@@ -353,6 +353,15 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.ReadUInt32("Glyph Index"); // 24
         }
 
+        [Parser(Opcode.CMSG_TOTEM_DESTROYED)]
+        public static void HandleTotemDestroyed(Packet packet)
+        {
+            packet.ReadByte("Slot"); // 24
+            var guid = packet.StartBitStream(4, 2, 1, 3, 0, 6, 7, 5);
+            packet.ParseBitStream(guid, 6, 2, 4, 1, 5, 0, 3, 7);
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.CMSG_UNLEARN_SKILL)]
         public static void HandleUnlearnSkill(Packet packet)
         {
@@ -580,7 +589,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
             guid[0] = packet.ReadBit();
             guid[6] = packet.ReadBit();
-            var unk40 = !packet.ReadBit("!unk40");
+            var hasMask = !packet.ReadBit("!hasMask"); // 40
             guid[7] = packet.ReadBit();
             guid[3] = packet.ReadBit();
             guid[1] = packet.ReadBit();
@@ -590,12 +599,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             guid[4] = packet.ReadBit();
             for (var i = 0; i < count; i++)
             {
-                packet.ReadInt32("unk80", i);
-                packet.ReadInt32("unk84", i);
+                packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID"); // 80
+                packet.ReadInt32("Cooldown", i); // 84
             }
             packet.ParseBitStream(guid, 5, 3, 7);
-            if (unk40)
-                packet.ReadByte("unk40");
+            if (hasMask)
+                packet.ReadByte("Mask"); // 40
             packet.ParseBitStream(guid, 4, 1, 0, 2, 6);
             packet.WriteGuid("Guid", guid);
         }
@@ -1158,11 +1167,65 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid2", guid2);
         }
 
+        [Parser(Opcode.SMSG_SPELLINTERRUPTLOG)]
+        public static void HandleSpellInterruptLog(Packet packet)
+        {
+            var guid = new byte[8];
+            var guid2 = new byte[8];
+
+            guid[7] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+            guid2[5] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+
+            packet.ParseBitStream(guid, 0);
+            packet.ParseBitStream(guid2, 2);
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Interrupt Spell ID"); // 128
+            packet.ParseBitStream(guid2, 1);
+            packet.ParseBitStream(guid, 2);
+            packet.ParseBitStream(guid2, 3);
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Interrupted Spell ID"); // 144
+            packet.ParseBitStream(guid, 4);
+            packet.ParseBitStream(guid2, 4);
+            packet.ParseBitStream(guid, 3, 1);
+            packet.ParseBitStream(guid2, 5, 6, 7);
+            packet.ParseBitStream(guid, 5, 6);
+            packet.ParseBitStream(guid2, 0);
+            packet.ParseBitStream(guid, 7);
+
+            packet.WriteGuid("Target", guid);
+            packet.WriteGuid("Caster", guid2);
+        }
+
         [Parser(Opcode.SMSG_SPIRIT_HEALER_CONFIRM)]
         public static void HandleSpiritHealerConfirm(Packet packet)
         {
             var guid = packet.StartBitStream(6, 5, 7, 1, 4, 2, 3, 0);
             packet.ParseBitStream(guid, 0, 4, 2, 3, 7, 6, 5, 1);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_TOTEM_CREATED)]
+        public static void HandleTotemCreated(Packet packet)
+        {
+            var guid = packet.StartBitStream(6, 1, 2, 5, 3, 4, 7, 0);
+            packet.ReadInt32("Duration"); // 112
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID"); // 96
+            packet.ParseBitStream(guid, 3, 4, 5, 6, 0, 2);
+            packet.ReadByte("Slot"); // 32
+            packet.ParseBitStream(guid, 1, 7);
             packet.WriteGuid("Guid", guid);
         }
     }

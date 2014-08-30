@@ -43,6 +43,16 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Object Guid", guid);
         }
 
+        [Parser(Opcode.SMSG_HEALTH_UPDATE)]
+        public static void HandleHealthUpdate(Packet packet)
+        {
+            var guid = packet.StartBitStream(4, 3, 0, 2, 7, 5, 1, 6);
+            packet.ParseBitStream(guid, 3, 1, 2, 4, 6);
+            packet.ReadInt32("Health"); // 96
+            packet.ParseBitStream(guid, 7, 5, 0);
+            packet.WriteGuid("Guid", guid);
+        }
+
         [HasSniffData] // in ReadCreateObjectBlock
         [Parser(Opcode.SMSG_UPDATE_OBJECT)]
         public static void HandleUpdateObject(Packet packet)

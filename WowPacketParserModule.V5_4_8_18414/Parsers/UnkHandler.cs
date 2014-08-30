@@ -342,6 +342,32 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadToEnd();
         }
 
+        [Parser(Opcode.SMSG_UNK_0C13)]
+        public static void HandleSUnk0C13(Packet packet)
+        {
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID"); // 36
+            packet.ReadInt32("unk32"); // 32
+            packet.ReadInt32("Cooldown1"); // 24
+            packet.ReadInt32("Cooldown2"); // 28
+
+            var guid = new byte[8];
+
+            guid[5] = packet.ReadBit();
+            packet.ReadBits("unk44", 8); // 44
+            guid[7] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            packet.ReadBits("unk40", 8); // 40
+            guid[0] = packet.ReadBit();
+
+            packet.ParseBitStream(guid, 4, 2, 5, 6, 0, 7, 1, 3);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_UNK_0C32)]
         public static void HandleSUnk0C32(Packet packet)
         {
@@ -456,6 +482,45 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         public static void HandleSUnk11E1(Packet packet)
         {
             packet.ReadBits("Unk16", 2);
+        }
+
+        [Parser(Opcode.SMSG_UNK_1206)]
+        public static void HandleSUnk1206(Packet packet)
+        {
+            var guid = new byte[8];
+            var guid2 = new byte[8];
+
+            guid2[1] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+            guid2[5] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+
+            packet.ParseBitStream(guid, 5, 4);
+            packet.ParseBitStream(guid2, 3, 0, 5);
+            packet.ParseBitStream(guid, 0);
+            packet.ParseBitStream(guid2, 2);
+            packet.ParseBitStream(guid, 1, 7, 6, 2);
+            packet.ParseBitStream(guid2, 1, 6);
+
+            packet.ReadByte("unk32"); // 32
+
+            packet.ParseBitStream(guid2, 4, 7);
+            packet.ParseBitStream(guid, 3);
+
+            packet.WriteGuid("Guid", guid);
+            packet.WriteGuid("Guid2", guid2);
         }
 
         [Parser(Opcode.SMSG_UNK_12BB)]
@@ -581,6 +646,20 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadBit("unk16");
         }
 
+        [Parser(Opcode.SMSG_UNK_149B)]
+        public static void HandleSUnk149B(Packet packet)
+        {
+            packet.ReadInt32("unk28"); // 28
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID"); // 20
+            packet.ReadByte("unk32"); // 32
+            var unk24 = -packet.ReadBit("-unk24"); // 24
+            var unk16 = -packet.ReadBit("-unk16"); // 16
+            if (unk16 != -1)
+                packet.ReadInt32("unk16"); // 16
+            if (unk24 != -1)
+                packet.ReadInt32("unk24"); // 24
+        }
+
         [Parser(Opcode.SMSG_UNK_14E2)]
         public static void HandleSUnk14E2(Packet packet)
         {
@@ -613,6 +692,15 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         public static void HandleSUnk15A9(Packet packet)
         {
             packet.ReadToEnd();
+        }
+
+        [Parser(Opcode.SMSG_UNK_163F)]
+        public static void HandleSUnk163F(Packet packet)
+        {
+            var guid = packet.StartBitStream(5, 0, 6, 3, 7, 2, 4, 1);
+            packet.ReadInt32("unk24"); // 24
+            packet.ParseBitStream(guid, 2, 5, 4, 0, 1, 7, 3, 6);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_UNK_1960)]
