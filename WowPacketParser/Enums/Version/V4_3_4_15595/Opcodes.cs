@@ -1222,7 +1222,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_UNIT_HEALTH_FREQUENT, 0x2C26},
             {Opcode.SMSG_UNIT_SPELLCAST_START, 0x2517},
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA, 0x6837},
-            {Opcode.SMSG_UPDATE_ACCOUNT_DATA_COMPLETE, 0x6126},
+            {Opcode.SMSG_UPDATE_ACCOUNT_DATA_COMPLETE, 0x2015},
             {Opcode.SMSG_UPDATE_COMBO_POINTS, 0x6B34},
             {Opcode.SMSG_UPDATE_CURRENCY, 0x59B0},
             {Opcode.SMSG_UPDATE_CURRENCY_WEEK_LIMIT, 0x70A7},
