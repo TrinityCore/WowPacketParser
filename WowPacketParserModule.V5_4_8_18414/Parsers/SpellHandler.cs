@@ -509,6 +509,16 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.SMSG_COOLDOWN_EVENT)]
+        public static void HandleCooldownEvent(Packet packet)
+        {
+            var guid = packet.StartBitStream(4, 7, 1, 5, 6, 0, 2, 3);
+            packet.ParseBitStream(guid, 5, 7);
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID"); // 24
+            packet.ParseBitStream(guid, 3, 1, 2, 4, 6, 0);
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_INITIAL_SPELLS)]
         public static void HandleInitialSpells(Packet packet)
         {
