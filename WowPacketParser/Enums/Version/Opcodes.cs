@@ -172,10 +172,7 @@ namespace WowPacketParser.Enums.Version
 
         public static Opcode GetOpcode(int opcodeId)
         {
-            var opc = Dict.GetBySecond(opcodeId);
-            if (opc == Opcode.NULL_OPCODE)
-                opc = (Opcode)opcodeId;
-            return opc;
+            return Dict.GetBySecond(opcodeId);
         }
 
         public static Opcode GetOpcode(int opcodeId, Direction direction)
