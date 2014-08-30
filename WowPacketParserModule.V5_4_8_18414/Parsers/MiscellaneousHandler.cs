@@ -651,15 +651,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadEnum<MirrorTimerType>("Timer Type", TypeCode.UInt32);
         }
 
-        [Parser(Opcode.SMSG_THREAT_REMOVE)]
-        public static void HandleThreatRemove(Packet packet)
-        {
-            var guid = packet.StartBitStream(1, 3, 0, 4, 6, 7, 5, 2);
-            packet.ParseBitStream(guid, 7, 6, 2, 5, 0, 4, 1, 3);
-
-            packet.WriteGuid("Guid", guid);
-        }
-
         [Parser(Opcode.SMSG_WEATHER)]
         public static void Handleweather(Packet packet)
         {

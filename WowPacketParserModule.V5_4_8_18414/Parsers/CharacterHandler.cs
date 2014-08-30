@@ -356,7 +356,13 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_LEVELUP_INFO)]
         public static void HandleLevelUpInfo(Packet packet)
         {
-            packet.ReadToEnd();
+            packet.ReadInt32("Talent Level"); // 0 - No Talent gain / 1 - Talent Point gain  // 64
+            packet.ReadInt32("Health"); // 16
+            for (var i = 0; i < 5; i++)
+                packet.ReadInt32("Stat", (StatType)i); // 24
+            packet.ReadInt32("Level"); // 20
+            for (var i = 0; i < 5; i++)
+                packet.ReadInt32("Power", (PowerType)i); // 44
         }
 
         [Parser(Opcode.SMSG_LOG_XPGAIN)]

@@ -251,6 +251,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_SETSHEATHED,                              0x0249 | 0x10000}, //++ //some load screen
             {Opcode.CMSG_SHOWING_CLOAK,                            0x02F2 | 0x10000}, //--
             {Opcode.CMSG_SHOWING_HELM,                             0x126B | 0x10000}, //--
+            {Opcode.CMSG_SOCKET_GEMS,                              0x02CB | 0x10000}, //--
             {Opcode.CMSG_SPELLCLICK,                               0x067A | 0x10000}, //--
             {Opcode.CMSG_SPIRIT_HEALER_ACTIVATE,                   0x0340 | 0x10000}, //++
             {Opcode.CMSG_SPLIT_ITEM,                               0x02EC | 0x10000}, //--
@@ -440,6 +441,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             //{Opcode.SMSG_BLACKMARKET_BID_RESULT,                   0x18BA | 0x20000}, //-- bad id
             {Opcode.SMSG_BUY_FAILED,                               0x1563 | 0x20000}, //--
             {Opcode.SMSG_BUY_ITEM,                                 0x101A | 0x20000}, //--
+            {Opcode.SMSG_CANCEL_AUTO_REPEAT,                       0x1E0F | 0x20000}, //++
             {Opcode.SMSG_CANCEL_COMBAT,                            0x0534 | 0x20000}, //--
             {Opcode.SMSG_CAST_FAILED,                              0x143A | 0x20000}, //++
             {Opcode.SMSG_CHANNEL_NOTIFY,                           0x0F06 | 0x20000}, //--
@@ -523,6 +525,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_ITEM_PUSH_RESULT,                         0x0E0A | 0x20000}, //++
             {Opcode.SMSG_ITEM_TIME_UPDATE,                         0x18C1 | 0x20000}, //--
             {Opcode.SMSG_LEARNED_SPELL,                            0x129A | 0x20000}, //++
+            {Opcode.SMSG_LEVELUP_INFO,                             0x1961 | 0x20000}, //++
             {Opcode.SMSG_LFG_PLAYER_INFO,                          0x1861 | 0x20000}, //++
             {Opcode.SMSG_LIST_INVENTORY,                           0x1AAE | 0x20000}, //--
             {Opcode.SMSG_LOAD_CUF_PROFILES,                        0x0E32 | 0x20000}, //++
@@ -659,7 +662,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_TAXINODE_STATUS,                          0x169E | 0x20000}, //++ pair CMSG 02E1
             {Opcode.SMSG_TEXT_EMOTE,                               0x002E | 0x20000}, //++
             {Opcode.SMSG_THREAT_CLEAR,                             0x180B | 0x20000}, //++
-            {Opcode.SMSG_THREAT_REMOVE,                            0x1E0F | 0x20000}, //++ ??
+            {Opcode.SMSG_THREAT_REMOVE,                            0x1960 | 0x20000}, //++
             {Opcode.SMSG_THREAT_UPDATE,                            0x0632 | 0x20000}, //++
             {Opcode.SMSG_TIME_SYNC_REQ,                            0x1A8F | 0x20000}, //++
             {Opcode.SMSG_TOTEM_CREATED,                            0x1C8F | 0x20000}, //++
@@ -770,8 +773,6 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_UNK_188F,                                 0x188F | 0x20000}, //++
             {Opcode.SMSG_UNK_18BA,                                 0x18BA | 0x20000}, //++
             {Opcode.SMSG_UNK_18C3,                                 0x18C3 | 0x20000}, //++
-            {Opcode.SMSG_UNK_1960,                                 0x1960 | 0x20000}, //++
-            {Opcode.SMSG_UNK_1961,                                 0x1961 | 0x20000}, //++
             {Opcode.SMSG_UNK_1A1E,                                 0x1A1E | 0x20000}, //++ pair CMSG 0882
             {Opcode.SMSG_UNK_1A1F,                                 0x1A1F | 0x20000}, //++
             {Opcode.SMSG_UNK_1A2B,                                 0x1A2B | 0x20000}, //++ pair CMSG 1272

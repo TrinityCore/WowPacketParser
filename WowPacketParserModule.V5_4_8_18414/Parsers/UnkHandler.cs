@@ -851,55 +851,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_UNK_1960)]
-        public static void HandleSUnk1960(Packet packet)
-        {
-            var guid = new byte[8];
-            var guid2 = new byte[8];
-
-            guid[0] = packet.ReadBit();
-            guid[1] = packet.ReadBit();
-            guid[5] = packet.ReadBit();
-            guid2[4] = packet.ReadBit();
-            guid2[0] = packet.ReadBit();
-            guid[4] = packet.ReadBit();
-            guid[6] = packet.ReadBit();
-            guid2[7] = packet.ReadBit();
-            guid2[6] = packet.ReadBit();
-            guid2[3] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
-            guid2[1] = packet.ReadBit();
-            guid[3] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
-            guid2[5] = packet.ReadBit();
-            guid2[2] = packet.ReadBit();
-
-            packet.ParseBitStream(guid2, 3, 0, 2);
-            packet.ParseBitStream(guid, 5, 4, 7, 3, 0);
-            packet.ParseBitStream(guid2, 4);
-            packet.ParseBitStream(guid, 1);
-            packet.ParseBitStream(guid2, 1);
-            packet.ParseBitStream(guid, 6);
-            packet.ParseBitStream(guid2, 7, 6);
-            packet.ParseBitStream(guid, 2);
-            packet.ParseBitStream(guid2, 5);
-
-            packet.WriteGuid("Guid", guid);
-            packet.WriteGuid("Guid2", guid2);
-        }
-
-        [Parser(Opcode.SMSG_UNK_1961)]
-        public static void HandleSUnk1961(Packet packet)
-        {
-            packet.ReadInt32("unk64");
-            packet.ReadInt32("unk16");
-            for (var i = 0; i < 5; i++)
-                packet.ReadInt32("unk24", i);
-            packet.ReadInt32("unk20");
-            for (var i = 0; i < 5; i++)
-                packet.ReadInt32("unk44", i);
-        }
-
         [Parser(Opcode.SMSG_UNK_1A1E)]
         public static void HandleSUnk1A1E(Packet packet)
         {

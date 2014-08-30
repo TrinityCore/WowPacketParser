@@ -30,6 +30,15 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.SMSG_CANCEL_AUTO_REPEAT)]
+        public static void HandleCancelAutoRepeat(Packet packet)
+        {
+            var guid = packet.StartBitStream(1, 3, 0, 4, 6, 7, 5, 2);
+            packet.ParseBitStream(guid, 7, 6, 2, 5, 0, 4, 1, 3);
+
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_DUEL_INBOUNDS)]
         public static void HandleDuelInbounds(Packet packet)
         {

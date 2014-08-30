@@ -331,6 +331,50 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.SMSG_THREAT_REMOVE)]
+        public static void HandleRemoveThreatlist(Packet packet)
+        {
+            var hostileGUID = new byte[8];
+            var victimGUID = new byte[8];
+
+            victimGUID[0] = packet.ReadBit();
+            victimGUID[1] = packet.ReadBit();
+            victimGUID[5] = packet.ReadBit();
+            hostileGUID[4] = packet.ReadBit();
+            hostileGUID[0] = packet.ReadBit();
+            victimGUID[4] = packet.ReadBit();
+            victimGUID[6] = packet.ReadBit();
+            hostileGUID[7] = packet.ReadBit();
+            hostileGUID[6] = packet.ReadBit();
+            hostileGUID[3] = packet.ReadBit();
+            victimGUID[2] = packet.ReadBit();
+            hostileGUID[1] = packet.ReadBit();
+            victimGUID[3] = packet.ReadBit();
+            victimGUID[7] = packet.ReadBit();
+            hostileGUID[5] = packet.ReadBit();
+            hostileGUID[2] = packet.ReadBit();
+
+            packet.ReadXORByte(hostileGUID, 3);
+            packet.ReadXORByte(hostileGUID, 0);
+            packet.ReadXORByte(hostileGUID, 2);
+            packet.ReadXORByte(victimGUID, 5);
+            packet.ReadXORByte(victimGUID, 4);
+            packet.ReadXORByte(victimGUID, 7);
+            packet.ReadXORByte(victimGUID, 3);
+            packet.ReadXORByte(victimGUID, 0);
+            packet.ReadXORByte(hostileGUID, 4);
+            packet.ReadXORByte(victimGUID, 1);
+            packet.ReadXORByte(hostileGUID, 1);
+            packet.ReadXORByte(victimGUID, 6);
+            packet.ReadXORByte(hostileGUID, 7);
+            packet.ReadXORByte(hostileGUID, 6);
+            packet.ReadXORByte(victimGUID, 2);
+            packet.ReadXORByte(hostileGUID, 5);
+
+            packet.WriteGuid("Hostile GUID", hostileGUID);
+            packet.WriteGuid("GUID", victimGUID);
+        }
+
         [Parser(Opcode.SMSG_TRAINER_LIST)]
         public static void HandleServerTrainerList(Packet packet)
         {

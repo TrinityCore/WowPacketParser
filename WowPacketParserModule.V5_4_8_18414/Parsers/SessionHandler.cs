@@ -289,6 +289,15 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadUInt32("Server Token");
         }
 
+        [Parser(Opcode.SMSG_SEND_SERVER_LOCATION)]
+        public static void HandleSendServerLocation(Packet packet)
+        {
+            var len1 = packet.ReadBits(7);
+            var len2 = packet.ReadBits(7);
+            packet.ReadWoWString("Server Location", len2);
+            packet.ReadWoWString("Server Location", len1);
+        }
+
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]
         public static void HandleTransferPending(Packet packet)
         {

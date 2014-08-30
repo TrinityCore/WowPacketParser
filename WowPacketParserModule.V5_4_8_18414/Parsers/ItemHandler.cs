@@ -173,6 +173,14 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadToEnd();
         }
 
+        [Parser(Opcode.CMSG_SOCKET_GEMS)]
+        public static void HandleSocketGems(Packet packet)
+        {
+            packet.ReadGuid("GUID");
+            for (var i = 0; i < 3; ++i)
+                packet.ReadGuid("Gem GUID", i);
+        }
+
         [Parser(Opcode.CMSG_SPLIT_ITEM)]
         public static void HandleSplitItem(Packet packet)
         {
