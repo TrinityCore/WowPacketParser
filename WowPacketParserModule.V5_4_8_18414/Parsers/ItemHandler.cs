@@ -176,9 +176,68 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_SOCKET_GEMS)]
         public static void HandleSocketGems(Packet packet)
         {
-            packet.ReadGuid("GUID");
-            for (var i = 0; i < 3; ++i)
-                packet.ReadGuid("Gem GUID", i);
+            var guid2 = new byte[3][];
+            var guid = new byte[8];
+
+            for (var i = 0; i < 3; i++)
+            {
+                guid2[i] = new byte[8];
+                guid2[i][4] = packet.ReadBit();
+            }
+
+            for (var i = 0; i < 3; i++)
+                guid2[i][0] = packet.ReadBit();
+
+            for (var i = 0; i < 3; i++)
+                guid2[i][6] = packet.ReadBit();
+
+            for (var i = 0; i < 3; i++)
+                guid2[i][2] = packet.ReadBit();
+
+            for (var i = 0; i < 3; i++)
+                guid2[i][1] = packet.ReadBit();
+
+            for (var i = 0; i < 3; i++)
+                guid2[i][7] = packet.ReadBit();
+
+            for (var i = 0; i < 3; i++)
+                guid2[i][3] = packet.ReadBit();
+
+            for (var i = 0; i < 3; i++)
+                guid2[i][5] = packet.ReadBit();
+
+            guid = packet.StartBitStream(5, 0, 6, 2, 3, 4, 7, 1);
+            packet.ParseBitStream(guid, 7, 2, 6);
+
+            for (var i = 0; i < 3; i++)
+                packet.ReadXORByte(guid2[i], 6);
+
+            for (var i = 0; i < 3; i++)
+                packet.ReadXORByte(guid2[i], 4);
+
+            for (var i = 0; i < 3; i++)
+                packet.ReadXORByte(guid2[i], 3);
+
+            for (var i = 0; i < 3; i++)
+                packet.ReadXORByte(guid2[i], 2);
+
+            for (var i = 0; i < 3; i++)
+                packet.ReadXORByte(guid2[i], 0);
+
+            for (var i = 0; i < 3; i++)
+                packet.ReadXORByte(guid2[i], 1);
+
+            for (var i = 0; i < 3; i++)
+                packet.ReadXORByte(guid2[i], 7);
+
+            for (var i = 0; i < 3; i++)
+                packet.ReadXORByte(guid2[i], 5);
+
+            packet.ParseBitStream(guid, 4, 3, 1, 5, 0);
+
+            packet.WriteGuid("Guid", guid);
+            for (var i = 0; i < 3; i++)
+                packet.WriteGuid("Gem guid", guid2[i], i);
         }
 
         [Parser(Opcode.CMSG_SPLIT_ITEM)]

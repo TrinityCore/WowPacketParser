@@ -251,7 +251,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_SETSHEATHED,                              0x0249 | 0x10000}, //++ //some load screen
             {Opcode.CMSG_SHOWING_CLOAK,                            0x02F2 | 0x10000}, //--
             {Opcode.CMSG_SHOWING_HELM,                             0x126B | 0x10000}, //--
-            {Opcode.CMSG_SOCKET_GEMS,                              0x02CB | 0x10000}, //--
+            {Opcode.CMSG_SOCKET_GEMS,                              0x02CB | 0x10000}, //+-
             {Opcode.CMSG_SPELLCLICK,                               0x067A | 0x10000}, //--
             {Opcode.CMSG_SPIRIT_HEALER_ACTIVATE,                   0x0340 | 0x10000}, //++
             {Opcode.CMSG_SPLIT_ITEM,                               0x02EC | 0x10000}, //--
