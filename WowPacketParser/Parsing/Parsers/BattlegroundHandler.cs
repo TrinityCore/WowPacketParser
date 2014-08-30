@@ -622,7 +622,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadXORByte(guidBytes, 4);
 
-            var bgError = packet.ReadEnum<BattlegroundError430>("Battleground Error", TypeCode.Int32);
+            var bgError = packet.ReadEnum<BattlegroundError4x>("Battleground Error", TypeCode.Int32);
 
             packet.ReadXORByte(guidBytes, 1);
 
@@ -670,9 +670,9 @@ namespace WowPacketParser.Parsing.Parsers
             // note: guid is used to identify the player who's unable to join queue when it happens.
 
             // on id 0xB, 0xC and 8
-            if (bgError == BattlegroundError430.CouldntJoinQueueInTime
-                || bgError == BattlegroundError430.NotAllowedInBattleground
-                || bgError == BattlegroundError430.JoinFailedAsGroup)
+            if (bgError == BattlegroundError4x.CouldntJoinQueueInTime
+                || bgError == BattlegroundError4x.BattlegroundNotInBattleground
+                || bgError == BattlegroundError4x.JoinFailedAsGroup)
             {
                 packet.WriteGuid("Guid", guidBytes);
             }
@@ -1652,7 +1652,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadXORByte(guid1, 1);
 
-            packet.ReadEnum<BattlegroundStatus>("Status", TypeCode.UInt32);
+            packet.ReadEnum<BattlegroundError4x>("Battleground Error", TypeCode.UInt32);
             packet.ReadUInt32("Queue slot");
 
             packet.ReadXORByte(guid2, 6);
