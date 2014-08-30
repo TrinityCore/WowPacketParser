@@ -13,6 +13,7 @@ namespace WowPacketParser.SQL
     {
         public static void DumpSQL(string prefix, string fileName, string header)
         {
+            var startTime = DateTime.Now;
             var units = Storage.Objects.IsEmpty() ? null : Storage.Objects.Where(obj => obj.Value.Item1.Type == ObjectType.Unit && obj.Key.GetHighType() != HighGuidType.Pet && !obj.Value.Item1.IsTemporarySpawn()).ToDictionary(obj => obj.Key, obj => obj.Value.Item1 as Unit);
             var gameObjects = Storage.Objects.IsEmpty() ? null : Storage.Objects.Where(obj => obj.Value.Item1.Type == ObjectType.GameObject).ToDictionary(obj => obj.Key, obj => obj.Value.Item1 as GameObject);
             //var pets = Storage.Objects.Where(obj => obj.Value.Type == ObjectType.Unit && obj.Key.GetHighType() == HighGuidType.Pet).ToDictionary(obj => obj.Key, obj => obj.Value as Unit);
@@ -99,6 +100,9 @@ namespace WowPacketParser.SQL
                 Trace.WriteLine(store.WriteToFile(header)
                     ? String.Format("{0}: Saved file to '{1}'", prefix, fileName)
                     : "No SQL files created -- empty.");
+                var endTime = DateTime.Now;
+                var span = endTime.Subtract(startTime);
+                Trace.WriteLine(String.Format("Finished SQL file in {0}.", span.ToFormattedString()));
             }
         }
     }

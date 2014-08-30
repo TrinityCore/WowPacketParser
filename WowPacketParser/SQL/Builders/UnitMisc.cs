@@ -780,7 +780,6 @@ namespace WowPacketParser.SQL.Builders
                                 while (reader.Read())
                                     items.Add(reader.GetString(0));
                         }
-
                     }
 
                     row.AddValue("entry", text.Key);
