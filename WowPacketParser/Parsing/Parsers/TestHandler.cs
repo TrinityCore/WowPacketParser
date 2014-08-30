@@ -28,13 +28,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk Int 32"); //error related
         }
 
-        [Parser(17205)] // 4.3.4
-        public static void Handle17205(Packet packet)
-        {
-            packet.ReadPackedGuid("Guid");
-            packet.ReadInt32("Unk");
-        }
-
         [Parser(62540)]
         public static void Handle62540(Packet packet)
         {
