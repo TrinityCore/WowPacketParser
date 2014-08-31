@@ -4034,7 +4034,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.AddValue("Position", pos);
         }
 
-        [Parser(Opcode.MSG_MOVE_UPDATE_FLIGHT_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_FLIGHT_SPEED)]
         public static void HandleMoveUpdateFlightSpeed434(Packet packet)
         {
             var guid = new byte[8];
