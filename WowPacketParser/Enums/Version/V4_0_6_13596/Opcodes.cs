@@ -289,6 +289,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             //{Opcode.CMSG_GUILD_RANKS, 0x03129},
             {Opcode.CMSG_GUILD_REMOVE, 0x0312D}, //opcode12589
             //{Opcode.CMSG_GUILD_REQUEST_NEWS, 0x03129},
+            //{Opcode.CMSG_GUILD_REQUEST_PARTY_STATE, 0x02219},
             {Opcode.CMSG_GUILD_ROSTER, 0x0B2A4},
             {Opcode.CMSG_GUILD_SET_NOTE, 0x0232D},
             {Opcode.CMSG_GUILD_SWITCH_RANK, 0x03309}, //UnknownopcodeID
@@ -460,7 +461,6 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_REPOP_REQUEST, 0x0A9E4},
             {Opcode.CMSG_REPORT_PVP_AFK, 0x0E3AC},
             {Opcode.CMSG_REQUEST_ACCOUNT_DATA, 0x0EEAC},
-            //{Opcode.CMSG_REQUEST_GUILD_PARTY_STATE, 0x02219},
             //{Opcode.CMSG_REQUEST_GUILD_ROSTER, 0x0250D},
             {Opcode.CMSG_REQUEST_HOTFIX, 0x08589},// the client sends this after we send SMSG_HOTFIX_NOTIFY[_BLOP]}, only sent for the items that the player has in his inventory}, that are flagged to be hot fixed
             {Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS, 0x070C8},

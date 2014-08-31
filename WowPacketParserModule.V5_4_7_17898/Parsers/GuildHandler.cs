@@ -352,7 +352,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadWoWString("MOTD", motdLength);
         }
 
-        [Parser(Opcode.CMSG_REQUEST_GUILD_PARTY_STATE)]
+        [Parser(Opcode.CMSG_GUILD_REQUEST_PARTY_STATE)]
         public static void HandleGuildUpdatePartyState(Packet packet)
         {
             var guid = new byte[8];
