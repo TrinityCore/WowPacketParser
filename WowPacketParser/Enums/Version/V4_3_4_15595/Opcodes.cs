@@ -553,7 +553,6 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.MSG_MOVE_TELEPORT_CHEAT, 0x3A10},
             {Opcode.MSG_MOVE_TIME_SKIPPED, 0x19B3},
             {Opcode.MSG_MOVE_TOGGLE_COLLISION_CHEAT, 0x7B04},
-            {Opcode.MSG_MOVE_UPDATE_TELEPORT, 0x50B2},
             {Opcode.MSG_MOVE_WORLDPORT_ACK, 0x2411},
             {Opcode.MSG_NOTIFY_PARTY_SQUELCH, 0x4D06},
             {Opcode.MSG_PARTY_ASSIGNMENT, 0x0424}, // found CMSG
@@ -986,6 +985,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_MOVE_UPDATE_RUN_SPEED, 0x14A6},
             {Opcode.SMSG_MOVE_UPDATE_SWIM_BACK_SPEED, 0x30B5},
             {Opcode.SMSG_MOVE_UPDATE_SWIM_SPEED, 0x59B5},
+            {Opcode.SMSG_MOVE_UPDATE_TELEPORT, 0x50B2},
             {Opcode.SMSG_MOVE_UPDATE_TURN_RATE, 0x5DA1},
             {Opcode.SMSG_MOVE_UPDATE_WALK_SPEED, 0x54A2},
             {Opcode.SMSG_MOVE_WATER_WALK, 0x75B1},

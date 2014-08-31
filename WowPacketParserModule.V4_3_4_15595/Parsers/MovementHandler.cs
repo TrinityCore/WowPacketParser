@@ -4294,7 +4294,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.AddValue("Position", pos);
         }
 
-        [Parser(Opcode.MSG_MOVE_UPDATE_TELEPORT)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_TELEPORT)]
         public static void HandleMoveUpdateTeleport434(Packet packet)
         {
             var guid = new byte[8];

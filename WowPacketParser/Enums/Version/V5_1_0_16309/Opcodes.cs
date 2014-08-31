@@ -761,7 +761,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_MOVE_UPDATE_RUN_SPEED, 0x049D},
             {Opcode.SMSG_MOVE_UPDATE_SWIM_BACK_SPEED, 0x07BC},
             {Opcode.SMSG_MOVE_UPDATE_SWIM_SPEED, 0x06B8},
-            {Opcode.MSG_MOVE_UPDATE_TELEPORT, 0x0E1D},
+            {Opcode.SMSG_MOVE_UPDATE_TELEPORT, 0x0E1D},
             {Opcode.SMSG_MOVE_UPDATE_TURN_RATE, 0x0BB5},
             {Opcode.SMSG_MOVE_UPDATE_WALK_SPEED, 0x03B8},
             {Opcode.SMSG_MOVE_WATER_WALK, 0x021C},
