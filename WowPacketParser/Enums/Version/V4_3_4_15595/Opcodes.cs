@@ -604,11 +604,11 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_ATTACKSWING_CANT_ATTACK, 0x0016},
             {Opcode.SMSG_ATTACKSWING_DEADTARGET, 0x2B26},
             {Opcode.SMSG_ATTACKSWING_NOTINRANGE, 0x6C07},
-            {Opcode.SMSG_AUCTION_BIDDER_LIST_RESULT, 0x6637},
+            {Opcode.SMSG_AUCTION_BIDDER_LIST_RESULT, 0x0027},
             {Opcode.SMSG_AUCTION_BIDDER_NOTIFICATION, 0x4E27},
             {Opcode.SMSG_AUCTION_COMMAND_RESULT, 0x4C25},
             {Opcode.SMSG_AUCTION_LIST_PENDING_SALES, 0x6A27},
-            {Opcode.SMSG_AUCTION_LIST_RESULT, 0x0027},
+            {Opcode.SMSG_AUCTION_LIST_RESULT, 0x6637},
             {Opcode.SMSG_AUCTION_OWNER_LIST_RESULT, 0x6C34},
             {Opcode.SMSG_AUCTION_OWNER_NOTIFICATION, 0x4116},
             {Opcode.SMSG_AUCTION_REMOVED_NOTIFICATION, 0x2334},
@@ -766,9 +766,11 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_FLIGHT_SPLINE_SYNC, 0x0924},
             {Opcode.SMSG_FLOOD_DETECTED, 0x0542},
             {Opcode.SMSG_FORCED_DEATH_UPDATE, 0x2606},
+            {Opcode.SMSG_FORCE_ANIM, 0x4C05},
             {Opcode.SMSG_FORCE_SEND_QUEUED_PACKETS, 0x0140},
             {Opcode.SMSG_FORCE_SET_VEHICLE_REC_ID, 0x70A1},
             {Opcode.SMSG_FORGE_MASTER_SET, 0x70B7},
+            {Opcode.SMSG_FORCEACTIONSHOW, 0x6126}, // can be swapped with SMSG_BINDZONEREPLY
             {Opcode.SMSG_FRIEND_STATUS, 0x0717},
             {Opcode.SMSG_GAMEOBJECT_CUSTOM_ANIM, 0x4936},
             {Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM, 0x6735},
@@ -1104,6 +1106,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_RESET_COMPRESSION_CONTEXT, 0x0142},
             {Opcode.SMSG_RESET_FAILED_NOTIFY, 0x4616},
             {Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS, 0x15B0},
+            {Opcode.SMSG_RESURRECT_FAILED, 0x6705},
             {Opcode.SMSG_RESURRECT_REQUEST, 0x2905},
             {Opcode.SMSG_RESYNC_RUNES, 0x6224},
             {Opcode.SMSG_ROLE_POLL_BEGIN, 0x70B0},
@@ -1267,8 +1270,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x31A2},
             {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x4A14},
             {Opcode.SMSG_XP_GAIN_ABORTED, 0x50B4},
-            {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x0A06},
-            {Opcode.SMSG_UNKNOWN_1240, 0x4C05}, //should have name changed
+            {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x0A06}
         };
     }
 }
