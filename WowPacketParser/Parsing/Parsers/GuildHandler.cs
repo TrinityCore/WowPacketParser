@@ -1577,7 +1577,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadCString("Text");
         }
 
-        [Parser(Opcode.SMSG_GUILD_BANK_QUERY_TEXT_RESULTS, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_GUILD_BANK_QUERY_TEXT_RESULT, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildQueryBankText434(Packet packet)
         {
             packet.ReadUInt32("Tab Id");
@@ -1766,7 +1766,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_GUILD_BANK_LOG_QUERY_RESULTS, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_GUILD_BANK_LOG_QUERY_RESULT, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildBankLogQueryResult434(Packet packet)
         {
             var hasWeekCashflow = packet.ReadBit("Has Cash flow Perk");
