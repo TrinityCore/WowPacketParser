@@ -532,6 +532,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             ReadPlayerMovementInfo(ref packet, info.MovementGravityEnableAck);
         }
 
+        [Parser(Opcode.CMSG_UNK_00D9)]
+        public static void HandleCUnk00D9(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.CUnk00D9);
+        }
+
         [Parser(Opcode.CMSG_UNK_01F1)]
         public static void HandleCUnk01F1(Packet packet)
         {
@@ -662,6 +668,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         public static void HandleUnk023B(Packet packet)
         {
             ReadPlayerMovementInfo(ref packet, info.Unk023B);
+        }
+
+        [Parser(Opcode.SMSG_UNK_0251)]
+        public static void HandleUnk0251(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.SUnk0251);
         }
 
         [Parser(Opcode.SMSG_UNK_08A3)]
