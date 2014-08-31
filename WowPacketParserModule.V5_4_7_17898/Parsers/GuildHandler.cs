@@ -571,10 +571,5 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ParseBitStream(guid, 7, 0, 5, 2, 3, 6, 4, 1);
             packet.WriteGuid("GUID", guid);
         }
-
-        [Parser(Opcode.CMSG_GUILD_PERMISSIONS)]
-        public static void HandleGuildPermissions(Packet packet)
-        {
-        }
     }
 }
