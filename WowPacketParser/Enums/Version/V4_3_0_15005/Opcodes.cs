@@ -176,7 +176,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.CMSG_GUILD_BANK_WITHDRAW_MONEY, 26112},
             {Opcode.CMSG_GUILD_CHANGE_NAME_REQUEST, 8780},
             {Opcode.CMSG_GUILD_DECLINE, 2124},
-            {Opcode.CMSG_GUILD_INVITE_BY_NAME, 18742},
+            {Opcode.CMSG_GUILD_INVITE, 18742},
             {Opcode.CMSG_GUILD_LEAVE, 2060},
             {Opcode.CMSG_GUILD_MEMBER_SEND_SOR_REQUEST, 2188},
             {Opcode.CMSG_GUILD_QUERY, 23556},

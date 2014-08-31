@@ -361,7 +361,6 @@ namespace WowPacketParser.Enums
         CMSG_GUILD_INFO,
         CMSG_GUILD_INFO_TEXT,
         CMSG_GUILD_INVITE,
-        CMSG_GUILD_INVITE_BY_NAME,
         CMSG_GUILD_LEADER,
         CMSG_GUILD_LEAVE,
         CMSG_GUILD_MEMBER_SEND_SOR_REQUEST,

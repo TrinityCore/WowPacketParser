@@ -755,6 +755,13 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_GUILD_INVITE, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleGuildInviteByName(Packet packet)
+        {
+            var count = packet.ReadBits("String Length", 7);
+            packet.ReadWoWString("Name", count);
+        }
+
         [Parser(Opcode.CMSG_GUILD_CREATE)]
         [Parser(Opcode.CMSG_GUILD_INVITE)]
         [Parser(Opcode.CMSG_GUILD_PROMOTE)]
@@ -2151,13 +2158,6 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.WriteGuid("Player Guid", guids[i], i);
             }
-        }
-
-        [Parser(Opcode.CMSG_GUILD_INVITE_BY_NAME)]
-        public static void HandleGuildInviteByName(Packet packet)
-        {
-            var count = packet.ReadBits("String Length", 7);
-            packet.ReadWoWString("Name", count);
         }
 
         [Parser(Opcode.SMSG_GUILD_REPUTATION_REACTION_CHANGED, ClientVersionBuild.V4_3_4_15595)]
