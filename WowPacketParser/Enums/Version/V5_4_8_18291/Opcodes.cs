@@ -359,7 +359,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_GUILD_BANK_LOG_QUERY_RESULT, 0x0FF0},
             {Opcode.SMSG_GUILD_CHALLENGE_UPDATED, 0x0AE9},
             {Opcode.SMSG_GUILD_COMMAND_RESULT, 0x0EF1},
-            {Opcode.SMSG_GUILD_EVENT_LOG_QUERY, 0x1AF1},
+            {Opcode.SMSG_GUILD_EVENT_LOG_QUERY_RESULT, 0x1AF1},
             {Opcode.SMSG_GUILD_INVITE, 0x0F71},
             {Opcode.SMSG_GUILD_INVITE_CANCEL, 0x0FE1},
             {Opcode.SMSG_GUILD_MEMBER_DAILY_RESET, 0x1BE8},
