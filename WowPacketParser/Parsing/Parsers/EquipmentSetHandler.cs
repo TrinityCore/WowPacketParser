@@ -60,7 +60,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Result");
         }
 
-        [Parser(Opcode.CMSG_DELETEEQUIPMENT_SET)]
+        [Parser(Opcode.CMSG_EQUIPMENT_SET_DELETE)]
         public static void HandleEquipmentSetDelete(Packet packet)
         {
             packet.ReadPackedGuid("Set ID");

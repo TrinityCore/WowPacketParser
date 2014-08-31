@@ -1260,7 +1260,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_SET_ALLOW_LOW_LEVEL_RAID1, 0x0508}, // NF()(0x0508) // // lua: SetAllowLowLevelRaid
             //{Opcode.CMSG_SET_ALLOW_LOW_LEVEL_RAID2, 0x0509}, // NF()(0x0509) // // lua: SetAllowLowLevelRaid
             {Opcode.SMSG_CAMERA_SHAKE, 0xFF93}, // NF(0xA3B0)(0x050A) //ellEffectCameraShakes.dbc index}, uint32
-            {Opcode.SMSG_UPDATE_ITEM_ENCHANTMENTS, 0xFF92}, // NF(0x6A90)(0x050B) // update packet?
+            {Opcode.SMSG_SOCKET_GEMS_RESULT, 0xFF92}, // NF(0x6A90)(0x050B) // update packet?
             {Opcode.UMSG_UNKNOWN_1292, 0x050C}, // NF()(0x050C) // // not found
             {Opcode.SMSG_REDIRECT_CLIENT, 0x9000}, // (0x8400)(0x050D) //}, uint16 port}, uint32 unk}, uint8[20] hash (ip + port}, seed=sessionkey)
             {Opcode.CMSG_REDIRECTION_FAILED, 0x0509}, // (0x1201)(0x050E) // with networking

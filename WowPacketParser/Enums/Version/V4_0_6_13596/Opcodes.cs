@@ -1302,7 +1302,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_UPDATE_CURRENCY_WEEK_LIMIT, 0x04C5C},
             {Opcode.SMSG_UPDATE_INSTANCE_ENCOUNTER_UNIT, 0x0EDA4},// wtf::SMSG_GAMEOBJECT_SPAWN_ANIM_OBSOLETE
             {Opcode.SMSG_UPDATE_INSTANCE_OWNERSHIP, 0x03B8C},
-            {Opcode.SMSG_UPDATE_ITEM_ENCHANTMENTS, 0x020E8},
+            {Opcode.SMSG_SOCKET_GEMS_RESULT, 0x020E8},
             {Opcode.SMSG_UPDATE_LAST_INSTANCE, 0x033E8},
             //{Opcode.SMSG_UPDATE_LFG_LIST, 0x0768C},
             {Opcode.SMSG_UPDATE_OBJECT, 0x03780},
