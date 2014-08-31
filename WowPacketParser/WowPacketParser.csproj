@@ -427,7 +427,6 @@
     <Compile Include="Parsing\Parsers\SpellHandler.cs" />
     <Compile Include="Parsing\Parsers\TalentHandler.cs" />
     <Compile Include="Parsing\Parsers\TaxiHandler.cs" />
-    <Compile Include="Parsing\Parsers\TestHandler.cs" />
     <Compile Include="Parsing\Parsers\TicketHandler.cs" />
     <Compile Include="Parsing\Parsers\TradeHandler.cs" />
     <Compile Include="Parsing\Parsers\UpdateHandler.cs" />
