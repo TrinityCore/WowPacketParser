@@ -132,7 +132,7 @@ namespace WowPacketParser.SQL
             if (String.IsNullOrEmpty(input))
                 return bct;
 
-            var query = new StringBuilder(string.Format("SELECT Id FROM {1}.broadcast_text WHERE MaleText='{0}' OR FemaleText='{0}';", SQLUtil.Stringify(input), Settings.TDBDatabase));
+            var query = new StringBuilder(string.Format("SELECT Id FROM {1}.broadcast_text WHERE MaleText='{0}' OR FemaleText='{0}';", SQLUtil.EscapeString(input), Settings.TDBDatabase));
             using (var reader = ExecuteQuery(query.ToString()))
             {
                 if (reader != null)
