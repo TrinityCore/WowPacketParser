@@ -1031,7 +1031,6 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_LOTTERY_QUERY_RESULT_OBSOLETE, 0x1012A}, //UnknownopcodeID
             {Opcode.SMSG_LOTTERY_RESULT_OBSOLETE, 0x1012C}, //UnknownopcodeID
             {Opcode.SMSG_MAIL_LIST_RESULT, 0x0F1C8},
-            {Opcode.SMSG_MEETINGSTONE_COMPLETE, 0x0F680},
             {Opcode.SMSG_MEETINGSTONE_IN_PROGRESS, 0x0E7C4},
             {Opcode.SMSG_MEETINGSTONE_MEMBER_ADDED, 0x0B2A8},
             {Opcode.SMSG_MEETINGSTONE_SETQUEUE, 0x0ED88}, //(almost100%sureit'swrong)
@@ -1199,6 +1198,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_SET_PROJECTILE_POSITION, 0x02C84},
             {Opcode.SMSG_SHOWTAXINODES, 0x02B84},
             {Opcode.SMSG_SHOW_BANK, 0x027A4},
+            {Opcode.SMSG_SHOW_MAILBOX, 0x0F680},
             {Opcode.SMSG_SPELLBREAKLOG, 0x0BDAC},
             {Opcode.SMSG_SPELLDAMAGESHIELD, 0x073A0},
             {Opcode.SMSG_SPELLDISPELLOG, 0xA9C8},

@@ -420,6 +420,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_PLAYERBINDERROR, 0x765C}, // (0xC3FC)(0x01B6) //
             {Opcode.CMSG_BANKER_ACTIVATE, 0x01B7}, // NF()(0x01B7) //
             {Opcode.SMSG_SHOW_BANK, 0x01B8}, // NF()(0x01B8) //
+            {Opcode.SMSG_SHOW_MAILBOX, 0xF575}, // (0xEA14)(0x0297) //L_SHOW
             {Opcode.CMSG_BUY_BANK_SLOT, 0x01B9}, // NF()(0x01B9) //
             {Opcode.SMSG_BUY_BANK_SLOT_RESULT, 0x01BA}, // NF()(0x01BA) //
             {Opcode.CMSG_PETITION_SHOWLIST, 0x01BB}, // NF()(0x01BB) //
@@ -631,7 +632,6 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_MEETINGSTONE_CHEAT, 0x0294}, // NF()(0x0294) // // not found 3.3
             {Opcode.SMSG_MEETINGSTONE_SETQUEUE, 0x245F}, // (0xA215)(0x0295) //howed in console
             {Opcode.CMSG_MEETINGSTONE_INFO, 0x0296}, // NF()(0x0296) // // EVENT_LFG_UPDATE
-            {Opcode.SMSG_MEETINGSTONE_COMPLETE, 0xF575}, // (0xEA14)(0x0297) //L_SHOW
             {Opcode.SMSG_MEETINGSTONE_IN_PROGRESS, 0xF57D}, // (0xE318)(0x0298) //ome UPDATE_COOLDOWN events
             {Opcode.SMSG_MEETINGSTONE_MEMBER_ADDED, 0xF77C}, // (0x43FD)(0x0299) //rrors: ERR_NOT_IN_GROUP (2,51) and ERR_NOT_IN_RAID (3,39,40)
             {Opcode.CMSG_GMTICKETSYSTEM_TOGGLE, 0x029A}, // NF()(0x029A) //
