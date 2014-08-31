@@ -769,29 +769,6 @@ namespace WowPacketParser.SQL.Builders
                 {
                     var row = new QueryBuilder.SQLInsertRow();
 
-                    var query = new StringBuilder(string.Format("SELECT Id FROM {1}.broadcast_text WHERE MaleText='{0}' OR FemaleText='{0}';", MySqlHelper.DoubleQuoteString(textValue.Item1.Text), Settings.TDBDatabase));
-
-                    if (Settings.DevMode && !String.IsNullOrEmpty(textValue.Item1.Text))
-                    {
-                        using (var reader = SQLConnector.ExecuteQuery(query.ToString()))
-                        {
-                            if (reader != null)
-                                while (reader.Read())
-                                {
-                                    var values = new object[1];
-                                    var count = reader.GetValues(values);
-                                    if (count != 1)
-                                        break; // error in query
-
-                                    if (!String.IsNullOrWhiteSpace(textValue.Item1.BroadcastTextID))
-                                        textValue.Item1.BroadcastTextID += " - " + Convert.ToString(values[0]);
-                                    else
-                                        textValue.Item1.BroadcastTextID = Convert.ToString(values[0]);
-                                }
-                        }
-
-                    }
-
                     row.AddValue("entry", text.Key);
                     row.AddValue("groupid", "x", false, true);
                     row.AddValue("id", "x", false, true);
@@ -803,7 +780,22 @@ namespace WowPacketParser.SQL.Builders
                     row.AddValue("duration", 0);
                     row.AddValue("sound", textValue.Item1.Sound);
                     if (Settings.DevMode)
+                    {
+                        var bct = (LinkedList<string>)SQLConnector.BroadcastTextBuilder(textValue.Item1.Text);
+
+                        if (bct.Count != 0)
+                        {
+                            foreach (var broadcastTextId in bct)
+                            {
+                                if (!String.IsNullOrWhiteSpace(textValue.Item1.BroadcastTextID))
+                                    textValue.Item1.BroadcastTextID += " - " + broadcastTextId;
+                                else
+                                    textValue.Item1.BroadcastTextID = broadcastTextId;
+                            }
+                        }
                         row.AddValue("BroadcastTextID", textValue.Item1.BroadcastTextID);
+
+                    }
                     row.AddValue("comment", textValue.Item1.Comment);
 
                     rows.Add(row);

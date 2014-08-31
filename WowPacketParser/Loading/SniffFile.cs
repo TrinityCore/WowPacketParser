@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -17,8 +18,8 @@ namespace WowPacketParser.Loading
 {
     public class SniffFile
     {
-        private readonly string _fileName;
-        private readonly string _outFileName;
+        private string _fileName;
+        private readonly string _originalFileName;
         private readonly Statistics _stats;
         private readonly DumpFormatType _dumpFormat;
         private readonly string _logPrefix;
@@ -33,29 +34,65 @@ namespace WowPacketParser.Loading
 
             _stats = new Statistics();
             _fileName = fileName;
+            _originalFileName = fileName;
+
+            var extension = Path.GetExtension(_originalFileName);
+            if (extension.ToLower() == ".gz")
+                _originalFileName = _originalFileName.Remove(_originalFileName.Length - extension.Length);
+
             _dumpFormat = dumpFormat;
 
-            _outFileName = Path.ChangeExtension(fileName, null) + "_parsed.txt";
-
             if (number == null)
-                _logPrefix = string.Format("[{0}]", Path.GetFileName(fileName));
+                _logPrefix = string.Format("[{0}]", Path.GetFileName(_originalFileName));
             else
-                _logPrefix = string.Format("[{0}/{1} {2}]", number.Item1, number.Item2, Path.GetFileName(fileName));
+                _logPrefix = string.Format("[{0}/{1} {2}]", number.Item1, number.Item2, Path.GetFileName(_originalFileName));
         }
 
         public void ProcessFile()
         {
+            string tempFileName = null;
+
+            try
+            {
+                tempFileName = ProcessFileImpl();
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(_logPrefix + " " + ex.GetType());
+                Trace.WriteLine(_logPrefix + " " + ex.Message);
+                Trace.WriteLine(_logPrefix + " " + ex.StackTrace);
+            }
+            finally
+            {
+                if (tempFileName != null)
+                {
+                    File.Delete(tempFileName);
+                    Trace.WriteLine(_logPrefix + " Deleted temporary file " + Path.GetFileName(tempFileName));
+                }
+            }
+        }
+
+        private string ProcessFileImpl()
+        {
+            string tempFile = null;
+            var extension = Path.GetExtension(_fileName);
+            if (extension != null && extension.ToLower() == ".gz")
+            {
+                tempFile = Decompress(new FileInfo(_fileName));
+                _fileName = tempFile;
+            }
+
             switch (_dumpFormat)
             {
                 case DumpFormatType.StatisticsPreParse:
                 {
                     var packets = (LinkedList<Packet>)ReadPackets();
                     if (packets.Count == 0)
-                        return;
+                        break;
 
                     // CSV format
                     Trace.WriteLine(String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
-                        _fileName,                                                         // - sniff file name
+                        _originalFileName,                                                 // - sniff file name
                         packets.First.Value.Time,                                          // - time of first packet
                         packets.Last.Value.Time,                                           // - time of last packet
                         (packets.Last.Value.Time - packets.First.Value.Time).TotalSeconds, // - sniff duration (seconds)
@@ -71,17 +108,19 @@ namespace WowPacketParser.Loading
                 case DumpFormatType.SqlOnly:
                 case DumpFormatType.Text:
                 {
-                    if (Utilities.FileIsInUse(_outFileName) && Settings.DumpFormat != DumpFormatType.SqlOnly)
+                    var outFileName = Path.ChangeExtension(_originalFileName, null) + "_parsed.txt";
+
+                    if (Utilities.FileIsInUse(outFileName) && Settings.DumpFormat != DumpFormatType.SqlOnly)
                     {
                         // If our dump format requires a .txt to be created,
                         // check if we can write to that .txt before starting parsing
-                        Trace.WriteLine(string.Format("Save file {0} is in use, parsing will not be done.", _outFileName));
-                        return;
+                        Trace.WriteLine(string.Format("Save file {0} is in use, parsing will not be done.", outFileName));
+                        break;
                     }
 
                     Store.Store.SQLEnabledFlags = Settings.SQLOutputFlag;
 
-                    File.Delete(_outFileName);
+                    File.Delete(outFileName);
 
                     _stats.SetStartTime(DateTime.Now);
 
@@ -91,11 +130,11 @@ namespace WowPacketParser.Loading
 
                     ThreadPool.SetMinThreads(threadCount + 2, 4);
 
-                    using (var writer = (Settings.DumpFormatWithText() ? new StreamWriter(_outFileName, true) : null))
+                    using (var writer = (Settings.DumpFormatWithText() ? new StreamWriter(outFileName, true) : null))
                     {
                         bool first = true;
 
-                        var reader = new Reader(_fileName);
+                        var reader = new Reader(_fileName, _originalFileName);
 
                         var pwp = new ParallelWorkProcessor<Packet>(() => // read
                         {
@@ -112,7 +151,7 @@ namespace WowPacketParser.Loading
 
 // ReSharper disable AccessToDisposedClosure
                                 if (writer != null)
-                                    writer.WriteLine(GetHeader(_fileName));
+                                    writer.WriteLine(GetHeader(_originalFileName));
 // ReSharper restore AccessToDisposedClosure
 
                                 first = false;
@@ -163,7 +202,7 @@ namespace WowPacketParser.Loading
                         _stats.SetEndTime(DateTime.Now);
                     }
 
-                    Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", _logPrefix, _outFileName));
+                    Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", _logPrefix, outFileName));
                     Trace.WriteLine(string.Format("{0}: {1}", _logPrefix, _stats));
 
                     if (Settings.SQLOutputFlag != 0)
@@ -180,7 +219,7 @@ namespace WowPacketParser.Loading
                 {
                     var packets = (LinkedList<Packet>)ReadPackets();
                     if (packets.Count == 0)
-                        return;
+                        break;
 
                     if (Settings.FilterPacketsNum < 0)
                     {
@@ -191,7 +230,7 @@ namespace WowPacketParser.Loading
 
                         for (int i = 0; i < numberOfSplits; ++i)
                         {
-                            var fileNamePart = _fileName + "_part_" + (i + 1) + ".pkt";
+                            var fileNamePart = _originalFileName + "_part_" + (i + 1) + ".pkt";
 
                             var packetsPart = new LinkedList<Packet>();
 
@@ -209,7 +248,7 @@ namespace WowPacketParser.Loading
                     }
                     else
                     {
-                        var fileNameExcerpt = Path.ChangeExtension(_fileName, null) + "_excerpt.pkt";
+                        var fileNameExcerpt = Path.ChangeExtension(_originalFileName, null) + "_excerpt.pkt";
                         BinaryDump(fileNameExcerpt, packets);
                     }
 
@@ -219,7 +258,7 @@ namespace WowPacketParser.Loading
                 {
                     var packets = ReadPackets();
                     if (packets.Count == 0)
-                        return;
+                        break;
 
                     SplitBinaryDump(packets);
                     break;
@@ -228,9 +267,51 @@ namespace WowPacketParser.Loading
                 {
                     var packets = ReadPackets();
                     if (packets.Count == 0)
-                        return;
+                        break;
 
                     SessionSplitBinaryDump(packets);
+                    break;
+                }
+                case DumpFormatType.CompressSniff:
+                {
+                    if (extension == null || extension.ToLower() == ".gz")
+                    {
+                        Trace.WriteLine("Skipped compressing file {0}", _fileName);
+                        break;
+                    }
+
+                    var fi = new FileInfo(_fileName);
+                    Compress(fi);
+                    break;
+                }
+                case DumpFormatType.SniffVersionSplit:
+                {
+                    var reader = new Reader(_fileName, _originalFileName);
+
+                    if (ClientVersion.IsUndefined() && reader.PacketReader.CanRead())
+                    {
+                        Packet packet;
+                        reader.TryRead(out packet);
+                        packet.ClosePacket();
+                    }
+
+                    reader.PacketReader.Dispose();
+
+                    string version = ClientVersion.IsUndefined() ? "unknown" : ClientVersion.VersionString;
+
+                    string realFileName = _originalFileName + (_fileName != _originalFileName ? ".gz" : "");
+
+                    string destPath = Path.Combine(Path.GetDirectoryName(realFileName), version,
+                        Path.GetFileName(realFileName));
+
+                    string destDir = Path.GetDirectoryName(destPath);
+                    if (!Directory.Exists(destDir))
+                        Directory.CreateDirectory(destDir);
+
+                    File.Move(realFileName, destPath);
+
+                    Trace.WriteLine("Moved " + realFileName + " to " + destPath);
+
                     break;
                 }
                 default:
@@ -239,6 +320,8 @@ namespace WowPacketParser.Loading
                     break;
                 }
             }
+
+            return tempFile;
         }
 
         public static string GetHeader(string fileName)
@@ -270,7 +353,7 @@ namespace WowPacketParser.Loading
 
             // stats.SetStartTime(DateTime.Now);
 
-            Reader.Read(_fileName, p =>
+            Reader.Read(_fileName, _originalFileName, p =>
             {
                 var packet = p.Item1;
                 var currSize = p.Item2;
@@ -309,13 +392,13 @@ namespace WowPacketParser.Loading
             string sqlFileName;
             if (String.IsNullOrWhiteSpace(Settings.SQLFileName))
                 sqlFileName = string.Format("{0}_{1}.sql",
-                    Utilities.FormattedDateTimeForFiles(), Path.GetFileName(_fileName));
+                    Utilities.FormattedDateTimeForFiles(), Path.GetFileName(_originalFileName));
             else
                 sqlFileName = Settings.SQLFileName;
 
             if (String.IsNullOrWhiteSpace(Settings.SQLFileName))
             {
-                Builder.DumpSQL(string.Format("{0}: Dumping sql", _logPrefix), sqlFileName, GetHeader(_fileName));
+                Builder.DumpSQL(string.Format("{0}: Dumping sql", _logPrefix), sqlFileName, GetHeader(_originalFileName));
                 Storage.ClearContainers();
             }
         }
@@ -325,11 +408,11 @@ namespace WowPacketParser.Loading
             if (_withErrorHeaders.Count == 0 && _skippedHeaders.Count == 0)
                 return;
 
-            var fileName = Path.GetFileNameWithoutExtension(_fileName) + "_errors.txt";
+            var fileName = Path.GetFileNameWithoutExtension(_originalFileName) + "_errors.txt";
 
             using (var file = new StreamWriter(fileName))
             {
-                file.WriteLine(GetHeader(_fileName));
+                file.WriteLine(GetHeader(_originalFileName));
 
                 if (_withErrorHeaders.Count != 0)
                 {
@@ -344,6 +427,40 @@ namespace WowPacketParser.Loading
                     file.WriteLine("- Packets not parsed:");
                     foreach (var header in _skippedHeaders)
                         file.WriteLine(header);
+                }
+            }
+        }
+
+        private void Compress(FileInfo fileToCompress)
+        {
+            using (var originalFileStream = fileToCompress.OpenRead())
+            {
+                using (var compressedFileStream = File.Create(fileToCompress.FullName + ".gz"))
+                {
+                    using (var compressionStream = new GZipStream(compressedFileStream, CompressionMode.Compress))
+                    {
+                        originalFileStream.CopyTo(compressionStream);
+                        Console.WriteLine("{0} Compressed {1} from {2} to {3} bytes.",
+                            _logPrefix, fileToCompress.Name, fileToCompress.Length, compressedFileStream.Length);
+                    }
+                }
+            }
+        }
+
+        public string Decompress(FileInfo fileToDecompress)
+        {
+            using (var originalFileStream = fileToDecompress.OpenRead())
+            {
+                var newFileName = Path.GetTempFileName();
+
+                using (var decompressedFileStream = File.Create(newFileName))
+                {
+                    using (var decompressionStream = new GZipStream(originalFileStream, CompressionMode.Decompress))
+                    {
+                        decompressionStream.CopyTo(decompressedFileStream);
+                        Console.WriteLine("{0} Decompressed {1} to {2}", _logPrefix, fileToDecompress.Name, Path.GetFileName(newFileName));
+                        return newFileName;
+                    }
                 }
             }
         }

@@ -13,21 +13,23 @@ namespace WowPacketParser.Loading
         public string FileName { get; private set; }
         public IPacketReader PacketReader { get; private set; }
 
-        public Reader(string fileName)
+        public Reader(string fileName, string originalFileName)
         {
             FileName = fileName;
-            PacketReader = GetPacketReader(fileName);
+            PacketReader = GetPacketReader(fileName, originalFileName);
         }
 
-        private static IPacketReader GetPacketReader(string fileName)
+        private static IPacketReader GetPacketReader(string fileName, string oriFileName)
         {
-            var extension = Path.GetExtension(fileName);
+            var extension = Path.GetExtension(oriFileName);
             if (extension == null)
                 throw new IOException("Invalid file type");
 
+            extension = extension.ToLower();
+
             IPacketReader reader;
 
-            switch (extension.ToLower())
+            switch (extension)
             {
                 case ".bin":
                     reader = new BinaryPacketReader(SniffType.Bin, fileName, Encoding.ASCII);
@@ -93,9 +95,9 @@ namespace WowPacketParser.Loading
             return false;
         }
 
-        public static void Read(string fileName, Action<Tuple<Packet, long, long>> action)
+        public static void Read(string fileName, string oriFileName, Action<Tuple<Packet, long, long>> action)
         {
-            var reader = GetPacketReader(fileName);
+            var reader = GetPacketReader(fileName, oriFileName);
 
             try
             {

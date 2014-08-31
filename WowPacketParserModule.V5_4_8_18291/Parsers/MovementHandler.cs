@@ -885,5 +885,18 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadSingle("Speed");
             packet.WriteGuid("GUID", guid);
         }
+
+        [Parser(Opcode.SMSG_CLIENT_CONTROL_UPDATE)]
+        public static void HandleClientControlUpdate(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 2, 7);
+            packet.ReadBit("AllowMove");
+            packet.StartBitStream(guid, 0, 3, 6, 5, 1, 4);
+            packet.ParseBitStream(guid, 1, 5, 7, 4, 2, 6, 3, 0);
+
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }

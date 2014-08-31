@@ -15,3 +15,4 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 
 packages/*
+!packages/repositories.config

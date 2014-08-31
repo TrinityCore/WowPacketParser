@@ -211,7 +211,6 @@ namespace WowPacketParser.Misc
                         return Build;
                 }
             }
-            private set { }
         }
 
         public static int BuildInt

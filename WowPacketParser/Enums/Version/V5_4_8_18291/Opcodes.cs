@@ -316,6 +316,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_CHAR_ENUM, 0x11C3},
             {Opcode.SMSG_CHAT_PLAYER_NOT_FOUND, 0x1082},
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x002A},
+            {Opcode.SMSG_CLIENT_CONTROL_UPDATE, 0x1043},
             {Opcode.SMSG_CONTACT_LIST, 0x1F22},
             {Opcode.SMSG_CORPSE_MAP_POSITION_QUERY_RESPONSE, 0x1A3A},
             {Opcode.SMSG_CORPSE_NOT_IN_INSTANCE, 0x089E},
