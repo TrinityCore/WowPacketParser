@@ -2,6 +2,8 @@
 using System.Data;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Collections.Generic;
+using System.Text;
 using MySql.Data.MySqlClient;
 using WowPacketParser.Misc;
 
@@ -121,6 +123,23 @@ namespace WowPacketParser.SQL
             var span = endTime.Subtract(startTime);
             Trace.WriteLine(String.Format("Finished loading DB in {0}.", span.ToFormattedString()));
             Trace.WriteLine(Environment.NewLine);
+        }
+
+        public static ICollection<string> BroadcastTextBuilder(string input)
+        {
+            ICollection<string> bct = new LinkedList<string>();
+            if (String.IsNullOrEmpty(input))
+                return bct;
+
+            var query = new StringBuilder(string.Format("SELECT Id FROM {1}.broadcast_text WHERE MaleText='{0}' OR FemaleText='{0}';", MySqlHelper.DoubleQuoteString(input), Settings.TDBDatabase));
+            using (var reader = ExecuteQuery(query.ToString()))
+            {
+                if (reader != null)
+                    while (reader.Read())
+                        bct.Add(reader.GetString(0));
+            }
+
+            return bct;
         }
     }
 }

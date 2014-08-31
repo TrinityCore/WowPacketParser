@@ -769,19 +769,6 @@ namespace WowPacketParser.SQL.Builders
                 {
                     var row = new QueryBuilder.SQLInsertRow();
 
-                    var query = new StringBuilder(string.Format("SELECT Id FROM {1}.broadcast_text WHERE MaleText='{0}' OR FemaleText='{0}';", MySqlHelper.DoubleQuoteString(textValue.Item1.Text), Settings.TDBDatabase));
-
-                    var items = new List<string>();
-                    if (Settings.DevMode && !String.IsNullOrEmpty(textValue.Item1.Text))
-                    {
-                        using (var reader = SQLConnector.ExecuteQuery(query.ToString()))
-                        {
-                            if (reader != null)
-                                while (reader.Read())
-                                    items.Add(reader.GetString(0));
-                        }
-                    }
-
                     row.AddValue("entry", text.Key);
                     row.AddValue("groupid", "x", false, true);
                     row.AddValue("id", "x", false, true);
@@ -794,12 +781,17 @@ namespace WowPacketParser.SQL.Builders
                     row.AddValue("sound", textValue.Item1.Sound);
                     if (Settings.DevMode)
                     {
-                        foreach (var broadcastTextId in items)
+                        var bct = (LinkedList<string>)SQLConnector.BroadcastTextBuilder(textValue.Item1.Text);
+
+                        if (bct.Count != 0)
                         {
-                            if (!String.IsNullOrWhiteSpace(textValue.Item1.BroadcastTextID))
-                                textValue.Item1.BroadcastTextID += " - " + broadcastTextId;
-                            else
-                                textValue.Item1.BroadcastTextID = broadcastTextId;
+                            foreach (var broadcastTextId in bct)
+                            {
+                                if (!String.IsNullOrWhiteSpace(textValue.Item1.BroadcastTextID))
+                                    textValue.Item1.BroadcastTextID += " - " + broadcastTextId;
+                                else
+                                    textValue.Item1.BroadcastTextID = broadcastTextId;
+                            }
                         }
                         row.AddValue("BroadcastTextID", textValue.Item1.BroadcastTextID);
 
