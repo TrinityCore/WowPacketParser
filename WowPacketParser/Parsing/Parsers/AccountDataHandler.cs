@@ -65,7 +65,6 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_UPDATE_ACCOUNT_DATA_COMPLETE)]
-        [Parser(0x6126)] // 4.3.4 (might not be related to account at all, 2 ints, 551020)
         public static void HandleUpdateAccountDataComplete(Packet packet)
         {
             packet.ReadEnum<AccountDataType>("Data Type", TypeCode.Int32);
