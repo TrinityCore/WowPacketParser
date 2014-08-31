@@ -93,6 +93,7 @@ namespace SettingsUI
                 {showPromptCheckBox, new Tuple<string, dynamic>("ShowEndPrompt", true)},
                 //{packetLogErrorsCheckbox, new Tuple<string, dynamic>("LogPacketErrors", false)},
                 {logErrorCheckBox, new Tuple<string, dynamic>("LogErrors", false)},
+                {logPacketErrorsCheckBox, new Tuple<string, dynamic>("LogPacketErrors", false)},
                 {splitOutputCheckBox, new Tuple<string, dynamic>("SplitOutput", false)},
                 {debugReadsCheckBox, new Tuple<string, dynamic>("DebugReads", false)},
                 {parsingLogCheckBox, new Tuple<string, dynamic>("ParsingLog", false)},

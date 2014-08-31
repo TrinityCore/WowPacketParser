@@ -112,6 +112,7 @@
             this.parsingLogCheckBox = new System.Windows.Forms.CheckBox();
             this.statsComboBox = new System.Windows.Forms.ComboBox();
             this.statsLabel = new System.Windows.Forms.Label();
+            this.logPacketErrorsCheckBox = new System.Windows.Forms.CheckBox();
             filtersGroupBox = new System.Windows.Forms.GroupBox();
             filtersGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.packetNumUpDown)).BeginInit();
@@ -584,7 +585,7 @@
             //
             this.panel1.Controls.Add(this.dumpFormatLabel);
             this.panel1.Controls.Add(this.dumpFormatComboBox);
-            this.panel1.Location = new System.Drawing.Point(12, 46);
+            this.panel1.Location = new System.Drawing.Point(14, 18);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(213, 29);
             this.panel1.TabIndex = 9;
@@ -593,7 +594,7 @@
             //
             this.clientBuildPanel.Controls.Add(this.clientBuildLabel);
             this.clientBuildPanel.Controls.Add(this.clientBuildComboBox);
-            this.clientBuildPanel.Location = new System.Drawing.Point(12, 81);
+            this.clientBuildPanel.Location = new System.Drawing.Point(14, 53);
             this.clientBuildPanel.Name = "clientBuildPanel";
             this.clientBuildPanel.Size = new System.Drawing.Size(213, 29);
             this.clientBuildPanel.TabIndex = 10;
@@ -710,7 +711,7 @@
             // showPromptCheckBox
             //
             this.showPromptCheckBox.AutoSize = true;
-            this.showPromptCheckBox.Location = new System.Drawing.Point(18, 162);
+            this.showPromptCheckBox.Location = new System.Drawing.Point(20, 134);
             this.showPromptCheckBox.Name = "showPromptCheckBox";
             this.showPromptCheckBox.Size = new System.Drawing.Size(111, 17);
             this.showPromptCheckBox.TabIndex = 12;
@@ -720,7 +721,7 @@
             // debugReadsCheckBox
             //
             this.debugReadsCheckBox.AutoSize = true;
-            this.debugReadsCheckBox.Location = new System.Drawing.Point(18, 139);
+            this.debugReadsCheckBox.Location = new System.Drawing.Point(20, 111);
             this.debugReadsCheckBox.Name = "debugReadsCheckBox";
             this.debugReadsCheckBox.Size = new System.Drawing.Size(92, 17);
             this.debugReadsCheckBox.TabIndex = 13;
@@ -1025,7 +1026,7 @@
             // sshEnabledCheckBox
             //
             this.sshEnabledCheckBox.AutoSize = true;
-            this.sshEnabledCheckBox.Location = new System.Drawing.Point(132, 116);
+            this.sshEnabledCheckBox.Location = new System.Drawing.Point(134, 88);
             this.sshEnabledCheckBox.Name = "sshEnabledCheckBox";
             this.sshEnabledCheckBox.Size = new System.Drawing.Size(90, 17);
             this.sshEnabledCheckBox.TabIndex = 15;
@@ -1036,7 +1037,7 @@
             // dbEnabledCheckBox
             //
             this.dbEnabledCheckBox.AutoSize = true;
-            this.dbEnabledCheckBox.Location = new System.Drawing.Point(18, 116);
+            this.dbEnabledCheckBox.Location = new System.Drawing.Point(20, 88);
             this.dbEnabledCheckBox.Name = "dbEnabledCheckBox";
             this.dbEnabledCheckBox.Size = new System.Drawing.Size(83, 17);
             this.dbEnabledCheckBox.TabIndex = 16;
@@ -1047,7 +1048,7 @@
             // logErrorCheckBox
             //
             this.logErrorCheckBox.AutoSize = true;
-            this.logErrorCheckBox.Location = new System.Drawing.Point(132, 139);
+            this.logErrorCheckBox.Location = new System.Drawing.Point(134, 111);
             this.logErrorCheckBox.Name = "logErrorCheckBox";
             this.logErrorCheckBox.Size = new System.Drawing.Size(74, 17);
             this.logErrorCheckBox.TabIndex = 18;
@@ -1057,7 +1058,7 @@
             // splitOutputCheckBox
             //
             this.splitOutputCheckBox.AutoSize = true;
-            this.splitOutputCheckBox.Location = new System.Drawing.Point(132, 162);
+            this.splitOutputCheckBox.Location = new System.Drawing.Point(134, 157);
             this.splitOutputCheckBox.Name = "splitOutputCheckBox";
             this.splitOutputCheckBox.Size = new System.Drawing.Size(81, 17);
             this.splitOutputCheckBox.TabIndex = 19;
@@ -1067,7 +1068,7 @@
             // parsingLogCheckBox
             //
             this.parsingLogCheckBox.AutoSize = true;
-            this.parsingLogCheckBox.Location = new System.Drawing.Point(18, 185);
+            this.parsingLogCheckBox.Location = new System.Drawing.Point(20, 157);
             this.parsingLogCheckBox.Name = "parsingLogCheckBox";
             this.parsingLogCheckBox.Size = new System.Drawing.Size(82, 17);
             this.parsingLogCheckBox.TabIndex = 20;
@@ -1095,6 +1096,16 @@
             this.statsLabel.TabIndex = 22;
             this.statsLabel.Text = "Stats:";
             //
+            // logPacketErrorsCheckBox
+            //
+            this.logPacketErrorsCheckBox.AutoSize = true;
+            this.logPacketErrorsCheckBox.Location = new System.Drawing.Point(134, 134);
+            this.logPacketErrorsCheckBox.Name = "logPacketErrorsCheckBox";
+            this.logPacketErrorsCheckBox.Size = new System.Drawing.Size(111, 17);
+            this.logPacketErrorsCheckBox.TabIndex = 19;
+            this.logPacketErrorsCheckBox.Text = "Log Packet Errors";
+            this.logPacketErrorsCheckBox.UseVisualStyleBackColor = true;
+            //
             // MainForm
             //
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1103,6 +1114,7 @@
             this.Controls.Add(this.statsLabel);
             this.Controls.Add(this.statsComboBox);
             this.Controls.Add(this.parsingLogCheckBox);
+            this.Controls.Add(this.logPacketErrorsCheckBox);
             this.Controls.Add(this.splitOutputCheckBox);
             this.Controls.Add(this.logErrorCheckBox);
             this.Controls.Add(filtersGroupBox);
@@ -1231,6 +1243,7 @@
         private System.Windows.Forms.CheckBox mCheckBox;
         private System.Windows.Forms.CheckBox itCheckBox;
         private System.Windows.Forms.TextBox databaseWTextBox;
+        private System.Windows.Forms.CheckBox logPacketErrorsCheckBox;
     }
 }
 
