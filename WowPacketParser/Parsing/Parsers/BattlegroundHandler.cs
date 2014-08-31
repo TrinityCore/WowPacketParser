@@ -1475,16 +1475,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_REQUEST_HONOR_STATS, ClientVersionBuild.V4_3_4_15595)]
-        public static void Handle31006(Packet packet)
-        {
-            var guid = packet.StartBitStream(1, 5, 7, 3, 2, 4, 0, 6);
-
-            packet.ParseBitStream(guid, 4, 7, 0, 5, 1, 6, 2, 3);
-
-            packet.WriteGuid("Guid", guid);
-        }
-
         [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_POSITIONS, ClientVersionBuild.V4_0_6_13596, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleBattlegroundPlayerPositions(Packet packet)
         {
