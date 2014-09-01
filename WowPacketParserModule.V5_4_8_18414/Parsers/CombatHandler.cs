@@ -43,7 +43,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             {
                 var bits1C = (int)packet.ReadBits(21);
                 packet.ReadInt32("Int18");
-                for (var i = 0; i < bits1C; ++i)
+                for (var i = 0; i < bits1C; i++)
                 {
                     packet.ReadInt32("IntED", i);
                     packet.ReadInt32("IntED", i);
@@ -64,7 +64,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
             var subDmgCount = packet.ReadByte();
 
-            for (var i = 0; i < subDmgCount; ++i)
+            for (var i = 0; i < subDmgCount; i++)
             {
                 packet.ReadInt32("SchoolMask", i);
                 packet.ReadSingle("Float Damage", i);

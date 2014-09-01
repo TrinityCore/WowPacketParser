@@ -535,6 +535,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_UNK_00D9)]
         public static void HandleCUnk00D9(Packet packet)
         {
+            // шлеться при невдалій спробі підстрибнути (в кутку де низька стеля)
             ReadPlayerMovementInfo(ref packet, info.CUnk00D9);
         }
 
