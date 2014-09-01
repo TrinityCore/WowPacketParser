@@ -842,5 +842,45 @@ namespace WowPacketParser.SQL.Builders
 
             return new QueryBuilder.SQLInsert(tableName, rows, 1, false).Build();
         }
+
+        public static string NpcSpellClick()
+        {
+            if (Storage.NpcSpellClicks.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_spellclick_spells))
+                return string.Empty;
+
+            const string tableName = "npc_spellclick_spells";
+            var rows = new List<QueryBuilder.SQLInsertRow>();
+
+            foreach (var npcSpellClick in Storage.NpcSpellClicks)
+            {
+                foreach (var spellClick in Storage.SpellClicks)
+                {
+                    var row = new QueryBuilder.SQLInsertRow();
+
+                    if (spellClick.Item1.CasterGUID.GetObjectType() == ObjectType.Unit && spellClick.Item1.TargetGUID.GetObjectType() == ObjectType.Unit)
+                        spellClick.Item1.CastFlags = 0x0;
+                    if (spellClick.Item1.CasterGUID.GetObjectType() == ObjectType.Player && spellClick.Item1.TargetGUID.GetObjectType() == ObjectType.Unit)
+                        spellClick.Item1.CastFlags = 0x1;
+                    if (spellClick.Item1.CasterGUID.GetObjectType() == ObjectType.Unit && spellClick.Item1.TargetGUID.GetObjectType() == ObjectType.Player)
+                        spellClick.Item1.CastFlags = 0x2;
+                    if (spellClick.Item1.CasterGUID.GetObjectType() == ObjectType.Player && spellClick.Item1.TargetGUID.GetObjectType() == ObjectType.Player)
+                        spellClick.Item1.CastFlags = 0x3;
+
+                    row.AddValue("npc_entry", npcSpellClick.Item1.GetEntry());
+                    row.AddValue("spell_id", spellClick.Item1.SpellId);
+                    row.AddValue("cast_flags", spellClick.Item1.CastFlags);
+                    row.AddValue("user_type", "x", false, true);
+
+                    var timeSpan = spellClick.Item2 - npcSpellClick.Item2;
+                    if (timeSpan != null && timeSpan.Value.Duration() <= TimeSpan.FromSeconds(1))
+                        rows.Add(row);
+                }
+            }
+
+            return new QueryBuilder.SQLInsert(tableName, rows, 1, false).Build();
+        }
     }
 }

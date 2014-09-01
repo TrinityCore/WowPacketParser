@@ -34,7 +34,8 @@
         SniffData,
         SniffDataOpcodes,
         vehicle_template_accessory,
-        weather_updates
+        weather_updates,
+        npc_spellclick_spells
 // ReSharper restore InconsistentNaming
     }
 }

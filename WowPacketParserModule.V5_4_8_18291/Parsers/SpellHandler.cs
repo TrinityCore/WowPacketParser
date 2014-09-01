@@ -285,18 +285,17 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_SPELL_START)]
         public static void HandleSpellStart(Packet packet)
         {
-            var guid = new byte[8];
-            var guid2 = new byte[8];
-            var guid3 = new byte[8];
+            var casterGUID = new byte[8];
+            var casterUnitGUID = new byte[8];
+            var itemTargetGUID = new byte[8];
             var guid4 = new byte[8];
             var guid5 = new byte[8];
-            var guid6 = new byte[8];
-            var guid7 = new byte[8];
+            var unkGUID = new byte[8];
+            var targetGUID = new byte[8];
             var guid8 = new byte[8];
 
-
             var bits44 = packet.ReadBits("bits44", 24);
-            guid[5] = packet.ReadBit();
+            casterGUID[5] = packet.ReadBit();
 
             var guid9 = new byte[bits44][]; //18+
             for (var i = 0; i < bits44; ++i)
@@ -307,16 +306,16 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
 
             var hasSplineElevation = !packet.ReadBit("hasSplineElevation");//384
             packet.ReadBit(); //fake bit
-            guid2[4] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
+            casterUnitGUID[4] = packet.ReadBit();
+            casterGUID[2] = packet.ReadBit();
             var runeCooldownPassedCount = (int)packet.ReadBits(3);//340
-            guid2[2] = packet.ReadBit();
-            guid2[6] = packet.ReadBit();
+            casterUnitGUID[2] = packet.ReadBit();
+            casterUnitGUID[6] = packet.ReadBit();
             var missTypeCount = (int)packet.ReadBits(25); //84
             var bits11 = (int)packet.ReadBits(13);
-            guid[4] = packet.ReadBit();
+            casterGUID[4] = packet.ReadBit();
             var hitcountPos = (int)packet.ReadBits(24); //52
-            guid2[7] = packet.ReadBit();
+            casterUnitGUID[7] = packet.ReadBit();
 
             var guid11 = new byte[hitcountPos][]; //14+
             for (var i = 0; i < hitcountPos; ++i)
@@ -327,13 +326,13 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
 
             var hasSourceLocation = packet.ReadBit("hasSourceLocation"); //152
             var predictedPowerCount = (int)packet.ReadBits(21); //320
-            packet.StartBitStream(guid3, 3, 0, 1, 7, 2, 6, 4, 5); //120-127
+            packet.StartBitStream(itemTargetGUID, 3, 0, 1, 7, 2, 6, 4, 5); //120-127
             var hasElevation = !packet.ReadBit("hasElevation"); //90
             var hasTargetString = !packet.ReadBit("hasTargetString");
             var hasAmmoInventoryType = !packet.ReadBit("hasAmmoInventoryType");//368
             var hasDestLocation = packet.ReadBit("hasDestLocation");//184
             var hasDelayTime = !packet.ReadBit("hasDelayTime"); //89
-            guid[3] = packet.ReadBit();
+            casterGUID[3] = packet.ReadBit();
 
             if (hasDestLocation)
                 packet.StartBitStream(guid4, 1, 6, 2, 7, 0, 3, 5, 4); //160-167
@@ -344,18 +343,18 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
                 packet.StartBitStream(guid5, 4, 3, 5, 1, 7, 0, 6, 2); //128-135
 
             packet.ReadBit(); //fake bit 104
-            guid[6] = packet.ReadBit();
-            packet.StartBitStream(guid6, 2, 1, 7, 6, 0, 5, 3, 4); //416-423
+            casterGUID[6] = packet.ReadBit();
+            packet.StartBitStream(unkGUID, 2, 1, 7, 6, 0, 5, 3, 4); //416-423
             var hasTargetFlags = !packet.ReadBit("hasTargetFlags");
 
             if (hasTargetFlags)
                 packet.ReadEnum<TargetFlag>("Target Flags", 20);
 
-            guid[1] = packet.ReadBit();
+            casterGUID[1] = packet.ReadBit();
             var hasPredictedHeal = !packet.ReadBit("hasPredictedHeal"); //106
             var hasRunesStateBefore = !packet.ReadBit("hasRunesStateBefore"); //336
             var hasCastSchoolImmunities = !packet.ReadBit("hasCastSchoolImmunities"); //101
-            guid2[5] = packet.ReadBit();
+            casterUnitGUID[5] = packet.ReadBit();
             packet.ReadBit(); //28 fake bit
             var extraTargetCount = (int)packet.ReadBits("extraTargetCount", 20);//388
 
@@ -365,9 +364,9 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
                 guid10[i] = new byte[8];
                 packet.StartBitStream(guid10[i], 1, 6, 2, 3, 5, 7, 0, 4); //98+
             }
-            packet.StartBitStream(guid7, 1, 4, 6, 7, 5, 3, 0, 2); //112-119
-            guid[0] = packet.ReadBit();
-            guid2[3] = packet.ReadBit();
+            packet.StartBitStream(targetGUID, 1, 4, 6, 7, 5, 3, 0, 2); //112-119
+            casterGUID[0] = packet.ReadBit();
+            casterUnitGUID[3] = packet.ReadBit();
             var hasRunesStateAfter = !packet.ReadBit("hasRunesStateAfter");//337
 
             var bitsC0 = 0u;
@@ -380,27 +379,27 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
                     packet.ReadBits("bits22[1]", 4, i);
             }
             var hasUnkMovementField = !packet.ReadBit("hasUnkMovementField"); // 102
-            guid2[1] = packet.ReadBit();
+            casterUnitGUID[1] = packet.ReadBit();
             var hasVisualChain = packet.ReadBit("hasVisualChain");//380
-            guid[7] = packet.ReadBit();
+            casterGUID[7] = packet.ReadBit();
             var hasPredictedType = !packet.ReadBit("hasPredictedType");//428
-            guid2[0] = packet.ReadBit();
+            casterUnitGUID[0] = packet.ReadBit();
 
-            packet.ParseBitStream(guid3, 1, 7, 6, 0, 4, 2, 3, 5); //120-127
-            packet.WriteGuid("Guid3", guid3);
+            packet.ParseBitStream(itemTargetGUID, 1, 7, 6, 0, 4, 2, 3, 5); //120-127
+            packet.WriteGuid("Guid3", itemTargetGUID);
 
             for (var i = 0; i < hitcountPos; ++i)
             {
                 packet.ParseBitStream(guid11[i], 4, 5, 3, 0, 6, 2, 1, 7);//14+
                 packet.WriteGuid("Guid11", guid11[i]);
             }
-            packet.ParseBitStream(guid7, 4, 5, 1, 7, 6, 3, 2, 0); //112-119
-            packet.WriteGuid("Guid7", guid7);
+            packet.ParseBitStream(targetGUID, 4, 5, 1, 7, 6, 3, 2, 0); //112-119
+            packet.WriteGuid("Guid7", targetGUID);
 
             packet.ReadInt32("CastTime"); //12
 
-            packet.ParseBitStream(guid6, 4, 5, 3, 2, 1, 6, 7, 0); //416-423
-            packet.WriteGuid("Guid6", guid6);
+            packet.ParseBitStream(unkGUID, 4, 5, 3, 2, 1, 6, 7, 0); //416-423
+            packet.WriteGuid("Guid6", unkGUID);
 
             if (hasDestLocation)
             {
@@ -437,20 +436,20 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
 
             if (hasSourceLocation)
             {
-                packet.ReadXORByte(guid6, 0); //128-135
-                packet.ReadXORByte(guid6, 5);
-                packet.ReadXORByte(guid6, 4);
-                packet.ReadXORByte(guid6, 7);
-                packet.ReadXORByte(guid6, 3);
-                packet.ReadXORByte(guid6, 6);
+                packet.ReadXORByte(unkGUID, 0); //128-135
+                packet.ReadXORByte(unkGUID, 5);
+                packet.ReadXORByte(unkGUID, 4);
+                packet.ReadXORByte(unkGUID, 7);
+                packet.ReadXORByte(unkGUID, 3);
+                packet.ReadXORByte(unkGUID, 6);
                 packet.ReadSingle("Position X");
-                packet.ReadXORByte(guid6, 2);
+                packet.ReadXORByte(unkGUID, 2);
                 packet.ReadSingle("Position Z");
-                packet.ReadXORByte(guid6, 1);
+                packet.ReadXORByte(unkGUID, 1);
                 packet.ReadSingle("Position Y");
-                packet.WriteGuid("Guid6", guid6);
+                packet.WriteGuid("Guid6", unkGUID);
             }
-            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(casterGUID, 4);
 
             for (var i = 0; i < bits44; ++i)
             {
@@ -461,7 +460,7 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
             if (hasCastSchoolImmunities) // 101
                 packet.ReadUInt32("hasCastSchoolImmunities");
 
-            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(casterGUID, 2);
 
             if (hasUnkMovementField) // 102
                 packet.ReadUInt32("hasUnkMovementField");
@@ -481,17 +480,17 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
             if (hasRunesStateBefore) //336
                 packet.ReadByte("hasRunesStateBefore");
 
-            packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Int32); //10
+            var flags = packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Int32); //10
 
-            packet.ReadXORByte(guid, 5);
-            packet.ReadXORByte(guid, 7);
-            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(casterGUID, 5);
+            packet.ReadXORByte(casterGUID, 7);
+            packet.ReadXORByte(casterGUID, 1);
             packet.ReadByte("CastCount");
-            packet.ReadXORByte(guid2, 7);
-            packet.ReadXORByte(guid2, 0);
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid, 0);
-            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(casterUnitGUID, 7);
+            packet.ReadXORByte(casterUnitGUID, 0);
+            packet.ReadXORByte(casterGUID, 6);
+            packet.ReadXORByte(casterGUID, 0);
+            packet.ReadXORByte(casterUnitGUID, 1);
 
             if (hasAmmoInventoryType) //368
                 packet.ReadByte("AmmoInventoryType");
@@ -499,8 +498,8 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
             if (hasPredictedHeal) //106
                 packet.ReadUInt32("hasPredictedHeal");
 
-            packet.ReadXORByte(guid2, 6);
-            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(casterUnitGUID, 6);
+            packet.ReadXORByte(casterUnitGUID, 3);
 
             if (hasSplineElevation) //384
                 packet.ReadByte("Byte180");
@@ -508,31 +507,49 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
             if (hasDelayTime) //89
                 packet.ReadUInt32("hasDelayTime");
 
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID"); //9
+            var spellId = packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID"); //9
 
             if (hasAmmoDisplayId) //91
                 packet.ReadUInt32("hasAmmoDisplayId");
 
-            packet.ReadXORByte(guid2, 4);
-            packet.ReadXORByte(guid2, 5);
+            packet.ReadXORByte(casterUnitGUID, 4);
+            packet.ReadXORByte(casterUnitGUID, 5);
 
             if (hasRunesStateAfter)//337
                 packet.ReadByte("hasRunesStateAfter");
 
-            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(casterUnitGUID, 2);
 
             packet.ReadWoWString("Text", bitsC0);
 
             if (hasPredictedType) //428
                 packet.ReadByte("hasPredictedType");
 
-            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(casterGUID, 3);
 
             if (hasElevation) //90
                 packet.ReadSingle("Elevation");
 
             for (var i = 0; i < runeCooldownPassedCount; ++i) //340
                 packet.ReadByte("runeCooldownPassedCount", i);
+
+            if (flags.HasAnyFlag(CastFlag.Unknown21))
+            {
+                var spellClick = new NpcSpellClick();
+
+                spellClick.SpellId = (uint)spellId;
+
+                spellClick.CasterGUID = new WowGuid(BitConverter.ToUInt64(casterGUID, 0));
+                spellClick.TargetGUID =new WowGuid(BitConverter.ToUInt64(targetGUID, 0));
+
+                Storage.SpellClicks.Add(spellClick, packet.TimeSpan);
+            }
+
+            packet.WriteGuid("casterUnitGUID", casterUnitGUID);
+            packet.WriteGuid("CasterGUID", casterGUID);
+            packet.WriteGuid("targetGUID", targetGUID);
+            packet.WriteGuid("ItemTargetGUID", itemTargetGUID);
+            packet.WriteGuid("UnkGUID", unkGUID);
         }
 
         [Parser(Opcode.SMSG_SPELL_GO)]
