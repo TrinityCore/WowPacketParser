@@ -130,7 +130,7 @@ namespace WowPacketParser.Misc
 
         public KeyValuePair<int, bool> ReadEntry()
         {
-            // Entries masked with 0x8000000 are invalid entries OR used to tell apart NPCs and GOs
+            // Entries masked with 0x80000000 are invalid entries OR used to tell apart NPCs and GOs
 
             var entry = ReadUInt32();
             var realEntry = entry & 0x7FFFFFFF;
