@@ -39,6 +39,7 @@
     <Compile Include="Enums\MovementFlagExtra.cs" />
     <Compile Include="Enums\SplineFlag.cs" />
     <Compile Include="Enums\UpdateFields.cs" />
+    <Compile Include="Parsers\BattlegroundHandler.cs" />
     <Compile Include="Parsers\GuildHandler.cs" />
     <Compile Include="Parsers\MiscellaneousHandler.cs" />
     <Compile Include="Parsers\MovementHandler.cs" />
