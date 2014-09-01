@@ -569,6 +569,29 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.SMSG_RATED_BG_STATS)]
+        public static void HandleRatedBGStats(Packet packet)
+        {
+            packet.ReadUInt32("BgWeeklyWins20vs20");
+            packet.ReadUInt32("BgWeeklyPlayed20vs20");
+            packet.ReadUInt32("BgWeeklyPlayed15vs15");
+            packet.ReadUInt32("Unk UInt32 (3)");
+            packet.ReadUInt32("BgWeeklyWins10vs10");
+            packet.ReadUInt32("Unk UInt32 (3)");
+            packet.ReadUInt32("Unk UInt32 (4)");
+            packet.ReadUInt32("Unk UInt32");
+            packet.ReadUInt32("BgWeeklyWins15vs15");
+            packet.ReadUInt32("Unk UInt32");
+            packet.ReadUInt32("Unk UInt32 (4)");
+            packet.ReadUInt32("Unk UInt32");
+            packet.ReadUInt32("Unk UInt32 (3)");
+            packet.ReadUInt32("Unk UInt32 (4)");
+            packet.ReadUInt32("Unk UInt32");
+            packet.ReadUInt32("BgWeeklyPlayed10vs10");
+            packet.ReadUInt32("Unk UInt32");
+            packet.ReadUInt32("Unk UInt32");
+        }
+
         [Parser(Opcode.SMSG_BATTLEFIELD_RATED_INFO)]
         public static void HandleBattlefieldRatedInfo(Packet packet)
         {
