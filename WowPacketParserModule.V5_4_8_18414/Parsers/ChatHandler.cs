@@ -227,7 +227,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_ZONE_UNDER_ATTACK)]
         public static void HandleZoneUnderAttack(Packet packet)
         {
-            packet.ReadToEnd();
+            packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id");
         }
     }
 }

@@ -248,7 +248,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_SET_SELECTION,                            0x0740 | 0x10000}, //++
             {Opcode.CMSG_SET_TAXI_BENCHMARK_MODE,                  0x0762 | 0x10000}, //--
             {Opcode.CMSG_SET_TITLE,                                0x03C7 | 0x10000}, //+-
-            {Opcode.CMSG_SETSHEATHED,                              0x0249 | 0x10000}, //++ //some load screen
+            {Opcode.CMSG_SETSHEATHED,                              0x0249 | 0x10000}, //++
             {Opcode.CMSG_SHOWING_CLOAK,                            0x02F2 | 0x10000}, //--
             {Opcode.CMSG_SHOWING_HELM,                             0x126B | 0x10000}, //--
             {Opcode.CMSG_SOCKET_GEMS,                              0x02CB | 0x10000}, //+-
@@ -401,7 +401,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.MSG_MOVE_STOP_TURN,                            0x1170 | 0x10000}, //++
             {Opcode.MSG_MOVE_WORLDPORT_ACK,                        0x1FAD | 0x10000}, //++
             {Opcode.MSG_SET_RAID_DIFFICULTY,                       0x0591 | 0x10000}, //+-
-            {Opcode.MSG_VERIFY_CONNECTIVITY,                       0x4F57}, //--
+            {Opcode.MSG_VERIFY_CONNECTIVITY,                       0x4F57}, //++
 
             {Opcode.SMSG_ACCOUNT_DATA_TIMES,                       0x162B | 0x20000}, //++
             {Opcode.SMSG_ACHIEVEMENT_DELETED,                      0x1A2F | 0x20000}, //--
@@ -691,7 +691,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_WHO,                                      0x161B | 0x20000}, //--
             {Opcode.SMSG_WORLD_SERVER_INFO,                        0x0082 | 0x20000}, //++
             {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE,              0x0027 | 0x20000}, //--
-            {Opcode.SMSG_ZONE_UNDER_ATTACK,                        0x10C2 | 0x20000}, //--
+            {Opcode.SMSG_ZONE_UNDER_ATTACK,                        0x10C2 | 0x20000}, //++
             {Opcode.SMSG_UNK_0002,                                 0x0002 | 0x20000}, //+-
             {Opcode.SMSG_UNK_000F,                                 0x000f | 0x20000}, //++
             {Opcode.SMSG_UNK_001F,                                 0x001F | 0x20000}, //++
