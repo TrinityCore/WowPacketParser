@@ -304,6 +304,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_UNK_06C9,                                 0x06C9 | 0x10000}, //++
             {Opcode.CMSG_UNK_0882,                                 0x0882 | 0x10000}, //++
             {Opcode.CMSG_UNK_08C0,                                 0x08C0 | 0x10000}, //+-
+            {Opcode.CMSG_UNK_08D3,                                 0x08D3 | 0x10000}, //+-
             {Opcode.CMSG_UNK_09DB,                                 0x09DB | 0x10000}, //++
             {Opcode.CMSG_UNK_09FB,                                 0x09FB | 0x10000}, //--
             {Opcode.CMSG_UNK_0A16,                                 0x0A16 | 0x10000}, //++
@@ -767,6 +768,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_UNK_1203,                                 0x1203 | 0x20000}, //++
             {Opcode.SMSG_UNK_1206,                                 0x1206 | 0x20000}, //++
             {Opcode.SMSG_UNK_121E,                                 0x121E | 0x20000}, //++
+            {Opcode.SMSG_UNK_1223,                                 0x1223 | 0x20000}, //++
             {Opcode.SMSG_UNK_129B,                                 0x129B | 0x20000}, //++
             {Opcode.SMSG_UNK_129E,                                 0x129E | 0x20000}, //++
             {Opcode.SMSG_UNK_12A3,                                 0x12A3 | 0x20000}, //++
@@ -796,6 +798,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_UNK_1A2B,                                 0x1A2B | 0x20000}, //++ pair CMSG 1272
             {Opcode.SMSG_UNK_1ABB,                                 0x1ABB | 0x20000}, //++
             {Opcode.SMSG_UNK_1C0E,                                 0x1C0E | 0x20000}, //++
+            {Opcode.SMSG_UNK_1DBE,                                 0x1DBE | 0x20000}, //++
             {Opcode.SMSG_UNK_1E12,                                 0x1E12 | 0x20000}, //++
             {Opcode.SMSG_UNK_1E1B,                                 0x1E1B | 0x20000}, //++ levelup 90
             {Opcode.SMSG_UNK_1E2E,                                 0x1E2E | 0x20000}, //++

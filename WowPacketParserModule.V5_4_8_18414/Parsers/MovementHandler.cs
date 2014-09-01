@@ -550,6 +550,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             ReadPlayerMovementInfo(ref packet, info.MovementFeatherFallAck);
         }
 
+        [Parser(Opcode.CMSG_UNK_08D3)]
+        public static void HandleCUnk08D3(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.CUnk08D3);
+        }
+
         [Parser(Opcode.CMSG_UNK_09FB)]
         public static void HandleCUnk09FB(Packet packet)
         {
