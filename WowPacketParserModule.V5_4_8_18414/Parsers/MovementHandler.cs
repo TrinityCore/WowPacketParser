@@ -4037,21 +4037,39 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT)]
         public static void HandlePhaseShift(Packet packet)
         {
+            CoreParsers.MovementHandler.ActivePhases.Clear();
+
             var guid = packet.StartBitStream(0, 3, 1, 4, 6, 2, 7, 5);
             packet.ParseBitStream(guid, 4, 3, 2);
-            var count1 = packet.ReadInt32("count1");
-            packet.ReadBytes(count1);
+
+            var count = packet.ReadUInt32() / 2;
+            packet.AddValue("Phases count", count);
+            for (var i = 0; i < count; ++i)
+                packet.ReadInt16("Phase id", i); // if + Phase.dbc, if - duno atm
+
             packet.ParseBitStream(guid, 0, 6);
-            var count2 = packet.ReadInt32("count2");
-            packet.ReadBytes(count2);
+
+            count = packet.ReadUInt32() / 2;
+            packet.AddValue("Inactive Terrain swap count", count);
+            for (var i = 0; i < count; ++i)
+                packet.ReadEntry<Int16>(StoreNameType.Map, "Inactive Terrain swap", i); // Map.dbc, all possible terrainswaps
+
             packet.ParseBitStream(guid, 1, 7);
-            var count3 = packet.ReadInt32("count3");
-            packet.ReadBytes(count3);
-            var count4 = packet.ReadInt32("count4");
-            packet.ReadBytes(count4);
+
+            count = packet.ReadUInt32() / 2;
+            packet.AddValue("WorldMapArea swap count", count);
+            for (var i = 0; i < count; ++i)
+                packet.ReadUInt16("WorldMapArea swap", i); // WorldMapArea.dbc
+
+            count = packet.ReadUInt32() / 2;
+            packet.AddValue("Active Terrain swap count", count);
+            for (var i = 0; i < count; ++i)
+                packet.ReadEntry<Int16>(StoreNameType.Map, "Active Terrain swap", i); // Map.dbc, all active terrainswaps
+
             packet.ParseBitStream(guid, 5);
-            packet.ReadInt32("unk");
-            packet.WriteGuid("Guid", guid);
+            packet.WriteGuid("GUID", guid);
+
+            packet.ReadUInt32("Flags");
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_FLIGHT_SPEED)]

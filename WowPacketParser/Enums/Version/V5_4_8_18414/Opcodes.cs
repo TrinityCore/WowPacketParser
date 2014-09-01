@@ -488,7 +488,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_FRIEND_STATUS,                            0x0532 | 0x20000}, //--
             {Opcode.SMSG_GAME_SHOP_QUERY_RESPONSE,                 0x1ABF | 0x20000}, //--
             {Opcode.SMSG_GAME_STORE_INGAME_BUY_FAILED,             0x023A | 0x20000}, //++
-            {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE,                0x06BF | 0x20000}, //--
+            {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE,                0x06BF | 0x20000}, //++
             {Opcode.SMSG_GMRESPONSE_RECEIVED,                      0x148E | 0x20000}, //++
             {Opcode.SMSG_GOSSIP_COMPLETE,                          0x034E | 0x20000}, //--
             {Opcode.SMSG_GOSSIP_MESSAGE,                           0x0244 | 0x20000}, //--

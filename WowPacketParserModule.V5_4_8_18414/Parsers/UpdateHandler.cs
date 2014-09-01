@@ -139,6 +139,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             obj.Map = map;
             obj.Area = CoreParsers.WorldStateHandler.CurrentAreaId;
             obj.PhaseMask = (uint)CoreParsers.MovementHandler.CurrentPhaseMask;
+            obj.Phases = new HashSet<ushort>(CoreParsers.MovementHandler.ActivePhases);
 
             // If this is the second time we see the same object (same guid,
             // same position) update its phasemask
