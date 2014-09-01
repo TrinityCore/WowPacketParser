@@ -882,5 +882,43 @@ namespace WowPacketParser.SQL.Builders
 
             return new QueryBuilder.SQLInsert(tableName, rows, 1, false).Build();
         }
+
+        public static string NpcSpellClickMop(Dictionary<WowGuid, Unit> units)
+        {
+            if (units.Count == 0)
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_spellclick_spells))
+                return string.Empty;
+
+            const string tableName = "npc_spellclick_spells";
+            var rows = new List<QueryBuilder.SQLInsertRow>();
+
+            foreach (var unit in units)
+            {
+                var row = new QueryBuilder.SQLInsertRow();
+
+                var npc = unit.Value;
+                if (npc.InteractSpellID == null)
+                    continue;
+
+                if (Settings.AreaFilters.Length > 0)
+                    if (!(npc.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
+                        continue;
+
+                if (Settings.MapFilters.Length > 0)
+                    if (!(npc.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
+                        continue;
+
+                row.AddValue("npc_entry", unit.Key.GetEntry());
+                row.AddValue("spell_id", npc.InteractSpellID);
+                row.AddValue("cast_flags", "x", false, true);
+                row.AddValue("user_type", "x", false, true);
+
+                rows.Add(row);
+            }
+
+            return new QueryBuilder.SQLInsert(tableName, rows, 1, false).Build();
+        }
     }
 }
