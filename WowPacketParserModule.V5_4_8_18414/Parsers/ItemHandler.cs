@@ -61,7 +61,28 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_AUTOSTORE_BAG_ITEM)]
         public static void HandleAutoStoreBagItem(Packet packet)
         {
-            packet.ReadToEnd();
+            packet.ReadByte("Slot"); // 16
+            packet.ReadByte("unk36"); // 36
+            packet.ReadSByte("Bag"); // 17
+
+            var bits14 = (int)packet.ReadBits(2);
+
+            var hasSlot = new bool[bits14];
+            var hasBag = new bool[bits14];
+
+            for (var i = 0; i < bits14; i++)
+            {
+                hasBag[i] = !packet.ReadBit(); // 96
+                hasSlot[i] = !packet.ReadBit(); // 97
+            }
+
+            for (var i = 0; i < bits14; i++)
+            {
+                if (hasSlot[i])
+                    packet.ReadByte("Slot", i);
+                if (hasBag[i])
+                    packet.ReadSByte("Bag", i);
+            }
         }
 
         [Parser(Opcode.CMSG_AUTOSTORE_BANK_ITEM)]

@@ -34,7 +34,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_AUTH_SESSION,                             0x00B2 | 0x10000}, //+-
             {Opcode.CMSG_AUTOBANK_ITEM,                            0x066D | 0x10000}, //++
             {Opcode.CMSG_AUTOEQUIP_ITEM,                           0x025F | 0x10000}, //++
-            {Opcode.CMSG_AUTOSTORE_BAG_ITEM,                       0x067C | 0x10000}, //--
+            {Opcode.CMSG_AUTOSTORE_BAG_ITEM,                       0x067C | 0x10000}, //+-
             {Opcode.CMSG_AUTOSTORE_BANK_ITEM,                      0x02CF | 0x10000}, //++
             {Opcode.CMSG_AUTOSTORE_LOOT_ITEM,                      0x0354 | 0x10000}, //++
             {Opcode.CMSG_AUTO_DECLINE_GUILD_INVITES,               0x06CB | 0x10000}, //--
