@@ -10,6 +10,14 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
     public static class MiscellaneousHandler
     {
+        [Parser(Opcode.CMSG_ACCEPT_LEVEL_GRANT)]
+        public static void HandleAcceptLevelGrant(Packet packet)
+        {
+            var guid = packet.StartBitStream(2, 7, 5, 4, 3, 0, 1, 6);
+            packet.ParseBitStream(guid, 5, 3, 2, 7, 4, 1, 0, 6);
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.CMSG_ADD_FRIEND)]
         public static void HandleAddFriend(Packet packet)
         {

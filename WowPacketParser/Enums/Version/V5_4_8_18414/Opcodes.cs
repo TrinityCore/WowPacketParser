@@ -13,7 +13,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
         {
         //                                                                              /checked in code
         //                                                                               /checked with sniff
-            {Opcode.CMSG_ACCEPT_LEVEL_GRANT,                       0x02FB | 0x10000}, //--
+            {Opcode.CMSG_ACCEPT_LEVEL_GRANT,                       0x02FB | 0x10000}, //+-
             {Opcode.CMSG_ACCEPT_TRADE,                             0x144D | 0x10000}, //+-
             {Opcode.CMSG_ACTIVATETAXI,                             0x03C9 | 0x10000}, //++
             {Opcode.CMSG_ACTIVATETAXIEXPRESS,                      0x06FB | 0x10000}, //++
@@ -23,7 +23,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_ALTER_APPEARANCE,                         0x07F0 | 0x10000}, //+-
             {Opcode.CMSG_AREATRIGGER,                              0x1C44 | 0x10000}, //++
             {Opcode.CMSG_ATTACKSTOP,                               0x0345 | 0x10000}, //++
-            {Opcode.CMSG_ATTACKSWING,                              0x02E7 | 0x10000}, //--
+            {Opcode.CMSG_ATTACKSWING,                              0x02E7 | 0x10000}, //++
             {Opcode.CMSG_AUCTION_HELLO,                            0x0379 | 0x10000}, //+-
             {Opcode.CMSG_AUCTION_LIST_BIDDER_ITEMS,                0x12D0 | 0x10000}, //--
             {Opcode.CMSG_AUCTION_LIST_ITEMS,                       0x02EA | 0x10000}, //--
@@ -33,7 +33,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_AUCTION_SELL_ITEM,                        0x02EB | 0x10000}, //--
             {Opcode.CMSG_AUTH_SESSION,                             0x00B2 | 0x10000}, //+-
             {Opcode.CMSG_AUTOBANK_ITEM,                            0x066D | 0x10000}, //++
-            {Opcode.CMSG_AUTOEQUIP_ITEM,                           0x025F | 0x10000}, //--
+            {Opcode.CMSG_AUTOEQUIP_ITEM,                           0x025F | 0x10000}, //++
             {Opcode.CMSG_AUTOSTORE_BAG_ITEM,                       0x067C | 0x10000}, //--
             {Opcode.CMSG_AUTOSTORE_BANK_ITEM,                      0x02CF | 0x10000}, //++
             {Opcode.CMSG_AUTOSTORE_LOOT_ITEM,                      0x0354 | 0x10000}, //++
@@ -413,9 +413,9 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA_ACCOUNT,             0x0A9E | 0x20000}, //++
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA_PLAYER,              0x180A | 0x20000}, //++
             {Opcode.SMSG_ARENA_SEASON_WORLD_STATE,                 0x069B | 0x20000}, //++
-            {Opcode.SMSG_ATTACKERSTATEUPDATE,                      0x06AA | 0x20000}, //--
-            {Opcode.SMSG_ATTACKSTART,                              0x1A9E | 0x20000}, //--
-            {Opcode.SMSG_ATTACKSTOP,                               0x12AF | 0x20000}, //--
+            {Opcode.SMSG_ATTACKERSTATEUPDATE,                      0x06AA | 0x20000}, //++
+            {Opcode.SMSG_ATTACKSTART,                              0x1A9E | 0x20000}, //++
+            {Opcode.SMSG_ATTACKSTOP,                               0x12AF | 0x20000}, //++
             {Opcode.SMSG_AUCTION_HELLO,                            0x10A7 | 0x20000}, //+-
             {Opcode.SMSG_AURA_UPDATE,                              0x0072 | 0x20000}, //++
             {Opcode.SMSG_AUTH_CHALLENGE,                           0x0949 | 0x20000}, //--+
@@ -472,7 +472,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_DESTROY_OBJECT,                           0x14C2 | 0x20000}, //++
             {Opcode.SMSG_DUEL_COMPLETE,                            0x1C0A | 0x20000}, //--
             {Opcode.SMSG_DUEL_COUNTDOWN,                           0x129F | 0x20000}, //--
-            {Opcode.SMSG_DUEL_INBOUNDS,                            0x163A | 0x20000}, //--
+            {Opcode.SMSG_DUEL_INBOUNDS,                            0x163A | 0x20000}, //+-
             {Opcode.SMSG_DUEL_OUTOFBOUNDS,                         0x001A | 0x20000}, //--
             {Opcode.SMSG_DUEL_REQUESTED,                           0x0022 | 0x20000}, //--
             {Opcode.SMSG_DUEL_WINNER,                              0x10E1 | 0x20000}, //--
