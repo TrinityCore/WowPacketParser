@@ -94,7 +94,7 @@ namespace WowPacketParser.SQL.Builders
                 row.AddValue("spawnMask", creature.GetDefaultSpawnMask());
                 row.AddValue("phaseMask", creature.PhaseMask);
 
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595) && creature.Phases != null)
                     row.AddValue("phaseId", string.Join(" - ", creature.Phases));
 
                 if (!creature.IsOnTransport())
@@ -209,7 +209,7 @@ namespace WowPacketParser.SQL.Builders
                 row.AddValue("spawnMask", go.GetDefaultSpawnMask());
                 row.AddValue("phaseMask", go.PhaseMask);
 
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595) && go.Phases != null)
                     row.AddValue("phaseId", string.Join(" - ", go.Phases));
 
                 if (!go.IsOnTransport())
