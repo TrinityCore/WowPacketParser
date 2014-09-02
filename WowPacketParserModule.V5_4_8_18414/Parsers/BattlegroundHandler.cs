@@ -117,12 +117,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadToEnd();
         }
 
-        [Parser(Opcode.CMSG_REQUEST_HONOR_STATS)]
-        public static void Handle31006(Packet packet)
-        {
-            packet.ReadToEnd();
-        }
-
         [Parser(Opcode.CMSG_REQUEST_INSPECT_RATED_BG_STATS)]
         public static void HandleRequestInspectRBGStats(Packet packet)
         {
