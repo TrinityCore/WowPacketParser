@@ -60,7 +60,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 3);
 
-            packet.WriteGuid("Player GUID: ", guid);
+            packet.WriteGuid("Player GUID", guid);
         }
 
         [Parser(Opcode.CMSG_INSPECT_HONOR_STATS)]
@@ -70,7 +70,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             packet.StartBitStream(guid, 2, 3, 6, 0, 1, 5, 4, 7);
             packet.ParseBitStream(guid, 1, 2, 6, 4, 7, 0, 3, 5);
-            packet.WriteGuid("Player GUID: ", guid);
+            packet.WriteGuid("Player GUID", guid);
         }
 
         [Parser(Opcode.SMSG_WEATHER)]

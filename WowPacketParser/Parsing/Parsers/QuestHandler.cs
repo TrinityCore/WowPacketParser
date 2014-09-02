@@ -576,7 +576,7 @@ namespace WowPacketParser.Parsing.Parsers
                 for (var j = 0; j < count2; ++j)
                 {
                     var entry = packet.ReadEntry();
-                    packet.AddValue(entry.Value ? "Creature" : "GameObject",
+                    packet.AddValue(!entry.Value ? "Creature" : "GameObject",
                         StoreGetters.GetName(entry.Value ? StoreNameType.GameObject : StoreNameType.Unit, entry.Key), i, j);
                 }
             }
@@ -600,7 +600,7 @@ namespace WowPacketParser.Parsing.Parsers
                 for (int j = 0; j < counts[i]; ++j)
                 {
                     var entry = packet.ReadEntry();
-                    packet.AddValue(entry.Value ? "Creature" : "GameObject",
+                    packet.AddValue(!entry.Value ? "Creature" : "GameObject",
                         StoreGetters.GetName(entry.Value ? StoreNameType.GameObject : StoreNameType.Unit, entry.Key), i, j);
                 }
             }

@@ -723,7 +723,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             bool isSpellGo = packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_SPELL_GO);
 
-            packet.ReadPackedGuid("Caster GUID");
+            var casterGUID = packet.ReadPackedGuid("Caster GUID");
             packet.ReadPackedGuid("Caster Unit GUID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
@@ -758,7 +758,34 @@ namespace WowPacketParser.Parsing.Parsers
                 }
             }
 
-            var targetFlags = ReadSpellCastTargets(ref packet);
+            var targetFlags = packet.ReadEnum<TargetFlag>("Target Flags", TypeCode.Int32);
+
+            var targetGUID = new WowGuid();
+            if (targetFlags.HasAnyFlag(TargetFlag.Unit | TargetFlag.CorpseEnemy | TargetFlag.GameObject |
+                TargetFlag.CorpseAlly | TargetFlag.UnitMinipet))
+                targetGUID = packet.ReadPackedGuid("Target GUID");
+
+            if (targetFlags.HasAnyFlag(TargetFlag.Item | TargetFlag.TradeItem))
+                packet.ReadPackedGuid("Item Target GUID");
+
+            if (targetFlags.HasAnyFlag(TargetFlag.SourceLocation))
+            {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
+                    packet.ReadPackedGuid("Source Transport GUID");
+
+                packet.ReadVector3("Source Position");
+            }
+
+            if (targetFlags.HasAnyFlag(TargetFlag.DestinationLocation))
+            {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_8_9464))
+                    packet.ReadPackedGuid("Destination Transport GUID");
+
+                packet.ReadVector3("Destination Position");
+            }
+
+            if (targetFlags.HasAnyFlag(TargetFlag.NameString))
+                packet.ReadCString("Target String");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
             {
@@ -853,6 +880,18 @@ namespace WowPacketParser.Parsing.Parsers
                             packet.ReadPackedGuid("Unk Guid");
                     }
                 }
+            }
+
+            if (flags.HasAnyFlag(CastFlag.Unknown21) && !isSpellGo)
+            {
+                var spellClick = new NpcSpellClick();
+
+                spellClick.SpellId = (uint)spellId;
+
+                spellClick.CasterGUID = casterGUID;
+                spellClick.TargetGUID = targetGUID;
+
+                Storage.SpellClicks.Add(spellClick, packet.TimeSpan);
             }
 
             if (isSpellGo)

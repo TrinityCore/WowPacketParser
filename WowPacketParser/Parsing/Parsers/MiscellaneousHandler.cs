@@ -697,6 +697,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Instance Difficulty ID");
         }
 
+        [Parser(Opcode.CMSG_INSPECT_HONOR_STATS)]
         [Parser(Opcode.MSG_INSPECT_HONOR_STATS)]
         public static void HandleInspectHonorStats(Packet packet)
         {
@@ -827,10 +828,12 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_SPELLCLICK)]
-        [Parser(Opcode.CMSG_INSPECT_HONOR_STATS)]
         public static void HandleSpellClick(Packet packet)
         {
-            packet.ReadGuid("GUID");
+            var guid = packet.ReadGuid("GUID");
+
+            if (guid.GetObjectType() == ObjectType.Unit)
+                Storage.NpcSpellClicks.Add(guid, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_UI_TIME)]

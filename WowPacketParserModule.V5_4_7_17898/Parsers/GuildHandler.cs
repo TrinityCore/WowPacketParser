@@ -352,7 +352,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadWoWString("MOTD", motdLength);
         }
 
-        [Parser(Opcode.CMSG_REQUEST_GUILD_PARTY_STATE)]
+        [Parser(Opcode.CMSG_GUILD_REQUEST_PARTY_STATE)]
         public static void HandleGuildUpdatePartyState(Packet packet)
         {
             var guid = new byte[8];
@@ -570,11 +570,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var guid = packet.StartBitStream(4, 0, 3, 5, 7, 1, 2, 6);
             packet.ParseBitStream(guid, 7, 0, 5, 2, 3, 6, 4, 1);
             packet.WriteGuid("GUID", guid);
-        }
-
-        [Parser(Opcode.CMSG_GUILD_PERMISSIONS)]
-        public static void HandleGuildPermissions(Packet packet)
-        {
         }
     }
 }
