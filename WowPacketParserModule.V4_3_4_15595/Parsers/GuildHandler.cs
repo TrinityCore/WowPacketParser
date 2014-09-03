@@ -807,5 +807,126 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.AddValue("Criteria counter", BitConverter.ToUInt64(counter[i], 0), i);
             }
         }
+
+        [Parser(Opcode.CMSG_QUERY_GUILD_MEMBERS_FOR_RECIPE)]
+        public static void HandleQueryGuildMembersForRecipe(Packet packet)
+        {
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadUInt32("Skill ID");
+            packet.ReadUInt32("Skill Value");
+
+            var guid = packet.StartBitStream(4, 1, 0, 3, 6, 7, 5, 2);
+            packet.ParseBitStream(guid, 1, 6, 5, 0, 3, 7, 2, 4);
+            packet.WriteGuid("Guild GUID", guid);
+        }
+
+        [Parser(Opcode.SMSG_GUILD_MEMBERS_FOR_RECIPE)]
+        public static void HandleGuildMembersForRecipe(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 26);
+            var guid = new byte[count][];
+
+            for (int i = 0; i < count; ++i)
+                guid[i] = packet.StartBitStream(2, 3, 1, 6, 0, 7, 4, 5);
+
+            for (int i = 0; i < count; ++i)
+            {
+                packet.ParseBitStream(guid[i], 1, 5, 6, 7, 2, 3, 0, 4);
+                packet.WriteGuid("Player GUID", guid[i], i);
+            }
+
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadUInt32("Skill ID");
+        }
+
+        [Parser(Opcode.CMSG_QUERY_GUILD_MEMBER_RECIPES)]
+        public static void HandleQueryGuildMemberRecipes(Packet packet)
+        {
+            var guildGuid = new byte[8];
+            var guid = new byte[8];
+
+            packet.ReadInt32("Skill ID");
+
+            guid[2] = packet.ReadBit();
+            guildGuid[1] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guildGuid[0] = packet.ReadBit();
+            guildGuid[6] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guildGuid[4] = packet.ReadBit();
+            guildGuid[3] = packet.ReadBit();
+            guildGuid[7] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guildGuid[5] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guildGuid[2] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guildGuid, 4);
+            packet.ReadXORByte(guildGuid, 2);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guildGuid, 7);
+            packet.ReadXORByte(guildGuid, 3);
+            packet.ReadXORByte(guildGuid, 1);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guildGuid, 0);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guildGuid, 5);
+            packet.ReadXORByte(guildGuid, 6);
+            packet.ReadXORByte(guid, 5);
+
+            packet.WriteGuid("Guild GUID", guildGuid);
+            packet.WriteGuid("Player GUID", guid);
+        }
+
+        [Parser(Opcode.SMSG_GUILD_MEMBER_RECIPES)]
+        public static void HandleGuildMemberRecipes(Packet packet)
+        {
+            var guid = packet.StartBitStream(0, 3, 7, 4, 6, 2, 1, 5);
+
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 5);
+
+            packet.ReadInt32("Skill Value");
+            packet.ReadBytes("Skill Bits", 300);
+
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 2);
+
+            packet.ReadInt32("Skill ID");
+            packet.ReadInt32("Tradeskill Level");
+
+            packet.WriteGuid("Player GUID", guid);
+        }
+
+        [Parser(Opcode.CMSG_QUERY_GUILD_RECIPES, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)] // 4.3.4
+        public static void HandleQueryGuildRecipes(Packet packet)
+        {
+            var guid = packet.StartBitStream(5, 6, 1, 4, 2, 7, 0, 3);
+            packet.ParseBitStream(guid, 3, 1, 0, 5, 4, 2, 6, 7);
+            packet.WriteGuid("Guild GUID", guid);
+        }
+
+        [Parser(Opcode.SMSG_GUILD_RECIPES)] // 4.3.4
+        public static void HandleGuildRecipes(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 16);
+
+            for (int i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("Skill Id", i);
+                packet.ReadBytes("Skill Bits", 300, i);
+            }
+        }
     }
 }
