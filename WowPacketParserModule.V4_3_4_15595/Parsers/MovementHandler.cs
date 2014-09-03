@@ -3901,7 +3901,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.AddValue("Position", pos);
         }
 
-        [Parser(Opcode.MSG_MOVE_UPDATE_RUN_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_RUN_SPEED)]
         public static void HandleMoveUpdateRunSpeed434(Packet packet)
         {
             var guid = new byte[8];
@@ -4033,7 +4033,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.AddValue("Position", pos);
         }
 
-        [Parser(Opcode.MSG_MOVE_UPDATE_FLIGHT_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_FLIGHT_SPEED)]
         public static void HandleMoveUpdateFlightSpeed434(Packet packet)
         {
             var guid = new byte[8];
@@ -4293,7 +4293,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.AddValue("Position", pos);
         }
 
-        [Parser(Opcode.MSG_MOVE_UPDATE_TELEPORT)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_TELEPORT)]
         public static void HandleMoveUpdateTeleport434(Packet packet)
         {
             var guid = new byte[8];

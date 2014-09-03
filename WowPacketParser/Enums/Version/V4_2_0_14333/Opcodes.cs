@@ -857,7 +857,7 @@ namespace WowPacketParser.Enums.Version.V4_2_0_14333
             {Opcode.SMSG_UPDATE_CURRENCY, 0xD323},
             {Opcode.SMSG_UPDATE_INSTANCE_ENCOUNTER_UNIT, 0x3EF2},
             {Opcode.SMSG_UPDATE_INSTANCE_OWNERSHIP, 0x7A2B},
-            {Opcode.SMSG_UPDATE_ITEM_ENCHANTMENTS, 0x36BA},
+            //{Opcode.SMSG_UPDATE_ITEM_ENCHANTMENTS, 0x36BA},
             {Opcode.SMSG_UPDATE_LAST_INSTANCE, 0xAA32},
             {Opcode.SMSG_LFG_LFR_LIST, 0xEE37},
             {Opcode.SMSG_UPDATE_OBJECT, 0x72A7},

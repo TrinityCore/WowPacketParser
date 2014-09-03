@@ -724,6 +724,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.CMSG_LFG_LOCK_INFO_REQUEST)]
+        public static void HandleLFGLockInfoRequest(Packet packet)
+        {
+            packet.ReadBit("Player (1)/ Party (0)");
+        }
+
         [Parser(Opcode.CMSG_LFG_PLAYER_LOCK_INFO_REQUEST)]
         [Parser(Opcode.CMSG_LFG_PARTY_LOCK_INFO_REQUEST)]
         [Parser(Opcode.CMSG_LFG_GET_STATUS)]

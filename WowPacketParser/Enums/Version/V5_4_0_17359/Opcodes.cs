@@ -71,7 +71,6 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.CMSG_UNKNOWN_6774, 0x1A76},
             {Opcode.CMSG_UNKNOWN_6910, 0x1AFE},
             {Opcode.CMSG_WARDEN_DATA, 0x1702},
-            {Opcode.MSG_MOVE_UPDATE_RUN_SPEED, 0x176F},
             {Opcode.MSG_MULTIPLE_PACKETS, 0x10BD}, // CMSG_ADDON_REGISTERED_PREFIXES and SMSG_QUESTGIVER_QUEST_COMPLETE
             {Opcode.MSG_MULTIPLE_PACKETS1, 0x10B6 | 0x10000}, // SMSG_SPELL_START and ???
             {Opcode.MSG_QUERY_NEXT_MAIL_TIME, 0x1F61},
@@ -143,6 +142,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_MONSTER_MOVE, 0x137A},
             {Opcode.SMSG_MOTD, 0x082A},
             {Opcode.SMSG_MOVE_UPDATE_FLIGHT_SPEED, 0x160E},
+            {Opcode.SMSG_MOVE_UPDATE_RUN_SPEED, 0x176F},
             {Opcode.SMSG_SPLINE_MOVE_GRAVITY_DISABLE, 0x1207},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x00B7},
             {Opcode.SMSG_NEW_WORLD, 0x01AE},

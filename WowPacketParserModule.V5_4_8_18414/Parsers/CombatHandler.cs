@@ -38,7 +38,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_ATTACKERSTATEUPDATE)]
         public static void HandleAttackerStateUpdate(Packet packet)
         {
-            var bit2C = packet.ReadBit();
+            var bit2C = packet.ReadBit("bit2C");
             if (bit2C)
             {
                 var bits1C = (int)packet.ReadBits(21);
@@ -62,7 +62,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadInt32("Damage");
             packet.ReadInt32("OverDamage");
 
-            var subDmgCount = packet.ReadByte();
+            var subDmgCount = packet.ReadByte("subDmgCount");
 
             for (var i = 0; i < subDmgCount; i++)
             {

@@ -251,7 +251,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadTime("Timer 1"); // 24
             packet.ReadTime("Timer 2"); // 80
             packet.ParseBitStream(guid, 7, 0);
-            packet.WriteGuid("Guid", guid);
             packet.ReadUInt64("Counter"); // 16
             packet.WriteGuid("Guid", guid);
         }

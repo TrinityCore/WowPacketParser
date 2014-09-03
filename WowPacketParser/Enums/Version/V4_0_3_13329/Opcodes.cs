@@ -420,6 +420,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_PLAYERBINDERROR, 0x765C}, // (0xC3FC)(0x01B6) //
             {Opcode.CMSG_BANKER_ACTIVATE, 0x01B7}, // NF()(0x01B7) //
             {Opcode.SMSG_SHOW_BANK, 0x01B8}, // NF()(0x01B8) //
+            {Opcode.SMSG_SHOW_MAILBOX, 0xF575}, // (0xEA14)(0x0297) //L_SHOW
             {Opcode.CMSG_BUY_BANK_SLOT, 0x01B9}, // NF()(0x01B9) //
             {Opcode.SMSG_BUY_BANK_SLOT_RESULT, 0x01BA}, // NF()(0x01BA) //
             {Opcode.CMSG_PETITION_SHOWLIST, 0x01BB}, // NF()(0x01BB) //
@@ -631,7 +632,6 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_MEETINGSTONE_CHEAT, 0x0294}, // NF()(0x0294) // // not found 3.3
             {Opcode.SMSG_MEETINGSTONE_SETQUEUE, 0x245F}, // (0xA215)(0x0295) //howed in console
             {Opcode.CMSG_MEETINGSTONE_INFO, 0x0296}, // NF()(0x0296) // // EVENT_LFG_UPDATE
-            {Opcode.SMSG_MEETINGSTONE_COMPLETE, 0xF575}, // (0xEA14)(0x0297) //L_SHOW
             {Opcode.SMSG_MEETINGSTONE_IN_PROGRESS, 0xF57D}, // (0xE318)(0x0298) //ome UPDATE_COOLDOWN events
             {Opcode.SMSG_MEETINGSTONE_MEMBER_ADDED, 0xF77C}, // (0x43FD)(0x0299) //rrors: ERR_NOT_IN_GROUP (2,51) and ERR_NOT_IN_RAID (3,39,40)
             {Opcode.CMSG_GMTICKETSYSTEM_TOGGLE, 0x029A}, // NF()(0x029A) //
@@ -1260,7 +1260,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_SET_ALLOW_LOW_LEVEL_RAID1, 0x0508}, // NF()(0x0508) // // lua: SetAllowLowLevelRaid
             //{Opcode.CMSG_SET_ALLOW_LOW_LEVEL_RAID2, 0x0509}, // NF()(0x0509) // // lua: SetAllowLowLevelRaid
             {Opcode.SMSG_CAMERA_SHAKE, 0xFF93}, // NF(0xA3B0)(0x050A) //ellEffectCameraShakes.dbc index}, uint32
-            {Opcode.SMSG_UPDATE_ITEM_ENCHANTMENTS, 0xFF92}, // NF(0x6A90)(0x050B) // update packet?
+            {Opcode.SMSG_SOCKET_GEMS_RESULT, 0xFF92}, // NF(0x6A90)(0x050B) // update packet?
             {Opcode.UMSG_UNKNOWN_1292, 0x050C}, // NF()(0x050C) // // not found
             {Opcode.SMSG_REDIRECT_CLIENT, 0x9000}, // (0x8400)(0x050D) //}, uint16 port}, uint32 unk}, uint8[20] hash (ip + port}, seed=sessionkey)
             {Opcode.CMSG_REDIRECTION_FAILED, 0x0509}, // (0x1201)(0x050E) // with networking

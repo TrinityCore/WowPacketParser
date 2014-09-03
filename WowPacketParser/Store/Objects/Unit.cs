@@ -55,6 +55,7 @@ namespace WowPacketParser.Store.Objects
         public float? BoundingRadius;
         public float? CombatReach;
         public float? HoverHeight;
+        public uint? InteractSpellID;
 
         // Fields calculated with bytes0
         public PowerType? PowerType;
@@ -114,7 +115,10 @@ namespace WowPacketParser.Store.Objects
             HoverHeight   = UpdateFields.GetValue<UnitField, float?>(UnitField.UNIT_FIELD_HOVERHEIGHT);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_4_0_17359))
+            {
                 PowerType = UpdateFields.GetEnum<UnitField, PowerType?>(UnitField.UNIT_FIELD_DISPLAY_POWER);
+                InteractSpellID = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_INTERACT_SPELLID);
+            }
 
             ComputeBytes0();
         }
