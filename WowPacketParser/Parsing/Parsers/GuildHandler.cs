@@ -1172,35 +1172,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("Petition GUID");
         }
 
-        [Parser(Opcode.SMSG_GUILD_CHALLENGE_UPDATED, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleGuildChallengeUpdated(Packet packet)
-        {
-            for (int i = 0; i < 4; ++i)
-                packet.ReadInt32("Guild Experience Reward", i);
-
-            for (int i = 0; i < 4; ++i)
-                packet.ReadInt32("Completion Gold Reward", i);
-
-            for (int i = 0; i < 4; ++i)
-                packet.ReadInt32("Total Count", i);
-
-            for (int i = 0; i < 4; ++i)
-                packet.ReadInt32("Gold Reward Unk 2", i); // requires perk Cash Flow?
-
-            for (int i = 0; i < 4; ++i)
-                packet.ReadInt32("Current Count", i);
-        }
-
-        [Parser(Opcode.SMSG_GUILD_CHALLENGE_COMPLETED, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleGuildChallengeCompleted(Packet packet)
-        {
-            packet.ReadInt32("Index"); // not confirmed
-            packet.ReadInt32("Gold Reward");
-            packet.ReadInt32("Current Count");
-            packet.ReadInt32("Guild Experience Reward");
-            packet.ReadInt32("Total Count");
-        }
-
         [Parser(Opcode.SMSG_GUILD_REPUTATION_WEEKLY_CAP)]
         public static void HandleGuildReputationWeeklyCap(Packet packet)
         {
@@ -1315,22 +1286,6 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_GUILD_REPUTATION_REACTION_CHANGED, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleGuildReputationReactionChanged(Packet packet)
-        {
-            var guid = packet.StartBitStream(1, 6, 2, 4, 0, 3, 7, 5);
-            packet.ParseBitStream(guid, 4, 6, 5, 7, 2, 0, 3, 1);
-            packet.WriteGuid("Guid", guid);
-        }
-
-        [Parser(Opcode.CMSG_GUILD_ADD_RANK, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleGuildAddRank(Packet packet)
-        {
-            packet.ReadUInt32("Rank ID");
-            var count = packet.ReadBits(7);
-            packet.ReadWoWString("Name", count);
-        }
-
         [Parser(Opcode.SMSG_GUILD_MEMBER_UPDATE_NOTE)]
         public static void HandleGuildMemberUpdateNote(Packet packet)
         {
@@ -1361,120 +1316,6 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.WriteGuid("Guid", guid);
 
-        }
-
-        [Parser(Opcode.CMSG_GUILD_ACHIEVEMENT_MEMBERS, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleGuildAchievementMembers(Packet packet)
-        {
-            var guid = new byte[8];
-            var guid2 = new byte[8];
-
-            packet.ReadInt32("Achievement Id");
-
-            guid[0] = packet.ReadBit();
-            guid2[5] = packet.ReadBit();
-            guid2[4] = packet.ReadBit();
-            guid2[0] = packet.ReadBit();
-            guid2[7] = packet.ReadBit();
-            guid[5] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
-            guid2[3] = packet.ReadBit();
-            guid[3] = packet.ReadBit();
-            guid2[2] = packet.ReadBit();
-            guid[4] = packet.ReadBit();
-            guid[1] = packet.ReadBit();
-            guid[6] = packet.ReadBit();
-            guid2[6] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
-            guid2[1] = packet.ReadBit();
-
-            packet.ReadXORByte(guid, 0);
-            packet.ReadXORByte(guid, 3);
-            packet.ReadXORByte(guid2, 2);
-            packet.ReadXORByte(guid, 7);
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid2, 5);
-            packet.ReadXORByte(guid2, 0);
-            packet.ReadXORByte(guid2, 3);
-            packet.ReadXORByte(guid, 5);
-            packet.ReadXORByte(guid, 1);
-            packet.ReadXORByte(guid2, 4);
-            packet.ReadXORByte(guid2, 6);
-            packet.ReadXORByte(guid2, 1);
-            packet.ReadXORByte(guid2, 7);
-            packet.ReadXORByte(guid, 4);
-            packet.ReadXORByte(guid, 6);
-
-            packet.WriteGuid("Guild Guid", guid);
-            packet.WriteGuid("Player Guid", guid2);
-
-        }
-
-        [Parser(Opcode.SMSG_GUILD_ACHIEVEMENT_MEMBERS, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleGuildAchievementMembersResponse(Packet packet)
-        {
-            var guid = new byte[8];
-
-
-            guid[3] = packet.ReadBit();
-            guid[4] = packet.ReadBit();
-            guid[0] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
-
-            var count = packet.ReadBits("Player Count", 26);
-            var guid2 = new byte[count][];
-            for (var i = 0; i < count; i++)
-                guid2[i] = packet.StartBitStream(3,1,4,5,7,0,6,2);
-
-            guid[2] = packet.ReadBit();
-            guid[6] = packet.ReadBit();
-            guid[5] = packet.ReadBit();
-            guid[1] = packet.ReadBit();
-
-            packet.ReadXORByte(guid, 5);
-
-            for (var i = 0; i < count; i++)
-            {
-                packet.ParseBitStream(guid2[i], 1, 5, 7, 0, 6, 4, 3, 2);
-                packet.WriteGuid("Player Guid", guid2[i], i);
-            }
-
-            packet.ReadXORByte(guid, 7);
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid, 4);
-            packet.ReadXORByte(guid, 3);
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid, 0);
-
-            packet.ReadInt32("Achievement Id");
-
-            packet.ReadXORByte(guid, 1);
-
-            packet.WriteGuid("Guild Guid", guid);
-
-        }
-
-        [Parser(Opcode.SMSG_GUILD_ACHIEVEMENT_EARNED, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleGuildAchievementEarned(Packet packet)
-        {
-            var guid = packet.StartBitStream(3, 1, 0, 7, 4, 6, 2, 5);
-
-            packet.ReadXORByte(guid, 2);
-
-            packet.ReadPackedTime("Time");
-
-            packet.ReadXORByte(guid, 0);
-            packet.ReadXORByte(guid, 4);
-            packet.ReadXORByte(guid, 1);
-            packet.ReadXORByte(guid, 3);
-
-            packet.ReadInt32("Achievement Id");
-
-            packet.ReadXORByte(guid, 7);
-            packet.ReadXORByte(guid, 5);
-            packet.ReadXORByte(guid, 6);
-
-            packet.WriteGuid("Guild Guid", guid);
         }
 
         [Parser(Opcode.SMSG_GUILD_ACHIEVEMENT_DATA, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
