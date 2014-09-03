@@ -216,6 +216,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.SMSG_UNK_0222)]
+        public static void HandleSUnk0222(Packet packet)
+        {
+            packet.ReadBoolean("unk16");
+        }
+
         [Parser(Opcode.SMSG_UNK_0354)]
         public static void HandleSUnk0354(Packet packet)
         {
@@ -704,6 +710,14 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         {
             packet.ReadInt32("Int20");
             packet.ReadInt32("Int16");
+        }
+
+        [Parser(Opcode.SMSG_UNK_0E33)]
+        public static void HandleSUnk0E33(Packet packet)
+        {
+            var guid = packet.StartBitStream(7, 4, 2, 6, 5, 3, 1, 0);
+            packet.ParseBitStream(guid, 4, 0, 6, 7, 1, 2, 3, 5);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_UNK_0E3A)]
