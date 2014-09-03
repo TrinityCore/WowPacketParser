@@ -176,7 +176,14 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_REFORGE_ITEM)]
         public static void HandleReforgeItem(Packet packet)
         {
-            packet.ReadToEnd();
+            packet.ReadInt32("ReforgeEntry");
+            packet.ReadInt32("Bag");
+            packet.ReadInt32("Slot");
+
+            var guid = packet.StartBitStream(1, 0, 5, 3, 4, 2, 7, 6);
+            packet.ParseBitStream(guid, 4, 6, 3, 1, 2, 7, 0, 5);
+
+            packet.WriteGuid("NPC Guid", guid);
         }
 
         [Parser(Opcode.CMSG_REPAIR_ITEM)]
@@ -641,7 +648,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_REFORGE_RESULT)]
         public static void HandleReforgeResult(Packet packet)
         {
-            packet.ReadToEnd();
+            packet.ReadBit("Successful");
         }
 
         [Parser(Opcode.SMSG_SELL_ITEM)]
