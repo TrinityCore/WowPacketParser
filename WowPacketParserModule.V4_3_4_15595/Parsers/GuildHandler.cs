@@ -191,7 +191,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         [Parser(Opcode.CMSG_GUILD_ROSTER)]
         public static void HandleGuildRosterRequest434(Packet packet)
         {
-            // Seems to have some previous formula, processed GUIDS does not fit any know guid
+            // The client does not write these 2 guids properly.
             var guid1 = new byte[8];
             var guid2 = new byte[8];
             guid2[2] = packet.ReadBit();
@@ -227,8 +227,8 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadXORByte(guid2, 3);
             packet.ReadXORByte(guid2, 1);
             packet.ReadXORByte(guid1, 6);
-            packet.WriteGuid("Guid1", guid1);
-            packet.WriteGuid("Guid2", guid2);
+            // packet.WriteGuid("Guid1", guid1);
+            // packet.WriteGuid("Guid2", guid2);
         }
 
         [Parser(Opcode.SMSG_GUILD_ROSTER)]
@@ -909,7 +909,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Player GUID", guid);
         }
 
-        [Parser(Opcode.CMSG_QUERY_GUILD_RECIPES, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)] // 4.3.4
+        [Parser(Opcode.CMSG_QUERY_GUILD_RECIPES]
         public static void HandleQueryGuildRecipes(Packet packet)
         {
             var guid = packet.StartBitStream(5, 6, 1, 4, 2, 7, 0, 3);
@@ -917,7 +917,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guild GUID", guid);
         }
 
-        [Parser(Opcode.SMSG_GUILD_RECIPES)] // 4.3.4
+        [Parser(Opcode.SMSG_GUILD_RECIPES)]
         public static void HandleGuildRecipes(Packet packet)
         {
             var count = packet.ReadBits("Count", 16);
