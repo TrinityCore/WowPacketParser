@@ -52,6 +52,54 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.CMSG_UNK_1042)]
+        public static void HandleUnk1042(Packet packet)
+        {
+            packet.ReadInt32("unk36"); // 36
+            packet.ReadInt32("unk40"); // 40
+            packet.ReadInt32("unk32"); // 32
+
+            var guid = new byte[8];
+            var guid2 = new byte[8];
+
+            guid2[5] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid2, 6);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid2, 5);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid2, 4);
+
+            packet.WriteGuid("Guid", guid);
+            packet.WriteGuid("Guid2", guid2);
+        }
+
         [Parser(Opcode.CMSG_UNK_10D3)]
         public static void HandleUnk10D3(Packet packet)
         {
