@@ -67,9 +67,12 @@
     <Compile Include="Parsers\ActionBarHandler.cs" />
     <Compile Include="Parsers\AddonHandler.cs" />
     <Compile Include="Parsers\ArenaHandler.cs" />
+    <Compile Include="Parsers\AuctionHouseHandler.cs" />
     <Compile Include="Parsers\BattlegroundHandler.cs" />
     <Compile Include="Parsers\BattlePetHandlers.cs" />
     <Compile Include="Parsers\BlackMarketHandler.cs" />
+    <Compile Include="Parsers\CalendarHandler.cs" />
+    <Compile Include="Parsers\ChallengeModeHandler.cs" />
     <Compile Include="Parsers\ChannelHandler.cs" />
     <Compile Include="Parsers\CharacterHandler.cs" />
     <Compile Include="Parsers\ChatHandler.cs" />
@@ -81,8 +84,10 @@
     <Compile Include="Parsers\EquipmentSetHandler.cs" />
     <Compile Include="Parsers\GameObjectHandler.cs" />
     <Compile Include="Parsers\GameShop.cs" />
+    <Compile Include="Parsers\GameStoreHandler.cs" />
     <Compile Include="Parsers\GroupHandler.cs" />
     <Compile Include="Parsers\GuildHandler.cs" />
+    <Compile Include="Parsers\HotfixHandler.cs" />
     <Compile Include="Parsers\InstanceHandler.cs" />
     <Compile Include="Parsers\ItemHandler.cs" />
     <Compile Include="Parsers\LfgHandler.cs" />
@@ -95,10 +100,12 @@
     <Compile Include="Parsers\QuestHandler.cs" />
     <Compile Include="Parsers\PetHandler.cs" />
     <Compile Include="Parsers\ReputationHandler.cs" />
+    <Compile Include="Parsers\ScenarioHandler.cs" />
     <Compile Include="Parsers\SessionHandler.cs" />
     <Compile Include="Parsers\SpellHandler.cs" />
     <Compile Include="Parsers\TalentHandler.cs" />
     <Compile Include="Parsers\TaxiHandler.cs" />
+    <Compile Include="Parsers\TicketHandler.cs" />
     <Compile Include="Parsers\TimeHandler.cs" />
     <Compile Include="Parsers\TradeHandler.cs" />
     <Compile Include="Parsers\UnkHandler.cs" />

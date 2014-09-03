@@ -253,13 +253,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_DEATH_RELEASE_LOC)]
-        public static void HandleDeathReleaseLoc(Packet packet)
-        {
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
-            packet.ReadVector3("Position");
-        }
-
         [Parser(Opcode.SMSG_TEXT_EMOTE)]
         public static void HandleSTextEmote(Packet packet)
         {
@@ -305,12 +298,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Target", guid2);
         }
 
-        [Parser(Opcode.SMSG_ENVIRONMENTALDAMAGELOG)]
-        public static void HandleEnvironmentalDamageLog(Packet packet)
-        {
-            packet.ReadToEnd();
-        }
-
         [Parser(Opcode.SMSG_EXPLORATION_EXPERIENCE)]
         public static void HandleExplorationExpirience(Packet packet)
         {
@@ -321,35 +308,36 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         public static void HandleInitCurrency(Packet packet)
         {
             var count = packet.ReadBits("Count", 21);
-            if (count == 0)
-                return;
 
             var hasWeekCount = new bool[count];
             var hasWeekCap = new bool[count];
             var hasSeasonTotal = new bool[count];
             var flags = new uint[count];
-            for (var i = 0; i < count; ++i)
+
+            for (var i = 0; i < count; i++)
             {
-                hasSeasonTotal[i] = packet.ReadBit("hasSeasonTotal", i);
-                flags[i] = packet.ReadBits("flags", 5, i);
-                hasWeekCap[i] = packet.ReadBit("hasWeekCap", i);
-                hasWeekCount[i] = packet.ReadBit("hasWeekCount", i);
+                hasWeekCount[i] = packet.ReadBit();     // +28
+                flags[i] = packet.ReadBits(5);          // +32
+                hasWeekCap[i] = packet.ReadBit();       // +20
+                hasSeasonTotal[i] = packet.ReadBit();   // +12
             }
 
-            for (var i = 0; i < count; ++i)
+            for (var i = 0; i < count; i++)
             {
-                if (hasWeekCount[i])
-                    packet.ReadUInt32("Weekly count", i);
-
-                packet.ReadUInt32("Entry", i);
+                packet.AddValue("Flags", flags[i], i); // +32
 
                 if (hasSeasonTotal[i])
-                    packet.ReadUInt32("Season count", i);
+                    packet.ReadUInt32("Season total earned", i);    // +12
 
-                packet.ReadUInt32("Currency count", i);
+                packet.ReadUInt32("Currency id", i);    // +5
+
+                if (hasWeekCount[i])
+                    packet.ReadUInt32("Weekly count", i);    // +28
+
+                packet.ReadUInt32("Currency count", i);    // +4
 
                 if (hasWeekCap[i])
-                    packet.ReadUInt32("Weekly cap", i);
+                    packet.ReadUInt32("Weekly cap", i);    // +20
             }
         }
 

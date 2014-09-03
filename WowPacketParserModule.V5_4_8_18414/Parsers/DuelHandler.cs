@@ -10,7 +10,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_DUEL_PROPOSED)]
         public static void HandleClientDuelProposed(Packet packet)
         {
-            packet.ReadToEnd();
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 1, 5, 4, 6, 3, 2, 7, 0);
+            packet.ParseBitStream(guid, 4, 2, 5, 7, 1, 3, 6, 0);
+
+            packet.WriteGuid("Opponent GUID", guid);
         }
 
         [Parser(Opcode.CMSG_DUEL_RESPONSE)]

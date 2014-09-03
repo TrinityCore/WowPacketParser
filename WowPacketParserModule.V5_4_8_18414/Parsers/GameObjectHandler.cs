@@ -56,7 +56,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             var unk1 = packet.ReadInt32("Unk1 UInt32");
             if (unk1 == 0)
             {
-                packet.ReadByte("Unk1 Byte");
+                //packet.ReadByte("Unk1 Byte");
                 return;
             }
 

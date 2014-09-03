@@ -97,40 +97,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadSingle("Z");
         }
 
-        [Parser(Opcode.SMSG_CORPSE_QUERY_RESPONSE)]
-        public static void HandleCorpseQuery(Packet packet)
-        {
-            var pos = new Vector3();
-            var guid = new byte[8];
-
-            guid[0] = packet.ReadBit();
-            guid[3] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
-            packet.ReadBit("Corpse Found");
-            guid[5] = packet.ReadBit();
-            guid[4] = packet.ReadBit();
-            guid[1] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
-            guid[6] = packet.ReadBit();
-
-            packet.ReadXORByte(guid, 5);
-            pos.Z = packet.ReadSingle();
-            packet.ReadXORByte(guid, 1);
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid, 4);
-            pos.X = packet.ReadSingle();
-            packet.ReadXORByte(guid, 3);
-            packet.ReadXORByte(guid, 7);
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid, 0);
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Corpse Map ID");
-            pos.Y = packet.ReadSingle();
-
-            packet.WriteLine("Position: {0}", pos);
-            packet.WriteGuid("Corpse Low GUID", guid);
-        }
-
         [HasSniffData]
         [Parser(Opcode.SMSG_CREATURE_QUERY_RESPONSE)]
         public static void HandleCreatureQueryResponse(Packet packet)
@@ -312,28 +278,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 Name = name,
             };
             Storage.ObjectNames.Add((uint)playerGuid.GetLow(), objectName, packet.TimeSpan);
-        }
-
-        [Parser(Opcode.SMSG_NPC_TEXT_UPDATE)]
-        public static void HandleNpcTextUpdate(Packet packet)
-        {
-            packet.ReadInt32("TextID");
-
-            var txtSize = packet.ReadInt32("Size");
-            var Probability = new float[8];
-            var TextID = new Int32[8];
-
-            for (var i = 0; i < 8; i++)
-                Probability[i] = packet.ReadSingle("Probability", i);
-
-            for (var i = 0; i < 8; i++)
-                TextID[i] = packet.ReadInt32("Broadcast Text Id", i);
-
-            packet.ReadBit("hasData");
-
-            //packet.AddSniffData(StoreNameType.NpcText, entry.Key, "QUERY_RESPONSE");
-
-            //Storage.NpcTexts.Add((uint)entry.Key, npcText, packet.TimeSpan);
         }
 
         [HasSniffData]

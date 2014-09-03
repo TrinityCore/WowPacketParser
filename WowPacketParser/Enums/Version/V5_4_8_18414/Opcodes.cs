@@ -532,7 +532,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_LEARNED_SPELL,                            0x129A | 0x20000}, //++
             {Opcode.SMSG_LEVELUP_INFO,                             0x1961 | 0x20000}, //++
             {Opcode.SMSG_LFG_PLAYER_INFO,                          0x1861 | 0x20000}, //++
-            {Opcode.SMSG_LIST_INVENTORY,                           0x1AAE | 0x20000}, //--
+            {Opcode.SMSG_LIST_INVENTORY,                           0x1AAE | 0x20000}, //-+
             {Opcode.SMSG_LOAD_CUF_PROFILES,                        0x0E32 | 0x20000}, //++
             {Opcode.SMSG_LOG_XPGAIN,                               0x1E9A | 0x20000}, //--
             {Opcode.SMSG_LOGIN_SETTIMESPEED,                       0x082B | 0x20000}, //++
@@ -573,14 +573,14 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_NEW_TAXI_PATH,                            0x141B | 0x20000}, //++
             {Opcode.SMSG_NEW_WORLD,                                0x1C3B | 0x20000}, //++
             {Opcode.SMSG_NOTIFICATION,                             0x0C2A | 0x20000}, //--
-            {Opcode.SMSG_NPC_TEXT_UPDATE,                          0x140A | 0x20000}, //--
+            {Opcode.SMSG_NPC_TEXT_UPDATE,                          0x140A | 0x20000}, //-+
             {Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE,                 0x081E | 0x20000}, //--
             {Opcode.SMSG_PARTY_COMMAND_RESULT,                     0x0F86 | 0x20000}, //--
             {Opcode.SMSG_PARTY_MEMBER_STATS,                       0x0A9A | 0x20000}, //+-
             {Opcode.SMSG_PERIODICAURALOG,                          0x0CF2 | 0x20000}, //++
             {Opcode.SMSG_PET_GUIDS,                                0x1227 | 0x20000}, //++
-            {Opcode.SMSG_PET_NAME_QUERY_RESPONSE,                  0x0ABE | 0x20000}, //--
-            {Opcode.SMSG_PET_SPELLS,                               0x095A | 0x20000}, //--
+            {Opcode.SMSG_PET_NAME_QUERY_RESPONSE,                  0x0ABE | 0x20000}, //-+
+            {Opcode.SMSG_PET_SPELLS,                               0x095A | 0x20000}, //-+
             {Opcode.SMSG_PETITION_ALREADY_SIGNED,                  0x0286 | 0x20000}, //--
             {Opcode.SMSG_PETITION_QUERY_RESPONSE,                  0x1083 | 0x20000}, //--
             {Opcode.SMSG_PETITION_RENAME_RESULT,                   0x082A | 0x20000}, //--

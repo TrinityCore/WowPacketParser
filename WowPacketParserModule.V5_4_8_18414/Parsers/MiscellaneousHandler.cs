@@ -372,14 +372,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadUInt32("Version");
         }
 
-        [Parser(Opcode.SMSG_CORPSE_RECLAIM_DELAY)]
-        public static void HandleCorpseReclaimDelay(Packet packet)
-        {
-            var hasData = !packet.ReadBit("!hasData");
-            if (hasData)
-                packet.ReadInt32("Data");
-        }
-
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS)]
         public static void HandleFeatureSystemStatus(Packet packet)
         {
@@ -453,12 +445,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
         [Parser(Opcode.SMSG_GOSSIP_COMPLETE)]
         public static void HandleGossipComplete(Packet packet)
-        {
-            packet.ReadToEnd();
-        }
-
-        [Parser(Opcode.SMSG_HOTFIX_INFO)]
-        public static void HandleHotfixInfo(Packet packet)
         {
             packet.ReadToEnd();
         }
@@ -1067,37 +1053,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
 
             packet.WriteGuid("Guid", guid);
             packet.WriteGuid("Guid2", guid2);
-        }
-
-        [Parser(Opcode.SMSG_THREAT_UPDATE)]
-        public static void HandleThreatUpdate(Packet packet)
-        {
-            var guid = new byte[8];
-            guid[5] = packet.ReadBit();
-            guid[6] = packet.ReadBit();
-            guid[1] = packet.ReadBit();
-            guid[3] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
-            guid[0] = packet.ReadBit();
-            guid[4] = packet.ReadBit();
-            var count = packet.ReadBits("Count", 21);
-            var guid1 = new byte[count][];
-            for (var i = 0; i < count; i++)
-            {
-                guid1[i] = packet.StartBitStream(2, 3, 6, 5, 1, 4, 0, 7);
-            }
-
-            guid[2] = packet.ReadBit();
-
-            for (var i = 0; i < count; i++)
-            {
-                packet.ParseBitStream(guid1[i], 6, 7, 0, 1, 2, 5, 3, 4);
-                packet.WriteGuid("Guid", guid1[i], i);
-                packet.ReadInt32("Int20", i);
-            }
-
-            packet.ParseBitStream(guid, 1, 4, 2, 3, 5, 6, 0, 7);
-            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_UNK_02A7)]

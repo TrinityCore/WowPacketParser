@@ -6,6 +6,7 @@ using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreObjects = WowPacketParser.Store.Objects;
+using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V5_4_8_18414.Parsers
 {
@@ -31,7 +32,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         {
             const int buttonCount = 132;
 
-            var startAction = new StartAction { Actions = new List<WowPacketParser.Store.Objects.Action>(buttonCount) };
+            var startAction = new CoreObjects.StartAction { Actions = new List<CoreObjects.Action>(buttonCount) };
 
             var buttons = new byte[buttonCount][];
 
@@ -82,21 +83,21 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 if (actionId == 0)
                     continue;
 
-                var action = new WowPacketParser.Store.Objects.Action
+                var action = new CoreObjects.Action
                 {
                     Button = (uint)i,
                     Id = (uint)actionId,
                     Type = 0 // removed in MoP
                 };
 
-                packet.WriteLine("Action " + i + ": " + action.Id);
+                packet.AddValue("Action " + i, action.Id);
                 startAction.Actions.Add(action);
             }
 
-            WoWObject character;
-            if (Storage.Objects.TryGetValue(SessionHandler.LoginGuid, out character))
+            CoreObjects.WoWObject character;
+            if (Storage.Objects.TryGetValue(CoreParsers.SessionHandler.LoginGuid, out character))
             {
-                var player = character as Player;
+                var player = character as CoreObjects.Player;
                 if (player != null && player.FirstLogin)
                     Storage.StartActions.Add(new Tuple<Race, Class>(player.Race, player.Class), startAction, packet.TimeSpan);
             }

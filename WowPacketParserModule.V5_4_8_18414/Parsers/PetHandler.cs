@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
+using System.Linq;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -377,8 +377,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Pet Guid", guid1);
             packet.WriteGuid("Pet Number", guid2);
 
-            var PetGuid = new Guid(BitConverter.ToUInt64(guid1, 0));
-            var PetNumberGuid = new Guid(BitConverter.ToUInt64(guid2, 0));
+            var PetGuid = new WowGuid(BitConverter.ToUInt64(guid1, 0));
+            var PetNumberGuid = new WowGuid(BitConverter.ToUInt64(guid2, 0));
             var PetNumber = PetNumberGuid.GetEntry().ToString(CultureInfo.InvariantCulture); // Not sure about this.
 
             // Store temporary name from Pet Number GUID (will be retrieved as uint64 in SMSG_PET_NAME_QUERY_RESPONSE)
@@ -405,7 +405,33 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_PET_NAME_QUERY_RESPONSE)]
         public static void HandlePetNameQueryResponse(Packet packet)
         {
-            packet.ReadToEnd();
+            var hasData = packet.ReadBit();
+            if (!hasData)
+            {
+                packet.ReadUInt64("Pet number");
+                return;
+            }
+
+            const int maxDeclinedNameCases = 5;
+            var declinedNameLen = new int[maxDeclinedNameCases];
+            for (var i = 0; i < maxDeclinedNameCases; i++)
+                declinedNameLen[i] = (int)packet.ReadBits(7);
+
+            packet.ReadBit("Declined");
+
+            var len = packet.ReadBits(8);
+
+            for (var i = 0; i < maxDeclinedNameCases; i++)
+                if (declinedNameLen[i] != 0)
+                    packet.ReadWoWString("Declined name", declinedNameLen[i], i);
+
+            var petName = packet.ReadWoWString("Pet name", len);
+            packet.ReadTime("Time");
+            var number = packet.ReadUInt64("Pet number");
+
+            var guidArray = (from pair in StoreGetters.NameDict where Equals(pair.Value, number) select pair.Key).ToList();
+            foreach (var guid in guidArray)
+                StoreGetters.NameDict[guid] = petName;
         }
 
         [Parser(Opcode.SMSG_PET_SPELLS)]
@@ -424,10 +450,21 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             guid[0] = packet.ReadBit();
             guid[1] = packet.ReadBit();
 
-            for (var i = 0; i < 10; i++)
+            const int maxCreatureSpells = 10;
+            var spells = new List<uint>(maxCreatureSpells);
+            for (var i = 0; i < maxCreatureSpells; i++) // Read pet/vehicle spell ids
             {
-                packet.ReadInt32("unk84", i);
+                var spell16 = packet.ReadUInt16();
+                var spell8 = packet.ReadByte();
+                var spellId = spell16 + (spell8 << 16);
+                var slot = packet.ReadByte();
+
+                if (spellId <= 4)
+                    packet.AddValue("Action", spellId, i);
+                else
+                    packet.AddValue("Spell", StoreGetters.GetName(StoreNameType.Spell, spellId), i);
             }
+
             for (var i = 0; i < count16; i++)
             {
                 packet.ReadInt32("unk28", i);

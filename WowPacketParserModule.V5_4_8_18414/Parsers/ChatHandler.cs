@@ -100,6 +100,18 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadWoWString("Name", packet.ReadBits(9));
         }
 
+        [Parser(Opcode.SMSG_DEFENSE_MESSAGE)]
+        public static void HandleDefenseMessage(Packet packet)
+        {
+            var message = new DefenseMessage();
+
+            var zoneId = packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id");
+            var length = packet.ReadBits("Message Length", 12);
+            message.text = packet.ReadWoWString("Message", length);
+
+            Storage.DefenseMessages.Add(zoneId, message, packet.TimeSpan);
+        }
+
         [Parser(Opcode.SMSG_MESSAGECHAT)] // sub_70A096
         public static void HandleMessageChat(Packet packet)
         {
