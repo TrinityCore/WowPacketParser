@@ -530,6 +530,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE,                 0x10A2 | 0x20000}, //++
             {Opcode.SMSG_ITEM_PUSH_RESULT,                         0x0E0A | 0x20000}, //++
             {Opcode.SMSG_ITEM_TIME_UPDATE,                         0x18C1 | 0x20000}, //--
+            {Opcode.SMSG_ITEM_UPGRADE_RESULT,                      0x0222 | 0x20000}, //++
             {Opcode.SMSG_LEARNED_SPELL,                            0x129A | 0x20000}, //++
             {Opcode.SMSG_LEVELUP_INFO,                             0x1961 | 0x20000}, //++
             {Opcode.SMSG_LFG_PLAYER_INFO,                          0x1861 | 0x20000}, //++
@@ -710,7 +711,6 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_UNK_01E1,                                 0x01E1 | 0x20000}, //++
             {Opcode.SMSG_UNK_01E2,                                 0x01E2 | 0x20000}, //++
             {Opcode.SMSG_UNK_021A,                                 0x021A | 0x20000}, //++
-            {Opcode.SMSG_UNK_0222,                                 0x0222 | 0x20000}, //++
             {Opcode.SMSG_UNK_023B,                                 0x023B | 0x20000}, //++ SMSG_SPLINE_MOVE_SET_???_SPEED
             {Opcode.SMSG_UNK_0250,                                 0x0250 | 0x20000}, //++
             {Opcode.SMSG_UNK_0251,                                 0x0251 | 0x20000}, //++ PENDING_STOP

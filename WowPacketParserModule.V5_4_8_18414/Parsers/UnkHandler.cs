@@ -57,7 +57,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         {
             packet.ReadInt32("unk36"); // 36
             packet.ReadInt32("unk40"); // 40
-            packet.ReadInt32("unk32"); // 32
+            packet.ReadInt32("unk32"); // 32 itemUpgrade.db2  field 3 (0-5)
 
             var guid = new byte[8];
             var guid2 = new byte[8];
@@ -262,12 +262,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             var guid = packet.StartBitStream(2, 3, 7, 5, 4, 6, 0, 1);
             packet.ParseBitStream(guid, 2, 1, 3, 0, 7, 4, 6, 5);
             packet.WriteGuid("Guid", guid);
-        }
-
-        [Parser(Opcode.SMSG_UNK_0222)]
-        public static void HandleSUnk0222(Packet packet)
-        {
-            packet.ReadBoolean("unk16");
         }
 
         [Parser(Opcode.SMSG_UNK_0354)]

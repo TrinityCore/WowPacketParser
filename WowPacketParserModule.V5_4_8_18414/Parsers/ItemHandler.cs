@@ -651,6 +651,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadBit("Successful");
         }
 
+        [Parser(Opcode.SMSG_ITEM_UPGRADE_RESULT)]
+        public static void HandleItemUpgradeResult(Packet packet)
+        {
+            packet.ReadBoolean("Successful");
+        }
+
         [Parser(Opcode.SMSG_SELL_ITEM)]
         public static void HandleSellItemResponse(Packet packet)
         {
