@@ -222,7 +222,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_REALM_SPLIT,                              0x18B2 | 0x10000}, //++
             {Opcode.CMSG_RECLAIM_CORPSE,                           0x03D3 | 0x10000}, //++
             {Opcode.CMSG_REDIRECT_AUTH_PROOF,                      0x0F49 | 0x10000}, //--
-            {Opcode.CMSG_REFORGE_ITEM,                             0x0C4F | 0x10000}, //--
+            {Opcode.CMSG_REFORGE_ITEM,                             0x0C4F | 0x10000}, //++
             {Opcode.CMSG_REORDER_CHARACTERS,                       0x08A7 | 0x10000}, //--
             {Opcode.CMSG_REPAIR_ITEM,                              0x02C1 | 0x10000}, //--
             {Opcode.CMSG_REPOP_REQUEST,                            0x134A | 0x10000}, //--
@@ -618,7 +618,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_REALM_QUERY_RESPONSE,                     0x063E | 0x20000}, //++
             {Opcode.SMSG_RECEIVED_MAIL,                            0x182B | 0x20000}, //--
             {Opcode.SMSG_REDIRECT_CLIENT,                          0x1149 | 0x20000}, //--
-            {Opcode.SMSG_REFORGE_RESULT,                           0x141E | 0x20000}, //--
+            {Opcode.SMSG_REFORGE_RESULT,                           0x141E | 0x20000}, //++
             {Opcode.SMSG_REMOVED_SPELL,                            0x14C3 | 0x20000}, //+-
             {Opcode.SMSG_REQUEST_PVP_REWARDS_RESPONSE,             0x08AA | 0x20000}, //--
             {Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS,             0x009E | 0x20000}, //++ pair 0373
