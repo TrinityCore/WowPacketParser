@@ -274,6 +274,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_UNLEARN_SKILL,                            0x0268 | 0x10000}, //++
             {Opcode.CMSG_UNREGISTER_ALL_ADDON_PREFIXES,            0x029F | 0x10000}, //++
             {Opcode.CMSG_UPDATE_ACCOUNT_DATA,                      0x0068 | 0x10000}, //++
+            {Opcode.CMSG_UPGRADE_ITEM,                             0x1042 | 0x10000}, //++
             {Opcode.CMSG_USE_ITEM,                                 0x1CC1 | 0x10000}, //--
             {Opcode.CMSG_VIOLENCE_LEVEL,                           0x0040 | 0x10000}, //+-
             {Opcode.CMSG_VOID_STORAGE_QUERY,                       0x0140 | 0x10000}, //--
@@ -309,7 +310,6 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_UNK_09FB,                                 0x09FB | 0x10000}, //--
             {Opcode.CMSG_UNK_0A16,                                 0x0A16 | 0x10000}, //++
             {Opcode.CMSG_UNK_0CF0,                                 0x0CF0 | 0x10000}, //++
-            {Opcode.CMSG_UNK_1042,                                 0x1042 | 0x10000}, //++
             {Opcode.CMSG_UNK_10A2,                                 0x10A2 | 0x10000}, //+-
             {Opcode.CMSG_UNK_10A7,                                 0x10A7 | 0x10000}, //+-
             {Opcode.CMSG_UNK_10D3,                                 0x10D3 | 0x10000}, //++
@@ -627,6 +627,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_SELL_ITEM,                                0x048E | 0x20000}, //--
             {Opcode.SMSG_SEND_MAIL_RESULT,                         0x1A9B | 0x20000}, //--
             {Opcode.SMSG_SEND_UNLEARN_SPELLS,                      0x10F1 | 0x20000}, //++
+            {Opcode.SMSG_SEND_ITEM_UPGRADE,                        0x0E33 | 0x20000}, //++
             {Opcode.SMSG_SET_DUNGEON_DIFFICULTY,                   0x1283 | 0x20000}, //--
             {Opcode.SMSG_SET_FACTION_ATWAR,                        0x0C9B | 0x20000}, //--
             {Opcode.SMSG_SET_FACTION_STANDING,                     0x10AA | 0x20000}, //--
@@ -757,7 +758,6 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_UNK_0D52,                                 0x0D52 | 0x20000}, //++
             {Opcode.SMSG_UNK_0E1B,                                 0x0E1B | 0x20000}, //++
             {Opcode.SMSG_UNK_0E2A,                                 0x0E2A | 0x20000}, //++
-            {Opcode.SMSG_UNK_0E33,                                 0x0E33 | 0x20000}, //++
             {Opcode.SMSG_UNK_0E3A,                                 0x0E3A | 0x20000}, //++
             {Opcode.SMSG_UNK_0EAB,                                 0x0EAB | 0x20000}, //++
             {Opcode.SMSG_UNK_0EBA,                                 0x0EBA | 0x20000}, //++

@@ -651,10 +651,66 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadBit("Successful");
         }
 
+        [Parser(Opcode.CMSG_ITEM_UPGRADE)]
+        public static void HandleItemSendUpgrade(Packet packet)
+        {
+            packet.ReadInt32("unk36"); // 36
+            packet.ReadInt32("unk40"); // 40
+            packet.ReadInt32("unk32"); // 32 itemUpgrade.db2  field 3 (0-5)
+
+            var guid = new byte[8];
+            var guid2 = new byte[8];
+
+            guid2[5] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid2, 6);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid2, 5);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid2, 4);
+
+            packet.WriteGuid("Guid", guid);
+            packet.WriteGuid("Guid2", guid2);
+        }
+
         [Parser(Opcode.SMSG_ITEM_UPGRADE_RESULT)]
         public static void HandleItemUpgradeResult(Packet packet)
         {
-            packet.ReadBoolean("Successful");
+            packet.ReadBit("Successful");
+        }
+
+        [Parser(Opcode.SMSG_SEND_ITEM_UPGRADE)]
+        public static void HandleSendItemUpgrade(Packet packet)
+        {
+            var guid = packet.StartBitStream(7, 4, 2, 6, 5, 3, 1, 0);
+            packet.ParseBitStream(guid, 4, 0, 6, 7, 1, 2, 3, 5);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SELL_ITEM)]
