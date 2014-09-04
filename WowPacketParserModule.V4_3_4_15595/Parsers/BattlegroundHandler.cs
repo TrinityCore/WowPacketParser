@@ -10,13 +10,13 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_LIST)]
         public static void HandleBattlefieldListServer434(Packet packet)
         {
-            packet.ReadInt32("Win Conquest Reward"); // Winner Conquest Reward or Random Winner Conquest Reward
-            packet.ReadInt32("Random Win Conquest Reward"); // Winner Conquest Reward or Random Winner Conquest Reward
-            packet.ReadInt32("Random Loss Conquest Reward"); // Loser Honor Reward or Random Loser Honor Reward
+            packet.ReadInt32("Holiday First Win Arena Currency Bonus");
+            packet.ReadInt32("Random First Win Arena Currency Bonus");
+            packet.ReadInt32("Holiday Loss Honor Currency Bonus");
             packet.ReadEntry<Int32>(StoreNameType.Battleground, "BG type");
-            packet.ReadInt32("Loss Conquest Reward"); // Loser Honor Reward or Random Loser Honor Reward
-            packet.ReadInt32("Win Conquest Reward"); // Winner Honor Reward or Random Winner Honor Reward
-            packet.ReadInt32("Random Win Conquest Reward"); // Winner Honor Reward or Random Winner Honor Reward
+            packet.ReadInt32("Random Loss Honor Currency Bonus");
+            packet.ReadInt32("Random Win Honor Currency Bonus");
+            packet.ReadInt32("Holiday Win Honor Currency Bonus");
             packet.ReadByte("Max level");
             packet.ReadByte("Min level");
 
@@ -25,16 +25,16 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             guidBytes[0] = packet.ReadBit();
             guidBytes[1] = packet.ReadBit();
             guidBytes[7] = packet.ReadBit();
-            packet.ReadBit("Unk Bit");
-            packet.ReadBit("Unk Bit");
-            var count = packet.ReadBits("BG Instance count", 24);
+            packet.ReadBit("Has Won Holiday Win");
+            packet.ReadBit("Has Won Random Today");
+            var count = packet.ReadBits("BG Instance count", 24); // Max 64
             guidBytes[6] = packet.ReadBit();
             guidBytes[4] = packet.ReadBit();
             guidBytes[2] = packet.ReadBit();
             guidBytes[3] = packet.ReadBit();
-            packet.ReadBit("Unk Bit");
+            packet.ReadBit("Unk Bit"); // Unk bit 1
             guidBytes[5] = packet.ReadBit();
-            packet.ReadBit("Unk Bit");
+            packet.ReadBit("Trigger PVPQUEUE_ANYWHERE_SHOW");
 
             packet.ReadXORByte(guidBytes, 6);
             packet.ReadXORByte(guidBytes, 1);
@@ -42,7 +42,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadXORByte(guidBytes, 5);
 
             for (var i = 0; i < count; i++)
-                packet.ReadUInt32("Instance ID", i);
+                packet.ReadUInt32("BG Instance ID", i);
 
             packet.ReadXORByte(guidBytes, 0);
             packet.ReadXORByte(guidBytes, 2);
