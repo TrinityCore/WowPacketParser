@@ -302,7 +302,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_BATTLE_PET_PET_UPDATES, 0x041A},
             {Opcode.SMSG_BINDER_CONFIRM, 0x1287},
             {Opcode.SMSG_BINDPOINTUPDATE, 0x0E3B},
-            {Opcode.SMSG_BLACKMARKET_HELLO, 0x00AE},
+            {Opcode.SMSG_BLACK_MARKET_HELLO, 0x00AE},
             {Opcode.SMSG_BUY_FAILED, 0x1563},
             {Opcode.SMSG_BUY_ITEM, 0x101A},
             {Opcode.SMSG_CANCEL_AUTO_REPEAT, 0x1E0F},

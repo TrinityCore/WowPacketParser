@@ -54,9 +54,9 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_BATTLE_PET_SET_FLAGS,                     0x17AC | 0x10000}, //+-
             {Opcode.CMSG_BATTLE_PET_SUMMON_COMPANION,              0x1896 | 0x10000}, //+-
             {Opcode.CMSG_BINDER_ACTIVATE,                          0x1248 | 0x10000}, //+-
-            {Opcode.CMSG_BLACK_MARKET_BID,                         0x12C8 | 0x10000}, //--
-            {Opcode.CMSG_BLACK_MARKET_HELLO,                       0x075A | 0x10000}, //--
-            {Opcode.CMSG_BLACK_MARKET_REQUEST_ITEMS,               0x127A | 0x10000}, //--
+            {Opcode.CMSG_BLACK_MARKET_BID,                         0x12C8 | 0x10000}, //++
+            {Opcode.CMSG_BLACK_MARKET_HELLO,                       0x075A | 0x10000}, //++
+            {Opcode.CMSG_BLACK_MARKET_REQUEST_ITEMS,               0x127A | 0x10000}, //++
             {Opcode.CMSG_BUYBACK_ITEM,                             0x0661 | 0x10000}, //+-
             {Opcode.CMSG_BUY_BANK_SLOT,                            0x12F2 | 0x10000}, //+-
             {Opcode.CMSG_BUY_ITEM,                                 0x02E2 | 0x10000}, //--
@@ -442,8 +442,8 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_BATTLE_PET_UPDATES,                       0x041A | 0x20000}, //+-
             {Opcode.SMSG_BINDER_CONFIRM,                           0x1287 | 0x20000}, //--
             {Opcode.SMSG_BINDPOINTUPDATE,                          0x0E3B | 0x20000}, //++
-            {Opcode.SMSG_BLACKMARKET_HELLO,                        0x00AE | 0x20000}, //--
-            {Opcode.SMSG_BLACKMARKET_REQUEST_ITEMS_RESULT,         0x128B | 0x20000}, //--
+            {Opcode.SMSG_BLACK_MARKET_HELLO,                       0x00AE | 0x20000}, //++
+            {Opcode.SMSG_BLACK_MARKET_REQUEST_ITEMS_RESULT,        0x128B | 0x20000}, //++
             //{Opcode.SMSG_BLACKMARKET_BID_RESULT,                   0x18BA | 0x20000}, //-- bad id
             {Opcode.SMSG_BUY_FAILED,                               0x1563 | 0x20000}, //--
             {Opcode.SMSG_BUY_ITEM,                                 0x101A | 0x20000}, //--

@@ -45,7 +45,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid2", guid2);
 
         }
-        [Parser(Opcode.SMSG_BLACKMARKET_HELLO)]
+        [Parser(Opcode.SMSG_BLACK_MARKET_HELLO)]
         public static void HandleBlackMarketOpenResult(Packet packet)
         {
             var guid2 = new byte[8];
@@ -77,7 +77,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadInt32("Item Id");
             packet.ReadInt32("Int14");
         }
-        [Parser(Opcode.SMSG_BLACKMARKET_REQUEST_ITEMS_RESULT)]
+        [Parser(Opcode.SMSG_BLACK_MARKET_REQUEST_ITEMS_RESULT)]
         public static void HandleBlackMarketItemResult(Packet packet)
         {
             var bit34 = false;
