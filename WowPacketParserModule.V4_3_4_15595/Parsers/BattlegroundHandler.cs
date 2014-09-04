@@ -25,7 +25,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             guidBytes[0] = packet.ReadBit();
             guidBytes[1] = packet.ReadBit();
             guidBytes[7] = packet.ReadBit();
-            packet.ReadBit("Has Won Holiday Win");
+            packet.ReadBit("Has Won Holiday Today");
             packet.ReadBit("Has Won Random Today");
             var count = packet.ReadBits("BG Instance count", 24); // Max 64
             guidBytes[6] = packet.ReadBit();
@@ -98,7 +98,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             guid2[3] = packet.ReadBit();//59
             guid1[2] = packet.ReadBit();//34
             packet.ReadBit("Eligible In Queue");//21
-            packet.ReadBit("Join Failed");//20
+            packet.ReadBit("Join Failed"); // if true, & statuscode != 0 && bg entry exists, display name in error.
             guid2[2] = packet.ReadBit();//58
             guid1[1] = packet.ReadBit();//33
 
@@ -145,7 +145,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadTime("Time");
             packet.ReadInt32("QueueSlot");
             packet.ReadByte("Min Level");
-            packet.ReadInt32("Start Time");
+            packet.ReadInt32("Battlefield join time");
 
             packet.ReadXORByte(guid1, 1);
             packet.ReadXORByte(guid1, 5);
