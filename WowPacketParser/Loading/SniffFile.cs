@@ -396,7 +396,7 @@ namespace WowPacketParser.Loading
             else
                 sqlFileName = Settings.SQLFileName;
 
-            if (String.IsNullOrWhiteSpace(Settings.SQLFileName))
+            if (!String.IsNullOrWhiteSpace(sqlFileName))
             {
                 Builder.DumpSQL(string.Format("{0}: Dumping sql", _logPrefix), sqlFileName, GetHeader(_originalFileName));
                 Storage.ClearContainers();
