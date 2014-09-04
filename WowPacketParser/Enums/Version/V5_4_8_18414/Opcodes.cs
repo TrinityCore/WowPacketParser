@@ -54,9 +54,9 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_BATTLE_PET_SET_FLAGS,                     0x17AC | 0x10000}, //+-
             {Opcode.CMSG_BATTLE_PET_SUMMON_COMPANION,              0x1896 | 0x10000}, //+-
             {Opcode.CMSG_BINDER_ACTIVATE,                          0x1248 | 0x10000}, //+-
-            {Opcode.CMSG_BLACK_MARKET_BID,                         0x12C8 | 0x10000}, //--
-            {Opcode.CMSG_BLACK_MARKET_HELLO,                       0x075A | 0x10000}, //--
-            {Opcode.CMSG_BLACK_MARKET_REQUEST_ITEMS,               0x127A | 0x10000}, //--
+            {Opcode.CMSG_BLACK_MARKET_BID,                         0x12C8 | 0x10000}, //++
+            {Opcode.CMSG_BLACK_MARKET_HELLO,                       0x075A | 0x10000}, //++
+            {Opcode.CMSG_BLACK_MARKET_REQUEST_ITEMS,               0x127A | 0x10000}, //++
             {Opcode.CMSG_BUYBACK_ITEM,                             0x0661 | 0x10000}, //+-
             {Opcode.CMSG_BUY_BANK_SLOT,                            0x12F2 | 0x10000}, //+-
             {Opcode.CMSG_BUY_ITEM,                                 0x02E2 | 0x10000}, //--
@@ -274,6 +274,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_UNLEARN_SKILL,                            0x0268 | 0x10000}, //++
             {Opcode.CMSG_UNREGISTER_ALL_ADDON_PREFIXES,            0x029F | 0x10000}, //++
             {Opcode.CMSG_UPDATE_ACCOUNT_DATA,                      0x0068 | 0x10000}, //++
+            {Opcode.CMSG_UPGRADE_ITEM,                             0x1042 | 0x10000}, //++
             {Opcode.CMSG_USE_ITEM,                                 0x1CC1 | 0x10000}, //--
             {Opcode.CMSG_VIOLENCE_LEVEL,                           0x0040 | 0x10000}, //+-
             {Opcode.CMSG_VOID_STORAGE_QUERY,                       0x0140 | 0x10000}, //--
@@ -309,7 +310,6 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_UNK_09FB,                                 0x09FB | 0x10000}, //--
             {Opcode.CMSG_UNK_0A16,                                 0x0A16 | 0x10000}, //++
             {Opcode.CMSG_UNK_0CF0,                                 0x0CF0 | 0x10000}, //++
-            {Opcode.CMSG_UNK_1042,                                 0x1042 | 0x10000}, //++
             {Opcode.CMSG_UNK_10A2,                                 0x10A2 | 0x10000}, //+-
             {Opcode.CMSG_UNK_10A7,                                 0x10A7 | 0x10000}, //+-
             {Opcode.CMSG_UNK_10D3,                                 0x10D3 | 0x10000}, //++
@@ -442,8 +442,8 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_BATTLE_PET_UPDATES,                       0x041A | 0x20000}, //+-
             {Opcode.SMSG_BINDER_CONFIRM,                           0x1287 | 0x20000}, //--
             {Opcode.SMSG_BINDPOINTUPDATE,                          0x0E3B | 0x20000}, //++
-            {Opcode.SMSG_BLACKMARKET_HELLO,                        0x00AE | 0x20000}, //--
-            {Opcode.SMSG_BLACKMARKET_REQUEST_ITEMS_RESULT,         0x128B | 0x20000}, //--
+            {Opcode.SMSG_BLACK_MARKET_HELLO,                       0x00AE | 0x20000}, //++
+            {Opcode.SMSG_BLACK_MARKET_REQUEST_ITEMS_RESULT,        0x128B | 0x20000}, //++
             //{Opcode.SMSG_BLACKMARKET_BID_RESULT,                   0x18BA | 0x20000}, //-- bad id
             {Opcode.SMSG_BUY_FAILED,                               0x1563 | 0x20000}, //--
             {Opcode.SMSG_BUY_ITEM,                                 0x101A | 0x20000}, //--
@@ -530,6 +530,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE,                 0x10A2 | 0x20000}, //++
             {Opcode.SMSG_ITEM_PUSH_RESULT,                         0x0E0A | 0x20000}, //++
             {Opcode.SMSG_ITEM_TIME_UPDATE,                         0x18C1 | 0x20000}, //--
+            {Opcode.SMSG_ITEM_UPGRADE_RESULT,                      0x0222 | 0x20000}, //++
             {Opcode.SMSG_LEARNED_SPELL,                            0x129A | 0x20000}, //++
             {Opcode.SMSG_LEVELUP_INFO,                             0x1961 | 0x20000}, //++
             {Opcode.SMSG_LFG_PLAYER_INFO,                          0x1861 | 0x20000}, //++
@@ -626,6 +627,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_SELL_ITEM,                                0x048E | 0x20000}, //--
             {Opcode.SMSG_SEND_MAIL_RESULT,                         0x1A9B | 0x20000}, //--
             {Opcode.SMSG_SEND_UNLEARN_SPELLS,                      0x10F1 | 0x20000}, //++
+            {Opcode.SMSG_SEND_ITEM_UPGRADE,                        0x0E33 | 0x20000}, //++
             {Opcode.SMSG_SET_DUNGEON_DIFFICULTY,                   0x1283 | 0x20000}, //--
             {Opcode.SMSG_SET_FACTION_ATWAR,                        0x0C9B | 0x20000}, //--
             {Opcode.SMSG_SET_FACTION_STANDING,                     0x10AA | 0x20000}, //--
@@ -710,7 +712,6 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_UNK_01E1,                                 0x01E1 | 0x20000}, //++
             {Opcode.SMSG_UNK_01E2,                                 0x01E2 | 0x20000}, //++
             {Opcode.SMSG_UNK_021A,                                 0x021A | 0x20000}, //++
-            {Opcode.SMSG_UNK_0222,                                 0x0222 | 0x20000}, //++
             {Opcode.SMSG_UNK_023B,                                 0x023B | 0x20000}, //++ SMSG_SPLINE_MOVE_SET_???_SPEED
             {Opcode.SMSG_UNK_0250,                                 0x0250 | 0x20000}, //++
             {Opcode.SMSG_UNK_0251,                                 0x0251 | 0x20000}, //++ PENDING_STOP
@@ -757,7 +758,6 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_UNK_0D52,                                 0x0D52 | 0x20000}, //++
             {Opcode.SMSG_UNK_0E1B,                                 0x0E1B | 0x20000}, //++
             {Opcode.SMSG_UNK_0E2A,                                 0x0E2A | 0x20000}, //++
-            {Opcode.SMSG_UNK_0E33,                                 0x0E33 | 0x20000}, //++
             {Opcode.SMSG_UNK_0E3A,                                 0x0E3A | 0x20000}, //++
             {Opcode.SMSG_UNK_0EAB,                                 0x0EAB | 0x20000}, //++
             {Opcode.SMSG_UNK_0EBA,                                 0x0EBA | 0x20000}, //++
