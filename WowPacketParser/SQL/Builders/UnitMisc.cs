@@ -651,6 +651,9 @@ namespace WowPacketParser.SQL.Builders
                 template.UnitFlag &= ~(uint)UnitFlags.PlayerControlled;
                 template.UnitFlag &= ~(uint)UnitFlags.Silenced;
                 template.UnitFlag &= ~(uint)UnitFlags.PossessedByPlayer;
+                template.DynamicFlag &= ~(uint)UnitDynamicFlags.Lootable;
+                template.DynamicFlag &= ~(uint)UnitDynamicFlags.TappedByPlayer;
+                template.DynamicFlag &= ~(uint)UnitDynamicFlags.TappedByAllThreatList;
 
                 templates.Add(unit.Key.GetEntry(), template);
             }
