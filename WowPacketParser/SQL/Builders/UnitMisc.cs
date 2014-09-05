@@ -652,6 +652,7 @@ namespace WowPacketParser.SQL.Builders
                 template.UnitFlag &= ~(uint)UnitFlags.Silenced;
                 template.UnitFlag &= ~(uint)UnitFlags.PossessedByPlayer;
                 template.DynamicFlag &= ~(uint)UnitDynamicFlags.Lootable;
+                template.DynamicFlag &= ~(uint)UnitDynamicFlags.Tapped;
                 template.DynamicFlag &= ~(uint)UnitDynamicFlags.TappedByPlayer;
                 template.DynamicFlag &= ~(uint)UnitDynamicFlags.TappedByAllThreatList;
 
