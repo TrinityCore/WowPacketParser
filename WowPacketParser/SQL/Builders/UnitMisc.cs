@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -766,6 +767,9 @@ namespace WowPacketParser.SQL.Builders
 
             const string tableName = "creature_text";
 
+            var BroadcastTextStoresMale = SQLDatabase.BroadcastTextStores.GroupBy(blub => blub.Item2.maleText).ToDictionary(group => group.Key, group => group.ToList());
+            var BroadcastTextStoresFemale = SQLDatabase.BroadcastTextStores.GroupBy(blub => blub.Item2.femaleText).ToDictionary(group => group.Key, group => group.ToList());
+
             var rows = new List<QueryBuilder.SQLInsertRow>();
             foreach (var text in Storage.CreatureTexts)
             {
@@ -783,23 +787,24 @@ namespace WowPacketParser.SQL.Builders
                     row.AddValue("emote", textValue.Item1.Emote);
                     row.AddValue("duration", 0);
                     row.AddValue("sound", textValue.Item1.Sound);
-                    if (Settings.DevMode)
-                    {
-                        var bct = (LinkedList<string>)SQLConnector.BroadcastTextBuilder(textValue.Item1.Text);
 
-                        if (bct.Count != 0)
-                        {
-                            foreach (var broadcastTextId in bct)
+                    if (SQLDatabase.BroadcastTextStores != null)
+                    {
+                        List<Tuple<uint, BroadcastText>> textList;
+                        if (BroadcastTextStoresMale.TryGetValue(textValue.Item1.Text, out textList) ||
+                            BroadcastTextStoresFemale.TryGetValue(textValue.Item1.Text, out textList))
+                            foreach (var broadcastTextId in textList)
                             {
                                 if (!String.IsNullOrWhiteSpace(textValue.Item1.BroadcastTextID))
-                                    textValue.Item1.BroadcastTextID += " - " + broadcastTextId;
+                                    textValue.Item1.BroadcastTextID += " - " + broadcastTextId.Item1.ToString();
                                 else
-                                    textValue.Item1.BroadcastTextID = broadcastTextId;
+                                    textValue.Item1.BroadcastTextID = broadcastTextId.Item1.ToString();
                             }
-                        }
+
                         row.AddValue("BroadcastTextID", textValue.Item1.BroadcastTextID);
 
                     }
+
                     row.AddValue("comment", textValue.Item1.Comment);
 
                     rows.Add(row);

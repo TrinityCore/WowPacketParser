@@ -9,9 +9,6 @@ namespace WowPacketParser.Store.Objects
 
         public uint[] EmoteDelay;
 
-        public string MaleText = "";
-        public string FemaleText = "";
-
         public void ConvertToDBStruct()
         {
             // Seriously...
@@ -23,9 +20,6 @@ namespace WowPacketParser.Store.Objects
             emoteDelay0 = EmoteDelay[0];
             emoteDelay1 = EmoteDelay[1];
             emoteDelay2 = EmoteDelay[2];
-
-            maleText = MaleText;
-            femaleText = FemaleText;
         }
 
         // ReSharper disable InconsistentNaming
