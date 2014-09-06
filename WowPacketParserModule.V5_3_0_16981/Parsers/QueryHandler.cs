@@ -218,9 +218,9 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         var Id = db2File.ReadEntry("Broadcast Text Entry");
                         broadcastText.language = db2File.ReadUInt32("Language");
                         if (db2File.ReadUInt16() > 0)
-                            broadcastText.maleText = db2File.ReadCString("Male Text");
+                            broadcastText.MaleText = db2File.ReadCString("Male Text");
                         if (db2File.ReadUInt16() > 0)
-                            broadcastText.femaleText = db2File.ReadCString("Female Text");
+                            broadcastText.FemaleText = db2File.ReadCString("Female Text");
 
                         broadcastText.EmoteID = new uint[3];
                         broadcastText.EmoteDelay = new uint[3];

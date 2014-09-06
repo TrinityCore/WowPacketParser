@@ -26,9 +26,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Language")]
         public uint language;
         [DBFieldName("MaleText")]
-        public string maleText;
+        public string MaleText;
         [DBFieldName("FemaleText")]
-        public string femaleText;
+        public string FemaleText;
         [DBFieldName("EmoteID0")]
         public uint emoteID0;
         [DBFieldName("EmoteID1")]

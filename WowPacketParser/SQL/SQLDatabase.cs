@@ -62,8 +62,8 @@ namespace WowPacketParser.SQL
                     uint Id = Convert.ToUInt32(reader["Id"]);
 
                     broadcastText.language = Convert.ToUInt32(reader["Language"]);
-                    broadcastText.maleText = Convert.ToString(reader["MaleText"]);
-                    broadcastText.femaleText = Convert.ToString(reader["FemaleText"]);
+                    broadcastText.MaleText = Convert.ToString(reader["MaleText"]);
+                    broadcastText.FemaleText = Convert.ToString(reader["FemaleText"]);
 
                     broadcastText.emoteID0 = Convert.ToUInt32(reader["EmoteID0"]);
                     broadcastText.emoteID1 = Convert.ToUInt32(reader["EmoteID1"]);

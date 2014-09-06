@@ -767,8 +767,8 @@ namespace WowPacketParser.SQL.Builders
 
             const string tableName = "creature_text";
 
-            var BroadcastTextStoresMale = SQLDatabase.BroadcastTextStores.GroupBy(blub => blub.Item2.maleText).ToDictionary(group => group.Key, group => group.ToList());
-            var BroadcastTextStoresFemale = SQLDatabase.BroadcastTextStores.GroupBy(blub => blub.Item2.femaleText).ToDictionary(group => group.Key, group => group.ToList());
+            var BroadcastTextStoresMale = SQLDatabase.BroadcastTextStores.GroupBy(blub => blub.Item2.MaleText).ToDictionary(group => group.Key, group => group.ToList());
+            var BroadcastTextStoresFemale = SQLDatabase.BroadcastTextStores.GroupBy(blub => blub.Item2.FemaleText).ToDictionary(group => group.Key, group => group.ToList());
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
             foreach (var text in Storage.CreatureTexts)
