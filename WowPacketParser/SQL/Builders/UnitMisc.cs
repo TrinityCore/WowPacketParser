@@ -604,6 +604,48 @@ namespace WowPacketParser.SQL.Builders
             return result.Count == 0 ? null : result;
         }
 
+        private static readonly HashSet<string> _professionTrainers = new HashSet<string>
+        {
+            "Alchemy Trainer", "Armorsmith Trainer", "Armorsmithing Trainer", "Blacksmith Trainer", 
+            "Blacksmithing Trainer", "Blacksmithing Trainer & Supplies", "Cold Weather Flying Trainer", 
+            "Cooking Trainer", "Cooking Trainer & Supplies", "Dragonscale Leatherworking Trainer", 
+            "Elemental Leatherworking Trainer", "Enchanting Trainer", "Engineering Trainer", 
+            "First Aid Trainer", "Fishing Trainer", "Fishing Trainer & Supplies", 
+            "Gnome Engineering Trainer", "Gnomish Engineering Trainer", "Goblin Engineering Trainer", 
+            "Grand Master Alchemy Trainer", "Grand Master Blacksmithing Trainer", 
+            "Grand Master Cooking Trainer", "Grand Master Enchanting Trainer", 
+            "Grand Master Engineering Trainer", "Grand Master First Aid Trainer", 
+            "Grand Master Fishing Trainer", "Grand Master Fishing Trainer & Supplies", 
+            "Grand Master Herbalism Trainer", "Grand Master Inscription Trainer", 
+            "Grand Master Jewelcrafting Trainer", "Grand Master Leatherworking Trainer", 
+            "Grand Master Mining Trainer", "Grand Master Skinning Trainer", 
+            "Grand Master Tailoring Trainer", "Herbalism Trainer", 
+            "Herbalism Trainer & Supplies", "Inscription Trainer", 
+            "Jewelcrafting Trainer", "Leatherworking Trainer", 
+            "Master Alchemy Trainer", "Master Blacksmithing Trainer", 
+            "Master Enchanting Trainer", "Master Engineering Trainer", 
+            "Master Fishing Trainer", "Master Herbalism Trainer", 
+            "Master Inscription Trainer", "Master Jewelcrafting Trainer", 
+            "Master Leatherworking Trainer", "Master Mining Trainer", 
+            "Master Skinning Trainer", "Master Tailoring Trainer", 
+            "Mining Trainer", "Skinning Trainer", "Tailor Trainer", "Tailoring Trainer", 
+            "Tribal Leatherworking Trainer", "Weaponsmith Trainer", "Weaponsmithing Trainer", 
+            "Horse Riding Trainer", "Ram Riding Trainer", "Raptor Riding Trainer", 
+            "Tiger Riding Trainer", "Wolf Riding Trainer", "Mechastrider Riding Trainer", 
+            "Riding Trainer", "Undead Horse Riding Trainer"
+        };
+
+        private static readonly HashSet<string> _classTrainers = new HashSet<string>
+        {
+            "Druid Trainer", "Portal Trainer", "Portal: Darnassus Trainer", 
+            "Portal: Ironforge Trainer", "Portal: Orgrimmar Trainer", 
+            "Portal: Stormwind Trainer", "Portal: Thunder Bluff Trainer", 
+            "Portal: Undercity Trainer", "Deathknight Trainer", 
+            "Hunter Trainer", "Mage Trainer", "Paladin Trainer", 
+            "Priest Trainer", "Shaman Trainer", "Warlock Trainer", 
+            "Warrior Trainer"
+        };
+
         // Non-WDB data but nevertheless data that should be saved to creature_template
         public static string NpcTemplateNonWDB(Dictionary<WowGuid, Unit> units)
         {
@@ -656,6 +698,25 @@ namespace WowPacketParser.SQL.Builders
                 template.DynamicFlag &= ~(uint)UnitDynamicFlags.Tapped;
                 template.DynamicFlag &= ~(uint)UnitDynamicFlags.TappedByPlayer;
                 template.DynamicFlag &= ~(uint)UnitDynamicFlags.TappedByAllThreatList;
+
+                // has trainer flag but doesn't have prof nor class trainer flag
+                if ((template.NpcFlag & (uint) NPCFlags.Trainer) != 0 &&
+                    ((template.NpcFlag & (uint) NPCFlags.ProfessionTrainer) == 0 ||
+                     (template.NpcFlag & (uint) NPCFlags.ClassTrainer) == 0))
+                {
+                    var name = StoreGetters.GetName(StoreNameType.Unit, (int) unit.Key.GetEntry(), false);
+                    var firstIndex = name.LastIndexOf('<');
+                    var lastIndex = name.LastIndexOf('>');
+                    if (firstIndex != -1 && lastIndex != -1)
+                    {
+                        var subname = name.Substring(firstIndex + 1, lastIndex - firstIndex - 1);
+
+                        if (_professionTrainers.Contains(subname))
+                            template.NpcFlag |= (uint) NPCFlags.ProfessionTrainer;
+                        else if (_classTrainers.Contains(subname))
+                            template.NpcFlag |= (uint) NPCFlags.ClassTrainer;
+                    }
+                }
 
                 templates.Add(unit.Key.GetEntry(), template);
             }
