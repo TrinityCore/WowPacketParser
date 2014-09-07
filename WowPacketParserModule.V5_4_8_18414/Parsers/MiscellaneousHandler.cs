@@ -504,6 +504,13 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadToEnd();
         }
 
+        [Parser(Opcode.SMSG_SERVER_MESSAGE)]
+        public static void HandleServerMessage(Packet packet)
+        {
+            packet.ReadUInt32("Server Message DBC Id");
+            packet.ReadCString("Message");
+        }
+
         [Parser(Opcode.SMSG_SET_FACTION_ATWAR)]
         public static void HandleSetFactionAtWar(Packet packet)
         {

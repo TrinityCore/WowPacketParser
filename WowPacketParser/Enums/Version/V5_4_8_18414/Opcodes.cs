@@ -628,6 +628,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_SEND_MAIL_RESULT,                         0x1A9B | 0x20000}, //--
             {Opcode.SMSG_SEND_UNLEARN_SPELLS,                      0x10F1 | 0x20000}, //++
             {Opcode.SMSG_SEND_ITEM_UPGRADE,                        0x0E33 | 0x20000}, //++
+            {Opcode.SMSG_SERVER_MESSAGE,                           0x0302 | 0x20000}, //--
             {Opcode.SMSG_SET_DUNGEON_DIFFICULTY,                   0x1283 | 0x20000}, //--
             {Opcode.SMSG_SET_FACTION_ATWAR,                        0x0C9B | 0x20000}, //--
             {Opcode.SMSG_SET_FACTION_STANDING,                     0x10AA | 0x20000}, //--
@@ -641,6 +642,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_SET_TIMEZONE_INFORMATION,                 0x19C1 | 0x20000}, //++
             {Opcode.SMSG_SET_VIGNETTE,                             0x0CBE | 0x20000}, //++
             {Opcode.SMSG_SHOW_BANK,                                0x0007 | 0x20000}, //++
+            {Opcode.SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI,    0x15E0 | 0x20000}, //--
             {Opcode.SMSG_SHOWTAXINODES,                            0x1E1A | 0x20000}, //++
             {Opcode.SMSG_SPELL_CATEGORY_COOLDOWN,                  0x01DB | 0x20000}, //++
             {Opcode.SMSG_SPELL_COOLDOWN,                           0x0452 | 0x20000}, //++
