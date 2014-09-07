@@ -191,7 +191,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         [Parser(Opcode.CMSG_GUILD_ROSTER)]
         public static void HandleGuildRosterRequest434(Packet packet)
         {
-            // Seems to have some previous formula, processed GUIDS does not fit any know guid
+            // The client does not write these 2 guids properly.
             var guid1 = new byte[8];
             var guid2 = new byte[8];
             guid2[2] = packet.ReadBit();
@@ -227,8 +227,8 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadXORByte(guid2, 3);
             packet.ReadXORByte(guid2, 1);
             packet.ReadXORByte(guid1, 6);
-            packet.WriteGuid("Guid1", guid1);
-            packet.WriteGuid("Guid2", guid2);
+            // packet.WriteGuid("Guid1", guid1);
+            // packet.WriteGuid("Guid2", guid2);
         }
 
         [Parser(Opcode.SMSG_GUILD_ROSTER)]
@@ -806,6 +806,286 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.WriteGuid("Criteria GUID", guid[i], i);
                 packet.AddValue("Criteria counter", BitConverter.ToUInt64(counter[i], 0), i);
             }
+        }
+
+        [Parser(Opcode.CMSG_QUERY_GUILD_MEMBERS_FOR_RECIPE)]
+        public static void HandleQueryGuildMembersForRecipe(Packet packet)
+        {
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadUInt32("Skill ID");
+            packet.ReadUInt32("Skill Value");
+
+            var guid = packet.StartBitStream(4, 1, 0, 3, 6, 7, 5, 2);
+            packet.ParseBitStream(guid, 1, 6, 5, 0, 3, 7, 2, 4);
+            packet.WriteGuid("Guild GUID", guid);
+        }
+
+        [Parser(Opcode.SMSG_GUILD_MEMBERS_FOR_RECIPE)]
+        public static void HandleGuildMembersForRecipe(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 26);
+            var guid = new byte[count][];
+
+            for (int i = 0; i < count; ++i)
+                guid[i] = packet.StartBitStream(2, 3, 1, 6, 0, 7, 4, 5);
+
+            for (int i = 0; i < count; ++i)
+            {
+                packet.ParseBitStream(guid[i], 1, 5, 6, 7, 2, 3, 0, 4);
+                packet.WriteGuid("Player GUID", guid[i], i);
+            }
+
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadUInt32("Skill ID");
+        }
+
+        [Parser(Opcode.CMSG_QUERY_GUILD_MEMBER_RECIPES)]
+        public static void HandleQueryGuildMemberRecipes(Packet packet)
+        {
+            var guildGuid = new byte[8];
+            var guid = new byte[8];
+
+            packet.ReadInt32("Skill ID");
+
+            guid[2] = packet.ReadBit();
+            guildGuid[1] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guildGuid[0] = packet.ReadBit();
+            guildGuid[6] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guildGuid[4] = packet.ReadBit();
+            guildGuid[3] = packet.ReadBit();
+            guildGuid[7] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guildGuid[5] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guildGuid[2] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guildGuid, 4);
+            packet.ReadXORByte(guildGuid, 2);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guildGuid, 7);
+            packet.ReadXORByte(guildGuid, 3);
+            packet.ReadXORByte(guildGuid, 1);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guildGuid, 0);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guildGuid, 5);
+            packet.ReadXORByte(guildGuid, 6);
+            packet.ReadXORByte(guid, 5);
+
+            packet.WriteGuid("Guild GUID", guildGuid);
+            packet.WriteGuid("Player GUID", guid);
+        }
+
+        [Parser(Opcode.SMSG_GUILD_MEMBER_RECIPES)]
+        public static void HandleGuildMemberRecipes(Packet packet)
+        {
+            var guid = packet.StartBitStream(0, 3, 7, 4, 6, 2, 1, 5);
+
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 5);
+
+            packet.ReadInt32("Skill Value");
+            packet.ReadBytes("Skill Bits", 300);
+
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 2);
+
+            packet.ReadInt32("Skill ID");
+            packet.ReadInt32("Tradeskill Level");
+
+            packet.WriteGuid("Player GUID", guid);
+        }
+
+        [Parser(Opcode.CMSG_QUERY_GUILD_RECIPES)]
+        public static void HandleQueryGuildRecipes(Packet packet)
+        {
+            var guid = packet.StartBitStream(5, 6, 1, 4, 2, 7, 0, 3);
+            packet.ParseBitStream(guid, 3, 1, 0, 5, 4, 2, 6, 7);
+            packet.WriteGuid("Guild GUID", guid);
+        }
+
+        [Parser(Opcode.SMSG_GUILD_RECIPES)]
+        public static void HandleGuildRecipes(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 16);
+
+            for (int i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("Skill Id", i);
+                packet.ReadBytes("Skill Bits", 300, i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_GUILD_CHALLENGE_UPDATED)]
+        public static void HandleGuildChallengeUpdated(Packet packet)
+        {
+            for (int i = 0; i < 4; ++i)
+                packet.ReadInt32("Guild Experience Reward", i);
+
+            for (int i = 0; i < 4; ++i)
+                packet.ReadInt32("Completion Gold Reward", i);
+
+            for (int i = 0; i < 4; ++i)
+                packet.ReadInt32("Total Count", i);
+
+            for (int i = 0; i < 4; ++i)
+                packet.ReadInt32("Gold Reward Unk 2", i); // requires perk Cash Flow?
+
+            for (int i = 0; i < 4; ++i)
+                packet.ReadInt32("Current Count", i);
+        }
+
+        [Parser(Opcode.SMSG_GUILD_CHALLENGE_COMPLETED)]
+        public static void HandleGuildChallengeCompleted(Packet packet)
+        {
+            packet.ReadInt32("Index"); // not confirmed
+            packet.ReadInt32("Gold Reward");
+            packet.ReadInt32("Current Count");
+            packet.ReadInt32("Guild Experience Reward");
+            packet.ReadInt32("Total Count");
+        }
+
+        [Parser(Opcode.SMSG_GUILD_REPUTATION_REACTION_CHANGED)]
+        public static void HandleGuildReputationReactionChanged(Packet packet)
+        {
+            var guid = packet.StartBitStream(1, 6, 2, 4, 0, 3, 7, 5);
+            packet.ParseBitStream(guid, 4, 6, 5, 7, 2, 0, 3, 1);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.CMSG_GUILD_ADD_RANK)]
+        public static void HandleGuildAddRank(Packet packet)
+        {
+            packet.ReadUInt32("Rank ID");
+            var count = packet.ReadBits(7);
+            packet.ReadWoWString("Name", count);
+        }
+
+        [Parser(Opcode.CMSG_GUILD_ACHIEVEMENT_MEMBERS)]
+        public static void HandleGuildAchievementMembers(Packet packet)
+        {
+            var guid = new byte[8];
+            var guid2 = new byte[8];
+
+            packet.ReadInt32("Achievement Id");
+
+            guid[0] = packet.ReadBit();
+            guid2[5] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid2, 5);
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid2, 4);
+            packet.ReadXORByte(guid2, 6);
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 6);
+
+            packet.WriteGuid("Guild Guid", guid);
+            packet.WriteGuid("Player Guid", guid2);
+
+        }
+
+        [Parser(Opcode.SMSG_GUILD_ACHIEVEMENT_MEMBERS)]
+        public static void HandleGuildAchievementMembersResponse(Packet packet)
+        {
+            var guid = new byte[8];
+
+
+            guid[3] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+
+            var count = packet.ReadBits("Player Count", 26);
+            var guid2 = new byte[count][];
+            for (var i = 0; i < count; i++)
+                guid2[i] = packet.StartBitStream(3, 1, 4, 5, 7, 0, 6, 2);
+
+            guid[2] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+
+            packet.ReadXORByte(guid, 5);
+
+            for (var i = 0; i < count; i++)
+            {
+                packet.ParseBitStream(guid2[i], 1, 5, 7, 0, 6, 4, 3, 2);
+                packet.WriteGuid("Player Guid", guid2[i], i);
+            }
+
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 0);
+
+            packet.ReadInt32("Achievement Id");
+
+            packet.ReadXORByte(guid, 1);
+
+            packet.WriteGuid("Guild Guid", guid);
+
+        }
+
+        [Parser(Opcode.SMSG_GUILD_ACHIEVEMENT_EARNED)]
+        public static void HandleGuildAchievementEarned(Packet packet)
+        {
+            var guid = packet.StartBitStream(3, 1, 0, 7, 4, 6, 2, 5);
+
+            packet.ReadXORByte(guid, 2);
+
+            packet.ReadPackedTime("Time");
+
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 3);
+
+            packet.ReadInt32("Achievement Id");
+
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 6);
+
+            packet.WriteGuid("Guild Guid", guid);
         }
     }
 }
