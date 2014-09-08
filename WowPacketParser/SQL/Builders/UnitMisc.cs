@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using MySql.Data.MySqlClient;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
@@ -828,8 +826,8 @@ namespace WowPacketParser.SQL.Builders
 
             const string tableName = "creature_text";
 
-            var BroadcastTextStoresMale = SQLDatabase.BroadcastTextStores.GroupBy(blub => blub.Item2.MaleText).ToDictionary(group => group.Key, group => group.ToList());
-            var BroadcastTextStoresFemale = SQLDatabase.BroadcastTextStores.GroupBy(blub => blub.Item2.FemaleText).ToDictionary(group => group.Key, group => group.ToList());
+            var broadcastTextStoresMale = SQLDatabase.BroadcastTextStores.GroupBy(blub => blub.Item2.MaleText).ToDictionary(group => group.Key, group => group.ToList());
+            var broadcastTextStoresFemale = SQLDatabase.BroadcastTextStores.GroupBy(blub => blub.Item2.FemaleText).ToDictionary(group => group.Key, group => group.ToList());
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
             foreach (var text in Storage.CreatureTexts)
@@ -852,8 +850,8 @@ namespace WowPacketParser.SQL.Builders
                     if (SQLDatabase.BroadcastTextStores != null)
                     {
                         List<Tuple<uint, BroadcastText>> textList;
-                        if (BroadcastTextStoresMale.TryGetValue(textValue.Item1.Text, out textList) ||
-                            BroadcastTextStoresFemale.TryGetValue(textValue.Item1.Text, out textList))
+                        if (broadcastTextStoresMale.TryGetValue(textValue.Item1.Text, out textList) ||
+                            broadcastTextStoresFemale.TryGetValue(textValue.Item1.Text, out textList))
                             foreach (var broadcastTextId in textList)
                             {
                                 if (!String.IsNullOrWhiteSpace(textValue.Item1.BroadcastTextID))
