@@ -146,7 +146,8 @@ namespace WowPacketParser.SQL.Builders
 
                 return SQLUtil.CompareDicts(Storage.NpcTexts, templatesDb, StoreNameType.NpcText, "ID");
             }
-            else if (!Storage.NpcTextsMop.IsEmpty())
+            
+            if (!Storage.NpcTextsMop.IsEmpty())
             {
 
                 if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_text))
@@ -160,8 +161,8 @@ namespace WowPacketParser.SQL.Builders
 
                 return SQLUtil.CompareDicts(Storage.NpcTextsMop, templatesDb, StoreNameType.NpcText, "ID");
             }
-            else
-                return String.Empty;
+
+            return String.Empty;
         }
     }
 }

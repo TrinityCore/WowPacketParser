@@ -183,12 +183,18 @@ namespace WowPacketParser.Misc
             var str1 = o1 as string;
             var str2 = o2 as string;
 
+            if (str1 != null)
+                str1 = str1.TrimEnd('\r', '\n', ' ');
+
+            if (str2 != null)
+                str2 = str2.TrimEnd('\r', '\n', ' ');
+
             if (str1 != null && str2 == null)
                 return str1 == Convert.ToString(o2);
             if (str1 == null && str2 != null)
                 return str2 == Convert.ToString(o1);
             if (str1 != null)
-                return str1.Equals(o2);
+                return str1 == str2;
 
             // this still works if objects are booleans or enums
             return Convert.ToInt64(o1) == Convert.ToInt64(o2);
