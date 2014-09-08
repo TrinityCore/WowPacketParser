@@ -244,7 +244,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_SET_PLAYER_DECLINED_NAMES,                0x09E2 | 0x10000}, //++
             {Opcode.CMSG_SET_PRIMARY_TALENT_TREE,                  0x06C6 | 0x10000}, //+-
             {Opcode.CMSG_SET_PVP,                                  0x02C5 | 0x10000}, //--
-            {Opcode.CMSG_SET_LOOT_SPECIALIZATION,                  0x1260 | 0x10000}, //--
+            {Opcode.CMSG_SELECT_LOOT_SPEC,                         0x1260 | 0x10000}, //--
             {Opcode.CMSG_SET_RAID_DIFFICULTY,                      0x1093 | 0x10000}, //--
             {Opcode.CMSG_SET_SELECTION,                            0x0740 | 0x10000}, //++
             {Opcode.CMSG_SET_TAXI_BENCHMARK_MODE,                  0x0762 | 0x10000}, //--

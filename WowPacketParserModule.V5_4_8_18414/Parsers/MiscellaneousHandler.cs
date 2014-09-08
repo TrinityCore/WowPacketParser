@@ -167,8 +167,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadBoolean("PvP");
         }
 
-        [Parser(Opcode.CMSG_SET_LOOT_SPECIALIZATION)]
-        public static void HandleSetLootSpecialization(Packet packet)
+        [Parser(Opcode.CMSG_SELECT_LOOT_SPEC)]
+        public static void HandleSelectLootSpec(Packet packet)
         {
             packet.ReadInt32("SpecializationID"); 
             // 0 Default by spec
