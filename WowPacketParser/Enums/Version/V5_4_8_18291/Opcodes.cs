@@ -477,7 +477,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_SHOW_BANK, 0x0007},
             {Opcode.SMSG_SPELLDISPELLOG, 0x0DF9},
             {Opcode.SMSG_SPELLENERGIZELOG, 0x0D79 | 0x20000},
-            {Opcode.SMSG_SPELLLOGEXECUTE, 0x00D8},
+            {Opcode.SMSG_SPELLLOGEXECUTE, 0x043E},
             {Opcode.SMSG_SPELLHEALLOG, 0x09FB | 0x20000},
             {Opcode.SMSG_SPELLNONMELEEDAMAGELOG, 0x1450 | 0x20000},
             {Opcode.SMSG_SPELL_CATEGORY_COOLDOWN, 0x01DB},
