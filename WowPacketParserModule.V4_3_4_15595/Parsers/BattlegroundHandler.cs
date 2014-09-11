@@ -571,6 +571,19 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadWoWString("Team Name", teamLength);
         }
 
+        [Parser(Opcode.CMSG_ARENA_TEAM_CREATE)]
+        public static void HandleArenaTeamCreate434(Packet packet)
+        {
+            packet.ReadUInt32("Slot");
+            packet.ReadUInt32("Icon Color");
+            packet.ReadUInt32("Border Color");
+            packet.ReadUInt32("Border");
+            packet.ReadUInt32("Background Color");
+            packet.ReadUInt32("Icon");
+            var len = packet.ReadBits(8);
+            packet.ReadWoWString("Name", len);
+        }
+
         [Parser(Opcode.CMSG_BATTLEFIELD_MGR_QUEUE_REQUEST)]
         public static void HandleBattelfieldMgrQueueRequest434(Packet packet)
         {

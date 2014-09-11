@@ -24,7 +24,7 @@ namespace WowPacketParser.Enums
     {
         None                            = 0,
         GroupJoinBattlegroundDeserters  = 2,
-        ArenaTeamPartSize               = 3,
+        ArenaTeamPartySize              = 3,
         BattlegroundTooManyQueues       = 4,
         BattlegroundCannotQueueForRated = 5,
         BattlegroundQueuedForRated      = 6,

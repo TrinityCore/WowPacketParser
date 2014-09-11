@@ -545,9 +545,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_REAL_GROUP_UPDATE)]
         public static void HandleRealGroupUpdate(Packet packet)
         {
-            packet.ReadByte("Unk Byte");
+            packet.ReadByte("Group Type");
             packet.ReadUInt32("Member Count");
-            packet.ReadGuid("GUID");
+            packet.ReadGuid("Leader GUID");
         }
 
         [Parser(Opcode.CMSG_GROUP_CHANGE_SUB_GROUP)]
