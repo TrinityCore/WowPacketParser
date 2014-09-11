@@ -1,4 +1,5 @@
 ﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
@@ -22,7 +23,7 @@ namespace WowPacketParser.Store.Objects
         public float Size;
 
         [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild;
+        public int VerifiedBuild = ClientVersion.BuildInt;
     }
 
     [DBTableName("gameobject_db2_position")]
@@ -53,6 +54,6 @@ namespace WowPacketParser.Store.Objects
         public float rotationW;
 
         [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild;
+        public int VerifiedBuild = ClientVersion.BuildInt;
     }
 }

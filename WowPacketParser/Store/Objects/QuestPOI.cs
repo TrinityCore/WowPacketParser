@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
@@ -23,6 +24,9 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("unk4")]
         public uint UnkInt2;
+
+        [DBFieldName("VerifiedBuild")]
+        public int VerifiedBuild = ClientVersion.BuildInt;
 
         public uint Idx;
         public ICollection<QuestPOIPoint> Points;

@@ -1,4 +1,5 @@
 ﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
@@ -160,7 +161,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("em7_", 6, true)] public uint[] Em7X;
 
         [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild;
+        public int VerifiedBuild = ClientVersion.BuildInt;
     }
 
     [DBTableName("npc_text")]
@@ -227,6 +228,6 @@ namespace WowPacketParser.Store.Objects
         public uint BroadcastTextId7;
 
         [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild;
+        public int VerifiedBuild = ClientVersion.BuildInt;
     }
 }

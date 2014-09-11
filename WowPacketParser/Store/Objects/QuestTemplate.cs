@@ -1,4 +1,5 @@
 ﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
@@ -193,6 +194,6 @@ namespace WowPacketParser.Store.Objects
         public uint SoundTurnIn;
 
         [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild;
+        public int VerifiedBuild = ClientVersion.BuildInt;
     }
 }
