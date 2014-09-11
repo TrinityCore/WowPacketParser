@@ -17,11 +17,21 @@ namespace WowPacketParser.SQL
         public static void DumpSQL(string prefix, string fileName, string header)
         {
             var startTime = DateTime.Now;
-            var units = Storage.Objects.IsEmpty() ? new Dictionary<WowGuid, Unit>() : Storage.Objects.Where(obj => obj.Value.Item1.Type == ObjectType.Unit && obj.Key.GetHighType() != HighGuidType.Pet && !obj.Value.Item1.IsTemporarySpawn()).ToDictionary(obj => obj.Key, obj => obj.Value.Item1 as Unit);
-            var gameObjects = Storage.Objects.IsEmpty() ? new Dictionary<WowGuid, GameObject>() : Storage.Objects.Where(obj => obj.Value.Item1.Type == ObjectType.GameObject).ToDictionary(obj => obj.Key, obj => obj.Value.Item1 as GameObject);
-            //var pets = Storage.Objects.Where(obj => obj.Value.Type == ObjectType.Unit && obj.Key.GetHighType() == HighGuidType.Pet).ToDictionary(obj => obj.Key, obj => obj.Value as Unit);
-            //var players = Storage.Objects.Where(obj => obj.Value.Type == ObjectType.Player).ToDictionary(obj => obj.Key, obj => obj.Value as Player);
-            //var items = Storage.Objects.Where(obj => obj.Value.Type == ObjectType.Item).ToDictionary(obj => obj.Key, obj => obj.Value as Item);
+
+            var units = Storage.Objects.IsEmpty()
+                ? new Dictionary<WowGuid, Unit>()                                                               // empty dict if there are no objects
+                : Storage.Objects.Where(
+                    obj =>
+                        obj.Value.Item1.Type == ObjectType.Unit && obj.Key.GetHighType() != HighGuidType.Pet && // remove pets
+                        !obj.Value.Item1.IsTemporarySpawn())                                                    // remove temporary spawns
+                    .OrderBy(pair => pair.Value.Item2)                                                          // order by spawn time
+                    .ToDictionary(obj => obj.Key, obj => obj.Value.Item1 as Unit);
+
+            var gameObjects = Storage.Objects.IsEmpty()
+                ? new Dictionary<WowGuid, GameObject>()                                                         // empty dict if there are no objects
+                : Storage.Objects.Where(obj => obj.Value.Item1.Type == ObjectType.GameObject)
+                    .OrderBy(pair => pair.Value.Item2)                                                          // order by spawn time
+                    .ToDictionary(obj => obj.Key, obj => obj.Value.Item1 as GameObject);
 
             foreach (var obj in Storage.Objects)
                 obj.Value.Item1.LoadValuesFromUpdateFields();
