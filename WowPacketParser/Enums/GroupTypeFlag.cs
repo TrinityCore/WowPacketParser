@@ -3,7 +3,7 @@ using System;
 namespace WowPacketParser.Enums
 {
     [Flags]
-    public enum GroupTypeFlag
+    public enum GroupTypeFlag : byte
     {
         Normal            = 0x00,
         Battleground      = 0x01,
