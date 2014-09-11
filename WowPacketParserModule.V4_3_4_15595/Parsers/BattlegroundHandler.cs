@@ -87,6 +87,24 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS)]
+        public static void HandleBattlefieldStatus434(Packet packet)
+        {
+            var playerGuid = packet.StartBitStream(0, 4, 7, 1, 6, 3, 5, 2);
+
+            packet.ReadXORByte(playerGuid, 5);
+            packet.ReadXORByte(playerGuid, 6);
+            packet.ReadXORByte(playerGuid, 7);
+            packet.ReadXORByte(playerGuid, 2);
+            packet.ReadInt32("Join Type");
+            packet.ReadXORByte(playerGuid, 3);
+            packet.ReadXORByte(playerGuid, 1);
+            packet.ReadInt32("Queue Slot");
+            packet.ReadInt32("Join Time");
+            packet.ReadXORByte(playerGuid, 0);
+            packet.ReadXORByte(playerGuid, 4);
+        }
+
         [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_QUEUED)]
         public static void HandleRGroupJoinedBattleground434(Packet packet)
         {

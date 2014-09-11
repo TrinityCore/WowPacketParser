@@ -313,7 +313,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_1_13164)]
         public static void HandleBattlefieldStatusServer(Packet packet)
         {
             var slot = packet.ReadUInt32("Queue Slot");
