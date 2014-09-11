@@ -118,6 +118,7 @@
     <Compile Include="Enums\AIReaction.cs" />
     <Compile Include="Enums\AmmoType.cs" />
     <Compile Include="Enums\ArenaCommandResult.cs" />
+    <Compile Include="Enums\ArenaError.cs" />
     <Compile Include="Enums\ArenaEvent.cs" />
     <Compile Include="Enums\AttackerStateFlags.cs" />
     <Compile Include="Enums\AuctionHouseAction.cs" />
