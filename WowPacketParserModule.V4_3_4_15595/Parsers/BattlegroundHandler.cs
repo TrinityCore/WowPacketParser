@@ -657,6 +657,61 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadUInt32("Current Conquest Points");
         }
 
+        [Parser(Opcode.SMSG_WARGAME_REQUEST_SENT)]
+        public static void HandleWargameRequestSent434(Packet packet)
+        {
+            var guid = packet.StartBitStream(7, 6, 0, 3, 5, 2, 1, 4); // Either 5, 2 or 2, 5, tricky tricky brain tickles
+            packet.ParseBitStream(guid, 5, 6, 3, 0, 7, 4, 2, 1);
+            packet.WriteGuid("Guid", guid);
+        }
+        
+        [Parser(Opcode.SMSG_WARGAME_CHECK_ENTRY)]
+        public static void HandleWargameCheckEntry434(Packet packet)
+        {
+            var challengerGuid = new byte[8];
+            var battlefieldGuid = new byte[8];
+
+            challengerGuid[1] = packet.ReadBit();
+            challengerGuid[2] = packet.ReadBit();
+            battlefieldGuid[7] = packet.ReadBit();
+            battlefieldGuid[4] = packet.ReadBit();
+            challengerGuid[4] = packet.ReadBit();
+            battlefieldGuid[1] = packet.ReadBit();
+            challengerGuid[5] = packet.ReadBit();
+            battlefieldGuid[5] = packet.ReadBit();
+            challengerGuid[7] = packet.ReadBit();
+            battlefieldGuid[6] = packet.ReadBit();
+            battlefieldGuid[3] = packet.ReadBit();
+            challengerGuid[0] = packet.ReadBit();
+            challengerGuid[3] = packet.ReadBit();
+            battlefieldGuid[2] = packet.ReadBit();
+            challengerGuid[6] = packet.ReadBit();
+            battlefieldGuid[0] = packet.ReadBit();
+
+            packet.ReadXORByte(battlefieldGuid, 2);
+
+            packet.ReadUInt32("Battlefield TypeId");
+
+            packet.ReadXORByte(challengerGuid, 0);
+            packet.ReadXORByte(challengerGuid, 2);
+            packet.ReadXORByte(challengerGuid, 4);
+            packet.ReadXORByte(challengerGuid, 6);
+            packet.ReadXORByte(battlefieldGuid, 0);
+            packet.ReadXORByte(challengerGuid, 5);
+            packet.ReadXORByte(challengerGuid, 7);
+            packet.ReadXORByte(battlefieldGuid, 3);
+            packet.ReadXORByte(battlefieldGuid, 5);
+            packet.ReadXORByte(challengerGuid, 1);
+            packet.ReadXORByte(battlefieldGuid, 7);
+            packet.ReadXORByte(battlefieldGuid, 4);
+            packet.ReadXORByte(battlefieldGuid, 1);
+            packet.ReadXORByte(battlefieldGuid, 6);
+            packet.ReadXORByte(challengerGuid, 3);
+
+            packet.WriteGuid("Challenger GUID", challengerGuid);
+            packet.WriteGuid("Battlefield GUID", battlefieldGuid);
+        }
+
         [Parser(Opcode.CMSG_WARGAME_START)]
         public static void HandleWargameStart434(Packet packet)
         {
