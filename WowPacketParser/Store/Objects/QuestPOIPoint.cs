@@ -15,7 +15,6 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("y")]
         public int Y;
 
-        // FIXME: use this
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;
     }
