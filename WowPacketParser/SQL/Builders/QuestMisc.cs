@@ -7,8 +7,10 @@ using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.SQL.Builders
 {
+    [BuilderClass]
     public static class QuestMisc
     {
+        [BuilderMethod]
         public static string QuestOffer()
         {
             if (Storage.QuestOffers.IsEmpty())
@@ -23,6 +25,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(Storage.QuestOffers, offerDb, StoreNameType.Quest, "Id");
         }
 
+        [BuilderMethod]
         public static string QuestReward()
         {
             if (Storage.QuestRewards.IsEmpty())
@@ -37,6 +40,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(Storage.QuestRewards, rewardDb, StoreNameType.Quest, "Id");
         }
 
+        [BuilderMethod]
         public static string QuestPOI()
         {
             if (Storage.QuestPOIs.IsEmpty())

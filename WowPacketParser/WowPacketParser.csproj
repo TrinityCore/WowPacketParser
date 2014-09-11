@@ -441,6 +441,7 @@
     <Compile Include="Saving\SplitSessionBinaryPacketWriter.cs" />
     <Compile Include="Saving\SplitBinaryPacketWriter.cs" />
     <Compile Include="SQL\Builder.cs" />
+    <Compile Include="SQL\Builders\BuilderAttributes.cs" />
     <Compile Include="SQL\Builders\DB2.cs" />
     <Compile Include="SQL\Builders\Miscellaneous.cs" />
     <Compile Include="SQL\Builders\QuestMisc.cs" />

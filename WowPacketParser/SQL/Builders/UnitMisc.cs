@@ -11,8 +11,10 @@ using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.SQL.Builders
 {
+    [BuilderClass]
     public static class UnitMisc
     {
+        [BuilderMethod(Units = true)]
         public static string Addon(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
@@ -73,6 +75,7 @@ namespace WowPacketParser.SQL.Builders
             return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
+        [BuilderMethod(Units = true)]
         public static string ModelData(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
@@ -119,6 +122,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(models, modelsDb, StoreNameType.None, "modelid");
         }
 
+        [BuilderMethod]
         public static string NpcTrainer()
         {
             if (Storage.NpcTrainers.IsEmpty())
@@ -152,6 +156,7 @@ namespace WowPacketParser.SQL.Builders
             return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
+        [BuilderMethod]
         public static string NpcVendor()
         {
             if (Storage.NpcVendors.IsEmpty())
@@ -188,6 +193,7 @@ namespace WowPacketParser.SQL.Builders
             return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
+        [BuilderMethod(Units = true)]
         public static string CreatureEquip(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
@@ -241,6 +247,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(equips, equipsDb, StoreNameType.Unit);
         }
 
+        [BuilderMethod(Units = true)]
         public static string CreatureMovement(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
@@ -283,6 +290,7 @@ namespace WowPacketParser.SQL.Builders
         //
         //}
 
+        [BuilderMethod]
         public static string Loot()
         {
             if (Storage.Loots.IsEmpty())
@@ -318,6 +326,7 @@ namespace WowPacketParser.SQL.Builders
             return new QueryBuilder.SQLInsert(tableName, rows, 2).Build();
         }
 
+        [BuilderMethod]
         public static string Gossip()
         {
             // TODO: This should be rewritten
@@ -505,6 +514,7 @@ namespace WowPacketParser.SQL.Builders
             return result;
         }
 
+        [BuilderMethod]
         public static string PointsOfInterest()
         {
             if (Storage.GossipPOIs.IsEmpty())
@@ -581,7 +591,7 @@ namespace WowPacketParser.SQL.Builders
         }
 
         //                      entry, <minlevel, maxlevel>
-        public static Dictionary<uint, Tuple<uint, uint>> GetLevels(Dictionary<WowGuid, Unit> units)
+        private static Dictionary<uint, Tuple<uint, uint>> GetLevels(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
                 return null;
@@ -645,6 +655,7 @@ namespace WowPacketParser.SQL.Builders
         };
 
         // Non-WDB data but nevertheless data that should be saved to creature_template
+        [BuilderMethod(Units = true)]
         public static string NpcTemplateNonWDB(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
@@ -723,6 +734,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(templates, templatesDb, StoreNameType.Unit);
         }
 
+        [BuilderMethod]
         public static string SpellsX()
         {
             if (Storage.SpellsX.IsEmpty())
@@ -737,6 +749,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(Storage.SpellsX, spellsXDb, StoreNameType.Unit);
         }
 
+        [BuilderMethod]
         public static string CreatureText()
         {
             if (Storage.CreatureTexts.IsEmpty())
@@ -873,6 +886,7 @@ namespace WowPacketParser.SQL.Builders
             return new QueryBuilder.SQLInsert(tableName, rows, 1, false).Build();
         }
 
+        [BuilderMethod]
         public static string VehicleAccessory()
         {
             if (Storage.VehicleTemplateAccessorys.IsEmpty())
@@ -911,6 +925,7 @@ namespace WowPacketParser.SQL.Builders
             return new QueryBuilder.SQLInsert(tableName, rows, 1, false).Build();
         }
 
+        [BuilderMethod]
         public static string NpcSpellClick()
         {
             if (Storage.NpcSpellClicks.IsEmpty())
@@ -951,6 +966,7 @@ namespace WowPacketParser.SQL.Builders
             return new QueryBuilder.SQLInsert(tableName, rows, 1, false).Build();
         }
 
+        [BuilderMethod(Units = true)]
         public static string NpcSpellClickMop(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
