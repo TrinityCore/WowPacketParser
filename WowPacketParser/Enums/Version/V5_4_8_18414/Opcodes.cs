@@ -720,6 +720,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_UNK_023B,                                 0x023B | 0x20000}, //++ SMSG_SPLINE_MOVE_SET_???_SPEED
             {Opcode.SMSG_UNK_0250,                                 0x0250 | 0x20000}, //++
             {Opcode.SMSG_UNK_0251,                                 0x0251 | 0x20000}, //++ PENDING_STOP
+            {Opcode.SMSG_UNK_027D,                                 0x027D | 0x20000}, //++
             {Opcode.SMSG_UNK_02A7,                                 0x02A7 | 0x20000}, //+-
             {Opcode.SMSG_UNK_0332,                                 0x0332 | 0x20000}, //-- coded
             {Opcode.SMSG_UNK_0354,                                 0x0354 | 0x20000}, //++
