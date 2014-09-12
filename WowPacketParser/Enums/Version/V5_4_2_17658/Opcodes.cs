@@ -28,7 +28,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.CMSG_CANCEL_CAST, 0x0839},
             {Opcode.CMSG_CAST_SPELL, 0x0A57},
             {Opcode.CMSG_CHALLANGES_INFO, 0x0599},
-            {Opcode.CMSG_CHANNEL_LIST, 0x0847},
+            //{Opcode.CMSG_CHANNEL_LIST, 0x0847}, ???
             {Opcode.CMSG_CHANNEL_PASSWORD, 0x1313},
             {Opcode.CMSG_CHAR_CREATE, 0x077B},
             {Opcode.CMSG_CHAR_DELETE, 0x067A},
@@ -89,7 +89,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_REDIRECT_CLIENT, 0x0E43},
             {Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x1262},
             {Opcode.CMSG_REPAIR_ITEM, 0x0AED},
-            {Opcode.CMSG_REQUEST_HOTFIX, 0x0676},
+            //{Opcode.CMSG_REQUEST_HOTFIX, 0x0676}, ???
             {Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS, 0x04F2},
             {Opcode.CMSG_RESET_FACTION_CHEAT, 0x126E},
             {Opcode.CMSG_RESET_INSTANCES, 0x0DFA},
@@ -101,7 +101,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.CMSG_SET_SELECTION, 0x0AC5},
             {Opcode.CMSG_SET_TITLE, 0x08D8},
             {Opcode.CMSG_SETSHEATHED, 0x06CE},
-            {Opcode.CMSG_SHOP_CATEGORY, 0x0676},
+            //{Opcode.CMSG_SHOP_CATEGORY, 0x0676}, ???
             {Opcode.CMSG_SPLIT_ITEM, 0x012E},
             {Opcode.CMSG_TIME_SYNC_RESP, 0x06AB},
             {Opcode.CMSG_UI_TIME_REQUEST, 0x0574},
@@ -142,7 +142,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_DESTROY_OBJECT, 0x0A75},
             {Opcode.SMSG_EMOTE, 0x1A48},
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x0F08},
-            {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x0839},
+            {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x0839 | 0x20000},
             {Opcode.SMSG_FLIGHT_SPLINE_SYNC, 0x009E},
             {Opcode.SMSG_FRIEND_STATUS, 0x1220},
             {Opcode.SMSG_FORCE_SEND_QUEUED_PACKETS, 0x0C40},
