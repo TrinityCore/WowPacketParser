@@ -313,7 +313,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_1_13164)]
         public static void HandleBattlefieldStatusServer(Packet packet)
         {
             var slot = packet.ReadUInt32("Queue Slot");
@@ -752,6 +752,14 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadInt32("Battle Id");
             packet.ReadBoolean("Remote");
+        }
+
+        [Parser(Opcode.SMSG_ARENA_ERROR)]
+        public static void HandleArenaError(Packet packet)
+        {
+            var error = packet.ReadEnum<ArenaError>("Error", TypeCode.UInt32);
+            if (error == ArenaError.NoTeam)
+                packet.ReadByte("Arena Type"); // 2, 3, 5
         }
 
         [Parser(Opcode.SMSG_ARENA_TEAM_ROSTER)]

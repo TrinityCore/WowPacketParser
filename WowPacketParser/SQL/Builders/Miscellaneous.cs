@@ -9,8 +9,10 @@ using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.SQL.Builders
 {
+    [BuilderClass]
     public static class Miscellaneous
     {
+        [BuilderMethod]
         public static string StartInformation()
         {
             var result = String.Empty;
@@ -101,6 +103,7 @@ namespace WowPacketParser.SQL.Builders
             return result;
         }
 
+        [BuilderMethod]
         public static string ObjectNames()
         {
             if (Storage.ObjectNames.IsEmpty())
@@ -126,6 +129,7 @@ namespace WowPacketParser.SQL.Builders
             return new QueryBuilder.SQLInsert(tableName, rows, 2, ignore: true, withDelete: false).Build();
         }
 
+        [BuilderMethod]
         public static string SniffData()
         {
             if (Storage.SniffData.IsEmpty())
@@ -155,6 +159,7 @@ namespace WowPacketParser.SQL.Builders
         }
 
         // Non-WDB data but nevertheless data that should be saved to gameobject_template
+        [BuilderMethod(Gameobjects = true)]
         public static string GameobjectTemplateNonWDB(Dictionary<WowGuid, GameObject> gameobjects)
         {
             if (gameobjects.Count == 0)
@@ -194,6 +199,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(templates, templatesDb, StoreNameType.GameObject);
         }
 
+        [BuilderMethod]
         public static string DefenseMessage()
         {
             if (Storage.DefenseMessages.IsEmpty())
@@ -249,6 +255,7 @@ namespace WowPacketParser.SQL.Builders
             return new QueryBuilder.SQLInsert(tableName, rows, 1, false).Build();
         }
 
+        [BuilderMethod]
         public static string WeatherUpdates()
         {
             if (Storage.WeatherUpdates.IsEmpty())

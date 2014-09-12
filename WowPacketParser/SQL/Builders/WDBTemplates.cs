@@ -7,8 +7,10 @@ using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.SQL.Builders
 {
+    [BuilderClass]
     public static class WDBTemplates
     {
+        [BuilderMethod]
         public static string Quest()
         {
             if (Storage.QuestTemplates.IsEmpty())
@@ -23,6 +25,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(Storage.QuestTemplates, templatesDb, StoreNameType.Quest, "Id");
         }
 
+        [BuilderMethod]
         public static string Npc()
         {
             if (Storage.UnitTemplates.IsEmpty())
@@ -37,6 +40,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(Storage.UnitTemplates, templatesDb, StoreNameType.Unit);
         }
 
+        [BuilderMethod]
         public static string NpcName()
         {
             var result = "";
@@ -89,6 +93,7 @@ namespace WowPacketParser.SQL.Builders
             return result;
         }
 
+        [BuilderMethod]
         public static string GameObject()
         {
             if (Storage.GameObjectTemplates.IsEmpty())
@@ -103,6 +108,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(Storage.GameObjectTemplates, templatesDb, StoreNameType.GameObject);
         }
 
+        [BuilderMethod]
         public static string Item()
         {
             if (Storage.ItemTemplates.IsEmpty())
@@ -117,6 +123,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(Storage.ItemTemplates, templatesDb, StoreNameType.Item);
         }
 
+        [BuilderMethod]
         public static string PageText()
         {
             if (Storage.PageTexts.IsEmpty())
@@ -131,6 +138,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(Storage.PageTexts, templatesDb, StoreNameType.PageText);
         }
 
+        [BuilderMethod]
         public static string NpcText()
         {
             if (!Storage.NpcTexts.IsEmpty())
@@ -146,7 +154,8 @@ namespace WowPacketParser.SQL.Builders
 
                 return SQLUtil.CompareDicts(Storage.NpcTexts, templatesDb, StoreNameType.NpcText, "ID");
             }
-            else if (!Storage.NpcTextsMop.IsEmpty())
+            
+            if (!Storage.NpcTextsMop.IsEmpty())
             {
 
                 if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_text))
@@ -160,8 +169,8 @@ namespace WowPacketParser.SQL.Builders
 
                 return SQLUtil.CompareDicts(Storage.NpcTextsMop, templatesDb, StoreNameType.NpcText, "ID");
             }
-            else
-                return String.Empty;
+
+            return String.Empty;
         }
     }
 }

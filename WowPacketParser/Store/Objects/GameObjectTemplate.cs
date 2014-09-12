@@ -1,4 +1,5 @@
 ﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
@@ -37,7 +38,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("unkInt32", ClientVersionBuild.V4_0_1_13164)]
         public int UnknownInt;
 
-        [DBFieldName("WDBVerified")]
-        public int VerifiedBuild;
+        [DBFieldName("VerifiedBuild")]
+        public int VerifiedBuild = ClientVersion.BuildInt;
     }
 }

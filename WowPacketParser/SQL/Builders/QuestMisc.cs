@@ -7,8 +7,10 @@ using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.SQL.Builders
 {
+    [BuilderClass]
     public static class QuestMisc
     {
+        [BuilderMethod]
         public static string QuestOffer()
         {
             if (Storage.QuestOffers.IsEmpty())
@@ -23,6 +25,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(Storage.QuestOffers, offerDb, StoreNameType.Quest, "Id");
         }
 
+        [BuilderMethod]
         public static string QuestReward()
         {
             if (Storage.QuestRewards.IsEmpty())
@@ -37,6 +40,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(Storage.QuestRewards, rewardDb, StoreNameType.Quest, "Id");
         }
 
+        [BuilderMethod]
         public static string QuestPOI()
         {
             if (Storage.QuestPOIs.IsEmpty())
@@ -52,6 +56,7 @@ namespace WowPacketParser.SQL.Builders
                 sql = SQLUtil.CompareDicts(Storage.QuestPOIs, poiDb, StoreNameType.Quest, "questid", "id");
             }
 
+            // TODO: fix this piece of code so it compares with db
             //var points = new StoreMulti<Tuple<uint, uint>, QuestPOIPoint>();
             //
             //foreach (KeyValuePair<Tuple<uint, uint>, Tuple<QuestPOI, TimeSpan?>> pair in Storage.QuestPOIs)
@@ -80,6 +85,7 @@ namespace WowPacketParser.SQL.Builders
                             row.AddValue("idx", point.Index); // Not on sniffs
                             row.AddValue("x", point.X);
                             row.AddValue("y", point.Y);
+                            row.AddValue("VerifiedBuild", point.VerifiedBuild);
                             row.Comment = StoreGetters.GetName(StoreNameType.Quest, (int) quest.Key.Item1, false);
 
                             rows.Add(row);

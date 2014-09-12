@@ -1,4 +1,5 @@
 ﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
@@ -9,7 +10,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("name")]
         public string Name;
 
-        [DBFieldName("femaleName", ClientVersionBuild.Zero, ClientVersionBuild.V3_1_0_9767)]
+        [DBFieldName("femaleName", ClientVersionBuild.V4_0_1_13164)]
         public string femaleName;
 
         [DBFieldName("subname")]
@@ -63,7 +64,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("exp_unk", ClientVersionBuild.V4_0_1_13164)]
         public ClientType Expansion;
 
-        [DBFieldName("WDBVerified")]
-        public int VerifiedBuild;
+        [DBFieldName("VerifiedBuild")]
+        public int VerifiedBuild = ClientVersion.BuildInt;
     }
 }

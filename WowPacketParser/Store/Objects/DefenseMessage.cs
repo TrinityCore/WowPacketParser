@@ -1,4 +1,5 @@
-﻿﻿using WowPacketParser.SQL;
+﻿﻿using WowPacketParser.Misc;
+﻿using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
@@ -11,7 +12,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("BroadcastText")]
         public string broadcastText;
 
-        [DBFieldName("WDBVerified")]
-        public int VerifiedBuild;
+        [DBFieldName("VerifiedBuild")]
+        public int VerifiedBuild = ClientVersion.BuildInt;
     }
 }

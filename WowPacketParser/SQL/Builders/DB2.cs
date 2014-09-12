@@ -6,8 +6,10 @@ using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.SQL.Builders
 {
+    [BuilderClass]
     public static class DB2
     {
+        [BuilderMethod]
         public static string BroadcastText()
         {
             if (Storage.BroadcastTexts.IsEmpty())
@@ -25,6 +27,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(Storage.BroadcastTexts, templatesDb, StoreNameType.BroadcastText, "ID");
         }
 
+        [BuilderMethod]
         public static string CreatureDifficulty()
         {
             if (Storage.CreatureDifficultys.IsEmpty())
@@ -39,6 +42,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(Storage.CreatureDifficultys, templatesDb, StoreNameType.CreatureDifficulty);
         }
 
+        [BuilderMethod]
         public static string GameObjectDB2()
         {
             if (Storage.GameObjectTemplateDB2s.IsEmpty())
@@ -53,6 +57,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(Storage.GameObjectTemplateDB2s, templatesDb, StoreNameType.GameObject);
         }
 
+        [BuilderMethod]
         public static string GameObjectDB2Position()
         {
             if (Storage.GameObjectTemplatePositionDB2s.IsEmpty())

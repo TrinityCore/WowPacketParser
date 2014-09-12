@@ -87,6 +87,24 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS)]
+        public static void HandleBattlefieldStatus434(Packet packet)
+        {
+            var playerGuid = packet.StartBitStream(0, 4, 7, 1, 6, 3, 5, 2);
+
+            packet.ReadXORByte(playerGuid, 5);
+            packet.ReadXORByte(playerGuid, 6);
+            packet.ReadXORByte(playerGuid, 7);
+            packet.ReadXORByte(playerGuid, 2);
+            packet.ReadInt32("Join Type");
+            packet.ReadXORByte(playerGuid, 3);
+            packet.ReadXORByte(playerGuid, 1);
+            packet.ReadInt32("Queue Slot");
+            packet.ReadInt32("Join Time");
+            packet.ReadXORByte(playerGuid, 0);
+            packet.ReadXORByte(playerGuid, 4);
+        }
+
         [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_QUEUED)]
         public static void HandleRGroupJoinedBattleground434(Packet packet)
         {
@@ -553,6 +571,19 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadWoWString("Team Name", teamLength);
         }
 
+        [Parser(Opcode.CMSG_ARENA_TEAM_CREATE)]
+        public static void HandleArenaTeamCreate434(Packet packet)
+        {
+            packet.ReadUInt32("Slot");
+            packet.ReadUInt32("Icon Color");
+            packet.ReadUInt32("Border Color");
+            packet.ReadUInt32("Border");
+            packet.ReadUInt32("Background Color");
+            packet.ReadUInt32("Icon");
+            var len = packet.ReadBits(8);
+            packet.ReadWoWString("Name", len);
+        }
+
         [Parser(Opcode.CMSG_BATTLEFIELD_MGR_QUEUE_REQUEST)]
         public static void HandleBattelfieldMgrQueueRequest434(Packet packet)
         {
@@ -624,6 +655,106 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadUInt32("Conquest Points From Rated Bg");
             packet.ReadUInt32("Conquest Points From Arena");
             packet.ReadUInt32("Current Conquest Points");
+        }
+
+        [Parser(Opcode.SMSG_WARGAME_REQUEST_SENT)]
+        public static void HandleWargameRequestSent434(Packet packet)
+        {
+            var guid = packet.StartBitStream(7, 6, 0, 3, 5, 2, 1, 4); // Either 5, 2 or 2, 5, tricky tricky brain tickles
+            packet.ParseBitStream(guid, 5, 6, 3, 0, 7, 4, 2, 1);
+            packet.WriteGuid("Guid", guid);
+        }
+        
+        [Parser(Opcode.SMSG_WARGAME_CHECK_ENTRY)]
+        public static void HandleWargameCheckEntry434(Packet packet)
+        {
+            var challengerGuid = new byte[8];
+            var battlefieldGuid = new byte[8];
+
+            challengerGuid[1] = packet.ReadBit();
+            challengerGuid[2] = packet.ReadBit();
+            battlefieldGuid[7] = packet.ReadBit();
+            battlefieldGuid[4] = packet.ReadBit();
+            challengerGuid[4] = packet.ReadBit();
+            battlefieldGuid[1] = packet.ReadBit();
+            challengerGuid[5] = packet.ReadBit();
+            battlefieldGuid[5] = packet.ReadBit();
+            challengerGuid[7] = packet.ReadBit();
+            battlefieldGuid[6] = packet.ReadBit();
+            battlefieldGuid[3] = packet.ReadBit();
+            challengerGuid[0] = packet.ReadBit();
+            challengerGuid[3] = packet.ReadBit();
+            battlefieldGuid[2] = packet.ReadBit();
+            challengerGuid[6] = packet.ReadBit();
+            battlefieldGuid[0] = packet.ReadBit();
+
+            packet.ReadXORByte(battlefieldGuid, 2);
+
+            packet.ReadUInt32("Battlefield TypeId");
+
+            packet.ReadXORByte(challengerGuid, 0);
+            packet.ReadXORByte(challengerGuid, 2);
+            packet.ReadXORByte(challengerGuid, 4);
+            packet.ReadXORByte(challengerGuid, 6);
+            packet.ReadXORByte(battlefieldGuid, 0);
+            packet.ReadXORByte(challengerGuid, 5);
+            packet.ReadXORByte(challengerGuid, 7);
+            packet.ReadXORByte(battlefieldGuid, 3);
+            packet.ReadXORByte(battlefieldGuid, 5);
+            packet.ReadXORByte(challengerGuid, 1);
+            packet.ReadXORByte(battlefieldGuid, 7);
+            packet.ReadXORByte(battlefieldGuid, 4);
+            packet.ReadXORByte(battlefieldGuid, 1);
+            packet.ReadXORByte(battlefieldGuid, 6);
+            packet.ReadXORByte(challengerGuid, 3);
+
+            packet.WriteGuid("Challenger GUID", challengerGuid);
+            packet.WriteGuid("Battlefield GUID", battlefieldGuid);
+        }
+
+        [Parser(Opcode.CMSG_WARGAME_START)]
+        public static void HandleWargameStart434(Packet packet)
+        {
+            var guid1 = new byte[8];
+            var guid2 = new byte[8];
+
+            guid2[0] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            guid1[3] = packet.ReadBit();
+            guid1[7] = packet.ReadBit();
+            guid1[1] = packet.ReadBit();
+            guid2[5] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+
+            guid1[6] = packet.ReadBit();
+            guid1[5] = packet.ReadBit();
+            guid1[2] = packet.ReadBit();
+            guid1[0] = packet.ReadBit();
+            guid1[4] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+
+            packet.ReadXORByte(guid2, 6);
+            packet.ReadXORByte(guid1, 7);
+            packet.ReadXORByte(guid1, 3);
+            packet.ReadXORByte(guid2, 4);
+            packet.ReadXORByte(guid1, 5);
+            packet.ReadXORByte(guid1, 2);
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(guid2, 5);
+            packet.ReadXORByte(guid1, 0);
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadXORByte(guid1, 6);
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadXORByte(guid1, 1);
+            packet.ReadXORByte(guid1, 4);
+
+            packet.WriteGuid("Guid1", guid1);
+            packet.WriteGuid("Guid2", guid2);
         }
 
         [Parser(Opcode.CMSG_BATTLEFIELD_PORT)]

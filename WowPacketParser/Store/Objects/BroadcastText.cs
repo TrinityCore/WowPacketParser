@@ -1,4 +1,5 @@
-﻿using WowPacketParser.SQL;
+﻿using WowPacketParser.Misc;
+using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
@@ -49,7 +50,7 @@ namespace WowPacketParser.Store.Objects
         public uint unk2;
         // ReSharper restore InconsistentNaming
 
-        [DBFieldName("WDBVerified")]
-        public int VerifiedBuild;
+        [DBFieldName("VerifiedBuild")]
+        public int VerifiedBuild = ClientVersion.BuildInt;
     }
 }

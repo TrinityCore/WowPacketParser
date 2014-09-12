@@ -5,18 +5,20 @@ using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
+using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.SQL.Builders
 {
+    [BuilderClass]
     public static class Spawns
     {
-        private static bool GetTransportMap(WoWObject @object, Dictionary<WowGuid, GameObject> gameobjects, out int mapId)
+        private static bool GetTransportMap(WoWObject @object, out int mapId)
         {
             mapId = -1;
 
-            GameObject transport;
-            if (!gameobjects.TryGetValue(@object.Movement.TransportGuid, out transport))
+            WoWObject transport;
+            if (!Storage.Objects.TryGetValue(@object.Movement.TransportGuid, out transport))
                 return false;
 
             UpdateField entry;
@@ -25,7 +27,7 @@ namespace WowPacketParser.SQL.Builders
 
             if (SQLConnector.Enabled)
             {
-                var transportTemplates = SQLDatabase.GetDict<uint, GameObjectTemplate>(new List<uint>() { entry.UInt32Value });
+                var transportTemplates = SQLDatabase.GetDict<uint, GameObjectTemplate>(new List<uint> { entry.UInt32Value });
                 if (transportTemplates.IsEmpty())
                     return false;
 
@@ -35,7 +37,8 @@ namespace WowPacketParser.SQL.Builders
             return true;
         }
 
-        public static string Creature(Dictionary<WowGuid, Unit> units, Dictionary<WowGuid, GameObject> gameObjects)
+        [BuilderMethod(Units = true)]
+        public static string Creature(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
                 return string.Empty;
@@ -87,7 +90,7 @@ namespace WowPacketParser.SQL.Builders
                 else
                 {
                     int mapId;
-                    badTransport = !GetTransportMap(creature, gameObjects, out mapId);
+                    badTransport = !GetTransportMap(creature, out mapId);
                     row.AddValue("map", mapId);
                 }
 
@@ -151,6 +154,7 @@ namespace WowPacketParser.SQL.Builders
             return result.ToString();
         }
 
+        [BuilderMethod(Gameobjects = true)]
         public static string GameObject(Dictionary<WowGuid, GameObject> gameObjects)
         {
             if (gameObjects.Count == 0)
@@ -202,7 +206,7 @@ namespace WowPacketParser.SQL.Builders
                 else
                 {
                     int mapId;
-                    badTransport = !GetTransportMap(go, gameObjects, out mapId);
+                    badTransport = !GetTransportMap(go, out mapId);
                     row.AddValue("map", mapId);
                 }
 

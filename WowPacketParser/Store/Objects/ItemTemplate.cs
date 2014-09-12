@@ -1,4 +1,5 @@
 ﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
@@ -246,7 +247,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("CurrencySubstitutionCount", ClientVersionBuild.V4_0_1_13164)]
         public uint CurrencySubstitutionCount;
 
-        [DBFieldName("WDBVerified")]
-        public int VerifiedBuild;
+        [DBFieldName("VerifiedBuild")]
+        public int VerifiedBuild = ClientVersion.BuildInt;
     }
 }
