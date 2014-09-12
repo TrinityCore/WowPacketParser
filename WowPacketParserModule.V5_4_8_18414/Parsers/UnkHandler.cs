@@ -512,6 +512,15 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadBit("unk19");
         }
 
+        [Parser(Opcode.SMSG_UNK_080E)]
+        public static void HandleSUnk080E(Packet packet)
+        {
+            var hasData = !packet.ReadBit("!hasData"); // 16
+            packet.ReadByte("unk20"); // 20
+            if (hasData)
+                packet.ReadInt32("unk16");
+        }
+
         [Parser(Opcode.SMSG_UNK_08FB)]
         public static void HandleSUnk08FB(Packet packet)
         {
