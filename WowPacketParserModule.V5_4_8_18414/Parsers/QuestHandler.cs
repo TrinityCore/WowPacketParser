@@ -339,7 +339,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS)]
         [Parser(Opcode.SMSG_QUESTLOG_FULL)]
         [Parser(Opcode.SMSG_QUESTUPDATE_ADD_KILL)]
-        [Parser(Opcode.SMSG_QUESTUPDATE_COMPLETE)]
         public static void HandleQuestNull(Packet packet)
         {
             packet.ReadToEnd();

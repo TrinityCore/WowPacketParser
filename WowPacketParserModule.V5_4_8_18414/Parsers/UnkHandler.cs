@@ -502,6 +502,14 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.SMSG_UNK_07F5)]
+        public static void HandleSUnk07F5(Packet packet)
+        {
+            packet.ReadInt32("unk16"); // 16
+            packet.ReadEntry<Int32>(StoreNameType.Quest, "Quest ID", i); // 20
+            packet.ReadEnum<QuestRequirementType>("Requirement Type", TypeCode.Byte, i); // 24
+        }
+
         [Parser(Opcode.SMSG_UNK_080A)]
         public static void HandleSUnk080A(Packet packet)
         {
