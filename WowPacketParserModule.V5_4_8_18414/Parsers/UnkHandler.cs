@@ -506,8 +506,8 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         public static void HandleSUnk07F5(Packet packet)
         {
             packet.ReadInt32("unk16"); // 16
-            packet.ReadEntry<Int32>(StoreNameType.Quest, "Quest ID", i); // 20
-            packet.ReadEnum<QuestRequirementType>("Requirement Type", TypeCode.Byte, i); // 24
+            packet.ReadEntry<Int32>(StoreNameType.Quest, "Quest ID"); // 20
+            packet.ReadEnum<QuestRequirementType>("Requirement Type", TypeCode.Byte); // 24
         }
 
         [Parser(Opcode.SMSG_UNK_080A)]
@@ -754,6 +754,14 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadInt32("Int28");
             packet.ReadInt32("Int24");
             packet.ReadInt64("QW16");
+        }
+
+        [Parser(Opcode.SMSG_UNK_1046)]
+        public static void HandleSUnk1046(Packet packet)
+        {
+            var guid = packet.StartBitStream(4, 1, 2, 0, 7, 5, 3, 6);
+            packet.ParseBitStream(guid, 4, 7, 1, 0, 3, 5, 6, 2);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_UNK_109A)]
