@@ -610,7 +610,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE,               0x06CE | 0x20000}, //++
             {Opcode.SMSG_QUESTLOG_FULL,                            0x07FD | 0x20000}, //--
             {Opcode.SMSG_QUESTUPDATE_ADD_KILL,                     0x1645 | 0x20000}, //--
-            {Opcode.SMSG_QUESTUPDATE_COMPLETE,                     0x0776 | 0x20000}, //--
+            {Opcode.SMSG_QUESTUPDATE_COMPLETE,                     0x0776 | 0x20000}, //++
             {Opcode.SMSG_QUEST_CONFIRM_ACCEPT,                     0x13C7 | 0x20000}, //--
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE,                 0x067F | 0x20000}, //++
             {Opcode.SMSG_QUEST_QUERY_RESPONSE,                     0x0276 | 0x20000}, //--

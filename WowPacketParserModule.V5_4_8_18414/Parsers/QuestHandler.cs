@@ -320,6 +320,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_QUESTUPDATE_COMPLETE)]
+        public static void HandleQuestUpdateComplete(Packet packet)
+        {
+            packet.ReadEntry<Int32>(StoreNameType.Quest, "Quest ID");
+        }
+
         [Parser(Opcode.CMSG_QUESTGIVER_ACCEPT_QUEST)]
         [Parser(Opcode.CMSG_QUESTGIVER_CHOOSE_REWARD)]
         [Parser(Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST)]
