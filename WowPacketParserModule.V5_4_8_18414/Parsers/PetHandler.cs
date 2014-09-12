@@ -385,6 +385,19 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             StoreGetters.AddName(PetGuid, PetNumber);
         }
 
+        [Parser(Opcode.CMSG_PET_SET_ACTION)]
+        public static void HandlePetSetAction(Packet packet)
+        {
+            var i = 0;
+            packet.ReadUInt32("Position", i);
+            var action = (uint)packet.ReadUInt16() + (packet.ReadByte() << 16);
+            packet.AddValue("Action", action, i);
+            packet.ReadEnum<ActionButtonType>("Type", TypeCode.Byte, i++);
+            var guid = packet.StartBitStream(1, 0, 5, 3, 2, 7, 6, 4);
+            packet.ParseBitStream(guid, 5, 6, 7, 3, 2, 1, 4, 0);
+            packet.WriteGuid("Guid", guid);
+        }
+
         [Parser(Opcode.SMSG_PET_GUIDS)]
         public static void HandlePetGuids(Packet packet)
         {
