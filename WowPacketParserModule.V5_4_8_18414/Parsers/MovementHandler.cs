@@ -557,6 +557,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             ReadPlayerMovementInfo(ref packet, info.CUnk08D3);
         }
 
+        [Parser(Opcode.CMSG_UNK_09FA)]
+        public static void HandleCUnk09FA(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.CUnk09FA);
+        }
+
         [Parser(Opcode.CMSG_UNK_09FB)]
         public static void HandleCUnk09FB(Packet packet)
         {
