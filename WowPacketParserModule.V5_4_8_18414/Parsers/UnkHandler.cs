@@ -789,6 +789,25 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
+        [Parser(Opcode.SMSG_UNK_11C2)]
+        public static void HandleSUnk11C2(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 19); // 16
+            var unk68 = new UInt32[count];
+            for (var i = 0; i < count; i++)
+                unk68[i] = packet.ReadBits(23);
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadPackedTime("Time", i);
+                packet.ReadInt32("unk32", i); // 32
+                packet.ReadInt32("unk20", i); // 20
+                packet.ReadInt32("unk28", i); // 28
+                for (var j = 0; j < unk68[i]; j++)
+                    packet.ReadInt16("unk72", i, j);
+                packet.ReadInt32("unk24", i); // 24
+            }
+        }
+
         [Parser(Opcode.SMSG_UNK_11E1)]
         public static void HandleSUnk11E1(Packet packet)
         {
