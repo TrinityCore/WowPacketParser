@@ -250,6 +250,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_SET_SELECTION,                            0x0740 | 0x10000}, //++
             {Opcode.CMSG_SET_TAXI_BENCHMARK_MODE,                  0x0762 | 0x10000}, //--
             {Opcode.CMSG_SET_TITLE,                                0x03C7 | 0x10000}, //+-
+            {Opcode.CMSG_SET_TRADE_GOLD,                           0x14E3 | 0x10000}, //--
             {Opcode.CMSG_SETSHEATHED,                              0x0249 | 0x10000}, //++
             {Opcode.CMSG_SHOWING_CLOAK,                            0x02F2 | 0x10000}, //--
             {Opcode.CMSG_SHOWING_HELM,                             0x126B | 0x10000}, //--
@@ -680,6 +681,8 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_THREAT_UPDATE,                            0x0632 | 0x20000}, //++
             {Opcode.SMSG_TIME_SYNC_REQ,                            0x1A8F | 0x20000}, //++
             {Opcode.SMSG_TOTEM_CREATED,                            0x1C8F | 0x20000}, //++
+            {Opcode.SMSG_TRADE_STATUS,                             0x1963 | 0x20000}, //--
+            {Opcode.SMSG_TRADE_UPDATED,                            0x181E | 0x20000}, //--
             {Opcode.SMSG_TRAINER_LIST,                             0x189F | 0x20000}, //--
             {Opcode.SMSG_TRANSFER_PENDING,                         0x061B | 0x20000}, //++
             {Opcode.SMSG_TRIGGER_CINEMATIC,                        0x0B01 | 0x20000}, //--
