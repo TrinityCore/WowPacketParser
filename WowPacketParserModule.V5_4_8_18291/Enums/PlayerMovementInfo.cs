@@ -1,4 +1,6 @@
-namespace WowPacketParser.Misc
+using WowPacketParser.Misc;
+
+namespace WowPacketParserModule.V5_4_8_18291.Enums
 {
     public sealed class PlayerMovementInfo
     {
@@ -1815,5 +1817,51 @@ namespace WowPacketParser.Misc
             MovementStatusElements.MSEEnd,
         };
 
+        public MovementStatusElements[] MoveTeleport = // 5.4.8 18414
+        {
+            MovementStatusElements.MSEHasGuidByte0,
+            MovementStatusElements.MSEHasGuidByte6,
+            MovementStatusElements.MSEHasGuidByte5,
+            MovementStatusElements.MSEHasGuidByte7,
+            MovementStatusElements.MSEHasGuidByte2,
+            MovementStatusElements.MSEHasTransportData,
+            MovementStatusElements.MSEHasGuidByte4,
+            MovementStatusElements.MSEHasTransportGuidByte1,
+            MovementStatusElements.MSEHasTransportGuidByte3,
+            MovementStatusElements.MSEHasTransportGuidByte6,
+            MovementStatusElements.MSEHasTransportGuidByte4,
+            MovementStatusElements.MSEHasTransportGuidByte5,
+            MovementStatusElements.MSEHasTransportGuidByte2,
+            MovementStatusElements.MSEHasTransportGuidByte0,
+            MovementStatusElements.MSEHasTransportGuidByte7,
+            MovementStatusElements.MSEHasGuidByte3,
+            MovementStatusElements.MSEHasGuidByte1,
+            MovementStatusElements.MSEHasUnkBitA,
+            MovementStatusElements.MSEUnkBitABit,
+            MovementStatusElements.MSEUnkBitABit,
+            MovementStatusElements.MSEUnkBitAByte,
+            MovementStatusElements.MSETransportGuidByte4,
+            MovementStatusElements.MSETransportGuidByte3,
+            MovementStatusElements.MSETransportGuidByte7,
+            MovementStatusElements.MSETransportGuidByte1,
+            MovementStatusElements.MSETransportGuidByte6,
+            MovementStatusElements.MSETransportGuidByte0,
+            MovementStatusElements.MSETransportGuidByte2,
+            MovementStatusElements.MSETransportGuidByte5,
+            MovementStatusElements.MSEGuidByte4,
+            MovementStatusElements.MSEGuidByte7,
+            MovementStatusElements.MSEPositionZ,
+            MovementStatusElements.MSEPositionY,
+            MovementStatusElements.MSEGuidByte2,
+            MovementStatusElements.MSEGuidByte3,
+            MovementStatusElements.MSEGuidByte5,
+            MovementStatusElements.MSEPositionX,
+            MovementStatusElements.MSECount,
+            MovementStatusElements.MSEGuidByte0,
+            MovementStatusElements.MSEGuidByte6,
+            MovementStatusElements.MSEGuidByte1,
+            MovementStatusElements.MSEOrientation,
+            MovementStatusElements.MSEEnd
+        };
     }
 }

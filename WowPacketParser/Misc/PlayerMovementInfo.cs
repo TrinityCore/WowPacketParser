@@ -76,6 +76,10 @@ namespace WowPacketParser.Misc
         MSECount,
         MSECounter,
 
+        MSEHasUnkBitA,
+        MSEUnkBitABit,
+        MSEUnkBitAByte,
+
         // Special
         MSEZeroBit,         // writes bit value 1 or skips read bit
         MSEOneBit,          // writes bit value 0 or skips read bit
