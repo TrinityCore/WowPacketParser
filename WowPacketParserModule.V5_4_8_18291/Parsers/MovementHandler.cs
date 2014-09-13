@@ -1,5 +1,6 @@
 ﻿using System;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParserModule.V5_4_8_18291.Enums;
@@ -223,8 +224,13 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                         pos.Z = packet.ReadSingle();
                         break;
                     case MovementStatusElements.MSEOrientation:
-                        if (hasOrientation)
+                        if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_MOVE_TELEPORT))
                             pos.O = packet.ReadSingle();
+                        else
+                        {
+                            if (hasOrientation)
+                                pos.O = packet.ReadSingle();
+                        }
                         break;
                     case MovementStatusElements.MSETransportPositionX:
                         if (hasTransportData)
