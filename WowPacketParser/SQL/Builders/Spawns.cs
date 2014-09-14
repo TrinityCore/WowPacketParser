@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
+using System.Linq;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
@@ -47,9 +48,11 @@ namespace WowPacketParser.SQL.Builders
                 return string.Empty;
 
             const string tableName = "creature";
+            const string addonTableName = "creature_template_addon";
 
             uint count = 0;
             var rows = new List<QueryBuilder.SQLInsertRow>();
+            var addonRows = new List<QueryBuilder.SQLInsertRow>();
             foreach (var unit in units)
             {
                 var row = new QueryBuilder.SQLInsertRow();
@@ -118,8 +121,47 @@ namespace WowPacketParser.SQL.Builders
                 row.AddValue("spawntimesecs", creature.GetDefaultSpawnTime());
                 row.AddValue("spawndist", spawnDist);
                 row.AddValue("MovementType", movementType);
+
                 row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
                 row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, creature.Area, false) + ")";
+
+
+                var auras = string.Empty;
+                var commentAuras = string.Empty;
+                if (creature.Auras != null && creature.Auras.Count() != 0)
+                {
+                    foreach (var aura in creature.Auras)
+                    {
+                        if (aura == null)
+                            continue;
+
+                        // usually "template auras" do not have caster
+                        if (ClientVersion.AddedInVersion(ClientType.MistsOfPandaria) ? !aura.AuraFlags.HasAnyFlag(AuraFlagMoP.NoCaster) : !aura.AuraFlags.HasAnyFlag(AuraFlag.NotCaster))
+                            continue;
+
+                        auras += aura.SpellId + " ";
+                        commentAuras += aura.SpellId.ToString() + " - " + StoreGetters.GetName(StoreNameType.Spell, (int)aura.SpellId, false) + ", ";
+                    }
+
+                    auras = auras.TrimEnd(' ');
+                    commentAuras = commentAuras.TrimEnd(',', ' ');
+
+                    row.Comment += " (Auras: " + commentAuras + ")";
+                }
+
+                var addonRow = new QueryBuilder.SQLInsertRow();
+                if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_addon))
+                {
+                    addonRow.AddValue("guid", "@CGUID+" + count, noQuotes: true);
+                    addonRow.AddValue("mount", creature.Mount);
+                    addonRow.AddValue("bytes1", creature.Bytes1, true);
+                    addonRow.AddValue("bytes2", creature.Bytes2, true);
+                    addonRow.AddValue("auras", auras);
+                    addonRow.Comment += StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
+                    if (!String.IsNullOrWhiteSpace(auras))
+                        addonRow.Comment += " - " + commentAuras;
+                    addonRows.Add(addonRow);
+                }
 
                 if (creature.IsTemporarySpawn())
                 {
@@ -147,10 +189,18 @@ namespace WowPacketParser.SQL.Builders
                 // delete query for GUIDs
                 var delete = new QueryBuilder.SQLDelete(Tuple.Create("@CGUID+0", "@CGUID+" + --count), "guid", tableName);
                 result.Append(delete.Build());
+                var sql = new QueryBuilder.SQLInsert(tableName, rows, withDelete: false);
+                result.Append(sql.Build());
+
+                if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_addon))
+                {
+                    var addonDelete = new QueryBuilder.SQLDelete(Tuple.Create("@CGUID+0", "@CGUID+" + --count), "guid", addonTableName);
+                    result.Append(addonDelete.Build());
+                    var addonSql = new QueryBuilder.SQLInsert(addonTableName, addonRows, withDelete: false);
+                    result.Append(addonSql.Build());
+                }
             }
 
-            var sql = new QueryBuilder.SQLInsert(tableName, rows, withDelete: false);
-            result.Append(sql.Build());
             return result.ToString();
         }
 

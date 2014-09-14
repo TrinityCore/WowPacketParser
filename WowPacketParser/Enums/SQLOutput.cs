@@ -10,6 +10,7 @@
         creature_movement,
         creature_template,
         creature_template_addon,
+        creature_addon,
         creature_text,
         defense_message,
         gameobject,
