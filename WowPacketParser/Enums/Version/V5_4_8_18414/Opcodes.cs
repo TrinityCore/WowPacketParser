@@ -285,6 +285,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_VOID_STORAGE_UNLOCK,                      0x0444 | 0x10000}, //--
             {Opcode.CMSG_VOID_SWAP_ITEM,                           0x0655 | 0x10000}, //--
             {Opcode.CMSG_WARDEN_DATA,                              0x1816 | 0x10000}, //+-
+            {Opcode.CMSG_WRAP_ITEM,                                0x02DF | 0x10000}, //+-
             {Opcode.CMSG_MOVE_WATER_WALK_ACK,                      0x10F2 | 0x10000}, //++
             {Opcode.CMSG_WHO,                                      0x18A3 | 0x10000}, //--
             {Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE,              0x15AB | 0x10000}, //+-

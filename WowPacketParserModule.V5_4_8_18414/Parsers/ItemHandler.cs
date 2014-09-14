@@ -365,6 +365,27 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadToEnd();
         }
 
+        [Parser(Opcode.CMSG_WRAP_ITEM)]
+        public static void HandleWrapItem(Packet packet)
+        {
+            var count = packet.ReadBits("count", 2);
+            var hasBag = new bool[count];
+            var hasSlot = new bool[count];
+            for (var i = 0; i < count; i++)
+            {
+                hasBag[i] = !packet.ReadBit("!hasBag", i); // 80
+                hasSlot[i] = !packet.ReadBit("!hasSlot", i); // 81
+            }
+            packet.ResetBitReader();
+            for (var i = 0; i < count; i++)
+            {
+                if (hasSlot[i])
+                    packet.ReadByte("Slot", i);
+                if (hasBag[i])
+                    packet.ReadSByte("Bag", i);
+            }
+        }
+
         [Parser(Opcode.SMSG_BUY_FAILED)]
         public static void HandleBuyFailed(Packet packet)
         {
