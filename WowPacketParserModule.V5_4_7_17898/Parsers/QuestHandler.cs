@@ -218,7 +218,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         {
             packet.ReadInt32("RewSkillId");
             packet.ReadEntry<Int32>(StoreNameType.Quest, "Quest ID");
-            packet.ReadInt32("Unk Int32 1");
+            packet.ReadInt32("Talent Points");
             packet.ReadInt32("RewSkillPoints");
             packet.ReadInt32("Money");
             packet.ReadInt32("XP");
