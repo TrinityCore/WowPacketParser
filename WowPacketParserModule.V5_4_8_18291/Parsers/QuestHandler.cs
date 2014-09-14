@@ -632,5 +632,18 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             for (var i = 0; i < count; i++)
                 packet.ReadEntry<Int32>(StoreNameType.Quest, "Quest ID", i);
         }
+
+        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE)]
+        public static void HandleQuestCompleted(Packet packet)
+        {
+            packet.ReadBit("Unk Bit 1");
+            packet.ReadBit("Unk Bit 2");
+            packet.ReadInt32("Unk Int32 1");
+            packet.ReadInt32("Money");
+            packet.ReadEntry<Int32>(StoreNameType.Quest, "Quest ID");
+            packet.ReadInt32("RewSkillId");
+            packet.ReadInt32("XP");
+            packet.ReadInt32("RewSkillPoints");
+        }
     }
 }
