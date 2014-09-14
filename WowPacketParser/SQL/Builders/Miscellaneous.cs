@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using MySql.Data.MySqlClient;
 using WowPacketParser.Enums;
@@ -175,6 +176,15 @@ namespace WowPacketParser.SQL.Builders
                     continue;
 
                 var go = goT.Value;
+
+                if (Settings.AreaFilters.Length > 0)
+                    if (!(go.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
+                        continue;
+
+                if (Settings.MapFilters.Length > 0)
+                    if (!(go.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
+                        continue;
+
                 var template = new GameObjectTemplateNonWDB
                 {
                     Size = go.Size.GetValueOrDefault(1.0f),
