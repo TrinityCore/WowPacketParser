@@ -386,7 +386,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_INITIAL_SPELLS, 0x045A},
             {Opcode.SMSG_INSTANCE_RESET, 0x160F},
             {Opcode.SMSG_INVENTORY_CHANGE_FAILURE, 0x0C1E},
-            {Opcode.SMSG_INSPECT, 0x1842},
+            {Opcode.SMSG_INSPECT_RESULTS_UPDATE, 0x1842},
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0x0E0A},
             {Opcode.SMSG_ITEM_TIME_UPDATE, 0x18C1},
             {Opcode.SMSG_LEARNED_SPELL, 0x129A},
