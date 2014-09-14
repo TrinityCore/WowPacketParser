@@ -1564,13 +1564,10 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadToEnd();
         }
 
-
-        [Parser(Opcode.CMSG_NULL_0023)]
         [Parser(Opcode.CMSG_NULL_0060)]
         [Parser(Opcode.CMSG_NULL_0082)]
         [Parser(Opcode.CMSG_NULL_0141)]
         [Parser(Opcode.CMSG_NULL_01C0)]
-        [Parser(Opcode.CMSG_NULL_0276)]
         [Parser(Opcode.CMSG_NULL_02D6)]
         [Parser(Opcode.CMSG_NULL_02DA)]
         [Parser(Opcode.CMSG_NULL_032D)]
@@ -1608,7 +1605,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_NULL_1A87)]
         [Parser(Opcode.CMSG_NULL_1C45)]
         [Parser(Opcode.CMSG_NULL_1C5A)]
-        [Parser(Opcode.CMSG_NULL_1CE3)]
         [Parser(Opcode.CMSG_NULL_1D61)]
         [Parser(Opcode.CMSG_NULL_1DC3)]
         [Parser(Opcode.CMSG_NULL_1F34)]

@@ -287,12 +287,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 packet.ReadInt32("unk");
         }
 
-        [Parser(Opcode.CMSG_UNK_00A7)]
-        public static void HandleUnk00A7(Packet packet)
-        {
-            packet.ReadByte("unk");
-        }
-
         [Parser(Opcode.CMSG_UNK_0264)]
         public static void HandleUnk0264(Packet packet)
         {
@@ -1458,12 +1452,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         public static void HandleUnk1446(Packet packet)
         {
             packet.ReadInt32("unk");
-        }
-
-        [Parser(Opcode.CMSG_UNK_14E3)]
-        public static void HandleUnk14E3(Packet packet)
-        {
-            packet.ReadInt64("unk");
         }
 
         [Parser(Opcode.CMSG_UNK_03E4)]

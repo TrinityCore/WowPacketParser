@@ -14,7 +14,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
         //                                                                              /checked in code
         //                                                                               /checked with sniff
             {Opcode.CMSG_ACCEPT_LEVEL_GRANT,                       0x02FB | 0x10000}, //+-
-            {Opcode.CMSG_ACCEPT_TRADE,                             0x144D | 0x10000}, //+-
+            {Opcode.CMSG_ACCEPT_TRADE,                             0x144D | 0x10000}, //++
             {Opcode.CMSG_ACTIVATETAXI,                             0x03C9 | 0x10000}, //++
             {Opcode.CMSG_ACTIVATETAXIEXPRESS,                      0x06FB | 0x10000}, //++
             {Opcode.CMSG_ADD_FRIEND,                               0x09A6 | 0x10000}, //--
@@ -53,6 +53,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_BATTLE_PET_SET_BATTLE_SLOT,               0x0163 | 0x10000}, //+-
             {Opcode.CMSG_BATTLE_PET_SET_FLAGS,                     0x17AC | 0x10000}, //+-
             {Opcode.CMSG_BATTLE_PET_SUMMON_COMPANION,              0x1896 | 0x10000}, //+-
+            {Opcode.CMSG_BEGIN_TRADE,                              0x1CE3 | 0x10000}, //++
             {Opcode.CMSG_BINDER_ACTIVATE,                          0x1248 | 0x10000}, //+-
             {Opcode.CMSG_BLACK_MARKET_BID,                         0x12C8 | 0x10000}, //++
             {Opcode.CMSG_BLACK_MARKET_HELLO,                       0x075A | 0x10000}, //++
@@ -63,7 +64,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_CANCEL_AURA,                              0x1861 | 0x10000}, //++
             {Opcode.CMSG_CANCEL_CAST,                              0x18C0 | 0x10000}, //++
             {Opcode.CMSG_CANCEL_MOUNT_AURA,                        0x10E3 | 0x10000}, //++ ??
-            {Opcode.CMSG_CANCEL_TRADE,                             0x1941 | 0x10000}, //+-
+            {Opcode.CMSG_CANCEL_TRADE,                             0x1941 | 0x10000}, //++
             {Opcode.CMSG_CAST_SPELL,                               0x0206 | 0x10000}, //++
             {Opcode.CMSG_CHANNEL_ROSTER_INFO,                      0x0C1B | 0x10000}, //++
             {Opcode.CMSG_CHAR_CREATE,                              0x0F1D | 0x10000}, //--
@@ -73,6 +74,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_CHAR_FACTION_CHANGE,                      0x0329 | 0x10000}, //--
             {Opcode.CMSG_CHAR_RENAME,                              0x0963 | 0x10000}, //--
             {Opcode.CMSG_CHAT_IGNORED,                             0x048A | 0x10000}, //--
+            {Opcode.CMSG_CLEAR_TRADE_ITEM,                         0x00A7 | 0x10000}, //++
             {Opcode.CMSG_CONTACT_LIST,                             0x0BB4 | 0x10000}, //--
             //{Opcode.CMSG_CORPSE_MAP_POSITION_QUERY,                0x0150 | 0x10000}, //-- ??
             {Opcode.CMSG_CORPSE_QUERY,                             0x1FBE | 0x10000}, //++
@@ -128,6 +130,8 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_GUILD_REQUEST_CHALLENGE_UPDATE,           0x147A | 0x10000}, //--
             {Opcode.CMSG_GUILD_ROSTER,                             0x1459 | 0x10000}, //--
             {Opcode.CMSG_GUILD_SET_GUILD_MASTER,                   0x1A83 | 0x10000}, //--
+            {Opcode.CMSG_IGNORE_TRADE,                             0x0276 | 0x10000}, //++
+            {Opcode.CMSG_INITIATE_TRADE,                           0x0267 | 0x10000}, //++
             {Opcode.CMSG_INSPECT,                                  0x1259 | 0x10000}, //++
             {Opcode.CMSG_ITEM_REFUND_INFO,                         0x1258 | 0x10000}, //+-
             {Opcode.CMSG_JOIN_CHANNEL,                             0x148E | 0x10000}, //++
@@ -252,7 +256,8 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_SET_SELECTION,                            0x0740 | 0x10000}, //++
             {Opcode.CMSG_SET_TAXI_BENCHMARK_MODE,                  0x0762 | 0x10000}, //--
             {Opcode.CMSG_SET_TITLE,                                0x03C7 | 0x10000}, //+-
-            {Opcode.CMSG_SET_TRADE_GOLD,                           0x14E3 | 0x10000}, //--
+            {Opcode.CMSG_SET_TRADE_GOLD,                           0x14E3 | 0x10000}, //++
+            {Opcode.CMSG_SET_TRADE_ITEM,                           0x03D5 | 0x10000}, //++
             {Opcode.CMSG_SETSHEATHED,                              0x0249 | 0x10000}, //++
             {Opcode.CMSG_SHOWING_CLOAK,                            0x02F2 | 0x10000}, //--
             {Opcode.CMSG_SHOWING_HELM,                             0x126B | 0x10000}, //--
@@ -276,6 +281,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_TRAINER_LIST,                             0x034B | 0x10000}, //--
             {Opcode.CMSG_TRANSMOGRIFY_ITEMS,                       0x06D7 | 0x10000}, //+-
             {Opcode.CMSG_TURN_IN_PETITION,                         0x0673 | 0x10000}, //--
+            {Opcode.CMSG_UNACCEPT_TRADE,                           0x0023 | 0x10000}, //++
             {Opcode.CMSG_UNLEARN_SKILL,                            0x0268 | 0x10000}, //++
             {Opcode.CMSG_UNREGISTER_ALL_ADDON_PREFIXES,            0x029F | 0x10000}, //++
             {Opcode.CMSG_UPDATE_ACCOUNT_DATA,                      0x0068 | 0x10000}, //++
@@ -295,7 +301,6 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_UNK_0002,                                 0x0002 | 0x10000}, //++
             {Opcode.CMSG_UNK_006B,                                 0x006B | 0x10000}, //++
             {Opcode.CMSG_UNK_0087,                                 0x0087 | 0x10000}, //++
-            {Opcode.CMSG_UNK_00A7,                                 0x00A7 | 0x10000}, //+-
             {Opcode.CMSG_UNK_00D9,                                 0x00D9 | 0x10000}, //++ PENDING_STRAFE_STOP
             {Opcode.CMSG_UNK_00F2,                                 0x00F2 | 0x10000}, //++
             {Opcode.CMSG_UNK_0123,                                 0x0123 | 0x10000}, //++
@@ -325,7 +330,6 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_UNK_12B3,                                 0x12B3 | 0x10000}, //++
             {Opcode.CMSG_UNK_1341,                                 0x1341 | 0x10000}, //++
             {Opcode.CMSG_UNK_1446,                                 0x1446 | 0x10000}, //+-
-            {Opcode.CMSG_UNK_14E3,                                 0x14E3 | 0x10000}, //+-
             {Opcode.CMSG_UNK_15A9,                                 0x15A9 | 0x10000}, //++
             {Opcode.CMSG_UNK_15DB,                                 0x15DB | 0x10000}, //++
             {Opcode.CMSG_UNK_17BA,                                 0x17BA | 0x10000}, //++
@@ -335,12 +339,10 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_UNK_19C3,                                 0x19C3 | 0x10000}, //++
             {Opcode.CMSG_UNK_1D36,                                 0x1D36 | 0x10000}, //++
             {Opcode.CMSG_UNK_1DAE,                                 0x1DAE | 0x10000}, //++
-            {Opcode.CMSG_NULL_0023,                                0x0023 | 0x10000}, //+-
             {Opcode.CMSG_NULL_0060,                                0x0060 | 0x10000}, //+-
             {Opcode.CMSG_NULL_0082,                                0x0082 | 0x10000}, //+-
             {Opcode.CMSG_NULL_0141,                                0x0141 | 0x10000}, //+-
             {Opcode.CMSG_NULL_01C0,                                0x01C0 | 0x10000}, //+-
-            {Opcode.CMSG_NULL_0276,                                0x0276 | 0x10000}, //+-
             {Opcode.CMSG_NULL_02D6,                                0x02D6 | 0x10000}, //+-
             {Opcode.CMSG_NULL_02DA,                                0x02DA | 0x10000}, //+-
             {Opcode.CMSG_NULL_032D,                                0x032D | 0x10000}, //+-
@@ -376,7 +378,6 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_NULL_1A87,                                0x1A87 | 0x10000}, //+-
             {Opcode.CMSG_NULL_1C45,                                0x1C45 | 0x10000}, //+-
             {Opcode.CMSG_NULL_1C5A,                                0x1C5A | 0x10000}, //+-
-            {Opcode.CMSG_NULL_1CE3,                                0x1CE3 | 0x10000}, //+-
             {Opcode.CMSG_NULL_1D61,                                0x1D61 | 0x10000}, //+-
             {Opcode.CMSG_NULL_1DC3,                                0x1DC3 | 0x10000}, //+-
             {Opcode.CMSG_NULL_1F34,                                0x1F34 | 0x10000}, //+-
@@ -684,8 +685,8 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_THREAT_UPDATE,                            0x0632 | 0x20000}, //++
             {Opcode.SMSG_TIME_SYNC_REQ,                            0x1A8F | 0x20000}, //++
             {Opcode.SMSG_TOTEM_CREATED,                            0x1C8F | 0x20000}, //++
-            {Opcode.SMSG_TRADE_STATUS,                             0x1963 | 0x20000}, //--
-            {Opcode.SMSG_TRADE_UPDATED,                            0x181E | 0x20000}, //--
+            {Opcode.SMSG_TRADE_STATUS,                             0x1963 | 0x20000}, //++
+            {Opcode.SMSG_TRADE_STATUS_EXTENDED,                    0x181E | 0x20000}, //++
             {Opcode.SMSG_TRAINER_LIST,                             0x189F | 0x20000}, //--
             {Opcode.SMSG_TRANSFER_PENDING,                         0x061B | 0x20000}, //++
             {Opcode.SMSG_TRIGGER_CINEMATIC,                        0x0B01 | 0x20000}, //--
