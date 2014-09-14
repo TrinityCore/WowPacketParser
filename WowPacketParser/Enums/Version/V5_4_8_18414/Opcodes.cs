@@ -156,7 +156,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_MESSAGECHAT_ADDON_WHISPER,                0x0EBB | 0x10000}, //++
             {Opcode.CMSG_MESSAGECHAT_AFK,                          0x0EAB | 0x10000}, //++
             {Opcode.CMSG_MESSAGECHAT_CHANNEL,                      0x00BB | 0x10000}, //--
-            {Opcode.CMSG_MESSAGECHAT_DND,                          0x002E | 0x10000}, //--
+            {Opcode.CMSG_MESSAGECHAT_DND,                          0x002E | 0x10000}, //++
             {Opcode.CMSG_MESSAGECHAT_EMOTE,                        0x103E | 0x10000}, //+-
             {Opcode.CMSG_MESSAGECHAT_GUILD,                        0x0CAE | 0x10000}, //+-
             {Opcode.CMSG_MESSAGECHAT_OFFICER,                      0x0ABF | 0x10000}, //--
@@ -213,7 +213,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_QUESTGIVER_HELLO,                         0x02DB | 0x10000}, //--
             {Opcode.CMSG_QUESTGIVER_QUERY_QUEST,                   0x12F0 | 0x10000}, //--
             {Opcode.CMSG_QUESTGIVER_REQUEST_REWARD,                0x0378 | 0x10000}, //--
-            {Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY,         0x02F1 | 0x10000}, //--
+            {Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY,         0x02F1 | 0x10000}, //+-
             {Opcode.CMSG_QUESTGIVER_STATUS_QUERY,                  0x036A | 0x10000}, //++
             {Opcode.CMSG_QUEST_POI_QUERY,                          0x10C2 | 0x10000}, //++
             {Opcode.CMSG_QUEST_QUERY,                              0x02D5 | 0x10000}, //--

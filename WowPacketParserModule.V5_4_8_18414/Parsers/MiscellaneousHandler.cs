@@ -114,7 +114,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         [Parser(Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY)]
         public static void HandleQuestgiverStatusMultipleQuery(Packet packet)
         {
-            packet.ReadToEnd();
         }
 
         [Parser(Opcode.CMSG_RAID_READY_CHECK_CONFIRM)]
