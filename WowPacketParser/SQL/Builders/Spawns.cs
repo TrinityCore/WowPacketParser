@@ -48,7 +48,7 @@ namespace WowPacketParser.SQL.Builders
                 return string.Empty;
 
             const string tableName = "creature";
-            const string addonTableName = "creature_template_addon";
+            const string addonTableName = "creature_addon";
 
             uint count = 0;
             var rows = new List<QueryBuilder.SQLInsertRow>();
