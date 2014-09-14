@@ -279,6 +279,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_UPDATE_ACCOUNT_DATA,                      0x0068 | 0x10000}, //++
             {Opcode.CMSG_UPGRADE_ITEM,                             0x1042 | 0x10000}, //++
             {Opcode.CMSG_USE_ITEM,                                 0x1CC1 | 0x10000}, //--
+            {Opcode.CMSG_USED_FOLLOW,                              0x0374 | 0x10000}, //++
             {Opcode.CMSG_VIOLENCE_LEVEL,                           0x0040 | 0x10000}, //+-
             {Opcode.CMSG_VOID_STORAGE_QUERY,                       0x0140 | 0x10000}, //--
             {Opcode.CMSG_VOID_STORAGE_TRANSFER,                    0x1440 | 0x10000}, //+-
@@ -344,7 +345,6 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_NULL_033D,                                0x033D | 0x10000}, //+-
             {Opcode.CMSG_NULL_0360,                                0x0360 | 0x10000}, //++
             {Opcode.CMSG_NULL_0365,                                0x0365 | 0x10000}, //+-
-            {Opcode.CMSG_NULL_0374,                                0x0374 | 0x10000}, //+-
             {Opcode.CMSG_NULL_03C4,                                0x03C4 | 0x10000}, //+-
             {Opcode.CMSG_NULL_0558,                                0x0558 | 0x10000}, //+-
             {Opcode.CMSG_NULL_05E1,                                0x05E1 | 0x10000}, //+-
