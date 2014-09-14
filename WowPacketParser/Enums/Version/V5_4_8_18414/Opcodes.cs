@@ -243,6 +243,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_SET_ACTIVE_MOVER,                         0x09F0 | 0x10000}, //++
             {Opcode.CMSG_SET_CONTACT_NOTES,                        0x0937 | 0x10000}, //--
             {Opcode.CMSG_SET_DUNGEON_DIFFICULTY,                   0x1A36 | 0x10000}, //--
+            {Opcode.CMSG_SET_EVERYONE_IS_ASSISTANT,                0x1A36 | 0x10000}, //--
             {Opcode.CMSG_SET_PLAYER_DECLINED_NAMES,                0x09E2 | 0x10000}, //++
             {Opcode.CMSG_SET_PRIMARY_TALENT_TREE,                  0x06C6 | 0x10000}, //+-
             {Opcode.CMSG_SET_PVP,                                  0x02C5 | 0x10000}, //--
