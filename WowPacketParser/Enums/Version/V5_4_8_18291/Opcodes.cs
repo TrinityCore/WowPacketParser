@@ -202,7 +202,6 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_RETURN_TO_GRAVEYARD, 0x12EA},
             {Opcode.CMSG_RESET_FACTION_CHEAT, 0x10B6},
             {Opcode.CMSG_SAVE_CUF_PROFILES, 0x06E6},
-            {Opcode.CMSG_SELECT_FACTION, 0x0027},
             {Opcode.CMSG_SELL_ITEM, 0x1358},
             {Opcode.CMSG_SEND_MAIL, 0x1DBA},
             {Opcode.CMSG_SET_ACTIONBAR_TOGGLES, 0x0672},
