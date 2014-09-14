@@ -1124,13 +1124,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Reward Skill Points");
             packet.ReadEntry<Int32>(StoreNameType.Quest, "Quest ID");
             packet.ReadInt32("Reward Skill Id");
-            packet.ReadInt32("Unk5"); // Talent points?
+            packet.ReadInt32("Talent Points");
         }
 
         [Parser(Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestCompleted434(Packet packet)
         {
-            packet.ReadInt32("TalentPoints");
+            packet.ReadInt32("Talent Points");
             packet.ReadInt32("RewSkillPoints");
             packet.ReadInt32("Money");
             packet.ReadInt32("XP");
@@ -1143,7 +1143,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestCompleted510(Packet packet)
         {
-            packet.ReadInt32("Unk Int32 1");
+            packet.ReadInt32("Talent Points");
             packet.ReadInt32("Money");
             packet.ReadEntry<Int32>(StoreNameType.Quest, "Quest ID");
             packet.ReadInt32("XP");
