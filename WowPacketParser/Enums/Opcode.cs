@@ -655,6 +655,7 @@ namespace WowPacketParser.Enums
         CMSG_SAVE_CUF_PROFILES,
         CMSG_SAVE_DANCE,
         CMSG_SAVE_PLAYER,
+        CMSG_SELECT_FACTION,
         CMSG_SELF_RES,
         CMSG_SELL_ITEM,
         CMSG_SEND_COMBAT_TRIGGER,
