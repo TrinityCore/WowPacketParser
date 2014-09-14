@@ -194,7 +194,7 @@ namespace WowPacketParser.SQL.Builders
 
                 if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_addon))
                 {
-                    var addonDelete = new QueryBuilder.SQLDelete(Tuple.Create("@CGUID+0", "@CGUID+" + --count), "guid", addonTableName);
+                    var addonDelete = new QueryBuilder.SQLDelete(Tuple.Create("@CGUID+0", "@CGUID+" + count), "guid", addonTableName);
                     result.Append(addonDelete.Build());
                     var addonSql = new QueryBuilder.SQLInsert(addonTableName, addonRows, withDelete: false);
                     result.Append(addonSql.Build());
