@@ -276,11 +276,11 @@ namespace WowPacketParser.Misc
             AddValue(name, val + (Settings.DebugReads ? " (0x" + val.ToString("X4") + ")" : String.Empty), indexes);
             return val;
         }
-        public int ReadInt32Visible(string name, params int[] values)
+        public int ReadInt32Visible(string name, params object[] indexes)
         {
             int val = ReadInt32();
             if (val != 0)
-                WriteLine("{0}{1}: {2}{3}", GetIndexString(values), name, val, (Settings.DebugReads ? " (0x" + val.ToString("X8") + ")" : String.Empty));
+                AddValue(name, val + (Settings.DebugReads ? " (0x" + val.ToString("X4") + ")" : String.Empty), indexes);
             return val;
         }
 
@@ -481,11 +481,11 @@ namespace WowPacketParser.Misc
             return val;
         }
 
-        public Bit ReadBitVisible(string name, params int[] values)
+        public Bit ReadBitVisible(string name, params object[] indexes)
         {
             var bit = ReadBit();
             if (bit)
-                WriteLine("{0}{1}: {2}", GetIndexString(values), name, bit ? "1" : "0");
+                AddValue(name, bit ? "1" : "0", indexes);
             return bit;
         }
 

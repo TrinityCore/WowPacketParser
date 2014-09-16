@@ -504,6 +504,15 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             packet.ReadToEnd();
         }
 
+        [Parser(Opcode.SMSG_REQUEST_CEMETERY_LIST_RESPONSE)]
+        public static void HandleRequestCemeteryListResponse(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 22);
+            packet.ReadBit("Is MicroDungeon"); // Named in WorldMapFrame.lua
+            for (int i = 0; i < count; i++)
+                packet.ReadInt32("Cemetery Id", i); // 6
+        }
+
         [Parser(Opcode.SMSG_SERVER_MESSAGE)]
         public static void HandleServerMessage(Packet packet)
         {
@@ -968,15 +977,6 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 for (var j = 0; j < cnt[i]; j++)
                     packet.ReadInt32("unk56", i, j);
             }
-        }
-
-        [Parser(Opcode.SMSG_UNK_042A)] // pair CMSG_NULL_06E4
-        public static void HandleUnk042A(Packet packet)
-        {
-            var count = packet.ReadBits("count", 22);
-            packet.ReadBit("unk");
-            for (var i = 0; i < count; i++)
-                packet.ReadInt32("unk6", i);
         }
 
         [Parser(Opcode.SMSG_UNK_043F)]
