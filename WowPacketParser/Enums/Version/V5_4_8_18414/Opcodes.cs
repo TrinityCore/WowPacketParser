@@ -139,6 +139,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.CMSG_LEAVE_CHANNEL,                            0x042A | 0x10000}, //--
             {Opcode.CMSG_LFG_PLAYER_LOCK_INFO_REQUEST,             0x006B | 0x10000}, //--
             {Opcode.CMSG_LFG_TELEPORT,                             0x1AA6 | 0x10000}, //--
+            {Opcode.CMSG_LFG_JOIN,                                 0x046B | 0x10000}, //--
             {Opcode.CMSG_LIST_INVENTORY,                           0x02D8 | 0x10000}, //++
             {Opcode.CMSG_LOAD_SCREEN,                              0x1DBD | 0x10000}, //++
             {Opcode.CMSG_LOG_DISCONNECT,                           0x10B3 | 0x10000}, //++
@@ -543,7 +544,9 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18414
             {Opcode.SMSG_ITEM_UPGRADE_RESULT,                      0x0222 | 0x20000}, //++
             {Opcode.SMSG_LEARNED_SPELL,                            0x129A | 0x20000}, //++
             {Opcode.SMSG_LEVELUP_INFO,                             0x1961 | 0x20000}, //++
+            {Opcode.SMSG_LFG_JOIN_RESULT,                          0x18E3 | 0x20000}, //--
             {Opcode.SMSG_LFG_PLAYER_INFO,                          0x1861 | 0x20000}, //++
+            {Opcode.SMSG_LFG_QUEUE_STATUS,                         0x0C2E | 0x20000}, //--
             {Opcode.SMSG_LIST_INVENTORY,                           0x1AAE | 0x20000}, //-+
             {Opcode.SMSG_LOAD_CUF_PROFILES,                        0x0E32 | 0x20000}, //++
             {Opcode.SMSG_LOG_XPGAIN,                               0x1E9A | 0x20000}, //--
