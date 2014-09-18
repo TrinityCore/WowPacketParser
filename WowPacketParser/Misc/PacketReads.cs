@@ -154,11 +154,9 @@ namespace WowPacketParser.Misc
         public UpdateField ReadUpdateField()
         {
             long pos = Position;
-            uint svalue = ReadUInt32();
-            SetPosition(pos);
-            float fvalue = ReadSingle();
+            uint val = ReadUInt32();
 
-            var field = new UpdateField(svalue, fvalue);
+            var field = new UpdateField(val);
             return field;
         }
 
