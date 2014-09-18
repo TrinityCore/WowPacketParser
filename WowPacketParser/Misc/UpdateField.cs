@@ -1,7 +1,9 @@
 using System;
+using System.Runtime.InteropServices;
 
 namespace WowPacketParser.Misc
 {
+    [StructLayout(LayoutKind.Explicit)]
     public struct UpdateField
     {
         public UpdateField(uint val1, float val2)
@@ -10,8 +12,10 @@ namespace WowPacketParser.Misc
             SingleValue = val2;
         }
 
+        [FieldOffset(0)]
         public readonly uint UInt32Value;
 
+        [FieldOffset(0)]
         public readonly float SingleValue;
 
         public override bool Equals(object obj)
