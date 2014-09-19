@@ -2994,6 +2994,29 @@ namespace WowPacketParserModule.V5_4_8_18414.Misc
             MovementStatusElements.MSEEnd,
         };
 
+        public MovementStatusElements[] SUnk0861 = // 5.4.8 18414 0861
+        {
+            MovementStatusElements.MSEHasGuidByte0,
+            MovementStatusElements.MSEHasGuidByte6,
+            MovementStatusElements.MSEHasGuidByte1,
+            MovementStatusElements.MSEHasGuidByte3,
+            MovementStatusElements.MSEHasGuidByte7,
+            MovementStatusElements.MSEHasGuidByte4,
+            MovementStatusElements.MSEHasGuidByte5,
+            MovementStatusElements.MSEHasGuidByte2,
+            MovementStatusElements.MSEGuidByte6,
+            MovementStatusElements.MSEGuidByte7,
+            MovementStatusElements.MSEGuidByte0,
+            MovementStatusElements.MSEGuidByte3,
+            MovementStatusElements.MSEExtraInt32,
+            MovementStatusElements.MSECount,
+            MovementStatusElements.MSEGuidByte1,
+            MovementStatusElements.MSEGuidByte5,
+            MovementStatusElements.MSEGuidByte2,
+            MovementStatusElements.MSEGuidByte4,
+            MovementStatusElements.MSEEnd,
+        };
+
         public MovementStatusElements[] Unk09DB = 
         {
             MovementStatusElements.MSEPositionX,              // 36
@@ -4177,6 +4200,86 @@ namespace WowPacketParserModule.V5_4_8_18414.Misc
             MovementStatusElements.MSEGuidByte6,              // 30
             MovementStatusElements.MSETimestamp,              // 40
             MovementStatusElements.MSEGuidByte2,              // 26
+            MovementStatusElements.MSEEnd
+        };
+
+        public MovementStatusElements[] CUnk185B = // 185B +8
+        {
+            MovementStatusElements.MSEPositionY,              // 48  30h
+            MovementStatusElements.MSECount,                  // 184
+            MovementStatusElements.MSEPositionX,              // 44  2ch
+            MovementStatusElements.MSEPositionZ,              // 52  34h
+            MovementStatusElements.MSEExtraInt32,             // 16  10h
+            MovementStatusElements.MSEHasGuidByte2,           // 26
+            MovementStatusElements.MSEHasMovementFlags2,      // 36
+            MovementStatusElements.MSEHasGuidByte3,           // 27
+            MovementStatusElements.MSECounterCount,           // 160
+            MovementStatusElements.MSEHasMovementFlags,       // 32
+            MovementStatusElements.MSEHasTimestamp,           // 40
+            MovementStatusElements.MSEHasFallData,            // 148
+            MovementStatusElements.MSEHasGuidByte5,           // 29
+            MovementStatusElements.MSEHasTransportData,       // 112
+            MovementStatusElements.MSEbit148,                 // 156
+            MovementStatusElements.MSEHasGuidByte0,           // 24
+            MovementStatusElements.MSEHasGuidByte7,           // 31
+            MovementStatusElements.MSEHasGuidByte1,           // 25
+            MovementStatusElements.MSEHasUnkTime,             // 176
+            MovementStatusElements.MSEHasGuidByte4,           // 28
+            MovementStatusElements.MSEbit172,                 // 180
+            MovementStatusElements.MSEHasGuidByte6,           // 30
+            MovementStatusElements.MSEHasSplineElevation,     // 152 98h
+            MovementStatusElements.MSEHasOrientation,         // 56  38h
+            MovementStatusElements.MSEbit149,                 // 157
+            MovementStatusElements.MSEHasPitch,               // 120 78h
+            MovementStatusElements.MSEHasTransportTime2,      // 100
+            MovementStatusElements.MSEHasTransportGuidByte3,  // 67
+            MovementStatusElements.MSEHasTransportGuidByte2,  // 66
+            MovementStatusElements.MSEHasTransportGuidByte0,  // 64
+            MovementStatusElements.MSEHasTransportGuidByte4,  // 68
+            MovementStatusElements.MSEHasTransportGuidByte6,  // 70
+            MovementStatusElements.MSEHasTransportGuidByte7,  // 71
+            MovementStatusElements.MSEHasTransportGuidByte1,  // 65
+            MovementStatusElements.MSEHasTransportTime3,      // 108
+            MovementStatusElements.MSEHasTransportGuidByte5,  // 69
+            MovementStatusElements.MSEMovementFlags,          // 32
+            MovementStatusElements.MSEMovementFlags2,         // 36
+            MovementStatusElements.MSEHasFallDirection,       // 144
+
+            MovementStatusElements.MSEGuidByte6,              // 30
+            MovementStatusElements.MSEGuidByte2,              // 26
+            MovementStatusElements.MSEGuidByte0,              // 24
+            MovementStatusElements.MSEGuidByte4,              // 28
+            MovementStatusElements.MSEGuidByte7,              // 31
+            MovementStatusElements.MSECounter,                // 164
+            MovementStatusElements.MSEGuidByte1,              // 25
+            MovementStatusElements.MSEGuidByte3,              // 27
+            MovementStatusElements.MSEGuidByte5,              // 29
+            MovementStatusElements.MSETransportSeat,          // 88
+            MovementStatusElements.MSETransportTime2,         // 96
+            MovementStatusElements.MSETransportTime3,         // 104
+            MovementStatusElements.MSETransportGuidByte6,     // 70
+            MovementStatusElements.MSETransportGuidByte3,     // 67
+            MovementStatusElements.MSETransportPositionX,     // 72  48h
+            MovementStatusElements.MSETransportTime,          // 92
+            MovementStatusElements.MSETransportGuidByte4,     // 68
+            MovementStatusElements.MSETransportPositionZ,     // 80  50h
+            MovementStatusElements.MSETransportGuidByte1,     // 65
+            MovementStatusElements.MSETransportGuidByte2,     // 66
+            MovementStatusElements.MSETransportGuidByte0,     // 64
+            MovementStatusElements.MSETransportGuidByte5,     // 69
+            MovementStatusElements.MSETransportGuidByte7,     // 71
+            MovementStatusElements.MSETransportOrientation,   // 84  54h
+            MovementStatusElements.MSETransportPositionY,     // 76  4ch
+            MovementStatusElements.MSEFallTime,               // 124
+            MovementStatusElements.MSEFallSinAngle,           // 136 88h
+            MovementStatusElements.MSEFallCosAngle,           // 132 84h
+            MovementStatusElements.MSEFallHorizontalSpeed,    // 140 8ch
+            MovementStatusElements.MSEFallVerticalSpeed,      // 128 80h
+            MovementStatusElements.MSESplineElevation,        // 152 98h
+            MovementStatusElements.MSEUnkTime,                // 176
+            MovementStatusElements.MSEOrientation,            // 56  38h
+            MovementStatusElements.MSETimestamp,              // 40
+            MovementStatusElements.MSEPitch,                  // 120 78h
             MovementStatusElements.MSEEnd
         };
     }

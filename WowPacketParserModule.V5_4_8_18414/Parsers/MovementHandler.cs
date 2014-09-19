@@ -587,6 +587,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
             ReadPlayerMovementInfo(ref packet, info.MovementSplineDone);
         }
 
+        [Parser(Opcode.CMSG_UNK_185B)]
+        public static void HandleCUnk185B(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.CUnk185B);
+        }
+
         [Parser(Opcode.SMSG_PLAYER_MOVE)]
         public static void HandlePlayerMove(Packet packet)
         {
@@ -687,6 +693,12 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
         public static void HandleUnk0251(Packet packet)
         {
             ReadPlayerMovementInfo(ref packet, info.SUnk0251);
+        }
+
+        [Parser(Opcode.SMSG_UNK_0861)]
+        public static void HandleUnk0861(Packet packet)
+        {
+            ReadPlayerMovementInfo(ref packet, info.SUnk0861);
         }
 
         [Parser(Opcode.SMSG_UNK_08A3)]
