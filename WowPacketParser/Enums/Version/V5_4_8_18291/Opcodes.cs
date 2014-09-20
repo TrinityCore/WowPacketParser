@@ -442,6 +442,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_PLAYER_MOVE, 0x1A32},
             {Opcode.SMSG_PLAY_OBJECT_SOUND, 0x1443},
             {Opcode.SMSG_PLAY_SOUND, 0x102A},
+            {Opcode.SMSG_PLAY_SPELL_VISUAL_KIT, 0x11E3},
             {Opcode.SMSG_PONG, 0x1969},
             {Opcode.SMSG_POWER_UPDATE, 0x109F},
             {Opcode.SMSG_PVP_LOG_DATA, 0x1E8F},

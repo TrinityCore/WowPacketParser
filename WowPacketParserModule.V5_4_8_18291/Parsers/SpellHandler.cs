@@ -1441,5 +1441,26 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
                 packet.ReadInt32("Category Cooldown", i);
             }
         }
+
+        [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL_KIT)]
+        public static void HandleCastVisualKit(Packet packet)
+        {
+            var guid = new byte[8];
+
+            packet.StartBitStream(guid, 4, 2, 6, 5, 1, 3, 0, 7);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadUInt32("Unk 1");
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadUInt32("Unk 2");
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadUInt32("SpellVisualKit ID");
+
+            packet.WriteGuid("Guid2", guid);
+        }
     }
 }
