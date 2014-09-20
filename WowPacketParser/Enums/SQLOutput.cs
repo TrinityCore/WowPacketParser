@@ -36,7 +36,9 @@
         SniffDataOpcodes,
         vehicle_template_accessory,
         weather_updates,
-        npc_spellclick_spells
+        npc_spellclick_spells,
+        waypoint_data,
+        spline_waypoint_data
 // ReSharper restore InconsistentNaming
     }
 }

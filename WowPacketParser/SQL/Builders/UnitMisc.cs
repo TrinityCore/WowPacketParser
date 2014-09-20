@@ -1004,5 +1004,75 @@ namespace WowPacketParser.SQL.Builders
 
             return new QueryBuilder.SQLInsert(tableName, rows, 1, false).Build();
         }
+
+        [BuilderMethod]
+        public static string SplineWaypoints()
+        {
+            if (Storage.SplineWaypoints.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.spline_waypoint_data))
+                return string.Empty;
+
+            const string tableName = "spline_waypoint_data";
+
+            var rows = new List<QueryBuilder.SQLInsertRow>();
+            foreach (var wp in Storage.SplineWaypoints)
+            {
+                foreach (var wpInfo in wp.Value.Item1.SplineWaypointData)
+                {
+                    var row = new QueryBuilder.SQLInsertRow();
+
+                    var comment = wp.Key.ToString() + " - ";
+                    comment += "SplineFlag: " + wp.Value.Item1.SplineFlags.ToString() + " - ";
+                    comment += "MovementFlags: " + wp.Value.Item1.MovementFlags.ToString();
+
+                    row.AddValue("entry", wp.Key.GetEntry());
+                    row.AddValue("PointId", wpInfo.PointId);
+                    row.AddValue("PositionX", wpInfo.Position.X);
+                    row.AddValue("PositionY", wpInfo.Position.Y);
+                    row.AddValue("PositionZ", wpInfo.Position.Z);
+                    row.AddValue("Time", wpInfo.Time);
+                    row.AddValue("Comment", comment);
+                    rows.Add(row);
+                }
+            }
+
+            return new QueryBuilder.SQLInsert(tableName, rows).Build();
+        }
+
+        [BuilderMethod]
+        public static string Waypoints()
+        {
+            if (Storage.Waypoints.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.waypoint_data))
+                return string.Empty;
+
+            const string tableName = "waypoint_data";
+
+            var rows = new List<QueryBuilder.SQLInsertRow>();
+            foreach (var wp in Storage.Waypoints)
+            {
+                foreach (var wpInfo in wp.Value.Item1.WaypointData)
+                {
+                    var row = new QueryBuilder.SQLInsertRow();
+
+                    var comment = wpInfo.Time.ToString() + " - " + wp.Key.ToString() + " - ";
+                    comment += "SplineFlag: " + wp.Value.Item1.SplineFlags.ToString();
+
+                    row.AddValue("entry", wp.Key.GetEntry());
+                    row.AddValue("PointId", wpInfo.PointId);
+                    row.AddValue("PositionX", wpInfo.Position.X);
+                    row.AddValue("PositionY", wpInfo.Position.Y);
+                    row.AddValue("PositionZ", wpInfo.Position.Z);
+                    row.AddValue("Comment", comment);
+                    rows.Add(row);
+                }
+            }
+
+            return new QueryBuilder.SQLInsert(tableName, rows).Build();
+        }
     }
 }

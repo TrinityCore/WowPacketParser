@@ -109,6 +109,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         private static MovementInfo ReadMovementUpdateBlock434(ref Packet packet, WowGuid guid, object index)
         {
             var moveInfo = new MovementInfo();
+            var waypointInfo = new Waypoint();
 
             // bits
             /*var bit3 =*/
@@ -162,8 +163,12 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 guid2[7] = packet.ReadBit();
                 guid2[3] = packet.ReadBit();
                 guid2[2] = packet.ReadBit();
+
                 if (hasMovementFlags)
+                {
                     moveInfo.Flags = (MovementFlag)packet.ReadEnum<Enums.MovementFlag>("Movement Flags", 30, index);
+                    waypointInfo.MovementFlags = moveInfo.Flags;
+                }
 
                 packet.ReadBit("Has MovementInfo spline", index);
                 hasPitch = !packet.ReadBit("Lacks pitch", index);
@@ -220,7 +225,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                         hasSplineVerticalAcceleration = packet.ReadBit("Has spline vertical acceleration", index);
                         packet.AddValue("Spline type", splineType, index);
                         /*splineFlags =*/
-                        packet.ReadEnum<SplineFlag434>("Spline flags", 25, index);
+                        waypointInfo.SplineFlags = packet.ReadEnum<SplineFlag434>("Spline flags", 25, index);
                     }
                 }
 
@@ -302,8 +307,14 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                             packet.WriteGuid("Facing Target GUID", facingTargetGuid, index);
                         }
 
+                        waypointInfo.SplineWaypointData = new List<WaypointData>((int)splineCount);
                         for (var i = 0u; i < splineCount; ++i)
                         {
+                            var waypointData = new WaypointData();
+
+                            waypointData.Time = packet.Time.ToString("MM/dd/yyyy HH:mm:ss.fff");
+                            waypointData.PointId = i;
+
                             var wp = new Vector3
                             {
                                 Z = packet.ReadSingle(),
@@ -311,7 +322,27 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                                 Y = packet.ReadSingle(),
                             };
 
+                            waypointData.Position = wp;
+                            waypointInfo.SplineWaypointData.Add(waypointData);
+
                             packet.AddValue("Spline Waypoint", wp, index, i);
+                        }
+
+
+                        if (guid.HasEntry() && guid.GetHighType() == HighGuidType.Unit &&
+                            waypointInfo.SplineWaypointData != null && waypointInfo.SplineWaypointData.Count != 0)
+                        {
+                            if (Storage.SplineWaypoints.ContainsKey(guid))
+                            {
+                                var oldWp = Storage.SplineWaypoints[guid];
+                                if (oldWp != null)
+                                {
+                                    foreach (var wpInfo in waypointInfo.SplineWaypointData)
+                                        oldWp.Item1.SplineWaypointData.Add(wpInfo);
+                                }
+                            }
+                            else
+                                Storage.SplineWaypoints.Add(guid, waypointInfo, packet.TimeSpan);
                         }
 
                         if (splineType == SplineType.FacingSpot)
@@ -331,7 +362,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                         if (hasSplineStartTime)
                             packet.ReadUInt32("Spline Start time", index);
 
-                        packet.ReadSingle("Spline Duration Multiplier", index);
+                        packet.ReadSingle("Spline Duration Multiplier", index);                        
                     }
 
                     var endPoint = new Vector3

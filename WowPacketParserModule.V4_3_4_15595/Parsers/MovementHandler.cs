@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using MovementFlag = WowPacketParserModule.V4_3_4_15595.Enums.MovementFlag;
 using MovementFlagExtra = WowPacketParserModule.V4_3_4_15595.Enums.MovementFlagExtra;
@@ -17,6 +19,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         [Parser(Opcode.SMSG_MONSTER_MOVE_TRANSPORT)]
         public static void HandleMonsterMove(Packet packet)
         {
+            var waypointInfo = new Waypoint();
             var guid = packet.ReadPackedGuid("GUID");
 
             if (Storage.Objects != null && Storage.Objects.ContainsKey(guid))
@@ -31,13 +34,10 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_MONSTER_MOVE_TRANSPORT))
             {
                 packet.ReadPackedGuid("Transport GUID");
-
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767)) // no idea when this was added exactly
-                    packet.ReadByte("Transport Seat");
+                packet.ReadByte("Transport Seat");
             }
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767)) // no idea when this was added exactly
-                packet.ReadBoolean("Toggle AnimTierInTrans");
+            packet.ReadBoolean("Toggle AnimTierInTrans");
 
             var pos = packet.ReadVector3("Position");
 
@@ -66,9 +66,9 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     return;
             }
 
-            var flags = packet.ReadEnum<SplineFlag>("Spline Flags", TypeCode.Int32);
+            waypointInfo.SplineFlags = packet.ReadEnum<SplineFlag434>("Spline Flags", TypeCode.Int32);
 
-            if (flags.HasAnyFlag(SplineFlag.Animation))
+            if (waypointInfo.SplineFlags.HasAnyFlag(SplineFlag.Animation))
             {
                 packet.ReadEnum<MovementAnimationState>("Animation State", TypeCode.Byte);
                 packet.ReadInt32("Asynctime in ms"); // Async-time in ms
@@ -76,7 +76,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
 
             packet.ReadInt32("Move Time");
 
-            if (flags.HasAnyFlag(SplineFlag.Parabolic))
+            if (waypointInfo.SplineFlags.HasAnyFlag(SplineFlag.Parabolic))
             {
                 packet.ReadSingle("Vertical Speed");
                 packet.ReadInt32("Async-time in ms");
@@ -84,10 +84,18 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
 
             var waypoints = packet.ReadInt32("Waypoints");
 
-            if (flags.HasAnyFlag(SplineFlag.UncompressedPath))
+            waypointInfo.WaypointData = new List<WaypointData>(waypoints);
+            if (waypointInfo.SplineFlags.HasAnyFlag(SplineFlag.UncompressedPath))
             {
                 for (var i = 0; i < waypoints; i++)
-                    packet.ReadVector3("Waypoint", i);
+                {
+                    var waypointData = new WaypointData();
+                    waypointData.Time = packet.Time.ToString("MM/dd/yyyy HH:mm:ss.fff");
+                    waypointData.PointId = (uint)i;
+                    waypointData.Position = packet.ReadVector3("Waypoint", i);
+
+                    waypointInfo.WaypointData.Add(waypointData);
+                }
             }
             else
             {
@@ -95,32 +103,60 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
 
                 var mid = new Vector3
                 {
-                    X = (pos.X + newpos.X)*0.5f,
-                    Y = (pos.Y + newpos.Y)*0.5f,
-                    Z = (pos.Z + newpos.Z)*0.5f
+                    X = (pos.X + newpos.X) * 0.5f,
+                    Y = (pos.Y + newpos.Y) * 0.5f,
+                    Z = (pos.Z + newpos.Z) * 0.5f
                 };
 
                 if (waypoints != 1)
                 {
-                    var vec = packet.ReadPackedVector3();
-                    vec.X += mid.X;
-                    vec.Y += mid.Y;
-                    vec.Z += mid.Z;
-                    packet.AddValue("Waypoint", vec, 0);
-
                     if (waypoints > 2)
                     {
-                        for (var i = 1; i < waypoints - 1; ++i)
+                        for (var i = 0; i < waypoints - 1; ++i)
                         {
-                            vec = packet.ReadPackedVector3();
+                            var waypointData = new WaypointData();
+                            waypointData.Time = packet.Time.ToString("MM/dd/yyyy HH:mm:ss.fff");
+
+                            waypointData.PointId = (uint)i;
+                            var vec = packet.ReadPackedVector3();
+
                             vec.X += mid.X;
                             vec.Y += mid.Y;
                             vec.Z += mid.Z;
 
+                            waypointData.Position = vec;
+
                             packet.AddValue("Waypoint", vec, i);
+
+                            waypointInfo.WaypointData.Add(waypointData);
                         }
                     }
+                    else
+                    {
+                        var vec = packet.ReadPackedVector3();
+
+                        vec.X += mid.X;
+                        vec.Y += mid.Y;
+                        vec.Z += mid.Z;
+
+                        packet.AddValue("Waypoint", vec, 0);
+                    }
                 }
+            }
+
+            if (guid.HasEntry())
+            {
+                if (Storage.Waypoints.ContainsKey(guid))
+                {
+                    var oldWp = Storage.Waypoints[guid];
+                    if (oldWp != null)
+                    {
+                        foreach (var wpInfo in waypointInfo.WaypointData)
+                            oldWp.Item1.WaypointData.Add(wpInfo);
+                    }
+                }
+                else
+                    Storage.Waypoints.Add(guid, waypointInfo, packet.TimeSpan);
             }
         }
 

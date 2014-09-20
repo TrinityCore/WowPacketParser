@@ -86,6 +86,10 @@ namespace WowPacketParser.Store
         public static readonly StoreBag<WowGuid> NpcSpellClicks = new StoreBag<WowGuid>(new List<SQLOutput> { SQLOutput.npc_spellclick_spells });
         public static readonly StoreBag<NpcSpellClick> SpellClicks = new StoreBag<NpcSpellClick>(new List<SQLOutput> { SQLOutput.npc_spellclick_spells });
 
+        // Waypoints
+        public static readonly StoreDictionary<WowGuid, Waypoint> Waypoints = new StoreDictionary<WowGuid, Waypoint>(new List<SQLOutput> { SQLOutput.waypoint_data });
+        public static readonly StoreDictionary<WowGuid, Waypoint> SplineWaypoints = new StoreDictionary<WowGuid, Waypoint>(new List<SQLOutput> { SQLOutput.spline_waypoint_data });
+
         public static void ClearContainers()
         {
             SniffData.Clear();
@@ -137,6 +141,12 @@ namespace WowPacketParser.Store
             VehicleTemplateAccessorys.Clear();
 
             WeatherUpdates.Clear();
+
+            NpcSpellClicks.Clear();
+            SpellClicks.Clear();
+
+            Waypoints.Clear();
+            SplineWaypoints.Clear();
         }
     }
 }
