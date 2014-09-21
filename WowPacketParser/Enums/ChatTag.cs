@@ -12,6 +12,6 @@ namespace WowPacketParser.Enums
         Unk08 = 0x08,
         Dev   = 0x10,
         Unk40 = 0x40,
-        Com   = 0x80,
+        Com   = 0x80
     }
 }

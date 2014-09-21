@@ -14,7 +14,7 @@ namespace WowPacketParser.Enums
         AvailableRep         = 7,
         Available            = 8,
         Reward2              = 9,
-        Reward               = 10,
+        Reward               = 10
     }
 
     [Flags]
@@ -31,6 +31,6 @@ namespace WowPacketParser.Enums
         AvailableRep         = 0x080,
         Available            = 0x100,
         Reward2              = 0x200,
-        Reward               = 0x400,
+        Reward               = 0x400
     }
 }

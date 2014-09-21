@@ -8,6 +8,6 @@
         ItemLooted        = 3,
         ItemCrafted       = 4,
         ItemPurchased     = 5,
-        GuildLevel        = 6,
+        GuildLevel        = 6
     }
 }

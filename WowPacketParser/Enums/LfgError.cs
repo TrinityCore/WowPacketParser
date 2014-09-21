@@ -8,6 +8,6 @@ namespace WowPacketParser.Enums
         InVehicle               = 3,
         Fatigue                 = 4,
         InvalidTeleportLocation = 6,
-        Charming                = 8 // No 100%, can be 7
+        Charming                = 8 // Not 100%, can be 7
     }
 }

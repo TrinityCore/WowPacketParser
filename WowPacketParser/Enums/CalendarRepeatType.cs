@@ -5,6 +5,6 @@
         Never    = 0,
         Weekly   = 1,
         BiWeekly = 2,
-        Monthly  = 3,
+        Monthly  = 3
     }
 }

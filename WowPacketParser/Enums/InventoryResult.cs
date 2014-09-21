@@ -93,6 +93,6 @@ namespace WowPacketParser.Enums
         CantEquipNeedTalent                  = 88,
         ItemMaxLimitCategoryEquippedExceeded = 89,
         Unk90                                = 90,
-        Unk91                                = 91,
+        Unk91                                = 91
     }
 }

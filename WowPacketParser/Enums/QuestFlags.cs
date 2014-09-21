@@ -13,7 +13,7 @@ namespace WowPacketParser.Enums
         HasCondition          = 0x00000010,
         HideRewardPOI         = 0x00000020,
         Raid                  = 0x00000040,
-        ExpansionOnly         = 0x00000080,   // Deprecated flag
+        ExpansionOnly         = 0x00000080, // Deprecated flag
         NoMoneyFromExperience = 0x00000100,
         HiddenRewards         = 0x00000200,
         Tracking              = 0x00000400,

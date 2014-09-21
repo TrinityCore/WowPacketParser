@@ -2,8 +2,8 @@ namespace WowPacketParser.Enums
 {
     public enum Gender
     {
-        Male = 0,
+        Male   = 0,
         Female = 1,
-        None = 2
+        None   = 2
     }
 }
