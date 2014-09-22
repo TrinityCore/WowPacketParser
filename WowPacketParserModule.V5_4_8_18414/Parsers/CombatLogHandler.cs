@@ -45,7 +45,7 @@ namespace WowPacketParserModule.V5_4_8_18414.Parsers
                 hasOverDamage[i] = !packet.ReadBit("!hasOverDamage", i); // ! 64*4+8
                 hasAbsorb[i] = !packet.ReadBit("!hasAbsorb", i); // ! 64*4+16
                 packet.ReadBit("isCritical", i); // 64+24
-                hasUnk4[i] = !packet.ReadBit("!hasResist", i); // ! 64*4+20
+                hasResist[i] = !packet.ReadBit("!hasResist", i); // ! 64*4+20
                 hasSpellProto[i] = !packet.ReadBit("!hasSpellProto", i); // ! 64*4+12
             }
             targetGUID[5] = packet.ReadBit(); // 21
