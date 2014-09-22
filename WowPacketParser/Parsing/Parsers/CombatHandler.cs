@@ -6,8 +6,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class CombatHandler
     {
-
-        [Parser(Opcode.CMSG_ATTACKSWING, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_ATTACKSWING)]
         public static void HandleAttackSwing(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -113,14 +112,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("Target GUID");
         }
 
-        [Parser(Opcode.SMSG_ATTACKSTART, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.SMSG_ATTACKSTART)]
         public static void HandleAttackStartStart(Packet packet)
         {
             packet.ReadGuid("GUID");
             packet.ReadGuid("Victim GUID");
         }
 
-        [Parser(Opcode.SMSG_ATTACKSTOP, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.SMSG_ATTACKSTOP)]
         [Parser(Opcode.SMSG_COMBAT_EVENT_FAILED)]
         public static void HandleAttackStartStop(Packet packet)
         {
@@ -157,7 +156,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<VictimStates>("VictimState", TypeCode.Byte);
             packet.ReadInt32("Unk Attacker State 0");
 
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Melee Spell ID ");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Melee Spell ID ");
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK))
                 packet.ReadInt32("Block Amount");
@@ -218,7 +217,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<VictimStates>("VictimState", victimStateTypeCode);
             packet.ReadInt32("Unk Attacker State 0");
 
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Melee Spell ID ");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Melee Spell ID ");
 
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_0_3_9183) ||
                 hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK))
@@ -247,7 +246,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_DUEL_OUTOFBOUNDS)]
-        [Parser(Opcode.SMSG_CANCEL_COMBAT, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.SMSG_CANCEL_COMBAT)]
         [Parser(Opcode.CMSG_ATTACKSTOP)]
         [Parser(Opcode.SMSG_ATTACKSWING_NOTINRANGE)]
         [Parser(Opcode.SMSG_ATTACKSWING_BADFACING)]

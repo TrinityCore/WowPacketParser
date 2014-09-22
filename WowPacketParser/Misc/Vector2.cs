@@ -46,7 +46,10 @@ namespace WowPacketParser.Misc
         public override int GetHashCode()
         {
             var result = X.GetHashCode();
-            result = (result * 397) ^ Y.GetHashCode();
+            unchecked
+            {
+                result = (result*397) ^ Y.GetHashCode();
+            }
             return result;
         }
     }

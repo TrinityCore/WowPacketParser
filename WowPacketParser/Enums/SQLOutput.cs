@@ -3,6 +3,7 @@
     public enum SQLOutput
     {
 // ReSharper disable InconsistentNaming
+        broadcast_text,
         creature,
         creature_equip_template,
         creature_model_info,
@@ -10,7 +11,9 @@
         creature_template,
         creature_template_addon,
         creature_text,
+        defense_message,
         gameobject,
+        gameobject_db2_position,
         gameobject_template,
         gossip_menu,
         gossip_menu_option,
@@ -30,6 +33,9 @@
         quest_template,
         SniffData,
         SniffDataOpcodes,
+        vehicle_template_accessory,
+        weather_updates,
+        npc_spellclick_spells
 // ReSharper restore InconsistentNaming
     }
 }

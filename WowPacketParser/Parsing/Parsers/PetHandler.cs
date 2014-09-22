@@ -2,12 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using Guid=WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -16,9 +14,9 @@ namespace WowPacketParser.Parsing.Parsers
         public static void ReadPetFlags(ref Packet packet)
         {
             var petModeFlag = packet.ReadUInt32();
-            packet.WriteLine("React state: " + (ReactState)((petModeFlag >> 8) & 0xFF));
-            packet.WriteLine("Command state: " + (CommandState)((petModeFlag >> 16) & 0xFF));
-            packet.WriteLine("Flag: " + (PetModeFlags)(petModeFlag & 0xFFFF0000));
+            packet.AddValue("React state", (ReactState) ((petModeFlag >> 8) & 0xFF));
+            packet.AddValue("Command state", (CommandState) ((petModeFlag >> 16) & 0xFF));
+            packet.AddValue("Flag", (PetModeFlags) (petModeFlag & 0xFFFF0000));
         }
 
         [Parser(Opcode.SMSG_PET_SPELLS)]
@@ -49,16 +47,12 @@ namespace WowPacketParser.Parsing.Parsers
                 var spell16 = packet.ReadUInt16();
                 var spell8 = packet.ReadByte();
                 var spellId = spell16 + (spell8 << 16);
-                var slot = packet.ReadByte();
+                var slot = packet.ReadByte("Slot", i);
 
-                var s = new StringBuilder("[");
-                s.Append(i).Append("] ").Append("Spell/Action: ");
                 if (spellId <= 4)
-                    s.Append(spellId);
+                    packet.AddValue("Action", spellId, i);
                 else
-                    s.Append(StoreGetters.GetName(StoreNameType.Spell, spellId));
-                s.Append(" slot: ").Append(slot);
-                packet.WriteLine(s.ToString());
+                    packet.AddValue("Spell", StoreGetters.GetName(StoreNameType.Spell, spellId), i);
 
                 // Spells for pets are on DBCs; also no entry in guid
                 // We don't need the actions sent for minions (slots lower than 8)
@@ -76,7 +70,7 @@ namespace WowPacketParser.Parsing.Parsers
             var spellCount = packet.ReadByte("Spell Count"); // vehicles -> 0, pets -> != 0. Could this be auras?
             for (var i = 0; i < spellCount; i++)
             {
-                packet.ReadEntryWithName<UInt16>(StoreNameType.Spell, "Spell", i);
+                packet.ReadEntry<UInt16>(StoreNameType.Spell, "Spell", i);
                 packet.ReadInt16("Active", i);
             }
 
@@ -84,9 +78,9 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < cdCount; i++)
             {
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
-                    packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell", i);
+                    packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell", i);
                 else
-                    packet.ReadEntryWithName<UInt16>(StoreNameType.Spell, "Spell", i);
+                    packet.ReadEntry<UInt16>(StoreNameType.Spell, "Spell", i);
 
                 packet.ReadUInt16("Category", i);
                 packet.ReadUInt32("Cooldown", i);
@@ -111,7 +105,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<PetTameFailureReason>("Reason", TypeCode.Byte);
         }
 
-        [Parser(Opcode.CMSG_PET_NAME_QUERY, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_PET_NAME_QUERY)]
         public static void HandlePetNameQuery(Packet packet)
         {
             var number = packet.ReadInt32("Pet number").ToString(CultureInfo.InvariantCulture);
@@ -177,7 +171,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadUInt32("Position", i);
                 var action = (uint)packet.ReadUInt16() + (packet.ReadByte() << 16);
-                packet.WriteLine("[{0}] Action: {1}", i, action);
+                packet.AddValue("Action", action, i);
                 packet.ReadEnum<ActionButtonType>("Type", TypeCode.Byte, i++);
             }
         }
@@ -187,7 +181,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             var action = (uint)packet.ReadUInt16() + (packet.ReadByte() << 16);
-            packet.WriteLine("Action: {0}", action);
+            packet.AddValue("Action", action);
             packet.ReadEnum<ActionButtonType>("Type", TypeCode.Byte);
             packet.ReadGuid("GUID");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596))
@@ -198,14 +192,14 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandlePetCancelAura(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
         }
 
         [Parser(Opcode.SMSG_PET_LEARNED_SPELL)]
         [Parser(Opcode.SMSG_PET_REMOVED_SPELL)]
         public static void HandlePetSpellsLearnedRemoved(Packet packet)
         {
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
         }
 
         [Parser(Opcode.SMSG_PET_ACTION_FEEDBACK)]
@@ -217,11 +211,11 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 case PetFeedback.NothingToAttack:
                     if (ClientVersion.AddedInVersion(ClientType.Cataclysm) || packet.CanRead())
-                        packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+                        packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
                     break;
                 case PetFeedback.CantAttackTarget:
                     if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
-                        packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");    // sub_8ADA60 2nd parameter is SpellID, check sub_8B22C0
+                        packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");    // sub_8ADA60 2nd parameter is SpellID, check sub_8B22C0
                     break;
             }
         }
@@ -267,7 +261,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("Pet Slot", i);
 
                 packet.ReadInt32("Pet Number", i);
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Unit, "Pet Entry", i);
+                packet.ReadEntry<UInt32>(StoreNameType.Unit, "Pet Entry", i);
                 packet.ReadInt32("Pet Level", i);
                 packet.ReadCString("Pet Name", i);
                 packet.ReadByte("Stable Type", i); // 1 = current, 2/3 = in stable
@@ -279,7 +273,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             packet.ReadByte("Cast Count");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
             var castFlags = packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Byte);
             SpellHandler.ReadSpellCastTargets(ref packet);
             if (castFlags.HasAnyFlag(CastFlag.HasTrajectory))
@@ -297,7 +291,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Pet Level");
             packet.ReadInt32("Pet Slot");
             packet.ReadByte("Stable Type");
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Unit, "Entry");
+            packet.ReadEntry<UInt32>(StoreNameType.Unit, "Entry");
             packet.ReadInt32("Pet Number");
 
             var len = packet.ReadBits(8);
@@ -319,7 +313,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandlePetSpellAutocast(Packet packet)
         {
             packet.ReadGuid("Pet Guid");
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Spell, "Spell Id");
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell Id");
             packet.ReadByte("State");
         }
     }

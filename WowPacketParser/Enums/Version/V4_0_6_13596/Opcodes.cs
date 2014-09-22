@@ -289,6 +289,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             //{Opcode.CMSG_GUILD_RANKS, 0x03129},
             {Opcode.CMSG_GUILD_REMOVE, 0x0312D}, //opcode12589
             //{Opcode.CMSG_GUILD_REQUEST_NEWS, 0x03129},
+            //{Opcode.CMSG_GUILD_REQUEST_PARTY_STATE, 0x02219},
             {Opcode.CMSG_GUILD_ROSTER, 0x0B2A4},
             {Opcode.CMSG_GUILD_SET_NOTE, 0x0232D},
             {Opcode.CMSG_GUILD_SWITCH_RANK, 0x03309}, //UnknownopcodeID
@@ -460,7 +461,6 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_REPOP_REQUEST, 0x0A9E4},
             {Opcode.CMSG_REPORT_PVP_AFK, 0x0E3AC},
             {Opcode.CMSG_REQUEST_ACCOUNT_DATA, 0x0EEAC},
-            //{Opcode.CMSG_REQUEST_GUILD_PARTY_STATE, 0x02219},
             //{Opcode.CMSG_REQUEST_GUILD_ROSTER, 0x0250D},
             {Opcode.CMSG_REQUEST_HOTFIX, 0x08589},// the client sends this after we send SMSG_HOTFIX_NOTIFY[_BLOP]}, only sent for the items that the player has in his inventory}, that are flagged to be hot fixed
             {Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS, 0x070C8},
@@ -1031,7 +1031,6 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_LOTTERY_QUERY_RESULT_OBSOLETE, 0x1012A}, //UnknownopcodeID
             {Opcode.SMSG_LOTTERY_RESULT_OBSOLETE, 0x1012C}, //UnknownopcodeID
             {Opcode.SMSG_MAIL_LIST_RESULT, 0x0F1C8},
-            {Opcode.SMSG_MEETINGSTONE_COMPLETE, 0x0F680},
             {Opcode.SMSG_MEETINGSTONE_IN_PROGRESS, 0x0E7C4},
             {Opcode.SMSG_MEETINGSTONE_MEMBER_ADDED, 0x0B2A8},
             {Opcode.SMSG_MEETINGSTONE_SETQUEUE, 0x0ED88}, //(almost100%sureit'swrong)
@@ -1199,6 +1198,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_SET_PROJECTILE_POSITION, 0x02C84},
             {Opcode.SMSG_SHOWTAXINODES, 0x02B84},
             {Opcode.SMSG_SHOW_BANK, 0x027A4},
+            {Opcode.SMSG_SHOW_MAILBOX, 0x0F680},
             {Opcode.SMSG_SPELLBREAKLOG, 0x0BDAC},
             {Opcode.SMSG_SPELLDAMAGESHIELD, 0x073A0},
             {Opcode.SMSG_SPELLDISPELLOG, 0xA9C8},
@@ -1302,7 +1302,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_UPDATE_CURRENCY_WEEK_LIMIT, 0x04C5C},
             {Opcode.SMSG_UPDATE_INSTANCE_ENCOUNTER_UNIT, 0x0EDA4},// wtf::SMSG_GAMEOBJECT_SPAWN_ANIM_OBSOLETE
             {Opcode.SMSG_UPDATE_INSTANCE_OWNERSHIP, 0x03B8C},
-            {Opcode.SMSG_UPDATE_ITEM_ENCHANTMENTS, 0x020E8},
+            {Opcode.SMSG_SOCKET_GEMS_RESULT, 0x020E8},
             {Opcode.SMSG_UPDATE_LAST_INSTANCE, 0x033E8},
             //{Opcode.SMSG_UPDATE_LFG_LIST, 0x0768C},
             {Opcode.SMSG_UPDATE_OBJECT, 0x03780},

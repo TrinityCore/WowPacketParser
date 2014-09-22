@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
@@ -46,7 +47,7 @@ namespace WowPacketParser.Misc
 
             Contract.Assert(uBit >= 0 && uBit <= 63);
 
-            var uFlag = (UInt64)(1 << uBit);
+            var uFlag = 1UL << uBit;
             var uThis = value.ToUInt64(null);
 
             return (uThis & uFlag) != 0;
@@ -200,6 +201,13 @@ namespace WowPacketParser.Misc
                 default:
                     throw new ArgumentOutOfRangeException("count", count, "Numbers of element in IList to Tuple not supported.");
             }
+        }
+
+        public static void Clear<T>(this ConcurrentBag<T> bag)
+        {
+            T t;
+            while (bag.Count > 0)
+                bag.TryTake(out t);
         }
     }
 }

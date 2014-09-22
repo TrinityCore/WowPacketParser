@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using MySql.Data.MySqlClient;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.SQL.Builders
 {
+    [BuilderClass]
     public static class Miscellaneous
     {
+        [BuilderMethod]
         public static string StartInformation()
         {
             var result = String.Empty;
@@ -41,7 +44,7 @@ namespace WowPacketParser.SQL.Builders
                     }
                 }
 
-                result = new QueryBuilder.SQLInsert("playercreateinfo_action", rows, 2).Build();
+                result += new QueryBuilder.SQLInsert("playercreateinfo_action", rows, 2).Build();
             }
 
             if (!Storage.StartPositions.IsEmpty() && Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.playercreateinfo))
@@ -94,12 +97,13 @@ namespace WowPacketParser.SQL.Builders
                     }
                 }
 
-                result = new QueryBuilder.SQLInsert("playercreateinfo_spell", rows, 2).Build();
+                result += new QueryBuilder.SQLInsert("playercreateinfo_spell", rows, 2).Build();
             }
 
             return result;
         }
 
+        [BuilderMethod]
         public static string ObjectNames()
         {
             if (Storage.ObjectNames.IsEmpty())
@@ -125,6 +129,7 @@ namespace WowPacketParser.SQL.Builders
             return new QueryBuilder.SQLInsert(tableName, rows, 2, ignore: true, withDelete: false).Build();
         }
 
+        [BuilderMethod]
         public static string SniffData()
         {
             if (Storage.SniffData.IsEmpty())
@@ -154,7 +159,8 @@ namespace WowPacketParser.SQL.Builders
         }
 
         // Non-WDB data but nevertheless data that should be saved to gameobject_template
-        public static string GameobjectTemplateNonWDB(Dictionary<Guid, GameObject> gameobjects)
+        [BuilderMethod(Gameobjects = true)]
+        public static string GameobjectTemplateNonWDB(Dictionary<WowGuid, GameObject> gameobjects)
         {
             if (gameobjects.Count == 0)
                 return string.Empty;
@@ -186,11 +192,100 @@ namespace WowPacketParser.SQL.Builders
                 template.Flags &= ~GameObjectFlag.Damaged;
                 template.Flags &= ~GameObjectFlag.Destroyed;
 
-                templates.Add(goT.Key.GetEntry(), template, null);
+                templates.Add(goT.Key.GetEntry(), template);
             }
 
             var templatesDb = SQLDatabase.GetDict<uint, GameObjectTemplateNonWDB>(templates.Keys());
             return SQLUtil.CompareDicts(templates, templatesDb, StoreNameType.GameObject);
+        }
+
+        [BuilderMethod]
+        public static string DefenseMessage()
+        {
+            if (Storage.DefenseMessages.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.defense_message))
+                return string.Empty;
+
+            const string tableName = "defense_message";
+
+            var rows = new List<QueryBuilder.SQLInsertRow>();
+            foreach (var message in Storage.DefenseMessages)
+            {
+                foreach (var messageValue in message.Value)
+                {
+                    var row = new QueryBuilder.SQLInsertRow();
+
+                    var query = new StringBuilder(string.Format("SELECT Id FROM {1}.broadcast_text WHERE MaleText='{0}' OR FemaleText='{0}';", MySqlHelper.DoubleQuoteString(messageValue.Item1.text), Settings.TDBDatabase));
+
+                    string broadcastTextId = "";
+
+                    if (Settings.DevMode)
+                    {
+                        using (var reader = SQLConnector.ExecuteQuery(query.ToString()))
+                        {
+                            if (reader != null)
+                                while (reader.Read())
+                                {
+                                    var values = new object[1];
+                                    var count = reader.GetValues(values);
+                                    if (count != 1)
+                                        break; // error in query
+
+                                    if (!String.IsNullOrWhiteSpace(broadcastTextId))
+                                        broadcastTextId += " - " + Convert.ToInt32(values[0]);
+                                    else
+                                        broadcastTextId += Convert.ToInt32(values[0]);
+                                }
+                        }
+
+                    }
+
+                    row.AddValue("ZoneId", message.Key);
+                    row.AddValue("Id", "x", false, true);
+                    row.AddValue("Text", messageValue.Item1.text);
+                    if (Settings.DevMode)
+                        row.AddValue("BroadcastTextId", broadcastTextId);
+
+                    rows.Add(row);
+                }
+            }
+
+            return new QueryBuilder.SQLInsert(tableName, rows, 1, false).Build();
+        }
+
+        [BuilderMethod]
+        public static string WeatherUpdates()
+        {
+            if (Storage.WeatherUpdates.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.weather_updates))
+                return string.Empty;
+
+            const string tableName = "weather_updates";
+
+            var rows = new List<QueryBuilder.SQLInsertRow>();
+            foreach (var weatherUpdate in Storage.WeatherUpdates)
+            {
+                var row = new QueryBuilder.SQLInsertRow();
+
+                var weather = weatherUpdate.Item1;
+
+                row.AddValue("map_id", weather.MapId);
+                row.AddValue("zone_id", weather.ZoneId);
+                row.AddValue("weather_state", (int)weather.State);
+                row.AddValue("timestamp", weatherUpdate.Item2.HasValue ? weatherUpdate.Item2.Value.ToFormattedString() : "null");
+                row.AddValue("grade", weather.Grade);
+                row.AddValue("unk", weather.Unk);
+
+                row.Comment = StoreGetters.GetName(StoreNameType.Map, (int)weather.MapId, false) +
+                    " - " + weather.State + " - " + weather.Grade;
+                rows.Add(row);
+            }
+
+            return new QueryBuilder.SQLInsert(tableName, rows, ignore: true, withDelete: false).Build();
         }
     }
 }

@@ -4,6 +4,7 @@ namespace WowPacketParser.Enums
     {
         None            = -1,
         Player          = 0x000, // Seen 0x280 for players too
+        Player2         = 0x008,
         BattleGround1   = 0x101,
         InstanceSave    = 0x104,
         Group           = 0x105,
@@ -17,5 +18,8 @@ namespace WowPacketParser.Enums
         Unit            = 0xF03,
         Pet             = 0xF04,
         Vehicle         = 0xF05,
+        SceneObject     = 0xF06,
+        Loot            = 0xF09,
+        Corpse          = 0xF0C,
     }
 }

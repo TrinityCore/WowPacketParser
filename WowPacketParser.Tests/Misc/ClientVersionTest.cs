@@ -1,7 +1,7 @@
-﻿using NUnit.Framework;
-using WowPacketParser.Misc;
-using System;
+﻿using System;
+using NUnit.Framework;
 using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 
 namespace WowPacketParser.Tests.Misc
 {

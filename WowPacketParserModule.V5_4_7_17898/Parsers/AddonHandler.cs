@@ -1,0 +1,74 @@
+﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
+using WowPacketParser.Parsing;
+
+namespace WowPacketParserModule.V5_4_7_17898.Parsers
+{
+    public static class AddonHandler
+    {
+        [Parser(Opcode.SMSG_ADDON_INFO)]
+        public static void HandleServerAddonsList(Packet packet)
+        {
+            var bits20 = packet.ReadBits(23);
+
+            var usePublicKey = new bool[bits20];
+            var hasURL = new bool[bits20];
+            var bit1 = new bool[bits20];
+            var urlLang = new uint[bits20];
+
+            for (var i = 0; i < bits20; i++)
+            {
+                bit1[i] = packet.ReadBit();
+                hasURL[i] = packet.ReadBit();
+                usePublicKey[i] = packet.ReadBit();
+
+                if (hasURL[i])
+                    urlLang[i] = packet.ReadBits(8);
+            }
+
+            var bits10 = (int)packet.ReadBits(18);
+
+            for (var i = 0; i < bits20; i++)
+            {
+                if (usePublicKey[i])
+                    packet.ReadBytes("Name MD5", 256, i);
+
+                if (bit1[i])
+                {
+                    packet.ReadInt32("Int24", i);
+                    packet.ReadByte("Byte24", i);
+                }
+
+                if (hasURL[i])
+                    packet.ReadWoWString("Addon URL File", urlLang[i], i);
+
+                packet.ReadByte("Addon State", i);
+            }
+
+            for (var i = 0; i < bits10; i++)
+            {
+                for (var j = 0; j < 4; j++)
+                {
+                    packet.ReadInt32("IntED", i, j);
+                    packet.ReadInt32("Int14", i, j);
+                }
+
+                packet.ReadInt32("Int14", i);
+                packet.ReadInt32("IntED", i);
+                packet.ReadInt32("IntED", i);
+            }
+        }
+
+        [Parser(Opcode.CMSG_ADDON_REGISTERED_PREFIXES)]
+        public static void MultiplePackets(Packet packet)
+        {
+            var count = packet.ReadBits("Count", 24);
+            var lengths = new int[count];
+            for (var i = 0; i < count; ++i)
+                lengths[i] = (int)packet.ReadBits(5);
+
+            for (var i = 0; i < count; ++i)
+                packet.ReadWoWString("Addon", lengths[i], i);
+        }
+    }
+}

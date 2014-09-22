@@ -1,17 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
+using Ionic.Zlib;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using Guid=WowPacketParser.Misc.Guid;
-using Ionic.Zlib;
-using System.Collections.Generic;
 
 namespace WowPacketParser.Parsing.Parsers
 {
     public static class SessionHandler
     {
-        public static Guid LoginGuid;
-        public static Dictionary<int, ZlibCodec> z_streams = new Dictionary<int, ZlibCodec>();
+        public static WowGuid LoginGuid;
+        public static Dictionary<int, ZlibCodec> ZStreams = new Dictionary<int, ZlibCodec>();
 
         [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_1a_13205)]
         public static void HandleServerAuthChallenge(Packet packet)
@@ -23,8 +22,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
             {
-                var SStateCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685) ? 8 : 4;
-                for (var i = 0; i < SStateCount; i++)
+                var stateCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685) ? 8 : 4;
+                for (var i = 0; i < stateCount; i++)
                     packet.ReadInt32("Server State", i);
             }
         }
@@ -74,7 +73,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk8");
         }
 
-        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V5_0_5_16048, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V5_0_5_16048)]
         public static void HandleServerAuthChallenge505(Packet packet)
         {
             packet.ReadUInt32("Server Seed");
@@ -114,7 +113,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
                 packet.ReadInt64("Unk Int64");
 
-            packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(packet.ReadBytes(20)));
+            packet.ReadBytes("Proof SHA-1 Hash", 20);
 
             AddonHandler.ReadClientAddonsList(ref packet);
         }
@@ -193,15 +192,15 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < 2; i++)
                 packet.ReadByte("Digest (6)", i);
 
-            using (var pkt = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
-            {
-                var pkt2 = pkt;
-                AddonHandler.ReadClientAddonsList(ref pkt2);
-            }
+            var pkt = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
+                packet.Number, packet.Writer, packet.FileName);
+            AddonHandler.ReadClientAddonsList(ref pkt);
+            pkt.ClosePacket(false);
+
             packet.ReadByte("Mask"); // TODO: Seems to affect how the size is read
             var size = (packet.ReadByte() >> 4);
-            packet.WriteLine("Size: " + size);
-            packet.WriteLine("Account name: {0}", Encoding.UTF8.GetString(packet.ReadBytes(size)));
+            packet.AddValue("Size", size);
+            packet.AddValue("Account name", Encoding.UTF8.GetString(packet.ReadBytes(size)));
         }
 
         [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V4_3_2_15211, ClientVersionBuild.V4_3_3_15354)]
@@ -243,21 +242,20 @@ namespace WowPacketParser.Parsing.Parsers
             sha[1] = packet.ReadByte();
             sha[13] = packet.ReadByte();
 
-            using (var pkt = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
-            {
-                var pkt2 = pkt;
-                AddonHandler.ReadClientAddonsList(ref pkt2);
-            }
+            var pkt = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
+                packet.Number, packet.Writer, packet.FileName);
+            AddonHandler.ReadClientAddonsList(ref pkt);
+            pkt.ClosePacket(false);
 
             var highBits = packet.ReadByte() << 5;
             var lowBits = packet.ReadByte() >> 3;
             var size = lowBits | highBits;
-            packet.WriteLine("Size: " + size);
-            packet.WriteLine("Account name: {0}", Encoding.UTF8.GetString(packet.ReadBytes(size)));
-            packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
+            packet.AddValue("Size", size);
+            packet.AddValue("Account name", Encoding.UTF8.GetString(packet.ReadBytes(size)));
+            packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
         }
 
-        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_0_5_16048, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_0_5_16048)]
         public static void HandleAuthSession505(Packet packet)
         {
             var sha = new byte[20];
@@ -291,16 +289,15 @@ namespace WowPacketParser.Parsing.Parsers
             sha[6] = packet.ReadByte();//28
             sha[1] = packet.ReadByte();//23
 
-            using (var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
-            {
-                var pkt2 = addons;
-                AddonHandler.ReadClientAddonsList(ref pkt2);
-            }
+            var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
+                packet.Number, packet.Writer, packet.FileName);
+            AddonHandler.ReadClientAddonsList(ref addons);
+            addons.ClosePacket(false);
 
             packet.ReadBit("Unk bit");
             var size = (int)packet.ReadBits(12);
-            packet.WriteLine("Account name: {0}", Encoding.UTF8.GetString(packet.ReadBytes(size)));
-            packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(sha));
+            packet.AddValue("Account name", Encoding.UTF8.GetString(packet.ReadBytes(size)));
+            packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
         }
 
         [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -330,7 +327,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.V5_0_5_16048, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.V5_0_5_16048)]
         public static void HandleAuthResponse505(Packet packet)
         {
             var hasAccountData = packet.ReadBit("Has Account Data");
@@ -411,7 +408,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.StartBitStream(0, 4, 7, 1, 3, 2, 5, 6);
             packet.ParseBitStream(guid, 5, 0, 3, 4, 7, 2, 6, 1);
             packet.WriteGuid("Guid", guid);
-            LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
+            LoginGuid = new WowGuid(BitConverter.ToUInt64(guid, 0));
         }
 
         [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_3_15354)]
@@ -421,7 +418,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ParseBitStream(guid, 4, 1, 7, 2, 6, 5, 3, 0);
 
             packet.WriteGuid("Guid", guid);
-            LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
+            LoginGuid = new WowGuid(BitConverter.ToUInt64(guid, 0));
         }
 
         [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V4_3_3_15354, ClientVersionBuild.V4_3_4_15595)]
@@ -430,17 +427,17 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.StartBitStream(6, 7, 4, 5, 0, 1, 3, 2);
             packet.ParseBitStream(guid, 1, 4, 7, 2, 3, 6, 0, 5);
             packet.WriteGuid("Guid", guid);
-            LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
+            LoginGuid = new WowGuid(BitConverter.ToUInt64(guid, 0));
         }
 
-        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V5_1_0_16309, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V5_1_0_16309)]
         public static void HandlePlayerLogin510(Packet packet)
         {
             var guid = packet.StartBitStream(1, 5, 0, 2, 7, 6, 3, 4);
             packet.ParseBitStream(guid, 6, 4, 3, 5, 0, 2, 7, 1);
             packet.WriteGuid("Guid", guid);
             packet.ReadSingle("Unk Float");
-            LoginGuid = new Guid(BitConverter.ToUInt64(guid, 0));
+            LoginGuid = new WowGuid(BitConverter.ToUInt64(guid, 0));
         }
 
         [Parser(Opcode.SMSG_CHARACTER_LOGIN_FAILED)]
@@ -460,36 +457,33 @@ namespace WowPacketParser.Parsing.Parsers
             // Reason 3: Jumping or Falling
         }
 
-        [Parser(Opcode.SMSG_LOGOUT_COMPLETE, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.SMSG_LOGOUT_COMPLETE)]
         public static void HandleLogoutComplete(Packet packet)
         {
-            LoginGuid = new Guid(0);
+            LoginGuid = new WowGuid(0);
         }
 
         [Parser(Opcode.CMSG_CONNECT_TO_FAILED)]
         public static void HandleConnectToFailed(Packet packet)
         {
-            packet.WriteLine("IP Address: {0}", packet.ReadIPAddress());
+            packet.ReadIPAddress("IP Address");
             packet.ReadByte("Reason?");
         }
 
         [Parser(Opcode.SMSG_REDIRECT_CLIENT, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandleRedirectClient(Packet packet)
         {
-            var ip = packet.ReadIPAddress();
-            packet.WriteLine("IP Address: {0}", ip);
+            packet.ReadIPAddress("IP Address");
             packet.ReadUInt16("Port");
             packet.ReadInt32("Token");
-            var hash = packet.ReadBytes(20);
-            packet.WriteLine("Address SHA-1 Hash: {0}", Utilities.ByteArrayToHexString(hash));
+            packet.ReadBytes("Address SHA-1 Hash", 20);
         }
 
         [Parser(Opcode.SMSG_REDIRECT_CLIENT, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleRedirectClient406(Packet packet)
         {
             packet.ReadInt64("Int 64");
-            var hash = packet.ReadBytes(256);
-            packet.WriteLine("RSA Hash: {0}", Utilities.ByteArrayToHexString(hash));
+            packet.ReadBytes("RSA Hash", 256);
             packet.ReadByte("Byte");
             packet.ReadInt32("Int32");
         }
@@ -497,8 +491,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_REDIRECT_CLIENT, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleRedirectClient422(Packet packet)
         {
-            var hash = packet.ReadBytes(255);
-            packet.WriteLine("RSA Hash: {0}", Utilities.ByteArrayToHexString(hash));
+            packet.ReadBytes("RSA Hash", 255);
             packet.ReadInt16("Int 16");
             packet.ReadEnum<UnknownFlags>("Unknown int32 flag", TypeCode.Int32);
             packet.ReadInt64("Int 64");
@@ -515,9 +508,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadCString("Account");
             packet.ReadInt64("Unk Int64");
-
-            var hash = packet.ReadBytes(20);
-            packet.WriteLine("Proof SHA-1 Hash: " + Utilities.ByteArrayToHexString(hash));
+            packet.ReadBytes("Proof SHA-1 Hash", 20);
         }
 
         [Parser(Opcode.CMSG_REDIRECTION_AUTH_PROOF, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
@@ -546,7 +537,7 @@ namespace WowPacketParser.Parsing.Parsers
             bytes[16] = packet.ReadByte();
             bytes[14] = packet.ReadByte();
             bytes[10] = packet.ReadByte();
-            packet.WriteLine("Proof RSA Hash: " + Utilities.ByteArrayToHexString(bytes));
+            packet.AddValue("Proof RSA Hash", Utilities.ByteArrayToHexString(bytes));
         }
 
         [Parser(Opcode.SMSG_KICK_REASON)]
@@ -573,7 +564,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleResetCompressionContext(Packet packet)
         {
             packet.ReadInt32("Unk?");
-            z_streams[packet.ConnectionIndex] = new ZlibCodec(CompressionMode.Decompress);
+            ZStreams[packet.ConnectionIndex] = new ZlibCodec(CompressionMode.Decompress);
         }
     }
 }

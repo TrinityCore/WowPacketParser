@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -101,7 +101,9 @@ namespace WowPacketParser.Misc
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V5_4_7_17898,  new DateTime(2014, 02, 18)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V5_4_7_17930,  new DateTime(2014, 02, 20)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V5_4_7_17956,  new DateTime(2014, 02, 27)),
-            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V5_4_7_18019,  new DateTime(2014, 03, 12))
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V5_4_7_18019,  new DateTime(2014, 03, 10)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V5_4_8_18291,  new DateTime(2014, 05, 19)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V5_4_8_18414,  new DateTime(2014, 06, 13)),
         };
 
         private static ClientType _expansion;
@@ -191,19 +193,24 @@ namespace WowPacketParser.Misc
                     case ClientVersionBuild.V5_4_0_17359:
                     case ClientVersionBuild.V5_4_0_17371:
                     case ClientVersionBuild.V5_4_0_17399:
+                        return ClientVersionBuild.V5_4_0_17359;
                     case ClientVersionBuild.V5_4_1_17538:
+                        return ClientVersionBuild.V5_4_1_17538;
                     case ClientVersionBuild.V5_4_2_17658:
                     case ClientVersionBuild.V5_4_2_17688:
+                        return ClientVersionBuild.V5_4_2_17658;
                     case ClientVersionBuild.V5_4_7_17898:
                     case ClientVersionBuild.V5_4_7_17930:
                     case ClientVersionBuild.V5_4_7_17956:
                     case ClientVersionBuild.V5_4_7_18019:
-                        return ClientVersionBuild.V5_4_7_18019;
+                        return ClientVersionBuild.V5_4_7_17898;
+                    case ClientVersionBuild.V5_4_8_18291:
+                    case ClientVersionBuild.V5_4_8_18414:
+                        return ClientVersionBuild.V5_4_8_18414;
                     default:
                         return Build;
                 }
             }
-            private set { }
         }
 
         public static int BuildInt
@@ -255,15 +262,15 @@ namespace WowPacketParser.Misc
             UpdateFields.ResetUFDictionaries();
             try
             {
-                var asm = Assembly.LoadFrom(string.Format(AppDomain.CurrentDomain.BaseDirectory + "/" + "WowPacketParserModule.{0}.dll", ClientVersion.VersionDefiningBuild));
-                Trace.WriteLine(string.Format("Loading module WowPacketParserModule.{0}.dll", ClientVersion.VersionDefiningBuild));
-                Handler.LoadHandlers(asm, ClientVersion.VersionDefiningBuild);
-                UpdateFields.LoadUFDictionaries(asm, ClientVersion.VersionDefiningBuild);
+                var asm = Assembly.LoadFrom(string.Format(AppDomain.CurrentDomain.BaseDirectory + "/" + "WowPacketParserModule.{0}.dll", VersionDefiningBuild));
+                Trace.WriteLine(string.Format("Loading module WowPacketParserModule.{0}.dll", VersionDefiningBuild));
+                Handler.LoadHandlers(asm, VersionDefiningBuild);
+                UpdateFields.LoadUFDictionaries(asm, VersionDefiningBuild);
             }
             catch (FileNotFoundException)
             {
                 // No dll found, try to load the data in the executable itself
-                UpdateFields.LoadUFDictionaries(Assembly.GetExecutingAssembly(), ClientVersion.Build);
+                UpdateFields.LoadUFDictionaries(Assembly.GetExecutingAssembly(), Build);
             }
         }
 

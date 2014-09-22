@@ -1,20 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Data;
+using System.Data.SqlClient;
 using System.Text;
 using Wintellect.PowerCollections;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.SQL
 {
     public static class SQLDatabase
     {
-        public static readonly Dictionary<StoreNameType, Dictionary<int, string>> NameStores =
-            new Dictionary<StoreNameType, Dictionary<int, string>>();
+        public static readonly Dictionary<StoreNameType, Dictionary<int, string>> NameStores = new Dictionary<StoreNameType, Dictionary<int, string>>();
+        public static readonly ICollection<Tuple<uint, BroadcastText>> BroadcastTextStores = new List<Tuple<uint, BroadcastText>>();
 
-        private static readonly StoreNameType[] ObjectTypes = new[]
+
+        private static readonly StoreNameType[] ObjectTypes =
         {
             StoreNameType.Spell,
             StoreNameType.Map,
@@ -36,6 +40,51 @@ namespace WowPacketParser.SQL
 
             foreach (var objectType in ObjectTypes)
                 NameStores.Add(objectType, GetDict<int, string>(string.Format("SELECT `Id`, `Name` FROM `ObjectNames` WHERE `ObjectType`='{0}';", objectType)));
+        }
+
+        public static void LoadSQL()
+        {
+            if (!SQLConnector.Connected())
+                throw new DataException("Cannot get DB data without an active DB connection.");
+
+            var startTime = DateTime.Now;
+
+            var query = new StringBuilder(string.Format("SELECT ID, Language, MaleText, FemaleText, EmoteID0, EmoteID1, EmoteID2, EmoteDelay0, EmoteDelay1, EmoteDelay2, SoundId, Unk1, Unk2 FROM {0}.broadcast_text;", Settings.TDBDatabase));
+            using (var reader = SQLConnector.ExecuteQuery(query.ToString()))
+            {
+                if (reader == null)
+                    return;
+
+                while (reader.Read())
+                {
+                    var broadcastText = new BroadcastText();
+
+                    uint Id = Convert.ToUInt32(reader["Id"]);
+
+                    broadcastText.language = Convert.ToUInt32(reader["Language"]);
+                    broadcastText.MaleText = Convert.ToString(reader["MaleText"]);
+                    broadcastText.FemaleText = Convert.ToString(reader["FemaleText"]);
+
+                    broadcastText.emoteID0 = Convert.ToUInt32(reader["EmoteID0"]);
+                    broadcastText.emoteID1 = Convert.ToUInt32(reader["EmoteID1"]);
+                    broadcastText.emoteID2 = Convert.ToUInt32(reader["EmoteID2"]);
+
+                    broadcastText.emoteDelay0 = Convert.ToUInt32(reader["EmoteDelay0"]);
+                    broadcastText.emoteDelay1 = Convert.ToUInt32(reader["EmoteDelay1"]);
+                    broadcastText.emoteDelay2 = Convert.ToUInt32(reader["EmoteDelay2"]);
+
+                    broadcastText.soundId = Convert.ToUInt32(reader["SoundId"]);
+                    broadcastText.unk1 = Convert.ToUInt32(reader["Unk1"]);
+                    broadcastText.unk2 = Convert.ToUInt32(reader["Unk2"]);
+
+                    var tuple = Tuple.Create(Id, broadcastText);
+                    BroadcastTextStores.Add(tuple);
+                }
+            }
+
+            var endTime = DateTime.Now;
+            var span = endTime.Subtract(startTime);
+            Trace.WriteLine(String.Format("SQL loaded in {0}.", span.ToFormattedString()));
         }
 
         // Returns a dictionary from a DB query with two parameters (e.g <creature_entry, creature_name>)
@@ -88,7 +137,7 @@ namespace WowPacketParser.SQL
             fieldNames.Append(primaryKeyName + ",");
             foreach (var field in fields)
             {
-                fieldNames.Append(field.Item2.ToString());
+                fieldNames.Append(field.Item2);
                 fieldNames.Append(",");
                 fieldCount += field.Item2.Count;
             }
@@ -214,7 +263,7 @@ namespace WowPacketParser.SQL
             fieldNames.Append(primaryKeyName2 + ",");
             foreach (var field in fields)
             {
-                fieldNames.Append(field.Item2.ToString());
+                fieldNames.Append(field.Item2);
                 fieldNames.Append(",");
                 fieldCount += field.Item2.Count;
             }
@@ -348,7 +397,7 @@ namespace WowPacketParser.SQL
             fieldNames.Append(primaryKeyName2 + ",");
             foreach (var field in fields)
             {
-                fieldNames.Append(field.Item2.ToString());
+                fieldNames.Append(field.Item2);
                 fieldNames.Append(",");
                 fieldCount += field.Item2.Count;
             }

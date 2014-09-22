@@ -1,4 +1,5 @@
 ﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
@@ -8,6 +9,9 @@ namespace WowPacketParser.Store.Objects
     {
         [DBFieldName("name")]
         public string Name;
+
+        [DBFieldName("femaleName", ClientVersionBuild.V4_0_1_13164)]
+        public string femaleName;
 
         [DBFieldName("subname")]
         public string SubName;
@@ -42,10 +46,10 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("modelid", 4)]
         public uint[] DisplayIds;
 
-        [DBFieldName("Health_mod")]
+        [DBFieldName("HealthModifier")]
         public float Modifier1;
 
-        [DBFieldName("Mana_mod")]
+        [DBFieldName("ManaModifier")]
         public float Modifier2;
 
         [DBFieldName("RacialLeader")]
@@ -60,7 +64,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("exp_unk", ClientVersionBuild.V4_0_1_13164)]
         public ClientType Expansion;
 
-        [DBFieldName("WDBVerified")]
-        public int WDBVerified;
+        [DBFieldName("VerifiedBuild")]
+        public int VerifiedBuild = ClientVersion.BuildInt;
     }
 }

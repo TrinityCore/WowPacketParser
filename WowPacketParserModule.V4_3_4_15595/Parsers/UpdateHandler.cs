@@ -6,8 +6,6 @@ using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
-using Guid = WowPacketParser.Misc.Guid;
-using MovementFlag = WowPacketParserModule.V4_3_4_15595.Enums.MovementFlag;
 
 namespace WowPacketParserModule.V4_3_4_15595.Parsers
 {
@@ -25,7 +23,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 var type = packet.ReadByte();
                 var typeString = ((UpdateTypeCataclysm)type).ToString();
 
-                packet.WriteLine("[" + i + "] UpdateType: " + typeString);
+                packet.AddValue("UpdateType", typeString, i);
                 switch (typeString)
                 {
                     case "Values":
@@ -60,7 +58,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             }
         }
 
-        private static void ReadCreateObjectBlock(ref Packet packet, Guid guid, uint map, int index)
+        private static void ReadCreateObjectBlock(ref Packet packet, WowGuid guid, uint map, object index)
         {
             var objType = packet.ReadEnum<ObjectType>("Object Type", TypeCode.Byte, index);
             var moves = ReadMovementUpdateBlock434(ref packet, guid, index);
@@ -92,6 +90,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             obj.Map = map;
             obj.Area = CoreParsers.WorldStateHandler.CurrentAreaId;
             obj.PhaseMask = (uint)CoreParsers.MovementHandler.CurrentPhaseMask;
+            obj.Phases = new HashSet<ushort>(CoreParsers.MovementHandler.ActivePhases);
 
             // If this is the second time we see the same object (same guid,
             // same position) update its phasemask
@@ -107,7 +106,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.AddSniffData(Utilities.ObjectTypeToStore(objType), (int)guid.GetEntry(), "SPAWN");
         }
 
-        private static MovementInfo ReadMovementUpdateBlock434(ref Packet packet, Guid guid, int index)
+        private static MovementInfo ReadMovementUpdateBlock434(ref Packet packet, WowGuid guid, object index)
         {
             var moveInfo = new MovementInfo();
 
@@ -164,7 +163,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 guid2[3] = packet.ReadBit();
                 guid2[2] = packet.ReadBit();
                 if (hasMovementFlags)
-                    moveInfo.Flags = (WowPacketParser.Enums.MovementFlag)packet.ReadEnum<MovementFlag>("Movement Flags", 30, index);
+                    moveInfo.Flags = (MovementFlag)packet.ReadEnum<Enums.MovementFlag>("Movement Flags", 30, index);
 
                 packet.ReadBit("Has MovementInfo spline", index);
                 hasPitch = !packet.ReadBit("Lacks pitch", index);
@@ -219,7 +218,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                             facingTargetGuid = packet.StartBitStream(4, 3, 7, 2, 6, 1, 0, 5);
 
                         hasSplineVerticalAcceleration = packet.ReadBit("Has spline vertical acceleration", index);
-                        packet.WriteLine("[{0}] Spline type: {1}", index, splineType);
+                        packet.AddValue("Spline type", splineType, index);
                         /*splineFlags =*/
                         packet.ReadEnum<SplineFlag434>("Spline flags", 25, index);
                     }
@@ -312,7 +311,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                                 Y = packet.ReadSingle(),
                             };
 
-                            packet.WriteLine("[{0}][{1}] Spline Waypoint: {2}", index, i, wp);
+                            packet.AddValue("Spline Waypoint", wp, index, i);
                         }
 
                         if (splineType == SplineType.FacingSpot)
@@ -324,7 +323,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                                 Y = packet.ReadSingle(),
                             };
 
-                            packet.WriteLine("[{0}] Facing Spot: {1}", index, point);
+                            packet.AddValue("Facing Spot", point, index);
                         }
 
                         packet.ReadSingle("Spline Duration Multiplier Next", index);
@@ -343,7 +342,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     };
 
                     packet.ReadUInt32("Spline Id", index);
-                    packet.WriteLine("[{0}] Spline Endpoint: {1}", index, endPoint);
+                    packet.AddValue("Spline Endpoint:", endPoint, index);
                 }
 
                 moveInfo.Position.Z = packet.ReadSingle();
@@ -369,14 +368,23 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     if (hasTransportTime3)
                         packet.ReadUInt32("Transport Time 3", index);
 
-                    packet.ReadSByte("Transport Seat", index);
+                    var seat = packet.ReadSByte("Transport Seat", index);
                     packet.ReadXORByte(transportGuid, 1);
                     packet.ReadXORByte(transportGuid, 6);
                     packet.ReadXORByte(transportGuid, 2);
                     packet.ReadXORByte(transportGuid, 4);
-                    moveInfo.TransportGuid = new Guid(BitConverter.ToUInt64(transportGuid, 0));
-                    packet.WriteLine("[{0}] Transport GUID {1}", index, moveInfo.TransportGuid);
-                    packet.WriteLine("[{0}] Transport Position: {1}", index, moveInfo.TransportOffset);
+                    moveInfo.TransportGuid = new WowGuid(BitConverter.ToUInt64(transportGuid, 0));
+                    packet.AddValue("Transport GUID", moveInfo.TransportGuid, index);
+                    packet.AddValue("Transport Position", moveInfo.TransportOffset, index);
+
+                    if (moveInfo.TransportGuid.HasEntry() && moveInfo.TransportGuid.GetHighType() == HighGuidType.Vehicle &&
+                        guid.HasEntry() && guid.GetHighType() == HighGuidType.Unit)
+                    {
+                        var vehicleAccessory = new VehicleTemplateAccessory();
+                        vehicleAccessory.AccessoryEntry = guid.GetEntry();
+                        vehicleAccessory.SeatId = seat;
+                        Storage.VehicleTemplateAccessorys.Add(moveInfo.TransportGuid.GetEntry(), vehicleAccessory, packet.TimeSpan);
+                    }
                 }
 
                 moveInfo.Position.X = packet.ReadSingle();
@@ -407,9 +415,9 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
 
                 packet.ReadSingle("Fly Speed", index);
 
-                packet.WriteLine("[{0}] GUID 2: {1}", index, new Guid(BitConverter.ToUInt64(guid2, 0)));
-                packet.WriteLine("[{0}] Position: {1}", index, moveInfo.Position);
-                packet.WriteLine("[{0}] Orientation: {1}", index, moveInfo.Orientation);
+                packet.WriteGuid("GUID 2", guid2);
+                packet.AddValue("Position", moveInfo.Position, index);
+                packet.AddValue("Orientation", moveInfo.Orientation, index);
             }
 
             if (hasVehicleData)
@@ -443,9 +451,9 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 if (hasGOTransportTime2)
                     packet.ReadUInt32("GO Transport Time 2", index);
 
-                moveInfo.TransportGuid = new Guid(BitConverter.ToUInt64(goTransportGuid, 0));
-                packet.WriteLine("[{0}] GO Transport GUID {1}", index, moveInfo.TransportGuid);
-                packet.WriteLine("[{0}] GO Transport Position: {1}", index, moveInfo.TransportOffset);
+                moveInfo.TransportGuid = new WowGuid(BitConverter.ToUInt64(goTransportGuid, 0));
+                packet.AddValue("GO Transport GUID", moveInfo.TransportGuid, index);
+                packet.AddValue("GO Transport Position", moveInfo.TransportOffset, index);
             }
 
             if (hasGameObjectRotation)
@@ -473,11 +481,11 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             if (hasAnimKits)
             {
                 if (hasAnimKit1)
-                    packet.ReadUInt16("Anim Kit 1", index);
+                    packet.ReadUInt16("AI Anim Kit Id", index);
                 if (hasAnimKit2)
-                    packet.ReadUInt16("Anim Kit 2", index);
+                    packet.ReadUInt16("Movement Anim Kit Id", index);
                 if (hasAnimKit3)
-                    packet.ReadUInt16("Anim Kit 3", index);
+                    packet.ReadUInt16("Melee Anim Kit Id", index);
             }
 
             if (transport)

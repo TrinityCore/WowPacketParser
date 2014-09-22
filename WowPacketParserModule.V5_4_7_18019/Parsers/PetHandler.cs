@@ -7,7 +7,7 @@ using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using WowPacketParserModule.V5_4_7_18019.Enums;
-using Guid = WowPacketParser.Misc.Guid;
+using Guid = WowPacketParser.Misc.WowGuid;
 
 namespace WowPacketParserModule.V5_4_7_18019.Parsers
 {
@@ -62,6 +62,12 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
 
             // Store temporary name from Pet Number GUID (will be retrieved as uint64 in SMSG_PET_NAME_QUERY_RESPONSE)
             StoreGetters.AddName(PetGuid, PetNumber);
+        }
+
+        [Parser(Opcode.SMSG_PET_NAME_QUERY_RESPONSE)]
+        public static void HandlePetNameQueryResponse(Packet packet)
+        {
+            packet.ReadToEnd();
         }
     }
 }

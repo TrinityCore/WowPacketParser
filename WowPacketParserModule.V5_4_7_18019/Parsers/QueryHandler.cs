@@ -6,12 +6,17 @@ using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using WowPacketParserModule.V5_4_7_18019.Enums;
-using Guid = WowPacketParser.Misc.Guid;
+using Guid = WowPacketParser.Misc.WowGuid;
 
 namespace WowPacketParserModule.V5_4_7_18019.Parsers
 {
     public static class QueryHandler
     {
+        [Parser(Opcode.CMSG_CORPSE_QUERY)]
+        public static void HandleCorpseQuery(Packet packet)
+        {
+        }
+
         [Parser(Opcode.CMSG_CREATURE_QUERY)]
         public static void HandleCreatureQuery(Packet packet)
         {
@@ -119,7 +124,7 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
 
             creature.QuestItems = new uint[qItemCount];
             for (var i = 0; i < qItemCount; ++i)
-                creature.QuestItems[i] = (uint)packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Quest Item", i);
+                creature.QuestItems[i] = (uint)packet.ReadEntry<UInt32>(StoreNameType.Item, "Quest Item", i);
 
             creature.Type = packet.ReadEnum<CreatureType>("Type", TypeCode.Int32);
 
@@ -159,5 +164,45 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             };
             Storage.ObjectNames.Add((uint)entry.Key, objectName, packet.TimeSpan);
         }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_NPC_TEXT_UPDATE)]
+        public static void HandleNpcTextUpdate(Packet packet)
+        {
+            var txtSize = packet.ReadInt32("Size");
+            var Probability = new float[8];
+            var TextID = new Int32[8];
+
+            for (var i = 0; i < 8; i++)
+                Probability[i] = packet.ReadSingle("Probability", i);
+
+            for (var i = 0; i < 8; i++)
+                TextID[i] = packet.ReadInt32("Broadcast Text Id", i);
+
+            packet.ReadInt32("TextID");
+
+            packet.ReadBit("hasData");
+
+            //packet.AddSniffData(StoreNameType.NpcText, entry.Key, "QUERY_RESPONSE");
+
+            //Storage.NpcTexts.Add((uint)entry.Key, npcText, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.SMSG_REALM_QUERY_RESPONSE)]
+        public static void HandleRealmQueryResponse(Packet packet)
+        {
+
+            var byte20 = packet.ReadByte("byte20");
+            packet.ReadUInt32("Realm Id");
+
+            var bits22 = packet.ReadBits(8);
+            packet.ReadBit();
+            var bits278 = packet.ReadBits(8);
+
+            packet.ReadWoWString("Realmname (without white char)", bits278);
+            packet.ReadWoWString("Realmname", bits22);
+
+        }
+
     }
 }

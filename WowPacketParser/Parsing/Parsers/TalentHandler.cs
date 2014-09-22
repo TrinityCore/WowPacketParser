@@ -1,7 +1,7 @@
 using System;
-using WowPacketParser.Misc;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
+using WowPacketParser.Misc;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -23,7 +23,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadByte("Rank", i, j);
                 }
 
-                var glyphs = packet.ReadByte("Glyph count");
+                var glyphs = packet.ReadByte("Glyph count", i);
                 for (var j = 0; j < glyphs; ++j)
                     packet.ReadUInt16("Glyph", i, j);
             }
@@ -37,12 +37,11 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 if ((slotMask & 0x1) > 0)
                 {
-                    var name = "[" + (EquipmentSlotType)slot + "] ";
-                    packet.ReadEntryWithName<UInt32>(StoreNameType.Item, name + "Item Entry");
+                    packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry", (EquipmentSlotType)slot);
                     var enchantMask = packet.ReadUInt16();
                     if (enchantMask > 0)
                     {
-                        var enchantName = name + "Item Enchantments: ";
+                        var enchantName = string.Empty;
                         while (enchantMask > 0)
                         {
                             if ((enchantMask & 0x1) > 0)
@@ -53,11 +52,11 @@ namespace WowPacketParser.Parsing.Parsers
                             }
                             enchantMask >>= 1;
                         }
-                        packet.WriteLine(enchantName);
+                        packet.AddValue("Item Enchantments", enchantName, (EquipmentSlotType)slot);
                     }
-                    packet.ReadUInt16(name + "Unk Uint16");
-                    packet.ReadPackedGuid(name + "Creator GUID");
-                    packet.ReadUInt32(name + "Unk Uint32");
+                    packet.ReadUInt16("Unk UInt16", (EquipmentSlotType)slot);
+                    packet.ReadPackedGuid("Creator GUID", (EquipmentSlotType)slot);
+                    packet.ReadUInt32("Unk UInt32", (EquipmentSlotType)slot);
                 }
                 ++slot;
                 slotMask >>= 1;
@@ -190,17 +189,17 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_LEARN_TALENT, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.CMSG_LEARN_TALENT)]
         public static void HandleLearnTalent(Packet packet)
         {
             packet.ReadUInt32("Talent ID");
             packet.ReadUInt32("Rank");
         }
 
-        [Parser(Opcode.CMSG_LEARN_TALENT, ClientVersionBuild.V5_1_0_16309, ClientVersionBuild.V5_4_7_17898)]
-        public static void HandleLearnTalent510(Packet packet)
+        [Parser(Opcode.CMSG_LEARN_TALENTS)] // 5.1.0
+        public static void HandleLearnTalents(Packet packet)
         {
-            var talentCount = packet.ReadBits("Talent Count", 25);
+            var talentCount = packet.ReadBits("Learned Talent Count", 25);
 
             for (int i = 0; i < talentCount; i++)
                 packet.ReadUInt16("Talent Id", i);
@@ -218,15 +217,11 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Spec Group Id");
         }
 
-        [Parser(Opcode.CMSG_SET_PRIMARY_TALENT_TREE)]
-        public static void HandleSetPrimaryTalentTreeSpec(Packet packet)
-        {
-            packet.ReadUInt32("Spec Tab Id");
-        }
-
         //[Parser(Opcode.CMSG_UNLEARN_TALENTS)]
+
         //[Parser(Opcode.CMSG_PET_LEARN_TALENT)]
         //[Parser(Opcode.CMSG_PET_UNLEARN_TALENTS)]
         //[Parser(Opcode.CMSG_SET_ACTIVE_TALENT_GROUP_OBSOLETE)]
+        //[Parser(Opcode.CMSG_SET_PRIMARY_TALENT_TREE)] 4.0.6a
     }
 }

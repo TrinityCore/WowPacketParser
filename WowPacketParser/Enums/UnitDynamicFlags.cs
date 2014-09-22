@@ -3,7 +3,7 @@
 namespace WowPacketParser.Enums
 {
     [Flags]
-    public enum UnitDynamicFlags // 4.x
+    public enum UnitDynamicFlags
     {
         None = 0x0000,
         Lootable = 0x0001,

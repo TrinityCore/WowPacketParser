@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -15,9 +15,11 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             var Size = packet.ReadInt32();
             byte[] WardenDataBuffer = packet.ReadBytes(Size);
 
-            Packet WardenData = new Packet(WardenDataBuffer, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+            //Packet WardenData = new Packet(WardenDataBuffer, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
 
-            CoreParsers.WardenHandler.HandleClientWardenData(WardenData);
+            //CoreParsers.WardenHandler.HandleClientWardenData(WardenData);
+            packet.AsHex();
+            packet.ReadToEnd();
         }
 
         [Parser(Opcode.SMSG_WARDEN_DATA)]
@@ -26,9 +28,9 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             var Size = packet.ReadInt32();
             byte[] WardenDataBuffer = packet.ReadBytes(Size);
 
-            Packet WardenData = new Packet(WardenDataBuffer, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+            //Packet WardenData = new Packet(WardenDataBuffer, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
 
-            CoreParsers.WardenHandler.HandleServerWardenData(WardenData);
+            //CoreParsers.WardenHandler.HandleServerWardenData(WardenData);
         }
     }
 }

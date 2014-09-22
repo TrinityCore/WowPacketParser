@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using Guid = WowPacketParser.Misc.Guid;
 
 namespace WowPacketParser.SQL.Builders
 {
+    [BuilderClass]
     public static class UnitMisc
     {
-        public static string Addon(Dictionary<Guid, Unit> units)
+        [BuilderMethod(Units = true)]
+        public static string Addon(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
                 return string.Empty;
@@ -26,6 +29,14 @@ namespace WowPacketParser.SQL.Builders
             foreach (var unit in units)
             {
                 var npc = unit.Value;
+
+                if (Settings.AreaFilters.Length > 0)
+                    if (!(npc.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
+                        continue;
+
+                if (Settings.MapFilters.Length > 0)
+                    if (!(npc.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
+                        continue;
 
                 var row = new QueryBuilder.SQLInsertRow();
                 row.AddValue("entry", unit.Key.GetEntry());
@@ -64,7 +75,8 @@ namespace WowPacketParser.SQL.Builders
             return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
-        public static string ModelData(Dictionary<Guid, Unit> units)
+        [BuilderMethod(Units = true)]
+        public static string ModelData(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
                 return string.Empty;
@@ -76,6 +88,14 @@ namespace WowPacketParser.SQL.Builders
             var models = new StoreDictionary<uint, ModelData>();
             foreach (var npc in units.Select(unit => unit.Value))
             {
+                if (Settings.AreaFilters.Length > 0)
+                    if (!(npc.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
+                        continue;
+
+                if (Settings.MapFilters.Length > 0)
+                    if (!(npc.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
+                        continue;
+
                 uint modelId;
                 if (npc.Model.HasValue)
                     modelId = npc.Model.Value;
@@ -94,7 +114,7 @@ namespace WowPacketParser.SQL.Builders
                     Gender = npc.Gender.GetValueOrDefault(Gender.Male)
                 };
 
-                models.Add(modelId, model, null);
+                models.Add(modelId, model);
             }
 
             var entries = models.Keys();
@@ -102,6 +122,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(models, modelsDb, StoreNameType.None, "modelid");
         }
 
+        [BuilderMethod]
         public static string NpcTrainer()
         {
             if (Storage.NpcTrainers.IsEmpty())
@@ -135,6 +156,7 @@ namespace WowPacketParser.SQL.Builders
             return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
+        [BuilderMethod]
         public static string NpcVendor()
         {
             if (Storage.NpcVendors.IsEmpty())
@@ -171,7 +193,8 @@ namespace WowPacketParser.SQL.Builders
             return new QueryBuilder.SQLInsert(tableName, rows).Build();
         }
 
-        public static string CreatureEquip(Dictionary<Guid, Unit> units)
+        [BuilderMethod(Units = true)]
+        public static string CreatureEquip(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
                 return string.Empty;
@@ -185,6 +208,14 @@ namespace WowPacketParser.SQL.Builders
                 var equip = new CreatureEquipment();
                 var npc = unit.Value;
                 var entry = unit.Key.GetEntry();
+
+                if (Settings.AreaFilters.Length > 0)
+                    if (!(npc.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
+                        continue;
+
+                if (Settings.MapFilters.Length > 0)
+                    if (!(npc.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
+                        continue;
 
                 if (npc.Equipment == null || npc.Equipment.Length != 3)
                     continue;
@@ -216,7 +247,8 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(equips, equipsDb, StoreNameType.Unit);
         }
 
-        public static string CreatureMovement(Dictionary<Guid, Unit> units)
+        [BuilderMethod(Units = true)]
+        public static string CreatureMovement(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
                 return string.Empty;
@@ -253,6 +285,12 @@ namespace WowPacketParser.SQL.Builders
             return new QueryBuilder.SQLInsert(tableName, rows, ignore: true, withDelete: false).Build();
         }
 
+        //public static string CreatureXP(Dictionary<Guid, Unit> units)
+        //{
+        //
+        //}
+
+        [BuilderMethod]
         public static string Loot()
         {
             if (Storage.Loots.IsEmpty())
@@ -288,6 +326,7 @@ namespace WowPacketParser.SQL.Builders
             return new QueryBuilder.SQLInsert(tableName, rows, 2).Build();
         }
 
+        [BuilderMethod]
         public static string Gossip()
         {
             // TODO: This should be rewritten
@@ -370,7 +409,9 @@ namespace WowPacketParser.SQL.Builders
 
                     foreach (var gossip in Storage.Gossips)
                     {
-                        if (gossip.Value.Item1.GossipOptions == null) continue;
+                        if (gossip.Value.Item1.GossipOptions == null)
+                            continue;
+
                         foreach (var gossipOption in gossip.Value.Item1.GossipOptions)
                         {
                             var query = //         0     1       2         3         4        5         6
@@ -378,6 +419,7 @@ namespace WowPacketParser.SQL.Builders
                                     "SELECT menu_id,id,option_icon,box_coded,box_money,box_text,option_text " +
                                     "FROM {2}.gossip_menu_option WHERE menu_id={0} AND id={1};", gossip.Key.Item1,
                                     gossipOption.Index, Settings.TDBDatabase);
+
                             using (var reader = SQLConnector.ExecuteQuery(query))
                             {
                                 if (reader.HasRows) // possible update
@@ -472,6 +514,7 @@ namespace WowPacketParser.SQL.Builders
             return result;
         }
 
+        [BuilderMethod]
         public static string PointsOfInterest()
         {
             if (Storage.GossipPOIs.IsEmpty())
@@ -548,7 +591,7 @@ namespace WowPacketParser.SQL.Builders
         }
 
         //                      entry, <minlevel, maxlevel>
-        public static Dictionary<uint, Tuple<uint, uint>> GetLevels(Dictionary<Guid, Unit> units)
+        private static Dictionary<uint, Tuple<uint, uint>> GetLevels(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
                 return null;
@@ -569,8 +612,51 @@ namespace WowPacketParser.SQL.Builders
             return result.Count == 0 ? null : result;
         }
 
+        private static readonly HashSet<string> _professionTrainers = new HashSet<string>
+        {
+            "Alchemy Trainer", "Armorsmith Trainer", "Armorsmithing Trainer", "Blacksmith Trainer", 
+            "Blacksmithing Trainer", "Blacksmithing Trainer & Supplies", "Cold Weather Flying Trainer", 
+            "Cooking Trainer", "Cooking Trainer & Supplies", "Dragonscale Leatherworking Trainer", 
+            "Elemental Leatherworking Trainer", "Enchanting Trainer", "Engineering Trainer", 
+            "First Aid Trainer", "Fishing Trainer", "Fishing Trainer & Supplies", 
+            "Gnome Engineering Trainer", "Gnomish Engineering Trainer", "Goblin Engineering Trainer", 
+            "Grand Master Alchemy Trainer", "Grand Master Blacksmithing Trainer", 
+            "Grand Master Cooking Trainer", "Grand Master Enchanting Trainer", 
+            "Grand Master Engineering Trainer", "Grand Master First Aid Trainer", 
+            "Grand Master Fishing Trainer", "Grand Master Fishing Trainer & Supplies", 
+            "Grand Master Herbalism Trainer", "Grand Master Inscription Trainer", 
+            "Grand Master Jewelcrafting Trainer", "Grand Master Leatherworking Trainer", 
+            "Grand Master Mining Trainer", "Grand Master Skinning Trainer", 
+            "Grand Master Tailoring Trainer", "Herbalism Trainer", 
+            "Herbalism Trainer & Supplies", "Inscription Trainer", 
+            "Jewelcrafting Trainer", "Leatherworking Trainer", 
+            "Master Alchemy Trainer", "Master Blacksmithing Trainer", 
+            "Master Enchanting Trainer", "Master Engineering Trainer", 
+            "Master Fishing Trainer", "Master Herbalism Trainer", 
+            "Master Inscription Trainer", "Master Jewelcrafting Trainer", 
+            "Master Leatherworking Trainer", "Master Mining Trainer", 
+            "Master Skinning Trainer", "Master Tailoring Trainer", 
+            "Mining Trainer", "Skinning Trainer", "Tailor Trainer", "Tailoring Trainer", 
+            "Tribal Leatherworking Trainer", "Weaponsmith Trainer", "Weaponsmithing Trainer", 
+            "Horse Riding Trainer", "Ram Riding Trainer", "Raptor Riding Trainer", 
+            "Tiger Riding Trainer", "Wolf Riding Trainer", "Mechastrider Riding Trainer", 
+            "Riding Trainer", "Undead Horse Riding Trainer"
+        };
+
+        private static readonly HashSet<string> _classTrainers = new HashSet<string>
+        {
+            "Druid Trainer", "Portal Trainer", "Portal: Darnassus Trainer", 
+            "Portal: Ironforge Trainer", "Portal: Orgrimmar Trainer", 
+            "Portal: Stormwind Trainer", "Portal: Thunder Bluff Trainer", 
+            "Portal: Undercity Trainer", "Deathknight Trainer", 
+            "Hunter Trainer", "Mage Trainer", "Paladin Trainer", 
+            "Priest Trainer", "Shaman Trainer", "Warlock Trainer", 
+            "Warrior Trainer"
+        };
+
         // Non-WDB data but nevertheless data that should be saved to creature_template
-        public static string NpcTemplateNonWDB(Dictionary<Guid, Unit> units)
+        [BuilderMethod(Units = true)]
+        public static string NpcTemplateNonWDB(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
                 return string.Empty;
@@ -593,7 +679,6 @@ namespace WowPacketParser.SQL.Builders
                     MinLevel = levels[unit.Key.GetEntry()].Item1,
                     MaxLevel = levels[unit.Key.GetEntry()].Item2,
                     Faction = npc.Faction.GetValueOrDefault(35),
-                    Faction2 = npc.Faction.GetValueOrDefault(35),
                     NpcFlag = (uint) npc.NpcFlags.GetValueOrDefault(NPCFlags.None),
                     SpeedRun = npc.Movement.RunSpeed,
                     SpeedWalk = npc.Movement.WalkSpeed,
@@ -618,14 +703,38 @@ namespace WowPacketParser.SQL.Builders
                 template.UnitFlag &= ~(uint)UnitFlags.PlayerControlled;
                 template.UnitFlag &= ~(uint)UnitFlags.Silenced;
                 template.UnitFlag &= ~(uint)UnitFlags.PossessedByPlayer;
+                template.DynamicFlag &= ~(uint)UnitDynamicFlags.Lootable;
+                template.DynamicFlag &= ~(uint)UnitDynamicFlags.Tapped;
+                template.DynamicFlag &= ~(uint)UnitDynamicFlags.TappedByPlayer;
+                template.DynamicFlag &= ~(uint)UnitDynamicFlags.TappedByAllThreatList;
 
-                templates.Add(unit.Key.GetEntry(), template, null);
+                // has trainer flag but doesn't have prof nor class trainer flag
+                if ((template.NpcFlag & (uint) NPCFlags.Trainer) != 0 &&
+                    ((template.NpcFlag & (uint) NPCFlags.ProfessionTrainer) == 0 ||
+                     (template.NpcFlag & (uint) NPCFlags.ClassTrainer) == 0))
+                {
+                    var name = StoreGetters.GetName(StoreNameType.Unit, (int) unit.Key.GetEntry(), false);
+                    var firstIndex = name.LastIndexOf('<');
+                    var lastIndex = name.LastIndexOf('>');
+                    if (firstIndex != -1 && lastIndex != -1)
+                    {
+                        var subname = name.Substring(firstIndex + 1, lastIndex - firstIndex - 1);
+
+                        if (_professionTrainers.Contains(subname))
+                            template.NpcFlag |= (uint) NPCFlags.ProfessionTrainer;
+                        else if (_classTrainers.Contains(subname))
+                            template.NpcFlag |= (uint) NPCFlags.ClassTrainer;
+                    }
+                }
+
+                templates.Add(unit.Key.GetEntry(), template);
             }
 
             var templatesDb = SQLDatabase.GetDict<uint, UnitTemplateNonWDB>(templates.Keys());
             return SQLUtil.CompareDicts(templates, templatesDb, StoreNameType.Unit);
         }
 
+        [BuilderMethod]
         public static string SpellsX()
         {
             if (Storage.SpellsX.IsEmpty())
@@ -640,6 +749,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(Storage.SpellsX, spellsXDb, StoreNameType.Unit);
         }
 
+        [BuilderMethod]
         public static string CreatureText()
         {
             if (Storage.CreatureTexts.IsEmpty())
@@ -679,6 +789,46 @@ namespace WowPacketParser.SQL.Builders
                         if (timeSpan != null && timeSpan.Value.Duration() <= TimeSpan.FromSeconds(1))
                             textValue.Item1.Sound = sound.Item1;
                     }
+
+                    // Set comment
+
+                    string from = null, to = null;
+                    if (textValue.Item1.SenderGUID != 0)
+                    {
+                        if (textValue.Item1.SenderGUID.GetObjectType() == ObjectType.Player)
+                            from = "Player";
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(textValue.Item1.SenderName))
+                                from = textValue.Item1.SenderName;
+                            else
+                                from = StoreGetters.GetName(StoreNameType.Unit, (int)textValue.Item1.SenderGUID.GetEntry(), false);
+                        }
+                    }
+
+                    if (textValue.Item1.ReceiverGUID != 0)
+                    {
+                        if (textValue.Item1.ReceiverGUID.GetObjectType() == ObjectType.Player)
+                            to = "Player";
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(textValue.Item1.ReceiverName))
+                                to = textValue.Item1.ReceiverName;
+                            else
+                                to = StoreGetters.GetName(StoreNameType.Unit, (int)textValue.Item1.ReceiverGUID.GetEntry(), false);
+                        }
+                            
+                    }
+
+                    Trace.Assert(text.Key == textValue.Item1.SenderGUID.GetEntry() ||
+                        text.Key == textValue.Item1.ReceiverGUID.GetEntry());
+
+                    if (from != null && to != null)
+                        textValue.Item1.Comment = from + " to " + to;
+                    else if (from != null)
+                        textValue.Item1.Comment = from;
+                    else
+                        Trace.Assert(false);
                 }
             }
 
@@ -688,6 +838,9 @@ namespace WowPacketParser.SQL.Builders
             */
 
             const string tableName = "creature_text";
+
+            var broadcastTextStoresMale = SQLDatabase.BroadcastTextStores.GroupBy(blub => blub.Item2.MaleText).ToDictionary(group => group.Key, group => group.ToList());
+            var broadcastTextStoresFemale = SQLDatabase.BroadcastTextStores.GroupBy(blub => blub.Item2.FemaleText).ToDictionary(group => group.Key, group => group.ToList());
 
             var rows = new List<QueryBuilder.SQLInsertRow>();
             foreach (var text in Storage.CreatureTexts)
@@ -706,10 +859,147 @@ namespace WowPacketParser.SQL.Builders
                     row.AddValue("emote", textValue.Item1.Emote);
                     row.AddValue("duration", 0);
                     row.AddValue("sound", textValue.Item1.Sound);
+
+                    if (SQLDatabase.BroadcastTextStores != null)
+                    {
+                        List<Tuple<uint, BroadcastText>> textList;
+                        if (broadcastTextStoresMale.TryGetValue(textValue.Item1.Text, out textList) ||
+                            broadcastTextStoresFemale.TryGetValue(textValue.Item1.Text, out textList))
+                            foreach (var broadcastTextId in textList)
+                            {
+                                if (!String.IsNullOrWhiteSpace(textValue.Item1.BroadcastTextID))
+                                    textValue.Item1.BroadcastTextID += " - " + broadcastTextId.Item1.ToString();
+                                else
+                                    textValue.Item1.BroadcastTextID = broadcastTextId.Item1.ToString();
+                            }
+
+                        row.AddValue("BroadcastTextID", textValue.Item1.BroadcastTextID);
+
+                    }
+
                     row.AddValue("comment", textValue.Item1.Comment);
 
                     rows.Add(row);
                 }
+            }
+
+            return new QueryBuilder.SQLInsert(tableName, rows, 1, false).Build();
+        }
+
+        [BuilderMethod]
+        public static string VehicleAccessory()
+        {
+            if (Storage.VehicleTemplateAccessorys.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.vehicle_template_accessory))
+                return string.Empty;
+
+            const string tableName = "vehicle_template_accessory";
+
+            var rows = new List<QueryBuilder.SQLInsertRow>();
+            foreach (var accessorys in Storage.VehicleTemplateAccessorys)
+            {
+                foreach (var accessorysValue in accessorys.Value)
+                {
+                    var row = new QueryBuilder.SQLInsertRow();
+
+                    if (accessorysValue.Item1.SeatId < 0 || accessorysValue.Item1.SeatId > 7)
+                        continue;
+
+                    row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)accessorys.Key, false) + " - ";
+                    row.Comment += StoreGetters.GetName(StoreNameType.Unit, (int)accessorysValue.Item1.AccessoryEntry, false);
+
+                    row.AddValue("entry", accessorys.Key);
+                    row.AddValue("accessory_entry", accessorysValue.Item1.AccessoryEntry);
+                    row.AddValue("seat_id", accessorysValue.Item1.SeatId);
+                    row.AddValue("minion", "x", false, true);
+                    row.AddValue("description", row.Comment);
+                    row.AddValue("summontype", "x", false, true);
+                    row.AddValue("summontimer", "x", false, true);
+
+                    rows.Add(row);
+                }
+            }
+
+            return new QueryBuilder.SQLInsert(tableName, rows, 1, false).Build();
+        }
+
+        [BuilderMethod]
+        public static string NpcSpellClick()
+        {
+            if (Storage.NpcSpellClicks.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_spellclick_spells))
+                return string.Empty;
+
+            const string tableName = "npc_spellclick_spells";
+            var rows = new List<QueryBuilder.SQLInsertRow>();
+
+            foreach (var npcSpellClick in Storage.NpcSpellClicks)
+            {
+                foreach (var spellClick in Storage.SpellClicks)
+                {
+                    var row = new QueryBuilder.SQLInsertRow();
+
+                    if (spellClick.Item1.CasterGUID.GetObjectType() == ObjectType.Unit && spellClick.Item1.TargetGUID.GetObjectType() == ObjectType.Unit)
+                        spellClick.Item1.CastFlags = 0x0;
+                    if (spellClick.Item1.CasterGUID.GetObjectType() == ObjectType.Player && spellClick.Item1.TargetGUID.GetObjectType() == ObjectType.Unit)
+                        spellClick.Item1.CastFlags = 0x1;
+                    if (spellClick.Item1.CasterGUID.GetObjectType() == ObjectType.Unit && spellClick.Item1.TargetGUID.GetObjectType() == ObjectType.Player)
+                        spellClick.Item1.CastFlags = 0x2;
+                    if (spellClick.Item1.CasterGUID.GetObjectType() == ObjectType.Player && spellClick.Item1.TargetGUID.GetObjectType() == ObjectType.Player)
+                        spellClick.Item1.CastFlags = 0x3;
+
+                    row.AddValue("npc_entry", npcSpellClick.Item1.GetEntry());
+                    row.AddValue("spell_id", spellClick.Item1.SpellId);
+                    row.AddValue("cast_flags", spellClick.Item1.CastFlags);
+                    row.AddValue("user_type", "x", false, true);
+
+                    var timeSpan = spellClick.Item2 - npcSpellClick.Item2;
+                    if (timeSpan != null && timeSpan.Value.Duration() <= TimeSpan.FromSeconds(1))
+                        rows.Add(row);
+                }
+            }
+
+            return new QueryBuilder.SQLInsert(tableName, rows, 1, false).Build();
+        }
+
+        [BuilderMethod(Units = true)]
+        public static string NpcSpellClickMop(Dictionary<WowGuid, Unit> units)
+        {
+            if (units.Count == 0)
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_spellclick_spells))
+                return string.Empty;
+
+            const string tableName = "npc_spellclick_spells";
+            var rows = new List<QueryBuilder.SQLInsertRow>();
+
+            foreach (var unit in units)
+            {
+                var row = new QueryBuilder.SQLInsertRow();
+
+                var npc = unit.Value;
+                if (npc.InteractSpellID == null)
+                    continue;
+
+                if (Settings.AreaFilters.Length > 0)
+                    if (!(npc.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
+                        continue;
+
+                if (Settings.MapFilters.Length > 0)
+                    if (!(npc.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
+                        continue;
+
+                row.AddValue("npc_entry", unit.Key.GetEntry());
+                row.AddValue("spell_id", npc.InteractSpellID);
+                row.AddValue("cast_flags", "x", false, true);
+                row.AddValue("user_type", "x", false, true);
+
+                rows.Add(row);
             }
 
             return new QueryBuilder.SQLInsert(tableName, rows, 1, false).Build();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using MySql.Data.MySqlClient;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
@@ -41,9 +42,7 @@ namespace WowPacketParser.SQL
         /// <returns>Modified string</returns>
         public static string EscapeString(string str)
         {
-            str = str.Replace("'", "''");
-            str = str.Replace("\"", "\\\"");
-            return str;
+            return MySqlHelper.DoubleQuoteString(str);
         }
 
         /// <summary>
@@ -204,10 +203,10 @@ namespace WowPacketParser.SQL
                     var lastField = fields[fields.Count - 1];
                     if (lastField.Item2.Name == "WDBVerified")
                     {
-                        var wdbvSniff = (int)lastField.Item1.GetValue(elem1.Value.Item1);
-                        var wdbvDB = (int)lastField.Item1.GetValue(dict2[elem1.Key].Item1);
+                        var buildvSniff = (int)lastField.Item1.GetValue(elem1.Value.Item1);
+                        var buildvDB = (int)lastField.Item1.GetValue(dict2[elem1.Key].Item1);
 
-                        if (wdbvDB > wdbvSniff) // skip update if DB already has a WDBVerified higher than this one
+                        if (buildvDB > buildvSniff) // skip update if DB already has a VerifiedBuild higher than this one
                             continue;
                     }
 
@@ -326,10 +325,10 @@ namespace WowPacketParser.SQL
                     var lastField = fields[fields.Count - 1];
                     if (lastField.Item2.Name == "WDBVerified")
                     {
-                        var wdbvSniff = (int)lastField.Item1.GetValue(elem1.Value.Item1);
-                        var wdbvDB = (int)lastField.Item1.GetValue(dict2[elem1.Key].Item1);
+                        var buildvSniff = (int)lastField.Item1.GetValue(elem1.Value.Item1);
+                        var buildvDB = (int)lastField.Item1.GetValue(dict2[elem1.Key].Item1);
 
-                        if (wdbvDB > wdbvSniff) // skip update if DB already has a WDBVerified higher than this one
+                        if (buildvDB > buildvSniff) // skip update if DB already has a VerifiedBuild higher than this one
                             continue;
                     }
 

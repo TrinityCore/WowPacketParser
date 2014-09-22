@@ -1,4 +1,5 @@
-﻿using Guid = WowPacketParser.Misc.Guid;
+﻿using System;
+using WowPacketParser.Misc;
 
 namespace WowPacketParser.Store.Objects
 {
@@ -8,13 +9,13 @@ namespace WowPacketParser.Store.Objects
 
         public uint SpellId;
 
-        public System.Enum AuraFlags;
+        public Enum AuraFlags;
 
         public uint Level;
 
         public uint Charges;
 
-        public Guid CasterGuid;
+        public WowGuid CasterGuid;
 
         public int MaxDuration;
 

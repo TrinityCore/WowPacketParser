@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Data;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
-using WowPacketParser.Enums;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
-using WowPacketParser.SQL;
 using WowPacketParser.Parsing.Parsers;
+using WowPacketParser.SQL;
 
 namespace WowPacketParser
 {
@@ -36,19 +34,8 @@ namespace WowPacketParser
 
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
 
-            if (Settings.FilterPacketNumLow < 0)
-                throw new ConstraintException("FilterPacketNumLow must be positive");
-
-            if (Settings.FilterPacketNumHigh < 0)
-                throw new ConstraintException("FilterPacketNumHigh must be positive");
-
-            if (Settings.FilterPacketNumLow > 0 && Settings.FilterPacketNumHigh > 0
-                && Settings.FilterPacketNumLow > Settings.FilterPacketNumHigh)
-                throw new ConstraintException("FilterPacketNumLow must be less or equal than FilterPacketNumHigh");
-
             // Disable DB when we don't need its data (dumping to a binary file)
-            if (Settings.DumpFormat == DumpFormatType.None || Settings.DumpFormat == DumpFormatType.Pkt ||
-                Settings.DumpFormat == DumpFormatType.PktSplit || Settings.DumpFormat == DumpFormatType.SniffDataOnly)
+            if (!Settings.DumpFormatWithSQL())
             {
                 SQLConnector.Enabled = false;
                 SSHTunnel.Enabled = false;
@@ -61,17 +48,22 @@ namespace WowPacketParser
             var count = 0;
             foreach (var file in files)
             {
-                SessionHandler.z_streams.Clear();
+                SessionHandler.ZStreams.Clear();
                 ClientVersion.SetVersion(Settings.ClientBuild);
-                new SniffFile(file, Settings.DumpFormat, Tuple.Create(++count, files.Count)).ProcessFile();
+                var sf = new SniffFile(file, Settings.DumpFormat, Tuple.Create(++count, files.Count));
+                sf.ProcessFile();
             }
 
-            if (!String.IsNullOrWhiteSpace(Settings.SQLFileName))
-                Builder.DumpSQL("Dumping global sql", Settings.SQLFileName, "# multiple files\n");
+            if (!String.IsNullOrWhiteSpace(Settings.SQLFileName) && Settings.DumpFormatWithSQL())
+                Builder.DumpSQL("Dumping global sql", Settings.SQLFileName, SniffFile.GetHeader("multi"));
 
             SQLConnector.Disconnect();
             SSHTunnel.Disconnect();
-            Logger.WriteErrors();
+
+            if (Settings.LogErrors)
+                Logger.WriteErrors();
+
+            Trace.Listeners.Remove("ConsoleMirror");
 
             EndPrompt();
         }

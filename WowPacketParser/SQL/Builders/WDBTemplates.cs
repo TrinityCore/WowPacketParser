@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
@@ -6,8 +7,10 @@ using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.SQL.Builders
 {
+    [BuilderClass]
     public static class WDBTemplates
     {
+        [BuilderMethod]
         public static string Quest()
         {
             if (Storage.QuestTemplates.IsEmpty())
@@ -22,6 +25,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(Storage.QuestTemplates, templatesDb, StoreNameType.Quest, "Id");
         }
 
+        [BuilderMethod]
         public static string Npc()
         {
             if (Storage.UnitTemplates.IsEmpty())
@@ -36,6 +40,60 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(Storage.UnitTemplates, templatesDb, StoreNameType.Unit);
         }
 
+        [BuilderMethod]
+        public static string NpcName()
+        {
+            var result = "";
+
+            if (Storage.UnitTemplates.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template))
+                return string.Empty;
+
+            const string tableName = "creature_template";
+
+            if (SQLConnector.Enabled)
+            {
+                var rowsUpd = new List<QueryBuilder.SQLUpdateRow>();
+
+                foreach (var npcName in Storage.UnitTemplates)
+                {
+                    var query = string.Format("SELECT name FROM {0}.creature_template WHERE entry={1};",
+                        Settings.TDBDatabase, npcName.Key);
+
+                    using (var reader = SQLConnector.ExecuteQuery(query))
+                    {
+                        if (reader.HasRows) // possible update
+                        {
+                            while (reader.Read())
+                            {
+                                var row = new QueryBuilder.SQLUpdateRow();
+
+                                if (!Utilities.EqualValues(reader.GetValue(0), npcName.Value.Item1.Name))
+                                    row.AddValue("name", npcName.Value.Item1.Name);
+
+                                /*if (Utilities.EqualValues(reader.GetValue(0), npcName.Value.Item1.Name) && npcName.Value.Item1.femaleName != null)
+                                    row.AddValue("femaleName", npcName.Value.Item1.femaleName);*/
+
+                                row.AddWhere("entry", npcName.Key);
+
+                                row.Table = tableName;
+
+                                if (row.ValueCount != 0)
+                                    rowsUpd.Add(row);
+                            }
+                        }
+                    }
+                }
+
+                result += new QueryBuilder.SQLUpdate(rowsUpd).Build();
+            }
+
+            return result;
+        }
+
+        [BuilderMethod]
         public static string GameObject()
         {
             if (Storage.GameObjectTemplates.IsEmpty())
@@ -50,6 +108,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(Storage.GameObjectTemplates, templatesDb, StoreNameType.GameObject);
         }
 
+        [BuilderMethod]
         public static string Item()
         {
             if (Storage.ItemTemplates.IsEmpty())
@@ -64,6 +123,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(Storage.ItemTemplates, templatesDb, StoreNameType.Item);
         }
 
+        [BuilderMethod]
         public static string PageText()
         {
             if (Storage.PageTexts.IsEmpty())
@@ -78,21 +138,39 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(Storage.PageTexts, templatesDb, StoreNameType.PageText);
         }
 
+        [BuilderMethod]
         public static string NpcText()
         {
-            if (Storage.NpcTexts.IsEmpty())
-                return String.Empty;
+            if (!Storage.NpcTexts.IsEmpty())
+            {
+                if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_text))
+                    return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_text))
-                return string.Empty;
+                foreach (var npcText in Storage.NpcTexts)
+                    npcText.Value.Item1.ConvertToDBStruct();
 
-            foreach (var npcText in Storage.NpcTexts)
-                npcText.Value.Item1.ConvertToDBStruct();
+                var entries = Storage.NpcTexts.Keys();
+                var templatesDb = SQLDatabase.GetDict<uint, NpcText>(entries, "ID");
 
-            var entries = Storage.NpcTexts.Keys();
-            var templatesDb = SQLDatabase.GetDict<uint, NpcText>(entries, "ID");
+                return SQLUtil.CompareDicts(Storage.NpcTexts, templatesDb, StoreNameType.NpcText, "ID");
+            }
+            
+            if (!Storage.NpcTextsMop.IsEmpty())
+            {
 
-            return SQLUtil.CompareDicts(Storage.NpcTexts, templatesDb, StoreNameType.NpcText, "ID");
+                if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_text))
+                    return string.Empty;
+
+                foreach (var npcText in Storage.NpcTextsMop)
+                    npcText.Value.Item1.ConvertToDBStruct();
+
+                var entries = Storage.NpcTextsMop.Keys();
+                var templatesDb = SQLDatabase.GetDict<uint, NpcTextMop>(entries, "ID");
+
+                return SQLUtil.CompareDicts(Storage.NpcTextsMop, templatesDb, StoreNameType.NpcText, "ID");
+            }
+
+            return String.Empty;
         }
     }
 }

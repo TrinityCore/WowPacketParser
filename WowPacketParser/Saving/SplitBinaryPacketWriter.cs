@@ -25,20 +25,24 @@ namespace WowPacketParser.Saving
             Parallel.ForEach(groups, WriteGroup);
         }
 
-        private static void WriteGroup(IGrouping<int, Packet> group)
+        private static void WriteGroup(IGrouping<int, Packet> groups)
         {
-            var fileName = Folder + "/" + Opcodes.GetOpcodeName(group.Key) + ".pkt";
+            var groupDir = groups.GroupBy(p => p.Direction);
+            foreach (var group in groupDir)
+            {
+                var fileName = Folder + "/" + Opcodes.GetOpcodeName(groups.Key, group.Key) + ".pkt";
 
-            using (var fileStream = new FileStream(fileName, FileMode.Append, FileAccess.Write))
-                using (var writer = new BinaryWriter(fileStream, _encoding))
-                    foreach (var packet in group)
-                    {
-                        writer.Write((ushort)packet.Opcode);
-                        writer.Write((int)packet.Length);
-                        writer.Write((byte)packet.Direction);
-                        writer.Write((ulong)Utilities.GetUnixTimeFromDateTime(packet.Time));
-                        writer.Write(packet.GetStream(0));
-                    }
+                using (var fileStream = new FileStream(fileName, FileMode.Append, FileAccess.Write))
+                    using (var writer = new BinaryWriter(fileStream, _encoding))
+                        foreach (var packet in group)
+                        {
+                            writer.Write((ushort)packet.Opcode);
+                            writer.Write((int)packet.Length);
+                            writer.Write((byte)packet.Direction);
+                            writer.Write((ulong)Utilities.GetUnixTimeFromDateTime(packet.Time));
+                            writer.Write(packet.GetStream(0));
+                        }
+            }
         }
     }
 }

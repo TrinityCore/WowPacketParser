@@ -20,6 +20,8 @@ namespace WowPacketParser.Store.Objects
 
         public uint PhaseMask;
 
+        public HashSet<ushort> Phases; // Possible phases
+
         public bool ForceTemporarySpawn;
 
         public virtual bool IsTemporarySpawn()
@@ -29,7 +31,7 @@ namespace WowPacketParser.Store.Objects
 
         public bool IsOnTransport()
         {
-            return Movement.TransportGuid != Guid.Empty;
+            return Movement.TransportGuid != WowGuid.Empty;
         }
 
         public int GetDefaultSpawnTime()

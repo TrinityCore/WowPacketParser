@@ -3,7 +3,7 @@
 namespace WowPacketParser.Enums
 {
     [Flags]
-    enum AttackerStateFlags
+    public enum AttackerStateFlags
     {
         None = 0,
         Unk1 = 0x1,

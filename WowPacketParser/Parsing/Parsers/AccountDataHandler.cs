@@ -13,7 +13,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Unk Int32", i);
         }
 
-        [Parser(Opcode.SMSG_ACCOUNT_DATA_TIMES, ClientVersionBuild.V3_0_2_9056, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.SMSG_ACCOUNT_DATA_TIMES, ClientVersionBuild.V3_0_2_9056)]
         public static void HandleAccountDataTimes2(Packet packet)
         {
             packet.ReadTime("Server Time");
@@ -46,9 +46,9 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadTime("Login Time");
 
             var decompCount = packet.ReadInt32();
-            packet = packet.Inflate(decompCount, false);
-
-            packet.ReadWoWString("Account Data", decompCount);
+            var pkt = packet.Inflate(decompCount, false);
+            pkt.ReadWoWString("Account Data", decompCount);
+            pkt.ClosePacket(false);
         }
 
         [Parser(Opcode.CMSG_UPDATE_ACCOUNT_DATA)]
@@ -65,7 +65,6 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_UPDATE_ACCOUNT_DATA_COMPLETE)]
-        [Parser(0x2015)] // 4.3.4
         public static void HandleUpdateAccountDataComplete(Packet packet)
         {
             packet.ReadEnum<AccountDataType>("Data Type", TypeCode.Int32);

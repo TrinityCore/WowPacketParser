@@ -152,7 +152,6 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_LOG_XPGAIN, 0x01F7E}, // 4.1.0 13914
             {Opcode.SMSG_LOOT_LIST, 0x00A2E}, // 4.1.0 13914
             {Opcode.SMSG_MAIL_LIST_RESULT, 0x03B7D}, // 4.1.0 13914
-            {Opcode.SMSG_MEETINGSTONE_COMPLETE, 0x0893C}, // 4.1.0 13914
             {Opcode.SMSG_MEETINGSTONE_IN_PROGRESS, 0x0AD7D}, // 4.1.0 13914
             {Opcode.SMSG_MEETINGSTONE_MEMBER_ADDED, 0x02F6C}, // 4.1.0 13914
             {Opcode.SMSG_MESSAGECHAT, 0x0DD7C}, // 4.1.0 13914
@@ -214,6 +213,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_SET_FACTION_STANDING, 0x01B6E}, // 4.1.0 13914
             {Opcode.SMSG_SET_PROFICIENCY, 0x0BF3C}, // 4.1.0 13914
             {Opcode.SMSG_SET_PROJECTILE_POSITION, 0x0FD2C}, // 4.1.0 13914
+            {Opcode.SMSG_SHOW_MAILBOX, 0x0893C}, // 4.1.0 13914
             {Opcode.SMSG_SPELLDAMAGESHIELD, 0x0AE3C}, // 4.1.0 13914
             {Opcode.SMSG_SPELLENERGIZELOG, 0x01F6E}, // 4.1.0 13914
             {Opcode.SMSG_SPELLHEALLOG, 0x00F7C}, // 4.1.0 13914

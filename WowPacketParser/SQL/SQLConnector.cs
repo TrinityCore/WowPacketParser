@@ -2,6 +2,8 @@
 using System.Data;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.Collections.Generic;
+using System.Text;
 using MySql.Data.MySqlClient;
 using WowPacketParser.Misc;
 
@@ -61,9 +63,9 @@ namespace WowPacketParser.SQL
             catch (Exception e)
             {
                 // Something wrong happened, disabling everything MySQL/DB related
-                Enabled = false;
+                //Enabled = false;
                 Trace.WriteLine(e.Message + " at query \"" + input + "\"");
-                Disconnect();
+                //Disconnect();
             }
 
             return null;
@@ -92,7 +94,8 @@ namespace WowPacketParser.SQL
 
         public static void ReadDB()
         {
-            if (!Enabled) return;
+            if (!Enabled)
+                return;
 
             // Enable SSH Tunnel
             if (SSHTunnel.Enabled)
@@ -108,6 +111,7 @@ namespace WowPacketParser.SQL
             {
                 Connect();
                 SQLDatabase.GrabNameData();
+                SQLDatabase.LoadSQL();
             }
             catch (Exception ex)
             {

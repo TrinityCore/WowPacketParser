@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Store.Objects
@@ -10,7 +12,7 @@ namespace WowPacketParser.Store.Objects
     {
         public List<Aura> Auras;
 
-        public List<List<Aura>> AddedAuras;
+        public BlockingCollection<List<Aura>> AddedAuras = new BlockingCollection<List<Aura>>();
 
         public override bool IsTemporarySpawn()
         {
@@ -53,6 +55,7 @@ namespace WowPacketParser.Store.Objects
         public float? BoundingRadius;
         public float? CombatReach;
         public float? HoverHeight;
+        public uint? InteractSpellID;
 
         // Fields calculated with bytes0
         public PowerType? PowerType;
@@ -72,22 +75,29 @@ namespace WowPacketParser.Store.Objects
                 return;
             }
 
-            PowerType = (PowerType) ((Bytes0 & 0x7FFFFFFF) >> 24);
-            Gender    = (Gender)    ((Bytes0 & 0x00FF0000) >> 16);
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V5_4_0_17359))
+            {
+                PowerType = (PowerType)((Bytes0 & 0x7FFFFFFF) >> 24);
+                Gender = (Gender)((Bytes0 & 0x00FF0000) >> 16);
+            }
+            else
+            {
+                Gender = (Gender)((Bytes0 & 0xFF000000) >> 24);
+            }
             Class     = (Class)     ((Bytes0 & 0x0000FF00) >>  8);
             Race      = (Race)      ((Bytes0 & 0x000000FF) >>  0);
         }
 
         public override void LoadValuesFromUpdateFields()
         {
-            Bytes0        = UpdateFields.GetValue<UnitField, uint?>(ClientVersion.AddedInVersion(ClientType.MistsOfPandaria) ? UnitField.UNIT_FIELD_DISPLAY_POWER : UnitField.UNIT_FIELD_BYTES_0);
-            Bytes1        = UpdateFields.GetValue<UnitField, uint?>(ClientVersion.AddedInVersion(ClientType.MistsOfPandaria) ? UnitField.UNIT_FIELD_ANIMTIER : UnitField.UNIT_FIELD_BYTES_1);
-            Bytes2        = UpdateFields.GetValue<UnitField, uint?>(ClientVersion.AddedInVersion(ClientType.MistsOfPandaria) ? UnitField.UNIT_FIELD_SHAPESHIFT_FORM : UnitField.UNIT_FIELD_BYTES_2);
+            Bytes0        = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BYTES_0);
+            Bytes1        = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BYTES_1);
+            Bytes2        = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BYTES_2);
             Size          = UpdateFields.GetValue<ObjectField, float?>(ObjectField.OBJECT_FIELD_SCALE_X);
             MaxHealth     = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_MAXHEALTH);
             Level         = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_LEVEL);
             Faction       = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_FACTIONTEMPLATE);
-            Equipment     = UpdateFields.GetArray<UnitField, uint>(ClientVersion.AddedInVersion(ClientType.MistsOfPandaria) ? UnitField.UNIT_FIELD_VIRTUAL_ITEM_ID1 : UnitField.UNIT_VIRTUAL_ITEM_SLOT_ID1, 3);
+            Equipment     = UpdateFields.GetArray<UnitField, uint>(UnitField.UNIT_VIRTUAL_ITEM_SLOT_ID1, 3);
             UnitFlags     = UpdateFields.GetEnum<UnitField, UnitFlags?>(UnitField.UNIT_FIELD_FLAGS);
             UnitFlags2    = UpdateFields.GetEnum<UnitField, UnitFlags2?>(UnitField.UNIT_FIELD_FLAGS_2);
             MeleeTime     = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BASEATTACKTIME);
@@ -103,6 +113,12 @@ namespace WowPacketParser.Store.Objects
             BoundingRadius= UpdateFields.GetValue<UnitField, float?>(UnitField.UNIT_FIELD_BOUNDINGRADIUS);
             CombatReach   = UpdateFields.GetValue<UnitField, float?>(UnitField.UNIT_FIELD_COMBATREACH);
             HoverHeight   = UpdateFields.GetValue<UnitField, float?>(UnitField.UNIT_FIELD_HOVERHEIGHT);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_4_0_17359))
+            {
+                PowerType = UpdateFields.GetEnum<UnitField, PowerType?>(UnitField.UNIT_FIELD_DISPLAY_POWER);
+                InteractSpellID = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_INTERACT_SPELLID);
+            }
 
             ComputeBytes0();
         }
@@ -150,7 +166,7 @@ namespace WowPacketParser.Store.Objects
             }
 
             UpdateField uf;
-            if (dict.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(updateField), out uf))
+            if (dict.TryGetValue(UpdateFields.GetUpdateField(updateField), out uf))
             {
                 if (isInt)
                     return (TK)(object)uf.UInt32Value;
@@ -205,13 +221,13 @@ namespace WowPacketParser.Store.Objects
             if (isInt)
             {
                 for (var i = 0; i < count; i++)
-                    if (dict.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(firstUpdateField) + i, out uf))
+                    if (dict.TryGetValue(UpdateFields.GetUpdateField(firstUpdateField) + i, out uf))
                         result[i] = (TK)(object)uf.UInt32Value;
             }
             else
             {
                 for (var i = 0; i < count; i++)
-                    if (dict.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(firstUpdateField) + i, out uf))
+                    if (dict.TryGetValue(UpdateFields.GetUpdateField(firstUpdateField) + i, out uf))
                         result[i] = (TK)(object)uf.SingleValue;
             }
 
@@ -235,7 +251,7 @@ namespace WowPacketParser.Store.Objects
             try
             {
                 UpdateField uf;
-                if (dict.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(updateField), out uf))
+                if (dict.TryGetValue(UpdateFields.GetUpdateField(updateField), out uf))
                     return (TK)Enum.Parse(typeof(TK).GetGenericArguments()[0], uf.UInt32Value.ToString(CultureInfo.InvariantCulture));
             }
             catch (OverflowException) // Data wrongly parsed can result in very wtfy values

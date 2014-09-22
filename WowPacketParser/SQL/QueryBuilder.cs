@@ -407,8 +407,8 @@ namespace WowPacketParser.SQL
             private readonly bool _double;
             private readonly bool _between;
 
-            private ICollection<string> Values { get; set; }
-            private ICollection<Tuple<string, string>> ValuesDouble { get; set; }
+            private ISet<string> Values { get; set; }
+            private ISet<Tuple<string, string>> ValuesDouble { get; set; }
             private Tuple<string, string> ValuesBetween { get; set; }
 
             private string Table { get; set; }
@@ -424,12 +424,12 @@ namespace WowPacketParser.SQL
             /// <param name="values">Collection of values to be deleted</param>
             /// <param name="primaryKey">Field used in the WHERE clause</param>
             /// <param name="tableName">Table name</param>
-            public SQLDelete(ICollection<string> values, string primaryKey, string tableName)
+            public SQLDelete(IEnumerable<string> values, string primaryKey, string tableName)
             {
                 PrimaryKey = primaryKey;
                 Table = tableName;
 
-                Values = values;
+                Values = new HashSet<string>(values);
                 _double = false;
                 _between = false;
             }
@@ -441,12 +441,12 @@ namespace WowPacketParser.SQL
             /// <param name="values">Collection of pairs of values to be deleted</param>
             /// <param name="primaryKeys">Collection of pairs of fields used in the WHERE clause</param>
             /// <param name="tableName">Table name</param>
-            public SQLDelete(ICollection<Tuple<string, string>> values, Tuple<string, string> primaryKeys, string tableName)
+            public SQLDelete(IEnumerable<Tuple<string, string>> values, Tuple<string, string> primaryKeys, string tableName)
             {
                 PrimaryKeys = primaryKeys;
                 Table = tableName;
 
-                ValuesDouble = values;
+                ValuesDouble = new HashSet<Tuple<string, string>>(values);
                 _double = true;
                 _between = false;
             }

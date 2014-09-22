@@ -49,32 +49,24 @@ namespace WowPacketParser.Parsing.Parsers
         {
             while (true)
             {
-                var id = packet.ReadInt32();
+                var id = packet.ReadInt32("Achievement ID");
 
                 if (id == -1)
                     break;
-
-                packet.WriteLine("Achievement ID: " + id);
 
                 packet.ReadPackedTime("Achievement Time");
             }
 
             while (true)
             {
-                var id = packet.ReadInt32();
+                var id = packet.ReadInt32("Criteria ID");
 
                 if (id == -1)
                     break;
 
-                packet.WriteLine("Criteria ID: " + id);
-
-                var counter = packet.ReadPackedGuid();
-                packet.WriteLine("Criteria Counter: " + counter.Full);
-
+                packet.ReadPackedUInt64("Criteria Counter");
                 packet.ReadPackedGuid("Player GUID");
-
                 packet.ReadInt32("Unk Int32"); // Unk flag, same as in SMSG_CRITERIA_UPDATE
-
                 packet.ReadPackedTime("Criteria Time");
 
                 for (var i = 0; i < 2; i++)
@@ -205,7 +197,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(counter[i], 0);
                 packet.ReadXORByte(guid2[i], 2);
 
-                packet.WriteLine("[{0}] Criteria Counter: {1}", i, BitConverter.ToUInt64(counter[i], 0));
+                packet.AddValue("Criteria Counter", BitConverter.ToUInt64(counter[i], 0), i);
                 packet.WriteGuid("GUID2", guid2[i], i);
             }
 
@@ -335,8 +327,8 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadXORByte(guid[i], 1);
 
-                packet.WriteLine("[{0}] Criteria Flags: {1}", i, flags[i]);
-                packet.WriteLine("[{0}] Criteria Counter: {1}", i, BitConverter.ToUInt64(counter[i], 0));
+                packet.AddValue("Criteria Flags", flags[i], i);
+                packet.AddValue("Criteria Counter", BitConverter.ToUInt64(counter[i], 0), i);
                 packet.WriteGuid("Criteria GUID", guid[i], i);
             }
 
@@ -434,8 +426,8 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(counter[i], 2);
                 packet.ReadXORByte(guid[i], 2);
 
-                packet.WriteLine("[{0}] Criteria Flags: {1}", i, flags[i]);
-                packet.WriteLine("[{0}] Criteria Counter: {1}", i, BitConverter.ToUInt64(counter[i], 0));
+                packet.AddValue("Criteria Flags", flags[i], i);
+                packet.AddValue("Criteria Counter", BitConverter.ToUInt64(counter[i], 0), i);
                 packet.WriteGuid("Criteria Completer GUID", guid[i], i);
             }
         }

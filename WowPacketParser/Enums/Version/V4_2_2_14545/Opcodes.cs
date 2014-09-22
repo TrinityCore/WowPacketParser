@@ -777,7 +777,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.SMSG_UPDATE_COMBO_POINTS, 0x9AF6},
             {Opcode.SMSG_UPDATE_INSTANCE_ENCOUNTER_UNIT, 0x8C4A},
             {Opcode.SMSG_UPDATE_INSTANCE_OWNERSHIP, 0xCA73},
-            {Opcode.SMSG_UPDATE_ITEM_ENCHANTMENTS, 0xCA43},
+            {Opcode.SMSG_SOCKET_GEMS_RESULT, 0xCA43},
             {Opcode.SMSG_UPDATE_LAST_INSTANCE, 0x58FE},
             {Opcode.SMSG_UPDATE_OBJECT, 0x1EE7},
             {Opcode.SMSG_UPDATE_WORLD_STATE, 0x08E2},

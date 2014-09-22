@@ -1,6 +1,6 @@
 using System;
-using System.Diagnostics;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -102,16 +102,11 @@ namespace WowPacketParser.Misc
         }
 
         [SecurityCritical]
-        internal static void GetMemUse(string prefix, bool inKBs = false)
+        internal static void GetMemUse(string prefix)
         {
             var process = Process.GetCurrentProcess();
-            const int megabyte = 1048576;
-            const int kilobyte = 8192;
-            var bytesstr = inKBs ? "KB" : "MB";
-            var bytes = inKBs ? kilobyte : megabyte;
-
-            Trace.WriteLine(String.Format("Memory GC: {0,5}{3}, Process: {1,5}{3} - {2}",
-                GC.GetTotalMemory(true) / bytes, process.PrivateMemorySize64 / bytes, prefix, bytesstr));
+            Trace.WriteLine(String.Format("Memory GC: {0,5}, Process: {1,5} - {2}",
+                BytesToString(GC.GetTotalMemory(true)), BytesToString(process.PrivateMemorySize64), prefix));
         }
 
         public static void RemoveConfigOptions(ref List<string> files)
@@ -188,12 +183,18 @@ namespace WowPacketParser.Misc
             var str1 = o1 as string;
             var str2 = o2 as string;
 
+            if (str1 != null)
+                str1 = str1.TrimEnd('\r', '\n', ' ');
+
+            if (str2 != null)
+                str2 = str2.TrimEnd('\r', '\n', ' ');
+
             if (str1 != null && str2 == null)
                 return str1 == Convert.ToString(o2);
             if (str1 == null && str2 != null)
                 return str2 == Convert.ToString(o1);
             if (str1 != null)
-                return str1.Equals(o2);
+                return str1 == str2;
 
             // this still works if objects are booleans or enums
             return Convert.ToInt64(o1) == Convert.ToInt64(o2);
@@ -220,7 +221,7 @@ namespace WowPacketParser.Misc
                 if (attrs.Length <= 0)
                     continue;
 
-                list.Add(Tuple.Create(field, (TK)attrs[0]));
+                list.AddRange(attrs.Select(attr => Tuple.Create(field, (TK) attr)));
             }
 
             return list;
@@ -233,6 +234,22 @@ namespace WowPacketParser.Misc
         public static string FormattedDateTimeForFiles()
         {
             return DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss");
+        }
+
+        /// <summary>
+        /// Human-readable byte count
+        /// </summary>
+        /// <param name="byteCount">Number of bytes</param>
+        /// <returns>String with byte suffix</returns>
+        public static String BytesToString(long byteCount)
+        {
+            string[] suf = { "B", "KB", "MB", "GB", "TB", "PB", "EB" };
+            if (byteCount == 0)
+                return "0" + suf[0];
+            long bytes = Math.Abs(byteCount);
+            int place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
+            double num = Math.Round(bytes / Math.Pow(1024, place), 1);
+            return (Math.Sign(byteCount) * num) + suf[place];
         }
     }
 }

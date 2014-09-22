@@ -1,6 +1,6 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using NUnit.Framework;
 using WowPacketParser.Misc;
-using System.Collections.Generic;
 
 namespace WowPacketParser.Tests.Misc
 {

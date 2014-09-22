@@ -1,5 +1,5 @@
-﻿using System.Runtime.InteropServices.ComTypes;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
@@ -26,10 +26,10 @@ namespace WowPacketParser.Store.Objects
         public ItemQuality Quality;
 
         [DBFieldName("Flags")]
-        public ItemProtoFlags Flags;
+        public ItemProtoFlags Flags1;
 
         [DBFieldName("FlagsExtra")]
-        public ItemFlagExtra ExtraFlags;
+        public ItemFlagExtra Flags2;
 
         [DBFieldName("Unk430_1", ClientVersionBuild.V4_3_0_15005)]
         public float Unk430_1;
@@ -37,8 +37,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Unk430_2", ClientVersionBuild.V4_3_0_15005)]
         public float Unk430_2;
 
-        [DBFieldName("Unk530_1", ClientVersionBuild.V5_3_0_16981)]
-        public float Unk530_1;
+        //[DBFieldName("Flags 3", ClientVersionBuild.V5_3_0_16981)] Added in soon
+        public uint Flags3;
 
         [DBFieldName("BuyCount")]
         public uint BuyCount;
@@ -247,7 +247,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("CurrencySubstitutionCount", ClientVersionBuild.V4_0_1_13164)]
         public uint CurrencySubstitutionCount;
 
-        [DBFieldName("WDBVerified")]
-        public int WDBVerified;
+        [DBFieldName("VerifiedBuild")]
+        public int VerifiedBuild = ClientVersion.BuildInt;
     }
 }

@@ -2,9 +2,8 @@ using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
-using WowPacketParser.Store.Objects;
 using WowPacketParser.Store;
-using Guid=WowPacketParser.Misc.Guid;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -22,7 +21,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Standstate");
         }
 
-        [Parser(Opcode.CMSG_CHAR_CREATE, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_CHAR_CREATE)]
         public static void HandleClientCharCreate(Packet packet)
         {
             packet.ReadCString("Name");
@@ -137,8 +136,8 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Facial Hair");
 
                 var level = packet.ReadByte("Level");
-                var zone = packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id");
-                var mapId = packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
+                var zone = packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id");
+                var mapId = packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
 
                 var pos = packet.ReadVector3("Position");
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_3_13329))
@@ -172,7 +171,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (firstLogin)
                 {
-                    var startPos = new StartPosition {Map = mapId, Position = pos, Zone = zone};
+                    var startPos = new StartPosition {Map = mapId, Position = pos, Zone = (int) zone};
                     Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
                 }
 
@@ -238,7 +237,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadXORByte(playerGuid[c], 0);
 
-                var zone = packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id", c);
+                var zone = packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id", c);
                 packet.ReadInt32("Pet Level", c);
 
                 packet.ReadXORByte(playerGuid[c], 3);
@@ -296,7 +295,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadXORByte(guildGuid[c], 1);
 
-                var guidPlayer = new Guid(BitConverter.ToUInt64(playerGuid[c], 0));
+                var guidPlayer = new WowGuid(BitConverter.ToUInt64(playerGuid[c], 0));
 
                 packet.WriteGuid("Character Guid", playerGuid[c],c);
                 packet.WriteGuid("Guild Guid", guildGuid[c],c);
@@ -382,7 +381,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<Gender>("Gender", TypeCode.Byte, c);
                 var level = packet.ReadByte("Level", c);
                 packet.ReadInt32("Pet Level", c);
-                var zone = packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", c);
+                var zone = packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id", c);
                 var y = packet.ReadSingle("Position Y", c);
                 packet.ReadInt32("Pet Family", c);
                 packet.ReadByte("Hair Style", c);
@@ -419,14 +418,14 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guildGuids[c], 6);
                 packet.ReadXORByte(guildGuids[c], 2);
 
-                var playerGuid = new Guid(BitConverter.ToUInt64(charGuids[c], 0));
+                var playerGuid = new WowGuid(BitConverter.ToUInt64(charGuids[c], 0));
 
                 packet.WriteGuid("Character GUID", charGuids[c], c);
                 packet.WriteGuid("Guild GUID", guildGuids[c], c);
 
                 if (firstLogins[c])
                 {
-                    var startPos = new StartPosition { Map = mapId, Position = new Vector3(x, y, z), Zone = zone };
+                    var startPos = new StartPosition { Map = mapId, Position = new Vector3(x, y, z), Zone = (int) zone };
 
                     Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
                 }
@@ -440,7 +439,10 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             for (var c = 0; c < unkCounter; c++)
-                packet.WriteLine("Unk Loop: {0}, {1}", packet.ReadUInt32(), packet.ReadByte());
+            {
+                packet.ReadUInt32("Unk1", c);
+                packet.ReadByte("Unk2", c);
+            }
         }
 
         [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V4_3_3_15354, ClientVersionBuild.V4_3_4_15595)]
@@ -506,7 +508,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadEnum<InventoryType>("Bag InventoryType", TypeCode.Byte, c, itm);
                 }
 
-                var zone = packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", c);
+                var zone = packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id", c);
                 packet.ReadInt32("Pet Level", c);
                 packet.ReadEnum<CharacterFlag>("CharacterFlag", TypeCode.Int32, c);
 
@@ -578,7 +580,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var mapId = packet.ReadInt32("Map", c);
                 var name = packet.ReadWoWString("Name", (int)nameLenghts[c], c);
 
-                var playerGuid = new Guid(BitConverter.ToUInt64(charGuids[c], 0));
+                var playerGuid = new WowGuid(BitConverter.ToUInt64(charGuids[c], 0));
 
                 packet.WriteGuid("Character GUID", charGuids[c], c);
                 packet.WriteGuid("Guild GUID", guildGuids[c], c);
@@ -588,7 +590,7 @@ namespace WowPacketParser.Parsing.Parsers
                     var startPos = new StartPosition();
                     startPos.Map = mapId;
                     startPos.Position = new Vector3(x, y, z);
-                    startPos.Zone = zone;
+                    startPos.Zone = (int) zone;
 
                     Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
                 }
@@ -602,7 +604,10 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             for (var c = 0; c < unkCounter; c++)
-                packet.WriteLine("Unk Loop: {0}, {1}", packet.ReadUInt32(), packet.ReadByte());
+            {
+                packet.ReadUInt32("Unk1", c);
+                packet.ReadByte("Unk2", c);
+            }
         }
 
         [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_0_5_16048)]
@@ -717,9 +722,9 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadXORByte(charGuids[c], 1);
 
-                var zone = packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", c);
+                var zone = packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id", c);
 
-                var playerGuid = new Guid(BitConverter.ToUInt64(charGuids[c], 0));
+                var playerGuid = new WowGuid(BitConverter.ToUInt64(charGuids[c], 0));
 
                 packet.WriteGuid("Character GUID", charGuids[c], c);
                 packet.WriteGuid("Guild GUID", guildGuids[c], c);
@@ -729,7 +734,7 @@ namespace WowPacketParser.Parsing.Parsers
                     var startPos = new StartPosition();
                     startPos.Map = mapId;
                     startPos.Position = new Vector3(x, y, z);
-                    startPos.Zone = zone;
+                    startPos.Zone = (int) zone;
 
                     Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
                 }
@@ -825,13 +830,13 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guildGuids[c], 0);
 
                 packet.ReadEnum<CharacterFlag>("Character Flags", TypeCode.Int32, c);
-                var zone = packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", c);
+                var zone = packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id", c);
 
                 packet.ReadXORByte(charGuids[c], 5);
                 packet.ReadXORByte(charGuids[c], 6);
 
                 packet.ReadEnum<CustomizationFlag>("Customization Flags", TypeCode.Int32, c);
-                var mapId = packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id", c);
+                var mapId = packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id", c);
 
                 packet.ReadXORByte(charGuids[c], 1);
 
@@ -865,7 +870,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(charGuids[c], 2);
                 packet.ReadXORByte(charGuids[c], 3);
 
-                var playerGuid = new Guid(BitConverter.ToUInt64(charGuids[c], 0));
+                var playerGuid = new WowGuid(BitConverter.ToUInt64(charGuids[c], 0));
 
                 packet.WriteGuid("Character GUID", charGuids[c], c);
                 packet.WriteGuid("Guild GUID", guildGuids[c], c);
@@ -875,7 +880,7 @@ namespace WowPacketParser.Parsing.Parsers
                     var startPos = new StartPosition();
                     startPos.Map = mapId;
                     startPos.Position = new Vector3(x, y, z);
-                    startPos.Zone = zone;
+                    startPos.Zone = (int) zone;
 
                     Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
                 }
@@ -889,7 +894,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V5_1_0_16309, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleCharEnum510(Packet packet)
         {
             var unkCounter = packet.ReadBits("Unk Counter", 23);
@@ -956,7 +961,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Hair Color", c);
                 packet.ReadByte("Facial Hair", c);
                 packet.ReadXORByte(guildGuids[c], 2);
-                var zone = packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", c);
+                var zone = packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id", c);
                 packet.ReadByte("List Order", c);
                 packet.ReadXORByte(charGuids[c], 0);
                 packet.ReadXORByte(guildGuids[c], 1);
@@ -971,12 +976,12 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Hair Style", c);
                 packet.ReadXORByte(guildGuids[c], 4);
                 packet.ReadEnum<Gender>("Gender", TypeCode.Byte, c);
-                var mapId = packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id", c);
+                var mapId = packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id", c);
                 packet.ReadEnum<CustomizationFlag>("CustomizationFlag", TypeCode.UInt32, c);
                 var race = packet.ReadEnum<Race>("Race", TypeCode.Byte, c);
                 packet.ReadByte("Face", c);
 
-                var playerGuid = new Guid(BitConverter.ToUInt64(charGuids[c], 0));
+                var playerGuid = new WowGuid(BitConverter.ToUInt64(charGuids[c], 0));
 
                 packet.WriteGuid("Character GUID", charGuids[c], c);
                 packet.WriteGuid("Guild GUID", guildGuids[c], c);
@@ -986,7 +991,7 @@ namespace WowPacketParser.Parsing.Parsers
                     var startPos = new StartPosition();
                     startPos.Map = mapId;
                     startPos.Position = new Vector3(x, y, z);
-                    startPos.Zone = zone;
+                    startPos.Zone = (int) zone;
 
                     Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
                 }
@@ -1100,7 +1105,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < count; ++i)
             {
-                packet.WriteLine("[{0}] Flags {1}", i, flags[i]);
+                packet.AddValue("Flags", flags[i], i);
                 packet.ReadUInt32("Currency count", i);
                 if (hasWeekCap[i])
                     packet.ReadUInt32("Weekly cap", i);
@@ -1252,7 +1257,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_FAILED_PLAYER_CONDITION)]
         public static void HandleFailedPlayerCondition(Packet packet)
         {
-            packet.ReadInt32("Id"); // quest id? PlayerCondition.dbc id?
+            packet.ReadInt32("Id");
         }
 
         [Parser(Opcode.CMSG_SHOWING_CLOAK)]
@@ -1308,10 +1313,10 @@ namespace WowPacketParser.Parsing.Parsers
 
             // TODO: Exclude happiness on Cata
             for (var i = 0; i < powerCount; i++)
-                packet.WriteLine("Power " + (PowerType)i + ": " + packet.ReadInt32());
+                packet.ReadInt32("Power", (PowerType) i);
 
             for (var i = 0; i < 5; i++)
-                packet.WriteLine("Stat " + (StatType)i + ": " + packet.ReadInt32());
+                packet.ReadInt32("Stat", (StatType)i);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
                 packet.ReadInt32("Talent Level"); // 0 - No Talent gain / 1 - Talent Point gain

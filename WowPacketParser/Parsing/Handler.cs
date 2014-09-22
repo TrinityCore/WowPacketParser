@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Parsing
 {
@@ -91,13 +94,15 @@ namespace WowPacketParser.Parsing
             }
         }
 
-        private static Dictionary<KeyValuePair<ClientVersionBuild, Opcode>, Action<Packet>> VersionHandlers = LoadDefaultHandlers();
+        private static readonly Dictionary<KeyValuePair<ClientVersionBuild, Opcode>, Action<Packet>> VersionHandlers = LoadDefaultHandlers();
 
         public static void Parse(Packet packet, bool isMultiple = false)
         {
             ParsedStatus status;
 
-            var opcode = Opcodes.GetOpcode(packet.Opcode);
+            var opcode = Opcodes.GetOpcode(packet.Opcode, packet.Direction);
+            if (opcode == Opcode.NULL_OPCODE)
+                opcode = Opcodes.GetOpcode(packet.Opcode);
 
             packet.WriteLine(packet.GetHeader(isMultiple));
 
@@ -142,7 +147,7 @@ namespace WowPacketParser.Parsing
                         packet.WriteLine("Packet not fully read! Current position is {0}, length is {1}, and diff is {2}.",
                             pos, len, len - pos);
 
-                        if (len < 300) // If the packet isn't "too big" and it is not full read, print its hex table
+                        //if (len < 300) // If the packet isn't "too big" and it is not full read, print its hex table
                             packet.AsHex();
 
                         status = ParsedStatus.WithErrors;
@@ -170,9 +175,63 @@ namespace WowPacketParser.Parsing
                 if (Settings.DumpFormat != DumpFormatType.SniffDataOnly)
                 {
                     // added before for this type
-                    var data = status == ParsedStatus.Success ? Opcodes.GetOpcodeName(packet.Opcode) : status.ToString();
-                    packet.AddSniffData(StoreNameType.Opcode, packet.Opcode, data);
+                    var data = status == ParsedStatus.Success ? Opcodes.GetOpcodeName(packet.Opcode, packet.Direction) : status.ToString();
+                    data = packet.Direction == Direction.ClientToServer ? "C>S " + data : "S>C " + data;
+                    packet.AddSniffData(StoreNameType.Opcode, Settings.AllPackets ? (packet.Number+1) : packet.Opcode, data);
                 }
+            }
+        }
+
+        private static Dictionary<BattlenetPacketHeader, Action<BattlenetPacket>> LoadBattlenetHandlers()
+        {
+            var handlers = new Dictionary<BattlenetPacketHeader, Action<BattlenetPacket>>();
+            var currentAsm = Assembly.GetExecutingAssembly();
+
+            foreach (var type in currentAsm.GetTypes())
+                foreach (var methodInfo in type.GetMethods())
+                    foreach (var msgAttr in (BattlenetParserAttribute[])methodInfo.GetCustomAttributes(typeof(BattlenetParserAttribute), false))
+                        handlers.Add(msgAttr.Header, (Action<BattlenetPacket>)Delegate.CreateDelegate(typeof(Action<BattlenetPacket>), methodInfo));
+
+            return handlers;
+        }
+
+        private static readonly Dictionary<BattlenetPacketHeader, Action<BattlenetPacket>> BattlenetHandlers = LoadBattlenetHandlers();
+
+        public static void ParseBattlenet(Packet packet)
+        {
+            try
+            {
+                var bnetPacket = new BattlenetPacket(packet);
+                Action<BattlenetPacket> handler;
+
+                bnetPacket.Stream.WriteLine(bnetPacket.GetHeader());
+
+                if (BattlenetHandlers.TryGetValue(bnetPacket.Header, out handler))
+                {
+                    handler(bnetPacket);
+                    packet.Status = ParsedStatus.Success;
+                }
+                else
+                {
+                    packet.AsHex();
+                    packet.Status = ParsedStatus.NotParsed;
+                }
+            }
+            catch (EndOfStreamException)
+            {
+                // Processes the packet until it has all data to read - packet appears multiple times in the sniff file
+                // but only the last copy is complete
+                packet.Writer.Clear();
+                packet.AsHex();
+                packet.Status = ParsedStatus.WithErrors;
+            }
+            catch (Exception ex)
+            {
+                packet.WriteLine(ex.GetType().ToString());
+                packet.WriteLine(ex.Message);
+                packet.WriteLine(ex.StackTrace);
+
+                packet.Status = ParsedStatus.WithErrors;
             }
         }
     }

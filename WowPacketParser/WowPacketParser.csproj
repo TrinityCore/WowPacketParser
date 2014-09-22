@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -32,11 +32,15 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -67,7 +71,7 @@
     <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
     <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
     <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
     <CodeAnalysisRuleSet>BasicCorrectnessRules.ruleset</CodeAnalysisRuleSet>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <Prefer32Bit>false</Prefer32Bit>
@@ -85,25 +89,28 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ionic.Zip, Version=1.9.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\DotNetZip.1.9.3\lib\net20\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.8.3.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MySql.Data.6.8.3\lib\net45\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="PowerCollections, Version=1.0.2141.24679, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\XAct.Wintellect.PowerCollections.0.0.1\lib\net20\PowerCollections.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="MySql.Data, Version=6.2.2.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d">
-      <HintPath>Dependencies\MySql.Data.dll</HintPath>
-    </Reference>
     <Reference Include="System.Configuration" />
-    <Reference Include="SharpSSH, Version=2.0.0.25137, Culture=neutral, PublicKeyToken=null">
-      <HintPath>Dependencies\SharpSSH.dll</HintPath>
+    <Reference Include="Tamir.SharpSSH, Version=1.1.1.13, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Tamir.SharpSSH.1.1.1.13\lib\Tamir.SharpSSH.dll</HintPath>
     </Reference>
-    <Reference Include="Ionic.Zlib">
-      <HintPath>Dependencies\Ionic.Zlib.dll</HintPath>
-    </Reference>
-    <Reference Include="PowerCollections">
-      <HintPath>Dependencies\PowerCollections.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Extensions" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enums\AccountDataType.cs" />
@@ -111,6 +118,7 @@
     <Compile Include="Enums\AIReaction.cs" />
     <Compile Include="Enums\AmmoType.cs" />
     <Compile Include="Enums\ArenaCommandResult.cs" />
+    <Compile Include="Enums\ArenaError.cs" />
     <Compile Include="Enums\ArenaEvent.cs" />
     <Compile Include="Enums\AttackerStateFlags.cs" />
     <Compile Include="Enums\AuctionHouseAction.cs" />
@@ -124,6 +132,8 @@
     <Compile Include="Enums\BattlegroundListFlags.cs" />
     <Compile Include="Enums\BattlegroundStatus.cs" />
     <Compile Include="Enums\BattlegroundUpdateFlags.cs" />
+    <Compile Include="Enums\Battlenet\BattlenetChannel.cs" />
+    <Compile Include="Enums\Battlenet\BattlenetOpcode.cs" />
     <Compile Include="Enums\BillingFlag.cs" />
     <Compile Include="Enums\CalendarError.cs" />
     <Compile Include="Enums\CalendarEventStatus.cs" />
@@ -149,6 +159,7 @@
     <Compile Include="Enums\ContactResult.cs" />
     <Compile Include="Enums\ContactStatus.cs" />
     <Compile Include="Enums\BuyResult.cs" />
+    <Compile Include="Enums\DB2Hash.cs" />
     <Compile Include="Enums\ItemFieldFlags.cs" />
     <Compile Include="Enums\QuestFlags2.cs" />
     <Compile Include="Enums\QuestRequirementType.cs" />
@@ -275,6 +286,7 @@
     <Compile Include="Enums\SpellMechanic.cs" />
     <Compile Include="Enums\SpellMissType.cs" />
     <Compile Include="Enums\SpellModOp.cs" />
+    <Compile Include="Enums\SplineFlag542.cs" />
     <Compile Include="Enums\SplineFlag422.cs" />
     <Compile Include="Enums\SplineFlag.cs" />
     <Compile Include="Enums\SplineMode.cs" />
@@ -301,19 +313,21 @@
     <Compile Include="Enums\UpdateType.cs" />
     <Compile Include="Enums\VehicleFlags.cs" />
     <Compile Include="Enums\Version\Opcodes.cs" />
-    <Compile Include="Enums\Version\UpdateFields.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Enums\Version\UpdateFields.cs" />
     <Compile Include="Enums\Version\V3_3_0_10958\UpdateFields.cs" />
     <Compile Include="Enums\Version\V3_3_5a_12340\Opcodes.cs" />
     <Compile Include="Enums\Version\V3_3_5a_12340\UpdateFields.cs" />
     <Compile Include="Enums\Version\V4_0_3_13329\Opcodes.cs" />
-    <Compile Include="Enums\Version\V4_0_6_13596\Opcodes.cs" />
+    <Compile Include="Enums\Version\V4_0_6_13596\Opcodes.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Enums\Version\V4_0_6_13596\UpdateFields.cs" />
     <Compile Include="Enums\Version\V4_1_0_13914\Opcodes.cs" />
     <Compile Include="Enums\Version\V4_1_0_13914\UpdateFields.cs" />
     <Compile Include="Enums\Version\V4_2_0_14333\Opcodes.cs" />
     <Compile Include="Enums\Version\V4_2_0_14333\UpdateFields.cs" />
+    <Compile Include="Enums\Version\V4_2_0_14480\Opcodes.cs" />
+    <Compile Include="Enums\Version\V4_2_0_14480\UpdateFields.cs" />
     <Compile Include="Enums\Version\V4_2_2_14545\Opcodes.cs" />
     <Compile Include="Enums\Version\V4_2_2_14545\UpdateFields.cs" />
     <Compile Include="Enums\Version\V4_3_0_15005\Opcodes.cs" />
@@ -334,8 +348,16 @@
     <Compile Include="Enums\Version\V5_2_0_16650\UpdateFields.cs" />
     <Compile Include="Enums\Version\V5_3_0_16981\Opcodes.cs" />
     <Compile Include="Enums\Version\V5_3_0_16981\UpdateFields.cs" />
-    <Compile Include="Enums\Version\V5_4_7_18019\Opcodes.cs" />
-    <Compile Include="Enums\Version\V5_4_7_18019\UpdateFields.cs" />
+    <Compile Include="Enums\Version\V5_4_0_17359\Opcodes.cs" />
+    <Compile Include="Enums\Version\V5_4_0_17359\UpdateFields.cs" />
+    <Compile Include="Enums\Version\V5_4_1_17538\Opcodes.cs" />
+    <Compile Include="Enums\Version\V5_4_1_17538\UpdateFields.cs" />
+    <Compile Include="Enums\Version\V5_4_2_17658\Opcodes.cs" />
+    <Compile Include="Enums\Version\V5_4_2_17658\UpdateFields.cs" />
+    <Compile Include="Enums\Version\V5_4_7_17898\Opcodes.cs" />
+    <Compile Include="Enums\Version\V5_4_8_18291\Opcodes.cs" />
+    <Compile Include="Enums\Version\V5_4_8_18414\Opcodes.cs" />
+    <Compile Include="Enums\Version\V5_4_8_18414\UpdateFields.cs" />
     <Compile Include="Enums\VictimStates.cs" />
     <Compile Include="Enums\VoidTransferError.cs" />
     <Compile Include="Enums\WardenCheckType.cs" />
@@ -344,17 +366,22 @@
     <Compile Include="Loading\BinaryPacketReader.cs" />
     <Compile Include="Loading\IPacketReader.cs" />
     <Compile Include="Loading\Reader.cs" />
+    <Compile Include="Misc\BattlenetPacket.cs" />
+    <Compile Include="Misc\BattlenetPacketHeader.cs" />
     <Compile Include="Misc\BiDictionary.cs" />
     <Compile Include="Misc\Bit.cs" />
     <Compile Include="Misc\ClientVersion.cs" />
+    <Compile Include="Misc\ConcurrentPriorityQueue.cs" />
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Misc\Filters.cs" />
-    <Compile Include="Misc\Guid.cs" />
+    <Compile Include="Misc\WowGuid.cs" />
     <Compile Include="Misc\LfgEntry.cs" />
     <Compile Include="Misc\Logger.cs" />
     <Compile Include="Misc\MovementInfo.cs" />
     <Compile Include="Misc\Packet.cs" />
     <Compile Include="Misc\PacketReads.cs" />
+    <Compile Include="Misc\ParallelWorkProcessor.cs" />
+    <Compile Include="Misc\PlayerMovementInfo.cs" />
     <Compile Include="Loading\SniffFile.cs" />
     <Compile Include="Misc\Statistics.cs" />
     <Compile Include="Misc\Quaternion.cs" />
@@ -367,14 +394,17 @@
     <Compile Include="Misc\Vector4.cs" />
     <Compile Include="Parsing\Handler.cs" />
     <Compile Include="Parsing\HasSniffDataAttribute.cs" />
+    <Compile Include="Parsing\BattlenetParserAttribute.cs" />
     <Compile Include="Parsing\ParserAttribute.cs" />
     <Compile Include="Parsing\Parsers\AccountDataHandler.cs" />
     <Compile Include="Parsing\Parsers\AchievementHandler.cs" />
     <Compile Include="Parsing\Parsers\ActionBarHandler.cs" />
     <Compile Include="Parsing\Parsers\AddonHandler.cs" />
-    <Compile Include="Parsing\Parsers\ArchaeologyHandler.cs" />
+    <Compile Include="Parsing\Parsers\ArchaelogyHandler.cs" />
     <Compile Include="Parsing\Parsers\AuctionHouseHandler.cs" />
     <Compile Include="Parsing\Parsers\BattlegroundHandler.cs" />
+    <Compile Include="Parsing\Parsers\BattlenetHandler.cs" />
+    <Compile Include="Parsing\Parsers\BattlenetModuleHandler.cs" />
     <Compile Include="Parsing\Parsers\CalendarHandler.cs" />
     <Compile Include="Parsing\Parsers\ChannelHandler.cs" />
     <Compile Include="Parsing\Parsers\CharacterHandler.cs" />
@@ -404,7 +434,6 @@
     <Compile Include="Parsing\Parsers\SpellHandler.cs" />
     <Compile Include="Parsing\Parsers\TalentHandler.cs" />
     <Compile Include="Parsing\Parsers\TaxiHandler.cs" />
-    <Compile Include="Parsing\Parsers\TestHandler.cs" />
     <Compile Include="Parsing\Parsers\TicketHandler.cs" />
     <Compile Include="Parsing\Parsers\TradeHandler.cs" />
     <Compile Include="Parsing\Parsers\UpdateHandler.cs" />
@@ -415,8 +444,11 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Saving\BinaryPacketWriter.cs" />
+    <Compile Include="Saving\SplitSessionBinaryPacketWriter.cs" />
     <Compile Include="Saving\SplitBinaryPacketWriter.cs" />
     <Compile Include="SQL\Builder.cs" />
+    <Compile Include="SQL\Builders\BuilderAttributes.cs" />
+    <Compile Include="SQL\Builders\DB2.cs" />
     <Compile Include="SQL\Builders\Miscellaneous.cs" />
     <Compile Include="SQL\Builders\QuestMisc.cs" />
     <Compile Include="SQL\Builders\Spawns.cs" />
@@ -432,11 +464,15 @@
     <Compile Include="SQL\SQLUtil.cs" />
     <Compile Include="SQL\SSHTunnel.cs" />
     <Compile Include="Store\Objects\Aura.cs" />
+    <Compile Include="Store\Objects\BroadcastText.cs" />
+    <Compile Include="Store\Objects\CreatureDifficulty.cs" />
     <Compile Include="Store\Objects\CreatureEquipment.cs" />
-    <Compile Include="Store\Objects\GameObjectTemplateNonWDB.cs" />
     <Compile Include="Store\Objects\CreatureText.cs" />
+    <Compile Include="Store\Objects\DefenseMessage.cs" />
     <Compile Include="Store\Objects\GameObject.cs" />
     <Compile Include="Store\Objects\GameObjectTemplate.cs" />
+    <Compile Include="Store\Objects\GameObjectTemplateDB2.cs" />
+    <Compile Include="Store\Objects\GameObjectTemplateNonWDB.cs" />
     <Compile Include="Store\Objects\Gossip.cs" />
     <Compile Include="Store\Objects\GossipPOI.cs" />
     <Compile Include="Store\Objects\Item.cs" />
@@ -445,6 +481,7 @@
     <Compile Include="Store\Objects\LootItem.cs" />
     <Compile Include="Store\Objects\ModelData.cs" />
     <Compile Include="Store\Objects\NpcText.cs" />
+    <Compile Include="Store\Objects\NpcSpellClick.cs" />
     <Compile Include="Store\Objects\NpcTrainer.cs" />
     <Compile Include="Store\Objects\NpcVendor.cs" />
     <Compile Include="Store\Objects\ObjectName.cs" />
@@ -464,7 +501,9 @@
     <Compile Include="Store\Objects\Unit.cs" />
     <Compile Include="Store\Objects\UnitTemplate.cs" />
     <Compile Include="Store\Objects\UnitTemplateNonWDB.cs" />
+    <Compile Include="Store\Objects\VehicleTemplateAccessory.cs" />
     <Compile Include="Store\Objects\VendorItem.cs" />
+    <Compile Include="Store\Objects\WeatherUpdate.cs" />
     <Compile Include="Store\Objects\WoWObject.cs" />
     <Compile Include="Store\Storage.cs" />
     <Compile Include="Store\StoreDictionaries.cs" />
@@ -472,6 +511,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0">
@@ -513,4 +553,11 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
 </Project>

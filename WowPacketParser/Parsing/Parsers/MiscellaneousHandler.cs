@@ -3,6 +3,7 @@ using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -11,7 +12,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_LOG_DISCONNECT)]
         public static void HandleLogDisconnect(Packet packet)
         {
-            packet.ReadUInt32("Disconnect Reason");
+            packet.ReadUInt32("Unk");
             // 4 is inability for client to decrypt RSA
             // 3 is not receiving "WORLD OF WARCRAFT CONNECTION - SERVER TO CLIENT"
             // 11 is sent on receiving opcode 0x140 with some specific data
@@ -38,7 +39,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadInt32("Hotfix type", i); // Also time?
+                packet.ReadEnum<DB2Hash>("Hotfix DB2 File", TypeCode.UInt32, i);
                 packet.ReadTime("Hotfix date", i);
                 packet.ReadInt32("Hotfixed entry", i);
             }
@@ -168,12 +169,11 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
         }
 
-        [Parser(Opcode.CMSG_SET_SELECTION, ClientVersionBuild.V5_1_0_16309, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_SET_SELECTION, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleSetSelection510(Packet packet)
         {
             var guid = packet.StartBitStream(0, 1, 2, 4, 7, 3, 6, 5);
             packet.ParseBitStream(guid, 4, 1, 5, 2, 6, 7, 0, 3);
-
             packet.WriteGuid("Guid", guid);
         }
 
@@ -209,7 +209,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             packet.ReadEnum<DrunkenState>("Drunken State", TypeCode.UInt32);
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Item, "Entry");
+            packet.ReadEntry<UInt32>(StoreNameType.Item, "Entry");
         }
 
         [Parser(Opcode.SMSG_BUY_BANK_SLOT_RESULT)]
@@ -253,9 +253,8 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadByte("Button");
             var data = packet.ReadInt32();
-            var type = (ActionButtonType)((data & 0xFF000000) >> 24);
-            var action = (data & 0x00FFFFFF);
-            packet.WriteLine("Type: " + type + " ID: " + action);
+            packet.AddValue("Type", (ActionButtonType)((data & 0xFF000000) >> 24));
+            packet.AddValue("ID", data & 0x00FFFFFF);
         }
 
         [Parser(Opcode.CMSG_SET_ACTION_BUTTON, ClientVersionBuild.V5_1_0_16309)]
@@ -264,7 +263,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Slot Id");
             var actionId = packet.StartBitStream(0, 7, 6, 1, 3, 5, 2, 4);
             packet.ParseBitStream(actionId, 3, 0, 1, 4, 7, 2, 6, 5);
-            packet.WriteLine("Action Id: {0}", BitConverter.ToUInt32(actionId, 0));
+            packet.AddValue("Action Id", BitConverter.ToUInt32(actionId, 0));
         }
 
         [Parser(Opcode.SMSG_RESURRECT_REQUEST)]
@@ -276,7 +275,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Resurrection Sickness");
             packet.ReadBoolean("Use Timer");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
-                packet.ReadEntryWithName<Int32>(StoreNameType.Spell, "Spell ID");   // Used only for: <if (Spell ID == 83968 && Unit_HasAura(95223) return 1;>
+                packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");   // Used only for: <if (Spell ID == 83968 && Unit_HasAura(95223) return 1;>
         }
 
         [Parser(Opcode.CMSG_RESURRECT_RESPONSE)]
@@ -363,20 +362,20 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Split Date");
         }
 
-        [Parser(Opcode.CMSG_PING, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_PING)]
         public static void HandleClientPing(Packet packet)
         {
             packet.ReadInt32("Ping");
             packet.ReadInt32("Ping Count");
         }
 
-        [Parser(Opcode.SMSG_PONG, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.SMSG_PONG)]
         public static void HandleServerPong(Packet packet)
         {
             packet.ReadInt32("Ping");
         }
 
-        [Parser(Opcode.SMSG_CLIENTCACHE_VERSION, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.SMSG_CLIENTCACHE_VERSION)]
         public static void HandleClientCacheVersion(Packet packet)
         {
             packet.ReadInt32("Version");
@@ -421,16 +420,24 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_WEATHER)]
         public static void HandleWeatherStatus(Packet packet)
         {
-            packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
-            packet.ReadSingle("Grade");
-            packet.ReadByte("Unk Byte"); // Type
+            var state = packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
+            var grade = packet.ReadSingle("Grade");
+            var unk = packet.ReadByte("Unk Byte"); // Type
+
+            Storage.WeatherUpdates.Add(new WeatherUpdate
+            {
+                MapId = MovementHandler.CurrentMapId,
+                ZoneId = 0, // fixme
+                State = state,
+                Grade = grade,
+                Unk = unk
+            }, packet.TimeSpan);
         }
 
         [Parser(Opcode.CMSG_TUTORIAL_FLAG)]
         public static void HandleTutorialFlag(Packet packet)
         {
-            var flag = packet.ReadInt32();
-            packet.WriteLine("Flag: 0x" + flag.ToString("X8"));
+            packet.ReadInt32("Flag");
         }
 
         [Parser(Opcode.SMSG_TUTORIAL_FLAGS)]
@@ -443,9 +450,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_AREATRIGGER)]
         public static void HandleClientAreaTrigger(Packet packet)
         {
-            packet.ReadInt32("Area Trigger Id");
+            var entry = packet.ReadEntry("Area Trigger Id");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
                 packet.ReadByte("Unk Byte");
+
+            packet.AddSniffData(StoreNameType.AreaTrigger, entry.Key, "AREATRIGGER");
         }
 
         [Parser(Opcode.SMSG_PRE_RESURRECT)]
@@ -478,7 +487,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_EXPLORATION_EXPERIENCE)]
         public static void HandleExplorationExperience(Packet packet)
         {
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Area, "Area ID");
+            packet.ReadEntry<UInt32>(StoreNameType.Area, "Area ID");
             packet.ReadUInt32("Experience");
         }
 
@@ -509,7 +518,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_DEATH_RELEASE_LOC)]
         public static void HandleDeathReleaseLoc(Packet packet)
         {
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
             packet.ReadVector3("Position");
         }
 
@@ -517,7 +526,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ZONE_UNDER_ATTACK)]
         public static void HandleZoneUpdate(Packet packet)
         {
-            packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id");
+            packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id");
         }
 
         [Parser(Opcode.CMSG_PLAY_DANCE)]
@@ -574,7 +583,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var zones = packet.ReadUInt32("Zones count");
             for (var i = 0; i < zones; ++i)
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id");
+                packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id");
 
             var patterns = packet.ReadUInt32("Pattern count");
             for (var i = 0; i < patterns; ++i)
@@ -595,14 +604,14 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<Class>("Class", TypeCode.UInt32, i);
                 packet.ReadEnum<Race>("Race", TypeCode.UInt32, i);
                 packet.ReadEnum<Gender>("Gender", TypeCode.Byte, i);
-                packet.ReadEntryWithName<UInt32>(StoreNameType.Zone, "Zone Id", i);
+                packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id", i);
             }
         }
 
-        [Parser(Opcode.CMSG_TIME_SYNC_RESP, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_TIME_SYNC_RESP)]
         public static void HandleTimeSyncResp(Packet packet)
         {
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // no idea when this was added exactly
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545) && ClientVersion.RemovedInVersion(ClientVersionBuild.V4_3_4_15595)) // no idea when this was added exactly
             {
                 packet.ReadUInt32("Ticks");
                 packet.ReadUInt32("Counter");
@@ -614,14 +623,14 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_GAMETIME_SET, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.SMSG_GAMETIME_SET)]
         public static void HandleGametimeSet(Packet packet)
         {
             packet.ReadUInt32("Unk time");
             packet.ReadUInt32("Unk int32");
         }
 
-        [Parser(Opcode.SMSG_GAMETIME_UPDATE, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.SMSG_GAMETIME_UPDATE)]
         public static void HandleGametimeUpdate(Packet packet)
         {
             packet.ReadUInt32("Unk time"); // Time online?
@@ -688,6 +697,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Instance Difficulty ID");
         }
 
+        [Parser(Opcode.CMSG_INSPECT_HONOR_STATS)]
         [Parser(Opcode.MSG_INSPECT_HONOR_STATS)]
         public static void HandleInspectHonorStats(Packet packet)
         {
@@ -725,24 +735,24 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)] // Also named CMSG_LOADING_SCREEN_NOTIFY
         public static void HandleClientEnterWorld(Packet packet)
         {
-            packet.WriteLine("Loading: " + (packet.ReadBit() ? "true" : "false")); // Not sure on the meaning
-            var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");
-            MovementHandler.CurrentMapId = (uint) mapId;
+            packet.ReadBitBoolean("Loading");
+            var mapId = packet.ReadEntry<UInt32>(StoreNameType.Map, "Map");
+            MovementHandler.CurrentMapId = mapId;
 
-            if (mapId >= 0 && mapId < 1000) // Getting some weird results in a couple of packets
-                packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
+            if (mapId < 1000) // Getting some weird results in a couple of packets
+                packet.AddSniffData(StoreNameType.Map, (int) mapId, "LOAD_SCREEN");
         }
 
         [HasSniffData]
-        [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleClientEnterWorld434(Packet packet)
         {
-            var mapId = packet.ReadEntryWithName<UInt32>(StoreNameType.Map, "Map");
-            packet.ReadBit("Loading");
-            MovementHandler.CurrentMapId = (uint)mapId;
+            var mapId = packet.ReadEntry<UInt32>(StoreNameType.Map, "Map");
+            packet.ReadBitBoolean("Loading");
+            MovementHandler.CurrentMapId = mapId;
 
-            if (mapId >= 0 && mapId < 1000) // Getting some weird results in a couple of packets
-                packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
+            if (mapId < 1000) // Getting some weird results in a couple of packets
+                packet.AddSniffData(StoreNameType.Map, (int) mapId, "LOAD_SCREEN");
         }
 
         [Parser(Opcode.MSG_VERIFY_CONNECTIVITY)]
@@ -806,7 +816,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleSummonRequest(Packet packet)
         {
             packet.ReadGuid("Summoner GUID");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Area, "Area ID");
+            packet.ReadEntry<Int32>(StoreNameType.Area, "Area ID");
             packet.ReadTime("Summon Confirm Time");
         }
 
@@ -818,10 +828,12 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_SPELLCLICK)]
-        [Parser(Opcode.CMSG_INSPECT_HONOR_STATS)]
         public static void HandleSpellClick(Packet packet)
         {
-            packet.ReadGuid("GUID");
+            var guid = packet.ReadGuid("GUID");
+
+            if (guid.GetObjectType() == ObjectType.Unit)
+                Storage.NpcSpellClicks.Add(guid, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_UI_TIME)]
@@ -972,7 +984,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(transportGuid, 6);
 
                 packet.WriteGuid("Transport Guid", transportGuid);
-                packet.WriteLine("Transport Position: {0}", tpos);
+                packet.AddValue("Transport Position: {0}", tpos);
             }
 
             if (hasTime)
@@ -985,7 +997,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadSingle("Pitch");
 
             packet.WriteGuid("Guid", guid);
-            packet.WriteLine("Position: {0}", pos);
+            packet.AddValue("Position", pos);
         }
 
         [Parser(Opcode.SMSG_MEETINGSTONE_IN_PROGRESS)]
@@ -1035,26 +1047,26 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleDisplayGameError(Packet packet)
         {
             var hasAchieveOrSpellFailedIdOrCurrencyCount = packet.ReadBit();
-            var AchieveOrSpellFailedIdOrCurrencyCount = 0u;
+            var achieveOrSpellFailedIdOrCurrencyCount = 0u;
             var hasCurrencyId = packet.ReadBit();
 
             if (hasAchieveOrSpellFailedIdOrCurrencyCount)
-                AchieveOrSpellFailedIdOrCurrencyCount = packet.ReadUInt32();
+                achieveOrSpellFailedIdOrCurrencyCount = packet.ReadUInt32();
             var err = packet.ReadUInt32("Error Code");
             if (hasAchieveOrSpellFailedIdOrCurrencyCount)
                 switch (err)
                 {
                     case 48: // ERR_SPELL_FAILED_S
-                        packet.WriteLine("Spell Failed Id: {0}", AchieveOrSpellFailedIdOrCurrencyCount);
+                        packet.AddValue("Spell Failed Id", achieveOrSpellFailedIdOrCurrencyCount);
                         break;
                     case 784: // ERR_REQUIRES_ACHIEVEMENT_I
-                        packet.WriteLine("Achievement Id: {0}", AchieveOrSpellFailedIdOrCurrencyCount);
+                        packet.AddValue("Achievement Id", achieveOrSpellFailedIdOrCurrencyCount);
                         break;
                     case 790: // ERR_INSUFF_TRACKED_CURRENCY_IS
-                        packet.WriteLine("Currency Count: {0}", AchieveOrSpellFailedIdOrCurrencyCount);
+                        packet.AddValue("Currency Count", achieveOrSpellFailedIdOrCurrencyCount);
                         break;
                     default:
-                        packet.WriteLine("Unk UInt32: {0}", AchieveOrSpellFailedIdOrCurrencyCount);
+                        packet.AddValue("Unk UInt32", achieveOrSpellFailedIdOrCurrencyCount);
                         break;
                 }
 
@@ -1063,16 +1075,10 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_NOTIFICATION)]
+        [Parser(Opcode.SMSG_NOTIFICATION_2)]
         public static void HandleNotification(Packet packet)
         {
-            var length = packet.ReadBits(13);
-            packet.ReadWoWString("Message", length);
-        }
-
-        [Parser(Opcode.SMSG_NOTIFICATION_2)]
-        public static void HandleNotification2(Packet packet)
-        {
-            packet.ReadCString("Message");
+            packet.ReadCString("Notification");
         }
 
         [Parser(Opcode.CMSG_TIME_SYNC_RESP_FAILED)]
@@ -1086,6 +1092,16 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var length = packet.ReadUInt32("Length");
             packet.ReadWoWString("Text", length);
+        }
+
+        [Parser(Opcode.SMSG_PLAY_ONE_SHOT_ANIM_KIT)]
+        [Parser(Opcode.SMSG_SET_AI_ANIM_KIT)]
+        [Parser(Opcode.SMSG_SET_MELEE_ANIM_KIT)]
+        [Parser(Opcode.SMSG_SET_MOVEMENT_ANIM_KIT)]
+        public static void HandlePlayOneShotAnimKit(Packet packet)
+        {
+            packet.ReadPackedGuid("Guid");
+            packet.ReadUInt16("AnimKit.dbc Id");
         }
 
         [Parser(Opcode.SMSG_MINIGAME_STATE)]

@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using Guid = WowPacketParser.Misc.Guid;
+using Guid = WowPacketParser.Misc.WowGuid;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V5_4_7_18019.Parsers
@@ -95,33 +95,35 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
         [Parser(Opcode.SMSG_AUTH_RESPONSE)]
         public static void HandleAuthResponse(Packet packet)
         {
-            var hasAccountData = packet.ReadBit("Has Account Data");
-
-            var count = 0u;
-            uint[,] count_1 = new uint[1,2];
-            var count1 = 0u;
-            uint[,] count1_1 = new uint[1,3];
-            var ClassCount = 0u;
-            var RaceCount = 0u;
-            bool hasByte78 = false;
-            bool hasByte7C = false;
-
-            if (hasAccountData)
+            if (packet.Direction == Direction.ServerToClient)
             {
-                count = packet.ReadBits("unk count", 21);
-                count_1 = new uint[count, 2];
+                var hasAccountData = packet.ReadBit("Has Account Data");
 
-                for (uint i = 0; i < count; ++i)
+                var count = 0u;
+                uint[,] count_1 = new uint[1, 2];
+                var count1 = 0u;
+                uint[,] count1_1 = new uint[1, 3];
+                var ClassCount = 0u;
+                var RaceCount = 0u;
+                bool hasByte78 = false;
+                bool hasByte7C = false;
+
+                if (hasAccountData)
                 {
-                    count_1[i, 0] = packet.ReadBits("unk count bytes lenght1", 8);
-                    packet.ReadBit("count unk bit");
-                    count_1[i, 1] = packet.ReadBits("unk count bytes lenght2", 8);
-                }
+                    count = packet.ReadBits("Realm Names", 21);
+                    count_1 = new uint[count, 2];
 
-                packet.ReadBit("byte74");
-                RaceCount = packet.ReadBits("RaceCount", 23);
-                count1 = packet.ReadBits("unk count", 21);
-                count1_1 = new uint[count1, 3];
+                    for (uint i = 0; i < count; ++i)
+                    {
+                        count_1[i, 0] = packet.ReadBits("unk count bytes lenght1", 8);
+                        packet.ReadBit("Home realm");
+                        count_1[i, 1] = packet.ReadBits("unk count bytes lenght2", 8);
+                    }
+
+                    packet.ReadBit("byte74");
+                    RaceCount = packet.ReadBits("RaceCount", 23);
+                    count1 = packet.ReadBits("unk count", 21);
+                    count1_1 = new uint[count1, 3];
 
                 for (uint i = 0; i < count1; ++i)
                 {
@@ -200,6 +202,12 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
 
             packet.ReadEnum<ResponseCode>("Auth Code", TypeCode.Byte);
         }
+            else
+            {
+                packet.WriteLine("              : CMSG_LOOT_MONEY");
+                packet.Opcode = (int)Opcode.CMSG_LOOT_MONEY;
+            }
+        }
 
         [Parser(Opcode.SMSG_LOGOUT_COMPLETE)]
         public static void HandleLogoutComplete(Packet packet)
@@ -212,6 +220,17 @@ namespace WowPacketParserModule.V5_4_7_18019.Parsers
             packet.WriteGuid("Guid", guid);
 
             LoginGuid = new Guid(0);
+        }
+
+        [Parser(Opcode.SMSG_MOTD)]
+        public static void HandleMessageOfTheDay(Packet packet)
+        {
+            var lineCount = packet.ReadBits("Line Count", 4);
+            var LineSize = new uint[lineCount];
+            for (var i = 0; i < lineCount; i++)
+                LineSize[i] = packet.ReadBits(7);
+            for (var i = 0; i < lineCount; i++)
+                packet.ReadWoWString("", LineSize[i], i);
         }
 
         [Parser(Opcode.SMSG_REDIRECT_CLIENT)]

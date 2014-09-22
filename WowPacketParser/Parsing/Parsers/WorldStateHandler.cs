@@ -11,20 +11,20 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_INIT_WORLD_STATES)]
         public static void HandleInitWorldStates(Packet packet)
         {
-            packet.ReadEntryWithName<Int32>(StoreNameType.Map, "Map ID");
-            packet.ReadEntryWithName<Int32>(StoreNameType.Zone, "Zone Id");
-            CurrentAreaId = packet.ReadEntryWithName<Int32>(StoreNameType.Area, "Area Id");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
+            packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id");
+            CurrentAreaId = packet.ReadEntry<Int32>(StoreNameType.Area, "Area Id");
 
             var numFields = packet.ReadInt16("Field Count");
             for (var i = 0; i < numFields; i++)
-                ReadWorldStateBlock(ref packet);
+                ReadWorldStateBlock(ref packet, i);
         }
 
-        public static void ReadWorldStateBlock(ref Packet packet)
+        public static void ReadWorldStateBlock(ref Packet packet, params object[] indexes)
         {
             var field = packet.ReadInt32();
             var val = packet.ReadInt32();
-            packet.WriteLine("Field: {0} - Value: {1}", field, val);
+            packet.AddValue("Field", field + " - Value: " + val, indexes);
         }
 
         [Parser(Opcode.SMSG_UPDATE_WORLD_STATE)]
