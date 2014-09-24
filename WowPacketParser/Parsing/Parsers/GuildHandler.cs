@@ -1183,7 +1183,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var count = packet.ReadBits("Count", 24);
             for (var i = 0; i < count; ++i)
-                packet.ReadUInt32("Criteria Id", i);
+                packet.ReadUInt32("Achievement Id", i);
         }
 
         [Parser(Opcode.CMSG_QUERY_GUILD_RECIPES, ClientVersionBuild.V5_1_0_16309)]
