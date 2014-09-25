@@ -126,7 +126,7 @@ namespace WowPacketParser.Misc
             if (keepStream)
             {
                 int idx = ConnectionIndex;
-                while (!TryInflate(inflatedSize, idx, arr, ref newarr))
+                while (!TryInflate(inflatedSize, idx, arr, ref newarr) && idx <= 4)
                     idx += 1;
             }
             else
@@ -175,7 +175,7 @@ namespace WowPacketParser.Misc
             if (keepStream)
             {
                 int idx = ConnectionIndex;
-                while (!TryInflate(inflatedSize, idx, arr, ref newarr))
+                while (!TryInflate(inflatedSize, idx, arr, ref newarr) && idx <= 4)
                     idx += 1;
             }
             else
