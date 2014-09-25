@@ -123,7 +123,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 text.ReceiverName = packet.ReadWoWString("Receiver Name", receiverLen);
 
             if (hasAchi)
-                packet.ReadInt32("Achievement");
+                packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id");
 
             if (hasLang)
                 text.Language = packet.ReadEnum<Language>("Language", TypeCode.Byte);

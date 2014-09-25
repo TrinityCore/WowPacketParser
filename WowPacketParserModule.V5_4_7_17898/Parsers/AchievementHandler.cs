@@ -129,7 +129,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadXORByte(guid1[i], 0);
                 packet.ReadXORByte(guid1[i], 2);
                 packet.ReadXORByte(guid1[i], 1);
-                packet.ReadUInt32("Achievement Id", i);
+                packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id", i);
                 packet.ReadInt32("Realm Id", i);
                 packet.ReadInt32("Realm Id", i);
                 packet.ReadXORByte(guid1[i], 4);
@@ -324,7 +324,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadInt32("Realm Id", i);
                 packet.ReadInt32("Realm Id", i);
                 packet.ReadXORByte(guid5[i], 4);
-                packet.ReadUInt32("Achievement Id", i);
+                packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id", i);
                 packet.ReadPackedTime("Achievement Time", i);
                 packet.ReadXORByte(guid5[i], 7);
                 packet.ReadXORByte(guid5[i], 5);

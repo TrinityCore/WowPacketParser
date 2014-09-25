@@ -93,7 +93,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadWoWString("Channel Name", channelLen);
 
             if (hasAchi)
-                packet.ReadInt32("Achievement");
+                packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id");
 
             if (hasPrefix)
                 packet.ReadWoWString("Addon Message Prefix", prefixLen);

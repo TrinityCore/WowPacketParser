@@ -298,7 +298,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                     db2File.ReadUInt32("Required Faction Standing");
                     db2File.ReadUInt32("Requirement Flags");
                     db2File.ReadUInt32("Required Guild Level");
-                    db2File.ReadUInt32("Required Achievement");
+                    db2File.ReadEntry<Int32>(StoreNameType.Achievement, "Required Achievement");
                     break;
                 }
                 case DB2Hash.Item_sparse:

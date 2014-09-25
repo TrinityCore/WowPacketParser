@@ -24,6 +24,7 @@
         Player,
         Currency,
         DefenseMessage,
-        VehicleTemplateAccessory
+        VehicleTemplateAccessory,
+        Achievement
     }
 }

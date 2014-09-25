@@ -1,5 +1,4 @@
-﻿using System;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Tests.Misc

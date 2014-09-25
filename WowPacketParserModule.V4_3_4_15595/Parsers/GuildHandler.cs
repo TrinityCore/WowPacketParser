@@ -599,7 +599,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Id", i);
                 packet.ReadUInt64("Price", i);
                 packet.ReadUInt32("Unk UInt32", i);
-                packet.ReadUInt32("Achievement Id", i);
+                packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id", i);
             }
 
             packet.ReadTime("Time");
@@ -1057,7 +1057,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 0);
 
-            packet.ReadInt32("Achievement Id");
+            packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id");
 
             packet.ReadXORByte(guid, 1);
 
@@ -1079,7 +1079,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 3);
 
-            packet.ReadInt32("Achievement Id");
+            packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id");
 
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 5);

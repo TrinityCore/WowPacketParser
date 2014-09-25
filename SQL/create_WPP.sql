@@ -5,7 +5,7 @@ CREATE DATABASE `WPP`;
 CREATE TABLE IF NOT EXISTS `WPP`.`SniffData` (
   `Build` INT(10) UNSIGNED NOT NULL DEFAULT '0',
   `SniffName` TEXT NOT NULL,
-  `ObjectType` ENUM('None','Spell','Map','LFGDungeon','Battleground','Unit','GameObject','CreatureDifficulty','Item','Quest','Opcode','PageText','NpcText','BroadcastText','Gossip','Zone','Area','AreaTrigger','Phase','Player') NOT NULL DEFAULT 'None', -- StoreNameType.cs enum
+  `ObjectType` ENUM('None','Spell','Map','LFGDungeon','Battleground','Unit','GameObject','CreatureDifficulty','Item','Quest','Opcode','PageText','NpcText','BroadcastText','Gossip','Zone','Area','AreaTrigger','Phase','Player', 'Achievement') NOT NULL DEFAULT 'None', -- StoreNameType.cs enum
   `Id` INT(10) NOT NULL DEFAULT '0',
   `Data` TEXT NOT NULL,
   UNIQUE KEY `SniffName` (`ObjectType`,`Id`,`Data`(255))
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `WPP`.`SniffData` (
 
 -- Table structure for table `ObjectNames`
 CREATE TABLE IF NOT EXISTS `WPP`.`ObjectNames` (
-  `ObjectType` enum('None','Spell','Map','LFGDungeon','Battleground','Unit','GameObject','CreatureDifficulty','Item','Quest','Opcode','PageText','NpcText','BroadcastText','Gossip','Zone','Area','AreaTrigger','Phase','Player') NOT NULL DEFAULT 'None', -- StoreNameType.cs enum
+  `ObjectType` enum('None','Spell','Map','LFGDungeon','Battleground','Unit','GameObject','CreatureDifficulty','Item','Quest','Opcode','PageText','NpcText','BroadcastText','Gossip','Zone','Area','AreaTrigger','Phase','Player', 'Achievement') NOT NULL DEFAULT 'None', -- StoreNameType.cs enum
   `Id` int(10) NOT NULL,
   `Name` text NOT NULL,
   PRIMARY KEY (`ObjectType`,`Id`)

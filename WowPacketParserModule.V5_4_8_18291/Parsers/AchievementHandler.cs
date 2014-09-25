@@ -127,7 +127,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             for (var i = 0; i < bits10; ++i)
             {
-                packet.ReadUInt32("Achievement Id", i);
+                packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id", i);
                 packet.ReadInt32("Realm Id", i);
                 packet.ReadXORByte(guid1[i], 5);
                 packet.ReadXORByte(guid1[i], 7);
@@ -210,7 +210,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadXORByte(guid2, 3);
             packet.ReadXORByte(guid1, 4);
             packet.ReadXORByte(guid2, 7);
-            packet.ReadInt32("Achievement");
+            packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id");
             packet.ReadXORByte(guid2, 4);
             packet.ReadXORByte(guid1, 1);
             packet.ReadXORByte(guid2, 0);

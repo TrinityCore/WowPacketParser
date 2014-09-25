@@ -80,7 +80,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
 
             if (hasAchi)
-                packet.ReadInt32("Achievement");
+                packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id");
 
             if (hasReceiver)
                 text.ReceiverName = packet.ReadWoWString("Receiver Name", receiverLen);

@@ -863,7 +863,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt64("Price", i);
 
             for (var i = 0; i < size; ++i)
-                packet.ReadUInt32("Achievement Id", i);
+                packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id", i);
 
             for (var i = 0; i < size; ++i)
                 packet.ReadEnum<ReputationRank>("Faction Standing", TypeCode.UInt32, i);
@@ -1183,7 +1183,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var count = packet.ReadBits("Count", 24);
             for (var i = 0; i < count; ++i)
-                packet.ReadUInt32("Achievement Id", i);
+                packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id", i);
         }
 
         [Parser(Opcode.CMSG_QUERY_GUILD_RECIPES, ClientVersionBuild.V5_1_0_16309)]
@@ -1204,7 +1204,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GUILD_ACHIEVEMENT_PROGRESS_QUERY)]
         public static void HandleGuildAchievementProgressQuery(Packet packet)
         {
-            packet.ReadUInt32("Guild Achievement Id");
+            packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id");
         }
 
         [Parser(Opcode.SMSG_GUILD_UPDATE_ROSTER)]
@@ -1336,7 +1336,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadPackedTime("Date", i);
-                packet.ReadUInt32("Achievement Id", i);
+                packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id", i);
             }
         }
 

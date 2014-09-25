@@ -103,7 +103,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             text.Type = (ChatMessageType)packet.ReadEnum<ChatMessageType540>("Chat type", TypeCode.Byte);
 
             if (hasAchi)
-                packet.ReadInt32("Achievement");
+                packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id");
 
             if (bit1490)
                 packet.ReadSingle("Float1490");

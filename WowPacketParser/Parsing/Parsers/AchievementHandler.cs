@@ -19,7 +19,7 @@ namespace WowPacketParser.Parsing.Parsers
             var name = packet.ReadCString("Player Name");
             var guid = packet.ReadGuid("Player GUID");
             StoreGetters.AddName(guid, name);
-            packet.ReadInt32("Achievement");
+            packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id");
             packet.ReadInt32("Linked Name");
         }
 
@@ -27,7 +27,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleAchievementEarned(Packet packet)
         {
             packet.ReadPackedGuid("Player GUID");
-            packet.ReadInt32("Achievement");
+            packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id");
             packet.ReadPackedTime("Time");
             packet.ReadInt32("Unk Int32");
         }
@@ -49,7 +49,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             while (true)
             {
-                var id = packet.ReadInt32("Achievement ID");
+                var id = packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id");
 
                 if (id == -1)
                     break;
@@ -87,7 +87,7 @@ namespace WowPacketParser.Parsing.Parsers
             var criterias = packet.ReadUInt32("Criterias count");
 
             for (var i = 0; i < achievements; ++i)
-                packet.ReadUInt32("Achievement Id", i);
+                packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id", i);
 
             for (var i = 0; i < achievements; ++i)
                 packet.ReadPackedTime("Achievement Time", i);
@@ -209,7 +209,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < achievements; ++i)
             {
-                packet.ReadUInt32("Achievement Id", i);
+                packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id", i);
                 packet.ReadPackedTime("Achievement Time", i);
             }
 
@@ -257,7 +257,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Timer 1", 0, i);
 
             for (var i = 0; i < achievements; ++i)
-                packet.ReadUInt32("Achievement Id", 1, i);
+                packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id", 1, i);
 
             for (var i = 0; i < criterias; ++i)
                 packet.ReadUInt32("Criteria Id", 0, i);
@@ -334,7 +334,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < achievements; ++i)
             {
-                packet.ReadUInt32("Achievement Id", i);
+                packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id", i);
                 packet.ReadPackedTime("Achievement Date", i);
             }
         }
@@ -398,7 +398,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(achievementGuid[i], 3);
                 packet.ReadXORByte(achievementGuid[i], 2);
                 packet.ReadPackedTime("Achievement Date", i);
-                packet.ReadUInt32("Achievement Id", i);
+                packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id", i);
                 packet.ReadXORByte(achievementGuid[i], 5);
                 packet.WriteGuid("Achievement Completer GUID", achievementGuid[i], i);
             }

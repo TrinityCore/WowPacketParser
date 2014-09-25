@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Data;
-using System.Data.SqlClient;
 using System.Text;
 using Wintellect.PowerCollections;
 using WowPacketParser.Enums;
@@ -30,7 +29,8 @@ namespace WowPacketParser.SQL
             StoreNameType.Quest,
             StoreNameType.Zone,
             StoreNameType.Area,
-            StoreNameType.Player
+            StoreNameType.Player,
+            StoreNameType.Achievement
         };
 
         public static void GrabNameData()

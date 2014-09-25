@@ -178,7 +178,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (text.Type == ChatMessageType.Achievement || text.Type == ChatMessageType.GuildAchievement)
-                packet.ReadInt32("Achievement ID");
+                packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id");
 
             uint entry = 0;
             if (text.SenderGUID.GetObjectType() == ObjectType.Unit)
@@ -395,7 +395,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Message");
             packet.ReadEnum<ChatTag>("Chat Tag", ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309) ? TypeCode.Int16 : TypeCode.Byte);
             if (type == ChatMessageType.Achievement || type == ChatMessageType.GuildAchievement)
-                packet.ReadInt32("Achievement ID");
+                packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id");
         }
 
         [Parser(Opcode.SMSG_CHAT_RESTRICTED)]

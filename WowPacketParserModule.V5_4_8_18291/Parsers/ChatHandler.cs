@@ -174,7 +174,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             text.Type = (ChatMessageType)packet.ReadEnum<ChatMessageType540>("Chat type", TypeCode.Byte);
             if (hasAchi)
-                packet.ReadInt32("Achievement");
+                packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id");
             packet.ParseBitStream(groupGUIDBytes, 1, 3, 4, 6, 0, 2, 5, 7);
             packet.ParseBitStream(receiverGUIDBytes, 2, 5, 3, 6, 7, 4, 1, 0);
             if (hasLang)

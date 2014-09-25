@@ -180,7 +180,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadXORByte(guid1[i], 5);
 
                 packet.ReadInt32("Int14", i);
-                packet.ReadUInt32("Achievement Id", i);
+                packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id", i);
 
                 packet.WriteGuid("GUID1", guid1[i], i);
             }

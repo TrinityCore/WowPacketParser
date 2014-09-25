@@ -179,7 +179,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadXORByte(guid[i], 5);
                 packet.ReadXORByte(guid[i], 3);
                 packet.ReadXORByte(guid[i], 1);
-                packet.ReadInt32("Achievement Id", i);
+                packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id", i);
                 packet.ReadXORByte(guid[i], 6);
                 packet.ReadInt32("Unk 2", i);
                 packet.ReadXORByte(guid[i], 4);
@@ -501,7 +501,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             for (var i = 0; i < size; ++i)
             {
                 for (var j = 0; j < bits4[i]; ++j)
-                    packet.ReadUInt32("Achievement Id", i, j);
+                    packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id", i, j);
 
                 packet.ReadUInt64("Price", i);
                 packet.ReadEnum<ReputationRank>("Faction Standing", TypeCode.UInt32, i);

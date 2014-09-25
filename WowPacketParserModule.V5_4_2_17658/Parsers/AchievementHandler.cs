@@ -168,7 +168,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             for (var i = 0; i < bits10; ++i)
             {
-                packet.ReadUInt32("Achievement Id", i);
+                packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id");
                 packet.ReadXORByte(guid1[i], 6);
                 packet.ReadInt32("Realm Id", i);
                 packet.ReadXORByte(guid1[i], 2);
