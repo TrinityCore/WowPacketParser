@@ -33,6 +33,10 @@ namespace WowPacketParser
             }
 
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            CultureInfo customCulture = (CultureInfo)Thread.CurrentThread.CurrentCulture.Clone();
+            customCulture.NumberFormat.NumberDecimalSeparator = ".";
+            Thread.CurrentThread.CurrentCulture = customCulture;
+            CultureInfo.DefaultThreadCurrentCulture = customCulture;
 
             // Disable DB when we don't need its data (dumping to a binary file)
             if (!Settings.DumpFormatWithSQL())
