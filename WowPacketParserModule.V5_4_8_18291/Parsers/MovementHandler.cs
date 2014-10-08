@@ -576,7 +576,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             pos.Z = packet.ReadSingle();        // +6
             pos.X = packet.ReadSingle();        // +4
-            packet.ReadInt32("Int10");          // +10
+            packet.ReadInt32("Move Ticks");     // +10
             pos.Y = packet.ReadSingle();        // +5
             packet.ReadSingle("Float12");       // +12
             packet.ReadSingle("Float13");       // +13
@@ -694,7 +694,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadXORByte(ownerGUID, 3);   // +35 - 3
 
             if (bit16)
-                packet.ReadInt32("Int16");      // +16
+                packet.ReadEnum<SplineFlag>("Spline Flags", TypeCode.Int32); // +16
 
             if (bit69)
                 packet.ReadByte("Byte69");      // +69
@@ -729,7 +729,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadXORByte(ownerGUID, 4);   // +36 - 4
 
             if (bit20)
-                packet.ReadInt32("Int20");      // +20
+                packet.ReadInt32("Move Time");      // +20
 
             // Calculate mid pos
             var mid = new Vector3();
