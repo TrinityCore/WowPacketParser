@@ -54,6 +54,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Enums\UpdateFields.cs" />
+    <Compile Include="Parsers\GameObjectHandler.cs" />
     <Compile Include="Parsers\QueryHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
