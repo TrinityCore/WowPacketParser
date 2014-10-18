@@ -247,6 +247,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("CurrencySubstitutionCount", ClientVersionBuild.V4_0_1_13164)]
         public uint CurrencySubstitutionCount;
 
+        [DBFieldName("ItemNameDescriptionID", ClientVersionBuild.V6_0_2_19033)]
+        public uint ItemNameDescriptionId;
+
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;
     }

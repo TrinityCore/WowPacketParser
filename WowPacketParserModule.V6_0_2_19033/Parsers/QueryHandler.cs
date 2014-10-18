@@ -137,7 +137,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                             packet.TimeSpan);
                     break;
                 }
-                case DB2Hash.Item:
+                case DB2Hash.Item: // Structure 6.x
                 {
                     var item = Storage.ItemTemplates.ContainsKey(entry)
                         ? Storage.ItemTemplates[entry].Item1
@@ -252,34 +252,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     item.DamageType = db2File.ReadEnum<DamageType>("Damage Type", TypeCode.Int32);
                     item.Delay = db2File.ReadUInt32("Delay");
                     item.RangedMod = db2File.ReadSingle("Ranged Mod");
-
-                    item.TriggeredSpellIds = new int[5];
-                    for (var i = 0; i < 5; i++)
-                        item.TriggeredSpellIds[i] = db2File.ReadEntry<Int32>(StoreNameType.Spell,
-                            "Triggered Spell ID", i);
-
-                    item.TriggeredSpellTypes = new ItemSpellTriggerType[5];
-                    for (var i = 0; i < 5; i++)
-                        item.TriggeredSpellTypes[i] = db2File.ReadEnum<ItemSpellTriggerType>("Trigger Spell Type",
-                            TypeCode.Int32, i);
-
-                    item.TriggeredSpellCharges = new int[5];
-                    for (var i = 0; i < 5; i++)
-                        item.TriggeredSpellCharges[i] = db2File.ReadInt32("Triggered Spell Charges", i);
-
-                    item.TriggeredSpellCooldowns = new int[5];
-                    for (var i = 0; i < 5; i++)
-                        item.TriggeredSpellCooldowns[i] = db2File.ReadInt32("Triggered Spell Cooldown", i);
-
-                    item.TriggeredSpellCategories = new uint[5];
-                    for (var i = 0; i < 5; i++)
-                        item.TriggeredSpellCategories[i] = db2File.ReadUInt32("Triggered Spell Category", i);
-
-                    item.TriggeredSpellCategoryCooldowns = new int[5];
-                    for (var i = 0; i < 5; i++)
-                        item.TriggeredSpellCategoryCooldowns[i] = db2File.ReadInt32(
-                            "Triggered Spell Category Cooldown", i);
-
                     item.Bonding = db2File.ReadEnum<ItemBonding>("Bonding", TypeCode.Int32);
 
                     if (db2File.ReadUInt16() > 0)
@@ -311,10 +283,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     for (var i = 0; i < 3; i++)
                         item.ItemSocketColors[i] = db2File.ReadEnum<ItemSocketColor>("Socket Color", TypeCode.Int32, i);
 
-                    item.SocketContent = new uint[3];
-                    for (var i = 0; i < 3; i++)
-                        item.SocketContent[i] = db2File.ReadUInt32("Socket Item", i);
-
                     item.SocketBonus = db2File.ReadInt32("Socket Bonus");
                     item.GemProperties = db2File.ReadInt32("Gem Properties");
                     item.ArmorDamageModifier = db2File.ReadSingle("Armor Damage Modifier");
@@ -324,6 +292,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     item.StatScalingFactor = db2File.ReadSingle("Stat Scaling Factor");
                     item.CurrencySubstitutionId = db2File.ReadUInt32("Currency Substitution Id");
                     item.CurrencySubstitutionCount = db2File.ReadUInt32("Currency Substitution Count");
+                    item.ItemNameDescriptionId = db2File.ReadUInt32("Item Name Description ID");
 
                     Storage.ObjectNames.Add(entry, new ObjectName {ObjectType = ObjectType.Item, Name = item.Name},
                         packet.TimeSpan);
