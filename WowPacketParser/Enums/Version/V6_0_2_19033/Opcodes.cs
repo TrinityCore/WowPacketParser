@@ -12,12 +12,12 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
             {Opcode.CMSG_AUTH_SESSION, 0x1B05},
+            {Opcode.CMSG_NAME_QUERY, 0x0BA4},
 
             {Opcode.SMSG_ADDON_INFO, 0x1400},
             {Opcode.SMSG_AUTH_CHALLENGE, 0x10AA},
             {Opcode.SMSG_AUTH_RESPONSE, 0x0564},
             {Opcode.SMSG_CHAR_ENUM, 0x1154},
-            {Opcode.CMSG_NAME_QUERY, 0x0BA4},
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x10EF},
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x0203},
             {Opcode.SMSG_DB_REPLY, 0x1574},

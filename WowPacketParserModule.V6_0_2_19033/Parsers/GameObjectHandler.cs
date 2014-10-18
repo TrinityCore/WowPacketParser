@@ -64,40 +64,5 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             };
             Storage.ObjectNames.Add((uint)entry.Key, objectName, packet.TimeSpan);
         }
-
-
-        [HasSniffData] // in ReadCreateObjectBlock
-        [Parser(Opcode.SMSG_UPDATE_OBJECT)]
-        public static void HandleUpdateObject(Packet packet)
-        {
-            var count = packet.ReadUInt32("Count");
-            uint map = packet.ReadUInt16("Map");
-
-            for (var i = 0; i < count; i++)
-            {
-                var type = packet.ReadByte();
-                var typeString = ((UpdateTypeCataclysm)type).ToString();
-
-                packet.AddValue("UpdateType", typeString, i);
-                switch (typeString)
-                {
-                    case "Values":
-                        {
-
-                            break;
-                        }
-                    case "CreateObject1":
-                    case "CreateObject2": // Might != CreateObject1 on Cata
-                        {
-                            var guid = packet.ReadPackedGuid("GUID", i);
-                            break;
-                        }
-                    case "DestroyObjects":
-                        {
-                            break;
-                        }
-                }
-            }
-        }
     }
 }
