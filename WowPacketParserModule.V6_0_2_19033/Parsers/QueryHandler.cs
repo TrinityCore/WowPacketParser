@@ -55,9 +55,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.AddSniffData(StoreNameType.BroadcastText, Id.Key, "BROADCAST_TEXT");
                     break;
                 }
-                case DB2Hash.Creature: // New structure - 5.4.0
+                case DB2Hash.Creature: // New structure - 6.0.2
                 {
                     db2File.ReadUInt32("Creature Id");
+                    db2File.ReadUInt32("Type");
                     db2File.ReadUInt32("Item Id 1");
                     db2File.ReadUInt32("Item Id 2");
                     db2File.ReadUInt32("Item Id 3");
@@ -70,6 +71,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                     if (db2File.ReadUInt16() > 0)
                         db2File.ReadCString("Name");
+
+                    if (db2File.ReadUInt16() > 0)
+                        db2File.ReadCString("Female Name");
 
                     if (db2File.ReadUInt16() > 0)
                         db2File.ReadCString("SubName");
@@ -137,7 +141,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                             packet.TimeSpan);
                     break;
                 }
-                case DB2Hash.Item: // Structure 6.x
+                case DB2Hash.Item: // New structure - 6.0.2
                 {
                     var item = Storage.ItemTemplates.ContainsKey(entry)
                         ? Storage.ItemTemplates[entry].Item1
