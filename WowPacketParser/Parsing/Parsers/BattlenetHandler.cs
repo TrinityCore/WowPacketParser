@@ -145,6 +145,7 @@ namespace WowPacketParser.Parsing.Parsers
         [BattlenetParser(BattlenetOpcode.EnableEncyption, BattlenetChannel.Connection, Direction.BNClientToServer)]
         [BattlenetParser(BattlenetOpcode.ClientRealmUpdateSubscribe, BattlenetChannel.WoWRealm, Direction.BNClientToServer)]
         [BattlenetParser(BattlenetOpcode.ListComplete, BattlenetChannel.WoWRealm, Direction.BNServerToClient)]
+        [BattlenetParser(BattlenetOpcode.ToonLoggedOut, BattlenetChannel.WoWRealm, Direction.ServerToClient)]
         public static void HandleEmpty(BattlenetPacket packet)
         {
         }
@@ -172,30 +173,31 @@ namespace WowPacketParser.Parsing.Parsers
         [BattlenetParser(BattlenetOpcode.ListUpdate, BattlenetChannel.WoWRealm, Direction.BNServerToClient)]
         public static void HandleServerRealmUpdate(BattlenetPacket packet)
         {
-            if (!packet.Read<bool>(1))
-                return;
-
-            packet.Read<uint>("Timezone", 32);
-            packet.ReadSingle("Population");
-            packet.Read<byte>("Lock", 8);
-            packet.Read<uint>("Unk", 19);
-            packet.Stream.AddValue("Type", packet.Read<uint>(32) + int.MinValue);
-            packet.ReadString("Name", packet.Read<int>(10));
-            if (packet.Read<bool>("Has version", 1))
+            if (packet.Read<bool>(1))
             {
-                packet.ReadString("Version", packet.Read<int>(5));
-                packet.Read<uint>("RealmId4", 32);
+                packet.Read<uint>("Timezone", 32);
+                packet.ReadSingle("Population");
+                packet.Read<byte>("Lock", 8);
+                packet.Read<uint>("Unk", 19);
+                packet.Stream.AddValue("Type", packet.Read<uint>(32) + int.MinValue);
+                packet.ReadString("Name", packet.Read<int>(10));
+                if (packet.Read<bool>("Has version", 1))
+                {
+                    packet.ReadString("Version", packet.Read<int>(5));
+                    packet.Read<uint>("RealmId4", 32);
 
-                var ip = packet.ReadBytes(4);
-                var port = packet.ReadBytes(2);
+                    var ip = packet.ReadBytes(4);
+                    var port = packet.ReadBytes(2);
 
-                Array.Reverse(port);
+                    Array.Reverse(port);
 
-                packet.Stream.AddValue("IP address", new IPAddress(ip));
-                packet.Stream.AddValue("Port", BitConverter.ToUInt16(port, 0));
+                    packet.Stream.AddValue("IP address", new IPAddress(ip));
+                    packet.Stream.AddValue("Port", BitConverter.ToUInt16(port, 0));
+                }
+
+                packet.Read<byte>("Flags", 8);
             }
 
-            packet.Read<byte>("Flags", 8);
             packet.Read<byte>("Region", 8);
             packet.Read<short>("Unk2", 12);
             packet.Read<byte>("Battlegroup", 8);
@@ -300,6 +302,20 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.Stream.AddValue("Publication time", Utilities.ByteArrayToHexString(BitConverter.GetBytes(packet.Read<uint>(32))), i);
             }
         }
+        [BattlenetParser(BattlenetOpcode.ToonReady, BattlenetChannel.WoWRealm, Direction.BNServerToClient)]
+        public static void HandleToonReady(BattlenetPacket packet)
+        {
+            packet.Read<ulong>("Region", 8);
+            packet.ReadFourCC("Game");
+            packet.Read<ulong>("Realmaddress", 32);
+            packet.ReadString("Name", packet.Read<int>(7) + 2);
+            packet.Read<ulong>(21);
+            packet.Read<ulong>("Unk64", 64);
+            packet.Read<ulong>("Unk32", 32);
+            packet.Stream.AddValue("Guid", new WowGuid(packet.Read<ulong>(64)));
+            packet.Read<ulong>("Realmaddress", 32);
+            packet.Read<ulong>("Region", 8);
+            packet.ReadFourCC("Game");
+        }
     }
 }
-

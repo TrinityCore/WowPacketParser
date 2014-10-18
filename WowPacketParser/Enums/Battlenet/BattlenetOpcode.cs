@@ -36,6 +36,8 @@ namespace WowPacketParser.Enums.Battlenet
         ListSubscribeResponse = 0x00,
         ListUpdate = 0x02,
         ListComplete = 0x03,
+        ToonReady = 0x06,
+        ToonLoggedOut = 0x07,
         JoinResponseV2 = 0x08,
 #endregion
 
@@ -91,6 +93,8 @@ namespace WowPacketParser.Enums.Battlenet
             { new OpcodeNameKey(0, 2, Direction.BNServerToClient), "ListSubscribeResponse" },
             { new OpcodeNameKey(2, 2, Direction.BNServerToClient), "ListUpdate" },
             { new OpcodeNameKey(3, 2, Direction.BNServerToClient), "ListComplete" },
+            { new OpcodeNameKey(6, 2, Direction.BNServerToClient), "ToonReady" },
+            { new OpcodeNameKey(7, 2, Direction.BNServerToClient), "ToonLoggedOut" },
             { new OpcodeNameKey(8, 2, Direction.BNServerToClient), "JoinResponseV2" },
 
             { new OpcodeNameKey(9, 11, Direction.BNClientToServer), "GetStreamItemsRequest" },
