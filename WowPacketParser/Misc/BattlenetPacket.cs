@@ -65,7 +65,7 @@ namespace WowPacketParser.Misc
         public byte[] ReadBytes(string name, int length, params object[] indexes)
         {
             var value = ReadBytes(length);
-            Stream.AddValue(name, value, indexes);
+            Stream.AddValue(name, Utilities.ByteArrayToHexString(value), indexes);
             return value;
         }
 

@@ -20,7 +20,7 @@ namespace WowPacketParser.Parsing.Parsers
         /// <param name="module">Battle.net module id as string</param>
         /// <param name="data"></param>
         /// <returns>null if module is unhandled, false if it needs more data from client</returns>
-        public bool? HandleData(string module, byte[] data, params int[] indexes)
+        public bool? HandleData(string module, byte[] data, params object[] indexes)
         {
             var reader = new BinaryReader(new MemoryStream(data));
             switch (module)
@@ -66,12 +66,12 @@ namespace WowPacketParser.Parsing.Parsers
             return null;
         }
 
-        private T AddValue<T>(string name, T value, params int[] indexes)
+        private T AddValue<T>(string name, T value, params object[] indexes)
         {
             return Packet.AddValue(name, value, indexes);
         }
 
-        public bool HandlePassword(BinaryReader reader, params int[] values)
+        public bool HandlePassword(BinaryReader reader, params object[] values)
         {
             var state = reader.ReadByte();
             AddValue("State", state, values);
@@ -96,7 +96,7 @@ namespace WowPacketParser.Parsing.Parsers
             return false;
         }
 
-        private bool HandleToken(BinaryReader reader, params int[] values)
+        private bool HandleToken(BinaryReader reader, params object[] values)
         {
             var state = reader.ReadByte();
             AddValue("State", state, values);
@@ -126,13 +126,13 @@ namespace WowPacketParser.Parsing.Parsers
             return true;
         }
 
-        private bool HandleThumbprint(BinaryReader reader, params int[] values)
+        private bool HandleThumbprint(BinaryReader reader, params object[] values)
         {
             AddValue("Data", Utilities.ByteArrayToHexString(reader.ReadBytes(512)), values);
             return true;
         }
 
-        private bool HandleSelectGameAccount(BinaryReader reader, params int[] values)
+        private bool HandleSelectGameAccount(BinaryReader reader, params object[] values)
         {
             var state = reader.ReadByte();
             AddValue("State", state, values);
@@ -142,8 +142,8 @@ namespace WowPacketParser.Parsing.Parsers
                     var accounts = reader.ReadByte();
                     for (var i = 0; i < accounts; ++i)
                     {
-                        AddValue("Unk", reader.ReadByte(), values.Concat(new[] { i }).ToArray());
-                        AddValue("Account name", Encoding.ASCII.GetString(reader.ReadBytes(reader.ReadByte())), values.Concat(new[] { i }).ToArray());
+                        AddValue("Unk", reader.ReadByte(), values.Concat(new object[] { i }).ToArray());
+                        AddValue("Account name", Encoding.ASCII.GetString(reader.ReadBytes(reader.ReadByte())), values.Concat(new object[] { i }).ToArray());
                     }
                     return false;
                 case 1:
@@ -154,7 +154,7 @@ namespace WowPacketParser.Parsing.Parsers
             return true;
         }
 
-        private bool HandleRiskFingerprint(BinaryReader reader, params int[] values)
+        private bool HandleRiskFingerprint(BinaryReader reader, params object[] values)
         {
             if (reader.BaseStream.Length == 0)
                 return false;
@@ -167,14 +167,14 @@ namespace WowPacketParser.Parsing.Parsers
             var count = reader.ReadUInt32();
             for (var i = 0; i < count; ++i)
             {
-                AddValue("Data", Encoding.ASCII.GetString(reader.ReadBytes(4).Reverse().ToArray()).Trim(new[] { '\0' }), values.Concat(new[] { i }).ToArray());
-                AddValue("Value", reader.ReadUInt32(), values.Concat(new[] { i }).ToArray());
+                AddValue("Data", Encoding.ASCII.GetString(reader.ReadBytes(4).Reverse().ToArray()).Trim(new[] { '\0' }), values.Concat(new object[] { i }).ToArray());
+                AddValue("Value", reader.ReadUInt32(), values.Concat(new object[] { i }).ToArray());
             }
 
             return true;
         }
 
-        private bool HandleResume(BinaryReader reader, params int[] values)
+        private bool HandleResume(BinaryReader reader, params object[] values)
         {
             var state = reader.ReadByte();
             AddValue("State", state, values);
