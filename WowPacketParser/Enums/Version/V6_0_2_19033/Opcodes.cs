@@ -23,7 +23,9 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_DB_REPLY, 0x1574},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x08E3},
             {Opcode.SMSG_MESSAGECHAT, 0x0E09},
+            {Opcode.SMSG_MONSTER_MOVE, 0x019C},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x1667},
+            {Opcode.SMSG_PLAYER_MOVE, 0x128B},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x1082},
             {Opcode.SMSG_UPDATE_OBJECT, 0x03EF}
         };
