@@ -104,5 +104,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadWoWString("Line", lineLength, i);
             }
         }
+
+        [Parser(Opcode.SMSG_SEND_SERVER_LOCATION)]
+        public static void HandleSendServerLocation(Packet packet)
+        {
+            var len1 = packet.ReadBits(7);
+            var len2 = packet.ReadBits(7);
+            packet.ReadWoWString("Server Location", len1);
+            packet.ReadWoWString("Server Location", len2);
+        }
     }
 }
