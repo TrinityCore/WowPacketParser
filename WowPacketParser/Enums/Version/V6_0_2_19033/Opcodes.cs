@@ -75,6 +75,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x12D4},
             {Opcode.SMSG_SET_PHASE_SHIFT, 0x0567},
             {Opcode.SMSG_SET_PROFICIENCY, 0x12AF},
+            {Opcode.SMSG_SPELL_CATEGORY_COOLDOWN, 0x07A7},
             {Opcode.SMSG_SPELL_GO, 0x1288},
             {Opcode.SMSG_SPELL_START, 0x0FCB},
             {Opcode.SMSG_SUSPEND_COMMS, 0x1882},

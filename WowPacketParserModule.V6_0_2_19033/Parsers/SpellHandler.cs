@@ -44,5 +44,17 @@ namespace WowPacketParser.V6_0_2_19033.Parsers
                     Storage.StartSpells.Add(new Tuple<Race, Class>(player.Race, player.Class), startSpell, packet.TimeSpan);
             }
         }
+
+        [Parser(Opcode.SMSG_SPELL_CATEGORY_COOLDOWN)]
+        public static void HandleSpellCategoryCooldown(Packet packet)
+        {
+            var count = packet.ReadUInt32("Spell Count");
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("Cooldown", i);
+                packet.ReadInt32("Category Cooldown", i);
+            }
+        }
     }
 }
