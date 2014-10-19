@@ -110,6 +110,7 @@ namespace WowPacketParser.Enums
         SpellClassOptions               = 0x288EAB81, // WoD - 6.0.1
         SpellEffectCameraShakes         = 0x73985069, // MoP - 5.4.0
         SpellEffectGroupSize            = 0x23BF7E10, // WoD - 6.0.1
+        SpellMisc                       = 0xC603EE28, // WoD - 6.0.2
         SpellMissile                    = 0x688F7A07, // MoP - 5.4.0
         SpellMissileMotion              = 0x37717679, // MoP - 5.4.0
         SpellPower                      = 0xA1ACE1DF, // WoD - 6.0.1
