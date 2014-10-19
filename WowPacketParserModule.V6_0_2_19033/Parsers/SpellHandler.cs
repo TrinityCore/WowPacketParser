@@ -56,5 +56,51 @@ namespace WowPacketParser.V6_0_2_19033.Parsers
                 packet.ReadInt32("Category Cooldown", i);
             }
         }
+
+        [Parser(Opcode.SMSG_SET_FLAT_SPELL_MODIFIER)]
+        public static void HandleSetSpellModifierFlat(Packet packet)
+        {
+            var modCount = packet.ReadUInt32("Modifier type count");
+            var modTypeCount = new uint[modCount];
+
+            for (var j = 0; j < modCount; ++j)
+            {
+                packet.ReadEnum<SpellModOp>("Spell Mod", TypeCode.Byte, j);
+
+                modTypeCount[j] = packet.ReadUInt32("Count", j);
+            }
+
+            for (var j = 0; j < modCount; ++j)
+            {
+                for (var i = 0; i < modTypeCount[j]; ++i)
+                {
+                    packet.ReadSingle("Amount", j, i);
+                    packet.ReadByte("Spell Mask bitpos", j, i);
+                }
+            }
+        }
+
+        [Parser(Opcode.SMSG_SET_PCT_SPELL_MODIFIER)]
+        public static void HandleSetSpellModifierPct(Packet packet)
+        {
+            var modCount = packet.ReadUInt32("Modifier type count");
+            var modTypeCount = new uint[modCount];
+
+            for (var j = 0; j < modCount; ++j)
+            {
+                packet.ReadEnum<SpellModOp>("Spell Mod", TypeCode.Byte, j);
+
+                modTypeCount[j] = packet.ReadUInt32("Count", j);
+            }
+
+            for (var j = 0; j < modCount; ++j)
+            {
+                for (var i = 0; i < modTypeCount[j]; ++i)
+                {
+                    packet.ReadSingle("Amount", j, i);
+                    packet.ReadByte("Spell Mask bitpos", j, i);
+                }
+            }
+        }
     }
 }
