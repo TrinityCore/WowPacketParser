@@ -24,8 +24,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleWeatherStatus(Packet packet)
         {
             var state = packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
-            var grade = packet.ReadSingle("Grade");
-            var unk = packet.ReadBit("Unk Bit"); // Type
+            var grade = packet.ReadSingle("Intensity");
+            var unk = packet.ReadBit("Abrupt"); // Type
 
             Storage.WeatherUpdates.Add(new WeatherUpdate
             {

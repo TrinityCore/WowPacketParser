@@ -19,7 +19,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             pos.Y = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
             pos.O = packet.ReadSingle();
-            packet.ReadUInt32("Unk");
+            packet.ReadUInt32("Reason");
 
             packet.AddValue("Position", pos);
             packet.AddSniffData(StoreNameType.Map, (int)CoreParsers.MovementHandler.CurrentMapId, "NEW_WORLD");
