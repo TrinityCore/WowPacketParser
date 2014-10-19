@@ -9,6 +9,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class QueryHandler
     {
+        [Parser(Opcode.CMSG_CREATURE_QUERY)]
+        public static void HandleCreatureQuery(Packet packet)
+        {
+            packet.ReadInt32("Entry");
+        }
+
         [HasSniffData]
         [Parser(Opcode.SMSG_DB_REPLY)]
         public static void HandleDBReply(Packet packet)
