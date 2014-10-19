@@ -24,6 +24,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.CMSG_NAME_QUERY, 0x0BA4},
             {Opcode.CMSG_PING, 0x1B75},
             {Opcode.CMSG_PLAYER_LOGIN, 0x03A8},
+            {Opcode.CMSG_QUEST_QUERY, 0x0A94},
             {Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x1806},
             {Opcode.CMSG_RESET_FACTION_CHEAT, 0x1876},
             {Opcode.CMSG_SET_RAID_DIFFICULTY, 0x1A76},

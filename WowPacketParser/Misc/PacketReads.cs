@@ -28,6 +28,38 @@ namespace WowPacketParser.Misc
             return guid;
         }
 
+        public void ReadPackedGuid128()
+        {
+            var guidLowMask = ReadByte();
+            var guidHighMask = ReadByte();
+
+            ulong guidLow = 0;
+            ulong guidHigh = 0;
+
+            if (guidLowMask != 0)
+            {
+                int i = 0;
+                while (i < 8)
+                {
+                    if ((guidLowMask & 1 << i) != 0)
+                        guidLow += (ulong)ReadByte() << (i * 8);
+
+                    i++;
+                }
+            }
+            if (guidHighMask != 0)
+            {
+                int i = 0;
+                while (i < 8)
+                {
+                    if ((guidHighMask & 1 << i) != 0)
+                        guidHigh += (ulong)ReadByte() << (i * 8);
+
+                    i++;
+                }
+            }
+        }
+
         public ulong ReadPackedUInt64()
         {
             byte mask = ReadByte();
