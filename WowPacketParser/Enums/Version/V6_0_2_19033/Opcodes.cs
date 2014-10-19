@@ -34,6 +34,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x18E2},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x08E3},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x034A},
+            {Opcode.SMSG_HOTFIX_INFO, 0x0AA8},
             {Opcode.SMSG_INIT_CURRENCY, 0x00A4},
             {Opcode.SMSG_INIT_WORLD_STATES, 0x0BB7},
             {Opcode.SMSG_INITIAL_SPELLS, 0x0297},
