@@ -12,8 +12,6 @@ namespace WowPacketParser.Store.Objects
 
         public void ConvertToDBStruct()
         {
-            // Seriously...
-
             emoteID0 = EmoteID[0];
             emoteID1 = EmoteID[1];
             emoteID2 = EmoteID[2];
