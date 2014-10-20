@@ -311,7 +311,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
 
                 var name = packet.ReadWoWString("Name", nameLength[i], i);
                 packet.WriteGuid("Guid", guid[i], i);
-                StoreGetters.AddName(new WowGuid(BitConverter.ToUInt64(guid[i], 0)), name);
+                StoreGetters.AddName(new WowGuid64(BitConverter.ToUInt64(guid[i], 0)), name);
             }
 
             packet.ReadWoWString("Guild Info", infoLength);

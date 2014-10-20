@@ -52,7 +52,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.WriteGuid("Guid2", number);
             packet.WriteGuid("Guid3", guid);
 
-            var GUID = new WowGuid(BitConverter.ToUInt64(guid, 0));
+            var GUID = new WowGuid64(BitConverter.ToUInt64(guid, 0));
             var Number = BitConverter.ToUInt64(number, 0);
             packet.WriteGuid("Guid", guid);
             packet.AddValue("Pet Number", Number);

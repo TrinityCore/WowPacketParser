@@ -50,7 +50,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 7);
 
-            var GUID = new WowGuid(BitConverter.ToUInt64(number, 0));
+            var GUID = new WowGuid64(BitConverter.ToUInt64(number, 0));
             var Number = BitConverter.ToUInt64(number, 0);
             packet.WriteGuid("Guid", guid);
             packet.AddValue("Pet Number", Number);

@@ -12,7 +12,7 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("cast_flags")]
         public uint CastFlags;
-        
+
         [DBFieldName("user_type")]
         public uint UserType;
 

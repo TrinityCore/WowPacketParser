@@ -39,7 +39,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var isPet = guid.GetHighType() == HighGuidType.Pet;
             var isVehicle = guid.GetHighType() == HighGuidType.Vehicle;
-            var isMinion = guid.GetHighType() == HighGuidType.Unit;
+            var isMinion = guid.GetHighType() == HighGuidType.Creature;
             const int maxCreatureSpells = 10;
             var spells = new List<uint>(maxCreatureSpells);
             for (var i = 0; i < maxCreatureSpells; i++) // Read pet/vehicle spell ids

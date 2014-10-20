@@ -539,8 +539,8 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
 
                 spellClick.SpellId = (uint)spellId;
 
-                spellClick.CasterGUID = new WowGuid(BitConverter.ToUInt64(casterGUID, 0));
-                spellClick.TargetGUID =new WowGuid(BitConverter.ToUInt64(targetGUID, 0));
+                spellClick.CasterGUID = new WowGuid64(BitConverter.ToUInt64(casterGUID, 0));
+                spellClick.TargetGUID =new WowGuid64(BitConverter.ToUInt64(targetGUID, 0));
 
                 Storage.SpellClicks.Add(spellClick, packet.TimeSpan);
             }
@@ -892,7 +892,7 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
                     {
                         packet.ParseBitStream(casterGUID[i], 3, 2, 1, 6, 4, 0, 5, 7);
                         packet.WriteGuid("CasterGUID", casterGUID[i], i);
-                        aura.CasterGuid = new WowGuid(BitConverter.ToUInt64(casterGUID[i], 0));
+                        aura.CasterGuid = new WowGuid64(BitConverter.ToUInt64(casterGUID[i], 0));
                     }
 
                     aura.AuraFlags = packet.ReadEnum<AuraFlagMoP>("Flags", TypeCode.Byte, i);

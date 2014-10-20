@@ -69,10 +69,10 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                     {
                         packet.ParseBitStream(casterGUID[i], 2, 7, 6, 1, 4, 0, 5, 3);
                         packet.WriteGuid("Caster GUID", casterGUID[i], i);
-                        aura.CasterGuid = new WowGuid(BitConverter.ToUInt64(casterGUID[i], 0));
+                        aura.CasterGuid = new WowGuid64(BitConverter.ToUInt64(casterGUID[i], 0));
                     }
                     else
-                        aura.CasterGuid = new WowGuid();
+                        aura.CasterGuid = new WowGuid64();
 
                     aura.Charges = packet.ReadByte("Charges", i);
 
@@ -118,7 +118,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ParseBitStream(guid, 0, 5, 7, 2, 1, 4, 3, 6);
             packet.WriteGuid("Guid", guid);
 
-            var GUID = new WowGuid(BitConverter.ToUInt64(guid, 0));
+            var GUID = new WowGuid64(BitConverter.ToUInt64(guid, 0));
             if (Storage.Objects.ContainsKey(GUID))
             {
                 var unit = Storage.Objects[GUID].Item1 as Unit;

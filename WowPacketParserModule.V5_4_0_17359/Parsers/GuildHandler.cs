@@ -175,7 +175,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
                 packet.ReadWoWString("Public note", publicLength[i], i);
                 packet.WriteGuid("Guid", guid[i], i);
-                StoreGetters.AddName(new WowGuid(BitConverter.ToUInt64(guid[i], 0)), name);
+                StoreGetters.AddName(new WowGuid64(BitConverter.ToUInt64(guid[i], 0)), name);
             }
 
             packet.ReadWoWString("Guild Info", infoLength);

@@ -247,7 +247,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
 
             packet.WriteGuid("Guid", guid);
 
-            var vendorGUID = new WowGuid(BitConverter.ToUInt64(guid, 0));
+            var vendorGUID = new WowGuid64(BitConverter.ToUInt64(guid, 0));
             Storage.NpcVendors.Add(vendorGUID.GetEntry(), npcVendor, packet.TimeSpan);
         }
 

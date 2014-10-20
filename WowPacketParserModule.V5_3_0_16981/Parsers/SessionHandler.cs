@@ -147,14 +147,14 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadSingle("Unk Float");
             var guid = packet.StartBitStream(3, 4, 0, 6, 7, 1, 2, 5);
             packet.ParseBitStream(guid, 0, 3, 7, 6, 1, 2, 4, 5);
-            CoreParsers.SessionHandler.LoginGuid = new WowGuid(BitConverter.ToUInt64(guid, 0));
+            CoreParsers.SessionHandler.LoginGuid = new WowGuid64(BitConverter.ToUInt64(guid, 0));
             packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_LOGOUT_COMPLETE)]
         public static void HandleLogoutComplete(Packet packet)
         {
-            CoreParsers.SessionHandler.LoginGuid = new WowGuid(0);
+            CoreParsers.SessionHandler.LoginGuid = new WowGuid64(0);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
 
             packet.ParseBitStream(playerGuid, 2, 0, 4, 1, 5, 3, 7, 6);
 
-            var guid = new WowGuid(BitConverter.ToUInt64(playerGuid, 0));
+            var guid = new WowGuid64(BitConverter.ToUInt64(playerGuid, 0));
             packet.WriteGuid("GUID", playerGuid);
         }
 
@@ -126,7 +126,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
                     packet.ReadUInt32("unk1");
                 }
 
-                var playerGuid = new WowGuid(BitConverter.ToUInt64(charGuids[c], 0));
+                var playerGuid = new WowGuid64(BitConverter.ToUInt64(charGuids[c], 0));
 
                 packet.WriteGuid("Character GUID", charGuids[c], c);
                 packet.WriteGuid("Guild GUID", guildGuids[c], c);

@@ -358,7 +358,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             npcTrainer.Type = packet.ReadEnum<TrainerType>("Type", TypeCode.Int32);
 
             packet.WriteGuid("Guid", guid);
-            var GUID = new WowGuid(BitConverter.ToUInt64(guid, 0));
+            var GUID = new WowGuid64(BitConverter.ToUInt64(guid, 0));
 
             if (Storage.NpcTrainers.ContainsKey(GUID.GetEntry()))
             {
@@ -447,7 +447,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             packet.WriteGuid("Guid", guid);
 
-            var vendorGUID = new WowGuid(BitConverter.ToUInt64(guid, 0));
+            var vendorGUID = new WowGuid64(BitConverter.ToUInt64(guid, 0));
             Storage.NpcVendors.Add(vendorGUID.GetEntry(), npcVendor, packet.TimeSpan);
         }
 

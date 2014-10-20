@@ -263,7 +263,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             packet.WriteGuid("Guid", guidBytes);
 
-            var guid = new WowGuid(BitConverter.ToUInt64(guidBytes, 0));
+            var guid = new WowGuid64(BitConverter.ToUInt64(guidBytes, 0));
             if (guid.GetObjectType() == ObjectType.Unit)
                 Storage.NpcSpellClicks.Add(guid, packet.TimeSpan);
         }

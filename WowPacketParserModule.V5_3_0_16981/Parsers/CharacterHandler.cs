@@ -97,7 +97,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadXORByte(charGuids[c], 0);
                 packet.ReadByte("Hair Color", c);
 
-                var playerGuid = new WowGuid(BitConverter.ToUInt64(charGuids[c], 0));
+                var playerGuid = new WowGuid64(BitConverter.ToUInt64(charGuids[c], 0));
 
                 packet.WriteGuid("Character GUID", charGuids[c], c);
                 packet.WriteGuid("Guild GUID", guildGuids[c], c);
@@ -165,7 +165,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadXORByte(playerGuid, 5);
             packet.ReadXORByte(playerGuid, 6);
 
-            var guid = new WowGuid(BitConverter.ToUInt64(playerGuid, 0));
+            var guid = new WowGuid64(BitConverter.ToUInt64(playerGuid, 0));
             packet.WriteGuid("GUID", playerGuid);
         }
 

@@ -382,12 +382,12 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     packet.ReadXORByte(transportGuid, 2);
                     packet.ReadUInt32("Transport Time", index); //76
 
-                    moveInfo.TransportGuid = new WowGuid(BitConverter.ToUInt64(transportGuid, 0));
+                    moveInfo.TransportGuid = new WowGuid64(BitConverter.ToUInt64(transportGuid, 0));
                     packet.AddValue("Transport GUID", moveInfo.TransportGuid, index);
                     packet.AddValue("Transport Position", moveInfo.TransportOffset, index);
 
                     if (moveInfo.TransportGuid.HasEntry() && moveInfo.TransportGuid.GetHighType() == HighGuidType.Vehicle &&
-                        guid.HasEntry() && guid.GetHighType() == HighGuidType.Unit)
+                        guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
                     {
                         var vehicleAccessory = new VehicleTemplateAccessory();
                         vehicleAccessory.AccessoryEntry = guid.GetEntry();
@@ -604,7 +604,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
                 packet.ReadXORBytes(goTransportGuid, 6, 0, 5, 3, 7);
 
-                moveInfo.TransportGuid = new WowGuid(BitConverter.ToUInt64(goTransportGuid, 0));
+                moveInfo.TransportGuid = new WowGuid64(BitConverter.ToUInt64(goTransportGuid, 0));
                 packet.AddValue("Transport GUID", moveInfo.TransportGuid, index);
                 packet.AddValue("Transport Position", moveInfo.TransportOffset, index);
             }

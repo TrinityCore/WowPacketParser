@@ -614,43 +614,43 @@ namespace WowPacketParser.SQL.Builders
 
         private static readonly HashSet<string> _professionTrainers = new HashSet<string>
         {
-            "Alchemy Trainer", "Armorsmith Trainer", "Armorsmithing Trainer", "Blacksmith Trainer", 
-            "Blacksmithing Trainer", "Blacksmithing Trainer & Supplies", "Cold Weather Flying Trainer", 
-            "Cooking Trainer", "Cooking Trainer & Supplies", "Dragonscale Leatherworking Trainer", 
-            "Elemental Leatherworking Trainer", "Enchanting Trainer", "Engineering Trainer", 
-            "First Aid Trainer", "Fishing Trainer", "Fishing Trainer & Supplies", 
-            "Gnome Engineering Trainer", "Gnomish Engineering Trainer", "Goblin Engineering Trainer", 
-            "Grand Master Alchemy Trainer", "Grand Master Blacksmithing Trainer", 
-            "Grand Master Cooking Trainer", "Grand Master Enchanting Trainer", 
-            "Grand Master Engineering Trainer", "Grand Master First Aid Trainer", 
-            "Grand Master Fishing Trainer", "Grand Master Fishing Trainer & Supplies", 
-            "Grand Master Herbalism Trainer", "Grand Master Inscription Trainer", 
-            "Grand Master Jewelcrafting Trainer", "Grand Master Leatherworking Trainer", 
-            "Grand Master Mining Trainer", "Grand Master Skinning Trainer", 
-            "Grand Master Tailoring Trainer", "Herbalism Trainer", 
-            "Herbalism Trainer & Supplies", "Inscription Trainer", 
-            "Jewelcrafting Trainer", "Leatherworking Trainer", 
-            "Master Alchemy Trainer", "Master Blacksmithing Trainer", 
-            "Master Enchanting Trainer", "Master Engineering Trainer", 
-            "Master Fishing Trainer", "Master Herbalism Trainer", 
-            "Master Inscription Trainer", "Master Jewelcrafting Trainer", 
-            "Master Leatherworking Trainer", "Master Mining Trainer", 
-            "Master Skinning Trainer", "Master Tailoring Trainer", 
-            "Mining Trainer", "Skinning Trainer", "Tailor Trainer", "Tailoring Trainer", 
-            "Tribal Leatherworking Trainer", "Weaponsmith Trainer", "Weaponsmithing Trainer", 
-            "Horse Riding Trainer", "Ram Riding Trainer", "Raptor Riding Trainer", 
-            "Tiger Riding Trainer", "Wolf Riding Trainer", "Mechastrider Riding Trainer", 
+            "Alchemy Trainer", "Armorsmith Trainer", "Armorsmithing Trainer", "Blacksmith Trainer",
+            "Blacksmithing Trainer", "Blacksmithing Trainer & Supplies", "Cold Weather Flying Trainer",
+            "Cooking Trainer", "Cooking Trainer & Supplies", "Dragonscale Leatherworking Trainer",
+            "Elemental Leatherworking Trainer", "Enchanting Trainer", "Engineering Trainer",
+            "First Aid Trainer", "Fishing Trainer", "Fishing Trainer & Supplies",
+            "Gnome Engineering Trainer", "Gnomish Engineering Trainer", "Goblin Engineering Trainer",
+            "Grand Master Alchemy Trainer", "Grand Master Blacksmithing Trainer",
+            "Grand Master Cooking Trainer", "Grand Master Enchanting Trainer",
+            "Grand Master Engineering Trainer", "Grand Master First Aid Trainer",
+            "Grand Master Fishing Trainer", "Grand Master Fishing Trainer & Supplies",
+            "Grand Master Herbalism Trainer", "Grand Master Inscription Trainer",
+            "Grand Master Jewelcrafting Trainer", "Grand Master Leatherworking Trainer",
+            "Grand Master Mining Trainer", "Grand Master Skinning Trainer",
+            "Grand Master Tailoring Trainer", "Herbalism Trainer",
+            "Herbalism Trainer & Supplies", "Inscription Trainer",
+            "Jewelcrafting Trainer", "Leatherworking Trainer",
+            "Master Alchemy Trainer", "Master Blacksmithing Trainer",
+            "Master Enchanting Trainer", "Master Engineering Trainer",
+            "Master Fishing Trainer", "Master Herbalism Trainer",
+            "Master Inscription Trainer", "Master Jewelcrafting Trainer",
+            "Master Leatherworking Trainer", "Master Mining Trainer",
+            "Master Skinning Trainer", "Master Tailoring Trainer",
+            "Mining Trainer", "Skinning Trainer", "Tailor Trainer", "Tailoring Trainer",
+            "Tribal Leatherworking Trainer", "Weaponsmith Trainer", "Weaponsmithing Trainer",
+            "Horse Riding Trainer", "Ram Riding Trainer", "Raptor Riding Trainer",
+            "Tiger Riding Trainer", "Wolf Riding Trainer", "Mechastrider Riding Trainer",
             "Riding Trainer", "Undead Horse Riding Trainer"
         };
 
         private static readonly HashSet<string> _classTrainers = new HashSet<string>
         {
-            "Druid Trainer", "Portal Trainer", "Portal: Darnassus Trainer", 
-            "Portal: Ironforge Trainer", "Portal: Orgrimmar Trainer", 
-            "Portal: Stormwind Trainer", "Portal: Thunder Bluff Trainer", 
-            "Portal: Undercity Trainer", "Deathknight Trainer", 
-            "Hunter Trainer", "Mage Trainer", "Paladin Trainer", 
-            "Priest Trainer", "Shaman Trainer", "Warlock Trainer", 
+            "Druid Trainer", "Portal Trainer", "Portal: Darnassus Trainer",
+            "Portal: Ironforge Trainer", "Portal: Orgrimmar Trainer",
+            "Portal: Stormwind Trainer", "Portal: Thunder Bluff Trainer",
+            "Portal: Undercity Trainer", "Deathknight Trainer",
+            "Hunter Trainer", "Mage Trainer", "Paladin Trainer",
+            "Priest Trainer", "Shaman Trainer", "Warlock Trainer",
             "Warrior Trainer"
         };
 
@@ -793,7 +793,7 @@ namespace WowPacketParser.SQL.Builders
                     // Set comment
 
                     string from = null, to = null;
-                    if (textValue.Item1.SenderGUID != 0)
+                    if (textValue.Item1.SenderGUID.Full != 0)
                     {
                         if (textValue.Item1.SenderGUID.GetObjectType() == ObjectType.Player)
                             from = "Player";
@@ -806,7 +806,7 @@ namespace WowPacketParser.SQL.Builders
                         }
                     }
 
-                    if (textValue.Item1.ReceiverGUID != 0)
+                    if (textValue.Item1.ReceiverGUID.Full != 0)
                     {
                         if (textValue.Item1.ReceiverGUID.GetObjectType() == ObjectType.Player)
                             to = "Player";
@@ -817,7 +817,7 @@ namespace WowPacketParser.SQL.Builders
                             else
                                 to = StoreGetters.GetName(StoreNameType.Unit, (int)textValue.Item1.ReceiverGUID.GetEntry(), false);
                         }
-                            
+
                     }
 
                     Trace.Assert(text.Key == textValue.Item1.SenderGUID.GetEntry() ||

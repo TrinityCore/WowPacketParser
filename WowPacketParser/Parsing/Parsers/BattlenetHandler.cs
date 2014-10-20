@@ -312,7 +312,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.Read<ulong>(21);
             packet.Read<ulong>("Unk64", 64);
             packet.Read<ulong>("Unk32", 32);
-            packet.Stream.AddValue("Guid", new WowGuid(packet.Read<ulong>(64)));
+            packet.Stream.AddValue("Guid", new WowGuid64(packet.Read<ulong>(64)));
             packet.Read<ulong>("Realmaddress", 32);
             packet.Read<ulong>("Region", 8);
             packet.ReadFourCC("Game");

@@ -14,11 +14,11 @@ namespace WowPacketParser.Enums
         CustomPitch       = 0x00000040,
         AdjustAimAngle    = 0x00000400,
         AdjustAimPower    = 0x00000800
-    }                                                       
+    }
 
-    [Flags]                                                 
-    enum VehicleSeatFlags : uint                            
-    {                                                       
+    [Flags]
+    enum VehicleSeatFlags : uint
+    {
         HasLowerAnimForEnter                             = 0x00000001,
         HasLowerAnimForRide                              = 0x00000002,
 
@@ -60,12 +60,12 @@ namespace WowPacketParser.Enums
         HasStartWaitingForVehicleTransitionAnimEnter     = 0x08000000,
         HasStartWaitingForVehicleTransitionAnimExit      = 0x10000000,
         HasVehicleUI                                     = 0x20000000,
-        AllowsInteraction                                = 0x80000000 
-    }                                                       
+        AllowsInteraction                                = 0x80000000
+    }
 
-    [Flags]                                                 
-    enum VehicleSeatFlagsB : uint                           
-    {                                                       
+    [Flags]
+    enum VehicleSeatFlagsB : uint
+    {
         None                                                = 0x00000000,
         Unknown1                                            = 0x00000001,
         UsableForced                                        = 0x00000002,

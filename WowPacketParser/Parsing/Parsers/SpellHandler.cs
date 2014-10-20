@@ -260,7 +260,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             aura.Charges = packet.ReadByte("Charges", i);
 
-            aura.CasterGuid = !aura.AuraFlags.HasAnyFlag(AuraFlag.NotCaster) ? packet.ReadPackedGuid("Caster GUID", i) : new WowGuid();
+            aura.CasterGuid = !aura.AuraFlags.HasAnyFlag(AuraFlag.NotCaster) ? packet.ReadPackedGuid("Caster GUID", i) : new WowGuid64();
 
             if (aura.AuraFlags.HasAnyFlag(AuraFlag.Duration))
             {
@@ -310,7 +310,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             aura.Charges = packet.ReadByte("Charges", i);
 
-            aura.CasterGuid = !aura.AuraFlags.HasAnyFlag(AuraFlagMoP.NoCaster) ? packet.ReadPackedGuid("Caster GUID", i) : new WowGuid();
+            aura.CasterGuid = !aura.AuraFlags.HasAnyFlag(AuraFlagMoP.NoCaster) ? packet.ReadPackedGuid("Caster GUID", i) : new WowGuid64();
 
             if (aura.AuraFlags.HasAnyFlag(AuraFlagMoP.Duration))
             {
@@ -760,7 +760,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var targetFlags = packet.ReadEnum<TargetFlag>("Target Flags", TypeCode.Int32);
 
-            var targetGUID = new WowGuid();
+            WowGuid targetGUID = new WowGuid64();
             if (targetFlags.HasAnyFlag(TargetFlag.Unit | TargetFlag.CorpseEnemy | TargetFlag.GameObject |
                 TargetFlag.CorpseAlly | TargetFlag.UnitMinipet))
                 targetGUID = packet.ReadPackedGuid("Target GUID");

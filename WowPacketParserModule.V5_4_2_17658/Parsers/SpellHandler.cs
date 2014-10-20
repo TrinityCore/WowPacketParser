@@ -70,7 +70,7 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
                     {
                         packet.ParseBitStream(casterGUID[i], 0, 3, 7, 1, 2, 5, 4, 6);
                         packet.WriteGuid("Caster GUID", casterGUID[i], i);
-                        aura.CasterGuid = new WowGuid(BitConverter.ToUInt64(casterGUID[i], 0));
+                        aura.CasterGuid = new WowGuid64(BitConverter.ToUInt64(casterGUID[i], 0));
                     }
 
                     if (hasDuration[i])
@@ -107,7 +107,7 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
 
             packet.WriteGuid("Guid", guid);
 
-            var GUID = new WowGuid(BitConverter.ToUInt64(guid, 0));
+            var GUID = new WowGuid64(BitConverter.ToUInt64(guid, 0));
             if (Storage.Objects.ContainsKey(GUID))
             {
                 var unit = Storage.Objects[GUID].Item1 as Unit;

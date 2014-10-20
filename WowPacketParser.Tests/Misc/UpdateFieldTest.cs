@@ -36,7 +36,7 @@ namespace WowPacketParser.Tests.Misc
             var uf1 = new UpdateField(uint.MaxValue);
             var uf15 = new UpdateField(uint.MaxValue);
             var uf2 = new UpdateField(float.MaxValue);
-            
+
             Assert.IsTrue(uf1.Equals(uf15));
             Assert.IsFalse(uf1.Equals(uf2));
             Assert.IsFalse(uf1.Equals(uint.MaxValue));

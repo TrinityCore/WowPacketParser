@@ -664,7 +664,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ParseBitStream(guid, 5, 6, 3, 0, 7, 4, 2, 1);
             packet.WriteGuid("Guid", guid);
         }
-        
+
         [Parser(Opcode.SMSG_WARGAME_CHECK_ENTRY)]
         public static void HandleWargameCheckEntry434(Packet packet)
         {

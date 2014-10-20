@@ -154,7 +154,7 @@ namespace WowPacketParser.SQL.Builders
 
                 return SQLUtil.CompareDicts(Storage.NpcTexts, templatesDb, StoreNameType.NpcText, "ID");
             }
-            
+
             if (!Storage.NpcTextsMop.IsEmpty())
             {
 

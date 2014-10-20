@@ -137,7 +137,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.WriteGuid("Guid", guidBytes);
 
-            var guid = new WowGuid(BitConverter.ToUInt64(guidBytes, 0));
+            var guid = new WowGuid64(BitConverter.ToUInt64(guidBytes, 0));
             gossip.ObjectType = guid.GetObjectType();
             gossip.ObjectEntry = guid.GetEntry();
 
@@ -372,7 +372,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.WriteGuid("Guid", guid);
 
-            var vendorGUID = new WowGuid(BitConverter.ToUInt64(guid, 0));
+            var vendorGUID = new WowGuid64(BitConverter.ToUInt64(guid, 0));
             Storage.NpcVendors.Add(vendorGUID.GetEntry(), npcVendor, packet.TimeSpan);
         }
 

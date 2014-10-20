@@ -295,7 +295,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.ReadXORByte(guildGuid[c], 1);
 
-                var guidPlayer = new WowGuid(BitConverter.ToUInt64(playerGuid[c], 0));
+                var guidPlayer = new WowGuid64(BitConverter.ToUInt64(playerGuid[c], 0));
 
                 packet.WriteGuid("Character Guid", playerGuid[c],c);
                 packet.WriteGuid("Guild Guid", guildGuid[c],c);
@@ -418,7 +418,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guildGuids[c], 6);
                 packet.ReadXORByte(guildGuids[c], 2);
 
-                var playerGuid = new WowGuid(BitConverter.ToUInt64(charGuids[c], 0));
+                var playerGuid = new WowGuid64(BitConverter.ToUInt64(charGuids[c], 0));
 
                 packet.WriteGuid("Character GUID", charGuids[c], c);
                 packet.WriteGuid("Guild GUID", guildGuids[c], c);
@@ -580,7 +580,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var mapId = packet.ReadInt32("Map", c);
                 var name = packet.ReadWoWString("Name", (int)nameLenghts[c], c);
 
-                var playerGuid = new WowGuid(BitConverter.ToUInt64(charGuids[c], 0));
+                var playerGuid = new WowGuid64(BitConverter.ToUInt64(charGuids[c], 0));
 
                 packet.WriteGuid("Character GUID", charGuids[c], c);
                 packet.WriteGuid("Guild GUID", guildGuids[c], c);
@@ -724,7 +724,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 var zone = packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id", c);
 
-                var playerGuid = new WowGuid(BitConverter.ToUInt64(charGuids[c], 0));
+                var playerGuid = new WowGuid64(BitConverter.ToUInt64(charGuids[c], 0));
 
                 packet.WriteGuid("Character GUID", charGuids[c], c);
                 packet.WriteGuid("Guild GUID", guildGuids[c], c);
@@ -870,7 +870,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(charGuids[c], 2);
                 packet.ReadXORByte(charGuids[c], 3);
 
-                var playerGuid = new WowGuid(BitConverter.ToUInt64(charGuids[c], 0));
+                var playerGuid = new WowGuid64(BitConverter.ToUInt64(charGuids[c], 0));
 
                 packet.WriteGuid("Character GUID", charGuids[c], c);
                 packet.WriteGuid("Guild GUID", guildGuids[c], c);
@@ -981,7 +981,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var race = packet.ReadEnum<Race>("Race", TypeCode.Byte, c);
                 packet.ReadByte("Face", c);
 
-                var playerGuid = new WowGuid(BitConverter.ToUInt64(charGuids[c], 0));
+                var playerGuid = new WowGuid64(BitConverter.ToUInt64(charGuids[c], 0));
 
                 packet.WriteGuid("Character GUID", charGuids[c], c);
                 packet.WriteGuid("Guild GUID", guildGuids[c], c);

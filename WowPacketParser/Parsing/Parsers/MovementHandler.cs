@@ -191,7 +191,7 @@ namespace WowPacketParser.Parsing.Parsers
                     seat = packet.ReadByte("Transport Seat");
 
                 if (transportGuid.HasEntry() && transportGuid.GetHighType() == HighGuidType.Vehicle &&
-                    guid.HasEntry() && guid.GetHighType() == HighGuidType.Unit)
+                    guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
                 {
                     var vehicleAccessory = new VehicleTemplateAccessory();
                     vehicleAccessory.AccessoryEntry = guid.GetEntry();
@@ -1264,7 +1264,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.Direction == Direction.ServerToClient) && ClientVersion.Build != ClientVersionBuild.V4_2_2_14545)
                 guid = packet.ReadPackedGuid("GUID");
             else
-                guid = new WowGuid();
+                guid = new WowGuid64();
 
             ReadMovementInfo(ref packet, guid);
 
