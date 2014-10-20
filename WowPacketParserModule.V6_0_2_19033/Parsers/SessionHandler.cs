@@ -113,5 +113,40 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Server Location", len1);
             packet.ReadWoWString("Server Location", len2);
         }
+
+        [Parser(Opcode.CMSG_AUTH_SESSION)]
+        public static void HandleAuthSession(Packet packet)
+        {
+            var sha = new byte[20];
+            packet.ReadUInt32("Grunt ServerId");
+            packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int16);
+            packet.ReadUInt32("Region");
+            packet.ReadUInt32("Battlegroup");
+            packet.ReadUInt32("RealmIndex");
+            packet.ReadByte("Login Server Type");
+            packet.ReadByte("Unk");
+            packet.ReadUInt32("Client Seed");
+            packet.ReadUInt64("DosResponse");
+
+            for (uint i = 0; i < 20; ++i)
+                sha[i] = packet.ReadByte();
+
+            var accountNameLength = packet.ReadBits("Account Name Length", 11);
+            packet.ResetBitReader();
+            packet.ReadWoWString("Account Name", accountNameLength);
+            packet.ReadBit("UseIPv6");
+
+            var addonSize = packet.ReadUInt32("Addons Size");
+            
+            if (addonSize > 0)
+            {
+                var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
+                packet.Number, packet.Writer, packet.FileName);
+                //CoreParsers.AddonHandler.ReadClientAddonsList(ref addons);
+                addons.ClosePacket(false);
+            }
+
+            packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
+        }
     }
 }
