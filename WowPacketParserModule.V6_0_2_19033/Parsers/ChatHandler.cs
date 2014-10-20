@@ -9,6 +9,37 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class ChatHandler
     {
+        [Parser(Opcode.CMSG_MESSAGECHAT_GUILD)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_YELL)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_SAY)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_PARTY)]
+        public static void HandleClientChatMessage(Packet packet)
+        {
+            packet.ReadEnum<Language>("Language", TypeCode.Int32);
+            var len = packet.ReadBits(8);
+            packet.ReadWoWString("Message", len);
+        }
+
+        [Parser(Opcode.CMSG_MESSAGECHAT_CHANNEL)]
+        public static void HandleClientChatMessageChannel434(Packet packet)
+        {
+            packet.ReadEnum<Language>("Language", TypeCode.Int32);
+            var channelNameLen = packet.ReadBits(9);
+            var msgLen = packet.ReadBits(8);
+            packet.ResetBitReader();
+            packet.ReadWoWString("Channel Name", channelNameLen);
+            packet.ReadWoWString("Message", msgLen);
+        }
+
+        [Parser(Opcode.CMSG_MESSAGECHAT_DND)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_EMOTE)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_AFK)]
+        public static void HandleMessageChatDND(Packet packet)
+        {
+            var len = packet.ReadBits(8);
+            packet.ReadWoWString("Message", len);
+        }
+
         [Parser(Opcode.SMSG_MESSAGECHAT)]
         public static void HandleServerChatMessage(Packet packet)
         {
