@@ -36,6 +36,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 Unk = unk
             }, packet.TimeSpan);
         }
+
+        [Parser(Opcode.CMSG_SET_SELECTION)]
+        public static void HandleSetSelection(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+        }
     }
 }
 
