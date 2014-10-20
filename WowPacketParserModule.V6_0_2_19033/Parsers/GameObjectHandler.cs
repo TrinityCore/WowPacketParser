@@ -9,6 +9,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class GameObjectHandler
     {
+        [Parser(Opcode.CMSG_GAMEOBJECT_QUERY)]
+        public static void HandleGameObjectQuery(Packet packet)
+        {
+            packet.ReadInt32("Entry");
+            packet.ReadPackedGuid128("GUID");
+        }
+
         [HasSniffData]
         [Parser(Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE)]
         public static void HandleGameObjectQueryResponse(Packet packet)
