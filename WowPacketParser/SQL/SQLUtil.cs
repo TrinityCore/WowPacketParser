@@ -42,7 +42,10 @@ namespace WowPacketParser.SQL
         /// <returns>Modified string</returns>
         public static string EscapeString(string str)
         {
-            return MySqlHelper.DoubleQuoteString(str);
+            str = MySqlHelper.DoubleQuoteString(str);
+
+            // prevent double escaping
+            return str.Replace("\"\"", "\"");
         }
 
         /// <summary>
