@@ -47,6 +47,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x00D4},
             {Opcode.CMSG_WARDEN_DATA, 0x00F3},
 
+            {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x11AC},
             {Opcode.SMSG_ACTION_BUTTONS, 0x03F4},
             {Opcode.SMSG_ADDON_INFO, 0x1400},
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA_ACCOUNT, 0x1603},
