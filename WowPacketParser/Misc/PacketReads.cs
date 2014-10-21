@@ -29,10 +29,65 @@ namespace WowPacketParser.Misc
             return guid;
         }
 
-        public WowGuid ReadPackedGuid128()
+        public ulong unkfunc1(ulong v3, byte v7)
+        {
+            ulong v2 = 0;
+            
+            if (v7 > 0x40)
+                v2 = 0;
+            else
+            {
+                if (v7 > 0x20)
+                    v2 = 0;
+                else
+                    v2 = v3 << (int)(v7 & 0x1F);
+            }
+
+            return v2;
+        }
+
+        public unsafe WowGuid ReadPackedGuid128()
         {
             var guidLowMask = ReadByte();
             var guidHighMask = ReadByte();
+            /*
+            ulong lowPart = 0;
+            ulong* lowPartPointer = &lowPart;
+            {
+                uint v3 = 0;
+                int v6 = 0;
+                do
+                {
+                    if ((guidLowMask & (1 << v6)) != 0)
+                    {
+                        var v7 = ReadByte();
+                        var res = unkfunc1((ulong)v3, v7);
+                        *(uint*)(lowPartPointer) |= *(uint*)(&res);
+                        *(uint*)(lowPartPointer + 4) |= *(uint*)(&res + 4);
+                    }
+                    ++v6;
+                    v3 += 8;
+                } while (v3 < 0x40);
+            }
+
+            ulong highPart = 0;
+            ulong* highPartPointer = &highPart;
+            {
+                uint v3 = 0;
+                int v6 = 0;
+                do
+                {
+                    if ((guidHighMask & (1 << v6)) != 0)
+                    {
+                        var v7 = ReadByte();
+                        var res = unkfunc1((ulong)v3, v7);
+                        *(uint*)(highPartPointer) |= *(uint*)(&res);
+                        *(uint*)(highPartPointer + 4) |= *(uint*)(&res + 4);
+                    }
+                    ++v6;
+                    v3 += 8;
+                } while (v3 < 0x40);
+            }*/
 
             ulong guidLow = 0;
             ulong guidHigh = 0;
@@ -59,8 +114,7 @@ namespace WowPacketParser.Misc
                     i++;
                 }
             }
-
-            return new WowGuid128(new Int128(guidHigh, guidLow));
+            return new WowGuid128(new Int128(0, 0));
         }
 
         public ulong ReadPackedUInt64()
