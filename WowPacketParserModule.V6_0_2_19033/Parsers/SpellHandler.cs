@@ -179,5 +179,24 @@ namespace WowPacketParser.V6_0_2_19033.Parsers
                 }
             }*/
         }
+
+        [Parser(Opcode.SMSG_TALENTS_INFO)]
+        public static void ReadTalentInfo(Packet packet)
+        {
+            packet.ReadByte("Active Spec Group");
+
+            var specCount = packet.ReadInt32("Spec Group count");
+            for (var i = 0; i < specCount; ++i)
+            {
+                packet.ReadUInt32("Spec Id", i);
+                var spentTalents = packet.ReadInt32("Spec Talent Count", i);
+
+                for (var j = 0; j < 6; ++j)
+                    packet.ReadUInt16("Glyph", i, j);
+
+                for (var j = 0; j < spentTalents; ++j)
+                    packet.ReadUInt16("Talent Id", i, j);
+            }
+        }
     }
 }
