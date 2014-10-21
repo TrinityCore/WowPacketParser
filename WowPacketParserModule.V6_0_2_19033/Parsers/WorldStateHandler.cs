@@ -15,7 +15,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             CoreParsers.WorldStateHandler.CurrentAreaId = packet.ReadEntry<Int32>(StoreNameType.Area, "Area Id");
             packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
 
-            var numFields = packet.ReadBits("Field Count", 21);
+            var numFields = packet.ReadInt32("Field Count");
             for (var i = 0; i < numFields; i++)
                 CoreParsers.WorldStateHandler.ReadWorldStateBlock(ref packet);
         }
