@@ -148,5 +148,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
         }
+
+        [Parser(Opcode.CMSG_PLAYER_LOGIN)]
+        public static void HandlePlayerLogin(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadSingle("FarClip");
+        }
     }
 }
