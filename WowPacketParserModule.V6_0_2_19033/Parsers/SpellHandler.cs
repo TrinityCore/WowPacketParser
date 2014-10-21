@@ -33,7 +33,8 @@ namespace WowPacketParser.V6_0_2_19033.Parsers
                 var spellId = packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID", i);
                 spells.Add((uint)spellId);
             }
-
+            // Fix me
+            /*
             var startSpell = new StartSpell { Spells = spells };
 
             WoWObject character;
@@ -42,7 +43,7 @@ namespace WowPacketParser.V6_0_2_19033.Parsers
                 var player = character as Player;
                 if (player != null && player.FirstLogin)
                     Storage.StartSpells.Add(new Tuple<Race, Class>(player.Race, player.Class), startSpell, packet.TimeSpan);
-            }
+            }*/
         }
 
         [Parser(Opcode.SMSG_SPELL_CATEGORY_COOLDOWN)]
@@ -144,7 +145,6 @@ namespace WowPacketParser.V6_0_2_19033.Parsers
 
                     if (hasCasterGUID)
                         packet.ReadPackedGuid128("Caster Guid");
-
 
                     if (hasDuration)
                         aura.Duration = packet.ReadInt32("Duration", i);
