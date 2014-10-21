@@ -1,3 +1,4 @@
+using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -19,6 +20,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleItemRefundInfo(Packet packet)
         {
             packet.ReadPackedGuid128("Item Guid");
+        }
+
+        [Parser(Opcode.SMSG_SET_PROFICIENCY)]
+        public static void HandleSetProficency(Packet packet)
+        {
+            packet.ReadEnum<UnknownFlags>("ProficiencyMask", TypeCode.UInt32);
+            packet.ReadEnum<ItemClass>("ProficiencyClass", TypeCode.Byte);
         }
     }
 }
