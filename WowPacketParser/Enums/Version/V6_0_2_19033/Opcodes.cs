@@ -68,6 +68,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x08E3},
             {Opcode.SMSG_GOSSIP_COMPLETE, 0x0292},
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x01EE},
+            {Opcode.SMSG_GUILD_MOTD, 0x125A},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x034A},
             {Opcode.SMSG_GUILD_RANK, 0x035A},
             {Opcode.SMSG_GUILD_ROSTER, 0x0779},

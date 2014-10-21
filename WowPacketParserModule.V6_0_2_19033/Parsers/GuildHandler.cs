@@ -13,5 +13,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Guild Guid");
             packet.ReadPackedGuid128("Player Guid");
         }
+
+        [Parser(Opcode.SMSG_GUILD_MOTD)]
+        public static void HandleNewText(Packet packet)
+        {
+            packet.ReadWoWString("MotdText", (int)packet.ReadBits(10));
+        }
     }
 }
