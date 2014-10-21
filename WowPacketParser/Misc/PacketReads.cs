@@ -5,7 +5,6 @@ using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using WowPacketParser.Enums;
-using WowPacketParser.Misc.BigMath;
 
 namespace WowPacketParser.Misc
 {
@@ -23,7 +22,7 @@ namespace WowPacketParser.Misc
         {
             var guid = new WowGuid64(ReadPackedUInt64());
 
-            if (guid.Full != 0 && WriteToFile)
+            if (!guid.IsEmpty() && WriteToFile)
                 WriteToFile = Filters.CheckFilter(guid);
 
             return guid;
@@ -46,81 +45,21 @@ namespace WowPacketParser.Misc
             return v2;
         }
 
-        public unsafe WowGuid ReadPackedGuid128()
+        public WowGuid ReadPackedGuid128()
         {
             var guidLowMask = ReadByte();
             var guidHighMask = ReadByte();
-            /*
-            ulong lowPart = 0;
-            ulong* lowPartPointer = &lowPart;
-            {
-                uint v3 = 0;
-                int v6 = 0;
-                do
-                {
-                    if ((guidLowMask & (1 << v6)) != 0)
-                    {
-                        var v7 = ReadByte();
-                        var res = unkfunc1((ulong)v3, v7);
-                        *(uint*)(lowPartPointer) |= *(uint*)(&res);
-                        *(uint*)(lowPartPointer + 4) |= *(uint*)(&res + 4);
-                    }
-                    ++v6;
-                    v3 += 8;
-                } while (v3 < 0x40);
-            }
 
-            ulong highPart = 0;
-            ulong* highPartPointer = &highPart;
-            {
-                uint v3 = 0;
-                int v6 = 0;
-                do
-                {
-                    if ((guidHighMask & (1 << v6)) != 0)
-                    {
-                        var v7 = ReadByte();
-                        var res = unkfunc1((ulong)v3, v7);
-                        *(uint*)(highPartPointer) |= *(uint*)(&res);
-                        *(uint*)(highPartPointer + 4) |= *(uint*)(&res + 4);
-                    }
-                    ++v6;
-                    v3 += 8;
-                } while (v3 < 0x40);
-            }*/
-
-            ulong guidLow = 0;
-            ulong guidHigh = 0;
-
-            if (guidLowMask != 0)
-            {
-                int i = 0;
-                while (i < 8)
-                {
-                    if ((guidLowMask & 1 << i) != 0)
-                        guidLow += (ulong)ReadByte() << (i * 8);
-
-                    i++;
-                }
-            }
-            if (guidHighMask != 0)
-            {
-                int i = 0;
-                while (i < 8)
-                {
-                    if ((guidHighMask & 1 << i) != 0)
-                        guidHigh += (ulong)ReadByte() << (i * 8);
-
-                    i++;
-                }
-            }
-            return new WowGuid128(new Int128(0, 0));
+            return new WowGuid128(ReadPackedUInt64(guidLowMask), ReadPackedUInt64(guidHighMask));
         }
 
         public ulong ReadPackedUInt64()
         {
-            byte mask = ReadByte();
+            return ReadPackedUInt64(ReadByte());
+        }
 
+        private ulong ReadPackedUInt64(byte mask)
+        {
             if (mask == 0)
                 return 0;
 

@@ -793,7 +793,7 @@ namespace WowPacketParser.SQL.Builders
                     // Set comment
 
                     string from = null, to = null;
-                    if (textValue.Item1.SenderGUID.Full != 0)
+                    if (!textValue.Item1.SenderGUID.IsEmpty())
                     {
                         if (textValue.Item1.SenderGUID.GetObjectType() == ObjectType.Player)
                             from = "Player";
@@ -806,7 +806,7 @@ namespace WowPacketParser.SQL.Builders
                         }
                     }
 
-                    if (textValue.Item1.ReceiverGUID.Full != 0)
+                    if (!textValue.Item1.ReceiverGUID.IsEmpty())
                     {
                         if (textValue.Item1.ReceiverGUID.GetObjectType() == ObjectType.Player)
                             to = "Player";

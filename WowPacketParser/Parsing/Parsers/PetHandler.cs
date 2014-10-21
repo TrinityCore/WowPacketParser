@@ -24,7 +24,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.ReadGuid("GUID");
             // Equal to "Clear spells" pre cataclysm
-            if (guid.Full == 0)
+            if (guid.IsEmpty())
                 return;
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))

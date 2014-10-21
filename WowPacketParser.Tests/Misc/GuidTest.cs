@@ -13,7 +13,8 @@ namespace WowPacketParser.Tests.Misc
             var guid = new WowGuid64(1);
 
             Assert.IsNotNull(guid);
-            Assert.AreEqual(1, guid.Full);
+            Assert.AreEqual(1, guid.Low);
+            Assert.AreEqual(0, guid.High);
         }
 
         [Test]

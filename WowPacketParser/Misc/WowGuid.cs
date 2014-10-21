@@ -1,12 +1,12 @@
 using System;
 using WowPacketParser.Enums;
-using WowPacketParser.Misc.BigMath;
 
 namespace WowPacketParser.Misc
 {
     public abstract class WowGuid
     {
-        public Int128 Full { get; set; }
+        public ulong Low { get; set; }
+        public ulong High { get; set; }
 
         public static WowGuid Empty = new WowGuid64(0);
 
@@ -60,11 +60,6 @@ namespace WowPacketParser.Misc
             return !(first == other);
         }
 
-        public static implicit operator Int128(WowGuid guid)
-        {
-            return guid.Full;
-        }
-
         public override bool Equals(object obj)
         {
             return obj != null && obj is WowGuid && Equals((WowGuid)obj);
@@ -72,60 +67,66 @@ namespace WowPacketParser.Misc
 
         public bool Equals(WowGuid other)
         {
-            return other.Full == Full;
+            return other.Low == Low && other.High == High;
         }
 
         public override int GetHashCode()
         {
-            return Full.GetHashCode();
+            return new { Low, High }.GetHashCode();
+        }
+
+        public bool IsEmpty()
+        {
+            return High == 0 && Low == 0;
         }
     }
 
     public class WowGuid128 : WowGuid
     {
-        public WowGuid128(Int128 id)
+        public WowGuid128(ulong low, ulong high)
         {
-            Full = id;
+            Low = low;
+            High = high;
         }
 
         public override HighGuidType GetHighType()
         {
-            return (HighGuidType)(byte)((Full >> 58) & 0x3F);
+            return (HighGuidType)(byte)((High >> 58) & 0x3F);
         }
 
         public byte GetSubType() // move to base?
         {
-            return (byte)((Full >> 120) & 0x3F);
+            return (byte)((Low >> 56) & 0x3F);
         }
 
         public ushort GetRealmId() // move to base?
         {
-            return (ushort)((Full >> 42) & 0x1FFF);
+            return (ushort)((High >> 42) & 0x1FFF);
         }
 
         public ushort GetServerId() // move to base?
         {
-            return (ushort)((Full >> 104) & 0x1FFF);
+            return (ushort)((Low >> 40) & 0x1FFF);
         }
 
         public ushort GetMapId() // move to base?
         {
-            return (ushort)((Full >> 29) & 0x1FFF);
+            return (ushort)((High >> 29) & 0x1FFF);
         }
 
         public override uint GetEntry()
         {
-            return (uint)((Full >> 6) & 0x7FFFFF); // Id
+            return (uint)((High >> 6) & 0x7FFFFF); // Id
         }
 
         public override ulong GetLow()
         {
-            return (ulong)((Full >> 64) & 0xFFFFFFFFFF); // CreationBits
+            return (ulong)(Low & 0xFFFFFFFFFF); // CreationBits
         }
 
         public override string ToString()
         {
-            return Full.ToString(); // TODO
+            return "High: " + High.ToString("X16") + " Low: " + Low.ToString("X16"); // TODO
         }
     }
 
@@ -133,12 +134,11 @@ namespace WowPacketParser.Misc
     {
         public WowGuid64(ulong id)
         {
-            Full = id;
+            Low = id;
         }
 
         public WowGuid64()
         {
-            Full = 0;
         }
 
         public override ulong GetLow()
@@ -149,7 +149,7 @@ namespace WowPacketParser.Misc
                 case HighGuidType.DynamicObject:
                 case HighGuidType.RaidGroup:
                 case HighGuidType.Item:
-                    return (Full & 0x000FFFFFFFFFFFFF).Low;
+                    return Low & 0x000FFFFFFFFFFFFF;
                 case HighGuidType.GameObject:
                 case HighGuidType.Transport:
                 //case HighGuidType.MOTransport: ??
@@ -157,12 +157,12 @@ namespace WowPacketParser.Misc
                 case HighGuidType.Creature:
                 case HighGuidType.Pet:
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
-                        return (Full & 0x00000000FFFFFFFF).Low;
-                    return (Full & 0x0000000000FFFFFF).Low;
+                        return Low & 0x00000000FFFFFFFFul;
+                    return Low & 0x0000000000FFFFFFul;
             }
 
             // TODO: check if entryless guids dont use now more bytes
-            return (Full & 0x00000000FFFFFFFF).Low;
+            return Low & 0x00000000FFFFFFFFul;
         }
 
         public override uint GetEntry()
@@ -171,16 +171,16 @@ namespace WowPacketParser.Misc
                 return 0;
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
-                return (uint)((Full & 0x000FFFFF00000000) >> 32);
-            return     (uint)((Full & 0x000FFFFFFF000000) >> 24);
+                return (uint)((Low & 0x000FFFFF00000000) >> 32);
+            return     (uint)((Low & 0x000FFFFFFF000000) >> 24);
         }
 
         public HighGuidTypeLegacy GetHighGuidTypeLegacy()
         {
-            if (Full == 0)
+            if (Low == 0)
                 return HighGuidTypeLegacy.None;
 
-            var highGUID = (HighGuidTypeLegacy)((Full & 0xF0F0000000000000).Low >> 52);
+            var highGUID = (HighGuidTypeLegacy)((Low & 0xF0F0000000000000) >> 52);
 
             return (highGUID == 0 || (int)highGUID == 8) ? HighGuidTypeLegacy.Player : highGUID;
         }
@@ -226,7 +226,7 @@ namespace WowPacketParser.Misc
 
         public override string ToString()
         {
-            if (Full == 0)
+            if (Low == 0)
                 return "0x0";
 
             // If our guid has an entry and it is an unit or a GO, print its
@@ -235,7 +235,7 @@ namespace WowPacketParser.Misc
             {
                 var type = Utilities.ObjectTypeToStore(GetObjectType());
 
-                return "Full: 0x" + Full.ToString("X8") + " Type: " + GetHighType()
+                return "Full: 0x" + Low.ToString("X8") + " Type: " + GetHighType()
                     + " Entry: " + StoreGetters.GetName(type, (int)GetEntry()) + " Low: " + GetLow();
             }
 
@@ -245,22 +245,22 @@ namespace WowPacketParser.Misc
             {
                 case HighGuidTypeLegacy.BattleGround1:
                 {
-                    var bgType = Full & 0x00000000000000FF;
-                    return "Full: 0x" + Full.ToString("X8") + " Type: " + GetHighType()
+                    var bgType = Low & 0x00000000000000FF;
+                    return "Full: 0x" + Low.ToString("X8") + " Type: " + GetHighType()
                         + " BgType: " + StoreGetters.GetName(StoreNameType.Battleground, (int)bgType);
                 }
                 case HighGuidTypeLegacy.BattleGround2:
                 {
-                    var bgType    = (Full & 0x00FF0000) >> 16;
-                    var unkId     = (Full & 0x0000FF00) >> 8;
-                    var arenaType = (Full & 0x000000FF) >> 0;
-                    return "Full: 0x" + Full.ToString("X8") + " Type: " + GetHighType()
+                    var bgType = (Low & 0x00FF0000) >> 16;
+                    var unkId = (Low & 0x0000FF00) >> 8;
+                    var arenaType = (Low & 0x000000FF) >> 0;
+                    return "Full: 0x" + Low.ToString("X8") + " Type: " + GetHighType()
                         + " BgType: " + StoreGetters.GetName(StoreNameType.Battleground, (int)bgType)
                         + " Unk: " + unkId + (arenaType > 0 ? (" ArenaType: " + arenaType) : String.Empty);
                 }
             }
 
-            return "Full: 0x" + Full.ToString("X8") + " Type: " + GetHighType()
+            return "Full: 0x" + Low.ToString("X8") + " Type: " + GetHighType()
                 + " Low: " + GetLow() + (String.IsNullOrEmpty(name) ? String.Empty : (" Name: " + name));
         }
     }

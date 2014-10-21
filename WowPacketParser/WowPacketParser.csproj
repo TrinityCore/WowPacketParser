@@ -359,9 +359,6 @@
     <Compile Include="Enums\WardenCheckType.cs" />
     <Compile Include="Enums\WardenOpcode.cs" />
     <Compile Include="Enums\WeatherState.cs" />
-    <Compile Include="Misc\BigMath\ArrayUtils.cs" />
-    <Compile Include="Misc\BigMath\ExtendedBitConverter.cs" />
-    <Compile Include="Misc\BigMath\Int128.cs" />
     <Compile Include="Loading\BinaryPacketReader.cs" />
     <Compile Include="Loading\IPacketReader.cs" />
     <Compile Include="Loading\Reader.cs" />
@@ -373,7 +370,6 @@
     <Compile Include="Misc\ConcurrentPriorityQueue.cs" />
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Misc\Filters.cs" />
-    <Compile Include="Misc\BigMath\MathUtils.cs" />
     <Compile Include="Misc\WowGuid.cs" />
     <Compile Include="Misc\LfgEntry.cs" />
     <Compile Include="Misc\Logger.cs" />
