@@ -25,5 +25,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("Entry", i);
             }
         }
+
+        [Parser(Opcode.CMSG_NAME_QUERY)]
+        public static void HandleNameQuery(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+
+            var bit4 = packet.ReadBit();
+            var bit12 = packet.ReadBit();
+
+            if (bit4)
+                packet.ReadInt32("VirtualRealmAddress");
+
+            if (bit12)
+                packet.ReadInt32("NativeRealmAddress");
+        }
     }
 }
