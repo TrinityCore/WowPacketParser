@@ -24,5 +24,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.AddValue("Position", pos);
             packet.AddSniffData(StoreNameType.Map, (int)CoreParsers.MovementHandler.CurrentMapId, "NEW_WORLD");
         }
+
+        [Parser(Opcode.CMSG_MOVE_TIME_SKIPPED)]
+        public static void HandleMoveTimeSkipped(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+            packet.ReadInt32("Time");
+        }
     }
 }

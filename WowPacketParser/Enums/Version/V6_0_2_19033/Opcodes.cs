@@ -32,6 +32,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.CMSG_MESSAGECHAT_PARTY, 0x06EF},
             {Opcode.CMSG_MESSAGECHAT_SAY, 0x07B3 | 0x10000},
             {Opcode.CMSG_MESSAGECHAT_YELL, 0x1288 | 0x10000},
+            {Opcode.CMSG_MOVE_TIME_SKIPPED, 0x0F46},
             {Opcode.CMSG_NAME_QUERY, 0x0BA4},
             {Opcode.CMSG_NPC_TEXT_QUERY, 0x0CC3},
             {Opcode.CMSG_PAGE_TEXT_QUERY, 0x0B98},
