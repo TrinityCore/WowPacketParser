@@ -55,6 +55,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA_PLAYER, 0x01A4},
             {Opcode.SMSG_AUCTION_COMMAND_RESULT, 0x1554},
             {Opcode.SMSG_AUCTION_HELLO, 0x0417},
+            {Opcode.SMSG_AUCTION_LIST_RESULT, 0x13B4},
             {Opcode.SMSG_AURA_UPDATE, 0x128B},
             {Opcode.SMSG_AUTH_CHALLENGE, 0x10AA},
             {Opcode.SMSG_AUTH_RESPONSE, 0x0564},
