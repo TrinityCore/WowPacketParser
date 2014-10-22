@@ -5,7 +5,7 @@ using WowPacketParser.Parsing;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
-    public static class ArenaHandler
+    public static class AuctionHandler
     {
         [Parser(Opcode.SMSG_AUCTION_COMMAND_RESULT)]
         public static void HandleAuctionCommandResult(Packet packet)
