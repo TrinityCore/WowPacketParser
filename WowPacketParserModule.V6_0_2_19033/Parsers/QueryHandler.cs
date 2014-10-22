@@ -43,6 +43,40 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("NativeRealmAddress");
         }
 
+
+        [Parser(Opcode.SMSG_NAME_QUERY_RESPONSE)]
+        public static void HandleNameQueryResponse(Packet packet)
+        {
+            var hasData = packet.ReadByte("HasData");
+
+            packet.ReadPackedGuid128("Player Guid");
+
+            if (hasData == 0)
+            {
+                var bits15 = (int)packet.ReadBits(7);
+
+                var count = new int[5];
+                for (var i = 0; i < 5; ++i)
+                    count[i] = (int)packet.ReadBits(7);
+
+                for (var i = 0; i < 5; ++i)
+                    packet.ReadWoWString("Name Declined", count[i], i);
+
+                packet.ReadPackedGuid128("BnetAccountID");
+                packet.ReadPackedGuid128("AccountID");
+                packet.ReadPackedGuid128("Player Guid");
+
+                packet.ReadUInt32("VirtualRealmAddress");
+
+                packet.ReadEnum<Race>("Race", TypeCode.Byte);
+                packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
+                packet.ReadEnum<Class>("Class", TypeCode.Byte);
+                packet.ReadByte("Level");
+
+                packet.ReadWoWString("Name", bits15);
+            }
+        }
+
         [Parser(Opcode.CMSG_PAGE_TEXT_QUERY)]
         public static void HandlePageTextQuery(Packet packet)
         {
