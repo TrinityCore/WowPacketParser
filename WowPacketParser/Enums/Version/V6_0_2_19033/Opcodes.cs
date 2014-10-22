@@ -11,6 +11,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
 
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
+            {Opcode.CMSG_AUCTION_HELLO, 0x1074},
             {Opcode.CMSG_AUTH_SESSION, 0x1B05},
             {Opcode.CMSG_CREATURE_QUERY, 0x14D6},
             {Opcode.CMSG_DB_QUERY_BULK, 0x09AC},

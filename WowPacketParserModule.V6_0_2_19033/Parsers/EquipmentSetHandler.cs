@@ -15,9 +15,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (var i = 0; i < count; i++)
             {
-                packet.ReadUInt64("Set ID");
+                packet.ReadUInt64("Set ID", i);
 
-                packet.ReadInt32("Index");
+                packet.ReadInt32("Index", i);
                 packet.ReadInt32("Unk Int", i);
 
                 for (var j = 0; j < NumSlots; j++)
