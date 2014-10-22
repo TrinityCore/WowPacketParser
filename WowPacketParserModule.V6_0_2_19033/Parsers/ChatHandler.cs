@@ -48,10 +48,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             text.Type = (ChatMessageType)packet.ReadByte("Chat type");
             text.Language = packet.ReadEnum<Language>("Language", TypeCode.Byte);
 
-            packet.ReadPackedGuid128("SenderGUID");
+            text.SenderGUID = packet.ReadPackedGuid128("SenderGUID");
             packet.ReadPackedGuid128("SenderGuildGUID");
             packet.ReadPackedGuid128("WowAccountGUID");
-            packet.ReadPackedGuid128("TargetGUID");
+            text.ReceiverGUID = packet.ReadPackedGuid128("TargetGUID");
             packet.ReadUInt32("TargetVirtualAddress");
             packet.ReadUInt32("SenderVirtualAddress");
             packet.ReadPackedGuid128("PartyGUID");
@@ -68,12 +68,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("Bit5304");
             packet.ReadBit("Bit5305");
 
-            packet.ReadWoWString("Sender Name", bits24);
-            packet.ReadWoWString("Receiver Name", bits1121);
+            text.SenderName = packet.ReadWoWString("Sender Name", bits24);
+            text.ReceiverName = packet.ReadWoWString("Receiver Name", bits1121);
             packet.ReadWoWString("Addon Message Prefix", prefixLen);
             packet.ReadWoWString("Channel Name", channelLen);
 
             text.Text = packet.ReadWoWString("Text", textLen);
+
+            uint entry = 0;
+            if (text.SenderGUID.GetObjectType() == ObjectType.Unit)
+                entry = text.SenderGUID.GetEntry();
+            else if (text.ReceiverGUID.GetObjectType() == ObjectType.Unit)
+                entry = text.ReceiverGUID.GetEntry();
+
+            if (entry != 0)
+                Storage.CreatureTexts.Add(entry, text, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_EMOTE)]
@@ -82,9 +91,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var guid = packet.ReadPackedGuid128("GUID");
             var emote = packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
 
-            // Fix me
-            /*if (guid.GetObjectType() == ObjectType.Unit)
-                Storage.Emotes.Add(guid, emote, packet.TimeSpan);*/
+            if (guid.GetObjectType() == ObjectType.Unit)
+                Storage.Emotes.Add(guid, emote, packet.TimeSpan);
         }
     }
 }
