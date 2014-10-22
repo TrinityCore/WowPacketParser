@@ -75,5 +75,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             text.Text = packet.ReadWoWString("Text", textLen);
         }
+
+        [Parser(Opcode.SMSG_EMOTE)]
+        public static void HandleEmote(Packet packet)
+        {
+            var guid = packet.ReadPackedGuid128("GUID");
+            var emote = packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
+
+            // Fix me
+            /*if (guid.GetObjectType() == ObjectType.Unit)
+                Storage.Emotes.Add(guid, emote, packet.TimeSpan);*/
+        }
     }
 }

@@ -70,6 +70,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_CRITERIA_UPDATE_PLAYER, 0x0AEC},
             {Opcode.SMSG_CORPSE_RECLAIM_DELAY, 0x11C0},
             {Opcode.SMSG_DB_REPLY, 0x1574},
+            {Opcode.SMSG_EMOTE, 0x03F8},
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x01E7},
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x0177},
             {Opcode.SMSG_FORCE_SEND_QUEUED_PACKETS, 0x128A},
