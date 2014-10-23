@@ -5,9 +5,8 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using CoreParsers = WowPacketParser.Parsing.Parsers;
 
-namespace WowPacketParser.V6_0_2_19033.Parsers
+namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class SpellHandler
     {
@@ -31,13 +30,13 @@ namespace WowPacketParser.V6_0_2_19033.Parsers
             for (var i = 0; i < count; i++)
             {
                 var spellId = packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID", i);
-                spells.Add((uint)spellId);
+                spells.Add(spellId);
             }
 
             var startSpell = new StartSpell { Spells = spells };
 
             WoWObject character;
-            if (Storage.Objects.TryGetValue(CoreParsers.SessionHandler.LoginGuid, out character))
+            if (Storage.Objects.TryGetValue(WowPacketParser.Parsing.Parsers.SessionHandler.LoginGuid, out character))
             {
                 var player = character as Player;
                 if (player != null && player.FirstLogin)
