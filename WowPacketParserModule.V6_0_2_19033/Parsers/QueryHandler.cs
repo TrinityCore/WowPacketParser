@@ -45,9 +45,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < 4; ++i)
             {
                 if (stringLens[i][0] > 1)
-                    name[i] = packet.ReadCString("Name");
+                    creature.Name = packet.ReadCString("Name");
                 if (stringLens[i][1] > 1)
-                    femaleName[i] = packet.ReadCString("NameAlt");
+                    creature.femaleName = packet.ReadCString("NameAlt");
             }
 
             //for (var i = 0; i < 2; ++i)
@@ -58,21 +58,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             creature.Type = packet.ReadEnum<CreatureType>("CreatureType", TypeCode.Int32);
             creature.Family = packet.ReadEnum<CreatureFamily>("CreatureFamily", TypeCode.Int32);
-            packet.ReadInt32("Classification");
+            creature.Rank = packet.ReadEnum<CreatureRank>("Classification", TypeCode.Int32);
 
+            creature.KillCredits = new uint[2];
             for (var i = 0; i < 2; ++i)
                 creature.KillCredits[i] = packet.ReadUInt32("ProxyCreatureID", i);
 
+            creature.DisplayIds = new uint[4];
             for (var i = 0; i < 4; ++i)
                 creature.DisplayIds[i] = packet.ReadUInt32("CreatureDisplayID", i);
 
             creature.Modifier1 = packet.ReadSingle("HpMulti");
             creature.Modifier2 = packet.ReadSingle("EnergyMulti");
 
+            creature.QuestItems = new uint[6];
             var QuestItems = packet.ReadInt32("QuestItems");
             creature.MovementId = packet.ReadUInt32("CreatureMovementInfoID");
             creature.Expansion = packet.ReadEnum<ClientType>("RequiredExpansion", TypeCode.UInt32);
-            packet.ReadInt32("Int88");
+            packet.ReadInt32("FlagQuest");
 
             if (bits4 > 1)
                 creature.SubName = packet.ReadCString("Title");
@@ -83,7 +86,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (bits28 > 1)
                 creature.IconName = packet.ReadCString("CursorName");
 
-            creature.QuestItems = new uint[QuestItems];
             for (var i = 0; i < QuestItems; ++i)
                 creature.QuestItems[i] = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "Quest Item", i);
 
