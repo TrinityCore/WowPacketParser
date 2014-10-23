@@ -42,6 +42,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Guid");
         }
+
+        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS_GLUE_SCREEN)]
+        public static void HandleFeatureSystemStatusGlueScreen(Packet packet)
+        {
+            // educated guess order
+            packet.ReadBit("BpayStoreEnabled");
+            packet.ReadBit("CharUndeleteEnabled");
+            packet.ReadBit("BpayStoreDisabledByParentalControls");
+            packet.ReadBit("BpayStoreAvailable");
+        }
     }
 }
 
