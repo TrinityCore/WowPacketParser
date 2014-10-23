@@ -1,3 +1,4 @@
+using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -55,6 +56,41 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.AddSniffData(StoreNameType.NpcText, entry.Key, "QUERY_RESPONSE");
 
             Storage.NpcTextsMop.Add((uint)entry.Key, npcText, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.CMSG_GOSSIP_SELECT_OPTION)]
+        public static void HandleNpcGossipSelectOption(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+
+            var gossipId = packet.ReadUInt32("Gossip Id");
+            var menuEntry = packet.ReadUInt32("Menu Id");
+
+            var bits8 = packet.ReadBits(8);
+            packet.ResetBitReader();
+            packet.ReadWoWString("Box Text", bits8);
+
+            Storage.GossipSelects.Add(Tuple.Create(menuEntry, gossipId), null, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.SMSG_GOSSIP_POI)]
+        public static void HandleGossipPoi(Packet packet)
+        {
+            ++LastGossipPOIEntry;
+
+            var gossipPOI = new GossipPOI();
+
+            gossipPOI.Flags = (uint)packet.ReadBits("Flags", 14);
+            var bit84 = packet.ReadBits(6);
+            var pos = packet.ReadVector2("Coordinates");
+            gossipPOI.Icon = packet.ReadEnum<GossipPOIIcon>("Icon", TypeCode.UInt32);
+            gossipPOI.Data = packet.ReadUInt32("Data");
+            gossipPOI.IconName = packet.ReadWoWString("Icon Name", bit84);
+
+            gossipPOI.XPos = pos.X;
+            gossipPOI.YPos = pos.Y;
+
+            Storage.GossipPOIs.Add(LastGossipPOIEntry, gossipPOI, packet.TimeSpan);
         }
     }
 }
