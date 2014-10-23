@@ -63,6 +63,8 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_AUTH_CHALLENGE, 0x10AA},
             {Opcode.SMSG_AUTH_RESPONSE, 0x0564},
             {Opcode.SMSG_BINDPOINTUPDATE, 0x1428},
+            {Opcode.SMSG_CHAR_CREATE, 0x0637},
+            {Opcode.SMSG_CHAR_DELETE, 0x12A4},
             {Opcode.SMSG_CHAR_ENUM, 0x1154},
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x10EF},
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x0203},
@@ -123,6 +125,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_VOID_STORAGE_CONTENTS, 0x0137},
             {Opcode.SMSG_WARDEN_DATA, 0x12EF},
             {Opcode.SMSG_WEATHER, 0x01BF},
+            {Opcode.SMSG_WHO, 0x080A},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x1164},
         };
     }
