@@ -48,8 +48,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         public static void HandleRedirectAuthProof(Packet packet)
         {
             var sha = new byte[20];
-            packet.ReadInt64("Int64 Unk1");
-            packet.ReadInt64("Int64 Unk2");
+            packet.ReadInt64("Int64 Unk1"); // Key or DosResponse
+            packet.ReadInt64("Int64 Unk2"); // Key or DosResponse
             sha[1] = packet.ReadByte();
             sha[14] = packet.ReadByte();
             sha[9] = packet.ReadByte();

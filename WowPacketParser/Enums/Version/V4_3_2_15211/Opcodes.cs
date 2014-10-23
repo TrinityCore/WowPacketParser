@@ -51,7 +51,7 @@ namespace WowPacketParser.Enums.Version.V4_3_2_15211
             {Opcode.CMSG_QUERY_TIME, 0x257F},
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x452B},
             {Opcode.CMSG_REALM_SPLIT, 0x0DB7},
-            {Opcode.CMSG_REDIRECTION_AUTH_PROOF, 0x004A},
+            {Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x004A},
             {Opcode.CMSG_REQUEST_CEMETERY_LIST, 0x03A4},
             {Opcode.CMSG_TRAINER_LIST, 0x4DD5},
             {Opcode.CMSG_UNLEARN_SKILL, 0x2DC7},

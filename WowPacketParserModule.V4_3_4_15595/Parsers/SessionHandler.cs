@@ -111,7 +111,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadByte("Unk Byte"); // 1 == Connecting to world server
         }
 
-        [Parser(Opcode.CMSG_REDIRECTION_AUTH_PROOF)]
+        [Parser(Opcode.CMSG_REDIRECT_AUTH_PROOF)]
         public static void HandleRedirectionAuthProof434(Packet packet)
         {
             var bytes = new byte[20];

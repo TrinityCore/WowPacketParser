@@ -1308,7 +1308,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.SMSG_SUSPEND_COMMS, 0x50F},
             {Opcode.CMSG_SUSPEND_COMMS_ACK, 0x510},
             {Opcode.SMSG_FORCE_SEND_QUEUED_PACKETS, 0x511},
-            {Opcode.CMSG_REDIRECTION_AUTH_PROOF, 0x512},
+            {Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x512},
             {Opcode.CMSG_DROP_NEW_CONNECTION, 0x513},
             {Opcode.SMSG_COMBAT_LOG_MULTIPLE, 0x514},
             {Opcode.SMSG_OPEN_LFG_DUNGEON_FINDER, 0x515},

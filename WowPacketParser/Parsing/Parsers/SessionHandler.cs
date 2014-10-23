@@ -503,15 +503,15 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Token");
         }
 
-        [Parser(Opcode.CMSG_REDIRECTION_AUTH_PROOF, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.CMSG_REDIRECT_AUTH_PROOF, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleRedirectionAuthProof(Packet packet)
         {
             packet.ReadCString("Account");
-            packet.ReadInt64("Unk Int64");
+            packet.ReadInt64("Unk Int64"); // Key or DosResponse
             packet.ReadBytes("Proof SHA-1 Hash", 20);
         }
 
-        [Parser(Opcode.CMSG_REDIRECTION_AUTH_PROOF, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_REDIRECT_AUTH_PROOF, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleRedirectionAuthProof422(Packet packet)
         {
             var bytes = new byte[20];
@@ -528,10 +528,10 @@ namespace WowPacketParser.Parsing.Parsers
             bytes[15] = packet.ReadByte();
             bytes[18] = packet.ReadByte();
             bytes[8] = packet.ReadByte();
-            packet.ReadInt64("Unk long 1");
+            packet.ReadInt64("Unk long 1"); // Key or DosResponse
             bytes[2] = packet.ReadByte();
             bytes[1] = packet.ReadByte();
-            packet.ReadInt64("Unk long 2");
+            packet.ReadInt64("Unk long 2"); // Key or DosResponse
             bytes[7] = packet.ReadByte();
             bytes[4] = packet.ReadByte();
             bytes[16] = packet.ReadByte();

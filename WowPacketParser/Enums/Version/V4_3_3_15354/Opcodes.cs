@@ -55,7 +55,7 @@ namespace WowPacketParser.Enums.Version.V4_3_3_15354
             {Opcode.CMSG_QUESTLOG_REMOVE_QUEST, 0x7665},
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x2924},
             {Opcode.CMSG_REALM_SPLIT, 0x66AD},
-            {Opcode.CMSG_REDIRECTION_AUTH_PROOF,0x0A26},
+            {Opcode.CMSG_REDIRECT_AUTH_PROOF,0x0A26},
             {Opcode.CMSG_REQUEST_ACCOUNT_DATA, 0x29A4},
             {Opcode.CMSG_REQUEST_PET_INFO, 0x3EAC},
             {Opcode.CMSG_REQUEST_RAID_INFO, 0x60ED},

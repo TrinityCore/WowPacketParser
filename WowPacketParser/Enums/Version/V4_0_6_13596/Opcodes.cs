@@ -451,7 +451,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_READ_ITEM, 0x0F3C0},
             {Opcode.CMSG_REALM_SPLIT, 0x060AC},
             {Opcode.CMSG_RECLAIM_CORPSE, 0x07CC8},
-            {Opcode.CMSG_REDIRECTION_AUTH_PROOF, 0x00E4C},
+            {Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x00E4C},
             {Opcode.CMSG_REDIRECTION_FAILED, 0x10007}, //UnknownopcodeID
             //{Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x00100},
             {Opcode.CMSG_REFER_A_FRIEND, 0x030C4},
