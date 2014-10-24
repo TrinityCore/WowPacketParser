@@ -135,25 +135,25 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 waypoints[i].Z = vec.Z;
             }
 
-
             var type = packet.ReadBits("Face", 2);
             var monsterSplineFilter = packet.ReadBit("Has MonsterSplineFilter");
 
             switch (type)
             {
-                case 2:
+                case 1:
                 {
                    packet.ReadVector3("FaceSpot");
                    break;
                 }
                 case 3:
                 {
-                    packet.ReadPackedGuid128("Facing GUID");
+                    packet.ReadSingle("FaceDirection");
                     break;
                 }
-                case 4:
+                case 2:
                 {
                     packet.ReadSingle("FaceDirection");
+                    packet.ReadPackedGuid128("Facing GUID");
                     break;
                 }
             }
