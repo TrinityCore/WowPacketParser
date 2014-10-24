@@ -145,15 +145,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                    packet.ReadVector3("FaceSpot");
                    break;
                 }
-                case 3:
-                {
-                    packet.ReadSingle("FaceDirection");
-                    break;
-                }
                 case 2:
                 {
                     packet.ReadSingle("FaceDirection");
                     packet.ReadPackedGuid128("Facing GUID");
+                    break;
+                }
+                case 3:
+                {
+                    packet.ReadSingle("FaceDirection");
                     break;
                 }
             }
