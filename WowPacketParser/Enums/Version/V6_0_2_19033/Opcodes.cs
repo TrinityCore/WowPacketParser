@@ -64,6 +64,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_AUTH_CHALLENGE, 0x10AA},
             {Opcode.SMSG_AUTH_RESPONSE, 0x0564},
             {Opcode.SMSG_BINDPOINTUPDATE, 0x1428},
+            {Opcode.SMSG_CHANNEL_NOTIFY, 0x0C4D},
             {Opcode.SMSG_CHANNEL_NOTIFY_JOINED, 0x1C0A},
             {Opcode.SMSG_CHAR_CREATE, 0x0637},
             {Opcode.SMSG_CHAR_DELETE, 0x12A4},

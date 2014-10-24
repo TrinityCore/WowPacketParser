@@ -24,7 +24,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_CHANNEL_NOTIFY_JOINED)]
-        public static void HandleChannelNotify(Packet packet)
+        public static void HandleChannelNotifyJoined(Packet packet)
         {
             var bits544 = packet.ReadBits(7);
             var bits24 = packet.ReadBits(10);
@@ -35,6 +35,33 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadWoWString("Channel", bits544);
             packet.ReadWoWString("ChannelWelcomeMsg", bits24);
+        }
+
+        [Parser(Opcode.SMSG_CHANNEL_NOTIFY)]
+        public static void HandleChannelNotify(Packet packet)
+        {
+            var type = (ChatNotificationType)packet.ReadBits("Type", 6);
+            var bits108 = packet.ReadBits(7);
+            var bits52 = packet.ReadBits(6);
+
+            packet.ReadPackedGuid128("SenderGuid");
+            packet.ReadPackedGuid128("BnetAccountID");
+
+            packet.ReadInt32("SenderVirtualRealm");
+
+            packet.ReadPackedGuid128("TargetGuid");
+
+            packet.ReadInt32("TargetVirtualRealm");
+            packet.ReadInt32("ChatChannelID");
+
+            if (type == ChatNotificationType.ModeChange)
+            {
+                packet.ReadEnum<ChannelMemberFlag>("OldFlags", TypeCode.Byte);
+                packet.ReadEnum<ChannelMemberFlag>("NewFlags", TypeCode.Byte);
+            }
+
+            packet.ReadWoWString("Channel", bits108);
+            packet.ReadWoWString("Sender", bits52);
         }
     }
 }
