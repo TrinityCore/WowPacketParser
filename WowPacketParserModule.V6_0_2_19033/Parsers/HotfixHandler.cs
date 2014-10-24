@@ -325,6 +325,28 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     db2File.ReadUInt32("Next Scene Script Part");
                     break;
                 }
+                case DB2Hash.SpellMisc: // New structure - 6.0.2
+                {
+                    db2File.ReadUInt32("ID");
+
+                    for (var i = 0; i < 14; ++i)
+                        db2File.ReadUInt32("Attributes", i);
+
+                    db2File.ReadUInt32("Casting Time Index");
+                    db2File.ReadUInt32("Duration Index");
+                    db2File.ReadUInt32("Range Index");
+                    db2File.ReadSingle("Speed");
+
+                    for (var i = 0; i < 2; ++i)
+                        db2File.ReadUInt32("Spell Visual ID", i);
+
+
+                    db2File.ReadUInt32("Spell Icon ID");
+                    db2File.ReadUInt32("Active Icon ID");
+                    db2File.ReadUInt32("School Mask");
+                    db2File.ReadSingle("UnkWoD1");
+                    break;
+                }
                 case DB2Hash.Vignette:
                 {
                     db2File.ReadUInt32("Vignette ID");
