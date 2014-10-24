@@ -340,11 +340,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     for (var i = 0; i < 2; ++i)
                         db2File.ReadUInt32("Spell Visual ID", i);
 
-
                     db2File.ReadUInt32("Spell Icon ID");
                     db2File.ReadUInt32("Active Icon ID");
                     db2File.ReadUInt32("School Mask");
                     db2File.ReadSingle("UnkWoD1");
+                    break;
+                }
+                case DB2Hash.Toy: // New structure - 6.0.2
+                {
+                    db2File.ReadUInt32("ID");
+                    db2File.ReadEntry<UInt32>(StoreNameType.Item, "Item ID");
+                    db2File.ReadUInt32("Flags");
+
+                    if (db2File.ReadUInt16() > 0)
+                        db2File.ReadCString("Description");
+
+                    db2File.ReadInt32("Source Type");
                     break;
                 }
                 case DB2Hash.Vignette:
