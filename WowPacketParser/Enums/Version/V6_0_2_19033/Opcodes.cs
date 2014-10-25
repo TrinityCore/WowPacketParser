@@ -11,6 +11,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
 
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
+            {Opcode.CMSG_ACCEPT_TRADE, 0x1C85},
             {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x07CC | 0x10000},
             {Opcode.CMSG_AUCTION_HELLO, 0x1074},
             {Opcode.CMSG_AUTH_SESSION, 0x1B05},
@@ -23,7 +24,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.CMSG_GUILD_QUERY_RANKS, 0x018E},
             {Opcode.CMSG_LIST_INVENTORY, 0x1037},
             {Opcode.CMSG_LOAD_SCREEN, 0x09B8},
-            {Opcode.CMSG_CANCEL_TRADE, 0x0591},
+            {Opcode.CMSG_CANCEL_TRADE, 0x07DA},
             {Opcode.CMSG_LOG_DISCONNECT, 0x1856},
             {Opcode.CMSG_ITEM_REFUND_INFO, 0x0154},
             {Opcode.CMSG_JOIN_CHANNEL, 0x0EC3},
