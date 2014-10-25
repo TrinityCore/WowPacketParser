@@ -196,5 +196,142 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadUInt16("Talent Id", i, j);
             }
         }
+
+        [Parser(Opcode.SMSG_SPELL_START)]
+        public static void HandleSpellGo(Packet packet)
+        {
+            packet.ReadPackedGuid128("Caster Guid");
+            packet.ReadPackedGuid128("CasterUnit Guid");
+
+            packet.ReadByte("CastID");
+
+            packet.ReadUInt32("SpellID");
+            packet.ReadUInt32("CastFlags");
+            packet.ReadUInt32("CastTime");
+
+            var int52 = packet.ReadUInt32("HitTargets");
+            var int68 = packet.ReadUInt32("MissTargets");
+            var int84 = packet.ReadUInt32("MissStatus");
+
+            // SpellTargetData
+            packet.ReadEnum<TargetFlag>("Flags", 21);
+            var bit72 = packet.ReadBit("HasSrcLocation");
+            var bit112 = packet.ReadBit("HasDstLocation");
+            var bit124 = packet.ReadBit("HasOrientation");
+            var bits128 = packet.ReadBits(7);
+
+            packet.ReadPackedGuid128("Unit Guid");
+            packet.ReadPackedGuid128("Item Guid");
+
+            if (bit72)
+            {
+                packet.ReadPackedGuid128("SrcLocation Guid");
+                packet.ReadVector3("SrcLocation");
+            }
+
+            if (bit112)
+            {
+                packet.ReadPackedGuid128("DstLocation Guid");
+                packet.ReadVector3("DstLocation");
+            }
+
+            if (bit124)
+                packet.ReadSingle("Orientation");
+
+            packet.ReadWoWString("Name", bits128);
+
+            var int360 = packet.ReadUInt32("SpellPowerData");
+
+            // MissileTrajectoryResult
+            packet.ReadUInt32("TravelTime");
+            packet.ReadSingle("Pitch");
+
+            // SpellAmmo
+            packet.ReadByte("InventoryType");
+            packet.ReadUInt32("DisplayID");
+
+            packet.ReadByte("DestLocSpellCastIndex");
+
+            var int428 = packet.ReadUInt32("TargetPoints");
+
+            // CreatureImmunities
+            packet.ReadUInt32("School");
+            packet.ReadUInt32("Value");
+
+            // SpellHealPrediction
+            packet.ReadUInt32("Points");
+            packet.ReadByte("Type");
+            packet.ReadPackedGuid128("BeaconGUID");
+
+            // HitTargets
+            for (var i = 0; i < int52; ++i)
+                packet.ReadPackedGuid128("HitTarget Guid", i);
+
+            // MissTargets
+            for (var i = 0; i < int52; ++i)
+                packet.ReadPackedGuid128("MissTarget Guid", i);
+
+            // MissStatus
+            for (var i = 0; i < int84; ++i)
+                if (packet.ReadBits("Reason", 4, i) == 11)
+                    packet.ReadBits("ReflectStatus", 4, i);
+
+            // SpellPowerData
+            for (var i = 0; i < int360; ++i)
+            {
+                packet.ReadInt32("Cost", i);
+                packet.ReadEnum<PowerType>("Type", TypeCode.Byte, i);
+            }
+
+            // TargetPoints
+            for (var i = 0; i < int428; ++i)
+            {
+                packet.ReadPackedGuid128("Transport Guid");
+                packet.ReadVector3("Location");
+            }
+
+            packet.ReadBits("CastFlagsEx", 18);
+
+            var bit396 = packet.ReadBit("Bit396");
+            var bit424 = packet.ReadBit("Bit396");
+
+            // RuneData
+            if (bit396)
+            {
+                packet.ReadByte("Start");
+                var byte1 = packet.ReadByte("Count");
+
+                for (var i = 0; i < byte1; ++i)
+                    packet.ReadByte("Cooldowns", i);
+            }
+
+            // ProjectileVisual
+            if (bit424)
+                for (var i = 0; i < 2; ++i)
+                    packet.ReadInt32("Id", i);
+
+            var bit52 = packet.ReadBit("SpellCastLogData");
+
+            // SpellCastLogData
+            if (bit52)
+            {
+                packet.ReadInt32("Health");
+                packet.ReadInt32("AttackPower");
+                packet.ReadInt32("SpellPower");
+                var int3 = packet.ReadInt32("SpellLogPowerData");
+
+                // SpellLogPowerData
+                for (var i = 0; int3 < 2; ++i)
+                {
+                    packet.ReadInt32("PowerType", i);
+                    packet.ReadInt32("Amount", i);
+                }
+
+                var bit32 = packet.ReadBit("bit32");
+
+                if (bit32)
+                    packet.ReadSingle("Float7");
+            }
+        }
     }
 }
