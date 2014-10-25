@@ -216,6 +216,8 @@ namespace WowPacketParser.Misc
 
         private static ClientType GetExpansion(ClientVersionBuild build)
         {
+            if (build >= ClientVersionBuild.V6_0_2_19033)
+                return ClientType.WarlordsOfDraenor;
             if (build >= ClientVersionBuild.V5_0_4_16016)
                 return ClientType.MistsOfPandaria;
             if (build >= ClientVersionBuild.V4_0_3_13329)
