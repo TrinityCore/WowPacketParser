@@ -114,6 +114,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_PONG, 0x1881},
             {Opcode.SMSG_QUERY_TIME_RESPONSE, 0x0224},
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x03DE},
+            {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x00D5},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x1082},
             {Opcode.SMSG_SEND_SERVER_LOCATION, 0x1257},
             {Opcode.SMSG_ARENA_SEASON_WORLD_STATE, 0x0618},
