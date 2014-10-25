@@ -24,6 +24,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.AddSniffData(StoreNameType.Map, (int)CoreParsers.MovementHandler.CurrentMapId, "NEW_WORLD");
         }
 
+        [Parser(Opcode.SMSG_LOGIN_SETTIMESPEED)]
+        public static void HandleLoginSetTimeSpeed(Packet packet)
+        {
+            packet.ReadPackedTime("ServerTime");
+            packet.ReadPackedTime("GameTime");
+            packet.ReadSingle("NewSpeed");
+            packet.ReadInt32("ServerTimeHolidayOffset");
+            packet.ReadInt32("GameTimeHolidayOffset");
+        }
+
         [Parser(Opcode.CMSG_MOVE_TIME_SKIPPED)]
         public static void HandleMoveTimeSkipped(Packet packet)
         {
