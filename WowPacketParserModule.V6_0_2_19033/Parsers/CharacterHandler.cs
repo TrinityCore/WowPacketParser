@@ -81,7 +81,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 var hasWeeklyQuantity = packet.ReadBit();
                 var hasMaxWeeklyQuantity = packet.ReadBit();
                 var hasTrackedQuantity = packet.ReadBit();
-                packet.ReadBits("Flags", 5);
+                packet.ReadBits("Flags", 5, i);
 
                 if (hasWeeklyQuantity)
                     packet.ReadUInt32("WeeklyQuantity", i);
