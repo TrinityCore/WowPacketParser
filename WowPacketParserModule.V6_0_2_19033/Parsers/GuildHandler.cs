@@ -51,5 +51,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadWoWString("MotdText", (int)packet.ReadBits(10));
         }
+
+        [Parser(Opcode.CMSG_GUILD_BANK_BUY_TAB)]
+        public static void HandleGuildBankBuyTab(Packet packet)
+        {
+            packet.ReadPackedGuid128("Banker");
+            packet.ReadByte("BankTab");
+        }
     }
 }
