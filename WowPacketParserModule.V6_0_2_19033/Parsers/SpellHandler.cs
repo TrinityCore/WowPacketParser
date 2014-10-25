@@ -268,7 +268,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadPackedGuid128("HitTarget Guid", i);
 
             // MissTargets
-            for (var i = 0; i < int52; ++i)
+            for (var i = 0; i < int68; ++i)
                 packet.ReadPackedGuid128("MissTarget Guid", i);
 
             // MissStatus
