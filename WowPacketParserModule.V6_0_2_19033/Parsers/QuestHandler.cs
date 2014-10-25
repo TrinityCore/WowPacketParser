@@ -221,5 +221,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             Storage.QuestTemplatesWod.Add((uint)id.Key, quest, packet.TimeSpan);
         }
+
+        [Parser(Opcode.CMSG_QUEST_POI_QUERY)]
+        public static void HandleQuestPoiQuery(Packet packet)
+        {
+            var count = packet.ReadUInt32("Count");
+
+            for (var i = 0; i < count; i++)
+                packet.ReadEntry<Int32>(StoreNameType.Quest, "Quest ID", i);
+        }
     }
 }
