@@ -23,11 +23,11 @@ namespace WowPacketParser.Parsing.Parsers
             gossipPOI.Flags = (uint) packet.ReadEnum<UnknownFlags>("Flags", TypeCode.Int32);
             var pos = packet.ReadVector2("Coordinates");
             gossipPOI.Icon = packet.ReadEnum<GossipPOIIcon>("Icon", TypeCode.UInt32);
-            gossipPOI.Data = packet.ReadUInt32("Data");
-            gossipPOI.IconName = packet.ReadCString("Icon Name");
+            gossipPOI.Importance = packet.ReadUInt32("Data");
+            gossipPOI.Name = packet.ReadCString("Icon Name");
 
-            gossipPOI.XPos = pos.X;
-            gossipPOI.YPos = pos.Y;
+            gossipPOI.PositionX = pos.X;
+            gossipPOI.PositionY = pos.Y;
 
             Storage.GossipPOIs.Add(LastGossipPOIEntry, gossipPOI, packet.TimeSpan);
         }

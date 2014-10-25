@@ -571,13 +571,13 @@ namespace WowPacketParser.SQL.Builders
                 {
                     var row = new QueryBuilder.SQLInsertRow();
 
-                    row.AddValue("entry", "@ID+" + count, noQuotes: true);
-                    row.AddValue("x", poi.Value.Item1.XPos);
-                    row.AddValue("y", poi.Value.Item1.YPos);
-                    row.AddValue("icon", poi.Value.Item1.Icon);
-                    row.AddValue("flags", poi.Value.Item1.Flags);
-                    row.AddValue("data", poi.Value.Item1.Data);
-                    row.AddValue("icon_name", poi.Value.Item1.IconName);
+                    row.AddValue("ID", "@ID+" + count, noQuotes: true);
+                    row.AddValue("PositionX", poi.Value.Item1.PositionX);
+                    row.AddValue("PositionY", poi.Value.Item1.PositionY);
+                    row.AddValue("Icon", poi.Value.Item1.Icon);
+                    row.AddValue("Flags", poi.Value.Item1.Flags);
+                    row.AddValue("Importance", poi.Value.Item1.Importance);
+                    row.AddValue("Name", poi.Value.Item1.Name);
 
                     rowsIns.Add(row);
                     count++;

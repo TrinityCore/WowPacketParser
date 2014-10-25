@@ -558,7 +558,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ResetBitReader();
             pageText.Text = packet.ReadWoWString("Page Text", textLen);
 
-            pageText.NextPageId = packet.ReadUInt32("Next Page");
+            pageText.NextPageID = packet.ReadUInt32("Next Page");
             var entry = packet.ReadUInt32("Entry");
             packet.ReadUInt32("Entry");
 

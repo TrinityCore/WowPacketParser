@@ -537,7 +537,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             pageText.Text = packet.ReadWoWString("Page Text", textLen);
 
             var entry = packet.ReadUInt32("Entry");
-            pageText.NextPageId = packet.ReadUInt32("Next Page");
+            pageText.NextPageID = packet.ReadUInt32("Next Page");
             packet.ReadUInt32("Entry");
 
             packet.AddSniffData(StoreNameType.PageText, (int)entry, "QUERY_RESPONSE");

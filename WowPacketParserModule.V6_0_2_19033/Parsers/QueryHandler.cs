@@ -182,7 +182,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 return; // nothing to do
 
             var entry = packet.ReadUInt32("Entry");
-            pageText.NextPageId = packet.ReadUInt32("Next Page");
+            pageText.NextPageID = packet.ReadUInt32("Next Page");
 
             packet.ResetBitReader();
             var textLen = packet.ReadBits(12);

@@ -870,7 +870,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadUInt32("Entry");
             pageText.Text = packet.ReadWoWString("Page Text", textLen);
 
-            pageText.NextPageId = packet.ReadUInt32("Next Page");
+            pageText.NextPageID = packet.ReadUInt32("Next Page");
 
             packet.AddSniffData(StoreNameType.PageText, (int)entry, "QUERY_RESPONSE");
             Storage.PageTexts.Add(entry, pageText, packet.TimeSpan);

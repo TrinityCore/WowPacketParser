@@ -86,11 +86,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var bit84 = packet.ReadBits(6);
             var pos = packet.ReadVector2("Coordinates");
             gossipPOI.Icon = packet.ReadEnum<GossipPOIIcon>("Icon", TypeCode.UInt32);
-            gossipPOI.Data = packet.ReadUInt32("Data");
-            gossipPOI.IconName = packet.ReadWoWString("Icon Name", bit84);
+            gossipPOI.Importance = packet.ReadUInt32("Data");
+            gossipPOI.Name = packet.ReadWoWString("Icon Name", bit84);
 
-            gossipPOI.XPos = pos.X;
-            gossipPOI.YPos = pos.Y;
+            gossipPOI.PositionX = pos.X;
+            gossipPOI.PositionY = pos.Y;
 
             Storage.GossipPOIs.Add(LastGossipPOIEntry, gossipPOI, packet.TimeSpan);
         }

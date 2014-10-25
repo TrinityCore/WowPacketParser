@@ -6,11 +6,11 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("page_text")]
     public class PageText
     {
-        [DBFieldName("text")]
+        [DBFieldName("Text")]
         public string Text;
 
-        [DBFieldName("next_page")]
-        public uint NextPageId;
+        [DBFieldName("NextPageID")]
+        public uint NextPageID;
 
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;

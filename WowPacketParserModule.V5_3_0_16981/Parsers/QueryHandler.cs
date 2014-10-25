@@ -454,7 +454,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var textLen = (int)packet.ReadBits(12);
             packet.ResetBitReader();
             pageText.Text = packet.ReadWoWString("Page Text", textLen);
-            pageText.NextPageId = packet.ReadUInt32("Next Page");
+            pageText.NextPageID = packet.ReadUInt32("Next Page");
             packet.ReadUInt32("Entry");
 
             packet.AddSniffData(StoreNameType.PageText, (int)entry, "QUERY_RESPONSE");

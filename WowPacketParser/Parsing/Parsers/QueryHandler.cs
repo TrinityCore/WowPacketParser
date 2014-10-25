@@ -190,7 +190,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             pageText.Text = packet.ReadCString("Page Text");
 
-            pageText.NextPageId = packet.ReadUInt32("Next Page");
+            pageText.NextPageID = packet.ReadUInt32("Next Page");
 
             packet.AddSniffData(StoreNameType.PageText, (int)entry, "QUERY_RESPONSE");
 
