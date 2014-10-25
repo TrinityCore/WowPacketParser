@@ -198,7 +198,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_SPELL_START)]
-        public static void HandleSpellGo(Packet packet)
+        public static void HandleSpellStart(Packet packet)
         {
             packet.ReadPackedGuid128("Caster Guid");
             packet.ReadPackedGuid128("CasterUnit Guid");
@@ -292,8 +292,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadBits("CastFlagsEx", 18);
 
-            var bit396 = packet.ReadBit("Bit396");
-            var bit424 = packet.ReadBit("Bit396");
+            var bit396 = packet.ReadBit("HasRuneData");
+            var bit424 = packet.ReadBit("HasProjectileVisual");
 
             // RuneData
             if (bit396)
