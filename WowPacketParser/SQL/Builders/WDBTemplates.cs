@@ -26,6 +26,21 @@ namespace WowPacketParser.SQL.Builders
         }
 
         [BuilderMethod]
+        public static string QuestWod()
+        {
+            if (Storage.QuestTemplatesWod.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+                return string.Empty;
+
+            var entries = Storage.QuestTemplatesWod.Keys();
+            var templatesDb = SQLDatabase.GetDict<uint, QuestTemplateWod>(entries, "Id");
+
+            return SQLUtil.CompareDicts(Storage.QuestTemplatesWod, templatesDb, StoreNameType.Quest, "Id");
+        }
+
+        [BuilderMethod]
         public static string Npc()
         {
             if (Storage.UnitTemplates.IsEmpty())
