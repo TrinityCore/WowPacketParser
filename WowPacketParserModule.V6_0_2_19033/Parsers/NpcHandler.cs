@@ -168,5 +168,73 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.AddSniffData(StoreNameType.Gossip, (int)menuId, guid.GetEntry().ToString(CultureInfo.InvariantCulture));
             }
         }
+
+        [Parser(Opcode.SMSG_LIST_INVENTORY)]
+        public static void HandleVendorInventoryList(Packet packet)
+        {
+            var npcVendor = new NpcVendor();
+
+            var guid = packet.ReadPackedGuid128("VendorGUID");
+
+            packet.ReadByte("Reason");
+
+            var int9 = packet.ReadInt32("VendorItems");
+
+            npcVendor.VendorItems = new List<VendorItem>(int9);
+            for (var i = 0; i < int9; ++i)
+            {
+                var vendorItem = new VendorItem();
+
+                vendorItem.Slot = (uint)packet.ReadInt32("Muid", i);
+                vendorItem.Type = (uint)packet.ReadInt32("Type", i);
+
+                // ItemInstance
+                //if (ItemInstance)
+                {
+                    vendorItem.ItemId = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "ItemID", i);
+                    packet.ReadUInt32("RandomPropertiesSeed", i);
+                    packet.ReadUInt32("RandomPropertiesID", i);
+
+                    packet.ResetBitReader();
+
+                    var hasBonuses = packet.ReadBit("HasItemBonus", i);
+                    var hasModifications = packet.ReadBit("HasModifications", i);
+                    if (hasBonuses)
+                    {
+                        packet.ReadByte("Context", i);
+
+                        var bonusCount = packet.ReadUInt32();
+                        for (var j = 0; j < bonusCount; ++j)
+                            packet.ReadUInt32("BonusListID", i, j);
+                    }
+
+                    if (hasModifications)
+                    {
+                        var modificationCount = packet.ReadUInt32() / 4;
+                        for (var j = 0; j < modificationCount; ++j)
+                            packet.ReadUInt32("Modification", i, j);
+                    }
+                }
+
+                var maxCount = packet.ReadInt32("Quantity", i);
+                packet.ReadInt32("Price", i);
+                packet.ReadInt32("Durability", i);
+                var buyCount = packet.ReadInt32("StackCount", i);
+                vendorItem.ExtendedCostId = (uint)packet.ReadInt32("ExtendedCostID", i);
+                packet.ReadInt32("PlayerConditionFailed", i);
+
+                packet.ResetBitReader();
+
+                packet.ReadBit("DoNotFilterOnVendor", i);
+
+                vendorItem.MaxCount = maxCount == -1 ? 0 : maxCount; // TDB
+                if (vendorItem.Type == 2)
+                    vendorItem.MaxCount = (int)buyCount;
+
+                npcVendor.VendorItems.Add(vendorItem);
+            }
+
+            Storage.NpcVendors.Add(guid.GetEntry(), npcVendor, packet.TimeSpan);
+        }
     }
 }
