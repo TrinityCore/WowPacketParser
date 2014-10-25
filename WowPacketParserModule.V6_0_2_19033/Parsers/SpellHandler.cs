@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -109,7 +110,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("bit16");
             packet.ReadPackedGuid128("Guid");
             var count = packet.ReadUInt32("AuraCount");
-            
+
             var auras = new List<Aura>();
             for (var i = 0; i < count; ++i)
             {
@@ -198,6 +199,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_SPELL_START)]
+        [Parser(Opcode.SMSG_SPELL_GO)]
         public static void HandleSpellStart(Packet packet)
         {
             packet.ReadPackedGuid128("Caster Guid");
@@ -214,6 +216,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var int84 = packet.ReadUInt32("MissStatus");
 
             // SpellTargetData
+            packet.ResetBitReader();
+
             packet.ReadEnum<TargetFlag>("Flags", 21);
             var bit72 = packet.ReadBit("HasSrcLocation");
             var bit112 = packet.ReadBit("HasDstLocation");
@@ -247,8 +251,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadSingle("Pitch");
 
             // SpellAmmo
-            packet.ReadByte("InventoryType");
             packet.ReadUInt32("DisplayID");
+            packet.ReadByte("InventoryType");
 
             packet.ReadByte("DestLocSpellCastIndex");
 
@@ -273,8 +277,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             // MissStatus
             for (var i = 0; i < int84; ++i)
+            {
                 if (packet.ReadBits("Reason", 4, i) == 11)
                     packet.ReadBits("ReflectStatus", 4, i);
+            }
 
             // SpellPowerData
             for (var i = 0; i < int360; ++i)
@@ -290,6 +296,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadVector3("Location");
             }
 
+            packet.ResetBitReader();
+
             packet.ReadBits("CastFlagsEx", 18);
 
             var bit396 = packet.ReadBit("HasRuneData");
@@ -299,9 +307,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (bit396)
             {
                 packet.ReadByte("Start");
-                var byte1 = packet.ReadByte("Count");
+                packet.ReadByte("Count");
 
-                for (var i = 0; i < byte1; ++i)
+                packet.ResetBitReader();
+                var bits1 = packet.ReadBits("CooldownCount", 3);
+
+                for (var i = 0; i < bits1; ++i)
                     packet.ReadByte("Cooldowns", i);
             }
 
@@ -310,6 +321,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 for (var i = 0; i < 2; ++i)
                     packet.ReadInt32("Id", i);
 
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_SPELL_START))
+                return;
+
+            ReadSpellCastLogData(ref packet);
+        }
+
+        private static void ReadSpellCastLogData(ref Packet packet)
+        {
+
+            packet.ResetBitReader();
             var bit52 = packet.ReadBit("SpellCastLogData");
 
             // SpellCastLogData
@@ -318,6 +339,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("Health");
                 packet.ReadInt32("AttackPower");
                 packet.ReadInt32("SpellPower");
+
                 var int3 = packet.ReadInt32("SpellLogPowerData");
 
                 // SpellLogPowerData
