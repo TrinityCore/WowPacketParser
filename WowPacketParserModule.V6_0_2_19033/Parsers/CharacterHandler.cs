@@ -66,5 +66,32 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadByte("FactionChangeRestriction RaceID", i);
             }
         }
+
+        [Parser(Opcode.SMSG_INIT_CURRENCY)]
+        public static void HandleInitCurrency(Packet packet)
+        {
+            var count = packet.ReadInt32("SetupCurrencyRecord");
+
+            // ClientSetupCurrencyRecord
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadUInt32("Type", i);
+                packet.ReadUInt32("Quantity", i);
+
+                var hasWeeklyQuantity = packet.ReadBit();
+                var hasMaxWeeklyQuantity = packet.ReadBit();
+                var hasTrackedQuantity = packet.ReadBit();
+                packet.ReadBits("Flags", 5);
+
+                if (hasWeeklyQuantity)
+                    packet.ReadUInt32("WeeklyQuantity", i);
+
+                if (hasMaxWeeklyQuantity)
+                    packet.ReadUInt32("MaxWeeklyQuantity", i);
+
+                if (hasTrackedQuantity)
+                    packet.ReadUInt32("TrackedQuantity", i);
+            }
+        }
     }
 }
