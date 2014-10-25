@@ -2,6 +2,7 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
@@ -152,8 +153,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_PLAYER_LOGIN)]
         public static void HandlePlayerLogin(Packet packet)
         {
-            packet.ReadPackedGuid128("Guid");
+            var guid = packet.ReadPackedGuid128("Guid");
             packet.ReadSingle("FarClip");
+            CoreParsers.SessionHandler.LoginGuid = guid;
         }
     }
 }
