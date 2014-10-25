@@ -65,6 +65,7 @@
     <Compile Include="Parsers\ChatHandler.cs" />
     <Compile Include="Parsers\EquipmentSetHandler.cs" />
     <Compile Include="Parsers\GameObjectHandler.cs" />
+    <Compile Include="Parsers\GarrisonHandler.cs" />
     <Compile Include="Parsers\GuildHandler.cs" />
     <Compile Include="Parsers\HotfixHandler.cs" />
     <Compile Include="Parsers\InstanceHandler.cs" />
