@@ -129,6 +129,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_SPELL_START, 0x0FCB},
             {Opcode.SMSG_SUSPEND_COMMS, 0x1882},
             {Opcode.SMSG_TALENTS_INFO, 0x10FF},
+            {Opcode.SMSG_TRAINER_LIST, 0x0678},
             {Opcode.SMSG_TIME_SYNC_REQ, 0x0CA8},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x0617},
             {Opcode.SMSG_SEND_UNLEARN_SPELLS, 0x07DB},

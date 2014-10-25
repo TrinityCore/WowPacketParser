@@ -236,5 +236,52 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             Storage.NpcVendors.Add(guid.GetEntry(), npcVendor, packet.TimeSpan);
         }
+
+        [Parser(Opcode.SMSG_TRAINER_LIST)]
+        public static void HandleServerTrainerList(Packet packet)
+        {
+            var npcTrainer = new NpcTrainer();
+
+            var guid = packet.ReadPackedGuid128("TrainerGUID");
+
+            packet.ReadInt32("TrainerType");
+            packet.ReadInt32("TrainerID");
+            var int36 = packet.ReadInt32("Spells");
+
+            npcTrainer.TrainerSpells = new List<TrainerSpell>(int36);
+            // ClientTrainerListSpell
+            for (var i = 0; i < int36; ++i)
+            {
+                var trainerSpell = new TrainerSpell();
+
+                trainerSpell.Spell = (uint)packet.ReadEntry<Int32>(StoreNameType.Spell, "SpellID", i);
+                trainerSpell.Cost = (uint)packet.ReadInt32("MoneyCost", i);
+                trainerSpell.RequiredSkill = (uint)packet.ReadInt32("ReqSkillLine", i);
+                trainerSpell.RequiredSkillLevel = (uint)packet.ReadInt32("ReqSkillRank", i);
+
+                for (var j = 0; j < 3; ++j)
+                    packet.ReadInt32("ReqAbility", i, j);
+
+                packet.ReadEnum<TrainerSpellState>("Usable", TypeCode.Byte, i);
+                trainerSpell.RequiredLevel = packet.ReadByte("ReqLevel", i);
+
+                npcTrainer.TrainerSpells.Add(trainerSpell);
+            }
+
+            var bits56 = packet.ReadBits(11);
+            npcTrainer.Title = packet.ReadWoWString("Greeting", bits56);
+
+            if (Storage.NpcTrainers.ContainsKey(guid.GetEntry()))
+            {
+                var oldTrainer = Storage.NpcTrainers[guid.GetEntry()];
+                if (oldTrainer != null)
+                {
+                    foreach (var trainerSpell in npcTrainer.TrainerSpells)
+                        oldTrainer.Item1.TrainerSpells.Add(trainerSpell);
+                }
+            }
+            else
+                Storage.NpcTrainers.Add(guid.GetEntry(), npcTrainer, packet.TimeSpan);
+        }
     }
 }
