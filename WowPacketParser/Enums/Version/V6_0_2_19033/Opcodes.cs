@@ -49,6 +49,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.CMSG_RESET_FACTION_CHEAT, 0x1876},
             {Opcode.CMSG_SET_SELECTION, 0x1038},
             {Opcode.CMSG_GOSSIP_HELLO, 0x0647},
+            {Opcode.CMSG_CUF_PROFILES_SAVE, 0x0CC4},
             {Opcode.SMSG_SHOW_BANK, 0x0204},
             {Opcode.CMSG_SET_RAID_DIFFICULTY, 0x1A76},
             {Opcode.CMSG_TIME_SYNC_RESP, 0x0A02},
