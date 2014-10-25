@@ -16,5 +16,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("Entry");
             packet.ReadPackedGuid128("Guid");
         }
+
+        [Parser(Opcode.CMSG_QUEST_NPC_QUERY)]
+        public static void HandleQuestNpcQuery(Packet packet)
+        {
+            var count = packet.ReadUInt32("Count");
+            packet.ResetBitReader();
+
+            for (var i = 0; i < 50; i++)
+                packet.ReadEntry<Int32>(StoreNameType.Quest, "Quest ID", i);
+        }
     }
 }
