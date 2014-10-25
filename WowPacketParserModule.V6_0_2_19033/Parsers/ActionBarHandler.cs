@@ -21,16 +21,17 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             for (var i = 0; i < buttonCount; ++i)
             {
                 var action = new CoreObjects.Action();
-                var packed = packet.ReadInt64();
-                if (packed == 0)
-                    continue;
 
                 action.Button = (uint)i;
 
-                action.Id = (uint)(packed & 0x0FFFFFFF);
-                action.Type = (ActionButtonType)(packed & 0xF0000000);
+                action.Id = packet.ReadUInt32();
+                var type = packet.ReadEntry();
+                if (type.Value) // Can be masked
+                    continue;
+
+                action.Type = (ActionButtonType)type.Key;
+
                 packet.AddValue("Action " + i, action.Id);
-                packet.AddValue("Type " + i, action.Type);
 
                 startAction.Actions.Add(action);
             }
