@@ -17,6 +17,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Guid");
         }
 
+        [Parser(Opcode.CMSG_QUESTGIVER_QUERY_QUEST)]
+        public static void HandleQuestGiverQueryQuest(Packet packet)
+        {
+            packet.ReadPackedGuid128("QuestGiverGUID");
+            packet.ReadUInt32("QuestID");
+            packet.ReadBit("RespondToGiver");
+        }
+
+        [Parser(Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST)]
+        public static void HandleQuestGiverCompleteQuest(Packet packet)
+        {
+            packet.ReadPackedGuid128("QuestGiverGUID");
+            packet.ReadUInt32("QuestID");
+            packet.ReadBit("FromScript");
+        }
+
         [Parser(Opcode.CMSG_QUEST_NPC_QUERY)]
         public static void HandleQuestNpcQuery(Packet packet)
         {
