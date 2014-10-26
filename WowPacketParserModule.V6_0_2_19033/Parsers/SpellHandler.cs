@@ -329,7 +329,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         private static void ReadSpellCastLogData(ref Packet packet)
         {
-
             packet.ResetBitReader();
             var bit52 = packet.ReadBit("SpellCastLogData");
 

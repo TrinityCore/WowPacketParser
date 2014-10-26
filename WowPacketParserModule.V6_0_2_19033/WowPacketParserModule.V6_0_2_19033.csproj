@@ -84,6 +84,7 @@
     <Compile Include="Parsers\VoidStorageHandler.cs" />
     <Compile Include="Parsers\WardenHandler.cs" />
     <Compile Include="Parsers\WorldStateHandler.cs" />
+    <Compile Include="Parsers\UpdateHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
