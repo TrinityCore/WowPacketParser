@@ -278,6 +278,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             // MissStatus
             for (var i = 0; i < int84; ++i)
             {
+                packet.ResetBitReader();
                 if (packet.ReadBits("Reason", 4, i) == 11)
                     packet.ReadBits("ReflectStatus", 4, i);
             }
@@ -347,6 +348,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadInt32("PowerType", i);
                     packet.ReadInt32("Amount", i);
                 }
+
+                packet.ResetBitReader();
 
                 var bit32 = packet.ReadBit("bit32");
 
