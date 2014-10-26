@@ -141,11 +141,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var SceneObjCreate = packet.ReadBit("SceneObjCreate", index);
             var ScenePendingInstances = packet.ReadBit("ScenePendingInstances", index);
 
-            var PauseTimes = packet.ReadUInt32("PauseTimesCount", index);
+            var PauseTimesCount = packet.ReadUInt32("PauseTimesCount", index);
 
             if (HasMovementUpdate) // 392
             {
-                ReadMovementStatusData(ref packet, guid, index);
+                moveInfo = ReadMovementStatusData(ref packet, guid, index);
 
                 packet.ReadSingle("WalkSpeed", index);
                 packet.ReadSingle("RunSpeed", index);
@@ -157,9 +157,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadSingle("TurnRate", index);
                 packet.ReadSingle("PitchRate", index);
 
-                var int368 = packet.ReadInt32("MovementForce", index);
+                var MovementForceCount = packet.ReadInt32("MovementForceCount", index);
 
-                for (var i = 0; i < int368; ++i)
+                for (var i = 0; i < MovementForceCount; ++i)
                 {
                     packet.ReadPackedGuid128("Id", index);
                     packet.ReadVector3("Direction", index);
@@ -170,17 +170,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 packet.ResetBitReader();
 
-                var MovementSpline = packet.ReadBit("CliMovementSpline", index);
+                moveInfo.HasSplineData = packet.ReadBit("HasMovementSpline", index);
 
-                if (MovementSpline)
+                if (moveInfo.HasSplineData)
                 {
                     packet.ReadInt32("ID", index);
                     packet.ReadVector3("Destination", index);
 
                     packet.ResetBitReader();
 
-                    var bit136 = packet.ReadBit("MovementSplineMove", index);
-                    if (bit136)
+                    var HasMovementSplineMove = packet.ReadBit("MovementSplineMove", index);
+                    if (HasMovementSplineMove)
                     {
                         packet.ResetBitReader();
 
@@ -192,7 +192,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                         packet.ReadBits("Face", 2, index);
 
-                        var HasSplineFilterKey = packet.ReadBit("bit80", index);
+                        var HasSplineFilterKey = packet.ReadBit("HasSplineFilterKey", index);
 
                         packet.ReadUInt32("Elapsed", index);
                         packet.ReadUInt32("Duration", index);
@@ -200,7 +200,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                         packet.ReadSingle("DurationModifier", index);
                         packet.ReadSingle("NextDurationModifier", index);
 
-                        var int10 = packet.ReadUInt32("PointsCount", index);
+                        var PointsCount = packet.ReadUInt32("PointsCount", index);
 
                         if (type == 3) // FaceDirection
                             packet.ReadSingle("FaceDirection", index);
@@ -219,8 +219,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                         if (HasSplineFilterKey)
                         {
-                            var int8 = packet.ReadUInt32("PointsCount", index);
-                            for (var i = 0; i < int10; ++i)
+                            var FilterKeysCount = packet.ReadUInt32("FilterKeysCount", index);
+                            for (var i = 0; i < PointsCount; ++i)
                             {
                                 packet.ReadSingle("In", index, i);
                                 packet.ReadSingle("Out", index, i);
@@ -229,7 +229,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                             packet.ReadBits("FilterFlags", 2, index);
                         }
 
-                        for (var i = 0; i < int10; ++i)
+                        for (var i = 0; i < PointsCount; ++i)
                             packet.ReadVector3("Points", index, i);
                     }
                 }
@@ -237,21 +237,30 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (HasMovementTransport) // 456
             {
-                packet.ReadPackedGuid128("PassengerGUID", index);
+                moveInfo.TransportGuid = packet.ReadPackedGuid128("PassengerGUID", index);
                 moveInfo.TransportOffset = packet.ReadVector4();
                 var seat = packet.ReadByte("VehicleSeatIndex", index);
                 packet.ReadUInt32("MoveTime", index);
 
                 packet.ResetBitReader();
 
-                var PrevMoveTime = packet.ReadBit();
-                var VehicleRecID = packet.ReadBit();
+                var HasPrevMoveTime = packet.ReadBit("HasPrevMoveTime");
+                var HasVehicleRecID = packet.ReadBit("HasVehicleRecID");
 
-                if (PrevMoveTime)
+                if (HasPrevMoveTime)
                     packet.ReadUInt32("PrevMoveTime", index);
 
-                if (VehicleRecID)
+                if (HasVehicleRecID)
                     packet.ReadInt32("VehicleRecID", index);
+
+                if (moveInfo.TransportGuid.HasEntry() && moveInfo.TransportGuid.GetHighType() == HighGuidType.Vehicle &&
+                    guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
+                {
+                    var vehicleAccessory = new VehicleTemplateAccessory();
+                    vehicleAccessory.AccessoryEntry = guid.GetEntry();
+                    vehicleAccessory.SeatId = seat;
+                    Storage.VehicleTemplateAccessorys.Add(moveInfo.TransportGuid.GetEntry(), vehicleAccessory, packet.TimeSpan);
+                }
             }
 
             if (Stationary) // 480
@@ -293,11 +302,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 packet.ResetBitReader();
 
-                var bit4 = packet.ReadBit("HasAbsoluteOrientation", index);
-                var bit5 = packet.ReadBit("HasDynamicShape", index);
-                var bit6 = packet.ReadBit("HasAttached", index);
-                var bit7 = packet.ReadBit("HasFaceMovementDir", index);
-                var bit8 = packet.ReadBit("HasFollowsTerrain", index);
+                var HasAbsoluteOrientation = packet.ReadBit("HasAbsoluteOrientation", index);
+                var HasDynamicShape = packet.ReadBit("HasDynamicShape", index);
+                var HasAttached = packet.ReadBit("HasAttached", index);
+                var HasFaceMovementDir = packet.ReadBit("HasFaceMovementDir", index);
+                var HasFollowsTerrain = packet.ReadBit("HasFollowsTerrain", index);
                 var HasTargetRollPitchYaw = packet.ReadBit("HasTargetRollPitchYaw", index);
                 var HasScaleCurveID = packet.ReadBit("HasScaleCurveID", index);
                 var HasMorphCurveID = packet.ReadBit("HasMorphCurveID", index);
@@ -385,14 +394,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (SceneObjCreate) // 1184
             {
                 packet.ResetBitReader();
+
                 var CliSceneLocalScriptData = packet.ReadBit("CliSceneLocalScriptData", index);
                 var PetBattleFullUpdate = packet.ReadBit("PetBattleFullUpdate", index);
 
                 if (CliSceneLocalScriptData)
                 {
                     packet.ResetBitReader();
-                    var bits0 = packet.ReadBits(7);
-                    packet.ReadWoWString("Data", bits0, index);
+                    var DataLength = packet.ReadBits(7);
+                    packet.ReadWoWString("Data", DataLength, index);
                 }
 
                 if (PetBattleFullUpdate)
@@ -410,6 +420,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                         packet.ReadByte("InputFlags", index, i);
 
                         packet.ResetBitReader();
+
                         var PetBattlePetUpdateCount = packet.ReadBits("PetBattlePetUpdateCount", 2, index, i);
 
                         for (var j = 0; j < PetBattlePetUpdateCount; ++j)
@@ -515,14 +526,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadInt32("SceneInstanceIDs", index, i);
             }
             
-            for (var i = 0; i < PauseTimes; ++i)
+            for (var i = 0; i < PauseTimesCount; ++i)
                 packet.ReadInt32("PauseTimes", index, i);
 
             return moveInfo;
         }
 
-        private static void ReadMovementStatusData(ref Packet packet, WowGuid guid, object index)
+        private static MovementInfo ReadMovementStatusData(ref Packet packet, WowGuid guid, object index)
         {
+            var moveInfo = new MovementInfo();
+
             packet.ReadPackedGuid128("MoverGUID", index);
 
             packet.ReadUInt32("MoveIndex", index);
@@ -540,7 +553,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ResetBitReader();
 
             packet.ReadEnum<MovementFlag>("Movement Flags", 30, index);
-            packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 15, index);
+            moveInfo.FlagsExtra = packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 15, index);
 
             var HasTransport = packet.ReadBit("Has Transport Data", index);
             var HasFall = packet.ReadBit("Has Fall Data", index);
@@ -579,6 +592,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadSingle("Horizontal Speed", index);
                 }
             }
+
+            return moveInfo;
         }
     }
 }
