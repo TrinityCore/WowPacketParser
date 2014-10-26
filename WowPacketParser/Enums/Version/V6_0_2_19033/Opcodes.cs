@@ -79,7 +79,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_CHAR_CREATE, 0x0637},
             {Opcode.SMSG_CHAR_DELETE, 0x12A4},
             {Opcode.SMSG_CHAR_ENUM, 0x1154},
-            {Opcode.SMSG_CLIENTCACHE_VERSION, 0x10EF},
+            {Opcode.SMSG_CLIENTCACHE_VERSION, 0x10EF | 0x20000},
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x0203},
             {Opcode.SMSG_CRITERIA_UPDATE_ACCOUNT, 0x0727},
             {Opcode.SMSG_CRITERIA_UPDATE_PLAYER, 0x0AEC},
