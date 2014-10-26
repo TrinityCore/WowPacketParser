@@ -122,28 +122,28 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
 
-            var NoBirthAnim = packet.ReadBit("NoBirthAnim", index);
-            var EnablePortals = packet.ReadBit("EnablePortals", index);
-            var PlayHoverAnim = packet.ReadBit("PlayHoverAnim", index);
-            var IsSuppressingGreetings = packet.ReadBit("IsSuppressingGreetings", index);
-            var Move = packet.ReadBit("Move", index);
-            var Passenger = packet.ReadBit("Passenger", index);
+            packet.ReadBit("NoBirthAnim", index);
+            packet.ReadBit("EnablePortals", index);
+            packet.ReadBit("PlayHoverAnim", index);
+            packet.ReadBit("IsSuppressingGreetings", index);
+            var HasMovementUpdate = packet.ReadBit("HasMovementUpdate", index);
+            var HasMovementTransport = packet.ReadBit("HasMovementTransport", index);
             var Stationary = packet.ReadBit("Stationary", index);
-            var CombatVictim = packet.ReadBit("CombatVictim", index);
-            var ServerTime = packet.ReadBit("ServerTime", index);
-            var Vehicle = packet.ReadBit("Vehicle", index);
-            var AnimKit = packet.ReadBit("AnimKit", index);
-            var Rotation = packet.ReadBit("Rotation", index);
-            var AreaTrigger = packet.ReadBit("AreaTrigger", index);
+            var CombatVictim = packet.ReadBit("HasCombatVictim", index);
+            var ServerTime = packet.ReadBit("HasServerTime", index);
+            var VehicleCreate = packet.ReadBit("HasVehicleCreate", index);
+            var AnimKitCreate = packet.ReadBit("HasAnimKitCreate", index);
+            var Rotation = packet.ReadBit("HasRotation", index);
+            var AreaTrigger = packet.ReadBit("HasAreaTrigger", index);
             var GameObject = packet.ReadBit("GameObject", index);
-            var ThisIsYou = packet.ReadBit("ThisIsYou", index);
-            var ReplaceActive = packet.ReadBit("ReplaceActive", index);
+            packet.ReadBit("ThisIsYou", index);
+            packet.ReadBit("ReplaceActive", index);
             var SceneObjCreate = packet.ReadBit("SceneObjCreate", index);
             var ScenePendingInstances = packet.ReadBit("ScenePendingInstances", index);
 
             var PauseTimes = packet.ReadUInt32("PauseTimesCount", index);
 
-            if (Move) // 392
+            if (HasMovementUpdate) // 392
             {
                 ReadMovementStatusData(ref packet, guid, index);
 
@@ -235,7 +235,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 }
             }
 
-            if (Passenger) // 456
+            if (HasMovementTransport) // 456
             {
                 packet.ReadPackedGuid128("PassengerGUID", index);
                 moveInfo.TransportOffset = packet.ReadVector4();
@@ -268,13 +268,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (ServerTime) // 516
                 packet.ReadPackedTime("ServerTime", index);
 
-            if (Vehicle) // 528
+            if (VehicleCreate) // 528
             {
                 moveInfo.VehicleId = packet.ReadUInt32("RecID", index);
                 packet.ReadSingle("InitialRawFacing", index);
             }
 
-            if (AnimKit) // 538
+            if (AnimKitCreate) // 538
             {
                 packet.ReadUInt16("AiID", index);
                 packet.ReadUInt16("MovementID", index);
