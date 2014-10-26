@@ -13,6 +13,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Enums
         OBJECT_END                                             = 0x00C,
     }
 
+    public enum ObjectDynamicField
+    {
+        OBJECT_DYNAMIC_END                                     = 0x000,
+    }
+
     public enum ItemField
     {
         ITEM_FIELD_OWNER                                       = ObjectField.OBJECT_END + 0x000, // Size: 4, Flags: PUBLIC
@@ -36,9 +41,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Enums
 
     public enum ItemDynamicField
     {
-        ITEM_DYNAMIC_FIELD_MODIFIERS                           = 0x000, //  Flags: OWNER
-        ITEM_DYNAMIC_FIELD_BONUSLIST_IDS                       = 0x001, //  Flags: OWNER
-        ITEM_DYNAMIC_END                                       = 0x002,
+        ITEM_DYNAMIC_FIELD_MODIFIERS                           = ObjectDynamicField.OBJECT_DYNAMIC_END + 0x000, //  Flags: OWNER
+        ITEM_DYNAMIC_FIELD_BONUSLIST_IDS                       = ObjectDynamicField.OBJECT_DYNAMIC_END + 0x001, //  Flags: OWNER
+        ITEM_DYNAMIC_END                                       = ObjectDynamicField.OBJECT_DYNAMIC_END + 0x002,
     }
 
     public enum ContainerField
@@ -46,6 +51,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Enums
         CONTAINER_FIELD_SLOT_1                                 = ItemField.ITEM_END + 0x000, // Size: 144, Flags: PUBLIC
         CONTAINER_FIELD_NUM_SLOTS                              = ItemField.ITEM_END + 0x090, // Size: 1, Flags: PUBLIC
         CONTAINER_END                                          = ItemField.ITEM_END + 0x091,
+    }
+
+    public enum ContainerDynamicField
+    {
+        CONTAINER_DYNAMIC_END                                  = ItemDynamicField.ITEM_DYNAMIC_END + 0x000,
     }
 
     public enum UnitField
@@ -146,9 +156,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Enums
 
     public enum UnitDynamicField
     {
-        UNIT_DYNAMIC_FIELD_PASSIVE_SPELLS                      = 0x000, //  Flags: PUBLIC, URGENT
-        UNIT_DYNAMIC_FIELD_WORLD_EFFECTS                       = 0x001, //  Flags: PUBLIC, URGENT
-        UNIT_DYNAMIC_END                                       = 0x002,
+        UNIT_DYNAMIC_FIELD_PASSIVE_SPELLS                      = ObjectDynamicField.OBJECT_DYNAMIC_END + 0x000, //  Flags: PUBLIC, URGENT
+        UNIT_DYNAMIC_FIELD_WORLD_EFFECTS                       = ObjectDynamicField.OBJECT_DYNAMIC_END + 0x001, //  Flags: PUBLIC, URGENT
+        UNIT_DYNAMIC_END                                       = ObjectDynamicField.OBJECT_DYNAMIC_END + 0x002,
     }
 
     public enum PlayerField
@@ -269,13 +279,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Enums
 
     public enum PlayerDynamicField
     {
-        PLAYER_DYNAMIC_FIELD_RESERACH_SITE                     = 0x000, //  Flags: PRIVATE
-        PLAYER_DYNAMIC_FIELD_RESEARCH_SITE_PROGRESS            = 0x001, //  Flags: PRIVATE
-        PLAYER_DYNAMIC_FIELD_DAILY_QUESTS                      = 0x002, //  Flags: PRIVATE
-        PLAYER_DYNAMIC_FIELD_AVAILABLE_QUEST_LINE_X_QUEST_ID   = 0x003, //  Flags: PRIVATE
-        PLAYER_DYNAMIC_FIELD_HEIRLOOMS                         = 0x004, //  Flags: PRIVATE
-        PLAYER_DYNAMIC_FIELD_TOYS                              = 0x005, //  Flags: PRIVATE
-        PLAYER_DYNAMIC_END                                     = 0x006,
+        PLAYER_DYNAMIC_FIELD_RESERACH_SITE                     = UnitDynamicField.UNIT_DYNAMIC_END + 0x000, //  Flags: PRIVATE
+        PLAYER_DYNAMIC_FIELD_RESEARCH_SITE_PROGRESS            = UnitDynamicField.UNIT_DYNAMIC_END + 0x001, //  Flags: PRIVATE
+        PLAYER_DYNAMIC_FIELD_DAILY_QUESTS                      = UnitDynamicField.UNIT_DYNAMIC_END + 0x002, //  Flags: PRIVATE
+        PLAYER_DYNAMIC_FIELD_AVAILABLE_QUEST_LINE_X_QUEST_ID   = UnitDynamicField.UNIT_DYNAMIC_END + 0x003, //  Flags: PRIVATE
+        PLAYER_DYNAMIC_FIELD_HEIRLOOMS                         = UnitDynamicField.UNIT_DYNAMIC_END + 0x004, //  Flags: PRIVATE
+        PLAYER_DYNAMIC_FIELD_TOYS                              = UnitDynamicField.UNIT_DYNAMIC_END + 0x005, //  Flags: PRIVATE
+        PLAYER_DYNAMIC_END                                     = UnitDynamicField.UNIT_DYNAMIC_END + 0x006,
     }
 
     public enum GameObjectField
@@ -288,11 +298,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Enums
         GAMEOBJECT_LEVEL                                       = ObjectField.OBJECT_END + 0x00B, // Size: 1, Flags: PUBLIC
         GAMEOBJECT_BYTES_1                                     = ObjectField.OBJECT_END + 0x00C, // Size: 1, Flags: PUBLIC, URGENT
         GAMEOBJECT_SPELL_VISUAL_ID                             = ObjectField.OBJECT_END + 0x00D, // Size: 1, Flags: PUBLIC, URGENT
-        GAMEOBJECT_STATE_SPELL_VISUAL_ID                       = ObjectField.OBJECT_END + 0x00E, // Size: 2, Flags: DYNAMIC, URGENT
+        GAMEOBJECT_STATE_SPELL_VISUAL_ID                       = ObjectField.OBJECT_END + 0x00E, // Size: 1, Flags: DYNAMIC, URGENT
         GAMEOBJECT_STATE_ANIM_ID                               = ObjectField.OBJECT_END + 0x00F, // Size: 1, Flags: DYNAMIC, URGENT
         GAMEOBJECT_STATE_ANIM_KIT_ID                           = ObjectField.OBJECT_END + 0x010, // Size: 1, Flags: DYNAMIC, URGENT
         GAMEOBJECT_STATE_WORLD_EFFECT_ID                       = ObjectField.OBJECT_END + 0x011, // Size: 4, Flags: DYNAMIC, URGENT
         GAMEOBJECT_END                                         = ObjectField.OBJECT_END + 0x015,
+    }
+
+    public enum GameObjectDynamicField
+    {
+        GAMEOBJECT_DYNAMIC_END                                 = ObjectDynamicField.OBJECT_DYNAMIC_END + 0x000,
     }
 
     public enum DynamicObjectField
@@ -303,6 +318,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Enums
         DYNAMICOBJECT_RADIUS                                   = ObjectField.OBJECT_END + 0x006, // Size: 1, Flags: PUBLIC
         DYNAMICOBJECT_CASTTIME                                 = ObjectField.OBJECT_END + 0x007, // Size: 1, Flags: PUBLIC
         DYNAMICOBJECT_END                                      = ObjectField.OBJECT_END + 0x008,
+    }
+
+    public enum DynamicObjectDynamicField
+    {
+        DYNAMICOBJECT_DYNAMIC_END                              = ObjectDynamicField.OBJECT_DYNAMIC_END + 0x000,
     }
 
     public enum CorpseField
@@ -319,6 +339,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Enums
         CORPSE_END                                             = ObjectField.OBJECT_END + 0x021,
     }
 
+    public enum CorpseDynamicField
+    {
+        CORPSE_DYNAMIC_END                                     = ObjectDynamicField.OBJECT_DYNAMIC_END + 0x000,
+    }
+
     public enum AreaTriggerField
     {
         AREATRIGGER_CASTER                                     = ObjectField.OBJECT_END + 0x000, // Size: 4, Flags: PUBLIC
@@ -327,6 +352,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Enums
         AREATRIGGER_SPELLVISUALID                              = ObjectField.OBJECT_END + 0x006, // Size: 1, Flags: DYNAMIC
         AREATRIGGER_EXPLICIT_SCALE                             = ObjectField.OBJECT_END + 0x007, // Size: 1, Flags: PUBLIC, URGENT
         AREATRIGGER_END                                        = ObjectField.OBJECT_END + 0x008,
+    }
+
+    public enum AreaTriggerDynamicField
+    {
+        AREATRIGGER_DYNAMIC_END                                = ObjectDynamicField.OBJECT_DYNAMIC_END + 0x000,
     }
 
     public enum SceneObjectField
@@ -338,6 +368,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Enums
         SCENEOBJECT_END                                        = ObjectField.OBJECT_END + 0x007,
     }
 
+    public enum SceneObjectDynamicField
+    {
+        SCENEOBJECT_DYNAMIC_END                                = ObjectDynamicField.OBJECT_DYNAMIC_END + 0x000,
+    }
+
     public enum ConversationField
     {
         CONTAINER_FIELD_SLOT_1                                 = ObjectField.OBJECT_END + 0x000, // Size: 144, Flags: PUBLIC
@@ -346,9 +381,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Enums
 
     public enum ConversationDynamicField
     {
-        CONVERSATION_DYNAMIC_FIELD_ACTORS                      = 0x000, //  Flags: PUBLIC
-        CONVERSATION_DYNAMIC_FIELD_LINES                       = 0x001, //  Flags: 0x100
-        CONVERSATION_DYNAMIC_END                               = 0x002,
+        CONVERSATION_DYNAMIC_FIELD_ACTORS                      = ObjectDynamicField.OBJECT_DYNAMIC_END + 0x000, //  Flags: PUBLIC
+        CONVERSATION_DYNAMIC_FIELD_LINES                       = ObjectDynamicField.OBJECT_DYNAMIC_END + 0x001, //  Flags: 0x100
+        CONVERSATION_DYNAMIC_END                               = ObjectDynamicField.OBJECT_DYNAMIC_END + 0x002,
     }
 
     // ReSharper restore InconsistentNaming
