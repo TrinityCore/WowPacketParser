@@ -52,7 +52,7 @@ namespace WowPacketParser.Misc
 
         public static bool operator ==(WowGuid first, WowGuid other)
         {
-            return first == null && other == null || first != null && first.Equals(other);
+            return ReferenceEquals(first, other) || (first != null && first.Equals(other));
         }
 
         public static bool operator !=(WowGuid first, WowGuid other)
