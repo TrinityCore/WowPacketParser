@@ -24,7 +24,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt16("Int0");
                 var int8 = packet.ReadUInt32("Int8");
                 for (var i = 0; i < int8; i++)
-                    packet.ReadPackedGuid128("Guid8");
+                    packet.ReadPackedGuid128("Guid8", i);
             }
             packet.ReadUInt32("Unk");
 
@@ -147,8 +147,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             {
                 moveInfo = ReadMovementStatusData(ref packet, guid, index);
 
-                packet.ReadSingle("WalkSpeed", index);
-                packet.ReadSingle("RunSpeed", index);
+                moveInfo.WalkSpeed = packet.ReadSingle("WalkSpeed", index) / 2.5f;
+                moveInfo.RunSpeed = packet.ReadSingle("RunSpeed", index) / 7.0f;
                 packet.ReadSingle("RunBackSpeed", index);
                 packet.ReadSingle("SwimSpeed", index);
                 packet.ReadSingle("SwimBackSpeed", index);
@@ -539,7 +539,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("MoverGUID", index);
 
             packet.ReadUInt32("MoveIndex", index);
-            packet.ReadVector4("Position", index);
+            moveInfo.Position = packet.ReadVector3("Position", index);
+            moveInfo.Orientation = packet.ReadSingle("Orientation", index);
 
             packet.ReadSingle("Pitch", index);
             packet.ReadSingle("StepUpStartElevation", index);

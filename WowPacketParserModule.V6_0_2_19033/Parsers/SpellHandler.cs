@@ -6,6 +6,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using MovementParsers = WowPacketParser.V6_0_2_19033.Parsers.MovementHandler;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
@@ -108,7 +109,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleAuraUpdate(Packet packet)
         {
             packet.ReadBit("bit16");
-            packet.ReadPackedGuid128("Guid");
+            var guid = packet.ReadPackedGuid128("Guid");
             var count = packet.ReadUInt32("AuraCount");
 
             var auras = new List<Aura>();
@@ -160,10 +161,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 }
             }
             // To-Do: Fix me
-            /*
-            if (Storage.Objects.ContainsKey(GUID))
+            if (Storage.Objects.ContainsKey(guid))
             {
-                var unit = Storage.Objects[GUID].Item1 as Unit;
+                var unit = Storage.Objects[guid].Item1 as Unit;
                 if (unit != null)
                 {
                     // If this is the first packet that sends auras
@@ -176,7 +176,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     else
                         unit.AddedAuras.Add(auras);
                 }
-            }*/
+            }
         }
 
         [Parser(Opcode.SMSG_TALENTS_INFO)]
@@ -195,6 +195,68 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 for (var j = 0; j < spentTalents; ++j)
                     packet.ReadUInt16("Talent Id", i, j);
+            }
+        }
+
+        [Parser(Opcode.CMSG_CAST_SPELL)]
+        public static void HandleCastSpell(Packet packet)
+        {
+            packet.ReadByte("CastID");
+            packet.ReadUInt32("SpellID");
+            packet.ReadUInt32("Misc");
+
+            // SpellTargetData
+            packet.ResetBitReader();
+
+            packet.ReadEnum<TargetFlag>("Flags", 21);
+            var bit72 = packet.ReadBit("HasSrcLocation");
+            var bit112 = packet.ReadBit("HasDstLocation");
+            var bit124 = packet.ReadBit("HasOrientation");
+            var bits128 = packet.ReadBits(7);
+
+            packet.ReadPackedGuid128("Unit Guid");
+            packet.ReadPackedGuid128("Item Guid");
+
+            if (bit72)
+            {
+                packet.ReadPackedGuid128("SrcLocation Guid");
+                packet.ReadVector3("SrcLocation");
+            }
+
+            if (bit112)
+            {
+                packet.ReadPackedGuid128("DstLocation Guid");
+                packet.ReadVector3("DstLocation");
+            }
+
+            if (bit124)
+                packet.ReadSingle("Orientation");
+
+            packet.ReadWoWString("Name", bits128);
+
+            // MissileTrajectoryRequest
+            packet.ReadSingle("Pitch");
+            packet.ReadSingle("Speed");
+
+            packet.ReadPackedGuid128("Guid");
+
+            packet.ResetBitReader();
+
+            var bit456 = packet.ReadBit("HasMoveUpdate"); // MoveUpdate
+
+            var bits116 = packet.ReadBits("SpellWeightCount", 2); // SpellWeight
+
+            // MoveUpdate
+            if (bit456)
+                MovementParsers.ReadMovementStats(ref packet);
+
+            // SpellWeight
+            for (var i = 0; i < bits116; ++i)
+            {
+                packet.ResetBitReader();
+                packet.ReadBits("Type", 2, i);
+                packet.ReadInt32("ID", i);
+                packet.ReadInt32("Quantity", i);
             }
         }
 

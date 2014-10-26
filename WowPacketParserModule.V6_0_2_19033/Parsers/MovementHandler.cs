@@ -4,11 +4,11 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 
-namespace WowPacketParserModule.V6_0_2_19033.Parsers
+namespace WowPacketParser.V6_0_2_19033.Parsers
 {
     public static class MovementHandler
     {
-        private static void ReadMovementStats(ref Packet packet)
+        public static void ReadMovementStats(ref Packet packet)
         {
             packet.ReadPackedGuid128("Guid");
 
@@ -23,6 +23,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (var i = 0; i < int152; i++)
                 packet.ReadPackedGuid128("Guid156");
+
+            packet.ResetBitReader();
 
             packet.ReadEnum<MovementFlag>("Movement Flags", 30);
             packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 15);
