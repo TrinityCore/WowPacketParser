@@ -222,7 +222,7 @@ namespace WowPacketParser.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT)]
         public static void HandlePhaseShift(Packet packet)
         {
-            packet.ReadPackedGuid128("PersonalGUID");
+            packet.ReadPackedGuid128("Client");
 
             // PhaseShiftData
             packet.ReadInt32("PhaseShiftFlags");
