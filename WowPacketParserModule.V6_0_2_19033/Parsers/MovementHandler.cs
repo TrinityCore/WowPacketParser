@@ -218,5 +218,33 @@ namespace WowPacketParser.V6_0_2_19033.Parsers
                 packet.AddValue("Waypoint", vec, i);
             }
         }
+
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT)]
+        public static void HandlePhaseShift(Packet packet)
+        {
+            packet.ReadPackedGuid128("PersonalGUID");
+
+            // PhaseShiftData
+            packet.ReadInt32("PhaseShiftFlags");
+            var count = packet.ReadInt32("PhaseShiftCount");
+            packet.ReadPackedGuid128("PersonalGUID");
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadInt16("PhaseFlags", i);
+                packet.ReadInt16("Id", i);
+            }
+
+            var PreloadMapIDCount = packet.ReadInt32("PreloadMapIDsCount") / 2;
+            for (var i = 0; i < PreloadMapIDCount; ++i)
+                packet.ReadEntry<Int16>(StoreNameType.Map, "PreloadMapIDs", i);
+
+            var UiWorldMapAreaIDSwapsCount = packet.ReadInt32("UiWorldMapAreaIDSwapsCount") / 2;
+            for (var i = 0; i < UiWorldMapAreaIDSwapsCount; ++i)
+                packet.ReadEntry<Int16>(StoreNameType.Map, "UiWorldMapAreaIDSwaps", i);
+
+            var VisibleMapIDsCount = packet.ReadInt32("VisibleMapIDsCount") / 2;
+            for (var i = 0; i < VisibleMapIDsCount; ++i)
+                packet.ReadEntry<Int16>(StoreNameType.Map, "VisibleMapIDs", i);
+        }
     }
 }
