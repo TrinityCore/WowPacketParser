@@ -83,5 +83,60 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadWoWString("RankName", bits8, i);
             }
         }
+
+        [Parser(Opcode.SMSG_GUILD_ROSTER)]
+        public static void HandleGuildRoster(Packet packet)
+        {
+            packet.ReadUInt32("NumAccounts");
+            packet.ReadPackedTime("CreateDate");
+            packet.ReadUInt32("MaxWeeklyRep");
+            var int20 = packet.ReadUInt32("MemberDataCount");
+
+            for (var i = 0; i < int20; ++i)
+            {
+                packet.ReadPackedGuid128("Guid");
+
+                packet.ReadUInt32("RankID", i);
+                packet.ReadUInt32("AreaID", i);
+                packet.ReadUInt32("PersonalAchievementPoints", i);
+                packet.ReadUInt32("GuildReputation", i);
+
+                packet.ReadSingle("LastSave", i);
+
+                for (var j = 0; j < 2; ++j)
+                {
+                    packet.ReadUInt32("DbID", i, j);
+                    packet.ReadUInt32("Rank", i, j);
+                    packet.ReadUInt32("Step", i, j);
+                }
+
+                packet.ReadUInt32("VirtualRealmAddress", i);
+
+                packet.ReadEnum<GuildMemberFlag>("Status", TypeCode.Byte, i);
+                packet.ReadByte("Level", i);
+                packet.ReadEnum<Class>("ClassID", TypeCode.Byte);
+                packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
+
+                packet.ResetBitReader();
+
+                var bits36 = packet.ReadBits(6);
+                var bits92 = packet.ReadBits(8);
+                var bits221 = packet.ReadBits(8);
+
+                packet.ReadBit("Authenticated", i);
+                packet.ReadBit("SorEligible", i);
+
+                packet.ReadWoWString("Name", bits36, i);
+                packet.ReadWoWString("Note", bits92, i);
+                packet.ReadWoWString("OfficerNote", bits221, i);
+            }
+
+            packet.ResetBitReader();
+            var bits2037= packet.ReadBits(10);
+            var bits9 = packet.ReadBits(11);
+
+            packet.ReadWoWString("WelcomeText", bits2037);
+            packet.ReadWoWString("InfoText", bits9);
+        }
     }
 }
