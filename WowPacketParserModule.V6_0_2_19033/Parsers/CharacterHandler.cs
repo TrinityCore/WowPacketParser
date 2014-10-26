@@ -67,6 +67,28 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_CHAR_CREATE)]
+        public static void HandleClientCharCreate(Packet packet)
+        {
+            var bits29 = packet.ReadBits(6);
+            var bit24 = packet.ReadBit();
+
+            packet.ReadEnum<Race>("RaceID", TypeCode.Byte);
+            packet.ReadEnum<Class>("ClassID", TypeCode.Byte);
+            packet.ReadEnum<Gender>("SexID", TypeCode.Byte);
+            packet.ReadByte("SkinID");
+            packet.ReadByte("FaceID");
+            packet.ReadByte("HairStyleID");
+            packet.ReadByte("HairColorID");
+            packet.ReadByte("FacialHairStyleID");
+            packet.ReadByte("OutfitID");
+
+            packet.ReadWoWString("Name", bits29);
+
+            if (bit24)
+                packet.ReadInt32("TemplateSetID");
+        }
+
         [Parser(Opcode.SMSG_INIT_CURRENCY)]
         public static void HandleInitCurrency(Packet packet)
         {
