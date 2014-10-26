@@ -1,3 +1,4 @@
+using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -57,6 +58,30 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Banker");
             packet.ReadByte("BankTab");
+        }
+
+        [Parser(Opcode.SMSG_GUILD_RANK)]
+        public static void HandleGuildRankServer434(Packet packet)
+        {
+            var count = packet.ReadUInt32("Count");
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("RankID", i);
+                packet.ReadInt32("RankOrder", i);
+                packet.ReadInt32("Flags", i);
+                packet.ReadInt32("WithdrawGoldLimit", i);
+
+                for (var j = 0; j < 8; ++j)
+                {
+                    packet.ReadEnum<GuildBankRightsFlag>("TabFlags", TypeCode.Int32, i, j);
+                    packet.ReadInt32("TabWithdrawItemLimit", i, j);
+                }
+
+                packet.ResetBitReader();
+                var bits8 = (int)packet.ReadBits(7);
+                packet.ReadWoWString("RankName", bits8, i);
+            }
         }
     }
 }
