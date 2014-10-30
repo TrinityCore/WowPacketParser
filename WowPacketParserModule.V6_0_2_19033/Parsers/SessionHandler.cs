@@ -157,5 +157,32 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadSingle("FarClip");
             CoreParsers.SessionHandler.LoginGuid = guid;
         }
+
+        [Parser(Opcode.CMSG_REDIRECT_AUTH_PROOF)]
+        public static void HandleRedirectAuthProof(Packet packet)
+        {
+            packet.ReadInt64("Key");
+            packet.ReadInt64("DosResponse");
+
+            packet.ReadBytes("Digest", 0x14);
+        }
+
+        [Parser(Opcode.SMSG_REDIRECT_CLIENT)]
+        public static void HandleRedirectClient422(Packet packet)
+        {
+            packet.ReadUInt64("Key");
+            packet.ReadUInt32("Serial");
+            packet.ReadBytes("RSA Hash", 0x100);
+            packet.ReadByte("Con");
+        }
+
+        [Parser(Opcode.SMSG_AUTH_CHALLENGE)]
+        public static void HandleServerAuthChallenge(Packet packet)
+        {
+            packet.ReadUInt32("Challenge");
+            for (uint i = 0; i < 8; ++i)
+                packet.ReadUInt32("DosChallenge");
+            packet.ReadByte("DosZeroBits");
+        }
     }
 }
