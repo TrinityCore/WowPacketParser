@@ -59,5 +59,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadWoWString("Name", strlen, i);
             }
         }
+
+        [Parser(Opcode.CMSG_SET_RAID_DIFFICULTY)]
+        public static void HandleSetDifficulty(Packet packet)
+        {
+            packet.ReadInt32("DifficultyID");
+        }
     }
 }
