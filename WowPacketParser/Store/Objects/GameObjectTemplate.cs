@@ -26,7 +26,8 @@ namespace WowPacketParser.Store.Objects
         public string UnkString;
 
         [DBFieldName("data", ClientVersionBuild.Zero, ClientVersionBuild.V4_0_1_13164, 24, true)]
-        [DBFieldName("data", ClientVersionBuild.V4_0_1_13164, 32, true)]
+        [DBFieldName("data", ClientVersionBuild.V4_0_1_13164, ClientVersionBuild.V6_0_3_19103, 32, true)]
+        [DBFieldName("data", ClientVersionBuild.V6_0_3_19103, 33, true)]
         public int[] Data;
 
         [DBFieldName("size")]
