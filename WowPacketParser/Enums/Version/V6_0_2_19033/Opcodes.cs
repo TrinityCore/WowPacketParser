@@ -150,6 +150,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_VOID_STORAGE_CONTENTS, 0x0137},
             {Opcode.SMSG_WARDEN_DATA, 0x12EF},
             {Opcode.SMSG_WEATHER, 0x01BF},
+            {Opcode.SMSG_WEEKLY_SPELL_USAGE, 0x0E8C},
             {Opcode.SMSG_WHO, 0x080A},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x1164},
         };

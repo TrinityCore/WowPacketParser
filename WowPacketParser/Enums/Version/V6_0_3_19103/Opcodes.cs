@@ -143,6 +143,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_UPDATE_WORLD_STATE, 0x03EC},
             {Opcode.SMSG_WARDEN_DATA, 0x0BEC},
             {Opcode.SMSG_WEATHER, 0x073E},
+            {Opcode.SMSG_WEEKLY_SPELL_USAGE, 0x13DC},
             {Opcode.SMSG_WHO, 0x0601},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x11AC},
         };

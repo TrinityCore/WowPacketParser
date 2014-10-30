@@ -392,5 +392,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadSingle("Float7");
             }
         }
+
+        [Parser(Opcode.SMSG_WEEKLY_SPELL_USAGE)]
+        public static void HandleWeeklySpellUsage(Packet packet)
+        {
+            var count = packet.ReadUInt32("Count");
+
+            for (int i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("Category");
+                packet.ReadByte("Uses");
+            }
+        }
     }
 }
