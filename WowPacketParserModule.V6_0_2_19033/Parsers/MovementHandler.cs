@@ -260,5 +260,12 @@ namespace WowPacketParser.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Guid");
             packet.ReadSingle("Speed");
         }
+
+        [Parser(Opcode.SMSG_FLIGHT_SPLINE_SYNC)]
+        public static void HandleFlightSplineSync(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadSingle("SplineDist");
+        }
     }
 }

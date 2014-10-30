@@ -93,6 +93,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x01E7},
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x0177},
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS_GLUE_SCREEN, 0x0577},
+            {Opcode.SMSG_FLIGHT_SPLINE_SYNC, 0x10C4},
             {Opcode.SMSG_FORCE_SEND_QUEUED_PACKETS, 0x128A},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x08E3},
             {Opcode.SMSG_GOSSIP_COMPLETE, 0x0292},
