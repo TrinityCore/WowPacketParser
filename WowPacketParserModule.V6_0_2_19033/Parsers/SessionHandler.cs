@@ -181,7 +181,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadUInt32("Challenge");
             for (uint i = 0; i < 8; ++i)
-                packet.ReadUInt32("DosChallenge");
+                packet.ReadUInt32("DosChallenge", i);
             packet.ReadByte("DosZeroBits");
         }
     }

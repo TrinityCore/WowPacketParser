@@ -249,5 +249,16 @@ namespace WowPacketParser.V6_0_2_19033.Parsers
             for (var i = 0; i < VisibleMapIDsCount; ++i)
                 packet.ReadEntry<Int16>(StoreNameType.Map, "VisibleMapIDs", i);
         }
+
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_SPEED)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_FLIGHT_SPEED)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_SWIM_SPEED)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_WALK_SPEED)]
+        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_BACK_SPEED)]
+        public static void HandleSplineSetSpeed(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadSingle("Speed");
+        }
     }
 }
