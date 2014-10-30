@@ -239,15 +239,15 @@ namespace WowPacketParser.V6_0_2_19033.Parsers
 
             var PreloadMapIDCount = packet.ReadInt32("PreloadMapIDsCount") / 2;
             for (var i = 0; i < PreloadMapIDCount; ++i)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "PreloadMapIDs", i);
+                packet.ReadEntry<Int16>(StoreNameType.Map, "PreloadMapID", i);
 
-            var UiWorldMapAreaIDSwapsCount = packet.ReadInt32("UiWorldMapAreaIDSwapsCount") / 2;
+            var UiWorldMapAreaIDSwapsCount = packet.ReadInt32("UiWorldMapAreaIDSwap") / 2;
             for (var i = 0; i < UiWorldMapAreaIDSwapsCount; ++i)
                 packet.ReadEntry<Int16>(StoreNameType.Map, "UiWorldMapAreaIDSwaps", i);
 
             var VisibleMapIDsCount = packet.ReadInt32("VisibleMapIDsCount") / 2;
             for (var i = 0; i < VisibleMapIDsCount; ++i)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "VisibleMapIDs", i);
+                packet.ReadEntry<Int16>(StoreNameType.Map, "VisibleMapID", i);
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_SPEED)]
