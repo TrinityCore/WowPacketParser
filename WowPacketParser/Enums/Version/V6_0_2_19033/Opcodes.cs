@@ -118,7 +118,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_MOTD, 0x0E5D},
             {Opcode.SMSG_MONSTER_MOVE, 0x04A4},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x1667},
-            {Opcode.SMSG_NEW_WORLD, 0x0206},
+            {Opcode.SMSG_NEW_WORLD, 0x0003},
             {Opcode.SMSG_NPC_TEXT_UPDATE, 0x0BE8},
             {Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE, 0x1163},
             {Opcode.SMSG_PET_NAME_QUERY_RESPONSE, 0x03B4},
