@@ -78,6 +78,53 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("RestrictedAccountMaxMoney");
         }
 
+        [Parser(Opcode.CMSG_WHO)]
+        public static void HandleWhoRequest(Packet packet)
+        {
+            var bits728 = packet.ReadBits("WhoWordCount", 4);
+
+            packet.ReadInt32("MinLevel");
+            packet.ReadInt32("MaxLevel");
+            packet.ReadInt32("RaceFilter");
+            packet.ReadInt32("ClassFilter");
+
+            packet.ResetBitReader();
+
+            var bits2 = packet.ReadBits(6);
+            var bits57 = packet.ReadBits(9);
+            var bits314 = packet.ReadBits(7);
+            var bits411 = packet.ReadBits(9);
+            var bit169 = packet.ReadBits(3);
+
+            packet.ReadBit("ShowEnemies");
+            packet.ReadBit("ShowArenaPlayers");
+            packet.ReadBit("ExactName");
+            var bit708 = packet.ReadBit("HasServerInfo");
+
+            packet.ReadWoWString("Name", bits2);
+            packet.ReadWoWString("VirtualRealmName", bits57);
+            packet.ReadWoWString("Guild", bits314);
+            packet.ReadWoWString("GuildVirtualRealmName", bits411);
+
+            for (var i = 0; i < bit169; ++i)
+            {
+                packet.ResetBitReader();
+                var bits0 = packet.ReadBits(7);
+                packet.ReadWoWString("Word", bits0, i);
+            }
+
+            // WhoRequestServerInfo
+            if (bit708)
+            {
+                packet.ReadInt32("FactionGroup");
+                packet.ReadInt32("Locale");
+                packet.ReadInt32("RequesterVirtualRealmAddress");
+            }
+
+            for (var i = 0; i < bits728; ++i)
+                packet.ReadEntry<UInt32>(StoreNameType.Area, "Area", i);
+        }
+
         [Parser(Opcode.SMSG_WHO)]
         public static void HandleWho(Packet packet)
         {
@@ -99,20 +146,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 for (var j = 0; j < 5; ++j)
                     packet.ReadWoWString("DeclinedNames", count[i], i, j);
 
-                packet.ReadPackedGuid128("AccountID");
-                packet.ReadPackedGuid128("BnetAccountID");
-                packet.ReadPackedGuid128("GuidActual");
+                packet.ReadPackedGuid128("AccountID", i);
+                packet.ReadPackedGuid128("BnetAccountID", i);
+                packet.ReadPackedGuid128("GuidActual", i);
 
-                packet.ReadInt32("VirtualRealmAddress");
+                packet.ReadInt32("VirtualRealmAddress", i);
 
-                packet.ReadEnum<Race>("Race", TypeCode.Byte);
-                packet.ReadEnum<Gender>("Sex", TypeCode.Byte);
-                packet.ReadEnum<Class>("ClassId", TypeCode.Byte);
-                packet.ReadByte("Level");
+                packet.ReadEnum<Race>("Race", TypeCode.Byte, i);
+                packet.ReadEnum<Gender>("Sex", TypeCode.Byte, i);
+                packet.ReadEnum<Class>("ClassId", TypeCode.Byte, i);
+                packet.ReadByte("Level", i);
 
                 packet.ReadWoWString("Name", bits15, i);
 
-                packet.ReadPackedGuid128("GuildGUID");
+                packet.ReadPackedGuid128("GuildGUID", i);
 
                 packet.ReadInt32("GuildVirtualRealmAddress", i);
                 packet.ReadInt32("AreaID", i);

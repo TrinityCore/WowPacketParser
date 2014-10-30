@@ -65,6 +65,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.CMSG_TIME_SYNC_RESP, 0x0A02},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x00D4},
             {Opcode.CMSG_WARDEN_DATA, 0x00F3},
+            {Opcode.CMSG_WHO, 0x11AF},
 
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x11AC},
             {Opcode.SMSG_ACTION_BUTTONS, 0x03F4},
