@@ -77,6 +77,53 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (bit44)
                 packet.ReadInt32("RestrictedAccountMaxMoney");
         }
+
+        [Parser(Opcode.SMSG_WHO)]
+        public static void HandleWho(Packet packet)
+        {
+            var bits568 = packet.ReadBits("List count", 6);
+
+            for (var i = 0; i < bits568; ++i)
+            {
+                packet.ResetBitReader();
+                packet.ReadBit("IsDeleted", i);
+                var bits15 = packet.ReadBits(6);
+
+                var count = new int[5];
+                for (var j = 0; j < 5; ++j)
+                {
+                    packet.ResetBitReader();
+                    count[i] = (int)packet.ReadBits(7);
+                }
+
+                for (var j = 0; j < 5; ++j)
+                    packet.ReadWoWString("DeclinedNames", count[i], i, j);
+
+                packet.ReadPackedGuid128("AccountID");
+                packet.ReadPackedGuid128("BnetAccountID");
+                packet.ReadPackedGuid128("GuidActual");
+
+                packet.ReadInt32("VirtualRealmAddress");
+
+                packet.ReadEnum<Race>("Race", TypeCode.Byte);
+                packet.ReadEnum<Gender>("Sex", TypeCode.Byte);
+                packet.ReadEnum<Class>("ClassId", TypeCode.Byte);
+                packet.ReadByte("Level");
+
+                packet.ReadWoWString("Name", bits15, i);
+
+                packet.ReadPackedGuid128("GuildGUID");
+
+                packet.ReadInt32("GuildVirtualRealmAddress", i);
+                packet.ReadInt32("AreaID", i);
+
+                packet.ResetBitReader();
+                var bits460 = packet.ReadBits(7);
+                packet.ReadBit("IsGM", i);
+
+                packet.ReadWoWString("GuildName", bits460, i);
+            }
+        }
     }
 }
 
