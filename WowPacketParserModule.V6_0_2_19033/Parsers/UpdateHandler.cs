@@ -18,15 +18,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var count = packet.ReadUInt32("NumObjUpdates");
             uint map = packet.ReadEntry<UInt16>(StoreNameType.Map, "MapID");
             packet.ResetBitReader();
-            var bit552 = packet.ReadBit("bit552");
+            var bit552 = packet.ReadBit("HasDestroyObjects");
             if (bit552)
             {
                 packet.ReadInt16("Int0");
-                var int8 = packet.ReadUInt32("Int8");
+                var int8 = packet.ReadUInt32("DestroyObjectsCount");
                 for (var i = 0; i < int8; i++)
-                    packet.ReadPackedGuid128("Guid8", i);
+                    packet.ReadPackedGuid128("Object GUID", i);
             }
-            packet.ReadUInt32("Unk");
+            packet.ReadUInt32("Data size");
 
             for (var i = 0; i < count; i++)
             {
@@ -38,7 +38,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 {
                     case "Values":
                         {
-                            var guid = packet.ReadPackedGuid128("GUID", i);
+                            var guid = packet.ReadPackedGuid128("Object Guid", i);
 
                             WoWObject obj;
                             var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlock(ref packet, guid.GetObjectType(), i, false);
@@ -55,13 +55,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     case "CreateObject1":
                     case "CreateObject2": // Might != CreateObject1 on Cata
                         {
-                            var guid = packet.ReadPackedGuid128("GUID", i);
+                            var guid = packet.ReadPackedGuid128("Object Guid", i);
                             ReadCreateObjectBlock(ref packet, guid, map, i);
-                            break;
-                        }
-                    case "DestroyObjects":
-                        {
-                            CoreParsers.UpdateHandler.ReadObjectsBlock(ref packet, i);
                             break;
                         }
                 }

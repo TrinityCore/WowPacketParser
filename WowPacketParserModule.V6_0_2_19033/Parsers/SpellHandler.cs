@@ -93,18 +93,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadByte("Slot", i);
 
                 packet.ResetBitReader();
-                var hasAura = packet.ReadBit("HasAura");
+                var hasAura = packet.ReadBit("HasAura", i);
                 if (hasAura)
                 {
                     var id = packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i);
                     aura.AuraFlags = packet.ReadEnum<AuraFlagMoP>("Flags", TypeCode.Byte, i);
                     packet.ReadInt32("Effect Mask", i);
-                    packet.ResetBitReader();
                     aura.Level = packet.ReadUInt16("Caster Level", i);
                     aura.Charges = packet.ReadByte("Charges", i);
 
-                    var int72 = packet.ReadUInt32("Int56 Count");
-                    var effectCount = packet.ReadUInt32("Effect Count");
+                    var int72 = packet.ReadUInt32("Int56 Count", i);
+                    var effectCount = packet.ReadUInt32("Effect Count", i);
 
                     for (var j = 0; j < int72; ++j)
                         packet.ReadSingle("Float15", i, j);
@@ -112,12 +111,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     for (var j = 0; j < effectCount; ++j)
                         packet.ReadSingle("Effect Value", i, j);
 
-                    var hasCasterGUID = packet.ReadBit("hasCasterGUID");
-                    var hasDuration = packet.ReadBit("hasDuration");
-                    var hasMaxDuration = packet.ReadBit("hasMaxDuration");
+                    packet.ResetBitReader();
+                    var hasCasterGUID = packet.ReadBit("hasCasterGUID", i);
+                    var hasDuration = packet.ReadBit("hasDuration", i);
+                    var hasMaxDuration = packet.ReadBit("hasMaxDuration", i);
 
                     if (hasCasterGUID)
-                        packet.ReadPackedGuid128("Caster Guid");
+                        packet.ReadPackedGuid128("Caster Guid", i);
 
                     if (hasDuration)
                         aura.Duration = packet.ReadInt32("Duration", i);
@@ -133,7 +133,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.AddSniffData(StoreNameType.Spell, (int)aura.SpellId, "AURA_UPDATE");
                 }
             }
-            // To-Do: Fix me
+
             if (Storage.Objects.ContainsKey(guid))
             {
                 var unit = Storage.Objects[guid].Item1 as Unit;

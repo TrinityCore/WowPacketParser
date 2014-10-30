@@ -94,5 +94,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (guid.GetObjectType() == ObjectType.Unit)
                 Storage.Emotes.Add(guid, emote, packet.TimeSpan);
         }
+
+        [Parser(Opcode.CMSG_TEXT_EMOTE)]
+        public static void HandleTextEmote(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+
+            packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
+            packet.ReadEnum<EmoteTextType>("Text Emote ID", TypeCode.Int32);
+        }
+
+        [Parser(Opcode.SMSG_TEXT_EMOTE)]
+        public static void HandleTextEmoteServer(Packet packet)
+        {
+            packet.ReadPackedGuid128("SourceGUID");
+            packet.ReadPackedGuid128("WowAccountGUID");
+            packet.ReadEnum<EmoteTextType>("SoundIndex", TypeCode.Int32);
+            packet.ReadEnum<EmoteType>("EmoteID", TypeCode.Int32);
+            packet.ReadPackedGuid128("TargetGUID");
+        }
     }
 }

@@ -94,7 +94,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (var i = 0; i < int20; ++i)
             {
-                packet.ReadPackedGuid128("Guid");
+                packet.ReadPackedGuid128("Guid", i);
 
                 packet.ReadUInt32("RankID", i);
                 packet.ReadUInt32("AreaID", i);
@@ -114,8 +114,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 packet.ReadEnum<GuildMemberFlag>("Status", TypeCode.Byte, i);
                 packet.ReadByte("Level", i);
-                packet.ReadEnum<Class>("ClassID", TypeCode.Byte);
-                packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
+                packet.ReadEnum<Class>("ClassID", TypeCode.Byte, i);
+                packet.ReadEnum<Gender>("Gender", TypeCode.Byte, i);
 
                 packet.ResetBitReader();
 

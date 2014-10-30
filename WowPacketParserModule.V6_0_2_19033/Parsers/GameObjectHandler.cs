@@ -68,5 +68,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             };
             Storage.ObjectNames.Add((uint)entry.Key, objectName, packet.TimeSpan);
         }
+
+        [Parser(Opcode.CMSG_GAMEOBJ_REPORT_USE)]
+        public static void HandleGOUse(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+        }
     }
 }
