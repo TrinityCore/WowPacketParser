@@ -106,6 +106,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_GOSSIP_COMPLETE, 0x15D1},
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x1746},
             {Opcode.SMSG_GOSSIP_POI, 0x011E},
+            {Opcode.SMSG_GUILD_EVENT_PRESENCE_CHANGE, 0x0B44},
             {Opcode.SMSG_GUILD_MOTD, 0x1825},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x1046},
             {Opcode.SMSG_GUILD_RANK, 0x1218},

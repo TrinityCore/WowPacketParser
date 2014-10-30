@@ -138,5 +138,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("WelcomeText", bits2037);
             packet.ReadWoWString("InfoText", bits9);
         }
+
+        [Parser(Opcode.SMSG_GUILD_EVENT_PRESENCE_CHANGE)]
+        public static void HandleGuildEventPresenceChange(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+
+            packet.ReadInt32("VirtualRealmAddress");
+
+            var bits38 = packet.ReadBits(6);
+            packet.ReadBit("LoggedOn");
+            packet.ReadBit("Mobile");
+
+            packet.ReadWoWString("Name", bits38);
+        }
     }
 }
