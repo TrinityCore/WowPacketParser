@@ -52,6 +52,31 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("BpayStoreDisabledByParentalControls");
             packet.ReadBit("BpayStoreAvailable");
         }
+
+        [Parser(Opcode.SMSG_WORLD_SERVER_INFO)]
+        public static void HandleWorldServerInfo(Packet packet)
+        {
+            packet.ReadInt32("DifficultyID");
+            packet.ReadByte("IsTournamentRealm");
+            packet.ReadTime("WeeklyReset");
+
+            var bit32 = packet.ReadBit();
+            var bit20 = packet.ReadBit();
+            var bit56 = packet.ReadBit();
+            var bit44 = packet.ReadBit();
+
+            if (bit32)
+                packet.ReadInt32("IneligibleForLootMask");
+
+            if (bit20)
+                packet.ReadInt32("InstanceGroupSize");
+
+            if (bit56)
+                packet.ReadInt32("RestrictedAccountMaxLevel");
+
+            if (bit44)
+                packet.ReadInt32("RestrictedAccountMaxMoney");
+        }
     }
 }
 
