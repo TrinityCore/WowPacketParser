@@ -8,7 +8,7 @@ using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using MovementParsers = WowPacketParser.V6_0_2_19033.Parsers.MovementHandler;
 
-namespace WowPacketParserModule.V6_0_2_19033.Parsers
+namespace WowPacketParser.V6_0_2_19033.Parsers
 {
     public static class SpellHandler
     {
@@ -363,7 +363,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadSpellCastLogData(ref packet);
         }
 
-        private static void ReadSpellCastLogData(ref Packet packet)
+        public static void ReadSpellCastLogData(ref Packet packet)
         {
             packet.ResetBitReader();
             var bit52 = packet.ReadBit("SpellCastLogData");
@@ -378,7 +378,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 var int3 = packet.ReadInt32("SpellLogPowerData");
 
                 // SpellLogPowerData
-                for (var i = 0; int3 < 2; ++i)
+                for (var i = 0; i < int3; ++i)
                 {
                     packet.ReadInt32("PowerType", i);
                     packet.ReadInt32("Amount", i);
