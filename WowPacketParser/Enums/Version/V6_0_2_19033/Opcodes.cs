@@ -31,6 +31,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.CMSG_GUILD_QUERY_RANKS, 0x018E},
             {Opcode.CMSG_LIST_INVENTORY, 0x1037},
             {Opcode.CMSG_LOAD_SCREEN, 0x09B8},
+            {Opcode.CMSG_LOGOUT_REQUEST, 0x0513},
             {Opcode.CMSG_CANCEL_TRADE, 0x0591},
             {Opcode.CMSG_LOG_DISCONNECT, 0x1856},
             {Opcode.CMSG_ITEM_REFUND_INFO, 0x0154},

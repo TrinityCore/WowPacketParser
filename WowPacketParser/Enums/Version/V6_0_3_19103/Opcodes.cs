@@ -31,6 +31,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_GUILD_QUERY, 0x0930},
             {Opcode.CMSG_LOAD_SCREEN, 0x0B08},
             {Opcode.CMSG_LOG_DISCONNECT, 0x04D5},
+            {Opcode.CMSG_LOGOUT_REQUEST, 0x1911},
             {Opcode.CMSG_ITEM_REFUND_INFO, 0x0924},
             {Opcode.CMSG_MESSAGECHAT_AFK, 0x1BDC},
             {Opcode.CMSG_MESSAGECHAT_DND, 0x0AAB | 0x10000},
