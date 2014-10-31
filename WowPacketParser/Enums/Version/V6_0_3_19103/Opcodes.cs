@@ -138,6 +138,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_PLAYER_MOVE, 0x0ACE},
             {Opcode.SMSG_PONG, 0x17CA},
             {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, 0x15B3},
+            {Opcode.SMSG_QUESTGIVER_STATUS, 0x1567},
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x1715},
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x1547},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x175A},
