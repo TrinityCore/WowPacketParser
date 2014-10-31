@@ -476,7 +476,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_REQUEST_PVP_REWARDS_RESPONSE, 0x08AA},
             {Opcode.SMSG_SELL_ITEM, 0x048E},
             {Opcode.SMSG_SEND_MAIL_RESULT, 0x1A9B},
-            {Opcode.SMSG_SEND_SERVER_LOCATION, 0x19C1},
+            {Opcode.SMSG_SET_TIME_ZONE_INFORMATION, 0x19C1},
             {Opcode.SMSG_SEND_UNLEARN_SPELLS, 0x10F1},
             {Opcode.SMSG_SERVER_MESSAGE, 0x0302},
             {Opcode.SMSG_SET_DUNGEON_DIFFICULTY, 0x1283},

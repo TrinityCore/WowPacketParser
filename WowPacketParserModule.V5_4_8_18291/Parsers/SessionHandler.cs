@@ -35,8 +35,8 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SEND_SERVER_LOCATION)]
-        public static void HandleSendServerLocation(Packet packet)
+        [Parser(Opcode.SMSG_SET_TIME_ZONE_INFORMATION)]
+        public static void HandleSetTimeZoneInformation(Packet packet)
         {
             var len1 = packet.ReadBits(7);
             var len2 = packet.ReadBits(7);

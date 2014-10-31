@@ -106,13 +106,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_SEND_SERVER_LOCATION)]
-        public static void HandleSendServerLocation(Packet packet)
+        [Parser(Opcode.SMSG_SET_TIME_ZONE_INFORMATION)]
+        public static void HandleSetTimeZoneInformation(Packet packet)
         {
             var len1 = packet.ReadBits(7);
             var len2 = packet.ReadBits(7);
-            packet.ReadWoWString("Server Location", len1);
-            packet.ReadWoWString("Server Location", len2);
+
+            packet.ReadWoWString("ServerTimeTZ", len1);
+            packet.ReadWoWString("GameTimeTZ", len2);
         }
 
         [Parser(Opcode.CMSG_AUTH_SESSION)]

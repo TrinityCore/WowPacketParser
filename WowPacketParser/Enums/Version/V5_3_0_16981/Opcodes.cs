@@ -331,7 +331,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS, 0x0DD1},
             {Opcode.SMSG_RESURRECT_REQUEST, 0x0FD0},
             {Opcode.SMSG_ROLE_POLL_BEGIN, 0x0CDC},
-            {Opcode.SMSG_SEND_SERVER_LOCATION, 0x0390},
+            {Opcode.SMSG_SET_TIME_ZONE_INFORMATION, 0x0390},
             {Opcode.SMSG_SERVERTIME, 0x0789},
             {Opcode.SMSG_SERVER_INFO_RESPONSE, 0x0ED4},
             {Opcode.SMSG_SERVER_MESSAGE, 0x0DB7},

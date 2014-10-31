@@ -104,7 +104,7 @@ namespace WowPacketParser.Enums.Version.V5_4_1_17538
             {Opcode.SMSG_PONG, 0x005D},
             {Opcode.SMSG_REALM_QUERY_RESPONSE, 0x052D},
             {Opcode.SMSG_REALM_SPLIT, 0x0884},
-            {Opcode.SMSG_SEND_SERVER_LOCATION, 0x14AF},
+            {Opcode.SMSG_SET_TIME_ZONE_INFORMATION, 0x14AF},
             {Opcode.SMSG_SEND_UNLEARN_SPELLS, 0x049E},
             {Opcode.SMSG_SET_PROFICIENCY, 0x05B6},
             {Opcode.SMSG_SPELL_GO, 0x14EC},

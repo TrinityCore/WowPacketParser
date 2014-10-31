@@ -10,8 +10,8 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 {
     public static class MiscellaneousHandler
     {
-        [Parser(Opcode.SMSG_SEND_SERVER_LOCATION)]
-        public static void HandleSendServerLocation(Packet packet)
+        [Parser(Opcode.SMSG_SET_TIME_ZONE_INFORMATION)]
+        public static void HandleSetTimeZoneInformation(Packet packet)
         {
             var len1 = packet.ReadBits(7);
             var len2 = packet.ReadBits(7);

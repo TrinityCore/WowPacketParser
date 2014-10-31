@@ -163,7 +163,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_REDIRECT_CLIENT, 0x0143},
             {Opcode.SMSG_REMOVED_SPELL, 0x0523},
             {Opcode.SMSG_REQUEST_CEMETERY_LIST_RESPONSE, 0x0499},
-            {Opcode.SMSG_SEND_SERVER_LOCATION, 0x0883},
+            {Opcode.SMSG_SET_TIME_ZONE_INFORMATION, 0x0883},
             {Opcode.SMSG_SEND_UNLEARN_SPELLS, 0x11A2},
             {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x1530},
             {Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x1C06},

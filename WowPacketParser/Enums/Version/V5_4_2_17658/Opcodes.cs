@@ -157,7 +157,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_RANDOMIZE_CHAR_NAME, 0x0D24},
             {Opcode.SMSG_REALM_QUERY_RESPONSE, 0x0867},
             {Opcode.SMSG_REMOVED_SPELL, 0x0008},
-            {Opcode.SMSG_SEND_SERVER_LOCATION, 0x038B},
+            {Opcode.SMSG_SET_TIME_ZONE_INFORMATION, 0x038B},
             {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x0C1D},
             {Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x06A0},
             {Opcode.SMSG_SET_PHASE_SHIFT, 0x0AD1},

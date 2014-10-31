@@ -139,7 +139,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x1547},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x175A},
             {Opcode.SMSG_SEND_MAIL_RESULT, 0x0302 | 0x20000},
-            {Opcode.SMSG_SEND_SERVER_LOCATION, 0x153E},
+            {Opcode.SMSG_SET_TIME_ZONE_INFORMATION, 0x153E},
             {Opcode.SMSG_SEND_UNLEARN_SPELLS, 0x1A82},
             {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x1884 | 0x20000},
             {Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x113C | 0x20000},

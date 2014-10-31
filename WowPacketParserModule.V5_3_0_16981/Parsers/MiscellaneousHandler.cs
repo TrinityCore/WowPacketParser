@@ -160,8 +160,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_SEND_SERVER_LOCATION)]
-        public static void HandleSendServerLocation(Packet packet)
+        [Parser(Opcode.SMSG_SET_TIME_ZONE_INFORMATION)]
+        public static void HandleSetTimeZoneInformation(Packet packet)
         {
             packet.ReadBits("Unk Bits", 9);
             packet.ReadCString("Server Location");

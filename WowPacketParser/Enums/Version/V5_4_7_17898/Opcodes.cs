@@ -421,7 +421,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_SCENARIO_POI, 0x10E9},
             {Opcode.SMSG_SCENARIO_PROGRESS_UPDATE, 0x167B},
             {Opcode.SMSG_SCENARIO_STATE, 0x1E20},
-            {Opcode.SMSG_SEND_SERVER_LOCATION, 0x0C2B},
+            {Opcode.SMSG_SET_TIME_ZONE_INFORMATION, 0x0C2B},
             {Opcode.SMSG_SEND_UNLEARN_SPELLS, 0x1B3E | 0x20000},
             {Opcode.SMSG_SHOW_BANK, 0x060B},
             {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x0179},
