@@ -62,6 +62,8 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_SUSPEND_TOKEN, 0x0142},
             {Opcode.CMSG_TEXT_EMOTE, 0x1901 | 0x10000},
             {Opcode.CMSG_TIME_SYNC_RESP, 0x0003},
+            {Opcode.CMSG_UNDELETE_CHARACTER, 0x0D99},
+            {Opcode.CMSG_UNDELETE_COOLDOWN_STATUS_QUERY, 0x19A9},
             {Opcode.CMSG_UPDATE_ACCOUNT_DATA, 0x12A1},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x098D | 0x10000},
             {Opcode.CMSG_WARDEN_DATA, 0x0BA1 | 0x10000},
