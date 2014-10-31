@@ -360,37 +360,34 @@ namespace WowPacketParser.V6_0_2_19033.Parsers
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_SPELL_START))
                 return;
 
-            ReadSpellCastLogData(ref packet);
+            packet.ResetBitReader();
+
+            var bit52 = packet.ReadBit("SpellCastLogData");
+            if (bit52)
+                ReadSpellCastLogData(ref packet);
         }
 
         public static void ReadSpellCastLogData(ref Packet packet)
         {
-            packet.ResetBitReader();
-            var bit52 = packet.ReadBit("SpellCastLogData");
+            packet.ReadInt32("Health");
+            packet.ReadInt32("AttackPower");
+            packet.ReadInt32("SpellPower");
 
-            // SpellCastLogData
-            if (bit52)
+            var int3 = packet.ReadInt32("SpellLogPowerData");
+
+            // SpellLogPowerData
+            for (var i = 0; i < int3; ++i)
             {
-                packet.ReadInt32("Health");
-                packet.ReadInt32("AttackPower");
-                packet.ReadInt32("SpellPower");
-
-                var int3 = packet.ReadInt32("SpellLogPowerData");
-
-                // SpellLogPowerData
-                for (var i = 0; i < int3; ++i)
-                {
-                    packet.ReadInt32("PowerType", i);
-                    packet.ReadInt32("Amount", i);
-                }
-
-                packet.ResetBitReader();
-
-                var bit32 = packet.ReadBit("bit32");
-
-                if (bit32)
-                    packet.ReadSingle("Float7");
+                packet.ReadInt32("PowerType", i);
+                packet.ReadInt32("Amount", i);
             }
+
+            packet.ResetBitReader();
+
+            var bit32 = packet.ReadBit("bit32");
+
+            if (bit32)
+                packet.ReadSingle("Float7");
         }
 
         [Parser(Opcode.SMSG_WEEKLY_SPELL_USAGE)]
