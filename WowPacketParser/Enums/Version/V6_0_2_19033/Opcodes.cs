@@ -118,6 +118,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_LOAD_CUF_PROFILES, 0x09B3},
             {Opcode.SMSG_LOGIN_SETTIMESPEED, 0x0528},
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x1044},
+            {Opcode.SMSG_LOGOUT_COMPLETE, 0x1077},
             {Opcode.SMSG_MAIL_LIST_RESULT, 0x08AF},
             {Opcode.SMSG_MESSAGECHAT, 0x0E09},
             {Opcode.SMSG_MOTD, 0x0E5D},

@@ -184,5 +184,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadUInt32("DosChallenge", i);
             packet.ReadByte("DosZeroBits");
         }
+
+        [Parser(Opcode.SMSG_LOGOUT_COMPLETE)]
+        public static void HandleLogoutComplete(Packet packet)
+        {
+            CoreParsers.SessionHandler.LoginGuid = packet.ReadPackedGuid128("Guid");
+        }
     }
 }
