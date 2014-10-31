@@ -105,7 +105,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleDBQueryBulk(Packet packet)
         {
             packet.ReadEnum<DB2Hash>("DB2 File", TypeCode.Int32);
-            var count = packet.ReadUInt32("Count");
+
+            var count = 0u;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_0_3_19103))
+                count = packet.ReadBits("Count", 13);
+            else
+                count = packet.ReadUInt32("Count");
 
             for (var i = 0; i < count; ++i)
             {
