@@ -118,5 +118,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (bit120)
                 SpellParsers.ReadSpellCastLogData(ref packet);
         }
+
+        [Parser(Opcode.SMSG_SPELLENERGIZELOG)]
+        public static void HandleSpellEnergizeLog(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadPackedGuid128("TargetGUID");
+
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "SpellID");
+            packet.ReadEnum<PowerType>("Type", TypeCode.UInt32);
+            packet.ReadInt32("Amount");
+
+            packet.ResetBitReader();
+
+            var bit100 = packet.ReadBit("HasLogData");
+            if (bit100)
+                SpellParsers.ReadSpellCastLogData(ref packet);
+        }
     }
 }

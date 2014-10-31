@@ -48,9 +48,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             // educated guess order
             packet.ReadBit("BpayStoreEnabled");
-            packet.ReadBit("CharUndeleteEnabled");
-            packet.ReadBit("BpayStoreDisabledByParentalControls");
             packet.ReadBit("BpayStoreAvailable");
+            packet.ReadBit("BpayStoreDisabledByParentalControls");
+            packet.ReadBit("CharUndeleteEnabled");
         }
 
         [Parser(Opcode.SMSG_WORLD_SERVER_INFO)]
