@@ -2,6 +2,7 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParserModule.V6_0_2_19033.Enums;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
@@ -114,6 +115,29 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 if (hasTrackedQuantity)
                     packet.ReadUInt32("TrackedQuantity", i);
             }
+        }
+
+        [Parser(Opcode.CMSG_UNDELETE_CHARACTER)]
+        public static void HandleUndeleteCharacter(Packet packet)
+        {
+            packet.ReadInt32("ClientToken");
+            packet.ReadPackedGuid128("CharacterGuid");
+        }
+
+        [Parser(Opcode.SMSG_UNDELETE_CHARACTER_RESPONSE)]
+        public static void HandleUndeleteCharacterResponse(Packet packet)
+        {
+            packet.ReadEnum<CharacterUndeleteResult>("Result", TypeCode.Int32);
+            packet.ReadInt32("ClientToken");
+            packet.ReadPackedGuid128("CharacterGuid");
+        }
+
+        [Parser(Opcode.SMSG_UNDELETE_COOLDOWN_STATUS_RESPONSE)]
+        public static void HandleUndeleteCooldownStatusResponse(Packet packet)
+        {
+            packet.ReadBit("OnCooldown");
+            packet.ReadInt32("MaxCooldown"); // In Sec
+            packet.ReadInt32("CurrentCooldown"); // In Sec
         }
     }
 }
