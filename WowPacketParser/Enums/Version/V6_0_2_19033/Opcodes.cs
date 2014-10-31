@@ -112,6 +112,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_GUILD_MOTD, 0x125A},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x034A},
             {Opcode.SMSG_GUILD_RANK, 0x035A},
+            {Opcode.SMSG_GUILD_RECIPES, 0x0679},
             {Opcode.SMSG_GUILD_ROSTER, 0x0779},
             {Opcode.SMSG_HIGHEST_THREAT_UPDATE, 0x0604},
             {Opcode.SMSG_HOTFIX_INFO, 0x0AA8},

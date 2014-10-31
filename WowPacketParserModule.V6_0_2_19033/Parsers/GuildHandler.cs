@@ -152,5 +152,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadWoWString("Name", bits38);
         }
+
+        [Parser(Opcode.SMSG_GUILD_RECIPES)]
+        public static void HandleGuildAchievementData(Packet packet)
+        {
+            var count = packet.ReadInt32("Criteria count");
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("Skill Id", i);
+                packet.ReadBytes("Skill Bits", 300, i);
+            }
+        }
     }
 }
