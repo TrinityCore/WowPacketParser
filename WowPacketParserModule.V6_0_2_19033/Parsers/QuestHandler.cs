@@ -367,5 +367,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("QuestGiverGUID");
             packet.ReadEnum<QuestGiverStatus4x>("StatusFlags", TypeCode.Int32);
         }
+
+        [Parser(Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE)]
+        public static void HandleQuestgiverStatusMultiple(Packet packet)
+        {
+            var int16 = packet.ReadInt32("QuestGiverStatusCount");
+            for (var i = 0; i < int16; ++i)
+            {
+                packet.ReadPackedGuid128("Guid");
+                packet.ReadEnum<QuestGiverStatus4x>("Status", TypeCode.Int32);
+            }
+        }
     }
 }

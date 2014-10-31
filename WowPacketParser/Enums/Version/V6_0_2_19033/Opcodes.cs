@@ -141,6 +141,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_QUERY_TIME_RESPONSE, 0x0224},
             {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, 0x02B6},
             {Opcode.SMSG_QUESTGIVER_STATUS, 0x02A1},
+            {Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE, 0x01CA},
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x03DE},
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x00D5},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x1082},
