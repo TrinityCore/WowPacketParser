@@ -355,6 +355,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("PortraitTurnInText", bits1532);
         }
 
+        [Parser(Opcode.CMSG_QUESTGIVER_STATUS_QUERY)]
+        public static void HandleQuestgiverStatusQuery(Packet packet)
+        {
+            packet.ReadPackedGuid128("QuestGiverGUID");
+        }
+
         [Parser(Opcode.SMSG_QUESTGIVER_STATUS)]
         public static void HandleQuestgiverStatus(Packet packet)
         {
