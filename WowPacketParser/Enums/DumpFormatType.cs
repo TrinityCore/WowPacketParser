@@ -11,6 +11,7 @@
         StatisticsPreParse,
         PktSessionSplit,
         CompressSniff,
-        SniffVersionSplit
+        SniffVersionSplit,
+        HexOnly
     }
 }

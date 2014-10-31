@@ -107,6 +107,7 @@ namespace WowPacketParser.Loading
                 case DumpFormatType.SniffDataOnly:
                 case DumpFormatType.SqlOnly:
                 case DumpFormatType.Text:
+                case DumpFormatType.HexOnly:
                 {
                     var outFileName = Path.ChangeExtension(_originalFileName, null) + "_parsed.txt";
 

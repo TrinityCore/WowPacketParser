@@ -117,7 +117,7 @@ namespace WowPacketParser.Parsing
                 hasHandler = VersionHandlers.TryGetValue(key, out handler);
             }
 
-            if (hasHandler)
+            if (hasHandler && Settings.DumpFormat != DumpFormatType.HexOnly)
             {
                 if (Settings.DumpFormat == DumpFormatType.SniffDataOnly)
                 {
