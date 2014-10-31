@@ -131,6 +131,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_NPC_TEXT_UPDATE, 0x1122},
             {Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE, 0x05A0},
             {Opcode.SMSG_PET_NAME_QUERY_RESPONSE, 0x0D0E},
+            {Opcode.SMSG_PERIODICAURALOG, 0x0B1B},
             {Opcode.SMSG_PLAYER_MOVE, 0x0ACE},
             {Opcode.SMSG_PONG, 0x17CA},
             {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, 0x15B3},
