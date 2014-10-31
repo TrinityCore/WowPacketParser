@@ -53,8 +53,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_UNK0))
             {
-                packet.ReadInt32("Physical");
-                packet.ReadSingle("Physical");
+                packet.ReadInt32("Unk Attacker State 3 1");
+                packet.ReadSingle("Unk Attacker State 3 2");
                 packet.ReadSingle("Unk Attacker State 3 3");
                 packet.ReadSingle("Unk Attacker State 3 4");
                 packet.ReadSingle("Unk Attacker State 3 5");
@@ -69,6 +69,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK | SpellHitInfo.HITINFO_UNK12))
                 packet.ReadSingle("Unk Float");
+        }
+
+        [Parser(Opcode.SMSG_ATTACKSTART)]
+        public static void HandleAttackStartStart(Packet packet)
+        {
+            packet.ReadPackedGuid128("Attacker Guid");
+            packet.ReadPackedGuid128("Victim Guid");
+        }
+
+        [Parser(Opcode.SMSG_ATTACKSTOP)]
+        public static void HandleAttackStartStop(Packet packet)
+        {
+            packet.ReadPackedGuid128("Attacker Guid");
+            packet.ReadPackedGuid128("Victim Guid");
+
+            packet.ReadBit("NowDead");
         }
     }
 }

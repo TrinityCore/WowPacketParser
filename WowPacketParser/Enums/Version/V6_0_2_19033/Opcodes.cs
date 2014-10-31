@@ -76,6 +76,8 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA_ACCOUNT, 0x1603},
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA_PLAYER, 0x01A4},
             {Opcode.SMSG_ATTACKERSTATEUPDATE, 0x11BC},
+            {Opcode.SMSG_ATTACKSTART, 0x13E4},
+            {Opcode.SMSG_ATTACKSTOP, 0x10E7},
             {Opcode.SMSG_AUCTION_COMMAND_RESULT, 0x1554},
             {Opcode.SMSG_AUCTION_HELLO, 0x0417},
             {Opcode.SMSG_AUCTION_LIST_RESULT, 0x13B4 | 0x20000},
