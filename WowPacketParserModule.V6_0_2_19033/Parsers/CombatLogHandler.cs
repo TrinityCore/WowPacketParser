@@ -92,5 +92,31 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (bit56)
                 SpellParsers.ReadSpellCastLogData(ref packet);
         }
+
+        [Parser(Opcode.SMSG_SPELLHEALLOG)]
+        public static void HandleSpellHealLog(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadPackedGuid128("TargetGUID");
+
+            packet.ReadInt32("SpellID");
+            packet.ReadInt32("Health");
+            packet.ReadInt32("OverHeal");
+            packet.ReadInt32("Absorbed");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Crit");
+            packet.ReadBit("Multistrike");
+
+            var bit128 = packet.ReadBit("HasCritRollMade");
+            var bit120 = packet.ReadBit("HasLogData");
+
+            if (bit128)
+                packet.ReadSingle("CritRollMade");
+
+            if (bit120)
+                SpellParsers.ReadSpellCastLogData(ref packet);
+        }
     }
 }
