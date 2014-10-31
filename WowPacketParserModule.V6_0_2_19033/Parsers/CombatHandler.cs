@@ -86,5 +86,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadBit("NowDead");
         }
+
+        [Parser(Opcode.SMSG_HIGHEST_THREAT_UPDATE)]
+        public static void HandleThreatlistUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+            packet.ReadPackedGuid128("HighestThreatGUID");
+
+            var count = packet.ReadUInt32("ThreatListCount");
+
+            // ThreatInfo
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadPackedGuid128("UnitGUID", i);
+                packet.ReadUInt32("Threat", i);
+            }
+        }
     }
 }
