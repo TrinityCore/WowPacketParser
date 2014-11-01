@@ -152,5 +152,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadEnum<PowerType>("PowerType", TypeCode.Byte, i);
             }
         }
+
+        [Parser(Opcode.CMSG_REORDER_CHARACTERS)]
+        public static void HandleReorderCharacters(Packet packet)
+        {
+            var count = packet.ReadBits("CharactersCount", 9);
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadPackedGuid128("PlayerGUID");
+                packet.ReadByte("NewPosition", i);
+            }
+        }
     }
 }

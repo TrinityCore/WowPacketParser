@@ -58,6 +58,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_QUEST_POI_QUERY, 0x0BD9},
             {Opcode.CMSG_QUEST_QUERY, 0x09A6},
             {Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x0485},
+            {Opcode.CMSG_REORDER_CHARACTERS, 0x0DAA},
             {Opcode.CMSG_RESET_FACTION_CHEAT, 0x0C56},
             {Opcode.CMSG_SAVE_CUF_PROFILES, 0x0053},
             {Opcode.CMSG_SET_RAID_DIFFICULTY, 0x04DF},
