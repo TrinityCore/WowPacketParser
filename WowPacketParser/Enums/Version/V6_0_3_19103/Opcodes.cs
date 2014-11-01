@@ -24,6 +24,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_CREATURE_QUERY, 0x0505},
             {Opcode.CMSG_DB_QUERY_BULK, 0x138B | 0x10000},
             {Opcode.CMSG_EQUIPMENT_SET_SAVE, 0x1B54},
+            {Opcode.CMSG_FACTION_BONUS_INFO, 0x0928},
             {Opcode.CMSG_JOIN_CHANNEL, 0x0B4B},
             {Opcode.CMSG_GAMEOBJ_REPORT_USE, 0x082E},
             {Opcode.CMSG_GAMEOBJECT_QUERY, 0x0D97},

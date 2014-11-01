@@ -239,8 +239,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 packet.ResetBitReader();
 
-                var HasPrevMoveTime = packet.ReadBit("HasPrevMoveTime");
-                var HasVehicleRecID = packet.ReadBit("HasVehicleRecID");
+                var HasPrevMoveTime = packet.ReadBit("HasPrevMoveTime", index);
+                var HasVehicleRecID = packet.ReadBit("HasVehicleRecID", index);
 
                 if (HasPrevMoveTime)
                     packet.ReadUInt32("PrevMoveTime", index);
