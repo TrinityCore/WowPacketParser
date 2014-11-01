@@ -135,5 +135,66 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (bit100)
                 SpellParsers.ReadSpellCastLogData(ref packet);
         }
+
+        [Parser(Opcode.SMSG_SPELLLOGEXECUTE)]
+        public static void HandleSpellLogExecute(Packet packet)
+        {
+            packet.ReadPackedGuid128("Caster");
+
+            packet.ReadInt32("SpellID");
+
+            var int16 = packet.ReadInt32("EffectsCount");
+            for (var i = 0; i < int16; i++)
+            {
+                packet.ReadInt32("Effect", i);
+
+                var int4 = packet.ReadInt32("PowerDrainTargetsCount", i);
+                var int20 = packet.ReadInt32("ExtraAttacksTargetsCount", i);
+                var int36 = packet.ReadInt32("DurabilityDamageTargetsCount", i);
+                var int52 = packet.ReadInt32("GenericVictimTargetsCount", i);
+                var int68 = packet.ReadInt32("TradeSkillTargetsCount", i);
+                var int84 = packet.ReadInt32("FeedPetTargetsCount", i);
+
+                // ClientSpellLogEffectPowerDrainParams
+                for (var j = 0; j < int4; j++)
+                {
+                    packet.ReadPackedGuid128("Victim");
+                    packet.ReadInt32("Points");
+                    packet.ReadInt32("PowerType");
+                    packet.ReadSingle("Amplitude");
+                }
+
+                // ClientSpellLogEffectExtraAttacksParams
+                for (var j = 0; j < int20; j++)
+                {
+                    packet.ReadPackedGuid128("Victim", i, j);
+                    packet.ReadInt32("NumAttacks", i, j);
+                }
+
+                // ClientSpellLogEffectDurabilityDamageParams
+                for (var j = 0; j < int36; j++)
+                {
+                    packet.ReadPackedGuid128("Victim", i, j);
+                    packet.ReadInt32("ItemID", i, j);
+                    packet.ReadInt32("Amount", i, j);
+                }
+
+                // ClientSpellLogEffectGenericVictimParams
+                for (var j = 0; j < int52; j++)
+                    packet.ReadPackedGuid128("Victim", i, j);
+
+                // ClientSpellLogEffectTradeSkillItemParams
+                for (var j = 0; j < int68; j++)
+                    packet.ReadInt32("ItemID", i, j);
+
+                // ClientSpellLogEffectFeedPetParams
+                for (var j = 0; j < int84; j++)
+                    packet.ReadInt32("ItemID", i, j);
+            }
+
+            var bit160 = packet.ReadBit("HasLogData");
+            if (bit160)
+                SpellParsers.ReadSpellCastLogData(ref packet);
+        }
     }
 }

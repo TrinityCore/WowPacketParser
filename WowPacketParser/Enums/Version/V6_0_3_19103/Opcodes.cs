@@ -171,6 +171,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_SPELL_START, 0x0803},
             {Opcode.SMSG_SPELLENERGIZELOG, 0x137C},
             {Opcode.SMSG_SPELLHEALLOG, 0x0114},
+            {Opcode.SMSG_SPELLLOGEXECUTE, 0x1823},
             {Opcode.SMSG_SPELLNONMELEEDAMAGELOG, 0x11FB},
             {Opcode.SMSG_SPLINE_MOVE_SET_FLIGHT_SPEED, 0x060C},
             {Opcode.SMSG_SPLINE_MOVE_SET_RUN_SPEED, 0x1B9A},
