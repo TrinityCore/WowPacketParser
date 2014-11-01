@@ -164,5 +164,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadBytes("Skill Bits", 300, i);
             }
         }
+
+        [Parser(Opcode.CMSG_GUILD_REQUEST_PARTY_STATE)]
+        public static void HandleGuildUpdatePartyState(Packet packet)
+        {
+            packet.ReadPackedGuid128("GuildGUID");
+        }
+
+        [Parser(Opcode.SMSG_GUILD_PARTY_STATE_RESPONSE)]
+        public static void HandleGuildPartyStateResponse(Packet packet)
+        {
+            packet.ReadBit("Is guild group");
+            packet.ReadUInt32("Current guild members");
+            packet.ReadUInt32("Needed guild members");
+            packet.ReadSingle("Guild XP multiplier");
+        }
     }
 }
