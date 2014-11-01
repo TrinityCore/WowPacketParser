@@ -88,6 +88,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_AURA_UPDATE, 0x128B},
             {Opcode.SMSG_AUTH_CHALLENGE, 0x10AA},
             {Opcode.SMSG_AUTH_RESPONSE, 0x0564 | 0x20000},
+            {Opcode.SMSG_BATTLE_PET_JOURNAL, 0x00EF},
             {Opcode.SMSG_BINDPOINTUPDATE, 0x1428},
             {Opcode.SMSG_CHANNEL_NOTIFY, 0x0C4D},
             {Opcode.SMSG_CHANNEL_NOTIFY_JOINED, 0x1C0A},
