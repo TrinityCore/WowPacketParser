@@ -127,6 +127,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_LIST_INVENTORY, 0x0103},
             {Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE, 0x01BB},
             {Opcode.SMSG_LEARNED_SPELL, 0x02D8},
+            {Opcode.SMSG_LFG_PLAYER_INFO, 0x0005},
             {Opcode.SMSG_LOAD_CUF_PROFILES, 0x09B3},
             {Opcode.SMSG_LOGIN_SETTIMESPEED, 0x0528},
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x1044},
