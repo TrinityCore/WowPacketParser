@@ -208,7 +208,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_GUILD_RECIPES)]
-        public static void HandleGuildAchievementData(Packet packet)
+        public static void HandleGuildRecipes(Packet packet)
         {
             var count = packet.ReadInt32("Criteria count");
 
@@ -232,6 +232,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("Current guild members");
             packet.ReadUInt32("Needed guild members");
             packet.ReadSingle("Guild XP multiplier");
+        }
+
+        [Parser(Opcode.SMSG_GUILD_ACHIEVEMENT_DATA)]
+        public static void HandleGuildAchievementData(Packet packet)
+        {
+            var int10 = packet.ReadUInt32("EarnedAchievementCount");
+            for (var i = 0; i < int10; ++i)
+            {
+                packet.ReadInt32("Id", i);
+                packet.ReadPackedTime("Date", i);
+                packet.ReadPackedGuid128("Owner", i);
+                packet.ReadInt32("VirtualRealmAddress", i);
+                packet.ReadInt32("NativeRealmAddress", i);
+            }
         }
     }
 }
