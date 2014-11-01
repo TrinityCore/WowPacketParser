@@ -378,5 +378,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadEnum<QuestGiverStatus4x>("Status", TypeCode.Int32);
             }
         }
+
+        [Parser(Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE)]
+        public static void HandleUnknown6462(Packet packet)
+        {
+            var int1 = packet.ReadInt32("QuestCompletionNPCsCount");
+
+            // QuestCompletionNPC
+            for (var i = 0; i < int1; ++i)
+            {
+                packet.ReadInt32("Quest Id", i);
+
+                var int4 = packet.ReadInt32("NpcCount", i);
+                for (var j = 0; j < int4; ++j)
+                    packet.ReadInt32("Npc", i, j);
+            }
+        }
     }
 }
