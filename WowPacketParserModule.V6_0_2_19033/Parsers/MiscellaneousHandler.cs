@@ -171,6 +171,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadWoWString("GuildName", bits460, i);
             }
         }
+
+        [Parser(Opcode.CMSG_PING)]
+        public static void HandleClientPing(Packet packet)
+        {
+            packet.ReadInt32("Serial");
+            packet.ReadInt32("Latency");
+        }
+
+        [Parser(Opcode.SMSG_PONG)]
+        public static void HandleServerPong(Packet packet)
+        {
+            packet.ReadInt32("Serial");
+        }
     }
 }
 

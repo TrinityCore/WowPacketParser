@@ -83,7 +83,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_ATTACKSTOP, 0x1382},
             {Opcode.SMSG_AUCTION_COMMAND_RESULT, 0x0B2D},
             {Opcode.SMSG_AUCTION_HELLO, 0x011F},
-            {Opcode.SMSG_AUCTION_LIST_RESULT, 0x19D2},
+            {Opcode.SMSG_AUCTION_LIST_RESULT, 0x19D2 | 0x20000},
             {Opcode.SMSG_AURA_UPDATE, 0x091C},
             {Opcode.SMSG_AUTH_RESPONSE, 0x0DA9},
             {Opcode.SMSG_AUTH_CHALLENGE, 0x1759},
