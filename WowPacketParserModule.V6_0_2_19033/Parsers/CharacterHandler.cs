@@ -127,8 +127,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_UNDELETE_CHARACTER_RESPONSE)]
         public static void HandleUndeleteCharacterResponse(Packet packet)
         {
-            packet.ReadEnum<CharacterUndeleteResult>("Result", TypeCode.Int32);
             packet.ReadInt32("ClientToken");
+            packet.ReadEnum<CharacterUndeleteResult>("Result", TypeCode.Int32);
             packet.ReadPackedGuid128("CharacterGuid");
         }
 

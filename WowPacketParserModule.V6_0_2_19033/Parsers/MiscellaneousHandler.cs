@@ -184,6 +184,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("Serial");
         }
+
+        [Parser(Opcode.SMSG_INITIAL_SETUP)]
+        public static void HandleInitialSetup(Packet packet)
+        {
+            var int6 = packet.ReadInt32("QuestsCompletedCount");
+
+            packet.ReadByte("ServerExpansionLevel");
+            packet.ReadByte("ServerExpansionTier");
+
+            packet.ReadInt32("ServerRegionID");
+            packet.ReadTime("RaidOrigin");
+
+            for (var i = 0; i < int6; ++i)
+                packet.ReadByte("QuestsCompleted", i);
+        }
     }
 }
 

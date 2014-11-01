@@ -121,6 +121,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_HOTFIX_INFO, 0x0AA8},
             {Opcode.SMSG_INIT_CURRENCY, 0x00A4},
             {Opcode.SMSG_INIT_WORLD_STATES, 0x0BB7 | 0x20000},
+            {Opcode.SMSG_INITIAL_SETUP, 0x12E8},
             {Opcode.SMSG_INITIAL_SPELLS, 0x0297},
             {Opcode.SMSG_INITIALIZE_FACTIONS, 0x0AAB},
             {Opcode.SMSG_LIST_INVENTORY, 0x0103},
