@@ -139,6 +139,60 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("InfoText", bits9);
         }
 
+        [Parser(Opcode.SMSG_GUILD_EVENT)]
+        public static void HandleGuildUpdateRoster(Packet packet)
+        {
+            var count = packet.ReadInt32("NewsCount");
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadInt32("Id", i);
+                packet.ReadPackedTime("CompletedDate", i);
+                packet.ReadInt32("Type", i);
+                packet.ReadInt32("Flags", i);
+
+                for (var j = 0; j < 2; ++j)
+                    packet.ReadInt32("Data", i, j);
+
+                packet.ReadPackedGuid128("MemberGuid", i);
+
+                var int64 = packet.ReadInt32("MemberListCount", i);
+
+                for (var j = 0; j < int64; ++j)
+                    packet.ReadPackedGuid128("MemberList", i, j);
+
+                packet.ResetBitReader();
+
+                var bit80 = packet.ReadBit("HasItemInstance", i);
+                if (bit80)
+                {
+                    packet.ReadUInt32("ItemID", i);
+                    packet.ReadUInt32("RandomPropertiesSeed", i);
+                    packet.ReadUInt32("RandomPropertiesID", i);
+
+                    packet.ResetBitReader();
+
+                    var hasBonuses = packet.ReadBit("HasItemBonus", i);
+                    var hasModifications = packet.ReadBit("HasModifications", i);
+                    if (hasBonuses)
+                    {
+                        packet.ReadByte("Context", i);
+
+                        var bonusCount = packet.ReadUInt32();
+                        for (var j = 0; j < bonusCount; ++j)
+                            packet.ReadUInt32("BonusListID", i, j);
+                    }
+
+                    if (hasModifications)
+                    {
+                        var modificationCount = packet.ReadUInt32() / 4;
+                        for (var j = 0; j < modificationCount; ++j)
+                            packet.ReadUInt32("Modification", i, j);
+                    }
+                }
+            }
+        }
+
         [Parser(Opcode.SMSG_GUILD_EVENT_PRESENCE_CHANGE)]
         public static void HandleGuildEventPresenceChange(Packet packet)
         {

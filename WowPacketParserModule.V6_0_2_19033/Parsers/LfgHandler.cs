@@ -48,7 +48,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 var int64 = packet.ReadInt32("ShortageRewardCount", i);
 
                 // Rewards
-                packet.ReadInt32("Mask", i);
+                packet.ReadUInt32("Mask", i);
                 packet.ReadInt32("RewardMoney", i);
                 packet.ReadInt32("RewardXP", i);
 
