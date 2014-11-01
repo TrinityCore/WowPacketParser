@@ -142,6 +142,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_PERIODICAURALOG, 0x0B1B},
             {Opcode.SMSG_PLAYER_MOVE, 0x0ACE},
             {Opcode.SMSG_PONG, 0x17CA},
+            {Opcode.SMSG_POWER_UPDATE, 0x0B27},
             {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, 0x15B3},
             {Opcode.SMSG_QUESTGIVER_STATUS, 0x1567},
             {Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE, 0x17C6},

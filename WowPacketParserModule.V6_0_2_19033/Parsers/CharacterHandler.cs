@@ -139,5 +139,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("MaxCooldown"); // In Sec
             packet.ReadInt32("CurrentCooldown"); // In Sec
         }
+
+        [Parser(Opcode.SMSG_POWER_UPDATE)]
+        public static void HandlePowerUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+
+            var int32 = packet.ReadInt32("Count");
+            for (var i = 0; i < int32; i++)
+            {
+                packet.ReadInt32("Power", i);
+                packet.ReadEnum<PowerType>("PowerType", TypeCode.Byte, i);
+            }
+        }
     }
 }
