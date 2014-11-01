@@ -109,6 +109,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_INITIAL_SPELLS, 0x0A81},
             {Opcode.SMSG_INIT_CURRENCY,  0x0B06},
             {Opcode.SMSG_INIT_WORLD_STATES, 0x0B04},
+            {Opcode.SMSG_INITIALIZE_FACTIONS, 0x0B10},
             {Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE, 0x010D},
             {Opcode.SMSG_LEARNED_SPELL, 0x08AB},
             {Opcode.SMSG_LIST_INVENTORY, 0x0940},
