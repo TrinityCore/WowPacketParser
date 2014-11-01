@@ -267,5 +267,46 @@ namespace WowPacketParser.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Guid");
             packet.ReadSingle("SplineDist");
         }
+
+        [Parser(Opcode.SMSG_SET_VIGNETTE)]
+        public static void HandleUnknown177(Packet packet)
+        {
+            packet.ReadBit("ForceUpdate");
+
+            // VignetteInstanceIDList
+            var int1 = packet.ReadInt32("RemovedCount");
+            for (var i = 0; i < int1; ++i)
+                packet.ReadPackedGuid128("IDs");
+
+            // Added
+            var int2 = packet.ReadInt32("AddedCount");
+            for (var i = 0; i < int2; ++i)
+                packet.ReadPackedGuid128("IDs");
+
+            // VignetteClientData
+            var int3 = packet.ReadInt32("VignetteClientDataCount");
+            for (var i = 0; i < int3; ++i)
+            {
+                packet.ReadVector3("Position");
+                packet.ReadPackedGuid128("ObjGUID");
+                packet.ReadInt32("VignetteID");
+                packet.ReadInt32("Unk");
+            }
+
+            // Updated
+            var int4 = packet.ReadInt32("UpdatedCount");
+            for (var i = 0; i < int4; ++i)
+                packet.ReadPackedGuid128("IDs");
+
+            // VignetteClientData
+            var int5 = packet.ReadInt32("VignetteClientDataCount");
+            for (var i = 0; i < int5; ++i)
+            {
+                packet.ReadVector3("Position");
+                packet.ReadPackedGuid128("ObjGUID");
+                packet.ReadInt32("VignetteID");
+                packet.ReadInt32("Unk");
+            }
+        }
     }
 }
