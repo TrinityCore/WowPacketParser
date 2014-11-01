@@ -121,26 +121,29 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("EnablePortals", index);
             packet.ReadBit("PlayHoverAnim", index);
             packet.ReadBit("IsSuppressingGreetings", index);
-            var HasMovementUpdate = packet.ReadBit("HasMovementUpdate", index);
-            var HasMovementTransport = packet.ReadBit("HasMovementTransport", index);
-            var Stationary = packet.ReadBit("Stationary", index);
-            var CombatVictim = packet.ReadBit("HasCombatVictim", index);
-            var ServerTime = packet.ReadBit("HasServerTime", index);
-            var VehicleCreate = packet.ReadBit("HasVehicleCreate", index);
-            var AnimKitCreate = packet.ReadBit("HasAnimKitCreate", index);
-            var Rotation = packet.ReadBit("HasRotation", index);
-            var AreaTrigger = packet.ReadBit("HasAreaTrigger", index);
-            var GameObject = packet.ReadBit("GameObject", index);
+
+            var hasMovementUpdate = packet.ReadBit("HasMovementUpdate", index);
+            var hasMovementTransport = packet.ReadBit("HasMovementTransport", index);
+            var hasStationaryPosition = packet.ReadBit("Stationary", index);
+            var hasCombatVictim = packet.ReadBit("HasCombatVictim", index);
+            var hasServerTime = packet.ReadBit("HasServerTime", index);
+            var hasVehicleCreate = packet.ReadBit("HasVehicleCreate", index);
+            var hasAnimKitCreate = packet.ReadBit("HasAnimKitCreate", index);
+            var hasRotation = packet.ReadBit("HasRotation", index);
+            var hasAreaTrigger = packet.ReadBit("HasAreaTrigger", index);
+            var hasGameObject = packet.ReadBit("HasGameObject", index);
+
             packet.ReadBit("ThisIsYou", index);
             packet.ReadBit("ReplaceActive", index);
-            var SceneObjCreate = packet.ReadBit("SceneObjCreate", index);
-            var ScenePendingInstances = packet.ReadBit("ScenePendingInstances", index);
 
-            var PauseTimesCount = packet.ReadUInt32("PauseTimesCount", index);
+            var sceneObjCreate = packet.ReadBit("SceneObjCreate", index);
+            var scenePendingInstances = packet.ReadBit("ScenePendingInstances", index);
 
-            if (HasMovementUpdate) // 392
+            var pauseTimesCount = packet.ReadUInt32("PauseTimesCount", index);
+
+            if (hasMovementUpdate) // 392
             {
-                moveInfo = ReadMovementStatusData(ref packet, guid, index);
+                moveInfo = ReadMovementStatusData(ref packet, index);
 
                 moveInfo.WalkSpeed = packet.ReadSingle("WalkSpeed", index) / 2.5f;
                 moveInfo.RunSpeed = packet.ReadSingle("RunSpeed", index) / 7.0f;
@@ -152,9 +155,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadSingle("TurnRate", index);
                 packet.ReadSingle("PitchRate", index);
 
-                var MovementForceCount = packet.ReadInt32("MovementForceCount", index);
+                var movementForceCount = packet.ReadInt32("MovementForceCount", index);
 
-                for (var i = 0; i < MovementForceCount; ++i)
+                for (var i = 0; i < movementForceCount; ++i)
                 {
                     packet.ReadPackedGuid128("Id", index);
                     packet.ReadVector3("Direction", index);
@@ -174,20 +177,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                     packet.ResetBitReader();
 
-                    var HasMovementSplineMove = packet.ReadBit("MovementSplineMove", index);
-                    if (HasMovementSplineMove)
+                    var hasMovementSplineMove = packet.ReadBit("MovementSplineMove", index);
+                    if (hasMovementSplineMove)
                     {
                         packet.ResetBitReader();
 
                         packet.ReadEnum<SplineFlag434>("SplineFlags", 25, index);
                         var type = (uint)packet.ReadEnum<SplineMode>("Mode", 2, index);
 
-                        var HasJumpGravity = packet.ReadBit("HasJumpGravity", index);
-                        var HasSpecialTime = packet.ReadBit("HasSpecialTime", index);
+                        var hasJumpGravity = packet.ReadBit("HasJumpGravity", index);
+                        var hasSpecialTime = packet.ReadBit("HasSpecialTime", index);
 
                         packet.ReadBits("Face", 2, index);
 
-                        var HasSplineFilterKey = packet.ReadBit("HasSplineFilterKey", index);
+                        var hasSplineFilterKey = packet.ReadBit("HasSplineFilterKey", index);
 
                         packet.ReadUInt32("Elapsed", index);
                         packet.ReadUInt32("Duration", index);
@@ -195,7 +198,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                         packet.ReadSingle("DurationModifier", index);
                         packet.ReadSingle("NextDurationModifier", index);
 
-                        var PointsCount = packet.ReadUInt32("PointsCount", index);
+                        var pointsCount = packet.ReadUInt32("PointsCount", index);
 
                         if (type == 3) // FaceDirection
                             packet.ReadSingle("FaceDirection", index);
@@ -206,16 +209,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                         if (type == 1) // FaceSpot
                             packet.ReadVector3("FaceSpot", index);
 
-                        if (HasJumpGravity)
+                        if (hasJumpGravity)
                             packet.ReadSingle("JumpGravity", index);
 
-                        if (HasSpecialTime)
+                        if (hasSpecialTime)
                             packet.ReadInt32("SpecialTime", index);
 
-                        if (HasSplineFilterKey)
+                        if (hasSplineFilterKey)
                         {
-                            var FilterKeysCount = packet.ReadUInt32("FilterKeysCount", index);
-                            for (var i = 0; i < PointsCount; ++i)
+                            var filterKeysCount = packet.ReadUInt32("FilterKeysCount", index);
+                            for (var i = 0; i < filterKeysCount; ++i)
                             {
                                 packet.ReadSingle("In", index, i);
                                 packet.ReadSingle("Out", index, i);
@@ -224,13 +227,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                             packet.ReadBits("FilterFlags", 2, index);
                         }
 
-                        for (var i = 0; i < PointsCount; ++i)
+                        for (var i = 0; i < pointsCount; ++i)
                             packet.ReadVector3("Points", index, i);
                     }
                 }
             }
 
-            if (HasMovementTransport) // 456
+            if (hasMovementTransport) // 456
             {
                 moveInfo.TransportGuid = packet.ReadPackedGuid128("PassengerGUID", index);
                 moveInfo.TransportOffset = packet.ReadVector4();
@@ -239,26 +242,28 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 packet.ResetBitReader();
 
-                var HasPrevMoveTime = packet.ReadBit("HasPrevMoveTime", index);
-                var HasVehicleRecID = packet.ReadBit("HasVehicleRecID", index);
+                var hasPrevMoveTime = packet.ReadBit("HasPrevMoveTime", index);
+                var hasVehicleRecID = packet.ReadBit("HasVehicleRecID", index);
 
-                if (HasPrevMoveTime)
+                if (hasPrevMoveTime)
                     packet.ReadUInt32("PrevMoveTime", index);
 
-                if (HasVehicleRecID)
+                if (hasVehicleRecID)
                     packet.ReadInt32("VehicleRecID", index);
 
                 if (moveInfo.TransportGuid.HasEntry() && moveInfo.TransportGuid.GetHighType() == HighGuidType.Vehicle &&
                     guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
                 {
-                    var vehicleAccessory = new VehicleTemplateAccessory();
-                    vehicleAccessory.AccessoryEntry = guid.GetEntry();
-                    vehicleAccessory.SeatId = seat;
+                    var vehicleAccessory = new VehicleTemplateAccessory
+                    {
+                        AccessoryEntry = guid.GetEntry(),
+                        SeatId = seat
+                    };
                     Storage.VehicleTemplateAccessorys.Add(moveInfo.TransportGuid.GetEntry(), vehicleAccessory, packet.TimeSpan);
                 }
             }
 
-            if (Stationary) // 480
+            if (hasStationaryPosition) // 480
             {
                 moveInfo.Position = packet.ReadVector3();
                 moveInfo.Orientation = packet.ReadSingle();
@@ -266,29 +271,29 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.AddValue("Stationary Position", moveInfo.Position, index);
             }
 
-            if (CombatVictim) // 504
+            if (hasCombatVictim) // 504
                 packet.ReadPackedGuid128("CombatVictim Guid", index);
 
-            if (ServerTime) // 516
+            if (hasServerTime) // 516
                 packet.ReadPackedTime("ServerTime", index);
 
-            if (VehicleCreate) // 528
+            if (hasVehicleCreate) // 528
             {
                 moveInfo.VehicleId = packet.ReadUInt32("RecID", index);
                 packet.ReadSingle("InitialRawFacing", index);
             }
 
-            if (AnimKitCreate) // 538
+            if (hasAnimKitCreate) // 538
             {
                 packet.ReadUInt16("AiID", index);
                 packet.ReadUInt16("MovementID", index);
                 packet.ReadUInt16("MeleeID", index);
             }
 
-            if (Rotation) // 552
+            if (hasRotation) // 552
                 packet.ReadPackedQuaternion("GameObject Rotation", index);
 
-            if (AreaTrigger) // 772
+            if (hasAreaTrigger) // 772
             {
                 // CliAreaTrigger
                 packet.ReadInt32("ElapsedMs", index);
@@ -297,64 +302,65 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 packet.ResetBitReader();
 
-                var HasAbsoluteOrientation = packet.ReadBit("HasAbsoluteOrientation", index);
-                var HasDynamicShape = packet.ReadBit("HasDynamicShape", index);
-                var HasAttached = packet.ReadBit("HasAttached", index);
-                var HasFaceMovementDir = packet.ReadBit("HasFaceMovementDir", index);
-                var HasFollowsTerrain = packet.ReadBit("HasFollowsTerrain", index);
-                var HasTargetRollPitchYaw = packet.ReadBit("HasTargetRollPitchYaw", index);
-                var HasScaleCurveID = packet.ReadBit("HasScaleCurveID", index);
-                var HasMorphCurveID = packet.ReadBit("HasMorphCurveID", index);
-                var HasFacingCurveID = packet.ReadBit("HasFacingCurveID", index);
-                var HasMoveCurveID = packet.ReadBit("HasMoveCurveID", index);
-                var HasAreaTriggerSphere = packet.ReadBit("HasAreaTriggerSphere", index);
-                var HasAreaTriggerBox = packet.ReadBit("HasAreaTriggerBox", index);
-                var HasAreaTriggerPolygon = packet.ReadBit("HasAreaTriggerPolygon", index);
-                var HasAreaTriggerCylinder = packet.ReadBit("HasAreaTriggerCylinder", index);
-                var HasAreaTriggerSpline = packet.ReadBit("HasAreaTriggerSpline", index);
+                packet.ReadBit("HasAbsoluteOrientation", index);
+                packet.ReadBit("HasDynamicShape", index);
+                packet.ReadBit("HasAttached", index);
+                packet.ReadBit("HasFaceMovementDir", index);
+                packet.ReadBit("HasFollowsTerrain", index);
 
-                if (HasTargetRollPitchYaw)
+                var hasTargetRollPitchYaw = packet.ReadBit("HasTargetRollPitchYaw", index);
+                var hasScaleCurveID = packet.ReadBit("HasScaleCurveID", index);
+                var hasMorphCurveID = packet.ReadBit("HasMorphCurveID", index);
+                var hasFacingCurveID = packet.ReadBit("HasFacingCurveID", index);
+                var hasMoveCurveID = packet.ReadBit("HasMoveCurveID", index);
+                var hasAreaTriggerSphere = packet.ReadBit("HasAreaTriggerSphere", index);
+                var hasAreaTriggerBox = packet.ReadBit("HasAreaTriggerBox", index);
+                var hasAreaTriggerPolygon = packet.ReadBit("HasAreaTriggerPolygon", index);
+                var hasAreaTriggerCylinder = packet.ReadBit("HasAreaTriggerCylinder", index);
+                var hasAreaTriggerSpline = packet.ReadBit("HasAreaTriggerSpline", index);
+
+                if (hasTargetRollPitchYaw)
                     packet.ReadVector3("TargetRollPitchYaw", index);
 
-                if (HasScaleCurveID)
+                if (hasScaleCurveID)
                     packet.ReadInt32("ScaleCurveID, index");
 
-                if (HasMorphCurveID)
+                if (hasMorphCurveID)
                     packet.ReadInt32("MorphCurveID", index);
 
-                if (HasFacingCurveID)
+                if (hasFacingCurveID)
                     packet.ReadInt32("FacingCurveID", index);
 
-                if (HasMoveCurveID)
+                if (hasMoveCurveID)
                     packet.ReadInt32("MoveCurveID", index);
 
-                if (HasAreaTriggerSphere)
+                if (hasAreaTriggerSphere)
                 {
                     packet.ReadSingle("Radius", index);
                     packet.ReadSingle("RadiusTarget", index);
                 }
 
-                if (HasAreaTriggerBox)
+                if (hasAreaTriggerBox)
                 {
                     packet.ReadVector3("Extents", index);
                     packet.ReadVector3("ExtentsTarget", index);
                 }
 
-                if (HasAreaTriggerPolygon)
+                if (hasAreaTriggerPolygon)
                 {
-                    var VerticesCount = packet.ReadInt32("VerticesCount", index);
-                    var VerticesTargetCount = packet.ReadInt32("VerticesTargetCount", index);
+                    var verticesCount = packet.ReadInt32("VerticesCount", index);
+                    var verticesTargetCount = packet.ReadInt32("VerticesTargetCount", index);
                     packet.ReadSingle("Height", index);
                     packet.ReadSingle("HeightTarget", index);
 
-                    for (var i = 0; i < VerticesCount; ++i)
+                    for (var i = 0; i < verticesCount; ++i)
                         packet.ReadVector2("Vertices", index, i);
 
-                    for (var i = 0; i < VerticesTargetCount; ++i)
+                    for (var i = 0; i < verticesTargetCount; ++i)
                         packet.ReadVector2("VerticesTarget", index, i);
                 }
 
-                if (HasAreaTriggerCylinder)
+                if (hasAreaTriggerCylinder)
                 {
                     packet.ReadSingle("Radius", index);
                     packet.ReadSingle("RadiusTarget", index);
@@ -364,7 +370,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadSingle("Float5", index);
                 }
 
-                if (HasAreaTriggerSpline)
+                if (hasAreaTriggerSpline)
                 {
                     packet.ReadInt32("TimeToTarget", index);
                     packet.ReadInt32("ElapsedTimeForMovement", index);
@@ -375,7 +381,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 }
             }
 
-            if (GameObject) // 788
+            if (hasGameObject) // 788
             {
                 packet.ReadInt32("WorldEffectID", index);
 
@@ -386,21 +392,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadInt32("Int1", index);
             }
 
-            if (SceneObjCreate) // 1184
+            if (sceneObjCreate) // 1184
             {
                 packet.ResetBitReader();
 
-                var CliSceneLocalScriptData = packet.ReadBit("CliSceneLocalScriptData", index);
-                var PetBattleFullUpdate = packet.ReadBit("PetBattleFullUpdate", index);
+                var hasSceneLocalScriptData = packet.ReadBit("HasSceneLocalScriptData", index);
+                var petBattleFullUpdate = packet.ReadBit("HasPetBattleFullUpdate", index);
 
-                if (CliSceneLocalScriptData)
+                if (hasSceneLocalScriptData)
                 {
                     packet.ResetBitReader();
-                    var DataLength = packet.ReadBits(7);
-                    packet.ReadWoWString("Data", DataLength, index);
+                    var dataLength = packet.ReadBits(7);
+                    packet.ReadWoWString("Data", dataLength, index);
                 }
 
-                if (PetBattleFullUpdate)
+                if (petBattleFullUpdate)
                 {
                     for (var i = 0; i < 2; ++i)
                     {
@@ -416,9 +422,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                         packet.ResetBitReader();
 
-                        var PetBattlePetUpdateCount = packet.ReadBits("PetBattlePetUpdateCount", 2, index, i);
+                        var petBattlePetUpdateCount = packet.ReadBits("PetBattlePetUpdateCount", 2, index, i);
 
-                        for (var j = 0; j < PetBattlePetUpdateCount; ++j)
+                        for (var j = 0; j < petBattlePetUpdateCount; ++j)
                         {
                             packet.ReadPackedGuid128("BattlePetGUID", index, i, j);
 
@@ -428,7 +434,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                             packet.ReadInt16("Level", index, i, j);
                             packet.ReadInt16("Xp", index, i, j);
-
 
                             packet.ReadInt32("CurHealth", index, i, j);
                             packet.ReadInt32("MaxHealth", index, i, j);
@@ -441,11 +446,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                             packet.ReadByte("Slot", index, i, j);
 
-                            var PetBattleActiveAbility = packet.ReadInt32("PetBattleActiveAbility", index, i, j);
-                            var PetBattleActiveAura = packet.ReadInt32("PetBattleActiveAura", index, i, j);
-                            var PetBattleActiveState = packet.ReadInt32("PetBattleActiveState", index, i, j);
+                            var petBattleActiveAbility = packet.ReadInt32("PetBattleActiveAbility", index, i, j);
+                            var petBattleActiveAura = packet.ReadInt32("PetBattleActiveAura", index, i, j);
+                            var petBattleActiveState = packet.ReadInt32("PetBattleActiveState", index, i, j);
 
-                            for (var k = 0; k < PetBattleActiveAbility; ++k)
+                            for (var k = 0; k < petBattleActiveAbility; ++k)
                             {
                                 packet.ReadInt32("AbilityID", index, i, j, k);
                                 packet.ReadInt16("CooldownRemaining", index, i, j, k);
@@ -454,7 +459,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                                 packet.ReadByte("Pboid", index, i, j, k);
                             }
 
-                            for (var k = 0; k < PetBattleActiveAura; ++k)
+                            for (var k = 0; k < petBattleActiveAura; ++k)
                             {
                                 packet.ReadInt32("AbilityID", index, i, j, k);
                                 packet.ReadInt32("InstanceID", index, i, j, k);
@@ -463,7 +468,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                                 packet.ReadByte("CasterPBOID", index, i, j, k);
                             }
 
-                            for (var k = 0; k < PetBattleActiveState; ++k)
+                            for (var k = 0; k < petBattleActiveState; ++k)
                             {
                                 packet.ReadInt32("StateID", index, i, j, k);
                                 packet.ReadInt32("StateValue", index, i, j, k);
@@ -477,10 +482,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                     for (var i = 0; i < 3; ++i)
                     {
-                        var PetBattleActiveAura = packet.ReadInt32("PetBattleActiveAura", index, i);
-                        var PetBattleActiveState = packet.ReadInt32("PetBattleActiveState", index, i);
+                        var petBattleActiveAura = packet.ReadInt32("PetBattleActiveAura", index, i);
+                        var petBattleActiveState = packet.ReadInt32("PetBattleActiveState", index, i);
 
-                        for (var j = 0; j < PetBattleActiveAura; ++j)
+                        for (var j = 0; j < petBattleActiveAura; ++j)
                         {
                             packet.ReadInt32("AbilityID", index, i, j);
                             packet.ReadInt32("InstanceID", index, i, j);
@@ -489,7 +494,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                             packet.ReadByte("CasterPBOID", index, i, j);
                         }
 
-                        for (var j = 0; j < PetBattleActiveState; ++j)
+                        for (var j = 0; j < petBattleActiveState; ++j)
                         {
                             packet.ReadInt32("StateID", index, i, j);
                             packet.ReadInt32("StateValue", index, i, j);
@@ -513,21 +518,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 }
             }
 
-            if (ScenePendingInstances) // 1208
+            if (scenePendingInstances) // 1208
             {
-                var SceneInstanceIDs = packet.ReadInt32("SceneInstanceIDsCount");
+                var sceneInstanceIDs = packet.ReadInt32("SceneInstanceIDsCount");
 
-                for (var i = 0; i < SceneInstanceIDs; ++i)
+                for (var i = 0; i < sceneInstanceIDs; ++i)
                     packet.ReadInt32("SceneInstanceIDs", index, i);
             }
             
-            for (var i = 0; i < PauseTimesCount; ++i)
+            for (var i = 0; i < pauseTimesCount; ++i)
                 packet.ReadInt32("PauseTimes", index, i);
 
             return moveInfo;
         }
 
-        private static MovementInfo ReadMovementStatusData(ref Packet packet, WowGuid guid, object index)
+        private static MovementInfo ReadMovementStatusData(ref Packet packet, object index)
         {
             var moveInfo = new MovementInfo();
 
@@ -551,12 +556,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadEnum<MovementFlag>("Movement Flags", 30, index);
             moveInfo.FlagsExtra = packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 15, index);
 
-            var HasTransport = packet.ReadBit("Has Transport Data", index);
-            var HasFall = packet.ReadBit("Has Fall Data", index);
+            var hasTransport = packet.ReadBit("Has Transport Data", index);
+            var hasFall = packet.ReadBit("Has Fall Data", index);
             packet.ReadBit("HasSpline", index);
             packet.ReadBit("HeightChangeFailed", index);
 
-            if (HasTransport)
+            if (hasTransport)
             {
                 packet.ReadPackedGuid128("Transport Guid", index);
                 packet.ReadVector4("Transport Position", index);
@@ -565,17 +570,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 packet.ResetBitReader();
 
-                var HasTransportTime2 = packet.ReadBit("HasTransportTime2", index);
-                var HasTransportTime3 = packet.ReadBit("HasTransportTime3", index);
+                var hasPrevMoveTime = packet.ReadBit("HasPrevMoveTime", index);
+                var hasVehicleRecID = packet.ReadBit("HasVehicleRecID", index);
 
-                if (HasTransportTime2)
-                    packet.ReadUInt32("Transport Time 2", index);
+                if (hasPrevMoveTime)
+                    packet.ReadUInt32("PrevMoveTime", index);
 
-                if (HasTransportTime3)
-                    packet.ReadUInt32("Transport Time 3", index);
+                if (hasVehicleRecID)
+                    packet.ReadUInt32("VehicleRecID", index);
             }
 
-            if (HasFall)
+            if (hasFall)
             {
                 packet.ReadUInt32("Fall Time", index);
                 packet.ReadSingle("JumpVelocity", index);
