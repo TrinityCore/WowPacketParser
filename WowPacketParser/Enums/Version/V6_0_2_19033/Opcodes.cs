@@ -179,6 +179,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_TIME_SYNC_REQ, 0x0CA8},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x0617},
             {Opcode.SMSG_SEND_UNLEARN_SPELLS, 0x07DB},
+            {Opcode.SMSG_UPDATE_ACCOUNT_DATA, 0x1427},
             {Opcode.SMSG_UPDATE_OBJECT, 0x03EF},
             {Opcode.SMSG_UPDATE_WORLD_STATE, 0x1368},
             {Opcode.SMSG_VOID_STORAGE_CONTENTS, 0x0137},

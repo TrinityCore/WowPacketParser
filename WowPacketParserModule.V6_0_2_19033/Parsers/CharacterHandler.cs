@@ -132,6 +132,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("CharacterGuid");
         }
 
+        [Parser(Opcode.CMSG_UNDELETE_COOLDOWN_STATUS_QUERY)]
+        public static void HandleUndeleteCooldownStatusQuery(Packet packet)
+        {
+        }
+
         [Parser(Opcode.SMSG_UNDELETE_COOLDOWN_STATUS_RESPONSE)]
         public static void HandleUndeleteCooldownStatusResponse(Packet packet)
         {
