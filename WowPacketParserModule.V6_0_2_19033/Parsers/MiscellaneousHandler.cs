@@ -199,6 +199,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < int6; ++i)
                 packet.ReadByte("QuestsCompleted", i);
         }
+
+        [Parser(Opcode.CMSG_AREATRIGGER)]
+        public static void HandleClientAreaTrigger(Packet packet)
+        {
+            var entry = packet.ReadEntry("Area Trigger Id");
+            packet.ReadBit("Entered");
+            packet.ReadBit("FromClient");
+
+            packet.AddSniffData(StoreNameType.AreaTrigger, entry.Key, "AREATRIGGER");
+        }
     }
 }
 
