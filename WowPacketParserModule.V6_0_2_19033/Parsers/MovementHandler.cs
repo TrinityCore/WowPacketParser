@@ -308,5 +308,25 @@ namespace WowPacketParser.V6_0_2_19033.Parsers
                 packet.ReadInt32("Unk", i);
             }
         }
+
+        [Parser(Opcode.SMSG_TRANSFER_PENDING)]
+        public static void HandleTransferPending434(Packet packet)
+        {
+            packet.ReadEntry<Int32>(StoreNameType.Map, "MapID");
+
+            packet.ResetBitReader();
+
+            var hasTransport = packet.ReadBit();
+            var customLoadScreenSpell = packet.ReadBit();
+
+            if (hasTransport)
+            {
+                packet.ReadInt32("ID");
+                packet.ReadEntry<Int32>(StoreNameType.Map, "OriginMapID");
+            }
+
+            if (customLoadScreenSpell)
+                packet.ReadEntry<UInt32>(StoreNameType.Spell, "TransferSpellID");
+        }
     }
 }
