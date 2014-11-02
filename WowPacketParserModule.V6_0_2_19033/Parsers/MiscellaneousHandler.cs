@@ -53,6 +53,54 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("CharUndeleteEnabled");
         }
 
+        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS)]
+        public static void HandleFeatureSystemStatus(Packet packet)
+        {
+            packet.ReadByte("ComplaintStatus");
+
+            packet.ReadInt32("ScrollOfResurrectionRequestsRemaining");
+            packet.ReadInt32("ScrollOfResurrectionMaxRequestsPerDay");
+            packet.ReadInt32("CfgRealmID");
+            packet.ReadInt32("CfgRealmRecID");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("VoiceEnabled");
+            var bit84 = packet.ReadBit("EuropaTicketSystemStatus");
+            packet.ReadBit("ScrollOfResurrectionEnabled");
+            packet.ReadBit("BpayStoreEnabled");
+            packet.ReadBit("BpayStoreAvailable");
+            packet.ReadBit("BpayStoreDisabledByParentalControls");
+            packet.ReadBit("ItemRestorationButtonEnabled");
+            packet.ReadBit("BrowserEnabled");
+            var bit44 = packet.ReadBit("SessionAlert");
+            packet.ReadBit("RecruitAFriendSendingEnabled");
+            packet.ReadBit("CharUndeleteEnabled");
+            packet.ReadBit("Unk bit21");
+            packet.ReadBit("Unk bit22");
+            packet.ReadBit("Unk bit90");
+
+            if (bit84)
+            {
+                packet.ReadBit("Unk bit0");
+                packet.ReadBit("Unk bit1");
+                packet.ReadBit("TicketSystemEnabled");
+                packet.ReadBit("SubmitBugEnabled");
+
+                packet.ReadInt32("MaxTries");
+                packet.ReadInt32("PerMilliseconds");
+                packet.ReadInt32("TryCount");
+                packet.ReadInt32("LastResetTimeBeforeNow");
+            }
+
+            if (bit44)
+            {
+                packet.ReadInt32("Delay");
+                packet.ReadInt32("Period");
+                packet.ReadInt32("DisplayTime");
+            }
+        }
+
         [Parser(Opcode.SMSG_WORLD_SERVER_INFO)]
         public static void HandleWorldServerInfo(Packet packet)
         {
