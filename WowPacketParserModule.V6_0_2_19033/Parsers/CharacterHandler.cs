@@ -169,5 +169,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadByte("NewPosition", i);
             }
         }
+
+        [Parser(Opcode.CMSG_CHAR_DELETE)]
+        public static void HandleClientCharDelete(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGUID");
+        }
     }
 }

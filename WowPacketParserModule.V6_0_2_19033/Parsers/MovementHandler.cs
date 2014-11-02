@@ -310,22 +310,22 @@ namespace WowPacketParser.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]
-        public static void HandleTransferPending434(Packet packet)
+        public static void HandleTransferPending(Packet packet)
         {
             packet.ReadEntry<Int32>(StoreNameType.Map, "MapID");
 
             packet.ResetBitReader();
 
-            var hasTransport = packet.ReadBit();
-            var customLoadScreenSpell = packet.ReadBit();
+            var hasShipTransferPending = packet.ReadBit();
+            var hasTransferSpell = packet.ReadBit();
 
-            if (hasTransport)
+            if (hasShipTransferPending)
             {
                 packet.ReadInt32("ID");
                 packet.ReadEntry<Int32>(StoreNameType.Map, "OriginMapID");
             }
 
-            if (customLoadScreenSpell)
+            if (hasTransferSpell)
                 packet.ReadEntry<UInt32>(StoreNameType.Spell, "TransferSpellID");
         }
     }
