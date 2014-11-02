@@ -96,7 +96,7 @@ namespace WowPacketParser.Misc
 
         public byte GetSubType() // move to base?
         {
-            return (byte)((Low >> 56) & 0x3F);
+            return (byte)(High & 0x3F);
         }
 
         public ushort GetRealmId() // move to base?
@@ -104,9 +104,9 @@ namespace WowPacketParser.Misc
             return (ushort)((High >> 42) & 0x1FFF);
         }
 
-        public ushort GetServerId() // move to base?
+        public uint GetServerId() // move to base?
         {
-            return (ushort)((Low >> 40) & 0x1FFF);
+            return (uint)((Low >> 40) & 0xFFFFFF);
         }
 
         public ushort GetMapId() // move to base?
