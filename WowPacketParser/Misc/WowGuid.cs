@@ -52,7 +52,13 @@ namespace WowPacketParser.Misc
 
         public static bool operator ==(WowGuid first, WowGuid other)
         {
-            return ReferenceEquals(first, other) || (first != null && first.Equals(other));
+            if (ReferenceEquals(first, other))
+                return true;
+
+            if (((object) first == null) || ((object) other == null))
+                return false;
+
+            return first.Equals(other);
         }
 
         public static bool operator !=(WowGuid first, WowGuid other)
@@ -121,7 +127,7 @@ namespace WowPacketParser.Misc
 
         public override ulong GetLow()
         {
-            return (ulong)(Low & 0xFFFFFFFFFF); // CreationBits
+            return Low & 0xFFFFFFFFFF; // CreationBits
         }
 
         public override string ToString()
