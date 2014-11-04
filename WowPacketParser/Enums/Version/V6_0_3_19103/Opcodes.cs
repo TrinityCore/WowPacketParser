@@ -11,6 +11,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
 
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
+            {Opcode.CMSG_ADD_IGNORE, 0x1321},
             {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x03F4 | 0x10000},
             {Opcode.CMSG_AUCTION_HELLO, 0x13EA},
             {Opcode.CMSG_AUTH_SESSION, 0x0487},
@@ -68,6 +69,8 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_SET_RAID_DIFFICULTY, 0x04DF},
             {Opcode.CMSG_SEND_MAIL, 0x0910},
             {Opcode.CMSG_SET_SELECTION, 0x05BD},
+            {Opcode.CMSG_SHOWING_CLOAK, 0x0132},
+            {Opcode.CMSG_SHOWING_HELM, 0x11E1},
             {Opcode.CMSG_SUSPEND_TOKEN, 0x0142},
             {Opcode.CMSG_TEXT_EMOTE, 0x1901 | 0x10000},
             {Opcode.CMSG_TIME_SYNC_RESP, 0x0003},
