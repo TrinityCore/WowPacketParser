@@ -188,7 +188,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                         var hasJumpGravity = packet.ReadBit("HasJumpGravity", index);
                         var hasSpecialTime = packet.ReadBit("HasSpecialTime", index);
 
-                        var facing = packet.ReadBits("Face", 2, index);
+                        packet.ReadBits("Face", 2, index);
 
                         var hasSplineFilterKey = packet.ReadBit("HasSplineFilterKey", index);
 
@@ -200,13 +200,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                         var pointsCount = packet.ReadUInt32("PointsCount", index);
 
-                        if (facing == 3) // FaceDirection
+                        if (type == 3) // FaceDirection
                             packet.ReadSingle("FaceDirection", index);
 
-                        if (facing == 2) // FaceGUID
+                        if (type == 2) // FaceGUID
                             packet.ReadPackedGuid128("FaceGUID", index);
 
-                        if (facing == 1) // FaceSpot
+                        if (type == 1) // FaceSpot
                             packet.ReadVector3("FaceSpot", index);
 
                         if (hasJumpGravity)
