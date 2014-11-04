@@ -114,6 +114,36 @@ namespace WowPacketParser.V6_0_2_19033.Parsers
             ReadMovementStats(ref packet);
         }
 
+        [Parser(Opcode.CMSG_MOVE_FALL_LAND)]
+        public static void HandleMoveFallLand(Packet packet)
+        {
+            ReadMovementStats(ref packet);
+        }
+
+        [Parser(Opcode.CMSG_MOVE_JUMP)]
+        public static void HandleMoveJump(Packet packet)
+        {
+            ReadMovementStats(ref packet);
+        }
+
+        [Parser(Opcode.CMSG_MOVE_START_BACKWARD)]
+        public static void HandleMoveStartBackward(Packet packet)
+        {
+            ReadMovementStats(ref packet);
+        }
+
+        [Parser(Opcode.CMSG_MOVE_START_FORWARD)]
+        public static void HandleMoveStartForward(Packet packet)
+        {
+            ReadMovementStats(ref packet);
+        }
+        
+        [Parser(Opcode.MSG_MOVE_STOP)]
+        public static void HandleMoveStop(Packet packet)
+        {
+            ReadMovementStats(ref packet);
+        }
+
         [Parser(Opcode.SMSG_MONSTER_MOVE)]
         public static void HandleMonsterMove(Packet packet)
         {

@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using MovementParsers = WowPacketParser.V6_0_2_19033.Parsers.MovementHandler;
+using WowPacketParser.V6_0_2_19033.Parsers;
 
-namespace WowPacketParser.V6_0_2_19033.Parsers
+namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class SpellHandler
     {
@@ -96,7 +97,7 @@ namespace WowPacketParser.V6_0_2_19033.Parsers
                 var hasAura = packet.ReadBit("HasAura", i);
                 if (hasAura)
                 {
-                    var id = packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i);
+                    aura.SpellId = (uint)packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i);
                     aura.AuraFlags = packet.ReadEnum<AuraFlagMoP>("Flags", TypeCode.Byte, i);
                     packet.ReadInt32("Effect Mask", i);
                     aura.Level = packet.ReadUInt16("Caster Level", i);
@@ -215,13 +216,14 @@ namespace WowPacketParser.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
 
+            packet.ReadBits("SendCastFlags", 5);
             var bit456 = packet.ReadBit("HasMoveUpdate"); // MoveUpdate
 
             var bits116 = packet.ReadBits("SpellWeightCount", 2); // SpellWeight
 
             // MoveUpdate
             if (bit456)
-                MovementParsers.ReadMovementStats(ref packet);
+                MovementHandler.ReadMovementStats(ref packet);
 
             // SpellWeight
             for (var i = 0; i < bits116; ++i)
@@ -237,6 +239,8 @@ namespace WowPacketParser.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_SPELL_GO)]
         public static void HandleSpellStart(Packet packet)
         {
+            bool isSpellGo = (packet.Opcode | 0x20000) == Opcodes.GetOpcode(Opcode.SMSG_SPELL_GO);
+
             packet.ReadPackedGuid128("Caster Guid");
             packet.ReadPackedGuid128("CasterUnit Guid");
 
@@ -357,14 +361,15 @@ namespace WowPacketParser.V6_0_2_19033.Parsers
                 for (var i = 0; i < 2; ++i)
                     packet.ReadInt32("Id", i);
 
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_SPELL_START))
-                return;
+            if (isSpellGo)
+            {
 
-            packet.ResetBitReader();
+                packet.ResetBitReader();
 
-            var bit52 = packet.ReadBit("SpellCastLogData");
-            if (bit52)
-                ReadSpellCastLogData(ref packet);
+                var bit52 = packet.ReadBit("SpellCastLogData");
+                if (bit52)
+                    ReadSpellCastLogData(ref packet);
+            }
         }
 
         public static void ReadSpellCastLogData(ref Packet packet)
