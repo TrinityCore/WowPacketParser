@@ -175,5 +175,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("PlayerGUID");
         }
+
+        [Parser(Opcode.CMSG_RANDOMIZE_CHAR_NAME)]
+        public static void HandleGenerateRandomCharacterName(Packet packet)
+        {
+            packet.ReadEnum<Race>("Race", TypeCode.Byte);
+            packet.ReadEnum<Gender>("Sex", TypeCode.Byte);
+        }
     }
 }
