@@ -31,7 +31,7 @@ namespace WowPacketParser.Store.Objects
 
         public bool IsOnTransport()
         {
-            return Movement.TransportGuid != WowGuid.Empty;
+            return Movement.TransportGuid != null && Movement.TransportGuid != WowGuid.Empty;
         }
 
         public int GetDefaultSpawnTime()
