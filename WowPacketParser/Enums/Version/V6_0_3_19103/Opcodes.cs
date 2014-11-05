@@ -30,7 +30,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_FACTION_BONUS_INFO, 0x0928},
             {Opcode.CMSG_JOIN_CHANNEL, 0x0B4B},
             {Opcode.CMSG_GAMEOBJ_REPORT_USE, 0x082E},
-            {Opcode.CMSG_GAMEOBJECT_QUERY, 0x0D97},
+            {Opcode.CMSG_GAMEOBJECT_QUERY, 0x03AE},
             {Opcode.CMSG_GOSSIP_HELLO, 0x00F3},
             {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x0332 | 0x10000},
             {Opcode.CMSG_GUILD_QUERY, 0x0930},
