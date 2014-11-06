@@ -11,7 +11,9 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
 
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
+            {Opcode.CMSG_ADD_FRIEND, 0x0DB9},
             {Opcode.CMSG_ADD_IGNORE, 0x1321},
+            {Opcode.CMSG_ADD_MUTE, 0x098A},
             {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x03F4 | 0x10000},
             {Opcode.CMSG_AUCTION_HELLO, 0x13EA},
             {Opcode.CMSG_AUTH_SESSION, 0x0487},
@@ -22,6 +24,9 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_CHAR_CREATE, 0x070D},
             {Opcode.CMSG_CHAR_DELETE, 0x030E},
             {Opcode.CMSG_CHAR_ENUM, 0x0918},
+            {Opcode.CMSG_DEL_FRIEND, 0x0F2A},
+            {Opcode.CMSG_DEL_IGNORE, 0x033D},
+            {Opcode.CMSG_DEL_MUTE, 0x0128},
             {Opcode.CMSG_RANDOMIZE_CHAR_NAME, 0x1981},
             {Opcode.CMSG_CHAR_UNDELETE_ENUM, 0x0F2D},
             {Opcode.CMSG_CREATURE_QUERY, 0x0505},
@@ -112,6 +117,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_CHAR_CREATE, 0x0107},
             {Opcode.SMSG_CHAR_DELETE, 0x0BC4},
             {Opcode.SMSG_CHAR_ENUM, 0x05AF},
+            {Opcode.SMSG_CONTACT_LIST, 0x1BEA},
             {Opcode.SMSG_CRITERIA_UPDATE_ACCOUNT, 0x0912},
             {Opcode.SMSG_CRITERIA_UPDATE_PLAYER, 0x1904},
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x080D},
@@ -142,7 +148,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x128A},
             {Opcode.SMSG_GOSSIP_COMPLETE, 0x15D1},
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x1746},
-            {Opcode.SMSG_GOSSIP_POI, 0x011E},
+            {Opcode.SMSG_GOSSIP_POI, 0x011E | 0x20000},
             {Opcode.SMSG_GUILD_ACHIEVEMENT_DATA, 0x1866},
             {Opcode.SMSG_GUILD_EVENT, 0x1027},
             {Opcode.SMSG_GUILD_EVENT_PRESENCE_CHANGE, 0x1228},

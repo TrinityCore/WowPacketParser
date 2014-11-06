@@ -257,6 +257,34 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.AddSniffData(StoreNameType.AreaTrigger, entry.Key, "AREATRIGGER");
         }
+
+        [Parser(Opcode.CMSG_ADD_IGNORE)]
+        [Parser(Opcode.CMSG_ADD_MUTE)]
+        public static void HandleAddIgnoreOrMute(Packet packet)
+        {
+            var bits9 = packet.ReadBits(9);
+            packet.ReadWoWString("Name", bits9);
+        }
+
+        [Parser(Opcode.CMSG_ADD_FRIEND)]
+        public static void HandleAddFriend(Packet packet)
+        {
+            var bits16 = packet.ReadBits(9);
+            var bits10 = packet.ReadBits(10);
+
+            packet.ReadWoWString("Name", bits16);
+            packet.ReadWoWString("Notes", bits10);
+        }
+
+        [Parser(Opcode.CMSG_DEL_FRIEND)]
+        [Parser(Opcode.CMSG_DEL_IGNORE)]
+        [Parser(Opcode.CMSG_DEL_MUTE)]
+        public static void HandleDeleteFriendOrIgnoreOrMute(Packet packet)
+        {
+            // QualifiedGUID
+            packet.ReadInt32("VirtualRealmAddress");
+            packet.ReadPackedGuid128("Guid");
+        }
     }
 }
 
