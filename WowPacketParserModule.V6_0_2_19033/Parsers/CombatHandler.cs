@@ -102,5 +102,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadUInt32("Threat", i);
             }
         }
+
+        [Parser(Opcode.SMSG_AI_REACTION)]
+        public static void HandleAIReaction(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+            packet.ReadEnum<AIReaction>("Reaction", TypeCode.Int32);
+        }
     }
 }
