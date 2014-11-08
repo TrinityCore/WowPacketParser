@@ -405,6 +405,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_CHANNEL_UPDATE)]
+        public static void HandleSpellChannelUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadInt32("TimeRemaining");
+        }
+
         [Parser(Opcode.SMSG_CHANNEL_START)]
         public static void HandleSpellChannelStart(Packet packet)
         {
