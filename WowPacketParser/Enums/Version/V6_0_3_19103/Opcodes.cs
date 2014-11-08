@@ -185,6 +185,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x0828},
             {Opcode.SMSG_NEW_WORLD, 0x0206},
             {Opcode.SMSG_NPC_TEXT_UPDATE, 0x1122},
+            {Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA, 0x053F},
             {Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE, 0x05A0},
             {Opcode.SMSG_PERIODICAURALOG, 0x0B1B},
             {Opcode.SMSG_PET_NAME_QUERY_RESPONSE, 0x0D0E},
