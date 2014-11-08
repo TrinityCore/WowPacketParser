@@ -450,5 +450,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < count; i++)
                 packet.ReadPackedGuid128("Targets", i);
         }
+
+        [Parser(Opcode.CMSG_CANCEL_AURA)]
+        public static void HandleCanelAura(Packet packet)
+        {
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "SpellID");
+            packet.ReadPackedGuid128("CasterGUID");
+        }
     }
 }
