@@ -357,5 +357,60 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (hasTransferSpell)
                 packet.ReadEntry<UInt32>(StoreNameType.Spell, "TransferSpellID");
         }
+
+        [Parser(Opcode.SMSG_MOVE_UPDATE_TELEPORT)]
+        public static void HandleMoveUpdateTeleport(Packet packet)
+        {
+            ReadMovementStats(ref packet);
+
+            var int32 = packet.ReadInt32("MovementForcesCount");
+            for (int i = 0; i < int32; i++)
+            {
+                packet.ReadPackedGuid128("ID", i);
+                packet.ReadVector3("Direction", i);
+                packet.ReadInt32("TransportID", i);
+                packet.ReadSingle("Magnitude", i);
+                packet.ReadBits("Type", 2, i);
+            }
+
+            packet.ResetBitReader();
+
+            var bit260 = packet.ReadBit("HasWalkSpeed");
+            var bit276 = packet.ReadBit("HasRunSpeed");
+            var bit52 = packet.ReadBit("HasRunBackSpeed");
+            var bit28 = packet.ReadBit("HasSwimSpeed");
+            var bit76 = packet.ReadBit("HasSwimBackSpeed");
+            var bit20 = packet.ReadBit("HasFlightSpeed");
+            var bit268 = packet.ReadBit("HasFlightBackSpeed");
+            var bit60 = packet.ReadBit("HasTurnRate");
+            var bit68 = packet.ReadBit("HasPitchRate");
+
+            if (bit260)
+                packet.ReadSingle("WalkSpeed");
+
+            if (bit276)
+                packet.ReadSingle("RunSpeed");
+
+            if (bit52)
+                packet.ReadSingle("RunBackSpeed");
+
+            if (bit28)
+                packet.ReadSingle("SwimSpeed");
+
+            if (bit76)
+                packet.ReadSingle("SwimBackSpeed");
+
+            if (bit20)
+                packet.ReadSingle("FlightSpeed");
+
+            if (bit268)
+                packet.ReadSingle("FlightBackSpeed");
+
+            if (bit60)
+                packet.ReadSingle("TurnRate");
+
+            if (bit68)
+                packet.ReadSingle("PitchRate");
+        }
     }
 }

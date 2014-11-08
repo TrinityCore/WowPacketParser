@@ -180,6 +180,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_MESSAGECHAT, 0x0603},
             {Opcode.SMSG_MONSTER_MOVE, 0x0994},
             {Opcode.SMSG_MOTD, 0x0442},
+            {Opcode.SMSG_MOVE_UPDATE_TELEPORT, 0x03D5},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x0828},
             {Opcode.SMSG_NEW_WORLD, 0x0206},
             {Opcode.SMSG_NPC_TEXT_UPDATE, 0x1122},
