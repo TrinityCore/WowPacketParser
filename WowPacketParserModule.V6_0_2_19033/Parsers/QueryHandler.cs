@@ -196,5 +196,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.AddSniffData(StoreNameType.PageText, (int)entry, "QUERY_RESPONSE");
             Storage.PageTexts.Add(entry, pageText, packet.TimeSpan);
         }
+
+        [Parser(Opcode.SMSG_QUERY_TIME_RESPONSE)]
+        public static void HandleTimeQueryResponse(Packet packet)
+        {
+            packet.ReadTime("CurrentTime");
+            packet.ReadInt32("TimeOutRequest");
+        }
     }
 }

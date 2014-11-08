@@ -256,7 +256,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadEnum<GuildRankRightsFlag>("Flags", TypeCode.UInt32);
             packet.ReadUInt32("NumTabs");
 
-            var int16 = packet.ReadInt32("Tab size");
+            var int16 = packet.ReadInt32("TabCount");
 
             for (var i = 0; i < int16; i++)
             {
