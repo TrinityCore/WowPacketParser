@@ -85,6 +85,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_SHOWING_CLOAK, 0x0132},
             {Opcode.CMSG_SHOWING_HELM, 0x11E1},
             {Opcode.CMSG_SUSPEND_TOKEN, 0x0142},
+            {Opcode.CMSG_TRANSMOGRIFY_ITEMS, 0x0A85},
             {Opcode.CMSG_TEXT_EMOTE, 0x1901 | 0x10000},
             {Opcode.CMSG_TIME_SYNC_RESP, 0x0003},
             {Opcode.CMSG_UNDELETE_CHARACTER, 0x0D99},
