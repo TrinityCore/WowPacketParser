@@ -65,6 +65,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
+        public static void ReadMovementAck(ref Packet packet)
+        {
+            ReadMovementStats(ref packet);
+            packet.ReadInt32("AckIndex");
+        }
+
         [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
         public static void HandleLoginVerifyWorld(Packet packet)
         {
@@ -421,12 +427,56 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("SequenceIndex");
         }
 
+        [Parser(Opcode.SMSG_MOVE_SET_COLLISION_HEIGHT)]
+        public static void HandleSetCollisionHeight(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+            packet.ReadInt32("SequenceIndex");
+            packet.ReadSingle("Scale");
+            packet.ReadSingle("Height");
+            packet.ReadInt32("MountDisplayID");
+
+            packet.ResetBitReader();
+
+            packet.ReadBits("Reason", 2);
+        }
+
         [Parser(Opcode.CMSG_MOVE_GRAVITY_DISABLE_ACK)]
         [Parser(Opcode.CMSG_FORCE_MOVE_ROOT_ACK)]
         public static void HandleMovementAck(Packet packet)
         {
-            ReadMovementStats(ref packet);
-            packet.ReadInt32("AckIndex");
+            ReadMovementAck(ref packet);
+        }
+
+        [Parser(Opcode.CMSG_MOVE_SET_COLLISION_HEIGHT_ACK)]
+        public static void HandleMoveSetCollisionHeightAck434(Packet packet)
+        {
+            ReadMovementAck(ref packet);
+            packet.ReadSingle("Height");
+            packet.ReadInt32("MountDisplayID");
+
+            packet.ResetBitReader();
+
+            packet.ReadBits("Reason", 2);
+        }
+
+        [Parser(Opcode.SMSG_SPLINE_MOVE_GRAVITY_DISABLE)]
+        public static void HandleSplineMoveGravityDisable(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+        }
+
+        [Parser(Opcode.SMSG_SET_PLAY_HOVER_ANIM)]
+        public static void HandlePlayHoverAnim(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+            packet.ReadBit("PlayHoverAnim");
+        }
+
+        [Parser(Opcode.SMSG_SPLINE_MOVE_UNSET_HOVER)]
+        public static void HandleSplineMoveUnsetHover(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
         }
     }
 }
