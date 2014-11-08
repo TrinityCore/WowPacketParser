@@ -156,6 +156,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x03DE},
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x00D5},
             {Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE, 0x01C6},
+            {Opcode.SMSG_RANDOMIZE_CHAR_NAME, 0x0653},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x1082},
             {Opcode.SMSG_SEND_MAIL_RESULT, 0x0035},
             {Opcode.SMSG_SET_TIME_ZONE_INFORMATION, 0x1257},

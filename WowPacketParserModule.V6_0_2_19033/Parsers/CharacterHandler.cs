@@ -177,10 +177,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_RANDOMIZE_CHAR_NAME)]
-        public static void HandleGenerateRandomCharacterName(Packet packet)
+        public static void HandleGenerateRandomCharacterNameQuery(Packet packet)
         {
             packet.ReadEnum<Race>("Race", TypeCode.Byte);
             packet.ReadEnum<Gender>("Sex", TypeCode.Byte);
+        }
+
+        [Parser(Opcode.SMSG_RANDOMIZE_CHAR_NAME)]
+        public static void HandleGenerateRandomCharacterNameResponse(Packet packet)
+        {
+            packet.ReadBit("Success");
+            var bits17 = packet.ReadBits(6);
+
+            packet.ReadWoWString("Name", bits17);
         }
     }
 }
