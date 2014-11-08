@@ -61,6 +61,7 @@
     <Compile Include="Parsers\AddonHandler.cs" />
     <Compile Include="Parsers\ArenaHandler.cs" />
     <Compile Include="Parsers\AuctionHandler.cs" />
+    <Compile Include="Parsers\BattlegroundHandler.cs" />
     <Compile Include="Parsers\BattlePetHandler.cs" />
     <Compile Include="Parsers\BattlePayHandler.cs" />
     <Compile Include="Parsers\ChannelHandler.cs" />
