@@ -199,6 +199,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_RANDOMIZE_CHAR_NAME, 0x0D8F},
             {Opcode.SMSG_BATTLEFIELD_RATED_INFO, 0x1F0A},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x175A},
+            {Opcode.SMSG_REMOVED_SPELL, 0x138B},
             {Opcode.SMSG_RESUME_COMMS, 0x07C9},
             {Opcode.SMSG_SEND_MAIL_RESULT, 0x0302 | 0x20000},
             {Opcode.SMSG_SEND_UNLEARN_SPELLS, 0x1A82},
