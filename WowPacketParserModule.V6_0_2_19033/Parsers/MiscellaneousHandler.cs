@@ -274,6 +274,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < int16; i++)
                 packet.ReadBit("MountIsFavorite", i);
         }
+
+        [Parser(Opcode.SMSG_PLAY_SOUND)]
+        public static void HandlePlaySound(Packet packet)
+        {
+            var sound = packet.ReadUInt32("SoundKitID");
+            var guid = packet.ReadPackedGuid128("SourceObjectGUID");
+
+            Storage.Sounds.Add(sound, packet.TimeSpan);
+        }
     }
 }
 
