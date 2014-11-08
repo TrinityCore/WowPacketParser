@@ -89,6 +89,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_SET_SPECIALIZATION, 0x0AC5},
             {Opcode.CMSG_SHOWING_CLOAK, 0x0132},
             {Opcode.CMSG_SHOWING_HELM, 0x11E1},
+            {Opcode.CMSG_SPELLCLICK, 0x0BC2},
             {Opcode.CMSG_SUSPEND_COMMS_ACK, 0x0C56},
             {Opcode.CMSG_SUSPEND_TOKEN, 0x0142},
             {Opcode.CMSG_TRANSMOGRIFY_ITEMS, 0x0A85},

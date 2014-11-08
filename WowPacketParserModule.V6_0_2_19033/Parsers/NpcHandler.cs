@@ -283,5 +283,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             else
                 Storage.NpcTrainers.Add(guid.GetEntry(), npcTrainer, packet.TimeSpan);
         }
+
+        [Parser(Opcode.CMSG_SPELLCLICK)]
+        public static void HandleSpellClick(Packet packet)
+        {
+            var guid = packet.ReadPackedGuid128("SpellClickUnitGUID");
+            packet.ReadBit("TryAutoDismount");
+
+            if (guid.GetObjectType() == ObjectType.Unit)
+                Storage.NpcSpellClicks.Add(guid, packet.TimeSpan);
+        }
     }
 }
