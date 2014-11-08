@@ -22,6 +22,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_BANKER_ACTIVATE, 0x1B24},
             {Opcode.CMSG_BATTLE_PET_NAME_QUERY, 0x041C},
             {Opcode.CMSG_BATTLE_PAY_GET_PRODUCT_LIST_QUERY, 0x1389},
+            {Opcode.CMSG_BATTLE_PAY_GET_PURCHASE_LIST_QUERY, 0x120C},
             {Opcode.CMSG_CANCEL_TRADE, 0x1159},
             {Opcode.CMSG_CAST_SPELL, 0x08FE},
             {Opcode.CMSG_CHAR_CREATE, 0x070D},

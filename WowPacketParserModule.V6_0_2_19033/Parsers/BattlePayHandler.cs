@@ -6,6 +6,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class BattlePayHandler
     {
+        [Parser(Opcode.CMSG_BATTLE_PAY_GET_PURCHASE_LIST_QUERY)]
+        public static void HandleZeroLengthPackets(Packet packet)
+        {
+        }
+
         private static void ReadBattlepayDisplayInfo(ref Packet packet, uint index)
         {
             packet.ResetBitReader();
