@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -33,7 +34,60 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadWoWString("DeclinedNames", declinedNameLen[i], i);
 
             packet.ReadTime("Timestamp");
-            var petName = packet.ReadWoWString("Pet name", len);
+            packet.ReadWoWString("Pet name", len);
+        }
+
+
+        [Parser(Opcode.SMSG_PET_SPELLS)]
+        public static void HandlePetSpells(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
+            packet.ReadInt16("CreatureFamily");
+            packet.ReadInt16("Specialization");
+            packet.ReadInt32("TimeLimit");
+            packet.ReadInt32("PetModeAndOrders");
+
+            // ActionButtons
+            const int maxCreatureSpells = 10;
+            var spells = new List<uint>(maxCreatureSpells);
+            for (var i = 0; i < maxCreatureSpells; i++) // Read pet/vehicle spell ids
+            {
+                var spell16 = packet.ReadUInt16();
+                var spell8 = packet.ReadByte();
+                var spellId = spell16 + (spell8 << 16);
+                var slot = packet.ReadByte();
+
+                if (spellId <= 4)
+                    packet.AddValue("Action", spellId, i);
+                else
+                    packet.AddValue("Spell", StoreGetters.GetName(StoreNameType.Spell, spellId), i);
+                packet.AddValue("Slot", slot, i);
+            }
+
+            var int28 = packet.ReadInt32("ActionsCount");
+            var int44 = packet.ReadUInt32("CooldownsCount");
+            var int60 = packet.ReadUInt32("SpellHistoryCount");
+
+            // Actions
+            for (int i = 0; i < int28; i++)
+                packet.ReadInt32("Actions", i);
+
+            // PetSpellCooldown
+            for (int i = 0; i < int44; i++)
+            {
+                packet.ReadInt32("SpellID", i);
+                packet.ReadInt32("Duration", i);
+                packet.ReadInt32("CategoryDuration", i);
+                packet.ReadInt16("Category", i);
+            }
+
+            // PetSpellHistory
+            for (int i = 0; i < int60; i++)
+            {
+                packet.ReadInt32("CategoryID", i);
+                packet.ReadInt32("RecoveryTime", i);
+                packet.ReadSByte("ConsumedCharges", i);
+            }
         }
     }
 }
