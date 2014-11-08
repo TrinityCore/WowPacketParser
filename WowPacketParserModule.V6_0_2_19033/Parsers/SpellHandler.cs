@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using WowPacketParser.V6_0_2_19033.Parsers;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
@@ -404,6 +402,35 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             {
                 packet.ReadInt32("Category");
                 packet.ReadByte("Uses");
+            }
+        }
+
+        [Parser(Opcode.SMSG_CHANNEL_START)]
+        public static void HandleSpellChannelStart(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadInt32("SpellID");
+            packet.ReadInt32("ChannelDuration");
+
+            var bit84 = packet.ReadBit("HasInterruptImmunities");
+            var bit24 = packet.ReadBit("HasHealPrediction");
+
+            // SpellChannelStartInterruptImmunities
+            if (bit84)
+            {
+                packet.ReadInt32("SchoolImmunities");
+                packet.ReadInt32("Immunities");
+            }
+
+            // SpellTargetedHealPrediction
+            if (bit24)
+            {
+                packet.ReadPackedGuid128("TargetGUID");
+
+                // SpellHealPrediction
+                packet.ReadInt32("Points");
+                packet.ReadByte("Type");
+                packet.ReadPackedGuid128("BeaconGUID");
             }
         }
     }
