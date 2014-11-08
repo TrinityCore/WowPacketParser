@@ -11,7 +11,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_AUTH_RESPONSE)]
         public static void HandleAuthResponse(Packet packet)
         {
-            var code = packet.ReadEnum<ResponseCode>("Auth Code", TypeCode.Byte);
+            packet.ReadEnum<ResponseCode>("Auth Code", TypeCode.Byte);
             var ok = packet.ReadBit("Success");
             var queued = packet.ReadBit("Queued");
             if (ok)
@@ -190,6 +190,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleLogoutComplete(Packet packet)
         {
             CoreParsers.SessionHandler.LoginGuid = packet.ReadPackedGuid128("Guid");
+        }
+
+        [Parser(Opcode.SMSG_DANCE_STUDIO_CREATE_RESULT)]
+        public static void HandleDanceStudioCreateResult(Packet packet)
+        {
+            packet.ReadBit("Enable");
+
+            for (int i = 0; i < 4; i++)
+                packet.ReadInt32("Secrets", i);
         }
     }
 }

@@ -127,6 +127,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x080D},
             {Opcode.SMSG_CORPSE_RECLAIM_DELAY, 0x0BE2},
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x0A26},
+            {Opcode.SMSG_DANCE_STUDIO_CREATE_RESULT, 0x178D},
             {Opcode.SMSG_DB_REPLY, 0x1939},
             {Opcode.SMSG_EMOTE, 0x071D | 0x20000},
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x0F1E},
