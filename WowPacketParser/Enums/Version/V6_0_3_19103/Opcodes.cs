@@ -220,6 +220,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_SET_PHASE_SHIFT, 0x00D1},
             {Opcode.SMSG_SET_PROFICIENCY, 0x00D3},
             {Opcode.SMSG_SET_TIME_ZONE_INFORMATION, 0x153E},
+            {Opcode.SMSG_SET_VEHICLE_REC_ID, 0x08BD},
             {Opcode.SMSG_SET_VIGNETTE, 0x09AC},
             {Opcode.SMSG_SPELLENERGIZELOG, 0x137C | 0x20000},
             {Opcode.SMSG_SPELLHEALLOG, 0x0114},

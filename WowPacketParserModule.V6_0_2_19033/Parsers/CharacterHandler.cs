@@ -197,5 +197,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("SpecID");
         }
+
+        [Parser(Opcode.SMSG_SET_VEHICLE_REC_ID)]
+        public static void HandleSetVehicleRecID(Packet packet)
+        {
+            packet.ReadPackedGuid128("VehicleGUID");
+            packet.ReadInt32("VehicleRecID");
+        }
     }
 }
