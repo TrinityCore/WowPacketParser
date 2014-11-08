@@ -100,6 +100,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_WHO, 0x1322},
 
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x0120},
+            {Opcode.SMSG_ACCOUNT_MOUNT_UPDATE, 0x0140},
             {Opcode.SMSG_ACTION_BUTTONS, 0x1D1F},
             {Opcode.SMSG_ADDON_INFO, 0x1D9F},
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA_ACCOUNT, 0x0123},
