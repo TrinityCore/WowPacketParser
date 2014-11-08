@@ -61,7 +61,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, 0x1243},
             {Opcode.CMSG_QUESTGIVER_STATUS_QUERY, 0x0704},
             {Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY, 0x0633},
-            {Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x1806},
+            {Opcode.CMSG_AUTH_CONTINUED_SESSION, 0x1806},
             {Opcode.CMSG_RESET_FACTION_CHEAT, 0x1876},
             {Opcode.CMSG_SET_SELECTION, 0x1038 | 0x10000},
             {Opcode.CMSG_GOSSIP_HELLO, 0x0647},

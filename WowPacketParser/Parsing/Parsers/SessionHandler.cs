@@ -463,13 +463,6 @@ namespace WowPacketParser.Parsing.Parsers
             LoginGuid = new WowGuid64(0);
         }
 
-        [Parser(Opcode.CMSG_CONNECT_TO_FAILED)]
-        public static void HandleConnectToFailed(Packet packet)
-        {
-            packet.ReadIPAddress("IP Address");
-            packet.ReadByte("Reason?");
-        }
-
         [Parser(Opcode.SMSG_REDIRECT_CLIENT, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandleRedirectClient(Packet packet)
         {
@@ -497,13 +490,15 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt64("Int 64");
         }
 
-        [Parser(Opcode.CMSG_REDIRECTION_FAILED)]
+        [Parser(Opcode.CMSG_CONNECT_TO_FAILED, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_1_13164)]
         public static void HandleRedirectFailed(Packet packet)
         {
-            packet.ReadInt32("Token");
+            packet.ReadInt32("Serial");
+            if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
+                packet.ReadByte("Con");
         }
 
-        [Parser(Opcode.CMSG_REDIRECT_AUTH_PROOF, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.CMSG_AUTH_CONTINUED_SESSION, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleRedirectionAuthProof(Packet packet)
         {
             packet.ReadCString("Account");
@@ -511,7 +506,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBytes("Proof SHA-1 Hash", 20);
         }
 
-        [Parser(Opcode.CMSG_REDIRECT_AUTH_PROOF, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_AUTH_CONTINUED_SESSION, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleRedirectionAuthProof422(Packet packet)
         {
             var bytes = new byte[20];

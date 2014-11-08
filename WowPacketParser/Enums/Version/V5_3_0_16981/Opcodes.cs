@@ -61,7 +61,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x0755},
             {Opcode.CMSG_REALM_QUERY, 0x0209},
             {Opcode.CMSG_REALM_SPLIT, 0x0B48},
-            {Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x1AA1},
+            {Opcode.CMSG_AUTH_CONTINUED_SESSION, 0x1AA1},
             {Opcode.CMSG_REQUEST_ACCOUNT_DATA, 0x0A82},
             {Opcode.CMSG_SAVE_CUF_PROFILES, 0x059B},
             {Opcode.CMSG_SEND_MAIL, 0x0550},

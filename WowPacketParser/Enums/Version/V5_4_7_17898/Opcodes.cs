@@ -144,7 +144,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_RAID_READY_CHECK_CONFIRM, 0x13D9},
             {Opcode.CMSG_RANDOMIZE_CHAR_NAME, 0x1DB9},
             {Opcode.CMSG_REALM_NAME_QUERY, 0x1899},
-            {Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x1A5B},
+            {Opcode.CMSG_AUTH_CONTINUED_SESSION, 0x1A5B},
             {Opcode.CMSG_REFORGE_ITEM, 0x1632},
             {Opcode.CMSG_RECLAIM_CORPSE, 0x065C},
             {Opcode.CMSG_REORDER_CHARACTERS, 0x1892},

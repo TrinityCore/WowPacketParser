@@ -1263,11 +1263,11 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_SOCKET_GEMS_RESULT, 0xFF92}, // NF(0x6A90)(0x050B) // update packet?
             {Opcode.UMSG_UNKNOWN_1292, 0x050C}, // NF()(0x050C) // // not found
             {Opcode.SMSG_REDIRECT_CLIENT, 0x9000}, // (0x8400)(0x050D) //}, uint16 port}, uint32 unk}, uint8[20] hash (ip + port}, seed=sessionkey)
-            {Opcode.CMSG_REDIRECTION_FAILED, 0x0509}, // (0x1201)(0x050E) // with networking
+            {Opcode.CMSG_CONNECT_TO_FAILED, 0x0509}, // (0x1201)(0x050E) // with networking
             {Opcode.SMSG_UNKNOWN_1295, 0x050F}, // NF()(0x050F) // // not found - disconnect
             {Opcode.CMSG_ENABLE_NAGLE, 0x0510}, // NF()(0x0510) // // something with networking
             {Opcode.SMSG_FORCE_SEND_QUEUED_PACKETS, 0x0511}, // NF()(0x0511) // // not found - crash
-            {Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x0512}, // NF()(0x0512) // // something with networking
+            {Opcode.CMSG_AUTH_CONTINUED_SESSION, 0x0512}, // NF()(0x0512) // // something with networking
             {Opcode.UMSG_UNKNOWN_1299, 0x0513}, // NF()(0x0513) // // not found
             {Opcode.SMSG_COMBAT_LOG_MULTIPLE, 0x8F75}, // (0x4AB4)(0x0514) //
             {Opcode.SMSG_OPEN_LFG_DUNGEON_FINDER, 0xA774}, // (0x0379)(0x0515) //04 (opens dungeon finder}, probably for outdoor bosses)

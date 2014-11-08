@@ -151,7 +151,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_REDIRECT_AUTH_PROOF)]
+        [Parser(Opcode.CMSG_AUTH_CONTINUED_SESSION)]
         public static void HandleRedirectAuthProof(Packet packet)
         {
             var sha = new byte[20];

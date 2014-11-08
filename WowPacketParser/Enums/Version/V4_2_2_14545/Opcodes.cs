@@ -260,7 +260,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.CMSG_READ_ITEM, 0x184F},
             {Opcode.CMSG_REALM_SPLIT, 0xDC66},
             {Opcode.CMSG_RECLAIM_CORPSE, 0x88DB},
-            {Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x1039},
+            {Opcode.CMSG_AUTH_CONTINUED_SESSION, 0x1039},
             {Opcode.CMSG_REPAIR_ITEM, 0xCF3},
             {Opcode.CMSG_REPOP_REQUEST, 0x8872},
             {Opcode.CMSG_REQUEST_ACCOUNT_DATA, 0x8AF2},

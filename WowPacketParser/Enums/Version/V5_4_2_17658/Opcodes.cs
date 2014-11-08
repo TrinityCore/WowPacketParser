@@ -58,7 +58,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x047F},
             {Opcode.CMSG_REALM_NAME_QUERY, 0x0472},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x0E43},
-            {Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x1262},
+            {Opcode.CMSG_AUTH_CONTINUED_SESSION, 0x1262},
             {Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS, 0x04F2},
             {Opcode.CMSG_RESET_FACTION_CHEAT, 0x126E},
             {Opcode.CMSG_QUERY_WORLD_COUNTDOWN_TIMER, 0x08DD},

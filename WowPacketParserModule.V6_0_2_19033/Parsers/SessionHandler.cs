@@ -139,7 +139,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("UseIPv6");
 
             var addonSize = packet.ReadUInt32("Addons Size");
-            
+
             if (addonSize > 0)
             {
                 var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
@@ -159,13 +159,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             CoreParsers.SessionHandler.LoginGuid = guid;
         }
 
-        [Parser(Opcode.CMSG_REDIRECT_AUTH_PROOF)]
+        [Parser(Opcode.CMSG_AUTH_CONTINUED_SESSION)]
         public static void HandleRedirectAuthProof(Packet packet)
         {
-            packet.ReadInt64("Key");
             packet.ReadInt64("DosResponse");
-
-            packet.ReadBytes("Digest", 0x14);
+            packet.ReadInt64("Key");
+            packet.ReadBytes("Digest", 20);
         }
 
         [Parser(Opcode.SMSG_REDIRECT_CLIENT)]
@@ -173,7 +172,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadUInt64("Key");
             packet.ReadUInt32("Serial");
-            packet.ReadBytes("RSA Hash", 0x100);
+            packet.ReadBytes("Where (RSA encrypted)", 256);
             packet.ReadByte("Con");
         }
 
@@ -199,6 +198,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (int i = 0; i < 4; i++)
                 packet.ReadInt32("Secrets", i);
+        }
+
+        [Parser(Opcode.CMSG_SUSPEND_COMMS_ACK)]
+        public static void HandleSuspendCommsAck(Packet packet)
+        {
+            packet.ReadInt32("Serial");
+            packet.ReadInt32("Timestamp");
+        }
+
+        [Parser(Opcode.CMSG_QUEUED_MESSAGES_END)]
+        public static void HandleQueuedMessagesEnd(Packet packet)
+        {
+            packet.ReadInt32("Timestamp");
         }
     }
 }

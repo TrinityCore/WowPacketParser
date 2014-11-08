@@ -12,7 +12,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_LOG_DISCONNECT)]
         public static void HandleLogDisconnect(Packet packet)
         {
-            packet.ReadUInt32("Unk");
+            packet.ReadUInt32("Reason");
             // 4 is inability for client to decrypt RSA
             // 3 is not receiving "WORLD OF WARCRAFT CONNECTION - SERVER TO CLIENT"
             // 11 is sent on receiving opcode 0x140 with some specific data
@@ -474,7 +474,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_SUSPEND_COMMS_ACK)]
         public static void HandleSuspendCommsPackets(Packet packet)
         {
-            packet.ReadInt32("Unk Int32");
+            packet.ReadInt32("Serial");
         }
 
         [Parser(Opcode.CMSG_SET_ALLOW_LOW_LEVEL_RAID1)]
@@ -1137,6 +1137,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CLEAR_BOSS_EMOTES)]
         [Parser(Opcode.SMSG_NEW_WORLD_ABORT)]
         [Parser(Opcode.CMSG_ROLE_POLL_BEGIN)]
+        [Parser(Opcode.SMSG_RESUME_COMMS)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }

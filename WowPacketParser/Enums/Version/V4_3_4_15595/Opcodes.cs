@@ -398,7 +398,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_READ_ITEM, 0x2F16},
             {Opcode.CMSG_REALM_SPLIT, 0x2906},
             {Opcode.CMSG_RECLAIM_CORPSE, 0x4036},
-            {Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x044D},
+            {Opcode.CMSG_AUTH_CONTINUED_SESSION, 0x044D},
             {Opcode.CMSG_REFORGE_ITEM, 0x331A},
             {Opcode.CMSG_REORDER_CHARACTERS, 0x0593},
             {Opcode.CMSG_REPAIR_ITEM, 0x2917},

@@ -44,7 +44,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadWoWString("Server Location", len1);
         }
 
-        [Parser(Opcode.CMSG_REDIRECT_AUTH_PROOF)]
+        [Parser(Opcode.CMSG_AUTH_CONTINUED_SESSION)]
         public static void HandleRedirectAuthProof(Packet packet)
         {
             var sha = new byte[20];

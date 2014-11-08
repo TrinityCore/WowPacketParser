@@ -19,7 +19,7 @@ namespace WowPacketParser.Enums.Version.V5_2_0_16650
             {Opcode.CMSG_LOAD_SCREEN, 0x045D},
             {Opcode.CMSG_QUEST_QUERY, 0x001F},
             {Opcode.CMSG_PLAYER_LOGIN, 0x015D},
-            {Opcode.CMSG_REDIRECT_AUTH_PROOF, 0x03F3},
+            {Opcode.CMSG_AUTH_CONTINUED_SESSION, 0x03F3},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x10AC},
             {Opcode.CMSG_WARDEN_DATA, 0x007C},
             {Opcode.MSG_SET_DUNGEON_DIFFICULTY, 0x0140},
