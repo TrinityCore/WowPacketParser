@@ -218,6 +218,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_SPELL_CATEGORY_COOLDOWN, 0x082A | 0x20000},
             {Opcode.SMSG_SPELL_GO, 0x1161 | 0x20000},
             {Opcode.SMSG_SPELL_START, 0x0803 | 0x20000},
+            {Opcode.SMSG_SPELL_UPDATE_CHAIN_TARGETS, 0x0374},
             {Opcode.SMSG_SPLINE_MOVE_SET_FLIGHT_SPEED, 0x060C},
             {Opcode.SMSG_SPLINE_MOVE_SET_RUN_BACK_SPEED, 0x0086},
             {Opcode.SMSG_SPLINE_MOVE_SET_RUN_SPEED, 0x1B9A},

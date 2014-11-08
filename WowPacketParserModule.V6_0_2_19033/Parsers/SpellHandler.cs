@@ -433,5 +433,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadPackedGuid128("BeaconGUID");
             }
         }
+
+        [Parser(Opcode.SMSG_SPELL_UPDATE_CHAIN_TARGETS)]
+        public static void HandleUpdateChainTargets(Packet packet)
+        {
+            packet.ReadPackedGuid128("Caster GUID");
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
+            var count = packet.ReadInt32("Count");
+            for (var i = 0; i < count; i++)
+                packet.ReadPackedGuid128("Targets", i);
+        }
     }
 }
