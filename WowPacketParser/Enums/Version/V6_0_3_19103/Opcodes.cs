@@ -115,6 +115,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_AUTH_CHALLENGE, 0x1759},
             {Opcode.SMSG_AUTH_RESPONSE, 0x0DA9},
             {Opcode.SMSG_BATTLE_PAY_GET_PRODUCT_LIST_RESPONSE, 0x12A4},
+            {Opcode.SMSG_BATTLE_PAY_GET_PURCHASE_LIST_RESPONSE, 0x168A},
             {Opcode.SMSG_BATTLE_PET_JOURNAL, 0x19A2},
             {Opcode.SMSG_BINDPOINTUPDATE, 0x0A30},
             {Opcode.SMSG_CHANNEL_NOTIFY, 0x0643},
