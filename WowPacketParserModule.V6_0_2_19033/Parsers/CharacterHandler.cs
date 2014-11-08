@@ -191,5 +191,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadWoWString("Name", bits17);
         }
+
+        [Parser(Opcode.CMSG_SET_LOOT_SPECIALIZATION)]
+        public static void HandleSetLootSpecialization(Packet packet)
+        {
+            packet.ReadInt32("SpecID");
+        }
     }
 }

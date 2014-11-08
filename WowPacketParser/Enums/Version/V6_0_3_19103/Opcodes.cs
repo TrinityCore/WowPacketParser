@@ -81,6 +81,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_SAVE_CUF_PROFILES, 0x0053},
             {Opcode.CMSG_SET_RAID_DIFFICULTY, 0x04DF},
             {Opcode.CMSG_SEND_MAIL, 0x0910},
+            {Opcode.CMSG_SET_LOOT_SPECIALIZATION, 0x0226},
             {Opcode.CMSG_SET_SELECTION, 0x05BD},
             {Opcode.CMSG_SHOWING_CLOAK, 0x0132},
             {Opcode.CMSG_SHOWING_HELM, 0x11E1},
