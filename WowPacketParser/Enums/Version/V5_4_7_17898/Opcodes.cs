@@ -291,7 +291,6 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x1560},
             {Opcode.SMSG_FRIEND_STATUS, 0x0707},
             {Opcode.SMSG_FLIGHT_SPLINE_SYNC, 0x0992 | 0x20000},
-            {Opcode.SMSG_FORCE_SEND_QUEUED_PACKETS, 0x01B9},
             {Opcode.SMSG_INITIALIZE_FACTIONS, 0x11E1},
             {Opcode.SMSG_INITIAL_SPELLS, 0x1B05 | 0x20000},
             {Opcode.SMSG_INIT_CURRENCY, 0x1E3A},
@@ -404,6 +403,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_REMOVED_SPELL, 0x05E3},
             {Opcode.SMSG_PERIODICAURALOG, 0x051B | 0x20000},
             {Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS, 0x04E1},
+            {Opcode.SMSG_RESUME_COMMS, 0x01B9},
             {Opcode.SMSG_PLAYER_MOVE, 0x1CB2},
             {Opcode.SMSG_PLAYER_VEHICLE_DATA, 0x1F29},
             {Opcode.SMSG_PONG, 0x15B1},
@@ -489,4 +489,3 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
         };
     }
 }
-         

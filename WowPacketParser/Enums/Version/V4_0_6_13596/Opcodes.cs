@@ -892,7 +892,6 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_FORCE_PITCH_RATE_CHANGE, 0x0BF8C},
             //{Opcode.SMSG_FORCE_RUN_BACK_SPEED_CHANGE, 0x068E8},
             {Opcode.SMSG_FORCE_RUN_SPEED_CHANGE, 0x0F1CC},
-            {Opcode.SMSG_FORCE_SEND_QUEUED_PACKETS, 0x02880},
             {Opcode.SMSG_FORCE_SWIM_BACK_SPEED_CHANGE, 0x0AE88},
             {Opcode.SMSG_FORCE_SWIM_SPEED_CHANGE, 0x0F5A0},
             {Opcode.SMSG_FORCE_TURN_RATE_CHANGE, 0x0708C},
@@ -1168,6 +1167,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS, 0x0041C},
             {Opcode.SMSG_RESURRECT_FAILED, 0x0D557}, //4.0.3a13329-403
             {Opcode.SMSG_RESURRECT_REQUEST, 0x0F3A0},
+            {Opcode.SMSG_RESUME_COMMS, 0x02880},
             {Opcode.SMSG_RESYNC_RUNES, 0x0F8E4},
             {Opcode.SMSG_RWHOIS, 0x071C8},
             {Opcode.SMSG_SCRIPT_MESSAGE, 0x100E0}, //UnknownopcodeID

@@ -1116,7 +1116,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_COMSAT_DISCONNECT)]
         [Parser(Opcode.SMSG_VOICESESSION_FULL)] // 61 bytes in 2.4.1
         [Parser(Opcode.SMSG_DEBUG_SERVER_GEO)] // Was unknown
-        [Parser(Opcode.SMSG_FORCE_SEND_QUEUED_PACKETS)]
+        [Parser(Opcode.SMSG_RESUME_COMMS)]
         [Parser(Opcode.SMSG_GOSSIP_COMPLETE)]
         [Parser(Opcode.SMSG_INVALID_PROMOTION_CODE)]
         [Parser(Opcode.CMSG_COMPLETE_CINEMATIC)]
@@ -1137,7 +1137,6 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CLEAR_BOSS_EMOTES)]
         [Parser(Opcode.SMSG_NEW_WORLD_ABORT)]
         [Parser(Opcode.CMSG_ROLE_POLL_BEGIN)]
-        [Parser(Opcode.SMSG_RESUME_COMMS)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }

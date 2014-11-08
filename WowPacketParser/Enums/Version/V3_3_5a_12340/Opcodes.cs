@@ -1307,7 +1307,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.CMSG_CONNECT_TO_FAILED, 0x50E},
             {Opcode.SMSG_SUSPEND_COMMS, 0x50F},
             {Opcode.CMSG_SUSPEND_COMMS_ACK, 0x510},
-            {Opcode.SMSG_FORCE_SEND_QUEUED_PACKETS, 0x511},
+            {Opcode.SMSG_RESUME_COMMS, 0x511},
             {Opcode.CMSG_AUTH_CONTINUED_SESSION, 0x512},
             {Opcode.CMSG_DROP_NEW_CONNECTION, 0x513},
             {Opcode.SMSG_COMBAT_LOG_MULTIPLE, 0x514},

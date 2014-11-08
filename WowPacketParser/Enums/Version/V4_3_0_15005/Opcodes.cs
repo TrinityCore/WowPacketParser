@@ -619,7 +619,6 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.SMSG_FORCED_DEATH_UPDATE, 25600},
             {Opcode.SMSG_FORCE_DISPLAY_UPDATE, 2212},
             {Opcode.SMSG_FORCE_MOVE_ROOT, 17950},
-            {Opcode.SMSG_FORCE_SEND_QUEUED_PACKETS, 4898},
             {Opcode.SMSG_FRIEND_STATUS, 20004},
             {Opcode.SMSG_GAMEOBJECT_CUSTOM_ANIM, 1574},
             {Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM, 30752},
@@ -851,6 +850,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.SMSG_REQUEST_PVP_REWARDS_RESPONSE, 9226},
             {Opcode.SMSG_RESET_COMPRESSION_CONTEXT, 9404}, // 5922
             {Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS, 9898},
+            {Opcode.SMSG_RESUME_COMMS, 4898},
             {Opcode.SMSG_RESURRECT_REQUEST, 16898},
             {Opcode.SMSG_RWHOIS, 6790},
             {Opcode.SMSG_SELL_ITEM, 19458},
