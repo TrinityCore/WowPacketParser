@@ -412,5 +412,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (bit68)
                 packet.ReadSingle("PitchRate");
         }
+
+        [Parser(Opcode.SMSG_MOVE_GRAVITY_DISABLE)]
+        [Parser(Opcode.SMSG_MOVE_ROOT)]
+        public static void HandleMovementIndex(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+            packet.ReadInt32("SequenceIndex");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_GRAVITY_DISABLE_ACK)]
+        [Parser(Opcode.CMSG_FORCE_MOVE_ROOT_ACK)]
+        public static void HandleMovementAck(Packet packet)
+        {
+            ReadMovementStats(ref packet);
+            packet.ReadInt32("AckIndex");
+        }
     }
 }
