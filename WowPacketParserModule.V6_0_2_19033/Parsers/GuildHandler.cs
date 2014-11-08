@@ -247,5 +247,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("NativeRealmAddress", i);
             }
         }
+
+        [Parser(Opcode.SMSG_GUILD_PERMISSIONS_QUERY_RESULTS)]
+        public static void HandleGuildPermissionsQueryResult(Packet packet)
+        {
+            packet.ReadInt32("RankID");
+            packet.ReadInt32("WithdrawGoldLimit");
+            packet.ReadEnum<GuildRankRightsFlag>("Flags", TypeCode.UInt32);
+            packet.ReadUInt32("NumTabs");
+
+            var int16 = packet.ReadInt32("Tab size");
+
+            for (var i = 0; i < int16; i++)
+            {
+                packet.ReadEnum<GuildBankRightsFlag>("Flags", TypeCode.Int32, i);
+                packet.ReadInt32("WithdrawItemLimit", i);
+            }
+        }
     }
 }
