@@ -71,5 +71,38 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadBit("HasJournalLock");
         }
+
+        [Parser(Opcode.CMSG_BATTLE_PET_NAME_QUERY)]
+        public static void HandleBattlePetQuery(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlePetID");
+            packet.ReadPackedGuid128("UnitGUID");
+        }
+
+        [Parser(Opcode.SMSG_BATTLE_PET_NAME_QUERY_RESPONSE)]
+        public static void HandleBattlePetQueryResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlePetID");
+
+            packet.ReadInt32("CreatureID");
+            packet.ReadTime("Timestamp");
+
+            packet.ResetBitReader();
+            var bit40 = packet.ReadBit("Allow");
+            if (!bit40)
+                return;
+
+            var bits49 = packet.ReadBits(8);
+            packet.ReadBit("HasDeclined");
+
+            var bits97 = new uint[5];
+            for (int i = 0; i < 5; i++)
+                bits97[i] = packet.ReadBits(7);
+
+            for (int i = 0; i < 5; i++)
+                packet.ReadWoWString("DeclinedNames", bits97[i]);
+
+            packet.ReadWoWString("Name", bits49);
+        }
     }
 }
