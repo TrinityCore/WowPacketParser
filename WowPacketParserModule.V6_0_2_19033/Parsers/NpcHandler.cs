@@ -13,9 +13,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     {
         public static uint LastGossipPOIEntry = 0;
 
+        [Parser(Opcode.CMSG_BANKER_ACTIVATE)]
+        [Parser(Opcode.CMSG_BINDER_ACTIVATE)]
         [Parser(Opcode.CMSG_GOSSIP_HELLO)]
         [Parser(Opcode.CMSG_LIST_INVENTORY)]
-        [Parser(Opcode.CMSG_BANKER_ACTIVATE)]
         [Parser(Opcode.CMSG_TRAINER_LIST)]
         public static void HandleNpcHello(Packet packet)
         {
