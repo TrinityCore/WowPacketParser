@@ -238,6 +238,32 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadByte("FaceID");
         }
 
+        [Parser(Opcode.SMSG_CHAR_FACTION_CHANGE)]
+        public static void HandleCharFactionChangeResult(Packet packet)
+        {
+            packet.ReadByte("Result");
+            packet.ReadPackedGuid128("Guid");
+
+            packet.ResetBitReader();
+
+            var bit72 = packet.ReadBit("HasDisplayInfo");
+            if (bit72)
+            {
+                packet.ResetBitReader();
+                var bits55 = packet.ReadBits(6);
+
+                packet.ReadByte("SexID");
+                packet.ReadByte("SkinID");
+                packet.ReadByte("HairColorID");
+                packet.ReadByte("HairStyleID");
+                packet.ReadByte("FacialHairStyleID");
+                packet.ReadByte("FaceID");
+                packet.ReadByte("RaceID");
+
+                packet.ReadWoWString("Name", bits55);
+            }
+        }
+
         [Parser(Opcode.CMSG_SET_LOOT_SPECIALIZATION)]
         public static void HandleSetLootSpecialization(Packet packet)
         {
