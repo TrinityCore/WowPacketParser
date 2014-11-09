@@ -474,5 +474,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("Duration");
             packet.ReadInt32("KitRecID");
         }
+
+        [Parser(Opcode.CMSG_UNLEARN_SKILL)]
+        public static void HandleUnlearnSkill(Packet packet)
+        {
+            packet.ReadInt32("SkillLine");
+        }
     }
 }
