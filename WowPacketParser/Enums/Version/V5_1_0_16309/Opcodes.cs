@@ -361,7 +361,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.CMSG_SUBMIT_BUG, 0x0D12},
             {Opcode.CMSG_SUBMIT_COMPLAIN, 0x01AA},
             {Opcode.CMSG_SUMMON_RESPONSE, 0x0D00},
-            {Opcode.CMSG_SUSPEND_TOKEN, 0x0E23},
+            {Opcode.CMSG_SUSPEND_TOKEN_RESPONSE, 0x0E23},
             {Opcode.CMSG_SWAP_INV_ITEM, 0x0428},
             {Opcode.CMSG_SWAP_ITEM, 0x04A1},
             {Opcode.CMSG_TAXINODE_STATUS_QUERY, 0x0B00},

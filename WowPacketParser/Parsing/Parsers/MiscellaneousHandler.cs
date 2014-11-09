@@ -58,13 +58,13 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Enable");
         }
 
-        [Parser(Opcode.CMSG_SUSPEND_TOKEN)]
+        [Parser(Opcode.CMSG_SUSPEND_TOKEN_RESPONSE)]
         public static void HandleSuspendToken(Packet packet)
         {
             packet.ReadUInt32("Count");
         }
 
-        [Parser(Opcode.SMSG_SUSPEND_TOKEN_RESPONSE)]
+        [Parser(Opcode.SMSG_SUSPEND_TOKEN)]
         public static void HandleSuspendTokenResponse(Packet packet)
         {
             packet.ReadBit("Unk");

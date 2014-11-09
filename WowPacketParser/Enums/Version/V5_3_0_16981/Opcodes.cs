@@ -356,7 +356,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_SUMMON_REQUEST, 0x079C},
             {Opcode.SMSG_SUPERCEDED_SPELL, 0x0F99},
             {Opcode.SMSG_SUPPRESS_NPC_GREETINGS, 0x0F85},
-            {Opcode.SMSG_SUSPEND_TOKEN_RESPONSE, 0x03DD},
+            {Opcode.SMSG_SUSPEND_TOKEN, 0x03DD},
             {Opcode.SMSG_TEXT_EMOTE, 0x1185},
             {Opcode.SMSG_THREAT_CLEAR, 0x0199},
             {Opcode.SMSG_THREAT_REMOVE, 0x0EC0},
