@@ -56,6 +56,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_MESSAGECHAT_GUILD, 0x0B1B | 0x10000},
             {Opcode.CMSG_MESSAGECHAT_PARTY, 0x0134},
             {Opcode.CMSG_MESSAGECHAT_SAY, 0x1884 | 0x10000},
+            {Opcode.CMSG_MESSAGECHAT_WHISPER, 0x1829},
             {Opcode.CMSG_MESSAGECHAT_YELL, 0x1161 | 0x10000},
             {Opcode.CMSG_MOVE_GRAVITY_DISABLE_ACK, 0x0553},
             {Opcode.CMSG_MOVE_FALL_LAND, 0x0D54},
