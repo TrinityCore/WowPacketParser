@@ -18,6 +18,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_ADD_IGNORE, 0x1321},
             {Opcode.CMSG_ADD_MUTE, 0x098A},
             {Opcode.CMSG_AREATRIGGER, 0x01B4},
+            {Opcode.CMSG_ATTACKSTOP, 0x065B},
             {Opcode.CMSG_AUCTION_HELLO, 0x13EA},
             {Opcode.CMSG_AUTH_CONTINUED_SESSION, 0x0485},
             {Opcode.CMSG_AUTH_SESSION, 0x0487},
