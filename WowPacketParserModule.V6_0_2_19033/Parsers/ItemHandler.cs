@@ -83,6 +83,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("Amount");
         }
 
+        [Parser(Opcode.CMSG_BUYBACK_ITEM)]
+        public static void HandleBuyBackItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("VendorGUID");
+            packet.ReadUInt32("Slot");
+        }
+
         [Parser(Opcode.CMSG_USE_ITEM)]
         public static void HandleUseItem(Packet packet)
         {
