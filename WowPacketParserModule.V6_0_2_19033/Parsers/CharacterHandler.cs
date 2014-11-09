@@ -203,6 +203,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("NewName", bits16);
         }
 
+        [Parser(Opcode.SMSG_CHAR_RENAME)]
+        public static void HandleServerCharRename(Packet packet)
+        {
+            packet.ReadByte("Result");
+
+            packet.ResetBitReader();
+            var bit32 = packet.ReadBit("HasGuid");
+            var bits41 = packet.ReadBits(6);
+
+            if (bit32)
+                packet.ReadPackedGuid128("Guid");
+
+            packet.ReadWoWString("Name", bits41);
+        }
+
         [Parser(Opcode.CMSG_CHAR_RACE_OR_FACTION_CHANGE)]
         public static void HandleCharRaceOrFactionChange(Packet packet)
         {
@@ -262,6 +277,43 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 packet.ReadWoWString("Name", bits55);
             }
+        }
+
+        [Parser(Opcode.CMSG_CHAR_CUSTOMIZE)]
+        public static void HandleClientCharCustomize(Packet packet)
+        {
+            packet.ReadPackedGuid128("CharGUID");
+
+            packet.ReadByte("SexID");
+            packet.ReadByte("SkinID");
+            packet.ReadByte("HairColorID");
+            packet.ReadByte("HairStyleID");
+            packet.ReadByte("FacialHairStyleID");
+            packet.ReadByte("FaceID");
+
+            packet.ResetBitReader();
+
+            var bits19 = packet.ReadBits(6);
+            packet.ReadWoWString("CharName", bits19);
+        }
+
+        [Parser(Opcode.SMSG_CHAR_CUSTOMIZE)]
+        public static void HandleServerCharCustomize(Packet packet)
+        {
+            packet.ReadPackedGuid128("CharGUID");
+
+            packet.ResetBitReader();
+            var bits55 = packet.ReadBits(6);
+
+            packet.ReadByte("SexID");
+            packet.ReadByte("SkinID");
+            packet.ReadByte("HairColorID");
+            packet.ReadByte("HairStyleID");
+            packet.ReadByte("FacialHairStyleID");
+            packet.ReadByte("FaceID");
+            packet.ReadByte("RaceID");
+
+            packet.ReadWoWString("Name", bits55);
         }
 
         [Parser(Opcode.CMSG_SET_LOOT_SPECIALIZATION)]
