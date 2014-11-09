@@ -415,6 +415,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("SequenceIndex");
         }
 
+        [Parser(Opcode.SMSG_FORCE_RUN_SPEED_CHANGE)]
+        [Parser(Opcode.SMSG_FORCE_SWIM_SPEED_CHANGE)]
+        public static void HandleMovementIndexSpeed(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+            packet.ReadInt32("SequenceIndex");
+
+            packet.ReadSingle("Speed");
+        }
+
         [Parser(Opcode.SMSG_MOVE_SET_COLLISION_HEIGHT)]
         public static void HandleSetCollisionHeight(Packet packet)
         {
@@ -434,6 +444,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleMovementAck(Packet packet)
         {
             ReadMovementAck(ref packet);
+        }
+
+        [Parser(Opcode.CMSG_MOVE_FORCE_RUN_SPEED_CHANGE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FORCE_SWIM_SPEED_CHANGE_ACK)]
+        public static void HandleMovementSpeedAck(Packet packet)
+        {
+            ReadMovementAck(ref packet);
+            packet.ReadSingle("Speed");
         }
 
         [Parser(Opcode.CMSG_MOVE_SET_COLLISION_HEIGHT_ACK)]
