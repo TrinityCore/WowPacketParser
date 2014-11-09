@@ -124,5 +124,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadEnum<VoidTransferError>("Error", TypeCode.UInt32);
         }
+
+        [Parser(Opcode.CMSG_VOID_STORAGE_UNLOCK)]
+        public static void HandleVoidStorageUnlock(Packet packet)
+        {
+            packet.ReadPackedGuid128("Npc");
+        }
     }
 }
