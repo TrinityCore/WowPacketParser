@@ -284,6 +284,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 Storage.NpcTrainers.Add(guid.GetEntry(), npcTrainer, packet.TimeSpan);
         }
 
+        [Parser(Opcode.CMSG_TRAINER_BUY_SPELL)]
+        public static void HandleTrainerBuySpell(Packet packet)
+        {
+            packet.ReadPackedGuid128("TrainerGUID");
+            packet.ReadInt32("TrainerID");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "SpellID");
+        }
+
         [Parser(Opcode.CMSG_SPELLCLICK)]
         public static void HandleSpellClick(Packet packet)
         {
