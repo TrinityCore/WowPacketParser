@@ -29,6 +29,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_CHAR_CREATE, 0x070D},
             {Opcode.CMSG_CHAR_DELETE, 0x030E},
             {Opcode.CMSG_CHAR_ENUM, 0x0918},
+            {Opcode.CMSG_CHAR_RACE_OR_FACTION_CHANGE, 0x1209},
             {Opcode.CMSG_CHAR_UNDELETE_ENUM, 0x0F2D},
             {Opcode.CMSG_CREATURE_QUERY, 0x0505},
             {Opcode.CMSG_DB_QUERY_BULK, 0x138B | 0x10000},
