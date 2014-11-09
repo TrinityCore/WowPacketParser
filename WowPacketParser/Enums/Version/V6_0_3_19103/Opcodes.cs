@@ -11,6 +11,8 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
 
         private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
         {
+            {Opcode.CMSG_ACTIVATETAXI, 0x0311 | 0x10000},
+            {Opcode.CMSG_ACTIVATETAXIEXPRESS, 0x1B52 | 0x10000},
             {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x03F4 | 0x10000},
             {Opcode.CMSG_ADD_FRIEND, 0x0DB9},
             {Opcode.CMSG_ADD_IGNORE, 0x1321},
@@ -30,6 +32,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_CHAR_DELETE, 0x030E},
             {Opcode.CMSG_CHAR_ENUM, 0x0918},
             {Opcode.CMSG_CHAR_RACE_OR_FACTION_CHANGE, 0x1209},
+            {Opcode.CMSG_CHAR_RENAME, 0x038B | 0x10000},
             {Opcode.CMSG_CHAR_UNDELETE_ENUM, 0x0F2D},
             {Opcode.CMSG_CREATURE_QUERY, 0x0505},
             {Opcode.CMSG_DB_QUERY_BULK, 0x138B | 0x10000},
@@ -161,7 +164,6 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_CHAR_DELETE, 0x0BC4},
             {Opcode.SMSG_CHAR_ENUM, 0x05AF},
             {Opcode.SMSG_CHAR_FACTION_CHANGE, 0x0810},
-            {Opcode.CMSG_CHAR_RENAME, 0x038B},
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x080D},
             {Opcode.SMSG_CONTACT_STATUS, 0x1BEA},
             {Opcode.SMSG_CORPSE_RECLAIM_DELAY, 0x0BE2},
