@@ -127,6 +127,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_TIME_SYNC_RESP, 0x0003},
             {Opcode.CMSG_UNDELETE_CHARACTER, 0x0D99},
             {Opcode.CMSG_UNDELETE_COOLDOWN_STATUS_QUERY, 0x19A9},
+            {Opcode.CMSG_USE_ITEM, 0x08B6},
             {Opcode.CMSG_UPDATE_ACCOUNT_DATA, 0x12A1},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x098D | 0x10000},
             {Opcode.CMSG_VOID_STORAGE_QUERY, 0x019E},

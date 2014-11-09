@@ -11,6 +11,90 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class SpellHandler
     {
+        public static void ReadSpellCastLogData(ref Packet packet)
+        {
+            packet.ReadInt32("Health");
+            packet.ReadInt32("AttackPower");
+            packet.ReadInt32("SpellPower");
+
+            var int3 = packet.ReadInt32("SpellLogPowerData");
+
+            // SpellLogPowerData
+            for (var i = 0; i < int3; ++i)
+            {
+                packet.ReadInt32("PowerType", i);
+                packet.ReadInt32("Amount", i);
+            }
+
+            packet.ResetBitReader();
+
+            var bit32 = packet.ReadBit("bit32");
+
+            if (bit32)
+                packet.ReadSingle("Float7");
+        }
+        public static void ReadSpellCastRequest(ref Packet packet)
+        {
+            packet.ReadByte("CastID");
+            packet.ReadUInt32("SpellID");
+            packet.ReadUInt32("Misc");
+
+            // SpellTargetData
+            packet.ResetBitReader();
+
+            packet.ReadEnum<TargetFlag>("Flags", 21);
+            var bit72 = packet.ReadBit("HasSrcLocation");
+            var bit112 = packet.ReadBit("HasDstLocation");
+            var bit124 = packet.ReadBit("HasOrientation");
+            var bits128 = packet.ReadBits(7);
+
+            packet.ReadPackedGuid128("Unit Guid");
+            packet.ReadPackedGuid128("Item Guid");
+
+            if (bit72)
+            {
+                packet.ReadPackedGuid128("SrcLocation Guid");
+                packet.ReadVector3("SrcLocation");
+            }
+
+            if (bit112)
+            {
+                packet.ReadPackedGuid128("DstLocation Guid");
+                packet.ReadVector3("DstLocation");
+            }
+
+            if (bit124)
+                packet.ReadSingle("Orientation");
+
+            packet.ReadWoWString("Name", bits128);
+
+            // MissileTrajectoryRequest
+            packet.ReadSingle("Pitch");
+            packet.ReadSingle("Speed");
+
+            packet.ReadPackedGuid128("Guid");
+
+            packet.ResetBitReader();
+
+            packet.ReadBits("SendCastFlags", 5);
+            var bit456 = packet.ReadBit("HasMoveUpdate"); // MoveUpdate
+
+            var bits116 = packet.ReadBits("SpellWeightCount", 2); // SpellWeight
+
+            // MoveUpdate
+            if (bit456)
+                MovementHandler.ReadMovementStats(ref packet);
+
+            // SpellWeight
+            for (var i = 0; i < bits116; ++i)
+            {
+                packet.ResetBitReader();
+                packet.ReadBits("Type", 2, i);
+                packet.ReadInt32("ID", i);
+                packet.ReadInt32("Quantity", i);
+            }
+        }
+
         [Parser(Opcode.SMSG_LEARNED_SPELL)]
         public static void HandleLearnSpell(Packet packet)
         {
@@ -177,64 +261,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_PET_CAST_SPELL))
                 packet.ReadPackedGuid128("PetGUID");
 
-            packet.ReadByte("CastID");
-            packet.ReadUInt32("SpellID");
-            packet.ReadUInt32("Misc");
-
-            // SpellTargetData
-            packet.ResetBitReader();
-
-            packet.ReadEnum<TargetFlag>("Flags", 21);
-            var bit72 = packet.ReadBit("HasSrcLocation");
-            var bit112 = packet.ReadBit("HasDstLocation");
-            var bit124 = packet.ReadBit("HasOrientation");
-            var bits128 = packet.ReadBits(7);
-
-            packet.ReadPackedGuid128("Unit Guid");
-            packet.ReadPackedGuid128("Item Guid");
-
-            if (bit72)
-            {
-                packet.ReadPackedGuid128("SrcLocation Guid");
-                packet.ReadVector3("SrcLocation");
-            }
-
-            if (bit112)
-            {
-                packet.ReadPackedGuid128("DstLocation Guid");
-                packet.ReadVector3("DstLocation");
-            }
-
-            if (bit124)
-                packet.ReadSingle("Orientation");
-
-            packet.ReadWoWString("Name", bits128);
-
-            // MissileTrajectoryRequest
-            packet.ReadSingle("Pitch");
-            packet.ReadSingle("Speed");
-
-            packet.ReadPackedGuid128("Guid");
-
-            packet.ResetBitReader();
-
-            packet.ReadBits("SendCastFlags", 5);
-            var bit456 = packet.ReadBit("HasMoveUpdate"); // MoveUpdate
-
-            var bits116 = packet.ReadBits("SpellWeightCount", 2); // SpellWeight
-
-            // MoveUpdate
-            if (bit456)
-                MovementHandler.ReadMovementStats(ref packet);
-
-            // SpellWeight
-            for (var i = 0; i < bits116; ++i)
-            {
-                packet.ResetBitReader();
-                packet.ReadBits("Type", 2, i);
-                packet.ReadInt32("ID", i);
-                packet.ReadInt32("Quantity", i);
-            }
+            ReadSpellCastRequest(ref packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_START)]
@@ -372,29 +399,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 if (bit52)
                     ReadSpellCastLogData(ref packet);
             }
-        }
-
-        public static void ReadSpellCastLogData(ref Packet packet)
-        {
-            packet.ReadInt32("Health");
-            packet.ReadInt32("AttackPower");
-            packet.ReadInt32("SpellPower");
-
-            var int3 = packet.ReadInt32("SpellLogPowerData");
-
-            // SpellLogPowerData
-            for (var i = 0; i < int3; ++i)
-            {
-                packet.ReadInt32("PowerType", i);
-                packet.ReadInt32("Amount", i);
-            }
-
-            packet.ResetBitReader();
-
-            var bit32 = packet.ReadBit("bit32");
-
-            if (bit32)
-                packet.ReadSingle("Float7");
         }
 
         [Parser(Opcode.SMSG_WEEKLY_SPELL_USAGE)]

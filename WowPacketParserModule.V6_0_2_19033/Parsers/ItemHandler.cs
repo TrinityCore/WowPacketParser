@@ -82,5 +82,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadUInt32("Amount");
         }
+
+        [Parser(Opcode.CMSG_USE_ITEM)]
+        public static void HandleUseItem(Packet packet)
+        {
+            packet.ReadByte("PackSlot");
+            packet.ReadByte("Slot");
+            packet.ReadPackedGuid128("CastItem");
+
+            SpellHandler.ReadSpellCastRequest(ref packet);
+        }
     }
 }
