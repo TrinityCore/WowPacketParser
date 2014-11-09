@@ -92,5 +92,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             SpellHandler.ReadSpellCastRequest(ref packet);
         }
+
+        [Parser(Opcode.CMSG_DESTROY_ITEM)]
+        public static void HandleDestroyItem(Packet packet)
+        {
+            packet.ReadUInt32("Count");
+            packet.ReadByte("SlotNum");
+            packet.ReadByte("ContainerId");
+        }
     }
 }

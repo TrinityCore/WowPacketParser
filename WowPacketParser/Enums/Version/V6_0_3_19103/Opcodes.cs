@@ -41,6 +41,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_DEL_FRIEND, 0x0F2A | 0x10000},
             {Opcode.CMSG_DEL_IGNORE, 0x033D},
             {Opcode.CMSG_DEL_MUTE, 0x0128},
+            {Opcode.CMSG_DESTROY_ITEM, 0x01EE},
             {Opcode.CMSG_EQUIPMENT_SET_SAVE, 0x1B54},
             {Opcode.CMSG_FACTION_BONUS_INFO, 0x0928},
             {Opcode.CMSG_FORCE_MOVE_ROOT_ACK, 0x0B73},
