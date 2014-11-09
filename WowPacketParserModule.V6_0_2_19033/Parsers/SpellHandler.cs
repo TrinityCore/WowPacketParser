@@ -171,8 +171,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_CAST_SPELL)]
+        [Parser(Opcode.CMSG_PET_CAST_SPELL)]
         public static void HandleCastSpell(Packet packet)
         {
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_PET_CAST_SPELL))
+                packet.ReadPackedGuid128("PetGUID");
+
             packet.ReadByte("CastID");
             packet.ReadUInt32("SpellID");
             packet.ReadUInt32("Misc");

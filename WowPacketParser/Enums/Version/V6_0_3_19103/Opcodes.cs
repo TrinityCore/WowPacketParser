@@ -89,6 +89,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_NPC_TEXT_QUERY, 0x0ECB},
             {Opcode.CMSG_PAGE_TEXT_QUERY, 0x0BBB},
             {Opcode.CMSG_PET_ACTION, 0x133A},
+            {Opcode.CMSG_PET_CAST_SPELL, 0x0286},
             {Opcode.CMSG_PET_NAME_QUERY, 0x1433},
             {Opcode.CMSG_PING, 0x0416},
             {Opcode.CMSG_PLAYER_LOGIN, 0x0B1D},
