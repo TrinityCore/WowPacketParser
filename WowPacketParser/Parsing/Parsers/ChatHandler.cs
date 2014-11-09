@@ -183,7 +183,7 @@ namespace WowPacketParser.Parsing.Parsers
             uint entry = 0;
             if (text.SenderGUID.GetObjectType() == ObjectType.Unit)
                 entry = text.SenderGUID.GetEntry();
-            else if (text.ReceiverGUID.GetObjectType() == ObjectType.Unit)
+            else if (text.ReceiverGUID != null && text.ReceiverGUID.GetObjectType() == ObjectType.Unit)
                 entry = text.ReceiverGUID.GetEntry();
 
             if (entry != 0)
