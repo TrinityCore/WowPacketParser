@@ -60,6 +60,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("BankTab");
         }
 
+        [Parser(Opcode.CMSG_GUILD_QUERY_RANKS)]
+        public static void HandleGuildRanks434(Packet packet)
+        {
+            packet.ReadPackedGuid128("GuildGUID");
+        }
+
         [Parser(Opcode.SMSG_GUILD_RANK)]
         public static void HandleGuildRankServer434(Packet packet)
         {
