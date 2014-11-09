@@ -88,7 +88,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_HIGHEST_THREAT_UPDATE)]
-        public static void HandleThreatlistUpdate(Packet packet)
+        public static void HandleHighestThreatlistUpdate(Packet packet)
         {
             packet.ReadPackedGuid128("UnitGUID");
             packet.ReadPackedGuid128("HighestThreatGUID");
@@ -100,6 +100,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             {
                 packet.ReadPackedGuid128("UnitGUID", i);
                 packet.ReadUInt32("Threat", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_THREAT_UPDATE)]
+        public static void HandleThreatlistUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+            var int16 = packet.ReadInt32("Targets");
+
+            for (int i = 0; i < int16; i++)
+            {
+                packet.ReadPackedGuid128("TargetGUID", i);
+                packet.ReadInt32("Threat", i);
             }
         }
 

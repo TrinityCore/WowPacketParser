@@ -279,7 +279,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandlePlaySound(Packet packet)
         {
             var sound = packet.ReadUInt32("SoundKitID");
-            var guid = packet.ReadPackedGuid128("SourceObjectGUID");
+            packet.ReadPackedGuid128("SourceObjectGUID");
 
             Storage.Sounds.Add(sound, packet.TimeSpan);
         }
