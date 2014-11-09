@@ -117,6 +117,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_RANDOM_ROLL, 0x12AA},
             {Opcode.CMSG_RANDOMIZE_CHAR_NAME, 0x1981},
             {Opcode.CMSG_REORDER_CHARACTERS, 0x0DAA},
+            {Opcode.CMSG_REPAIR_ITEM, 0x0B54},
             {Opcode.CMSG_REQUEST_ACCOUNT_DATA, 0x0F3E},
             {Opcode.CMSG_SAVE_CUF_PROFILES, 0x0053},
             {Opcode.CMSG_SEND_MAIL, 0x0910},

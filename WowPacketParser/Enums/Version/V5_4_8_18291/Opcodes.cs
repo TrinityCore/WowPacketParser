@@ -121,7 +121,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_LFG_TELEPORT, 0x1AA6},
             {Opcode.CMSG_LIST_INVENTORY, 0x02D8},
             {Opcode.CMSG_LOAD_SCREEN, 0x1DBD},
-            {Opcode.CMSG_LOGOUT_CANCEL, 0x06C1},
+            {Opcode.CMSG_LOGOUT_CANCEL, 0x06C1 | 0x10000},
             {Opcode.CMSG_LOGOUT_REQUEST, 0x1349},
             {Opcode.CMSG_LOG_DISCONNECT, 0x10B3},
             {Opcode.CMSG_LOOT, 0x1CE2},

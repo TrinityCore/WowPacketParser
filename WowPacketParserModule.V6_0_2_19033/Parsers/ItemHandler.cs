@@ -107,5 +107,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("SlotNum");
             packet.ReadByte("ContainerId");
         }
+
+        [Parser(Opcode.CMSG_REPAIR_ITEM)]
+        public static void HandleRepairItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("NpcGUID");
+            packet.ReadPackedGuid128("ItemGUID");
+
+            packet.ResetBitReader();
+            packet.ReadBit("UseGuildBank");
+        }
     }
 }
