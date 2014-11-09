@@ -104,7 +104,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_REQUEST_ACCOUNT_DATA, 0x0F3E},
             {Opcode.CMSG_SAVE_CUF_PROFILES, 0x0053},
             {Opcode.CMSG_SEND_MAIL, 0x0910},
-            {Opcode.CMSG_SET_LOOT_SPECIALIZATION, 0x0226},
+            {Opcode.CMSG_SET_LOOT_SPECIALIZATION, 0x0226 | 0x10000},
             {Opcode.CMSG_SET_SELECTION, 0x05BD},
             {Opcode.CMSG_SET_SPECIALIZATION, 0x0AC5},
             {Opcode.CMSG_SHOWING_CLOAK, 0x0132},

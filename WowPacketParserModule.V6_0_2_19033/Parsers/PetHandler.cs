@@ -89,5 +89,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadSByte("ConsumedCharges", i);
             }
         }
+
+        [Parser(Opcode.CMSG_PET_ACTION)]
+        public static void HandlePetAction(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
+            var action = (uint)packet.ReadUInt16() + (packet.ReadByte() << 16);
+            packet.AddValue("Action", action);
+            packet.ReadByte("Slot");
+            packet.ReadPackedGuid128("TargetGUID");
+            packet.ReadVector3("ActionPosition");
+        }
     }
 }
