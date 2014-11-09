@@ -59,6 +59,7 @@
     <Compile Include="Parsers\AccountDataHandler.cs" />
     <Compile Include="Parsers\ActionBarHandler.cs" />
     <Compile Include="Parsers\AddonHandler.cs" />
+    <Compile Include="Parsers\ArchaelogyHandler.cs" />
     <Compile Include="Parsers\ArenaHandler.cs" />
     <Compile Include="Parsers\AuctionHandler.cs" />
     <Compile Include="Parsers\BattlegroundHandler.cs" />

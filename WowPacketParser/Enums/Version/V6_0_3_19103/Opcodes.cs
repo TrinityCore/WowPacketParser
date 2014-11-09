@@ -229,6 +229,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x1715},
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x1547},
             {Opcode.SMSG_RANDOMIZE_CHAR_NAME, 0x0D8F},
+            {Opcode.SMSG_RESEARCH_SETUP_HISTORY, 0x0A25},
             {Opcode.SMSG_BATTLEFIELD_RATED_INFO, 0x1F0A},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x175A},
             {Opcode.SMSG_RESUME_COMMS, 0x07C9},
