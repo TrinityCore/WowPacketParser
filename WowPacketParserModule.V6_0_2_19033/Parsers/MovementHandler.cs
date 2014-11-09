@@ -71,6 +71,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("AckIndex");
         }
 
+        [Parser(Opcode.CMSG_MOVE_WORLDPORT_ACK)]
+        public static void HandleZeroLengthPackets(Packet packet)
+        {
+        }
+
         [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
         public static void HandleLoginVerifyWorld(Packet packet)
         {
