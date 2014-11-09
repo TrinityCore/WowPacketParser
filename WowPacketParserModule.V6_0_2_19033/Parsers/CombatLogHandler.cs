@@ -196,5 +196,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (bit160)
                 SpellParsers.ReadSpellCastLogData(ref packet);
         }
+
+        [Parser(Opcode.SMSG_SPELLDAMAGESHIELD)]
+        public static void ReadSpellDamageShield(Packet packet)
+        {
+            packet.ReadPackedGuid128("Attacker");
+            packet.ReadPackedGuid128("Defender");
+            packet.ReadInt32("TotalDamage");
+            packet.ReadInt32("SpellID");
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadInt32("LogAbsorbed");
+            var bit76 = packet.ReadBit("HasLogData");
+            if (bit76)
+                SpellHandler.ReadSpellCastLogData(ref packet);
+        }
     }
 }
