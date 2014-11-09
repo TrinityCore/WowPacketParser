@@ -73,5 +73,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadPackedGuid128("SrcVoidItemGUID", i);
             }
         }
+
+        [Parser(Opcode.CMSG_SELL_ITEM)]
+        public static void HandleSellItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("VendorGUID");
+            packet.ReadPackedGuid128("ItemGUID");
+
+            packet.ReadUInt32("Amount");
+        }
     }
 }
