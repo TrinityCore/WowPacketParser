@@ -457,5 +457,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadEntry<UInt32>(StoreNameType.Spell, "SpellID");
             packet.ReadPackedGuid128("CasterGUID");
         }
+
+        [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL_KIT)]
+        public static void HandleCastVisualKit(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+            packet.ReadInt32("KitType");
+            packet.ReadUInt32("Duration");
+            packet.ReadInt32("KitRecID");
+        }
     }
 }
