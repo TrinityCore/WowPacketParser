@@ -107,44 +107,32 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("Time");
         }
 
+        [Parser(Opcode.CMSG_MOVE_FALL_LAND)]
+        [Parser(Opcode.CMSG_MOVE_HEARTBEAT)]
+        [Parser(Opcode.CMSG_MOVE_JUMP)]
+        [Parser(Opcode.CMSG_MOVE_SET_FACING)]
+        [Parser(Opcode.CMSG_MOVE_SET_PITCH)]
+        [Parser(Opcode.CMSG_MOVE_SET_RUN_MODE)]
+        [Parser(Opcode.CMSG_MOVE_SET_WALK_MODE)]
+        [Parser(Opcode.CMSG_MOVE_START_ASCEND)]
+        [Parser(Opcode.CMSG_MOVE_START_BACKWARD)]
+        [Parser(Opcode.CMSG_MOVE_START_DESCEND)]
+        [Parser(Opcode.CMSG_MOVE_START_FORWARD)]
+        [Parser(Opcode.CMSG_MOVE_START_PITCH_DOWN)]
+        [Parser(Opcode.CMSG_MOVE_START_PITCH_UP)]
+        [Parser(Opcode.CMSG_MOVE_START_SWIM)]
+        [Parser(Opcode.CMSG_MOVE_START_TURN_LEFT)]
+        [Parser(Opcode.CMSG_MOVE_START_TURN_RIGHT)]
+        [Parser(Opcode.CMSG_MOVE_START_STRAFE_LEFT)]
+        [Parser(Opcode.CMSG_MOVE_START_STRAFE_RIGHT)]
+        [Parser(Opcode.CMSG_MOVE_STOP)]
+        [Parser(Opcode.CMSG_MOVE_STOP_ASCEND)]
+        [Parser(Opcode.CMSG_MOVE_STOP_PITCH)]
+        [Parser(Opcode.CMSG_MOVE_STOP_STRAFE)]
+        [Parser(Opcode.CMSG_MOVE_STOP_SWIM)]
+        [Parser(Opcode.CMSG_MOVE_STOP_TURN)]
         [Parser(Opcode.SMSG_PLAYER_MOVE)]
         public static void HandlePlayerMove(Packet packet)
-        {
-            ReadMovementStats(ref packet);
-        }
-
-        [Parser(Opcode.CMSG_MOVE_HEARTBEAT)]
-        public static void HandleMoveHeartbeat(Packet packet)
-        {
-            ReadMovementStats(ref packet);
-        }
-
-        [Parser(Opcode.CMSG_MOVE_FALL_LAND)]
-        public static void HandleMoveFallLand(Packet packet)
-        {
-            ReadMovementStats(ref packet);
-        }
-
-        [Parser(Opcode.CMSG_MOVE_JUMP)]
-        public static void HandleMoveJump(Packet packet)
-        {
-            ReadMovementStats(ref packet);
-        }
-
-        [Parser(Opcode.CMSG_MOVE_START_BACKWARD)]
-        public static void HandleMoveStartBackward(Packet packet)
-        {
-            ReadMovementStats(ref packet);
-        }
-
-        [Parser(Opcode.CMSG_MOVE_START_FORWARD)]
-        public static void HandleMoveStartForward(Packet packet)
-        {
-            ReadMovementStats(ref packet);
-        }
-        
-        [Parser(Opcode.CMSG_MOVE_STOP)]
-        public static void HandleMoveStop(Packet packet)
         {
             ReadMovementStats(ref packet);
         }
