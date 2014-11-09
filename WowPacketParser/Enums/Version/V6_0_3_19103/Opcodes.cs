@@ -183,6 +183,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_CHANNEL_UPDATE, 0x19DB},
             {Opcode.SMSG_CHAR_CREATE, 0x0107},
             {Opcode.SMSG_CHAR_CUSTOMIZE, 0x1932},
+            {Opcode.SMSG_CHAR_CUSTOMIZE_RESULT, 0x0BAA},
             {Opcode.SMSG_CHAR_DELETE, 0x0BC4},
             {Opcode.SMSG_CHAR_ENUM, 0x05AF},
             {Opcode.SMSG_CHAR_FACTION_CHANGE, 0x0810},
