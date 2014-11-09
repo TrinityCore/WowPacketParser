@@ -114,6 +114,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_QUEST_POI_QUERY, 0x0BD9},
             {Opcode.CMSG_QUEST_QUERY, 0x09A6},
             {Opcode.CMSG_QUEUED_MESSAGES_END, 0x04DF},
+            {Opcode.CMSG_RANDOM_ROLL, 0x12AA},
             {Opcode.CMSG_RANDOMIZE_CHAR_NAME, 0x1981},
             {Opcode.CMSG_REORDER_CHARACTERS, 0x0DAA},
             {Opcode.CMSG_REQUEST_ACCOUNT_DATA, 0x0F3E},

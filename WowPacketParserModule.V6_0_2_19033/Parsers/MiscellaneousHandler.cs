@@ -283,6 +283,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             Storage.Sounds.Add(sound, packet.TimeSpan);
         }
+
+        [Parser(Opcode.CMSG_RANDOM_ROLL)]
+        public static void HandleRandomRoll(Packet packet)
+        {
+            packet.ReadInt32("Min");
+            packet.ReadInt32("Max");
+            packet.ReadByte("PartyIndex");
+        }
     }
 }
 
