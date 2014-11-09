@@ -302,5 +302,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (guid.GetObjectType() == ObjectType.Unit)
                 Storage.NpcSpellClicks.Add(guid, packet.TimeSpan);
         }
+
+        [Parser(Opcode.CMSG_BUY_BANK_SLOT)]
+        public static void HandleBuyBankSlot(Packet packet)
+        {
+            packet.ReadPackedGuid128("Banker");
+        }
     }
 }
