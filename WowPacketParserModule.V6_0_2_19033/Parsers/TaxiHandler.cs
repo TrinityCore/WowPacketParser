@@ -23,5 +23,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < count; ++i)
                 packet.ReadUInt32("PathNodes", i);
         }
+        [Parser(Opcode.CMSG_ENABLETAXI)]
+        public static void HandleTaxiStatusQuery(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+        }
     }
 }
