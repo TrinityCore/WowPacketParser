@@ -159,6 +159,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_CHAR_CREATE, 0x0107},
             {Opcode.SMSG_CHAR_DELETE, 0x0BC4},
             {Opcode.SMSG_CHAR_ENUM, 0x05AF},
+            {Opcode.CMSG_CHAR_RENAME, 0x038B},
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x080D},
             {Opcode.SMSG_CONTACT_STATUS, 0x1BEA},
             {Opcode.SMSG_CORPSE_RECLAIM_DELAY, 0x0BE2},

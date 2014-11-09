@@ -192,6 +192,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Name", bits17);
         }
 
+        [Parser(Opcode.CMSG_CHAR_RENAME)]
+        public static void HandleClientCharRename(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+
+            packet.ResetBitReader();
+
+            var bits16 = packet.ReadBits(6);
+            packet.ReadWoWString("NewName", bits16);
+        }
+
         [Parser(Opcode.CMSG_SET_LOOT_SPECIALIZATION)]
         public static void HandleSetLootSpecialization(Packet packet)
         {
