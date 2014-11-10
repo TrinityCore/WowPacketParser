@@ -203,5 +203,27 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadTime("CurrentTime");
             packet.ReadInt32("TimeOutRequest");
         }
+
+        [Parser(Opcode.SMSG_REALM_QUERY_RESPONSE)]
+        public static void HandleRealmQueryResponse(Packet packet)
+        {
+            packet.ReadUInt32("VirtualRealmAddress");
+
+            var state = packet.ReadByte("LookupState");
+            if (state == 0)
+            {
+                packet.ResetBitReader();
+
+                packet.ReadBit("IsLocal");
+                packet.ReadBit("Unk bit");
+
+                var bits2 = packet.ReadBits(8);
+                var bits258 = packet.ReadBits(8);
+                packet.ReadBit();
+
+                packet.ReadWoWString("RealmNameActual", bits2);
+                packet.ReadWoWString("RealmNameNormalized", bits258);
+            }
+        }
     }
 }
