@@ -394,5 +394,43 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadInt32("Npc", i, j);
             }
         }
+
+        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE)]
+        public static void HandleQuestCompleted(Packet packet)
+        {
+            packet.ReadUInt32("QuestId");
+            packet.ReadUInt32("SkillLineIDReward");
+            packet.ReadUInt32("MoneyReward");
+            packet.ReadUInt32("NumSkillUpsReward");
+            packet.ReadUInt32("XpReward");
+            packet.ReadUInt32("TalentReward");
+
+            packet.ReadUInt32("ItemID");
+            packet.ReadUInt32("RandomPropertiesSeed");
+            packet.ReadUInt32("RandomPropertiesID");
+            packet.ResetBitReader();
+            var hasBonuses = packet.ReadBit("HasItemBonus");
+            var hasModifications = packet.ReadBit("HasModifications");
+            if (hasBonuses)
+            {
+                packet.ReadByte("Context");
+
+                var bonusCount = packet.ReadUInt32();
+                for (var j = 0; j < bonusCount; ++j)
+                    packet.ReadUInt32("BonusListID", j);
+            }
+
+            if (hasModifications)
+            {
+                var modificationCount = packet.ReadUInt32() / 4;
+                for (var j = 0; j < modificationCount; ++j)
+                    packet.ReadUInt32("Modification", j);
+            }
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("UseQuestReward");
+            packet.ReadBit("LaunchGossip");
+        }
     }
 }
