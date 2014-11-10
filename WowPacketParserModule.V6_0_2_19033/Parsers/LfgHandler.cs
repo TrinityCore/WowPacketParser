@@ -141,6 +141,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_LFG_JOIN_RESULT)]
         public static void HandleLfgJoinResult(Packet packet)
         {
+            ReadRideTicket(ref packet);
 
             packet.ReadByte("Result");
             packet.ReadByte("ResultDetail");
