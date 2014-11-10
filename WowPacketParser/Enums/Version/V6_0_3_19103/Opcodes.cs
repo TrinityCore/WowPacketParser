@@ -286,6 +286,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_SET_PROFICIENCY, 0x00D3},
             {Opcode.SMSG_SET_TIME_ZONE_INFORMATION, 0x153E},
             {Opcode.SMSG_SET_VIGNETTE, 0x09AC},
+            {Opcode.SMSG_SHOWTAXINODES, 0x12A1},
             {Opcode.SMSG_SPELLDAMAGESHIELD, 0x188A},
             {Opcode.SMSG_SPELLENERGIZELOG, 0x137C | 0x20000},
             {Opcode.SMSG_SPELLHEALLOG, 0x0114},
