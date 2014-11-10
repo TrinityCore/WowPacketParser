@@ -129,5 +129,34 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadBit("ShortageEligible", i);
             }
         }
+
+        [Parser(Opcode.SMSG_LFG_JOIN_RESULT)]
+        public static void HandleLfgJoinResult(Packet packet)
+        {
+            // RideTicket
+            packet.ReadPackedGuid128("RequesterGuid");
+            packet.ReadInt32("Id");
+            packet.ReadInt32("Type");
+            packet.ReadTime("Time");
+
+            packet.ReadByte("Result");
+            packet.ReadByte("ResultDetail");
+
+            var int16 = packet.ReadInt32("BlackListCount");
+            for (int i = 0; i < int16; i++)
+            {
+                packet.ReadPackedGuid128("Guid", i);
+
+                var int160 = packet.ReadInt32("SlotsCount", i);
+
+                for (int j = 0; j < int160; j++)
+                {
+                    packet.ReadInt32("Slot", i, j);
+                    packet.ReadInt32("Reason", i, j);
+                    packet.ReadInt32("SubReason1", i, j);
+                    packet.ReadInt32("SubReason2", i, j);
+                }
+            }
+        }
     }
 }
