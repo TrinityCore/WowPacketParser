@@ -180,6 +180,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED, 0x01A3},
             {Opcode.SMSG_BINDPOINTUPDATE, 0x0A30},
             {Opcode.SMSG_BUY_FAILED, 0x013A},
+            {Opcode.SMSG_BUY_ITEM, 0x0BD1},
             {Opcode.SMSG_CHANNEL_NOTIFY, 0x0643},
             {Opcode.SMSG_CHANNEL_NOTIFY_JOINED, 0x1602},
             {Opcode.SMSG_CHANNEL_START, 0x016C},
