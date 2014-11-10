@@ -247,6 +247,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_LOGOUT_CANCEL_ACK, 0x0FAD},
             {Opcode.SMSG_LOGOUT_COMPLETE, 0x0B21},
             {Opcode.SMSG_LOGOUT_RESPONSE, 0x052D},
+            {Opcode.SMSG_LOOT_MONEY_NOTIFY, 0x12A9},
             {Opcode.SMSG_MAIL_LIST_RESULT, 0x0B3F},
             {Opcode.SMSG_MESSAGECHAT, 0x0603},
             {Opcode.SMSG_MONSTER_MOVE, 0x0994},

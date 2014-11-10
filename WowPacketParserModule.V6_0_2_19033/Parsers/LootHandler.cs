@@ -11,5 +11,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Unit");
         }
+
+        [Parser(Opcode.SMSG_LOOT_MONEY_NOTIFY)]
+        public static void HandleLootMoneyNotify(Packet packet)
+        {
+            packet.ReadInt32("Money");
+            packet.ReadBit("SoleLooter");
+        }
     }
 }
