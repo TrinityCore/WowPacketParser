@@ -291,6 +291,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("Max");
             packet.ReadByte("PartyIndex");
         }
+
+        [Parser(Opcode.SMSG_ZONE_UNDER_ATTACK)]
+        public static void HandleZoneUpdate(Packet packet)
+        {
+            packet.ReadEntry<Int32>(StoreNameType.Zone, "AreaID");
+        }
     }
 }
 
