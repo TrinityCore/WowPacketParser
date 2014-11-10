@@ -15,6 +15,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         [Parser(Opcode.CMSG_BANKER_ACTIVATE)]
         [Parser(Opcode.CMSG_BINDER_ACTIVATE)]
+        [Parser(Opcode.SMSG_BINDER_CONFIRM)]
         [Parser(Opcode.CMSG_GOSSIP_HELLO)]
         [Parser(Opcode.CMSG_LIST_INVENTORY)]
         [Parser(Opcode.CMSG_TRAINER_LIST)]

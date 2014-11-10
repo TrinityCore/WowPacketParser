@@ -178,6 +178,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_BATTLE_PET_NAME_QUERY_RESPONSE, 0x09EC},
             {Opcode.SMSG_BATTLE_PET_JOURNAL, 0x19A2},
             {Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED, 0x01A3},
+            {Opcode.SMSG_BINDER_CONFIRM, 0x0B11},
             {Opcode.SMSG_BINDPOINTUPDATE, 0x0A30},
             {Opcode.SMSG_BUY_FAILED, 0x013A},
             {Opcode.SMSG_BUY_ITEM, 0x0BD1},
