@@ -204,6 +204,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("TimeOutRequest");
         }
 
+        [Parser(Opcode.CMSG_REALM_NAME_QUERY)]
+        public static void HandleRealmQuery(Packet packet)
+        {
+            packet.ReadInt32("VirtualRealmAddress");
+        }
+
         [Parser(Opcode.SMSG_REALM_QUERY_RESPONSE)]
         public static void HandleRealmQueryResponse(Packet packet)
         {
