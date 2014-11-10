@@ -235,6 +235,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_LEARNED_SPELL, 0x08AB},
             {Opcode.SMSG_LFG_PLAYER_INFO, 0x0F36},
             {Opcode.SMSG_LFG_JOIN_RESULT, 0x0F72},
+            {Opcode.SMSG_LFG_UPDATE_STATUS, 0x07F7},
             {Opcode.SMSG_LIST_INVENTORY, 0x0940},
             {Opcode.SMSG_LOAD_CUF_PROFILES, 0x1530},
             {Opcode.SMSG_LOGIN_SETTIMESPEED, 0x09AA},

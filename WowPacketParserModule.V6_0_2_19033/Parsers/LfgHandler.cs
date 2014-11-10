@@ -6,6 +6,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class LfgHandler
     {
+        public static void ReadRideTicket(ref Packet packet)
+        {
+            packet.ReadPackedGuid128("RequesterGuid");
+            packet.ReadInt32("Id");
+            packet.ReadInt32("Type");
+            packet.ReadTime("Time");
+        }
+
         [Parser(Opcode.SMSG_LFG_PLAYER_INFO)]
         public static void HandleLfgPlayerLockInfoResponse(Packet packet)
         {
@@ -133,11 +141,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_LFG_JOIN_RESULT)]
         public static void HandleLfgJoinResult(Packet packet)
         {
-            // RideTicket
-            packet.ReadPackedGuid128("RequesterGuid");
-            packet.ReadInt32("Id");
-            packet.ReadInt32("Type");
-            packet.ReadTime("Time");
 
             packet.ReadByte("Result");
             packet.ReadByte("ResultDetail");
@@ -157,6 +160,39 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadInt32("SubReason2", i, j);
                 }
             }
+        }
+
+        [Parser(Opcode.SMSG_LFG_UPDATE_STATUS)]
+        public static void HandleLfgQueueStatusUpdate(Packet packet)
+        {
+            ReadRideTicket(ref packet);
+
+            packet.ReadByte("SubType");
+            packet.ReadByte("Reason");
+
+            for (int i = 0; i < 3; i++)
+                packet.ReadByte("Needs", i);
+
+            var int8 = packet.ReadInt32("SlotsCount");
+            packet.ReadInt32("RequestedRoles");
+            var int4 = packet.ReadInt32("SuspendedPlayersCount");
+
+            for (int i = 0; i < int8; i++)
+                packet.ReadInt32("Slots", i);
+
+            for (int i = 0; i < int4; i++)
+                packet.ReadPackedGuid128("SuspendedPlayers", i);
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("IsParty");
+            packet.ReadBit("NotifyUI");
+            packet.ReadBit("Joined");
+            packet.ReadBit("LfgJoined");
+            packet.ReadBit("Queued");
+
+            var bits56 = packet.ReadBits(8);
+            packet.ReadWoWString("Comment", bits56);
         }
     }
 }
