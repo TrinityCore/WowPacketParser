@@ -83,6 +83,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("Amount");
         }
 
+        [Parser(Opcode.SMSG_BUY_FAILED)]
+        public static void HandleBuyFailed(Packet packet)
+        {
+            packet.ReadPackedGuid128("VendorGUID");
+            packet.ReadEntry<UInt32>(StoreNameType.Item, "Muid");
+            packet.ReadEnum<BuyResult>("Reason", TypeCode.Byte);
+        }
+
         [Parser(Opcode.CMSG_BUYBACK_ITEM)]
         public static void HandleBuyBackItem(Packet packet)
         {
