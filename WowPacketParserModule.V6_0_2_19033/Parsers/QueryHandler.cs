@@ -153,8 +153,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 for (var i = 0; i < 5; ++i)
                     packet.ReadWoWString("Name Declined", count[i], i);
 
-                packet.ReadPackedGuid128("BnetAccountID");
                 packet.ReadPackedGuid128("AccountID");
+                packet.ReadPackedGuid128("BnetAccountID");
                 packet.ReadPackedGuid128("Player Guid");
 
                 packet.ReadUInt32("VirtualRealmAddress");

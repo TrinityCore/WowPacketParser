@@ -735,8 +735,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)] // Also named CMSG_LOADING_SCREEN_NOTIFY
         public static void HandleClientEnterWorld(Packet packet)
         {
-            packet.ReadBitBoolean("Loading");
-            var mapId = packet.ReadEntry<UInt32>(StoreNameType.Map, "Map");
+            packet.ReadBitBoolean("Showing");
+            var mapId = packet.ReadEntry<UInt32>(StoreNameType.Map, "MapID");
             MovementHandler.CurrentMapId = mapId;
 
             if (mapId < 1000) // Getting some weird results in a couple of packets
@@ -747,8 +747,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleClientEnterWorld434(Packet packet)
         {
-            var mapId = packet.ReadEntry<UInt32>(StoreNameType.Map, "Map");
-            packet.ReadBitBoolean("Loading");
+            var mapId = packet.ReadEntry<UInt32>(StoreNameType.Map, "MapID");
+            packet.ReadBitBoolean("Showing");
             MovementHandler.CurrentMapId = mapId;
 
             if (mapId < 1000) // Getting some weird results in a couple of packets
