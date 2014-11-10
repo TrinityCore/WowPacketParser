@@ -241,6 +241,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_LFG_UPDATE_STATUS, 0x07F7},
             {Opcode.SMSG_LIST_INVENTORY, 0x0940},
             {Opcode.SMSG_LOAD_CUF_PROFILES, 0x1530},
+            {Opcode.SMSG_LOG_XPGAIN, 0x1B53},
             {Opcode.SMSG_LOGIN_SETTIMESPEED, 0x09AA},
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x0B19 | 0x20000},
             {Opcode.SMSG_LOGOUT_CANCEL_ACK, 0x0FAD},

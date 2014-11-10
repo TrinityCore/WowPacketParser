@@ -328,5 +328,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("SpecID");
         }
+
+        [Parser(Opcode.SMSG_LOG_XPGAIN)]
+        public static void HandleLogXPGain(Packet packet)
+        {
+            packet.ReadPackedGuid128("Victim");
+            packet.ReadInt32("Original");
+
+            packet.ReadByte("Reason");
+            packet.ReadInt32("Amount");
+            packet.ReadSingle("GroupBonus");
+
+            packet.ReadBit("ReferAFriend");
+        }
     }
 }
