@@ -43,5 +43,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt64("QueueID");
         }
+
+        [Parser(Opcode.CMSG_BATTLEFIELD_PORT)]
+        public static void HandleBattlefieldPort434(Packet packet)
+        {
+            packet.ReadPackedGuid128("RequesterGuid");
+
+            packet.ReadUInt32("Id");
+            packet.ReadEntry<Int32>(StoreNameType.Battleground, "Type");
+            packet.ReadTime("Time");
+
+            packet.ReadBit("AcceptedInvite");
+        }
     }
 }
