@@ -30,8 +30,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadEntry<Int32>(StoreNameType.Battleground, "ListID");
         }
 
-        [Parser(Opcode.CMSG_BATTLEFIELD_MGR_ENTRY_INVITE_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleBattlefieldMgrEntryInviteResponse(Packet packet)
+        [Parser(Opcode.CMSG_BATTLEFIELD_MGR_ENTRY_INVITE_RESPONSE)]
+        [Parser(Opcode.CMSG_BATTLEFIELD_MGR_QUEUE_INVITE_RESPONSE)]
+        public static void HandleBattlefieldMgrEntryOrQueueInviteResponse(Packet packet)
         {
             packet.ReadInt64("QueueID");
             packet.ReadBit("AcceptedInvite");
