@@ -303,6 +303,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE, 0x1591},
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x1715},
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x1547},
+            {Opcode.SMSG_QUESTUPDATE_ADD_KILL, 0x1515},
             {Opcode.SMSG_RANDOMIZE_CHAR_NAME, 0x0D8F},
             {Opcode.SMSG_REALM_QUERY_RESPONSE, 0x011D},
             {Opcode.SMSG_RESEARCH_SETUP_HISTORY, 0x0A25 | 0x20000},

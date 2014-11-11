@@ -44,7 +44,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("SpellCompletionDisplayID");
             packet.ReadInt32("SpellCompletionID");
 
-
             for (var i = 0; i < 4; ++i)
             {
                 packet.ReadInt32("CurrencyID", i);
@@ -485,6 +484,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("PortraitGiverName", bits819);
             packet.ReadWoWString("PortraitGiverText", bits1268);
             packet.ReadWoWString("PortraitTurnInName", bits4);
+        }
+
+        [Parser(Opcode.SMSG_QUESTUPDATE_ADD_KILL)]
+        public static void HandleQuestUpdateAdd(Packet packet)
+        {
+            packet.ReadPackedGuid128("VictimGUID");
+
+            packet.ReadInt32("QuestID");
+            packet.ReadInt32("ObjectID");
+
+            packet.ReadInt16("Count");
+            packet.ReadInt16("Required");
+
+            packet.ReadByte("ObjectiveType");
         }
     }
 }
