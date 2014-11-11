@@ -23,6 +23,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_AUCTION_HELLO, 0x13EA},
             {Opcode.CMSG_AUTH_CONTINUED_SESSION, 0x0485},
             {Opcode.CMSG_AUTH_SESSION, 0x0487},
+            {Opcode.CMSG_AUTOEQUIP_ITEM, 0x0F35},
             {Opcode.CMSG_AUTOSTORE_BAG_ITEM, 0x0F18},
             {Opcode.CMSG_AUTOSTORE_BANK_ITEM, 0x0732},
             {Opcode.CMSG_AUTOSTORE_LOOT_ITEM, 0x0609},

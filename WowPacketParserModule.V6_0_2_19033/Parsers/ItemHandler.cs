@@ -147,8 +147,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_AUTOEQUIP_ITEM)]
         [Parser(Opcode.CMSG_AUTOSTORE_BANK_ITEM)]
-        public static void HandleAutoBankItem(Packet packet)
+        public static void HandleAutoItem(Packet packet)
         {
             var bits2 = packet.ReadBits("InvItemCount", 2);
             for (int i = 0; i < bits2; i++)
