@@ -55,5 +55,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadBit("AcceptedInvite");
         }
+
+        [Parser(Opcode.CMSG_BATTLEMASTER_JOIN)]
+        public static void HandleBattlemasterJoin434(Packet packet)
+        {
+            packet.ReadInt64("QueueID");
+            packet.ReadByte("Roles");
+
+            for (int i = 0; i < 2; i++)
+                packet.ReadInt32("BlacklistMap", i);
+
+            packet.ReadBit("JoinAsGroup");
+        }
     }
 }
