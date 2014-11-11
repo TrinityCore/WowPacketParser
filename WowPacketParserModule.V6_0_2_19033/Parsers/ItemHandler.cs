@@ -161,6 +161,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("PackSlot");
         }
 
+        [Parser(Opcode.CMSG_AUTOSTORE_BAG_ITEM)]
+        public static void HandleAutoBagItem(Packet packet)
+        {
+            var bits2 = packet.ReadBits("InvItemCount", 2);
+            for (int i = 0; i < bits2; i++)
+            {
+                packet.ReadByte("ContainerSlot", i);
+                packet.ReadByte("Slot", i);
+            }
+
+            packet.ReadByte("ContainerSlotB");
+            packet.ReadByte("ContainerSlotA");
+            packet.ReadByte("SlotA");
+        }
+
         [Parser(Opcode.SMSG_COIN_REMOVED)]
         public static void HandleCoinRemoved(Packet packet)
         {
