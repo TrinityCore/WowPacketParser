@@ -123,5 +123,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Mailbox");
             packet.ReadUInt32("MailID");
         }
+
+        [Parser(Opcode.CMSG_MAIL_DELETE)]
+        public static void HandleMailDelete(Packet packet)
+        {
+            packet.ReadInt32("DeleteReason");
+            packet.ReadInt32("MailID");
+        }
     }
 }
