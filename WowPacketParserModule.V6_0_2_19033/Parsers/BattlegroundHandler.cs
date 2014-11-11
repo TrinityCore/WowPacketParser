@@ -23,5 +23,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("BestSeasonRating", i);
             }
         }
+
+        [Parser(Opcode.CMSG_BATTLEFIELD_LIST)]
+        public static void HandleBattlefieldListClient(Packet packet)
+        {
+            packet.ReadEntry<Int32>(StoreNameType.Battleground, "ListID");
+        }
     }
 }
