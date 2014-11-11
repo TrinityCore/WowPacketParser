@@ -250,6 +250,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_LOOT_MONEY_NOTIFY, 0x12A9},
             {Opcode.SMSG_MAIL_LIST_RESULT, 0x0B3F},
             {Opcode.SMSG_MESSAGECHAT, 0x0603},
+            {Opcode.SMSG_MINIMAP_PING, 0x07BA},
             {Opcode.SMSG_MONSTER_MOVE, 0x0994},
             {Opcode.SMSG_MOTD, 0x0442},
             {Opcode.SMSG_MOVE_GRAVITY_DISABLE, 0x02C6},
