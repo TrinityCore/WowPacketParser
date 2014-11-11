@@ -185,7 +185,7 @@ namespace WowPacketParser.Loading
                             }
 
 // ReSharper disable AccessToDisposedClosure
-                            if (writer != null)
+                            if (writer != null && packet.Status.HasAnyFlag(Settings.OutputFlag))
                             {
                                 // Write to file
                                 writer.WriteLine(packet.Writer);

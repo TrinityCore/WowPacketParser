@@ -24,6 +24,7 @@ namespace WowPacketParser.Misc
         public static readonly bool ShowEndPrompt = GetBoolean("ShowEndPrompt", false);
         public static readonly bool LogErrors = GetBoolean("LogErrors", false);
         public static readonly bool LogPacketErrors = GetBoolean("LogPacketErrors", false);
+        public static readonly ParsedStatus OutputFlag = GetEnum("OutputFlag", ParsedStatus.All);
         public static readonly bool DebugReads = GetBoolean("DebugReads", false);
         public static readonly bool ParsingLog = GetBoolean("ParsingLog", false);
         public static readonly bool DevMode = GetBoolean("DevMode", false);
