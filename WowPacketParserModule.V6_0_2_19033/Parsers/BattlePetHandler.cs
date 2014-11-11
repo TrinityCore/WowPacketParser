@@ -104,5 +104,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadWoWString("Name", bits49);
         }
+
+        [Parser(Opcode.CMSG_BATTLE_PET_DELETE_PET)]
+        public static void HandleBattlePetDeletePet(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlePetGUID");
+        }
     }
 }
