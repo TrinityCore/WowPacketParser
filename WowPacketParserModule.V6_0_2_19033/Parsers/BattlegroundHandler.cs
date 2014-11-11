@@ -45,7 +45,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_BATTLEFIELD_PORT)]
-        public static void HandleBattlefieldPort434(Packet packet)
+        public static void HandleBattlefieldPort(Packet packet)
         {
             packet.ReadPackedGuid128("RequesterGuid");
 
@@ -57,7 +57,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_BATTLEMASTER_JOIN)]
-        public static void HandleBattlemasterJoin434(Packet packet)
+        public static void HandleBattlemasterJoin(Packet packet)
         {
             packet.ReadInt64("QueueID");
             packet.ReadByte("Roles");
@@ -66,6 +66,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("BlacklistMap", i);
 
             packet.ReadBit("JoinAsGroup");
+        }
+
+        [Parser(Opcode.CMSG_BATTLEMASTER_JOIN_ARENA)]
+        public static void HandleBattlemasterJoinArena(Packet packet)
+        {
+            packet.ReadByte("TeamSizeIndex");
         }
     }
 }

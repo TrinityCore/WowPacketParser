@@ -33,6 +33,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_BATTLEFIELD_MGR_QUEUE_INVITE_RESPONSE, 0x122A},
             {Opcode.CMSG_BATTLEFIELD_PORT, 0x11EB},
             {Opcode.CMSG_BATTLEMASTER_JOIN, 0x0D2E},
+            {Opcode.CMSG_BATTLEMASTER_JOIN_ARENA, 0x0DAE},
             {Opcode.CMSG_BINDER_ACTIVATE, 0x02F3},
             {Opcode.CMSG_BUYBACK_ITEM, 0x02D3},
             {Opcode.CMSG_BUY_BANK_SLOT, 0x0A25 | 0x10000},
