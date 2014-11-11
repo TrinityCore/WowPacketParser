@@ -116,5 +116,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadWoWString("Body", bits87, i);
             }
         }
+
+        [Parser(Opcode.CMSG_MAIL_CREATE_TEXT_ITEM)]
+        public static void HandleMailCreateTextItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("Mailbox");
+            packet.ReadUInt32("MailID");
+        }
     }
 }
