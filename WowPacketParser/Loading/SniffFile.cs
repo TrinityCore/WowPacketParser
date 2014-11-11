@@ -146,7 +146,7 @@ namespace WowPacketParser.Loading
 
                             if (first)
                             {
-                                Trace.WriteLine(string.Format("{0}: Parsing {1} packets. Detected version {2}",
+                                Trace.WriteLine(string.Format("{0}: Parsing {1} of packets. Detected version {2}",
                                     _logPrefix, Utilities.BytesToString(reader.PacketReader.GetTotalSize()), ClientVersion.VersionString));
 
 // ReSharper disable AccessToDisposedClosure
