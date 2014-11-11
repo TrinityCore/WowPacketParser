@@ -270,5 +270,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("WithdrawItemLimit", i);
             }
         }
+
+        [Parser(Opcode.CMSG_GUILD_INVITE)]
+        public static void HandleGuildInviteByName(Packet packet)
+        {
+            var bits16 = packet.ReadBits(9);
+            packet.ReadWoWString("Name", bits16);
+        }
     }
 }

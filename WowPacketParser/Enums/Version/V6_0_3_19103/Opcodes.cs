@@ -70,6 +70,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_GAMEOBJ_USE, 0x082E},
             {Opcode.CMSG_GOSSIP_HELLO, 0x00F3},
             {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x0332 | 0x10000},
+            {Opcode.CMSG_GUILD_INVITE, 0x19A4},
             {Opcode.CMSG_GUILD_QUERY, 0x0930},
             {Opcode.CMSG_GUILD_QUERY_RANKS, 0x0C37},
             {Opcode.CMSG_GUILD_REQUEST_PARTY_STATE, 0x0A8E},
