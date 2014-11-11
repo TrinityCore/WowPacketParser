@@ -134,5 +134,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ResetBitReader();
             packet.ReadBit("UseGuildBank");
         }
+
+        [Parser(Opcode.CMSG_AUTOSTORE_LOOT_ITEM)]
+        public static void HandleAutoStoreLootItem(Packet packet)
+        {
+            var int16 = packet.ReadInt32("Count");
+
+            for (var i = 0; i < int16; ++i)
+            {
+                packet.ReadPackedGuid128("LootObj", i);
+                packet.ReadByte("Slot", i);
+            }
+        }
     }
 }
