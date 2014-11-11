@@ -110,5 +110,28 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("BattlePetGUID");
         }
+        [Parser(Opcode.CMSG_BATTLE_PET_MODIFY_NAME)]
+        public static void HandleBattlePetModifyName(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlePetGUID");
+
+            packet.ResetBitReader();
+
+            var bits342 = packet.ReadBits(7);
+            var bit341 = packet.ReadBit("HasDeclinedNames");
+
+            packet.ReadWoWString("Name", bits342);
+
+            if (bit341)
+            {
+                var bits97 = new uint[5];
+                for (int i = 0; i < 5; i++)
+                    bits97[i] = packet.ReadBits(7);
+
+                for (int i = 0; i < 5; i++)
+                    packet.ReadWoWString("DeclinedNames", bits97[i]);
+            }
+
+        }
     }
 }
