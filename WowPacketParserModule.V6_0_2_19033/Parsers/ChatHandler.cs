@@ -85,6 +85,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 Storage.CreatureTexts.Add(entry, text, packet.TimeSpan);
         }
 
+        [Parser(Opcode.SMSG_SERVER_MESSAGE)]
+        public static void HandleServerMessage(Packet packet)
+        {
+            packet.ReadInt32("MessageID");
+
+            packet.ResetBitReader();
+
+            var bits20 = packet.ReadBits(11);
+            packet.ReadWoWString("StringParam", bits20);
+        }
+
         [Parser(Opcode.SMSG_EMOTE)]
         public static void HandleEmote(Packet packet)
         {

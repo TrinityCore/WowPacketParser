@@ -285,6 +285,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_RESUME_COMMS, 0x07C9},
             {Opcode.SMSG_SEND_MAIL_RESULT, 0x0302 | 0x20000},
             {Opcode.SMSG_SEND_UNLEARN_SPELLS, 0x1A82},
+            {Opcode.SMSG_SERVER_MESSAGE, 0x0683},
             {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x1884 | 0x20000},
             {Opcode.SMSG_SET_FORCED_REACTIONS, 0x09A9},
             {Opcode.SMSG_SET_PLAY_HOVER_ANIM, 0x02D4},
