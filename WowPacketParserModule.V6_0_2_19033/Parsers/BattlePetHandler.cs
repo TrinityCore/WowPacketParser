@@ -110,6 +110,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("BattlePetGUID");
         }
+
         [Parser(Opcode.CMSG_BATTLE_PET_MODIFY_NAME)]
         public static void HandleBattlePetModifyName(Packet packet)
         {
@@ -131,7 +132,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 for (int i = 0; i < 5; i++)
                     packet.ReadWoWString("DeclinedNames", bits97[i]);
             }
+        }
 
+        [Parser(Opcode.CMSG_BATTLE_PET_SET_BATTLE_SLOT)]
+        public static void HandleBattlePetSetBattleSlot(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlePetGUID");
+            packet.ReadByte("SlotIndex");
         }
     }
 }
