@@ -212,5 +212,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("Timestamp");
         }
+
+        [Parser(Opcode.SMSG_WAIT_QUEUE_UPDATE)]
+        public static void HandleWaitQueueUpdate(Packet packet)
+        {
+            packet.ReadInt32("WaitCount");
+            packet.ReadBit("HasFCM");
+        }
+
+        [Parser(Opcode.SMSG_WAIT_QUEUE_FINISH)]
+        public static void HandleZeroLengthPackets(Packet packet)
+        {
+        }
     }
 }
