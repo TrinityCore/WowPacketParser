@@ -136,8 +136,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadInt32("Cooldown", i);
-                packet.ReadInt32("Category Cooldown", i);
+                packet.ReadInt32("Category", i);
+                packet.ReadInt32("ModCooldown", i);
             }
         }
 
