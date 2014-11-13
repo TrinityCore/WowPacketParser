@@ -347,6 +347,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_TIME_SYNC_REQ, 0x03B1 | 0x20000},
             {Opcode.SMSG_TRAINER_LIST, 0x0BA9},
             {Opcode.SMSG_TRANSFER_PENDING, 0x172A},
+            {Opcode.SMSG_TRANSFER_ABORTED, 0x03C2},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x020F},
             {Opcode.SMSG_UNDELETE_CHARACTER_RESPONSE, 0x0344},
             {Opcode.SMSG_UNDELETE_COOLDOWN_STATUS_RESPONSE, 0x0310},

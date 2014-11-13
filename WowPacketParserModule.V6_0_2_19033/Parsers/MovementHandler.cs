@@ -357,6 +357,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadEntry<UInt32>(StoreNameType.Spell, "TransferSpellID");
         }
 
+        [Parser(Opcode.SMSG_TRANSFER_ABORTED)]
+        public static void HandleTransferAborted(Packet packet)
+        {
+            packet.ReadEntry<Int32>(StoreNameType.Map, "MapID");
+            packet.ReadByte("Arg");
+            packet.ReadEnum<TransferAbortReason>("TransfertAbort", 5);
+        }
+
         [Parser(Opcode.SMSG_MOVE_UPDATE_TELEPORT)]
         public static void HandleMoveUpdateTeleport(Packet packet)
         {
