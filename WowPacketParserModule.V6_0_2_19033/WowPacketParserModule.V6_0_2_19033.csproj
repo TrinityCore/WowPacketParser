@@ -88,6 +88,7 @@
     <Compile Include="Parsers\PetHandler.cs" />
     <Compile Include="Parsers\QueryHandler.cs" />
     <Compile Include="Parsers\QuestHandler.cs" />
+    <Compile Include="Parsers\RecruitAFriendHandler.cs" />
     <Compile Include="Parsers\ReputationHandler.cs" />
     <Compile Include="Parsers\SessionHandler.cs" />
     <Compile Include="Parsers\SpellHandler.cs" />

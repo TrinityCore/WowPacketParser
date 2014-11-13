@@ -650,6 +650,7 @@ namespace WowPacketParser.Enums
         CMSG_REALM_SPLIT,
         CMSG_RECHARGE,
         CMSG_RECLAIM_CORPSE,
+        CMSG_RECRUIT_A_FRIEND,
         CMSG_AUTH_CONTINUED_SESSION,
         CMSG_REFER_A_FRIEND,
         CMSG_REFORGE_ITEM,
