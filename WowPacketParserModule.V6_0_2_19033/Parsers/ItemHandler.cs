@@ -7,6 +7,31 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class ItemHandler
     {
+        public static void ReadItemInstance(ref Packet packet, params object[] indexes)
+        {
+            packet.ReadUInt32("ItemID", indexes);
+            packet.ReadUInt32("RandomPropertiesSeed", indexes);
+            packet.ReadUInt32("RandomPropertiesID", indexes);
+            packet.ResetBitReader();
+            var hasBonuses = packet.ReadBit("HasItemBonus", indexes);
+            var hasModifications = packet.ReadBit("HasModifications", indexes);
+            if (hasBonuses)
+            {
+                packet.ReadByte("Context", indexes);
+
+                var bonusCount = packet.ReadUInt32();
+                for (var j = 0; j < bonusCount; ++j)
+                    packet.ReadUInt32("BonusListID", indexes, j);
+            }
+
+            if (hasModifications)
+            {
+                var modificationCount = packet.ReadUInt32() / 4;
+                for (var j = 0; j < modificationCount; ++j)
+                    packet.ReadUInt32("Modification", indexes, j);
+            }
+        }
+
         [Parser(Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE)]
         public static void HandleItemEnchantTimeUpdate(Packet packet)
         {
@@ -30,7 +55,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_TRANSMOGRIFY_ITEMS)]
-        public static void HandleTransmogrifyITems(Packet packet)
+        public static void HandleTransmogrifyItems(Packet packet)
         {
             var int16 = packet.ReadInt32("ItemsCount");
             packet.ReadPackedGuid128("Npc");
