@@ -466,6 +466,25 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("CasterGUID");
         }
 
+        [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL)]
+        public static void HandleCastVisual(Packet packet)
+        {
+            packet.ReadPackedGuid128("Source");
+            packet.ReadPackedGuid128("Target");
+
+            packet.ReadVector3("TargetPosition");
+
+            packet.ReadInt32("SpellVisualID");
+            packet.ReadSingle("TravelSpeed");
+
+            packet.ReadInt16("MissReason");
+            packet.ReadInt16("ReflectStatus");
+
+            packet.ReadSingle("Orientation");
+
+            packet.ReadBit("SpeedAsTime");
+        }
+
         [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL_KIT)]
         public static void HandleCastVisualKit(Packet packet)
         {

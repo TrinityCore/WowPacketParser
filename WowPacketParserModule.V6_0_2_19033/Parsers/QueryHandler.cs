@@ -40,8 +40,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 stringLens[i][1] = (int)packet.ReadBits(11);
             }
 
-            var name = new string[4];
-            var femaleName = new string[4];
             for (var i = 0; i < 4; ++i)
             {
                 if (stringLens[i][0] > 1)
@@ -72,7 +70,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             creature.Modifier2 = packet.ReadSingle("EnergyMulti");
 
             creature.QuestItems = new uint[6];
-            var QuestItems = packet.ReadInt32("QuestItems");
+            var questItems = packet.ReadInt32("QuestItems");
             creature.MovementId = packet.ReadUInt32("CreatureMovementInfoID");
             creature.Expansion = packet.ReadEnum<ClientType>("RequiredExpansion", TypeCode.UInt32);
             packet.ReadInt32("FlagQuest");
@@ -86,7 +84,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (bits28 > 1)
                 creature.IconName = packet.ReadCString("CursorName");
 
-            for (var i = 0; i < QuestItems; ++i)
+            for (var i = 0; i < questItems; ++i)
                 creature.QuestItems[i] = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "Quest Item", i);
 
             packet.AddSniffData(StoreNameType.Unit, entry.Key, "QUERY_RESPONSE");
@@ -102,11 +100,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_DB_QUERY_BULK)]
-        public static void HandleDBQueryBulk(Packet packet)
+        public static void HandleDbQueryBulk(Packet packet)
         {
             packet.ReadEnum<DB2Hash>("DB2 File", TypeCode.Int32);
 
-            var count = 0u;
+            uint count;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_0_3_19103))
                 count = packet.ReadBits("Count", 13);
             else
