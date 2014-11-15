@@ -326,6 +326,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.AddSniffData(StoreNameType.PageText, (int)entry, "QUERY_RESPONSE");
             Storage.PageTexts.Add(entry, pageText, packet.TimeSpan);
         }
+
+        [Parser(Opcode.SMSG_SET_AI_ANIM_KIT)]
+        public static void HandleSetAIAnimKit(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+            packet.ReadUInt16("AnimKitID");
+        }
     }
 }
 
