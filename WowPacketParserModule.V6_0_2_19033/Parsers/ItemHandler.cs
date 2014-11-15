@@ -111,9 +111,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_BUY_ITEM)]
         public static void HandleBuyItemResponse(Packet packet)
         {
-            packet.ReadGuid("Vendor GUID");
-            packet.ReadUInt32("Muid");
+            packet.ReadPackedGuid128("VendorGUID");
             packet.ReadUInt32("QuantityBought");
+            packet.ReadUInt32("Muid");
             packet.ReadUInt32("NewQuantity");
         }
 

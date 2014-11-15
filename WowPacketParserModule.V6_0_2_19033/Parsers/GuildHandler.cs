@@ -7,6 +7,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class GuildHandler
     {
+        [Parser(Opcode.CMSG_GUILD_ROSTER)]
+        public static void HandleGuildRosterRequest(Packet packet)
+        {
+        }
+
         [Parser(Opcode.CMSG_GUILD_QUERY)]
         public static void HandleGuildQuery(Packet packet)
         {
