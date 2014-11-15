@@ -184,15 +184,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadBit("IsDeleted", i);
                 var bits15 = packet.ReadBits(6);
 
-                var count = new int[5];
+                var declinedNamesLen = new int[5];
                 for (var j = 0; j < 5; ++j)
                 {
                     packet.ResetBitReader();
-                    count[i] = (int)packet.ReadBits(7);
+                    declinedNamesLen[j] = (int)packet.ReadBits(7);
                 }
 
                 for (var j = 0; j < 5; ++j)
-                    packet.ReadWoWString("DeclinedNames", count[i], i, j);
+                    packet.ReadWoWString("DeclinedNames", declinedNamesLen[j], i, j);
 
                 packet.ReadPackedGuid128("AccountID", i);
                 packet.ReadPackedGuid128("BnetAccountID", i);
