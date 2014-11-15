@@ -72,5 +72,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Channel", bits108);
             packet.ReadWoWString("Sender", bits52);
         }
+
+        [Parser(Opcode.SMSG_CHANNEL_LIST)]
+        public static void HandleChannelSendList(Packet packet)
+        {
+            packet.ReadBit("Display");
+            var bits108 = packet.ReadBits(7);
+
+            packet.ReadByte("ChannelFlags");
+            var int20 = packet.ReadInt32("MembersCount");
+
+            packet.ReadWoWString("Channel", bits108);
+
+            for (var i = 0; i < int20; i++)
+            {
+                packet.ReadPackedGuid128("Guid", i);
+                packet.ReadUInt32("VirtualRealmAddress", i);
+                packet.ReadByte("Flags", i);
+            }
+        }
     }
 }
