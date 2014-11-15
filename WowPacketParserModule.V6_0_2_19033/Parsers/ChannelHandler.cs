@@ -37,6 +37,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("ChannelWelcomeMsg", bits24);
         }
 
+        [Parser(Opcode.SMSG_CHANNEL_NOTIFY_LEFT)]
+        public static void HandleChannelNotifyLeft(Packet packet)
+        {
+            var bits20 = packet.ReadBits(7);
+            packet.ReadBit("Suspended");
+            packet.ReadInt32("ChatChannelID");
+            packet.ReadWoWString("Channel", bits20);
+        }
+
         [Parser(Opcode.SMSG_CHANNEL_NOTIFY)]
         public static void HandleChannelNotify(Packet packet)
         {
