@@ -238,6 +238,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_FLIGHT_SPLINE_SYNC, 0x08A5},
             {Opcode.SMSG_FORCE_RUN_SPEED_CHANGE, 0x08F5},
             {Opcode.SMSG_FORCE_SWIM_SPEED_CHANGE, 0x061A},
+            {Opcode.SMSG_GAMEOBJECT_CUSTOM_ANIM, 0x03EB},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x128A | 0x20000},
             {Opcode.SMSG_GOSSIP_COMPLETE, 0x15D1},
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x1746},

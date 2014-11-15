@@ -71,9 +71,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         [Parser(Opcode.CMSG_GAMEOBJ_REPORT_USE)]
         [Parser(Opcode.CMSG_GAMEOBJ_USE)]
-        public static void HandleGOUse(Packet packet)
+        public static void HandleGoUse(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");
+        }
+
+        [Parser(Opcode.SMSG_GAMEOBJECT_CUSTOM_ANIM)]
+        public static void HandleGoCustomAnim(Packet packet)
+        {
+            packet.ReadPackedGuid128("ObjectGUID");
+            packet.ReadInt32("CustomAnim");
+            packet.ReadBit("PlayAsDespawn");
         }
     }
 }
