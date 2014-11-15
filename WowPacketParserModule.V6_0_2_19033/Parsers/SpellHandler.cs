@@ -510,5 +510,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadByte("Cast count");
         }
+
+        [Parser(Opcode.SMSG_SPELL_FAILED_OTHER)]
+        public static void HandleSpellFailedOther(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterUnit");
+            packet.ReadByte("CastID");
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "SpellID");
+            packet.ReadEnum<SpellCastFailureReason>("Reason", TypeCode.Byte);
+        }
     }
 }
