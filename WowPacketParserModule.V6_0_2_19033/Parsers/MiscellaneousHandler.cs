@@ -333,6 +333,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Unit");
             packet.ReadUInt16("AnimKitID");
         }
+
+        [Parser(Opcode.SMSG_DISPLAY_PROMOTION)]
+        public static void HandleDisplayPromotion(Packet packet)
+        {
+            packet.ReadUInt32("PromotionID");
+        }
     }
 }
 
