@@ -341,5 +341,53 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadBit("ReferAFriend");
         }
+
+        [Parser(Opcode.CMSG_NAME_QUERY)]
+        public static void HandleNameQuery(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+
+            var bit4 = packet.ReadBit();
+            var bit12 = packet.ReadBit();
+
+            if (bit4)
+                packet.ReadInt32("VirtualRealmAddress");
+
+            if (bit12)
+                packet.ReadInt32("NativeRealmAddress");
+        }
+
+        [Parser(Opcode.SMSG_NAME_QUERY_RESPONSE)]
+        public static void HandleNameQueryResponse(Packet packet)
+        {
+            var hasData = packet.ReadByte("HasData");
+
+            packet.ReadPackedGuid128("Player Guid");
+
+            if (hasData == 0)
+            {
+                var bits15 = (int)packet.ReadBits(7);
+
+                var count = new int[5];
+                for (var i = 0; i < 5; ++i)
+                    count[i] = (int)packet.ReadBits(7);
+
+                for (var i = 0; i < 5; ++i)
+                    packet.ReadWoWString("Name Declined", count[i], i);
+
+                packet.ReadPackedGuid128("AccountID");
+                packet.ReadPackedGuid128("BnetAccountID");
+                packet.ReadPackedGuid128("Player Guid");
+
+                packet.ReadUInt32("VirtualRealmAddress");
+
+                packet.ReadEnum<Race>("Race", TypeCode.Byte);
+                packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
+                packet.ReadEnum<Class>("Class", TypeCode.Byte);
+                packet.ReadByte("Level");
+
+                packet.ReadWoWString("Name", bits15);
+            }
+        }
     }
 }
