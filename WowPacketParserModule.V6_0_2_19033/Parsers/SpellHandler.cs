@@ -499,5 +499,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("SkillLine");
         }
+
+        [Parser(Opcode.SMSG_CAST_FAILED)]
+        public static void HandleCastFailed(Packet packet)
+        {
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32("Reason");
+            packet.ReadInt32("FailedArg1");
+            packet.ReadInt32("FailedArg2");
+
+            packet.ReadByte("Cast count");
+        }
     }
 }

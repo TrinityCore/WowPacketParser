@@ -189,6 +189,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 waypoints[i].Z = vec.Z;
             }
 
+            packet.ResetBitReader();
             var type = packet.ReadBits("Face", 2);
             var monsterSplineFilter = packet.ReadBit("Has MonsterSplineFilter");
 
@@ -226,6 +227,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 }
 
                 packet.ReadInt16("AddedToStart");
+
+                packet.ResetBitReader();
                 packet.ReadBits("FilterFlags", 2);
             }
 
