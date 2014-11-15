@@ -376,6 +376,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_WEEKLY_SPELL_USAGE, 0x13DC},
             {Opcode.SMSG_WHO, 0x0601},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x11AC},
+            {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x0B83},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x1401},
         };
     }
