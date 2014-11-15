@@ -28,7 +28,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SET_FACTION_NOT_VISIBLE)]
         public static void HandleSetFactionMisc(Packet packet)
         {
-            packet.ReadUInt32("Faction Id");
+            packet.ReadUInt32("FactionIndex");
         }
 
         [Parser(Opcode.SMSG_SET_FORCED_REACTIONS)]
