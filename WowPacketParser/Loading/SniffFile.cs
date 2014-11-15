@@ -107,6 +107,7 @@ namespace WowPacketParser.Loading
                 case DumpFormatType.SniffDataOnly:
                 case DumpFormatType.SqlOnly:
                 case DumpFormatType.Text:
+                case DumpFormatType.HexOnly:
                 {
                     var outFileName = string.Format("{0}_{1}_parsed.txt", Path.GetFileNameWithoutExtension(_originalFileName),
                         Utilities.FormattedDateTimeForFiles());
