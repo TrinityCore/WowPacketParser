@@ -177,6 +177,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_VOID_SWAP_ITEM, 0x0619},
             {Opcode.CMSG_WARDEN_DATA, 0x0BA1 | 0x10000},
             {Opcode.CMSG_WHO, 0x1322},
+            {Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x0302},
 
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x0120},
             {Opcode.SMSG_ACCOUNT_MOUNT_UPDATE, 0x0140},
@@ -336,7 +337,8 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_SPELLLOGEXECUTE, 0x1823 | 0x20000},
             {Opcode.SMSG_SPELLNONMELEEDAMAGELOG, 0x11FB},
             {Opcode.SMSG_SPELL_CATEGORY_COOLDOWN, 0x082A | 0x20000},
-            {Opcode.SMSG_SPELL_FAILED_OTHER, 0x11DB},
+            {Opcode.SMSG_SPELL_FAILED_OTHER, 0x1A03},
+            {Opcode.SMSG_SPELL_FAILURE, 0x11DB},
             {Opcode.SMSG_SPELL_GO, 0x1161 | 0x20000},
             {Opcode.SMSG_SPELL_START, 0x0803 | 0x20000},
             {Opcode.SMSG_SPELL_UPDATE_CHAIN_TARGETS, 0x0374},
