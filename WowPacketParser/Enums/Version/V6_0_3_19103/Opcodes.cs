@@ -144,7 +144,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_PVP_LOG_DATA, 0x08B5},
             {Opcode.CMSG_QUESTGIVER_QUERY_QUEST, 0x1924},
             {Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY, 0x0131},
-            {Opcode.CMSG_QUESTGIVER_STATUS_QUERY, 0x0704},
+            {Opcode.CMSG_QUESTGIVER_STATUS_QUERY, 0x01E2},
             {Opcode.CMSG_QUEST_NPC_QUERY, 0x0B81},
             {Opcode.CMSG_QUEST_POI_QUERY, 0x0BD9},
             {Opcode.CMSG_QUEST_QUERY, 0x09A6},
