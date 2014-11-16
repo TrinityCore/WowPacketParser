@@ -83,5 +83,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("CustomAnim");
             packet.ReadBit("PlayAsDespawn");
         }
+
+        [Parser(Opcode.SMSG_GAMEOBJECT_DESPAWN)]
+        public static void HandleGameObjectDespawn(Packet packet)
+        {
+            packet.ReadPackedGuid128("ObjectGUID");
+        }
     }
 }
