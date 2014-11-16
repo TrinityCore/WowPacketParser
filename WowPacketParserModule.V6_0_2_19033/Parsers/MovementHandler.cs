@@ -455,6 +455,29 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBits("Reason", 2);
         }
 
+        [Parser(Opcode.SMSG_MOVE_TELEPORT)]
+        public static void HandleMoveTeleport(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+            packet.ReadInt32("SequenceIndex");
+            packet.ReadVector3("Position");
+            packet.ReadSingle("Facing");
+
+            var bit72 = packet.ReadBit("HasTransport");
+            var bit56 = packet.ReadBit("HasVehicleTeleport");
+
+            if (bit72)
+                packet.ReadPackedGuid128("TransportGUID");
+
+            // VehicleTeleport
+            if (bit56)
+            {
+                packet.ReadByte("VehicleSeatIndex");
+                packet.ReadBit("VehicleExitVoluntary");
+                packet.ReadBit("VehicleExitTeleport");
+            }
+        }
+
         [Parser(Opcode.CMSG_MOVE_GRAVITY_DISABLE_ACK)]
         [Parser(Opcode.CMSG_FORCE_MOVE_ROOT_ACK)]
         public static void HandleMovementAck(Packet packet)
@@ -471,7 +494,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_MOVE_SET_COLLISION_HEIGHT_ACK)]
-        public static void HandleMoveSetCollisionHeightAck434(Packet packet)
+        public static void HandleMoveSetCollisionHeightAck(Packet packet)
         {
             ReadMovementAck(ref packet);
             packet.ReadSingle("Height");
@@ -480,6 +503,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ResetBitReader();
 
             packet.ReadBits("Reason", 2);
+        }
+
+        [Parser(Opcode.CMSG_MOVE_TELEPORT_ACK)]
+        public static void HandleMoveTeleportAck(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+            packet.ReadInt32("AckIndex");
+            packet.ReadInt32("MoveTime");
         }
 
         [Parser(Opcode.SMSG_SPLINE_MOVE_GRAVITY_DISABLE)]
