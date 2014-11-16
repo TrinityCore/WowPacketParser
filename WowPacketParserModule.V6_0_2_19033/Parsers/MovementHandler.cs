@@ -532,16 +532,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("MoverGUID");
         }
 
-        [Parser(Opcode.SMSG_MOVE_SET_WALK_SPEED)]
-        [Parser(Opcode.SMSG_MOVE_SET_RUN_SPEED)]
-        [Parser(Opcode.SMSG_MOVE_SET_RUN_BACK_SPEED)]
-        [Parser(Opcode.SMSG_MOVE_SET_SWIM_SPEED)]
-        [Parser(Opcode.SMSG_MOVE_SET_SWIM_BACK_SPEED)]
-        [Parser(Opcode.SMSG_MOVE_SET_TURN_RATE)]
-        [Parser(Opcode.SMSG_MOVE_SET_FLIGHT_SPEED)]
-        [Parser(Opcode.SMSG_MOVE_SET_FLIGHT_BACK_SPEED)]
-        [Parser(Opcode.SMSG_MOVE_SET_PITCH_RATE)]
-        public static void HandleMovementSetSpeed(Packet packet)
+        [Parser(Opcode.SMSG_MOVE_UPDATE_WALK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_RUN_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_RUN_BACK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_SWIM_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_SWIM_BACK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_TURN_RATE)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_FLIGHT_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_FLIGHT_BACK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_PITCH_RATE)]
+        public static void HandleMovementUpdateSpeed(Packet packet)
         {
             ReadMovementStats(ref packet);
             packet.ReadSingle("Speed");
