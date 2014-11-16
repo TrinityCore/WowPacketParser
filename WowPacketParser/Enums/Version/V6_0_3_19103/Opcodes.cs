@@ -382,6 +382,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_SUSPEND_TOKEN, 0x12A2},
             {Opcode.SMSG_TALENTS_INFO, 0x012D},
             {Opcode.SMSG_TEXT_EMOTE, 0x0383},
+            {Opcode.SMSG_THREAT_REMOVE, 0x0F3D},
             {Opcode.SMSG_THREAT_UPDATE, 0x03A9 | 0x20000},
             {Opcode.SMSG_TIME_SYNC_REQ, 0x03B1 | 0x20000},
             {Opcode.SMSG_TRAINER_LIST, 0x0BA9},

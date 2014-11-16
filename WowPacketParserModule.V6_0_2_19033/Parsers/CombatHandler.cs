@@ -116,6 +116,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_THREAT_REMOVE)]
+        public static void HandleRemoveThreatlist(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+            packet.ReadPackedGuid128("AboutGUID");
+        }
+
         [Parser(Opcode.SMSG_AI_REACTION)]
         public static void HandleAIReaction(Packet packet)
         {
