@@ -10,6 +10,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class MiscellaneousHandler
     {
+        [Parser(Opcode.SMSG_INVALIDATE_PLAYER)]
+        public static void HandleReadGuid(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+        }
+
         [HasSniffData]
         [Parser(Opcode.CMSG_LOAD_SCREEN)]
         public static void HandleClientEnterWorld(Packet packet)
