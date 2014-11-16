@@ -282,5 +282,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var bits16 = packet.ReadBits(9);
             packet.ReadWoWString("Name", bits16);
         }
+
+        [Parser(Opcode.SMSG_GUILD_CRITERIA_UPDATE)]
+        public static void HandleGuildCriteriaUpdate(Packet packet)
+        {
+            var int16 = packet.ReadUInt32("ProgressCount");
+            for (int i = 0; i < int16; i++)
+            {
+                packet.ReadInt32("CriteriaID", i);
+                packet.ReadTime("DateCreated", i);
+                packet.ReadTime("DateStarted", i);
+                packet.ReadTime("DateUpdated", i);
+                packet.ReadInt64("Quantity", i);
+                packet.ReadPackedGuid128("PlayerGUID", i);
+
+                packet.ReadInt32("Flags", i);
+            }
+        }
     }
 }

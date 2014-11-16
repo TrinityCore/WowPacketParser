@@ -257,6 +257,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_GROUP_LIST, 0x15BE},
             {Opcode.SMSG_GUILD_ACHIEVEMENT_DATA, 0x1866},
             {Opcode.SMSG_GUILD_BANK_MONEY_WITHDRAWN, 0x1047},
+            {Opcode.SMSG_GUILD_CRITERIA_UPDATE, 0x1208},
             {Opcode.SMSG_GUILD_EVENT, 0x1027},
             {Opcode.SMSG_GUILD_EVENT_PRESENCE_CHANGE, 0x1228},
             {Opcode.SMSG_GUILD_MOTD, 0x1825},
