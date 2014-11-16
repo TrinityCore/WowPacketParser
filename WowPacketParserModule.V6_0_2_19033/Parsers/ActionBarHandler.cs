@@ -25,12 +25,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 action.Button = (uint)i;
 
                 action.Id = packet.ReadUInt32();
-                var type = packet.ReadEntry();
+                var type = packet.ReadUInt32();
 
                 packet.AddValue("Action " + i, action.Id);
                 packet.AddValue("Type " + i, type);
 
-                startAction.Actions.Add(action);
+                if (type == 0)
+                    startAction.Actions.Add(action);
             }
 
             packet.ReadByte("Packet Type");

@@ -68,12 +68,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_MESSAGECHAT)]
         public static void HandleServerChatMessage(Packet packet)
         {
-            var text = new CreatureText();
+            var text = new CreatureText
+            {
+                Type = (ChatMessageType) packet.ReadByte("Chat type"),
+                Language = packet.ReadEnum<Language>("Language", TypeCode.Byte),
+                SenderGUID = packet.ReadPackedGuid128("SenderGUID")
+            };
 
-            text.Type = (ChatMessageType)packet.ReadByte("Chat type");
-            text.Language = packet.ReadEnum<Language>("Language", TypeCode.Byte);
-
-            text.SenderGUID = packet.ReadPackedGuid128("SenderGUID");
             packet.ReadPackedGuid128("SenderGuildGUID");
             packet.ReadPackedGuid128("WowAccountGUID");
             text.ReceiverGUID = packet.ReadPackedGuid128("TargetGUID");
@@ -88,10 +89,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var prefixLen = packet.ReadBits(5);
             var channelLen = packet.ReadBits(7);
             var textLen = packet.ReadBits(12);
-            var bits1490 = packet.ReadBits(10);
+            packet.ReadBits("ChatFlags", 10);
 
-            packet.ReadBit("Bit5304");
-            packet.ReadBit("Bit5305");
+            packet.ReadBit("HideChatLog");
+            packet.ReadBit("FakeSenderName");
 
             text.SenderName = packet.ReadWoWString("Sender Name", bits24);
             text.ReceiverName = packet.ReadWoWString("Receiver Name", bits1121);
