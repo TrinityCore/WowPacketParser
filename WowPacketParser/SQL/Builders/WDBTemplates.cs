@@ -148,9 +148,9 @@ namespace WowPacketParser.SQL.Builders
                 return string.Empty;
 
             var entries = Storage.PageTexts.Keys();
-            var templatesDb = SQLDatabase.GetDict<uint, PageText>(entries);
+            var templatesDb = SQLDatabase.GetDict<uint, PageText>(entries, "ID");
 
-            return SQLUtil.CompareDicts(Storage.PageTexts, templatesDb, StoreNameType.PageText);
+            return SQLUtil.CompareDicts(Storage.PageTexts, templatesDb, StoreNameType.PageText, "ID");
         }
 
         [BuilderMethod]
