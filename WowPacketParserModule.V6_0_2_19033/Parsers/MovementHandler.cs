@@ -352,7 +352,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (hasShipTransferPending)
             {
-                packet.ReadInt32("ID");
+                packet.ReadEntry<UInt32>(StoreNameType.GameObject, "ID");
                 packet.ReadEntry<Int32>(StoreNameType.Map, "OriginMapID");
             }
 
