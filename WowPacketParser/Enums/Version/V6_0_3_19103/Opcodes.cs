@@ -190,6 +190,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
 
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x0120},
             {Opcode.SMSG_ACCOUNT_MOUNT_UPDATE, 0x0140},
+            {Opcode.SMSG_ACCOUNT_TOYS_UPDATE, 0x0590},
             {Opcode.SMSG_ACTION_BUTTONS, 0x1D1F},
             {Opcode.SMSG_ADDON_INFO, 0x1D9F},
             {Opcode.SMSG_AI_REACTION, 0x0BA1},
