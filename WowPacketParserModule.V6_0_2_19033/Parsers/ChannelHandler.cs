@@ -118,8 +118,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_AVAILABLE_VOICE_CHANNEL)]
         public static void HandleAvailableVoiceChannel(Packet packet)
         {
-            packet.ReadPackedGuid128("LocalGUID");
             packet.ReadPackedGuid128("SessionGUID");
+            packet.ReadPackedGuid128("LocalGUID");
             packet.ReadByte("ChannelType");
             var bits108 = packet.ReadBits(7);
             packet.ReadWoWString("ChannelName", bits108);
@@ -130,6 +130,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadBit("EnableVoiceChat");
             packet.ReadBit("EnableMicrophone");
+        }
+
+        [Parser(Opcode.SMSG_VOICE_SESSION_LEAVE)]
+        public static void HandleVoiceLeave(Packet packet)
+        {
+            packet.ReadPackedGuid128("LocalGUID");
+            packet.ReadPackedGuid128("SessionGUID");
         }
     }
 }
