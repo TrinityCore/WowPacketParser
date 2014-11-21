@@ -130,5 +130,35 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("DeleteReason");
             packet.ReadInt32("MailID");
         }
+
+        [Parser(Opcode.SMSG_MAIL_QUERY_NEXT_TIME_RESULT)]
+        public static void HandleMailQueryNextTimeResult(Packet packet)
+        {
+            packet.ReadSingle("NextMailTime");
+
+            var int5 = packet.ReadInt32("NextCount");
+
+            for (int i = 0; i < int5; i++)
+            {
+                packet.ReadPackedGuid128("SenderGUID", i);
+
+                // PlayerGuidLookupHint
+                packet.ResetBitReader();
+
+                var bit4 = packet.ReadBit("HasVirtualRealmAddress", i);
+                var bit12 = packet.ReadBit("HasNativeRealmAddress", i);
+
+                if (bit4)
+                    packet.ReadInt32("VirtualRealmAddress", i);
+
+                if (bit12)
+                    packet.ReadInt32("NativeRealmAddress", i);
+
+                packet.ReadSingle("TimeLeft", i);
+                packet.ReadInt32("AltSenderID", i);
+                packet.ReadByte("AltSenderType", i);
+                packet.ReadInt32("StationeryID", i);
+            }
+        }
     }
 }
