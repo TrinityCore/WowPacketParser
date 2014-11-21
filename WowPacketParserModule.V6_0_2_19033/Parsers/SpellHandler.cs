@@ -528,5 +528,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadEntry<UInt32>(StoreNameType.Spell, "SpellID");
             packet.ReadEnum<SpellCastFailureReason>("Reason", TypeCode.Int16);
         }
+
+        [Parser(Opcode.SMSG_REFRESH_SPELL_HISTORY)]
+        [Parser(Opcode.SMSG_SEND_SPELL_HISTORY)]
+        public static void HandleSendSpellHistory(Packet packet)
+        {
+            var int4 = packet.ReadInt32("SpellHistoryEntryCount");
+            for (int i = 0; i < int4; i++)
+            {
+                packet.ReadUInt32("SpellID", i);
+                packet.ReadUInt32("ItemID", i);
+                packet.ReadUInt32("Category", i);
+                packet.ReadInt32("RecoveryTime", i);
+                packet.ReadInt32("CategoryRecoveryTime", i);
+
+                packet.ResetBitReader();
+
+                packet.ReadBit("OnHold", i);
+            }
+        }
     }
 }
