@@ -72,6 +72,7 @@
     <Compile Include="Parsers\CombatLogHandler.cs" />
     <Compile Include="Parsers\ContactHandler.cs" />
     <Compile Include="Parsers\CreatureHandler.cs" />
+    <Compile Include="Parsers\CurrencyHandler.cs" />
     <Compile Include="Parsers\EquipmentSetHandler.cs" />
     <Compile Include="Parsers\GameObjectHandler.cs" />
     <Compile Include="Parsers\GarrisonHandler.cs" />
