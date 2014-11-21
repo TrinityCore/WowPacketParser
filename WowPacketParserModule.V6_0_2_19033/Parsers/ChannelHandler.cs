@@ -91,5 +91,45 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadByte("Flags", i);
             }
         }
+
+        [Parser(Opcode.CMSG_CHANNEL_DISPLAY_LIST)]
+        public static void HandleChannelMisc(Packet packet)
+        {
+            var bits108 = packet.ReadBits(7);
+            packet.ReadWoWString("ChannelName", bits108);
+        }
+
+        [Parser(Opcode.CMSG_LEAVE_CHANNEL)]
+        public static void HandleChannelLeave(Packet packet)
+        {
+            packet.ReadInt32("ZoneChannelID");
+            var bits108 = packet.ReadBits(7);
+            packet.ReadWoWString("ChannelName", bits108);
+        }
+
+        [Parser(Opcode.CMSG_SET_ACTIVE_VOICE_CHANNEL)]
+        public static void HandleSetActiveVoiceChannel(Packet packet)
+        {
+            packet.ReadByte("ChannelType");
+            var bits108 = packet.ReadBits(7);
+            packet.ReadWoWString("ChannelName", bits108);
+        }
+
+        [Parser(Opcode.SMSG_AVAILABLE_VOICE_CHANNEL)]
+        public static void HandleAvailableVoiceChannel(Packet packet)
+        {
+            packet.ReadPackedGuid128("LocalGUID");
+            packet.ReadPackedGuid128("SessionGUID");
+            packet.ReadByte("ChannelType");
+            var bits108 = packet.ReadBits(7);
+            packet.ReadWoWString("ChannelName", bits108);
+        }
+
+        [Parser(Opcode.SMSG_VOICE_SESSION_ENABLE)]
+        public static void HandleVoiceSessionEnable(Packet packet)
+        {
+            packet.ReadBit("EnableVoiceChat");
+            packet.ReadBit("EnableMicrophone");
+        }
     }
 }
