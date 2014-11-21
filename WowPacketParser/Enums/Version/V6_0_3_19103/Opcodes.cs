@@ -352,6 +352,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_SEND_UNLEARN_SPELLS, 0x1A82 | 0x20000},
             {Opcode.SMSG_SERVER_MESSAGE, 0x0683},
             {Opcode.SMSG_SET_AI_ANIM_KIT, 0x0335},
+            {Opcode.SMSG_SET_CURRENCY, 0x17BE},
             {Opcode.SMSG_SET_FACTION_VISIBLE, 0x138B},
             {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x1884 | 0x20000},
             {Opcode.SMSG_SET_FORCED_REACTIONS, 0x09A9},

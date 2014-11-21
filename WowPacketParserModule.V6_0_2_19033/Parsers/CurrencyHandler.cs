@@ -40,5 +40,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("Type");
             packet.ReadInt32("MaxWeeklyQuantity");
         }
+
+        [Parser(Opcode.SMSG_SET_CURRENCY)]
+        public static void HandleSetCurrency(Packet packet)
+        {
+            packet.ReadInt32("Type");
+            packet.ReadInt32("Quantity");
+            packet.ReadInt32("Flags");
+
+            var bit32 = packet.ReadBit("HasTrackedQuantity");
+            var bit40 = packet.ReadBit("HasWeeklyQuantity");
+            packet.ReadBit("SuppressChatLog");
+
+            if (bit32)
+                packet.ReadInt32("TrackedQuantity");
+
+            if (bit40)
+                packet.ReadInt32("WeeklyQuantity");
+        }
     }
 }
