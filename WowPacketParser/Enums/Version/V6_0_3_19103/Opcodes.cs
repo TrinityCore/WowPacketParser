@@ -183,7 +183,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_USE_ITEM, 0x08B6},
             {Opcode.CMSG_UPDATE_ACCOUNT_DATA, 0x12A1 | 0x10000},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x098D | 0x10000},
-            {Opcode.SMSG_VOICE_SESSION_ENABLE, 0x1102},
+            {Opcode.CMSG_VOICE_SESSION_ENABLE, 0x1102},
             {Opcode.CMSG_VOID_STORAGE_QUERY, 0x019E},
             {Opcode.CMSG_VOID_STORAGE_TRANSFER, 0x0463},
             {Opcode.CMSG_VOID_STORAGE_UNLOCK, 0x13BB},

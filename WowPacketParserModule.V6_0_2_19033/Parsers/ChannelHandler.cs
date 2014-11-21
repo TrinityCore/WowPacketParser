@@ -125,7 +125,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("ChannelName", bits108);
         }
 
-        [Parser(Opcode.SMSG_VOICE_SESSION_ENABLE)]
+        [Parser(Opcode.CMSG_VOICE_SESSION_ENABLE)]
         public static void HandleVoiceSessionEnable(Packet packet)
         {
             packet.ReadBit("EnableVoiceChat");
