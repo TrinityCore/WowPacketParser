@@ -299,5 +299,25 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("Flags", i);
             }
         }
+
+        [Parser(Opcode.SMSG_GUILD_REWARDS_LIST)]
+        public static void HandleGuildRewardsList(Packet packet)
+        {
+            packet.ReadTime("Version");
+
+            var size = packet.ReadUInt32("RewardItemsCount");
+            for (int i = 0; i < size; i++)
+            {
+                packet.ReadUInt32("ItemID", i);
+                var int1 = packet.ReadInt32("AchievementsRequiredCount", i);
+                packet.ReadUInt32("RaceMask", i);
+                packet.ReadInt32("MinGuildLevel", i);
+                packet.ReadInt32("MinGuildRep", i);
+                packet.ReadInt64("Cost", i);
+
+                for (int j = 0; j < int1; j++)
+                    packet.ReadInt32("AchievementsRequired", i, j);
+            }
+        }
     }
 }
