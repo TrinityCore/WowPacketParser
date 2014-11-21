@@ -362,6 +362,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadUInt32("PromotionID");
         }
+
+        [Parser(Opcode.SMSG_SET_ALL_TASK_PROGRESS)]
+        [Parser(Opcode.SMSG_UPDATE_TASK_PROGRESS)]
+        public static void HandleSetAllTaskProgress(Packet packet)
+        {
+            var int4 = packet.ReadInt32("TaskProgressCount");
+            for (int i = 0; i < int4; i++)
+            {
+                packet.ReadUInt32("TaskID", i);
+                packet.ReadUInt32("FailureTime", i);
+                packet.ReadUInt32("Flags", i);
+
+                var int3 = packet.ReadInt32("ProgressCounts", i);
+                for (int j = 0; j < int3; j++)
+                    packet.ReadInt16("Counts", i, j);
+            }
+        }
     }
 }
 
