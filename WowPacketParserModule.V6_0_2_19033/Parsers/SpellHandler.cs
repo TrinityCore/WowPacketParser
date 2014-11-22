@@ -559,5 +559,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadByte("ConsumedCharges", i);
             }
         }
+
+        [Parser(Opcode.SMSG_AURA_POINTS_DEPLETED)]
+        public static void HandleAuraPointsDepleted(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+            packet.ReadByte("Slot");
+            packet.ReadByte("EffectIndex");
+        }
     }
 }
