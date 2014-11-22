@@ -35,5 +35,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("MissionRecID");
             packet.ReadInt32("Result");
         }
+
+        [Parser(Opcode.SMSG_GARRISON_REMOTE_INFO)]
+        public static void HandleGarrisonRemoteInfo(Packet packet)
+        {
+            var int20 = packet.ReadInt32("InfoCount");
+            for (int i = 0; i < int20; i++)
+            {
+                packet.ReadInt32("GarrSiteLevelID", i);
+
+                var int1 = packet.ReadInt32("BuildingsCount", i);
+                for (int j = 0; j < int1; j++)
+                {
+                    packet.ReadInt32("GarrPlotInstanceID", i, j);
+                    packet.ReadInt32("GarrBuildingID", i, j);
+                }
+            }
+        }
     }
 }
