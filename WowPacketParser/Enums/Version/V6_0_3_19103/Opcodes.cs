@@ -57,6 +57,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_CHAR_RENAME, 0x038B | 0x10000},
             {Opcode.CMSG_CHAR_UNDELETE_ENUM, 0x0F2D},
             {Opcode.CMSG_CREATURE_QUERY, 0x0505},
+            {Opcode.CMSG_CONNECT_TO_FAILED, 0x0135},
             {Opcode.CMSG_DB_QUERY_BULK, 0x138B | 0x10000},
             {Opcode.CMSG_DEL_FRIEND, 0x0F2A | 0x10000},
             {Opcode.CMSG_DEL_IGNORE, 0x033D},

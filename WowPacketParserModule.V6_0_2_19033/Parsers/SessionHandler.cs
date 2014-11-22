@@ -259,5 +259,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadTime("CurrentTime");
             packet.ReadInt32("TimeOutRequest");
         }
+
+        [Parser(Opcode.CMSG_CONNECT_TO_FAILED)]
+        public static void HandleRedirectFailed(Packet packet)
+        {
+            packet.ReadUInt32("Serial");
+            packet.ReadSByte("Con");
+        }
     }
 }
