@@ -428,6 +428,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     break;
                 }
             }
+
+            if (db2File.Length != db2File.Position)
+            {
+                packet.WriteLine("Packet not fully read! Current position is {0}, length is {1}, and diff is {2}.",
+                    db2File.Position, db2File.Length, db2File.Length - db2File.Position);
+
+                if (db2File.Length < 300) // If the packet isn't "too big" and it is not full read, print its hex table
+                    packet.AsHex();
+
+                packet.Status = ParsedStatus.WithErrors;
+            }
         }
 
         [Parser(Opcode.SMSG_HOTFIX_INFO)]

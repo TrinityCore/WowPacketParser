@@ -44,5 +44,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < int16; ++i)
                 packet.ReadByte("Nodes", i);
         }
+
+        [Parser(Opcode.SMSG_TAXINODE_STATUS)]
+        public static void HandleTaxiStatus(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+            packet.ReadBits("Status", 2);
+        }
     }
 }

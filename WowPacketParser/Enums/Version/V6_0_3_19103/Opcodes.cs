@@ -399,6 +399,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_TALENTS_INFO, 0x012D},
             {Opcode.SMSG_SET_ALL_TASK_PROGRESS, 0x1B52},
             {Opcode.SMSG_UPDATE_TASK_PROGRESS, 0x1209},
+            {Opcode.SMSG_TAXINODE_STATUS, 0x0338},
             {Opcode.SMSG_TEXT_EMOTE, 0x0383},
             {Opcode.SMSG_THREAT_REMOVE, 0x0F3D},
             {Opcode.SMSG_THREAT_UPDATE, 0x03A9 | 0x20000},
