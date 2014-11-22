@@ -379,6 +379,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadInt16("Counts", i, j);
             }
         }
+
+        [Parser(Opcode.CMSG_TUTORIAL_FLAG)]
+        public static void HandleTutorialFlag(Packet packet)
+        {
+            packet.ReadBits("TutorialAction", 2);
+            packet.ReadInt32("TutorialBit");
+        }
     }
 }
 

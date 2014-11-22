@@ -237,10 +237,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBits("Unk Bit", 2);
 
             // Calculate mid pos
-            var mid = new Vector3();
-            mid.X = (pos.X + endpos.X) * 0.5f;
-            mid.Y = (pos.Y + endpos.Y) * 0.5f;
-            mid.Z = (pos.Z + endpos.Z) * 0.5f;
+            var mid = new Vector3
+            {
+                X = (pos.X + endpos.X)*0.5f,
+                Y = (pos.Y + endpos.Y)*0.5f,
+                Z = (pos.Z + endpos.Z)*0.5f
+            };
             for (var i = 0; i < packedDeltas; ++i)
             {
                 var vec = new Vector3

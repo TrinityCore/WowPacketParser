@@ -177,6 +177,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_TRANSMOGRIFY_ITEMS, 0x0A85},
             {Opcode.CMSG_TEXT_EMOTE, 0x1901 | 0x10000},
             {Opcode.CMSG_TIME_SYNC_RESP, 0x0003},
+            {Opcode.CMSG_TUTORIAL_FLAG, 0x0B16 | 0x10000},
             {Opcode.CMSG_UNDELETE_CHARACTER, 0x0D99},
             {Opcode.CMSG_UNDELETE_COOLDOWN_STATUS_QUERY, 0x19A9},
             {Opcode.CMSG_UNLEARN_SKILL, 0x0A26 | 0x10000},
