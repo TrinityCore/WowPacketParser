@@ -383,8 +383,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_TUTORIAL_FLAG)]
         public static void HandleTutorialFlag(Packet packet)
         {
-            packet.ReadBits("TutorialAction", 2);
-            packet.ReadInt32("TutorialBit");
+            var bits16 = packet.ReadBits("TutorialAction", 2); // 0 == Update, 1 == Clear?, 2 == Reset
+
+            if (bits16 == 0)
+                packet.ReadInt32("TutorialBit");
         }
     }
 }
