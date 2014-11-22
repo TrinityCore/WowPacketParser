@@ -548,5 +548,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadMovementStats(ref packet);
             packet.ReadSingle("Speed");
         }
+
+        [Parser(Opcode.SMSG_ADJUST_SPLINE_DURATION)]
+        public static void HandleAdjustSplineDuration(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+            packet.ReadSingle("Scale");
+        }
     }
 }

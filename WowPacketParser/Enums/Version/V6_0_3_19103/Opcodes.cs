@@ -200,6 +200,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_ACCOUNT_TOYS_UPDATE, 0x0590},
             {Opcode.SMSG_ACTION_BUTTONS, 0x1D1F},
             {Opcode.SMSG_ADDON_INFO, 0x1D9F},
+            {Opcode.SMSG_ADJUST_SPLINE_DURATION, 0x0104 | 0x20000},
             {Opcode.SMSG_AI_REACTION, 0x0BA1},
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA_ACCOUNT, 0x0123},
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA_PLAYER, 0x0030 | 0x20000},
