@@ -358,7 +358,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_RESUME_COMMS, 0x07C9},
             {Opcode.SMSG_SEND_MAIL_RESULT, 0x0302 | 0x20000},
             {Opcode.SMSG_SEND_SPELL_HISTORY, 0x1933},
-            {Opcode.SMSG_SEND_UNLEARN_SPELLS, 0x1A82 | 0x20000},
+            {Opcode.SMSG_SEND_UNLEARN_SPELLS, 0x0BCB},
             {Opcode.SMSG_SERVER_MESSAGE, 0x0683},
             {Opcode.SMSG_SET_AI_ANIM_KIT, 0x0335},
             {Opcode.SMSG_SET_CURRENCY, 0x17BE},
