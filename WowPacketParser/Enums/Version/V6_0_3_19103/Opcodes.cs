@@ -145,6 +145,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_PET_NAME_QUERY, 0x1433},
             {Opcode.CMSG_PING, 0x0416},
             {Opcode.CMSG_PLAYER_LOGIN, 0x0B1D},
+            {Opcode.CMSG_PLAYED_TIME, 0x1BB2},
             {Opcode.CMSG_PVP_LOG_DATA, 0x08B5},
             {Opcode.CMSG_QUESTGIVER_QUERY_QUEST, 0x1924},
             {Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY, 0x0131},

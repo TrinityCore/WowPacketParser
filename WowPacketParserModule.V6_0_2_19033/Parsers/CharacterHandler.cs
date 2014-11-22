@@ -362,5 +362,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadWoWString("Name", bits15);
             }
         }
+
+        [Parser(Opcode.CMSG_PLAYED_TIME)]
+        public static void HandlePlayedTime(Packet packet)
+        {
+            packet.ReadBit("TriggerScriptEvent");
+        }
     }
 }
