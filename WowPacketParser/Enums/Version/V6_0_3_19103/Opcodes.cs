@@ -393,6 +393,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_SPLINE_MOVE_SET_WALK_SPEED, 0x01D5},
             {Opcode.SMSG_SPLINE_MOVE_UNSET_HOVER, 0x1959},
             {Opcode.SMSG_STANDSTATE_UPDATE, 0x1311},
+            {Opcode.SMSG_START_ELAPSED_TIMERS, 0x093F},
             {Opcode.SMSG_SUSPEND_COMMS, 0x076A},
             {Opcode.SMSG_SUSPEND_TOKEN, 0x12A2},
             {Opcode.SMSG_TALENTS_INFO, 0x012D},

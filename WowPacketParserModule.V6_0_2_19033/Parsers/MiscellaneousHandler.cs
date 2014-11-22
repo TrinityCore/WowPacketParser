@@ -388,6 +388,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (bits16 == 0)
                 packet.ReadInt32("TutorialBit");
         }
+
+        [Parser(Opcode.SMSG_START_ELAPSED_TIMERS)]
+        public static void HandleStartElapsedTimers(Packet packet)
+        {
+            var int3 = packet.ReadInt32("ElaspedTimerCounts");
+            for (int i = 0; i < int3; i++)
+            {
+                packet.ReadUInt32("TimerID", i);
+                packet.ReadTime("CurrentDuration", i);
+            }
+        }
     }
 }
 
