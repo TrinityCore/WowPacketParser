@@ -109,8 +109,7 @@ namespace WowPacketParser.Loading
                 case DumpFormatType.Text:
                 case DumpFormatType.HexOnly:
                 {
-                    var outFileName = string.Format("{0}_{1}_parsed.txt", Path.GetFileNameWithoutExtension(_originalFileName),
-                        Utilities.FormattedDateTimeForFiles());
+                    var outFileName = Path.ChangeExtension(_originalFileName, null) + "_parsed.txt";
 
                     if (Utilities.FileIsInUse(outFileName) && Settings.DumpFormat != DumpFormatType.SqlOnly)
                     {
@@ -394,7 +393,7 @@ namespace WowPacketParser.Loading
             string sqlFileName;
             if (String.IsNullOrWhiteSpace(Settings.SQLFileName))
                 sqlFileName = string.Format("{0}_{1}.sql",
-                    Path.GetFileNameWithoutExtension(_originalFileName), Utilities.FormattedDateTimeForFiles());
+                    Utilities.FormattedDateTimeForFiles(), Path.GetFileName(_originalFileName));
             else
                 sqlFileName = Settings.SQLFileName;
 
@@ -410,8 +409,7 @@ namespace WowPacketParser.Loading
             if (_withErrorHeaders.Count == 0 && _skippedHeaders.Count == 0)
                 return;
 
-            var fileName = string.Format("{0}_{1}_errors.txt", Path.GetFileNameWithoutExtension(_originalFileName),
-                Utilities.FormattedDateTimeForFiles());
+            var fileName = Path.GetFileNameWithoutExtension(_originalFileName) + "_errors.txt";
 
             using (var file = new StreamWriter(fileName))
             {

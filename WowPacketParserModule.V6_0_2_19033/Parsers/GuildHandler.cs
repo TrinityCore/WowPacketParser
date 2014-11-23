@@ -319,5 +319,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadInt32("AchievementsRequired", i, j);
             }
         }
+
+        [Parser(Opcode.SMSG_GUILD_EVENT_BANK_MONEY_CHANGED)]
+        public static void HandleGuildEventBankMoneyChanged(Packet packet)
+        {
+            packet.ReadUInt64("Money");
+        }
     }
 }
