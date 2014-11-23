@@ -266,5 +266,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("Serial");
             packet.ReadSByte("Con");
         }
+
+        [Parser(Opcode.SMSG_RESUME_TOKEN)]
+        public static void HandleResumeTokenPacket(Packet packet)
+        {
+            packet.ReadUInt32("Sequence");
+            packet.ReadBits("Reason", 2);
+        }
     }
 }
