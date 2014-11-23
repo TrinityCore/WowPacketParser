@@ -434,5 +434,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (bit24)
                 packet.ReadInt64("WeeklyBonusMoney");
         }
+
+        [Parser(Opcode.SMSG_GUILD_CHALLENGE_UPDATED)]
+        public static void HandleGuildChallengeUpdated(Packet packet)
+        {
+            for (int i = 0; i < 6; ++i)
+                packet.ReadInt32("Gold", i);
+
+            for (int i = 0; i < 6; ++i)
+                packet.ReadInt32("MaxCount", i);
+            
+            for (int i = 0; i < 6; ++i)
+                packet.ReadInt32("CurrentCount", i);
+
+            for (int i = 0; i < 6; ++i)
+                packet.ReadInt32("MaxLevelGold", i);
+        }
     }
 }
