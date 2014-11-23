@@ -426,10 +426,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_MOVE_GRAVITY_DISABLE)]
-        [Parser(Opcode.SMSG_MOVE_SET_HOVER)]
         [Parser(Opcode.SMSG_MOVE_LAND_WALK)]
-        [Parser(Opcode.SMSG_MOVE_UNSET_HOVER)]
         [Parser(Opcode.SMSG_MOVE_ROOT)]
+        [Parser(Opcode.SMSG_MOVE_SET_CAN_FLY)]
+        [Parser(Opcode.SMSG_MOVE_SET_HOVER)]
+        [Parser(Opcode.SMSG_MOVE_UNSET_CAN_FLY)]
+        [Parser(Opcode.SMSG_MOVE_UNSET_HOVER)]
         [Parser(Opcode.SMSG_MOVE_UNROOT)]
         [Parser(Opcode.SMSG_MOVE_WATER_WALK)]
         public static void HandleMovementIndex(Packet packet)
