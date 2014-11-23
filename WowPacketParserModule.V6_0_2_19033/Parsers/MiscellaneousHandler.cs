@@ -399,6 +399,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadTime("CurrentDuration", i);
             }
         }
+
+        [Parser(Opcode.SMSG_REQUEST_CEMETERY_LIST_RESPONSE)]
+        public static void HandleRequestCemeteryListResponse(Packet packet)
+        {
+            packet.ReadBit("IsTriggered");
+
+            var count = packet.ReadUInt32("Count");
+            for (int i = 0; i < count; ++i)
+                packet.ReadInt32("CemeteryID", i);
+        }
     }
 }
 
