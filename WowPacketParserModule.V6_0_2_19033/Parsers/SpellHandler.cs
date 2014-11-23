@@ -567,5 +567,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("Slot");
             packet.ReadByte("EffectIndex");
         }
+
+        [Parser(Opcode.SMSG_SPELL_MULTISTRIKE_EFFECT)]
+        public static void HandleSpellMultistrikeEffect(Packet packet)
+        {
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadPackedGuid128("Target");
+            packet.ReadInt32("SpellID");
+            packet.ReadInt16("ProcCount");
+            packet.ReadInt16("ProcNum");
+        }
     }
 }

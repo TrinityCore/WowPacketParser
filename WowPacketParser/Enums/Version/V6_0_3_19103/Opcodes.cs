@@ -420,6 +420,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_SPELL_FAILED_OTHER, 0x1A03},
             {Opcode.SMSG_SPELL_FAILURE, 0x11DB},
             {Opcode.SMSG_SPELL_GO, 0x1161 | 0x20000},
+            {Opcode.SMSG_SPELL_MULTISTRIKE_EFFECT, 0x131C},
             {Opcode.SMSG_SPELL_START, 0x0803 | 0x20000},
             {Opcode.SMSG_SPELL_UPDATE_CHAIN_TARGETS, 0x0374},
             {Opcode.SMSG_SPLINE_MOVE_GRAVITY_DISABLE, 0x03B2},
