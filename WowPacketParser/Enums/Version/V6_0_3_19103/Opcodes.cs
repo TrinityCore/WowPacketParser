@@ -319,12 +319,16 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_MINIMAP_PING, 0x07BA | 0x20000},
             {Opcode.SMSG_MONSTER_MOVE, 0x0994},
             {Opcode.SMSG_MOTD, 0x0442},
+            //{Opcode.SMSG_MOVE_FEATHER_FALL, }, // Fix me: sub_CB9945
             {Opcode.SMSG_MOVE_GRAVITY_DISABLE, 0x02C6},
+            {Opcode.SMSG_MOVE_SET_HOVER, 0x0296},
             {Opcode.SMSG_MOVE_LAND_WALK, 0x13DA},
+            //{Opcode.SMSG_MOVE_NORMAL_FALL, }, // Fix me: sub_80C04E
             {Opcode.SMSG_MOVE_ROOT, 0x1B5A},
             {Opcode.SMSG_MOVE_SET_COLLISION_HEIGHT, 0x008D},
             {Opcode.SMSG_MOVE_WATER_WALK, 0x02A6},
             {Opcode.SMSG_MOVE_TELEPORT, 0x03A6},
+            {Opcode.SMSG_MOVE_UNSET_HOVER, 0x01A5},
             {Opcode.SMSG_MOVE_UPDATE_TELEPORT, 0x03D5 | 0x20000},
             //{Opcode.SMSG_MOVE_UPDATE_FLIGHT_SPEED, }, // Fix me: sub_CB9F13
             //{Opcode.SMSG_MOVE_UPDATE_FLIGHT_BACK_SPEED, }, // Fix me: sub_CB9F99
