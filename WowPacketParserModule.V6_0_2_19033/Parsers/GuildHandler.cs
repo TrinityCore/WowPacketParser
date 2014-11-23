@@ -325,5 +325,29 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadUInt64("Money");
         }
+
+        [Parser(Opcode.SMSG_GUILD_INVITE)]
+        public static void HandleGuildInvite(Packet packet)
+        {
+            var bits149 = packet.ReadBits(6);
+            var bits216 = packet.ReadBits(7);
+            var bits52 = packet.ReadBits(7);
+
+            packet.ReadInt32("InviterVirtualRealmAddress");
+            packet.ReadUInt32("GuildVirtualRealmAddress");
+            packet.ReadPackedGuid128("GuildGUID");
+            packet.ReadUInt32("OldGuildVirtualRealmAddress");
+            packet.ReadPackedGuid128("OldGuildGUID");
+            packet.ReadUInt32("EmblemStyle");
+            packet.ReadUInt32("EmblemColor");
+            packet.ReadUInt32("BorderStyle");
+            packet.ReadUInt32("BorderColor");
+            packet.ReadUInt32("BackgroundColor");
+            packet.ReadInt32("Level");
+
+            packet.ReadWoWString("InviterName", bits149);
+            packet.ReadWoWString("OldGuildName", bits216);
+            packet.ReadWoWString("GuildName", bits52);
+        }
     }
 }
