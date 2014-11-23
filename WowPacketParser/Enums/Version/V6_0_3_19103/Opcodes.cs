@@ -175,6 +175,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_SHOWING_HELM, 0x11E1},
             {Opcode.CMSG_SPELLCLICK, 0x0BC2},
             {Opcode.CMSG_SUSPEND_COMMS_ACK, 0x0C56},
+            {Opcode.CMSG_SUSPEND_TOKEN_RESPONSE, 0x041E},
             {Opcode.CMSG_TRAINER_BUY_SPELL, 0x0A28 | 0x10000},
             {Opcode.CMSG_TRAINER_LIST, 0x0A2E},
             {Opcode.CMSG_TRANSMOGRIFY_ITEMS, 0x0A85},

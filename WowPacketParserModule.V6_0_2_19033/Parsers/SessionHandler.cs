@@ -267,6 +267,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadSByte("Con");
         }
 
+        [Parser(Opcode.CMSG_SUSPEND_TOKEN_RESPONSE)]
+        public static void HandleSuspendToken(Packet packet)
+        {
+            packet.ReadUInt32("Sequence");
+        }
+
         [Parser(Opcode.SMSG_RESUME_TOKEN)]
         public static void HandleResumeTokenPacket(Packet packet)
         {
