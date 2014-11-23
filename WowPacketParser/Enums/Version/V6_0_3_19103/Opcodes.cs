@@ -329,6 +329,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_MOVE_WATER_WALK, 0x02A6},
             {Opcode.SMSG_MOVE_TELEPORT, 0x03A6},
             {Opcode.SMSG_MOVE_UNSET_HOVER, 0x01A5},
+            {Opcode.SMSG_MOVE_UNROOT, 0x08BD},
             {Opcode.SMSG_MOVE_UPDATE_TELEPORT, 0x03D5 | 0x20000},
             //{Opcode.SMSG_MOVE_UPDATE_FLIGHT_SPEED, }, // Fix me: sub_CB9F13
             //{Opcode.SMSG_MOVE_UPDATE_FLIGHT_BACK_SPEED, }, // Fix me: sub_CB9F99
