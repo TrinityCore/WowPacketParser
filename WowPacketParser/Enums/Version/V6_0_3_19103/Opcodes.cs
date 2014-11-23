@@ -326,11 +326,12 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             //{Opcode.SMSG_MOVE_NORMAL_FALL, }, // Fix me: sub_80C04E
             {Opcode.SMSG_MOVE_ROOT, 0x1B5A},
             {Opcode.SMSG_MOVE_SET_CAN_FLY, 0x01F6},
+            {Opcode.SMSG_MOVE_SET_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY, 0x08CE},
             {Opcode.SMSG_MOVE_SET_COLLISION_HEIGHT, 0x008D},
             //{Opcode.SMSG_MOVE_SET_IGNORE_MOVEMENT_FORCES, }, // Fix me: sub_CBA09D
-            {Opcode.SMSG_MOVE_WATER_WALK, 0x02A6},
             {Opcode.SMSG_MOVE_TELEPORT, 0x03A6},
             {Opcode.SMSG_MOVE_UNSET_CAN_FLY, 0x0BAE},
+            {Opcode.SMSG_MOVE_UNSET_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY, 0x00C5},
             {Opcode.SMSG_MOVE_UNSET_IGNORE_MOVEMENT_FORCES, 0x039E},
             {Opcode.SMSG_MOVE_UNSET_HOVER, 0x01A5},
             {Opcode.SMSG_MOVE_UNROOT, 0x08BD},
@@ -344,6 +345,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_MOVE_UPDATE_SWIM_BACK_SPEED, 0x1083},
             {Opcode.SMSG_MOVE_UPDATE_TURN_RATE, 0x08BE},
             {Opcode.SMSG_MOVE_UPDATE_WALK_SPEED, 0x01E5},
+            {Opcode.SMSG_MOVE_WATER_WALK, 0x02A6},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x0828},
             {Opcode.SMSG_NEW_WORLD, 0x0206 | 0x20000},
             {Opcode.SMSG_NPC_TEXT_UPDATE, 0x1122 | 0x20000},
