@@ -450,5 +450,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < 6; ++i)
                 packet.ReadInt32("MaxLevelGold", i);
         }
+
+        [Parser(Opcode.SMSG_GUILD_RANKS_UPDATE)]
+        public static void HandleGuildRanksUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("Officer");
+            packet.ReadPackedGuid128("Other");
+            packet.ReadInt32("RankID");
+            packet.ReadBit("Promote");
+        }
     }
 }
