@@ -499,5 +499,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadByte("ObjectiveType");
         }
+
+        [Parser(Opcode.SMSG_CLEAR_QUEST_COMPLETED_BITS)]
+        public static void HandleClearQuestCompletedBits(Packet packet)
+        {
+            var int4 = packet.ReadUInt32("Count");
+            for (int i = 0; i < int4; i++)
+                packet.ReadInt32("Qbits", i);
+        }
     }
 }
