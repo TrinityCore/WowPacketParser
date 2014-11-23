@@ -229,6 +229,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_BINDPOINTUPDATE, 0x0A30},
             {Opcode.SMSG_BUY_FAILED, 0x013A},
             {Opcode.SMSG_BUY_ITEM, 0x0BD1},
+            {Opcode.SMSG_CALENDAR_SEND_NUM_PENDING, 0x1B3A},
             {Opcode.SMSG_CAST_FAILED, 0x1A89},
             {Opcode.SMSG_REQUEST_CEMETERY_LIST_RESPONSE, 0x059E},
             {Opcode.SMSG_CHANNEL_LIST, 0x1411},
