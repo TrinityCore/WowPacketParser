@@ -271,6 +271,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_GARRISON_COMPLETE_MISSION_RESULT, 0x0952},
             {Opcode.SMSG_GARRISON_REMOTE_INFO, 0x0151},
             {Opcode.SMSG_GM_TICKET_CASE_STATUS, 0x1D8D},
+            {Opcode.SMSG_GM_TICKET_SYSTEM_STATUS, 0x1229},
             {Opcode.SMSG_GOSSIP_COMPLETE, 0x15D1},
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x1746},
             {Opcode.SMSG_GOSSIP_POI, 0x011E | 0x20000},

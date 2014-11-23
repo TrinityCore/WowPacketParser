@@ -30,5 +30,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadWoWString("WaitTimeOverrideMessage", bits262, i);
             }
         }
+
+        [Parser(Opcode.SMSG_GM_TICKET_SYSTEM_STATUS)]
+        public static void HandleGMTicketSystemStatus(Packet packet)
+        {
+            packet.ReadInt32("Status");
+        }
     }
 }
