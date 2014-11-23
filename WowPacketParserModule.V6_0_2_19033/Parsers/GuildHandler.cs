@@ -349,5 +349,52 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("OldGuildName", bits216);
             packet.ReadWoWString("GuildName", bits52);
         }
+
+        [Parser(Opcode.SMSG_GUILD_BANK_LIST)]
+        public static void HandleGuildBankList(Packet packet)
+        {
+            packet.ReadUInt64("Money");
+            packet.ReadInt32("WithdrawalsRemaining");
+            packet.ReadInt32("Tab");
+
+            var int36 = packet.ReadInt32("TabInfoCount");
+            var int16 = packet.ReadInt32("ItemInfoCount");
+
+            for (int i = 0; i < int36; i++)
+            {
+                packet.ReadInt32("TabIndex", i);
+
+                packet.ResetBitReader();
+
+                var bits1 = packet.ReadBits(8);
+                var bits69 = packet.ReadBits(7);
+
+                packet.ReadWoWString("Name", bits1, i);
+                packet.ReadWoWString("Icon", bits69, i);
+            }
+
+            for (int i = 0; i < int16; i++)
+            {
+                packet.ReadInt32("Slot", i);
+                ItemHandler.ReadItemInstance(ref packet, i);
+                packet.ReadInt32("Count", i);
+                packet.ReadInt32("EnchantmentID", i);
+                packet.ReadInt32("Charges", i);
+                var int76 = packet.ReadInt32("SocketEnchant", i);
+                packet.ReadInt32("OnUseEnchantmentID", i);
+
+                for (int j = 0; j < int76; j++)
+                {
+                    packet.ReadInt32("SocketIndex", i, j);
+                    packet.ReadInt32("SocketEnchantID", i, j);
+                }
+
+                packet.ResetBitReader();
+                packet.ReadBit("Locked");
+            }
+
+            packet.ResetBitReader();
+            packet.ReadBit("FullUpdate");
+        }
     }
 }
