@@ -7,6 +7,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class MailHandler
     {
+        [Parser(Opcode.CMSG_QUERY_NEXT_MAIL_TIME)]
+        public static void HandleNullMail(Packet packet)
+        {
+        }
+
         [Parser(Opcode.SMSG_SEND_MAIL_RESULT)]
         public static void HandleSendMailResult(Packet packet)
         {

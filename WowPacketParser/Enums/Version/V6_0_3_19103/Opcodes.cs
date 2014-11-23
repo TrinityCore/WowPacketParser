@@ -370,6 +370,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_PLAY_SOUND, 0x02D2},
             {Opcode.SMSG_PLAY_SPELL_VISUAL, 0x1A84},
             {Opcode.SMSG_PLAY_SPELL_VISUAL_KIT, 0x0171},
+            {Opcode.SMSG_PLAYED_TIME, 0x038B},
             {Opcode.SMSG_PLAYER_MOVE, 0x0ACE},
             {Opcode.SMSG_PONG, 0x17CA},
             {Opcode.SMSG_POWER_UPDATE, 0x0B27},

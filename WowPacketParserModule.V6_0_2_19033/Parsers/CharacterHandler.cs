@@ -364,9 +364,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_PLAYED_TIME)]
-        public static void HandlePlayedTime(Packet packet)
+        public static void HandleClientPlayedTime(Packet packet)
         {
             packet.ReadBit("TriggerScriptEvent");
+        }
+
+        [Parser(Opcode.SMSG_PLAYED_TIME)]
+        public static void HandleServerPlayedTime(Packet packet)
+        {
+            packet.ReadInt32("TotalTime");
+            packet.ReadInt32("LevelTime");
+
+            packet.ReadBit("TriggerEvent");
         }
     }
 }
