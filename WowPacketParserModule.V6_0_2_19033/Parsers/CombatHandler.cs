@@ -135,5 +135,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Victim");
         }
+
+        [Parser(Opcode.SMSG_CANCEL_AUTO_REPEAT)]
+        public static void HandleCancelAutoRepeat(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+        }
     }
 }
