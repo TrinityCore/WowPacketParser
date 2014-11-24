@@ -146,8 +146,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("SourceGUID");
             packet.ReadPackedGuid128("WowAccountGUID");
-            packet.ReadEnum<EmoteTextType>("SoundIndex", TypeCode.Int32);
             packet.ReadEnum<EmoteType>("EmoteID", TypeCode.Int32);
+            packet.ReadEnum<EmoteTextType>("SoundIndex", TypeCode.Int32);
             packet.ReadPackedGuid128("TargetGUID");
         }
     }
