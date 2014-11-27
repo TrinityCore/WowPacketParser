@@ -126,8 +126,9 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     // +2949 + 8
                     switch (reqType)
                     {
-                        case QuestRequirementType.Creature:
-                        case QuestRequirementType.Unknown3:
+                        case QuestRequirementType.CreatureKill:
+                        case QuestRequirementType.CreatureInteract:
+                        case QuestRequirementType.PetBattleDefeatCreature:
                             packet.ReadEntry<Int32>(StoreNameType.Unit, "Required Creature ID", i);
                             break;
                         case QuestRequirementType.Item:
@@ -142,8 +143,12 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                         case QuestRequirementType.Spell:
                             packet.ReadEntry<Int32>(StoreNameType.Spell, "Required Spell ID", i);
                             break;
-                        case QuestRequirementType.Faction:
+                        case QuestRequirementType.FactionRepHigher:
+                        case QuestRequirementType.FactionRepLower:
                             packet.ReadUInt32("Required Faction ID", i);
+                            break;
+                        case QuestRequirementType.PetBattleDefeatSpecies:
+                            packet.ReadUInt32("Required Species ID", i);
                             break;
                         default:
                             packet.ReadInt32("Required ID", i);
