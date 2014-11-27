@@ -117,7 +117,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 for (var i = 0; i < questObjectivesCount; ++i)
                 {
                     packet.ReadUInt32("Requirement Count ", i); // +2949 + 12
-                    packet.ReadUInt32("Unk UInt32", i); // +2949 + 0
+                    packet.ReadUInt32("Objective ID", i); // +2949 + 0
                     packet.ReadWoWString("Objective Text", objectivesCounts[i, 1], i); // +2949 + 20
                     packet.ReadUInt32("Unk2 UInt32", i); // +2949 + 16
                     packet.ReadByte("Objective", i); // +2949 + 5
