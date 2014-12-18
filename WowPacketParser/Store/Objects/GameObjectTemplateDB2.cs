@@ -38,7 +38,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("position_y")]
         public float positionY;
 
-        [DBFieldName("position_x")]
+        [DBFieldName("position_z")]
         public float positionZ;
 
         [DBFieldName("rotation0")]
