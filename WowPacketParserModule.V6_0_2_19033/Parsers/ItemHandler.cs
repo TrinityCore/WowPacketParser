@@ -175,6 +175,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_AUTOBANK_ITEM)]
         [Parser(Opcode.CMSG_AUTOEQUIP_ITEM)]
         [Parser(Opcode.CMSG_AUTOSTORE_BANK_ITEM)]
+        [Parser(Opcode.CMSG_SWAP_INV_ITEM)]
         public static void HandleAutoItem(Packet packet)
         {
             var bits2 = packet.ReadBits("InvItemCount", 2);
@@ -186,6 +187,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadByte("Slot");
             packet.ReadByte("PackSlot");
+        }
+
+        [Parser(Opcode.CMSG_SWAP_ITEM)]
+        public static void HandleSwapInvItem(Packet packet)
+        {
+            var bits2 = packet.ReadBits("InvItemCount", 2);
+            for (int i = 0; i < bits2; i++)
+            {
+                packet.ReadByte("ContainerSlot", i);
+                packet.ReadByte("Slot", i);
+            }
+
+            packet.ReadByte("DestBag");
+            packet.ReadByte("SrcBag");
+            packet.ReadByte("DestSlot");
+            packet.ReadByte("SrcSlot");
         }
 
         [Parser(Opcode.CMSG_AUTOSTORE_BAG_ITEM)]
@@ -207,6 +224,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleCoinRemoved(Packet packet)
         {
             packet.ReadPackedGuid128("LootObj");
+        }
+
+        [Parser(Opcode.CMSG_SPLIT_ITEM)]
+        public static void HandleSplitItem(Packet packet)
+        {
+            var bits2 = packet.ReadBits("InvItemCount", 2);
+            for (int i = 0; i < bits2; i++)
+            {
+                packet.ReadByte("ContainerSlot", i);
+                packet.ReadByte("Slot", i);
+            }
+
+            packet.ReadByte("SrcBag");
+            packet.ReadByte("SrcSlot");
+            packet.ReadByte("DestBag");
+            packet.ReadByte("DestSlot");
+            packet.ReadUInt32("Count");
         }
     }
 }
