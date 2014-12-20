@@ -208,5 +208,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("LootObj");
         }
+
+        [Parser(Opcode.SMSG_INVENTORY_CHANGE_FAILURE)]
+        public static void HandleInventoryChangeFailure(Packet packet)
+        {
+            var result = packet.ReadEnum<InventoryResult>("BagResult", TypeCode.Byte);
+            if (result == InventoryResult.Ok)
+                return;
+
+            for (int i = 0; i < 2; i++)
+                packet.ReadPackedGuid128("Item");
+
+            packet.ReadByte("ContainerBSlot");
+
+            if (result == InventoryResult.CantEquipLevel || result == InventoryResult.PurchaseLevelTooLow)
+                packet.ReadInt32("Level");
+        }
     }
 }
