@@ -146,8 +146,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleDestroyItem(Packet packet)
         {
             packet.ReadUInt32("Count");
-            packet.ReadByte("SlotNum");
             packet.ReadByte("ContainerId");
+            packet.ReadByte("SlotNum");
         }
 
         [Parser(Opcode.CMSG_REPAIR_ITEM)]
@@ -234,7 +234,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 return;
 
             for (int i = 0; i < 2; i++)
-                packet.ReadPackedGuid128("Item");
+                packet.ReadPackedGuid128("Item", i);
 
             packet.ReadByte("ContainerBSlot");
 

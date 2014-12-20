@@ -318,7 +318,6 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_INIT_WORLD_STATES, 0x0B04},
             {Opcode.SMSG_INSTANCE_INFO, 0x0DA0},
             {Opcode.SMSG_INVALIDATE_PLAYER, 0x0B37},
-            {Opcode.SMSG_INVENTORY_CHANGE_FAILURE, 0x0112},
             {Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE, 0x010D},
             {Opcode.SMSG_LEARNED_SPELL, 0x08AB},
             {Opcode.SMSG_LFG_PLAYER_INFO, 0x0F36},
