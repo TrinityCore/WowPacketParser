@@ -25,7 +25,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(Storage.QuestTemplates, templatesDb, StoreNameType.Quest, "Id");
         }
 
-        /*[BuilderMethod]
+        [BuilderMethod]
         public static string QuestWod()
         {
             if (Storage.QuestTemplatesWod.IsEmpty())
@@ -38,7 +38,7 @@ namespace WowPacketParser.SQL.Builders
             var templatesDb = SQLDatabase.GetDict<uint, QuestTemplateWod>(entries, "Id");
 
             return SQLUtil.CompareDicts(Storage.QuestTemplatesWod, templatesDb, StoreNameType.Quest, "Id");
-        }*/
+        }
 
         [BuilderMethod]
         public static string QuestInfoObjective()
