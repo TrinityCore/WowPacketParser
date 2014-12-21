@@ -197,7 +197,6 @@ namespace WowPacketParser.Store.Objects
         public int VerifiedBuild = ClientVersion.BuildInt;
     }
 
-
     [DBTableName("quest_template")]
     public sealed class QuestTemplateWod
     {
@@ -380,6 +379,40 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("QuestCompletionLog")]
         public string QuestCompletionLog;
+
+        [DBFieldName("VerifiedBuild")]
+        public int VerifiedBuild = ClientVersion.BuildInt;
+    }
+
+    [DBTableName("quest_objectives")]
+    public sealed class QuestInfoObjective
+    {
+        [DBFieldName("QuestId")]
+        public uint QuestId;
+
+        [DBFieldName("Type")]
+        public uint Type;
+
+        [DBFieldName("StorageIndex")]
+        public int StorageIndex;
+
+        [DBFieldName("ObjectID")]
+        public int ObjectID;
+
+        [DBFieldName("Amount")]
+        public int Amount;
+
+        [DBFieldName("Flags")]
+        public uint Flags;
+
+        [DBFieldName("UnkFloat")]
+        public float UnkFloat;
+
+        [DBFieldName("VisualEffect", 5)]
+        public int[] VisualEffects;
+
+        [DBFieldName("Description")]
+        public string Description;
 
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;

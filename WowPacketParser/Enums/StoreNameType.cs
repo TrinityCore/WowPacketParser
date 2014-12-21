@@ -12,6 +12,7 @@
         CreatureDifficulty,
         Item,
         Quest,
+        QuestInfoObjective,
         Opcode, // Packet
         PageText,
         NpcText,

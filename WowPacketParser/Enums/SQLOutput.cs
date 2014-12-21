@@ -32,6 +32,7 @@
         quest_poi,
         quest_poi_points,
         quest_template,
+        quest_objectives,
         SniffData,
         SniffDataOpcodes,
         vehicle_template_accessory,
