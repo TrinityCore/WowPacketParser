@@ -250,7 +250,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 var objectiveId = packet.ReadEntry("Id", i);
                 questInfoObjective.Type = packet.ReadByte("Type", i);
-                questInfoObjective.StorageIndex = packet.ReadByte("StorageIndex", i);
+                questInfoObjective.StorageIndex = packet.ReadSByte("StorageIndex", i);
                 questInfoObjective.ObjectID = packet.ReadInt32("ObjectID", i);
                 questInfoObjective.Amount = packet.ReadInt32("Amount", i);
                 questInfoObjective.Flags = packet.ReadUInt32("Flags", i);
