@@ -256,17 +256,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 questInfoObjective.Flags = packet.ReadUInt32("Flags", i);
                 questInfoObjective.UnkFloat = packet.ReadSingle("Float5", i);
 
-                questInfoObjective.VisualEffects = new int[5];
                 var int280 = packet.ReadInt32("VisualEffects", i);
+                questInfoObjective.VisualEffectIds = new List<QuestVisualEffect>(int280);
                 for (var j = 0; j < int280; ++j)
-                    questInfoObjective.VisualEffects[i] = packet.ReadInt32("VisualEffectId", i, j);
+                {
+                    var questVisualEffect = new QuestVisualEffect();
+
+                    questVisualEffect.Index = (uint)j;
+                    questVisualEffect.VisualEffect = packet.ReadInt32("VisualEffectId", i, j);
+
+                    questInfoObjective.VisualEffectIds.Add(questVisualEffect);
+                }
 
                 packet.ResetBitReader();
 
                 var bits6 = packet.ReadBits(8);
                 questInfoObjective.Description = packet.ReadWoWString("Description", bits6, i);
 
-                Storage.QuestInfoObjectives.Add((uint)objectiveId.Key, questInfoObjective, packet.TimeSpan);
+                Storage.QuestObjectives.Add((uint)objectiveId.Key, questInfoObjective, packet.TimeSpan);
             }
 
             packet.ResetBitReader();

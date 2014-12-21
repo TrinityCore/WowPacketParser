@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Enums;
+﻿using System.Collections.Generic;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
@@ -408,13 +409,22 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("UnkFloat")]
         public float UnkFloat;
 
-        [DBFieldName("VisualEffect", 5)]
-        public int[] VisualEffects;
+        public List<QuestVisualEffect> VisualEffectIds;
 
         [DBFieldName("Description")]
         public string Description;
 
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;
+    }
+
+    [DBTableName("quest_visual_effect")]
+    public sealed class QuestVisualEffect
+    {
+        [DBFieldName("Index")]
+        public uint Index;
+
+        [DBFieldName("VisualEffect")]
+        public int VisualEffect;
     }
 }
