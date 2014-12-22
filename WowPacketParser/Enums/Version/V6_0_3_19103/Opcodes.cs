@@ -46,6 +46,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_BINDER_ACTIVATE, 0x02F3},
             {Opcode.CMSG_BUYBACK_ITEM, 0x02D3 | 0x10000},
             {Opcode.CMSG_BUY_BANK_SLOT, 0x0A25 | 0x10000},
+            {Opcode.CMSG_BUY_ITEM, 0x0352 | 0x10000},
             {Opcode.CMSG_CANCEL_AURA, 0x08AE},
             {Opcode.CMSG_CANCEL_TRADE, 0x1159},
             {Opcode.CMSG_CAST_SPELL, 0x08FE},

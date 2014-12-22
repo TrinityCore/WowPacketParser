@@ -230,8 +230,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleInventoryChangeFailure(Packet packet)
         {
             var result = packet.ReadEnum<InventoryResult>("BagResult", TypeCode.Byte);
-            if (result == InventoryResult.Ok)
-                return;
 
             for (int i = 0; i < 2; i++)
                 packet.ReadPackedGuid128("Item", i);
@@ -257,6 +255,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("DestBag");
             packet.ReadByte("DestSlot");
             packet.ReadUInt32("Count");
+        }
+
+        [Parser(Opcode.CMSG_BUY_ITEM)]
+        public static void HandleBuyItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("VendorGUID");
+            packet.ReadPackedGuid128("ContainerGUID");
+
+            ReadItemInstance(ref packet);
+
+            packet.ReadInt32("Quantity");
+            packet.ReadUInt32("Muid");
+            packet.ReadUInt32("Slot");
+
+            packet.ResetBitReader();
+
+            packet.ReadBits("ItemType", 2);
         }
     }
 }
