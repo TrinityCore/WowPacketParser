@@ -17,7 +17,7 @@ namespace WowPacketParser.SQL.Builders
                 return String.Empty;
 
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
-                return string.Empty;
+                return String.Empty;
 
             var entries = Storage.QuestTemplates.Keys();
             var templatesDb = SQLDatabase.GetDict<uint, QuestTemplate>(entries, "Id");
@@ -32,7 +32,7 @@ namespace WowPacketParser.SQL.Builders
                 return String.Empty;
 
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
-                return string.Empty;
+                return String.Empty;
 
             var entries = Storage.QuestTemplatesWod.Keys();
             var templatesDb = SQLDatabase.GetDict<uint, QuestTemplateWod>(entries, "Id");
@@ -64,8 +64,8 @@ namespace WowPacketParser.SQL.Builders
                 {
                     if (SQLConnector.Enabled)
                     {
-                        var query = string.Format("SELECT Index, VisualEffect FROM {0}.quest_visual_effect WHERE Id={1};",
-                            Settings.TDBDatabase, questObjectives.Key);
+                        var query = string.Format("SELECT `VisualEffect`, `VerifiedBuild` FROM {0}.quest_visual_effect WHERE `Id`={1} AND `Index`={2};",
+                            Settings.TDBDatabase, questObjectives.Key, visualEffectIds.Index);
 
                         using (var reader = SQLConnector.ExecuteQuery(query))
                         {
@@ -75,13 +75,14 @@ namespace WowPacketParser.SQL.Builders
                                 {
                                     var row = new QueryBuilder.SQLUpdateRow();
 
-                                    if (!Utilities.EqualValues(reader.GetValue(0), visualEffectIds.Index))
-                                        row.AddValue("Index", visualEffectIds.Index);
-
-                                    if (!Utilities.EqualValues(reader.GetValue(1), visualEffectIds.VisualEffect))
+                                    if (!Utilities.EqualValues(reader.GetValue(0), visualEffectIds.VisualEffect))
                                         row.AddValue("VisualEffect", visualEffectIds.VisualEffect);
 
+                                    if (!Utilities.EqualValues(reader.GetValue(1), questObjectives.Value.Item1.VerifiedBuild))
+                                        row.AddValue("VerifiedBuild", questObjectives.Value.Item1.VerifiedBuild);
+
                                     row.AddWhere("Id", questObjectives.Key);
+                                    row.AddWhere("Index", visualEffectIds.Index);
 
                                     row.Table = "quest_visual_effect";
 
@@ -96,6 +97,7 @@ namespace WowPacketParser.SQL.Builders
                                 row.AddValue("Id", questObjectives.Key);
                                 row.AddValue("Index", visualEffectIds.Index);
                                 row.AddValue("VisualEffect", visualEffectIds.VisualEffect);
+                                row.AddValue("VerifiedBuild", questObjectives.Value.Item1.VerifiedBuild);
 
                                 rowsIns.Add(row);
                             }
@@ -108,6 +110,7 @@ namespace WowPacketParser.SQL.Builders
                         row.AddValue("Id", questObjectives.Key);
                         row.AddValue("Index", visualEffectIds.Index);
                         row.AddValue("VisualEffect", visualEffectIds.VisualEffect);
+                        row.AddValue("VerifiedBuild", questObjectives.Value.Item1.VerifiedBuild);
 
                         rowsIns.Add(row);
                     }
