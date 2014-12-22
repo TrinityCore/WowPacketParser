@@ -11,7 +11,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class NpcHandler
     {
-        public static uint LastGossipPOIEntry;
+        public static uint LastGossipPOIEntry = 0;
 
         [Parser(Opcode.CMSG_BANKER_ACTIVATE)]
         [Parser(Opcode.CMSG_BINDER_ACTIVATE)]
@@ -85,7 +85,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var gossipPOI = new GossipPOI();
 
-            gossipPOI.Flags = packet.ReadBits("Flags", 14);
+            gossipPOI.Flags = (uint)packet.ReadBits("Flags", 14);
             var bit84 = packet.ReadBits(6);
             var pos = packet.ReadVector2("Coordinates");
             gossipPOI.Icon = packet.ReadEnum<GossipPOIIcon>("Icon", TypeCode.UInt32);
@@ -168,7 +168,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 else
                     Storage.Gossips.Add(Tuple.Create((uint)menuId, (uint)textId), gossip, packet.TimeSpan);
 
-                packet.AddSniffData(StoreNameType.Gossip, menuId, guid.GetEntry().ToString(CultureInfo.InvariantCulture));
+                packet.AddSniffData(StoreNameType.Gossip, (int)menuId, guid.GetEntry().ToString(CultureInfo.InvariantCulture));
             }
         }
 
@@ -232,7 +232,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 vendorItem.MaxCount = maxCount == -1 ? 0 : maxCount; // TDB
                 if (vendorItem.Type == 2)
-                    vendorItem.MaxCount = buyCount;
+                    vendorItem.MaxCount = (int)buyCount;
 
                 npcVendor.VendorItems.Add(vendorItem);
             }

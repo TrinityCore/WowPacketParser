@@ -49,6 +49,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             // ActionButtons
             const int maxCreatureSpells = 10;
+            var spells = new List<uint>(maxCreatureSpells);
             for (var i = 0; i < maxCreatureSpells; i++) // Read pet/vehicle spell ids
             {
                 var spell16 = packet.ReadUInt16();

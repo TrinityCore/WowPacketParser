@@ -183,12 +183,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                         packet.ResetBitReader();
 
                         packet.ReadEnum<SplineFlag434>("SplineFlags", 25, index);
-                        var type = (uint)packet.ReadEnum<SplineMode>("Mode", 2, index);
+                        var face = packet.ReadBits("Face", 2, index);
 
                         var hasJumpGravity = packet.ReadBit("HasJumpGravity", index);
                         var hasSpecialTime = packet.ReadBit("HasSpecialTime", index);
 
-                        packet.ReadBits("Face", 2, index);
+                        packet.ReadEnum<SplineMode>("Mode", 2, index);
 
                         var hasSplineFilterKey = packet.ReadBit("HasSplineFilterKey", index);
 
@@ -200,13 +200,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                         var pointsCount = packet.ReadUInt32("PointsCount", index);
 
-                        if (type == 3) // FaceDirection
+                        if (face == 3) // FaceDirection
                             packet.ReadSingle("FaceDirection", index);
 
-                        if (type == 2) // FaceGUID
+                        if (face == 2) // FaceGUID
                             packet.ReadPackedGuid128("FaceGUID", index);
 
-                        if (type == 1) // FaceSpot
+                        if (face == 1) // FaceSpot
                             packet.ReadVector3("FaceSpot", index);
 
                         if (hasJumpGravity)

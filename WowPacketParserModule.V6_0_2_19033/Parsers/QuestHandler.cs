@@ -244,21 +244,36 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (var i = 0; i < int2946; ++i)
             {
-                packet.ReadInt32("Id", i);
-                packet.ReadByte("Type", i);
-                packet.ReadByte("StorageIndex", i);
-                packet.ReadInt32("ObjectID", i);
-                packet.ReadInt32("Amount", i);
-                packet.ReadInt32("Flags", i);
-                packet.ReadSingle("Float5", i);
+                var questInfoObjective = new QuestInfoObjective();
+
+                questInfoObjective.QuestId = (uint)id.Key;
+
+                var objectiveId = packet.ReadEntry("Id", i);
+                questInfoObjective.Type = packet.ReadByte("Type", i);
+                questInfoObjective.StorageIndex = packet.ReadSByte("StorageIndex", i);
+                questInfoObjective.ObjectID = packet.ReadInt32("ObjectID", i);
+                questInfoObjective.Amount = packet.ReadInt32("Amount", i);
+                questInfoObjective.Flags = packet.ReadUInt32("Flags", i);
+                questInfoObjective.UnkFloat = packet.ReadSingle("Float5", i);
+
                 var int280 = packet.ReadInt32("VisualEffects", i);
+                questInfoObjective.VisualEffectIds = new List<QuestVisualEffect>(int280);
                 for (var j = 0; j < int280; ++j)
-                    packet.ReadInt32("VisualEffectId", i, j);
+                {
+                    var questVisualEffect = new QuestVisualEffect();
+
+                    questVisualEffect.Index = (uint)j;
+                    questVisualEffect.VisualEffect = packet.ReadInt32("VisualEffectId", i, j);
+
+                    questInfoObjective.VisualEffectIds.Add(questVisualEffect);
+                }
 
                 packet.ResetBitReader();
 
                 var bits6 = packet.ReadBits(8);
-                packet.ReadWoWString("Description", bits6, i);
+                questInfoObjective.Description = packet.ReadWoWString("Description", bits6, i);
+
+                Storage.QuestObjectives.Add((uint)objectiveId.Key, questInfoObjective, packet.TimeSpan);
             }
 
             packet.ResetBitReader();
