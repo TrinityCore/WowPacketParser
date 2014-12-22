@@ -146,8 +146,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleDestroyItem(Packet packet)
         {
             packet.ReadUInt32("Count");
-            packet.ReadByte("ContainerId");
             packet.ReadByte("SlotNum");
+            packet.ReadByte("ContainerId");
         }
 
         [Parser(Opcode.CMSG_REPAIR_ITEM)]
@@ -175,7 +175,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_AUTOBANK_ITEM)]
         [Parser(Opcode.CMSG_AUTOEQUIP_ITEM)]
         [Parser(Opcode.CMSG_AUTOSTORE_BANK_ITEM)]
-        [Parser(Opcode.CMSG_SWAP_INV_ITEM)]
         public static void HandleAutoItem(Packet packet)
         {
             var bits2 = packet.ReadBits("InvItemCount", 2);
@@ -187,22 +186,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadByte("Slot");
             packet.ReadByte("PackSlot");
-        }
-
-        [Parser(Opcode.CMSG_SWAP_ITEM)]
-        public static void HandleSwapInvItem(Packet packet)
-        {
-            var bits2 = packet.ReadBits("InvItemCount", 2);
-            for (int i = 0; i < bits2; i++)
-            {
-                packet.ReadByte("ContainerSlot", i);
-                packet.ReadByte("Slot", i);
-            }
-
-            packet.ReadByte("DestBag");
-            packet.ReadByte("SrcBag");
-            packet.ReadByte("DestSlot");
-            packet.ReadByte("SrcSlot");
         }
 
         [Parser(Opcode.CMSG_AUTOSTORE_BAG_ITEM)]
@@ -224,54 +207,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleCoinRemoved(Packet packet)
         {
             packet.ReadPackedGuid128("LootObj");
-        }
-
-        [Parser(Opcode.SMSG_INVENTORY_CHANGE_FAILURE)]
-        public static void HandleInventoryChangeFailure(Packet packet)
-        {
-            var result = packet.ReadEnum<InventoryResult>("BagResult", TypeCode.Byte);
-
-            for (int i = 0; i < 2; i++)
-                packet.ReadPackedGuid128("Item", i);
-
-            packet.ReadByte("ContainerBSlot");
-
-            if (result == InventoryResult.CantEquipLevel || result == InventoryResult.PurchaseLevelTooLow)
-                packet.ReadInt32("Level");
-        }
-
-        [Parser(Opcode.CMSG_SPLIT_ITEM)]
-        public static void HandleSplitItem(Packet packet)
-        {
-            var bits2 = packet.ReadBits("InvItemCount", 2);
-            for (int i = 0; i < bits2; i++)
-            {
-                packet.ReadByte("ContainerSlot", i);
-                packet.ReadByte("Slot", i);
-            }
-
-            packet.ReadByte("SrcBag");
-            packet.ReadByte("SrcSlot");
-            packet.ReadByte("DestBag");
-            packet.ReadByte("DestSlot");
-            packet.ReadUInt32("Count");
-        }
-
-        [Parser(Opcode.CMSG_BUY_ITEM)]
-        public static void HandleBuyItem(Packet packet)
-        {
-            packet.ReadPackedGuid128("VendorGUID");
-            packet.ReadPackedGuid128("ContainerGUID");
-
-            ReadItemInstance(ref packet);
-
-            packet.ReadInt32("Quantity");
-            packet.ReadUInt32("Muid");
-            packet.ReadUInt32("Slot");
-
-            packet.ResetBitReader();
-
-            packet.ReadBits("ItemType", 2);
         }
     }
 }

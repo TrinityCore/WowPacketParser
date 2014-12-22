@@ -19,12 +19,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (var i = 0; i < buttonCount; ++i)
             {
-                var action = new Action();
+                var action = new Action {Button = (uint) i, Id = packet.ReadUInt32()};
                 //packet.ReadUInt64("Action");
 
-                action.Button = (uint)i;
 
-                action.Id = packet.ReadUInt32();
                 var type = packet.ReadUInt32();
 
                 packet.AddValue("Action " + i, action.Id);
