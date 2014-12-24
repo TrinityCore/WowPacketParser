@@ -1,4 +1,5 @@
-﻿using WowPacketParser.SQL;
+﻿using WowPacketParser.Misc;
+using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
@@ -63,5 +64,8 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("HoverHeight")]
         public float HoverHeight;
+
+        [DBFieldName("VerifiedBuild")]
+        public int VerifiedBuild = ClientVersion.BuildInt;
     }
 }
