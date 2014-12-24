@@ -44,6 +44,7 @@ namespace WowPacketParser.Misc
         public static readonly string Password = GetString("Password", string.Empty);
         public static readonly string WPPDatabase = GetString("WPPDatabase", "WPP");
         public static readonly string TDBDatabase = GetString("TDBDatabase", "world");
+        public static readonly string HotfixesDatabase = GetString("HotfixesDatabase", "hotfixes");
         public static readonly string CharacterSet = GetString("CharacterSet", "utf8");
 
         private static KeyValueConfigurationCollection GetConfiguration()

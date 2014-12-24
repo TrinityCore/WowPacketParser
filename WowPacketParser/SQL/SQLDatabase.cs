@@ -49,7 +49,7 @@ namespace WowPacketParser.SQL
 
             var startTime = DateTime.Now;
 
-            var query = new StringBuilder(string.Format("SELECT ID, Language, MaleText, FemaleText, EmoteID0, EmoteID1, EmoteID2, EmoteDelay0, EmoteDelay1, EmoteDelay2, SoundId, Unk1, Unk2 FROM {0}.broadcast_text;", Settings.TDBDatabase));
+            var query = new StringBuilder(string.Format("SELECT ID, Language, MaleText, FemaleText, EmoteID0, EmoteID1, EmoteID2, EmoteDelay0, EmoteDelay1, EmoteDelay2, SoundId, UnkMoP1, UnkMoP2 FROM {0}.broadcast_text;", Settings.HotfixesDatabase));
             using (var reader = SQLConnector.ExecuteQuery(query.ToString()))
             {
                 if (reader == null)
@@ -74,8 +74,8 @@ namespace WowPacketParser.SQL
                     broadcastText.emoteDelay2 = Convert.ToUInt32(reader["EmoteDelay2"]);
 
                     broadcastText.soundId = Convert.ToUInt32(reader["SoundId"]);
-                    broadcastText.unk1 = Convert.ToUInt32(reader["Unk1"]);
-                    broadcastText.unk2 = Convert.ToUInt32(reader["Unk2"]);
+                    broadcastText.unk1 = Convert.ToUInt32(reader["UnkMoP1"]);
+                    broadcastText.unk2 = Convert.ToUInt32(reader["UnkMoP2"]);
 
                     var tuple = Tuple.Create(Id, broadcastText);
                     BroadcastTextStores.Add(tuple);
