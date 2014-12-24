@@ -86,7 +86,7 @@ namespace WowPacketParser.SQL
 
                     broadcastText.soundId = Convert.ToUInt32(reader["SoundId"]);
                     broadcastText.unk1 = Convert.ToUInt32(reader["UnkMoP1"]);
-                    broadcastText.unk2 = Convert.ToUInt32(reader["UnkMoP1"]);
+                    broadcastText.unk2 = Convert.ToUInt32(reader["UnkMoP2"]);
 
                     var tuple = Tuple.Create(Id, broadcastText);
                     BroadcastTextStores.Add(tuple);
