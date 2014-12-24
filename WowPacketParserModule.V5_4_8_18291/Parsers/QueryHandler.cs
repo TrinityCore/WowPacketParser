@@ -218,19 +218,18 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 {
                     var creatureDifficulty = new CreatureDifficulty();
 
-                    db2File.ReadUInt32("Id");
-                    var Id = db2File.ReadEntry("Creature Id");
-                    creatureDifficulty.Faction = db2File.ReadUInt32("Faction Template Id");
+                    var Id = db2File.ReadEntry("Id");
+                    creatureDifficulty.CreatureID = db2File.ReadUInt32("Creature Id");
+                    creatureDifficulty.FactionID = db2File.ReadUInt32("Faction Template Id");
                     creatureDifficulty.Expansion = db2File.ReadInt32("Expansion");
                     creatureDifficulty.MinLevel = db2File.ReadInt32("Min Level");
                     creatureDifficulty.MaxLevel = db2File.ReadInt32("Max Level");
-                    db2File.ReadUInt32("Unk MoP 1");
-                    db2File.ReadUInt32("Unk MoP 2");
-                    db2File.ReadUInt32("Unk MoP 3");
-                    db2File.ReadUInt32("Unk MoP 4");
-                    db2File.ReadUInt32("Unk MoP 5");
 
-                    Storage.CreatureDifficultys.Add((uint) Id.Key, creatureDifficulty, packet.TimeSpan);
+                    creatureDifficulty.Flags = new uint[5];
+                    for (var i = 0; i < 5; ++i)
+                        creatureDifficulty.Flags[i] = db2File.ReadUInt32("Flags", i);
+
+                    Storage.CreatureDifficultys.Add((uint)Id.Key, creatureDifficulty, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.GameObjects:

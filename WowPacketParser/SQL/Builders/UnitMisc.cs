@@ -655,7 +655,7 @@ namespace WowPacketParser.SQL.Builders
         };
 
         // Non-WDB data but nevertheless data that should be saved to creature_template
-        [BuilderMethod(Units = true)]
+        //[BuilderMethod(Units = true)]
         public static string NpcTemplateNonWDB(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
