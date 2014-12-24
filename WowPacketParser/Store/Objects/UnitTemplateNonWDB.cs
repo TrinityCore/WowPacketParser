@@ -6,8 +6,8 @@ namespace WowPacketParser.Store.Objects
     public class UnitTemplateNonWDB
     {
         [DBFieldName("gossip_menu_id")] public uint GossipMenuId;
-        [DBFieldName("minlevel")] public uint MinLevel;
-        [DBFieldName("maxlevel")] public uint MaxLevel;
+        [DBFieldName("minlevel")] public int MinLevel;
+        [DBFieldName("maxlevel")] public int MaxLevel;
         [DBFieldName("faction")] public uint Faction;
         [DBFieldName("npcflag")] public uint NpcFlag;
         [DBFieldName("speed_walk")] public float SpeedWalk;
