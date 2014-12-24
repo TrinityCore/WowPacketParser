@@ -21,4 +21,47 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VehicleId")] public uint VehicleId;
         [DBFieldName("HoverHeight")] public float HoverHeight;
     }
+
+    [DBTableName("creature_difficulty_misc")]
+    public class CreatureDifficultyMisc
+    {
+        [DBFieldName("CreatureId")]
+        public uint CreatureId;
+
+        [DBFieldName("GossipMenuId")]
+        public uint GossipMenuId;
+
+        [DBFieldName("NpcFlag")]
+        public uint NpcFlag;
+
+        [DBFieldName("SpeedWalk")]
+        public float SpeedWalk;
+
+        [DBFieldName("SpeedRun")]
+        public float SpeedRun;
+
+        [DBFieldName("BaseAttackTime")]
+        public uint BaseAttackTime;
+
+        [DBFieldName("RangeAttackTime")]
+        public uint RangedAttackTime;
+
+        [DBFieldName("UnitClass")]
+        public uint UnitClass;
+
+        [DBFieldName("UnitFlags")]
+        public uint UnitFlag;
+
+        [DBFieldName("UnitFlags2")]
+        public uint UnitFlag2;
+
+        [DBFieldName("DynamicFlags")]
+        public uint DynamicFlag;
+
+        [DBFieldName("VehicleId")]
+        public uint VehicleId;
+
+        [DBFieldName("HoverHeight")]
+        public float HoverHeight;
+    }
 }

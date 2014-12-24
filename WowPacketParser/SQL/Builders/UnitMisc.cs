@@ -658,6 +658,9 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod(Units = true)]
         public static string NpcTemplateNonWDB(Dictionary<WowGuid, Unit> units)
         {
+            if (ClientVersion.AddedInVersion(ClientType.WarlordsOfDraenor))
+                return string.Empty;
+
             if (units.Count == 0)
                 return string.Empty;
 
@@ -732,6 +735,89 @@ namespace WowPacketParser.SQL.Builders
 
             var templatesDb = SQLDatabase.GetDict<uint, UnitTemplateNonWDB>(templates.Keys());
             return SQLUtil.CompareDicts(templates, templatesDb, StoreNameType.Unit);
+        }
+
+        // Non-WDB data but nevertheless data that should be saved to creature_template
+        [BuilderMethod(Units = true)]
+        public static string CreatureDifficultyMisc(Dictionary<WowGuid, Unit> units)
+        {
+            if (!ClientVersion.AddedInVersion(ClientType.WarlordsOfDraenor))
+                return string.Empty;
+
+            if (units.Count == 0)
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template))
+                return string.Empty;
+
+            var templates = new StoreDictionary<uint, CreatureDifficultyMisc>();
+            foreach (var unit in units)
+            {
+                if (SQLDatabase.CreatureDifficultyStores != null)
+                {
+                    foreach (var creatureDiff in SQLDatabase.CreatureDifficultyStores)
+                    {
+                        if (!Utilities.EqualValues(unit.Key.GetEntry(), creatureDiff.Value.CreatureID))
+                            continue;
+
+                        if (templates.ContainsKey(creatureDiff.Key))
+                            continue;
+
+                        var npc = unit.Value;
+                        var template = new CreatureDifficultyMisc
+                        {
+                            CreatureId = unit.Key.GetEntry(),
+                            GossipMenuId = npc.GossipId,
+                            NpcFlag = (uint)npc.NpcFlags.GetValueOrDefault(NPCFlags.None),
+                            SpeedRun = npc.Movement.RunSpeed,
+                            SpeedWalk = npc.Movement.WalkSpeed,
+                            BaseAttackTime = npc.MeleeTime.GetValueOrDefault(2000),
+                            RangedAttackTime = npc.RangedTime.GetValueOrDefault(2000),
+                            UnitClass = (uint)npc.Class.GetValueOrDefault(Class.Warrior),
+                            UnitFlag = (uint)npc.UnitFlags.GetValueOrDefault(UnitFlags.None),
+                            UnitFlag2 = (uint)npc.UnitFlags2.GetValueOrDefault(UnitFlags2.None),
+                            DynamicFlag = (uint)npc.DynamicFlags.GetValueOrDefault(UnitDynamicFlags.None),
+                            VehicleId = npc.Movement.VehicleId,
+                            HoverHeight = npc.HoverHeight.GetValueOrDefault(1.0f)
+                        };
+
+                        template.UnitFlag &= ~(uint)UnitFlags.IsInCombat;
+                        template.UnitFlag &= ~(uint)UnitFlags.PetIsAttackingTarget;
+                        template.UnitFlag &= ~(uint)UnitFlags.PlayerControlled;
+                        template.UnitFlag &= ~(uint)UnitFlags.Silenced;
+                        template.UnitFlag &= ~(uint)UnitFlags.PossessedByPlayer;
+
+                        template.DynamicFlag &= ~(uint)UnitDynamicFlags.Lootable;
+                        template.DynamicFlag &= ~(uint)UnitDynamicFlags.Tapped;
+                        template.DynamicFlag &= ~(uint)UnitDynamicFlags.TappedByPlayer;
+                        template.DynamicFlag &= ~(uint)UnitDynamicFlags.TappedByAllThreatList;
+
+                        // has trainer flag but doesn't have prof nor class trainer flag
+                        if ((template.NpcFlag & (uint)NPCFlags.Trainer) != 0 &&
+                            ((template.NpcFlag & (uint)NPCFlags.ProfessionTrainer) == 0 ||
+                             (template.NpcFlag & (uint)NPCFlags.ClassTrainer) == 0))
+                        {
+                            var name = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
+                            var firstIndex = name.LastIndexOf('<');
+                            var lastIndex = name.LastIndexOf('>');
+                            if (firstIndex != -1 && lastIndex != -1)
+                            {
+                                var subname = name.Substring(firstIndex + 1, lastIndex - firstIndex - 1);
+
+                                if (_professionTrainers.Contains(subname))
+                                    template.NpcFlag |= (uint)NPCFlags.ProfessionTrainer;
+                                else if (_classTrainers.Contains(subname))
+                                    template.NpcFlag |= (uint)NPCFlags.ClassTrainer;
+                            }
+                        }
+
+                        templates.Add(creatureDiff.Key, template);
+                    }
+                }
+            }
+
+            var templatesDb = SQLDatabase.GetDict<uint, CreatureDifficultyMisc>(templates.Keys(), "Id");
+            return SQLUtil.CompareDicts(templates, templatesDb, StoreNameType.Unit, "Id");
         }
 
         [BuilderMethod]
