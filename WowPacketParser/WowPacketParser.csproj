@@ -489,6 +489,7 @@
     <Compile Include="Store\Objects\QuestPOIPoint.cs" />
     <Compile Include="Store\Objects\QuestTemplate.cs" />
     <Compile Include="Store\Objects\SniffData.cs" />
+    <Compile Include="Store\Objects\SpellMisc.cs" />
     <Compile Include="Store\Objects\SpellsX.cs" />
     <Compile Include="Store\Objects\StartAction.cs" />
     <Compile Include="Store\Objects\StartItem.cs" />

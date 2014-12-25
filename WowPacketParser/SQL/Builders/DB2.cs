@@ -157,5 +157,20 @@ namespace WowPacketParser.SQL.Builders
 
             return SQLUtil.CompareDicts(Storage.GameObjectTemplatePositionDB2s, templatesDb, StoreNameType.GameObject);
         }
+
+        [BuilderMethod]
+        public static string SpellMisc()
+        {
+            if (Storage.SpellMiscs.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.spell_misc))
+                return string.Empty;
+
+            var entries = Storage.SpellMiscs.Keys();
+            var templatesDb = SQLDatabase.GetDict<uint, SpellMisc>(entries);
+
+            return SQLUtil.CompareDicts(Storage.SpellMiscs, templatesDb, StoreNameType.Spell);
+        }
     }
 }

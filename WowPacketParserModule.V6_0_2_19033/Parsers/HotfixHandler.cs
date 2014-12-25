@@ -346,23 +346,29 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 }
                 case DB2Hash.SpellMisc: // New structure - 6.0.2
                 {
-                    db2File.ReadUInt32("ID");
+                    var spellMisc = new SpellMisc();
 
+                    var Id = db2File.ReadEntry("ID");
+
+                    spellMisc.Attributes = new uint[14];
                     for (var i = 0; i < 14; ++i)
-                        db2File.ReadUInt32("Attributes", i);
+                        spellMisc.Attributes[i] = db2File.ReadUInt32("Attributes", i);
 
-                    db2File.ReadUInt32("Casting Time Index");
-                    db2File.ReadUInt32("Duration Index");
-                    db2File.ReadUInt32("Range Index");
-                    db2File.ReadSingle("Speed");
+                    spellMisc.CastingTimeIndex = db2File.ReadUInt32("CastingTimeIndex");
+                    spellMisc.DurationIndex = db2File.ReadUInt32("DurationIndex");
+                    spellMisc.RangeIndex = db2File.ReadUInt32("RangeIndex");
+                    spellMisc.Speed = db2File.ReadSingle("Speed");
 
+                    spellMisc.SpellVisualID = new uint[14];
                     for (var i = 0; i < 2; ++i)
-                        db2File.ReadUInt32("Spell Visual ID", i);
+                        spellMisc.SpellVisualID[i] = db2File.ReadUInt32("SpellVisualID", i);
 
-                    db2File.ReadUInt32("Spell Icon ID");
-                    db2File.ReadUInt32("Active Icon ID");
-                    db2File.ReadUInt32("School Mask");
-                    db2File.ReadSingle("UnkWoD1");
+                    spellMisc.SpellIconID = db2File.ReadUInt32("SpellIconID");
+                    spellMisc.ActiveIconID = db2File.ReadUInt32("ActiveIconID");
+                    spellMisc.SchoolMask = db2File.ReadUInt32("SchoolMask");
+                    spellMisc.UnkWoD1 = db2File.ReadSingle("UnkWoD1");
+
+                    Storage.SpellMiscs.Add((uint)Id.Key, spellMisc, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.Toy: // New structure - 6.0.2

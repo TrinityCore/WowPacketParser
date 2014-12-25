@@ -35,6 +35,7 @@
         quest_objectives,
         SniffData,
         SniffDataOpcodes,
+        spell_misc,
         vehicle_template_accessory,
         weather_updates,
         npc_spellclick_spells

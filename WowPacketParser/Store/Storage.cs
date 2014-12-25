@@ -24,6 +24,7 @@ namespace WowPacketParser.Store
         public static readonly StoreDictionary<uint, GameObjectTemplateDB2> GameObjectTemplateDB2s = new StoreDictionary<uint, GameObjectTemplateDB2>(new List<SQLOutput> { SQLOutput.gameobject_template });
         public static readonly StoreDictionary<uint, GameObjectTemplatePositionDB2> GameObjectTemplatePositionDB2s = new StoreDictionary<uint, GameObjectTemplatePositionDB2>(new List<SQLOutput> { SQLOutput.gameobject_db2_position });
         public static readonly StoreDictionary<uint, BroadcastText> BroadcastTexts = new StoreDictionary<uint, BroadcastText>(new List<SQLOutput> { SQLOutput.broadcast_text });
+        public static readonly StoreDictionary<uint, SpellMisc> SpellMiscs = new StoreDictionary<uint, SpellMisc>(new List<SQLOutput> { SQLOutput.spell_misc });
 
         // Templates
         public static readonly StoreDictionary<uint, GameObjectTemplate> GameObjectTemplates = new StoreDictionary<uint, GameObjectTemplate>(new List<SQLOutput> { SQLOutput.gameobject_template });
