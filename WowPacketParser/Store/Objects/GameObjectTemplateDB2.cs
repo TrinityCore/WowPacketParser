@@ -4,60 +4,54 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("gameobject_template")]
+    [DBTableName("gameobjects")]
     public sealed class GameObjectTemplateDB2
     {
-        [DBFieldName("type")]
-        public GameObjectType Type;
+        [DBFieldName("MapID")]
+        public uint MapID;
 
-        [DBFieldName("displayId")]
+        [DBFieldName("DisplayID")]
         public uint DisplayId;
 
-        [DBFieldName("name")]
-        public string Name;
+        [DBFieldName("PositionX")]
+        public float PositionX;
 
-        [DBFieldName("data", 4, true)]
-        public int[] Data;
+        [DBFieldName("PositionY")]
+        public float PositionY;
 
-        [DBFieldName("size")]
+        [DBFieldName("PositionZ")]
+        public float PositionZ;
+
+        [DBFieldName("RotationX")]
+        public float RotationX;
+
+        [DBFieldName("RotationY")]
+        public float RotationY;
+
+        [DBFieldName("RotationZ")]
+        public float RotationZ;
+
+        [DBFieldName("RotationW")]
+        public float RotationW;
+
+        [DBFieldName("Size")]
         public float Size;
-
-        [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild = ClientVersion.BuildInt;
-    }
-
-    [DBTableName("gameobject_db2_position")]
-    public sealed class GameObjectTemplatePositionDB2
-    {
-        [DBFieldName("map")]
-        public uint map;
-
-        [DBFieldName("position_x")]
-        public float positionX;
-
-        [DBFieldName("position_y")]
-        public float positionY;
-
-        [DBFieldName("position_z")]
-        public float positionZ;
-
-        [DBFieldName("rotation0")]
-        public float rotationX;
-
-        [DBFieldName("rotation1")]
-        public float rotationY;
-
-        [DBFieldName("rotation2")]
-        public float rotationZ;
-
-        [DBFieldName("rotation3")]
-        public float rotationW;
 
         [DBFieldName("PhaseID", ClientVersionBuild.V6_0_2_19033)]
         public int PhaseId;
 
         [DBFieldName("PhaseGroupID", ClientVersionBuild.V6_0_2_19033)]
         public int PhaseGroupId;
+
+        [DBFieldName("Type")]
+        public GameObjectType Type;
+
+        [DBFieldName("Data", ClientVersionBuild.Zero, ClientVersionBuild.V6_0_3_19103, 4, true)]
+        [DBFieldName("Data", ClientVersionBuild.V6_0_3_19103, 8, true)]
+        public int[] Data;
+
+        [DBFieldName("Name")]
+        public string Name;
 
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;

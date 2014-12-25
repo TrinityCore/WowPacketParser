@@ -24,7 +24,7 @@ namespace WowPacketParser.SQL.Builders
                 broadcastText.Value.Item1.ConvertToDBStruct();
 
             var entries = Storage.BroadcastTexts.Keys();
-            var templatesDb = SQLDatabase.GetDict<uint, BroadcastText>(entries, "ID");
+            var templatesDb = SQLDatabase.GetDict<uint, BroadcastText>(entries, "Id", Settings.HotfixesDatabase);
 
             return SQLUtil.CompareDicts(Storage.BroadcastTexts, templatesDb, StoreNameType.BroadcastText, "ID");
         }
@@ -138,24 +138,9 @@ namespace WowPacketParser.SQL.Builders
                 return string.Empty;
 
             var entries = Storage.GameObjectTemplateDB2s.Keys();
-            var templatesDb = SQLDatabase.GetDict<uint, GameObjectTemplateDB2>(entries);
+            var templatesDb = SQLDatabase.GetDict<uint, GameObjectTemplateDB2>(entries, "Id", Settings.HotfixesDatabase);
 
             return SQLUtil.CompareDicts(Storage.GameObjectTemplateDB2s, templatesDb, StoreNameType.GameObject);
-        }
-
-        [BuilderMethod]
-        public static string GameObjectDB2Position()
-        {
-            if (Storage.GameObjectTemplatePositionDB2s.IsEmpty())
-                return String.Empty;
-
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_db2_position))
-                return string.Empty;
-
-            var entries = Storage.GameObjectTemplatePositionDB2s.Keys();
-            var templatesDb = SQLDatabase.GetDict<uint, GameObjectTemplatePositionDB2>(entries);
-
-            return SQLUtil.CompareDicts(Storage.GameObjectTemplatePositionDB2s, templatesDb, StoreNameType.GameObject);
         }
 
         [BuilderMethod]
@@ -168,7 +153,7 @@ namespace WowPacketParser.SQL.Builders
                 return string.Empty;
 
             var entries = Storage.SpellMiscs.Keys();
-            var templatesDb = SQLDatabase.GetDict<uint, SpellMisc>(entries);
+            var templatesDb = SQLDatabase.GetDict<uint, SpellMisc>(entries, "Id", Settings.HotfixesDatabase);
 
             return SQLUtil.CompareDicts(Storage.SpellMiscs, templatesDb, StoreNameType.Spell);
         }

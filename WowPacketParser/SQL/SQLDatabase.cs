@@ -153,7 +153,7 @@ namespace WowPacketParser.SQL
         /// <param name="entries">List of entries to select from DB</param>
         /// <param name="primaryKeyName"> </param>
         /// <returns>Dictionary of structs of type TK</returns>
-        public static StoreDictionary<T, TK> GetDict<T, TK>(List<T> entries, string primaryKeyName = "entry")
+        public static StoreDictionary<T, TK> GetDict<T, TK>(List<T> entries, string primaryKeyName = "entry", string database = null)
         {
             if (entries.Count == 0)
                 return null;
@@ -181,7 +181,7 @@ namespace WowPacketParser.SQL
             }
 
             var query = string.Format("SELECT {0} FROM {1}.{2} WHERE {3} IN ({4})",
-                fieldNames.ToString().TrimEnd(','), Settings.TDBDatabase, tableName, primaryKeyName, String.Join(",", entries));
+                fieldNames.ToString().TrimEnd(','), database ?? Settings.TDBDatabase, tableName, primaryKeyName, String.Join(",", entries));
 
             var dict = new Dictionary<T, TK>(entries.Count);
 
