@@ -173,5 +173,31 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("MailID");
             packet.ReadInt32("AttachID");
         }
+
+        [Parser(Opcode.CMSG_SEND_MAIL)]
+        public static void HandleSendMail(Packet packet)
+        {
+            packet.ReadPackedGuid128("MailboxGuid");
+            packet.ReadInt32("StationeryID");
+            packet.ReadInt32("PackageID");
+            packet.ReadInt64("Money");
+            packet.ReadInt64("COD");
+
+            var nameLength = packet.ReadBits(9);
+            var subjectLength = packet.ReadBits(9);
+            var bodyLength = packet.ReadBits(11);
+            var itemCount = packet.ReadBits(5);
+            packet.ResetBitReader();
+
+            packet.ReadWoWString("ReceiverName", nameLength);
+            packet.ReadWoWString("Subject", subjectLength);
+            packet.ReadWoWString("Body", bodyLength);
+
+            for (var i = 0; i < itemCount; i++)
+            {
+                packet.ReadByte("Position");
+                packet.ReadPackedGuid128("ItemGuid");
+            }
+        }
     }
 }
