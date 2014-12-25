@@ -165,5 +165,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("StationeryID", i);
             }
         }
+
+        [Parser(Opcode.CMSG_MAIL_TAKE_ITEM)]
+        public static void HandleMailTakeItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("Mailbox");
+            packet.ReadInt32("MailID");
+            packet.ReadInt32("AttachID");
+        }
     }
 }

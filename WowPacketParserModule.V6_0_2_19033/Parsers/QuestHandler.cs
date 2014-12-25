@@ -423,28 +423,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("NumSkillUpsReward");
             packet.ReadUInt32("XpReward");
             packet.ReadUInt32("TalentReward");
-
-            packet.ReadUInt32("ItemID");
-            packet.ReadUInt32("RandomPropertiesSeed");
-            packet.ReadUInt32("RandomPropertiesID");
-            packet.ResetBitReader();
-            var hasBonuses = packet.ReadBit("HasItemBonus");
-            var hasModifications = packet.ReadBit("HasModifications");
-            if (hasBonuses)
-            {
-                packet.ReadByte("Context");
-
-                var bonusCount = packet.ReadUInt32();
-                for (var j = 0; j < bonusCount; ++j)
-                    packet.ReadUInt32("BonusListID", j);
-            }
-
-            if (hasModifications)
-            {
-                var modificationCount = packet.ReadUInt32() / 4;
-                for (var j = 0; j < modificationCount; ++j)
-                    packet.ReadUInt32("Modification", j);
-            }
+            
+            ItemHandler.ReadItemInstance(ref packet);
 
             packet.ResetBitReader();
 
