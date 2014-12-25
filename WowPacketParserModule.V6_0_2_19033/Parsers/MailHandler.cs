@@ -132,8 +132,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_MAIL_DELETE)]
         public static void HandleMailDelete(Packet packet)
         {
-            packet.ReadInt32("DeleteReason");
             packet.ReadInt32("MailID");
+            packet.ReadInt32("DeleteReason");
         }
 
         [Parser(Opcode.SMSG_MAIL_QUERY_NEXT_TIME_RESULT)]
