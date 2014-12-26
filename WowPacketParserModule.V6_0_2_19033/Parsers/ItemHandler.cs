@@ -273,5 +273,35 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadBits("ItemType", 2);
         }
+
+        // To-Do: Need In-Game review
+        [Parser(Opcode.SMSG_ITEM_PUSH_RESULT)]
+        public static void HandleItemPushResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGUID");
+
+            packet.ReadByte("Slot");
+
+            packet.ReadUInt32("SlotInBag");
+
+            ReadItemInstance(ref packet);
+
+            packet.ReadUInt32("WodUnk");
+            packet.ReadUInt32("QuantityInInventory");
+            packet.ReadUInt32("Quantity");
+            packet.ReadUInt32("BattlePetBreedID");
+            packet.ReadUInt32("BattlePetBreedQuality");
+            packet.ReadUInt32("BattlePetSpeciesID");
+            packet.ReadUInt32("BattlePetLevel");
+
+            packet.ReadPackedGuid128("ItemGUID");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Pushed");
+            packet.ReadBit("DisplayText");
+            packet.ReadBit("Created");
+            packet.ReadBit("IsBonusRoll");
+        }
     }
 }
