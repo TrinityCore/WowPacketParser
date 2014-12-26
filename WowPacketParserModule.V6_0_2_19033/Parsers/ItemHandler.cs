@@ -287,8 +287,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadItemInstance(ref packet);
 
             packet.ReadUInt32("WodUnk");
-            packet.ReadUInt32("QuantityInInventory");
             packet.ReadUInt32("Quantity");
+            packet.ReadUInt32("QuantityInInventory");
             packet.ReadUInt32("BattlePetBreedID");
             packet.ReadUInt32("BattlePetBreedQuality");
             packet.ReadUInt32("BattlePetSpeciesID");
