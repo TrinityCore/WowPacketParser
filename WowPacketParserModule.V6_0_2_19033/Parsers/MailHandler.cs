@@ -195,8 +195,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (var i = 0; i < itemCount; i++)
             {
-                packet.ReadByte("Position");
-                packet.ReadPackedGuid128("ItemGuid");
+                packet.ReadByte("Position", i);
+                packet.ReadPackedGuid128("ItemGuid", i);
             }
         }
     }
