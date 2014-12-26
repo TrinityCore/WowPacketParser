@@ -426,5 +426,8 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("VisualEffect")]
         public int VisualEffect;
+
+        [DBFieldName("VerifiedBuild")]
+        public int VerifiedBuild = ClientVersion.BuildInt;
     }
 }

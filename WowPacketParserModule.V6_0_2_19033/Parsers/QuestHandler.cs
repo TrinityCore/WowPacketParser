@@ -523,10 +523,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_QUESTGIVER_QUEST_LIST)]
         public static void HandleQuestgiverQuestList(Packet packet)
         {
-            packet.ReadPackedGuid128("QuestGiverGUID");
+           var guid = packet.ReadPackedGuid128("QuestGiverGUID");
 
-            packet.ReadUInt32("GreetEmoteDelay");
-            packet.ReadUInt32("GreetEmoteType");
+            var questGreeting = new QuestGreeting
+            {
+                GreetEmoteDelay = packet.ReadUInt32("GreetEmoteDelay"),
+                GreetEmoteType = packet.ReadUInt32("GreetEmoteType")
+            };
 
             var int520 = packet.ReadUInt32("GossipTextCount");
             for (int i = 0; i < int520; i++)
@@ -535,7 +538,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ResetBitReader();
 
             var bits16 = packet.ReadBits(11);
-            packet.ReadWoWString("Greeting", bits16);
+            questGreeting.Greeting = packet.ReadWoWString("Greeting", bits16);
+
+            questGreeting.ObjectType = guid.GetObjectType();
+
+            Storage.QuestGreetings.Add(guid.GetEntry(), questGreeting, packet.TimeSpan);
+
         }
 
         [Parser(Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS)]

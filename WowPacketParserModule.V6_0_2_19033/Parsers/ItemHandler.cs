@@ -9,15 +9,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     {
         public static int MaskCount(int mask)
         {
-            var ret = 0;
+            var count = 0;
 
             while (mask != 0)
             {
                mask &= (mask - 1);
-               ++ret;
+               ++count;
             }
 
-            return ret;
+            return count;
         }
 
         public static void ReadItemInstance(ref Packet packet, params object[] indexes)

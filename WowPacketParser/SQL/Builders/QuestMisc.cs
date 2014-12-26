@@ -98,5 +98,20 @@ namespace WowPacketParser.SQL.Builders
 
             return sql;
         }
+
+        [BuilderMethod]
+        public static string QuestGreeting()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+                return String.Empty;
+
+            if (Storage.QuestGreetings.IsEmpty())
+                return String.Empty;
+
+            var entries = Storage.QuestGreetings.Keys();
+            var templatesDb = SQLDatabase.GetDict<uint, QuestGreeting>(entries);
+
+            return SQLUtil.CompareDicts(Storage.QuestGreetings, templatesDb, StoreNameType.QuestGreeting);
+        }
     }
 }
