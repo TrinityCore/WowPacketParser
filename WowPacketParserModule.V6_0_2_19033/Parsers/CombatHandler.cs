@@ -141,5 +141,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Guid");
         }
+
+        [Parser(Opcode.CMSG_SETSHEATHED)]
+        public static void HandleSetSheathed(Packet packet)
+        {
+            packet.ReadEnum<SheathState>("CurrentSheathState", TypeCode.Int32);
+            packet.ReadBit("Animate");
+        }
     }
 }

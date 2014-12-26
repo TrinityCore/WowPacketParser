@@ -366,7 +366,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             //{Opcode.SMSG_MOVE_UPDATE_FLIGHT_SPEED, }, // Fix me: sub_CB9F13
             //{Opcode.SMSG_MOVE_UPDATE_FLIGHT_BACK_SPEED, }, // Fix me: sub_CB9F99
             {Opcode.SMSG_MOVE_UPDATE_RUN_SPEED, 0x09AD},
-            {Opcode.SMSG_MOVE_UPDATE_PITCH_RATE, 0x13D9},
+            {Opcode.SMSG_MOVE_UPDATE_PITCH_RATE, 0x13D9 | 0x20000},
             {Opcode.SMSG_MOVE_UPDATE_RUN_BACK_SPEED, 0x09DE | 0x20000},
             {Opcode.SMSG_MOVE_UPDATE_SWIM_SPEED, 0x0B95},
             {Opcode.SMSG_MOVE_UPDATE_SWIM_BACK_SPEED, 0x1083},
