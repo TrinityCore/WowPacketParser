@@ -58,6 +58,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("bit44");
         }
 
+        private static void ReadGossipText(ref Packet packet, params object[] indexes)
+        {
+            packet.ReadUInt32("QuestID", Packet.GetIndexString(indexes));
+            packet.ReadUInt32("QuestType", Packet.GetIndexString(indexes));
+            packet.ReadUInt32("QuestLevel", Packet.GetIndexString(indexes));
+
+            for (int i = 0; i < 2; i++)
+                packet.ReadUInt32("QuestFlags", Packet.GetIndexString(indexes), i);
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Repeatable", Packet.GetIndexString(indexes));
+
+            var bits13 = packet.ReadBits(9);
+            packet.ReadWoWString("QuestTitle", bits13, Packet.GetIndexString(indexes));
+        }
+
         [Parser(Opcode.CMSG_QUEST_QUERY)]
         public static void HandleQuestQuery(Packet packet)
         {
@@ -501,6 +518,74 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var int4 = packet.ReadUInt32("Count");
             for (int i = 0; i < int4; i++)
                 packet.ReadInt32("Qbits", i);
+        }
+
+        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_LIST)]
+        public static void HandleQuestgiverQuestList(Packet packet)
+        {
+            packet.ReadPackedGuid128("QuestGiverGUID");
+
+            packet.ReadUInt32("GreetEmoteDelay");
+            packet.ReadUInt32("GreetEmoteType");
+
+            var int520 = packet.ReadUInt32("GossipTextCount");
+            for (int i = 0; i < int520; i++)
+                ReadGossipText(ref packet, i);
+
+            packet.ResetBitReader();
+
+            var bits16 = packet.ReadBits(11);
+            packet.ReadWoWString("Greeting", bits16);
+        }
+
+        [Parser(Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS)]
+        public static void HandleQuestRequestItems(Packet packet)
+        {
+            packet.ReadPackedGuid128("QuestGiverGUID");
+
+            packet.ReadInt32("QuestGiverCreatureID");
+            packet.ReadInt32("QuestID");
+            packet.ReadInt32("CompEmoteDelay");
+            packet.ReadInt32("CompEmoteType");
+
+            for (int i = 0; i < 2; i++)
+                packet.ReadInt32("QuestFlags", i);
+
+            packet.ReadInt32("SuggestPartyMembers");
+            packet.ReadInt32("MoneyToGet");
+            var int44 = packet.ReadInt32("QuestObjectiveCollectCount");
+            var int60 = packet.ReadInt32("QuestCurrencyCount");
+            packet.ReadInt32("StatusFlags");
+
+            for (int i = 0; i < int44; i++)
+            {
+                packet.ReadInt32("ObjectID", i);
+                packet.ReadInt32("Amount", i);
+            }
+
+            for (int i = 0; i < int60; i++)
+            {
+                packet.ReadInt32("CurrencyID", i);
+                packet.ReadInt32("Amount", i);
+            }
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("AutoLaunched");
+
+            packet.ResetBitReader();
+
+            var bits3016 = packet.ReadBits(9);
+            var bits16 = packet.ReadBits(12);
+
+            packet.ReadWoWString("QuestTitle", bits3016);
+            packet.ReadWoWString("CompletionText", bits16);
+        }
+
+        [Parser(Opcode.SMSG_QUESTUPDATE_COMPLETE)]
+        public static void HandleQuestForceRemoved(Packet packet)
+        {
+            packet.ReadEntry<Int32>(StoreNameType.Quest, "QuestID");
         }
     }
 }
