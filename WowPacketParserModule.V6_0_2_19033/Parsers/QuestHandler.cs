@@ -523,7 +523,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_QUESTGIVER_QUEST_LIST)]
         public static void HandleQuestgiverQuestList(Packet packet)
         {
-           var guid = packet.ReadPackedGuid128("QuestGiverGUID");
+            var guid = packet.ReadPackedGuid128("QuestGiverGUID");
 
             var questGreeting = new QuestGreeting
             {

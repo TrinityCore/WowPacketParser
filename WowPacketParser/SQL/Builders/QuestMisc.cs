@@ -109,9 +109,9 @@ namespace WowPacketParser.SQL.Builders
                 return String.Empty;
 
             var entries = Storage.QuestGreetings.Keys();
-            var templatesDb = SQLDatabase.GetDict<uint, QuestGreeting>(entries);
+            var templatesDb = SQLDatabase.GetDict<uint, QuestGreeting>(entries, "Id");
 
-            return SQLUtil.CompareDicts(Storage.QuestGreetings, templatesDb, StoreNameType.QuestGreeting);
+            return SQLUtil.CompareDicts(Storage.QuestGreetings, templatesDb, StoreNameType.QuestGreeting, "Id");
         }
     }
 }
