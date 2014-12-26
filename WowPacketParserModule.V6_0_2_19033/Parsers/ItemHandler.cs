@@ -7,12 +7,27 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class ItemHandler
     {
+        public static int MaskCount(int mask)
+        {
+            var ret = 0;
+
+            while (mask != 0)
+            {
+               mask &= (mask - 1);
+               ++ret;
+            }
+
+            return ret;
+        }
+
         public static void ReadItemInstance(ref Packet packet, params object[] indexes)
         {
-            packet.ReadUInt32("ItemID", indexes);
-            packet.ReadUInt32("RandomPropertiesSeed", indexes);
-            packet.ReadUInt32("RandomPropertiesID", indexes);
+            packet.ReadUInt32("ItemID", Packet.GetIndexString(indexes));
+            packet.ReadUInt32("RandomPropertiesSeed", Packet.GetIndexString(indexes));
+            packet.ReadUInt32("RandomPropertiesID", Packet.GetIndexString(indexes));
+
             packet.ResetBitReader();
+
             var hasBonuses = packet.ReadBit("HasItemBonus", indexes);
             var hasModifications = packet.ReadBit("HasModifications", indexes);
             if (hasBonuses)
@@ -21,14 +36,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 var bonusCount = packet.ReadUInt32();
                 for (var j = 0; j < bonusCount; ++j)
-                    packet.ReadUInt32("BonusListID", indexes, j);
+                    packet.ReadUInt32("BonusListID", Packet.GetIndexString(indexes), j);
             }
 
             if (hasModifications)
             {
-                var modificationCount = packet.ReadUInt32() / 4;
+                var modificationCount = MaskCount(packet.ReadInt32("modificationCount"));
                 for (var j = 0; j < modificationCount; ++j)
-                    packet.ReadUInt32("Modification", indexes, j);
+                    packet.ReadInt32("Modification", Packet.GetIndexString(indexes), j);
             }
         }
 
@@ -282,7 +297,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadByte("Slot");
 
-            packet.ReadUInt32("SlotInBag");
+            packet.ReadInt32("SlotInBag");
 
             ReadItemInstance(ref packet);
 
