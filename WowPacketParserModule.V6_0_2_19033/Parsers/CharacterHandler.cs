@@ -32,7 +32,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadByte("ExperienceLevel", i);
                 packet.ReadUInt32("ZoneID", i);
                 packet.ReadUInt32("MapID", i);
-                
+
                 packet.ReadVector3("PreloadPos", i);
 
                 packet.ReadPackedGuid128("GuildGUID", i);

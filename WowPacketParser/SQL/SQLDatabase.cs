@@ -96,7 +96,7 @@ namespace WowPacketParser.SQL
 
         private static void LoadCreatureDifficulty()
         {
-            //                                                  0       1           2           3       4           5       6       7       8       9       10                                          
+            //                                                  0       1           2           3       4           5       6       7       8       9       10
             var query = new StringBuilder(string.Format("SELECT ID, CreatureID, FactionID, Expansion, MinLevel, MaxLevel, Flags1, Flags2, Flags3, Flags4, Flags5 FROM {0}.creature_difficulty;", Settings.HotfixesDatabase));
             using (var reader = SQLConnector.ExecuteQuery(query.ToString()))
             {

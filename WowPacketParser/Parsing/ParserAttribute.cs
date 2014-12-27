@@ -60,7 +60,7 @@ namespace WowPacketParser.Parsing
         /// </summary>
         /// <param name="opcode"></param>
         /// <param name="addedInVersion"></param>
-        /// <param name="removedInVersion"></param> 
+        /// <param name="removedInVersion"></param>
         /*[Obsolete]
         public ParserAttribute(int opcode, ClientVersionBuild addedInVersion, ClientVersionBuild removedInVersion)
         {

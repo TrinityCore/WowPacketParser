@@ -444,7 +444,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("NumSkillUpsReward");
             packet.ReadUInt32("XpReward");
             packet.ReadUInt32("TalentReward");
-            
+
             ItemHandler.ReadItemInstance(ref packet);
 
             packet.ResetBitReader();

@@ -277,7 +277,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ParseBitStream(guid, 5, 3, 1, 7, 4, 0, 6, 2);
             packet.WriteGuid("Guid", guid);
         }
-        
+
         [Parser(Opcode.CMSG_PET_CAST_SPELL)]
         public static void HandlePetCastSpell(Packet packet)
         {

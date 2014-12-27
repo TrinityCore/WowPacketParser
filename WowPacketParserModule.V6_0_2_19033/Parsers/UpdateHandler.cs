@@ -525,7 +525,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 for (var i = 0; i < sceneInstanceIDs; ++i)
                     packet.ReadInt32("SceneInstanceIDs", index, i);
             }
-            
+
             for (var i = 0; i < pauseTimesCount; ++i)
                 packet.ReadInt32("PauseTimes", index, i);
 
