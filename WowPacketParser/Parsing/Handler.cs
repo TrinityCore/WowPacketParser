@@ -81,8 +81,16 @@ namespace WowPacketParser.Parsing
 
                         if (handlers.ContainsKey(key))
                         {
+                            // @TODO This is a hack to keep things easy regarding declaration of opcodes.
+                            // Ideally, we would split the opcodes into three different enums:
+                            // ClientOpcodes, ServerOpcodes, BidirectionalOpcodes
+                            // The first two are obvious as to what they would contain.
+                            // The last one would be MSG_, UMSG_, TEST_, etc... opcodes
+                            // However that's just too much pain to do considering the mess Blizzard does
+                            // by naming their opcodes sometimes without following their own rules.
+                            var direction = attr.Opcode.ToString()[0] == 'S' ? Direction.ServerToClient : Direction.ClientToServer;
                             Trace.WriteLine(string.Format("Error: (Build: {0}) tried to overwrite delegate for opcode {1} ({2}); new handler: {3}; old handler: {4}",
-                                ClientVersion.Build, Opcodes.GetOpcode(attr.Opcode), attr.Opcode, del.Method, handlers[key].Method));
+                                ClientVersion.Build, Opcodes.GetOpcode(attr.Opcode, direction), attr.Opcode, del.Method, handlers[key].Method));
                             continue;
                         }
 
@@ -96,16 +104,16 @@ namespace WowPacketParser.Parsing
 
         public static void Parse(Packet packet, bool isMultiple = false)
         {
+            if (packet.Opcode == 0)
+                return;
+
             ParsedStatus status;
 
             var opcode = Opcodes.GetOpcode(packet.Opcode, packet.Direction);
             if (opcode == Opcode.NULL_OPCODE)
-                opcode = Opcodes.GetOpcode(packet.Opcode);
+                return;
 
             packet.WriteLine(packet.GetHeader(isMultiple));
-
-            if (packet.Opcode == 0)
-                return;
 
             var key = new KeyValuePair<ClientVersionBuild, Opcode>(ClientVersion.VersionDefiningBuild, opcode);
 
@@ -123,7 +131,7 @@ namespace WowPacketParser.Parsing
                 {
                     var attrs = handler.Method.GetCustomAttributes(typeof(HasSniffDataAttribute), false);
 
-                    packet.AddSniffData(StoreNameType.Opcode, packet.Opcode, Opcodes.GetOpcodeName(packet.Opcode));
+                    packet.AddSniffData(StoreNameType.Opcode, packet.Opcode, Opcodes.GetOpcodeName(packet.Opcode, packet.Direction));
 
                     if (attrs.Length == 0)
                     {
@@ -173,7 +181,7 @@ namespace WowPacketParser.Parsing
                 if (Settings.DumpFormat != DumpFormatType.SniffDataOnly)
                 {
                     // added before for this type
-                    var data = status == ParsedStatus.Success ? Opcodes.GetOpcodeName(packet.Opcode) : status.ToString();
+                    var data = status == ParsedStatus.Success ? Opcodes.GetOpcodeName(packet.Opcode, packet.Direction) : status.ToString();
                     packet.AddSniffData(StoreNameType.Opcode, packet.Opcode, data);
                 }
             }

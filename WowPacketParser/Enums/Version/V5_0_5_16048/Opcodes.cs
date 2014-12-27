@@ -4,12 +4,14 @@ namespace WowPacketParser.Enums.Version.V5_0_5_16048
 {
     public static class Opcodes_5_0_5
     {
-        public static BiDictionary<Opcode, int> Opcodes()
+        public static BiDictionary<Opcode, int> Opcodes(Direction direction)
         {
-            return Opcs;
+            if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
+                return ClientOpcodes;
+            return ServerOpcodes;
         }
 
-        private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
+        private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
         {
             {Opcode.CMSG_AUTH_SESSION, 0x008A},
             {Opcode.CMSG_CHANNEL_MODERATOR, 0x0581},
@@ -20,6 +22,10 @@ namespace WowPacketParser.Enums.Version.V5_0_5_16048
             {Opcode.CMSG_GROUP_RAID_CONVERT, 0x034F},
             {Opcode.CMSG_GUILD_EVENT_LOG_QUERY, 0x06C3},
             {Opcode.CMSG_REALM_SPLIT, 0x0820},
+        };
+
+        private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
+        {
             {Opcode.SMSG_ADDON_INFO, 0x09C6},
             {Opcode.SMSG_AURA_UPDATE, 0x08AB},
             {Opcode.SMSG_AURA_UPDATE_ALL, 0x0DDA},

@@ -4,12 +4,14 @@ namespace WowPacketParser.Enums.Version.V5_2_0_16650
 {
     public static class Opcodes_5_2_0
     {
-        public static BiDictionary<Opcode, int> Opcodes()
+        public static BiDictionary<Opcode, int> Opcodes(Direction direction)
         {
-            return Opcs;
+            if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
+                return ClientOpcodes;
+            return ServerOpcodes;
         }
 
-        private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
+        private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
         {
             {Opcode.CMSG_AUTH_SESSION, 0x1A72},
             {Opcode.CMSG_CREATURE_QUERY, 0x1C83},
@@ -23,6 +25,10 @@ namespace WowPacketParser.Enums.Version.V5_2_0_16650
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x10AC},
             {Opcode.CMSG_WARDEN_DATA, 0x007C},
             {Opcode.MSG_SET_DUNGEON_DIFFICULTY, 0x0140},
+        };
+
+        private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
+        {
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x1124},
             {Opcode.SMSG_ADDON_INFO, 0x1130},
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA, 0x18A1},
@@ -51,5 +57,6 @@ namespace WowPacketParser.Enums.Version.V5_2_0_16650
             {Opcode.SMSG_WEEKLY_SPELL_USAGE, 0x01C4},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x0754},
         };
+
     }
 }

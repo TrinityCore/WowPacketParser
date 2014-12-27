@@ -4,12 +4,14 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
 {
     public static class Opcodes_5_1_0
     {
-        public static BiDictionary<Opcode, int> Opcodes()
+        public static BiDictionary<Opcode, int> Opcodes(Direction direction)
         {
-            return Opcs;
+            if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
+                return ClientOpcodes;
+            return ServerOpcodes;
         }
 
-        private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
+        private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
         {
             {Opcode.CMSG_ACCEPT_LEVEL_GRANT, 0x0D85},
             {Opcode.CMSG_ACCEPT_TRADE, 0x0157},
@@ -438,6 +440,10 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.MSG_TABARDVENDOR_ACTIVATE, 0x0729},
             {Opcode.MSG_RESPEC_WIPE_CONFIRM, 0x052A},
             {Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57},
+        };
+
+        private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
+        {
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x0E48},
             {Opcode.SMSG_ACCOUNT_INFO_RESPONSE, 0x0659},
             {Opcode.SMSG_ACCOUNT_RESTRICTED_WARNING, 0x0CD8},

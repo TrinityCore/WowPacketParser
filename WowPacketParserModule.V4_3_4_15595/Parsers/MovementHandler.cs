@@ -28,7 +28,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                         obj.Movement.HasWpsOrRandMov = true;
             }
 
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_MONSTER_MOVE_TRANSPORT))
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_MONSTER_MOVE_TRANSPORT, Direction.ServerToClient))
             {
                 packet.ReadPackedGuid("Transport GUID");
 

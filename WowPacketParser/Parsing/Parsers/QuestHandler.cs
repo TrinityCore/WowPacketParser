@@ -1195,7 +1195,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleQuestgiverStatus(Packet packet)
         {
             uint count = 1;
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE))
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE, Direction.ServerToClient))
                 count = packet.ReadUInt32("Count");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))

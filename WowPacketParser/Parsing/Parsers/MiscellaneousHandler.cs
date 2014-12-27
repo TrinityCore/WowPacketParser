@@ -411,7 +411,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
                 packet.ReadGuid("GUID");
 
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_PLAY_OBJECT_SOUND))
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_PLAY_OBJECT_SOUND, Direction.ServerToClient))
                 packet.ReadGuid("GUID 2");
 
             Storage.Sounds.Add(sound, packet.TimeSpan);

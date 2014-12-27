@@ -4,13 +4,16 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
 {
     public static class Opcodes_4_0_6
     {
-        public static BiDictionary<Opcode, int> Opcodes()
+        public static BiDictionary<Opcode, int> Opcodes(Direction direction)
         {
-            return Opcs;
+            if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
+                return ClientOpcodes;
+            return ServerOpcodes;
         }
 
-        private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
+        private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
         {
+            {Opcode.OBSOLETE_DROP_ITEM, 0x10049}, //UnknownopcodeID
             {Opcode.CMSG_ACCEPT_LEVEL_GRANT, 0x0B5CC},
             {Opcode.CMSG_ACCEPT_TRADE, 0x00891},
             {Opcode.CMSG_ACTIVATETAXI, 0x039A4},
@@ -694,8 +697,10 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.MSG_SET_RAID_DIFFICULTY, 0x0B5E8},
             {Opcode.MSG_TABARDVENDOR_ACTIVATE, 0x02C80},
             {Opcode.MSG_TALENT_WIPE_CONFIRM, 0x0BFC4},
-            //{Opcode.NUM_MSG_TYPES, 0x102B8}, //lastunknownopcode+1.
-            {Opcode.OBSOLETE_DROP_ITEM, 0x10049}, //UnknownopcodeID
+        };
+
+        private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
+        {
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x07280},
             {Opcode.SMSG_ACHIEVEMENT_DELETED, 0x0E6A0},
             {Opcode.SMSG_ACHIEVEMENT_EARNED, 0x0F5E4},

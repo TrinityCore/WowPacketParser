@@ -258,7 +258,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_PET_CAST_SPELL)]
         public static void HandleCastSpell(Packet packet)
         {
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_PET_CAST_SPELL))
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_PET_CAST_SPELL, Direction.ClientToServer))
                 packet.ReadPackedGuid128("PetGUID");
 
             ReadSpellCastRequest(ref packet);
@@ -268,7 +268,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_SPELL_GO)]
         public static void HandleSpellStart(Packet packet)
         {
-            bool isSpellGo = (packet.Opcode | 0x20000) == Opcodes.GetOpcode(Opcode.SMSG_SPELL_GO);
+            bool isSpellGo = packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_SPELL_GO, Direction.ServerToClient);
 
             packet.ReadPackedGuid128("Caster Guid");
             packet.ReadPackedGuid128("CasterUnit Guid");

@@ -224,7 +224,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                         pos.Z = packet.ReadSingle();
                         break;
                     case MovementStatusElements.MSEOrientation:
-                        if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_MOVE_TELEPORT))
+                        if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_MOVE_TELEPORT, Direction.ServerToClient))
                             pos.O = packet.ReadSingle();
                         else
                         {

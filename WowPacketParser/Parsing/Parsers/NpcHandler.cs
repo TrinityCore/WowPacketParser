@@ -41,8 +41,8 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_3_13329))
                 packet.ReadInt32("Unk");
             packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_TRAINER_BUY_FAILED)
-                || packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_TRAINER_BUY_RESULT))
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_TRAINER_BUY_FAILED, Direction.ServerToClient)
+                || packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_TRAINER_BUY_RESULT, Direction.ServerToClient))
                 packet.ReadUInt32("Reason");
         }
 
@@ -403,7 +403,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadPackedGuid("GUID");
 
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_HIGHEST_THREAT_UPDATE))
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_HIGHEST_THREAT_UPDATE, Direction.ServerToClient))
                 packet.ReadPackedGuid("New Highest");
 
             var count = packet.ReadUInt32("Size");
@@ -420,7 +420,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadPackedGuid("GUID");
 
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_THREAT_REMOVE))
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_THREAT_REMOVE, Direction.ServerToClient))
                 packet.ReadPackedGuid("Victim GUID");
         }
     }

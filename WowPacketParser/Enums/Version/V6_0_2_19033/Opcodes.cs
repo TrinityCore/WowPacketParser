@@ -4,15 +4,17 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
 {
     public static class Opcodes_6_0_2
     {
-        public static BiDictionary<Opcode, int> Opcodes()
+        public static BiDictionary<Opcode, int> Opcodes(Direction direction)
         {
-            return Opcs;
+            if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
+                return ClientOpcodes;
+            return ServerOpcodes;
         }
 
-        private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
+        private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
         {
             {Opcode.CMSG_ACCEPT_TRADE, 0x1C85},
-            {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x07CC | 0x10000},
+            {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x07CC},
             {Opcode.CMSG_AUCTION_HELLO, 0x1074},
             {Opcode.CMSG_AUTH_SESSION, 0x1B05},
             {Opcode.CMSG_BANKER_ACTIVATE, 0x0204},
@@ -39,14 +41,14 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.CMSG_LOG_DISCONNECT, 0x1856},
             {Opcode.CMSG_ITEM_REFUND_INFO, 0x0154},
             {Opcode.CMSG_JOIN_CHANNEL, 0x0EC3},
-            {Opcode.CMSG_MESSAGECHAT_AFK, 0x0EEF | 0x10000},
-            {Opcode.CMSG_MESSAGECHAT_DND, 0x12C7 | 0x10000},
+            {Opcode.CMSG_MESSAGECHAT_AFK, 0x0EEF},
+            {Opcode.CMSG_MESSAGECHAT_DND, 0x12C7},
             {Opcode.CMSG_MESSAGECHAT_CHANNEL, 0x0288},
-            {Opcode.CMSG_MESSAGECHAT_EMOTE, 0x12D4 | 0x10000},
-            {Opcode.CMSG_MESSAGECHAT_GUILD, 0x039B | 0x10000},
+            {Opcode.CMSG_MESSAGECHAT_EMOTE, 0x12D4},
+            {Opcode.CMSG_MESSAGECHAT_GUILD, 0x039B},
             {Opcode.CMSG_MESSAGECHAT_PARTY, 0x06EF},
-            {Opcode.CMSG_MESSAGECHAT_SAY, 0x07B3 | 0x10000},
-            {Opcode.CMSG_MESSAGECHAT_YELL, 0x1288 | 0x10000},
+            {Opcode.CMSG_MESSAGECHAT_SAY, 0x07B3},
+            {Opcode.CMSG_MESSAGECHAT_YELL, 0x1288},
             {Opcode.CMSG_MOVE_HEARTBEAT, 0x0E36},
             {Opcode.CMSG_MOVE_TIME_SKIPPED, 0x0F46},
             {Opcode.CMSG_NAME_QUERY, 0x0BA4},
@@ -64,7 +66,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY, 0x0633},
             {Opcode.CMSG_AUTH_CONTINUED_SESSION, 0x1806},
             {Opcode.CMSG_RESET_FACTION_CHEAT, 0x1876},
-            {Opcode.CMSG_SET_SELECTION, 0x1038 | 0x10000},
+            {Opcode.CMSG_SET_SELECTION, 0x1038},
             {Opcode.CMSG_GOSSIP_HELLO, 0x0647},
             {Opcode.CMSG_SAVE_CUF_PROFILES, 0x0CC4},
             {Opcode.CMSG_SET_RAID_DIFFICULTY, 0x1A76},
@@ -74,7 +76,10 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x00D4},
             {Opcode.CMSG_WARDEN_DATA, 0x00F3},
             {Opcode.CMSG_WHO, 0x11AF},
+        };
 
+        private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
+        {
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x11AC},
             {Opcode.SMSG_ACTION_BUTTONS, 0x03F4},
             {Opcode.SMSG_ADDON_INFO, 0x1400},
@@ -85,19 +90,19 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_ATTACKSTOP, 0x10E7},
             {Opcode.SMSG_AUCTION_COMMAND_RESULT, 0x1554},
             {Opcode.SMSG_AUCTION_HELLO, 0x0417},
-            {Opcode.SMSG_AUCTION_LIST_RESULT, 0x13B4 | 0x20000},
+            {Opcode.SMSG_AUCTION_LIST_RESULT, 0x13B4},
             {Opcode.SMSG_AURA_UPDATE, 0x128B},
             {Opcode.SMSG_AUTH_CHALLENGE, 0x10AA},
-            {Opcode.SMSG_AUTH_RESPONSE, 0x0564 | 0x20000},
+            {Opcode.SMSG_AUTH_RESPONSE, 0x0564},
             {Opcode.SMSG_BATTLE_PET_JOURNAL, 0x00EF},
             {Opcode.SMSG_BINDPOINTUPDATE, 0x1428},
             {Opcode.SMSG_CHANNEL_NOTIFY, 0x0C4D},
             {Opcode.SMSG_CHANNEL_NOTIFY_JOINED, 0x1C0A},
             {Opcode.SMSG_CHAR_CREATE, 0x0637},
-            {Opcode.SMSG_CHAR_DELETE, 0x12A4 | 0x20000},
+            {Opcode.SMSG_CHAR_DELETE, 0x12A4},
             {Opcode.SMSG_CHAR_FACTION_CHANGE, 0x1743},
             {Opcode.SMSG_CHAR_ENUM, 0x1154},
-            {Opcode.SMSG_CLIENTCACHE_VERSION, 0x10EF | 0x20000},
+            {Opcode.SMSG_CLIENTCACHE_VERSION, 0x10EF},
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x0203},
             {Opcode.SMSG_CRITERIA_UPDATE_ACCOUNT, 0x0727},
             {Opcode.SMSG_CRITERIA_UPDATE_PLAYER, 0x0AEC},
@@ -124,7 +129,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_HIGHEST_THREAT_UPDATE, 0x0604},
             {Opcode.SMSG_HOTFIX_INFO, 0x0AA8},
             {Opcode.SMSG_INIT_CURRENCY, 0x00A4},
-            {Opcode.SMSG_INIT_WORLD_STATES, 0x0BB7 | 0x20000},
+            {Opcode.SMSG_INIT_WORLD_STATES, 0x0BB7},
             {Opcode.SMSG_INITIAL_SETUP, 0x12E8},
             {Opcode.SMSG_INITIAL_SPELLS, 0x0297},
             {Opcode.SMSG_INITIALIZE_FACTIONS, 0x0AAB},
@@ -163,13 +168,13 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_SEND_MAIL_RESULT, 0x0035},
             {Opcode.SMSG_SET_TIME_ZONE_INFORMATION, 0x1257},
             {Opcode.SMSG_ARENA_SEASON_WORLD_STATE, 0x0618},
-            {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x07B3 | 0x20000},
-            {Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x12D4 | 0x20000},
+            {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x07B3},
+            {Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x12D4},
             {Opcode.SMSG_SET_PHASE_SHIFT, 0x0567},
             {Opcode.SMSG_SET_PROFICIENCY, 0x12AF},
             {Opcode.SMSG_SET_VIGNETTE, 0x1613},
-            {Opcode.SMSG_SPELL_CATEGORY_COOLDOWN, 0x07A7 | 0x20000},
-            {Opcode.SMSG_SPELL_GO, 0x1288 | 0x20000},
+            {Opcode.SMSG_SPELL_CATEGORY_COOLDOWN, 0x07A7},
+            {Opcode.SMSG_SPELL_GO, 0x1288},
             {Opcode.SMSG_SPELL_START, 0x0FCB},
             {Opcode.SMSG_SPELLENERGIZELOG, 0x07E7},
             {Opcode.SMSG_SPELLHEALLOG, 0x0298},
@@ -184,7 +189,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_SUSPEND_TOKEN, 0x0464},
             {Opcode.SMSG_TALENTS_INFO, 0x10FF},
             {Opcode.SMSG_TEXT_EMOTE, 0x1458},
-            {Opcode.SMSG_TRAINER_LIST, 0x0678 | 0x20000},
+            {Opcode.SMSG_TRAINER_LIST, 0x0678},
             {Opcode.SMSG_TRANSFER_PENDING, 0x0BC0},
             {Opcode.SMSG_TIME_SYNC_REQ, 0x0CA8},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x0617},

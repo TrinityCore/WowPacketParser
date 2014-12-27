@@ -124,7 +124,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadBoolean("First Completion", index);
 
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_LFG_PLAYER_REWARD))
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_LFG_PLAYER_REWARD, Direction.ServerToClient))
                 packet.ReadInt32("Strangers", index);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))

@@ -182,7 +182,7 @@ namespace WowPacketParser.Parsing.Parsers
                         obj.Movement.HasWpsOrRandMov = true;
             }
 
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_MONSTER_MOVE_TRANSPORT))
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_MONSTER_MOVE_TRANSPORT, Direction.ServerToClient))
             {
                 var transportGuid = packet.ReadPackedGuid("Transport GUID");
 
@@ -1268,7 +1268,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             ReadMovementInfo(ref packet, guid);
 
-            if (packet.Opcode != Opcodes.GetOpcode(Opcode.MSG_MOVE_KNOCK_BACK))
+            if (packet.Opcode != Opcodes.GetOpcode(Opcode.MSG_MOVE_KNOCK_BACK, Direction.ClientToServer))
                 return;
 
             packet.ReadSingle("Sin Angle");
@@ -1356,7 +1356,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("Guid");
             packet.ReadUInt32("MoveEvent"); // Movement Counter?
 
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_FORCE_RUN_SPEED_CHANGE))
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_FORCE_RUN_SPEED_CHANGE, Direction.ServerToClient))
                 packet.ReadByte("Unk Byte");
 
             packet.ReadSingle("New Speed");
@@ -1387,10 +1387,10 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.ReadPackedGuid("Guid");
 
-            if (packet.Opcode != Opcodes.GetOpcode(Opcode.MSG_MOVE_SET_COLLISION_HGT))
+            if (packet.Opcode != Opcodes.GetOpcode(Opcode.MSG_MOVE_SET_COLLISION_HGT, Direction.ClientToServer))
                 packet.ReadInt32("Movement Counter");
 
-            if (packet.Opcode != Opcodes.GetOpcode(Opcode.SMSG_MOVE_SET_COLLISION_HGT))
+            if (packet.Opcode != Opcodes.GetOpcode(Opcode.SMSG_MOVE_SET_COLLISION_HGT, Direction.ServerToClient))
                 ReadMovementInfo(ref packet, guid);
 
             packet.ReadSingle("Collision Height");

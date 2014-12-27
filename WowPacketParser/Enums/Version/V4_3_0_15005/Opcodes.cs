@@ -4,12 +4,14 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
 {
     public static class Opcodes_4_3_0
     {
-        public static BiDictionary<Opcode, int> Opcodes()
+        public static BiDictionary<Opcode, int> Opcodes(Direction direction)
         {
-            return Opcs;
+            if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
+                return ClientOpcodes;
+            return ServerOpcodes;
         }
 
-        private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
+        private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
         {
             {Opcode.CMSG_ACCEPT_LEVEL_GRANT, 3074},
             {Opcode.CMSG_ACCEPT_TRADE, 12433},
@@ -321,7 +323,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.CMSG_REQUEST_PVP_OPTIONS_ENABLED, 854},
             {Opcode.CMSG_REQUEST_PVP_REWARDS, 26257},
             {Opcode.CMSG_REQUEST_RAID_INFO, 31362},
-//            {Opcode.CMSG_RECONNECT_PROOF, 788},
+            //            {Opcode.CMSG_RECONNECT_PROOF, 788},
             {Opcode.CMSG_REQUEST_VEHICLE_NEXT_SEAT, 1542},
             {Opcode.CMSG_REQUEST_VEHICLE_PREV_SEAT, 16516},
             {Opcode.CMSG_REQUEST_VEHICLE_SWITCH_SEAT, 17542},
@@ -457,6 +459,10 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.MSG_TABARDVENDOR_ACTIVATE, 27782},
             {Opcode.MSG_TALENT_WIPE_CONFIRM, 678},
             {Opcode.MSG_VERIFY_CONNECTIVITY, 20311},
+        };
+
+        private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
+        {
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 3200},
             {Opcode.SMSG_ACCOUNT_INFO_RESPONSE, 27706},
             {Opcode.SMSG_ACHIEVEMENT_DELETED, 13350},
@@ -677,7 +683,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.SMSG_GUILD_XP_GAIN, 11822},
             {Opcode.SMSG_HEALTH_UPDATE, 15362},
             {Opcode.SMSG_HIGHEST_THREAT_UPDATE, 29824},
-//            {Opcode.SMSG_HOTFIX_NOTIFY_BLOB, 6581},
+            //            {Opcode.SMSG_HOTFIX_NOTIFY_BLOB, 6581},
             {Opcode.SMSG_INITIALIZE_FACTIONS, 20006},
             {Opcode.SMSG_INITIAL_SPELLS, 2214},
             {Opcode.SMSG_INIT_CURRENCY, 3224},
@@ -968,9 +974,6 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 25122},
             {Opcode.SMSG_XP_GAIN_ABORTED, 11276},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 2564},
-
-            // TEST
-            {Opcode.TEST_430_SYNC_PLAYER_MOVE, 0x5}
         };
     }
 }

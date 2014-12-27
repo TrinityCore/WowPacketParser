@@ -88,7 +88,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PARTY_MEMBER_STATS_FULL, ClientVersionBuild.V4_2_2_14545)]
         public static void HandlePartyMemberStats422(Packet packet)
         {
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_PARTY_MEMBER_STATS_FULL))
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_PARTY_MEMBER_STATS_FULL, Direction.ServerToClient))
                 packet.ReadBoolean("Add arena opponent");
 
             packet.ReadPackedGuid("GUID");
@@ -221,7 +221,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandlePartyMemberStats(Packet packet)
         {
             if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) &&
-                packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_PARTY_MEMBER_STATS_FULL))
+                packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_PARTY_MEMBER_STATS_FULL, Direction.ServerToClient))
                 packet.ReadBoolean("Add arena opponent");
 
             packet.ReadPackedGuid("GUID");

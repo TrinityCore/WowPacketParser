@@ -4,12 +4,14 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
 {
     public static class Opcodes_4_1_0
     {
-        public static BiDictionary<Opcode, int> Opcodes()
+        public static BiDictionary<Opcode, int> Opcodes(Direction direction)
         {
-            return Opcs;
+            if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
+                return ClientOpcodes;
+            return ServerOpcodes;
         }
 
-        private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
+        private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
         {
             {Opcode.MSG_AUCTION_HELLO, 0x0FC3D}, // 4.1.0 13914
             {Opcode.MSG_GUILD_EVENT_LOG_QUERY, 0x09A7F}, // 4.1.0 13914
@@ -29,6 +31,10 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.MSG_TABARDVENDOR_ACTIVATE, 0x02A3E}, // 4.1.0 13914
             {Opcode.MSG_TALENT_WIPE_CONFIRM, 0x00C6F}, // 4.1.0 13914
             {Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57}, // 4.1.0 13914
+        };
+
+        private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
+        {
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x0B86D}, // 4.1.0 13914
             {Opcode.SMSG_ACHIEVEMENT_DELETED, 0x03A6D}, // 4.1.0 13914
             {Opcode.SMSG_ACHIEVEMENT_EARNED, 0x0EA6C}, // 4.1.0 13914

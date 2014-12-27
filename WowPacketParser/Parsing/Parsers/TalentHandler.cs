@@ -161,7 +161,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_LEARN_PREVIEW_TALENTS_PET, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleTalentPreviewTalents(Packet packet)
         {
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_LEARN_PREVIEW_TALENTS_PET))
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_LEARN_PREVIEW_TALENTS_PET, Direction.ClientToServer))
                 packet.ReadGuid("GUID");
 
             var count = packet.ReadUInt32("Talent Count");
@@ -176,7 +176,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_LEARN_PREVIEW_TALENTS_PET, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleTalentPreviewTalents434(Packet packet)
         {
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_LEARN_PREVIEW_TALENTS_PET))
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_LEARN_PREVIEW_TALENTS_PET, Direction.ClientToServer))
                 packet.ReadGuid("GUID");
             else
                 packet.ReadUInt32("Tab Page");

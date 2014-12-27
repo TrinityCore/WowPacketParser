@@ -4,12 +4,14 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
 {
     public static class Opcodes_5_4_2
     {
-        public static BiDictionary<Opcode, int> Opcodes()
+        public static BiDictionary<Opcode, int> Opcodes(Direction direction)
         {
-            return Opcs;
+            if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
+                return ClientOpcodes;
+            return ServerOpcodes;
         }
 
-        private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
+        private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
         {
             {Opcode.CMSG_ADD_FRIEND, 0x1388},
             {Opcode.CMSG_ADD_IGNORE, 0x1A01},
@@ -29,40 +31,38 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.CMSG_DEL_FRIEND, 0x1A60},
             {Opcode.CMSG_DUNGEON_FINDER_GET_SYSTEM_INFO, 0x05DA},
             {Opcode.CMSG_EQUIPMENT_SET_USE, 0x02A2},
-            {Opcode.CMSG_GAMEOBJECT_QUERY, 0x08BC | 0x10000},
+            {Opcode.CMSG_GAMEOBJECT_QUERY, 0x08BC},
             {Opcode.CMSG_GOSSIP_HELLO, 0x02EF},
             {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x0ECA},
-            {Opcode.SMSG_GROUP_LIST, 0x044E},
             {Opcode.CMSG_GUILD_QUERY, 0x055C},
             {Opcode.CMSG_INSPECT, 0x0206},
             {Opcode.CMSG_LEARN_TALENT, 0x026C},
             {Opcode.CMSG_LOAD_SCREEN, 0x0650},
             {Opcode.CMSG_LOG_DISCONNECT, 0x19EA},
             {Opcode.CMSG_LOGOUT_CANCEL, 0x0EE9},
-            {Opcode.CMSG_LOGOUT_REQUEST, 0x0183 | 0x10000},
+            {Opcode.CMSG_LOGOUT_REQUEST, 0x0183},
             {Opcode.CMSG_MESSAGECHAT_GUILD, 0x0243},
             {Opcode.CMSG_MESSAGECHAT_SAY, 0x0866},
             {Opcode.CMSG_MESSAGECHAT_YELL, 0x03AB},
             {Opcode.CMSG_MOVE_HEARTBEAT, 0x04AD},
             {Opcode.CMSG_MOVE_SET_FACING, 0x04AF},
             {Opcode.CMSG_NAME_QUERY, 0x05F4},
-            {Opcode.CMSG_NPC_TEXT_QUERY, 0x006C | 0x10000},
+            {Opcode.CMSG_NPC_TEXT_QUERY, 0x006C},
             {Opcode.CMSG_OBJECT_UPDATE_FAILED, 0x0A95},
-            {Opcode.CMSG_PAGE_TEXT_QUERY, 0x0E48 | 0x10000},
+            {Opcode.CMSG_PAGE_TEXT_QUERY, 0x0E48},
             {Opcode.CMSG_PET_CAST_SPELL, 0x0AB8},
             {Opcode.CMSG_PET_NAME_QUERY, 0x0249},
             {Opcode.CMSG_PING, 0x18E2},
             {Opcode.CMSG_PLAYER_LOGIN, 0x0754},
-            {Opcode.CMSG_PLAYED_TIME, 0x0A12 | 0x10000},
+            {Opcode.CMSG_PLAYED_TIME, 0x0A12},
             {Opcode.CMSG_RANDOMIZE_CHAR_NAME, 0x0DD1},
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x047F},
             {Opcode.CMSG_REALM_NAME_QUERY, 0x0472},
-            {Opcode.SMSG_REDIRECT_CLIENT, 0x0E43},
             {Opcode.CMSG_AUTH_CONTINUED_SESSION, 0x1262},
             {Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS, 0x04F2},
             {Opcode.CMSG_RESET_FACTION_CHEAT, 0x126E},
             {Opcode.CMSG_QUERY_WORLD_COUNTDOWN_TIMER, 0x08DD},
-            {Opcode.CMSG_QUEST_NPC_QUERY, 0x0AB1 | 0x10000},
+            {Opcode.CMSG_QUEST_NPC_QUERY, 0x0AB1},
             {Opcode.CMSG_QUEST_POI_QUERY, 0x0D52},
             {Opcode.CMSG_QUEST_QUERY, 0x066D},
             {Opcode.CMSG_SET_ACTION_BUTTON, 0x0D5E},
@@ -72,6 +72,12 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x0448},
             {Opcode.CMSG_WARDEN_DATA, 0x0573},
             {Opcode.CMSG_WHO, 0x0CFD},
+        };
+
+        private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
+        {
+            {Opcode.SMSG_GROUP_LIST, 0x044E},
+            {Opcode.SMSG_REDIRECT_CLIENT, 0x0E43},
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA_ACCOUNT, 0x08F2},
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA_PLAYER, 0x0E29},
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x0899},
@@ -83,7 +89,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_AURA_UPDATE, 0x0400},
             {Opcode.SMSG_AUTH_CHALLENGE, 0x0C42},
             {Opcode.SMSG_AUTH_RESPONSE, 0x03A8},
-            {Opcode.SMSG_BINDPOINTUPDATE, 0x0A12 | 0x20000},
+            {Opcode.SMSG_BINDPOINTUPDATE, 0x0A12},
             {Opcode.SMSG_BATTLE_PET_JOURNAL, 0x024B},
             {Opcode.SMSG_SPELL_CATEGORY_COOLDOWN, 0x02FE},
             {Opcode.SMSG_CAST_FAILED, 0x032B},
@@ -135,22 +141,22 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_MONSTER_MOVE, 0x0256},
             {Opcode.SMSG_MOVE_SET_FLIGHT_SPEED, 0x0207},
             {Opcode.SMSG_MOVE_SET_CAN_FLY, 0x06EB},
-            {Opcode.SMSG_MOVE_SET_RUN_SPEED, 0x0183 | 0x20000},
+            {Opcode.SMSG_MOVE_SET_RUN_SPEED, 0x0183},
             {Opcode.SMSG_MOVE_SET_SWIM_SPEED, 0x0579},
             {Opcode.SMSG_MOVE_SET_WALK_SPEED, 0x08C9},
-            {Opcode.SMSG_MOVE_TELEPORT, 0x0EC5 | 0x20000},
+            {Opcode.SMSG_MOVE_TELEPORT, 0x0EC5},
             {Opcode.SMSG_MOVE_UNSET_CAN_FLY, 0x06C4},
-            {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x0E48 | 0x20000},
+            {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x0E48},
             {Opcode.SMSG_NEW_WORLD, 0x0ABF},
             {Opcode.SMSG_NPC_TEXT_UPDATE, 0x0877},
             {Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE, 0x0EA4},
             {Opcode.SMSG_PERIODICAURALOG, 0x0515},
             {Opcode.SMSG_PET_CAST_FAILED, 0x0D85},
-            {Opcode.SMSG_PET_NAME_QUERY_RESPONSE, 0x08BC | 0x20000},
+            {Opcode.SMSG_PET_NAME_QUERY_RESPONSE, 0x08BC},
             {Opcode.SMSG_PLAYER_MOVE, 0x0EC4},
             {Opcode.SMSG_PONG, 0x0C46},
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x116B},
-            {Opcode.SMSG_PLAY_SOUND, 0x006C | 0x20000},
+            {Opcode.SMSG_PLAY_SOUND, 0x006C},
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x1A6B},
             {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, 0x012C},
             {Opcode.SMSG_RANDOMIZE_CHAR_NAME, 0x0D24},

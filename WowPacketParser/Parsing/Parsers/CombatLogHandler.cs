@@ -21,7 +21,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var unk2 = packet.ReadInt32();
                 packet.AddValue("Unknown", unk1 - unk2, i);
 
-                var opcode = Opcodes.GetOpcode(packet.ReadInt32());
+                var opcode = Opcodes.GetOpcode(packet.ReadInt32(), Direction.ServerToClient);
                 packet.AddValue("Opcode", opcode);
                 switch (opcode)
                 {

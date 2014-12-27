@@ -4,12 +4,14 @@ namespace WowPacketParser.Enums.Version.V4_3_3_15354
 {
     public static class Opcodes_4_3_3
     {
-        public static BiDictionary<Opcode, int> Opcodes()
+        public static BiDictionary<Opcode, int> Opcodes(Direction direction)
         {
-            return Opcs;
+            if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
+                return ClientOpcodes;
+            return ServerOpcodes;
         }
 
-        private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
+        private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
         {
             {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x0480},
             {Opcode.CMSG_AREATRIGGER, 0x33A4},
@@ -103,6 +105,11 @@ namespace WowPacketParser.Enums.Version.V4_3_3_15354
             {Opcode.MSG_MOVE_STOP_TURN, 0x1331},
             {Opcode.MSG_MOVE_TOGGLE_COLLISION_CHEAT, 0x1AF0},
             {Opcode.MSG_SET_DUNGEON_DIFFICULTY, 0x22ED},
+            {Opcode.CMSG_UPDATE_ACCOUNT_DATA, 0x38EC},
+        };
+
+        private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
+        {
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x622D},
             {Opcode.SMSG_ADDON_INFO, 0x22AD},
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA, 0x390E},
@@ -156,7 +163,6 @@ namespace WowPacketParser.Enums.Version.V4_3_3_15354
             {Opcode.SMSG_REDIRECT_CLIENT, 0x0855},
             {Opcode.SMSG_RESUME_COMMS, 0x0015},
             {Opcode.SMSG_SEND_UNLEARN_SPELLS, 0x78AC},
-            {Opcode.CMSG_UPDATE_ACCOUNT_DATA, 0x38EC},
             {Opcode.SMSG_SET_PHASE_SHIFT, 0x7104},
             {Opcode.SMSG_SET_PROFICIENCY, 0x7324},
             {Opcode.SMSG_SPELL_GO, 0x6425},

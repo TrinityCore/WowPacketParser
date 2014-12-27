@@ -4,12 +4,14 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
 {
     public static class Opcodes_5_3_0
     {
-        public static BiDictionary<Opcode, int> Opcodes()
+        public static BiDictionary<Opcode, int> Opcodes(Direction direction)
         {
-            return Opcs;
+            if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
+                return ClientOpcodes;
+            return ServerOpcodes;
         }
 
-        private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
+        private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
         {
             {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x0470},
             {Opcode.CMSG_AUTH_SESSION, 0x09F1},
@@ -107,6 +109,10 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.MSG_RAID_READY_CHECK_CONFIRM, 0x03C9},
             {Opcode.MSG_RAID_READY_CHECK_FINISHED, 0x1591},
             {Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57},
+        };
+
+        private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
+        {
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x0CD1},
             {Opcode.SMSG_ACCOUNT_INFO_RESPONSE, 0x0FC9},
             {Opcode.SMSG_ACHIEVEMENT_EARNED, 0x029D},

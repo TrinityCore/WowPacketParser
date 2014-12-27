@@ -4,12 +4,14 @@ namespace WowPacketParser.Enums.Version.V4_2_0_14480
 {
     public static class Opcodes_4_2_0
     {
-        public static BiDictionary<Opcode, int> Opcodes()
+        public static BiDictionary<Opcode, int> Opcodes(Direction direction)
         {
-            return Opcs;
+            if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
+                return ClientOpcodes;
+            return ServerOpcodes;
         }
 
-        private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
+        private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
         {
             {Opcode.CMSG_ACCEPT_LEVEL_GRANT, 0xE2A2},
             {Opcode.CMSG_ACCEPT_TRADE, 0x8C0},
@@ -429,6 +431,10 @@ namespace WowPacketParser.Enums.Version.V4_2_0_14480
             {Opcode.MSG_SET_RAID_DIFFICULTY, 0xFA73},
             {Opcode.MSG_TABARDVENDOR_ACTIVATE, 0xEAEF},
             {Opcode.MSG_TALENT_WIPE_CONFIRM, 0x2EA7},
+        };
+
+        private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
+        {
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x2E3E},
             {Opcode.SMSG_ACHIEVEMENT_DELETED, 0xEAFE},
             {Opcode.SMSG_ACHIEVEMENT_EARNED, 0xBAFA},
@@ -876,5 +882,6 @@ namespace WowPacketParser.Enums.Version.V4_2_0_14480
             {Opcode.SMSG_WHOIS, 0xAA76},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0xFE72},
         };
+
     }
 }

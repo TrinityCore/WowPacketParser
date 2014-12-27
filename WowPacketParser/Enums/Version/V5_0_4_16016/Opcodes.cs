@@ -4,12 +4,14 @@ namespace WowPacketParser.Enums.Version.V5_0_4_16016
 {
     public static class Opcodes_5_0_4
     {
-        public static BiDictionary<Opcode, int> Opcodes()
+        public static BiDictionary<Opcode, int> Opcodes(Direction direction)
         {
-            return Opcs;
+            if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
+                return ClientOpcodes;
+            return ServerOpcodes;
         }
 
-        private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
+        private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
         {
             {Opcode.CMSG_BATTLEFIELD_STATUS, 0x04ED},
             {Opcode.CMSG_BUG, 0x0790},
@@ -29,6 +31,10 @@ namespace WowPacketParser.Enums.Version.V5_0_4_16016
             {Opcode.CMSG_TAXINODE_STATUS_QUERY, 0x029D},
             {Opcode.CMSG_WHO, 0x04D1},
             {Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x00D9},
+        };
+
+        private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
+        {
         };
     }
 }

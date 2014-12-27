@@ -75,7 +75,7 @@ namespace WowPacketParser.Parsing.Parsers
             var entry = packet.ReadInt32("Entry");
             var guid = packet.ReadGuid("GUID");
 
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_CREATURE_QUERY) || packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_GAMEOBJECT_QUERY))
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_CREATURE_QUERY, Direction.ClientToServer) || packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_GAMEOBJECT_QUERY, Direction.ClientToServer))
                 if (guid.HasEntry() && (entry != guid.GetEntry()))
                     packet.AddValue("Error", "Entry does not match calculated GUID entry");
         }

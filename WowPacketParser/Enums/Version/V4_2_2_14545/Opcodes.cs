@@ -4,13 +4,16 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
 {
     public static class Opcodes_4_2_2
     {
-        public static BiDictionary<Opcode, int> Opcodes()
+        public static BiDictionary<Opcode, int> Opcodes(Direction direction)
         {
-            return Opcs;
+            if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
+                return ClientOpcodes;
+            return ServerOpcodes;
         }
 
-        private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
+        private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
         {
+            {Opcode.TEST_430_SYNC_PLAYER_MOVE, 0x5},
             //{Opcode.CMSG_UPDATE_MISSILE_TRAJECTORY, 0x0}, sub_677360
             {Opcode.CMSG_ACCEPT_LEVEL_GRANT, 0xDC4B},
             {Opcode.CMSG_ACCEPT_TRADE, 0xB4A5},
@@ -375,6 +378,10 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.MSG_TABARDVENDOR_ACTIVATE, 0x98EB},
             {Opcode.MSG_TALENT_WIPE_CONFIRM, 0x4C52}, // Not confirmed. ERR_NOT_ENOUGH_MONEY is sent
             {Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57},
+        };
+
+        private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
+        {
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x5EE2},
             {Opcode.SMSG_ACHIEVEMENT_DELETED, 0x9ED2},
             {Opcode.SMSG_ACHIEVEMENT_EARNED, 0x484E},
@@ -795,18 +802,12 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.SMSG_WHOIS, 0x9CFF},
             {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0xDE5E},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x08CF},
-
-            // Tests
-            {Opcode.TEST_422_265C, 0x265C},
-            {Opcode.TEST_422_9838, 9838},
-            {Opcode.TEST_422_13022, 13022}
-
-            // CMSG Handlers
-            // 4120 - sub_65D6A0 - CMSG_LFG_LFR_JOIN ?
-            // 4152 - sub_65D540 - CMSG_LFG_LFR_LEAVE ?
-            // 1061 - sub_664260
-            // 35467 - sub_660390
-            // 33476 - sub_B0C690 (4.3: 10764 - sub_69AFC0) (guid bitstreaming)
         };
+        // CMSG Handlers
+        // 4120 - sub_65D6A0 - CMSG_LFG_LFR_JOIN ?
+        // 4152 - sub_65D540 - CMSG_LFG_LFR_LEAVE ?
+        // 1061 - sub_664260
+        // 35467 - sub_660390
+        // 33476 - sub_B0C690 (4.3: 10764 - sub_69AFC0) (guid bitstreaming)
     }
 }

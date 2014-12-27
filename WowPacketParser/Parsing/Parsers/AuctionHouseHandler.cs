@@ -155,7 +155,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("Auctioneer GUID");
             packet.ReadUInt32("List From");
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_AUCTION_LIST_OWNER_ITEMS))
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_AUCTION_LIST_OWNER_ITEMS, Direction.ClientToServer))
                 return;
 
             var count = packet.ReadUInt32("Outbidded Count");

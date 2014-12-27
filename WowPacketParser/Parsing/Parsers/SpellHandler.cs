@@ -721,7 +721,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SPELL_GO)]
         public static void HandleSpellStart(Packet packet)
         {
-            bool isSpellGo = packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_SPELL_GO);
+            bool isSpellGo = packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_SPELL_GO, Direction.ServerToClient);
 
             var casterGUID = packet.ReadPackedGuid("Caster GUID");
             packet.ReadPackedGuid("Caster Unit GUID");
