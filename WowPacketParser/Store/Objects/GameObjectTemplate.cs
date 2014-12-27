@@ -25,16 +25,16 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("unk1")]
         public string UnkString;
 
-        [DBFieldName("Data", ClientVersionBuild.Zero, ClientVersionBuild.V4_0_1_13164, 24, true)]
-        [DBFieldName("Data", ClientVersionBuild.V4_0_1_13164, ClientVersionBuild.V6_0_3_19103, 32, true)]
-        [DBFieldName("Data", ClientVersionBuild.V6_0_3_19103, 33, true)]
-        public int[] Data;
-
         [DBFieldName("size")]
         public float Size;
 
         [DBFieldName("questItem", 6)]
         public uint[] QuestItems;
+
+        [DBFieldName("Data", ClientVersionBuild.Zero, ClientVersionBuild.V4_0_1_13164, 24, true)]
+        [DBFieldName("Data", ClientVersionBuild.V4_0_1_13164, ClientVersionBuild.V6_0_3_19103, 32, true)]
+        [DBFieldName("Data", ClientVersionBuild.V6_0_3_19103, 33, true)]
+        public int[] Data;
 
         [DBFieldName("unkInt32", ClientVersionBuild.V4_0_1_13164)]
         public int UnknownInt;
