@@ -111,7 +111,7 @@ namespace WowPacketParser.SQL.Builders
             var entries = Storage.QuestGreetings.Keys();
             var templatesDb = SQLDatabase.GetDict<uint, QuestGreeting>(entries, "ID");
 
-            return SQLUtil.CompareDicts(Storage.QuestGreetings, templatesDb, StoreNameType.QuestGreeting, "IIDd");
+            return SQLUtil.CompareDicts(Storage.QuestGreetings, templatesDb, StoreNameType.QuestGreeting, "ID");
         }
 
         [BuilderMethod]
