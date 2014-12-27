@@ -56,6 +56,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Message", msgLen);
         }
 
+        [Parser(Opcode.CMSG_MESSAGECHAT_WHISPER)]
+        public static void HandleClientChatMessageWhisper(Packet packet)
+        {
+            packet.ReadEnum<Language>("Language", TypeCode.Int32);
+            var recvName = packet.ReadBits(9);
+            var msgLen = packet.ReadBits(8);
+
+            packet.ReadWoWString("Target", recvName);
+            packet.ReadWoWString("Text", msgLen);
+        }
+
         [Parser(Opcode.CMSG_MESSAGECHAT_DND)]
         [Parser(Opcode.CMSG_MESSAGECHAT_EMOTE)]
         [Parser(Opcode.CMSG_MESSAGECHAT_AFK)]
