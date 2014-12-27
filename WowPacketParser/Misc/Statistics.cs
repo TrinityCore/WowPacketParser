@@ -188,7 +188,9 @@ namespace WowPacketParser.Misc
         /// <returns>String</returns>
         public override string ToString()
         {
-            var parsingTime = GetParsingTime();
+            if (SucessPacketCount == 0 && WithErrorsPacketCount == 0 &&
+                NotParsedPacketCount == 0)
+                return "No packets parsed";
 
             var sb = new StringBuilder("Parsed ")
                 .Append(SucessPacketCount)
@@ -201,6 +203,7 @@ namespace WowPacketParser.Misc
                 .Append(" (").AppendFormat("{0:F3}", GetNotParsedPercentage()).Append("%) ")
                 .Append(" (total: ").Append(CalculatedTotalPacketCount).Append(")");
 
+            var parsingTime = GetParsingTime();
             if (parsingTime.Milliseconds != 0)
                 sb.Append(" in ").Append(parsingTime.ToFormattedString());
 
