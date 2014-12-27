@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using WowPacketParser.Enums;
 
 namespace WowPacketParser.Misc
@@ -28,6 +29,18 @@ namespace WowPacketParser.Misc
                         list.Add(element);
                 if (list.Count > 0)
                     NameStores.Add(type, list);
+            }
+
+            foreach (var filter in Settings.Filters)
+            {
+                if (Enum.GetNames(typeof (Opcode)).All(opcode => opcode.IndexOf(filter, StringComparison.InvariantCultureIgnoreCase) == -1))
+                    Console.WriteLine("Warning: No opcode name matches filter \"" + filter + "\"");
+            }
+
+            foreach (var filter in Settings.IgnoreFilters)
+            {
+                if (Enum.GetNames(typeof(Opcode)).All(opcode => opcode.IndexOf(filter, StringComparison.InvariantCultureIgnoreCase) == -1))
+                    Console.WriteLine("Warning: No opcode name matches ignore filter \"" + filter + "\"");
             }
         }
 
