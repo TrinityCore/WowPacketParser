@@ -459,6 +459,8 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.MSG_TABARDVENDOR_ACTIVATE, 27782},
             {Opcode.MSG_TALENT_WIPE_CONFIRM, 678},
             {Opcode.MSG_VERIFY_CONNECTIVITY, 20311},
+            // TEST
+            {Opcode.TEST_430_SYNC_PLAYER_MOVE, 0x5}
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>

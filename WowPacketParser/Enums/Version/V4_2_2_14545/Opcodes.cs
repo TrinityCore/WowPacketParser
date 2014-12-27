@@ -378,6 +378,9 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.MSG_TABARDVENDOR_ACTIVATE, 0x98EB},
             {Opcode.MSG_TALENT_WIPE_CONFIRM, 0x4C52}, // Not confirmed. ERR_NOT_ENOUGH_MONEY is sent
             {Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57},
+            {Opcode.TEST_422_265C, 0x265C},
+            {Opcode.TEST_422_9838, 9838},
+            {Opcode.TEST_422_13022, 13022}
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>

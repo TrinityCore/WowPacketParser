@@ -69,6 +69,5 @@ namespace WowPacketParser.Parsing
         }*/
 
         public Opcode Opcode { get; private set; }
-        public Direction Direction { get; private set; }
     }
 }
