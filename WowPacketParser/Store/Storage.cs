@@ -74,6 +74,7 @@ namespace WowPacketParser.Store
 
         // Quest Misc
         public static readonly StoreDictionary<uint, QuestGreeting> QuestGreetings = new StoreDictionary<uint, QuestGreeting>(new List<SQLOutput> { SQLOutput.quest_template });
+        public static readonly StoreDictionary<uint, QuestDetails> QuestDetails = new StoreDictionary<uint, QuestDetails>(new List<SQLOutput> { SQLOutput.quest_template });
         public static readonly StoreDictionary<uint, QuestOfferReward> QuestOfferRewards = new StoreDictionary<uint, QuestOfferReward>(new List<SQLOutput> { SQLOutput.quest_template });
 
         // Names

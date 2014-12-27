@@ -330,10 +330,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_QUESTGIVER_QUEST_DETAILS)]
         public static void HandleQuestgiverDetails(Packet packet)
         {
+            var questDetails = new QuestDetails();
+
             packet.ReadPackedGuid128("QuestGiverGUID");
             packet.ReadPackedGuid128("InformUnit");
 
-            packet.ReadInt32("QuestID");
+            var id = packet.ReadInt32("QuestID");
             packet.ReadInt32("QuestPackageID");
             packet.ReadInt32("PortraitGiver");
             packet.ReadInt32("SuggestedPartyMembers");
@@ -350,14 +352,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var int5876 = packet.ReadInt32("ObjectivesCount");
 
             for (int i = 0; i < int5860; i++)
-            {
                 packet.ReadInt32("LearnSpells", i);
-            }
 
+            questDetails.Emote = new uint[4];
+            questDetails.EmoteDelay = new uint[4];
             for (int i = 0; i < int2584; i++)
             {
-                packet.ReadInt32("Type", i);
-                packet.ReadInt32("Delay", i);
+                questDetails.Emote[i] = (uint)packet.ReadInt32("Type", i);
+                questDetails.EmoteDelay[i] = packet.ReadUInt32("Delay", i);
             }
 
             for (int i = 0; i < int5876; i++)
@@ -389,6 +391,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("PortraitGiverName", bits650);
             packet.ReadWoWString("PortraitGiverText", bits4);
             packet.ReadWoWString("PortraitTurnInText", bits1532);
+
+            Storage.QuestDetails.Add((uint)id, questDetails, packet.TimeSpan);
         }
 
         [Parser(Opcode.CMSG_QUESTGIVER_STATUS_QUERY)]
