@@ -6,13 +6,13 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("creature_model_info")]
     public class ModelData
     {
-        [DBFieldName("bounding_radius")]
+        [DBFieldName("BoundingRadius")]
         public float BoundingRadius;
 
-        [DBFieldName("combat_reach")]
+        [DBFieldName("BoundingRadius")]
         public float CombatReach;
 
-        [DBFieldName("gender")]
+        [DBFieldName("DisplayID_Other_Gender")]
         public Gender Gender;
 
         //[DBFieldName("modelid_other_gender")]
