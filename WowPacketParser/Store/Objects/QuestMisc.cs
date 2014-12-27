@@ -36,4 +36,20 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [DBTableName("quest_offer_reward")]
+    public class QuestOfferReward
+    {
+        [DBFieldName("Emote", 4)]
+        public uint[] Emote;
+
+        [DBFieldName("EmoteDelay", 4)]
+        public uint[] EmoteDelay;
+
+        [DBFieldName("RewardText")]
+        public string RewardText;
+
+        [DBFieldName("VerifiedBuild")]
+        public int VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

@@ -109,9 +109,24 @@ namespace WowPacketParser.SQL.Builders
                 return String.Empty;
 
             var entries = Storage.QuestGreetings.Keys();
-            var templatesDb = SQLDatabase.GetDict<uint, QuestGreeting>(entries, "Id");
+            var templatesDb = SQLDatabase.GetDict<uint, QuestGreeting>(entries, "ID");
 
-            return SQLUtil.CompareDicts(Storage.QuestGreetings, templatesDb, StoreNameType.QuestGreeting, "Id");
+            return SQLUtil.CompareDicts(Storage.QuestGreetings, templatesDb, StoreNameType.QuestGreeting, "IIDd");
+        }
+
+        [BuilderMethod]
+        public static string QuestOfferReward()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+                return String.Empty;
+
+            if (Storage.QuestOfferRewards.IsEmpty())
+                return String.Empty;
+
+            var entries = Storage.QuestOfferRewards.Keys();
+            var templatesDb = SQLDatabase.GetDict<uint, QuestOfferReward>(entries, "ID");
+
+            return SQLUtil.CompareDicts(Storage.QuestOfferRewards, templatesDb, StoreNameType.QuestGreeting, "ID");
         }
     }
 }

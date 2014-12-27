@@ -452,10 +452,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_QUESTGIVER_OFFER_REWARD)]
         public static void HandleQuestOfferReward(Packet packet)
         {
+            var questOfferReward = new QuestOfferReward();
+
             packet.ReadPackedGuid128("QuestGiverGUID");
 
             packet.ReadInt32("QuestGiverCreatureID");
-            packet.ReadInt32("QuestID");
+            var id = packet.ReadInt32("QuestID");
 
             for (int i = 0; i < 2; i++)
                 packet.ReadInt32("QuestFlags", i);
@@ -467,10 +469,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var int252 = packet.ReadInt32("EmotesCount");
 
             // QuestDescEmote
+            questOfferReward.Emote = new uint[4];
+            questOfferReward.EmoteDelay = new uint[4];
             for (int i = 0; i < int252; i++)
             {
-                packet.ReadInt32("Type");
-                packet.ReadUInt32("Delay");
+                questOfferReward.Emote[i] = (uint)packet.ReadInt32("Type");
+                questOfferReward.EmoteDelay[i] = packet.ReadUInt32("Delay");
             }
 
             packet.ResetBitReader();
@@ -491,11 +495,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var bits4 = packet.ReadBits(8);
 
             packet.ReadWoWString("QuestTitle", bits1139);
-            packet.ReadWoWString("RewardText", bits69);
+            questOfferReward.RewardText = packet.ReadWoWString("RewardText", bits69);
             packet.ReadWoWString("PortraitTurnInText", bits883);
             packet.ReadWoWString("PortraitGiverName", bits819);
             packet.ReadWoWString("PortraitGiverText", bits1268);
             packet.ReadWoWString("PortraitTurnInName", bits4);
+
+            Storage.QuestOfferRewards.Add((uint)id, questOfferReward, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_QUESTUPDATE_ADD_KILL)]
