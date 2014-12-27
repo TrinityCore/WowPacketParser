@@ -540,7 +540,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var bits16 = packet.ReadBits(11);
             questGreeting.Greeting = packet.ReadWoWString("Greeting", bits16);
 
-            questGreeting.ObjectType = guid.GetObjectType();
+            switch (guid.GetObjectType())
+            {
+                case ObjectType.Unit:
+                    questGreeting.Type = 0;
+                    break;
+                case ObjectType.GameObject:
+                    questGreeting.Type = 1;
+                    break;
+            }
 
             Storage.QuestGreetings.Add(guid.GetEntry(), questGreeting, packet.TimeSpan);
 

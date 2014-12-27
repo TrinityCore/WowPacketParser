@@ -21,8 +21,8 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("quest_greeting")]
     public class QuestGreeting
     {
-        [DBFieldName("ObjectType")]
-        public ObjectType ObjectType;
+        [DBFieldName("Type")]
+        public uint Type;
 
         [DBFieldName("GreetEmoteType")]
         public uint GreetEmoteType;
