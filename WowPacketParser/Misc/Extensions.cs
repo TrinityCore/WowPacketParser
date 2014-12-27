@@ -209,5 +209,30 @@ namespace WowPacketParser.Misc
             while (bag.Count > 0)
                 bag.TryTake(out t);
         }
+
+        /// <summary>
+        /// Compare two dictionaries
+        /// </summary>
+        /// <typeparam name="TKey">The type of the keys in the dictionaries</typeparam>
+        /// <typeparam name="TValue">The type of the values in the dictionaries</typeparam>
+        /// <param name="first">First dictionary</param>
+        /// <param name="second">Second dictionary</param>
+        /// <returns>true if dictionaries are equal, false otherwise</returns>
+        public static bool DictionaryEqual<TKey, TValue>(this IDictionary<TKey, TValue> first, IDictionary<TKey, TValue> second)
+        {
+            if (first == second) return true;
+            if ((first == null) || (second == null)) return false;
+            if (first.Count != second.Count) return false;
+
+            var comparer = EqualityComparer<TValue>.Default;
+
+            foreach (var kvp in first)
+            {
+                TValue secondValue;
+                if (!second.TryGetValue(kvp.Key, out secondValue)) return false;
+                if (!comparer.Equals(kvp.Value, secondValue)) return false;
+            }
+            return true;
+        }
     }
 }

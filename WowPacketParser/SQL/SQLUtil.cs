@@ -26,6 +26,16 @@ namespace WowPacketParser.SQL
         }
 
         /// <summary>
+        /// Remove back quotes from a string.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string RemoveBackQuotes(string str)
+        {
+            return str.Replace("`", "");
+        }
+
+        /// <summary>
         /// Adds "straight" quotes to a string. For SQL text.
         /// </summary>
         /// <param name="str">String</param>

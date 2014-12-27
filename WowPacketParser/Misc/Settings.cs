@@ -128,7 +128,6 @@ namespace WowPacketParser.Misc
 
         private static bool GetBoolean(string key, bool defValue)
         {
-            
             var s = SettingsCollection[key];
             if (s == null || s.Value == null)
                 return defValue;
