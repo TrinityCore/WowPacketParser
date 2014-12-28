@@ -23,7 +23,7 @@ namespace WowPacketParser.SQL.Builders
                 return false;
 
             UpdateField entry;
-            if (!transport.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out entry))
+            if (transport.UpdateFields == null || !transport.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out entry))
                 return false;
 
             if (SQLConnector.Enabled)
