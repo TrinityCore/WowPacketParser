@@ -180,8 +180,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             quest.Float10 = packet.ReadSingle("Float10");
 
-            quest.RewardOrRequiredMoney = packet.ReadInt32("RewardMoney");
-            quest.RewardMoneyMaxLevel = packet.ReadInt32("RewardMoneyDifficulty");
+            quest.RewardMoney = packet.ReadInt32("RewardMoney");
+            quest.RewardMoneyDifficulty = packet.ReadInt32("RewardMoneyDifficulty");
 
             quest.Float13 = packet.ReadSingle("Float13");
 
@@ -208,14 +208,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 quest.ItemDropQuantity[i] = packet.ReadInt32("ItemDropQuantity", i);
             }
 
-            quest.ItemID = new int[6];
-            quest.Quantity = new int[6];
-            quest.DisplayID = new int[6];
+            quest.RewardChoiceItemID = new int[6];
+            quest.RewardChoiceItemQuantity = new int[6];
+            quest.RewardChoiceItemDisplayID = new int[6];
             for (var i = 0; i < 6; ++i) // CliQuestInfoChoiceItem
             {
-                quest.ItemID[i] = packet.ReadInt32("ItemID", i);
-                quest.Quantity[i] = packet.ReadInt32("Quantity", i);
-                quest.DisplayID[i] = packet.ReadInt32("DisplayID", i);
+                quest.RewardChoiceItemID[i] = packet.ReadInt32("RewardChoiceItemID", i);
+                quest.RewardChoiceItemQuantity[i] = packet.ReadInt32("RewardChoiceItemQuantity", i);
+                quest.RewardChoiceItemDisplayID[i] = packet.ReadInt32("RewardChoiceItemDisplayID", i);
             }
 
             quest.POIContinent = packet.ReadInt32("POIContinent");
@@ -257,7 +257,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             quest.AreaGroupID = packet.ReadInt32("AreaGroupID");
             quest.TimeAllowed = packet.ReadInt32("TimeAllowed");
             var int2946 = packet.ReadInt32("CliQuestInfoObjective");
-            quest.Int2950 = packet.ReadInt32("Int2950");
+            quest.AllowableRaces = packet.ReadInt32("AllowableRaces");
 
             for (var i = 0; i < int2946; ++i)
             {

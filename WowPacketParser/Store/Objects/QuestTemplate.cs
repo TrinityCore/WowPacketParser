@@ -207,9 +207,6 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("QuestLevel")]
         public int QuestLevel;
 
-        [DBFieldName("QuestLevel")]
-        public int Level;
-
         [DBFieldName("QuestPackageID")]
         public int QuestPackageID;
 
@@ -234,11 +231,11 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Float10")]
         public float Float10;
 
-        [DBFieldName("RewardOrRequiredMoney")]
-        public int RewardOrRequiredMoney;
+        [DBFieldName("RewardMoney")]
+        public int RewardMoney;
 
-        [DBFieldName("RewardMoneyMaxLevel")]
-        public int RewardMoneyMaxLevel;
+        [DBFieldName("RewardMoneyDifficulty")]
+        public int RewardMoneyDifficulty;
 
         [DBFieldName("Float13")]
         public float Float13;
@@ -267,7 +264,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("FlagsEx")]
         public int FlagsEx;
 
-        [DBFieldName("RewardItems", 4)]
+        [DBFieldName("RewardItem", 4)]
         public int[] RewardItems;
 
         [DBFieldName("RewardAmount", 4)]
@@ -279,14 +276,14 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ItemDropQuantity", 4)]
         public int[] ItemDropQuantity;
 
-        [DBFieldName("ItemID", 6)]
-        public int[] ItemID;
+        [DBFieldName("RewardChoiceItemID", 6)]
+        public int[] RewardChoiceItemID;
 
-        [DBFieldName("Quantity", 6)]
-        public int[] Quantity;
+        [DBFieldName("RewardChoiceItemQuantity", 6)]
+        public int[] RewardChoiceItemQuantity;
 
-        [DBFieldName("DisplayID", 6)]
-        public int[] DisplayID;
+        [DBFieldName("RewardChoiceItemDisplayID", 6)]
+        public int[] RewardChoiceItemDisplayID;
 
         [DBFieldName("POIContinent")]
         public int POIContinent;
@@ -351,8 +348,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("TimeAllowed")]
         public int TimeAllowed;
 
-        [DBFieldName("Int2950")]
-        public int Int2950;
+        [DBFieldName("AllowableRaces")]
+        public int AllowableRaces;
 
         [DBFieldName("LogTitle")]
         public string LogTitle;
