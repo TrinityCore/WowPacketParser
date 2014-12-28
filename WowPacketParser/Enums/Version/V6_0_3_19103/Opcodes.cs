@@ -168,6 +168,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_QUESTGIVER_CHOOSE_REWARD, 0x0DAD},
             {Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, 0x1E8A},
             {Opcode.CMSG_QUESTGIVER_QUERY_QUEST, 0x1924},
+            {Opcode.CMSG_QUESTGIVER_REQUEST_REWARD, 0x022E},
             {Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY, 0x0131},
             {Opcode.CMSG_QUESTGIVER_STATUS_QUERY, 0x01E2},
             {Opcode.CMSG_QUEST_NPC_QUERY, 0x0B81},

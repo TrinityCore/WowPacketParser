@@ -114,6 +114,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("StartCheat");
         }
 
+        [Parser(Opcode.CMSG_QUESTGIVER_REQUEST_REWARD)]
+        public static void HandleQuestRequestReward(Packet packet)
+        {
+            packet.ReadPackedGuid128("QuestGiverGUID");
+            packet.ReadEntry<UInt32>(StoreNameType.Quest, "QuestID");
+        }
+
         [Parser(Opcode.CMSG_QUEST_NPC_QUERY)]
         public static void HandleQuestNpcQuery(Packet packet)
         {
