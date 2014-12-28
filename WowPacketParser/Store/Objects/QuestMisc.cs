@@ -65,4 +65,20 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [DBTableName("quest_request_items")]
+    public class QuestRequestItems
+    {
+        [DBFieldName("CompEmoteType")]
+        public int CompEmoteType;
+
+        [DBFieldName("CompEmoteDelay")]
+        public int CompEmoteDelay;
+
+        [DBFieldName("CompletionText")]
+        public string CompletionText;
+
+        [DBFieldName("VerifiedBuild")]
+        public int VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

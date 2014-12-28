@@ -141,7 +141,22 @@ namespace WowPacketParser.SQL.Builders
             var entries = Storage.QuestDetails.Keys();
             var templatesDb = SQLDatabase.GetDict<uint, QuestDetails>(entries, "ID");
 
-            return SQLUtil.CompareDicts(Storage.QuestDetails, templatesDb, StoreNameType.QuestGreeting, "ID");
+            return SQLUtil.CompareDicts(Storage.QuestDetails, templatesDb, StoreNameType.Quest, "ID");
         }
+
+        [BuilderMethod]
+        public static string QuestRequestItems()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+                return String.Empty;
+
+            if (Storage.QuestRequestItems.IsEmpty())
+                return String.Empty;
+
+            var entries = Storage.QuestRequestItems.Keys();
+            var templatesDb = SQLDatabase.GetDict<uint, QuestRequestItems>(entries, "ID");
+
+            return SQLUtil.CompareDicts(Storage.QuestRequestItems, templatesDb, StoreNameType.Quest, "ID");
+         }
     }
 }

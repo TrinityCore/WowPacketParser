@@ -567,12 +567,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS)]
         public static void HandleQuestRequestItems(Packet packet)
         {
+            var questRequestItems = new QuestRequestItems();
+
             packet.ReadPackedGuid128("QuestGiverGUID");
 
             packet.ReadInt32("QuestGiverCreatureID");
-            packet.ReadInt32("QuestID");
-            packet.ReadInt32("CompEmoteDelay");
-            packet.ReadInt32("CompEmoteType");
+            var id = packet.ReadInt32("QuestID");
+            questRequestItems.CompEmoteDelay = packet.ReadInt32("CompEmoteDelay");
+            questRequestItems.CompEmoteType = packet.ReadInt32("CompEmoteType");
 
             for (int i = 0; i < 2; i++)
                 packet.ReadInt32("QuestFlags", i);
@@ -605,7 +607,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var bits16 = packet.ReadBits(12);
 
             packet.ReadWoWString("QuestTitle", bits3016);
-            packet.ReadWoWString("CompletionText", bits16);
+            questRequestItems.CompletionText = packet.ReadWoWString("CompletionText", bits16);
+
+            Storage.QuestRequestItems.Add((uint)id, questRequestItems, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_QUESTUPDATE_COMPLETE)]
