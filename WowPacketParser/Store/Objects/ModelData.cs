@@ -9,7 +9,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("BoundingRadius")]
         public float BoundingRadius;
 
-        [DBFieldName("BoundingRadius")]
+        [DBFieldName("CombatReach")]
         public float CombatReach;
 
         [DBFieldName("DisplayID_Other_Gender")]
