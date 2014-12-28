@@ -164,6 +164,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_PVP_LOG_DATA, 0x08B5},
             {Opcode.CMSG_QUERY_BATTLEFIELD_STATE, 0x0359},
             {Opcode.CMSG_QUERY_NEXT_MAIL_TIME, 0x0B31},
+            {Opcode.CMSG_QUESTGIVER_ACCEPT_QUEST, 0x13D3},
             {Opcode.CMSG_QUESTGIVER_CHOOSE_REWARD, 0x0DAD},
             {Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, 0x1E8A},
             {Opcode.CMSG_QUESTGIVER_QUERY_QUEST, 0x1924},
