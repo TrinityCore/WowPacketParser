@@ -210,7 +210,7 @@ namespace WowPacketParser.SQL
                 if (value == null)
                     value = "";
 
-                Values.Add(SQLUtil.AddBackQuotes(field), SQLUtil.ToSQLValue(value, isFlag, noQuotes));
+                Values[SQLUtil.AddBackQuotes(field)] = SQLUtil.ToSQLValue(value, isFlag, noQuotes);
             }
 
             /// <summary>
@@ -239,7 +239,7 @@ namespace WowPacketParser.SQL
                 if (value.Equals(defaultValue))
                     return;
 
-                Values.Add(SQLUtil.AddBackQuotes(field), SQLUtil.ToSQLValue(value, isFlag, noQuotes));
+                Values[SQLUtil.AddBackQuotes(field)] = SQLUtil.ToSQLValue(value, isFlag, noQuotes);
             }
 
             /// <summary>

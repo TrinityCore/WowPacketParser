@@ -53,8 +53,6 @@ namespace WowPacketParser.SQL.Builders
                             if (!Utilities.EqualValues(creature.Key, creatureDiff.Key))
                                 continue;
 
-                            Trace.WriteLine(string.Format("Meh"));
-
                             if (!Utilities.EqualValues(creatureDiff.Value.CreatureID, creature.Value.Item1.CreatureID))
                                 row.AddValue("CreatureID", creature.Value.Item1.CreatureID);
 
