@@ -108,8 +108,8 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
                 for (var i = 0; i < questObjectivesCount; ++i)
                 {
-                    objectivesCounts[i, 1] = packet.ReadBits(8); // +2949 + 20
-                    objectivesCounts[i, 0] = packet.ReadBits(22); // +2949 + 0
+                    objectivesCounts[i, 1] = packet.ReadBits(8); // +2949 + 20 objectives texts
+                    objectivesCounts[i, 0] = packet.ReadBits(22); // +2949 + 0 objectives visuals
                 }
 
                 packet.ResetBitReader();
@@ -156,7 +156,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     }
 
                     for (var j = 0; j < objectivesCounts[i, 0]; j++)
-                        packet.ReadUInt32("Unk Looped DWROD", i, j);
+                        packet.ReadUInt32("Objective Visual ID", i, j);
                 }
 
                 packet.ReadUInt32("Required Source Item ID 1"); // +2960
