@@ -8,7 +8,9 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
         {
             if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
                 return ClientOpcodes;
-            return ServerOpcodes;
+            if (direction == Direction.ServerToClient || direction == Direction.BNServerToClient)
+                return ServerOpcodes;
+            return MiscOpcodes;
         }
 
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
@@ -80,35 +82,6 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x054B},
             {Opcode.CMSG_WHO, 0x0308},
             {Opcode.CMSG_ZONEUPDATE, 0x2000},
-            {Opcode.MSG_MOVE_FALL_LAND, 0x0CCF},
-            {Opcode.MSG_MOVE_HEARTBEAT, 0x0E0B},
-            {Opcode.MSG_MOVE_JUMP, 0x0CCA},
-            {Opcode.MSG_MOVE_SET_FACING, 0x0886},
-            {Opcode.MSG_MOVE_SET_RUN_MODE, 0x081F},
-            {Opcode.MSG_MOVE_SET_WALK_MODE, 0x0856},
-            {Opcode.MSG_MOVE_START_ASCEND, 0x089F},
-            {Opcode.MSG_MOVE_START_BACKWARD, 0x08D2},
-            {Opcode.MSG_MOVE_START_DESCEND, 0x0893},
-            {Opcode.MSG_MOVE_START_FORWARD, 0x0A4B},
-            {Opcode.MSG_MOVE_START_PITCH_DOWN, 0x0A12},
-            {Opcode.MSG_MOVE_START_PITCH_UP, 0x0C02},
-            {Opcode.MSG_MOVE_START_STRAFE_LEFT, 0x0816},
-            {Opcode.MSG_MOVE_START_STRAFE_RIGHT, 0x0843},
-            {Opcode.MSG_MOVE_START_SWIM, 0x0C13},
-            {Opcode.MSG_MOVE_START_TURN_LEFT, 0x0A9E},
-            {Opcode.MSG_MOVE_START_TURN_RIGHT, 0x0A07},
-            {Opcode.MSG_MOVE_STOP, 0x0813},
-            {Opcode.MSG_MOVE_STOP_ASCEND, 0x0A47},
-            {Opcode.MSG_MOVE_STOP_PITCH, 0x0AC7},
-            {Opcode.MSG_MOVE_STOP_STRAFE, 0x0A4A},
-            {Opcode.MSG_MOVE_STOP_SWIM, 0x0C93},
-            {Opcode.MSG_MOVE_STOP_TURN, 0x080A},
-            {Opcode.MSG_MOVE_TELEPORT, 0x0C54},
-            {Opcode.MSG_MOVE_TOGGLE_COLLISION_CHEAT, 0x0A5f},
-            {Opcode.MSG_RAID_READY_CHECK, 0x0DDC},
-            {Opcode.MSG_RAID_READY_CHECK_CONFIRM, 0x03C9},
-            {Opcode.MSG_RAID_READY_CHECK_FINISHED, 0x1591},
-            {Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57},
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -407,5 +380,40 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_XP_GAIN_ABORTED, 0x1188},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x053F}
         };
+
+        private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
+        {
+            {Opcode.MSG_MOVE_FALL_LAND, 0x0CCF},
+            {Opcode.MSG_MOVE_HEARTBEAT, 0x0E0B},
+            {Opcode.MSG_MOVE_JUMP, 0x0CCA},
+            {Opcode.MSG_MOVE_SET_FACING, 0x0886},
+            {Opcode.MSG_MOVE_SET_RUN_MODE, 0x081F},
+            {Opcode.MSG_MOVE_SET_WALK_MODE, 0x0856},
+            {Opcode.MSG_MOVE_START_ASCEND, 0x089F},
+            {Opcode.MSG_MOVE_START_BACKWARD, 0x08D2},
+            {Opcode.MSG_MOVE_START_DESCEND, 0x0893},
+            {Opcode.MSG_MOVE_START_FORWARD, 0x0A4B},
+            {Opcode.MSG_MOVE_START_PITCH_DOWN, 0x0A12},
+            {Opcode.MSG_MOVE_START_PITCH_UP, 0x0C02},
+            {Opcode.MSG_MOVE_START_STRAFE_LEFT, 0x0816},
+            {Opcode.MSG_MOVE_START_STRAFE_RIGHT, 0x0843},
+            {Opcode.MSG_MOVE_START_SWIM, 0x0C13},
+            {Opcode.MSG_MOVE_START_TURN_LEFT, 0x0A9E},
+            {Opcode.MSG_MOVE_START_TURN_RIGHT, 0x0A07},
+            {Opcode.MSG_MOVE_STOP, 0x0813},
+            {Opcode.MSG_MOVE_STOP_ASCEND, 0x0A47},
+            {Opcode.MSG_MOVE_STOP_PITCH, 0x0AC7},
+            {Opcode.MSG_MOVE_STOP_STRAFE, 0x0A4A},
+            {Opcode.MSG_MOVE_STOP_SWIM, 0x0C93},
+            {Opcode.MSG_MOVE_STOP_TURN, 0x080A},
+            {Opcode.MSG_MOVE_TELEPORT, 0x0C54},
+            {Opcode.MSG_MOVE_TOGGLE_COLLISION_CHEAT, 0x0A5f},
+            {Opcode.MSG_RAID_READY_CHECK, 0x0DDC},
+            {Opcode.MSG_RAID_READY_CHECK_CONFIRM, 0x03C9},
+            {Opcode.MSG_RAID_READY_CHECK_FINISHED, 0x1591},
+            {Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57},
+        };
+
+
     }
 }

@@ -104,16 +104,16 @@ namespace WowPacketParser.Parsing
 
         public static void Parse(Packet packet, bool isMultiple = false)
         {
-            if (packet.Opcode == 0)
-                return;
-
             ParsedStatus status;
 
             var opcode = Opcodes.GetOpcode(packet.Opcode, packet.Direction);
             if (opcode == Opcode.NULL_OPCODE)
-                return;
+                opcode = Opcodes.GetOpcode(packet.Opcode, Direction.Bidirectional);
 
             packet.WriteLine(packet.GetHeader(isMultiple));
+
+            if (packet.Opcode == 0)
+                return;
 
             var key = new KeyValuePair<ClientVersionBuild, Opcode>(ClientVersion.VersionDefiningBuild, opcode);
 
@@ -121,6 +121,7 @@ namespace WowPacketParser.Parsing
             var hasHandler = VersionHandlers.TryGetValue(key, out handler);
             if (!hasHandler)
             {
+                // If no handler was found, try to find a handler that works for any version.
                 key = new KeyValuePair<ClientVersionBuild, Opcode>(ClientVersionBuild.Zero, opcode);
                 hasHandler = VersionHandlers.TryGetValue(key, out handler);
             }
@@ -150,7 +151,7 @@ namespace WowPacketParser.Parsing
                     {
                         var pos = packet.Position;
                         var len = packet.Length;
-                        packet.WriteLine("Packet not fully read! Current position is {0}, length is {1}, and diff is {2}.",
+                        packet.WriteLine("Packet not fully read! Current position: {0} Length: {1} Bytes remaining: {2}.",
                             pos, len, len - pos);
 
                         if (len < 300) // If the packet isn't "too big" and it is not full read, print its hex table

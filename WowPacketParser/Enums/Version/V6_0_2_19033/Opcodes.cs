@@ -8,7 +8,9 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
         {
             if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
                 return ClientOpcodes;
-            return ServerOpcodes;
+            if (direction == Direction.ServerToClient || direction == Direction.BNServerToClient)
+                return ServerOpcodes;
+            return MiscOpcodes;
         }
 
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
@@ -203,6 +205,10 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_WEEKLY_SPELL_USAGE, 0x0E8C},
             {Opcode.SMSG_WHO, 0x080A},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x1164},
+        };
+
+        private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
+        {
         };
     }
 }

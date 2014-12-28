@@ -8,7 +8,9 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
         {
             if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
                 return ClientOpcodes;
-            return ServerOpcodes;
+            if (direction == Direction.ServerToClient || direction == Direction.BNServerToClient)
+                return ServerOpcodes;
+            return MiscOpcodes;
         }
 
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
@@ -492,5 +494,8 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x1401},
         };
 
+        private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
+        {
+        };
     }
 }

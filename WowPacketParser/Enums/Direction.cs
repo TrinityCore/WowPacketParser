@@ -3,7 +3,7 @@ namespace WowPacketParser.Enums
     public enum Direction
     {
         /// <summary>
-        /// CMSG, MSG, and all other exotic opcodes fit here.
+        /// CMSG opcodes.
         /// </summary>
         ClientToServer   = 0,
         /// <summary>
@@ -18,5 +18,9 @@ namespace WowPacketParser.Enums
         /// Battle.NET Server to Client
         /// </summary>
         BNServerToClient = 3,
+        /// <summary>
+        /// Bidirectional opcode (MSG, UMSG, TEST...)
+        /// </summary>
+        Bidirectional    = 4,
     }
 }

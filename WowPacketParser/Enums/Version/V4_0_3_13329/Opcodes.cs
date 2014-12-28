@@ -8,7 +8,9 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
         {
             if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
                 return ClientOpcodes;
-            return ServerOpcodes;
+            if (direction == Direction.ServerToClient || direction == Direction.BNServerToClient)
+                return ServerOpcodes;
+            return MiscOpcodes;
         }
 
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
@@ -52,7 +54,6 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_GROUP_SET_LEADER, 0x7454}, // (0x83F5)(0x0078) //
             {Opcode.CMSG_LOOT_METHOD, 0x447D}, // (0xEA99)(0x007A) //
             {Opcode.CMSG_GROUP_DISBAND, 0x6575}, // (0x4271)(0x007B) //
-            {Opcode.UMSG_UPDATE_GROUP_MEMBERS, 0x0080}, // NF()(0x0080) //
             {Opcode.CMSG_GUILD_CREATE, 0x0081}, // NF()(0x0081) //
             {Opcode.CMSG_GUILD_INVITE, 0x277C}, // (0xCAB9)(0x0082) //
             {Opcode.CMSG_GUILD_ACCEPT, 0x0084}, // NF()(0x0084) //
@@ -66,7 +67,6 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_GUILD_DISBAND, 0x0982}, // (0x0205)(0x008F) //
             {Opcode.CMSG_GUILD_LEADER, 0xFFE1}, // NF(0x9900)(0x0090) //
             {Opcode.CMSG_GUILD_MOTD, 0xFFE0}, // NF(0x4A05)(0x0091) //
-            {Opcode.UMSG_UPDATE_GUILD, 0x0094}, // NF()(0x0094) //
             {Opcode.CMSG_MESSAGECHAT_SAY, 0x5A90}, // (0x5200)(0x0000) //
             {Opcode.CMSG_MESSAGECHAT_YELL, 0x3A10}, // (0x7200)(0x0000) //
             {Opcode.CMSG_MESSAGECHAT_CHANNEL, 0x3A88}, // (0x5A20)(0x0000) //
@@ -106,60 +106,14 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_GAMEOBJ_USE, 0x00B1}, // NF()(0x00B1) //
             {Opcode.CMSG_DESTROY_ITEMS, 0x00B2}, // NF()(0x00B2) //
             {Opcode.CMSG_AREATRIGGER, 0xBD5E}, // (0xAAB4)(0x00B4) //
-            {Opcode.MSG_MOVE_START_FORWARD, 0xF576}, // (0x0B31)(0x00B5) //
-            {Opcode.MSG_MOVE_START_BACKWARD, 0xCC7C}, // (0x0B50)(0x00B6) //
-            {Opcode.MSG_MOVE_STOP, 0x4E76}, // (0x433C)(0x00B7) //
-            {Opcode.MSG_MOVE_START_STRAFE_LEFT, 0x5F5C}, // (0xE395)(0x00B8) //
-            {Opcode.MSG_MOVE_START_STRAFE_RIGHT, 0x265C}, // (0x6BF4)(0x00B9) //
-            {Opcode.MSG_MOVE_STOP_STRAFE, 0x0D7F}, // (0xA31C)(0x00BA) //
-            {Opcode.MSG_MOVE_JUMP, 0x7477}, // (0x0A39)(0x00BB) //
-            {Opcode.MSG_MOVE_START_TURN_LEFT, 0x945F}, // (0xAA90)(0x00BC) //
-            {Opcode.MSG_MOVE_START_TURN_RIGHT, 0x6657}, // (0x4BFC)(0x00BD) //
-            {Opcode.MSG_MOVE_STOP_TURN, 0x6D54}, // (0xC39D)(0x00BE) //
-            {Opcode.MSG_MOVE_START_PITCH_UP, 0x0E7C}, // (0xAADC)(0x00BF) // INVERSER
-            {Opcode.MSG_MOVE_START_PITCH_DOWN, 0xCE75}, // (0x2BD5)(0x00C0) // INVERSER
-            {Opcode.MSG_MOVE_STOP_PITCH, 0x4E7D}, // (0x635D)(0x00C1) //
-            {Opcode.MSG_MOVE_SET_RUN_MODE, 0x7D56}, // (0xE339)(0x00C2) //
-            {Opcode.MSG_MOVE_SET_WALK_MODE, 0xF75D}, // (0x8A74)(0x00C3) //
-            {Opcode.MSG_MOVE_TOGGLE_LOGGING, 0x00C4}, // NF()(0x00C4) // NOT IN CLIENT 335 AND 401
-            {Opcode.MSG_MOVE_TELEPORT, 0xC557}, // (0xA254)(0x00C5) //
-            {Opcode.MSG_MOVE_TELEPORT_CHEAT, 0xFFDD}, // NF(0xC291)(0x00C6) //
-            {Opcode.MSG_MOVE_TELEPORT_ACK, 0x365D}, // (0x6A39)(0x00C7) //
-            {Opcode.MSG_MOVE_TOGGLE_FALL_LOGGING, 0x00C8}, // NF()(0x00C8) // NOT IN CLIENT 335 AND 401
-            {Opcode.MSG_MOVE_FALL_LAND, 0xF474}, // (0xAA58)(0x00C9) //
-            {Opcode.MSG_MOVE_START_SWIM, 0xAE57}, // (0x62F8)(0x00CA) //
-            {Opcode.MSG_MOVE_STOP_SWIM, 0xAC7D}, // (0xC290)(0x00CB) //
-            {Opcode.MSG_MOVE_SET_RUN_SPEED_CHEAT, 0x00CC}, // NF()(0x00CC) //
-            {Opcode.MSG_MOVE_SET_RUN_SPEED, 0xA454}, // (0x8379)(0x00CD) //
-            {Opcode.MSG_MOVE_SET_RUN_BACK_SPEED_CHEAT, 0x00CE}, // NF()(0x00CE) //
-            {Opcode.MSG_MOVE_SET_RUN_BACK_SPEED, 0x065F}, // (0x0270)(0x00CF) //
-            {Opcode.MSG_MOVE_SET_WALK_SPEED_CHEAT, 0x00D0}, // NF()(0x00D0) //
-            {Opcode.MSG_MOVE_SET_WALK_SPEED, 0xEF57}, // (0xEAB5)(0x00D1) //
-            {Opcode.MSG_MOVE_SET_SWIM_SPEED_CHEAT, 0x00D2}, // NF()(0x00D2) //
-            {Opcode.MSG_MOVE_SET_SWIM_SPEED, 0xDD76}, // (0x6A1D)(0x00D3) //
-            {Opcode.MSG_MOVE_SET_SWIM_BACK_SPEED_CHEAT, 0x00D4}, // NF()(0x00D4) //
-            {Opcode.MSG_MOVE_SET_SWIM_BACK_SPEED, 0x1777}, // (0x4B51)(0x00D5) //
-            {Opcode.MSG_MOVE_SET_ALL_SPEED_CHEAT, 0x00D6}, // NF()(0x00D6) //
-            {Opcode.MSG_MOVE_SET_TURN_RATE_CHEAT, 0x00D7}, // NF()(0x00D7) //
-            {Opcode.MSG_MOVE_SET_TURN_RATE, 0xAC75}, // (0xEA58)(0x00D8) //
-            {Opcode.MSG_MOVE_TOGGLE_COLLISION_CHEAT, 0x00D9}, // NF()(0x00D9) //
-            {Opcode.MSG_MOVE_SET_FACING, 0x865D}, // ()(0x00DA) //
-            {Opcode.MSG_MOVE_SET_PITCH, 0x00DB}, // NF()(0x00DB) //
-            {Opcode.MSG_MOVE_WORLDPORT_ACK, 0xFFDC}, // NF(0x6AD0)(0x00DC) //
-            {Opcode.MSG_MOVE_SET_RAW_POSITION_ACK, 0xFFDB}, // NF(0xA23C)(0x00E0) //
             {Opcode.CMSG_MOVE_SET_RAW_POSITION, 0xFFDA}, // NF(0xCB75)(0x00E1) //
             {Opcode.CMSG_FORCE_RUN_SPEED_CHANGE_ACK, 0x00E3}, // NF()(0x00E3) //
             {Opcode.CMSG_FORCE_RUN_BACK_SPEED_CHANGE_ACK, 0x00E5}, // NF()(0x00E5) //
             {Opcode.CMSG_FORCE_SWIM_SPEED_CHANGE_ACK, 0x00E7}, // NF()(0x00E7) //
             {Opcode.CMSG_FORCE_MOVE_ROOT_ACK, 0x00E9}, // NF()(0x00E9) //
             {Opcode.CMSG_FORCE_MOVE_UNROOT_ACK, 0x00EB}, // NF()(0x00EB) //
-            {Opcode.MSG_MOVE_ROOT, 0x9555}, // (0x0275)(0x00EC) //
-            {Opcode.MSG_MOVE_UNROOT, 0xFC55}, // (0x2338)(0x00ED) //
-            {Opcode.MSG_MOVE_HEARTBEAT, 0x177C}, // (0x0B38)(0x00EE) //
             {Opcode.CMSG_MOVE_KNOCK_BACK_ACK, 0x00F0}, // NF()(0x00F0) //
-            {Opcode.MSG_MOVE_KNOCK_BACK, 0x2555}, // (0xC210)(0x00F1) //
             {Opcode.CMSG_MOVE_HOVER_ACK, 0x00F6}, // NF()(0x00F6) //
-            {Opcode.MSG_MOVE_HOVER, 0xD575}, // (0x0331)(0x00F7) //
             {Opcode.CMSG_TRIGGER_CINEMATIC_CHEAT, 0x00F8}, // NF()(0x00F8) //
             {Opcode.CMSG_OPENING_CINEMATIC, 0x00F9}, // NF()(0x00F9) //
             {Opcode.CMSG_NEXT_CINEMATIC_CAMERA, 0x00FB}, // NF()(0x00FB) //
@@ -199,8 +153,6 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_CAST_SPELL, 0x4C56}, // (0xC390)(0x012E) //
             {Opcode.CMSG_CANCEL_CAST, 0xFD77}, // (0xEB5D)(0x012F) //
             {Opcode.CMSG_CANCEL_AURA, 0x545E}, // (0xAB7C)(0x0136) //
-            {Opcode.MSG_CHANNEL_START, 0x8574}, // (0xC3D5)(0x0139) //
-            {Opcode.MSG_CHANNEL_UPDATE, 0xC654}, // (0x8B70)(0x013A) //
             {Opcode.CMSG_CANCEL_CHANNELLING, 0x957C}, // (0x6A3D)(0x013B) //
             {Opcode.CMSG_SET_SELECTION, 0x5577}, // (0xEBB5)(0x013D) //
             {Opcode.CMSG_EQUIPMENT_SET_DELETE, 0xEE7D}, // (0x8BD8)(0x013E) //
@@ -257,7 +209,6 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_PETITION_BUY, 0x01BD}, // NF()(0x01BD) //
             {Opcode.CMSG_PETITION_SHOW_SIGNATURES, 0x01BE}, // NF()(0x01BE) //
             {Opcode.CMSG_PETITION_SIGN, 0x01C0}, // NF()(0x01C0) //
-            {Opcode.MSG_PETITION_DECLINE, 0xC454}, // (0x42B0)(0x01C2) //
             {Opcode.CMSG_OFFER_PETITION, 0x01C3}, // NF()(0x01C3) //
             {Opcode.CMSG_TURN_IN_PETITION, 0x01C4}, // NF()(0x01C4) //
             {Opcode.CMSG_PETITION_QUERY, 0xFFD3}, // NF(0x6255)(0x01C6) //
@@ -266,24 +217,17 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_QUERY_TIME, 0x01CE}, // NF()(0x01CE) //
             {Opcode.CMSG_RECLAIM_CORPSE, 0x01D2}, // NF()(0x01D2) //
             {Opcode.CMSG_WRAP_ITEM, 0x01D3}, // NF()(0x01D3) //
-            {Opcode.MSG_MINIMAP_PING, 0x01D5}, // NF()(0x01D5) //
             {Opcode.CMSG_SET_SKILL_CHEAT, 0x01D8}, // NF()(0x01D8) //
             {Opcode.CMSG_PING, 0x882A}, // ()(0x01DC) //
             {Opcode.CMSG_SETSHEATHED, 0x01E0}, // NF()(0x01E0) //
             {Opcode.CMSG_QUEST_POI_QUERY, 0x01E3}, // NF()(0x01E3) //
             {Opcode.CMSG_GHOST, 0x01E5}, // NF()(0x01E5) //
             {Opcode.CMSG_GM_INVIS, 0x01E6}, // NF()(0x01E6) //
-            {Opcode.MSG_GM_BIND_OTHER, 0x01E8}, // NF()(0x01E8) //
-            {Opcode.MSG_GM_SUMMON, 0x01E9}, // NF()(0x01E9) //
             {Opcode.CMSG_AUTH_SESSION, 0x880A}, // (0x3000)(0x01ED) //
-            {Opcode.MSG_GM_SHOWLABEL, 0x01EF}, // NF()(0x01EF) //
             {Opcode.CMSG_PET_CAST_SPELL, 0xC674}, // (0xC355)(0x01F0) //
-            {Opcode.MSG_SAVE_GUILD_EMBLEM, 0x9D74}, // (0x0AF1)(0x01F1) //
-            {Opcode.MSG_TABARDVENDOR_ACTIVATE, 0xB575}, // (0x0A50)(0x01F2) //
             {Opcode.CMSG_ZONEUPDATE, 0x5C7D}, // (0x2AD8)(0x01F4) //
             {Opcode.CMSG_GM_SET_SECURITY_GROUP, 0x01F9}, // NF()(0x01F9) //
             {Opcode.CMSG_GM_NUKE, 0x01FA}, // NF()(0x01FA) //
-            {Opcode.MSG_RANDOM_ROLL, 0xE455}, // (0x8A5D)(0x01FB) //
             {Opcode.CMSG_PLAYER_DIFFICULTY_CHANGE, 0x7E5D}, // (0x03D0)(0x01FD) //
             {Opcode.CMSG_UNLEARN_SPELL, 0x0201}, // NF()(0x0201) //
             {Opcode.CMSG_UNLEARN_SKILL, 0x0202}, // NF()(0x0202) //
@@ -296,7 +240,6 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_GM_CREATE_ITEM_TARGET, 0x0210}, // NF()(0x0210) //
             {Opcode.CMSG_GMTICKET_GETTICKET, 0x0211}, // NF()(0x0211) //
             {Opcode.CMSG_UNLEARN_TALENTS, 0x0213}, // NF()(0x0213) //
-            {Opcode.MSG_CORPSE_QUERY, 0x275E}, // (0xA3B1)(0x0216) //
             {Opcode.CMSG_GMTICKET_DELETETICKET, 0x0217}, // NF()(0x0217) //
             {Opcode.CMSG_GMTICKET_SYSTEMSTATUS, 0x021A}, // NF()(0x021A) //
             {Opcode.CMSG_SPIRIT_HEALER_ACTIVATE, 0x021C}, // NF()(0x021C) //
@@ -326,7 +269,6 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_MAIL_CREATE_TEXT_ITEM, 0x024A}, // NF()(0x024A) //
             {Opcode.CMSG_LEARN_TALENT, 0x0251}, // NF()(0x0251) //
             {Opcode.CMSG_TOGGLE_PVP, 0x0253}, // NF()(0x0253) //
-            {Opcode.MSG_AUCTION_HELLO, 0xD574}, // (0x8371)(0x0255) //
             {Opcode.CMSG_AUCTION_SELL_ITEM, 0x0256}, // NF()(0x0256) //
             {Opcode.CMSG_AUCTION_REMOVE_ITEM, 0x0257}, // NF()(0x0257) //
             {Opcode.CMSG_AUCTION_LIST_ITEMS, 0x0258}, // NF()(0x0258) //
@@ -338,14 +280,11 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_PET_CANCEL_AURA, 0x026B}, // NF()(0x026B) //
             {Opcode.CMSG_PLAYER_AI_CHEAT, 0x026C}, // NF()(0x026C) //
             {Opcode.CMSG_CANCEL_AUTO_REPEAT_SPELL, 0xA45E}, // (0xAB39)(0x026D) //
-            {Opcode.MSG_GM_ACCOUNT_ONLINE, 0x026E}, // NF()(0x026E) //
-            {Opcode.MSG_LIST_STABLED_PETS, 0x5E5D}, // (0x2A79)(0x026F) //
             {Opcode.CMSG_STABLE_PET, 0x0270}, // NF()(0x0270) //
             {Opcode.CMSG_UNSTABLE_PET, 0xFFC0}, // NF(0xFFFF)(0x0271) //
             {Opcode.CMSG_BUY_STABLE_SLOT, 0x0272}, // NF()(0x0272) //
             {Opcode.CMSG_STABLE_REVIVE_PET, 0x0274}, // NF()(0x0274) //
             {Opcode.CMSG_STABLE_SWAP_PET, 0x0275}, // NF()(0x0275) //
-            {Opcode.MSG_QUEST_PUSH_RESULT, 0x855F}, // (0xC231)(0x0276) //
             {Opcode.CMSG_REQUEST_PET_INFO, 0x0279}, // NF()(0x0279) //
             {Opcode.CMSG_FAR_SIGHT, 0x027A}, // NF()(0x027A) //
             {Opcode.CMSG_ENABLE_DAMAGE_LOG, 0x027D}, // NF()(0x027D) //
@@ -355,7 +294,6 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_RESET_FACTION_CHEAT, 0x0281}, // NF()(0x0281) //
             {Opcode.CMSG_AUTOSTORE_BANK_ITEM, 0x1556}, // (0xA2D4)(0x0282) //
             {Opcode.CMSG_AUTOBANK_ITEM, 0x2D55}, // (0x4A18)(0x0283) //
-            {Opcode.MSG_QUERY_NEXT_MAIL_TIME, 0x7457}, // (0x0A51)(0x0284) //
             {Opcode.CMSG_SET_DURABILITY_CHEAT, 0x0287}, // NF()(0x0287) //
             {Opcode.CMSG_SET_PVP_RANK_CHEAT, 0x0288}, // NF()(0x0288) //
             {Opcode.CMSG_ADD_PVP_MEDAL_CHEAT, 0x0289}, // NF()(0x0289) //
@@ -372,11 +310,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_LOOT_ROLL, 0x02A0}, // NF()(0x02A0) //
             {Opcode.CMSG_LOOT_MASTER_GIVE, 0x02A3}, // NF()(0x02A3) //
             {Opcode.CMSG_REPAIR_ITEM, 0x02A8}, // NF()(0x02A8) //
-            {Opcode.MSG_TALENT_WIPE_CONFIRM, 0xCC5E}, // (0x2A95)(0x02AA) //
             {Opcode.CMSG_SUMMON_RESPONSE, 0x4D77}, // (0x8A18)(0x02AC) //
-            {Opcode.MSG_MOVE_TOGGLE_GRAVITY_CHEAT, 0x02AD}, // NF()(0x02AD) //
-            {Opcode.MSG_MOVE_FEATHER_FALL, 0x3F75}, // (0x02FD)(0x02B0) //
-            {Opcode.MSG_MOVE_WATER_WALK, 0x8D7F}, // (0x23D9)(0x02B1) //
             {Opcode.CMSG_SERVER_BROADCAST, 0x02B2}, // NF()(0x02B2) //
             {Opcode.CMSG_SELF_RES, 0xBD5F}, // (0x62D5)(0x02B3) //
             {Opcode.CMSG_RUN_SCRIPT, 0x02B5}, // NF()(0x02B5) //
@@ -384,8 +318,6 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_SHOWING_CLOAK, 0xBE7F}, // (0xCBF4)(0x02BA) //
             {Opcode.CMSG_SET_EXPLORATION, 0x02BE}, // NF()(0x02BE) //
             {Opcode.CMSG_SET_ACTIONBAR_TOGGLES, 0x5754}, // (0x2270)(0x02BF) //
-            {Opcode.UMSG_DELETE_GUILD_CHARTER, 0x02C0}, // NF()(0x02C0) //
-            {Opcode.MSG_PETITION_RENAME, 0x577F}, // (0x4A59)(0x02C1) //
             {Opcode.CMSG_ITEM_NAME_QUERY, 0x02C4}, // NF()(0x02C4) //
             {Opcode.CMSG_CHAR_RENAME, 0x02C7}, // NF()(0x02C7) //
             {Opcode.CMSG_MOVE_SPLINE_DONE, 0x02C9}, // NF()(0x02C9) //
@@ -397,20 +329,17 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_MOVE_NOT_ACTIVE_MOVER, 0x02D1}, // NF()(0x02D1) //
             {Opcode.CMSG_BATTLEFIELD_STATUS, 0x02D3}, // NF()(0x02D3) //
             {Opcode.CMSG_BATTLEGROUND_PORT_AND_LEAVE, 0xFFBD}, // NF(0x1373)(0x02D5) //
-            {Opcode.MSG_INSPECT_HONOR_STATS, 0x02D6}, // NF()(0x02D6) //
             {Opcode.CMSG_BATTLEMASTER_HELLO, 0x02D7}, // NF()(0x02D7) //
             {Opcode.CMSG_MOVE_START_SWIM_CHEAT, 0x02D8}, // NF()(0x02D8) //
             {Opcode.CMSG_MOVE_STOP_SWIM_CHEAT, 0x02D9}, // NF()(0x02D9) //
             {Opcode.CMSG_FORCE_WALK_SPEED_CHANGE_ACK, 0x02DB}, // NF()(0x02DB) //
             {Opcode.CMSG_FORCE_SWIM_BACK_SPEED_CHANGE_ACK, 0x02DD}, // NF()(0x02DD) //
             {Opcode.CMSG_FORCE_TURN_RATE_CHANGE_ACK, 0x02DF}, // NF()(0x02DF) //
-            {Opcode.MSG_PVP_LOG_DATA, 0xFFBC}, // NF(0x0762)(0x02E0) //
             {Opcode.CMSG_LEAVE_BATTLEFIELD, 0x7757}, // (0xAA15)(0x02E1) //
             {Opcode.CMSG_AREA_SPIRIT_HEALER_QUERY, 0x02E2}, // NF()(0x02E2) //
             {Opcode.CMSG_AREA_SPIRIT_HEALER_QUEUE, 0x02E3}, // NF()(0x02E3) //
             {Opcode.CMSG_GM_UNTEACH, 0x02E5}, // NF()(0x02E5) //
             {Opcode.CMSG_WARDEN_DATA, 0x467F}, // (0x233D)(0x02E7) //
-            {Opcode.MSG_BATTLEGROUND_PLAYER_POSITIONS, 0xFFBB}, // NF(0x8772)(0x02E9) //
             {Opcode.CMSG_PET_STOP_ATTACK, 0x02EA}, // NF()(0x02EA) //
             {Opcode.CMSG_BATTLEMASTER_JOIN, 0xFFBA}, // NF(0x8F73)(0x02EE) //
             {Opcode.CMSG_BATTLEMASTER_JOIN_RATED, 0xFF8E}, // NF13297(0x8363)() // new op ?
@@ -419,36 +348,26 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_MINIGAME_MOVE, 0x02F8}, // NF()(0x02F8) //
             {Opcode.CMSG_GUILD_INFO_TEXT, 0x02FC}, // NF()(0x02FC) //
             {Opcode.CMSG_GM_NUKE_ACCOUNT, 0x030F}, // NF()(0x030F) //
-            {Opcode.MSG_GM_DESTROY_CORPSE, 0x0310}, // NF()(0x0310) //
             {Opcode.CMSG_GM_DESTROY_ONLINE_CORPSE, 0x0311}, // NF()(0x0311) //
             {Opcode.CMSG_ACTIVATETAXIEXPRESS, 0x0312}, // NF()(0x0312) //
             {Opcode.CMSG_DEBUG_ACTIONS_START, 0x0315}, // NF()(0x0315) //
             {Opcode.CMSG_DEBUG_ACTIONS_STOP, 0x0316}, // NF()(0x0316) //
             {Opcode.CMSG_SET_FACTION_INACTIVE, 0x0317}, // NF()(0x0317) //
             {Opcode.CMSG_SET_WATCHED_FACTION, 0x0318}, // NF()(0x0318) //
-            {Opcode.MSG_MOVE_TIME_SKIPPED, 0x9656}, // (0xCA7C)(0x0319) //
             {Opcode.CMSG_SET_EXPLORATION_ALL, 0x031B}, // NF()(0x031B) //
             {Opcode.CMSG_RESET_INSTANCES, 0x031D}, // NF()(0x031D) //
-            {Opcode.MSG_RAID_TARGET_UPDATE, 0x3C5F}, // (0x0B74)(0x0321) //
-            {Opcode.MSG_RAID_READY_CHECK, 0x8F76}, // (0x82D0)(0x0322) //
             {Opcode.CMSG_LUA_USAGE, 0x0323}, // NF()(0x0323) //
             {Opcode.CMSG_GM_UPDATE_TICKET_STATUS, 0x0327}, // NF()(0x0327) //
-            {Opcode.MSG_SET_DUNGEON_DIFFICULTY, 0x8654}, // (0x4B35)(0x0329) //
             {Opcode.CMSG_GMSURVEY_SUBMIT, 0x032A}, // NF()(0x032A) //
             {Opcode.CMSG_IGNORE_KNOCKBACK_CHEAT, 0x032C}, // NF()(0x032C) //
-            {Opcode.MSG_DELAY_GHOST_TELEPORT, 0x032E}, // NF()(0x032E) //
             {Opcode.CMSG_CHAT_FILTERED, 0x0331}, // NF()(0x0331) //
             {Opcode.CMSG_LOTTERY_QUERY_OBSOLETE, 0x0334}, // NF()(0x0334) //
             {Opcode.CMSG_BUY_LOTTERY_TICKET_OBSOLETE, 0x0336}, // NF()(0x0336) //
-            {Opcode.MSG_GM_RESETINSTANCELIMIT, 0x033C}, // NF()(0x033C) //
             {Opcode.CMSG_MOVE_FLIGHT_ACK, 0x0340}, // NF()(0x0340) //
-            {Opcode.MSG_MOVE_START_SWIM_CHEAT, 0x2755}, // (0x0A1C)(0x0341) //
-            {Opcode.MSG_MOVE_STOP_SWIM_CHEAT, 0x3D54}, // (0x6AF8)(0x0342) //
             {Opcode.CMSG_MOVE_SET_CAN_FLY_ACK, 0x0345}, // NF()(0x0345) //
             {Opcode.CMSG_MOVE_SET_FLY, 0x0346}, // NF()(0x0346) //
             {Opcode.CMSG_SOCKET_GEMS, 0x0347}, // NF()(0x0347) //
             {Opcode.CMSG_ARENA_TEAM_CREATE, 0x0348}, // NF()(0x0348) //
-            {Opcode.UMSG_UPDATE_ARENA_TEAM_OBSOLETE, 0x0E56}, // (0x8BB1)(0x034A) //
             {Opcode.CMSG_ARENA_TEAM_QUERY, 0xFFB7}, // NF(0x023D)(0x034B) //
             {Opcode.CMSG_ARENA_TEAM_ROSTER, 0x034D}, // NF()(0x034D)
             {Opcode.CMSG_ARENA_TEAM_INVITE, 0xEF7D}, // (0xAAB0)(0x034F) //
@@ -459,8 +378,6 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_ARENA_TEAM_DISBAND, 0x867C}, // (0x6AD4)(0x0355) //
             {Opcode.CMSG_ARENA_TEAM_LEADER, 0x9777}, // (0x0B95)(0x0356) //
             {Opcode.CMSG_BATTLEMASTER_JOIN_ARENA, 0xFFB5}, // NF(0x8362)(0x0358) //
-            {Opcode.MSG_MOVE_START_ASCEND, 0x0359}, // NF()(0x0359) //
-            {Opcode.MSG_MOVE_STOP_ASCEND, 0x035A}, // NF()(0x035A) //
             {Opcode.CMSG_LFG_JOIN, 0x035C}, // NF()(0x035C) // // CMSG JoinLFG
             {Opcode.CMSG_LFG_LEAVE, 0x035D}, // NF()(0x035D) // // CMSG LeaveLFG
             {Opcode.CMSG_LFG_LFR_JOIN, 0x035E}, // NF()(0x035E) // // CMSG SearchLFGJoin
@@ -475,21 +392,15 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_LFG_PARTY_LOCK_INFO_REQUEST, 0x0371}, // NF()(0x0371) // // CMSG RequestLFDPartyLockInfo
             {Opcode.CMSG_SET_TITLE, 0x0374}, // NF()(0x0374) //
             {Opcode.CMSG_CANCEL_MOUNT_AURA, 0x0375}, // NF()(0x0375) //
-            {Opcode.MSG_INSPECT_ARENA_TEAMS, 0x0377}, // NF()(0x0377) //
             {Opcode.CMSG_CANCEL_TEMP_ENCHANTMENT, 0x0379}, // NF()(0x0379) //
             {Opcode.CMSG_CHEAT_SET_HONOR_CURRENCY, 0x037B}, // NF()(0x037B) //
             {Opcode.CMSG_CHEAT_SET_ARENA_CURRENCY, 0x037C}, // NF()(0x037C) //
-            {Opcode.MSG_MOVE_SET_FLIGHT_SPEED_CHEAT, 0x037D}, // NF()(0x037D) //
-            {Opcode.MSG_MOVE_SET_FLIGHT_SPEED, 0x5576}, // (0x0310)(0x037E) //
-            {Opcode.MSG_MOVE_SET_FLIGHT_BACK_SPEED_CHEAT, 0x037F}, // NF()(0x037F) //
-            {Opcode.MSG_MOVE_SET_FLIGHT_BACK_SPEED, 0x5C55}, // (0xE2BC)(0x0380) //
             {Opcode.CMSG_FORCE_FLIGHT_SPEED_CHANGE_ACK, 0x0382}, // NF()(0x0382) //
             {Opcode.CMSG_FORCE_FLIGHT_BACK_SPEED_CHANGE_ACK, 0x0384}, // NF()(0x0384) //
             {Opcode.CMSG_MAELSTROM_INVALIDATE_CACHE, 0x0387}, // NF()(0x0387) //
             {Opcode.CMSG_SET_TAXI_BENCHMARK_MODE, 0x0389}, // NF()(0x0389) //
             {Opcode.CMSG_REALM_SPLIT, 0x477D}, // (0xAB58)(0x038C) //
             {Opcode.CMSG_MOVE_CHNG_TRANSPORT, 0x038D}, // NF()(0x038D) //
-            {Opcode.MSG_PARTY_ASSIGNMENT, 0x038E}, // NF()(0x038E) //
             {Opcode.CMSG_TIME_SYNC_RESP, 0x0D57}, // ()(0x0391) //
             {Opcode.CMSG_SEND_LOCAL_EVENT, 0x0392}, // NF()(0x0392) //
             {Opcode.CMSG_SEND_GENERAL_TRIGGER, 0x0393}, // NF()(0x0393) //
@@ -498,14 +409,10 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_ACTIVE_PVP_CHEAT, 0x0399}, // NF()(0x0399) //
             {Opcode.CMSG_CHEAT_DUMP_ITEMS_DEBUG_ONLY, 0x039A}, // NF()(0x039A) //
             {Opcode.CMSG_VOICE_SET_TALKER_MUTED_REQUEST, 0x03A1}, // NF()(0x03A1) //
-            {Opcode.MSG_MOVE_START_DESCEND, 0x03A7}, // NF()(0x03A7) //
             {Opcode.CMSG_IGNORE_REQUIREMENTS_CHEAT, 0x03A8}, // NF()(0x03A8) //
             {Opcode.CMSG_MOVE_SET_RUN_SPEED, 0x03AB}, // NF()(0x03AB) //
-            //{Opcode.MSG_MOVE_UPDATE_CAN_FLY, 0x675D}, // (0xEBF1)(0x03AD) //
-            {Opcode.MSG_RAID_READY_CHECK_CONFIRM, 0xB577}, // (0x2250)(0x03AE) //
             {Opcode.CMSG_VOICE_SESSION_ENABLE, 0x477C}, // (0x82B9)(0x03AF) //
             {Opcode.CMSG_GM_WHISPER, 0xDA24}, // NF(0xDA24)()
-            {Opcode.MSG_GM_GEARRATING, 0x03B4}, // NF()(0x03B4) //
             {Opcode.CMSG_COMMENTATOR_ENABLE, 0x03B5}, // NF()(0x03B5) //
             {Opcode.CMSG_COMMENTATOR_GET_MAP_INFO, 0x03B7}, // NF()(0x03B7) //
             {Opcode.CMSG_COMMENTATOR_GET_PLAYER_INFO, 0x03B9}, // NF()(0x03B9) //
@@ -515,7 +422,6 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_BOT_DETECTED, 0x03C0}, // NF()(0x03C0) //
             {Opcode.CMSG_CHEAT_PLAYER_LOGIN, 0x03C2}, // NF()(0x03C2) //
             {Opcode.CMSG_CHEAT_PLAYER_LOOKUP, 0x03C3}, // NF()(0x03C3) //
-            {Opcode.MSG_RAID_READY_CHECK_FINISHED, 0xFC75}, // (0x82D5)(0x03C6) //
             {Opcode.CMSG_COMPLAIN, 0x03C7}, // NF()(0x03C7) //
             {Opcode.CMSG_GM_SHOW_COMPLAINTS, 0x03CA}, // NF()(0x03CA) //
             {Opcode.CMSG_GM_UNSQUELCH, 0x03CB}, // NF()(0x03CB) //
@@ -535,7 +441,6 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_DEL_VOICE_IGNORE, 0x03DC}, // NF()(0x03DC) //
             {Opcode.CMSG_PARTY_SILENCE, 0xF755}, // (0x6BF0)(0x03DD) //
             {Opcode.CMSG_PARTY_UNSILENCE, 0x2F7D}, // (0xAA19)(0x03DE) //
-            {Opcode.MSG_NOTIFY_PARTY_SQUELCH, 0xE574}, // (0xC39C)(0x03DF) //
             {Opcode.CMSG_REPORT_PVP_AFK, 0x03E4}, // NF()(0x03E4) //
             {Opcode.CMSG_GUILD_BANKER_ACTIVATE, 0x03E6}, // NF()(0x03E6) //
             {Opcode.CMSG_GUILD_BANK_QUERY_TAB, 0x03E7}, // NF()(0x03E7) //
@@ -544,27 +449,21 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_GUILD_BANK_UPDATE_TAB, 0x03EB}, // NF()(0x03EB) //
             {Opcode.CMSG_GUILD_BANK_DEPOSIT_MONEY, 0x03EC}, // NF()(0x03EC) //
             {Opcode.CMSG_GUILD_BANK_WITHDRAW_MONEY, 0x03ED}, // NF()(0x03ED) //
-            {Opcode.MSG_GUILD_BANK_LOG_QUERY, 0x6308}, // (0xEB34)(0x03EE) //
             {Opcode.CMSG_SET_CHANNEL_WATCH, 0x2D54}, // (0xC37C)(0x03EF) //
             {Opcode.CMSG_CLEAR_CHANNEL_WATCH, 0x03F3}, // NF()(0x03F3) //
             {Opcode.CMSG_SET_TITLE_SUFFIX, 0x03F7}, // NF()(0x03F7) //
             {Opcode.CMSG_SPELLCLICK, 0xFFA6}, // NF(0xF001)(0x03F8) //
             {Opcode.CMSG_GM_CHARACTER_RESTORE, 0x03FA}, // NF()(0x03FA) //
             {Opcode.CMSG_GM_CHARACTER_SAVE, 0x03FB}, // NF()(0x03FB) //
-            {Opcode.MSG_GUILD_PERMISSIONS, 0x2E54}, // (0x02D0)(0x03FD) //
-            {Opcode.MSG_GUILD_BANK_MONEY_WITHDRAWN, 0x302A}, // (0x8B34)(0x03FE) //
-            {Opcode.MSG_GUILD_EVENT_LOG_QUERY, 0xFD5E}, // (0x23B8)(0x03FF) //
             {Opcode.CMSG_MAELSTROM_RENAME_GUILD, 0x0400}, // NF()(0x0400) //
             {Opcode.CMSG_GET_MIRRORIMAGE_DATA, 0x0401}, // NF()(0x0401) //
             {Opcode.CMSG_IGNORE_DIMINISHING_RETURNS_CHEAT, 0x0405}, // NF()(0x0405) //
             {Opcode.CMSG_KEEP_ALIVE, 0x0407}, // NF()(0x0407) //
             {Opcode.CMSG_OPT_OUT_OF_LOOT, 0x0409}, // NF()(0x0409) //
-            {Opcode.MSG_QUERY_GUILD_BANK_TEXT, 0x2322}, // (0x03DD)(0x040A) //
             {Opcode.CMSG_SET_GUILD_BANK_TEXT, 0x040B}, // NF()(0x040B) //
             {Opcode.CMSG_SET_GRANTABLE_LEVELS, 0x040C}, // NF()(0x040C) //
             {Opcode.CMSG_GRANT_LEVEL, 0x877C}, // (0xE251)(0x040D) //
             {Opcode.CMSG_REFER_A_FRIEND, 0x040E}, // NF()(0x040E) //
-            {Opcode.MSG_GM_CHANGE_ARENA_RATING, 0x040F}, // NF()(0x040F) //
             {Opcode.CMSG_DECLINE_CHANNEL_INVITE, 0xFFA5}, // NF(0x0290)(0x0410) //
             {Opcode.CMSG_TOTEM_DESTROYED, 0x0414}, // NF()(0x0414) //
             {Opcode.CMSG_EXPIRE_RAID_INSTANCE, 0x0415}, // NF()(0x0415) //
@@ -602,8 +501,6 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_UNLEARN_DANCE_MOVE, 0x0457}, // NF()(0x0457) //
             {Opcode.CMSG_SET_RUNE_COUNT, 0x0458}, // NF()(0x0458) //
             {Opcode.CMSG_SET_RUNE_COOLDOWN, 0x0459}, // NF()(0x0459) //
-            {Opcode.MSG_MOVE_SET_PITCH_RATE_CHEAT, 0x045A}, // NF()(0x045A) //
-            {Opcode.MSG_MOVE_SET_PITCH_RATE, 0xED76}, // (0x8274)(0x045B) //
             {Opcode.CMSG_FORCE_PITCH_RATE_CHANGE_ACK, 0x045D}, // NF()(0x045D) //
             {Opcode.CMSG_UPDATE_MISSILE_TRAJECTORY, 0x0462}, // NF()(0x0462) //
             {Opcode.CMSG_COMPLETE_MOVIE, 0x0465}, // NF()(0x0465) //
@@ -635,97 +532,40 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_SERVER_INFO_QUERY, 0x04A0}, // NF()(0x04A0) // // not found
             {Opcode.CMSG_CHECK_LOGIN_CRITERIA, 0x04A2}, // NF()(0x04A2) // // not found
             {Opcode.CMSG_QUERY_VEHICLE_STATUS, 0x04A4}, // NF()(0x04A4) // // not found
-            {Opcode.UMSG_UNKNOWN_1189, 0x04A5}, // NF()(0x04A5) // // not found}, old SMSG_PET_GUIDS
             {Opcode.CMSG_PLAYER_VEHICLE_ENTER, 0x04A8}, // NF()(0x04A8) // // cmsg uint64
             {Opcode.CMSG_EJECT_PASSENGER, 0x04A9}, // NF()(0x04A9) // // cmsg uint64
-            {Opcode.UMSG_UNKNOWN_1196, 0x04AC}, // NF()(0x04AC) // // not found
-            {Opcode.UMSG_UNKNOWN_1197, 0x04AD}, // NF()(0x04AD) // // not found
-            {Opcode.UMSG_UNKNOWN_1198, 0x04AE}, // NF()(0x04AE) // // not found
-            {Opcode.UMSG_UNKNOWN_1199, 0x04AF}, // NF()(0x04AF) // // not found
-            {Opcode.UMSG_UNKNOWN_1200, 0x04B0}, // NF()(0x04B0) // // not found
-            {Opcode.UMSG_UNKNOWN_1201, 0x04B1}, // NF()(0x04B1) // // not found
             {Opcode.CMSG_ITEM_REFUND_INFO, 0x04B3}, // NF()(0x04B3) // // refund request?
             {Opcode.CMSG_ITEM_REFUND, 0x04B4}, // NF()(0x04B4) // // lua: ContainerRefundItemPurchase
             {Opcode.CMSG_CORPSE_MAP_POSITION_QUERY, 0x04B6}, // NF()(0x04B6) // // CMSG}, uint32
             {Opcode.CMSG_LFG_SET_ROLES_2, 0x04B8}, // NF()(0x04B8) // // not found
-            {Opcode.UMSG_UNKNOWN_1209, 0x04B9}, // NF()(0x04B9) // // not found
             {Opcode.CMSG_CALENDAR_CONTEXT_EVENT_SIGNUP, 0x04BA}, // NF()(0x04BA) // // CMSG}, uint64}, lua: CalendarContextEventSignUp
             {Opcode.CMSG_EQUIPMENT_SET_SAVE, 0x04BD}, // NF()(0x04BD) // // CMSG}, lua: SaveEquipmentSet
             {Opcode.CMSG_UPDATE_PROJECTILE_POSITION, 0x04BE}, // NF()(0x04BE) // // CMSG}, uint64 caster}, uint32 spellId}, uint8 castId}, vector3 position
             {Opcode.CMSG_LEARN_PREVIEW_TALENTS, 0x4754}, // (0xC3B1)(0x04C1) //: LearnPreviewTalents (for player?)
             {Opcode.CMSG_LEARN_PREVIEW_TALENTS_PET, 0x04C2}, // NF()(0x04C2) // // CMSG}, lua: LearnPreviewTalents (for pet?)
-            {Opcode.UMSG_UNKNOWN_1219, 0x04C3}, // NF()(0x04C3) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1220, 0x04C4}, // NF()(0x04C4) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1221, 0x04C5}, // NF()(0x04C5) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1222, 0x04C6}, // NF()(0x04C6) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1225, 0x04C9}, // NF()(0x04C9) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1226, 0x04CA}, // NF()(0x04CA) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1227, 0x04CB}, // NF()(0x04CB) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1228, 0x04CC}, // NF()(0x04CC) // // not found 3.2
             {Opcode.CMSG_MOVE_GRAVITY_DISABLE_ACK, 0x04CF}, // NF()(0x04CF) // // movement related
             {Opcode.CMSG_MOVE_GRAVITY_ENABLE_ACK, 0x04D1}, // NF()(0x04D1) // // movement related
-            {Opcode.MSG_MOVE_UNKNOWN_1234, 0x04D2}, // NF()(0x04D2) // // SMSG}, movement related
             {Opcode.CMSG_EQUIPMENT_SET_USE, 0x04D5}, // NF()(0x04D5) // // CMSG}, lua: UseEquipmentSet
-            {Opcode.UMSG_UNKNOWN_1239, 0x04D7}, // NF()(0x04D7) // // not found 3.2
             {Opcode.CMSG_CHAR_FACTION_CHANGE, 0x4F75}, // NF()(0x04D9) // // lua: CreateCharacter (PFC client response)
-            {Opcode.UMSG_UNKNOWN_1243, 0x04DB}, // NF()(0x04DB) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1244, 0x04DC}, // NF()(0x04DC) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1245, 0x04DD}, // NF()(0x04DD) // // not found 3.2
             //{Opcode.CMSG_BATTLEFIELD_MGR_ENTRY_INVITE_RESPONSE, 0x0100}, // (0x1E11)(0x04DF) //lefieldMgrEntryInviteResponse
             {Opcode.CMSG_BATTLEFIELD_MGR_QUEUE_INVITE_RESPONSE, 0x05A0}, // (0x5A11)(0x04E2) //lefieldMgrQueueInviteResponse
             {Opcode.CMSG_BATTLEFIELD_MGR_QUEUE_REQUEST, 0xFF95}, // NF(0x1B62)(0x04E3) //lefieldMgrQueueRequest
             {Opcode.CMSG_BATTLEFIELD_MGR_EXIT_REQUEST, 0x0581}, // (0x1601)(0x04E7) //lefieldMgrExitRequest
-            {Opcode.UMSG_UNKNOWN_1257, 0x04E9}, // NF()(0x04E9) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1258, 0x04EA}, // NF()(0x04EA) // // not found 3.2
-            {Opcode.MSG_SET_RAID_DIFFICULTY, 0x04EB}, // NF()(0x04EB) // // lua: SetRaidDifficulty
-            {Opcode.UMSG_UNKNOWN_1260, 0x04EC}, // NF()(0x04EC) // // not found 3.2
             {Opcode.CMSG_GMRESPONSE_RESOLVE, 0x04F0}, // NF()(0x04F0) // // lua: GMResponseResolve
-            {Opcode.UMSG_UNKNOWN_1266, 0x04F2}, // NF()(0x04F2) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1267, 0x04F3}, // NF()(0x04F3) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1268, 0x04F4}, // NF()(0x04F4) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1269, 0x04F5}, // NF()(0x04F5) // // not found 3.2
             {Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x3574}, // (0x4A55)(0x0000) //
             {Opcode.CMSG_CHAR_RACE_CHANGE, 0x04F8}, // NF()(0x04F8) // // called from lua: CreateCharacter}, paid race change
-            {Opcode.UMSG_UNKNOWN_1273, 0x04F9}, // NF()(0x04F9) // // not found 10554
-            {Opcode.UMSG_UNKNOWN_1275, 0x04FB}, // NF()(0x04FB) // // not found 10554
-            {Opcode.UMSG_UNKNOWN_1278, 0x04FE}, // NF()(0x04FE) // // not found 10596
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0xD677}, // (0x6A99)(0x04FF) //yForAccountDataTimes
             {Opcode.CMSG_QUERY_QUESTS_COMPLETED, 0x0500}, // NF()(0x0500) // // lua: QueryQuestsCompleted
             {Opcode.CMSG_GM_REPORT_LAG, 0x0502}, // NF()(0x0502) // // lua: GMReportLag
-            {Opcode.UMSG_UNKNOWN_1283, 0x0503}, // NF()(0x0503) //
-            {Opcode.UMSG_UNKNOWN_1284, 0x0504}, // NF()(0x0504) //
-            {Opcode.UMSG_UNKNOWN_1285, 0x0505}, // NF()(0x0505) //
-            {Opcode.UMSG_UNKNOWN_1287, 0x0507}, // NF()(0x0507) // // not found
             {Opcode.CMSG_SET_ALLOW_LOW_LEVEL_RAID1, 0x0508}, // NF()(0x0508) // // lua: SetAllowLowLevelRaid
             //{Opcode.CMSG_SET_ALLOW_LOW_LEVEL_RAID2, 0x0509}, // NF()(0x0509) // // lua: SetAllowLowLevelRaid
-            {Opcode.UMSG_UNKNOWN_1292, 0x050C}, // NF()(0x050C) // // not found
             {Opcode.CMSG_CONNECT_TO_FAILED, 0x0509}, // (0x1201)(0x050E) // with networking
             {Opcode.CMSG_ENABLE_NAGLE, 0x0510}, // NF()(0x0510) // // something with networking
             {Opcode.CMSG_AUTH_CONTINUED_SESSION, 0x0512}, // NF()(0x0512) // // something with networking
-            {Opcode.UMSG_UNKNOWN_1299, 0x0513}, // NF()(0x0513) // // not found
             {Opcode.CMSG_UNKNOWN_1303, 0x0517}, // NF()(0x0517) // // something with player movement (move event 58?)
-            {Opcode.UMSG_UNKNOWN_1305, 0x0519}, // NF()(0x0519) // // not found
-            {Opcode.UMSG_UNKNOWN_1306, 0x051A}, // NF()(0x051A) // // not found
             {Opcode.CMSG_COMMENTATOR_SKIRMISH_QUEUE_COMMAND, 0x051B}, // NF()(0x051B) // // Lua_CommentatorSetSkirmishMatchmakingMode and Lua_CommentatorRequestSkirmishQueueData
             {Opcode.CMSG_UNKNOWN_1309, 0x051D}, // NF()(0x051D) // // Lua_Transform
-            {Opcode.UMSG_UNKNOWN_1313, 0x0521}, // NF()(0x0521) // // not found
-            {Opcode.UMSG_UNKNOWN_1318, 0x0526}, // NF()(0x0526) // // not found
-            {Opcode.UMSG_UNKNOWN_1319, 0x0527}, // NF()(0x0527) // // not found
             {Opcode.CMSG_UNKNOWN_1320, 0x0528}, // NF()(0x0528) // // setcurrency console command?
-            {Opcode.UMSG_UNKNOWN_1321, 0x0529}, // NF()(0x0529) // // not found
-            {Opcode.UMSG_UNKNOWN_1322, 0x052A}, // NF()(0x052A) // // not found
-            {Opcode.UMSG_UNKNOWN_1323, 0x052B}, // NF()(0x052B) // // not found
-            {Opcode.UMSG_UNKNOWN_1324, 0x052C}, // NF()(0x052C) // // not found
-            {Opcode.UMSG_UNKNOWN_1325, 0x052D}, // NF()(0x052D) // // not found
-            {Opcode.UMSG_UNKNOWN_1326, 0x052E}, // NF()(0x052E) // // not found
-            {Opcode.UMSG_UNKNOWN_1327, 0x052F}, // NF()(0x052F) // // not found
-            {Opcode.UMSG_UNKNOWN_1328, 0x0530}, // NF()(0x0530) // // not found
-            {Opcode.UMSG_UNKNOWN_1330, 0x0532}, // NF()(0x0532) // // not found
-            {Opcode.UMSG_UNKNOWN_1331, 0x0533}, // NF()(0x0533) // // not found
-            {Opcode.UMSG_UNKNOWN_1332, 0x0534}, // NF()(0x0534) // // not found
-            {Opcode.UMSG_UNKNOWN_1333, 0x0535}, // NF()(0x0535) // // not found
-            {Opcode.UMSG_UNKNOWN_1334, 0x0536}, // NF()(0x0536) // // not found
-            {Opcode.OBSOLETE_DROP_ITEM, 0x0110}, // NF()(0x0110) //
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -1310,6 +1150,172 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_UNKNOWN_1316, 0x0524}, // NF()(0x0524) // // sets unit+4338 to value from packet
             {Opcode.SMSG_UNKNOWN_1317, 0x0525}, // NF()(0x0525) // // sets unit+4340 to value from packet
             {Opcode.SMSG_UNKNOWN_1329, 0x2D57}, // (0x02B8)(0x0531) //elated
+        };
+
+        private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
+        {
+            {Opcode.UMSG_UPDATE_GROUP_MEMBERS, 0x0080}, // NF()(0x0080) //
+            {Opcode.UMSG_UPDATE_GUILD, 0x0094}, // NF()(0x0094) //
+            {Opcode.MSG_MOVE_START_FORWARD, 0xF576}, // (0x0B31)(0x00B5) //
+            {Opcode.MSG_MOVE_START_BACKWARD, 0xCC7C}, // (0x0B50)(0x00B6) //
+            {Opcode.MSG_MOVE_STOP, 0x4E76}, // (0x433C)(0x00B7) //
+            {Opcode.MSG_MOVE_START_STRAFE_LEFT, 0x5F5C}, // (0xE395)(0x00B8) //
+            {Opcode.MSG_MOVE_START_STRAFE_RIGHT, 0x265C}, // (0x6BF4)(0x00B9) //
+            {Opcode.MSG_MOVE_STOP_STRAFE, 0x0D7F}, // (0xA31C)(0x00BA) //
+            {Opcode.MSG_MOVE_JUMP, 0x7477}, // (0x0A39)(0x00BB) //
+            {Opcode.MSG_MOVE_START_TURN_LEFT, 0x945F}, // (0xAA90)(0x00BC) //
+            {Opcode.MSG_MOVE_START_TURN_RIGHT, 0x6657}, // (0x4BFC)(0x00BD) //
+            {Opcode.MSG_MOVE_STOP_TURN, 0x6D54}, // (0xC39D)(0x00BE) //
+            {Opcode.MSG_MOVE_START_PITCH_UP, 0x0E7C}, // (0xAADC)(0x00BF) // INVERSER
+            {Opcode.MSG_MOVE_START_PITCH_DOWN, 0xCE75}, // (0x2BD5)(0x00C0) // INVERSER
+            {Opcode.MSG_MOVE_STOP_PITCH, 0x4E7D}, // (0x635D)(0x00C1) //
+            {Opcode.MSG_MOVE_SET_RUN_MODE, 0x7D56}, // (0xE339)(0x00C2) //
+            {Opcode.MSG_MOVE_SET_WALK_MODE, 0xF75D}, // (0x8A74)(0x00C3) //
+            {Opcode.MSG_MOVE_TOGGLE_LOGGING, 0x00C4}, // NF()(0x00C4) // NOT IN CLIENT 335 AND 401
+            {Opcode.MSG_MOVE_TELEPORT, 0xC557}, // (0xA254)(0x00C5) //
+            {Opcode.MSG_MOVE_TELEPORT_CHEAT, 0xFFDD}, // NF(0xC291)(0x00C6) //
+            {Opcode.MSG_MOVE_TELEPORT_ACK, 0x365D}, // (0x6A39)(0x00C7) //
+            {Opcode.MSG_MOVE_TOGGLE_FALL_LOGGING, 0x00C8}, // NF()(0x00C8) // NOT IN CLIENT 335 AND 401
+            {Opcode.MSG_MOVE_FALL_LAND, 0xF474}, // (0xAA58)(0x00C9) //
+            {Opcode.MSG_MOVE_START_SWIM, 0xAE57}, // (0x62F8)(0x00CA) //
+            {Opcode.MSG_MOVE_STOP_SWIM, 0xAC7D}, // (0xC290)(0x00CB) //
+            {Opcode.MSG_MOVE_SET_RUN_SPEED_CHEAT, 0x00CC}, // NF()(0x00CC) //
+            {Opcode.MSG_MOVE_SET_RUN_SPEED, 0xA454}, // (0x8379)(0x00CD) //
+            {Opcode.MSG_MOVE_SET_RUN_BACK_SPEED_CHEAT, 0x00CE}, // NF()(0x00CE) //
+            {Opcode.MSG_MOVE_SET_RUN_BACK_SPEED, 0x065F}, // (0x0270)(0x00CF) //
+            {Opcode.MSG_MOVE_SET_WALK_SPEED_CHEAT, 0x00D0}, // NF()(0x00D0) //
+            {Opcode.MSG_MOVE_SET_WALK_SPEED, 0xEF57}, // (0xEAB5)(0x00D1) //
+            {Opcode.MSG_MOVE_SET_SWIM_SPEED_CHEAT, 0x00D2}, // NF()(0x00D2) //
+            {Opcode.MSG_MOVE_SET_SWIM_SPEED, 0xDD76}, // (0x6A1D)(0x00D3) //
+            {Opcode.MSG_MOVE_SET_SWIM_BACK_SPEED_CHEAT, 0x00D4}, // NF()(0x00D4) //
+            {Opcode.MSG_MOVE_SET_SWIM_BACK_SPEED, 0x1777}, // (0x4B51)(0x00D5) //
+            {Opcode.MSG_MOVE_SET_ALL_SPEED_CHEAT, 0x00D6}, // NF()(0x00D6) //
+            {Opcode.MSG_MOVE_SET_TURN_RATE_CHEAT, 0x00D7}, // NF()(0x00D7) //
+            {Opcode.MSG_MOVE_SET_TURN_RATE, 0xAC75}, // (0xEA58)(0x00D8) //
+            {Opcode.MSG_MOVE_TOGGLE_COLLISION_CHEAT, 0x00D9}, // NF()(0x00D9) //
+            {Opcode.MSG_MOVE_SET_FACING, 0x865D}, // ()(0x00DA) //
+            {Opcode.MSG_MOVE_SET_PITCH, 0x00DB}, // NF()(0x00DB) //
+            {Opcode.MSG_MOVE_WORLDPORT_ACK, 0xFFDC}, // NF(0x6AD0)(0x00DC) //
+            {Opcode.MSG_MOVE_SET_RAW_POSITION_ACK, 0xFFDB}, // NF(0xA23C)(0x00E0) //
+            {Opcode.MSG_MOVE_ROOT, 0x9555}, // (0x0275)(0x00EC) //
+            {Opcode.MSG_MOVE_UNROOT, 0xFC55}, // (0x2338)(0x00ED) //
+            {Opcode.MSG_MOVE_HEARTBEAT, 0x177C}, // (0x0B38)(0x00EE) //
+            {Opcode.MSG_MOVE_KNOCK_BACK, 0x2555}, // (0xC210)(0x00F1) //
+            {Opcode.MSG_MOVE_HOVER, 0xD575}, // (0x0331)(0x00F7) //
+            {Opcode.MSG_CHANNEL_START, 0x8574}, // (0xC3D5)(0x0139) //
+            {Opcode.MSG_CHANNEL_UPDATE, 0xC654}, // (0x8B70)(0x013A) //
+            {Opcode.MSG_PETITION_DECLINE, 0xC454}, // (0x42B0)(0x01C2) //
+            {Opcode.MSG_MINIMAP_PING, 0x01D5}, // NF()(0x01D5) //
+            {Opcode.MSG_GM_BIND_OTHER, 0x01E8}, // NF()(0x01E8) //
+            {Opcode.MSG_GM_SUMMON, 0x01E9}, // NF()(0x01E9) //
+            {Opcode.MSG_GM_SHOWLABEL, 0x01EF}, // NF()(0x01EF) //
+            {Opcode.MSG_SAVE_GUILD_EMBLEM, 0x9D74}, // (0x0AF1)(0x01F1) //
+            {Opcode.MSG_TABARDVENDOR_ACTIVATE, 0xB575}, // (0x0A50)(0x01F2) //
+            {Opcode.MSG_RANDOM_ROLL, 0xE455}, // (0x8A5D)(0x01FB) //
+            {Opcode.MSG_CORPSE_QUERY, 0x275E}, // (0xA3B1)(0x0216) //
+            {Opcode.MSG_AUCTION_HELLO, 0xD574}, // (0x8371)(0x0255) //
+            {Opcode.MSG_GM_ACCOUNT_ONLINE, 0x026E}, // NF()(0x026E) //
+            {Opcode.MSG_LIST_STABLED_PETS, 0x5E5D}, // (0x2A79)(0x026F) //
+            {Opcode.MSG_QUEST_PUSH_RESULT, 0x855F}, // (0xC231)(0x0276) //
+            {Opcode.MSG_QUERY_NEXT_MAIL_TIME, 0x7457}, // (0x0A51)(0x0284) //
+            {Opcode.MSG_TALENT_WIPE_CONFIRM, 0xCC5E}, // (0x2A95)(0x02AA) //
+            {Opcode.MSG_MOVE_TOGGLE_GRAVITY_CHEAT, 0x02AD}, // NF()(0x02AD) //
+            {Opcode.MSG_MOVE_FEATHER_FALL, 0x3F75}, // (0x02FD)(0x02B0) //
+            {Opcode.MSG_MOVE_WATER_WALK, 0x8D7F}, // (0x23D9)(0x02B1) //
+            {Opcode.UMSG_DELETE_GUILD_CHARTER, 0x02C0}, // NF()(0x02C0) //
+            {Opcode.MSG_PETITION_RENAME, 0x577F}, // (0x4A59)(0x02C1) //
+            {Opcode.MSG_INSPECT_HONOR_STATS, 0x02D6}, // NF()(0x02D6) //
+            {Opcode.MSG_PVP_LOG_DATA, 0xFFBC}, // NF(0x0762)(0x02E0) //
+            {Opcode.MSG_BATTLEGROUND_PLAYER_POSITIONS, 0xFFBB}, // NF(0x8772)(0x02E9) //
+            {Opcode.MSG_GM_DESTROY_CORPSE, 0x0310}, // NF()(0x0310) //
+            {Opcode.MSG_MOVE_TIME_SKIPPED, 0x9656}, // (0xCA7C)(0x0319) //
+            {Opcode.MSG_RAID_TARGET_UPDATE, 0x3C5F}, // (0x0B74)(0x0321) //
+            {Opcode.MSG_RAID_READY_CHECK, 0x8F76}, // (0x82D0)(0x0322) //
+            {Opcode.MSG_SET_DUNGEON_DIFFICULTY, 0x8654}, // (0x4B35)(0x0329) //
+            {Opcode.MSG_DELAY_GHOST_TELEPORT, 0x032E}, // NF()(0x032E) //
+            {Opcode.MSG_GM_RESETINSTANCELIMIT, 0x033C}, // NF()(0x033C) //
+            {Opcode.MSG_MOVE_START_SWIM_CHEAT, 0x2755}, // (0x0A1C)(0x0341) //
+            {Opcode.MSG_MOVE_STOP_SWIM_CHEAT, 0x3D54}, // (0x6AF8)(0x0342) //
+            {Opcode.UMSG_UPDATE_ARENA_TEAM_OBSOLETE, 0x0E56}, // (0x8BB1)(0x034A) //
+            {Opcode.MSG_MOVE_START_ASCEND, 0x0359}, // NF()(0x0359) //
+            {Opcode.MSG_MOVE_STOP_ASCEND, 0x035A}, // NF()(0x035A) //
+            {Opcode.MSG_INSPECT_ARENA_TEAMS, 0x0377}, // NF()(0x0377) //
+            {Opcode.MSG_MOVE_SET_FLIGHT_SPEED_CHEAT, 0x037D}, // NF()(0x037D) //
+            {Opcode.MSG_MOVE_SET_FLIGHT_SPEED, 0x5576}, // (0x0310)(0x037E) //
+            {Opcode.MSG_MOVE_SET_FLIGHT_BACK_SPEED_CHEAT, 0x037F}, // NF()(0x037F) //
+            {Opcode.MSG_MOVE_SET_FLIGHT_BACK_SPEED, 0x5C55}, // (0xE2BC)(0x0380) //
+            {Opcode.MSG_PARTY_ASSIGNMENT, 0x038E}, // NF()(0x038E) //
+            {Opcode.MSG_MOVE_START_DESCEND, 0x03A7}, // NF()(0x03A7) //
+            //{Opcode.MSG_MOVE_UPDATE_CAN_FLY, 0x675D}, // (0xEBF1)(0x03AD) //
+            {Opcode.MSG_RAID_READY_CHECK_CONFIRM, 0xB577}, // (0x2250)(0x03AE) //
+            {Opcode.MSG_GM_GEARRATING, 0x03B4}, // NF()(0x03B4) //
+            {Opcode.MSG_RAID_READY_CHECK_FINISHED, 0xFC75}, // (0x82D5)(0x03C6) //
+            {Opcode.MSG_NOTIFY_PARTY_SQUELCH, 0xE574}, // (0xC39C)(0x03DF) //
+            {Opcode.MSG_GUILD_BANK_LOG_QUERY, 0x6308}, // (0xEB34)(0x03EE) //
+            {Opcode.MSG_GUILD_PERMISSIONS, 0x2E54}, // (0x02D0)(0x03FD) //
+            {Opcode.MSG_GUILD_BANK_MONEY_WITHDRAWN, 0x302A}, // (0x8B34)(0x03FE) //
+            {Opcode.MSG_GUILD_EVENT_LOG_QUERY, 0xFD5E}, // (0x23B8)(0x03FF) //
+            {Opcode.MSG_QUERY_GUILD_BANK_TEXT, 0x2322}, // (0x03DD)(0x040A) //
+            {Opcode.MSG_GM_CHANGE_ARENA_RATING, 0x040F}, // NF()(0x040F) //
+            {Opcode.MSG_MOVE_SET_PITCH_RATE_CHEAT, 0x045A}, // NF()(0x045A) //
+            {Opcode.MSG_MOVE_SET_PITCH_RATE, 0xED76}, // (0x8274)(0x045B) //
+            {Opcode.UMSG_UNKNOWN_1189, 0x04A5}, // NF()(0x04A5) // // not found}, old SMSG_PET_GUIDS
+            {Opcode.UMSG_UNKNOWN_1196, 0x04AC}, // NF()(0x04AC) // // not found
+            {Opcode.UMSG_UNKNOWN_1197, 0x04AD}, // NF()(0x04AD) // // not found
+            {Opcode.UMSG_UNKNOWN_1198, 0x04AE}, // NF()(0x04AE) // // not found
+            {Opcode.UMSG_UNKNOWN_1199, 0x04AF}, // NF()(0x04AF) // // not found
+            {Opcode.UMSG_UNKNOWN_1200, 0x04B0}, // NF()(0x04B0) // // not found
+            {Opcode.UMSG_UNKNOWN_1201, 0x04B1}, // NF()(0x04B1) // // not found
+            {Opcode.UMSG_UNKNOWN_1209, 0x04B9}, // NF()(0x04B9) // // not found
+            {Opcode.UMSG_UNKNOWN_1219, 0x04C3}, // NF()(0x04C3) // // not found 3.2
+            {Opcode.UMSG_UNKNOWN_1220, 0x04C4}, // NF()(0x04C4) // // not found 3.2
+            {Opcode.UMSG_UNKNOWN_1221, 0x04C5}, // NF()(0x04C5) // // not found 3.2
+            {Opcode.UMSG_UNKNOWN_1222, 0x04C6}, // NF()(0x04C6) // // not found 3.2
+            {Opcode.UMSG_UNKNOWN_1225, 0x04C9}, // NF()(0x04C9) // // not found 3.2
+            {Opcode.UMSG_UNKNOWN_1226, 0x04CA}, // NF()(0x04CA) // // not found 3.2
+            {Opcode.UMSG_UNKNOWN_1227, 0x04CB}, // NF()(0x04CB) // // not found 3.2
+            {Opcode.UMSG_UNKNOWN_1228, 0x04CC}, // NF()(0x04CC) // // not found 3.2
+            {Opcode.MSG_MOVE_UNKNOWN_1234, 0x04D2}, // NF()(0x04D2) // // SMSG}, movement related
+            {Opcode.UMSG_UNKNOWN_1239, 0x04D7}, // NF()(0x04D7) // // not found 3.2
+            {Opcode.UMSG_UNKNOWN_1243, 0x04DB}, // NF()(0x04DB) // // not found 3.2
+            {Opcode.UMSG_UNKNOWN_1244, 0x04DC}, // NF()(0x04DC) // // not found 3.2
+            {Opcode.UMSG_UNKNOWN_1245, 0x04DD}, // NF()(0x04DD) // // not found 3.2
+            {Opcode.UMSG_UNKNOWN_1257, 0x04E9}, // NF()(0x04E9) // // not found 3.2
+            {Opcode.UMSG_UNKNOWN_1258, 0x04EA}, // NF()(0x04EA) // // not found 3.2
+            {Opcode.MSG_SET_RAID_DIFFICULTY, 0x04EB}, // NF()(0x04EB) // // lua: SetRaidDifficulty
+            {Opcode.UMSG_UNKNOWN_1260, 0x04EC}, // NF()(0x04EC) // // not found 3.2
+            {Opcode.UMSG_UNKNOWN_1266, 0x04F2}, // NF()(0x04F2) // // not found 3.2
+            {Opcode.UMSG_UNKNOWN_1267, 0x04F3}, // NF()(0x04F3) // // not found 3.2
+            {Opcode.UMSG_UNKNOWN_1268, 0x04F4}, // NF()(0x04F4) // // not found 3.2
+            {Opcode.UMSG_UNKNOWN_1269, 0x04F5}, // NF()(0x04F5) // // not found 3.2
+            {Opcode.UMSG_UNKNOWN_1273, 0x04F9}, // NF()(0x04F9) // // not found 10554
+            {Opcode.UMSG_UNKNOWN_1275, 0x04FB}, // NF()(0x04FB) // // not found 10554
+            {Opcode.UMSG_UNKNOWN_1278, 0x04FE}, // NF()(0x04FE) // // not found 10596
+            {Opcode.UMSG_UNKNOWN_1283, 0x0503}, // NF()(0x0503) //
+            {Opcode.UMSG_UNKNOWN_1284, 0x0504}, // NF()(0x0504) //
+            {Opcode.UMSG_UNKNOWN_1285, 0x0505}, // NF()(0x0505) //
+            {Opcode.UMSG_UNKNOWN_1287, 0x0507}, // NF()(0x0507) // // not found
+            {Opcode.UMSG_UNKNOWN_1292, 0x050C}, // NF()(0x050C) // // not found
+            {Opcode.UMSG_UNKNOWN_1299, 0x0513}, // NF()(0x0513) // // not found
+            {Opcode.UMSG_UNKNOWN_1305, 0x0519}, // NF()(0x0519) // // not found
+            {Opcode.UMSG_UNKNOWN_1306, 0x051A}, // NF()(0x051A) // // not found
+            {Opcode.UMSG_UNKNOWN_1313, 0x0521}, // NF()(0x0521) // // not found
+            {Opcode.UMSG_UNKNOWN_1318, 0x0526}, // NF()(0x0526) // // not found
+            {Opcode.UMSG_UNKNOWN_1319, 0x0527}, // NF()(0x0527) // // not found
+            {Opcode.UMSG_UNKNOWN_1321, 0x0529}, // NF()(0x0529) // // not found
+            {Opcode.UMSG_UNKNOWN_1322, 0x052A}, // NF()(0x052A) // // not found
+            {Opcode.UMSG_UNKNOWN_1323, 0x052B}, // NF()(0x052B) // // not found
+            {Opcode.UMSG_UNKNOWN_1324, 0x052C}, // NF()(0x052C) // // not found
+            {Opcode.UMSG_UNKNOWN_1325, 0x052D}, // NF()(0x052D) // // not found
+            {Opcode.UMSG_UNKNOWN_1326, 0x052E}, // NF()(0x052E) // // not found
+            {Opcode.UMSG_UNKNOWN_1327, 0x052F}, // NF()(0x052F) // // not found
+            {Opcode.UMSG_UNKNOWN_1328, 0x0530}, // NF()(0x0530) // // not found
+            {Opcode.UMSG_UNKNOWN_1330, 0x0532}, // NF()(0x0532) // // not found
+            {Opcode.UMSG_UNKNOWN_1331, 0x0533}, // NF()(0x0533) // // not found
+            {Opcode.UMSG_UNKNOWN_1332, 0x0534}, // NF()(0x0534) // // not found
+            {Opcode.UMSG_UNKNOWN_1333, 0x0535}, // NF()(0x0535) // // not found
+            {Opcode.UMSG_UNKNOWN_1334, 0x0536}, // NF()(0x0536) // // not found
+            {Opcode.OBSOLETE_DROP_ITEM, 0x0110}, // NF()(0x0110) //
         };
     }
 }

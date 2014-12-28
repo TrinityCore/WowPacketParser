@@ -8,7 +8,9 @@ namespace WowPacketParser.Enums.Version.V4_3_2_15211
         {
             if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
                 return ClientOpcodes;
-            return ServerOpcodes;
+            if (direction == Direction.ServerToClient || direction == Direction.BNServerToClient)
+                return ServerOpcodes;
+            return MiscOpcodes;
         }
 
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
@@ -58,8 +60,6 @@ namespace WowPacketParser.Enums.Version.V4_3_2_15211
             {Opcode.CMSG_TRAINER_LIST, 0x4DD5},
             {Opcode.CMSG_UNLEARN_SKILL, 0x2DC7},
             {Opcode.CMSG_USE_ITEM, 0x2549},
-            {Opcode.MSG_MOVE_HEARTBEAT, 0x2B81},
-            {Opcode.MSG_TABARDVENDOR_ACTIVATE, 0x05FB},
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -131,5 +131,10 @@ namespace WowPacketParser.Enums.Version.V4_3_2_15211
             {Opcode.SMSG_WARDEN_DATA, 0x0CF0},
         };
 
+        private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
+        {
+            {Opcode.MSG_MOVE_HEARTBEAT, 0x2B81},
+            {Opcode.MSG_TABARDVENDOR_ACTIVATE, 0x05FB},
+        };
     }
 }

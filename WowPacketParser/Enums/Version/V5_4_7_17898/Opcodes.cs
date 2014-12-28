@@ -8,7 +8,9 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
         {
             if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
                 return ClientOpcodes;
-            return ServerOpcodes;
+            if (direction == Direction.ServerToClient || direction == Direction.BNServerToClient)
+                return ServerOpcodes;
+            return MiscOpcodes;
         }
 
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
@@ -192,35 +194,6 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_VOID_SWAP_ITEM, 0x01E2},
             {Opcode.CMSG_WARDEN_DATA, 0x1681},
             {Opcode.CMSG_WHO, 0x13C1},
-            {Opcode.MSG_CHANNEL_START, 0x1B15},
-            {Opcode.MSG_CHANNEL_UPDATE, 0x087B},
-            {Opcode.MSG_MOVE_FALL_LAND, 0x055B},
-            {Opcode.MSG_MOVE_HEARTBEAT, 0x017B},
-            {Opcode.MSG_MOVE_JUMP, 0x0438},
-            {Opcode.MSG_MOVE_SET_FACING, 0x005A}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_SET_PITCH, 0x047A}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_SET_RUN_MODE, 0x0878}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_SET_WALK_MODE, 0x0138}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_START_ASCEND, 0x0430}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_START_BACKWARD, 0x0459}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_START_DESCEND, 0x0132}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_START_FORWARD, 0x041B}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_START_PITCH_DOWN, 0x093B}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_START_PITCH_UP, 0x0079}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_START_STRAFE_LEFT, 0x0873}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_START_STRAFE_RIGHT, 0x0C12}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_START_SWIM, 0x0871}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_START_TURN_LEFT, 0x011B}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_START_TURN_RIGHT, 0x0411}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_STOP, 0x0570}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_STOP_ASCEND, 0x0012}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_STOP_PITCH, 0x0071}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_STOP_STRAFE, 0x0171}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_STOP_SWIM, 0x0578}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_STOP_TURN, 0x0530}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_TELEPORT, 0x00D5}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_TELEPORT_ACK, 0x0978}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_WORLDPORT_ACK, 0x18BB},
             {Opcode.CMSG_SWAP_INV_ITEM, 0x150A},
             {Opcode.CMSG_SWAP_ITEM, 0x1403},
             {Opcode.CMSG_AUTOSTORE_BAG_ITEM, 0x162B},
@@ -389,7 +362,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_PET_BATTLE_QUEUE_STATUS, 0x1540},  // 5.4.7 17930 PET_BATTLE NYI
             {Opcode.SMSG_PET_BATTLE_ROUND_RESULT, 0x0709},  // 5.4.7 17930 PET_BATTLE NYI
             {Opcode.SMSG_PET_BATTLE_REPLACEMENTS_MADE, 0x0891},  // 5.4.0 17399 PET_BATTLE NYI
-             //SMSG_PET_BATTLE_REQUEST_FAILED, 0x0000},  // 5.4.7 17930 PET_BATTLE NYI (not sure)
+            //SMSG_PET_BATTLE_REQUEST_FAILED, 0x0000},  // 5.4.7 17930 PET_BATTLE NYI (not sure)
             {Opcode.SMSG_PET_BATTLE_SLOT_UPDATE, 0x0421},  // 5.4.7 17930 PET_BATTLE NYI
             {Opcode.SMSG_PET_CAST_FAILED, 0x1D33},
             {Opcode.SMSG_PET_NAME_QUERY_RESPONSE, 0x1F08},
@@ -487,6 +460,38 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_XP_GAIN_ABORTED, 0x1E32},
         };
 
+        private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
+        {
+            {Opcode.MSG_CHANNEL_START, 0x1B15},
+            {Opcode.MSG_CHANNEL_UPDATE, 0x087B},
+            {Opcode.MSG_MOVE_FALL_LAND, 0x055B},
+            {Opcode.MSG_MOVE_HEARTBEAT, 0x017B},
+            {Opcode.MSG_MOVE_JUMP, 0x0438},
+            {Opcode.MSG_MOVE_SET_FACING, 0x005A}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_SET_PITCH, 0x047A}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_SET_RUN_MODE, 0x0878}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_SET_WALK_MODE, 0x0138}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_START_ASCEND, 0x0430}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_START_BACKWARD, 0x0459}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_START_DESCEND, 0x0132}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_START_FORWARD, 0x041B}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_START_PITCH_DOWN, 0x093B}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_START_PITCH_UP, 0x0079}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_START_STRAFE_LEFT, 0x0873}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_START_STRAFE_RIGHT, 0x0C12}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_START_SWIM, 0x0871}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_START_TURN_LEFT, 0x011B}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_START_TURN_RIGHT, 0x0411}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_STOP, 0x0570}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_STOP_ASCEND, 0x0012}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_STOP_PITCH, 0x0071}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_STOP_STRAFE, 0x0171}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_STOP_SWIM, 0x0578}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_STOP_TURN, 0x0530}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_TELEPORT, 0x00D5}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_TELEPORT_ACK, 0x0978}, // 5.4.7 17956
+            {Opcode.MSG_MOVE_WORLDPORT_ACK, 0x18BB},
+        };
         /* Note:
             0x1231, 0x12FB - CMSG / SMSG - Count opcode
             0x0F43         - SMSG        - Spell opcode

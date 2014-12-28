@@ -8,12 +8,13 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
         {
             if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
                 return ClientOpcodes;
-            return ServerOpcodes;
+            if (direction == Direction.ServerToClient || direction == Direction.BNServerToClient)
+                return ServerOpcodes;
+            return MiscOpcodes;
         }
 
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
         {
-            {Opcode.OBSOLETE_DROP_ITEM, 0x10049}, //UnknownopcodeID
             {Opcode.CMSG_ACCEPT_LEVEL_GRANT, 0x0B5CC},
             {Opcode.CMSG_ACCEPT_TRADE, 0x00891},
             {Opcode.CMSG_ACTIVATETAXI, 0x039A4},
@@ -597,106 +598,6 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_WORLD_TELEPORT, 0x08100},
             {Opcode.CMSG_WRAP_ITEM, 0x07CC4},
             {Opcode.CMSG_ZONEUPDATE, 0x033E4},
-            {Opcode.MSG_AUCTION_HELLO, 0x0B3A0},
-            {Opcode.MSG_CHANNEL_START, 0x02BAC},
-            {Opcode.MSG_CHANNEL_UPDATE, 0x062AC},
-            {Opcode.MSG_CORPSE_QUERY, 0x0E0C8},
-            {Opcode.MSG_DELAY_GHOST_TELEPORT, 0x10127}, //0x03729
-            {Opcode.MSG_GM_ACCOUNT_ONLINE, 0x100C3}, //UnknownopcodeID
-            {Opcode.MSG_GM_BIND_OTHER, 0x1008B}, //UnknownopcodeID
-            {Opcode.MSG_GM_CHANGE_ARENA_RATING, 0x101A3}, //UnknownopcodeID
-            {Opcode.MSG_GM_DESTROY_CORPSE, 0x10117}, //UnknownopcodeID
-            {Opcode.MSG_GM_GEARRATING, 0x10173}, //UnknownopcodeID
-            {Opcode.MSG_GM_RESETINSTANCELIMIT, 0x1012F}, //UnknownopcodeID
-            {Opcode.MSG_GM_SHOWLABEL, 0x1008D}, //UnknownopcodeID
-            {Opcode.MSG_GM_SUMMON, 0x1008C}, //UnknownopcodeID
-            {Opcode.MSG_GUILD_BANK_LOG_QUERY, 0x0F584},
-            {Opcode.MSG_GUILD_BANK_MONEY_WITHDRAWN, 0x06CE4},
-            {Opcode.MSG_GUILD_EVENT_LOG_QUERY, 0x069EC},
-            {Opcode.MSG_GUILD_PERMISSIONS, 0x0F4C4},
-            {Opcode.MSG_INSPECT_ARENA_TEAMS, 0x0FDA4},
-            {Opcode.MSG_LIST_STABLED_PETS, 0x06EAC},
-            {Opcode.MSG_MINIMAP_PING, 0x033A0},
-            {Opcode.MSG_MOVE_FALL_LAND, 0x0AFAC},
-            {Opcode.MSG_MOVE_FEATHER_FALL, 0x0B6A8},
-            {Opcode.MSG_MOVE_HEARTBEAT, 0x022EC},
-            {Opcode.MSG_MOVE_HOVER, 0x02FCC},
-            {Opcode.MSG_MOVE_JUMP, 0x065AC},
-            {Opcode.MSG_MOVE_KNOCK_BACK, 0x0B0E8},
-            {Opcode.MSG_MOVE_ROOT, 0x0ABA8},
-            {Opcode.MSG_MOVE_SET_ALL_SPEED_CHEAT, 0x10025}, //UnknownopcodeID
-            {Opcode.MSG_MOVE_SET_FACING, 0x0ABC4},
-            {Opcode.MSG_MOVE_SET_FLIGHT_BACK_SPEED, 0x0B484},
-            {Opcode.MSG_MOVE_SET_FLIGHT_BACK_SPEED_CHEAT, 0x10150}, //UnknownopcodeID
-            {Opcode.MSG_MOVE_SET_FLIGHT_SPEED, 0x0B088},
-            {Opcode.MSG_MOVE_SET_FLIGHT_SPEED_CHEAT, 0x1014F}, //UnknownopcodeID
-            {Opcode.MSG_MOVE_SET_PITCH, 0x0EBA0},
-            {Opcode.MSG_MOVE_SET_PITCH_RATE, 0x0ABA4},
-            {Opcode.MSG_MOVE_SET_PITCH_RATE_CHEAT, 0x101CD}, //UnknownopcodeID
-            {Opcode.MSG_MOVE_SET_RAW_POSITION_ACK, 0x0F4A0},
-            {Opcode.MSG_MOVE_SET_RUN_BACK_SPEED, 0x0B5EC},
-            {Opcode.MSG_MOVE_SET_RUN_BACK_SPEED_CHEAT, 0x10021}, //UnknownopcodeID
-            {Opcode.MSG_MOVE_SET_RUN_MODE, 0x0E7A8},
-            {Opcode.MSG_MOVE_SET_RUN_SPEED, 0x064A0},
-            {Opcode.MSG_MOVE_SET_RUN_SPEED_CHEAT, 0x10020}, //UnknownopcodeID
-            {Opcode.MSG_MOVE_SET_SWIM_BACK_SPEED, 0x0B0AC},
-            {Opcode.MSG_MOVE_SET_SWIM_BACK_SPEED_CHEAT, 0x10024}, //UnknownopcodeID
-            {Opcode.MSG_MOVE_SET_SWIM_SPEED, 0x02380},
-            {Opcode.MSG_MOVE_SET_SWIM_SPEED_CHEAT, 0x10023}, //UnknownopcodeID
-            {Opcode.MSG_MOVE_SET_TURN_RATE, 0x0A3A8}, //UnknownopcodeID
-            {Opcode.MSG_MOVE_SET_TURN_RATE_CHEAT, 0x10026}, //UnknownopcodeID
-            {Opcode.MSG_MOVE_SET_WALK_MODE, 0x03FAC},
-            {Opcode.MSG_MOVE_SET_WALK_SPEED, 0x0F284},
-            {Opcode.MSG_MOVE_SET_WALK_SPEED_CHEAT, 0x10022}, //UnknownopcodeID
-            {Opcode.MSG_MOVE_START_ASCEND, 0x0BDC0},
-            {Opcode.MSG_MOVE_START_BACKWARD, 0x072E4},
-            {Opcode.MSG_MOVE_START_DESCEND, 0x07880},
-            {Opcode.MSG_MOVE_START_FORWARD, 0x0EBAC},
-            {Opcode.MSG_MOVE_START_PITCH_DOWN, 0x0ADC4},
-            {Opcode.MSG_MOVE_START_PITCH_UP, 0x060E4},
-            {Opcode.MSG_MOVE_START_STRAFE_LEFT, 0x060E8},
-            {Opcode.MSG_MOVE_START_STRAFE_RIGHT, 0x07DA4},
-            //{Opcode.MSG_MOVE_START_SWIM, 0x026C0},
-            //{Opcode.MSG_MOVE_START_SWIM_CHEAT, 0x026C0},
-            {Opcode.MSG_MOVE_START_TURN_LEFT, 0x0B8C8},
-            {Opcode.MSG_MOVE_START_TURN_RIGHT, 0x0F9E4},
-            {Opcode.MSG_MOVE_STOP, 0x034E0},
-            {Opcode.MSG_MOVE_STOP_ASCEND, 0x0FCA8},
-            {Opcode.MSG_MOVE_STOP_PITCH, 0x028E8},
-            {Opcode.MSG_MOVE_STOP_STRAFE, 0x0F9A8},
-            {Opcode.MSG_MOVE_STOP_SWIM, 0x0FDE8},
-            //{Opcode.MSG_MOVE_STOP_SWIM_CHEAT, 0x06988},
-            {Opcode.MSG_MOVE_STOP_TURN, 0x0E2E8},
-            {Opcode.MSG_MOVE_TELEPORT, 0x024E4},
-            {Opcode.MSG_MOVE_TELEPORT_ACK, 0x06DAC},
-            {Opcode.MSG_MOVE_TELEPORT_CHEAT, 0x0E7EC},
-            {Opcode.MSG_MOVE_TIME_SKIPPED, 0x025E4},
-            {Opcode.MSG_MOVE_TOGGLE_COLLISION_CHEAT, 0x07688},
-            {Opcode.MSG_MOVE_TOGGLE_FALL_LOGGING, 0x1001F}, //UnknownopcodeID
-            {Opcode.MSG_MOVE_TOGGLE_GRAVITY_CHEAT, 0x100DD}, //UnknownopcodeID
-            {Opcode.MSG_MOVE_TOGGLE_LOGGING, 0x1001D}, //UnknownopcodeID
-            {Opcode.MSG_MOVE_UNROOT, 0x02088},
-            {Opcode.MSG_MOVE_UPDATE_CAN_FLY, 0x025E0},
-            {Opcode.MSG_MOVE_WATER_WALK, 0x0E1A4},
-            {Opcode.MSG_MOVE_WORLDPORT_ACK, 0x02FC0},
-            {Opcode.MSG_NOTIFY_PARTY_SQUELCH, 0x0E8E8},
-            {Opcode.MSG_PARTY_ASSIGNMENT, 0x028AC},
-            {Opcode.MSG_PETITION_DECLINE, 0x032E0},
-            {Opcode.MSG_PETITION_RENAME, 0x070C0},
-            {Opcode.MSG_PVP_LOG_DATA, 0x00C0E},
-            {Opcode.MSG_QUERY_GUILD_BANK_TEXT, 0x0A2C4},
-            {Opcode.MSG_QUERY_NEXT_MAIL_TIME, 0x025C8},
-            {Opcode.MSG_QUEST_PUSH_RESULT, 0x022A4},
-            {Opcode.MSG_RAID_READY_CHECK, 0x0FDC0},
-            {Opcode.MSG_RAID_READY_CHECK_CONFIRM, 0x0A2AC},
-            {Opcode.MSG_RAID_READY_CHECK_FINISHED, 0x0A0A0},
-            {Opcode.MSG_RAID_TARGET_UPDATE, 0x0A5AC},
-            {Opcode.MSG_RANDOM_ROLL, 0x0B7A4},
-            {Opcode.MSG_SAVE_GUILD_EMBLEM, 0x031AC},
-            {Opcode.MSG_SET_DUNGEON_DIFFICULTY, 0x074E0},
-            {Opcode.MSG_SET_RAID_DIFFICULTY, 0x0B5E8},
-            {Opcode.MSG_TABARDVENDOR_ACTIVATE, 0x02C80},
-            {Opcode.MSG_TALENT_WIPE_CONFIRM, 0x0BFC4},
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -1331,6 +1232,111 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_WHOIS, 0x0B1A4},
             {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x05557},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x0BD80},
+        };
+
+        private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
+        {
+            {Opcode.MSG_AUCTION_HELLO, 0x0B3A0},
+            {Opcode.MSG_CHANNEL_START, 0x02BAC},
+            {Opcode.MSG_CHANNEL_UPDATE, 0x062AC},
+            {Opcode.MSG_CORPSE_QUERY, 0x0E0C8},
+            {Opcode.MSG_DELAY_GHOST_TELEPORT, 0x10127}, //0x03729
+            {Opcode.MSG_GM_ACCOUNT_ONLINE, 0x100C3}, //UnknownopcodeID
+            {Opcode.MSG_GM_BIND_OTHER, 0x1008B}, //UnknownopcodeID
+            {Opcode.MSG_GM_CHANGE_ARENA_RATING, 0x101A3}, //UnknownopcodeID
+            {Opcode.MSG_GM_DESTROY_CORPSE, 0x10117}, //UnknownopcodeID
+            {Opcode.MSG_GM_GEARRATING, 0x10173}, //UnknownopcodeID
+            {Opcode.MSG_GM_RESETINSTANCELIMIT, 0x1012F}, //UnknownopcodeID
+            {Opcode.MSG_GM_SHOWLABEL, 0x1008D}, //UnknownopcodeID
+            {Opcode.MSG_GM_SUMMON, 0x1008C}, //UnknownopcodeID
+            {Opcode.MSG_GUILD_BANK_LOG_QUERY, 0x0F584},
+            {Opcode.MSG_GUILD_BANK_MONEY_WITHDRAWN, 0x06CE4},
+            {Opcode.MSG_GUILD_EVENT_LOG_QUERY, 0x069EC},
+            {Opcode.MSG_GUILD_PERMISSIONS, 0x0F4C4},
+            {Opcode.MSG_INSPECT_ARENA_TEAMS, 0x0FDA4},
+            {Opcode.MSG_LIST_STABLED_PETS, 0x06EAC},
+            {Opcode.MSG_MINIMAP_PING, 0x033A0},
+            {Opcode.MSG_MOVE_FALL_LAND, 0x0AFAC},
+            {Opcode.MSG_MOVE_FEATHER_FALL, 0x0B6A8},
+            {Opcode.MSG_MOVE_HEARTBEAT, 0x022EC},
+            {Opcode.MSG_MOVE_HOVER, 0x02FCC},
+            {Opcode.MSG_MOVE_JUMP, 0x065AC},
+            {Opcode.MSG_MOVE_KNOCK_BACK, 0x0B0E8},
+            {Opcode.MSG_MOVE_ROOT, 0x0ABA8},
+            {Opcode.MSG_MOVE_SET_ALL_SPEED_CHEAT, 0x10025}, //UnknownopcodeID
+            {Opcode.MSG_MOVE_SET_FACING, 0x0ABC4},
+            {Opcode.MSG_MOVE_SET_FLIGHT_BACK_SPEED, 0x0B484},
+            {Opcode.MSG_MOVE_SET_FLIGHT_BACK_SPEED_CHEAT, 0x10150}, //UnknownopcodeID
+            {Opcode.MSG_MOVE_SET_FLIGHT_SPEED, 0x0B088},
+            {Opcode.MSG_MOVE_SET_FLIGHT_SPEED_CHEAT, 0x1014F}, //UnknownopcodeID
+            {Opcode.MSG_MOVE_SET_PITCH, 0x0EBA0},
+            {Opcode.MSG_MOVE_SET_PITCH_RATE, 0x0ABA4},
+            {Opcode.MSG_MOVE_SET_PITCH_RATE_CHEAT, 0x101CD}, //UnknownopcodeID
+            {Opcode.MSG_MOVE_SET_RAW_POSITION_ACK, 0x0F4A0},
+            {Opcode.MSG_MOVE_SET_RUN_BACK_SPEED, 0x0B5EC},
+            {Opcode.MSG_MOVE_SET_RUN_BACK_SPEED_CHEAT, 0x10021}, //UnknownopcodeID
+            {Opcode.MSG_MOVE_SET_RUN_MODE, 0x0E7A8},
+            {Opcode.MSG_MOVE_SET_RUN_SPEED, 0x064A0},
+            {Opcode.MSG_MOVE_SET_RUN_SPEED_CHEAT, 0x10020}, //UnknownopcodeID
+            {Opcode.MSG_MOVE_SET_SWIM_BACK_SPEED, 0x0B0AC},
+            {Opcode.MSG_MOVE_SET_SWIM_BACK_SPEED_CHEAT, 0x10024}, //UnknownopcodeID
+            {Opcode.MSG_MOVE_SET_SWIM_SPEED, 0x02380},
+            {Opcode.MSG_MOVE_SET_SWIM_SPEED_CHEAT, 0x10023}, //UnknownopcodeID
+            {Opcode.MSG_MOVE_SET_TURN_RATE, 0x0A3A8}, //UnknownopcodeID
+            {Opcode.MSG_MOVE_SET_TURN_RATE_CHEAT, 0x10026}, //UnknownopcodeID
+            {Opcode.MSG_MOVE_SET_WALK_MODE, 0x03FAC},
+            {Opcode.MSG_MOVE_SET_WALK_SPEED, 0x0F284},
+            {Opcode.MSG_MOVE_SET_WALK_SPEED_CHEAT, 0x10022}, //UnknownopcodeID
+            {Opcode.MSG_MOVE_START_ASCEND, 0x0BDC0},
+            {Opcode.MSG_MOVE_START_BACKWARD, 0x072E4},
+            {Opcode.MSG_MOVE_START_DESCEND, 0x07880},
+            {Opcode.MSG_MOVE_START_FORWARD, 0x0EBAC},
+            {Opcode.MSG_MOVE_START_PITCH_DOWN, 0x0ADC4},
+            {Opcode.MSG_MOVE_START_PITCH_UP, 0x060E4},
+            {Opcode.MSG_MOVE_START_STRAFE_LEFT, 0x060E8},
+            {Opcode.MSG_MOVE_START_STRAFE_RIGHT, 0x07DA4},
+            //{Opcode.MSG_MOVE_START_SWIM, 0x026C0},
+            //{Opcode.MSG_MOVE_START_SWIM_CHEAT, 0x026C0},
+            {Opcode.MSG_MOVE_START_TURN_LEFT, 0x0B8C8},
+            {Opcode.MSG_MOVE_START_TURN_RIGHT, 0x0F9E4},
+            {Opcode.MSG_MOVE_STOP, 0x034E0},
+            {Opcode.MSG_MOVE_STOP_ASCEND, 0x0FCA8},
+            {Opcode.MSG_MOVE_STOP_PITCH, 0x028E8},
+            {Opcode.MSG_MOVE_STOP_STRAFE, 0x0F9A8},
+            {Opcode.MSG_MOVE_STOP_SWIM, 0x0FDE8},
+            //{Opcode.MSG_MOVE_STOP_SWIM_CHEAT, 0x06988},
+            {Opcode.MSG_MOVE_STOP_TURN, 0x0E2E8},
+            {Opcode.MSG_MOVE_TELEPORT, 0x024E4},
+            {Opcode.MSG_MOVE_TELEPORT_ACK, 0x06DAC},
+            {Opcode.MSG_MOVE_TELEPORT_CHEAT, 0x0E7EC},
+            {Opcode.MSG_MOVE_TIME_SKIPPED, 0x025E4},
+            {Opcode.MSG_MOVE_TOGGLE_COLLISION_CHEAT, 0x07688},
+            {Opcode.MSG_MOVE_TOGGLE_FALL_LOGGING, 0x1001F}, //UnknownopcodeID
+            {Opcode.MSG_MOVE_TOGGLE_GRAVITY_CHEAT, 0x100DD}, //UnknownopcodeID
+            {Opcode.MSG_MOVE_TOGGLE_LOGGING, 0x1001D}, //UnknownopcodeID
+            {Opcode.MSG_MOVE_UNROOT, 0x02088},
+            {Opcode.MSG_MOVE_UPDATE_CAN_FLY, 0x025E0},
+            {Opcode.MSG_MOVE_WATER_WALK, 0x0E1A4},
+            {Opcode.MSG_MOVE_WORLDPORT_ACK, 0x02FC0},
+            {Opcode.MSG_NOTIFY_PARTY_SQUELCH, 0x0E8E8},
+            {Opcode.MSG_PARTY_ASSIGNMENT, 0x028AC},
+            {Opcode.MSG_PETITION_DECLINE, 0x032E0},
+            {Opcode.MSG_PETITION_RENAME, 0x070C0},
+            {Opcode.MSG_PVP_LOG_DATA, 0x00C0E},
+            {Opcode.MSG_QUERY_GUILD_BANK_TEXT, 0x0A2C4},
+            {Opcode.MSG_QUERY_NEXT_MAIL_TIME, 0x025C8},
+            {Opcode.MSG_QUEST_PUSH_RESULT, 0x022A4},
+            {Opcode.MSG_RAID_READY_CHECK, 0x0FDC0},
+            {Opcode.MSG_RAID_READY_CHECK_CONFIRM, 0x0A2AC},
+            {Opcode.MSG_RAID_READY_CHECK_FINISHED, 0x0A0A0},
+            {Opcode.MSG_RAID_TARGET_UPDATE, 0x0A5AC},
+            {Opcode.MSG_RANDOM_ROLL, 0x0B7A4},
+            {Opcode.MSG_SAVE_GUILD_EMBLEM, 0x031AC},
+            {Opcode.MSG_SET_DUNGEON_DIFFICULTY, 0x074E0},
+            {Opcode.MSG_SET_RAID_DIFFICULTY, 0x0B5E8},
+            {Opcode.MSG_TABARDVENDOR_ACTIVATE, 0x02C80},
+            {Opcode.MSG_TALENT_WIPE_CONFIRM, 0x0BFC4},
+            {Opcode.OBSOLETE_DROP_ITEM, 0x10049}, //UnknownopcodeID
         };
     }
 }

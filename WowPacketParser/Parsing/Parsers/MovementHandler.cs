@@ -1268,7 +1268,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             ReadMovementInfo(ref packet, guid);
 
-            if (packet.Opcode != Opcodes.GetOpcode(Opcode.MSG_MOVE_KNOCK_BACK, Direction.ClientToServer))
+            if (packet.Opcode != Opcodes.GetOpcode(Opcode.MSG_MOVE_KNOCK_BACK, Direction.Bidirectional))
                 return;
 
             packet.ReadSingle("Sin Angle");
@@ -1387,7 +1387,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.ReadPackedGuid("Guid");
 
-            if (packet.Opcode != Opcodes.GetOpcode(Opcode.MSG_MOVE_SET_COLLISION_HGT, Direction.ClientToServer))
+            if (packet.Opcode != Opcodes.GetOpcode(Opcode.MSG_MOVE_SET_COLLISION_HGT, Direction.Bidirectional))
                 packet.ReadInt32("Movement Counter");
 
             if (packet.Opcode != Opcodes.GetOpcode(Opcode.SMSG_MOVE_SET_COLLISION_HGT, Direction.ServerToClient))

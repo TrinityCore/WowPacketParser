@@ -8,7 +8,9 @@ namespace WowPacketParser.Enums.Version.V5_0_5_16048
         {
             if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
                 return ClientOpcodes;
-            return ServerOpcodes;
+            if (direction == Direction.ServerToClient || direction == Direction.BNServerToClient)
+                return ServerOpcodes;
+            return MiscOpcodes;
         }
 
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
@@ -50,6 +52,10 @@ namespace WowPacketParser.Enums.Version.V5_0_5_16048
             {Opcode.SMSG_UPDATE_OBJECT, 0x08F7},
             // {Opcode.SMSG_MULTIPLE_PACKETS, 0x0826},
             // {Opcode.SMSG_MULTIPLE_PACKETS_2, 0x0B8B},
+        };
+
+        private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
+        {
         };
     }
 }

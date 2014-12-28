@@ -29,11 +29,13 @@ namespace WowPacketParser.Enums.Version
     {
         private static BiDictionary<Opcode, int> ServerDict = GetOpcodeDictionary(ClientVersion.Build, Direction.ServerToClient);
         private static BiDictionary<Opcode, int> ClientDict = GetOpcodeDictionary(ClientVersion.Build, Direction.ClientToServer);
+        private static BiDictionary<Opcode, int> MiscDict = GetOpcodeDictionary(ClientVersion.Build, Direction.Bidirectional);
 
         public static void InitializeOpcodeDictionary()
         {
             ServerDict = GetOpcodeDictionary(ClientVersion.Build, Direction.ServerToClient);
             ClientDict = GetOpcodeDictionary(ClientVersion.Build, Direction.ClientToServer);
+            MiscDict = GetOpcodeDictionary(ClientVersion.Build, Direction.Bidirectional);
         }
 
         private static BiDictionary<Opcode, int> GetOpcodeDictionary(ClientVersionBuild build, Direction direction)
@@ -194,13 +196,10 @@ namespace WowPacketParser.Enums.Version
                     return ClientDict.GetBySecond(opcodeId);
                 case Direction.ServerToClient:
                     return ServerDict.GetBySecond(opcodeId);
-                default:
-                    // Try on ServerDict first, as ClientDict contains MSG, UMSG, etc
-                    var opcode = ServerDict.GetBySecond(opcodeId);
-                    if (opcode == Opcode.NULL_OPCODE)
-                        opcode = ClientDict.GetBySecond(opcodeId);
-                    return opcode;
+                case Direction.Bidirectional:
+                    return MiscDict.GetBySecond(opcodeId);
             }
+            return default(Opcode); // Can never be called, anyway.
         }
 
         public static int GetOpcode(Opcode opcodeId, Direction direction)
@@ -211,13 +210,10 @@ namespace WowPacketParser.Enums.Version
                     return ClientDict.GetByFirst(opcodeId);
                 case Direction.ServerToClient:
                     return ServerDict.GetByFirst(opcodeId);
-                default:
-                    // Try on ServerDict first, as ClientDict contains MSG, UMSG, etc
-                    var opcode = ServerDict.GetByFirst(opcodeId);
-                    if (opcode == 0)
-                        opcode = ClientDict.GetByFirst(opcodeId);
-                    return opcode;
+                case Direction.Bidirectional:
+                    return MiscDict.GetByFirst(opcodeId);
             }
+            return 0;
         }
 
         public static string GetOpcodeName(int opcodeId, Direction direction)

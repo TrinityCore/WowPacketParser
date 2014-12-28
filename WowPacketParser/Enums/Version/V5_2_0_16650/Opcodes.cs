@@ -8,7 +8,9 @@ namespace WowPacketParser.Enums.Version.V5_2_0_16650
         {
             if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
                 return ClientOpcodes;
-            return ServerOpcodes;
+            if (direction == Direction.ServerToClient || direction == Direction.BNServerToClient)
+                return ServerOpcodes;
+            return MiscOpcodes;
         }
 
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
@@ -24,7 +26,6 @@ namespace WowPacketParser.Enums.Version.V5_2_0_16650
             {Opcode.CMSG_AUTH_CONTINUED_SESSION, 0x03F3},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x10AC},
             {Opcode.CMSG_WARDEN_DATA, 0x007C},
-            {Opcode.MSG_SET_DUNGEON_DIFFICULTY, 0x0140},
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -58,5 +59,9 @@ namespace WowPacketParser.Enums.Version.V5_2_0_16650
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x0754},
         };
 
+        private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
+        {
+            {Opcode.MSG_SET_DUNGEON_DIFFICULTY, 0x0140},
+        };
     }
 }
