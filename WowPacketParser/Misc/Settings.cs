@@ -143,7 +143,7 @@ namespace WowPacketParser.Misc
         private static int GetInt32(string key, int defValue)
         {
             var s = SettingsCollection[key];
-            if (s == null || s.Value == null)
+            if (s == null || s.Value == null || s.Value == string.Empty)
                 return defValue;
 
             int aux;
