@@ -98,6 +98,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("FromScript");
         }
 
+        [Parser(Opcode.CMSG_QUESTGIVER_CHOOSE_REWARD)]
+        public static void HandleQuestChooseReward(Packet packet)
+        {
+            packet.ReadPackedGuid128("QuestGiverGUID");
+            packet.ReadInt32("QuestID");
+            packet.ReadInt32("ItemChoiceID");
+        }
+
         [Parser(Opcode.CMSG_QUEST_NPC_QUERY)]
         public static void HandleQuestNpcQuery(Packet packet)
         {
