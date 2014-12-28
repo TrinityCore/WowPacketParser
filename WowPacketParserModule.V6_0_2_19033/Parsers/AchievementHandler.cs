@@ -82,5 +82,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadBits("Flags", 4, i); // some flag... & 1 -> delete
             }
         }
+
+        [Parser(Opcode.SMSG_ACHIEVEMENT_EARNED)]
+        public static void HandleAchievementEarned(Packet packet)
+        {
+            packet.ReadPackedGuid128("Sender");
+            packet.ReadPackedGuid128("Earner");
+            packet.ReadUInt32("AchievementID");
+            packet.ReadPackedTime("Time");
+            packet.ReadUInt32("EarnerNativeRealm");
+            packet.ReadUInt32("EarnerVirtualRealm");
+            packet.ReadBit("Initial");
+        }
     }
 }
