@@ -17,10 +17,8 @@ namespace WowPacketParser.SQL
 
             public int GetHashCode(Dictionary<string, object> obj)
             {
-                // bad impl, pls fix.
-                int hash1 = obj.Keys.Sum(key => key.GetHashCode());
-                int hash2 = obj.Values.Sum(value => value.GetHashCode());
-                return hash1 ^ hash2;
+                // bad impl 2.0
+                return obj.Aggregate(0, (current, o) => current ^ o.GetHashCode());
             }
         }
 
