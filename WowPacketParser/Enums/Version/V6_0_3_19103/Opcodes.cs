@@ -73,6 +73,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_EQUIPMENT_SET_SAVE, 0x1B54},
             {Opcode.CMSG_FACTION_BONUS_INFO, 0x0928},
             {Opcode.CMSG_FORCE_MOVE_ROOT_ACK, 0x0B73},
+            {Opcode.CMSG_GARRISON_MISSION_BONUS_ROLL, 0x02C2},
             {Opcode.CMSG_GARRISON_START_MISSION, 0x1624},
             {Opcode.CMSG_GAMEOBJECT_QUERY, 0x03AE},
             {Opcode.CMSG_GAMEOBJ_REPORT_USE, 0x0B19},
