@@ -43,6 +43,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Object GUID");
         }
 
+        [Parser(Opcode.SMSG_AE_LOOT_TARGETS)]
+        public static void HandleClientAELootTargets(Packet packet)
+        {
+            packet.ReadUInt32("Count");
+        }
+
         [Parser(Opcode.SMSG_LOOT_RESPONSE)]
         public static void HandleLootResponse(Packet packet) // 6.0.3.19342 sub_6179EA, sub_83C6C7
         {
