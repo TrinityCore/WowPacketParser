@@ -679,8 +679,8 @@ namespace WowPacketParser.SQL.Builders
                 var template = new UnitTemplateNonWDB
                 {
                     GossipMenuId = npc.GossipId,
-                    MinLevel = levels[unit.Key.GetEntry()].Item1,
-                    MaxLevel = levels[unit.Key.GetEntry()].Item2,
+                    MinLevel = (int) levels[unit.Key.GetEntry()].Item1,
+                    MaxLevel = (int) levels[unit.Key.GetEntry()].Item2,
                     Faction = npc.Faction.GetValueOrDefault(35),
                     NpcFlag = (uint) npc.NpcFlags.GetValueOrDefault(NPCFlags.None),
                     SpeedRun = npc.Movement.RunSpeed,
