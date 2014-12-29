@@ -126,6 +126,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_MINIMAP_PING, 0x0837},
             {Opcode.CMSG_MOVE_GRAVITY_DISABLE_ACK, 0x0553},
             {Opcode.CMSG_MOVE_FALL_LAND, 0x0D54},
+            {Opcode.CMSG_MOVE_FALL_RESET, 0x0522},
             {Opcode.CMSG_MOVE_FORCE_RUN_SPEED_CHANGE_ACK, 0x0B7C},
             {Opcode.CMSG_MOVE_FORCE_SWIM_SPEED_CHANGE_ACK, 0x008A},
             {Opcode.CMSG_MOVE_HEARTBEAT, 0x19C1},
