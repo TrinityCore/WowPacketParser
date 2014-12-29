@@ -322,10 +322,10 @@ namespace WowPacketParser.Store.Objects
         public uint[] RewardFactionID;
 
         [DBFieldName("RewardFactionValue", 5)]
-        public uint[] RewardFactionValue;
+        public int[] RewardFactionValue;
 
         [DBFieldName("RewardFactionOverride", 5)]
-        public uint[] RewardFactionOverride;
+        public int[] RewardFactionOverride;
 
         [DBFieldName("RewardFactionFlags")]
         public uint RewardFactionFlags;

@@ -256,13 +256,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             quest.PortraitTurnIn = packet.ReadUInt32("PortraitTurnIn");
 
             quest.RewardFactionID = new uint[5];
-            quest.RewardFactionValue = new uint[5];
-            quest.RewardFactionOverride = new uint[5];
+            quest.RewardFactionValue = new int[5];
+            quest.RewardFactionOverride = new int[5];
             for (var i = 0; i < 5; ++i)
             {
                 quest.RewardFactionID[i] = packet.ReadUInt32("RewardFactionID", i);
-                quest.RewardFactionValue[i] = packet.ReadUInt32("RewardFactionValue", i);
-                quest.RewardFactionOverride[i] = packet.ReadUInt32("RewardFactionOverride", i);
+                quest.RewardFactionValue[i] = packet.ReadInt32("RewardFactionValue", i);
+                quest.RewardFactionOverride[i] = packet.ReadInt32("RewardFactionOverride", i);
             }
 
             quest.RewardFactionFlags = packet.ReadUInt32("RewardFactionFlags");
