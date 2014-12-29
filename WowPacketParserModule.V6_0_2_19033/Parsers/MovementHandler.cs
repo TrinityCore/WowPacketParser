@@ -565,5 +565,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Unit");
             packet.ReadSingle("Scale");
         }
+
+        [Parser(Opcode.SMSG_CLIENT_CONTROL_UPDATE)]
+        public static void HandleClientControlUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+            packet.ReadBit("On");
+        }
     }
 }

@@ -276,6 +276,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_CHAR_FACTION_CHANGE, 0x0810},
             {Opcode.SMSG_CHAR_RENAME, 0x0D89},
             {Opcode.SMSG_CLEAR_QUEST_COMPLETED_BITS, 0x1D47},
+            {Opcode.SMSG_CLIENT_CONTROL_UPDATE, 0x080E},
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x080D},
             {Opcode.SMSG_COIN_REMOVED, 0x0D30},
             {Opcode.SMSG_CONTACT_LIST, 0x0210},
