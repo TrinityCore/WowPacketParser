@@ -123,6 +123,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("AboutGUID");
         }
 
+        [Parser(Opcode.SMSG_THREAT_CLEAR)]
+        public static void HandleClearThreatlist(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+        }
+
         [Parser(Opcode.SMSG_AI_REACTION)]
         public static void HandleAIReaction(Packet packet)
         {
