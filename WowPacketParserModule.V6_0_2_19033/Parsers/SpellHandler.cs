@@ -600,5 +600,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadUInt32("Needed", i);
             }
         }
+
+        [Parser(Opcode.SMSG_RESUME_CAST_BAR)]
+        public static void HandleResumeCastBar(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadPackedGuid128("Target");
+
+            packet.ReadUInt32("SpellID");
+            packet.ReadUInt32("TimeRemaining");
+            packet.ReadUInt32("TotalTime");
+
+            var result = packet.ReadBit("HasInterruptImmunities");
+            if (result)
+            {
+                packet.ReadUInt32("SchoolImmunities");
+                packet.ReadUInt32("Immunities");
+            }
+        }
     }
 }
