@@ -318,5 +318,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("Created");
             packet.ReadBit("IsBonusRoll");
         }
+
+        [Parser(Opcode.SMSG_SELL_RESPONSE)]
+        public static void HandleSellResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("VendorGUID");
+            packet.ReadPackedGuid128("ItemGUID");
+            packet.ReadEnum<SellResult>("Reason", TypeCode.Byte);
+        }
     }
 }

@@ -437,6 +437,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_REQUEST_CEMETERY_LIST_RESPONSE, 0x059E},
             {Opcode.SMSG_RESUME_COMMS, 0x07C9},
             {Opcode.SMSG_RESUME_TOKEN, 0x0326},
+            {Opcode.SMSG_SELL_RESPONSE, 0x1352},
             {Opcode.SMSG_SEND_SPELL_CHARGES, 0x1A82},
             {Opcode.SMSG_SEND_MAIL_RESULT, 0x0302},
             {Opcode.SMSG_SEND_SPELL_HISTORY, 0x1933},
