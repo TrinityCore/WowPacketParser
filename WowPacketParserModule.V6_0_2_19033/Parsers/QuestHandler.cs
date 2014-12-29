@@ -642,5 +642,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadEntry<Int32>(StoreNameType.Quest, "QuestID");
         }
+
+        [Parser(Opcode.CMSG_QUESTGIVER_HELLO)]
+        public static void HandleQuestGiverHello(Packet packet)
+        {
+            packet.ReadPackedGuid128("QuestGiver GUID");
+        }
     }
 }

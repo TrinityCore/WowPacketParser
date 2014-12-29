@@ -28,5 +28,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Master");
             packet.ReadEnum<ItemQuality>("Threshold", TypeCode.Int32);
         }
+
+        [Parser(Opcode.SMSG_LOOT_REMOVED)]
+        public static void HandleLootRemoved(Packet packet)
+        {
+            packet.ReadPackedGuid128("Loot Owner");
+            packet.ReadPackedGuid128("LootObj");
+            packet.ReadByte("LootListId");
+        }
     }
 }
