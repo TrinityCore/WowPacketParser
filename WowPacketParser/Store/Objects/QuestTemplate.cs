@@ -208,10 +208,10 @@ namespace WowPacketParser.Store.Objects
         public int QuestLevel;
 
         [DBFieldName("QuestPackageID")]
-        public int QuestPackageID;
+        public uint QuestPackageID;
 
         [DBFieldName("MinLevel")]
-        public int MinLevel;
+        public uint MinLevel;
 
         [DBFieldName("QuestSortID")]
         public QuestSort QuestSortID;
@@ -220,73 +220,73 @@ namespace WowPacketParser.Store.Objects
         public QuestType QuestInfoID;
 
         [DBFieldName("SuggestedGroupNum")]
-        public int SuggestedGroupNum;
+        public uint SuggestedGroupNum;
 
         [DBFieldName("RewardNextQuest")]
-        public int RewardNextQuest;
+        public uint RewardNextQuest;
 
         [DBFieldName("RewardXPDifficulty")]
-        public int RewardXPDifficulty;
+        public uint RewardXPDifficulty;
 
         [DBFieldName("Float10")]
         public float Float10;
 
         [DBFieldName("RewardMoney")]
-        public int RewardMoney;
+        public uint RewardMoney;
 
         [DBFieldName("RewardMoneyDifficulty")]
-        public int RewardMoneyDifficulty;
+        public uint RewardMoneyDifficulty;
 
         [DBFieldName("Float13")]
         public float Float13;
 
         [DBFieldName("RewardBonusMoney")]
-        public int RewardBonusMoney;
+        public uint RewardBonusMoney;
 
         [DBFieldName("RewardDisplaySpell")]
-        public int RewardDisplaySpell;
+        public uint RewardDisplaySpell;
 
         [DBFieldName("RewardSpell")]
-        public int RewardSpell;
+        public uint RewardSpell;
 
         [DBFieldName("RewardHonor")]
-        public int RewardHonor;
+        public uint RewardHonor;
 
         [DBFieldName("RewardKillHonor")]
         public float RewardKillHonor;
 
         [DBFieldName("StartItem")]
-        public int StartItem;
+        public uint StartItem;
 
         [DBFieldName("Flags")]
         public QuestFlags Flags;
 
         [DBFieldName("FlagsEx")]
-        public int FlagsEx;
+        public uint FlagsEx;
 
         [DBFieldName("RewardItem", 4)]
-        public int[] RewardItems;
+        public uint[] RewardItems;
 
         [DBFieldName("RewardAmount", 4)]
-        public int[] RewardAmount;
+        public uint[] RewardAmount;
 
         [DBFieldName("ItemDrop", 4)]
-        public int[] ItemDrop;
+        public uint[] ItemDrop;
 
         [DBFieldName("ItemDropQuantity", 4)]
-        public int[] ItemDropQuantity;
+        public uint[] ItemDropQuantity;
 
         [DBFieldName("RewardChoiceItemID", 6)]
-        public int[] RewardChoiceItemID;
+        public uint[] RewardChoiceItemID;
 
         [DBFieldName("RewardChoiceItemQuantity", 6)]
-        public int[] RewardChoiceItemQuantity;
+        public uint[] RewardChoiceItemQuantity;
 
         [DBFieldName("RewardChoiceItemDisplayID", 6)]
-        public int[] RewardChoiceItemDisplayID;
+        public uint[] RewardChoiceItemDisplayID;
 
         [DBFieldName("POIContinent")]
-        public int POIContinent;
+        public uint POIContinent;
 
         [DBFieldName("POIx")]
         public float POIx;
@@ -298,55 +298,55 @@ namespace WowPacketParser.Store.Objects
         public int POIPriority;
 
         [DBFieldName("RewardTitle")]
-        public int RewardTitle;
+        public uint RewardTitle;
 
         [DBFieldName("RewardTalents")]
-        public int RewardTalents;
+        public uint RewardTalents;
 
         [DBFieldName("RewardArenaPoints")]
-        public int RewardArenaPoints;
+        public uint RewardArenaPoints;
 
         [DBFieldName("RewardSkillLineID")]
-        public int RewardSkillLineID;
+        public uint RewardSkillLineID;
 
         [DBFieldName("RewardNumSkillUps")]
-        public int RewardNumSkillUps;
+        public uint RewardNumSkillUps;
 
         [DBFieldName("PortraitGiver")]
-        public int PortraitGiver;
+        public uint PortraitGiver;
 
         [DBFieldName("PortraitTurnIn")]
-        public int PortraitTurnIn;
+        public uint PortraitTurnIn;
 
         [DBFieldName("RewardFactionID", 5)]
-        public int[] RewardFactionID;
+        public uint[] RewardFactionID;
 
         [DBFieldName("RewardFactionValue", 5)]
-        public int[] RewardFactionValue;
+        public uint[] RewardFactionValue;
 
         [DBFieldName("RewardFactionOverride", 5)]
-        public int[] RewardFactionOverride;
+        public uint[] RewardFactionOverride;
 
         [DBFieldName("RewardFactionFlags")]
-        public int RewardFactionFlags;
+        public uint RewardFactionFlags;
 
         [DBFieldName("RewardCurrencyID", 4)]
-        public int[] RewardCurrencyID;
+        public uint[] RewardCurrencyID;
 
         [DBFieldName("RewardCurrencyQty", 4)]
-        public int[] RewardCurrencyQty;
+        public uint[] RewardCurrencyQty;
 
         [DBFieldName("AcceptedSoundKitID")]
-        public int AcceptedSoundKitID;
+        public uint AcceptedSoundKitID;
 
         [DBFieldName("CompleteSoundKitID")]
-        public int CompleteSoundKitID;
+        public uint CompleteSoundKitID;
 
         [DBFieldName("AreaGroupID")]
-        public int AreaGroupID;
+        public uint AreaGroupID;
 
         [DBFieldName("TimeAllowed")]
-        public int TimeAllowed;
+        public uint TimeAllowed;
 
         [DBFieldName("AllowableRaces")]
         public int AllowableRaces;
