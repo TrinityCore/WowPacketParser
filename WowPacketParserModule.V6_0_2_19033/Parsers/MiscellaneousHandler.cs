@@ -409,6 +409,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < count; ++i)
                 packet.ReadInt32("CemeteryID", i);
         }
+
+        [Parser(Opcode.SMSG_START_MIRROR_TIMER)]
+        public static void HandleStartMirrorTimer(Packet packet)
+        {
+            // Names from GetMirrorTimerInfo
+            packet.ReadUInt32("Type");
+            packet.ReadUInt32("InitialValue");
+            packet.ReadUInt32("MaxValue");
+            packet.ReadInt32("Scale");
+            packet.ReadUInt32("Timer"); // Either that or spell id (but i don't see why the client would need the spell id...)
+            packet.ReadBit("Paused");
+        }
     }
 }
 
