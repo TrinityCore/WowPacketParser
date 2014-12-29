@@ -461,5 +461,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("RankID");
             packet.ReadBit("Promote");
         }
+
+        [Parser(Opcode.SMSG_GUILD_EVENT_RANK_CHANGED)]
+        public static void HandleGuildEventRankChanged(Packet packet)
+        {
+            packet.ReadInt32("RankID");
+        }
     }
 }
