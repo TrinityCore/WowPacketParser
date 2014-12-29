@@ -161,5 +161,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("PlayerGUID");
             packet.ReadPackedGuid128("VictimGUID");
         }
+
+        [Parser(Opcode.SMSG_ATTACKSWING_ERROR)]
+        public static void HandleAttackSwingError(Packet packet)
+        {
+            packet.ReadBits("Reason", 2);
+        }
     }
 }
