@@ -103,10 +103,13 @@ namespace WowPacketParser.Store
             CreatureDifficultys.Clear();
             GameObjectTemplateDB2s.Clear();
             BroadcastTexts.Clear();
+            SpellMiscs.Clear();
 
             GameObjectTemplates.Clear();
             ItemTemplates.Clear();
             QuestTemplates.Clear();
+            QuestTemplatesWod.Clear();
+            QuestObjectives.Clear();
             UnitTemplates.Clear();
 
             NpcTrainers.Clear();
@@ -137,6 +140,11 @@ namespace WowPacketParser.Store
 
             QuestPOIs.Clear();
 
+            QuestGreetings.Clear();
+            QuestDetails.Clear();
+            QuestRequestItems.Clear();
+            QuestOfferRewards.Clear();
+
             ObjectNames.Clear();
 
             DefenseMessages.Clear();
@@ -144,6 +152,9 @@ namespace WowPacketParser.Store
             VehicleTemplateAccessorys.Clear();
 
             WeatherUpdates.Clear();
+
+            NpcSpellClicks.Clear();
+            SpellClicks.Clear();
         }
     }
 }
