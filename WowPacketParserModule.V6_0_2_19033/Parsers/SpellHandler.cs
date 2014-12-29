@@ -577,5 +577,28 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt16("ProcCount");
             packet.ReadInt16("ProcNum");
         }
+
+        [Parser(Opcode.SMSG_SPELLDISPELLOG)]
+        public static void HandleSpellInterruptLog(Packet packet)
+        {
+            packet.ReadBit("Is Steal");
+            packet.ReadBit("Is Break");
+            packet.ReadPackedGuid128("Target GUID");
+            packet.ReadPackedGuid128("Caster GUID");
+            packet.ReadUInt32("Spell ID");
+            var dataSize = packet.ReadUInt32("Dispel count");
+            for (var i = 0; i < dataSize; ++i)
+            {
+                packet.ResetBitReader();
+                packet.ReadUInt32("Spell ID", i);
+                packet.ReadBit("Is Harmful", i);
+                var hasRolled = packet.ReadBit("Has Rolled", i);
+                var hasNeeded = packet.ReadBit("Has Needed", i);
+                if (hasRolled)
+                    packet.ReadUInt32("Rolled", i);
+                if (hasNeeded)
+                    packet.ReadUInt32("Needed", i);
+            }
+        }
     }
 }
