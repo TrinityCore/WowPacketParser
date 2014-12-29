@@ -194,7 +194,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             quest.QuestType = packet.ReadEnum<QuestMethod>("QuestType", TypeCode.Int32);
             quest.QuestLevel = packet.ReadInt32("QuestLevel");
             quest.QuestPackageID = packet.ReadUInt32("QuestPackageID");
-            quest.MinLevel = packet.ReadUInt32("QuestMinLevel");
+            quest.MinLevel = packet.ReadInt32("QuestMinLevel");
             quest.QuestSortID = (QuestSort)packet.ReadUInt32("QuestSortID");
             quest.QuestInfoID = packet.ReadEnum<QuestType>("QuestInfoID", TypeCode.Int32);
             quest.SuggestedGroupNum = packet.ReadUInt32("SuggestedGroupNum");

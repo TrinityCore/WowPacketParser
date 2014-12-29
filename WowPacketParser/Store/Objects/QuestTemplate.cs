@@ -211,7 +211,7 @@ namespace WowPacketParser.Store.Objects
         public uint QuestPackageID;
 
         [DBFieldName("MinLevel")]
-        public uint MinLevel;
+        public int MinLevel;
 
         [DBFieldName("QuestSortID")]
         public QuestSort QuestSortID;
