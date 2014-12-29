@@ -591,20 +591,20 @@ namespace WowPacketParser.SQL.Builders
         }
 
         //                      entry, <minlevel, maxlevel>
-        private static Dictionary<uint, Tuple<int, int>> GetLevels(Dictionary<WowGuid, Unit> units)
+        private static Dictionary<uint, Tuple<uint, uint>> GetLevels(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
                 return null;
 
             var entries = units.GroupBy(unit => unit.Key.GetEntry());
-            var list = new Dictionary<uint, List<int>>();
+            var list = new Dictionary<uint, List<uint>>();
 
             foreach (var pair in entries.SelectMany(entry => entry))
             {
                 if (list.ContainsKey(pair.Key.GetEntry()))
                     list[pair.Key.GetEntry()].Add(pair.Value.Level.GetValueOrDefault(1));
                 else
-                    list.Add(pair.Key.GetEntry(), new List<int> { pair.Value.Level.GetValueOrDefault(1) });
+                    list.Add(pair.Key.GetEntry(), new List<uint> { pair.Value.Level.GetValueOrDefault(1) });
             }
 
             var result = list.ToDictionary(pair => pair.Key, pair => Tuple.Create(pair.Value.Min(), pair.Value.Max()));

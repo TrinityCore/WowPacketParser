@@ -284,9 +284,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (var i = 0; i < int2946; ++i)
             {
-                var questInfoObjective = new QuestInfoObjective();
-
-                questInfoObjective.QuestId = (uint)id.Key;
+                var questInfoObjective = new QuestInfoObjective
+                {
+                    QuestId = (uint) id.Key
+                };
 
                 var objectiveId = packet.ReadEntry("Id", i);
                 questInfoObjective.Type = packet.ReadByte("Type", i);
@@ -300,10 +301,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 questInfoObjective.VisualEffectIds = new List<QuestVisualEffect>(int280);
                 for (var j = 0; j < int280; ++j)
                 {
-                    var questVisualEffect = new QuestVisualEffect();
-
-                    questVisualEffect.Index = (uint)j;
-                    questVisualEffect.VisualEffect = packet.ReadInt32("VisualEffectId", i, j);
+                    var questVisualEffect = new QuestVisualEffect
+                    {
+                        Index = (uint) j,
+                        VisualEffect = packet.ReadInt32("VisualEffectId", i, j)
+                    };
 
                     questInfoObjective.VisualEffectIds.Add(questVisualEffect);
                 }
