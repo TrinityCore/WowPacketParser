@@ -354,6 +354,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE, 0x010D},
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0x0183},
             {Opcode.SMSG_LEARNED_SPELL, 0x08AB},
+            {Opcode.SMSG_LEVELUP_INFO, 0x1BE4},
             {Opcode.SMSG_LFG_PLAYER_INFO, 0x0F36},
             {Opcode.SMSG_LFG_JOIN_RESULT, 0x0F72},
             {Opcode.SMSG_LFG_UPDATE_STATUS, 0x07F7},

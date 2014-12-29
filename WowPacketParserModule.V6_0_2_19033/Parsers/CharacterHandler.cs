@@ -385,5 +385,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadBit("TriggerEvent");
         }
+
+        [Parser(Opcode.SMSG_LEVELUP_INFO)]
+        public static void HandleLevelUp(Packet packet)
+        {
+            packet.ReadInt32("Level");
+            packet.ReadInt32("HealthDelta");
+
+            for (var i = 0; i < 6; i++)
+                packet.ReadInt32("PowerDelta", (PowerType)i);
+
+            for (var i = 0; i < 5; i++)
+                packet.ReadInt32("StatDelta", (StatType)i);
+
+            packet.ReadInt32("Cp");
+        }
     }
 }
