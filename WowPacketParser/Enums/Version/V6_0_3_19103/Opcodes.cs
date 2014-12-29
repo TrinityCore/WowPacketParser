@@ -127,6 +127,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_MOVE_FORCE_RUN_SPEED_CHANGE_ACK, 0x0B7C},
             {Opcode.CMSG_MOVE_FORCE_SWIM_SPEED_CHANGE_ACK, 0x008A},
             {Opcode.CMSG_MOVE_HEARTBEAT, 0x19C1},
+            {Opcode.CMSG_MOVE_HOVER_ACK, 0x0543},
             {Opcode.CMSG_MOVE_JUMP, 0x0282},
             {Opcode.CMSG_MOVE_SET_COLLISION_HEIGHT_ACK, 0x0141},
             {Opcode.CMSG_MOVE_SET_FACING, 0x19D2},

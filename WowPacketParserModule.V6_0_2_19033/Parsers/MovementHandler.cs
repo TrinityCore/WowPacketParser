@@ -495,6 +495,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_MOVE_GRAVITY_DISABLE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_HOVER_ACK)]
         [Parser(Opcode.CMSG_MOVE_WATER_WALK_ACK)]
         [Parser(Opcode.CMSG_FORCE_MOVE_ROOT_ACK)]
         public static void HandleMovementAck(Packet packet)
