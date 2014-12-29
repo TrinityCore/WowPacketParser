@@ -64,5 +64,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < int40; i++)
                 packet.ReadInt64("FollowerDBIDs", i);
         }
+
+        [Parser(Opcode.CMSG_GARRISON_COMPLETE_MISSION)]
+        public static void HandleGarrisonCompleteMission(Packet packet)
+        {
+            packet.ReadPackedGuid128("NpcGUID");
+            packet.ReadInt32("MissionRecID");
+        }
     }
 }
