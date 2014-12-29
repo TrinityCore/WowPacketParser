@@ -75,7 +75,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<SheathState>("Sheath", TypeCode.Int32);
         }
 
-        [Parser(Opcode.SMSG_PARTYKILLLOG)]
+        [Parser(Opcode.SMSG_PARTY_KILL_LOG)]
         public static void HandlePartyKillLog(Packet packet)
         {
             packet.ReadGuid("Player GUID");

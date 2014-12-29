@@ -844,7 +844,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.SMSG_AUTH_CHALLENGE, 0x1EC},
             {Opcode.SMSG_AUTH_RESPONSE, 0x1EE},
             {Opcode.SMSG_PLAY_SPELL_VISUAL, 0x1F3},
-            {Opcode.SMSG_PARTYKILLLOG, 0x1F5},
+            {Opcode.SMSG_PARTY_KILL_LOG, 0x1F5},
             {Opcode.SMSG_COMPRESSED_UPDATE_OBJECT, 0x1F6},
             {Opcode.SMSG_PLAY_SPELL_IMPACT, 0x1F7},
             {Opcode.SMSG_EXPLORATION_EXPERIENCE, 0x1F8},

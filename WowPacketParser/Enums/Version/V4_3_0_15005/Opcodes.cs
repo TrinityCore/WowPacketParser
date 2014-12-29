@@ -714,7 +714,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA, 25252},
             {Opcode.SMSG_OVERRIDE_LIGHT, 31904},
             {Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE, 31876},
-            {Opcode.SMSG_PARTYKILLLOG, 26758},
+            {Opcode.SMSG_PARTY_KILL_LOG, 26758},
             {Opcode.SMSG_PARTY_COMMAND_RESULT, 27168},
             {Opcode.SMSG_PARTY_MEMBER_STATS, 14370},
             {Opcode.SMSG_PARTY_MEMBER_STATS_FULL, 22144},

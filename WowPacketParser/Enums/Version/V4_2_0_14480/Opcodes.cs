@@ -673,7 +673,7 @@ namespace WowPacketParser.Enums.Version.V4_2_0_14480
             {Opcode.SMSG_OVERRIDE_LIGHT, 0x3A36},
             {Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE, 0x762F},
             {Opcode.SMSG_PARTY_COMMAND_RESULT, 0xF2EF},
-            {Opcode.SMSG_PARTYKILLLOG, 0x3276},
+            {Opcode.SMSG_PARTY_KILL_LOG, 0x3276},
             {Opcode.SMSG_PARTY_MEMBER_STATS, 0xB2BB},
             {Opcode.SMSG_PARTY_MEMBER_STATS_FULL, 0x2ABA},
             {Opcode.SMSG_PAUSE_MIRROR_TIMER, 0xA2EF},

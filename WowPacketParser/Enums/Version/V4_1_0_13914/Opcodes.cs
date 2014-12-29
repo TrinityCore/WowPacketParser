@@ -157,7 +157,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_ON_CANCEL_EXPECTED_RIDE_VEHICLE_AURA, 0x01F7F}, // 4.1.0 13914
             {Opcode.SMSG_OPEN_LFG_DUNGEON_FINDER, 0x05A7D}, // 4.1.0 13914
             {Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE, 0x09B6F}, // 4.1.0 13914
-            {Opcode.SMSG_PARTYKILLLOG, 0x0982F}, // 4.1.0 13914
+            {Opcode.SMSG_PARTY_KILL_LOG, 0x0982F}, // 4.1.0 13914
             {Opcode.SMSG_PARTY_COMMAND_RESULT, 0x0E92F}, // 4.1.0 13914
             {Opcode.SMSG_PERIODICAURALOG, 0x04C3E}, // 4.1.0 13914
             {Opcode.SMSG_PETITION_QUERY_RESPONSE, 0x0CA2C}, // 4.1.0 13914

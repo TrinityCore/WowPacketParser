@@ -981,7 +981,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_OPEN_CONTAINER, 0x03FC4},
             {Opcode.SMSG_OVERRIDE_LIGHT, 0x00756}, //UnknownopcodeID
             {Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE, 0x0B084},
-            {Opcode.SMSG_PARTYKILLLOG, 0x0AB84},
+            {Opcode.SMSG_PARTY_KILL_LOG, 0x0AB84},
             {Opcode.SMSG_PARTY_COMMAND_RESULT, 0x026E0},
             {Opcode.SMSG_PARTY_MEMBER_STATS, 0x029AC},
             {Opcode.SMSG_PARTY_MEMBER_STATS_FULL, 0x0BA8C},

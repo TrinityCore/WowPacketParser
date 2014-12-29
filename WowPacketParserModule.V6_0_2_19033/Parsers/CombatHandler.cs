@@ -148,5 +148,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadEnum<SheathState>("CurrentSheathState", TypeCode.Int32);
             packet.ReadBit("Animate");
         }
+
+        [Parser(Opcode.SMSG_PARTY_KILL_LOG)]
+        public static void HandlePartyKillLog(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGUID");
+            packet.ReadPackedGuid128("VictimGUID");
+        }
     }
 }

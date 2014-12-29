@@ -587,7 +587,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.SMSG_OPEN_LFG_DUNGEON_FINDER, 0x0C5E},
             {Opcode.SMSG_OVERRIDE_LIGHT, 0xCC56},
             {Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE, 0x18D2},
-            {Opcode.SMSG_PARTYKILLLOG, 0xCCC2},
+            {Opcode.SMSG_PARTY_KILL_LOG, 0xCCC2},
             {Opcode.SMSG_PARTY_COMMAND_RESULT, 0xCCD6},
             {Opcode.SMSG_PARTY_MEMBER_STATS, 0xDC5A},
             {Opcode.SMSG_PARTY_MEMBER_STATS_FULL, 0x0EDF},
