@@ -12,7 +12,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("CombatReach")]
         public float CombatReach;
 
-        [DBFieldName("DisplayID_Other_Gender")]
+        [DBFieldName("gender", ClientVersionBuild.Zero, ClientVersionBuild.V6_0_2_19033)]
         public Gender Gender;
 
         //[DBFieldName("modelid_other_gender")]
