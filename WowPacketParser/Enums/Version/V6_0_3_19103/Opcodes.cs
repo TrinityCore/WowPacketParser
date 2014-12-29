@@ -247,6 +247,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_ATTACKERSTATEUPDATE, 0x1204},
             {Opcode.SMSG_ATTACKSTART, 0x1D3E},
             {Opcode.SMSG_ATTACKSTOP, 0x1382},
+            {Opcode.SMSG_COMBAT_EVENT_FAILED, 0x1DAF},
             {Opcode.SMSG_ATTACKSWING_ERROR, 0x0509},
             {Opcode.SMSG_AUCTION_COMMAND_RESULT, 0x0B2D},
             {Opcode.SMSG_AUCTION_HELLO, 0x011F},

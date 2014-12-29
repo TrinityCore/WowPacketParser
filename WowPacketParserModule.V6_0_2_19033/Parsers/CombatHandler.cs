@@ -167,5 +167,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadBits("Reason", 2);
         }
+
+        [Parser(Opcode.SMSG_COMBAT_EVENT_FAILED)]
+        public static void HandleAttackEventFailed(Packet packet)
+        {
+            packet.ReadPackedGuid128("Attacker");
+            packet.ReadPackedGuid128("Victim");
+        }
     }
 }
