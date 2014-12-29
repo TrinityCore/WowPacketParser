@@ -203,7 +203,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             quest.Float10 = packet.ReadSingle("Float10");
 
-            quest.RewardMoney = packet.ReadUInt32("RewardMoney");
+            quest.RewardMoney = packet.ReadInt32("RewardMoney");
             quest.RewardMoneyDifficulty = packet.ReadUInt32("RewardMoneyDifficulty");
 
             quest.Float13 = packet.ReadSingle("Float13");
@@ -290,7 +290,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 };
 
                 var objectiveId = packet.ReadEntry("Id", i);
-                questInfoObjective.Type = packet.ReadByte("Type", i);
+                questInfoObjective.Type = packet.ReadEnum<QuestRequirementType>("Quest Requirement Type", TypeCode.Byte);
                 questInfoObjective.StorageIndex = packet.ReadSByte("StorageIndex", i);
                 questInfoObjective.ObjectID = packet.ReadInt32("ObjectID", i);
                 questInfoObjective.Amount = packet.ReadInt32("Amount", i);

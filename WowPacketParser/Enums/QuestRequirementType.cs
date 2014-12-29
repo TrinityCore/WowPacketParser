@@ -1,6 +1,6 @@
 ﻿namespace WowPacketParser.Enums
 {
-    public enum QuestRequirementType
+    public enum QuestRequirementType : byte
     {
         CreatureKill            = 0,
         Item                    = 1,

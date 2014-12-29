@@ -232,7 +232,7 @@ namespace WowPacketParser.Store.Objects
         public float Float10;
 
         [DBFieldName("RewardMoney")]
-        public uint RewardMoney;
+        public int RewardMoney;
 
         [DBFieldName("RewardMoneyDifficulty")]
         public uint RewardMoneyDifficulty;
@@ -389,7 +389,7 @@ namespace WowPacketParser.Store.Objects
         public uint QuestId;
 
         [DBFieldName("Type")]
-        public uint Type;
+        public QuestRequirementType Type;
 
         [DBFieldName("StorageIndex")]
         public int StorageIndex;
