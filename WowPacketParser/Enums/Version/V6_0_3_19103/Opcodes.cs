@@ -152,6 +152,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_MOVE_STOP_TURN, 0x0964},
             {Opcode.CMSG_MOVE_TELEPORT_ACK, 0x0D01},
             {Opcode.CMSG_MOVE_TIME_SKIPPED, 0x19C2},
+            {Opcode.CMSG_MOVE_WATER_WALK_ACK, 0x0B6C},
             {Opcode.CMSG_MOVE_WORLDPORT_ACK, 0x0938},
             {Opcode.CMSG_NAME_QUERY, 0x0B15},
             {Opcode.CMSG_NPC_TEXT_QUERY, 0x0ECB},

@@ -9,7 +9,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     {
         public static void ReadMovementStats(ref Packet packet)
         {
-            packet.ReadPackedGuid128("Guid");
+            packet.ReadPackedGuid128("MoverGUID");
 
             packet.ReadUInt32("MoveIndex");
             packet.ReadVector4("Position");
@@ -17,11 +17,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadSingle("Pitch");
             packet.ReadSingle("StepUpStartElevation");
 
-            var int152 = packet.ReadInt32("Int152");
-            packet.ReadInt32("Int168");
+            var int152 = packet.ReadInt32("RemoveForcesCount");
+            packet.ReadInt32("MoveTime");
 
             for (var i = 0; i < int152; i++)
-                packet.ReadPackedGuid128("Guid156");
+                packet.ReadPackedGuid128("RemoveForcesIDs", i);
 
             packet.ResetBitReader();
 
@@ -30,37 +30,41 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var hasTransport = packet.ReadBit("Has Transport Data");
             var hasFall = packet.ReadBit("Has Fall Data");
-            packet.ReadBit("bit148");
-            packet.ReadBit("bit149");
+            packet.ReadBit("HasSpline");
+            packet.ReadBit("HeightChangeFailed");
+            packet.ReadBit("RemoteTimeValid");
 
             if (hasTransport)
             {
-                packet.ReadPackedGuid128("Transport Guid");
-                packet.ReadVector4("Transport Position");
-                packet.ReadSByte("Transport Seat");
-                packet.ReadInt32("Transport Time");
+                packet.ReadPackedGuid128("TransportGuid");
+                packet.ReadVector4("TransportPosition");
+                packet.ReadByte("TransportSeat");
+                packet.ReadInt32("TransportMoveTime");
 
                 packet.ResetBitReader();
-                var bit44 = packet.ReadBit("Has Transport Time 2");
-                var bit52 = packet.ReadBit("Has Transport Time 3");
-                if (bit44)
-                    packet.ReadUInt32("Transport Time 2");
 
-                if (bit52)
-                    packet.ReadUInt32("Transport Time 3");
+                var hasPrevMoveTime = packet.ReadBit("HasPrevMoveTime");
+                var hasVehicleRecID = packet.ReadBit("HasVehicleRecID");
+
+                if (hasPrevMoveTime)
+                    packet.ReadUInt32("PrevMoveTime");
+
+                if (hasVehicleRecID)
+                    packet.ReadUInt32("VehicleRecID");
             }
 
             if (hasFall)
             {
-                packet.ReadUInt32("Fall Time");
+                packet.ReadUInt32("FallTime");
                 packet.ReadSingle("JumpVelocity");
 
                 packet.ResetBitReader();
-                var bit20 = packet.ReadBit("Has Fall Direction");
+
+                var bit20 = packet.ReadBit("HasFallDirection");
                 if (bit20)
                 {
-                    packet.ReadVector2("Fall");
-                    packet.ReadSingle("Horizontal Speed");
+                    packet.ReadVector2("Direction");
+                    packet.ReadSingle("HorizontalSpeed");
                 }
             }
         }
@@ -491,6 +495,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_MOVE_GRAVITY_DISABLE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_WATER_WALK_ACK)]
         [Parser(Opcode.CMSG_FORCE_MOVE_ROOT_ACK)]
         public static void HandleMovementAck(Packet packet)
         {
