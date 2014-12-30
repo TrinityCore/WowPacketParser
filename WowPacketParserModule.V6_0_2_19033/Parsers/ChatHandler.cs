@@ -38,6 +38,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_MESSAGECHAT_YELL)]
         [Parser(Opcode.CMSG_MESSAGECHAT_SAY)]
         [Parser(Opcode.CMSG_MESSAGECHAT_PARTY)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_INSTANCE)]
         public static void HandleClientChatMessage(Packet packet)
         {
             packet.ReadEnum<Language>("Language", TypeCode.Int32);
