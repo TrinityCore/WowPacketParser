@@ -61,6 +61,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_CONQUEST_FORMULA_CONSTANTS)]
         public static void HandleConquestFormulaConstants(Packet packet)
         {
+            // Order guessed
             packet.ReadInt32("PvpMinCPPerWeek");
             packet.ReadInt32("PvpMaxCPPerWeek");
             packet.ReadSingle("PvpCPBaseCoefficient");

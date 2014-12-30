@@ -279,5 +279,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("Sequence");
             packet.ReadBits("Reason", 2);
         }
+
+        [Parser(Opcode.CMSG_ROUTER_CLIENT_LOG_STREAMING_ERROR)]
+        public static void HandleRouterClientLogStreamingError(Packet packet)
+        {
+            var bits16 = packet.ReadBits(9);
+            packet.ReadWoWString("Error", bits16);
+        }
     }
 }
