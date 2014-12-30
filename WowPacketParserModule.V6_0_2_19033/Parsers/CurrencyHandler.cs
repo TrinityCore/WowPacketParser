@@ -57,5 +57,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (bit40)
                 packet.ReadInt32("WeeklyQuantity");
         }
+
+        [Parser(Opcode.SMSG_CONQUEST_FORMULA_CONSTANTS)]
+        public static void HandleConquestFormulaConstants(Packet packet)
+        {
+            packet.ReadInt32("PvpMinCPPerWeek");
+            packet.ReadInt32("PvpMaxCPPerWeek");
+            packet.ReadSingle("PvpCPBaseCoefficient");
+            packet.ReadSingle("PvpCPExpCoefficient");
+            packet.ReadSingle("PvpCPNumerator");
+        }
     }
 }
