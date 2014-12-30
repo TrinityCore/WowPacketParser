@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Enums;
+﻿using System;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -87,6 +88,166 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadInt32("DungeonDifficultyID");
                     packet.ReadInt32("RaidDifficultyID");
                 //}
+            }
+        }
+
+        [Parser(Opcode.SMSG_PARTY_MEMBER_STATS)]
+        public static void HandlePartyMemberStats(Packet packet)
+        {
+            packet.ReadBit("ForEnemy");
+            packet.ReadBit("FullUpdate");
+            var bit761 = packet.ReadBit("HasUnk761");
+            var bit790 = packet.ReadBit("HasStatus");
+            var bit763 = packet.ReadBit("HasPowerType");
+            var bit322 = packet.ReadBit("HasUnk322");
+            var bit28 = packet.ReadBit("HasCurrentHealth");
+            var bit316 = packet.ReadBit("HasMaxHealth");
+            var bit748 = packet.ReadBit("HasCurrentPower");
+            var bit766 = packet.ReadBit("HasMaxPower");
+            var bit752 = packet.ReadBit("HasLevel");
+            var bit326 = packet.ReadBit("HasUnk326");
+            var bit770 = packet.ReadBit("HasZoneId");
+            var bit756 = packet.ReadBit("HasUnk756");
+            var bit776 = packet.ReadBit("HasUnk776");
+            var bit786 = packet.ReadBit("HasPosition");
+            var bit20 = packet.ReadBit("HasVehicleSeat");
+            var bit308 = packet.ReadBit("HasAuras");
+            var bit736 = packet.ReadBit("HasPet");
+            var bit72 = packet.ReadBit("HasPhase");
+
+            packet.ReadPackedGuid128("MemberGuid");
+
+            if (bit761)
+            {
+                // sub_5FB6A9
+                for (int i = 0; i < 2; i++)
+                    packet.ReadByte("Unk761", i);
+            }
+
+            if (bit790)
+                packet.ReadEnum<GroupMemberStatusFlag>("Status", TypeCode.Int16);
+
+            if (bit763)
+                packet.ReadByte("PowerType");
+
+            if (bit322)
+                packet.ReadInt16("Unk322");
+
+            if (bit28)
+                packet.ReadInt32("CurrentHealth");
+
+            if (bit316)
+                packet.ReadInt32("MaxHealth");
+
+            if (bit748)
+                packet.ReadInt16("CurrentPower");
+
+            if (bit766)
+                packet.ReadInt16("MaxPower");
+
+            if (bit752)
+                packet.ReadInt16("Level");
+
+            if (bit326)
+                packet.ReadInt16("Unk200000");
+
+            if (bit770)
+                packet.ReadInt16("ZoneId");
+
+            if (bit756)
+                packet.ReadInt16("Unk2000000");
+
+            if (bit776)
+                packet.ReadInt32("Unk4000000");
+
+            if (bit786)
+            {
+                // sub_626D9A
+                packet.ReadInt16("PositionX");
+                packet.ReadInt16("PositionY");
+                packet.ReadInt16("PositionZ");
+            }
+
+            if (bit20)
+                packet.ReadInt32("VehicleSeat");
+
+            if (bit308)
+            {
+                // sub_618493
+                var count = packet.ReadInt32("AuraCount");
+
+                for (int i = 0; i < count; i++)
+                {
+                    packet.ReadInt32("SpellId", i);
+                    packet.ReadByte("Scalings", i);
+                    packet.ReadInt32("EffectMask", i);
+                    var byte3 = packet.ReadInt32("EffectCount", i);
+
+                    for (int j = 0; j < byte3; j++)
+                        packet.ReadSingle("Scale", i, j);
+                }
+            }
+
+            if (bit736) // Pet
+            {
+                // sub_618CF4
+                packet.ResetBitReader();
+
+                var bit16 = packet.ReadBit("HasPetGUID");
+                var bit153 = packet.ReadBit("HasPetName");
+                var bit156 = packet.ReadBit("HasPetModelId");
+                var bit164 = packet.ReadBit("HasPetCurrentHealth");
+                var bit172 = packet.ReadBit("HasPetMaxHealth");
+                var bit404 = packet.ReadBit("HasPetAuras");
+
+                if (bit16)
+                    packet.ReadPackedGuid128("PetGUID");
+
+                if (bit153)
+                {
+                    // sub_5EA889
+                    packet.ResetBitReader();
+                    var len = packet.ReadBits(8);
+                    packet.ReadWoWString("PetName", len);
+                }
+
+                if (bit156)
+                    packet.ReadInt16("PetModelId");
+
+                if (bit164)
+                    packet.ReadInt32("PetCurrentHealth");
+
+                if (bit172)
+                    packet.ReadInt32("PetMaxHealth");
+
+                if (bit404)
+                {
+                    var count = packet.ReadInt32("AuraCount");
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        packet.ReadInt32("SpellId", i);
+                        packet.ReadByte("Scalings", i);
+                        packet.ReadInt32("EffectMask", i);
+                        var byte3 = packet.ReadInt32("EffectCount", i);
+
+                        for (int j = 0; j < byte3; j++)
+                            packet.ReadSingle("Scale", i, j);
+                    }
+                }
+            }
+
+            if (bit72) // Phase
+            {
+                // sub_61E155
+                packet.ReadInt32("PhaseShiftFlags");
+                var int4 = packet.ReadInt32("PhaseCount");
+                packet.ReadPackedGuid128("PersonalGUID");
+                for (int i = 0; i < int4; i++)
+                {
+                    packet.ReadInt16("PhaseFlags", i);
+                    packet.ReadInt16("Id", i);
+                }
             }
         }
     }
