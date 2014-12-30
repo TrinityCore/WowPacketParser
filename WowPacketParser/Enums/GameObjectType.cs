@@ -38,7 +38,13 @@ namespace WowPacketParser.Enums
         DestructibleBuilding = 33,
         GuildBank            = 34,
         TrapDoor             = 35,
+        GarrisonBuilding     = 38,
+        GarrisonBuildingPlot = 39,
         ClientCreature       = 40,
-        ClientItem           = 41
+        ClientItem           = 41,
+        GarrisonBuilding2    = 43,
+        GarrisonMonument     = 44,
+        GarrisonShipment     = 45,
+        GarrisonMonumentPlaque = 46
     }
 }
