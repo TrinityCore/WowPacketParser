@@ -276,6 +276,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_BUY_ITEM, 0x0BD1},
             {Opcode.SMSG_CALENDAR_SEND_NUM_PENDING, 0x1B3A},
             {Opcode.SMSG_CANCEL_AUTO_REPEAT, 0x0B18},
+            {Opcode.SMSG_CANCEL_COMBAT, 0x05AD},
             {Opcode.SMSG_CAST_FAILED, 0x1A89},
             {Opcode.SMSG_CHANNEL_LIST, 0x1411},
             {Opcode.SMSG_CHANNEL_NOTIFY, 0x0643},
