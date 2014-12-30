@@ -195,22 +195,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                         packet.ReadSingle("EstimatedPoints", i, j);
 
                     packet.ResetBitReader();
-                    var hasCasterGUID = packet.ReadBit("hasCasterGUID", i);
-                    var hasDuration = packet.ReadBit("hasDuration", i);
-                    var hasMaxDuration = packet.ReadBit("hasMaxDuration", i);
+                    var hasCasterGUID = packet.ReadBit("HasCastUnit", i);
+                    var hasDuration = packet.ReadBit("HasDuration", i);
+                    var hasMaxDuration = packet.ReadBit("HasRemaining", i);
 
                     if (hasCasterGUID)
                         packet.ReadPackedGuid128("CastUnit", i);
 
-                    if (hasDuration)
-                        aura.Duration = packet.ReadInt32("Duration", i);
-                    else
-                        aura.Duration = 0;
-
-                    if (hasMaxDuration)
-                        aura.MaxDuration = packet.ReadInt32("Remaining", i);
-                    else
-                        aura.MaxDuration = 0;
+                    aura.Duration = hasDuration ? packet.ReadInt32("Duration", i) : 0;
+                    aura.MaxDuration = hasMaxDuration ? packet.ReadInt32("Remaining", i) : 0;
 
                     auras.Add(aura);
                     packet.AddSniffData(StoreNameType.Spell, (int)aura.SpellId, "AURA_UPDATE");
@@ -268,7 +261,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_SPELL_GO)]
         public static void HandleSpellStart(Packet packet)
         {
-            bool isSpellGo = packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_SPELL_GO, Direction.ServerToClient);
+            var isSpellGo = packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_SPELL_GO, Direction.ServerToClient);
 
             packet.ReadPackedGuid128("Caster Guid");
             packet.ReadPackedGuid128("CasterUnit Guid");
@@ -392,7 +385,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (isSpellGo)
             {
-
                 packet.ResetBitReader();
 
                 var bit52 = packet.ReadBit("SpellCastLogData");

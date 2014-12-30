@@ -199,5 +199,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadPackedGuid128("ItemGuid", i);
             }
         }
+
+        [Parser(Opcode.CMSG_MAIL_MARK_AS_READ)]
+        public static void HandleMailMarkAsRead(Packet packet)
+        {
+            packet.ReadPackedGuid128("Mailbox");
+            packet.ReadInt32("MailID");
+            packet.ReadBit("BiReceipt");
+        }
     }
 }
