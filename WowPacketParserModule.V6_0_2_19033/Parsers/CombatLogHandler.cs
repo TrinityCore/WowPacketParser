@@ -202,10 +202,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Attacker");
             packet.ReadPackedGuid128("Defender");
-            packet.ReadInt32("TotalDamage");
             packet.ReadInt32("SpellID");
-            packet.ReadPackedGuid128("Caster");
+            packet.ReadInt32("TotalDamage");
+            packet.ReadInt32("OverKill");
+            packet.ReadInt32("SchoolMask");
             packet.ReadInt32("LogAbsorbed");
+
+            packet.ResetBitReader();
+
             var bit76 = packet.ReadBit("HasLogData");
             if (bit76)
                 SpellHandler.ReadSpellCastLogData(ref packet);
