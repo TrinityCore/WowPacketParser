@@ -579,5 +579,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Unit");
             packet.ReadBit("On");
         }
+
+        [Parser(Opcode.CMSG_MOVE_SPLINE_DONE)]
+        public static void HandleMoveSplineDone(Packet packet)
+        {
+            ReadMovementStats(ref packet);
+            packet.ReadInt32("SplineID");
+        }
     }
 }

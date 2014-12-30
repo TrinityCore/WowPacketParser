@@ -137,6 +137,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_MOVE_SET_PITCH, 0x0D92},
             {Opcode.CMSG_MOVE_SET_RUN_MODE, 0x0D51},
             {Opcode.CMSG_MOVE_SET_WALK_MODE, 0x0544},
+            {Opcode.CMSG_MOVE_SPLINE_DONE, 0x0B63},
             {Opcode.CMSG_MOVE_START_ASCEND, 0x0D41},
             {Opcode.CMSG_MOVE_START_BACKWARD, 0x0583},
             {Opcode.CMSG_MOVE_START_DESCEND, 0x0B79},
