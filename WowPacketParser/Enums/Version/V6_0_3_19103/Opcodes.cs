@@ -303,6 +303,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_CRITERIA_UPDATE_PLAYER, 0x1904},
             {Opcode.SMSG_DANCE_STUDIO_CREATE_RESULT, 0x178D},
             {Opcode.SMSG_DB_REPLY, 0x1939},
+            {Opcode.SMSG_DEFENSE_MESSAGE, 0x1442},
             {Opcode.SMSG_DISPLAY_PROMOTION, 0x151D},
             {Opcode.SMSG_EMOTE, 0x071D},
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x0F1E},

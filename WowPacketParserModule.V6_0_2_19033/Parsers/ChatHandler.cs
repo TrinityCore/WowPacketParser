@@ -162,5 +162,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadEnum<EmoteTextType>("SoundIndex", TypeCode.Int32);
             packet.ReadPackedGuid128("TargetGUID");
         }
+
+        [Parser(Opcode.SMSG_DEFENSE_MESSAGE)]
+        public static void HandleDefenseMessage(Packet packet)
+        {
+            packet.ReadEntry<Int32>(StoreNameType.Zone, "ZoneID");
+            var len = packet.ReadBits(12);
+            packet.ReadWoWString("MessageText", len);
+        }
     }
 }
