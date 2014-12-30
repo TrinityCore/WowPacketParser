@@ -199,6 +199,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_SELL_ITEM, 0x0351},
             {Opcode.CMSG_SETSHEATHED, 0x1B43},
             {Opcode.CMSG_SET_ACTION_BUTTON, 0x0599},
+            {Opcode.CMSG_SET_ACTIVE_MOVER, 0x0971},
             {Opcode.CMSG_SET_ACTIVE_VOICE_CHANNEL, 0x031E},
             {Opcode.CMSG_SET_LOOT_SPECIALIZATION, 0x0226},
             {Opcode.CMSG_SET_SELECTION, 0x05BD},

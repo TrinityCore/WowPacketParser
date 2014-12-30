@@ -586,5 +586,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadMovementStats(ref packet);
             packet.ReadInt32("SplineID");
         }
+
+        [Parser(Opcode.CMSG_SET_ACTIVE_MOVER)]
+        public static void HandleSetActiveMover(Packet packet)
+        {
+            packet.ReadPackedGuid128("ActiveMover");
+        }
     }
 }
