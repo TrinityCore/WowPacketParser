@@ -51,5 +51,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Unit");
             packet.ReadBits("Status", 2);
         }
+
+        [Parser(Opcode.CMSG_TAXINODE_STATUS_QUERY)]
+        public static void HandleTaxinodeStatusQuery(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+        }
     }
 }

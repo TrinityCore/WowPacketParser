@@ -209,6 +209,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_SUSPEND_TOKEN_RESPONSE, 0x041E},
             {Opcode.CMSG_SWAP_INV_ITEM, 0x0F17},
             {Opcode.CMSG_SWAP_ITEM, 0x0736},
+            {Opcode.CMSG_TAXINODE_STATUS_QUERY, 0x1BC1},
             {Opcode.CMSG_TRAINER_BUY_SPELL, 0x0A28},
             {Opcode.CMSG_TRAINER_LIST, 0x0A2E},
             {Opcode.CMSG_TRANSMOGRIFY_ITEMS, 0x0A85},
