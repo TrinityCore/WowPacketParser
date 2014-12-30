@@ -164,9 +164,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_AURA_UPDATE)]
         public static void HandleAuraUpdate(Packet packet)
         {
-            packet.ReadBit("bit16");
-            var guid = packet.ReadPackedGuid128("Guid");
-            var count = packet.ReadUInt32("AuraCount");
+            packet.ReadBit("UpdateAll");
+            var guid = packet.ReadPackedGuid128("UnitGUID");
+            var count = packet.ReadUInt32("AurasCount");
 
             var auras = new List<Aura>();
             for (var i = 0; i < count; ++i)
@@ -179,20 +179,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 var hasAura = packet.ReadBit("HasAura", i);
                 if (hasAura)
                 {
-                    aura.SpellId = (uint)packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i);
+                    aura.SpellId = (uint)packet.ReadEntry<Int32>(StoreNameType.Spell, "SpellID", i);
                     aura.AuraFlags = packet.ReadEnum<AuraFlagMoP>("Flags", TypeCode.Byte, i);
-                    packet.ReadInt32("Effect Mask", i);
-                    aura.Level = packet.ReadUInt16("Caster Level", i);
-                    aura.Charges = packet.ReadByte("Charges", i);
+                    packet.ReadInt32("ActiveFlags", i);
+                    aura.Level = packet.ReadUInt16("CastLevel", i);
+                    aura.Charges = packet.ReadByte("Applications", i);
 
                     var int72 = packet.ReadUInt32("Int56 Count", i);
                     var effectCount = packet.ReadUInt32("Effect Count", i);
 
                     for (var j = 0; j < int72; ++j)
-                        packet.ReadSingle("Float15", i, j);
+                        packet.ReadSingle("Points", i, j);
 
                     for (var j = 0; j < effectCount; ++j)
-                        packet.ReadSingle("Effect Value", i, j);
+                        packet.ReadSingle("EstimatedPoints", i, j);
 
                     packet.ResetBitReader();
                     var hasCasterGUID = packet.ReadBit("hasCasterGUID", i);
@@ -200,7 +200,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     var hasMaxDuration = packet.ReadBit("hasMaxDuration", i);
 
                     if (hasCasterGUID)
-                        packet.ReadPackedGuid128("Caster Guid", i);
+                        packet.ReadPackedGuid128("CastUnit", i);
 
                     if (hasDuration)
                         aura.Duration = packet.ReadInt32("Duration", i);
@@ -208,7 +208,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                         aura.Duration = 0;
 
                     if (hasMaxDuration)
-                        aura.MaxDuration = packet.ReadInt32("Max Duration", i);
+                        aura.MaxDuration = packet.ReadInt32("Remaining", i);
                     else
                         aura.MaxDuration = 0;
 
