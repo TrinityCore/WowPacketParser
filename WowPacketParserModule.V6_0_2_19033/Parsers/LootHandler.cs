@@ -53,8 +53,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleLootResponse(Packet packet) // 6.0.3.19342 sub_6179EA, sub_83C6C7
         {
             //! TODO Doublecheck the fields for this whole packet. I didn't have many different sniffs to name fields.
-            packet.ReadPackedGuid128("LootObj");
             packet.ReadPackedGuid128("Owner");
+            packet.ReadPackedGuid128("LootObj");
             // Order guessed
             packet.ReadByte("Threshold");
             packet.ReadByte("LootMethod");
