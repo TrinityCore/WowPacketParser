@@ -390,7 +390,7 @@ namespace WowPacketParser.Enums.Version.V4_2_0_14480
             {Opcode.SMSG_ACHIEVEMENT_DELETED, 0xEAFE},
             {Opcode.SMSG_ACHIEVEMENT_EARNED, 0xBAFA},
             {Opcode.SMSG_ACTION_BUTTONS, 0x6EBA},
-            {Opcode.SMSG_ACTIVATETAXIREPLY, 0xAEB2},
+            {Opcode.SMSG_ACTIVATE_TAXI_REPLY, 0xAEB2},
             {Opcode.SMSG_ADDON_INFO, 0x6AAE},
             {Opcode.SMSG_ADD_RUNE_POWER, 0x2E6E},
             {Opcode.SMSG_AI_REACTION, 0xB2EF},

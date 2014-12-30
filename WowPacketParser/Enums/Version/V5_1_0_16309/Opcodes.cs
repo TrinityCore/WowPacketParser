@@ -404,7 +404,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_ACCOUNT_INFO_RESPONSE, 0x0659},
             {Opcode.SMSG_ACCOUNT_RESTRICTED_WARNING, 0x0CD8},
             {Opcode.SMSG_ACHIEVEMENT_EARNED, 0x0719},
-            {Opcode.SMSG_ACTIVATETAXIREPLY, 0x0E88},
+            {Opcode.SMSG_ACTIVATE_TAXI_REPLY, 0x0E88},
             {Opcode.SMSG_ADDON_INFO, 0x0760},
             {Opcode.SMSG_ADD_RUNE_POWER, 0x026D},
             {Opcode.SMSG_AI_REACTION, 0x00C4},

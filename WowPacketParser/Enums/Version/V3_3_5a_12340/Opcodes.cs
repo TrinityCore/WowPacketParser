@@ -806,7 +806,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.SMSG_BUY_FAILED, 0x1A5},
             {Opcode.SMSG_SHOWTAXINODES, 0x1A9},
             {Opcode.SMSG_TAXINODE_STATUS, 0x1AB},
-            {Opcode.SMSG_ACTIVATETAXIREPLY, 0x1AE},
+            {Opcode.SMSG_ACTIVATE_TAXI_REPLY, 0x1AE},
             {Opcode.SMSG_NEW_TAXI_PATH, 0x1AF},
             {Opcode.SMSG_TRAINER_LIST, 0x1B1},
             {Opcode.SMSG_TRAINER_BUY_SUCCEEDED, 0x1B3},

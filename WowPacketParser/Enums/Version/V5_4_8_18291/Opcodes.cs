@@ -258,7 +258,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x162B},
             {Opcode.SMSG_ACHIEVEMENT_EARNED, 0x080B},
             {Opcode.SMSG_ACTION_BUTTONS, 0x081A},
-            {Opcode.SMSG_ACTIVATETAXIREPLY, 0x02A7},
+            {Opcode.SMSG_ACTIVATE_TAXI_REPLY, 0x02A7},
             {Opcode.SMSG_ADDON_INFO, 0x160A},
             {Opcode.SMSG_AI_REACTION, 0x06AF},
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA_ACCOUNT, 0x0A9E},

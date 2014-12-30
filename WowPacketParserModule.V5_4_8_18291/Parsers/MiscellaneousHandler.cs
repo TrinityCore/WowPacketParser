@@ -330,7 +330,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             Storage.Sounds.Add(sound, packet.TimeSpan);
         }
 
-        [Parser(Opcode.SMSG_ACTIVATETAXIREPLY)]
+        [Parser(Opcode.SMSG_ACTIVATE_TAXI_REPLY)]
         public static void HandleActivateTaxiReply(Packet packet)
         {
             packet.ReadEnum<TaxiError>("Result", 4);

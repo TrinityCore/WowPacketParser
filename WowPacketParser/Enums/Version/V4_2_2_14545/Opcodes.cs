@@ -336,7 +336,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.SMSG_ACHIEVEMENT_DELETED, 0x9ED2},
             {Opcode.SMSG_ACHIEVEMENT_EARNED, 0x484E},
             {Opcode.SMSG_ACTION_BUTTONS, 0x8A6B},
-            {Opcode.SMSG_ACTIVATETAXIREPLY, 0x8E4F},
+            {Opcode.SMSG_ACTIVATE_TAXI_REPLY, 0x8E4F},
             {Opcode.SMSG_ADDON_INFO, 0x9863},
             {Opcode.SMSG_AI_REACTION, 0xCEC2},
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA, 0xE6EC},
