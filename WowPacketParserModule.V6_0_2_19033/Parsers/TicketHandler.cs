@@ -65,5 +65,32 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadWoWString("WaitTimeOverrideMessage", bits2022);
             }
         }
+
+        [Parser(Opcode.CMSG_COMPLAIN)]
+        public static void HandleComplain(Packet packet)
+        {
+            var result = packet.ReadByte("Offender");
+
+            if (result == 0)
+                packet.ReadInt32("MailID");
+
+            if (result == 1)
+            {
+                packet.ReadInt32("Command");
+                packet.ReadInt32("ChannelID");
+
+                packet.ResetBitReader();
+
+                var len = packet.ReadBits(12);
+                packet.ReadWoWString("MessageLog", len);
+            }
+
+            if (result == 2)
+            {
+                // Order guessed
+                packet.ReadInt64("EventGuid");
+                packet.ReadInt64("InviteGuid");
+            }
+        }
     }
 }
