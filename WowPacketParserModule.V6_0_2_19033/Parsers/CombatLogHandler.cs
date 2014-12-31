@@ -125,8 +125,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("CasterGUID");
             packet.ReadPackedGuid128("TargetGUID");
 
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "SpellID");
             packet.ReadEnum<PowerType>("Type", TypeCode.UInt32);
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "SpellID");
             packet.ReadInt32("Amount");
 
             packet.ResetBitReader();
