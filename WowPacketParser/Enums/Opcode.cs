@@ -1996,6 +1996,7 @@ namespace WowPacketParser.Enums
         SMSG_WORLD_SERVER_INFO,
         SMSG_WORLD_STATE_UI_TIMER_UPDATE,
         SMSG_XP_GAIN_ABORTED,
+        SMSG_XP_GAIN_ENABLED,
         SMSG_ZONE_MAP,
         SMSG_ZONE_UNDER_ATTACK,
         SMSG_UNKNOWN_3,
