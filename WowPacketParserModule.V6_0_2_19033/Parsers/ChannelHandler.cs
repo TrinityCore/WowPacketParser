@@ -160,7 +160,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_CHANNEL_VOICE_OFF)]
         [Parser(Opcode.CMSG_CHANNEL_DECLINE_INVITE)]
         [Parser(Opcode.CMSG_CHANNEL_DISPLAY_LIST)]
-        public static void HandleChannelMisc(Packet packet)
+        public static void HandleChannelMisc2(Packet packet)
         {
             var bits108 = packet.ReadBits(7);
             packet.ReadWoWString("ChannelName", bits108);
@@ -176,5 +176,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Name", lenName);
         }
 
+        [Parser(Opcode.CMSG_CHANNEL_LIST)]
+        [Parser(Opcode.CMSG_CHANNEL_ANNOUNCEMENTS)]
+        [Parser(Opcode.CMSG_CHANNEL_VOICE_ON)]
+        [Parser(Opcode.CMSG_CHANNEL_VOICE_OFF)]
+        [Parser(Opcode.CMSG_CHANNEL_DECLINE_INVITE)]
+        [Parser(Opcode.CMSG_CHANNEL_DISPLAY_LIST)]
+        public static void HandleChannelMisc3(Packet packet)
+        {
+            var bits108 = packet.ReadBits(7);
+            packet.ReadWoWString("ChannelName", bits108);
+        }
     }
 }
