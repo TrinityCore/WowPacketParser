@@ -59,6 +59,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_CHANNEL_DECLINE_INVITE, 0x19DB},
             {Opcode.CMSG_CHANNEL_DISPLAY_LIST, 0x091C},
             {Opcode.CMSG_CHANNEL_KICK, 0x0A2A},
+            {Opcode.CMSG_CHANNEL_LIST, 0x091C},
             {Opcode.CMSG_CHANNEL_MODERATE, 0x093B},
             {Opcode.CMSG_CHANNEL_MODERATOR, 0x088B},
             {Opcode.CMSG_CHANNEL_OWNER, 0x0BFA},
