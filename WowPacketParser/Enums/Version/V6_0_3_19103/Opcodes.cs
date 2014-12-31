@@ -285,6 +285,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_AUTH_CHALLENGE, 0x1759},
             {Opcode.SMSG_AUTH_RESPONSE, 0x0DA9},
             {Opcode.SMSG_AVAILABLE_VOICE_CHANNEL, 0x04D4},
+            {Opcode.SMSG_BARBER_SHOP_RESULT, 0x150D},
             {Opcode.SMSG_BATTLE_PAY_DISTRIBUTION_UPDATE, 0x0BE3},
             {Opcode.SMSG_BATTLE_PAY_GET_DISTRIBUTION_LIST_RESPONSE, 0x0F2A},
             {Opcode.SMSG_BATTLE_PAY_GET_PRODUCT_LIST_RESPONSE, 0x12A4},
