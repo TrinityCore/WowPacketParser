@@ -176,7 +176,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_DEBUG_ACTIONS_STOP, 0x1011C}, //UnknownopcodeID
             {Opcode.CMSG_DEBUG_LIST_TARGETS, 0x10187}, //UnknownopcodeID
             {Opcode.CMSG_DECHARGE, 0x10092}, //UnknownopcodeID
-            {Opcode.CMSG_DECLINE_CHANNEL_INVITE, 0x0DF7F},
+            {Opcode.CMSG_CHANNEL_DECLINE_INVITE, 0x0DF7F},
             {Opcode.CMSG_DELETE_DANCE, 0x101C8}, //UnknownopcodeID
             {Opcode.CMSG_DEL_FRIEND, 0x02980},
             {Opcode.CMSG_DEL_IGNORE, 0x0F384},

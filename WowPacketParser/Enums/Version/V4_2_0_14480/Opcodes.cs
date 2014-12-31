@@ -134,7 +134,7 @@ namespace WowPacketParser.Enums.Version.V4_2_0_14480
             {Opcode.CMSG_CREATURE_QUERY, 0xA662},
             {Opcode.CMSG_CUF_PROFILES_SAVE, 0x1862},
             {Opcode.CMSG_DANCE_QUERY, 0xA6BF},
-            {Opcode.CMSG_DECLINE_CHANNEL_INVITE, 0x7633},
+            {Opcode.CMSG_CHANNEL_DECLINE_INVITE, 0x7633},
             {Opcode.CMSG_DEL_FRIEND, 0x3E3B},
             {Opcode.CMSG_DEL_IGNORE, 0x7AB6},
             {Opcode.CMSG_DEL_VOICE_IGNORE, 0x2EA3},

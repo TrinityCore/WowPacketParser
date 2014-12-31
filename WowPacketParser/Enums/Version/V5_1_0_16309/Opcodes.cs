@@ -133,7 +133,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.CMSG_CREATURE_QUERY, 0x0285},
             {Opcode.CMSG_DANCE_QUERY, 0x06EC},
             {Opcode.CMSG_DB_QUERY_BULK, 0x0537},
-            {Opcode.CMSG_DECLINE_CHANNEL_INVITE, 0x0AC1},
+            {Opcode.CMSG_CHANNEL_DECLINE_INVITE, 0x0AC1},
             {Opcode.CMSG_EQUIPMENT_SET_DELETE, 0x0C69},
             {Opcode.CMSG_DEL_FRIEND, 0x0C4D},
             {Opcode.CMSG_DEL_IGNORE, 0x0A01},

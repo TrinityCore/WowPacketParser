@@ -92,13 +92,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_CHANNEL_DISPLAY_LIST)]
-        public static void HandleChannelMisc(Packet packet)
-        {
-            var bits108 = packet.ReadBits(7);
-            packet.ReadWoWString("ChannelName", bits108);
-        }
-
         [Parser(Opcode.CMSG_LEAVE_CHANNEL)]
         public static void HandleChannelLeave(Packet packet)
         {
@@ -138,5 +131,50 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("LocalGUID");
             packet.ReadPackedGuid128("SessionGUID");
         }
+
+        [Parser(Opcode.CMSG_CHANNEL_SET_OWNER)]
+        [Parser(Opcode.CMSG_CHANNEL_MODERATOR)]
+        [Parser(Opcode.CMSG_CHANNEL_UNMODERATOR)]
+        [Parser(Opcode.CMSG_CHANNEL_MUTE)]
+        [Parser(Opcode.CMSG_CHANNEL_UNMUTE)]
+        [Parser(Opcode.CMSG_CHANNEL_INVITE)]
+        [Parser(Opcode.CMSG_CHANNEL_KICK)]
+        [Parser(Opcode.CMSG_CHANNEL_BAN)]
+        [Parser(Opcode.CMSG_CHANNEL_UNBAN)]
+        [Parser(Opcode.CMSG_CHANNEL_SILENCE_VOICE)]
+        [Parser(Opcode.CMSG_CHANNEL_UNSILENCE_VOICE)]
+        [Parser(Opcode.CMSG_CHANNEL_SILENCE_ALL)]
+        [Parser(Opcode.CMSG_CHANNEL_UNSILENCE_ALL)]
+        public static void HandleChannelMisc1(Packet packet)
+        {
+            var lenChannelName = packet.ReadBits(7);
+            var lenName = packet.ReadBits(9);
+
+            packet.ReadWoWString("ChannelName", lenChannelName);
+            packet.ReadWoWString("Name", lenName);
+        }
+
+        [Parser(Opcode.CMSG_CHANNEL_LIST)]
+        [Parser(Opcode.CMSG_CHANNEL_ANNOUNCEMENTS)]
+        [Parser(Opcode.CMSG_CHANNEL_VOICE_ON)]
+        [Parser(Opcode.CMSG_CHANNEL_VOICE_OFF)]
+        [Parser(Opcode.CMSG_CHANNEL_DECLINE_INVITE)]
+        [Parser(Opcode.CMSG_CHANNEL_DISPLAY_LIST)]
+        public static void HandleChannelMisc(Packet packet)
+        {
+            var bits108 = packet.ReadBits(7);
+            packet.ReadWoWString("ChannelName", bits108);
+        }
+
+        [Parser(Opcode.CMSG_CHANNEL_PASSWORD)]
+        public static void HandleChannelPassword(Packet packet)
+        {
+            var lenChannelName = packet.ReadBits(7);
+            var lenName = packet.ReadBits(7);
+
+            packet.ReadWoWString("ChannelName", lenChannelName);
+            packet.ReadWoWString("Name", lenName);
+        }
+
     }
 }

@@ -22,7 +22,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_CHANNEL_VOICE_ON)]
         [Parser(Opcode.CMSG_CHANNEL_VOICE_OFF)]
         [Parser(Opcode.CMSG_SET_CHANNEL_WATCH)]
-        [Parser(Opcode.CMSG_DECLINE_CHANNEL_INVITE)]
+        [Parser(Opcode.CMSG_CHANNEL_DECLINE_INVITE)]
         [Parser(Opcode.CMSG_CHANNEL_DISPLAY_LIST)]
         public static void HandleChannelMisc(Packet packet)
         {

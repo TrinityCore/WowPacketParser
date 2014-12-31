@@ -111,7 +111,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.CMSG_CORPSE_MAP_POSITION_QUERY, 0xDC7F},
             {Opcode.CMSG_CREATURE_QUERY, 0x5A7E},
             {Opcode.CMSG_DANCE_QUERY, 0x5C5E},
-            {Opcode.CMSG_DECLINE_CHANNEL_INVITE, 0x4EFB},
+            {Opcode.CMSG_CHANNEL_DECLINE_INVITE, 0x4EFB},
             {Opcode.CMSG_DEL_FRIEND, 0xC852},
             {Opcode.CMSG_DEL_IGNORE, 0x8ADA},
             {Opcode.CMSG_DEL_VOICE_IGNORE, 0x8C73},

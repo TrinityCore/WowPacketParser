@@ -464,7 +464,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_SET_GRANTABLE_LEVELS, 0x040C}, // NF()(0x040C) //
             {Opcode.CMSG_GRANT_LEVEL, 0x877C}, // (0xE251)(0x040D) //
             {Opcode.CMSG_REFER_A_FRIEND, 0x040E}, // NF()(0x040E) //
-            {Opcode.CMSG_DECLINE_CHANNEL_INVITE, 0xFFA5}, // NF(0x0290)(0x0410) //
+            {Opcode.CMSG_CHANNEL_DECLINE_INVITE, 0xFFA5}, // NF(0x0290)(0x0410) //
             {Opcode.CMSG_TOTEM_DESTROYED, 0x0414}, // NF()(0x0414) //
             {Opcode.CMSG_EXPIRE_RAID_INSTANCE, 0x0415}, // NF()(0x0415) //
             {Opcode.CMSG_NO_SPELL_VARIANCE, 0x0416}, // NF()(0x0416) //

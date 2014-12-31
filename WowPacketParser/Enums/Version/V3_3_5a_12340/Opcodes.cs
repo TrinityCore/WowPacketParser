@@ -501,7 +501,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.CMSG_SET_GRANTABLE_LEVELS, 0x40C},
             {Opcode.CMSG_GRANT_LEVEL, 0x40D},
             {Opcode.CMSG_REFER_A_FRIEND, 0x40E},
-            {Opcode.CMSG_DECLINE_CHANNEL_INVITE, 0x410},
+            {Opcode.CMSG_CHANNEL_DECLINE_INVITE, 0x410},
             {Opcode.CMSG_TOTEM_DESTROYED, 0x414},
             {Opcode.CMSG_EXPIRE_RAID_INSTANCE, 0x415},
             {Opcode.CMSG_NO_SPELL_VARIANCE, 0x416},
