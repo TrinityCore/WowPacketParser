@@ -334,6 +334,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_CONQUEST_FORMULA_CONSTANTS, 0x1342},
             {Opcode.SMSG_CONTACT_LIST, 0x0210},
             {Opcode.SMSG_CONTACT_STATUS, 0x1BEA},
+            {Opcode.SMSG_CONVERT_RUNE, 0x1C89},
             {Opcode.SMSG_CORPSE_RECLAIM_DELAY, 0x0BE2},
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x0A26},
             {Opcode.SMSG_CRITERIA_UPDATE_ACCOUNT, 0x0912},
