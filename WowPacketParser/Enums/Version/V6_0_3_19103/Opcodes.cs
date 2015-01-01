@@ -319,6 +319,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_CHANNEL_NOTIFY_LEFT, 0x1452},
             {Opcode.SMSG_CHANNEL_START, 0x016C},
             {Opcode.SMSG_CHANNEL_UPDATE, 0x19DB},
+            {Opcode.SMSG_CHAT_PLAYER_NOT_FOUND, 0x0614},
             {Opcode.SMSG_CHAR_CREATE, 0x0107},
             {Opcode.SMSG_CHAR_CUSTOMIZE, 0x1932},
             {Opcode.SMSG_CHAR_CUSTOMIZE_RESULT, 0x0BAA},

@@ -170,5 +170,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var len = packet.ReadBits(12);
             packet.ReadWoWString("MessageText", len);
         }
+
+        [Parser(Opcode.SMSG_CHAT_PLAYER_NOT_FOUND)]
+        public static void HandleChatPlayerNotFound(Packet packet)
+        {
+            var bits16 = packet.ReadBits(9);
+            packet.ReadWoWString("Name", bits16);
+        }
     }
 }
