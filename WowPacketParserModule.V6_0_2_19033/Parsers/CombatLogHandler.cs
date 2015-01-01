@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -209,6 +210,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("LogAbsorbed");
 
             packet.ResetBitReader();
+
+            var bit76 = packet.ReadBit("HasLogData");
+            if (bit76)
+                SpellHandler.ReadSpellCastLogData(ref packet);
+        }
+
+        [Parser(Opcode.SMSG_ENVIRONMENTALDAMAGELOG)]
+        public static void HandleEnvirenmentalDamageLog(Packet packet)
+        {
+            packet.ReadPackedGuid128("Victim");
+
+            packet.ReadEnum<EnvironmentDamage>("Type", TypeCode.Byte);
+
+            packet.ReadInt32("Amount");
+            packet.ReadInt32("Resisted");
+            packet.ReadInt32("Absorbed");
 
             var bit76 = packet.ReadBit("HasLogData");
             if (bit76)
