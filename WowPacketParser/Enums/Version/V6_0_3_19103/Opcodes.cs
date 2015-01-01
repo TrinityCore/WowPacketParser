@@ -22,7 +22,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_ADD_FRIEND, 0x0DB9},
             {Opcode.CMSG_ADD_IGNORE, 0x1321},
             {Opcode.CMSG_ADD_MUTE, 0x098A},
-            {Opcode.CMSG_ALTER_APPEARANCE, 0x0B54},
+            {Opcode.CMSG_ALTER_APPEARANCE, 0x13E9},
             {Opcode.CMSG_AREATRIGGER, 0x01B4},
             {Opcode.CMSG_ATTACKSTOP, 0x065B},
             {Opcode.CMSG_ATTACKSWING, 0x1E9B},
