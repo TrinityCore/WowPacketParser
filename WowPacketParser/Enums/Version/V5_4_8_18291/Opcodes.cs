@@ -226,7 +226,6 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_SOCKET_GEMS, 0x02CB},
             {Opcode.CMSG_SPELLCLICK, 0x067A},
             {Opcode.CMSG_SPLIT_ITEM, 0x02EC},
-            {Opcode.CMSG_STANDSTATECHANGE, 0x0ABD},
             {Opcode.CMSG_SUBMIT_BUG, 0x0861},
             {Opcode.CMSG_SUBMIT_COMPLAIN, 0x030D},
             {Opcode.CMSG_SUGGESTION_SUBMIT, 0x0A12},
