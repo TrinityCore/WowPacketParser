@@ -15,6 +15,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
 
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
         {
+            {Opcode.CMSG_ACCEPT_LEVEL_GRANT, 0x1921},
             {Opcode.CMSG_ACTIVATETAXI, 0x0311},
             {Opcode.CMSG_ACTIVATETAXIEXPRESS, 0x1B52},
             {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x03F4},
@@ -102,6 +103,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_GET_MAIL_LIST, 0x0BD3},
             {Opcode.CMSG_GOSSIP_HELLO, 0x00F3},
             {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x0332},
+            {Opcode.CMSG_GRANT_LEVEL, 0x0BE3},
             {Opcode.CMSG_GUILD_BANK_MONEY_WITHDRAWN_QUERY, 0x063D},
             {Opcode.CMSG_GUILD_INVITE, 0x19A4},
             {Opcode.CMSG_GUILD_PERMISSIONS, 0x1436},
