@@ -54,7 +54,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_AUTOSTORE_BAG_ITEM, 0x0236},
             {Opcode.CMSG_AUTOSTORE_BANK_ITEM, 0x0607},
             {Opcode.CMSG_AUTOSTORE_LOOT_ITEM, 0x0E34},
-            {Opcode.CMSG_AUTO_DECLINE_GUILD_INVITE, 0x1234},
+            {Opcode.CMSG_GUILD_AUTO_DECLINE_INVITATION, 0x1234},
             {Opcode.CMSG_AUTO_DECLINE_GUILD_INVITES, 0x2034},
             {Opcode.CMSG_BANKER_ACTIVATE, 0x0005},
             {Opcode.CMSG_BATTLEFIELD_LEAVE, 0x3018},

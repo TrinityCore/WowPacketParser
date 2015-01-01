@@ -1379,7 +1379,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GUILD_EVENT_LOG_QUERY)]
         [Parser(Opcode.SMSG_GUILD_CANCEL)] // Fires GUILD_INVITE_CANCEL
         [Parser(Opcode.SMSG_GUILD_INVITE_CANCEL)]
-        [Parser(Opcode.CMSG_AUTO_DECLINE_GUILD_INVITE)] // 4.3.4, sent if player has PLAYER_FLAGS_AUTO_DECLINE_GUILD
+        [Parser(Opcode.CMSG_GUILD_AUTO_DECLINE_INVITATION)] // 4.3.4, sent if player has PLAYER_FLAGS_AUTO_DECLINE_GUILD
         [Parser(Opcode.CMSG_GUILD_PERMISSIONS)]
         public static void HandleGuildNull(Packet packet)
         {

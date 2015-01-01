@@ -104,6 +104,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_GOSSIP_HELLO, 0x00F3},
             {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x0332},
             {Opcode.CMSG_GRANT_LEVEL, 0x0BE3},
+            {Opcode.CMSG_GUILD_AUTO_DECLINE_INVITATION, 0x062F},
             {Opcode.CMSG_GUILD_BANK_MONEY_WITHDRAWN_QUERY, 0x063D},
             {Opcode.CMSG_GUILD_INVITE, 0x19A4},
             {Opcode.CMSG_GUILD_PERMISSIONS, 0x1436},
