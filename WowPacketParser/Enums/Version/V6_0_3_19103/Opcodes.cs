@@ -255,7 +255,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_SHOWING_HELM, 0x11E1},
             {Opcode.CMSG_SOCKET_GEMS, 0x1BE1},
             {Opcode.CMSG_SPELLCLICK, 0x0BC2},
-            {Opcode.CMSG_SPLIT_ITEM, 0x02EC},
+            {Opcode.CMSG_SPLIT_ITEM, 0x0795},
             {Opcode.CMSG_STANDSTATECHANGE, 0x0ABD},
             {Opcode.CMSG_SUPPORT_TICKET_SUBMIT_COMPLAINT, 0x0B37}, // need structure | 2871 (0x0B37) | 0x0098E908 | 0x005E41E4 |
             {Opcode.CMSG_SUSPEND_COMMS_ACK, 0x0C56},
