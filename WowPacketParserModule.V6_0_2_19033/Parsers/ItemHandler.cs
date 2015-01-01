@@ -7,24 +7,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class ItemHandler
     {
-        public static int MaskCount(int mask)
+        public static int ReadItemInstance(Packet packet, params object[] indexes)
         {
-            var count = 0;
 
-            while (mask != 0)
-            {
-               mask &= (mask - 1);
-               ++count;
-            }
-
-            return count;
-        }
-
-        public static void ReadItemInstance(ref Packet packet, params object[] indexes)
-        {
-            packet.ReadUInt32("ItemID", Packet.GetIndexString(indexes));
-            packet.ReadUInt32("RandomPropertiesSeed", Packet.GetIndexString(indexes));
-            packet.ReadUInt32("RandomPropertiesID", Packet.GetIndexString(indexes));
+            var itemId = packet.ReadEntry<Int32>(StoreNameType.Item, "ItemID", indexes);
+            packet.ReadUInt32("RandomPropertiesSeed", indexes);
+            packet.ReadUInt32("RandomPropertiesID", indexes);
 
             packet.ResetBitReader();
 
@@ -34,17 +22,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             {
                 packet.ReadByte("Context", indexes);
 
+                var indexString = Packet.GetIndexString(indexes);
                 var bonusCount = packet.ReadUInt32();
                 for (var j = 0; j < bonusCount; ++j)
-                    packet.ReadUInt32("BonusListID", Packet.GetIndexString(indexes), j);
+                    packet.ReadUInt32(String.Format("{0} [{1}] BonusListID", indexString, j));
             }
 
             if (hasModifications)
             {
-                var modificationCount = MaskCount(packet.ReadInt32("modificationCount"));
-                for (var j = 0; j < modificationCount; ++j)
-                    packet.ReadInt32("Modification", Packet.GetIndexString(indexes), j);
+                var mask = packet.ReadUInt32();
+                for (var j = 1; j <= 8; ++j)
+                    if ((mask & (1u << (j - 1))) != 0)
+                        packet.ReadInt32(((ItemModifier)j).ToString(), indexes);
             }
+
+            return itemId;
         }
 
         [Parser(Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE)]
@@ -82,27 +74,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 var bit16 = packet.ReadBit("HasSrcItem", i);
                 var bit40 = packet.ReadBit("HasSrcVoidItem", i);
 
-                packet.ReadUInt32("ItemID", i);
-                packet.ReadUInt32("RandomPropertiesSeed", i);
-                packet.ReadUInt32("RandomPropertiesID", i);
-                packet.ResetBitReader();
-                var hasBonuses = packet.ReadBit("HasItemBonus", i);
-                var hasModifications = packet.ReadBit("HasModifications", i);
-                if (hasBonuses)
-                {
-                    packet.ReadByte("Context", i);
-
-                    var bonusCount = packet.ReadUInt32();
-                    for (var j = 0; j < bonusCount; ++j)
-                        packet.ReadUInt32("BonusListID", i, j);
-                }
-
-                if (hasModifications)
-                {
-                    var modificationCount = packet.ReadUInt32() / 4;
-                    for (var j = 0; j < modificationCount; ++j)
-                        packet.ReadUInt32("Modification", i, j);
-                }
+                ItemHandler.ReadItemInstance(packet, i);
 
                 packet.ReadInt32("Slot", i);
 
@@ -278,7 +250,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("VendorGUID");
             packet.ReadPackedGuid128("ContainerGUID");
 
-            ReadItemInstance(ref packet);
+            ReadItemInstance(packet);
 
             packet.ReadInt32("Quantity");
             packet.ReadUInt32("Muid");
@@ -299,7 +271,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadInt32("SlotInBag");
 
-            ReadItemInstance(ref packet);
+            ReadItemInstance(packet);
 
             packet.ReadUInt32("WodUnk");
             packet.ReadUInt32("Quantity");

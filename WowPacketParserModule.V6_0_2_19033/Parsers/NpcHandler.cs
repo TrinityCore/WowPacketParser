@@ -194,29 +194,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 // ItemInstance
                 //if (ItemInstance)
                 {
-                    vendorItem.ItemId = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "ItemID", i);
-                    packet.ReadUInt32("RandomPropertiesSeed", i);
-                    packet.ReadUInt32("RandomPropertiesID", i);
-
-                    packet.ResetBitReader();
-
-                    var hasBonuses = packet.ReadBit("HasItemBonus", i);
-                    var hasModifications = packet.ReadBit("HasModifications", i);
-                    if (hasBonuses)
-                    {
-                        packet.ReadByte("Context", i);
-
-                        var bonusCount = packet.ReadUInt32();
-                        for (var j = 0; j < bonusCount; ++j)
-                            packet.ReadUInt32("BonusListID", i, j);
-                    }
-
-                    if (hasModifications)
-                    {
-                        var modificationCount = packet.ReadUInt32() / 4;
-                        for (var j = 0; j < modificationCount; ++j)
-                            packet.ReadUInt32("Modification", i, j);
-                    }
+                    vendorItem.ItemId = (uint)ItemHandler.ReadItemInstance(packet, i);
                 }
 
                 var maxCount = packet.ReadInt32("Quantity", i);

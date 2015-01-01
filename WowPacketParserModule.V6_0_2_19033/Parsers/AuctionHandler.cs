@@ -44,7 +44,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (int i = 0; i < int10; i++)
             {
-                ItemHandler.ReadItemInstance(ref packet, i);
+                ItemHandler.ReadItemInstance(packet, i);
 
                 packet.ReadInt32("Count", i);
                 packet.ReadInt32("Charges", i);

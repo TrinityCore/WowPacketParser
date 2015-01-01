@@ -78,7 +78,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadByte("LootItemType", i);
                 packet.ReadByte("LootListID", i);
 
-                ItemHandler.ReadItemInstance(ref packet, i);
+                ItemHandler.ReadItemInstance(packet, i);
             }
 
             for (var i = 0; i < currencyCount; ++i)
