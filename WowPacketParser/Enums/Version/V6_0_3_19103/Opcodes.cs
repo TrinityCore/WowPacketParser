@@ -40,6 +40,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_BATTLE_PET_SET_BATTLE_SLOT, 0x120B},
             {Opcode.CMSG_BATTLE_PAY_GET_PRODUCT_LIST_QUERY, 0x1389},
             {Opcode.CMSG_BATTLE_PAY_GET_PURCHASE_LIST_QUERY, 0x120C},
+            {Opcode.CMSG_BATTLEFIELD_LEAVE, 0x06F1},
             {Opcode.CMSG_BATTLEFIELD_LIST, 0x03B1},
             {Opcode.CMSG_BATTLEFIELD_MGR_ENTRY_INVITE_RESPONSE, 0x059A},
             {Opcode.CMSG_BATTLEFIELD_MGR_EXIT_REQUEST, 0x1381},
