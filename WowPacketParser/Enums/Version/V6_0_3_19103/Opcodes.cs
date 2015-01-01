@@ -251,7 +251,6 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_SET_PRIMARY_TALENT_TREE, 0x0AC5},
             {Opcode.CMSG_SET_PVP, 0x19B9},
             {Opcode.CMSG_SET_SELECTION, 0x05BD},
-            {Opcode.CMSG_SPLIT_ITEM, 0x0795},
             {Opcode.CMSG_SHOWING_CLOAK, 0x0132},
             {Opcode.CMSG_SHOWING_HELM, 0x11E1},
             {Opcode.CMSG_SOCKET_GEMS, 0x1BE1},
