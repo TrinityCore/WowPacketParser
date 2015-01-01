@@ -579,6 +579,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_WARDEN_DATA, 0x0BEC},
             {Opcode.SMSG_WEATHER, 0x073E},
             {Opcode.SMSG_WEEKLY_SPELL_USAGE, 0x13DC},
+            {Opcode.SMSG_WEEKLY_SPELL_USAGE_UPDATE, 0x1829},
             {Opcode.SMSG_WHO, 0x0601},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x11AC},
             {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x0B83},

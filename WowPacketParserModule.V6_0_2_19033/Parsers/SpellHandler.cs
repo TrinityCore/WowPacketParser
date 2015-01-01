@@ -405,6 +405,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_WEEKLY_SPELL_USAGE_UPDATE)]
+        public static void HandleWeeklySpellUsageUpdate(Packet packet)
+        {
+            packet.ReadInt32("Category");
+            packet.ReadByte("Uses");
+        }
+
         [Parser(Opcode.SMSG_CHANNEL_UPDATE)]
         public static void HandleSpellChannelUpdate(Packet packet)
         {
