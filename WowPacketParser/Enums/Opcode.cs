@@ -598,6 +598,7 @@ namespace WowPacketParser.Enums
         CMSG_PET_STOP_ATTACK,
         CMSG_PET_UNLEARN,
         CMSG_PET_UNLEARN_TALENTS,
+        CMSG_PET_SET_SPECIALIZATION,
         CMSG_PING,
         CMSG_PLAYED_TIME,
         CMSG_PLAYER_AI_CHEAT,
