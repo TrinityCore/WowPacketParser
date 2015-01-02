@@ -456,6 +456,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadWoWString("Name", len);
         }
+
+        [Parser(Opcode.CMSG_RESURRECT_RESPONSE)]
+        public static void HandleResurrectResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("Resurrecter");
+            packet.ReadInt32("Response");
+        }
     }
 }
 
