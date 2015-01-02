@@ -183,7 +183,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("AddedUserGUID");
 
             packet.ReadEnum<ChannelFlag>("ChannelFlags", TypeCode.Byte);
-            packet.ReadEnum<ChannelMemberFlag>("Member Flags", TypeCode.Byte);
+            packet.ReadEnum<ChannelMemberFlag>("UserFlags", TypeCode.Byte);
 
             packet.ReadInt32("ChannelID");
 

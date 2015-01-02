@@ -288,5 +288,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Banker");
         }
+
+        [Parser(Opcode.CSSG_CLOSE_INTERACTION)] // trigger in CGGameUI::CloseInteraction
+        public static void HandleTest(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+        }
     }
 }

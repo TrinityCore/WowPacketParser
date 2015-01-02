@@ -88,6 +88,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_CHAR_RACE_OR_FACTION_CHANGE, 0x1209},
             {Opcode.CMSG_CHAR_RENAME, 0x038B},
             {Opcode.CMSG_CHAR_UNDELETE_ENUM, 0x0F2D},
+            {Opcode.CSSG_CLOSE_INTERACTION, 0x1B19},
             {Opcode.CMSG_CREATURE_QUERY, 0x0505},
             {Opcode.CMSG_COMPLAIN, 0x0917},
             {Opcode.CMSG_CONNECT_TO_FAILED, 0x0135},
