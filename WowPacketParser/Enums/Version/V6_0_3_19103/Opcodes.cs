@@ -436,6 +436,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_GUILD_RECIPES, 0x1078},
             {Opcode.SMSG_GUILD_REWARDS_LIST, 0x1818},
             {Opcode.SMSG_GUILD_ROSTER, 0x1026},
+            {Opcode.SMSG_HEALTH_UPDATE, 0x0BE1},
             {Opcode.SMSG_HIGHEST_THREAT_UPDATE, 0x059A},
             {Opcode.SMSG_HOTFIX_INFO, 0x1D1D},
             {Opcode.SMSG_INITIALIZE_FACTIONS, 0x0B10},

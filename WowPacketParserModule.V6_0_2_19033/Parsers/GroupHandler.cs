@@ -261,7 +261,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadEnum<LfgRoleFlag>("NewRole", TypeCode.Int32);
         }
 
-        [Parser(Opcode.SMSG_ROLE_CHANGED_INFORM)]
+        [Parser(Opcode.SMSG_ROLE_POLL_INFORM)]
         public static void HandleRolePollInform(Packet packet)
         {
             packet.ReadByte("PartyIndex");
