@@ -53,6 +53,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_BUYBACK_ITEM, 0x0661},
             {Opcode.CMSG_BUY_BANK_SLOT, 0x12F2},
             {Opcode.CMSG_BUY_ITEM, 0x02E2},
+            {Opcode.CMSG_BUG_REPORT, 0x0181},
             {Opcode.CMSG_DB_QUERY_BULK, 0x158D},
             {Opcode.CMSG_CANCEL_AURA, 0x1861},
             {Opcode.CMSG_CANCEL_CAST, 0x18C0},

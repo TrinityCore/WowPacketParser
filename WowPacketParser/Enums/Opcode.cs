@@ -98,6 +98,7 @@ namespace WowPacketParser.Enums
         CMSG_BOT_DETECTED,
         CMSG_BOT_DETECTED2,
         CMSG_BUG,
+        CMSG_BUG_REPORT,
         CMSG_BUSY_TRADE,
         CMSG_BUYBACK_ITEM,
         CMSG_BUY_BANK_SLOT,

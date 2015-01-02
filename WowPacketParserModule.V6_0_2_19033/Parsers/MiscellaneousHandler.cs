@@ -427,6 +427,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Unit");
             packet.ReadUInt16("AnimKitID");
         }
+
+        [Parser(Opcode.CMSG_BUG_REPORT)]
+        public static void HandleBugReport(Packet packet)
+        {
+            packet.ReadBit("Type");
+
+            var len1 = packet.ReadBits(12);
+            var len2 = packet.ReadBits(10);
+
+            packet.ReadWoWString("DiagInfo", len1);
+            packet.ReadWoWString("Text", len2);
+        }
     }
 }
 
