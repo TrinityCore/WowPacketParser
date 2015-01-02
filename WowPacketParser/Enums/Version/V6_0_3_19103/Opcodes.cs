@@ -91,6 +91,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_CLOSE_INTERACTION, 0x1B19},
             {Opcode.CMSG_CREATURE_QUERY, 0x0505},
             {Opcode.CMSG_COMPLAIN, 0x0917},
+            {Opcode.CMSG_COMPLETE_CINEMATIC, 0x1B51},
             {Opcode.CMSG_CONNECT_TO_FAILED, 0x0135},
             {Opcode.CMSG_DB_QUERY_BULK, 0x138B},
             {Opcode.CMSG_DEL_FRIEND, 0x0F2A},
