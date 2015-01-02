@@ -215,6 +215,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_SET_CONTACT_NOTES, 0x0937},
             {Opcode.CMSG_SET_DUNGEON_DIFFICULTY, 0x1A36},
             {Opcode.CMSG_SET_RAID_DIFFICULTY, 0x1093},
+            {Opcode.CMSG_SET_PLAYER_DECLINED_NAMES, 0x018B},
             {Opcode.CMSG_SET_PRIMARY_TALENT_TREE, 0x06C6},
             {Opcode.CMSG_SET_PVP, 0x02C5},
             {Opcode.CMSG_SET_SAVED_INSTANCE_EXTEND, 0x1222},

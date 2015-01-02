@@ -387,7 +387,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_LEVELUP_INFO)]
-        public static void HandleLevelUp(Packet packet)
+        public static void HandleLevelUpInfo(Packet packet)
         {
             packet.ReadInt32("Level");
             packet.ReadInt32("HealthDelta");
@@ -399,6 +399,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("StatDelta", (StatType)i);
 
             packet.ReadInt32("Cp");
+        }
+
+        [Parser(Opcode.CMSG_SET_PLAYER_DECLINED_NAMES)]
+        public static void HandleSetPlayerDeclinedNames(Packet packet)
+        {
+            packet.ReadPackedGuid128("Player");
+
+            var count = new int[5];
+            for (var i = 0; i < 5; ++i)
+                count[i] = (int)packet.ReadBits(7);
+
+            for (var i = 0; i < 5; ++i)
+                packet.ReadWoWString("DeclinedName", count[i], i);
         }
     }
 }
