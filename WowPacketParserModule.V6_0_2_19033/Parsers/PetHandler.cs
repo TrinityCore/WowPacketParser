@@ -122,5 +122,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadWoWString("NewName", bits20);
         }
+        
+        [Parser(Opcode.SMSG_PET_SPECIALIZATION)]
+        public static void HandlePetSpecialization(Packet packet)
+        {
+             packet.ReadInt16("Specialization");
+        }
+        
+        [Parser(Opcode.CMSG_PET_SET_SPECIALIZATION)]
+        public static void HandlePetSetSpecialization(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
+            packet.ReadInt32("SpecGroupId");
+        }
     }
 }
