@@ -144,7 +144,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_PET_REMOVED_SPELL)]
         public static void HandlePetSpellsLearnedRemoved(Packet packet)
         {
-             var count = packet.ReadUInt32("Spell Count");
+            var count = packet.ReadUInt32("Spell Count");
 
             for (var i = 0; i < count; ++i)
                 packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i);
