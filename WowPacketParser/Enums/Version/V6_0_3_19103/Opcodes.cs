@@ -460,6 +460,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_LFG_JOIN_RESULT, 0x0F72},
             {Opcode.SMSG_LFG_QUEUE_STATUS, 0x07F1},
             {Opcode.SMSG_LFG_PLAYER_INFO, 0x0F36},
+            {Opcode.SMSG_LFG_PROPOSAL_UPDATE, 0x0F32},
             {Opcode.SMSG_LFG_UPDATE_STATUS, 0x07F7},
             {Opcode.SMSG_LIST_INVENTORY, 0x0940},
             {Opcode.SMSG_LOAD_CUF_PROFILES, 0x1530},

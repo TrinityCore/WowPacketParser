@@ -220,5 +220,38 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadInt32("AvgWaitTimeMe");
         }
+
+        [Parser(Opcode.SMSG_LFG_PROPOSAL_UPDATE)]
+        public static void HandleLfgProposalUpdate(Packet packet)
+        {
+            ReadRideTicket(packet);
+
+            packet.ReadInt64("InstanceID");
+
+            packet.ReadInt32("ProposalID");
+            packet.ReadInt32("Slot");
+
+            packet.ReadByte("State");
+
+            packet.ReadInt32("CompletedMask");
+            var int68 = packet.ReadInt32("PlayersCount");
+            for (int i = 0; i < int68; i++)
+            {
+                packet.ReadInt32("Roles", i);
+
+                packet.ResetBitReader();
+
+                packet.ReadBit("Me", i);
+                packet.ReadBit("SameParty", i);
+                packet.ReadBit("MyParty", i);
+                packet.ReadBit("Responded", i);
+                packet.ReadBit("Accepted", i);
+            }
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("ValidCompletedMask");
+            packet.ReadBit("ProposalSilent");
+        }
     }
 }
