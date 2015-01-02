@@ -6,7 +6,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class LfgHandler
     {
-        public static void ReadRideTicket(ref Packet packet)
+        public static void ReadRideTicket(Packet packet)
         {
             packet.ReadPackedGuid128("RequesterGuid");
             packet.ReadInt32("Id");
@@ -141,7 +141,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_LFG_JOIN_RESULT)]
         public static void HandleLfgJoinResult(Packet packet)
         {
-            ReadRideTicket(ref packet);
+            ReadRideTicket(packet);
 
             packet.ReadByte("Result");
             packet.ReadByte("ResultDetail");
@@ -166,7 +166,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_LFG_UPDATE_STATUS)]
         public static void HandleLfgQueueStatusUpdate(Packet packet)
         {
-            ReadRideTicket(ref packet);
+            ReadRideTicket(packet);
 
             packet.ReadByte("SubType");
             packet.ReadByte("Reason");
@@ -201,6 +201,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadBit("Player");
             packet.ReadByte("PartyIndex");
+        }
+
+        [Parser(Opcode.SMSG_LFG_QUEUE_STATUS)]
+        public static void HandleLfgQueueStatusUpdate434(Packet packet)
+        {
+            ReadRideTicket(packet);
+
+            packet.ReadInt32("Slot");
+            packet.ReadInt32("AvgWaitTime");
+            packet.ReadInt32("QueuedTime");
+
+            for (int i = 0; i < 3; i++)
+            {
+                packet.ReadInt32("AvgWaitTimeByRole", i);
+                packet.ReadByte("LastNeeded", i);
+            }
+
+            packet.ReadInt32("AvgWaitTimeMe");
         }
     }
 }
