@@ -1,3 +1,4 @@
+using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -81,6 +82,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadBit("Locked", i);
                 packet.ReadBit("Extended", i);
             }
+        }
+
+        [Parser(Opcode.CMSG_SET_SAVED_INSTANCE_EXTEND)]
+        public static void HandleSetSavedInstanceExtend(Packet packet)
+        {
+            packet.ReadEntry<Int32>(StoreNameType.Map, "MapID");
+            packet.ReadInt32("DifficultyID");
+            packet.ReadBit("Extended");
         }
     }
 }

@@ -217,6 +217,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_SET_RAID_DIFFICULTY, 0x1093},
             {Opcode.CMSG_SET_PRIMARY_TALENT_TREE, 0x06C6},
             {Opcode.CMSG_SET_PVP, 0x02C5},
+            {Opcode.CMSG_SET_SAVED_INSTANCE_EXTEND, 0x1222},
             {Opcode.CMSG_SET_SELECTION, 0x0740},
             {Opcode.CMSG_SET_TAXI_BENCHMARK_MODE, 0x0762},
             {Opcode.CMSG_SET_TITLE, 0x03C7},
