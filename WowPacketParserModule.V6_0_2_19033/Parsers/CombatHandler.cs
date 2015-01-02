@@ -174,5 +174,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Attacker");
             packet.ReadPackedGuid128("Victim");
         }
+
+        [Parser(Opcode.SMSG_DUEL_WINNER)]
+        public static void HandleDuelWinner(Packet packet)
+        {
+            var bits80 = packet.ReadBits(6);
+            var bits24 = packet.ReadBits(6);
+
+            packet.ReadBit("Fled");
+
+            // Order guessed
+            packet.ReadUInt32("BeatenVirtualRealmAddress");
+            packet.ReadUInt32("WinnerVirtualRealmAddress");
+
+            // Order guessed
+            packet.ReadWoWString("BeatenName", bits80);
+            packet.ReadWoWString("WinnerName", bits24);
+        }
     }
 }
