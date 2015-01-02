@@ -275,5 +275,43 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var len = packet.ReadBits(6);
             packet.ReadWoWString("Name", len);
         }
+
+        [Parser(Opcode.SMSG_PARTY_INVITE)]
+        public static void HandlePartyInvite(Packet packet)
+        {
+            // Order guessed
+            packet.ReadBit("CanAccept");
+            packet.ReadBit("MightCRZYou");
+            packet.ReadBit("MustBeBNetFriend");
+            packet.ReadBit("AllowMultipleRoles");
+            packet.ReadBit("IsXRealm");
+
+            var len = packet.ReadBits(6);
+
+            packet.ReadPackedGuid128("InviterGuid");
+            packet.ReadPackedGuid128("InviterBNetAccountID");
+
+            packet.ReadInt32("InviterCfgRealmID");
+            packet.ReadInt16("Unk1");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("IsLocal");
+            packet.ReadBit("Unk2");
+
+            var bits2 = packet.ReadBits(8);
+            var bits258 = packet.ReadBits(8);
+            packet.ReadWoWString("InviterRealmNameActual", bits2);
+            packet.ReadWoWString("InviterRealmNameNormalized", bits258);
+
+            packet.ReadInt32("ProposedRoles");
+            var int32 = packet.ReadInt32("LfgSlotsCount");
+            packet.ReadInt32("LfgCompletedMask");
+
+            packet.ReadWoWString("InviterName", len);
+
+            for (int i = 0; i < int32; i++)
+                packet.ReadInt32("LfgSlots", i);
+        }
     }
 }
