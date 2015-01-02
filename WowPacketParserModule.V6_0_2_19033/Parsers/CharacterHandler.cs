@@ -430,5 +430,56 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Guid");
             packet.ReadInt32("Health");
         }
+
+        [Parser(Opcode.SMSG_INSPECT_RESULT)]
+        public static void HandleInspectResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("InspecteeGUID");
+
+            var int112 = packet.ReadInt32("ItemsCount");
+            var int36 = packet.ReadInt32("GlyphsCount");
+            var int20 = packet.ReadInt32("TalentsCount");
+            packet.ReadInt32("ClassID");
+            packet.ReadInt32("SpecializationID");
+            packet.ReadInt32("Gender");
+
+            for (int i = 0; i < int112; i++)
+            {
+                // sub_614FDF
+                packet.ReadPackedGuid128("CreatorGUID", i);
+
+                ItemHandler.ReadItemInstance(packet, i);
+
+                packet.ReadByte("Index", i);
+
+                var int80 = packet.ReadInt32("EnchantsCount", i);
+                for (int j = 0; j < int80; j++)
+                {
+                    packet.ReadInt32("Id", i, j);
+                    packet.ReadByte("Index", i, j);
+                }
+
+                packet.ResetBitReader();
+
+                packet.ReadBit("Usable", i);
+            }
+
+            for (int i = 0; i < int36; i++)
+                packet.ReadInt16("Glyphs", i);
+
+            for (int i = 0; i < int20; i++)
+                packet.ReadInt16("Talents", i);
+            
+                packet.ResetBitReader();
+
+            var bit80 = packet.ReadBit("HasGuildData");
+            if (bit80)
+            {
+                // sub_5F9390
+                packet.ReadPackedGuid128("GuildGUID");
+                packet.ReadInt32("GuildLevel");
+                packet.ReadInt32("NumGuildMembers");
+            }
+        }
     }
 }

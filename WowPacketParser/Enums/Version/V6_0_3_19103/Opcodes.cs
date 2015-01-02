@@ -445,7 +445,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_INIT_CURRENCY,  0x0B06},
             {Opcode.SMSG_INIT_WORLD_STATES, 0x0B04},
             {Opcode.SMSG_INSPECT_HONOR_STATS, 0x02D3},
-            {Opcode.SMSG_INSPECT_RESULTS_UPDATE, 0x052E},
+            {Opcode.SMSG_INSPECT_RESULT, 0x052E},
             {Opcode.SMSG_INSPECT_PVP, 0x050A},
             {Opcode.SMSG_INSTANCE_INFO, 0x0DA0},
             {Opcode.SMSG_INSTANCE_RESET, 0x0B16},
