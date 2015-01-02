@@ -521,6 +521,8 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_PET_NAME_QUERY_RESPONSE, 0x0D0E},
             {Opcode.SMSG_PET_SPECIALIZATION, 0x1989},
             {Opcode.SMSG_PET_SPELLS, 0x0174},
+            {Opcode.SMSG_PET_LEARNED_SPELL, 0x1822},
+            {Opcode.SMSG_PET_REMOVED_SPELL, 0x011B},
             {Opcode.SMSG_PLAY_ONE_SHOT_ANIM_KIT, 0x078D},
             {Opcode.SMSG_PLAY_SOUND, 0x02D2},
             {Opcode.SMSG_PLAY_SPELL_VISUAL, 0x1A84},
