@@ -142,6 +142,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_MOVE_STOP_SWIM)]
         [Parser(Opcode.CMSG_MOVE_STOP_TURN)]
         [Parser(Opcode.SMSG_MOVE_SET_IGNORE_MOVEMENT_FORCES)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_KNOCK_BACK)]
         [Parser(Opcode.SMSG_PLAYER_MOVE)]
         public static void HandlePlayerMove(Packet packet)
         {
