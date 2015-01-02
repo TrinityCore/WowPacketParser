@@ -1781,6 +1781,7 @@ namespace WowPacketParser.Enums
         SMSG_RESURRECT_REQUEST,
         SMSG_RESYNC_RUNES,
         SMSG_ROLE_CHANGED_INFORM,
+        SMSG_ROLE_POLL_INFORM,
         SMSG_ROLE_POLL_BEGIN,
         SMSG_RWHOIS,
         SMSG_SCENARIO_POI,
