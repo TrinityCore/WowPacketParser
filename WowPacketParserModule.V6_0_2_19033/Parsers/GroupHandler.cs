@@ -250,5 +250,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 }
             }
         }
+
+        [Parser(Opcode.SMSG_ROLE_CHANGED_INFORM)]
+        public static void HandleGRoleChangedInform(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadPackedGuid128("From");
+            packet.ReadPackedGuid128("ChangedUnit");
+            packet.ReadEnum<LfgRoleFlag>("OldRole", TypeCode.Int32);
+            packet.ReadEnum<LfgRoleFlag>("NewRole", TypeCode.Int32);
+        }
     }
 }
