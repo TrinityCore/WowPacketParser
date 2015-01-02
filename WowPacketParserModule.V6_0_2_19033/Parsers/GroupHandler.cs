@@ -267,5 +267,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("PartyIndex");
             packet.ReadPackedGuid128("From");
         }
+
+        [Parser(Opcode.SMSG_GROUP_NEW_LEADER)]
+        public static void HandleGroupNewLeader(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            var len = packet.ReadBits(6);
+            packet.ReadWoWString("Name", len);
+        }
     }
 }

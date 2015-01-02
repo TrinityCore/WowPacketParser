@@ -407,6 +407,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x1746},
             {Opcode.SMSG_GOSSIP_POI, 0x011E},
             {Opcode.SMSG_GROUP_LIST, 0x15BE},
+            {Opcode.SMSG_GROUP_NEW_LEADER, 0x0984},
             {Opcode.SMSG_GUILD_ACHIEVEMENT_DATA, 0x1866},
             {Opcode.SMSG_GUILD_BANK_LIST, 0x1245},
             {Opcode.SMSG_GUILD_BANK_LOG_QUERY_RESULT, 0x1237},
