@@ -630,6 +630,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_VOID_TRANSFER_RESULT, 0x0539},
             {Opcode.SMSG_VOID_STORAGE_TRANSFER_CHANGES, 0x0321},
             {Opcode.SMSG_VOID_ITEM_SWAP_RESPONSE, 0x1131},
+            {Opcode.SMSG_XP_GAIN_ABORTED, 0x031E},
             {Opcode.SMSG_XP_GAIN_ENABLED, 0x0FAA},
             {Opcode.SMSG_WAIT_QUEUE_UPDATE, 0x00D4},
             {Opcode.SMSG_WAIT_QUEUE_FINISH, 0x198A},

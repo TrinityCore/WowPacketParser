@@ -323,6 +323,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("ReferAFriend");
         }
 
+        [Parser(Opcode.SMSG_XP_GAIN_ABORTED)]
+        public static void HandleXPGainAborted(Packet packet)
+        {
+            packet.ReadPackedGuid128("Victim");
+
+            packet.ReadInt32("XpToAdd");
+            packet.ReadInt32("XpGainReason");
+            packet.ReadInt32("XpAbortReason");
+        }
+
         [Parser(Opcode.CMSG_NAME_QUERY)]
         public static void HandleNameQuery(Packet packet)
         {
