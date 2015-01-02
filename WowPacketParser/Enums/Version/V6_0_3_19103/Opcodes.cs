@@ -247,7 +247,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_REQUEST_ACCOUNT_DATA, 0x0F3E},
             {Opcode.CMSG_REQUEST_CEMETERY_LIST, 0x10A2},
             {Opcode.CMSG_RESURRECT_RESPONSE, 0x073E},
-            {Opcode.CMSG_RETURN_TO_GRAVEYARD, 0x12EA},
+            {Opcode.CMSG_RETURN_TO_GRAVEYARD, 0x0D3E},
             {Opcode.CMSG_ROUTER_CLIENT_LOG_STREAMING_ERROR, 0x0C10},
             {Opcode.CMSG_SAVE_CUF_PROFILES, 0x0053},
             {Opcode.CMSG_SEND_MAIL, 0x0910},
