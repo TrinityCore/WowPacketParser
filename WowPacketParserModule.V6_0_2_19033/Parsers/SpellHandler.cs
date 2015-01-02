@@ -624,5 +624,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Caster");
             packet.ReadInt32("ActualDelay");
         }
+
+        [Parser(Opcode.CMSG_CANCEL_CAST)]
+        public static void HandlePlayerCancelCast(Packet packet)
+        {
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "SpellID");
+            packet.ReadByte("CastID");
+        }
     }
 }
