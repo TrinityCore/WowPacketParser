@@ -100,5 +100,27 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("TargetGUID");
             packet.ReadVector3("ActionPosition");
         }
+
+        [Parser(Opcode.CMSG_PET_RENAME)]
+        public static void HandlePetRename(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
+            packet.ReadInt32("PetNumber");
+
+            var bits20 = packet.ReadBits(8);
+
+            var bit149 = packet.ReadBit("HasDeclinedNames");
+            if (bit149)
+            {
+                var count = new int[5];
+                for (var i = 0; i < 5; ++i)
+                    count[i] = (int)packet.ReadBits(7);
+
+                for (var i = 0; i < 5; ++i)
+                    packet.ReadWoWString("DeclinedNames", count[i], i);
+            }
+
+            packet.ReadWoWString("NewName", bits20);
+        }
     }
 }
