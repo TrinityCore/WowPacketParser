@@ -543,6 +543,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_REALM_QUERY_RESPONSE, 0x011D},
             {Opcode.SMSG_REFRESH_SPELL_HISTORY, 0x0A2A},
             {Opcode.SMSG_RESEARCH_SETUP_HISTORY, 0x0A25},
+            {Opcode.SMSG_RESURRECT_REQUEST, 0x0336},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x175A},
             {Opcode.SMSG_REQUEST_CEMETERY_LIST_RESPONSE, 0x059E},
             {Opcode.SMSG_RESUME_COMMS, 0x07C9},

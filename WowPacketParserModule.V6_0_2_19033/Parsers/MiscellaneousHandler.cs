@@ -439,6 +439,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("DiagInfo", len1);
             packet.ReadWoWString("Text", len2);
         }
+
+        [Parser(Opcode.SMSG_RESURRECT_REQUEST)]
+        public static void HandleResurrectRequest(Packet packet)
+        {
+            packet.ReadPackedGuid128("ResurrectOffererGUID");
+
+            packet.ReadInt32("ResurrectOffererVirtualRealmAddress");
+            packet.ReadInt32("PetNumber");
+            packet.ReadInt32("SpellID");
+
+            var len = packet.ReadBits(6);
+
+            packet.ReadBit("UseTimer");
+            packet.ReadBit("Sickness");
+
+            packet.ReadWoWString("Name", len);
+        }
     }
 }
 
