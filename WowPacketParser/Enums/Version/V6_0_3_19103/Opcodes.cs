@@ -591,6 +591,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_THREAT_REMOVE, 0x0F3D},
             {Opcode.SMSG_THREAT_UPDATE, 0x03A9},
             {Opcode.SMSG_TIME_SYNC_REQ, 0x03B1},
+            {Opcode.SMSG_TRADE_STATUS, 0x093D},
             {Opcode.SMSG_TRADE_UPDATED, 0x0B43},
             {Opcode.SMSG_TRAINER_LIST, 0x0BA9},
             {Opcode.SMSG_TRANSFER_PENDING, 0x172A},

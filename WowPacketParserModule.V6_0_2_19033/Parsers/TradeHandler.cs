@@ -63,5 +63,40 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 }
             }
         }
+
+        [Parser(Opcode.SMSG_TRADE_STATUS)]
+        public static void HandleTradeStatus(Packet packet)
+        {
+            packet.ReadBit("FailureForYou");
+
+            var status = packet.ReadBits("Status", 5);
+
+            if (status == 13)
+                packet.ReadBit("PartnerIsSameBnetAccount");
+
+            if (status == 13)
+            {
+                packet.ReadInt32("CurrencyType");
+                packet.ReadInt32("CurrencyQuantity");
+            }
+
+            if (status == 31)
+                packet.ReadInt32("ID");
+
+            if (status == 4)
+            {
+                packet.ReadPackedGuid128("PartnerGuid");
+                packet.ReadPackedGuid128("PartnerWowAccount");
+            }
+
+            if (status == 1)
+                packet.ReadByte("TradeSlot");
+
+            if (status == 8 || status == 21)
+            {
+                packet.ReadInt32("BagResult");
+                packet.ReadInt32("ItemID");
+            }
+        }
     }
 }
