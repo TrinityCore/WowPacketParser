@@ -431,6 +431,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("Health");
         }
 
+        [Parser(Opcode.CMSG_INSPECT)]
+        public static void HandleInspect(Packet packet)
+        {
+            packet.ReadPackedGuid128("Target");
+        }
+
         [Parser(Opcode.SMSG_INSPECT_RESULT)]
         public static void HandleInspectResult(Packet packet)
         {
