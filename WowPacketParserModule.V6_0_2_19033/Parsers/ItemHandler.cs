@@ -298,5 +298,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("ItemGUID");
             packet.ReadEnum<SellResult>("Reason", TypeCode.Byte);
         }
+
+        [Parser(Opcode.SMSG_ITEM_TIME_UPDATE)]
+        public static void HandleItemTimeUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+            packet.ReadUInt32("DurationLeft");
+        }
     }
 }
