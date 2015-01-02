@@ -1,7 +1,11 @@
+using System;
 using System.Collections.Generic;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
@@ -134,6 +138,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("PetGUID");
             packet.ReadInt32("SpecGroupId");
+        }
+        
+        [Parser(Opcode.SMSG_PET_LEARNED_SPELL)]
+        [Parser(Opcode.SMSG_PET_REMOVED_SPELL)]
+        public static void HandlePetSpellsLearnedRemoved(Packet packet)
+        {
+             var count = packet.ReadUInt32("Spell Count");
+
+            for (var i = 0; i < count; ++i)
+                packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i);
         }
     }
 }
