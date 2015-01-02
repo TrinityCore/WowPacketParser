@@ -463,6 +463,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Resurrecter");
             packet.ReadInt32("Response");
         }
+
+        [Parser(Opcode.CMSG_ACCEPT_LEVEL_GRANT)]
+        public static void HandleAcceptLevelGrant(Packet packet)
+        {
+            packet.ReadPackedGuid128("Granter");
+        }
     }
 }
 
