@@ -617,5 +617,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadUInt32("Immunities");
             }
         }
+
+        [Parser(Opcode.SMSG_SPELL_DELAYED)]
+        public static void HandleSpellDelayed(Packet packet)
+        {
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadInt32("ActualDelay");
+        }
     }
 }

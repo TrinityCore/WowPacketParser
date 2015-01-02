@@ -562,6 +562,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_SPELLNONMELEEDAMAGELOG, 0x11FB},
             {Opcode.SMSG_SPELL_CATEGORY_COOLDOWN, 0x082A},
             {Opcode.SMSG_SPELLDISPELLOG, 0x18A2},
+            {Opcode.SMSG_SPELL_DELAYED, 0x0134},
             {Opcode.SMSG_SPELL_FAILED_OTHER, 0x1A03},
             {Opcode.SMSG_SPELL_FAILURE, 0x11DB},
             {Opcode.SMSG_SPELL_GO, 0x1161},
