@@ -575,6 +575,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_RESUME_CAST_BAR, 0x082C},
             {Opcode.SMSG_ROLE_CHANGED_INFORM, 0x0729},
             {Opcode.SMSG_ROLE_POLL_INFORM, 0x0F89},
+            {Opcode.SMSG_SAVE_GUILD_EMBLEM, 0x1037},
             {Opcode.SMSG_SELL_RESPONSE, 0x1352},
             {Opcode.SMSG_SEND_SPELL_CHARGES, 0x1A82},
             {Opcode.SMSG_SEND_MAIL_RESULT, 0x0302},
