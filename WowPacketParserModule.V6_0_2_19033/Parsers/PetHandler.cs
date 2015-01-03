@@ -130,7 +130,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_PET_STABLE_RESULT)]
         public static void HandlePetStableResult(Packet packet)
         {
-            packet.ReadByte("reason");
+            packet.ReadByte("result");
         }
         
         [Parser(Opcode.CMSG_REQUEST_STABLED_PETS)]
