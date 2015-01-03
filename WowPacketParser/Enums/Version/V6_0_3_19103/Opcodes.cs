@@ -127,6 +127,8 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_GUILD_BANK_DEPOSIT_MONEY, 0x1B11},
             {Opcode.CMSG_GUILD_BANK_LOG_QUERY, 0x0428},
             {Opcode.CMSG_GUILD_BANK_MONEY_WITHDRAWN_QUERY, 0x063D},
+            {Opcode.CMSG_GUILD_BANK_QUERY_TAB, 0x1139},
+            {Opcode.CMSG_GUILD_BANK_SWAP_ITEMS, 0x1131},
             {Opcode.CMSG_GUILD_BANK_UPDATE_TAB, 0x13C1},
             {Opcode.CMSG_GUILD_DEL_RANK, 0x0C28},
             {Opcode.CMSG_GUILD_DECLINE, 0x0667},
