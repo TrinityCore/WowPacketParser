@@ -227,6 +227,7 @@ namespace WowPacketParser.Enums
         CMSG_DECHARGE,
         CMSG_CHANNEL_DECLINE_INVITE,
         CMSG_DELETE_DANCE,
+        CMSG_DELETE_EQUIPMENT_SET,
         CMSG_DEL_FRIEND,
         CMSG_DEL_IGNORE,
         CMSG_DEL_MUTE,
