@@ -159,9 +159,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_DISMISS_CRITTER)]
+        [Parser(Opcode.CMSG_PET_ABANDON)]
         public static void HandleDismissCritter(Packet packet)
         {
-            packet.ReadPackedGuid128("CritterGUID");
+            packet.ReadPackedGuid128("PetGUID");
+        }
+        
+        [Parser(Opcode.CMSG_PET_SET_ACTION)]
+        public static void HandlePetSetAction(Packet packet)
+        {
+            var i = 0;
+            packet.ReadPackedGuid128("PetGUID");
+            while (packet.CanRead())
+            {
+                packet.ReadUInt32("Position", i);
+                var action = (uint)packet.ReadUInt16() + (packet.ReadByte() << 16);
+                packet.AddValue("Action", action, i);
+                packet.ReadEnum<ActionButtonType>("Type", TypeCode.Byte, i++);
+            }
         }
     }
 }
