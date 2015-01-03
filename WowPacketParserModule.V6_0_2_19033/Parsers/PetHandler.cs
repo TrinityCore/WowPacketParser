@@ -127,6 +127,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("NewName", bits20);
         }
         
+        [Parser(Opcode.SMSG_PET_STABLE_RESULT)]
+        public static void HandlePetStableResult(Packet packet)
+        {
+            packet.ReadByte("reason");
+        }
+        
+        [Parser(Opcode.CMSG_REQUEST_STABLED_PETS)]
+        public static void HandlePetRequestStable(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
+        }
+        
         [Parser(Opcode.SMSG_PET_SPECIALIZATION)]
         public static void HandlePetSpecialization(Packet packet)
         {
