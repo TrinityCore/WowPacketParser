@@ -273,6 +273,8 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_SET_ACTION_BUTTON, 0x0599},
             {Opcode.CMSG_SET_ACTIVE_MOVER, 0x0971},
             {Opcode.CMSG_SET_ACTIVE_VOICE_CHANNEL, 0x031E},
+            {Opcode.CMSG_SET_FACTION_AT_WAR, 0x051E},
+            {Opcode.CMSG_SET_FACTION_NOT_AT_WAR, 0x0A06},
             {Opcode.CMSG_SET_DUNGEON_DIFFICULTY, 0x012F},
             {Opcode.CMSG_SET_LOOT_SPECIALIZATION, 0x0226},
             {Opcode.CMSG_SET_PLAYER_DECLINED_NAMES, 0x018B},
