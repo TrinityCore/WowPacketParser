@@ -157,5 +157,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < count; ++i)
                 packet.ReadPackedGuid128("PetGUID", i);
         }
+
+        [Parser(Opcode.CMSG_DISMISS_CRITTER)]
+        public static void HandleDismissCritter(Packet packet)
+        {
+            packet.ReadPackedGuid128("CritterGUID");
+        }
     }
 }
