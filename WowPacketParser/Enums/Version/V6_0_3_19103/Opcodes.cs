@@ -40,6 +40,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_BATTLE_PET_MODIFY_NAME, 0x03A9},
             {Opcode.CMSG_BATTLE_PET_NAME_QUERY, 0x041C},
             {Opcode.CMSG_BATTLE_PET_SET_BATTLE_SLOT, 0x120B},
+            {Opcode.CMSG_BATTLE_PET_SET_FLAGS, 0x0BA2},
             {Opcode.CMSG_BATTLE_PET_SUMMON, 0x0B38},
             {Opcode.CMSG_BATTLE_PAY_GET_PRODUCT_LIST_QUERY, 0x1389},
             {Opcode.CMSG_BATTLE_PAY_GET_PURCHASE_LIST_QUERY, 0x120C},

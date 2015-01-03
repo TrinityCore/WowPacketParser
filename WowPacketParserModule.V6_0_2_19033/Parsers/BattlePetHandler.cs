@@ -142,5 +142,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("BattlePetGUID");
             packet.ReadByte("SlotIndex");
         }
+
+        [Parser(Opcode.CMSG_BATTLE_PET_SET_FLAGS)]
+        public static void HandleBattlePetSetFlags(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlePetGUID");
+            packet.ReadInt32("Flags");
+            packet.ReadBits("ControlType", 2);
+        }
     }
 }
