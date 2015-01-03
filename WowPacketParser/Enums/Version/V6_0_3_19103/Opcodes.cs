@@ -182,6 +182,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_MESSAGECHAT_WHISPER, 0x1829},
             {Opcode.CMSG_MESSAGECHAT_YELL, 0x1161},
             {Opcode.CMSG_MINIMAP_PING, 0x0837},
+            {Opcode.CMSG_MOUNT_SET_FAVORITE, 0x090E},
             {Opcode.CMSG_MOVE_GRAVITY_DISABLE_ACK, 0x0553},
             {Opcode.CMSG_MOVE_FALL_LAND, 0x0D54},
             {Opcode.CMSG_MOVE_FALL_RESET, 0x0522},

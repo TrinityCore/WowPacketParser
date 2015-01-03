@@ -475,8 +475,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (int i = 0; i < int20; i++)
                 packet.ReadInt16("Talents", i);
-            
-                packet.ResetBitReader();
+
+            packet.ResetBitReader();
 
             var bit80 = packet.ReadBit("HasGuildData");
             if (bit80)
@@ -486,6 +486,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("GuildLevel");
                 packet.ReadInt32("NumGuildMembers");
             }
+        }
+
+
+        [Parser(Opcode.CMSG_MOUNT_SET_FAVORITE)]
+        public static void HandleMountSetFavorite(Packet packet)
+        {
+            packet.ReadInt32("MountSpellID");
+            packet.ReadBit("IsFavorite");
         }
     }
 }
