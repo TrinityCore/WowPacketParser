@@ -524,6 +524,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_PARTY_KILL_LOG, 0x1312},
             {Opcode.SMSG_PARTY_MEMBER_STATS, 0x1729},
             {Opcode.SMSG_PERIODICAURALOG, 0x0B1B},
+            {Opcode.SMSG_PET_ADDED, 0x0327},
             {Opcode.SMSG_PET_NAME_QUERY_RESPONSE, 0x0D0E},
             {Opcode.SMSG_PET_SPECIALIZATION, 0x1989},
             {Opcode.SMSG_PET_SPELLS, 0x0174},
