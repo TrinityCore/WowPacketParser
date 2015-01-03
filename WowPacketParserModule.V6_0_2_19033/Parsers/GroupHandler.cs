@@ -21,8 +21,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadVector2("Position");
         }
 
-        [Parser(Opcode.SMSG_GROUP_LIST)]
-        public static void HandleGroupList(Packet packet)
+        [Parser(Opcode.SMSG_PARTY_UPDATE)]
+        public static void HandlePartyUpdate(Packet packet)
         {
             packet.ReadByte("PartyFlags");
             packet.ReadByte("PartyIndex");
