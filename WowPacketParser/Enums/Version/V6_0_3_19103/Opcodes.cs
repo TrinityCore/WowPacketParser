@@ -226,6 +226,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_PET_NAME_QUERY, 0x1433},
             {Opcode.CMSG_PET_RENAME, 0x093F},
             {Opcode.CMSG_PET_SET_SPECIALIZATION, 0x08D6},
+            {Opcode.CMSG_PET_SET_ACTION, 0x020F},
             {Opcode.CMSG_PING, 0x0416},
             {Opcode.CMSG_PLAYER_LOGIN, 0x0B1D},
             {Opcode.CMSG_PLAYED_TIME, 0x1BB2},
