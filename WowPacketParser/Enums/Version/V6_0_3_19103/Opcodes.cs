@@ -354,6 +354,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_BATTLEFIELD_STATUS_WAITFORGROUPS, 0x082D},
             {Opcode.SMSG_BATTLEGROUND_PLAYER_JOINED, 0x13EA},
             {Opcode.SMSG_BATTLEGROUND_PLAYER_LEFT, 0x1BD1},
+            {Opcode.SMSG_BATTLEGROUND_PLAYER_POSITIONS, 0x1BE9}^,
             {Opcode.SMSG_BINDER_CONFIRM, 0x0B11},
             {Opcode.SMSG_BINDPOINTUPDATE, 0x0A30},
             {Opcode.SMSG_BLACKMARKET_OPEN_RESULT, 0x0A05},
