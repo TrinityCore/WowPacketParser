@@ -252,6 +252,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_REPAIR_ITEM, 0x0B54},
             {Opcode.CMSG_REQUEST_ACCOUNT_DATA, 0x0F3E},
             {Opcode.CMSG_REQUEST_CEMETERY_LIST, 0x10A2},
+            {Opcode.CMSG_REQUEST_STABLED_PETS, 0x059D},
             {Opcode.CMSG_RESURRECT_RESPONSE, 0x073E},
             {Opcode.CMSG_RETURN_TO_GRAVEYARD, 0x0D3E},
             {Opcode.CMSG_ROUTER_CLIENT_LOG_STREAMING_ERROR, 0x0C10},
