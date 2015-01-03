@@ -107,6 +107,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         [Parser(Opcode.CMSG_BATTLE_PET_DELETE_PET)]
         [Parser(Opcode.CMSG_BATTLE_PET_DELETE_PET_CHEAT)]
+        [Parser(Opcode.CMSG_BATTLE_PET_SUMMON)]
         public static void HandleBattlePetDeletePet(Packet packet)
         {
             packet.ReadPackedGuid128("BattlePetGUID");
