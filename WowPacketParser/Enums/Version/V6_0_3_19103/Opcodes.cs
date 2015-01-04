@@ -456,6 +456,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_ENVIRONMENTALDAMAGELOG, 0x0AAB},
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x0F1E},
             {Opcode.SMSG_EQUIPMENT_SET_SAVED, 0x0027},
+            {Opcode.SMSG_EXPLORATION_EXPERIENCE, 0x07AE},
             {Opcode.SMSG_FACTION_BONUS_INFO, 0x0928},
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x0B1E},
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS_GLUE_SCREEN, 0x1540},
