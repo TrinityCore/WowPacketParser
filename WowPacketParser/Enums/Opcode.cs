@@ -1957,6 +1957,7 @@ namespace WowPacketParser.Enums
         SMSG_TIME_ADJUSTMENT,
         SMSG_TIME_SYNC_REQ,
         SMSG_TITLE_EARNED,
+        SMSG_TITLE_LOST,
         SMSG_TITLE_REMOVED,
         SMSG_TOGGLE_XP_GAIN,
         SMSG_TOTEM_CREATED,
