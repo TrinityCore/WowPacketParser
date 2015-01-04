@@ -405,6 +405,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_BATTLEGROUND_PLAYER_JOINED, 0x13EA},
             {Opcode.SMSG_BATTLEGROUND_PLAYER_LEFT, 0x1BD1},
             {Opcode.SMSG_BATTLEGROUND_PLAYER_POSITIONS, 0x1BE9},
+            {Opcode.SMSG_BATTLEGROUND_POINTS, 0x122A},
             {Opcode.SMSG_BINDER_CONFIRM, 0x0B11},
             {Opcode.SMSG_BINDPOINTUPDATE, 0x0A30},
             {Opcode.SMSG_BLACKMARKET_OPEN_RESULT, 0x0A05},
@@ -526,6 +527,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_LF_GUILD_POST, 0x1817},
             {Opcode.SMSG_LF_GUILD_RECRUITS, 0x1008},
             //{Opcode.SMSG_LF_GUILD_COMMAND_RESULT, 0x0308}, maybe correct
+            {Opcode.SMSG_LFG_BOOT_PLAYER, 0x07B3},
             {Opcode.SMSG_LFG_JOIN_RESULT, 0x0F72},
             {Opcode.SMSG_LFG_LIST_JOIN_RESULT, 0x0793},
             {Opcode.SMSG_LFG_QUEUE_STATUS, 0x07F1},
