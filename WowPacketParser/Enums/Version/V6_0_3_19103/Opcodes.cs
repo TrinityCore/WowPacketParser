@@ -235,6 +235,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_NAME_QUERY, 0x0B15},
             {Opcode.CMSG_NPC_TEXT_QUERY, 0x0ECB},
             {Opcode.CMSG_OFFER_PETITION, 0x0315},
+            {Opcode.CMSG_OPEN_ITEM, 0x08AD},
             {Opcode.CMSG_OPT_OUT_OF_LOOT, 0x0810},
             {Opcode.CMSG_PAGE_TEXT_QUERY, 0x0BBB},
             {Opcode.CMSG_PETITION_SHOW_SIGNATURES, 0x0632},
