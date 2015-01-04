@@ -634,6 +634,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_RESURRECT_REQUEST, 0x0336},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x175A},
             {Opcode.SMSG_REQUEST_CEMETERY_LIST_RESPONSE, 0x059E},
+            {Opcode.SMSG_REQUEST_PVP_REWARDS_RESPONSE, 0x1DAE},
             {Opcode.SMSG_RESUME_COMMS, 0x07C9},
             {Opcode.SMSG_RESUME_TOKEN, 0x0326},
             {Opcode.SMSG_RESUME_CAST_BAR, 0x082C},
