@@ -296,7 +296,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_SET_DUNGEON_DIFFICULTY, 0x012F},
             {Opcode.CMSG_SET_LOOT_SPECIALIZATION, 0x0226},
             {Opcode.CMSG_SET_PLAYER_DECLINED_NAMES, 0x018B},
-            {Opcode.CMSG_SET_PRIMARY_TALENT_TREE, 0x0AC5},
+            {Opcode.CMSG_SET_SPECIALIZATION, 0x0AC5},
             {Opcode.CMSG_SET_PVP, 0x19B9},
             {Opcode.CMSG_SET_RAID_DIFFICULTY, 0x1121},
             {Opcode.CMSG_SET_SAVED_INSTANCE_EXTEND, 0x1222},
