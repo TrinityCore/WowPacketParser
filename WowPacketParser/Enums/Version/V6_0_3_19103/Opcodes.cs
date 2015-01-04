@@ -385,6 +385,8 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_BATTLE_PET_RESTORED, 0x159D},
             {Opcode.SMSG_BATTLE_PET_REVOKED, 0x0936},
             {Opcode.SMSG_BATTLE_PET_SLOT_UPDATES, 0x1D8F},
+            {Opcode.SMSG_BATTLE_PET_TRAP_LEVEL, 0x0911},
+            {Opcode.SMSG_BATTLE_PET_UPDATES, 0x0354},
             {Opcode.SMSG_BATTLEFIELD_LIST, 0x11A1},
             {Opcode.SMSG_BATTLEFIELD_MGR_STATE_CHANGED, 0x13C3},
             {Opcode.SMSG_BATTLEFIELD_MGR_EJECTED, 0x0DAF},
