@@ -307,7 +307,9 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_SPELLCLICK, 0x0BC2},
             {Opcode.CMSG_SPLIT_ITEM, 0x0795},
             {Opcode.CMSG_STANDSTATECHANGE, 0x0ABD},
+            {Opcode.CMSG_SUPPORT_TICKET_SUBMIT_BUG, 0x0B0D},
             {Opcode.CMSG_SUPPORT_TICKET_SUBMIT_COMPLAINT, 0x0B37}, // need structure | 2871 (0x0B37) | 0x0098E908 | 0x005E41E4 |
+            {Opcode.CMSG_SUPPORT_TICKET_SUBMIT_SUGGESTION, 0x0D0A},
             {Opcode.CMSG_SUSPEND_COMMS_ACK, 0x0C56},
             {Opcode.CMSG_SUSPEND_TOKEN_RESPONSE, 0x041E},
             {Opcode.CMSG_SWAP_INV_ITEM, 0x0F17},
