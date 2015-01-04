@@ -15,8 +15,8 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
 
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
         {
-            {Opcode.CMSG_ACTIVATETAXI, 0x03C9},
-            {Opcode.CMSG_ACTIVATETAXIEXPRESS, 0x06FB},
+            {Opcode.CMSG_ACTIVATE_TAXI, 0x03C9},
+            {Opcode.CMSG_ACTIVATE_TAXI_EXPRESS, 0x06FB},
             {Opcode.CMSG_ADD_FRIEND, 0x09A6},
             {Opcode.CMSG_ADD_IGNORE, 0x0D20},
             {Opcode.CMSG_ALTER_APPEARANCE, 0x07F0},
@@ -50,7 +50,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_BLACK_MARKET_BID, 0x12C8},
             {Opcode.CMSG_BLACK_MARKET_HELLO, 0x075A},
             {Opcode.CMSG_BLACK_MARKET_REQUEST_ITEMS, 0x127A},
-            {Opcode.CMSG_BUYBACK_ITEM, 0x0661},
+            {Opcode.CMSG_BUY_BACK_ITEM, 0x0661},
             {Opcode.CMSG_BUY_BANK_SLOT, 0x12F2},
             {Opcode.CMSG_BUY_ITEM, 0x02E2},
             {Opcode.CMSG_DB_QUERY_BULK, 0x158D},
@@ -75,7 +75,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_DESTROY_ITEM, 0x0026},
             {Opcode.CMSG_DUEL_PROPOSED, 0x1A26},
             {Opcode.CMSG_EMOTE, 0x1924},
-            {Opcode.CMSG_ENABLETAXI, 0x0741},
+            {Opcode.CMSG_ENABLE_TAXI_NODE, 0x0741},
             {Opcode.CMSG_GAMEOBJECT_QUERY, 0x1461},
             {Opcode.CMSG_GAMEOBJ_REPORT_USE,  0x06D8},
             {Opcode.CMSG_GAMEOBJ_USE, 0x06D9},
@@ -231,7 +231,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_SUGGESTION_SUBMIT, 0x0A12},
             {Opcode.CMSG_SWAP_INV_ITEM, 0x03DF},
             {Opcode.CMSG_SWAP_ITEM, 0x035D},
-            {Opcode.CMSG_TAXIQUERYAVAILABLENODES, 0x02E3},
+            {Opcode.CMSG_TAXI_QUERY_AVAILABLE_NODES, 0x02E3},
             {Opcode.CMSG_TEXT_EMOTE, 0x07E9},
             {Opcode.CMSG_TIME_SYNC_RESP_FAILED, 0x0058},
             {Opcode.CMSG_TIME_SYNC_RESP, 0x01DB},

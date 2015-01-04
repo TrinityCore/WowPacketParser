@@ -190,16 +190,16 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_QUESTLOG_SWAP_QUEST, 0x0193}, // NF()(0x0193) //
             {Opcode.CMSG_QUESTLOG_REMOVE_QUEST, 0x0194}, // NF()(0x0194) //
             {Opcode.CMSG_QUEST_CONFIRM_ACCEPT, 0xD756}, // (0x8350)(0x019B) //
-            {Opcode.CMSG_PUSHQUESTTOPARTY, 0xE755}, // (0x2314)(0x019D) //
+            {Opcode.CMSG_PUSH_QUEST_TO_PARTY, 0xE755}, // (0x2314)(0x019D) //
             {Opcode.CMSG_LIST_INVENTORY, 0x3E77}, // (0xCA59)(0x019E) //
             {Opcode.CMSG_SELL_ITEM, 0xDF77}, // (0x8BB5)(0x01A0) //
             //{Opcode.CMSG_BUY_ITEM, 0x8457}, // (0xCB5C)(0x01A3) // INT INT INT GUID BYTE
             {Opcode.CMSG_TAXICLEARALLNODES, 0x01A6}, // NF()(0x01A6) //
             {Opcode.CMSG_TAXIENABLEALLNODES, 0x01A7}, // NF()(0x01A7) //
             {Opcode.CMSG_TAXISHOWNODES, 0x01A8}, // NF()(0x01A8) //
-            {Opcode.CMSG_TAXINODE_STATUS_QUERY, 0x01AA}, // NF()(0x01AA) //
-            {Opcode.CMSG_TAXIQUERYAVAILABLENODES, 0x01AC}, // NF()(0x01AC) //
-            {Opcode.CMSG_ACTIVATETAXI, 0x01AD}, // NF()(0x01AD) //
+            {Opcode.CMSG_TAXI_NODE_STATUS_QUERY, 0x01AA}, // NF()(0x01AA) //
+            {Opcode.CMSG_TAXI_QUERY_AVAILABLE_NODES, 0x01AC}, // NF()(0x01AC) //
+            {Opcode.CMSG_ACTIVATE_TAXI, 0x01AD}, // NF()(0x01AD) //
             //{Opcode.CMSG_TRAINER_LIST, 0x8E7C}, // (0x0271)(0x01B0) //
             {Opcode.CMSG_TRAINER_BUY_SPELL, 0x9754}, // (0x4391)(0x01B2) //
             {Opcode.CMSG_BINDER_ACTIVATE, 0x1D7F}, // (0xE39C)(0x01B5) //
@@ -301,7 +301,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_SET_PVP_TITLE, 0x028B}, // NF()(0x028B) //
             {Opcode.CMSG_GROUP_RAID_CONVERT, 0xA75D}, // (0x427C)(0x028E) //
             {Opcode.CMSG_GROUP_ASSISTANT_LEADER, 0x8556}, // (0xEBD1)(0x028F) //
-            {Opcode.CMSG_BUYBACK_ITEM, 0x0290}, // NF()(0x0290) //
+            {Opcode.CMSG_BUY_BACK_ITEM, 0x0290}, // NF()(0x0290) //
             {Opcode.CMSG_SET_SAVED_INSTANCE_EXTEND, 0x0292}, // NF()(0x0292) // // lua: SetSavedInstanceExtend
             {Opcode.CMSG_MEETINGSTONE_CHEAT, 0x0294}, // NF()(0x0294) // // not found 3.3
             {Opcode.CMSG_MEETINGSTONE_INFO, 0x0296}, // NF()(0x0296) // // EVENT_LFG_UPDATE
@@ -349,7 +349,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_GUILD_INFO_TEXT, 0x02FC}, // NF()(0x02FC) //
             {Opcode.CMSG_GM_NUKE_ACCOUNT, 0x030F}, // NF()(0x030F) //
             {Opcode.CMSG_GM_DESTROY_ONLINE_CORPSE, 0x0311}, // NF()(0x0311) //
-            {Opcode.CMSG_ACTIVATETAXIEXPRESS, 0x0312}, // NF()(0x0312) //
+            {Opcode.CMSG_ACTIVATE_TAXI_EXPRESS, 0x0312}, // NF()(0x0312) //
             {Opcode.CMSG_DEBUG_ACTIONS_START, 0x0315}, // NF()(0x0315) //
             {Opcode.CMSG_DEBUG_ACTIONS_STOP, 0x0316}, // NF()(0x0316) //
             {Opcode.CMSG_SET_FACTION_INACTIVE, 0x0317}, // NF()(0x0317) //
@@ -525,7 +525,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_DUMP_OBJECTS, 0x048B}, // NF()(0x048B) //
             {Opcode.CMSG_DISMISS_CRITTER, 0x048D}, // NF()(0x048D) //
             {Opcode.CMSG_AUCTION_LIST_PENDING_SALES, 0x048F}, // NF()(0x048F) //
-            {Opcode.CMSG_ENABLETAXI, 0x0493}, // NF()(0x0493) //
+            {Opcode.CMSG_ENABLE_TAXI_NODE, 0x0493}, // NF()(0x0493) //
             {Opcode.CMSG_FLOOD_GRACE_CHEAT, 0x0497}, // NF()(0x0497) //
             {Opcode.CMSG_CHANGE_SEATS_ON_CONTROLLED_VEHICLE, 0x049B}, // NF()(0x049B) //
             {Opcode.CMSG_HEARTH_AND_RESURRECT, 0xD67E}, // (0x0A71)(0x049C) //

@@ -34,7 +34,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_BLACK_MARKET_BID, 0x03FE},
             {Opcode.CMSG_BLACK_MARKET_REQUEST_ITEMS, 0x06D4},
             {Opcode.CMSG_BUY_BANK_SLOT, 0x00FE},
-            {Opcode.CMSG_BUYBACK_ITEM, 0x07D7},
+            {Opcode.CMSG_BUY_BACK_ITEM, 0x07D7},
             {Opcode.CMSG_CALENDAR_ADD_EVENT, 0x16D0},
             {Opcode.CMSG_CANCEL_AURA, 0x16E1},
             {Opcode.CMSG_CANCEL_CAST, 0x12EB},

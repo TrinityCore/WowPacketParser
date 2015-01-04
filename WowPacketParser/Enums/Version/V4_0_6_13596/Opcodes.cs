@@ -17,8 +17,8 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
         {
             {Opcode.CMSG_ACCEPT_LEVEL_GRANT, 0x0B5CC},
             {Opcode.CMSG_ACCEPT_TRADE, 0x00891},
-            {Opcode.CMSG_ACTIVATETAXI, 0x039A4},
-            {Opcode.CMSG_ACTIVATETAXIEXPRESS, 0x0FC8C},
+            {Opcode.CMSG_ACTIVATE_TAXI, 0x039A4},
+            {Opcode.CMSG_ACTIVATE_TAXI_EXPRESS, 0x0FC8C},
             {Opcode.CMSG_ACTIVE_PVP_CHEAT, 0x1015E}, //UnknownopcodeID
             {Opcode.CMSG_ADD_FRIEND, 0x03980},
             {Opcode.CMSG_ADD_IGNORE, 0x06780},
@@ -80,7 +80,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_BOT_DETECTED, 0x0E757}, //4.0.3a13329-403
             {Opcode.CMSG_BUG, 0x034AC},
             {Opcode.CMSG_BUSY_TRADE, 0x1004C}, //UnknownopcodeID
-            {Opcode.CMSG_BUYBACK_ITEM, 0x0A4C4},
+            {Opcode.CMSG_BUY_BACK_ITEM, 0x0A4C4},
             {Opcode.CMSG_BUY_BANK_SLOT, 0x02BA0},
             {Opcode.CMSG_BUY_ITEM, 0x0EA84},
             {Opcode.CMSG_BUY_LOTTERY_TICKET_OBSOLETE, 0x00336}, //4.0.3a13329-403
@@ -191,7 +191,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_DUMP_OBJECTS, 0x101ED}, //UnknownopcodeID
             {Opcode.CMSG_EJECT_PASSENGER, 0x0F688},
             {Opcode.CMSG_EMOTE, 0x0FAC4},
-            {Opcode.CMSG_ENABLETAXI, 0x0328C},
+            {Opcode.CMSG_ENABLE_TAXI_NODE, 0x0328C},
             {Opcode.CMSG_ENABLE_DAMAGE_LOG, 0x100CB}, //UnknownopcodeID
             {Opcode.CMSG_EQUIPMENT_SET_DELETE, 0x0AEA0},
             {Opcode.CMSG_EQUIPMENT_SET_SAVE, 0x0BFC0},
@@ -426,7 +426,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_PLAYER_LOGOUT, 0x0F78C},
             {Opcode.CMSG_PLAYER_VEHICLE_ENTER, 0x0AEC8},
             {Opcode.CMSG_PLAY_DANCE, 0x02288},
-            {Opcode.CMSG_PUSHQUESTTOPARTY, 0x029E8},
+            {Opcode.CMSG_PUSH_QUEST_TO_PARTY, 0x029E8},
             //{Opcode.CMSG_QUERY_GUILD_MAX_XP, 0x0350D},
             {Opcode.CMSG_QUERY_GUILD_MEMBERS_FOR_RECIPE, 0x0210D},
             {Opcode.CMSG_QUERY_GUILD_REWARDS, 0x02210},
@@ -556,8 +556,8 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_TARGET_SCRIPT_CAST, 0x10184}, //UnknownopcodeID
             {Opcode.CMSG_TAXICLEARALLNODES, 0x1006C}, //Neverused
             {Opcode.CMSG_TAXIENABLEALLNODES, 0x1006D}, //Neverused
-            {Opcode.CMSG_TAXINODE_STATUS_QUERY, 0x0A1EC},
-            {Opcode.CMSG_TAXIQUERYAVAILABLENODES, 0x0BE8E},
+            {Opcode.CMSG_TAXI_NODE_STATUS_QUERY, 0x0A1EC},
+            {Opcode.CMSG_TAXI_QUERY_AVAILABLE_NODES, 0x0BE8E},
             {Opcode.CMSG_TAXISHOWNODES, 0x0B8E8},
             {Opcode.CMSG_TELEPORT_TO_UNIT, 0x0E1AC},
             {Opcode.CMSG_TEXT_EMOTE, 0x0E9E0},

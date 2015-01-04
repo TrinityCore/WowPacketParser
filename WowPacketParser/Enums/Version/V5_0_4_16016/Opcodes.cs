@@ -30,7 +30,7 @@ namespace WowPacketParser.Enums.Version.V5_0_4_16016
             {Opcode.CMSG_REQUEST_PET_INFO, 0x01F4},
             {Opcode.CMSG_SELL_ITEM, 0x0493},
             {Opcode.CMSG_SEND_MAIL, 0x09A8},
-            {Opcode.CMSG_TAXINODE_STATUS_QUERY, 0x029D},
+            {Opcode.CMSG_TAXI_NODE_STATUS_QUERY, 0x029D},
             {Opcode.CMSG_WHO, 0x04D1},
             {Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x00D9},
         };
