@@ -168,7 +168,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_QUEST_QUERY)]
-        [Parser(Opcode.CMSG_PUSHQUESTTOPARTY)]
+        [Parser(Opcode.CMSG_PUSH_QUEST_TO_PARTY)]
         public static void HandleQuestQuery(Packet packet)
         {
             packet.ReadInt32("Entry");

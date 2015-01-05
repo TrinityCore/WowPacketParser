@@ -195,7 +195,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("Player GUID");
         }
 
-        [Parser(Opcode.CMSG_BUYBACK_ITEM)]
+        [Parser(Opcode.CMSG_BUY_BACK_ITEM)]
         public static void HandleBuyBackItem(Packet packet)
         {
             packet.ReadGuid("Vendor GUID");

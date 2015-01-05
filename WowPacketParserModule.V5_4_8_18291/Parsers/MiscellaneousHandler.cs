@@ -336,7 +336,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadEnum<TaxiError>("Result", 4);
         }
 
-        [Parser(Opcode.CMSG_ACTIVATETAXI)]
+        [Parser(Opcode.CMSG_ACTIVATE_TAXI)]
         public static void HandleActivateTaxi(Packet packet)
         {
             packet.ReadUInt32("Node 2 ID");
@@ -347,7 +347,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid", guid);
 
         }
-        [Parser(Opcode.CMSG_TAXIQUERYAVAILABLENODES)]
+        [Parser(Opcode.CMSG_TAXI_QUERY_AVAILABLE_NODES)]
         public static void HandleTaxiStatusQuery(Packet packet)
         {
             var guid = packet.StartBitStream(7, 1, 0, 4, 2, 5, 6, 3);
@@ -370,7 +370,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
-        [Parser(Opcode.CMSG_ACTIVATETAXIEXPRESS)]
+        [Parser(Opcode.CMSG_ACTIVATE_TAXI_EXPRESS)]
         public static void HandleActiaveTaxiExpress(Packet packet)
         {
             var guid = new byte[8];

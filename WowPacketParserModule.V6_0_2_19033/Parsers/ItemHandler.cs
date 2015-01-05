@@ -112,7 +112,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadEnum<BuyResult>("Reason", TypeCode.Byte);
         }
 
-        [Parser(Opcode.CMSG_BUYBACK_ITEM)]
+        [Parser(Opcode.CMSG_BUY_BACK_ITEM)]
         public static void HandleBuyBackItem(Packet packet)
         {
             packet.ReadPackedGuid128("VendorGUID");

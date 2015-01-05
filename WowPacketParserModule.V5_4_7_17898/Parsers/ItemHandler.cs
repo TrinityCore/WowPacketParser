@@ -235,7 +235,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_BUYBACK_ITEM)]
+        [Parser(Opcode.CMSG_BUY_BACK_ITEM)]
         public static void HandleBuyBackItem(Packet packet)
         {
             var guid = new byte[8];
