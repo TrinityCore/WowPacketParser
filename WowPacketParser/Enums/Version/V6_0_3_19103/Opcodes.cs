@@ -15,7 +15,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
 
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
         {
-            {Opcode.CMSG_ACCEPT_LEVEL_GRANT, 0x1921},
+            {Opcode.CMSG_ACCEPT_LEVEL_GRANT, 0x0B12},
             {Opcode.CMSG_ACTIVATE_TAXI, 0x0311},
             {Opcode.CMSG_ACTIVATE_TAXI_EXPRESS, 0x1B52},
             {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x03F4},
