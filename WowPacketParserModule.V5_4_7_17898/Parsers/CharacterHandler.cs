@@ -128,7 +128,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
                 if (firstLogins[c])
                 {
-                    var startPos = new StartPosition {Map = mapId, Position = pos, Zone = (int) zone};
+                    var startPos = new StartPosition {Map = (uint) mapId, Position = pos, Zone = zone};
 
                     Storage.StartPositions.Add(new Tuple<Race, Class>(race, Class), startPos, packet.TimeSpan);
                 }

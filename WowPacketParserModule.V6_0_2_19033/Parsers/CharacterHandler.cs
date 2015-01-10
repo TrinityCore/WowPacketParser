@@ -64,7 +64,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 if (firstLogin)
                 {
-                    var startPos = new StartPosition { Map = (int) mapId, Position = pos, Zone = (int)zone };
+                    var startPos = new StartPosition { Map = mapId, Position = pos, Zone = zone };
                     Storage.StartPositions.Add(new Tuple<Race, Class>(race, klass), startPos, packet.TimeSpan);
                 }
             }

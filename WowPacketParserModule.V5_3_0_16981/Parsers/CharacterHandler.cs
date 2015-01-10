@@ -104,7 +104,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
                 if (firstLogins[c])
                 {
-                    var startPos = new StartPosition {Map = mapId, Position = new Vector3(x, y, z), Zone = (int) zone};
+                    var startPos = new StartPosition {Map = (uint) mapId, Position = new Vector3(x, y, z), Zone = zone};
 
                     Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
                 }

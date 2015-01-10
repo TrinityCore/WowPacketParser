@@ -171,7 +171,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (firstLogin)
                 {
-                    var startPos = new StartPosition {Map = mapId, Position = pos, Zone = (int) zone};
+                    var startPos = new StartPosition {Map = (uint) mapId, Position = pos, Zone = zone};
                     Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
                 }
 
@@ -303,7 +303,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (firstLogin[c])
                 {
-                    var startPos = new StartPosition {Map = mapId, Position = pos, Zone = zone};
+                    var startPos = new StartPosition {Map = (uint) mapId, Position = pos, Zone = (uint) zone};
 
                     Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
                 }
@@ -425,7 +425,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (firstLogins[c])
                 {
-                    var startPos = new StartPosition { Map = mapId, Position = new Vector3(x, y, z), Zone = (int) zone };
+                    var startPos = new StartPosition { Map = (uint) mapId, Position = new Vector3(x, y, z), Zone = zone };
 
                     Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
                 }
@@ -587,10 +587,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (firstLogins[c])
                 {
-                    var startPos = new StartPosition();
-                    startPos.Map = mapId;
-                    startPos.Position = new Vector3(x, y, z);
-                    startPos.Zone = (int) zone;
+                    var startPos = new StartPosition {Map = (uint) mapId, Position = new Vector3(x, y, z), Zone = zone};
 
                     Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
                 }
@@ -731,10 +728,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (firstLogins[c])
                 {
-                    var startPos = new StartPosition();
-                    startPos.Map = mapId;
-                    startPos.Position = new Vector3(x, y, z);
-                    startPos.Zone = (int) zone;
+                    var startPos = new StartPosition {Map = (uint) mapId, Position = new Vector3(x, y, z), Zone = zone};
 
                     Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
                 }
@@ -877,10 +871,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (firstLogins[c])
                 {
-                    var startPos = new StartPosition();
-                    startPos.Map = mapId;
-                    startPos.Position = new Vector3(x, y, z);
-                    startPos.Zone = (int) zone;
+                    var startPos = new StartPosition {Map = (uint) mapId, Position = new Vector3(x, y, z), Zone = zone};
 
                     Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
                 }
@@ -988,10 +979,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (firstLogins[c])
                 {
-                    var startPos = new StartPosition();
-                    startPos.Map = mapId;
-                    startPos.Position = new Vector3(x, y, z);
-                    startPos.Zone = (int) zone;
+                    var startPos = new StartPosition {Map = (uint) mapId, Position = new Vector3(x, y, z), Zone = zone};
 
                     Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
                 }

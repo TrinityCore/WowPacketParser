@@ -50,30 +50,10 @@ namespace WowPacketParser.SQL.Builders
 
             if (!Storage.StartPositions.IsEmpty() && Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.playercreateinfo))
             {
-                var rows = new List<QueryBuilder.SQLInsertRow>();
-                foreach (KeyValuePair<Tuple<Race, Class>, Tuple<StartPosition, TimeSpan?>> startPosition in Storage.StartPositions)
-                {
-                    var comment = new QueryBuilder.SQLInsertRow();
-                    comment.HeaderComment = startPosition.Key.Item1 + " - " + startPosition.Key.Item2;
-                    rows.Add(comment);
+                var entries = Storage.StartPositions.Keys();
+                var dataDb = SQLDatabase.GetDict<Race, Class, StartPosition>(entries, "race", "class");
 
-                    var row = new QueryBuilder.SQLInsertRow();
-
-                    row.AddValue("race", startPosition.Key.Item1);
-                    row.AddValue("class", startPosition.Key.Item2);
-                    row.AddValue("map", startPosition.Value.Item1.Map);
-                    row.AddValue("zone", startPosition.Value.Item1.Zone);
-                    row.AddValue("position_x", startPosition.Value.Item1.Position.X);
-                    row.AddValue("position_y", startPosition.Value.Item1.Position.Y);
-                    row.AddValue("position_z", startPosition.Value.Item1.Position.Z);
-
-                    row.Comment = StoreGetters.GetName(StoreNameType.Map, startPosition.Value.Item1.Map, false) + " - " +
-                                  StoreGetters.GetName(StoreNameType.Zone, startPosition.Value.Item1.Zone, false);
-
-                    rows.Add(row);
-                }
-
-                result += new QueryBuilder.SQLInsert("playercreateinfo", rows, 2).Build();
+                result += SQLUtil.CompareDicts(Storage.StartPositions, dataDb, StoreNameType.None, StoreNameType.None, "race", "class");
             }
 
             if (!Storage.StartSpells.IsEmpty() && Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.playercreateinfo_spell))
