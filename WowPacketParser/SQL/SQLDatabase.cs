@@ -278,7 +278,7 @@ namespace WowPacketParser.SQL
         /// <param name="primaryKeyName1">Name of the first primary key</param>
         /// <param name="primaryKeyName2">Name of the second primary key</param>
         /// <returns>Dictionary of structs of type TK</returns>
-        public static StoreDictionary<Tuple<T, TG>, TK> GetDict<T, TG, TK>(List<Tuple<T, TG>> entries, string primaryKeyName1, string primaryKeyName2)
+        public static StoreDictionary<Tuple<T, TG>, TK> GetDict<T, TG, TK>(List<Tuple<T, TG>> entries, string primaryKeyName1, string primaryKeyName2) where T : struct where TG : struct
         {
             if (entries.Count == 0)
                 return null;
@@ -316,11 +316,11 @@ namespace WowPacketParser.SQL
                 whereClause.Append("(")
                     .Append(primaryKeyName1)
                     .Append(" = ")
-                    .Append(tuple.Item1)
+                    .Append(Convert.ToInt64(tuple.Item1))
                     .Append(" AND ")
                     .Append(primaryKeyName2)
                     .Append(" = ")
-                    .Append(tuple.Item2)
+                    .Append(Convert.ToInt64(tuple.Item2))
                     .Append(")");
                 if (ji != entries.Count)
                     whereClause.Append(" OR ");
@@ -403,7 +403,18 @@ namespace WowPacketParser.SQL
                         i += field.Item2.Count;
                     }
 
-                    var key = Tuple.Create((T)values[0], (TG)values[1]);
+                    T key1;
+                    TG key2;
+                    if (typeof (T).IsEnum)
+                        key1 = (T) Enum.ToObject(typeof (T), values[0]);
+                    else
+                        key1 = (T) values[0];
+                    if (typeof (TG).IsEnum)
+                        key2 = (TG)Enum.ToObject(typeof(TG), values[1]);
+                    else
+                        key2 = (TG)values[1];
+
+                    var key = Tuple.Create(key1, key2);
                     if (!dict.ContainsKey(key))
                         dict.Add(key, instance);
                 }

@@ -53,7 +53,7 @@ namespace WowPacketParser.SQL.Builders
                 var entries = Storage.QuestPOIs.Keys();
                 var poiDb = SQLDatabase.GetDict<uint, uint, QuestPOI>(entries, "questid", "id");
 
-                sql = SQLUtil.CompareDicts(Storage.QuestPOIs, poiDb, StoreNameType.Quest, "questid", "id");
+                sql = SQLUtil.CompareDicts(Storage.QuestPOIs, poiDb, StoreNameType.Quest, StoreNameType.None, "questid", "id");
             }
 
             // TODO: fix this piece of code so it compares with db
