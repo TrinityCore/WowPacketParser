@@ -581,6 +581,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             // 0x15AF sub_839D65 sub_607E4F another loot opcode
             {Opcode.SMSG_MAIL_LIST_RESULT, 0x0B3F},
             {Opcode.SMSG_MAIL_QUERY_NEXT_TIME_RESULT, 0x153D},
+            {Opcode.SMSG_MAP_OBJ_EVENTS, 0x031A},
             {Opcode.SMSG_MAP_OBJECTIVES_INIT, 0x1323},
             {Opcode.SMSG_MESSAGECHAT, 0x0603},
             {Opcode.SMSG_MINIMAP_PING, 0x07BA},
@@ -721,6 +722,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_SPELLLOGEXECUTE, 0x1823},
             {Opcode.SMSG_SPELLNONMELEEDAMAGELOG, 0x11FB},
             {Opcode.SMSG_SPELL_CATEGORY_COOLDOWN, 0x082A},
+            {Opcode.SMSG_SPELL_COOLDOWN, 0x03F4},
             {Opcode.SMSG_SPELLDISPELLOG, 0x18A2},
             {Opcode.SMSG_SPELL_DELAYED, 0x0134},
             {Opcode.SMSG_SPELL_FAILED_OTHER, 0x1A03},
