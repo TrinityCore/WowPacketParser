@@ -114,22 +114,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("IsTournamentRealm");
             packet.ReadTime("WeeklyReset");
 
-            var bit32 = packet.ReadBit();
-            var bit20 = packet.ReadBit();
-            var bit56 = packet.ReadBit();
-            var bit44 = packet.ReadBit();
+            var hasRestrictedAccountMaxLevel = packet.ReadBit("HasRestrictedAccountMaxLevel");
+            var hasRestrictedAccountMaxMoney = packet.ReadBit("HasRestrictedAccountMaxMoney");
+            var hasIneligibleForLootMask = packet.ReadBit("HasIneligibleForLootMask");
+            var hasInstanceGroupSize = packet.ReadBit("HasInstanceGroupSize");
 
-            if (bit32)
-                packet.ReadInt32("IneligibleForLootMask");
-
-            if (bit20)
-                packet.ReadInt32("InstanceGroupSize");
-
-            if (bit56)
+            if (hasRestrictedAccountMaxLevel)
                 packet.ReadInt32("RestrictedAccountMaxLevel");
 
-            if (bit44)
+            if (hasRestrictedAccountMaxMoney)
                 packet.ReadInt32("RestrictedAccountMaxMoney");
+
+            if (hasIneligibleForLootMask)
+                packet.ReadInt32("IneligibleForLootMask");
+
+            if (hasInstanceGroupSize)
+                packet.ReadInt32("InstanceGroupSize");
         }
 
         [Parser(Opcode.CMSG_WHO)]
