@@ -11,14 +11,15 @@ namespace WowPacketParser.Parsing.Parsers
 
         public BattlenetModuleHandler(BattlenetPacket packet)
         {
-            this.Packet = packet.Stream;
+            Packet = packet.Stream;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="module">Battle.net module id as string</param>
-        /// <param name="data"></param>
+        ///  <summary>
+        /// 
+        ///  </summary>
+        ///  <param name="module">Battle.net module id as string</param>
+        ///  <param name="data"></param>
+        /// <param name="indexes"></param>
         /// <returns>null if module is unhandled, false if it needs more data from client</returns>
         public bool? HandleData(string module, byte[] data, params object[] indexes)
         {
@@ -167,7 +168,7 @@ namespace WowPacketParser.Parsing.Parsers
             var count = reader.ReadUInt32();
             for (var i = 0; i < count; ++i)
             {
-                AddValue("Data", Encoding.ASCII.GetString(reader.ReadBytes(4).Reverse().ToArray()).Trim(new[] { '\0' }), values.Concat(new object[] { i }).ToArray());
+                AddValue("Data", Encoding.ASCII.GetString(reader.ReadBytes(4).Reverse().ToArray()).Trim('\0'), values.Concat(new object[] { i }).ToArray());
                 AddValue("Value", reader.ReadUInt32(), values.Concat(new object[] { i }).ToArray());
             }
 

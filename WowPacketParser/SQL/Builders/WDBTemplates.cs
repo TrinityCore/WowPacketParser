@@ -170,8 +170,8 @@ namespace WowPacketParser.SQL.Builders
                                 if (!Utilities.EqualValues(reader.GetValue(0), npcName.Value.Item1.Name))
                                     row.AddValue("name", npcName.Value.Item1.Name);
 
-                                if (Utilities.EqualValues(reader.GetValue(0), npcName.Value.Item1.Name) && npcName.Value.Item1.femaleName != null)
-                                    row.AddValue("femaleName", npcName.Value.Item1.femaleName);
+                                if (Utilities.EqualValues(reader.GetValue(0), npcName.Value.Item1.Name) && npcName.Value.Item1.FemaleName != null)
+                                    row.AddValue("femaleName", npcName.Value.Item1.FemaleName);
 
                                 row.AddWhere("entry", npcName.Key);
 

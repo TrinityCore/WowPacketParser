@@ -37,11 +37,7 @@ namespace WowPacketParser.Misc
 
         public static string ByteArrayToHexString(byte[] data)
         {
-            var str = String.Empty;
-            for (var i = 0; i < data.Length; ++i)
-                str += data[i].ToString("X2", CultureInfo.InvariantCulture);
-
-            return str;
+            return data.Aggregate(String.Empty, (current, t) => current + t.ToString("X2", CultureInfo.InvariantCulture));
         }
 
         public static DateTime GetDateTimeFromGameTime(int packedDate)

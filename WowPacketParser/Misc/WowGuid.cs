@@ -68,7 +68,7 @@ namespace WowPacketParser.Misc
 
         public override bool Equals(object obj)
         {
-            return obj != null && obj is WowGuid && Equals((WowGuid)obj);
+            return obj is WowGuid && Equals((WowGuid)obj);
         }
 
         public bool Equals(WowGuid other)

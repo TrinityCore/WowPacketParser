@@ -2,8 +2,6 @@
 using System.Data;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Collections.Generic;
-using System.Text;
 using MySql.Data.MySqlClient;
 using WowPacketParser.Misc;
 

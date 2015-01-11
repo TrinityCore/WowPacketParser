@@ -219,7 +219,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             var zoneId = packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id");
             var length = packet.ReadBits("Message Length", 12);
-            message.text = packet.ReadWoWString("Message", length);
+            message.Text = packet.ReadWoWString("Message", length);
 
             Storage.DefenseMessages.Add(zoneId, message, packet.TimeSpan);
         }

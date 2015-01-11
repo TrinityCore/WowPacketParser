@@ -13,6 +13,7 @@ namespace WowPacketParser.Tests.Misc
         [Test]
         public void TestConstructor()
         {
+            // ReSharper disable once ObjectCreationAsStatement
             Assert.Throws<ArgumentOutOfRangeException>(() => new Statistics(0));
 
             var stats = new Statistics(10);

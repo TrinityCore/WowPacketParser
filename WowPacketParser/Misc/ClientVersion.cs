@@ -12,8 +12,7 @@ namespace WowPacketParser.Misc
     public static class ClientVersion
     {
         // Kept in sync with http://www.wowwiki.com/Public_client_builds
-        private static readonly KeyValuePair<ClientVersionBuild, DateTime>[] _clientBuilds = new []
-        {
+        private static readonly KeyValuePair<ClientVersionBuild, DateTime>[] ClientBuilds = {
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V1_12_1_5875, new DateTime(2006, 9, 26)),
 
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V2_0_1_6180, new DateTime(2006, 12, 5)),
@@ -240,14 +239,14 @@ namespace WowPacketParser.Misc
 
         private static ClientVersionBuild GetVersion(DateTime time)
         {
-            if (time < _clientBuilds[0].Value)
+            if (time < ClientBuilds[0].Value)
                 return ClientVersionBuild.Zero;
 
-            for (var i = 1; i < _clientBuilds.Length; i++)
-                if (_clientBuilds[i].Value > time)
-                    return _clientBuilds[i - 1].Key;
+            for (var i = 1; i < ClientBuilds.Length; i++)
+                if (ClientBuilds[i].Value > time)
+                    return ClientBuilds[i - 1].Key;
 
-            return _clientBuilds[_clientBuilds.Length - 1].Key;
+            return ClientBuilds[ClientBuilds.Length - 1].Key;
         }
 
         public static void SetVersion(ClientVersionBuild version)

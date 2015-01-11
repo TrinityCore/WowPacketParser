@@ -114,7 +114,7 @@ namespace WowPacketParser.Misc
                 hex.Append("| ");
                 hex.Append(text + "|");
                 hex.Append(n);
-                hexDump.Append(hex.ToString());
+                hexDump.Append(hex);
             }
 
             hexDump.Append("|-------------------------------------------------|---------------------------------|");

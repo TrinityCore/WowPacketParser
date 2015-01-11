@@ -35,12 +35,8 @@ namespace WowPacketParser.Enums.Version.V5_0_4_16016
             {Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x00D9},
         };
 
-        private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
-        {
-        };
+        private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>();
 
-        private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
-        {
-        };
+        private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>();
     }
 }

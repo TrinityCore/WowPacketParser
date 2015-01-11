@@ -168,7 +168,7 @@ namespace WowPacketParser.Misc
 
             Array.Reverse(data);
 
-            return Encoding.UTF8.GetString(data).Trim(new[] { '\0' });
+            return Encoding.UTF8.GetString(data).Trim('\0');
         }
 
         public float ReadSingle()

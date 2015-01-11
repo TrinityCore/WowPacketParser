@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security.Cryptography;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;

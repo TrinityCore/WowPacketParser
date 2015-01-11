@@ -47,6 +47,7 @@ namespace WowPacketParser.Tests.Misc
             Assert.IsTrue(lfg1 != lfg2);
 
 #pragma warning disable 1718
+            // ReSharper disable once EqualExpressionComparison
             Assert.IsTrue(lfg1 == lfg1);
 #pragma warning restore 1718
 

@@ -28,23 +28,6 @@ namespace WowPacketParser.Misc
             return guid;
         }
 
-        public ulong unkfunc1(ulong v3, byte v7)
-        {
-            ulong v2 = 0;
-
-            if (v7 > 0x40)
-                v2 = 0;
-            else
-            {
-                if (v7 > 0x20)
-                    v2 = 0;
-                else
-                    v2 = v3 << (int)(v7 & 0x1F);
-            }
-
-            return v2;
-        }
-
         public WowGuid ReadPackedGuid128()
         {
             var guidLowMask = ReadByte();

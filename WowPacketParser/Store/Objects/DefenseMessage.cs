@@ -7,10 +7,10 @@ namespace WowPacketParser.Store.Objects
     public class DefenseMessage
     {
         [DBFieldName("Text")]
-        public string text;
+        public string Text;
 
         [DBFieldName("BroadcastText")]
-        public string broadcastText;
+        public string BroadcastText;
 
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;

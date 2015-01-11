@@ -159,8 +159,10 @@ namespace WowPacketParser.Misc
             }
 
             // Cannot use "using" here
-            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer, FileName);
-            pkt.ConnectionIndex = ConnectionIndex;
+            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer, FileName)
+            {
+                ConnectionIndex = ConnectionIndex
+            };
             return pkt;
         }
 
@@ -207,8 +209,10 @@ namespace WowPacketParser.Misc
             }
 
             // Cannot use "using" here
-            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer, FileName);
-            pkt.ConnectionIndex = ConnectionIndex;
+            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer, FileName)
+            {
+                ConnectionIndex = ConnectionIndex
+            };
             return pkt;
         }
 

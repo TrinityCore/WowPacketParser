@@ -127,7 +127,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 var lootItem = new LootItem();
                 packet.ReadByte("Slot", i);
-                lootItem.ItemId = (uint) packet.ReadEntry<UInt32>(StoreNameType.Item, "Entry", i);
+                lootItem.ItemId = packet.ReadEntry<UInt32>(StoreNameType.Item, "Entry", i);
                 lootItem.Count = packet.ReadUInt32("Count", i);
                 packet.ReadUInt32("Display ID", i);
                 packet.ReadInt32("Random Suffix", i);

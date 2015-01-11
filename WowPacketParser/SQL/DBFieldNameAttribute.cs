@@ -26,12 +26,12 @@ namespace WowPacketParser.SQL
         /// <summary>
         /// True if counting should include 0
         /// </summary>
-        public readonly bool StartAtZero = false;
+        public readonly bool StartAtZero;
 
         /// <summary>
         /// True if cctor that accepts multiple fields was used (name + count)
         /// </summary>
-        private readonly bool _multipleFields = false;
+        private readonly bool _multipleFields;
 
         /// <summary>
         /// matches any version

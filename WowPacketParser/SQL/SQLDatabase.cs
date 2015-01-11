@@ -70,7 +70,7 @@ namespace WowPacketParser.SQL
                 {
                     var broadcastText = new BroadcastText();
 
-                    uint Id = Convert.ToUInt32(reader["Id"]);
+                    uint id = Convert.ToUInt32(reader["Id"]);
 
                     broadcastText.language = Convert.ToUInt32(reader["Language"]);
                     broadcastText.MaleText = Convert.ToString(reader["MaleText"]);
@@ -88,7 +88,7 @@ namespace WowPacketParser.SQL
                     broadcastText.unk1 = Convert.ToUInt32(reader["UnkMoP1"]);
                     broadcastText.unk2 = Convert.ToUInt32(reader["UnkMoP2"]);
 
-                    var tuple = Tuple.Create(Id, broadcastText);
+                    var tuple = Tuple.Create(id, broadcastText);
                     BroadcastTextStores.Add(tuple);
                 }
             }
@@ -107,7 +107,7 @@ namespace WowPacketParser.SQL
                 {
                     var creatureDifficulty = new CreatureDifficulty();
 
-                    uint Id = (uint)reader.GetValue(0);
+                    uint id = (uint)reader.GetValue(0);
 
                     creatureDifficulty.CreatureID = (uint)reader.GetValue(1);
                     creatureDifficulty.FactionID = (uint)reader.GetValue(2);
@@ -120,7 +120,7 @@ namespace WowPacketParser.SQL
                     for (int i = 0; i < 5; i++)
                         creatureDifficulty.Flags[i] = (uint)reader.GetValue(i + 6);
 
-                    CreatureDifficultyStores.Add(Id, creatureDifficulty);
+                    CreatureDifficultyStores.Add(id, creatureDifficulty);
                 }
             }
         }
@@ -151,7 +151,8 @@ namespace WowPacketParser.SQL
         /// <typeparam name="T">Type of the elements of the list of entries (usually uint)</typeparam>
         /// <typeparam name="TK">Type of the struct</typeparam>
         /// <param name="entries">List of entries to select from DB</param>
-        /// <param name="primaryKeyName"> </param>
+        /// <param name="primaryKeyName"></param>
+        /// <param name="database"></param>
         /// <returns>Dictionary of structs of type TK</returns>
         public static StoreDictionary<T, TK> GetDict<T, TK>(List<T> entries, string primaryKeyName = "entry", string database = null)
         {

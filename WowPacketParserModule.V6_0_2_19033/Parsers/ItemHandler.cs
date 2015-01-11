@@ -74,7 +74,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 var bit16 = packet.ReadBit("HasSrcItem", i);
                 var bit40 = packet.ReadBit("HasSrcVoidItem", i);
 
-                ItemHandler.ReadItemInstance(packet, i);
+                ReadItemInstance(packet, i);
 
                 packet.ReadInt32("Slot", i);
 

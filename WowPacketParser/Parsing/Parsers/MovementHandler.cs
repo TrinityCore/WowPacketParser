@@ -28,8 +28,10 @@ namespace WowPacketParser.Parsing.Parsers
 
         private static MovementInfo ReadMovementInfoGen(ref Packet packet, WowGuid guid, object index)
         {
-            var info = new MovementInfo();
-            info.Flags = packet.ReadEnum<MovementFlag>("Movement Flags", TypeCode.Int32, index);
+            var info = new MovementInfo
+            {
+                Flags = packet.ReadEnum<MovementFlag>("Movement Flags", TypeCode.Int32, index)
+            };
 
             var flagsTypeCode = ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056) ? TypeCode.Int16 : TypeCode.Byte;
             info.FlagsExtra = packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", flagsTypeCode, index);
@@ -100,9 +102,10 @@ namespace WowPacketParser.Parsing.Parsers
 
         private static MovementInfo ReadMovementInfo420(ref Packet packet, object index)
         {
-            var info = new MovementInfo();
-
-            info.Flags = packet.ReadEnum<MovementFlag>("Movement Flags", 30, index);
+            var info = new MovementInfo
+            {
+                Flags = packet.ReadEnum<MovementFlag>("Movement Flags", 30, index)
+            };
 
             packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 12, index);
 
@@ -193,9 +196,12 @@ namespace WowPacketParser.Parsing.Parsers
                 if (transportGuid.HasEntry() && transportGuid.GetHighType() == HighGuidType.Vehicle &&
                     guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
                 {
-                    var vehicleAccessory = new VehicleTemplateAccessory();
-                    vehicleAccessory.AccessoryEntry = guid.GetEntry();
-                    vehicleAccessory.SeatId = seat;
+                    var vehicleAccessory = new VehicleTemplateAccessory
+                    {
+                        AccessoryEntry = guid.GetEntry(),
+                        SeatId = seat
+                    };
+
                     Storage.VehicleTemplateAccessorys.Add(transportGuid.GetEntry(), vehicleAccessory, packet.TimeSpan);
                 }
             }

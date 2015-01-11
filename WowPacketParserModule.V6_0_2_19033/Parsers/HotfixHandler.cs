@@ -109,7 +109,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 {
                     var creatureDifficulty = new CreatureDifficulty();
 
-                    var Id = db2File.ReadEntry("Id");
+                    var id = db2File.ReadEntry("Id");
                     creatureDifficulty.CreatureID = db2File.ReadUInt32("Creature Id");
                     creatureDifficulty.FactionID = db2File.ReadUInt32("Faction Template Id");
                     creatureDifficulty.Expansion = db2File.ReadInt32("Expansion");
@@ -120,14 +120,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     for (var i = 0; i < 5; ++i)
                         creatureDifficulty.Flags[i] = db2File.ReadUInt32("Flags", i);
 
-                    Storage.CreatureDifficultys.Add((uint)Id.Key, creatureDifficulty, packet.TimeSpan);
+                    Storage.CreatureDifficultys.Add((uint)id.Key, creatureDifficulty, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.GameObjects: // New structure - 6.0.2
                 {
                     var gameObjectTemplateDB2 = new GameObjectTemplateDB2();
 
-                    var Id = db2File.ReadEntry("ID");
+                    var id = db2File.ReadEntry("ID");
 
                     gameObjectTemplateDB2.MapID = db2File.ReadUInt32("Map");
 
@@ -156,7 +156,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     if (db2File.ReadUInt16() > 0)
                         gameObjectTemplateDB2.Name = db2File.ReadCString("Name");
 
-                    Storage.GameObjectTemplateDB2s.Add((uint)Id.Key, gameObjectTemplateDB2, packet.TimeSpan);
+                    Storage.GameObjectTemplateDB2s.Add((uint)id.Key, gameObjectTemplateDB2, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.Item: // New structure - 6.0.2
@@ -343,7 +343,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 {
                     var spellMisc = new SpellMisc();
 
-                    var Id = db2File.ReadEntry("ID");
+                    var id = db2File.ReadEntry("ID");
 
                     spellMisc.Attributes = new uint[14];
                     for (var i = 0; i < 14; ++i)
@@ -363,7 +363,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     spellMisc.SchoolMask = db2File.ReadUInt32("SchoolMask");
                     spellMisc.UnkWoD1 = db2File.ReadSingle("UnkWoD1");
 
-                    Storage.SpellMiscs.Add((uint)Id.Key, spellMisc, packet.TimeSpan);
+                    Storage.SpellMiscs.Add((uint)id.Key, spellMisc, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.Toy: // New structure - 6.0.2

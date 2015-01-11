@@ -106,7 +106,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var femaleName = new string[4];
                 for (var i = 0; i < femaleName.Length; i++)
                     femaleName[i] = packet.ReadCString("Female Name", i);
-                creature.femaleName = femaleName[0];
+                creature.FemaleName = femaleName[0];
             }
 
             creature.SubName = packet.ReadCString("Sub Name");

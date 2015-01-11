@@ -45,7 +45,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 if (stringLens[i][0] > 1)
                     creature.Name = packet.ReadCString("Name");
                 if (stringLens[i][1] > 1)
-                    creature.femaleName = packet.ReadCString("NameAlt");
+                    creature.FemaleName = packet.ReadCString("NameAlt");
             }
 
             //for (var i = 0; i < 2; ++i)

@@ -64,8 +64,8 @@ namespace WowPacketParser.Tests.Misc
         [Test]
         public void TestToByte()
         {
-            Assert.AreEqual((byte)1, true.ToByte());
-            Assert.AreEqual((byte)0, false.ToByte());
+            Assert.AreEqual(1, true.ToByte());
+            Assert.AreEqual(0, false.ToByte());
         }
 
         [Test]

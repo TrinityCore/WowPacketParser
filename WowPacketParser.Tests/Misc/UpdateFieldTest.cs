@@ -39,6 +39,7 @@ namespace WowPacketParser.Tests.Misc
 
             Assert.IsTrue(uf1.Equals(uf15));
             Assert.IsFalse(uf1.Equals(uf2));
+            // ReSharper disable once SuspiciousTypeConversion.Global
             Assert.IsFalse(uf1.Equals(uint.MaxValue));
             Assert.IsTrue(uf1.Equals(uf1));
         }
@@ -55,6 +56,7 @@ namespace WowPacketParser.Tests.Misc
             Assert.IsFalse(uf1 == uf2);
             Assert.IsTrue(uf1 != uf2);
 #pragma warning disable 1718
+            // ReSharper disable once EqualExpressionComparison
             Assert.IsTrue(uf1 == uf1);
 #pragma warning restore 1718
         }

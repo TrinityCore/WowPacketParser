@@ -13,9 +13,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             return MiscOpcodes;
         }
 
-        private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
-        {
-        };
+        private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>();
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
         {

@@ -21,7 +21,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var zoneId = packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id");
             packet.ReadInt32("Message Length");
-            message.text = packet.ReadCString("Message");
+            message.Text = packet.ReadCString("Message");
 
             Storage.DefenseMessages.Add(zoneId, message, packet.TimeSpan);
         }
@@ -76,11 +76,12 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_MESSAGECHAT)]
         public static void HandleServerChatMessage(Packet packet)
         {
-            var text = new CreatureText();
-
-            text.Type = packet.ReadEnum<ChatMessageType>("Type", TypeCode.Byte);
-            text.Language = packet.ReadEnum<Language>("Language", TypeCode.Int32);
-            text.SenderGUID = packet.ReadGuid("GUID");
+            var text = new CreatureText
+            {
+                Type = packet.ReadEnum<ChatMessageType>("Type", TypeCode.Byte),
+                Language = packet.ReadEnum<Language>("Language", TypeCode.Int32),
+                SenderGUID = packet.ReadGuid("GUID")
+            };
 
             packet.ReadInt32("Constant time");
 

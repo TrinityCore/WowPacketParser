@@ -207,8 +207,6 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x1164},
         };
 
-        private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
-        {
-        };
+        private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>();
     }
 }

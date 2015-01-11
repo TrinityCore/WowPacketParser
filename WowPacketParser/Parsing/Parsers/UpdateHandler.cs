@@ -372,8 +372,6 @@ namespace WowPacketParser.Parsing.Parsers
             var hasFallDirection = false;
             var hasTimestamp = false;
             var hasOrientation = false;
-            var hasMoveFlagsExtra = false;
-            var hasMovementFlags = false;
             var hasPitch = false;
             var hasSplineElevation = false;
             var hasTransportData = false;
@@ -411,7 +409,7 @@ namespace WowPacketParser.Parsing.Parsers
                 guid2[2] = packet.ReadBit();
                 packet.ReadBit(); // bit149
                 hasPitch = !packet.ReadBit("Lacks Pitch", index);
-                hasMoveFlagsExtra = !packet.ReadBit();
+                var hasMoveFlagsExtra = !packet.ReadBit();
                 guid2[4] = packet.ReadBit();
                 guid2[5] = packet.ReadBit();
                 unkLoopCounter2 = packet.ReadBits(24);
@@ -441,7 +439,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (hasMoveFlagsExtra)
                     moveInfo.FlagsExtra = packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13, index);
 
-                hasMovementFlags = !packet.ReadBit();
+                var hasMovementFlags = !packet.ReadBit();
                 guid2[1] = packet.ReadBit();
                 if (hasFallData)
                     hasFallDirection = packet.ReadBit("Has Fall Direction", index);
@@ -570,8 +568,8 @@ namespace WowPacketParser.Parsing.Parsers
                         {
                             for (var i = 0; i < unkSplineCounter; ++i)
                             {
-                                packet.ReadSingle("Unk Spline Float1", index, (int)i);
-                                packet.ReadSingle("Unk Spline Float2", index, (int)i);
+                                packet.ReadSingle("Unk Spline Float1", index, i);
+                                packet.ReadSingle("Unk Spline Float2", index, i);
                             }
                         }
 
@@ -676,9 +674,12 @@ namespace WowPacketParser.Parsing.Parsers
                     if (moveInfo.TransportGuid.HasEntry() && moveInfo.TransportGuid.GetHighType() == HighGuidType.Vehicle &&
                         guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
                     {
-                        var vehicleAccessory = new VehicleTemplateAccessory();
-                        vehicleAccessory.AccessoryEntry = guid.GetEntry();
-                        vehicleAccessory.SeatId = seat;
+                        var vehicleAccessory = new VehicleTemplateAccessory
+                        {
+                            AccessoryEntry = guid.GetEntry(),
+                            SeatId = seat
+                        };
+
                         Storage.VehicleTemplateAccessorys.Add(moveInfo.TransportGuid.GetEntry(), vehicleAccessory, packet.TimeSpan);
                     }
                 }
@@ -1124,8 +1125,10 @@ namespace WowPacketParser.Parsing.Parsers
                         packet.ReadSingle("Spline Duration Multiplier Next", index);
                     }
 
-                    var endPoint = new Vector3();
-                    endPoint.Z = packet.ReadSingle();
+                    var endPoint = new Vector3
+                    {
+                        Z = packet.ReadSingle()
+                    };
                     packet.ReadUInt32("Spline Id", index);
                     endPoint.X = packet.ReadSingle();
                     endPoint.Y = packet.ReadSingle();
@@ -1166,9 +1169,12 @@ namespace WowPacketParser.Parsing.Parsers
                     if (moveInfo.TransportGuid.HasEntry() && moveInfo.TransportGuid.GetHighType() == HighGuidType.Vehicle &&
                         guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
                     {
-                        var vehicleAccessory = new VehicleTemplateAccessory();
-                        vehicleAccessory.AccessoryEntry = guid.GetEntry();
-                        vehicleAccessory.SeatId = seat;
+                        var vehicleAccessory = new VehicleTemplateAccessory
+                        {
+                            AccessoryEntry = guid.GetEntry(),
+                            SeatId = seat
+                        };
+
                         Storage.VehicleTemplateAccessorys.Add(moveInfo.TransportGuid.GetEntry(), vehicleAccessory, packet.TimeSpan);
                     }
                 }
@@ -1587,9 +1593,12 @@ namespace WowPacketParser.Parsing.Parsers
                     if (moveInfo.TransportGuid.HasEntry() && moveInfo.TransportGuid.GetHighType() == HighGuidType.Vehicle &&
                         guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
                     {
-                        var vehicleAccessory = new VehicleTemplateAccessory();
-                        vehicleAccessory.AccessoryEntry = guid.GetEntry();
-                        vehicleAccessory.SeatId = seat;
+                        var vehicleAccessory = new VehicleTemplateAccessory
+                        {
+                            AccessoryEntry = guid.GetEntry(),
+                            SeatId = seat
+                        };
+
                         Storage.VehicleTemplateAccessorys.Add(moveInfo.TransportGuid.GetEntry(), vehicleAccessory, packet.TimeSpan);
                     }
                 }
@@ -1621,8 +1630,7 @@ namespace WowPacketParser.Parsing.Parsers
                 }
 
                 packet.ReadSingle("RunBack Speed", index);
-                moveInfo.Position = new Vector3();
-                moveInfo.Position.X = packet.ReadSingle();
+                moveInfo.Position = new Vector3 {X = packet.ReadSingle()};
                 packet.ReadSingle("SwimBack Speed", index);
                 packet.ReadXORByte(guid2, 7);
 
@@ -2011,15 +2019,17 @@ namespace WowPacketParser.Parsing.Parsers
                     if (moveInfo.TransportGuid.HasEntry() && moveInfo.TransportGuid.GetHighType() == HighGuidType.Vehicle &&
                         guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
                     {
-                        var vehicleAccessory = new VehicleTemplateAccessory();
-                        vehicleAccessory.AccessoryEntry = guid.GetEntry();
-                        vehicleAccessory.SeatId = seat;
+                        var vehicleAccessory = new VehicleTemplateAccessory
+                        {
+                            AccessoryEntry = guid.GetEntry(),
+                            SeatId = seat
+                        };
+
                         Storage.VehicleTemplateAccessorys.Add(moveInfo.TransportGuid.GetEntry(), vehicleAccessory, packet.TimeSpan);
                     }
                 }
 
-                moveInfo.Position = new Vector3();
-                moveInfo.Position.Z = packet.ReadSingle();
+                moveInfo.Position = new Vector3 {Z = packet.ReadSingle()};
                 packet.ReadSingle("FlyBack Speed", index);
                 moveInfo.Position.Y = packet.ReadSingle();
                 packet.ReadXORByte(guid2, 4);
@@ -2275,8 +2285,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasStationaryPosition)
             {
-                moveInfo.Position = new Vector3();
-                moveInfo.Position.Z = packet.ReadSingle();
+                moveInfo.Position = new Vector3 {Z = packet.ReadSingle()};
                 moveInfo.Orientation = packet.ReadSingle("O", index);
                 moveInfo.Position.X = packet.ReadSingle();
                 moveInfo.Position.Y = packet.ReadSingle();
@@ -2408,16 +2417,18 @@ namespace WowPacketParser.Parsing.Parsers
                     if (moveInfo.TransportGuid.HasEntry() && moveInfo.TransportGuid.GetHighType() == HighGuidType.Vehicle &&
                         guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
                     {
-                        var vehicleAccessory = new VehicleTemplateAccessory();
-                        vehicleAccessory.AccessoryEntry = guid.GetEntry();
-                        vehicleAccessory.SeatId = seat;
+                        var vehicleAccessory = new VehicleTemplateAccessory
+                        {
+                            AccessoryEntry = guid.GetEntry(),
+                            SeatId = seat
+                        };
+
                         Storage.VehicleTemplateAccessorys.Add(moveInfo.TransportGuid.GetEntry(), vehicleAccessory, packet.TimeSpan);
                     }
                 }
 
                 packet.ReadSingle("FlyBack Speed", index);
-                moveInfo.Position = new Vector3();
-                moveInfo.Position.X = packet.ReadSingle();
+                moveInfo.Position = new Vector3 {X = packet.ReadSingle()};
                 if (unkFloat1)
                     packet.ReadSingle("Unk float +28", index);
 

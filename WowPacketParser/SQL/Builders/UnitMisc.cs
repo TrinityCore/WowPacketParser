@@ -136,8 +136,10 @@ namespace WowPacketParser.SQL.Builders
             var rows = new List<QueryBuilder.SQLInsertRow>();
             foreach (var npcTrainer in Storage.NpcTrainers)
             {
-                var comment = new QueryBuilder.SQLInsertRow();
-                comment.HeaderComment = StoreGetters.GetName(StoreNameType.Unit, (int)npcTrainer.Key, false);
+                var comment = new QueryBuilder.SQLInsertRow
+                {
+                    HeaderComment = StoreGetters.GetName(StoreNameType.Unit, (int) npcTrainer.Key, false)
+                };
                 rows.Add(comment);
                 foreach (var trainerSpell in npcTrainer.Value.Item1.TrainerSpells)
                 {
@@ -170,8 +172,10 @@ namespace WowPacketParser.SQL.Builders
             var rows = new List<QueryBuilder.SQLInsertRow>();
             foreach (var npcVendor in Storage.NpcVendors)
             {
-                var comment = new QueryBuilder.SQLInsertRow();
-                comment.HeaderComment = StoreGetters.GetName(StoreNameType.Unit, (int)npcVendor.Key);
+                var comment = new QueryBuilder.SQLInsertRow
+                {
+                    HeaderComment = StoreGetters.GetName(StoreNameType.Unit, (int) npcVendor.Key)
+                };
                 rows.Add(comment);
                 foreach (var vendorItem in npcVendor.Value.Item1.VendorItems)
                 {
@@ -305,10 +309,13 @@ namespace WowPacketParser.SQL.Builders
             var rows = new List<QueryBuilder.SQLInsertRow>();
             foreach (var loot in Storage.Loots)
             {
-                var comment = new QueryBuilder.SQLInsertRow();
-                comment.HeaderComment =
-                    StoreGetters.GetName(Utilities.ObjectTypeToStore(Storage.Loots.Keys().First().Item2), (int)loot.Key.Item1, false) +
-                    " (" + loot.Value.Item1.Gold + " gold)";
+                var comment = new QueryBuilder.SQLInsertRow
+                {
+                    HeaderComment =
+                        StoreGetters.GetName(Utilities.ObjectTypeToStore(Storage.Loots.Keys().First().Item2),
+                            (int) loot.Key.Item1, false) +
+                        " (" + loot.Value.Item1.Gold + " gold)"
+                };
                 rows.Add(comment);
                 foreach (var lootItem in loot.Value.Item1.LootItems)
                 {

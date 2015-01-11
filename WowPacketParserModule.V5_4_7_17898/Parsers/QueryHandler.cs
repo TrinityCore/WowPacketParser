@@ -58,7 +58,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             }
 
             creature.Name = name[0];
-            creature.femaleName = femaleName[0];
+            creature.FemaleName = femaleName[0];
 
             creature.Modifier1 = packet.ReadSingle("Modifier 1");
 

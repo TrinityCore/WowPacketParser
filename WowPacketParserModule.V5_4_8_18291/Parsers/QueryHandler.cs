@@ -73,7 +73,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     name[i] = packet.ReadCString("Name", i);
             }
             creature.Name = name[0];
-            creature.femaleName = femaleName[0];
+            creature.FemaleName = femaleName[0];
 
             if (bits24 > 1)
                 creature.SubName = packet.ReadCString("Sub Name");

@@ -31,7 +31,7 @@ namespace WowPacketParser.Enums.Version
             LoadUFDictionariesInto(UpdateFieldDictionaries, asm, build);
         }
 
-        private static Dictionary<Type, BiDictionary<string, int>> UpdateFieldDictionaries = LoadDefaultUFDictionaries();
+        private static readonly Dictionary<Type, BiDictionary<string, int>> UpdateFieldDictionaries = LoadDefaultUFDictionaries();
 
         private static void LoadUFDictionariesInto(Dictionary<Type, BiDictionary<string, int>> dicts, Assembly asm, ClientVersionBuild build)
         {

@@ -244,9 +244,10 @@ namespace WowPacketParser.Parsing.Parsers
 
         private static Aura ReadAuraUpdateBlock(ref Packet packet, int i)
         {
-            var aura = new Aura();
-
-            aura.Slot = packet.ReadByte("Slot", i);
+            var aura = new Aura
+            {
+                Slot = packet.ReadByte("Slot", i)
+            };
 
             var id = packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i);
             if (id <= 0)
@@ -292,9 +293,10 @@ namespace WowPacketParser.Parsing.Parsers
 
         private static Aura ReadAuraUpdateBlock505(ref Packet packet, int i)
         {
-            var aura = new Aura();
-
-            aura.Slot = packet.ReadByte("Slot", i);
+            var aura = new Aura
+            {
+                Slot = packet.ReadByte("Slot", i)
+            };
 
             var id = packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i);
             if (id <= 0)
@@ -884,12 +886,12 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (flags.HasAnyFlag(CastFlag.Unknown21) && !isSpellGo)
             {
-                var spellClick = new NpcSpellClick();
-
-                spellClick.SpellId = (uint)spellId;
-
-                spellClick.CasterGUID = casterGUID;
-                spellClick.TargetGUID = targetGUID;
+                var spellClick = new NpcSpellClick
+                {
+                    SpellId = (uint) spellId,
+                    CasterGUID = casterGUID,
+                    TargetGUID = targetGUID
+                };
 
                 Storage.SpellClicks.Add(spellClick, packet.TimeSpan);
             }

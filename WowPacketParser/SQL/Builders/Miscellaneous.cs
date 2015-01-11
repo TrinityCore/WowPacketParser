@@ -23,8 +23,10 @@ namespace WowPacketParser.SQL.Builders
                 var rows = new List<QueryBuilder.SQLInsertRow>();
                 foreach (var startActions in Storage.StartActions)
                 {
-                    var comment = new QueryBuilder.SQLInsertRow();
-                    comment.HeaderComment = startActions.Key.Item1 + " - " + startActions.Key.Item2;
+                    var comment = new QueryBuilder.SQLInsertRow
+                    {
+                        HeaderComment = startActions.Key.Item1 + " - " + startActions.Key.Item2
+                    };
                     rows.Add(comment);
 
                     foreach (var action in startActions.Value.Item1.Actions)
@@ -61,8 +63,10 @@ namespace WowPacketParser.SQL.Builders
                 var rows = new List<QueryBuilder.SQLInsertRow>();
                 foreach (var startSpells in Storage.StartSpells)
                 {
-                    var comment = new QueryBuilder.SQLInsertRow();
-                    comment.HeaderComment = startSpells.Key.Item1 + " - " + startSpells.Key.Item2;
+                    var comment = new QueryBuilder.SQLInsertRow
+                    {
+                        HeaderComment = startSpells.Key.Item1 + " - " + startSpells.Key.Item2
+                    };
                     rows.Add(comment);
 
                     foreach (var spell in startSpells.Value.Item1.Spells)
@@ -207,7 +211,7 @@ namespace WowPacketParser.SQL.Builders
                 {
                     var row = new QueryBuilder.SQLInsertRow();
 
-                    var query = new StringBuilder(string.Format("SELECT Id FROM {1}.broadcast_text WHERE MaleText='{0}' OR FemaleText='{0}';", MySqlHelper.DoubleQuoteString(messageValue.Item1.text), Settings.HotfixesDatabase));
+                    var query = new StringBuilder(string.Format("SELECT Id FROM {1}.broadcast_text WHERE MaleText='{0}' OR FemaleText='{0}';", MySqlHelper.DoubleQuoteString(messageValue.Item1.Text), Settings.HotfixesDatabase));
 
                     string broadcastTextId = "";
 
@@ -234,7 +238,7 @@ namespace WowPacketParser.SQL.Builders
 
                     row.AddValue("ZoneId", message.Key);
                     row.AddValue("Id", "x", false, true);
-                    row.AddValue("Text", messageValue.Item1.text);
+                    row.AddValue("Text", messageValue.Item1.Text);
                     if (Settings.DevMode)
                         row.AddValue("BroadcastTextId", broadcastTextId);
 

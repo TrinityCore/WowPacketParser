@@ -54,8 +54,6 @@ namespace WowPacketParser.Enums.Version.V5_0_5_16048
             // {Opcode.SMSG_MULTIPLE_PACKETS_2, 0x0B8B},
         };
 
-        private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
-        {
-        };
+        private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>();
     }
 }

@@ -11,16 +11,18 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class NpcHandler
     {
-        public static uint LastGossipPOIEntry = 0;
+        public static uint LastGossipPOIEntry;
 
         [Parser(Opcode.SMSG_GOSSIP_POI)]
         public static void HandleGossipPoi(Packet packet)
         {
             LastGossipPOIEntry++;
 
-            var gossipPOI = new GossipPOI();
+            var gossipPOI = new GossipPOI
+            {
+                Flags = (uint) packet.ReadEnum<UnknownFlags>("Flags", TypeCode.Int32)
+            };
 
-            gossipPOI.Flags = (uint) packet.ReadEnum<UnknownFlags>("Flags", TypeCode.Int32);
             var pos = packet.ReadVector2("Coordinates");
             gossipPOI.Icon = packet.ReadEnum<GossipPOIIcon>("Icon", TypeCode.UInt32);
             gossipPOI.Importance = packet.ReadUInt32("Data");
@@ -95,9 +97,11 @@ namespace WowPacketParser.Parsing.Parsers
             npcTrainer.TrainerSpells = new List<TrainerSpell>(count);
             for (var i = 0; i < count; ++i)
             {
-                var trainerSpell = new TrainerSpell();
+                var trainerSpell = new TrainerSpell
+                {
+                    Spell = (uint) packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i)
+                };
 
-                trainerSpell.Spell = (uint)packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i);
 
                 packet.ReadEnum<TrainerSpellState>("State", TypeCode.Byte, i);
 
@@ -158,9 +162,11 @@ namespace WowPacketParser.Parsing.Parsers
             npcVendor.VendorItems = new List<VendorItem>(itemCount);
             for (var i = 0; i < itemCount; i++)
             {
-                var vendorItem = new VendorItem();
+                var vendorItem = new VendorItem
+                {
+                    Slot = packet.ReadUInt32("Item Position", i)
+                };
 
-                vendorItem.Slot = packet.ReadUInt32("Item Position", i);
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_3_13329))
                     vendorItem.Type = packet.ReadUInt32("Item Type", i); // not confirmed
                 vendorItem.ItemId = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "Item ID", i);
@@ -261,9 +267,11 @@ namespace WowPacketParser.Parsing.Parsers
             npcVendor.VendorItems = new List<VendorItem>((int)itemCount);
             for (int i = 0; i < itemCount; ++i)
             {
-                var vendorItem = new VendorItem();
+                var vendorItem = new VendorItem
+                {
+                    Slot = packet.ReadUInt32("Item Position", i)
+                };
 
-                vendorItem.Slot = packet.ReadUInt32("Item Position", i);
                 packet.ReadInt32("Max Durability", i);
                 if (hasExtendedCost[i])
                     vendorItem.ExtendedCostId = packet.ReadUInt32("Extended Cost", i);
