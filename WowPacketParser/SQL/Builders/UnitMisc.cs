@@ -847,63 +847,55 @@ namespace WowPacketParser.SQL.Builders
             // For each sound and emote, if the time they were send is in the +1/-1 seconds range of
             // our texts, add that sound and emote to our Storage.CreatureTexts
 
+            var broadcastTextStoresMale = SQLDatabase.BroadcastTextStores.GroupBy(blub => blub.Item2.MaleText).ToDictionary(group => group.Key, group => group.ToList());
+            var broadcastTextStoresFemale = SQLDatabase.BroadcastTextStores.GroupBy(blub => blub.Item2.FemaleText).ToDictionary(group => group.Key, group => group.ToList());
+
             foreach (var text in Storage.CreatureTexts)
             {
                 // For each text
                 foreach (var textValue in text.Value)
                 {
                     // For each emote
-                    foreach (var emote in Storage.Emotes)
-                    {
-                        // Emote packets always have a sender (guid);
-                        // skip this one if it was sent by a different creature
-                        if (emote.Key.GetEntry() != text.Key)
-                            continue;
-
-                        foreach (var emoteValue in emote.Value)
-                        {
-                            var timeSpan = textValue.Item2 - emoteValue.Item2;
-                            if (timeSpan != null && timeSpan.Value.Duration() <= TimeSpan.FromSeconds(1))
-                                textValue.Item1.Emote = emoteValue.Item1;
-                        }
-                    }
+                    var text1 = text;
+                    var value1 = textValue;
+                    foreach (var emoteValue in from emote in Storage.Emotes where emote.Key.GetEntry() == text1.Key from emoteValue in emote.Value let timeSpan = value1.Item2 - emoteValue.Item2 where timeSpan != null && timeSpan.Value.Duration() <= TimeSpan.FromSeconds(1) select emoteValue)
+                        textValue.Item1.Emote = emoteValue.Item1;
 
                     // For each sound
-                    foreach (var sound in Storage.Sounds)
+                    var value = textValue;
+                    foreach (var sound in from sound in Storage.Sounds let timeSpan = value.Item2 - sound.Item2 where timeSpan != null && timeSpan.Value.Duration() <= TimeSpan.FromSeconds(1) select sound)
+                        textValue.Item1.Sound = sound.Item1;
+
+                    if (SQLDatabase.BroadcastTextStores != null)
                     {
-                        var timeSpan = textValue.Item2 - sound.Item2;
-                        if (timeSpan != null && timeSpan.Value.Duration() <= TimeSpan.FromSeconds(1))
-                            textValue.Item1.Sound = sound.Item1;
+                        List<Tuple<uint, BroadcastText>> textList;
+                        if (broadcastTextStoresMale.TryGetValue(textValue.Item1.Text, out textList) ||
+                            broadcastTextStoresFemale.TryGetValue(textValue.Item1.Text, out textList))
+                            foreach (var broadcastTextId in textList)
+                            {
+                                if (!String.IsNullOrWhiteSpace(textValue.Item1.BroadcastTextID))
+                                    textValue.Item1.BroadcastTextID += " - " + broadcastTextId.Item1;
+                                else
+                                    textValue.Item1.BroadcastTextID = broadcastTextId.Item1.ToString();
+                            }
                     }
 
                     // Set comment
-
                     string from = null, to = null;
-                    if (!textValue.Item1.SenderGUID.IsEmpty())
+                    if (!textValue.Item1.SenderGUID.IsEmpty() || textValue.Item1.SenderGUID != null)
                     {
                         if (textValue.Item1.SenderGUID.GetObjectType() == ObjectType.Player)
                             from = "Player";
                         else
-                        {
-                            if (!string.IsNullOrEmpty(textValue.Item1.SenderName))
-                                from = textValue.Item1.SenderName;
-                            else
-                                from = StoreGetters.GetName(StoreNameType.Unit, (int)textValue.Item1.SenderGUID.GetEntry(), false);
-                        }
+                            @from = !string.IsNullOrEmpty(textValue.Item1.SenderName) ? textValue.Item1.SenderName : StoreGetters.GetName(StoreNameType.Unit, (int)textValue.Item1.SenderGUID.GetEntry(), false);
                     }
 
-                    if (!textValue.Item1.ReceiverGUID.IsEmpty())
+                    if (!textValue.Item1.ReceiverGUID.IsEmpty() || textValue.Item1.ReceiverGUID != null)
                     {
                         if (textValue.Item1.ReceiverGUID.GetObjectType() == ObjectType.Player)
                             to = "Player";
                         else
-                        {
-                            if (!string.IsNullOrEmpty(textValue.Item1.ReceiverName))
-                                to = textValue.Item1.ReceiverName;
-                            else
-                                to = StoreGetters.GetName(StoreNameType.Unit, (int)textValue.Item1.ReceiverGUID.GetEntry(), false);
-                        }
-
+                            to = !string.IsNullOrEmpty(textValue.Item1.ReceiverName) ? textValue.Item1.ReceiverName : StoreGetters.GetName(StoreNameType.Unit, (int)textValue.Item1.ReceiverGUID.GetEntry(), false);
                     }
 
                     Trace.Assert(text.Key == textValue.Item1.SenderGUID.GetEntry() ||
@@ -925,9 +917,6 @@ namespace WowPacketParser.SQL.Builders
 
             const string tableName = "creature_text";
 
-            var broadcastTextStoresMale = SQLDatabase.BroadcastTextStores.GroupBy(blub => blub.Item2.MaleText).ToDictionary(group => group.Key, group => group.ToList());
-            var broadcastTextStoresFemale = SQLDatabase.BroadcastTextStores.GroupBy(blub => blub.Item2.FemaleText).ToDictionary(group => group.Key, group => group.ToList());
-
             var rows = new List<QueryBuilder.SQLInsertRow>();
             foreach (var text in Storage.CreatureTexts)
             {
@@ -945,24 +934,7 @@ namespace WowPacketParser.SQL.Builders
                     row.AddValue("emote", textValue.Item1.Emote);
                     row.AddValue("duration", 0);
                     row.AddValue("sound", textValue.Item1.Sound);
-
-                    if (SQLDatabase.BroadcastTextStores != null)
-                    {
-                        List<Tuple<uint, BroadcastText>> textList;
-                        if (broadcastTextStoresMale.TryGetValue(textValue.Item1.Text, out textList) ||
-                            broadcastTextStoresFemale.TryGetValue(textValue.Item1.Text, out textList))
-                            foreach (var broadcastTextId in textList)
-                            {
-                                if (!String.IsNullOrWhiteSpace(textValue.Item1.BroadcastTextID))
-                                    textValue.Item1.BroadcastTextID += " - " + broadcastTextId.Item1.ToString();
-                                else
-                                    textValue.Item1.BroadcastTextID = broadcastTextId.Item1.ToString();
-                            }
-
-                        row.AddValue("BroadcastTextID", textValue.Item1.BroadcastTextID);
-
-                    }
-
+                    row.AddValue("BroadcastTextID", textValue.Item1.BroadcastTextID);
                     row.AddValue("comment", textValue.Item1.Comment);
 
                     rows.Add(row);
