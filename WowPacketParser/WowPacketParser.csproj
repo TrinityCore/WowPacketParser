@@ -370,6 +370,7 @@
     <Compile Include="Misc\Bit.cs" />
     <Compile Include="Misc\ClientVersion.cs" />
     <Compile Include="Misc\ConcurrentPriorityQueue.cs" />
+    <Compile Include="Misc\Configuration.cs" />
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Misc\Filters.cs" />
     <Compile Include="Misc\WowGuid.cs" />
