@@ -100,7 +100,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadUInt32("NumAccounts");
             packet.ReadPackedTime("CreateDate");
-            packet.ReadUInt32("MaxWeeklyRep");
+            packet.ReadUInt32("GuildFlags");
             var int20 = packet.ReadUInt32("MemberDataCount");
 
             for (var i = 0; i < int20; ++i)
