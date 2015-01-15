@@ -438,7 +438,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             for (int i = 0; i < size; ++i)
             {
-                for (int j = 0; i < count[i]; ++j)
+                for (int j = 0; j < count[i]; ++j)
                 {
                     packet.ParseBitStream(guidIn[i][j], 3, 2, 4, 6, 5, 0, 1, 7);
                     packet.WriteGuid("Guid", guidIn[i][j], i, j);

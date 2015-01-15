@@ -399,7 +399,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                     item.RandomPropery = db2File.ReadInt32("Random Property");
                     item.RandomSuffix = db2File.ReadUInt32("Random Suffix");
                     item.ItemSet = db2File.ReadUInt32("Item Set");
-                    item.AreaId = (uint) db2File.ReadEntry<UInt32>(StoreNameType.Area, "Area");
+                    item.AreaId = db2File.ReadEntry<UInt32>(StoreNameType.Area, "Area");
                     item.MapId = db2File.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
                     item.TotemCategory = db2File.ReadEnum<TotemCategory>("Totem Category", TypeCode.Int32);
 

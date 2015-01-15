@@ -150,7 +150,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             playerGuid[7] = packet.ReadBit();
             playerGuid[6] = packet.ReadBit();
 
-            var unknown = packet.ReadBit();
+            packet.ReadBit();
 
             playerGuid[3] = packet.ReadBit();
             playerGuid[0] = packet.ReadBit();
@@ -165,7 +165,6 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadXORByte(playerGuid, 5);
             packet.ReadXORByte(playerGuid, 6);
 
-            var guid = new WowGuid64(BitConverter.ToUInt64(playerGuid, 0));
             packet.WriteGuid("GUID", playerGuid);
         }
 

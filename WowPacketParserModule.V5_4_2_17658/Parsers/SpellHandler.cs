@@ -73,10 +73,7 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
                         aura.CasterGuid = new WowGuid64(BitConverter.ToUInt64(casterGUID[i], 0));
                     }
 
-                    if (hasDuration[i])
-                        aura.Duration = packet.ReadInt32("Duration", i);
-                    else
-                        aura.Duration = 0;
+                    aura.Duration = hasDuration[i] ? packet.ReadInt32("Duration", i) : 0;
 
                     for (var j = 0; j < bits48[i]; ++j)
                         packet.ReadSingle("Float3", i, j);
@@ -86,10 +83,7 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
 
                     aura.Level = packet.ReadUInt16("Caster Level", i);
 
-                    if (hasMaxDuration[i])
-                        aura.MaxDuration = packet.ReadInt32("Max Duration", i);
-                    else
-                        aura.MaxDuration = 0;
+                    aura.MaxDuration = hasMaxDuration[i] ? packet.ReadInt32("Max Duration", i) : 0;
 
                     aura.Charges = packet.ReadByte("Charges", i);
                     aura.SpellId = packet.ReadUInt32("Spell Id", i);
@@ -136,7 +130,7 @@ namespace WowPacketParser.V5_4_2_17658.Parsers
             for (var i = 0; i < count; i++)
             {
                 var spellId = packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID", i);
-                spells.Add((uint)spellId);
+                spells.Add(spellId);
             }
 
             var startSpell = new StartSpell { Spells = spells };

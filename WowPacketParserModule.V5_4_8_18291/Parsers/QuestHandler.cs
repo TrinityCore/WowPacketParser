@@ -318,7 +318,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     packet.ReadInt32("Unk Int32 2", i, j);
                     packet.ReadInt32("Unk Int32 4", i, j);
 
-                    questPoi.Map = (uint)packet.ReadEntry<UInt32>(StoreNameType.Map, "Map Id", i, j);
+                    questPoi.Map = packet.ReadEntry<UInt32>(StoreNameType.Map, "Map Id", i, j);
 
                     questPoi.FloorId = packet.ReadUInt32("Floor Id", i, j);
 

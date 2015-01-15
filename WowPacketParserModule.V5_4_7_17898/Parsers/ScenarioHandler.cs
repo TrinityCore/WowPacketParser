@@ -160,8 +160,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
                     for (var k = 0; k < bits34[i][j]; ++k)
                     {
-                        packet.ReadInt32("Point X", i, j, (int)k);
-                        packet.ReadInt32("Point Y", i, j, (int)k);
+                        packet.ReadInt32("Point X", i, j, k);
+                        packet.ReadInt32("Point Y", i, j, k);
                     }
 
                     packet.ReadInt32("Int12", i, j);

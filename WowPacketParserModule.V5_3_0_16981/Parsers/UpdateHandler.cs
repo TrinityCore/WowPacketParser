@@ -158,7 +158,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var bits28F = 0u;
             var splineType = SplineType.Stop;
 
-            var bit28D = packet.ReadBit();
+            packet.ReadBit();
             var transportFrames = packet.ReadBits(22);
             var hasVehicleData = packet.ReadBit("Has Vehicle Data", index);
             var bit3F0 = packet.ReadBit();
@@ -172,7 +172,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var hasAttackingTarget = packet.ReadBit("Has Attacking Target", index);
             packet.ReadBit(); // fake bit
             packet.ReadBit(); // fake bit
-            var isSelf = packet.ReadBit("Self", index);
+            packet.ReadBit("Self", index);
             packet.ReadBit(); // fake bit
             var living = packet.ReadBit("Living", index);
             var bit3E8 = packet.ReadBit(); // something with scene object

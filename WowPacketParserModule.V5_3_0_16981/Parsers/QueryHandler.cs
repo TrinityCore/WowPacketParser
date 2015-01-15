@@ -101,12 +101,11 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         [Parser(Opcode.CMSG_NPC_TEXT_QUERY)]
         public static void HandleNpcTextQuery(Packet packet)
         {
-            var entry = packet.ReadInt32("Entry");
+            packet.ReadInt32("Entry");
 
-            var GUID = new byte[8];
-            GUID = packet.StartBitStream(7, 1, 4, 3, 0, 2, 6, 5);
-            packet.ParseBitStream(GUID, 4, 5, 6, 7, 1, 0, 2, 3);
-            packet.WriteGuid("GUID", GUID);
+            var guid = packet.StartBitStream(7, 1, 4, 3, 0, 2, 6, 5);
+            packet.ParseBitStream(guid, 4, 5, 6, 7, 1, 0, 2, 3);
+            packet.WriteGuid("GUID", guid);
         }
 
         [Parser(Opcode.CMSG_QUERY_PLAYER_NAME)]
@@ -215,7 +214,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                     {
                         var broadcastText = new BroadcastText();
 
-                        var Id = db2File.ReadEntry("Broadcast Text Entry");
+                        var id = db2File.ReadEntry("Broadcast Text Entry");
                         broadcastText.language = db2File.ReadUInt32("Language");
                         if (db2File.ReadUInt16() > 0)
                             broadcastText.MaleText = db2File.ReadCString("Male Text");
@@ -233,8 +232,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         broadcastText.unk1 = db2File.ReadUInt32("Unk 1"); // emote unk
                         broadcastText.unk2 = db2File.ReadUInt32("Unk 2"); // kind of type?
 
-                        Storage.BroadcastTexts.Add((uint)Id.Key, broadcastText, packet.TimeSpan);
-                        packet.AddSniffData(StoreNameType.BroadcastText, Id.Key, "BROADCAST_TEXT");
+                        Storage.BroadcastTexts.Add((uint)id.Key, broadcastText, packet.TimeSpan);
+                        packet.AddSniffData(StoreNameType.BroadcastText, id.Key, "BROADCAST_TEXT");
                         break;
                     }
                 case DB2Hash.Creature:
@@ -485,18 +484,18 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var questTurnTargetName = (int)packet.ReadBits(8);
             var count = (int)packet.ReadBits("Requirement Count", 19);
 
-            var len2949_20 = new int[count];
+            var len294920 = new int[count];
             var counter = new int[count];
             for (var i = 0; i < count; ++i)
             {
-                len2949_20[i] = (int)packet.ReadBits(8);
+                len294920[i] = (int)packet.ReadBits(8);
                 counter[i] = (int)packet.ReadBits(22);
             }
             packet.ResetBitReader();
 
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadWoWString("string2949+20", len2949_20[i], i);
+                packet.ReadWoWString("string2949+20", len294920[i], i);
                 packet.ReadInt32("int2949+16", i);
                 packet.ReadByte("byte2949+5", i);
                 packet.ReadByte("byte2949+4", i);
@@ -579,7 +578,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             quest.ZoneOrSort = packet.ReadEnum<QuestSort>("Sort", TypeCode.Int32);
             packet.ReadInt32("int1788");
             quest.SoundTurnIn = packet.ReadUInt32("Sound TurnIn");
-            quest.SourceItemId = (uint) packet.ReadEntry<UInt32>(StoreNameType.Item, "Source Item ID");
+            quest.SourceItemId = packet.ReadEntry<UInt32>(StoreNameType.Item, "Source Item ID");
             quest.QuestTurnTargetName = packet.ReadWoWString("QuestTurn Target Name", questTurnTargetName);
             quest.QuestTurnInPortrait = packet.ReadUInt32("QuestTurnInPortrait");
             quest.Flags = packet.ReadEnum<QuestFlags>("Flags", TypeCode.UInt32);

@@ -332,11 +332,11 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13);
 
             var hasMovementFlags = !packet.ReadBit();
-            var unk_bit0 = packet.ReadBit("unk_bit");
+            packet.ReadBit("unk_bit");
             var counter2 = packet.ReadBits(22);
             var hasPitch = !packet.ReadBit();
             var hasSplineElevation = !packet.ReadBit();
-            var unkbit = packet.ReadBit("unkbit");
+            packet.ReadBit("unkbit");
             packet.ReadBit("HasSpline");
             guid[7] = packet.ReadBit();
             var hasTransportData = packet.ReadBit();

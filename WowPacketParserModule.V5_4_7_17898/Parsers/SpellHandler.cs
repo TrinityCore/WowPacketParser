@@ -84,15 +84,9 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
                     aura.Level = packet.ReadUInt16("Caster Level", i);
                     aura.Charges = packet.ReadByte("Charges", i);
 
-                    if (hasMaxDuration[i])
-                        aura.MaxDuration = packet.ReadInt32("Max Duration", i);
-                    else
-                        aura.MaxDuration = 0;
+                    aura.MaxDuration = hasMaxDuration[i] ? packet.ReadInt32("Max Duration", i) : 0;
 
-                    if (hasDuration[i])
-                        aura.Duration = packet.ReadInt32("Duration", i);
-                    else
-                        aura.Duration = 0;
+                    aura.Duration = hasDuration[i] ? packet.ReadInt32("Duration", i) : 0;
                 }
                 packet.ReadByte("Slot", i);
             }
@@ -1019,7 +1013,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             for (var i = 0; i < count; i++)
             {
                 var spellId = packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID", i);
-                spells.Add((uint)spellId);
+                spells.Add(spellId);
             }
 
             var startSpell = new StartSpell { Spells = spells };

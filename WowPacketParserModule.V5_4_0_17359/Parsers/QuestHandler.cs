@@ -97,7 +97,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
                     questPoi.ObjectiveIndex = packet.ReadInt32("Objective Index", i, j);
                     packet.ReadInt32("Points Counter?", i, j);
-                    questPoi.Map = (uint)packet.ReadEntry<UInt32>(StoreNameType.Map, "Map Id", i, j);
+                    questPoi.Map = packet.ReadEntry<UInt32>(StoreNameType.Map, "Map Id", i, j);
                     packet.ReadInt32("Player Condition ID", i, j);
                     packet.ReadInt32("World Effect ID", i, j);
                     questPoi.Idx = (uint)packet.ReadInt32("POI Index", i, j);

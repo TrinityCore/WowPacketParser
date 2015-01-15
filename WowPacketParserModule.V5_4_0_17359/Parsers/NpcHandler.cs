@@ -11,7 +11,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 {
     public static class NpcHandler
     {
-        public static uint LastGossipPOIEntry = 0;
+        public static uint LastGossipPOIEntry;
 
         [Parser(Opcode.CMSG_GOSSIP_HELLO)]
         public static void HandleGossipHello(Packet packet)

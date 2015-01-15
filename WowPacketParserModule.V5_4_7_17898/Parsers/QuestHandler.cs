@@ -93,7 +93,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                         questPoi.Points.Add(questPoiPoint);
                     }
 
-                    questPoi.Map = (uint)packet.ReadEntry<UInt32>(StoreNameType.Map, "Map Id", i, j);
+                    questPoi.Map = packet.ReadEntry<UInt32>(StoreNameType.Map, "Map Id", i, j);
                     packet.ReadInt32("Unk Int32 3", i, j);
                     packet.ReadInt32("Unk Int32 4", i, j);
                     questPoi.FloorId = packet.ReadUInt32("Floor Id", i, j);

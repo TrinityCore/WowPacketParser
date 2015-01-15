@@ -21,7 +21,7 @@ namespace WowPacketParser.V5_4_0_17359.Parsers
             for (var i = 0; i < count; i++)
             {
                 var spellId = packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID", i);
-                spells.Add((uint)spellId);
+                spells.Add(spellId);
             }
 
             var startSpell = new StartSpell { Spells = spells };
@@ -153,10 +153,7 @@ namespace WowPacketParser.V5_4_0_17359.Parsers
                 {
                     var aura = new Aura();
 
-                    if (hasDuration[i])
-                        aura.Duration = packet.ReadInt32("Duration", i);
-                    else
-                        aura.Duration = 0;
+                    aura.Duration = hasDuration[i] ? packet.ReadInt32("Duration", i) : 0;
 
                     if (hasCasterGUID[i])
                     {
@@ -174,10 +171,7 @@ namespace WowPacketParser.V5_4_0_17359.Parsers
 
                     aura.SpellId = packet.ReadUInt32("Spell Id", i);
 
-                    if (hasMaxDuration[i])
-                        aura.MaxDuration = packet.ReadInt32("Max Duration", i);
-                    else
-                        aura.MaxDuration = 0;
+                    aura.MaxDuration = hasMaxDuration[i] ? packet.ReadInt32("Max Duration", i) : 0;
 
                     for (var j = 0; j < bitsEC[i]; ++j)
                         packet.ReadSingle("FloatEA");

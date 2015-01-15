@@ -138,6 +138,7 @@ namespace WowPacketParser.Tests.Misc
         private class TestFoo
         {
 #pragma warning disable 0649
+#pragma warning disable 169
             [FieldTest]
             public int Bar;
 
@@ -146,6 +147,7 @@ namespace WowPacketParser.Tests.Misc
 
             [FieldTest]
             public double Baz;
+#pragma warning disable 169
 #pragma warning restore 0649
         }
 
