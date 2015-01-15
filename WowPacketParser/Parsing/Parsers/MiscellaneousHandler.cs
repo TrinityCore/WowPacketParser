@@ -1127,7 +1127,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_FISH_ESCAPED)]
         [Parser(Opcode.SMSG_SUMMON_CANCEL)]
         [Parser(Opcode.CMSG_MEETINGSTONE_INFO)]
-        [Parser(Opcode.CMSG_RETURN_TO_GRAVEYARD)]
+        [Parser(Opcode.CMSG_PORT_GRAVEYARD)]
         [Parser(Opcode.CMSG_UI_TIME_REQUEST)]
         [Parser(Opcode.CMSG_REQUEST_CEMETERY_LIST)]
         [Parser(Opcode.CMSG_REQUEST_RESEARCH_HISTORY)]

@@ -480,7 +480,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_RESET_FACTION_CHEAT, 0x100CD}, //UnknownopcodeID
             {Opcode.CMSG_RESET_INSTANCES, 0x0AAA0},
             {Opcode.CMSG_RESURRECT_RESPONSE, 0x0BBE8},
-            {Opcode.CMSG_RETURN_TO_GRAVEYARD, 0x00593},
+            {Opcode.CMSG_PORT_GRAVEYARD, 0x00593},
             {Opcode.CMSG_RUN_SCRIPT, 0x100DF}, //UnknownopcodeID
             {Opcode.CMSG_SAVE_DANCE, 0x101C3}, //UnknownopcodeID
             {Opcode.CMSG_SAVE_PLAYER, 0x1005C}, //UnknownopcodeID
@@ -745,7 +745,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_COOLDOWN_CHEAT, 0x0AAA4},
             {Opcode.SMSG_COOLDOWN_EVENT, 0x0EAEC},
             {Opcode.SMSG_CORPSE_MAP_POSITION_QUERY_RESPONSE, 0x1020A}, //UnknownopcodeID
-            {Opcode.SMSG_CORPSE_NOT_IN_INSTANCE, 0x031E4},
+            {Opcode.SMSG_AREA_TRIGGER_NO_CORPSE, 0x031E4},
             {Opcode.SMSG_CORPSE_RECLAIM_DELAY, 0x031C4},
             {Opcode.SMSG_CREATURE_QUERY_RESPONSE, 0x0E6AC},
             {Opcode.SMSG_CRITERIA_DELETED, 0x0AF84},

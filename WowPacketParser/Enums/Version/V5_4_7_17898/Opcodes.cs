@@ -158,7 +158,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x13CB},
             {Opcode.CMSG_REPAIR_ITEM, 0x0577},
             {Opcode.CMSG_REPOP_REQUEST, 0x04FC},
-            {Opcode.CMSG_RETURN_TO_GRAVEYARD, 0x0257},
+            {Opcode.CMSG_PORT_GRAVEYARD, 0x0257},
             {Opcode.CMSG_PAGE_TEXT_QUERY, 0x13B1},
             {Opcode.CMSG_PET_NAME_QUERY, 0x16A3},
             {Opcode.CMSG_PLAYER_LOGIN, 0x17D3},

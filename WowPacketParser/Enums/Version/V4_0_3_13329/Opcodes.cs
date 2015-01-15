@@ -1131,7 +1131,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_UNKNOWN_1276, 0xFF94}, // NF(0x2AD0)(0x04FC) //ing in 10554
             {Opcode.SMSG_LOOT_SLOT_CHANGED, 0x4C7C}, // (0xC3BD)(0x04FD) //T_SLOT_CHANGED
             {Opcode.SMSG_QUERY_QUESTS_COMPLETED_RESPONSE, 0x0501}, // NF()(0x0501) // // response to 0x500
-            {Opcode.SMSG_CORPSE_NOT_IN_INSTANCE, 0x0506}, // NF()(0x0506) //
+            {Opcode.SMSG_AREA_TRIGGER_NO_CORPSE, 0x0506}, // NF()(0x0506) //
             {Opcode.SMSG_CAMERA_SHAKE, 0xFF93}, // NF(0xA3B0)(0x050A) //ellEffectCameraShakes.dbc index}, uint32
             {Opcode.SMSG_SOCKET_GEMS_RESULT, 0xFF92}, // NF(0x6A90)(0x050B) // update packet?
             {Opcode.SMSG_REDIRECT_CLIENT, 0x9000}, // (0x8400)(0x050D) //}, uint16 port}, uint32 unk}, uint8[20] hash (ip + port}, seed=sessionkey)
