@@ -176,6 +176,12 @@ namespace WowPacketParser.Loading
                         {
                             ShowPercentProgress("Processing...", reader.PacketReader.GetCurrentSize(), reader.PacketReader.GetTotalSize());
 
+                            if (!packet.Status.HasAnyFlag(Settings.OutputFlag))
+                            {
+                                packet.ClosePacket();
+                                return;
+                            }
+
                             // get packet header if necessary
                             if (Settings.LogPacketErrors)
                             {
@@ -186,7 +192,7 @@ namespace WowPacketParser.Loading
                             }
 
 // ReSharper disable AccessToDisposedClosure
-                            if (writer != null && packet.Status.HasAnyFlag(Settings.OutputFlag))
+                            if (writer != null)
                             {
                                 // Write to file
                                 writer.WriteLine(packet.Writer);
