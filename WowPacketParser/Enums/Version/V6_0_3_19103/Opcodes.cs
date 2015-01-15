@@ -205,6 +205,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_JOIN_CHANNEL, 0x0B4B},
             {Opcode.CMSG_JOIN_RATED_BATTLEGROUND, 0x065A},
             {Opcode.CMSG_LEAVE_CHANNEL, 0x19F2},
+            {Opcode.CMSG_LEAVE_GROUP, 0x1BA3},
             {Opcode.CMSG_LF_GUILD_ADD_RECRUIT, 0x1223},
             {Opcode.CMSG_LF_GUILD_BROWSE, 0x0BA3},
             {Opcode.CMSG_LF_GUILD_DECLINE_RECRUIT, 0x066D},

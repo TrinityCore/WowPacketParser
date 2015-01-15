@@ -457,6 +457,7 @@ namespace WowPacketParser.Enums
         CMSG_LEAVE_BATTLEFIELD,
         CMSG_LEAVE_CHANNEL,
         CMSG_LEVEL_CHEAT,
+        CMSG_LEAVE_GROUP,
         CMSG_LFG_GET_STATUS,
         CMSG_LFG_GET_SYSTEM_INFO,
         CMSG_LFG_JOIN,
