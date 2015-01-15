@@ -129,6 +129,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             SpellHandler.ReadSpellCastRequest(ref packet);
         }
 
+        [Parser(Opcode.CMSG_USE_TOY)]
+        public static void HandleUseToy(Packet packet)
+        {
+            packet.ReadInt32("ItemID");
+            SpellHandler.ReadSpellCastRequest(ref packet);
+        }
+
         [Parser(Opcode.CMSG_DESTROY_ITEM)]
         public static void HandleDestroyItem(Packet packet)
         {
