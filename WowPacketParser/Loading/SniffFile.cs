@@ -131,9 +131,11 @@ namespace WowPacketParser.Loading
 
                     ThreadPool.SetMinThreads(threadCount + 2, 4);
 
+                    var written = false;
                     using (var writer = (Settings.DumpFormatWithText() ? new StreamWriter(outFileName, true) : null))
                     {
-                        bool first = true;
+                        var firstRead = true;
+                        var firstWrite = true;
 
                         var reader = new Reader(_fileName, _originalFileName);
 
@@ -145,17 +147,12 @@ namespace WowPacketParser.Loading
                             Packet packet;
                             var b = reader.TryRead(out packet);
 
-                            if (first)
+                            if (firstRead)
                             {
                                 Trace.WriteLine(string.Format("{0}: Parsing {1} of packets. Detected version {2}",
                                     _logPrefix, Utilities.BytesToString(reader.PacketReader.GetTotalSize()), ClientVersion.VersionString));
 
-// ReSharper disable AccessToDisposedClosure
-                                if (writer != null)
-                                    writer.WriteLine(GetHeader(_originalFileName));
-// ReSharper restore AccessToDisposedClosure
-
-                                first = false;
+                                firstRead = false;
                             }
 
                             return Tuple.Create(packet, b);
@@ -180,6 +177,18 @@ namespace WowPacketParser.Loading
                             {
                                 packet.ClosePacket();
                                 return;
+                            }
+
+                            written = true;
+
+                            if (firstWrite)
+                            {
+                                // ReSharper disable AccessToDisposedClosure
+                                if (writer != null)
+                                    writer.WriteLine(GetHeader(_originalFileName));
+                                // ReSharper restore AccessToDisposedClosure
+
+                                firstWrite = false;
                             }
 
                             // get packet header if necessary
@@ -209,7 +218,14 @@ namespace WowPacketParser.Loading
                         _stats.SetEndTime(DateTime.Now);
                     }
 
-                    Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", _logPrefix, outFileName));
+                    if (written)
+                        Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", _logPrefix, outFileName));
+                    else
+                    {
+                        Trace.WriteLine(string.Format("{0}: No file produced", _logPrefix));
+                        File.Delete(outFileName);
+                    }
+
                     Trace.WriteLine(string.Format("{0}: {1}", _logPrefix, _stats));
 
                     if (Settings.SQLOutputFlag != 0)
