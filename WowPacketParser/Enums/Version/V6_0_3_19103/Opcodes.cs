@@ -167,7 +167,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_GM_TICKET_ACKNOWLEDGE_SURVEY, 0x0327},
             {Opcode.CMSG_GM_TICKET_DELETE_TICKET, 0x0F2E},
             {Opcode.CMSG_GM_TICKET_GET_CASE_STATUS, 0x0F0A},
-            //{Opcode.CMSG_GM_TICKET_GET_SYSTEM_STATUS, }, Fix me: off_D631A4
+            {Opcode.CMSG_GM_TICKET_GET_SYSTEM_STATUS, 0x0B0E},
             {Opcode.CMSG_GM_TICKET_GET_TICKET, 0x0B28},
             {Opcode.CMSG_GM_TICKET_RESPONSE_RESOLVE, 0x0F2E},
             {Opcode.CMSG_GOSSIP_HELLO, 0x00F3},
