@@ -28,6 +28,7 @@ namespace WowPacketParser.Loading
         private DateTime _startTime;
         private uint _startTickCount;
         private int _snifferId;
+        private short _snifferVersion;
 
         public BinaryPacketReader(SniffType type, string fileName, Encoding encoding)
         {
@@ -95,7 +96,16 @@ namespace WowPacketParser.Loading
                     _startTime = Utilities.GetDateTimeFromUnixTime(_reader.ReadUInt32()); // start time
                     _startTickCount = _reader.ReadUInt32();     // start tick count
                     additionalLength = _reader.ReadInt32();
-                    _reader.ReadBytes(additionalLength);
+                    var optionalData = _reader.ReadBytes(additionalLength);
+                    if (_snifferId == 'S') // WSTC
+                    {
+                        // versions 1.5 and older store human readable sniffer description string in header
+                        // version 1.6 adds 3 bytes before that data, 0xFF separator, one byte for major version and one byte for minor version, expecting 0x0106 for 1.6
+                        if (additionalLength >= 3 && optionalData[0] == 0xFF)
+                            _snifferVersion = BitConverter.ToInt16(optionalData, 1);
+                        else
+                            _snifferVersion = 0x0105;
+                    }
                     break;
                 }
                 default:
