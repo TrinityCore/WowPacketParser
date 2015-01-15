@@ -16,6 +16,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
         {
             {Opcode.CMSG_ACCEPT_LEVEL_GRANT, 0x0B12},
+            {Opcode.CMSG_ACCEPT_TRADE, 0x01E5},
             {Opcode.CMSG_ACTIVATE_TAXI, 0x0311},
             {Opcode.CMSG_ACTIVATE_TAXI_EXPRESS, 0x1B52},
             {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x03F4},
@@ -127,6 +128,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_DEL_IGNORE, 0x033D},
             {Opcode.CMSG_DEL_MUTE, 0x0128},
             {Opcode.CMSG_DECLINE_PETITION, 0x03EA},
+            {Opcode.CMSG_DF_LEAVE, 0x01A2},
             {Opcode.CMSG_DF_SET_ROLES, 0x1B82},
             {Opcode.CMSG_DESTROY_ITEM, 0x01EE},
             {Opcode.CMSG_DISCARDED_TIME_SYNC_ACKS, 0x0142},
@@ -138,6 +140,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_FORCE_MOVE_ROOT_ACK, 0x0B73},
             {Opcode.CMSG_GARRISON_COMPLETE_MISSION, 0x102C},
             {Opcode.CMSG_GARRISON_MISSION_BONUS_ROLL, 0x02C2},
+            {Opcode.CMGS_GARRISON_REMOVE_FOLLOWER_FROM_BUILDING, 0x01BB},
             {Opcode.CMSG_GARRISON_REQUEST_BLUEPRINT_AND_SPECIALIZATION_DATA, 0x16F2},
             {Opcode.CMSG_GARRISON_START_MISSION, 0x1624},
             {Opcode.CMSG_GAMEOBJECT_QUERY, 0x03AE},
@@ -389,6 +392,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_TEXT_EMOTE, 0x1901},
             {Opcode.CMSG_TIME_SYNC_RESP, 0x0003},
             {Opcode.CMSG_TUTORIAL_FLAG, 0x0B16},
+            {Opcode.CMSG_UNACCEPT_TRADE, 0x13BA},
             {Opcode.CMSG_UNDELETE_CHARACTER, 0x0D99},
             {Opcode.CMSG_UNDELETE_COOLDOWN_STATUS_QUERY, 0x19A9},
             {Opcode.CMSG_UNLEARN_SKILL, 0x0A26},
