@@ -264,6 +264,15 @@ namespace WowPacketParser.Loading
                     SplitBinaryDump(packets);
                     break;
                 }
+                case DumpFormatType.PktDirectionSplit:
+                {
+                    var packets = ReadPackets();
+                    if (packets.Count == 0)
+                        break;
+
+                    DirectionSplitBinaryDump(packets);
+                    break;
+                }
                 case DumpFormatType.PktSessionSplit:
                 {
                     var packets = ReadPackets();
@@ -374,6 +383,12 @@ namespace WowPacketParser.Loading
         {
             Trace.WriteLine(string.Format("{0}: Splitting {1} packets to multiple files...", _logPrefix, packets.Count));
             SplitBinaryPacketWriter.Write(packets, Encoding.ASCII);
+        }
+
+        private void DirectionSplitBinaryDump(ICollection<Packet> packets)
+        {
+            Trace.WriteLine(string.Format("{0}: Splitting {1} packets to multiple files...", _logPrefix, packets.Count));
+            SplitDirectionBinaryPacketWriter.Write(packets, Encoding.ASCII);
         }
 
         private void SessionSplitBinaryDump(ICollection<Packet> packets)
