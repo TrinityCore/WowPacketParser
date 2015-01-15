@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Saving;
@@ -343,6 +344,44 @@ namespace WowPacketParser.Loading
                     File.Move(realFileName, destPath);
 
                     Trace.WriteLine("Moved " + realFileName + " to " + destPath);
+
+                    break;
+                }
+                case DumpFormatType.ConnectionIndexes:
+                {
+                    var packets = ReadPackets();
+                    if (packets.Count == 0)
+                        break;
+
+                    using (var writer = new StreamWriter(Path.ChangeExtension(_originalFileName, null) + "_connidx.txt"))
+                    {
+                        if (ClientVersion.Build <= ClientVersionBuild.V6_0_3_19342)
+                            writer.WriteLine("# Warning: versions before 6.1 might not have proper ConnectionIndex values.");
+
+                        IEnumerable<IGrouping<Tuple<int, Direction>, Packet>> groupsOpcode = packets
+                            .GroupBy(packet => Tuple.Create(packet.Opcode, packet.Direction))
+                            .OrderBy(grouping => grouping.Key.Item2);
+
+                        foreach (IGrouping<Tuple<int, Direction>, Packet> groupOpcode in groupsOpcode)
+                        {
+                            List<IGrouping<int, Packet>> groups = groupOpcode
+                                .GroupBy(packet => packet.ConnectionIndex)
+                                .OrderBy(grouping => grouping.Key)
+                                .ToList();
+
+                            writer.Write("{0} {1,-50}: ", groupOpcode.Key.Item2, Opcodes.GetOpcodeName(groupOpcode.Key.Item1, groupOpcode.Key.Item2));
+
+                            for (int i = 0; i < groups.Count; i++)
+                            {
+                                writer.Write("{0}", groups[i].Key);
+
+                                if (i != groups.Count - 1)
+                                    writer.Write(",");
+                            }
+
+                            writer.WriteLine();
+                        }
+                    }
 
                     break;
                 }
