@@ -506,9 +506,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadMovementAck(ref packet);
         }
 
+        [Parser(Opcode.CMSG_MOVE_FORCE_FLIGHT_SPEED_CHANGE_ACK)]
         [Parser(Opcode.CMSG_MOVE_FORCE_RUN_SPEED_CHANGE_ACK)]
         [Parser(Opcode.CMSG_MOVE_FORCE_RUN_BACK_SPEED_CHANGE_ACK)]
         [Parser(Opcode.CMSG_MOVE_FORCE_SWIM_SPEED_CHANGE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FORCE_WALK_SPEED_CHANGE_ACK)]
         public static void HandleMovementSpeedAck(Packet packet)
         {
             ReadMovementAck(ref packet);
