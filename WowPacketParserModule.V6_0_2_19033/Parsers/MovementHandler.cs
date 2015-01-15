@@ -497,6 +497,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_MOVE_GRAVITY_DISABLE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_GRAVITY_ENABLE_ACK)]
         [Parser(Opcode.CMSG_MOVE_HOVER_ACK)]
         [Parser(Opcode.CMSG_MOVE_WATER_WALK_ACK)]
         [Parser(Opcode.CMSG_FORCE_MOVE_ROOT_ACK)]
@@ -511,6 +512,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             ReadMovementAck(ref packet);
             packet.ReadSingle("Speed");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_REMOVE_MOVEMENT_FORCE_ACK)]
+        public static void HandleMoveRemoveMovementForceAck(Packet packet)
+        {
+            ReadMovementAck(ref packet);
+            packet.ReadUInt32("MovementForceID");
         }
 
         [Parser(Opcode.CMSG_MOVE_SET_COLLISION_HEIGHT_ACK)]
