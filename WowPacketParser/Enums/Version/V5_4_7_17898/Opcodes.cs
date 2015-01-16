@@ -398,7 +398,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_QUESTGIVER_STATUS, 0x0D7E},
             {Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE, 0x0F79},
             {Opcode.SMSG_QUERY_TIME_RESPONSE, 0x0E2A},
-            {Opcode.SMSG_SCENARIO_POI, 0x10E9},
+            {Opcode.SMSG_SCENARIO_POIS, 0x10E9},
             {Opcode.SMSG_SCENARIO_PROGRESS_UPDATE, 0x167B},
             {Opcode.SMSG_SCENARIO_STATE, 0x1E20},
             {Opcode.SMSG_SET_TIME_ZONE_INFORMATION, 0x0C2B},

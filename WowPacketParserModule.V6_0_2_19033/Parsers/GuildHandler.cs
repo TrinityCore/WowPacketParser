@@ -150,7 +150,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("InfoText", bits9);
         }
 
-        [Parser(Opcode.SMSG_GUILD_EVENT)]
+        [Parser(Opcode.SMSG_GUILD_NEWS)]
         public static void HandleGuildUpdateRoster(Packet packet)
         {
             var count = packet.ReadInt32("NewsCount");

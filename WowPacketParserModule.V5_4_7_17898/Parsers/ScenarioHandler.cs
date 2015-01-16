@@ -130,7 +130,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
         }
 
-        [Parser(Opcode.SMSG_SCENARIO_POI)]
+        [Parser(Opcode.SMSG_SCENARIO_POIS)]
         public static void HandleScenarioPoi(Packet packet)
         {
             var bits20 = packet.ReadBits(21);
