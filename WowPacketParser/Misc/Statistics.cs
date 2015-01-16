@@ -14,7 +14,7 @@ namespace WowPacketParser.Misc
     {
         private readonly int _totalPacketCount;
 
-        private int _sucessPacketCount;
+        private int _successPacketCount;
         private int _withErrorsPacketCount;
         private int _notParsedPacketCount;
         private int _noStructurePacketCount;
@@ -55,15 +55,15 @@ namespace WowPacketParser.Misc
         /// </summary>
         public int CalculatedTotalPacketCount
         {
-            get { return _sucessPacketCount + _withErrorsPacketCount + _notParsedPacketCount + _noStructurePacketCount; }
+            get { return _successPacketCount + _withErrorsPacketCount + _notParsedPacketCount + _noStructurePacketCount; }
         }
 
         /// <summary>
-        /// Number of packets sucessfully parsed.
+        /// Number of packets successfully parsed.
         /// </summary>
-        public int SucessPacketCount
+        public int SuccessPacketCount
         {
-            get { return _sucessPacketCount; }
+            get { return _successPacketCount; }
         }
 
         /// <summary>
@@ -91,11 +91,11 @@ namespace WowPacketParser.Misc
         }
 
         /// <summary>
-        /// Increments by one the number of packets sucessfully parsed.
+        /// Increments by one the number of packets successfully parsed.
         /// </summary>
-        public void AddSucess()
+        public void AddSuccess()
         {
-            Interlocked.Increment(ref _sucessPacketCount);
+            Interlocked.Increment(ref _successPacketCount);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace WowPacketParser.Misc
                 case ParsedStatus.None:
                     break;
                 case ParsedStatus.Success:
-                    AddSucess();
+                    AddSuccess();
                     break;
                 case ParsedStatus.WithErrors:
                     AddWithErrors();
@@ -145,12 +145,12 @@ namespace WowPacketParser.Misc
         }
 
         /// <summary>
-        /// Sucessfully parsed packets percentage. [0-100]
+        /// Successfully parsed packets percentage. [0-100]
         /// </summary>
         /// <returns></returns>
-        public double GetSucessPercentage()
+        public double GetSuccessPercentage()
         {
-            return 100.0 * SucessPacketCount / CalculatedTotalPacketCount;
+            return 100.0 * SuccessPacketCount / CalculatedTotalPacketCount;
         }
 
         /// <summary>
@@ -209,14 +209,14 @@ namespace WowPacketParser.Misc
         /// <returns>String</returns>
         public override string ToString()
         {
-            if (SucessPacketCount == 0 && WithErrorsPacketCount == 0 &&
+            if (SuccessPacketCount == 0 && WithErrorsPacketCount == 0 &&
                 NotParsedPacketCount == 0 && NoStructurePacketCount == 0)
                 return "No packets parsed";
 
             var sb = new StringBuilder("Parsed ")
-                .Append(SucessPacketCount)
-                .Append(" (").AppendFormat("{0:F3}", GetSucessPercentage()).Append("%) ")
-                .Append("packets sucessfully, ")
+                .Append(SuccessPacketCount)
+                .Append(" (").AppendFormat("{0:F3}", GetSuccessPercentage()).Append("%) ")
+                .Append("packets successfully, ")
                 .Append(WithErrorsPacketCount)
                 .Append(" (").AppendFormat("{0:F3}", GetWithErrorsPercentage()).Append("%) ")
                 .Append("with errors and skipped ")
@@ -253,7 +253,7 @@ namespace WowPacketParser.Misc
                     switch (packet.Status)
                     {
                         case ParsedStatus.Success:
-                            stats.AddSucess();
+                            stats.AddSuccess();
                             break;
                         case ParsedStatus.WithErrors:
                             stats.AddWithErrors();
