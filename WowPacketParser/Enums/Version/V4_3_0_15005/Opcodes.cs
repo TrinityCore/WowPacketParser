@@ -250,7 +250,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.CMSG_MESSAGECHAT_SAY, 4974},
             {Opcode.CMSG_MESSAGECHAT_WHISPER, 782},
             {Opcode.CMSG_MESSAGECHAT_YELL, 844},
-            {Opcode.CMSG_MOUNTSPECIAL_ANIM, 6656},
+            {Opcode.CMSG_MOUNT_SPECIAL_ANIM, 6656},
             {Opcode.CMSG_MOVE_FALL_RESET, 9859},
             {Opcode.CMSG_MOVE_FEATHER_FALL_ACK, 12835},
             {Opcode.CMSG_MOVE_HOVER_ACK, 26275},

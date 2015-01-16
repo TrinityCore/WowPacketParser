@@ -261,7 +261,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.CMSG_MESSAGECHAT_SAY, 0x067A},
             {Opcode.CMSG_MESSAGECHAT_WHISPER, 0x0306},
             {Opcode.CMSG_MESSAGECHAT_YELL, 0x0F7F},
-            {Opcode.CMSG_MOUNTSPECIAL_ANIM, 0x0985},
+            {Opcode.CMSG_MOUNT_SPECIAL_ANIM, 0x0985},
             {Opcode.CMSG_MOVE_CHNG_TRANSPORT, 0x064A},
             {Opcode.CMSG_MOVE_FALL_RESET, 0x0AFF},
             {Opcode.CMSG_MOVE_FORCE_FLIGHT_SPEED_CHANGE_ACK, 0x06C7},

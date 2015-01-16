@@ -243,7 +243,7 @@ namespace WowPacketParser.Enums.Version.V4_2_0_14480
             {Opcode.CMSG_MESSAGECHAT_WHISPER, 0x5B35},
             {Opcode.CMSG_MESSAGECHAT_YELL, 0x13B1},
             {Opcode.CMSG_MINIGAME_MOVE, 0xBABB},
-            {Opcode.CMSG_MOUNTSPECIAL_ANIM, 0xAA6F},
+            {Opcode.CMSG_MOUNT_SPECIAL_ANIM, 0xAA6F},
             //{Opcode.CMSG_MOVE_SPLINE_DONE, 0x18CA},
             {Opcode.CMSG_MOVE_TIME_SKIPPED, 0x2848},
             {Opcode.CMSG_NAME_QUERY, 0x7266},

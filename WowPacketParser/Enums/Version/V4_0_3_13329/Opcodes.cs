@@ -170,7 +170,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_LOOT_RELEASE, 0x947F}, // (0x82F8)(0x015F) //
             {Opcode.CMSG_DUEL_ACCEPTED, 0x6F75}, // (0x8295)(0x016C) //
             {Opcode.CMSG_DUEL_CANCELLED, 0xCC7E}, // (0x6BDC)(0x016D) //
-            {Opcode.CMSG_MOUNTSPECIAL_ANIM, 0x0171}, // NF()(0x0171) //
+            {Opcode.CMSG_MOUNT_SPECIAL_ANIM, 0x0171}, // NF()(0x0171) //
             {Opcode.CMSG_PET_SET_ACTION, 0x977F}, // (0x2318)(0x0174) //
             {Opcode.CMSG_PET_ACTION, 0x3C55}, // (0x8B19)(0x0175) //
             {Opcode.CMSG_PET_ABANDON, 0x3576}, // (0x02D5)(0x0176) //

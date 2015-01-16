@@ -195,7 +195,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.CMSG_LOOT_RELEASE, 0x15F},
             {Opcode.CMSG_DUEL_ACCEPTED, 0x16C},
             {Opcode.CMSG_DUEL_CANCELLED, 0x16D},
-            {Opcode.CMSG_MOUNTSPECIAL_ANIM, 0x171},
+            {Opcode.CMSG_MOUNT_SPECIAL_ANIM, 0x171},
             {Opcode.CMSG_PET_SET_ACTION, 0x174},
             {Opcode.CMSG_PET_ACTION, 0x175},
             {Opcode.CMSG_PET_ABANDON, 0x176},

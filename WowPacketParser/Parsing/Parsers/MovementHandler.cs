@@ -1845,7 +1845,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_MOUNTSPECIAL_ANIM)]
+        [Parser(Opcode.CMSG_MOUNT_SPECIAL_ANIM)]
         public static void HandleMovementNull(Packet packet)
         {
         }
