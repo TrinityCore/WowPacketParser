@@ -1211,7 +1211,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<DismountResult>("Result", TypeCode.Int32);
         }
 
-        [Parser(Opcode.CMSG_GET_MIRRORIMAGE_DATA)]
+        [Parser(Opcode.CMSG_GET_MIRROR_IMAGE_DATA)]
         public static void HandleGetMirrorImageData(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -1219,7 +1219,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Display Id");
         }
 
-        [Parser(Opcode.SMSG_MIRRORIMAGE_DATA)]
+        [Parser(Opcode.SMSG_MIRROR_IMAGE_COMPONENTED_DATA)]
         public static void HandleMirrorImageData(Packet packet)
         {
             packet.ReadGuid("GUID");

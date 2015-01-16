@@ -456,7 +456,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_GM_CHARACTER_RESTORE, 0x03FA}, // NF()(0x03FA) //
             {Opcode.CMSG_GM_CHARACTER_SAVE, 0x03FB}, // NF()(0x03FB) //
             {Opcode.CMSG_MAELSTROM_RENAME_GUILD, 0x0400}, // NF()(0x0400) //
-            {Opcode.CMSG_GET_MIRRORIMAGE_DATA, 0x0401}, // NF()(0x0401) //
+            {Opcode.CMSG_GET_MIRROR_IMAGE_DATA, 0x0401}, // NF()(0x0401) //
             {Opcode.CMSG_IGNORE_DIMINISHING_RETURNS_CHEAT, 0x0405}, // NF()(0x0405) //
             {Opcode.CMSG_KEEP_ALIVE, 0x0407}, // NF()(0x0407) //
             {Opcode.CMSG_OPT_OUT_OF_LOOT, 0x0409}, // NF()(0x0409) //
@@ -1010,7 +1010,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_ECHO_PARTY_SQUELCH, 0x1303}, // (0xA3DD)(0x03F6) //
             {Opcode.SMSG_LOOT_LIST, 0xCE7D}, // (0x0BD1)(0x03F9) //
             {Opcode.SMSG_VOICESESSION_FULL, 0xA456}, // (0xCB90)(0x03FC) //
-            {Opcode.SMSG_MIRRORIMAGE_DATA, 0xF675}, // (0xA3B9)(0x0402) //
+            {Opcode.SMSG_MIRROR_IMAGE_COMPONENTED_DATA, 0xF675}, // (0xA3B9)(0x0402) //
             {Opcode.SMSG_FORCE_DISPLAY_UPDATE, 0xE57E}, // (0x43B8)(0x0403) //
             {Opcode.SMSG_SPELL_CHANCE_RESIST_PUSHBACK, 0x0404}, // NF()(0x0404) //
             {Opcode.SMSG_IGNORE_DIMINISHING_RETURNS_CHEAT, 0x747E}, // (0x4A39)(0x0406) //

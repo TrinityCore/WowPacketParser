@@ -221,7 +221,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_GUILD_ACHIEVEMENT_MEMBERS, 0x02509},
             {Opcode.CMSG_QUERY_GUILD_MEMBER_RECIPES, 0x0212D},
             {Opcode.CMSG_GET_MAIL_LIST, 0x0B284},
-            {Opcode.CMSG_GET_MIRRORIMAGE_DATA, 0x0A08C},
+            {Opcode.CMSG_GET_MIRROR_IMAGE_DATA, 0x0A08C},
             {Opcode.CMSG_GHOST, 0x10088}, //UnknownopcodeID
             {Opcode.CMSG_GMRESPONSE_RESOLVE, 0x062C8},
             {Opcode.CMSG_GMSURVEY_SUBMIT, 0x0E280},
@@ -943,7 +943,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_MINIGAME_MOVE_FAILED, 0x10109}, //UnknownopcodeID
             {Opcode.SMSG_MINIGAME_SETUP, 0x026A4},
             {Opcode.SMSG_MINIGAME_STATE, 0x0A5A8},
-            {Opcode.SMSG_MIRRORIMAGE_DATA, 0x0E2A4},
+            {Opcode.SMSG_MIRROR_IMAGE_COMPONENTED_DATA, 0x0E2A4},
             {Opcode.SMSG_MODIFY_COOLDOWN, 0x030CC},
             {Opcode.SMSG_MONSTER_MOVE, 0x0F1A4},
             {Opcode.SMSG_MONSTER_MOVE_TRANSPORT, 0x0248C},

@@ -677,7 +677,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_MESSAGECHAT, 0x0009},
             {Opcode.SMSG_MESSAGE_BOX, 0x08D1},
             {Opcode.SMSG_MINIGAME_SETUP, 0x0928},
-            {Opcode.SMSG_MIRRORIMAGE_DATA, 0x0E65},
+            {Opcode.SMSG_MIRROR_IMAGE_COMPONENTED_DATA, 0x0E65},
             {Opcode.SMSG_MISSILE_CANCEL, 0x0CF9},
             {Opcode.SMSG_MONEY_NOTIFY, 0x099C},
             {Opcode.SMSG_MONSTER_MOVE, 0x02A5},
