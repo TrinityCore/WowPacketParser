@@ -115,5 +115,26 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (bit72)
                 packet.ReadPackedGuid128("RoundRobinWinner");
         }
+
+        [Parser(Opcode.SMSG_LOOT_ROLL)]
+        public static void HandleLootRollResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("LootObj");
+            packet.ReadPackedGuid128("Player");
+
+            packet.ResetBitReader();
+            packet.ReadBits("ItemType", 2);
+            packet.ReadBits("ItemUiType", 3);
+            packet.ReadBit("CanTradeToTapList");
+            packet.ReadUInt32("Item Quantity");
+            packet.ReadByte("LootItemType");
+            packet.ReadByte("LootListID");
+            ItemHandler.ReadItemInstance(packet);
+
+            packet.ReadInt32("Roll");
+            packet.ReadByte("RollType");
+            packet.ResetBitReader();
+            packet.ReadBit("Autopassed");
+        }
     }
 }
