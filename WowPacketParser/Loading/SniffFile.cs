@@ -27,6 +27,7 @@ namespace WowPacketParser.Loading
 
         private readonly LinkedList<string> _withErrorHeaders = new LinkedList<string>();
         private readonly LinkedList<string> _skippedHeaders = new LinkedList<string>();
+        private readonly LinkedList<string> _noStructureHeaders = new LinkedList<string>();
 
         public SniffFile(string fileName, DumpFormatType dumpFormat = DumpFormatType.Text, Tuple<int, int> number = null)
         {
@@ -195,10 +196,18 @@ namespace WowPacketParser.Loading
                             // get packet header if necessary
                             if (Settings.LogPacketErrors)
                             {
-                                if (packet.Status == ParsedStatus.WithErrors)
-                                    _withErrorHeaders.AddLast(packet.GetHeader());
-                                else if (packet.Status == ParsedStatus.NotParsed)
-                                    _skippedHeaders.AddLast(packet.GetHeader());
+                                switch (packet.Status)
+                                {
+                                    case ParsedStatus.WithErrors:
+                                        _withErrorHeaders.AddLast(packet.GetHeader());
+                                        break;
+                                    case ParsedStatus.NotParsed:
+                                        _skippedHeaders.AddLast(packet.GetHeader());
+                                        break;
+                                    case ParsedStatus.NoStructure:
+                                        _noStructureHeaders.AddLast(packet.GetHeader());
+                                        break;
+                                }
                             }
 
 // ReSharper disable AccessToDisposedClosure
@@ -483,7 +492,7 @@ namespace WowPacketParser.Loading
 
         private void WritePacketErrors()
         {
-            if (_withErrorHeaders.Count == 0 && _skippedHeaders.Count == 0)
+            if (_withErrorHeaders.Count == 0 && _skippedHeaders.Count == 0 && _noStructureHeaders.Count == 0)
                 return;
 
             var fileName = Path.GetFileNameWithoutExtension(_originalFileName) + "_errors.txt";
@@ -504,6 +513,14 @@ namespace WowPacketParser.Loading
                 {
                     file.WriteLine("- Packets not parsed:");
                     foreach (var header in _skippedHeaders)
+                        file.WriteLine(header);
+                    file.WriteLine();
+                }
+
+                if (_noStructureHeaders.Count != 0)
+                {
+                    file.WriteLine("- Packets without structure:");
+                    foreach (var header in _noStructureHeaders)
                         file.WriteLine(header);
                 }
             }

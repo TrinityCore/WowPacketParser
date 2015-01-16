@@ -171,7 +171,7 @@ namespace WowPacketParser.Parsing
             else
             {
                 packet.AsHex();
-                status = ParsedStatus.NotParsed;
+                status = opcode == Opcode.NULL_OPCODE ? ParsedStatus.NotParsed : ParsedStatus.NoStructure;
             }
 
             if (!isMultiple)
