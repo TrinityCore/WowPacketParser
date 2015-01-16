@@ -22,6 +22,7 @@ namespace WowPacketParser.Tests.Misc
             Assert.AreEqual(0, stats.SuccessPacketCount);
             Assert.AreEqual(0, stats.WithErrorsPacketCount);
             Assert.AreEqual(0, stats.NotParsedPacketCount);
+            Assert.AreEqual(0, stats.NoStructurePacketCount);
 
             var stats2 = new Statistics();
             Assert.AreEqual(0, stats2.TotalPacketCount);
@@ -29,22 +30,25 @@ namespace WowPacketParser.Tests.Misc
             Assert.AreEqual(0, stats2.SuccessPacketCount);
             Assert.AreEqual(0, stats2.WithErrorsPacketCount);
             Assert.AreEqual(0, stats2.NotParsedPacketCount);
+            Assert.AreEqual(0, stats2.NoStructurePacketCount);
         }
 
         [Test]
         public void TestAdds()
         {
-            var stats = new Statistics(6);
+            var stats = new Statistics(7);
             stats.AddSuccess();
             stats.AddSuccess();
             stats.AddSuccess();
             stats.AddWithErrors();
             stats.AddWithErrors();
             stats.AddNotParsed();
+            stats.AddNoStructure();
 
             Assert.AreEqual(3, stats.SuccessPacketCount);
             Assert.AreEqual(2, stats.WithErrorsPacketCount);
             Assert.AreEqual(1, stats.NotParsedPacketCount);
+            Assert.AreEqual(1, stats.NoStructurePacketCount);
             Assert.AreEqual(stats.TotalPacketCount, stats.CalculatedTotalPacketCount);
         }
 
@@ -69,6 +73,7 @@ namespace WowPacketParser.Tests.Misc
 
             Assert.AreEqual(1, stats.SuccessPacketCount);
             Assert.AreEqual(0, stats.WithErrorsPacketCount);
+            Assert.AreEqual(0, stats.NoStructurePacketCount);
             Assert.AreEqual(1, stats.NotParsedPacketCount);
             Assert.AreEqual(2, stats.CalculatedTotalPacketCount);
         }
@@ -76,17 +81,20 @@ namespace WowPacketParser.Tests.Misc
         [Test]
         public void TestPercentage()
         {
-            var stats = new Statistics(6);
+            var stats = new Statistics(7);
             stats.AddSuccess();
             stats.AddSuccess();
             stats.AddSuccess();
             stats.AddWithErrors();
             stats.AddWithErrors();
             stats.AddNotParsed();
+            stats.AddNoStructure();
+            stats.AddNoStructure();
 
-            Assert.AreEqual(3.0 / 6.0 * 100.0, stats.GetSuccessPercentage(), 0.001);
-            Assert.AreEqual(2.0 / 6.0 * 100.0, stats.GetWithErrorsPercentage(), 0.001);
-            Assert.AreEqual(1.0 / 6.0 * 100.0, stats.GetNotParsedPercentage(), 0.001);
+            Assert.AreEqual(3.0 / 8.0 * 100.0, stats.GetSuccessPercentage(), 0.001);
+            Assert.AreEqual(2.0 / 8.0 * 100.0, stats.GetWithErrorsPercentage(), 0.001);
+            Assert.AreEqual(1.0 / 8.0 * 100.0, stats.GetNotParsedPercentage(), 0.001);
+            Assert.AreEqual(2.0 / 8.0 * 100.0, stats.GetNoStructurePercentage(), 0.001);
         }
 
         [Test]
@@ -114,6 +122,7 @@ namespace WowPacketParser.Tests.Misc
             stats.AddWithErrors();
             stats.AddWithErrors();
             stats.AddNotParsed();
+            stats.AddNoStructure();
 
             var str = stats.ToString();
 
@@ -125,22 +134,25 @@ namespace WowPacketParser.Tests.Misc
         {
             var packet1 = new Packet(new byte[] { 1, 2 }, 1, DateTime.Now, Direction.ClientToServer, 1, "test.bin");
             var packet2 = new Packet(new byte[] { 2, 1 }, 2, DateTime.Now.AddMinutes(1), Direction.ServerToClient, 2, "test.bin");
+            var packet3 = new Packet(new byte[] { 2, 2 }, 3, DateTime.Now.AddMinutes(3), Direction.ServerToClient, 3, "test.bin");
 
             packet1.Status = ParsedStatus.Success;
             packet2.Status = ParsedStatus.NotParsed;
+            packet3.Status = ParsedStatus.NoStructure;
 
-            var packets = new List<Packet> {packet1, packet2};
+            var packets = new List<Packet> {packet1, packet2, packet3};
 
             var stats = Statistics.BuildStats(packets);
 
-            Assert.AreEqual(2, stats.TotalPacketCount);
-            Assert.AreEqual(2, stats.CalculatedTotalPacketCount);
+            Assert.AreEqual(3, stats.TotalPacketCount);
+            Assert.AreEqual(3, stats.CalculatedTotalPacketCount);
             Assert.AreEqual(1, stats.SuccessPacketCount);
             Assert.AreEqual(0, stats.WithErrorsPacketCount);
             Assert.AreEqual(1, stats.NotParsedPacketCount);
-            Assert.AreEqual(50, stats.GetSuccessPercentage());
+            Assert.AreEqual(33.3, stats.GetSuccessPercentage(), 0.1);
             Assert.AreEqual(0, stats.GetWithErrorsPercentage());
-            Assert.AreEqual(50, stats.GetNotParsedPercentage());
+            Assert.AreEqual(33.3, stats.GetNotParsedPercentage(), 0.1);
+            Assert.AreEqual(33.3, stats.GetNoStructurePercentage(), 0.1);
         }
     }
 }
