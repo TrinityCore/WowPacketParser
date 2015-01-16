@@ -156,5 +156,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("Roll");
             packet.ReadByte("RollType");
         }
+
+        [Parser(Opcode.SMSG_LOOT_ROLLS_COMPLETE)]
+        public static void HandleLootRollsComplete(Packet packet)
+        {
+            packet.ReadPackedGuid128("LootObj");
+            packet.ReadByte("LootListID");
+        }
     }
 }
