@@ -637,5 +637,49 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Guid");
         }
+
+        [Parser(Opcode.CMSG_TOTEM_DESTROYED)]
+        public static void HandleTotemDestroyed(Packet packet)
+        {
+            packet.ReadByte("Slot");
+            packet.ReadPackedGuid128("TotemGUID");
+        }
+
+        [Parser(Opcode.SMSG_COOLDOWN_EVENT)]
+        public static void HandleCooldownEvent(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "SpellID");
+        }
+
+        [Parser(Opcode.SMSG_LOSS_OF_CONTROL_AURA_UPDATE)]
+        public static void HandleLossOfControlAuraUpdate(Packet packet)
+        {
+            var count = packet.ReadInt32("LossOfControlInfoCount");
+            for (int i = 0; i < count; i++)
+            {
+                packet.ReadByte("AuraSlot", i);
+                packet.ReadByte("EffectIndex", i);
+                packet.ReadBits("Type", 8, i);
+                packet.ReadBits("Mechanic", 8, i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_CLEAR_COOLDOWN)]
+        public static void HandleClearCooldown(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "SpellID");
+            packet.ReadBit("ClearOnHold");
+        }
+
+        [Parser(Opcode.SMSG_CLEAR_COOLDOWNS)]
+        public static void HandleClearCooldowns(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterGUID");
+            var count = packet.ReadInt32("SpellCount");
+            for (int i = 0; i < count; i++)
+                packet.ReadEntry<UInt32>(StoreNameType.Spell, "SpellID");
+        }
     }
 }

@@ -457,7 +457,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.AddSniffData(StoreNameType.AreaTrigger, entry.Key, "AREATRIGGER");
         }
 
-        [Parser(Opcode.SMSG_PRE_RESURRECT)]
+        [Parser(Opcode.SMSG_PRE_RESSURECT)]
         public static void HandlePreResurrect(Packet packet)
         {
             packet.ReadPackedGuid("GUID");

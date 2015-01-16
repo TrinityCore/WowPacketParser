@@ -176,7 +176,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_PLAYER_SKINNED, 0x0BB3D}, // 4.1.0 13914
             {Opcode.SMSG_PLAYER_VEHICLE_DATA, 0x00A7C}, // 4.1.0 13914
             {Opcode.SMSG_PLAY_TIME_WARNING, 0x0EB6F}, // 4.1.0 13914
-            {Opcode.SMSG_PRE_RESURRECT, 0x0EA2E}, // 4.1.0 13914
+            {Opcode.SMSG_PRE_RESSURECT, 0x0EA2E}, // 4.1.0 13914
             {Opcode.SMSG_PROCRESIST, 0x0282E}, // 4.1.0 13914
             {Opcode.SMSG_QUERY_QUESTS_COMPLETED_RESPONSE, 0x0DB3C}, // 4.1.0 13914
             {Opcode.SMSG_QUERY_TIME_RESPONSE, 0x0DF2E}, // 4.1.0 13914

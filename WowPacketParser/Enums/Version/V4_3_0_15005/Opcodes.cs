@@ -755,7 +755,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.SMSG_PLAYED_TIME, 2},
             {Opcode.SMSG_PONG, 770},
             {Opcode.SMSG_POWER_UPDATE, 26790},
-            {Opcode.SMSG_PRE_RESURRECT, 3718},
+            {Opcode.SMSG_PRE_RESSURECT, 3718},
             {Opcode.SMSG_PRINT_NOTIFICATION, 26266},
             {Opcode.SMSG_PROCRESIST, 4608},
             {Opcode.SMSG_PROPOSE_LEVEL_GRANT, 5248},

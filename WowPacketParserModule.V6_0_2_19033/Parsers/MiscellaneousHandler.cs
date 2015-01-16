@@ -469,6 +469,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Granter");
         }
+
+        [Parser(Opcode.SMSG_PRE_RESSURECT)]
+        public static void HandlePreRessurect(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGUID");
+        }
     }
 }
 

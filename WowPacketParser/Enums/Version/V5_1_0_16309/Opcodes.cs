@@ -790,7 +790,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_PLAY_TIME_WARNING, 0x0AC9},
             {Opcode.SMSG_PONG, 0x08AE},
             {Opcode.SMSG_POWER_UPDATE, 0x026C},
-            {Opcode.SMSG_PRE_RESURRECT, 0x0821},
+            {Opcode.SMSG_PRE_RESSURECT, 0x0821},
             {Opcode.SMSG_PROPOSE_LEVEL_GRANT, 0x0601},
             {Opcode.SMSG_PVP_CREDIT, 0x0D04},
             {Opcode.SMSG_PVP_LOG_DATA, 0x0C5D},

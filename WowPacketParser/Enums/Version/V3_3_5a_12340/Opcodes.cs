@@ -1155,7 +1155,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.SMSG_AUCTION_LIST_PENDING_SALES, 0x490},
             {Opcode.SMSG_MODIFY_COOLDOWN, 0x491},
             {Opcode.SMSG_PET_UPDATE_COMBO_POINTS, 0x492},
-            {Opcode.SMSG_PRE_RESURRECT, 0x494},
+            {Opcode.SMSG_PRE_RESSURECT, 0x494},
             {Opcode.SMSG_AURA_UPDATE_ALL, 0x495},
             {Opcode.SMSG_AURA_UPDATE, 0x496},
             {Opcode.SMSG_SERVER_FIRST_ACHIEVEMENT, 0x498},

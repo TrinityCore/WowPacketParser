@@ -1083,7 +1083,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_AUCTION_LIST_PENDING_SALES, 0xDB29}, // (0xE2F9)(0x0490) //
             {Opcode.SMSG_MODIFY_COOLDOWN, 0x5D5D}, // (0x8AD9)(0x0491) //
             {Opcode.SMSG_PET_UPDATE_COMBO_POINTS, 0xD20B}, // (0x8BF5)(0x0492) //
-            {Opcode.SMSG_PRE_RESURRECT, 0x665F}, // (0xA231)(0x0494) //
+            {Opcode.SMSG_PRE_RESSURECT, 0x665F}, // (0xA231)(0x0494) //
             {Opcode.SMSG_AURA_UPDATE_ALL, 0x1C76}, // (0xE298)(0x0495) //
             //{Opcode.SMSG_AURA_UPDATE, 0xCE7D}, // (0xA3D4)(0x0496) //
             {Opcode.SMSG_SERVER_FIRST_ACHIEVEMENT, 0xA92A}, // (0xCA10)(0x0498) //

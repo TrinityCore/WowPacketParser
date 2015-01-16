@@ -1023,7 +1023,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_PLAY_TIME_WARNING, 0x032EC},
             {Opcode.SMSG_PONG, 0x0A01B},
             {Opcode.SMSG_POWER_UPDATE, 0x065E8},
-            {Opcode.SMSG_PRE_RESURRECT, 0x066C4},
+            {Opcode.SMSG_PRE_RESSURECT, 0x066C4},
             {Opcode.SMSG_PROCRESIST, 0x07E80},
             {Opcode.SMSG_PROPOSE_LEVEL_GRANT, 0x0E0C4},
             {Opcode.SMSG_PUREMOUNT_CANCELLED_OBSOLETE, 0x0054E},

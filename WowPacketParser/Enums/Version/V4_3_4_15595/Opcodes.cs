@@ -1002,7 +1002,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_PLAY_TIME_WARNING, 0x4814},
             {Opcode.SMSG_PONG, 0x4D42},
             {Opcode.SMSG_POWER_UPDATE, 0x4A07},
-            {Opcode.SMSG_PRE_RESURRECT, 0x6C36},
+            {Opcode.SMSG_PRE_RESSURECT, 0x6C36},
             {Opcode.SMSG_PROCRESIST, 0x0426},
             {Opcode.SMSG_PROPOSE_LEVEL_GRANT, 0x6114},
             {Opcode.SMSG_PVP_CREDIT, 0x6015},

@@ -293,7 +293,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_MOVE_SPLINE_SET_RUN_SPEED)]
         [Parser(Opcode.SMSG_MOVE_SPLINE_SET_FLIGHT_SPEED)]
         [Parser(Opcode.SMSG_MOVE_SPLINE_SET_SWIM_SPEED)]
-        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_WALK_SPEED)]
         [Parser(Opcode.SMSG_MOVE_SPLINE_SET_RUN_BACK_SPEED)]
         public static void HandleSplineSetSpeed(Packet packet)
         {
@@ -456,6 +455,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         [Parser(Opcode.SMSG_FORCE_RUN_SPEED_CHANGE)]
         [Parser(Opcode.SMSG_FORCE_SWIM_SPEED_CHANGE)]
+        [Parser(Opcode.SMSG_MOVE_SET_WALK_SPEED)]
         public static void HandleMovementIndexSpeed(Packet packet)
         {
             packet.ReadPackedGuid128("MoverGUID");
@@ -549,9 +549,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("MoveTime");
         }
 
+        [Parser(Opcode.SMSG_MOVE_SPLINE_ROOT)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_UNROOT)]
         [Parser(Opcode.SMSG_MOVE_SPLINE_DISABLE_GRAVITY)]
         [Parser(Opcode.SMSG_MOVE_SPLINE_ENABLE_GRAVITY)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_DISABLE_COLLISION)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_ENABLE_COLLISION)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_FEATHER_FALL)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_NORMAL_FALL)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_HOVER)]
         [Parser(Opcode.SMSG_MOVE_SPLINE_UNSET_HOVER)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_WATER_WALK)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_START_SWIM)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_STOP_SWIM)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_RUN_MODE)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_WALK_MODE)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_FLYING)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_UNSET_FLYING)]
         public static void HandleSplineMoveGravityDisable(Packet packet)
         {
             packet.ReadPackedGuid128("MoverGUID");
