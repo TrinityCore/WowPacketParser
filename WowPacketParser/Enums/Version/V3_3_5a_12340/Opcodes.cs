@@ -658,7 +658,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.SMSG_TRANSFER_ABORTED, 0x40},
             {Opcode.SMSG_CHARACTER_LOGIN_FAILED, 0x41},
             {Opcode.SMSG_LOGIN_SETTIMESPEED, 0x42},
-            {Opcode.SMSG_GAMETIME_UPDATE, 0x43},
+            {Opcode.SMSG_GAME_TIME_UPDATE, 0x43},
             {Opcode.SMSG_GAMETIME_SET, 0x45},
             {Opcode.SMSG_GAMESPEED_SET, 0x47},
             {Opcode.SMSG_SERVERTIME, 0x49},

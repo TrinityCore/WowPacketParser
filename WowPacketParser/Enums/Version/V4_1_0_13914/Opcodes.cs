@@ -101,7 +101,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_GAMEOBJECT_RESET_STATE, 0x0B97F}, // 4.1.0 13914
             {Opcode.SMSG_GAMESPEED_SET, 0x09A2F}, // 4.1.0 13914
             {Opcode.SMSG_GAMETIME_SET, 0x09F7D}, // 4.1.0 13914
-            {Opcode.SMSG_GAMETIME_UPDATE, 0x0982C}, // 4.1.0 13914
+            {Opcode.SMSG_GAME_TIME_UPDATE, 0x0982C}, // 4.1.0 13914
             {Opcode.SMSG_GM_MESSAGECHAT, 0x06C3D}, // 4.1.0 13914
             {Opcode.SMSG_GOSSIP_COMPLETE, 0x0486E}, // 4.1.0 13914
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x0BE3C}, // 4.1.0 13914

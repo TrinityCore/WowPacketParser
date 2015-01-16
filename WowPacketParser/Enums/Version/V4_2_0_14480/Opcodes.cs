@@ -548,7 +548,7 @@ namespace WowPacketParser.Enums.Version.V4_2_0_14480
             {Opcode.SMSG_GAMEOBJECT_RESET_STATE, 0xAAAE},
             {Opcode.SMSG_GAMESPEED_SET, 0xAAB2},
             {Opcode.SMSG_GAMETIME_SET, 0xB26F},
-            {Opcode.SMSG_GAMETIME_UPDATE, 0x6AFE},
+            {Opcode.SMSG_GAME_TIME_UPDATE, 0x6AFE},
             {Opcode.SMSG_GM_MESSAGECHAT, 0xA262},
             {Opcode.SMSG_GMRESPONSE_DB_ERROR, 0x726A},
             {Opcode.SMSG_GMRESPONSE_RECEIVED, 0xBA66},

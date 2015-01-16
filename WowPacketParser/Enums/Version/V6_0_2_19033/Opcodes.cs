@@ -17,7 +17,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
         {
             {Opcode.CMSG_ACCEPT_TRADE, 0x1C85},
             {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x07CC},
-            {Opcode.CMSG_AUCTION_HELLO, 0x1074},
+            {Opcode.CMSG_AUCTION_HELLO_REQUEST, 0x1074},
             {Opcode.CMSG_AUTH_SESSION, 0x1B05},
             {Opcode.CMSG_BANKER_ACTIVATE, 0x0204},
             {Opcode.CMSG_CAST_SPELL, 0x10C8},

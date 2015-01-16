@@ -23,7 +23,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_AREATRIGGER, 0x1C44},
             {Opcode.CMSG_ATTACKSTOP, 0x0345},
             {Opcode.CMSG_ATTACKSWING, 0x02E7},
-            {Opcode.CMSG_AUCTION_HELLO, 0x0379},
+            {Opcode.CMSG_AUCTION_HELLO_REQUEST, 0x0379},
             {Opcode.CMSG_AUTH_SESSION, 0x00B2},
             {Opcode.CMSG_AUTOBANK_ITEM, 0x066D},
             {Opcode.CMSG_AUTOEQUIP_ITEM, 0x025F},

@@ -583,7 +583,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_TRANSFER_ABORTED, 0x0A2A}, // (0x0B55)(0x0040) //
             {Opcode.SMSG_CHARACTER_LOGIN_FAILED, 0x2C56}, // (0xCBD9)(0x0041) //
             {Opcode.SMSG_LOGIN_SETTIMESPEED, 0x047C}, // (0x0A10)(0x0042) //
-            {Opcode.SMSG_GAMETIME_UPDATE, 0xC675}, // (0xEBF0)(0x0043) //
+            {Opcode.SMSG_GAME_TIME_UPDATE, 0xC675}, // (0xEBF0)(0x0043) //
             {Opcode.SMSG_GAMETIME_SET, 0x5D77}, // (0xE2BD)(0x0045) //
             {Opcode.SMSG_GAMESPEED_SET, 0xFF75}, // (0x2354)(0x0047) //
             {Opcode.SMSG_SERVERTIME, 0xCE55}, // (0x8AD0)(0x0049) //

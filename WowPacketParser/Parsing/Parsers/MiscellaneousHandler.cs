@@ -630,7 +630,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk int32");
         }
 
-        [Parser(Opcode.SMSG_GAMETIME_UPDATE)]
+        [Parser(Opcode.SMSG_GAME_TIME_UPDATE)]
         public static void HandleGametimeUpdate(Packet packet)
         {
             packet.ReadUInt32("Unk time"); // Time online?

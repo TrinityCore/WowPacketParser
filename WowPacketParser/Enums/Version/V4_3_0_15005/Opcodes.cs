@@ -574,7 +574,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.SMSG_GAMEOBJECT_RESET_STATE, 19586},
             {Opcode.SMSG_GAMESPEED_SET, 14884},
             {Opcode.SMSG_GAMETIME_SET, 28198},
-            {Opcode.SMSG_GAMETIME_UPDATE, 6144},
+            {Opcode.SMSG_GAME_TIME_UPDATE, 6144},
             {Opcode.SMSG_GAME_EVENT_DEBUG_LOG, 9368},
             {Opcode.SMSG_GAME_OBJECT_ACTIVATE_ANIM_KIT, 27658},
             {Opcode.SMSG_GMRESPONSE_DB_ERROR, 21120},

@@ -133,7 +133,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_RESET_FAILED_NOTIFY)]
         public static void HandleResetFailedNotify(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadEntry<Int32>(StoreNameType.Map, "MapID");
         }
 
         [Parser(Opcode.MSG_RAID_TARGET_UPDATE)]

@@ -7,7 +7,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class AuctionHandler
     {
-        [Parser(Opcode.CMSG_AUCTION_HELLO)]
+        [Parser(Opcode.CMSG_AUCTION_HELLO_REQUEST)]
         public static void HandleClientAuctionHello(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");

@@ -472,7 +472,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.SMSG_GAMEOBJECT_RESET_STATE, 0x9CF3},
             {Opcode.SMSG_GAMESPEED_SET, 0x5ACA},
             {Opcode.SMSG_GAMETIME_SET, 0x9C4A},
-            {Opcode.SMSG_GAMETIME_UPDATE, 0x18E3},
+            {Opcode.SMSG_GAME_TIME_UPDATE, 0x18E3},
             {Opcode.SMSG_GMRESPONSE_DB_ERROR, 0x5843},
             {Opcode.SMSG_GMRESPONSE_RECEIVED, 0xCCEA},
             {Opcode.SMSG_GMTICKET_CREATE, 0xC84A},

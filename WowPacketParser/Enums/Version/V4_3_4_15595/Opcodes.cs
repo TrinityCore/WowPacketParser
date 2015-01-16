@@ -729,7 +729,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_GAMEOBJECT_RESET_STATE, 0x2A16},
             {Opcode.SMSG_GAMESPEED_SET, 0x4E34},
             {Opcode.SMSG_GAMETIME_SET, 0x0014},
-            {Opcode.SMSG_GAMETIME_UPDATE, 0x4127},
+            {Opcode.SMSG_GAME_TIME_UPDATE, 0x4127},
             {Opcode.SMSG_GAME_EVENT_DEBUG_LOG, 0x31A7},
             {Opcode.SMSG_GAME_OBJECT_ACTIVATE_ANIM_KIT, 0x14A3},
             {Opcode.SMSG_GMRESPONSE_DB_ERROR, 0x0006},

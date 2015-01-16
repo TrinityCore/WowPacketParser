@@ -811,7 +811,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_GAMESPEED_SET, 0x03EC0},
             {Opcode.SMSG_GAMETIMEBIAS_SET, 0x1011A}, //UnknownopcodeID
             {Opcode.SMSG_GAMETIME_SET, 0x07888},
-            {Opcode.SMSG_GAMETIME_UPDATE, 0x0F1EC},
+            {Opcode.SMSG_GAME_TIME_UPDATE, 0x0F1EC},
             {Opcode.SMSG_GHOSTEE_GONE, 0x10123}, //UnknownopcodeID
             {Opcode.SMSG_GMRESPONSE_DB_ERROR, 0x0E0A0},
             {Opcode.SMSG_GMRESPONSE_RECEIVED, 0x033AC},

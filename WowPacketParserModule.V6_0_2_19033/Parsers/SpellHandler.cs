@@ -681,5 +681,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < count; i++)
                 packet.ReadEntry<UInt32>(StoreNameType.Spell, "SpellID");
         }
+
+        [Parser(Opcode.SMSG_BREAK_TARGET)]
+        public static void HandleBreakTarget(Packet packet)
+        {
+            packet.ReadPackedGuid("UnitGUID");
+        }
+
+        [Parser(Opcode.SMSG_PLAY_ORPHAN_SPELL_VISUAL)]
+        public static void HandlePlayOrphanSpellVisual(Packet packet)
+        {
+            packet.ReadVector3("SourceLocation");
+            packet.ReadVector3("SourceOrientation");
+            packet.ReadVector3("TargetLocation");
+            packet.ReadPackedGuid128("Target");
+            packet.ReadInt32("SpellVisualID");
+            packet.ReadSingle("TravelSpeed");
+            packet.ReadSingle("UnkFloat");
+            packet.ReadBit("SpeedAsTime");
+        }
     }
 }
