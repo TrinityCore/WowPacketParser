@@ -19,6 +19,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_GOSSIP_HELLO)]
         [Parser(Opcode.CMSG_LIST_INVENTORY)]
         [Parser(Opcode.CMSG_TRAINER_LIST)]
+        [Parser(Opcode.SMSG_SHOW_BANK)]
         public static void HandleNpcHello(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");

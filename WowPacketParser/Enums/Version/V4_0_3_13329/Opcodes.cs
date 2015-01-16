@@ -755,7 +755,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_AURACASTLOG, 0x01D1}, // NF()(0x01D1) //
             {Opcode.SMSG_LEVELUP_INFO, 0x01D4}, // NF()(0x01D4) //
             {Opcode.SMSG_RESISTLOG, 0x01D6}, // NF()(0x01D6) //
-            {Opcode.SMSG_ENCHANTMENTLOG, 0xD676}, // (0x435C)(0x01D7) //
+            {Opcode.SMSG_ENCHANTMENT_LOG, 0xD676}, // (0x435C)(0x01D7) //
             {Opcode.SMSG_START_MIRROR_TIMER, 0xAD74}, // (0x6A54)(0x01D9) //
             {Opcode.SMSG_PAUSE_MIRROR_TIMER, 0xBE76}, // (0x0A55)(0x01DA) //
             {Opcode.SMSG_STOP_MIRROR_TIMER, 0x2E56}, // (0x2299)(0x01DB) //

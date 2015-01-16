@@ -82,7 +82,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_ECHO_PARTY_SQUELCH, 0x03F2C}, // 4.1.0 13914
             {Opcode.SMSG_EMOTE, 0x0AD7C}, // 4.1.0 13914
             {Opcode.SMSG_ENABLE_BARBER_SHOP, 0x0D97E}, // 4.1.0 13914
-            {Opcode.SMSG_ENCHANTMENTLOG, 0x0BB2F}, // 4.1.0 13914
+            {Opcode.SMSG_ENCHANTMENT_LOG, 0x0BB2F}, // 4.1.0 13914
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x0683D}, // 4.1.0 13914
             {Opcode.SMSG_EQUIPMENT_SET_SAVED, 0x01A7F}, // 4.1.0 13914
             {Opcode.SMSG_EQUIPMENT_SET_USE_RESULT, 0x0D93D}, // 4.1.0 13914

@@ -312,5 +312,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("GUID");
             packet.ReadUInt32("DurationLeft");
         }
+
+        [Parser(Opcode.SMSG_ENCHANTMENT_LOG)]
+        public static void HandleEnchantmentLog(Packet packet)
+        {
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadPackedGuid128("Owner");
+            packet.ReadPackedGuid128("ItemGUID");
+            packet.ReadUInt32("ItemID");
+            packet.ReadUInt32("Enchantment");
+            packet.ReadUInt32("EnchantSlot");
+        }
     }
 }

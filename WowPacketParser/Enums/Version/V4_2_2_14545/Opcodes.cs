@@ -455,7 +455,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.SMSG_ECHO_PARTY_SQUELCH, 0x5ED7},
             {Opcode.SMSG_EMOTE, 0x0C67},
             {Opcode.SMSG_ENABLE_BARBER_SHOP, 0x9C7A},
-            {Opcode.SMSG_ENCHANTMENTLOG, 0x48E2},
+            {Opcode.SMSG_ENCHANTMENT_LOG, 0x48E2},
             {Opcode.SMSG_ENVIRONMENTALDAMAGELOG, 0x5A6B},
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x18DF},
             {Opcode.SMSG_EXPECTED_SPAM_RECORDS, 0x48E7},

@@ -776,7 +776,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_ECHO_PARTY_SQUELCH, 0x02AC4},
             {Opcode.SMSG_EMOTE, 0x0EEA0},
             {Opcode.SMSG_ENABLE_BARBER_SHOP, 0x037E8},
-            {Opcode.SMSG_ENCHANTMENTLOG, 0x0F5AC},
+            {Opcode.SMSG_ENCHANTMENT_LOG, 0x0F5AC},
             {Opcode.SMSG_ENVIRONMENTALDAMAGELOG, 0x0E1C8},
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x0F1A8},
             {Opcode.SMSG_EQUIPMENT_SET_SAVED, 0x0B0C0},

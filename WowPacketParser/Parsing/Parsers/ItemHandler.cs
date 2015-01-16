@@ -436,7 +436,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Count");
         }
 
-        [Parser(Opcode.SMSG_ENCHANTMENTLOG)]
+        [Parser(Opcode.SMSG_ENCHANTMENT_LOG)]
         public static void HandleEnchantmentLog(Packet packet)
         {
             packet.ReadPackedGuid("Target");
