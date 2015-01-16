@@ -6,7 +6,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class AddonHandler
     {
-        [Parser(Opcode.CMSG_ADDON_REGISTERED_PREFIXES)]
+        [Parser(Opcode.CMSG_REGISTER_ADDON_PREFIXES)]
         public static void MultiplePackets(Packet packet)
         {
             var count = packet.ReadInt32("Count");

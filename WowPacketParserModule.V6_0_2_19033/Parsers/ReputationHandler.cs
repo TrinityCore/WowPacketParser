@@ -7,6 +7,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class ReputationHandler
     {
+        [Parser(Opcode.CMSG_REQUEST_FORCED_REACTIONS)]
+        public static void HandleReputationZero(Packet packet)
+        {
+        }
+
         [Parser(Opcode.CMSG_RESET_FACTION_CHEAT)]
         public static void HandleResetFactionCheat(Packet packet)
         {

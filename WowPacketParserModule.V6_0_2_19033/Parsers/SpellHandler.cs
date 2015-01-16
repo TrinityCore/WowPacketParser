@@ -638,6 +638,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Guid");
         }
 
+        [Parser(Opcode.SMSG_TOTEM_CREATED)]
+        public static void HandleTotemCreated(Packet packet)
+        {
+            packet.ReadByte("Slot");
+            packet.ReadPackedGuid128("Totem");
+            packet.ReadUInt32("Duration");
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "SpellID");
+        }
+
         [Parser(Opcode.CMSG_TOTEM_DESTROYED)]
         public static void HandleTotemDestroyed(Packet packet)
         {

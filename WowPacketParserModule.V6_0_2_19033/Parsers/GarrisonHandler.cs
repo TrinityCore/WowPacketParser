@@ -20,6 +20,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("MissionState");
         }
 
+        [Parser(Opcode.CMSG_GET_GARRISON_INFO)]
+        [Parser(Opcode.CMSG_GARRISON_REQUEST_LANDING_PAGE_SHIPMENT_INFO)]
+        [Parser(Opcode.CMSG_GARRISON_REQUEST_BLUEPRINT_AND_SPECIALIZATION_DATA)]
+        public static void HandleGarrisonZero(Packet packet)
+        {
+        }
+
         [Parser(Opcode.CMSG_GARRISON_MISSION_BONUS_ROLL)]
         public static void HandleGarrisonMissionBonusRoll(Packet packet)
         {

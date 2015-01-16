@@ -14,6 +14,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadTime("Time");
         }
 
+        [Parser(Opcode.CMSG_LFG_LIST_GET_STATUS)]
+        public static void HandleLfgZero(Packet packet)
+        {
+        }
+
         [Parser(Opcode.SMSG_LFG_PLAYER_INFO)]
         public static void HandleLfgPlayerLockInfoResponse(Packet packet)
         {

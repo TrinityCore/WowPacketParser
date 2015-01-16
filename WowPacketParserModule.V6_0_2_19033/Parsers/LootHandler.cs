@@ -100,5 +100,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("Acquired");
             packet.ReadBit("AELooting");
         }
+
+        [Parser(Opcode.SMSG_LOOT_LIST)]
+        public static void HandleLootList(Packet packet)
+        {
+            packet.ReadPackedGuid128("Owner");
+
+            var bit48 = packet.ReadBit("HasMaster");
+            var bit72 = packet.ReadBit("HasRoundRobinWinner");
+
+            if (bit48)
+                packet.ReadPackedGuid128("Master");
+
+            if (bit72)
+                packet.ReadPackedGuid128("RoundRobinWinner");
+        }
     }
 }

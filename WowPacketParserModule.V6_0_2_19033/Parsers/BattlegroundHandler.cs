@@ -7,6 +7,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class BattlegroundHandler
     {
+        [Parser(Opcode.CMSG_REQUEST_BATTLEFIELD_STATUS)]
+        [Parser(Opcode.CMSG_REQUEST_CONQUEST_FORMULA_CONSTANTS)]
+        public static void HandleBattlefieldZero(Packet packet)
+        {
+        }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_RATED_INFO)]
         public static void HandleBattlefieldRatedInfo(Packet packet)

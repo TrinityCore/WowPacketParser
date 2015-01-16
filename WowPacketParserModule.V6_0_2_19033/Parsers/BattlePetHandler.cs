@@ -7,7 +7,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     public static class BattlePetHandler
     {
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED)]
-        public static void HandleZeroLengthPackets(Packet packet)
+        [Parser(Opcode.CMSG_BATTLE_PET_REQUEST_JOURNAL)]
+        public static void HandleBattlePetZero(Packet packet)
         {
         }
 

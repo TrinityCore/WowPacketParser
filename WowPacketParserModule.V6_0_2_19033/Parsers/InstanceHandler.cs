@@ -7,6 +7,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class InstanceHandler
     {
+
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_END)]
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_PHASE_SHIFT_CHANGED)]
+        public static void HandleInstanceZero(Packet packet)
+        {
+        }
+
         [Parser(Opcode.CMSG_SAVE_CUF_PROFILES)]
         [Parser(Opcode.SMSG_LOAD_CUF_PROFILES)]
         public static void HandleCUFProfiles(Packet packet)

@@ -508,6 +508,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_MOVE_KNOCK_BACK_ACK)]
         [Parser(Opcode.CMSG_MOVE_WATER_WALK_ACK)]
         [Parser(Opcode.CMSG_MOVE_FORCE_ROOT_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FORCE_UNROOT_ACK)]
         public static void HandleMovementAck(Packet packet)
         {
             ReadMovementAck(ref packet);
