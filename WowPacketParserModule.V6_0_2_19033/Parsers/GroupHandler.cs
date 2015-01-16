@@ -313,5 +313,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < int32; i++)
                 packet.ReadInt32("LfgSlots", i);
         }
+
+        [Parser(Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS)]
+        public static void HandleRequestPartyMemberStats(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadPackedGuid128("Target");
+        }
     }
 }

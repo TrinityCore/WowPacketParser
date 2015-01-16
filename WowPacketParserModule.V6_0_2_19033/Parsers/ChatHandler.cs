@@ -134,6 +134,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("StringParam", bits20);
         }
 
+        [Parser(Opcode.CMSG_EMOTE)]
+        public static void HandleEmoteClient(Packet packet)
+        {
+        }
+
         [Parser(Opcode.SMSG_EMOTE)]
         public static void HandleEmote(Packet packet)
         {

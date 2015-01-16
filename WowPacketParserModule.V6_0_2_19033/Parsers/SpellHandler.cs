@@ -631,5 +631,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadEntry<UInt32>(StoreNameType.Spell, "SpellID");
             packet.ReadByte("CastID");
         }
+
+        [Parser(Opcode.SMSG_DISMOUNT)]
+        public static void HandleDismount(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+        }
     }
 }

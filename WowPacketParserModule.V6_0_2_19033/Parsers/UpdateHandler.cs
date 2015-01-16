@@ -617,5 +617,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32(byte20 == 1 ? "Unk3" : "Unk4", i);
             }
         }
+
+        [Parser(Opcode.SMSG_SET_ANIM_TIER)]
+        public static void HandleSetAnimTier(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+            packet.ReadBits("Tier", 3);
+        }
     }
 }

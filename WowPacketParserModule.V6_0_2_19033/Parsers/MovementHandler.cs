@@ -290,11 +290,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadEntry<Int16>(StoreNameType.Map, "VisibleMapID", i);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_SPEED)]
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_FLIGHT_SPEED)]
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_SWIM_SPEED)]
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_WALK_SPEED)]
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_BACK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_RUN_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_FLIGHT_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_SWIM_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_WALK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_RUN_BACK_SPEED)]
         public static void HandleSplineSetSpeed(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");
@@ -375,6 +375,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadEntry<Int32>(StoreNameType.Map, "MapID");
             packet.ReadByte("Arg");
             packet.ReadEnum<TransferAbortReason>("TransfertAbort", 5);
+        }
+
+        [Parser(Opcode.SMSG_ABORT_NEW_WORLD)]
+        public static void HandleAbortNewWorld(Packet packet)
+        {
         }
 
         [Parser(Opcode.SMSG_MOVE_UPDATE_TELEPORT)]
@@ -544,7 +549,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("MoveTime");
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_GRAVITY_DISABLE)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_DISABLE_GRAVITY)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_ENABLE_GRAVITY)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_UNSET_HOVER)]
         public static void HandleSplineMoveGravityDisable(Packet packet)
         {
             packet.ReadPackedGuid128("MoverGUID");
@@ -555,12 +562,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("UnitGUID");
             packet.ReadBit("PlayHoverAnim");
-        }
-
-        [Parser(Opcode.SMSG_SPLINE_MOVE_UNSET_HOVER)]
-        public static void HandleSplineMoveUnsetHover(Packet packet)
-        {
-            packet.ReadPackedGuid128("MoverGUID");
         }
 
         [Parser(Opcode.SMSG_MOVE_UPDATE_WALK_SPEED)]
@@ -603,6 +604,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleSetActiveMover(Packet packet)
         {
             packet.ReadPackedGuid128("ActiveMover");
+        }
+
+        [Parser(Opcode.SMSG_MOVE_UPDATE_COLLISION_HEIGHT)]
+        public static void HandleMoveUpdateCollisionHeight434(Packet packet)
+        {
+            ReadMovementStats(ref packet);
+            packet.ReadSingle("Height");
+            packet.ReadSingle("Scale");
+        }
+
+        [Parser(Opcode.SMSG_SET_VEHILCE_REC_ID)]
+        public static void HandleSetVehicleRecID(Packet packet)
+        {
+            packet.ReadPackedGuid128("VehicleGUID");
+            packet.ReadInt32("VehicleRecID");
         }
     }
 }
