@@ -136,5 +136,25 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ResetBitReader();
             packet.ReadBit("Autopassed");
         }
+
+        [Parser(Opcode.SMSG_LOOT_ROLL_WON)]
+        public static void HandleLootRollWon(Packet packet)
+        {
+            packet.ReadPackedGuid128("LootObj");
+
+            packet.ResetBitReader();
+            packet.ReadBits("ItemType", 2);
+            packet.ReadBits("ItemUiType", 3);
+            packet.ReadBit("CanTradeToTapList");
+            packet.ReadUInt32("Item Quantity");
+            packet.ReadByte("LootItemType");
+            packet.ReadByte("LootListID");
+            ItemHandler.ReadItemInstance(packet);
+
+            packet.ReadPackedGuid128("Player");
+
+            packet.ReadInt32("Roll");
+            packet.ReadByte("RollType");
+        }
     }
 }

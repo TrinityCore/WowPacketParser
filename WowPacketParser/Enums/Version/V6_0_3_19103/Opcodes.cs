@@ -779,6 +779,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_LOOT_REMOVED, 0x0906},
             {Opcode.SMSG_LOOT_RESPONSE, 0x0F8A},
             {Opcode.SMSG_LOOT_ROLL, 0x1BE2},
+            {Opcode.SMSG_LOOT_ROLL_WON, 0x071E},
             {Opcode.SMSG_LOSS_OF_CONTROL_AURA_UPDATE, 0x0305},
             {Opcode.SMSG_MAIL_LIST_RESULT, 0x0B3F},
             {Opcode.SMSG_MAIL_QUERY_NEXT_TIME_RESULT, 0x153D},
