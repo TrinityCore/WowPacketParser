@@ -320,5 +320,37 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("PartyIndex");
             packet.ReadPackedGuid128("Target");
         }
+
+        [Parser(Opcode.CMSG_UPDATE_RAID_TARGET)]
+        public static void HandleUpdateRaidTarget(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadPackedGuid128("Target");
+            packet.ReadByte("Symbol");
+        }
+
+        [Parser(Opcode.SMSG_READY_CHECK_RESPONSE)]
+        public static void HandleReadyCheckResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("PartyGUID");
+            packet.ReadPackedGuid128("Player");
+            packet.ReadBit("IsReady");
+        }
+
+        [Parser(Opcode.SMSG_READY_CHECK_STARTED)]
+        public static void HandleReadyCheckStarted(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadPackedGuid128("PartyGUID");
+            packet.ReadPackedGuid128("InitiatorGUID");
+            packet.ReadInt32("Duration");
+        }
+
+        [Parser(Opcode.SMSG_READY_CHECK_COMPLETED)]
+        public static void HandleReadyCheckCompleted(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadPackedGuid128("PartyGUID");
+        }
     }
 }

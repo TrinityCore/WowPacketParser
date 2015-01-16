@@ -13,6 +13,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_OFFICER)]
         [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_PARTY)]
         [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_RAID)]
+        [Parser(Opcode.CMSG_MESSAGECHAT_ADDON_INSTANCE)]
         public static void HandleAddonMessage(Packet packet)
         {
             var prefixLen = packet.ReadBits(5);

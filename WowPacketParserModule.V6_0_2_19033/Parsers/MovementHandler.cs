@@ -294,6 +294,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_MOVE_SPLINE_SET_FLIGHT_SPEED)]
         [Parser(Opcode.SMSG_MOVE_SPLINE_SET_SWIM_SPEED)]
         [Parser(Opcode.SMSG_MOVE_SPLINE_SET_RUN_BACK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_WALK_BACK_SPEED)]
         public static void HandleSplineSetSpeed(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");
@@ -504,8 +505,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_MOVE_GRAVITY_DISABLE_ACK)]
         [Parser(Opcode.CMSG_MOVE_GRAVITY_ENABLE_ACK)]
         [Parser(Opcode.CMSG_MOVE_HOVER_ACK)]
+        [Parser(Opcode.CMSG_MOVE_KNOCK_BACK_ACK)]
         [Parser(Opcode.CMSG_MOVE_WATER_WALK_ACK)]
-        [Parser(Opcode.CMSG_FORCE_MOVE_ROOT_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FORCE_ROOT_ACK)]
         public static void HandleMovementAck(Packet packet)
         {
             ReadMovementAck(ref packet);
@@ -566,6 +568,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_MOVE_SPLINE_SET_WALK_MODE)]
         [Parser(Opcode.SMSG_MOVE_SPLINE_SET_FLYING)]
         [Parser(Opcode.SMSG_MOVE_SPLINE_UNSET_FLYING)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_LAND_WALK)]
         public static void HandleSplineMoveGravityDisable(Packet packet)
         {
             packet.ReadPackedGuid128("MoverGUID");
@@ -633,6 +636,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("VehicleGUID");
             packet.ReadInt32("VehicleRecID");
+        }
+
+        [Parser(Opcode.SMSG_SPECIAL_MOUNT_ANIM)]
+        public static void HandleSpecialMountAnim(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
         }
     }
 }
