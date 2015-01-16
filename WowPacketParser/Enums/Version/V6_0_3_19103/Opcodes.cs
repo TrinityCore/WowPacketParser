@@ -989,6 +989,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_STANDSTATE_UPDATE, 0x1311},
             {Opcode.SMSG_START_ELAPSED_TIMERS, 0x093F},
             {Opcode.SMSG_START_MIRROR_TIMER, 0x051E},
+            {Opcode.SMSG_START_LOOT_ROLL, 0x1B84},
             {Opcode.SMSG_START_TIMER, 0x0317},
             {Opcode.SMSG_STREAMING_MOVIE, 0x158F},
             {Opcode.SMSG_SUMMON_RAID_MEMBER_VALIDATE_FAILED, 0x1B24},

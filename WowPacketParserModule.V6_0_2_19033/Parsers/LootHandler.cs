@@ -163,5 +163,25 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("LootObj");
             packet.ReadByte("LootListID");
         }
+
+        [Parser(Opcode.SMSG_START_LOOT_ROLL)]
+        public static void HandleStartLootRoll(Packet packet)
+        {
+            packet.ReadPackedGuid128("LootObj");
+            packet.ReadInt32("MapID");
+
+            packet.ResetBitReader();
+            packet.ReadBits("ItemType", 2);
+            packet.ReadBits("ItemUiType", 3);
+            packet.ReadBit("CanTradeToTapList");
+            packet.ReadUInt32("Item Quantity");
+            packet.ReadByte("LootItemType");
+            packet.ReadByte("LootListID");
+            ItemHandler.ReadItemInstance(packet);
+
+            packet.ReadInt32("RollTime");
+            packet.ReadByte("ValidRolls");
+            packet.ReadByte("Method");
+        }
     }
 }
