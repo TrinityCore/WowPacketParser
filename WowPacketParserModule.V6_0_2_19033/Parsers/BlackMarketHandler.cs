@@ -55,8 +55,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_BLACK_MARKET_REQUEST_ITEMS_RESULT)]
         public static void HandleBlackMarketRequestItemsResult(Packet packet)
         {
-            packet.ReadInt32("");
-            var count = packet.ReadInt32("");
+            packet.ReadTime("LastUpdateID");
+            var count = packet.ReadInt32("ItemsCount");
 
             for (int i = 0; i < count; i++)
             {
