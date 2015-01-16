@@ -310,7 +310,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.CMSG_TAXI_NODE_STATUS_QUERY, 0x98E3},
             {Opcode.CMSG_TELEPORT_TO_UNIT, 0x8C72},
             {Opcode.CMSG_TEXT_EMOTE, 0x08D3},
-            {Opcode.CMSG_TIME_SYNC_RESP, 0x07A5},
+            {Opcode.CMSG_TIME_SYNC_RESPONSE, 0x07A5},
             {Opcode.CMSG_TOGGLE_PVP, 0x8ECA},
             {Opcode.CMSG_TRAINER_BUY_SPELL, 0xAF7},
             {Opcode.CMSG_TRAINER_LIST, 0xCC7F},

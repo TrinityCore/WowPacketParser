@@ -178,7 +178,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_SET_SPECIALIZATION, 0x04AA},
             {Opcode.CMSG_STANDSTATECHANGE, 0x157A},
             {Opcode.CMSG_TEXT_EMOTE, 0x037D},
-            {Opcode.CMSG_TIME_SYNC_RESP, 0x0413},
+            {Opcode.CMSG_TIME_SYNC_RESPONSE, 0x0413},
             {Opcode.CMSG_TRAINER_BUY_SPELL, 0x0274},
             {Opcode.CMSG_TRAINER_LIST, 0x075E},
             {Opcode.CMSG_TUTORIAL_FLAG, 0x07A4},

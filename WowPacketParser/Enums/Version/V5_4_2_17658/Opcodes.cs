@@ -69,7 +69,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.CMSG_QUEST_QUERY, 0x066D},
             {Opcode.CMSG_SET_ACTION_BUTTON, 0x0D5E},
             {Opcode.CMSG_SET_SELECTION, 0x0AC5},
-            {Opcode.CMSG_TIME_SYNC_RESP, 0x06AB},
+            {Opcode.CMSG_TIME_SYNC_RESPONSE, 0x06AB},
             {Opcode.CMSG_UI_TIME_REQUEST, 0x0574},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x0448},
             {Opcode.CMSG_WARDEN_DATA, 0x0573},

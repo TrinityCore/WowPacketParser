@@ -371,7 +371,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.CMSG_SWAP_ITEM, 25088},
             {Opcode.CMSG_TAXI_NODE_STATUS_QUERY, 28162},
             {Opcode.CMSG_TEXT_EMOTE, 18566},
-            {Opcode.CMSG_TIME_SYNC_RESP, 29331},
+            {Opcode.CMSG_TIME_SYNC_RESPONSE, 29331},
             {Opcode.CMSG_TOGGLE_PVP, 18598},
             {Opcode.CMSG_TOTEM_DESTROYED, 26240},
             {Opcode.CMSG_TRAINER_BUY_SPELL, 32416},

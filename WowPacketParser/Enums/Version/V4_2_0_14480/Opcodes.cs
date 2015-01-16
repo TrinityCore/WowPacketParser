@@ -360,7 +360,7 @@ namespace WowPacketParser.Enums.Version.V4_2_0_14480
             {Opcode.CMSG_TAXISHOWNODES, 0xAA77},
             {Opcode.CMSG_TELEPORT_TO_UNIT, 0xE62B},
             {Opcode.CMSG_TEXT_EMOTE, 0x7EB6},
-            {Opcode.CMSG_TIME_SYNC_RESP, 0x184A},
+            {Opcode.CMSG_TIME_SYNC_RESPONSE, 0x184A},
             {Opcode.CMSG_TOGGLE_PVP, 0xBA6F},
             {Opcode.CMSG_TOTEM_DESTROYED, 0x3EB7},
             {Opcode.CMSG_TRAINER_BUY_SPELL, 0xBA27},

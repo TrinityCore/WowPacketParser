@@ -438,7 +438,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.CMSG_SET_TAXI_BENCHMARK_MODE, 0x389},
             {Opcode.CMSG_REALM_SPLIT, 0x38C},
             {Opcode.CMSG_MOVE_CHNG_TRANSPORT, 0x38D},
-            {Opcode.CMSG_TIME_SYNC_RESP, 0x391},
+            {Opcode.CMSG_TIME_SYNC_RESPONSE, 0x391},
             {Opcode.CMSG_SEND_LOCAL_EVENT, 0x392},
             {Opcode.CMSG_SEND_GENERAL_TRIGGER, 0x393},
             {Opcode.CMSG_SEND_COMBAT_TRIGGER, 0x394},

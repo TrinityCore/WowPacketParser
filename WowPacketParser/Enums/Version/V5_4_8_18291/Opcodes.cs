@@ -234,7 +234,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_TAXI_QUERY_AVAILABLE_NODES, 0x02E3},
             {Opcode.CMSG_TEXT_EMOTE, 0x07E9},
             {Opcode.CMSG_TIME_SYNC_RESP_FAILED, 0x0058},
-            {Opcode.CMSG_TIME_SYNC_RESP, 0x01DB},
+            {Opcode.CMSG_TIME_SYNC_RESPONSE, 0x01DB},
             {Opcode.CMSG_TRAINER_BUY_SPELL, 0x0352},
             {Opcode.CMSG_TRAINER_LIST, 0x034B},
             {Opcode.CMSG_TRANSMOGRIFY_ITEMS, 0x06D7},

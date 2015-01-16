@@ -72,7 +72,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.CMSG_SAVE_CUF_PROFILES, 0x0CC4},
             {Opcode.CMSG_SET_RAID_DIFFICULTY, 0x1A76},
             {Opcode.CMSG_SUSPEND_TOKEN_RESPONSE, 0x0845},
-            {Opcode.CMSG_TIME_SYNC_RESP, 0x0A02},
+            {Opcode.CMSG_TIME_SYNC_RESPONSE, 0x0A02},
             {Opcode.CMSG_UPDATE_ACCOUNT_DATA, 0x10EF},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x00D4},
             {Opcode.CMSG_WARDEN_DATA, 0x00F3},

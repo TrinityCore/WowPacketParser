@@ -401,7 +401,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_SET_TAXI_BENCHMARK_MODE, 0x0389}, // NF()(0x0389) //
             {Opcode.CMSG_REALM_SPLIT, 0x477D}, // (0xAB58)(0x038C) //
             {Opcode.CMSG_MOVE_CHNG_TRANSPORT, 0x038D}, // NF()(0x038D) //
-            {Opcode.CMSG_TIME_SYNC_RESP, 0x0D57}, // ()(0x0391) //
+            {Opcode.CMSG_TIME_SYNC_RESPONSE, 0x0D57}, // ()(0x0391) //
             {Opcode.CMSG_SEND_LOCAL_EVENT, 0x0392}, // NF()(0x0392) //
             {Opcode.CMSG_SEND_GENERAL_TRIGGER, 0x0393}, // NF()(0x0393) //
             {Opcode.CMSG_SEND_COMBAT_TRIGGER, 0x0394}, // NF()(0x0394) //

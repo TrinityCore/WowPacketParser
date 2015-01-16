@@ -484,7 +484,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_TELEPORT_TO_UNIT, 0x4206},
             {Opcode.CMSG_TEXT_EMOTE, 0x2E24},
             {Opcode.CMSG_TIME_ADJUSTMENT_RESPONSE, 0x3818},
-            {Opcode.CMSG_TIME_SYNC_RESP, 0x3B0C},
+            {Opcode.CMSG_TIME_SYNC_RESPONSE, 0x3B0C},
             {Opcode.CMSG_TIME_SYNC_RESP_FAILED, 0x710A},
             {Opcode.CMSG_TOGGLE_PVP, 0x6815},
             {Opcode.CMSG_TOTEM_DESTROYED, 0x4207},

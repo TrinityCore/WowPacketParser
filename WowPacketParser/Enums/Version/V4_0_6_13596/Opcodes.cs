@@ -561,7 +561,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_TAXISHOWNODES, 0x0B8E8},
             {Opcode.CMSG_TELEPORT_TO_UNIT, 0x0E1AC},
             {Opcode.CMSG_TEXT_EMOTE, 0x0E9E0},
-            {Opcode.CMSG_TIME_SYNC_RESP, 0x0A8AC},
+            {Opcode.CMSG_TIME_SYNC_RESPONSE, 0x0A8AC},
             {Opcode.CMSG_TOGGLE_PVP, 0x06480},
             {Opcode.CMSG_TOTEM_DESTROYED, 0x034A0},
             {Opcode.CMSG_TRAINER_BUY_SPELL, 0x0FDC8},
