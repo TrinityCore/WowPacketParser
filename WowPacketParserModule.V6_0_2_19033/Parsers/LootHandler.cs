@@ -7,6 +7,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class LootHandler
     {
+        [Parser(Opcode.SMSG_AE_LOOT_TARGET_ACK)]
+        public static void HandleLootZero(Packet packet)
+        {
+        }
+
         [Parser(Opcode.CMSG_LOOT)]
         public static void HandleLoot(Packet packet)
         {

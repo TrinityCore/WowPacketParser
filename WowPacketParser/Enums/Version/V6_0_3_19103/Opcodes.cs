@@ -536,6 +536,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_ACTIVATE_TAXI_REPLY, 0x1321},
             {Opcode.SMSG_ADDON_INFO, 0x1D9F},
             {Opcode.SMSG_ADJUST_SPLINE_DURATION, 0x0104},
+            {Opcode.SMSG_AE_LOOT_TARGET_ACK, 0x031D},
             {Opcode.SMSG_AE_LOOT_TARGETS, 0x15AF},
             {Opcode.SMSG_AI_REACTION, 0x0BA1},
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA_ACCOUNT, 0x0123},
