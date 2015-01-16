@@ -596,7 +596,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_BATTLEGROUND_POINTS, 0x122A},
             {Opcode.SMSG_BINDER_CONFIRM, 0x0B11},
             {Opcode.SMSG_BINDPOINTUPDATE, 0x0A30},
-            {Opcode.SMSG_BLACK_MARKET_BID_ON_ITEM_RESULT, 0x0810},
+            {Opcode.SMSG_BLACK_MARKET_BID_ON_ITEM_RESULT, 0x0825},
             {Opcode.SMSG_BLACK_MARKET_OPEN_RESULT, 0x0A05},
             {Opcode.SMSG_BLACK_MARKET_OUTBID, 0x0B1D},
             {Opcode.SMSG_BLACK_MARKET_REQUEST_ITEMS_RESULT, 0x1BC2},
