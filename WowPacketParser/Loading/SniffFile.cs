@@ -25,9 +25,9 @@ namespace WowPacketParser.Loading
         private readonly DumpFormatType _dumpFormat;
         private readonly string _logPrefix;
 
-        private readonly LinkedList<string> _withErrorHeaders = new LinkedList<string>();
-        private readonly LinkedList<string> _skippedHeaders = new LinkedList<string>();
-        private readonly LinkedList<string> _noStructureHeaders = new LinkedList<string>();
+        private readonly List<string> _withErrorHeaders = new List<string>();
+        private readonly List<string> _skippedHeaders = new List<string>();
+        private readonly List<string> _noStructureHeaders = new List<string>();
 
         public SniffFile(string fileName, DumpFormatType dumpFormat = DumpFormatType.Text, Tuple<int, int> number = null)
         {
@@ -199,13 +199,13 @@ namespace WowPacketParser.Loading
                                 switch (packet.Status)
                                 {
                                     case ParsedStatus.WithErrors:
-                                        _withErrorHeaders.AddLast(packet.GetHeader());
+                                        _withErrorHeaders.Add(packet.GetHeader());
                                         break;
                                     case ParsedStatus.NotParsed:
-                                        _skippedHeaders.AddLast(packet.GetHeader());
+                                        _skippedHeaders.Add(packet.GetHeader());
                                         break;
                                     case ParsedStatus.NoStructure:
-                                        _noStructureHeaders.AddLast(packet.GetHeader());
+                                        _noStructureHeaders.Add(packet.GetHeader());
                                         break;
                                 }
                             }
