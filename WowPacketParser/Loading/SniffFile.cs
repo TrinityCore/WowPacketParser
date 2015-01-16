@@ -373,10 +373,11 @@ namespace WowPacketParser.Loading
 
                             for (int i = 0; i < groups.Count; i++)
                             {
-                                writer.Write("{0}", groups[i].Key);
+                                int idx = groups[i].Key;
+                                writer.Write("{0} ({1}{2})", idx, (idx & 1) != 0 ? "INSTANCE" : "REALM", (idx & 2) != 0 ? "_NEW" : "");
 
                                 if (i != groups.Count - 1)
-                                    writer.Write(",");
+                                    writer.Write(", ");
                             }
 
                             writer.WriteLine();
