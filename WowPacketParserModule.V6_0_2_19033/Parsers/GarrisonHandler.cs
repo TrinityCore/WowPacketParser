@@ -91,5 +91,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadVector3("PosUnk", i);
             }
         }
+
+        [Parser(Opcode.SMSG_GARRISON_REQUEST_BLUEPRINT_AND_SPECIALIZATION_DATA_RESULT)]
+        public static void HandleGarrisonRequestBlueprintAndSpecializationDataResult(Packet packet)
+        {
+            var int8 = packet.ReadInt32("SpecializationsKnownCount");
+            var int4 = packet.ReadInt32("BlueprintsKnownCount");
+
+            for (var i = 0; i < int8; i++)
+                packet.ReadInt32("SpecializationsKnown", i);
+
+            for (var i = 0; i < int4; i++)
+                packet.ReadInt32("BlueprintsKnown", i);
+        }
     }
 }

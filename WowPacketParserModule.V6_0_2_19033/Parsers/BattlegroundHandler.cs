@@ -149,5 +149,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadUInt32("MmrChange", i);
             }
         }
+
+        [Parser(Opcode.CMSG_AREA_SPIRIT_HEALER_QUERY)]
+        [Parser(Opcode.CMSG_AREA_SPIRIT_HEALER_QUEUE)]
+        public static void HandleAreaSpiritHealer(Packet packet)
+        {
+            packet.ReadPackedGuid128("HealerGuid");
+        }
+
+        [Parser(Opcode.SMSG_AREA_SPIRIT_HEALER_TIME)]
+        public static void HandleAreaSpiritHealerTime(Packet packet)
+        {
+            packet.ReadPackedGuid128("HealerGuid");
+            packet.ReadUInt32("TimeLeft");
+        }
     }
 }

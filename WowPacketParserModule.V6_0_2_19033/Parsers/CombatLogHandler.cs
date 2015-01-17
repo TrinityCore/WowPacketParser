@@ -248,5 +248,26 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (bit100)
                 SpellParsers.ReadSpellCastLogData(ref packet);
         }
+
+        [Parser(Opcode.SMSG_SPELL_INTERRUPT_LOG)]
+        public static void HandleSpellInterruptLog(Packet packet)
+        {
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadPackedGuid128("Victim");
+
+            packet.ReadInt32("InterruptedSpellID");
+            packet.ReadInt32("SpellID");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_OR_DAMAGE_IMMUNE)]
+        public static void HandleSpellOrDamageImmune(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadPackedGuid128("VictimGUID");
+
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "SpellID");
+
+            packet.ReadBit("IsPeriodic");
+        }
     }
 }

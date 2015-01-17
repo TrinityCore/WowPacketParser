@@ -769,14 +769,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("Reverse");
         }
 
-        [Parser(Opcode.SMSG_SPELL_INTERRUPT_LOG)]
-        public static void HandleSpellInterruptLog(Packet packet)
+        [Parser(Opcode.SMSG_MODIFY_COOLDOWN)]
+        public static void HandleModifyCooldown(Packet packet)
         {
-            packet.ReadPackedGuid128("Caster");
-            packet.ReadPackedGuid128("Victim");
-
-            packet.ReadInt32("InterruptedSpellID");
-            packet.ReadInt32("SpellID");
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "SpellID");
+            packet.ReadPackedGuid128("UnitGUID");
+            packet.ReadInt32("DeltaTime");
         }
     }
 }

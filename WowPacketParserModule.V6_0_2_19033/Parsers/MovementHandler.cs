@@ -109,6 +109,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("GameTimeHolidayOffset");
         }
 
+        [Parser(Opcode.SMSG_GAME_TIME_UPDATE)]
+        public static void HandleGameTimeUpdate(Packet packet)
+        {
+            packet.ReadPackedTime("ServerTime");
+            packet.ReadPackedTime("GameTime");
+            packet.ReadInt32("ServerTimeHolidayOffset");
+            packet.ReadInt32("GameTimeHolidayOffset");
+        }
+
         [Parser(Opcode.CMSG_MOVE_TIME_SKIPPED)]
         public static void HandleMoveTimeSkipped(Packet packet)
         {
