@@ -710,6 +710,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("SpeedAsTime");
         }
 
+        [Parser(Opcode.SMSG_PLAY_ORPHAN_SPELL_VISUAL)]
+        public static void HandleCancelOrphanSpellVisual(Packet packet)
+        {
+            packet.ReadInt32("SpellVisualID");
+        }
+
         [Parser(Opcode.SMSG_SPELL_INSTAKILL_LOG)]
         public static void HandleSpellInstakillLog(Packet packet)
         {

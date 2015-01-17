@@ -51,7 +51,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_ITEM_REFUND_INFO)]
         public static void HandleItemRefundInfo(Packet packet)
         {
-            packet.ReadPackedGuid128("Item Guid");
+            packet.ReadPackedGuid128("ItemGUID");
         }
 
         [Parser(Opcode.SMSG_SET_PROFICIENCY)]
@@ -322,6 +322,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("ItemID");
             packet.ReadUInt32("Enchantment");
             packet.ReadUInt32("EnchantSlot");
+        }
+        [Parser(Opcode.SMSG_READ_ITEM_RESULT_OK)]
+        public static void HandleReadItemResultOk(Packet packet)
+        {
+            packet.ReadPackedGuid128("Item");
         }
     }
 }

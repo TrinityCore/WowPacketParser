@@ -661,18 +661,18 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_QUEST_FORCE_REMOVE)]
+        [Parser(Opcode.SMSG_QUEST_FORCE_REMOVED)]
         [Parser(Opcode.CMSG_QUEST_CONFIRM_ACCEPT)]
-        [Parser(Opcode.SMSG_QUESTUPDATE_FAILED)]
-        [Parser(Opcode.SMSG_QUESTUPDATE_FAILEDTIMER)]
-        [Parser(Opcode.SMSG_QUESTUPDATE_COMPLETE, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
-        [Parser(Opcode.SMSG_QUESTUPDATE_COMPLETE, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.SMSG_QUEST_UPDATE_FAILED)]
+        [Parser(Opcode.SMSG_QUEST_UPDATE_FAILED_TIMER)]
+        [Parser(Opcode.SMSG_QUEST_UPDATE_COMPLETE, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_QUEST_UPDATE_COMPLETE, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestForceRemoved(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Quest, "Quest ID");
+            packet.ReadEntry<Int32>(StoreNameType.Quest, "QuestID");
         }
 
-        [Parser(Opcode.SMSG_QUESTUPDATE_COMPLETE, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_QUEST_UPDATE_COMPLETE, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleQuestUpdateComplete422(Packet packet)
         {
             packet.ReadGuid("Guid");
@@ -698,7 +698,7 @@ namespace WowPacketParser.Parsing.Parsers
             ReadExtraQuestInfo(ref packet);
         }
 
-        [Parser(Opcode.SMSG_QUESTUPDATE_COMPLETE, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.SMSG_QUEST_UPDATE_COMPLETE, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestUpdateComplete510(Packet packet)
         {
             packet.ReadGuid("Guid");
@@ -1171,8 +1171,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Slot");
         }
 
-        [Parser(Opcode.SMSG_QUESTUPDATE_ADD_KILL)]
-        [Parser(Opcode.SMSG_QUESTUPDATE_ADD_ITEM)]
+        [Parser(Opcode.SMSG_QUEST_UPDATE_ADD_KILL)]
+        [Parser(Opcode.SMSG_QUEST_UPDATE_ADD_ITEM)]
         public static void HandleQuestUpdateAdd(Packet packet)
         {
             packet.ReadEntry<Int32>(StoreNameType.Quest, "Quest ID");
@@ -1212,7 +1212,7 @@ namespace WowPacketParser.Parsing.Parsers
                 }
         }
 
-        [Parser(Opcode.SMSG_QUESTUPDATE_ADD_PVP_KILL)]
+        [Parser(Opcode.SMSG_QUEST_UPDATE_ADD_PVP_KILL)]
         public static void HandleQuestupdateAddPvpKill(Packet packet)
         {
             packet.ReadEntry<Int32>(StoreNameType.Quest, "Quest ID");

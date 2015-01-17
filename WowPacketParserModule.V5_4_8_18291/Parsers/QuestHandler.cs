@@ -392,7 +392,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_QUESTUPDATE_ADD_KILL)]
+        [Parser(Opcode.SMSG_QUEST_UPDATE_ADD_KILL)]
         public static void HandleQuestUpdateAdd(Packet packet)
         {
             packet.ReadInt16("Count");

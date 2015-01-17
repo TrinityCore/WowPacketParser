@@ -533,7 +533,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             Storage.QuestOfferRewards.Add((uint)id, questOfferReward, packet.TimeSpan);
         }
 
-        [Parser(Opcode.SMSG_QUESTUPDATE_ADD_KILL)]
+        [Parser(Opcode.SMSG_QUEST_UPDATE_ADD_KILL)]
         public static void HandleQuestUpdateAdd(Packet packet)
         {
             packet.ReadPackedGuid128("VictimGUID");
@@ -637,10 +637,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             Storage.QuestRequestItems.Add((uint)id, questRequestItems, packet.TimeSpan);
         }
 
-        [Parser(Opcode.SMSG_QUESTUPDATE_COMPLETE)]
+        [Parser(Opcode.SMSG_QUEST_UPDATE_COMPLETE)]
         public static void HandleQuestForceRemoved(Packet packet)
         {
             packet.ReadEntry<Int32>(StoreNameType.Quest, "QuestID");
+        }
+
+        [Parser(Opcode.SMSG_QUEST_UPDATE_ADD_CREDIT_SIMPLE)]
+        public static void HandleQuestUpdateAddCreditSimple(Packet packet)
+        {
+            packet.ReadEntry<Int32>(StoreNameType.Quest, "QuestID");
+            packet.ReadInt32("ObjectID");
+            packet.ReadByte("ObjectiveType");
         }
 
         [Parser(Opcode.CMSG_QUESTGIVER_HELLO)]
