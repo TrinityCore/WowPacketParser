@@ -23,6 +23,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_GET_GARRISON_INFO)]
         [Parser(Opcode.CMSG_GARRISON_REQUEST_LANDING_PAGE_SHIPMENT_INFO)]
         [Parser(Opcode.CMSG_GARRISON_REQUEST_BLUEPRINT_AND_SPECIALIZATION_DATA)]
+        [Parser(Opcode.CMSG_GARRISON_UNK1)]
         public static void HandleGarrisonZero(Packet packet)
         {
         }
@@ -77,6 +78,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("NpcGUID");
             packet.ReadInt32("MissionRecID");
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_UNK1)] // trigger on CMSG_GARRISON_UNK1
+        public static void HandleGarrisonUnk1(Packet packet)
+        {
+            var int40 = packet.ReadInt32("Count");
+
+            for (int i = 0; i < int40; i++)
+            {
+                packet.ReadInt32("Unk1", i);
+                packet.ReadVector3("PosUnk", i);
+            }
         }
     }
 }
