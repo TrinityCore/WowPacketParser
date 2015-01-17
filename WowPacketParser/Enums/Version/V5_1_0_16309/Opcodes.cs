@@ -575,7 +575,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_GUILD_BANK_QUERY_TEXT_RESULT, 0x02F5},
             {Opcode.SMSG_GUILD_CHALLENGE_COMPLETED, 0x04F9},
             {Opcode.SMSG_GUILD_CHALLENGE_UPDATED, 0x0F3D},
-            {Opcode.SMSG_GUILD_CHANGE_NAME_RESULT, 0x04D9},
+            {Opcode.SMSG_GUILD_NAME_CHANGED, 0x04D9},
             {Opcode.SMSG_GUILD_COMMAND_RESULT, 0x09FC},
             {Opcode.SMSG_GUILD_COMMAND_RESULT_2, 0x0580},
             {Opcode.SMSG_GUILD_CRITERIA_DATA, 0x0799},

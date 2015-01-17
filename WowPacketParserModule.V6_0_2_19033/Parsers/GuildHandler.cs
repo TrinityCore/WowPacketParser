@@ -460,5 +460,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var len = packet.ReadBits(8);
             packet.ReadWoWString("Name", len);
         }
+
+        [Parser(Opcode.SMSG_GUILD_NAME_CHANGED)]
+        public static void HandleGuildNameChanged(Packet packet)
+        {
+            packet.ReadPackedGuid128("GuildGUID");
+
+            var len = packet.ReadBits(7);
+            packet.ReadWoWString("GuildName", len);
+        }
     }
 }

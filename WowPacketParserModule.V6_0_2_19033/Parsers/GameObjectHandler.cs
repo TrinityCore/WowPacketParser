@@ -98,5 +98,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("AnimKitID");
             packet.ReadBit("Maintain");
         }
+
+        [Parser(Opcode.SMSG_GAMEOBJECT_PLAY_SPELL_VISUAL)]
+        public static void HandleGameObjectPlaySpellVisual(Packet packet)
+        {
+            packet.ReadPackedGuid128("ObjectGUID");
+            packet.ReadPackedGuid128("ActivatorGUID");
+            packet.ReadInt32("SpellVisualID");
+        }
     }
 }

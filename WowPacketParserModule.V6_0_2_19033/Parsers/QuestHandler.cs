@@ -656,5 +656,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("QuestGiver GUID");
         }
+
+        [Parser(Opcode.SMSG_QUEST_PUSH_RESULT)]
+        public static void HandleQuestPushResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("SenderGUID");
+            packet.ReadEnum<QuestPartyResult>("Result", TypeCode.Byte);
+        }
     }
 }

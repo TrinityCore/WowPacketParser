@@ -500,6 +500,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_CAST_FAILED)]
+        [Parser(Opcode.SMSG_PET_CAST_FAILED)]
         public static void HandleCastFailed(Packet packet)
         {
             packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
@@ -739,6 +740,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_GET_MIRROR_IMAGE_DATA)]
+        [Parser(Opcode.SMSG_MIRROR_IMAGE_CREATURE_DATA)]
         public static void HandleGetMirrorImageData(Packet packet)
         {
             packet.ReadPackedGuid128("UnitGUID");
@@ -781,6 +783,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadEntry<UInt32>(StoreNameType.Spell, "SpellID");
             packet.ReadPackedGuid128("UnitGUID");
             packet.ReadInt32("DeltaTime");
+        }
+        [Parser(Opcode.SMSG_CLEAR_TARGET)]
+        public static void HandleClearTarget(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
         }
     }
 }
