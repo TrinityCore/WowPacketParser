@@ -234,8 +234,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_SPELL_ABSORB_LOG)]
         public static void HandleSpellAbsorbLog(Packet packet)
         {
-            packet.ReadPackedGuid128("CasterGUID");
-            packet.ReadPackedGuid128("TargetGUID");
+            packet.ReadPackedGuid128("Victim");
+            packet.ReadPackedGuid128("Caster");
 
             packet.ReadInt32("InterruptedSpellID");
             packet.ReadEntry<Int32>(StoreNameType.Spell, "SpellID");
