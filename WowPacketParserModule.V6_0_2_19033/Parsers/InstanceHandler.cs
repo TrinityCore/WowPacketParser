@@ -105,5 +105,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("DifficultyID");
             packet.ReadBit("Extended");
         }
+
+        [Parser(Opcode.SMSG_RAID_INSTANCE_MESSAGE)]
+        public static void HandleRaidInstanceMessage(Packet packet)
+        {
+            packet.ReadByte("Type");
+
+            packet.ReadInt32("MapID");
+            packet.ReadInt32("DifficultyID");
+            packet.ReadInt32("TimeLeft");
+
+            packet.ReadBit("Locked");
+            packet.ReadBit("Extended");
+        }
+
+        [Parser(Opcode.SMSG_INSTANCE_SAVE_CREATED)]
+        public static void HandleInstanceSaveCreated(Packet packet)
+        {
+            packet.ReadBit("Gm");
+        }
     }
 }

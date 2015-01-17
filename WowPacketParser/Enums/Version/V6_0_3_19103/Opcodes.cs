@@ -617,7 +617,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_BLACK_MARKET_OPEN_RESULT, 0x0A05},
             {Opcode.SMSG_BLACK_MARKET_OUTBID, 0x0B1D},
             {Opcode.SMSG_BLACK_MARKET_REQUEST_ITEMS_RESULT, 0x1BC2},
-            {Opcode.SMSG_BLACK_MARKET_WON, 0x1BA4},
+            {Opcode.SMSG_BLACK_MARKET_WON, 0x1BAA},
             {Opcode.SMSG_BREAK_TARGET, 0x11A2},
             {Opcode.SMSG_BUY_FAILED, 0x013A},
             {Opcode.SMSG_BUY_ITEM, 0x0BD1},

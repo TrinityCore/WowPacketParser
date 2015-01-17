@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -50,7 +49,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             // ActionButtons
             const int maxCreatureSpells = 10;
-            var spells = new List<uint>(maxCreatureSpells);
             for (var i = 0; i < maxCreatureSpells; i++) // Read pet/vehicle spell ids
             {
                 var spell16 = packet.ReadUInt16();
@@ -166,6 +164,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("UnitGUID");
             packet.ReadInt32("Action");
+        }
+
+        [Parser(Opcode.SMSG_PET_MODE)]
+        public static void HandlePetMode(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
+            var petModeFlag = packet.ReadUInt32();
+            packet.AddValue("React state", (ReactState)((petModeFlag >> 8) & 0xFF));
+            packet.AddValue("Command state", (CommandState)((petModeFlag >> 16) & 0xFF));
+            packet.AddValue("Flag", (petModeFlag & 0xFFFF0000), (PetModeFlags)(petModeFlag & 0xFFFF0000));
+        }
+
+        [Parser(Opcode.CMSG_PET_STOP_ATTACK)]
+        public static void HandlePetStopAttack(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
         }
     }
 }

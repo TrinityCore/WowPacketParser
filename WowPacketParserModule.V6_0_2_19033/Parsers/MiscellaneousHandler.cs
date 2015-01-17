@@ -481,6 +481,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("TimerType");
         }
+
+        [Parser(Opcode.SMSG_STREAMING_MOVIE)]
+        public static void HandleStreamingMovie(Packet packet)
+        {
+            var count = packet.ReadInt32("MovieCount");
+            for (var i = 0; i < count; i++)
+                packet.ReadInt16("MovieIDs", i);
+        }
     }
 }
 

@@ -130,6 +130,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_MOVE_HEARTBEAT)]
         [Parser(Opcode.CMSG_MOVE_JUMP)]
         [Parser(Opcode.CMSG_MOVE_SET_FACING)]
+        [Parser(Opcode.CMSG_MOVE_SET_FLY)]
         [Parser(Opcode.CMSG_MOVE_SET_PITCH)]
         [Parser(Opcode.CMSG_MOVE_SET_RUN_MODE)]
         [Parser(Opcode.CMSG_MOVE_SET_WALK_MODE)]
