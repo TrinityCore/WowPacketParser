@@ -644,5 +644,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("UnitGUID");
         }
+
+        [Parser(Opcode.SMSG_MOVE_KNOCK_BACK)]
+        public static void HandleMoveKnockBack(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+            packet.ReadInt32("SequenceIndex");
+            packet.ReadVector2("Direction");
+            packet.ReadSingle("HorzSpeed");
+            packet.ReadSingle("VertSpeed");
+        }
     }
 }
