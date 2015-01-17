@@ -32,7 +32,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk int32");
         }
 
-        [Parser(Opcode.SMSG_HOTFIX_INFO)]
+        [Parser(Opcode.SMSG_HOTFIX_NOTIFY_BLOB)]
         public static void HandleHotfixInfo(Packet packet)
         {
             var count = ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595) ? packet.ReadBits("Count", 22) : packet.ReadUInt32("Count");

@@ -489,6 +489,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < count; i++)
                 packet.ReadInt16("MovieIDs", i);
         }
+
+        [Parser(Opcode.SMSG_CUSTOM_LOAD_SCREEN)]
+        public static void HandleCustomLoadScreen(Packet packet)
+        {
+            packet.ReadInt32("TeleportSpellID");
+        }
     }
 }
 

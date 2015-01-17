@@ -190,7 +190,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_GUILD_RANK, 0x0A5E},
             {Opcode.SMSG_GUILD_ROSTER, 0x0C0A},
             {Opcode.SMSG_HEALTH_UPDATE, 0x13D8},
-            {Opcode.SMSG_HOTFIX_INFO, 0x1584},
+            {Opcode.SMSG_HOTFIX_NOTIFY_BLOB, 0x1584},
             {Opcode.SMSG_HOTFIX_NOTIFY, 0x0EDC},
             {Opcode.SMSG_INITIALIZE_FACTIONS, 0x0598},
             {Opcode.SMSG_INITIAL_SPELLS, 0x173F},

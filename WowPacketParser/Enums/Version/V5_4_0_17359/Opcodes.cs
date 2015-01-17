@@ -120,7 +120,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_GUILD_NEWS_TEXT, 0x0D47},
             {Opcode.SMSG_GUILD_REPUTATION_WEEKLY_CAP, 0x0457},
             {Opcode.SMSG_HIGHEST_THREAT_UPDATE, 0x000B},
-            {Opcode.SMSG_HOTFIX_INFO, 0x0416},
+            {Opcode.SMSG_HOTFIX_NOTIFY_BLOB, 0x0416},
             {Opcode.SMSG_INITIAL_SPELLS, 0x1534},
             {Opcode.SMSG_INIT_CURRENCY, 0x0494},
             {Opcode.SMSG_INIT_WORLD_STATES, 0x0929},

@@ -310,7 +310,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_GUILD_XP, 0x1A51},
             {Opcode.SMSG_GUILD_XP_GAIN, 0x1A11},
             {Opcode.SMSG_HIGHEST_THREAT_UPDATE, 0x0761},
-            {Opcode.SMSG_HOTFIX_INFO, 0x0C81},
+            {Opcode.SMSG_HOTFIX_NOTIFY_BLOB, 0x0C81},
             {Opcode.SMSG_LEARNED_SPELL, 0x0C99},
             {Opcode.SMSG_LEVELUP_INFO, 0x0E6A},
             {Opcode.SMSG_LFG_QUEUE_STATUS, 0x0D40},

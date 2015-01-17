@@ -7,7 +7,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 {
     public static class HotfixHandler
     {
-        [Parser(Opcode.SMSG_HOTFIX_INFO)]
+        [Parser(Opcode.SMSG_HOTFIX_NOTIFY_BLOB)]
         public static void HandleHotfixInfo(Packet packet)
         {
             var count = packet.ReadBits("Count", 20);

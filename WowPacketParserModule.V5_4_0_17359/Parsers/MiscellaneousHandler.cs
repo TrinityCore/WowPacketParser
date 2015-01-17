@@ -99,7 +99,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             }, packet.TimeSpan);
         }
 
-        [Parser(Opcode.SMSG_HOTFIX_INFO)]
+        [Parser(Opcode.SMSG_HOTFIX_NOTIFY_BLOB)]
         public static void HandleHotfixInfo(Packet packet)
         {
             var count = packet.ReadBits("Count", 20);

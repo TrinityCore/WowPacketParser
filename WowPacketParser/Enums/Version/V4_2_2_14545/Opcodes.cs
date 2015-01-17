@@ -502,7 +502,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.SMSG_GUILD_ROSTER, 0x664C},
             {Opcode.SMSG_GUILD_SET_NOTE, 0xB6CE},
             {Opcode.SMSG_HIGHEST_THREAT_UPDATE, 0x5E7B},
-            {Opcode.SMSG_HOTFIX_INFO, 0xA04C},
+            {Opcode.SMSG_HOTFIX_NOTIFY_BLOB, 0xA04C},
             {Opcode.SMSG_INITIALIZE_FACTIONS, 0xCC6F},
             {Opcode.SMSG_INITIAL_SPELLS, 0x88FE},
             {Opcode.SMSG_INIT_CURRENCY, 0x227E},

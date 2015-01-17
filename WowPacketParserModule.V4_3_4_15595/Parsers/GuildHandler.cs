@@ -619,7 +619,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadWoWString("Tab Text", packet.ReadBits(14));
         }
 
-        [Parser(Opcode.SMSG_GUILD_EVENT_LOG_QUERY_RESULT)]
+        [Parser(Opcode.SMSG_GUILD_EVENT_LOG_QUERY_RESULTS)]
         public static void HandleGuildEventLogQuery434(Packet packet)
         {
             var count = packet.ReadBits(23);

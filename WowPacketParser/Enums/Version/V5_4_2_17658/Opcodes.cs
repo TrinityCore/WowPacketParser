@@ -130,7 +130,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_GUILD_RANK, 0x05AA},
             {Opcode.SMSG_GUILD_ROSTER, 0x050E},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x0502},
-            {Opcode.SMSG_HOTFIX_INFO, 0x0A4B},
+            {Opcode.SMSG_HOTFIX_NOTIFY_BLOB, 0x0A4B},
             {Opcode.SMSG_LEARNED_SPELL, 0x0C6E},
             {Opcode.SMSG_LFG_PLAYER_INFO, 0x0DA0},
             {Opcode.SMSG_LIST_INVENTORY, 0x0ADC},

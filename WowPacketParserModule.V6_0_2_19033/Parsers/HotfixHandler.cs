@@ -443,17 +443,25 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_HOTFIX_INFO)]
-        public static void HandleHotfixInfo(Packet packet)
+        [Parser(Opcode.SMSG_HOTFIX_NOTIFY_BLOB)]
+        public static void HandleHotfixNotifyBlob(Packet packet)
         {
-            var count = packet.ReadUInt32("Hotfix Count");
+            var count = packet.ReadUInt32("HotfixCount");
 
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadEnum<DB2Hash>("Hotfix DB2 File", TypeCode.Int32, i);
-                packet.ReadInt32("Hotfixed entry", i);
-                packet.ReadTime("Hotfix date", i);
+                packet.ReadEnum<DB2Hash>("TableHash", TypeCode.Int32, i);
+                packet.ReadInt32("RecordID", i);
+                packet.ReadTime("Timestamp", i);
             }
+        }
+
+        [Parser(Opcode.SMSG_HOTFIX_NOTIFY)]
+        public static void HandleHotfixNotify(Packet packet)
+        {
+            packet.ReadEnum<DB2Hash>("TableHash", TypeCode.Int32);
+            packet.ReadInt32("RecordID");
+            packet.ReadTime("Timestamp");
         }
     }
 }
