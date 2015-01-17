@@ -359,7 +359,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("PartyIndex");
             packet.ReadInt32("ActiveMarkers");
 
-            var count = packet.ReadBits(5);
+            var count = packet.ReadBits(4);
             for (int i = 0; i < count; i++)
             {
                 packet.ReadPackedGuid128("TransportGUID");
