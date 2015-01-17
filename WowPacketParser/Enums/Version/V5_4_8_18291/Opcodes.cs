@@ -469,7 +469,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_SET_PROFICIENCY, 0x1440},
             {Opcode.SMSG_SET_RAID_DIFFICULTY, 0x0591},
             {Opcode.SMSG_SET_VIGNETTE, 0x0CBE},
-            {Opcode.SMSG_SHOWTAXINODES, 0x1E1A},
+            {Opcode.SMSG_SHOW_TAXI_NODES, 0x1E1A},
             {Opcode.SMSG_SHOW_BANK, 0x0007},
             {Opcode.SMSG_SPELL_DISPEL_LOG, 0x0DF9},
             {Opcode.SMSG_SPELL_ENERGIZE_LOG, 0x0D79},

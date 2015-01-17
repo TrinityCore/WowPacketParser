@@ -856,7 +856,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_SET_PHASE_SHIFT, 0x05F4},
             {Opcode.SMSG_SET_PLAY_HOVER_ANIM, 0x0F58},
             {Opcode.SMSG_SET_PROFICIENCY, 0x0DC1},
-            {Opcode.SMSG_SHOWTAXINODES, 0x0424},
+            {Opcode.SMSG_SHOW_TAXI_NODES, 0x0424},
             {Opcode.SMSG_SHOW_BANK, 0x0B65},
             {Opcode.SMSG_SHOW_RATINGS, 0x0AD0},
             {Opcode.SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI, 0x0CF1},

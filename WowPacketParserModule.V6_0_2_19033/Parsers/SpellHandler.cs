@@ -711,7 +711,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("SpeedAsTime");
         }
 
-        [Parser(Opcode.SMSG_PLAY_ORPHAN_SPELL_VISUAL)]
+        [Parser(Opcode.SMSG_CANCEL_ORPHAN_SPELL_VISUAL)]
         public static void HandleCancelOrphanSpellVisual(Packet packet)
         {
             packet.ReadInt32("SpellVisualID");
@@ -784,10 +784,36 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("UnitGUID");
             packet.ReadInt32("DeltaTime");
         }
+
         [Parser(Opcode.SMSG_CLEAR_TARGET)]
         public static void HandleClearTarget(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");
+        }
+
+        [Parser(Opcode.SMSG_SHOW_TRADE_SKILL_RESPONSE)]
+        public static void HandleShowTradeSkillResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGUID");
+
+            packet.ReadInt32("SpellId");
+
+            var int4 = packet.ReadInt32("SkillLineCount");
+            var int20 = packet.ReadInt32("SkillRankCount");
+            var int36 = packet.ReadInt32("SkillMaxRankCount");
+            var int52 = packet.ReadInt32("KnownAbilitySpellCount");
+
+            for (int i = 0; i < int4; i++)
+                packet.ReadInt32("SkillLineIDs", i);
+
+            for (int i = 0; i < int20; i++)
+                packet.ReadInt32("SkillRanks", i);
+
+            for (int i = 0; i < int36; i++)
+                packet.ReadInt32("SkillMaxRanks", i);
+
+            for (int i = 0; i < int52; i++)
+                packet.ReadInt32("KnownAbilitySpellIDs", i);
         }
     }
 }

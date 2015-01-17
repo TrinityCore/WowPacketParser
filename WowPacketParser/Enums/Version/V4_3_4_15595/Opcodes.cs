@@ -1087,7 +1087,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_SET_PLAY_HOVER_ANIM, 0x30A6},
             {Opcode.SMSG_SET_PROFICIENCY, 0x6207},
             {Opcode.SMSG_SET_PROJECTILE_POSITION, 0x2616},
-            {Opcode.SMSG_SHOWTAXINODES, 0x2A36},
+            {Opcode.SMSG_SHOW_TAXI_NODES, 0x2A36},
             {Opcode.SMSG_SHOW_BANK, 0x2627},
             {Opcode.SMSG_SHOW_MAILBOX, 0x2524},
             {Opcode.SMSG_SHOW_RATINGS, 0x11B4},

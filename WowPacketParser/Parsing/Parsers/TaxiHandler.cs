@@ -21,7 +21,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Known");
         }
 
-        [Parser(Opcode.SMSG_SHOWTAXINODES, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_SHOW_TAXI_NODES, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleShowTaxiNodes(Packet packet)
         {
             var u = packet.ReadUInt32("Unk UInt32 1");
@@ -35,7 +35,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt64("NodeMask", i++);
         }
 
-        [Parser(Opcode.SMSG_SHOWTAXINODES, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_SHOW_TAXI_NODES, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleShowTaxiNodes434(Packet packet)
         {
             var u = packet.ReadUInt32("Unk UInt32 1");

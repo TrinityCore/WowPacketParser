@@ -355,7 +355,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SHOWTAXINODES)]
+        [Parser(Opcode.SMSG_SHOW_TAXI_NODES)]
         public static void HandleShowTaxiNodes434(Packet packet)
         {
             packet.ReadBit("unk");

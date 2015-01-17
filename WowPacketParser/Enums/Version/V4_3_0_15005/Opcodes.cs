@@ -817,7 +817,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.SMSG_SET_PHASE_SHIFT, 17448},
             {Opcode.SMSG_SET_PROFICIENCY, 3746},
             {Opcode.SMSG_SET_PROJECTILE_POSITION, 11782},
-            {Opcode.SMSG_SHOWTAXINODES, 24098},
+            {Opcode.SMSG_SHOW_TAXI_NODES, 24098},
             {Opcode.SMSG_SHOW_MAILBOX, 4770},
             {Opcode.SMSG_SHOW_BANK, 18980},
             {Opcode.SMSG_SOR_START_EXPERIENCE_INCOMPLETE, 19596},

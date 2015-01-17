@@ -30,7 +30,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Unit");
         }
 
-        [Parser(Opcode.SMSG_SHOWTAXINODES)]
+        [Parser(Opcode.SMSG_SHOW_TAXI_NODES)]
         public static void HandleShowTaxiNodes(Packet packet)
         {
             var bit56 = packet.ReadBit("HasWindowInfo");

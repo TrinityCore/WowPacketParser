@@ -730,7 +730,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_SELL_ITEM, 0x2F7E}, // (0x2BB5)(0x01A1) //
             {Opcode.SMSG_BUY_ITEM, 0x4676}, // (0x8AF4)(0x01A4) //
             {Opcode.SMSG_BUY_FAILED, 0xF757}, // (0x83DD)(0x01A5) //
-            {Opcode.SMSG_SHOWTAXINODES, 0xD654}, // (0x0399)(0x01A9) //
+            {Opcode.SMSG_SHOW_TAXI_NODES, 0xD654}, // (0x0399)(0x01A9) //
             {Opcode.SMSG_TAXINODE_STATUS, 0x6F76}, // (0xA330)(0x01AB) //
             {Opcode.SMSG_ACTIVATE_TAXI_REPLY, 0x6F7C}, // (0x23D5)(0x01AE) //
             {Opcode.SMSG_NEW_TAXI_PATH, 0xAE5E}, // (0xA259)(0x01AF) //

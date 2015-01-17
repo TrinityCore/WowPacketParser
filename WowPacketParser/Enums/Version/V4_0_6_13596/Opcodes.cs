@@ -1102,7 +1102,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_SET_PLAYER_DECLINED_NAMES_RESULT, 0x0BAAC},
             {Opcode.SMSG_SET_PROFICIENCY, 0x0BBA8},
             {Opcode.SMSG_SET_PROJECTILE_POSITION, 0x02C84},
-            {Opcode.SMSG_SHOWTAXINODES, 0x02B84},
+            {Opcode.SMSG_SHOW_TAXI_NODES, 0x02B84},
             {Opcode.SMSG_SHOW_BANK, 0x027A4},
             {Opcode.SMSG_SHOW_MAILBOX, 0x0F680},
             {Opcode.SMSG_SPELL_BREAK_LOG, 0x0BDAC},
