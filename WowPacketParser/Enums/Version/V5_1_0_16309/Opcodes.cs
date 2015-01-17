@@ -776,7 +776,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_PET_BATTLE_ROUND_RESULT, 0x031C},
             {Opcode.SMSG_PLAYED_TIME, 0x0944},
             {Opcode.SMSG_PLAYERBINDERROR, 0x0EC4},
-            {Opcode.SMSG_PLAYERBOUND, 0x0D4D},
+            {Opcode.SMSG_PLAYER_BOUND, 0x0D4D},
             {Opcode.SMSG_PLAYER_DIFFICULTY_CHANGE, 0x0A6D},
             {Opcode.SMSG_PLAYER_MOVE, 0x0294},
             {Opcode.SMSG_PLAYER_SKINNED, 0x018C},

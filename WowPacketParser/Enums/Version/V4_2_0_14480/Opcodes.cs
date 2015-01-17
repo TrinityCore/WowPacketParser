@@ -700,7 +700,7 @@ namespace WowPacketParser.Enums.Version.V4_2_0_14480
             {Opcode.SMSG_PLAY_DANCE, 0x32B3},
             {Opcode.SMSG_PLAYED_TIME, 0x2EA2},
             {Opcode.SMSG_PLAYERBINDERROR, 0xA26B},
-            {Opcode.SMSG_PLAYERBOUND, 0x6EAE},
+            {Opcode.SMSG_PLAYER_BOUND, 0x6EAE},
             {Opcode.SMSG_PLAYER_DIFFICULTY_CHANGE, 0x7EAF},
             {Opcode.SMSG_PLAYER_MOVE, 0x5341},
             {Opcode.SMSG_PLAYER_SKINNED, 0xFAF6},

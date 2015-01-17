@@ -684,7 +684,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_BREAK_TARGET, 0x0152}, // NF()(0x0152) // NOT IN CLIENT 335 AND 401
             {Opcode.SMSG_BINDPOINTUPDATE, 0x175D}, // (0xA255)(0x0155) //
             {Opcode.SMSG_BINDZONEREPLY, 0xB477}, // (0xC338)(0x0157) //
-            {Opcode.SMSG_PLAYERBOUND, 0x5F77}, // (0x827D)(0x0158) //
+            {Opcode.SMSG_PLAYER_BOUND, 0x5F77}, // (0x827D)(0x0158) //
             {Opcode.SMSG_CLIENT_CONTROL_UPDATE, 0xCD55}, // (0x4290)(0x0159) //
             {Opcode.SMSG_RESURRECT_REQUEST, 0xAE7D}, // (0x8B51)(0x015B) //
             {Opcode.SMSG_LOOT_RESPONSE, 0x545D}, // (0x8339)(0x0160) //

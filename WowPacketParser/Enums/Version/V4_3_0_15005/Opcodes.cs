@@ -740,7 +740,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.SMSG_PET_TAME_FAILURE, 22048},
             {Opcode.SMSG_PET_UPDATE_COMBO_POINTS, 548},
             {Opcode.SMSG_PLAYERBINDERROR, 23174},
-            {Opcode.SMSG_PLAYERBOUND, 30338},
+            {Opcode.SMSG_PLAYER_BOUND, 30338},
             {Opcode.SMSG_PLAYER_DIFFICULTY_CHANGE, 9862},
             {Opcode.SMSG_PLAYER_MOVE, 17432},
             {Opcode.SMSG_PLAYER_SKINNED, 9252},

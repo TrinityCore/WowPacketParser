@@ -57,7 +57,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("GUID 2", guid1);
         }
 
-        [Parser(Opcode.SMSG_PLAYERBOUND)]
+        [Parser(Opcode.SMSG_PLAYER_BOUND)]
         public static void HandlePlayerBound(Packet packet)
         {
             packet.ReadGuid("GUID");

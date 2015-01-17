@@ -421,7 +421,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_PET_NAME_QUERY_RESPONSE, 0x0ABE},
             {Opcode.SMSG_PET_SPELLS, 0x095A},
             {Opcode.SMSG_PLAYED_TIME, 0x11E2},
-            {Opcode.SMSG_PLAYERBOUND, 0x1B60},
+            {Opcode.SMSG_PLAYER_BOUND, 0x1B60},
             {Opcode.SMSG_PLAYER_MOVE, 0x1A32},
             {Opcode.SMSG_PLAY_OBJECT_SOUND, 0x1443},
             {Opcode.SMSG_PLAY_SOUND, 0x102A},

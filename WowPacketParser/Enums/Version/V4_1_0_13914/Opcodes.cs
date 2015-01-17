@@ -171,7 +171,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_PET_TAME_FAILURE, 0x0FC2C}, // 4.1.0 13914
             {Opcode.SMSG_PET_UPDATE_COMBO_POINTS, 0x0D97D}, // 4.1.0 13914
             {Opcode.SMSG_PLAYED_TIME, 0x07F7D}, // 4.1.0 13914
-            {Opcode.SMSG_PLAYERBOUND, 0x0BC7E}, // 4.1.0 13914
+            {Opcode.SMSG_PLAYER_BOUND, 0x0BC7E}, // 4.1.0 13914
             {Opcode.SMSG_PLAYER_DIFFICULTY_CHANGE, 0x09E6D}, // 4.1.0 13914
             {Opcode.SMSG_PLAYER_SKINNED, 0x0BB3D}, // 4.1.0 13914
             {Opcode.SMSG_PLAYER_VEHICLE_DATA, 0x00A7C}, // 4.1.0 13914

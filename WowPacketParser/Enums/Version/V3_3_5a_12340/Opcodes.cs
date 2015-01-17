@@ -758,7 +758,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.SMSG_BREAK_TARGET, 0x152},
             {Opcode.SMSG_BINDPOINTUPDATE, 0x155},
             {Opcode.SMSG_BINDZONEREPLY, 0x157},
-            {Opcode.SMSG_PLAYERBOUND, 0x158},
+            {Opcode.SMSG_PLAYER_BOUND, 0x158},
             {Opcode.SMSG_CLIENT_CONTROL_UPDATE, 0x159},
             {Opcode.SMSG_RESURRECT_REQUEST, 0x15B},
             {Opcode.SMSG_LOOT_RESPONSE, 0x160},

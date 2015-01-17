@@ -1010,7 +1010,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_PET_UPDATE_COMBO_POINTS, 0x07588},
             {Opcode.SMSG_PLAYED_TIME, 0x0E4C8},
             {Opcode.SMSG_PLAYERBINDERROR, 0x0EEC8},
-            {Opcode.SMSG_PLAYERBOUND, 0x06BCC},
+            {Opcode.SMSG_PLAYER_BOUND, 0x06BCC},
             {Opcode.SMSG_PLAYER_DIFFICULTY_CHANGE, 0x02A80},
             {Opcode.SMSG_PLAYER_SKINNED, 0x0BAA0},
             {Opcode.SMSG_PLAYER_VEHICLE_DATA, 0x0A5A4},

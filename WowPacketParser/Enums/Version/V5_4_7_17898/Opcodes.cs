@@ -371,7 +371,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_PLAY_SPELL_VISUAL, 0x1F3B},
             {Opcode.SMSG_PLAY_SPELL_VISUAL_KIT, 0x0500},
             {Opcode.SMSG_PLAYED_TIME, 0x1C69},
-            {Opcode.SMSG_PLAYERBOUND, 0x00E8},
+            {Opcode.SMSG_PLAYER_BOUND, 0x00E8},
             {Opcode.SMSG_PLAYER_DIFFICULTY_CHANGE, 0x1500},
             {Opcode.SMSG_PVP_LOG_DATA, 0x076A},
             {Opcode.SMSG_RANDOMIZE_CHAR_NAME, 0x074B},

@@ -281,7 +281,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_PET_TAME_FAILURE, 0x0689},
             {Opcode.SMSG_PET_UNLEARN_CONFIRM, 0x0F9D},
             {Opcode.SMSG_PLAYED_TIME, 0x0995},
-            {Opcode.SMSG_PLAYERBOUND, 0x12DD},
+            {Opcode.SMSG_PLAYER_BOUND, 0x12DD},
             {Opcode.SMSG_PLAY_SOUND, 0x017C},
             {Opcode.SMSG_PLAY_SPELL_VISUAL, 0x01C1},
             {Opcode.SMSG_PLAYER_MOVE, 0x1109},
