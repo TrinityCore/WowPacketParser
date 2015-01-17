@@ -717,5 +717,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Caster");
             packet.ReadEntry<UInt32>(StoreNameType.Spell, "SpellID");
         }
+
+        [Parser(Opcode.SMSG_SPELL_COOLDOWN)]
+        public static void HandleSpellCooldown(Packet packet)
+        {
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadByte("Flags");
+
+            var count = packet.ReadInt32("SpellCooldownsCount");
+            for (int i = 0; i < count; i++)
+            {
+                packet.ReadInt32("SrecID", i);
+                packet.ReadInt32("ForcedCooldown", i);
+            }
+        }
     }
 }

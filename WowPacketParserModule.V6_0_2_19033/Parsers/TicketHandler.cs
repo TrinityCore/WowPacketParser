@@ -6,6 +6,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class TicketHandler
     {
+        [Parser(Opcode.CMSG_GM_TICKET_GET_TICKET)]
+        [Parser(Opcode.CMSG_GM_TICKET_GET_CASE_STATUS)]
+        public static void HandleGMTicketZero(Packet packet)
+        {
+        }
+
         [Parser(Opcode.SMSG_GM_TICKET_CASE_STATUS)]
         public static void HandleGMTicketCaseStatus(Packet packet)
         {

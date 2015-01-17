@@ -655,7 +655,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_CLIENT_CONTROL_UPDATE, 0x080E},
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x080D},
             {Opcode.SMSG_COIN_REMOVED, 0x0D30},
-            {Opcode.SMSG_COMPLETE_SHIPMENT_RESPONSE, 0x1901},
+            {Opcode.SMSG_COMPLETE_SHIPMENT_RESPONSE, 0x0F3A},
             {Opcode.SMSG_CONQUEST_FORMULA_CONSTANTS, 0x1342},
             {Opcode.SMSG_CONTACT_LIST, 0x0210},
             {Opcode.SMSG_CONTACT_STATUS, 0x1BEA},

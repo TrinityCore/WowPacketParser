@@ -443,5 +443,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("RankID");
         }
+
+        [Parser(Opcode.CMSG_GUILD_SET_ACHIEVEMENT_TRACKING)]
+        public static void HandleGuildSetAchievementTracking(Packet packet)
+        {
+            var count = packet.ReadUInt32("Count");
+            for (var i = 0; i < count; ++i)
+                packet.ReadEntry<Int32>(StoreNameType.Achievement, "AchievementIDs", i);
+        }
     }
 }

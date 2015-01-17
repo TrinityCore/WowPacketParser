@@ -475,6 +475,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("PlayerGUID");
         }
+
+        [Parser(Opcode.CMSG_QUERY_COUNTDOWN_TIMER)]
+        public static void HandleQueryCountdownTimer(Packet packet)
+        {
+            packet.ReadInt32("TimerType");
+        }
     }
 }
 

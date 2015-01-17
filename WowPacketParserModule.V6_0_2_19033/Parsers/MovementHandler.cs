@@ -656,5 +656,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadSingle("HorzSpeed");
             packet.ReadSingle("VertSpeed");
         }
+
+        [Parser(Opcode.CMSG_DISCARDED_TIME_SYNC_ACKS)]
+        public static void HandleDiscardedTimeSyncAcks(Packet packet)
+        {
+            packet.ReadUInt32("MaxSequenceIndex");
+        }
     }
 }
