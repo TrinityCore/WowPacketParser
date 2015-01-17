@@ -688,7 +688,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_CLIENT_CONTROL_UPDATE, 0xCD55}, // (0x4290)(0x0159) //
             {Opcode.SMSG_RESURRECT_REQUEST, 0xAE7D}, // (0x8B51)(0x015B) //
             {Opcode.SMSG_LOOT_RESPONSE, 0x545D}, // (0x8339)(0x0160) //
-            {Opcode.SMSG_LOOT_RELEASE_RESPONSE, 0xB67F}, // (0x4B58)(0x0161) //
+            {Opcode.SMSG_LOOT_RELEASE, 0xB67F}, // (0x4B58)(0x0161) //
             {Opcode.SMSG_LOOT_REMOVED, 0x577C}, // (0x03B1)(0x0162) //
             {Opcode.SMSG_LOOT_MONEY_NOTIFY, 0xD57F}, // (0x2A9C)(0x0163) //
             {Opcode.SMSG_LOOT_ITEM_NOTIFY, 0x765D}, // (0xEA3D)(0x0164) //

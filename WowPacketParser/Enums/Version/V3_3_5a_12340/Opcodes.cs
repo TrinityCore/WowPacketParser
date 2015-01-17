@@ -762,7 +762,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.SMSG_CLIENT_CONTROL_UPDATE, 0x159},
             {Opcode.SMSG_RESURRECT_REQUEST, 0x15B},
             {Opcode.SMSG_LOOT_RESPONSE, 0x160},
-            {Opcode.SMSG_LOOT_RELEASE_RESPONSE, 0x161},
+            {Opcode.SMSG_LOOT_RELEASE, 0x161},
             {Opcode.SMSG_LOOT_REMOVED, 0x162},
             {Opcode.SMSG_LOOT_MONEY_NOTIFY, 0x163},
             {Opcode.SMSG_LOOT_ITEM_NOTIFY, 0x164},

@@ -134,7 +134,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_LOGIN_SETTIMESPEED, 0x01AF},
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x0896},
             {Opcode.SMSG_LOOT_MONEY_NOTIFY, 0x052D},
-            {Opcode.SMSG_LOOT_RELEASE_RESPONSE, 0x048F},
+            {Opcode.SMSG_LOOT_RELEASE, 0x048F},
             {Opcode.SMSG_MAIL_LIST_RESULT, 0x088C},
             {Opcode.SMSG_MESSAGECHAT, 0x092F},
             {Opcode.SMSG_MONSTER_MOVE, 0x137A},

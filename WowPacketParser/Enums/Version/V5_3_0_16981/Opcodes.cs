@@ -236,7 +236,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_LOOT_LIST, 0x0CC4},
             {Opcode.SMSG_LOOT_MASTER_LIST, 0x0994},
             {Opcode.SMSG_LOOT_MONEY_NOTIFY, 0x0180},
-            {Opcode.SMSG_LOOT_RELEASE_RESPONSE, 0x12C1},
+            {Opcode.SMSG_LOOT_RELEASE, 0x12C1},
             {Opcode.SMSG_LOOT_REMOVED, 0x0E8C},
             {Opcode.SMSG_LOOT_RESPONSE, 0x08CD},
             {Opcode.SMSG_LOOT_ROLL, 0x158C},

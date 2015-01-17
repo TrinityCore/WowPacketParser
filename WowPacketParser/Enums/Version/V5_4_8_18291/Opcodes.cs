@@ -386,7 +386,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_LOGOUT_RESPONSE, 0x008F},
             {Opcode.SMSG_LOOT_CLEAR_MONEY, 0x1632},
             {Opcode.SMSG_LOOT_MONEY_NOTIFY, 0x14C0},
-            {Opcode.SMSG_LOOT_RELEASE_RESPONSE, 0x123F},
+            {Opcode.SMSG_LOOT_RELEASE, 0x123F},
             {Opcode.SMSG_LOOT_REMOVED, 0x0C3E},
             {Opcode.SMSG_LOOT_RESPONSE, 0x128A},
             {Opcode.SMSG_MAIL_LIST_RESULT, 0x1C0B},

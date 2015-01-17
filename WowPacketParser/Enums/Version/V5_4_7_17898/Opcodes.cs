@@ -324,7 +324,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_LOG_XPGAIN, 0x1613},
             {Opcode.SMSG_LOOT_CLEAR_MONEY, 0x0C89},
             {Opcode.SMSG_LOOT_MONEY_NOTIFY, 0x1F49},
-            {Opcode.SMSG_LOOT_RELEASE_RESPONSE, 0x14A2},
+            {Opcode.SMSG_LOOT_RELEASE, 0x14A2},
             {Opcode.SMSG_LOOT_REMOVED, 0x0D00},
             {Opcode.SMSG_LOOT_RESPONSE, 0x1F41},
             {Opcode.SMSG_MAIL_LIST_RESULT, 0x0401},

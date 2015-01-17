@@ -88,7 +88,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("Looter GUID");
         }
 
-        [Parser(Opcode.SMSG_LOOT_RELEASE_RESPONSE)]
+        [Parser(Opcode.SMSG_LOOT_RELEASE)]
         public static void HandleLootReleaseResponse(Packet packet)
         {
             packet.ReadGuid("GUID");
