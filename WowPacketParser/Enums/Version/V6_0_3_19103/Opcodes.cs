@@ -985,6 +985,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_SHOW_BANK, 0x1B51},
             {Opcode.SMSG_SHOWTAXINODES, 0x12A1},
             {Opcode.SMSG_SPECIAL_MOUNT_ANIM, 0x159F},
+            {Opcode.SMSG_SPELL_ABSORB_LOG, 0x188A},
             {Opcode.SMSG_SPELL_CATEGORY_COOLDOWN, 0x082A},
             {Opcode.SMSG_SPELL_COOLDOWN, 0x03F4},
             {Opcode.SMSG_SPELL_DAMAGE_SHIELD, 0x0B4C},

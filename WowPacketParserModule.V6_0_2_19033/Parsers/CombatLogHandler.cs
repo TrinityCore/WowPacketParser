@@ -230,5 +230,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (bit76)
                 SpellHandler.ReadSpellCastLogData(ref packet);
         }
+
+        [Parser(Opcode.SMSG_SPELL_ABSORB_LOG)]
+        public static void HandleSpellAbsorbLog(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadPackedGuid128("TargetGUID");
+
+            packet.ReadInt32("InterruptedSpellID");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "SpellID");
+            packet.ReadPackedGuid128("ShieldTargetGUID?");
+            packet.ReadInt32("Absorbed");
+
+            packet.ResetBitReader();
+
+            var bit100 = packet.ReadBit("HasLogData");
+            if (bit100)
+                SpellParsers.ReadSpellCastLogData(ref packet);
+        }
     }
 }
