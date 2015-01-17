@@ -948,7 +948,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_MONSTER_MOVE, 0x0F1A4},
             {Opcode.SMSG_MONSTER_MOVE_TRANSPORT, 0x0248C},
             {Opcode.SMSG_MOTD, 0x077C0},
-            {Opcode.SMSG_MOUNTRESULT, 0x02AEC},
+            {Opcode.SMSG_MOUNT_RESULT, 0x02AEC},
             {Opcode.SMSG_MOUNTSPECIAL_ANIM, 0x02388},
             {Opcode.SMSG_MOVE_ABANDON_TRANSPORT, 0x101D0}, //UnknownopcodeID
             {Opcode.SMSG_MOVE_FEATHER_FALL, 0x06088},

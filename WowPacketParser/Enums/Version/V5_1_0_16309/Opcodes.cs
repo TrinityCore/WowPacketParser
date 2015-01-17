@@ -683,7 +683,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_MONSTER_MOVE, 0x02A5},
             {Opcode.SMSG_MONSTER_MOVE_TRANSPORT, 0x036C},
             {Opcode.SMSG_MOTD, 0x0849},
-            {Opcode.SMSG_MOUNTRESULT, 0x08E0},
+            {Opcode.SMSG_MOUNT_RESULT, 0x08E0},
             {Opcode.SMSG_MOUNTSPECIAL_ANIM, 0x0388},
             {Opcode.SMSG_MOVE_COLLISION_DISABLE, 0x0D54},
             {Opcode.SMSG_MOVE_GRAVITY_DISABLE, 0x0DD0},

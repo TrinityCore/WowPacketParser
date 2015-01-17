@@ -699,7 +699,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_DUEL_INBOUNDS, 0x9B00}, // (0x2ADD)(0x0169) //
             {Opcode.SMSG_DUEL_COMPLETE, 0xE323}, // (0x6B74)(0x016A) //
             {Opcode.SMSG_DUEL_WINNER, 0x2329}, // (0xEB95)(0x016B) //
-            {Opcode.SMSG_MOUNTRESULT, 0x6E7C}, // (0x82FD)(0x016E) //
+            {Opcode.SMSG_MOUNT_RESULT, 0x6E7C}, // (0x82FD)(0x016E) //
             {Opcode.SMSG_DISMOUNTRESULT, 0xD77D}, // (0xE39D)(0x016F) //
             {Opcode.SMSG_PUREMOUNT_CANCELLED_OBSOLETE, 0x0170}, // NF()(0x0170) // // ERR_REMOVE_FROM_PVP_QUEUE_* events
             {Opcode.SMSG_MOUNTSPECIAL_ANIM, 0xCC5D}, // (0xAB59)(0x0172) //

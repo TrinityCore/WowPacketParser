@@ -251,7 +251,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_MONEY_NOTIFY, 0x0DCC},
             {Opcode.SMSG_MONSTER_MOVE, 0x114C},
             {Opcode.SMSG_MOTD, 0x12DC},
-            {Opcode.SMSG_MOUNTRESULT, 0x15D0},
+            {Opcode.SMSG_MOUNT_RESULT, 0x15D0},
             {Opcode.SMSG_MOVE_ROOT, 0x0505},
             {Opcode.SMSG_MOVE_SET_CAN_FLY, 0x0F48},
             {Opcode.SMSG_MOVE_SET_FLIGHT_SPEED, 0x0E54},

@@ -689,5 +689,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadUInt32("MaxSequenceIndex");
         }
+
+        [Parser(Opcode.SMSG_PLAYER_SKINNED)]
+        public static void HandlePlayerSkinned(Packet packet)
+        {
+            packet.ReadBit("FreeRepop");
+        }
     }
 }

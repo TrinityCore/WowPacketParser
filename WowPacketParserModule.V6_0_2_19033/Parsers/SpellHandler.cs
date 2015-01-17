@@ -823,5 +823,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("CastID");
             packet.ReadVector3("CollisionPos");
         }
+
+        [Parser(Opcode.SMSG_MOUNT_RESULT)]
+        public static void HandleMountResult(Packet packet)
+        {
+            packet.ReadEnum<MountResult>("Result", TypeCode.Int32);
+        }
+
+        [Parser(Opcode.SMSG_RESYNC_RUNES)]
+        public static void HandleResyncRunes(Packet packet)
+        {
+            var count = packet.ReadUInt32("Count");
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadByte("RuneType");
+                packet.ReadByte("Cooldown");
+            }
+        }
     }
 }

@@ -773,7 +773,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.SMSG_DUEL_INBOUNDS, 0x169},
             {Opcode.SMSG_DUEL_COMPLETE, 0x16A},
             {Opcode.SMSG_DUEL_WINNER, 0x16B},
-            {Opcode.SMSG_MOUNTRESULT, 0x16E},
+            {Opcode.SMSG_MOUNT_RESULT, 0x16E},
             {Opcode.SMSG_DISMOUNTRESULT, 0x16F},
             {Opcode.SMSG_REMOVED_FROM_PVP_QUEUE, 0x170},
             {Opcode.SMSG_MOUNTSPECIAL_ANIM, 0x172},

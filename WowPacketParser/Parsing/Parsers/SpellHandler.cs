@@ -1196,7 +1196,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("GUID");
         }
 
-        [Parser(Opcode.SMSG_MOUNTRESULT)]
+        [Parser(Opcode.SMSG_MOUNT_RESULT)]
         public static void HandleMountResult(Packet packet)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623) && ClientVersion.RemovedInVersion(ClientVersionBuild.V4_3_4_15595))
