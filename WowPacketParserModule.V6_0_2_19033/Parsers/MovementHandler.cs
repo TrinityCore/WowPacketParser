@@ -456,7 +456,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         [Parser(Opcode.SMSG_FORCE_RUN_SPEED_CHANGE)]
         [Parser(Opcode.SMSG_FORCE_SWIM_SPEED_CHANGE)]
+        [Parser(Opcode.SMSG_MOVE_SET_FLIGHT_SPEED)]
         [Parser(Opcode.SMSG_MOVE_SET_WALK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SET_RUN_BACK_SPEED)]
         public static void HandleMovementIndexSpeed(Packet packet)
         {
             packet.ReadPackedGuid128("MoverGUID");

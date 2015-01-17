@@ -160,5 +160,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("CritterGUID");
         }
+
+        [Parser(Opcode.SMSG_PET_ACTION_SOUND)]
+        public static void HandlePetSound(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+            packet.ReadInt32("Action");
+        }
     }
 }
