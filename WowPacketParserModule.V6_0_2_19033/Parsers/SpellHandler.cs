@@ -815,5 +815,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < int52; i++)
                 packet.ReadInt32("KnownAbilitySpellIDs", i);
         }
+
+        [Parser(Opcode.SMSG_NOTIFY_MISSILE_TRAJECTORY_COLLISION)]
+        public static void HandleNotifyMissileTrajectoryCollision(Packet packet)
+        {
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadByte("CastID");
+            packet.ReadVector3("CollisionPos");
+        }
     }
 }

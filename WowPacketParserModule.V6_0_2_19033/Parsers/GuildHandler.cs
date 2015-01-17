@@ -52,8 +52,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_GUILD_MOTD)]
-        public static void HandleNewText(Packet packet)
+        [Parser(Opcode.SMSG_GUILD_EVENT_MOTD)]
+        public static void HandleEventMotd(Packet packet)
         {
             packet.ReadWoWString("MotdText", (int)packet.ReadBits(10));
         }

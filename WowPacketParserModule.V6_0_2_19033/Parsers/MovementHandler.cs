@@ -477,6 +477,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadSingle("Speed");
         }
 
+        [Parser(Opcode.SMSG_MOVE_SET_VEHICLE_REC_ID)]
+        public static void HandleMoveSetVehicleRecID(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+            packet.ReadInt32("SequenceIndex");
+
+            packet.ReadInt32("VehicleRecID");
+        }
+
         [Parser(Opcode.SMSG_MOVE_SET_COLLISION_HEIGHT)]
         public static void HandleSetCollisionHeight(Packet packet)
         {

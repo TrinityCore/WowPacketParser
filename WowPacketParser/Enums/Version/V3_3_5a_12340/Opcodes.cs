@@ -858,7 +858,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x209},
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA, 0x20C},
             {Opcode.SMSG_CLEAR_FAR_SIGHT_IMMEDIATE, 0x20D},
-            {Opcode.SMSG_CHANGEPLAYER_DIFFICULTY_RESULT, 0x20E},
+            {Opcode.SMSG_CHANGE_PLAYER_DIFFICULTY_RESULT, 0x20E},
             {Opcode.SMSG_GMTICKET_GETTICKET, 0x212},
             {Opcode.SMSG_UPDATE_INSTANCE_ENCOUNTER_UNIT, 0x214},
             {Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM, 0x215},

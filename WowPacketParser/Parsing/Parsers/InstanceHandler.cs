@@ -77,7 +77,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Player Difficulty");
         }
 
-        [Parser(Opcode.SMSG_CHANGEPLAYER_DIFFICULTY_RESULT)]
+        [Parser(Opcode.SMSG_CHANGE_PLAYER_DIFFICULTY_RESULT)]
         public static void HandlePlayerChangeDifficulty(Packet packet)
         {
             var type = packet.ReadEnum<DifficultyChangeType>("Change Type", TypeCode.Int32);

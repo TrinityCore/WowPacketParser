@@ -124,5 +124,29 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadBit("Gm");
         }
+
+        [Parser(Opcode.SMSG_CHANGE_PLAYER_DIFFICULTY_RESULT)]
+        public static void HandlePlayerChangeDifficulty(Packet packet)
+        {
+            var type = packet.ReadBits("Result", 4);
+            switch (type)
+            {
+                case 5:
+                case 8:
+                    packet.ReadBit("Cooldown");
+                    packet.ReadUInt32("CooldownReason");
+                    break;
+                case 11:
+                    packet.ReadUInt32("InstanceDifficultyID");
+                    packet.ReadUInt32("DifficultyRecID");
+                    break;
+                case 2:
+                    packet.ReadUInt32("MapID");
+                    break;
+                case 4:
+                    packet.ReadPackedGuid128("Guid");
+                    break;
+            }
+        }
     }
 }

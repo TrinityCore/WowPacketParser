@@ -104,5 +104,48 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < int4; i++)
                 packet.ReadInt32("BlueprintsKnown", i);
         }
+
+        [Parser(Opcode.SMSG_GARRISON_ASSIGN_FOLLOWER_TO_BUILDING_RESULT)]
+        public static void HandleGarrisonAssignFollowerToBuildingResult(Packet packet)
+        {
+            packet.ReadInt64("FollowerDBID");
+            packet.ReadInt32("Result");
+            packet.ReadInt32("PlotInstanceID");
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_BUILDING_ACTIVATED)]
+        public static void HandleGarrisonBuildingActivated(Packet packet)
+        {
+            packet.ReadInt32("GarrPlotInstanceID");
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_BUILDING_REMOVED)]
+        public static void HandleGarrBuildingID(Packet packet)
+        {
+            packet.ReadInt32("Unk1");
+            packet.ReadInt32("GarrPlotInstanceID");
+            packet.ReadInt32("GarrBuildingID");
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_LANDINGPAGE_SHIPMENTS)]
+        public static void HandleGarrisonLandingPage(Packet packet)
+        {
+            var count = packet.ReadInt32("Count");
+            for (int i = 0; i < count; i++)
+            {
+                packet.ReadInt32("MissionRecID", i);
+                packet.ReadInt64("FollowerDBID", i);
+                packet.ReadInt32("Unk1", i);
+                packet.ReadInt32("Unk2", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_ADD_MISSION_RESULT)]
+        public static void HandleGarrisonAddMissionResult(Packet packet)
+        {
+            ReadGarrisonMission(ref packet);
+
+            packet.ReadInt32("Result");
+        }
     }
 }
