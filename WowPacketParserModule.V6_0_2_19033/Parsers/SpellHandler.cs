@@ -578,7 +578,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_SPELL_DISPEL_LOG)]
-        public static void HandleSpellInterruptLog(Packet packet)
+        public static void HandleSpellDispelLog(Packet packet)
         {
             packet.ReadBit("Is Steal");
             packet.ReadBit("Is Break");
@@ -694,7 +694,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_BREAK_TARGET)]
         public static void HandleBreakTarget(Packet packet)
         {
-            packet.ReadPackedGuid("UnitGUID");
+            packet.ReadPackedGuid128("UnitGUID");
         }
 
         [Parser(Opcode.SMSG_PLAY_ORPHAN_SPELL_VISUAL)]
@@ -730,6 +730,53 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("SrecID", i);
                 packet.ReadInt32("ForcedCooldown", i);
             }
+        }
+
+        [Parser(Opcode.CMSG_GET_MIRROR_IMAGE_DATA)]
+        public static void HandleGetMirrorImageData(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+            packet.ReadInt32("DisplayID");
+        }
+
+        [Parser(Opcode.SMSG_MIRROR_IMAGE_COMPONENTED_DATA)]
+        public static void HandleMirrorImageData(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+            packet.ReadInt32("DisplayID");
+
+            packet.ReadByte("RaceID");
+            packet.ReadByte("Gender");
+            packet.ReadByte("ClassID");
+            packet.ReadByte("BeardVariation");  // SkinID
+            packet.ReadByte("FaceVariation");   // FaceID
+            packet.ReadByte("HairVariation");   // HairStyle
+            packet.ReadByte("HairColor");       // HairColor
+            packet.ReadByte("SkinColor");       // FacialHairStyle
+
+            packet.ReadPackedGuid128("GuildGUID");
+
+            var count = packet.ReadInt32("ItemDisplayCount");
+            for (var i = 0; i < count; i++)
+                packet.ReadInt32("ItemDisplayID", i);
+        }
+
+        [Parser(Opcode.SMSG_MISSILE_CANCEL)]
+        public static void HandleMissileCancel(Packet packet)
+        {
+            packet.ReadPackedGuid128("OwnerGUID");
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "SpellID");
+            packet.ReadBit("Reverse");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_INTERRUPT_LOG)]
+        public static void HandleSpellInterruptLog(Packet packet)
+        {
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadPackedGuid128("Victim");
+
+            packet.ReadInt32("InterruptedSpellID");
+            packet.ReadInt32("SpellID");
         }
     }
 }

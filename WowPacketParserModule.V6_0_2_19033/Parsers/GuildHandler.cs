@@ -451,5 +451,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < count; ++i)
                 packet.ReadEntry<Int32>(StoreNameType.Achievement, "AchievementIDs", i);
         }
+
+        [Parser(Opcode.SMSG_GUILD_COMMAND_RESULT)]
+        public static void HandleGuildCommandResult(Packet packet)
+        {
+            packet.ReadEnum<GuildCommandError>("Result", TypeCode.UInt32);
+            packet.ReadEnum<GuildCommandType>("Command", TypeCode.UInt32);
+            var len = packet.ReadBits(8);
+            packet.ReadWoWString("Name", len);
+        }
     }
 }

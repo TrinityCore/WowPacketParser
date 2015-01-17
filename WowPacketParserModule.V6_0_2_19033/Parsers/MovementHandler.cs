@@ -531,7 +531,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleMoveRemoveMovementForceAck(Packet packet)
         {
             ReadMovementAck(ref packet);
-            packet.ReadUInt32("MovementForceID");
+            packet.ReadPackedGuid128("TriggerGUID");
+        }
+
+        [Parser(Opcode.SMSG_MOVE_REMOVE_MOVEMENT_FORCE)]
+        public static void HandleMoveRemoveMovementForce(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+            packet.ReadInt32("SequenceIndex");
+            packet.ReadPackedGuid128("TriggerGUID");
         }
 
         [Parser(Opcode.CMSG_MOVE_SET_COLLISION_HEIGHT_ACK)]
