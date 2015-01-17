@@ -92,5 +92,37 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadBit("OnlyUsable");
         }
+
+        [Parser(Opcode.CMSG_AUCTION_LIST_ITEMS)]
+        public static void HandleAuctionListItems(Packet packet)
+        {
+            packet.ReadInt32("Offset");
+            packet.ReadPackedGuid128("Auctioneer");
+
+            packet.ReadByte("MinLevel");
+            packet.ReadByte("MaxLevel");
+            packet.ReadInt32("ItemClass");
+            packet.ReadInt32("InvType");
+            packet.ReadInt32("ItemSubclass");
+            packet.ReadInt32("Quality");
+            var sort = packet.ReadByte("SortCount");
+
+            packet.ResetBitReader();
+
+            var len = packet.ReadBits(8);
+            packet.ReadWoWString("Name", len);
+
+            packet.ReadBit("OnlyUsable");
+            packet.ReadBit("ExactMatch");
+
+            var size = packet.ReadInt32("DataSize");
+            var data = packet.ReadBytes(size);
+            var sorts = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+            for (var i = 0; i < sort; ++i)
+            {
+                sorts.ReadByte("UnkByte1", i);
+                sorts.ReadByte("UnkByte2", i);
+            }
+        }
     }
 }
