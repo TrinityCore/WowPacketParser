@@ -1262,7 +1262,7 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
             packet.WriteGuid("GUID", guid);
         }
 
-        [Parser(Opcode.SMSG_SPELLLOGEXECUTE)]
+        [Parser(Opcode.SMSG_SPELL_EXECUTE_LOG)]
         public static void HandleSpellLogExecute(Packet packet)
         {
             var guid = new byte[8];

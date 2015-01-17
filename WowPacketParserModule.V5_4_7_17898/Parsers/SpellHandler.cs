@@ -1258,7 +1258,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPELLINTERRUPTLOG)] // 4.3.4
+        [Parser(Opcode.SMSG_SPELL_INTERRUPT_LOG)] // 4.3.4
         public static void HandleSpellInterruptLog(Packet packet)
         {
             var guid1 = new byte[8];
@@ -1317,7 +1317,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPELLLOGEXECUTE)]
+        [Parser(Opcode.SMSG_SPELL_EXECUTE_LOG)]
         public static void HandleSpellLogExecute(Packet packet)
         {
             var guid1 = new byte[8];

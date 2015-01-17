@@ -7,7 +7,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 {
     public static class CombatLogHandler
     {
-        [Parser(Opcode.SMSG_SPELLNONMELEEDAMAGELOG)]
+        [Parser(Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG)]
         public static void HandleSpellNonMeleeDmgLog(Packet packet)
         {
             var guidA = new byte[8];
@@ -226,7 +226,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Target GUID", targetGUID);
         }
 
-        [Parser(Opcode.SMSG_SPELLENERGIZELOG)]
+        [Parser(Opcode.SMSG_SPELL_ENERGIZE_LOG)]
         public static void HandleSpellEnergizeLog(Packet packet)
         {
             var guid1 = new byte[8];
@@ -292,7 +292,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid2", guid2);
         }
 
-        [Parser(Opcode.SMSG_SPELLHEALLOG)]
+        [Parser(Opcode.SMSG_SPELL_HEAL_LOG)]
         public static void HandleSpellHealLog(Packet packet)
         {
             var casterGUID = new byte[8];
@@ -364,7 +364,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Target GUID", targetGUID);
         }
 
-        [Parser(Opcode.SMSG_SPELLDISPELLOG)]
+        [Parser(Opcode.SMSG_SPELL_DISPEL_LOG)]
         public static void SpellDispelLog(Packet packet)
         {
             var casterGUID = new byte[8];

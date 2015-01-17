@@ -8,7 +8,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class CombatLogHandler
     {
-        [Parser(Opcode.SMSG_SPELLNONMELEEDAMAGELOG)]
+        [Parser(Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG)]
         public static void HandleSpellNonMeleeDmgLog(Packet packet)
         {
             packet.ReadPackedGuid128("Me");
@@ -93,7 +93,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 SpellParsers.ReadSpellCastLogData(ref packet);
         }
 
-        [Parser(Opcode.SMSG_SPELLHEALLOG)]
+        [Parser(Opcode.SMSG_SPELL_HEAL_LOG)]
         public static void HandleSpellHealLog(Packet packet)
         {
             packet.ReadPackedGuid128("CasterGUID");
@@ -119,7 +119,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 SpellParsers.ReadSpellCastLogData(ref packet);
         }
 
-        [Parser(Opcode.SMSG_SPELLENERGIZELOG)]
+        [Parser(Opcode.SMSG_SPELL_ENERGIZE_LOG)]
         public static void HandleSpellEnergizeLog(Packet packet)
         {
             packet.ReadPackedGuid128("CasterGUID");
@@ -136,7 +136,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 SpellParsers.ReadSpellCastLogData(ref packet);
         }
 
-        [Parser(Opcode.SMSG_SPELLLOGEXECUTE)]
+        [Parser(Opcode.SMSG_SPELL_EXECUTE_LOG)]
         public static void HandleSpellLogExecute(Packet packet)
         {
             packet.ReadPackedGuid128("Caster");
@@ -197,7 +197,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 SpellParsers.ReadSpellCastLogData(ref packet);
         }
 
-        [Parser(Opcode.SMSG_SPELLDAMAGESHIELD)]
+        [Parser(Opcode.SMSG_SPELL_DAMAGE_SHIELD)]
         public static void ReadSpellDamageShield(Packet packet)
         {
             packet.ReadPackedGuid128("Attacker");

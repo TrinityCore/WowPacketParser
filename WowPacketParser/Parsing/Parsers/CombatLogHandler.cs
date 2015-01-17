@@ -25,12 +25,12 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.AddValue("Opcode", opcode);
                 switch (opcode)
                 {
-                    case Opcode.SMSG_SPELLHEALLOG:
+                    case Opcode.SMSG_SPELL_HEAL_LOG:
                     {
                         ReadSpellHealLog(ref packet, i);
                         break;
                     }
-                    case Opcode.SMSG_SPELLENERGIZELOG:
+                    case Opcode.SMSG_SPELL_ENERGIZE_LOG:
                     {
                         ReadSpellEnergizeLog(ref packet, i);
                         break;
@@ -40,24 +40,24 @@ namespace WowPacketParser.Parsing.Parsers
                         ReadPeriodicAuraLog(ref packet, i); // sub_5EEE10
                         break;
                     }
-                    case Opcode.SMSG_SPELLLOGEXECUTE:
+                    case Opcode.SMSG_SPELL_EXECUTE_LOG:
                     {
                         ReadSpellLogExecute(ref packet, i);
                         break;
                     }
-                    case Opcode.SMSG_SPELLNONMELEEDAMAGELOG:
+                    case Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG:
                     {
                         ReadSpellNonMeleeDamageLog(ref packet, i);
                         break;
                     }
-                    case Opcode.SMSG_SPELLLOGMISS:
+                    case Opcode.SMSG_SPELL_MISS_LOG:
                     {
                         ReadSpellMissLog(ref packet, i);
                         break;
                     }
-                    case Opcode.SMSG_SPELLSTEALLOG:
-                    case Opcode.SMSG_SPELLDISPELLOG:
-                    case Opcode.SMSG_SPELLBREAKLOG:
+                    case Opcode.SMSG_SPELL_STEAL_LOG:
+                    case Opcode.SMSG_SPELL_DISPEL_LOG:
+                    case Opcode.SMSG_SPELL_BREAK_LOG:
                     {
                         ReadSpellRemoveLog(ref packet, i);
                         break;
@@ -68,9 +68,9 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_SPELLSTEALLOG)]
-        [Parser(Opcode.SMSG_SPELLDISPELLOG)]
-        [Parser(Opcode.SMSG_SPELLBREAKLOG)]
+        [Parser(Opcode.SMSG_SPELL_STEAL_LOG)]
+        [Parser(Opcode.SMSG_SPELL_DISPEL_LOG)]
+        [Parser(Opcode.SMSG_SPELL_BREAK_LOG)]
         public static void HandleSpellRemoveLog(Packet packet)
         {
             ReadSpellRemoveLog(ref packet);
@@ -82,31 +82,31 @@ namespace WowPacketParser.Parsing.Parsers
             ReadPeriodicAuraLog(ref packet);
         }
 
-        [Parser(Opcode.SMSG_SPELLNONMELEEDAMAGELOG)]
+        [Parser(Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG)]
         public static void HandleSpellNonMeleeDmgLog(Packet packet)
         {
             ReadSpellNonMeleeDamageLog(ref packet);
         }
 
-        [Parser(Opcode.SMSG_SPELLHEALLOG)]
+        [Parser(Opcode.SMSG_SPELL_HEAL_LOG)]
         public static void HandleSpellHealLog(Packet packet)
         {
             ReadSpellHealLog(ref packet);
         }
 
-        [Parser(Opcode.SMSG_SPELLENERGIZELOG)]
+        [Parser(Opcode.SMSG_SPELL_ENERGIZE_LOG)]
         public static void HandleSpellEnergizeLog(Packet packet)
         {
             ReadSpellEnergizeLog(ref packet);
         }
 
-        [Parser(Opcode.SMSG_SPELLLOGMISS)]
+        [Parser(Opcode.SMSG_SPELL_MISS_LOG)]
         public static void HandleSpellLogMiss(Packet packet)
         {
             ReadSpellMissLog(ref packet);
         }
 
-        [Parser(Opcode.SMSG_SPELLLOGEXECUTE)]
+        [Parser(Opcode.SMSG_SPELL_EXECUTE_LOG)]
         public static void HandleSpellLogExecute(Packet packet)
         {
             ReadSpellLogExecute(ref packet);
@@ -393,7 +393,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_SPELLDAMAGESHIELD)]
+        [Parser(Opcode.SMSG_SPELL_DAMAGE_SHIELD)]
         public static void ReadSpellDamageShield(Packet packet)
         {
             packet.ReadGuid("Victim");

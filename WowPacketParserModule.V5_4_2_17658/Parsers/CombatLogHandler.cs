@@ -7,7 +7,7 @@ namespace WowPacketParserModule.V5_4_2_17659.Parsers
 {
     public static class CombatLogHandler
     {
-        [Parser(Opcode.SMSG_SPELLNONMELEEDAMAGELOG)]
+        [Parser(Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG)]
         public static void HandleSpellNonMeleeDmgLog(Packet packet)
         {
             var casterGUID = new byte[8];
@@ -328,7 +328,7 @@ namespace WowPacketParserModule.V5_4_2_17659.Parsers
             packet.WriteGuid("Caster GUID", casterGUID);
         }
 
-        [Parser(Opcode.SMSG_SPELLHEALLOG)]
+        [Parser(Opcode.SMSG_SPELL_HEAL_LOG)]
         public static void HandleSpellHealLog(Packet packet)
         {
             var guid2 = new byte[8];

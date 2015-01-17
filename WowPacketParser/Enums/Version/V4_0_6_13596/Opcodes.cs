@@ -1105,17 +1105,17 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_SHOWTAXINODES, 0x02B84},
             {Opcode.SMSG_SHOW_BANK, 0x027A4},
             {Opcode.SMSG_SHOW_MAILBOX, 0x0F680},
-            {Opcode.SMSG_SPELLBREAKLOG, 0x0BDAC},
-            {Opcode.SMSG_SPELLDAMAGESHIELD, 0x073A0},
-            {Opcode.SMSG_SPELLDISPELLOG, 0xA9C8},
-            {Opcode.SMSG_SPELLENERGIZELOG, 0x0F0EC},
-            {Opcode.SMSG_SPELLHEALLOG, 0x06E84},
-            {Opcode.SMSG_SPELLINSTAKILLLOG, 0x061C8},
-            {Opcode.SMSG_SPELLLOGEXECUTE, 0x0B6E8},
-            {Opcode.SMSG_SPELLLOGMISS, 0x0BDA4},
-            {Opcode.SMSG_SPELLNONMELEEDAMAGELOG, 0x074AC},
-            {Opcode.SMSG_SPELLORDAMAGE_IMMUNE, 0x073C8},
-            {Opcode.SMSG_SPELLSTEALLOG, 0x09F74}, //4.0.3a13329-403
+            {Opcode.SMSG_SPELL_BREAK_LOG, 0x0BDAC},
+            {Opcode.SMSG_SPELL_DAMAGE_SHIELD, 0x073A0},
+            {Opcode.SMSG_SPELL_DISPEL_LOG, 0xA9C8},
+            {Opcode.SMSG_SPELL_ENERGIZE_LOG, 0x0F0EC},
+            {Opcode.SMSG_SPELL_HEAL_LOG, 0x06E84},
+            {Opcode.SMSG_SPELL_INSTAKILL_LOG, 0x061C8},
+            {Opcode.SMSG_SPELL_EXECUTE_LOG, 0x0B6E8},
+            {Opcode.SMSG_SPELL_MISS_LOG, 0x0BDA4},
+            {Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG, 0x074AC},
+            {Opcode.SMSG_SPELL_OR_DAMAGE_IMMUNE, 0x073C8},
+            {Opcode.SMSG_SPELL_STEAL_LOG, 0x09F74}, //4.0.3a13329-403
             {Opcode.SMSG_SPELL_CHANCE_PROC_LOG, 0x1016E}, //UnknownopcodeID
             {Opcode.SMSG_SPELL_CHANCE_RESIST_PUSHBACK, 0x1019C}, //UnknownopcodeID
             {Opcode.SMSG_SPELL_COOLDOWN, 0x0F3E8},

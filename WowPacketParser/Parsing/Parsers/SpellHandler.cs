@@ -11,7 +11,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class SpellHandler
     {
-        [Parser(Opcode.SMSG_SPELLINTERRUPTLOG)] // 4.3.4
+        [Parser(Opcode.SMSG_SPELL_INTERRUPT_LOG)] // 4.3.4
         public static void HandleSpellInterruptLog(Packet packet)
         {
             var guid1 = new byte[8];
@@ -1130,7 +1130,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<SpellCastFailureReason>("Reason", TypeCode.Byte);
         }
 
-        [Parser(Opcode.SMSG_SPELLINSTAKILLLOG)]
+        [Parser(Opcode.SMSG_SPELL_INSTAKILL_LOG)]
         public static void HandleSpellInstakillLog(Packet packet)
         {
             packet.ReadGuid("Target GUID");
@@ -1138,7 +1138,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
         }
 
-        [Parser(Opcode.SMSG_SPELLORDAMAGE_IMMUNE)]
+        [Parser(Opcode.SMSG_SPELL_OR_DAMAGE_IMMUNE)]
         [Parser(Opcode.SMSG_PROCRESIST)]
         public static void HandleSpellProcResist(Packet packet)
         {

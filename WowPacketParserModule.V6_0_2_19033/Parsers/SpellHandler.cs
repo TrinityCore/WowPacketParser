@@ -577,7 +577,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt16("ProcNum");
         }
 
-        [Parser(Opcode.SMSG_SPELLDISPELLOG)]
+        [Parser(Opcode.SMSG_SPELL_DISPEL_LOG)]
         public static void HandleSpellInterruptLog(Packet packet)
         {
             packet.ReadBit("Is Steal");
@@ -708,6 +708,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadSingle("TravelSpeed");
             packet.ReadSingle("UnkFloat");
             packet.ReadBit("SpeedAsTime");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_INSTAKILL_LOG)]
+        public static void HandleSpellInstakillLog(Packet packet)
+        {
+            packet.ReadPackedGuid128("Target");
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadEntry<UInt32>(StoreNameType.Spell, "SpellID");
         }
     }
 }

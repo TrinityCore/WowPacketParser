@@ -202,13 +202,13 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_SET_PROFICIENCY, 0x0BF3C}, // 4.1.0 13914
             {Opcode.SMSG_SET_PROJECTILE_POSITION, 0x0FD2C}, // 4.1.0 13914
             {Opcode.SMSG_SHOW_MAILBOX, 0x0893C}, // 4.1.0 13914
-            {Opcode.SMSG_SPELLDAMAGESHIELD, 0x0AE3C}, // 4.1.0 13914
-            {Opcode.SMSG_SPELLENERGIZELOG, 0x01F6E}, // 4.1.0 13914
-            {Opcode.SMSG_SPELLHEALLOG, 0x00F7C}, // 4.1.0 13914
-            {Opcode.SMSG_SPELLINSTAKILLLOG, 0x0383C}, // 4.1.0 13914
-            {Opcode.SMSG_SPELLLOGEXECUTE, 0x00A7F}, // 4.1.0 13914
-            {Opcode.SMSG_SPELLNONMELEEDAMAGELOG, 0x0487C}, // 4.1.0 13914
-            {Opcode.SMSG_SPELLORDAMAGE_IMMUNE, 0x00B2F}, // 4.1.0 13914
+            {Opcode.SMSG_SPELL_DAMAGE_SHIELD, 0x0AE3C}, // 4.1.0 13914
+            {Opcode.SMSG_SPELL_ENERGIZE_LOG, 0x01F6E}, // 4.1.0 13914
+            {Opcode.SMSG_SPELL_HEAL_LOG, 0x00F7C}, // 4.1.0 13914
+            {Opcode.SMSG_SPELL_INSTAKILL_LOG, 0x0383C}, // 4.1.0 13914
+            {Opcode.SMSG_SPELL_EXECUTE_LOG, 0x00A7F}, // 4.1.0 13914
+            {Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG, 0x0487C}, // 4.1.0 13914
+            {Opcode.SMSG_SPELL_OR_DAMAGE_IMMUNE, 0x00B2F}, // 4.1.0 13914
             {Opcode.SMSG_SPELL_COOLDOWN, 0x0B86C}, // 4.1.0 13914
             {Opcode.SMSG_SPELL_DELAYED, 0x0093C}, // 4.1.0 13914
             {Opcode.SMSG_SPELL_FAILED_OTHER, 0x07C2E}, // 4.1.0 13914
