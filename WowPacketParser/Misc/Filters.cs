@@ -33,12 +33,18 @@ namespace WowPacketParser.Misc
 
             foreach (var filter in Settings.Filters)
             {
+                if (filter.StartsWith("-")) // ignore error checking for negative values
+                    continue;
+
                 if (Enum.GetNames(typeof (Opcode)).All(opcode => opcode.IndexOf(filter, StringComparison.InvariantCultureIgnoreCase) == -1))
                     Console.WriteLine("Warning: No opcode name matches filter \"" + filter + "\"");
             }
 
             foreach (var filter in Settings.IgnoreFilters)
             {
+                if (filter.StartsWith("-")) // ignore error checking for negative values
+                    continue;
+
                 if (Enum.GetNames(typeof(Opcode)).All(opcode => opcode.IndexOf(filter, StringComparison.InvariantCultureIgnoreCase) == -1))
                     Console.WriteLine("Warning: No opcode name matches ignore filter \"" + filter + "\"");
             }
