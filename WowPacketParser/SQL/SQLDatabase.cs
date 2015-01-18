@@ -204,32 +204,6 @@ namespace WowPacketParser.SQL
                     var i = 1;
                     foreach (var field in fields)
                     {
-#if __MonoCS__ // Mono does not support __makeref (only added in the upcoming 2.12 version)
-                        if (values[i] is DBNull && field.Item1.FieldType == typeof(string))
-                            field.Item1.SetValue(instance, string.Empty);
-                        else if (field.Item1.FieldType.BaseType == typeof(Enum))
-                            field.Item1.SetValue(instance, Enum.Parse(field.Item1.FieldType, values[i].ToString()));
-                        else if (field.Item1.FieldType.BaseType == typeof(Array))
-                        {
-                            var arr = Array.CreateInstance(field.Item1.FieldType.GetElementType(), field.Item2.Count);
-
-                            for (var j = 0; j < arr.Length; j++)
-                            {
-                                var elemType = arr.GetType().GetElementType();
-
-                                var val = elemType.IsEnum ?
-                                    Enum.Parse(elemType, values[i + j].ToString()) :
-                                    Convert.ChangeType(values[i + j], elemType);
-
-                                arr.SetValue(val, j);
-                            }
-                            field.Item1.SetValue(instance, arr);
-                        }
-                        else if (field.Item1.FieldType == typeof(bool))
-                            field.Item1.SetValue(instance, Convert.ToBoolean(values[i]));
-                        else
-                            field.Item1.SetValue(instance, values[i]);
-#else
                         if (values[i] is DBNull && field.Item1.FieldType == typeof(string))
                             field.Item1.SetValueDirect(__makeref(instance), string.Empty);
                         else if (field.Item1.FieldType.BaseType == typeof(Enum))
@@ -254,7 +228,7 @@ namespace WowPacketParser.SQL
                             field.Item1.SetValueDirect(__makeref(instance), Convert.ToBoolean(values[i]));
                         else
                             field.Item1.SetValueDirect(__makeref(instance), values[i]);
-#endif
+
                         i += field.Item2.Count;
                     }
 
@@ -350,32 +324,6 @@ namespace WowPacketParser.SQL
                     var i = 2;
                     foreach (var field in fields)
                     {
-#if __MonoCS__ // Mono does not support __makeref (only added in the upcoming 2.12 version)
-                        if (values[i] is DBNull && field.Item1.FieldType == typeof(string))
-                            field.Item1.SetValue(instance, string.Empty);
-                        else if (field.Item1.FieldType.BaseType == typeof(Enum))
-                            field.Item1.SetValue(instance, Enum.Parse(field.Item1.FieldType, values[i].ToString()));
-                        else if (field.Item1.FieldType.BaseType == typeof(Array))
-                        {
-                            var arr = Array.CreateInstance(field.Item1.FieldType.GetElementType(), field.Item2.Count);
-
-                            for (var j = 0; j < arr.Length; j++)
-                            {
-                                var elemType = arr.GetType().GetElementType();
-
-                                var val = elemType.IsEnum ?
-                                    Enum.Parse(elemType, values[i + j].ToString()) :
-                                    Convert.ChangeType(values[i + j], elemType);
-
-                                arr.SetValue(val, j);
-                            }
-                            field.Item1.SetValue(instance, arr);
-                        }
-                        else if (field.Item1.FieldType == typeof(bool))
-                            field.Item1.SetValue(instance, Convert.ToBoolean(values[i]));
-                        else
-                            field.Item1.SetValue(instance, values[i]);
-#else
                         if (values[i] is DBNull && field.Item1.FieldType == typeof(string))
                             field.Item1.SetValueDirect(__makeref(instance), string.Empty);
                         else if (field.Item1.FieldType.BaseType == typeof(Enum))
@@ -400,7 +348,7 @@ namespace WowPacketParser.SQL
                             field.Item1.SetValueDirect(__makeref(instance), Convert.ToBoolean(values[i]));
                         else
                             field.Item1.SetValueDirect(__makeref(instance), values[i]);
-#endif
+
                         i += field.Item2.Count;
                     }
 
@@ -495,29 +443,6 @@ namespace WowPacketParser.SQL
                     var i = 2;
                     foreach (var field in fields)
                     {
-#if __MonoCS__ // Mono does not support __makeref (only added in the upcoming 2.12 version)
-                        if (values[i] is DBNull && field.Item1.FieldType == typeof(string))
-                            field.Item1.SetValue(instance, string.Empty);
-                        else if (field.Item1.FieldType.BaseType == typeof(Enum))
-                            field.Item1.SetValue(instance, Enum.Parse(field.Item1.FieldType, values[i].ToString()));
-                        else if (field.Item1.FieldType.BaseType == typeof(Array))
-                        {
-                            var arr = Array.CreateInstance(field.Item1.FieldType.GetElementType(), field.Item2.Count);
-
-                            for (var j = 0; j < arr.Length; j++)
-                            {
-                                var elemType = arr.GetType().GetElementType();
-                                var val = Convert.ChangeType(values[i + j], elemType);
-
-                                arr.SetValue(val, j);
-                            }
-                            field.Item1.SetValue(instance, arr);
-                        }
-                        else if (field.Item1.FieldType == typeof(bool))
-                            field.Item1.SetValue(instance, Convert.ToBoolean(values[i]));
-                        else
-                            field.Item1.SetValue(instance, values[i]);
-#else
                         if (values[i] is DBNull && field.Item1.FieldType == typeof(string))
                             field.Item1.SetValueDirect(__makeref(instance), string.Empty);
                         else if (field.Item1.FieldType.BaseType == typeof(Enum))
@@ -539,7 +464,7 @@ namespace WowPacketParser.SQL
                             field.Item1.SetValueDirect(__makeref(instance), Convert.ToBoolean(values[i]));
                         else
                             field.Item1.SetValueDirect(__makeref(instance), values[i]);
-#endif
+
                         i += field.Item2.Count;
                     }
 
