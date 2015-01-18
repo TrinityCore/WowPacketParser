@@ -847,5 +847,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Disenchanter");
             ItemHandler.ReadItemInstance(packet);
         }
+
+        [Parser(Opcode.SMSG_UNLEARNED_SPELLS)]
+        public static void HandleUnlearnedSpells(Packet packet)
+        {
+            var count = packet.ReadInt32("UnlearnedSpellCount");
+            for (int i = 0; i < count; i++)
+                packet.ReadEntry<UInt32>(StoreNameType.Spell, "SpellID");
+        }
     }
 }
