@@ -25,6 +25,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_ENABLE_TAXI_NODE)]
+        [Parser(Opcode.CMSG_TAXI_QUERY_AVAILABLE_NODES)]
         public static void HandleTaxiStatusQuery(Packet packet)
         {
             packet.ReadPackedGuid128("Unit");

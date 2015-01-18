@@ -195,5 +195,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("LootObj");
             packet.ReadPackedGuid128("Owner");
         }
+
+        [Parser(Opcode.CMSG_LOOT_ROLL)]
+        public static void HandleLootRoll(Packet packet)
+        {
+            packet.ReadPackedGuid128("LootObj");
+            packet.ReadByte("LootListID");
+            packet.ReadEnum<LootRollType>("RollType", TypeCode.Byte);
+        }
+
     }
 }
