@@ -9,7 +9,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     {
         public static int ReadItemInstance(Packet packet, params object[] indexes)
         {
-
             var itemId = packet.ReadEntry<Int32>(StoreNameType.Item, "ItemID", indexes);
             packet.ReadUInt32("RandomPropertiesSeed", indexes);
             packet.ReadUInt32("RandomPropertiesID", indexes);

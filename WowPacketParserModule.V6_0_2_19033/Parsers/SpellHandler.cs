@@ -840,5 +840,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadByte("Cooldown");
             }
         }
+
+        [Parser(Opcode.SMSG_DISENCHANT_CREDIT)]
+        public static void HandleDisenchantCredit(Packet packet)
+        {
+            packet.ReadPackedGuid128("Disenchanter");
+            ItemHandler.ReadItemInstance(packet);
+        }
     }
 }

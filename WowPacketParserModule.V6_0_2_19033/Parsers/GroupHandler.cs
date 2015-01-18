@@ -367,5 +367,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadVector3("Position");
             }
         }
+
+        [Parser(Opcode.SMSG_PARTY_COMMAND_RESULT)]
+        public static void HandlePartyCommandResult(Packet packet)
+        {
+            var nameLength = packet.ReadBits(9);
+            packet.ReadEnum<PartyCommand>("Command", 4);
+            packet.ReadEnum<PartyResult>("Result", 6);
+            packet.ReadUInt32("ResultData");
+            packet.ReadPackedGuid128("ResultGUID");
+            packet.ReadWoWString("Name", nameLength);
+        }
     }
 }

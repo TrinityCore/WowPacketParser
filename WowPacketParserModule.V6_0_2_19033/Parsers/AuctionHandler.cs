@@ -133,6 +133,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("Offset");
 
             var count = packet.ReadBits("AuctionItemIDsCount", 7);
+            packet.ResetBitReader();
+
             for (var i = 0; i < count; ++i)
                 packet.ReadUInt32("AuctionItemID", i);
         }

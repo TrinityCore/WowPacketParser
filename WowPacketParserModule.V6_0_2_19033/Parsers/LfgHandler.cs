@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Enums;
+﻿using System;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -257,6 +258,27 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadBit("ValidCompletedMask");
             packet.ReadBit("ProposalSilent");
+        }
+
+        public static void ReadLFGPlayerRewards(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("RewardItem", indexes);
+            packet.ReadUInt32("RewardItemQuantity", indexes);
+            packet.ReadInt32("BonusCurrency", indexes);
+            packet.ReadBitBoolean("IsCurrency", indexes);
+        }
+
+        [Parser(Opcode.SMSG_LFG_PLAYER_REWARD)]
+        public static void HandleLfgPlayerReward(Packet packet)
+        {
+            packet.ReadUInt32("ActualSlot"); // unconfirmed order
+            packet.ReadUInt32("QueuedSlot"); // unconfirmed order
+            packet.ReadInt32("RewardMoney");
+            packet.ReadInt32("AddedXP");
+
+            var count = packet.ReadInt32("RewardsCount");
+            for (var i = 0; i < count; ++i)
+                ReadLFGPlayerRewards(packet, i);
         }
     }
 }

@@ -188,5 +188,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("ValidRolls");
             packet.ReadByte("Method");
         }
+
+        [Parser(Opcode.SMSG_LOOT_RELEASE)]
+        public static void HandleLootReleaseResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("LootObj");
+            packet.ReadPackedGuid128("Owner");
+        }
     }
 }
