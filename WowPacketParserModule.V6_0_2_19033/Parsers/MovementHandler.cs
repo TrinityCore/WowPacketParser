@@ -74,6 +74,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadMovementStats(ref packet);
             packet.ReadInt32("AckIndex");
         }
+        public static void ReadMovementForce(Packet packet)
+        {
+            packet.ReadPackedGuid128("ID");
+            packet.ReadVector3("Direction");
+            packet.ReadInt32("TransportID");
+            packet.ReadSingle("Magnitude");
+            packet.ReadBits("Type", 2);
+        }
 
         [Parser(Opcode.CMSG_MOVE_WORLDPORT_ACK)]
         public static void HandleZeroLengthPackets(Packet packet)
@@ -695,6 +703,54 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandlePlayerSkinned(Packet packet)
         {
             packet.ReadBit("FreeRepop");
+        }
+
+        [Parser(Opcode.SMSG_MOVE_SET_COMPOUND_STATE)]
+        public static void HandleMoveSetCompoundState(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+
+            var moveStateChangeCount = packet.ReadInt32("MoveStateChangeCount");
+            for (int i = 0; i < moveStateChangeCount; i++)
+            {
+                packet.ReadInt16("MessageID");
+                packet.ReadInt32("SequenceIndex");
+
+                packet.ResetBitReader();
+
+                var bit12 = packet.ReadBit("HasSpeed");
+                var bit32 = packet.ReadBit("HasKnockBack");
+                var bit40 = packet.ReadBit("HasVehicle");
+                var bit56 = packet.ReadBit("HasCollisionHeight");
+                var bit104 = packet.ReadBit("HasMovementForce");
+                var bit128 = packet.ReadBit("HasMoverGUID");
+
+                if (bit12)
+                    packet.ReadSingle("Speed");
+
+                if (bit32)
+                {
+                    packet.ReadSingle("HorzSpeed");
+                    packet.ReadVector2("InitVertSpeed");
+                    packet.ReadSingle("InitVertSpeed");
+                }
+
+                if (bit40)
+                    packet.ReadInt32("VehicleRecID");
+
+                if (bit56)
+                {
+                    packet.ReadSingle("Height");
+                    packet.ReadSingle("Scale");
+                    packet.ReadBits("UpdateCollisionHeightReason", 2);
+                }
+
+                if (bit104)
+                    ReadMovementForce(packet);
+
+                if (bit128)
+                    packet.ReadPackedGuid128("MoverGUID");
+            }
         }
     }
 }
