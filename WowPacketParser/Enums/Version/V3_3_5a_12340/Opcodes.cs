@@ -852,7 +852,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.SMSG_RWHOIS, 0x1FE},
             {Opcode.SMSG_LFG_PLAYER_REWARD, 0x1FF},
             {Opcode.SMSG_LFG_TELEPORT_DENIED, 0x200},
-            {Opcode.SMSG_REMOVED_SPELL, 0x203},
+            {Opcode.SMSG_UNLEARNED_SPELLS, 0x203},
             {Opcode.SMSG_GMTICKET_CREATE, 0x206},
             {Opcode.SMSG_GMTICKET_UPDATETEXT, 0x208},
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x209},

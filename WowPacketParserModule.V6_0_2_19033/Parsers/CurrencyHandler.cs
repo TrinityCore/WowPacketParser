@@ -6,7 +6,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class CurrencyHandler
     {
-        [Parser(Opcode.SMSG_INIT_CURRENCY)]
+        [Parser(Opcode.SMSG_SETUP_CURRENCY)]
         public static void HandleInitCurrency(Packet packet)
         {
             var count = packet.ReadInt32("SetupCurrencyRecord");

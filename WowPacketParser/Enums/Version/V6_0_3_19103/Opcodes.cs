@@ -842,7 +842,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_INITIALIZE_FACTIONS, 0x0B10},
             {Opcode.SMSG_INITIAL_SETUP, 0x0B07},
             {Opcode.SMSG_INITIAL_SPELLS, 0x0A81},
-            {Opcode.SMSG_INIT_CURRENCY,  0x0B06},
+            {Opcode.SMSG_SETUP_CURRENCY,  0x0B06},
             {Opcode.SMSG_INIT_WORLD_STATES, 0x0B04},
             {Opcode.SMSG_INSPECT_HONOR_STATS, 0x02D3},
             {Opcode.SMSG_INSPECT_RESULT, 0x052E},

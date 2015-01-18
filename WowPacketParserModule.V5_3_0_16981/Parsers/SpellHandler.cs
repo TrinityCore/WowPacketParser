@@ -802,7 +802,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.WriteGuid("GUID11", guid11);
         }
 
-        [Parser(Opcode.SMSG_REMOVED_SPELL)]
+        [Parser(Opcode.SMSG_UNLEARNED_SPELLS)]
         public static void HandleRemovedSpell2(Packet packet)
         {
             var count = packet.ReadBits(22);

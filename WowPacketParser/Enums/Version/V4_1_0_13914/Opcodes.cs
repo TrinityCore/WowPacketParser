@@ -188,7 +188,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_RAID_INSTANCE_MESSAGE, 0x0EA7C}, // 4.1.0 13914
             {Opcode.SMSG_REAL_GROUP_UPDATE, 0x0692F}, // 4.1.0 13914
             {Opcode.SMSG_RECEIVED_MAIL, 0x0083C}, // 4.1.0 13914
-            {Opcode.SMSG_REMOVED_SPELL, 0x0DB6E}, // 4.1.0 13914
+            {Opcode.SMSG_UNLEARNED_SPELLS, 0x0DB6E}, // 4.1.0 13914
             {Opcode.SMSG_REPORT_PVP_AFK_RESULT, 0x01C6D}, // 4.1.0 13914
             {Opcode.SMSG_RESURRECT_REQUEST, 0x0EF2D}, // 4.1.0 13914
             {Opcode.SMSG_RWHOIS, 0x0AF7D}, // 4.1.0 13914

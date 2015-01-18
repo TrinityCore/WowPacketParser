@@ -148,7 +148,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadUInt32("Week Cap");
         }
 
-        [Parser(Opcode.SMSG_INIT_CURRENCY)]
+        [Parser(Opcode.SMSG_SETUP_CURRENCY)]
         public static void HandleInitCurrency(Packet packet)
         {
             var count = packet.ReadBits("Count", 21);

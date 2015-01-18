@@ -809,7 +809,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_IGNORE_REQUIREMENTS_CHEAT, 0x4E36}, //also might be SMSG_IGNORE_DIMINISHING_RETURNS_CHEAT
             {Opcode.SMSG_INITIALIZE_FACTIONS, 0x4634},
             {Opcode.SMSG_INITIAL_SPELLS, 0x0104},
-            {Opcode.SMSG_INIT_CURRENCY, 0x15A5},
+            {Opcode.SMSG_SETUP_CURRENCY, 0x15A5},
             {Opcode.SMSG_INIT_WORLD_STATES, 0x4C15},
             {Opcode.SMSG_INSPECT_HONOR_STATS, 0x79A5},
             {Opcode.SMSG_INSPECT_RATED_BG_STATS, 0x19A5},
@@ -1048,7 +1048,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_REFER_A_FRIEND_EXPIRED, 0x4934},
             {Opcode.SMSG_REFER_A_FRIEND_FAILURE, 0x2037},
             {Opcode.SMSG_REFORGE_RESULT, 0x58A4},
-            {Opcode.SMSG_REMOVED_SPELL, 0x4804},
+            {Opcode.SMSG_UNLEARNED_SPELLS, 0x4804},
             {Opcode.SMSG_REPORT_PVP_AFK_RESULT, 0x2D06},
             {Opcode.SMSG_REQUEST_CEMETERY_LIST_RESPONSE, 0x30A7},
             {Opcode.SMSG_REQUEST_PVP_REWARDS_RESPONSE, 0x5DA4},

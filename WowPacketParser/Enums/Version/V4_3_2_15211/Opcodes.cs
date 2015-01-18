@@ -113,7 +113,7 @@ namespace WowPacketParser.Enums.Version.V4_3_2_15211
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x25CB},
             {Opcode.SMSG_REALM_SPLIT, 0x0581},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x1329},
-            {Opcode.SMSG_REMOVED_SPELL, 0x0501},
+            {Opcode.SMSG_UNLEARNED_SPELLS, 0x0501},
             {Opcode.SMSG_REQUEST_CEMETERY_LIST_RESPONSE, 0x0405},
             {Opcode.SMSG_SPELL_ENERGIZE_LOG, 0x05EF},
             {Opcode.SMSG_SPELL_EXECUTE_LOG, 0x4569},

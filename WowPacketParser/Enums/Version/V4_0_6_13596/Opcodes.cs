@@ -869,7 +869,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_IGNORE_REQUIREMENTS_CHEAT, 0x07C84},
             {Opcode.SMSG_INITIALIZE_FACTIONS, 0x025C0},
             {Opcode.SMSG_INITIAL_SPELLS, 0x06584},
-            {Opcode.SMSG_INIT_CURRENCY, 0x0091C},
+            {Opcode.SMSG_SETUP_CURRENCY, 0x0091C},
             {Opcode.SMSG_INIT_EXTRA_AURA_INFO_OBSOLETE, 0x10168}, //UnknownopcodeID
             {Opcode.SMSG_INIT_WORLD_STATES, 0x0F6E8},
             //{Opcode.SMSG_INSPECT, 0x07AC8},
@@ -1065,7 +1065,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_REDIRECT_CLIENT, 0x0201B},
             {Opcode.SMSG_REFER_A_FRIEND_FAILURE, 0x07F7C},
             //{Opcode.SMSG_REFORGE_OPEN_FROM_GOSSIP, 0x00C5C},
-            {Opcode.SMSG_REMOVED_SPELL, 0x07CA0},
+            {Opcode.SMSG_UNLEARNED_SPELLS, 0x07CA0},
             {Opcode.SMSG_REPORT_PVP_AFK_RESULT, 0x078E8},
             //{Opcode.SMSG_REQUEST_WAR_GAME_RESPONSE, 0x00C1C},
             {Opcode.SMSG_RESET_FAILED_NOTIFY, 0x0BD5C}, //4.0.3a13329-403

@@ -779,7 +779,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_RWHOIS, 0x3228}, // (0xC35D)(0x01FE) //
             {Opcode.SMSG_LFG_PLAYER_REWARD, 0xEC5E}, // (0xCBBC)(0x01FF) //int8}, uint32}, uint32}, uint32}, uint32}, uint32}, uint8}, for (uint8) {uint32,uint32,uint32}
             {Opcode.SMSG_LFG_TELEPORT_DENIED, 0x6C55}, // (0x4B19)(0x0200) //,2,4,6;0,5,7)
-            {Opcode.SMSG_REMOVED_SPELL, 0x2456}, // (0x227D)(0x0203) //
+            {Opcode.SMSG_UNLEARNED_SPELLS, 0x2456}, // (0x227D)(0x0203) //
             {Opcode.SMSG_GMTICKET_CREATE, 0x355D}, // (0xAA74)(0x0206) //
             {Opcode.SMSG_GMTICKET_UPDATETEXT, 0x5D5E}, // (0xAA79)(0x0208) //
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0xFD55}, // (0x82B5)(0x0209) //

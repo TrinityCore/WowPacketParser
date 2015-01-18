@@ -1072,7 +1072,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Title Id");
         }
 
-        [Parser(Opcode.SMSG_INIT_CURRENCY, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_SETUP_CURRENCY, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleInitCurrency434(Packet packet)
         {
             var count = packet.ReadBits("Count", 23);
@@ -1107,7 +1107,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_INIT_CURRENCY, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
+        [Parser(Opcode.SMSG_SETUP_CURRENCY, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleInitCurrency422(Packet packet)
         {
             var count = packet.ReadUInt32("Count");
@@ -1134,7 +1134,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_INIT_CURRENCY, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_SETUP_CURRENCY, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleInitCurrency(Packet packet)
         {
             var count = packet.ReadUInt32("Count");

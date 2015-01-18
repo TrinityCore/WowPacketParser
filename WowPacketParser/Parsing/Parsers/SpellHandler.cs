@@ -931,14 +931,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadVector3("Position");
         }
 
-        [Parser(Opcode.SMSG_REMOVED_SPELL, ClientVersionBuild.Zero, ClientVersionBuild.V3_1_0_9767)]
+        [Parser(Opcode.SMSG_UNLEARNED_SPELLS, ClientVersionBuild.Zero, ClientVersionBuild.V3_1_0_9767)]
         public static void HandleRemovedSpell(Packet packet)
         {
             packet.ReadEntry<UInt16>(StoreNameType.Spell, "Spell ID");
         }
 
         [Parser(Opcode.CMSG_CANCEL_AURA)]
-        [Parser(Opcode.SMSG_REMOVED_SPELL, ClientVersionBuild.V3_1_0_9767)]
+        [Parser(Opcode.SMSG_UNLEARNED_SPELLS, ClientVersionBuild.V3_1_0_9767)]
         [Parser(Opcode.CMSG_CANCEL_CHANNELLING)]
         public static void HandleRemovedSpell2(Packet packet)
         {

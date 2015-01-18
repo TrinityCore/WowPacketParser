@@ -130,7 +130,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_GUILD_PARTY_STATE_RESPONSE, 0x127A},
             {Opcode.SMSG_HIGHEST_THREAT_UPDATE, 0x0604},
             {Opcode.SMSG_HOTFIX_NOTIFY_BLOB, 0x0AA8},
-            {Opcode.SMSG_INIT_CURRENCY, 0x00A4},
+            {Opcode.SMSG_SETUP_CURRENCY, 0x00A4},
             {Opcode.SMSG_INIT_WORLD_STATES, 0x0BB7},
             {Opcode.SMSG_INITIAL_SETUP, 0x12E8},
             {Opcode.SMSG_INITIAL_SPELLS, 0x0297},
