@@ -1,5 +1,6 @@
 ﻿using System;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -123,6 +124,47 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 sorts.ReadByte("UnkByte1", i);
                 sorts.ReadByte("UnkByte2", i);
             }
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_LIST_BIDDER_ITEMS)]
+        public static void HandleAuctionListBidderItems(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadUInt32("Offset");
+
+            var count = packet.ReadBits("AuctionItemIDsCount", 7);
+            for (var i = 0; i < count; ++i)
+                packet.ReadUInt32("AuctionItemID", i);
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_LIST_OWNER_ITEMS)]
+        public static void HandleAuctionListOwnerItems(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadUInt32("Offset");
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_SELL_ITEM)]
+        public static void HandleAuctionSellItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadInt64("MinBit");
+            packet.ReadInt64("BuyoutPrice");
+            packet.ReadInt32("RunTime");
+
+            var count = packet.ReadBits("ItemsCount", 5);
+            packet.ResetBitReader();
+
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadPackedGuid128("Guid", i);
+                packet.ReadInt32("UseCount");
+            }
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_LIST_PENDING_SALES)]
+        public static void HandleZero(Packet packet)
+        {
         }
     }
 }

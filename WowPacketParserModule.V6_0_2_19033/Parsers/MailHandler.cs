@@ -186,6 +186,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("BiReceipt");
         }
 
+        [Parser(Opcode.CMSG_MAIL_TAKE_MONEY)]
+        public static void HandleMailTakeMoney(Packet packet)
+        {
+            packet.ReadPackedGuid128("Mailbox");
+            packet.ReadInt32("MailID");
+            packet.ReadInt64("AttachID");
+        }
+
         [Parser(Opcode.CMSG_GET_MAIL_LIST)]
         public static void HandleShowMailbox(Packet packet)
         {
