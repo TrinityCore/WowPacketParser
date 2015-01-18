@@ -60,11 +60,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             //! TODO Doublecheck the fields for this whole packet. I didn't have many different sniffs to name fields.
             packet.ReadPackedGuid128("Owner");
             packet.ReadPackedGuid128("LootObj");
-            // Order guessed
-            packet.ReadByte("Threshold");
+            packet.ReadByte("FailureReason");
             packet.ReadByte("LootMethod");
             packet.ReadByte("AcquireReason");
-            packet.ReadByte("FailureReason");
+            packet.ReadByte("Threshold");
 
             packet.ReadUInt32("Coins");
 
@@ -100,10 +99,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
 
-            // Order guessed
             packet.ReadBit("PersonalLooting");
-            packet.ReadBit("Acquired");
             packet.ReadBit("AELooting");
+            packet.ReadBit("Acquired");
         }
 
         [Parser(Opcode.SMSG_LOOT_LIST)]
