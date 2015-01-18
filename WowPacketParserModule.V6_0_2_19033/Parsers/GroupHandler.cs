@@ -254,8 +254,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_PARTY_MEMBER_STATE)]
         public static void HandlePartyMemberState(Packet packet)
         {
-            packet.ReadBit("");
-            packet.ReadPackedGuid128("");
+            packet.ReadBit("ForEnemy");
+            packet.ReadPackedGuid128("MemberGuid");
 
             for (var i = 0; i < 2; i++)
                 packet.ReadByte("Unk704", i);
