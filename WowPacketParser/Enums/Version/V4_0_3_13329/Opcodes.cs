@@ -1259,62 +1259,8 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.MSG_GM_CHANGE_ARENA_RATING, 0x040F}, // NF()(0x040F) //
             {Opcode.MSG_MOVE_SET_PITCH_RATE_CHEAT, 0x045A}, // NF()(0x045A) //
             {Opcode.MSG_MOVE_SET_PITCH_RATE, 0xED76}, // (0x8274)(0x045B) //
-            {Opcode.UMSG_UNKNOWN_1189, 0x04A5}, // NF()(0x04A5) // // not found}, old SMSG_PET_GUIDS
-            {Opcode.UMSG_UNKNOWN_1196, 0x04AC}, // NF()(0x04AC) // // not found
-            {Opcode.UMSG_UNKNOWN_1197, 0x04AD}, // NF()(0x04AD) // // not found
-            {Opcode.UMSG_UNKNOWN_1198, 0x04AE}, // NF()(0x04AE) // // not found
-            {Opcode.UMSG_UNKNOWN_1199, 0x04AF}, // NF()(0x04AF) // // not found
-            {Opcode.UMSG_UNKNOWN_1200, 0x04B0}, // NF()(0x04B0) // // not found
-            {Opcode.UMSG_UNKNOWN_1201, 0x04B1}, // NF()(0x04B1) // // not found
-            {Opcode.UMSG_UNKNOWN_1209, 0x04B9}, // NF()(0x04B9) // // not found
-            {Opcode.UMSG_UNKNOWN_1219, 0x04C3}, // NF()(0x04C3) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1220, 0x04C4}, // NF()(0x04C4) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1221, 0x04C5}, // NF()(0x04C5) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1222, 0x04C6}, // NF()(0x04C6) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1225, 0x04C9}, // NF()(0x04C9) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1226, 0x04CA}, // NF()(0x04CA) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1227, 0x04CB}, // NF()(0x04CB) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1228, 0x04CC}, // NF()(0x04CC) // // not found 3.2
             {Opcode.MSG_MOVE_UNKNOWN_1234, 0x04D2}, // NF()(0x04D2) // // SMSG}, movement related
-            {Opcode.UMSG_UNKNOWN_1239, 0x04D7}, // NF()(0x04D7) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1243, 0x04DB}, // NF()(0x04DB) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1244, 0x04DC}, // NF()(0x04DC) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1245, 0x04DD}, // NF()(0x04DD) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1257, 0x04E9}, // NF()(0x04E9) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1258, 0x04EA}, // NF()(0x04EA) // // not found 3.2
             {Opcode.MSG_SET_RAID_DIFFICULTY, 0x04EB}, // NF()(0x04EB) // // lua: SetRaidDifficulty
-            {Opcode.UMSG_UNKNOWN_1260, 0x04EC}, // NF()(0x04EC) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1266, 0x04F2}, // NF()(0x04F2) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1267, 0x04F3}, // NF()(0x04F3) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1268, 0x04F4}, // NF()(0x04F4) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1269, 0x04F5}, // NF()(0x04F5) // // not found 3.2
-            {Opcode.UMSG_UNKNOWN_1273, 0x04F9}, // NF()(0x04F9) // // not found 10554
-            {Opcode.UMSG_UNKNOWN_1275, 0x04FB}, // NF()(0x04FB) // // not found 10554
-            {Opcode.UMSG_UNKNOWN_1278, 0x04FE}, // NF()(0x04FE) // // not found 10596
-            {Opcode.UMSG_UNKNOWN_1283, 0x0503}, // NF()(0x0503) //
-            {Opcode.UMSG_UNKNOWN_1284, 0x0504}, // NF()(0x0504) //
-            {Opcode.UMSG_UNKNOWN_1285, 0x0505}, // NF()(0x0505) //
-            {Opcode.UMSG_UNKNOWN_1287, 0x0507}, // NF()(0x0507) // // not found
-            {Opcode.UMSG_UNKNOWN_1292, 0x050C}, // NF()(0x050C) // // not found
-            {Opcode.UMSG_UNKNOWN_1299, 0x0513}, // NF()(0x0513) // // not found
-            {Opcode.UMSG_UNKNOWN_1305, 0x0519}, // NF()(0x0519) // // not found
-            {Opcode.UMSG_UNKNOWN_1306, 0x051A}, // NF()(0x051A) // // not found
-            {Opcode.UMSG_UNKNOWN_1313, 0x0521}, // NF()(0x0521) // // not found
-            {Opcode.UMSG_UNKNOWN_1318, 0x0526}, // NF()(0x0526) // // not found
-            {Opcode.UMSG_UNKNOWN_1319, 0x0527}, // NF()(0x0527) // // not found
-            {Opcode.UMSG_UNKNOWN_1321, 0x0529}, // NF()(0x0529) // // not found
-            {Opcode.UMSG_UNKNOWN_1322, 0x052A}, // NF()(0x052A) // // not found
-            {Opcode.UMSG_UNKNOWN_1323, 0x052B}, // NF()(0x052B) // // not found
-            {Opcode.UMSG_UNKNOWN_1324, 0x052C}, // NF()(0x052C) // // not found
-            {Opcode.UMSG_UNKNOWN_1325, 0x052D}, // NF()(0x052D) // // not found
-            {Opcode.UMSG_UNKNOWN_1326, 0x052E}, // NF()(0x052E) // // not found
-            {Opcode.UMSG_UNKNOWN_1327, 0x052F}, // NF()(0x052F) // // not found
-            {Opcode.UMSG_UNKNOWN_1328, 0x0530}, // NF()(0x0530) // // not found
-            {Opcode.UMSG_UNKNOWN_1330, 0x0532}, // NF()(0x0532) // // not found
-            {Opcode.UMSG_UNKNOWN_1331, 0x0533}, // NF()(0x0533) // // not found
-            {Opcode.UMSG_UNKNOWN_1332, 0x0534}, // NF()(0x0534) // // not found
-            {Opcode.UMSG_UNKNOWN_1333, 0x0535}, // NF()(0x0535) // // not found
-            {Opcode.UMSG_UNKNOWN_1334, 0x0536}, // NF()(0x0536) // // not found
             {Opcode.OBSOLETE_DROP_ITEM, 0x0110}, // NF()(0x0110) //
         };
     }

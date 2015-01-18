@@ -809,7 +809,6 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57},
             {Opcode.TEST_430_SYNC_PLAYER_MOVE, 0x5},
             {Opcode.TEST_422_265C, 0x265C},
-            {Opcode.TEST_422_9838, 9838},
             {Opcode.TEST_422_13022, 13022}
             // CMSG Handlers
             // 4120 - sub_65D6A0 - CMSG_LFG_LFR_JOIN ?
