@@ -328,5 +328,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Item");
         }
+
+        [Parser(Opcode.SMSG_ITEM_EXPIRE_PURCHASE_REFUND)]
+        public static void HandleItemExpirePurchaseRefund(Packet packet)
+        {
+            packet.ReadPackedGuid128("ItemGUID");
+        }
     }
 }

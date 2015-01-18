@@ -90,5 +90,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Npc");
         }
+
+        [Parser(Opcode.SMSG_VOID_STORAGE_FAILED)]
+        public static void HandleVoidStorageFailed(Packet packet)
+        {
+            packet.ReadByte("Reason");
+        }
     }
 }

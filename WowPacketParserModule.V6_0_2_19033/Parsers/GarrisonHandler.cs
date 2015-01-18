@@ -147,5 +147,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadInt32("Result");
         }
+
+        [Parser(Opcode.SMSG_GARRISON_UPGRADE_RESULT)]
+        public static void HandleGarrisonUpgradeResult(Packet packet)
+        {
+            packet.ReadInt32("Result");
+            packet.ReadInt32("GarrSiteLevelID");
+        }
     }
 }
