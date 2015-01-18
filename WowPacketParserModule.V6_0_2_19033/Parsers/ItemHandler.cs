@@ -323,6 +323,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("Enchantment");
             packet.ReadUInt32("EnchantSlot");
         }
+
         [Parser(Opcode.SMSG_READ_ITEM_RESULT_OK)]
         public static void HandleReadItemResultOk(Packet packet)
         {
