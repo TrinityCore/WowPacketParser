@@ -84,7 +84,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_CAGE_BATTLE_PET, 0x0AFE},
             {Opcode.CMSG_CALENDAR_ADD_EVENT, 0x09A3},
             {Opcode.CMSG_CALENDAR_COMPLAIN, 0x0D19},
-            {Opcode.CMSG_CALENDAR_COPY_EVENT, 0x0315},
+            {Opcode.CMSG_CALENDAR_COPY_EVENT, 0x0317},
             {Opcode.CMSG_CALENDAR_EVENT_INVITE, 0x010E},
             {Opcode.CMSG_CALENDAR_EVENT_MODERATOR_STATUS, 0x118C},
             {Opcode.CMSG_CALENDAR_EVENT_RSVP, 0x11A4},
