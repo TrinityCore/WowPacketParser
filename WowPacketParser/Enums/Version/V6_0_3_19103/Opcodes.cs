@@ -929,7 +929,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_MOVE_DISABLE_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY, 0x00C5},
             {Opcode.SMSG_MOVE_ENABLE_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY, 0x08CE},
             {Opcode.SMSG_MOVE_ENABLE_GRAVITY, 0x03B4},
-            {Opcode.SMSG_MOVE_FEATHER_FALL, 0x01DD},
+            {Opcode.SMSG_MOVE_SET_FEATHER_FALL, 0x01DD},
             {Opcode.SMSG_MOVE_GRAVITY_DISABLE, 0x02C6},
             {Opcode.SMSG_MOVE_KNOCK_BACK, 0x0CCB},
             {Opcode.SMSG_MOVE_LAND_WALK, 0x13DA},

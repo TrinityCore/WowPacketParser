@@ -901,7 +901,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_MOUNTSPECIAL_ANIM, 0x0217},
             {Opcode.SMSG_MOVE_COLLISION_DISABLE, 0x31B0},
             {Opcode.SMSG_MOVE_COLLISION_ENABLE, 0x11A7},
-            {Opcode.SMSG_MOVE_FEATHER_FALL, 0x79B0},
+            {Opcode.SMSG_MOVE_SET_FEATHER_FALL, 0x79B0},
             {Opcode.SMSG_MOVE_GRAVITY_DISABLE, 0x75B2},
             {Opcode.SMSG_MOVE_GRAVITY_ENABLE, 0x30B3},
             {Opcode.SMSG_MOVE_KNOCK_BACK, 0x5CB4},

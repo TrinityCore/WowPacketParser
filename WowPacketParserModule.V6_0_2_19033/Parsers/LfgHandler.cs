@@ -280,5 +280,26 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < count; ++i)
                 ReadLFGPlayerRewards(packet, i);
         }
+
+        [Parser(Opcode.CMSG_DF_JOIN)]
+        public static void HandleDFJoin(Packet packet)
+        {
+            packet.ReadBitBoolean("QueueAsGroup");
+            var commentLength = packet.ReadBits("UnkBits8", 8);
+
+            packet.ResetBitReader();
+
+            packet.ReadByte("PartyIndex");
+            packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32);
+            var slotsCount = packet.ReadInt32();
+
+            for (var i = 0; i < 3; ++i) // Needs
+                packet.ReadUInt32("Need", i);
+
+            packet.ReadWoWString("Comment", commentLength);
+
+            for (var i = 0; i < slotsCount; ++i) // Slots
+                packet.ReadUInt32("Slot", i);
+        }
     }
 }

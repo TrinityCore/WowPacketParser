@@ -458,6 +458,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_MOVE_UNSET_HOVER)]
         [Parser(Opcode.SMSG_MOVE_UNROOT)]
         [Parser(Opcode.SMSG_MOVE_WATER_WALK)]
+        [Parser(Opcode.SMSG_MOVE_SET_FEATHER_FALL)]
         public static void HandleMovementIndex(Packet packet)
         {
             packet.ReadPackedGuid128("MoverGUID");
