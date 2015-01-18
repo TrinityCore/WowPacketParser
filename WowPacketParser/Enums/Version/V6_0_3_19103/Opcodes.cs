@@ -217,7 +217,6 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_GUILD_BANK_MONEY_WITHDRAWN_QUERY, 0x020D},
             {Opcode.CMSG_GUILD_BANK_QUERY_TAB, 0x1139},
             {Opcode.CMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY_QUERY, 0x063D},
-            {Opcode.CMSG_GUILD_SET_RANK_PERMISSIONS, 0x0E38},
             {Opcode.CMSG_GUILD_BANK_SWAP_ITEMS, 0x1131},
             {Opcode.CMSG_GUILD_BANK_QUERY_TEXT, 0x062D},
             {Opcode.CMSG_GUILD_BANK_UPDATE_TAB, 0x13C1},
