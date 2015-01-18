@@ -15,14 +15,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Emblem Background Color");
         }
 
-        [Parser(Opcode.CMSG_GUILD_ROSTER, ClientVersionBuild.V4_0_6_13596, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.CMSG_GUILD_GET_ROSTER, ClientVersionBuild.V4_0_6_13596, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleGuildRequestRoster406(Packet packet)
         {
             packet.ReadGuid("Guild GUID");
             packet.ReadGuid("Player GUID");
         }
 
-        [Parser(Opcode.CMSG_GUILD_ROSTER, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
+        [Parser(Opcode.CMSG_GUILD_GET_ROSTER, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleGuildRosterC422(Packet packet)
         {
             var guid = packet.StartBitStream(7, 3, 2, 6, 5, 4, 1, 0);
@@ -30,7 +30,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_GUILD_ROSTER, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_3_15354)]
+        [Parser(Opcode.CMSG_GUILD_GET_ROSTER, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_3_15354)]
         public static void HandleGuildRoster430(Packet packet)
         {
             // Seems to have some previous formula, processed GUIDS does not fit any know guid
@@ -74,7 +74,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid2", guid2);
         }
 
-        [Parser(Opcode.CMSG_GUILD_ROSTER, ClientVersionBuild.V4_3_3_15354, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_GUILD_GET_ROSTER, ClientVersionBuild.V4_3_3_15354, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildRosterRequest433(Packet packet)
         {
             // Seems to have some previous formula, processed GUIDS does not fit any know guid
@@ -456,9 +456,9 @@ namespace WowPacketParser.Parsing.Parsers
 
         [Parser(Opcode.CMSG_GUILD_CREATE)]
         [Parser(Opcode.CMSG_GUILD_INVITE)]
-        [Parser(Opcode.CMSG_GUILD_PROMOTE)]
+        [Parser(Opcode.CMSG_GUILD_PROMOTE_MEMBER)]
         [Parser(Opcode.CMSG_GUILD_DEMOTE)]
-        [Parser(Opcode.CMSG_GUILD_REMOVE, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
+        [Parser(Opcode.CMSG_GUILD_OFFICER_REMOVE_MEMBER, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
         [Parser(Opcode.CMSG_GUILD_LEADER)]
         [Parser(Opcode.CMSG_GUILD_ADD_RANK, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildCreate(Packet packet)
@@ -466,7 +466,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Name");
         }
 
-        [Parser(Opcode.CMSG_GUILD_REMOVE, ClientVersionBuild.V4_0_6_13596, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_GUILD_OFFICER_REMOVE_MEMBER, ClientVersionBuild.V4_0_6_13596, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildRemove406(Packet packet)
         {
             packet.ReadGuid("Target GUID");
@@ -712,7 +712,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Tab Icon");
         }
 
-        [Parser(Opcode.CMSG_GUILD_QUERY_RANKS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
+        [Parser(Opcode.CMSG_GUILD_GET_RANKS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
         [Parser(Opcode.CMSG_GUILD_QUERY_NEWS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.CMSG_GUILD_REQUEST_MAX_DAILY_XP, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
         [Parser(Opcode.CMSG_QUERY_GUILD_XP, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
@@ -746,7 +746,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("GUID", guid);
         }
 
-        [Parser(Opcode.CMSG_GUILD_QUERY_RANKS, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_3_15354)]
+        [Parser(Opcode.CMSG_GUILD_GET_RANKS, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_3_15354)]
         public static void HandleGuildRanks43(Packet packet)
         {
             var guid = packet.StartBitStream(7, 2, 0, 4, 6, 5, 1, 3);
@@ -754,7 +754,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_GUILD_QUERY_RANKS, ClientVersionBuild.V4_3_3_15354, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_GUILD_GET_RANKS, ClientVersionBuild.V4_3_3_15354, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildRanks433(Packet packet)
         {
             var guid = packet.StartBitStream(2, 6, 1, 0, 5, 3, 7, 4);
@@ -1021,7 +1021,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBoolean("Auto decline");
         }
 
-        [Parser(Opcode.SMSG_PETITION_SHOWLIST)]
+        [Parser(Opcode.SMSG_PETITION_SHOW_LIST)]
         public static void HandlePetitionShowList(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -1369,18 +1369,18 @@ namespace WowPacketParser.Parsing.Parsers
 
         [Parser(Opcode.SMSG_GUILD_MEMBER_DAILY_RESET)]
         [Parser(Opcode.CMSG_GUILD_REQUEST_CHALLENGE_UPDATE)]
-        [Parser(Opcode.CMSG_GUILD_ROSTER, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
+        [Parser(Opcode.CMSG_GUILD_GET_ROSTER, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
         [Parser(Opcode.CMSG_GUILD_ACCEPT)]
         [Parser(Opcode.CMSG_GUILD_DECLINE)]
         [Parser(Opcode.CMSG_GUILD_INFO)]
         [Parser(Opcode.CMSG_GUILD_LEAVE)]
         [Parser(Opcode.CMSG_GUILD_DISBAND)]
-        [Parser(Opcode.CMSG_GUILD_DEL_RANK, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_GUILD_DELETE_RANK, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.CMSG_GUILD_EVENT_LOG_QUERY)]
         [Parser(Opcode.SMSG_GUILD_CANCEL)] // Fires GUILD_INVITE_CANCEL
         [Parser(Opcode.SMSG_GUILD_INVITE_CANCEL)]
         [Parser(Opcode.CMSG_GUILD_AUTO_DECLINE_INVITATION)] // 4.3.4, sent if player has PLAYER_FLAGS_AUTO_DECLINE_GUILD
-        [Parser(Opcode.CMSG_GUILD_PERMISSIONS)]
+        [Parser(Opcode.CMSG_GUILD_PERMISSIONS_QUERY)]
         public static void HandleGuildNull(Packet packet)
         {
             // Just to have guild opcodes together

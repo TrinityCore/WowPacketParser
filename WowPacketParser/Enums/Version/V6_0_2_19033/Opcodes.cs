@@ -33,7 +33,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x1143},
             {Opcode.CMSG_GUILD_BANK_BUY_TAB, 0x1238},
             {Opcode.CMSG_GUILD_QUERY, 0x00E4},
-            {Opcode.CMSG_GUILD_QUERY_RANKS, 0x018E},
+            {Opcode.CMSG_GUILD_GET_RANKS, 0x018E},
             {Opcode.CMSG_GUILD_REQUEST_PARTY_STATE, 0x1183},
             {Opcode.CMSG_LIST_INVENTORY, 0x1037},
             {Opcode.CMSG_LOAD_SCREEN, 0x09B8},

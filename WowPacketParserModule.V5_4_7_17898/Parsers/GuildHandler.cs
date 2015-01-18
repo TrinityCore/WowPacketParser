@@ -189,7 +189,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_GUILD_QUERY_RANKS)]
+        [Parser(Opcode.CMSG_GUILD_GET_RANKS)]
         public static void HandleGuildRanks(Packet packet)
         {
             var guid = packet.StartBitStream(2, 7, 0, 5, 6, 3, 4, 1);
@@ -226,7 +226,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_GUILD_ROSTER)]
+        [Parser(Opcode.CMSG_GUILD_GET_ROSTER)]
         public static void HandleGuildRosterRequest(Packet packet)
         {
             // Seems to have some previous formula, processed GUIDS does not fit any know guid
@@ -548,7 +548,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadWoWString("Rank Name", length);
         }
 
-        [Parser(Opcode.CMSG_GUILD_REMOVE)]
+        [Parser(Opcode.CMSG_GUILD_OFFICER_REMOVE_MEMBER)]
         public static void HandleGuildRemove(Packet packet)
         {
             var guid = packet.StartBitStream(3, 1, 6, 0, 7, 2, 5, 4);
@@ -564,7 +564,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("GUID", guid);
         }
 
-        [Parser(Opcode.CMSG_GUILD_PROMOTE)]
+        [Parser(Opcode.CMSG_GUILD_PROMOTE_MEMBER)]
         public static void HandleGuildPromote(Packet packet)
         {
             var guid = packet.StartBitStream(4, 0, 3, 5, 7, 1, 2, 6);

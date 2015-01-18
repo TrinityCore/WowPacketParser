@@ -7,7 +7,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class GuildHandler
     {
-        [Parser(Opcode.CMSG_GUILD_ROSTER)]
+        [Parser(Opcode.CMSG_GUILD_GET_ROSTER)]
         public static void HandleGuildRosterRequest(Packet packet)
         {
         }
@@ -65,7 +65,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("BankTab");
         }
 
-        [Parser(Opcode.CMSG_GUILD_QUERY_RANKS)]
+        [Parser(Opcode.CMSG_GUILD_GET_RANKS)]
         public static void HandleGuildRanks434(Packet packet)
         {
             packet.ReadPackedGuid128("GuildGUID");

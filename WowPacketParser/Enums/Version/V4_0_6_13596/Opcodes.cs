@@ -274,7 +274,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_GUILD_BANK_WITHDRAW_MONEY, 0x073A8},
             {Opcode.CMSG_GUILD_CREATE, 0x02219},
             {Opcode.CMSG_GUILD_DECLINE, 0x0352D},
-            {Opcode.CMSG_GUILD_DEL_RANK, 0x02129},
+            {Opcode.CMSG_GUILD_DELETE_RANK, 0x02129},
             {Opcode.CMSG_GUILD_DEMOTE, 0x0330D},
             {Opcode.CMSG_GUILD_DISBAND, 0x0372D}, //opcode14125
             {Opcode.CMSG_GUILD_INFO, 0x06884},
@@ -284,17 +284,17 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_GUILD_LEAVE, 0x03329}, //opcode13097
             {Opcode.CMSG_GUILD_MOTD, 0x0272D}, //opcode10029
             //{Opcode.CMSG_GUILD_NEWS_SET_STICKY, 0x0252D},
-            {Opcode.CMSG_GUILD_PROMOTE, 0x02109},
+            {Opcode.CMSG_GUILD_PROMOTE_MEMBER, 0x02109},
             {Opcode.CMSG_GUILD_QUERY, 0x0AFC4},
             {Opcode.CMSG_GUILD_QUERY_NEWS, 0x03529},
             {Opcode.CMSG_GUILD_QUERY_TRADESKILL, 0x02329},
             //{Opcode.CMSG_GUILD_QUERY_XP, 0x0350D},
             //{Opcode.CMSG_GUILD_RANK, 0x02709},
             //{Opcode.CMSG_GUILD_RANKS, 0x03129},
-            {Opcode.CMSG_GUILD_REMOVE, 0x0312D}, //opcode12589
+            {Opcode.CMSG_GUILD_OFFICER_REMOVE_MEMBER, 0x0312D}, //opcode12589
             //{Opcode.CMSG_GUILD_REQUEST_NEWS, 0x03129},
             //{Opcode.CMSG_GUILD_REQUEST_PARTY_STATE, 0x02219},
-            {Opcode.CMSG_GUILD_ROSTER, 0x0B2A4},
+            {Opcode.CMSG_GUILD_GET_ROSTER, 0x0B2A4},
             {Opcode.CMSG_GUILD_SET_NOTE, 0x0232D},
             {Opcode.CMSG_GUILD_SWITCH_RANK, 0x03309}, //UnknownopcodeID
             //{Opcode.CMSG_GUILD_UPDATE_PARTY_STATE, 0x02219},
@@ -403,7 +403,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_PARTY_UNSILENCE, 0x0FCA4},
             {Opcode.CMSG_PETITION_BUY, 0x0B3E4},
             {Opcode.CMSG_PETITION_QUERY, 0x0B1AC},
-            {Opcode.CMSG_PETITION_SHOWLIST, 0x0FCC4},
+            {Opcode.CMSG_PETITION_SHOW_LIST, 0x0FCC4},
             {Opcode.CMSG_PETITION_SHOW_SIGNATURES, 0x02CA8},
             {Opcode.CMSG_PETITION_SIGN, 0x03AA0},
             {Opcode.CMSG_PET_ABANDON, 0x0A480},
@@ -989,7 +989,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_PERIODICAURALOG, 0x03388},
             {Opcode.SMSG_PETGODMODE, 0x0F2CC},
             {Opcode.SMSG_PETITION_QUERY_RESPONSE, 0x0FB80},
-            {Opcode.SMSG_PETITION_SHOWLIST, 0x0FCC0},
+            {Opcode.SMSG_PETITION_SHOW_LIST, 0x0FCC0},
             {Opcode.SMSG_PETITION_SHOW_SIGNATURES, 0x0E2E0},
             {Opcode.SMSG_PETITION_SIGN_RESULTS, 0x0A1A4},
             {Opcode.SMSG_PET_ACTION_FEEDBACK, 0x02584},

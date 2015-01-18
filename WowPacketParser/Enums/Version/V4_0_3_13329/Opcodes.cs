@@ -59,11 +59,11 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_GUILD_ACCEPT, 0x0084}, // NF()(0x0084) //
             {Opcode.CMSG_GUILD_DECLINE, 0x0085}, // NF()(0x0085) //
             {Opcode.CMSG_GUILD_INFO, 0xAF5E}, // (0x6B75)(0x0087) //
-            {Opcode.CMSG_GUILD_ROSTER, 0x0757}, // (0x22FD)(0x0089) //
-            {Opcode.CMSG_GUILD_PROMOTE, 0xFFE5}, // NF(0x4A00)(0x008B) //
+            {Opcode.CMSG_GUILD_GET_ROSTER, 0x0757}, // (0x22FD)(0x0089) //
+            {Opcode.CMSG_GUILD_PROMOTE_MEMBER, 0xFFE5}, // NF(0x4A00)(0x008B) //
             {Opcode.CMSG_GUILD_DEMOTE, 0xFFE4}, // NF(0x4200)(0x008C) //
             {Opcode.CMSG_GUILD_LEAVE, 0xFFE3}, // NF(0x0A80)(0x008D) //
-            {Opcode.CMSG_GUILD_REMOVE, 0xFFE2}, // NF(0x4281)(0x008E) //
+            {Opcode.CMSG_GUILD_OFFICER_REMOVE_MEMBER, 0xFFE2}, // NF(0x4281)(0x008E) //
             {Opcode.CMSG_GUILD_DISBAND, 0x0982}, // (0x0205)(0x008F) //
             {Opcode.CMSG_GUILD_LEADER, 0xFFE1}, // NF(0x9900)(0x0090) //
             {Opcode.CMSG_GUILD_MOTD, 0xFFE0}, // NF(0x4A05)(0x0091) //
@@ -205,7 +205,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_BINDER_ACTIVATE, 0x1D7F}, // (0xE39C)(0x01B5) //
             {Opcode.CMSG_BANKER_ACTIVATE, 0x01B7}, // NF()(0x01B7) //
             {Opcode.CMSG_BUY_BANK_SLOT, 0x01B9}, // NF()(0x01B9) //
-            {Opcode.CMSG_PETITION_SHOWLIST, 0x01BB}, // NF()(0x01BB) //
+            {Opcode.CMSG_PETITION_SHOW_LIST, 0x01BB}, // NF()(0x01BB) //
             {Opcode.CMSG_PETITION_BUY, 0x01BD}, // NF()(0x01BD) //
             {Opcode.CMSG_PETITION_SHOW_SIGNATURES, 0x01BE}, // NF()(0x01BE) //
             {Opcode.CMSG_PETITION_SIGN, 0x01C0}, // NF()(0x01C0) //
@@ -249,7 +249,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_CHAT_IGNORED, 0x0225}, // NF()(0x0225) //
             //{Opcode.CMSG_GUILD_SET_RANK_PERMISSIONS, 0xFFC7}, // NF(0x4A81)(0x0231) //
             {Opcode.CMSG_GUILD_ADD_RANK, 0x0232}, // NF()(0x0232) //
-            {Opcode.CMSG_GUILD_DEL_RANK, 0xFFC6}, // NF(0x4205)(0x0233) //
+            {Opcode.CMSG_GUILD_DELETE_RANK, 0xFFC6}, // NF(0x4205)(0x0233) //
             {Opcode.CMSG_GUILD_SWITCH_RANK, 0xFFC5}, // NF(0x0A04)(0x0000) //si up}, 0 si down) uint32(rank) uint64 playerGUID
             {Opcode.CMSG_GUILD_SET_PUBLIC_NOTE, 0x0234}, // NF()(0x0234) //
             {Opcode.CMSG_GUILD_SET_OFFICER_NOTE, 0x0235}, // NF()(0x0235) //
@@ -741,7 +741,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_SHOW_BANK, 0x01B8}, // NF()(0x01B8) //
             {Opcode.SMSG_SHOW_MAILBOX, 0xF575}, // (0xEA14)(0x0297) //L_SHOW
             {Opcode.SMSG_BUY_BANK_SLOT_RESULT, 0x01BA}, // NF()(0x01BA) //
-            {Opcode.SMSG_PETITION_SHOWLIST, 0x5E5C}, // (0x6BB9)(0x01BC) //
+            {Opcode.SMSG_PETITION_SHOW_LIST, 0x5E5C}, // (0x6BB9)(0x01BC) //
             {Opcode.SMSG_PETITION_SHOW_SIGNATURES, 0x747C}, // (0x0B9D)(0x01BF) //
             {Opcode.SMSG_PETITION_SIGN_RESULTS, 0xAF56}, // (0x4B1C)(0x01C1) //
             {Opcode.SMSG_TURN_IN_PETITION_RESULTS, 0x2E74}, // (0xCA19)(0x01C5) //

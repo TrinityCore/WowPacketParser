@@ -47,7 +47,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_GUILD_DEL_RANK)]
+        [Parser(Opcode.CMSG_GUILD_DELETE_RANK)]
         public static void HandleGuildDelRank434(Packet packet)
         {
             packet.ReadUInt32("Rank Id");
@@ -188,7 +188,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("GUID 2", guid2);
         }
 
-        [Parser(Opcode.CMSG_GUILD_ROSTER)]
+        [Parser(Opcode.CMSG_GUILD_GET_ROSTER)]
         public static void HandleGuildRosterRequest434(Packet packet)
         {
             // The client does not write these 2 guids properly.
@@ -322,7 +322,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadUInt32("Unk Uint32 4");
         }
 
-        [Parser(Opcode.CMSG_GUILD_REMOVE)]
+        [Parser(Opcode.CMSG_GUILD_OFFICER_REMOVE_MEMBER)]
         public static void HandleGuildRemove434(Packet packet)
         {
             var guid = packet.StartBitStream(6, 5, 4, 0, 1, 3, 7, 2);
@@ -520,7 +520,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         }
 
 
-        [Parser(Opcode.CMSG_GUILD_QUERY_RANKS)]
+        [Parser(Opcode.CMSG_GUILD_GET_RANKS)]
         public static void HandleGuildRanks434(Packet packet)
         {
             var guid = packet.StartBitStream(2, 3, 0, 6, 4, 7, 5, 1);
