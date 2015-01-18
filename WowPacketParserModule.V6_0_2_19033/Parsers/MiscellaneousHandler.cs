@@ -495,6 +495,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("TeleportSpellID");
         }
+
+        [Parser(Opcode.CMSG_CONVERSATION_UNK1)]
+        public static void HandleConversationUnk1(Packet packet)
+        {
+            packet.ReadPackedGuid128("Conversation");
+            packet.ReadInt32("ConversationID?");
+        }
     }
 }
 
