@@ -603,7 +603,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.SMSG_GUILD_BANK_MONEY_WITHDRAWN, 3130},
             {Opcode.SMSG_GUILD_BANK_QUERY_RESULTS, 19496},
             {Opcode.SMSG_GUILD_CHALLENGE_UPDATED, 17566},
-            {Opcode.SMSG_GUILD_NAME_CHANGED, 9244},
+            {Opcode.SMSG_GUILD_CHANGE_NAME_RESULT, 9244},
             {Opcode.SMSG_GUILD_COMMAND_RESULT, 28314},
             {Opcode.SMSG_GUILD_CRITERIA_DATA, 19642},
             {Opcode.SMSG_GUILD_EVENT, 23716},
