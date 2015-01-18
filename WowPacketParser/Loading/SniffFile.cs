@@ -88,16 +88,19 @@ namespace WowPacketParser.Loading
             {
                 case DumpFormatType.StatisticsPreParse:
                 {
-                    var packets = (LinkedList<Packet>)ReadPackets();
+                    var packets = ReadPackets();
                     if (packets.Count == 0)
                         break;
+
+                    var firstPacket = packets.First();
+                    var lastPacket = packets.Last();
 
                     // CSV format
                     Trace.WriteLine(String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
                         _originalFileName,                                                 // - sniff file name
-                        packets.First.Value.Time,                                          // - time of first packet
-                        packets.Last.Value.Time,                                           // - time of last packet
-                        (packets.Last.Value.Time - packets.First.Value.Time).TotalSeconds, // - sniff duration (seconds)
+                        firstPacket.Time,                                                  // - time of first packet
+                        lastPacket.Time,                                                   // - time of last packet
+                        (lastPacket.Time - firstPacket.Time).TotalSeconds,                 // - sniff duration (seconds)
                         packets.Count,                                                     // - packet count
                         packets.AsParallel().Sum(packet => packet.Length),                 // - total packets size (bytes)
                         packets.AsParallel().Average(packet => packet.Length),             // - average packet size (bytes)
@@ -250,7 +253,7 @@ namespace WowPacketParser.Loading
                 }
                 case DumpFormatType.Pkt:
                 {
-                    var packets = (LinkedList<Packet>)ReadPackets();
+                    var packets = ReadPackets();
                     if (packets.Count == 0)
                         break;
 
@@ -259,22 +262,14 @@ namespace WowPacketParser.Loading
                         int packetsPerSplit = Math.Abs(Settings.FilterPacketsNum);
                         int totalPackets = packets.Count;
 
-                        int numberOfSplits = totalPackets/packetsPerSplit;
+                        int numberOfSplits = (int)Math.Ceiling((double)totalPackets/packetsPerSplit);
 
                         for (int i = 0; i < numberOfSplits; ++i)
                         {
                             var fileNamePart = _originalFileName + "_part_" + (i + 1) + ".pkt";
 
-                            var packetsPart = new LinkedList<Packet>();
-
-                            for (int j = 0; j < packetsPerSplit; ++j)
-                            {
-                                if (packets.Count == 0)
-                                    break;
-
-                                packetsPart.AddLast(packets.First.Value);
-                                packets.RemoveFirst();
-                            }
+                            var packetsPart = packets.Take(packetsPerSplit).ToList();
+                            packets.RemoveRange(0, packetsPart.Count);
 
                             BinaryDump(fileNamePart, packetsPart);
                         }
@@ -428,9 +423,9 @@ namespace WowPacketParser.Loading
                 Console.WriteLine();
         }
 
-        public ICollection<Packet> ReadPackets()
+        public List<Packet> ReadPackets()
         {
-            ICollection<Packet> packets = new LinkedList<Packet>();
+            var packets = new List<Packet>();
 
             // stats.SetStartTime(DateTime.Now);
 
