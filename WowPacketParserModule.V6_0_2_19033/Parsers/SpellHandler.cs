@@ -95,20 +95,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_LEARNED_SPELL)]
-        public static void HandleLearnSpell(Packet packet)
+        [Parser(Opcode.SMSG_LEARNED_SPELLS)]
+        public static void HandleLearnedSpells(Packet packet)
         {
             var count = packet.ReadUInt32("Spell Count");
 
             for (var i = 0; i < count; ++i)
                 packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i);
-            packet.ReadBit("Unk Bits");
+            packet.ReadBit("SuppressMessaging");
         }
 
         [Parser(Opcode.SMSG_INITIAL_SPELLS)]
         public static void HandleInitialSpells(Packet packet)
         {
-            packet.ReadBit("Unk Bit");
+            packet.ReadBit("InitialLogin");
             var count = packet.ReadUInt32("Spell Count");
 
             var spells = new List<uint>((int)count);

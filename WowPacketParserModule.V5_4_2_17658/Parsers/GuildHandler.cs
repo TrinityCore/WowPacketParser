@@ -241,10 +241,10 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ReadWoWString("Text", (int)packet.ReadBits(10));
         }
 
-        [Parser(Opcode.SMSG_GUILD_ACHIEVEMENT_DATA)]
+        [Parser(Opcode.SMSG_ALL_GUILD_ACHIEVEMENTS)]
         public static void HandleGuildAchievementData(Packet packet)
         {
-            var count = packet.ReadBits("Criteria count", 20);
+            var count = packet.ReadBits("Achievement count", 20);
 
             var guid = new byte[count][];
 

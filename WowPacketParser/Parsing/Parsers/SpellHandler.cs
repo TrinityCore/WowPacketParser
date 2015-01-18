@@ -221,7 +221,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleInitialSpells510(Packet packet)
         {
             var count = packet.ReadBits("Spell Count", 24);
-            packet.ReadBit("Unk Bit");
+            packet.ReadBit("InitialLogin");
             packet.ResetBitReader();
 
             var spells = new List<uint>((int)count);

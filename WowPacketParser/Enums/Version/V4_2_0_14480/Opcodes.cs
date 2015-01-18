@@ -659,7 +659,7 @@ namespace WowPacketParser.Enums.Version.V4_2_0_14480
             {Opcode.SMSG_MONSTER_MOVE_TRANSPORT, 0xB2BA},
             {Opcode.SMSG_MOTD, 0xE6FB},
             {Opcode.SMSG_MOUNT_RESULT, 0xEEF2},
-            {Opcode.SMSG_MOUNTSPECIAL_ANIM, 0x22F3},
+            {Opcode.SMSG_MOUNT_SPECIAL_ANIM, 0x22F3},
             {Opcode.SMSG_MULTIPLE_PACKETS_2, 0x2A76},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0xFA67},
             {Opcode.SMSG_NEW_TAXI_PATH, 0x6AA6},

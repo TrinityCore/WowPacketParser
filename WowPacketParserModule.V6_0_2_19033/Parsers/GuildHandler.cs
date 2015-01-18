@@ -221,7 +221,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadSingle("Guild XP multiplier");
         }
 
-        [Parser(Opcode.SMSG_GUILD_ACHIEVEMENT_DATA)]
+        [Parser(Opcode.SMSG_ALL_GUILD_ACHIEVEMENTS)]
         public static void HandleGuildAchievementData(Packet packet)
         {
             var int10 = packet.ReadUInt32("EarnedAchievementCount");

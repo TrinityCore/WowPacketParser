@@ -509,7 +509,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         public static void HandleInitialSpells(Packet packet)
         {
             var count = packet.ReadBits("Spell Count", 22);
-            packet.ReadBit("Unk Bit");
+            packet.ReadBit("InitialLogin");
 
             var spells = new List<uint>((int)count);
             for (var i = 0; i < count; i++)

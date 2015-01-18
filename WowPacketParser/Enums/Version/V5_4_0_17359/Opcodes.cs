@@ -83,7 +83,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_ACTION_BUTTONS, 0x0096},
             {Opcode.SMSG_ADDON_INFO, 0x0128},
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA, 0x0816},
-            {Opcode.SMSG_ARENA_SEASON_WORLD_STATE, 0x0189},
+            {Opcode.SMSG_ALL_GUILD_ACHIEVEMENTS, 0x0C5E},
             {Opcode.SMSG_ATTACKERSTATEUPDATE, 0x1BC0},
             {Opcode.SMSG_ATTACKSTART, 0x0427},  // correct?
             {Opcode.SMSG_ATTACKSTOP, 0x050F},   // correct?
@@ -112,7 +112,6 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x1508},
             {Opcode.SMSG_GOSSIP_POI, 0x1E0C},
             {Opcode.SMSG_GROUP_LIST, 0x013D},
-            {Opcode.SMSG_GUILD_ACHIEVEMENT_DATA, 0x0C5E},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x0D42},
             {Opcode.SMSG_GUILD_RANK, 0x0446},
             {Opcode.SMSG_GUILD_PARTY_STATE_RESPONSE, 0x0C73},
@@ -126,7 +125,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_INIT_WORLD_STATES, 0x0929},
             {Opcode.SMSG_INITIALIZE_FACTIONS, 0x090F},
             {Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE, 0x0437},
-            {Opcode.SMSG_LEARNED_SPELL, 0x0830},
+            {Opcode.SMSG_LEARNED_SPELLS, 0x0830},
             {Opcode.SMSG_LEVELUP_INFO, 0x0402},
             {Opcode.SMSG_LFG_PLAYER_INFO, 0x01A2},
             {Opcode.SMSG_LIST_INVENTORY, 0x088D},
@@ -151,6 +150,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_PLAY_SCENE, 0x01A9},
             {Opcode.SMSG_PLAY_SOUND, 0x04A1},
             {Opcode.SMSG_PLAY_SPELL_VISUAL_KIT, 0x01A5},
+            {Opcode.SMSG_PVP_SEASON, 0x0189},
             {Opcode.SMSG_MOVE_UPDATE, 0x139F},
             {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, 0x142D},
             {Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE, 0x193E},

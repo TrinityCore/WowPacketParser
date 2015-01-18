@@ -1318,7 +1318,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         }
 
-        [Parser(Opcode.SMSG_GUILD_ACHIEVEMENT_DATA, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
+        [Parser(Opcode.SMSG_ALL_GUILD_ACHIEVEMENTS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleGuildAchievementData(Packet packet)
         {
             var cnt = packet.ReadUInt32("Count");
@@ -1329,7 +1329,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Achievement Id", i);
         }
 
-        [Parser(Opcode.SMSG_GUILD_ACHIEVEMENT_DATA, ClientVersionBuild.V4_3_0_15005)]
+        [Parser(Opcode.SMSG_ALL_GUILD_ACHIEVEMENTS, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleGuildAchievementData430(Packet packet)
         {
             var count = packet.ReadBits("Count", 23);

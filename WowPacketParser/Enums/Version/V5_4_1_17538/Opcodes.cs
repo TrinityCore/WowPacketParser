@@ -81,7 +81,7 @@ namespace WowPacketParser.Enums.Version.V5_4_1_17538
             {Opcode.SMSG_GROUP_INVITE, 0x09A6},
             {Opcode.SMSG_GROUP_LIST, 0x01B5},
             {Opcode.SMSG_INITIAL_SPELLS, 0x1164},
-            {Opcode.SMSG_LEARNED_SPELL, 0x118E},
+            {Opcode.SMSG_LEARNED_SPELLS, 0x118E},
             {Opcode.SMSG_LOGIN_SETTIMESPEED, 0x0D17},
             {Opcode.SMSG_LOGOUT_COMPLETE, 0x0D95},
             {Opcode.SMSG_MESSAGECHAT, 0x14AC},

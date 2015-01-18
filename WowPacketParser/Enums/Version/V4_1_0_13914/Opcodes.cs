@@ -146,7 +146,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_MIRROR_IMAGE_COMPONENTED_DATA, 0x01C3E}, // 4.1.0 13914
             {Opcode.SMSG_ON_MONSTER_MOVE, 0xAA6D},
             {Opcode.SMSG_MOTD, 0x0987F}, // 4.1.0 13914
-            {Opcode.SMSG_MOUNTSPECIAL_ANIM, 0x0BC2C}, // 4.1.0 13914
+            {Opcode.SMSG_MOUNT_SPECIAL_ANIM, 0x0BC2C}, // 4.1.0 13914
             {Opcode.SMSG_MULTIPLE_PACKETS_2, 0x04F2E}, // 4.1.0 13914
             {Opcode.SMSG_NOTIFICATION, 0x0CA7C}, // 4.1.0 13914
             {Opcode.SMSG_NOTIFY_DEST_LOC_SPELL_CAST, 0x0EE3C}, // 4.1.0 13914

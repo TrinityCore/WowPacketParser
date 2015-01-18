@@ -1403,7 +1403,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_SET_ACTIVE_MOVER, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
-        [Parser(Opcode.SMSG_MOUNTSPECIAL_ANIM)]
+        [Parser(Opcode.SMSG_MOUNT_SPECIAL_ANIM)]
         public static void HandleSetActiveMover(Packet packet)
         {
             packet.ReadGuid("GUID");

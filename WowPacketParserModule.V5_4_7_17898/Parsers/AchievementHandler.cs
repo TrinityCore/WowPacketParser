@@ -7,7 +7,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 {
     public static class AchievementHandler
     {
-        [Parser(Opcode.SMSG_CRITERIA_UPDATE_ACCOUNT)]
+        [Parser(Opcode.SMSG_ACCOUNT_CRITERIA_UPDATE)]
         public static void HandleCriteriaUpdateAccount(Packet packet)
         {
             var accountId = new byte[8];
@@ -58,7 +58,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.AddValue("Counter", BitConverter.ToInt64(counter, 0));
         }
 
-        [Parser(Opcode.SMSG_CRITERIA_UPDATE_PLAYER)]
+        [Parser(Opcode.SMSG_CRITERIA_UPDATE)]
         public static void HandleCriteriaPlayer(Packet packet)
         {
             var guid = new byte[8];
@@ -77,7 +77,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_DATA_PLAYER)]
+        [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_DATA)]
         public static void HandleAllAchievementDataPlayer(Packet packet)
         {
             var bits20 = packet.ReadBits("Criteria count", 19);
@@ -178,7 +178,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_DATA_ACCOUNT)]
+        [Parser(Opcode.SMSG_ALL_ACCOUNT_CRITERIA)]
         public static void HandleAllAchievementCriteriaDataAccount(Packet packet)
         {
             var count = packet.ReadBits("Criteria count", 19);

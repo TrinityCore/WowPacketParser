@@ -202,10 +202,10 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadBit("Is guild group");
         }
 
-        [Parser(Opcode.SMSG_GUILD_ACHIEVEMENT_DATA)]
+        [Parser(Opcode.SMSG_ALL_GUILD_ACHIEVEMENTS)]
         public static void HandleGuildAchievementData(Packet packet)
         {
-            var count = packet.ReadBits("Criteria count", 20);
+            var count = packet.ReadBits("Achievement count", 20);
 
             var guid = new byte[count][];
 

@@ -6,7 +6,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class AchievementHandler
     {
-        [Parser(Opcode.SMSG_CRITERIA_UPDATE_PLAYER)]
+        [Parser(Opcode.SMSG_CRITERIA_UPDATE)]
         public static void HandleCriteriaPlayer(Packet packet)
         {
             packet.ReadInt32("Id");
@@ -18,7 +18,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadTime("TimeFromCreate");
         }
 
-        [Parser(Opcode.SMSG_CRITERIA_UPDATE_ACCOUNT)]
+        [Parser(Opcode.SMSG_ACCOUNT_CRITERIA_UPDATE)]
         public static void HandleCriteriaUpdateAccount(Packet packet)
         {
             packet.ReadInt32("Id");
@@ -30,7 +30,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBits("Flags", 4); // some flag... & 1 -> delete
         }
 
-        [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_DATA_ACCOUNT)]
+        [Parser(Opcode.SMSG_ALL_ACCOUNT_CRITERIA)]
         public static void HandleAllAchievementCriteriaDataAccount(Packet packet)
         {
             var count = packet.ReadUInt32("Criteria count");
@@ -52,7 +52,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_DATA_PLAYER)]
+        [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_DATA)]
         public static void HandleAllAchievementDataPlayer(Packet packet)
         {
             var int10 = packet.ReadUInt32("EarnedAchievementCount");

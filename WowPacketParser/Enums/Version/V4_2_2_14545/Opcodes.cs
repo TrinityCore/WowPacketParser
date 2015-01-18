@@ -340,6 +340,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.SMSG_ADDON_INFO, 0x9863},
             {Opcode.SMSG_AI_REACTION, 0xCEC2},
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA, 0xE6EC},
+            {Opcode.SMSG_ALL_GUILD_ACHIEVEMENTS, 0xA67E},
             {Opcode.SMSG_AREA_TRIGGER_MESSAGE, 0xCC42},
             {Opcode.SMSG_ARENA_ERROR, 0x8C7},
             {Opcode.SMSG_ARENA_OPPONENT_UPDATE, 0xAD6},
@@ -489,7 +490,6 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.SMSG_GROUP_LIST, 0x5C7E},
             {Opcode.SMSG_GROUP_SET_LEADER, 0xCCF2},
             {Opcode.SMSG_GROUP_UNINVITE, 0x9CEA},
-            {Opcode.SMSG_GUILD_ACHIEVEMENT_DATA, 0xA67E},
             {Opcode.SMSG_GUILD_BANK_LIST, 0x5EFB},
             {Opcode.SMSG_GUILD_CANCEL, 0x08C3}, // New 4.x?
             {Opcode.SMSG_GUILD_COMMAND_RESULT, 56023},
@@ -572,7 +572,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.SMSG_ON_MONSTER_MOVE, 0x4C53},
             {Opcode.SMSG_MONSTER_MOVE_TRANSPORT, 0x88FB},
             {Opcode.SMSG_MOTD, 0xCA4B},
-            {Opcode.SMSG_MOUNTSPECIAL_ANIM, 0x09E77},
+            {Opcode.SMSG_MOUNT_SPECIAL_ANIM, 0x09E77},
             {Opcode.SMSG_MOVE_KNOCK_BACK, 0x60FE}, // Not sure
             {Opcode.SMSG_MULTIPLE_PACKETS, 0x1381},
             {Opcode.SMSG_MULTIPLE_PACKETS_2, 0xDCEA},

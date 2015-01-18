@@ -611,6 +611,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_ADD_RUNE_POWER, 0x0F5E8},
             {Opcode.SMSG_AI_REACTION, 0x031CC},
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA, 0x0445E},
+            {Opcode.SMSG_ALL_GUILD_ACHIEVEMENTS, 0x0491E},
             {Opcode.SMSG_AREA_SPIRIT_HEALER_TIME, 0x06D80},
             {Opcode.SMSG_AREA_TRIGGER_MESSAGE, 0x0EAE0},
             {Opcode.SMSG_ARENA_ERROR, 0x02FEC},
@@ -837,7 +838,6 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_GROUP_LIST, 0x06D8C},
             {Opcode.SMSG_GROUP_SET_LEADER, 0x0E88C},
             {Opcode.SMSG_GROUP_UNINVITE, 0x03ACC},
-            {Opcode.SMSG_GUILD_ACHIEVEMENT_DATA, 0x0491E},
             {Opcode.SMSG_GUILD_ACHIEVEMENT_EARNED, 0x00D5C},
             {Opcode.SMSG_GUILD_BANK_LIST, 0x0A6A8},
             {Opcode.SMSG_GUILD_COMMAND_RESULT, 0x023C0},
@@ -949,7 +949,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_MONSTER_MOVE_TRANSPORT, 0x0248C},
             {Opcode.SMSG_MOTD, 0x077C0},
             {Opcode.SMSG_MOUNT_RESULT, 0x02AEC},
-            {Opcode.SMSG_MOUNTSPECIAL_ANIM, 0x02388},
+            {Opcode.SMSG_MOUNT_SPECIAL_ANIM, 0x02388},
             {Opcode.SMSG_MOVE_ABANDON_TRANSPORT, 0x101D0}, //UnknownopcodeID
             {Opcode.SMSG_MOVE_SET_FEATHER_FALL, 0x06088},
             {Opcode.SMSG_MOVE_GRAVITY_DISABLE, 0x10219}, //UnknownopcodeID
@@ -1054,8 +1054,8 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_RAID_GROUP_ONLY, 0x00554}, //4.0.3a13329
             {Opcode.SMSG_RAID_INSTANCE_INFO, 0x0A18C},
             {Opcode.SMSG_RAID_INSTANCE_MESSAGE, 0x06680},
-            {Opcode.SMSG_RAID_READY_CHECK_ERROR, 0x0547E}, //4.0.3a13329-403
-            //{Opcode.SMSG_RAID_READY_CHECK_THROTTLED, 0x0EEC4},
+            {Opcode.SMSG_READY_CHECK_ERROR, 0x0547E}, //4.0.3a13329-403
+            //{Opcode.SMSG_READY_CHECK_THROTTLED, 0x0EEC4},
             //{Opcode.SMSG_RAID_ROLE_CHECK_UPDATE, 0x0484C},
             {Opcode.SMSG_READ_ITEM_FAILED, 0x0A4EC},
             {Opcode.SMSG_READ_ITEM_RESULT_OK, 0x0A988},
