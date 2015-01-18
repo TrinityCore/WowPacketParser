@@ -117,7 +117,7 @@ namespace WowPacketParser.Enums.Version.V4_3_3_15354
             {Opcode.SMSG_LOGIN_SETTIMESPEED, 0x6B2D},
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x3EE5},
             {Opcode.SMSG_MESSAGECHAT, 0x2FEC},
-            {Opcode.SMSG_MONSTER_MOVE, 0x29A5},
+            {Opcode.SMSG_ON_MONSTER_MOVE, 0x29A5},
             {Opcode.SMSG_MOTD, 0x3C6D},
             {Opcode.SMSG_MOVE_SET_CAN_FLY, 0x64CE},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x7865},

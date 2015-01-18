@@ -47,7 +47,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.AddValue("Position", pos);
         }
 
-        [Parser(Opcode.SMSG_MONSTER_MOVE)]
+        [Parser(Opcode.SMSG_ON_MONSTER_MOVE)]
         public static void HandleMonsterMove(Packet packet)
         {
             var ownerGUID = new byte[8];
@@ -253,7 +253,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("GUID", guid);
         }
 
-        [Parser(Opcode.SMSG_PLAYER_MOVE)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE)]
         public static void HandlePlayerMove(Packet packet)
         {
             var guid = new byte[8];

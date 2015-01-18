@@ -8,7 +8,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 {
     public static class MovementHandler
     {
-        [Parser(Opcode.SMSG_PLAYER_MOVE)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE)]
         public static void HandlePlayerMove(Packet packet)
         {
             var pos = new Vector4();
@@ -160,7 +160,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.AddValue("Position", pos);
         }
 
-        [Parser(Opcode.SMSG_MONSTER_MOVE)]
+        [Parser(Opcode.SMSG_ON_MONSTER_MOVE)]
         public static void HandleMonsterMove(Packet packet)
         {
             var pos = new Vector3();

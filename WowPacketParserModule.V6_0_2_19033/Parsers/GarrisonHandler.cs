@@ -147,12 +147,5 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadInt32("Result");
         }
-
-        [Parser(Opcode.SMSG_GARRISON_LEARN_BLUEPRINT_RESULT)]
-        public static void HandleGarrisonBuildingErrorResult(Packet packet)
-        {
-            packet.ReadInt32("Result");
-            packet.ReadBit("");
-        }
     }
 }

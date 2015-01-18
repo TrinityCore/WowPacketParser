@@ -945,7 +945,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_MINIGAME_STATE, 0x0A5A8},
             {Opcode.SMSG_MIRROR_IMAGE_COMPONENTED_DATA, 0x0E2A4},
             {Opcode.SMSG_MODIFY_COOLDOWN, 0x030CC},
-            {Opcode.SMSG_MONSTER_MOVE, 0x0F1A4},
+            {Opcode.SMSG_ON_MONSTER_MOVE, 0x0F1A4},
             {Opcode.SMSG_MONSTER_MOVE_TRANSPORT, 0x0248C},
             {Opcode.SMSG_MOTD, 0x077C0},
             {Opcode.SMSG_MOUNT_RESULT, 0x02AEC},

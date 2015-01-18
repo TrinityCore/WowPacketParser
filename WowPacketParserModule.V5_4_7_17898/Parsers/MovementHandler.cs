@@ -83,7 +83,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
         }
 
-        [Parser(Opcode.SMSG_MONSTER_MOVE)]
+        [Parser(Opcode.SMSG_ON_MONSTER_MOVE)]
         public static void HandleMonsterMove(Packet packet)
         {
             var pos = new Vector3();
@@ -265,7 +265,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid2", guid2);
         }
 
-        [Parser(Opcode.SMSG_PLAYER_MOVE)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE)]
         public static void HandlePlayerMove(Packet packet)
         {
             var pos = new Vector4();

@@ -170,7 +170,7 @@ namespace WowPacketParser.Parsing.Parsers
             return info;
         }
 
-        [Parser(Opcode.SMSG_MONSTER_MOVE)]
+        [Parser(Opcode.SMSG_ON_MONSTER_MOVE)]
         [Parser(Opcode.SMSG_MONSTER_MOVE_TRANSPORT)]
         public static void HandleMonsterMove(Packet packet)
         {
@@ -1108,7 +1108,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Transport Guid", transportGuidBytes);
         }
 
-        [Parser(Opcode.SMSG_PLAYER_MOVE, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
         public static void HandlePlayerMove422(Packet packet)
         {
             var info = new MovementInfo();
@@ -1216,7 +1216,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Transport Guid", transportGuidBytes);
         }
 
-        [Parser(Opcode.SMSG_PLAYER_MOVE, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandlePlayerMove(Packet packet)
         {
         }
@@ -1425,8 +1425,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_MOVE_UNSET_HOVER)]
         [Parser(Opcode.SMSG_MOVE_SET_CAN_FLY)]
         [Parser(Opcode.SMSG_MOVE_UNSET_CAN_FLY)]
-        [Parser(Opcode.SMSG_MOVE_SET_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY)]
-        [Parser(Opcode.SMSG_MOVE_UNSET_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY)]
+        [Parser(Opcode.SMSG_MOVE_ENABLE_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY)]
+        [Parser(Opcode.SMSG_MOVE_DISABLE_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY)]
         [Parser(Opcode.SMSG_MOVE_FEATHER_FALL)]
         [Parser(Opcode.SMSG_MOVE_NORMAL_FALL, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleSetMovementMessages(Packet packet)

@@ -97,7 +97,7 @@ namespace WowPacketParser.Enums.Version.V4_3_2_15211
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x0DEB},
             {Opcode.SMSG_MESSAGECHAT, 0x0529},
             {Opcode.SMSG_MIRROR_IMAGE_COMPONENTED_DATA, 0x457D},
-            {Opcode.SMSG_MONSTER_MOVE, 0x2561},
+            {Opcode.SMSG_ON_MONSTER_MOVE, 0x2561},
             {Opcode.SMSG_MONSTER_MOVE_TRANSPORT, 0x65D5},
             {Opcode.SMSG_MOTD, 0x6D11},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x455D},

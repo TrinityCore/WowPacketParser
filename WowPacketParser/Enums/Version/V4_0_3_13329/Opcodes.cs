@@ -627,7 +627,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_READ_ITEM_FAILED, 0xCE56}, // (0xA378)(0x00AF) //
             {Opcode.SMSG_ITEM_COOLDOWN, 0xD75F}, // (0x2B58)(0x00B0) //
             {Opcode.SMSG_GAMEOBJECT_CUSTOM_ANIM, 0xA655}, // (0x8230)(0x00B3) //
-            {Opcode.SMSG_MONSTER_MOVE, 0xA65D}, // (0x02B0)(0x00DD) //
+            {Opcode.SMSG_ON_MONSTER_MOVE, 0xA65D}, // (0x02B0)(0x00DD) //
             {Opcode.SMSG_MOVE_WATER_WALK, 0x00DE}, // NF()(0x00DE) //
             {Opcode.SMSG_MOVE_LAND_WALK, 0x00DF}, // NF()(0x00DF) //
             {Opcode.SMSG_FORCE_RUN_SPEED_CHANGE, 0x00E2}, // NF()(0x00E2) //

@@ -330,7 +330,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_MAIL_LIST_RESULT, 0x0401},
             {Opcode.SMSG_MESSAGECHAT, 0x0E60},
             {Opcode.SMSG_MONEY_NOTIFY, 0x05E2},
-            {Opcode.SMSG_MONSTER_MOVE, 0x12D8},
+            {Opcode.SMSG_ON_MONSTER_MOVE, 0x12D8},
             {Opcode.SMSG_MOTD, 0x0E20},
             {Opcode.SMSG_MOVE_ROOT, 0x198B},
             {Opcode.SMSG_MOVE_SET_CAN_FLY, 0x01F4}, // 5.4.7 17956
@@ -384,7 +384,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_PERIODICAURALOG, 0x051B},
             {Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS, 0x04E1},
             {Opcode.SMSG_RESUME_COMMS, 0x01B9},
-            {Opcode.SMSG_PLAYER_MOVE, 0x1CB2},
+            {Opcode.SMSG_MOVE_UPDATE, 0x1CB2},
             {Opcode.SMSG_PLAYER_VEHICLE_DATA, 0x1F29},
             {Opcode.SMSG_PONG, 0x15B1},
             {Opcode.SMSG_POWER_UPDATE, 0x1441},
