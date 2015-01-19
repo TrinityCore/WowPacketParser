@@ -201,6 +201,5 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("LootListID");
             packet.ReadEnum<LootRollType>("RollType", TypeCode.Byte);
         }
-
     }
 }

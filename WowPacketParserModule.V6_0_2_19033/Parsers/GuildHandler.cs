@@ -8,7 +8,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     public static class GuildHandler
     {
         [Parser(Opcode.CMSG_GUILD_GET_ROSTER)]
-        public static void HandleGuildRosterRequest(Packet packet)
+        [Parser(Opcode.CMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY_QUERY)]
+        public static void HandleGuildZero(Packet packet)
         {
         }
 

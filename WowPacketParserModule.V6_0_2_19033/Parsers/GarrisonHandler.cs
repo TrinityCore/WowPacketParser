@@ -6,7 +6,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class GarrisonHandler
     {
-        private static void ReadGarrisonMission(ref Packet packet)
+        private static void ReadGarrisonMission(Packet packet)
         {
             packet.ReadInt64("DbID");
             packet.ReadInt32("MissionRecID");
@@ -38,7 +38,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_GARRISON_COMPLETE_MISSION_RESULT)]
         public static void HandleGarrisonCompleteMissionResult(Packet packet)
         {
-            ReadGarrisonMission(ref packet);
+            ReadGarrisonMission(packet);
 
             packet.ReadInt32("MissionRecID");
             packet.ReadInt32("Result");
@@ -143,7 +143,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_GARRISON_ADD_MISSION_RESULT)]
         public static void HandleGarrisonAddMissionResult(Packet packet)
         {
-            ReadGarrisonMission(ref packet);
+            ReadGarrisonMission(packet);
 
             packet.ReadInt32("Result");
         }
@@ -153,6 +153,45 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("Result");
             packet.ReadInt32("GarrSiteLevelID");
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_START_MISSION_RESULT)]
+        public static void HandleGarrisonStartMissionResult(Packet packet)
+        {
+            packet.ReadInt32("Result");
+            ReadGarrisonMission(packet);
+
+            var followerCount = packet.ReadInt32("FollowerCount");
+            for (int i = 0; i < followerCount; i++)
+                packet.ReadInt64("FollowerDBIDs");
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_UPGRADEABLE_RESULT)]
+        public static void HandleClientGarrisonUpgradeableResult(Packet packet)
+        {
+            packet.ReadInt32("Result");
+        }
+
+        [Parser(Opcode.SMSG_DISPLAY_TOAST)]
+        public static void HandleDisplayToast(Packet packet)
+        {
+            packet.ReadInt32("Quantity");
+            packet.ReadByte("DisplayToastMethod");
+            packet.ReadBit("Mailed");
+            var type = packet.ReadBits("Type", 2);
+
+            if (type == 3)
+                packet.ReadBit("BonusRoll");
+
+            if (type == 3)
+            {
+                ItemHandler.ReadItemInstance(packet);
+                packet.ReadInt32("SpecializationID");
+                packet.ReadInt32("ItemQuantity?");
+            }
+
+            if (type == 1)
+                packet.ReadInt32("CurrencyID");
         }
     }
 }
