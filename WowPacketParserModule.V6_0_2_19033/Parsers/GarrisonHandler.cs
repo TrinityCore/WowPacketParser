@@ -1,3 +1,4 @@
+using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -6,18 +7,58 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class GarrisonHandler
     {
-        private static void ReadGarrisonMission(Packet packet)
+        private static void ReadGarrisonMission(Packet packet, params object[] indexes)
         {
-            packet.ReadInt64("DbID");
-            packet.ReadInt32("MissionRecID");
+            packet.ReadInt64("DbID", indexes);
+            packet.ReadInt32("MissionRecID", indexes);
 
-            packet.ReadTime("OfferTime");
-            packet.ReadTime("OfferDuration");
-            packet.ReadTime("StartTime");
-            packet.ReadTime("TravelDuration");
-            packet.ReadTime("MissionDuration");
+            packet.ReadUInt32("OfferTime", indexes);
+            packet.ReadUInt32("OfferDuration", indexes);
+            packet.ReadUInt32("StartTime", indexes);
+            packet.ReadUInt32("TravelDuration", indexes);
+            packet.ReadUInt32("MissionDuration", indexes);
 
-            packet.ReadInt32("MissionState");
+            packet.ReadInt32("MissionState", indexes);
+        }
+
+        private static void ReadGarrisonBuildingInfo(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("GarrPlotInstanceID", indexes);
+            packet.ReadInt32("GarrBuildingID", indexes);
+            packet.ReadTime("TimeBuilt", indexes);
+            packet.ReadInt32("CurrentGarSpecID", indexes);
+            packet.ReadInt32("Unk", indexes);
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Active", indexes);
+        }
+
+        private static void ReadGarrisonFollower(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt64("DbID", indexes);
+
+            packet.ReadInt32("GarrFollowerID", indexes);
+            packet.ReadInt32("Quality", indexes);
+            packet.ReadInt32("FollowerLevel", indexes);
+            packet.ReadInt32("ItemLevelWeapon", indexes);
+            packet.ReadInt32("ItemLevelArmor", indexes);
+            packet.ReadInt32("Xp", indexes);
+            packet.ReadInt32("CurrentBuildingID", indexes);
+            packet.ReadInt32("CurrentMissionID", indexes);
+            var int40 = packet.ReadInt32("AbilityCount", indexes);
+            packet.ReadInt32("UnkInt", indexes);
+
+            var indexString = Packet.GetIndexString(indexes);
+            for (int i = 0; i < int40; i++)
+                packet.ReadInt32(String.Format("{0} [{1}] AbilityID", indexString, i));
+        }
+
+        private static void ReadGarrisonPlotInfo(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("GarrPlotInstanceID", indexes);
+            packet.ReadVector4("PlotPos", indexes);
+            packet.ReadInt32("PlotType", indexes);
         }
 
         [Parser(Opcode.CMSG_GET_GARRISON_INFO)]
@@ -199,6 +240,37 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleGarrisonOpenMissionNPC(Packet packet)
         {
             packet.ReadPackedGuid128("NpcGUID");
+        }
+
+        [Parser(Opcode.SMSG_GET_GARRISON_INFO_RESULT)]
+        public static void HandleGetGarrisonInfoResult(Packet packet)
+        {
+            packet.ReadInt32("GarrSiteID");
+            packet.ReadInt32("GarrSiteLevelID");
+            packet.ReadInt32("FactionIndex");
+
+            var int92 = packet.ReadInt32("GarrisonBuildingInfoCount");
+            var int52 = packet.ReadInt32("GarrisonPlotInfoCount");
+            var int68 = packet.ReadInt32("GarrisonMissionCount");
+            var int36 = packet.ReadInt32("GarrisonFollowerCount");
+            var int16 = packet.ReadInt32("ArchivedMissionsCount");
+
+            packet.ReadInt32("Unk1");
+
+            for (int i = 0; i < int92; i++)
+                ReadGarrisonBuildingInfo(packet, i);
+
+            for (int i = 0; i < int52; i++)
+                ReadGarrisonPlotInfo(packet, i);
+
+            for (int i = 0; i < int68; i++)
+                ReadGarrisonFollower(packet, i);
+
+            for (int i = 0; i < int36; i++)
+                ReadGarrisonMission(packet, i);
+
+            for (int i = 0; i < int16; i++)
+                packet.ReadInt32("ArchivedMissions", i);
         }
     }
 }
