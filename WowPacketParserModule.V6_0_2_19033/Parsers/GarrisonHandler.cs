@@ -77,8 +77,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("MissionRecID");
         }
 
-        [Parser(Opcode.SMSG_GARRISON_COMPLETE_MISSION_RESULT)]
-        public static void HandleGarrisonCompleteMissionResult(Packet packet)
+        [Parser(Opcode.SMSG_GARRISON_MISSION_BONUS_ROLL_RESULT)]
+        public static void HandleGarrisonMissionBonusRollResult(Packet packet)
         {
             ReadGarrisonMission(packet);
 
@@ -271,6 +271,35 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (int i = 0; i < int16; i++)
                 packet.ReadInt32("ArchivedMissions", i);
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_UNK2)] // GARRISON_FOLLOWER_XP_CHANGED
+        public static void HandleGarrisonUnk2(Packet packet)
+        {
+            packet.ReadInt32("Result");
+            ReadGarrisonFollower(packet);
+            ReadGarrisonFollower(packet);
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_COMPLETE_MISSION_RESULT)] // GARRISON_MISSION_COMPLETE_RESPONSE
+        public static void HandleGarrisonCompleteMissionResult(Packet packet)
+        {
+            packet.ReadInt32("Result");
+            ReadGarrisonMission(packet);
+            packet.ReadInt32("MissionRecID");
+            packet.ReadBit("Succeeded");
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_UNK3)] // GARRISON_MISSION_NPC_OPENED / GARRISON_MISSION_LIST_UPDATE
+        public static void HandleGarrisonUnk3(Packet packet)
+        {
+            packet.ReadInt32("Result");
+
+            var count = packet.ReadInt32("MissionsCount");
+            for (int i = 0; i < count; i++)
+                packet.ReadInt32("Missions", i);
+
+            packet.ReadBit("Succeeded");
         }
     }
 }
