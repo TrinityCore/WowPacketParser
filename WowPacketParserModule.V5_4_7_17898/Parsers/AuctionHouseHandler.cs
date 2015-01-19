@@ -18,7 +18,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
         }
 
-        [Parser(Opcode.SMSG_AUCTION_HELLO)]
+        [Parser(Opcode.SMSG_AUCTION_HELLO_RESPONSE)]
         public static void HandleServerAuctionHello(Packet packet)
         {
             var guid = new byte[8];

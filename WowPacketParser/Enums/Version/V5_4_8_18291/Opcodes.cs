@@ -267,7 +267,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_ATTACKERSTATEUPDATE, 0x06AA},
             {Opcode.SMSG_ATTACKSTART, 0x1A9E},
             {Opcode.SMSG_ATTACKSTOP, 0x12AF},
-            {Opcode.SMSG_AUCTION_HELLO, 0x10A7},
+            {Opcode.SMSG_AUCTION_HELLO_RESPONSE, 0x10A7},
             {Opcode.SMSG_AURA_UPDATE, 0x0072},
             {Opcode.SMSG_AUTH_CHALLENGE, 0x0949},
             {Opcode.SMSG_AUTH_RESPONSE, 0x0ABA},
