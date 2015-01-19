@@ -202,5 +202,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < int32; i++)
                 packet.ReadInt64("LowGuid?");
         }
+
+        [Parser(Opcode.SMSG_NOTIFY_RECEIVED_MAIL)]
+        public static void HandleNotifyReceivedMail(Packet packet)
+        {
+            packet.ReadSingle("Delay");
+        }
     }
 }

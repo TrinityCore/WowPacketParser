@@ -23,6 +23,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_GET_GARRISON_INFO)]
         [Parser(Opcode.CMSG_GARRISON_REQUEST_LANDING_PAGE_SHIPMENT_INFO)]
         [Parser(Opcode.CMSG_GARRISON_REQUEST_BLUEPRINT_AND_SPECIALIZATION_DATA)]
+        [Parser(Opcode.CMSG_GARRISON_REQUEST_UPGRADEABLE)]
         [Parser(Opcode.CMSG_GARRISON_UNK1)]
         public static void HandleGarrisonZero(Packet packet)
         {
@@ -192,6 +193,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (type == 1)
                 packet.ReadInt32("CurrencyID");
+        }
+
+        [Parser(Opcode.CMSG_GARRISON_OPEN_MISSION_NPC)]
+        public static void HandleGarrisonOpenMissionNPC(Packet packet)
+        {
+            packet.ReadPackedGuid128("NpcGUID");
         }
     }
 }

@@ -10,6 +10,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class MiscellaneousHandler
     {
+        [Parser(Opcode.CMSG_REQUEST_ARTIFACT_COMPLETION_HISTORY)]
+        public static void HandleMiscZero(Packet packet)
+        {
+        }
+
         [Parser(Opcode.SMSG_INVALIDATE_PLAYER)]
         public static void HandleReadGuid(Packet packet)
         {

@@ -382,7 +382,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_NEXT_CINEMATIC_CAMERA, 0x1B3A},
             {Opcode.CMSG_NPC_TEXT_QUERY, 0x0ECB},
             {Opcode.CMSG_OFFER_PETITION, 0x0315},
-            {Opcode.CMSG_OPEN_GARRISON_MISSION_NPC, 0x03D9},
+            {Opcode.CMSG_GARRISON_OPEN_MISSION_NPC, 0x03D9},
             {Opcode.CMSG_OPEN_ITEM, 0x08AD},
             {Opcode.CMSG_OPT_OUT_OF_LOOT, 0x0810},
             {Opcode.CMSG_OPEN_SHIPMENT_NPC, 0x0432},
