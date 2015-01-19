@@ -251,8 +251,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var int92 = packet.ReadInt32("GarrisonBuildingInfoCount");
             var int52 = packet.ReadInt32("GarrisonPlotInfoCount");
-            var int68 = packet.ReadInt32("GarrisonMissionCount");
-            var int36 = packet.ReadInt32("GarrisonFollowerCount");
+            var int68 = packet.ReadInt32("GarrisonFollowerCount");
+            var int36 = packet.ReadInt32("GarrisonMissionCount");
             var int16 = packet.ReadInt32("ArchivedMissionsCount");
 
             packet.ReadInt32("Unk1");
