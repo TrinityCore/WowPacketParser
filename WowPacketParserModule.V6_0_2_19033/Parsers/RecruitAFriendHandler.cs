@@ -18,7 +18,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Text", bits338);
         }
 
-        [Parser(Opcode.CMSG_RECRUIT_A_FRIEND)]
+        [Parser(Opcode.SMSG_RECRUIT_A_FRIEND_RESPONSE)]
         public static void HandleRecruitAFriendResponse(Packet packet)
         {
             packet.ReadBits("Result", 3)

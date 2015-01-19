@@ -1082,7 +1082,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_SET_MELEE_ANIM_KIT, 0x6715},
             {Opcode.SMSG_SET_MOVEMENT_ANIM_KIT, 0x0F14},
             {Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x0224},
-            {Opcode.SMSG_SET_PHASE_SHIFT, 0x70A0},
+            {Opcode.SMSG_SET_PHASE_SHIFT_CHANGE, 0x70A0},
             {Opcode.SMSG_SET_PLAYER_DECLINED_NAMES_RESULT , 0x2B25},
             {Opcode.SMSG_SET_PLAY_HOVER_ANIM, 0x30A6},
             {Opcode.SMSG_SET_PROFICIENCY, 0x6207},

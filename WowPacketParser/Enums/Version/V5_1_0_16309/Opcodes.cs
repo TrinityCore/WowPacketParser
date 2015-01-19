@@ -853,7 +853,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x0CED},
             {Opcode.SMSG_SET_FORCED_REACTIONS, 0x0565},
             {Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x0108},
-            {Opcode.SMSG_SET_PHASE_SHIFT, 0x05F4},
+            {Opcode.SMSG_SET_PHASE_SHIFT_CHANGE, 0x05F4},
             {Opcode.SMSG_SET_PLAY_HOVER_ANIM, 0x0F58},
             {Opcode.SMSG_SET_PROFICIENCY, 0x0DC1},
             {Opcode.SMSG_SHOW_TAXI_NODES, 0x0424},

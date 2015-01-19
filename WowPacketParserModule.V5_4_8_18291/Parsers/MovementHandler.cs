@@ -473,7 +473,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             ReadPlayerMovementInfo(ref packet, Info.MoveUnroot);
         }
 
-        [Parser(Opcode.SMSG_SET_PHASE_SHIFT)]
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT_CHANGE)]
         public static void HandlePhaseShift(Packet packet)
         {
             CoreParsers.MovementHandler.ActivePhases.Clear();

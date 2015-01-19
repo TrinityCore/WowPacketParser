@@ -757,7 +757,7 @@ namespace WowPacketParser.Enums.Version.V4_2_0_14480
             {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0xB6EB},
             {Opcode.SMSG_SET_FORCED_REACTIONS, 0x3EE2},
             {Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0xFAAF},
-            {Opcode.SMSG_SET_PHASE_SHIFT, 0xDB05},
+            {Opcode.SMSG_SET_PHASE_SHIFT_CHANGE, 0xDB05},
             {Opcode.SMSG_SET_PROFICIENCY, 0x7EE6},
             {Opcode.SMSG_SET_PROJECTILE_POSITION, 0xFA23},
             {Opcode.SMSG_SHOW_BANK, 0xEAA6},

@@ -672,7 +672,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x4EF2},
             {Opcode.SMSG_SET_FORCED_REACTIONS, 0xD8C3},
             {Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x485B},
-            {Opcode.SMSG_SET_PHASE_SHIFT, 0x204C},
+            {Opcode.SMSG_SET_PHASE_SHIFT_CHANGE, 0x204C},
             {Opcode.SMSG_SET_PLAYER_DECLINED_NAMES_RESULT, 0xE67},
             {Opcode.SMSG_SET_PROFICIENCY, 0x9C5F},
             {Opcode.SMSG_SET_PROJECTILE_POSITION, 0xC8F7},

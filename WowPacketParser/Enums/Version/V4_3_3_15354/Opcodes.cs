@@ -134,7 +134,7 @@ namespace WowPacketParser.Enums.Version.V4_3_3_15354
             {Opcode.SMSG_REDIRECT_CLIENT, 0x0855},
             {Opcode.SMSG_RESUME_COMMS, 0x0015},
             {Opcode.SMSG_SEND_UNLEARN_SPELLS, 0x78AC},
-            {Opcode.SMSG_SET_PHASE_SHIFT, 0x7104},
+            {Opcode.SMSG_SET_PHASE_SHIFT_CHANGE, 0x7104},
             {Opcode.SMSG_SET_PROFICIENCY, 0x7324},
             {Opcode.SMSG_SPELL_GO, 0x6425},
             {Opcode.SMSG_SPELL_START, 0x212D},

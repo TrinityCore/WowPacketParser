@@ -172,7 +172,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_SET_TIME_ZONE_INFORMATION, 0x1257},
             {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x07B3},
             {Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x12D4},
-            {Opcode.SMSG_SET_PHASE_SHIFT, 0x0567},
+            {Opcode.SMSG_SET_PHASE_SHIFT_CHANGE, 0x0567},
             {Opcode.SMSG_SET_PROFICIENCY, 0x12AF},
             {Opcode.SMSG_SET_VIGNETTE, 0x1613},
             {Opcode.SMSG_SPELL_CATEGORY_COOLDOWN, 0x07A7},

@@ -316,7 +316,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_SERVER_MESSAGE, 0x0DB7},
             {Opcode.SMSG_SET_DF_FAST_LAUNCH_RESULT, 0x01C0},
             {Opcode.SMSG_SET_FORCED_REACTIONS, 0x069D},
-            {Opcode.SMSG_SET_PHASE_SHIFT, 0x0BD4},
+            {Opcode.SMSG_SET_PHASE_SHIFT_CHANGE, 0x0BD4},
             {Opcode.SMSG_SET_PLAYER_DECLINED_NAMES_RESULT, 0x08CC},
             {Opcode.SMSG_SET_PLAY_HOVER_ANIM, 0x0A80},
             {Opcode.SMSG_SET_PROFICIENCY, 0x00C1},

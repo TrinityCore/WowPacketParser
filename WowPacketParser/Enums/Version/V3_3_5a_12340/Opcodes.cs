@@ -1139,7 +1139,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.SMSG_CALENDAR_RAID_LOCKOUT_UPDATED, 0x471},
             {Opcode.SMSG_CHAR_CUSTOMIZE, 0x474},
             {Opcode.SMSG_PET_RENAMEABLE, 0x475},
-            {Opcode.SMSG_SET_PHASE_SHIFT, 0x47C},
+            {Opcode.SMSG_SET_PHASE_SHIFT_CHANGE, 0x47C},
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA, 0x47D},
             {Opcode.SMSG_HEALTH_UPDATE, 0x47F},
             {Opcode.SMSG_POWER_UPDATE, 0x480},

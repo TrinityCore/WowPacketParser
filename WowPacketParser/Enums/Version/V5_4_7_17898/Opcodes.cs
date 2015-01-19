@@ -406,7 +406,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_SHOW_BANK, 0x060B},
             {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x0179},
             {Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x193C},
-            {Opcode.SMSG_SET_PHASE_SHIFT, 0x1D52},
+            {Opcode.SMSG_SET_PHASE_SHIFT_CHANGE, 0x1D52},
             {Opcode.SMSG_SET_PLAY_HOVER_ANIM, 0x0729},
             {Opcode.SMSG_SET_PROFICIENCY, 0x1E3B},
             {Opcode.SMSG_SET_VIGNETTE, 0x05A1},

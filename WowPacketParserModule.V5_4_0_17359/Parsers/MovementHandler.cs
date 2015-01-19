@@ -220,7 +220,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.AddValue("Position", pos);
         }
 
-        [Parser(Opcode.SMSG_SET_PHASE_SHIFT)]
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT_CHANGE)]
         public static void HandlePhaseShift(Packet packet)
         {
             CoreParsers.MovementHandler.ActivePhases.Clear();

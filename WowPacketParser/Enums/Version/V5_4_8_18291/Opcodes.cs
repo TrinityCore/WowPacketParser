@@ -465,7 +465,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_SET_FACTION_STANDING, 0x10AA},
             {Opcode.SMSG_SET_FORCED_REACTIONS, 0x068F},
             {Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 0x09D3},
-            {Opcode.SMSG_SET_PHASE_SHIFT, 0x02A2},
+            {Opcode.SMSG_SET_PHASE_SHIFT_CHANGE, 0x02A2},
             {Opcode.SMSG_SET_PROFICIENCY, 0x1440},
             {Opcode.SMSG_SET_RAID_DIFFICULTY, 0x0591},
             {Opcode.SMSG_SET_VIGNETTE, 0x0CBE},

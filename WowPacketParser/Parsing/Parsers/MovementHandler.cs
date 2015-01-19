@@ -1460,7 +1460,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT_CHANGE, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandlePhaseShift(Packet packet)
         {
             CurrentPhaseMask = packet.ReadInt32("Phase Mask");
@@ -1469,7 +1469,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_1_0_13914)]
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT_CHANGE, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_1_0_13914)]
         public static void HandlePhaseShift406(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -1501,7 +1501,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT_CHANGE, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
         public static void HandlePhaseShift422(Packet packet)
         {
             var guid = new byte[8];
@@ -1560,7 +1560,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V5_0_5_16048, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT_CHANGE, ClientVersionBuild.V5_0_5_16048, ClientVersionBuild.V5_1_0_16309)]
         public static void HandlePhaseShift505(Packet packet)
         {
             ActivePhases.Clear();
@@ -1593,7 +1593,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("GUID", guid);
         }
 
-        [Parser(Opcode.SMSG_SET_PHASE_SHIFT, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT_CHANGE, ClientVersionBuild.V5_1_0_16309)]
         public static void HandlePhaseShift510(Packet packet)
         {
             ActivePhases.Clear();

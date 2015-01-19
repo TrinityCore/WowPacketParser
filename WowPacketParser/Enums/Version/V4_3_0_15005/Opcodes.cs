@@ -814,7 +814,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 18054},
             {Opcode.SMSG_SET_FORCED_REACTIONS, 18976},
             {Opcode.SMSG_SET_PCT_SPELL_MODIFIER, 25762},
-            {Opcode.SMSG_SET_PHASE_SHIFT, 17448},
+            {Opcode.SMSG_SET_PHASE_SHIFT_CHANGE, 17448},
             {Opcode.SMSG_SET_PROFICIENCY, 3746},
             {Opcode.SMSG_SET_PROJECTILE_POSITION, 11782},
             {Opcode.SMSG_SHOW_TAXI_NODES, 24098},
