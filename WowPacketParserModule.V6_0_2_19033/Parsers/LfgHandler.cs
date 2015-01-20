@@ -331,5 +331,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBitBoolean("IsBeginning");
             packet.ReadBitBoolean("ShowRoleCheck"); // NC
         }
+
+        [Parser(Opcode.SMSG_ROLE_CHOSEN)]
+        public static void HandleRoleChosen(Packet packet)
+        {
+            packet.ReadPackedGuid128("Player");
+            packet.ReadEnum<LfgRoleFlag>("RoleMask", TypeCode.UInt32);
+            packet.ReadBitBoolean("Accepted");
+        }
     }
 }

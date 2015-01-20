@@ -35,59 +35,62 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt64("Money");
         }
 
+        public static void ReadCliAuctionItem(Packet packet, params object[] idx)
+        {
+            ItemHandler.ReadItemInstance(packet, idx);
+
+            packet.ReadInt32("Count", idx);
+            packet.ReadInt32("Charges", idx);
+            var enchantmentsCount = packet.ReadInt32("EnchantmentsCount", idx);
+            packet.ReadInt32("Flags", idx);
+            packet.ReadInt32("AuctionItemID", idx);
+
+            packet.ReadPackedGuid128("Owner", idx);
+
+            packet.ReadUInt64("MinBid", idx);
+            packet.ReadUInt64("MinIncrement", idx);
+            packet.ReadUInt64("BuyoutPrice", idx);
+
+            packet.ReadInt32("DurationLeft", idx);
+            packet.ReadByte("DeleteReason", idx);
+
+            for (int i = 0; i < enchantmentsCount; i++)
+            {
+                packet.ReadInt32("ID", idx, i);
+                packet.ReadUInt32("Expiration", idx, i);
+                packet.ReadInt32("Charges", idx, i);
+                packet.ReadByte("Slot", idx, i);
+            }
+
+            packet.ResetBitReader();
+
+            var bit141 = !packet.ReadBit("CensorServerSideInfo", idx);
+            var bit142 = !packet.ReadBit("CensorBidInfo", idx);
+
+            if (bit141)
+            {
+                packet.ReadPackedGuid128("ItemGUID", idx);
+                packet.ReadPackedGuid128("OwnerAccountID", idx);
+                packet.ReadInt32("EndTime", idx);
+            }
+
+            if (bit142)
+            {
+                packet.ReadPackedGuid128("Bidder", idx);
+                packet.ReadInt64("BidAmount", idx);
+            }
+        }
+
         [Parser(Opcode.SMSG_AUCTION_LIST_ITEMS_RESULT)]
         public static void HandleListItemsResult(Packet packet)
         {
-            var int10 = packet.ReadInt32("ItemsCount");
+            var itemsCount = packet.ReadInt32("ItemsCount");
 
             packet.ReadInt32("DesiredDelay");
             packet.ReadInt32("TotalCount");
 
-            for (int i = 0; i < int10; i++)
-            {
-                ItemHandler.ReadItemInstance(packet, i);
-
-                packet.ReadInt32("Count", i);
-                packet.ReadInt32("Charges", i);
-                var int34 = packet.ReadInt32("EnchantmentsCount", i);
-                packet.ReadInt32("Flags", i);
-                packet.ReadInt32("AuctionItemID", i);
-
-                packet.ReadPackedGuid128("Owner", i);
-
-                packet.ReadUInt64("MinBid", i);
-                packet.ReadUInt64("MinIncrement", i);
-                packet.ReadUInt64("BuyoutPrice", i);
-
-                packet.ReadInt32("DurationLeft", i);
-                packet.ReadByte("DeleteReason", i);
-
-                for (int j = 0; j < int34; j++)
-                {
-                    packet.ReadInt32("ID", i, j);
-                    packet.ReadUInt32("Expiration", i, j);
-                    packet.ReadInt32("Charges", i, j);
-                    packet.ReadByte("Slot", i, j);
-                }
-
-                packet.ResetBitReader();
-
-                var bit141 = !packet.ReadBit("CensorServerSideInfo", i);
-                var bit142 = !packet.ReadBit("CensorBidInfo", i);
-
-                if (bit141)
-                {
-                    packet.ReadPackedGuid128("ItemGUID", i);
-                    packet.ReadPackedGuid128("OwnerAccountID", i);
-                    packet.ReadInt32("EndTime", i);
-                }
-
-                if (bit142)
-                {
-                    packet.ReadPackedGuid128("Bidder", i);
-                    packet.ReadInt64("BidAmount", i);
-                }
-            }
+            for (var i = 0; i < itemsCount; i++)
+                ReadCliAuctionItem(packet, i);
 
             packet.ResetBitReader();
 
@@ -139,6 +142,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadUInt32("AuctionItemID", i);
         }
 
+        [Parser(Opcode.SMSG_AUCTION_LIST_BIDDER_ITEMS_RESULT)]
+        public static void HandleAuctionListBidderItemsResult(Packet packet)
+        {
+            var itemsCount = packet.ReadInt32("ItemsCount");
+            packet.ReadUInt32("TotalCount");
+            packet.ReadUInt32("DesiredDelay");
+
+            for (var i = 0; i < itemsCount; ++i)
+                ReadCliAuctionItem(packet, i);
+        }
+
         [Parser(Opcode.CMSG_AUCTION_LIST_OWNER_ITEMS)]
         public static void HandleAuctionListOwnerItems(Packet packet)
         {
@@ -165,7 +179,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_AUCTION_LIST_PENDING_SALES)]
-        public static void HandleZero(Packet packet)
+        public static void HandleAuctionZero(Packet packet)
         {
         }
     }
