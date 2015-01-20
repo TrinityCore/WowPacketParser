@@ -301,5 +301,35 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < slotsCount; ++i) // Slots
                 packet.ReadUInt32("Slot", i);
         }
+
+        public static void ReadLFGRoleCheckUpdateMember(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("Guid", idx);
+            packet.ReadEnum<LfgRoleFlag>("RolesDesired", TypeCode.UInt32, idx);
+            packet.ReadByte("Level", idx);
+            packet.ReadBitBoolean("RoleCheckComplete", idx);
+
+            packet.ResetBitReader();
+        }
+
+        [Parser(Opcode.SMSG_LFG_ROLE_CHECK_UPDATE)]
+        public static void HandleLfgRoleCheck(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadEnum<LfgRoleCheckStatus>("RoleCheckStatus", TypeCode.Byte);
+            var joinSlotsCount = packet.ReadInt32("JoinSlotsCount");
+            packet.ReadUInt64("BgQueueID");
+            packet.ReadInt32("ActivityID"); // NC
+            var membersCount = packet.ReadInt32("MembersCount");
+
+            for (var i = 0; i < joinSlotsCount; ++i) // JoinSlots
+                packet.ReadUInt32("JoinSlot", i);
+
+            for (var i = 0; i < membersCount; ++i) // Members
+                ReadLFGRoleCheckUpdateMember(packet, i);
+
+            packet.ReadBitBoolean("IsBeginning");
+            packet.ReadBitBoolean("ShowRoleCheck"); // NC
+        }
     }
 }

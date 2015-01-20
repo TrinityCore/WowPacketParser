@@ -312,6 +312,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             Storage.Sounds.Add(sound, packet.TimeSpan);
         }
 
+        [Parser(Opcode.SMSG_PLAY_MUSIC)]
+        public static void HandlePlayMusic(Packet packet)
+        {
+            var sound = packet.ReadUInt32("SoundKitID");
+
+            Storage.Sounds.Add(sound, packet.TimeSpan);
+        }
+
         [Parser(Opcode.CMSG_RANDOM_ROLL)]
         public static void HandleRandomRoll(Packet packet)
         {
