@@ -197,7 +197,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_GET_SHIPMENT_INFO, 0x06E3},
             {Opcode.CMSG_GET_TROPHY_LIST, 0x13B1},
             {Opcode.CMSG_GM_TICKET_ACKNOWLEDGE_SURVEY, 0x0327},
-            {Opcode.CMSG_GM_TICKET_CREATE, 0x0932},
+            {Opcode.CMSG_GM_TICKET_CREATE, 0x0935},
             {Opcode.CMSG_GM_TICKET_DELETE_TICKET, 0x0F2E},
             {Opcode.CMSG_GM_TICKET_GET_CASE_STATUS, 0x0F0A},
             {Opcode.CMSG_GM_TICKET_GET_SYSTEM_STATUS, 0x0B0E},
