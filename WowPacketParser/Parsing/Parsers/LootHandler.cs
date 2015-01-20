@@ -108,7 +108,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var guid = packet.ReadGuid("GUID");
             var lootType = packet.ReadEnum<LootType>("Loot Type", TypeCode.Byte);
-            if (lootType == LootType.Unk0)
+            if (lootType == LootType.None)
             {
                 packet.ReadByte("Slot");
                 return;

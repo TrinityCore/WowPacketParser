@@ -60,10 +60,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             //! TODO Doublecheck the fields for this whole packet. I didn't have many different sniffs to name fields.
             packet.ReadPackedGuid128("Owner");
             packet.ReadPackedGuid128("LootObj");
-            packet.ReadByte("FailureReason");
-            packet.ReadByte("LootMethod");
-            packet.ReadByte("AcquireReason");
-            packet.ReadByte("Threshold");
+            packet.ReadEnum<LootError>("FailureReason", TypeCode.Byte);
+            packet.ReadEnum<LootType>("AcquireReason", TypeCode.Byte);
+            packet.ReadEnum<LootMethod>("LootMethod", TypeCode.Byte);
+            packet.ReadEnum<ItemQuality>("Threshold", TypeCode.Byte);
 
             packet.ReadUInt32("Coins");
 
