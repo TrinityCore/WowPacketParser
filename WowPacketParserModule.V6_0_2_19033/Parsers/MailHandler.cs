@@ -23,81 +23,86 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("QtyInInventory");
         }
 
+        public static void ReadCliMailListEntry(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("MailID", idx);
+            packet.ReadEnum<MailType>("SenderType", TypeCode.Byte, idx);
+
+            packet.ResetBitReader();
+
+            var bit4 = packet.ReadBit();
+            var bit12 = packet.ReadBit();
+
+            if (bit4)
+                packet.ReadInt32("VirtualRealmAddress", idx);
+
+            if (bit12)
+                packet.ReadInt32("NativeRealmAddress", idx);
+
+            packet.ReadInt64("Cod", idx);
+            packet.ReadInt32("PackageID", idx);
+            packet.ReadInt32("StationeryID", idx);
+            packet.ReadInt64("SentMoney", idx);
+            packet.ReadInt32("Flags", idx);
+            packet.ReadSingle("DaysLeft", idx);
+            packet.ReadInt32("MailTemplateID", idx);
+
+            var attachmentsCount = packet.ReadInt32("AttachmentsCount", idx);
+            for (var i = 0; i < attachmentsCount; ++i) // Attachments
+                ReadCliMailAttachedItem(packet, idx, i);
+
+            packet.ResetBitReader();
+
+            var bit24 = packet.ReadBit("HasSenderCharacter", idx);
+            var bit52 = packet.ReadBit("HasAltSenderID", idx);
+
+            var bits23 = packet.ReadBits(8);
+            var bits87 = packet.ReadBits(13);
+
+            if (bit24)
+                packet.ReadPackedGuid128("SenderCharacter", idx);
+
+            if (bit52)
+                packet.ReadInt32("AltSenderID", idx);
+
+            packet.ReadWoWString("Subject", bits23, idx);
+            packet.ReadWoWString("Body", bits87, idx);
+        }
+
+        public static void ReadCliMailAttachedItem(Packet packet, params object[] idx)
+        {
+            packet.ReadByte("Position", idx);
+            packet.ReadInt32("AttachID", idx);
+
+            // ItemInstance
+            ItemHandler.ReadItemInstance(packet, idx);
+
+            for (var k = 0; k < 8; ++k)
+            {
+                packet.ReadInt32("Enchant", idx, k);
+                packet.ReadInt32("Duration", idx, k);
+                packet.ReadInt32("Charges", idx, k);
+            }
+
+            packet.ReadInt32("Count", idx);
+            packet.ReadInt32("Charges", idx);
+            packet.ReadInt32("MaxDurability", idx);
+            packet.ReadInt32("Durability", idx);
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Unlocked", idx);
+        }
+
         [Parser(Opcode.SMSG_MAIL_LIST_RESULT)]
         public static void HandleMailListResult(Packet packet)
         {
             packet.ReadInt32("TotalNumRecords");
 
-            var int4 = packet.ReadInt32("Shown Mails");
+            var mailsCount = packet.ReadInt32("MailsCount");
 
-            for (var i = 0; i < int4; ++i)
-            {
-                packet.ReadInt32("MailID", i);
-                packet.ReadEnum<MailType>("SenderType", TypeCode.Byte, i);
-
-                packet.ResetBitReader();
-
-                var bit4 = packet.ReadBit();
-                var bit12 = packet.ReadBit();
-
-                if (bit4)
-                    packet.ReadInt32("VirtualRealmAddress", i);
-
-                if (bit12)
-                    packet.ReadInt32("NativeRealmAddress", i);
-
-                packet.ReadInt64("Cod", i);
-                packet.ReadInt32("PackageID", i);
-                packet.ReadInt32("StationeryID", i);
-                packet.ReadInt64("SentMoney", i);
-                packet.ReadInt32("Flags", i);
-                packet.ReadSingle("DaysLeft", i);
-                packet.ReadInt32("MailTemplateID", i);
-
-                // CliMailAttachedItem
-                var int8348 = packet.ReadInt32("AttachmentsCount", i);
-                for (var j = 0; j < int8348; ++j)
-                {
-                    packet.ReadByte("Position", i, j);
-                    packet.ReadInt32("AttachID", i, j);
-
-                    // ItemInstance
-                    ItemHandler.ReadItemInstance(packet, i, j);
-
-                    for (var k = 0; k < 8; ++k)
-                    {
-                        packet.ReadInt32("Enchant", i, j, k);
-                        packet.ReadInt32("Duration", i, j, k);
-                        packet.ReadInt32("Charges", i, j, k);
-                    }
-
-                    packet.ReadInt32("Count", i, j);
-                    packet.ReadInt32("Charges", i, j);
-                    packet.ReadInt32("MaxDurability", i, j);
-                    packet.ReadInt32("Durability", i, j);
-
-                    packet.ResetBitReader();
-
-                    packet.ReadBit("Unlocked", i, j);
-                }
-
-                packet.ResetBitReader();
-
-                var bit24 = packet.ReadBit("HasSenderCharacter", i);
-                var bit52 = packet.ReadBit("HasAltSenderID", i);
-
-                var bits23 = packet.ReadBits(8);
-                var bits87 = packet.ReadBits(13);
-
-                if (bit24)
-                    packet.ReadPackedGuid128("SenderCharacter", i);
-
-                if (bit52)
-                    packet.ReadInt32("AltSenderID", i);
-
-                packet.ReadWoWString("Subject", bits23, i);
-                packet.ReadWoWString("Body", bits87, i);
-            }
+            for (var i = 0; i < mailsCount; ++i)
+                ReadCliMailListEntry(packet, i);
         }
 
         [Parser(Opcode.CMSG_MAIL_CREATE_TEXT_ITEM)]
