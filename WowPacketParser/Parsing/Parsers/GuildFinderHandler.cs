@@ -362,7 +362,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guild GUID", guid);
         }
 
-        [Parser(Opcode.CMSG_LF_GUILD_POST_REQUEST)]
+        [Parser(Opcode.CMSG_LF_GUILD_GET_GUILD_POST)]
         [Parser(Opcode.CMSG_LF_GUILD_GET_APPLICATIONS)]
         [Parser(Opcode.SMSG_LF_GUILD_APPLICANT_LIST_UPDATED)]
         [Parser(Opcode.SMSG_LF_GUILD_APPLICATIONS_LIST_CHANGED)]
