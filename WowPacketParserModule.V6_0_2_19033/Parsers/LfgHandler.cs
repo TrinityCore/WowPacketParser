@@ -14,6 +14,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("Type");
             packet.ReadTime("Time");
         }
+        public static void ReadLFGBlackList(Packet packet, params object[] indexes)
+        {
+            packet.ResetBitReader();
+            var bit16 = packet.ReadBit("HasPlayerGuid", indexes);
+            var int24 = packet.ReadInt32("LFGBlackListCount", indexes);
+
+            if (bit16)
+                packet.ReadPackedGuid128("PlayerGuid", indexes);
+
+            var indexString = Packet.GetIndexString(indexes);
+            for (var i = 0; i < int24; ++i)
+            {
+                packet.ReadUInt32(String.Format("{0} [{1}] Slot", indexString, i));
+                packet.ReadUInt32(String.Format("{0} [{1}] Reason", indexString, i));
+                packet.ReadInt32(String.Format("{0} [{1}] SubReason1", indexString, i));
+                packet.ReadInt32(String.Format("{0} [{1}] SubReason2", indexString, i));
+            }
+        }
 
         [Parser(Opcode.CMSG_LFG_LIST_GET_STATUS)]
         public static void HandleLfgZero(Packet packet)
@@ -26,20 +44,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var int16 = packet.ReadInt32("DungeonCount");
 
             // LFGBlackList
-            packet.ResetBitReader();
-            var bit16 = packet.ReadBit("HasPlayerGuid");
-            var int24 = packet.ReadInt32("LFGBlackListCount");
-
-            if (bit16)
-                packet.ReadPackedGuid128("PlayerGuid");
-
-            for (var i = 0; i < int24; ++i)
-            {
-                packet.ReadInt32("Slot", i);
-                packet.ReadInt32("Reason", i);
-                packet.ReadInt32("SubReason1", i);
-                packet.ReadInt32("SubReason2", i);
-            }
+            ReadLFGBlackList(packet);
 
             // LfgPlayerDungeonInfo
             for (var i = 0; i < int16; ++i)
@@ -338,6 +343,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Player");
             packet.ReadEnum<LfgRoleFlag>("RoleMask", TypeCode.UInt32);
             packet.ReadBitBoolean("Accepted");
+        }
+
+        [Parser(Opcode.SMSG_LFG_PARTY_INFO)]
+        public static void HandleLfgPartyInfo(Packet packet)
+        {
+            var blackListCount = packet.ReadInt32("BlackListCount");
+            for (var i = 0; i < blackListCount; i++)
+                ReadLFGBlackList(packet, i);
         }
     }
 }
