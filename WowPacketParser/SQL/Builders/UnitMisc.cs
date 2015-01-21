@@ -726,10 +726,43 @@ namespace WowPacketParser.SQL.Builders
                     UnitTemplate UnitData;
                     if (Storage.UnitTemplates.TryGetValue((uint)unit.Key.GetEntry(), out UnitData))
                     {
-                        if (_professionTrainers.Contains(UnitData.SubName))
-                            template.NpcFlag |= (uint) NPCFlags.ProfessionTrainer;
-                        else if (_classTrainers.Contains(UnitData.SubName))
-                            template.NpcFlag |= (uint) NPCFlags.ClassTrainer;
+                        if (UnitData.SubName.Length > 0)
+                        {
+                            if (_professionTrainers.Contains(UnitData.SubName))
+                                template.NpcFlag |= (uint)NPCFlags.ProfessionTrainer;
+                            else if (_classTrainers.Contains(UnitData.SubName))
+                                template.NpcFlag |= (uint)NPCFlags.ClassTrainer;
+                        }
+                        else // If the SubName doesn't exist, fall back to DB method
+                        {
+                            var name = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
+                            var firstIndex = name.LastIndexOf('<');
+                            var lastIndex = name.LastIndexOf('>');
+                            if (firstIndex != -1 && lastIndex != -1)
+                            {
+                                var subname = name.Substring(firstIndex + 1, lastIndex - firstIndex - 1);
+
+                                if (_professionTrainers.Contains(subname))
+                                    template.NpcFlag |= (uint)NPCFlags.ProfessionTrainer;
+                                else if (_classTrainers.Contains(subname))
+                                    template.NpcFlag |= (uint)NPCFlags.ClassTrainer;
+                            }
+                        }
+                    }
+                    else // In case we have NonWDB data which doesn't have an entry in UnitTemplates
+                    {
+                        var name = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
+                        var firstIndex = name.LastIndexOf('<');
+                        var lastIndex = name.LastIndexOf('>');
+                        if (firstIndex != -1 && lastIndex != -1)
+                        {
+                            var subname = name.Substring(firstIndex + 1, lastIndex - firstIndex - 1);
+
+                            if (_professionTrainers.Contains(subname))
+                                template.NpcFlag |= (uint)NPCFlags.ProfessionTrainer;
+                            else if (_classTrainers.Contains(subname))
+                                template.NpcFlag |= (uint)NPCFlags.ClassTrainer;
+                        }
                     }
                 }
 
