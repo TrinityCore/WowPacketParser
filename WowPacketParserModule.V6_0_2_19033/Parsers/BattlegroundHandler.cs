@@ -206,16 +206,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_REQUEST_PVP_REWARDS_RESPONSE)]
         public static void HandleRequestPVPRewardsResponse(Packet packet)
         {
-            packet.ReadUInt32("RandomRewardPointsThisWeek");
-            packet.ReadUInt32("ArenaRewardPointsThisWeek");
-            packet.ReadUInt32("MaxRewardPointsThisWeek");
-            packet.ReadUInt32("RatedMaxRewardPointsThisWeek");
-            packet.ReadUInt32("ArenaRewardPoints");
-            packet.ReadUInt32("RandomMaxRewardPointsThisWeek");
-            packet.ReadUInt32("ArenaMaxRewardPointsThisWeek");
-            packet.ReadUInt32("RatedRewardPoints");
             packet.ReadUInt32("RewardPointsThisWeek");
+            packet.ReadUInt32("MaxRewardPointsThisWeek");
+
             packet.ReadUInt32("RatedRewardPointsThisWeek");
+            packet.ReadUInt32("RatedMaxRewardPointsThisWeek");
+
+            packet.ReadUInt32("RandomRewardPointsThisWeek");
+            packet.ReadUInt32("RandomMaxRewardPointsThisWeek");
+
+            packet.ReadUInt32("ArenaRewardPointsThisWeek");
+            packet.ReadUInt32("ArenaMaxRewardPointsThisWeek");
+
+            packet.ReadUInt32("ArenaRewardPoints");
+            packet.ReadUInt32("RatedRewardPoints");
         }
     }
 }
