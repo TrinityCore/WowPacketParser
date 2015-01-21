@@ -12,61 +12,70 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
         }
 
+        public static void ReadClientBattlePet(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("BattlePetGUID", idx);
+
+            packet.ReadInt32("SpeciesID", idx);
+            packet.ReadInt32("DisplayID", idx);
+            packet.ReadInt32("CollarID", idx);
+
+            packet.ReadInt16("BreedID", idx);
+            packet.ReadInt16("Level", idx);
+            packet.ReadInt16("Xp", idx);
+            packet.ReadInt16("BattlePetDBFlags", idx);
+
+            packet.ReadInt32("Power", idx);
+            packet.ReadInt32("Health", idx);
+            packet.ReadInt32("MaxHealth", idx);
+            packet.ReadInt32("Speed", idx);
+
+            packet.ReadByte("BreedQuality", idx);
+
+            packet.ResetBitReader();
+
+            var customNameLength = packet.ReadBits(7);
+            var hasOwnerInfo = packet.ReadBit("HasOwnerInfo", idx);
+            packet.ReadBit("NoRename", idx);
+
+            if (hasOwnerInfo) // OwnerInfo
+                ReadClientBattlePetOwnerInfo(packet, idx);
+
+            packet.ReadWoWString("CustomName", customNameLength, idx);
+        }
+
+        public static void ReadClientPetBattleSlot(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("BattlePetGUID", idx);
+
+            packet.ReadInt32("CollarID", idx);
+            packet.ReadByte("SlotIndex", idx);
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Locked", idx);
+        }
+
+        public static void ReadClientBattlePetOwnerInfo(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("Guid", idx);
+            packet.ReadUInt32("PlayerVirtualRealm", idx);
+            packet.ReadUInt32("PlayerNativeRealm", idx);
+        }
+
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL)]
         public static void HandleBattlePetJournal(Packet packet)
         {
             packet.ReadInt16("TrapLevel");
 
-            var int16 = packet.ReadInt32("SlotsCount");
-            var int32 = packet.ReadInt32("PetsCount");
+            var slotsCount = packet.ReadInt32("SlotsCount");
+            var petsCount = packet.ReadInt32("PetsCount");
 
-            for (var i = 0; i < int16; i++)
-            {
-                packet.ReadPackedGuid128("BattlePetGUID", i);
+            for (var i = 0; i < slotsCount; i++)
+                ReadClientPetBattleSlot(packet, i);
 
-                packet.ReadInt32("CollarID", i);
-                packet.ReadByte("SlotIndex", i);
-
-                packet.ResetBitReader();
-
-                packet.ReadBit("Locked", i);
-            }
-
-            for (var i = 0; i < int32; i++)
-            {
-                packet.ReadPackedGuid128("BattlePetGUID", i);
-
-                packet.ReadInt32("SpeciesID", i);
-                packet.ReadInt32("DisplayID", i);
-                packet.ReadInt32("CollarID", i);
-
-                packet.ReadInt16("BreedID", i);
-                packet.ReadInt16("Level", i);
-                packet.ReadInt16("Xp", i);
-                packet.ReadInt16("BattlePetDBFlags", i);
-
-                packet.ReadInt32("Power", i);
-                packet.ReadInt32("Health", i);
-                packet.ReadInt32("MaxHealth", i);
-                packet.ReadInt32("Speed", i);
-
-                packet.ReadByte("BreedQuality", i);
-
-                packet.ResetBitReader();
-                var bits52 = packet.ReadBits(7);
-                var bit144 = packet.ReadBit("CustomName", i);
-
-                packet.ReadBit("HasOwnerInfo", i);
-
-                if (bit144)
-                {
-                    packet.ReadPackedGuid128("Guid", i);
-                    packet.ReadInt32("PlayerVirtualRealm", i);
-                    packet.ReadInt32("PlayerNativeRealm", i);
-                }
-
-                packet.ReadWoWString("CustomName", bits52, i);
-            }
+            for (var i = 0; i < petsCount; i++)
+                ReadClientBattlePet(packet, i);
 
             packet.ResetBitReader();
 
@@ -150,6 +159,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("BattlePetGUID");
             packet.ReadInt32("Flags");
             packet.ReadBits("ControlType", 2);
+        }
+
+        [Parser(Opcode.SMSG_BATTLE_PET_UPDATES)]
+        public static void HandleBattlePetUpdates(Packet packet)
+        {
+            var petsCount = packet.ReadInt32("PetsCount");
+
+            for (var i = 0; i < petsCount; ++i)
+                ReadClientBattlePet(packet, i);
+
+            packet.ResetBitReader();
+
+            packet.ReadBitBoolean("AddedPet");
         }
     }
 }

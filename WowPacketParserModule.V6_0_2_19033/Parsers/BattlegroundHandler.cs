@@ -173,5 +173,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("NumBlackMarksOnOffender");
             packet.ReadByte("Result");
         }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_LIST)]
+        public static void HandleBattlefieldList(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlemasterGuid");
+            packet.ReadInt32("BattlemasterListID");
+            packet.ReadByte("MaxLevel");
+            packet.ReadByte("MinLevel");
+            var battlefieldsCount = packet.ReadInt32("BattlefieldsCount");
+            for (var i = 0; i < battlefieldsCount; ++i) // Battlefields
+                packet.ReadInt32("Battlefield");
+
+            packet.ReadBitBoolean("PvpAnywhere");
+            packet.ReadBitBoolean("HasHolidayWinToday");
+            packet.ReadBitBoolean("HasRandomWinToday");
+            packet.ReadBitBoolean("IsRandomBG");
+        }
     }
 }
