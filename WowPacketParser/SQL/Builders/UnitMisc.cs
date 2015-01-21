@@ -661,6 +661,27 @@ namespace WowPacketParser.SQL.Builders
             "Warrior Trainer"
         };
 
+        private static string GetSubName(int Entry, bool withEntry)
+        {
+            var name = StoreGetters.GetName(StoreNameType.Unit, Entry, withEntry);
+            var firstIndex = name.LastIndexOf('<');
+            var lastIndex = name.LastIndexOf('>');
+            if (firstIndex != -1 && lastIndex != -1)
+                return name.Substring(firstIndex + 1, lastIndex - firstIndex - 1);
+
+            return "";
+        }
+
+        private static uint ProcessNpcFlags(string SubName)
+        {
+            if (_professionTrainers.Contains(SubName))
+                return (uint)NPCFlags.ProfessionTrainer;
+            else if (_classTrainers.Contains(SubName))
+                return (uint)NPCFlags.ClassTrainer;
+
+            return 0;
+        }
+
         // Non-WDB data but nevertheless data that should be saved to creature_template
         [BuilderMethod(Units = true)]
         public static string NpcTemplateNonWDB(Dictionary<WowGuid, Unit> units)
@@ -723,18 +744,17 @@ namespace WowPacketParser.SQL.Builders
                     ((template.NpcFlag & (uint) NPCFlags.ProfessionTrainer) == 0 ||
                      (template.NpcFlag & (uint) NPCFlags.ClassTrainer) == 0))
                 {
-                    var name = StoreGetters.GetName(StoreNameType.Unit, (int) unit.Key.GetEntry(), false);
-                    var firstIndex = name.LastIndexOf('<');
-                    var lastIndex = name.LastIndexOf('>');
-                    if (firstIndex != -1 && lastIndex != -1)
+                    UnitTemplate UnitData;
+                    var subname = GetSubName((int)unit.Key.GetEntry(), false); // Fall back
+                    if (Storage.UnitTemplates.TryGetValue((uint)unit.Key.GetEntry(), out UnitData))
                     {
-                        var subname = name.Substring(firstIndex + 1, lastIndex - firstIndex - 1);
-
-                        if (_professionTrainers.Contains(subname))
-                            template.NpcFlag |= (uint) NPCFlags.ProfessionTrainer;
-                        else if (_classTrainers.Contains(subname))
-                            template.NpcFlag |= (uint) NPCFlags.ClassTrainer;
+                        if (UnitData.SubName.Length > 0)
+                            template.NpcFlag |= ProcessNpcFlags(UnitData.SubName);
+                        else // If the SubName doesn't exist or is cached, fall back to DB method
+                            template.NpcFlag |= ProcessNpcFlags(subname);
                     }
+                    else // In case we have NonWDB data which doesn't have an entry in UnitTemplates
+                        template.NpcFlag |= ProcessNpcFlags(subname);
                 }
 
                 templates.Add(unit.Key.GetEntry(), template);
