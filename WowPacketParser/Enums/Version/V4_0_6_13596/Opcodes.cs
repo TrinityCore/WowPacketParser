@@ -952,8 +952,8 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_MOUNT_SPECIAL_ANIM, 0x02388},
             {Opcode.SMSG_MOVE_ABANDON_TRANSPORT, 0x101D0}, //UnknownopcodeID
             {Opcode.SMSG_MOVE_SET_FEATHER_FALL, 0x06088},
-            {Opcode.SMSG_MOVE_GRAVITY_DISABLE, 0x10219}, //UnknownopcodeID
-            {Opcode.SMSG_MOVE_GRAVITY_ENABLE, 0x1021B}, //UnknownopcodeID
+            {Opcode.SMSG_MOVE_DISABLE_GRAVITY, 0x10219}, //UnknownopcodeID
+            {Opcode.SMSG_MOVE_ENABLE_GRAVITY, 0x1021B}, //UnknownopcodeID
             {Opcode.SMSG_MOVE_KNOCK_BACK, 0x0B180},
             //{Opcode.SMSG_MOVE_LAND_WALK, 0x02084},
             {Opcode.SMSG_MOVE_LEVITATING, 0x0B8AC},

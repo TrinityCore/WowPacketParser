@@ -6898,7 +6898,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.AddValue("Position", pos);
         }
 
-        [Parser(Opcode.SMSG_MOVE_GRAVITY_DISABLE)]
+        [Parser(Opcode.SMSG_MOVE_DISABLE_GRAVITY)]
         public static void HandleMoveGravityDisable434(Packet packet)
         {
             var guid = packet.StartBitStream(0, 1, 5, 7, 6, 4, 3, 2);
@@ -6914,7 +6914,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_MOVE_GRAVITY_ENABLE)]
+        [Parser(Opcode.SMSG_MOVE_ENABLE_GRAVITY)]
         public static void HandleMoveGravityEnable434(Packet packet)
         {
             var guid = packet.StartBitStream(1, 4, 7, 5, 2, 0, 3, 6);

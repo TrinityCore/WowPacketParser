@@ -1108,8 +1108,8 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_ARENA_OPPONENT_UPDATE, 0x5B29}, // ()(0x04C7) // // uint64}, EVENT_ARENA_OPPONENT_UPDATE
             {Opcode.SMSG_ARENA_TEAM_CHANGE_FAILED_QUEUED, 0xFF96}, // NF(0xA370)(0x04C8) //an't modify arena team while queued or in a match." 3.2
             {Opcode.SMSG_MULTIPLE_PACKETS_2, 0x957E}, // (0x0B5C)(0x04CD) //dles any opcode
-            {Opcode.SMSG_MOVE_GRAVITY_DISABLE, 0x04CE}, // NF()(0x04CE) // // SMSG}, movement related
-            {Opcode.SMSG_MOVE_GRAVITY_ENABLE, 0x04D0}, // NF()(0x04D0) // // SMSG}, movement related
+            {Opcode.SMSG_MOVE_DISABLE_GRAVITY, 0x04CE}, // NF()(0x04CE) // // SMSG}, movement related
+            {Opcode.SMSG_MOVE_ENABLE_GRAVITY, 0x04D0}, // NF()(0x04D0) // // SMSG}, movement related
             {Opcode.SMSG_SPLINE_MOVE_GRAVITY_DISABLE, 0x04D3}, // NF()(0x04D3) // // SMSG}, movement related
             {Opcode.SMSG_SPLINE_MOVE_GRAVITY_ENABLE, 0x04D4}, // NF()(0x04D4) // // SMSG}, movement related
             {Opcode.SMSG_EQUIPMENT_SET_USE_RESULT, 0xF657}, // (0x02D9)(0x04D6) //EquipmentSetResult?

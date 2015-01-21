@@ -83,7 +83,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             // MoveUpdate
             if (bit456)
-                MovementHandler.ReadMovementStats(ref packet);
+                MovementHandler.ReadMovementStats(packet);
 
             // SpellWeight
             for (var i = 0; i < bits116; ++i)
