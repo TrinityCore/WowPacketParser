@@ -465,13 +465,6 @@ namespace WowPacketParser.Misc
             return AddValue(name, ReadBit(), indexes);
         }
 
-        public Bit ReadBitBoolean(string name, params object[] indexes)
-        {
-            var val = ReadBit();
-            AddValue(name, val ? "true" : "false", indexes);
-            return val;
-        }
-
         public Bit ReadBit()
         {
             ++_bitpos;

@@ -186,10 +186,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < battlefieldsCount; ++i) // Battlefields
                 packet.ReadInt32("Battlefield");
 
-            packet.ReadBitBoolean("PvpAnywhere");
-            packet.ReadBitBoolean("HasHolidayWinToday");
-            packet.ReadBitBoolean("HasRandomWinToday");
-            packet.ReadBitBoolean("IsRandomBG");
+            packet.ReadBit("PvpAnywhere");
+            packet.ReadBit("HasHolidayWinToday");
+            packet.ReadBit("HasRandomWinToday");
+            packet.ReadBit("IsRandomBG");
         }
 
         [Parser(Opcode.SMSG_PVP_OPTIONS_ENABLED)]

@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-
-namespace WowPacketParser.Misc
+﻿namespace WowPacketParser.Misc
 {
     public struct Bit
     {
@@ -13,6 +11,6 @@ namespace WowPacketParser.Misc
         public static implicit operator bool(Bit b) { return b.Value; }
         public static implicit operator Bit(bool b) { return new Bit(b); }
         public static implicit operator Bit(byte b) { return new Bit(b); }
-        public override string ToString() { return _value.ToString(CultureInfo.InvariantCulture); }
+        public override string ToString() { return _value.ToString(); }
     }
 }

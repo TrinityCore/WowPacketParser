@@ -270,7 +270,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("RewardItem", indexes);
             packet.ReadUInt32("RewardItemQuantity", indexes);
             packet.ReadInt32("BonusCurrency", indexes);
-            packet.ReadBitBoolean("IsCurrency", indexes);
+            packet.ReadBit("IsCurrency", indexes);
         }
 
         [Parser(Opcode.SMSG_LFG_PLAYER_REWARD)]
@@ -289,7 +289,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_DF_JOIN)]
         public static void HandleDFJoin(Packet packet)
         {
-            packet.ReadBitBoolean("QueueAsGroup");
+            packet.ReadBit("QueueAsGroup");
             var commentLength = packet.ReadBits("UnkBits8", 8);
 
             packet.ResetBitReader();
@@ -312,7 +312,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Guid", idx);
             packet.ReadEnum<LfgRoleFlag>("RolesDesired", TypeCode.UInt32, idx);
             packet.ReadByte("Level", idx);
-            packet.ReadBitBoolean("RoleCheckComplete", idx);
+            packet.ReadBit("RoleCheckComplete", idx);
 
             packet.ResetBitReader();
         }
@@ -333,8 +333,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < membersCount; ++i) // Members
                 ReadLFGRoleCheckUpdateMember(packet, i);
 
-            packet.ReadBitBoolean("IsBeginning");
-            packet.ReadBitBoolean("ShowRoleCheck"); // NC
+            packet.ReadBit("IsBeginning");
+            packet.ReadBit("ShowRoleCheck"); // NC
         }
 
         [Parser(Opcode.SMSG_ROLE_CHOSEN)]
@@ -342,7 +342,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Player");
             packet.ReadEnum<LfgRoleFlag>("RoleMask", TypeCode.UInt32);
-            packet.ReadBitBoolean("Accepted");
+            packet.ReadBit("Accepted");
         }
 
         [Parser(Opcode.SMSG_LFG_PARTY_INFO)]
