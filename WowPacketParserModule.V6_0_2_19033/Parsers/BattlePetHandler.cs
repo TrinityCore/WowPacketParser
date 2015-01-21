@@ -1,3 +1,4 @@
+using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -8,6 +9,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     {
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED)]
         [Parser(Opcode.CMSG_BATTLE_PET_REQUEST_JOURNAL)]
+        [Parser(Opcode.CMSG_BATTLE_PET_REQUEST_JOURNAL_LOCK)]
         public static void HandleBattlePetZero(Packet packet)
         {
         }
@@ -171,7 +173,217 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
 
-            packet.ReadBitBoolean("AddedPet");
+            packet.ReadBit("AddedPet");
+        }
+
+        public static void ReadPetBattlePetUpdate(Packet packet, params object[] idx)
+        {
+            /*
+            ulong BattlePetGUID                    { get; set; }
+            int SpeciesID                          { get; set; }
+            int DisplayID                          { get; set; }
+            int CollarID                           { get; set; }
+            short Level                            { get; set; }
+            short Xp                               { get; set; }
+            int CurHealth                          { get; set; }
+            int MaxHealth                          { get; set; }
+            int Power                              { get; set; }
+            int Speed                              { get; set; }
+            int NpcTeamMemberID                    { get; set; }
+            ushort BreedQuality                    { get; set; }
+            ushort StatusFlags                     { get; set; }
+            sbyte Slot                             { get; set; }
+            string CustomName                      { get; set; }
+            List<PetBattleActiveAbility> Abilities { get; set; }
+            List<PetBattleActiveAura> Auras        { get; set; }
+            List<PetBattleActiveState> States      { get; set; }
+            */
+        }
+
+        public static void ReadPetBattlePlayerUpdate(Packet packet, params object[] idx)
+        {
+            /*
+            ulong CharacterID             { get; set; }
+            int TrapAbilityID             { get; set; }
+            int TrapStatus                { get; set; }
+            ushort RoundTimeSecs          { get; set; }
+            List<PetBattlePetUpdate> Pets { get; set; }
+            sbyte FrontPet                { get; set; }
+            byte InputFlags               { get; set; }
+            */
+        }
+
+        public static void ReadPetBattleActiveState(Packet packet, params object[] idx)
+        {
+            /*
+            uint StateID
+            int StateValue
+            */
+        }
+
+        public static void ReadPetBattleActiveAbility(Packet packet, params object[] idx)
+        {
+            /*
+            int AbilityID          
+            short CooldownRemaining
+            short LockdownRemaining
+            sbyte AbilityIndex     
+            byte Pboid             
+            */
+        }
+
+        public static void ReadPetBattleActiveAura(Packet packet, params object[] idx)
+        {
+            /*
+            int AbilityID      
+            uint InstanceID    
+            int RoundsRemaining
+            int CurrentRound   
+            byte CasterPBOID   
+            */
+        }
+
+        public static void ReadPetBattleEnviroUpdate(Packet packet, params object[] idx)
+        {
+            /*
+            List<PetBattleActiveAura> Auras
+            List<PetBattleActiveState> States
+            */
+        }
+
+        public static void ReadPetBattleFullUpdate(Packet packet, params object[] idx)
+        {
+            /*
+            ushort WaitingForFrontPetsMaxSecs
+            ushort PvpMaxRoundTime           
+            int CurRound                     
+            uint NpcCreatureID               
+            uint NpcDisplayID                
+            sbyte CurPetBattleState          
+            byte ForfeitPenalty              
+            ulong InitialWildPetGUID         
+            bool IsPVP                       
+            bool CanAwardXP                  
+            PetBattlePlayerUpdate[2] Players 
+            PetBattleEnviroUpdate[3] Enviros 
+             */
+        }
+
+        public static void ReadPetBattleEffectTarget(Packet packet, params object[] idx)
+        {
+            /*
+            PetBattleEffectTargetEx??? Type
+            byte Petx            
+            uint AuraInstanceID  
+            uint AuraAbilityID   
+            int RoundsRemaining  
+            int CurrentRound     
+            uint StateID         
+            int StateValue       
+            int Health           
+            int NewStatValue     
+            int TriggerAbilityID 
+            int ChangedAbilityID 
+            int CooldownRemaining
+            int LockdownRemaining
+            int BroadcastTextID  
+            */
+        }
+
+        public static void ReadPetBattleEffect(Packet packet, params object[] idx)
+        {
+            /*
+            uint AbilityEffectID               
+            ushort Flags                       
+            ushort SourceAuraInstanceID        
+            ushort TurnInstanceID              
+            sbyte PetBattleEffectType          
+            byte CasterPBOID                   
+            byte StackDepth                    
+            List<PetBattleEffectTarget> Targets
+             */
+        }
+
+        public static void ReadPetBattleRoundResult(Packet packet, params object[] idx)
+        {
+            /*
+            int CurRound                          
+            sbyte NextPetBattleState              
+            List<PetBattleEffect> Effects         
+            List<sbyte> PetXDied                  
+            List<PetBattleActiveAbility> Cooldowns
+            byte[2] NextInputFlags                
+            sbyte[2] NextTrapStatus               
+            ushort[2] RoundTimeSecs               
+            */
+        }
+
+        public static void ReadPetBattleFinalPet(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("Guid", idx);
+            packet.ReadUInt16("Level", idx);
+            packet.ReadUInt16("Xp", idx);
+            packet.ReadInt32("Health", idx);
+            packet.ReadInt32("MaxHealth", idx);
+            packet.ReadUInt16("InitialLevel", idx);
+            packet.ReadByte("Pboid", idx);
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Captured | Caged | SeenAction", idx);
+            packet.ReadBit("Captured | Caged | SeenAction", idx);
+            packet.ReadBit("Captured | Caged | SeenAction", idx);
+            packet.ReadBit("AwardedXP", idx);
+
+            packet.ResetBitReader();
+        }
+
+        public static void ReadPetBattleFinalRound(Packet packet, params object[] idx)
+        {
+            packet.ReadBit("Abandoned | PvpBattle", idx);
+            packet.ReadBit("Abandoned | PvpBattle", idx);
+
+            for (var i = 0; i < 2; ++i) // Winners
+                packet.ReadBit("Winner", idx, i);
+
+            packet.ResetBitReader();
+
+            for (var i = 0; i < 2; ++i) // Winners
+                packet.ReadEntry<Int32>(StoreNameType.Unit, "NpcCreatureID", idx, i);
+
+            var petsCount = packet.ReadInt32("PetsCount", idx);
+
+            for (var i = 0; i < petsCount; ++i)
+                ReadPetBattleFinalPet(packet, idx, "Pets", i);
+        }
+
+        [Parser(Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_INITIAL_UPDATE)]
+        public static void HandleSceneObjectPetBattleInitialUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("SceneObjectGUID");
+            ReadPetBattleFullUpdate(packet, "MsgData");
+        }
+
+        [Parser(Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_FIRST_ROUND)]
+        [Parser(Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_ROUND_RESULT)]
+        [Parser(Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_REPLACEMENTS_MADE)]
+        public static void HandleSceneObjectPetBattleRound(Packet packet)
+        {
+            packet.ReadPackedGuid128("SceneObjectGUID");
+            ReadPetBattleRoundResult(packet, "MsgData");
+        }
+
+        [Parser(Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_FINAL_ROUND)]
+        public static void HandleSceneObjectPetBattleFinalRound(Packet packet)
+        {
+            packet.ReadPackedGuid128("SceneObjectGUID");
+            ReadPetBattleFinalRound(packet, "MsgData");
+        }
+
+        [Parser(Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_FINISHED)]
+        public static void HandleSceneObjectPetBattleFinished(Packet packet)
+        {
+            packet.ReadPackedGuid128("SceneObjectGUID");
         }
     }
 }

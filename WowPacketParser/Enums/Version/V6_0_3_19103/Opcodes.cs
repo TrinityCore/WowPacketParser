@@ -1162,6 +1162,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_SCENARIO_POIS, 0x0343},
             {Opcode.SMSG_SCENARIO_PROGRESS_UPDATE, 0x0324},
             {Opcode.SMSG_SCENARIO_STATE, 0x152D},
+            {Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_INITIAL_UPDATE, 0x0540},
             {Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_FINAL_ROUND, 0x092E},
             {Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_FIRST_ROUND, 0x000E},
             {Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_FINISHED, 0x1B44},

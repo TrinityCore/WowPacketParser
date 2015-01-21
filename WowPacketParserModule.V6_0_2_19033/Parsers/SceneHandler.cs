@@ -7,7 +7,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     public static class SceneHandler
     {
         [Parser(Opcode.SMSG_CANCEL_SCENE)]
-        public static void HandleCancelScene(Packet packet)
+        [Parser(Opcode.CMSG_SCENE_PLAYBACK_COMPLETE)]
+        [Parser(Opcode.CMSG_SCENE_PLAYBACK_CANCELED)]
+        public static void HandleMiscScene(Packet packet)
         {
             packet.ReadUInt32("SceneInstanceID");
         }
