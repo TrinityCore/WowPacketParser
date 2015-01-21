@@ -307,7 +307,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_BATTLENET_CHALLENGE_START)]
+        [Parser(Opcode.SMSG_BATTLENET_CHALLENGE_ABORT)]
         public static void HandleBattlenetChallengeAbort(Packet packet)
         {
             packet.ReadUInt32("Token");

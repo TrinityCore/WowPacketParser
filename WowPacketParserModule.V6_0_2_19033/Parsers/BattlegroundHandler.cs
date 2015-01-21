@@ -203,7 +203,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("RatedBattlegrounds");
         }
 
-        [Parser(Opcode.SMSG_PVP_OPTIONS_ENABLED)]
+        [Parser(Opcode.SMSG_REQUEST_PVP_REWARDS_RESPONSE)]
         public static void HandleRequestPVPRewardsResponse(Packet packet)
         {
             packet.ReadUInt32("RandomRewardPointsThisWeek");
