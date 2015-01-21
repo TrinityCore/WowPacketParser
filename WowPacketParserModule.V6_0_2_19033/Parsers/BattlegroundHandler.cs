@@ -9,6 +9,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     {
         [Parser(Opcode.CMSG_REQUEST_BATTLEFIELD_STATUS)]
         [Parser(Opcode.CMSG_REQUEST_CONQUEST_FORMULA_CONSTANTS)]
+        [Parser(Opcode.CMSG_REQUEST_RATED_BATTLEFIELD_INFO)]
         public static void HandleBattlefieldZero(Packet packet)
         {
         }
@@ -189,6 +190,32 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBitBoolean("HasHolidayWinToday");
             packet.ReadBitBoolean("HasRandomWinToday");
             packet.ReadBitBoolean("IsRandomBG");
+        }
+
+        [Parser(Opcode.SMSG_PVP_OPTIONS_ENABLED)]
+        public static void HandlePVPOptionsEnabled(Packet packet)
+        {
+            packet.ReadBit("RatedArenas");
+            packet.ReadBit("ArenaSkirmish");
+            packet.ReadBit("PugBattlegrounds");
+            packet.ReadBit("WargameBattlegrounds");
+            packet.ReadBit("WargameArenas");
+            packet.ReadBit("RatedBattlegrounds");
+        }
+
+        [Parser(Opcode.SMSG_PVP_OPTIONS_ENABLED)]
+        public static void HandleRequestPVPRewardsResponse(Packet packet)
+        {
+            packet.ReadUInt32("RandomRewardPointsThisWeek");
+            packet.ReadUInt32("ArenaRewardPointsThisWeek");
+            packet.ReadUInt32("MaxRewardPointsThisWeek");
+            packet.ReadUInt32("RatedMaxRewardPointsThisWeek");
+            packet.ReadUInt32("ArenaRewardPoints");
+            packet.ReadUInt32("RandomMaxRewardPointsThisWeek");
+            packet.ReadUInt32("ArenaMaxRewardPointsThisWeek");
+            packet.ReadUInt32("RatedRewardPoints");
+            packet.ReadUInt32("RewardPointsThisWeek");
+            packet.ReadUInt32("RatedRewardPointsThisWeek");
         }
     }
 }
