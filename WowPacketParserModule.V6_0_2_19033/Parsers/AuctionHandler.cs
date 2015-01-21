@@ -1,6 +1,5 @@
 ﻿using System;
 using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -142,14 +141,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadUInt32("AuctionItemID", i);
         }
 
+        [Parser(Opcode.SMSG_AUCTION_LIST_OWNER_ITEMS_RESULT)]
         [Parser(Opcode.SMSG_AUCTION_LIST_BIDDER_ITEMS_RESULT)]
-        public static void HandleAuctionListBidderItemsResult(Packet packet)
+        public static void HandleAuctionListItemsResult(Packet packet)
         {
             var itemsCount = packet.ReadInt32("ItemsCount");
             packet.ReadUInt32("TotalCount");
             packet.ReadUInt32("DesiredDelay");
 
-            for (var i = 0; i < itemsCount; ++i)
+            for (var i = 0; i < itemsCount; ++i) // Items
                 ReadCliAuctionItem(packet, i);
         }
 
@@ -176,6 +176,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadPackedGuid128("Guid", i);
                 packet.ReadInt32("UseCount");
             }
+        }
+
+        [Parser(Opcode.SMSG_AUCTION_LIST_PENDING_SALES_RESULT)]
+        public static void HandleAuctionListPendingSalesResult(Packet packet)
+        {
+            var mailsCount = packet.ReadInt32("MailsCount");
+            packet.ReadInt32("TotalNumRecords");
+
+            for (var i = 0; i < mailsCount; i++) // Mails
+                MailHandler.ReadCliMailListEntry(packet, i);
         }
 
         [Parser(Opcode.CMSG_AUCTION_LIST_PENDING_SALES)]
