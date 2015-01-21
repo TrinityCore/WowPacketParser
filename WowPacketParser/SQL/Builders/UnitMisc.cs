@@ -723,16 +723,12 @@ namespace WowPacketParser.SQL.Builders
                     ((template.NpcFlag & (uint) NPCFlags.ProfessionTrainer) == 0 ||
                      (template.NpcFlag & (uint) NPCFlags.ClassTrainer) == 0))
                 {
-                    var name = StoreGetters.GetName(StoreNameType.Unit, (int) unit.Key.GetEntry(), false);
-                    var firstIndex = name.LastIndexOf('<');
-                    var lastIndex = name.LastIndexOf('>');
-                    if (firstIndex != -1 && lastIndex != -1)
+                    UnitTemplate UnitData;
+                    if (Storage.UnitTemplates.TryGetValue((uint)unit.Key.GetEntry(), out UnitData))
                     {
-                        var subname = name.Substring(firstIndex + 1, lastIndex - firstIndex - 1);
-
-                        if (_professionTrainers.Contains(subname))
+                        if (_professionTrainers.Contains(UnitData.SubName))
                             template.NpcFlag |= (uint) NPCFlags.ProfessionTrainer;
-                        else if (_classTrainers.Contains(subname))
+                        else if (_classTrainers.Contains(UnitData.SubName))
                             template.NpcFlag |= (uint) NPCFlags.ClassTrainer;
                     }
                 }
