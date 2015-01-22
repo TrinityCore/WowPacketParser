@@ -89,21 +89,5 @@ namespace WowPacketParser.Tests.Misc
 
             Thread.CurrentThread.CurrentCulture = oldCulture;
         }
-
-        [Test]
-        public void TestToTuple()
-        {
-            var list1 = new List<object> {1, "Foo", InhabitType.Air, 4};
-            var list2 = new List<object>();
-
-            var result1 = (Tuple<object, object, object>)list1.ToTuple(4);
-
-            Assert.Throws<ArgumentOutOfRangeException>(() => list2.ToTuple(0));
-            Assert.Throws<ArgumentOutOfRangeException>(() => list1.ToTuple(5));
-
-            Assert.AreEqual(list1[1], result1.Item1);
-            Assert.AreEqual(list1[2], result1.Item2);
-            Assert.AreEqual(list1[3], result1.Item3);
-        }
     }
 }
