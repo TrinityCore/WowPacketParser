@@ -192,20 +192,30 @@ namespace WowPacketParser.Misc
             return ReadBytes(length);
         }
 
-        public static string GetIndexString(params object[] values)
+        private static IEnumerable<object> FlatArray(IEnumerable<object> values)
         {
             var list = values.ToList();
 
-            for (var i = 0; i < list.Count; i++)
+            while (list.Any(o => o is IEnumerable<object>))
             {
-                var arr = list[i] as IEnumerable<object>;
-                if (arr == null) continue;
-                var arrList = arr.ToList();
-                list.RemoveAt(i);
+                for (var i = 0; i < list.Count; i++)
+                {
+                    var arr = list[i] as IEnumerable<object>;
+                    if (arr == null) continue;
+                    var arrList = arr.ToList();
+                    list.RemoveAt(i);
 
-                list.InsertRange(i, arrList);
-                i += arrList.Count - 1;
+                    list.InsertRange(i, arrList);
+                    i += arrList.Count - 1;
+                }
             }
+
+            return list;
+        }
+
+        public static string GetIndexString(params object[] values)
+        {
+            var list = FlatArray(values);
 
             return list.Where(value => value != null)
                 .Aggregate(string.Empty, (current, value) =>
