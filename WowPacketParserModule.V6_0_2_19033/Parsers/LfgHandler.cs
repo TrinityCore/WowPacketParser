@@ -34,6 +34,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_LFG_LIST_GET_STATUS)]
+        [Parser(Opcode.CMSG_REQUEST_LFG_LIST_BLACKLIST)]
         public static void HandleLfgZero(Packet packet)
         {
         }

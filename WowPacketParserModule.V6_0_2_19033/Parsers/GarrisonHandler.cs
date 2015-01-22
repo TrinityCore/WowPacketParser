@@ -61,6 +61,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("PlotType", indexes);
         }
 
+        private static void ReadCharacterShipment(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("ShipmentRecID", indexes);
+            packet.ReadInt64("ShipmentID", indexes);
+            packet.ReadTime("CreationTime", indexes);
+            packet.ReadInt32("ShipmentDuration", indexes);
+        }
+
         [Parser(Opcode.CMSG_GET_GARRISON_INFO)]
         [Parser(Opcode.CMSG_GARRISON_REQUEST_LANDING_PAGE_SHIPMENT_INFO)]
         [Parser(Opcode.CMSG_GARRISON_REQUEST_BLUEPRINT_AND_SPECIALIZATION_DATA)]
@@ -300,6 +308,27 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("Missions", i);
 
             packet.ReadBit("Succeeded");
+        }
+
+        [Parser(Opcode.CMSG_CREATE_SHIPMENT)]
+        [Parser(Opcode.CMSG_GET_SHIPMENT_INFO)]
+        public static void HandleGetShipmentInfo(Packet packet)
+        {
+            packet.ReadPackedGuid128("NpcGUID");
+        }
+
+        [Parser(Opcode.SMSG_GET_SHIPMENT_INFO_RESPONSE)]
+        public static void HandleGetShipmentInfoResponse(Packet packet)
+        {
+            packet.ReadBit("Success");
+
+            packet.ReadInt32("ShipmentID");
+            packet.ReadInt32("MaxShipments");
+            var characterShipmentCount = packet.ReadInt32("CharacterShipmentCount");
+            packet.ReadInt32("PlotInstanceID");
+
+            for (int i = 0; i < characterShipmentCount; i++)
+                ReadCharacterShipment(packet);
         }
     }
 }

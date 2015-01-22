@@ -657,11 +657,26 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("QuestGiver GUID");
         }
 
+        [Parser(Opcode.CMSG_QUEST_PUSH_RESULT)]
+        public static void HandleCliQuestPushResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("SenderGUID");
+            packet.ReadInt32("QuestID");
+            packet.ReadEnum<QuestPartyResult>("Result", TypeCode.Byte);
+        }
+
         [Parser(Opcode.SMSG_QUEST_PUSH_RESULT)]
         public static void HandleQuestPushResult(Packet packet)
         {
             packet.ReadPackedGuid128("SenderGUID");
             packet.ReadEnum<QuestPartyResult>("Result", TypeCode.Byte);
+        }
+
+        [Parser(Opcode.SMSG_SET_QUEST_COMPLETED_BIT)]
+        public static void HandleSetQuestCompletedBit(Packet packet)
+        {
+            packet.ReadInt32("Bit");
+            packet.ReadInt32("QuestID");
         }
     }
 }

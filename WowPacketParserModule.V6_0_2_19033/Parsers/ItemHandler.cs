@@ -38,6 +38,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             return itemId;
         }
 
+        [Parser(Opcode.CMSG_SORT_BAGS)]
+        public static void HandleItemZero(Packet packet)
+        {
+        }
+
         [Parser(Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE)]
         public static void HandleItemEnchantTimeUpdate(Packet packet)
         {

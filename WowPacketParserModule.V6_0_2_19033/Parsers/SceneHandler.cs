@@ -106,6 +106,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_SCENARIO_BOOT)]
+        public static void HandleScenarioZero(Packet packet)
+        {
+        }
+
         [Parser(Opcode.SMSG_SCENARIO_PROGRESS_UPDATE)]
         public static void HandleScenarioProgressUpdate(Packet packet)
         {
