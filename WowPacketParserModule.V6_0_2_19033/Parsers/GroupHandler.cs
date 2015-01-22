@@ -418,7 +418,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("ChangedBy");
         }
 
-        [Parser(Opcode.SMSG_SEND_RAID_TARGET_UPDATE_SINGLE)]
+        [Parser(Opcode.SMSG_SEND_RAID_TARGET_UPDATE_ALL)]
         public static void HandleSendRaidTargetUpdateAll(Packet packet)
         {
             packet.ReadByte("PartyIndex");
