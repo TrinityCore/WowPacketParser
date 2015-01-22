@@ -357,33 +357,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 ReadPetBattleFinalPet(packet, idx, "Pets", i);
         }
 
-        [Parser(Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_INITIAL_UPDATE)]
-        public static void HandleSceneObjectPetBattleInitialUpdate(Packet packet)
+        [Parser(Opcode.SMSG_PET_BATTLE_INITIAL_UPDATE)]
+        public static void HandlePetBattleInitialUpdate(Packet packet)
         {
-            packet.ReadPackedGuid128("SceneObjectGUID");
             ReadPetBattleFullUpdate(packet, "MsgData");
         }
 
-        [Parser(Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_FIRST_ROUND)]
-        [Parser(Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_ROUND_RESULT)]
-        [Parser(Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_REPLACEMENTS_MADE)]
-        public static void HandleSceneObjectPetBattleRound(Packet packet)
+        [Parser(Opcode.SMSG_PET_BATTLE_FIRST_ROUND)]
+        [Parser(Opcode.SMSG_PET_BATTLE_ROUND_RESULT)]
+        [Parser(Opcode.SMSG_PET_BATTLE_REPLACEMENTS_MADE)]
+        public static void HandlePetBattleRound(Packet packet)
         {
-            packet.ReadPackedGuid128("SceneObjectGUID");
             ReadPetBattleRoundResult(packet, "MsgData");
         }
 
-        [Parser(Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_FINAL_ROUND)]
+        [Parser(Opcode.SMSG_PET_BATTLE_FINAL_ROUND)]
         public static void HandleSceneObjectPetBattleFinalRound(Packet packet)
         {
-            packet.ReadPackedGuid128("SceneObjectGUID");
             ReadPetBattleFinalRound(packet, "MsgData");
-        }
-
-        [Parser(Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_FINISHED)]
-        public static void HandleSceneObjectPetBattleFinished(Packet packet)
-        {
-            packet.ReadPackedGuid128("SceneObjectGUID");
         }
     }
 }
