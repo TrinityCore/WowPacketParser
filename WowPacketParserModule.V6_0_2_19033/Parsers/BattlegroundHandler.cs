@@ -221,5 +221,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("ArenaRewardPoints");
             packet.ReadUInt32("RatedRewardPoints");
         }
+
+        [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_POSITIONS)]
+        public static void HandleBattlegroundPlayerPositions(Packet packet)
+        {
+            var battlegroundPlayerPositionCount = packet.ReadInt32("BattlegroundPlayerPositionCount");
+            for (int i = 0; i < battlegroundPlayerPositionCount; i++)
+            {
+                packet.ReadPackedGuid128("Guid", i);
+                packet.ReadVector2("Pos", i);
+                packet.ReadByte("IconID", i);
+                packet.ReadByte("ArenaSlot", i);
+            }
+        }
     }
 }

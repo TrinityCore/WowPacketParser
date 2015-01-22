@@ -371,14 +371,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 }
 
                 if (hasAreaTriggerSpline)
-                {
-                    packet.ReadInt32("TimeToTarget", index);
-                    packet.ReadInt32("ElapsedTimeForMovement", index);
-                    var int8 = packet.ReadInt32("VerticesCount", index);
-
-                    for (var i = 0; i < int8; ++i)
-                        packet.ReadVector3("Points", index, i);
-                }
+                    AreaTriggerHandler.ReadAreaTriggerSpline(packet, index);
             }
 
             if (hasGameObject) // 788

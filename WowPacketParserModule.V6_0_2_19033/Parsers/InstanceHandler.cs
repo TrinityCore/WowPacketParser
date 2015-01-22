@@ -148,5 +148,34 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     break;
             }
         }
+
+        [Parser(Opcode.SMSG_INSTANCE_GROUP_SIZE_CHANGED)]
+        public static void HandleInstanceGroupSizeChanged(Packet packet)
+        {
+            packet.ReadUInt32("GroupSize");
+        }
+
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_START)]
+        public static void HandleInstanceEncounterStart(Packet packet)
+        {
+            packet.ReadInt32("InCombatResCount");
+            packet.ReadInt32("MaxInCombatResCount");
+            packet.ReadInt32("CombatResChargeRecovery");
+            packet.ReadInt32("NextCombatResChargeTime");
+        }
+
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_ENGAGE_UNIT)]
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_CHANGE_PRIORITY)]
+        public static void HandleInstanceEncounterEngageUnit(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+            packet.ReadByte("TargetFramePriority");
+        }
+
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_DISENGAGE_UNIT)]
+        public static void HandleInstanceEncounterDisengageUnit(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+        }
     }
 }
