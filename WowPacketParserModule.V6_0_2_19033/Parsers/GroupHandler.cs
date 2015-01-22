@@ -409,6 +409,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("Symbol");
         }
 
+        [Parser(Opcode.SMSG_SEND_RAID_TARGET_UPDATE_SINGLE)]
+        public static void HandleSendRaidTargetUpdateSingle(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadByte("Symbol");
+            packet.ReadPackedGuid128("Target");
+            packet.ReadPackedGuid128("ChangedBy");
+        }
+
         [Parser(Opcode.SMSG_READY_CHECK_RESPONSE)]
         public static void HandleReadyCheckResponse(Packet packet)
         {
@@ -457,6 +466,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("ResultData");
             packet.ReadPackedGuid128("ResultGUID");
             packet.ReadWoWString("Name", nameLength);
+        }
+
+        [Parser(Opcode.CMSG_LEAVE_GROUP)]
+        public static void HandleLeaveGroup(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
         }
     }
 }

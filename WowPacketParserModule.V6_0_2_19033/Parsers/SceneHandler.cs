@@ -145,5 +145,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadBit("ScenarioComplete");
         }
+
+        [Parser(Opcode.SMSG_SCENARIO_COMPLETED)]
+        public static void HandleScenarioCompleted(Packet packet)
+        {
+            packet.ReadInt32("ScenarioID");
+        }
     }
 }

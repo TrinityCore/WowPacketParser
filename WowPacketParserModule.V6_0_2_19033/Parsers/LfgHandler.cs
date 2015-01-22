@@ -14,6 +14,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("Type");
             packet.ReadTime("Time");
         }
+
         public static void ReadLFGBlackList(Packet packet, params object[] indexes)
         {
             packet.ResetBitReader();
@@ -31,6 +32,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32(String.Format("{0} [{1}] SubReason1", indexString, i));
                 packet.ReadInt32(String.Format("{0} [{1}] SubReason2", indexString, i));
             }
+        }
+        public static void ReadLfgBootInfo(Packet packet, params object[] indexes)
+        {
+            packet.ReadBit("VoteInProgress");
+            packet.ReadBit("VotePassed");
+            packet.ReadBit("MyVoteCompleted");
+            packet.ReadBit("MyVote");
+            var len = packet.ReadBits(8);
+            packet.ReadPackedGuid128("Target");
+            packet.ReadUInt32("TotalVotes");
+            packet.ReadUInt32("BootVotes");
+            packet.ReadInt32("TimeLeft");
+            packet.ReadUInt32("VotesNeeded");
+            packet.ReadWoWString("Reason", len);
         }
 
         [Parser(Opcode.CMSG_LFG_LIST_GET_STATUS)]
@@ -352,6 +367,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var blackListCount = packet.ReadInt32("BlackListCount");
             for (var i = 0; i < blackListCount; i++)
                 ReadLFGBlackList(packet, i);
+        }
+
+        [Parser(Opcode.SMSG_LFG_BOOT_PLAYER)]
+        public static void HandleLfgBootPlayer(Packet packet)
+        {
+            ReadLfgBootInfo(packet);
+        }
+
+        [Parser(Opcode.CMSG_DF_BOOT_PLAYER_VOTE)]
+        public static void HandleDFBootPlayerVote(Packet packet)
+        {
+            packet.ReadBit("Vote");
         }
     }
 }

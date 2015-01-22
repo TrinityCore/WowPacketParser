@@ -339,5 +339,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("ItemGUID");
         }
+
+        [Parser(Opcode.CMSG_SET_SORT_BAGS_RIGHT_TO_LEFT)]
+        public static void HandleSortBagsRightToLeft(Packet packet)
+        {
+            packet.ReadBit("Disable");
+        }
     }
 }

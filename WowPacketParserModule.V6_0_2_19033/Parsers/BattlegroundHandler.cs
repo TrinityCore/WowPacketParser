@@ -7,6 +7,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class BattlegroundHandler
     {
+        public static void ReadBattlefieldStatus_Header(Packet packet, params object[] indexes)
+        {
+            LfgHandler.ReadRideTicket(packet);
+
+            packet.ReadInt64("QueueID");
+            packet.ReadByte("RangeMin");
+            packet.ReadByte("RangeMax");
+            packet.ReadByte("TeamSize");
+            packet.ReadInt32("InstanceID");
+
+            packet.ResetBitReader();
+            packet.ReadBit("RegisteredMatch");
+            packet.ReadBit("TournamentRules");
+        }
+
         [Parser(Opcode.CMSG_REQUEST_BATTLEFIELD_STATUS)]
         [Parser(Opcode.CMSG_REQUEST_CONQUEST_FORMULA_CONSTANTS)]
         [Parser(Opcode.CMSG_REQUEST_RATED_BATTLEFIELD_INFO)]
@@ -53,12 +68,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_BATTLEFIELD_PORT)]
         public static void HandleBattlefieldPort(Packet packet)
         {
-            packet.ReadPackedGuid128("RequesterGuid");
-
-            packet.ReadUInt32("Id");
-            packet.ReadEntry<Int32>(StoreNameType.Battleground, "Type");
-            packet.ReadTime("Time");
-
+            LfgHandler.ReadRideTicket(packet);
             packet.ReadBit("AcceptedInvite");
         }
 
@@ -233,6 +243,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadByte("IconID", i);
                 packet.ReadByte("ArenaSlot", i);
             }
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_QUEUED)]
+        public static void HandleBattlefieldStatus_Queued(Packet packet)
+        {
+            ReadBattlefieldStatus_Header(packet);
+            packet.ReadInt32("AverageWaitTime");
+            packet.ReadInt32("WaitTime");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("AsGroup");                   // unconfirmed order
+            packet.ReadBit("SuspendedQueue");            // unconfirmed order
+            packet.ReadBit("EligibleForMatchmaking");    // unconfirmed order
         }
     }
 }
