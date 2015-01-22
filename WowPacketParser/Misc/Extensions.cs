@@ -187,5 +187,34 @@ namespace WowPacketParser.Misc
             }
             return true;
         }
+
+        /// <summary>
+        /// Flattens an IEnumerable
+        /// Example:
+        /// [1, 2, [3, [4]], 5] -> [1, 2, 3, 4, 5]
+        /// </summary>
+        /// <typeparam name="T">Type of each object</typeparam>
+        /// <param name="values">Input IEnumerable</param>
+        /// <returns>Flatten result</returns>
+        public static IEnumerable<T> Flatten<T>(this IEnumerable<T> values)
+        {
+            var list = values.ToList();
+
+            while (list.Any(o => o is IEnumerable<T>))
+            {
+                for (var i = 0; i < list.Count; i++)
+                {
+                    var arr = list[i] as IEnumerable<T>;
+                    if (arr == null) continue;
+                    var arrList = arr.ToList();
+                    list.RemoveAt(i);
+
+                    list.InsertRange(i, arrList);
+                    i += arrList.Count - 1;
+                }
+            }
+
+            return list;
+        }
     }
 }

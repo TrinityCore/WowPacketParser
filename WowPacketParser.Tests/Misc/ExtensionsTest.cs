@@ -89,5 +89,23 @@ namespace WowPacketParser.Tests.Misc
 
             Thread.CurrentThread.CurrentCulture = oldCulture;
         }
+
+        [Test]
+        public void TestFlattenIEnumerable()
+        {
+            object[] arr = { 1, 2, new object[] { 3, new object[] {4} }, 5 };
+
+            Assert.AreEqual(new object[] { 1, 2, 3, 4, 5 }, arr.Flatten());
+
+            var list = new List<object> { "a", new[] {"b", "c"}, 2 };
+
+            Assert.AreEqual(new object[] { "a", "b", "c", 2}, list.Flatten());
+
+            int[] simple = {1, 2, 3};
+            Assert.AreEqual(new[] { 1, 2, 3 }, simple.Flatten());
+
+            int[] empty = {};
+            Assert.AreEqual(new int[] {}, empty.Flatten());
+        }
     }
 }
