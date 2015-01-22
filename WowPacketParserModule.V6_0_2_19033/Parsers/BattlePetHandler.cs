@@ -300,51 +300,90 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         public static void ReadPetBattleEffectTarget(Packet packet, params object[] idx)
         {
-            /*
-            PetBattleEffectTargetEx??? Type
-            byte Petx            
-            uint AuraInstanceID  
-            uint AuraAbilityID   
-            int RoundsRemaining  
-            int CurrentRound     
-            uint StateID         
-            int StateValue       
-            int Health           
-            int NewStatValue     
-            int TriggerAbilityID 
-            int ChangedAbilityID 
-            int CooldownRemaining
-            int LockdownRemaining
-            int BroadcastTextID  
-            */
+            var type = packet.ReadBits("Type", 3, idx); // enum PetBattleEffectTargetEx
+
+            packet.ResetBitReader();
+
+            packet.ReadByte("Petx", idx);
+
+            switch (type)
+            {
+                case 5:
+                    packet.ReadInt32("AuraInstanceID", idx);
+                    packet.ReadInt32("AuraAbilityID", idx);
+                    packet.ReadInt32("RoundsRemaining", idx);
+                    packet.ReadInt32("CurrentRound", idx);
+                    break;
+                case 2:
+                    packet.ReadInt32("StateID", idx);
+                    packet.ReadInt32("StateValue", idx);
+                    break;
+                case 1:
+                    packet.ReadInt32("Health", idx);
+                    break;
+                case 3:
+                    packet.ReadInt32("NewStatValue", idx);
+                    break;
+                case 0:
+                    packet.ReadInt32("TriggerAbilityID", idx);
+                    break;
+                case 7:
+                    packet.ReadInt32("ChangedAbilityID", idx);
+                    packet.ReadInt32("CooldownRemaining", idx);
+                    packet.ReadInt32("LockdownRemaining", idx);
+                    break;
+                case 4:
+                    packet.ReadInt32("BroadcastTextID", idx);
+                    break;
+            }
         }
 
         public static void ReadPetBattleEffect(Packet packet, params object[] idx)
         {
-            /*
-            uint AbilityEffectID               
-            ushort Flags                       
-            ushort SourceAuraInstanceID        
-            ushort TurnInstanceID              
-            sbyte PetBattleEffectType          
-            byte CasterPBOID                   
-            byte StackDepth                    
-            List<PetBattleEffectTarget> Targets
-             */
+            packet.ReadUInt32("AbilityEffectID", idx);
+            packet.ReadUInt16("Flags", idx);
+            packet.ReadUInt16("SourceAuraInstanceID", idx);
+            packet.ReadUInt16("TurnInstanceID", idx);
+            packet.ReadSByte("PetBattleEffectType", idx);
+            packet.ReadByte("CasterPBOID", idx);
+            packet.ReadByte("StackDepth", idx);
+
+            var targetsCount = packet.ReadInt32("TargetsCount", idx);
+
+            for (var i = 0; i < targetsCount; ++i)
+                ReadPetBattleEffectTarget(packet, idx, "Targets", i);
         }
 
         public static void ReadPetBattleRoundResult(Packet packet, params object[] idx)
         {
-            /*
-            int CurRound                          
-            sbyte NextPetBattleState              
-            List<PetBattleEffect> Effects         
-            List<sbyte> PetXDied                  
-            List<PetBattleActiveAbility> Cooldowns
-            byte[2] NextInputFlags                
-            sbyte[2] NextTrapStatus               
-            ushort[2] RoundTimeSecs               
-            */
+            packet.ReadInt32("CurRound", idx);
+            packet.ReadSByte("NextPetBattleState", idx);
+
+            var effectsCount = packet.ReadInt32("EffectsCount", idx);
+
+            for (var i = 0; i < 2; ++i)
+            {
+                packet.ReadByte("NextInputFlags", idx, i);
+                packet.ReadSByte("NextTrapStatus", idx, i);
+                packet.ReadUInt16("RoundTimeSecs", idx, i);
+            }
+
+            var cooldownsCount = packet.ReadInt32("CooldownsCount", idx);
+
+            for (var i = 0; i < effectsCount; ++i)
+                ReadPetBattleEffect(packet, idx, "Effects", i);
+
+            for (var i = 0; i < cooldownsCount; ++i)
+                ReadPetBattleActiveAbility(packet, idx, "Cooldowns", i);
+
+            packet.ResetBitReader();
+
+            var petXDiedCount = packet.ReadBits("PetXDied", 3, idx);
+
+            packet.ResetBitReader();
+
+            for (var i = 0; i < petXDiedCount; ++i)
+                packet.ReadSByte("PetXDied", idx, i);
         }
 
         public static void ReadPetBattleFinalPet(Packet packet, params object[] idx)
