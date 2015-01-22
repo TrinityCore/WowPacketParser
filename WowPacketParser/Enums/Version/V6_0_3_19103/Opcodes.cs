@@ -108,6 +108,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_CANCEL_MOUNT_AURA, 0x03E6},
             {Opcode.CMSG_CANCEL_TEMP_ENCHANTMENT, 0x13C4},
             {Opcode.CMSG_CANCEL_TRADE, 0x1159},
+            {Opcode.CMSG_CAN_DUEL, 0x0B25},
             {Opcode.CMSG_CAST_SPELL, 0x08FE},
             {Opcode.CMSG_CHALLENGE_MODE_REQUEST_LEADERS, 0x0E66},
             {Opcode.CMSG_CHALLENGE_MODE_REQUEST_MAP_STATS, 0x0E78},
@@ -270,6 +271,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_LFG_LIST_DECLINE_APPLICANT, 0x0916},
             {Opcode.CMSG_LFG_LIST_GET_STATUS, 0x0B17},
             {Opcode.CMSG_LFG_LIST_JOIN, 0x0B84},
+            {Opcode.CMSG_LFG_LIST_SEARCH, 0x0915},
             {Opcode.CMSG_LFG_LOCK_INFO_REQUEST, 0x030F},
             {Opcode.CMSG_LF_GUILD_ADD_RECRUIT, 0x1223},
             {Opcode.CMSG_LF_GUILD_BROWSE, 0x0BA3},
@@ -383,6 +385,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_MOVE_WATER_WALK_ACK, 0x0543},
             {Opcode.CMSG_MOVE_WORLDPORT_ACK, 0x0938},
             {Opcode.CMSG_NAME_QUERY, 0x0B15},
+            {Opcode.CMSG_NEUTRAL_PLAYER_SELECT_FACTION, 0x0B5A},
             {Opcode.CMSG_NEXT_CINEMATIC_CAMERA, 0x1B3A},
             {Opcode.CMSG_NPC_TEXT_QUERY, 0x0ECB},
             {Opcode.CMSG_OFFER_PETITION, 0x0315},
@@ -402,6 +405,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_PET_BATTLE_FINAL_NOTIF, 0x0565},
             {Opcode.CMSG_PET_BATTLE_INPUT, 0x0989},
             {Opcode.CMSG_PET_BATTLE_REPLACE_FRONT_PET, 0x0936},
+            {Opcode.CMSG_PET_BATTLE_REQUEST_PVP, 0x1CDC},
             {Opcode.CMSG_PET_BATTLE_SCRIPT_ERROR_NOTIFY, 0x09CA},
             {Opcode.CMSG_PET_CAST_SPELL, 0x0286},
             {Opcode.CMSG_PET_NAME_QUERY, 0x1433},
@@ -471,6 +475,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_REQUEST_RAID_INFO, 0x0104},
             {Opcode.CMSG_REQUEST_RATED_BATTLEFIELD_INFO, 0x1323},
             {Opcode.CMSG_REQUEST_STABLED_PETS, 0x059D},
+            {Opcode.CMSG_REQUEST_VEHICLE_EXIT, 0x09CE},
             {Opcode.CMSG_REQUEST_VEHICLE_PREV_SEAT, 0x0527},
             {Opcode.CMSG_RESET_INSTANCES, 0x0389},
             {Opcode.CMSG_RESURRECT_RESPONSE, 0x073E},
@@ -538,6 +543,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_TEXT_EMOTE, 0x1901},
             {Opcode.CMSG_TIME_SYNC_RESPONSE, 0x0003},
             {Opcode.CMSG_TIME_SYNC_RESPONSE_DROPPED, 0x0D93},
+            {Opcode.CMSG_TIME_SYNC_RESPONSE_FAILED, 0x1B73},
             {Opcode.CMSG_TOGGLE_PVP, 0x149B},
             {Opcode.CMSG_TOTEM_DESTROYED, 0x000D},
             {Opcode.CMSG_TRAINER_BUY_SPELL, 0x0A28},
@@ -555,6 +561,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_UPDATE_CLIENT_SETTINGS, 0x090F},
             {Opcode.CMSG_UPDATE_RAID_TARGET, 0x1122},
             {Opcode.CMSG_UPGRADE_GARRISON, 0x0526},
+            {Opcode.CMSG_USED_FOLLOW, 0x1609},
             {Opcode.CMSG_USE_CRITTER_ITEM, 0x0BBE},
             {Opcode.CMSG_USE_ITEM, 0x08B6},
             {Opcode.CMSG_USE_TOY, 0x16E2},
@@ -567,7 +574,8 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_WARDEN_DATA, 0x0BA1},
             {Opcode.CMSG_WHO, 0x1322},
             {Opcode.CMSG_WHOIS, 0x011F},
-            {Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x0302},        };
+            {Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x0302},
+        };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
         {

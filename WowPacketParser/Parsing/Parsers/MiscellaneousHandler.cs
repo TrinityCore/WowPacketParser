@@ -1081,10 +1081,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Notification");
         }
 
-        [Parser(Opcode.CMSG_TIME_SYNC_RESP_FAILED)]
+        [Parser(Opcode.CMSG_TIME_SYNC_RESPONSE_FAILED)]
         public static void HandleTimeSyncRespFailed(Packet packet)
         {
-            packet.ReadUInt32("Unk Uint32");
+            packet.ReadUInt32("SequenceIndex");
         }
 
         [Parser(Opcode.SMSG_AREA_TRIGGER_MESSAGE)]
