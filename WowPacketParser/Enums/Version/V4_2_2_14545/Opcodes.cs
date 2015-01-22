@@ -498,7 +498,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.SMSG_GUILD_INFO, 0x5876},
             {Opcode.SMSG_GUILD_NEWS_UPDATE, 0xA2DE},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0xCA66},
-            {Opcode.SMSG_GUILD_RANK, 0xA6EC},
+            {Opcode.SMSG_GUILD_RANKS, 0xA6EC},
             {Opcode.SMSG_GUILD_ROSTER, 0x664C},
             {Opcode.SMSG_GUILD_SET_NOTE, 0xB6CE},
             {Opcode.SMSG_HIGHEST_THREAT_UPDATE, 0x5E7B},

@@ -87,7 +87,7 @@ namespace WowPacketParser.Enums.Version.V4_3_2_15211
             {Opcode.SMSG_GOSSIP_POI, 0x6565},
             {Opcode.SMSG_GUILD_EVENT, 0x65F5},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x2D33},
-            {Opcode.SMSG_GUILD_RANK, 0x1EB1}, // Not confirmed
+            {Opcode.SMSG_GUILD_RANKS, 0x1EB1}, // Not confirmed
             {Opcode.SMSG_GUILD_ROSTER, 0x1E94}, // Not confirmed
             {Opcode.SMSG_HIGHEST_THREAT_UPDATE, 0x6527},
             {Opcode.SMSG_INIT_WORLD_STATES, 0x0D25},

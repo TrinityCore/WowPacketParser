@@ -303,7 +303,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_GUILD_PARTY_STATE_RESPONSE, 0x1A52},
             {Opcode.SMSG_GUILD_PERMISSIONS_QUERY_RESULTS, 0x1A32},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x1953},
-            {Opcode.SMSG_GUILD_RANK, 0x1271},
+            {Opcode.SMSG_GUILD_RANKS, 0x1271},
             {Opcode.SMSG_GUILD_REWARDS_LIST, 0x1010},
             {Opcode.SMSG_GUILD_ROSTER, 0x1231},
             {Opcode.SMSG_GUILD_XP, 0x1A51},

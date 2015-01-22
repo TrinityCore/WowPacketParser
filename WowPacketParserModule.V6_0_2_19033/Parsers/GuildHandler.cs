@@ -83,7 +83,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("GuildGUID");
         }
 
-        [Parser(Opcode.SMSG_GUILD_RANK)]
+        [Parser(Opcode.SMSG_GUILD_RANKS)]
         public static void HandleGuildRankServer434(Packet packet)
         {
             var count = packet.ReadUInt32("Count");
@@ -441,7 +441,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("MaxLevelGold", i);
         }
 
-        [Parser(Opcode.SMSG_GUILD_RANKS_UPDATE)]
+        [Parser(Opcode.SMSG_GUILD_SEND_RANK_CHANGE)]
         public static void HandleGuildRanksUpdate(Packet packet)
         {
             packet.ReadPackedGuid128("Officer");

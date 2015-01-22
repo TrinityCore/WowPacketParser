@@ -209,7 +209,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ReadInt32("Accounts In Guild");
         }
 
-        [Parser(Opcode.SMSG_GUILD_RANK)]
+        [Parser(Opcode.SMSG_GUILD_RANKS)]
         public static void HandleGuildRankServer(Packet packet)
         {
             const int guildBankMaxTabs = 8;

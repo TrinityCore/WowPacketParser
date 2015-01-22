@@ -77,7 +77,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadWoWString("Text", (int)packet.ReadBits(10));
         }
 
-        [Parser(Opcode.SMSG_GUILD_RANK)]
+        [Parser(Opcode.SMSG_GUILD_RANKS)]
         public static void HandleGuildRankServer434(Packet packet)
         {
             const int guildBankMaxTabs = 8;

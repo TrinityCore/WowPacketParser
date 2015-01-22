@@ -127,7 +127,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid2", guid2);
         }
 
-        [Parser(Opcode.SMSG_GUILD_RANK)]
+        [Parser(Opcode.SMSG_GUILD_RANKS)]
         public static void HandleGuildRankServer(Packet packet)
         {
             const int guildBankMaxTabs = 8;

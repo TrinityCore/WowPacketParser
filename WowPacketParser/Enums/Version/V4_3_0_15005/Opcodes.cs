@@ -615,7 +615,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.SMSG_GUILD_PARTY_STATE_RESPONSE, 26156},
             {Opcode.SMSG_GUILD_PERMISSIONS_QUERY_RESULTS, 1064},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 6820},
-            {Opcode.SMSG_GUILD_RANK, 27674},
+            {Opcode.SMSG_GUILD_RANKS, 27674},
             {Opcode.SMSG_GUILD_REWARDS_LIST, 1674},
             {Opcode.SMSG_GUILD_ROSTER, 3102},
             {Opcode.SMSG_GUILD_ROSTER_UPDATE, 20028},

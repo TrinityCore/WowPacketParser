@@ -124,7 +124,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_GUILD_EVENT_PRESENCE_CHANGE, 0x0649},
             {Opcode.SMSG_GUILD_MOTD, 0x125A},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x034A},
-            {Opcode.SMSG_GUILD_RANK, 0x035A},
+            {Opcode.SMSG_GUILD_RANKS, 0x035A},
             {Opcode.SMSG_GUILD_RECIPES, 0x0679},
             {Opcode.SMSG_GUILD_ROSTER, 0x0779},
             {Opcode.SMSG_GUILD_PARTY_STATE_RESPONSE, 0x127A},

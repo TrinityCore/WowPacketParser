@@ -383,7 +383,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Rank Id");
         }
 
-        [Parser(Opcode.SMSG_GUILD_RANK, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_GUILD_RANKS, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleGuildRankServer(Packet packet)
         {
             const int guildBankMaxTabs = 8;
@@ -406,7 +406,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_GUILD_RANK, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_GUILD_RANKS, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildRankServer430(Packet packet)
         {
             const int guildBankMaxTabs = 8;
@@ -430,7 +430,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_GUILD_RANK, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
+        [Parser(Opcode.SMSG_GUILD_RANKS, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleGuildRankServer422(Packet packet)
         {
             const int guildBankMaxTabs = 8;

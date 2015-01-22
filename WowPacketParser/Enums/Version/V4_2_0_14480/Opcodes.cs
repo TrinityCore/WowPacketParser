@@ -578,7 +578,7 @@ namespace WowPacketParser.Enums.Version.V4_2_0_14480
             {Opcode.SMSG_GUILD_INVITE, 0x9F65},
             {Opcode.SMSG_GUILD_NEWS_UPDATE, 0x8F41},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x76E3},
-            {Opcode.SMSG_GUILD_RANK, 0xF05},
+            {Opcode.SMSG_GUILD_RANKS, 0xF05},
             {Opcode.SMSG_GUILD_REWARDS_LIST, 0xC303},
             {Opcode.SMSG_GUILD_ROSTER, 0x1B47},
             {Opcode.SMSG_GUILD_TRADESKILL_UPDATE, 0x343},

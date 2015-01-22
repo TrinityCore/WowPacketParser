@@ -795,7 +795,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_QUEST_FORCE_REMOVED, 0xFFC8}, // NF(0x0B18)(0x021E) //estid
             {Opcode.SMSG_SPIRIT_HEALER_CONFIRM, 0x7C57}, // (0x4AF4)(0x0222) //
             {Opcode.SMSG_GOSSIP_POI, 0x1002}, // (0x0BD9)(0x0224) //
-            //{Opcode.SMSG_GUILD_RANK, 0xFFC7}, // NF(0x4090)() //
+            //{Opcode.SMSG_GUILD_RANKS, 0xFFC7}, // NF(0x4090)() //
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0xEC7C}, // (0x4A5D)(0x0236) //
             {Opcode.SMSG_SEND_MAIL_RESULT, 0x8B23}, // (0xE351)(0x0239) //
             {Opcode.SMSG_MAIL_LIST_RESULT, 0x3804}, // (0xABD1)(0x023B) //
