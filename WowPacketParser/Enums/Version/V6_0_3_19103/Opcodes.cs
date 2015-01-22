@@ -1295,6 +1295,19 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x11AC},
             {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x0B83},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x1401},
+            {Opcode.SMSG_CAN_DUEL_RESULT, 0x03E9},
+            {Opcode.SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI, 0x053D},
+            {Opcode.SMSG_CHAT_NOT_IN_PARTY, 0x0604},
+            {Opcode.SMSG_LFG_TELEPORT_DENIED, 0x0795},
+            {Opcode.SMSG_RESTRICTED_ACCOUNT_WARNING, 0x0A2E},
+            {Opcode.SMSG_INSTANCE_ENCOUNTER_CHANGE_PRIORITY, 0x0B03},
+            {Opcode.SMSG_CLEAR_BOSS_EMOTES, 0x118B},
+            {Opcode.SMSG_PAGE_TEXT, 0x158D},
+            {Opcode.SMSG_QUEST_CONFIRM_ACCEPT, 0x15B2},
+            {Opcode.SMSG_QUEST_LOG_FULL, 0x17E4},
+            {Opcode.SMSG_SUPPRESS_NPC_GREETINGS, 0x193A},
+            {Opcode.SMSG_TRAINER_BUY_FAILED, 0x1BD2},
+            {Opcode.SMSG_PROC_RESIST, 0x1DAD},
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>();

@@ -402,7 +402,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
         {
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x0E48},
             {Opcode.SMSG_ACCOUNT_INFO_RESPONSE, 0x0659},
-            {Opcode.SMSG_ACCOUNT_RESTRICTED_WARNING, 0x0CD8},
+            {Opcode.SMSG_RESTRICTED_ACCOUNT_WARNING, 0x0CD8},
             {Opcode.SMSG_ACHIEVEMENT_EARNED, 0x0719},
             {Opcode.SMSG_ACTIVATE_TAXI_REPLY, 0x0E88},
             {Opcode.SMSG_ADDON_INFO, 0x0760},
@@ -805,7 +805,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS, 0x0DC5},
             {Opcode.SMSG_QUESTGIVER_STATUS, 0x0888},
             {Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE, 0x0D8D},
-            {Opcode.SMSG_QUESTLOG_FULL, 0x09C0},
+            {Opcode.SMSG_QUEST_LOG_FULL, 0x09C0},
             {Opcode.SMSG_QUEST_UPDATE_ADD_KILL, 0x0E61},
             {Opcode.SMSG_QUEST_UPDATE_ADD_PVP_KILL, 0x0629},
             {Opcode.SMSG_QUEST_UPDATE_FAILED_TIMER, 0x06A5},

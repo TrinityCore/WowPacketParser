@@ -719,7 +719,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_QUESTGIVER_QUEST_INVALID, 0x018F}, // NF()(0x018F) //
             {Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, 0x0191}, // NF()(0x0191) //
             {Opcode.SMSG_QUESTGIVER_QUEST_FAILED, 0x2E77}, // (0x6B39)(0x0192) //
-            {Opcode.SMSG_QUESTLOG_FULL, 0x0195}, // NF()(0x0195) //
+            {Opcode.SMSG_QUEST_LOG_FULL, 0x0195}, // NF()(0x0195) //
             {Opcode.SMSG_QUEST_UPDATE_FAILED, 0xDC5D}, // (0x0AB5)(0x0196) //
             {Opcode.SMSG_QUEST_UPDATE_FAILED_TIMER, 0x3F5D}, // (0x8BB4)(0x0197) //
             {Opcode.SMSG_QUEST_UPDATE_COMPLETE, 0x4575}, // (0x4AF5)(0x0198) //
@@ -761,7 +761,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_STOP_MIRROR_TIMER, 0x2E56}, // (0x2299)(0x01DB) //
             {Opcode.SMSG_PONG, 0xB000}, // (0xC500)(0x01DD) //
             {Opcode.SMSG_CLEAR_COOLDOWN, 0x9577}, // (0xCB51)(0x01DE) //
-            {Opcode.SMSG_GAMEOBJECT_PAGETEXT, 0xC757}, // (0x2B79)(0x01DF) //
+            {Opcode.SMSG_PAGE_TEXT, 0xC757}, // (0x2B79)(0x01DF) //
             {Opcode.SMSG_COOLDOWN_CHEAT, 0x2C7F}, // (0x637C)(0x01E1) //
             {Opcode.SMSG_SPELL_DELAYED, 0x9675}, // (0xA21C)(0x01E2) //
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0xFFCE}, // NF(0x8AB8)(0x01E4) //
@@ -816,7 +816,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_AUCTION_OWNER_LIST_RESULT, 0xDA22}, // (0x4B94)(0x025D) //
             {Opcode.SMSG_AUCTION_BIDDER_NOTIFICATION, 0x3021}, // (0x4250)(0x025E) //
             {Opcode.SMSG_AUCTION_OWNER_NOTIFICATION, 0xC009}, // (0x42B5)(0x025F) //
-            {Opcode.SMSG_PROCRESIST, 0x6754}, // (0xEBB0)(0x0260) //
+            {Opcode.SMSG_PROC_RESIST, 0x6754}, // (0xEBB0)(0x0260) //
             {Opcode.SMSG_STANDSTATE_CHANGE_FAILURE_OBSOLETE, 0x455D}, // (0x8290)(0x0261) //
             {Opcode.SMSG_DISPEL_FAILED, 0xDD54}, // (0x4BB5)(0x0262) //
             {Opcode.SMSG_SPELL_OR_DAMAGE_IMMUNE, 0x247F}, // (0x63F5)(0x0263) //

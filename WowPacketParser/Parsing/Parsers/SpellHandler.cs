@@ -1139,7 +1139,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_SPELL_OR_DAMAGE_IMMUNE)]
-        [Parser(Opcode.SMSG_PROCRESIST)]
+        [Parser(Opcode.SMSG_PROC_RESIST)]
         public static void HandleSpellProcResist(Packet packet)
         {
             packet.ReadGuid("Caster GUID");
