@@ -129,6 +129,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_PET_CLEAR_SPELLS)]
+        public static void HandleSpellZero(Packet packet)
+        {
+        }
+
         [Parser(Opcode.SMSG_SPELL_CATEGORY_COOLDOWN)]
         public static void HandleSpellCategoryCooldown(Packet packet)
         {
@@ -655,6 +660,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("TotemGUID");
         }
 
+        [Parser(Opcode.SMSG_TOTEM_MOVED)]
+        public static void HandleTotemMoved(Packet packet)
+        {
+            packet.ReadByte("Slot");
+            packet.ReadByte("NewSlot");
+            packet.ReadPackedGuid128("Totem");
+        }
+
         [Parser(Opcode.SMSG_COOLDOWN_EVENT)]
         public static void HandleCooldownEvent(Packet packet)
         {
@@ -854,6 +867,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var count = packet.ReadInt32("UnlearnedSpellCount");
             for (int i = 0; i < count; i++)
                 packet.ReadEntry<UInt32>(StoreNameType.Spell, "SpellID");
+        }
+
+        [Parser(Opcode.SMSG_ADD_LOSS_OF_CONTROL)]
+        public static void HandleAddLossOfControl(Packet packet)
+        {
+            packet.ReadBits("Mechanic", 8);
+            packet.ReadBits("Type", 8);
+
+            packet.ReadInt32("SpellID");
+
+            packet.ReadPackedGuid128("Caster");
+
+            packet.ReadInt32("Duration");
+            packet.ReadInt32("DurationRemaining");
+            packet.ReadInt32("LockoutSchoolMask");
         }
     }
 }

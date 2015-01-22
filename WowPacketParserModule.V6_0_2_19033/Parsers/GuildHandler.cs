@@ -78,7 +78,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_GUILD_GET_RANKS)]
-        public static void HandleGuildRanks434(Packet packet)
+        [Parser(Opcode.CMSG_GUILD_QUERY_RECIPES)]
+        public static void HandleGuildGuildGUID(Packet packet)
         {
             packet.ReadPackedGuid128("GuildGUID");
         }
@@ -554,6 +555,41 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var rankNameLen = packet.ReadBits(7);
 
             packet.ReadWoWString("RankName", rankNameLen);
+        }
+
+        [Parser(Opcode.CMSG_REQUEST_GUILD_REWARDS_LIST)]
+        public static void HandleRequestGuildRewardsList(Packet packet)
+        {
+            packet.ReadTime("CurrentVersion");
+        }
+
+        [Parser(Opcode.SMSG_LF_GUILD_POST)]
+        public static void HandleLFGuildPost(Packet packet)
+        {
+            var hasGuildPostData = packet.ReadBit("HasGuildPostData");
+            if (hasGuildPostData)
+            {
+                packet.ResetBitReader();
+                packet.ReadBit("Active");
+                var len = packet.ReadBits(10);
+
+                packet.ReadInt32("PlayStyle");
+                packet.ReadInt32("Availability");
+                packet.ReadInt32("ClassRoles");
+                packet.ReadInt32("LevelRange");
+                packet.ReadInt32("SecondsRemaining");
+
+                packet.ReadWoWString("Comment", len);
+            }
+        }
+
+        [Parser(Opcode.SMSG_GUILD_CHALLENGE_COMPLETED)]
+        public static void HandleGuildChallengeCompleted(Packet packet)
+        {
+            packet.ReadInt32("ChallengeType");
+            packet.ReadInt32("CurrentCount");
+            packet.ReadInt32("MaxCount");
+            packet.ReadInt32("GoldAwarded");
         }
     }
 }

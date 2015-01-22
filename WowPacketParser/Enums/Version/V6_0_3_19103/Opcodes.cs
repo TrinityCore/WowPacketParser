@@ -816,7 +816,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_GARRISON_UPGRADEABLE_RESULT, 0x0522},
             {Opcode.SMSG_GARRISON_UPGRADE_RESULT, 0x0D51},
             {Opcode.SMSG_GET_GARRISON_INFO_RESULT, 0x0521},
-            {Opcode.SMSG_GET_SHIPMENTS_OF_TYPE_RESPONSE, 0x11AB},
+            {Opcode.SMSG_CREATE_SHIPMENT_RESPONSE, 0x11AB},
             {Opcode.SMSG_GET_SHIPMENT_INFO_RESPONSE, 0x1BAB},
             {Opcode.SMSG_GET_TROPHY_LIST_RESPONSE, 0x0126},
             {Opcode.SMSG_GM_TICKET_CASE_STATUS, 0x1D8D},

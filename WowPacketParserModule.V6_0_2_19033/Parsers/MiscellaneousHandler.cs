@@ -10,6 +10,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class MiscellaneousHandler
     {
+        public static void ReadElaspedTimer(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("TimerID", indexes);
+            packet.ReadInt32("CurrentDuration", indexes);
+        }
+
         [Parser(Opcode.CMSG_REQUEST_ARTIFACT_COMPLETION_HISTORY)]
         public static void HandleMiscZero(Packet packet)
         {
@@ -530,6 +536,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("SourceObjectGUID");
             packet.ReadUInt32("SoundId");
+        }
+
+        [Parser(Opcode.SMSG_START_ELAPSED_TIMER)]
+        public static void HandleStartElapsedTimer(Packet packet)
+        {
+            ReadElaspedTimer(packet);
+        }
+
+        [Parser(Opcode.SMSG_STOP_ELAPSED_TIMER)]
+        public static void HandleStopElapsedTimer(Packet packet)
+        {
+            packet.ReadInt32("TimerID");
+            packet.ReadBit("KeepTimer");
         }
     }
 }

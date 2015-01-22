@@ -33,6 +33,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32(String.Format("{0} [{1}] SubReason2", indexString, i));
             }
         }
+
         public static void ReadLfgBootInfo(Packet packet, params object[] indexes)
         {
             packet.ReadBit("VoteInProgress");
@@ -379,6 +380,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleDFBootPlayerVote(Packet packet)
         {
             packet.ReadBit("Vote");
+        }
+
+        [Parser(Opcode.CMSG_DF_PROPOSAL_RESPONSE)]
+        public static void HandleDFProposalResponse(Packet packet)
+        {
+            ReadRideTicket(packet);
+            packet.ReadInt64("InstanceID");
+            packet.ReadInt32("ProposalID");
+            packet.ReadBit("Accepted");
         }
     }
 }

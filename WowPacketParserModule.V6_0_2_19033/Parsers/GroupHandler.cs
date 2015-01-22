@@ -418,6 +418,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("ChangedBy");
         }
 
+        [Parser(Opcode.SMSG_SEND_RAID_TARGET_UPDATE_SINGLE)]
+        public static void HandleSendRaidTargetUpdateAll(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            var raidTargetSymbolCount = packet.ReadInt32("RaidTargetSymbolCount");
+            for (int i = 0; i < raidTargetSymbolCount; i++)
+            {
+                packet.ReadPackedGuid128("", i);
+                packet.ReadByte("", i);
+            }
+        }
+
         [Parser(Opcode.SMSG_READY_CHECK_RESPONSE)]
         public static void HandleReadyCheckResponse(Packet packet)
         {
@@ -433,6 +445,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("PartyGUID");
             packet.ReadPackedGuid128("InitiatorGUID");
             packet.ReadInt32("Duration");
+        }
+
+        [Parser(Opcode.CMSG_READY_CHECK_RESPONSE)]
+        public static void HandleClientReadyCheckResponse(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadPackedGuid128("PartyGUID");
+            packet.ReadBit("IsReady");
         }
 
         [Parser(Opcode.SMSG_READY_CHECK_COMPLETED)]
@@ -469,6 +489,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_LEAVE_GROUP)]
+        [Parser(Opcode.CMSG_REQUEST_PARTY_JOIN_UPDATES)]
         public static void HandleLeaveGroup(Packet packet)
         {
             packet.ReadByte("PartyIndex");

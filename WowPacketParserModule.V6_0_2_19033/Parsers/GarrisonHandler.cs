@@ -330,5 +330,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < characterShipmentCount; i++)
                 ReadCharacterShipment(packet);
         }
+
+        [Parser(Opcode.SMSG_CREATE_SHIPMENT_RESPONSE)]
+        public static void HandleCreateShipmentResponse(Packet packet)
+        {
+            packet.ReadInt64("ShipmentID");
+            packet.ReadUInt32("ShipmentRecID");
+            packet.ReadUInt32("Result");
+        }
     }
 }

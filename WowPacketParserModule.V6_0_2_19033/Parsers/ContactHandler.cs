@@ -84,5 +84,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadWoWString("Notes", bits44, i);
             }
         }
+
+        [Parser(Opcode.CMSG_SEND_CONTACT_LIST)]
+        public static void HandleSendContactList(Packet packet)
+        {
+            packet.ReadInt32("Flags");
+        }
     }
 }
