@@ -221,10 +221,10 @@ namespace WowPacketParser.Misc
                 .Append(" (").AppendFormat("{0:F3}", GetWithErrorsPercentage()).Append("%) ")
                 .Append("with errors and skipped ")
                 .Append(NotParsedPacketCount)
-                .Append(" (").AppendFormat("{0:F3}", GetNoStructurePercentage()).Append("%) ")
+                .Append(" (").AppendFormat("{0:F3}", GetNotParsedPercentage()).Append("%) ")
                 .Append("without structure ")
                 .Append(NoStructurePacketCount)
-                .Append(" (").AppendFormat("{0:F3}", GetNotParsedPercentage()).Append("%) ")
+                .Append(" (").AppendFormat("{0:F3}", GetNoStructurePercentage()).Append("%) ")
                 .Append(" (total: ").Append(CalculatedTotalPacketCount).Append(")");
 
             var parsingTime = GetParsingTime();
