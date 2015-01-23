@@ -351,5 +351,34 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             ReadGarrisonFollower(packet);
         }
+
+        [Parser(Opcode.SMSG_GARRISON_OPEN_TRADESKILL)]
+        public static void HandleGarrisonOpenTradeskill(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+
+            packet.ReadInt32("SpellID");
+
+            var int4 = packet.ReadInt32("SkillLineCount");
+            var int20 = packet.ReadInt32("SkillRankCount");
+            var int36 = packet.ReadInt32("SkillMaxRankCount");
+            var int52 = packet.ReadInt32("KnownAbilitySpellCount");
+
+            for (int i = 0; i < int4; i++)
+                packet.ReadInt32("SkillLineIDs", i);
+
+            for (int i = 0; i < int20; i++)
+                packet.ReadInt32("SkillRanks", i);
+
+            for (int i = 0; i < int36; i++)
+                packet.ReadInt32("SkillMaxRanks", i);
+
+            for (int i = 0; i < int52; i++)
+                packet.ReadInt32("KnownAbilitySpellIDs", i);
+
+            var int84 = packet.ReadInt32("PlayerConditionCount");
+            for (int i = 0; i < int84; i++)
+                packet.ReadInt32("PlayerConditionID", i);
+        }
     }
 }
