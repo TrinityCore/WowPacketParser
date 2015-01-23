@@ -9,6 +9,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     {
 
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_END)]
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_IN_COMBAT_RESURRECTION)]
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_PHASE_SHIFT_CHANGED)]
         public static void HandleInstanceZero(Packet packet)
         {
@@ -74,6 +75,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_SET_RAID_DIFFICULTY)]
+        [Parser(Opcode.SMSG_SET_RAID_DIFFICULTY)]
         public static void HandleSetRaidDifficulty(Packet packet)
         {
             packet.ReadInt32("DifficultyID");
@@ -176,6 +178,30 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleInstanceEncounterDisengageUnit(Packet packet)
         {
             packet.ReadPackedGuid128("Unit");
+        }
+
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_GAIN_COMBAT_RESURRECTION_CHARGE)]
+        public static void HandleInstanceEncounterGainCombatResurrectionCharge(Packet packet)
+        {
+            packet.ReadInt32("InCombatResCount");
+            packet.ReadInt32("CombatResChargeRecovery");
+        }
+
+        [Parser(Opcode.SMSG_ENCOUNTER_START)]
+        public static void HandleEncounterStart(Packet packet)
+        {
+            packet.ReadInt32("EncounterID");
+            packet.ReadInt32("DifficultyID");
+            packet.ReadInt32("GroupSize");
+        }
+
+        [Parser(Opcode.SMSG_ENCOUNTER_END)]
+        public static void HandleEncounterStop(Packet packet)
+        {
+            packet.ReadInt32("EncounterID");
+            packet.ReadInt32("DifficultyID");
+            packet.ReadInt32("GroupSize");
+            packet.ReadBit("Success");
         }
     }
 }

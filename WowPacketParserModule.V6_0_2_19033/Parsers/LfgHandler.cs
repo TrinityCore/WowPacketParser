@@ -390,5 +390,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("ProposalID");
             packet.ReadBit("Accepted");
         }
+
+        [Parser(Opcode.SMSG_LFG_LIST_UPDATE_BLACKLIST)]
+        public static void HandleLFGListUpdateBlacklist(Packet packet)
+        {
+            var count = packet.ReadInt32("");
+            for (int i = 0; i < count; i++)
+            {
+                packet.ReadInt32("ActivityID", i);
+                packet.ReadInt32("Reason", i);
+            }
+        }
     }
 }

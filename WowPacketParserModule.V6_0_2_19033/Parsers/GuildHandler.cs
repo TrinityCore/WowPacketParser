@@ -591,5 +591,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("MaxCount");
             packet.ReadInt32("GoldAwarded");
         }
+
+        [Parser(Opcode.SMSG_GUILD_REPUTATION_REACTION_CHANGED)]
+        public static void HandleGuildReputationReactionChanged(Packet packet)
+        {
+            packet.ReadPackedGuid128("MemberGUID");
+        }
     }
 }

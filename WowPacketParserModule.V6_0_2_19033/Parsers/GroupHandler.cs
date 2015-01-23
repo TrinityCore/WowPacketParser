@@ -425,8 +425,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var raidTargetSymbolCount = packet.ReadInt32("RaidTargetSymbolCount");
             for (int i = 0; i < raidTargetSymbolCount; i++)
             {
-                packet.ReadPackedGuid128("", i);
-                packet.ReadByte("", i);
+                packet.ReadPackedGuid128("Target", i);
+                packet.ReadByte("Symbol", i);
             }
         }
 
@@ -493,6 +493,37 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleLeaveGroup(Packet packet)
         {
             packet.ReadByte("PartyIndex");
+        }
+
+        [Parser(Opcode.CMSG_PARTY_INVITE_RESPONSE)]
+        public static void HandlePartyInviteResponse(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Accept");
+            var hasRolesDesired = packet.ReadBit("HasRolesDesired");
+            if (hasRolesDesired)
+                packet.ReadInt32("RolesDesired");
+        }
+
+        [Parser(Opcode.CMSG_PARTY_UNINVITE)]
+        public static void HandlePartyUninvite(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadPackedGuid128("TargetGuid");
+
+            var len = packet.ReadBits(8);
+            packet.ReadWoWString("Reason", len);
+        }
+
+        [Parser(Opcode.CMSG_SET_ROLE)]
+        public static void HandleSetRole(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadPackedGuid128("ChangedUnit");
+            packet.ReadInt32("Role");
         }
     }
 }

@@ -345,5 +345,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadBit("Disable");
         }
+
+        [Parser(Opcode.CMSG_DEPOSIT_REAGENT_BANK)]
+        public static void HandleReagentBankDeposit(Packet packet)
+        {
+            packet.ReadPackedGuid128("Banker");
+        }
     }
 }

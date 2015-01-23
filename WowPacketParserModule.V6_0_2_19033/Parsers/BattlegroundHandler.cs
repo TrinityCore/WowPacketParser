@@ -258,5 +258,62 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("SuspendedQueue");            // unconfirmed order
             packet.ReadBit("EligibleForMatchmaking");    // unconfirmed order
         }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_NONE)]
+        public static void HandleBattlefieldStatus_None(Packet packet)
+        {
+            LfgHandler.ReadRideTicket(packet);
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_ACTIVE)]
+        public static void HandleBattlefieldStatus_Active(Packet packet)
+        {
+            ReadBattlefieldStatus_Header(packet);
+
+            packet.ReadInt32("Mapid");
+            packet.ReadInt32("StartTimer");
+            packet.ReadInt32("ShutdownTimer");
+
+            packet.ResetBitReader();
+            packet.ReadBit("ArenaFaction");     // unconfirmed order
+            packet.ReadBit("LeftEarly");        // unconfirmed order
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_NEEDCONFIRMATION)]
+        public static void HandleBattlefieldStatus_NeedConfirmation(Packet packet)
+        {
+            ReadBattlefieldStatus_Header(packet);
+            packet.ReadInt32("Mapid");
+            packet.ReadInt32("Timeout");
+            packet.ReadByte("Role");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_FAILED)]
+        public static void HandleBattlefieldStatus_Failed(Packet packet)
+        {
+            LfgHandler.ReadRideTicket(packet);
+            packet.ReadInt64("QueueID");
+            packet.ReadInt32("Reason");
+            packet.ReadPackedGuid128("ClientID");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_JOINED)]
+        public static void HandleBattlegroundPlayerJoined(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEGROUND_POINTS)]
+        public static void HandleBattlegroundPoints(Packet packet)
+        {
+            packet.ReadInt16("Points");
+            packet.ReadBit("Team");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEGROUND_INIT)]
+        public static void HandleBattlegroundInit(Packet packet)
+        {
+            packet.ReadInt16("MaxPoints");
+        }
     }
 }

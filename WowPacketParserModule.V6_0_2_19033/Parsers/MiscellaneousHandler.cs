@@ -326,14 +326,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             Storage.Sounds.Add(sound, packet.TimeSpan);
         }
 
-        [Parser(Opcode.CMSG_RANDOM_ROLL)]
-        public static void HandleRandomRoll(Packet packet)
-        {
-            packet.ReadInt32("Min");
-            packet.ReadInt32("Max");
-            packet.ReadByte("PartyIndex");
-        }
-
         [Parser(Opcode.SMSG_ZONE_UNDER_ATTACK)]
         public static void HandleZoneUpdate(Packet packet)
         {
@@ -549,6 +541,30 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("TimerID");
             packet.ReadBit("KeepTimer");
+        }
+
+        [Parser(Opcode.CMSG_RANDOM_ROLL)]
+        public static void HandleRandomRoll(Packet packet)
+        {
+            packet.ReadInt32("Min");
+            packet.ReadInt32("Max");
+            packet.ReadByte("PartyIndex");
+        }
+
+        [Parser(Opcode.SMSG_RANDOM_ROLL)]
+        public static void HandleRandomRollResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("Roller");
+            packet.ReadPackedGuid128("RollerWowAccount");
+            packet.ReadInt32("Min");
+            packet.ReadInt32("Max");
+            packet.ReadInt32("Result");
+        }
+
+        [Parser(Opcode.SMSG_SET_TASK_COMPLETE)]
+        public static void HandleSetTaskComplete(Packet packet)
+        {
+            packet.ReadInt32("TaskID");
         }
     }
 }

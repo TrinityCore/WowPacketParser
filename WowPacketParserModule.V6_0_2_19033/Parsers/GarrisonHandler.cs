@@ -338,5 +338,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("ShipmentRecID");
             packet.ReadUInt32("Result");
         }
+
+        [Parser(Opcode.SMSG_OPEN_SHIPMENT_NPC_FROM_GOSSIP)]
+        public static void HandleOpenShipmentNPCFromGossip(Packet packet)
+        {
+            packet.ReadPackedGuid128("NpcGUID");
+            packet.ReadUInt32("CharShipmentContainerID");
+        }
     }
 }
