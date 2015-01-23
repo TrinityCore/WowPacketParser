@@ -6,6 +6,57 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class CalendarHandler
     {
+        public static void ReadCalendarSendCalendarInviteInfo(Packet packet, params object[] indexes)
+        {
+            // sub_5F9CFB
+            packet.ReadInt64("EventID", indexes);
+            packet.ReadInt64("InviteID", indexes);
+
+            packet.ReadByte("Status", indexes);
+            packet.ReadByte("Moderator", indexes);
+            packet.ReadByte("InviteType", indexes);
+
+            packet.ReadPackedGuid128("InviterGUID", indexes);
+        }
+
+        public static void ReadCalendarSendCalendarEventInfo(Packet packet, params object[] indexes)
+        {
+            // sub_6073D9
+            packet.ReadInt64("EventID", indexes);
+
+            packet.ReadByte("EventType", indexes);
+
+            packet.ReadInt32("Date", indexes);
+            packet.ReadInt32("Flags", indexes);
+            packet.ReadInt32("TextureID", indexes);
+
+            packet.ReadPackedGuid128("EventGuildID", indexes);
+            packet.ReadPackedGuid128("OwnerGUID", indexes);
+
+            packet.ResetBitReader();
+
+            var len = packet.ReadBits(8);
+            packet.ReadWoWString("EventName", len, indexes);
+        }
+
+        public static void ReadCalendarSendCalendarRaidLockoutInfo(Packet packet, params object[] indexes)
+        {
+            // sub_5F9975
+            packet.ReadInt64("InstanceID", indexes);
+
+            packet.ReadInt32("MapID", indexes);
+            packet.ReadUInt32("DifficultyID", indexes);
+            packet.ReadInt32("ExpireTime", indexes);
+        }
+
+        public static void ReadCalendarSendCalendarRaidResetInfo(Packet packet, params object[] indexes)
+        {
+            // sub_5F9A7E
+            packet.ReadInt32("MapID", indexes);
+            packet.ReadInt32("Duration", indexes);
+            packet.ReadInt32("Offset", indexes);
+        }
+
         [Parser(Opcode.CMSG_CALENDAR_GET)]
         public static void HandleCalendarZero(Packet packet)
         {
@@ -30,55 +81,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var int16 = packet.ReadInt32("CalendarSendCalendarRaidResetInfoCount");
 
             for (int i = 0; i < int52; i++)
-            {
-                // sub_5F9CFB
-                packet.ReadInt64("EventID", i);
-                packet.ReadInt64("InviteID", i);
-
-                packet.ReadByte("Status", i);
-                packet.ReadByte("Moderator", i);
-                packet.ReadByte("InviteType", i);
-
-                packet.ReadPackedGuid128("InviterGUID", i);
-            }
+                ReadCalendarSendCalendarInviteInfo(packet, i, "CalendarSendCalendarInviteInfo");
 
             for (int i = 0; i < int68; i++)
-            {
-                // sub_6073D9
-                packet.ReadInt64("EventID", i);
-
-                packet.ReadByte("EventType", i);
-
-                packet.ReadInt32("Date", i);
-                packet.ReadInt32("Flags", i);
-                packet.ReadInt32("TextureID", i);
-
-                packet.ReadPackedGuid128("EventGuildID", i);
-                packet.ReadPackedGuid128("OwnerGUID", i);
-
-                packet.ResetBitReader();
-
-                var len = packet.ReadBits(8);
-                packet.ReadWoWString("EventName", len, i);
-            }
+                ReadCalendarSendCalendarEventInfo(packet, i, "CalendarSendCalendarEventInfo");
 
             for (int i = 0; i < int36; i++)
-            {
-                // sub_5F9975
-                packet.ReadInt64("InstanceID", i);
-
-                packet.ReadInt32("MapID", i);
-                packet.ReadUInt32("DifficultyID", i);
-                packet.ReadInt32("ExpireTime", i);
-            }
+                ReadCalendarSendCalendarRaidLockoutInfo(packet, i, "CalendarSendCalendarRaidLockoutInfo");
 
             for (int i = 0; i < int16; i++)
-            {
-                // sub_5F9A7E
-                packet.ReadInt32("MapID", i);
-                packet.ReadInt32("Duration", i);
-                packet.ReadInt32("Offset", i);
-            }
+                ReadCalendarSendCalendarRaidResetInfo(packet, i, "CalendarSendCalendarRaidResetInfo");
         }
     }
 }
