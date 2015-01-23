@@ -39,6 +39,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_SORT_BAGS)]
+        [Parser(Opcode.CMSG_SORT_BANK_BAGS)]
+        [Parser(Opcode.CMSG_SORT_REAGENT_BANK_BAGS)]
         public static void HandleItemZero(Packet packet)
         {
         }
