@@ -345,5 +345,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("NpcGUID");
             packet.ReadUInt32("CharShipmentContainerID");
         }
+
+        [Parser(Opcode.SMSG_GARRISON_UPGRADE_FOLLOWER_ITEM_LEVEL)]
+        public static void HandleGarrisonUpgradeFollowerItemLevel(Packet packet)
+        {
+            ReadGarrisonFollower(packet);
+        }
     }
 }
