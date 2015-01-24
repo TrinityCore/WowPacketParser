@@ -22,5 +22,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("TriggerGUID");
             ReadAreaTriggerSpline(packet);
         }
+
+        [Parser(Opcode.SMSG_AREA_TRIGGER_DENIED)]
+        public static void HandleAreaTriggerDenied(Packet packet)
+        {
+            packet.ReadInt32("AreaTriggerID");
+
+            packet.ReadBit("Entered");
+            packet.ResetBitReader();
+        }
     }
 }
