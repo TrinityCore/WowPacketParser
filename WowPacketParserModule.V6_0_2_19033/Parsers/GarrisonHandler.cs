@@ -392,5 +392,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("Unk2", i);
             }
         }
+
+        [Parser(Opcode.SMSG_GARRISON_ADD_FOLLOWER_RESULT)]
+        public static void HandleGarrisonAddFollowerResult(Packet packet)
+        {
+            packet.ReadInt32("Result");
+            ReadGarrisonFollower(packet);
+        }
     }
 }
