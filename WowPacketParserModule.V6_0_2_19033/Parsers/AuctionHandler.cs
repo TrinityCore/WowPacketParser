@@ -188,6 +188,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 MailHandler.ReadCliMailListEntry(packet, i);
         }
 
+        public static void ReadClientAuctionOwnerNotification(Packet packet, params object[] idx)
+        {
+            packet.ReadEntry<Int32>(StoreNameType.Item, "AuctionItemID", idx);
+
+            packet.ReadUInt64("BidAmount", idx);
+            ItemHandler.ReadItemInstance(packet, idx, "Item");
+        }
+
+        [Parser(Opcode.SMSG_AUCTION_CLOSED_NOTIFICATION)]
+        public static void HandleAuctionClosedNotification(Packet packet)
+        {
+            ReadClientAuctionOwnerNotification(packet, "Info");
+
+            packet.ReadSingle("ProceedsMailDelay");
+
+            packet.ReadBit("Sold");
+        }
+
         [Parser(Opcode.CMSG_AUCTION_LIST_PENDING_SALES)]
         public static void HandleAuctionZero(Packet packet)
         {

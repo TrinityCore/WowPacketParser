@@ -35,6 +35,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                         packet.ReadInt32(((ItemModifier)j).ToString(), indexes);
             }
 
+            packet.ResetBitReader();
+
             return itemId;
         }
 
