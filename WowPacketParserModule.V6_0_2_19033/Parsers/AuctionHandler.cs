@@ -226,6 +226,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadClientAuctionBidderNotification(packet, "Info");
         }
 
+        [Parser(Opcode.SMSG_AUCTION_OWNER_BID_NOTIFICATION)]
+        public static void HandleAuctionOwnerBidNotification(Packet packet)
+        {
+            ReadClientAuctionOwnerNotification(packet, "Info");
+
+            packet.ReadUInt64("MinIncrement");
+            packet.ReadPackedGuid128("Bidder");
+        }
+
         [Parser(Opcode.CMSG_AUCTION_LIST_PENDING_SALES)]
         public static void HandleAuctionZero(Packet packet)
         {
