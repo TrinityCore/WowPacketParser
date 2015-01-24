@@ -834,6 +834,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x1746},
             {Opcode.SMSG_GOSSIP_POI, 0x011E},
             {Opcode.SMSG_GROUP_DECLINE, 0x153F},
+            {Opcode.SMSG_GROUP_DESTROYED, 0x1982},
             {Opcode.SMSG_GROUP_NEW_LEADER, 0x0984},
             {Opcode.SMSG_GROUP_UNINVITE, 0x0110},
             {Opcode.SMSG_GUILD_ACHIEVEMENT_DELETED, 0x1058},
