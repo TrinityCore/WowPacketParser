@@ -657,11 +657,218 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("QuestGiver GUID");
         }
 
+        [Parser(Opcode.CMSG_QUEST_PUSH_RESULT)]
+        public static void HandleCliQuestPushResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("SenderGUID");
+            packet.ReadInt32("QuestID");
+            packet.ReadEnum<QuestPartyResult>("Result", TypeCode.Byte);
+        }
+
         [Parser(Opcode.SMSG_QUEST_PUSH_RESULT)]
         public static void HandleQuestPushResult(Packet packet)
         {
             packet.ReadPackedGuid128("SenderGUID");
             packet.ReadEnum<QuestPartyResult>("Result", TypeCode.Byte);
+        }
+
+        [Parser(Opcode.SMSG_SET_QUEST_COMPLETED_BIT)]
+        public static void HandleSetQuestCompletedBit(Packet packet)
+        {
+            packet.ReadInt32("Bit");
+            packet.ReadInt32("QuestID");
+        }
+
+        [Parser(Opcode.SMSG_QUESTGIVER_INVALID_QUEST)]
+        public static void HandleQuestGiverInvalidQuest(Packet packet)
+        {
+            packet.ReadInt32("Reason");
+            packet.ReadBit("UnkBit");
+
+            var len = packet.ReadBits(9);
+            packet.ReadWoWString("ReasonText", len);
+        }
+
+        [Parser(Opcode.CMSG_CHOICE_RESPONSE)]
+        public static void HandleChoiceResponse(Packet packet)
+        {
+            packet.ReadInt32("ChoiceID");
+            packet.ReadInt32("ResponseID");
+        }
+
+        [Parser(Opcode.SMSG_DISPLAY_PLAYER_CHOICE)]
+        public static void HandleDisplayPlayerChoice(Packet packet)
+        {
+            packet.ReadInt32("ChoiceID");
+            var int5 = packet.ReadInt32("PlayerChoiceResponseCount");
+            packet.ReadPackedGuid128("Guid");
+
+            for (int i = 0; i < int5; i++)
+            {
+                packet.ReadInt32("ResponseID", i);
+                packet.ReadInt32("ChoiceArtFileID", i);
+
+                packet.ResetBitReader();
+
+                var bits4 = packet.ReadBits(9);
+                var bits404 = packet.ReadBits(11);
+                var bit2112 = packet.ReadBit("HasPlayerChoiceResponseReward", i);
+
+                packet.ReadWoWString("Answer", bits4);
+                packet.ReadWoWString("Description", bits404);
+
+                if (bit2112)
+                {
+                    packet.ReadInt32("TitleID", i);
+                    packet.ReadInt32("PackageID", i);
+                    packet.ReadInt32("SkillLineID", i);
+                    packet.ReadInt32("SkillPointCount", i);
+                    packet.ReadInt32("ArenaPointCount", i);
+                    packet.ReadInt32("HonorPointCount", i);
+                    packet.ReadInt64("Money", i);
+                    packet.ReadInt32("Xp", i);
+
+                    var int36 = packet.ReadInt32("ItemsCount", i);
+                    var int52 = packet.ReadInt32("CurrenciesCount", i);
+                    var int68 = packet.ReadInt32("FactionsCount", i);
+                    var int84 = packet.ReadInt32("ItemChoicesCount", i);
+
+                    for (int j = 0; j < int36; j++) // @To-Do: need verification
+                    {
+                        packet.ReadInt32("Id", i, j);
+                        packet.ReadInt32("DisplayID", i, j);
+                        packet.ReadInt32("Quantity", i, j);
+
+                        packet.ResetBitReader();
+
+                        var bit32 = packet.ReadBit("HasBit32", i, j);
+                        var bit56 = packet.ReadBit("HasBit56", i, j);
+
+                        if (bit32)
+                        {
+                            // sub_5ED78D
+                            packet.ReadByte("", i, j);
+
+                            var int1 = packet.ReadUInt32("", i, j);
+                            for (int k = 0; k < int1; k++)
+                                packet.ReadUInt32("", i, j, k);
+                        }
+
+                        if (bit56)
+                        {
+                            // sub_5ECDA0
+                            var int4 = packet.ReadInt32("", i, j);
+                            packet.ReadWoWString("", int4, i, j);
+                        }
+
+                        packet.ReadInt32("", i, j);
+                    }
+
+                    for (int j = 0; j < int52; j++)
+                    {
+                        packet.ReadInt32("", i, j);
+                        packet.ReadInt32("", i, j);
+                        packet.ReadInt32("", i, j);
+
+                        packet.ResetBitReader();
+
+                        var bit32 = packet.ReadBit("", i, j);
+                        var bit56 = packet.ReadBit("", i, j);
+
+                        if (bit32)
+                        {
+                            // sub_5ED78D
+                            packet.ReadByte("", i, j);
+
+                            var int1 = packet.ReadUInt32("", i, j);
+                            for (int k = 0; k < int1; k++)
+                                packet.ReadUInt32("", i, j, k);
+                        }
+
+                        if (bit56)
+                        {
+                            // sub_5ECDA0
+                            var int4 = packet.ReadInt32("", i, j);
+                            packet.ReadWoWString("", int4, i, j);
+                        }
+
+                        packet.ReadInt32("", i, j);
+                    }
+
+                    for (int j = 0; j < int68; j++)
+                    {
+                        packet.ReadInt32("", i, j);
+                        packet.ReadInt32("", i, j);
+                        packet.ReadInt32("", i, j);
+
+                        packet.ResetBitReader();
+
+                        var bit32 = packet.ReadBit("", i, j);
+                        var bit56 = packet.ReadBit("", i, j);
+
+                        if (bit32)
+                        {
+                            // sub_5ED78D
+                            packet.ReadByte("", i, j);
+
+                            var int1 = packet.ReadUInt32("", i, j);
+                            for (int k = 0; k < int1; k++)
+                                packet.ReadUInt32("", i, j, k);
+                        }
+
+                        if (bit56)
+                        {
+                            // sub_5ECDA0
+                            var int4 = packet.ReadInt32("", i, j);
+                            packet.ReadWoWString("", int4, i, j);
+                        }
+
+                        packet.ReadInt32("", i, j);
+                    }
+
+                    for (int j = 0; j < int84; j++)
+                    {
+                        packet.ReadInt32("", i, j);
+                        packet.ReadInt32("", i, j);
+                        packet.ReadInt32("", i, j);
+
+                        packet.ResetBitReader();
+
+                        var bit32 = packet.ReadBit("", i, j);
+                        var bit56 = packet.ReadBit("", i, j);
+
+                        if (bit32)
+                        {
+                            // sub_5ED78D
+                            packet.ReadByte("", i, j);
+
+                            var int1 = packet.ReadUInt32("", i, j);
+                            for (int k = 0; k < int1; k++)
+                                packet.ReadUInt32("", i, j, k);
+                        }
+
+                        if (bit56)
+                        {
+                            // sub_5ECDA0
+                            var int4 = packet.ReadInt32("", i, j);
+                            packet.ReadWoWString("", int4, i, j);
+                        }
+
+                        packet.ReadInt32("", i, j);
+                    }
+                }
+            }
+
+            packet.ResetBitReader();
+
+            var len = packet.ReadBits(8);
+            packet.ReadWoWString("Question", len);
+        }
+
+        [Parser(Opcode.SMSG_DAILY_QUESTS_RESET)]
+        public static void HandleDailyQuestsReset(Packet packet)
+        {
+            packet.ReadInt32("Count");
         }
     }
 }

@@ -156,53 +156,6 @@ namespace WowPacketParser.Misc
             return string.Format("{0:00}:{1:00}:{2:00}.{3:000}", span.Hours, span.Minutes, span.Seconds, span.Milliseconds);
         }
 
-        /// <summary>
-        /// <para>Converts an IList (array, list) to a tuple. Up to 14 elements</para>
-        /// <remarks>1st value (0) of the IList is NOT used</remarks>
-        /// </summary>
-        /// <param name="col">The IList to be converted</param>
-        /// <param name="count">Number of elements</param>
-        /// <returns></returns>
-        public static object ToTuple(this IList<object> col, int count)
-        {
-            if (count > col.Count)
-                throw new ArgumentOutOfRangeException("col", col.Count,
-                    "Number of elements of the IList needs to be higher or equal than count");
-
-            // I still feel stupid...
-            switch (count)
-            {
-                case 2:
-                    return Tuple.Create(col[1]);
-                case 3:
-                    return Tuple.Create(col[1], col[2]);
-                case 4:
-                    return Tuple.Create(col[1], col[2], col[3]);
-                case 5:
-                    return Tuple.Create(col[1], col[2], col[3], col[4]);
-                case 6:
-                    return Tuple.Create(col[1], col[2], col[3], col[4], col[5]);
-                case 7:
-                    return Tuple.Create(col[1], col[2], col[3], col[4], col[5], col[6]);
-                case 8:
-                    return Tuple.Create(col[1], col[2], col[3], col[4], col[5], col[6], col[7]);
-                case 9:
-                    return Tuple.Create(col[1], col[2], col[3], col[4], col[5], col[6], col[7], col[8]);
-                case 10:
-                    return Tuple.Create(col[1], col[2], col[3], col[4], col[5], col[6], col[7], Tuple.Create(col[8]));
-                case 11:
-                    return Tuple.Create(col[1], col[2], col[3], col[4], col[5], col[6], col[7], Tuple.Create(col[8], col[9]));
-                case 12:
-                    return Tuple.Create(col[1], col[2], col[3], col[4], col[5], col[6], col[7], Tuple.Create(col[8], col[9], col[10]));
-                case 13:
-                    return Tuple.Create(col[1], col[2], col[3], col[4], col[5], col[6], col[7], Tuple.Create(col[8], col[9], col[10], col[11]));
-                case 14:
-                    return Tuple.Create(col[1], col[2], col[3], col[4], col[5], col[6], col[7], Tuple.Create(col[8], col[9], col[10], col[11], col[12]));
-                default:
-                    throw new ArgumentOutOfRangeException("count", count, "Numbers of element in IList to Tuple not supported.");
-            }
-        }
-
         public static void Clear<T>(this ConcurrentBag<T> bag)
         {
             T t;
@@ -233,6 +186,35 @@ namespace WowPacketParser.Misc
                 if (!comparer.Equals(kvp.Value, secondValue)) return false;
             }
             return true;
+        }
+
+        /// <summary>
+        /// Flattens an IEnumerable
+        /// Example:
+        /// [1, 2, [3, [4]], 5] -> [1, 2, 3, 4, 5]
+        /// </summary>
+        /// <typeparam name="T">Type of each object</typeparam>
+        /// <param name="values">Input IEnumerable</param>
+        /// <returns>Flatten result</returns>
+        public static IEnumerable<T> Flatten<T>(this IEnumerable<T> values)
+        {
+            var list = values.ToList();
+
+            while (list.Any(o => o is IEnumerable<T>))
+            {
+                for (var i = 0; i < list.Count; i++)
+                {
+                    var arr = list[i] as IEnumerable<T>;
+                    if (arr == null) continue;
+                    var arrList = arr.ToList();
+                    list.RemoveAt(i);
+
+                    list.InsertRange(i, arrList);
+                    i += arrList.Count - 1;
+                }
+            }
+
+            return list;
         }
     }
 }

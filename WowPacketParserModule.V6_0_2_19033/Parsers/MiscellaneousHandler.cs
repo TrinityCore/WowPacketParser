@@ -10,6 +10,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class MiscellaneousHandler
     {
+        public static void ReadElaspedTimer(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("TimerID", indexes);
+            packet.ReadInt32("CurrentDuration", indexes);
+        }
+
         [Parser(Opcode.CMSG_REQUEST_ARTIFACT_COMPLETION_HISTORY)]
         public static void HandleMiscZero(Packet packet)
         {
@@ -320,14 +326,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             Storage.Sounds.Add(sound, packet.TimeSpan);
         }
 
-        [Parser(Opcode.CMSG_RANDOM_ROLL)]
-        public static void HandleRandomRoll(Packet packet)
-        {
-            packet.ReadInt32("Min");
-            packet.ReadInt32("Max");
-            packet.ReadByte("PartyIndex");
-        }
-
         [Parser(Opcode.SMSG_ZONE_UNDER_ATTACK)]
         public static void HandleZoneUpdate(Packet packet)
         {
@@ -530,6 +528,43 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("SourceObjectGUID");
             packet.ReadUInt32("SoundId");
+        }
+
+        [Parser(Opcode.SMSG_START_ELAPSED_TIMER)]
+        public static void HandleStartElapsedTimer(Packet packet)
+        {
+            ReadElaspedTimer(packet);
+        }
+
+        [Parser(Opcode.SMSG_STOP_ELAPSED_TIMER)]
+        public static void HandleStopElapsedTimer(Packet packet)
+        {
+            packet.ReadInt32("TimerID");
+            packet.ReadBit("KeepTimer");
+        }
+
+        [Parser(Opcode.CMSG_RANDOM_ROLL)]
+        public static void HandleRandomRoll(Packet packet)
+        {
+            packet.ReadInt32("Min");
+            packet.ReadInt32("Max");
+            packet.ReadByte("PartyIndex");
+        }
+
+        [Parser(Opcode.SMSG_RANDOM_ROLL)]
+        public static void HandleRandomRollResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("Roller");
+            packet.ReadPackedGuid128("RollerWowAccount");
+            packet.ReadInt32("Min");
+            packet.ReadInt32("Max");
+            packet.ReadInt32("Result");
+        }
+
+        [Parser(Opcode.SMSG_SET_TASK_COMPLETE)]
+        public static void HandleSetTaskComplete(Packet packet)
+        {
+            packet.ReadInt32("TaskID");
         }
     }
 }

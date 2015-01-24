@@ -102,6 +102,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 ReadBattlePayProduct(ref packet, indexes);
         }
 
+        private static void ReadBattlePayPurchase(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt64("PurchaseID", indexes);
+            packet.ReadInt32("Status", indexes);
+            packet.ReadInt32("ResultCode", indexes);
+            packet.ReadInt32("ProductID", indexes);
+
+            packet.ResetBitReader();
+
+            var bits20 = packet.ReadBits(8);
+            packet.ReadWoWString("WalletName", bits20, indexes);
+        }
+
         [Parser(Opcode.SMSG_BATTLE_PAY_GET_PURCHASE_LIST_RESPONSE)]
         public static void HandleBattlePayGetPurchaseListResponse(Packet packet)
         {
@@ -110,17 +123,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var int6 = packet.ReadUInt32("BattlePayPurchaseCount");
 
             for (int i = 0; i < int6; i++)
-            {
-                packet.ReadInt64("PurchaseID", i);
-                packet.ReadInt32("Status", i);
-                packet.ReadInt32("ResultCode", i);
-                packet.ReadInt32("ProductID", i);
-
-                packet.ResetBitReader();
-
-                var bits20 = packet.ReadBits(8);
-                packet.ReadWoWString("WalletName", bits20, i);
-            }
+                ReadBattlePayPurchase(packet, i);
         }
 
         [Parser(Opcode.SMSG_BATTLE_PAY_GET_DISTRIBUTION_LIST_RESPONSE)]
@@ -181,6 +184,57 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 if (bit5172)
                     ReadBattlepayDisplayInfo(ref packet, i);
             }
+        }
+
+        [Parser(Opcode.CMSG_BATTLE_PAY_START_PURCHASE)]
+        public static void HandleBattlePayStartPurchase(Packet packet)
+        {
+            packet.ReadInt32("ClientToken");
+            packet.ReadInt32("ProductID");
+            packet.ReadPackedGuid128("TargetCharacter");
+        }
+
+        [Parser(Opcode.SMSG_BATTLE_PAY_START_PURCHASE_RESPONSE)]
+        public static void HandleBattlePayStartPurchaseResponse(Packet packet)
+        {
+            packet.ReadUInt64("PurchaseID");
+            packet.ReadInt32("ClientToken");
+            packet.ReadInt32("PurchaseResult");
+        }
+
+        [Parser(Opcode.SMSG_BATTLE_PAY_PURCHASE_UPDATE)]
+        public static void HandleBattlePayPurchaseUpdate(Packet packet)
+        {
+
+            var battlePayPurchaseCount = packet.ReadUInt32("BattlePayPurchaseCount");
+            for (int i = 0; i < battlePayPurchaseCount; i++)
+                ReadBattlePayPurchase(packet, i);
+        }
+
+        [Parser(Opcode.SMSG_BATTLE_PAY_CONFIRM_PURCHASE)]
+        public static void HandleBattlePayConfirmPurchase(Packet packet)
+        {
+            packet.ReadInt64("PurchaseID");
+            packet.ReadInt64("CurrentPriceFixedPoint");
+            packet.ReadInt32("ServerToken");
+        }
+
+        [Parser(Opcode.CMSG_BATTLE_PAY_CONFIRM_PURCHASE_RESPONSE)]
+        public static void HandleBattlePayConfirmPurchaseResponse(Packet packet)
+        {
+            packet.ReadBit("ConfirmPurchase");
+            packet.ReadInt32("ServerToken");
+            packet.ReadInt64("ClientCurrentPriceFixedPoint");
+        }
+
+        [Parser(Opcode.SMSG_BATTLE_PAY_DELIVERY_ENDED)]
+        public static void HandleBattlePayDeliveryEnded(Packet packet)
+        {
+            packet.ReadInt64("DistributionID");
+
+            var itemCount = packet.ReadInt32("ItemCount");
+            for (int i = 0; i < itemCount; i++)
+                ItemHandler.ReadItemInstance(packet, i);
         }
     }
 }

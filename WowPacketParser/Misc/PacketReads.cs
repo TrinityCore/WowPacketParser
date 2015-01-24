@@ -192,10 +192,17 @@ namespace WowPacketParser.Misc
             return ReadBytes(length);
         }
 
+
         public static string GetIndexString(params object[] values)
         {
-            return values.Where(value => value != null)
-                .Aggregate(string.Empty, (current, value) => current + ("[" + value + "] "));
+            var list = values.Flatten();
+
+            return list.Where(value => value != null)
+                .Aggregate(string.Empty, (current, value) =>
+                {
+                    var s = value is string ? "()" : "[]";
+                    return current + (s[0] + value.ToString() + s[1] + ' ');
+                });
         }
 
         public byte ReadByte(string name, params object[] indexes)
@@ -463,13 +470,6 @@ namespace WowPacketParser.Misc
         public Bit ReadBit(string name, params object[] indexes)
         {
             return AddValue(name, ReadBit(), indexes);
-        }
-
-        public Bit ReadBitBoolean(string name, params object[] indexes)
-        {
-            var val = ReadBit();
-            AddValue(name, val ? "true" : "false", indexes);
-            return val;
         }
 
         public Bit ReadBit()

@@ -43,7 +43,7 @@ namespace WowPacketParser.Enums.Version.V5_2_0_16650
             {Opcode.SMSG_DB_REPLY, 0x0411},
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x04A5},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x1024},
-            {Opcode.SMSG_GUILD_RANK, 0x0DEF},
+            {Opcode.SMSG_GUILD_RANKS, 0x0DEF},
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x19C5},
             {Opcode.SMSG_MOTD, 0x0514},
             {Opcode.SMSG_ON_MONSTER_MOVE, 0x0309},

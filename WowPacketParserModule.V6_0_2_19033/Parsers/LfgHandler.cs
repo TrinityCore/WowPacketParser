@@ -15,7 +15,42 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadTime("Time");
         }
 
+        public static void ReadLFGBlackList(Packet packet, params object[] indexes)
+        {
+            packet.ResetBitReader();
+            var bit16 = packet.ReadBit("HasPlayerGuid", indexes);
+            var int24 = packet.ReadInt32("LFGBlackListCount", indexes);
+
+            if (bit16)
+                packet.ReadPackedGuid128("PlayerGuid", indexes);
+
+            var indexString = Packet.GetIndexString(indexes);
+            for (var i = 0; i < int24; ++i)
+            {
+                packet.ReadUInt32(String.Format("{0} [{1}] Slot", indexString, i));
+                packet.ReadUInt32(String.Format("{0} [{1}] Reason", indexString, i));
+                packet.ReadInt32(String.Format("{0} [{1}] SubReason1", indexString, i));
+                packet.ReadInt32(String.Format("{0} [{1}] SubReason2", indexString, i));
+            }
+        }
+
+        public static void ReadLfgBootInfo(Packet packet, params object[] indexes)
+        {
+            packet.ReadBit("VoteInProgress");
+            packet.ReadBit("VotePassed");
+            packet.ReadBit("MyVoteCompleted");
+            packet.ReadBit("MyVote");
+            var len = packet.ReadBits(8);
+            packet.ReadPackedGuid128("Target");
+            packet.ReadUInt32("TotalVotes");
+            packet.ReadUInt32("BootVotes");
+            packet.ReadInt32("TimeLeft");
+            packet.ReadUInt32("VotesNeeded");
+            packet.ReadWoWString("Reason", len);
+        }
+
         [Parser(Opcode.CMSG_LFG_LIST_GET_STATUS)]
+        [Parser(Opcode.CMSG_REQUEST_LFG_LIST_BLACKLIST)]
         public static void HandleLfgZero(Packet packet)
         {
         }
@@ -26,20 +61,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var int16 = packet.ReadInt32("DungeonCount");
 
             // LFGBlackList
-            packet.ResetBitReader();
-            var bit16 = packet.ReadBit("HasPlayerGuid");
-            var int24 = packet.ReadInt32("LFGBlackListCount");
-
-            if (bit16)
-                packet.ReadPackedGuid128("PlayerGuid");
-
-            for (var i = 0; i < int24; ++i)
-            {
-                packet.ReadInt32("Slot", i);
-                packet.ReadInt32("Reason", i);
-                packet.ReadInt32("SubReason1", i);
-                packet.ReadInt32("SubReason2", i);
-            }
+            ReadLFGBlackList(packet);
 
             // LfgPlayerDungeonInfo
             for (var i = 0; i < int16; ++i)
@@ -265,7 +287,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("RewardItem", indexes);
             packet.ReadUInt32("RewardItemQuantity", indexes);
             packet.ReadInt32("BonusCurrency", indexes);
-            packet.ReadBitBoolean("IsCurrency", indexes);
+            packet.ReadBit("IsCurrency", indexes);
         }
 
         [Parser(Opcode.SMSG_LFG_PLAYER_REWARD)]
@@ -284,7 +306,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_DF_JOIN)]
         public static void HandleDFJoin(Packet packet)
         {
-            packet.ReadBitBoolean("QueueAsGroup");
+            packet.ReadBit("QueueAsGroup");
             var commentLength = packet.ReadBits("UnkBits8", 8);
 
             packet.ResetBitReader();
@@ -307,7 +329,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Guid", idx);
             packet.ReadEnum<LfgRoleFlag>("RolesDesired", TypeCode.UInt32, idx);
             packet.ReadByte("Level", idx);
-            packet.ReadBitBoolean("RoleCheckComplete", idx);
+            packet.ReadBit("RoleCheckComplete", idx);
 
             packet.ResetBitReader();
         }
@@ -328,8 +350,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < membersCount; ++i) // Members
                 ReadLFGRoleCheckUpdateMember(packet, i);
 
-            packet.ReadBitBoolean("IsBeginning");
-            packet.ReadBitBoolean("ShowRoleCheck"); // NC
+            packet.ReadBit("IsBeginning");
+            packet.ReadBit("ShowRoleCheck"); // NC
         }
 
         [Parser(Opcode.SMSG_ROLE_CHOSEN)]
@@ -337,7 +359,47 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Player");
             packet.ReadEnum<LfgRoleFlag>("RoleMask", TypeCode.UInt32);
-            packet.ReadBitBoolean("Accepted");
+            packet.ReadBit("Accepted");
+        }
+
+        [Parser(Opcode.SMSG_LFG_PARTY_INFO)]
+        public static void HandleLfgPartyInfo(Packet packet)
+        {
+            var blackListCount = packet.ReadInt32("BlackListCount");
+            for (var i = 0; i < blackListCount; i++)
+                ReadLFGBlackList(packet, i);
+        }
+
+        [Parser(Opcode.SMSG_LFG_BOOT_PLAYER)]
+        public static void HandleLfgBootPlayer(Packet packet)
+        {
+            ReadLfgBootInfo(packet);
+        }
+
+        [Parser(Opcode.CMSG_DF_BOOT_PLAYER_VOTE)]
+        public static void HandleDFBootPlayerVote(Packet packet)
+        {
+            packet.ReadBit("Vote");
+        }
+
+        [Parser(Opcode.CMSG_DF_PROPOSAL_RESPONSE)]
+        public static void HandleDFProposalResponse(Packet packet)
+        {
+            ReadRideTicket(packet);
+            packet.ReadInt64("InstanceID");
+            packet.ReadInt32("ProposalID");
+            packet.ReadBit("Accepted");
+        }
+
+        [Parser(Opcode.SMSG_LFG_LIST_UPDATE_BLACKLIST)]
+        public static void HandleLFGListUpdateBlacklist(Packet packet)
+        {
+            var count = packet.ReadInt32("");
+            for (int i = 0; i < count; i++)
+            {
+                packet.ReadInt32("ActivityID", i);
+                packet.ReadInt32("Reason", i);
+            }
         }
     }
 }

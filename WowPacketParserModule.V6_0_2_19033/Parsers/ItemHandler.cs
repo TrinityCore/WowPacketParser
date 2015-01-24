@@ -35,7 +35,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                         packet.ReadInt32(((ItemModifier)j).ToString(), indexes);
             }
 
+            packet.ResetBitReader();
+
             return itemId;
+        }
+
+        [Parser(Opcode.CMSG_SORT_BAGS)]
+        [Parser(Opcode.CMSG_SORT_BANK_BAGS)]
+        [Parser(Opcode.CMSG_SORT_REAGENT_BANK_BAGS)]
+        [Parser(Opcode.SMSG_SORT_BAGS_ACK)]
+        public static void HandleItemZero(Packet packet)
+        {
         }
 
         [Parser(Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE)]
@@ -333,6 +343,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleItemExpirePurchaseRefund(Packet packet)
         {
             packet.ReadPackedGuid128("ItemGUID");
+        }
+
+        [Parser(Opcode.CMSG_SET_SORT_BAGS_RIGHT_TO_LEFT)]
+        public static void HandleSortBagsRightToLeft(Packet packet)
+        {
+            packet.ReadBit("Disable");
+        }
+
+        [Parser(Opcode.CMSG_DEPOSIT_REAGENT_BANK)]
+        public static void HandleReagentBankDeposit(Packet packet)
+        {
+            packet.ReadPackedGuid128("Banker");
         }
     }
 }

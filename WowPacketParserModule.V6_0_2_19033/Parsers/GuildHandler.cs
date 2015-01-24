@@ -78,12 +78,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_GUILD_GET_RANKS)]
-        public static void HandleGuildRanks434(Packet packet)
+        [Parser(Opcode.CMSG_GUILD_QUERY_RECIPES)]
+        public static void HandleGuildGuildGUID(Packet packet)
         {
             packet.ReadPackedGuid128("GuildGUID");
         }
 
-        [Parser(Opcode.SMSG_GUILD_RANK)]
+        [Parser(Opcode.SMSG_GUILD_RANKS)]
         public static void HandleGuildRankServer434(Packet packet)
         {
             var count = packet.ReadUInt32("Count");
@@ -441,7 +442,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("MaxLevelGold", i);
         }
 
-        [Parser(Opcode.SMSG_GUILD_RANKS_UPDATE)]
+        [Parser(Opcode.SMSG_GUILD_SEND_RANK_CHANGE)]
         public static void HandleGuildRanksUpdate(Packet packet)
         {
             packet.ReadPackedGuid128("Officer");
@@ -554,6 +555,47 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var rankNameLen = packet.ReadBits(7);
 
             packet.ReadWoWString("RankName", rankNameLen);
+        }
+
+        [Parser(Opcode.CMSG_REQUEST_GUILD_REWARDS_LIST)]
+        public static void HandleRequestGuildRewardsList(Packet packet)
+        {
+            packet.ReadTime("CurrentVersion");
+        }
+
+        [Parser(Opcode.SMSG_LF_GUILD_POST)]
+        public static void HandleLFGuildPost(Packet packet)
+        {
+            var hasGuildPostData = packet.ReadBit("HasGuildPostData");
+            if (hasGuildPostData)
+            {
+                packet.ResetBitReader();
+                packet.ReadBit("Active");
+                var len = packet.ReadBits(10);
+
+                packet.ReadInt32("PlayStyle");
+                packet.ReadInt32("Availability");
+                packet.ReadInt32("ClassRoles");
+                packet.ReadInt32("LevelRange");
+                packet.ReadInt32("SecondsRemaining");
+
+                packet.ReadWoWString("Comment", len);
+            }
+        }
+
+        [Parser(Opcode.SMSG_GUILD_CHALLENGE_COMPLETED)]
+        public static void HandleGuildChallengeCompleted(Packet packet)
+        {
+            packet.ReadInt32("ChallengeType");
+            packet.ReadInt32("CurrentCount");
+            packet.ReadInt32("MaxCount");
+            packet.ReadInt32("GoldAwarded");
+        }
+
+        [Parser(Opcode.SMSG_GUILD_REPUTATION_REACTION_CHANGED)]
+        public static void HandleGuildReputationReactionChanged(Packet packet)
+        {
+            packet.ReadPackedGuid128("MemberGUID");
         }
     }
 }

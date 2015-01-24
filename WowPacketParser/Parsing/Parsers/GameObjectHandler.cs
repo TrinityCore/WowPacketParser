@@ -77,7 +77,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM)]
         [Parser(Opcode.CMSG_GAMEOBJ_USE)]
         [Parser(Opcode.CMSG_GAMEOBJ_REPORT_USE)]
-        [Parser(Opcode.SMSG_GAMEOBJECT_PAGETEXT)]
+        [Parser(Opcode.SMSG_PAGE_TEXT)]
         [Parser(Opcode.SMSG_GAMEOBJECT_RESET_STATE)]
         public static void HandleGOMisc(Packet packet)
         {

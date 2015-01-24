@@ -61,6 +61,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("PlotType", indexes);
         }
 
+        private static void ReadCharacterShipment(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("ShipmentRecID", indexes);
+            packet.ReadInt64("ShipmentID", indexes);
+            packet.ReadTime("CreationTime", indexes);
+            packet.ReadInt32("ShipmentDuration", indexes);
+        }
+
         [Parser(Opcode.CMSG_GET_GARRISON_INFO)]
         [Parser(Opcode.CMSG_GARRISON_REQUEST_LANDING_PAGE_SHIPMENT_INFO)]
         [Parser(Opcode.CMSG_GARRISON_REQUEST_BLUEPRINT_AND_SPECIALIZATION_DATA)]
@@ -236,12 +244,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("CurrencyID");
         }
 
-        [Parser(Opcode.CMSG_GARRISON_OPEN_MISSION_NPC)]
-        public static void HandleGarrisonOpenMissionNPC(Packet packet)
-        {
-            packet.ReadPackedGuid128("NpcGUID");
-        }
-
         [Parser(Opcode.SMSG_GET_GARRISON_INFO_RESULT)]
         public static void HandleGetGarrisonInfoResult(Packet packet)
         {
@@ -300,6 +302,114 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("Missions", i);
 
             packet.ReadBit("Succeeded");
+        }
+
+        [Parser(Opcode.CMSG_CREATE_SHIPMENT)]
+        [Parser(Opcode.CMSG_GET_SHIPMENT_INFO)]
+        [Parser(Opcode.CMSG_GARRISON_OPEN_MISSION_NPC)]
+        public static void HandleGarrisonNpcGUID(Packet packet)
+        {
+            packet.ReadPackedGuid128("NpcGUID");
+        }
+
+        [Parser(Opcode.CMSG_OPEN_SHIPMENT_GAME_OBJ)]
+        public static void HandleGarrisonGameObjGUID(Packet packet)
+        {
+            packet.ReadPackedGuid128("GameObjectGUID");
+        }
+
+        [Parser(Opcode.SMSG_GET_SHIPMENT_INFO_RESPONSE)]
+        public static void HandleGetShipmentInfoResponse(Packet packet)
+        {
+            packet.ReadBit("Success");
+
+            packet.ReadInt32("ShipmentID");
+            packet.ReadInt32("MaxShipments");
+            var characterShipmentCount = packet.ReadInt32("CharacterShipmentCount");
+            packet.ReadInt32("PlotInstanceID");
+
+            for (int i = 0; i < characterShipmentCount; i++)
+                ReadCharacterShipment(packet);
+        }
+
+        [Parser(Opcode.SMSG_CREATE_SHIPMENT_RESPONSE)]
+        public static void HandleCreateShipmentResponse(Packet packet)
+        {
+            packet.ReadInt64("ShipmentID");
+            packet.ReadUInt32("ShipmentRecID");
+            packet.ReadUInt32("Result");
+        }
+
+        [Parser(Opcode.SMSG_OPEN_SHIPMENT_NPC_FROM_GOSSIP)]
+        public static void HandleOpenShipmentNPCFromGossip(Packet packet)
+        {
+            packet.ReadPackedGuid128("NpcGUID");
+            packet.ReadUInt32("CharShipmentContainerID");
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_UPGRADE_FOLLOWER_ITEM_LEVEL)]
+        public static void HandleGarrisonUpgradeFollowerItemLevel(Packet packet)
+        {
+            ReadGarrisonFollower(packet);
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_OPEN_TRADESKILL)]
+        public static void HandleGarrisonOpenTradeskill(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+
+            packet.ReadInt32("SpellID");
+
+            var int4 = packet.ReadInt32("SkillLineCount");
+            var int20 = packet.ReadInt32("SkillRankCount");
+            var int36 = packet.ReadInt32("SkillMaxRankCount");
+            var int52 = packet.ReadInt32("KnownAbilitySpellCount");
+
+            for (int i = 0; i < int4; i++)
+                packet.ReadInt32("SkillLineIDs", i);
+
+            for (int i = 0; i < int20; i++)
+                packet.ReadInt32("SkillRanks", i);
+
+            for (int i = 0; i < int36; i++)
+                packet.ReadInt32("SkillMaxRanks", i);
+
+            for (int i = 0; i < int52; i++)
+                packet.ReadInt32("KnownAbilitySpellIDs", i);
+
+            var int84 = packet.ReadInt32("PlayerConditionCount");
+            for (int i = 0; i < int84; i++)
+                packet.ReadInt32("PlayerConditionID", i);
+        }
+
+        [Parser(Opcode.SMSG_SETUP_TROPHY)]
+        public static void HandleGarrisonSetupTrophy(Packet packet)
+        {
+            var count = packet.ReadInt32("TrophyCount");
+            for (int i = 0; i < count; i++) // @To-Do: need verification
+            {
+                packet.ReadInt32("Unk1", i);
+                packet.ReadInt32("Unk2", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_ADD_FOLLOWER_RESULT)]
+        public static void HandleGarrisonAddFollowerResult(Packet packet)
+        {
+            packet.ReadInt32("Result");
+            ReadGarrisonFollower(packet);
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_PLOT_REMOVED)]
+        public static void HandleGarrisonPlotRemoved(Packet packet)
+        {
+            packet.ReadInt32("GarrPlotInstanceID");
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_SET_NUM_FOLLOWER_ACTIVATIONS_REMAINING)]
+        public static void HandleGarrisonSetNumFollowerActivationsRemaining(Packet packet)
+        {
+            packet.ReadInt32("Activated");
         }
     }
 }

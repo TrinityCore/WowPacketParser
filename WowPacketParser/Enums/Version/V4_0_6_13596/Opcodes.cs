@@ -806,7 +806,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_FRIEND_STATUS, 0x0F68C},
             {Opcode.SMSG_GAMEOBJECT_CUSTOM_ANIM, 0x02E8C}, //(0x8230)(0x00B3)//4.0.6a13623
             {Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM, 0x0BFA8},
-            {Opcode.SMSG_GAMEOBJECT_PAGETEXT, 0x0E5C8},
+            {Opcode.SMSG_PAGE_TEXT, 0x0E5C8},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x0F4E8},
             {Opcode.SMSG_GAMEOBJECT_RESET_STATE, 0x022E0},
             {Opcode.SMSG_GAMESPEED_SET, 0x03EC0},
@@ -851,8 +851,8 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_GUILD_NEWS_UPDATE, 0x0485E},
             //{Opcode.SMSG_GUILD_PARTY_STATE_UPDATE, 0x0450C},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x03F80},
-            {Opcode.SMSG_GUILD_RANK, 0x0411E},
-            {Opcode.SMSG_GUILD_RANKS_UPDATE, 0x0004C},
+            {Opcode.SMSG_GUILD_RANKS, 0x0411E},
+            {Opcode.SMSG_GUILD_SEND_RANK_CHANGE, 0x0004C},
             {Opcode.SMSG_GUILD_REWARDS_LIST, 0x00C4C},
             {Opcode.SMSG_GUILD_ROSTER, 0x04D5C},
             {Opcode.SMSG_GUILD_TRADESKILL_UPDATE, 0x0454E},
@@ -952,8 +952,8 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_MOUNT_SPECIAL_ANIM, 0x02388},
             {Opcode.SMSG_MOVE_ABANDON_TRANSPORT, 0x101D0}, //UnknownopcodeID
             {Opcode.SMSG_MOVE_SET_FEATHER_FALL, 0x06088},
-            {Opcode.SMSG_MOVE_GRAVITY_DISABLE, 0x10219}, //UnknownopcodeID
-            {Opcode.SMSG_MOVE_GRAVITY_ENABLE, 0x1021B}, //UnknownopcodeID
+            {Opcode.SMSG_MOVE_DISABLE_GRAVITY, 0x10219}, //UnknownopcodeID
+            {Opcode.SMSG_MOVE_ENABLE_GRAVITY, 0x1021B}, //UnknownopcodeID
             {Opcode.SMSG_MOVE_KNOCK_BACK, 0x0B180},
             //{Opcode.SMSG_MOVE_LAND_WALK, 0x02084},
             {Opcode.SMSG_MOVE_LEVITATING, 0x0B8AC},
@@ -1024,7 +1024,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_PONG, 0x0A01B},
             {Opcode.SMSG_POWER_UPDATE, 0x065E8},
             {Opcode.SMSG_PRE_RESSURECT, 0x066C4},
-            {Opcode.SMSG_PROCRESIST, 0x07E80},
+            {Opcode.SMSG_PROC_RESIST, 0x07E80},
             {Opcode.SMSG_PROPOSE_LEVEL_GRANT, 0x0E0C4},
             {Opcode.SMSG_PUREMOUNT_CANCELLED_OBSOLETE, 0x0054E},
             {Opcode.SMSG_PVP_CREDIT, 0x037C8},
@@ -1040,7 +1040,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS, 0x06EE0},
             {Opcode.SMSG_QUESTGIVER_STATUS, 0x07988},
             //{Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE, 0x0F5C0},
-            //{Opcode.SMSG_QUESTLOG_FULL, 0x061EC},
+            //{Opcode.SMSG_QUEST_LOG_FULL, 0x061EC},
             {Opcode.SMSG_QUEST_UPDATE_ADD_ITEM, 0x1006B},
             {Opcode.SMSG_QUEST_UPDATE_ADD_KILL, 0x0ADA0},
             {Opcode.SMSG_QUEST_UPDATE_ADD_PVP_KILL, 0x078E0},

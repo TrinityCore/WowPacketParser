@@ -7,8 +7,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class BattlegroundHandler
     {
+        public static void ReadBattlefieldStatus_Header(Packet packet, params object[] indexes)
+        {
+            LfgHandler.ReadRideTicket(packet);
+
+            packet.ReadInt64("QueueID");
+            packet.ReadByte("RangeMin");
+            packet.ReadByte("RangeMax");
+            packet.ReadByte("TeamSize");
+            packet.ReadInt32("InstanceID");
+
+            packet.ResetBitReader();
+            packet.ReadBit("RegisteredMatch");
+            packet.ReadBit("TournamentRules");
+        }
+
         [Parser(Opcode.CMSG_REQUEST_BATTLEFIELD_STATUS)]
         [Parser(Opcode.CMSG_REQUEST_CONQUEST_FORMULA_CONSTANTS)]
+        [Parser(Opcode.CMSG_REQUEST_RATED_BATTLEFIELD_INFO)]
         public static void HandleBattlefieldZero(Packet packet)
         {
         }
@@ -52,12 +68,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_BATTLEFIELD_PORT)]
         public static void HandleBattlefieldPort(Packet packet)
         {
-            packet.ReadPackedGuid128("RequesterGuid");
-
-            packet.ReadUInt32("Id");
-            packet.ReadEntry<Int32>(StoreNameType.Battleground, "Type");
-            packet.ReadTime("Time");
-
+            LfgHandler.ReadRideTicket(packet);
             packet.ReadBit("AcceptedInvite");
         }
 
@@ -185,10 +196,124 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < battlefieldsCount; ++i) // Battlefields
                 packet.ReadInt32("Battlefield");
 
-            packet.ReadBitBoolean("PvpAnywhere");
-            packet.ReadBitBoolean("HasHolidayWinToday");
-            packet.ReadBitBoolean("HasRandomWinToday");
-            packet.ReadBitBoolean("IsRandomBG");
+            packet.ReadBit("PvpAnywhere");
+            packet.ReadBit("HasHolidayWinToday");
+            packet.ReadBit("HasRandomWinToday");
+            packet.ReadBit("IsRandomBG");
+        }
+
+        [Parser(Opcode.SMSG_PVP_OPTIONS_ENABLED)]
+        public static void HandlePVPOptionsEnabled(Packet packet)
+        {
+            packet.ReadBit("RatedArenas");
+            packet.ReadBit("ArenaSkirmish");
+            packet.ReadBit("PugBattlegrounds");
+            packet.ReadBit("WargameBattlegrounds");
+            packet.ReadBit("WargameArenas");
+            packet.ReadBit("RatedBattlegrounds");
+        }
+
+        [Parser(Opcode.SMSG_REQUEST_PVP_REWARDS_RESPONSE)]
+        public static void HandleRequestPVPRewardsResponse(Packet packet)
+        {
+            packet.ReadUInt32("RewardPointsThisWeek");
+            packet.ReadUInt32("MaxRewardPointsThisWeek");
+
+            packet.ReadUInt32("RatedRewardPointsThisWeek");
+            packet.ReadUInt32("RatedMaxRewardPointsThisWeek");
+
+            packet.ReadUInt32("RandomRewardPointsThisWeek");
+            packet.ReadUInt32("RandomMaxRewardPointsThisWeek");
+
+            packet.ReadUInt32("ArenaRewardPointsThisWeek");
+            packet.ReadUInt32("ArenaMaxRewardPointsThisWeek");
+
+            packet.ReadUInt32("ArenaRewardPoints");
+            packet.ReadUInt32("RatedRewardPoints");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_POSITIONS)]
+        public static void HandleBattlegroundPlayerPositions(Packet packet)
+        {
+            var battlegroundPlayerPositionCount = packet.ReadInt32("BattlegroundPlayerPositionCount");
+            for (int i = 0; i < battlegroundPlayerPositionCount; i++)
+            {
+                packet.ReadPackedGuid128("Guid", i);
+                packet.ReadVector2("Pos", i);
+                packet.ReadByte("IconID", i);
+                packet.ReadByte("ArenaSlot", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_QUEUED)]
+        public static void HandleBattlefieldStatus_Queued(Packet packet)
+        {
+            ReadBattlefieldStatus_Header(packet);
+            packet.ReadInt32("AverageWaitTime");
+            packet.ReadInt32("WaitTime");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("AsGroup");                   // unconfirmed order
+            packet.ReadBit("SuspendedQueue");            // unconfirmed order
+            packet.ReadBit("EligibleForMatchmaking");    // unconfirmed order
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_NONE)]
+        public static void HandleBattlefieldStatus_None(Packet packet)
+        {
+            LfgHandler.ReadRideTicket(packet);
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_ACTIVE)]
+        public static void HandleBattlefieldStatus_Active(Packet packet)
+        {
+            ReadBattlefieldStatus_Header(packet);
+
+            packet.ReadInt32("Mapid");
+            packet.ReadInt32("StartTimer");
+            packet.ReadInt32("ShutdownTimer");
+
+            packet.ResetBitReader();
+            packet.ReadBit("ArenaFaction");     // unconfirmed order
+            packet.ReadBit("LeftEarly");        // unconfirmed order
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_NEEDCONFIRMATION)]
+        public static void HandleBattlefieldStatus_NeedConfirmation(Packet packet)
+        {
+            ReadBattlefieldStatus_Header(packet);
+            packet.ReadInt32("Mapid");
+            packet.ReadInt32("Timeout");
+            packet.ReadByte("Role");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_FAILED)]
+        public static void HandleBattlefieldStatus_Failed(Packet packet)
+        {
+            LfgHandler.ReadRideTicket(packet);
+            packet.ReadInt64("QueueID");
+            packet.ReadInt32("Reason");
+            packet.ReadPackedGuid128("ClientID");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_JOINED)]
+        public static void HandleBattlegroundPlayerJoined(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEGROUND_POINTS)]
+        public static void HandleBattlegroundPoints(Packet packet)
+        {
+            packet.ReadInt16("Points");
+            packet.ReadBit("Team");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEGROUND_INIT)]
+        public static void HandleBattlegroundInit(Packet packet)
+        {
+            packet.ReadInt16("MaxPoints");
         }
     }
 }

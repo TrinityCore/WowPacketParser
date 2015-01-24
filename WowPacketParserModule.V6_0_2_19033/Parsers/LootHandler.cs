@@ -8,6 +8,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     public static class LootHandler
     {
         [Parser(Opcode.SMSG_AE_LOOT_TARGET_ACK)]
+        [Parser(Opcode.SMSG_LOOT_RELEASE_ALL)]
         public static void HandleLootZero(Packet packet)
         {
         }

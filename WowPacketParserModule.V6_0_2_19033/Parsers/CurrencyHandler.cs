@@ -6,6 +6,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class CurrencyHandler
     {
+        [Parser(Opcode.SMSG_RESET_WEEKLY_CURRENCY)]
+        public static void HandleCurrencyZero(Packet packet)
+        {
+        }
+
         [Parser(Opcode.SMSG_SETUP_CURRENCY)]
         public static void HandleInitCurrency(Packet packet)
         {

@@ -268,7 +268,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 Storage.NpcSpellClicks.Add(guid, packet.TimeSpan);
         }
 
-        [Parser(Opcode.CMSG_NEUTRALPLAYERFACTIONSELECTRESULT)]
+        [Parser(Opcode.CMSG_NEUTRAL_PLAYER_SELECT_FACTION)]
         public static void HandleFactionSelect(Packet packet)
         {
             packet.ReadUInt32("Option");

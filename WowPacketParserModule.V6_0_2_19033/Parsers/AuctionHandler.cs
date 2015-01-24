@@ -188,6 +188,68 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 MailHandler.ReadCliMailListEntry(packet, i);
         }
 
+        public static void ReadClientAuctionOwnerNotification(Packet packet, params object[] idx)
+        {
+            packet.ReadEntry<Int32>(StoreNameType.Item, "AuctionItemID", idx);
+            packet.ReadUInt64("BidAmount", idx);
+            ItemHandler.ReadItemInstance(packet, idx, "Item");
+        }
+
+        public static void ReadClientAuctionBidderNotification(Packet packet, params object[] idx)
+        {
+            packet.ReadEntry<Int32>(StoreNameType.Item, "AuctionItemID", idx);
+            packet.ReadPackedGuid128("Bidder", idx);
+            ItemHandler.ReadItemInstance(packet, idx, "Item");
+        }
+
+        [Parser(Opcode.SMSG_AUCTION_CLOSED_NOTIFICATION)]
+        public static void HandleAuctionClosedNotification(Packet packet)
+        {
+            ReadClientAuctionOwnerNotification(packet, "Info");
+
+            packet.ReadSingle("ProceedsMailDelay");
+            packet.ReadBit("Sold");
+        }
+
+        [Parser(Opcode.SMSG_AUCTION_OUTBID_NOTIFICATION)]
+        public static void HandleAuctionOutbitNotification(Packet packet)
+        {
+            ReadClientAuctionBidderNotification(packet, "Info");
+
+            packet.ReadUInt64("BidAmount");
+            packet.ReadUInt64("MinIncrement");
+        }
+
+        [Parser(Opcode.SMSG_AUCTION_WON_NOTIFICATION)]
+        public static void HandleAuctionWonNotification(Packet packet)
+        {
+            ReadClientAuctionBidderNotification(packet, "Info");
+        }
+
+        [Parser(Opcode.SMSG_AUCTION_OWNER_BID_NOTIFICATION)]
+        public static void HandleAuctionOwnerBidNotification(Packet packet)
+        {
+            ReadClientAuctionOwnerNotification(packet, "Info");
+
+            packet.ReadUInt64("MinIncrement");
+            packet.ReadPackedGuid128("Bidder");
+        }
+
+        [Parser(Opcode.SMSG_AUCTION_REPLICATE_RESPONSE)]
+        public static void HandleAuctionReplicateResponse(Packet packet)
+        {
+            // TODO: Order is not confirmed
+            packet.ReadUInt32("ChangeNumberCursor");
+            packet.ReadUInt32("ChangeNumberGlobal");
+            packet.ReadUInt32("DesiredDelay");
+            packet.ReadUInt32("ChangeNumberTombstone");
+            packet.ReadUInt32("Result");
+
+            var itemsCount = packet.ReadInt32("ItemsCount");
+            for (var i = 0; i < itemsCount; ++i)
+                ReadCliAuctionItem(packet, "Items", i);
+        }
+
         [Parser(Opcode.CMSG_AUCTION_LIST_PENDING_SALES)]
         public static void HandleAuctionZero(Packet packet)
         {

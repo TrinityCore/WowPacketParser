@@ -719,7 +719,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_QUESTGIVER_QUEST_INVALID, 0x018F}, // NF()(0x018F) //
             {Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, 0x0191}, // NF()(0x0191) //
             {Opcode.SMSG_QUESTGIVER_QUEST_FAILED, 0x2E77}, // (0x6B39)(0x0192) //
-            {Opcode.SMSG_QUESTLOG_FULL, 0x0195}, // NF()(0x0195) //
+            {Opcode.SMSG_QUEST_LOG_FULL, 0x0195}, // NF()(0x0195) //
             {Opcode.SMSG_QUEST_UPDATE_FAILED, 0xDC5D}, // (0x0AB5)(0x0196) //
             {Opcode.SMSG_QUEST_UPDATE_FAILED_TIMER, 0x3F5D}, // (0x8BB4)(0x0197) //
             {Opcode.SMSG_QUEST_UPDATE_COMPLETE, 0x4575}, // (0x4AF5)(0x0198) //
@@ -761,7 +761,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_STOP_MIRROR_TIMER, 0x2E56}, // (0x2299)(0x01DB) //
             {Opcode.SMSG_PONG, 0xB000}, // (0xC500)(0x01DD) //
             {Opcode.SMSG_CLEAR_COOLDOWN, 0x9577}, // (0xCB51)(0x01DE) //
-            {Opcode.SMSG_GAMEOBJECT_PAGETEXT, 0xC757}, // (0x2B79)(0x01DF) //
+            {Opcode.SMSG_PAGE_TEXT, 0xC757}, // (0x2B79)(0x01DF) //
             {Opcode.SMSG_COOLDOWN_CHEAT, 0x2C7F}, // (0x637C)(0x01E1) //
             {Opcode.SMSG_SPELL_DELAYED, 0x9675}, // (0xA21C)(0x01E2) //
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0xFFCE}, // NF(0x8AB8)(0x01E4) //
@@ -795,7 +795,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_QUEST_FORCE_REMOVED, 0xFFC8}, // NF(0x0B18)(0x021E) //estid
             {Opcode.SMSG_SPIRIT_HEALER_CONFIRM, 0x7C57}, // (0x4AF4)(0x0222) //
             {Opcode.SMSG_GOSSIP_POI, 0x1002}, // (0x0BD9)(0x0224) //
-            //{Opcode.SMSG_GUILD_RANK, 0xFFC7}, // NF(0x4090)() //
+            //{Opcode.SMSG_GUILD_RANKS, 0xFFC7}, // NF(0x4090)() //
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0xEC7C}, // (0x4A5D)(0x0236) //
             {Opcode.SMSG_SEND_MAIL_RESULT, 0x8B23}, // (0xE351)(0x0239) //
             {Opcode.SMSG_MAIL_LIST_RESULT, 0x3804}, // (0xABD1)(0x023B) //
@@ -816,7 +816,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_AUCTION_OWNER_LIST_RESULT, 0xDA22}, // (0x4B94)(0x025D) //
             {Opcode.SMSG_AUCTION_BIDDER_NOTIFICATION, 0x3021}, // (0x4250)(0x025E) //
             {Opcode.SMSG_AUCTION_OWNER_NOTIFICATION, 0xC009}, // (0x42B5)(0x025F) //
-            {Opcode.SMSG_PROCRESIST, 0x6754}, // (0xEBB0)(0x0260) //
+            {Opcode.SMSG_PROC_RESIST, 0x6754}, // (0xEBB0)(0x0260) //
             {Opcode.SMSG_STANDSTATE_CHANGE_FAILURE_OBSOLETE, 0x455D}, // (0x8290)(0x0261) //
             {Opcode.SMSG_DISPEL_FAILED, 0xDD54}, // (0x4BB5)(0x0262) //
             {Opcode.SMSG_SPELL_OR_DAMAGE_IMMUNE, 0x247F}, // (0x63F5)(0x0263) //
@@ -1108,8 +1108,8 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_ARENA_OPPONENT_UPDATE, 0x5B29}, // ()(0x04C7) // // uint64}, EVENT_ARENA_OPPONENT_UPDATE
             {Opcode.SMSG_ARENA_TEAM_CHANGE_FAILED_QUEUED, 0xFF96}, // NF(0xA370)(0x04C8) //an't modify arena team while queued or in a match." 3.2
             {Opcode.SMSG_MULTIPLE_PACKETS_2, 0x957E}, // (0x0B5C)(0x04CD) //dles any opcode
-            {Opcode.SMSG_MOVE_GRAVITY_DISABLE, 0x04CE}, // NF()(0x04CE) // // SMSG}, movement related
-            {Opcode.SMSG_MOVE_GRAVITY_ENABLE, 0x04D0}, // NF()(0x04D0) // // SMSG}, movement related
+            {Opcode.SMSG_MOVE_DISABLE_GRAVITY, 0x04CE}, // NF()(0x04CE) // // SMSG}, movement related
+            {Opcode.SMSG_MOVE_ENABLE_GRAVITY, 0x04D0}, // NF()(0x04D0) // // SMSG}, movement related
             {Opcode.SMSG_SPLINE_MOVE_GRAVITY_DISABLE, 0x04D3}, // NF()(0x04D3) // // SMSG}, movement related
             {Opcode.SMSG_SPLINE_MOVE_GRAVITY_ENABLE, 0x04D4}, // NF()(0x04D4) // // SMSG}, movement related
             {Opcode.SMSG_EQUIPMENT_SET_USE_RESULT, 0xF657}, // (0x02D9)(0x04D6) //EquipmentSetResult?

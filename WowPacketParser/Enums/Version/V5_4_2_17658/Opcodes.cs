@@ -126,7 +126,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x1736},
             {Opcode.SMSG_GOSSIP_POI, 0x1D8D},
             {Opcode.SMSG_GUILD_NEWS_TEXT, 0x050A},
-            {Opcode.SMSG_GUILD_RANK, 0x05AA},
+            {Opcode.SMSG_GUILD_RANKS, 0x05AA},
             {Opcode.SMSG_GUILD_ROSTER, 0x050E},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x0502},
             {Opcode.SMSG_HOTFIX_NOTIFY_BLOB, 0x0A4B},

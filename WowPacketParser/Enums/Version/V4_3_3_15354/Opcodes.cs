@@ -107,7 +107,7 @@ namespace WowPacketParser.Enums.Version.V4_3_3_15354
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x7664},
             {Opcode.SMSG_GUILD_EVENT, 0x632D},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x2BEC},
-            {Opcode.SMSG_GUILD_RANK, 0x6D06},
+            {Opcode.SMSG_GUILD_RANKS, 0x6D06},
             {Opcode.SMSG_GUILD_ROSTER, 0x350C},
             {Opcode.SMSG_INITIALIZE_FACTIONS, 0x3865},
             {Opcode.SMSG_INITIAL_SPELLS, 0x7364},

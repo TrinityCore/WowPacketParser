@@ -5,6 +5,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using Action = WowPacketParser.Store.Objects.Action;
+using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
@@ -36,12 +37,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadByte("Packet Type");
 
-            WowPacketParser.Store.Objects.WoWObject character;
-            if (Storage.Objects.TryGetValue(WowPacketParser.Parsing.Parsers.SessionHandler.LoginGuid, out character))
+            if (CoreParsers.SessionHandler.LoginGuid != null)
             {
-                var player = character as WowPacketParser.Store.Objects.Player;
-                if (player != null && player.FirstLogin)
-                    Storage.StartActions.Add(new Tuple<Race, Class>(player.Race, player.Class), startAction, packet.TimeSpan);
+                WowPacketParser.Store.Objects.WoWObject character;
+                if (Storage.Objects.TryGetValue(CoreParsers.SessionHandler.LoginGuid, out character))
+                {
+                    var player = character as WowPacketParser.Store.Objects.Player;
+                    if (player != null && player.FirstLogin)
+                        Storage.StartActions.Add(new Tuple<Race, Class>(player.Race, player.Class), startAction, packet.TimeSpan);
+                }
             }
         }
 

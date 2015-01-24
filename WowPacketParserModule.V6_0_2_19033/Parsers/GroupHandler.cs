@@ -409,6 +409,27 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("Symbol");
         }
 
+        [Parser(Opcode.SMSG_SEND_RAID_TARGET_UPDATE_SINGLE)]
+        public static void HandleSendRaidTargetUpdateSingle(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadByte("Symbol");
+            packet.ReadPackedGuid128("Target");
+            packet.ReadPackedGuid128("ChangedBy");
+        }
+
+        [Parser(Opcode.SMSG_SEND_RAID_TARGET_UPDATE_ALL)]
+        public static void HandleSendRaidTargetUpdateAll(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            var raidTargetSymbolCount = packet.ReadInt32("RaidTargetSymbolCount");
+            for (int i = 0; i < raidTargetSymbolCount; i++)
+            {
+                packet.ReadPackedGuid128("Target", i);
+                packet.ReadByte("Symbol", i);
+            }
+        }
+
         [Parser(Opcode.SMSG_READY_CHECK_RESPONSE)]
         public static void HandleReadyCheckResponse(Packet packet)
         {
@@ -424,6 +445,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("PartyGUID");
             packet.ReadPackedGuid128("InitiatorGUID");
             packet.ReadInt32("Duration");
+        }
+
+        [Parser(Opcode.CMSG_READY_CHECK_RESPONSE)]
+        public static void HandleClientReadyCheckResponse(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadPackedGuid128("PartyGUID");
+            packet.ReadBit("IsReady");
         }
 
         [Parser(Opcode.SMSG_READY_CHECK_COMPLETED)]
@@ -457,6 +486,44 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("ResultData");
             packet.ReadPackedGuid128("ResultGUID");
             packet.ReadWoWString("Name", nameLength);
+        }
+
+        [Parser(Opcode.CMSG_LEAVE_GROUP)]
+        [Parser(Opcode.CMSG_REQUEST_PARTY_JOIN_UPDATES)]
+        public static void HandleLeaveGroup(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+        }
+
+        [Parser(Opcode.CMSG_PARTY_INVITE_RESPONSE)]
+        public static void HandlePartyInviteResponse(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Accept");
+            var hasRolesDesired = packet.ReadBit("HasRolesDesired");
+            if (hasRolesDesired)
+                packet.ReadInt32("RolesDesired");
+        }
+
+        [Parser(Opcode.CMSG_PARTY_UNINVITE)]
+        public static void HandlePartyUninvite(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadPackedGuid128("TargetGuid");
+
+            var len = packet.ReadBits(8);
+            packet.ReadWoWString("Reason", len);
+        }
+
+        [Parser(Opcode.CMSG_SET_ROLE)]
+        public static void HandleSetRole(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadPackedGuid128("ChangedUnit");
+            packet.ReadInt32("Role");
         }
     }
 }

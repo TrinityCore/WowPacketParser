@@ -61,12 +61,14 @@
     <Compile Include="Parsers\AddonHandler.cs" />
     <Compile Include="Parsers\ArchaelogyHandler.cs" />
     <Compile Include="Parsers\ArenaHandler.cs" />
+    <Compile Include="Parsers\AreaTriggerHandler.cs" />
     <Compile Include="Parsers\AuctionHandler.cs" />
     <Compile Include="Parsers\BattlegroundHandler.cs" />
     <Compile Include="Parsers\BattlePetHandler.cs" />
     <Compile Include="Parsers\BattlePayHandler.cs" />
     <Compile Include="Parsers\BlackMarketHandler.cs" />
     <Compile Include="Parsers\CalendarHandler.cs" />
+    <Compile Include="Parsers\ChallengeModeHandler.cs" />
     <Compile Include="Parsers\ChannelHandler.cs" />
     <Compile Include="Parsers\CharacterHandler.cs" />
     <Compile Include="Parsers\ChatHandler.cs" />
@@ -94,6 +96,7 @@
     <Compile Include="Parsers\QuestHandler.cs" />
     <Compile Include="Parsers\RecruitAFriendHandler.cs" />
     <Compile Include="Parsers\ReputationHandler.cs" />
+    <Compile Include="Parsers\SceneHandler.cs" />
     <Compile Include="Parsers\SessionHandler.cs" />
     <Compile Include="Parsers\SpellHandler.cs" />
     <Compile Include="Parsers\TaxiHandler.cs" />

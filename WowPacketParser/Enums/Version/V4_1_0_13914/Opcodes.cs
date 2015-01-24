@@ -96,7 +96,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_FORCE_DISPLAY_UPDATE, 0x06F7D}, // 4.1.0 13914
             {Opcode.SMSG_FRIEND_STATUS, 0x08C2C}, // 4.1.0 13914
             {Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM, 0x00A7D}, // 4.1.0 13914
-            {Opcode.SMSG_GAMEOBJECT_PAGETEXT, 0x0AC3E}, // 4.1.0 13914
+            {Opcode.SMSG_PAGE_TEXT, 0x0AC3E}, // 4.1.0 13914
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x0AB7C}, // 4.1.0 13914
             {Opcode.SMSG_GAMEOBJECT_RESET_STATE, 0x0B97F}, // 4.1.0 13914
             {Opcode.SMSG_GAMESPEED_SET, 0x09A2F}, // 4.1.0 13914
@@ -177,7 +177,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_PLAYER_VEHICLE_DATA, 0x00A7C}, // 4.1.0 13914
             {Opcode.SMSG_PLAY_TIME_WARNING, 0x0EB6F}, // 4.1.0 13914
             {Opcode.SMSG_PRE_RESSURECT, 0x0EA2E}, // 4.1.0 13914
-            {Opcode.SMSG_PROCRESIST, 0x0282E}, // 4.1.0 13914
+            {Opcode.SMSG_PROC_RESIST, 0x0282E}, // 4.1.0 13914
             {Opcode.SMSG_QUERY_QUESTS_COMPLETED_RESPONSE, 0x0DB3C}, // 4.1.0 13914
             {Opcode.SMSG_QUERY_TIME_RESPONSE, 0x0DF2E}, // 4.1.0 13914
             {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, 0xF87C}, // 4.1.0 13914

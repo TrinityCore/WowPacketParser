@@ -1238,7 +1238,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_QUERY_QUESTS_COMPLETED)]
-        [Parser(Opcode.SMSG_QUESTLOG_FULL)]
+        [Parser(Opcode.SMSG_QUEST_LOG_FULL)]
         [Parser(Opcode.CMSG_QUESTGIVER_CANCEL)]
         [Parser(Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY)]
         public static void HandleQuestZeroLengthPackets(Packet packet)

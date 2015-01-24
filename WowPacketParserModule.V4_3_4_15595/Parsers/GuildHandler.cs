@@ -23,7 +23,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadWoWString("Name", count);
         }
 
-        [Parser(Opcode.SMSG_GUILD_RANK)]
+        [Parser(Opcode.SMSG_GUILD_RANKS)]
         public static void HandleGuildRankServer434(Packet packet)
         {
             const int guildBankMaxTabs = 8;
@@ -60,7 +60,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadBit("Direction");
         }
 
-        [Parser(Opcode.SMSG_GUILD_RANKS_UPDATE)]
+        [Parser(Opcode.SMSG_GUILD_SEND_RANK_CHANGE)]
         public static void HandleGuildRanksUpdate(Packet packet)
         {
             var guid1 = new byte[8];
