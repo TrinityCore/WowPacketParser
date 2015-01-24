@@ -1226,6 +1226,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI, 0x053D},
             {Opcode.SMSG_SHOW_TAXI_NODES, 0x12A1},
             {Opcode.SMSG_SHOW_TRADE_SKILL_RESPONSE, 0x15C0},
+            {Opcode.SMSG_SORT_BAGS_ACK, 0x09E4}, // Trigger on CMSG_SORT_BAGS / CMSG_SORT_BANK_BAGS / CMSG_SORT_REAGENT_BANK_BAGS
             {Opcode.SMSG_SPECIAL_MOUNT_ANIM, 0x159F},
             {Opcode.SMSG_SPELL_ABSORB_LOG, 0x188A},
             {Opcode.SMSG_SPELL_CATEGORY_COOLDOWN, 0x082A},
