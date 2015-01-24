@@ -405,5 +405,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("GarrPlotInstanceID");
         }
+
+        [Parser(Opcode.SMSG_GARRISON_SET_NUM_FOLLOWER_ACTIVATIONS_REMAINING)]
+        public static void HandleGarrisonSetNumFollowerActivationsRemaining(Packet packet)
+        {
+            packet.ReadInt32("Activated");
+        }
     }
 }
