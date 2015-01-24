@@ -191,8 +191,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void ReadClientAuctionOwnerNotification(Packet packet, params object[] idx)
         {
             packet.ReadEntry<Int32>(StoreNameType.Item, "AuctionItemID", idx);
-
             packet.ReadUInt64("BidAmount", idx);
+            ItemHandler.ReadItemInstance(packet, idx, "Item");
+        }
+
+        public static void ReadClientAuctionBidderNotification(Packet packet, params object[] idx)
+        {
+            packet.ReadEntry<Int32>(StoreNameType.Item, "AuctionItemID", idx);
+            packet.ReadPackedGuid128("Bidder", idx);
             ItemHandler.ReadItemInstance(packet, idx, "Item");
         }
 
@@ -202,8 +208,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadClientAuctionOwnerNotification(packet, "Info");
 
             packet.ReadSingle("ProceedsMailDelay");
-
             packet.ReadBit("Sold");
+        }
+
+        [Parser(Opcode.SMSG_AUCTION_OUTBID_NOTIFICATION)]
+        public static void HandleAuctionOutbitNotification(Packet packet)
+        {
+            ReadClientAuctionBidderNotification(packet, "Info");
+
+            packet.ReadUInt64("BidAmount");
+            packet.ReadUInt64("MinIncrement");
+        }
+
+        [Parser(Opcode.SMSG_AUCTION_WON_NOTIFICATION)]
+        public static void HandleAuctionWonNotification(Packet packet)
+        {
+            ReadClientAuctionBidderNotification(packet, "Info");
         }
 
         [Parser(Opcode.CMSG_AUCTION_LIST_PENDING_SALES)]
