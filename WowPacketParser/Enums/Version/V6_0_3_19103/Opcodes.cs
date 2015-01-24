@@ -270,7 +270,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_LFG_GET_STATUS, 0x1BA4},
             {Opcode.CMSG_LFG_LIST_DECLINE_APPLICANT, 0x0916},
             {Opcode.CMSG_LFG_LIST_GET_STATUS, 0x0B17},
-            {Opcode.CMSG_LFG_LIST_INVITE_APPLICANT, 0x12AA},
+            {Opcode.CMSG_LFG_LIST_INVITE_APPLICANT, 0x12AB},
             {Opcode.CMSG_LFG_LIST_INVITE_RESPONSE, 0x13AB},
             {Opcode.CMSG_LFG_LIST_JOIN, 0x0B84},
             {Opcode.CMSG_LFG_LIST_LEAVE, 0x0DA9},
