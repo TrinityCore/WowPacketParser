@@ -235,6 +235,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Bidder");
         }
 
+        [Parser(Opcode.SMSG_AUCTION_REPLICATE_RESPONSE)]
+        public static void HandleAuctionReplicateResponse(Packet packet)
+        {
+            // TODO: Order is not confirmed
+            packet.ReadUInt32("ChangeNumberCursor");
+            packet.ReadUInt32("ChangeNumberGlobal");
+            packet.ReadUInt32("DesiredDelay");
+            packet.ReadUInt32("ChangeNumberTombstone");
+            packet.ReadUInt32("Result");
+
+            var itemsCount = packet.ReadInt32("ItemsCount");
+            for (var i = 0; i < itemsCount; ++i)
+                ReadCliAuctionItem(packet, "Items", i);
+        }
+
         [Parser(Opcode.CMSG_AUCTION_LIST_PENDING_SALES)]
         public static void HandleAuctionZero(Packet packet)
         {
