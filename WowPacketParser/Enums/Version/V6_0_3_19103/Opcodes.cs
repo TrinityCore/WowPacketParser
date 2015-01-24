@@ -812,6 +812,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_GARRISON_REQUEST_BLUEPRINT_AND_SPECIALIZATION_DATA_RESULT, 0x0964},
             {Opcode.SMSG_GARRISON_UPGRADE_FOLLOWER_ITEM_LEVEL, 0x000C},
             {Opcode.SMSG_GARRISON_START_MISSION_RESULT, 0x0D01},
+            {Opcode.SMSG_GARRISON_SETUP_TROPHY, 0x0B63},
             {Opcode.SMSG_GARRISON_UNK1, 0x0543},
             {Opcode.SMSG_GARRISON_UNK2, 0x1B64},
             {Opcode.SMSG_GARRISON_UNK3, 0x096B},

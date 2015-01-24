@@ -380,5 +380,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < int84; i++)
                 packet.ReadInt32("PlayerConditionID", i);
         }
+
+        [Parser(Opcode.SMSG_GARRISON_SETUP_TROPHY)]
+        public static void HandleGarrisonSetupTrophy(Packet packet)
+        {
+            var count = packet.ReadInt32("TrophyCount");
+            for (int i = 0; i < count; i++) // @To-Do: need verification
+            {
+                packet.ReadInt32("Unk1", i);
+                packet.ReadInt32("Unk2", i);
+            }
+        }
     }
 }
