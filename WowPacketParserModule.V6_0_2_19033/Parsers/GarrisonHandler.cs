@@ -244,12 +244,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("CurrencyID");
         }
 
-        [Parser(Opcode.CMSG_GARRISON_OPEN_MISSION_NPC)]
-        public static void HandleGarrisonOpenMissionNPC(Packet packet)
-        {
-            packet.ReadPackedGuid128("NpcGUID");
-        }
-
         [Parser(Opcode.SMSG_GET_GARRISON_INFO_RESULT)]
         public static void HandleGetGarrisonInfoResult(Packet packet)
         {
@@ -312,9 +306,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         [Parser(Opcode.CMSG_CREATE_SHIPMENT)]
         [Parser(Opcode.CMSG_GET_SHIPMENT_INFO)]
-        public static void HandleGetShipmentInfo(Packet packet)
+        [Parser(Opcode.CMSG_GARRISON_OPEN_MISSION_NPC)]
+        public static void HandleGarrisonNpcGUID(Packet packet)
         {
             packet.ReadPackedGuid128("NpcGUID");
+        }
+
+        [Parser(Opcode.CMSG_OPEN_SHIPMENT_GAME_OBJ)]
+        public static void HandleGarrisonGameObjGUID(Packet packet)
+        {
+            packet.ReadPackedGuid128("GameObjectGUID");
         }
 
         [Parser(Opcode.SMSG_GET_SHIPMENT_INFO_RESPONSE)]
