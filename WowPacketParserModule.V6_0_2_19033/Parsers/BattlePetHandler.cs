@@ -527,5 +527,27 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             ReadPetBattleInput(packet, "PetBattleInput");
         }
+
+        [Parser(Opcode.SMSG_PET_BATTLE_QUEUE_STATUS)]
+        public static void HandlePetBattleQueueStatus(Packet packet)
+        {
+            packet.ReadInt32("Status");
+
+            var slotResultCount = packet.ReadInt32("SlotResultCount");
+
+            LfgHandler.ReadRideTicket(packet, "RideTicket");
+
+            for (int i = 0; i < slotResultCount; i++)
+                packet.ReadInt32("SlotResult", i);
+
+            var bit64 = packet.ReadBit("HasClientWaitTime");
+            var bit56 = packet.ReadBit("HasAverageWaitTime");
+
+            if (bit64)
+                packet.ReadInt32("ClientWaitTime");
+
+            if (bit56)
+                packet.ReadInt32("AverageWaitTime");
+        }
     }
 }
