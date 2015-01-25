@@ -69,6 +69,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_SET_DUNGEON_DIFFICULTY)]
+        [Parser(Opcode.SMSG_SET_DUNGEON_DIFFICULTY)]
         public static void HandleSetDungeonDifficulty(Packet packet)
         {
             packet.ReadInt32("DifficultyID");
