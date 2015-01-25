@@ -106,5 +106,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("ActivatorGUID");
             packet.ReadInt32("SpellVisualID");
         }
+
+        [Parser(Opcode.SMSG_DESTRUCTIBLE_BUILDING_DAMAGE)]
+        public static void HandleDestructibleBuildingDamage(Packet packet)
+        {
+            packet.ReadPackedGuid128("Target");
+            packet.ReadPackedGuid128("Owner");
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadInt32("Damage");
+            packet.ReadInt32("SpellID");
+        }
     }
 }
