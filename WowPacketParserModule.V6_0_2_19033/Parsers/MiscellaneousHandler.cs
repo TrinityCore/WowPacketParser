@@ -345,17 +345,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             var pageText = new PageText();
 
-            packet.ReadUInt32("Entry");
-            var hasData = packet.ReadBit();
+            packet.ReadUInt32("PageTextID");
+
+            packet.ResetBitReader();
+
+            var hasData = packet.ReadBit("Allow");
             if (!hasData)
                 return; // nothing to do
 
-            var entry = packet.ReadUInt32("Entry");
-            pageText.NextPageID = packet.ReadUInt32("Next Page");
+            var entry = packet.ReadUInt32("ID");
+            pageText.NextPageID = packet.ReadUInt32("NextPageID");
 
             packet.ResetBitReader();
             var textLen = packet.ReadBits(12);
-            pageText.Text = packet.ReadWoWString("Page Text", textLen);
+            pageText.Text = packet.ReadWoWString("Text", textLen);
 
             packet.AddSniffData(StoreNameType.PageText, (int)entry, "QUERY_RESPONSE");
             Storage.PageTexts.Add(entry, pageText, packet.TimeSpan);
