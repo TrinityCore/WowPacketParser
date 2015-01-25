@@ -738,5 +738,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("GuildGUID");
             packet.ReadUInt32("SkillLineID");
         }
+
+        [Parser(Opcode.SMSG_PETITION_SIGN_RESULTS)]
+        public static void HandlePetitionSignResults(Packet packet)
+        {
+            packet.ReadPackedGuid128("Item");
+            packet.ReadPackedGuid128("Player");
+            packet.ReadBits("Error", 4);
+        }
     }
 }
