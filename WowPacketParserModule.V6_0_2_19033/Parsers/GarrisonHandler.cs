@@ -446,8 +446,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_GARRISON_SET_FOLLOWER_INACTIVE)]
         public static void HandleGarrisonSetFollowerInactive(Packet packet)
         {
-            packet.ReadInt64("DbID");
+            packet.ReadInt64("FollowerDBID");
             packet.ReadBit("Inactive");
+        }
+
+        [Parser(Opcode.CMSG_GARRISON_REMOVE_FOLLOWER_FROM_BUILDING)]
+        public static void HandleGarrisonRemoveFollowerFromBuilding(Packet packet)
+        {
+            packet.ReadPackedGuid128("NpcGUID");
+            packet.ReadInt64("FollowerDBID");
         }
     }
 }
