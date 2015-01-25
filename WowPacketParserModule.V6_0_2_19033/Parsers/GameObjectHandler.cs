@@ -72,7 +72,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         [Parser(Opcode.CMSG_GAMEOBJ_REPORT_USE)]
         [Parser(Opcode.CMSG_GAMEOBJ_USE)]
-        public static void HandleGoUse(Packet packet)
+        [Parser(Opcode.SMSG_PAGE_TEXT)]
+        public static void HandleGoMisc(Packet packet)
         {
             packet.ReadPackedGuid128("GameObjectGUID");
         }

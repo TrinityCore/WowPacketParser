@@ -669,10 +669,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 ReadLFGuildRecruitData(packet, i, "LFGuildRecruitData");
         }
 
+        [Parser(Opcode.CMSG_PETITION_SHOW_LIST)]
+        public static void HandlePetitionShowListClient(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetitionUnit");
+        }
+
         [Parser(Opcode.SMSG_PETITION_SHOW_LIST)]
         public static void HandlePetitionShowList(Packet packet)
         {
-            packet.ReadGuid("Unit");
+            packet.ReadPackedGuid128("Unit");
             packet.ReadUInt32("Price");
         }
     }
