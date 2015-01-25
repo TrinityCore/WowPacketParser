@@ -566,5 +566,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadUInt32("Faction");
         }
+
+        [Parser(Opcode.CMSG_ALTER_APPEARANCE)]
+        public static void HandleAlterAppearance(Packet packet)
+        {
+            packet.ReadUInt32("NewHairStyle");
+            packet.ReadUInt32("NewHairColor");
+            packet.ReadUInt32("NewFacialHair");
+            packet.ReadUInt32("NewSkinColor");
+            packet.ReadUInt32("Unk");
+        }
     }
 }
