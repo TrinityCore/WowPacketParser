@@ -315,5 +315,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt16("MaxPoints");
         }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECTED)]
+        public static void HandleBFMgrEjected(Packet packet)
+        {
+            packet.ReadInt64("QueueID");
+            packet.ReadByte("BattleState");
+            packet.ReadByte("Reason");
+            packet.ReadBit("Relocated");
+        }
     }
 }
