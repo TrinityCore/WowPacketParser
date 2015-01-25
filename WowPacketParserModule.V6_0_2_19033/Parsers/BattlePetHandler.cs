@@ -12,6 +12,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_BATTLE_PET_REQUEST_JOURNAL_LOCK)]
         [Parser(Opcode.SMSG_PET_BATTLE_FINISHED)]
         [Parser(Opcode.CMSG_PET_BATTLE_FINAL_NOTIF)]
+        [Parser(Opcode.CMSG_JOIN_PET_BATTLE_QUEUE)]
         public static void HandleBattlePetZero(Packet packet)
         {
         }
