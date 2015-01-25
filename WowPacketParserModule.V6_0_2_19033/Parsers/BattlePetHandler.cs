@@ -493,7 +493,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("Reason"); // TODO: enum
         }
 
-        [Parser(Opcode.SMSG_BATTLE_PET_SLOT_UPDATES)]
+        [Parser(Opcode.SMSG_PET_BATTLE_SLOT_UPDATES)]
         public static void HandlePetBattleSlotUpdates(Packet packet)
         {
             var petBattleSlotCount = packet.ReadInt32("PetBattleSlotCount");

@@ -369,7 +369,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_PET_BATTLE_ROUND_RESULT, 0x0709},  // 5.4.7 17930 PET_BATTLE NYI
             {Opcode.SMSG_PET_BATTLE_REPLACEMENTS_MADE, 0x0891},  // 5.4.0 17399 PET_BATTLE NYI
             //SMSG_PET_BATTLE_REQUEST_FAILED, 0x0000},  // 5.4.7 17930 PET_BATTLE NYI (not sure)
-            {Opcode.SMSG_PET_BATTLE_SLOT_UPDATE, 0x0421},  // 5.4.7 17930 PET_BATTLE NYI
+            {Opcode.SMSG_PET_BATTLE_SLOT_UPDATES, 0x0421},  // 5.4.7 17930 PET_BATTLE NYI
             {Opcode.SMSG_PET_CAST_FAILED, 0x1D33},
             {Opcode.SMSG_PET_NAME_QUERY_RESPONSE, 0x1F08},
             {Opcode.SMSG_PLAY_SCENE, 0x1748},
