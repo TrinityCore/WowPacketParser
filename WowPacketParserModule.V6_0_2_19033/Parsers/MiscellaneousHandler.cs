@@ -567,7 +567,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("TaskID");
         }
 
-
         [Parser(Opcode.SMSG_DISPLAY_GAME_ERROR)]
         public static void HandleDisplayGameError(Packet packet)
         {
@@ -580,6 +579,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (hasArg2)
                 packet.ReadUInt32("Arg2");
+        }
+
+
+        [Parser(Opcode.SMSG_RESTRICTED_ACCOUNT_WARNING)]
+        public static void HandleRestrictedAccountWarning(Packet packet)
+        {
+            packet.ReadUInt32("Arg");
+            packet.ReadByte("Type");
         }
     }
 }
