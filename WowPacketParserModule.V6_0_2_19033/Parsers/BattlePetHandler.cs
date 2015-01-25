@@ -564,5 +564,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             LfgHandler.ReadRideTicket(packet, "RideTicket");
         }
+
+        [Parser(Opcode.CMSG_BATTLE_PET_REQUEST_UPDATE)]
+        public static void HandlePetBattleRequestUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("TargetGUID");
+            packet.ReadBit("Canceled");
+        }
     }
 }
