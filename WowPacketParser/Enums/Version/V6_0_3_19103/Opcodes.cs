@@ -176,6 +176,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_DO_READY_CHECK, 0x1221},
             {Opcode.CMSG_DUEL_RESPONSE, 0x1BD2},
             {Opcode.CMSG_EMOTE, 0x0A27},
+            {Opcode.CMSG_ENABLE_NAGLE, 0x0460},
             {Opcode.CMSG_ENABLE_TAXI_NODE, 0x00D2},
             {Opcode.CMSG_EQUIPMENT_SET_SAVE, 0x1B54},
             {Opcode.CMSG_FAR_SIGHT, 0x1C8A},
