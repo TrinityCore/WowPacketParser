@@ -10,6 +10,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class CharacterHandler
     {
+        [Parser(Opcode.SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI)]
+        public static void HandleCharacterZero(Packet packet)
+        {
+        }
+
         [Parser(Opcode.SMSG_CHAR_ENUM)]
         public static void HandleCharEnum(Packet packet)
         {
