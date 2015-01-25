@@ -975,5 +975,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Source");
             packet.ReadInt32("SpellVisualID");
         }
+
+        [Parser(Opcode.SMSG_SPIRIT_HEALER_CONFIRM)]
+        public static void HandleSpiritHealerConfirm(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+        }
     }
 }
