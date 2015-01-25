@@ -43,10 +43,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 return;
 
             var hasData = packet.ReadBit("Has Data");
-            if (!hasData)
+            var size = packet.ReadInt32("Size");
+
+            if (!hasData || size == 0)
                 return; // nothing to do
 
-            var size = packet.ReadInt32("Size");
             var data = packet.ReadBytes(size);
 
             var pkt = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
