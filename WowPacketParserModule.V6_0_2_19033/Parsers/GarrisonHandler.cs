@@ -411,5 +411,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("Activated");
         }
+
+        [Parser(Opcode.CMSG_UPGRADE_GARRISON)]
+        public static void HandleUpgradeGarrison(Packet packet)
+        {
+            packet.ReadPackedGuid128("NpcGUID");
+        }
     }
 }
