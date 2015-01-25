@@ -681,5 +681,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Unit");
             packet.ReadUInt32("Price");
         }
+
+        [Parser(Opcode.CMSG_SIGN_PETITION)]
+        public static void HandleSignPetition(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetitionGUID");
+            packet.ReadByte("Choice");
+        }
     }
 }
