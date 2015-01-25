@@ -416,6 +416,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadVector3("Direction", i);
                 packet.ReadInt32("TransportID", i);
                 packet.ReadSingle("Magnitude", i);
+
+                packet.ResetBitReader();
                 packet.ReadBits("Type", 2, i);
             }
 
