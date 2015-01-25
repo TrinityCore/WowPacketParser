@@ -292,5 +292,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 }
             }
         }
+
+        [Parser(Opcode.SMSG_PROC_RESIST)]
+        public static void HandleProcResist(Packet packet)
+        {
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadPackedGuid128("Target");
+
+            packet.ReadInt32("SpellID");
+
+            var bit20 = packet.ReadBit("HasRolled");    // unconfirmed order
+            var bit32 = packet.ReadBit("HasNeeded");    // unconfirmed order
+
+            if (bit20)
+                packet.ReadSingle("Rolled");            // unconfirmed order
+
+            if (bit32)
+                packet.ReadSingle("Needed");            // unconfirmed order
+        }
     }
 }
