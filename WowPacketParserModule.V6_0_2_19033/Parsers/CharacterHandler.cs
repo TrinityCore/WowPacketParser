@@ -492,6 +492,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("NumGuildMembers");
             }
         }
+
+        [Parser(Opcode.CMSG_REQUEST_HONOR_STATS)]
+        public static void HandleRequestHonorStats(Packet packet)
+        {
+            packet.ReadPackedGuid128("Target");
+        }
+
         [Parser(Opcode.SMSG_INSPECT_HONOR_STATS)]
         public static void HandleInspectHonorStats(Packet packet)
         {
