@@ -501,5 +501,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadUInt32("Index");
         }
+
+        [Parser(Opcode.SMSG_NEUTRAL_PLAYER_FACTION_SELECT_RESULT)]
+        public static void HandleNeutralPlayerFactionSelectResult(Packet packet)
+        {
+            packet.ReadBit("Success");
+            packet.ReadUInt32("NewRaceID");
+        }
     }
 }
