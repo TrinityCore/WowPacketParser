@@ -311,5 +311,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadEntry<Int32>(StoreNameType.Spell, "SpellID");
             packet.ReadUInt32("TrainerFailedReason");
         }
+
+        [Parser(Opcode.CMSG_SPIRIT_HEALER_ACTIVATE)]
+        public static void HandleSpiritHealerActivate(Packet packet)
+        {
+            packet.ReadPackedGuid128("Healer");
+        }
     }
 }
