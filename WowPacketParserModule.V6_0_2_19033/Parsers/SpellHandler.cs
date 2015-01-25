@@ -895,5 +895,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadSingle("Count");
             packet.ReadBit("IsPet");
         }
+
+        [Parser(Opcode.SMSG_NOTIFY_DEST_LOC_SPELL_CAST)]
+        public static void HandleNotifyDestLocSpellCast(Packet packet)
+        {
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadPackedGuid128("DestTransport");
+            packet.ReadInt32("SpellID");
+            packet.ReadVector3("SourceLoc");
+            packet.ReadVector3("DestLoc");
+            packet.ReadSingle("MissileTrajectoryPitch");
+            packet.ReadSingle("MissileTrajectorySpeed");
+            packet.ReadInt32("TravelTime");
+            packet.ReadByte("DestLocSpellCastIndex");
+            packet.ReadByte("CastID");
+        }
     }
 }
