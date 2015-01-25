@@ -556,5 +556,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadBit("Accepted");
         }
+
+        [Parser(Opcode.CMSG_LEAVE_PET_BATTLE_QUEUE)]
+        public static void HandleLeavePetBattleQueue(Packet packet)
+        {
+            LfgHandler.ReadRideTicket(packet, "RideTicket");
+        }
     }
 }
