@@ -688,5 +688,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("PetitionGUID");
             packet.ReadByte("Choice");
         }
+
+        [Parser(Opcode.CMSG_QUERY_PETITION)]
+        public static void HandleQueryPetition(Packet packet)
+        {
+            packet.ReadUInt32("PetitionID");
+            packet.ReadPackedGuid128("ItemGUID");
+        }
     }
 }
