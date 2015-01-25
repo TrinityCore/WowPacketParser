@@ -7,6 +7,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class LootHandler
     {
+        public static void ReadLootItem(Packet packet, params object[] indexes)
+        {
+            packet.ResetBitReader();
+
+            packet.ReadBits("ItemType", 2, indexes);
+            packet.ReadBits("ItemUiType", 3, indexes);
+            packet.ReadBit("CanTradeToTapList", indexes);
+            packet.ReadUInt32("Item Quantity", indexes);
+            packet.ReadByte("LootItemType", indexes);
+            packet.ReadByte("LootListID", indexes);
+
+            ItemHandler.ReadItemInstance(packet, indexes, "ItemInstance");
+        }
+
         [Parser(Opcode.SMSG_AE_LOOT_TARGET_ACK)]
         [Parser(Opcode.SMSG_LOOT_RELEASE_ALL)]
         public static void HandleLootZero(Packet packet)
@@ -72,19 +86,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var currencyCount = packet.ReadUInt32("CurrencyCount");
 
             for (var i = 0; i < itemCount; ++i)
-            {
-                // Guessed order
-                packet.ResetBitReader();
-
-                packet.ReadBits("ItemType", 2, i);
-                packet.ReadBits("ItemUiType", 3, i);
-                packet.ReadBit("CanTradeToTapList", i);
-                packet.ReadUInt32("Item Quantity", i);
-                packet.ReadByte("LootItemType", i);
-                packet.ReadByte("LootListID", i);
-
-                ItemHandler.ReadItemInstance(packet, i);
-            }
+                ReadLootItem(packet, i, "LootItem");
 
             for (var i = 0; i < currencyCount; ++i)
             {
@@ -126,14 +128,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("LootObj");
             packet.ReadPackedGuid128("Player");
 
-            packet.ResetBitReader();
-            packet.ReadBits("ItemType", 2);
-            packet.ReadBits("ItemUiType", 3);
-            packet.ReadBit("CanTradeToTapList");
-            packet.ReadUInt32("Item Quantity");
-            packet.ReadByte("LootItemType");
-            packet.ReadByte("LootListID");
-            ItemHandler.ReadItemInstance(packet);
+            ReadLootItem(packet, "LootItem");
 
             packet.ReadInt32("Roll");
             packet.ReadByte("RollType");
@@ -146,14 +141,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("LootObj");
 
-            packet.ResetBitReader();
-            packet.ReadBits("ItemType", 2);
-            packet.ReadBits("ItemUiType", 3);
-            packet.ReadBit("CanTradeToTapList");
-            packet.ReadUInt32("Item Quantity");
-            packet.ReadByte("LootItemType");
-            packet.ReadByte("LootListID");
-            ItemHandler.ReadItemInstance(packet);
+            ReadLootItem(packet, "LootItem");
 
             packet.ReadPackedGuid128("Player");
 
@@ -174,14 +162,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("LootObj");
             packet.ReadInt32("MapID");
 
-            packet.ResetBitReader();
-            packet.ReadBits("ItemType", 2);
-            packet.ReadBits("ItemUiType", 3);
-            packet.ReadBit("CanTradeToTapList");
-            packet.ReadUInt32("Item Quantity");
-            packet.ReadByte("LootItemType");
-            packet.ReadByte("LootListID");
-            ItemHandler.ReadItemInstance(packet);
+            ReadLootItem(packet, "LootItem");
 
             packet.ReadInt32("RollTime");
             packet.ReadByte("ValidRolls");
@@ -201,6 +182,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("LootObj");
             packet.ReadByte("LootListID");
             packet.ReadEnum<LootRollType>("RollType", TypeCode.Byte);
+        }
+
+        [Parser(Opcode.SMSG_LOOT_ALL_PASSED)]
+        public static void HandleLootAllPassed(Packet packet)
+        {
+            packet.ReadPackedGuid128("LootObj");
+            ReadLootItem(packet, "LootItem");
         }
     }
 }
