@@ -549,5 +549,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("TargetName", lenTargetName);
             packet.ReadWoWString("TargetRealm", lenTargetRealm);
         }
+
+        [Parser(Opcode.CMSG_CONVERT_RAID)]
+        public static void HandleConvertRaid(Packet packet)
+        {
+            packet.ReadBit("Raid");
+        }
     }
 }
