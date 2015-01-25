@@ -137,6 +137,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_MOVE_CHANGE_TRANSPORT)]
+        [Parser(Opcode.CMSG_MOVE_DISMISS_VEHICLE)]
         [Parser(Opcode.CMSG_MOVE_FALL_LAND)]
         [Parser(Opcode.CMSG_MOVE_FALL_RESET)]
         [Parser(Opcode.CMSG_MOVE_HEARTBEAT)]
