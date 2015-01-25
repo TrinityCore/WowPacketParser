@@ -458,5 +458,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("RolesDesired");
             packet.ReadByte("PartyIndex");
         }
+
+        [Parser(Opcode.CMSG_DF_LEAVE)]
+        public static void HandleDFLeave(Packet packet)
+        {
+            ReadRideTicket(packet, "RideTicket");
+        }
     }
 }
