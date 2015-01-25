@@ -11,14 +11,13 @@ namespace WowPacketParser.Store
 {
     public abstract class Store
     {
-        public static UInt64 SQLEnabledFlags { protected get; set; }
         public List<SQLOutput> Types { get; protected set; }
 
         protected bool ProcessFlags()
         {
             return Types.Count == 0 ||
                 Settings.DumpFormat == DumpFormatType.SniffDataOnly ||
-                Types.Any(sqlOutput => SQLEnabledFlags.HasAnyFlagBit(sqlOutput));
+                Types.Any(sqlOutput => Settings.SQLOutputFlag.HasAnyFlagBit(sqlOutput));
         }
 
         public abstract void Clear();

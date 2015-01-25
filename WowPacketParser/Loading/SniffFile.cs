@@ -124,8 +124,6 @@ namespace WowPacketParser.Loading
                         break;
                     }
 
-                    Store.Store.SQLEnabledFlags = Settings.SQLOutputFlag;
-
                     File.Delete(outFileName);
 
                     _stats.SetStartTime(DateTime.Now);
