@@ -910,5 +910,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("DestLocSpellCastIndex");
             packet.ReadByte("CastID");
         }
+
+        [Parser(Opcode.SMSG_CLEAR_ALL_SPELL_CHARGE)]
+        public static void HandleClearAllSpellCharges(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+        }
     }
 }
