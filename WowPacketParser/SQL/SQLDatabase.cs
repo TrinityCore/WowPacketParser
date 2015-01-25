@@ -17,7 +17,6 @@ namespace WowPacketParser.SQL
         public static readonly ICollection<Tuple<uint, BroadcastText>> BroadcastTextStores = new List<Tuple<uint, BroadcastText>>();
         public static readonly Dictionary<uint, CreatureDifficulty> CreatureDifficultyStores = new Dictionary<uint, CreatureDifficulty>();
 
-
         private static readonly StoreNameType[] ObjectTypes =
         {
             StoreNameType.Spell,
@@ -56,6 +55,23 @@ namespace WowPacketParser.SQL
             var endTime = DateTime.Now;
             var span = endTime.Subtract(startTime);
             Trace.WriteLine(String.Format("SQL loaded in {0}.", span.ToFormattedString()));
+        }
+
+        public static string DatabaseName(WPPDatabase db)
+        {
+            switch (db)
+            {
+                case WPPDatabase.None:
+                    return null;
+                case WPPDatabase.WPP:
+                    return Settings.WPPDatabase;
+                case WPPDatabase.World:
+                    return Settings.TDBDatabase;
+                case WPPDatabase.Hotfixes:
+                    return Settings.HotfixesDatabase;
+                default:
+                    throw new ArgumentOutOfRangeException("db");
+            }
         }
 
         private static void LoadBroadcastText()
@@ -144,7 +160,7 @@ namespace WowPacketParser.SQL
         }
 
         /// <summary>
-        /// Gets from `world` database a dictionary of the given struct/class.
+        /// Gets from a database a dictionary of the given struct/class.
         /// Structs fields type must match the type of the DB columns.
         /// DB columns names are set by using DBFieldNameAttribute.
         /// </summary>
@@ -152,9 +168,8 @@ namespace WowPacketParser.SQL
         /// <typeparam name="TK">Type of the struct</typeparam>
         /// <param name="entries">List of entries to select from DB</param>
         /// <param name="primaryKeyName"></param>
-        /// <param name="database"></param>
         /// <returns>Dictionary of structs of type TK</returns>
-        public static StoreDictionary<T, TK> GetDict<T, TK>(List<T> entries, string primaryKeyName = "entry", string database = null)
+        public static StoreDictionary<T, TK> GetDict<T, TK>(List<T> entries, string primaryKeyName = "entry")
         {
             if (entries.Count == 0)
                 return null;
@@ -167,6 +182,9 @@ namespace WowPacketParser.SQL
             if (tableAttrs.Length <= 0)
                 return null;
             var tableName = tableAttrs[0].Name;
+            var database = DatabaseName(tableAttrs[0].Database);
+            if (database == null)
+                return null;
 
             var fields = Utilities.GetFieldsAndAttribute<TK, DBFieldNameAttribute>();
             fields.RemoveAll(field => field.Item2.Name == null);
@@ -182,7 +200,7 @@ namespace WowPacketParser.SQL
             }
 
             var query = string.Format("SELECT {0} FROM {1}.{2} WHERE {3} IN ({4})",
-                fieldNames.ToString().TrimEnd(','), database ?? Settings.TDBDatabase, tableName, primaryKeyName, String.Join(",", entries));
+                fieldNames.ToString().TrimEnd(','), database, tableName, primaryKeyName, String.Join(",", entries));
 
             var dict = new Dictionary<T, TK>(entries.Count);
 
@@ -242,7 +260,7 @@ namespace WowPacketParser.SQL
         }
 
         /// <summary>
-        /// Gets from `world` database a dictionary of the given struct/class.
+        /// Gets from a database a dictionary of the given struct/class.
         /// Structs fields type must match the type of the DB columns.
         /// DB columns names are set by using DBFieldNameAttribute.
         /// </summary>
@@ -266,6 +284,9 @@ namespace WowPacketParser.SQL
             if (tableAttrs.Length <= 0)
                 return null;
             var tableName = tableAttrs[0].Name;
+            var database = DatabaseName(tableAttrs[0].Database);
+            if (database == null)
+                return null;
 
             var fields = Utilities.GetFieldsAndAttribute<TK, DBFieldNameAttribute>();
             fields.RemoveAll(field => field.Item2.Name == null);
@@ -302,7 +323,7 @@ namespace WowPacketParser.SQL
             }
 
             var query = string.Format("SELECT {0} FROM {1}.{2} WHERE {3}",
-                fieldNames.ToString().TrimEnd(','), Settings.TDBDatabase, tableName, whereClause);
+                fieldNames.ToString().TrimEnd(','), database, tableName, whereClause);
 
             var dict = new Dictionary<Tuple<T, TG>, TK>(entries.Count);
 
@@ -385,6 +406,9 @@ namespace WowPacketParser.SQL
             if (tableAttrs.Length <= 0)
                 return null;
             var tableName = tableAttrs[0].Name;
+            var database = DatabaseName(tableAttrs[0].Database);
+            if (database == null)
+                return null;
 
             var fields = Utilities.GetFieldsAndAttribute<TK, DBFieldNameAttribute>();
             fields.RemoveAll(field => field.Item2.Name == null);
@@ -421,7 +445,7 @@ namespace WowPacketParser.SQL
             }
 
             var query = string.Format("SELECT {0} FROM {1}.{2} WHERE {3}",
-                fieldNames.ToString().TrimEnd(','), Settings.TDBDatabase, tableName, whereClause);
+                fieldNames.ToString().TrimEnd(','), database, tableName, whereClause);
 
             var dict = new MultiDictionary<Tuple<T, TG>, TK>(true);
 

@@ -155,6 +155,7 @@ namespace WowPacketParser.SQL
             if (tableAttrs.Length <= 0)
                 return string.Empty;
             var tableName = tableAttrs[0].Name;
+            // var database = tableAttrs[0].Database;
 
             var fields = Utilities.GetFieldsAndAttribute<TK, DBFieldNameAttribute>();
             if (fields == null)
@@ -283,6 +284,7 @@ namespace WowPacketParser.SQL
             if (tableAttrs.Length <= 0)
                 return string.Empty;
             var tableName = tableAttrs[0].Name;
+            // var database = tableAttrs[0].Database;
 
             var fields = Utilities.GetFieldsAndAttribute<TK, DBFieldNameAttribute>();
             if (fields == null)
