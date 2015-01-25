@@ -811,5 +811,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (hasAllow)
                 ReadPetitionInfo(packet, "PetitionInfo");
         }
+
+        [Parser(Opcode.SMSG_GUILD_MEMBER_RECIPES)]
+        public static void HandleGuildMemberRecipes(Packet packet)
+        {
+            packet.ReadPackedGuid128("Member");
+            packet.ReadInt32("SkillLineID");
+            packet.ReadInt32("SkillStep");
+            packet.ReadInt32("SkillRank");
+            for (int i = 0; i < 0x12C; i++)
+                packet.ReadByte("SkillLineBitArray", i);
+        }
     }
 }
