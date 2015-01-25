@@ -923,5 +923,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("BinderID");
             packet.ReadEntry<UInt32>(StoreNameType.Area, "AreaID");
         }
+
+        [Parser(Opcode.SMSG_RESPEC_WIPE_CONFIRM)]
+        public static void HandleRespecWipeConfirm(Packet packet)
+        {
+            packet.ReadSByte("RespecType");
+            packet.ReadUInt32("Cost");
+            packet.ReadPackedGuid128("RespecMaster");
+        }
     }
 }
