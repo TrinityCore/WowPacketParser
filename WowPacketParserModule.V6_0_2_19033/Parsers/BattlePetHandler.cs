@@ -444,5 +444,48 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             ReadPetBattleFinalRound(packet, "MsgData");
         }
+
+        public static void ReadPetBattleLocations(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("LocationResult", idx);
+            packet.ReadVector3("BattleOrigin", idx);
+            packet.ReadSingle("BattleFacing", idx);
+
+            for (var i = 0; i < 2; ++i)
+                packet.ReadVector3("PlayerPositions", idx, i);
+        }
+
+        [Parser(Opcode.SMSG_PET_BATTLE_FINALIZE_LOCATION)]
+        public static void HandlePetBattleFinalizeLocation(Packet packet)
+        {
+            ReadPetBattleLocations(packet, "Location");
+        }
+
+        [Parser(Opcode.SMSG_PET_BATTLE_PVP_CHALLENGE)]
+        public static void HandlePetBattlePVPChallenge(Packet packet)
+        {
+            packet.ReadPackedGuid128("ChallengerGUID");
+            ReadPetBattleLocations(packet, "Location");
+        }
+
+        [Parser(Opcode.CMSG_PET_BATTLE_REQUEST_WILD)]
+        public static void HandlePetBattleRequestWild(Packet packet)
+        {
+            packet.ReadPackedGuid128("TargetGUID");
+            ReadPetBattleLocations(packet, "Location");
+        }
+
+        [Parser(Opcode.CMSG_PET_BATTLE_REQUEST_PVP)]
+        public static void HandlePetBattleRequestPVP(Packet packet)
+        {
+            packet.ReadPackedGuid128("TargetGUID");
+            ReadPetBattleLocations(packet, "OpponentCharacterID");
+        }
+
+        [Parser(Opcode.SMSG_PET_BATTLE_REQUEST_FAILED)]
+        public static void HandlePetBattleRequestFailed(Packet packet)
+        {
+            packet.ReadByte("Reason"); // TODO: enum
+        }
     }
 }
