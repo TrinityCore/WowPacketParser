@@ -99,5 +99,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt64("InviteGuid");
             }
         }
+
+        [Parser(Opcode.CMSG_GM_TICKET_ACKNOWLEDGE_SURVEY)]
+        public static void HandleGMTicketAcknowledgeSurvey(Packet packet)
+        {
+            packet.ReadInt32("CaseID");
+        }
     }
 }
