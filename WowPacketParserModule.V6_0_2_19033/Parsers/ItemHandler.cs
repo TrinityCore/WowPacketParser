@@ -40,6 +40,29 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             return itemId;
         }
 
+        public static void ReadItemPurchaseContents(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("");
+
+            for (int i = 0; i < 5; i++)
+                ReadItemPurchaseRefundItem(packet, indexes, i, "ItemPurchaseRefundItem");
+
+            for (int i = 0; i < 5; i++)
+                ReadItemPurchaseRefundCurrency(packet, indexes, i, "ItemPurchaseRefundCurrency");
+        }
+
+        public static void ReadItemPurchaseRefundItem(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("ItemID", indexes);
+            packet.ReadInt32("ItemCount", indexes);
+        }
+
+        public static void ReadItemPurchaseRefundCurrency(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("CurrencyID", indexes);
+            packet.ReadInt32("CurrencyCount", indexes);
+        }
+
         [Parser(Opcode.CMSG_SORT_BAGS)]
         [Parser(Opcode.CMSG_SORT_BANK_BAGS)]
         [Parser(Opcode.CMSG_SORT_REAGENT_BANK_BAGS)]
@@ -370,6 +393,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Guid");
             packet.ReadInt32("Threshold");
             packet.ReadInt32("ItemID");
+        }
+
+        [Parser(Opcode.SMSG_SET_ITEM_PURCHASE_DATA)]
+        public static void HandleSetItemPurchaseData(Packet packet)
+        {
+            packet.ReadPackedGuid128("ItemGUID");
+
+            ReadItemPurchaseContents(packet, "ItemPurchaseContents");
+
+            packet.ReadInt32("Flags");
+            packet.ReadInt32("PurchaseTime");
         }
     }
 }
