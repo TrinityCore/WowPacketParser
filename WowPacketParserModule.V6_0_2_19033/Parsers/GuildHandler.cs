@@ -615,5 +615,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var len = packet.ReadBits(6);
             packet.ReadWoWString("Name", len);
         }
+
+        [Parser(Opcode.SMSG_GUILD_EVENT_PLAYER_LEFT)]
+        public static void HandleGuildEventPlayerLeft(Packet packet)
+        {
+            var hasRemoved = packet.ReadBit("Removed");
+            var lenLeaverName = packet.ReadBits(6);
+
+            if (hasRemoved)
+            {
+                var lenRemoverName = packet.ReadBits(6);
+                packet.ReadPackedGuid128("RemoverGUID");
+                packet.ReadInt32("RemoverVirtualRealmAddress");
+                packet.ReadWoWString("RemoverName", lenRemoverName);
+            }
+
+            packet.ReadPackedGuid128("LeaverGUID");
+            packet.ReadInt32("LeaverVirtualRealmAddress");
+            packet.ReadWoWString("LeaverName", lenLeaverName);
+        }
     }
 }
