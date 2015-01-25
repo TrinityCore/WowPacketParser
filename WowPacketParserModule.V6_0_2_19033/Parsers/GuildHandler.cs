@@ -597,5 +597,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("MemberGUID");
         }
+
+        [Parser(Opcode.SMSG_GUILD_ACHIEVEMENT_EARNED)]
+        public static void HandleGuildAchievementEarned(Packet packet)
+        {
+            packet.ReadPackedGuid128("GuildGUID");
+            packet.ReadEntry<Int32>(StoreNameType.Achievement, "AchievementID");
+            packet.ReadPackedTime("TimeEarned");
+        }
     }
 }
