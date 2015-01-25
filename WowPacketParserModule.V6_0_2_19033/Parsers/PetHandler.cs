@@ -193,5 +193,29 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.AddValue("Action", action);
             packet.ReadByte("Unk");
         }
+
+        public static void ReadPetStableInfo(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("PetSlot", indexes);
+            packet.ReadInt32("PetNumber", indexes);
+            packet.ReadInt32("CreatureID", indexes);
+            packet.ReadInt32("DisplayID", indexes);
+            packet.ReadInt32("ExperienceLevel", indexes);
+            packet.ReadByte("PetFlags", indexes);
+
+            packet.ResetBitReader();
+
+            var len = packet.ReadBits(8);
+            packet.ReadWoWString("PetName", len, indexes);
+        }
+
+        [Parser(Opcode.SMSG_PET_STABLE_LIST)]
+        public static void HandlePetStableList(Packet packet)
+        {
+            packet.ReadPackedGuid128("StableMaster");
+            var petCount = packet.ReadInt32("PetCount");
+            for (int i = 0; i < petCount; i++)
+                ReadPetStableInfo(packet, i, "PetStableInfo");
+        }
     }
 }
