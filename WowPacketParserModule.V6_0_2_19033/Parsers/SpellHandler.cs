@@ -968,5 +968,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < talentCount; i++)
                 packet.ReadInt16("Talents");
         }
+
+        [Parser(Opcode.SMSG_CANCEL_SPELL_VISUAL)]
+        public static void HandleCancelSpellVisual(Packet packet)
+        {
+            packet.ReadPackedGuid128("Source");
+            packet.ReadInt32("SpellVisualID");
+        }
     }
 }
