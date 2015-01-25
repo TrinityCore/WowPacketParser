@@ -363,5 +363,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("ItemGuid");
             packet.ReadInt32("SpellID");
         }
+
+        [Parser(Opcode.SMSG_CROSSED_INEBRIATION_THRESHOLD)]
+        public static void HandleCrossedInebriationThreshold(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadInt32("Threshold");
+            packet.ReadInt32("ItemID");
+        }
     }
 }
