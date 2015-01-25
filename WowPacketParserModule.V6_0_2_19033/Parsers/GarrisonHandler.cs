@@ -473,5 +473,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("PlotInstanceID");
             packet.ReadInt64("FollowerDBID");
         }
+
+        [Parser(Opcode.SMSG_GET_TROPHY_LIST_RESPONSE)]
+        public static void HandleGetTrophyListResponse(Packet packet)
+        {
+            packet.ReadBit("Success");
+            var trophyCount = packet.ReadInt32("TrophyCount");
+            for (int i = 0; i < trophyCount; i++)
+            {
+                packet.ReadInt32("TrophyID", i);
+                packet.ReadInt32("Unk1", i);
+                packet.ReadInt32("Unk2", i);
+            }
+        }
     }
 }
