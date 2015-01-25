@@ -266,7 +266,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_GUILD_INVITE)]
+        [Parser(Opcode.CMSG_GUILD_INVITE_BY_NAME)]
         public static void HandleGuildInviteByName(Packet packet)
         {
             var bits16 = packet.ReadBits(9);
