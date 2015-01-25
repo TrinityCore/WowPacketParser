@@ -635,6 +635,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("LeaverVirtualRealmAddress");
             packet.ReadWoWString("LeaverName", lenLeaverName);
         }
+
         public static void ReadLFGuildRecruitData(Packet packet, params object[] indexes)
         {
             packet.ReadPackedGuid128("RecruitGUID", indexes);
@@ -660,6 +661,25 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Comment", lenComment, indexes);
         }
 
+        public static void ReadLFGuildApplicationData(Packet packet, params object[] indexes)
+        {
+            packet.ReadPackedGuid128("GuildGUID", indexes);
+            packet.ReadInt32("GuildVirtualRealm", indexes);
+
+            packet.ReadInt32("ClassRoles", indexes);
+            packet.ReadInt32("PlayStyle", indexes);
+            packet.ReadInt32("Availability", indexes);
+            packet.ReadInt32("SecondsSinceCreated", indexes);
+
+            packet.ResetBitReader();
+
+            var lenName = packet.ReadBits(7);
+            var lenComment = packet.ReadBits(10);
+
+            packet.ReadWoWString("GuildName", lenName, indexes);
+            packet.ReadWoWString("Comment", lenComment, indexes);
+        }
+
         [Parser(Opcode.SMSG_LF_GUILD_RECRUITS)]
         public static void HandleLFGuildRecruits(Packet packet)
         {
@@ -667,6 +687,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadTime("UpdateTime");
             for (int i = 0; i < recruitsCount; i++)
                 ReadLFGuildRecruitData(packet, i, "LFGuildRecruitData");
+        }
+
+        [Parser(Opcode.SMSG_LF_GUILD_APPLICATIONS)]
+        public static void HandleLFGuildApplications(Packet packet)
+        {
+            packet.ReadInt32("NumRemaining");
+            var applicationCount = packet.ReadInt32("LFGuildApplicationDataCount");
+            for (int i = 0; i < applicationCount; i++)
+                ReadLFGuildApplicationData(packet, i, "LFGuildApplicationData");
         }
 
         [Parser(Opcode.CMSG_PETITION_SHOW_LIST)]
