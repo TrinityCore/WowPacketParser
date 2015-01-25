@@ -151,5 +151,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("ScenarioID");
         }
+
+        [Parser(Opcode.CMSG_SCENE_TRIGGER_EVENT)]
+        public static void HandleSceneTriggerEvent(Packet packet)
+        {
+            var len = packet.ReadBits(6);
+            packet.ReadUInt32("SceneInstanceID");
+            packet.ReadWoWString("Event", len);
+        }
     }
 }
