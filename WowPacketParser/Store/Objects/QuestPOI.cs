@@ -4,7 +4,7 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("quest_poi")]
+    [DBTableName("quest_poi", WPPDatabase.World)]
     public class QuestPOI
     {
         [DBFieldName("objIndex")]

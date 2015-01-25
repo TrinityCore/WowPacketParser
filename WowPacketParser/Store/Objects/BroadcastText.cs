@@ -3,7 +3,7 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("broadcast_text")]
+    [DBTableName("broadcast_text", WPPDatabase.Hotfixes)]
     public class BroadcastText
     {
         public uint[] EmoteID;

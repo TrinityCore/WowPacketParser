@@ -3,7 +3,7 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("page_text")]
+    [DBTableName("page_text", WPPDatabase.World)]
     public class PageText
     {
         [DBFieldName("Text")]

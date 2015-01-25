@@ -3,7 +3,7 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("weather_update")]
+    [DBTableName("weather_update", WPPDatabase.None)]
     public class WeatherUpdate
     {
         [DBFieldName("map_id")]

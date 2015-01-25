@@ -3,7 +3,7 @@
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("defense_message")]
+    [DBTableName("defense_message", WPPDatabase.None /* NYI */)]
     public class DefenseMessage
     {
         [DBFieldName("Text")]

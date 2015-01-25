@@ -3,7 +3,7 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("creature_model_info")]
+    [DBTableName("creature_model_info", WPPDatabase.World)]
     public class ModelData
     {
         [DBFieldName("BoundingRadius")]

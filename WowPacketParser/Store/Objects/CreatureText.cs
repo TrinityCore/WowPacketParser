@@ -4,7 +4,7 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("creature_text")]
+    [DBTableName("creature_text", WPPDatabase.World)]
     public sealed class CreatureText
     {
         [DBFieldName("groupid")]

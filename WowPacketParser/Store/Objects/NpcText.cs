@@ -4,7 +4,7 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("npc_text")]
+    [DBTableName("npc_text", WPPDatabase.World)]
     public class NpcText
     {
         public float[] Probabilities;
@@ -164,7 +164,7 @@ namespace WowPacketParser.Store.Objects
         public int VerifiedBuild = ClientVersion.BuildInt;
     }
 
-    [DBTableName("npc_text")]
+    [DBTableName("npc_text", WPPDatabase.World)]
     public class NpcTextMop
     {
         public float[] Probabilities;
@@ -173,8 +173,6 @@ namespace WowPacketParser.Store.Objects
 
         public void ConvertToDBStruct()
         {
-            // Seriously...
-
             Prob0 = Probabilities[0];
             Prob1 = Probabilities[1];
             Prob2 = Probabilities[2];

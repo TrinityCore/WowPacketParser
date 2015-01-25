@@ -2,7 +2,7 @@
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("vehicle_template_accessory")]
+    [DBTableName("vehicle_template_accessory", WPPDatabase.World)]
     public class VehicleTemplateAccessory
     {
         [DBFieldName("accessory_entry")]

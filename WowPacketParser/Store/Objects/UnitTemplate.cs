@@ -4,7 +4,7 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("creature_template")]
+    [DBTableName("creature_template", WPPDatabase.World)]
     public class UnitTemplate
     {
         [DBFieldName("name")]

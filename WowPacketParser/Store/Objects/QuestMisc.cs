@@ -3,21 +3,21 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("quest_template")]
+    [DBTableName("quest_template", WPPDatabase.World)]
     public class QuestOffer
     {
         [DBFieldName("OfferRewardText")]
         public string OfferRewardText;
     }
 
-    [DBTableName("quest_template")]
+    [DBTableName("quest_template", WPPDatabase.World)]
     public class QuestReward
     {
         [DBFieldName("RequestItemsText")]
         public string RequestItemsText;
     }
 
-    [DBTableName("quest_greeting")]
+    [DBTableName("quest_greeting", WPPDatabase.World)]
     public class QuestGreeting
     {
         [DBFieldName("Type")]
@@ -36,7 +36,7 @@ namespace WowPacketParser.Store.Objects
         public int VerifiedBuild = ClientVersion.BuildInt;
     }
 
-    [DBTableName("quest_offer_reward")]
+    [DBTableName("quest_offer_reward", WPPDatabase.World)]
     public class QuestOfferReward
     {
         [DBFieldName("Emote", 4)]
@@ -52,7 +52,7 @@ namespace WowPacketParser.Store.Objects
         public int VerifiedBuild = ClientVersion.BuildInt;
     }
 
-    [DBTableName("quest_details")]
+    [DBTableName("quest_details", WPPDatabase.World)]
     public class QuestDetails
     {
         [DBFieldName("Emote", 4)]
@@ -65,7 +65,7 @@ namespace WowPacketParser.Store.Objects
         public int VerifiedBuild = ClientVersion.BuildInt;
     }
 
-    [DBTableName("quest_request_items")]
+    [DBTableName("quest_request_items", WPPDatabase.World)]
     public class QuestRequestItems
     {
         [DBFieldName("CompEmoteType")]

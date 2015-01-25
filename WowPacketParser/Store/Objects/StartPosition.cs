@@ -3,7 +3,7 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("playercreateinfo")]
+    [DBTableName("playercreateinfo", WPPDatabase.World)]
     public class StartPosition
     {
         [DBFieldName("map")]

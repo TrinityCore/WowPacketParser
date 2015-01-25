@@ -4,7 +4,7 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("gameobjects")]
+    [DBTableName("gameobjects", WPPDatabase.Hotfixes)]
     public sealed class GameObjectTemplateDB2
     {
         [DBFieldName("MapID")]

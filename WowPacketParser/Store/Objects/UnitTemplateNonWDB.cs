@@ -3,7 +3,7 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("creature_template")]
+    [DBTableName("creature_template", WPPDatabase.World)]
     public class UnitTemplateNonWDB
     {
         [DBFieldName("gossip_menu_id")] public uint GossipMenuId;
@@ -23,7 +23,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("HoverHeight")] public float HoverHeight;
     }
 
-    [DBTableName("creature_difficulty_misc")]
+    [DBTableName("creature_difficulty_misc", WPPDatabase.World)]
     public class CreatureDifficultyMisc
     {
         [DBFieldName("CreatureId")]

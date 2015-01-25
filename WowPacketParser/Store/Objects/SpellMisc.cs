@@ -3,7 +3,7 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("spell_misc")]
+    [DBTableName("spell_misc", WPPDatabase.Hotfixes)]
     public sealed class SpellMisc
     {
         [DBFieldName("Attributes")]

@@ -5,7 +5,7 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("quest_template")]
+    [DBTableName("quest_template", WPPDatabase.World)]
     public sealed class QuestTemplate
     {
         [DBFieldName("Method")]
@@ -198,7 +198,7 @@ namespace WowPacketParser.Store.Objects
         public int VerifiedBuild = ClientVersion.BuildInt;
     }
 
-    [DBTableName("quest_template")]
+    [DBTableName("quest_template", WPPDatabase.World)]
     public sealed class QuestTemplateWod
     {
         [DBFieldName("QuestType")]
@@ -382,7 +382,7 @@ namespace WowPacketParser.Store.Objects
         public int VerifiedBuild = ClientVersion.BuildInt;
     }
 
-    [DBTableName("quest_objectives")]
+    [DBTableName("quest_objectives", WPPDatabase.World)]
     public sealed class QuestInfoObjective
     {
         [DBFieldName("QuestId")]
@@ -415,7 +415,7 @@ namespace WowPacketParser.Store.Objects
         public int VerifiedBuild = ClientVersion.BuildInt;
     }
 
-    [DBTableName("quest_visual_effect")]
+    [DBTableName("quest_visual_effect", WPPDatabase.World)]
     public sealed class QuestVisualEffect
     {
         [DBFieldName("Index")]

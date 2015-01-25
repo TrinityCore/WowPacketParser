@@ -3,7 +3,7 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("quest_poi_points")]
+    [DBTableName("quest_poi_points", WPPDatabase.World)]
     public class QuestPOIPoint
     {
         [DBFieldName("idx")]

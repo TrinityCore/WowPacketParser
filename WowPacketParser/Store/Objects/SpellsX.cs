@@ -2,7 +2,7 @@
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("creature_template")]
+    [DBTableName("creature_template", WPPDatabase.World)]
     public struct SpellsX
     {
         [DBFieldName("spell", 8)]

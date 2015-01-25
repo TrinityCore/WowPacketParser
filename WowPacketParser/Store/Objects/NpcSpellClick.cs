@@ -3,7 +3,7 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("npc_spellclick_spells")]
+    [DBTableName("npc_spellclick_spells", WPPDatabase.World)]
     public sealed class NpcSpellClick
     {
         [DBFieldName("spell_id")]
@@ -14,7 +14,6 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("user_type")]
         public uint UserType;
-
 
         public WowGuid CasterGUID;
         public WowGuid TargetGUID;

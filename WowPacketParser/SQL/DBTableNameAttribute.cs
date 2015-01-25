@@ -15,11 +15,17 @@ namespace WowPacketParser.SQL
         public readonly string Name;
 
         /// <summary>
+        /// Target database type
+        /// </summary>
+        public readonly WPPDatabase Database;
+
+        /// <summary>
         /// </summary>
         /// <param name="name">table name</param>
-        public DBTableNameAttribute(string name)
+        public DBTableNameAttribute(string name, WPPDatabase db)
         {
             Name = name;
+            Database = db;
         }
     }
 }

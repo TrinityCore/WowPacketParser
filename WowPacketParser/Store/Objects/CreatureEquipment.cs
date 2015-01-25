@@ -2,7 +2,7 @@
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("creature_equip_template")]
+    [DBTableName("creature_equip_template", WPPDatabase.World)]
     public sealed class CreatureEquipment
     {
         [DBFieldName("itemEntry1")]
