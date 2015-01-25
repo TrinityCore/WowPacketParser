@@ -464,5 +464,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("PlotInstanceID");
             packet.ReadInt32("BuildingID");
         }
+
+        [Parser(Opcode.CMSG_GARRISON_ASSIGN_FOLLOWER_TO_BUILDING)]
+        public static void HandleGarrisonAssignFollowerToBuilding(Packet packet)
+        {
+            packet.ReadPackedGuid128("NpcGUID");
+            packet.ReadInt32("PlotInstanceID");
+            packet.ReadInt64("FollowerDBID");
+        }
     }
 }
