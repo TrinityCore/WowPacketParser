@@ -489,6 +489,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
 
+        [Parser(Opcode.SMSG_INSPECT_HONOR_STATS)]
+        public static void HandleInspectHonorStats434(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGUID");
+
+            packet.ReadByte("LifetimeMaxRank");
+
+            packet.ReadInt16("YesterdayHK");    // unconfirmed order
+            packet.ReadInt16("TodayHK");        // unconfirmed order
+
+            packet.ReadInt32("LifetimeHK");
+        }
+
         [Parser(Opcode.CMSG_MOUNT_SET_FAVORITE)]
         public static void HandleMountSetFavorite(Packet packet)
         {
