@@ -442,5 +442,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("TrophyTypeID");
         }
+
+        [Parser(Opcode.CMSG_GARRISON_SET_FOLLOWER_INACTIVE)]
+        public static void HandleGarrisonSetFollowerInactive(Packet packet)
+        {
+            packet.ReadInt64("DbID");
+            packet.ReadBit("Inactive");
+        }
     }
 }
