@@ -325,5 +325,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("Reason");
             packet.ReadBit("Relocated");
         }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_REQUEST_RESPONSE)]
+        public static void HandleBFMgrQueueRequestResponse(Packet packet)
+        {
+            packet.ReadInt64("QueueID");
+            packet.ReadInt32("AreaID");
+            packet.ReadSByte("BattleState");
+            packet.ReadPackedGuid128("FailedPlayerGUID");
+            packet.ReadSByte("Result");
+            packet.ReadBit("LoggingIn");
+        }
     }
 }
