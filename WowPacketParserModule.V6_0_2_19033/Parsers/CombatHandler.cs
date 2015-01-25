@@ -192,6 +192,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("WinnerName", bits24);
         }
 
+        [Parser(Opcode.SMSG_CAN_DUEL_RESULT)]
+        public static void HandleCanDuelResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("TargetGUID");
+            packet.ReadBit("Result");
+        }
+
         [Parser(Opcode.SMSG_PVP_CREDIT)]
         public static void HandlePvPCredit(Packet packet)
         {
