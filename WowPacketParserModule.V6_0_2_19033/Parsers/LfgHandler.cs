@@ -34,6 +34,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
+        public static void ReadListBlacklistEntry(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("ActivityID", indexes);
+            packet.ReadInt32("Reason", indexes);
+        }
+
         public static void ReadLfgBootInfo(Packet packet, params object[] indexes)
         {
             packet.ReadBit("VoteInProgress");
@@ -410,12 +416,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_LFG_LIST_UPDATE_BLACKLIST)]
         public static void HandleLFGListUpdateBlacklist(Packet packet)
         {
-            var count = packet.ReadInt32("");
+            var count = packet.ReadInt32("BlacklistEntryCount");
             for (int i = 0; i < count; i++)
-            {
-                packet.ReadInt32("ActivityID", i);
-                packet.ReadInt32("Reason", i);
-            }
+                ReadListBlacklistEntry(packet, i, "ListBlacklistEntry");
         }
 
         [Parser(Opcode.SMSG_LFG_LIST_UPDATE_STATUS)]
@@ -463,6 +466,38 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleDFLeave(Packet packet)
         {
             ReadRideTicket(packet, "RideTicket");
+        }
+
+        [Parser(Opcode.CMSG_LFG_LIST_JOIN)]
+        public static void HandleLFGListJoin(Packet packet)
+        {
+            ReadLFGListJoinRequest(packet, "LFGListJoinRequest");
+        }
+
+        [Parser(Opcode.CMSG_LFG_LIST_LEAVE)]
+        public static void HandleLFGListLeave(Packet packet)
+        {
+            ReadRideTicket(packet, "RideTicket");
+        }
+
+        [Parser(Opcode.CMSG_LFG_LIST_SEARCH)] // To-Do: Rename Unks
+        public static void HandleLFGListSearch(Packet packet)
+        {
+            var len = packet.ReadBits(6);
+            var bits92 = packet.ReadBits("Bits92", 7);
+
+            packet.ReadInt32("Int64");
+            packet.ReadInt32("Int68");
+            packet.ReadInt32("Int72");
+            var int72 = packet.ReadInt32("ListBlacklistEntryCount");
+
+            packet.ReadWoWString("String", len);
+
+            for (int i = 0; i < bits92; i++)
+                packet.ReadPackedGuid128("SmartGuid96", i); // PartyMember?
+
+            for (int i = 0; i < int72; i++)
+                ReadListBlacklistEntry(packet, i, "ListBlacklistEntry");
         }
     }
 }
