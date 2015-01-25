@@ -498,5 +498,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("AutoSlotted");      // unconfirmed order
             packet.ReadBit("NewSlotUnlocked");  // unconfirmed order
         }
+
+        [Parser(Opcode.CMSG_PET_BATTLE_REPLACE_FRONT_PET)]
+        public static void HandlePetBattleReplaceFrontPet(Packet packet)
+        {
+            packet.ReadSByte("FrontPet");
+        }
     }
 }
