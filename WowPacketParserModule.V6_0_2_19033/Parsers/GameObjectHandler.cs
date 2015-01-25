@@ -111,8 +111,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleDestructibleBuildingDamage(Packet packet)
         {
             packet.ReadPackedGuid128("Target");
-            packet.ReadPackedGuid128("Owner");
             packet.ReadPackedGuid128("Caster");
+            packet.ReadPackedGuid128("Owner");
             packet.ReadInt32("Damage");
             packet.ReadInt32("SpellID");
         }

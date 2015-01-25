@@ -566,6 +566,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("TaskID");
         }
+
+
+        [Parser(Opcode.SMSG_DISPLAY_GAME_ERROR)]
+        public static void HandleDisplayGameError(Packet packet)
+        {
+            packet.ReadUInt32("Error");
+            var hasArg = packet.ReadBit();
+            var hasArg2 = packet.ReadBit();
+
+            if (hasArg)
+                packet.ReadUInt32("Arg");
+
+            if (hasArg2)
+                packet.ReadUInt32("Arg2");
+        }
     }
 }
 
