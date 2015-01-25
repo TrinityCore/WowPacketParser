@@ -498,6 +498,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < petBattleSlotCount; i++)
                 ReadClientPetBattleSlot(packet, i, "PetBattleSlot");
 
+            packet.ResetBitReader();
+
             packet.ReadBit("AutoSlotted");      // unconfirmed order
             packet.ReadBit("NewSlotUnlocked");  // unconfirmed order
         }
