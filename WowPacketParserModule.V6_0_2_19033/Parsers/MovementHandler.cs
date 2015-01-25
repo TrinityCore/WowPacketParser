@@ -572,6 +572,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("TriggerGUID");
         }
 
+        [Parser(Opcode.CMSG_MOVE_SET_VEHICLE_REC_ID_ACK)]
+        public static void HandleMoveSetVehicleRecIdAck(Packet packet)
+        {
+            ReadMovementAck(ref packet);
+            packet.ReadInt32("VehicleRecID");
+        }
+
         [Parser(Opcode.SMSG_MOVE_REMOVE_MOVEMENT_FORCE)]
         public static void HandleMoveRemoveMovementForce(Packet packet)
         {
