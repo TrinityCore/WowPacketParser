@@ -419,6 +419,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_REPLACE_TROPHY)]
+        [Parser(Opcode.CMSG_CHANGE_TROPHY)]
         public static void HandleReplaceTrophy(Packet packet)
         {
             packet.ReadPackedGuid128("TrophyGUID");
