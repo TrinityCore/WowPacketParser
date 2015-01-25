@@ -185,7 +185,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("TotalNumRecords");
 
             for (var i = 0; i < mailsCount; i++) // Mails
-                MailHandler.ReadCliMailListEntry(packet, i);
+                MailHandler.ReadMailListEntry(packet, i, "MailListEntry");
         }
 
         public static void ReadClientAuctionOwnerNotification(Packet packet, params object[] idx)
