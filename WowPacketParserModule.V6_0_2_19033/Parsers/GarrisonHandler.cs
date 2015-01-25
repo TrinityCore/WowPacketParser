@@ -492,5 +492,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadBit("Success");
         }
+
+        [Parser(Opcode.SMSG_GARRISON_MONUMENT_SELECTED_TROPHY_ID_LOADED)]
+        public static void HandleGarrisonMonumentSelectedTrophyIdLoaded(Packet packet)
+        {
+            packet.ReadBit("Success");
+            packet.ReadInt32("TrophyID");
+        }
     }
 }
