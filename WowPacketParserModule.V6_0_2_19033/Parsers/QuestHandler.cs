@@ -673,6 +673,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_SET_QUEST_COMPLETED_BIT)]
+        [Parser(Opcode.SMSG_CLEAR_QUEST_COMPLETED_BIT)]
         public static void HandleSetQuestCompletedBit(Packet packet)
         {
             packet.ReadInt32("Bit");
