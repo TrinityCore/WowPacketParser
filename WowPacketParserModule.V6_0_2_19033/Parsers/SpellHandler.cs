@@ -960,5 +960,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("CastID");
             packet.ReadVector3("CollisionPos");
         }
+
+        [Parser(Opcode.CMSG_LEARN_TALENTS)]
+        public static void HandleLearnTalents(Packet packet)
+        {
+            var talentCount = packet.ReadInt32("TalentCount");
+            for (int i = 0; i < talentCount; i++)
+                packet.ReadInt16("Talents");
+        }
     }
 }

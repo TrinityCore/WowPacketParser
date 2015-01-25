@@ -513,7 +513,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_SET_FACTION_AT_WAR, 0x051E},
             {Opcode.CMSG_SET_FACTION_INACTIVE, 0x09E2},
             {Opcode.CMSG_SET_FACTION_NOT_AT_WAR, 0x0A06},
-            {Opcode.CMSG_SET_LEARN_TALENTS, 0x0BB6},
+            {Opcode.CMSG_LEARN_TALENTS, 0x0BB6},
             {Opcode.CMSG_SET_LFG_BONUS_FACTION_ID, 0x009D},
             {Opcode.CMSG_SET_LOOT_SPECIALIZATION, 0x0226},
             {Opcode.CMSG_SET_PARTY_ASSIGNMENT, 0x050A},
