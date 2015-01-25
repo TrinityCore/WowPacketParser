@@ -181,5 +181,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("PetGUID");
         }
+
+        [Parser(Opcode.CMSG_PET_SET_ACTION)]
+        public static void HandlePetSetAction(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
+            packet.ReadUInt32("Index");
+
+            //packet.ReadUInt32("Action");
+            var action = (uint)packet.ReadUInt16() + (packet.ReadByte() << 16);
+            packet.AddValue("Action", action);
+            packet.ReadByte("Unk");
+        }
     }
 }
