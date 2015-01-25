@@ -754,6 +754,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("MaxSequenceIndex");
         }
 
+        [Parser(Opcode.CMSG_TIME_SYNC_RESPONSE_DROPPED)]
+        public static void HandleTimeSyncResponseDropped(Packet packet)
+        {
+            packet.ReadUInt32("SequenceIndexFirst");
+            packet.ReadUInt32("SequenceIndexLast");
+        }
+
         [Parser(Opcode.SMSG_PLAYER_SKINNED)]
         public static void HandlePlayerSkinned(Packet packet)
         {
