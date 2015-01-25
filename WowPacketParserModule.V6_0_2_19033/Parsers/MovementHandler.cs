@@ -551,6 +551,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_MOVE_SET_CAN_FLY_ACK)]
         [Parser(Opcode.CMSG_MOVE_ENABLE_SWIM_TO_FLY_TRANS_ACK)]
         [Parser(Opcode.CMSG_MOVE_FEATHER_FALL_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_CAN_TURN_WHILE_FALLING_ACK)]
         public static void HandleMovementAck(Packet packet)
         {
             ReadMovementAck(ref packet);
