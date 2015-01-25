@@ -486,5 +486,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("Unk2", i);
             }
         }
+
+        [Parser(Opcode.SMSG_REPLACE_TROPHY_RESPONSE)]
+        public static void HandleReplaceTrophyResponse(Packet packet)
+        {
+            packet.ReadBit("Success");
+        }
     }
 }
