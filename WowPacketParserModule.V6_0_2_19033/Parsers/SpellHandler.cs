@@ -916,5 +916,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Unit");
         }
+
+        [Parser(Opcode.SMSG_PLAYER_BOUND)]
+        public static void HandlePlayerBound(Packet packet)
+        {
+            packet.ReadPackedGuid128("BinderID");
+            packet.ReadEntry<UInt32>(StoreNameType.Area, "AreaID");
+        }
     }
 }
