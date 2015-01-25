@@ -394,6 +394,8 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_NEUTRAL_PLAYER_SELECT_FACTION, 0x0B5A},
             {Opcode.CMSG_NEXT_CINEMATIC_CAMERA, 0x1B3A},
             {Opcode.CMSG_NPC_TEXT_QUERY, 0x0ECB},
+            {Opcode.CMSG_OBJECT_UPDATE_FAILED, 0x14E2},
+            {Opcode.CMSG_OBJECT_UPDATE_RESCUED, 0x0AD6},
             {Opcode.CMSG_OFFER_PETITION, 0x0315},
             {Opcode.CMSG_OPEN_ITEM, 0x08AD},
             {Opcode.CMSG_OPEN_SHIPMENT_NPC, 0x0432},
