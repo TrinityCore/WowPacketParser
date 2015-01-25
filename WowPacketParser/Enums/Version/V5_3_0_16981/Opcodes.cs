@@ -182,7 +182,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_GAME_EVENT_DEBUG_LOG, 0x0190},
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x13AD},
             {Opcode.SMSG_GOSSIP_POI, 0x15A7},
-            {Opcode.SMSG_GROUPACTION_THROTTLED, 0x1394},
+            {Opcode.SMSG_GROUP_ACTION_THROTTLED, 0x1394},
             {Opcode.SMSG_GROUP_INVITE, 0x11DD},
             {Opcode.SMSG_GUILD_EVENT, 0x11CC},
             {Opcode.SMSG_GUILD_REPUTATION_WEEKLY_CAP, 0x1A83},

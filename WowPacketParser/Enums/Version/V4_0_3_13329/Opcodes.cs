@@ -1015,7 +1015,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_SPELL_CHANCE_RESIST_PUSHBACK, 0x0404}, // NF()(0x0404) //
             {Opcode.SMSG_IGNORE_DIMINISHING_RETURNS_CHEAT, 0x747E}, // (0x4A39)(0x0406) //
             {Opcode.SMSG_READY_CHECK_ERROR, 0x502A}, // (0xCB50)(0x0408) //
-            {Opcode.SMSG_GROUPACTION_THROTTLED, 0xFFA4}, // NF(0xC2D5)(0x0411) //
+            {Opcode.SMSG_GROUP_ACTION_THROTTLED, 0xFFA4}, // NF(0xC2D5)(0x0411) //
             {Opcode.SMSG_OVERRIDE_LIGHT, 0x0756}, // (0xABB8)(0x0412) //
             {Opcode.SMSG_TOTEM_CREATED, 0xED77}, // (0x23B9)(0x0413) //
             {Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE, 0x0418}, // NF()(0x0418) //
