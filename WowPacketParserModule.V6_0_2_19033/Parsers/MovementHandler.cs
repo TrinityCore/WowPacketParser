@@ -807,5 +807,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadPackedGuid128("MoverGUID");
             }
         }
+
+        [Parser(Opcode.SMSG_MOVE_SET_ANIM_KIT)]
+        public static void HandleSetMovementAnimKit(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+            packet.ReadInt16("AnimKitID");
+        }
     }
 }
