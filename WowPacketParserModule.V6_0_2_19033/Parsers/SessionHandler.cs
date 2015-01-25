@@ -8,6 +8,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class SessionHandler
     {
+        public static void ReadClientSettings(Packet packet, params object[] idx)
+        {
+            packet.ReadSingle("FarClip", idx);
+        }
+
         [Parser(Opcode.SMSG_AUTH_RESPONSE)]
         public static void HandleAuthResponse(Packet packet)
         {
@@ -155,7 +160,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandlePlayerLogin(Packet packet)
         {
             var guid = packet.ReadPackedGuid128("Guid");
-            packet.ReadSingle("FarClip");
+            ReadClientSettings(packet, "ClientSettings");
             CoreParsers.SessionHandler.LoginGuid = guid;
         }
 
@@ -312,6 +317,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadUInt32("Token");
             packet.ReadBit("Timeout");
+        }
+
+        [Parser(Opcode.CMSG_UPDATE_CLIENT_SETTINGS)]
+        public static void HandleUpdateClientSettings(Packet packet)
+        {
+            ReadClientSettings(packet, "ClientSettings");
         }
     }
 }
