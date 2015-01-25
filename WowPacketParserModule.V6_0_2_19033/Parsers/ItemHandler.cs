@@ -356,5 +356,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Banker");
         }
+
+        [Parser(Opcode.SMSG_ITEM_COOLDOWN)]
+        public static void HandleItemCooldown(Packet packet)
+        {
+            packet.ReadPackedGuid128("ItemGuid");
+            packet.ReadInt32("SpellID");
+        }
     }
 }
