@@ -9,7 +9,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_ACCEPT_TRADE)]
         public static void HandleAcceptTrade(Packet packet)
         {
-            packet.ReadUInt32("State Index");
+            packet.ReadUInt32("StateIndex");
         }
 
         [Parser(Opcode.SMSG_TRADE_UPDATED)]
@@ -97,6 +97,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("BagResult");
                 packet.ReadInt32("ItemID");
             }
+        }
+
+        [Parser(Opcode.CMSG_INITIATE_TRADE)]
+        public static void HandleInitiateTrade(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
         }
     }
 }
