@@ -120,12 +120,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var startSpell = new StartSpell { Spells = spells };
 
-            WoWObject character;
-            if (Storage.Objects.TryGetValue(WowPacketParser.Parsing.Parsers.SessionHandler.LoginGuid, out character))
+
+            if (WowPacketParser.Parsing.Parsers.SessionHandler.LoginGuid != null)
             {
-                var player = character as Player;
-                if (player != null && player.FirstLogin)
-                    Storage.StartSpells.Add(new Tuple<Race, Class>(player.Race, player.Class), startSpell, packet.TimeSpan);
+                WoWObject character;
+                if (Storage.Objects.TryGetValue(WowPacketParser.Parsing.Parsers.SessionHandler.LoginGuid, out character))
+                {
+                    var player = character as Player;
+                    if (player != null && player.FirstLogin)
+                        Storage.StartSpells.Add(new Tuple<Race, Class>(player.Race, player.Class), startSpell, packet.TimeSpan);
+                }
             }
         }
 
