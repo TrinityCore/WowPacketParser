@@ -496,7 +496,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_REQUEST_HONOR_STATS)]
         public static void HandleRequestHonorStats(Packet packet)
         {
-            packet.ReadPackedGuid128("Target");
+            packet.ReadPackedGuid128("TargetGUID");
         }
 
         [Parser(Opcode.SMSG_INSPECT_HONOR_STATS)]
@@ -522,6 +522,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("SeasonWon", idx);
             packet.ReadInt32("WeeklyBestRating", idx);
             packet.ReadByte("Bracket", idx);
+        }
+
+        [Parser(Opcode.CMSG_REQUEST_INSPECT_PVP)]
+        public static void HandleRequestInspectPVP(Packet packet)
+        {
+            packet.ReadPackedGuid128("InspectTarget");
+            packet.ReadInt32("InspectRealmAddress");
         }
 
         [Parser(Opcode.SMSG_INSPECT_PVP)]
