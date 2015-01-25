@@ -425,5 +425,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("Reason");
             packet.ReadBit("Listed");
         }
+
+        [Parser(Opcode.SMSG_LFG_TELEPORT_DENIED)]
+        public static void HandleLFGTeleportDenied(Packet packet)
+        {
+            packet.ReadBits("Reason", 4);
+        }
     }
 }
