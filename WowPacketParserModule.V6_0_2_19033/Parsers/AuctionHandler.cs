@@ -260,6 +260,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("ChangeNumberTombstone");
         }
 
+        [Parser(Opcode.CMSG_AUCTION_PLACE_BID)]
+        public static void HandleAuctionPlaceBid(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadInt32("AuctionItemID");
+            packet.ReadInt64("BidAmount");
+        }
+
         [Parser(Opcode.CMSG_AUCTION_LIST_PENDING_SALES)]
         public static void HandleAuctionZero(Packet packet)
         {
