@@ -499,5 +499,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < int72; i++)
                 ReadListBlacklistEntry(packet, i, "ListBlacklistEntry");
         }
+
+        [Parser(Opcode.CMSG_SET_LFG_BONUS_FACTION_ID)]
+        public static void HandleSetLFGBonusFactionID(Packet packet)
+        {
+            packet.ReadInt32("FactionID");
+        }
     }
 }
