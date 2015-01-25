@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -57,6 +58,46 @@ namespace WowPacketParser.Tests
                 {
                     if (!usedOpcode.Value)
                         Console.WriteLine("Warning: {0} is not used in any handler.", usedOpcode.Key);
+                }
+            }
+
+            Assert.IsTrue(allUsed, "Found unused opcodes defined.");
+        }
+
+        [Test]
+        public void HasValue()
+        {
+            var opcodes = Utilities.GetValues<Opcode>();
+
+            var usedOpcodes = opcodes.ToDictionary(opcode => opcode, opcode => false);
+            usedOpcodes[Opcode.NULL_OPCODE] = true; // ignore
+
+            var versions = Utilities.GetValues<ClientVersionBuild>();
+            var directions = Utilities.GetValues<Direction>().ToList();
+
+            var foundOpcodes = new HashSet<Opcode>();
+
+            foreach (var version in versions)
+            {
+                foreach (var direction in directions)
+                {
+                    foundOpcodes.UnionWith(Opcodes.GetOpcodeDictionary(version, direction).Select(pair => pair.Key));
+                }
+            }
+
+            foreach (var foundOpcode in foundOpcodes)
+            {
+                usedOpcodes[foundOpcode] = true;
+            }
+
+            var allUsed = usedOpcodes.All(pair => pair.Value);
+
+            if (!allUsed)
+            {
+                foreach (var usedOpcode in usedOpcodes)
+                {
+                    if (!usedOpcode.Value)
+                        Console.WriteLine("Warning: {0} does not have any id in any version.", usedOpcode.Key);
                 }
             }
 

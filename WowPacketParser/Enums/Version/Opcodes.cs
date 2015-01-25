@@ -38,7 +38,7 @@ namespace WowPacketParser.Enums.Version
             MiscDict = GetOpcodeDictionary(ClientVersion.Build, Direction.Bidirectional);
         }
 
-        private static BiDictionary<Opcode, int> GetOpcodeDictionary(ClientVersionBuild build, Direction direction)
+        public static BiDictionary<Opcode, int> GetOpcodeDictionary(ClientVersionBuild build, Direction direction)
         {
             switch (build)
             {
