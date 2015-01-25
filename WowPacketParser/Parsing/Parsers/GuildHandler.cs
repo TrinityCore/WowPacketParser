@@ -715,7 +715,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GUILD_GET_RANKS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
         [Parser(Opcode.CMSG_GUILD_QUERY_NEWS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.CMSG_GUILD_REQUEST_MAX_DAILY_XP, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
-        [Parser(Opcode.CMSG_QUERY_GUILD_XP, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
+        [Parser(Opcode.CMSG_REQUEST_GUILD_XP, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
         [Parser(Opcode.CMSG_GUILD_QUERY_TRADESKILL)]
         public static void HandleGuildRequestMulti(Packet packet)
         {
@@ -730,8 +730,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("GUID", guid);
         }
 
-        [Parser(Opcode.CMSG_QUERY_GUILD_XP, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleGuildQueryGuildXP430(Packet packet)
+        [Parser(Opcode.CMSG_REQUEST_GUILD_XP, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15595)]
+        public static void HandleRequestGuildXP430(Packet packet)
         {
             var guid = packet.StartBitStream(2, 4, 5, 6, 1, 0, 3, 7);
             packet.ParseBitStream(guid, 0, 1, 4, 3, 2, 6, 7, 5);
@@ -839,10 +839,10 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadPackedTime("Time", i);
         }
 
-        [Parser(Opcode.CMSG_QUERY_GUILD_REWARDS)]
-        public static void HandleGuildQueryRewards(Packet packet)
+        [Parser(Opcode.CMSG_REQUEST_GUILD_REWARDS_LIST)]
+        public static void HandleRequestGuildRewardsList(Packet packet)
         {
-            packet.ReadTime("Unk Time");
+            packet.ReadTime("CurrentVersion");
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_3_4_15595))
                 packet.ReadGuid("Player GUID");
         }
@@ -1186,7 +1186,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id", i);
         }
 
-        [Parser(Opcode.CMSG_QUERY_GUILD_RECIPES, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.CMSG_GUILD_QUERY_RECIPES, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQueryGuildRecipes510(Packet packet)
         {
             var guid = packet.StartBitStream(1, 4, 3, 5, 0, 6, 2, 7);
@@ -1207,8 +1207,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id");
         }
 
-        [Parser(Opcode.SMSG_GUILD_UPDATE_ROSTER)]
-        public static void HandleGuildUpdateRoster(Packet packet)
+        [Parser(Opcode.SMSG_GUILD_ROSTER_UPDATE)]
+        public static void HandleGuildRosterUpdate(Packet packet)
         {
             var count = packet.ReadBits("Count", 18);
             var guids = new byte[count][];

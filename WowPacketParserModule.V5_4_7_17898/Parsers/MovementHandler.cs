@@ -2944,7 +2944,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_ROOT)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_ROOT)]
         public static void HandleSplineMoveRoot(Packet packet)
         {
             var guid = new byte[8];
@@ -2955,7 +2955,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_UNROOT)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_UNROOT)]
         public static void HandleSplineMoveUnroot(Packet packet)
         {
             var guid = new byte[8];
@@ -2966,7 +2966,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_RUN_SPEED)]
         public static void HandleSplineSetRunSpeed(Packet packet)
         {
             var guid = new byte[8];
@@ -2985,7 +2985,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_FLIGHT_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_FLIGHT_SPEED)]
         public static void HandleSplineSetFlightSpeed(Packet packet)
         {
             var guid = new byte[8];
@@ -3004,7 +3004,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_SWIM_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_SWIM_SPEED)]
         public static void HandleSplineSetSwimSpeed(Packet packet)
         {
             var guid = new byte[8];
@@ -3023,7 +3023,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_WALK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_WALK_BACK_SPEED)]
         public static void HandleSplineSetWalkSpeed(Packet packet)
         {
             var guid = new byte[8];
@@ -3042,7 +3042,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_BACK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_RUN_BACK_SPEED)]
         public static void HandleSplineSetRunBackSpeed(Packet packet)
         {
             var guid = new byte[8];

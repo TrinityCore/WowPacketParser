@@ -470,8 +470,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_QUERY_GUILD_XP)]
-        public static void HandleGuildQueryGuildXP430(Packet packet)
+        [Parser(Opcode.CMSG_REQUEST_GUILD_XP)]
+        public static void HandleRequestGuildXP(Packet packet)
         {
             var guid = packet.StartBitStream(3, 2, 7, 5, 6, 0, 1, 4);
             packet.ParseBitStream(guid, 3, 7, 2, 1, 5, 4, 0, 6);

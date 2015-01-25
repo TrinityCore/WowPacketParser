@@ -861,7 +861,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid2", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_FLIGHT_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_FLIGHT_SPEED)]
         public static void HandleSplineSetFlightSpeed(Packet packet)
         {
             packet.ReadSingle("Speed");
@@ -870,7 +870,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_RUN_SPEED)]
         public static void HandleSplineSetRunSpeed(Packet packet)
         {
             var guid = packet.StartBitStream(3, 0, 1, 4, 7, 5, 6, 2);
@@ -880,7 +880,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("GUID", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_BACK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_RUN_BACK_SPEED)]
         public static void HandleSplineSetRunBackSpeed(Packet packet)
         {
             var guid = packet.StartBitStream(7, 4, 0, 3, 2, 5, 6, 1);
@@ -890,7 +890,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_SWIM_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_SWIM_SPEED)]
         public static void HandleSplineSetSwimSpeed(Packet packet)
         {
             var guid = packet.StartBitStream(5, 6, 7, 3, 4, 2, 1, 0);
@@ -900,7 +900,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_WALK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_WALK_BACK_SPEED)]
         public static void HandleSplineSetWalkSpeed(Packet packet)
         {
             var guid = packet.StartBitStream(4, 1, 7, 6, 3, 2, 5, 0);

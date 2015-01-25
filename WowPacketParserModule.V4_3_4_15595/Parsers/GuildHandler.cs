@@ -503,8 +503,8 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("GUID", guid);
         }
 
-        [Parser(Opcode.CMSG_QUERY_GUILD_XP)]
-        public static void HandleGuildQueryGuildXP434(Packet packet)
+        [Parser(Opcode.CMSG_REQUEST_GUILD_XP)]
+        public static void HandleRequestGuildXP(Packet packet)
         {
             var guid = packet.StartBitStream(2, 1, 0, 5, 4, 7, 6, 3);
             packet.ParseBitStream(guid, 7, 2, 3, 6, 1, 5, 0, 4);
@@ -808,8 +808,8 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_QUERY_GUILD_MEMBERS_FOR_RECIPE)]
-        public static void HandleQueryGuildMembersForRecipe(Packet packet)
+        [Parser(Opcode.CMSG_GUILD_QUERY_MEMBERS_FOR_RECIPE)]
+        public static void HandleGuildQueryMembersForRecipe(Packet packet)
         {
             packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
             packet.ReadUInt32("Skill ID");
@@ -839,8 +839,8 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadUInt32("Skill ID");
         }
 
-        [Parser(Opcode.CMSG_QUERY_GUILD_MEMBER_RECIPES)]
-        public static void HandleQueryGuildMemberRecipes(Packet packet)
+        [Parser(Opcode.CMSG_GUILD_QUERY_MEMBER_RECIPES)]
+        public static void HandleGuildQueryMemberRecipes(Packet packet)
         {
             var guildGuid = new byte[8];
             var guid = new byte[8];
@@ -909,8 +909,8 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Player GUID", guid);
         }
 
-        [Parser(Opcode.CMSG_QUERY_GUILD_RECIPES)]
-        public static void HandleQueryGuildRecipes(Packet packet)
+        [Parser(Opcode.CMSG_GUILD_QUERY_RECIPES)]
+        public static void HandleGuildQueryRecipes(Packet packet)
         {
             var guid = packet.StartBitStream(5, 6, 1, 4, 2, 7, 0, 3);
             packet.ParseBitStream(guid, 3, 1, 0, 5, 4, 2, 6, 7);

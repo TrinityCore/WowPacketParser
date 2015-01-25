@@ -554,7 +554,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("GUID", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_SWIM_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_SWIM_SPEED)]
         public static void HandleUnknown5730(Packet packet)
         {
             var guid = new byte[8];
@@ -567,7 +567,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("GUID", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_WALK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_WALK_BACK_SPEED)]
         public static void HandleSplineSetWalkSpeed(Packet packet)
         {
             var guid = new byte[8];
@@ -610,7 +610,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("GUID", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_GRAVITY_DISABLE)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_DISABLE_GRAVITY)]
         public static void HandleSplineMoveGravityDisable(Packet packet)
         {
             var guid = new byte[8];
@@ -621,7 +621,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("GUID", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_ROOT)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_ROOT)]
         public static void HandleSplineMoveRoot(Packet packet)
         {
             var guid = new byte[8];

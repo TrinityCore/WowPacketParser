@@ -163,10 +163,10 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Auction Id", i);
         }
 
-        [Parser(Opcode.SMSG_AUCTION_BIDDER_LIST_RESULT)]
-        [Parser(Opcode.SMSG_AUCTION_OWNER_LIST_RESULT)]
+        [Parser(Opcode.SMSG_AUCTION_LIST_BIDDER_ITEMS_RESULT)]
+        [Parser(Opcode.SMSG_AUCTION_LIST_OWNER_ITEMS_RESULT)]
         [Parser(Opcode.SMSG_AUCTION_LIST_RESULT)]
-        public static void HandleAuctionListBidderResult(Packet packet)
+        public static void HandleAuctionListItemsResult(Packet packet)
         {
             var count = packet.ReadUInt32("Count");
             for (var i = 0; i < count; ++i)
