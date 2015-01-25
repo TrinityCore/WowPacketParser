@@ -58,7 +58,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var lenName = packet.ReadBits(8);
             var lenComment = packet.ReadBits(11);
-            var lenVoiceChat = packet.ReadBits(9);
+            var lenVoiceChat = packet.ReadBits(8);
 
             packet.ReadWoWString("Name", lenName);
             packet.ReadWoWString("Comment", lenComment);
