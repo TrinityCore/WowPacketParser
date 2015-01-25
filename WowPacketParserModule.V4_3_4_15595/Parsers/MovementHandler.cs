@@ -6930,7 +6930,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_MOVE_NORMAL_FALL)]
+        [Parser(Opcode.SMSG_MOVE_SET_NORMAL_FALL)]
         public static void HandleMoveNormalFall434(Packet packet)
         {
             packet.ReadInt32("Unk Int32"); // ##

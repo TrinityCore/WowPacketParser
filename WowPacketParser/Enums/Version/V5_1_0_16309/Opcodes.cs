@@ -692,7 +692,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_MOVE_SET_FEATHER_FALL, 0x09F4},
             {Opcode.SMSG_MOVE_KNOCK_BACK, 0x0194},
             {Opcode.SMSG_MOVE_LAND_WALK, 0x0D94},
-            {Opcode.SMSG_MOVE_NORMAL_FALL, 0x0C9D},
+            {Opcode.SMSG_MOVE_SET_NORMAL_FALL, 0x0C9D},
             {Opcode.SMSG_MOVE_ROOT, 0x0955},
             {Opcode.SMSG_MOVE_SET_ACTIVE_MOVER, 0x07DC},
             {Opcode.SMSG_MOVE_SET_CAN_FLY, 0x0419},

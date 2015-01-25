@@ -637,7 +637,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_FORCE_MOVE_UNROOT, 0x00EA}, // NF()(0x00EA) //
             {Opcode.SMSG_MOVE_KNOCK_BACK, 0x00EF}, // NF()(0x00EF) //
             {Opcode.SMSG_MOVE_SET_FEATHER_FALL, 0x00F2}, // NF()(0x00F2) //
-            {Opcode.SMSG_MOVE_NORMAL_FALL, 0x00F3}, // NF()(0x00F3) //
+            {Opcode.SMSG_MOVE_SET_NORMAL_FALL, 0x00F3}, // NF()(0x00F3) //
             {Opcode.SMSG_MOVE_SET_HOVER, 0x00F4}, // NF()(0x00F4) //
             {Opcode.SMSG_MOVE_UNSET_HOVER, 0x00F5}, // NF()(0x00F5) //
             {Opcode.SMSG_TRIGGER_CINEMATIC, 0x00FA}, // NF()(0x00FA) //

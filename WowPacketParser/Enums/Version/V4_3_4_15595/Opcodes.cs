@@ -906,7 +906,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_MOVE_ENABLE_GRAVITY, 0x30B3},
             {Opcode.SMSG_MOVE_KNOCK_BACK, 0x5CB4},
             {Opcode.SMSG_MOVE_LAND_WALK, 0x34B7},
-            {Opcode.SMSG_MOVE_NORMAL_FALL, 0x51B6},
+            {Opcode.SMSG_MOVE_SET_NORMAL_FALL, 0x51B6},
             {Opcode.SMSG_MOVE_ROOT, 0x7DA0},
             {Opcode.SMSG_MOVE_SET_ACTIVE_MOVER, 0x11B3},
             {Opcode.SMSG_MOVE_SET_CAN_FLY, 0x3DA1},
