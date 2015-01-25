@@ -203,5 +203,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("GroupSize");
             packet.ReadBit("Success");
         }
+
+        [Parser(Opcode.SMSG_INSTANCE_RESET_FAILED)]
+        public static void HandleInstanceResetFailed(Packet packet)
+        {
+            packet.ReadInt32("MapID");
+            packet.ReadBits("ResetFailedReason", 2);
+        }
     }
 }
