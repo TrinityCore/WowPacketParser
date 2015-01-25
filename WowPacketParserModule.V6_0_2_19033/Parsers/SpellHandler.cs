@@ -951,5 +951,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < supercededCount; i++)
                 packet.ReadInt32("Superceded", i);
         }
+
+        [Parser(Opcode.CMSG_MISSILE_TRAJECTORY_COLLISION)]
+        public static void HandleMissileTrajectoryCollision(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadInt32("SpellID");
+            packet.ReadByte("CastID");
+            packet.ReadVector3("CollisionPos");
+        }
     }
 }
