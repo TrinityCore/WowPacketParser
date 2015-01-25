@@ -445,5 +445,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ResetBitReader();
             packet.ReadBit("Accept");
         }
+
+        [Parser(Opcode.CMSG_DF_TELEPORT)]
+        public static void HandleDFTeleport(Packet packet)
+        {
+            packet.ReadBit("TeleportOut");
+        }
     }
 }
