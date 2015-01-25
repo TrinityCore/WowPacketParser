@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
@@ -37,9 +34,8 @@ namespace WowPacketParser.Tests
                         usedOpcodes[action.Key.Value] = true;
                     }
                 }
-                catch (FileNotFoundException e)
+                catch (FileNotFoundException)
                 {
-                    //Console.WriteLine(e);
                     // do nothing, go to next possible assembly
                 }
             }
@@ -54,10 +50,9 @@ namespace WowPacketParser.Tests
 
             if (!allUsed)
             {
-                foreach (var usedOpcode in usedOpcodes)
+                foreach (var usedOpcode in usedOpcodes.Where(usedOpcode => !usedOpcode.Value))
                 {
-                    if (!usedOpcode.Value)
-                        Console.WriteLine("Warning: {0} is not used in any handler.", usedOpcode.Key);
+                    Console.WriteLine("Warning: {0} is not used in any handler.", usedOpcode.Key);
                 }
             }
 
@@ -75,29 +70,25 @@ namespace WowPacketParser.Tests
             var versions = Utilities.GetValues<ClientVersionBuild>();
             var directions = Utilities.GetValues<Direction>().ToList();
 
-            var foundOpcodes = new HashSet<Opcode>();
-
             foreach (var version in versions)
             {
                 foreach (var direction in directions)
                 {
-                    foundOpcodes.UnionWith(Opcodes.GetOpcodeDictionary(version, direction).Select(pair => pair.Key));
+                    var dict = Opcodes.GetOpcodeDictionary(version, direction);
+                    foreach (var pair in dict)
+                    {
+                        usedOpcodes[pair.Key] = true;
+                    }
                 }
-            }
-
-            foreach (var foundOpcode in foundOpcodes)
-            {
-                usedOpcodes[foundOpcode] = true;
             }
 
             var allUsed = usedOpcodes.All(pair => pair.Value);
 
             if (!allUsed)
             {
-                foreach (var usedOpcode in usedOpcodes)
+                foreach (var usedOpcode in usedOpcodes.Where(usedOpcode => !usedOpcode.Value))
                 {
-                    if (!usedOpcode.Value)
-                        Console.WriteLine("Warning: {0} does not have any id in any version.", usedOpcode.Key);
+                    Console.WriteLine("Warning: {0} does not have any id in any version.", usedOpcode.Key);
                 }
             }
 
