@@ -89,7 +89,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadPackedGuid128("PartnerWowAccount");
             }
 
-            if (status == 1)
+            if (status == 1 || status == 0)
                 packet.ReadByte("TradeSlot");
 
             if (status == 8 || status == 21)
