@@ -746,5 +746,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Player");
             packet.ReadBits("Error", 4);
         }
+
+        public static void ReadPetitionSignature(Packet packet, params object[] indexes)
+        {
+            packet.ReadPackedGuid128("Signer", indexes);
+            packet.ReadInt32("Choice", indexes);
+        }
+
+        [Parser(Opcode.SMSG_PETITION_SHOW_SIGNATURES)]
+        public static void HandlePetitionShowSignatures(Packet packet)
+        {
+            packet.ReadPackedGuid128("Item");
+            packet.ReadPackedGuid128("Owner");
+            packet.ReadPackedGuid128("OwnerWoWAccount");
+            packet.ReadInt32("PetitionID");
+
+            var signaturesCount = packet.ReadInt32("SignaturesCount");
+            for (int i = 0; i < signaturesCount; i++)
+                ReadPetitionSignature(packet, i, "PetitionSignature");
+        }
     }
 }
