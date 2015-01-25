@@ -54,6 +54,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("ActivityID");
             packet.ReadSingle("RequiredItemLevel");
 
+            packet.ResetBitReader();
+
             var lenName = packet.ReadBits(8);
             var lenComment = packet.ReadBits(11);
             var lenVoiceChat = packet.ReadBits(9);
@@ -423,6 +425,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadLFGListJoinRequest(packet, "LFGListJoinRequest");
             packet.ReadInt32("Unk");
             packet.ReadByte("Reason");
+
+            packet.ResetBitReader();
+
             packet.ReadBit("Listed");
         }
 
