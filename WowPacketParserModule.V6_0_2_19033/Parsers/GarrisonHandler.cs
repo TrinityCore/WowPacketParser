@@ -430,5 +430,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("TrophyGUID");
         }
+
+        [Parser(Opcode.CMSG_TROPHY_MONUMENT_LOAD_SELECTED_TROPHY_ID)]
+        public static void HandleGetSelectedTrophyId(Packet packet)
+        {
+            packet.ReadInt32("TrophyID");
+        }
     }
 }
