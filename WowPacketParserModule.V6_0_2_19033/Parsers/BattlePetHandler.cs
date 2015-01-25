@@ -550,5 +550,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (bit56)
                 packet.ReadInt32("AverageWaitTime");
         }
+
+        [Parser(Opcode.CMSG_PET_BATTLE_QUEUE_PROPOSE_MATCH_RESULT)]
+        public static void HandlePetBattleQueueProposeMatchResult(Packet packet)
+        {
+            packet.ReadBit("Accepted");
+        }
     }
 }
