@@ -572,8 +572,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleDisplayGameError(Packet packet)
         {
             packet.ReadUInt32("Error");
-            var hasArg = packet.ReadBit();
-            var hasArg2 = packet.ReadBit();
+            var hasArg = packet.ReadBit("HasArg");
+            var hasArg2 = packet.ReadBit("HasArg2");
 
             if (hasArg)
                 packet.ReadUInt32("Arg");
