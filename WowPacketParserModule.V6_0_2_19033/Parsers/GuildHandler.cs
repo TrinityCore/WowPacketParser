@@ -695,5 +695,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("PetitionID");
             packet.ReadPackedGuid128("ItemGUID");
         }
+
+        [Parser(Opcode.CMSG_GUILD_SET_FOCUSED_ACHIEVEMENT)]
+        public static void HandleGuildSetFocusedAchievement(Packet packet)
+        {
+            packet.ReadUInt32("AchievementID");
+        }
     }
 }
