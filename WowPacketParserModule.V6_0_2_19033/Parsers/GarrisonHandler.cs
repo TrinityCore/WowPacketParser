@@ -424,5 +424,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("TrophyGUID");
             packet.ReadInt32("NewTrophyID");
         }
+
+        [Parser(Opcode.CMSG_REVERT_TROPHY)]
+        public static void HandleRevertTrophy(Packet packet)
+        {
+            packet.ReadPackedGuid128("TrophyGUID");
+        }
     }
 }
