@@ -436,5 +436,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("TrophyID");
         }
+
+        [Parser(Opcode.CMSG_GET_TROPHY_LIST)]
+        public static void HandleGetTrophyList(Packet packet)
+        {
+            packet.ReadInt32("TrophyTypeID");
+        }
     }
 }
