@@ -217,5 +217,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < petCount; i++)
                 ReadPetStableInfo(packet, i, "PetStableInfo");
         }
+
+        [Parser(Opcode.SMSG_PET_ADDED)]
+        public static void HandlePetAdded(Packet packet)
+        {
+            ReadPetStableInfo(packet, "PetStableInfo");
+        }
     }
 }
