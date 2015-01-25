@@ -207,6 +207,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("RequestedByWowAccount");
         }
 
+        [Parser(Opcode.CMSG_DUEL_RESPONSE)]
+        public static void HandleDuelResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("ArbiterGUID");
+            packet.ReadBit("Accepted");
+        }
+
         [Parser(Opcode.SMSG_PVP_CREDIT)]
         public static void HandlePvPCredit(Packet packet)
         {
