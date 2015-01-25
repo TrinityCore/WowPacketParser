@@ -269,5 +269,28 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadBit("IsPeriodic");
         }
+
+        [Parser(Opcode.SMSG_SPELL_MISS_LOG)]
+        public static void HandleSpellMissLog(Packet packet)
+        {
+            packet.ReadInt32("SpellID");
+            packet.ReadPackedGuid128("Caster");
+
+            var spellLogMissEntryCount = packet.ReadInt32("SpellLogMissEntryCount");
+            for (int i = 0; i < spellLogMissEntryCount; i++)
+            {
+                packet.ReadPackedGuid128("Victim", i);
+                packet.ReadByte("MissReason", i);
+
+                packet.ResetBitReader();
+
+                var hasSpellLogMissDebug = packet.ReadBit("HasSpellLogMissDebug", i);
+                if (hasSpellLogMissDebug)
+                {
+                    packet.ReadSingle("HitRoll", i);
+                    packet.ReadSingle("HitRollNeededHitRollNeeded", i);
+                }
+            }
+        }
     }
 }
