@@ -303,5 +303,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("UnitGUID");
             packet.ReadBit("SuppressNPCGreetings");
         }
+
+        [Parser(Opcode.SMSG_TRAINER_BUY_FAILED)]
+        public static void HandleTrainerBuyFailed(Packet packet)
+        {
+            packet.ReadPackedGuid128("TrainerGUID");
+            packet.ReadEntry<Int32>(StoreNameType.Spell, "SpellID");
+            packet.ReadUInt32("TrainerFailedReason");
+        }
     }
 }
