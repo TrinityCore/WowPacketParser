@@ -765,5 +765,51 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < signaturesCount; i++)
                 ReadPetitionSignature(packet, i, "PetitionSignature");
         }
+
+        public static void ReadPetitionInfo(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("PetitionID", indexes);
+            packet.ReadPackedGuid128("Petitioner", indexes);
+
+            packet.ReadInt32("MinSignatures", indexes);
+            packet.ReadInt32("MaxSignatures", indexes);
+            packet.ReadInt32("DeadLine", indexes);
+            packet.ReadInt32("IssueDate", indexes);
+
+            packet.ReadInt32("AllowedGuildID", indexes);
+            packet.ReadInt32("AllowedClasses", indexes);
+            packet.ReadInt32("AllowedRaces", indexes);
+            packet.ReadInt16("AllowedGender", indexes);
+            packet.ReadInt32("AllowedMinLevel", indexes);
+            packet.ReadInt32("AllowedMaxLevel", indexes);
+
+            packet.ReadInt32("NumChoices", indexes);
+            packet.ReadInt32("StaticType", indexes);
+            packet.ReadUInt32("Muid", indexes);
+
+            packet.ResetBitReader();
+
+            var lenTitle = packet.ReadBits(7);
+            var lenBodyText = packet.ReadBits(12);
+
+            var lenChoicetext = new uint[10];
+            for (int i = 0; i < 10; i++)
+                lenChoicetext[i] = packet.ReadBits(6);
+            for (int i = 0; i < 10; i++)
+                packet.ReadWoWString("Choicetext", lenChoicetext[i]);
+
+            packet.ReadWoWString("Title", lenTitle);
+            packet.ReadWoWString("BodyText", lenBodyText);
+        }
+
+        [Parser(Opcode.SMSG_QUERY_PETITION_RESPONSE)]
+        public static void HandleQueryPetitionResponse(Packet packet)
+        {
+            packet.ReadInt32("PetitionID");
+
+            var hasAllow = packet.ReadBit("Allow");
+            if (hasAllow)
+                ReadPetitionInfo(packet, "PetitionInfo");
+        }
     }
 }
