@@ -924,6 +924,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadEntry<UInt32>(StoreNameType.Area, "AreaID");
         }
 
+        [Parser(Opcode.CMSG_CONFIRM_RESPEC_WIPE)]
+        public static void HandleConfirmRespecWipe(Packet packet)
+        {
+            packet.ReadPackedGuid128("RespecMaster");
+            packet.ReadByte("RespecType");
+        }
+
         [Parser(Opcode.SMSG_RESPEC_WIPE_CONFIRM)]
         public static void HandleRespecWipeConfirm(Packet packet)
         {
