@@ -336,5 +336,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadSByte("Result");
             packet.ReadBit("LoggingIn");
         }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_INVITE)]
+        public static void HandleBFMgrQueueInvite(Packet packet)
+        {
+            packet.ReadInt64("QueueID");
+            packet.ReadByte("BattleState");
+
+            packet.ReadInt32("Timeout");        // unconfirmed order
+            packet.ReadInt32("MinLevel");       // unconfirmed order
+            packet.ReadInt32("MaxLevel");       // unconfirmed order
+            packet.ReadInt32("InstanceID");     // unconfirmed order
+            packet.ReadInt32("MapID");          // unconfirmed order
+            
+            packet.ResetBitReader();
+            packet.ReadBit("Index");
+        }
     }
 }
