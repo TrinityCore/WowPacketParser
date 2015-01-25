@@ -436,5 +436,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadBits("Reason", 4);
         }
+
+        [Parser(Opcode.CMSG_LFG_LIST_INVITE_RESPONSE)]
+        public static void HandleLFGListInviteResponse(Packet packet)
+        {
+            ReadRideTicket(packet, "RideTicket");
+
+            packet.ResetBitReader();
+            packet.ReadBit("Accept");
+        }
     }
 }
