@@ -287,7 +287,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_BATTLE_PET_JOURNAL, 0x1542},
             {Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED, 0x1A0F},
             {Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_DENIED, 0x0203},
-            {Opcode.SMSG_BATTLE_PET_NAME_QUERY_RESPONSE, 0x1540},
+            {Opcode.SMSG_BATTLE_PET_NAME_RESPONSE, 0x1540},
             {Opcode.SMSG_BATTLE_PET_SLOT_UPDATE, 0x16AF},
             {Opcode.SMSG_BATTLE_PET_PET_UPDATES, 0x041A},
             {Opcode.SMSG_BINDER_CONFIRM, 0x1287},
