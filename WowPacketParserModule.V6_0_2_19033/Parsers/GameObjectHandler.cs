@@ -74,7 +74,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_GAMEOBJ_USE)]
         public static void HandleGoUse(Packet packet)
         {
-            packet.ReadPackedGuid128("Guid");
+            packet.ReadPackedGuid128("GameObjectGUID");
         }
 
         [Parser(Opcode.SMSG_GAMEOBJECT_CUSTOM_ANIM)]
@@ -115,6 +115,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Owner");
             packet.ReadInt32("Damage");
             packet.ReadInt32("SpellID");
+        }
+
+        [Parser(Opcode.SMSG_GAMEOBJECT_RESET_STATE)]
+        public static void HandleGameObjectResetState(Packet packet)
+        {
+            packet.ReadPackedGuid128("ObjectGUID");
         }
     }
 }
