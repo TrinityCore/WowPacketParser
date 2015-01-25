@@ -487,5 +487,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadByte("Reason"); // TODO: enum
         }
+
+        [Parser(Opcode.SMSG_BATTLE_PET_SLOT_UPDATES)]
+        public static void HandlePetBattleSlotUpdates(Packet packet)
+        {
+            var petBattleSlotCount = packet.ReadInt32("PetBattleSlotCount");
+            for (int i = 0; i < petBattleSlotCount; i++)
+                ReadClientPetBattleSlot(packet, i, "PetBattleSlot");
+
+            packet.ReadBit("AutoSlotted");      // unconfirmed order
+            packet.ReadBit("NewSlotUnlocked");  // unconfirmed order
+        }
     }
 }
