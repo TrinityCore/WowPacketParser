@@ -487,10 +487,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("NumGuildMembers");
             }
         }
-
-
         [Parser(Opcode.SMSG_INSPECT_HONOR_STATS)]
-        public static void HandleInspectHonorStats434(Packet packet)
+        public static void HandleInspectHonorStats(Packet packet)
         {
             packet.ReadPackedGuid128("PlayerGUID");
 
@@ -500,6 +498,28 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt16("TodayHK");        // unconfirmed order
 
             packet.ReadInt32("LifetimeHK");
+        }
+
+        public static void ReadPVPBracketData(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("Rating", idx);
+            packet.ReadInt32("Rank", idx);
+            packet.ReadInt32("WeeklyPlayed", idx);
+            packet.ReadInt32("WeeklyWon", idx);
+            packet.ReadInt32("SeasonPlayed", idx);
+            packet.ReadInt32("SeasonWon", idx);
+            packet.ReadInt32("WeeklyBestRating", idx);
+            packet.ReadByte("Bracket", idx);
+        }
+
+        [Parser(Opcode.SMSG_INSPECT_PVP)]
+        public static void HandleInspectPVP(Packet packet)
+        {
+            packet.ReadPackedGuid128("ClientGUID");
+
+            var bracketCount = packet.ReadBits(3);
+            for (var i = 0; i < bracketCount; i++)
+                ReadPVPBracketData(packet, i, "PVPBracketData");
         }
 
         [Parser(Opcode.CMSG_MOUNT_SET_FAVORITE)]
