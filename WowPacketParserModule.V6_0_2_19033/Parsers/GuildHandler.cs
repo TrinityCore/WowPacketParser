@@ -605,5 +605,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadEntry<Int32>(StoreNameType.Achievement, "AchievementID");
             packet.ReadPackedTime("TimeEarned");
         }
+
+        [Parser(Opcode.SMSG_GUILD_EVENT_PLAYER_JOINED)]
+        public static void HandleGuildEventPlayerJoined(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadInt32("VirtualRealmAddress");
+
+            var len = packet.ReadBits(6);
+            packet.ReadWoWString("Name", len);
+        }
     }
 }
