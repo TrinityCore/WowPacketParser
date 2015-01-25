@@ -701,5 +701,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadUInt32("AchievementID");
         }
+
+        [Parser(Opcode.CMSG_GUILD_QUERY_MEMBER_RECIPES)]
+        public static void HandleGuildQueryMemberRecipes(Packet packet)
+        {
+            packet.ReadPackedGuid128("GuildMember");
+            packet.ReadPackedGuid128("GuildGUID");
+            packet.ReadUInt32("SkillLineID");
+        }
     }
 }
