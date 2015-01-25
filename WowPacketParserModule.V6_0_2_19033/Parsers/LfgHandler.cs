@@ -7,7 +7,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class LfgHandler
     {
-        public static void ReadRideTicket(Packet packet)
+        public static void ReadRideTicket(Packet packet, params object[] indexes)
         {
             packet.ReadPackedGuid128("RequesterGuid");
             packet.ReadInt32("Id");
@@ -47,6 +47,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("TimeLeft");
             packet.ReadUInt32("VotesNeeded");
             packet.ReadWoWString("Reason", len);
+        }
+
+        public static void ReadLFGListJoinRequest(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("ActivityID");
+            packet.ReadSingle("RequiredItemLevel");
+
+            var lenName = packet.ReadBits(8);
+            var lenComment = packet.ReadBits(11);
+            var lenVoiceChat = packet.ReadBits(9);
+
+            packet.ReadWoWString("Name", lenName);
+            packet.ReadWoWString("Comment", lenComment);
+            packet.ReadWoWString("VoiceChat", lenVoiceChat);
         }
 
         [Parser(Opcode.CMSG_LFG_LIST_GET_STATUS)]
@@ -400,6 +414,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("ActivityID", i);
                 packet.ReadInt32("Reason", i);
             }
+        }
+
+        [Parser(Opcode.SMSG_LFG_LIST_UPDATE_STATUS)]
+        public static void HandleLFGListUpdateStatus(Packet packet)
+        {
+            ReadRideTicket(packet, "RideTicket");
+            ReadLFGListJoinRequest(packet, "LFGListJoinRequest");
+            packet.ReadInt32("Unk");
+            packet.ReadByte("Reason");
+            packet.ReadBit("Listed");
         }
     }
 }
