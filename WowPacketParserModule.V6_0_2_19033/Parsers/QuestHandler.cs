@@ -870,5 +870,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("Count");
         }
+
+        [Parser(Opcode.SMSG_QUEST_CONFIRM_ACCEPT)]
+        public static void HandleQuestConfirmAccept(Packet packet)
+        {
+            packet.ReadInt32("QuestID");
+            packet.ReadPackedGuid128("InitiatedBy");
+            var len = packet.ReadBits(10);
+            packet.ReadWoWString("QuestTitle", len);
+        }
     }
 }
