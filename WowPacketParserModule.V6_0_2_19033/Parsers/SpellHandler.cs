@@ -931,5 +931,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("Cost");
             packet.ReadPackedGuid128("RespecMaster");
         }
+
+        [Parser(Opcode.SMSG_SUPERCEDED_SPELL)]
+        public static void HandleSupercededSpells(Packet packet)
+        {
+            var spellCount = packet.ReadInt32("");
+            var supercededCount = packet.ReadInt32("");
+
+            for (int i = 0; i < spellCount; i++)
+                packet.ReadInt32("SpellID", i);
+
+            for (int i = 0; i < supercededCount; i++)
+                packet.ReadInt32("Superceded", i);
+        }
     }
 }
