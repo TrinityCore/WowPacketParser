@@ -20,6 +20,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_GUILD_EVENT_LOG_QUERY)]
         [Parser(Opcode.SMSG_GUILD_MEMBER_DAILY_RESET)]
         [Parser(Opcode.SMSG_GUILD_EVENT_BANK_CONTENTS_CHANGED)]
+        [Parser(Opcode.SMSG_GUILD_EVENT_RANKS_UPDATED)]
         public static void HandleGuildZero(Packet packet)
         {
         }
