@@ -766,8 +766,8 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_DISPEL_FAILED, 0x0AAE8},
             {Opcode.SMSG_DUEL_COMPLETE, 0x0FCE8},
             {Opcode.SMSG_DUEL_COUNTDOWN, 0x0E8E0},
-            {Opcode.SMSG_DUEL_INBOUNDS, 0x0ECA4},
-            {Opcode.SMSG_DUEL_OUTOFBOUNDS, 0x068C0},
+            {Opcode.SMSG_DUEL_IN_BOUNDS, 0x0ECA4},
+            {Opcode.SMSG_DUEL_OUT_OF_BOUNDS, 0x068C0},
             {Opcode.SMSG_DUEL_REQUESTED, 0x03FC8},
             {Opcode.SMSG_DUEL_WINNER, 0x079E4},
             {Opcode.SMSG_DUMP_OBJECTS_DATA, 0x101EE}, //UnknownopcodeID

@@ -245,7 +245,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_DUEL_OUTOFBOUNDS)]
+        [Parser(Opcode.SMSG_DUEL_OUT_OF_BOUNDS)]
         [Parser(Opcode.SMSG_CANCEL_COMBAT)]
         [Parser(Opcode.CMSG_ATTACKSTOP)]
         [Parser(Opcode.SMSG_ATTACKSWING_NOTINRANGE)]

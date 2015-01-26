@@ -695,8 +695,8 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_LOOT_CLEAR_MONEY, 0xF77E}, // (0xA2B0)(0x0165) //
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0xDB00}, // (0x835D)(0x0166) //
             {Opcode.SMSG_DUEL_REQUESTED, 0x530A}, // (0xCAF1)(0x0167) //
-            {Opcode.SMSG_DUEL_OUTOFBOUNDS, 0xB829}, // (0x2350)(0x0168) //
-            {Opcode.SMSG_DUEL_INBOUNDS, 0x9B00}, // (0x2ADD)(0x0169) //
+            {Opcode.SMSG_DUEL_OUT_OF_BOUNDS, 0xB829}, // (0x2350)(0x0168) //
+            {Opcode.SMSG_DUEL_IN_BOUNDS, 0x9B00}, // (0x2ADD)(0x0169) //
             {Opcode.SMSG_DUEL_COMPLETE, 0xE323}, // (0x6B74)(0x016A) //
             {Opcode.SMSG_DUEL_WINNER, 0x2329}, // (0xEB95)(0x016B) //
             {Opcode.SMSG_MOUNT_RESULT, 0x6E7C}, // (0x82FD)(0x016E) //
