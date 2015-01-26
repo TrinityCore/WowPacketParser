@@ -757,7 +757,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_CLEAR_BOSS_EMOTES, 0x118B},
             {Opcode.SMSG_CLEAR_COOLDOWN, 0x0226},
             {Opcode.SMSG_CLEAR_COOLDOWNS, 0x0BFA},
-            {Opcode.SMSG_CLAR_LOSS_OF_CONTROL, 0x1D20},
+            {Opcode.SMSG_CLEAR_LOSS_OF_CONTROL, 0x1D20},
             {Opcode.SMSG_CLEAR_QUEST_COMPLETED_BIT, 0x1563},
             {Opcode.SMSG_CLEAR_QUEST_COMPLETED_BITS, 0x1D47},
             {Opcode.SMSG_CLEAR_SPELL_CHARGES, 0x1AA1},
