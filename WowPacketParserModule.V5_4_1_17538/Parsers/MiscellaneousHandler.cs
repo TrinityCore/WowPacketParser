@@ -78,7 +78,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
 
             for (var i = 0; i < counter; ++i)
             {
-                packet.ReadEnum<Gender>("Gender", TypeCode.Byte, i);
+                packet.ReadByteE<Gender>("Gender", i);
 
                 packet.ReadXORByte(guildGUID[i], 3);
                 packet.ReadXORByte(guildGUID[i], 1);
@@ -90,7 +90,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
 
                 packet.ReadXORByte(accountId[i], 6);
 
-                packet.ReadEnum<Race>("Race", TypeCode.Byte, i);
+                packet.ReadByteE<Race>("Race", i);
                 packet.ReadInt32("RealmId", i);
 
                 packet.ReadXORByte(accountId[i], 1);
@@ -102,11 +102,11 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
 
                 packet.ReadXORByte(playerGUID[i], 4);
 
-                packet.ReadEnum<Class>("Class", TypeCode.Byte, i);
+                packet.ReadByteE<Class>("Class", i);
 
                 packet.ReadXORByte(guildGUID[i], 6);
 
-                packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id", i);
+                packet.ReadUInt32<ZoneId>("Zone Id", i);
 
                 packet.ReadXORByte(accountId[i], 0);
 
@@ -161,8 +161,8 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
         [Parser(Opcode.SMSG_SET_PROFICIENCY)]
         public static void HandleSetProficency(Packet packet)
         {
-            packet.ReadEnum<UnknownFlags>("Mask", TypeCode.UInt32);
-            packet.ReadEnum<ItemClass>("Class", TypeCode.Byte);
+            packet.ReadUInt32E<UnknownFlags>("Mask");
+            packet.ReadByteE<ItemClass>("Class");
         }
 
         [Parser(Opcode.CMSG_DESTROY_ITEM)]

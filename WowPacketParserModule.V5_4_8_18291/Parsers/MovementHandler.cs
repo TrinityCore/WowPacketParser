@@ -1,6 +1,5 @@
 ﻿using System;
 using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParserModule.V5_4_8_18291.Enums;
@@ -224,7 +223,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                         pos.Z = packet.ReadSingle();
                         break;
                     case MovementStatusElements.MSEOrientation:
-                        if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_MOVE_TELEPORT, Direction.ServerToClient))
+                        if (packet.Opcode == CoreOpcode.GetOpcode(Opcode.SMSG_MOVE_TELEPORT, Direction.ServerToClient))
                             pos.O = packet.ReadSingle();
                         else
                         {
@@ -491,7 +490,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Inactive Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Inactive Terrain swap", i); // Map.dbc, all possible terrainswaps
+                packet.ReadInt16<MapId>("Inactive Terrain swap", i); // Map.dbc, all possible terrainswaps
 
             packet.ParseBitStream(guid, 1, 7);
 
@@ -503,7 +502,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Active Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Active Terrain swap", i); // Map.dbc, all active terrainswaps
+                packet.ReadInt16<MapId>("Active Terrain swap", i); // Map.dbc, all active terrainswaps
 
             packet.ParseBitStream(guid, 5);
             packet.WriteGuid("GUID", guid);
@@ -519,14 +518,14 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             if (hasTransport)
             {
-                packet.ReadEntry<Int32>(StoreNameType.Map, "Transport Map ID");
+                packet.ReadInt32<MapId>("Transport Map ID");
                 packet.ReadInt32("Transport Entry");
             }
 
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
+            packet.ReadInt32<MapId>("Map ID");
 
             if (customLoadScreenSpell)
-                packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
+                packet.ReadUInt32<SpellId>("Spell ID");
         }
 
         [HasSniffData]
@@ -536,7 +535,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             var pos = new Vector4();
 
             pos.X = packet.ReadSingle();
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map");
+            packet.ReadInt32<MapId>("Map");
             pos.Y = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
             pos.O = packet.ReadSingle();
@@ -552,7 +551,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             pos.X = packet.ReadSingle();
             pos.O = packet.ReadSingle();
             pos.Y = packet.ReadSingle();
-            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntry<Int32>(StoreNameType.Map, "Map");
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadInt32<MapId>("Map");
             pos.Z = packet.ReadSingle();
 
             packet.AddValue("Position", pos);
@@ -694,7 +693,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadXORByte(ownerGUID, 3);   // +35 - 3
 
             if (bit16)
-                packet.ReadEnum<SplineFlag>("Spline Flags", TypeCode.Int32); // +16
+                packet.ReadInt32E<SplineFlag>("Spline Flags"); // +16
 
             if (bit69)
                 packet.ReadByte("Byte69");      // +69

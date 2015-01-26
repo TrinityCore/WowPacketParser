@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -12,7 +11,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_SET_RAID_DIFFICULTY)]
         public static void HandleSetDifficulty(Packet packet)
         {
-            packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
+            packet.ReadInt32E<MapDifficulty>("Difficulty");
         }
 
         [Parser(Opcode.CMSG_SAVE_CUF_PROFILES)]

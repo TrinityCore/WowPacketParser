@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 
@@ -9,7 +8,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_WARDEN_DATA)]
         public static void HandleServerWardenData(Packet packet)
         {
-            var opcode = packet.ReadEnum<WardenServerOpcode>("Warden Server Opcode", TypeCode.Byte);
+            var opcode = packet.ReadByteE<WardenServerOpcode>("Warden Server Opcode");
 
             packet.SetPosition(0);
 
@@ -68,7 +67,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_WARDEN_DATA)]
         public static void HandleClientWardenData(Packet packet)
         {
-            var opcode = packet.ReadEnum<WardenClientOpcode>("Warden Client Opcode", TypeCode.Byte);
+            var opcode = packet.ReadByteE<WardenClientOpcode>("Warden Client Opcode");
 
             switch (opcode)
             {
@@ -97,9 +96,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_BOT_DETECTED)]
         public static void HandleBotDetected(Packet packet)
         {
-            packet.ReadBoolean("Glider 1 Detected");
-            packet.ReadBoolean("Glider 2 Detected");
-            packet.ReadBoolean("Inner Space Detected");
+            packet.ReadBool("Glider 1 Detected");
+            packet.ReadBool("Glider 2 Detected");
+            packet.ReadBool("Inner Space Detected");
             packet.ReadBytes(20); // Hash
         }
 

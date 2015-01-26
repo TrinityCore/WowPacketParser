@@ -80,12 +80,12 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
 
             if (hasAchi)
-                packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id");
+                packet.ReadInt32<AchievementId>("Achievement Id");
 
             if (hasReceiver)
                 text.ReceiverName = packet.ReadWoWString("Receiver Name", receiverLen);
 
-            text.Type = (ChatMessageType)packet.ReadEnum<ChatMessageType530>("Chat type", TypeCode.Byte);
+            text.Type = (ChatMessageType)packet.ReadByteE<ChatMessageType530>("Chat type");
             if (hasText)
                 text.Text = packet.ReadWoWString("Text", textLen);
 
@@ -102,7 +102,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 text.SenderName = packet.ReadWoWString("Sender Name", senderName);
 
             if (hasLang)
-                text.Language = packet.ReadEnum<Language>("Language", TypeCode.Byte);
+                text.Language = packet.ReadByteE<Language>("Language");
 
             uint entry = 0;
             if (text.SenderGUID.GetObjectType() == ObjectType.Unit)
@@ -119,8 +119,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         {
             var guid = new byte[8];
 
-            packet.ReadEnum<EmoteTextType>("Text Emote ID", TypeCode.Int32);
-            packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
+            packet.ReadInt32E<EmoteTextType>("Text Emote ID");
+            packet.ReadInt32E<EmoteType>("Emote ID");
 
             packet.StartBitStream(guid, 3, 4, 5, 1, 6, 2, 0, 7);
             packet.ParseBitStream(guid, 6, 7, 4, 5, 2, 1, 3, 0);
@@ -142,9 +142,9 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             guid[7] = packet.ReadBit();
             guid[3] = packet.ReadBit();
 
-            packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
+            packet.ReadInt32E<EmoteType>("Emote ID");
             packet.ReadWoWString("Name", bits7);
-            packet.ReadEnum<EmoteTextType>("Text Emote ID", TypeCode.Int32);
+            packet.ReadInt32E<EmoteTextType>("Text Emote ID");
 
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 0);
@@ -180,7 +180,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         [Parser(Opcode.CMSG_MESSAGECHAT_YELL)]
         public static void HandleClientChatMessage(Packet packet)
         {
-            packet.ReadEnum<Language>("Language", TypeCode.Int32);
+            packet.ReadInt32E<Language>("Language");
             var len = packet.ReadBits(8);
             packet.ReadWoWString("Message", len);
         }
@@ -197,7 +197,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         [Parser(Opcode.CMSG_MESSAGECHAT_CHANNEL)]
         public static void HandleClientChatMessageChannel(Packet packet)
         {
-            packet.ReadEnum<Language>("Language", TypeCode.Int32);
+            packet.ReadInt32E<Language>("Language");
             var msgLen = packet.ReadBits(8);
             var channelNameLen = packet.ReadBits(9);
 
@@ -208,7 +208,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         [Parser(Opcode.CMSG_MESSAGECHAT_WHISPER)]
         public static void HandleClientChatMessageWhisper(Packet packet)
         {
-            packet.ReadEnum<Language>("Language", TypeCode.Int32);
+            packet.ReadInt32E<Language>("Language");
             var recvName = packet.ReadBits(9);
             var msgLen = packet.ReadBits(8);
 
@@ -219,7 +219,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         [Parser(Opcode.SMSG_DEFENSE_MESSAGE)]
         public static void HandleDefenseMessage(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id");
+            packet.ReadInt32<ZoneId>("Zone Id");
             packet.ReadBits("Message Length?", 12);
             packet.ReadCString("Message");
         }

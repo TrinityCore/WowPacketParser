@@ -79,7 +79,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                     aura.Duration = hasDuration[i] ? packet.ReadInt32("Duration", i) : 0;
 
                     aura.SpellId = packet.ReadUInt32("Spell Id", i);
-                    aura.AuraFlags = packet.ReadEnum<AuraFlagMoP>("Flags", TypeCode.Byte, i);
+                    aura.AuraFlags = packet.ReadByteE<AuraFlagMoP>("Flags", i);
 
                     for (var j = 0; j < effectCount[i]; ++j)
                         packet.ReadSingle("Effect Value", i, j);
@@ -99,7 +99,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadXORBytes(guid2, 7, 0);
                 for (var i = 0; i < bits3C; ++i)
                 {
-                    packet.ReadEnum<PowerType>("Power Type", TypeCode.UInt32, i);
+                    packet.ReadUInt32E<PowerType>("Power Type", i);
                     packet.ReadInt32("Power Value", i);
                 }
                 packet.ReadXORBytes(guid2, 2, 5);
@@ -389,7 +389,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             for (var i = 0; i < bits320; ++i)
             {
-                packet.ReadEnum<PowerType>("Power Type", TypeCode.Byte, i);
+                packet.ReadByteE<PowerType>("Power Type", i);
                 packet.ReadInt32("Power Value", i);
             }
 
@@ -405,7 +405,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
                 for (var i = 0; i < powerTypeCount; ++i)
                 {
-                    packet.ReadEnum<PowerType>("Power Type", TypeCode.UInt32, i);
+                    packet.ReadUInt32E<PowerType>("Power Type", i);
                     packet.ReadInt32("Power Value", i);
                 }
                 packet.ReadXORBytes(powerUnitGUID, 6, 7, 4, 3);
@@ -455,9 +455,9 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             if (bit90)
                 packet.ReadSingle("float90");
 
-            packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Int32);
+            packet.ReadInt32E<CastFlag>("Cast Flags");
             packet.ReadXORByte(guid3, 2);
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32<SpellId>("Spell ID");
             packet.ReadXORByte(guid4, 0);
             packet.ReadXORByte(guid3, 5);
 
@@ -514,7 +514,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var spells = new List<uint>((int)count);
             for (var i = 0; i < count; i++)
             {
-                var spellId = packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID", i);
+                var spellId = packet.ReadUInt32<SpellId>("Spell ID", i);
                 spells.Add(spellId);
             }
 
@@ -771,7 +771,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             packet.ReadXORByte(guid11, 1);
             packet.ReadXORByte(guid10, 4);
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32<SpellId>("Spell ID");
 
             if (hasRuneStateBefore)
                 packet.ReadByte("Rune State Before");
@@ -785,7 +785,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             for (var i = 0; i < powerLeftSelf; ++i)
             {
                 packet.ReadInt32("Power Value", i);
-                packet.ReadEnum<PowerType>("Power Type", TypeCode.Byte, i);
+                packet.ReadByteE<PowerType>("Power Type", i);
             }
             packet.ReadXORByte(guid10, 5);
             packet.ReadXORByte(guid11, 6);
@@ -807,7 +807,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         {
             var count = packet.ReadBits(22);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID", i);
+                packet.ReadUInt32<SpellId>("Spell ID", i);
         }
     }
 }

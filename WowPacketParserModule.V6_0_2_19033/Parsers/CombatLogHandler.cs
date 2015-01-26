@@ -14,7 +14,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Me");
             packet.ReadPackedGuid128("CasterGUID");
 
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
             packet.ReadInt32("Damage");
             packet.ReadInt32("OverKill");
 
@@ -125,8 +125,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("CasterGUID");
             packet.ReadPackedGuid128("TargetGUID");
 
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "SpellID");
-            packet.ReadEnum<PowerType>("Type", TypeCode.UInt32);
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadUInt32E<PowerType>("Type");
             packet.ReadInt32("Amount");
 
             packet.ResetBitReader();
@@ -220,7 +220,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Victim");
 
-            packet.ReadEnum<EnvironmentDamage>("Type", TypeCode.Byte);
+            packet.ReadByteE<EnvironmentDamage>("Type");
 
             packet.ReadInt32("Amount");
             packet.ReadInt32("Resisted");
@@ -238,7 +238,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Caster");
 
             packet.ReadInt32("InterruptedSpellID");
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
             packet.ReadPackedGuid128("ShieldTargetGUID?");
             packet.ReadInt32("Absorbed");
 
@@ -265,7 +265,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("CasterGUID");
             packet.ReadPackedGuid128("VictimGUID");
 
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
 
             packet.ReadBit("IsPeriodic");
         }

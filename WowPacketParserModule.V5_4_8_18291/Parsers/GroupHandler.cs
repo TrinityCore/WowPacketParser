@@ -263,9 +263,9 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_PARTY_COMMAND_RESULT)]
         public static void HandlePartyCommandResult(Packet packet)
         {
-            packet.ReadEnum<PartyCommand>("Command", TypeCode.UInt32);
+            packet.ReadUInt32E<PartyCommand>("Command");
             packet.ReadCString("Member");
-            packet.ReadEnum<PartyResult>("Result", TypeCode.UInt32);
+            packet.ReadUInt32E<PartyResult>("Result");
             packet.ReadUInt32("LFG Boot Cooldown");
             packet.ReadGuid("Player Guid"); // Usually 0
         }
@@ -288,7 +288,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.StartBitStream(guid, 6, 2, 7, 3);
 
             packet.ParseBitStream(guid, 3, 2, 6, 7, 5);
-            var updateFlags = packet.ReadEnum<GroupUpdateFlag548>("Update Flags", TypeCode.UInt32);
+            var updateFlags = packet.ReadUInt32E<GroupUpdateFlag548>("Update Flags");
             packet.ParseBitStream(guid, 1, 4, 0);
 
             packet.WriteGuid("Guid", guid);
@@ -298,7 +298,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             var updateFlagPacket = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
 
             if (updateFlags.HasFlag(GroupUpdateFlag548.Status)) // 0x1
-                updateFlagPacket.ReadEnum<GroupMemberStatusFlag>("Status", TypeCode.Int16);
+                updateFlagPacket.ReadInt16E<GroupMemberStatusFlag>("Status");
 
             if (updateFlags.HasFlag(GroupUpdateFlag548.Unk2)) // 0x2
             {
@@ -313,13 +313,13 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 updateFlagPacket.ReadUInt32("Max Health");
 
             if (updateFlags.HasFlag(GroupUpdateFlag548.PowerType)) // 0x10
-                updateFlagPacket.ReadEnum<PowerType>("Power type", TypeCode.Byte);
+                updateFlagPacket.ReadByteE<PowerType>("Power type");
 
             if (updateFlags.HasFlag(GroupUpdateFlag548.CurrentPower)) // 0x20
                 updateFlagPacket.ReadUInt16("Current Power");
 
             if (updateFlags.HasFlag(GroupUpdateFlag548.Zone)) // 0x40
-                updateFlagPacket.ReadEntry<UInt16>(StoreNameType.Zone, "Zone Id");
+                updateFlagPacket.ReadUInt16<ZoneId>("Zone Id");
 
             if (updateFlags.HasFlag(GroupUpdateFlag548.MaxPower))// 0x80
                 updateFlagPacket.ReadUInt16("Max Power");
@@ -355,8 +355,8 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     if ((mask & (1ul << i)) == 0)
                         continue;
 
-                    updateFlagPacket.ReadEntry<UInt32>(StoreNameType.Spell, "Spell Id", i);
-                    var flags = updateFlagPacket.ReadEnum<AuraFlagMoP>("Aura Flags", TypeCode.Byte, i);
+                    updateFlagPacket.ReadUInt32<SpellId>("Spell Id", i);
+                    var flags = updateFlagPacket.ReadByteE<AuraFlagMoP>("Aura Flags", i);
                     var unk = updateFlagPacket.ReadUInt32("unk", i);
 
                     if (flags.HasFlag(AuraFlagMoP.Scalable))
@@ -384,7 +384,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 updateFlagPacket.ReadInt32("Pet Max Health");
 
             if (updateFlags.HasFlag(GroupUpdateFlag548.PetPowerType)) // 0x40000
-                updateFlagPacket.ReadEnum<PowerType>("Pet Power type", TypeCode.Byte);
+                updateFlagPacket.ReadByteE<PowerType>("Pet Power type");
 
             if (updateFlags.HasFlag(GroupUpdateFlag548.PetCurrentPower)) // 0x80000
                 updateFlagPacket.ReadInt16("Pet Current Power");
@@ -406,8 +406,8 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     if ((mask & (1ul << i)) == 0)
                         continue;
 
-                    updateFlagPacket.ReadEntry<UInt32>(StoreNameType.Spell, "Spell Id", i);
-                    var flags = updateFlagPacket.ReadEnum<AuraFlagMoP>("Aura Flags", TypeCode.Byte, i);
+                    updateFlagPacket.ReadUInt32<SpellId>("Spell Id", i);
+                    var flags = updateFlagPacket.ReadByteE<AuraFlagMoP>("Aura Flags", i);
                     updateFlagPacket.ReadUInt32("unk", i);
 
                     if (flags.HasFlag(AuraFlagMoP.Scalable))
@@ -466,7 +466,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadXORByte(assignerGuid, 6);
             packet.ReadXORByte(assignerGuid, 2);
             packet.ReadXORByte(targetGuid, 3);
-            packet.ReadEnum<LfgRoleFlag>("Old Roles", TypeCode.Int32);
+            packet.ReadInt32E<LfgRoleFlag>("Old Roles");
             packet.ReadXORByte(assignerGuid, 7);
             packet.ReadXORByte(targetGuid, 5);
             packet.ReadXORByte(assignerGuid, 3);
@@ -480,7 +480,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadXORByte(assignerGuid, 4);
             packet.ReadByte("Byte28");
             packet.ReadXORByte(assignerGuid, 0);
-            packet.ReadEnum<LfgRoleFlag>("New Roles", TypeCode.Int32);
+            packet.ReadInt32E<LfgRoleFlag>("New Roles");
 
             packet.WriteGuid("Guid2", assignerGuid);
             packet.WriteGuid("Guid3", targetGuid);

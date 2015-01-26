@@ -1,5 +1,4 @@
-﻿using System;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -82,7 +81,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_VOID_TRANSFER_RESULT)]
         public static void HandleVoidTransferResults(Packet packet)
         {
-            packet.ReadEnum<VoidTransferError>("Error", TypeCode.UInt32);
+            packet.ReadUInt32E<VoidTransferError>("Error");
         }
 
         [Parser(Opcode.CMSG_VOID_STORAGE_UNLOCK)]

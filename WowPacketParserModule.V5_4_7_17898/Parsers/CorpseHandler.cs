@@ -50,12 +50,12 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 2);
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
+            packet.ReadInt32<MapId>("Map ID");
             pos.X = packet.ReadSingle();
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 5);
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Corpse Map ID");
+            packet.ReadInt32<MapId>("Corpse Map ID");
             packet.ReadXORByte(guid, 7);
             pos.Z = packet.ReadSingle();
             packet.ReadXORByte(guid, 0);
@@ -72,7 +72,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             pos.Y = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
             pos.X = packet.ReadSingle();
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadInt32<MapId>("Map Id");
 
             packet.AddValue("Position", pos);
         }

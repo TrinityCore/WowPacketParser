@@ -30,11 +30,13 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var info = new MovementInfo
             {
-                Flags = packet.ReadEnum<MovementFlag>("Movement Flags", TypeCode.Int32, index)
+                Flags = packet.ReadInt32E<MovementFlag>("Movement Flags", index)
             };
 
-            var flagsTypeCode = ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056) ? TypeCode.Int16 : TypeCode.Byte;
-            info.FlagsExtra = packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", flagsTypeCode, index);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
+                info.FlagsExtra = packet.ReadInt16E<MovementFlagExtra>("Extra Movement Flags", index);
+            else
+                info.FlagsExtra = packet.ReadByteE<MovementFlagExtra>("Extra Movement Flags", index);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
                 if (packet.ReadGuid("GUID 2", index) != guid)
@@ -207,13 +209,13 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767)) // no idea when this was added exactly
-                packet.ReadBoolean("Toggle AnimTierInTrans");
+                packet.ReadBool("Toggle AnimTierInTrans");
 
             var pos = packet.ReadVector3("Position");
 
             packet.ReadInt32("Move Ticks");
 
-            var type = packet.ReadEnum<SplineType>("Spline Type", TypeCode.Byte);
+            var type = packet.ReadByteE<SplineType>("Spline Type");
 
             switch (type)
             {
@@ -250,11 +252,11 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
             }
 
-            var flags = packet.ReadEnum<SplineFlag>("Spline Flags", TypeCode.Int32);
+            var flags = packet.ReadInt32E<SplineFlag>("Spline Flags");
 
             if (flags.HasAnyFlag(SplineFlag.AnimationTier))
             {
-                packet.ReadEnum<MovementAnimationState>("Animation State", TypeCode.Byte);
+                packet.ReadByteE<MovementAnimationState>("Animation State");
                 packet.ReadInt32("Async-time in ms");
             }
 
@@ -290,11 +292,11 @@ namespace WowPacketParser.Parsing.Parsers
 
         private static void ReadSplineMovement510(Packet packet, Vector3 pos)
         {
-            var flags = packet.ReadEnum<SplineFlag434>("Spline Flags", TypeCode.Int32);
+            var flags = packet.ReadInt32E<SplineFlag434>("Spline Flags");
 
             if (flags.HasAnyFlag(SplineFlag434.Animation))
             {
-                packet.ReadEnum<MovementAnimationState>("Animation State", TypeCode.Byte);
+                packet.ReadByteE<MovementAnimationState>("Animation State");
                 packet.ReadInt32("Asynctime in ms"); // Async-time in ms
             }
 
@@ -366,11 +368,11 @@ namespace WowPacketParser.Parsing.Parsers
 
         private static void ReadSplineMovement422(Packet packet, Vector3 pos)
         {
-            var flags = packet.ReadEnum<SplineFlag422>("Spline Flags", TypeCode.Int32);
+            var flags = packet.ReadInt32E<SplineFlag422>("Spline Flags");
 
             if (flags.HasAnyFlag(SplineFlag422.AnimationTier))
             {
-                packet.ReadEnum<MovementAnimationState>("Animation State", TypeCode.Byte);
+                packet.ReadByteE<MovementAnimationState>("Animation State");
                 packet.ReadInt32("Asynctime in ms"); // Async-time in ms
             }
 
@@ -417,7 +419,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
         public static void HandleEnterWorld(Packet packet)
         {
-            CurrentMapId = (uint) packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
+            CurrentMapId = (uint) packet.ReadInt32<MapId>("Map ID");
             packet.ReadVector4("Position");
 
             packet.AddSniffData(StoreNameType.Map, (int) CurrentMapId, "NEW_WORLD");
@@ -428,7 +430,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleNewWorld422(Packet packet)
         {
             packet.ReadVector3("Position");
-            CurrentMapId = (uint) packet.ReadEntry<Int32>(StoreNameType.Map, "Map");
+            CurrentMapId = (uint) packet.ReadInt32<MapId>("Map");
             packet.ReadSingle("Orientation");
 
             packet.AddSniffData(StoreNameType.Map, (int)CurrentMapId, "NEW_WORLD");
@@ -438,7 +440,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_NEW_WORLD, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleNewWorld510(Packet packet)
         {
-            CurrentMapId = (uint)packet.ReadEntry<Int32>(StoreNameType.Map, "Map");
+            CurrentMapId = (uint)packet.ReadInt32<MapId>("Map");
             packet.ReadSingle("Y");
             packet.ReadSingle("Orientation");
             packet.ReadSingle("X");
@@ -461,15 +463,15 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBindPointUpdate(Packet packet)
         {
             packet.ReadVector3("Position");
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
-            packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id");
+            packet.ReadInt32<MapId>("Map Id");
+            packet.ReadInt32<ZoneId>("Zone Id");
         }
 
         [Parser(Opcode.CMSG_UPDATE_MISSILE_TRAJECTORY)]
         public static void HandleUpdateMissileTrajectory(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32<SpellId>("Spell ID");
             packet.ReadSingle("Elevation");
             packet.ReadSingle("Missile speed");
             packet.ReadVector3("Current Position");
@@ -500,7 +502,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
             else
             {
-                packet.ReadEnum<MovementFlag>("Move Flags", TypeCode.Int32);
+                packet.ReadInt32E<MovementFlag>("Move Flags");
                 packet.ReadInt32("Time");
             }
         }
@@ -1476,12 +1478,12 @@ namespace WowPacketParser.Parsing.Parsers
             var i = 0;
             int count = packet.ReadInt32("Count");
             for (var j = 0; j < count / 2; ++j)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Unk", i, j);
+                packet.ReadInt16<MapId>("Unk", i, j);
 
             i++;
             count = packet.ReadInt32();
             for (var j = 0; j < count / 2; ++j)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Terrain Swap 1", i, j);
+                packet.ReadInt16<MapId>("Terrain Swap 1", i, j);
 
             i++;
             count = packet.ReadInt32();
@@ -1492,7 +1494,7 @@ namespace WowPacketParser.Parsing.Parsers
             i++;
             count = packet.ReadInt32();
             for (var j = 0; j < count / 2; ++j)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Terrain Swap 2", i, j);
+                packet.ReadInt16<MapId>("Terrain Swap 2", i, j);
 
             packet.ReadUInt32("Flag"); // can be 0, 4 or 8, 8 = normal world, others are unknown
 
@@ -1521,7 +1523,7 @@ namespace WowPacketParser.Parsing.Parsers
             var i = 0;
             var count = packet.ReadInt32();
             for (var j = 0; j < count / 2; ++j)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Map Swap 1", i, j);
+                packet.ReadInt16<MapId>("Map Swap 1", i, j);
 
             packet.ReadXORByte(guid, 3);
 
@@ -1539,14 +1541,14 @@ namespace WowPacketParser.Parsing.Parsers
             i++;
             count = packet.ReadInt32();
             for (var j = 0; j < count / 2; ++j)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Map Swap 1", i, j);
+                packet.ReadInt16<MapId>("Map Swap 1", i, j);
 
             packet.ReadXORByte(guid, 7);
 
             i++;
             count = packet.ReadInt32();
             for (var j = 0; j < count / 2; ++j)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Map Swap 3", i, j);
+                packet.ReadInt16<MapId>("Map Swap 3", i, j);
 
             packet.ReadXORByte(guid, 5);
             packet.ReadXORByte(guid, 1);
@@ -1568,14 +1570,14 @@ namespace WowPacketParser.Parsing.Parsers
             var count = packet.ReadUInt32() / 2;
             packet.AddValue("Inactive Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Inactive Terrain swap", i);
+                packet.ReadInt16<MapId>("Inactive Terrain swap", i);
 
             packet.ReadUInt32("UInt32");
 
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Active Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Active Terrain swap", i);
+                packet.ReadInt16<MapId>("Active Terrain swap", i);
 
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Phases count", count);
@@ -1620,7 +1622,7 @@ namespace WowPacketParser.Parsing.Parsers
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Active Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Active Terrain swap", i);
+                packet.ReadInt16<MapId>("Active Terrain swap", i);
 
             packet.ReadUInt32("UInt32");
             packet.ReadXORByte(guid, 0);
@@ -1630,7 +1632,7 @@ namespace WowPacketParser.Parsing.Parsers
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Inactive Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Inactive Terrain swap", i);
+                packet.ReadInt16<MapId>("Inactive Terrain swap", i);
 
             packet.WriteGuid("GUID", guid);
         }
@@ -1638,13 +1640,13 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_TRANSFER_PENDING, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleTransferPending(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
+            packet.ReadInt32<MapId>("Map ID");
 
             if (!packet.CanRead())
                 return;
 
             packet.ReadInt32("Transport Entry");
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Transport Map ID");
+            packet.ReadInt32<MapId>("Transport Map ID");
         }
 
         [Parser(Opcode.SMSG_TRANSFER_PENDING, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15595)]
@@ -1658,30 +1660,30 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasTransport)
             {
-                packet.ReadEntry<Int32>(StoreNameType.Map, "Transport Map ID");
+                packet.ReadInt32<MapId>("Transport Map ID");
                 packet.ReadInt32("Transport Entry");
             }
 
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
+            packet.ReadInt32<MapId>("Map ID");
         }
 
         [Parser(Opcode.SMSG_TRANSFER_ABORTED)]
         public static void HandleTransferAborted(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
+            packet.ReadInt32<MapId>("Map ID");
 
-            var reason = packet.ReadEnum<TransferAbortReason>("Reason", TypeCode.Byte);
+            var reason = packet.ReadByteE<TransferAbortReason>("Reason");
 
             switch (reason)
             {
                 case TransferAbortReason.DifficultyUnavailable:
                 {
-                    packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Byte);
+                    packet.ReadByteE<MapDifficulty>("Difficulty");
                     break;
                 }
                 case TransferAbortReason.InsufficientExpansion:
                 {
-                    packet.ReadEnum<ClientType>("Expansion", TypeCode.Byte);
+                    packet.ReadByteE<ClientType>("Expansion");
                     break;
                 }
                 case TransferAbortReason.UniqueMessage:

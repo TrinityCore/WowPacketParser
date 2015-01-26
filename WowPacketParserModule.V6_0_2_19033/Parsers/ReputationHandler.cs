@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -31,8 +30,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             for (var i = 0; i < 0x100; i++)
             {
-                packet.ReadEnum<FactionFlag>("FactionFlags", TypeCode.Byte, i);
-                packet.ReadEnum<ReputationRank>("FactionStandings", TypeCode.UInt32, i);
+                packet.ReadByteE<FactionFlag>("FactionFlags", i);
+                packet.ReadUInt32E<ReputationRank>("FactionStandings", i);
             }
 
             for (var i = 0; i < 0x100; i++)

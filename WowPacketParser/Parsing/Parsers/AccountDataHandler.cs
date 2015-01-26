@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 
@@ -36,12 +35,12 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_REQUEST_ACCOUNT_DATA)]
         public static void HandleRequestAccountData(Packet packet)
         {
-            packet.ReadEnum<AccountDataType>("Data Type", TypeCode.Int32);
+            packet.ReadInt32E<AccountDataType>("Data Type");
         }
 
         public static void ReadUpdateAccountDataBlock(Packet packet)
         {
-            packet.ReadEnum<AccountDataType>("Data Type", TypeCode.Int32);
+            packet.ReadInt32E<AccountDataType>("Data Type");
 
             packet.ReadTime("Login Time");
 
@@ -67,7 +66,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_UPDATE_ACCOUNT_DATA_COMPLETE)]
         public static void HandleUpdateAccountDataComplete(Packet packet)
         {
-            packet.ReadEnum<AccountDataType>("Data Type", TypeCode.Int32);
+            packet.ReadInt32E<AccountDataType>("Data Type");
             packet.ReadInt32("Unk Int32");
         }
 

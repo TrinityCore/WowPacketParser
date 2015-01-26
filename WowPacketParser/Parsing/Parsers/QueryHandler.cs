@@ -51,12 +51,20 @@ namespace WowPacketParser.Parsing.Parsers
             StoreGetters.AddName(guid, name);
             packet.ReadCString("Realm Name");
 
-            TypeCode typeCode = ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767) ? TypeCode.Byte : TypeCode.Int32;
-            packet.ReadEnum<Race>("Race", typeCode);
-            packet.ReadEnum<Gender>("Gender", typeCode);
-            packet.ReadEnum<Class>("Class", typeCode);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
+            {
+                packet.ReadByteE<Race>("Race");
+                packet.ReadByteE<Gender>("Gender");
+                packet.ReadByteE<Class>("Class");
+            }
+            else
+            {
+                packet.ReadInt32E<Race>("Race");
+                packet.ReadInt32E<Gender>("Gender");
+                packet.ReadInt32E<Class>("Class");
+            }
 
-            if (!packet.ReadBoolean("Name Declined"))
+            if (!packet.ReadBool("Name Declined"))
                 return;
 
             for (var i = 0; i < 5; i++)
@@ -116,16 +124,16 @@ namespace WowPacketParser.Parsing.Parsers
 
             creature.IconName = packet.ReadCString("Icon Name");
 
-            creature.TypeFlags = packet.ReadEnum<CreatureTypeFlag>("Type Flags", TypeCode.UInt32);
+            creature.TypeFlags = packet.ReadUInt32E<CreatureTypeFlag>("Type Flags");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_1_0_13914)) // Might be earlier or later
                 creature.TypeFlags2 = packet.ReadUInt32("Creature Type Flags 2"); // Missing enum
 
-            creature.Type = packet.ReadEnum<CreatureType>("Type", TypeCode.Int32);
+            creature.Type = packet.ReadInt32E<CreatureType>("Type");
 
-            creature.Family = packet.ReadEnum<CreatureFamily>("Family", TypeCode.Int32);
+            creature.Family = packet.ReadInt32E<CreatureFamily>("Family");
 
-            creature.Rank = packet.ReadEnum<CreatureRank>("Rank", TypeCode.Int32);
+            creature.Rank = packet.ReadInt32E<CreatureRank>("Rank");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
             {
@@ -146,7 +154,7 @@ namespace WowPacketParser.Parsing.Parsers
             creature.Modifier1 = packet.ReadSingle("Modifier 1");
             creature.Modifier2 = packet.ReadSingle("Modifier 2");
 
-            creature.RacialLeader = packet.ReadBoolean("Racial Leader");
+            creature.RacialLeader = packet.ReadBool("Racial Leader");
 
             var qItemCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ? 6 : 4;
             creature.QuestItems = new uint[qItemCount];
@@ -154,13 +162,13 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
             {
                 for (var i = 0; i < qItemCount; i++)
-                    creature.QuestItems[i] = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "Quest Item", i);
+                    creature.QuestItems[i] = (uint)packet.ReadInt32<ItemId>("Quest Item", i);
 
                 creature.MovementId = packet.ReadUInt32("Movement ID");
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
-                creature.Expansion = packet.ReadEnum<ClientType>("Expansion", TypeCode.UInt32);
+                creature.Expansion = packet.ReadUInt32E<ClientType>("Expansion");
 
             packet.AddSniffData(StoreNameType.Unit, entry.Key, "QUERY_RESPONSE");
 
@@ -227,14 +235,14 @@ namespace WowPacketParser.Parsing.Parsers
 
                 npcText.Texts2[i] = packet.ReadCString("Text 2", i);
 
-                npcText.Languages[i] = packet.ReadEnum<Language>("Language", TypeCode.Int32, i);
+                npcText.Languages[i] = packet.ReadInt32E<Language>("Language", i);
 
                 npcText.EmoteDelays[i] = new uint[3];
                 npcText.EmoteIds[i] = new EmoteType[3];
                 for (var j = 0; j < 3; j++)
                 {
                     npcText.EmoteDelays[i][j] = packet.ReadUInt32("Emote Delay", i, j);
-                    npcText.EmoteIds[i][j] = packet.ReadEnum<EmoteType>("Emote ID", TypeCode.UInt32, i, j);
+                    npcText.EmoteIds[i][j] = packet.ReadUInt32E<EmoteType>("Emote ID", i, j);
                 }
             }
 

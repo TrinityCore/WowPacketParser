@@ -183,7 +183,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                         packet.ReadWoWString("StringED", bits426[i][j], i, j);
 
                         if (bit18[i][j])
-                            packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Id", i, j);
+                            packet.ReadUInt32<ItemId>("Item Id", i, j);
 
                         if (bit10[i][j])
                             packet.ReadInt32("IntED", i, j);
@@ -194,7 +194,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                         packet.ReadWoWString("StringED", bits24[i][j], i, j);
                     }
 
-                    packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Id", i, j);
+                    packet.ReadUInt32<ItemId>("Item Id", i, j);
                     packet.ReadInt32("Int14", i, j);
                     packet.ReadInt32("Buy Count", i, j);
                 }

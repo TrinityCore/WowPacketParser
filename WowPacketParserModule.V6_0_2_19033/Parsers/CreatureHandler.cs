@@ -50,13 +50,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             //for (var i = 0; i < 2; ++i)
             //{
-            creature.TypeFlags = packet.ReadEnum<CreatureTypeFlag>("Type Flags", TypeCode.UInt32);
+            creature.TypeFlags = packet.ReadUInt32E<CreatureTypeFlag>("Type Flags");
             creature.TypeFlags2 = packet.ReadUInt32("Creature Type Flags 2");
             //}
 
-            creature.Type = packet.ReadEnum<CreatureType>("CreatureType", TypeCode.Int32);
-            creature.Family = packet.ReadEnum<CreatureFamily>("CreatureFamily", TypeCode.Int32);
-            creature.Rank = packet.ReadEnum<CreatureRank>("Classification", TypeCode.Int32);
+            creature.Type = packet.ReadInt32E<CreatureType>("CreatureType");
+            creature.Family = packet.ReadInt32E<CreatureFamily>("CreatureFamily");
+            creature.Rank = packet.ReadInt32E<CreatureRank>("Classification");
 
             creature.KillCredits = new uint[2];
             for (var i = 0; i < 2; ++i)
@@ -72,7 +72,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             creature.QuestItems = new uint[6];
             var questItems = packet.ReadInt32("QuestItems");
             creature.MovementId = packet.ReadUInt32("CreatureMovementInfoID");
-            creature.Expansion = packet.ReadEnum<ClientType>("RequiredExpansion", TypeCode.UInt32);
+            creature.Expansion = packet.ReadUInt32E<ClientType>("RequiredExpansion");
             packet.ReadInt32("FlagQuest");
 
             if (bits4 > 1)
@@ -85,7 +85,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 creature.IconName = packet.ReadCString("CursorName");
 
             for (var i = 0; i < questItems; ++i)
-                creature.QuestItems[i] = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "Quest Item", i);
+                creature.QuestItems[i] = (uint)packet.ReadInt32<ItemId>("Quest Item", i);
 
             packet.AddSniffData(StoreNameType.Unit, entry.Key, "QUERY_RESPONSE");
 

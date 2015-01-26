@@ -142,7 +142,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var count = packet.ReadUInt32("Spell Count");
 
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i);
+                packet.ReadInt32<SpellId>("Spell ID", i);
         }
         
         [Parser(Opcode.SMSG_PET_GUIDS)]

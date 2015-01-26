@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 
@@ -61,7 +60,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ACTIVATE_TAXI_REPLY)]
         public static void HandleActivateTaxiReply(Packet packet)
         {
-            packet.ReadEnum<TaxiError>("Result", TypeCode.UInt32);
+            packet.ReadUInt32E<TaxiError>("Result");
         }
 
         [Parser(Opcode.CMSG_ACTIVATE_TAXI_EXPRESS)]
@@ -81,7 +80,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_SET_TAXI_BENCHMARK_MODE)]
         public static void HandleSetTaxiBenchmarkMode(Packet packet)
         {
-            packet.ReadBoolean("Activate");
+            packet.ReadBool("Activate");
         }
 
         [Parser(Opcode.SMSG_NEW_TAXI_PATH)]

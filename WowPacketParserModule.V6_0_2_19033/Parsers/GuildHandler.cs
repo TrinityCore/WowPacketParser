@@ -99,7 +99,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 for (var j = 0; j < 8; ++j)
                 {
-                    packet.ReadEnum<GuildBankRightsFlag>("TabFlags", TypeCode.Int32, i, j);
+                    packet.ReadInt32E<GuildBankRightsFlag>("TabFlags", i, j);
                     packet.ReadInt32("TabWithdrawItemLimit", i, j);
                 }
 
@@ -137,10 +137,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 packet.ReadUInt32("VirtualRealmAddress", i);
 
-                packet.ReadEnum<GuildMemberFlag>("Status", TypeCode.Byte, i);
+                packet.ReadByteE<GuildMemberFlag>("Status", i);
                 packet.ReadByte("Level", i);
-                packet.ReadEnum<Class>("ClassID", TypeCode.Byte, i);
-                packet.ReadEnum<Gender>("Gender", TypeCode.Byte, i);
+                packet.ReadByteE<Class>("ClassID", i);
+                packet.ReadByteE<Gender>("Gender", i);
 
                 packet.ResetBitReader();
 
@@ -254,14 +254,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("RankID");
             packet.ReadInt32("WithdrawGoldLimit");
-            packet.ReadEnum<GuildRankRightsFlag>("Flags", TypeCode.UInt32);
+            packet.ReadUInt32E<GuildRankRightsFlag>("Flags");
             packet.ReadUInt32("NumTabs");
 
             var int16 = packet.ReadInt32("TabCount");
 
             for (var i = 0; i < int16; i++)
             {
-                packet.ReadEnum<GuildBankRightsFlag>("Flags", TypeCode.Int32, i);
+                packet.ReadInt32E<GuildBankRightsFlag>("Flags", i);
                 packet.ReadInt32("WithdrawItemLimit", i);
             }
         }
@@ -463,14 +463,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             var count = packet.ReadUInt32("Count");
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int32>(StoreNameType.Achievement, "AchievementIDs", i);
+                packet.ReadInt32<AchievementId>("AchievementIDs", i);
         }
 
         [Parser(Opcode.SMSG_GUILD_COMMAND_RESULT)]
         public static void HandleGuildCommandResult(Packet packet)
         {
-            packet.ReadEnum<GuildCommandError>("Result", TypeCode.UInt32);
-            packet.ReadEnum<GuildCommandType>("Command", TypeCode.UInt32);
+            packet.ReadUInt32E<GuildCommandError>("Result");
+            packet.ReadUInt32E<GuildCommandType>("Command");
             var len = packet.ReadBits(8);
             packet.ReadWoWString("Name", len);
         }
@@ -542,13 +542,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("RankID");
             packet.ReadInt32("RankOrder");
-            packet.ReadEnum<GuildRankRightsFlag>("Flags", TypeCode.UInt32);
-            packet.ReadEnum<GuildRankRightsFlag>("OldFlags", TypeCode.UInt32);
+            packet.ReadUInt32E<GuildRankRightsFlag>("Flags");
+            packet.ReadUInt32E<GuildRankRightsFlag>("OldFlags");
             packet.ReadInt32("WithdrawGoldLimit");
 
             for (var i = 0; i < 8; ++i)
             {
-                packet.ReadEnum<GuildBankRightsFlag>("TabFlags", TypeCode.Int32, i);
+                packet.ReadInt32E<GuildBankRightsFlag>("TabFlags", i);
                 packet.ReadInt32("TabWithdrawItemLimit", i);
             }
 
@@ -603,7 +603,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleGuildAchievementEarned(Packet packet)
         {
             packet.ReadPackedGuid128("GuildGUID");
-            packet.ReadEntry<Int32>(StoreNameType.Achievement, "AchievementID");
+            packet.ReadInt32<AchievementId>("AchievementID");
             packet.ReadPackedTime("TimeEarned");
         }
 

@@ -48,7 +48,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_BATTLEFIELD_LIST)]
         public static void HandleBattlefieldListClient(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Battleground, "ListID");
+            packet.ReadInt32<BgId>("ListID");
         }
 
         [Parser(Opcode.CMSG_BATTLEFIELD_MGR_ENTRY_INVITE_RESPONSE)]

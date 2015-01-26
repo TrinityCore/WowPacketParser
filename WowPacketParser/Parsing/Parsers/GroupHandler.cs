@@ -23,7 +23,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GROUP_SET_ROLES, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGroupSetRoles434(Packet packet)
         {
-            packet.ReadEnum<LfgRoleFlag>("Role", TypeCode.Int32);
+            packet.ReadInt32E<LfgRoleFlag>("Role");
             var guid = packet.StartBitStream(2, 6, 3, 7, 5, 1, 0, 4);
             packet.ParseBitStream(guid, 6, 4, 1, 3, 0, 5, 2, 7);
             packet.WriteGuid("Guid", guid);
@@ -33,17 +33,17 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GROUP_LIST)]
         public static void HandleGroupList(Packet packet)
         {
-            var grouptype = packet.ReadEnum<GroupTypeFlag>("Group Type", TypeCode.Byte);
+            var grouptype = packet.ReadByteE<GroupTypeFlag>("Group Type");
             packet.ReadByte("Sub Group");
-            packet.ReadEnum<GroupUpdateFlag>("Flags", TypeCode.Byte);
+            packet.ReadByteE<GroupUpdateFlag>("Flags");
             packet.ReadByte("Player Roles Assigned");
 
             if (grouptype.HasFlag(GroupTypeFlag.LookingForDungeon))
             {
-                packet.ReadEnum<InstanceStatus>("Group Type Status", TypeCode.Byte);
+                packet.ReadByteE<InstanceStatus>("Group Type Status");
                 packet.ReadLfgEntry("LFG Entry");
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                    packet.ReadBoolean("Unk bool");
+                    packet.ReadBool("Unk bool");
             }
 
             packet.ReadGuid("Group GUID");
@@ -57,12 +57,12 @@ namespace WowPacketParser.Parsing.Parsers
                 var name = packet.ReadCString("Name", i);
                 var guid = packet.ReadGuid("GUID", i);
                 StoreGetters.AddName(guid, name);
-                packet.ReadEnum<GroupMemberStatusFlag>("Status", TypeCode.Byte, i);
+                packet.ReadByteE<GroupMemberStatusFlag>("Status", i);
                 packet.ReadByte("Sub Group", i);
-                packet.ReadEnum<GroupUpdateFlag>("Update Flags", TypeCode.Byte, i);
+                packet.ReadByteE<GroupUpdateFlag>("Update Flags", i);
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
-                    packet.ReadEnum<LfgRoleFlag>("Role", TypeCode.Byte, i);
+                    packet.ReadByteE<LfgRoleFlag>("Role", i);
             }
 
             packet.ReadGuid("Leader GUID");
@@ -70,14 +70,14 @@ namespace WowPacketParser.Parsing.Parsers
             if (numFields <= 0)
                 return;
 
-            packet.ReadEnum<LootMethod>("Loot Method", TypeCode.Byte);
+            packet.ReadByteE<LootMethod>("Loot Method");
             packet.ReadGuid("Looter GUID");
-            packet.ReadEnum<ItemQuality>("Loot Threshold", TypeCode.Byte);
+            packet.ReadByteE<ItemQuality>("Loot Threshold");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
-                packet.ReadEnum<MapDifficulty>("Dungeon Difficulty", TypeCode.Byte);
+                packet.ReadByteE<MapDifficulty>("Dungeon Difficulty");
 
-            packet.ReadEnum<MapDifficulty>("Raid Difficulty", TypeCode.Byte);
+            packet.ReadByteE<MapDifficulty>("Raid Difficulty");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958) &&
                 ClientVersion.RemovedInVersion(ClientVersionBuild.V4_0_6a_13623))
@@ -89,13 +89,13 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandlePartyMemberStats422(Packet packet)
         {
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_PARTY_MEMBER_STATS_FULL, Direction.ServerToClient))
-                packet.ReadBoolean("Add arena opponent");
+                packet.ReadBool("Add arena opponent");
 
             packet.ReadPackedGuid("GUID");
-            var updateFlags = packet.ReadEnum<GroupUpdateFlag422>("Update Flags", TypeCode.Int32);
+            var updateFlags = packet.ReadInt32E<GroupUpdateFlag422>("Update Flags");
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.Status))
-                packet.ReadEnum<GroupMemberStatusFlag>("Status", TypeCode.Int16);
+                packet.ReadInt16E<GroupMemberStatusFlag>("Status");
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.CurrentHealth))
             {
@@ -114,7 +114,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.PowerType))
-                packet.ReadEnum<PowerType>("Power type", TypeCode.Byte);
+                packet.ReadByteE<PowerType>("Power type");
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.CurrentPower))
                 packet.ReadInt16("Current Power");
@@ -126,7 +126,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt16("Level");
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.Zone))
-                packet.ReadEntry<Int16>(StoreNameType.Zone, "Zone Id");
+                packet.ReadInt16<ZoneId>("Zone Id");
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.Unk100))
                 packet.ReadInt16("Unk");
@@ -151,9 +151,9 @@ namespace WowPacketParser.Parsing.Parsers
                     if ((mask & (1ul << i)) == 0)
                         continue;
 
-                    packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell Id", i);
+                    packet.ReadUInt32<SpellId>("Spell Id", i);
 
-                    var aflags = packet.ReadEnum<AuraFlag>("Aura Flags", TypeCode.UInt16, i);
+                    var aflags = packet.ReadUInt16E<AuraFlag>("Aura Flags", i);
                     if (aflags.HasFlag(AuraFlag.Scalable))
                         for (var j = 0; j < 3; ++j)
                             packet.ReadInt32("Effect BasePoints", i, j);
@@ -176,7 +176,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Pet Max Health");
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.PetPowerType))
-                packet.ReadEnum<PowerType>("Pet Power type", TypeCode.Byte);
+                packet.ReadByteE<PowerType>("Pet Power type");
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.PetCurrentPower))
                 packet.ReadInt16("Pet Current Power");
@@ -194,9 +194,9 @@ namespace WowPacketParser.Parsing.Parsers
                     if ((mask & (1ul << i)) == 0)
                         continue;
 
-                    packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell Id", i);
+                    packet.ReadUInt32<SpellId>("Spell Id", i);
 
-                    var aflags = packet.ReadEnum<AuraFlag>("Aura Flags", TypeCode.UInt16, i);
+                    var aflags = packet.ReadUInt16E<AuraFlag>("Aura Flags", i);
                     if (aflags.HasFlag(AuraFlag.Scalable))
                         for (var j = 0; j < 3; ++j)
                             packet.ReadInt32("Effect BasePoints", i, j);
@@ -222,13 +222,13 @@ namespace WowPacketParser.Parsing.Parsers
         {
             if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) &&
                 packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_PARTY_MEMBER_STATS_FULL, Direction.ServerToClient))
-                packet.ReadBoolean("Add arena opponent");
+                packet.ReadBool("Add arena opponent");
 
             packet.ReadPackedGuid("GUID");
-            var updateFlags = packet.ReadEnum<GroupUpdateFlag>("Update Flags", TypeCode.UInt32);
+            var updateFlags = packet.ReadUInt32E<GroupUpdateFlag>("Update Flags");
 
             if (updateFlags.HasFlag(GroupUpdateFlag.Status))
-                packet.ReadEnum<GroupMemberStatusFlag>("Status", TypeCode.Int16);
+                packet.ReadInt16E<GroupMemberStatusFlag>("Status");
 
             if (updateFlags.HasFlag(GroupUpdateFlag.CurrentHealth))
             {
@@ -247,7 +247,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (updateFlags.HasFlag(GroupUpdateFlag.PowerType))
-                packet.ReadEnum<PowerType>("Power type", TypeCode.Byte);
+                packet.ReadByteE<PowerType>("Power type");
 
             if (updateFlags.HasFlag(GroupUpdateFlag.CurrentPower))
                 packet.ReadInt16("Current Power");
@@ -259,7 +259,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt16("Level");
 
             if (updateFlags.HasFlag(GroupUpdateFlag.Zone))
-                packet.ReadEntry<Int16>(StoreNameType.Zone, "Zone Id");
+                packet.ReadInt16<ZoneId>("Zone Id");
 
             if (updateFlags.HasFlag(GroupUpdateFlag.Position))
             {
@@ -278,11 +278,11 @@ namespace WowPacketParser.Parsing.Parsers
                         continue;
 
                     if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
-                        packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell Id", i);
+                        packet.ReadUInt32<SpellId>("Spell Id", i);
                     else
-                        packet.ReadEntry<UInt16>(StoreNameType.Spell, "Spell Id", i);
+                        packet.ReadUInt16<SpellId>("Spell Id", i);
 
-                    packet.ReadEnum<AuraFlag>("Aura Flags", TypeCode.Byte, i);
+                    packet.ReadByteE<AuraFlag>("Aura Flags", i);
                 }
             }
 
@@ -312,7 +312,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (updateFlags.HasFlag(GroupUpdateFlag.PetPowerType))
-                packet.ReadEnum<PowerType>("Pet Power type", TypeCode.Byte);
+                packet.ReadByteE<PowerType>("Pet Power type");
 
             if (updateFlags.HasFlag(GroupUpdateFlag.PetCurrentPower))
                 packet.ReadInt16("Pet Current Power");
@@ -331,11 +331,11 @@ namespace WowPacketParser.Parsing.Parsers
                         continue;
 
                     if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
-                        packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell Id", i);
+                        packet.ReadUInt32<SpellId>("Spell Id", i);
                     else
-                        packet.ReadEntry<UInt16>(StoreNameType.Spell, "Spell Id", i);
+                        packet.ReadUInt16<SpellId>("Spell Id", i);
 
-                    packet.ReadEnum<AuraFlag>("Aura Flags", TypeCode.Byte, i);
+                    packet.ReadByteE<AuraFlag>("Aura Flags", i);
                 }
             }
 
@@ -424,7 +424,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GROUP_INVITE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGroupInviteResponse(Packet packet)
         {
-            packet.ReadBoolean("invited/already in group flag?");
+            packet.ReadBool("invited/already in group flag?");
             packet.ReadCString("Name");
             packet.ReadInt32("Unk Int32 1");
             var count = packet.ReadByte("Count");
@@ -525,9 +525,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PARTY_COMMAND_RESULT)]
         public static void HandlePartyCommandResult(Packet packet)
         {
-            packet.ReadEnum<PartyCommand>("Command", TypeCode.UInt32);
+            packet.ReadUInt32E<PartyCommand>("Command");
             packet.ReadCString("Member");
-            packet.ReadEnum<PartyResult>("Result", TypeCode.UInt32);
+            packet.ReadUInt32E<PartyResult>("Result");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 packet.ReadUInt32("LFG Boot Cooldown");
@@ -539,13 +539,13 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleRaidGroupOnly(Packet packet)
         {
             packet.ReadInt32("Time left");
-            packet.ReadEnum<InstanceStatus>("Group Type Status?", TypeCode.Int32);
+            packet.ReadInt32E<InstanceStatus>("Group Type Status?");
         }
 
         [Parser(Opcode.SMSG_REAL_GROUP_UPDATE)]
         public static void HandleRealGroupUpdate(Packet packet)
         {
-            packet.ReadEnum<GroupTypeFlag>("Group Type", TypeCode.Byte);
+            packet.ReadByteE<GroupTypeFlag>("Group Type");
             packet.ReadUInt32("Member Count");
             packet.ReadGuid("Leader GUID");
         }
@@ -564,7 +564,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 // Packet is sent in two different methods. One sends a byte and one doesn't
                 if (packet.CanRead())
-                    packet.ReadBoolean("Ready");
+                    packet.ReadBool("Ready");
             }
             else
                 packet.ReadGuid("GUID");
@@ -574,7 +574,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleRaidReadyCheckConfirm(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadBoolean("Ready");
+            packet.ReadBool("Ready");
         }
 
         [Parser(Opcode.MSG_MINIMAP_PING)]
@@ -590,7 +590,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleGroupRaidConvert(Packet packet)
         {
             if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
-                packet.ReadBoolean("ToRaid");
+                packet.ReadBool("ToRaid");
         }
 
         [Parser(Opcode.CMSG_GROUP_SWAP_SUB_GROUP)]
@@ -604,7 +604,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleGroupAssistantLeader(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadBoolean("Promote"); // False = demote
+            packet.ReadBool("Promote"); // False = demote
         }
 
         [Parser(Opcode.MSG_PARTY_ASSIGNMENT)]
@@ -612,7 +612,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             //if (packet.Direction == Direction.ClientToServer)
             packet.ReadByte("Assigment");
-            packet.ReadBoolean("Apply");
+            packet.ReadBool("Apply");
             packet.ReadGuid("Guid");
         }
 
@@ -644,7 +644,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid1, 6);
             packet.ReadXORByte(guid2, 4);
             packet.ReadXORByte(guid2, 0);
-            packet.ReadEnum<LfgRoleFlag>("New Roles", TypeCode.Int32);
+            packet.ReadInt32E<LfgRoleFlag>("New Roles");
             packet.ReadXORByte(guid2, 6);
             packet.ReadXORByte(guid2, 2);
             packet.ReadXORByte(guid1, 0);
@@ -658,7 +658,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid2, 7);
             packet.ReadXORByte(guid1, 1);
 
-            packet.ReadEnum<LfgRoleFlag>("Old Roles", TypeCode.Int32);
+            packet.ReadInt32E<LfgRoleFlag>("Old Roles");
             packet.WriteGuid("Assigner Guid", guid1);
             packet.WriteGuid("Target Guid", guid2);
         }
@@ -694,7 +694,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guids[i], 6);
                 packet.ReadXORByte(guids[i], 5);
 
-                packet.ReadEnum<RaidSummonFail>("Error", TypeCode.Int32, i);
+                packet.ReadInt32E<RaidSummonFail>("Error", i);
 
                 packet.ReadXORByte(guids[i], 7);
                 packet.ReadXORByte(guids[i], 3);

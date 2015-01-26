@@ -9,7 +9,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     {
         public static int ReadItemInstance(Packet packet, params object[] indexes)
         {
-            var itemId = packet.ReadEntry<Int32>(StoreNameType.Item, "ItemID", indexes);
+            var itemId = packet.ReadInt32<ItemId>("ItemID", indexes);
             packet.ReadUInt32("RandomPropertiesSeed", indexes);
             packet.ReadUInt32("RandomPropertiesID", indexes);
 
@@ -89,8 +89,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_SET_PROFICIENCY)]
         public static void HandleSetProficency(Packet packet)
         {
-            packet.ReadEnum<UnknownFlags>("ProficiencyMask", TypeCode.UInt32);
-            packet.ReadEnum<ItemClass>("ProficiencyClass", TypeCode.Byte);
+            packet.ReadUInt32E<UnknownFlags>("ProficiencyMask");
+            packet.ReadByteE<ItemClass>("ProficiencyClass");
         }
 
         [Parser(Opcode.CMSG_TRANSMOGRIFY_ITEMS)]
@@ -140,8 +140,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleBuyFailed(Packet packet)
         {
             packet.ReadPackedGuid128("VendorGUID");
-            packet.ReadEntry<UInt32>(StoreNameType.Item, "Muid");
-            packet.ReadEnum<BuyResult>("Reason", TypeCode.Byte);
+            packet.ReadUInt32<ItemId>("Muid");
+            packet.ReadByteE<BuyResult>("Reason");
         }
 
         [Parser(Opcode.CMSG_BUY_BACK_ITEM)]
@@ -255,7 +255,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_INVENTORY_CHANGE_FAILURE)]
         public static void HandleInventoryChangeFailure(Packet packet)
         {
-            var result = packet.ReadEnum<InventoryResult>("BagResult", TypeCode.Byte);
+            var result = packet.ReadByteE<InventoryResult>("BagResult");
 
             for (int i = 0; i < 2; i++)
                 packet.ReadPackedGuid128("Item", i);
@@ -335,7 +335,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("VendorGUID");
             packet.ReadPackedGuid128("ItemGUID");
-            packet.ReadEnum<SellResult>("Reason", TypeCode.Byte);
+            packet.ReadByteE<SellResult>("Reason");
         }
 
         [Parser(Opcode.SMSG_ITEM_TIME_UPDATE)]

@@ -37,13 +37,13 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767)) // no idea when this was added exactly
-                packet.ReadBoolean("Toggle AnimTierInTrans");
+                packet.ReadBool("Toggle AnimTierInTrans");
 
             var pos = packet.ReadVector3("Position");
 
             packet.ReadInt32("Move Ticks");
 
-            var type = packet.ReadEnum<SplineType>("Spline Type", TypeCode.Byte);
+            var type = packet.ReadByteE<SplineType>("Spline Type");
 
             switch (type)
             {
@@ -66,11 +66,11 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     return;
             }
 
-            var flags = packet.ReadEnum<SplineFlag>("Spline Flags", TypeCode.Int32);
+            var flags = packet.ReadInt32E<SplineFlag>("Spline Flags");
 
             if (flags.HasAnyFlag(SplineFlag.Animation))
             {
-                packet.ReadEnum<MovementAnimationState>("Animation State", TypeCode.Byte);
+                packet.ReadByteE<MovementAnimationState>("Animation State");
                 packet.ReadInt32("Asynctime in ms"); // Async-time in ms
             }
 
@@ -131,7 +131,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadSingle("X");
             packet.ReadSingle("Orientation");
             packet.ReadSingle("Y");
-            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntry<Int32>(StoreNameType.Map, "Map");
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadInt32<MapId>("Map");
             packet.ReadSingle("Z"); // seriously...
 
             packet.AddSniffData(StoreNameType.Map, (int)CoreParsers.MovementHandler.CurrentMapId, "NEW_WORLD");
@@ -2737,7 +2737,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Inactive Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Inactive Terrain swap", i);
+                packet.ReadInt16<MapId>("Inactive Terrain swap", i);
 
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Phases count", count);
@@ -2750,7 +2750,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Active Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Active Terrain swap", i);
+                packet.ReadInt16<MapId>("Active Terrain swap", i);
 
             packet.ReadXORByte(guid, 5);
             packet.WriteGuid("GUID", guid);
@@ -2764,14 +2764,14 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             var hasTransport = packet.ReadBit();
             if (hasTransport)
             {
-                packet.ReadEntry<Int32>(StoreNameType.Map, "Transport Map ID");
+                packet.ReadInt32<MapId>("Transport Map ID");
                 packet.ReadInt32("Transport Entry");
             }
 
             if (customLoadScreenSpell)
-                packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
+                packet.ReadUInt32<SpellId>("Spell ID");
 
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
+            packet.ReadInt32<MapId>("Map ID");
         }
 
         [Parser(Opcode.CMSG_MOVE_TIME_SKIPPED)]
@@ -7156,7 +7156,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         public static void HandleSplineMoveSetAnim(Packet packet)
         {
             packet.ReadPackedGuid("Guid");
-            packet.ReadEnum<MovementAnimationState>("Animation", TypeCode.UInt32);
+            packet.ReadUInt32E<MovementAnimationState>("Animation");
         }
 
         [Parser(Opcode.SMSG_MOVE_UPDATE_KNOCK_BACK)]

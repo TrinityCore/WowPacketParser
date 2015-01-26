@@ -8,26 +8,26 @@ namespace WowPacketParser.Parsing.Parsers
     {
         public static void ReadSingleContactBlock(Packet packet, bool onlineCheck)
         {
-            var status = packet.ReadEnum<ContactStatus>("Status", TypeCode.Byte);
+            var status = packet.ReadByteE<ContactStatus>("Status");
 
             if (onlineCheck && status == ContactStatus.Offline)
                 return;
 
-            packet.ReadEntry<Int32>(StoreNameType.Area, "Area");
+            packet.ReadInt32<AreaId>("Area");
             packet.ReadInt32("Level");
-            packet.ReadEnum<Class>("Class", TypeCode.Int32);
+            packet.ReadInt32E<Class>("Class");
         }
 
         [Parser(Opcode.CMSG_CONTACT_LIST)]
         public static void HandleContactListClient(Packet packet)
         {
-            packet.ReadEnum<ContactListFlag>("List Flags?", TypeCode.Int32);
+            packet.ReadInt32E<ContactListFlag>("List Flags?");
         }
 
         [Parser(Opcode.SMSG_CONTACT_LIST)]
         public static void HandleContactList(Packet packet)
         {
-            packet.ReadEnum<ContactListFlag>("List Flags", TypeCode.Int32);
+            packet.ReadInt32E<ContactListFlag>("List Flags");
 
             var count = packet.ReadInt32("Count");
 
@@ -35,7 +35,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadGuid("GUID");
 
-                var flag = packet.ReadEnum<ContactEntryFlag>("Flags", TypeCode.Int32);
+                var flag = packet.ReadInt32E<ContactEntryFlag>("Flags");
 
                 packet.ReadCString("Note");
 
@@ -52,7 +52,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_FRIEND_STATUS)]
         public static void HandleFriendStatus(Packet packet)
         {
-            var result = packet.ReadEnum<ContactResult>("Result", TypeCode.Byte);
+            var result = packet.ReadByteE<ContactResult>("Result");
 
             packet.ReadGuid("GUID");
 

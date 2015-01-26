@@ -12,12 +12,12 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.Direction == Direction.ClientToServer)
                 return;
 
-            if (!packet.ReadBoolean("Corpse Found"))
+            if (!packet.ReadBool("Corpse Found"))
                 return;
 
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
+            packet.ReadInt32<MapId>("Map ID");
             packet.ReadVector3("Corpse Position");
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Corpse Map ID");
+            packet.ReadInt32<MapId>("Corpse Map ID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_2_10482))
                 packet.ReadInt32("Corpse Low GUID");

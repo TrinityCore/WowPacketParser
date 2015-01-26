@@ -83,7 +83,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
                 {
                     packet.ReadInt32("Item DisplayID", c, j);
                     packet.ReadInt32("Item EnchantID", c, j);
-                    packet.ReadEnum<InventoryType>("Item InventoryType", TypeCode.Byte, c, j);
+                    packet.ReadByteE<InventoryType>("Item InventoryType", c, j);
                 }
 
                 packet.ReadXORByte(charGuids[c], 4);
@@ -95,21 +95,21 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
                 packet.ReadByte("Face", c); // v4+62
                 packet.ReadXORByte(guildGuids[c], 0);
                 packet.ReadByte("List Order", c); //v4+57
-                var zone = packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id", c);
+                var zone = packet.ReadUInt32<ZoneId>("Zone Id", c);
                 packet.ReadXORByte(guildGuids[c], 7);
-                packet.ReadEnum<CharacterFlag>("CharacterFlag", TypeCode.Int32, c);
-                var mapId = packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id", c); //v4+72
-                var race = packet.ReadEnum<Race>("Race", TypeCode.Byte, c); //v4+58
+                packet.ReadInt32E<CharacterFlag>("CharacterFlag", c);
+                var mapId = packet.ReadInt32<MapId>("Map Id", c); //v4+72
+                var race = packet.ReadByteE<Race>("Race", c); //v4+58
                 var z = packet.ReadSingle("Position Z", c); //v4+84
                 packet.ReadXORByte(guildGuids[c], 1);
-                packet.ReadEnum<Gender>("Gender", TypeCode.Byte, c); //v4+60
+                packet.ReadByteE<Gender>("Gender", c); //v4+60
                 packet.ReadXORByte(charGuids[c], 3);
                 packet.ReadByte("Hair Color", c); // v4+64
                 packet.ReadXORByte(guildGuids[c], 5);
-                var clss = packet.ReadEnum<Class>("Class", TypeCode.Byte, c); // v4+59
+                var clss = packet.ReadByteE<Class>("Class", c); // v4+59
                 packet.ReadXORByte(guildGuids[c], 2);
                 packet.ReadXORByte(charGuids[c], 1);
-                packet.ReadEnum<CustomizationFlag>("CustomizationFlag", TypeCode.UInt32, c); //v4+100
+                packet.ReadUInt32E<CustomizationFlag>("CustomizationFlag", c); //v4+100
                 packet.ReadByte("Facial Hair", c); // v4+65
                 packet.ReadXORByte(guildGuids[c], 6);
                 packet.ReadXORByte(charGuids[c], 0);

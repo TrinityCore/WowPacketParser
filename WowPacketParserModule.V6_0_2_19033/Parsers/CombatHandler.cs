@@ -18,7 +18,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadInt32("Size");
 
-            var hitInfo = packet.ReadEnum<SpellHitInfo>("HitInfo", TypeCode.Int32);
+            var hitInfo = packet.ReadInt32E<SpellHitInfo>("HitInfo");
 
             packet.ReadPackedGuid128("Attacker Guid");
             packet.ReadPackedGuid128("Target Guid");
@@ -26,7 +26,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("Damage");
             packet.ReadInt32("OverDamage");
 
-            var subDmgCount = packet.ReadBoolean("HasSubDmg");
+            var subDmgCount = packet.ReadBool("HasSubDmg");
             if (subDmgCount)
             {
                 packet.ReadInt32("SchoolMask");
@@ -40,10 +40,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadInt32("Damage Resisted");
             }
 
-            packet.ReadEnum<VictimStates>("VictimState", TypeCode.Byte);
+            packet.ReadByteE<VictimStates>("VictimState");
             packet.ReadInt32("Unk Attacker State 0");
 
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Melee Spell ID");
+            packet.ReadInt32<SpellId>("Melee Spell ID");
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK))
                 packet.ReadInt32("Block Amount");
@@ -133,7 +133,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleAIReaction(Packet packet)
         {
             packet.ReadPackedGuid128("UnitGUID");
-            packet.ReadEnum<AIReaction>("Reaction", TypeCode.Int32);
+            packet.ReadInt32E<AIReaction>("Reaction");
         }
 
         [Parser(Opcode.CMSG_ATTACKSWING)]
@@ -151,7 +151,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_SETSHEATHED)]
         public static void HandleSetSheathed(Packet packet)
         {
-            packet.ReadEnum<SheathState>("CurrentSheathState", TypeCode.Int32);
+            packet.ReadInt32E<SheathState>("CurrentSheathState");
             packet.ReadBit("Animate");
         }
 

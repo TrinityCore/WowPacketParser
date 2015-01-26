@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -17,7 +16,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.SMSG_CHANNEL_NOTIFY)]
         public static void HandleChannelNotify(Packet packet)
         {
-            var type = packet.ReadEnum<ChatNotificationType>("Notification Type", TypeCode.Byte);
+            var type = packet.ReadByteE<ChatNotificationType>("Notification Type");
 
             if (type == ChatNotificationType.InvalidName) // hack, because of some silly reason this type
                 packet.ReadBytes(3);                      // has 3 null bytes before the invalid channel name
@@ -46,7 +45,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     }
                 case ChatNotificationType.YouJoined:
                     {
-                        packet.ReadEnum<ChannelFlag>("Flags", TypeCode.Byte);
+                        packet.ReadByteE<ChannelFlag>("Flags");
                         packet.ReadInt32("Channel Id");
                         packet.ReadInt32("Unk");
                         break;
@@ -54,7 +53,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 case ChatNotificationType.YouLeft:
                     {
                         packet.ReadInt32("Channel Id");
-                        packet.ReadBoolean("Unk");
+                        packet.ReadBool("Unk");
                         break;
                     }
                 case ChatNotificationType.PlayerNotFound:
@@ -69,8 +68,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 case ChatNotificationType.ModeChange:
                     {
                         packet.ReadGuid("GUID");
-                        packet.ReadEnum<ChannelMemberFlag>("Old Flags", TypeCode.Byte);
-                        packet.ReadEnum<ChannelMemberFlag>("New Flags", TypeCode.Byte);
+                        packet.ReadByteE<ChannelMemberFlag>("Old Flags");
+                        packet.ReadByteE<ChannelMemberFlag>("New Flags");
                         break;
                     }
                 case ChatNotificationType.PlayerKicked:
@@ -123,12 +122,12 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         {
             packet.ReadByte("Type");
             packet.ReadCString("Channel Name");
-            packet.ReadEnum<ChannelFlag>("Flags", TypeCode.Byte);
+            packet.ReadByteE<ChannelFlag>("Flags");
             var count = packet.ReadInt32("Counter");
             for (var i = 0; i < count; i++)
             {
                 packet.ReadGuid("Player GUID " + i);
-                packet.ReadEnum<ChannelMemberFlag>("Player Flags " + i, TypeCode.Byte);
+                packet.ReadByteE<ChannelMemberFlag>("Player Flags " + i);
                 packet.ReadUInt32("unk");
             }
         }

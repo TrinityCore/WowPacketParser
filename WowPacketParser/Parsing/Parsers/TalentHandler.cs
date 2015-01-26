@@ -37,7 +37,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 if ((slotMask & 0x1) > 0)
                 {
-                    packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry", (EquipmentSlotType)slot);
+                    packet.ReadUInt32<ItemId>("Item Entry", (EquipmentSlotType)slot);
                     var enchantMask = packet.ReadUInt16();
                     if (enchantMask > 0)
                     {
@@ -122,7 +122,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_TALENTS_INFO, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleTalentsInfo(Packet packet)
         {
-            var pet = packet.ReadBoolean("Pet Talents");
+            var pet = packet.ReadBool("Pet Talents");
             if (pet)
             {
                 packet.ReadUInt32("Unspent Talent");
@@ -208,7 +208,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_TALENTS_ERROR)]
         public static void HandleTalentError(Packet packet)
         {
-            packet.ReadEnum<TalentError>("Talent Error", TypeCode.Int32);
+            packet.ReadInt32E<TalentError>("Talent Error");
         }
 
         [Parser(Opcode.CMSG_SET_SPECIALIZATION)]

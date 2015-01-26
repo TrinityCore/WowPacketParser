@@ -94,7 +94,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
         public static void HandleLoginVerifyWorld(Packet packet)
         {
-            WowPacketParser.Parsing.Parsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntry<Int32>(StoreNameType.Map, "Map");
+            WowPacketParser.Parsing.Parsers.MovementHandler.CurrentMapId = (uint)packet.ReadInt32<MapId>("Map");
             packet.ReadVector4("Position");
             packet.ReadUInt32("Reason");
         }
@@ -103,7 +103,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_NEW_WORLD)]
         public static void HandleNewWorld(Packet packet)
         {
-            WowPacketParser.Parsing.Parsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntry<Int32>(StoreNameType.Map, "Map");
+            WowPacketParser.Parsing.Parsers.MovementHandler.CurrentMapId = (uint)packet.ReadInt32<MapId>("Map");
             packet.ReadVector4("Position");
             packet.ReadUInt32("Reason");
 
@@ -182,7 +182,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("Id");
             packet.ReadVector3("Destination");
 
-            packet.ReadEnum<SplineFlag434>("Spline Flags", TypeCode.Int32);
+            packet.ReadInt32E<SplineFlag434>("Spline Flags");
             packet.ReadByte("AnimTier");
             packet.ReadUInt32("TierTransStartTime");
             packet.ReadUInt32("Elapsed");
@@ -303,15 +303,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var preloadMapIDCount = packet.ReadInt32("PreloadMapIDsCount") / 2;
             for (var i = 0; i < preloadMapIDCount; ++i)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "PreloadMapID", i);
+                packet.ReadInt16<MapId>("PreloadMapID", i);
 
             var uiWorldMapAreaIDSwapsCount = packet.ReadInt32("UiWorldMapAreaIDSwap") / 2;
             for (var i = 0; i < uiWorldMapAreaIDSwapsCount; ++i)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "UiWorldMapAreaIDSwaps", i);
+                packet.ReadInt16<MapId>("UiWorldMapAreaIDSwaps", i);
 
             var visibleMapIDsCount = packet.ReadInt32("VisibleMapIDsCount") / 2;
             for (var i = 0; i < visibleMapIDsCount; ++i)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "VisibleMapID", i);
+                packet.ReadInt16<MapId>("VisibleMapID", i);
         }
 
         [Parser(Opcode.SMSG_MOVE_SPLINE_SET_RUN_SPEED)]
@@ -376,7 +376,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]
         public static void HandleTransferPending(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Map, "MapID");
+            packet.ReadInt32<MapId>("MapID");
 
             packet.ResetBitReader();
 
@@ -385,18 +385,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (hasShipTransferPending)
             {
-                packet.ReadEntry<UInt32>(StoreNameType.GameObject, "ID");
-                packet.ReadEntry<Int32>(StoreNameType.Map, "OriginMapID");
+                packet.ReadUInt32<GOId>("ID");
+                packet.ReadInt32<MapId>("OriginMapID");
             }
 
             if (hasTransferSpell)
-                packet.ReadEntry<UInt32>(StoreNameType.Spell, "TransferSpellID");
+                packet.ReadUInt32<SpellId>("TransferSpellID");
         }
 
         [Parser(Opcode.SMSG_TRANSFER_ABORTED)]
         public static void HandleTransferAborted(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Map, "MapID");
+            packet.ReadInt32<MapId>("MapID");
             packet.ReadByte("Arg");
             packet.ReadEnum<TransferAbortReason>("TransfertAbort", 5);
         }
@@ -736,7 +736,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadSingle("Scale");
         }
 
-        [Parser(Opcode.SMSG_SET_VEHILCE_REC_ID)]
+        [Parser(Opcode.SMSG_SET_VEHICLE_REC_ID)]
         public static void HandleSetVehicleRecID(Packet packet)
         {
             packet.ReadPackedGuid128("VehicleGUID");

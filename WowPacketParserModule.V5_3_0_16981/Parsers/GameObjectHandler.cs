@@ -32,7 +32,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadByte("Unk1 Byte");
                 return;
             }
-            gameObject.Type = packet.ReadEnum<GameObjectType>("Type", TypeCode.Int32);
+            gameObject.Type = packet.ReadInt32E<GameObjectType>("Type");
             gameObject.DisplayId = packet.ReadUInt32("Display ID");
 
             var name = new string[4];
@@ -54,9 +54,9 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             gameObject.QuestItems = new uint[packet.ReadByte("QuestItems Length")]; // correct?
 
             for (var i = 0; i < gameObject.QuestItems.Length; i++)
-                gameObject.QuestItems[i] = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "Quest Item", i);
+                gameObject.QuestItems[i] = (uint)packet.ReadInt32<ItemId>("Quest Item", i);
 
-            packet.ReadEnum<ClientType>("Expansion", TypeCode.UInt32);
+            packet.ReadUInt32E<ClientType>("Expansion");
 
             var entry = packet.ReadEntry("Entry");
             if (entry.Value) // entry is masked

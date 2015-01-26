@@ -16,7 +16,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleUpdateObject(Packet packet)
         {
             var count = packet.ReadUInt32("NumObjUpdates");
-            uint map = packet.ReadEntry<UInt16>(StoreNameType.Map, "MapID");
+            uint map = packet.ReadUInt16<MapId>("MapID");
             packet.ResetBitReader();
             var bit552 = packet.ReadBit("HasDestroyObjects");
             if (bit552)
@@ -65,7 +65,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         private static void ReadCreateObjectBlock(Packet packet, WowGuid guid, uint map, object index)
         {
-            var objType = packet.ReadEnum<ObjectType>("Object Type", TypeCode.Byte, index);
+            var objType = packet.ReadByteE<ObjectType>("Object Type", index);
             var moves = ReadMovementUpdateBlock(packet, guid, index);
             var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, objType, index, true);
 

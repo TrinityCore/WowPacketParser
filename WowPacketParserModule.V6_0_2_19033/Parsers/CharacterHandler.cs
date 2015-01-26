@@ -29,8 +29,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadPackedGuid128("Guid", i);
 
                 packet.ReadByte("ListPosition", i);
-                var race = packet.ReadEnum<Race>("RaceID", TypeCode.Byte, i);
-                var klass = packet.ReadEnum<Class>("ClassID", TypeCode.Byte, i);
+                var race = packet.ReadByteE<Race>("RaceID", i);
+                var klass = packet.ReadByteE<Class>("ClassID", i);
                 packet.ReadByte("SexID", i);
                 packet.ReadByte("SkinID", i);
                 packet.ReadByte("FaceID", i);
@@ -59,7 +59,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 {
                     packet.ReadUInt32("InventoryItem DisplayID", i, j);
                     packet.ReadUInt32("InventoryItem DisplayEnchantID", i, j);
-                    packet.ReadEnum<InventoryType>("InventoryItem InvType", TypeCode.Byte, i, j);
+                    packet.ReadByteE<InventoryType>("InventoryItem InvType", i, j);
                 }
 
                 packet.ResetBitReader();
@@ -88,9 +88,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var bits29 = packet.ReadBits(6);
             var bit24 = packet.ReadBit();
 
-            packet.ReadEnum<Race>("RaceID", TypeCode.Byte);
-            packet.ReadEnum<Class>("ClassID", TypeCode.Byte);
-            packet.ReadEnum<Gender>("SexID", TypeCode.Byte);
+            packet.ReadByteE<Race>("RaceID");
+            packet.ReadByteE<Class>("ClassID");
+            packet.ReadByteE<Gender>("SexID");
             packet.ReadByte("SkinID");
             packet.ReadByte("FaceID");
             packet.ReadByte("HairStyleID");
@@ -115,7 +115,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleUndeleteCharacterResponse(Packet packet)
         {
             packet.ReadInt32("ClientToken");
-            packet.ReadEnum<CharacterUndeleteResult>("Result", TypeCode.Int32);
+            packet.ReadInt32E<CharacterUndeleteResult>("Result");
             packet.ReadPackedGuid128("CharacterGuid");
         }
 
@@ -141,7 +141,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < int32; i++)
             {
                 packet.ReadInt32("Power", i);
-                packet.ReadEnum<PowerType>("PowerType", TypeCode.Byte, i);
+                packet.ReadByteE<PowerType>("PowerType", i);
             }
         }
 
@@ -166,8 +166,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_RANDOMIZE_CHAR_NAME)]
         public static void HandleGenerateRandomCharacterNameQuery(Packet packet)
         {
-            packet.ReadEnum<Race>("Race", TypeCode.Byte);
-            packet.ReadEnum<Gender>("Sex", TypeCode.Byte);
+            packet.ReadByteE<Race>("Race");
+            packet.ReadByteE<Gender>("Sex");
         }
 
         [Parser(Opcode.SMSG_RANDOMIZE_CHAR_NAME)]
@@ -378,9 +378,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 packet.ReadUInt32("VirtualRealmAddress");
 
-                packet.ReadEnum<Race>("Race", TypeCode.Byte);
-                packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
-                packet.ReadEnum<Class>("Class", TypeCode.Byte);
+                packet.ReadByteE<Race>("Race");
+                packet.ReadByteE<Gender>("Gender");
+                packet.ReadByteE<Class>("Class");
                 packet.ReadByte("Level");
 
                 packet.ReadWoWString("Name", bits15);

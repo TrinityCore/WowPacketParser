@@ -75,7 +75,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         {
             var guid = new Byte[8];
 
-            var hitInfo = packet.ReadEnum<SpellHitInfo>("HitInfo", TypeCode.Int32);
+            var hitInfo = packet.ReadInt32E<SpellHitInfo>("HitInfo");
             packet.ReadPackedGuid("AttackerGUID");
             packet.ReadPackedGuid("TargetGUID");
             packet.ReadInt32("Damage");
@@ -98,10 +98,10 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 for (var i = 0; i < subDmgCount; ++i)
                     packet.ReadInt32("Damage Resisted", i);
 
-            packet.ReadEnum<VictimStates>("VictimState", TypeCode.Byte);
+            packet.ReadByteE<VictimStates>("VictimState");
             packet.ReadInt32("Unk Attacker State 0");
 
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Melee Spell ID ");
+            packet.ReadInt32<SpellId>("Melee Spell ID ");
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK))
                 packet.ReadInt32("Block Amount");

@@ -80,7 +80,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
         private static void ReadCreateObjectBlock(Packet packet, WowGuid guid, uint map, object index)
         {
-            var objType = packet.ReadEnum<ObjectType>("Object Type", TypeCode.Byte, index);
+            var objType = packet.ReadByteE<ObjectType>("Object Type", index);
             var moves = ReadMovementUpdateBlock(packet, guid, index);
             var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, objType, index, true);
 

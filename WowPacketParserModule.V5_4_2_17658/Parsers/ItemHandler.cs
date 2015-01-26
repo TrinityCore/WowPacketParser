@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -10,8 +9,8 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         [Parser(Opcode.SMSG_SET_PROFICIENCY)]
         public static void HandleSetProficency(Packet packet)
         {
-            packet.ReadEnum<UnknownFlags>("Mask", TypeCode.UInt32);
-            packet.ReadEnum<ItemClass>("Class", TypeCode.Byte);
+            packet.ReadUInt32E<UnknownFlags>("Mask");
+            packet.ReadByteE<ItemClass>("Class");
         }
 
         [Parser(Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE)]

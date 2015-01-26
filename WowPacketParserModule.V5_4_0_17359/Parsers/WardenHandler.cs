@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -11,7 +10,7 @@ namespace WowPacketParser.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_WARDEN_DATA)]
         public static void HandleWardenData(Packet packet)
         {
-            var opcode = packet.ReadEnum<WardenServerOpcode>("Warden Opcode", TypeCode.Int32);
+            var opcode = packet.ReadInt32E<WardenServerOpcode>("Warden Opcode");
 
             packet.ReadToEnd(); // Hack
         }

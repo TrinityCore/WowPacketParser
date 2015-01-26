@@ -25,11 +25,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GMTICKET_CREATE)]
         public static void HandleGMTicketCreate(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
+            packet.ReadInt32<MapId>("Map ID");
             packet.ReadVector3("Position");
             packet.ReadCString("Text");
             packet.ReadUInt32("Need Response");
-            packet.ReadBoolean("Need GM interaction");
+            packet.ReadBool("Need GM interaction");
             var count = packet.ReadInt32("Count");
 
             for (int i = 0; i < count; i++)
@@ -71,7 +71,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GMTICKET_GETTICKET)]
         public static void HandleGetGMTicket(Packet packet)
         {
-            var ticketStatus = packet.ReadEnum<GMTicketStatus>("TicketStatus", TypeCode.Int32);
+            var ticketStatus = packet.ReadInt32E<GMTicketStatus>("TicketStatus");
             if (ticketStatus != GMTicketStatus.HasText)
                 return;
 
@@ -81,8 +81,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadSingle("Ticket Age");
             packet.ReadSingle("Oldest Ticket Time");
             packet.ReadSingle("Update Time");
-            packet.ReadBoolean("Assigned to GM");
-            packet.ReadBoolean("Opened by GM");
+            packet.ReadBool("Assigned to GM");
+            packet.ReadBool("Opened by GM");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
             {
                 packet.ReadCString("Average wait time Text");
@@ -95,7 +95,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GMTICKET_DELETETICKET)]
         public static void HandleCreateUpdateGMTicket(Packet packet)
         {
-            packet.ReadEnum<GMTicketResponse>("TicketResponse", TypeCode.Int32);
+            packet.ReadInt32E<GMTicketResponse>("TicketResponse");
         }
 
         [Parser(Opcode.CMSG_GMTICKET_UPDATETEXT)]
@@ -121,10 +121,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_COMPLAIN)]
         public static void HandleComplain(Packet packet)
         {
-            bool fromChat = packet.ReadBoolean("From Chat"); // false = from mail
+            bool fromChat = packet.ReadBool("From Chat"); // false = from mail
             packet.ReadGuid("Guid");
-            packet.ReadEnum<Language>("Language", TypeCode.Int32);
-            packet.ReadEnum<ChatMessageType>("Type", TypeCode.Int32);
+            packet.ReadInt32E<Language>("Language");
+            packet.ReadInt32E<ChatMessageType>("Type");
             packet.ReadInt32("Channel ID");
 
             if (fromChat)

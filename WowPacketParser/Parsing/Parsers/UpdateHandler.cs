@@ -22,7 +22,7 @@ namespace WowPacketParser.Parsing.Parsers
             var count = packet.ReadUInt32("Count");
 
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_0_2_9056))
-                packet.ReadBoolean("Has Transport");
+                packet.ReadBool("Has Transport");
 
             for (var i = 0; i < count; i++)
             {
@@ -75,7 +75,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         private static void ReadCreateObjectBlock(Packet packet, WowGuid guid, uint map, object index)
         {
-            var objType = packet.ReadEnum<ObjectType>("Object Type", TypeCode.Byte, index);
+            var objType = packet.ReadByteE<ObjectType>("Object Type", index);
             var moves = ReadMovementUpdateBlock(packet, guid, index);
             var updates = ReadValuesUpdateBlock(packet, objType, index, true);
 
@@ -2527,8 +2527,11 @@ namespace WowPacketParser.Parsing.Parsers
 
             var moveInfo = new MovementInfo();
 
-            var flagsTypeCode = ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767) ? TypeCode.UInt16 : TypeCode.Byte;
-            var flags = packet.ReadEnum<UpdateFlag>("[" + index + "] Update Flags", flagsTypeCode);
+            UpdateFlag flags;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
+                flags = packet.ReadUInt16E<UpdateFlag>("Update Flags", index);
+            else
+                flags = packet.ReadByteE<UpdateFlag>("Update Flags", index);
 
             if (flags.HasAnyFlag(UpdateFlag.Living))
             {
@@ -2563,7 +2566,7 @@ namespace WowPacketParser.Parsing.Parsers
                     // TODO: Make Enums version friendly
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
                     {
-                        var splineFlags422 = packet.ReadEnum<SplineFlag422>("Spline Flags", TypeCode.Int32, index);
+                        var splineFlags422 = packet.ReadInt32E<SplineFlag422>("Spline Flags", index);
                         if (splineFlags422.HasAnyFlag(SplineFlag422.FinalOrientation))
                         {
                             packet.ReadSingle("Final Spline Orientation", index);
@@ -2578,7 +2581,7 @@ namespace WowPacketParser.Parsing.Parsers
                     }
                     else
                     {
-                        var splineFlags = packet.ReadEnum<SplineFlag>("Spline Flags", TypeCode.Int32, index);
+                        var splineFlags = packet.ReadInt32E<SplineFlag>("Spline Flags", index);
                         if (splineFlags.HasAnyFlag(SplineFlag.FinalTarget))
                             packet.ReadGuid("Final Spline Target GUID", index);
                         else if (splineFlags.HasAnyFlag(SplineFlag.FinalOrientation))
@@ -2604,7 +2607,7 @@ namespace WowPacketParser.Parsing.Parsers
                         packet.ReadVector3("Spline Waypoint", index, i);
 
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
-                        packet.ReadEnum<SplineMode>("Spline Mode", TypeCode.Byte, index);
+                        packet.ReadByteE<SplineMode>("Spline Mode", index);
 
                     packet.ReadVector3("Spline Endpoint", index);
                 }
@@ -2696,7 +2699,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
-                packet.ReadBoolean("Despawn Animation");
+                packet.ReadBool("Despawn Animation");
         }
 
         [Parser(Opcode.CMSG_OBJECT_UPDATE_FAILED, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)] // 4.3.4

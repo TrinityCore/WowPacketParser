@@ -52,7 +52,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             uint[] bits68 = null;
             uint[] bits448 = null;
 
-            packet.ReadEnum<ResponseCode>("Auth Code", TypeCode.Byte);
+            packet.ReadByteE<ResponseCode>("Auth Code");
 
             var hasAccountData = packet.ReadBit("Has Account Data");
             if (hasAccountData)
@@ -130,8 +130,8 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
                 for (var i = 0; i < raceCount; ++i)
                 {
-                    packet.ReadEnum<Race>("Race", TypeCode.Byte, i);
-                    packet.ReadEnum<ClientType>("Race Expansion", TypeCode.Byte, i);
+                    packet.ReadByteE<Race>("Race", i);
+                    packet.ReadByteE<ClientType>("Race Expansion", i);
                 }
 
                 packet.ReadInt32("Int34");
@@ -140,8 +140,8 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
                 for (var i = 0; i < classCount; ++i)
                 {
-                    packet.ReadEnum<Class>("Class", TypeCode.Byte, i);
-                    packet.ReadEnum<ClientType>("Class Expansion", TypeCode.Byte, i);
+                    packet.ReadByteE<Class>("Class", i);
+                    packet.ReadByteE<ClientType>("Class Expansion", i);
                 }
 
                 if (bit7C)

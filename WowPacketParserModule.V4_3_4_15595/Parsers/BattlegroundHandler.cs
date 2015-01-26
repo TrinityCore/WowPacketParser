@@ -13,7 +13,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadInt32("Holiday First Win Arena Currency Bonus");
             packet.ReadInt32("Random First Win Arena Currency Bonus");
             packet.ReadInt32("Holiday Loss Honor Currency Bonus");
-            packet.ReadEntry<Int32>(StoreNameType.Battleground, "BG type");
+            packet.ReadInt32<BgId>("BG type");
             packet.ReadInt32("Random Loss Honor Currency Bonus");
             packet.ReadInt32("Random Win Honor Currency Bonus");
             packet.ReadInt32("Holiday Win Honor Currency Bonus");
@@ -310,7 +310,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 2);
             packet.ReadXORByte(guid, 5);
-            packet.ReadEnum<BattlegroundStatus>("Status", TypeCode.UInt32);
+            packet.ReadUInt32E<BattlegroundStatus>("Status");
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 0);
@@ -325,7 +325,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             var guid = packet.StartBitStream(5, 3, 7, 2, 6, 4, 1, 0);
 
             packet.ReadXORByte(guid, 6);
-            packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id");
+            packet.ReadInt32<ZoneId>("Zone Id");
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 4);
@@ -435,7 +435,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             if (hasSecondGuid)
                 packet.ParseBitStream(guid2, 2, 5, 3, 0, 4, 6, 1, 7);
 
-            packet.ReadBoolean("Accepted");
+            packet.ReadBool("Accepted");
 
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 3);
@@ -443,13 +443,13 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 0);
 
-            packet.ReadBoolean("Warmup");
+            packet.ReadBool("Warmup");
 
             packet.ReadXORByte(guid, 2);
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 5);
 
-            packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone ID");
+            packet.ReadInt32<ZoneId>("Zone ID");
 
             packet.WriteGuid("BG Guid", guid);
             packet.WriteGuid("guid2", guid2);
@@ -530,7 +530,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         {
             var guid = packet.StartBitStream(2, 0, 3, 7, 4, 5, 6, 1);
             packet.ParseBitStream(guid, 5, 2, 0, 1, 4, 3, 7, 6);
-            packet.WriteGuid(guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING)]
@@ -557,7 +557,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 2);
 
-            packet.WriteGuid(guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_ARENA_TEAM_COMMAND_RESULT)]
@@ -762,7 +762,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         {
             packet.ReadTime("Time");
             packet.ReadUInt32("Queue Slot");
-            packet.ReadEntry<Int32>(StoreNameType.Battleground, "BGType");
+            packet.ReadInt32<BgId>("BGType");
 
             var guid = packet.StartBitStream(0, 1, 5, 6, 7, 4, 3, 2);
             packet.ReadBit("Join");
@@ -807,7 +807,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
 
             packet.ReadXORByte(guid1, 1);
 
-            packet.ReadEnum<BattlegroundError4x>("Battleground Error", TypeCode.UInt32);
+            packet.ReadUInt32E<BattlegroundError4x>("Battleground Error");
             packet.ReadUInt32("Queue slot");
 
             packet.ReadXORByte(guid2, 6);
@@ -832,7 +832,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadXORByte(guid1, 4);
             packet.ReadXORByte(guid2, 2);
 
-            packet.ReadEntry<Int32>(StoreNameType.Battleground, "BGType");
+            packet.ReadInt32<BgId>("BGType");
 
             packet.ReadXORByte(guid3, 2);
 
@@ -888,8 +888,8 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
 
             packet.ReadUInt32("Queue slot");
             packet.ReadByte("Max Level");
-            packet.ReadEnum<BattlegroundStatus>("Status", TypeCode.UInt32);
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadUInt32E<BattlegroundStatus>("Status");
+            packet.ReadInt32<MapId>("Map Id");
             packet.ReadByte("Min Level");
             packet.ReadUInt32("Elapsed Time");
 
@@ -921,8 +921,8 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadUInt32("Queue slot");
             packet.ReadTime("Time");
             packet.ReadByte("Min Level");
-            packet.ReadEnum<BattlegroundStatus>("Status", TypeCode.UInt32);
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadUInt32E<BattlegroundStatus>("Status");
+            packet.ReadInt32<MapId>("Map Id");
             packet.ReadByte("Unk Byte");
 
             var guid1 = new byte[8];
@@ -970,7 +970,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         public static void HandleBattlefieldStatusWaitForGroups(Packet packet)
         {
             packet.ReadByte("Unk Byte");
-            packet.ReadEnum<BattlegroundStatus>("Status", TypeCode.UInt32);
+            packet.ReadUInt32E<BattlegroundStatus>("Status");
             packet.ReadUInt32("Queue slot");
             packet.ReadUInt32("Time until closed");
             packet.ReadUInt32("Unk Int32");
@@ -979,7 +979,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadByte("Min Level");
             packet.ReadByte("Unk Byte");
             packet.ReadByte("Unk Byte");
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadInt32<MapId>("Map Id");
             packet.ReadTime("Time");
             packet.ReadByte("Unk Byte");
             var guid1 = new byte[8];

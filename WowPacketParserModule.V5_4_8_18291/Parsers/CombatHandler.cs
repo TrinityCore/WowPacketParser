@@ -124,7 +124,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             }
 
             packet.ReadInt32("Length");
-            var hitInfo = packet.ReadEnum<SpellHitInfo>("HitInfo", TypeCode.Int32);
+            var hitInfo = packet.ReadInt32E<SpellHitInfo>("HitInfo");
 
             packet.ReadPackedGuid("AttackerGUID");
             packet.ReadPackedGuid("TargetGUID");
@@ -149,10 +149,10 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 for (var i = 0; i < subDmgCount; ++i)
                     packet.ReadInt32("Damage Resisted", i);
 
-            var state = packet.ReadEnum<VictimStates>("VictimState", TypeCode.Byte);
+            var state = packet.ReadByteE<VictimStates>("VictimState");
             packet.ReadInt32("Unk Attacker State 0");
 
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Melee Spell ID");
+            packet.ReadInt32<SpellId>("Melee Spell ID");
 
             var block = 0;
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK))
@@ -190,7 +190,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 5);
-            packet.ReadEnum<AIReaction>("Reaction", TypeCode.Int32);
+            packet.ReadInt32E<AIReaction>("Reaction");
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 2);
@@ -232,7 +232,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadInt32("Int3C");
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 7);
-            packet.ReadEnum<EnvironmentDamage>("Type", TypeCode.Byte);
+            packet.ReadByteE<EnvironmentDamage>("Type");
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 5);

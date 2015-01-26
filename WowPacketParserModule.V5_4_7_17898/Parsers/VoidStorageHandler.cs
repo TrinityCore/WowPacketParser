@@ -99,7 +99,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guid[i], 7);
                 packet.ReadXORByte(guid[i], 6);
                 packet.ReadXORByte(id[i], 0);
-                packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry", i);
+                packet.ReadUInt32<ItemId>("Item Entry", i);
                 packet.ReadInt32("New Unk", i);
                 packet.WriteGuid("Item Id", id[i], i);
                 packet.WriteGuid("Item Player Creator Guid", guid[i], i);
@@ -108,7 +108,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_VOID_TRANSFER_RESULT)]
         public static void HandleVoidTransferResults(Packet packet)
         {
-            packet.ReadEnum<VoidTransferError>("Error", TypeCode.UInt32);
+            packet.ReadUInt32E<VoidTransferError>("Error");
         }
 
         [Parser(Opcode.SMSG_VOID_STORAGE_TRANSFER_CHANGES)]
@@ -170,7 +170,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guid[i], 5);
                 packet.ReadXORByte(guid[i], 1);
                 packet.ReadXORByte(id1[i], 4);
-                packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry", i); //16
+                packet.ReadUInt32<ItemId>("Item Entry", i); //16
 
                 packet.WriteGuid("Item Id 1", id1[i], i);
                 packet.WriteGuid("Item Player Creator Guid", guid[i], i);

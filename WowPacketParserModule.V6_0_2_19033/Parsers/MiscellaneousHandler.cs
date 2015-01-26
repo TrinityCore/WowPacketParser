@@ -31,7 +31,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_LOAD_SCREEN)]
         public static void HandleClientEnterWorld(Packet packet)
         {
-            var mapId = packet.ReadEntry<Int32>(StoreNameType.Map, "MapID");
+            var mapId = packet.ReadInt32<MapId>("MapID");
             packet.ReadBit("Showing");
 
             packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
@@ -40,7 +40,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_WEATHER)]
         public static void HandleWeatherStatus(Packet packet)
         {
-            var state = packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
+            var state = packet.ReadInt32E<WeatherState>("State");
             var grade = packet.ReadSingle("Intensity");
             var unk = packet.ReadBit("Abrupt"); // Type
 
@@ -187,7 +187,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
 
             for (var i = 0; i < bits728; ++i)
-                packet.ReadEntry<UInt32>(StoreNameType.Area, "Area", i);
+                packet.ReadUInt32<AreaId>("Area", i);
         }
 
         [Parser(Opcode.SMSG_WHO)]
@@ -217,9 +217,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 packet.ReadInt32("VirtualRealmAddress", i);
 
-                packet.ReadEnum<Race>("Race", TypeCode.Byte, i);
-                packet.ReadEnum<Gender>("Sex", TypeCode.Byte, i);
-                packet.ReadEnum<Class>("ClassId", TypeCode.Byte, i);
+                packet.ReadByteE<Race>("Race", i);
+                packet.ReadByteE<Gender>("Sex", i);
+                packet.ReadByteE<Class>("ClassId", i);
                 packet.ReadByte("Level", i);
 
                 packet.ReadWoWString("Name", bits15, i);
@@ -329,7 +329,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_ZONE_UNDER_ATTACK)]
         public static void HandleZoneUpdate(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Zone, "AreaID");
+            packet.ReadInt32<ZoneId>("AreaID");
         }
 
         [Parser(Opcode.CMSG_PAGE_TEXT_QUERY)]

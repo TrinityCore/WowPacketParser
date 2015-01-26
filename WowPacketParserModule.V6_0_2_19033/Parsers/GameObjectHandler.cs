@@ -32,7 +32,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (dataSize == 0)
                 return;
 
-            gameObject.Type = packet.ReadEnum<GameObjectType>("Type", TypeCode.Int32);
+            gameObject.Type = packet.ReadInt32E<GameObjectType>("Type");
 
             gameObject.DisplayId = packet.ReadUInt32("Display ID");
 
@@ -56,9 +56,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var length = packet.ReadByte("QuestItems Length");
             for (var i = 0; i < length; i++)
-                gameObject.QuestItems[i] = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "Quest Item", i);
+                gameObject.QuestItems[i] = (uint)packet.ReadInt32<ItemId>("Quest Item", i);
 
-            packet.ReadEnum<ClientType>("Expansion", TypeCode.UInt32);
+            packet.ReadUInt32E<ClientType>("Expansion");
 
             Storage.GameObjectTemplates.Add((uint)entry.Key, gameObject, packet.TimeSpan);
 

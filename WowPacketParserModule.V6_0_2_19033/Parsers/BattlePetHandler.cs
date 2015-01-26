@@ -422,7 +422,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ResetBitReader();
 
             for (var i = 0; i < 2; ++i) // Winners
-                packet.ReadEntry<Int32>(StoreNameType.Unit, "NpcCreatureID", idx, i);
+                packet.ReadInt32<UnitId>("NpcCreatureID", idx, i);
 
             var petsCount = packet.ReadInt32("PetsCount", idx);
 

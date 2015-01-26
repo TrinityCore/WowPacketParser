@@ -72,7 +72,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     packet.ReadInt32("Count", i, j);
                     packet.ReadByte("Slot", i, j);
                     packet.AddValue("bit84", bit84[i][j], i, j);
-                    packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Id", i, j);
+                    packet.ReadUInt32<ItemId>("Item Id", i, j);
                 }
 
                 packet.ReadWoWString("Body", bodyLength[i], i);
@@ -109,9 +109,9 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         public static void HandleSendMailResult(Packet packet)
         {
             packet.ReadUInt32("Mail Id");
-            packet.ReadEnum<MailErrorType>("Mail Error", TypeCode.UInt32);
+            packet.ReadUInt32E<MailErrorType>("Mail Error");
             packet.ReadUInt32("Equip Error");
-            packet.ReadEnum<MailActionType>("Mail Action", TypeCode.UInt32);
+            packet.ReadUInt32E<MailActionType>("Mail Action");
             packet.ReadUInt32("Item Low GUID");
             packet.ReadUInt32("Item count");
         }

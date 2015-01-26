@@ -1,5 +1,4 @@
-﻿using System;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -43,10 +42,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_LOOT_METHOD)]
         public static void HandleLootMethod(Packet packet)
         {
-            packet.ReadEnum<LootMethod>("Method", TypeCode.Byte);
+            packet.ReadByteE<LootMethod>("Method");
             packet.ReadByte("PartyIndex");
             packet.ReadPackedGuid128("Master");
-            packet.ReadEnum<ItemQuality>("Threshold", TypeCode.Int32);
+            packet.ReadInt32E<ItemQuality>("Threshold");
         }
 
         [Parser(Opcode.SMSG_LOOT_REMOVED)]
@@ -75,10 +74,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             //! TODO Doublecheck the fields for this whole packet. I didn't have many different sniffs to name fields.
             packet.ReadPackedGuid128("Owner");
             packet.ReadPackedGuid128("LootObj");
-            packet.ReadEnum<LootError>("FailureReason", TypeCode.Byte);
-            packet.ReadEnum<LootType>("AcquireReason", TypeCode.Byte);
-            packet.ReadEnum<LootMethod>("LootMethod", TypeCode.Byte);
-            packet.ReadEnum<ItemQuality>("Threshold", TypeCode.Byte);
+            packet.ReadByteE<LootError>("FailureReason");
+            packet.ReadByteE<LootType>("AcquireReason");
+            packet.ReadByteE<LootMethod>("LootMethod");
+            packet.ReadByteE<ItemQuality>("Threshold");
 
             packet.ReadUInt32("Coins");
 
@@ -181,7 +180,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("LootObj");
             packet.ReadByte("LootListID");
-            packet.ReadEnum<LootRollType>("RollType", TypeCode.Byte);
+            packet.ReadByteE<LootRollType>("RollType");
         }
 
         [Parser(Opcode.SMSG_LOOT_ALL_PASSED)]

@@ -17,7 +17,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.StartBitStream(0, 3, 5, 1, 4, 6, 7, 2);
             packet.ParseBitStream(guid, 7, 4, 3, 5, 1, 2, 6, 0);
-            packet.WriteGuid(guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_SET_TRADE_ITEM, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -57,7 +57,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_TRADE_STATUS, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleTradeStatus(Packet packet)
         {
-            var status = packet.ReadEnum<TradeStatus>("Status", TypeCode.UInt32);
+            var status = packet.ReadUInt32E<TradeStatus>("Status");
             switch (status)
             {
                 case TradeStatus.BeginTrade:
@@ -162,12 +162,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk Slot 1");
             packet.ReadUInt32("Unk Slot 2");
             packet.ReadUInt32("Gold");
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32<SpellId>("Spell ID");
 
             while (packet.CanRead())
             {
                 var slot = packet.ReadByte("Slot Index");
-                packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry", slot);
+                packet.ReadUInt32<ItemId>("Item Entry", slot);
                 packet.ReadUInt32("Item Display ID", slot);
                 packet.ReadUInt32("Item Count", slot);
                 packet.ReadUInt32("Item Wrapped", slot);
@@ -190,7 +190,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadUInt32("Unk 1");
             packet.ReadUInt32("Unk 2");
-            packet.ReadBoolean("Unk (Has slots?)");
+            packet.ReadBool("Unk (Has slots?)");
             packet.ReadUInt32("Unk 3");
             packet.ReadUInt32("Unk 4");
             packet.ReadUInt32("Trade Id?");
@@ -203,7 +203,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Unk1", i);
                 packet.ReadGuid("Item Creator GUID", i);
                 packet.ReadUInt32("Item Perm Enchantment Id", i);
-                packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry", i);
+                packet.ReadUInt32<ItemId>("Item Entry", i);
                 packet.ReadUInt32("Item Enchantment Id", i, 0);
                 packet.ReadUInt32("Item Durability", i);
                 packet.ReadUInt32("Unk2", i);
@@ -339,10 +339,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Trade Id");
             packet.ReadInt32("Unk Int32 2");
             packet.ReadInt64("Gold");
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32<SpellId>("Spell ID");
             packet.ReadInt32("Unk Slot 1");
             packet.ReadInt32("Unk Int32 5");
-            packet.ReadBoolean("Trader");
+            packet.ReadBool("Trader");
             packet.ReadInt32("Unk Slot 2");
 
             var count = packet.ReadBits("Count", 22);
@@ -421,7 +421,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(guids1[i], 1);
                 packet.ReadXORByte(guids1[i], 7);
                 packet.ReadXORByte(guids1[i], 4);
-                packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry", i);
+                packet.ReadUInt32<ItemId>("Item Entry", i);
                 packet.ReadXORByte(guids1[i], 0);
                 packet.ReadUInt32("Item Count", i);
                 packet.ReadXORByte(guids1[i], 5);

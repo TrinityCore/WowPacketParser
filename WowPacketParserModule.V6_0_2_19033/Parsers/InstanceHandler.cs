@@ -104,7 +104,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_SET_SAVED_INSTANCE_EXTEND)]
         public static void HandleSetSavedInstanceExtend(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Map, "MapID");
+            packet.ReadInt32<MapId>("MapID");
             packet.ReadInt32("DifficultyID");
             packet.ReadBit("Extended");
         }

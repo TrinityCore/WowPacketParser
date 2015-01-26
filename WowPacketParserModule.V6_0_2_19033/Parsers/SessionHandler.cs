@@ -1,5 +1,4 @@
-﻿using System;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
@@ -16,7 +15,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_AUTH_RESPONSE)]
         public static void HandleAuthResponse(Packet packet)
         {
-            packet.ReadEnum<ResponseCode>("Auth Code", TypeCode.Byte);
+            packet.ReadByteE<ResponseCode>("Auth Code");
             var ok = packet.ReadBit("Success");
             var queued = packet.ReadBit("Queued");
             if (ok)
@@ -48,14 +47,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 for (var i = 0; i < races; ++i)
                 {
-                    packet.ReadEnum<Race>("Race", TypeCode.Byte, i);
-                    packet.ReadEnum<ClientType>("RequiredExpansion", TypeCode.Byte, i);
+                    packet.ReadByteE<Race>("Race", i);
+                    packet.ReadByteE<ClientType>("RequiredExpansion", i);
                 }
 
                 for (var i = 0; i < classes; ++i)
                 {
-                    packet.ReadEnum<Class>("Class", TypeCode.Byte, i);
-                    packet.ReadEnum<ClientType>("RequiredExpansion", TypeCode.Byte, i);
+                    packet.ReadByteE<Class>("Class", i);
+                    packet.ReadByteE<ClientType>("RequiredExpansion", i);
                 }
 
                 for (var i = 0; i < templates; ++i)
@@ -64,7 +63,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     var templateClasses = packet.ReadUInt32();
                     for (var j = 0; j < templateClasses; ++j)
                     {
-                        packet.ReadEnum<Class>("Class", TypeCode.Byte, i, j);
+                        packet.ReadByteE<Class>("Class", i, j);
                         packet.ReadByte("FactionGroup", i, j);
                     }
 
@@ -126,7 +125,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             var sha = new byte[20];
             packet.ReadUInt32("Grunt ServerId");
-            packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int16);
+            packet.ReadInt16E<ClientVersionBuild>("Client Build");
             packet.ReadUInt32("Region");
             packet.ReadUInt32("Battlegroup");
             packet.ReadUInt32("RealmIndex");

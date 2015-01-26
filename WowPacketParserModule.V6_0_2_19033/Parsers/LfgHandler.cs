@@ -1,5 +1,4 @@
-﻿using System;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -332,7 +331,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ResetBitReader();
 
             packet.ReadByte("PartyIndex");
-            packet.ReadEnum<LfgRoleFlag>("Roles", TypeCode.Int32);
+            packet.ReadInt32E<LfgRoleFlag>("Roles");
             var slotsCount = packet.ReadInt32();
 
             for (var i = 0; i < 3; ++i) // Needs
@@ -347,7 +346,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void ReadLFGRoleCheckUpdateMember(Packet packet, params object[] idx)
         {
             packet.ReadPackedGuid128("Guid", idx);
-            packet.ReadEnum<LfgRoleFlag>("RolesDesired", TypeCode.UInt32, idx);
+            packet.ReadUInt32E<LfgRoleFlag>("RolesDesired", idx);
             packet.ReadByte("Level", idx);
             packet.ReadBit("RoleCheckComplete", idx);
 
@@ -358,7 +357,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleLfgRoleCheck(Packet packet)
         {
             packet.ReadByte("PartyIndex");
-            packet.ReadEnum<LfgRoleCheckStatus>("RoleCheckStatus", TypeCode.Byte);
+            packet.ReadByteE<LfgRoleCheckStatus>("RoleCheckStatus");
             var joinSlotsCount = packet.ReadInt32("JoinSlotsCount");
             packet.ReadUInt64("BgQueueID");
             packet.ReadInt32("ActivityID"); // NC
@@ -378,7 +377,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleRoleChosen(Packet packet)
         {
             packet.ReadPackedGuid128("Player");
-            packet.ReadEnum<LfgRoleFlag>("RoleMask", TypeCode.UInt32);
+            packet.ReadUInt32E<LfgRoleFlag>("RoleMask");
             packet.ReadBit("Accepted");
         }
 
