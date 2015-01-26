@@ -552,7 +552,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_BATTLEFIELD_MGR_QUEUE_REQUEST, 0xFF95}, // NF(0x1B62)(0x04E3) //lefieldMgrQueueRequest
             {Opcode.CMSG_BATTLEFIELD_MGR_EXIT_REQUEST, 0x0581}, // (0x1601)(0x04E7) //lefieldMgrExitRequest
             {Opcode.CMSG_GMRESPONSE_RESOLVE, 0x04F0}, // NF()(0x04F0) // // lua: GMResponseResolve
-            {Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x3574}, // (0x4A55)(0x0000) //
+            {Opcode.CMSG_UI_TIME_REQUEST, 0x3574}, // (0x4A55)(0x0000) //
             {Opcode.CMSG_CHAR_RACE_CHANGE, 0x04F8}, // NF()(0x04F8) // // called from lua: CreateCharacter}, paid race change
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0xD677}, // (0x6A99)(0x04FF) //yForAccountDataTimes
             {Opcode.CMSG_QUERY_QUESTS_COMPLETED, 0x0500}, // NF()(0x0500) // // lua: QueryQuestsCompleted
@@ -1112,7 +1112,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_MOVE_ENABLE_GRAVITY, 0x04D0}, // NF()(0x04D0) // // SMSG}, movement related
             {Opcode.SMSG_MOVE_SPLINE_DISABLE_GRAVITY, 0x04D3}, // NF()(0x04D3) // // SMSG}, movement related
             {Opcode.SMSG_MOVE_SPLINE_ENABLE_GRAVITY, 0x04D4}, // NF()(0x04D4) // // SMSG}, movement related
-            {Opcode.SMSG_EQUIPMENT_SET_USE_RESULT, 0xF657}, // (0x02D9)(0x04D6) //EquipmentSetResult?
+            {Opcode.SMSG_USE_EQUIPMENT_SET_RESULT, 0xF657}, // (0x02D9)(0x04D6) //EquipmentSetResult?
             {Opcode.SMSG_UNKNOWN_1240, 0xA676}, // (0x83DC)(0x04D8) //t64}, string}, doing nothing
             {Opcode.SMSG_CHAR_FACTION_CHANGE, 0xCC76}, // (0x42FD)(0x04DA) //to 1241 (PFC server response)
             {Opcode.SMSG_BATTLEFIELD_MGR_ENTRY_INVITE, 0x04DE}, // NF()(0x04DE) // // uint32}, EVENT_BATTLEFIELD_MGR_ENTRY_INVITE
@@ -1126,7 +1126,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_GMRESPONSE_DB_ERROR, 0x9576}, // (0x4375)(0x04EE) //
             {Opcode.SMSG_GMRESPONSE_RECEIVED, 0x0F57}, // (0x0A91)(0x04EF) //int32}, string[2000]}, string[4000][4]
             {Opcode.SMSG_GMRESPONSE_STATUS_UPDATE, 0x057C}, // (0x8B39)(0x04F1) //- EVENT_GMSURVEY_DISPLAY}, 0 - EVENT_UPDATE_TICKET)
-            {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x5557}, // (0xCA31)(0x04F7) //
+            {Opcode.SMSG_UI_TIME, 0x5557}, // (0xCA31)(0x04F7) //
             {Opcode.SMSG_TALENTS_INVOLUNTARILY_RESET, 0x4E54}, // (0x0215)(0x04FA) //NT_TALENTS_INVOLUNTARILY_RESET
             {Opcode.SMSG_UNKNOWN_1276, 0xFF94}, // NF(0x2AD0)(0x04FC) //ing in 10554
             {Opcode.SMSG_LOOT_SLOT_CHANGED, 0x4C7C}, // (0xC3BD)(0x04FD) //T_SLOT_CHANGED

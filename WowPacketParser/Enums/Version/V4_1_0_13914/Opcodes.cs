@@ -85,7 +85,6 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_ENCHANTMENT_LOG, 0x0BB2F}, // 4.1.0 13914
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x0683D}, // 4.1.0 13914
             {Opcode.SMSG_EQUIPMENT_SET_SAVED, 0x01A7F}, // 4.1.0 13914
-            {Opcode.SMSG_EQUIPMENT_SET_USE_RESULT, 0x0D93D}, // 4.1.0 13914
             {Opcode.SMSG_EXPECTED_SPAM_RECORDS, 0x01E3F}, // 4.1.0 13914
             {Opcode.SMSG_EXPLORATION_EXPERIENCE, 0x06B3F}, // 4.1.0 13914
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x0CC6C}, // 4.1.0 13914
@@ -232,6 +231,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_UPDATE_INSTANCE_OWNERSHIP, 0x05D6E}, // 4.1.0 13914
             {Opcode.SMSG_UPDATE_LAST_INSTANCE, 0x09D2E}, // 4.1.0 13914
             {Opcode.SMSG_UPDATE_OBJECT, 0x0BF6D}, // 4.1.0 13914
+            {Opcode.SMSG_USE_EQUIPMENT_SET_RESULT, 0x0D93D}, // 4.1.0 13914
             {Opcode.SMSG_USERLIST_ADD, 0x0E83C}, // 4.1.0 13914
             {Opcode.SMSG_USERLIST_REMOVE, 0x05B3F}, // 4.1.0 13914
             {Opcode.SMSG_USERLIST_UPDATE, 0x09C3C}, // 4.1.0 13914

@@ -54,8 +54,8 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_EQUIPMENT_SET_USE_RESULT)]
-        public static void HandleEquipmentSetUseResult(Packet packet)
+        [Parser(Opcode.SMSG_USE_EQUIPMENT_SET_RESULT)]
+        public static void HandleUseEquipmentSetResult(Packet packet)
         {
             packet.ReadByte("Result");
         }

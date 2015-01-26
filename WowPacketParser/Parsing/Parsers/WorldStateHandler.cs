@@ -36,7 +36,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Unk byte");
         }
 
-        [Parser(Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE)]
+        [Parser(Opcode.SMSG_UI_TIME)]
         public static void HandleUpdateUITimer(Packet packet)
         {
             packet.ReadTime("Time");

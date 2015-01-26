@@ -1110,7 +1110,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_TUTORIAL_CLEAR)]
         [Parser(Opcode.MSG_MOVE_WORLDPORT_ACK)]
         [Parser(Opcode.CMSG_QUERY_TIME)]
-        [Parser(Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE)]
+        [Parser(Opcode.CMSG_UI_TIME_REQUEST)]
         [Parser(Opcode.SMSG_COMSAT_CONNECT_FAIL)]
         [Parser(Opcode.SMSG_COMSAT_RECONNECT_TRY)]
         [Parser(Opcode.SMSG_COMSAT_DISCONNECT)]

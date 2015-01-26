@@ -318,6 +318,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.CMSG_TUTORIAL_CLEAR, 0x1CE7},
             {Opcode.CMSG_TUTORIAL_FLAG, 0x9E73},
             {Opcode.CMSG_TUTORIAL_RESET, 0x8AF7},
+            {Opcode.CMSG_UI_TIME_REQUEST, 0x58F6},
             {Opcode.CMSG_UNLEARN_SKILL, 0xAC3},
             {Opcode.CMSG_UPDATE_ACCOUNT_DATA, 0x4AFE},
             {Opcode.CMSG_UPDATE_PROJECTILE_POSITION, 0xEDB},
@@ -326,7 +327,6 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.CMSG_WHO, 0x9AD7},
             {Opcode.CMSG_WHOIS, 0xCCE6},
             //{Opcode.CMSG_WORLD_PORT_RESPONSE, 0x0A9A},
-            {Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x58F6},
             {Opcode.CMSG_ZONEUPDATE, 0x4AE2},
         };
 
@@ -728,6 +728,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.SMSG_TRIGGER_MOVIE, 0x1A7B},
             {Opcode.SMSG_TURN_IN_PETITION_RESULTS, 0x08DB},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x1A46},
+            {Opcode.SMSG_UI_TIME, 0xDE5E},
             {Opcode.SMSG_UNIT_SPELLCAST_START, 0x8C63},
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA, 0x4A73},
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA_COMPLETE, 0x5E53},
@@ -750,7 +751,6 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.SMSG_WEATHER, 0x4ECE},
             {Opcode.SMSG_WHO, 0x4C7F},
             {Opcode.SMSG_WHOIS, 0x9CFF},
-            {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0xDE5E},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x08CF},
         };
 

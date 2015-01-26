@@ -377,6 +377,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.CMSG_TUTORIAL_CLEAR, 0x0885},
             {Opcode.CMSG_TUTORIAL_FLAG, 0x07AC},
             {Opcode.CMSG_TUTORIAL_RESET, 0x0B05},
+            {Opcode.CMSG_UI_TIME_REQUEST, 0x0780},
             {Opcode.CMSG_UNACCEPT_TRADE, 0x02F2},
             {Opcode.CMSG_UNLEARN_SKILL, 0x0709},
             {Opcode.CMSG_UNLEARN_SPECIALIZATION, 0x0BF7},
@@ -393,7 +394,6 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.CMSG_WARGAME_ACCEPT, 0x00AA},
             {Opcode.CMSG_WHO, 0x0D20},
             {Opcode.CMSG_WHOIS, 0x0E25},
-            {Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x0780},
             {Opcode.CMSG_WRAP_ITEM, 0x076C},
             {Opcode.CMSG_ZONEUPDATE, 0x088D},
         };
@@ -934,6 +934,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_TRIGGER_MOVIE, 0x080C},
             {Opcode.SMSG_TURN_IN_PETITION_RESULTS, 0x0E28},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x06A8},
+            {Opcode.SMSG_UI_TIME, 0x004D},
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA, 0x0EE8},
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA_COMPLETE, 0x0548},
             {Opcode.SMSG_ACTION_BUTTONS, 0x0951},
@@ -972,7 +973,6 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_WHO, 0x098C},
             {Opcode.SMSG_WHOIS, 0x07A5},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x00D9},
-            {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x004D},
             {Opcode.SMSG_XP_GAIN_ABORTED, 0x0398},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x09E9},
         };
