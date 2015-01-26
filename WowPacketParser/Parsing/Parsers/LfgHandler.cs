@@ -120,7 +120,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Comment");
         }
 
-        public static void ReadLfgRewardBlock(ref Packet packet, object index)
+        public static void ReadLfgRewardBlock(Packet packet, object index)
         {
             packet.ReadBoolean("First Completion", index);
 
@@ -191,7 +191,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadLfgEntry("Random LFG Entry");
             packet.ReadLfgEntry("Actual LFG Entry");
 
-            ReadLfgRewardBlock(ref packet, -1);
+            ReadLfgRewardBlock(packet, -1);
         }
 
         [Parser(Opcode.SMSG_LFG_PLAYER_REWARD, ClientVersionBuild.V4_3_4_15595)]
@@ -253,7 +253,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadLfgEntry("LFG Entry");
         }
 
-        public static void ReadDungeonJoinResults(ref Packet packet, params int[] values)
+        public static void ReadDungeonJoinResults(Packet packet, params int[] values)
         {
             packet.ReadLfgEntry("LFG Entry", values);
             packet.ReadEnum<LfgEntryCheckResult>("Entry Check Result", TypeCode.UInt32, values);
@@ -264,11 +264,11 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        public static void ReadPlayerLockedDungeons(ref Packet packet, int i)
+        public static void ReadPlayerLockedDungeons(Packet packet, int i)
         {
             var numFields = packet.ReadInt32("Entry Count", i);
             for (var j = 0; j < numFields; j++)
-                ReadDungeonJoinResults(ref packet, i, j);
+                ReadDungeonJoinResults(packet, i, j);
         }
 
         [Parser(Opcode.SMSG_LFG_PLAYER_INFO)]
@@ -278,10 +278,10 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < numFields; i++)
             {
                 packet.ReadLfgEntry("Random Dungeon Entry", i);
-                ReadLfgRewardBlock(ref packet, i);
+                ReadLfgRewardBlock(packet, i);
             }
 
-            ReadPlayerLockedDungeons(ref packet, -1);
+            ReadPlayerLockedDungeons(packet, -1);
         }
 
         [Parser(Opcode.SMSG_LFG_PARTY_INFO)]
@@ -291,7 +291,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < numFields; i++)
             {
                 packet.ReadGuid("GUID", i);
-                ReadPlayerLockedDungeons(ref packet, i);
+                ReadPlayerLockedDungeons(packet, i);
             }
         }
 
@@ -517,7 +517,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadGuid("GUID", i);
                 var cnt2 = packet.ReadInt32("Dungeon Count", i);
                 for (var j = 0; j < cnt2; j++)
-                    ReadDungeonJoinResults(ref packet, i, j);
+                    ReadDungeonJoinResults(packet, i, j);
             }
         }
 
@@ -555,7 +555,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; ++i)
             {
                 for (var j = 0; j < counts[i]; j++)
-                    ReadDungeonJoinResults(ref packet, i, j);
+                    ReadDungeonJoinResults(packet, i, j);
 
                 packet.ParseBitStream(guids[i], 2, 5, 1, 0, 4, 3, 6, 7);
                 packet.WriteGuid("Guid", guids[i], i);

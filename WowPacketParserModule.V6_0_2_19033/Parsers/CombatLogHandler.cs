@@ -48,7 +48,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
 
             if (bit76)
-                SpellParsers.ReadSpellCastLogData(ref packet);
+                SpellParsers.ReadSpellCastLogData(packet);
         }
 
         [Parser(Opcode.SMSG_PERIODICAURALOG)]
@@ -90,7 +90,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var bit56 = packet.ReadBit("HasLogData");
             if (bit56)
-                SpellParsers.ReadSpellCastLogData(ref packet);
+                SpellParsers.ReadSpellCastLogData(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_HEAL_LOG)]
@@ -116,7 +116,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadSingle("CritRollMade");
 
             if (bit120)
-                SpellParsers.ReadSpellCastLogData(ref packet);
+                SpellParsers.ReadSpellCastLogData(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_ENERGIZE_LOG)]
@@ -133,7 +133,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var bit100 = packet.ReadBit("HasLogData");
             if (bit100)
-                SpellParsers.ReadSpellCastLogData(ref packet);
+                SpellParsers.ReadSpellCastLogData(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_EXECUTE_LOG)]
@@ -194,7 +194,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var bit160 = packet.ReadBit("HasLogData");
             if (bit160)
-                SpellParsers.ReadSpellCastLogData(ref packet);
+                SpellParsers.ReadSpellCastLogData(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_DAMAGE_SHIELD)]
@@ -212,7 +212,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var bit76 = packet.ReadBit("HasLogData");
             if (bit76)
-                SpellHandler.ReadSpellCastLogData(ref packet);
+                SpellHandler.ReadSpellCastLogData(packet);
         }
 
         [Parser(Opcode.SMSG_ENVIRONMENTALDAMAGELOG)]
@@ -228,7 +228,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var bit76 = packet.ReadBit("HasLogData");
             if (bit76)
-                SpellHandler.ReadSpellCastLogData(ref packet);
+                SpellHandler.ReadSpellCastLogData(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_ABSORB_LOG)]
@@ -246,7 +246,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var bit100 = packet.ReadBit("HasLogData");
             if (bit100)
-                SpellParsers.ReadSpellCastLogData(ref packet);
+                SpellParsers.ReadSpellCastLogData(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_INTERRUPT_LOG)]

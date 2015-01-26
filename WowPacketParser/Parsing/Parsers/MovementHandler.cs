@@ -18,15 +18,15 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static readonly ConcurrentBag<ushort> ActivePhases = new ConcurrentBag<ushort>();
 
-        public static MovementInfo ReadMovementInfo(ref Packet packet, WowGuid guid, object index = null)
+        public static MovementInfo ReadMovementInfo(Packet packet, WowGuid guid, object index = null)
         {
             if (ClientVersion.Build == ClientVersionBuild.V4_2_0_14333)
-                return ReadMovementInfo420(ref packet, index);
+                return ReadMovementInfo420(packet, index);
 
-            return ReadMovementInfoGen(ref packet, guid, index);
+            return ReadMovementInfoGen(packet, guid, index);
         }
 
-        private static MovementInfo ReadMovementInfoGen(ref Packet packet, WowGuid guid, object index)
+        private static MovementInfo ReadMovementInfoGen(Packet packet, WowGuid guid, object index)
         {
             var info = new MovementInfo
             {
@@ -100,7 +100,7 @@ namespace WowPacketParser.Parsing.Parsers
             return info;
         }
 
-        private static MovementInfo ReadMovementInfo420(ref Packet packet, object index)
+        private static MovementInfo ReadMovementInfo420(Packet packet, object index)
         {
             var info = new MovementInfo
             {
@@ -239,14 +239,14 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
             {
                 // Not the best way
-                ReadSplineMovement510(ref packet, pos);
+                ReadSplineMovement510(packet, pos);
                 return;
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
             {
                 // Not the best way
-                ReadSplineMovement422(ref packet, pos);
+                ReadSplineMovement422(packet, pos);
                 return;
             }
 
@@ -288,7 +288,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        private static void ReadSplineMovement510(ref Packet packet, Vector3 pos)
+        private static void ReadSplineMovement510(Packet packet, Vector3 pos)
         {
             var flags = packet.ReadEnum<SplineFlag434>("Spline Flags", TypeCode.Int32);
 
@@ -364,7 +364,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        private static void ReadSplineMovement422(ref Packet packet, Vector3 pos)
+        private static void ReadSplineMovement422(Packet packet, Vector3 pos)
         {
             var flags = packet.ReadEnum<SplineFlag422>("Spline Flags", TypeCode.Int32);
 
@@ -496,7 +496,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.Direction == Direction.ServerToClient)
             {
                 packet.ReadInt32("Movement Counter");
-                ReadMovementInfo(ref packet, guid);
+                ReadMovementInfo(packet, guid);
             }
             else
             {
@@ -1272,7 +1272,7 @@ namespace WowPacketParser.Parsing.Parsers
             else
                 guid = new WowGuid64();
 
-            ReadMovementInfo(ref packet, guid);
+            ReadMovementInfo(packet, guid);
 
             if (packet.Opcode != Opcodes.GetOpcode(Opcode.MSG_MOVE_KNOCK_BACK, Direction.Bidirectional))
                 return;
@@ -1287,7 +1287,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleMoveSplineDone(Packet packet)
         {
             var guid = packet.ReadPackedGuid("Guid");
-            ReadMovementInfo(ref packet, guid);
+            ReadMovementInfo(packet, guid);
             packet.ReadInt32("Movement Counter"); // Possibly
         }
 
@@ -1344,7 +1344,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleMovementSetSpeed(Packet packet)
         {
             var guid = packet.ReadPackedGuid("GUID");
-            ReadMovementInfo(ref packet, guid);
+            ReadMovementInfo(packet, guid);
             packet.ReadSingle("Speed");
         }
 
@@ -1381,7 +1381,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadPackedGuid("Guid");
             packet.ReadInt32("Movement Counter");
 
-            ReadMovementInfo(ref packet, guid);
+            ReadMovementInfo(packet, guid);
 
             packet.ReadSingle("New Speed");
         }
@@ -1397,7 +1397,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Movement Counter");
 
             if (packet.Opcode != Opcodes.GetOpcode(Opcode.SMSG_MOVE_SET_COLLISION_HGT, Direction.ServerToClient))
-                ReadMovementInfo(ref packet, guid);
+                ReadMovementInfo(packet, guid);
 
             packet.ReadSingle("Collision Height");
         }
@@ -1444,7 +1444,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.ReadPackedGuid("Guid");
             packet.ReadInt32("Movement Counter");
-            ReadMovementInfo(ref packet, guid);
+            ReadMovementInfo(packet, guid);
             packet.ReadSingle("Unk float");
         }
 
@@ -1456,7 +1456,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadPackedGuid("Guid");
             packet.ReadInt32("Movement Counter");
 
-            ReadMovementInfo(ref packet, guid);
+            ReadMovementInfo(packet, guid);
         }
 
         [HasSniffData]

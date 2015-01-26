@@ -7,7 +7,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class TalentHandler
     {
-        public static void ReadTalentInfo(ref Packet packet)
+        public static void ReadTalentInfo(Packet packet)
         {
             packet.ReadUInt32("Free Talent count");
             var speccount = packet.ReadByte("Spec count");
@@ -29,7 +29,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        public static void ReadInspectPart(ref Packet packet)
+        public static void ReadInspectPart(Packet packet)
         {
             var slotMask = packet.ReadUInt32("Slot Mask");
             var slot = 0;
@@ -77,8 +77,8 @@ namespace WowPacketParser.Parsing.Parsers
             else
                 packet.ReadPackedGuid("GUID");
 
-            ReadTalentInfo(ref packet);
-            ReadInspectPart(ref packet);
+            ReadTalentInfo(packet);
+            ReadInspectPart(packet);
 
             if (packet.CanRead()) // otherwise it would fail for players without a guild
             {
@@ -99,7 +99,7 @@ namespace WowPacketParser.Parsing.Parsers
             else
                 packet.ReadPackedGuid("GUID");
 
-            ReadInspectPart(ref packet);
+            ReadInspectPart(packet);
         }
 
         [Parser(Opcode.MSG_TALENT_WIPE_CONFIRM)]
@@ -134,7 +134,7 @@ namespace WowPacketParser.Parsing.Parsers
                 }
             }
             else
-                ReadTalentInfo(ref packet);
+                ReadTalentInfo(packet);
         }
 
         [Parser(Opcode.SMSG_TALENTS_INFO, ClientVersionBuild.V5_1_0_16309)]

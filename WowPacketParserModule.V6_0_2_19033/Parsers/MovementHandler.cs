@@ -69,7 +69,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        public static void ReadMovementAck(ref Packet packet)
+        public static void ReadMovementAck(Packet packet)
         {
             ReadMovementStats(packet);
             packet.ReadInt32("AckIndex");
@@ -555,7 +555,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_MOVE_SET_CAN_TURN_WHILE_FALLING_ACK)]
         public static void HandleMovementAck(Packet packet)
         {
-            ReadMovementAck(ref packet);
+            ReadMovementAck(packet);
         }
 
         [Parser(Opcode.CMSG_MOVE_FORCE_FLIGHT_SPEED_CHANGE_ACK)]
@@ -565,21 +565,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_MOVE_FORCE_WALK_SPEED_CHANGE_ACK)]
         public static void HandleMovementSpeedAck(Packet packet)
         {
-            ReadMovementAck(ref packet);
+            ReadMovementAck(packet);
             packet.ReadSingle("Speed");
         }
 
         [Parser(Opcode.CMSG_MOVE_REMOVE_MOVEMENT_FORCE_ACK)]
         public static void HandleMoveRemoveMovementForceAck(Packet packet)
         {
-            ReadMovementAck(ref packet);
+            ReadMovementAck(packet);
             packet.ReadPackedGuid128("TriggerGUID");
         }
 
         [Parser(Opcode.CMSG_MOVE_SET_VEHICLE_REC_ID_ACK)]
         public static void HandleMoveSetVehicleRecIdAck(Packet packet)
         {
-            ReadMovementAck(ref packet);
+            ReadMovementAck(packet);
             packet.ReadInt32("VehicleRecID");
         }
 
@@ -601,7 +601,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_MOVE_APPLY_MOVEMENT_FORCE_ACK)]
         public static void HandleMoveApplyMovementForceAck(Packet packet)
         {
-            ReadMovementAck(ref packet);
+            ReadMovementAck(packet);
             packet.ReadPackedGuid128("TriggerGUID");
             packet.ReadVector3("Direction");
             packet.ReadInt32("TransportID");
@@ -638,7 +638,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_MOVE_SET_COLLISION_HEIGHT_ACK)]
         public static void HandleMoveSetCollisionHeightAck(Packet packet)
         {
-            ReadMovementAck(ref packet);
+            ReadMovementAck(packet);
             packet.ReadSingle("Height");
             packet.ReadInt32("MountDisplayID");
 

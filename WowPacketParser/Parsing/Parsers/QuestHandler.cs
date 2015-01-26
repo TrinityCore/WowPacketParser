@@ -10,7 +10,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class QuestHandler
     {
-        private static void ReadExtraQuestInfo510(ref Packet packet)
+        private static void ReadExtraQuestInfo510(Packet packet)
         {
             packet.ReadUInt32("Choice Item Count");
             for (var i = 0; i < 6; i++)
@@ -54,11 +54,11 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Reward Skill Points");
         }
 
-        private static void ReadExtraQuestInfo(ref Packet packet, bool readFlags = true)
+        private static void ReadExtraQuestInfo(Packet packet, bool readFlags = true)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
             {
-                ReadExtraQuestInfo510(ref packet);
+                ReadExtraQuestInfo510(packet);
                 return;
             }
 
@@ -695,7 +695,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Emote Delay (ms)", i);
             }
 
-            ReadExtraQuestInfo(ref packet);
+            ReadExtraQuestInfo(packet);
         }
 
         [Parser(Opcode.SMSG_QUEST_UPDATE_COMPLETE, ClientVersionBuild.V5_1_0_16309)]
@@ -724,7 +724,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Emote Id", i);
             }
 
-            ReadExtraQuestInfo(ref packet);
+            ReadExtraQuestInfo(packet);
         }
 
         [Parser(Opcode.SMSG_QUERY_QUESTS_COMPLETED_RESPONSE)]
@@ -849,7 +849,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt32("Hidden XP");
             }
 
-            ReadExtraQuestInfo(ref packet, false);
+            ReadExtraQuestInfo(packet, false);
 
             var emoteCount = packet.ReadUInt32("Quest Emote Count");
             for (var i = 0; i < emoteCount; i++)
@@ -886,7 +886,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < reqSpellCount; i++)
                 packet.ReadEntry<Int32>(StoreNameType.Spell, "Required Spell", i);
 
-            ReadExtraQuestInfo(ref packet, false);
+            ReadExtraQuestInfo(packet, false);
 
             var emoteCount = packet.ReadUInt32("Quest Emote Count");
             for (var i = 0; i < emoteCount; i++)
@@ -1073,7 +1073,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<EmoteType>("Emote Id", TypeCode.UInt32, i);
             }
 
-            ReadExtraQuestInfo(ref packet);
+            ReadExtraQuestInfo(packet);
         }
 
         [Parser(Opcode.CMSG_QUESTGIVER_CHOOSE_REWARD)]

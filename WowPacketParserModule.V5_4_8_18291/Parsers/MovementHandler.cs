@@ -13,7 +13,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
     {
         public static PlayerMovementInfo Info = new PlayerMovementInfo();
 
-        public static void ReadPlayerMovementInfo(ref Packet packet, params MovementStatusElements[] movementStatusElements)
+        public static void ReadPlayerMovementInfo(Packet packet, params MovementStatusElements[] movementStatusElements)
         {
             var guid = new byte[8];
             var transportGUID = new byte[8];
@@ -332,145 +332,145 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.MSG_MOVE_FALL_LAND)]
         public static void HandleMoveFallLand(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementFallLand);
+            ReadPlayerMovementInfo(packet, Info.MovementFallLand);
         }
 
         [Parser(Opcode.MSG_MOVE_HEARTBEAT)]
         public static void HandleMoveHeartbeat(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementHeartBeat);
+            ReadPlayerMovementInfo(packet, Info.MovementHeartBeat);
         }
 
         [Parser(Opcode.MSG_MOVE_JUMP)]
         public static void HandleMoveJump434(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementJump);
+            ReadPlayerMovementInfo(packet, Info.MovementJump);
         }
 
         [Parser(Opcode.MSG_MOVE_SET_FACING)]
         public static void HandleMoveSetFacing(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementSetFacing);
+            ReadPlayerMovementInfo(packet, Info.MovementSetFacing);
         }
 
         [Parser(Opcode.MSG_MOVE_SET_PITCH)]
         public static void HandleMoveSetPitch(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementSetPitch);
+            ReadPlayerMovementInfo(packet, Info.MovementSetPitch);
         }
 
         [Parser(Opcode.MSG_MOVE_START_ASCEND)]
         public static void HandleMoveStartAscend434(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStartAscend);
+            ReadPlayerMovementInfo(packet, Info.MovementStartAscend);
         }
 
         [Parser(Opcode.MSG_MOVE_START_BACKWARD)]
         public static void HandleMoveStartBackward(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStartBackward);
+            ReadPlayerMovementInfo(packet, Info.MovementStartBackward);
         }
 
         [Parser(Opcode.MSG_MOVE_START_DESCEND)]
         public static void HandleMoveStartDescend(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStartDescend);
+            ReadPlayerMovementInfo(packet, Info.MovementStartDescend);
         }
 
         [Parser(Opcode.MSG_MOVE_START_FORWARD)]
         public static void HandleMoveStartForward(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStartForward);
+            ReadPlayerMovementInfo(packet, Info.MovementStartForward);
         }
 
         [Parser(Opcode.MSG_MOVE_START_PITCH_DOWN)]
         public static void HandleMoveStartPitchDown(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStartPitchDown);
+            ReadPlayerMovementInfo(packet, Info.MovementStartPitchDown);
         }
 
         [Parser(Opcode.MSG_MOVE_START_PITCH_UP)]
         public static void HandleMoveStartPitchUp(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStartPitchUp);
+            ReadPlayerMovementInfo(packet, Info.MovementStartPitchUp);
         }
 
         [Parser(Opcode.MSG_MOVE_START_STRAFE_LEFT)]
         public static void HandleMoveStartStrafeLeft(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStartStrafeLeft);
+            ReadPlayerMovementInfo(packet, Info.MovementStartStrafeLeft);
         }
 
         [Parser(Opcode.MSG_MOVE_START_STRAFE_RIGHT)]
         public static void HandleMoveStartStrafeRight(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStartStrafeRight);
+            ReadPlayerMovementInfo(packet, Info.MovementStartStrafeRight);
         }
 
         [Parser(Opcode.MSG_MOVE_START_SWIM)]
         public static void HandleMoveStartSwim(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStartSwim);
+            ReadPlayerMovementInfo(packet, Info.MovementStartSwim);
         }
 
         [Parser(Opcode.MSG_MOVE_START_TURN_LEFT)]
         public static void HandleMoveStartTurnLeft(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStartTurnLeft);
+            ReadPlayerMovementInfo(packet, Info.MovementStartTurnLeft);
         }
 
         [Parser(Opcode.MSG_MOVE_START_TURN_RIGHT)]
         public static void HandleMoveStartTurnRight(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStartTurnRight);
+            ReadPlayerMovementInfo(packet, Info.MovementStartTurnRight);
         }
 
         [Parser(Opcode.MSG_MOVE_STOP)]
         public static void HandleMoveStop(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStop);
+            ReadPlayerMovementInfo(packet, Info.MovementStop);
         }
 
         [Parser(Opcode.MSG_MOVE_STOP_ASCEND)]
         public static void HandleMoveStopAscend(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStopAscend);
+            ReadPlayerMovementInfo(packet, Info.MovementStopAscend);
         }
 
         [Parser(Opcode.MSG_MOVE_STOP_PITCH)]
         public static void HandleMoveStopPitch(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStopPitch);
+            ReadPlayerMovementInfo(packet, Info.MovementStopPitch);
         }
 
         [Parser(Opcode.MSG_MOVE_STOP_STRAFE)]
         public static void HandleMoveStopStrafe(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStopStrafe);
+            ReadPlayerMovementInfo(packet, Info.MovementStopStrafe);
         }
 
         [Parser(Opcode.MSG_MOVE_STOP_SWIM)]
         public static void HandleMoveStopSwim(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStopSwim);
+            ReadPlayerMovementInfo(packet, Info.MovementStopSwim);
         }
 
         [Parser(Opcode.MSG_MOVE_STOP_TURN)]
         public static void HandleMoveStopTurn(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStopTurn);
+            ReadPlayerMovementInfo(packet, Info.MovementStopTurn);
         }
 
         [Parser(Opcode.SMSG_MOVE_ROOT)]
         public static void HandleMoveRoot434(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MoveRoot);
+            ReadPlayerMovementInfo(packet, Info.MoveRoot);
         }
 
         [Parser(Opcode.SMSG_MOVE_UNROOT)]
         public static void HandleMoveUnroot434(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MoveUnroot);
+            ReadPlayerMovementInfo(packet, Info.MoveUnroot);
         }
 
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT_CHANGE)]
@@ -562,7 +562,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_MOVE_UPDATE)]
         public static void HandlePlayerMove(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.PlayerMove);
+            ReadPlayerMovementInfo(packet, Info.PlayerMove);
         }
 
         [Parser(Opcode.SMSG_ON_MONSTER_MOVE)]
@@ -755,7 +755,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_MOVE_TELEPORT)]
         public static void HandleMoveTeleport548(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MoveTeleport);
+            ReadPlayerMovementInfo(packet, Info.MoveTeleport);
         }
 
         [Parser(Opcode.SMSG_LOGIN_SETTIMESPEED)]

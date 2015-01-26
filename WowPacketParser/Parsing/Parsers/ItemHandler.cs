@@ -84,7 +84,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Cast Count");
             packet.ReadGuid("GUID");
 
-            SpellHandler.ReadSpellCastTargets(ref packet);
+            SpellHandler.ReadSpellCastTargets(packet);
         }
 
         [Parser(Opcode.CMSG_USE_ITEM, ClientVersionBuild.V3_0_3_9183)]
@@ -98,7 +98,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Glyph Index");
             var castflag = packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Byte);
 
-            SpellHandler.ReadSpellCastTargets(ref packet);
+            SpellHandler.ReadSpellCastTargets(packet);
 
             if (!castflag.HasAnyFlag(CastFlag.HasTrajectory))
                 return;

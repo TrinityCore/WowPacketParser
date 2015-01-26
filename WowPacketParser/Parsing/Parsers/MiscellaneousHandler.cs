@@ -198,7 +198,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadPackedGuid("Vehicle GUID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3a_11723))
-                MovementHandler.ReadMovementInfo(ref packet, guid);
+                MovementHandler.ReadMovementInfo(packet, guid);
 
             packet.ReadPackedGuid("Accessory GUID");
             packet.ReadByte("Seat");

@@ -70,7 +70,7 @@ namespace WowPacketParser.Parsing.Parsers
             Storage.ObjectNames.Add((uint)guid.GetLow(), objectName, packet.TimeSpan);
         }
 
-        public static void ReadQueryHeader(ref Packet packet)
+        public static void ReadQueryHeader(Packet packet)
         {
             var entry = packet.ReadInt32("Entry");
             var guid = packet.ReadGuid("GUID");
@@ -83,7 +83,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_CREATURE_QUERY)]
         public static void HandleCreatureQuery(Packet packet)
         {
-            ReadQueryHeader(ref packet);
+            ReadQueryHeader(packet);
         }
 
         [HasSniffData]
@@ -177,7 +177,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_PAGE_TEXT_QUERY)]
         public static void HandlePageTextQuery(Packet packet)
         {
-            ReadQueryHeader(ref packet);
+            ReadQueryHeader(packet);
         }
 
         [HasSniffData]
@@ -200,7 +200,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_NPC_TEXT_QUERY)]
         public static void HandleNpcTextQuery(Packet packet)
         {
-            ReadQueryHeader(ref packet);
+            ReadQueryHeader(packet);
         }
 
         [HasSniffData]

@@ -45,7 +45,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Timer " + i);
         }
 
-        public static void ReadAllAchievementData(ref Packet packet)
+        public static void ReadAllAchievementData(Packet packet)
         {
             while (true)
             {
@@ -77,7 +77,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_DATA, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandleAllAchievementData(Packet packet)
         {
-            ReadAllAchievementData(ref packet);
+            ReadAllAchievementData(packet);
         }
 
         [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_DATA, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_1_0_13914)]
@@ -124,7 +124,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleInspectAchievementDataResponse(Packet packet)
         {
             packet.ReadPackedGuid("Player GUID");
-            ReadAllAchievementData(ref packet);
+            ReadAllAchievementData(packet);
         }
 
         [Parser(Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS, ClientVersionBuild.V4_3_4_15595)]

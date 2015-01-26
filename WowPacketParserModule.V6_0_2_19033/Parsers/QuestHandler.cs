@@ -10,7 +10,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class QuestHandler
     {
-        private static void ReadQuestRewards(ref Packet packet)
+        private static void ReadQuestRewards(Packet packet)
         {
             packet.ReadInt32("ChoiceItemCount");
 
@@ -58,21 +58,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("bit44");
         }
 
-        private static void ReadGossipText(ref Packet packet, params object[] indexes)
+        public static void ReadGossipText(Packet packet, params object[] indexes)
         {
-            packet.ReadUInt32("QuestID", Packet.GetIndexString(indexes));
-            packet.ReadUInt32("QuestType", Packet.GetIndexString(indexes));
-            packet.ReadUInt32("QuestLevel", Packet.GetIndexString(indexes));
+            packet.ReadUInt32("QuestID", indexes);
+            packet.ReadUInt32("QuestType", indexes);
+            packet.ReadUInt32("QuestLevel", indexes);
 
             for (int i = 0; i < 2; i++)
-                packet.ReadUInt32("QuestFlags", Packet.GetIndexString(indexes), i);
+                packet.ReadUInt32("QuestFlags", indexes, i);
 
             packet.ResetBitReader();
 
-            packet.ReadBit("Repeatable", Packet.GetIndexString(indexes));
+            packet.ReadBit("Repeatable", indexes);
 
             var bits13 = packet.ReadBits(9);
-            packet.ReadWoWString("QuestTitle", bits13, Packet.GetIndexString(indexes));
+            packet.ReadWoWString("QuestTitle", bits13, indexes);
         }
 
         [Parser(Opcode.CMSG_QUEST_QUERY)]
@@ -371,7 +371,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("PortraitTurnIn");
             var int5860 = packet.ReadInt32("LearnSpellsCount");
 
-            ReadQuestRewards(ref packet);
+            ReadQuestRewards(packet);
 
             var int2584 = packet.ReadInt32("DescEmotesCount");
             var int5876 = packet.ReadInt32("ObjectivesCount");
@@ -493,7 +493,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadInt32("SuggestedPartyMembers");
 
-            ReadQuestRewards(ref packet);
+            ReadQuestRewards(packet);
 
             var int252 = packet.ReadInt32("EmotesCount");
 
@@ -568,7 +568,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var int520 = packet.ReadUInt32("GossipTextCount");
             for (int i = 0; i < int520; i++)
-                ReadGossipText(ref packet, i);
+                ReadGossipText(packet, i);
 
             packet.ResetBitReader();
 

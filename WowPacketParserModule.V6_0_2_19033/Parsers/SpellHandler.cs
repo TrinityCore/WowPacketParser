@@ -11,7 +11,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class SpellHandler
     {
-        public static void ReadSpellCastLogData(ref Packet packet)
+        public static void ReadSpellCastLogData(Packet packet)
         {
             packet.ReadInt32("Health");
             packet.ReadInt32("AttackPower");
@@ -33,7 +33,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (bit32)
                 packet.ReadSingle("Float7");
         }
-        public static void ReadSpellCastRequest(ref Packet packet)
+        public static void ReadSpellCastRequest(Packet packet)
         {
             packet.ReadByte("CastID");
             packet.ReadUInt32("SpellID");
@@ -263,7 +263,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_PET_CAST_SPELL, Direction.ClientToServer))
                 packet.ReadPackedGuid128("PetGUID");
 
-            ReadSpellCastRequest(ref packet);
+            ReadSpellCastRequest(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_START)]
@@ -398,7 +398,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 var bit52 = packet.ReadBit("SpellCastLogData");
                 if (bit52)
-                    ReadSpellCastLogData(ref packet);
+                    ReadSpellCastLogData(packet);
             }
         }
 

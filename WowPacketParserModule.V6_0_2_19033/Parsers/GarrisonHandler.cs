@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -49,9 +48,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var int40 = packet.ReadInt32("AbilityCount", indexes);
             packet.ReadInt32("UnkInt", indexes);
 
-            var indexString = Packet.GetIndexString(indexes);
             for (int i = 0; i < int40; i++)
-                packet.ReadInt32(String.Format("{0} [{1}] AbilityID", indexString, i));
+                packet.ReadInt32("AbilityID", indexes, i);
         }
 
         private static void ReadGarrisonPlotInfo(Packet packet, params object[] indexes)

@@ -7,30 +7,29 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class LfgHandler
     {
-        public static void ReadRideTicket(Packet packet, params object[] indexes)
+        public static void ReadRideTicket(Packet packet, params object[] idx)
         {
-            packet.ReadPackedGuid128("RequesterGuid");
-            packet.ReadInt32("Id");
-            packet.ReadInt32("Type");
-            packet.ReadTime("Time");
+            packet.ReadPackedGuid128("RequesterGuid", idx);
+            packet.ReadInt32("Id", idx);
+            packet.ReadInt32("Type", idx);
+            packet.ReadTime("Time", idx);
         }
 
-        public static void ReadLFGBlackList(Packet packet, params object[] indexes)
+        public static void ReadLFGBlackList(Packet packet, params object[] idx)
         {
             packet.ResetBitReader();
-            var bit16 = packet.ReadBit("HasPlayerGuid", indexes);
-            var int24 = packet.ReadInt32("LFGBlackListCount", indexes);
+            var bit16 = packet.ReadBit("HasPlayerGuid", idx);
+            var int24 = packet.ReadInt32("LFGBlackListCount", idx);
 
             if (bit16)
-                packet.ReadPackedGuid128("PlayerGuid", indexes);
+                packet.ReadPackedGuid128("PlayerGuid", idx);
 
-            var indexString = Packet.GetIndexString(indexes);
             for (var i = 0; i < int24; ++i)
             {
-                packet.ReadUInt32(String.Format("{0} [{1}] Slot", indexString, i));
-                packet.ReadUInt32(String.Format("{0} [{1}] Reason", indexString, i));
-                packet.ReadInt32(String.Format("{0} [{1}] SubReason1", indexString, i));
-                packet.ReadInt32(String.Format("{0} [{1}] SubReason2", indexString, i));
+                packet.ReadUInt32("Slot", idx, i);
+                packet.ReadUInt32("Reason", idx, i);
+                packet.ReadInt32("SubReason1", idx, i);
+                packet.ReadInt32("SubReason2", idx, i);
             }
         }
 
@@ -40,25 +39,25 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("Reason", indexes);
         }
 
-        public static void ReadLfgBootInfo(Packet packet, params object[] indexes)
+        public static void ReadLfgBootInfo(Packet packet, params object[] idx)
         {
-            packet.ReadBit("VoteInProgress");
-            packet.ReadBit("VotePassed");
-            packet.ReadBit("MyVoteCompleted");
-            packet.ReadBit("MyVote");
+            packet.ReadBit("VoteInProgress", idx);
+            packet.ReadBit("VotePassed", idx);
+            packet.ReadBit("MyVoteCompleted", idx);
+            packet.ReadBit("MyVote", idx);
             var len = packet.ReadBits(8);
-            packet.ReadPackedGuid128("Target");
-            packet.ReadUInt32("TotalVotes");
-            packet.ReadUInt32("BootVotes");
-            packet.ReadInt32("TimeLeft");
-            packet.ReadUInt32("VotesNeeded");
-            packet.ReadWoWString("Reason", len);
+            packet.ReadPackedGuid128("Target", idx);
+            packet.ReadUInt32("TotalVotes", idx);
+            packet.ReadUInt32("BootVotes", idx);
+            packet.ReadInt32("TimeLeft", idx);
+            packet.ReadUInt32("VotesNeeded", idx);
+            packet.ReadWoWString("Reason", len, idx);
         }
 
-        public static void ReadLFGListJoinRequest(Packet packet, params object[] indexes)
+        public static void ReadLFGListJoinRequest(Packet packet, params object[] idx)
         {
-            packet.ReadInt32("ActivityID");
-            packet.ReadSingle("RequiredItemLevel");
+            packet.ReadInt32("ActivityID", idx);
+            packet.ReadSingle("RequiredItemLevel", idx);
 
             packet.ResetBitReader();
 
@@ -66,9 +65,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var lenComment = packet.ReadBits(11);
             var lenVoiceChat = packet.ReadBits(8);
 
-            packet.ReadWoWString("Name", lenName);
-            packet.ReadWoWString("Comment", lenComment);
-            packet.ReadWoWString("VoiceChat", lenVoiceChat);
+            packet.ReadWoWString("Name", lenName, idx);
+            packet.ReadWoWString("Comment", lenComment, idx);
+            packet.ReadWoWString("VoiceChat", lenVoiceChat, idx);
         }
 
         [Parser(Opcode.CMSG_LFG_LIST_GET_STATUS)]
@@ -82,8 +81,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             var int16 = packet.ReadInt32("DungeonCount");
 
-            // LFGBlackList
-            ReadLFGBlackList(packet);
+            ReadLFGBlackList(packet, "LFGBlackList");
 
             // LfgPlayerDungeonInfo
             for (var i = 0; i < int16; ++i)

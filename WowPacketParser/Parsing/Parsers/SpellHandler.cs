@@ -242,7 +242,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        private static Aura ReadAuraUpdateBlock(ref Packet packet, int i)
+        private static Aura ReadAuraUpdateBlock(Packet packet, int i)
         {
             var aura = new Aura
             {
@@ -291,7 +291,7 @@ namespace WowPacketParser.Parsing.Parsers
             return aura;
         }
 
-        private static Aura ReadAuraUpdateBlock505(ref Packet packet, int i)
+        private static Aura ReadAuraUpdateBlock505(Packet packet, int i)
         {
             var aura = new Aura
             {
@@ -350,9 +350,9 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 Aura aura;
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_0_5_16048))
-                    aura = ReadAuraUpdateBlock505(ref packet, i++);
+                    aura = ReadAuraUpdateBlock505(packet, i++);
                 else
-                    aura = ReadAuraUpdateBlock(ref packet, i++);
+                    aura = ReadAuraUpdateBlock(packet, i++);
 
                 if (aura != null)
                     auras.Add(aura);
@@ -389,20 +389,20 @@ namespace WowPacketParser.Parsing.Parsers
             var castFlags = packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Byte);
             if (castFlags.HasAnyFlag(CastFlag.HasTrajectory))
             {
-                ReadSpellCastTargets(ref packet);
-                HandleSpellMissileAndMove(ref packet);
+                ReadSpellCastTargets(packet);
+                HandleSpellMissileAndMove(packet);
             }
             else
             {
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
                     if (castFlags.HasAnyFlag(CastFlag.Unknown4))
-                        HandleSpellMove(ref packet);
+                        HandleSpellMove(packet);
 
-                ReadSpellCastTargets(ref packet);
+                ReadSpellCastTargets(packet);
             }
         }
 
-        public static TargetFlag ReadSpellCastTargets(ref Packet packet)
+        public static TargetFlag ReadSpellCastTargets(Packet packet)
         {
             var targetFlags = packet.ReadEnum<TargetFlag>("Target Flags", TypeCode.Int32);
 
@@ -435,7 +435,7 @@ namespace WowPacketParser.Parsing.Parsers
             return targetFlags;
         }
 
-        public static void HandleSpellMissileAndMove(ref Packet packet) // 4.3.4
+        public static void HandleSpellMissileAndMove(Packet packet) // 4.3.4
         {
             packet.ReadSingle("Elevation");
             packet.ReadSingle("Missile speed");
@@ -450,10 +450,10 @@ namespace WowPacketParser.Parsing.Parsers
                     Handler.Parse(newpacket, true);
             }
             else
-                HandleSpellMove(ref packet);
+                HandleSpellMove(packet);
         }
 
-        public static void HandleSpellMove510(ref Packet packet)
+        public static void HandleSpellMove510(Packet packet)
         {
             var hasMovement = packet.ReadBoolean("Has Movement Data");
             if (hasMovement)
@@ -586,11 +586,11 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        public static void HandleSpellMove(ref Packet packet)
+        public static void HandleSpellMove(Packet packet)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
             {
-                HandleSpellMove510(ref packet);
+                HandleSpellMove510(packet);
                 return;
             }
 

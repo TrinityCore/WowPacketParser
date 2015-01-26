@@ -115,7 +115,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadBytes("Proof SHA-1 Hash", 20);
 
-            AddonHandler.ReadClientAddonsList(ref packet);
+            AddonHandler.ReadClientAddonsList(packet);
         }
 
         //[Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V4_2_0_14333)]
@@ -161,7 +161,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Account name");
             packet.ReadInt32("Int32");
 
-            AddonHandler.ReadClientAddonsList(ref packet);
+            AddonHandler.ReadClientAddonsList(packet);
         }
 
         [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_2_15211)]
@@ -309,19 +309,19 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 case ResponseCode.AUTH_OK:
                 {
-                    ReadAuthResponseInfo(ref packet);
+                    ReadAuthResponseInfo(packet);
                     break;
                 }
                 case ResponseCode.AUTH_WAIT_QUEUE:
                 {
                     if (packet.Length <= 6)
                     {
-                        ReadQueuePositionInfo(ref packet);
+                        ReadQueuePositionInfo(packet);
                         break;
                     }
 
-                    ReadAuthResponseInfo(ref packet);
-                    ReadQueuePositionInfo(ref packet);
+                    ReadAuthResponseInfo(packet);
+                    ReadQueuePositionInfo(packet);
                     break;
                 }
             }
@@ -376,7 +376,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadEnum<ResponseCode>("Auth Code", TypeCode.Byte);
         }
 
-        public static void ReadAuthResponseInfo(ref Packet packet)
+        public static void ReadAuthResponseInfo(Packet packet)
         {
             packet.ReadInt32("Billing Time Remaining");
             packet.ReadEnum<BillingFlag>("Billing Flags", TypeCode.Byte);
@@ -389,7 +389,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
         }
 
-        public static void ReadQueuePositionInfo(ref Packet packet)
+        public static void ReadQueuePositionInfo(Packet packet)
         {
             packet.ReadInt32("Queue Position");
             packet.ReadBoolean("Realm Has Free Character Migration");

@@ -6,7 +6,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class GuildHandler
     {
-        private static void ReadEmblemInfo(ref Packet packet)
+        private static void ReadEmblemInfo(Packet packet)
         {
             packet.ReadInt32("Emblem Style");
             packet.ReadInt32("Emblem Color");
@@ -325,7 +325,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt32("Rights Order", i);
             }
 
-            ReadEmblemInfo(ref packet);
+            ReadEmblemInfo(packet);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                 packet.ReadUInt32("Ranks");
@@ -565,7 +565,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.Direction == Direction.ClientToServer)
             {
                 packet.ReadGuid("GUID");
-                ReadEmblemInfo(ref packet);
+                ReadEmblemInfo(packet);
             }
             else
                 packet.ReadEnum<GuildEmblemError>("Result", TypeCode.UInt32);

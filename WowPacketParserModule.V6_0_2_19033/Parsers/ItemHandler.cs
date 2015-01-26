@@ -21,10 +21,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             {
                 packet.ReadByte("Context", indexes);
 
-                var indexString = Packet.GetIndexString(indexes);
                 var bonusCount = packet.ReadUInt32();
                 for (var j = 0; j < bonusCount; ++j)
-                    packet.ReadUInt32(String.Format("{0} [{1}] BonusListID", indexString, j));
+                    packet.ReadUInt32("BonusListID", indexes, j);
             }
 
             if (hasModifications)
@@ -159,14 +158,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("Slot");
             packet.ReadPackedGuid128("CastItem");
 
-            SpellHandler.ReadSpellCastRequest(ref packet);
+            SpellHandler.ReadSpellCastRequest(packet);
         }
 
         [Parser(Opcode.CMSG_USE_TOY)]
         public static void HandleUseToy(Packet packet)
         {
             packet.ReadInt32("ItemID");
-            SpellHandler.ReadSpellCastRequest(ref packet);
+            SpellHandler.ReadSpellCastRequest(packet);
         }
 
         [Parser(Opcode.CMSG_DESTROY_ITEM)]

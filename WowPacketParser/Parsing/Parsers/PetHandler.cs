@@ -11,7 +11,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class PetHandler
     {
-        public static void ReadPetFlags(ref Packet packet)
+        public static void ReadPetFlags(Packet packet)
         {
             var petModeFlag = packet.ReadUInt32();
             packet.AddValue("React state", (ReactState) ((petModeFlag >> 8) & 0xFF));
@@ -35,7 +35,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadUInt32("Expiration Time");
 
-            ReadPetFlags(ref packet);
+            ReadPetFlags(packet);
 
             var isPet = guid.GetHighType() == HighGuidType.Pet;
             var isVehicle = guid.GetHighType() == HighGuidType.Vehicle;
@@ -145,7 +145,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandlePetMode(Packet packet)
         {
             packet.ReadGuid("Guid");
-            ReadPetFlags(ref packet);
+            ReadPetFlags(packet);
         }
 
         [Parser(Opcode.SMSG_PET_ACTION_SOUND)]
@@ -285,9 +285,9 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Cast Count");
             packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
             var castFlags = packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Byte);
-            SpellHandler.ReadSpellCastTargets(ref packet);
+            SpellHandler.ReadSpellCastTargets(packet);
             if (castFlags.HasAnyFlag(CastFlag.HasTrajectory))
-                SpellHandler.HandleSpellMissileAndMove(ref packet);
+                SpellHandler.HandleSpellMissileAndMove(packet);
         }
 
         [Parser(Opcode.CMSG_REQUEST_PET_INFO)]

@@ -222,7 +222,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadInt32("Int18");
 
             if (hasMovment)
-                MovementHandler.ReadClientMovementBlock(ref packet);
+                MovementHandler.ReadClientMovementBlock(packet);
 
             if (hasSpellId)
                 packet.ReadInt32("SpellId");

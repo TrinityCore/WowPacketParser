@@ -17,7 +17,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             var numFields = packet.ReadBits("Field Count", 21);
             for (var i = 0; i < numFields; i++)
-                CoreParsers.WorldStateHandler.ReadWorldStateBlock(ref packet);
+                CoreParsers.WorldStateHandler.ReadWorldStateBlock(packet);
         }
     }
 }

@@ -27,39 +27,39 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     case Opcode.SMSG_SPELL_HEAL_LOG:
                     {
-                        ReadSpellHealLog(ref packet, i);
+                        ReadSpellHealLog(packet, i);
                         break;
                     }
                     case Opcode.SMSG_SPELL_ENERGIZE_LOG:
                     {
-                        ReadSpellEnergizeLog(ref packet, i);
+                        ReadSpellEnergizeLog(packet, i);
                         break;
                     }
                     case Opcode.SMSG_PERIODICAURALOG:
                     {
-                        ReadPeriodicAuraLog(ref packet, i); // sub_5EEE10
+                        ReadPeriodicAuraLog(packet, i); // sub_5EEE10
                         break;
                     }
                     case Opcode.SMSG_SPELL_EXECUTE_LOG:
                     {
-                        ReadSpellLogExecute(ref packet, i);
+                        ReadSpellLogExecute(packet, i);
                         break;
                     }
                     case Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG:
                     {
-                        ReadSpellNonMeleeDamageLog(ref packet, i);
+                        ReadSpellNonMeleeDamageLog(packet, i);
                         break;
                     }
                     case Opcode.SMSG_SPELL_MISS_LOG:
                     {
-                        ReadSpellMissLog(ref packet, i);
+                        ReadSpellMissLog(packet, i);
                         break;
                     }
                     case Opcode.SMSG_SPELL_STEAL_LOG:
                     case Opcode.SMSG_SPELL_DISPEL_LOG:
                     case Opcode.SMSG_SPELL_BREAK_LOG:
                     {
-                        ReadSpellRemoveLog(ref packet, i);
+                        ReadSpellRemoveLog(packet, i);
                         break;
                     }
                     default:
@@ -73,47 +73,47 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SPELL_BREAK_LOG)]
         public static void HandleSpellRemoveLog(Packet packet)
         {
-            ReadSpellRemoveLog(ref packet);
+            ReadSpellRemoveLog(packet);
         }
 
         [Parser(Opcode.SMSG_PERIODICAURALOG)]
         public static void HandlePeriodicAuraLog(Packet packet)
         {
-            ReadPeriodicAuraLog(ref packet);
+            ReadPeriodicAuraLog(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG)]
         public static void HandleSpellNonMeleeDmgLog(Packet packet)
         {
-            ReadSpellNonMeleeDamageLog(ref packet);
+            ReadSpellNonMeleeDamageLog(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_HEAL_LOG)]
         public static void HandleSpellHealLog(Packet packet)
         {
-            ReadSpellHealLog(ref packet);
+            ReadSpellHealLog(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_ENERGIZE_LOG)]
         public static void HandleSpellEnergizeLog(Packet packet)
         {
-            ReadSpellEnergizeLog(ref packet);
+            ReadSpellEnergizeLog(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_MISS_LOG)]
         public static void HandleSpellLogMiss(Packet packet)
         {
-            ReadSpellMissLog(ref packet);
+            ReadSpellMissLog(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_EXECUTE_LOG)]
         public static void HandleSpellLogExecute(Packet packet)
         {
-            ReadSpellLogExecute(ref packet);
+            ReadSpellLogExecute(packet);
         }
 
         // Unknown opcode name(s)
-        private static void ReadSpellRemoveLog(ref Packet packet, object index = null)
+        private static void ReadSpellRemoveLog(Packet packet, object index = null)
         {
             packet.ReadPackedGuid("Target GUID", index);
             packet.ReadPackedGuid("Caster GUID", index); // Can be 0
@@ -134,7 +134,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        private static void ReadSpellLogExecute(ref Packet packet, object index = null)
+        private static void ReadSpellLogExecute(Packet packet, object index = null)
         {
             packet.ReadPackedGuid("Caster GUID", index);
             packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", index);
@@ -232,7 +232,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        private static void ReadPeriodicAuraLog(ref Packet packet, object index = null)
+        private static void ReadPeriodicAuraLog(Packet packet, object index = null)
         {
             packet.ReadPackedGuid("Target GUID", index);
             packet.ReadPackedGuid("Caster GUID", index);
@@ -296,7 +296,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        private static void ReadSpellNonMeleeDamageLog(ref Packet packet, object index = null)
+        private static void ReadSpellNonMeleeDamageLog(Packet packet, object index = null)
         {
             packet.ReadPackedGuid("Target GUID", index);
             packet.ReadPackedGuid("Caster GUID", index);
@@ -343,7 +343,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        private static void ReadSpellHealLog(ref Packet packet, object index = null)
+        private static void ReadSpellHealLog(Packet packet, object index = null)
         {
             packet.ReadPackedGuid("Target GUID", index);
             packet.ReadPackedGuid("Caster GUID", index);
@@ -365,7 +365,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        private static void ReadSpellEnergizeLog(ref Packet packet, object index = null)
+        private static void ReadSpellEnergizeLog(Packet packet, object index = null)
         {
             packet.ReadPackedGuid("Target GUID", index);
             packet.ReadPackedGuid("Caster GUID", index);
@@ -374,7 +374,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Amount", index);
         }
 
-        private static void ReadSpellMissLog(ref Packet packet, object index = null)
+        private static void ReadSpellMissLog(Packet packet, object index = null)
         {
             packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID", index);
             packet.ReadGuid("Caster GUID", index);

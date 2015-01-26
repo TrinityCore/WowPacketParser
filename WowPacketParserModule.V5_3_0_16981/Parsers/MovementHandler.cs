@@ -28,7 +28,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadSingle("Game Speed");
         }
 
-        public static void ReadClientMovementBlock(ref Packet packet)
+        public static void ReadClientMovementBlock(Packet packet)
         {
             var guid = new byte[8];
             var transportGUID = new byte[8];

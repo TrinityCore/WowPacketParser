@@ -37,7 +37,7 @@ namespace WowPacketParser.Parsing.Parsers
                         var guid = packet.ReadPackedGuid("GUID", i);
 
                         WoWObject obj;
-                        var updates = ReadValuesUpdateBlock(ref packet, guid.GetObjectType(), i, false);
+                        var updates = ReadValuesUpdateBlock(packet, guid.GetObjectType(), i, false);
 
                         if (Storage.Objects.TryGetValue(guid, out obj))
                         {
@@ -51,7 +51,7 @@ namespace WowPacketParser.Parsing.Parsers
                     case "Movement":
                     {
                         var guid = ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_2_9901) ? packet.ReadPackedGuid("GUID", i) : packet.ReadGuid("GUID", i);
-                        ReadMovementUpdateBlock(ref packet, guid, i);
+                        ReadMovementUpdateBlock(packet, guid, i);
                         // Should we update Storage.Object?
                         break;
                     }
@@ -59,25 +59,25 @@ namespace WowPacketParser.Parsing.Parsers
                     case "CreateObject2": // Might != CreateObject1 on Cata
                     {
                         var guid = packet.ReadPackedGuid("GUID", i);
-                        ReadCreateObjectBlock(ref packet, guid, map, i);
+                        ReadCreateObjectBlock(packet, guid, map, i);
                         break;
                     }
                     case "FarObjects":
                     case "NearObjects":
                     case "DestroyObjects":
                     {
-                        ReadObjectsBlock(ref packet, i);
+                        ReadObjectsBlock(packet, i);
                         break;
                     }
                 }
             }
         }
 
-        private static void ReadCreateObjectBlock(ref Packet packet, WowGuid guid, uint map, object index)
+        private static void ReadCreateObjectBlock(Packet packet, WowGuid guid, uint map, object index)
         {
             var objType = packet.ReadEnum<ObjectType>("Object Type", TypeCode.Byte, index);
-            var moves = ReadMovementUpdateBlock(ref packet, guid, index);
-            var updates = ReadValuesUpdateBlock(ref packet, objType, index, true);
+            var moves = ReadMovementUpdateBlock(packet, guid, index);
+            var updates = ReadValuesUpdateBlock(packet, objType, index, true);
 
             WoWObject obj;
             switch (objType)
@@ -126,14 +126,14 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        public static void ReadObjectsBlock(ref Packet packet, object index)
+        public static void ReadObjectsBlock(Packet packet, object index)
         {
             var objCount = packet.ReadInt32("Object Count", index);
             for (var j = 0; j < objCount; j++)
                 packet.ReadPackedGuid("Object GUID", index, j);
         }
 
-        public static Dictionary<int, UpdateField> ReadValuesUpdateBlock(ref Packet packet, ObjectType type, object index, bool isCreating)
+        public static Dictionary<int, UpdateField> ReadValuesUpdateBlock(Packet packet, ObjectType type, object index, bool isCreating)
         {
             var maskSize = packet.ReadByte();
 
@@ -335,7 +335,7 @@ namespace WowPacketParser.Parsing.Parsers
             return dict;
         }
 
-        private static MovementInfo ReadMovementUpdateBlock510(ref Packet packet, WowGuid guid, object index)
+        private static MovementInfo ReadMovementUpdateBlock510(Packet packet, WowGuid guid, object index)
         {
             var moveInfo = new MovementInfo();
 
@@ -854,7 +854,7 @@ namespace WowPacketParser.Parsing.Parsers
             return moveInfo;
         }
 
-        private static MovementInfo ReadMovementUpdateBlock504(ref Packet packet, WowGuid guid, object index)
+        private static MovementInfo ReadMovementUpdateBlock504(Packet packet, WowGuid guid, object index)
         {
             var moveInfo = new MovementInfo();
 
@@ -1351,7 +1351,7 @@ namespace WowPacketParser.Parsing.Parsers
             return moveInfo;
         }
 
-        private static MovementInfo ReadMovementUpdateBlock433(ref Packet packet, WowGuid guid, object index)
+        private static MovementInfo ReadMovementUpdateBlock433(Packet packet, WowGuid guid, object index)
         {
             var moveInfo = new MovementInfo();
 
@@ -1740,7 +1740,7 @@ namespace WowPacketParser.Parsing.Parsers
             return moveInfo;
         }
 
-        private static MovementInfo ReadMovementUpdateBlock432(ref Packet packet, WowGuid guid, object index)
+        private static MovementInfo ReadMovementUpdateBlock432(Packet packet, WowGuid guid, object index)
         {
             var moveInfo = new MovementInfo();
 
@@ -2134,7 +2134,7 @@ namespace WowPacketParser.Parsing.Parsers
             return moveInfo;
         }
 
-        private static MovementInfo ReadMovementUpdateBlock430(ref Packet packet, WowGuid guid, object index)
+        private static MovementInfo ReadMovementUpdateBlock430(Packet packet, WowGuid guid, object index)
         {
             var moveInfo = new MovementInfo();
             bool hasAttackingTarget = packet.ReadBit("Has Attacking Target", index);
@@ -2508,22 +2508,22 @@ namespace WowPacketParser.Parsing.Parsers
             return moveInfo;
         }
 
-        private static MovementInfo ReadMovementUpdateBlock(ref Packet packet, WowGuid guid, object index)
+        private static MovementInfo ReadMovementUpdateBlock(Packet packet, WowGuid guid, object index)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
-                return ReadMovementUpdateBlock510(ref packet, guid, index);
+                return ReadMovementUpdateBlock510(packet, guid, index);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_0_4_16016))
-                return ReadMovementUpdateBlock504(ref packet, guid, index);
+                return ReadMovementUpdateBlock504(packet, guid, index);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_3_15354))
-                return ReadMovementUpdateBlock433(ref packet, guid, index);
+                return ReadMovementUpdateBlock433(packet, guid, index);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_2_15211))
-                return ReadMovementUpdateBlock432(ref packet, guid, index);
+                return ReadMovementUpdateBlock432(packet, guid, index);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
-                return ReadMovementUpdateBlock430(ref packet, guid, index);
+                return ReadMovementUpdateBlock430(packet, guid, index);
 
             var moveInfo = new MovementInfo();
 
@@ -2532,7 +2532,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (flags.HasAnyFlag(UpdateFlag.Living))
             {
-                moveInfo = MovementHandler.ReadMovementInfo(ref packet, guid, index);
+                moveInfo = MovementHandler.ReadMovementInfo(packet, guid, index);
                 var moveFlags = moveInfo.Flags;
 
                 for (var i = 0; i < 9; ++i)

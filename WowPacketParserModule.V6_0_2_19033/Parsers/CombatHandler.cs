@@ -14,7 +14,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var bit52 = packet.ReadBit("HasLogData");
 
             if (bit52)
-                SpellParsers.ReadSpellCastLogData(ref packet);
+                SpellParsers.ReadSpellCastLogData(packet);
 
             packet.ReadInt32("Size");
 
