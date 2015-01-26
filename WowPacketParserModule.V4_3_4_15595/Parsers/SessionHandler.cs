@@ -59,7 +59,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
 
             var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
                 packet.Number, packet.Writer, packet.FileName);
-            CoreParsers.AddonHandler.ReadClientAddonsList(ref addons);
+            CoreParsers.AddonHandler.ReadClientAddonsList(addons);
             addons.ClosePacket(false);
 
             packet.ReadBit("Unk bit");

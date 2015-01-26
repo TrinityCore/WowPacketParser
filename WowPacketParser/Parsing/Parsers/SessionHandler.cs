@@ -194,7 +194,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var pkt = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
                 packet.Number, packet.Writer, packet.FileName);
-            AddonHandler.ReadClientAddonsList(ref pkt);
+            AddonHandler.ReadClientAddonsList(pkt);
             pkt.ClosePacket(false);
 
             packet.ReadByte("Mask"); // TODO: Seems to affect how the size is read
@@ -244,7 +244,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var pkt = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
                 packet.Number, packet.Writer, packet.FileName);
-            AddonHandler.ReadClientAddonsList(ref pkt);
+            AddonHandler.ReadClientAddonsList(pkt);
             pkt.ClosePacket(false);
 
             var highBits = packet.ReadByte() << 5;
@@ -291,7 +291,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
                 packet.Number, packet.Writer, packet.FileName);
-            AddonHandler.ReadClientAddonsList(ref addons);
+            AddonHandler.ReadClientAddonsList(addons);
             addons.ClosePacket(false);
 
             packet.ReadBit("Unk bit");

@@ -69,7 +69,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
                 packet.Number, packet.Writer, packet.FileName);
-            CoreParsers.AddonHandler.ReadClientAddonsList(ref addons);
+            CoreParsers.AddonHandler.ReadClientAddonsList(addons);
             addons.ClosePacket(false);
 
             var size = (int)packet.ReadBits(11);
