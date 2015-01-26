@@ -836,12 +836,6 @@ namespace WowPacketParser.Parsing.Parsers
                 Storage.NpcSpellClicks.Add(guid, packet.TimeSpan);
         }
 
-        [Parser(Opcode.SMSG_UI_TIME)]
-        public static void HandleUITime(Packet packet)
-        {
-            packet.ReadTime("Time");
-        }
-
         [Parser(Opcode.SMSG_START_TIMER)]
         public static void HandleStartTimer(Packet packet)
         {
@@ -1128,7 +1122,6 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SUMMON_CANCEL)]
         [Parser(Opcode.CMSG_MEETINGSTONE_INFO)]
         [Parser(Opcode.CMSG_PORT_GRAVEYARD)]
-        [Parser(Opcode.CMSG_UI_TIME_REQUEST)]
         [Parser(Opcode.CMSG_REQUEST_CEMETERY_LIST)]
         [Parser(Opcode.CMSG_REQUEST_RESEARCH_HISTORY)]
         [Parser(Opcode.CMSG_COMPLETE_MOVIE)]
