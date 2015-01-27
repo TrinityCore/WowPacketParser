@@ -942,7 +942,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_UPDATE_CURRENCY, 0x0918},
             {Opcode.SMSG_UPDATE_DUNGEON_ENCOUNTER_FOR_LOOT, 0x0F9D},
             {Opcode.SMSG_UPDATE_INSTANCE_OWNERSHIP, 0x0E09},
-            {Opcode.SMSG_SOCKET_GEMS_RESULT, 0x07EC},
+            {Opcode.SMSG_SOCKET_GEMS, 0x07EC},
             {Opcode.SMSG_UPDATE_LAST_INSTANCE, 0x0A49},
             {Opcode.SMSG_UPDATE_OBJECT, 0x0120},
             {Opcode.SMSG_UPDATE_SERVER_PLAYER_POSITION, 0x071C},

@@ -1118,7 +1118,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_SHOW_BANK, 0x2627},
             {Opcode.SMSG_SHOW_MAILBOX, 0x2524},
             {Opcode.SMSG_SHOW_RATINGS, 0x11B4},
-            {Opcode.SMSG_SOCKET_GEMS_RESULT, 0x6014},
+            {Opcode.SMSG_SOCKET_GEMS, 0x6014},
             {Opcode.SMSG_SOR_START_EXPERIENCE_INCOMPLETE, 0x7CA7},
             {Opcode.SMSG_SPELL_BREAK_LOG, 0x6B17},
             {Opcode.SMSG_SPELL_DAMAGE_SHIELD, 0x2927},

@@ -1210,7 +1210,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.SMSG_AFK_MONITOR_INFO_RESPONSE, 0x504},
             {Opcode.SMSG_AREA_TRIGGER_NO_CORPSE, 0x506},
             {Opcode.SMSG_CAMERA_SHAKE, 0x50A},
-            {Opcode.SMSG_SOCKET_GEMS_RESULT, 0x50B},
+            {Opcode.SMSG_SOCKET_GEMS, 0x50B},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x50D},
             {Opcode.SMSG_SUSPEND_COMMS, 0x50F},
             {Opcode.SMSG_RESUME_COMMS, 0x511},

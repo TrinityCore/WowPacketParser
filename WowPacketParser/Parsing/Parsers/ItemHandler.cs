@@ -1170,7 +1170,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.AddSniffData(StoreNameType.Item, (int)itemId, "DB_REPLY");
         }
 
-        [Parser(Opcode.SMSG_SOCKET_GEMS_RESULT)]
+        [Parser(Opcode.SMSG_SOCKET_GEMS)]
         public static void HandleUpdateItemEnchantments(Packet packet)
         {
             packet.ReadGuid("Item Guid");

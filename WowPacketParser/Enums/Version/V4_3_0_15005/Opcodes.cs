@@ -886,7 +886,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.SMSG_UPDATE_DUNGEON_ENCOUNTER_FOR_LOOT, 17564},
             {Opcode.SMSG_UPDATE_INSTANCE_ENCOUNTER_UNIT, 1698},
             {Opcode.SMSG_UPDATE_INSTANCE_OWNERSHIP, 6178},
-            {Opcode.SMSG_SOCKET_GEMS_RESULT, 30884},
+            {Opcode.SMSG_SOCKET_GEMS, 30884},
             {Opcode.SMSG_UPDATE_LAST_INSTANCE, 17538},
             {Opcode.SMSG_UPDATE_OBJECT, 17926},
             {Opcode.SMSG_UPDATE_SERVER_PLAYER_POSITION, 20124},
