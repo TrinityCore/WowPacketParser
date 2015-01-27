@@ -164,7 +164,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_USE_TOY)]
         public static void HandleUseToy(Packet packet)
         {
-            packet.ReadInt32("ItemID");
+            packet.ReadInt32<ItemId>("ItemID");
             SpellHandler.ReadSpellCastRequest(packet);
         }
 

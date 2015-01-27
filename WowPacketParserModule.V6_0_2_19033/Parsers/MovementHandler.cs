@@ -1,5 +1,4 @@
-﻿using System;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -7,64 +6,64 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class MovementHandler
     {
-        public static void ReadMovementStats(Packet packet)
+        public static void ReadMovementStats(Packet packet, params object[] idx)
         {
-            packet.ReadPackedGuid128("MoverGUID");
+            packet.ReadPackedGuid128("MoverGUID", idx);
 
-            packet.ReadUInt32("MoveIndex");
-            packet.ReadVector4("Position");
+            packet.ReadUInt32("MoveIndex", idx);
+            packet.ReadVector4("Position", idx);
 
-            packet.ReadSingle("Pitch");
-            packet.ReadSingle("StepUpStartElevation");
+            packet.ReadSingle("Pitch", idx);
+            packet.ReadSingle("StepUpStartElevation", idx);
 
-            var int152 = packet.ReadInt32("RemoveForcesCount");
-            packet.ReadInt32("MoveTime");
+            var int152 = packet.ReadInt32("RemoveForcesCount", idx);
+            packet.ReadInt32("MoveTime", idx);
 
             for (var i = 0; i < int152; i++)
-                packet.ReadPackedGuid128("RemoveForcesIDs", i);
+                packet.ReadPackedGuid128("RemoveForcesIDs", idx, i);
 
             packet.ResetBitReader();
 
-            packet.ReadEnum<MovementFlag>("Movement Flags", 30);
-            packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 15);
+            packet.ReadEnum<MovementFlag>("Movement Flags", 30, idx);
+            packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 15, idx);
 
-            var hasTransport = packet.ReadBit("Has Transport Data");
-            var hasFall = packet.ReadBit("Has Fall Data");
-            packet.ReadBit("HasSpline");
-            packet.ReadBit("HeightChangeFailed");
-            packet.ReadBit("RemoteTimeValid");
+            var hasTransport = packet.ReadBit("Has Transport Data", idx);
+            var hasFall = packet.ReadBit("Has Fall Data", idx);
+            packet.ReadBit("HasSpline", idx);
+            packet.ReadBit("HeightChangeFailed", idx);
+            packet.ReadBit("RemoteTimeValid", idx);
 
             if (hasTransport)
             {
-                packet.ReadPackedGuid128("TransportGuid");
-                packet.ReadVector4("TransportPosition");
-                packet.ReadByte("TransportSeat");
-                packet.ReadInt32("TransportMoveTime");
+                packet.ReadPackedGuid128("TransportGuid", idx);
+                packet.ReadVector4("TransportPosition", idx);
+                packet.ReadByte("TransportSeat", idx);
+                packet.ReadInt32("TransportMoveTime", idx);
 
                 packet.ResetBitReader();
 
-                var hasPrevMoveTime = packet.ReadBit("HasPrevMoveTime");
-                var hasVehicleRecID = packet.ReadBit("HasVehicleRecID");
+                var hasPrevMoveTime = packet.ReadBit("HasPrevMoveTime", idx);
+                var hasVehicleRecID = packet.ReadBit("HasVehicleRecID", idx);
 
                 if (hasPrevMoveTime)
-                    packet.ReadUInt32("PrevMoveTime");
+                    packet.ReadUInt32("PrevMoveTime", idx);
 
                 if (hasVehicleRecID)
-                    packet.ReadUInt32("VehicleRecID");
+                    packet.ReadUInt32("VehicleRecID", idx);
             }
 
             if (hasFall)
             {
-                packet.ReadUInt32("FallTime");
-                packet.ReadSingle("JumpVelocity");
+                packet.ReadUInt32("FallTime", idx);
+                packet.ReadSingle("JumpVelocity", idx);
 
                 packet.ResetBitReader();
 
-                var bit20 = packet.ReadBit("HasFallDirection");
+                var bit20 = packet.ReadBit("HasFallDirection", idx);
                 if (bit20)
                 {
-                    packet.ReadVector2("Direction");
-                    packet.ReadSingle("HorizontalSpeed");
+                    packet.ReadVector2("Direction", idx);
+                    packet.ReadSingle("HorizontalSpeed", idx);
                 }
             }
         }
