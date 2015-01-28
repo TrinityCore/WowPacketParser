@@ -443,8 +443,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_TUTORIAL_FLAGS)]
         public static void HandleTutorialFlags(Packet packet)
         {
-            for (var i = 0; i < 8; i++)
-                packet.ReadUInt32("Flag", i);
+            for (var i = 0; i < 32; i++)
+                packet.ReadByte("TutorialData", i);
         }
 
         [Parser(Opcode.CMSG_AREATRIGGER)]
