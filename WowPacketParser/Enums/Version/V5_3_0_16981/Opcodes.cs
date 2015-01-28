@@ -328,7 +328,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_SPELL_GO, 0x036E},
             {Opcode.SMSG_SPELL_START, 0x0765},
             {Opcode.SMSG_STABLE_RESULT, 0x118D},
-            {Opcode.SMSG_STANDSTATE_UPDATE, 0x1399},
+            {Opcode.SMSG_STAND_STATE_UPDATE, 0x1399},
             {Opcode.SMSG_START_TIMER, 0x0988},
             {Opcode.SMSG_STREAMING_MOVIE, 0x0989},
             {Opcode.SMSG_SUMMON_REQUEST, 0x079C},

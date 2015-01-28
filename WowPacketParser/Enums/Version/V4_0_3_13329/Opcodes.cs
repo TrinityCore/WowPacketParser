@@ -121,7 +121,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_TUTORIAL_FLAG, 0x00FE}, // NF()(0x00FE) //
             {Opcode.CMSG_TUTORIAL_CLEAR, 0x00FF}, // NF()(0x00FF) //
             {Opcode.CMSG_TUTORIAL_RESET, 0x0100}, // NF()(0x0100) //
-            {Opcode.CMSG_STANDSTATECHANGE, 0x0101}, // NF()(0x0101) //
+            {Opcode.CMSG_STAND_STATE_CHANGE, 0x0101}, // NF()(0x0101) //
             {Opcode.CMSG_EMOTE, 0x7F5C}, // (0x4A50)(0x0102) //
             //{Opcode.CMSG_TEXT_EMOTE, 0x4A90}, // (0xD200)(0x0104) //
             {Opcode.CMSG_AUTOEQUIP_GROUND_ITEM, 0x0106}, // NF()(0x0106) //
@@ -817,7 +817,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_AUCTION_BIDDER_NOTIFICATION, 0x3021}, // (0x4250)(0x025E) //
             {Opcode.SMSG_AUCTION_OWNER_NOTIFICATION, 0xC009}, // (0x42B5)(0x025F) //
             {Opcode.SMSG_PROC_RESIST, 0x6754}, // (0xEBB0)(0x0260) //
-            {Opcode.SMSG_STANDSTATE_CHANGE_FAILURE_OBSOLETE, 0x455D}, // (0x8290)(0x0261) //
+            {Opcode.SMSG_STAND_STATE_CHANGE_FAILURE_OBSOLETE, 0x455D}, // (0x8290)(0x0261) //
             {Opcode.SMSG_DISPEL_FAILED, 0xDD54}, // (0x4BB5)(0x0262) //
             {Opcode.SMSG_SPELL_OR_DAMAGE_IMMUNE, 0x247F}, // (0x63F5)(0x0263) //
             {Opcode.SMSG_AUCTION_LIST_BIDDER_ITEMS_RESULT, 0xEA0A}, // (0x42D5)(0x0265) //
@@ -839,7 +839,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_MEETINGSTONE_IN_PROGRESS, 0xF57D}, // (0xE318)(0x0298) //ome UPDATE_COOLDOWN events
             {Opcode.SMSG_MEETINGSTONE_MEMBER_ADDED, 0xF77C}, // (0x43FD)(0x0299) //rrors: ERR_NOT_IN_GROUP (2,51) and ERR_NOT_IN_RAID (3,39,40)
             //{Opcode.SMSG_CANCEL_AUTO_REPEAT, 0x0456}, // (0xE398)(0x029C) //
-            {Opcode.SMSG_STANDSTATE_UPDATE, 0x0F77}, // (0xCBD1)(0x029D) //
+            {Opcode.SMSG_STAND_STATE_UPDATE, 0x0F77}, // (0xCBD1)(0x029D) //
             {Opcode.SMSG_LOOT_ALL_PASSED, 0x8E54}, // (0x83B1)(0x029E) //
             {Opcode.SMSG_LOOT_ROLL_WON, 0x757E}, // (0xE235)(0x029F) //
             {Opcode.SMSG_LOOT_START_ROLL, 0x7D7C}, // (0xEB19)(0x02A1) //

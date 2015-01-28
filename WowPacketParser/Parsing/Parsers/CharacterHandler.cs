@@ -9,16 +9,16 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class CharacterHandler
     {
-        [Parser(Opcode.CMSG_STANDSTATECHANGE)]
+        [Parser(Opcode.CMSG_STAND_STATE_CHANGE)]
         public static void HandleStandStateChange(Packet packet)
         {
-            packet.ReadInt32("Standstate");
+            packet.ReadInt32E<StandState>("StandState");
         }
 
-        [Parser(Opcode.SMSG_STANDSTATE_UPDATE)]
+        [Parser(Opcode.SMSG_STAND_STATE_UPDATE)]
         public static void HandleStandStateUpdate(Packet packet)
         {
-            packet.ReadByte("Standstate");
+            packet.ReadByteE<StandState>("State");
         }
 
         [Parser(Opcode.CMSG_CHAR_CREATE)]

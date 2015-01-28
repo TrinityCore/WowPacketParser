@@ -490,7 +490,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_SPELL_FAILURE, 0x04AF},
             {Opcode.SMSG_SPELL_GO, 0x09D8},
             {Opcode.SMSG_SPELL_START, 0x107A},
-            {Opcode.SMSG_STANDSTATE_UPDATE, 0x1C12},
+            {Opcode.SMSG_STAND_STATE_UPDATE, 0x1C12},
             {Opcode.SMSG_START_TIMER, 0x0E3F},
             {Opcode.SMSG_SUSPEND_COMMS, 0x1D48},
             {Opcode.SMSG_TALENTS_INFO, 0x0A9B},

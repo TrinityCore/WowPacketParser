@@ -546,7 +546,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_SPELLCLICK, 0x0BC2},
             {Opcode.CMSG_SPIRIT_HEALER_ACTIVATE, 0x03EC},
             {Opcode.CMSG_SPLIT_ITEM, 0x0795},
-            {Opcode.CMSG_STANDSTATECHANGE, 0x0ABD},
+            {Opcode.CMSG_STAND_STATE_CHANGE, 0x0ABD},
             {Opcode.CMSG_SUPPORT_TICKET_SUBMIT_BUG, 0x0B0D},
             {Opcode.CMSG_SUPPORT_TICKET_SUBMIT_COMPLAINT, 0x0B37}, // need structure | 2871 (0x0B37) | 0x0098E908 | 0x005E41E4 |
             {Opcode.CMSG_SUPPORT_TICKET_SUBMIT_SUGGESTION, 0x0D0A},
@@ -1329,7 +1329,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_SPELL_START, 0x0803},
             {Opcode.SMSG_SPELL_UPDATE_CHAIN_TARGETS, 0x0374},
             {Opcode.SMSG_SPIRIT_HEALER_CONFIRM, 0x1331},
-            {Opcode.SMSG_STANDSTATE_UPDATE, 0x1311},
+            {Opcode.SMSG_STAND_STATE_UPDATE, 0x1311},
             {Opcode.SMSG_START_ELAPSED_TIMER, 0x0D2A},
             {Opcode.SMSG_START_ELAPSED_TIMERS, 0x093F},
             {Opcode.SMSG_START_LOOT_ROLL, 0x1B84},

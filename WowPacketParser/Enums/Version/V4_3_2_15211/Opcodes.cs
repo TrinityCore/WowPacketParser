@@ -120,7 +120,7 @@ namespace WowPacketParser.Enums.Version.V4_3_2_15211
             {Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG, 0x250F},
             {Opcode.SMSG_SPELL_GO, 0x6DEF},
             {Opcode.SMSG_SPELL_START, 0x6D27},
-            {Opcode.SMSG_STANDSTATE_UPDATE, 0x25DF},
+            {Opcode.SMSG_STAND_STATE_UPDATE, 0x25DF},
             {Opcode.SMSG_THREAT_CLEAR, 0x6DA1},
             {Opcode.SMSG_THREAT_REMOVE, 0x0DD7},
             {Opcode.SMSG_THREAT_UPDATE, 0x05BD},
