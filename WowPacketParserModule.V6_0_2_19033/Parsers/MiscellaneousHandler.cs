@@ -1,5 +1,4 @@
-﻿using System;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -397,10 +396,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_TUTORIAL_FLAG)]
         public static void HandleTutorialFlag(Packet packet)
         {
-            var bits16 = packet.ReadBits("TutorialAction", 2); // 0 == Update, 1 == Clear?, 2 == Reset
+            var action = packet.ReadEnum<TutorialAction>("TutorialAction", 2);
 
-            if (bits16 == 0)
-                packet.ReadInt32("TutorialBit");
+            if (action == TutorialAction.Update)
+                packet.ReadInt32E<Tutorial>("TutorialBit");
         }
 
         [Parser(Opcode.SMSG_START_ELAPSED_TIMERS)]

@@ -444,7 +444,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleTutorialFlags(Packet packet)
         {
             for (var i = 0; i < 8; i++)
-                packet.ReadInt32("Flag", i);
+                packet.ReadUInt32("Flag", i);
         }
 
         [Parser(Opcode.CMSG_AREATRIGGER)]
