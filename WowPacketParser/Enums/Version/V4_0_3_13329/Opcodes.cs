@@ -219,7 +219,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_WRAP_ITEM, 0x01D3}, // NF()(0x01D3) //
             {Opcode.CMSG_SET_SKILL_CHEAT, 0x01D8}, // NF()(0x01D8) //
             {Opcode.CMSG_PING, 0x882A}, // ()(0x01DC) //
-            {Opcode.CMSG_SETSHEATHED, 0x01E0}, // NF()(0x01E0) //
+            {Opcode.CMSG_SET_SHEATHED, 0x01E0}, // NF()(0x01E0) //
             {Opcode.CMSG_QUEST_POI_QUERY, 0x01E3}, // NF()(0x01E3) //
             {Opcode.CMSG_GHOST, 0x01E5}, // NF()(0x01E5) //
             {Opcode.CMSG_GM_INVIS, 0x01E6}, // NF()(0x01E6) //
@@ -556,7 +556,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_CHAR_RACE_CHANGE, 0x04F8}, // NF()(0x04F8) // // called from lua: CreateCharacter}, paid race change
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0xD677}, // (0x6A99)(0x04FF) //yForAccountDataTimes
             {Opcode.CMSG_QUERY_QUESTS_COMPLETED, 0x0500}, // NF()(0x0500) // // lua: QueryQuestsCompleted
-            {Opcode.CMSG_GM_REPORT_LAG, 0x0502}, // NF()(0x0502) // // lua: GMReportLag
+            {Opcode.CMSG_GM_LAG_REPORT, 0x0502}, // NF()(0x0502) // // lua: GMReportLag
             {Opcode.CMSG_SET_ALLOW_LOW_LEVEL_RAID1, 0x0508}, // NF()(0x0508) // // lua: SetAllowLowLevelRaid
             //{Opcode.CMSG_SET_ALLOW_LOW_LEVEL_RAID2, 0x0509}, // NF()(0x0509) // // lua: SetAllowLowLevelRaid
             {Opcode.CMSG_CONNECT_TO_FAILED, 0x0509}, // (0x1201)(0x050E) // with networking

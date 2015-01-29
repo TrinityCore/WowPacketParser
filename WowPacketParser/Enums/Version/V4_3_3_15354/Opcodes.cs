@@ -65,7 +65,7 @@ namespace WowPacketParser.Enums.Version.V4_3_3_15354
             {Opcode.CMSG_REQUEST_RAID_INFO, 0x60ED},
             {Opcode.CMSG_RESET_FACTION_CHEAT, 0x0222},
             {Opcode.CMSG_SELL_ITEM, 0x2B25},
-            {Opcode.CMSG_SETSHEATHED, 0x2AED},
+            {Opcode.CMSG_SET_SHEATHED, 0x2AED},
             {Opcode.CMSG_SET_ACTIONBAR_TOGGLES, 0x74A5},
             {Opcode.CMSG_SET_SELECTION, 0x2325},
             {Opcode.CMSG_SET_VEHICLE_REC_ID_ACK, 0x1310},

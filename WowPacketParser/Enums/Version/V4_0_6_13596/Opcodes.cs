@@ -236,7 +236,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_GM_INVIS, 0x10089}, //UnknownopcodeID
             {Opcode.CMSG_GM_NUKE, 0x1008F}, //UnknownopcodeID
             {Opcode.CMSG_GM_NUKE_ACCOUNT, 0x10116}, //UnknownopcodeID
-            {Opcode.CMSG_GM_REPORT_LAG, 0x03FA0},
+            {Opcode.CMSG_GM_LAG_REPORT, 0x03FA0},
             {Opcode.CMSG_GM_SET_SECURITY_GROUP, 0x1008E}, //UnknownopcodeID
             {Opcode.CMSG_GM_SHOW_COMPLAINTS, 0x10181}, //UnknownopcodeID
             {Opcode.CMSG_GM_TEACH, 0x10095}, //UnknownopcodeID
@@ -495,7 +495,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_SERVER_BROADCAST, 0x100DE}, //UnknownopcodeID
             {Opcode.CMSG_SERVER_INFO_QUERY, 0x101F6}, //UnknownopcodeID
             {Opcode.CMSG_SETDEATHBINDPOINT, 0x0A94E},
-            {Opcode.CMSG_SETSHEATHED, 0x0AAE4},
+            {Opcode.CMSG_SET_SHEATHED, 0x0AAE4},
             {Opcode.CMSG_SET_ACTIONBAR_TOGGLES, 0x032C4},
             {Opcode.CMSG_SET_ACTION_BUTTON, 0x072E8},
             {Opcode.CMSG_SET_ACTIVE_MOVER, 0x06CA0},

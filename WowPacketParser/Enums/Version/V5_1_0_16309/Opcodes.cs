@@ -161,7 +161,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.CMSG_GMTICKET_GETTICKET, 0x0F68},
             {Opcode.CMSG_GMTICKET_SYSTEMSTATUS, 0x09C9},
             {Opcode.CMSG_GMTICKET_UPDATETEXT, 0x0069},
-            {Opcode.CMSG_GM_REPORT_LAG, 0x0588},
+            {Opcode.CMSG_GM_LAG_REPORT, 0x0588},
             {Opcode.CMSG_GOSSIP_HELLO, 0x0764},
             {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x08A8},
             {Opcode.CMSG_GRANT_LEVEL, 0x03CD},
