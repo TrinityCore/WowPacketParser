@@ -144,12 +144,12 @@ namespace WowPacketParser.SQL.Builders
                 foreach (var trainerSpell in npcTrainer.Value.Item1.TrainerSpells)
                 {
                     var row = new QueryBuilder.SQLInsertRow();
-                    row.AddValue("entry", npcTrainer.Key);
-                    row.AddValue("spell", trainerSpell.Spell);
-                    row.AddValue("spellcost", trainerSpell.Cost);
-                    row.AddValue("reqskill", trainerSpell.RequiredSkill);
-                    row.AddValue("reqskillvalue", trainerSpell.RequiredSkillLevel);
-                    row.AddValue("reqlevel", trainerSpell.RequiredLevel);
+                    row.AddValue("ID", npcTrainer.Key);
+                    row.AddValue("SpellID", trainerSpell.Spell);
+                    row.AddValue("MoneyCost", trainerSpell.Cost);
+                    row.AddValue("ReqSkillLine", trainerSpell.RequiredSkill);
+                    row.AddValue("ReqSkillRank", trainerSpell.RequiredSkillLevel);
+                    row.AddValue("ReqLevel", trainerSpell.RequiredLevel);
                     row.Comment = StoreGetters.GetName(StoreNameType.Spell, (int)trainerSpell.Spell, false);
                     rows.Add(row);
                 }
