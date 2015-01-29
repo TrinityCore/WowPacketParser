@@ -1,5 +1,4 @@
-﻿using System;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -16,7 +15,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             {
                 packet.ReadTime("Hotfix date", i);
                 packet.ReadInt32("Hotfixed entry", i);
-                packet.ReadEnum<DB2Hash>("Hotfix DB2 File", TypeCode.Int32, i);
+                packet.ReadInt32E<DB2Hash>("Hotfix DB2 File", i);
             }
         }
     }

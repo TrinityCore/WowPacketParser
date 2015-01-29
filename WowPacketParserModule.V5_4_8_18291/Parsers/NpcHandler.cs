@@ -92,11 +92,11 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             for (var i = 0; i < questgossips; ++i)
             {
                 packet.ReadWoWString("Title", titleLen[i], i);
-                packet.ReadEnum<QuestFlags>("Flags", TypeCode.UInt32, i);//528
+                packet.ReadUInt32E<QuestFlags>("Flags", i);//528
                 packet.ReadInt32("Level", i);//8
                 packet.ReadUInt32("Icon", i);//4
-                packet.ReadEntry<UInt32>(StoreNameType.Quest, "Quest ID", i); //528
-                packet.ReadEnum<QuestFlags2>("Flags 2", TypeCode.UInt32, i);//532
+                packet.ReadUInt32<QuestId>("Quest ID", i); //528
+                packet.ReadUInt32E<QuestFlags2>("Flags 2", i);//532
             }
 
             packet.ReadXORByte(guidBytes, 1);
@@ -110,9 +110,9 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     RequiredMoney = packet.ReadUInt32("Required money", i),//3012
                     BoxText = packet.ReadWoWString("Box Text", boxTextLen[i], i),//12
                     Index = packet.ReadUInt32("Index", i),//0
-                    Box = packet.ReadBoolean("Box", i),
+                    Box = packet.ReadBool("Box", i),
                     OptionText = packet.ReadWoWString("Text", optionTextLen[i], i),
-                    OptionIcon = packet.ReadEnum<GossipOptionIcon>("Icon", TypeCode.Byte, i),//4
+                    OptionIcon = packet.ReadByteE<GossipOptionIcon>("Icon", i),//4
                 };
 
                 gossip.GossipOptions.Add(gossipOption);
@@ -157,9 +157,9 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             var gossipPOI = new GossipPOI();
 
-            gossipPOI.Flags = (uint)packet.ReadEnum<UnknownFlags>("Flags", TypeCode.Int32);
+            gossipPOI.Flags = (uint)packet.ReadInt32E<UnknownFlags>("Flags");
             var pos = packet.ReadVector2("Coordinates");
-            gossipPOI.Icon = packet.ReadEnum<GossipPOIIcon>("Icon", TypeCode.UInt32);
+            gossipPOI.Icon = packet.ReadUInt32E<GossipPOIIcon>("Icon");
             gossipPOI.Importance = packet.ReadUInt32("Importance");
             gossipPOI.Name = packet.ReadCString("Icon Name");
 
@@ -336,12 +336,12 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 var trainerSpell = new TrainerSpell();
                 trainerSpell.RequiredLevel = packet.ReadByte("Required Level", i);
                 trainerSpell.Cost = packet.ReadUInt32("Cost", i);
-                trainerSpell.Spell = (uint)packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i);
+                trainerSpell.Spell = (uint)packet.ReadInt32<SpellId>("Spell ID", i);
                 for (var j = 0; j < 3; ++j)
                     packet.ReadInt32("Int818", i, j);
                 trainerSpell.RequiredSkill = packet.ReadUInt32("Required Skill", i);
                 trainerSpell.RequiredSkillLevel = packet.ReadUInt32("Required Skill Level", i);
-                packet.ReadEnum<TrainerSpellState>("State", TypeCode.Byte, i);
+                packet.ReadByteE<TrainerSpellState>("State", i);
 
                 npcTrainer.TrainerSpells.Add(trainerSpell);
             }
@@ -355,7 +355,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadXORByte(guid, 5);
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 2);
-            npcTrainer.Type = packet.ReadEnum<TrainerType>("Type", TypeCode.Int32);
+            npcTrainer.Type = packet.ReadInt32E<TrainerType>("Type");
 
             packet.WriteGuid("Guid", guid);
             var GUID = new WowGuid64(BitConverter.ToUInt64(guid, 0));
@@ -428,7 +428,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 packet.ReadInt32("Display ID", i);    // +12
                 var buyCount = packet.ReadUInt32("Buy Count", i);    // +28
 
-                vendorItem.ItemId = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "Item ID", i);   // +8
+                vendorItem.ItemId = (uint)packet.ReadInt32<ItemId>("Item ID", i);   // +8
 
                 if (hasExtendedCost[i])
                     vendorItem.ExtendedCostId = packet.ReadUInt32("Extended Cost", i);    // +36

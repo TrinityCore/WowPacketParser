@@ -142,7 +142,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var count = packet.ReadUInt32("Spell Count");
 
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i);
+                packet.ReadInt32<SpellId>("Spell ID", i);
         }
         
         [Parser(Opcode.SMSG_PET_GUIDS)]
@@ -180,6 +180,48 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandlePetStopAttack(Packet packet)
         {
             packet.ReadPackedGuid128("PetGUID");
+        }
+
+        [Parser(Opcode.CMSG_PET_SET_ACTION)]
+        public static void HandlePetSetAction(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
+            packet.ReadUInt32("Index");
+
+            //packet.ReadUInt32("Action");
+            var action = (uint)packet.ReadUInt16() + (packet.ReadByte() << 16);
+            packet.AddValue("Action", action);
+            packet.ReadByte("Unk");
+        }
+
+        public static void ReadPetStableInfo(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("PetSlot", indexes);
+            packet.ReadInt32("PetNumber", indexes);
+            packet.ReadInt32("CreatureID", indexes);
+            packet.ReadInt32("DisplayID", indexes);
+            packet.ReadInt32("ExperienceLevel", indexes);
+            packet.ReadByte("PetFlags", indexes);
+
+            packet.ResetBitReader();
+
+            var len = packet.ReadBits(8);
+            packet.ReadWoWString("PetName", len, indexes);
+        }
+
+        [Parser(Opcode.SMSG_PET_STABLE_LIST)]
+        public static void HandlePetStableList(Packet packet)
+        {
+            packet.ReadPackedGuid128("StableMaster");
+            var petCount = packet.ReadInt32("PetCount");
+            for (int i = 0; i < petCount; i++)
+                ReadPetStableInfo(packet, i, "PetStableInfo");
+        }
+
+        [Parser(Opcode.SMSG_PET_ADDED)]
+        public static void HandlePetAdded(Packet packet)
+        {
+            ReadPetStableInfo(packet, "PetStableInfo");
         }
     }
 }

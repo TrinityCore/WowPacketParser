@@ -528,7 +528,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadByte("Byte2C", i);
             }
         }
-        [Parser(Opcode.SMSG_PET_BATTLE_SLOT_UPDATE)]
+        [Parser(Opcode.SMSG_PET_BATTLE_SLOT_UPDATES)]
         public static void HandleBattleSlotUpdate(Packet packet)
         {
             var bits10 = 0;
@@ -887,7 +887,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
         }
 
-        [Parser(Opcode.SMSG_BATTLE_PET_NAME_QUERY_RESPONSE)]
+        [Parser(Opcode.SMSG_BATTLE_PET_NAME_RESPONSE)]
         public static void HandleBattlePetQueryResponse(Packet packet)
         {
             var bits19 = 0u;

@@ -28,12 +28,12 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_ARENA_TEAM_INVITE, 0x07B3D}, // 4.1.0 13914
             {Opcode.SMSG_ARENA_TEAM_QUERY_RESPONSE, 0x0982D}, // 4.1.0 13914
             {Opcode.SMSG_ARENA_TEAM_ROSTER, 0x0ED6E}, // 4.1.0 13914
-            {Opcode.SMSG_AUCTION_BIDDER_LIST_RESULT, 0x0FD6C}, // 4.1.0 13914
             {Opcode.SMSG_AUCTION_BIDDER_NOTIFICATION, 0x01E7C}, // 4.1.0 13914
             {Opcode.SMSG_AUCTION_COMMAND_RESULT, 0x00F3D}, // 4.1.0 13914
+            {Opcode.SMSG_AUCTION_LIST_BIDDER_ITEMS_RESULT, 0x0FD6C}, // 4.1.0 13914
+            {Opcode.SMSG_AUCTION_LIST_OWNER_ITEMS_RESULT, 0x01A6D}, // 4.1.0 13914
             {Opcode.SMSG_AUCTION_LIST_PENDING_SALES, 0x0AF3C}, // 4.1.0 13914
             {Opcode.SMSG_AUCTION_LIST_RESULT, 0x05D7C}, // 4.1.0 13914
-            {Opcode.SMSG_AUCTION_OWNER_LIST_RESULT, 0x01A6D}, // 4.1.0 13914
             {Opcode.SMSG_AUCTION_OWNER_NOTIFICATION, 0x00D2C}, // 4.1.0 13914
             {Opcode.SMSG_AUCTION_REMOVED_NOTIFICATION, 0x0ED3D}, // 4.1.0 13914
             {Opcode.SMSG_AURA_UPDATE, 0xE86C},
@@ -85,7 +85,6 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_ENCHANTMENT_LOG, 0x0BB2F}, // 4.1.0 13914
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x0683D}, // 4.1.0 13914
             {Opcode.SMSG_EQUIPMENT_SET_SAVED, 0x01A7F}, // 4.1.0 13914
-            {Opcode.SMSG_EQUIPMENT_SET_USE_RESULT, 0x0D93D}, // 4.1.0 13914
             {Opcode.SMSG_EXPECTED_SPAM_RECORDS, 0x01E3F}, // 4.1.0 13914
             {Opcode.SMSG_EXPLORATION_EXPERIENCE, 0x06B3F}, // 4.1.0 13914
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x0CC6C}, // 4.1.0 13914
@@ -217,7 +216,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_SPELL_START, 0xDB2F},
             {Opcode.SMSG_SPELL_UPDATE_CHAIN_TARGETS, 0x06B3C}, // 4.1.0 13914
             {Opcode.SMSG_STABLE_RESULT, 0x0896F}, // 4.1.0 13914
-            {Opcode.SMSG_STANDSTATE_UPDATE, 0x0D87F}, // 4.1.0 13914
+            {Opcode.SMSG_STAND_STATE_UPDATE, 0x0D87F}, // 4.1.0 13914
             {Opcode.SMSG_SUMMON_REQUEST, 0x0D87D}, // 4.1.0 13914
             {Opcode.SMSG_SUPERCEDED_SPELL, 0x02F2E}, // 4.1.0 13914
             {Opcode.SMSG_TEXT_EMOTE, 0x00B3C}, // 4.1.0 13914
@@ -232,6 +231,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_UPDATE_INSTANCE_OWNERSHIP, 0x05D6E}, // 4.1.0 13914
             {Opcode.SMSG_UPDATE_LAST_INSTANCE, 0x09D2E}, // 4.1.0 13914
             {Opcode.SMSG_UPDATE_OBJECT, 0x0BF6D}, // 4.1.0 13914
+            {Opcode.SMSG_USE_EQUIPMENT_SET_RESULT, 0x0D93D}, // 4.1.0 13914
             {Opcode.SMSG_USERLIST_ADD, 0x0E83C}, // 4.1.0 13914
             {Opcode.SMSG_USERLIST_REMOVE, 0x05B3F}, // 4.1.0 13914
             {Opcode.SMSG_USERLIST_UPDATE, 0x09C3C}, // 4.1.0 13914

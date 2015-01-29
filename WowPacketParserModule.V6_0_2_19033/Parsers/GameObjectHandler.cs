@@ -32,7 +32,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (dataSize == 0)
                 return;
 
-            gameObject.Type = packet.ReadEnum<GameObjectType>("Type", TypeCode.Int32);
+            gameObject.Type = packet.ReadInt32E<GameObjectType>("Type");
 
             gameObject.DisplayId = packet.ReadUInt32("Display ID");
 
@@ -56,9 +56,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var length = packet.ReadByte("QuestItems Length");
             for (var i = 0; i < length; i++)
-                gameObject.QuestItems[i] = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "Quest Item", i);
+                gameObject.QuestItems[i] = (uint)packet.ReadInt32<ItemId>("Quest Item", i);
 
-            packet.ReadEnum<ClientType>("Expansion", TypeCode.UInt32);
+            packet.ReadUInt32E<ClientType>("Expansion");
 
             Storage.GameObjectTemplates.Add((uint)entry.Key, gameObject, packet.TimeSpan);
 
@@ -72,9 +72,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         [Parser(Opcode.CMSG_GAMEOBJ_REPORT_USE)]
         [Parser(Opcode.CMSG_GAMEOBJ_USE)]
-        public static void HandleGoUse(Packet packet)
+        [Parser(Opcode.SMSG_PAGE_TEXT)]
+        public static void HandleGoMisc(Packet packet)
         {
-            packet.ReadPackedGuid128("Guid");
+            packet.ReadPackedGuid128("GameObjectGUID");
         }
 
         [Parser(Opcode.SMSG_GAMEOBJECT_CUSTOM_ANIM)]
@@ -105,6 +106,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("ObjectGUID");
             packet.ReadPackedGuid128("ActivatorGUID");
             packet.ReadInt32("SpellVisualID");
+        }
+
+        [Parser(Opcode.SMSG_DESTRUCTIBLE_BUILDING_DAMAGE)]
+        public static void HandleDestructibleBuildingDamage(Packet packet)
+        {
+            packet.ReadPackedGuid128("Target");
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadPackedGuid128("Owner");
+            packet.ReadInt32("Damage");
+            packet.ReadInt32("SpellID");
+        }
+
+        [Parser(Opcode.SMSG_GAMEOBJECT_RESET_STATE)]
+        public static void HandleGameObjectResetState(Packet packet)
+        {
+            packet.ReadPackedGuid128("ObjectGUID");
         }
     }
 }

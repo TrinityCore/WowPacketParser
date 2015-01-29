@@ -9,7 +9,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     {
         public static int ReadItemInstance(Packet packet, params object[] indexes)
         {
-            var itemId = packet.ReadEntry<Int32>(StoreNameType.Item, "ItemID", indexes);
+            var itemId = packet.ReadInt32<ItemId>("ItemID", indexes);
             packet.ReadUInt32("RandomPropertiesSeed", indexes);
             packet.ReadUInt32("RandomPropertiesID", indexes);
 
@@ -21,10 +21,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             {
                 packet.ReadByte("Context", indexes);
 
-                var indexString = Packet.GetIndexString(indexes);
                 var bonusCount = packet.ReadUInt32();
                 for (var j = 0; j < bonusCount; ++j)
-                    packet.ReadUInt32(String.Format("{0} [{1}] BonusListID", indexString, j));
+                    packet.ReadUInt32("BonusListID", indexes, j);
             }
 
             if (hasModifications)
@@ -38,6 +37,29 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ResetBitReader();
 
             return itemId;
+        }
+
+        public static void ReadItemPurchaseContents(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("");
+
+            for (int i = 0; i < 5; i++)
+                ReadItemPurchaseRefundItem(packet, indexes, i, "ItemPurchaseRefundItem");
+
+            for (int i = 0; i < 5; i++)
+                ReadItemPurchaseRefundCurrency(packet, indexes, i, "ItemPurchaseRefundCurrency");
+        }
+
+        public static void ReadItemPurchaseRefundItem(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("ItemID", indexes);
+            packet.ReadInt32("ItemCount", indexes);
+        }
+
+        public static void ReadItemPurchaseRefundCurrency(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("CurrencyID", indexes);
+            packet.ReadInt32("CurrencyCount", indexes);
         }
 
         [Parser(Opcode.CMSG_SORT_BAGS)]
@@ -58,6 +80,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_ITEM_REFUND_INFO)]
+        [Parser(Opcode.CMSG_USE_CRITTER_ITEM)]
         public static void HandleItemRefundInfo(Packet packet)
         {
             packet.ReadPackedGuid128("ItemGUID");
@@ -66,8 +89,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_SET_PROFICIENCY)]
         public static void HandleSetProficency(Packet packet)
         {
-            packet.ReadEnum<UnknownFlags>("ProficiencyMask", TypeCode.UInt32);
-            packet.ReadEnum<ItemClass>("ProficiencyClass", TypeCode.Byte);
+            packet.ReadUInt32E<UnknownFlags>("ProficiencyMask");
+            packet.ReadByteE<ItemClass>("ProficiencyClass");
         }
 
         [Parser(Opcode.CMSG_TRANSMOGRIFY_ITEMS)]
@@ -117,8 +140,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleBuyFailed(Packet packet)
         {
             packet.ReadPackedGuid128("VendorGUID");
-            packet.ReadEntry<UInt32>(StoreNameType.Item, "Muid");
-            packet.ReadEnum<BuyResult>("Reason", TypeCode.Byte);
+            packet.ReadUInt32<ItemId>("Muid");
+            packet.ReadByteE<BuyResult>("Reason");
         }
 
         [Parser(Opcode.CMSG_BUY_BACK_ITEM)]
@@ -135,14 +158,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("Slot");
             packet.ReadPackedGuid128("CastItem");
 
-            SpellHandler.ReadSpellCastRequest(ref packet);
+            SpellHandler.ReadSpellCastRequest(packet);
         }
 
         [Parser(Opcode.CMSG_USE_TOY)]
         public static void HandleUseToy(Packet packet)
         {
-            packet.ReadInt32("ItemID");
-            SpellHandler.ReadSpellCastRequest(ref packet);
+            packet.ReadInt32<ItemId>("ItemID");
+            SpellHandler.ReadSpellCastRequest(packet);
         }
 
         [Parser(Opcode.CMSG_DESTROY_ITEM)]
@@ -232,7 +255,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_INVENTORY_CHANGE_FAILURE)]
         public static void HandleInventoryChangeFailure(Packet packet)
         {
-            var result = packet.ReadEnum<InventoryResult>("BagResult", TypeCode.Byte);
+            var result = packet.ReadByteE<InventoryResult>("BagResult");
 
             for (int i = 0; i < 2; i++)
                 packet.ReadPackedGuid128("Item", i);
@@ -312,7 +335,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("VendorGUID");
             packet.ReadPackedGuid128("ItemGUID");
-            packet.ReadEnum<SellResult>("Reason", TypeCode.Byte);
+            packet.ReadByteE<SellResult>("Reason");
         }
 
         [Parser(Opcode.SMSG_ITEM_TIME_UPDATE)]
@@ -355,6 +378,43 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleReagentBankDeposit(Packet packet)
         {
             packet.ReadPackedGuid128("Banker");
+        }
+
+        [Parser(Opcode.SMSG_ITEM_COOLDOWN)]
+        public static void HandleItemCooldown(Packet packet)
+        {
+            packet.ReadPackedGuid128("ItemGuid");
+            packet.ReadInt32("SpellID");
+        }
+
+        [Parser(Opcode.SMSG_CROSSED_INEBRIATION_THRESHOLD)]
+        public static void HandleCrossedInebriationThreshold(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadInt32("Threshold");
+            packet.ReadInt32("ItemID");
+        }
+
+        [Parser(Opcode.SMSG_SET_ITEM_PURCHASE_DATA)]
+        public static void HandleSetItemPurchaseData(Packet packet)
+        {
+            packet.ReadPackedGuid128("ItemGUID");
+
+            ReadItemPurchaseContents(packet, "ItemPurchaseContents");
+
+            packet.ReadInt32("Flags");
+            packet.ReadInt32("PurchaseTime");
+        }
+
+        [Parser(Opcode.SMSG_SOCKET_GEMS)]
+        public static void HandleSocketGems(Packet packet)
+        {
+            packet.ReadPackedGuid128("Item");
+
+            for (var i = 0; i < 3; i++)
+                packet.ReadInt32("Socket", i);
+
+            packet.ReadInt32("SocketMatch");
         }
     }
 }

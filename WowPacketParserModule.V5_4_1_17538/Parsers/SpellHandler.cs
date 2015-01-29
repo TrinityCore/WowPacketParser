@@ -19,7 +19,7 @@ namespace WowPacketParser.V5_4_1_17538.Parsers
             var count = packet.ReadBits("Spell Count", 22);
 
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i);
+                packet.ReadInt32<SpellId>("Spell ID", i);
         }
 
         [Parser(Opcode.CMSG_LEARN_TALENT)]
@@ -372,7 +372,7 @@ namespace WowPacketParser.V5_4_1_17538.Parsers
                 packet.ReadInt32("IntED", i);
             }
 
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32<SpellId>("Spell ID");
             if (bit1AC)
                 packet.ReadByte("Byte1AC");
             packet.ReadByte("Byte20");
@@ -439,7 +439,7 @@ namespace WowPacketParser.V5_4_1_17538.Parsers
             var spells = new List<uint>((int)count);
             for (var i = 0; i < count; i++)
             {
-                var spellId = packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID", i);
+                var spellId = packet.ReadUInt32<SpellId>("Spell ID", i);
                 spells.Add((uint)spellId);
             }
 
@@ -673,7 +673,7 @@ namespace WowPacketParser.V5_4_1_17538.Parsers
                 packet.ReadUInt32("unk9");
 
             if (hasSpellId)
-                packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+                packet.ReadInt32<SpellId>("Spell ID");
 
             if (bit120)
                 packet.ReadWoWString("Text", bits120);

@@ -48,7 +48,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_BATTLEFIELD_LIST)]
         public static void HandleBattlefieldListClient(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Battleground, "ListID");
+            packet.ReadInt32<BgId>("ListID");
         }
 
         [Parser(Opcode.CMSG_BATTLEFIELD_MGR_ENTRY_INVITE_RESPONSE)]
@@ -298,6 +298,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_JOINED)]
+        [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_LEFT)]
         public static void HandleBattlegroundPlayerJoined(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");
@@ -314,6 +315,42 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleBattlegroundInit(Packet packet)
         {
             packet.ReadInt16("MaxPoints");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECTED)]
+        public static void HandleBFMgrEjected(Packet packet)
+        {
+            packet.ReadInt64("QueueID");
+            packet.ReadByte("BattleState");
+            packet.ReadByte("Reason");
+            packet.ReadBit("Relocated");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_REQUEST_RESPONSE)]
+        public static void HandleBFMgrQueueRequestResponse(Packet packet)
+        {
+            packet.ReadInt64("QueueID");
+            packet.ReadInt32("AreaID");
+            packet.ReadSByte("BattleState");
+            packet.ReadPackedGuid128("FailedPlayerGUID");
+            packet.ReadSByte("Result");
+            packet.ReadBit("LoggingIn");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_INVITE)]
+        public static void HandleBFMgrQueueInvite(Packet packet)
+        {
+            packet.ReadInt64("QueueID");
+            packet.ReadByte("BattleState");
+
+            packet.ReadInt32("Timeout");        // unconfirmed order
+            packet.ReadInt32("MinLevel");       // unconfirmed order
+            packet.ReadInt32("MaxLevel");       // unconfirmed order
+            packet.ReadInt32("InstanceID");     // unconfirmed order
+            packet.ReadInt32("MapID");          // unconfirmed order
+            
+            packet.ResetBitReader();
+            packet.ReadBit("Index");
         }
     }
 }

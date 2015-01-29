@@ -11,7 +11,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GAMEOBJECT_QUERY)]
         public static void HandleGameObjectQuery(Packet packet)
         {
-            QueryHandler.ReadQueryHeader(ref packet);
+            QueryHandler.ReadQueryHeader(packet);
         }
 
         [HasSniffData]
@@ -25,7 +25,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (entry.Value) // entry is masked
                 return;
 
-            gameObject.Type = packet.ReadEnum<GameObjectType>("Type", TypeCode.Int32);
+            gameObject.Type = packet.ReadInt32E<GameObjectType>("Type");
             gameObject.DisplayId = packet.ReadUInt32("Display ID");
 
             var name = new string[4];
@@ -47,7 +47,7 @@ namespace WowPacketParser.Parsing.Parsers
             gameObject.QuestItems = new uint[ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ? 6 : 4];
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
                 for (var i = 0; i < gameObject.QuestItems.Length; i++)
-                    gameObject.QuestItems[i] = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "Quest Item", i);
+                    gameObject.QuestItems[i] = (uint)packet.ReadInt32<ItemId>("Quest Item", i);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596))
                 gameObject.UnknownInt = packet.ReadInt32("Unknown UInt32");
@@ -71,7 +71,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("Vehicle GUID");
             packet.ReadPackedGuid("Player GUID");
             packet.ReadInt32("Damage");
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32<SpellId>("Spell ID");
         }
 
         [Parser(Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM)]

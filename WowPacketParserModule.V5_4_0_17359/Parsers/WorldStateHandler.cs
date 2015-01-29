@@ -11,13 +11,13 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_INIT_WORLD_STATES)]
         public static void HandleInitWorldStates(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id");
-            CoreParsers.WorldStateHandler.CurrentAreaId = packet.ReadEntry<Int32>(StoreNameType.Area, "Area Id");
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
+            packet.ReadInt32<ZoneId>("Zone Id");
+            CoreParsers.WorldStateHandler.CurrentAreaId = packet.ReadInt32<AreaId>("Area Id");
+            packet.ReadInt32<MapId>("Map ID");
 
             var numFields = packet.ReadBits("Field Count", 21);
             for (var i = 0; i < numFields; i++)
-                CoreParsers.WorldStateHandler.ReadWorldStateBlock(ref packet);
+                CoreParsers.WorldStateHandler.ReadWorldStateBlock(packet);
         }
     }
 }

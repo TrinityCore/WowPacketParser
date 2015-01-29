@@ -14,7 +14,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Me");
             packet.ReadPackedGuid128("CasterGUID");
 
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
             packet.ReadInt32("Damage");
             packet.ReadInt32("OverKill");
 
@@ -48,7 +48,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
 
             if (bit76)
-                SpellParsers.ReadSpellCastLogData(ref packet);
+                SpellParsers.ReadSpellCastLogData(packet);
         }
 
         [Parser(Opcode.SMSG_PERIODICAURALOG)]
@@ -90,7 +90,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var bit56 = packet.ReadBit("HasLogData");
             if (bit56)
-                SpellParsers.ReadSpellCastLogData(ref packet);
+                SpellParsers.ReadSpellCastLogData(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_HEAL_LOG)]
@@ -116,7 +116,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadSingle("CritRollMade");
 
             if (bit120)
-                SpellParsers.ReadSpellCastLogData(ref packet);
+                SpellParsers.ReadSpellCastLogData(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_ENERGIZE_LOG)]
@@ -125,15 +125,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("CasterGUID");
             packet.ReadPackedGuid128("TargetGUID");
 
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "SpellID");
-            packet.ReadEnum<PowerType>("Type", TypeCode.UInt32);
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadUInt32E<PowerType>("Type");
             packet.ReadInt32("Amount");
 
             packet.ResetBitReader();
 
             var bit100 = packet.ReadBit("HasLogData");
             if (bit100)
-                SpellParsers.ReadSpellCastLogData(ref packet);
+                SpellParsers.ReadSpellCastLogData(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_EXECUTE_LOG)]
@@ -194,7 +194,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var bit160 = packet.ReadBit("HasLogData");
             if (bit160)
-                SpellParsers.ReadSpellCastLogData(ref packet);
+                SpellParsers.ReadSpellCastLogData(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_DAMAGE_SHIELD)]
@@ -212,7 +212,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var bit76 = packet.ReadBit("HasLogData");
             if (bit76)
-                SpellHandler.ReadSpellCastLogData(ref packet);
+                SpellHandler.ReadSpellCastLogData(packet);
         }
 
         [Parser(Opcode.SMSG_ENVIRONMENTALDAMAGELOG)]
@@ -220,7 +220,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Victim");
 
-            packet.ReadEnum<EnvironmentDamage>("Type", TypeCode.Byte);
+            packet.ReadByteE<EnvironmentDamage>("Type");
 
             packet.ReadInt32("Amount");
             packet.ReadInt32("Resisted");
@@ -228,7 +228,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var bit76 = packet.ReadBit("HasLogData");
             if (bit76)
-                SpellHandler.ReadSpellCastLogData(ref packet);
+                SpellHandler.ReadSpellCastLogData(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_ABSORB_LOG)]
@@ -238,7 +238,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Caster");
 
             packet.ReadInt32("InterruptedSpellID");
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
             packet.ReadPackedGuid128("ShieldTargetGUID?");
             packet.ReadInt32("Absorbed");
 
@@ -246,7 +246,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var bit100 = packet.ReadBit("HasLogData");
             if (bit100)
-                SpellParsers.ReadSpellCastLogData(ref packet);
+                SpellParsers.ReadSpellCastLogData(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_INTERRUPT_LOG)]
@@ -265,9 +265,50 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("CasterGUID");
             packet.ReadPackedGuid128("VictimGUID");
 
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
 
             packet.ReadBit("IsPeriodic");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_MISS_LOG)]
+        public static void HandleSpellMissLog(Packet packet)
+        {
+            packet.ReadInt32("SpellID");
+            packet.ReadPackedGuid128("Caster");
+
+            var spellLogMissEntryCount = packet.ReadInt32("SpellLogMissEntryCount");
+            for (int i = 0; i < spellLogMissEntryCount; i++)
+            {
+                packet.ReadPackedGuid128("Victim", i);
+                packet.ReadByte("MissReason", i);
+
+                packet.ResetBitReader();
+
+                var hasSpellLogMissDebug = packet.ReadBit("HasSpellLogMissDebug", i);
+                if (hasSpellLogMissDebug)
+                {
+                    packet.ReadSingle("HitRoll", i);
+                    packet.ReadSingle("HitRollNeededHitRollNeeded", i);
+                }
+            }
+        }
+
+        [Parser(Opcode.SMSG_PROC_RESIST)]
+        public static void HandleProcResist(Packet packet)
+        {
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadPackedGuid128("Target");
+
+            packet.ReadInt32("SpellID");
+
+            var bit20 = packet.ReadBit("HasRolled");    // unconfirmed order
+            var bit32 = packet.ReadBit("HasNeeded");    // unconfirmed order
+
+            if (bit20)
+                packet.ReadSingle("Rolled");            // unconfirmed order
+
+            if (bit32)
+                packet.ReadSingle("Needed");            // unconfirmed order
         }
     }
 }

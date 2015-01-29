@@ -71,10 +71,10 @@ namespace WowPacketParser.Enums.Version.V4_3_3_15354
             {Opcode.CMSG_SET_VEHICLE_REC_ID_ACK, 0x1310},
             {Opcode.CMSG_SUSPEND_TOKEN_RESPONSE, 0x0A06},
             {Opcode.CMSG_TAXI_NODE_STATUS_QUERY, 0x7E65},
+            {Opcode.CMSG_UI_TIME_REQUEST, 0x39E5},
             {Opcode.CMSG_UNREGISTER_ALL_ADDON_PREFIXES, 0x0028},
             {Opcode.CMSG_USE_ITEM, 0x352D},
             {Opcode.CMSG_WARDEN_DATA, 0x0202},
-            {Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x39E5},
             {Opcode.CMSG_ZONEUPDATE, 0x3125},
             {Opcode.CMSG_UPDATE_ACCOUNT_DATA, 0x38EC},
         };

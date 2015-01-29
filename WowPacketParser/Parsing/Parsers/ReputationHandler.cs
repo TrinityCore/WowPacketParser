@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 
@@ -18,8 +17,8 @@ namespace WowPacketParser.Parsing.Parsers
             var count = packet.ReadInt32("Count");
             for (var i = 0; i < count; i++)
             {
-                packet.ReadEnum<FactionFlag>("Faction Flags", TypeCode.Byte, i);
-                packet.ReadEnum<ReputationRank>("Faction Standing", TypeCode.UInt32, i);
+                packet.ReadByteE<FactionFlag>("Faction Flags", i);
+                packet.ReadUInt32E<ReputationRank>("Faction Standing", i);
             }
         }
 
@@ -49,7 +48,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadSingle("Reputation loss");
 
             if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
-                packet.ReadBoolean("Play Visual");
+                packet.ReadBool("Play Visual");
 
             var count = packet.ReadInt32("Count");
             for (var i = 0; i < count; i++)
@@ -63,14 +62,14 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleSetFactionInactive(Packet packet)
         {
             packet.ReadUInt32("Faction Id");
-            packet.ReadBoolean("Inactive");
+            packet.ReadBool("Inactive");
         }
 
-        [Parser(Opcode.CMSG_SET_FACTION_ATWAR)]
+        [Parser(Opcode.CMSG_SET_FACTION_AT_WAR)]
         public static void HandleSetFactionAtWar(Packet packet)
         {
             packet.ReadUInt32("Faction Id");
-            packet.ReadBoolean("At War");
+            packet.ReadBool("At War");
         }
     }
 }

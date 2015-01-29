@@ -1,5 +1,4 @@
-﻿using System;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -31,7 +30,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_LOAD_SCREEN)]
         public static void HandleClientEnterWorld(Packet packet)
         {
-            var mapId = packet.ReadEntry<Int32>(StoreNameType.Map, "MapID");
+            var mapId = packet.ReadInt32<MapId>("MapID");
             packet.ReadBit("Showing");
 
             packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
@@ -40,7 +39,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_WEATHER)]
         public static void HandleWeatherStatus(Packet packet)
         {
-            var state = packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
+            var state = packet.ReadInt32E<WeatherState>("State");
             var grade = packet.ReadSingle("Intensity");
             var unk = packet.ReadBit("Abrupt"); // Type
 
@@ -187,7 +186,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
 
             for (var i = 0; i < bits728; ++i)
-                packet.ReadEntry<UInt32>(StoreNameType.Area, "Area", i);
+                packet.ReadUInt32<AreaId>("Area", i);
         }
 
         [Parser(Opcode.SMSG_WHO)]
@@ -217,9 +216,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 packet.ReadInt32("VirtualRealmAddress", i);
 
-                packet.ReadEnum<Race>("Race", TypeCode.Byte, i);
-                packet.ReadEnum<Gender>("Sex", TypeCode.Byte, i);
-                packet.ReadEnum<Class>("ClassId", TypeCode.Byte, i);
+                packet.ReadByteE<Race>("Race", i);
+                packet.ReadByteE<Gender>("Sex", i);
+                packet.ReadByteE<Class>("ClassId", i);
                 packet.ReadByte("Level", i);
 
                 packet.ReadWoWString("Name", bits15, i);
@@ -329,7 +328,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_ZONE_UNDER_ATTACK)]
         public static void HandleZoneUpdate(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Zone, "AreaID");
+            packet.ReadInt32<ZoneId>("AreaID");
         }
 
         [Parser(Opcode.CMSG_PAGE_TEXT_QUERY)]
@@ -345,17 +344,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             var pageText = new PageText();
 
-            packet.ReadUInt32("Entry");
-            var hasData = packet.ReadBit();
+            packet.ReadUInt32("PageTextID");
+
+            packet.ResetBitReader();
+
+            var hasData = packet.ReadBit("Allow");
             if (!hasData)
                 return; // nothing to do
 
-            var entry = packet.ReadUInt32("Entry");
-            pageText.NextPageID = packet.ReadUInt32("Next Page");
+            var entry = packet.ReadUInt32("ID");
+            pageText.NextPageID = packet.ReadUInt32("NextPageID");
 
             packet.ResetBitReader();
             var textLen = packet.ReadBits(12);
-            pageText.Text = packet.ReadWoWString("Page Text", textLen);
+            pageText.Text = packet.ReadWoWString("Text", textLen);
 
             packet.AddSniffData(StoreNameType.PageText, (int)entry, "QUERY_RESPONSE");
             Storage.PageTexts.Add(entry, pageText, packet.TimeSpan);
@@ -394,10 +396,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_TUTORIAL_FLAG)]
         public static void HandleTutorialFlag(Packet packet)
         {
-            var bits16 = packet.ReadBits("TutorialAction", 2); // 0 == Update, 1 == Clear?, 2 == Reset
+            var action = packet.ReadEnum<TutorialAction>("TutorialAction", 2);
 
-            if (bits16 == 0)
-                packet.ReadInt32("TutorialBit");
+            if (action == TutorialAction.Update)
+                packet.ReadInt32E<Tutorial>("TutorialBit");
         }
 
         [Parser(Opcode.SMSG_START_ELAPSED_TIMERS)]
@@ -565,6 +567,28 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleSetTaskComplete(Packet packet)
         {
             packet.ReadInt32("TaskID");
+        }
+
+        [Parser(Opcode.SMSG_DISPLAY_GAME_ERROR)]
+        public static void HandleDisplayGameError(Packet packet)
+        {
+            packet.ReadUInt32("Error");
+            var hasArg = packet.ReadBit("HasArg");
+            var hasArg2 = packet.ReadBit("HasArg2");
+
+            if (hasArg)
+                packet.ReadUInt32("Arg");
+
+            if (hasArg2)
+                packet.ReadUInt32("Arg2");
+        }
+
+
+        [Parser(Opcode.SMSG_RESTRICTED_ACCOUNT_WARNING)]
+        public static void HandleRestrictedAccountWarning(Packet packet)
+        {
+            packet.ReadUInt32("Arg");
+            packet.ReadByte("Type");
         }
     }
 }

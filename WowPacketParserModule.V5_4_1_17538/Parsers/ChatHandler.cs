@@ -91,7 +91,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             packet.ParseBitStream(guildGUIDBytes, 5, 7, 3, 0, 4, 6, 1, 2);
 
             if (hasLang)
-                text.Language = packet.ReadEnum<Language>("Language", TypeCode.Byte);
+                text.Language = packet.ReadByteE<Language>("Language");
 
             packet.ParseBitStream(senderGUIDBytes, 7, 4, 0, 6, 3, 2, 5, 1);
 
@@ -100,10 +100,10 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
 
             text.Text = packet.ReadWoWString("Text", textLen);
 
-            text.Type = (ChatMessageType)packet.ReadEnum<ChatMessageType540>("Chat type", TypeCode.Byte);
+            text.Type = (ChatMessageType)packet.ReadByteE<ChatMessageType540>("Chat type");
 
             if (hasAchi)
-                packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id");
+                packet.ReadInt32<AchievementId>("Achievement Id");
 
             if (bit1490)
                 packet.ReadSingle("Float1490");
@@ -136,7 +136,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
         [Parser(Opcode.CMSG_MESSAGECHAT_YELL)]
         public static void HandleClientChatMessage(Packet packet)
         {
-            packet.ReadEnum<Language>("Language", TypeCode.Int32);
+            packet.ReadInt32E<Language>("Language");
             var len = packet.ReadBits(8);
             packet.ReadWoWString("Message", len);
         }

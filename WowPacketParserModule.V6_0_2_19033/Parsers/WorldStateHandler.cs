@@ -8,7 +8,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class WorldStateHandler
     {
-        public static void ReadWorldStateBlock(ref Packet packet, params object[] indexes)
+        public static void ReadWorldStateBlock(Packet packet, params object[] indexes)
         {
             var field = packet.ReadInt32();
             var val = packet.ReadInt32();
@@ -18,19 +18,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_INIT_WORLD_STATES)]
         public static void HandleInitWorldStates(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
-            packet.ReadEntry<Int32>(StoreNameType.Zone, "AreaID");
-            CoreParsers.WorldStateHandler.CurrentAreaId = packet.ReadEntry<Int32>(StoreNameType.Area, "SubareaID");
+            packet.ReadInt32<MapId>("Map ID");
+            packet.ReadInt32<ZoneId>("AreaID");
+            CoreParsers.WorldStateHandler.CurrentAreaId = packet.ReadInt32<AreaId>("SubareaID");
 
             var numFields = packet.ReadInt32("Field Count");
             for (var i = 0; i < numFields; i++)
-                ReadWorldStateBlock(ref packet);
+                ReadWorldStateBlock(packet);
         }
 
         [Parser(Opcode.SMSG_UPDATE_WORLD_STATE)]
         public static void HandleUpdateWorldState(Packet packet)
         {
-            ReadWorldStateBlock(ref packet);
+            ReadWorldStateBlock(packet);
             packet.ReadBit("Hidden");
         }
     }

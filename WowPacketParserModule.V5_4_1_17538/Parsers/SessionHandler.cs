@@ -53,7 +53,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             packet.ReadUInt32("Client seed");
             sha[5] = packet.ReadByte();
             sha[2] = packet.ReadByte();
-            packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int16);//20
+            packet.ReadInt16E<ClientVersionBuild>("Client Build");//20
             sha[12] = packet.ReadByte();
             packet.ReadUInt32("UInt32 3");
             sha[18] = packet.ReadByte();
@@ -71,7 +71,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
 
             var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
                 packet.Number, packet.Writer, packet.FileName);
-            CoreParsers.AddonHandler.ReadClientAddonsList(ref addons);
+            CoreParsers.AddonHandler.ReadClientAddonsList(addons);
             addons.ClosePacket(false);
 
             var size = (int)packet.ReadBits(11);
@@ -180,8 +180,8 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
 
                 for (var i = 0; i < raceCount; ++i)
                 {
-                    packet.ReadEnum<ClientType>("Race Expansion", TypeCode.Byte, i);
-                    packet.ReadEnum<Race>("Race", TypeCode.Byte, i);
+                    packet.ReadByteE<ClientType>("Race Expansion", i);
+                    packet.ReadByteE<Race>("Race", i);
                 }
 
                 packet.ReadByte("Byte30");
@@ -189,8 +189,8 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
 
                 for (var i = 0; i < classCount; ++i)
                 {
-                    packet.ReadEnum<Class>("Class", TypeCode.Byte, i);
-                    packet.ReadEnum<ClientType>("Class Expansion", TypeCode.Byte, i);
+                    packet.ReadByteE<Class>("Class", i);
+                    packet.ReadByteE<ClientType>("Class Expansion", i);
                 }
 
                 if (bit70)

@@ -92,7 +92,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleAuthSession(Packet packet)
         {
             // Do not overwrite version after Handler was initialized
-            packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int32);
+            packet.ReadInt32E<ClientVersionBuild>("Client Build");
 
             packet.ReadInt32("Unk Int32 1");
             packet.ReadCString("Account");
@@ -115,7 +115,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadBytes("Proof SHA-1 Hash", 20);
 
-            AddonHandler.ReadClientAddonsList(ref packet);
+            AddonHandler.ReadClientAddonsList(packet);
         }
 
         //[Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V4_2_0_14333)]
@@ -133,7 +133,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Byte");
             packet.ReadByte("Byte");
             packet.ReadByte("Byte");
-            packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int16);
+            packet.ReadInt16E<ClientVersionBuild>("Client Build");
 
             packet.ReadByte("Byte");
             packet.ReadByte("Byte");
@@ -161,7 +161,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Account name");
             packet.ReadInt32("Int32");
 
-            AddonHandler.ReadClientAddonsList(ref packet);
+            AddonHandler.ReadClientAddonsList(packet);
         }
 
         [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_2_15211)]
@@ -179,7 +179,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < 7; i++)
                 packet.ReadByte("Digest (4)", i);
 
-            packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int16);
+            packet.ReadInt16E<ClientVersionBuild>("Client Build");
 
             for (var i = 0; i < 8; i++)
                 packet.ReadByte("Digest (5)", i);
@@ -194,7 +194,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var pkt = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
                 packet.Number, packet.Writer, packet.FileName);
-            AddonHandler.ReadClientAddonsList(ref pkt);
+            AddonHandler.ReadClientAddonsList(pkt);
             pkt.ClosePacket(false);
 
             packet.ReadByte("Mask"); // TODO: Seems to affect how the size is read
@@ -221,7 +221,7 @@ namespace WowPacketParser.Parsing.Parsers
             sha[6] = packet.ReadByte();
             sha[11] = packet.ReadByte();
 
-            packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int16);
+            packet.ReadInt16E<ClientVersionBuild>("Client Build");
 
             sha[15] = packet.ReadByte();
 
@@ -244,7 +244,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var pkt = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
                 packet.Number, packet.Writer, packet.FileName);
-            AddonHandler.ReadClientAddonsList(ref pkt);
+            AddonHandler.ReadClientAddonsList(pkt);
             pkt.ClosePacket(false);
 
             var highBits = packet.ReadByte() << 5;
@@ -270,7 +270,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Client seed");//14
             sha[16] = packet.ReadByte();//38
             sha[5] = packet.ReadByte();//27
-            packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int16);//34
+            packet.ReadInt16E<ClientVersionBuild>("Client Build");//34
             packet.ReadUInt32("UInt32 4");//16
             sha[18] = packet.ReadByte();//40
             sha[0] = packet.ReadByte();//22
@@ -291,7 +291,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
                 packet.Number, packet.Writer, packet.FileName);
-            AddonHandler.ReadClientAddonsList(ref addons);
+            AddonHandler.ReadClientAddonsList(addons);
             addons.ClosePacket(false);
 
             packet.ReadBit("Unk bit");
@@ -303,25 +303,25 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleAuthResponse(Packet packet)
         {
-            var code = packet.ReadEnum<ResponseCode>("Auth Code", TypeCode.Byte);
+            var code = packet.ReadByteE<ResponseCode>("Auth Code");
 
             switch (code)
             {
                 case ResponseCode.AUTH_OK:
                 {
-                    ReadAuthResponseInfo(ref packet);
+                    ReadAuthResponseInfo(packet);
                     break;
                 }
                 case ResponseCode.AUTH_WAIT_QUEUE:
                 {
                     if (packet.Length <= 6)
                     {
-                        ReadQueuePositionInfo(ref packet);
+                        ReadQueuePositionInfo(packet);
                         break;
                     }
 
-                    ReadAuthResponseInfo(ref packet);
-                    ReadQueuePositionInfo(ref packet);
+                    ReadAuthResponseInfo(packet);
+                    ReadQueuePositionInfo(packet);
                     break;
                 }
             }
@@ -352,12 +352,12 @@ namespace WowPacketParser.Parsing.Parsers
             if (hasAccountData)
             {
                 packet.ReadByte("Unk 5");
-                packet.ReadEnum<ClientType>("Player Expansion", TypeCode.Byte);
+                packet.ReadByteE<ClientType>("Player Expansion");
 
                 for (var i = 0; i < count; ++i)
                 {
-                    packet.ReadEnum<Class>("Class", TypeCode.Byte, i);
-                    packet.ReadEnum<ClientType>("Class Expansion", TypeCode.Byte, i);
+                    packet.ReadByteE<Class>("Class", i);
+                    packet.ReadByteE<ClientType>("Class Expansion", i);
                 }
 
                 packet.ReadUInt32("Unk 8");
@@ -366,33 +366,33 @@ namespace WowPacketParser.Parsing.Parsers
 
                 for (var i = 0; i < count1; ++i)
                 {
-                    packet.ReadEnum<Race>("Race", TypeCode.Byte, i);
-                    packet.ReadEnum<ClientType>("Race Expansion", TypeCode.Byte, i);
+                    packet.ReadByteE<Race>("Race", i);
+                    packet.ReadByteE<ClientType>("Race Expansion", i);
                 }
 
-                packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
+                packet.ReadByteE<ClientType>("Account Expansion");
             }
 
-            packet.ReadEnum<ResponseCode>("Auth Code", TypeCode.Byte);
+            packet.ReadByteE<ResponseCode>("Auth Code");
         }
 
-        public static void ReadAuthResponseInfo(ref Packet packet)
+        public static void ReadAuthResponseInfo(Packet packet)
         {
             packet.ReadInt32("Billing Time Remaining");
-            packet.ReadEnum<BillingFlag>("Billing Flags", TypeCode.Byte);
+            packet.ReadByteE<BillingFlag>("Billing Flags");
             packet.ReadInt32("Billing Time Rested");
 
             // Unknown, these two show the same as expansion payed for.
             // Eg. If account only has payed for Wotlk expansion it will show 2 for both.
-            packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
+            packet.ReadByteE<ClientType>("Account Expansion");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_3_13329))
-                packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
+                packet.ReadByteE<ClientType>("Account Expansion");
         }
 
-        public static void ReadQueuePositionInfo(ref Packet packet)
+        public static void ReadQueuePositionInfo(Packet packet)
         {
             packet.ReadInt32("Queue Position");
-            packet.ReadBoolean("Realm Has Free Character Migration");
+            packet.ReadBool("Realm Has Free Character Migration");
         }
 
         [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
@@ -443,14 +443,14 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CHARACTER_LOGIN_FAILED)]
         public static void HandleLoginFailed(Packet packet)
         {
-            packet.ReadEnum<ResponseCode>("Fail reason", TypeCode.Byte);
+            packet.ReadByteE<ResponseCode>("Fail reason");
         }
 
         [Parser(Opcode.SMSG_LOGOUT_RESPONSE)]
         public static void HandlePlayerLogoutResponse(Packet packet)
         {
             packet.ReadInt32("Reason");
-            packet.ReadBoolean("Instant");
+            packet.ReadBool("Instant");
             // From TC:
             // Reason 1: IsInCombat
             // Reason 2: InDuel or frozen by GM
@@ -486,7 +486,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadBytes("RSA Hash", 255);
             packet.ReadInt16("Int 16");
-            packet.ReadEnum<UnknownFlags>("Unknown int32 flag", TypeCode.Int32);
+            packet.ReadInt32E<UnknownFlags>("Unknown int32 flag");
             packet.ReadInt64("Int 64");
         }
 
@@ -538,7 +538,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_KICK_REASON)]
         public static void HandleKickReason(Packet packet)
         {
-            packet.ReadEnum<KickReason>("Reason", TypeCode.Byte);
+            packet.ReadByteE<KickReason>("Reason");
 
             if (!packet.CanRead())
                 return;

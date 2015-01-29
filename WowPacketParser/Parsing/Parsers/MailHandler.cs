@@ -66,20 +66,20 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt16("Message Size", i);
                 packet.ReadUInt32("Mail Id", i);
 
-                var mailType = packet.ReadEnum<MailType>("Message Type", TypeCode.Byte, i);
+                var mailType = packet.ReadByteE<MailType>("Message Type", i);
                 switch (mailType) // Read GUID if MailType.Normal, int32 (entry) if not
                 {
                     case MailType.Normal:
                         packet.ReadGuid("Player GUID", i);
                         break;
                     case MailType.Creature:
-                        packet.ReadEntry<Int32>(StoreNameType.Unit, "Entry", i);
+                        packet.ReadInt32<UnitId>("Entry", i);
                         break;
                     case MailType.GameObject:
-                        packet.ReadEntry<Int32>(StoreNameType.GameObject, "Entry", i);
+                        packet.ReadInt32<GOId>("Entry", i);
                         break;
                     case MailType.Item:
-                        packet.ReadEntry<Int32>(StoreNameType.Item, "Entry", i);
+                        packet.ReadInt32<ItemId>("Entry", i);
                         break;
                     case (MailType)1:
                     case MailType.Auction:
@@ -114,7 +114,7 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     packet.ReadByte("Item Index", i, j);
                     packet.ReadUInt32("Item GuidLow", i, j);
-                    packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Id", i, j);
+                    packet.ReadUInt32<ItemId>("Item Id", i, j);
 
                     int enchantmentCount = 6;
                     if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
@@ -173,8 +173,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleSendMailResult(Packet packet)
         {
             packet.ReadUInt32("Mail Id");
-            var action = packet.ReadEnum<MailActionType>("Mail Action", TypeCode.UInt32);
-            var error = packet.ReadEnum<MailErrorType>("Mail Error", TypeCode.UInt32);
+            var action = packet.ReadUInt32E<MailActionType>("Mail Action");
+            var error = packet.ReadUInt32E<MailErrorType>("Mail Error");
             if (error == MailErrorType.Equip)
                 packet.ReadUInt32("Equip Error");
             else if (action == MailActionType.AttachmentExpired)

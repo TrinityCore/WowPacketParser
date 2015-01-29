@@ -57,6 +57,25 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("Offset", indexes);
         }
 
+        public static void ReadCalendarEventInviteInfo(Packet packet, params object[] indexes)
+        {
+            // sub_602F66
+            packet.ReadPackedGuid128("Guid", indexes);
+            packet.ReadInt64("InviteID", indexes);
+
+            packet.ReadByte("Level", indexes);
+            packet.ReadByte("Status", indexes);
+            packet.ReadByte("Moderator", indexes);
+            packet.ReadByte("InviteType", indexes);
+
+            packet.ReadInt32("ResponseTime", indexes);
+
+            packet.ResetBitReader();
+
+            var lenNotes = packet.ReadBits(8);
+            packet.ReadWoWString("Notes", lenNotes, indexes);
+        }
+
         [Parser(Opcode.CMSG_CALENDAR_GET)]
         public static void HandleCalendarZero(Packet packet)
         {
@@ -91,6 +110,32 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (int i = 0; i < int16; i++)
                 ReadCalendarSendCalendarRaidResetInfo(packet, i, "CalendarSendCalendarRaidResetInfo");
+        }
+
+        [Parser(Opcode.SMSG_CALENDAR_SEND_EVENT)]
+        public static void HandleCalendarSendEvent(Packet packet)
+        {
+            packet.ReadByte("EventType");
+            packet.ReadPackedGuid128("OwnerGUID");
+            packet.ReadInt64("EventID");
+            packet.ReadByte("GetEventType");
+            packet.ReadInt32("TextureID");
+            packet.ReadUInt32("Flags");
+            packet.ReadUInt32("Date");
+            packet.ReadUInt32("LockDate");
+            packet.ReadPackedGuid128("EventGuildID");
+
+            var inviteCount = packet.ReadInt32("InviteCount");
+            for (int i = 0; i < inviteCount; i++)
+                ReadCalendarEventInviteInfo(packet, i, "CalendarEventInviteInfo");
+
+            packet.ResetBitReader();
+
+            var lenEventName = packet.ReadBits(8);
+            var lenDescription = packet.ReadBits(11);
+
+            packet.ReadWoWString("EventName", lenEventName);
+            packet.ReadWoWString("Description", lenDescription);
         }
     }
 }

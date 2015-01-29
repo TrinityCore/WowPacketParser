@@ -13,7 +13,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_DEFENSE_MESSAGE)]
         public static void HandleDefenseMessage(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id");
+            packet.ReadInt32<ZoneId>("Zone Id");
             var len = packet.ReadBits(12);
             packet.ReadWoWString("Message", len);
         }
@@ -107,7 +107,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.ParseBitStream(receiverGUIDBytes, 0, 4, 1, 3, 5, 7, 2, 6);
 
-            text.Type = (ChatMessageType)packet.ReadEnum<ChatMessageType540>("Chat type", TypeCode.Byte);
+            text.Type = (ChatMessageType)packet.ReadByteE<ChatMessageType540>("Chat type");
 
             packet.ParseBitStream(senderGUIDBytes, 7, 6, 5, 4, 0, 2, 1, 3);
 
@@ -123,10 +123,10 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 text.ReceiverName = packet.ReadWoWString("Receiver Name", receiverLen);
 
             if (hasAchi)
-                packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id");
+                packet.ReadInt32<AchievementId>("Achievement Id");
 
             if (hasLang)
-                text.Language = packet.ReadEnum<Language>("Language", TypeCode.Byte);
+                text.Language = packet.ReadByteE<Language>("Language");
 
             if (hasText)
                 text.Text = packet.ReadWoWString("Text", textLen);
@@ -169,13 +169,13 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadXORByte(guid2, 1);
             packet.ReadXORByte(guid1, 6);
 
-            packet.ReadEnum<EmoteType>("Emote ID", TypeCode.Int32);
+            packet.ReadInt32E<EmoteType>("Emote ID");
 
             packet.ReadXORByte(guid1, 7);
             packet.ReadXORByte(guid1, 1);
             packet.ReadXORByte(guid1, 4);
 
-            packet.ReadEnum<EmoteTextType>("Text Emote ID", TypeCode.Int32);
+            packet.ReadInt32E<EmoteTextType>("Text Emote ID");
 
             packet.ReadXORByte(guid1, 0);
             packet.ReadXORByte(guid2, 7);
@@ -201,7 +201,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.CMSG_MESSAGECHAT_YELL)]
         public static void HandleClientChatMessage(Packet packet)
         {
-            packet.ReadEnum<Language>("Language", TypeCode.Int32);
+            packet.ReadInt32E<Language>("Language");
             var len = packet.ReadBits(8);
             packet.ReadWoWString("Message", len);
         }

@@ -9,6 +9,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_GM_TICKET_GET_TICKET)]
         [Parser(Opcode.CMSG_GM_TICKET_GET_CASE_STATUS)]
         [Parser(Opcode.CMSG_GM_TICKET_GET_SYSTEM_STATUS)]
+        [Parser(Opcode.SMSG_GM_TICKET_RESPONSE_ERROR)]
         public static void HandleGMTicketZero(Packet packet)
         {
         }
@@ -98,6 +99,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt64("EventGuid");
                 packet.ReadInt64("InviteGuid");
             }
+        }
+
+        [Parser(Opcode.CMSG_GM_TICKET_ACKNOWLEDGE_SURVEY)]
+        public static void HandleGMTicketAcknowledgeSurvey(Packet packet)
+        {
+            packet.ReadInt32("CaseID");
         }
     }
 }

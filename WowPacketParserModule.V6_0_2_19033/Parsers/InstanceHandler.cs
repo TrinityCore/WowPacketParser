@@ -69,6 +69,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_SET_DUNGEON_DIFFICULTY)]
+        [Parser(Opcode.SMSG_SET_DUNGEON_DIFFICULTY)]
         public static void HandleSetDungeonDifficulty(Packet packet)
         {
             packet.ReadInt32("DifficultyID");
@@ -103,7 +104,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_SET_SAVED_INSTANCE_EXTEND)]
         public static void HandleSetSavedInstanceExtend(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Map, "MapID");
+            packet.ReadInt32<MapId>("MapID");
             packet.ReadInt32("DifficultyID");
             packet.ReadBit("Extended");
         }
@@ -202,6 +203,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("DifficultyID");
             packet.ReadInt32("GroupSize");
             packet.ReadBit("Success");
+        }
+
+        [Parser(Opcode.SMSG_INSTANCE_RESET_FAILED)]
+        public static void HandleInstanceResetFailed(Packet packet)
+        {
+            packet.ReadInt32("MapID");
+            packet.ReadBits("ResetFailedReason", 2);
         }
     }
 }

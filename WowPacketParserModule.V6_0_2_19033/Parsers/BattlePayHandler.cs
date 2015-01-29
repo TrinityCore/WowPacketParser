@@ -12,74 +12,74 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
         }
 
-        private static void ReadBattlepayDisplayInfo(ref Packet packet, params object[] indexes)
+        private static void ReadBattlepayDisplayInfo(Packet packet, params object[] idx)
         {
             packet.ResetBitReader();
 
-            var bit4 = packet.ReadBit("HasCreatureDisplayInfoID", Packet.GetIndexString(indexes));
-            var bit12 = packet.ReadBit("HasFileDataID", Packet.GetIndexString(indexes));
+            var bit4 = packet.ReadBit("HasCreatureDisplayInfoID", idx);
+            var bit12 = packet.ReadBit("HasFileDataID", idx);
 
             var bits16 = packet.ReadBits(10);
             var bits529 = packet.ReadBits(10);
             var bits1042 = packet.ReadBits(13);
 
-            var bit5144 = packet.ReadBit("HasFlags", Packet.GetIndexString(indexes));
+            var bit5144 = packet.ReadBit("HasFlags", idx);
 
             if (bit4)
-                packet.ReadInt32("CreatureDisplayInfoID", Packet.GetIndexString(indexes));
+                packet.ReadInt32("CreatureDisplayInfoID", idx);
 
             if (bit12)
-                packet.ReadInt32("FileDataID", Packet.GetIndexString(indexes));
+                packet.ReadInt32("FileDataID", idx);
 
-            packet.ReadWoWString("Name1", bits16, Packet.GetIndexString(indexes));
-            packet.ReadWoWString("Name2", bits529, Packet.GetIndexString(indexes));
-            packet.ReadWoWString("Name3", bits1042, Packet.GetIndexString(indexes));
+            packet.ReadWoWString("Name1", bits16, idx);
+            packet.ReadWoWString("Name2", bits529, idx);
+            packet.ReadWoWString("Name3", bits1042, idx);
 
             if (bit5144)
-                packet.ReadInt32("Flags", Packet.GetIndexString(indexes));
+                packet.ReadInt32("Flags", idx);
         }
 
-        private static void ReadBattlePayProduct(ref Packet packet, params object[] indexes)
+        private static void ReadBattlePayProduct(Packet packet, params object[] idx)
         {
-            packet.ReadInt32("ProductID", Packet.GetIndexString(indexes));
+            packet.ReadInt32("ProductID", idx);
 
-            packet.ReadInt64("NormalPriceFixedPoint", Packet.GetIndexString(indexes));
-            packet.ReadInt64("CurrentPriceFixedPoint", Packet.GetIndexString(indexes));
+            packet.ReadInt64("NormalPriceFixedPoint", idx);
+            packet.ReadInt64("CurrentPriceFixedPoint", idx);
 
-            var int11 = packet.ReadInt32("BattlepayProductItemCount", Packet.GetIndexString(indexes));
+            var int11 = packet.ReadInt32("BattlepayProductItemCount", idx);
 
-            packet.ReadByte("Type", Packet.GetIndexString(indexes));
-            packet.ReadInt32("Flags", Packet.GetIndexString(indexes));
+            packet.ReadByte("Type", idx);
+            packet.ReadInt32("Flags", idx);
 
             for (int j = 0; j < int11; j++)
             {
-                packet.ReadInt32("ID", Packet.GetIndexString(indexes), j);
-                packet.ReadInt32("ItemID", Packet.GetIndexString(indexes), j);
-                packet.ReadInt32("Quantity", Packet.GetIndexString(indexes), j);
+                packet.ReadInt32("ID", idx, j);
+                packet.ReadInt32("ItemID", idx, j);
+                packet.ReadInt32("Quantity", idx, j);
 
                 packet.ResetBitReader();
 
-                var bit5160 = packet.ReadBit("HasBattlepayDisplayInfo", Packet.GetIndexString(indexes), j);
-                packet.ReadBit("HasPet", Packet.GetIndexString(indexes), j);
-                var bit5172 = packet.ReadBit("HasBATTLEPETRESULT", Packet.GetIndexString(indexes), j);
+                var bit5160 = packet.ReadBit("HasBattlepayDisplayInfo", idx, j);
+                packet.ReadBit("HasPet", idx, j);
+                var bit5172 = packet.ReadBit("HasBATTLEPETRESULT", idx, j);
 
                 if (bit5172)
                     packet.ReadBits("PetResult", 4);
 
                 if (bit5160)
-                    ReadBattlepayDisplayInfo(ref packet, indexes);
+                    ReadBattlepayDisplayInfo(packet, idx);
             }
 
             packet.ResetBitReader();
 
-            packet.ReadBits("ChoiceType", 2, Packet.GetIndexString(indexes));
+            packet.ReadBits("ChoiceType", 2, idx);
 
-            var bit5196 = packet.ReadBit("HasBattlepayDisplayInfo", Packet.GetIndexString(indexes));
+            var bit5196 = packet.ReadBit("HasBattlepayDisplayInfo", idx);
             if (bit5196)
-                ReadBattlepayDisplayInfo(ref packet, Packet.GetIndexString(indexes));
+                ReadBattlepayDisplayInfo(packet, idx);
         }
 
-        private static void ReadBattlePayDistributionObject(ref Packet packet, params object[] indexes)
+        private static void ReadBattlePayDistributionObject(Packet packet, params object[] indexes)
         {
             packet.ReadInt64("DistributionID", indexes);
 
@@ -99,7 +99,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("Revoked", indexes);
 
             if (bit5248)
-                ReadBattlePayProduct(ref packet, indexes);
+                ReadBattlePayProduct(packet, indexes);
         }
 
         private static void ReadBattlePayPurchase(Packet packet, params object[] indexes)
@@ -134,13 +134,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var int6 = packet.ReadUInt32("BattlePayDistributionObjectCount");
 
             for (uint index = 0; index < int6; index++)
-                ReadBattlePayDistributionObject(ref packet, index);
+                ReadBattlePayDistributionObject(packet, index);
         }
 
         [Parser(Opcode.SMSG_BATTLE_PAY_DISTRIBUTION_UPDATE)]
         public static void HandleBattlePayDistributionUpdate(Packet packet)
         {
-            ReadBattlePayDistributionObject(ref packet);
+            ReadBattlePayDistributionObject(packet);
         }
 
         [Parser(Opcode.SMSG_BATTLE_PAY_GET_PRODUCT_LIST_RESPONSE)]
@@ -154,7 +154,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var int20 = packet.ReadUInt32("BattlePayShopEntryCount");
 
             for (uint index = 0; index < int52; index++)
-                ReadBattlePayProduct(ref packet, index);
+                ReadBattlePayProduct(packet, index);
 
             for (int i = 0; i < int36; i++)
             {
@@ -182,7 +182,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 var bit5172 = packet.ReadBit("HasBattlepayDisplayInfo", i);
                 if (bit5172)
-                    ReadBattlepayDisplayInfo(ref packet, i);
+                    ReadBattlepayDisplayInfo(packet, i);
             }
         }
 

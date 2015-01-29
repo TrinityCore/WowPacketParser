@@ -14,7 +14,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         public static void HandleWeatherStatus(Packet packet)
         {
             var grade = packet.ReadSingle("Grade");
-            var state = packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
+            var state = packet.ReadInt32E<WeatherState>("State");
             var unk = packet.ReadBit("Unk Bit"); // Type
 
             Storage.WeatherUpdates.Add(new WeatherUpdate
@@ -99,7 +99,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.ReadTime("Last Weekly Reset");
             packet.ReadInt32("Instance Difficulty ID");
-            packet.ReadBoolean("Is On Tournament Realm");
+            packet.ReadBool("Is On Tournament Realm");
 
             if (bit14)
                 packet.ReadInt32("Int10");
@@ -211,7 +211,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadWoWString("string73", bits73);
 
             for (var i = 0; i < zones; ++i)
-                packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id");
+                packet.ReadInt32<ZoneId>("Zone Id");
 
             packet.ReadWoWString("Guild Name", guildNameLen);
             packet.ReadWoWString("string1AB", bits1AB);
@@ -292,10 +292,10 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadInt32("RealmID", i);
                 packet.ReadXORByte(playerGUID[i], 5);
                 packet.ReadXORByte(guildGUID[i], 1);
-                packet.ReadEnum<Gender>("Gender", TypeCode.Byte, i);
+                packet.ReadByteE<Gender>("Gender", i);
                 packet.ReadXORByte(playerGUID[i], 7);
                 packet.ReadInt32("Unk1", i);
-                packet.ReadEnum<Race>("Race", TypeCode.Byte, i);
+                packet.ReadByteE<Race>("Race", i);
                 packet.ReadXORByte(guildGUID[i], 0);
                 packet.ReadXORByte(guildGUID[i], 4);
                 packet.ReadXORByte(accountId[i], 0);
@@ -307,7 +307,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadXORByte(playerGUID[i], 2);
                 packet.ReadXORByte(playerGUID[i], 6);
 
-                packet.ReadEnum<Class>("Class", TypeCode.Byte, i);
+                packet.ReadByteE<Class>("Class", i);
 
                 packet.ReadXORByte(accountId[i], 5);
                 packet.ReadXORByte(guildGUID[i], 2);
@@ -319,7 +319,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadXORByte(playerGUID[i], 1);
                 packet.ReadXORByte(accountId[i], 1);
 
-                packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id", i);
+                packet.ReadInt32<ZoneId>("Zone Id", i);
 
                 packet.ReadXORByte(guildGUID[i], 7);
                 packet.ReadXORByte(guildGUID[i], 6);

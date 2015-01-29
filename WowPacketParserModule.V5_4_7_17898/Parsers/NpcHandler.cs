@@ -94,11 +94,11 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             for (var i = 0; i < questgossips; ++i)
             {
-                packet.ReadEnum<QuestFlags2>("Flags 2", TypeCode.UInt32, i);
-                packet.ReadEntry<UInt32>(StoreNameType.Quest, "Quest ID", i);
+                packet.ReadUInt32E<QuestFlags2>("Flags 2", i);
+                packet.ReadUInt32<QuestId>("Quest ID", i);
                 packet.ReadInt32("Level", i);
                 packet.ReadUInt32("Icon", i);
-                packet.ReadEnum<QuestFlags>("Flags", TypeCode.UInt32, i);
+                packet.ReadUInt32E<QuestFlags>("Flags", i);
                 packet.ReadWoWString("Title", titleLen[i], i);
             }
 
@@ -112,9 +112,9 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     RequiredMoney = packet.ReadUInt32("Required money", i),
                     OptionText = packet.ReadWoWString("Text", optionTextLen[i], i),
                     Index = packet.ReadUInt32("Index", i),
-                    OptionIcon = packet.ReadEnum<GossipOptionIcon>("Icon", TypeCode.Byte, i),
+                    OptionIcon = packet.ReadByteE<GossipOptionIcon>("Icon", i),
                     BoxText = packet.ReadWoWString("Box Text", boxTextLen[i], i),
-                    Box = packet.ReadBoolean("Box", i),
+                    Box = packet.ReadBool("Box", i),
                 };
 
                 gossip.GossipOptions.Add(gossipOption);
@@ -210,9 +210,9 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             var gossipPOI = new GossipPOI();
 
-            gossipPOI.Flags = (uint)packet.ReadEnum<UnknownFlags>("Flags", TypeCode.Int32);
+            gossipPOI.Flags = (uint)packet.ReadInt32E<UnknownFlags>("Flags");
             var pos = packet.ReadVector2("Coordinates");
-            gossipPOI.Icon = packet.ReadEnum<GossipPOIIcon>("Icon", TypeCode.UInt32);
+            gossipPOI.Icon = packet.ReadUInt32E<GossipPOIIcon>("Icon");
             gossipPOI.Importance = packet.ReadUInt32("Data");
             gossipPOI.Name = packet.ReadCString("Icon Name");
 
@@ -246,8 +246,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             for (var i = 0; i < count; ++i)
             {
                 var trainerSpell = new TrainerSpell();
-                packet.ReadEnum<TrainerSpellState>("State", TypeCode.Byte, i);
-                trainerSpell.Spell = (uint)packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i);
+                packet.ReadByteE<TrainerSpellState>("State", i);
+                trainerSpell.Spell = (uint)packet.ReadInt32<SpellId>("Spell ID", i);
                 trainerSpell.RequiredSkill = packet.ReadUInt32("Required Skill", i);
                 trainerSpell.Cost = packet.ReadUInt32("Cost", i);
                 for (var j = 0; j < 3; ++j)
@@ -262,7 +262,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadXORByte(guidBytes, 6);
             packet.ReadXORByte(guidBytes, 0);
             npcTrainer.Title = packet.ReadWoWString("Title", titleLen);
-            npcTrainer.Type = packet.ReadEnum<TrainerType>("Type", TypeCode.Int32);
+            npcTrainer.Type = packet.ReadInt32E<TrainerType>("Type");
             packet.ReadXORByte(guidBytes, 2);
             packet.ReadXORByte(guidBytes, 4);
             packet.ReadXORByte(guidBytes, 5);
@@ -290,7 +290,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var guid = new byte[8];
 
             packet.ReadInt32("Unknown Int32"); // same unk exists in SMSG_TRAINER_LIST
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32<SpellId>("Spell ID");
 
             packet.StartBitStream(guid, 6, 2, 0, 7, 5, 3, 1, 4);
             packet.ParseBitStream(guid, 6, 0, 5, 1, 7, 4, 2, 3);
@@ -348,7 +348,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     vendorItem.ExtendedCostId = packet.ReadUInt32("Extended Cost", i);
 
                 packet.ReadInt32("Price", i);
-                vendorItem.ItemId = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "Item ID", i);
+                vendorItem.ItemId = (uint)packet.ReadInt32<ItemId>("Item ID", i);
                 vendorItem.Slot = packet.ReadUInt32("Item Position", i);
 
                 if (hasCondition[i])

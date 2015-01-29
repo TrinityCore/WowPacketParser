@@ -22,7 +22,7 @@ namespace WowPacketParser.Parsing.Parsers
             var count = packet.ReadUInt32("Count");
 
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_0_2_9056))
-                packet.ReadBoolean("Has Transport");
+                packet.ReadBool("Has Transport");
 
             for (var i = 0; i < count; i++)
             {
@@ -37,7 +37,7 @@ namespace WowPacketParser.Parsing.Parsers
                         var guid = packet.ReadPackedGuid("GUID", i);
 
                         WoWObject obj;
-                        var updates = ReadValuesUpdateBlock(ref packet, guid.GetObjectType(), i, false);
+                        var updates = ReadValuesUpdateBlock(packet, guid.GetObjectType(), i, false);
 
                         if (Storage.Objects.TryGetValue(guid, out obj))
                         {
@@ -51,7 +51,7 @@ namespace WowPacketParser.Parsing.Parsers
                     case "Movement":
                     {
                         var guid = ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_2_9901) ? packet.ReadPackedGuid("GUID", i) : packet.ReadGuid("GUID", i);
-                        ReadMovementUpdateBlock(ref packet, guid, i);
+                        ReadMovementUpdateBlock(packet, guid, i);
                         // Should we update Storage.Object?
                         break;
                     }
@@ -59,25 +59,25 @@ namespace WowPacketParser.Parsing.Parsers
                     case "CreateObject2": // Might != CreateObject1 on Cata
                     {
                         var guid = packet.ReadPackedGuid("GUID", i);
-                        ReadCreateObjectBlock(ref packet, guid, map, i);
+                        ReadCreateObjectBlock(packet, guid, map, i);
                         break;
                     }
                     case "FarObjects":
                     case "NearObjects":
                     case "DestroyObjects":
                     {
-                        ReadObjectsBlock(ref packet, i);
+                        ReadObjectsBlock(packet, i);
                         break;
                     }
                 }
             }
         }
 
-        private static void ReadCreateObjectBlock(ref Packet packet, WowGuid guid, uint map, object index)
+        private static void ReadCreateObjectBlock(Packet packet, WowGuid guid, uint map, object index)
         {
-            var objType = packet.ReadEnum<ObjectType>("Object Type", TypeCode.Byte, index);
-            var moves = ReadMovementUpdateBlock(ref packet, guid, index);
-            var updates = ReadValuesUpdateBlock(ref packet, objType, index, true);
+            var objType = packet.ReadByteE<ObjectType>("Object Type", index);
+            var moves = ReadMovementUpdateBlock(packet, guid, index);
+            var updates = ReadValuesUpdateBlock(packet, objType, index, true);
 
             WoWObject obj;
             switch (objType)
@@ -126,14 +126,14 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        public static void ReadObjectsBlock(ref Packet packet, object index)
+        public static void ReadObjectsBlock(Packet packet, object index)
         {
             var objCount = packet.ReadInt32("Object Count", index);
             for (var j = 0; j < objCount; j++)
                 packet.ReadPackedGuid("Object GUID", index, j);
         }
 
-        public static Dictionary<int, UpdateField> ReadValuesUpdateBlock(ref Packet packet, ObjectType type, object index, bool isCreating)
+        public static Dictionary<int, UpdateField> ReadValuesUpdateBlock(Packet packet, ObjectType type, object index, bool isCreating)
         {
             var maskSize = packet.ReadByte();
 
@@ -335,7 +335,7 @@ namespace WowPacketParser.Parsing.Parsers
             return dict;
         }
 
-        private static MovementInfo ReadMovementUpdateBlock510(ref Packet packet, WowGuid guid, object index)
+        private static MovementInfo ReadMovementUpdateBlock510(Packet packet, WowGuid guid, object index)
         {
             var moveInfo = new MovementInfo();
 
@@ -854,7 +854,7 @@ namespace WowPacketParser.Parsing.Parsers
             return moveInfo;
         }
 
-        private static MovementInfo ReadMovementUpdateBlock504(ref Packet packet, WowGuid guid, object index)
+        private static MovementInfo ReadMovementUpdateBlock504(Packet packet, WowGuid guid, object index)
         {
             var moveInfo = new MovementInfo();
 
@@ -1351,7 +1351,7 @@ namespace WowPacketParser.Parsing.Parsers
             return moveInfo;
         }
 
-        private static MovementInfo ReadMovementUpdateBlock433(ref Packet packet, WowGuid guid, object index)
+        private static MovementInfo ReadMovementUpdateBlock433(Packet packet, WowGuid guid, object index)
         {
             var moveInfo = new MovementInfo();
 
@@ -1740,7 +1740,7 @@ namespace WowPacketParser.Parsing.Parsers
             return moveInfo;
         }
 
-        private static MovementInfo ReadMovementUpdateBlock432(ref Packet packet, WowGuid guid, object index)
+        private static MovementInfo ReadMovementUpdateBlock432(Packet packet, WowGuid guid, object index)
         {
             var moveInfo = new MovementInfo();
 
@@ -2134,7 +2134,7 @@ namespace WowPacketParser.Parsing.Parsers
             return moveInfo;
         }
 
-        private static MovementInfo ReadMovementUpdateBlock430(ref Packet packet, WowGuid guid, object index)
+        private static MovementInfo ReadMovementUpdateBlock430(Packet packet, WowGuid guid, object index)
         {
             var moveInfo = new MovementInfo();
             bool hasAttackingTarget = packet.ReadBit("Has Attacking Target", index);
@@ -2508,31 +2508,34 @@ namespace WowPacketParser.Parsing.Parsers
             return moveInfo;
         }
 
-        private static MovementInfo ReadMovementUpdateBlock(ref Packet packet, WowGuid guid, object index)
+        private static MovementInfo ReadMovementUpdateBlock(Packet packet, WowGuid guid, object index)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
-                return ReadMovementUpdateBlock510(ref packet, guid, index);
+                return ReadMovementUpdateBlock510(packet, guid, index);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_0_4_16016))
-                return ReadMovementUpdateBlock504(ref packet, guid, index);
+                return ReadMovementUpdateBlock504(packet, guid, index);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_3_15354))
-                return ReadMovementUpdateBlock433(ref packet, guid, index);
+                return ReadMovementUpdateBlock433(packet, guid, index);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_2_15211))
-                return ReadMovementUpdateBlock432(ref packet, guid, index);
+                return ReadMovementUpdateBlock432(packet, guid, index);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
-                return ReadMovementUpdateBlock430(ref packet, guid, index);
+                return ReadMovementUpdateBlock430(packet, guid, index);
 
             var moveInfo = new MovementInfo();
 
-            var flagsTypeCode = ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767) ? TypeCode.UInt16 : TypeCode.Byte;
-            var flags = packet.ReadEnum<UpdateFlag>("[" + index + "] Update Flags", flagsTypeCode);
+            UpdateFlag flags;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
+                flags = packet.ReadUInt16E<UpdateFlag>("Update Flags", index);
+            else
+                flags = packet.ReadByteE<UpdateFlag>("Update Flags", index);
 
             if (flags.HasAnyFlag(UpdateFlag.Living))
             {
-                moveInfo = MovementHandler.ReadMovementInfo(ref packet, guid, index);
+                moveInfo = MovementHandler.ReadMovementInfo(packet, guid, index);
                 var moveFlags = moveInfo.Flags;
 
                 for (var i = 0; i < 9; ++i)
@@ -2563,7 +2566,7 @@ namespace WowPacketParser.Parsing.Parsers
                     // TODO: Make Enums version friendly
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
                     {
-                        var splineFlags422 = packet.ReadEnum<SplineFlag422>("Spline Flags", TypeCode.Int32, index);
+                        var splineFlags422 = packet.ReadInt32E<SplineFlag422>("Spline Flags", index);
                         if (splineFlags422.HasAnyFlag(SplineFlag422.FinalOrientation))
                         {
                             packet.ReadSingle("Final Spline Orientation", index);
@@ -2578,7 +2581,7 @@ namespace WowPacketParser.Parsing.Parsers
                     }
                     else
                     {
-                        var splineFlags = packet.ReadEnum<SplineFlag>("Spline Flags", TypeCode.Int32, index);
+                        var splineFlags = packet.ReadInt32E<SplineFlag>("Spline Flags", index);
                         if (splineFlags.HasAnyFlag(SplineFlag.FinalTarget))
                             packet.ReadGuid("Final Spline Target GUID", index);
                         else if (splineFlags.HasAnyFlag(SplineFlag.FinalOrientation))
@@ -2604,7 +2607,7 @@ namespace WowPacketParser.Parsing.Parsers
                         packet.ReadVector3("Spline Waypoint", index, i);
 
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
-                        packet.ReadEnum<SplineMode>("Spline Mode", TypeCode.Byte, index);
+                        packet.ReadByteE<SplineMode>("Spline Mode", index);
 
                     packet.ReadVector3("Spline Endpoint", index);
                 }
@@ -2696,7 +2699,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
-                packet.ReadBoolean("Despawn Animation");
+                packet.ReadBool("Despawn Animation");
         }
 
         [Parser(Opcode.CMSG_OBJECT_UPDATE_FAILED, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)] // 4.3.4

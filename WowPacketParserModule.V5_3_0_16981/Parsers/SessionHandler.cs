@@ -33,7 +33,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             sha[3] = packet.ReadByte();//35
             packet.ReadUInt32("UInt32 3");//28
             sha[6] = packet.ReadByte();//38
-            packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int16);//20
+            packet.ReadInt16E<ClientVersionBuild>("Client Build");//20
             sha[2] = packet.ReadByte();//34
             sha[0] = packet.ReadByte();//32
             sha[7] = packet.ReadByte();//39
@@ -59,7 +59,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
                 packet.Number, packet.Writer, packet.FileName);
-            CoreParsers.AddonHandler.ReadClientAddonsList(ref addons);
+            CoreParsers.AddonHandler.ReadClientAddonsList(addons);
             addons.ClosePacket(false);
 
             packet.ReadBit("Unk bit");
@@ -100,8 +100,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadByte("unk");
                 for (var i = 0; i < count; ++i)
                 {
-                    packet.ReadEnum<ClientType>("Class Expansion", TypeCode.Byte, i);
-                    packet.ReadEnum<Class>("Class", TypeCode.Byte, i);
+                    packet.ReadByteE<ClientType>("Class Expansion", i);
+                    packet.ReadByteE<Class>("Class", i);
                 }
 
                 packet.ReadInt16("UnkInt16 1");
@@ -109,8 +109,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
                 for (var i = 0; i < count1; ++i)
                 {
-                    packet.ReadEnum<ClientType>("Race Expansion", TypeCode.Byte, i);
-                    packet.ReadEnum<Race>("Race", TypeCode.Byte, i);
+                    packet.ReadByteE<ClientType>("Race Expansion", i);
+                    packet.ReadByteE<Race>("Race", i);
                 }
 
                 packet.ReadUInt32("Unk 8");
@@ -118,12 +118,12 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadUInt32("Unk 10");
 
 
-                packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
-                packet.ReadEnum<ClientType>("Player Expansion", TypeCode.Byte);
+                packet.ReadByteE<ClientType>("Account Expansion");
+                packet.ReadByteE<ClientType>("Player Expansion");
 
             }
 
-            packet.ReadEnum<ResponseCode>("Auth Code", TypeCode.Byte);
+            packet.ReadByteE<ResponseCode>("Auth Code");
 
             if (isQueued)
                 packet.ReadUInt32("Unk 11");

@@ -32,8 +32,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         {
             var len = packet.ReadBits(7);
             packet.ReadWoWString("Split Date", len);
-            packet.ReadEnum<ClientSplitState>("Client State", TypeCode.Int32);
-            packet.ReadEnum<PendingSplitState>("Split State", TypeCode.Int32);
+            packet.ReadInt32E<ClientSplitState>("Client State");
+            packet.ReadInt32E<PendingSplitState>("Split State");
         }
 
         [Parser(Opcode.CMSG_INSPECT)]
@@ -76,7 +76,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         [Parser(Opcode.SMSG_WEATHER)]
         public static void HandleWeatherStatus(Packet packet)
         {
-            var state = packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
+            var state = packet.ReadInt32E<WeatherState>("State");
             var grade = packet.ReadSingle("Grade");
             var unk = packet.ReadBit("Unk bit");
 
@@ -99,7 +99,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             pos.Y = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
             pos.X = packet.ReadSingle();
-            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntry<Int32>(StoreNameType.Map, "Map");
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadInt32<MapId>("Map");
             packet.AddValue("Position", pos);
 
             packet.AddSniffData(StoreNameType.Map, (int)CoreParsers.MovementHandler.CurrentMapId, "NEW_WORLD");
@@ -155,7 +155,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             for (var i = 0; i < count; ++i)
             {
                 packet.ReadInt32("Hotfixed entry", i);
-                packet.ReadEnum<DB2Hash>("Hotfix DB2 File", TypeCode.UInt32, i);
+                packet.ReadUInt32E<DB2Hash>("Hotfix DB2 File", i);
                 packet.ReadTime("Hotfix date", i);
             }
         }

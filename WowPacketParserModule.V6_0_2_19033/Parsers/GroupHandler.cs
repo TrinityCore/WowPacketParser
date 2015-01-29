@@ -1,5 +1,4 @@
-﻿using System;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -125,7 +124,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
 
             if (bit790)
-                packet.ReadEnum<GroupMemberStatusFlag>("Status", TypeCode.Int16);
+                packet.ReadInt16E<GroupMemberStatusFlag>("Status");
 
             if (bit763)
                 packet.ReadByte("PowerType");
@@ -260,7 +259,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < 2; i++)
                 packet.ReadByte("Unk704", i);
 
-            packet.ReadEnum<GroupMemberStatusFlag>("Status", TypeCode.Int16);
+            packet.ReadInt16E<GroupMemberStatusFlag>("Status");
 
             packet.ReadByte("PowerType");
             packet.ReadInt16("Unk322");
@@ -337,8 +336,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("PartyIndex");
             packet.ReadPackedGuid128("From");
             packet.ReadPackedGuid128("ChangedUnit");
-            packet.ReadEnum<LfgRoleFlag>("OldRole", TypeCode.Int32);
-            packet.ReadEnum<LfgRoleFlag>("NewRole", TypeCode.Int32);
+            packet.ReadInt32E<LfgRoleFlag>("OldRole");
+            packet.ReadInt32E<LfgRoleFlag>("NewRole");
         }
 
         [Parser(Opcode.SMSG_ROLE_POLL_INFORM)]
@@ -524,6 +523,36 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("PartyIndex");
             packet.ReadPackedGuid128("ChangedUnit");
             packet.ReadInt32("Role");
+        }
+
+        [Parser(Opcode.CMSG_SET_PARTY_LEADER)]
+        public static void HandleSetPartyLeader(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadPackedGuid128("Target");
+        }
+
+        [Parser(Opcode.CMSG_PARTY_INVITE)]
+        public static void HandleClientPartyInvite(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadInt32("ProposedRoles");
+            packet.ReadPackedGuid128("TargetGuid");
+            packet.ReadInt32("TargetCfgRealmID");
+
+            packet.ResetBitReader();
+
+            var lenTargetName = packet.ReadBits(9);
+            var lenTargetRealm = packet.ReadBits(9);
+
+            packet.ReadWoWString("TargetName", lenTargetName);
+            packet.ReadWoWString("TargetRealm", lenTargetRealm);
+        }
+
+        [Parser(Opcode.CMSG_CONVERT_RAID)]
+        public static void HandleConvertRaid(Packet packet)
+        {
+            packet.ReadBit("Raid");
         }
     }
 }

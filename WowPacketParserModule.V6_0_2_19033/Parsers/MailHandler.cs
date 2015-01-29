@@ -1,5 +1,4 @@
-﻿using System;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -16,17 +15,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleSendMailResult(Packet packet)
         {
             packet.ReadUInt32("MailID");
-            packet.ReadEnum<MailActionType>("Command", TypeCode.UInt32);
-            packet.ReadEnum<MailErrorType>("ErrorCode", TypeCode.UInt32);
+            packet.ReadUInt32E<MailActionType>("Command");
+            packet.ReadUInt32E<MailErrorType>("ErrorCode");
             packet.ReadUInt32("BagResult");
             packet.ReadUInt32("AttachID");
             packet.ReadUInt32("QtyInInventory");
         }
 
-        public static void ReadCliMailListEntry(Packet packet, params object[] idx)
+        public static void ReadMailListEntry(Packet packet, params object[] idx)
         {
             packet.ReadInt32("MailID", idx);
-            packet.ReadEnum<MailType>("SenderType", TypeCode.Byte, idx);
+            packet.ReadByteE<MailType>("SenderType", idx);
 
             packet.ResetBitReader();
 
@@ -49,7 +48,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var attachmentsCount = packet.ReadInt32("AttachmentsCount", idx);
             for (var i = 0; i < attachmentsCount; ++i) // Attachments
-                ReadCliMailAttachedItem(packet, idx, i);
+                ReadMailAttachedItem(packet, idx, i, "MailAttachedItem");
 
             packet.ResetBitReader();
 
@@ -69,7 +68,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Body", bits87, idx);
         }
 
-        public static void ReadCliMailAttachedItem(Packet packet, params object[] idx)
+        public static void ReadMailAttachedItem(Packet packet, params object[] idx)
         {
             packet.ReadByte("Position", idx);
             packet.ReadInt32("AttachID", idx);
@@ -97,12 +96,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_MAIL_LIST_RESULT)]
         public static void HandleMailListResult(Packet packet)
         {
+            var mailsCount = packet.ReadInt32("MailsCount");
             packet.ReadInt32("TotalNumRecords");
 
-            var mailsCount = packet.ReadInt32("MailsCount");
-
             for (var i = 0; i < mailsCount; ++i)
-                ReadCliMailListEntry(packet, i);
+                ReadMailListEntry(packet, i, "MailListEntry");
         }
 
         [Parser(Opcode.CMSG_MAIL_CREATE_TEXT_ITEM)]

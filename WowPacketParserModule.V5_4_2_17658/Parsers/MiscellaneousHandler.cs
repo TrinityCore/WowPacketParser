@@ -1,5 +1,4 @@
-﻿using System;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -44,7 +43,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         {
             var unk = packet.ReadBit("Unk Bit"); // Type
             var grade = packet.ReadSingle("Grade");
-            var state = packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
+            var state = packet.ReadInt32E<WeatherState>("State");
 
             Storage.WeatherUpdates.Add(new WeatherUpdate
             {

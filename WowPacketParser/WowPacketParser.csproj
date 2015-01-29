@@ -121,6 +121,7 @@
     <Compile Include="Enums\ArenaError.cs" />
     <Compile Include="Enums\ArenaEvent.cs" />
     <Compile Include="Enums\AttackerStateFlags.cs" />
+    <Compile Include="Enums\AttackSwingErr.cs" />
     <Compile Include="Enums\AuctionHouseAction.cs" />
     <Compile Include="Enums\AuctionHouseError.cs" />
     <Compile Include="Enums\AuraFlag.cs" />
@@ -210,6 +211,7 @@
     <Compile Include="Enums\InhabitType.cs" />
     <Compile Include="Enums\MountResult.cs" />
     <Compile Include="Enums\RaidSummonFail.cs" />
+    <Compile Include="Enums\StandState.cs" />
     <Compile Include="Enums\TalentErrors.cs" />
     <Compile Include="Enums\TargetIcon.cs" />
     <Compile Include="Enums\InstanceResetWarningType.cs" />
@@ -304,6 +306,8 @@
     <Compile Include="Enums\TrainerSpellState.cs" />
     <Compile Include="Enums\TrainerType.cs" />
     <Compile Include="Enums\TransferAbortReason.cs" />
+    <Compile Include="Enums\Tutorial.cs" />
+    <Compile Include="Enums\TutorialAction.cs" />
     <Compile Include="Enums\TypeMask.cs" />
     <Compile Include="Enums\UnitDynamicFlags.cs" />
     <Compile Include="Enums\UnitFlags2.cs" />

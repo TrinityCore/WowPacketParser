@@ -96,12 +96,12 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             for (var i = 0; i < questgossips; i++)
             {
-                packet.ReadEnum<QuestFlags2>("Flags 2", TypeCode.UInt32, i);
+                packet.ReadUInt32E<QuestFlags2>("Flags 2", i);
                 packet.ReadUInt32("Icon", i);
                 packet.ReadWoWString("Title", titleLen[i], i);
-                packet.ReadEnum<QuestFlags>("Flags", TypeCode.UInt32, i);
+                packet.ReadUInt32E<QuestFlags>("Flags", i);
                 packet.ReadInt32("Level", i);
-                packet.ReadEntry<UInt32>(StoreNameType.Quest, "Quest ID", i);
+                packet.ReadUInt32<QuestId>("Quest ID", i);
             }
 
             var gossip = new Gossip();
@@ -114,9 +114,9 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                     RequiredMoney = packet.ReadUInt32("Required money", i),
                     Index = packet.ReadUInt32("Index", i),
                     BoxText = packet.ReadWoWString("Box Text", boxTextLen[i], i),
-                    Box = packet.ReadBoolean("Box", i),
+                    Box = packet.ReadBool("Box", i),
                     OptionText = packet.ReadWoWString("Text", optionTextLen[i], i),
-                    OptionIcon = packet.ReadEnum<GossipOptionIcon>("Icon", TypeCode.Byte, i),
+                    OptionIcon = packet.ReadByteE<GossipOptionIcon>("Icon", i),
                 };
 
                 gossip.GossipOptions.Add(gossipOption);
@@ -154,9 +154,9 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             var gossipPOI = new GossipPOI();
 
-            gossipPOI.Flags = (uint) packet.ReadEnum<UnknownFlags>("Flags", TypeCode.Int32);
+            gossipPOI.Flags = (uint) packet.ReadInt32E<UnknownFlags>("Flags");
             var pos = packet.ReadVector2("Coordinates");
-            gossipPOI.Icon = packet.ReadEnum<GossipPOIIcon>("Icon", TypeCode.UInt32);
+            gossipPOI.Icon = packet.ReadUInt32E<GossipPOIIcon>("Icon");
             gossipPOI.Importance = packet.ReadUInt32("Data");
             gossipPOI.Name = packet.ReadCString("Icon Name");
 
@@ -308,7 +308,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadInt32("Item Upgrade ID", i);
                 packet.ReadInt32("Price", i);
                 packet.ReadInt32("Display ID", i);
-                vendorItem.ItemId = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "Item ID", i);
+                vendorItem.ItemId = (uint)packet.ReadInt32<ItemId>("Item ID", i);
                 vendorItem.Slot = packet.ReadUInt32("Item Position", i);
 
                 if (hasExtendedCost[i])

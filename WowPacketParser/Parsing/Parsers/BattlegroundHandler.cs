@@ -18,7 +18,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBit("IsRated");
             packet.ReadUInt32("Time since started");
             packet.ReadUInt32("Queue slot");
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadInt32<MapId>("Map Id");
             packet.ReadGuid("BG Guid");
             packet.ReadUInt32("Time until closed");
             packet.ReadByte("Teamsize");
@@ -37,7 +37,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Queue slot");
             packet.ReadByte("Teamsize");
             packet.ReadUInt32("Expire Time");
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadInt32<MapId>("Map Id");
             packet.ReadByte("Max Level");
         }
 
@@ -119,12 +119,12 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_BATTLEFIELD_LIST)]
         public static void HandleBattlefieldListClient(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Battleground, "BGType");
+            packet.ReadInt32<BgId>("BGType");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
                 return;
 
-            packet.ReadBoolean("From UI");
+            packet.ReadBool("From UI");
             packet.ReadByte("Unk Byte (BattlefieldList)");
         }
 
@@ -156,7 +156,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadXORByte(guidBytes, 7);
 
-            packet.ReadEntry<Int32>(StoreNameType.Battleground, "BG type");
+            packet.ReadInt32<BgId>("BG type");
 
             packet.ReadXORByte(guidBytes, 1);
 
@@ -216,7 +216,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guidBytes, 2);
             packet.ReadXORByte(guidBytes, 4);
 
-            packet.ReadEntry<Int32>(StoreNameType.Battleground, "BGType");
+            packet.ReadInt32<BgId>("BGType");
             packet.ReadInt32("Random Winner Conquest Reward");
             packet.ReadInt32("Winner Conquest Reward");
 
@@ -236,7 +236,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_LIST, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleBattlefieldListServer406(Packet packet)
         {
-            packet.ReadEnum<BattlegroundListFlags>("Flags", TypeCode.Byte);
+            packet.ReadByteE<BattlegroundListFlags>("Flags");
             packet.ReadByte("Min level");
             packet.ReadInt32("Winner Honor Reward");
             packet.ReadGuid("GUID");
@@ -245,7 +245,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Random Loser Honor Reward");
             packet.ReadInt32("Random Winner Conquest Reward");
             packet.ReadInt32("Winner Conquest Reward");
-            packet.ReadEntry<Int32>(StoreNameType.Battleground, "BGType");
+            packet.ReadInt32<BgId>("BGType");
 
             var count = packet.ReadUInt32("BG Instance count");
             for (var i = 0; i < count; i++)
@@ -260,20 +260,20 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
 
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_0_14333))
-                packet.ReadBoolean("From UI");
+                packet.ReadBool("From UI");
 
-            packet.ReadEntry<Int32>(StoreNameType.Battleground, "BGType");
+            packet.ReadInt32<BgId>("BGType");
             packet.ReadByte("Min Level");
             packet.ReadByte("Max Level");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685)) // verify if it wasn't earlier or later
             {
-                packet.ReadBoolean("Has Win");
+                packet.ReadBool("Has Win");
                 packet.ReadInt32("Winner Honor Reward");
                 packet.ReadInt32("Winner Arena Reward");
                 packet.ReadInt32("Loser Honor Reward");
 
-                if (packet.ReadBoolean("Is random"))
+                if (packet.ReadBool("Is random"))
                 {
                     packet.ReadByte("Random Has Win");
                     packet.ReadInt32("Random Winner Honor Reward");
@@ -298,7 +298,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBattlefieldPort(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadBoolean("Join BG");
+            packet.ReadBool("Join BG");
         }
 
         [Parser(Opcode.CMSG_LEAVE_BATTLEFIELD)]
@@ -338,8 +338,8 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
 
             packet.ReadUInt32("Client Instance ID");
-            packet.ReadBoolean("Rated");
-            var status = packet.ReadEnum<BattlegroundStatus>("Status", TypeCode.UInt32);
+            packet.ReadBool("Rated");
+            var status = packet.ReadUInt32E<BattlegroundStatus>("Status");
             switch (status)
             {
                 case BattlegroundStatus.WaitQueue:
@@ -347,7 +347,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt32("Time in queue");
                     break;
                 case BattlegroundStatus.WaitJoin:
-                    packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
+                    packet.ReadInt32<MapId>("Map ID");
 
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_5_12213))
                         packet.ReadGuid("GUID");
@@ -355,7 +355,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt32("Time left");
                     break;
                 case BattlegroundStatus.InProgress:
-                    packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
+                    packet.ReadInt32<MapId>("Map ID");
 
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_5_12213))
                         packet.ReadGuid("GUID");
@@ -390,9 +390,9 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBattlemasterJoin(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadEntry<Int32>(StoreNameType.Battleground, "BGType");
+            packet.ReadInt32<BgId>("BGType");
             packet.ReadUInt32("Instance Id");
-            packet.ReadBoolean("As group");
+            packet.ReadBool("As group");
         }
 
         [Parser(Opcode.CMSG_BATTLEMASTER_JOIN_ARENA, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
@@ -400,8 +400,8 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             packet.ReadByte("Slot");
-            packet.ReadBoolean("As group");
-            packet.ReadBoolean("Rated");
+            packet.ReadBool("As group");
+            packet.ReadBool("Rated");
         }
 
         [Parser(Opcode.CMSG_BATTLEMASTER_JOIN_ARENA, ClientVersionBuild.V4_0_6a_13623)]
@@ -471,7 +471,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadXORByte(guidBytes, 4);
 
-            var bgError = packet.ReadEnum<BattlegroundError4x>("Battleground Error", TypeCode.Int32);
+            var bgError = packet.ReadInt32E<BattlegroundError4x>("Battleground Error");
 
             packet.ReadXORByte(guidBytes, 1);
 
@@ -555,7 +555,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.Direction == Direction.ClientToServer)
                 return;
 
-            var arena = packet.ReadBoolean("Arena");
+            var arena = packet.ReadBool("Arena");
             if (arena)
             {
                 packet.ReadUInt32("[1] Points Lost");
@@ -568,7 +568,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadCString("[0] Name");
             }
 
-            var finished = packet.ReadBoolean("Finished");
+            var finished = packet.ReadBool("Finished");
             if (finished)
                 packet.ReadByte("Winner");
 
@@ -666,22 +666,22 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_STATE_CHANGE, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleBattlefieldMgrStateChanged406(Packet packet)
         {
-            packet.ReadEnum<BattlegroundStatus>("status", TypeCode.UInt32);
+            packet.ReadUInt32E<BattlegroundStatus>("status");
             packet.ReadGuid("BG Guid");
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_STATE_CHANGE, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandleBattlefieldMgrStateChanged(Packet packet)
         {
-            packet.ReadEnum<BattlegroundStatus>("Old status", TypeCode.UInt32);
-            packet.ReadEnum<BattlegroundStatus>("New status", TypeCode.UInt32);
+            packet.ReadUInt32E<BattlegroundStatus>("Old status");
+            packet.ReadUInt32E<BattlegroundStatus>("New status");
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_ENTRY_INVITE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleBattlefieldMgrInviteSend(Packet packet)
         {
             packet.ReadInt32("Battle Id");
-            packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id");
+            packet.ReadInt32<ZoneId>("Zone Id");
             packet.ReadTime("Invite lasts until");
         }
 
@@ -696,14 +696,14 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBattlefieldMgrQueueInviteResponse(Packet packet)
         {
             packet.ReadInt32("Battle Id");
-            packet.ReadBoolean("Accepted");
+            packet.ReadBool("Accepted");
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_REQUEST_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleBattlefieldMgrQueueRequestResponse(Packet packet)
         {
             packet.ReadInt32("Battle Id");
-            packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone ID");
+            packet.ReadInt32<ZoneId>("Zone ID");
             packet.ReadByte("Accepted");
             packet.ReadByte("Logging In");
             packet.ReadByte("Warmup");
@@ -738,7 +738,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBattlefieldMgrEntryInviteResponse(Packet packet)
         {
             packet.ReadInt32("Battle Id");
-            packet.ReadBoolean("Accepted");
+            packet.ReadBool("Accepted");
         }
 
         [Parser(Opcode.CMSG_BATTLEFIELD_MGR_EXIT_REQUEST, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -751,13 +751,13 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleBattlefieldMgrEjectPending(Packet packet)
         {
             packet.ReadInt32("Battle Id");
-            packet.ReadBoolean("Remote");
+            packet.ReadBool("Remote");
         }
 
         [Parser(Opcode.SMSG_ARENA_ERROR)]
         public static void HandleArenaError(Packet packet)
         {
-            var error = packet.ReadEnum<ArenaError>("Error", TypeCode.UInt32);
+            var error = packet.ReadUInt32E<ArenaError>("Error");
             if (error == ArenaError.NoTeam)
                 packet.ReadByte("Arena Type"); // 2, 3, 5
         }
@@ -766,19 +766,19 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleArenaTeamRoster(Packet packet)
         {
             packet.ReadUInt32("Team Id");
-            var hiddenRating = packet.ReadBoolean("Send Hidden Rating");
+            var hiddenRating = packet.ReadBool("Send Hidden Rating");
             var count = packet.ReadUInt32("Member count");
             packet.ReadUInt32("Type");
 
             for (var i = 0; i < count; i++)
             {
                 var guid = packet.ReadGuid("GUID", i);
-                packet.ReadBoolean("Online", i);
+                packet.ReadBool("Online", i);
                 var name = packet.ReadCString("Name", i);
                 StoreGetters.AddName(guid, name);
                 packet.ReadUInt32("Captain", i);
                 packet.ReadByte("Level", i);
-                packet.ReadEnum<Class>("Class", TypeCode.Byte, i);
+                packet.ReadByteE<Class>("Class", i);
                 packet.ReadUInt32("Week Games", i);
                 packet.ReadUInt32("Week Win", i);
                 packet.ReadUInt32("Seasonal Games", i);
@@ -834,7 +834,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ARENA_TEAM_COMMAND_RESULT, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleArenaTeamCommandResult406(Packet packet)
         {
-            packet.ReadEnum<ArenaCommandResult>("Result", TypeCode.UInt32);
+            packet.ReadUInt32E<ArenaCommandResult>("Result");
             packet.ReadCString("Team Name");
             packet.ReadCString("Player Name");
         }
@@ -842,7 +842,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ARENA_TEAM_EVENT)]
         public static void HandleArenaTeamEvent(Packet packet)
         {
-            packet.ReadEnum<ArenaEvent>("Event", TypeCode.Byte);
+            packet.ReadByteE<ArenaEvent>("Event");
             var count = packet.ReadByte("Count");
             for (var i = 0; i < count; ++i)
                 packet.ReadCString("Param", i);

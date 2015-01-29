@@ -10,7 +10,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class QuestHandler
     {
-        private static void ReadQuestRewards(ref Packet packet)
+        private static void ReadQuestRewards(Packet packet)
         {
             packet.ReadInt32("ChoiceItemCount");
 
@@ -58,21 +58,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("bit44");
         }
 
-        private static void ReadGossipText(ref Packet packet, params object[] indexes)
+        public static void ReadGossipText(Packet packet, params object[] indexes)
         {
-            packet.ReadUInt32("QuestID", Packet.GetIndexString(indexes));
-            packet.ReadUInt32("QuestType", Packet.GetIndexString(indexes));
-            packet.ReadUInt32("QuestLevel", Packet.GetIndexString(indexes));
+            packet.ReadUInt32("QuestID", indexes);
+            packet.ReadUInt32("QuestType", indexes);
+            packet.ReadUInt32("QuestLevel", indexes);
 
             for (int i = 0; i < 2; i++)
-                packet.ReadUInt32("QuestFlags", Packet.GetIndexString(indexes), i);
+                packet.ReadUInt32("QuestFlags", indexes, i);
 
             packet.ResetBitReader();
 
-            packet.ReadBit("Repeatable", Packet.GetIndexString(indexes));
+            packet.ReadBit("Repeatable", indexes);
 
             var bits13 = packet.ReadBits(9);
-            packet.ReadWoWString("QuestTitle", bits13, Packet.GetIndexString(indexes));
+            packet.ReadWoWString("QuestTitle", bits13, indexes);
         }
 
         [Parser(Opcode.CMSG_QUEST_QUERY)]
@@ -110,7 +110,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleQuestgiverAcceptQuest(Packet packet)
         {
             packet.ReadPackedGuid128("QuestGiverGUID");
-            packet.ReadEntry<UInt32>(StoreNameType.Quest, "QuestID");
+            packet.ReadUInt32<QuestId>("QuestID");
             packet.ReadBit("StartCheat");
         }
 
@@ -118,7 +118,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleQuestRequestReward(Packet packet)
         {
             packet.ReadPackedGuid128("QuestGiverGUID");
-            packet.ReadEntry<UInt32>(StoreNameType.Quest, "QuestID");
+            packet.ReadUInt32<QuestId>("QuestID");
         }
 
         [Parser(Opcode.CMSG_QUEST_NPC_QUERY)]
@@ -127,7 +127,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("Count");
 
             for (var i = 0; i < 50; i++)
-                packet.ReadEntry<Int32>(StoreNameType.Quest, "Quest ID", i);
+                packet.ReadInt32<QuestId>("Quest ID", i);
         }
 
         [Parser(Opcode.SMSG_QUEST_POI_QUERY_RESPONSE)]
@@ -191,12 +191,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var quest = new QuestTemplateWod();
 
             var id = packet.ReadEntry("Quest ID");
-            quest.QuestType = packet.ReadEnum<QuestMethod>("QuestType", TypeCode.Int32);
+            quest.QuestType = packet.ReadInt32E<QuestMethod>("QuestType");
             quest.QuestLevel = packet.ReadInt32("QuestLevel");
             quest.QuestPackageID = packet.ReadUInt32("QuestPackageID");
             quest.MinLevel = packet.ReadInt32("QuestMinLevel");
             quest.QuestSortID = (QuestSort)packet.ReadUInt32("QuestSortID");
-            quest.QuestInfoID = packet.ReadEnum<QuestType>("QuestInfoID", TypeCode.Int32);
+            quest.QuestInfoID = packet.ReadInt32E<QuestType>("QuestInfoID");
             quest.SuggestedGroupNum = packet.ReadUInt32("SuggestedGroupNum");
             quest.RewardNextQuest = packet.ReadUInt32("RewardNextQuest");
             quest.RewardXPDifficulty = packet.ReadUInt32("RewardXPDifficulty");
@@ -216,7 +216,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             quest.RewardKillHonor = packet.ReadSingle("RewardKillHonor");
 
             quest.StartItem = packet.ReadUInt32("StartItem");
-            quest.Flags = packet.ReadEnum<QuestFlags>("Flags", TypeCode.UInt32);
+            quest.Flags = packet.ReadUInt32E<QuestFlags>("Flags");
             quest.FlagsEx = packet.ReadUInt32("FlagsEx");
 
             quest.RewardItems = new uint[4];
@@ -290,7 +290,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 };
 
                 var objectiveId = packet.ReadEntry("Id", i);
-                questInfoObjective.Type = packet.ReadEnum<QuestRequirementType>("Quest Requirement Type", TypeCode.Byte);
+                questInfoObjective.Type = packet.ReadByteE<QuestRequirementType>("Quest Requirement Type");
                 questInfoObjective.StorageIndex = packet.ReadSByte("StorageIndex", i);
                 questInfoObjective.ObjectID = packet.ReadInt32("ObjectID", i);
                 questInfoObjective.Amount = packet.ReadInt32("Amount", i);
@@ -349,7 +349,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var count = packet.ReadUInt32("Count");
 
             for (var i = 0; i < count; i++)
-                packet.ReadEntry<Int32>(StoreNameType.Quest, "Quest ID", i);
+                packet.ReadInt32<QuestId>("Quest ID", i);
         }
 
         [Parser(Opcode.SMSG_QUESTGIVER_QUEST_DETAILS)]
@@ -371,7 +371,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("PortraitTurnIn");
             var int5860 = packet.ReadInt32("LearnSpellsCount");
 
-            ReadQuestRewards(ref packet);
+            ReadQuestRewards(packet);
 
             var int2584 = packet.ReadInt32("DescEmotesCount");
             var int5876 = packet.ReadInt32("ObjectivesCount");
@@ -430,7 +430,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleQuestgiverStatus(Packet packet)
         {
             packet.ReadPackedGuid128("QuestGiverGUID");
-            packet.ReadEnum<QuestGiverStatus4x>("StatusFlags", TypeCode.Int32);
+            packet.ReadInt32E<QuestGiverStatus4x>("StatusFlags");
         }
 
         [Parser(Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE)]
@@ -440,7 +440,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < int16; ++i)
             {
                 packet.ReadPackedGuid128("Guid");
-                packet.ReadEnum<QuestGiverStatus4x>("Status", TypeCode.Int32);
+                packet.ReadInt32E<QuestGiverStatus4x>("Status");
             }
         }
 
@@ -493,7 +493,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadInt32("SuggestedPartyMembers");
 
-            ReadQuestRewards(ref packet);
+            ReadQuestRewards(packet);
 
             var int252 = packet.ReadInt32("EmotesCount");
 
@@ -568,7 +568,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var int520 = packet.ReadUInt32("GossipTextCount");
             for (int i = 0; i < int520; i++)
-                ReadGossipText(ref packet, i);
+                ReadGossipText(packet, i);
 
             packet.ResetBitReader();
 
@@ -640,13 +640,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_QUEST_UPDATE_COMPLETE)]
         public static void HandleQuestForceRemoved(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Quest, "QuestID");
+            packet.ReadInt32<QuestId>("QuestID");
         }
 
         [Parser(Opcode.SMSG_QUEST_UPDATE_ADD_CREDIT_SIMPLE)]
         public static void HandleQuestUpdateAddCreditSimple(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Quest, "QuestID");
+            packet.ReadInt32<QuestId>("QuestID");
             packet.ReadInt32("ObjectID");
             packet.ReadByte("ObjectiveType");
         }
@@ -662,17 +662,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("SenderGUID");
             packet.ReadInt32("QuestID");
-            packet.ReadEnum<QuestPartyResult>("Result", TypeCode.Byte);
+            packet.ReadByteE<QuestPartyResult>("Result");
         }
 
         [Parser(Opcode.SMSG_QUEST_PUSH_RESULT)]
         public static void HandleQuestPushResult(Packet packet)
         {
             packet.ReadPackedGuid128("SenderGUID");
-            packet.ReadEnum<QuestPartyResult>("Result", TypeCode.Byte);
+            packet.ReadByteE<QuestPartyResult>("Result");
         }
 
         [Parser(Opcode.SMSG_SET_QUEST_COMPLETED_BIT)]
+        [Parser(Opcode.SMSG_CLEAR_QUEST_COMPLETED_BIT)]
         public static void HandleSetQuestCompletedBit(Packet packet)
         {
             packet.ReadInt32("Bit");
@@ -869,6 +870,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleDailyQuestsReset(Packet packet)
         {
             packet.ReadInt32("Count");
+        }
+
+        [Parser(Opcode.SMSG_QUEST_CONFIRM_ACCEPT)]
+        public static void HandleQuestConfirmAccept(Packet packet)
+        {
+            packet.ReadInt32("QuestID");
+            packet.ReadPackedGuid128("InitiatedBy");
+            var len = packet.ReadBits(10);
+            packet.ReadWoWString("QuestTitle", len);
         }
     }
 }

@@ -247,5 +247,16 @@ namespace WowPacketParser.Misc
             double num = Math.Round(bytes / Math.Pow(1024, place), 1);
             return (Math.Sign(byteCount) * num) + suf[place];
         }
+
+
+        /// <summary>
+        /// Retrieves the values of an enumeration
+        /// </summary>
+        /// <typeparam name="T">Enum type</typeparam>
+        /// <returns>Enumerable with the enum values</returns>
+        public static IEnumerable<T> GetValues<T>()
+        {
+            return (T[])Enum.GetValues(typeof(T));
+        }
     }
 }

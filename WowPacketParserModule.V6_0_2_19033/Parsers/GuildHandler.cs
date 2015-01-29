@@ -20,6 +20,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_GUILD_EVENT_LOG_QUERY)]
         [Parser(Opcode.SMSG_GUILD_MEMBER_DAILY_RESET)]
         [Parser(Opcode.SMSG_GUILD_EVENT_BANK_CONTENTS_CHANGED)]
+        [Parser(Opcode.SMSG_GUILD_EVENT_RANKS_UPDATED)]
         public static void HandleGuildZero(Packet packet)
         {
         }
@@ -98,7 +99,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 for (var j = 0; j < 8; ++j)
                 {
-                    packet.ReadEnum<GuildBankRightsFlag>("TabFlags", TypeCode.Int32, i, j);
+                    packet.ReadInt32E<GuildBankRightsFlag>("TabFlags", i, j);
                     packet.ReadInt32("TabWithdrawItemLimit", i, j);
                 }
 
@@ -136,10 +137,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 packet.ReadUInt32("VirtualRealmAddress", i);
 
-                packet.ReadEnum<GuildMemberFlag>("Status", TypeCode.Byte, i);
+                packet.ReadByteE<GuildMemberFlag>("Status", i);
                 packet.ReadByte("Level", i);
-                packet.ReadEnum<Class>("ClassID", TypeCode.Byte, i);
-                packet.ReadEnum<Gender>("Gender", TypeCode.Byte, i);
+                packet.ReadByteE<Class>("ClassID", i);
+                packet.ReadByteE<Gender>("Gender", i);
 
                 packet.ResetBitReader();
 
@@ -253,19 +254,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("RankID");
             packet.ReadInt32("WithdrawGoldLimit");
-            packet.ReadEnum<GuildRankRightsFlag>("Flags", TypeCode.UInt32);
+            packet.ReadUInt32E<GuildRankRightsFlag>("Flags");
             packet.ReadUInt32("NumTabs");
 
             var int16 = packet.ReadInt32("TabCount");
 
             for (var i = 0; i < int16; i++)
             {
-                packet.ReadEnum<GuildBankRightsFlag>("Flags", TypeCode.Int32, i);
+                packet.ReadInt32E<GuildBankRightsFlag>("Flags", i);
                 packet.ReadInt32("WithdrawItemLimit", i);
             }
         }
 
-        [Parser(Opcode.CMSG_GUILD_INVITE)]
+        [Parser(Opcode.CMSG_GUILD_INVITE_BY_NAME)]
         public static void HandleGuildInviteByName(Packet packet)
         {
             var bits16 = packet.ReadBits(9);
@@ -462,14 +463,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             var count = packet.ReadUInt32("Count");
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int32>(StoreNameType.Achievement, "AchievementIDs", i);
+                packet.ReadInt32<AchievementId>("AchievementIDs", i);
         }
 
         [Parser(Opcode.SMSG_GUILD_COMMAND_RESULT)]
         public static void HandleGuildCommandResult(Packet packet)
         {
-            packet.ReadEnum<GuildCommandError>("Result", TypeCode.UInt32);
-            packet.ReadEnum<GuildCommandType>("Command", TypeCode.UInt32);
+            packet.ReadUInt32E<GuildCommandError>("Result");
+            packet.ReadUInt32E<GuildCommandType>("Command");
             var len = packet.ReadBits(8);
             packet.ReadWoWString("Name", len);
         }
@@ -541,13 +542,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("RankID");
             packet.ReadInt32("RankOrder");
-            packet.ReadEnum<GuildRankRightsFlag>("Flags", TypeCode.UInt32);
-            packet.ReadEnum<GuildRankRightsFlag>("OldFlags", TypeCode.UInt32);
+            packet.ReadUInt32E<GuildRankRightsFlag>("Flags");
+            packet.ReadUInt32E<GuildRankRightsFlag>("OldFlags");
             packet.ReadInt32("WithdrawGoldLimit");
 
             for (var i = 0; i < 8; ++i)
             {
-                packet.ReadEnum<GuildBankRightsFlag>("TabFlags", TypeCode.Int32, i);
+                packet.ReadInt32E<GuildBankRightsFlag>("TabFlags", i);
                 packet.ReadInt32("TabWithdrawItemLimit", i);
             }
 
@@ -596,6 +597,230 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleGuildReputationReactionChanged(Packet packet)
         {
             packet.ReadPackedGuid128("MemberGUID");
+        }
+
+        [Parser(Opcode.SMSG_GUILD_ACHIEVEMENT_EARNED)]
+        public static void HandleGuildAchievementEarned(Packet packet)
+        {
+            packet.ReadPackedGuid128("GuildGUID");
+            packet.ReadInt32<AchievementId>("AchievementID");
+            packet.ReadPackedTime("TimeEarned");
+        }
+
+        [Parser(Opcode.SMSG_GUILD_EVENT_PLAYER_JOINED)]
+        public static void HandleGuildEventPlayerJoined(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadInt32("VirtualRealmAddress");
+
+            var len = packet.ReadBits(6);
+            packet.ReadWoWString("Name", len);
+        }
+
+        [Parser(Opcode.SMSG_GUILD_EVENT_PLAYER_LEFT)]
+        public static void HandleGuildEventPlayerLeft(Packet packet)
+        {
+            var hasRemoved = packet.ReadBit("Removed");
+            var lenLeaverName = packet.ReadBits(6);
+
+            if (hasRemoved)
+            {
+                var lenRemoverName = packet.ReadBits(6);
+                packet.ReadPackedGuid128("RemoverGUID");
+                packet.ReadInt32("RemoverVirtualRealmAddress");
+                packet.ReadWoWString("RemoverName", lenRemoverName);
+            }
+
+            packet.ReadPackedGuid128("LeaverGUID");
+            packet.ReadInt32("LeaverVirtualRealmAddress");
+            packet.ReadWoWString("LeaverName", lenLeaverName);
+        }
+
+        public static void ReadLFGuildRecruitData(Packet packet, params object[] indexes)
+        {
+            packet.ReadPackedGuid128("RecruitGUID", indexes);
+
+            packet.ReadInt32("RecruitVirtualRealm", indexes);
+
+            packet.ReadInt32("CharacterClass", indexes);
+            packet.ReadInt32("CharacterGender", indexes);
+            packet.ReadInt32("CharacterLevel", indexes);
+
+            packet.ReadInt32("ClassRoles", indexes);
+            packet.ReadInt32("PlayStyle", indexes);
+            packet.ReadInt32("Availability", indexes);
+            packet.ReadInt32("SecondsSinceCreated", indexes);
+            packet.ReadInt32("SecondsUntilExpiration", indexes);
+
+            packet.ResetBitReader();
+
+            var lenName = packet.ReadBits(6);
+            var lenComment = packet.ReadBits(10);
+
+            packet.ReadWoWString("Name", lenName, indexes);
+            packet.ReadWoWString("Comment", lenComment, indexes);
+        }
+
+        public static void ReadLFGuildApplicationData(Packet packet, params object[] indexes)
+        {
+            packet.ReadPackedGuid128("GuildGUID", indexes);
+            packet.ReadInt32("GuildVirtualRealm", indexes);
+
+            packet.ReadInt32("ClassRoles", indexes);
+            packet.ReadInt32("PlayStyle", indexes);
+            packet.ReadInt32("Availability", indexes);
+            packet.ReadInt32("SecondsSinceCreated", indexes);
+
+            packet.ResetBitReader();
+
+            var lenName = packet.ReadBits(7);
+            var lenComment = packet.ReadBits(10);
+
+            packet.ReadWoWString("GuildName", lenName, indexes);
+            packet.ReadWoWString("Comment", lenComment, indexes);
+        }
+
+        [Parser(Opcode.SMSG_LF_GUILD_RECRUITS)]
+        public static void HandleLFGuildRecruits(Packet packet)
+        {
+            var recruitsCount = packet.ReadInt32("LFGuildRecruitDataCount");
+            packet.ReadTime("UpdateTime");
+            for (int i = 0; i < recruitsCount; i++)
+                ReadLFGuildRecruitData(packet, i, "LFGuildRecruitData");
+        }
+
+        [Parser(Opcode.SMSG_LF_GUILD_APPLICATIONS)]
+        public static void HandleLFGuildApplications(Packet packet)
+        {
+            packet.ReadInt32("NumRemaining");
+            var applicationCount = packet.ReadInt32("LFGuildApplicationDataCount");
+            for (int i = 0; i < applicationCount; i++)
+                ReadLFGuildApplicationData(packet, i, "LFGuildApplicationData");
+        }
+
+        [Parser(Opcode.CMSG_PETITION_SHOW_LIST)]
+        public static void HandlePetitionShowListClient(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetitionUnit");
+        }
+
+        [Parser(Opcode.SMSG_PETITION_SHOW_LIST)]
+        public static void HandlePetitionShowList(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+            packet.ReadUInt32("Price");
+        }
+
+        [Parser(Opcode.CMSG_SIGN_PETITION)]
+        public static void HandleSignPetition(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetitionGUID");
+            packet.ReadByte("Choice");
+        }
+
+        [Parser(Opcode.CMSG_QUERY_PETITION)]
+        public static void HandleQueryPetition(Packet packet)
+        {
+            packet.ReadUInt32("PetitionID");
+            packet.ReadPackedGuid128("ItemGUID");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_SET_FOCUSED_ACHIEVEMENT)]
+        public static void HandleGuildSetFocusedAchievement(Packet packet)
+        {
+            packet.ReadUInt32("AchievementID");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_QUERY_MEMBER_RECIPES)]
+        public static void HandleGuildQueryMemberRecipes(Packet packet)
+        {
+            packet.ReadPackedGuid128("GuildMember");
+            packet.ReadPackedGuid128("GuildGUID");
+            packet.ReadUInt32("SkillLineID");
+        }
+
+        [Parser(Opcode.SMSG_PETITION_SIGN_RESULTS)]
+        public static void HandlePetitionSignResults(Packet packet)
+        {
+            packet.ReadPackedGuid128("Item");
+            packet.ReadPackedGuid128("Player");
+            packet.ReadBits("Error", 4);
+        }
+
+        public static void ReadPetitionSignature(Packet packet, params object[] indexes)
+        {
+            packet.ReadPackedGuid128("Signer", indexes);
+            packet.ReadInt32("Choice", indexes);
+        }
+
+        [Parser(Opcode.SMSG_PETITION_SHOW_SIGNATURES)]
+        public static void HandlePetitionShowSignatures(Packet packet)
+        {
+            packet.ReadPackedGuid128("Item");
+            packet.ReadPackedGuid128("Owner");
+            packet.ReadPackedGuid128("OwnerWoWAccount");
+            packet.ReadInt32("PetitionID");
+
+            var signaturesCount = packet.ReadInt32("SignaturesCount");
+            for (int i = 0; i < signaturesCount; i++)
+                ReadPetitionSignature(packet, i, "PetitionSignature");
+        }
+
+        public static void ReadPetitionInfo(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("PetitionID", indexes);
+            packet.ReadPackedGuid128("Petitioner", indexes);
+
+            packet.ReadInt32("MinSignatures", indexes);
+            packet.ReadInt32("MaxSignatures", indexes);
+            packet.ReadInt32("DeadLine", indexes);
+            packet.ReadInt32("IssueDate", indexes);
+
+            packet.ReadInt32("AllowedGuildID", indexes);
+            packet.ReadInt32("AllowedClasses", indexes);
+            packet.ReadInt32("AllowedRaces", indexes);
+            packet.ReadInt16("AllowedGender", indexes);
+            packet.ReadInt32("AllowedMinLevel", indexes);
+            packet.ReadInt32("AllowedMaxLevel", indexes);
+
+            packet.ReadInt32("NumChoices", indexes);
+            packet.ReadInt32("StaticType", indexes);
+            packet.ReadUInt32("Muid", indexes);
+
+            packet.ResetBitReader();
+
+            var lenTitle = packet.ReadBits(7);
+            var lenBodyText = packet.ReadBits(12);
+
+            var lenChoicetext = new uint[10];
+            for (int i = 0; i < 10; i++)
+                lenChoicetext[i] = packet.ReadBits(6);
+            for (int i = 0; i < 10; i++)
+                packet.ReadWoWString("Choicetext", lenChoicetext[i]);
+
+            packet.ReadWoWString("Title", lenTitle);
+            packet.ReadWoWString("BodyText", lenBodyText);
+        }
+
+        [Parser(Opcode.SMSG_QUERY_PETITION_RESPONSE)]
+        public static void HandleQueryPetitionResponse(Packet packet)
+        {
+            packet.ReadInt32("PetitionID");
+
+            var hasAllow = packet.ReadBit("Allow");
+            if (hasAllow)
+                ReadPetitionInfo(packet, "PetitionInfo");
+        }
+
+        [Parser(Opcode.SMSG_GUILD_MEMBER_RECIPES)]
+        public static void HandleGuildMemberRecipes(Packet packet)
+        {
+            packet.ReadPackedGuid128("Member");
+            packet.ReadInt32("SkillLineID");
+            packet.ReadInt32("SkillStep");
+            packet.ReadInt32("SkillRank");
+            for (int i = 0; i < 0x12C; i++)
+                packet.ReadByte("SkillLineBitArray", i);
         }
     }
 }

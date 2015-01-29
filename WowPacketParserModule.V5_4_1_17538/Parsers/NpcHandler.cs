@@ -40,12 +40,12 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             guidBytes[3] = packet.ReadBit();
             for (var i = 0; i < questgossips; i++)
             {
-                packet.ReadEnum<QuestFlags>("Flags", TypeCode.UInt32, i);
+                packet.ReadUInt32E<QuestFlags>("Flags", i);
                 packet.ReadUInt32("Icon", i);
                 packet.ReadInt32("Level", i);
                 packet.ReadWoWString("Title", titleLen[i], i);
-                packet.ReadEntry<UInt32>(StoreNameType.Quest, "Quest ID", i);
-                packet.ReadEnum<QuestFlags2>("Flags 2", TypeCode.UInt32, i);
+                packet.ReadUInt32<QuestId>("Quest ID", i);
+                packet.ReadUInt32E<QuestFlags2>("Flags 2", i);
             }
 
             packet.ReadXORByte(guidBytes, 2);
@@ -61,8 +61,8 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
                 var gossipOption = new GossipOption
                 {
                     OptionText = packet.ReadWoWString("Text", optionTextLen[i], i),
-                    Box = packet.ReadBoolean("Box", i),
-                    OptionIcon = packet.ReadEnum<GossipOptionIcon>("Icon", TypeCode.Byte, i),
+                    Box = packet.ReadBool("Box", i),
+                    OptionIcon = packet.ReadByteE<GossipOptionIcon>("Icon", i),
                     RequiredMoney = packet.ReadUInt32("Required money", i),
                     BoxText = packet.ReadWoWString("Box Text", boxTextLen[i], i),
                     Index = packet.ReadUInt32("Index", i),
@@ -222,7 +222,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             {
                 var vendorItem = new VendorItem();
 
-                vendorItem.ItemId = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "Item ID", i);
+                vendorItem.ItemId = (uint)packet.ReadInt32<ItemId>("Item ID", i);
 
                 if (hasCondition[i])
                     packet.ReadInt32("Condition ID", i);
@@ -276,12 +276,12 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             for (var i = 0; i < count; ++i)
             {
                 var trainerSpell = new TrainerSpell();
-                trainerSpell.Spell = (uint)packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i);
+                trainerSpell.Spell = (uint)packet.ReadInt32<SpellId>("Spell ID", i);
 
                 for (var j = 0; j < 3; ++j)
                     packet.ReadInt32("Int818", i, j);
 
-                packet.ReadEnum<TrainerSpellState>("State", TypeCode.Byte, i);
+                packet.ReadByteE<TrainerSpellState>("State", i);
                 trainerSpell.RequiredLevel = packet.ReadByte("Required Level", i);
                 trainerSpell.RequiredSkillLevel = packet.ReadUInt32("Required Skill Level", i);
                 trainerSpell.Cost = packet.ReadUInt32("Cost", i);
@@ -295,7 +295,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 6);
 
-            npcTrainer.Type = packet.ReadEnum<TrainerType>("Type", TypeCode.Int32);
+            npcTrainer.Type = packet.ReadInt32E<TrainerType>("Type");
             packet.ReadWoWString("Title", titleLen);
             packet.ReadInt32("Unk Int32"); // Same unk exists in CMSG_TRAINER_BUY_SPELL
 

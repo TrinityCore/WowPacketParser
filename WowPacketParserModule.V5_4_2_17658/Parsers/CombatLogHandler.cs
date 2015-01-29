@@ -108,14 +108,14 @@ namespace WowPacketParserModule.V5_4_2_17659.Parsers
             }
 
             packet.ReadXORByte(casterGUID, 6);
-            packet.ReadEnum<AttackerStateFlags>("Attacker State Flags", TypeCode.Int32);
+            packet.ReadInt32E<AttackerStateFlags>("Attacker State Flags");
             packet.ReadXORByte(casterGUID, 0);
             packet.ReadXORByte(targetGUID, 1);
             packet.ReadXORByte(casterGUID, 4);
             packet.ReadXORByte(casterGUID, 2);
             packet.ReadXORByte(targetGUID, 5);
             packet.ReadUInt32("Absorb"); // correct?
-            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadUInt32<SpellId>("Spell ID");
             packet.ReadXORByte(targetGUID, 2);
             packet.ReadInt32("Overkill");
             packet.ReadXORByte(targetGUID, 3);
@@ -280,7 +280,7 @@ namespace WowPacketParserModule.V5_4_2_17659.Parsers
 
             for (var i = 0; i < bits20; ++i)
             {
-                var aura = packet.ReadEnum<AuraType>("Aura Type", TypeCode.UInt32, i);
+                var aura = packet.ReadUInt32E<AuraType>("Aura Type", i);
                 packet.ReadInt32("Damage", i);
 
                 if (hasOverDamage[i])
@@ -296,7 +296,7 @@ namespace WowPacketParserModule.V5_4_2_17659.Parsers
             packet.ReadXORByte(casterGUID, 6);
             packet.ReadXORByte(targetGUID, 4);
             packet.ReadXORByte(targetGUID, 0);
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32<SpellId>("Spell ID");
             if (hasPowerData)
             {
                 packet.ReadInt32("Int38");
@@ -364,7 +364,7 @@ namespace WowPacketParserModule.V5_4_2_17659.Parsers
             packet.ReadXORByte(guid4, 0);
             packet.ReadXORByte(guid4, 4);
             packet.ReadInt32("Overheal");
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32<SpellId>("Spell ID");
             if (bit5C)
                 packet.ReadSingle("Float58");
             if (hasPowerData)

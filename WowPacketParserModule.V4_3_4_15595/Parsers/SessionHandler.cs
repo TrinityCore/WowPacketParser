@@ -42,7 +42,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             sha[7] = packet.ReadByte();
             sha[16] = packet.ReadByte();
             sha[3] = packet.ReadByte();
-            packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int16);
+            packet.ReadInt16E<ClientVersionBuild>("Client Build");
             sha[8] = packet.ReadByte();
             packet.ReadUInt32("UInt32 3");
             packet.ReadByte("Unk Byte");
@@ -59,7 +59,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
 
             var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
                 packet.Number, packet.Writer, packet.FileName);
-            CoreParsers.AddonHandler.ReadClientAddonsList(ref addons);
+            CoreParsers.AddonHandler.ReadClientAddonsList(addons);
             addons.ClosePacket(false);
 
             packet.ReadBit("Unk bit");
@@ -80,14 +80,14 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             if (hasAccountInfo)
             {
                 packet.ReadInt32("Billing Time Remaining");
-                packet.ReadEnum<ClientType>("Player Expansion", TypeCode.Byte);
+                packet.ReadByteE<ClientType>("Player Expansion");
                 packet.ReadInt32("Unknown UInt32");
-                packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
+                packet.ReadByteE<ClientType>("Account Expansion");
                 packet.ReadInt32("Billing Time Rested");
-                packet.ReadEnum<BillingFlag>("Billing Flags", TypeCode.Byte);
+                packet.ReadByteE<BillingFlag>("Billing Flags");
             }
 
-            packet.ReadEnum<ResponseCode>("Auth Code", TypeCode.Byte);
+            packet.ReadByteE<ResponseCode>("Auth Code");
 
             if (isQueued)
                 packet.ReadInt32("Queue Position");

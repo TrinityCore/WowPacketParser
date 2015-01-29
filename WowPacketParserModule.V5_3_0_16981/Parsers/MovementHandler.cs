@@ -13,8 +13,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         {
             packet.ReadSingle("Position Z");
             packet.ReadSingle("Position Y");
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
-            packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id");
+            packet.ReadInt32<MapId>("Map Id");
+            packet.ReadInt32<ZoneId>("Zone Id");
             packet.ReadSingle("Position X");
         }
 
@@ -28,7 +28,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadSingle("Game Speed");
         }
 
-        public static void ReadClientMovementBlock(ref Packet packet)
+        public static void ReadClientMovementBlock(Packet packet)
         {
             var guid = new byte[8];
             var transportGUID = new byte[8];
@@ -232,7 +232,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadInt32("Async-time in ms");
 
             if (hasAnimationState)
-                packet.ReadEnum<MovementAnimationState>("Animation State", TypeCode.Byte);
+                packet.ReadByteE<MovementAnimationState>("Animation State");
 
             if (hasTime)
                 packet.ReadInt32("Move Time in ms");
@@ -258,7 +258,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             }
 
             if (hasFlags)
-                packet.ReadEnum<SplineFlag434>("Spline Flags", TypeCode.Int32);
+                packet.ReadInt32E<SplineFlag434>("Spline Flags");
 
             if (splineType == 2)
                 packet.ReadVector3("Facing Spot");
@@ -454,7 +454,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Inactive Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Inactive Terrain swap", i);
+                packet.ReadInt16<MapId>("Inactive Terrain swap", i);
 
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Phases count", count);
@@ -465,7 +465,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Active Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Active Terrain swap", i);
+                packet.ReadInt16<MapId>("Active Terrain swap", i);
 
             packet.ReadXORBytes(guid, 6, 2, 1);
             packet.WriteGuid("GUID", guid);

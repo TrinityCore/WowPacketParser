@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -49,9 +48,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var int40 = packet.ReadInt32("AbilityCount", indexes);
             packet.ReadInt32("UnkInt", indexes);
 
-            var indexString = Packet.GetIndexString(indexes);
             for (int i = 0; i < int40; i++)
-                packet.ReadInt32(String.Format("{0} [{1}] AbilityID", indexString, i));
+                packet.ReadInt32("AbilityID", indexes, i);
         }
 
         private static void ReadGarrisonPlotInfo(Packet packet, params object[] indexes)
@@ -410,6 +408,94 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleGarrisonSetNumFollowerActivationsRemaining(Packet packet)
         {
             packet.ReadInt32("Activated");
+        }
+
+        [Parser(Opcode.CMSG_UPGRADE_GARRISON)]
+        public static void HandleUpgradeGarrison(Packet packet)
+        {
+            packet.ReadPackedGuid128("NpcGUID");
+        }
+
+        [Parser(Opcode.CMSG_REPLACE_TROPHY)]
+        [Parser(Opcode.CMSG_CHANGE_TROPHY)]
+        public static void HandleReplaceTrophy(Packet packet)
+        {
+            packet.ReadPackedGuid128("TrophyGUID");
+            packet.ReadInt32("NewTrophyID");
+        }
+
+        [Parser(Opcode.CMSG_REVERT_TROPHY)]
+        public static void HandleRevertTrophy(Packet packet)
+        {
+            packet.ReadPackedGuid128("TrophyGUID");
+        }
+
+        [Parser(Opcode.CMSG_TROPHY_MONUMENT_LOAD_SELECTED_TROPHY_ID)]
+        public static void HandleGetSelectedTrophyId(Packet packet)
+        {
+            packet.ReadInt32("TrophyID");
+        }
+
+        [Parser(Opcode.CMSG_GET_TROPHY_LIST)]
+        public static void HandleGetTrophyList(Packet packet)
+        {
+            packet.ReadInt32("TrophyTypeID");
+        }
+
+        [Parser(Opcode.CMSG_GARRISON_SET_FOLLOWER_INACTIVE)]
+        public static void HandleGarrisonSetFollowerInactive(Packet packet)
+        {
+            packet.ReadInt64("FollowerDBID");
+            packet.ReadBit("Inactive");
+        }
+
+        [Parser(Opcode.CMSG_GARRISON_REMOVE_FOLLOWER_FROM_BUILDING)]
+        public static void HandleGarrisonRemoveFollowerFromBuilding(Packet packet)
+        {
+            packet.ReadPackedGuid128("NpcGUID");
+            packet.ReadInt64("FollowerDBID");
+        }
+
+        [Parser(Opcode.CMSG_GARRISON_PURCHASE_BUILDING)]
+        public static void HandleGarrisonPurchaseBuilding(Packet packet)
+        {
+            packet.ReadPackedGuid128("NpcGUID");
+            packet.ReadInt32("PlotInstanceID");
+            packet.ReadInt32("BuildingID");
+        }
+
+        [Parser(Opcode.CMSG_GARRISON_ASSIGN_FOLLOWER_TO_BUILDING)]
+        public static void HandleGarrisonAssignFollowerToBuilding(Packet packet)
+        {
+            packet.ReadPackedGuid128("NpcGUID");
+            packet.ReadInt32("PlotInstanceID");
+            packet.ReadInt64("FollowerDBID");
+        }
+
+        [Parser(Opcode.SMSG_GET_TROPHY_LIST_RESPONSE)]
+        public static void HandleGetTrophyListResponse(Packet packet)
+        {
+            packet.ReadBit("Success");
+            var trophyCount = packet.ReadInt32("TrophyCount");
+            for (int i = 0; i < trophyCount; i++)
+            {
+                packet.ReadInt32("TrophyID", i);
+                packet.ReadInt32("Unk1", i);
+                packet.ReadInt32("Unk2", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_REPLACE_TROPHY_RESPONSE)]
+        public static void HandleReplaceTrophyResponse(Packet packet)
+        {
+            packet.ReadBit("Success");
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_MONUMENT_SELECTED_TROPHY_ID_LOADED)]
+        public static void HandleGarrisonMonumentSelectedTrophyIdLoaded(Packet packet)
+        {
+            packet.ReadBit("Success");
+            packet.ReadInt32("TrophyID");
         }
     }
 }

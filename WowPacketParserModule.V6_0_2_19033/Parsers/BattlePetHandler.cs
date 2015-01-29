@@ -11,6 +11,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_BATTLE_PET_REQUEST_JOURNAL)]
         [Parser(Opcode.CMSG_BATTLE_PET_REQUEST_JOURNAL_LOCK)]
         [Parser(Opcode.SMSG_PET_BATTLE_FINISHED)]
+        [Parser(Opcode.CMSG_PET_BATTLE_FINAL_NOTIF)]
+        [Parser(Opcode.CMSG_JOIN_PET_BATTLE_QUEUE)]
+        [Parser(Opcode.SMSG_PET_BATTLE_QUEUE_PROPOSE_MATCH)]
         public static void HandleBattlePetZero(Packet packet)
         {
         }
@@ -92,7 +95,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("UnitGUID");
         }
 
-        [Parser(Opcode.SMSG_BATTLE_PET_NAME_QUERY_RESPONSE)]
+        [Parser(Opcode.SMSG_BATTLE_PET_NAME_RESPONSE)]
         public static void HandleBattlePetQueryResponse(Packet packet)
         {
             packet.ReadPackedGuid128("BattlePetID");
@@ -121,6 +124,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_BATTLE_PET_DELETE_PET)]
         [Parser(Opcode.CMSG_BATTLE_PET_DELETE_PET_CHEAT)]
         [Parser(Opcode.CMSG_BATTLE_PET_SUMMON)]
+        [Parser(Opcode.CMSG_CAGE_BATTLE_PET)]
+        [Parser(Opcode.SMSG_BATTLE_PET_DELETED)]
         public static void HandleBattlePetDeletePet(Packet packet)
         {
             packet.ReadPackedGuid128("BattlePetGUID");
@@ -417,7 +422,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ResetBitReader();
 
             for (var i = 0; i < 2; ++i) // Winners
-                packet.ReadEntry<Int32>(StoreNameType.Unit, "NpcCreatureID", idx, i);
+                packet.ReadInt32<UnitId>("NpcCreatureID", idx, i);
 
             var petsCount = packet.ReadInt32("PetsCount", idx);
 
@@ -443,6 +448,130 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleSceneObjectPetBattleFinalRound(Packet packet)
         {
             ReadPetBattleFinalRound(packet, "MsgData");
+        }
+
+        public static void ReadPetBattleLocations(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("LocationResult", idx);
+            packet.ReadVector3("BattleOrigin", idx);
+            packet.ReadSingle("BattleFacing", idx);
+
+            for (var i = 0; i < 2; ++i)
+                packet.ReadVector3("PlayerPositions", idx, i);
+        }
+
+        [Parser(Opcode.SMSG_PET_BATTLE_FINALIZE_LOCATION)]
+        public static void HandlePetBattleFinalizeLocation(Packet packet)
+        {
+            ReadPetBattleLocations(packet, "Location");
+        }
+
+        [Parser(Opcode.SMSG_PET_BATTLE_PVP_CHALLENGE)]
+        public static void HandlePetBattlePVPChallenge(Packet packet)
+        {
+            packet.ReadPackedGuid128("ChallengerGUID");
+            ReadPetBattleLocations(packet, "Location");
+        }
+
+        [Parser(Opcode.CMSG_PET_BATTLE_REQUEST_WILD)]
+        public static void HandlePetBattleRequestWild(Packet packet)
+        {
+            packet.ReadPackedGuid128("TargetGUID");
+            ReadPetBattleLocations(packet, "Location");
+        }
+
+        [Parser(Opcode.CMSG_PET_BATTLE_REQUEST_PVP)]
+        public static void HandlePetBattleRequestPVP(Packet packet)
+        {
+            packet.ReadPackedGuid128("TargetGUID");
+            ReadPetBattleLocations(packet, "OpponentCharacterID");
+        }
+
+        [Parser(Opcode.SMSG_PET_BATTLE_REQUEST_FAILED)]
+        public static void HandlePetBattleRequestFailed(Packet packet)
+        {
+            packet.ReadByte("Reason"); // TODO: enum
+        }
+
+        [Parser(Opcode.SMSG_PET_BATTLE_SLOT_UPDATES)]
+        public static void HandlePetBattleSlotUpdates(Packet packet)
+        {
+            var petBattleSlotCount = packet.ReadInt32("PetBattleSlotCount");
+            for (int i = 0; i < petBattleSlotCount; i++)
+                ReadClientPetBattleSlot(packet, i, "PetBattleSlot");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("AutoSlotted");      // unconfirmed order
+            packet.ReadBit("NewSlotUnlocked");  // unconfirmed order
+        }
+
+        [Parser(Opcode.CMSG_PET_BATTLE_REPLACE_FRONT_PET)]
+        public static void HandlePetBattleReplaceFrontPet(Packet packet)
+        {
+            packet.ReadSByte("FrontPet");
+        }
+
+        public static void ReadPetBattleInput(Packet packet, params object[] idx)
+        {
+            packet.ReadByte("MoveType");
+            packet.ReadSByte("NewFrontPet");
+            packet.ReadByte("DebugFlags");
+            packet.ReadByte("BattleInterrupted");
+
+            packet.ReadInt32("AbilityID");
+            packet.ReadInt32("Round");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("IgnoreAbandonPenalty");
+        }
+
+        [Parser(Opcode.CMSG_PET_BATTLE_INPUT)]
+        public static void HandlePetBattleInput(Packet packet)
+        {
+            ReadPetBattleInput(packet, "PetBattleInput");
+        }
+
+        [Parser(Opcode.SMSG_PET_BATTLE_QUEUE_STATUS)]
+        public static void HandlePetBattleQueueStatus(Packet packet)
+        {
+            packet.ReadInt32("Status");
+
+            var slotResultCount = packet.ReadInt32("SlotResultCount");
+
+            LfgHandler.ReadRideTicket(packet, "RideTicket");
+
+            for (int i = 0; i < slotResultCount; i++)
+                packet.ReadInt32("SlotResult", i);
+
+            var bit64 = packet.ReadBit("HasClientWaitTime");
+            var bit56 = packet.ReadBit("HasAverageWaitTime");
+
+            if (bit64)
+                packet.ReadInt32("ClientWaitTime");
+
+            if (bit56)
+                packet.ReadInt32("AverageWaitTime");
+        }
+
+        [Parser(Opcode.CMSG_PET_BATTLE_QUEUE_PROPOSE_MATCH_RESULT)]
+        public static void HandlePetBattleQueueProposeMatchResult(Packet packet)
+        {
+            packet.ReadBit("Accepted");
+        }
+
+        [Parser(Opcode.CMSG_LEAVE_PET_BATTLE_QUEUE)]
+        public static void HandleLeavePetBattleQueue(Packet packet)
+        {
+            LfgHandler.ReadRideTicket(packet, "RideTicket");
+        }
+
+        [Parser(Opcode.CMSG_BATTLE_PET_REQUEST_UPDATE)]
+        public static void HandlePetBattleRequestUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("TargetGUID");
+            packet.ReadBit("Canceled");
         }
     }
 }

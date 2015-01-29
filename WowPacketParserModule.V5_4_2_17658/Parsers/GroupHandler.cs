@@ -1,5 +1,4 @@
-﻿using System;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -110,7 +109,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadByte("Sub Group", i);
                 packet.ReadXORByte(memberGUID[i], 7);
                 packet.ReadWoWString("Name", bitsED[i], i);
-                packet.ReadEnum<LfgRoleFlag>("Role", TypeCode.Byte, i);
+                packet.ReadByteE<LfgRoleFlag>("Role", i);
                 packet.ReadXORByte(memberGUID[i], 2);
                 packet.ReadXORByte(memberGUID[i], 5);
                 packet.ReadXORByte(memberGUID[i], 0);
@@ -142,7 +141,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ReadXORByte(leaderGUID, 7);
             packet.ReadXORByte(leaderGUID, 3);
             packet.ReadXORByte(groupGUID, 1);
-            packet.ReadEnum<MapDifficulty>("Dungeon Difficulty", TypeCode.Byte);
+            packet.ReadByteE<MapDifficulty>("Dungeon Difficulty");
 
             packet.WriteGuid("Leader GUID", leaderGUID);
             packet.WriteGuid("Group GUID", groupGUID);

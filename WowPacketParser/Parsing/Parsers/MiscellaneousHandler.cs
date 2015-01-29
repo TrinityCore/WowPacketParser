@@ -39,7 +39,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadEnum<DB2Hash>("Hotfix DB2 File", TypeCode.UInt32, i);
+                packet.ReadUInt32E<DB2Hash>("Hotfix DB2 File", i);
                 packet.ReadTime("Hotfix date", i);
                 packet.ReadInt32("Hotfixed entry", i);
             }
@@ -198,7 +198,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadPackedGuid("Vehicle GUID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3a_11723))
-                MovementHandler.ReadMovementInfo(ref packet, guid);
+                MovementHandler.ReadMovementInfo(packet, guid);
 
             packet.ReadPackedGuid("Accessory GUID");
             packet.ReadByte("Seat");
@@ -208,14 +208,14 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleCrossedInerbriationThreshold(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadEnum<DrunkenState>("Drunken State", TypeCode.UInt32);
-            packet.ReadEntry<UInt32>(StoreNameType.Item, "Entry");
+            packet.ReadUInt32E<DrunkenState>("Drunken State");
+            packet.ReadUInt32<ItemId>("Entry");
         }
 
         [Parser(Opcode.SMSG_BUY_BANK_SLOT_RESULT)]
         public static void HandleBuyBankSlotResult(Packet packet)
         {
-            packet.ReadEnum<BankSlotResult>("Result", TypeCode.UInt32);
+            packet.ReadUInt32E<BankSlotResult>("Result");
         }
 
         [Parser(Opcode.CMSG_ADD_FRIEND)]
@@ -272,30 +272,30 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
             packet.ReadUInt32("Name length");
             packet.ReadCString("Resurrector Name");
-            packet.ReadBoolean("Resurrection Sickness");
-            packet.ReadBoolean("Use Timer");
+            packet.ReadBool("Resurrection Sickness");
+            packet.ReadBool("Use Timer");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
-                packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");   // Used only for: <if (Spell ID == 83968 && Unit_HasAura(95223) return 1;>
+                packet.ReadInt32<SpellId>("Spell ID");   // Used only for: <if (Spell ID == 83968 && Unit_HasAura(95223) return 1;>
         }
 
         [Parser(Opcode.CMSG_RESURRECT_RESPONSE)]
         public static void HandleResurrectResponse(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadBoolean("Accept");
+            packet.ReadBool("Accept");
         }
 
         [Parser(Opcode.CMSG_REPOP_REQUEST)]
         public static void HandleRepopRequest(Packet packet)
         {
-            packet.ReadBoolean("Accept");
+            packet.ReadBool("Accept");
         }
 
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleFeatureSystemStatus(Packet packet)
         {
-            packet.ReadBoolean("Enable Complaint Chat");
-            packet.ReadBoolean("Enable Voice Chat");
+            packet.ReadBool("Enable Complaint Chat");
+            packet.ReadBool("Enable Voice Chat");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
                 packet.ReadInt32("Complain System Status");
@@ -351,14 +351,14 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_REALM_SPLIT)]
         public static void HandleClientRealmSplit(Packet packet)
         {
-            packet.ReadEnum<ClientSplitState>("Client State", TypeCode.Int32);
+            packet.ReadInt32E<ClientSplitState>("Client State");
         }
 
         [Parser(Opcode.SMSG_REALM_SPLIT)]
         public static void HandleServerRealmSplit(Packet packet)
         {
-            packet.ReadEnum<ClientSplitState>("Client State", TypeCode.Int32);
-            packet.ReadEnum<PendingSplitState>("Split State", TypeCode.Int32);
+            packet.ReadInt32E<ClientSplitState>("Client State");
+            packet.ReadInt32E<PendingSplitState>("Split State");
             packet.ReadCString("Split Date");
         }
 
@@ -420,7 +420,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_WEATHER)]
         public static void HandleWeatherStatus(Packet packet)
         {
-            var state = packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
+            var state = packet.ReadInt32E<WeatherState>("State");
             var grade = packet.ReadSingle("Grade");
             var unk = packet.ReadByte("Unk Byte"); // Type
 
@@ -443,8 +443,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_TUTORIAL_FLAGS)]
         public static void HandleTutorialFlags(Packet packet)
         {
-            for (var i = 0; i < 8; i++)
-                packet.ReadInt32("Flag", i);
+            for (var i = 0; i < 32; i++)
+                packet.ReadByte("TutorialData", i);
         }
 
         [Parser(Opcode.CMSG_AREATRIGGER)]
@@ -481,44 +481,44 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_SET_ALLOW_LOW_LEVEL_RAID2)]
         public static void HandleLowLevelRaidPackets(Packet packet)
         {
-            packet.ReadBoolean("Allow");
+            packet.ReadBool("Allow");
         }
 
         [Parser(Opcode.SMSG_EXPLORATION_EXPERIENCE)]
         public static void HandleExplorationExperience(Packet packet)
         {
-            packet.ReadEntry<UInt32>(StoreNameType.Area, "Area ID");
+            packet.ReadUInt32<AreaId>("Area ID");
             packet.ReadUInt32("Experience");
         }
 
         [Parser(Opcode.SMSG_START_MIRROR_TIMER)]
         public static void HandleStartMirrorTimer(Packet packet)
         {
-            packet.ReadEnum<MirrorTimerType>("Timer Type", TypeCode.UInt32);
+            packet.ReadUInt32E<MirrorTimerType>("Timer Type");
             packet.ReadUInt32("Current Value");
             packet.ReadUInt32("Max Value");
             packet.ReadInt32("Regen");
-            packet.ReadBoolean("Paused");
+            packet.ReadBool("Paused");
             packet.ReadUInt32("Spell Id");
         }
 
         [Parser(Opcode.SMSG_PAUSE_MIRROR_TIMER)]
         public static void HandlePauseMirrorTimer(Packet packet)
         {
-            packet.ReadEnum<MirrorTimerType>("Timer Type", TypeCode.UInt32);
-            packet.ReadBoolean("Paused");
+            packet.ReadUInt32E<MirrorTimerType>("Timer Type");
+            packet.ReadBool("Paused");
         }
 
         [Parser(Opcode.SMSG_STOP_MIRROR_TIMER)]
         public static void HandleStopMirrorTimer(Packet packet)
         {
-            packet.ReadEnum<MirrorTimerType>("Timer Type", TypeCode.UInt32);
+            packet.ReadUInt32E<MirrorTimerType>("Timer Type");
         }
 
         [Parser(Opcode.SMSG_DEATH_RELEASE_LOC)]
         public static void HandleDeathReleaseLoc(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadInt32<MapId>("Map Id");
             packet.ReadVector3("Position");
         }
 
@@ -526,7 +526,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ZONE_UNDER_ATTACK)]
         public static void HandleZoneUpdate(Packet packet)
         {
-            packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id");
+            packet.ReadUInt32<ZoneId>("Zone Id");
         }
 
         [Parser(Opcode.CMSG_PLAY_DANCE)]
@@ -583,7 +583,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var zones = packet.ReadUInt32("Zones count");
             for (var i = 0; i < zones; ++i)
-                packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id");
+                packet.ReadUInt32<ZoneId>("Zone Id");
 
             var patterns = packet.ReadUInt32("Pattern count");
             for (var i = 0; i < patterns; ++i)
@@ -601,10 +601,10 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadCString("Name", i);
                 packet.ReadCString("Guild", i);
                 packet.ReadUInt32("Level", i);
-                packet.ReadEnum<Class>("Class", TypeCode.UInt32, i);
-                packet.ReadEnum<Race>("Race", TypeCode.UInt32, i);
-                packet.ReadEnum<Gender>("Gender", TypeCode.Byte, i);
-                packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id", i);
+                packet.ReadUInt32E<Class>("Class", i);
+                packet.ReadUInt32E<Race>("Race", i);
+                packet.ReadByteE<Gender>("Gender", i);
+                packet.ReadUInt32<ZoneId>("Zone Id", i);
             }
         }
 
@@ -643,7 +643,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PLAYER_SKINNED)]
         public static void HandleFarSight(Packet packet)
         {
-            packet.ReadBoolean("Apply");
+            packet.ReadBool("Apply");
         }
 
         [Parser(Opcode.SMSG_SERVER_MESSAGE)]
@@ -685,7 +685,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (isNotEligibleForLoot)
                 packet.ReadUInt32("Unk UInt32");
 
-            packet.ReadBoolean("Is On Tournament Realm");
+            packet.ReadBool("Is On Tournament Realm");
 
             if (hasRestrictedLevel)
                 packet.ReadInt32("Restricted Account Max Level");
@@ -736,7 +736,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleClientEnterWorld(Packet packet)
         {
             packet.ReadBit("Showing");
-            var mapId = packet.ReadEntry<UInt32>(StoreNameType.Map, "MapID");
+            var mapId = packet.ReadUInt32<MapId>("MapID");
             MovementHandler.CurrentMapId = mapId;
 
             if (mapId < 1000) // Getting some weird results in a couple of packets
@@ -747,7 +747,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleClientEnterWorld434(Packet packet)
         {
-            var mapId = packet.ReadEntry<UInt32>(StoreNameType.Map, "MapID");
+            var mapId = packet.ReadUInt32<MapId>("MapID");
             packet.ReadBit("Showing");
             MovementHandler.CurrentMapId = mapId;
 
@@ -816,7 +816,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleSummonRequest(Packet packet)
         {
             packet.ReadGuid("Summoner GUID");
-            packet.ReadEntry<Int32>(StoreNameType.Area, "Area ID");
+            packet.ReadInt32<AreaId>("Area ID");
             packet.ReadTime("Summon Confirm Time");
         }
 
@@ -824,7 +824,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleSummonResponse(Packet packet)
         {
             packet.ReadGuid("Summoner GUID");
-            packet.ReadBoolean("Accept");
+            packet.ReadBool("Accept");
         }
 
         [Parser(Opcode.CMSG_SPELLCLICK)]
@@ -836,16 +836,10 @@ namespace WowPacketParser.Parsing.Parsers
                 Storage.NpcSpellClicks.Add(guid, packet.TimeSpan);
         }
 
-        [Parser(Opcode.SMSG_UI_TIME)]
-        public static void HandleUITime(Packet packet)
-        {
-            packet.ReadTime("Time");
-        }
-
         [Parser(Opcode.SMSG_START_TIMER)]
         public static void HandleStartTimer(Packet packet)
         {
-            packet.ReadEnum<TimerType>("Timer type", TypeCode.UInt32);
+            packet.ReadUInt32E<TimerType>("Timer type");
             packet.ReadInt32("Time left (secs)");
             packet.ReadInt32("Total time (secs)");
         }
@@ -1110,7 +1104,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_TUTORIAL_CLEAR)]
         [Parser(Opcode.MSG_MOVE_WORLDPORT_ACK)]
         [Parser(Opcode.CMSG_QUERY_TIME)]
-        [Parser(Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE)]
+        [Parser(Opcode.CMSG_UI_TIME_REQUEST)]
         [Parser(Opcode.SMSG_COMSAT_CONNECT_FAIL)]
         [Parser(Opcode.SMSG_COMSAT_RECONNECT_TRY)]
         [Parser(Opcode.SMSG_COMSAT_DISCONNECT)]
@@ -1128,7 +1122,6 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SUMMON_CANCEL)]
         [Parser(Opcode.CMSG_MEETINGSTONE_INFO)]
         [Parser(Opcode.CMSG_PORT_GRAVEYARD)]
-        [Parser(Opcode.CMSG_UI_TIME_REQUEST)]
         [Parser(Opcode.CMSG_REQUEST_CEMETERY_LIST)]
         [Parser(Opcode.CMSG_REQUEST_RESEARCH_HISTORY)]
         [Parser(Opcode.CMSG_COMPLETE_MOVIE)]

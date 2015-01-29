@@ -163,8 +163,8 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             for (var i = 0; i < size; ++i)
             {
-                packet.ReadEnum<Gender>("Gender", TypeCode.Byte, i);
-                packet.ReadEnum<Class>("Member Class", TypeCode.Byte, i);
+                packet.ReadByteE<Gender>("Gender", i);
+                packet.ReadByteE<Class>("Member Class", i);
                 packet.ReadXORByte(guid[i], 6);
                 packet.ReadByte("Member Level", i);
                 packet.ReadXORByte(guid[i], 0);
@@ -192,7 +192,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadXORByte(guid[i], 2);
                 packet.ReadInt32("Member Rank", i);
                 packet.ReadXORByte(guid[i], 1);
-                packet.ReadEnum<GuildMemberFlag>("Member Flags", TypeCode.Byte, i);
+                packet.ReadByteE<GuildMemberFlag>("Member Flags", i);
                 packet.ReadInt32("Guild Reputation", i);
                 packet.ReadWoWString("Public note", publicLength[i], i);
                 packet.ReadXORByte(guid[i], 3);
@@ -224,7 +224,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 for (var j = 0; j < guildBankMaxTabs; ++j)
                 {
                     packet.ReadInt32("Tab Slots", i, j);
-                    packet.ReadEnum<GuildBankRightsFlag>("Tab Rights", TypeCode.Int32, i, j);
+                    packet.ReadInt32E<GuildBankRightsFlag>("Tab Rights", i, j);
                 }
 
                 packet.ReadInt32("Gold Per Day", i);
@@ -256,7 +256,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadEntry<Int32>(StoreNameType.Achievement, "Achievement Id", i);
+                packet.ReadInt32<AchievementId>("Achievement Id", i);
 
                 packet.ReadXORByte(guid[i], 6);
                 packet.ReadXORByte(guid[i], 3);

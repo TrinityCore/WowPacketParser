@@ -45,11 +45,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadInt32("VirtualRealmAddress");
 
-            packet.ReadEnum<ContactStatus>("Status", TypeCode.Byte);
+            packet.ReadByteE<ContactStatus>("Status");
 
-            packet.ReadEntry<Int32>(StoreNameType.Area, "AreaID");
+            packet.ReadInt32<AreaId>("AreaID");
             packet.ReadInt32("Level");
-            packet.ReadEnum<Class>("ClassID", TypeCode.Int32);
+            packet.ReadInt32E<Class>("ClassID");
 
             packet.ResetBitReader();
 
@@ -60,7 +60,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_CONTACT_LIST)]
         public static void HandleContactList(Packet packet)
         {
-            packet.ReadEnum<ContactListFlag>("List Flags", TypeCode.Int32);
+            packet.ReadInt32E<ContactListFlag>("List Flags");
             var bits6 = packet.ReadBits("ContactInfoCount", 8);
 
             for (var i = 0; i < bits6; i++)

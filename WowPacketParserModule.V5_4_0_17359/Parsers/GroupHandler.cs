@@ -1,5 +1,4 @@
-﻿using System;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -60,7 +59,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadByte("Byte2A");
                 packet.ReadSingle("Float24");
                 packet.ReadByte("Byte28");
-                packet.ReadEnum<InstanceStatus>("Group Type Status", TypeCode.Byte);
+                packet.ReadByteE<InstanceStatus>("Group Type Status");
                 packet.ReadByte("Byte21");
                 packet.ReadByte("Byte29");
                 packet.ReadInt32("Int1C");
@@ -69,15 +68,15 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             for (var i = 0; i < memberCount; i++)
             {
                 packet.ReadXORByte(guid4[i], 5);
-                packet.ReadEnum<GroupUpdateFlag>("Update Flags", TypeCode.Byte, i);
-                packet.ReadEnum<LfgRoleFlag>("Role", TypeCode.Byte, i);
+                packet.ReadByteE<GroupUpdateFlag>("Update Flags", i);
+                packet.ReadByteE<LfgRoleFlag>("Role", i);
                 packet.ReadXORByte(guid4[i], 3);
                 packet.ReadXORByte(guid4[i], 6);
                 packet.ReadByte("Sub Group", i);
                 packet.ReadWoWString("Name", bitsED[i], i);
                 packet.ReadXORByte(guid4[i], 0);
                 packet.ReadXORByte(guid4[i], 2);
-                packet.ReadEnum<GroupMemberStatusFlag>("Status", TypeCode.Byte, i);
+                packet.ReadByteE<GroupMemberStatusFlag>("Status", i);
                 packet.ReadXORByte(guid4[i], 7);
                 packet.ReadXORByte(guid4[i], 1);
                 packet.ReadXORByte(guid4[i], 4);
@@ -97,13 +96,13 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadXORByte(guid3, 2);
                 packet.ReadByte("Byte78");
                 packet.ReadXORByte(guid3, 5);
-                packet.ReadEnum<ItemQuality>("Loot Threshold", TypeCode.Byte);
+                packet.ReadByteE<ItemQuality>("Loot Threshold");
                 packet.ReadXORByte(guid3, 4);
                 packet.WriteGuid("Looter GUID", guid3);
             }
 
             packet.ReadXORByte(guid2, 3);
-            packet.ReadEnum<MapDifficulty>("Dungeon Difficulty", TypeCode.Byte);
+            packet.ReadByteE<MapDifficulty>("Dungeon Difficulty");
             packet.ReadXORByte(guid1, 7);
 
             if (bit38)
@@ -116,7 +115,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadXORByte(guid2, 6);
             packet.ReadXORByte(guid1, 3);
 
-            packet.ReadEnum<LootMethod>("Loot Method", TypeCode.Byte);
+            packet.ReadByteE<LootMethod>("Loot Method");
 
             packet.ReadXORByte(guid1, 1);
             packet.ReadXORByte(guid1, 0);
@@ -124,7 +123,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadXORByte(guid1, 4);
             packet.ReadXORByte(guid1, 6);
 
-            packet.ReadEnum<GroupTypeFlag>("Group Type", TypeCode.Byte);
+            packet.ReadByteE<GroupTypeFlag>("Group Type");
             packet.ReadInt32("Int48");
 
             packet.ReadXORByte(guid2, 2);

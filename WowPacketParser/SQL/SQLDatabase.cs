@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Data;
+using System.Diagnostics;
 using System.Text;
 using Wintellect.PowerCollections;
 using WowPacketParser.Enums;

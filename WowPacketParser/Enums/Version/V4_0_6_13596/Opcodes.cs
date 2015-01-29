@@ -218,8 +218,6 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             //{Opcode.CMSG_GAMETIME_SET, 0x020C4},
             {Opcode.CMSG_GETDEATHBINDZONE, 0x1005E}, //UnknownopcodeID
             {Opcode.CMSG_GET_CHANNEL_MEMBER_COUNT, 0x00009},
-            {Opcode.CMSG_GUILD_ACHIEVEMENT_MEMBERS, 0x02509},
-            {Opcode.CMSG_QUERY_GUILD_MEMBER_RECIPES, 0x0212D},
             {Opcode.CMSG_GET_MAIL_LIST, 0x0B284},
             {Opcode.CMSG_GET_MIRROR_IMAGE_DATA, 0x0A08C},
             {Opcode.CMSG_GHOST, 0x10088}, //UnknownopcodeID
@@ -263,6 +261,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_GROUP_UNINVITE, 0x04F74},
             {Opcode.CMSG_GROUP_UNINVITE_GUID, 0x0E3C8},
             {Opcode.CMSG_GUILD_ACCEPT, 0x03729},
+            {Opcode.CMSG_GUILD_ACHIEVEMENT_MEMBERS, 0x02509},
             {Opcode.CMSG_GUILD_ADD_RANK, 0x02309},
             {Opcode.CMSG_GUILD_BANKER_ACTIVATE, 0x0FFC4},
             {Opcode.CMSG_GUILD_BANK_BUY_TAB, 0x078AC},
@@ -286,9 +285,11 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             //{Opcode.CMSG_GUILD_NEWS_SET_STICKY, 0x0252D},
             {Opcode.CMSG_GUILD_PROMOTE_MEMBER, 0x02109},
             {Opcode.CMSG_GUILD_QUERY, 0x0AFC4},
+            //{Opcode.CMSG_GUILD_QUERY_MAX_XP, 0x0350D},
+            {Opcode.CMSG_GUILD_QUERY_MEMBERS_FOR_RECIPE, 0x0210D},
+            {Opcode.CMSG_GUILD_QUERY_MEMBER_RECIPES, 0x0212D},
             {Opcode.CMSG_GUILD_QUERY_NEWS, 0x03529},
             {Opcode.CMSG_GUILD_QUERY_TRADESKILL, 0x02329},
-            //{Opcode.CMSG_GUILD_QUERY_XP, 0x0350D},
             //{Opcode.CMSG_GUILD_RANK, 0x02709},
             //{Opcode.CMSG_GUILD_RANKS, 0x03129},
             {Opcode.CMSG_GUILD_OFFICER_REMOVE_MEMBER, 0x0312D}, //opcode12589
@@ -427,10 +428,6 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_PLAYER_VEHICLE_ENTER, 0x0AEC8},
             {Opcode.CMSG_PLAY_DANCE, 0x02288},
             {Opcode.CMSG_PUSH_QUEST_TO_PARTY, 0x029E8},
-            //{Opcode.CMSG_QUERY_GUILD_MAX_XP, 0x0350D},
-            {Opcode.CMSG_QUERY_GUILD_MEMBERS_FOR_RECIPE, 0x0210D},
-            {Opcode.CMSG_QUERY_GUILD_REWARDS, 0x02210},
-            {Opcode.CMSG_QUERY_GUILD_XP, 0x03509},
             //{Opcode.CMSG_QUERY_INSPECT_ACHIEVEMENTS, 0x069A0},
             {Opcode.CMSG_QUERY_QUESTS_COMPLETED, 0x0ECE8},
             {Opcode.CMSG_QUERY_SERVER_BUCK_DATA, 0x101AC}, //UnknownopcodeID
@@ -465,7 +462,9 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_REPOP_REQUEST, 0x0A9E4},
             {Opcode.CMSG_REPORT_PVP_AFK, 0x0E3AC},
             {Opcode.CMSG_REQUEST_ACCOUNT_DATA, 0x0EEAC},
+            {Opcode.CMSG_REQUEST_GUILD_REWARDS_LIST, 0x02210},
             //{Opcode.CMSG_REQUEST_GUILD_ROSTER, 0x0250D},
+            {Opcode.CMSG_REQUEST_GUILD_XP, 0x03509},
             {Opcode.CMSG_REQUEST_HOTFIX, 0x08589},// the client sends this after we send SMSG_HOTFIX_NOTIFY[_BLOP]}, only sent for the items that the player has in his inventory}, that are flagged to be hot fixed
             {Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS, 0x070C8},
             {Opcode.CMSG_REQUEST_PET_INFO, 0x0EAE4},
@@ -509,7 +508,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_SET_DURABILITY_CHEAT, 0x100CE}, //UnknownopcodeID
             {Opcode.CMSG_SET_EXPLORATION, 0x100E1}, //UnknownopcodeID
             {Opcode.CMSG_SET_EXPLORATION_ALL, 0x10120}, //UnknownopcodeID
-            {Opcode.CMSG_SET_FACTION_ATWAR, 0x10055}, //UnknownopcodeID
+            {Opcode.CMSG_SET_FACTION_AT_WAR, 0x10055}, //UnknownopcodeID
             {Opcode.CMSG_SET_FACTION_CHEAT, 0x10056}, //UnknownopcodeID
             {Opcode.CMSG_SET_FACTION_INACTIVE, 0x0FE84},
             //{Opcode.CMSG_SET_FOCUSED_ACHIEVEMENT, 0x03109},
@@ -543,7 +542,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_SPLIT_ITEM, 0x0FDAC},
             {Opcode.CMSG_STABLE_CHANGE_SLOT, 0x00291},
             {Opcode.CMSG_STABLE_REVIVE_PET, 0x100C7}, //UnknownopcodeID
-            {Opcode.CMSG_STANDSTATECHANGE, 0x0FC88},
+            {Opcode.CMSG_STAND_STATE_CHANGE, 0x0FC88},
             //{Opcode.CMSG_START_QUEST, 0x00613},
             {Opcode.CMSG_STOP_DANCE, 0x03080},
             {Opcode.CMSG_STORE_LOOT_IN_SLOT, 0x07FCC},
@@ -572,7 +571,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_TUTORIAL_CLEAR, 0x0A5E4},
             {Opcode.CMSG_TUTORIAL_FLAG, 0x0E4CC},
             {Opcode.CMSG_TUTORIAL_RESET, 0x02188},
-            //{Opcode.CMSG_UI_TIME_REQUEST, 0x03FA8},
+            {Opcode.CMSG_UI_TIME_REQUEST, 0x03FA8},
             {Opcode.CMSG_UNACCEPT_TRADE, 0x00811},
             {Opcode.CMSG_UNITANIMTIER_CHEAT, 0x101DE}, //UnknownopcodeID
             {Opcode.CMSG_UNKNOWN_1303, 0x06BE0},
@@ -594,7 +593,6 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_WHO, 0x0A4CC},
             {Opcode.CMSG_WHOIS, 0x02180},
             //{Opcode.CMSG_WORLD_LOGIN, 0x08508},
-            {Opcode.CMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x03FA8},
             {Opcode.CMSG_WORLD_TELEPORT, 0x08100},
             {Opcode.CMSG_WRAP_ITEM, 0x07CC4},
             {Opcode.CMSG_ZONEUPDATE, 0x033E4},
@@ -631,12 +629,12 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_ATTACKSWING_CANT_ATTACK, 0x06188},
             {Opcode.SMSG_ATTACKSWING_DEADTARGET, 0x0A7C4},
             {Opcode.SMSG_ATTACKSWING_NOTINRANGE, 0x036C4},
-            {Opcode.SMSG_AUCTION_BIDDER_LIST_RESULT, 0x0A1A8},
             {Opcode.SMSG_AUCTION_BIDDER_NOTIFICATION, 0x0ACEC},
             {Opcode.SMSG_AUCTION_COMMAND_RESULT, 0x0AAE0},
+            {Opcode.SMSG_AUCTION_LIST_BIDDER_ITEMS_RESULT, 0x0A1A8},
+            {Opcode.SMSG_AUCTION_LIST_OWNER_ITEMS_RESULT, 0x03CA8},
             {Opcode.SMSG_AUCTION_LIST_PENDING_SALES, 0x0BAC4},
             {Opcode.SMSG_AUCTION_LIST_RESULT, 0x0E5A8},
-            {Opcode.SMSG_AUCTION_OWNER_LIST_RESULT, 0x03CA8},
             {Opcode.SMSG_AUCTION_OWNER_NOTIFICATION, 0x06C80},
             {Opcode.SMSG_AUCTION_REMOVED_NOTIFICATION, 0x0B1EC},
             {Opcode.SMSG_AURACASTLOG, 0x10080}, //UnknownopcodeID
@@ -767,8 +765,8 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_DISPEL_FAILED, 0x0AAE8},
             {Opcode.SMSG_DUEL_COMPLETE, 0x0FCE8},
             {Opcode.SMSG_DUEL_COUNTDOWN, 0x0E8E0},
-            {Opcode.SMSG_DUEL_INBOUNDS, 0x0ECA4},
-            {Opcode.SMSG_DUEL_OUTOFBOUNDS, 0x068C0},
+            {Opcode.SMSG_DUEL_IN_BOUNDS, 0x0ECA4},
+            {Opcode.SMSG_DUEL_OUT_OF_BOUNDS, 0x068C0},
             {Opcode.SMSG_DUEL_REQUESTED, 0x03FC8},
             {Opcode.SMSG_DUEL_WINNER, 0x079E4},
             {Opcode.SMSG_DUMP_OBJECTS_DATA, 0x101EE}, //UnknownopcodeID
@@ -781,7 +779,6 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_ENVIRONMENTALDAMAGELOG, 0x0E1C8},
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x0F1A8},
             {Opcode.SMSG_EQUIPMENT_SET_SAVED, 0x0B0C0},
-            {Opcode.SMSG_EQUIPMENT_SET_USE_RESULT, 0x076AC},
             {Opcode.SMSG_EXPECTED_SPAM_RECORDS, 0x06084},
             {Opcode.SMSG_EXPLORATION_EXPERIENCE, 0x0A9C4},
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x03DAC},
@@ -829,7 +826,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_GOSSIP_COMPLETE, 0x0F0AC},
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x0BBC8},
             {Opcode.SMSG_GOSSIP_POI, 0x0B9AC},
-            {Opcode.SMSG_GROUPACTION_THROTTLED, 0x0F4E4},
+            {Opcode.SMSG_GROUP_ACTION_THROTTLED, 0x0F4E4},
             {Opcode.SMSG_GROUP_CANCEL, 0x06AAC},
             {Opcode.SMSG_GROUP_DECLINE, 0x0ABAC},
             {Opcode.SMSG_GROUP_DESTROYED, 0x022CC},
@@ -855,9 +852,9 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_GUILD_SEND_RANK_CHANGE, 0x0004C},
             {Opcode.SMSG_GUILD_REWARDS_LIST, 0x00C4C},
             {Opcode.SMSG_GUILD_ROSTER, 0x04D5C},
+            {Opcode.SMSG_GUILD_ROSTER_UPDATE, 0x0085E},
             {Opcode.SMSG_GUILD_TRADESKILL_UPDATE, 0x0454E},
             //{Opcode.SMSG_GUILD_UPDATE_PARTY_STATE, 0x0450C},
-            {Opcode.SMSG_GUILD_UPDATE_ROSTER, 0x0085E},
             {Opcode.SMSG_GUILD_XP, 0x0440E},
             //{Opcode.SMSG_GUILD_XP_LIMIT, 0x0441C},
             //{Opcode.SMSG_GUILD_XP_UPDATE, 0x0440E},
@@ -951,22 +948,47 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_MOUNT_RESULT, 0x02AEC},
             {Opcode.SMSG_MOUNT_SPECIAL_ANIM, 0x02388},
             {Opcode.SMSG_MOVE_ABANDON_TRANSPORT, 0x101D0}, //UnknownopcodeID
-            {Opcode.SMSG_MOVE_SET_FEATHER_FALL, 0x06088},
             {Opcode.SMSG_MOVE_DISABLE_GRAVITY, 0x10219}, //UnknownopcodeID
             {Opcode.SMSG_MOVE_ENABLE_GRAVITY, 0x1021B}, //UnknownopcodeID
             {Opcode.SMSG_MOVE_KNOCK_BACK, 0x0B180},
-            //{Opcode.SMSG_MOVE_LAND_WALK, 0x02084},
             {Opcode.SMSG_MOVE_LEVITATING, 0x0B8AC},
-            {Opcode.SMSG_MOVE_NORMAL_FALL, 0x06CE0},
             //{Opcode.SMSG_MOVE_SET_CAN_FLY, 0x0BDA0},
+            {Opcode.SMSG_MOVE_SET_FEATHER_FALL, 0x06088},
             {Opcode.SMSG_MOVE_SET_FLIGHT, 0x0C57F}, //4.0.3a13329-403
             {Opcode.SMSG_MOVE_SET_HOVER, 0x06AE0},
+            //{Opcode.SMSG_MOVE_SET_LAND_WALK, 0x02084},
+            {Opcode.SMSG_MOVE_SET_NORMAL_FALL, 0x06CE0},
             {Opcode.SMSG_MOVE_SET_WALK_IN_AIR, 0x0A980},
+            {Opcode.SMSG_MOVE_SET_WATER_WALK, 0x02E84},
+            {Opcode.SMSG_MOVE_SPLINE_DISABLE_GRAVITY, 0x1021E}, //UnknownopcodeID
+            {Opcode.SMSG_MOVE_SPLINE_ENABLE_GRAVITY, 0x1022F},
+            {Opcode.SMSG_MOVE_SPLINE_ROOT, 0x01E55},
+            {Opcode.SMSG_MOVE_SPLINE_SET_FEATHER_FALL, 0x1010C}, //UnknownopcodeID
+            //{Opcode.SMSG_MOVE_SPLINE_SET_FLIGHT_BACK_SPEED, 0x0F2EC},
+            //{Opcode.SMSG_MOVE_SPLINE_SET_FLIGHT_SPEED, 0x0E0C0},
+            {Opcode.SMSG_MOVE_SPLINE_SET_FLYING, 0x05D54}, //4.0.3a13329-403
+            {Opcode.SMSG_MOVE_SPLINE_SET_HOVER, 0x1010E}, //UnknownopcodeID
+            {Opcode.SMSG_MOVE_SPLINE_SET_LAND_WALK, 0x0A7C8},
+            {Opcode.SMSG_MOVE_SPLINE_SET_NORMAL_FALL, 0x1010D}, //UnknownopcodeID
+            //{Opcode.SMSG_MOVE_SPLINE_SET_PITCH_RATE, 0x070C4},
+            //{Opcode.SMSG_MOVE_SPLINE_SET_RUN_BACK_SPEED, 0x0E9C0},
+            {Opcode.SMSG_MOVE_SPLINE_SET_RUN_MODE, 0x10114}, //UnknownopcodeID
+            //{Opcode.SMSG_MOVE_SPLINE_SET_RUN_SPEED, 0x0F9E8},
+            //{Opcode.SMSG_MOVE_SPLINE_SET_SWIM_BACK_SPEED, 0x021C8},
+            //{Opcode.SMSG_MOVE_SPLINE_SET_SWIM_SPEED, 0x0B2C0},
+            //{Opcode.SMSG_MOVE_SPLINE_SET_TURN_RATE, 0x07EAC},
+            {Opcode.SMSG_MOVE_SPLINE_SET_WALK_MODE, 0x10115}, //UnknownopcodeID
+            //{Opcode.SMSG_MOVE_SPLINE_SET_WALK_SPEED, 0x03EA8},
+            {Opcode.SMSG_MOVE_SPLINE_SET_WATER_WALK, 0x061C0},
+            {Opcode.SMSG_MOVE_SPLINE_START_SWIM, 0x10112}, //UnknownopcodeID
+            {Opcode.SMSG_MOVE_SPLINE_STOP_SWIM, 0x10113}, //UnknownopcodeID
+            {Opcode.SMSG_MOVE_SPLINE_UNROOT, 0x1010B}, //UnknownopcodeID
+            {Opcode.SMSG_MOVE_SPLINE_UNSET_FLYING, 0x0257D},
+            {Opcode.SMSG_MOVE_SPLINE_UNSET_HOVER, 0x1010F}, //UnknownopcodeID
             {Opcode.SMSG_MOVE_UNSET_CAN_FLY, 0x03084},
             {Opcode.SMSG_MOVE_UNSET_FLIGHT, 0x0BDA0}, //Notsure.
             {Opcode.SMSG_MOVE_UNSET_HOVER, 0x03FE0},
             {Opcode.SMSG_MOVE_UNSET_WALK_IN_AIR, 0x07784},
-            {Opcode.SMSG_MOVE_WATER_WALK, 0x02E84},
             {Opcode.SMSG_MULTIPLE_PACKETS, 0x0FEC0},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x07BC8},
             {Opcode.SMSG_NEW_TAXI_PATH, 0x0E5E4},
@@ -1126,34 +1148,9 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_SPELL_START, 0x06BA8},
             {Opcode.SMSG_SPELL_UPDATE_CHAIN_TARGETS, 0x036A4},
             {Opcode.SMSG_SPIRIT_HEALER_CONFIRM, 0x067E0},
-            {Opcode.SMSG_SPLINE_MOVE_FEATHER_FALL, 0x1010C}, //UnknownopcodeID
-            {Opcode.SMSG_SPLINE_MOVE_GRAVITY_DISABLE, 0x1021E}, //UnknownopcodeID
-            {Opcode.SMSG_SPLINE_MOVE_GRAVITY_ENABLE, 0x1022F},
-            {Opcode.SMSG_SPLINE_MOVE_LAND_WALK, 0x0A7C8},
-            {Opcode.SMSG_SPLINE_MOVE_NORMAL_FALL, 0x1010D}, //UnknownopcodeID
-            {Opcode.SMSG_SPLINE_MOVE_ROOT, 0x01E55},
-            {Opcode.SMSG_SPLINE_MOVE_SET_FLYING, 0x05D54}, //4.0.3a13329-403
-            {Opcode.SMSG_SPLINE_MOVE_SET_HOVER, 0x1010E}, //UnknownopcodeID
-            {Opcode.SMSG_SPLINE_MOVE_SET_RUN_MODE, 0x10114}, //UnknownopcodeID
-            {Opcode.SMSG_SPLINE_MOVE_SET_WALK_MODE, 0x10115}, //UnknownopcodeID
-            {Opcode.SMSG_SPLINE_MOVE_START_SWIM, 0x10112}, //UnknownopcodeID
-            {Opcode.SMSG_SPLINE_MOVE_STOP_SWIM, 0x10113}, //UnknownopcodeID
-            {Opcode.SMSG_SPLINE_MOVE_UNROOT, 0x1010B}, //UnknownopcodeID
-            {Opcode.SMSG_SPLINE_MOVE_UNSET_FLYING, 0x0257D},
-            {Opcode.SMSG_SPLINE_MOVE_UNSET_HOVER, 0x1010F}, //UnknownopcodeID
-            {Opcode.SMSG_SPLINE_MOVE_WATER_WALK, 0x061C0},
-            //{Opcode.SMSG_SPLINE_SET_FLIGHT_BACK_SPEED, 0x0F2EC},
-            //{Opcode.SMSG_SPLINE_SET_FLIGHT_SPEED, 0x0E0C0},
-            //{Opcode.SMSG_SPLINE_SET_PITCH_RATE, 0x070C4},
-            //{Opcode.SMSG_SPLINE_SET_RUN_BACK_SPEED, 0x0E9C0},
-            //{Opcode.SMSG_SPLINE_SET_RUN_SPEED, 0x0F9E8},
-            //{Opcode.SMSG_SPLINE_SET_SWIM_BACK_SPEED, 0x021C8},
-            //{Opcode.SMSG_SPLINE_SET_SWIM_SPEED, 0x0B2C0},
-            //{Opcode.SMSG_SPLINE_SET_TURN_RATE, 0x07EAC},
-            //{Opcode.SMSG_SPLINE_SET_WALK_SPEED, 0x03EA8},
             {Opcode.SMSG_STABLE_RESULT, 0x0EACC},
-            //{Opcode.SMSG_STANDSTATE_CHANGE_FAILURE_OBSOLETE, 0x06DCC},
-            {Opcode.SMSG_STANDSTATE_UPDATE, 0x0E6A8},
+            //{Opcode.SMSG_STAND_STATE_CHANGE_FAILURE_OBSOLETE, 0x06DCC},
+            {Opcode.SMSG_STAND_STATE_UPDATE, 0x0E6A8},
             {Opcode.SMSG_START_MIRROR_TIMER, 0x0B4A8},
             {Opcode.SMSG_STOP_DANCE, 0x0E0A8},
             {Opcode.SMSG_STOP_MIRROR_TIMER, 0x0A68C},
@@ -1183,7 +1180,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_TRIGGER_MOVIE, 0x020C8},
             {Opcode.SMSG_TURN_IN_PETITION_RESULTS, 0x035AC},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x03384},
-            //{Opcode.SMSG_UI_TIME, 0x0618C},
+            {Opcode.SMSG_UI_TIME, 0x05557},
             {Opcode.SMSG_UNIT_SPELLCAST_START, 0x0BDE0},
             {Opcode.SMSG_UNKNOWN_1240, 0x0B8E0},
             {Opcode.SMSG_UNKNOWN_1276, 0x1023A},
@@ -1208,11 +1205,12 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_UPDATE_CURRENCY_WEEK_LIMIT, 0x04C5C},
             {Opcode.SMSG_UPDATE_INSTANCE_ENCOUNTER_UNIT, 0x0EDA4},// wtf::SMSG_GAMEOBJECT_SPAWN_ANIM_OBSOLETE
             {Opcode.SMSG_UPDATE_INSTANCE_OWNERSHIP, 0x03B8C},
-            {Opcode.SMSG_SOCKET_GEMS_RESULT, 0x020E8},
+            {Opcode.SMSG_SOCKET_GEMS, 0x020E8},
             {Opcode.SMSG_UPDATE_LAST_INSTANCE, 0x033E8},
             //{Opcode.SMSG_UPDATE_LFG_LIST, 0x0768C},
             {Opcode.SMSG_UPDATE_OBJECT, 0x03780},
             {Opcode.SMSG_UPDATE_WORLD_STATE, 0x0F784},
+            {Opcode.SMSG_USE_EQUIPMENT_SET_RESULT, 0x076AC},
             {Opcode.SMSG_USERLIST_ADD, 0x0F8CC},
             {Opcode.SMSG_USERLIST_REMOVE, 0x0EF80},
             {Opcode.SMSG_USERLIST_UPDATE, 0x02C8C},
@@ -1230,7 +1228,6 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_WEATHER, 0x079A0},
             {Opcode.SMSG_WHO, 0x0BE8C},
             {Opcode.SMSG_WHOIS, 0x0B1A4},
-            {Opcode.SMSG_WORLD_STATE_UI_TIMER_UPDATE, 0x05557},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x0BD80},
         };
 

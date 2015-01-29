@@ -14,11 +14,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var bit52 = packet.ReadBit("HasLogData");
 
             if (bit52)
-                SpellParsers.ReadSpellCastLogData(ref packet);
+                SpellParsers.ReadSpellCastLogData(packet);
 
             packet.ReadInt32("Size");
 
-            var hitInfo = packet.ReadEnum<SpellHitInfo>("HitInfo", TypeCode.Int32);
+            var hitInfo = packet.ReadInt32E<SpellHitInfo>("HitInfo");
 
             packet.ReadPackedGuid128("Attacker Guid");
             packet.ReadPackedGuid128("Target Guid");
@@ -26,7 +26,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("Damage");
             packet.ReadInt32("OverDamage");
 
-            var subDmgCount = packet.ReadBoolean("HasSubDmg");
+            var subDmgCount = packet.ReadBool("HasSubDmg");
             if (subDmgCount)
             {
                 packet.ReadInt32("SchoolMask");
@@ -40,10 +40,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadInt32("Damage Resisted");
             }
 
-            packet.ReadEnum<VictimStates>("VictimState", TypeCode.Byte);
+            packet.ReadByteE<VictimStates>("VictimState");
             packet.ReadInt32("Unk Attacker State 0");
 
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Melee Spell ID");
+            packet.ReadInt32<SpellId>("Melee Spell ID");
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK))
                 packet.ReadInt32("Block Amount");
@@ -133,7 +133,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleAIReaction(Packet packet)
         {
             packet.ReadPackedGuid128("UnitGUID");
-            packet.ReadEnum<AIReaction>("Reaction", TypeCode.Int32);
+            packet.ReadInt32E<AIReaction>("Reaction");
         }
 
         [Parser(Opcode.CMSG_ATTACKSWING)]
@@ -151,7 +151,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_SETSHEATHED)]
         public static void HandleSetSheathed(Packet packet)
         {
-            packet.ReadEnum<SheathState>("CurrentSheathState", TypeCode.Int32);
+            packet.ReadInt32E<SheathState>("CurrentSheathState");
             packet.ReadBit("Animate");
         }
 
@@ -165,7 +165,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_ATTACKSWING_ERROR)]
         public static void HandleAttackSwingError(Packet packet)
         {
-            packet.ReadBits("Reason", 2);
+            packet.ReadEnum<AttackSwingErr>("Reason", 2);
         }
 
         [Parser(Opcode.SMSG_COMBAT_EVENT_FAILED)]
@@ -190,6 +190,34 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             // Order guessed
             packet.ReadWoWString("BeatenName", bits80);
             packet.ReadWoWString("WinnerName", bits24);
+        }
+
+        [Parser(Opcode.SMSG_CAN_DUEL_RESULT)]
+        public static void HandleCanDuelResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("TargetGUID");
+            packet.ReadBit("Result");
+        }
+
+        [Parser(Opcode.SMSG_DUEL_REQUESTED)]
+        public static void HandleDuelRequested(Packet packet)
+        {
+            packet.ReadPackedGuid128("ArbiterGUID");
+            packet.ReadPackedGuid128("RequestedByGUID");
+            packet.ReadPackedGuid128("RequestedByWowAccount");
+        }
+
+        [Parser(Opcode.CMSG_DUEL_RESPONSE)]
+        public static void HandleDuelResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("ArbiterGUID");
+            packet.ReadBit("Accepted");
+        }
+
+        [Parser(Opcode.CMSG_CAN_DUEL)]
+        public static void HandleCanDuel(Packet packet)
+        {
+            packet.ReadPackedGuid128("TargetGUID");
         }
 
         [Parser(Opcode.SMSG_PVP_CREDIT)]

@@ -37,13 +37,13 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767)) // no idea when this was added exactly
-                packet.ReadBoolean("Toggle AnimTierInTrans");
+                packet.ReadBool("Toggle AnimTierInTrans");
 
             var pos = packet.ReadVector3("Position");
 
             packet.ReadInt32("Move Ticks");
 
-            var type = packet.ReadEnum<SplineType>("Spline Type", TypeCode.Byte);
+            var type = packet.ReadByteE<SplineType>("Spline Type");
 
             switch (type)
             {
@@ -66,11 +66,11 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     return;
             }
 
-            var flags = packet.ReadEnum<SplineFlag>("Spline Flags", TypeCode.Int32);
+            var flags = packet.ReadInt32E<SplineFlag>("Spline Flags");
 
             if (flags.HasAnyFlag(SplineFlag.Animation))
             {
-                packet.ReadEnum<MovementAnimationState>("Animation State", TypeCode.Byte);
+                packet.ReadByteE<MovementAnimationState>("Animation State");
                 packet.ReadInt32("Asynctime in ms"); // Async-time in ms
             }
 
@@ -131,7 +131,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadSingle("X");
             packet.ReadSingle("Orientation");
             packet.ReadSingle("Y");
-            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntry<Int32>(StoreNameType.Map, "Map");
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadInt32<MapId>("Map");
             packet.ReadSingle("Z"); // seriously...
 
             packet.AddSniffData(StoreNameType.Map, (int)CoreParsers.MovementHandler.CurrentMapId, "NEW_WORLD");
@@ -1674,7 +1674,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.AddValue("Position", pos);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_RUN_SPEED)]
         public static void HandleSplineSetRunSpeed434(Packet packet)
         {
             var guid = packet.StartBitStream(4, 0, 5, 7, 6, 3, 1, 2);
@@ -2737,7 +2737,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Inactive Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Inactive Terrain swap", i);
+                packet.ReadInt16<MapId>("Inactive Terrain swap", i);
 
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Phases count", count);
@@ -2750,7 +2750,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Active Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Active Terrain swap", i);
+                packet.ReadInt16<MapId>("Active Terrain swap", i);
 
             packet.ReadXORByte(guid, 5);
             packet.WriteGuid("GUID", guid);
@@ -2764,14 +2764,14 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             var hasTransport = packet.ReadBit();
             if (hasTransport)
             {
-                packet.ReadEntry<Int32>(StoreNameType.Map, "Transport Map ID");
+                packet.ReadInt32<MapId>("Transport Map ID");
                 packet.ReadInt32("Transport Entry");
             }
 
             if (customLoadScreenSpell)
-                packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
+                packet.ReadUInt32<SpellId>("Spell ID");
 
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
+            packet.ReadInt32<MapId>("Map ID");
         }
 
         [Parser(Opcode.CMSG_MOVE_TIME_SKIPPED)]
@@ -2783,7 +2783,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_FLIGHT_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_FLIGHT_SPEED)]
         public static void HandleSplineSetFlightSpeed434(Packet packet)
         {
             var guid = packet.StartBitStream(7, 4, 0, 1, 3, 6, 5, 2);
@@ -2792,7 +2792,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_SWIM_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_SWIM_SPEED)]
         public static void HandleSplineSetSwimSpeed434(Packet packet)
         {
             var guid = packet.StartBitStream(4, 2, 5, 0, 7, 6, 3, 1);
@@ -2808,7 +2808,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_WALK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_WALK_BACK_SPEED)]
         public static void HandleSplineSetWalkSpeed434(Packet packet)
         {
             var guid = packet.StartBitStream(0, 6, 7, 3, 5, 1, 2, 4);
@@ -2824,7 +2824,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_BACK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_RUN_BACK_SPEED)]
         public static void HandleSplineSetRunBackSpeed434(Packet packet)
         {
             var guid = packet.StartBitStream(1, 2, 6, 0, 3, 7, 5, 4);
@@ -4425,7 +4425,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.AddValue("Position", pos);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_SWIM_BACK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_SWIM_BACK_SPEED)]
         public static void HandleSplineSetSwimBackSpeed434(Packet packet)
         {
             var guid = packet.StartBitStream(0, 1, 3, 6, 4, 5, 7, 2);
@@ -4441,7 +4441,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_FLIGHT_BACK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_FLIGHT_BACK_SPEED)]
         public static void HandleSplineSetFlightBackSpeed434(Packet packet)
         {
             var guid = packet.StartBitStream(2, 1, 6, 5, 0, 3, 4, 7);
@@ -4457,7 +4457,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_TURN_RATE)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_TURN_RATE)]
         public static void HandleSplineSetTurnRate434(Packet packet)
         {
             var guid = packet.StartBitStream(2, 4, 6, 1, 3, 5, 7, 0);
@@ -4466,7 +4466,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_PITCH_RATE)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_PITCH_RATE)]
         public static void HandleSplineSetPitchRate434(Packet packet)
         {
             var guid = packet.StartBitStream(3, 5, 6, 1, 0, 4, 7, 2);
@@ -4482,7 +4482,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_ROOT)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_ROOT)]
         public static void HandleSplineMoveRoot434(Packet packet)
         {
             var guid = packet.StartBitStream(5, 4, 6, 1, 3, 7, 2, 0);
@@ -4490,7 +4490,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_UNROOT)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_UNROOT)]
         public static void HandleSplineMoveUnroot434(Packet packet)
         {
             var guid = packet.StartBitStream(0, 1, 6, 5, 3, 2, 7, 4);
@@ -4498,7 +4498,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_GRAVITY_ENABLE)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_ENABLE_GRAVITY)]
         public static void HandleSplineMoveGravityEnable434(Packet packet)
         {
             var guid = packet.StartBitStream(5, 4, 7, 1, 3, 6, 2, 0);
@@ -4506,7 +4506,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_GRAVITY_DISABLE)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_DISABLE_GRAVITY)]
         public static void HandleSplineMoveGravityDisable434(Packet packet)
         {
             var guid = packet.StartBitStream(7, 3, 4, 2, 5, 1, 0, 6);
@@ -4514,7 +4514,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_COLLISION_ENABLE)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_ENABLE_COLLISION)]
         public static void HandleSplineMoveCollisionEnable434(Packet packet)
         {
             var guid = packet.StartBitStream(3, 4, 7, 6, 1, 0, 2, 5);
@@ -4522,7 +4522,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_COLLISION_DISABLE)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_DISABLE_COLLISION)]
         public static void HandleSplineMoveCollisionDisable434(Packet packet)
         {
             var guid = packet.StartBitStream(3, 7, 1, 0, 4, 2, 6, 5);
@@ -4530,7 +4530,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_FEATHER_FALL)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_FEATHER_FALL)]
         public static void HandleSplineMoveFeatherFall434(Packet packet)
         {
             var guid = packet.StartBitStream(3, 2, 7, 5, 4, 6, 1, 0);
@@ -4538,7 +4538,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_NORMAL_FALL)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_NORMAL_FALL)]
         public static void HandleSplineMoveNormalFall434(Packet packet)
         {
             var guid = packet.StartBitStream(3, 5, 1, 0, 7, 6, 2, 4);
@@ -4546,7 +4546,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_MODE)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_RUN_MODE)]
         public static void HandleSplineSetRunMode434(Packet packet)
         {
             var guid = packet.StartBitStream(5, 6, 3, 7, 2, 0, 4, 1);
@@ -4554,7 +4554,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_WALK_MODE)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_WALK_MODE)]
         public static void HandleSplineSetWalkMode434(Packet packet)
         {
             var guid = packet.StartBitStream(7, 6, 5, 1, 3, 4, 2, 0);
@@ -4562,7 +4562,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_HOVER)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_HOVER)]
         public static void HandleSplineSetHover434(Packet packet)
         {
             var guid = packet.StartBitStream(3, 7, 0, 1, 4, 6, 2, 5);
@@ -4570,7 +4570,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_UNSET_HOVER)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_UNSET_HOVER)]
         public static void HandleSplineUnsetHover434(Packet packet)
         {
             var guid = packet.StartBitStream(6, 7, 4, 0, 3, 1, 5, 2);
@@ -4578,7 +4578,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_WATER_WALK)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_WATER_WALK)]
         public static void HandleSplineMoveWaterWalk434(Packet packet)
         {
             var guid = packet.StartBitStream(6, 1, 4, 2, 3, 7, 5, 0);
@@ -4586,7 +4586,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_START_SWIM)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_START_SWIM)]
         public static void HandleSplineMoveStartSwim434(Packet packet)
         {
             var guid = packet.StartBitStream(1, 6, 0, 7, 3, 5, 2, 4);
@@ -4594,7 +4594,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_STOP_SWIM)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_STOP_SWIM)]
         public static void HandleSplineMoveStopSwim434(Packet packet)
         {
             var guid = packet.StartBitStream(4, 1, 5, 3, 0, 7, 2, 6);
@@ -4602,7 +4602,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_FLYING)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_FLYING)]
         public static void HandleSplineMoveSetFlying434(Packet packet)
         {
             var guid = packet.StartBitStream(0, 4, 1, 6, 7, 2, 3, 5);
@@ -4610,7 +4610,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_UNSET_FLYING)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_UNSET_FLYING)]
         public static void HandleSplineMoveUnsetFlying434(Packet packet)
         {
             var guid = packet.StartBitStream(5, 0, 4, 7, 2, 3, 1, 6);
@@ -6930,8 +6930,8 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_MOVE_NORMAL_FALL)]
-        public static void HandleMoveNormalFall434(Packet packet)
+        [Parser(Opcode.SMSG_MOVE_SET_NORMAL_FALL)]
+        public static void HandleMoveSetNormalFall(Packet packet)
         {
             packet.ReadInt32("Unk Int32"); // ##
             var guid = packet.StartBitStream(3, 0, 1, 5, 7, 4, 6, 2);
@@ -7128,7 +7128,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_FEATHER_FALL)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_FEATHER_FALL)]
         public static void HandleSplineMoveSetFeatherFall434(Packet packet)
         {
             var guid = packet.StartBitStream(3, 2, 7, 5, 4, 6, 1, 0);
@@ -7136,7 +7136,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_LAND_WALK)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_LAND_WALK)]
         public static void HandleSplineMoveSetLandWalk434(Packet packet)
         {
             var guid = packet.StartBitStream(5, 0, 4, 6, 7, 2, 3, 1);
@@ -7144,7 +7144,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_NORMAL_FALL)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_NORMAL_FALL)]
         public static void HandleSplineMoveSetNormalFall434(Packet packet)
         {
             var guid = packet.StartBitStream(3, 5, 1, 0, 7, 6, 2, 4);
@@ -7152,11 +7152,11 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_ANIM)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_ANIM)]
         public static void HandleSplineMoveSetAnim(Packet packet)
         {
             packet.ReadPackedGuid("Guid");
-            packet.ReadEnum<MovementAnimationState>("Animation", TypeCode.UInt32);
+            packet.ReadUInt32E<MovementAnimationState>("Animation");
         }
 
         [Parser(Opcode.SMSG_MOVE_UPDATE_KNOCK_BACK)]

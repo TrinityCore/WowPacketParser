@@ -10,6 +10,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class CharacterHandler
     {
+        [Parser(Opcode.SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI)]
+        [Parser(Opcode.CMSG_CHAR_UNDELETE_ENUM)]
+        public static void HandleCharacterZero(Packet packet)
+        {
+        }
+
         [Parser(Opcode.SMSG_CHAR_ENUM)]
         public static void HandleCharEnum(Packet packet)
         {
@@ -23,8 +29,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadPackedGuid128("Guid", i);
 
                 packet.ReadByte("ListPosition", i);
-                var race = packet.ReadEnum<Race>("RaceID", TypeCode.Byte, i);
-                var klass = packet.ReadEnum<Class>("ClassID", TypeCode.Byte, i);
+                var race = packet.ReadByteE<Race>("RaceID", i);
+                var klass = packet.ReadByteE<Class>("ClassID", i);
                 packet.ReadByte("SexID", i);
                 packet.ReadByte("SkinID", i);
                 packet.ReadByte("FaceID", i);
@@ -53,7 +59,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 {
                     packet.ReadUInt32("InventoryItem DisplayID", i, j);
                     packet.ReadUInt32("InventoryItem DisplayEnchantID", i, j);
-                    packet.ReadEnum<InventoryType>("InventoryItem InvType", TypeCode.Byte, i, j);
+                    packet.ReadByteE<InventoryType>("InventoryItem InvType", i, j);
                 }
 
                 packet.ResetBitReader();
@@ -82,9 +88,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var bits29 = packet.ReadBits(6);
             var bit24 = packet.ReadBit();
 
-            packet.ReadEnum<Race>("RaceID", TypeCode.Byte);
-            packet.ReadEnum<Class>("ClassID", TypeCode.Byte);
-            packet.ReadEnum<Gender>("SexID", TypeCode.Byte);
+            packet.ReadByteE<Race>("RaceID");
+            packet.ReadByteE<Class>("ClassID");
+            packet.ReadByteE<Gender>("SexID");
             packet.ReadByte("SkinID");
             packet.ReadByte("FaceID");
             packet.ReadByte("HairStyleID");
@@ -109,12 +115,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleUndeleteCharacterResponse(Packet packet)
         {
             packet.ReadInt32("ClientToken");
-            packet.ReadEnum<CharacterUndeleteResult>("Result", TypeCode.Int32);
+            packet.ReadInt32E<CharacterUndeleteResult>("Result");
             packet.ReadPackedGuid128("CharacterGuid");
         }
 
-        [Parser(Opcode.CMSG_UNDELETE_COOLDOWN_STATUS_QUERY)]
-        public static void HandleUndeleteCooldownStatusQuery(Packet packet)
+        [Parser(Opcode.CMSG_GET_UNDELETE_COOLDOWN_STATUS)]
+        public static void HandleGetUndeleteCooldownStatus(Packet packet)
         {
         }
 
@@ -135,7 +141,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < int32; i++)
             {
                 packet.ReadInt32("Power", i);
-                packet.ReadEnum<PowerType>("PowerType", TypeCode.Byte, i);
+                packet.ReadByteE<PowerType>("PowerType", i);
             }
         }
 
@@ -160,8 +166,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_RANDOMIZE_CHAR_NAME)]
         public static void HandleGenerateRandomCharacterNameQuery(Packet packet)
         {
-            packet.ReadEnum<Race>("Race", TypeCode.Byte);
-            packet.ReadEnum<Gender>("Sex", TypeCode.Byte);
+            packet.ReadByteE<Race>("Race");
+            packet.ReadByteE<Gender>("Sex");
         }
 
         [Parser(Opcode.SMSG_RANDOMIZE_CHAR_NAME)]
@@ -372,9 +378,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 packet.ReadUInt32("VirtualRealmAddress");
 
-                packet.ReadEnum<Race>("Race", TypeCode.Byte);
-                packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
-                packet.ReadEnum<Class>("Class", TypeCode.Byte);
+                packet.ReadByteE<Race>("Race");
+                packet.ReadByteE<Gender>("Gender");
+                packet.ReadByteE<Class>("Class");
                 packet.ReadByte("Level");
 
                 packet.ReadWoWString("Name", bits15);
@@ -488,6 +494,53 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_REQUEST_HONOR_STATS)]
+        public static void HandleRequestHonorStats(Packet packet)
+        {
+            packet.ReadPackedGuid128("TargetGUID");
+        }
+
+        [Parser(Opcode.SMSG_INSPECT_HONOR_STATS)]
+        public static void HandleInspectHonorStats(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGUID");
+
+            packet.ReadByte("LifetimeMaxRank");
+
+            packet.ReadInt16("YesterdayHK");    // unconfirmed order
+            packet.ReadInt16("TodayHK");        // unconfirmed order
+
+            packet.ReadInt32("LifetimeHK");
+        }
+
+        public static void ReadPVPBracketData(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("Rating", idx);
+            packet.ReadInt32("Rank", idx);
+            packet.ReadInt32("WeeklyPlayed", idx);
+            packet.ReadInt32("WeeklyWon", idx);
+            packet.ReadInt32("SeasonPlayed", idx);
+            packet.ReadInt32("SeasonWon", idx);
+            packet.ReadInt32("WeeklyBestRating", idx);
+            packet.ReadByte("Bracket", idx);
+        }
+
+        [Parser(Opcode.CMSG_REQUEST_INSPECT_PVP)]
+        public static void HandleRequestInspectPVP(Packet packet)
+        {
+            packet.ReadPackedGuid128("InspectTarget");
+            packet.ReadInt32("InspectRealmAddress");
+        }
+
+        [Parser(Opcode.SMSG_INSPECT_PVP)]
+        public static void HandleInspectPVP(Packet packet)
+        {
+            packet.ReadPackedGuid128("ClientGUID");
+
+            var bracketCount = packet.ReadBits(3);
+            for (var i = 0; i < bracketCount; i++)
+                ReadPVPBracketData(packet, i, "PVPBracketData");
+        }
 
         [Parser(Opcode.CMSG_MOUNT_SET_FAVORITE)]
         public static void HandleMountSetFavorite(Packet packet)
@@ -500,6 +553,29 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleTitleEarned(Packet packet)
         {
             packet.ReadUInt32("Index");
+        }
+
+        [Parser(Opcode.SMSG_NEUTRAL_PLAYER_FACTION_SELECT_RESULT)]
+        public static void HandleNeutralPlayerFactionSelectResult(Packet packet)
+        {
+            packet.ReadBit("Success");
+            packet.ReadUInt32("NewRaceID");
+        }
+
+        [Parser(Opcode.CMSG_NEUTRAL_PLAYER_SELECT_FACTION)]
+        public static void HandleNeutralPlayerSelectFaction(Packet packet)
+        {
+            packet.ReadUInt32("Faction");
+        }
+
+        [Parser(Opcode.CMSG_ALTER_APPEARANCE)]
+        public static void HandleAlterAppearance(Packet packet)
+        {
+            packet.ReadUInt32("NewHairStyle");
+            packet.ReadUInt32("NewHairColor");
+            packet.ReadUInt32("NewFacialHair");
+            packet.ReadUInt32("NewSkinColor");
+            packet.ReadUInt32("Unk");
         }
     }
 }

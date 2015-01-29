@@ -24,8 +24,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleAuctionCommandResult(Packet packet)
         {
             packet.ReadUInt32("AuctionItemID");
-            packet.ReadEnum<AuctionHouseAction>("Command", TypeCode.UInt32);
-            packet.ReadEnum<AuctionHouseError>("ErrorCode", TypeCode.UInt32);
+            packet.ReadUInt32E<AuctionHouseAction>("Command");
+            packet.ReadUInt32E<AuctionHouseError>("ErrorCode");
             packet.ReadUInt32("BagResult");
             packet.ReadPackedGuid128("Guid");
 
@@ -185,19 +185,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("TotalNumRecords");
 
             for (var i = 0; i < mailsCount; i++) // Mails
-                MailHandler.ReadCliMailListEntry(packet, i);
+                MailHandler.ReadMailListEntry(packet, i, "MailListEntry");
         }
 
         public static void ReadClientAuctionOwnerNotification(Packet packet, params object[] idx)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Item, "AuctionItemID", idx);
+            packet.ReadInt32<ItemId>("AuctionItemID", idx);
             packet.ReadUInt64("BidAmount", idx);
             ItemHandler.ReadItemInstance(packet, idx, "Item");
         }
 
         public static void ReadClientAuctionBidderNotification(Packet packet, params object[] idx)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Item, "AuctionItemID", idx);
+            packet.ReadInt32<ItemId>("AuctionItemID", idx);
             packet.ReadPackedGuid128("Bidder", idx);
             ItemHandler.ReadItemInstance(packet, idx, "Item");
         }
@@ -248,6 +248,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var itemsCount = packet.ReadInt32("ItemsCount");
             for (var i = 0; i < itemsCount; ++i)
                 ReadCliAuctionItem(packet, "Items", i);
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_REPLICATE_ITEMS)]
+        public static void HandleAuctionReplicateItems(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadInt32("Count");
+            packet.ReadInt32("ChangeNumberGlobal");
+            packet.ReadInt32("ChangeNumberCursor");
+            packet.ReadInt32("ChangeNumberTombstone");
+        }
+
+        [Parser(Opcode.CMSG_AUCTION_PLACE_BID)]
+        public static void HandleAuctionPlaceBid(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadInt32("AuctionItemID");
+            packet.ReadInt64("BidAmount");
         }
 
         [Parser(Opcode.CMSG_AUCTION_LIST_PENDING_SALES)]

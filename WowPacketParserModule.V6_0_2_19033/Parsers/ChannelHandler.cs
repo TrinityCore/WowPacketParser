@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -65,8 +64,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (type == ChatNotificationType.ModeChange)
             {
-                packet.ReadEnum<ChannelMemberFlag>("OldFlags", TypeCode.Byte);
-                packet.ReadEnum<ChannelMemberFlag>("NewFlags", TypeCode.Byte);
+                packet.ReadByteE<ChannelMemberFlag>("OldFlags");
+                packet.ReadByteE<ChannelMemberFlag>("NewFlags");
             }
 
             packet.ReadWoWString("Channel", bits108);
@@ -182,8 +181,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("AddedUserGUID");
 
-            packet.ReadEnum<ChannelFlag>("ChannelFlags", TypeCode.Byte);
-            packet.ReadEnum<ChannelMemberFlag>("UserFlags", TypeCode.Byte);
+            packet.ReadByteE<ChannelFlag>("ChannelFlags");
+            packet.ReadByteE<ChannelMemberFlag>("UserFlags");
 
             packet.ReadInt32("ChannelID");
 
@@ -196,7 +195,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("RemovedUserGUID");
 
-            packet.ReadEnum<ChannelFlag>("ChannelFlags", TypeCode.Byte);
+            packet.ReadByteE<ChannelFlag>("ChannelFlags");
 
             packet.ReadInt32("ChannelID");
 
@@ -209,8 +208,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("UpdatedUserGUID");
 
-            packet.ReadEnum<ChannelFlag>("ChannelFlags", TypeCode.Byte);
-            packet.ReadEnum<ChannelMemberFlag>("UserFlags", TypeCode.Byte);
+            packet.ReadByteE<ChannelFlag>("ChannelFlags");
+            packet.ReadByteE<ChannelMemberFlag>("UserFlags");
 
             packet.ReadInt32("ChannelID");
 

@@ -16,7 +16,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleUpdateObject(Packet packet)
         {
             var count = packet.ReadUInt32("NumObjUpdates");
-            uint map = packet.ReadEntry<UInt16>(StoreNameType.Map, "MapID");
+            uint map = packet.ReadUInt16<MapId>("MapID");
             packet.ResetBitReader();
             var bit552 = packet.ReadBit("HasDestroyObjects");
             if (bit552)
@@ -41,7 +41,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                             var guid = packet.ReadPackedGuid128("Object Guid", i);
 
                             WoWObject obj;
-                            var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlock(ref packet, guid.GetObjectType(), i, false);
+                            var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, guid.GetObjectType(), i, false);
 
                             if (Storage.Objects.TryGetValue(guid, out obj))
                             {
@@ -56,18 +56,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     case "CreateObject2": // Might != CreateObject1 on Cata
                         {
                             var guid = packet.ReadPackedGuid128("Object Guid", i);
-                            ReadCreateObjectBlock(ref packet, guid, map, i);
+                            ReadCreateObjectBlock(packet, guid, map, i);
                             break;
                         }
                 }
             }
         }
 
-        private static void ReadCreateObjectBlock(ref Packet packet, WowGuid guid, uint map, object index)
+        private static void ReadCreateObjectBlock(Packet packet, WowGuid guid, uint map, object index)
         {
-            var objType = packet.ReadEnum<ObjectType>("Object Type", TypeCode.Byte, index);
-            var moves = ReadMovementUpdateBlock(ref packet, guid, index);
-            var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlock(ref packet, objType, index, true);
+            var objType = packet.ReadByteE<ObjectType>("Object Type", index);
+            var moves = ReadMovementUpdateBlock(packet, guid, index);
+            var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, objType, index, true);
 
             WoWObject obj;
             switch (objType)
@@ -111,7 +111,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.AddSniffData(Utilities.ObjectTypeToStore(objType), (int)guid.GetEntry(), "SPAWN");
         }
 
-        private static MovementInfo ReadMovementUpdateBlock(ref Packet packet, WowGuid guid, object index)
+        private static MovementInfo ReadMovementUpdateBlock(Packet packet, WowGuid guid, object index)
         {
             var moveInfo = new MovementInfo();
 
@@ -143,7 +143,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (hasMovementUpdate) // 392
             {
-                moveInfo = ReadMovementStatusData(ref packet, index);
+                moveInfo = ReadMovementStatusData(packet, index);
 
                 moveInfo.WalkSpeed = packet.ReadSingle("WalkSpeed", index) / 2.5f;
                 moveInfo.RunSpeed = packet.ReadSingle("RunSpeed", index) / 7.0f;
@@ -417,7 +417,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             return moveInfo;
         }
 
-        private static MovementInfo ReadMovementStatusData(ref Packet packet, object index)
+        private static MovementInfo ReadMovementStatusData(Packet packet, object index)
         {
             var moveInfo = new MovementInfo();
 
@@ -508,6 +508,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Unit");
             packet.ReadBits("Tier", 3);
+        }
+
+        [Parser(Opcode.CMSG_OBJECT_UPDATE_FAILED)]
+        [Parser(Opcode.CMSG_OBJECT_UPDATE_RESCUED)]
+        public static void HandleObjectUpdateOrRescued(Packet packet)
+        {
+            packet.ReadPackedGuid128("ObjectGUID");
         }
     }
 }

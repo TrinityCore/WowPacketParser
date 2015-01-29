@@ -11,7 +11,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class PetHandler
     {
-        public static void ReadPetFlags(ref Packet packet)
+        public static void ReadPetFlags(Packet packet)
         {
             var petModeFlag = packet.ReadUInt32();
             packet.AddValue("React state", (ReactState) ((petModeFlag >> 8) & 0xFF));
@@ -28,14 +28,14 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
-                packet.ReadEnum<CreatureFamily>("Pet Family", TypeCode.UInt16); // vehicles -> 0
+                packet.ReadUInt16E<CreatureFamily>("Pet Family"); // vehicles -> 0
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
                 packet.ReadUInt16("Unk UInt16");
 
             packet.ReadUInt32("Expiration Time");
 
-            ReadPetFlags(ref packet);
+            ReadPetFlags(packet);
 
             var isPet = guid.GetHighType() == HighGuidType.Pet;
             var isVehicle = guid.GetHighType() == HighGuidType.Vehicle;
@@ -70,7 +70,7 @@ namespace WowPacketParser.Parsing.Parsers
             var spellCount = packet.ReadByte("Spell Count"); // vehicles -> 0, pets -> != 0. Could this be auras?
             for (var i = 0; i < spellCount; i++)
             {
-                packet.ReadEntry<UInt16>(StoreNameType.Spell, "Spell", i);
+                packet.ReadUInt16<SpellId>("Spell", i);
                 packet.ReadInt16("Active", i);
             }
 
@@ -78,9 +78,9 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < cdCount; i++)
             {
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
-                    packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell", i);
+                    packet.ReadUInt32<SpellId>("Spell", i);
                 else
-                    packet.ReadEntry<UInt16>(StoreNameType.Spell, "Spell", i);
+                    packet.ReadUInt16<SpellId>("Spell", i);
 
                 packet.ReadUInt16("Category", i);
                 packet.ReadUInt32("Cooldown", i);
@@ -102,7 +102,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PET_TAME_FAILURE)]
         public static void HandlePetTameFailure(Packet packet)
         {
-            packet.ReadEnum<PetTameFailureReason>("Reason", TypeCode.Byte);
+            packet.ReadByteE<PetTameFailureReason>("Reason");
         }
 
         [Parser(Opcode.CMSG_PET_NAME_QUERY)]
@@ -132,7 +132,7 @@ namespace WowPacketParser.Parsing.Parsers
                 StoreGetters.NameDict[guid] = petName;
 
             packet.ReadTime("Time");
-            var declined = packet.ReadBoolean("Declined");
+            var declined = packet.ReadBool("Declined");
 
             const int maxDeclinedNameCases = 5;
 
@@ -145,7 +145,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandlePetMode(Packet packet)
         {
             packet.ReadGuid("Guid");
-            ReadPetFlags(ref packet);
+            ReadPetFlags(packet);
         }
 
         [Parser(Opcode.SMSG_PET_ACTION_SOUND)]
@@ -172,7 +172,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Position", i);
                 var action = (uint)packet.ReadUInt16() + (packet.ReadByte() << 16);
                 packet.AddValue("Action", action, i);
-                packet.ReadEnum<ActionButtonType>("Type", TypeCode.Byte, i++);
+                packet.ReadByteE<ActionButtonType>("Type", i++);
             }
         }
 
@@ -182,7 +182,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
             var action = (uint)packet.ReadUInt16() + (packet.ReadByte() << 16);
             packet.AddValue("Action", action);
-            packet.ReadEnum<ActionButtonType>("Type", TypeCode.Byte);
+            packet.ReadByteE<ActionButtonType>("Type");
             packet.ReadGuid("GUID");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596))
                 packet.ReadVector3("Position");
@@ -192,30 +192,30 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandlePetCancelAura(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32<SpellId>("Spell ID");
         }
 
         [Parser(Opcode.SMSG_PET_LEARNED_SPELL)]
         [Parser(Opcode.SMSG_PET_REMOVED_SPELL)]
         public static void HandlePetSpellsLearnedRemoved(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32<SpellId>("Spell ID");
         }
 
         [Parser(Opcode.SMSG_PET_ACTION_FEEDBACK)]
         public static void HandlePetActionFeedback(Packet packet)
         {
-            var state = packet.ReadEnum<PetFeedback>("Pet state", TypeCode.Byte);
+            var state = packet.ReadByteE<PetFeedback>("Pet state");
 
             switch (state)
             {
                 case PetFeedback.NothingToAttack:
                     if (ClientVersion.AddedInVersion(ClientType.Cataclysm) || packet.CanRead())
-                        packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+                        packet.ReadInt32<SpellId>("Spell ID");
                     break;
                 case PetFeedback.CantAttackTarget:
                     if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
-                        packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");    // sub_8ADA60 2nd parameter is SpellID, check sub_8B22C0
+                        packet.ReadInt32<SpellId>("Spell ID");    // sub_8ADA60 2nd parameter is SpellID, check sub_8B22C0
                     break;
             }
         }
@@ -261,7 +261,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("Pet Slot", i);
 
                 packet.ReadInt32("Pet Number", i);
-                packet.ReadEntry<UInt32>(StoreNameType.Unit, "Pet Entry", i);
+                packet.ReadUInt32<UnitId>("Pet Entry", i);
                 packet.ReadInt32("Pet Level", i);
                 packet.ReadCString("Pet Name", i);
                 packet.ReadByte("Stable Type", i); // 1 = current, 2/3 = in stable
@@ -283,11 +283,11 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             packet.ReadByte("Cast Count");
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
-            var castFlags = packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Byte);
-            SpellHandler.ReadSpellCastTargets(ref packet);
+            packet.ReadInt32<SpellId>("Spell ID");
+            var castFlags = packet.ReadByteE<CastFlag>("Cast Flags");
+            SpellHandler.ReadSpellCastTargets(packet);
             if (castFlags.HasAnyFlag(CastFlag.HasTrajectory))
-                SpellHandler.HandleSpellMissileAndMove(ref packet);
+                SpellHandler.HandleSpellMissileAndMove(packet);
         }
 
         [Parser(Opcode.CMSG_REQUEST_PET_INFO)]
@@ -301,7 +301,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Pet Level");
             packet.ReadInt32("Pet Slot");
             packet.ReadByte("Stable Type");
-            packet.ReadEntry<UInt32>(StoreNameType.Unit, "Entry");
+            packet.ReadUInt32<UnitId>("Entry");
             packet.ReadInt32("Pet Number");
 
             var len = packet.ReadBits(8);
@@ -313,7 +313,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("Pet Guid");
             packet.ReadCString("Name");
-            var declined = packet.ReadBoolean("Is Declined");
+            var declined = packet.ReadBool("Is Declined");
             if (declined)
                 for (var i = 0; i < 5; ++i)
                     packet.ReadCString("Declined Name", i);
@@ -323,7 +323,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandlePetSpellAutocast(Packet packet)
         {
             packet.ReadGuid("Pet Guid");
-            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell Id");
+            packet.ReadUInt32<SpellId>("Spell Id");
             packet.ReadByte("State");
         }
     }
