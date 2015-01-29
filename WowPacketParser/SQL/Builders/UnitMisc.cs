@@ -672,11 +672,11 @@ namespace WowPacketParser.SQL.Builders
             return "";
         }
 
-        private static uint ProcessNpcFlags(string SubName)
+        private static uint ProcessNpcFlags(string subName)
         {
-            if (_professionTrainers.Contains(SubName))
+            if (_professionTrainers.Contains(subName))
                 return (uint)NPCFlags.ProfessionTrainer;
-            else if (_classTrainers.Contains(SubName))
+            else if (_classTrainers.Contains(subName))
                 return (uint)NPCFlags.ClassTrainer;
 
             return 0;
@@ -744,12 +744,12 @@ namespace WowPacketParser.SQL.Builders
                     ((template.NpcFlag & (uint) NPCFlags.ProfessionTrainer) == 0 ||
                      (template.NpcFlag & (uint) NPCFlags.ClassTrainer) == 0))
                 {
-                    UnitTemplate UnitData;
+                    UnitTemplate unitData;
                     var subname = GetSubName((int)unit.Key.GetEntry(), false); // Fall back
-                    if (Storage.UnitTemplates.TryGetValue((uint)unit.Key.GetEntry(), out UnitData))
+                    if (Storage.UnitTemplates.TryGetValue((uint)unit.Key.GetEntry(), out unitData))
                     {
-                        if (UnitData.SubName.Length > 0)
-                            template.NpcFlag |= ProcessNpcFlags(UnitData.SubName);
+                        if (unitData.SubName.Length > 0)
+                            template.NpcFlag |= ProcessNpcFlags(unitData.SubName);
                         else // If the SubName doesn't exist or is cached, fall back to DB method
                             template.NpcFlag |= ProcessNpcFlags(subname);
                     }

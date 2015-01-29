@@ -213,13 +213,14 @@ namespace WowPacketParser.Enums.Version
                 case Direction.Bidirectional:
                     return MiscDict.GetByFirst(opcodeId);
             }
+
             return 0;
         }
 
         public static string GetOpcodeName(int opcodeId, Direction direction)
         {
             var opc = GetOpcode(opcodeId, direction);
-            return opc == 0 ? opcodeId.ToString(CultureInfo.InvariantCulture) : opc.ToString();
+            return opc == 0 ? "0x" + opcodeId.ToString("X4", CultureInfo.InvariantCulture) : opc.ToString();
         }
     }
 }
