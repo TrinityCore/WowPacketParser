@@ -65,7 +65,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_GET_MAIL_LIST, 0x07DD},
             {Opcode.CMSG_GOSSIP_HELLO, 0x05F6},
             {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x02D7},
-            {Opcode.CMSG_GROUP_ASSISTANT_LEADER, 0x0DBB},
+            {Opcode.CMSG_SET_ASSISTANT_LEADER, 0x0DBB},
             {Opcode.CMSG_GROUP_ASSIGNMENT, 0x18A2},
             {Opcode.CMSG_GROUP_DISBAND, 0x0DB2},
             {Opcode.CMSG_GROUP_INVITE, 0x1990},

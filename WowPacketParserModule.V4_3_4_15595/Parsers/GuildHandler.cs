@@ -612,7 +612,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadWoWString("Text", packet.ReadBits(14));
         }
 
-        [Parser(Opcode.CMSG_SET_GUILD_BANK_TEXT)]
+        [Parser(Opcode.CMSG_GUILD_BANK_SET_TAB_TEXT)]
         public static void HandleGuildSetBankText434(Packet packet)
         {
             packet.ReadUInt32("Tab Id");

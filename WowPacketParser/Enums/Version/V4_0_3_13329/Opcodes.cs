@@ -300,7 +300,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_DEL_PVP_MEDAL_CHEAT, 0x028A}, // NF()(0x028A) //
             {Opcode.CMSG_SET_PVP_TITLE, 0x028B}, // NF()(0x028B) //
             {Opcode.CMSG_GROUP_RAID_CONVERT, 0xA75D}, // (0x427C)(0x028E) //
-            {Opcode.CMSG_GROUP_ASSISTANT_LEADER, 0x8556}, // (0xEBD1)(0x028F) //
+            {Opcode.CMSG_SET_ASSISTANT_LEADER, 0x8556}, // (0xEBD1)(0x028F) //
             {Opcode.CMSG_BUY_BACK_ITEM, 0x0290}, // NF()(0x0290) //
             {Opcode.CMSG_SET_SAVED_INSTANCE_EXTEND, 0x0292}, // NF()(0x0292) // // lua: SetSavedInstanceExtend
             {Opcode.CMSG_MEETINGSTONE_CHEAT, 0x0294}, // NF()(0x0294) // // not found 3.3
@@ -460,7 +460,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_IGNORE_DIMINISHING_RETURNS_CHEAT, 0x0405}, // NF()(0x0405) //
             {Opcode.CMSG_KEEP_ALIVE, 0x0407}, // NF()(0x0407) //
             {Opcode.CMSG_OPT_OUT_OF_LOOT, 0x0409}, // NF()(0x0409) //
-            {Opcode.CMSG_SET_GUILD_BANK_TEXT, 0x040B}, // NF()(0x040B) //
+            {Opcode.CMSG_GUILD_BANK_SET_TAB_TEXT, 0x040B}, // NF()(0x040B) //
             {Opcode.CMSG_SET_GRANTABLE_LEVELS, 0x040C}, // NF()(0x040C) //
             {Opcode.CMSG_GRANT_LEVEL, 0x877C}, // (0xE251)(0x040D) //
             {Opcode.CMSG_REFER_A_FRIEND, 0x040E}, // NF()(0x040E) //
@@ -991,7 +991,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_CROSSED_INEBRIATION_THRESHOLD, 0xFFAB}, // NF(0xEBB4)(0x03C1) //
             {Opcode.SMSG_CHEAT_PLAYER_LOOKUP, 0x03C4}, // NF()(0x03C4) //
             {Opcode.SMSG_KICK_REASON, 0x3320}, // (0x4A71)(0x03C5) //
-            {Opcode.SMSG_COMPLAIN_RESULT, 0xFFAA}, // NF(0x2295)(0x03C8) //
+            {Opcode.SMSG_COMPLAINT_RESULT, 0xFFAA}, // NF(0x2295)(0x03C8) //
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x5C74}, // (0xA37C)(0x03C9) //
             {Opcode.SMSG_CHANNEL_MEMBER_COUNT, 0x0823}, // (0xAAB1)(0x03D5) //
             {Opcode.SMSG_DEBUG_LIST_TARGETS, 0x03D9}, // NF()(0x03D9) //

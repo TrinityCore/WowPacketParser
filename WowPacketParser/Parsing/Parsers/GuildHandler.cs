@@ -706,10 +706,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GUILD_BANK_UPDATE_TAB)]
         public static void HandleGuildBankUpdateTab(Packet packet)
         {
-            packet.ReadGuid("GUID");
-            packet.ReadByte("Tab Id");
-            packet.ReadCString("Tab Name");
-            packet.ReadCString("Tab Icon");
+            packet.ReadGuid("Banker");
+            packet.ReadByte("BankTab");
+            packet.ReadCString("Name");
+            packet.ReadCString("Icon");
         }
 
         [Parser(Opcode.CMSG_GUILD_GET_RANKS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
@@ -897,7 +897,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadCString("Text");
         }
 
-        [Parser(Opcode.CMSG_SET_GUILD_BANK_TEXT, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_GUILD_BANK_SET_TAB_TEXT, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildSetBankText(Packet packet)
         {
             packet.ReadByte("Tab Id");

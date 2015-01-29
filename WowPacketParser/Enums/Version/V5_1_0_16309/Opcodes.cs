@@ -165,7 +165,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.CMSG_GOSSIP_HELLO, 0x0764},
             {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x08A8},
             {Opcode.CMSG_GRANT_LEVEL, 0x03CD},
-            {Opcode.CMSG_GROUP_ASSISTANT_LEADER, 0x071E},
+            {Opcode.CMSG_SET_ASSISTANT_LEADER, 0x071E},
             {Opcode.CMSG_GROUP_CHANGE_SUB_GROUP, 0x01C2},
             {Opcode.CMSG_GROUP_DISBAND, 0x01A6},
             {Opcode.CMSG_GROUP_INVITE, 0x016F},

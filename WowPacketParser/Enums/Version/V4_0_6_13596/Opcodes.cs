@@ -248,7 +248,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x0FF88},
             {Opcode.CMSG_GRANT_LEVEL, 0x0B980},
             {Opcode.CMSG_GROUP_ACCEPT, 0x0368C},
-            {Opcode.CMSG_GROUP_ASSISTANT_LEADER, 0x03F84},
+            {Opcode.CMSG_SET_ASSISTANT_LEADER, 0x03F84},
             {Opcode.CMSG_GROUP_CANCEL, 0x1000A}, //UnknownopcodeID
             {Opcode.CMSG_GROUP_CHANGE_SUB_GROUP, 0x03A80},
             {Opcode.CMSG_GROUP_DECLINE, 0x0B4CC},
@@ -515,7 +515,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_SET_GLYPH, 0x101D5}, //UnknownopcodeID
             {Opcode.CMSG_SET_GLYPH_SLOT, 0x101D4}, //UnknownopcodeID
             {Opcode.CMSG_SET_GRANTABLE_LEVELS, 0x101A1}, //UnknownopcodeID
-            {Opcode.CMSG_SET_GUILD_BANK_TEXT, 0x07680},
+            {Opcode.CMSG_GUILD_BANK_SET_TAB_TEXT, 0x07680},
             //{Opcode.CMSG_SET_LFG_COMMENT, 0x0E1C4},
             {Opcode.CMSG_SET_PLAYER_DECLINED_NAMES, 0x0ADC0},
             {Opcode.CMSG_SET_PRIMARY_TALENT_TREE, 0x0FEA8},
@@ -730,7 +730,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_COMMENTATOR_MAP_INFO, 0x0A4E8},
             {Opcode.SMSG_COMMENTATOR_PLAYER_INFO, 0x0758C},
             {Opcode.SMSG_COMMENTATOR_STATE_CHANGED, 0x0E0E4},
-            {Opcode.SMSG_COMPLAIN_RESULT, 0x070CC},
+            {Opcode.SMSG_COMPLAINT_RESULT, 0x070CC},
             //{Opcode.SMSG_COMPLETED_ARTIFACTS, 0x0044E}, // structure:uint32(count)loop:uint32(id)}, uint32(date)}, uint32(numberoftimescompleted):endloop
             {Opcode.SMSG_COMPRESSED_ACHIEVEMENT_DATA, 0x0C1B0},
             {Opcode.SMSG_COMPRESSED_MOVES, 0x06FE4},

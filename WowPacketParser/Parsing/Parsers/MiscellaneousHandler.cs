@@ -784,7 +784,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Sound ID");
         }
 
-        [Parser(Opcode.SMSG_COMPLAIN_RESULT)]
+        [Parser(Opcode.SMSG_COMPLAINT_RESULT)]
         public static void HandleComplainResult(Packet packet)
         {
             packet.ReadByte("Unknown1"); // value 1 resets CGChat::m_complaintsSystemStatus in client. (unused?)

@@ -34,12 +34,12 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_GROUP_ASSISTANT_LEADER)]
+        [Parser(Opcode.CMSG_SET_ASSISTANT_LEADER)]
         public static void HandleGroupAssistantLeader(Packet packet)
         {
             var guid = new byte[8];
 
-            packet.ReadByte("Byte10");
+            packet.ReadBool("Promote");
             guid[1] = packet.ReadBit();
             var bit11 = packet.ReadBit();
             guid[0] = packet.ReadBit();

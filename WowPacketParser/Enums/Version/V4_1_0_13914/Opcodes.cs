@@ -56,7 +56,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_COMMENTATOR_MAP_INFO, 0x05E2F}, // 4.1.0 13914
             {Opcode.SMSG_COMMENTATOR_PLAYER_INFO, 0x08E3C}, // 4.1.0 13914
             {Opcode.SMSG_COMMENTATOR_STATE_CHANGED, 0x0482F}, // 4.1.0 13914
-            {Opcode.SMSG_COMPLAIN_RESULT, 0x06E6C}, // 4.1.0 13914
+            {Opcode.SMSG_COMPLAINT_RESULT, 0x06E6C}, // 4.1.0 13914
             {Opcode.SMSG_COMPRESSED_MOVES, 0x07F2F}, // 4.1.0 13914
             {Opcode.SMSG_COMPRESSED_UPDATE_OBJECT, 0xAE3F}, // 4.1.0 13914
             {Opcode.SMSG_CONTACT_LIST, 0x0CC2D}, // 4.1.0 13914
