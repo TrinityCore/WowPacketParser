@@ -202,10 +202,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Slot");
         }
 
-        [Parser(Opcode.CMSG_ITEM_REFUND_INFO)]
+        [Parser(Opcode.CMSG_GET_ITEM_PURCHASE_DATA)]
         [Parser(Opcode.SMSG_READ_ITEM_RESULT_OK)]
         [Parser(Opcode.SMSG_READ_ITEM_FAILED)]
-        [Parser(Opcode.CMSG_ITEM_REFUND)]
+        [Parser(Opcode.CMSG_ITEM_PURCHASE_REFUND)]
         public static void HandleReadItem(Packet packet)
         {
             packet.ReadGuid("Item GUID");

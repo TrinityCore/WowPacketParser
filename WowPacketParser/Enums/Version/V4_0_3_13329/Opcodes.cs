@@ -534,8 +534,8 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_QUERY_VEHICLE_STATUS, 0x04A4}, // NF()(0x04A4) // // not found
             {Opcode.CMSG_PLAYER_VEHICLE_ENTER, 0x04A8}, // NF()(0x04A8) // // cmsg uint64
             {Opcode.CMSG_EJECT_PASSENGER, 0x04A9}, // NF()(0x04A9) // // cmsg uint64
-            {Opcode.CMSG_ITEM_REFUND_INFO, 0x04B3}, // NF()(0x04B3) // // refund request?
-            {Opcode.CMSG_ITEM_REFUND, 0x04B4}, // NF()(0x04B4) // // lua: ContainerRefundItemPurchase
+            {Opcode.CMSG_GET_ITEM_PURCHASE_DATA, 0x04B3}, // NF()(0x04B3) // // refund request?
+            {Opcode.CMSG_ITEM_PURCHASE_REFUND, 0x04B4}, // NF()(0x04B4) // // lua: ContainerRefundItemPurchase
             {Opcode.CMSG_CORPSE_MAP_POSITION_QUERY, 0x04B6}, // NF()(0x04B6) // // CMSG}, uint32
             {Opcode.CMSG_LFG_SET_ROLES_2, 0x04B8}, // NF()(0x04B8) // // not found
             {Opcode.CMSG_CALENDAR_CONTEXT_EVENT_SIGNUP, 0x04BA}, // NF()(0x04BA) // // CMSG}, uint64}, lua: CalendarContextEventSignUp
@@ -557,7 +557,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0xD677}, // (0x6A99)(0x04FF) //yForAccountDataTimes
             {Opcode.CMSG_QUERY_QUESTS_COMPLETED, 0x0500}, // NF()(0x0500) // // lua: QueryQuestsCompleted
             {Opcode.CMSG_GM_LAG_REPORT, 0x0502}, // NF()(0x0502) // // lua: GMReportLag
-            {Opcode.CMSG_SET_ALLOW_LOW_LEVEL_RAID1, 0x0508}, // NF()(0x0508) // // lua: SetAllowLowLevelRaid
+            {Opcode.CMSG_LOW_LEVEL_RAID1, 0x0508}, // NF()(0x0508) // // lua: SetAllowLowLevelRaid
             //{Opcode.CMSG_SET_ALLOW_LOW_LEVEL_RAID2, 0x0509}, // NF()(0x0509) // // lua: SetAllowLowLevelRaid
             {Opcode.CMSG_CONNECT_TO_FAILED, 0x0509}, // (0x1201)(0x050E) // with networking
             {Opcode.CMSG_ENABLE_NAGLE, 0x0510}, // NF()(0x0510) // // something with networking

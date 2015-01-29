@@ -40,7 +40,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.CMSG_LOGOUT_REQUEST, 0x0513},
             {Opcode.CMSG_CANCEL_TRADE, 0x0591},
             {Opcode.CMSG_LOG_DISCONNECT, 0x1856},
-            {Opcode.CMSG_ITEM_REFUND_INFO, 0x0154},
+            {Opcode.CMSG_GET_ITEM_PURCHASE_DATA, 0x0154},
             {Opcode.CMSG_JOIN_CHANNEL, 0x0EC3},
             {Opcode.CMSG_MESSAGECHAT_AFK, 0x0EEF},
             {Opcode.CMSG_MESSAGECHAT_DND, 0x12C7},

@@ -119,7 +119,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_GUILD_SET_RANK_PERMISSIONS, 0x0C7A},
             {Opcode.CMSG_GUILD_SET_NOTE, 0x05DA},
             {Opcode.CMSG_INSPECT, 0x1259},
-            {Opcode.CMSG_ITEM_REFUND_INFO, 0x1258},
+            {Opcode.CMSG_GET_ITEM_PURCHASE_DATA, 0x1258},
             {Opcode.CMSG_JOIN_CHANNEL, 0x148E},
             {Opcode.CMSG_LEARN_TALENT, 0x02A7},
             {Opcode.CMSG_LEAVE_CHANNEL, 0x042A},

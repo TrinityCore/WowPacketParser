@@ -33,7 +33,7 @@ namespace WowPacketParser.Enums.Version.V4_3_3_15354
             {Opcode.CMSG_GUILD_REQUEST_PARTY_STATE, 0x1390},
             {Opcode.CMSG_GUILD_GET_ROSTER, 0x0274},
             {Opcode.CMSG_GUILD_SET_ACHIEVEMENT_TRACKING, 0x02D1},
-            {Opcode.CMSG_ITEM_REFUND_INFO, 0x6FE4},
+            {Opcode.CMSG_GET_ITEM_PURCHASE_DATA, 0x6FE4},
             {Opcode.CMSG_JOIN_CHANNEL, 0x0520},
             {Opcode.CMSG_LEAVE_CHANNEL, 0x0000},
             {Opcode.CMSG_LF_GUILD_ADD_RECRUIT, 0x0004},

@@ -309,8 +309,8 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_INSPECT_HONOR_STATS, 0x00E93},
             {Opcode.CMSG_INSTANCE_LOCK_WARNING_RESPONSE, 0x034C4},
             {Opcode.CMSG_ITEM_NAME_QUERY, 0x100E3}, //UnknownopcodeID
-            {Opcode.CMSG_ITEM_REFUND, 0x062E8},
-            {Opcode.CMSG_ITEM_REFUND_INFO, 0x031E0},
+            {Opcode.CMSG_ITEM_PURCHASE_REFUND, 0x062E8},
+            {Opcode.CMSG_GET_ITEM_PURCHASE_DATA, 0x031E0},
             {Opcode.CMSG_ITEM_TEXT_QUERY, 0x0F280},
             {Opcode.CMSG_JOIN_CHANNEL, 0x00002},
             //{Opcode.CMSG_JOIN_RATED_BATTLEFIELD, 0x00591},
@@ -500,8 +500,8 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_SET_ACTION_BUTTON, 0x072E8},
             {Opcode.CMSG_SET_ACTIVE_MOVER, 0x06CA0},
             {Opcode.CMSG_SET_ACTIVE_VOICE_CHANNEL, 0x032A4},
-            {Opcode.CMSG_SET_ALLOW_LOW_LEVEL_RAID1, 0x035EC},
-            {Opcode.CMSG_SET_ALLOW_LOW_LEVEL_RAID2, 0x029C4},
+            {Opcode.CMSG_LOW_LEVEL_RAID1, 0x035EC},
+            {Opcode.CMSG_LOW_LEVEL_RAID2, 0x029C4},
             //{Opcode.CMSG_SET_CHANNEL_WATCH, 0x07FE0}, //opcode32736
             {Opcode.CMSG_SET_CONTACT_NOTES, 0x07DCC},
             {Opcode.CMSG_SET_CRITERIA_CHEAT, 0x101DD}, //UnknownopcodeID
