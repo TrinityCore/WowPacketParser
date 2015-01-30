@@ -15,15 +15,15 @@ namespace WowPacketParser.Enums.Version.V5_2_0_16650
 
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
         {
+            {Opcode.CMSG_AUTH_CONTINUED_SESSION, 0x03F3},
             {Opcode.CMSG_AUTH_SESSION, 0x1A72},
             {Opcode.CMSG_CREATURE_QUERY, 0x1C83},
             {Opcode.CMSG_DB_QUERY_BULK, 0x006A},
             {Opcode.CMSG_ENABLE_NAGLE, 0x06D2},
             {Opcode.CMSG_GAMEOBJECT_QUERY, 0x0118},
             {Opcode.CMSG_LOAD_SCREEN, 0x045D},
-            {Opcode.CMSG_QUEST_QUERY, 0x001F},
             {Opcode.CMSG_PLAYER_LOGIN, 0x015D},
-            {Opcode.CMSG_AUTH_CONTINUED_SESSION, 0x03F3},
+            {Opcode.CMSG_QUEST_QUERY, 0x001F},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x10AC},
             {Opcode.CMSG_WARDEN_DATA, 0x007C},
         };
@@ -44,10 +44,10 @@ namespace WowPacketParser.Enums.Version.V5_2_0_16650
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x04A5},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x1024},
             {Opcode.SMSG_GUILD_RANKS, 0x0DEF},
-            {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x19C5},
             {Opcode.SMSG_MOTD, 0x0514},
             {Opcode.SMSG_MOVE_SPLINE_UNROOT, 0x121D},
             {Opcode.SMSG_ON_MONSTER_MOVE, 0x0309},
+            {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x19C5},
             {Opcode.SMSG_REALM_SPLIT, 0x0274},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x0C0E},
             {Opcode.SMSG_RESUME_COMMS, 0x0C18},
