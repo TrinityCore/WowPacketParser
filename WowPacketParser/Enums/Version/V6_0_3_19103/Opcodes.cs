@@ -811,6 +811,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_CHALLENGE_MODE_NEW_PLAYER_RECORD, 0x13A3},
             {Opcode.SMSG_CHALLENGE_MODE_REQUEST_LEADERS_RESULT, 0x07AA},
             {Opcode.SMSG_CHALLENGE_MODE_REWARDS, 0x1CC9},
+            {Opcode.SMSG_CHALLENGE_MODE_START, 0x1221},
             {Opcode.SMSG_CHANGE_PLAYER_DIFFICULTY_RESULT, 0x0826},
             {Opcode.SMSG_CHANNEL_LIST, 0x1411},
             {Opcode.SMSG_CHANNEL_NOTIFY, 0x0643},
