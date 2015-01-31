@@ -482,8 +482,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("SequenceIndex");
         }
 
-        [Parser(Opcode.SMSG_FORCE_RUN_SPEED_CHANGE)]
-        [Parser(Opcode.SMSG_FORCE_SWIM_SPEED_CHANGE)]
+        [Parser(Opcode.SMSG_MOVE_SET_RUN_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SET_SWIM_SPEED)]
         [Parser(Opcode.SMSG_MOVE_SET_FLIGHT_SPEED)]
         [Parser(Opcode.SMSG_MOVE_SET_WALK_SPEED)]
         [Parser(Opcode.SMSG_MOVE_SET_RUN_BACK_SPEED)]

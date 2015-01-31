@@ -351,8 +351,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadGarrisonFollower(packet);
         }
 
-        [Parser(Opcode.SMSG_GARRISON_OPEN_TRADESKILL)]
-        public static void HandleGarrisonOpenTradeskill(Packet packet)
+        [Parser(Opcode.CMSG_GARRISON_OPEN_TRADESKILL_NPC)]
+        public static void HandleGarrisonOpenTradeskillNpc(Packet packet)
+        {
+            packet.ReadInt32("Unk"); // maybe: SkillLineID?
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_OPEN_TRADESKILL_NPC_RESPONSE)]
+        public static void HandleGarrisonOpenTradeskillNpcResponse(Packet packet)
         {
             packet.ReadPackedGuid128("GUID");
 
