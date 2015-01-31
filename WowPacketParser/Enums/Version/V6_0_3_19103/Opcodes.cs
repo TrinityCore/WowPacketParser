@@ -820,6 +820,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_CHARACTER_LOGIN_FAILED, 0x091E},
             {Opcode.SMSG_CHARACTER_OBJECT_TEST_RESPONSE, 0x038A},
             {Opcode.SMSG_CHARACTER_UPGRADE_COMPLETE, 0x0806},
+            {Opcode.SMSG_CHARACTER_UPGRADE_SPELL_TIER_SET, 0x0B23},
             {Opcode.SMSG_CHAR_CREATE, 0x0107},
             {Opcode.SMSG_CHAR_CUSTOMIZE, 0x1932},
             {Opcode.SMSG_CHAR_CUSTOMIZE_RESULT, 0x0BAA},
