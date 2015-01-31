@@ -704,7 +704,6 @@ namespace WowPacketParser.Enums
         CMSG_OPEN_ITEM,
         CMSG_OPEN_SHIPMENT_GAME_OBJ,
         CMSG_OPEN_SHIPMENT_NPC,
-        CMSG_OPEN_TRADE_SKILL,
         CMSG_OPT_OUT_OF_LOOT,
         CMSG_PAGE_TEXT_QUERY,
         CMSG_PARTY_INVITE,
