@@ -762,7 +762,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM, 0x1E54}, // (0x62D4)(0x0215) //
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x0577}, // (0x0231)(0x005F) //
             {Opcode.SMSG_GAMEOBJECT_RESET_STATE, 0x4655}, // (0x0274)(0x02A7) //
-            {Opcode.SMSG_GAMESPEED_SET, 0xFF75}, // (0x2354)(0x0047) //
+            {Opcode.SMSG_GAME_SPEED_SET, 0xFF75}, // (0x2354)(0x0047) //
             {Opcode.SMSG_GAMETIMEBIAS_SET, 0x0314}, // NF()(0x0314) //
             {Opcode.SMSG_GAMETIME_SET, 0x5D77}, // (0xE2BD)(0x0045) //
             {Opcode.SMSG_GAME_TIME_UPDATE, 0xC675}, // (0xEBF0)(0x0043) //
@@ -777,7 +777,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_GM_MESSAGECHAT, 0x2902}, // (0xE3B0)(0x03B3) //
             //{Opcode.SMSG_GMTICKET_DELETETICKET, 0x1656}, // (0x4A90)(0x0218) //
             {Opcode.SMSG_GM_TICKET_STATUS_UPDATE, 0xBF7D}, // (0x22F4)(0x0328) //
-            {Opcode.SMSG_GODMODE, 0x167E}, // (0x0AF5)(0x0023) //
+            {Opcode.SMSG_GOD_MODE, 0x167E}, // (0x0AF5)(0x0023) //
             {Opcode.SMSG_GOGOGO_OBSOLETE, 0x03F5}, // NF()(0x03F5) //
             {Opcode.SMSG_GOSSIP_COMPLETE, 0x430B}, // (0x6BF9)(0x017E) //
             {Opcode.SMSG_GOSSIP_MESSAGE, 0xD12A}, // (0xAB3D)(0x017D) //

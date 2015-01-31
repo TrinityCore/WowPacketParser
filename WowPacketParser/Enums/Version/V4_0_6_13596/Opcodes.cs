@@ -806,7 +806,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM, 0x0BFA8},
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x0F4E8},
             {Opcode.SMSG_GAMEOBJECT_RESET_STATE, 0x022E0},
-            {Opcode.SMSG_GAMESPEED_SET, 0x03EC0},
+            {Opcode.SMSG_GAME_SPEED_SET, 0x03EC0},
             {Opcode.SMSG_GAMETIMEBIAS_SET, 0x1011A}, //UnknownopcodeID
             {Opcode.SMSG_GAMETIME_SET, 0x07888},
             {Opcode.SMSG_GAME_TIME_UPDATE, 0x0F1EC},
@@ -821,7 +821,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_GMTICKET_UPDATETEXT, 0x0A5E8},
             {Opcode.SMSG_GM_MESSAGECHAT, 0x03AEC},
             {Opcode.SMSG_GM_TICKET_STATUS_UPDATE, 0x072C4},
-            {Opcode.SMSG_GODMODE, 0x023EC},
+            {Opcode.SMSG_GOD_MODE, 0x023EC},
             {Opcode.SMSG_GOGOGO_OBSOLETE, 0x10195}, //UnknownopcodeID
             {Opcode.SMSG_GOSSIP_COMPLETE, 0x0F0AC},
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x0BBC8},

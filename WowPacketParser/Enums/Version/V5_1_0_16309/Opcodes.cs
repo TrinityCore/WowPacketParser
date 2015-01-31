@@ -558,7 +558,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_GM_MESSAGECHAT, 0x036D},
             {Opcode.SMSG_GM_PLAYER_INFO, 0x00A4},
             {Opcode.SMSG_GM_TICKET_STATUS_UPDATE, 0x0E8C},
-            {Opcode.SMSG_GODMODE, 0x0F89},
+            {Opcode.SMSG_GOD_MODE, 0x0F89},
             {Opcode.SMSG_GOSSIP_COMPLETE, 0x08A4},
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x088C},
             {Opcode.SMSG_GOSSIP_POI, 0x0E45},
