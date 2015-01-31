@@ -525,7 +525,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("Bracket", idx);
         }
 
-        [Parser(Opcode.CMSG_REQUEST_INSPECT_PVP)]
+        [Parser(Opcode.CMSG_INSPECT_PVP)]
         public static void HandleRequestInspectPVP(Packet packet)
         {
             packet.ReadPackedGuid128("InspectTarget");
