@@ -98,7 +98,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_GAMEOBJECT_QUERY_RESPONSE, 0x0AB7C}, // 4.1.0 13914
             {Opcode.SMSG_GAMEOBJECT_RESET_STATE, 0x0B97F}, // 4.1.0 13914
             {Opcode.SMSG_GAME_SPEED_SET, 0x09A2F}, // 4.1.0 13914
-            {Opcode.SMSG_GAMETIME_SET, 0x09F7D}, // 4.1.0 13914
+            {Opcode.SMSG_GAME_TIME_SET, 0x09F7D}, // 4.1.0 13914
             {Opcode.SMSG_GAME_TIME_UPDATE, 0x0982C}, // 4.1.0 13914
             {Opcode.SMSG_GM_MESSAGECHAT, 0x06C3D}, // 4.1.0 13914
             {Opcode.SMSG_GOSSIP_COMPLETE, 0x0486E}, // 4.1.0 13914
@@ -195,7 +195,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_SERVERTIME, 0x0CF2D}, // 4.1.0 13914
             {Opcode.SMSG_SERVER_FIRST_ACHIEVEMENT, 0x00E3E}, // 4.1.0 13914
             {Opcode.SMSG_SERVER_MESSAGE, 0x04B2C}, // 4.1.0 13914
-            {Opcode.SMSG_SET_FACTION_ATWAR, 0x0283D}, // 4.1.0 13914
+            {Opcode.SMSG_SET_FACTION_AT_WAR, 0x0283D}, // 4.1.0 13914
             {Opcode.SMSG_SET_FACTION_STANDING, 0x01B6E}, // 4.1.0 13914
             {Opcode.SMSG_SET_PROFICIENCY, 0x0BF3C}, // 4.1.0 13914
             {Opcode.SMSG_SET_PROJECTILE_POSITION, 0x0FD2C}, // 4.1.0 13914

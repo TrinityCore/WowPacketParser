@@ -145,8 +145,8 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_CHAR_FACTION_CHANGE, 0x0BBCC},
             {Opcode.CMSG_CHAR_RACE_CHANGE, 0x06EA4},
             {Opcode.CMSG_CHAR_RENAME, 0x027C4},
-            {Opcode.CMSG_CHAT_FILTERED, 0x075A8},
-            {Opcode.CMSG_CHAT_IGNORED, 0x0A78C},
+            {Opcode.CMSG_CHAT_REPORT_FILTERED, 0x075A8},
+            {Opcode.CMSG_CHAT_REPORT_IGNORED, 0x0A78C},
             {Opcode.CMSG_CHEAT_DUMP_ITEMS_DEBUG_ONLY, 0x1015F}, //UnknownopcodeID
             {Opcode.CMSG_CHEAT_PLAYER_LOGIN, 0x1017D}, //UnknownopcodeID
             {Opcode.CMSG_CHEAT_PLAYER_LOOKUP, 0x1017E}, //UnknownopcodeID
@@ -762,7 +762,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_DESTROY_OBJECT, 0x02AA0},
             {Opcode.SMSG_DESTRUCTIBLE_BUILDING_DAMAGE, 0x0A0E0},
             {Opcode.SMSG_DISMOUNT, 0x03CC4},
-            {Opcode.SMSG_DISMOUNTRESULT, 0x0F9C0},
+            {Opcode.SMSG_DISMOUNT_RESULT, 0x0F9C0},
             {Opcode.SMSG_DISPEL_FAILED, 0x0AAE8},
             {Opcode.SMSG_DUEL_COMPLETE, 0x0FCE8},
             {Opcode.SMSG_DUEL_COUNTDOWN, 0x0E8E0},
@@ -808,7 +808,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_GAMEOBJECT_RESET_STATE, 0x022E0},
             {Opcode.SMSG_GAME_SPEED_SET, 0x03EC0},
             {Opcode.SMSG_GAMETIMEBIAS_SET, 0x1011A}, //UnknownopcodeID
-            {Opcode.SMSG_GAMETIME_SET, 0x07888},
+            {Opcode.SMSG_GAME_TIME_SET, 0x07888},
             {Opcode.SMSG_GAME_TIME_UPDATE, 0x0F1EC},
             {Opcode.SMSG_GHOSTEE_GONE, 0x10123}, //UnknownopcodeID
             {Opcode.SMSG_GMRESPONSE_DB_ERROR, 0x0E0A0},
@@ -1113,7 +1113,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_SETUP_CURRENCY, 0x0091C},
             {Opcode.SMSG_SET_EXTRA_AURA_INFO_NEED_UPDATE_OBSOLETE, 0x1016A}, //UnknownopcodeID
             {Opcode.SMSG_SET_EXTRA_AURA_INFO_OBSOLETE, 0x10169}, //UnknownopcodeID
-            {Opcode.SMSG_SET_FACTION_ATWAR, 0x0EEEC},
+            {Opcode.SMSG_SET_FACTION_AT_WAR, 0x0EEEC},
             {Opcode.SMSG_SET_FACTION_STANDING, 0x0718C},
             {Opcode.SMSG_SET_FACTION_VISIBLE, 0x03988},
             {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x02BC8},

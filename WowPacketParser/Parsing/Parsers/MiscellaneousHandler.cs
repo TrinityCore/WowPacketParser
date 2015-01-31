@@ -623,7 +623,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_GAMETIME_SET)]
+        [Parser(Opcode.SMSG_GAME_TIME_SET)]
         public static void HandleGametimeSet(Packet packet)
         {
             packet.ReadUInt32("Unk time");

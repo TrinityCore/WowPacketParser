@@ -66,7 +66,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_CHAR_ENUM, 0x00E0},
             {Opcode.CMSG_CHAR_FACTION_CHANGE, 0x0329},
             {Opcode.CMSG_CHAR_RENAME, 0x0963},
-            {Opcode.CMSG_CHAT_IGNORED, 0x048A},
+            {Opcode.CMSG_CHAT_REPORT_IGNORED, 0x048A},
             {Opcode.CMSG_CONTACT_LIST, 0x0BB4},
             {Opcode.CMSG_CREATURE_QUERY, 0x0842},
             {Opcode.CMSG_DB_QUERY_BULK, 0x158D},

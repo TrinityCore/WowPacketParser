@@ -139,8 +139,8 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_CHAR_FACTION_CHANGE, 0x4F75}, // NF()(0x04D9) // // lua: CreateCharacter (PFC client response)
             {Opcode.CMSG_CHAR_RACE_CHANGE, 0x04F8}, // NF()(0x04F8) // // called from lua: CreateCharacter}, paid race change
             {Opcode.CMSG_CHAR_RENAME, 0x02C7}, // NF()(0x02C7) //
-            {Opcode.CMSG_CHAT_FILTERED, 0x0331}, // NF()(0x0331) //
-            {Opcode.CMSG_CHAT_IGNORED, 0x0225}, // NF()(0x0225) //
+            {Opcode.CMSG_CHAT_REPORT_FILTERED, 0x0331}, // NF()(0x0331) //
+            {Opcode.CMSG_CHAT_REPORT_IGNORED, 0x0225}, // NF()(0x0225) //
             {Opcode.CMSG_CHEAT_DUMP_ITEMS_DEBUG_ONLY, 0x039A}, // NF()(0x039A) //
             {Opcode.CMSG_CHEAT_PLAYER_LOGIN, 0x03C2}, // NF()(0x03C2) //
             {Opcode.CMSG_CHEAT_PLAYER_LOOKUP, 0x03C3}, // NF()(0x03C3) //
@@ -718,7 +718,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_DESTROY_OBJECT, 0x6F77}, // (0xE310)(0x00AA) //
             {Opcode.SMSG_DESTRUCTIBLE_BUILDING_DAMAGE, 0xEC5F}, // (0xE3D9)(0x0032) //
             {Opcode.SMSG_DISMOUNT, 0x5756}, // (0xC394)(0x03AC) //
-            {Opcode.SMSG_DISMOUNTRESULT, 0xD77D}, // (0xE39D)(0x016F) //
+            {Opcode.SMSG_DISMOUNT_RESULT, 0xD77D}, // (0xE39D)(0x016F) //
             {Opcode.SMSG_DISPEL_FAILED, 0xDD54}, // (0x4BB5)(0x0262) //
             {Opcode.SMSG_DUEL_COMPLETE, 0xE323}, // (0x6B74)(0x016A) //
             {Opcode.SMSG_DUEL_COUNTDOWN, 0x8A21}, // (0x8A54)(0x02B7) //
@@ -764,7 +764,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_GAMEOBJECT_RESET_STATE, 0x4655}, // (0x0274)(0x02A7) //
             {Opcode.SMSG_GAME_SPEED_SET, 0xFF75}, // (0x2354)(0x0047) //
             {Opcode.SMSG_GAMETIMEBIAS_SET, 0x0314}, // NF()(0x0314) //
-            {Opcode.SMSG_GAMETIME_SET, 0x5D77}, // (0xE2BD)(0x0045) //
+            {Opcode.SMSG_GAME_TIME_SET, 0x5D77}, // (0xE2BD)(0x0045) //
             {Opcode.SMSG_GAME_TIME_UPDATE, 0xC675}, // (0xEBF0)(0x0043) //
             {Opcode.SMSG_GHOSTEE_GONE, 0x0326}, // NF()(0x0326) //
             {Opcode.SMSG_GMRESPONSE_DB_ERROR, 0x9576}, // (0x4375)(0x04EE) //
@@ -1042,7 +1042,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_SERVER_MESSAGE, 0x2100}, // (0x221C)(0x0291) //
             {Opcode.SMSG_SET_EXTRA_AURA_INFO_NEED_UPDATE_OBSOLETE, 0x03A5}, // NF()(0x03A5) //
             {Opcode.SMSG_SET_EXTRA_AURA_INFO_OBSOLETE, 0x03A4}, // NF()(0x03A4) //
-            {Opcode.SMSG_SET_FACTION_ATWAR, 0x4657}, // (0x2A59)(0x0313) //
+            {Opcode.SMSG_SET_FACTION_AT_WAR, 0x4657}, // (0x2A59)(0x0313) //
             {Opcode.SMSG_SET_FACTION_STANDING, 0x367F}, // (0xA211)(0x0124) //
             {Opcode.SMSG_SET_FACTION_VISIBLE, 0xF676}, // (0xA394)(0x0123) //
             {Opcode.SMSG_SET_FLAT_SPELL_MODIFIER, 0x2654}, // (0x4218)(0x0266) //
