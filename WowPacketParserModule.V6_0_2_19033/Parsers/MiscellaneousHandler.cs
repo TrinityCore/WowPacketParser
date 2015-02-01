@@ -590,6 +590,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("Arg");
             packet.ReadByte("Type");
         }
+
+        [Parser(Opcode.SMSG_WEEKLY_LAST_RESET)]
+        public static void HandleLastWeeklyReset(Packet packet)
+        {
+            packet.ReadTime("Reset");
+        }
     }
 }
 

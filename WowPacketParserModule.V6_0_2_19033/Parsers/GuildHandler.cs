@@ -208,7 +208,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Name", bits38);
         }
 
-        [Parser(Opcode.SMSG_GUILD_RECIPES)]
+        [Parser(Opcode.SMSG_GUILD_KNOWN_RECIPES)]
         public static void HandleGuildRecipes(Packet packet)
         {
             var count = packet.ReadInt32("Criteria count");

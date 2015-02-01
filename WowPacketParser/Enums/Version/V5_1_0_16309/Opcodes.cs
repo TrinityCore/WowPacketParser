@@ -597,7 +597,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_GUILD_PERMISSIONS_QUERY_RESULTS, 0x089C},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x08C9},
             {Opcode.SMSG_GUILD_RANKS, 0x0D50},
-            {Opcode.SMSG_GUILD_RECIPES, 0x04FC},
+            {Opcode.SMSG_GUILD_KNOWN_RECIPES, 0x04FC},
             {Opcode.SMSG_GUILD_RENAMED, 0x0851},
             {Opcode.SMSG_GUILD_REPUTATION_REACTION_CHANGED, 0x0F59},
             {Opcode.SMSG_GUILD_REPUTATION_WEEKLY_CAP, 0x061C},

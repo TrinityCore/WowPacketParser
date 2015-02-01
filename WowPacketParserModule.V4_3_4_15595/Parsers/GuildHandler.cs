@@ -917,7 +917,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guild GUID", guid);
         }
 
-        [Parser(Opcode.SMSG_GUILD_RECIPES)]
+        [Parser(Opcode.SMSG_GUILD_KNOWN_RECIPES)]
         public static void HandleGuildRecipes(Packet packet)
         {
             var count = packet.ReadBits("Count", 16);
