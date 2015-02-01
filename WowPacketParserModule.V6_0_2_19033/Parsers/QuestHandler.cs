@@ -533,8 +533,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             Storage.QuestOfferRewards.Add((uint)id, questOfferReward, packet.TimeSpan);
         }
 
-        [Parser(Opcode.SMSG_QUEST_UPDATE_ADD_KILL)]
-        public static void HandleQuestUpdateAdd(Packet packet)
+        [Parser(Opcode.SMSG_QUEST_UPDATE_ADD_CREDIT)]
+        public static void HandleQuestUpdateAddCredit(Packet packet)
         {
             packet.ReadPackedGuid128("VictimGUID");
 

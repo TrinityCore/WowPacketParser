@@ -63,8 +63,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.WriteGuid("Player GUID", guid);
         }
 
-        [Parser(Opcode.CMSG_INSPECT_HONOR_STATS)]
-        public static void HandleClientInspectHonorStats(Packet packet)
+        [Parser(Opcode.CMSG_REQUEST_HONOR_STATS)]
+        public static void HandleRequestHonorStats(Packet packet)
         {
             var guid = new byte[8];
 

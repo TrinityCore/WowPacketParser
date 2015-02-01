@@ -1135,7 +1135,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.SMSG_DYNAMIC_DROP_ROLL_RESULT, 0x469},
             {Opcode.SMSG_CRITERIA_UPDATE, 0x46A},
             {Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS, 0x46C},
-            {Opcode.SMSG_QUEST_UPDATE_ADD_PVP_KILL, 0x46F},
+            {Opcode.SMSG_QUEST_UPDATE_ADD_PVP_CREDIT, 0x46F},
             {Opcode.SMSG_CALENDAR_RAID_LOCKOUT_UPDATED, 0x471},
             {Opcode.SMSG_CHAR_CUSTOMIZE, 0x474},
             {Opcode.SMSG_PET_RENAMEABLE, 0x475},

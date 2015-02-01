@@ -92,8 +92,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("ObjectGUID");
         }
 
-        [Parser(Opcode.SMSG_GAME_OBJECT_ACTIVATE_ANIM_KIT)]
-        public static void HandleGoActivateAnimKit(Packet packet)
+        [Parser(Opcode.SMSG_GAMEOBJECT_ACTIVATE_ANIM_KIT)]
+        public static void HandleGameObjectActivateAnimKit(Packet packet)
         {
             packet.ReadPackedGuid128("ObjectGUID");
             packet.ReadInt32("AnimKitID");

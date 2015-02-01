@@ -1006,7 +1006,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x720B}, // (0x28C4)(0x005D) //
             {Opcode.SMSG_QUEST_UPDATE_ADD_ITEM, 0x019A}, // NF()(0x019A) // NOT IN CLIENT 335 AND 401
             {Opcode.SMSG_QUEST_UPDATE_ADD_KILL, 0x157F}, // (0x0BF1)(0x0199) //
-            {Opcode.SMSG_QUEST_UPDATE_ADD_PVP_KILL, 0x5D55}, // (0xE210)(0x046F) //
+            {Opcode.SMSG_QUEST_UPDATE_ADD_PVP_CREDIT, 0x5D55}, // (0xE210)(0x046F) //
             {Opcode.SMSG_QUEST_UPDATE_COMPLETE, 0x4575}, // (0x4AF5)(0x0198) //
             {Opcode.SMSG_QUEST_UPDATE_FAILED, 0xDC5D}, // (0x0AB5)(0x0196) //
             {Opcode.SMSG_QUEST_UPDATE_FAILED_TIMER, 0x3F5D}, // (0x8BB4)(0x0197) //

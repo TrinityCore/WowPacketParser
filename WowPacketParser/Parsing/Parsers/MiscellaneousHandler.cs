@@ -697,7 +697,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Instance Difficulty ID");
         }
 
-        [Parser(Opcode.CMSG_INSPECT_HONOR_STATS)]
+        [Parser(Opcode.CMSG_REQUEST_HONOR_STATS)]
         [Parser(Opcode.MSG_INSPECT_HONOR_STATS)]
         public static void HandleInspectHonorStats(Packet packet)
         {

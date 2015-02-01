@@ -494,8 +494,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_INSPECT_HONOR_STATS)]
-        public static void HandleRequestInspectHonorStats(Packet packet)
+        [Parser(Opcode.CMSG_REQUEST_HONOR_STATS)]
+        public static void HandleRequestHonorStats(Packet packet)
         {
             packet.ReadPackedGuid128("TargetGUID");
         }

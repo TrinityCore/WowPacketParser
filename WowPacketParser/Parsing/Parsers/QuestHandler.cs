@@ -1212,8 +1212,8 @@ namespace WowPacketParser.Parsing.Parsers
                 }
         }
 
-        [Parser(Opcode.SMSG_QUEST_UPDATE_ADD_PVP_KILL)]
-        public static void HandleQuestupdateAddPvpKill(Packet packet)
+        [Parser(Opcode.SMSG_QUEST_UPDATE_ADD_PVP_CREDIT)]
+        public static void HandleQuestUpdateAddPvPCredit(Packet packet)
         {
             packet.ReadInt32<QuestId>("Quest ID");
             packet.ReadInt32("Count");

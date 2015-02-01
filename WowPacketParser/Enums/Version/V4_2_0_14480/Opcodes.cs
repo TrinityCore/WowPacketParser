@@ -728,7 +728,7 @@ namespace WowPacketParser.Enums.Version.V4_2_0_14480
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x663F},
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0xAEE3},
             {Opcode.SMSG_QUEST_UPDATE_ADD_KILL, 0xB67A},
-            {Opcode.SMSG_QUEST_UPDATE_ADD_PVP_KILL, 0x727E},
+            {Opcode.SMSG_QUEST_UPDATE_ADD_PVP_CREDIT, 0x727E},
             {Opcode.SMSG_QUEST_UPDATE_COMPLETE, 0x3A73},
             {Opcode.SMSG_QUEST_UPDATE_FAILED, 0xEAB7},
             {Opcode.SMSG_QUEST_UPDATE_FAILED_TIMER, 0xBAF7},

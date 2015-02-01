@@ -310,7 +310,6 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_IGNORE_TRADE, 0x1004D}, //UnknownopcodeID
             {Opcode.CMSG_INITIATE_TRADE, 0x00413},
             {Opcode.CMSG_INSPECT, 0x078A8},
-            {Opcode.CMSG_INSPECT_HONOR_STATS, 0x00E93},
             {Opcode.CMSG_INSTANCE_LOCK_WARNING_RESPONSE, 0x034C4},
             {Opcode.CMSG_ITEM_NAME_QUERY, 0x100E3}, //UnknownopcodeID
             {Opcode.CMSG_ITEM_PURCHASE_REFUND, 0x062E8},
@@ -468,6 +467,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_REQUEST_GUILD_REWARDS_LIST, 0x02210},
             {Opcode.CMSG_REQUEST_GUILD_XP, 0x03509},
             //{Opcode.CMSG_REQUEST_GUILD_ROSTER, 0x0250D},
+            {Opcode.CMSG_REQUEST_HONOR_STATS, 0x00E93},
             {Opcode.CMSG_REQUEST_HOTFIX, 0x08589},// the client sends this after we send SMSG_HOTFIX_NOTIFY[_BLOP]}, only sent for the items that the player has in his inventory}, that are flagged to be hot fixed
             {Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS, 0x070C8},
             {Opcode.CMSG_REQUEST_PET_INFO, 0x0EAE4},
@@ -1069,7 +1069,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x07BA0},
             {Opcode.SMSG_QUEST_UPDATE_ADD_ITEM, 0x1006B},
             {Opcode.SMSG_QUEST_UPDATE_ADD_KILL, 0x0ADA0},
-            {Opcode.SMSG_QUEST_UPDATE_ADD_PVP_KILL, 0x078E0},
+            {Opcode.SMSG_QUEST_UPDATE_ADD_PVP_CREDIT, 0x078E0},
             {Opcode.SMSG_QUEST_UPDATE_COMPLETE, 0x0EDA0},
             {Opcode.SMSG_QUEST_UPDATE_FAILED, 0x0E588},
             {Opcode.SMSG_QUEST_UPDATE_FAILED_TIMER, 0x0F7CC},
