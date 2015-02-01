@@ -489,8 +489,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             {
                 // sub_5F9390
                 packet.ReadPackedGuid128("GuildGUID");
-                packet.ReadInt32("GuildLevel");
                 packet.ReadInt32("NumGuildMembers");
+                packet.ReadInt32("GuildAchievementPoints");
             }
         }
 
