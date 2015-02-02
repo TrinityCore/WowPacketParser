@@ -132,7 +132,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("VendorGUID");
             packet.ReadUInt32("Muid");
-            packet.ReadUInt32("NewQuantity");
+            packet.ReadInt32("NewQuantity");
             packet.ReadUInt32("QuantityBought");
         }
 
@@ -292,8 +292,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadItemInstance(packet);
 
             packet.ReadInt32("Quantity");
-            packet.ReadUInt32("Slot");
             packet.ReadUInt32("Muid");
+            packet.ReadUInt32("Slot");
 
             packet.ResetBitReader();
 
