@@ -292,8 +292,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadItemInstance(packet);
 
             packet.ReadInt32("Quantity");
-            packet.ReadUInt32("Muid");
             packet.ReadUInt32("Slot");
+            packet.ReadUInt32("Muid");
 
             packet.ResetBitReader();
 
