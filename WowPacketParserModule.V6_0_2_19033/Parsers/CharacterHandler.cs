@@ -363,7 +363,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (hasData == 0)
             {
-                var bits15 = (int)packet.ReadBits(7);
+                packet.ReadBit("IsDeleted");
+                var bits15 = (int)packet.ReadBits(6);
 
                 var count = new int[5];
                 for (var i = 0; i < 5; ++i)
