@@ -12,7 +12,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_SEND_MAIL_RESULT)]
-        public static void HandleSendMailResult(Packet packet)
+        public static void HandleMailCommandResult(Packet packet)
         {
             packet.ReadUInt32("MailID");
             packet.ReadUInt32E<MailActionType>("Command");
@@ -158,11 +158,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_SEND_MAIL)]
         public static void HandleSendMail(Packet packet)
         {
-            packet.ReadPackedGuid128("MailboxGuid");
+            packet.ReadPackedGuid128("Mailbox");
             packet.ReadInt32("StationeryID");
             packet.ReadInt32("PackageID");
-            packet.ReadInt64("Money");
-            packet.ReadInt64("COD");
+            packet.ReadInt64("SendMoney");
+            packet.ReadInt64("Cod");
 
             var nameLength = packet.ReadBits(9);
             var subjectLength = packet.ReadBits(9);
@@ -170,14 +170,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var itemCount = packet.ReadBits(5);
             packet.ResetBitReader();
 
-            packet.ReadWoWString("ReceiverName", nameLength);
+            packet.ReadWoWString("Target", nameLength);
             packet.ReadWoWString("Subject", subjectLength);
             packet.ReadWoWString("Body", bodyLength);
 
             for (var i = 0; i < itemCount; i++)
             {
-                packet.ReadByte("Position", i);
-                packet.ReadPackedGuid128("ItemGuid", i);
+                packet.ReadByte("AttachPosition", i);
+                packet.ReadPackedGuid128("ItemGUID", i);
             }
         }
 
@@ -194,7 +194,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Mailbox");
             packet.ReadInt32("MailID");
-            packet.ReadInt64("AttachID");
+            packet.ReadInt64("Money");
         }
 
         [Parser(Opcode.CMSG_GET_MAIL_LIST)]
