@@ -211,5 +211,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadSingle("Delay");
         }
+
+        [Parser(Opcode.CMSG_MAIL_RETURN_TO_SENDER)]
+        public static void HandleMailReturnToSender(Packet packet)
+        {
+            packet.ReadInt32("MailID");
+            packet.ReadPackedGuid128("SenderGUID");
+        }
     }
 }
