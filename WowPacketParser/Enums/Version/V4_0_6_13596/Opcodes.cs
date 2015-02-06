@@ -226,13 +226,13 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_GET_MIRROR_IMAGE_DATA, 0x0A08C},
             {Opcode.CMSG_GHOST, 0x10088}, //UnknownopcodeID
             {Opcode.CMSG_GMRESPONSE_RESOLVE, 0x062C8},
-            {Opcode.CMSG_GMSURVEY_SUBMIT, 0x0E280},
+            {Opcode.CMSG_GM_SURVEY_SUBMIT, 0x0E280},
             {Opcode.CMSG_GMTICKETSYSTEM_TOGGLE, 0x100D7}, //UnknownopcodeID
-            {Opcode.CMSG_GMTICKET_CREATE, 0x06380},
-            {Opcode.CMSG_GMTICKET_DELETETICKET, 0x0FBE4},
-            {Opcode.CMSG_GMTICKET_GETTICKET, 0x0B4C4},
-            {Opcode.CMSG_GMTICKET_SYSTEMSTATUS, 0x0ACE0},
-            {Opcode.CMSG_GMTICKET_UPDATETEXT, 0x07F8C},
+            {Opcode.CMSG_GM_TICKET_CREATE, 0x06380},
+            {Opcode.CMSG_GM_TICKET_DELETE_TICKET, 0x0FBE4},
+            {Opcode.CMSG_GM_TICKET_GET_TICKET, 0x0B4C4},
+            {Opcode.CMSG_GM_TICKET_GET_SYSTEM_STATUS, 0x0ACE0},
+            {Opcode.CMSG_GM_TICKET_UPDATE_TEXT, 0x07F8C},
             {Opcode.CMSG_GM_CHARACTER_RESTORE, 0x10198}, //UnknownopcodeID
             {Opcode.CMSG_GM_CHARACTER_SAVE, 0x10199}, //UnknownopcodeID
             {Opcode.CMSG_GM_CREATE_ITEM_TARGET, 0x10096}, //UnknownopcodeID
@@ -814,11 +814,11 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_GMRESPONSE_DB_ERROR, 0x0E0A0},
             {Opcode.SMSG_GMRESPONSE_RECEIVED, 0x033AC},
             {Opcode.SMSG_GMRESPONSE_STATUS_UPDATE, 0x00101},
-            {Opcode.SMSG_GMTICKET_CREATE, 0x0A8A0},
-            {Opcode.SMSG_GMTICKET_DELETETICKET, 0x0F48C},
-            {Opcode.SMSG_GMTICKET_GETTICKET, 0x02284},
-            {Opcode.SMSG_GMTICKET_SYSTEMSTATUS, 0x0B9C0},
-            {Opcode.SMSG_GMTICKET_UPDATETEXT, 0x0A5E8},
+            {Opcode.SMSG_GM_TICKET_CREATE, 0x0A8A0},
+            {Opcode.SMSG_GM_TICKET_DELETE_TICKET, 0x0F48C},
+            {Opcode.SMSG_GM_TICKET_GET_TICKET, 0x02284},
+            {Opcode.SMSG_GM_TICKET_GET_SYSTEM_STATUS, 0x0B9C0},
+            {Opcode.SMSG_GM_TICKET_UPDATE_TEXT, 0x0A5E8},
             {Opcode.SMSG_GM_MESSAGECHAT, 0x03AEC},
             {Opcode.SMSG_GM_TICKET_STATUS_UPDATE, 0x072C4},
             {Opcode.SMSG_GOD_MODE, 0x023EC},

@@ -218,13 +218,13 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_GET_MIRROR_IMAGE_DATA, 0x0401}, // NF()(0x0401) //
             {Opcode.CMSG_GHOST, 0x01E5}, // NF()(0x01E5) //
             {Opcode.CMSG_GMRESPONSE_RESOLVE, 0x04F0}, // NF()(0x04F0) // // lua: GMResponseResolve
-            {Opcode.CMSG_GMSURVEY_SUBMIT, 0x032A}, // NF()(0x032A) //
+            {Opcode.CMSG_GM_SURVEY_SUBMIT, 0x032A}, // NF()(0x032A) //
             {Opcode.CMSG_GMTICKETSYSTEM_TOGGLE, 0x029A}, // NF()(0x029A) //
-            {Opcode.CMSG_GMTICKET_CREATE, 0x0205}, // NF()(0x0205) //
-            {Opcode.CMSG_GMTICKET_DELETETICKET, 0x0217}, // NF()(0x0217) //
-            {Opcode.CMSG_GMTICKET_GETTICKET, 0x0211}, // NF()(0x0211) //
-            {Opcode.CMSG_GMTICKET_SYSTEMSTATUS, 0x021A}, // NF()(0x021A) //
-            {Opcode.CMSG_GMTICKET_UPDATETEXT, 0x0207}, // NF()(0x0207) //
+            {Opcode.CMSG_GM_TICKET_CREATE, 0x0205}, // NF()(0x0205) //
+            {Opcode.CMSG_GM_TICKET_DELETE_TICKET, 0x0217}, // NF()(0x0217) //
+            {Opcode.CMSG_GM_TICKET_GET_TICKET, 0x0211}, // NF()(0x0211) //
+            {Opcode.CMSG_GM_TICKET_GET_SYSTEM_STATUS, 0x021A}, // NF()(0x021A) //
+            {Opcode.CMSG_GM_TICKET_UPDATE_TEXT, 0x0207}, // NF()(0x0207) //
             {Opcode.CMSG_GM_CHARACTER_RESTORE, 0x03FA}, // NF()(0x03FA) //
             {Opcode.CMSG_GM_CHARACTER_SAVE, 0x03FB}, // NF()(0x03FB) //
             {Opcode.CMSG_GM_CREATE_ITEM_TARGET, 0x0210}, // NF()(0x0210) //
@@ -769,13 +769,13 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_GHOSTEE_GONE, 0x0326}, // NF()(0x0326) //
             {Opcode.SMSG_GMRESPONSE_DB_ERROR, 0x9576}, // (0x4375)(0x04EE) //
             {Opcode.SMSG_GMRESPONSE_RECEIVED, 0x0F57}, // (0x0A91)(0x04EF) //int32}, string[2000]}, string[4000][4]
-            {Opcode.SMSG_GMRESPONSE_STATUS_UPDATE, 0x057C}, // (0x8B39)(0x04F1) //- EVENT_GMSURVEY_DISPLAY}, 0 - EVENT_UPDATE_TICKET)
-            {Opcode.SMSG_GMTICKET_CREATE, 0x355D}, // (0xAA74)(0x0206) //
-            {Opcode.SMSG_GMTICKET_GETTICKET, 0xF47F}, // (0x6A7C)(0x0212) //
-            {Opcode.SMSG_GMTICKET_SYSTEMSTATUS, 0x467C}, // (0x6A51)(0x021B) //
-            {Opcode.SMSG_GMTICKET_UPDATETEXT, 0x5D5E}, // (0xAA79)(0x0208) //
+            {Opcode.SMSG_GMRESPONSE_STATUS_UPDATE, 0x057C}, // (0x8B39)(0x04F1) //- EVENT_GM_SURVEY_DISPLAY}, 0 - EVENT_UPDATE_TICKET)
+            {Opcode.SMSG_GM_TICKET_CREATE, 0x355D}, // (0xAA74)(0x0206) //
+            {Opcode.SMSG_GM_TICKET_GET_TICKET, 0xF47F}, // (0x6A7C)(0x0212) //
+            {Opcode.SMSG_GM_TICKET_GET_SYSTEM_STATUS, 0x467C}, // (0x6A51)(0x021B) //
+            {Opcode.SMSG_GM_TICKET_UPDATE_TEXT, 0x5D5E}, // (0xAA79)(0x0208) //
             {Opcode.SMSG_GM_MESSAGECHAT, 0x2902}, // (0xE3B0)(0x03B3) //
-            //{Opcode.SMSG_GMTICKET_DELETETICKET, 0x1656}, // (0x4A90)(0x0218) //
+            //{Opcode.SMSG_GM_TICKET_DELETE_TICKET, 0x1656}, // (0x4A90)(0x0218) //
             {Opcode.SMSG_GM_TICKET_STATUS_UPDATE, 0xBF7D}, // (0x22F4)(0x0328) //
             {Opcode.SMSG_GOD_MODE, 0x167E}, // (0x0AF5)(0x0023) //
             {Opcode.SMSG_GOGOGO_OBSOLETE, 0x03F5}, // NF()(0x03F5) //

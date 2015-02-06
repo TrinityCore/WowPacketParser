@@ -277,7 +277,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_GAME_STORE_BUY_RESULT, 0x12AB}, // CORRECT NAME?
             {Opcode.SMSG_GAME_STORE_INGAME_BUY_FAILED, 0x145A}, // CORRECT NAME?
             {Opcode.SMSG_GAME_STORE_LIST, 0x1C29},
-            {Opcode.SMSG_GMTICKET_GETTICKET, 0x054B},
+            {Opcode.SMSG_GM_TICKET_GET_TICKET, 0x054B},
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x0E52},
             {Opcode.SMSG_GOSSIP_POI, 0x058F},
             {Opcode.SMSG_GROUP_DECLINE, 0x108F},
