@@ -155,7 +155,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.CMSG_GAMEOBJ_REPORT_USE, 0x0969},
             {Opcode.CMSG_GAMEOBJ_USE, 0x0288},
             {Opcode.CMSG_GET_MAIL_LIST, 0x02A8},
-            {Opcode.CMSG_GMRESPONSE_RESOLVE, 0x06A9},
+            {Opcode.CMSG_GM_TICKET_RESPONSE_RESOLVE, 0x06A9},
             {Opcode.CMSG_GM_SURVEY_SUBMIT, 0x0A84},
             {Opcode.CMSG_GM_TICKET_CREATE, 0x0440},
             {Opcode.CMSG_GM_TICKET_DELETE_TICKET, 0x0DE5},

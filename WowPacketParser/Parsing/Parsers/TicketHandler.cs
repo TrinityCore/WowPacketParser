@@ -18,8 +18,8 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Question Number", i);
                 packet.ReadCString("Answer", i);
             }
-            packet.ReadCString("Comment");
 
+            packet.ReadCString("Comment");
         }
 
         [Parser(Opcode.CMSG_GM_TICKET_CREATE)]
@@ -41,7 +41,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 var decompCount = packet.ReadInt32();
                 var pkt = packet.Inflate(decompCount);
-                packet.ReadCString("String");
+                pkt.ReadCString("String");
                 pkt.ClosePacket(false);
             }
         }
@@ -112,7 +112,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         [Parser(Opcode.CMSG_GM_TICKET_GET_TICKET)]
         [Parser(Opcode.CMSG_GM_TICKET_GET_SYSTEM_STATUS)]
-        [Parser(Opcode.CMSG_GMRESPONSE_RESOLVE)]
+        [Parser(Opcode.CMSG_GM_TICKET_RESPONSE_RESOLVE)]
         [Parser(Opcode.CMSG_GM_TICKET_DELETE_TICKET)]
         public static void HandleTicketZeroLengthPackets(Packet packet)
         {

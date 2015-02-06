@@ -610,7 +610,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.CMSG_BATTLEFIELD_MANAGER_ADVANCE_STATE, 0x4E9},
             {Opcode.CMSG_BATTLEFIELD_MANAGER_SET_NEXT_TRANSITION_TIME, 0x4EA},
             {Opcode.CMSG_TOGGLE_XP_GAIN, 0x4EC},
-            {Opcode.CMSG_GMRESPONSE_RESOLVE, 0x4F0},
+            {Opcode.CMSG_GM_TICKET_RESPONSE_RESOLVE, 0x4F0},
             {Opcode.CMSG_GMRESPONSE_CREATE_TICKET, 0x4F3},
             {Opcode.CMSG_SERVERINFO, 0x4F4},
             {Opcode.CMSG_UI_TIME_REQUEST, 0x4F6},

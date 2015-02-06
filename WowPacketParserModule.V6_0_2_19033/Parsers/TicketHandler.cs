@@ -106,5 +106,64 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("CaseID");
         }
+
+        [Parser(Opcode.CMSG_GM_TICKET_CREATE)]
+        public static void HandleGMTicketCreate(Packet packet)
+        {
+            // TODO: confirm order, test
+            packet.ReadInt32<MapId>("Map");
+            packet.ReadVector3("Pos");
+            packet.ReadByte("Flags");
+
+            var descriptionLength = packet.ReadBits("DescriptionLength", 11);
+            packet.ResetBitReader();
+            packet.ReadWoWString("Description", descriptionLength);
+
+            packet.ReadBit("NeedMoreHelp");
+            packet.ReadBit("NeedResponse");
+            packet.ResetBitReader();
+
+            var dataCount = packet.ReadInt32("ChatHistoryDataCount");
+            var pkt = packet.Inflate(dataCount);
+            pkt.ReadCString("ChatHistoryData");
+            pkt.ClosePacket(false);
+        }
+
+        [Parser(Opcode.CMSG_GM_TICKET_UPDATE_TEXT)]
+        public static void HandleGMTicketUpdatetext(Packet packet)
+        {
+            var length = packet.ReadBits("DescriptionLength", 11);
+            packet.ResetBitReader();
+
+            packet.ReadWoWString("Description", length);
+        }
+
+        public static void ReadClientGMSurveyQuestion(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("QuestionID", idx);
+            packet.ReadByte("Answer", idx);
+
+            packet.ResetBitReader();
+            var length = packet.ReadBits("AnswerCommentLength", 11, idx);
+            packet.ResetBitReader();
+
+            packet.ReadWoWString("AnswerComment", length, idx);
+        }
+
+        [Parser(Opcode.CMSG_GM_SURVEY_SUBMIT)]
+        public static void HandleGMSurveySubmit(Packet packet)
+        {
+            packet.ReadInt32("SurveyID");
+
+            var questionCount = packet.ReadBits("SurveyQuestionCount", 4);
+            var commentLenght = packet.ReadBits("CommentLength", 11);
+
+            packet.ResetBitReader();
+
+            for (var i = 0; i < questionCount; ++i)
+                ReadClientGMSurveyQuestion(packet, "SurveyQuestion", i);
+
+            packet.ReadWoWString("Comment", commentLenght);
+        }
     }
 }

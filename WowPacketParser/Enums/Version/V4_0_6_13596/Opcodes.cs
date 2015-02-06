@@ -225,7 +225,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_GET_MAIL_LIST, 0x0B284},
             {Opcode.CMSG_GET_MIRROR_IMAGE_DATA, 0x0A08C},
             {Opcode.CMSG_GHOST, 0x10088}, //UnknownopcodeID
-            {Opcode.CMSG_GMRESPONSE_RESOLVE, 0x062C8},
+            {Opcode.CMSG_GM_TICKET_RESPONSE_RESOLVE, 0x062C8},
             {Opcode.CMSG_GM_SURVEY_SUBMIT, 0x0E280},
             {Opcode.CMSG_GMTICKETSYSTEM_TOGGLE, 0x100D7}, //UnknownopcodeID
             {Opcode.CMSG_GM_TICKET_CREATE, 0x06380},

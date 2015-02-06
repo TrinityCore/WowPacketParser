@@ -162,7 +162,7 @@ namespace WowPacketParser.Enums.Version.V4_2_0_14480
             {Opcode.CMSG_GET_ITEM_PURCHASE_DATA, 0xE276},
             {Opcode.CMSG_GET_MAIL_LIST, 0xEA33},
             {Opcode.CMSG_GET_MIRROR_IMAGE_DATA, 0xEEEA},
-            {Opcode.CMSG_GMRESPONSE_RESOLVE, 0x363E},
+            {Opcode.CMSG_GM_TICKET_RESPONSE_RESOLVE, 0x363E},
             {Opcode.CMSG_GM_SURVEY_SUBMIT, 0xBEBB},
             {Opcode.CMSG_GM_TICKET_CREATE, 0x2223},
             {Opcode.CMSG_GM_TICKET_DELETE_TICKET, 0xFE22},

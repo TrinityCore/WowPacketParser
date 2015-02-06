@@ -217,7 +217,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_GET_MAIL_LIST, 0x023A}, // NF()(0x023A) //
             {Opcode.CMSG_GET_MIRROR_IMAGE_DATA, 0x0401}, // NF()(0x0401) //
             {Opcode.CMSG_GHOST, 0x01E5}, // NF()(0x01E5) //
-            {Opcode.CMSG_GMRESPONSE_RESOLVE, 0x04F0}, // NF()(0x04F0) // // lua: GMResponseResolve
+            {Opcode.CMSG_GM_TICKET_RESPONSE_RESOLVE, 0x04F0}, // NF()(0x04F0) // // lua: GMResponseResolve
             {Opcode.CMSG_GM_SURVEY_SUBMIT, 0x032A}, // NF()(0x032A) //
             {Opcode.CMSG_GMTICKETSYSTEM_TOGGLE, 0x029A}, // NF()(0x029A) //
             {Opcode.CMSG_GM_TICKET_CREATE, 0x0205}, // NF()(0x0205) //
