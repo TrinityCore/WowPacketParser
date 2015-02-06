@@ -960,8 +960,6 @@ namespace WowPacketParser.Enums
         CMSG_START_WARGAME,
         CMSG_STOP_DANCE,
         CMSG_STORE_LOOT_IN_SLOT,
-        CMSG_SUBMIT_BUG,
-        CMSG_SUBMIT_COMPLAIN,
         CMSG_SUGGESTION_SUBMIT,
         CMSG_SUMMON_CANCEL,
         CMSG_SUMMON_RESPONSE,

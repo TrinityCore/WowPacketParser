@@ -165,5 +165,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadWoWString("Comment", commentLenght);
         }
+
+        public static void ReadCliSupportTicketHeader(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32<MapId>("MapID", idx);
+            packet.ReadVector3("Position", idx);
+            packet.ReadSingle("Facing", idx);
+        }
+
+        [Parser(Opcode.CMSG_SUPPORT_TICKET_SUBMIT_SUGGESTION)]
+        [Parser(Opcode.CMSG_SUPPORT_TICKET_SUBMIT_BUG)]
+        public static void HandleSubmitBug(Packet packet)
+        {
+            ReadCliSupportTicketHeader(packet, "Header");
+
+            var noteLength = packet.ReadBits("NoteLength", 11);
+            packet.ResetBitReader();
+            packet.ReadWoWString("Note", noteLength);
+        }
     }
 }

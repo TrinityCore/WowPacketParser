@@ -134,7 +134,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_SUBMIT_BUG)]
+        [Parser(Opcode.CMSG_SUPPORT_TICKET_SUBMIT_BUG)]
         public static void HandleSubmitBug(Packet packet)
         {
             var length = packet.ReadBits(12);
@@ -149,7 +149,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.AddValue("Position", pos);
         }
 
-        [Parser(Opcode.CMSG_SUBMIT_COMPLAIN)]
+        [Parser(Opcode.CMSG_SUPPORT_TICKET_SUBMIT_COMPLAINT)]
         public static void HandleSubmitComplain(Packet packet)
         {
             var pos = new Vector4();
