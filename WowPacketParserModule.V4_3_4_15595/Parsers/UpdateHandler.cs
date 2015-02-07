@@ -31,7 +31,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                         var guid = packet.ReadPackedGuid("GUID", i);
 
                         WoWObject obj;
-                        var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlock(ref packet, guid.GetObjectType(), i, false);
+                        var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, guid.GetObjectType(), i, false);
 
                         if (Storage.Objects.TryGetValue(guid, out obj))
                         {
@@ -46,23 +46,23 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     case "CreateObject2":
                     {
                         var guid = packet.ReadPackedGuid("GUID", i);
-                        ReadCreateObjectBlock(ref packet, guid, map, i);
+                        ReadCreateObjectBlock(packet, guid, map, i);
                         break;
                     }
                     case "DestroyObjects":
                     {
-                        CoreParsers.UpdateHandler.ReadObjectsBlock(ref packet, i);
+                        CoreParsers.UpdateHandler.ReadObjectsBlock(packet, i);
                         break;
                     }
                 }
             }
         }
 
-        private static void ReadCreateObjectBlock(ref Packet packet, WowGuid guid, uint map, object index)
+        private static void ReadCreateObjectBlock(Packet packet, WowGuid guid, uint map, object index)
         {
-            var objType = packet.ReadEnum<ObjectType>("Object Type", TypeCode.Byte, index);
-            var moves = ReadMovementUpdateBlock434(ref packet, guid, index);
-            var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlock(ref packet, objType, index, true);
+            var objType = packet.ReadByteE<ObjectType>("Object Type", index);
+            var moves = ReadMovementUpdateBlock434(packet, guid, index);
+            var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, objType, index, true);
 
             WoWObject obj;
             switch (objType)
@@ -106,7 +106,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.AddSniffData(Utilities.ObjectTypeToStore(objType), (int)guid.GetEntry(), "SPAWN");
         }
 
-        private static MovementInfo ReadMovementUpdateBlock434(ref Packet packet, WowGuid guid, object index)
+        private static MovementInfo ReadMovementUpdateBlock434(Packet packet, WowGuid guid, object index)
         {
             var moveInfo = new MovementInfo();
             var waypointInfo = new Waypoint();
@@ -404,12 +404,12 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     packet.ReadXORByte(transportGuid, 6);
                     packet.ReadXORByte(transportGuid, 2);
                     packet.ReadXORByte(transportGuid, 4);
-                    moveInfo.TransportGuid = new WowGuid(BitConverter.ToUInt64(transportGuid, 0));
+                    moveInfo.TransportGuid = new WowGuid64(BitConverter.ToUInt64(transportGuid, 0));
                     packet.AddValue("Transport GUID", moveInfo.TransportGuid, index);
                     packet.AddValue("Transport Position", moveInfo.TransportOffset, index);
 
                     if (moveInfo.TransportGuid.HasEntry() && moveInfo.TransportGuid.GetHighType() == HighGuidType.Vehicle &&
-                        guid.HasEntry() && guid.GetHighType() == HighGuidType.Unit)
+                        guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
                     {
                         var vehicleAccessory = new VehicleTemplateAccessory();
                         vehicleAccessory.AccessoryEntry = guid.GetEntry();
@@ -482,7 +482,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 if (hasGOTransportTime2)
                     packet.ReadUInt32("GO Transport Time 2", index);
 
-                moveInfo.TransportGuid = new WowGuid(BitConverter.ToUInt64(goTransportGuid, 0));
+                moveInfo.TransportGuid = new WowGuid64(BitConverter.ToUInt64(goTransportGuid, 0));
                 packet.AddValue("GO Transport GUID", moveInfo.TransportGuid, index);
                 packet.AddValue("GO Transport Position", moveInfo.TransportOffset, index);
             }

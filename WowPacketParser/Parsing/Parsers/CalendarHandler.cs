@@ -15,9 +15,9 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadInt64("Event ID", i);
                 packet.ReadInt64("Invite ID", i);
-                packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Byte, i);
-                packet.ReadEnum<CalendarModerationRank>("Moderation Rank", TypeCode.Byte, i);
-                packet.ReadBoolean("Guild Event", i);
+                packet.ReadByteE<CalendarEventStatus>("Status", i);
+                packet.ReadByteE<CalendarModerationRank>("Moderation Rank", i);
+                packet.ReadBool("Guild Event", i);
                 packet.ReadPackedGuid("Creator GUID", i);
             }
 
@@ -27,10 +27,10 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadInt64("Event ID", i);
                 packet.ReadCString("Event Title", i);
-                packet.ReadEnum<CalendarEventType>("Event Type", TypeCode.Int32, i);
+                packet.ReadInt32E<CalendarEventType>("Event Type", i);
                 packet.ReadPackedTime("Event Time", i);
-                packet.ReadEnum<CalendarFlag>("Event Flags", TypeCode.Int32, i);
-                packet.ReadEntry<Int32>(StoreNameType.LFGDungeon, "Dungeon ID", i);
+                packet.ReadInt32E<CalendarFlag>("Event Flags", i);
+                packet.ReadInt32<LFGDungeonId>("Dungeon ID", i);
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
                     packet.ReadGuid("Guild GUID", i);
@@ -45,8 +45,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < instanceResetCount; i++)
             {
-                packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID", i);
-                packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32, i);
+                packet.ReadInt32<MapId>("Map ID", i);
+                packet.ReadInt32E<MapDifficulty>("Difficulty", i);
                 packet.ReadInt32("Time left", i);
                 packet.ReadGuid("Instance ID", i);
             }
@@ -57,7 +57,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < raidResetCount; i++)
             {
-                packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID", i);
+                packet.ReadInt32<MapId>("Map ID", i);
                 packet.ReadInt32("Time left", i);
                 packet.ReadInt32("Unk Time", i);
             }
@@ -76,7 +76,7 @@ namespace WowPacketParser.Parsing.Parsers
                 for (var j = 0; j < 10; j++)
                     packet.ReadInt32("Duration", i, j);
                 for (var j = 0; j < 10; j++)
-                    packet.ReadEnum<CalendarFlag>("Calendar Flags", TypeCode.Int32, i, j);
+                    packet.ReadInt32E<CalendarFlag>("Calendar Flags", i, j);
                 packet.ReadCString("Holiday Name", i);
             }
         }
@@ -90,16 +90,16 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CALENDAR_SEND_EVENT)]
         public static void HandleSendCalendarEvent(Packet packet)
         {
-            packet.ReadEnum<CalendarSendEventType>("Send Event Type", TypeCode.Byte);
+            packet.ReadByteE<CalendarSendEventType>("Send Event Type");
             packet.ReadPackedGuid("Creator GUID");
             packet.ReadInt64("Event ID");
             packet.ReadCString("Title");
             packet.ReadCString("Description");
-            packet.ReadEnum<CalendarEventType>("Event Type", TypeCode.Byte);
-            packet.ReadEnum<CalendarRepeatType>("Repeat Type", TypeCode.Byte);
+            packet.ReadByteE<CalendarEventType>("Event Type");
+            packet.ReadByteE<CalendarRepeatType>("Repeat Type");
             packet.ReadInt32("Max Invites");
-            packet.ReadEntry<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
-            packet.ReadEnum<CalendarFlag>("Event Flags", TypeCode.Int32);
+            packet.ReadInt32<LFGDungeonId>("Dungeon ID");
+            packet.ReadInt32E<CalendarFlag>("Event Flags");
             packet.ReadPackedTime("Event Time");
             packet.ReadPackedTime("Unk PackedTime");
             if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
@@ -113,9 +113,9 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadPackedGuid("Invitee GUID", i);
                 packet.ReadByte("Player Level", i);
-                packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Byte, i);
-                packet.ReadEnum<CalendarModerationRank>("Moderation Rank", TypeCode.Byte, i);
-                packet.ReadBoolean("Guild Member", i);
+                packet.ReadByteE<CalendarEventStatus>("Status", i);
+                packet.ReadByteE<CalendarModerationRank>("Moderation Rank", i);
+                packet.ReadBool("Guild Member", i);
                 packet.ReadInt64("Invite ID", i);
                 packet.ReadPackedTime("Status Time", i);
                 packet.ReadCString("Invite Text", i);
@@ -154,14 +154,14 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadCString("Title");
             packet.ReadCString("Description");
-            packet.ReadEnum<CalendarEventType>("Event Type", TypeCode.Byte);
-            packet.ReadEnum<CalendarRepeatType>("Repeat Type", TypeCode.Byte);
+            packet.ReadByteE<CalendarEventType>("Event Type");
+            packet.ReadByteE<CalendarRepeatType>("Repeat Type");
             packet.ReadInt32("Max Invites");
-            packet.ReadEntry<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
+            packet.ReadInt32<LFGDungeonId>("Dungeon ID");
             packet.ReadPackedTime("Event Time");
             packet.ReadPackedTime("Unk PackedTime");
 
-            var flags = packet.ReadEnum<CalendarFlag>("Event Flags", TypeCode.Int32);
+            var flags = packet.ReadInt32E<CalendarFlag>("Event Flags");
 
             if ((flags & CalendarFlag.GuildAnnouncement) != 0)
                 return;
@@ -171,8 +171,8 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; i++)
             {
                 packet.ReadPackedGuid("Creator GUID");
-                packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Byte);
-                packet.ReadEnum<CalendarModerationRank>("Moderation Rank", TypeCode.Byte);
+                packet.ReadByteE<CalendarEventStatus>("Status");
+                packet.ReadByteE<CalendarModerationRank>("Moderation Rank");
             }
         }
 
@@ -183,13 +183,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt64("Invite ID");
             packet.ReadCString("Title");
             packet.ReadCString("Description");
-            packet.ReadEnum<CalendarEventType>("Event Type", TypeCode.Byte);
-            packet.ReadEnum<CalendarRepeatType>("Repeat Type", TypeCode.Byte);
+            packet.ReadByteE<CalendarEventType>("Event Type");
+            packet.ReadByteE<CalendarRepeatType>("Repeat Type");
             packet.ReadInt32("Max Invites");
-            packet.ReadEntry<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
+            packet.ReadInt32<LFGDungeonId>("Dungeon ID");
             packet.ReadPackedTime("Event Time");
             packet.ReadPackedTime("Unk PackedTime");
-            packet.ReadEnum<CalendarFlag>("Event Flags", TypeCode.Int32);
+            packet.ReadInt32E<CalendarFlag>("Event Flags");
         }
 
         [Parser(Opcode.CMSG_CALENDAR_REMOVE_EVENT)]
@@ -197,7 +197,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadInt64("Event ID");
             packet.ReadInt64("Invite ID");
-            packet.ReadEnum<CalendarFlag>("Event Flags", TypeCode.Int32);
+            packet.ReadInt32E<CalendarFlag>("Event Flags");
         }
 
         [Parser(Opcode.CMSG_CALENDAR_COPY_EVENT)]
@@ -214,8 +214,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt64("Event ID");
             packet.ReadInt64("Invite ID");
             packet.ReadCString("Name");
-            packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Byte);
-            packet.ReadEnum<CalendarModerationRank>("Moderation Rank", TypeCode.Byte);
+            packet.ReadByteE<CalendarEventStatus>("Status");
+            packet.ReadByteE<CalendarModerationRank>("Moderation Rank");
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE)]
@@ -225,12 +225,12 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt64("Event ID");
             packet.ReadInt64("Invite ID");
             packet.ReadByte("Player Level");
-            packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Byte);
+            packet.ReadByteE<CalendarEventStatus>("Status");
 
-            if (packet.ReadBoolean("Has Confirm Time"))
+            if (packet.ReadBool("Has Confirm Time"))
                 packet.ReadPackedTime("Confirm Time");
 
-            packet.ReadBoolean("Guild Event");
+            packet.ReadBool("Guild Event");
         }
 
         [Parser(Opcode.CMSG_CALENDAR_EVENT_INVITE_NOTES)]
@@ -239,7 +239,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("Invitee GUID");
             packet.ReadInt64("Invite ID");
             packet.ReadCString("Invite Text");
-            packet.ReadBoolean("Unk Boolean");
+            packet.ReadBool("Unk Boolean");
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_NOTES_ALERT)]
@@ -255,7 +255,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("Invitee GUID");
             packet.ReadInt64("Invite ID");
             packet.ReadCString("Invite Text");
-            packet.ReadBoolean("Unk bool");
+            packet.ReadBool("Unk bool");
         }
 
         [Parser(Opcode.CMSG_CALENDAR_EVENT_REMOVE_INVITE)]
@@ -272,7 +272,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadPackedGuid("GUID");
             packet.ReadInt64("Invite ID");
-            packet.ReadEnum<CalendarFlag>("Event Flags", TypeCode.Int32);
+            packet.ReadInt32E<CalendarFlag>("Event Flags");
             packet.ReadByte("Unk Byte");
         }
 
@@ -283,7 +283,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt64("Event ID");
             packet.ReadInt64("Invite ID");
             packet.ReadInt64("Owner Invite ID"); // sender's invite id?
-            packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Int32);
+            packet.ReadInt32E<CalendarEventStatus>("Status");
         }
 
         [Parser(Opcode.CMSG_CALENDAR_EVENT_MODERATOR_STATUS)]
@@ -293,7 +293,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt64("Event ID");
             packet.ReadInt64("Invite ID");
             packet.ReadInt64("Owner Invite ID"); // sender's invite id?
-            packet.ReadEnum<CalendarModerationRank>("Rank", TypeCode.Int32);
+            packet.ReadInt32E<CalendarModerationRank>("Rank");
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_STATUS)]
@@ -302,9 +302,9 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("GUID");
             packet.ReadInt64("Event ID");
             packet.ReadPackedTime("Event Time");
-            packet.ReadEnum<CalendarFlag>("Event Flags", TypeCode.Int32);
-            packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Byte);
-            packet.ReadEnum<CalendarModerationRank>("Moderation Rank", TypeCode.Byte);
+            packet.ReadInt32E<CalendarFlag>("Event Flags");
+            packet.ReadByteE<CalendarEventStatus>("Status");
+            packet.ReadByteE<CalendarModerationRank>("Moderation Rank");
             packet.ReadPackedTime("Event status change time");
         }
 
@@ -313,8 +313,8 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadPackedGuid("Invitee GUID");
             packet.ReadInt64("Event ID");
-            packet.ReadEnum<CalendarModerationRank>("Rank", TypeCode.Byte);
-            packet.ReadBoolean("Unk Boolean");
+            packet.ReadByteE<CalendarModerationRank>("Rank");
+            packet.ReadBool("Unk Boolean");
         }
 
         [Parser(Opcode.CMSG_CALENDAR_COMPLAIN, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -343,15 +343,15 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadInt64("Event ID");
             packet.ReadInt64("Invite ID");
-            packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Int32);
+            packet.ReadInt32E<CalendarEventStatus>("Status");
         }
 
         [Parser(Opcode.SMSG_CALENDAR_RAID_LOCKOUT_ADDED)]
         public static void HandleRaidLockoutAdded(Packet packet)
         {
             packet.ReadPackedTime("Time");
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
-            packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
+            packet.ReadInt32<MapId>("Map ID");
+            packet.ReadInt32E<MapDifficulty>("Difficulty");
             packet.ReadInt32("Reset Time");
             packet.ReadGuid("Instance ID");
         }
@@ -359,8 +359,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CALENDAR_RAID_LOCKOUT_REMOVED)]
         public static void HandleRaidLockoutRemoved(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
-            packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
+            packet.ReadInt32<MapId>("Map ID");
+            packet.ReadInt32E<MapDifficulty>("Difficulty");
             packet.ReadInt32("Reset Time");
             packet.ReadGuid("Instance ID");
         }
@@ -381,16 +381,16 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt64("Event ID");
             packet.ReadCString("Title");
             packet.ReadPackedTime("Time");
-            packet.ReadEnum<CalendarFlag>("Event Flags", TypeCode.Int32);
-            packet.ReadEnum<CalendarEventType>("Type", TypeCode.Int32);
-            packet.ReadEntry<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
+            packet.ReadInt32E<CalendarFlag>("Event Flags");
+            packet.ReadInt32E<CalendarEventType>("Type");
+            packet.ReadInt32<LFGDungeonId>("Dungeon ID");
             packet.ReadInt64("Invite ID");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0a_15050))
             {
                 packet.ReadGuid("Guild GUID");
             }
-            packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Byte);
-            packet.ReadEnum<CalendarModerationRank>("Moderation Rank", TypeCode.Byte);
+            packet.ReadByteE<CalendarEventStatus>("Status");
+            packet.ReadByteE<CalendarModerationRank>("Moderation Rank");
             packet.ReadPackedGuid("Creator GUID");
             packet.ReadPackedGuid("Sender GUID");
         }
@@ -409,13 +409,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Unk byte (UpdatedAlert)");
             packet.ReadInt64("Event ID");
             packet.ReadPackedTime("Event Time");
-            packet.ReadEnum<CalendarFlag>("Event Flags", TypeCode.Int32);
+            packet.ReadInt32E<CalendarFlag>("Event Flags");
             packet.ReadPackedTime("Time2");
-            packet.ReadEnum<CalendarEventType>("Event Type", TypeCode.Byte);
-            packet.ReadEntry<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
+            packet.ReadByteE<CalendarEventType>("Event Type");
+            packet.ReadInt32<LFGDungeonId>("Dungeon ID");
             packet.ReadCString("Title");
             packet.ReadCString("Description");
-            packet.ReadEnum<CalendarRepeatType>("Repeat Type", TypeCode.Byte);
+            packet.ReadByteE<CalendarRepeatType>("Repeat Type");
             packet.ReadInt32("Max Invites");
             packet.ReadInt32("Unk int32 (UpdatedAlert)");
         }
@@ -426,7 +426,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("UnkInt1");
             packet.ReadCString("UnkString1");
             packet.ReadCString("Param 1"); // if %s is used in the error message
-            packet.ReadEnum<CalendarError>("Error", TypeCode.Int32);
+            packet.ReadInt32E<CalendarError>("Error");
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_REMOVED_ALERT)]
@@ -434,8 +434,8 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadInt64("Event ID");
             packet.ReadPackedTime("Event Time");
-            packet.ReadEnum<CalendarFlag>("Event Flags", TypeCode.Int32);
-            packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Byte);
+            packet.ReadInt32E<CalendarFlag>("Event Flags");
+            packet.ReadByteE<CalendarEventStatus>("Status");
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_STATUS_ALERT)]
@@ -444,14 +444,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt64("Event ID");
             packet.ReadPackedTime("Event Time");
             packet.ReadInt32("Unk flag"); // (v38 & 0x440) != 0
-            packet.ReadBoolean("DeletePendingInvite");
+            packet.ReadBool("DeletePendingInvite");
         }
 
         [Parser(Opcode.CMSG_CALENDAR_EVENT_SIGNUP)]
         public static void HandleCalendarEventSignup(Packet packet)
         {
             packet.ReadInt64("Event ID");
-            packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Byte);
+            packet.ReadByteE<CalendarEventStatus>("Status");
         }
 
         [Parser(Opcode.CMSG_CALENDAR_GET_CALENDAR)]

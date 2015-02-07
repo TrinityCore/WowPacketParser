@@ -31,12 +31,12 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.StartBitStream(guid, 1, 4, 7, 3, 2, 6, 5, 0);
             packet.ParseBitStream(guid, 5, 1, 0, 6, 2, 4, 7, 3);
 
-            CoreParsers.SessionHandler.LoginGuid = new WowGuid(BitConverter.ToUInt64(guid, 0));
+            CoreParsers.SessionHandler.LoginGuid = new WowGuid64(BitConverter.ToUInt64(guid, 0));
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SEND_SERVER_LOCATION)]
-        public static void HandleSendServerLocation(Packet packet)
+        [Parser(Opcode.SMSG_SET_TIME_ZONE_INFORMATION)]
+        public static void HandleSetTimeZoneInformation(Packet packet)
         {
             var len1 = packet.ReadBits(7);
             var len2 = packet.ReadBits(7);
@@ -56,7 +56,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             packet.WriteGuid("Guid", guid);
 
-            CoreParsers.SessionHandler.LoginGuid = new WowGuid(BitConverter.ToUInt64(guid, 0));
+            CoreParsers.SessionHandler.LoginGuid = new WowGuid64(BitConverter.ToUInt64(guid, 0));
         }
     }
 }

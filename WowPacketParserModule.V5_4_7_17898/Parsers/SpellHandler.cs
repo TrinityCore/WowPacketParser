@@ -68,7 +68,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
                     {
                         packet.ParseBitStream(casterGUID[i], 2, 5, 6, 7, 0, 1, 4, 3);
                         packet.WriteGuid("Caster GUID", casterGUID[i], i);
-                        aura.CasterGuid = new WowGuid(BitConverter.ToUInt64(casterGUID[i], 0));
+                        aura.CasterGuid = new WowGuid64(BitConverter.ToUInt64(casterGUID[i], 0));
                     }
 
                     for (var j = 0; j < bits48[i]; ++j)
@@ -78,21 +78,15 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
                         packet.ReadSingle("Effect Value", i, j);
 
                     packet.ReadInt32("Effect Mask", i);
-                    aura.AuraFlags = packet.ReadEnum<AuraFlagMoP>("Flags", TypeCode.Byte, i);
-                    var id = packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i);
+                    aura.AuraFlags = packet.ReadByteE<AuraFlagMoP>("Flags", i);
+                    var id = packet.ReadInt32<SpellId>("Spell ID", i);
                     aura.SpellId = (uint)id;
                     aura.Level = packet.ReadUInt16("Caster Level", i);
                     aura.Charges = packet.ReadByte("Charges", i);
 
-                    if (hasMaxDuration[i])
-                        aura.MaxDuration = packet.ReadInt32("Max Duration", i);
-                    else
-                        aura.MaxDuration = 0;
+                    aura.MaxDuration = hasMaxDuration[i] ? packet.ReadInt32("Max Duration", i) : 0;
 
-                    if (hasDuration[i])
-                        aura.Duration = packet.ReadInt32("Duration", i);
-                    else
-                        aura.Duration = 0;
+                    aura.Duration = hasDuration[i] ? packet.ReadInt32("Duration", i) : 0;
                 }
                 packet.ReadByte("Slot", i);
             }
@@ -344,7 +338,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             }
 
             if (hasSpellId)
-                packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+                packet.ReadInt32<SpellId>("Spell ID");
 
             packet.ParseBitStream(guid5, 7, 0, 1, 2, 3, 5, 6, 4);
 
@@ -548,7 +542,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             if (hasDelayTime)
                 packet.ReadInt32("hasDelayTime");
 
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32<SpellId>("Spell ID");
 
             if (hasSplineElevation)
                 packet.ReadByte("Byte180");
@@ -583,11 +577,11 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             for (var i = 0; i < predictedPowerCount; ++i)
             {
                 packet.ReadInt32("Value", i);
-                packet.ReadEnum<PowerType>("Power type", TypeCode.Byte, i);
+                packet.ReadByteE<PowerType>("Power type", i);
             }
 
             packet.ReadByte("CastCount");
-            packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Int32);
+            packet.ReadInt32E<CastFlag>("Cast Flags");
 
             if (hasPredictedType)
                 packet.ReadByte("hasPredictedType");
@@ -801,7 +795,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
 
             if (hasTargetFlags)
                 packet.ReadEnum<TargetFlag>("Target Flags", 20);
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32<SpellId>("Spell ID");
 
             if (hasDestLocation)
             {
@@ -934,7 +928,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
 
             for (var i = 0; i < predictedPowerCount; ++i)
             {
-                packet.ReadEnum<PowerType>("Power type", TypeCode.Byte, i);
+                packet.ReadByteE<PowerType>("Power type", i);
                 packet.ReadInt32("Value", i);
             }
 
@@ -944,7 +938,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
                 packet.ReadInt32("Int174");
             }
 
-            packet.ReadEnum<CastFlag>("Cast Flags", TypeCode.Int32);
+            packet.ReadInt32E<CastFlag>("Cast Flags");
             packet.ReadInt32("getMSTime");
             packet.ReadXORByte(guid2, 7);
             packet.ReadByte("CastCount");
@@ -990,36 +984,36 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
 
         }
 
-        [Parser(Opcode.SMSG_LEARNED_SPELL)]
-        public static void HandleLearnSpell(Packet packet)
+        [Parser(Opcode.SMSG_LEARNED_SPELLS)]
+        public static void HandleLearnedSpells(Packet packet)
         {
-            packet.ReadBit("Unk Bits");
+            packet.ReadBit("SuppressMessaging");
             var count = packet.ReadBits("Spell Count", 22);
 
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i);
+                packet.ReadInt32<SpellId>("Spell ID", i);
         }
 
-        [Parser(Opcode.SMSG_REMOVED_SPELL)]
+        [Parser(Opcode.SMSG_UNLEARNED_SPELLS)]
         public static void HandleRemovedSpell(Packet packet)
         {
             var count = packet.ReadBits("Spell Count", 22);
 
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID", i);
+                packet.ReadUInt32<SpellId>("Spell ID", i);
         }
 
         [Parser(Opcode.SMSG_INITIAL_SPELLS)]
         public static void HandleInitialSpells(Packet packet)
         {
-            packet.ReadBit("Unk Bit");
+            packet.ReadBit("InitialLogin");
             var count = packet.ReadBits("Spell Count", 22);
 
             var spells = new List<uint>((int)count);
             for (var i = 0; i < count; i++)
             {
-                var spellId = packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID", i);
-                spells.Add((uint)spellId);
+                var spellId = packet.ReadUInt32<SpellId>("Spell ID", i);
+                spells.Add(spellId);
             }
 
             var startSpell = new StartSpell { Spells = spells };
@@ -1041,7 +1035,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             for (var i = 0; i < count; i++)
             {
                 packet.ReadInt32("Unk Int32", i);
-                packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i);
+                packet.ReadInt32<SpellId>("Spell ID", i);
                 packet.ReadByte("Unk Byte", i);
             }
         }
@@ -1057,7 +1051,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
 
             for (var j = 0; j < modCount; ++j)
             {
-                packet.ReadEnum<SpellModOp>("Spell Mod", TypeCode.Byte, j);
+                packet.ReadByteE<SpellModOp>("Spell Mod", j);
 
                 for (var i = 0; i < modTypeCount[j]; ++i)
                 {
@@ -1084,7 +1078,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
                     packet.ReadByte("Spell Mask bitpos", j, i);
                 }
 
-                packet.ReadEnum<SpellModOp>("Spell Mod", TypeCode.Byte, j);
+                packet.ReadByteE<SpellModOp>("Spell Mod", j);
             }
         }
 
@@ -1124,7 +1118,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 2);
             packet.ReadXORByte(guid, 6);
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32<SpellId>("Spell ID");
             packet.ReadXORByte(guid, 7);
 
             packet.WriteGuid("Guid", guid);
@@ -1152,7 +1146,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
 
             for (var i = 0; i < bits10; ++i)
             {
-                packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
+                packet.ReadUInt32<SpellId>("Spell ID");
                 packet.ReadInt32("Time");
             }
 
@@ -1194,7 +1188,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 0);
-            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadUInt32<SpellId>("Spell ID");
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 2);
@@ -1207,9 +1201,9 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
         [Parser(Opcode.SMSG_PET_CAST_FAILED)]
         public static void HandleCastFailed(Packet packet)
         {
-            var result = packet.ReadEnum<SpellCastFailureReason>("Reason", TypeCode.Int32);
+            var result = packet.ReadInt32E<SpellCastFailureReason>("Reason");
             packet.ReadByte("Cast count");
-            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadUInt32<SpellId>("Spell ID");
 
             var bit18 = !packet.ReadBit();
             var bit14 = !packet.ReadBit();
@@ -1231,9 +1225,9 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 2);
             packet.ReadXORByte(guid, 5);
-            packet.ReadEnum<SpellCastFailureReason>("Reason", TypeCode.Byte);
+            packet.ReadByteE<SpellCastFailureReason>("Reason");
             packet.ReadByte("Cast count");
-            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadUInt32<SpellId>("Spell ID");
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 3);
@@ -1254,9 +1248,9 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 3);
-            packet.ReadEnum<SpellCastFailureReason>("Reason", TypeCode.Byte);
+            packet.ReadByteE<SpellCastFailureReason>("Reason");
             packet.ReadXORByte(guid, 7);
-            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadUInt32<SpellId>("Spell ID");
             packet.ReadXORByte(guid, 1);
             packet.ReadByte("Cast count");
             packet.ReadXORByte(guid, 0);
@@ -1264,7 +1258,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPELLINTERRUPTLOG)] // 4.3.4
+        [Parser(Opcode.SMSG_SPELL_INTERRUPT_LOG)] // 4.3.4
         public static void HandleSpellInterruptLog(Packet packet)
         {
             var guid1 = new byte[8];
@@ -1299,10 +1293,10 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid2, 3);
             packet.ReadXORByte(guid2, 4);
             packet.ReadXORByte(guid1, 6);
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Interrupted Spell ID");
+            packet.ReadInt32<SpellId>("Interrupted Spell ID");
             packet.ReadXORByte(guid1, 0);
             packet.ReadXORByte(guid2, 5);
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Interrupt Spell ID");
+            packet.ReadInt32<SpellId>("Interrupt Spell ID");
             packet.ReadXORByte(guid1, 4);
 
             packet.WriteGuid("Guid1", guid1);
@@ -1316,14 +1310,14 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
 
             packet.ReadByte("Slot");
             packet.ReadInt32("Duration");
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32<SpellId>("Spell ID");
             packet.StartBitStream(guid, 5, 2, 4, 7, 6, 1, 3, 0);
             packet.ParseBitStream(guid, 4, 3, 7, 6, 5, 1, 0, 2);
 
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPELLLOGEXECUTE)]
+        [Parser(Opcode.SMSG_SPELL_EXECUTE_LOG)]
         public static void HandleSpellLogExecute(Packet packet)
         {
             var guid1 = new byte[8];
@@ -1466,10 +1460,10 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
                 for (var j = 0; j < bits54[i]; ++j)
                     packet.ReadInt32("IntEB", i, j);
 
-                var type = packet.ReadEnum<SpellEffect>("Spell Effect", TypeCode.Int32, i);
+                var type = packet.ReadInt32E<SpellEffect>("Spell Effect", i);
 
                 for (var j = 0; j < bits44[i]; ++j)
-                    packet.ReadEntry<Int32>(StoreNameType.Item, "Created Item", i, j);
+                    packet.ReadInt32<ItemId>("Created Item", i, j);
             }
 
             packet.ReadXORByte(guid1, 5);
@@ -1492,7 +1486,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid1, 3);
             packet.ReadXORByte(guid1, 0);
             packet.ReadXORByte(guid1, 7);
-            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadUInt32<SpellId>("Spell ID");
             packet.ReadXORByte(guid1, 6);
             packet.ReadXORByte(guid1, 4);
 
@@ -1580,7 +1574,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             packet.ReadXORByte(casterGUID, 4);
             packet.ReadXORByte(casterGUID, 5);
             packet.ReadXORByte(casterGUID, 3);
-            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadUInt32<SpellId>("Spell ID");
             packet.ReadInt32("Duration");
             packet.ReadXORByte(casterGUID, 1);
             packet.ReadXORByte(casterGUID, 2);
@@ -1704,7 +1698,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             if (hasCount)
                 packet.ReadByte("Count");
             if (hasSpellId)
-                packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell Id");
+                packet.ReadUInt32<SpellId>("Spell Id");
         }
 
         [Parser(Opcode.CMSG_CANCEL_AURA)]
@@ -1712,7 +1706,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
         {
             var guid = new byte[8];
 
-            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadUInt32<SpellId>("Spell ID");
             packet.ReadBit(); // fake bit?
             packet.StartBitStream(guid, 1, 5, 2, 0, 3, 4, 6, 7);
             packet.ParseBitStream(guid, 0, 1, 4, 5, 3, 6, 7, 2);

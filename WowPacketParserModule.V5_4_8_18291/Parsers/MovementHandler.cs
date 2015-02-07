@@ -1,6 +1,5 @@
 ﻿using System;
 using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParserModule.V5_4_8_18291.Enums;
@@ -13,7 +12,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
     {
         public static PlayerMovementInfo Info = new PlayerMovementInfo();
 
-        public static void ReadPlayerMovementInfo(ref Packet packet, params MovementStatusElements[] movementStatusElements)
+        public static void ReadPlayerMovementInfo(Packet packet, params MovementStatusElements[] movementStatusElements)
         {
             var guid = new byte[8];
             var transportGUID = new byte[8];
@@ -224,7 +223,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                         pos.Z = packet.ReadSingle();
                         break;
                     case MovementStatusElements.MSEOrientation:
-                        if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_MOVE_TELEPORT))
+                        if (packet.Opcode == CoreOpcode.GetOpcode(Opcode.SMSG_MOVE_TELEPORT, Direction.ServerToClient))
                             pos.O = packet.ReadSingle();
                         else
                         {
@@ -332,148 +331,148 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.MSG_MOVE_FALL_LAND)]
         public static void HandleMoveFallLand(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementFallLand);
+            ReadPlayerMovementInfo(packet, Info.MovementFallLand);
         }
 
         [Parser(Opcode.MSG_MOVE_HEARTBEAT)]
         public static void HandleMoveHeartbeat(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementHeartBeat);
+            ReadPlayerMovementInfo(packet, Info.MovementHeartBeat);
         }
 
         [Parser(Opcode.MSG_MOVE_JUMP)]
         public static void HandleMoveJump434(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementJump);
+            ReadPlayerMovementInfo(packet, Info.MovementJump);
         }
 
         [Parser(Opcode.MSG_MOVE_SET_FACING)]
         public static void HandleMoveSetFacing(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementSetFacing);
+            ReadPlayerMovementInfo(packet, Info.MovementSetFacing);
         }
 
         [Parser(Opcode.MSG_MOVE_SET_PITCH)]
         public static void HandleMoveSetPitch(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementSetPitch);
+            ReadPlayerMovementInfo(packet, Info.MovementSetPitch);
         }
 
         [Parser(Opcode.MSG_MOVE_START_ASCEND)]
         public static void HandleMoveStartAscend434(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStartAscend);
+            ReadPlayerMovementInfo(packet, Info.MovementStartAscend);
         }
 
         [Parser(Opcode.MSG_MOVE_START_BACKWARD)]
         public static void HandleMoveStartBackward(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStartBackward);
+            ReadPlayerMovementInfo(packet, Info.MovementStartBackward);
         }
 
         [Parser(Opcode.MSG_MOVE_START_DESCEND)]
         public static void HandleMoveStartDescend(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStartDescend);
+            ReadPlayerMovementInfo(packet, Info.MovementStartDescend);
         }
 
         [Parser(Opcode.MSG_MOVE_START_FORWARD)]
         public static void HandleMoveStartForward(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStartForward);
+            ReadPlayerMovementInfo(packet, Info.MovementStartForward);
         }
 
         [Parser(Opcode.MSG_MOVE_START_PITCH_DOWN)]
         public static void HandleMoveStartPitchDown(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStartPitchDown);
+            ReadPlayerMovementInfo(packet, Info.MovementStartPitchDown);
         }
 
         [Parser(Opcode.MSG_MOVE_START_PITCH_UP)]
         public static void HandleMoveStartPitchUp(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStartPitchUp);
+            ReadPlayerMovementInfo(packet, Info.MovementStartPitchUp);
         }
 
         [Parser(Opcode.MSG_MOVE_START_STRAFE_LEFT)]
         public static void HandleMoveStartStrafeLeft(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStartStrafeLeft);
+            ReadPlayerMovementInfo(packet, Info.MovementStartStrafeLeft);
         }
 
         [Parser(Opcode.MSG_MOVE_START_STRAFE_RIGHT)]
         public static void HandleMoveStartStrafeRight(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStartStrafeRight);
+            ReadPlayerMovementInfo(packet, Info.MovementStartStrafeRight);
         }
 
         [Parser(Opcode.MSG_MOVE_START_SWIM)]
         public static void HandleMoveStartSwim(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStartSwim);
+            ReadPlayerMovementInfo(packet, Info.MovementStartSwim);
         }
 
         [Parser(Opcode.MSG_MOVE_START_TURN_LEFT)]
         public static void HandleMoveStartTurnLeft(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStartTurnLeft);
+            ReadPlayerMovementInfo(packet, Info.MovementStartTurnLeft);
         }
 
         [Parser(Opcode.MSG_MOVE_START_TURN_RIGHT)]
         public static void HandleMoveStartTurnRight(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStartTurnRight);
+            ReadPlayerMovementInfo(packet, Info.MovementStartTurnRight);
         }
 
         [Parser(Opcode.MSG_MOVE_STOP)]
         public static void HandleMoveStop(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStop);
+            ReadPlayerMovementInfo(packet, Info.MovementStop);
         }
 
         [Parser(Opcode.MSG_MOVE_STOP_ASCEND)]
         public static void HandleMoveStopAscend(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStopAscend);
+            ReadPlayerMovementInfo(packet, Info.MovementStopAscend);
         }
 
         [Parser(Opcode.MSG_MOVE_STOP_PITCH)]
         public static void HandleMoveStopPitch(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStopPitch);
+            ReadPlayerMovementInfo(packet, Info.MovementStopPitch);
         }
 
         [Parser(Opcode.MSG_MOVE_STOP_STRAFE)]
         public static void HandleMoveStopStrafe(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStopStrafe);
+            ReadPlayerMovementInfo(packet, Info.MovementStopStrafe);
         }
 
         [Parser(Opcode.MSG_MOVE_STOP_SWIM)]
         public static void HandleMoveStopSwim(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStopSwim);
+            ReadPlayerMovementInfo(packet, Info.MovementStopSwim);
         }
 
         [Parser(Opcode.MSG_MOVE_STOP_TURN)]
         public static void HandleMoveStopTurn(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MovementStopTurn);
+            ReadPlayerMovementInfo(packet, Info.MovementStopTurn);
         }
 
         [Parser(Opcode.SMSG_MOVE_ROOT)]
         public static void HandleMoveRoot434(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MoveRoot);
+            ReadPlayerMovementInfo(packet, Info.MoveRoot);
         }
 
         [Parser(Opcode.SMSG_MOVE_UNROOT)]
         public static void HandleMoveUnroot434(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MoveUnroot);
+            ReadPlayerMovementInfo(packet, Info.MoveUnroot);
         }
 
-        [Parser(Opcode.SMSG_SET_PHASE_SHIFT)]
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT_CHANGE)]
         public static void HandlePhaseShift(Packet packet)
         {
             CoreParsers.MovementHandler.ActivePhases.Clear();
@@ -491,7 +490,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Inactive Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Inactive Terrain swap", i); // Map.dbc, all possible terrainswaps
+                packet.ReadInt16<MapId>("Inactive Terrain swap", i); // Map.dbc, all possible terrainswaps
 
             packet.ParseBitStream(guid, 1, 7);
 
@@ -503,7 +502,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Active Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Active Terrain swap", i); // Map.dbc, all active terrainswaps
+                packet.ReadInt16<MapId>("Active Terrain swap", i); // Map.dbc, all active terrainswaps
 
             packet.ParseBitStream(guid, 5);
             packet.WriteGuid("GUID", guid);
@@ -519,14 +518,14 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             if (hasTransport)
             {
-                packet.ReadEntry<Int32>(StoreNameType.Map, "Transport Map ID");
+                packet.ReadInt32<MapId>("Transport Map ID");
                 packet.ReadInt32("Transport Entry");
             }
 
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
+            packet.ReadInt32<MapId>("Map ID");
 
             if (customLoadScreenSpell)
-                packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
+                packet.ReadUInt32<SpellId>("Spell ID");
         }
 
         [HasSniffData]
@@ -536,7 +535,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             var pos = new Vector4();
 
             pos.X = packet.ReadSingle();
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map");
+            packet.ReadInt32<MapId>("Map");
             pos.Y = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
             pos.O = packet.ReadSingle();
@@ -552,20 +551,20 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             pos.X = packet.ReadSingle();
             pos.O = packet.ReadSingle();
             pos.Y = packet.ReadSingle();
-            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntry<Int32>(StoreNameType.Map, "Map");
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadInt32<MapId>("Map");
             pos.Z = packet.ReadSingle();
 
             packet.AddValue("Position", pos);
             packet.AddSniffData(StoreNameType.Map, (int)CoreParsers.MovementHandler.CurrentMapId, "NEW_WORLD");
         }
 
-        [Parser(Opcode.SMSG_PLAYER_MOVE)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE)]
         public static void HandlePlayerMove(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.PlayerMove);
+            ReadPlayerMovementInfo(packet, Info.PlayerMove);
         }
 
-        [Parser(Opcode.SMSG_MONSTER_MOVE)]
+        [Parser(Opcode.SMSG_ON_MONSTER_MOVE)]
         public static void HandleMonsterMove(Packet packet)
         {
             var pos = new Vector3();
@@ -576,7 +575,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             pos.Z = packet.ReadSingle();        // +6
             pos.X = packet.ReadSingle();        // +4
-            packet.ReadInt32("Int10");          // +10
+            packet.ReadInt32("Move Ticks");     // +10
             pos.Y = packet.ReadSingle();        // +5
             packet.ReadSingle("Float12");       // +12
             packet.ReadSingle("Float13");       // +13
@@ -694,7 +693,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadXORByte(ownerGUID, 3);   // +35 - 3
 
             if (bit16)
-                packet.ReadInt32("Int16");      // +16
+                packet.ReadInt32E<SplineFlag>("Spline Flags"); // +16
 
             if (bit69)
                 packet.ReadByte("Byte69");      // +69
@@ -729,7 +728,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadXORByte(ownerGUID, 4);   // +36 - 4
 
             if (bit20)
-                packet.ReadInt32("Int20");      // +20
+                packet.ReadInt32("Move Time");      // +20
 
             // Calculate mid pos
             var mid = new Vector3();
@@ -755,7 +754,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_MOVE_TELEPORT)]
         public static void HandleMoveTeleport548(Packet packet)
         {
-            ReadPlayerMovementInfo(ref packet, Info.MoveTeleport);
+            ReadPlayerMovementInfo(packet, Info.MoveTeleport);
         }
 
         [Parser(Opcode.SMSG_LOGIN_SETTIMESPEED)]
@@ -861,7 +860,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid2", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_FLIGHT_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_FLIGHT_SPEED)]
         public static void HandleSplineSetFlightSpeed(Packet packet)
         {
             packet.ReadSingle("Speed");
@@ -870,7 +869,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_RUN_SPEED)]
         public static void HandleSplineSetRunSpeed(Packet packet)
         {
             var guid = packet.StartBitStream(3, 0, 1, 4, 7, 5, 6, 2);
@@ -880,7 +879,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("GUID", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_BACK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_RUN_BACK_SPEED)]
         public static void HandleSplineSetRunBackSpeed(Packet packet)
         {
             var guid = packet.StartBitStream(7, 4, 0, 3, 2, 5, 6, 1);
@@ -890,7 +889,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_SWIM_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_SWIM_SPEED)]
         public static void HandleSplineSetSwimSpeed(Packet packet)
         {
             var guid = packet.StartBitStream(5, 6, 7, 3, 4, 2, 1, 0);
@@ -900,7 +899,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_WALK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_WALK_BACK_SPEED)]
         public static void HandleSplineSetWalkSpeed(Packet packet)
         {
             var guid = packet.StartBitStream(4, 1, 7, 6, 3, 2, 5, 0);

@@ -18,7 +18,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.StartBitStream(guid, 7, 6, 0, 4, 5, 2, 3, 1);
             packet.ParseBitStream(guid, 5, 0, 1, 6, 7, 2, 3, 4);
 
-            CoreParsers.SessionHandler.LoginGuid = new WowGuid(BitConverter.ToUInt64(guid, 0));
+            CoreParsers.SessionHandler.LoginGuid = new WowGuid64(BitConverter.ToUInt64(guid, 0));
             packet.WriteGuid("Guid", guid);
         }
 
@@ -35,8 +35,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadWoWString("Line", lineLength[i], i);
         }
 
-        [Parser(Opcode.SMSG_SEND_SERVER_LOCATION)]
-        public static void HandleSendServerLocation(Packet packet)
+        [Parser(Opcode.SMSG_SET_TIME_ZONE_INFORMATION)]
+        public static void HandleSetTimeZoneInformation(Packet packet)
         {
             var len1 = packet.ReadBits(7);
             var len2 = packet.ReadBits(7);
@@ -44,12 +44,12 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadWoWString("Server Location", len1);
         }
 
-        [Parser(Opcode.CMSG_REDIRECT_AUTH_PROOF)]
+        [Parser(Opcode.CMSG_AUTH_CONTINUED_SESSION)]
         public static void HandleRedirectAuthProof(Packet packet)
         {
             var sha = new byte[20];
-            packet.ReadInt64("Int64 Unk1");
-            packet.ReadInt64("Int64 Unk2");
+            packet.ReadInt64("Int64 Unk1"); // Key or DosResponse
+            packet.ReadInt64("Int64 Unk2"); // Key or DosResponse
             sha[1] = packet.ReadByte();
             sha[14] = packet.ReadByte();
             sha[9] = packet.ReadByte();
@@ -164,16 +164,16 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
                 for (var i = 0; i < classCount; ++i)
                 {
-                    packet.ReadEnum<ClientType>("Class Expansion", TypeCode.Byte, i);
-                    packet.ReadEnum<Class>("Class", TypeCode.Byte, i);
+                    packet.ReadByteE<ClientType>("Class Expansion", i);
+                    packet.ReadByteE<Class>("Class", i);
                 }
 
                 packet.ReadByte("Byte3C");
 
                 for (var i = 0; i < raceCount; ++i)
                 {
-                    packet.ReadEnum<ClientType>("Race Expansion", TypeCode.Byte, i);
-                    packet.ReadEnum<Race>("Race", TypeCode.Byte, i);
+                    packet.ReadByteE<ClientType>("Race Expansion", i);
+                    packet.ReadByteE<Race>("Race", i);
                 }
 
                 packet.ReadInt32("Int34");
@@ -197,7 +197,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadInt32("Int1C");
             }
 
-            packet.ReadEnum<ResponseCode>("Auth Code", TypeCode.Byte);
+            packet.ReadByteE<ResponseCode>("Auth Code");
         }
 
         [Parser(Opcode.SMSG_LOGOUT_COMPLETE)]
@@ -212,7 +212,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.WriteGuid("Guid", guid);
 
-            CoreParsers.SessionHandler.LoginGuid = new WowGuid(BitConverter.ToUInt64(guid, 0));
+            CoreParsers.SessionHandler.LoginGuid = new WowGuid64(BitConverter.ToUInt64(guid, 0));
         }
 
         [Parser(Opcode.CMSG_AUTH_SESSION)]
@@ -248,7 +248,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             sha[0] = packet.ReadByte();
             sha[8] = packet.ReadByte();
 
-            packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int16);
+            packet.ReadInt16E<ClientVersionBuild>("Client Build");
 
             sha[1] = packet.ReadByte();
             sha[19] = packet.ReadByte();
@@ -264,7 +264,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
                 packet.Number, packet.Writer, packet.FileName);
-            CoreParsers.AddonHandler.ReadClientAddonsList(ref addons);
+            CoreParsers.AddonHandler.ReadClientAddonsList(addons);
             addons.ClosePacket(false);
 
             var size = (int)packet.ReadBits(11);

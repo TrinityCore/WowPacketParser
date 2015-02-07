@@ -8,6 +8,6 @@ namespace WowPacketParser.Enums
         Ground   = 0x1,
         Water    = 0x2,
         Air      = 0x4,
-        Anywhere = Ground | Water | Air,
+        Anywhere = Ground | Water | Air
     }
 }

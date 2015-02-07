@@ -37,6 +37,7 @@ namespace WowPacketParser.Tests.Misc
 
             Assert.IsTrue(vect1 == vect15);
 #pragma warning disable 1718
+            // ReSharper disable once EqualExpressionComparison
             Assert.IsTrue(vect1 == vect1);
 #pragma warning restore 1718
             Assert.IsFalse(vect1 == vect2);

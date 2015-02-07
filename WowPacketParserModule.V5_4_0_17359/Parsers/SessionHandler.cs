@@ -14,7 +14,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadSingle("Unk Float");
             var guid = packet.StartBitStream(2, 3, 7, 4, 0, 1, 5, 6);
             packet.ParseBitStream(guid, 0, 1, 3, 4, 7, 6, 2, 5);
-            CoreParsers.SessionHandler.LoginGuid = new WowGuid(BitConverter.ToUInt64(guid, 0));
+            CoreParsers.SessionHandler.LoginGuid = new WowGuid64(BitConverter.ToUInt64(guid, 0));
             packet.WriteGuid("Guid", guid);
         }
 
@@ -62,14 +62,14 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadUInt32("UInt32 1");
             sha[5] = packet.ReadByte();
             sha[0] = packet.ReadByte();
-            packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int16);//20
+            packet.ReadInt16E<ClientVersionBuild>("Client Build");//20
             sha[16] = packet.ReadByte();
             sha[2] = packet.ReadByte();
             packet.ReadUInt32("UInt32 3");
 
             var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
                 packet.Number, packet.Writer, packet.FileName);
-            CoreParsers.AddonHandler.ReadClientAddonsList(ref addons);
+            CoreParsers.AddonHandler.ReadClientAddonsList(addons);
             addons.ClosePacket(false);
 
             var size = (int)packet.ReadBits(11);
@@ -139,15 +139,15 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             {
                 for (var i = 0; i < classCount; ++i)
                 {
-                    packet.ReadEnum<Class>("Class", TypeCode.Byte, i);
-                    packet.ReadEnum<ClientType>("Class Expansion", TypeCode.Byte, i);
+                    packet.ReadByteE<Class>("Class", i);
+                    packet.ReadByteE<ClientType>("Class Expansion", i);
                 }
 
                 packet.ReadUInt32("Unk int 12");
                 for (var i = 0; i < raceCount; ++i)
                 {
-                    packet.ReadEnum<ClientType>("Race Expansion", TypeCode.Byte, i);
-                    packet.ReadEnum<Race>("Race", TypeCode.Byte, i);
+                    packet.ReadByteE<ClientType>("Race Expansion", i);
+                    packet.ReadByteE<Race>("Race", i);
                 }
 
                 packet.ReadInt32("Unk int 10");
@@ -166,8 +166,8 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                     packet.ReadWoWString("String 1", len69[i], i);
                     packet.ReadWoWString("String 2", len4[i], i);
                 }
-                packet.ReadEnum<ClientType>("Player Expansion", TypeCode.Byte);
-                packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
+                packet.ReadByteE<ClientType>("Player Expansion");
+                packet.ReadByteE<ClientType>("Account Expansion");
                 if (bit116)
                     packet.ReadInt16("UnkInt16 2");
 
@@ -181,7 +181,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadInt32("Unk int 11");
             }
 
-            packet.ReadEnum<ResponseCode>("Auth Code", TypeCode.Byte);
+            packet.ReadByteE<ResponseCode>("Auth Code");
         }
 
         [Parser(Opcode.SMSG_MOTD)]
@@ -205,12 +205,12 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadBytes("RSA Hash", 0x100);
         }
 
-        [Parser(Opcode.CMSG_REDIRECT_AUTH_PROOF)]
+        [Parser(Opcode.CMSG_AUTH_CONTINUED_SESSION)]
         public static void HandleRedirectAuthProof(Packet packet)
         {
             var sha = new byte[20];
-            packet.ReadInt64("Int64 Unk1");
-            packet.ReadInt64("Int64 Unk2");
+            packet.ReadInt64("Int64 Unk1"); // Key or DosResponse
+            packet.ReadInt64("Int64 Unk2"); // Key or DosResponse
             sha[0] = packet.ReadByte();
             sha[12] = packet.ReadByte();
             sha[1] = packet.ReadByte();

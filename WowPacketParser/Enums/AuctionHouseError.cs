@@ -10,6 +10,6 @@ namespace WowPacketParser.Enums
         HigherBid         = 5,  // ERR_AUCTION_HIGHER_BID
         IncrementBind     = 7,  // ERR_AUCTION_BID_INCREMENT
         CantBidYouAuction = 10, // ERR_AUCTION_BID_OWN
-        Restricted        = 13, // ERR_RESTRICTED_ACCOUNT
+        Restricted        = 13  // ERR_RESTRICTED_ACCOUNT
     }
 }

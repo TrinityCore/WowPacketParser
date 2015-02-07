@@ -10,64 +10,64 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         [Parser(Opcode.SMSG_ATTACKSTART)]
         public static void HandleAttackStartStart(Packet packet)
         {
-            var VictimGUID = new byte[8];
-            var AttackerGUID = new byte[8];
+            var victimGUID = new byte[8];
+            var attackerGUID = new byte[8];
 
-            packet.StartBitStream(VictimGUID, 6, 2, 1);
-            AttackerGUID[6] = packet.ReadBit();
-            VictimGUID[5] = packet.ReadBit();
-            packet.StartBitStream(AttackerGUID, 1, 3, 0);
-            packet.StartBitStream(VictimGUID, 0, 7);
-            packet.StartBitStream(AttackerGUID, 7, 5, 4);
-            packet.StartBitStream(VictimGUID, 4, 3);
-            AttackerGUID[2] = packet.ReadBit();
+            packet.StartBitStream(victimGUID, 6, 2, 1);
+            attackerGUID[6] = packet.ReadBit();
+            victimGUID[5] = packet.ReadBit();
+            packet.StartBitStream(attackerGUID, 1, 3, 0);
+            packet.StartBitStream(victimGUID, 0, 7);
+            packet.StartBitStream(attackerGUID, 7, 5, 4);
+            packet.StartBitStream(victimGUID, 4, 3);
+            attackerGUID[2] = packet.ReadBit();
 
-            packet.ReadXORByte(AttackerGUID, 4);
-            packet.ReadXORByte(VictimGUID, 4);
-            packet.ReadXORBytes(AttackerGUID, 2, 6);
-            packet.ReadXORByte(VictimGUID, 7);
-            packet.ReadXORByte(AttackerGUID, 0);
-            packet.ReadXORByte(VictimGUID, 5);
-            packet.ReadXORByte(AttackerGUID, 1);
-            packet.ReadXORBytes(VictimGUID, 2, 6);
-            packet.ReadXORByte(AttackerGUID, 7);
-            packet.ReadXORByte(VictimGUID, 3);
-            packet.ReadXORByte(AttackerGUID, 5);
-            packet.ReadXORByte(VictimGUID, 0);
-            packet.ReadXORByte(AttackerGUID, 3);
-            packet.ReadXORByte(VictimGUID, 1);
+            packet.ReadXORByte(attackerGUID, 4);
+            packet.ReadXORByte(victimGUID, 4);
+            packet.ReadXORBytes(attackerGUID, 2, 6);
+            packet.ReadXORByte(victimGUID, 7);
+            packet.ReadXORByte(attackerGUID, 0);
+            packet.ReadXORByte(victimGUID, 5);
+            packet.ReadXORByte(attackerGUID, 1);
+            packet.ReadXORBytes(victimGUID, 2, 6);
+            packet.ReadXORByte(attackerGUID, 7);
+            packet.ReadXORByte(victimGUID, 3);
+            packet.ReadXORByte(attackerGUID, 5);
+            packet.ReadXORByte(victimGUID, 0);
+            packet.ReadXORByte(attackerGUID, 3);
+            packet.ReadXORByte(victimGUID, 1);
 
-            packet.WriteGuid("Attacker GUID", AttackerGUID);
-            packet.WriteGuid("Victim GUID", VictimGUID);
+            packet.WriteGuid("Attacker GUID", attackerGUID);
+            packet.WriteGuid("Victim GUID", victimGUID);
         }
 
         [Parser(Opcode.SMSG_ATTACKSTOP)]
         public static void HandleAttackStartStop(Packet packet)
         {
-            var VictimGUID = new byte[8];
-            var AttackerGUID = new byte[8];
+            var victimGUID = new byte[8];
+            var attackerGUID = new byte[8];
 
-            VictimGUID[4] = packet.ReadBit();
-            packet.StartBitStream(AttackerGUID, 1, 3, 0, 6, 5);
-            VictimGUID[1] = packet.ReadBit();
-            AttackerGUID[7] = packet.ReadBit();
-            packet.StartBitStream(VictimGUID, 5, 6, 0);
-            packet.StartBitStream(AttackerGUID, 2, 4);
-            packet.StartBitStream(VictimGUID, 7, 2);
+            victimGUID[4] = packet.ReadBit();
+            packet.StartBitStream(attackerGUID, 1, 3, 0, 6, 5);
+            victimGUID[1] = packet.ReadBit();
+            attackerGUID[7] = packet.ReadBit();
+            packet.StartBitStream(victimGUID, 5, 6, 0);
+            packet.StartBitStream(attackerGUID, 2, 4);
+            packet.StartBitStream(victimGUID, 7, 2);
             packet.ReadBit("Unk bit");
-            VictimGUID[3] = packet.ReadBit();
+            victimGUID[3] = packet.ReadBit();
 
-            packet.ReadXORBytes(VictimGUID, 2, 0);
-            packet.ReadXORBytes(AttackerGUID, 5, 0, 4);
-            packet.ReadXORBytes(VictimGUID, 4, 6, 7);
-            packet.ReadXORBytes(AttackerGUID, 2, 3);
-            packet.ReadXORBytes(VictimGUID, 5, 1);
-            packet.ReadXORBytes(AttackerGUID, 1, 7);
-            packet.ReadXORByte(VictimGUID, 3);
-            packet.ReadXORByte(AttackerGUID, 6);
+            packet.ReadXORBytes(victimGUID, 2, 0);
+            packet.ReadXORBytes(attackerGUID, 5, 0, 4);
+            packet.ReadXORBytes(victimGUID, 4, 6, 7);
+            packet.ReadXORBytes(attackerGUID, 2, 3);
+            packet.ReadXORBytes(victimGUID, 5, 1);
+            packet.ReadXORBytes(attackerGUID, 1, 7);
+            packet.ReadXORByte(victimGUID, 3);
+            packet.ReadXORByte(attackerGUID, 6);
 
-            packet.WriteGuid("Attacker GUID", AttackerGUID);
-            packet.WriteGuid("Victim GUID", VictimGUID);
+            packet.WriteGuid("Attacker GUID", attackerGUID);
+            packet.WriteGuid("Victim GUID", victimGUID);
         }
 
         [Parser(Opcode.SMSG_ATTACKERSTATEUPDATE)]
@@ -75,7 +75,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         {
             var guid = new Byte[8];
 
-            var hitInfo = packet.ReadEnum<SpellHitInfo>("HitInfo", TypeCode.Int32);
+            var hitInfo = packet.ReadInt32E<SpellHitInfo>("HitInfo");
             packet.ReadPackedGuid("AttackerGUID");
             packet.ReadPackedGuid("TargetGUID");
             packet.ReadInt32("Damage");
@@ -98,14 +98,13 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 for (var i = 0; i < subDmgCount; ++i)
                     packet.ReadInt32("Damage Resisted", i);
 
-            var state = packet.ReadEnum<VictimStates>("VictimState", TypeCode.Byte);
+            packet.ReadByteE<VictimStates>("VictimState");
             packet.ReadInt32("Unk Attacker State 0");
 
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Melee Spell ID ");
+            packet.ReadInt32<SpellId>("Melee Spell ID ");
 
-            var block = 0;
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK))
-                block = packet.ReadInt32("Block Amount");
+                packet.ReadInt32("Block Amount");
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_RAGE_GAIN))
                 packet.ReadInt32("Rage Gained");

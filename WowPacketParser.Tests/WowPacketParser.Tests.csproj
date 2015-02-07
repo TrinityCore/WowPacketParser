@@ -41,11 +41,13 @@
       <HintPath>Dependencies\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Misc\BiDictionaryTest.cs" />
     <Compile Include="Misc\ClientVersionTest.cs" />
+    <Compile Include="Misc\ConfigurationTest.cs" />
     <Compile Include="Misc\StatisticsTest.cs" />
     <Compile Include="Misc\UtilitiesTest.cs" />
     <Compile Include="Misc\Vector2Test.cs" />
@@ -56,8 +58,41 @@
     <Compile Include="Misc\QuaternionTest.cs" />
     <Compile Include="Misc\UpdateFieldTest.cs" />
     <Compile Include="Misc\Vector4Test.cs" />
+    <Compile Include="OpcodeTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WowPacketParserModule.V4_3_4_15595\WowPacketParserModule.V4_3_4_15595.csproj">
+      <Project>{7a909478-8263-498d-9f0c-52480e29825e}</Project>
+      <Name>WowPacketParserModule.V4_3_4_15595</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WowPacketParserModule.V5_3_0_16981\WowPacketParserModule.V5_3_0_16981.csproj">
+      <Project>{422ac0f6-a8df-4fff-8a98-a830f4002c53}</Project>
+      <Name>WowPacketParserModule.V5_3_0_16981</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WowPacketParserModule.V5_4_0_17359\WowPacketParserModule.V5_4_0_17359.csproj">
+      <Project>{11543cdb-d1fc-454b-a977-d6f40d08cb09}</Project>
+      <Name>WowPacketParserModule.V5_4_0_17359</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WowPacketParserModule.V5_4_1_17538\WowPacketParserModule.V5_4_1_17538.csproj">
+      <Project>{bd889d75-6f3f-4222-92c1-b32548952b4e}</Project>
+      <Name>WowPacketParserModule.V5_4_1_17538</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WowPacketParserModule.V5_4_2_17658\WowPacketParserModule.V5_4_2_17658.csproj">
+      <Project>{611e8abd-9581-4cdc-a98e-fddd743b7908}</Project>
+      <Name>WowPacketParserModule.V5_4_2_17658</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WowPacketParserModule.V5_4_7_17898\WowPacketParserModule.V5_4_7_17898.csproj">
+      <Project>{763dc013-0757-4786-a841-934000d0a2b6}</Project>
+      <Name>WowPacketParserModule.V5_4_7_17898</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WowPacketParserModule.V5_4_8_18291\WowPacketParserModule.V5_4_8_18291.csproj">
+      <Project>{b53a76dc-ba47-4364-ae96-6bea96e3df0f}</Project>
+      <Name>WowPacketParserModule.V5_4_8_18291</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WowPacketParserModule.V6_0_2_19033\WowPacketParserModule.V6_0_2_19033.csproj">
+      <Project>{63484313-34d2-4133-b157-a19d12b69d9b}</Project>
+      <Name>WowPacketParserModule.V6_0_2_19033</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WowPacketParser\WowPacketParser.csproj">
       <Project>{0BF6F270-0B6F-4705-8E1A-F57DB76DB407}</Project>
       <Name>WowPacketParser</Name>

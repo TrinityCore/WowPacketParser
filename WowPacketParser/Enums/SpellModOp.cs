@@ -36,6 +36,6 @@ namespace WowPacketParser.Enums
         Unk41                  = 41,
         Unk51                  = 51,
         Unk71                  = 71,
-        Unk215                 = 215,
+        Unk215                 = 215
     }
 }

@@ -4,7 +4,7 @@ namespace WowPacketParser.Enums
     {
         OnGround = 0,
         Swimming = 1,
-        Hover = 2,
-        Flying = 3
+        Hover    = 2,
+        Flying   = 3
     }
 }

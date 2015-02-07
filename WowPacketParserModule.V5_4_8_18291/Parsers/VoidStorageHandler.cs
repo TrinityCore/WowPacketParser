@@ -74,7 +74,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             {
                 packet.ReadInt32("Item Slot", i); //28
                 packet.ReadXORByte(guid[i], 5);
-                packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry", i); //16
+                packet.ReadUInt32<ItemId>("Item Entry", i); //16
                 packet.ReadXORByte(guid[i], 6);
                 packet.ReadXORByte(guid[i], 3);
                 packet.ReadInt32("Item Suffix Factor", i); //20
@@ -206,7 +206,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_VOID_TRANSFER_RESULT)]
         public static void HandleVoidTransferResults(Packet packet)
         {
-            packet.ReadEnum<VoidTransferError>("Error", TypeCode.UInt32);
+            packet.ReadUInt32E<VoidTransferError>("Error");
         }
 
         [Parser(Opcode.SMSG_VOID_STORAGE_CONTENTS)]
@@ -257,7 +257,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 packet.ReadXORByte(creatorGuid[i], 2);
                 packet.ReadXORByte(creatorGuid[i], 5);
                 packet.ReadXORByte(creatorGuid[i], 3);
-                packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry", i);
+                packet.ReadUInt32<ItemId>("Item Entry", i);
                 packet.ReadXORByte(itemId[i], 5);
                 packet.ReadXORByte(itemId[i], 1);
                 packet.ReadInt32("Item Slot", i);

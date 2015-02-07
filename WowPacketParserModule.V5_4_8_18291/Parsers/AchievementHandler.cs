@@ -7,7 +7,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 {
     public static class AchievementHandler
     {
-        [Parser(Opcode.SMSG_CRITERIA_UPDATE_ACCOUNT)]
+        [Parser(Opcode.SMSG_ACCOUNT_CRITERIA_UPDATE)]
         public static void HandleCriteriaUpdateAccount(Packet packet)
         {
             var counter = new byte[8];
@@ -58,7 +58,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.AddValue("Counter", BitConverter.ToInt64(counter, 0));
         }
 
-        [Parser(Opcode.SMSG_CRITERIA_UPDATE_PLAYER)]
+        [Parser(Opcode.SMSG_CRITERIA_UPDATE)]
         public static void HandleCriteriaPlayer(Packet packet)
         {
             var guid = new byte[8];
@@ -83,7 +83,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_DATA_PLAYER)]
+        [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_DATA)]
         public static void HandleAllAchievementDataPlayer(Packet packet)
         {
             var bits20 = packet.ReadBits("Criteria count", 19);
@@ -127,7 +127,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             for (var i = 0; i < bits10; ++i)
             {
-                packet.ReadUInt32("Achievement Id", i);
+                packet.ReadInt32<AchievementId>("Achievement Id", i);
                 packet.ReadInt32("Realm Id", i);
                 packet.ReadXORByte(guid1[i], 5);
                 packet.ReadXORByte(guid1[i], 7);
@@ -210,7 +210,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadXORByte(guid2, 3);
             packet.ReadXORByte(guid1, 4);
             packet.ReadXORByte(guid2, 7);
-            packet.ReadInt32("Achievement");
+            packet.ReadInt32<AchievementId>("Achievement Id");
             packet.ReadXORByte(guid2, 4);
             packet.ReadXORByte(guid1, 1);
             packet.ReadXORByte(guid2, 0);

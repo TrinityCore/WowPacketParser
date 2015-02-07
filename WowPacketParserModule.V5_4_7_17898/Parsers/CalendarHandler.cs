@@ -14,8 +14,8 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         {
             packet.ReadInt32("Event Time");
             packet.ReadInt32("Invite Count");
-            packet.ReadEnum<CalendarEventType>("Event Type", TypeCode.Byte);
-            packet.ReadEntry<Int32>(StoreNameType.LFGDungeon, "Dungeon ID");
+            packet.ReadByteE<CalendarEventType>("Event Type");
+            packet.ReadInt32<LFGDungeonId>("Dungeon ID");
             packet.ReadInt32("Max Invites");
 
             var bits496 = packet.ReadBits(8);
@@ -36,14 +36,14 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             for (var i = 0; i < bits4A4; ++i)
             {
-                packet.ReadEnum<CalendarModerationRank>("Moderation Rank", TypeCode.Byte, i);
+                packet.ReadByteE<CalendarModerationRank>("Moderation Rank", i);
                 packet.ReadXORByte(guid[i], 6);
                 packet.ReadXORByte(guid[i], 1);
                 packet.ReadXORByte(guid[i], 7);
                 packet.ReadXORByte(guid[i], 5);
                 packet.ReadXORByte(guid[i], 4);
                 packet.ReadXORByte(guid[i], 2);
-                packet.ReadEnum<CalendarEventStatus>("Status", TypeCode.Byte, i);
+                packet.ReadByteE<CalendarEventStatus>("Status", i);
                 packet.ReadXORByte(guid[i], 3);
                 packet.ReadXORByte(guid[i], 0);
 

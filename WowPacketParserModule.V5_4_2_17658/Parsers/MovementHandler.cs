@@ -8,7 +8,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 {
     public static class MovementHandler
     {
-        [Parser(Opcode.SMSG_PLAYER_MOVE)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE)]
         public static void HandlePlayerMove(Packet packet)
         {
             var pos = new Vector4();
@@ -160,7 +160,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.AddValue("Position", pos);
         }
 
-        [Parser(Opcode.SMSG_MONSTER_MOVE)]
+        [Parser(Opcode.SMSG_ON_MONSTER_MOVE)]
         public static void HandleMonsterMove(Packet packet)
         {
             var pos = new Vector3();
@@ -241,7 +241,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             }
 
             if (hasFlags)
-                packet.ReadEnum<SplineFlag434>("Spline Flags", TypeCode.Int32);
+                packet.ReadInt32E<SplineFlag434>("Spline Flags");
 
             if (bit40)
                 packet.ReadInt32("Int40");
@@ -351,7 +351,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         {
             var pos = new Vector4();
 
-            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntry<Int32>(StoreNameType.Map, "Map");
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadInt32<MapId>("Map");
             pos.X = packet.ReadSingle();
             pos.O = packet.ReadSingle();
             pos.Y = packet.ReadSingle();
@@ -368,7 +368,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var pos = new Vector4();
 
             pos.Y = packet.ReadSingle();
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map");
+            packet.ReadInt32<MapId>("Map");
             pos.X = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
             pos.O = packet.ReadSingle();
@@ -381,12 +381,12 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         {
             var pos = new Vector3();
 
-            packet.ReadEntry<Int32>(StoreNameType.Area, "Area Id");
+            packet.ReadInt32<AreaId>("Area Id");
             pos.Z = packet.ReadSingle();
             pos.X = packet.ReadSingle();
             pos.Y = packet.ReadSingle();
 
-            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntry<Int32>(StoreNameType.Map, "Map");
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadInt32<MapId>("Map");
 
             packet.AddValue("Position", pos);
         }
@@ -408,16 +408,16 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var customLoadScreenSpell = packet.ReadBit();
             var hasTransport = packet.ReadBit();
 
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
+            packet.ReadInt32<MapId>("Map ID");
 
             if (hasTransport)
             {
-                packet.ReadEntry<Int32>(StoreNameType.Map, "Transport Map ID");
+                packet.ReadInt32<MapId>("Transport Map ID");
                 packet.ReadInt32("Transport Entry");
             }
 
             if (customLoadScreenSpell)
-                packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
+                packet.ReadUInt32<SpellId>("Spell ID");
         }
 
         [Parser(Opcode.SMSG_MOVE_TELEPORT)]
@@ -879,7 +879,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.AddValue("Position", pos);
         }
 
-        [Parser(Opcode.SMSG_SET_PHASE_SHIFT)]
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT_CHANGE)]
         public static void HandlePhaseShift(Packet packet)
         {
             CoreParsers.MovementHandler.ActivePhases.Clear();
@@ -894,12 +894,12 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var count = packet.ReadUInt32() / 2;
             packet.AddValue("Inactive Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Inactive Terrain swap", i);
+                packet.ReadInt16<MapId>("Inactive Terrain swap", i);
 
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Active Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Active Terrain swap", i);
+                packet.ReadInt16<MapId>("Active Terrain swap", i);
 
             packet.ParseBitStream(guid, 3);
 

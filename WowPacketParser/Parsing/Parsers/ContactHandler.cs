@@ -6,28 +6,28 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class ContactHandler
     {
-        public static void ReadSingleContactBlock(ref Packet packet, bool onlineCheck)
+        public static void ReadSingleContactBlock(Packet packet, bool onlineCheck)
         {
-            var status = packet.ReadEnum<ContactStatus>("Status", TypeCode.Byte);
+            var status = packet.ReadByteE<ContactStatus>("Status");
 
             if (onlineCheck && status == ContactStatus.Offline)
                 return;
 
-            packet.ReadEntry<Int32>(StoreNameType.Area, "Area");
+            packet.ReadInt32<AreaId>("Area");
             packet.ReadInt32("Level");
-            packet.ReadEnum<Class>("Class", TypeCode.Int32);
+            packet.ReadInt32E<Class>("Class");
         }
 
         [Parser(Opcode.CMSG_CONTACT_LIST)]
         public static void HandleContactListClient(Packet packet)
         {
-            packet.ReadEnum<ContactListFlag>("List Flags?", TypeCode.Int32);
+            packet.ReadInt32E<ContactListFlag>("List Flags?");
         }
 
         [Parser(Opcode.SMSG_CONTACT_LIST)]
         public static void HandleContactList(Packet packet)
         {
-            packet.ReadEnum<ContactListFlag>("List Flags", TypeCode.Int32);
+            packet.ReadInt32E<ContactListFlag>("List Flags");
 
             var count = packet.ReadInt32("Count");
 
@@ -35,24 +35,24 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadGuid("GUID");
 
-                var flag = packet.ReadEnum<ContactEntryFlag>("Flags", TypeCode.Int32);
+                var flag = packet.ReadInt32E<ContactEntryFlag>("Flags");
 
                 packet.ReadCString("Note");
 
                 if (!flag.HasAnyFlag(ContactEntryFlag.Friend))
                     continue;
 
-                ReadSingleContactBlock(ref packet, true);
+                ReadSingleContactBlock(packet, true);
             }
 
             if (packet.CanRead())
-                WardenHandler.ReadCheatCheckDecryptionBlock(ref packet);
+                WardenHandler.ReadCheatCheckDecryptionBlock(packet);
         }
 
         [Parser(Opcode.SMSG_FRIEND_STATUS)]
         public static void HandleFriendStatus(Packet packet)
         {
-            var result = packet.ReadEnum<ContactResult>("Result", TypeCode.Byte);
+            var result = packet.ReadByteE<ContactResult>("Result");
 
             packet.ReadGuid("GUID");
 
@@ -64,11 +64,11 @@ namespace WowPacketParser.Parsing.Parsers
                 case ContactResult.FriendAddedOnline:
                 {
                     packet.ReadCString("Note");
-                    ReadSingleContactBlock(ref packet, false);
+                    ReadSingleContactBlock(packet, false);
                     break;
                 }
                 case ContactResult.Online:
-                    ReadSingleContactBlock(ref packet, false);
+                    ReadSingleContactBlock(packet, false);
                     break;
                 case ContactResult.Unknown2:
                     packet.ReadByte("Unk byte 1");

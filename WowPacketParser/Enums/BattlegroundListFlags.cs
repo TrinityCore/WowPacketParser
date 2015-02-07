@@ -7,6 +7,6 @@ namespace WowPacketParser.Enums
     {
         AlreadyWon     = 0x10,
         Unk20          = 0x20,
-        NoBattlemaster = 0x80,
+        NoBattlemaster = 0x80
     }
 }

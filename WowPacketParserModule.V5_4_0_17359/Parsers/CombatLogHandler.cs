@@ -7,7 +7,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 {
     public static class CombatLogHandler
     {
-        [Parser(Opcode.SMSG_SPELLNONMELEEDAMAGELOG)]
+        [Parser(Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG)]
         public static void HandleSpellNonMeleeDmgLog(Packet packet)
         {
             var target = new byte[8];
@@ -16,9 +16,9 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.ReadUInt32("Damage");
             packet.ReadUInt32("Resist");
-            packet.ReadEnum<AttackerStateFlags>("Attacker State Flags", TypeCode.Int32);
+            packet.ReadInt32E<AttackerStateFlags>("Attacker State Flags");
             packet.ReadUInt32("Blocked");
-            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadUInt32<SpellId>("Spell ID");
             packet.ReadInt32("Overkill");
             packet.ReadUInt32("Absorb");
             packet.ReadByte("SchoolMask");
@@ -104,7 +104,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 for (var i = 0; i < bits8C; ++i)
                 {
                     packet.ReadInt32("Value", i);
-                    packet.ReadEnum<PowerType>("Power type", TypeCode.UInt32, i);
+                    packet.ReadUInt32E<PowerType>("Power type", i);
                 }
 
                 packet.ReadXORBytes(powerTargetGUID, 4, 0);
@@ -129,7 +129,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("TargetGUID", target);
         }
 
-        [Parser(Opcode.SMSG_SPELLHEALLOG)]
+        [Parser(Opcode.SMSG_SPELL_HEAL_LOG)]
         public static void HandleRandom(Packet packet)
         {
             var guid1 = new byte[8];
@@ -173,7 +173,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadXORByte(powerGUID, 3);
                 for (var i = 0; i < powerCount; ++i)
                 {
-                    packet.ReadEnum<PowerType>("Power type", TypeCode.Int32, i); // Actually powertype for class
+                    packet.ReadInt32E<PowerType>("Power type", i); // Actually powertype for class
                     packet.ReadInt32("Value", i);
                 }
 
@@ -196,7 +196,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.ReadXORByte(guid2, 3);
             packet.ReadXORByte(guid1, 4);
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32<SpellId>("Spell ID");
             packet.ReadXORByte(guid2, 1);
             packet.ReadInt32("Overheal");
             packet.WriteGuid("GUID1", guid1);
@@ -257,7 +257,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 if (bit8[i])
                     packet.ReadInt32("bit8", i);
 
-                var aura = packet.ReadEnum<AuraType>("Aura Type", TypeCode.UInt32, i);
+                var aura = packet.ReadUInt32E<AuraType>("Aura Type", i);
 
                 if (hasOverDamage[i])
                     packet.ReadInt32("Over damage", i);
@@ -290,7 +290,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 for (var i = 0; i < bits34; ++i)
                 {
                     packet.ReadInt32("Value", i);
-                    packet.ReadEnum<PowerType>("Power type", TypeCode.Int32, i); // Actually powertype for class
+                    packet.ReadInt32E<PowerType>("Power type", i); // Actually powertype for class
                 }
 
                 packet.ReadXORByte(powerGUID, 6);
@@ -304,7 +304,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadXORByte(casterGUID, 0);
             packet.ReadXORByte(casterGUID, 5);
 
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32<SpellId>("Spell ID");
 
             packet.ReadXORByte(casterGUID, 1);
             packet.ReadXORByte(targetGUID, 7);
@@ -406,7 +406,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         {
             var guid = new Byte[8];
 
-            var hitInfo = packet.ReadEnum<SpellHitInfo>("HitInfo", TypeCode.Int32);
+            var hitInfo = packet.ReadInt32E<SpellHitInfo>("HitInfo");
             packet.ReadPackedGuid("AttackerGUID");
             packet.ReadPackedGuid("TargetGUID");
             packet.ReadInt32("Damage");
@@ -429,10 +429,10 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 for (var i = 0; i < subDmgCount; ++i)
                     packet.ReadInt32("Damage Resisted", i);
 
-            var state = packet.ReadEnum<VictimStates>("VictimState", TypeCode.Byte);
+            var state = packet.ReadByteE<VictimStates>("VictimState");
             packet.ReadInt32("Unk Attacker State 0");
 
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Melee Spell ID ");
+            packet.ReadInt32<SpellId>("Melee Spell ID ");
 
             var block = 0;
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK))
@@ -499,7 +499,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_SPELLENERGIZELOG)]
+        [Parser(Opcode.SMSG_SPELL_ENERGIZE_LOG)]
         public static void HandleSpellEnergizeLog(Packet packet)
         {
             var casterGUID = new byte[8];
@@ -543,7 +543,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 for (var i = 0; i < powerCount; i++)
                 {
                     packet.ReadInt32("Power Value", i);
-                    packet.ReadEnum<PowerType>("Power Type", TypeCode.UInt32, i);
+                    packet.ReadUInt32E<PowerType>("Power Type", i);
                 }
 
                 packet.ReadXORByte(powerGUID, 4);
@@ -561,9 +561,9 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadXORByte(targetGUID, 6);
             packet.ReadXORByte(casterGUID, 7);
             packet.ReadXORByte(casterGUID, 6);
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32<SpellId>("Spell ID");
             packet.ReadXORByte(casterGUID, 3);
-            packet.ReadEnum<PowerType>("Power Type", TypeCode.UInt32);
+            packet.ReadUInt32E<PowerType>("Power Type");
             packet.ReadXORByte(targetGUID, 7);
             packet.ReadXORByte(targetGUID, 2);
             packet.ReadXORByte(targetGUID, 4);

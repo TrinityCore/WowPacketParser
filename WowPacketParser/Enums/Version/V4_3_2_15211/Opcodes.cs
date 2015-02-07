@@ -4,19 +4,24 @@ namespace WowPacketParser.Enums.Version.V4_3_2_15211
 {
     public static class Opcodes_4_3_2
     {
-        public static BiDictionary<Opcode, int> Opcodes()
+        public static BiDictionary<Opcode, int> Opcodes(Direction direction)
         {
-            return Opcs;
+            if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
+                return ClientOpcodes;
+            if (direction == Direction.ServerToClient || direction == Direction.BNServerToClient)
+                return ServerOpcodes;
+            return MiscOpcodes;
         }
 
-        private static readonly BiDictionary<Opcode, int> Opcs = new BiDictionary<Opcode, int>
+        private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
         {
             {Opcode.CMSG_ACCEPT_LEVEL_GRANT, 0x0D33},
-            {Opcode.CMSG_ACTIVATETAXI, 0x4DF9},
-            {Opcode.CMSG_ACTIVATETAXIEXPRESS, 0x4D0F},
+            {Opcode.CMSG_ACTIVATE_TAXI, 0x4DF9},
+            {Opcode.CMSG_ACTIVATE_TAXI_EXPRESS, 0x4D0F},
             {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x2860},
             {Opcode.CMSG_ADD_FRIEND, 0x2DBD},
             {Opcode.CMSG_ADD_IGNORE, 0x2541},
+            {Opcode.CMSG_AUTH_CONTINUED_SESSION, 0x004A},
             {Opcode.CMSG_AUTH_SESSION, 0x4042},
             {Opcode.CMSG_BANKER_ACTIVATE, 0x0569},
             {Opcode.CMSG_BINDER_ACTIVATE, 0x6DC7},
@@ -47,17 +52,18 @@ namespace WowPacketParser.Enums.Version.V4_3_2_15211
             {Opcode.CMSG_NPC_TEXT_QUERY, 0x4DF3},
             {Opcode.CMSG_PLAYER_VEHICLE_ENTER, 0x658F},
             {Opcode.CMSG_PLAY_DANCE, 0x0D93},
-            {Opcode.CMSG_QUESTGIVER_HELLO, 0x0D6D},
             {Opcode.CMSG_QUERY_TIME, 0x257F},
+            {Opcode.CMSG_QUESTGIVER_HELLO, 0x0D6D},
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x452B},
             {Opcode.CMSG_REALM_SPLIT, 0x0DB7},
-            {Opcode.CMSG_REDIRECTION_AUTH_PROOF, 0x004A},
             {Opcode.CMSG_REQUEST_CEMETERY_LIST, 0x03A4},
             {Opcode.CMSG_TRAINER_LIST, 0x4DD5},
             {Opcode.CMSG_UNLEARN_SKILL, 0x2DC7},
             {Opcode.CMSG_USE_ITEM, 0x2549},
-            {Opcode.MSG_MOVE_HEARTBEAT, 0x2B81},
-            {Opcode.MSG_TABARDVENDOR_ACTIVATE, 0x05FB},
+        };
+
+        private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
+        {
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x058B},
             {Opcode.SMSG_ADDON_INFO, 0x6D8D},
             {Opcode.SMSG_ATTACKERSTATEUPDATE, 0x2D59},
@@ -81,21 +87,21 @@ namespace WowPacketParser.Enums.Version.V4_3_2_15211
             {Opcode.SMSG_GOSSIP_POI, 0x6565},
             {Opcode.SMSG_GUILD_EVENT, 0x65F5},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x2D33},
-            {Opcode.SMSG_GUILD_RANK, 0x1EB1}, // Not confirmed
+            {Opcode.SMSG_GUILD_RANKS, 0x1EB1}, // Not confirmed
             {Opcode.SMSG_GUILD_ROSTER, 0x1E94}, // Not confirmed
             {Opcode.SMSG_HIGHEST_THREAT_UPDATE, 0x6527},
-            {Opcode.SMSG_INIT_WORLD_STATES, 0x0D25},
             {Opcode.SMSG_INITIAL_SPELLS, 0x65D3},
+            {Opcode.SMSG_INIT_WORLD_STATES, 0x0D25},
             {Opcode.SMSG_LEARNED_SPELL, 0x1611},
             {Opcode.SMSG_LOAD_CUF_PROFILES, 0x1494},
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x0DEB},
             {Opcode.SMSG_MESSAGECHAT, 0x0529},
-            {Opcode.SMSG_MIRRORIMAGE_DATA, 0x457D},
-            {Opcode.SMSG_MONSTER_MOVE, 0x2561},
+            {Opcode.SMSG_MIRROR_IMAGE_COMPONENTED_DATA, 0x457D},
             {Opcode.SMSG_MONSTER_MOVE_TRANSPORT, 0x65D5},
             {Opcode.SMSG_MOTD, 0x6D11},
             {Opcode.SMSG_NAME_QUERY_RESPONSE, 0x455D},
             {Opcode.SMSG_NPC_TEXT_UPDATE, 0x0D09},
+            {Opcode.SMSG_ON_MONSTER_MOVE, 0x2561},
             {Opcode.SMSG_PLAYER_VEHICLE_DATA, 0x2503},
             {Opcode.SMSG_PLAY_DANCE, 0x4D2F},
             {Opcode.SMSG_PLAY_MUSIC, 0x256D},
@@ -107,22 +113,28 @@ namespace WowPacketParser.Enums.Version.V4_3_2_15211
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x25CB},
             {Opcode.SMSG_REALM_SPLIT, 0x0581},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x1329},
-            {Opcode.SMSG_REMOVED_SPELL, 0x0501},
             {Opcode.SMSG_REQUEST_CEMETERY_LIST_RESPONSE, 0x0405},
-            {Opcode.SMSG_SPELLENERGIZELOG, 0x05EF},
-            {Opcode.SMSG_SPELLLOGEXECUTE, 0x4569},
-            {Opcode.SMSG_SPELLNONMELEEDAMAGELOG, 0x250F},
+            {Opcode.SMSG_SPELL_ENERGIZE_LOG, 0x05EF},
+            {Opcode.SMSG_SPELL_EXECUTE_LOG, 0x4569},
             {Opcode.SMSG_SPELL_GO, 0x6DEF},
+            {Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG, 0x250F},
             {Opcode.SMSG_SPELL_START, 0x6D27},
-            {Opcode.SMSG_STANDSTATE_UPDATE, 0x25DF},
+            {Opcode.SMSG_STAND_STATE_UPDATE, 0x25DF},
             {Opcode.SMSG_THREAT_CLEAR, 0x6DA1},
             {Opcode.SMSG_THREAT_REMOVE, 0x0DD7},
             {Opcode.SMSG_THREAT_UPDATE, 0x05BD},
             {Opcode.SMSG_TRAINER_LIST, 0x6D85},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x4D8F},
+            {Opcode.SMSG_UNLEARNED_SPELLS, 0x0501},
             {Opcode.SMSG_UPDATE_OBJECT, 0x0D63},
             {Opcode.SMSG_UPDATE_WORLD_STATE, 0x45E5},
             {Opcode.SMSG_WARDEN_DATA, 0x0CF0},
+        };
+
+        private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
+        {
+            {Opcode.MSG_MOVE_HEARTBEAT, 0x2B81},
+            {Opcode.MSG_TABARDVENDOR_ACTIVATE, 0x05FB},
         };
     }
 }

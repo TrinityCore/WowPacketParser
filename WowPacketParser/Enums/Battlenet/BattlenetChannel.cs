@@ -3,9 +3,9 @@ namespace WowPacketParser.Enums.Battlenet
 {
     public enum BattlenetChannel : byte
     {
-        Auth = 0,
+        Authentication = 0,
         Connection = 1,
-        WoW = 2,
+        WoWRealm = 2,
         Friend = 3,
         Presence = 4,
         Chat = 5,

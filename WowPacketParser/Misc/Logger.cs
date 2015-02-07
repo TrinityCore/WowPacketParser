@@ -11,15 +11,15 @@ namespace WowPacketParser.Misc
         private static readonly Dictionary<string, List<long>> EnumLogs =
             new Dictionary<string, List<long>>();
 
-        public static void CheckForMissingValues<T>(long rawValue)
+        public static void CheckForMissingValues<TEnum>(long rawValue)
         {
-            if (!Settings.LogErrors || !typeof(T).IsEnum || !Attribute.IsDefined(typeof(T), typeof(FlagsAttribute)))
+            if (!Settings.LogErrors || !typeof(TEnum).IsEnum || !Attribute.IsDefined(typeof(TEnum), typeof(FlagsAttribute)))
                 return;
 
-            var key = typeof(T).ToString().Replace("WowPacketParser.Enums.", "");
+            var key = typeof(TEnum).ToString().Replace("WowPacketParser.Enums.", "");
 
             // Remove all know values
-            foreach (T value in Enum.GetValues(typeof(T)))
+            foreach (TEnum value in Enum.GetValues(typeof(TEnum)))
                 rawValue = rawValue & ~Convert.ToInt64(value, CultureInfo.InvariantCulture);
 
             if (rawValue == 0)

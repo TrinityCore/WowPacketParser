@@ -52,7 +52,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             for (int c = 0; c < count; ++c)
             {
                 packet.ReadXORByte(charGuids[c], 4);
-                var race = packet.ReadEnum<Race>("Race", TypeCode.Byte, c);
+                var race = packet.ReadByteE<Race>("Race", c);
                 packet.ReadXORByte(charGuids[c], 6);
                 packet.ReadXORByte(guildGuids[c], 1);
                 packet.ReadByte("List Order", c);
@@ -60,12 +60,12 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadXORByte(guildGuids[c], 6);
                 packet.ReadXORByte(charGuids[c], 3);
                 var x = packet.ReadSingle("Position X", c);
-                packet.ReadEnum<CharacterFlag>("CharacterFlag", TypeCode.Int32, c);
+                packet.ReadInt32E<CharacterFlag>("CharacterFlag", c);
                 packet.ReadXORByte(guildGuids[c], 0);
                 packet.ReadInt32("Pet Level", c);
-                var mapId = packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id", c);
+                var mapId = packet.ReadInt32<MapId>("Map Id", c);
                 packet.ReadXORByte(guildGuids[c], 7);
-                packet.ReadEnum<CustomizationFlag>("CustomizationFlag", TypeCode.UInt32, c);
+                packet.ReadUInt32E<CustomizationFlag>("CustomizationFlag", c);
                 packet.ReadXORByte(guildGuids[c], 4);
                 packet.ReadXORByte(charGuids[c], 2);
                 packet.ReadXORByte(charGuids[c], 5);
@@ -83,28 +83,28 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 {
                     packet.ReadInt32("Item EnchantID", c, j);
                     packet.ReadInt32("Item DisplayID", c, j);
-                    packet.ReadEnum<InventoryType>("Item InventoryType", TypeCode.Byte, c, j);
+                    packet.ReadByteE<InventoryType>("Item InventoryType", c, j);
                 }
 
                 var z = packet.ReadSingle("Position Z", c);
-                var zone = packet.ReadEntry<UInt32>(StoreNameType.Zone, "Zone Id", c);
+                var zone = packet.ReadUInt32<ZoneId>("Zone Id", c);
                 packet.ReadByte("Facial Hair", c);
-                var clss = packet.ReadEnum<Class>("Class", TypeCode.Byte, c);
+                var clss = packet.ReadByteE<Class>("Class", c);
                 packet.ReadXORByte(guildGuids[c], 5);
                 packet.ReadByte("Skin", c);
-                packet.ReadEnum<Gender>("Gender", TypeCode.Byte, c);
+                packet.ReadByteE<Gender>("Gender", c);
                 packet.ReadByte("Face", c);
                 packet.ReadXORByte(charGuids[c], 0);
                 packet.ReadByte("Hair Color", c);
 
-                var playerGuid = new WowGuid(BitConverter.ToUInt64(charGuids[c], 0));
+                var playerGuid = new WowGuid64(BitConverter.ToUInt64(charGuids[c], 0));
 
                 packet.WriteGuid("Character GUID", charGuids[c], c);
                 packet.WriteGuid("Guild GUID", guildGuids[c], c);
 
                 if (firstLogins[c])
                 {
-                    var startPos = new StartPosition {Map = mapId, Position = new Vector3(x, y, z), Zone = (int) zone};
+                    var startPos = new StartPosition {Map = (uint) mapId, Position = new Vector3(x, y, z), Zone = zone};
 
                     Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
                 }
@@ -126,10 +126,10 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadByte("Face");
             packet.ReadByte("Facial Hair");
             packet.ReadByte("Hair Color");
-            packet.ReadEnum<Race>("Race", TypeCode.Byte);
-            packet.ReadEnum<Class>("Class", TypeCode.Byte);
+            packet.ReadByteE<Race>("Race");
+            packet.ReadByteE<Class>("Class");
             packet.ReadByte("Skin");
-            packet.ReadEnum<Gender>("Gender", TypeCode.Byte);
+            packet.ReadByteE<Gender>("Gender");
             packet.ReadByte("Outfit Id");
 
             var nameLength = packet.ReadBits(6);
@@ -150,7 +150,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             playerGuid[7] = packet.ReadBit();
             playerGuid[6] = packet.ReadBit();
 
-            var unknown = packet.ReadBit();
+            packet.ReadBit();
 
             playerGuid[3] = packet.ReadBit();
             playerGuid[0] = packet.ReadBit();
@@ -165,7 +165,6 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadXORByte(playerGuid, 5);
             packet.ReadXORByte(playerGuid, 6);
 
-            var guid = new WowGuid(BitConverter.ToUInt64(playerGuid, 0));
             packet.WriteGuid("GUID", playerGuid);
         }
 

@@ -7,7 +7,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 {
     public static class CombatLogHandler
     {
-        [Parser(Opcode.SMSG_SPELLNONMELEEDAMAGELOG)]
+        [Parser(Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG)]
         public static void HandleSpellNonMeleeDmgLog(Packet packet)
         {
             var guidA = new byte[8];
@@ -121,9 +121,9 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadInt32("Damage");
             packet.ReadByte("SchoolMask");
             packet.ReadXORByte(guid12, 7);
-            packet.ReadEnum<AttackerStateFlags>("Attacker State Flags", TypeCode.Int32);
+            packet.ReadInt32E<AttackerStateFlags>("Attacker State Flags");
             packet.ReadXORByte(guid12, 1);
-            packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadUInt32<SpellId>("Spell ID");
 
             packet.WriteGuid("GuidA", guidA);
             packet.WriteGuid("Guid12", guid12);
@@ -179,7 +179,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     packet.ReadInt32("Over damage", i); // +8
 
                 packet.ReadInt32("Damage", i);
-                packet.ReadEnum<AuraType>("Aura Type", TypeCode.Int32, i);
+                packet.ReadInt32E<AuraType>("Aura Type", i);
 
                 if (bit14[i])
                     packet.ReadInt32("Int14", i); // +20
@@ -194,7 +194,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadXORByte(casterGUID, 5);
             packet.ReadXORByte(casterGUID, 3);
             packet.ReadXORByte(targetGUID, 4);
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32<SpellId>("Spell ID");
             packet.ReadXORByte(targetGUID, 6);
             packet.ReadXORByte(casterGUID, 7);
             packet.ReadXORByte(casterGUID, 1);
@@ -226,7 +226,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Target GUID", targetGUID);
         }
 
-        [Parser(Opcode.SMSG_SPELLENERGIZELOG)]
+        [Parser(Opcode.SMSG_SPELL_ENERGIZE_LOG)]
         public static void HandleSpellEnergizeLog(Packet packet)
         {
             var guid1 = new byte[8];
@@ -285,14 +285,14 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadXORByte(guid1, 7);
             packet.ReadXORByte(guid2, 4);
             packet.ReadXORByte(guid1, 3);
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
-            packet.ReadEnum<PowerType>("Power Type", TypeCode.UInt32);
+            packet.ReadInt32<SpellId>("Spell ID");
+            packet.ReadUInt32E<PowerType>("Power Type");
 
             packet.WriteGuid("Guid1", guid1);
             packet.WriteGuid("Guid2", guid2);
         }
 
-        [Parser(Opcode.SMSG_SPELLHEALLOG)]
+        [Parser(Opcode.SMSG_SPELL_HEAL_LOG)]
         public static void HandleSpellHealLog(Packet packet)
         {
             var casterGUID = new byte[8];
@@ -300,7 +300,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             var bits24 = 0;
 
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID");
+            packet.ReadInt32<SpellId>("Spell ID");
             packet.ReadInt32("Absorb");
             packet.ReadInt32("Damage");
             packet.ReadInt32("Overheal");
@@ -364,7 +364,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Target GUID", targetGUID);
         }
 
-        [Parser(Opcode.SMSG_SPELLDISPELLOG)]
+        [Parser(Opcode.SMSG_SPELL_DISPEL_LOG)]
         public static void SpellDispelLog(Packet packet)
         {
             var casterGUID = new byte[8];
@@ -409,7 +409,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 if (bit14[i])
                     packet.ReadInt32("Int20", i);
 
-                packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell", i);
+                packet.ReadInt32<SpellId>("Spell", i);
 
                 if (bitC[i])
                     packet.ReadInt32("Int20", i);
@@ -426,7 +426,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadXORByte(casterGUID, 1);
             packet.ReadXORByte(casterGUID, 5);
             packet.ReadXORByte(targetGUID, 0);
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell");
+            packet.ReadInt32<SpellId>("Spell");
             packet.ReadXORByte(targetGUID, 7);
             packet.ReadXORByte(targetGUID, 6);
             packet.ReadXORByte(targetGUID, 2);

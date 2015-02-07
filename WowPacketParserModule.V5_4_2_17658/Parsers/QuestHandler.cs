@@ -17,7 +17,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
 
             for (var i = 0; i < count; i++) //for (var i = 0; i < 50; i++)
-                packet.ReadEntry<Int32>(StoreNameType.Quest, "Quest ID", i);
+                packet.ReadInt32<QuestId>("Quest ID", i);
 
             packet.ReadToEnd(); // Hack
         }
@@ -28,7 +28,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var count = packet.ReadBits("Count", 22);
 
             for (var i = 0; i < count; i++)
-                packet.ReadEntry<Int32>(StoreNameType.Quest, "Quest ID", i);
+                packet.ReadInt32<QuestId>("Quest ID", i);
         }
 
         [Parser(Opcode.SMSG_QUEST_POI_QUERY_RESPONSE)]
@@ -73,7 +73,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                     packet.ReadInt32("Unk Int32 1", i, j);
                     packet.ReadInt32("Unk Int32 2", i, j);
                     packet.ReadInt32("Unk Int32 3", i, j);
-                    questPoi.Map = (uint)packet.ReadEntry<UInt32>(StoreNameType.Map, "Map Id", i, j);
+                    questPoi.Map = packet.ReadUInt32<MapId>("Map Id", i, j);
                     questPoi.ObjectiveIndex = packet.ReadInt32("Objective Index", i, j);
                     questPoi.WorldMapAreaId = packet.ReadUInt32("World Map Area ID", i, j);
                     packet.ReadInt32("Unk Int32 4", i, j);
@@ -85,7 +85,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                     questPOIs.Add(questPoi);
                 }
 
-                var questId = packet.ReadEntry<Int32>(StoreNameType.Quest, "Quest ID", i);
+                var questId = packet.ReadInt32<QuestId>("Quest ID", i);
                 packet.ReadInt32("POI Counter?", i);
 
                 foreach (var questpoi in questPOIs)

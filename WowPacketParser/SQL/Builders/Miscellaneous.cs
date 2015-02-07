@@ -23,8 +23,10 @@ namespace WowPacketParser.SQL.Builders
                 var rows = new List<QueryBuilder.SQLInsertRow>();
                 foreach (var startActions in Storage.StartActions)
                 {
-                    var comment = new QueryBuilder.SQLInsertRow();
-                    comment.HeaderComment = startActions.Key.Item1 + " - " + startActions.Key.Item2;
+                    var comment = new QueryBuilder.SQLInsertRow
+                    {
+                        HeaderComment = startActions.Key.Item1 + " - " + startActions.Key.Item2
+                    };
                     rows.Add(comment);
 
                     foreach (var action in startActions.Value.Item1.Actions)
@@ -50,30 +52,10 @@ namespace WowPacketParser.SQL.Builders
 
             if (!Storage.StartPositions.IsEmpty() && Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.playercreateinfo))
             {
-                var rows = new List<QueryBuilder.SQLInsertRow>();
-                foreach (KeyValuePair<Tuple<Race, Class>, Tuple<StartPosition, TimeSpan?>> startPosition in Storage.StartPositions)
-                {
-                    var comment = new QueryBuilder.SQLInsertRow();
-                    comment.HeaderComment = startPosition.Key.Item1 + " - " + startPosition.Key.Item2;
-                    rows.Add(comment);
+                var entries = Storage.StartPositions.Keys();
+                var dataDb = SQLDatabase.GetDict<Race, Class, StartPosition>(entries, "race", "class");
 
-                    var row = new QueryBuilder.SQLInsertRow();
-
-                    row.AddValue("race", startPosition.Key.Item1);
-                    row.AddValue("class", startPosition.Key.Item2);
-                    row.AddValue("map", startPosition.Value.Item1.Map);
-                    row.AddValue("zone", startPosition.Value.Item1.Zone);
-                    row.AddValue("position_x", startPosition.Value.Item1.Position.X);
-                    row.AddValue("position_y", startPosition.Value.Item1.Position.Y);
-                    row.AddValue("position_z", startPosition.Value.Item1.Position.Z);
-
-                    row.Comment = StoreGetters.GetName(StoreNameType.Map, startPosition.Value.Item1.Map, false) + " - " +
-                                  StoreGetters.GetName(StoreNameType.Zone, startPosition.Value.Item1.Zone, false);
-
-                    rows.Add(row);
-                }
-
-                result += new QueryBuilder.SQLInsert("playercreateinfo", rows, 2).Build();
+                result += SQLUtil.CompareDicts(Storage.StartPositions, dataDb, StoreNameType.None, StoreNameType.None, "race", "class");
             }
 
             if (!Storage.StartSpells.IsEmpty() && Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.playercreateinfo_spell))
@@ -81,8 +63,10 @@ namespace WowPacketParser.SQL.Builders
                 var rows = new List<QueryBuilder.SQLInsertRow>();
                 foreach (var startSpells in Storage.StartSpells)
                 {
-                    var comment = new QueryBuilder.SQLInsertRow();
-                    comment.HeaderComment = startSpells.Key.Item1 + " - " + startSpells.Key.Item2;
+                    var comment = new QueryBuilder.SQLInsertRow
+                    {
+                        HeaderComment = startSpells.Key.Item1 + " - " + startSpells.Key.Item2
+                    };
                     rows.Add(comment);
 
                     foreach (var spell in startSpells.Value.Item1.Spells)
@@ -227,7 +211,7 @@ namespace WowPacketParser.SQL.Builders
                 {
                     var row = new QueryBuilder.SQLInsertRow();
 
-                    var query = new StringBuilder(string.Format("SELECT Id FROM {1}.broadcast_text WHERE MaleText='{0}' OR FemaleText='{0}';", MySqlHelper.DoubleQuoteString(messageValue.Item1.text), Settings.TDBDatabase));
+                    var query = new StringBuilder(string.Format("SELECT Id FROM {1}.broadcast_text WHERE MaleText='{0}' OR FemaleText='{0}';", MySqlHelper.DoubleQuoteString(messageValue.Item1.Text), Settings.HotfixesDatabase));
 
                     string broadcastTextId = "";
 
@@ -254,7 +238,7 @@ namespace WowPacketParser.SQL.Builders
 
                     row.AddValue("ZoneId", message.Key);
                     row.AddValue("Id", "x", false, true);
-                    row.AddValue("Text", messageValue.Item1.text);
+                    row.AddValue("Text", messageValue.Item1.Text);
                     if (Settings.DevMode)
                         row.AddValue("BroadcastTextId", broadcastTextId);
 

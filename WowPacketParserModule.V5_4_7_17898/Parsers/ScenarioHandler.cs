@@ -130,7 +130,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
         }
 
-        [Parser(Opcode.SMSG_SCENARIO_POI)]
+        [Parser(Opcode.SMSG_SCENARIO_POIS)]
         public static void HandleScenarioPoi(Packet packet)
         {
             var bits20 = packet.ReadBits(21);
@@ -152,7 +152,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             {
                 for (var j = 0; j < bits4[i]; ++j)
                 {
-                    packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
+                    packet.ReadInt32<MapId>("Map Id");
                     packet.ReadInt32("Int10", i, j);
                     packet.ReadInt32("Int16", i, j);
                     packet.ReadInt32("World Effect ID", i, j);
@@ -160,8 +160,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
                     for (var k = 0; k < bits34[i][j]; ++k)
                     {
-                        packet.ReadInt32("Point X", i, j, (int)k);
-                        packet.ReadInt32("Point Y", i, j, (int)k);
+                        packet.ReadInt32("Point X", i, j, k);
+                        packet.ReadInt32("Point Y", i, j, k);
                     }
 
                     packet.ReadInt32("Int12", i, j);

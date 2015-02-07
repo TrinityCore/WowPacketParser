@@ -1,23 +1,30 @@
-﻿using WowPacketParser.SQL;
+﻿using WowPacketParser.Misc;
+using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("creature_template")]
     public class CreatureDifficulty
     {
-        [DBFieldName("minlevel")]
-        public int MinLevel;
-        [DBFieldName("maxlevel")]
-        public int MaxLevel;
-        [DBFieldName("exp")]
-        public int Expansion;
-        [DBFieldName("faction")]
-        public uint Faction;
+        [DBFieldName("CreatureID")]
+        public uint CreatureID;
 
-        //[DBFieldName("Unk 1")] public uint unk1;
-        //[DBFieldName("Unk 2")] public uint unk2;
-        //[DBFieldName("Unk 3")] public uint unk3;
-        //[DBFieldName("Unk 4")] public uint unk4;
-        //[DBFieldName("Unk 5")] public uint unk5;
+        [DBFieldName("FactionID")]
+        public uint FactionID;
+
+        [DBFieldName("Expansion")]
+        public int Expansion;
+
+        [DBFieldName("MinLevel")]
+        public int MinLevel;
+
+        [DBFieldName("MaxLevel")]
+        public int MaxLevel;
+
+        [DBFieldName("Flags", 5, true)]
+        public uint[] Flags;
+
+        [DBFieldName("VerifiedBuild")]
+        public int VerifiedBuild = ClientVersion.BuildInt;
     }
 }

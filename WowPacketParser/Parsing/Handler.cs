@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Reflection;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
@@ -11,7 +10,7 @@ namespace WowPacketParser.Parsing
 {
     public static class Handler
     {
-        private static Dictionary<KeyValuePair<ClientVersionBuild, Opcode>, Action<Packet>> LoadDefaultHandlers()
+        public static Dictionary<KeyValuePair<ClientVersionBuild, Opcode>, Action<Packet>> LoadDefaultHandlers()
         {
             var handlers = new Dictionary<KeyValuePair<ClientVersionBuild, Opcode>, Action<Packet>>(1000);
 
@@ -30,9 +29,10 @@ namespace WowPacketParser.Parsing
             LoadHandlersInto(VersionHandlers, Assembly.GetExecutingAssembly(), ClientVersionBuild.Zero);
         }
 
-        public static void LoadHandlers(Assembly asm, ClientVersionBuild build)
+        public static Dictionary<KeyValuePair<ClientVersionBuild, Opcode>, Action<Packet>> LoadHandlers(Assembly asm, ClientVersionBuild build)
         {
             LoadHandlersInto(VersionHandlers, asm, build);
+            return VersionHandlers;
         }
 
         private static void LoadHandlersInto(Dictionary<KeyValuePair<ClientVersionBuild, Opcode>, Action<Packet>> handlers, Assembly asm, ClientVersionBuild build)
@@ -81,8 +81,16 @@ namespace WowPacketParser.Parsing
 
                         if (handlers.ContainsKey(key))
                         {
+                            // @TODO This is a hack to keep things easy regarding declaration of opcodes.
+                            // Ideally, we would split the opcodes into three different enums:
+                            // ClientOpcodes, ServerOpcodes, BidirectionalOpcodes
+                            // The first two are obvious as to what they would contain.
+                            // The last one would be MSG_, UMSG_, TEST_, etc... opcodes
+                            // However that's just too much pain to do considering the mess Blizzard does
+                            // by naming their opcodes sometimes without following their own rules.
+                            var direction = attr.Opcode.ToString()[0] == 'S' ? Direction.ServerToClient : Direction.ClientToServer;
                             Trace.WriteLine(string.Format("Error: (Build: {0}) tried to overwrite delegate for opcode {1} ({2}); new handler: {3}; old handler: {4}",
-                                ClientVersion.Build, Opcodes.GetOpcode(attr.Opcode), attr.Opcode, del.Method, handlers[key].Method));
+                                ClientVersion.Build, Opcodes.GetOpcode(attr.Opcode, direction), attr.Opcode, del.Method, handlers[key].Method));
                             continue;
                         }
 
@@ -100,7 +108,7 @@ namespace WowPacketParser.Parsing
 
             var opcode = Opcodes.GetOpcode(packet.Opcode, packet.Direction);
             if (opcode == Opcode.NULL_OPCODE)
-                opcode = Opcodes.GetOpcode(packet.Opcode);
+                opcode = Opcodes.GetOpcode(packet.Opcode, Direction.Bidirectional);
 
             packet.WriteLine(packet.GetHeader(isMultiple));
 
@@ -113,17 +121,18 @@ namespace WowPacketParser.Parsing
             var hasHandler = VersionHandlers.TryGetValue(key, out handler);
             if (!hasHandler)
             {
+                // If no handler was found, try to find a handler that works for any version.
                 key = new KeyValuePair<ClientVersionBuild, Opcode>(ClientVersionBuild.Zero, opcode);
                 hasHandler = VersionHandlers.TryGetValue(key, out handler);
             }
 
-            if (hasHandler)
+            if (hasHandler && Settings.DumpFormat != DumpFormatType.HexOnly)
             {
                 if (Settings.DumpFormat == DumpFormatType.SniffDataOnly)
                 {
                     var attrs = handler.Method.GetCustomAttributes(typeof(HasSniffDataAttribute), false);
 
-                    packet.AddSniffData(StoreNameType.Opcode, packet.Opcode, Opcodes.GetOpcodeName(packet.Opcode));
+                    packet.AddSniffData(StoreNameType.Opcode, packet.Opcode, Opcodes.GetOpcodeName(packet.Opcode, packet.Direction));
 
                     if (attrs.Length == 0)
                     {
@@ -142,7 +151,7 @@ namespace WowPacketParser.Parsing
                     {
                         var pos = packet.Position;
                         var len = packet.Length;
-                        packet.WriteLine("Packet not fully read! Current position is {0}, length is {1}, and diff is {2}.",
+                        packet.WriteLine("Packet not fully read! Current position: {0} Length: {1} Bytes remaining: {2}.",
                             pos, len, len - pos);
 
                         if (len < 300) // If the packet isn't "too big" and it is not full read, print its hex table
@@ -163,7 +172,7 @@ namespace WowPacketParser.Parsing
             else
             {
                 packet.AsHex();
-                status = ParsedStatus.NotParsed;
+                status = opcode == Opcode.NULL_OPCODE ? ParsedStatus.NotParsed : ParsedStatus.NoStructure;
             }
 
             if (!isMultiple)
@@ -173,7 +182,7 @@ namespace WowPacketParser.Parsing
                 if (Settings.DumpFormat != DumpFormatType.SniffDataOnly)
                 {
                     // added before for this type
-                    var data = status == ParsedStatus.Success ? Opcodes.GetOpcodeName(packet.Opcode) : status.ToString();
+                    var data = status == ParsedStatus.Success ? Opcodes.GetOpcodeName(packet.Opcode, packet.Direction) : status.ToString();
                     packet.AddSniffData(StoreNameType.Opcode, packet.Opcode, data);
                 }
             }
@@ -213,14 +222,6 @@ namespace WowPacketParser.Parsing
                     packet.AsHex();
                     packet.Status = ParsedStatus.NotParsed;
                 }
-            }
-            catch (EndOfStreamException)
-            {
-                // Processes the packet until it has all data to read - packet appears multiple times in the sniff file
-                // but only the last copy is complete
-                packet.Writer.Clear();
-                packet.AsHex();
-                packet.Status = ParsedStatus.WithErrors;
             }
             catch (Exception ex)
             {

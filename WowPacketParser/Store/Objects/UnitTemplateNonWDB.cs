@@ -1,4 +1,5 @@
-﻿using WowPacketParser.SQL;
+﻿using WowPacketParser.Misc;
+using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
@@ -6,8 +7,8 @@ namespace WowPacketParser.Store.Objects
     public class UnitTemplateNonWDB
     {
         [DBFieldName("gossip_menu_id")] public uint GossipMenuId;
-        [DBFieldName("minlevel")] public uint MinLevel;
-        [DBFieldName("maxlevel")] public uint MaxLevel;
+        [DBFieldName("minlevel")] public int MinLevel;
+        [DBFieldName("maxlevel")] public int MaxLevel;
         [DBFieldName("faction")] public uint Faction;
         [DBFieldName("npcflag")] public uint NpcFlag;
         [DBFieldName("speed_walk")] public float SpeedWalk;
@@ -20,5 +21,51 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("dynamicflags")] public uint DynamicFlag;
         [DBFieldName("VehicleId")] public uint VehicleId;
         [DBFieldName("HoverHeight")] public float HoverHeight;
+    }
+
+    [DBTableName("creature_difficulty_misc")]
+    public class CreatureDifficultyMisc
+    {
+        [DBFieldName("CreatureId")]
+        public uint CreatureId;
+
+        [DBFieldName("GossipMenuId")]
+        public uint GossipMenuId;
+
+        [DBFieldName("NpcFlag")]
+        public uint NpcFlag;
+
+        [DBFieldName("SpeedWalk")]
+        public float SpeedWalk;
+
+        [DBFieldName("SpeedRun")]
+        public float SpeedRun;
+
+        [DBFieldName("BaseAttackTime")]
+        public uint BaseAttackTime;
+
+        [DBFieldName("RangeAttackTime")]
+        public uint RangedAttackTime;
+
+        [DBFieldName("UnitClass")]
+        public uint UnitClass;
+
+        [DBFieldName("UnitFlags")]
+        public uint UnitFlag;
+
+        [DBFieldName("UnitFlags2")]
+        public uint UnitFlag2;
+
+        [DBFieldName("DynamicFlags")]
+        public uint DynamicFlag;
+
+        [DBFieldName("VehicleId")]
+        public uint VehicleId;
+
+        [DBFieldName("HoverHeight")]
+        public float HoverHeight;
+
+        [DBFieldName("VerifiedBuild")]
+        public int VerifiedBuild = ClientVersion.BuildInt;
     }
 }

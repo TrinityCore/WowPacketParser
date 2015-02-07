@@ -16,7 +16,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Gold");
 
             if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing)) // no idea when this was added, doesn't exist in 2.4.1
-                packet.ReadBoolean("Solo Loot"); // true = YOU_LOOT_MONEY, false = LOOT_MONEY_SPLIT
+                packet.ReadBool("Solo Loot"); // true = YOU_LOOT_MONEY, false = LOOT_MONEY_SPLIT
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623) && ClientVersion.RemovedInVersion(ClientVersionBuild.V4_3_0_15005)) // remove confirmed for 430
                 packet.ReadUInt32("Guild Gold");
@@ -56,16 +56,16 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_LOOT_METHOD)]
         public static void HandleLootMethod(Packet packet)
         {
-            packet.ReadEnum<LootMethod>("Loot Method", TypeCode.UInt32);
+            packet.ReadUInt32E<LootMethod>("Loot Method");
             packet.ReadGuid("Master GUID");
-            packet.ReadEnum<ItemQuality>("Loot Threshold", TypeCode.UInt32);
+            packet.ReadUInt32E<ItemQuality>("Loot Threshold");
         }
 
         [Parser(Opcode.CMSG_OPT_OUT_OF_LOOT)]
         public static void HandleOptOutOfLoot(Packet packet)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
-                packet.ReadBoolean("Always Pass");
+                packet.ReadBool("Always Pass");
             else
                 packet.ReadUInt32("Always Pass");
         }
@@ -75,7 +75,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             packet.ReadUInt32("Slot");
-            packet.ReadEntry<UInt32>(StoreNameType.Item, "Entry");
+            packet.ReadUInt32<ItemId>("Entry");
             packet.ReadInt32("Random Property Id");
             packet.ReadInt32("Random Suffix");
         }
@@ -88,11 +88,11 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("Looter GUID");
         }
 
-        [Parser(Opcode.SMSG_LOOT_RELEASE_RESPONSE)]
+        [Parser(Opcode.SMSG_LOOT_RELEASE)]
         public static void HandleLootReleaseResponse(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadBoolean("Unk Bool"); // true calls CGUnit_C::UpdateLootAnimKit and CGameUI::CloseLoot
+            packet.ReadBool("Unk Bool"); // true calls CGUnit_C::UpdateLootAnimKit and CGameUI::CloseLoot
         }
 
         [Parser(Opcode.SMSG_LOOT_REMOVED)]
@@ -107,8 +107,8 @@ namespace WowPacketParser.Parsing.Parsers
             var loot = new Loot();
 
             var guid = packet.ReadGuid("GUID");
-            var lootType = packet.ReadEnum<LootType>("Loot Type", TypeCode.Byte);
-            if (lootType == LootType.Unk0)
+            var lootType = packet.ReadByteE<LootType>("Loot Type");
+            if (lootType == LootType.None)
             {
                 packet.ReadByte("Slot");
                 return;
@@ -127,12 +127,12 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 var lootItem = new LootItem();
                 packet.ReadByte("Slot", i);
-                lootItem.ItemId = (uint) packet.ReadEntry<UInt32>(StoreNameType.Item, "Entry", i);
+                lootItem.ItemId = packet.ReadUInt32<ItemId>("Entry", i);
                 lootItem.Count = packet.ReadUInt32("Count", i);
                 packet.ReadUInt32("Display ID", i);
                 packet.ReadInt32("Random Suffix", i);
                 packet.ReadInt32("Random Property Id", i);
-                packet.ReadEnum<LootSlotType>("Slot Type", TypeCode.Byte, i);
+                packet.ReadByteE<LootSlotType>("Slot Type", i);
                 loot.LootItems.Add(lootItem);
             }
 
@@ -164,7 +164,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             packet.ReadUInt32("Slot");
-            packet.ReadEnum<LootRollType>("Roll Type", TypeCode.Byte);
+            packet.ReadByteE<LootRollType>("Roll Type");
         }
 
         [Parser(Opcode.SMSG_LOOT_ROLL)]
@@ -173,15 +173,15 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
             packet.ReadUInt32("Slot");
             packet.ReadGuid("Player GUID");
-            packet.ReadEntry<UInt32>(StoreNameType.Item, "Entry");
+            packet.ReadUInt32<ItemId>("Entry");
             packet.ReadInt32("Random Property Id");
             packet.ReadInt32("Random Suffix");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
                 packet.ReadInt32("Roll Number");
             else
                 packet.ReadByte("Roll Number");
-            packet.ReadEnum<LootRollType>("Roll Type", TypeCode.Byte);
-            packet.ReadBoolean("Auto Pass");
+            packet.ReadByteE<LootRollType>("Roll Type");
+            packet.ReadBool("Auto Pass");
         }
 
         [Parser(Opcode.SMSG_LOOT_ROLL_WON)]
@@ -189,7 +189,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             packet.ReadUInt32("Slot");
-            packet.ReadEntry<UInt32>(StoreNameType.Item, "Entry");
+            packet.ReadUInt32<ItemId>("Entry");
             packet.ReadInt32("Random Property Id");
             packet.ReadInt32("Random Suffix");
             packet.ReadGuid("Player GUID");
@@ -197,22 +197,22 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Roll Number");
             else
                 packet.ReadByte("Roll Number");
-            packet.ReadEnum<LootRollType>("Roll Type", TypeCode.Byte);
+            packet.ReadByteE<LootRollType>("Roll Type");
         }
 
         [Parser(Opcode.SMSG_LOOT_START_ROLL)]
         public static void HandleStartLoot(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
+            packet.ReadInt32<MapId>("Map ID");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685)) // probably earlier
                 packet.ReadUInt32("Slot");
-            packet.ReadEntry<UInt32>(StoreNameType.Item, "Entry");
+            packet.ReadUInt32<ItemId>("Entry");
             packet.ReadInt32("Random Suffix");
             packet.ReadInt32("Random Property Id");
             packet.ReadUInt32("Count");
             packet.ReadUInt32("Roll time");
-            packet.ReadEnum<LootVoteFlags>("Roll Vote Mask", TypeCode.Byte);
+            packet.ReadByteE<LootVoteFlags>("Roll Vote Mask");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
                 packet.ReadByte("unk"); //amount of players? need verification.
         }
@@ -222,7 +222,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadGuid("GUID");
             packet.ReadByte("Slot");
-            packet.ReadEntry<UInt32>(StoreNameType.Item, "Entry");
+            packet.ReadUInt32<ItemId>("Entry");
             packet.ReadUInt32("Display ID");
             packet.ReadInt32("Unk UInt32 1");
             packet.ReadInt32("Unk UInt32 2"); // only seen 0
@@ -246,7 +246,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Display ID", i);
                 packet.ReadInt32("Random Suffix Factor", i);
                 packet.ReadInt32("Item Count", i);
-                packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Entry", i);
+                packet.ReadUInt32<ItemId>("Item Entry", i);
                 packet.ReadInt32("Unk Int32", i); // possibly random property id or looted count
             }
         }

@@ -2,11 +2,11 @@
 {
     public enum ArenaEvent
     {
-        PlayerJoined = 4,
-        PlayerLeft = 5,
+        PlayerJoined  = 4,
+        PlayerLeft    = 5,
         PlayerRemoved = 6,
-        LeaderIs = 7,
+        LeaderIs      = 7,
         LeaderChanged = 8,
-        TeamDisbanded = 9,
+        TeamDisbanded = 9
     }
 }

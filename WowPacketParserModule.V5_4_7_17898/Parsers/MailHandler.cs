@@ -122,7 +122,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 {
                     packet.AddValue("bit84", bit84[i][j], i, j);
                     packet.ReadInt32("IntED", i, j);
-                    packet.ReadEntry<UInt32>(StoreNameType.Item, "Item Id", i, j);
+                    packet.ReadUInt32<ItemId>("Item Id", i, j);
                     packet.ReadInt32("IntED", i, j);
                     packet.ReadInt32("Int14", i, j);
                     packet.ReadByte("ByteED", i, j);

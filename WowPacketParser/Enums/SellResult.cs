@@ -8,6 +8,6 @@ namespace WowPacketParser.Enums
         CantFindVendor = 3,
         DoNotOwnItem   = 4,
         Unk            = 5,
-        OnlyEmptyBag   = 6,
+        OnlyEmptyBag   = 6
     }
 }

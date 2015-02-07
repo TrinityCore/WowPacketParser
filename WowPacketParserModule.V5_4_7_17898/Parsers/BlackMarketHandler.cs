@@ -19,7 +19,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
         }
 
-        [Parser(Opcode.CMSG_BLACK_MARKET_BID)]
+        [Parser(Opcode.CMSG_BLACK_MARKET_BID_ON_ITEM)]
         public static void HandleBlackMarketBid(Packet packet)
         {
             var guid2 = new byte[8];
@@ -34,7 +34,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
         }
 
-        [Parser(Opcode.CMSG_BLACK_MARKET_HELLO)]
+        [Parser(Opcode.CMSG_BLACK_MARKET_OPEN)]
         public static void HandleBlackMarketHello(Packet packet)
         {
             var guid2 = new byte[8];
@@ -45,7 +45,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid2", guid2);
 
         }
-        [Parser(Opcode.SMSG_BLACKMARKET_OPEN_RESULT)]
+        [Parser(Opcode.SMSG_BLACK_MARKET_OPEN_RESULT)]
         public static void HandleBlackMarketOpenResult(Packet packet)
         {
             var guid2 = new byte[8];
@@ -70,14 +70,14 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.WriteGuid("Guid2", guid2);
         }
-        [Parser(Opcode.SMSG_BLACKMARKET_OUT_BID)]
+        [Parser(Opcode.SMSG_BLACK_MARKET_OUTBID)]
         public static void HandleBlackMarketOutBid(Packet packet)
         {
             packet.ReadInt32("Int10");
             packet.ReadInt32("Item Id");
             packet.ReadInt32("Int14");
         }
-        [Parser(Opcode.SMSG_BLACKMARKET_ITEM_RESULT)]
+        [Parser(Opcode.SMSG_BLACK_MARKET_REQUEST_ITEMS_RESULT)]
         public static void HandleBlackMarketItemResult(Packet packet)
         {
             var bit34 = false;
@@ -106,14 +106,14 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadInt32("Amount", i);
             }
         }
-        [Parser(Opcode.SMSG_BLACKMARKET_BID_ON_ITEM_RESULT)]
+        [Parser(Opcode.SMSG_BLACK_MARKET_BID_ON_ITEM_RESULT)]
         public static void HandleBlackMarketBidOnItemResult(Packet packet)
         {
             packet.ReadInt32("Int10");
             packet.ReadInt32("Item Entry");
             packet.ReadInt32("Int14");
         }
-        [Parser(Opcode.SMSG_BLACKMARKET_WON)]
+        [Parser(Opcode.SMSG_BLACK_MARKET_WON)]
         public static void HandleBlackMarketWon(Packet packet)
         {
             packet.ReadInt32("Int10");

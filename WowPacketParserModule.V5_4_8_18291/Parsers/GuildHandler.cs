@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -127,7 +126,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid2", guid2);
         }
 
-        [Parser(Opcode.SMSG_GUILD_RANK)]
+        [Parser(Opcode.SMSG_GUILD_RANKS)]
         public static void HandleGuildRankServer(Packet packet)
         {
             const int guildBankMaxTabs = 8;
@@ -145,7 +144,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 for (var j = 0; j < guildBankMaxTabs; ++j)
                 {
                     packet.ReadInt32("Tab Slots", i, j);
-                    packet.ReadEnum<GuildBankRightsFlag>("Tab Rights", TypeCode.Int32, i, j);
+                    packet.ReadInt32E<GuildBankRightsFlag>("Tab Rights", i, j);
                 }
 
                 packet.ReadWoWString("Name", length[i], i);
@@ -153,6 +152,35 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 packet.ReadInt32("Rights Order", i);
                 packet.ReadInt32("Unk 1", i);
             }
+        }
+
+        [Parser(Opcode.CMSG_GUILD_SET_NOTE)]
+        public static void HandleGuildPlayerSetNote(Packet packet)
+        {
+            var playerGUID = new byte[8];
+
+            playerGUID[1]  = packet.ReadBit();
+            var noteLength = packet.ReadBits("note length", 8);
+            playerGUID[4]  = packet.ReadBit();
+            playerGUID[2]  = packet.ReadBit();
+            var ispublic   = packet.ReadBit("IsPublic");
+            playerGUID[3]  = packet.ReadBit();
+            playerGUID[5]  = packet.ReadBit();
+            playerGUID[0]  = packet.ReadBit();
+            playerGUID[6]  = packet.ReadBit();
+            playerGUID[7]  = packet.ReadBit();
+
+            packet.ReadXORByte(playerGUID, 5);
+            packet.ReadXORByte(playerGUID, 1);
+            packet.ReadXORByte(playerGUID, 6);
+            packet.ReadWoWString("note", noteLength);
+            packet.ReadXORByte(playerGUID, 0);
+            packet.ReadXORByte(playerGUID, 7);
+            packet.ReadXORByte(playerGUID, 4);
+            packet.ReadXORByte(playerGUID, 3);
+            packet.ReadXORByte(playerGUID, 2);
+
+            packet.WriteGuid("Player GUID", playerGUID);
         }
 
         [Parser(Opcode.SMSG_GUILD_NEWS_TEXT)]
@@ -167,6 +195,36 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             var guid = packet.StartBitStream(3, 6, 0, 2, 7, 5, 4, 1);
             packet.ParseBitStream(guid, 7, 4, 2, 5, 1, 3, 0, 6);
             packet.WriteGuid("GUID", guid);
+        }
+
+        [Parser(Opcode.SMSG_GUILD_SET_NOTE)]
+        public static void HandleGuildClientSetNote(Packet packet)
+        {
+            var playerGUID = new byte[8];
+
+            playerGUID[1]  = packet.ReadBit();
+            var noteLength = packet.ReadBits("note length", 8);
+            var ispublic   = packet.ReadBit("IsPublic");
+            playerGUID[4]  = packet.ReadBit();
+            playerGUID[2]  = packet.ReadBit();
+            playerGUID[3]  = packet.ReadBit();
+            playerGUID[5]  = packet.ReadBit();
+            playerGUID[0]  = packet.ReadBit();
+            playerGUID[6]  = packet.ReadBit();
+            playerGUID[7]  = packet.ReadBit();
+
+            packet.ReadXORByte(playerGUID, 5);
+            packet.ReadXORByte(playerGUID, 1);
+            packet.ReadXORByte(playerGUID, 6);
+            packet.ReadXORByte(playerGUID, 0);
+            packet.ReadWoWString("note", noteLength);
+            packet.ReadXORByte(playerGUID, 7);
+            packet.ReadXORByte(playerGUID, 4);
+            packet.ReadXORByte(playerGUID, 3);
+            packet.ReadXORByte(playerGUID, 2);
+            packet.ResetBitReader();
+
+            packet.WriteGuid("Player GUID", playerGUID);
         }
     }
 }

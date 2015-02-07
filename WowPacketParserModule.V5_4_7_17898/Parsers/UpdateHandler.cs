@@ -60,7 +60,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                             var guid = packet.ReadPackedGuid("GUID", i);
 
                             WoWObject obj;
-                            var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlock(ref packet, guid.GetObjectType(), i, false);
+                            var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, guid.GetObjectType(), i, false);
 
                             if (Storage.Objects.TryGetValue(guid, out obj))
                             {
@@ -75,23 +75,23 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     case "CreateObject2": // Might != CreateObject1 on Cata
                         {
                             var guid = packet.ReadPackedGuid("GUID", i);
-                            ReadCreateObjectBlock(ref packet, guid, map, i);
+                            ReadCreateObjectBlock(packet, guid, map, i);
                             break;
                         }
                     case "DestroyObjects":
                         {
-                            CoreParsers.UpdateHandler.ReadObjectsBlock(ref packet, i);
+                            CoreParsers.UpdateHandler.ReadObjectsBlock(packet, i);
                             break;
                         }
                 }
             }
         }
 
-        private static void ReadCreateObjectBlock(ref Packet packet, WowGuid guid, uint map, object index)
+        private static void ReadCreateObjectBlock(Packet packet, WowGuid guid, uint map, object index)
         {
-            var objType = packet.ReadEnum<ObjectType>("Object Type", TypeCode.Byte, index);
-            var moves = ReadMovementUpdateBlock(ref packet, guid, index);
-            var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlock(ref packet, objType, index, true);
+            var objType = packet.ReadByteE<ObjectType>("Object Type", index);
+            var moves = ReadMovementUpdateBlock(packet, guid, index);
+            var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, objType, index, true);
 
             WoWObject obj;
             switch (objType)
@@ -135,7 +135,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.AddSniffData(Utilities.ObjectTypeToStore(objType), (int)guid.GetEntry(), "SPAWN");
         }
 
-        private static MovementInfo ReadMovementUpdateBlock(ref Packet packet, WowGuid guid, object index)
+        private static MovementInfo ReadMovementUpdateBlock(Packet packet, WowGuid guid, object index)
         {
             var moveInfo = new MovementInfo();
 
@@ -512,16 +512,19 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     packet.ReadXORByte(transportGuid, 0);
                     packet.ReadXORByte(transportGuid, 5);
 
-                    moveInfo.TransportGuid = new WowGuid(BitConverter.ToUInt64(transportGuid, 0));
+                    moveInfo.TransportGuid = new WowGuid64(BitConverter.ToUInt64(transportGuid, 0));
                     packet.AddValue("Transport GUID", moveInfo.TransportGuid, index);
                     packet.AddValue("Transport Position", moveInfo.TransportOffset, index);
 
                     if (moveInfo.TransportGuid.HasEntry() && moveInfo.TransportGuid.GetHighType() == HighGuidType.Vehicle &&
-                        guid.HasEntry() && guid.GetHighType() == HighGuidType.Unit)
+                        guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
                     {
-                        var vehicleAccessory = new VehicleTemplateAccessory();
-                        vehicleAccessory.AccessoryEntry = guid.GetEntry();
-                        vehicleAccessory.SeatId = seat;
+                        var vehicleAccessory = new VehicleTemplateAccessory
+                        {
+                            AccessoryEntry = guid.GetEntry(),
+                            SeatId = seat
+                        };
+
                         Storage.VehicleTemplateAccessorys.Add(moveInfo.TransportGuid.GetEntry(), vehicleAccessory, packet.TimeSpan);
                     }
                 }
@@ -595,7 +598,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadXORByte(goTransportGuid, 3);
                 packet.ReadUInt32("Transport Time", index);
 
-                moveInfo.TransportGuid = new WowGuid(BitConverter.ToUInt64(goTransportGuid, 0));
+                moveInfo.TransportGuid = new WowGuid64(BitConverter.ToUInt64(goTransportGuid, 0));
                 packet.AddValue("Transport GUID", moveInfo.TransportGuid, index);
                 packet.AddValue("Transport Position", moveInfo.TransportOffset, index);
             }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
@@ -12,7 +13,7 @@ namespace WowPacketParser.Misc
     {
         public WowGuid ReadGuid()
         {
-            var guid = new WowGuid(ReadUInt64());
+            var guid = new WowGuid64(ReadUInt64());
             if (WriteToFile)
                 WriteToFile = Filters.CheckFilter(guid);
             return guid;
@@ -20,18 +21,34 @@ namespace WowPacketParser.Misc
 
         public WowGuid ReadPackedGuid()
         {
-            var guid = new WowGuid(ReadPackedUInt64());
+            var guid = new WowGuid64(ReadPackedUInt64());
 
-            if (guid.Full != 0 && WriteToFile)
+            if (!guid.IsEmpty() && WriteToFile)
                 WriteToFile = Filters.CheckFilter(guid);
 
             return guid;
         }
 
+        public WowGuid ReadPackedGuid128()
+        {
+            var guidLowMask = ReadByte();
+            var guidHighMask = ReadByte();
+
+            return new WowGuid128(ReadPackedUInt64(guidLowMask), ReadPackedUInt64(guidHighMask));
+        }
+
+        public WowGuid WriteGuid(string name, byte[] stream, params object[] indexes)
+        {
+            return AddValue(name, new WowGuid64(BitConverter.ToUInt64(stream, 0)), indexes);
+        }
+
         public ulong ReadPackedUInt64()
         {
-            byte mask = ReadByte();
+            return ReadPackedUInt64(ReadByte());
+        }
 
+        private ulong ReadPackedUInt64(byte mask)
+        {
             if (mask == 0)
                 return 0;
 
@@ -140,10 +157,10 @@ namespace WowPacketParser.Misc
 
         public T ReadEntry<T>(StoreNameType type, string name, params object[] indexes) where T : struct
         {
-            var val = ReadStruct<T>();
+            var val = ReadValue<T>();
             var val32 = Convert.ToInt32(val);
-            AddValue(name, StoreGetters.GetName(type, val32) + (Settings.DebugReads ? " (0x" + val32.ToString("X4") + ")" : String.Empty), indexes);
-            return val;
+            AddValue(name, FormatInteger(val32, StoreGetters.GetName(type, val32, false)), indexes);
+            return (T) Convert.ChangeType(val, typeof (T));
         }
 
         public LfgEntry ReadLfgEntry()
@@ -153,7 +170,6 @@ namespace WowPacketParser.Misc
 
         public UpdateField ReadUpdateField()
         {
-            long pos = Position;
             uint val = ReadUInt32();
 
             var field = new UpdateField(val);
@@ -182,109 +198,122 @@ namespace WowPacketParser.Misc
             return ReadBytes(length);
         }
 
-        public static string GetIndexString(params object[] values)
+        private TEnum ReadEnum<TEnum, T>(string name, params object[] indexes) where TEnum : struct, IConvertible
+            where T : struct, IEquatable<T>
         {
-            return values.Where(value => value != null)
-                .Aggregate(string.Empty, (current, value) => current + ("[" + value + "] "));
+            var e = ReadEnum<TEnum, T>();
+            AddValue(name, FormatInteger(Convert.ToInt64(e), e.ToString(CultureInfo.InvariantCulture)), indexes);
+            return e;
         }
+
+        public TEnum ReadByteE<TEnum>(string name, params object[] idx) where TEnum : struct, IConvertible { return ReadEnum<TEnum, Byte>(name, idx); }
+        public TEnum ReadSByteE<TEnum>(string name, params object[] idx) where TEnum : struct, IConvertible { return ReadEnum<TEnum, SByte>(name, idx); }
+        public TEnum ReadInt16E<TEnum>(string name, params object[] idx) where TEnum : struct, IConvertible { return ReadEnum<TEnum, Int16>(name, idx); }
+        public TEnum ReadUInt16E<TEnum>(string name, params object[] idx) where TEnum : struct, IConvertible { return ReadEnum<TEnum, UInt16>(name, idx); }
+        public TEnum ReadInt32E<TEnum>(string name, params object[] idx) where TEnum : struct, IConvertible { return ReadEnum<TEnum, Int32>(name, idx); }
+        public TEnum ReadUInt32E<TEnum>(string name, params object[] idx) where TEnum : struct, IConvertible { return ReadEnum<TEnum, UInt32>(name, idx); }
+        public TEnum ReadInt64E<TEnum>(string name, params object[] idx) where TEnum : struct, IConvertible { return ReadEnum<TEnum, Int64>(name, idx); }
+        public TEnum ReadUInt64E<TEnum>(string name, params object[] idx) where TEnum : struct, IConvertible { return ReadEnum<TEnum, UInt64>(name, idx); }
+
+        public TEnum ReadByteE<TEnum>() where TEnum : struct, IConvertible { return ReadEnum<TEnum, Byte>(); }
+        public TEnum ReadSByteE<TEnum>() where TEnum : struct, IConvertible { return ReadEnum<TEnum, SByte>(); }
+        public TEnum ReadInt16E<TEnum>() where TEnum : struct, IConvertible { return ReadEnum<TEnum, Int16>(); }
+        public TEnum ReadUInt16E<TEnum>() where TEnum : struct, IConvertible { return ReadEnum<TEnum, UInt16>(); }
+        public TEnum ReadInt32E<TEnum>() where TEnum : struct, IConvertible { return ReadEnum<TEnum, Int32>(); }
+        public TEnum ReadUInt32E<TEnum>() where TEnum : struct, IConvertible { return ReadEnum<TEnum, UInt32>(); }
+        public TEnum ReadInt64E<TEnum>() where TEnum : struct, IConvertible { return ReadEnum<TEnum, Int64>(); }
+        public TEnum ReadUInt64E<TEnum>() where TEnum : struct, IConvertible { return ReadEnum<TEnum, UInt64>(); }
+
+        public SByte ReadSByte<T>(string name, params object[] idx) where T : IId { return ReadEntry<SByte>(StoreName.ToEnum<T>(), name, idx); }
+        public Byte ReadByte<T>(string name, params object[] idx) where T : IId { return ReadEntry<Byte>(StoreName.ToEnum<T>(), name, idx); }
+        public Int16 ReadInt16<T>(string name, params object[] idx) where T : IId { return ReadEntry<Int16>(StoreName.ToEnum<T>(), name, idx); }
+        public UInt16 ReadUInt16<T>(string name, params object[] idx) where T : IId { return ReadEntry<UInt16>(StoreName.ToEnum<T>(), name, idx); }
+        public Int32 ReadInt32<T>(string name, params object[] idx) where T : IId { return ReadEntry<Int32>(StoreName.ToEnum<T>(), name, idx); }
+        public UInt32 ReadUInt32<T>(string name, params object[] idx) where T : IId { return ReadEntry<UInt32>(StoreName.ToEnum<T>(), name, idx); }
+        public Int64 ReadInt64<T>(string name, params object[] idx) where T : IId { return ReadEntry<Int64>(StoreName.ToEnum<T>(), name, idx); }
+        public UInt64 ReadUInt64<T>(string name, params object[] idx) where T : IId { return ReadEntry<UInt64>(StoreName.ToEnum<T>(), name, idx); }
 
         public byte ReadByte(string name, params object[] indexes)
         {
             var val = ReadByte();
-            AddValue(name, val + (Settings.DebugReads ? " (0x" + val.ToString("X2") + ")" : String.Empty), indexes);
+            AddValue(name, FormatInteger(val), indexes);
             return val;
         }
 
         public sbyte ReadSByte(string name, params object[] indexes)
         {
             var val = ReadSByte();
-            AddValue(name, val + (Settings.DebugReads ? " (0x" + val.ToString("X2") + ")" : String.Empty), indexes);
+            AddValue(name, FormatInteger(val), indexes);
             return val;
         }
 
-        public bool ReadBoolean(string name, params object[] indexes)
+        public bool ReadBool(string name, params object[] indexes)
         {
             var val = ReadBoolean();
             AddValue(name, val ? "true" : "false", indexes);
             return val;
         }
 
-        public bool ReadBoolean(string name, TypeCode code, params object[] indexes)
+        public bool ReadBool<T>(string name, params object[] indexes) where T : struct, IEquatable<T>
         {
-            var val = ReadValue(code) == 1;
-            AddValue(name, val ? "true" : "false", indexes);
+            var val = ReadValue<T>().Equals(default(T));
+            AddValue(name, !val ? "true" : "false", indexes);
             return val;
         }
 
         public short ReadInt16(string name, params object[] indexes)
         {
             var val = ReadInt16();
-            AddValue(name, val + (Settings.DebugReads ? " (0x" + val.ToString("X4") + ")" : String.Empty), indexes);
+            AddValue(name, FormatInteger(val), indexes);
             return val;
         }
 
         public ushort ReadUInt16(string name, params object[] indexes)
         {
             var val = ReadUInt16();
-            AddValue(name, val + (Settings.DebugReads ? " (0x" + val.ToString("X4") + ")" : String.Empty), indexes);
+            AddValue(name, FormatInteger(val), indexes);
             return val;
         }
 
         public float ReadSingle(string name, params object[] indexes)
         {
             var val = ReadSingle();
-
-            if (Settings.DebugReads)
-            {
-                var bytes = BitConverter.GetBytes(val);
-                AddValue(name, val + " (0x" + BitConverter.ToString(bytes) + ")");
-            }
-            else
-                return AddValue(name, val, indexes);
-
+            AddValue(name, FormatFloat(val), indexes);
             return val;
         }
 
         public double ReadDouble(string name, params object[] indexes)
         {
             var val = ReadDouble();
-
-            if (Settings.DebugReads)
-            {
-                var bytes = BitConverter.GetBytes(val);
-                AddValue(name, val + " (0x" + BitConverter.ToString(bytes) + ")");
-            }
-            else
-                return AddValue(name, val, indexes);
-
+            AddValue(name, FormatFloat(val), indexes);
             return val;
         }
 
         public int ReadInt32(string name, params object[] indexes)
         {
             var val = ReadInt32();
-            AddValue(name, val + (Settings.DebugReads ? " (0x" + val.ToString("X4") + ")" : String.Empty), indexes);
+            AddValue(name, FormatInteger(val), indexes);
             return val;
         }
 
         public uint ReadUInt32(string name, params object[] indexes)
         {
             var val = ReadUInt32();
-            AddValue(name, val + (Settings.DebugReads ? " (0x" + val.ToString("X4") + ")" : String.Empty), indexes);
+            AddValue(name, FormatInteger(val), indexes);
             return val;
         }
 
         public long ReadInt64(string name, params object[] indexes)
         {
             var val = ReadInt64();
-            AddValue(name, val + (Settings.DebugReads ? " (0x" + val.ToString("X4") + ")" : String.Empty), indexes);
+            AddValue(name, FormatInteger(val), indexes);
             return val;
         }
 
         public ulong ReadUInt64(string name, params object[] indexes)
         {
             var val = ReadUInt64();
-            AddValue(name, val + (Settings.DebugReads ? " (0x" + val.ToString("X4") + ")" : String.Empty), indexes);
+            AddValue(name, FormatInteger(val), indexes);
             return val;
         }
 
@@ -311,13 +340,18 @@ namespace WowPacketParser.Misc
         public ulong ReadPackedUInt64(string name, params object[] indexes)
         {
             var val = ReadPackedUInt64();
-            AddValue(name, val + (Settings.DebugReads ? " (0x" + val.ToString("X4") + ")" : String.Empty), indexes);
+            AddValue(name, FormatInteger(val), indexes);
             return val;
         }
 
         public WowGuid ReadPackedGuid(string name, params object[] indexes)
         {
             return AddValue(name, ReadPackedGuid(), indexes);
+        }
+
+        public WowGuid ReadPackedGuid128(string name, params object[] indexes)
+        {
+            return AddValue(name, ReadPackedGuid128(), indexes);
         }
 
         public byte[] ReadBytesString(string name, int length, params object[] indexes)
@@ -384,8 +418,14 @@ namespace WowPacketParser.Misc
         public long ReadValue(string name, TypeCode typeCode, params object[] indexes)
         {
             var val = ReadValue(typeCode);
-            AddValue(name, val + (Settings.DebugReads ? " (0x" + val.ToString("X4") + ")" : String.Empty), indexes);
+            AddValue(name, FormatInteger(val), indexes);
             return val;
+        }
+
+        private long ReadValue<T>() where T : struct
+        {
+            var code = Type.GetTypeCode(typeof (T));
+            return ReadValue(code);
         }
 
         private long ReadValue(TypeCode code)
@@ -421,23 +461,15 @@ namespace WowPacketParser.Misc
             return rawValue;
         }
 
-        private T ReadEnum<T>(TypeCode code) where T : struct, IConvertible
+        private TEnum ReadEnum<TEnum, T>() where TEnum : struct, IConvertible where T : struct
         {
-            long rawValue = ReadValue(code);
-            object value = Enum.ToObject(typeof (T), rawValue);
+            var rawValue = Convert.ToInt64(ReadValue<T>());
+            var value = Enum.ToObject(typeof (TEnum), rawValue);
 
             if (rawValue > 0)
-                Logger.CheckForMissingValues<T>(rawValue);
+                Logger.CheckForMissingValues<TEnum>(rawValue);
 
-            return (T) value;
-        }
-
-        public T ReadEnum<T>(string name, TypeCode code, params object[] indexes) where T : struct, IConvertible
-        {
-            var val = ReadEnum<T>(code);
-            var val64 = Convert.ToInt64(val);
-            AddValue(name, val + " (" + val64 + ")" + (Settings.DebugReads ? " (0x" + val64.ToString("X4") + ")" : String.Empty), indexes);
-            return val;
+            return (TEnum) value;
         }
 
 #region BitStream
@@ -448,13 +480,6 @@ namespace WowPacketParser.Misc
         public Bit ReadBit(string name, params object[] indexes)
         {
             return AddValue(name, ReadBit(), indexes);
-        }
-
-        public Bit ReadBitBoolean(string name, params object[] indexes)
-        {
-            var val = ReadBit();
-            AddValue(name, val ? "true" : "false", indexes);
-            return val;
         }
 
         public Bit ReadBit()
@@ -479,7 +504,7 @@ namespace WowPacketParser.Misc
         public uint ReadBits(string name, int bits, params object[] indexes)
         {
             var val = ReadBits(bits);
-            AddValue(name, val + (Settings.DebugReads ? " (0x" + val.ToString("X4") + ")" : String.Empty), indexes);
+            AddValue(name, FormatInteger(val), indexes);
             return val;
         }
 
@@ -505,7 +530,7 @@ namespace WowPacketParser.Misc
         {
             var val = ReadEnum<T>(bits);
             var val64 = Convert.ToInt64(val);
-            AddValue(name, val + " (" + val64 + ")" + (Settings.DebugReads ? " (0x" + val64.ToString("X4") + ")" : String.Empty), indexes);
+            AddValue(name, FormatInteger(val64, val.ToString(CultureInfo.InvariantCulture)), indexes);
             return val;
         }
 
@@ -566,14 +591,48 @@ namespace WowPacketParser.Misc
 
 #endregion
 
-        public WowGuid WriteGuid(byte[] stream, params object[] indexes)
+        private static string FormatInteger(IFormattable value)
         {
-            return WriteGuid("Guid", stream, indexes);
+            if (Settings.DebugReads)
+                return value + " (0x" + value.ToString("X4", NumberFormatInfo.CurrentInfo) + ")";
+            return value.ToString();
         }
 
-        public WowGuid WriteGuid(string name, byte[] stream, params object[] indexes)
+        private static string FormatFloat(float value)
         {
-            return AddValue(name, new WowGuid(BitConverter.ToUInt64(stream, 0)), indexes);
+            if (!Settings.DebugReads)
+                return value.ToString(CultureInfo.InvariantCulture);
+
+            var bytes = BitConverter.GetBytes(value);
+            return value + " (0x" + BitConverter.ToString(bytes) + ")";
+        }
+
+        private string FormatFloat(double value)
+        {
+            if (!Settings.DebugReads)
+                return value.ToString(CultureInfo.InvariantCulture);
+
+            var bytes = BitConverter.GetBytes(value);
+            return value + " (0x" + BitConverter.ToString(bytes) + ")";
+        }
+
+        private static string FormatInteger(IFormattable value, string name)
+        {
+            if (Settings.DebugReads)
+                return string.Format("{0} ({1}) (0x{2:X4})", name, value, value);
+            return name + " (" + value + ")";
+        }
+
+        private static string GetIndexString(params object[] values)
+        {
+            var list = values.Flatten();
+
+            return list.Where(value => value != null)
+                .Aggregate(string.Empty, (current, value) =>
+                {
+                    var s = value is string ? "()" : "[]";
+                    return current + (s[0] + value.ToString() + s[1] + ' ');
+                });
         }
     }
 }

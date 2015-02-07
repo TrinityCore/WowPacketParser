@@ -31,7 +31,7 @@ namespace WowPacketParser.Enums.Version
             LoadUFDictionariesInto(UpdateFieldDictionaries, asm, build);
         }
 
-        private static Dictionary<Type, BiDictionary<string, int>> UpdateFieldDictionaries = LoadDefaultUFDictionaries();
+        private static readonly Dictionary<Type, BiDictionary<string, int>> UpdateFieldDictionaries = LoadDefaultUFDictionaries();
 
         private static void LoadUFDictionariesInto(Dictionary<Type, BiDictionary<string, int>> dicts, Assembly asm, ClientVersionBuild build)
         {
@@ -39,7 +39,10 @@ namespace WowPacketParser.Enums.Version
             {
                 typeof(ObjectField), typeof(ItemField), typeof(ContainerField), typeof(UnitField),
                 typeof(PlayerField), typeof(GameObjectField), typeof(DynamicObjectField),
-                typeof(CorpseField), typeof(AreaTriggerField), typeof(SceneObjectField)
+                typeof(CorpseField), typeof(AreaTriggerField), typeof(SceneObjectField), typeof(ConversationField),
+                typeof(ObjectDynamicField), typeof(ItemDynamicField), typeof(ContainerDynamicField), typeof(UnitDynamicField),
+                typeof(PlayerDynamicField), typeof(GameObjectDynamicField), typeof(DynamicObjectDynamicField),
+                typeof(CorpseDynamicField), typeof(AreaTriggerDynamicField), typeof(SceneObjectDynamicField), typeof(ConversationDynamicField)
             };
 
             foreach (var enumType in enumTypes)
@@ -223,6 +226,18 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V5_4_8_18414:
                 {
                     return "V5_4_8_18291";
+                }
+                case ClientVersionBuild.V6_0_2_19033:
+                case ClientVersionBuild.V6_0_2_19034:
+                {
+                    return "V6_0_2_19033";
+                }
+                case ClientVersionBuild.V6_0_3_19103:
+                case ClientVersionBuild.V6_0_3_19116:
+                case ClientVersionBuild.V6_0_3_19243:
+                case ClientVersionBuild.V6_0_3_19342:
+                {
+                    return "V6_0_3_19103";
                 }
                 default:
                 {

@@ -13,7 +13,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadBit("bit14");
         }
 
-        [Parser(Opcode.SMSG_LOOT_RELEASE_RESPONSE)]
+        [Parser(Opcode.SMSG_LOOT_RELEASE)]
         public static void HandleLootReleaseResponse(Packet packet)
         {
             var guid1 = new byte[8];

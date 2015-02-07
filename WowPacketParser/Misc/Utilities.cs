@@ -37,11 +37,7 @@ namespace WowPacketParser.Misc
 
         public static string ByteArrayToHexString(byte[] data)
         {
-            var str = String.Empty;
-            for (var i = 0; i < data.Length; ++i)
-                str += data[i].ToString("X2", CultureInfo.InvariantCulture);
-
-            return str;
+            return data.Aggregate(String.Empty, (current, t) => current + t.ToString("X2", CultureInfo.InvariantCulture));
         }
 
         public static DateTime GetDateTimeFromGameTime(int packedDate)
@@ -250,6 +246,17 @@ namespace WowPacketParser.Misc
             int place = Convert.ToInt32(Math.Floor(Math.Log(bytes, 1024)));
             double num = Math.Round(bytes / Math.Pow(1024, place), 1);
             return (Math.Sign(byteCount) * num) + suf[place];
+        }
+
+
+        /// <summary>
+        /// Retrieves the values of an enumeration
+        /// </summary>
+        /// <typeparam name="T">Enum type</typeparam>
+        /// <returns>Enumerable with the enum values</returns>
+        public static IEnumerable<T> GetValues<T>()
+        {
+            return (T[])Enum.GetValues(typeof(T));
         }
     }
 }

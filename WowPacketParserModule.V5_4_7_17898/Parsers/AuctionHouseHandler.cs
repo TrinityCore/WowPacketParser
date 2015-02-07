@@ -6,7 +6,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 {
     public static class AuctionHouseHandler
     {
-        [Parser(Opcode.CMSG_AUCTION_HELLO)]
+        [Parser(Opcode.CMSG_AUCTION_HELLO_REQUEST)]
         public static void HandleClientAuctionHello(Packet packet)
         {
             var guid = new byte[8];
@@ -18,7 +18,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
         }
 
-        [Parser(Opcode.SMSG_AUCTION_HELLO)]
+        [Parser(Opcode.SMSG_AUCTION_HELLO_RESPONSE)]
         public static void HandleServerAuctionHello(Packet packet)
         {
             var guid = new byte[8];

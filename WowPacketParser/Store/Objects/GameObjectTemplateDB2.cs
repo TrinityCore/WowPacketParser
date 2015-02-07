@@ -4,54 +4,54 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("gameobject_template")]
+    [DBTableName("gameobjects")]
     public sealed class GameObjectTemplateDB2
     {
-        [DBFieldName("type")]
-        public GameObjectType Type;
+        [DBFieldName("MapID")]
+        public uint MapID;
 
-        [DBFieldName("displayId")]
+        [DBFieldName("DisplayID")]
         public uint DisplayId;
 
-        [DBFieldName("name")]
-        public string Name;
+        [DBFieldName("PositionX")]
+        public float PositionX;
 
-        [DBFieldName("data", 4, true)]
-        public int[] Data;
+        [DBFieldName("PositionY")]
+        public float PositionY;
 
-        [DBFieldName("size")]
+        [DBFieldName("PositionZ")]
+        public float PositionZ;
+
+        [DBFieldName("RotationX")]
+        public float RotationX;
+
+        [DBFieldName("RotationY")]
+        public float RotationY;
+
+        [DBFieldName("RotationZ")]
+        public float RotationZ;
+
+        [DBFieldName("RotationW")]
+        public float RotationW;
+
+        [DBFieldName("Size")]
         public float Size;
 
-        [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild = ClientVersion.BuildInt;
-    }
+        [DBFieldName("PhaseID", ClientVersionBuild.V6_0_2_19033)]
+        public int PhaseId;
 
-    [DBTableName("gameobject_db2_position")]
-    public sealed class GameObjectTemplatePositionDB2
-    {
-        [DBFieldName("map")]
-        public uint map;
+        [DBFieldName("PhaseGroupID", ClientVersionBuild.V6_0_2_19033)]
+        public int PhaseGroupId;
 
-        [DBFieldName("position_x")]
-        public float positionX;
+        [DBFieldName("Type")]
+        public GameObjectType Type;
 
-        [DBFieldName("position_y")]
-        public float positionY;
+        [DBFieldName("Data", ClientVersionBuild.Zero, ClientVersionBuild.V6_0_3_19103, 4, true)]
+        [DBFieldName("Data", ClientVersionBuild.V6_0_3_19103, 8, true)]
+        public int[] Data;
 
-        [DBFieldName("position_x")]
-        public float positionZ;
-
-        [DBFieldName("rotation0")]
-        public float rotationX;
-
-        [DBFieldName("rotation1")]
-        public float rotationY;
-
-        [DBFieldName("rotation2")]
-        public float rotationZ;
-
-        [DBFieldName("rotation3")]
-        public float rotationW;
+        [DBFieldName("Name")]
+        public string Name;
 
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;

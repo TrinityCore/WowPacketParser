@@ -14,7 +14,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var pos = new Vector4();
 
             pos.O = packet.ReadSingle();
-            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntry<Int32>(StoreNameType.Map, "Map");
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadInt32<MapId>("Map");
             pos.Z = packet.ReadSingle();
             pos.X = packet.ReadSingle();
             pos.Y = packet.ReadSingle();
@@ -29,7 +29,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         {
             var pos = new Vector4();
 
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map");
+            packet.ReadInt32<MapId>("Map");
             pos.Y = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
             pos.O = packet.ReadSingle();
@@ -43,13 +43,13 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         {
             var pos = new Vector3();
 
-            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadEntry<Int32>(StoreNameType.Map, "Map");
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadInt32<MapId>("Map");
 
             pos.X = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
             pos.Y = packet.ReadSingle();
 
-            packet.ReadEntry<Int32>(StoreNameType.Area, "Area Id");
+            packet.ReadInt32<AreaId>("Area Id");
 
             packet.AddValue("Position", pos);
         }
@@ -68,22 +68,22 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]
         public static void HandleTransferPending(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID");
+            packet.ReadInt32<MapId>("Map ID");
 
             var customLoadScreenSpell = packet.ReadBit();
             var hasTransport = packet.ReadBit();
 
             if (hasTransport)
             {
-                packet.ReadEntry<Int32>(StoreNameType.Map, "Transport Map ID");
+                packet.ReadInt32<MapId>("Transport Map ID");
                 packet.ReadInt32("Transport Entry");
             }
 
             if (customLoadScreenSpell)
-                packet.ReadEntry<UInt32>(StoreNameType.Spell, "Spell ID");
+                packet.ReadUInt32<SpellId>("Spell ID");
         }
 
-        [Parser(Opcode.SMSG_MONSTER_MOVE)]
+        [Parser(Opcode.SMSG_ON_MONSTER_MOVE)]
         public static void HandleMonsterMove(Packet packet)
         {
             var pos = new Vector3();
@@ -265,7 +265,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid2", guid2);
         }
 
-        [Parser(Opcode.SMSG_PLAYER_MOVE)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE)]
         public static void HandlePlayerMove(Packet packet)
         {
             var pos = new Vector4();
@@ -395,7 +395,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.AddValue("Position", pos);
         }
 
-        [Parser(Opcode.SMSG_SET_PHASE_SHIFT)]
+        [Parser(Opcode.SMSG_SET_PHASE_SHIFT_CHANGE)]
         public static void HandlePhaseShift(Packet packet)
         {
             CoreParsers.MovementHandler.ActivePhases.Clear();
@@ -405,7 +405,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var count = packet.ReadUInt32() / 2;
             packet.AddValue("Inactive Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Inactive Terrain swap", i);
+                packet.ReadInt16<MapId>("Inactive Terrain swap", i);
 
             count = packet.ReadUInt32() / 2;
             packet.AddValue("WorldMapArea swap count", count);
@@ -420,7 +420,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Active Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadEntry<Int16>(StoreNameType.Map, "Active Terrain swap", i);
+                packet.ReadInt16<MapId>("Active Terrain swap", i);
 
             var guid = packet.StartBitStream(4, 6, 1, 7, 2, 0, 5, 3);
             packet.ParseBitStream(guid, 0, 4, 7, 6, 3, 5, 1, 2);
@@ -2944,7 +2944,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_ROOT)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_ROOT)]
         public static void HandleSplineMoveRoot(Packet packet)
         {
             var guid = new byte[8];
@@ -2955,7 +2955,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_UNROOT)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_UNROOT)]
         public static void HandleSplineMoveUnroot(Packet packet)
         {
             var guid = new byte[8];
@@ -2966,7 +2966,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_RUN_SPEED)]
         public static void HandleSplineSetRunSpeed(Packet packet)
         {
             var guid = new byte[8];
@@ -2985,7 +2985,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_FLIGHT_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_FLIGHT_SPEED)]
         public static void HandleSplineSetFlightSpeed(Packet packet)
         {
             var guid = new byte[8];
@@ -3004,7 +3004,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_SWIM_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_SWIM_SPEED)]
         public static void HandleSplineSetSwimSpeed(Packet packet)
         {
             var guid = new byte[8];
@@ -3023,7 +3023,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_WALK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_WALK_BACK_SPEED)]
         public static void HandleSplineSetWalkSpeed(Packet packet)
         {
             var guid = new byte[8];
@@ -3042,7 +3042,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPLINE_MOVE_SET_RUN_BACK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_RUN_BACK_SPEED)]
         public static void HandleSplineSetRunBackSpeed(Packet packet)
         {
             var guid = new byte[8];

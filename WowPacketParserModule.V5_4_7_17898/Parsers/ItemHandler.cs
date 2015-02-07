@@ -10,8 +10,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.SMSG_SET_PROFICIENCY)]
         public static void HandleSetProficency(Packet packet)
         {
-            packet.ReadEnum<UnknownFlags>("Mask", TypeCode.UInt32);
-            packet.ReadEnum<ItemClass>("Class", TypeCode.Byte);
+            packet.ReadUInt32E<UnknownFlags>("Mask");
+            packet.ReadByteE<ItemClass>("Class");
         }
 
         [Parser(Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE)]
@@ -134,7 +134,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadBit("Successful");
         }
 
-        [Parser(Opcode.CMSG_ITEM_REFUND_INFO)]
+        [Parser(Opcode.CMSG_GET_ITEM_PURCHASE_DATA)]
         public static void HandleItemRefundInfo(Packet packet)
         {
             var guid = new byte[8];
@@ -188,7 +188,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid2, 1);
             packet.ReadXORByte(playerGUID, 7);
             packet.ReadByte("Slot");
-            packet.ReadEntry<UInt32>(StoreNameType.Item, "Entry");
+            packet.ReadUInt32<ItemId>("Entry");
             packet.ReadInt32("Int40");
             packet.ReadXORByte(playerGUID, 0);
             packet.ReadXORByte(playerGUID, 4);
@@ -235,7 +235,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_BUYBACK_ITEM)]
+        [Parser(Opcode.CMSG_BUY_BACK_ITEM)]
         public static void HandleBuyBackItem(Packet packet)
         {
             var guid = new byte[8];
@@ -280,7 +280,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid1, 2);
             packet.ReadXORByte(guid1, 1);
             packet.ReadXORByte(guid1, 7);
-            var result = packet.ReadEnum<InventoryResult>("Result", TypeCode.Byte);
+            var result = packet.ReadByteE<InventoryResult>("Result");
             packet.ReadXORByte(guid2, 4);
             packet.ReadXORByte(guid1, 6);
             packet.ReadByte("Bag");

@@ -51,7 +51,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Item GUID", itemGUID);
         }
 
-        [Parser(Opcode.CMSG_ITEM_REFUND_INFO)]
+        [Parser(Opcode.CMSG_GET_ITEM_PURCHASE_DATA)]
         public static void HandleItemRefundInfo(Packet packet)
         {
             var guid = new byte[8];

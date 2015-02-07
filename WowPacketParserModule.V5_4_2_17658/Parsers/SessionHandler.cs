@@ -18,7 +18,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.StartBitStream(guid, 7, 2, 5, 4, 3, 0, 6, 1);
             packet.ParseBitStream(guid, 7, 1, 5, 0, 3, 6, 2, 4);
 
-            CoreParsers.SessionHandler.LoginGuid = new WowGuid(BitConverter.ToUInt64(guid, 0));
+            CoreParsers.SessionHandler.LoginGuid = new WowGuid64(BitConverter.ToUInt64(guid, 0));
             packet.WriteGuid("Guid", guid);
         }
 
@@ -52,7 +52,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             uint[] bits68 = null;
             uint[] bits448 = null;
 
-            packet.ReadEnum<ResponseCode>("Auth Code", TypeCode.Byte);
+            packet.ReadByteE<ResponseCode>("Auth Code");
 
             var hasAccountData = packet.ReadBit("Has Account Data");
             if (hasAccountData)
@@ -130,8 +130,8 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
                 for (var i = 0; i < raceCount; ++i)
                 {
-                    packet.ReadEnum<Race>("Race", TypeCode.Byte, i);
-                    packet.ReadEnum<ClientType>("Race Expansion", TypeCode.Byte, i);
+                    packet.ReadByteE<Race>("Race", i);
+                    packet.ReadByteE<ClientType>("Race Expansion", i);
                 }
 
                 packet.ReadInt32("Int34");
@@ -140,8 +140,8 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
                 for (var i = 0; i < classCount; ++i)
                 {
-                    packet.ReadEnum<Class>("Class", TypeCode.Byte, i);
-                    packet.ReadEnum<ClientType>("Class Expansion", TypeCode.Byte, i);
+                    packet.ReadByteE<Class>("Class", i);
+                    packet.ReadByteE<ClientType>("Class Expansion", i);
                 }
 
                 if (bit7C)
@@ -151,12 +151,12 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_REDIRECT_AUTH_PROOF)]
+        [Parser(Opcode.CMSG_AUTH_CONTINUED_SESSION)]
         public static void HandleRedirectAuthProof(Packet packet)
         {
             var sha = new byte[20];
-            packet.ReadInt64("Int64 Unk1");
-            packet.ReadInt64("Int64 Unk2");
+            packet.ReadInt64("Int64 Unk1"); // Key or DosResponse
+            packet.ReadInt64("Int64 Unk2"); // Key or DosResponse
 
             sha[10] = packet.ReadByte();
             sha[17] = packet.ReadByte();

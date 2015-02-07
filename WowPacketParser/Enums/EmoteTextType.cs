@@ -254,6 +254,7 @@ namespace WowPacketParser.Enums
         Object         = 450,
         Sweat          = 451,
         Yw             = 453,
-        Read           = 456
+        Read           = 456,
+        Boot           = 506
     }
 }

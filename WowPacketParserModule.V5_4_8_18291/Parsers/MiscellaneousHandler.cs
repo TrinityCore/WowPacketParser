@@ -14,8 +14,8 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.CMSG_LOAD_SCREEN)]
         public static void HandleClientEnterWorld(Packet packet)
         {
-            var mapId = packet.ReadEntry<Int32>(StoreNameType.Map, "Map");
-            packet.ReadBit("Loading");
+            var mapId = packet.ReadInt32<MapId>("MapID");
+            packet.ReadBit("Showing");
 
             packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
         }
@@ -30,7 +30,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.AddSniffData(StoreNameType.AreaTrigger, entry.Key, "AREATRIGGER");
         }
 
-        [Parser(Opcode.CMSG_TIME_SYNC_RESP)]
+        [Parser(Opcode.CMSG_TIME_SYNC_RESPONSE)]
         public static void HandleTimeSyncResp(Packet packet)
         {
             packet.ReadUInt32("Counter");
@@ -112,7 +112,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 packet.ReadWoWString("Guild Name", guildNameLength[i], i);
                 packet.ReadXORByte(guildGUID[i], 3);
                 packet.ReadXORByte(accountId[i], 4);
-                packet.ReadEnum<Class>("Class", TypeCode.Byte, i);
+                packet.ReadByteE<Class>("Class", i);
                 packet.ReadXORByte(accountId[i], 7);
                 packet.ReadXORByte(playerGUID[i], 6);
                 packet.ReadXORByte(playerGUID[i], 2);
@@ -122,17 +122,17 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
                 packet.ReadXORByte(accountId[i], 2);
                 packet.ReadXORByte(accountId[i], 3);
-                packet.ReadEnum<Race>("Race", TypeCode.Byte, i);
+                packet.ReadByteE<Race>("Race", i);
                 packet.ReadXORByte(guildGUID[i], 7);
                 packet.ReadXORByte(accountId[i], 1);
                 packet.ReadXORByte(accountId[i], 5);
                 packet.ReadXORByte(accountId[i], 6);
                 packet.ReadXORByte(playerGUID[i], 5);
                 packet.ReadXORByte(accountId[i], 0);
-                packet.ReadEnum<Gender>("Gender", TypeCode.Byte, i);
+                packet.ReadByteE<Gender>("Gender", i);
                 packet.ReadXORByte(guildGUID[i], 5);
                 packet.ReadByte("Level", i);
-                packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id", i);
+                packet.ReadInt32<ZoneId>("Zone Id", i);
 
                 packet.WriteGuid("PlayerGUID", playerGUID[i], i);
                 packet.WriteGuid("GuildGUID", guildGUID[i], i);
@@ -178,7 +178,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadWoWString("string1AB", bits1AB);
 
             for (var i = 0; i < zones; ++i)
-                packet.ReadEntry<Int32>(StoreNameType.Zone, "Zone Id");
+                packet.ReadInt32<ZoneId>("Zone Id");
 
             packet.ReadWoWString("Player Name", PlayerNameLen);
 
@@ -197,7 +197,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_WEATHER)]
         public static void HandleWeatherStatus(Packet packet)
         {
-            var state = packet.ReadEnum<WeatherState>("State", TypeCode.Int32);
+            var state = packet.ReadInt32E<WeatherState>("State");
             var grade = packet.ReadSingle("Grade");
             var unk = packet.ReadBit("Unk Bit"); // Type
 
@@ -263,12 +263,12 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             packet.WriteGuid("Guid", guidBytes);
 
-            var guid = new WowGuid(BitConverter.ToUInt64(guidBytes, 0));
+            var guid = new WowGuid64(BitConverter.ToUInt64(guidBytes, 0));
             if (guid.GetObjectType() == ObjectType.Unit)
                 Storage.NpcSpellClicks.Add(guid, packet.TimeSpan);
         }
 
-        [Parser(Opcode.CMSG_NEUTRALPLAYERFACTIONSELECTRESULT)]
+        [Parser(Opcode.CMSG_NEUTRAL_PLAYER_SELECT_FACTION)]
         public static void HandleFactionSelect(Packet packet)
         {
             packet.ReadUInt32("Option");
@@ -330,13 +330,13 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             Storage.Sounds.Add(sound, packet.TimeSpan);
         }
 
-        [Parser(Opcode.SMSG_ACTIVATETAXIREPLY)]
+        [Parser(Opcode.SMSG_ACTIVATE_TAXI_REPLY)]
         public static void HandleActivateTaxiReply(Packet packet)
         {
             packet.ReadEnum<TaxiError>("Result", 4);
         }
 
-        [Parser(Opcode.CMSG_ACTIVATETAXI)]
+        [Parser(Opcode.CMSG_ACTIVATE_TAXI)]
         public static void HandleActivateTaxi(Packet packet)
         {
             packet.ReadUInt32("Node 2 ID");
@@ -347,7 +347,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid", guid);
 
         }
-        [Parser(Opcode.CMSG_TAXIQUERYAVAILABLENODES)]
+        [Parser(Opcode.CMSG_TAXI_QUERY_AVAILABLE_NODES)]
         public static void HandleTaxiStatusQuery(Packet packet)
         {
             var guid = packet.StartBitStream(7, 1, 0, 4, 2, 5, 6, 3);
@@ -355,7 +355,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SHOWTAXINODES)]
+        [Parser(Opcode.SMSG_SHOW_TAXI_NODES)]
         public static void HandleShowTaxiNodes434(Packet packet)
         {
             packet.ReadBit("unk");
@@ -370,7 +370,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             packet.WriteGuid("Guid", guid);
         }
-        [Parser(Opcode.CMSG_ACTIVATETAXIEXPRESS)]
+        [Parser(Opcode.CMSG_ACTIVATE_TAXI_EXPRESS)]
         public static void HandleActiaveTaxiExpress(Packet packet)
         {
             var guid = new byte[8];

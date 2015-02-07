@@ -33,6 +33,7 @@ namespace WowPacketParser
             }
 
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 
             // Disable DB when we don't need its data (dumping to a binary file)
             if (!Settings.DumpFormatWithSQL())

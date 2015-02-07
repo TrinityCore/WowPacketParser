@@ -121,6 +121,7 @@
     <Compile Include="Enums\ArenaError.cs" />
     <Compile Include="Enums\ArenaEvent.cs" />
     <Compile Include="Enums\AttackerStateFlags.cs" />
+    <Compile Include="Enums\AttackSwingErr.cs" />
     <Compile Include="Enums\AuctionHouseAction.cs" />
     <Compile Include="Enums\AuctionHouseError.cs" />
     <Compile Include="Enums\AuraFlag.cs" />
@@ -161,6 +162,8 @@
     <Compile Include="Enums\BuyResult.cs" />
     <Compile Include="Enums\DB2Hash.cs" />
     <Compile Include="Enums\ItemFieldFlags.cs" />
+    <Compile Include="Enums\ItemModifier.cs" />
+    <Compile Include="Enums\LootError.cs" />
     <Compile Include="Enums\QuestFlags2.cs" />
     <Compile Include="Enums\QuestRequirementType.cs" />
     <Compile Include="Enums\CreatureFamily.cs" />
@@ -208,6 +211,7 @@
     <Compile Include="Enums\InhabitType.cs" />
     <Compile Include="Enums\MountResult.cs" />
     <Compile Include="Enums\RaidSummonFail.cs" />
+    <Compile Include="Enums\StandState.cs" />
     <Compile Include="Enums\TalentErrors.cs" />
     <Compile Include="Enums\TargetIcon.cs" />
     <Compile Include="Enums\InstanceResetWarningType.cs" />
@@ -302,6 +306,8 @@
     <Compile Include="Enums\TrainerSpellState.cs" />
     <Compile Include="Enums\TrainerType.cs" />
     <Compile Include="Enums\TransferAbortReason.cs" />
+    <Compile Include="Enums\Tutorial.cs" />
+    <Compile Include="Enums\TutorialAction.cs" />
     <Compile Include="Enums\TypeMask.cs" />
     <Compile Include="Enums\UnitDynamicFlags.cs" />
     <Compile Include="Enums\UnitFlags2.cs" />
@@ -352,6 +358,8 @@
     <Compile Include="Enums\Version\V5_4_2_17658\UpdateFields.cs" />
     <Compile Include="Enums\Version\V5_4_7_17898\Opcodes.cs" />
     <Compile Include="Enums\Version\V5_4_8_18291\Opcodes.cs" />
+    <Compile Include="Enums\Version\V6_0_2_19033\Opcodes.cs" />
+    <Compile Include="Enums\Version\V6_0_3_19103\Opcodes.cs" />
     <Compile Include="Enums\VictimStates.cs" />
     <Compile Include="Enums\VoidTransferError.cs" />
     <Compile Include="Enums\WardenCheckType.cs" />
@@ -366,6 +374,7 @@
     <Compile Include="Misc\Bit.cs" />
     <Compile Include="Misc\ClientVersion.cs" />
     <Compile Include="Misc\ConcurrentPriorityQueue.cs" />
+    <Compile Include="Misc\Configuration.cs" />
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Misc\Filters.cs" />
     <Compile Include="Misc\WowGuid.cs" />
@@ -438,6 +447,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Saving\BinaryPacketWriter.cs" />
+    <Compile Include="Saving\SplitDirectionBinaryPacketWriter.cs" />
     <Compile Include="Saving\SplitSessionBinaryPacketWriter.cs" />
     <Compile Include="Saving\SplitBinaryPacketWriter.cs" />
     <Compile Include="SQL\Builder.cs" />
@@ -486,6 +496,7 @@
     <Compile Include="Store\Objects\QuestPOIPoint.cs" />
     <Compile Include="Store\Objects\QuestTemplate.cs" />
     <Compile Include="Store\Objects\SniffData.cs" />
+    <Compile Include="Store\Objects\SpellMisc.cs" />
     <Compile Include="Store\Objects\SpellsX.cs" />
     <Compile Include="Store\Objects\StartAction.cs" />
     <Compile Include="Store\Objects\StartItem.cs" />

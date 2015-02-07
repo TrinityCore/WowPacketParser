@@ -10,7 +10,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleUpdateInstanceEncounterUnit(Packet packet)
         {
             // Note: Enum values changed after 3.3.5a
-            var type = packet.ReadEnum<EncounterFrame>("Type", TypeCode.UInt32);
+            var type = packet.ReadUInt32E<EncounterFrame>("Type");
             switch (type)
             {
                 case EncounterFrame.Engage:
@@ -34,7 +34,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_UPDATE_INSTANCE_ENCOUNTER_UNIT, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleUpdateInstanceEncounterUnit434(Packet packet)
         {
-            var type = packet.ReadEnum<EncounterFrame434>("Type", TypeCode.UInt32);
+            var type = packet.ReadUInt32E<EncounterFrame434>("Type");
             switch (type)
             {
                 case EncounterFrame434.Engage:
@@ -60,7 +60,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.MSG_SET_RAID_DIFFICULTY)]
         public static void HandleSetDifficulty(Packet packet)
         {
-            packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
+            packet.ReadInt32E<MapDifficulty>("Difficulty");
             if (packet.Direction != Direction.ServerToClient)
                 return;
 
@@ -71,16 +71,16 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_INSTANCE_DIFFICULTY)]
         public static void HandleInstanceDifficulty(Packet packet)
         {
-            packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
+            packet.ReadInt32E<MapDifficulty>("Difficulty");
             if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing)
                 && ClientVersion.RemovedInVersion(ClientType.Cataclysm))
                 packet.ReadInt32("Player Difficulty");
         }
 
-        [Parser(Opcode.SMSG_CHANGEPLAYER_DIFFICULTY_RESULT)]
+        [Parser(Opcode.SMSG_CHANGE_PLAYER_DIFFICULTY_RESULT)]
         public static void HandlePlayerChangeDifficulty(Packet packet)
         {
-            var type = packet.ReadEnum<DifficultyChangeType>("Change Type", TypeCode.Int32);
+            var type = packet.ReadInt32E<DifficultyChangeType>("Change Type");
             switch (type)
             {
                 case DifficultyChangeType.PlayerDifficulty1:
@@ -93,7 +93,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("Time");
                     break;
                 case DifficultyChangeType.MapDifficulty:
-                    packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
+                    packet.ReadInt32E<MapDifficulty>("Difficulty");
                     break;
             }
         }
@@ -101,13 +101,13 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_CHANGEPLAYER_DIFFICULTY)]
         public static void HandleChangePlayerDifficulty434(Packet packet)
         {
-            packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
+            packet.ReadInt32E<MapDifficulty>("Difficulty");
         }
 
         [Parser(Opcode.SMSG_PLAYER_DIFFICULTY_CHANGE)]
         public static void HandlePlayerDifficultyChange434(Packet packet)
         {
-            var type = packet.ReadEnum<DifficultyChangeType434>("Change Type", TypeCode.Int32);
+            var type = packet.ReadInt32E<DifficultyChangeType434>("Change Type");
             switch (type)
             {
                 case DifficultyChangeType434.Cooldown:
@@ -124,7 +124,7 @@ namespace WowPacketParser.Parsing.Parsers
                     break;
                 case DifficultyChangeType434.DifficultyChanged:
                     packet.ReadInt32("Map");
-                    packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
+                    packet.ReadInt32E<MapDifficulty>("Difficulty");
                     break;
             }
         }
@@ -133,7 +133,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_RESET_FAILED_NOTIFY)]
         public static void HandleResetFailedNotify(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadInt32<MapId>("MapID");
         }
 
         [Parser(Opcode.MSG_RAID_TARGET_UPDATE)]
@@ -141,20 +141,20 @@ namespace WowPacketParser.Parsing.Parsers
         {
             if (packet.Direction == Direction.ClientToServer)
             {
-                var icon = packet.ReadEnum<TargetIcon>("Icon Id", TypeCode.SByte);
+                var icon = packet.ReadSByteE<TargetIcon>("Icon Id");
                 if (icon != TargetIcon.None)
                     packet.ReadGuid("Target GUID");
 
                 return;
             }
 
-            var test = packet.ReadBoolean("List target"); // false == Set Target
+            var test = packet.ReadBool("List target"); // false == Set Target
             if (!test)
                 packet.ReadGuid("Owner GUID");
 
             for (int i = 0; packet.CanRead(); ++i)
             {
-                packet.ReadEnum<TargetIcon>("Icon Id", TypeCode.Byte, i);
+                packet.ReadByteE<TargetIcon>("Icon Id", i);
                 packet.ReadGuid("Target Guid", i);
             }
         }
@@ -162,23 +162,23 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_RAID_INSTANCE_MESSAGE)]
         public static void HandleRaidInstanceMessage(Packet packet)
         {
-            var type = packet.ReadEnum<RaidInstanceResetWarning>("Warning Type", TypeCode.Int32);
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
-            packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
+            var type = packet.ReadInt32E<RaidInstanceResetWarning>("Warning Type");
+            packet.ReadInt32<MapId>("Map Id");
+            packet.ReadInt32E<MapDifficulty>("Difficulty");
             packet.ReadInt32("Reset time");
             if (type == RaidInstanceResetWarning.Welcome)
             {
-                packet.ReadBoolean("Locked");
-                packet.ReadBoolean("Extended");
+                packet.ReadBool("Locked");
+                packet.ReadBool("Extended");
             }
         }
 
         [Parser(Opcode.CMSG_SET_SAVED_INSTANCE_EXTEND)]
         public static void HandleSetSavedInstanceExtend(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
-            packet.ReadEnum<MapDifficulty>("Difficulty", TypeCode.Int32);
-            packet.ReadBoolean("Extended");
+            packet.ReadInt32<MapId>("Map Id");
+            packet.ReadInt32E<MapDifficulty>("Difficulty");
+            packet.ReadBool("Extended");
         }
 
         [Parser(Opcode.SMSG_UPDATE_INSTANCE_OWNERSHIP)]
@@ -191,14 +191,14 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_INSTANCE_RESET)]
         public static void HandleUpdateInstanceReset(Packet packet)
         {
-            packet.ReadEntry<Int32>(StoreNameType.Map, "Map Id");
+            packet.ReadInt32<MapId>("Map Id");
         }
 
         [Parser(Opcode.CMSG_INSTANCE_LOCK_WARNING_RESPONSE)]
         [Parser(Opcode.CMSG_INSTANCE_LOCK_RESPONSE)]
         public static void HandleInstanceLockResponse(Packet packet)
         {
-            packet.ReadBoolean("Accept");
+            packet.ReadBool("Accept");
         }
 
         [Parser(Opcode.SMSG_INSTANCE_LOCK_WARNING_QUERY)]
@@ -206,10 +206,10 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadInt32("Time");
             packet.ReadInt32("Encounters Completed Mask");
-            packet.ReadBoolean("Extending");
+            packet.ReadBool("Extending");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623)) // guessing
-                packet.ReadBoolean("Locked warning"); // Displays a window asking if the player choose to join an instance which is saved.
+                packet.ReadBool("Locked warning"); // Displays a window asking if the player choose to join an instance which is saved.
         }
 
         [Parser(Opcode.SMSG_RAID_INSTANCE_INFO)]
@@ -218,13 +218,13 @@ namespace WowPacketParser.Parsing.Parsers
             var counter = packet.ReadInt32("Counter");
             for (var i = 0; i < counter; ++i)
             {
-                packet.ReadEntry<Int32>(StoreNameType.Map, "Map ID", i);
-                packet.ReadEnum<MapDifficulty>("Map Difficulty", TypeCode.UInt32, i);
+                packet.ReadInt32<MapId>("Map ID", i);
+                packet.ReadUInt32E<MapDifficulty>("Map Difficulty", i);
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
                     packet.ReadUInt32("Heroic", i);
                 packet.ReadGuid("Instance GUID", i);
-                packet.ReadBoolean("Expired", i);
-                packet.ReadBoolean("Extended", i);
+                packet.ReadBool("Expired", i);
+                packet.ReadBool("Extended", i);
                 packet.ReadUInt32("Reset Time", i);
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))

@@ -2,8 +2,8 @@
 {
     public enum  CalendarSendEventType
     {
-        Get = 0,
-        Add = 1,
-        Copy = 2,
+        Get  = 0,
+        Add  = 1,
+        Copy = 2
     }
 }

@@ -8,8 +8,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_VOICE_SESSION_ENABLE)]
         public static void HandleVoiceSessionEnable(Packet packet)
         {
-            packet.ReadBoolean("Voice Enabled");
-            packet.ReadBoolean("Microphone Enabled");
+            packet.ReadBool("Voice Enabled");
+            packet.ReadBool("Microphone Enabled");
         }
 
         [Parser(Opcode.SMSG_VOICE_SESSION_ROSTER_UPDATE)]
@@ -61,8 +61,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_VOICE_PARENTAL_CONTROLS)]
         public static void HandleVoiceParentalControls(Packet packet)
         {
-            packet.ReadBoolean("Disable All");
-            packet.ReadBoolean("Disable Microphone");
+            packet.ReadBool("Disable All");
+            packet.ReadBool("Disable Microphone");
         }
 
         [Parser(Opcode.SMSG_AVAILABLE_VOICE_CHANNEL)]

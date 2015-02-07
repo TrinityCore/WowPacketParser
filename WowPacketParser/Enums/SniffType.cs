@@ -3,6 +3,6 @@
     public enum SniffType
     {
         Bin,
-        Pkt,
+        Pkt
     }
 }

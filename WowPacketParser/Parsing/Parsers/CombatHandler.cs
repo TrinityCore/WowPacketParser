@@ -22,13 +22,13 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_DUEL_COMPLETE)]
         public static void HandleDuelComplete(Packet packet)
         {
-            packet.ReadBoolean("Abnormal finish");
+            packet.ReadBool("Abnormal finish");
         }
 
         [Parser(Opcode.SMSG_DUEL_WINNER)]
         public static void HandleDuelWinner(Packet packet)
         {
-            packet.ReadBoolean("Abnormal finish");
+            packet.ReadBool("Abnormal finish");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545)) // Probably earlier
             {
                 packet.ReadCString("Name");
@@ -58,7 +58,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             // this opcode can be used in two ways: Either set new status explicitly or toggle old status
             if (packet.CanRead())
-                packet.ReadBoolean("Enable");
+                packet.ReadBool("Enable");
         }
 
         [Parser(Opcode.SMSG_PVP_CREDIT)]
@@ -69,13 +69,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Rank");
         }
 
-        [Parser(Opcode.CMSG_SETSHEATHED)]
+        [Parser(Opcode.CMSG_SET_SHEATHED)]
         public static void HandleSetSheathed(Packet packet)
         {
-            packet.ReadEnum<SheathState>("Sheath", TypeCode.Int32);
+            packet.ReadInt32E<SheathState>("Sheath");
         }
 
-        [Parser(Opcode.SMSG_PARTYKILLLOG)]
+        [Parser(Opcode.SMSG_PARTY_KILL_LOG)]
         public static void HandlePartyKillLog(Packet packet)
         {
             packet.ReadGuid("Player GUID");
@@ -86,7 +86,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleAIReaction(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadEnum<AIReaction>("Reaction", TypeCode.Int32);
+            packet.ReadInt32E<AIReaction>("Reaction");
         }
 
         [Parser(Opcode.SMSG_UPDATE_COMBO_POINTS)]
@@ -100,7 +100,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleEnvirenmentalDamageLog(Packet packet)
         {
             packet.ReadGuid("GUID");
-            packet.ReadEnum<EnvironmentDamage>("Type", TypeCode.Byte);
+            packet.ReadByteE<EnvironmentDamage>("Type");
             packet.ReadInt32("Damage");
             packet.ReadInt32("Absorb");
             packet.ReadInt32("Resist");
@@ -131,7 +131,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ATTACKERSTATEUPDATE, ClientVersionBuild.V4_0_6_13596)]
         public static void HandleAttackerStateUpdate406(Packet packet)
         {
-            var hitInfo = packet.ReadEnum<SpellHitInfo>("HitInfo", TypeCode.Int32);
+            var hitInfo = packet.ReadInt32E<SpellHitInfo>("HitInfo");
             packet.ReadPackedGuid("AttackerGUID");
             packet.ReadPackedGuid("TargetGUID");
             packet.ReadInt32("Damage");
@@ -153,10 +153,10 @@ namespace WowPacketParser.Parsing.Parsers
                     for (var i = 0; i < subDmgCount; ++i)
                         packet.ReadInt32("Damage Resisted", i);
 
-            packet.ReadEnum<VictimStates>("VictimState", TypeCode.Byte);
+            packet.ReadByteE<VictimStates>("VictimState");
             packet.ReadInt32("Unk Attacker State 0");
 
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Melee Spell ID ");
+            packet.ReadInt32<SpellId>("Melee Spell Id");
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK))
                 packet.ReadInt32("Block Amount");
@@ -189,7 +189,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ATTACKERSTATEUPDATE, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
         public static void HandleAttackerStateUpdate(Packet packet)
         {
-            var hitInfo = packet.ReadEnum<SpellHitInfo>("HitInfo", TypeCode.Int32);
+            var hitInfo = packet.ReadInt32E<SpellHitInfo>("HitInfo");
             packet.ReadPackedGuid("AttackerGUID");
             packet.ReadPackedGuid("TargetGUID");
             packet.ReadInt32("Damage");
@@ -213,11 +213,14 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("Damage Resisted", i);
             }
 
-            var victimStateTypeCode = ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_3_9183) ? TypeCode.Byte : TypeCode.Int32;
-            packet.ReadEnum<VictimStates>("VictimState", victimStateTypeCode);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_3_9183))
+                packet.ReadByteE<VictimStates>("VictimState");
+            else
+                packet.ReadInt32E<VictimStates>("VictimState");
+
             packet.ReadInt32("Unk Attacker State 0");
 
-            packet.ReadEntry<Int32>(StoreNameType.Spell, "Melee Spell ID ");
+            packet.ReadInt32<SpellId>("Melee Spell ID ");
 
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_0_3_9183) ||
                 hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK))
@@ -245,7 +248,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_DUEL_OUTOFBOUNDS)]
+        [Parser(Opcode.SMSG_DUEL_OUT_OF_BOUNDS)]
         [Parser(Opcode.SMSG_CANCEL_COMBAT)]
         [Parser(Opcode.CMSG_ATTACKSTOP)]
         [Parser(Opcode.SMSG_ATTACKSWING_NOTINRANGE)]

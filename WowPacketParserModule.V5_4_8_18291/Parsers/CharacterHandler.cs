@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -26,7 +25,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             for (var i = 0; i < count; i++)
             {
-                packet.ReadEnum<PowerType>("Power type", TypeCode.Byte); // Actually powertype for class
+                packet.ReadByteE<PowerType>("Power type"); // Actually powertype for class
                 packet.ReadInt32("Value");
             }
 
@@ -35,7 +34,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_INIT_CURRENCY)]
+        [Parser(Opcode.SMSG_SETUP_CURRENCY)]
         public static void HandleInitCurrency(Packet packet)
         {
             var count = packet.ReadBits("Count", 21);

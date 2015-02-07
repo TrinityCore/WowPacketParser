@@ -9,7 +9,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
     public static class SessionHandler
     {
         [Parser(Opcode.SMSG_AUTH_CHALLENGE)]
-        public static void HandleServerAuthChallenge434(Packet packet)
+        public static void HandleServerAuthChallenge(Packet packet)
         {
             packet.ReadUInt32("Key pt1");
             packet.ReadUInt32("Key pt2");
@@ -24,7 +24,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         }
 
         [Parser(Opcode.CMSG_AUTH_SESSION)]
-        public static void HandleAuthSession434(Packet packet)
+        public static void HandleAuthSession(Packet packet)
         {
             var sha = new byte[20];
             packet.ReadUInt32("UInt32 1");
@@ -42,7 +42,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             sha[7] = packet.ReadByte();
             sha[16] = packet.ReadByte();
             sha[3] = packet.ReadByte();
-            packet.ReadEnum<ClientVersionBuild>("Client Build", TypeCode.Int16);
+            packet.ReadInt16E<ClientVersionBuild>("Client Build");
             sha[8] = packet.ReadByte();
             packet.ReadUInt32("UInt32 3");
             packet.ReadByte("Unk Byte");
@@ -59,7 +59,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
 
             var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
                 packet.Number, packet.Writer, packet.FileName);
-            CoreParsers.AddonHandler.ReadClientAddonsList(ref addons);
+            CoreParsers.AddonHandler.ReadClientAddonsList(addons);
             addons.ClosePacket(false);
 
             packet.ReadBit("Unk bit");
@@ -69,7 +69,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         }
 
         [Parser(Opcode.SMSG_AUTH_RESPONSE)]
-        public static void HandleAuthResponse434(Packet packet)
+        public static void HandleAuthResponse(Packet packet)
         {
             var isQueued = packet.ReadBit("Queued");
             var hasAccountInfo = packet.ReadBit("Has account info");
@@ -80,39 +80,39 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             if (hasAccountInfo)
             {
                 packet.ReadInt32("Billing Time Remaining");
-                packet.ReadEnum<ClientType>("Player Expansion", TypeCode.Byte);
+                packet.ReadByteE<ClientType>("Player Expansion");
                 packet.ReadInt32("Unknown UInt32");
-                packet.ReadEnum<ClientType>("Account Expansion", TypeCode.Byte);
+                packet.ReadByteE<ClientType>("Account Expansion");
                 packet.ReadInt32("Billing Time Rested");
-                packet.ReadEnum<BillingFlag>("Billing Flags", TypeCode.Byte);
+                packet.ReadByteE<BillingFlag>("Billing Flags");
             }
 
-            packet.ReadEnum<ResponseCode>("Auth Code", TypeCode.Byte);
+            packet.ReadByteE<ResponseCode>("Auth Code");
 
             if (isQueued)
                 packet.ReadInt32("Queue Position");
         }
 
         [Parser(Opcode.CMSG_PLAYER_LOGIN)]
-        public static void HandlePlayerLogin434(Packet packet)
+        public static void HandlePlayerLogin(Packet packet)
         {
             var guid = packet.StartBitStream(2, 3, 0, 6, 4, 5, 1, 7);
             packet.ParseBitStream(guid, 2, 7, 0, 3, 5, 6, 1, 4);
             packet.WriteGuid("Guid", guid);
-            CoreParsers.SessionHandler.LoginGuid = new WowGuid(BitConverter.ToUInt64(guid, 0));
+            CoreParsers.SessionHandler.LoginGuid = new WowGuid64(BitConverter.ToUInt64(guid, 0));
         }
 
         [Parser(Opcode.SMSG_REDIRECT_CLIENT)]
-        public static void HandleRedirectClient434(Packet packet)
+        public static void HandleRedirectClient(Packet packet)
         {
-            packet.ReadUInt64("Unk Long");
-            packet.ReadUInt32("Token");
+            packet.ReadUInt64("Key");
+            packet.ReadUInt32("Serial");
             packet.ReadBytes("RSA Hash", 0x100);
-            packet.ReadByte("Unk Byte"); // 1 == Connecting to world server
+            packet.ReadByte("Con"); // 1 == Connecting to world server
         }
 
-        [Parser(Opcode.CMSG_REDIRECTION_AUTH_PROOF)]
-        public static void HandleRedirectionAuthProof434(Packet packet)
+        [Parser(Opcode.CMSG_AUTH_CONTINUED_SESSION)]
+        public static void HandleRedirectionAuthProof(Packet packet)
         {
             var bytes = new byte[20];
             packet.ReadUInt64("Unk Long");

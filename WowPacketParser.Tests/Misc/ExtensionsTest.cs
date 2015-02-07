@@ -64,8 +64,8 @@ namespace WowPacketParser.Tests.Misc
         [Test]
         public void TestToByte()
         {
-            Assert.AreEqual((byte)1, true.ToByte());
-            Assert.AreEqual((byte)0, false.ToByte());
+            Assert.AreEqual(1, true.ToByte());
+            Assert.AreEqual(0, false.ToByte());
         }
 
         [Test]
@@ -91,19 +91,21 @@ namespace WowPacketParser.Tests.Misc
         }
 
         [Test]
-        public void TestToTuple()
+        public void TestFlattenIEnumerable()
         {
-            var list1 = new List<object> {1, "Foo", InhabitType.Air, 4};
-            var list2 = new List<object>();
+            object[] arr = { 1, 2, new object[] { 3, new object[] {4} }, 5 };
 
-            var result1 = (Tuple<object, object, object>)list1.ToTuple(4);
+            Assert.AreEqual(new object[] { 1, 2, 3, 4, 5 }, arr.Flatten());
 
-            Assert.Throws<ArgumentOutOfRangeException>(() => list2.ToTuple(0));
-            Assert.Throws<ArgumentOutOfRangeException>(() => list1.ToTuple(5));
+            var list = new List<object> { "a", new[] {"b", "c"}, 2 };
 
-            Assert.AreEqual(list1[1], result1.Item1);
-            Assert.AreEqual(list1[2], result1.Item2);
-            Assert.AreEqual(list1[3], result1.Item3);
+            Assert.AreEqual(new object[] { "a", "b", "c", 2}, list.Flatten());
+
+            int[] simple = {1, 2, 3};
+            Assert.AreEqual(new[] { 1, 2, 3 }, simple.Flatten());
+
+            int[] empty = {};
+            Assert.AreEqual(new int[] {}, empty.Flatten());
         }
     }
 }

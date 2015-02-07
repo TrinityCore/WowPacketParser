@@ -22,13 +22,15 @@ namespace WowPacketParser.Store
         // DB2
         public static readonly StoreDictionary<uint, CreatureDifficulty> CreatureDifficultys = new StoreDictionary<uint, CreatureDifficulty>(new List<SQLOutput> { SQLOutput.creature_template });
         public static readonly StoreDictionary<uint, GameObjectTemplateDB2> GameObjectTemplateDB2s = new StoreDictionary<uint, GameObjectTemplateDB2>(new List<SQLOutput> { SQLOutput.gameobject_template });
-        public static readonly StoreDictionary<uint, GameObjectTemplatePositionDB2> GameObjectTemplatePositionDB2s = new StoreDictionary<uint, GameObjectTemplatePositionDB2>(new List<SQLOutput> { SQLOutput.gameobject_db2_position });
         public static readonly StoreDictionary<uint, BroadcastText> BroadcastTexts = new StoreDictionary<uint, BroadcastText>(new List<SQLOutput> { SQLOutput.broadcast_text });
+        public static readonly StoreDictionary<uint, SpellMisc> SpellMiscs = new StoreDictionary<uint, SpellMisc>(new List<SQLOutput> { SQLOutput.spell_misc });
 
         // Templates
         public static readonly StoreDictionary<uint, GameObjectTemplate> GameObjectTemplates = new StoreDictionary<uint, GameObjectTemplate>(new List<SQLOutput> { SQLOutput.gameobject_template });
         public static readonly StoreDictionary<uint, ItemTemplate> ItemTemplates = new StoreDictionary<uint, ItemTemplate>(new List<SQLOutput> { SQLOutput.item_template });
         public static readonly StoreDictionary<uint, QuestTemplate> QuestTemplates = new StoreDictionary<uint, QuestTemplate>(new List<SQLOutput> { SQLOutput.quest_template });
+        public static readonly StoreDictionary<uint, QuestTemplateWod> QuestTemplatesWod = new StoreDictionary<uint, QuestTemplateWod>(new List<SQLOutput> { SQLOutput.quest_template });
+        public static readonly StoreDictionary<uint, QuestInfoObjective> QuestObjectives = new StoreDictionary<uint, QuestInfoObjective>(new List<SQLOutput> { SQLOutput.quest_template });
         public static readonly StoreDictionary<uint, UnitTemplate> UnitTemplates = new StoreDictionary<uint, UnitTemplate>(new List<SQLOutput> { SQLOutput.creature_template });
 
         // Vendor & trainer
@@ -70,6 +72,12 @@ namespace WowPacketParser.Store
         // Quest POI (QuestId, Id)
         public static readonly StoreDictionary<Tuple<uint, uint>, QuestPOI> QuestPOIs = new StoreDictionary<Tuple<uint, uint>, QuestPOI>(new List<SQLOutput> { SQLOutput.quest_poi_points });
 
+        // Quest Misc
+        public static readonly StoreDictionary<uint, QuestGreeting> QuestGreetings = new StoreDictionary<uint, QuestGreeting>(new List<SQLOutput> { SQLOutput.quest_template });
+        public static readonly StoreDictionary<uint, QuestDetails> QuestDetails = new StoreDictionary<uint, QuestDetails>(new List<SQLOutput> { SQLOutput.quest_template });
+        public static readonly StoreDictionary<uint, QuestRequestItems> QuestRequestItems = new StoreDictionary<uint, QuestRequestItems>(new List<SQLOutput> { SQLOutput.quest_template });
+        public static readonly StoreDictionary<uint, QuestOfferReward> QuestOfferRewards = new StoreDictionary<uint, QuestOfferReward>(new List<SQLOutput> { SQLOutput.quest_template });
+
         // Names
         public static readonly StoreDictionary<uint, ObjectName> ObjectNames = new StoreDictionary<uint, ObjectName>(new List<SQLOutput> { SQLOutput.ObjectNames });
 
@@ -98,12 +106,14 @@ namespace WowPacketParser.Store
 
             CreatureDifficultys.Clear();
             GameObjectTemplateDB2s.Clear();
-            GameObjectTemplatePositionDB2s.Clear();
             BroadcastTexts.Clear();
+            SpellMiscs.Clear();
 
             GameObjectTemplates.Clear();
             ItemTemplates.Clear();
             QuestTemplates.Clear();
+            QuestTemplatesWod.Clear();
+            QuestObjectives.Clear();
             UnitTemplates.Clear();
 
             NpcTrainers.Clear();
@@ -134,6 +144,11 @@ namespace WowPacketParser.Store
 
             QuestPOIs.Clear();
 
+            QuestGreetings.Clear();
+            QuestDetails.Clear();
+            QuestRequestItems.Clear();
+            QuestOfferRewards.Clear();
+
             ObjectNames.Clear();
 
             DefenseMessages.Clear();
@@ -146,7 +161,7 @@ namespace WowPacketParser.Store
             SpellClicks.Clear();
 
             Waypoints.Clear();
-            SplineWaypoints.Clear();
+            SplineWaypoints.Clear();´
         }
     }
 }

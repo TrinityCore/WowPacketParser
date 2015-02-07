@@ -26,6 +26,16 @@ namespace WowPacketParser.SQL
         }
 
         /// <summary>
+        /// Remove back quotes from a string.
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
+        public static string RemoveBackQuotes(string str)
+        {
+            return str.Replace("`", "");
+        }
+
+        /// <summary>
         /// Adds "straight" quotes to a string. For SQL text.
         /// </summary>
         /// <param name="str">String</param>
@@ -42,7 +52,10 @@ namespace WowPacketParser.SQL
         /// <returns>Modified string</returns>
         public static string EscapeString(string str)
         {
-            return MySqlHelper.DoubleQuoteString(str);
+            str = MySqlHelper.DoubleQuoteString(str);
+
+            // prevent double escaping
+            return str.Replace("\"\"", "\"");
         }
 
         /// <summary>
@@ -232,7 +245,11 @@ namespace WowPacketParser.SQL
                             continue;
                         }
 
-                        row.AddValue(field.Item2.Name, field.Item1.GetValue(elem1.Value.Item1));
+                        var val = field.Item1.GetValue(elem1.Value.Item1);
+                        if (val == null && field.Item1.FieldType == typeof (string))
+                            val = string.Empty;
+
+                        row.AddValue(field.Item2.Name, val);
                     }
                     rowsIns.Add(row);
                 }
@@ -255,11 +272,12 @@ namespace WowPacketParser.SQL
         /// <typeparam name="TK">Type of the WDB struct (field names and types must match DB field name and types)</typeparam>
         /// <param name="dict1">Dictionary retrieved from  parser</param>
         /// <param name="dict2">Dictionary retrieved from  DB</param>
-        /// <param name="storeType">Are we dealing with Spells, Quests, Units, ...?</param>
+        /// <param name="storeType1">(T) Are we dealing with Spells, Quests, Units, ...?</param>
+        /// <param name="storeType2">(TG) Are we dealing with Spells, Quests, Units, ...?</param>
         /// <param name="primaryKeyName1">The name of the first primary key</param>
         /// <param name="primaryKeyName2">The name of the second primary key</param>
         /// <returns>A string containing full SQL queries</returns>
-        public static string CompareDicts<T, TG, TK>(StoreDictionary<Tuple<T, TG>, TK> dict1, StoreDictionary<Tuple<T, TG>, TK> dict2, StoreNameType storeType, string primaryKeyName1, string primaryKeyName2)
+        public static string CompareDicts<T, TG, TK>(StoreDictionary<Tuple<T, TG>, TK> dict1, StoreDictionary<Tuple<T, TG>, TK> dict2, StoreNameType storeType1, StoreNameType storeType2, string primaryKeyName1, string primaryKeyName2)
         {
             var tableAttrs = (DBTableNameAttribute[])typeof(TK).GetCustomAttributes(typeof(DBTableNameAttribute), false);
             if (tableAttrs.Length <= 0)
@@ -316,7 +334,15 @@ namespace WowPacketParser.SQL
 
                     row.AddWhere(primaryKeyName1, key1);
                     row.AddWhere(primaryKeyName2, key2);
-                    row.Comment = StoreGetters.GetName(storeType, (int)key1, false);
+
+                    var key1Name = storeType1 != StoreNameType.None ?
+                        StoreGetters.GetName(storeType1, (int) key1, false) :
+                        elem1.Key.Item1.ToString();
+                    var key2Name = storeType2 != StoreNameType.None ?
+                        StoreGetters.GetName(storeType2, (int) key2, false) :
+                        elem1.Key.Item2.ToString();
+
+                    row.Comment = key1Name + " - " + key2Name;
                     row.Table = tableName;
 
                     if (row.ValueCount == 0)
@@ -339,7 +365,18 @@ namespace WowPacketParser.SQL
                     var row = new QueryBuilder.SQLInsertRow();
                     row.AddValue(primaryKeyName1, elem1.Key.Item1);
                     row.AddValue(primaryKeyName2, elem1.Key.Item2);
-                    row.Comment = StoreGetters.GetName(storeType, Convert.ToInt32(elem1.Key.Item1), false);
+
+                    var key1 = Convert.ToUInt32(elem1.Key.Item1);
+                    var key2 = Convert.ToUInt32(elem1.Key.Item2);
+
+                    var key1Name = storeType1 != StoreNameType.None ?
+                        StoreGetters.GetName(storeType1, (int) key1, false) :
+                        elem1.Key.Item1.ToString();
+                    var key2Name = storeType2 != StoreNameType.None ?
+                        StoreGetters.GetName(storeType2, (int) key2, false) :
+                        elem1.Key.Item2.ToString();
+
+                    row.Comment = key1Name + " - " + key2Name;
 
                     foreach (var field in fields)
                     {
@@ -355,13 +392,17 @@ namespace WowPacketParser.SQL
                             continue;
                         }
 
-                        row.AddValue(field.Item2.Name, field.Item1.GetValue(elem1.Value.Item1));
+                        var val = field.Item1.GetValue(elem1.Value.Item1);
+                        if (val == null && field.Item1.FieldType == typeof(string))
+                            val = string.Empty;
+
+                        row.AddValue(field.Item2.Name, val);
                     }
                     rowsIns.Add(row);
                 }
             }
 
-            var result = new QueryBuilder.SQLInsert(tableName, rowsIns, deleteDuplicates: false).Build() +
+            var result = new QueryBuilder.SQLInsert(tableName, rowsIns, deleteDuplicates: false, primaryKeyNumber: 2).Build() +
                          new QueryBuilder.SQLUpdate(rowsUpd).Build();
 
             return result;

@@ -14,9 +14,10 @@ namespace WowPacketParser.Misc
     {
         private readonly int _totalPacketCount;
 
-        private int _sucessPacketCount;
+        private int _successPacketCount;
         private int _withErrorsPacketCount;
         private int _notParsedPacketCount;
+        private int _noStructurePacketCount;
 
         private DateTime _startTime;
         private DateTime _endTime;
@@ -54,15 +55,15 @@ namespace WowPacketParser.Misc
         /// </summary>
         public int CalculatedTotalPacketCount
         {
-            get { return _sucessPacketCount + _withErrorsPacketCount + _notParsedPacketCount; }
+            get { return _successPacketCount + _withErrorsPacketCount + _notParsedPacketCount + _noStructurePacketCount; }
         }
 
         /// <summary>
-        /// Number of packets sucessfully parsed.
+        /// Number of packets successfully parsed.
         /// </summary>
-        public int SucessPacketCount
+        public int SuccessPacketCount
         {
-            get { return _sucessPacketCount; }
+            get { return _successPacketCount; }
         }
 
         /// <summary>
@@ -82,11 +83,19 @@ namespace WowPacketParser.Misc
         }
 
         /// <summary>
-        /// Increments by one the number of packets sucessfully parsed.
+        /// Number of packets that were skipped.
         /// </summary>
-        public void AddSucess()
+        public int NoStructurePacketCount
         {
-            Interlocked.Increment(ref _sucessPacketCount);
+            get { return _noStructurePacketCount; }
+        }
+
+        /// <summary>
+        /// Increments by one the number of packets successfully parsed.
+        /// </summary>
+        public void AddSuccess()
+        {
+            Interlocked.Increment(ref _successPacketCount);
         }
 
         /// <summary>
@@ -105,6 +114,11 @@ namespace WowPacketParser.Misc
             Interlocked.Increment(ref _notParsedPacketCount);
         }
 
+        public void AddNoStructure()
+        {
+            Interlocked.Increment(ref _noStructurePacketCount);
+        }
+
         /// <summary>
         /// Increment respective count
         /// </summary>
@@ -116,7 +130,7 @@ namespace WowPacketParser.Misc
                 case ParsedStatus.None:
                     break;
                 case ParsedStatus.Success:
-                    AddSucess();
+                    AddSuccess();
                     break;
                 case ParsedStatus.WithErrors:
                     AddWithErrors();
@@ -124,16 +138,19 @@ namespace WowPacketParser.Misc
                 case ParsedStatus.NotParsed:
                     AddNotParsed();
                     break;
+                case ParsedStatus.NoStructure:
+                    AddNoStructure();
+                    break;
             }
         }
 
         /// <summary>
-        /// Sucessfully parsed packets percentage. [0-100]
+        /// Successfully parsed packets percentage. [0-100]
         /// </summary>
         /// <returns></returns>
-        public double GetSucessPercentage()
+        public double GetSuccessPercentage()
         {
-            return 100.0 * SucessPacketCount / CalculatedTotalPacketCount;
+            return 100.0 * SuccessPacketCount / CalculatedTotalPacketCount;
         }
 
         /// <summary>
@@ -152,6 +169,10 @@ namespace WowPacketParser.Misc
         public double GetNotParsedPercentage()
         {
             return 100.0 * NotParsedPacketCount / CalculatedTotalPacketCount;
+        }
+        public double GetNoStructurePercentage()
+        {
+            return 100.0 * NoStructurePacketCount / CalculatedTotalPacketCount;
         }
 
         /// <summary>
@@ -188,19 +209,25 @@ namespace WowPacketParser.Misc
         /// <returns>String</returns>
         public override string ToString()
         {
-            var parsingTime = GetParsingTime();
+            if (SuccessPacketCount == 0 && WithErrorsPacketCount == 0 &&
+                NotParsedPacketCount == 0 && NoStructurePacketCount == 0)
+                return "No packets parsed";
 
             var sb = new StringBuilder("Parsed ")
-                .Append(SucessPacketCount)
-                .Append(" (").AppendFormat("{0:F3}", GetSucessPercentage()).Append("%) ")
-                .Append("packets sucessfully, ")
+                .Append(SuccessPacketCount)
+                .Append(" (").AppendFormat("{0:F3}", GetSuccessPercentage()).Append("%) ")
+                .Append("packets successfully, ")
                 .Append(WithErrorsPacketCount)
                 .Append(" (").AppendFormat("{0:F3}", GetWithErrorsPercentage()).Append("%) ")
                 .Append("with errors and skipped ")
                 .Append(NotParsedPacketCount)
                 .Append(" (").AppendFormat("{0:F3}", GetNotParsedPercentage()).Append("%) ")
+                .Append("without structure ")
+                .Append(NoStructurePacketCount)
+                .Append(" (").AppendFormat("{0:F3}", GetNoStructurePercentage()).Append("%) ")
                 .Append(" (total: ").Append(CalculatedTotalPacketCount).Append(")");
 
+            var parsingTime = GetParsingTime();
             if (parsingTime.Milliseconds != 0)
                 sb.Append(" in ").Append(parsingTime.ToFormattedString());
 
@@ -226,13 +253,16 @@ namespace WowPacketParser.Misc
                     switch (packet.Status)
                     {
                         case ParsedStatus.Success:
-                            stats.AddSucess();
+                            stats.AddSuccess();
                             break;
                         case ParsedStatus.WithErrors:
                             stats.AddWithErrors();
                             break;
                         case ParsedStatus.NotParsed:
                             stats.AddNotParsed();
+                            break;
+                        case ParsedStatus.NoStructure:
+                            stats.AddNoStructure();
                             break;
                     }
                 }

@@ -4,6 +4,6 @@ namespace WowPacketParser.Enums
     {
         Failure = 1,
         Success = 2,
-        Deleted = 9,
+        Deleted = 9
     }
 }

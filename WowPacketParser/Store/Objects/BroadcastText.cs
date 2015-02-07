@@ -12,8 +12,6 @@ namespace WowPacketParser.Store.Objects
 
         public void ConvertToDBStruct()
         {
-            // Seriously...
-
             emoteID0 = EmoteID[0];
             emoteID1 = EmoteID[1];
             emoteID2 = EmoteID[2];
@@ -44,9 +42,9 @@ namespace WowPacketParser.Store.Objects
         public uint emoteDelay2;
         [DBFieldName("SoundId")]
         public uint soundId;
-        [DBFieldName("Unk1")]
+        [DBFieldName("UnkMoP1")]
         public uint unk1;
-        [DBFieldName("Unk2")]
+        [DBFieldName("UnkMoP2")]
         public uint unk2;
         // ReSharper restore InconsistentNaming
 

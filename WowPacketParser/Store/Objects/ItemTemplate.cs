@@ -97,16 +97,16 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("StatsCount", ClientVersionBuild.Zero, ClientVersionBuild.V4_0_1_13164)]
         public uint StatsCount;
 
-        [DBFieldName("stat_type", 10, false)]
+        [DBFieldName("stat_type", 10)]
         public ItemModType[] StatTypes;
 
-        [DBFieldName("stat_value", 10, false)]
+        [DBFieldName("stat_value", 10)]
         public int[] StatValues;
 
-        [DBFieldName("stat_unk1_", ClientVersionBuild.V4_0_1_13164, 10, false)]
+        [DBFieldName("stat_unk1_", ClientVersionBuild.V4_0_1_13164, 10)]
         public int[] StatUnk1;
 
-        [DBFieldName("stat_unk2_", ClientVersionBuild.V4_0_1_13164, 10, false)]
+        [DBFieldName("stat_unk2_", ClientVersionBuild.V4_0_1_13164, 10)]
         public int[] StatUnk2;
 
         [DBFieldName("ScalingStatDistribution")]
@@ -246,6 +246,9 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("CurrencySubstitutionCount", ClientVersionBuild.V4_0_1_13164)]
         public uint CurrencySubstitutionCount;
+
+        [DBFieldName("ItemNameDescriptionID", ClientVersionBuild.V6_0_2_19033)]
+        public uint ItemNameDescriptionId;
 
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;

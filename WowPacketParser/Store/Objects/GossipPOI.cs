@@ -7,22 +7,22 @@ namespace WowPacketParser.Store.Objects
     //[DBTableName("points_of_interest")]
     public sealed class GossipPOI
     {
-        //[DBFieldName("x")]
-        public float XPos;
+        //[DBFieldName("PositionX")]
+        public float PositionX;
 
-        //[DBFieldName("y")]
-        public float YPos;
+        //[DBFieldName("PositionY")]
+        public float PositionY;
 
-        //[DBFieldName("icon")]
+        //[DBFieldName("Icon")]
         public GossipPOIIcon Icon;
 
-        //[DBFieldName("flags")]
+        //[DBFieldName("Flags")]
         public uint Flags;
 
-        //[DBFieldName("data")]
-        public uint Data;
+        //[DBFieldName("Importance")]
+        public uint Importance;
 
-        //[DBFieldName("icon_name")]
-        public string IconName;
+        //[DBFieldName("Name")]
+        public string Name;
     }
 }

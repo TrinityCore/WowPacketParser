@@ -7,7 +7,7 @@ namespace WowPacketParser.Parsing.Parsers
     {
         private static int _addonCount = -1;
 
-        public static void ReadClientAddonsList(ref Packet packet)
+        public static void ReadClientAddonsList(Packet packet)
         {
             var decompCount = packet.ReadInt32();
             if (decompCount == 0)
@@ -23,7 +23,7 @@ namespace WowPacketParser.Parsing.Parsers
                 for (var i = 0; i < count; i++)
                 {
                     newPacket.ReadCString("Name", i);
-                    newPacket.ReadBoolean("Uses public key", i);
+                    newPacket.ReadBool("Uses public key", i);
                     newPacket.ReadInt32("Public key CRC", i);
                     newPacket.ReadInt32("URL file CRC", i);
                 }
@@ -37,7 +37,7 @@ namespace WowPacketParser.Parsing.Parsers
                 while (newPacket.Position != newPacket.Length)
                 {
                     newPacket.ReadCString("Name");
-                    newPacket.ReadBoolean("Enabled");
+                    newPacket.ReadBool("Enabled");
                     newPacket.ReadInt32("CRC");
                     newPacket.ReadInt32("Unk Int32");
 
@@ -65,11 +65,11 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 packet.ReadByte("Addon State", i);
 
-                var sendCrc = packet.ReadBoolean("Use CRC", i);
+                var sendCrc = packet.ReadBool("Use CRC", i);
 
                 if (sendCrc)
                 {
-                    var usePublicKey = packet.ReadBoolean("Use Public Key", i);
+                    var usePublicKey = packet.ReadBool("Use Public Key", i);
 
                     if (usePublicKey)
                         packet.ReadBytes("Name MD5", 256);
@@ -77,7 +77,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("Unk Int32", i);
                 }
 
-                if (packet.ReadBoolean("Use URL File", i))
+                if (packet.ReadBool("Use URL File", i))
                     packet.ReadCString("Addon URL File", i);
             }
 

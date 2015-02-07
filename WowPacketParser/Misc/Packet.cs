@@ -126,7 +126,7 @@ namespace WowPacketParser.Misc
             if (keepStream)
             {
                 int idx = ConnectionIndex;
-                while (!TryInflate(inflatedSize, idx, arr, ref newarr))
+                while (!TryInflate(inflatedSize, idx, arr, ref newarr) && idx <= 4)
                     idx += 1;
             }
             else
@@ -159,8 +159,10 @@ namespace WowPacketParser.Misc
             }
 
             // Cannot use "using" here
-            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer, FileName);
-            pkt.ConnectionIndex = ConnectionIndex;
+            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer, FileName)
+            {
+                ConnectionIndex = ConnectionIndex
+            };
             return pkt;
         }
 
@@ -175,7 +177,7 @@ namespace WowPacketParser.Misc
             if (keepStream)
             {
                 int idx = ConnectionIndex;
-                while (!TryInflate(inflatedSize, idx, arr, ref newarr))
+                while (!TryInflate(inflatedSize, idx, arr, ref newarr) && idx <= 4)
                     idx += 1;
             }
             else
@@ -207,8 +209,10 @@ namespace WowPacketParser.Misc
             }
 
             // Cannot use "using" here
-            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer, FileName);
-            pkt.ConnectionIndex = ConnectionIndex;
+            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer, FileName)
+            {
+                ConnectionIndex = ConnectionIndex
+            };
             return pkt;
         }
 
@@ -223,9 +227,9 @@ namespace WowPacketParser.Misc
 
         public string GetHeader(bool isMultiple = false)
         {
-            return string.Format("{0}: {1} (0x{2}) Length: {3} ConnIdx: {4} EP: {5} Time: {6} Number: {7}{8}",
-                Direction, Opcodes.GetOpcodeName(Opcode, Direction), Opcode.ToString("X4"),
-                Length, ConnectionIndex, EndPoint, Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
+            return string.Format("{0}: {1} (0x{2}) Length: {3} ConnIdx: {4}{5} Time: {6} Number: {7}{8}",
+                Direction, Opcodes.GetOpcodeName(Opcode, Direction, false), Opcode.ToString("X4"),
+                Length, ConnectionIndex, EndPoint != null ? " EP: " + EndPoint : "", Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
                 Number, isMultiple ? " (part of another packet)" : "");
         }
 

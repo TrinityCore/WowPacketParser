@@ -6,6 +6,6 @@ namespace WowPacketParser.Enums
         PetDead          = 1,
         NothingToAttack  = 2,
         CantAttackTarget = 3,
-        ChargeHasNoPath  = 4,
+        ChargeHasNoPath  = 4
     }
 }

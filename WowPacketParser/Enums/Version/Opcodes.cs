@@ -19,20 +19,26 @@ using WowPacketParser.Enums.Version.V5_4_1_17538;
 using WowPacketParser.Enums.Version.V5_4_2_17658;
 using WowPacketParser.Enums.Version.V5_4_7_17898;
 using WowPacketParser.Enums.Version.V5_4_8_18291;
+using WowPacketParser.Enums.Version.V6_0_2_19033;
+using WowPacketParser.Enums.Version.V6_0_3_19103;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Enums.Version
 {
     public static class Opcodes
     {
-        private static BiDictionary<Opcode, int> Dict = GetOpcodeDictionary(ClientVersion.Build);
+        private static BiDictionary<Opcode, int> ServerDict = GetOpcodeDictionary(ClientVersion.Build, Direction.ServerToClient);
+        private static BiDictionary<Opcode, int> ClientDict = GetOpcodeDictionary(ClientVersion.Build, Direction.ClientToServer);
+        private static BiDictionary<Opcode, int> MiscDict = GetOpcodeDictionary(ClientVersion.Build, Direction.Bidirectional);
 
         public static void InitializeOpcodeDictionary()
         {
-            Dict = GetOpcodeDictionary(ClientVersion.Build);
+            ServerDict = GetOpcodeDictionary(ClientVersion.Build, Direction.ServerToClient);
+            ClientDict = GetOpcodeDictionary(ClientVersion.Build, Direction.ClientToServer);
+            MiscDict = GetOpcodeDictionary(ClientVersion.Build, Direction.Bidirectional);
         }
 
-        private static BiDictionary<Opcode, int> GetOpcodeDictionary(ClientVersionBuild build)
+        public static BiDictionary<Opcode, int> GetOpcodeDictionary(ClientVersionBuild build, Direction direction)
         {
             switch (build)
             {
@@ -57,62 +63,62 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V3_3_3a_11723:
                 case ClientVersionBuild.V3_3_5a_12340:
                 {
-                    return Opcodes_3_3_5.Opcodes();
+                    return Opcodes_3_3_5.Opcodes(direction);
                 }
                 case ClientVersionBuild.V4_0_3_13329:
                 {
-                    return Opcodes_4_0_3.Opcodes();
+                    return Opcodes_4_0_3.Opcodes(direction);
                 }
                 case ClientVersionBuild.V4_0_6_13596:
                 case ClientVersionBuild.V4_0_6a_13623:
                 {
-                    return Opcodes_4_0_6.Opcodes();
+                    return Opcodes_4_0_6.Opcodes(direction);
                 }
                 case ClientVersionBuild.V4_1_0_13914:
                 case ClientVersionBuild.V4_1_0a_14007:
                 {
-                    return Opcodes_4_1_0.Opcodes();
+                    return Opcodes_4_1_0.Opcodes(direction);
                 }
                 case ClientVersionBuild.V4_2_0_14333:
                 case ClientVersionBuild.V4_2_0a_14480:
                 {
-                    return Opcodes_4_2_0.Opcodes();
+                    return Opcodes_4_2_0.Opcodes(direction);
                 }
                 case ClientVersionBuild.V4_2_2_14545:
                 {
-                    return Opcodes_4_2_2.Opcodes();
+                    return Opcodes_4_2_2.Opcodes(direction);
                 }
                 case ClientVersionBuild.V4_3_0_15005:
                 case ClientVersionBuild.V4_3_0a_15050:
                 {
-                    return Opcodes_4_3_0.Opcodes();
+                    return Opcodes_4_3_0.Opcodes(direction);
                 }
                 case ClientVersionBuild.V4_3_2_15211:
                 {
-                    return Opcodes_4_3_2.Opcodes();
+                    return Opcodes_4_3_2.Opcodes(direction);
                 }
                 case ClientVersionBuild.V4_3_3_15354:
                 {
-                    return Opcodes_4_3_3.Opcodes();
+                    return Opcodes_4_3_3.Opcodes(direction);
                 }
                 case ClientVersionBuild.V4_3_4_15595:
                 {
-                    return Opcodes_4_3_4.Opcodes();
+                    return Opcodes_4_3_4.Opcodes(direction);
                 }
                 case ClientVersionBuild.V5_0_4_16016:
                 {
-                    return Opcodes_5_0_4.Opcodes();
+                    return Opcodes_5_0_4.Opcodes(direction);
                 }
                 case ClientVersionBuild.V5_0_5_16048:
                 case ClientVersionBuild.V5_0_5a_16057:
                 case ClientVersionBuild.V5_0_5b_16135:
                 {
-                    return Opcodes_5_0_5.Opcodes();
+                    return Opcodes_5_0_5.Opcodes(direction);
                 }
                 case ClientVersionBuild.V5_1_0_16309:
                 case ClientVersionBuild.V5_1_0a_16357:
                 {
-                    return Opcodes_5_1_0.Opcodes();
+                    return Opcodes_5_1_0.Opcodes(direction);
                 }
                 case ClientVersionBuild.V5_2_0_16650:
                 case ClientVersionBuild.V5_2_0_16669:
@@ -125,7 +131,7 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V5_2_0_16769:
                 case ClientVersionBuild.V5_2_0_16826:
                 {
-                    return Opcodes_5_2_0.Opcodes();
+                    return Opcodes_5_2_0.Opcodes(direction);
                 }
                 case ClientVersionBuild.V5_3_0_16981:
                 case ClientVersionBuild.V5_3_0_16983:
@@ -134,45 +140,52 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V5_3_0_17116:
                 case ClientVersionBuild.V5_3_0_17128:
                 {
-                    return Opcodes_5_3_0.Opcodes();
+                    return Opcodes_5_3_0.Opcodes(direction);
                 }
                 case ClientVersionBuild.V5_4_0_17359:
                 case ClientVersionBuild.V5_4_0_17371:
                 case ClientVersionBuild.V5_4_0_17399:
                 {
-                    return Opcodes_5_4_0.Opcodes();
+                    return Opcodes_5_4_0.Opcodes(direction);
                 }
                 case ClientVersionBuild.V5_4_1_17538:
                 {
-                    return Opcodes_5_4_1.Opcodes();
+                    return Opcodes_5_4_1.Opcodes(direction);
                 }
                 case ClientVersionBuild.V5_4_2_17658:
                 case ClientVersionBuild.V5_4_2_17688:
                 {
-                    return Opcodes_5_4_2.Opcodes();
+                    return Opcodes_5_4_2.Opcodes(direction);
                 }
                 case ClientVersionBuild.V5_4_7_17898:
                 case ClientVersionBuild.V5_4_7_17930:
                 case ClientVersionBuild.V5_4_7_17956:
                 case ClientVersionBuild.V5_4_7_18019:
                 {
-                    return Opcodes_5_4_7.Opcodes();
+                    return Opcodes_5_4_7.Opcodes(direction);
                 }
                 case ClientVersionBuild.V5_4_8_18291:
                 case ClientVersionBuild.V5_4_8_18414:
                 {
-                    return Opcodes_5_4_8.Opcodes();
+                    return Opcodes_5_4_8.Opcodes(direction);
+                }
+                case ClientVersionBuild.V6_0_2_19033:
+                case ClientVersionBuild.V6_0_2_19034:
+                {
+                    return Opcodes_6_0_2.Opcodes(direction);
+                }
+                case ClientVersionBuild.V6_0_3_19103:
+                case ClientVersionBuild.V6_0_3_19116:
+                case ClientVersionBuild.V6_0_3_19243:
+                case ClientVersionBuild.V6_0_3_19342:
+                {
+                    return Opcodes_6_0_3.Opcodes(direction);
                 }
                 default:
                 {
-                    return Opcodes_3_3_5.Opcodes();
+                    return Opcodes_3_3_5.Opcodes(direction);
                 }
             }
-        }
-
-        public static Opcode GetOpcode(int opcodeId)
-        {
-            return Dict.GetBySecond(opcodeId);
         }
 
         public static Opcode GetOpcode(int opcodeId, Direction direction)
@@ -180,31 +193,40 @@ namespace WowPacketParser.Enums.Version
             switch (direction)
             {
                 case Direction.ClientToServer:
-                    return GetOpcode(opcodeId | 0x10000);
+                    return ClientDict.GetBySecond(opcodeId);
                 case Direction.ServerToClient:
-                    return GetOpcode(opcodeId | 0x20000);
-                default:
-                    return GetOpcode(opcodeId);
+                    return ServerDict.GetBySecond(opcodeId);
+                case Direction.Bidirectional:
+                    return MiscDict.GetBySecond(opcodeId);
             }
+            return default(Opcode); // Can never be called, anyway.
         }
 
-        public static int GetOpcode(Opcode opcode)
+        public static int GetOpcode(Opcode opcodeId, Direction direction)
         {
-            return Dict.GetByFirst(opcode);
+            switch (direction)
+            {
+                case Direction.ClientToServer:
+                    return ClientDict.GetByFirst(opcodeId);
+                case Direction.ServerToClient:
+                    return ServerDict.GetByFirst(opcodeId);
+                case Direction.Bidirectional:
+                    return MiscDict.GetByFirst(opcodeId);
+            }
+
+            return 0;
         }
 
-        public static string GetOpcodeName(int opcodeId)
-        {
-            var opc = GetOpcode(opcodeId);
-            return opc == 0 ? opcodeId.ToString(CultureInfo.InvariantCulture) : opc.ToString();
-        }
-
-        public static string GetOpcodeName(int opcodeId, Direction direction)
+        public static string GetOpcodeName(int opcodeId, Direction direction, bool hex = true)
         {
             var opc = GetOpcode(opcodeId, direction);
-            if (opc == 0)
-                opc = GetOpcode(opcodeId);
-            return opc == 0 ? opcodeId.ToString(CultureInfo.InvariantCulture) : opc.ToString();
+
+            if (opc != 0)
+                return opc.ToString();
+
+            if (hex)
+                return "0x" + opcodeId.ToString("X4", CultureInfo.InvariantCulture);
+            return opcodeId.ToString();
         }
     }
 }

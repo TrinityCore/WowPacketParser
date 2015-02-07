@@ -2,7 +2,7 @@ namespace WowPacketParser.Enums
 {
     public enum LootType
     {
-        Unk0          = 0,
+        None          = 0,
         Corpse        = 1,
         PickPocketing = 2,
         Fishing       = 3,

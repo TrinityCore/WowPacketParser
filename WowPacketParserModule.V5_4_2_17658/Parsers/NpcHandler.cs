@@ -72,8 +72,8 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                     BoxText = packet.ReadWoWString("Box Text", boxTextLen[i], i),
                     OptionText = packet.ReadWoWString("Text", optionTextLen[i], i),
                     Index = packet.ReadUInt32("Index", i),
-                    Box = packet.ReadBoolean("Box", i),
-                    OptionIcon = packet.ReadEnum<GossipOptionIcon>("Icon", TypeCode.Byte, i),
+                    Box = packet.ReadBool("Box", i),
+                    OptionIcon = packet.ReadByteE<GossipOptionIcon>("Icon", i),
                     RequiredMoney = packet.ReadUInt32("Required money", i),
                 };
 
@@ -83,11 +83,11 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             for (var i = 0; i < questgossips; ++i)
             {
                 packet.ReadInt32("Level", i);
-                packet.ReadEnum<QuestFlags>("Flags", TypeCode.UInt32, i);
+                packet.ReadUInt32E<QuestFlags>("Flags", i);
                 packet.ReadUInt32("Icon", i);
                 packet.ReadWoWString("Title", titleLen[i], i);
-                packet.ReadEntry<UInt32>(StoreNameType.Quest, "Quest ID", i);
-                packet.ReadEnum<QuestFlags2>("Flags 2", TypeCode.UInt32, i);
+                packet.ReadUInt32<QuestId>("Quest ID", i);
+                packet.ReadUInt32E<QuestFlags2>("Flags 2", i);
             }
 
             packet.ReadXORByte(guidBytes, 7);
@@ -170,14 +170,14 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             var gossipPOI = new GossipPOI();
 
-            gossipPOI.Flags = (uint)packet.ReadEnum<UnknownFlags>("Flags", TypeCode.Int32);
+            gossipPOI.Flags = (uint)packet.ReadInt32E<UnknownFlags>("Flags");
             var pos = packet.ReadVector2("Coordinates");
-            gossipPOI.Icon = packet.ReadEnum<GossipPOIIcon>("Icon", TypeCode.UInt32);
-            gossipPOI.Data = packet.ReadUInt32("Data");
-            gossipPOI.IconName = packet.ReadCString("Icon Name");
+            gossipPOI.Icon = packet.ReadUInt32E<GossipPOIIcon>("Icon");
+            gossipPOI.Importance = packet.ReadUInt32("Data");
+            gossipPOI.Name = packet.ReadCString("Icon Name");
 
-            gossipPOI.XPos = pos.X;
-            gossipPOI.YPos = pos.Y;
+            gossipPOI.PositionX = pos.X;
+            gossipPOI.PositionY = pos.Y;
 
             Storage.GossipPOIs.Add(LastGossipPOIEntry, gossipPOI, packet.TimeSpan);
         }
@@ -274,7 +274,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                     vendorItem.ExtendedCostId = packet.ReadUInt32("Extended Cost", i);
 
                 packet.ReadInt32("Item Upgrade ID", i);
-                vendorItem.ItemId = (uint)packet.ReadEntry<Int32>(StoreNameType.Item, "Item ID", i);
+                vendorItem.ItemId = (uint)packet.ReadInt32<ItemId>("Item ID", i);
 
                 if (hasCondition[i])
                     packet.ReadInt32("Condition ID", i);
@@ -293,7 +293,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             packet.WriteGuid("Guid", guid);
 
-            var vendorGUID = new WowGuid(BitConverter.ToUInt64(guid, 0));
+            var vendorGUID = new WowGuid64(BitConverter.ToUInt64(guid, 0));
             Storage.NpcVendors.Add(vendorGUID.GetEntry(), npcVendor, packet.TimeSpan);
         }
 
@@ -318,7 +318,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             var count = (int)packet.ReadBits("Count", 19);
 
-            npcTrainer.Type = packet.ReadEnum<TrainerType>("Type", TypeCode.Int32);
+            npcTrainer.Type = packet.ReadInt32E<TrainerType>("Type");
 
             npcTrainer.TrainerSpells = new List<TrainerSpell>(count);
             for (var i = 0; i < count; ++i)
@@ -327,9 +327,9 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 for (var j = 0; j < 3; ++j)
                     packet.ReadInt32("Int818", i, j);
 
-                packet.ReadEnum<TrainerSpellState>("State", TypeCode.Byte, i);
+                packet.ReadByteE<TrainerSpellState>("State", i);
                 trainerSpell.RequiredSkill = packet.ReadUInt32("Required Skill", i);
-                trainerSpell.Spell = (uint)packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i);
+                trainerSpell.Spell = (uint)packet.ReadInt32<SpellId>("Spell ID", i);
                 trainerSpell.Cost = packet.ReadUInt32("Cost", i);
                 trainerSpell.RequiredLevel = packet.ReadByte("Required Level", i);
                 trainerSpell.RequiredSkillLevel = packet.ReadUInt32("Required Skill Level", i);
