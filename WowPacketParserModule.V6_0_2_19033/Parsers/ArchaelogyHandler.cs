@@ -18,5 +18,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("CompletionCount", i);
             }
         }
+
+        [Parser(Opcode.SMSG_ARCHAEOLOGY_SURVERY_CAST)]
+        public static void HandleArchaelogySurveryCast(Packet packet)
+        {
+            packet.ReadUInt32("TotalFinds");
+            packet.ReadUInt32("NumFindsCompleted");
+            packet.ReadInt32("ResearchBranchID");
+            packet.ReadBit("SuccessfulFind");
+        }
     }
 }

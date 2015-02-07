@@ -137,5 +137,47 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("EventName", lenEventName);
             packet.ReadWoWString("Description", lenDescription);
         }
+
+        [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_ALERT)]
+        public static void HandleCalendarEventInviteAlert(Packet packet)
+        {
+            // TODO: find unks
+
+            packet.ReadUInt64("EventID");
+            packet.ReadPackedTime("Date");
+            packet.ReadInt32E<CalendarFlag>("Flags");
+
+            packet.ReadByteE<CalendarEventType>("EventType");
+
+            packet.ReadInt32("TextureID");
+
+            packet.ReadPackedGuid128("EventGuildID");
+
+            packet.ReadUInt64("InviteID");
+
+            packet.ReadByteE<CalendarEventStatus>("Status");
+            packet.ReadByteE<CalendarModerationRank>("ModeratorStatus");
+
+            packet.ReadPackedGuid128("OwnerGUID | InvitedByGUID");
+            packet.ReadPackedGuid128("OwnerGUID | InvitedByGUID");
+
+            var eventNameLength = packet.ReadBits("EventNameLength", 8);
+            packet.ResetBitReader();
+
+            packet.ReadWoWString("EventName", eventNameLength);  
+        }
+
+        [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE)]
+        public static void HandleCalendarEventInvite(Packet packet)
+        {
+            packet.ReadPackedGuid128("InviteGUID");
+            packet.ReadUInt64("EventID");
+            packet.ReadUInt64("InviteID");
+            packet.ReadByte("Level");
+            packet.ReadByteE<CalendarEventStatus>("Status");
+            packet.ReadByteE<CalendarEventType>("Type");
+            packet.ReadPackedTime("ResponseTime");
+            packet.ReadBit("ClearPending");
+        }
     }
 }
