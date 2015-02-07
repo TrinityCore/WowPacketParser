@@ -1,6 +1,9 @@
-﻿using WowPacketParser.Enums;
+﻿using System.Collections.Generic;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
@@ -191,9 +194,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBits("FilterFlags", 2, indexes);
         }
 
-        public static void ReadMovementSpline(Packet packet, Vector3 pos, params object[] indexes)
+        public static void ReadMovementSpline(Packet packet, WowGuid guid, Vector3 pos, params object[] indexes)
         {
-            packet.ReadInt32E<SplineFlag434>("Flags", indexes);
+            var waypointInfo = new Waypoint
+            {
+                SplineFlags = packet.ReadInt32E<SplineFlag434>("Flags", indexes)
+            };
+
             packet.ReadByte("AnimTier", indexes);
             packet.ReadUInt32("TierTransStartTime", indexes);
             packet.ReadInt32("Elapsed", indexes);
@@ -210,16 +217,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var packedDeltasCount = packet.ReadInt32("PackedDeltasCount", indexes);
 
-            Vector3 endpos = new Vector3();
+            Vector3 endPos = new Vector3();
+            waypointInfo.WaypointData = new List<WaypointData>(pointsCount);
             for (int i = 0; i < pointsCount; i++)
             {
-                var spot = packet.ReadVector3();
+                var waypointData = new WaypointData();
+                waypointData.Position = packet.ReadVector3();
 
                 // client always taking first point
                 if (i == 0)
-                    endpos = spot;
+                    endPos = waypointData.Position;
 
-                packet.AddValue("Points", spot, indexes, i);
+                waypointData.Time = packet.Time.ToString("MM/dd/yyyy HH:mm:ss.fff");
+                waypointData.PointId = (uint)i;
+
+                packet.AddValue("Points", waypointData.Position, indexes, i);
+                waypointInfo.WaypointData.Add(waypointData);
             }
 
             var waypoints = new Vector3[packedDeltasCount];
@@ -261,9 +274,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             // Calculate mid pos
             var mid = new Vector3
             {
-                X = (pos.X + endpos.X) * 0.5f,
-                Y = (pos.Y + endpos.Y) * 0.5f,
-                Z = (pos.Z + endpos.Z) * 0.5f
+                X = (pos.X + endPos.X) * 0.5f,
+                Y = (pos.Y + endPos.Y) * 0.5f,
+                Z = (pos.Z + endPos.Z) * 0.5f
             };
 
             for (var i = 0; i < packedDeltasCount; ++i)
@@ -276,14 +289,29 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 };
                 packet.AddValue("WayPoints", vec, indexes, i);
             }
+
+            if (guid.HasEntry())
+            {
+                if (Storage.Waypoints.ContainsKey(guid))
+                {
+                    var oldWp = Storage.Waypoints[guid];
+                    if (oldWp != null)
+                    {
+                        foreach (var wpInfo in waypointInfo.WaypointData)
+                            oldWp.Item1.WaypointData.Add(wpInfo);
+                    }
+                }
+                else
+                    Storage.Waypoints.Add(guid, waypointInfo, packet.TimeSpan);
+            }
         }
 
-        public static void ReadMovementMonsterSpline(Packet packet, Vector3 pos, params object[] indexes)
+        public static void ReadMovementMonsterSpline(Packet packet, WowGuid guid, Vector3 pos, params object[] indexes)
         {
             packet.ReadUInt32("Id", indexes);
             packet.ReadVector3("Destination", indexes);
 
-            ReadMovementSpline(packet, pos, indexes, "MovementSpline");
+            ReadMovementSpline(packet, guid, pos, indexes, "MovementSpline");
 
             packet.ResetBitReader();
 
@@ -294,10 +322,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_ON_MONSTER_MOVE)]
         public static void HandleOnMonsterMove(Packet packet)
         {
-            packet.ReadPackedGuid128("MoverGUID");
+            var guid = packet.ReadPackedGuid128("MoverGUID");
             var pos = packet.ReadVector3("Position");
 
-            ReadMovementMonsterSpline(packet, pos, "MovementMonsterSpline");
+            ReadMovementMonsterSpline(packet, guid, pos, "MovementMonsterSpline");
         }
 
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT_CHANGE)]

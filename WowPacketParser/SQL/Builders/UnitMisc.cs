@@ -1108,17 +1108,19 @@ namespace WowPacketParser.SQL.Builders
                 {
                     var row = new QueryBuilder.SQLInsertRow();
 
-                    var comment = wp.Key.ToString() + " - ";
-                    comment += "SplineFlag: " + wp.Value.Item1.SplineFlags.ToString() + " - ";
-                    comment += "MovementFlags: " + wp.Value.Item1.MovementFlags.ToString();
+                    var comment = wp.Key + " - ";
+                    comment += "SplineFlag: " + wp.Value.Item1.SplineFlags + " - ";
+                    comment += "MovementFlags: " + wp.Value.Item1.MovementFlags;
 
                     row.AddValue("entry", wp.Key.GetEntry());
                     row.AddValue("PointId", wpInfo.PointId);
                     row.AddValue("PositionX", wpInfo.Position.X);
                     row.AddValue("PositionY", wpInfo.Position.Y);
                     row.AddValue("PositionZ", wpInfo.Position.Z);
+
                     row.AddValue("Time", wpInfo.Time);
                     row.AddValue("Comment", comment);
+
                     rows.Add(row);
                 }
             }
@@ -1137,6 +1139,7 @@ namespace WowPacketParser.SQL.Builders
 
             const string tableName = "waypoint_data";
 
+            uint count = 0;
             var rows = new List<QueryBuilder.SQLInsertRow>();
             foreach (var wp in Storage.Waypoints)
             {
@@ -1144,9 +1147,11 @@ namespace WowPacketParser.SQL.Builders
                 {
                     var row = new QueryBuilder.SQLInsertRow();
 
-                    var comment = wpInfo.Time.ToString() + " - " + wp.Key.ToString() + " - ";
-                    comment += "SplineFlag: " + wp.Value.Item1.SplineFlags.ToString();
+                    var comment = wpInfo.Time + " - ";
+                    comment += wp.Key + " - ";
+                    comment += "SplineFlags: " + wp.Value.Item1.SplineFlags;
 
+                    row.AddValue("guid", "@CGUID+" + count, noQuotes: true);
                     row.AddValue("entry", wp.Key.GetEntry());
                     row.AddValue("PointId", wpInfo.PointId);
                     row.AddValue("PositionX", wpInfo.Position.X);
@@ -1155,6 +1160,7 @@ namespace WowPacketParser.SQL.Builders
                     row.AddValue("Comment", comment);
                     rows.Add(row);
                 }
+                ++count;
             }
 
             return new QueryBuilder.SQLInsert(tableName, rows).Build();
