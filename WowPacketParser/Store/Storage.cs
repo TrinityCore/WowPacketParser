@@ -161,7 +161,7 @@ namespace WowPacketParser.Store
             SpellClicks.Clear();
 
             Waypoints.Clear();
-            SplineWaypoints.Clear();´
+            SplineWaypoints.Clear();
         }
     }
 }

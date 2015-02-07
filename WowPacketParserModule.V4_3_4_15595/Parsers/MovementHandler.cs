@@ -37,12 +37,8 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadByte("Transport Seat");
             }
 
-<<<<<<< HEAD
-            packet.ReadBoolean("Toggle AnimTierInTrans");
-=======
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767)) // no idea when this was added exactly
                 packet.ReadBool("Toggle AnimTierInTrans");
->>>>>>> 2614f48c67f4227074f629e2707b97202e16d42e
 
             var pos = packet.ReadVector3("Position");
 
@@ -71,7 +67,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     return;
             }
 
-            waypointInfo.SplineFlags = packet.ReadInt32E<SplineFlag>("Spline Flags");
+            waypointInfo.SplineFlags = packet.ReadInt32E<SplineFlag434>("Spline Flags");
 
             if (waypointInfo.SplineFlags.HasAnyFlag(SplineFlag.Animation))
             {

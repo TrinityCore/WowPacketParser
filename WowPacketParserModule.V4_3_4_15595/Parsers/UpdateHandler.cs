@@ -329,7 +329,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                         }
 
 
-                        if (guid.HasEntry() && guid.GetHighType() == HighGuidType.Unit &&
+                        if (guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature &&
                             waypointInfo.SplineWaypointData != null && waypointInfo.SplineWaypointData.Count != 0)
                         {
                             if (Storage.SplineWaypoints.ContainsKey(guid))
