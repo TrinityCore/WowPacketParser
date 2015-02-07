@@ -217,10 +217,16 @@ namespace WowPacketParser.Enums.Version
             return 0;
         }
 
-        public static string GetOpcodeName(int opcodeId, Direction direction)
+        public static string GetOpcodeName(int opcodeId, Direction direction, bool hex = true)
         {
             var opc = GetOpcode(opcodeId, direction);
-            return opc == 0 ? "0x" + opcodeId.ToString("X4", CultureInfo.InvariantCulture) : opc.ToString();
+
+            if (opc != 0)
+                return opc.ToString();
+
+            if (hex)
+                return "0x" + opcodeId.ToString("X4", CultureInfo.InvariantCulture);
+            return opcodeId.ToString();
         }
     }
 }
