@@ -9,7 +9,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     {
         public static void ReadBattlefieldStatus_Header(Packet packet, params object[] indexes)
         {
-            LfgHandler.ReadRideTicket(packet);
+            LfgHandler.ReadCliRideTicket(packet);
 
             packet.ReadInt64("QueueID");
             packet.ReadByte("RangeMin");
@@ -68,7 +68,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_BATTLEFIELD_PORT)]
         public static void HandleBattlefieldPort(Packet packet)
         {
-            LfgHandler.ReadRideTicket(packet);
+            LfgHandler.ReadCliRideTicket(packet);
             packet.ReadBit("AcceptedInvite");
         }
 
@@ -262,7 +262,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_NONE)]
         public static void HandleBattlefieldStatus_None(Packet packet)
         {
-            LfgHandler.ReadRideTicket(packet);
+            LfgHandler.ReadCliRideTicket(packet);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_ACTIVE)]
@@ -291,7 +291,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_FAILED)]
         public static void HandleBattlefieldStatus_Failed(Packet packet)
         {
-            LfgHandler.ReadRideTicket(packet);
+            LfgHandler.ReadCliRideTicket(packet);
             packet.ReadInt64("QueueID");
             packet.ReadInt32("Reason");
             packet.ReadPackedGuid128("ClientID");

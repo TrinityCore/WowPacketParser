@@ -183,5 +183,138 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ResetBitReader();
             packet.ReadWoWString("Note", noteLength);
         }
+
+        public static void ReadCliSupportTicketMailInfo(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("MailID", idx);
+
+            var bodyLength = packet.ReadBits("MailBodyLength", 13, idx);
+            var subjectLength = packet.ReadBits("MailSubjectLength", 9, idx);
+
+            packet.ResetBitReader();
+
+            packet.ReadWoWString("MailBody", bodyLength, idx);
+            packet.ReadWoWString("MailSubject", subjectLength, idx);
+        }
+
+        public static void ReadCliSupportTicketCalendarEventInfo(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt64("EventID", idx); // order not confirmed
+            packet.ReadUInt64("InviteID", idx); // order not confirmed
+
+            var eventTitleLength = packet.ReadBits("EventTitleLength", 8, idx);
+
+            packet.ResetBitReader();
+
+            packet.ReadWoWString("EventTitle", eventTitleLength, idx);
+        }
+
+        public static void ReadCliSupportTicketPetInfo(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("PetID", idx);
+
+            var petNameLength = packet.ReadBits("PetNameLength", 8, idx);
+
+            packet.ResetBitReader();
+
+            packet.ReadWoWString("PetName", petNameLength, idx);
+        }
+
+        public static void ReadCliSupportTicketGuildInfo(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("GuildID", idx);
+
+            var guildNameLength = packet.ReadBits("GuildNameLength", 8, idx);
+
+            packet.ResetBitReader();
+
+            packet.ReadWoWString("GuildName", guildNameLength, idx);
+        }
+
+        public static void Read5E4383(Packet packet, params object[] idx)
+        {
+            LfgHandler.ReadCliRideTicket(packet, "RideTicket", idx);
+            packet.ReadPackedGuid128("40", idx);
+            packet.ReadPackedGuid128("56", idx);
+            packet.ReadPackedGuid128("72", idx);
+
+            var length88 = packet.ReadBits("88", 8, idx);
+            var length217 = packet.ReadBits("217", 8, idx);
+            var length1242 = packet.ReadBits("1242", 8, idx);
+
+            packet.ResetBitReader();
+
+            packet.ReadWoWString("88", length88, idx);
+            packet.ReadWoWString("217", length217, idx);
+            packet.ReadWoWString("1242", length1242, idx);
+        }
+
+        public static void Read5E3DFB(Packet packet, params object[] idx)
+        {
+            LfgHandler.ReadCliRideTicket(packet, "RideTicket", idx);
+
+            var length = packet.ReadBits("32", 9, idx);
+            packet.ResetBitReader();
+            packet.ReadWoWString("32", length, idx);
+        }
+
+        [Parser(Opcode.CMSG_SUPPORT_TICKET_SUBMIT_COMPLAINT)]
+        public static void HandleSubmitComplaints(Packet packet)
+        {
+            ReadCliSupportTicketHeader(packet, "Header");
+
+            packet.ReadPackedGuid128("TargetCharacterGUID");
+
+            packet.ReadBits("ComplaintType", 5); // enum CliComplaintType
+
+            var noteLength = packet.ReadBits("NoteLength", 10);
+
+            var hasMailInfo = packet.ReadBit("HasMailInfo");
+            var hasCalendarInfo = packet.ReadBit("HasCalendarInfo");
+            var hasPetInfo = packet.ReadBit("HasPetInfo");
+            var hasGuildInfo = packet.ReadBit("HasGuildInfo");
+            var has5E4383 = packet.ReadBit("Has5E4383");
+            var has5E3DFB = packet.ReadBit("Has5E3DFB");
+
+            packet.ResetBitReader();
+
+            packet.ReadWoWString("Note", noteLength);
+
+            if (hasMailInfo)
+                ReadCliSupportTicketMailInfo(packet, "MailInfo");
+
+            if (hasCalendarInfo)
+                ReadCliSupportTicketCalendarEventInfo(packet, "CalendarInfo");
+
+            if (hasPetInfo)
+                ReadCliSupportTicketPetInfo(packet, "PetInfo");
+
+            if (hasGuildInfo)
+                ReadCliSupportTicketGuildInfo(packet, "GuidInfo");
+
+            if (has5E4383)
+                Read5E4383(packet, "5E4383");
+
+            if (has5E3DFB)
+                Read5E3DFB(packet, "5E3DFB");
+        }
+
+        [Parser(Opcode.SMSG_GM_TICKET_RESOLVE_RESPONSE)]
+        public static void HandleGMTicketResolveResponse(Packet packet)
+        {
+            packet.ReadBit("ShowSurvey");
+        }
+
+        [Parser(Opcode.SMSG_GM_TICKET_STATUS_UPDATE)]
+        public static void HandleGMTicketStatusUpdate(Packet packet)
+        {
+            packet.ReadInt32("StatusInt");
+        }
+
+        [Parser(Opcode.SMSG_GM_TICKET_UPDATE)]
+        public static void HandleGMTicketUpdate(Packet packet)
+        {
+            packet.ReadByte("Result");
+        }
     }
 }

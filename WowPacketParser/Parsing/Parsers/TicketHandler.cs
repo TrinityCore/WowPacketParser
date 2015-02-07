@@ -49,13 +49,13 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GM_TICKET_STATUS_UPDATE)]
         public static void HandleGMTicketStatusUpdate(Packet packet)
         {
-              packet.ReadUInt32("Update");
+            packet.ReadInt32("StatusInt");
         }
 
         [Parser(Opcode.SMSG_GM_TICKET_GET_SYSTEM_STATUS)]
         public static void HandleGMTicketSystemStatus(Packet packet)
         {
-              packet.ReadUInt32("Response");
+            packet.ReadUInt32("Response");
         }
 
         [Parser(Opcode.SMSG_GMRESPONSE_RECEIVED)]
