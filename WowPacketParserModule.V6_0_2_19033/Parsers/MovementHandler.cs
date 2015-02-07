@@ -204,7 +204,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("AnimTier", indexes);
             packet.ReadUInt32("TierTransStartTime", indexes);
             packet.ReadInt32("Elapsed", indexes);
-            packet.ReadUInt32("MoveTime", indexes);
+            var moveTime = packet.ReadUInt32("MoveTime", indexes);
             packet.ReadSingle("JumpGravity", indexes);
             packet.ReadUInt32("SpecialTime", indexes);
             var pointsCount = packet.ReadInt32("PointsCount", indexes);
@@ -221,18 +221,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             waypointInfo.WaypointData = new List<WaypointData>(pointsCount);
             for (int i = 0; i < pointsCount; i++)
             {
-                var waypointData = new WaypointData();
-                waypointData.Position = packet.ReadVector3();
+                var spot = packet.ReadVector3();
 
                 // client always taking first point
                 if (i == 0)
-                    endPos = waypointData.Position;
-
-                waypointData.Time = packet.Time.ToString("MM/dd/yyyy HH:mm:ss.fff");
-                waypointData.PointId = (uint)i;
-
-                packet.AddValue("Points", waypointData.Position, indexes, i);
-                waypointInfo.WaypointData.Add(waypointData);
+                    endPos = spot;
             }
 
             var waypoints = new Vector3[packedDeltasCount];
@@ -288,6 +281,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     Z = mid.Z - waypoints[i].Z,
                 };
                 packet.AddValue("WayPoints", vec, indexes, i);
+
+                var waypointData = new WaypointData
+                {
+                    Position = vec,
+                    Time = packet.Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
+                    PointId = (uint) i
+                };
+
+                packet.AddValue("Points", waypointData.Position, indexes, i);
+
+                if (moveTime > 0)
+                    waypointInfo.WaypointData.Add(waypointData);
             }
 
             if (guid.HasEntry())
