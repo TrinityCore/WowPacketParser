@@ -1147,8 +1147,7 @@ namespace WowPacketParser.SQL.Builders
                 {
                     var row = new QueryBuilder.SQLInsertRow();
 
-                    var comment = wpInfo.Time + " - ";
-                    comment += wp.Key + " - ";
+                    var comment = wp.Key + " - ";
                     comment += "SplineFlags: " + wp.Value.Item1.SplineFlags;
 
                     row.AddValue("guid", "@CGUID+" + count, noQuotes: true);
@@ -1157,6 +1156,8 @@ namespace WowPacketParser.SQL.Builders
                     row.AddValue("PositionX", wpInfo.Position.X);
                     row.AddValue("PositionY", wpInfo.Position.Y);
                     row.AddValue("PositionZ", wpInfo.Position.Z);
+
+                    row.AddValue("Time", wpInfo.Time);
                     row.AddValue("Comment", comment);
                     rows.Add(row);
                 }

@@ -114,6 +114,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         private static MovementInfo ReadMovementUpdateBlock(Packet packet, WowGuid guid, object index)
         {
             var moveInfo = new MovementInfo();
+            var waypointInfo = new Waypoint();
 
             packet.ResetBitReader();
 
@@ -182,7 +183,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     {
                         packet.ResetBitReader();
 
-                        packet.ReadEnum<SplineFlag434>("SplineFlags", 25, index);
+                        waypointInfo.SplineFlags = packet.ReadEnum<SplineFlag434>("SplineFlags", 25, index);
                         var face = packet.ReadBits("Face", 2, index);
 
                         var hasJumpGravity = packet.ReadBit("HasJumpGravity", index);
@@ -227,8 +228,36 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                             packet.ReadBits("FilterFlags", 2, index);
                         }
 
+                        waypointInfo.SplineWaypointData = new List<WaypointData>((int)pointsCount);
                         for (var i = 0; i < pointsCount; ++i)
-                            packet.ReadVector3("Points", index, i);
+                        {
+                            var waypointData = new WaypointData
+                            {
+                                Time = packet.Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
+                                PointId = (uint) i,
+                                Position = packet.ReadVector3("Points", index, i)
+                            };
+
+                            waypointInfo.SplineWaypointData.Add(waypointData);
+                        }
+
+                        waypointInfo.MovementFlags = moveInfo.Flags;
+
+                        if (guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature &&
+                            waypointInfo.SplineWaypointData != null && waypointInfo.SplineWaypointData.Count != 0)
+                        {
+                            if (Storage.SplineWaypoints.ContainsKey(guid))
+                            {
+                                var oldWp = Storage.SplineWaypoints[guid];
+                                if (oldWp != null)
+                                {
+                                    foreach (var wpInfo in waypointInfo.SplineWaypointData)
+                                        oldWp.Item1.SplineWaypointData.Add(wpInfo);
+                                }
+                            }
+                            else
+                                Storage.SplineWaypoints.Add(guid, waypointInfo, packet.TimeSpan);
+                        }
                     }
                 }
             }
