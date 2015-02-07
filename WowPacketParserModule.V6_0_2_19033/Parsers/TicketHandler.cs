@@ -316,5 +316,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadByte("Result");
         }
+
+        [Parser(Opcode.SMSG_COMPLAINT_RESULT)]
+        public static void HandleComplaintResult(Packet packet)
+        {
+            packet.ReadUInt32("ComplaintType");
+            packet.ReadByte("Result");
+        }
+
     }
 }

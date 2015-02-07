@@ -198,7 +198,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_GET_MAIL_LIST)]
-        public static void HandleShowMailbox(Packet packet)
+        public static void HandleGetMailList(Packet packet)
         {
             packet.ReadPackedGuid128("Mailbox");
             var int32 = packet.ReadInt32("Count");
@@ -218,5 +218,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("MailID");
             packet.ReadPackedGuid128("SenderGUID");
         }
+
+        [Parser(Opcode.SMSG_SHOW_MAILBOX)]
+        public static void HandleShowMailbox(Packet packet)
+        {
+            packet.ReadPackedGuid128("PostmasterGUID");
+        }
+
     }
 }

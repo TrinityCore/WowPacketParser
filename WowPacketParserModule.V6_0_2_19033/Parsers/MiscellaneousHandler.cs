@@ -596,6 +596,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadTime("Reset");
         }
+
+        [Parser(Opcode.SMSG_SUMMON_REQUEST)]
+        public static void HandleSummonRequest(Packet packet)
+        {
+            packet.ReadPackedGuid128("SummonerGUID");
+            packet.ReadUInt32("SummonerVirtualRealmAddress");
+            packet.ReadInt32<AreaId>("AreaID");
+            packet.ReadBit("ConfirmSummon_NC");
+        }
     }
 }
-
