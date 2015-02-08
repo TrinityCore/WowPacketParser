@@ -128,12 +128,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("NPC GUID", npcGUID);
         }
 
-        [Parser(Opcode.SMSG_ITEM_UPGRADE_RESULT)]
-        public static void HandleItemUpgradeResult(Packet packet)
-        {
-            packet.ReadBit("Successful");
-        }
-
         [Parser(Opcode.CMSG_GET_ITEM_PURCHASE_DATA)]
         public static void HandleItemRefundInfo(Packet packet)
         {

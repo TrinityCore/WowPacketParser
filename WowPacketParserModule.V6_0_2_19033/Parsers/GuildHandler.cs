@@ -822,5 +822,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < 0x12C; i++)
                 packet.ReadByte("SkillLineBitArray", i);
         }
+
+        [Parser(Opcode.SMSG_PETITION_DECLINED)]
+        public static void HandlePetitionDeclined(Packet packet)
+        {
+            packet.ReadPackedGuid128("Decliner");
+        }
+
+        [Parser(Opcode.SMSG_PETITION_RENAME_GUILD_RESPONSE)]
+        public static void HandlePetitionRenameGuildResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetitionGuid");
+            var length = packet.ReadBits("NewGuildNameLength", 7);
+            packet.ResetBitReader();
+
+            packet.ReadWoWString("NewGuildName", length);
+        }
     }
 }

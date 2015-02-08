@@ -1264,5 +1264,11 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ParseBitStream(guid, 1, 0, 3, 4, 7, 6, 5, 2);
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_ITEM_UPGRADE_RESULT)]
+        public static void HandleItemUpgradeResult(Packet packet)
+        {
+            packet.ReadBit("Result");
+        }
     }
 }

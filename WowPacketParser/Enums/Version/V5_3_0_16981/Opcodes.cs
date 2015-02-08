@@ -341,7 +341,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_TIME_ADJUSTMENT, 0x159C},
             {Opcode.SMSG_TIME_SYNC_REQ, 0x0AD4},
             {Opcode.SMSG_TITLE_EARNED, 0x02D0},
-            {Opcode.SMSG_TITLE_REMOVED, 0x0484},
+            {Opcode.SMSG_TITLE_LOST, 0x0484},
             {Opcode.SMSG_TRADE_STATUS, 0x0DC0},
             {Opcode.SMSG_TRAINER_BUY_FAILED, 0x08C5},
             {Opcode.SMSG_TRAINER_LIST, 0x08C9},

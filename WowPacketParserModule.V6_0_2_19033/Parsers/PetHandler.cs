@@ -223,5 +223,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             ReadPetStableInfo(packet, "PetStableInfo");
         }
+
+        [Parser(Opcode.SMSG_PET_ACTION_FEEDBACK)]
+        public static void HandlePetActionFeedback(Packet packet)
+        {
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadByteE<PetFeedback>("Response");
+        }
     }
 }
