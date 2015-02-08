@@ -81,7 +81,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.CMSG_UPDATE_ACCOUNT_DATA, 0x0800},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x054B},
             {Opcode.CMSG_WHO, 0x0308},
-            {Opcode.CMSG_ZONEUPDATE, 0x2000},
+            {Opcode.CMSG_ZONEUPDATE, 0x2000}
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -411,7 +411,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.MSG_RAID_READY_CHECK, 0x0DDC},
             {Opcode.MSG_RAID_READY_CHECK_CONFIRM, 0x03C9},
             {Opcode.MSG_RAID_READY_CHECK_FINISHED, 0x1591},
-            {Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57},
+            {Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57}
         };
     }
 }

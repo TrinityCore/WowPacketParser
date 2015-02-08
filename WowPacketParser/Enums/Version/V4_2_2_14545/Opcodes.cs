@@ -326,7 +326,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.CMSG_WARDEN_DATA, 0x5847},
             {Opcode.CMSG_WHO, 0x9AD7},
             {Opcode.CMSG_WHOIS, 0xCCE6},            //{Opcode.CMSG_WORLD_PORT_RESPONSE, 0x0A9A},
-            {Opcode.CMSG_ZONEUPDATE, 0x4AE2},
+            {Opcode.CMSG_ZONEUPDATE, 0x4AE2}
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -750,7 +750,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.SMSG_WEATHER, 0x4ECE},
             {Opcode.SMSG_WHO, 0x4C7F},
             {Opcode.SMSG_WHOIS, 0x9CFF},
-            {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x08CF},
+            {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x08CF}
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
@@ -808,7 +808,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57},
             {Opcode.TEST_422_13022, 13022},
             {Opcode.TEST_422_265C, 0x265C},
-            {Opcode.TEST_430_SYNC_PLAYER_MOVE, 0x5},            // CMSG Handlers
+            {Opcode.TEST_430_SYNC_PLAYER_MOVE, 0x5}            // CMSG Handlers
             // 4120 - sub_65D6A0 - CMSG_LFG_LFR_JOIN ?
             // 4152 - sub_65D540 - CMSG_LFG_LFR_LEAVE ?
             // 1061 - sub_664260

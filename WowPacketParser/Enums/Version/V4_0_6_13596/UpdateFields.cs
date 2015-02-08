@@ -10,7 +10,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
         OBJECT_FIELD_SCALE_X = 0x0004, // Size: 1, Type: FLOAT, Flags: PUBLIC
         OBJECT_FIELD_DATA = 0x0005, // Size: 2, Type: LONG, Flags: PUBLIC
         OBJECT_FIELD_PADDING = 0x0007, // Size: 1, Type: INT, Flags: NONE
-        OBJECT_END = 0x0008,
+        OBJECT_END = 0x0008
     }
 
     enum ItemField
@@ -57,7 +57,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
         ITEM_FIELD_MAXDURABILITY = ObjectField.OBJECT_END + 0x003D, // Size: 1, Type: INT, Flags: OWNER, UNUSED1
         ITEM_FIELD_CREATE_PLAYED_TIME = ObjectField.OBJECT_END + 0x003E, // Size: 1, Type: INT, Flags: PUBLIC
         ITEM_FIELD_PAD = ObjectField.OBJECT_END + 0x003F, // Size: 1, Type: INT, Flags: NONE
-        ITEM_END = ObjectField.OBJECT_END + 0x0040,
+        ITEM_END = ObjectField.OBJECT_END + 0x0040
     }
 
     enum ContainerField
@@ -65,7 +65,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
         CONTAINER_FIELD_NUM_SLOTS = ItemField.ITEM_END + 0x0000, // Size: 1, Type: INT, Flags: PUBLIC
         CONTAINER_ALIGN_PAD = ItemField.ITEM_END + 0x0001, // Size: 1, Type: BYTES, Flags: NONE
         CONTAINER_FIELD_SLOT_1 = ItemField.ITEM_END + 0x0002, // Size: 72, Type: LONG, Flags: PUBLIC
-        CONTAINER_END = ItemField.ITEM_END + 0x004A,
+        CONTAINER_END = ItemField.ITEM_END + 0x004A
     }
 
     enum UnitField
@@ -189,7 +189,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
         UNIT_FIELD_MAXHEALTHMODIFIER = ObjectField.OBJECT_END + 0x009D, // Size: 1, Type: FLOAT, Flags: PRIVATE, OWNER
         UNIT_FIELD_HOVERHEIGHT = ObjectField.OBJECT_END + 0x009E, // Size: 1, Type: FLOAT, Flags: PUBLIC
         UNIT_FIELD_MAXITEMLEVEL = ObjectField.OBJECT_END + 0x009F, // Size: 1, Type: INT, Flags: PUBLIC
-        UNIT_END = ObjectField.OBJECT_END + 0x00A0,
+        UNIT_END = ObjectField.OBJECT_END + 0x00A0
     }
 
     public enum PlayerField
@@ -515,7 +515,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
         PLAYER_FIELD_MOD_RANGED_HASTE = UnitField.UNIT_END + 0x0501, // Size: 1, Type: FLOAT, Flags: PRIVATE
         PLAYER_FIELD_MOD_PET_HASTE = UnitField.UNIT_END + 0x0502, // Size: 1, Type: FLOAT, Flags: PRIVATE
         PLAYER_FIELD_MOD_HASTE_REGEN = UnitField.UNIT_END + 0x0503, // Size: 1, Type: FLOAT, Flags: PRIVATE
-        PLAYER_END = UnitField.UNIT_END + 0x0504,
+        PLAYER_END = UnitField.UNIT_END + 0x0504
     }
 
     enum GameObjectField
@@ -528,7 +528,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
         GAMEOBJECT_FACTION = ObjectField.OBJECT_END + 0x0009, // Size: 1, Type: INT, Flags: PUBLIC
         GAMEOBJECT_LEVEL = ObjectField.OBJECT_END + 0x000A, // Size: 1, Type: INT, Flags: PUBLIC
         GAMEOBJECT_BYTES_1 = ObjectField.OBJECT_END + 0x000B, // Size: 1, Type: BYTES, Flags: PUBLIC
-        GAMEOBJECT_END = ObjectField.OBJECT_END + 0x000C,
+        GAMEOBJECT_END = ObjectField.OBJECT_END + 0x000C
     }
 
     enum DynamicObjectField
@@ -538,7 +538,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
         DYNAMICOBJECT_SPELLID = ObjectField.OBJECT_END + 0x0003, // Size: 1, Type: INT, Flags: PUBLIC
         DYNAMICOBJECT_RADIUS = ObjectField.OBJECT_END + 0x0004, // Size: 1, Type: FLOAT, Flags: PUBLIC
         DYNAMICOBJECT_CASTTIME = ObjectField.OBJECT_END + 0x0005, // Size: 1, Type: INT, Flags: PUBLIC
-        DYNAMICOBJECT_END = ObjectField.OBJECT_END + 0x0006,
+        DYNAMICOBJECT_END = ObjectField.OBJECT_END + 0x0006
     }
 
     public enum CorpseField
@@ -551,7 +551,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
         CORPSE_FIELD_BYTES_2 = ObjectField.OBJECT_END + 0x0019, // Size: 1, Type: BYTES, Flags: PUBLIC
         CORPSE_FIELD_FLAGS = ObjectField.OBJECT_END + 0x001A, // Size: 1, Type: INT, Flags: PUBLIC
         CORPSE_FIELD_DYNAMIC_FLAGS = ObjectField.OBJECT_END + 0x001B, // Size: 1, Type: INT, Flags: UNUSED2
-        CORPSE_END = ObjectField.OBJECT_END + 0x001C,
+        CORPSE_END = ObjectField.OBJECT_END + 0x001C
     }
     // ReSharper restore InconsistentNaming
 }

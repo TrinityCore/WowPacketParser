@@ -25,7 +25,7 @@ namespace WowPacketParser.Enums.Version.V5_2_0_16650
             {Opcode.CMSG_PLAYER_LOGIN, 0x015D},
             {Opcode.CMSG_QUEST_QUERY, 0x001F},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x10AC},
-            {Opcode.CMSG_WARDEN_DATA, 0x007C},
+            {Opcode.CMSG_WARDEN_DATA, 0x007C}
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -56,12 +56,12 @@ namespace WowPacketParser.Enums.Version.V5_2_0_16650
             {Opcode.SMSG_UPDATE_OBJECT, 0x1406},
             {Opcode.SMSG_WARDEN_DATA, 0x0381},
             {Opcode.SMSG_WEEKLY_SPELL_USAGE, 0x01C4},
-            {Opcode.SMSG_WORLD_SERVER_INFO, 0x0754},
+            {Opcode.SMSG_WORLD_SERVER_INFO, 0x0754}
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
         {
-            {Opcode.MSG_SET_DUNGEON_DIFFICULTY, 0x0140},
+            {Opcode.MSG_SET_DUNGEON_DIFFICULTY, 0x0140}
         };
     }
 }

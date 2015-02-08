@@ -74,7 +74,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.CMSG_UNKNOWN_822, 0x0336},
             {Opcode.CMSG_UNKNOWN_903, 0x0387},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x1927},
-            {Opcode.CMSG_WARDEN_DATA, 0x1702},
+            {Opcode.CMSG_WARDEN_DATA, 0x1702}
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -361,7 +361,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_WARDEN_DATA, 0x0002},
             {Opcode.SMSG_WEATHER, 0x04A7},
             {Opcode.SMSG_WEEKLY_SPELL_USAGE, 0x1124},
-            {Opcode.SMSG_WORLD_SERVER_INFO, 0x052E},
+            {Opcode.SMSG_WORLD_SERVER_INFO, 0x052E}
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
@@ -374,7 +374,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.MSG_UNKNOWN_5383, 0x1507},
             {Opcode.MSG_UNKNOWN_5750, 0x1676},
             {Opcode.MSG_UNKNOWN_6127, 0x17EF},
-            {Opcode.MSG_UNKNOWN_6315, 0x18AB},
+            {Opcode.MSG_UNKNOWN_6315, 0x18AB}
         };
     }
 }

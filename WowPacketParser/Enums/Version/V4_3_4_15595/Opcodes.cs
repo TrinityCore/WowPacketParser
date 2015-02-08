@@ -518,7 +518,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_WHOIS, 0x6B05},
             {Opcode.CMSG_WORLD_TELEPORT, 0x24B2},
             {Opcode.CMSG_WRAP_ITEM, 0x4F06},
-            {Opcode.CMSG_ZONEUPDATE, 0x4F37},
+            {Opcode.CMSG_ZONEUPDATE, 0x4F37}
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -1282,7 +1282,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.MSG_SET_RAID_DIFFICULTY, 0x0614},
             {Opcode.MSG_TABARDVENDOR_ACTIVATE, 0x6926},
             {Opcode.MSG_TALENT_WIPE_CONFIRM, 0x0107},
-            {Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57},
+            {Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57}
         };
     }
 }

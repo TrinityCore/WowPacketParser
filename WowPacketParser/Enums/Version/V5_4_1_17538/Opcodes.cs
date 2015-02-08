@@ -52,7 +52,7 @@ namespace WowPacketParser.Enums.Version.V5_4_1_17538
             {Opcode.CMSG_SET_SELECTION, 0x07CD},
             {Opcode.CMSG_SET_SPECIALIZATION, 0x17DF},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x13CD},
-            {Opcode.CMSG_WHO, 0x1568},
+            {Opcode.CMSG_WHO, 0x1568}
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -107,7 +107,7 @@ namespace WowPacketParser.Enums.Version.V5_4_1_17538
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x0D1B},
             {Opcode.SMSG_UPDATE_OBJECT, 0x0C22},
             {Opcode.SMSG_WHO, 0x053C},
-            {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x148D},
+            {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x148D}
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
@@ -128,7 +128,7 @@ namespace WowPacketParser.Enums.Version.V5_4_1_17538
             {Opcode.MSG_MOVE_STOP, 0x0649},
             {Opcode.MSG_MOVE_STOP_STRAFE, 0x12C9},
             {Opcode.MSG_MOVE_STOP_TURN, 0x1749},
-            {Opcode.MSG_MOVE_TELEPORT, 0x0A2E},
+            {Opcode.MSG_MOVE_TELEPORT, 0x0A2E}
         };
     }
 }

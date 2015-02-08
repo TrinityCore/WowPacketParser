@@ -659,7 +659,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_WHO, 0x1322},
             {Opcode.CMSG_WHOIS, 0x011F},
             {Opcode.CMSG_WORLD_TELEPORT, 0x038A},
-            {Opcode.CMSG_WRAP_ITEM, 0x0797},
+            {Opcode.CMSG_WRAP_ITEM, 0x0797}
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -1544,7 +1544,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x11AC},
             {Opcode.SMSG_XP_GAIN_ABORTED, 0x031E},
             {Opcode.SMSG_XP_GAIN_ENABLED, 0x0FAA},
-            {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x1401},
+            {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x1401}
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>();

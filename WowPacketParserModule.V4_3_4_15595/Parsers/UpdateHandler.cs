@@ -308,7 +308,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                             {
                                 Z = packet.ReadSingle(),
                                 X = packet.ReadSingle(),
-                                Y = packet.ReadSingle(),
+                                Y = packet.ReadSingle()
                             };
 
                             packet.AddValue("Spline Waypoint", wp, index, i);
@@ -320,7 +320,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                             {
                                 X = packet.ReadSingle(),
                                 Z = packet.ReadSingle(),
-                                Y = packet.ReadSingle(),
+                                Y = packet.ReadSingle()
                             };
 
                             packet.AddValue("Facing Spot", point, index);
@@ -338,7 +338,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     {
                         Z = packet.ReadSingle(),
                         X = packet.ReadSingle(),
-                        Y = packet.ReadSingle(),
+                        Y = packet.ReadSingle()
                     };
 
                     packet.ReadUInt32("Spline Id", index);

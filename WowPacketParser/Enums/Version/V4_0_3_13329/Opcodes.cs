@@ -565,7 +565,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_WHOIS, 0xD776}, // (0x235D)(0x0064) //
             {Opcode.CMSG_WORLD_TELEPORT, 0x0589}, // (0x5211)(0x0008) //
             {Opcode.CMSG_WRAP_ITEM, 0x01D3}, // NF()(0x01D3) //
-            {Opcode.CMSG_ZONEUPDATE, 0x5C7D}, // (0x2AD8)(0x01F4) //
+            {Opcode.CMSG_ZONEUPDATE, 0x5C7D} // (0x2AD8)(0x01F4) //
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -1149,7 +1149,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_WEATHER, 0x777F}, // (0x2AF9)(0x02F4) //
             {Opcode.SMSG_WHO, 0xCB28}, // (0xE2D0)(0x0063) //
             {Opcode.SMSG_WHOIS, 0x3328}, // (0x0AD9)(0x0065) //
-            {Opcode.SMSG_ZONE_UNDER_ATTACK, 0xE801}, // (0x6215)(0x0254) //
+            {Opcode.SMSG_ZONE_UNDER_ATTACK, 0xE801} // (0x6215)(0x0254) //
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
@@ -1261,7 +1261,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.UMSG_DELETE_GUILD_CHARTER, 0x02C0}, // NF()(0x02C0) //
             {Opcode.UMSG_UPDATE_ARENA_TEAM_OBSOLETE, 0x0E56}, // (0x8BB1)(0x034A) //
             {Opcode.UMSG_UPDATE_GROUP_MEMBERS, 0x0080}, // NF()(0x0080) //
-            {Opcode.UMSG_UPDATE_GUILD, 0x0094}, // NF()(0x0094) //
+            {Opcode.UMSG_UPDATE_GUILD, 0x0094} // NF()(0x0094) //
         };
     }
 }

@@ -4,6 +4,7 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 using Action = WowPacketParser.Store.Objects.Action;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 
@@ -16,7 +17,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             const int buttonCount = 132;
 
-            var startAction = new WowPacketParser.Store.Objects.StartAction { Actions = new List<Action>(buttonCount) };
+            var startAction = new StartAction { Actions = new List<Action>(buttonCount) };
 
             for (var i = 0; i < buttonCount; ++i)
             {
@@ -39,10 +40,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (CoreParsers.SessionHandler.LoginGuid != null)
             {
-                WowPacketParser.Store.Objects.WoWObject character;
+                WoWObject character;
                 if (Storage.Objects.TryGetValue(CoreParsers.SessionHandler.LoginGuid, out character))
                 {
-                    var player = character as WowPacketParser.Store.Objects.Player;
+                    var player = character as Player;
                     if (player != null && player.FirstLogin)
                         Storage.StartActions.Add(new Tuple<Race, Class>(player.Race, player.Class), startAction, packet.TimeSpan);
                 }

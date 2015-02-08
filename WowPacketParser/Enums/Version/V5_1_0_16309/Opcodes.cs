@@ -395,7 +395,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.CMSG_WHO, 0x0D20},
             {Opcode.CMSG_WHOIS, 0x0E25},
             {Opcode.CMSG_WRAP_ITEM, 0x076C},
-            {Opcode.CMSG_ZONEUPDATE, 0x088D},
+            {Opcode.CMSG_ZONEUPDATE, 0x088D}
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -974,7 +974,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_WHOIS, 0x07A5},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x00D9},
             {Opcode.SMSG_XP_GAIN_ABORTED, 0x0398},
-            {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x09E9},
+            {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x09E9}
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
@@ -1024,7 +1024,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.MSG_SET_DUNGEON_DIFFICULTY, 0x0E0C},
             {Opcode.MSG_SET_RAID_DIFFICULTY, 0x0E00},
             {Opcode.MSG_TABARDVENDOR_ACTIVATE, 0x0729},
-            {Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57},
+            {Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57}
         };
     }
 }

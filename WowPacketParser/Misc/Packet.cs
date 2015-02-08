@@ -88,7 +88,7 @@ namespace WowPacketParser.Misc
                 FileName = FileName,
                 ObjectType = type,
                 Id = id,
-                Data = data,
+                Data = data
             };
 
             Storage.SniffData.Add(item, TimeSpan);

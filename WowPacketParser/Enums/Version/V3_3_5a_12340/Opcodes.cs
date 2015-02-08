@@ -632,7 +632,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.CMSG_MOVE_SET_COLLISION_HGT_ACK, 0x517},
             {Opcode.CMSG_CLEAR_RANDOM_BG_WIN_TIME, 0x519},
             {Opcode.CMSG_CLEAR_HOLIDAY_BG_WIN_TIME, 0x51A},
-            {Opcode.CMSG_COMMENTATOR_SKIRMISH_QUEUE_COMMAND, 0x51B},
+            {Opcode.CMSG_COMMENTATOR_SKIRMISH_QUEUE_COMMAND, 0x51B}
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -1219,7 +1219,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.SMSG_MOVE_SET_COLLISION_HGT, 0x516},
             {Opcode.SMSG_COMMENTATOR_SKIRMISH_QUEUE_RESULT1, 0x51C},
             {Opcode.SMSG_COMMENTATOR_SKIRMISH_QUEUE_RESULT2, 0x51D},
-            {Opcode.SMSG_COMPRESSED_UNKNOWN_1310, 0x51E},
+            {Opcode.SMSG_COMPRESSED_UNKNOWN_1310, 0x51E}
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
@@ -1332,7 +1332,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.MSG_SET_RAID_DIFFICULTY, 0x4EB},
             {Opcode.MSG_VIEW_PHASE_SHIFT, 0x4F9},
             {Opcode.UMSG_UPDATE_GROUP_INFO, 0x4FE},
-            {Opcode.MSG_MOVE_SET_COLLISION_HGT, 0x518},
+            {Opcode.MSG_MOVE_SET_COLLISION_HGT, 0x518}
         };
     }
 }

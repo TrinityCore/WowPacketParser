@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
@@ -32,7 +31,7 @@ namespace WowPacketParser.Parsing.Parsers
             var objectName = new ObjectName
             {
                 ObjectType = ObjectType.Item,
-                Name = name,
+                Name = name
             };
             Storage.ObjectNames.Add(entry, objectName, packet.TimeSpan);
         }

@@ -11,7 +11,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 {
     public static class NpcHandler
     {
-        public static uint LastGossipPOIEntry = 0;
+        public static uint LastGossipPOIEntry;
 
         [Parser(Opcode.CMSG_GOSSIP_HELLO)]
         public static void HandleGossipHello(Packet packet)
@@ -114,7 +114,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     Index = packet.ReadUInt32("Index", i),
                     OptionIcon = packet.ReadByteE<GossipOptionIcon>("Icon", i),
                     BoxText = packet.ReadWoWString("Box Text", boxTextLen[i], i),
-                    Box = packet.ReadBool("Box", i),
+                    Box = packet.ReadBool("Box", i)
                 };
 
                 gossip.GossipOptions.Add(gossipOption);

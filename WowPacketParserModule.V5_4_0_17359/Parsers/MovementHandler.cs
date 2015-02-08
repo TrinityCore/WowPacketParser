@@ -1,5 +1,4 @@
-﻿using System;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
@@ -137,7 +136,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 {
                     Y = packet.ReadSingle(),
                     Z = packet.ReadSingle(),
-                    X = packet.ReadSingle(),
+                    X = packet.ReadSingle()
                 };
                 packet.AddValue("Facing Spot", spot);
             }
@@ -149,7 +148,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 {
                     Y = packet.ReadSingle(),
                     Z = packet.ReadSingle(),
-                    X = packet.ReadSingle(),
+                    X = packet.ReadSingle()
                 };
                 // client always taking first point
                 if (i == 0)
@@ -210,7 +209,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 {
                     X = mid.X - waypoints[i].X,
                     Y = mid.Y - waypoints[i].Y,
-                    Z = mid.Z - waypoints[i].Z,
+                    Z = mid.Z - waypoints[i].Z
                 };
                 packet.AddValue("Waypoint", vec, i);
             }

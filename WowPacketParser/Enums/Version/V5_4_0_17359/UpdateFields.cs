@@ -10,7 +10,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
         OBJECT_FIELD_ENTRY                                  = 0x0005, // Size = 1
         OBJECT_FIELD_DYNAMIC_FLAGS                          = 0x0006, // Size = 1
         OBJECT_FIELD_SCALE_X                                = 0x0007, // Size = 1
-        OBJECT_END                                          = 0x0008,
+        OBJECT_END                                          = 0x0008
     };
 
     public enum ItemField
@@ -30,7 +30,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
         ITEM_FIELD_MAX_DURABILITY                           = ObjectField.OBJECT_END + 0x003A, // Size = 1
         ITEM_FIELD_CREATE_PLAYED_TIME                       = ObjectField.OBJECT_END + 0x003B, // Size = 1
         ITEM_FIELD_MODIFIERS_MASK                           = ObjectField.OBJECT_END + 0x003C, // Size = 1
-        ITEM_END                                            = ObjectField.OBJECT_END + 0x003D,
+        ITEM_END                                            = ObjectField.OBJECT_END + 0x003D
     };
 
     public enum ItemDynamicField
@@ -43,7 +43,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
     {
         CONTAINER_FIELD_SLOTS                               = ItemField.ITEM_END + 0x0000, // Size =  72
         CONTAINER_FIELD_NUM_SLOTS                           = ItemField.ITEM_END + 0x0048, // Size =   1
-        CONTAINER_END                                       = ItemField.ITEM_END + 0x0049,
+        CONTAINER_END                                       = ItemField.ITEM_END + 0x0049
     };
 
     public enum UnitField
@@ -130,7 +130,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
         UNIT_FIELD_WILD_BATTLEPET_LEVEL                     = ObjectField.OBJECT_END + 0x0095, // Size = 1
         UNIT_FIELD_BATTLEPET_COMPANION_NAME_TIMESTAMP       = ObjectField.OBJECT_END + 0x0096, // Size = 1
         UNIT_FIELD_INTERACT_SPELLID                         = ObjectField.OBJECT_END + 0x0097, // Size = 1
-        UNIT_FIELD_END                                      = ObjectField.OBJECT_END + 0x0098,
+        UNIT_FIELD_END                                      = ObjectField.OBJECT_END + 0x0098
     };
 
     public enum UnitDynamicField
@@ -231,7 +231,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
         PLAYER_FIELD_LOOT_SPEC_ID                           = UnitField.UNIT_FIELD_END + 0x0720, // Size = 1
         PLAYER_FIELD_OVERRIDE_ZONE_PVP_TYPE                 = UnitField.UNIT_FIELD_END + 0x0721, // Size = 1
         PLAYER_FIELD_ITEM_LEVEL_DELTA                       = UnitField.UNIT_FIELD_END + 0x0722, // Size = 1
-        PLAYER_FIELD_END                                    = UnitField.UNIT_FIELD_END + 0x0723,
+        PLAYER_FIELD_END                                    = UnitField.UNIT_FIELD_END + 0x0723
     };
 
     public enum PlayerDynamicField
@@ -261,7 +261,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
         DYNAMICOBJECT_FIELD_SPELLID                         = ObjectField.OBJECT_END + 0x0003, // Size = 1
         DYNAMICOBJECT_FIELD_RADIUS                          = ObjectField.OBJECT_END + 0x0004, // Size = 1
         DYNAMICOBJECT_FIELD_CASTTIME                        = ObjectField.OBJECT_END + 0x0005, // Size = 1
-        DYNAMICOBJECT_END                                   = ObjectField.OBJECT_END + 0x0006,
+        DYNAMICOBJECT_END                                   = ObjectField.OBJECT_END + 0x0006
     };
 
     public enum CorpseField
@@ -274,7 +274,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
         CORPSE_FIELD_FACIAL_HAIR_STYLE_ID                   = ObjectField.OBJECT_END + 0x0019, // Size = 1
         CORPSE_FIELD_FLAGS                                  = ObjectField.OBJECT_END + 0x001A, // Size = 1
         CORPSE_FIELD_DYNAMIC_FLAGS                          = ObjectField.OBJECT_END + 0x001B, // Size = 1
-        CORPSE_FIELD_END                                    = ObjectField.OBJECT_END + 0x001C,
+        CORPSE_FIELD_END                                    = ObjectField.OBJECT_END + 0x001C
     };
 
     public enum AreaTriggerField
@@ -284,7 +284,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
         AREATRIGGER_FIELD_SPELLID                           = ObjectField.OBJECT_END + 0x0003, // Size = 1
         AREATRIGGER_FIELD_SPELL_VISUAL_ID                   = ObjectField.OBJECT_END + 0x0004, // Size = 1
         AREATRIGGER_FIELD_EXPLICIT_SCALE                    = ObjectField.OBJECT_END + 0x0005, // Size = 1
-        AREATRIGGER_FIELD_END                               = ObjectField.OBJECT_END + 0x0006,
+        AREATRIGGER_FIELD_END                               = ObjectField.OBJECT_END + 0x0006
     };
 
     public enum SceneObjectField
@@ -293,7 +293,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
         SCENEOBJECT_FIELD_RND_SEED_VAL                      = ObjectField.OBJECT_END + 0x0001, // Size = 1
         SCENEOBJECT_FIELD_CREATEDBY                         = ObjectField.OBJECT_END + 0x0002, // Size = 2
         SCENEOBJECT_FIELD_SCENE_TYPE                        = ObjectField.OBJECT_END + 0x0004, // Size = 1
-        SCENEOBJECT_END                                     = ObjectField.OBJECT_END + 0x0005,
+        SCENEOBJECT_END                                     = ObjectField.OBJECT_END + 0x0005
     };
     // ReSharper restore InconsistentNaming
 }

@@ -147,7 +147,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.Write("[{0}] ", i++);
 
-                Handler.Parse(packet, isMultiple: true);
+                Handler.Parse(packet, true);
             }
             packet.WriteLine("}");
         }

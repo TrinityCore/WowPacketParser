@@ -12,6 +12,6 @@ namespace WowPacketParser.Enums
         Corpse        = 7,
         AreaTrigger   = 8,
         SceneObject   = 9,
-        Conversation  = 10,
+        Conversation  = 10
     }
 }

@@ -66,6 +66,6 @@
         LearnSpell2 = 61,
         LearnSpell3 = 62,
         LearnSpell4 = 63,
-        LearnSpell5 = 64,
+        LearnSpell5 = 64
     }
 }

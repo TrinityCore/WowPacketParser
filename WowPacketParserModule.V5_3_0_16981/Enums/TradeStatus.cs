@@ -28,6 +28,6 @@ namespace WowPacketParserModule.V5_3_0_16981.Enums
         NotEligible = 5, // checked
 
         TradeCurrency = 3, // checked
-        CurrencyNotTradable = 22, // checked
+        CurrencyNotTradable = 22 // checked
     }
 }

@@ -196,7 +196,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_VOID_STORAGE_UNLOCK, 0x13F2},
             {Opcode.CMSG_VOID_SWAP_ITEM, 0x01E2},
             {Opcode.CMSG_WARDEN_DATA, 0x1681},
-            {Opcode.CMSG_WHO, 0x13C1},
+            {Opcode.CMSG_WHO, 0x13C1}
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -457,7 +457,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_WEEKLY_SPELL_USAGE, 0x1D04},
             {Opcode.SMSG_WHO, 0x0460},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x1D01},
-            {Opcode.SMSG_XP_GAIN_ABORTED, 0x1E32},
+            {Opcode.SMSG_XP_GAIN_ABORTED, 0x1E32}
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
@@ -490,7 +490,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.MSG_MOVE_STOP_TURN, 0x0530}, // 5.4.7 17956
             {Opcode.MSG_MOVE_TELEPORT, 0x00D5}, // 5.4.7 17956
             {Opcode.MSG_MOVE_TELEPORT_ACK, 0x0978}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_WORLDPORT_ACK, 0x18BB},
+            {Opcode.MSG_MOVE_WORLDPORT_ACK, 0x18BB}
         };
         /* Note:
             0x1231, 0x12FB - CMSG / SMSG - Count opcode

@@ -15,6 +15,6 @@
         Dummy                   = 10,
         PetBattleDefeatCreature = 11,
         PetBattleDefeatSpecies  = 12,
-        PetBattleDefeatPlayer   = 13,
+        PetBattleDefeatPlayer   = 13
     }
 }

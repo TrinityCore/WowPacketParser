@@ -76,7 +76,7 @@ namespace WowPacketParser.Enums.Version.V4_3_3_15354
             {Opcode.CMSG_UPDATE_ACCOUNT_DATA, 0x38EC},
             {Opcode.CMSG_USE_ITEM, 0x352D},
             {Opcode.CMSG_WARDEN_DATA, 0x0202},
-            {Opcode.CMSG_ZONEUPDATE, 0x3125},
+            {Opcode.CMSG_ZONEUPDATE, 0x3125}
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -144,7 +144,7 @@ namespace WowPacketParser.Enums.Version.V4_3_3_15354
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x25A4},
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA,0x7565},
             {Opcode.SMSG_UPDATE_OBJECT, 0x6264},
-            {Opcode.SMSG_UPDATE_WORLD_STATE, 0x60A5},
+            {Opcode.SMSG_UPDATE_WORLD_STATE, 0x60A5}
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
@@ -179,7 +179,7 @@ namespace WowPacketParser.Enums.Version.V4_3_3_15354
             {Opcode.MSG_MOVE_STOP_SWIM, 0x1E11},
             {Opcode.MSG_MOVE_STOP_TURN, 0x1331},
             {Opcode.MSG_MOVE_TOGGLE_COLLISION_CHEAT, 0x1AF0},
-            {Opcode.MSG_SET_DUNGEON_DIFFICULTY, 0x22ED},
+            {Opcode.MSG_SET_DUNGEON_DIFFICULTY, 0x22ED}
         };
     }
 }

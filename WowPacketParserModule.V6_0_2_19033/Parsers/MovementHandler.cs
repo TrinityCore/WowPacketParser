@@ -272,7 +272,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 {
                     X = mid.X - waypoints[i].X,
                     Y = mid.Y - waypoints[i].Y,
-                    Z = mid.Z - waypoints[i].Z,
+                    Z = mid.Z - waypoints[i].Z
                 };
                 packet.AddValue("WayPoints", vec, indexes, i);
             }

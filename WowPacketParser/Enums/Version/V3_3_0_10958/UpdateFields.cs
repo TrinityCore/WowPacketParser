@@ -9,7 +9,7 @@ namespace WowPacketParser.Enums.Version.V3_3_0_10958
         OBJECT_FIELD_ENTRY = 0x0003, // Size: 1, Type: INT, Flags: PUBLIC
         OBJECT_FIELD_SCALE_X = 0x0004, // Size: 1, Type: FLOAT, Flags: PUBLIC
         OBJECT_FIELD_PADDING = 0x0005, // Size: 1, Type: INT, Flags: NONE
-        OBJECT_END = 0x0006,
+        OBJECT_END = 0x0006
     }
 
     public enum ItemField
@@ -52,7 +52,7 @@ namespace WowPacketParser.Enums.Version.V3_3_0_10958
         ITEM_FIELD_DURABILITY = ObjectField.OBJECT_END + 0x0037, // Size: 1, Type: INT, Flags: OWNER, ITEM_OWNER
         ITEM_FIELD_MAXDURABILITY = ObjectField.OBJECT_END + 0x0038, // Size: 1, Type: INT, Flags: OWNER, ITEM_OWNER
         ITEM_FIELD_CREATE_PLAYED_TIME = ObjectField.OBJECT_END + 0x0039, // Size: 1, Type: INT, Flags: PUBLIC
-        ITEM_END = ObjectField.OBJECT_END + 0x003A,
+        ITEM_END = ObjectField.OBJECT_END + 0x003A
     }
 
     public enum ContainerField
@@ -60,7 +60,7 @@ namespace WowPacketParser.Enums.Version.V3_3_0_10958
         CONTAINER_FIELD_NUM_SLOTS = ItemField.ITEM_END + 0x0000, // Size: 1, Type: INT, Flags: PUBLIC
         CONTAINER_ALIGN_PAD = ItemField.ITEM_END + 0x0001, // Size: 1, Type: BYTES, Flags: NONE
         CONTAINER_FIELD_SLOT_1 = ItemField.ITEM_END + 0x0002, // Size: 72, Type: LONG, Flags: PUBLIC
-        CONTAINER_END = ItemField.ITEM_END + 0x004A,
+        CONTAINER_END = ItemField.ITEM_END + 0x004A
     }
 
     public enum UnitField
@@ -156,7 +156,7 @@ namespace WowPacketParser.Enums.Version.V3_3_0_10958
         UNIT_FIELD_MAXHEALTHMODIFIER = ObjectField.OBJECT_END + 0x008B, // Size: 1, Type: FLOAT, Flags: PRIVATE, OWNER
         UNIT_FIELD_HOVERHEIGHT = ObjectField.OBJECT_END + 0x008C, // Size: 1, Type: FLOAT, Flags: PUBLIC
         UNIT_FIELD_PADDING = ObjectField.OBJECT_END + 0x008D, // Size: 1, Type: INT, Flags: NONE
-        UNIT_END = ObjectField.OBJECT_END + 0x008E,
+        UNIT_END = ObjectField.OBJECT_END + 0x008E
     }
 
     public enum PlayerField
@@ -376,7 +376,7 @@ namespace WowPacketParser.Enums.Version.V3_3_0_10958
         PLAYER_FIELD_GLYPHS_1 = UnitField.UNIT_END + 0x0492, // Size: 6, Type: INT, Flags: PRIVATE
         PLAYER_GLYPHS_ENABLED = UnitField.UNIT_END + 0x0498, // Size: 1, Type: INT, Flags: PRIVATE
         PLAYER_FIELD_PADDING = UnitField.UNIT_END + 0x0499, // Size: 1, Type: INT, Flags: NONE
-        PLAYER_END = UnitField.UNIT_END + 0x049A,
+        PLAYER_END = UnitField.UNIT_END + 0x049A
     }
 
     public enum GameObjectField
@@ -389,7 +389,7 @@ namespace WowPacketParser.Enums.Version.V3_3_0_10958
         GAMEOBJECT_FACTION = ObjectField.OBJECT_END + 0x0009, // Size: 1, Type: INT, Flags: PUBLIC
         GAMEOBJECT_LEVEL = ObjectField.OBJECT_END + 0x000A, // Size: 1, Type: INT, Flags: PUBLIC
         GAMEOBJECT_BYTES_1 = ObjectField.OBJECT_END + 0x000B, // Size: 1, Type: BYTES, Flags: PUBLIC
-        GAMEOBJECT_END = ObjectField.OBJECT_END + 0x000C,
+        GAMEOBJECT_END = ObjectField.OBJECT_END + 0x000C
     }
 
     public enum DynamicObjectField
@@ -399,7 +399,7 @@ namespace WowPacketParser.Enums.Version.V3_3_0_10958
         DYNAMICOBJECT_SPELLID = ObjectField.OBJECT_END + 0x0003, // Size: 1, Type: INT, Flags: PUBLIC
         DYNAMICOBJECT_RADIUS = ObjectField.OBJECT_END + 0x0004, // Size: 1, Type: FLOAT, Flags: PUBLIC
         DYNAMICOBJECT_CASTTIME = ObjectField.OBJECT_END + 0x0005, // Size: 1, Type: INT, Flags: PUBLIC
-        DYNAMICOBJECT_END = ObjectField.OBJECT_END + 0x0006,
+        DYNAMICOBJECT_END = ObjectField.OBJECT_END + 0x0006
     }
 
     public enum CorpseField
@@ -414,7 +414,7 @@ namespace WowPacketParser.Enums.Version.V3_3_0_10958
         CORPSE_FIELD_FLAGS = ObjectField.OBJECT_END + 0x001B, // Size: 1, Type: INT, Flags: PUBLIC
         CORPSE_FIELD_DYNAMIC_FLAGS = ObjectField.OBJECT_END + 0x001C, // Size: 1, Type: INT, Flags: DYNAMIC
         CORPSE_FIELD_PAD = ObjectField.OBJECT_END + 0x001D, // Size: 1, Type: INT, Flags: NONE
-        CORPSE_END = ObjectField.OBJECT_END + 0x001E,
+        CORPSE_END = ObjectField.OBJECT_END + 0x001E
     }
     // ReSharper restore InconsistentNaming
 }

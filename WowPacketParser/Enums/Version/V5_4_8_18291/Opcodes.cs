@@ -250,7 +250,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.CMSG_VOID_STORAGE_UNLOCK, 0x0444},
             {Opcode.CMSG_VOID_SWAP_ITEM, 0x0655},
             {Opcode.CMSG_WARDEN_DATA, 0x1816},
-            {Opcode.CMSG_WHO, 0x18A3},
+            {Opcode.CMSG_WHO, 0x18A3}
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -519,7 +519,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_WEATHER, 0x06AB},
             {Opcode.SMSG_WHO, 0x161B},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x0082},
-            {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x10C2},
+            {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x10C2}
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
@@ -549,7 +549,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.MSG_MOVE_STOP_SWIM, 0x0950},
             {Opcode.MSG_MOVE_STOP_TURN, 0x1170},
             {Opcode.MSG_MOVE_WORLDPORT_ACK, 0x1FAD},
-            {Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57},
+            {Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57}
         };
     }
 }

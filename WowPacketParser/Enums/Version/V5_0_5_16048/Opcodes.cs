@@ -23,7 +23,7 @@ namespace WowPacketParser.Enums.Version.V5_0_5_16048
             {Opcode.CMSG_GROUP_RAID_CONVERT, 0x034F},
             {Opcode.CMSG_GUILD_DISBAND, 0x0062},
             {Opcode.CMSG_GUILD_EVENT_LOG_QUERY, 0x06C3},
-            {Opcode.CMSG_REALM_SPLIT, 0x0820},
+            {Opcode.CMSG_REALM_SPLIT, 0x0820}
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -49,7 +49,7 @@ namespace WowPacketParser.Enums.Version.V5_0_5_16048
             {Opcode.SMSG_SPELL_GO, 0x0D42},
             {Opcode.SMSG_SPELL_START, 0x08FC},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x08AE},
-            {Opcode.SMSG_UPDATE_OBJECT, 0x08F7},
+            {Opcode.SMSG_UPDATE_OBJECT, 0x08F7}
             // {Opcode.SMSG_MULTIPLE_PACKETS, 0x0826},
             // {Opcode.SMSG_MULTIPLE_PACKETS_2, 0x0B8B},
         };

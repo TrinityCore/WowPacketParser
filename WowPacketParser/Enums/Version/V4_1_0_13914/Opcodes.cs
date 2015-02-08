@@ -243,7 +243,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_WARDEN_DATA, 0x08C3F}, // 4.1.0 13914
             {Opcode.SMSG_WHO, 0x01C3F}, // 4.1.0 13914
             {Opcode.SMSG_WHOIS, 0x07D3F}, // 4.1.0 13914
-            {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x0FA2F}, // 4.1.0 13914
+            {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x0FA2F} // 4.1.0 13914
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
@@ -265,7 +265,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.MSG_SAVE_GUILD_EMBLEM, 0x0286C}, // 4.1.0 13914
             {Opcode.MSG_TABARDVENDOR_ACTIVATE, 0x02A3E}, // 4.1.0 13914
             {Opcode.MSG_TALENT_WIPE_CONFIRM, 0x00C6F}, // 4.1.0 13914
-            {Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57}, // 4.1.0 13914
+            {Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57} // 4.1.0 13914
         };
     }
 }

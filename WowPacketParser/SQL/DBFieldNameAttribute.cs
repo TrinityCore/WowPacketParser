@@ -166,8 +166,7 @@ namespace WowPacketParser.SQL
                 }
                 return result.ToString();
             }
-            else
-                return Name;
+            return Name;
         }
     }
 }
