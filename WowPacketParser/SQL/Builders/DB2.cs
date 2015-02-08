@@ -98,6 +98,8 @@ namespace WowPacketParser.SQL.Builders
                         for (int i = 0; i < 5; i++)
                             row.AddValue("Flags" + (i + 1), creature.Value.Item1.Flags[i]);
 
+                        row.AddValue("VerifiedBuild", creature.Value.Item1.VerifiedBuild);
+
                         rowsIns.Add(row);
                     }
                 }
@@ -116,6 +118,8 @@ namespace WowPacketParser.SQL.Builders
 
                     for (int i = 0; i < 5; i++)
                         row.AddValue("Flags" + (i + 1), creature.Value.Item1.Flags[i]);
+
+                    row.AddValue("VerifiedBuild", creature.Value.Item1.VerifiedBuild);
 
                     rowsIns.Add(row);
                 }
