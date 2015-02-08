@@ -1211,7 +1211,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBit("Successful");
         }
 
-        [Parser(Opcode.SMSG_ITEM_TEXT_QUERY_RESPONSE)]
+        [Parser(Opcode.SMSG_QUERY_ITEM_TEXT_RESPONSE)]
         public static void HandleItemTextQueryResult(Packet packet)
         {
             if (!packet.ReadBool("Empty"))

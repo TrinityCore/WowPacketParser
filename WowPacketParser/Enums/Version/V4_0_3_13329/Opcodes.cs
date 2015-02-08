@@ -826,7 +826,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_ITEM_QUERY_SINGLE_RESPONSE, 0x0828}, // (0x8014)(0x0058) //
             {Opcode.SMSG_ITEM_REFUND_INFO_RESPONSE, 0x04B2}, // NF()(0x04B2) // // refund item info
             {Opcode.SMSG_ITEM_PURCHASE_REFUND_RESULT, 0x04B5}, // NF()(0x04B5) // // refund item result
-            {Opcode.SMSG_ITEM_TEXT_QUERY_RESPONSE, 0xA929}, // (0x8000)(0x0244) //
+            {Opcode.SMSG_QUERY_ITEM_TEXT_RESPONSE, 0xA929}, // (0x8000)(0x0244) //
             {Opcode.SMSG_ITEM_TIME_UPDATE, 0x0E5D}, // (0x2A90)(0x01EA) //
             {Opcode.SMSG_JOINED_BATTLEGROUND_QUEUE, 0x038A}, // NF()(0x038A) //
             {Opcode.SMSG_KICK_REASON, 0x3320}, // (0x4A71)(0x03C5) //

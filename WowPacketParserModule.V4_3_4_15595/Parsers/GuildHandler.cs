@@ -605,7 +605,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadTime("Time");
         }
 
-        [Parser(Opcode.SMSG_GUILD_BANK_QUERY_TEXT_RESULT)]
+        [Parser(Opcode.SMSG_GUILD_BANK_TEXT_QUERY_RESULT)]
         public static void HandleGuildQueryBankText434(Packet packet)
         {
             packet.ReadUInt32("Tab Id");

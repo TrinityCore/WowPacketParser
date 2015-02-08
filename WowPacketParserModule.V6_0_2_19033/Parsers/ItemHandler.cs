@@ -51,7 +51,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         public static void ReadItemPurchaseRefundItem(Packet packet, params object[] indexes)
         {
-            packet.ReadInt32("ItemID", indexes);
+            packet.ReadInt32<ItemId>("ItemID", indexes);
             packet.ReadInt32("ItemCount", indexes);
         }
 
@@ -59,6 +59,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("CurrencyID", indexes);
             packet.ReadInt32("CurrencyCount", indexes);
+        }
+
+        [Parser(Opcode.SMSG_ITEM_PURCHASE_REFUND_RESULT)]
+        public static void HandleItemPurchaseRefundResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("ItemGUID");
+            packet.ReadByte("Result");
+            var hasContents = packet.ReadBit("HasContents");
+            packet.ResetBitReader();
+
+            if (hasContents)
+                ReadItemPurchaseContents(packet, "Contents");
         }
 
         [Parser(Opcode.CMSG_SORT_BAGS)]
@@ -414,6 +426,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("Socket", i);
 
             packet.ReadInt32("SocketMatch");
+        }
+
+        public static void ReadCliItemTextCache(Packet packet, params object[] idx)
+        {
+            var length = packet.ReadBits("TextLength", 13, idx);
+            packet.ReadWoWString("Text", length, idx);
+        }
+
+        [Parser(Opcode.SMSG_QUERY_ITEM_TEXT_RESPONSE)]
+        public static void HandleQueryItemTextResponse(Packet packet)
+        {
+            packet.ReadBit("Valid");
+            packet.ResetBitReader();
+
+            packet.ReadPackedGuid128("Id");
+            ReadCliItemTextCache(packet, "Item");
         }
     }
 }

@@ -874,7 +874,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.SMSG_MAIL_LIST_RESULT, 0x23B},
             {Opcode.SMSG_BATTLEFIELD_LIST, 0x23D},
             {Opcode.SMSG_FORCE_SET_VEHICLE_REC_ID, 0x23F},
-            {Opcode.SMSG_ITEM_TEXT_QUERY_RESPONSE, 0x244},
+            {Opcode.SMSG_QUERY_ITEM_TEXT_RESPONSE, 0x244},
             {Opcode.SMSG_SPELL_MISS_LOG, 0x24B},
             {Opcode.SMSG_SPELL_EXECUTE_LOG, 0x24C},
             {Opcode.SMSG_DEBUGAURAPROC, 0x24D},

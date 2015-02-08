@@ -129,7 +129,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_ITEM_COOLDOWN, 0x0FA6D}, // 4.1.0 13914
             {Opcode.SMSG_ITEM_NAME_QUERY_RESPONSE, 0x05D6D}, // 4.1.0 13914
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0x0DC2D}, // 4.1.0 13914
-            {Opcode.SMSG_ITEM_TEXT_QUERY_RESPONSE, 0x06A3F}, // 4.1.0 13914
+            {Opcode.SMSG_QUERY_ITEM_TEXT_RESPONSE, 0x06A3F}, // 4.1.0 13914
             {Opcode.SMSG_LEARNED_SPELL, 0x0882D}, // 4.1.0 13914
             {Opcode.SMSG_LEVELUP_INFO, 0x09F2C}, // 4.1.0 13914
             {Opcode.SMSG_LFG_LFR_LIST, 0x01D7E}, // 4.1.0 13914

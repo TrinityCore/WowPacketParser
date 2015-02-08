@@ -855,5 +855,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("VirtualRealmAddress");
             packet.ReadWoWString("Name", nameLength);
         }
+
+        [Parser(Opcode.SMSG_GUILD_BANK_TEXT_QUERY_RESULT)]
+        public static void HandleGuildQueryBankText434(Packet packet)
+        {
+            packet.ReadInt32("Tab");
+
+            var textLength = packet.ReadBits("TextLength", 14);
+            packet.ResetBitReader();
+
+            packet.ReadWoWString("Text", textLength);
+        }
     }
 }
