@@ -866,5 +866,56 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadWoWString("Text", textLength);
         }
+
+        [Parser(Opcode.SMSG_GUILD_EVENT_TAB_MODIFIED)]
+        public static void HandleGuildEventTabModified(Packet packet)
+        {
+            packet.ReadInt32("Tab");
+
+            var nameLength = packet.ReadBits("NameLength", 7);
+            var iconLength = packet.ReadBits("IconLength", 9);
+            packet.ResetBitReader();
+
+            packet.ReadWoWString("Name", nameLength);
+            packet.ReadWoWString("Icon", iconLength);
+        }
+
+        public static void ReadLFGuildBrowseData(Packet packet, params object[] idx)
+        {
+            var guildNameLength = packet.ReadBits("GuildNameLength", 7, idx);
+            var commentLength = packet.ReadBits("CommentLength", 10, idx);
+            packet.ResetBitReader();
+
+            packet.ReadPackedGuid128("GuildGUID", idx);
+
+            packet.ReadUInt32("GuildVirtualRealm", idx);
+            // packet.ReadInt32("GuildLevel", idx);
+            packet.ReadInt32("GuildMembers", idx);
+            packet.ReadInt32("GuildAchievementPoints", idx);
+            packet.ReadInt32E<GuildFinderOptionsInterest>("PlayStyle", idx);
+            packet.ReadInt32E<GuildFinderOptionsAvailability>("Availability", idx);
+            packet.ReadInt32E<GuildFinderOptionsRoles>("ClassRoles", idx);
+            packet.ReadInt32E<GuildFinderOptionsLevel>("LevelRange", idx);
+            packet.ReadInt32("EmblemStyle", idx);
+            packet.ReadInt32("EmblemColor", idx);
+            packet.ReadInt32("BorderStyle", idx);
+            packet.ReadInt32("BorderColor", idx);
+            packet.ReadInt32("Background", idx);
+
+            packet.ReadSByte("Cached", idx);
+            packet.ReadSByte("MembershipRequested", idx);
+
+            packet.ReadWoWString("GuildName", guildNameLength);
+            packet.ReadWoWString("CommentLength", commentLength);
+        }
+
+        [Parser(Opcode.SMSG_LF_GUILD_BROWSE)]
+        public static void HandleLFGuildBrowse(Packet packet)
+        {
+            var count = packet.ReadInt32("PostCount");
+
+            for (var i = 0; i < count; ++i)
+                ReadLFGuildBrowseData(packet, "Post", i);
+        }
     }
 }
