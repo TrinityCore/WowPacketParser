@@ -275,7 +275,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_BARBER_SHOP_RESULT, 0x0C3F},
             {Opcode.SMSG_BATTLEFIELD_LIST, 0x160E},
             {Opcode.SMSG_BATTLEFIELD_MGR_EJECTED, 0x18C2},
-            {Opcode.SMSG_BATTLEFIELD_MGR_ENTERED, 0x081B},
+            {Opcode.SMSG_BATTLEFIELD_MGR_ENTERING, 0x081B},
             {Opcode.SMSG_BATTLEFIELD_STATUS, 0x0433},
             {Opcode.SMSG_BATTLEFIELD_STATUS_ACTIVE, 0x1AAF},
             {Opcode.SMSG_BATTLEFIELD_STATUS_FAILED, 0x1140},

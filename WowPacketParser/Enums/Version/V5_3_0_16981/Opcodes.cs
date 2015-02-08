@@ -105,7 +105,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_BATTLEFIELD_LIST, 0x0ACC},
             {Opcode.SMSG_BATTLEFIELD_MGR_EJECTED, 0x0091},
             {Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING, 0x0095},
-            {Opcode.SMSG_BATTLEFIELD_MGR_ENTERED, 0x06D9},
+            {Opcode.SMSG_BATTLEFIELD_MGR_ENTERING, 0x06D9},
             {Opcode.SMSG_BATTLEFIELD_MGR_ENTRY_INVITE, 0x14D8},
             {Opcode.SMSG_BATTLEFIELD_MGR_EXIT_REQUEST, 0x05C5},
             {Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_INVITE, 0x0485},

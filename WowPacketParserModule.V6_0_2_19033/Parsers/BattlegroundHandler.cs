@@ -378,5 +378,55 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < count; ++i)
                 ReadBattlegroundCapturePointInfo(packet, "CapturePointInfo", i);
         }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING)]
+        public static void HandleBFMgrEjectPending(Packet packet)
+        {
+            packet.ReadUInt64("QueueID");
+            packet.ReadBit("Remove");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_ENTERING)]
+        public static void HandleBFMgrEntering(Packet packet)
+        {
+            packet.ReadBit("ClearedAFK");
+
+            packet.ReadBit("OnOffense | Relocated"); // NC
+            packet.ReadBit("OnOffense | Relocated"); // NC
+
+            packet.ResetBitReader();
+
+            packet.ReadUInt64("QueueID");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_ENTRY_INVITE)]
+        public static void HandleBFMgrEntryInvite(Packet packet)
+        {
+            packet.ReadUInt64("QueueID");
+            packet.ReadInt32<AreaId>("AreaID");
+            packet.ReadTime("ExpireTime");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_STATE_CHANGED)]
+        public static void HandleBFMgrStateChanged(Packet packet)
+        {
+            packet.ReadUInt64("QueueID");
+            packet.ReadInt32("State");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_WAITFORGROUPS)]
+        public static void HandleBattlefieldStatus_WaitForGroups(Packet packet)
+        {
+            ReadBattlefieldStatus_Header(packet, "Hdr");
+
+            packet.ReadUInt32<MapId>("Mapid");
+            packet.ReadUInt32("Timeout");
+
+            for (var i = 0; i < 2; ++i)
+            {
+                packet.ReadByte("TotalPlayers", i);
+                packet.ReadByte("AwaitingPlayers", i);
+            }
+        }
     }
 }

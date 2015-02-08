@@ -503,5 +503,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("Success");
             packet.ReadInt32("TrophyID");
         }
+
+        [Parser(Opcode.SMSG_GARRISON_LEARN_BLUEPRINT_RESULT)]
+        public static void HandleGarrisonLearnBlueprintResult(Packet packet)
+        {
+            packet.ReadInt32("Result");
+            packet.ReadInt32("BuildingID");
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_PLACE_BUILDING_RESULT)]
+        public static void HandleGarrisonPlaceBuildingResult(Packet packet)
+        {
+            packet.ReadInt32("Result");
+            ReadGarrisonBuildingInfo(packet, "BuildingInfo");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("UnkBit");
+        }
     }
 }

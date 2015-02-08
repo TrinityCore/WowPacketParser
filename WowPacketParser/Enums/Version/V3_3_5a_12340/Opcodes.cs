@@ -1190,7 +1190,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.SMSG_CHAR_FACTION_CHANGE, 0x4DA},
             {Opcode.SMSG_PVP_QUEUE_STATS, 0x4DC},
             {Opcode.SMSG_BATTLEFIELD_MGR_ENTRY_INVITE, 0x4DE},
-            {Opcode.SMSG_BATTLEFIELD_MGR_ENTERED, 0x4E0},
+            {Opcode.SMSG_BATTLEFIELD_MGR_ENTERING, 0x4E0},
             {Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_INVITE, 0x4E1},
             {Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_REQUEST_RESPONSE, 0x4E4},
             {Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING, 0x4E5},

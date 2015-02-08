@@ -443,7 +443,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_BATTLEFIELD_LIST, 0x0530},
             {Opcode.SMSG_BATTLEFIELD_MGR_EJECTED, 0x07F1},
             {Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING, 0x0E54},
-            {Opcode.SMSG_BATTLEFIELD_MGR_ENTERED, 0x0EB5},
+            {Opcode.SMSG_BATTLEFIELD_MGR_ENTERING, 0x0EB5},
             {Opcode.SMSG_BATTLEFIELD_MGR_ENTRY_INVITE, 0x0C3D},
             {Opcode.SMSG_BATTLEFIELD_MGR_EXIT_REQUEST, 0x0E78},
             {Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_INVITE, 0x0C1D},
