@@ -1,5 +1,4 @@
-﻿using System;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -351,6 +350,33 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             
             packet.ResetBitReader();
             packet.ReadBit("Index");
+        }
+
+        public static void ReadBattlegroundCapturePointInfo(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("Guid", idx);
+            packet.ReadVector2("Pos", idx);
+            var state = packet.ReadByte("State", idx);
+
+            if (state == 2 || state == 3)
+            {
+                packet.ReadUInt32("CaptureTime", idx);
+                packet.ReadUInt32("CaptureTotalDuration", idx);
+            }
+        }
+
+        [Parser(Opcode.SMSG_UPDATE_CAPTURE_POINT)]
+        public static void HandleUpdateCapturePoint(Packet packet)
+        {
+            ReadBattlegroundCapturePointInfo(packet, "CapturePointInfo");
+        }
+
+        [Parser(Opcode.SMSG_MAP_OBJECTIVES_INIT)]
+        public static void HandleMapObjectivesInit(Packet packet)
+        {
+            var count = packet.ReadInt32("CapturePointInfoCount");
+            for (var i = 0; i < count; ++i)
+                ReadBattlegroundCapturePointInfo(packet, "CapturePointInfo", i);
         }
     }
 }

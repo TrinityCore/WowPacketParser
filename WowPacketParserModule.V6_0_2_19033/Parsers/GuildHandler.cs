@@ -838,5 +838,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadWoWString("NewGuildName", length);
         }
+
+        [Parser(Opcode.SMSG_TURN_IN_PETITION_RESULTS)]
+        public static void HandlePetitionTurnInResults(Packet packet)
+        {
+            packet.ReadEnum<PetitionResultType>("Result", 4);
+        }
     }
 }
