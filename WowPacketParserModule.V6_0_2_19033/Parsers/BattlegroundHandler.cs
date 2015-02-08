@@ -269,7 +269,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             ReadBattlefieldStatus_Header(packet);
 
-            packet.ReadInt32("Mapid");
+            packet.ReadInt32<MapId>("Mapid");
             packet.ReadInt32("StartTimer");
             packet.ReadInt32("ShutdownTimer");
 
@@ -282,7 +282,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleBattlefieldStatus_NeedConfirmation(Packet packet)
         {
             ReadBattlefieldStatus_Header(packet);
-            packet.ReadInt32("Mapid");
+            packet.ReadInt32<MapId>("Mapid");
             packet.ReadInt32("Timeout");
             packet.ReadByte("Role");
         }
@@ -346,7 +346,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("MinLevel");       // unconfirmed order
             packet.ReadInt32("MaxLevel");       // unconfirmed order
             packet.ReadInt32("InstanceID");     // unconfirmed order
-            packet.ReadInt32("MapID");          // unconfirmed order
+            packet.ReadInt32<MapId>("MapID");          // unconfirmed order
             
             packet.ResetBitReader();
             packet.ReadBit("Index");
@@ -427,6 +427,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadByte("TotalPlayers", i);
                 packet.ReadByte("AwaitingPlayers", i);
             }
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_DROP_TIMER_STARTED)]
+        public static void HandleBFMgrDropTimerStarted(Packet packet)
+        {
+            packet.ReadUInt64("QueueID");
+            packet.ReadInt32("Time");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_DROP_TIMER_CANCELED)]
+        public static void HandleBFMgrDropTimerCanceled(Packet packet)
+        {
+            packet.ReadUInt64("QueueID");
         }
     }
 }
