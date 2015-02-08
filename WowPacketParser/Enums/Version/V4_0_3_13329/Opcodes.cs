@@ -23,7 +23,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_ADD_FRIEND, 0x6E5F}, // (0xCAB1)(0x0069) //
             {Opcode.CMSG_ADD_IGNORE, 0x8D57}, // (0xCAF5)(0x006C) //
             {Opcode.CMSG_ADD_PVP_MEDAL_CHEAT, 0x0289}, // NF()(0x0289) //
-            {Opcode.CMSG_ADD_VOICE_IGNORE, 0x03DB}, // NF()(0x03DB) //
+            {Opcode.CMSG_VOICE_ADD_IGNORE, 0x03DB}, // NF()(0x03DB) //
             {Opcode.CMSG_ALTER_APPEARANCE, 0x0426}, // NF()(0x0426) //
             {Opcode.CMSG_AREATRIGGER, 0xBD5E}, // (0xAAB4)(0x00B4) //
             {Opcode.CMSG_AREA_SPIRIT_HEALER_QUERY, 0x02E2}, // NF()(0x02E2) //
@@ -175,7 +175,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_DEL_FRIEND, 0x1D5E}, // (0x0B10)(0x006A) //
             {Opcode.CMSG_DEL_IGNORE, 0xD57C}, // (0xC399)(0x006D) //
             {Opcode.CMSG_DEL_PVP_MEDAL_CHEAT, 0x028A}, // NF()(0x028A) //
-            {Opcode.CMSG_DEL_VOICE_IGNORE, 0x03DC}, // NF()(0x03DC) //
+            {Opcode.CMSG_VOICE_DEL_IGNORE, 0x03DC}, // NF()(0x03DC) //
             {Opcode.CMSG_DESTROY_ITEM, 0x0111}, // NF()(0x0111) //
             {Opcode.CMSG_DESTROY_ITEMS, 0x00B2}, // NF()(0x00B2) //
             {Opcode.CMSG_DISMISS_CONTROLLED_VEHICLE, 0x046D}, // NF()(0x046D) //

@@ -23,7 +23,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_ADD_FRIEND, 0x03980},
             {Opcode.CMSG_ADD_IGNORE, 0x06780},
             {Opcode.CMSG_ADD_PVP_MEDAL_CHEAT, 0x100D0}, //UnknownopcodeID
-            {Opcode.CMSG_ADD_VOICE_IGNORE, 0x0B888},
+            {Opcode.CMSG_VOICE_ADD_IGNORE, 0x0B888},
             {Opcode.CMSG_ALTER_APPEARANCE, 0x034A4},
             {Opcode.CMSG_AREATRIGGER, 0x0ADA8},
             {Opcode.CMSG_AREA_SPIRIT_HEALER_QUERY, 0x0A6C0},
@@ -184,7 +184,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_DEL_FRIEND, 0x02980},
             {Opcode.CMSG_DEL_IGNORE, 0x0F384},
             {Opcode.CMSG_DEL_PVP_MEDAL_CHEAT, 0x100D1}, //UnknownopcodeID
-            {Opcode.CMSG_DEL_VOICE_IGNORE, 0x07AC0},
+            {Opcode.CMSG_VOICE_DEL_IGNORE, 0x07AC0},
             //{Opcode.CMSG_DESTROY_ITEM, 0x0B8A8},
             {Opcode.CMSG_DESTROY_ITEMS, 0x0B8A8},
             {Opcode.CMSG_DISMISS_CONTROLLED_VEHICLE, 0x0E3C0},
