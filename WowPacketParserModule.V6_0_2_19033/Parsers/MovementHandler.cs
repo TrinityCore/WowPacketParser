@@ -238,21 +238,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             switch (type)
             {
                 case 1:
-                    {
-                        packet.ReadVector3("FaceSpot", indexes);
-                        break;
-                    }
+                    packet.ReadVector3("FaceSpot", indexes);
+                    break;
                 case 2:
-                    {
-                        packet.ReadSingle("FaceDirection", indexes);
-                        packet.ReadPackedGuid128("FacingGUID", indexes);
-                        break;
-                    }
+                    packet.ReadSingle("FaceDirection", indexes);
+                    packet.ReadPackedGuid128("FacingGUID", indexes);
+                    break;
                 case 3:
-                    {
-                        packet.ReadSingle("FaceDirection", indexes);
-                        break;
-                    }
+                    packet.ReadSingle("FaceDirection", indexes);
+                    break;
             }
 
             if (monsterSplineFilter)
