@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -41,7 +40,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         public static void ReadItemPurchaseContents(Packet packet, params object[] indexes)
         {
-            packet.ReadInt32("");
+            packet.ReadInt32("Money");
 
             for (int i = 0; i < 5; i++)
                 ReadItemPurchaseRefundItem(packet, indexes, i, "ItemPurchaseRefundItem");

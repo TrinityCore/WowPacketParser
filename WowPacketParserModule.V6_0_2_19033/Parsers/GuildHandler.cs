@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -843,6 +842,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandlePetitionTurnInResults(Packet packet)
         {
             packet.ReadEnum<PetitionResultType>("Result", 4);
+        }
+
+        [Parser(Opcode.SMSG_GUILD_INVITE_DECLINED)]
+        public static void HandleGuildInviteDeclined(Packet packet)
+        {
+            var nameLength = packet.ReadBits("NameLength", 6);
+            packet.ReadBit("AutoDecline");
+
+            packet.ResetBitReader();
+
+            packet.ReadUInt32("VirtualRealmAddress");
+            packet.ReadWoWString("Name", nameLength);
         }
     }
 }

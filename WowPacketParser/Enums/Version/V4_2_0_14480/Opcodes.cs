@@ -600,7 +600,7 @@ namespace WowPacketParser.Enums.Version.V4_2_0_14480
             //{Opcode.SMSG_ITEM_NAME_QUERY_RESPONSE, 0xFA67},
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0xA6A3},
             {Opcode.SMSG_ITEM_REFUND_INFO_RESPONSE, 0xDB03},
-            {Opcode.SMSG_ITEM_REFUND_RESULT, 0x8765},
+            {Opcode.SMSG_ITEM_PURCHASE_REFUND_RESULT, 0x8765},
             {Opcode.SMSG_ITEM_TEXT_QUERY_RESPONSE, 0x7A3E},
             {Opcode.SMSG_ITEM_TIME_UPDATE, 0x763E},
             {Opcode.SMSG_JOINED_BATTLEGROUND_QUEUE, 0xDB01},

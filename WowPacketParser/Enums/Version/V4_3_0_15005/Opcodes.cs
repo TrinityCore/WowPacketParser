@@ -641,7 +641,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.SMSG_ITEM_EXPIRE_PURCHASE_REFUND, 11272},
             {Opcode.SMSG_ITEM_PUSH_RESULT, 25120},
             {Opcode.SMSG_ITEM_REFUND_INFO_RESPONSE, 26286},
-            {Opcode.SMSG_ITEM_REFUND_RESULT, 11946},
+            {Opcode.SMSG_ITEM_PURCHASE_REFUND_RESULT, 11946},
             {Opcode.SMSG_ITEM_TEXT_QUERY_RESPONSE, 5796},
             {Opcode.SMSG_ITEM_TIME_UPDATE, 15490},
             {Opcode.SMSG_JOINED_BATTLEGROUND_QUEUE, 19468},

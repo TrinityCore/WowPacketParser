@@ -1171,7 +1171,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.SMSG_PET_GUIDS, 0x4AA},
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x4AB},
             {Opcode.SMSG_ITEM_REFUND_INFO_RESPONSE, 0x4B2},
-            {Opcode.SMSG_ITEM_REFUND_RESULT, 0x4B5},
+            {Opcode.SMSG_ITEM_PURCHASE_REFUND_RESULT, 0x4B5},
             {Opcode.SMSG_CORPSE_MAP_POSITION_QUERY_RESPONSE, 0x4B7},
             {Opcode.SMSG_CALENDAR_CLEAR_PENDING_ACTION, 0x4BB},
             {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x4BC},

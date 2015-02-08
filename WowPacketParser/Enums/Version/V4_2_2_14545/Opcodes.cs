@@ -517,7 +517,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE, 0xDCE6},
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0x8EFB},
             {Opcode.SMSG_ITEM_REFUND_INFO_RESPONSE, 0x304E},
-            {Opcode.SMSG_ITEM_REFUND_RESULT, 0x60DC},
+            {Opcode.SMSG_ITEM_PURCHASE_REFUND_RESULT, 0x60DC},
             {Opcode.SMSG_ITEM_TEXT_QUERY_RESPONSE, 0x984A},
             {Opcode.SMSG_ITEM_TIME_UPDATE, 0x8AEB},
             {Opcode.SMSG_KICK_REASON, 0x8A67},

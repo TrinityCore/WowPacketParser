@@ -258,14 +258,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Item Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_ITEM_REFUND_RESULT, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_ITEM_PURCHASE_REFUND_RESULT, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleItemRefundResult(Packet packet)
         {
             packet.ReadGuid("Item Guid");
             packet.ReadInt32("Error ID");
         }
 
-        [Parser(Opcode.SMSG_ITEM_REFUND_RESULT, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
+        [Parser(Opcode.SMSG_ITEM_PURCHASE_REFUND_RESULT, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleItemRefundResult422(Packet packet)
         {
             var guid = packet.StartBitStream(5, 0, 3, 7, 4, 1, 6, 2);
@@ -281,7 +281,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Item Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_ITEM_REFUND_RESULT, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_ITEM_PURCHASE_REFUND_RESULT, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleItemRefundResult434(Packet packet)
         {
             var guid = packet.StartBitStream(4, 5, 1, 6, 7, 0, 3, 2);

@@ -605,5 +605,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32<AreaId>("AreaID");
             packet.ReadBit("ConfirmSummon_NC");
         }
+
+        // new opcode on 6.x, related to combat log and mostly used in garrisons
+        [Parser(Opcode.SMSG_COMBAT_LOG_UNK)]
+        public static void HandleCombatLogUnk(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadInt32("Arg1");
+            packet.ReadInt32("Arg2");
+            var length = packet.ReadBits("TextLength", 12);
+            packet.ReadWoWString("Text", length);
+        }
     }
 }

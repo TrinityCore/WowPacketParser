@@ -885,7 +885,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             //{Opcode.SMSG_ITEM_NAME_QUERY_RESPONSE, 0x07BC8},
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0x0FBE8},
             {Opcode.SMSG_ITEM_REFUND_INFO_RESPONSE, 0x0095E},
-            {Opcode.SMSG_ITEM_REFUND_RESULT, 0x0441E},
+            {Opcode.SMSG_ITEM_PURCHASE_REFUND_RESULT, 0x0441E},
             {Opcode.SMSG_ITEM_TEXT_QUERY_RESPONSE, 0x077C8},
             {Opcode.SMSG_ITEM_TIME_UPDATE, 0x066A4},
             {Opcode.SMSG_JOINED_BATTLEGROUND_QUEUE, 0x0090E},

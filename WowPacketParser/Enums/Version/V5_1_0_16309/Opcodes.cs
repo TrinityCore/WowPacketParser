@@ -628,7 +628,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE, 0x0488},
             {Opcode.SMSG_ITEM_EXPIRE_PURCHASE_REFUND, 0x0795},
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0x0E51},
-            {Opcode.SMSG_ITEM_REFUND_RESULT, 0x07B5},
+            {Opcode.SMSG_ITEM_PURCHASE_REFUND_RESULT, 0x07B5},
             {Opcode.SMSG_ITEM_REMOVE_PASSIVE, 0x0439},
             {Opcode.SMSG_ITEM_SEND_PASSIVE, 0x08DD},
             {Opcode.SMSG_ITEM_TEXT_QUERY_RESPONSE, 0x0125},
