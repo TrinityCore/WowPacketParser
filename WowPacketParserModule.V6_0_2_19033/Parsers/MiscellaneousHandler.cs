@@ -69,6 +69,26 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("CharUndeleteEnabled");
         }
 
+        public static void ReadCliEuropaTicketConfig(Packet packet, params object[] idx)
+        {
+            packet.ReadBit("Unk bit0", idx);
+            packet.ReadBit("Unk bit1", idx);
+            packet.ReadBit("TicketSystemEnabled", idx);
+            packet.ReadBit("SubmitBugEnabled", idx);
+
+            packet.ReadInt32("MaxTries", idx);
+            packet.ReadInt32("PerMilliseconds",idx);
+            packet.ReadInt32("TryCount",idx);
+            packet.ReadInt32("LastResetTimeBeforeNow",idx);
+        }
+
+        public static void ReadClientSessionAlertConfig(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("Delay", idx);
+            packet.ReadInt32("Period", idx);
+            packet.ReadInt32("DisplayTime", idx);
+        }
+
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS)]
         public static void HandleFeatureSystemStatus(Packet packet)
         {
@@ -82,39 +102,25 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ResetBitReader();
 
             packet.ReadBit("VoiceEnabled");
-            var bit84 = packet.ReadBit("EuropaTicketSystemStatus");
+            var hasEuropaTicketSystemStatus = packet.ReadBit("HasEuropaTicketSystemStatus");
             packet.ReadBit("ScrollOfResurrectionEnabled");
             packet.ReadBit("BpayStoreEnabled");
             packet.ReadBit("BpayStoreAvailable");
             packet.ReadBit("BpayStoreDisabledByParentalControls");
             packet.ReadBit("ItemRestorationButtonEnabled");
             packet.ReadBit("BrowserEnabled");
-            var bit44 = packet.ReadBit("SessionAlert");
+            var hasSessionAlert = packet.ReadBit("HasSessionAlert");
             packet.ReadBit("RecruitAFriendSendingEnabled");
             packet.ReadBit("CharUndeleteEnabled");
             packet.ReadBit("Unk bit21");
             packet.ReadBit("Unk bit22");
             packet.ReadBit("Unk bit90");
 
-            if (bit84)
-            {
-                packet.ReadBit("Unk bit0");
-                packet.ReadBit("Unk bit1");
-                packet.ReadBit("TicketSystemEnabled");
-                packet.ReadBit("SubmitBugEnabled");
+            if (hasEuropaTicketSystemStatus)
+                ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
 
-                packet.ReadInt32("MaxTries");
-                packet.ReadInt32("PerMilliseconds");
-                packet.ReadInt32("TryCount");
-                packet.ReadInt32("LastResetTimeBeforeNow");
-            }
-
-            if (bit44)
-            {
-                packet.ReadInt32("Delay");
-                packet.ReadInt32("Period");
-                packet.ReadInt32("DisplayTime");
-            }
+            if (hasSessionAlert)
+                ReadClientSessionAlertConfig(packet, "SessionAlert");
         }
 
         [Parser(Opcode.SMSG_WORLD_SERVER_INFO)]
