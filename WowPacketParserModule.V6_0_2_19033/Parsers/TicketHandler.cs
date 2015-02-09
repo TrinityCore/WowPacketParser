@@ -74,23 +74,37 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
+        public static void ReadComplaintOffender(Packet packet, params object[] indexes)
+        {
+            packet.ReadPackedGuid128("PlayerGuid", indexes);
+            packet.ReadInt32("RealmAddress", indexes);
+            packet.ReadInt32("TimeSinceOffence", indexes);
+        }
+
+        public static void ReadComplaintChat(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("Command");
+            packet.ReadInt32("ChannelID");
+
+            packet.ResetBitReader();
+
+            var len = packet.ReadBits(12);
+            packet.ReadWoWString("MessageLog", len);
+        }
+
         [Parser(Opcode.CMSG_COMPLAIN)]
         public static void HandleComplain(Packet packet)
         {
             var result = packet.ReadByte("Offender");
+
+            ReadComplaintOffender(packet, "ComplaintOffender");
 
             if (result == 0)
                 packet.ReadInt32("MailID");
 
             if (result == 1)
             {
-                packet.ReadInt32("Command");
-                packet.ReadInt32("ChannelID");
-
-                packet.ResetBitReader();
-
-                var len = packet.ReadBits(12);
-                packet.ReadWoWString("MessageLog", len);
+                ReadComplaintChat(packet, "ComplaintChat");
             }
 
             if (result == 2)
