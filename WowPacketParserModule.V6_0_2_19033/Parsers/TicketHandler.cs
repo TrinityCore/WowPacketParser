@@ -95,7 +95,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_COMPLAIN)]
         public static void HandleComplain(Packet packet)
         {
-            var result = packet.ReadByte("Offender");
+            var result = packet.ReadByte("ComplaintType");
 
             ReadComplaintOffender(packet, "ComplaintOffender");
 
