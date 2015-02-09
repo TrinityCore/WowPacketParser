@@ -193,7 +193,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             ReadCliSupportTicketHeader(packet, "Header");
 
-            var noteLength = packet.ReadBits("NoteLength", 11);
+            var noteLength = packet.ReadBits("NoteLength", 10);
             packet.ResetBitReader();
             packet.ReadWoWString("Note", noteLength);
         }
