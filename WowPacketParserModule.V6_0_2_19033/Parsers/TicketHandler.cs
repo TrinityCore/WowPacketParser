@@ -99,19 +99,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             ReadComplaintOffender(packet, "ComplaintOffender");
 
-            if (result == 0)
-                packet.ReadInt32("MailID");
-
-            if (result == 1)
+            switch (result)
             {
-                ReadComplaintChat(packet, "ComplaintChat");
-            }
-
-            if (result == 2)
-            {
-                // Order guessed
-                packet.ReadInt64("EventGuid");
-                packet.ReadInt64("InviteGuid");
+                case 0: // Mail
+                    packet.ReadInt32("MailID");
+                    break;
+                case 1: // Chat
+                    ReadComplaintChat(packet, "ComplaintChat");
+                    break;
+                case 2: // Calendar
+                    // Order guessed
+                    packet.ReadInt64("EventGuid");
+                    packet.ReadInt64("InviteGuid");
+                    break;
             }
         }
 
