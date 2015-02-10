@@ -69,17 +69,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("CharUndeleteEnabled");
         }
 
+        public static void ReadCliSavedThrottleObjectState(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt32("MaxTries", idx);
+            packet.ReadUInt32("PerMilliseconds", idx);
+            packet.ReadUInt32("TryCount", idx);
+            packet.ReadUInt32("LastResetTimeBeforeNow", idx);
+        }
+
         public static void ReadCliEuropaTicketConfig(Packet packet, params object[] idx)
         {
-            packet.ReadBit("Unk bit0", idx);
-            packet.ReadBit("Unk bit1", idx);
-            packet.ReadBit("TicketSystemEnabled", idx);
-            packet.ReadBit("SubmitBugEnabled", idx);
+            packet.ReadBit("TicketsEnabled", idx);
+            packet.ReadBit("BugsEnabled", idx);
+            packet.ReadBit("ComplaintsEnabled", idx);
+            packet.ReadBit("SuggestionsEnabled", idx);
 
-            packet.ReadInt32("MaxTries", idx);
-            packet.ReadInt32("PerMilliseconds",idx);
-            packet.ReadInt32("TryCount",idx);
-            packet.ReadInt32("LastResetTimeBeforeNow",idx);
+            ReadCliSavedThrottleObjectState(packet, idx, "ThrottleState");
         }
 
         public static void ReadClientSessionAlertConfig(Packet packet, params object[] idx)
@@ -112,9 +117,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var hasSessionAlert = packet.ReadBit("HasSessionAlert");
             packet.ReadBit("RecruitAFriendSendingEnabled");
             packet.ReadBit("CharUndeleteEnabled");
-            packet.ReadBit("Unk bit21");
-            packet.ReadBit("Unk bit22");
-            packet.ReadBit("Unk bit90");
+            packet.ReadBit("RestrictedAccount");
+            packet.ReadBit("TutorialsEnabled");
+            packet.ReadBit("Unk bit90"); // Also tutorials related
 
             if (hasEuropaTicketSystemStatus)
                 ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
