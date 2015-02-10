@@ -337,5 +337,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("ComplaintType");
             packet.ReadByte("Result");
         }
+
+        [Parser(Opcode.SMSG_GM_TICKET_RESPONSE)]
+        public static void HandleGMTicketResponse(Packet packet)
+        {
+            // TODO: confirm order
+
+            packet.ReadUInt32("TicketID");
+            packet.ReadUInt32("ResponseID");
+
+            var descriptionLength = packet.ReadBits(11);
+            var responseTextLength = packet.ReadBits(14);
+
+            packet.ReadWoWString("Description", descriptionLength);
+            packet.ReadWoWString("ResponseText", responseTextLength);
+        }
+
     }
 }
