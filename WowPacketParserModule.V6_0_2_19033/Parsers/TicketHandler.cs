@@ -198,25 +198,26 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Note", noteLength);
         }
 
+        public static void ReadCliSupportTicketChatLine(Packet packet, params object[] idx)
+        {
+                packet.ReadTime("Timestamp", idx);
+
+                var textLength = packet.ReadBits("TextLength", 12, idx);
+                packet.ResetBitReader();
+                packet.ReadWoWString("Text", textLength, idx);
+        }
+
         public static void ReadCliSupportTicketChatLog(Packet packet, params object[] idx)
         {
             var linesCount = packet.ReadUInt32("LinesCount", idx);
-
             for (int i = 0; i < linesCount; ++i)
-            {
-                packet.ReadTime("Timestamp", i);
-
-                var textLength = packet.ReadBits("TextLength", 12, idx, i);
-                packet.ResetBitReader();
-                packet.ReadWoWString("Text", textLength, idx, i);
-            }
+                ReadCliSupportTicketChatLine(packet, idx, "Lines", i);
 
             var hasReportLineIndex = packet.ReadBit("HasReportLineIndex", idx);
             packet.ResetBitReader();
 
             if (hasReportLineIndex)
                 packet.ReadUInt32("ReportLineIndex", idx);
-
         }
 
         public static void ReadCliSupportTicketMailInfo(Packet packet, params object[] idx)
