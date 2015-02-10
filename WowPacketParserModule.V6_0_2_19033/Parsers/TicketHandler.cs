@@ -50,10 +50,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("Result");
 
-            var bit3068 = packet.ReadBit("HasInfo");
+            var hasInfo = packet.ReadBit("HasInfo");
 
             // ClientGMTicketInfo
-            if (bit3068)
+            if (hasInfo)
             {
                 packet.ReadInt32("TicketID");
                 packet.ReadByte("Category");
@@ -97,7 +97,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             var result = packet.ReadByte("ComplaintType");
 
-            ReadComplaintOffender(packet, "ComplaintOffender");
+            ReadComplaintOffender(packet, "Offender");
 
             switch (result)
             {
@@ -105,7 +105,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadInt32("MailID");
                     break;
                 case 1: // Chat
-                    ReadComplaintChat(packet, "ComplaintChat");
+                    ReadComplaintChat(packet, "Chat");
                     break;
                 case 2: // Calendar
                     // Order guessed
@@ -198,6 +198,27 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Note", noteLength);
         }
 
+        public static void ReadCliSupportTicketChatLog(Packet packet, params object[] idx)
+        {
+            var linesCount = packet.ReadUInt32("LinesCount", idx);
+
+            for (int i = 0; i < linesCount; ++i)
+            {
+                packet.ReadTime("Timestamp", i);
+
+                var textLength = packet.ReadBits("TextLength", 12, idx, i);
+                packet.ResetBitReader();
+                packet.ReadWoWString("Text", textLength, idx, i);
+            }
+
+            var hasReportLineIndex = packet.ReadBit("HasReportLineIndex", idx);
+            packet.ResetBitReader();
+
+            if (hasReportLineIndex)
+                packet.ReadUInt32("ReportLineIndex", idx);
+
+        }
+
         public static void ReadCliSupportTicketMailInfo(Packet packet, params object[] idx)
         {
             packet.ReadInt32("MailID", idx);
@@ -276,6 +297,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleSubmitComplaints(Packet packet)
         {
             ReadCliSupportTicketHeader(packet, "Header");
+            ReadCliSupportTicketChatLog(packet, "ChatLog");
 
             packet.ReadPackedGuid128("TargetCharacterGUID");
 
