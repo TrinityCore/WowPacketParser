@@ -190,7 +190,7 @@ namespace WowPacketParser.Loading
                         }
                         else
                         {
-                            cIndex = (int)_reader.ReadUInt32(); // session id, connection index
+                            cIndex = _reader.ReadInt32(); // session id, connection index
                             var tickCount = _reader.ReadUInt32();
                             time = _startTime.AddMilliseconds(tickCount - _startTickCount);
                         }
