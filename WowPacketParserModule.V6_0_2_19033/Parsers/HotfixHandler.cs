@@ -52,10 +52,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                     var id = db2File.ReadEntry("Id");
                     broadcastText.language = db2File.ReadUInt32("Language");
-                    if (db2File.ReadUInt16() > 0)
-                        broadcastText.MaleText = db2File.ReadCString("Male Text");
-                    if (db2File.ReadUInt16() > 0)
-                        broadcastText.FemaleText = db2File.ReadCString("Female Text");
+                    var maletextLength = db2File.ReadUInt16();
+                    broadcastText.MaleText = db2File.ReadWoWString("Male Text", maletextLength);
+                    var femaletextLength = db2File.ReadUInt16();
+                    broadcastText.FemaleText = db2File.ReadWoWString("Female Text", femaletextLength);
 
                     broadcastText.EmoteID = new uint[3];
                     broadcastText.EmoteDelay = new uint[3];
@@ -274,15 +274,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     item.RangedMod = db2File.ReadSingle("Ranged Mod");
                     item.Bonding = db2File.ReadInt32E<ItemBonding>("Bonding");
 
-                    if (db2File.ReadUInt16() > 0)
-                        item.Name = db2File.ReadCString("Name", 0);
+                    var nameLength = db2File.ReadUInt16();
+                    item.Name = db2File.ReadWoWString("Name", nameLength, 0);
 
                     for (var i = 1; i < 4; ++i)
                         if (db2File.ReadUInt16() > 0)
                             db2File.ReadCString("Name", i);
 
-                    if (db2File.ReadUInt16() > 0)
-                        item.Description = db2File.ReadCString("Description");
+                    var descriptionLength = db2File.ReadUInt16();
+                    item.Description = db2File.ReadWoWString("Description", descriptionLength);
 
                     item.PageText = db2File.ReadUInt32("Page Text");
                     item.Language = db2File.ReadInt32E<Language>("Language");
@@ -328,11 +328,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 case DB2Hash.SceneScript: // lua ftw!
                 {
                     db2File.ReadUInt32("Scene Script ID");
-                    if (db2File.ReadUInt16() > 0)
-                        db2File.ReadCString("Name");
+                    var nameLength = db2File.ReadUInt16();
+                    db2File.ReadWoWString("Name", nameLength);
 
-                    if (db2File.ReadUInt16() > 0)
-                        db2File.ReadCString("Script");
+                    var scriptLength = db2File.ReadUInt16();
+                    db2File.ReadWoWString("Script", scriptLength);
                     db2File.ReadUInt32("Previous Scene Script Part");
                     db2File.ReadUInt32("Next Scene Script Part");
                     break;
@@ -370,8 +370,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     db2File.ReadUInt32<ItemId>("Item ID");
                     db2File.ReadUInt32("Flags");
 
-                    if (db2File.ReadUInt16() > 0)
-                        db2File.ReadCString("Description");
+                    var descriptionLength = db2File.ReadUInt16();
+                    db2File.ReadWoWString("Description", descriptionLength);
 
                     db2File.ReadInt32("Source Type");
                     break;
@@ -379,8 +379,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 case DB2Hash.Vignette:
                 {
                     db2File.ReadUInt32("Vignette ID");
-                    if (db2File.ReadUInt16() > 0)
-                        db2File.ReadCString("Name");
+                    var nameLength = db2File.ReadUInt16();
+                    db2File.ReadWoWString("Name", nameLength);
 
                     db2File.ReadUInt32("Icon");
                     db2File.ReadUInt32("Flag"); // not 100% sure (8 & 32 as values only) - todo verify with more data
@@ -392,8 +392,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 {
                     db2File.ReadUInt32("Id");
 
-                    if (db2File.ReadUInt16() > 0)
-                        db2File.ReadCString("Address");
+                    var addressLength = db2File.ReadUInt16();
+                    db2File.ReadWoWString("Address", addressLength);
 
                     db2File.ReadUInt32("Unk MoP 1");
                     db2File.ReadUInt32("Unk MoP 2");

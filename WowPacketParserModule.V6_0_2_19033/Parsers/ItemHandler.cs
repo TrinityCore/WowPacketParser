@@ -169,14 +169,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("Slot");
             packet.ReadPackedGuid128("CastItem");
 
-            SpellHandler.ReadSpellCastRequest(packet);
+            SpellHandler.ReadSpellCastRequest(packet, "Cast");
         }
 
         [Parser(Opcode.CMSG_USE_TOY)]
         public static void HandleUseToy(Packet packet)
         {
             packet.ReadInt32<ItemId>("ItemID");
-            SpellHandler.ReadSpellCastRequest(packet);
+            SpellHandler.ReadSpellCastRequest(packet, "Cast");
         }
 
         [Parser(Opcode.CMSG_DESTROY_ITEM)]
