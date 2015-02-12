@@ -60,7 +60,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.CMSG_PLAYER_LOGIN, 0x0754},
             {Opcode.CMSG_QUERY_WORLD_COUNTDOWN_TIMER, 0x08DD},
             {Opcode.CMSG_QUERY_QUEST_COMPLETION_NPCS, 0x0AB1},
-            {Opcode.CMSG_QUERY_QUEST_POI, 0x0D52},
+            {Opcode.CMSG_QUEST_POI_QUERY, 0x0D52},
             {Opcode.CMSG_QUEST_QUERY, 0x066D},
             {Opcode.CMSG_RANDOMIZE_CHAR_NAME, 0x0DD1},
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x047F},

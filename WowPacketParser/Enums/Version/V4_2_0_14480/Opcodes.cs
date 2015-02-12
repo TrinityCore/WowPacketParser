@@ -303,7 +303,7 @@ namespace WowPacketParser.Enums.Version.V4_2_0_14480
             {Opcode.CMSG_QUESTLOG_REMOVE_QUEST, 0x3A3F},
             {Opcode.CMSG_QUEST_CONFIRM_ACCEPT, 0xF2B7},
             {Opcode.CMSG_QUERY_QUEST_COMPLETION_NPCS, 0x98C8},
-            {Opcode.CMSG_QUERY_QUEST_POI, 0xF2EE},
+            {Opcode.CMSG_QUEST_POI_QUERY, 0xF2EE},
             {Opcode.CMSG_QUEST_QUERY, 0x2AFE},
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0xF226},
             {Opcode.CMSG_READ_ITEM, 0x6A67},

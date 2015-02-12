@@ -147,7 +147,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_QUESTGIVER_STATUS_QUERY, 0x05FD},
             {Opcode.CMSG_QUESTLOG_REMOVE_QUEST, 0x0655},
             {Opcode.CMSG_QUERY_QUEST_COMPLETION_NPCS, 0x16B8},
-            {Opcode.CMSG_QUERY_QUEST_POI, 0x1DA8},
+            {Opcode.CMSG_QUEST_POI_QUERY, 0x1DA8},
             {Opcode.CMSG_QUEST_QUERY, 0x1F52},
             {Opcode.CMSG_RANDOMIZE_CHAR_NAME, 0x1DB9},
             {Opcode.CMSG_READY_CHECK_RESPONSE, 0x13D9},

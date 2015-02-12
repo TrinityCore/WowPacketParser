@@ -59,7 +59,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.CMSG_PET_NAME_QUERY, 0x05A7},
             {Opcode.CMSG_PLAYER_LOGIN, 0x03A8},
             {Opcode.CMSG_QUERY_QUEST_COMPLETION_NPCS, 0x02A7},
-            {Opcode.CMSG_QUERY_QUEST_POI, 0x0A90},
+            {Opcode.CMSG_QUEST_POI_QUERY, 0x0A90},
             {Opcode.CMSG_QUEST_QUERY, 0x0A94},
             {Opcode.CMSG_QUESTGIVER_QUERY_QUEST, 0x0358},
             {Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, 0x1243},

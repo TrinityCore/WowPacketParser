@@ -10,7 +10,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 {
     public static class QuestHandler
     {
-        [Parser(Opcode.CMSG_QUERY_QUEST_POI)]
+        [Parser(Opcode.CMSG_QUEST_POI_QUERY)]
         public static void HandleQuestPoiQuery(Packet packet)
         {
             var quest = new int[50];

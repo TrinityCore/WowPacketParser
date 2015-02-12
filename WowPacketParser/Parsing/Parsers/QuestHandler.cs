@@ -552,7 +552,7 @@ namespace WowPacketParser.Parsing.Parsers
             Storage.QuestTemplates.Add((uint)id.Key, quest, packet.TimeSpan);
         }
 
-        [Parser(Opcode.CMSG_QUERY_QUEST_POI)]
+        [Parser(Opcode.CMSG_QUEST_POI_QUERY)]
         [Parser(Opcode.CMSG_QUERY_QUEST_COMPLETION_NPCS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleQuestPoiQuery(Packet packet)
         {

@@ -246,7 +246,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.CMSG_SET_SKILL_CHEAT, 0x1D8},
             {Opcode.CMSG_PING, 0x1DC},
             {Opcode.CMSG_SET_SHEATHED, 0x1E0},
-            {Opcode.CMSG_QUERY_QUEST_POI, 0x1E3},
+            {Opcode.CMSG_QUEST_POI_QUERY, 0x1E3},
             {Opcode.CMSG_GHOST, 0x1E5},
             {Opcode.CMSG_GM_INVIS, 0x1E6},
             {Opcode.CMSG_AUTH_SESSION, 0x1ED},

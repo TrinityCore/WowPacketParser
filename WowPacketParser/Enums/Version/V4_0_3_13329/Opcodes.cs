@@ -434,7 +434,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_QUESTLOG_SWAP_QUEST, 0x0193}, // NF()(0x0193) //
             {Opcode.CMSG_QUEST_CONFIRM_ACCEPT, 0xD756}, // (0x8350)(0x019B) //
             {Opcode.CMSG_QUERY_QUEST_COMPLETION_NPCS, 0x0489}, // NF()(0x0489) //
-            {Opcode.CMSG_QUERY_QUEST_POI, 0x01E3}, // NF()(0x01E3) //
+            {Opcode.CMSG_QUEST_POI_QUERY, 0x01E3}, // NF()(0x01E3) //
             {Opcode.CMSG_QUEST_QUERY, 0xFFEA}, // NF(0xE27C)(0x005C) //
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0xD677}, // (0x6A99)(0x04FF) //yForAccountDataTimes
             {Opcode.CMSG_READ_ITEM, 0x00AD}, // NF()(0x00AD) //
