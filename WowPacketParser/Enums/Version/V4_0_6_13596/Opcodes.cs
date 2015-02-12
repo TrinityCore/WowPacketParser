@@ -672,7 +672,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_BREAK_TARGET, 0x02488},
             {Opcode.SMSG_BUY_BANK_SLOT_RESULT, 0x0F5C0},
             //{Opcode.SMSG_BUY_FAILED, 0x06CE8},
-            {Opcode.SMSG_BUY_ITEM, 0x069CC},
+            {Opcode.SMSG_BUY_SUCCEEDED, 0x069CC},
             {Opcode.SMSG_CALENDAR_ARENA_TEAM, 0x021E0},
             //{Opcode.SMSG_CALENDAR_CLEAR_ACTION_PENDING, 0x0265E},
             {Opcode.SMSG_CALENDAR_COMMAND_RESULT, 0x0AD80},

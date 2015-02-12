@@ -388,7 +388,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.SMSG_BINDZONEREPLY, 0x1A42},
             {Opcode.SMSG_BREAK_TARGET, 0x0E7E},
             {Opcode.SMSG_BUY_FAILED, 0x4A7F},
-            {Opcode.SMSG_BUY_ITEM, 0xCA67},
+            {Opcode.SMSG_BUY_SUCCEEDED, 0xCA67},
             {Opcode.SMSG_CALENDAR_COMMAND_RESULT, 0x9A4E},
             {Opcode.SMSG_CALENDAR_EVENT_REMOVED_ALERT, 0x5C72},
             {Opcode.SMSG_CALENDAR_EVENT_UPDATED_ALERT, 0x5CFA},

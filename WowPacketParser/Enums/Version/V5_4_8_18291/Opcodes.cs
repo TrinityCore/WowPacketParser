@@ -294,7 +294,7 @@ namespace WowPacketParser.Enums.Version.V5_4_8_18291
             {Opcode.SMSG_BINDPOINTUPDATE, 0x0E3B},
             {Opcode.SMSG_BLACK_MARKET_OPEN_RESULT, 0x00AE},
             {Opcode.SMSG_BUY_FAILED, 0x1563},
-            {Opcode.SMSG_BUY_ITEM, 0x101A},
+            {Opcode.SMSG_BUY_SUCCEEDED, 0x101A},
             {Opcode.SMSG_CANCEL_AUTO_REPEAT, 0x1E0F},
             {Opcode.SMSG_CANCEL_COMBAT, 0x0534},
             {Opcode.SMSG_CAST_FAILED, 0x143A},

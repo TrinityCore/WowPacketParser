@@ -473,7 +473,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.SMSG_BINDER_CONFIRM, 0x0949},
             {Opcode.SMSG_BINDPOINTUPDATE, 0x070D},
             {Opcode.SMSG_BUY_FAILED, 0x0525},
-            {Opcode.SMSG_BUY_ITEM, 0x0329},
+            {Opcode.SMSG_BUY_SUCCEEDED, 0x0329},
             {Opcode.SMSG_CALENDAR_COMMAND_RESULT, 0x0349},
             {Opcode.SMSG_CALENDAR_EVENT_INVITE_ALERT, 0x0BCD},
             {Opcode.SMSG_CALENDAR_EVENT_REMOVED_ALERT, 0x05C5},

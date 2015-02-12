@@ -775,7 +775,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_BONUS_ROLL_EMPTY, 0x0BEA},
             {Opcode.SMSG_BREAK_TARGET, 0x11A2},
             {Opcode.SMSG_BUY_FAILED, 0x013A},
-            {Opcode.SMSG_BUY_ITEM, 0x0BD1},
+            {Opcode.SMSG_BUY_SUCCEEDED, 0x0BD1},
             {Opcode.SMSG_CALENDAR_CLEAR_PENDING_ACTION, 0x1E8A},
             {Opcode.SMSG_CALENDAR_COMMAND_RESULT, 0x138A},
             {Opcode.SMSG_CALENDAR_EVENT_INITIAL_INVITES, 0x0139},

@@ -362,7 +362,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Bag Slot");
         }
 
-        [Parser(Opcode.SMSG_BUY_ITEM)]
+        [Parser(Opcode.SMSG_BUY_SUCCEEDED)]
         public static void HandleBuyItemResponse(Packet packet)
         {
             packet.ReadGuid("Vendor GUID");

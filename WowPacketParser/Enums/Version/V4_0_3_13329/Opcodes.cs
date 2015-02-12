@@ -635,7 +635,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_BREAK_TARGET, 0x0152}, // NF()(0x0152) // NOT IN CLIENT 335 AND 401
             {Opcode.SMSG_BUY_BANK_SLOT_RESULT, 0x01BA}, // NF()(0x01BA) //
             {Opcode.SMSG_BUY_FAILED, 0xF757}, // (0x83DD)(0x01A5) //
-            {Opcode.SMSG_BUY_ITEM, 0x4676}, // (0x8AF4)(0x01A4) //
+            {Opcode.SMSG_BUY_SUCCEEDED, 0x4676}, // (0x8AF4)(0x01A4) //
             {Opcode.SMSG_CALENDAR_ACTION_PENDING, 0x265E}, // (0x0B71)(0x04BB) //endar related EVENT_CALENDAR_ACTION_PENDING
             {Opcode.SMSG_CALENDAR_ARENA_TEAM, 0x2E7F}, // (0x23F8)(0x0439) //
             {Opcode.SMSG_CALENDAR_COMMAND_RESULT, 0xFFA1}, // NF(0xE2FC)(0x043D) //

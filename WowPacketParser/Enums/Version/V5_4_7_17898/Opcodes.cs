@@ -235,7 +235,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_BLACK_MARKET_OUTBID, 0x12A3},
             {Opcode.SMSG_BLACK_MARKET_REQUEST_ITEMS_RESULT, 0x165A},
             {Opcode.SMSG_BLACK_MARKET_WON, 0x4A9},
-            {Opcode.SMSG_BUY_ITEM, 0x0763},
+            {Opcode.SMSG_BUY_SUCCEEDED, 0x0763},
             {Opcode.SMSG_CANCEL_AUTO_REPEAT, 0x12B0},
             {Opcode.SMSG_CANCEL_COMBAT, 0x04E0},
             {Opcode.SMSG_CAST_FAILED, 0x0560},

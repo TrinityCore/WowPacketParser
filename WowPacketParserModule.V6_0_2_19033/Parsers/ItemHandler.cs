@@ -138,7 +138,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("Amount");
         }
 
-        [Parser(Opcode.SMSG_BUY_ITEM)]
+        [Parser(Opcode.SMSG_BUY_SUCCEEDED)]
         public static void HandleBuyItemResponse(Packet packet)
         {
             packet.ReadPackedGuid128("VendorGUID");

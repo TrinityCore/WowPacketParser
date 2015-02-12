@@ -802,7 +802,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.SMSG_QUEST_CONFIRM_ACCEPT, 0x19C},
             {Opcode.SMSG_LIST_INVENTORY, 0x19F},
             {Opcode.SMSG_SELL_ITEM, 0x1A1},
-            {Opcode.SMSG_BUY_ITEM, 0x1A4},
+            {Opcode.SMSG_BUY_SUCCEEDED, 0x1A4},
             {Opcode.SMSG_BUY_FAILED, 0x1A5},
             {Opcode.SMSG_SHOW_TAXI_NODES, 0x1A9},
             {Opcode.SMSG_TAXINODE_STATUS, 0x1AB},
