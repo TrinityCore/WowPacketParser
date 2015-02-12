@@ -451,7 +451,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_QUESTLOG_REMOVE_QUEST, 0x0EDA8},
             {Opcode.CMSG_QUESTLOG_SWAP_QUEST, 0x10068}, //UnknownopcodeID
             {Opcode.CMSG_QUEST_CONFIRM_ACCEPT, 0x06FCC},
-            {Opcode.CMSG_QUEST_POI_QUERY, 0x07DE0},
+            {Opcode.CMSG_QUERY_QUEST_POI, 0x07DE0},
             {Opcode.CMSG_QUEST_QUERY, 0x0EFE8},
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x07DA8}, //4.0.613561
             {Opcode.CMSG_READ_ITEM, 0x0F3C0},

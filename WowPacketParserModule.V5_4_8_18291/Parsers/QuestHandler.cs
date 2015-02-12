@@ -628,7 +628,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_QUEST_POI_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_QUEST_POI)]
         public static void HandleQuestPoiQuery(Packet packet)
         {
             var count = packet.ReadBits("Count", 22);

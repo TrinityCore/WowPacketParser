@@ -10,7 +10,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 {
     public static class QuestHandler
     {
-        [Parser(Opcode.CMSG_QUEST_POI_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_QUEST_POI)]
         public static void HandleQuestPoiQuery(Packet packet)
         {
             var count = packet.ReadUInt32("Count");
@@ -22,7 +22,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ReadToEnd(); // Hack
         }
 
-        [Parser(Opcode.CMSG_QUEST_NPC_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_QUEST_COMPLETION_NPCS)]
         public static void HandleQuestNpcQuery(Packet packet)
         {
             var count = packet.ReadBits("Count", 22);

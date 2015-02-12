@@ -10,7 +10,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 {
     public static class QuestHandler
     {
-        [Parser(Opcode.CMSG_QUEST_POI_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_QUEST_POI)]
         public static void HandleQuestPoiQuery(Packet packet)
         {
             var quest = new int[50];
@@ -23,7 +23,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.AddValue("Quest ID", StoreGetters.GetName(StoreNameType.Quest, quest[i]));
         }
 
-        [Parser(Opcode.CMSG_QUEST_NPC_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_QUEST_COMPLETION_NPCS)]
         public static void HandleQuestNpcQuery(Packet packet)
         {
             var count = packet.ReadBits("Count", 22);
