@@ -124,7 +124,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_GM_TICKET_CREATE)]
         public static void HandleGMTicketCreate(Packet packet)
         {
-            // TODO: confirm order, test
             packet.ReadInt32<MapId>("Map");
             packet.ReadVector3("Pos");
             packet.ReadByte("Flags");
@@ -137,10 +136,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("NeedResponse");
             packet.ResetBitReader();
 
-            var dataCount = packet.ReadInt32("ChatHistoryDataCount");
-            var pkt = packet.Inflate(dataCount);
-            pkt.ReadCString("ChatHistoryData");
-            pkt.ClosePacket(false);
+            var dataLength = packet.ReadInt32("DataLength");
+
+            if (dataLength > 0)
+            {
+                var textCount = packet.ReadByte("TextCount");
+
+                for (int i = 0; i < textCount /* 60 */; ++i)
+                    packet.AddValue("Sent", (packet.Time - packet.ReadTime()).ToFormattedString(), i);
+
+                var decompCount = packet.ReadInt32();
+                var pkt = packet.Inflate(decompCount);
+                pkt.ReadCString("Text");
+                pkt.ClosePacket(false);
+            }
         }
 
         [Parser(Opcode.CMSG_GM_TICKET_UPDATE_TEXT)]
