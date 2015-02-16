@@ -273,7 +273,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("ArchivedMissions", i);
         }
 
-        [Parser(Opcode.SMSG_GARRISON_UNK2)] // GARRISON_FOLLOWER_XP_CHANGED
+        [Parser(Opcode.SMSG_GARRISON_FOLLOWER_CHANGED_XP)] // GARRISON_FOLLOWER_XP_CHANGED
         public static void HandleGarrisonUnk2(Packet packet)
         {
             packet.ReadInt32("Result");
@@ -304,7 +304,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         [Parser(Opcode.CMSG_CREATE_SHIPMENT)]
         [Parser(Opcode.CMSG_GET_SHIPMENT_INFO)]
-        [Parser(Opcode.CMSG_GARRISON_OPEN_MISSION_NPC)]
+        [Parser(Opcode.CMSG_OPEN_GARRISON_MISSION_NPC)]
         public static void HandleGarrisonNpcGUID(Packet packet)
         {
             packet.ReadPackedGuid128("NpcGUID");

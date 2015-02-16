@@ -22,7 +22,7 @@
         IgnoringYou           = 19,
         Unk20                 = 20,
         Unk21                 = 21,
-        Unk24                 = 24, // Appears with CommandType ViewTab (21) after SMSG_GUILD_BANK_LIST 0, 0, -1, 0, 0
+        Unk24                 = 24, // Appears with CommandType ViewTab (21) after SMSG_GUILD_BANK_QUERY_RESULTS 0, 0, -1, 0, 0
         WithdrawLimit         = 25,
         NotEnoughMoney        = 26,
         BankFull              = 28,

@@ -40,7 +40,7 @@ namespace WowPacketParser.Enums.Version.V4_3_2_15211
             {Opcode.CMSG_GAMEOBJECT_QUERY, 0x4523},
             {Opcode.CMSG_GOSSIP_HELLO, 0x6593},
             {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x6589},
-            {Opcode.CMSG_GUILD_BANKER_ACTIVATE, 0x0563},
+            {Opcode.CMSG_GUILD_BANK_ACTIVATE, 0x0563},
             {Opcode.CMSG_JOIN_CHANNEL, 0x2241},
             {Opcode.CMSG_LEAVE_CHANNEL, 0x2800},
             {Opcode.CMSG_LOGOUT_CANCEL, 0x2509},

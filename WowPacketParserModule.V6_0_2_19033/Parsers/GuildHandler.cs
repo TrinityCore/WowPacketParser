@@ -8,14 +8,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     {
         [Parser(Opcode.CMSG_GUILD_GET_ROSTER)]
         [Parser(Opcode.CMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY_QUERY)]
-        [Parser(Opcode.CMSG_GUILD_REQUEST_CHALLENGE_INFO)]
+        [Parser(Opcode.CMSG_GUILD_CHALLENGE_UPDATE_REQUEST)]
         [Parser(Opcode.CMSG_GUILD_DELETE)]
         [Parser(Opcode.CMSG_GUILD_PERMISSIONS_QUERY)]
         [Parser(Opcode.CMSG_GUILD_REPLACE_GUILD_MASTER)]
         [Parser(Opcode.CMSG_ACCEPT_GUILD_INVITE)]
         [Parser(Opcode.CMSG_GUILD_LEAVE)]
         [Parser(Opcode.CMSG_GUILD_AUTO_DECLINE_INVITATION)]
-        [Parser(Opcode.CMSG_GUILD_DECLINE)]
+        [Parser(Opcode.CMSG_GUILD_DECLINE_INVITATION)]
         [Parser(Opcode.CMSG_GUILD_EVENT_LOG_QUERY)]
         [Parser(Opcode.SMSG_GUILD_MEMBER_DAILY_RESET)]
         [Parser(Opcode.SMSG_GUILD_EVENT_BANK_CONTENTS_CHANGED)]
@@ -339,7 +339,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("GuildName", bits52);
         }
 
-        [Parser(Opcode.SMSG_GUILD_BANK_LIST)]
+        [Parser(Opcode.SMSG_GUILD_BANK_QUERY_RESULTS)]
         public static void HandleGuildBankList(Packet packet)
         {
             packet.ReadUInt64("Money");
@@ -426,7 +426,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt64("WeeklyBonusMoney");
         }
 
-        [Parser(Opcode.SMSG_GUILD_CHALLENGE_UPDATED)]
+        [Parser(Opcode.SMSG_GUILD_CHALLENGE_UPDATE)]
         public static void HandleGuildChallengeUpdated(Packet packet)
         {
             for (int i = 0; i < 6; ++i)
@@ -527,7 +527,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("GuildGUID");
         }
 
-        [Parser(Opcode.CMSG_GUILD_BANKER_ACTIVATE)]
+        [Parser(Opcode.CMSG_GUILD_BANK_ACTIVATE)]
         public static void HandleGuildBankActivate(Packet packet)
         {
             packet.ReadPackedGuid128("Banker");

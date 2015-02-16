@@ -256,7 +256,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             //{Opcode.CMSG_GROUP_UNINVITE_GUID, 0x4F74}, // (0x0ABD)(0x0076) //
             {Opcode.CMSG_GUILD_ACCEPT, 0x0084}, // NF()(0x0084) //
             {Opcode.CMSG_GUILD_ADD_RANK, 0x0232}, // NF()(0x0232) //
-            {Opcode.CMSG_GUILD_BANKER_ACTIVATE, 0x03E6}, // NF()(0x03E6) //
+            {Opcode.CMSG_GUILD_BANK_ACTIVATE, 0x03E6}, // NF()(0x03E6) //
             {Opcode.CMSG_GUILD_BANK_BUY_TAB, 0x03EA}, // NF()(0x03EA) //
             {Opcode.CMSG_GUILD_BANK_DEPOSIT_MONEY, 0x03EC}, // NF()(0x03EC) //
             {Opcode.CMSG_GUILD_BANK_QUERY_TAB, 0x03E7}, // NF()(0x03E7) //
@@ -265,9 +265,9 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_GUILD_BANK_UPDATE_TAB, 0x03EB}, // NF()(0x03EB) //
             {Opcode.CMSG_GUILD_BANK_WITHDRAW_MONEY, 0x03ED}, // NF()(0x03ED) //
             {Opcode.CMSG_GUILD_CREATE, 0x0081}, // NF()(0x0081) //
-            {Opcode.CMSG_GUILD_DECLINE, 0x0085}, // NF()(0x0085) //
+            {Opcode.CMSG_GUILD_DECLINE_INVITATION, 0x0085}, // NF()(0x0085) //
             {Opcode.CMSG_GUILD_DELETE_RANK, 0xFFC6}, // NF(0x4205)(0x0233) //
-            {Opcode.CMSG_GUILD_DEMOTE, 0xFFE4}, // NF(0x4200)(0x008C) //
+            {Opcode.CMSG_GUILD_DEMOTE_MEMBER, 0xFFE4}, // NF(0x4200)(0x008C) //
             {Opcode.CMSG_GUILD_DISBAND, 0x0982}, // (0x0205)(0x008F) //
             {Opcode.CMSG_GUILD_GET_ROSTER, 0x0757}, // (0x22FD)(0x0089) //
             {Opcode.CMSG_GUILD_INFO, 0xAF5E}, // (0x6B75)(0x0087) //
@@ -790,7 +790,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_GROUP_LIST, 0x8C76}, // (0x229D)(0x007D) //
             {Opcode.SMSG_GROUP_SET_LEADER, 0xED5D}, // (0x6331)(0x0079) //
             {Opcode.SMSG_GROUP_UNINVITE, 0xBC75}, // (0x2355)(0x0077) //
-            {Opcode.SMSG_GUILD_BANK_LIST, 0xB822}, // (0xE3D0)(0x03E8) //
+            {Opcode.SMSG_GUILD_BANK_QUERY_RESULTS, 0xB822}, // (0xE3D0)(0x03E8) //
             {Opcode.SMSG_GUILD_COMMAND_RESULT, 0xBE5D}, // (0x8BF4)(0x0093) //
             {Opcode.SMSG_GUILD_DECLINE, 0x375F}, // (0xABD9)(0x0086) //
             {Opcode.SMSG_GUILD_EVENT, 0x577D}, // (0x8B14)(0x0092) //
