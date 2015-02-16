@@ -638,8 +638,8 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
         {
             {Opcode.SMSG_DBLOOKUP, 0x3},
-            {Opcode.SMSG_QUERY_OBJECT_POSITION, 0x5},
-            {Opcode.SMSG_QUERY_OBJECT_ROTATION, 0x7},
+            {Opcode.SMSG_QUERY_OBJ_POSITION, 0x5},
+            {Opcode.SMSG_QUERY_OBJ_ROTATION, 0x7},
             {Opcode.SMSG_ZONE_MAP, 0xB},
             {Opcode.SMSG_MOVE_CHARACTER_CHEAT, 0xE},
             {Opcode.SMSG_CHECK_FOR_BOTS, 0x15},
@@ -1179,7 +1179,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.SMSG_TALENTS_INFO, 0x4C0},
             {Opcode.SMSG_ARENA_OPPONENT_UPDATE, 0x4C7},
             {Opcode.SMSG_ARENA_TEAM_CHANGE_FAILED_QUEUED, 0x4C8},
-            {Opcode.SMSG_PROFILEDATA_RESPONSE, 0x4CA},
+            {Opcode.SMSG_PROFILE_DATA_RESPONSE, 0x4CA},
             {Opcode.SMSG_MULTIPLE_PACKETS_2, 0x4CD},
             {Opcode.SMSG_MOVE_DISABLE_GRAVITY, 0x4CE},
             {Opcode.SMSG_MOVE_ENABLE_GRAVITY, 0x4D0},
