@@ -636,7 +636,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE, 0xDCFF},
             {Opcode.SMSG_QUEST_CONFIRM_ACCEPT, 0x184B},
             {Opcode.SMSG_QUEST_LOG_FULL, 0x4EDE},
-            {Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE, 0xF67C},
+            {Opcode.SMSG_QUEST_COMPLETION_NPC_RESPONSE, 0xF67C},
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x8CC3},
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x9E56},
             {Opcode.SMSG_QUEST_UPDATE_ADD_ITEM, 0x9CCF},

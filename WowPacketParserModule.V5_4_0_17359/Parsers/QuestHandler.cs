@@ -31,7 +31,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadInt32<QuestId>("Quest ID", i);
         }
 
-        [Parser(Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE)]
+        [Parser(Opcode.SMSG_QUEST_COMPLETION_NPC_RESPONSE)]
         public static void HandleUnknown6462(Packet packet)
         {
             var bits10 = (int)packet.ReadBits(21);

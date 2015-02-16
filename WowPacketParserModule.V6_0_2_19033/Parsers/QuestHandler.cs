@@ -444,8 +444,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE)]
-        public static void HandleUnknown6462(Packet packet)
+        [Parser(Opcode.SMSG_QUEST_COMPLETION_NPC_RESPONSE)]
+        public static void HandleQuestCompletionNPCResponse(Packet packet)
         {
             var int1 = packet.ReadInt32("QuestCompletionNPCsCount");
 

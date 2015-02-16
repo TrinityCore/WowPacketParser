@@ -570,7 +570,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32<QuestId>("Quest", i);
         }
 
-        [Parser(Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_QUEST_COMPLETION_NPC_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleQuestNpcQueryResponse(Packet packet)
         {
             var count = packet.ReadUInt32("Count");
@@ -590,7 +590,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32<QuestId>("Quest ID", i);
         }
 
-        [Parser(Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_QUEST_COMPLETION_NPC_RESPONSE, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleQuestNpcQueryResponse434(Packet packet)
         {
             var count = packet.ReadBits("Count", 23);

@@ -391,7 +391,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS, 0x0A32},
             {Opcode.SMSG_QUESTGIVER_STATUS, 0x0D7E},
             {Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE, 0x0F79},
-            {Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE, 0x0957},
+            {Opcode.SMSG_QUEST_COMPLETION_NPC_RESPONSE, 0x0957},
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x0F5F},
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x0F13},
             {Opcode.SMSG_RANDOMIZE_CHAR_NAME, 0x074B},

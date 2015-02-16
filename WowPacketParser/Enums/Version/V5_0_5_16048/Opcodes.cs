@@ -43,7 +43,7 @@ namespace WowPacketParser.Enums.Version.V5_0_5_16048
             {Opcode.SMSG_GUILD_ROSTER, 0x0BEA},
             {Opcode.SMSG_MESSAGECHAT, 0x0C9F},
             {Opcode.SMSG_MOTD, 0x0952},
-            {Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE, 0x0A2E},
+            {Opcode.SMSG_QUEST_COMPLETION_NPC_RESPONSE, 0x0A2E},
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x0950},
             {Opcode.SMSG_SET_PHASE_SHIFT_CHANGE, 0x0A93},
             {Opcode.SMSG_SPELL_GO, 0x0D42},

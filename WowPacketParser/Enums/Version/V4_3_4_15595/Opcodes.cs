@@ -1047,7 +1047,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.SMSG_QUEST_CONFIRM_ACCEPT, 0x6F07},
             {Opcode.SMSG_QUEST_FORCE_REMOVED, 0x6605},
             {Opcode.SMSG_QUEST_LOG_FULL, 0x0E36},
-            {Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE, 0x75A1},
+            {Opcode.SMSG_QUEST_COMPLETION_NPC_RESPONSE, 0x75A1},
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x6304},
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x6936},
             {Opcode.SMSG_QUEST_UPDATE_ADD_KILL, 0x0D27},

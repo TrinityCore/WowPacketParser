@@ -155,7 +155,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_PLAY_SPELL_VISUAL_KIT, 0x01A5},
             {Opcode.SMSG_PVP_SEASON, 0x0189},
             {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, 0x142D},
-            {Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE, 0x193E},
+            {Opcode.SMSG_QUEST_COMPLETION_NPC_RESPONSE, 0x193E},
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x183F},
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x19AB},
             {Opcode.SMSG_REALM_QUERY_RESPONSE, 0x042B},

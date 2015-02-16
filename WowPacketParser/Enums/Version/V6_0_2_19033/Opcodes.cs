@@ -169,7 +169,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE, 0x01CA},
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x03DE},
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x00D5},
-            {Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE, 0x01C6},
+            {Opcode.SMSG_QUEST_COMPLETION_NPC_RESPONSE, 0x01C6},
             {Opcode.SMSG_RANDOMIZE_CHAR_NAME, 0x0653},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x1082},
             {Opcode.SMSG_RESUME_COMMS, 0x128A},
