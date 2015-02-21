@@ -755,7 +755,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("Stat Value", i);
 
                 for (var i = 0; i < 10; i++)
-                    packet.ReadInt32("Unk UInt32 1", i);
+                    packet.ReadInt32("Scaling Value", i);
 
                 for (var i = 0; i < 10; i++)
                     packet.ReadInt32("Unk UInt32 2", i);
