@@ -335,13 +335,13 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                     for (var i = 0; i < 10; i++)
                         item.StatValues[i] = db2File.ReadInt32("Stat Value", i);
 
-                    item.StatUnk1 = new int[10];
+                    item.ScalingValue = new int[10];
                     for (var i = 0; i < 10; i++)
-                        item.StatUnk1[i] = db2File.ReadInt32("Unk UInt32 1", i);
+                        item.ScalingValue[i] = db2File.ReadInt32("Scaling Value", i);
 
-                    item.StatUnk2 = new int[10];
+                    item.SocketCostRate = new int[10];
                     for (var i = 0; i < 10; i++)
-                        item.StatUnk2[i] = db2File.ReadInt32("Unk UInt32 2", i);
+                        item.SocketCostRate[i] = db2File.ReadInt32("Socket Cost Rate", i);
 
                     item.ScalingStatDistribution = db2File.ReadInt32("Scaling Stat Distribution");
                     item.DamageType = db2File.ReadInt32E<DamageType>("Damage Type");
