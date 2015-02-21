@@ -104,10 +104,10 @@ namespace WowPacketParser.Store.Objects
         public int[] StatValues;
 
         [DBFieldName("scaling_value", ClientVersionBuild.V4_0_1_13164, 10)]
-        public int[] StatUnk1;
+        public int[] ScalingValue;
 
         [DBFieldName("socket_cost_rate", ClientVersionBuild.V4_0_1_13164, 10)]
-        public int[] StatUnk2;
+        public int[] SocketCostRate;
 
         [DBFieldName("ScalingStatDistribution")]
         public int ScalingStatDistribution;
