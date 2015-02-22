@@ -124,7 +124,7 @@ namespace WowPacketParser.Misc
         public string ReadWoWString(int len)
         {
             Encoding encoding = Encoding.UTF8;
-            var bytes = ReadBytes(len);
+            var bytes = ReadBytes(len).Where(b => b != 0).ToArray();
             string s = encoding.GetString(bytes);
             return s;
         }
