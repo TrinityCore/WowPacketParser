@@ -51,7 +51,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     var broadcastText = new BroadcastText();
 
                     var id = db2File.ReadEntry("Id");
-                    broadcastText.language = db2File.ReadUInt32("Language");
+                    broadcastText.language = db2File.ReadInt32("Language");
                     var maletextLength = db2File.ReadUInt16();
                     broadcastText.MaleText = db2File.ReadWoWString("Male Text", maletextLength);
                     var femaletextLength = db2File.ReadUInt16();
@@ -343,23 +343,33 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                     var id = db2File.ReadEntry("ID");
 
-                    spellMisc.Attributes = new uint[14];
-                    for (var i = 0; i < 14; ++i)
-                        spellMisc.Attributes[i] = db2File.ReadUInt32("Attributes", i);
-
+                    spellMisc.Attributes = db2File.ReadUInt32("Attributes");
+                    spellMisc.AttributesEx = db2File.ReadUInt32("AttributesEx");
+                    spellMisc.AttributesExB = db2File.ReadUInt32("AttributesExB");
+                    spellMisc.AttributesExC = db2File.ReadUInt32("AttributesExC");
+                    spellMisc.AttributesExD = db2File.ReadUInt32("AttributesExD");
+                    spellMisc.AttributesExE = db2File.ReadUInt32("AttributesExE");
+                    spellMisc.AttributesExF = db2File.ReadUInt32("AttributesExF");
+                    spellMisc.AttributesExG = db2File.ReadUInt32("AttributesExG");
+                    spellMisc.AttributesExH = db2File.ReadUInt32("AttributesExH");
+                    spellMisc.AttributesExI = db2File.ReadUInt32("AttributesExI");
+                    spellMisc.AttributesExJ = db2File.ReadUInt32("AttributesExJ");
+                    spellMisc.AttributesExK = db2File.ReadUInt32("AttributesExK");
+                    spellMisc.AttributesExL = db2File.ReadUInt32("AttributesExL");
+                    spellMisc.AttributesExM = db2File.ReadUInt32("AttributesExM");
                     spellMisc.CastingTimeIndex = db2File.ReadUInt32("CastingTimeIndex");
                     spellMisc.DurationIndex = db2File.ReadUInt32("DurationIndex");
                     spellMisc.RangeIndex = db2File.ReadUInt32("RangeIndex");
                     spellMisc.Speed = db2File.ReadSingle("Speed");
 
-                    spellMisc.SpellVisualID = new uint[14];
+                    spellMisc.SpellVisualID = new uint[2];
                     for (var i = 0; i < 2; ++i)
                         spellMisc.SpellVisualID[i] = db2File.ReadUInt32("SpellVisualID", i);
 
                     spellMisc.SpellIconID = db2File.ReadUInt32("SpellIconID");
                     spellMisc.ActiveIconID = db2File.ReadUInt32("ActiveIconID");
                     spellMisc.SchoolMask = db2File.ReadUInt32("SchoolMask");
-                    spellMisc.UnkWoD1 = db2File.ReadSingle("UnkWoD1");
+                    spellMisc.MultistrikeSpeedMod = db2File.ReadSingle("MultistrikeSpeedMod");
 
                     Storage.SpellMiscs.Add((uint)id.Key, spellMisc, packet.TimeSpan);
                     break;

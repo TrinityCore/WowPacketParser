@@ -23,28 +23,28 @@ namespace WowPacketParser.Store.Objects
 
         // ReSharper disable InconsistentNaming
         [DBFieldName("Language")]
-        public uint language;
+        public int language;
         [DBFieldName("MaleText")]
         public string MaleText;
         [DBFieldName("FemaleText")]
         public string FemaleText;
-        [DBFieldName("EmoteID0")]
-        public uint emoteID0;
         [DBFieldName("EmoteID1")]
-        public uint emoteID1;
+        public uint emoteID0;
         [DBFieldName("EmoteID2")]
+        public uint emoteID1;
+        [DBFieldName("EmoteID3")]
         public uint emoteID2;
-        [DBFieldName("EmoteDelay0")]
-        public uint emoteDelay0;
         [DBFieldName("EmoteDelay1")]
-        public uint emoteDelay1;
+        public uint emoteDelay0;
         [DBFieldName("EmoteDelay2")]
+        public uint emoteDelay1;
+        [DBFieldName("EmoteDelay3")]
         public uint emoteDelay2;
         [DBFieldName("SoundId")]
         public uint soundId;
-        [DBFieldName("UnkMoP1")]
+        [DBFieldName("UnkEmoteID")]
         public uint unk1;
-        [DBFieldName("UnkMoP2")]
+        [DBFieldName("Type")]
         public uint unk2;
         // ReSharper restore InconsistentNaming
 

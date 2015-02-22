@@ -175,7 +175,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     var broadcastText = new BroadcastText();
 
                     var Id = db2File.ReadEntry("Id");
-                    broadcastText.language = db2File.ReadUInt32("Language");
+                    broadcastText.language = db2File.ReadInt32("Language");
                     if (db2File.ReadUInt16() > 0)
                         broadcastText.MaleText = db2File.ReadCString("Male Text");
                     if (db2File.ReadUInt16() > 0)
