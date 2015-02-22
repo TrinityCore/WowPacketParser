@@ -121,6 +121,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     Storage.CreatureDifficultys.Add((uint)id.Key, creatureDifficulty, packet.TimeSpan);
                     break;
                 }
+                case DB2Hash.CurvePoint:
+                {
+                    var curvePoint = new CurvePoint();
+                    var id = db2File.ReadUInt32("ID");
+                    curvePoint.CurveID = db2File.ReadUInt32("CurveID");
+                    curvePoint.Index = db2File.ReadUInt32("Index");
+                    curvePoint.X = db2File.ReadSingle("X");
+                    curvePoint.Y = db2File.ReadSingle("Y");
+
+                    Storage.CurvePoints.Add(id, curvePoint, packet.TimeSpan);
+                    break;
+                }
                 case DB2Hash.GameObjects: // New structure - 6.0.2
                 {
                     var gameObjectTemplateDB2 = new GameObjectTemplateDB2();
