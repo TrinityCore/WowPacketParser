@@ -755,7 +755,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("Stat Value", i);
 
                 for (var i = 0; i < 10; i++)
-                    packet.ReadInt32("Unk UInt32 1", i);
+                    packet.ReadInt32("Scaling Value", i);
 
                 for (var i = 0; i < 10; i++)
                     packet.ReadInt32("Unk UInt32 2", i);
@@ -906,13 +906,13 @@ namespace WowPacketParser.Parsing.Parsers
                 for (var i = 0; i < 10; i++)
                     item.StatValues[i] = packet.ReadInt32("Stat Value", i);
 
-                item.StatUnk1 = new int[10];
+                item.ScalingValue = new int[10];
                 for (var i = 0; i < 10; i++)
-                    item.StatUnk1[i] = packet.ReadInt32("Unk UInt32 1", i);
+                    item.ScalingValue[i] = packet.ReadInt32("Scaling Value", i);
 
-                item.StatUnk2 = new int[10];
+                item.SocketCostRate = new int[10];
                 for (var i = 0; i < 10; i++)
-                    item.StatUnk2[i] = packet.ReadInt32("Unk UInt32 2", i);
+                    item.SocketCostRate[i] = packet.ReadInt32("Socket Cost Rate", i);
 
                 item.ScalingStatDistribution = packet.ReadInt32("Scaling Stat Distribution");
                 item.DamageType = packet.ReadInt32E<DamageType>("Damage Type");
@@ -1073,13 +1073,13 @@ namespace WowPacketParser.Parsing.Parsers
                     for (var i = 0; i < 10; i++)
                         item.StatValues[i] = packet.ReadInt32("Stat Value", i);
 
-                    item.StatUnk1 = new int[10];
+                    item.ScalingValue = new int[10];
                     for (var i = 0; i < 10; i++)
-                        item.StatUnk1[i] = packet.ReadInt32("Unk UInt32 1", i);
+                        item.ScalingValue[i] = packet.ReadInt32("Scaling Value", i);
 
-                    item.StatUnk2 = new int[10];
+                    item.SocketCostRate = new int[10];
                     for (var i = 0; i < 10; i++)
-                        item.StatUnk2[i] = packet.ReadInt32("Unk UInt32 2", i);
+                        item.SocketCostRate[i] = packet.ReadInt32("Socket Cost Rate", i);
 
                     item.ScalingStatDistribution = packet.ReadInt32("Scaling Stat Distribution");
                     item.DamageType = packet.ReadInt32E<DamageType>("Damage Type");
