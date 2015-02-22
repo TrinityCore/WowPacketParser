@@ -173,7 +173,7 @@ namespace WowPacketParser.SQL
 
             var fieldCount = 1;
             var fieldNames = new StringBuilder();
-            fieldNames.Append(primaryKeyName + ",");
+            fieldNames.Append(SQLUtil.AddBackQuotes(primaryKeyName) + ",");
             foreach (var field in fields)
             {
                 fieldNames.Append(field.Item2);
