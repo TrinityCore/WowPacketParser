@@ -202,7 +202,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_GROUP_UNINVITE_GUID, 0x2E07},
             {Opcode.CMSG_GUILD_ACCEPT, 0x2531},
             {Opcode.CMSG_GUILD_ACHIEVEMENT_MEMBERS, 0x3025},
-            {Opcode.CMSG_GUILD_ACHIEVEMENT_PROGRESS_QUERY, 0x3235},
+            {Opcode.CMSG_GUILD_SET_FOCUSED_ACHIEVEMENT, 0x3235},
             {Opcode.CMSG_GUILD_ADD_RANK, 0x3030},
             {Opcode.CMSG_GUILD_ASSIGN_MEMBER_RANK, 0x3032},
             {Opcode.CMSG_GUILD_AUTO_DECLINE_INVITATION, 0x1234},

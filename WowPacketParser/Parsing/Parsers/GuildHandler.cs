@@ -1200,7 +1200,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt64("XP");
         }
 
-        [Parser(Opcode.CMSG_GUILD_ACHIEVEMENT_PROGRESS_QUERY)]
+        [Parser(Opcode.CMSG_GUILD_SET_FOCUSED_ACHIEVEMENT)]
         public static void HandleGuildAchievementProgressQuery(Packet packet)
         {
             packet.ReadInt32<AchievementId>("Achievement Id");
