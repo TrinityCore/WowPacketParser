@@ -344,12 +344,12 @@ namespace WowPacketParserModule.V5_4_1_17359.Parsers
                         item.StatValues[i] = db2File.ReadInt32("Stat Value", i);
 
                     item.ScalingValue = new int[10];
-                        for (var i = 0; i < 10; i++)
-                            item.ScalingValue[i] = db2File.ReadInt32("Scaling Value", i);
+                    for (var i = 0; i < 10; i++)
+                        item.ScalingValue[i] = db2File.ReadInt32("Scaling Value", i);
 
-                        item.SocketCostRate = new int[10];
-                        for (var i = 0; i < 10; i++)
-                            item.SocketCostRate[i] = db2File.ReadInt32("Socket Cost Rate", i);
+                    item.SocketCostRate = new int[10];
+                    for (var i = 0; i < 10; i++)
+                        item.SocketCostRate[i] = db2File.ReadInt32("Socket Cost Rate", i);
 
                     item.ScalingStatDistribution = db2File.ReadInt32("Scaling Stat Distribution");
                     item.DamageType = db2File.ReadInt32E<DamageType>("Damage Type");
