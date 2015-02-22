@@ -44,7 +44,11 @@ namespace WowPacketParser.Enums.Battlenet
 #region Cache
         GetStreamItemsRequest = 0x09,
 
-        GetStreamItemsResponse = 0x09
+        GetStreamItemsResponse = 0x09,
+#endregion
+
+#region Profile
+        SettingsAvailable = 0x04,
 #endregion
     }
 
@@ -98,7 +102,9 @@ namespace WowPacketParser.Enums.Battlenet
             { new OpcodeNameKey(8, 2, Direction.BNServerToClient), "JoinResponseV2" },
 
             { new OpcodeNameKey(9, 11, Direction.BNClientToServer), "GetStreamItemsRequest" },
-            { new OpcodeNameKey(9, 11, Direction.BNServerToClient), "GetStreamItemsResponse" }
+            { new OpcodeNameKey(9, 11, Direction.BNServerToClient), "GetStreamItemsResponse" },
+
+            { new OpcodeNameKey(4, 14, Direction.BNServerToClient), "SettingsAvailable" },
         };
 
         public static string GetName(ushort opcode, byte channel, Direction direction)

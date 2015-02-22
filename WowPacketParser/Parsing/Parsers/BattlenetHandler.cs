@@ -302,6 +302,18 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.Stream.AddValue("Publication time", Utilities.ByteArrayToHexString(BitConverter.GetBytes(packet.Read<uint>(32))), i);
             }
         }
+
+        [BattlenetParser(BattlenetOpcode.SettingsAvailable, BattlenetChannel.Profile, Direction.BNServerToClient)]
+        public static void HandleSettingsAvailable(BattlenetPacket packet)
+        {
+            packet.Read<byte>(5);   // padding
+            packet.Stream.AddValue("Smh", Utilities.ByteArrayToHexString(packet.ReadBytes(packet.Read<int>(6))));
+            packet.Read<int>(21);   // padding
+            packet.Read<ulong>("Flags", 64);
+            packet.Read<uint>("Int", 32);
+            packet.Read<byte>("Settings type", 2);
+        }
+
         [BattlenetParser(BattlenetOpcode.ToonReady, BattlenetChannel.WoWRealm, Direction.BNServerToClient)]
         public static void HandleToonReady(BattlenetPacket packet)
         {
