@@ -598,8 +598,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadInt32("QuestGiverCreatureID");
             var id = packet.ReadInt32("QuestID");
-            questRequestItems.CompEmoteDelay = packet.ReadInt32("CompEmoteDelay");
-            questRequestItems.CompEmoteType = packet.ReadInt32("CompEmoteType");
+            questRequestItems.EmoteOnCompleteDelay = packet.ReadInt32("EmoteOnCompleteDelay");
+            questRequestItems.EmoteOnComplete = packet.ReadInt32("EmoteOnComplete");
 
             for (int i = 0; i < 2; i++)
                 packet.ReadInt32("QuestFlags", i);
