@@ -518,17 +518,17 @@ namespace WowPacketParser.Misc
             return value;
         }
 
-        private T ReadEnum<T>(int bits) where T : struct, IConvertible
+        private TEnum ReadBitsE<TEnum>(int bits) where TEnum : struct, IConvertible
         {
-            var type = typeof(T);
+            var type = typeof(TEnum);
             long rawVal = ReadBits(bits);
             var value = Enum.ToObject(type, rawVal);
-            return (T) value;
+            return (TEnum) value;
         }
 
-        public T ReadEnum<T>(string name, int bits, params object[] indexes) where T : struct, IConvertible
+        public TEnum ReadBitsE<TEnum>(string name, int bits, params object[] indexes) where TEnum : struct, IConvertible
         {
-            var val = ReadEnum<T>(bits);
+            var val = ReadBitsE<TEnum>(bits);
             var val64 = Convert.ToInt64(val);
             AddValue(name, FormatInteger(val64, val.ToString(CultureInfo.InvariantCulture)), indexes);
             return val;

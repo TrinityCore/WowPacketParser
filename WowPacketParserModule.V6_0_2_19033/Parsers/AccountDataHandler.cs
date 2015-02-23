@@ -26,7 +26,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var decompCount = packet.ReadInt32();
             packet.ResetBitReader();
-            packet.ReadEnum<AccountDataType>("Data Type", 3);
+            packet.ReadBitsE<AccountDataType>("Data Type", 3);
             var compCount = packet.ReadInt32();
 
             var pkt = packet.Inflate(compCount, decompCount, false);
@@ -40,7 +40,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleRequestAccountData(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");
-            packet.ReadEnum<AccountDataType>("Data Type", 3);
+            packet.ReadBitsE<AccountDataType>("Data Type", 3);
         }
 
         [Parser(Opcode.SMSG_UPDATE_ACCOUNT_DATA)]
@@ -51,7 +51,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var decompCount = packet.ReadInt32();
             packet.ResetBitReader();
-            packet.ReadEnum<AccountDataType>("Data Type", 3);
+            packet.ReadBitsE<AccountDataType>("Data Type", 3);
             var compCount = packet.ReadInt32();
 
             var pkt = packet.Inflate(compCount, decompCount, false);

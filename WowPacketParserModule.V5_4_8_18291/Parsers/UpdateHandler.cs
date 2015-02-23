@@ -248,7 +248,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 hasFallData = packet.ReadBit(); //132
 
                 if (hasMovementFlags)
-                    moveInfo.Flags = packet.ReadEnum<MovementFlag>("Movement Flags", 30, index);
+                    moveInfo.Flags = packet.ReadBitsE<MovementFlag>("Movement Flags", 30, index);
 
                 hasSplineElevation = !packet.ReadBit("Has SplineElevation", index);//136
                 moveInfo.HasSplineData = packet.ReadBit("Has SplineData", index);
@@ -267,8 +267,8 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                         var bit304 = packet.ReadBit();
 
                         splineCount = packet.ReadBits(20);
-                        packet.ReadEnum<SplineMode>("Spline Mode", 2, index);
-                        packet.ReadEnum<SplineFlag434>("Spline flags", 25, index);
+                        packet.ReadBitsE<SplineMode>("Spline Mode", 2, index);
+                        packet.ReadBitsE<SplineFlag434>("Spline flags", 25, index);
 
                         if (bit304)
                         {
@@ -284,7 +284,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     hasFallDirection = packet.ReadBit(); //128
 
                 if (hasMoveFlagsExtra)
-                    moveInfo.FlagsExtra = packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13, index);
+                    moveInfo.FlagsExtra = packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 13, index);
 
             }
 

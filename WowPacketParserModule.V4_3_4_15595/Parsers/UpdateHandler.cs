@@ -163,7 +163,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 guid2[3] = packet.ReadBit();
                 guid2[2] = packet.ReadBit();
                 if (hasMovementFlags)
-                    moveInfo.Flags = (MovementFlag)packet.ReadEnum<Enums.MovementFlag>("Movement Flags", 30, index);
+                    moveInfo.Flags = (MovementFlag)packet.ReadBitsE<Enums.MovementFlag>("Movement Flags", 30, index);
 
                 packet.ReadBit("Has MovementInfo spline", index);
                 hasPitch = !packet.ReadBit("Lacks pitch", index);
@@ -194,7 +194,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     if (bit216)
                     {
                         /*var splineMode =*/
-                        packet.ReadEnum<SplineMode>("Spline Mode", 2, index);
+                        packet.ReadBitsE<SplineMode>("Spline Mode", 2, index);
                         hasSplineStartTime = packet.ReadBit("Has spline start time", index);
                         splineCount = packet.ReadBits("Spline Waypoints", 22, index);
                         var bits57 = packet.ReadBits(2);
@@ -220,7 +220,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                         hasSplineVerticalAcceleration = packet.ReadBit("Has spline vertical acceleration", index);
                         packet.AddValue("Spline type", splineType, index);
                         /*splineFlags =*/
-                        packet.ReadEnum<SplineFlag434>("Spline flags", 25, index);
+                        packet.ReadBitsE<SplineFlag434>("Spline flags", 25, index);
                     }
                 }
 
@@ -232,7 +232,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 guid2[1] = packet.ReadBit();
                 packet.ReadBit();
                 if (!packet.ReadBit())
-                    moveInfo.FlagsExtra = packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 12, index);
+                    moveInfo.FlagsExtra = packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12, index);
             }
 
             if (hasGameObjectPosition)

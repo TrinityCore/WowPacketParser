@@ -202,11 +202,11 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                         break;
                     case MovementStatusElements.MSEMovementFlags:
                         if (hasMovementFlags)
-                            packet.ReadEnum<MovementFlag>("Movement Flags", 30);
+                            packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
                         break;
                     case MovementStatusElements.MSEMovementFlags2:
                         if (hasMovementFlags2)
-                            packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13);
+                            packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 13);
                         break;
                     case MovementStatusElements.MSETimestamp:
                         if (hasTimestamp)

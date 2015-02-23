@@ -32,7 +32,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             pkt.ClosePacket();
 
             packet.AddValue("Account Data", data);
-            packet.ReadEnum<AccountDataType>("Data Type", 3);
+            packet.ReadBitsE<AccountDataType>("Data Type", 3);
         }
 
         [Parser(Opcode.SMSG_UPDATE_ACCOUNT_DATA)]
@@ -50,7 +50,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             packet.ReadTime("Login Time");
             guid[7] = packet.ReadBit();
-            packet.ReadEnum<AccountDataType>("Data Type", 3);
+            packet.ReadBitsE<AccountDataType>("Data Type", 3);
             packet.StartBitStream(guid, 3, 6, 1, 5, 0, 4, 2);
             packet.ReadXORBytes(guid, 6, 7, 4, 1, 5, 0, 3, 2);
 

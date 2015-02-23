@@ -248,7 +248,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 hasSplineElevation = !packet.ReadBit("Has SplineElevation", index);
 
                 if (hasMoveFlagsExtra)
-                    moveInfo.FlagsExtra = packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13, index);
+                    moveInfo.FlagsExtra = packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 13, index);
 
                 hasOrientation = !packet.ReadBit();
                 hasTimestamp = !packet.ReadBit();
@@ -262,7 +262,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 guid1[0] = packet.ReadBit();
 
                 if (hasMovementFlags)
-                    moveInfo.Flags = packet.ReadEnum<MovementFlag>("Movement Flags", 30, index);
+                    moveInfo.Flags = packet.ReadBitsE<MovementFlag>("Movement Flags", 30, index);
                 packet.ReadBit();
                 if (hasFallData)
                     hasFallDirection = packet.ReadBit();
@@ -279,9 +279,9 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     if (hasFullSpline)
                     {
                         hasSplineVerticalAcceleration = packet.ReadBit();
-                        packet.ReadEnum<SplineMode>("Spline Mode", 2, index);
+                        packet.ReadBitsE<SplineMode>("Spline Mode", 2, index);
                         splineCount = packet.ReadBits(20);
-                        packet.ReadEnum<SplineFlag434>("Spline flags", 25, index);
+                        packet.ReadBitsE<SplineFlag434>("Spline flags", 25, index);
 
                         hasSplineStartTime = packet.ReadBit();
                         bit134 = packet.ReadBit();

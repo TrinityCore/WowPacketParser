@@ -24,8 +24,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
 
-            packet.ReadEnum<MovementFlag>("Movement Flags", 30, idx);
-            packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 15, idx);
+            packet.ReadBitsE<MovementFlag>("Movement Flags", 30, idx);
+            packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 15, idx);
 
             var hasTransport = packet.ReadBit("Has Transport Data", idx);
             var hasFall = packet.ReadBit("Has Fall Data", idx);
@@ -405,7 +405,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32<MapId>("MapID");
             packet.ReadByte("Arg");
-            packet.ReadEnum<TransferAbortReason>("TransfertAbort", 5);
+            packet.ReadBitsE<TransferAbortReason>("TransfertAbort", 5);
         }
 
         [Parser(Opcode.SMSG_ABORT_NEW_WORLD)]

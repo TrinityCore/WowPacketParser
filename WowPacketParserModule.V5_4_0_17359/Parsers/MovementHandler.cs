@@ -285,7 +285,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var hasMovementFlags = !packet.ReadBit();
 
             if (hasMovementFlags)
-                packet.ReadEnum<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
 
             var hasOrientation = !packet.ReadBit();
             var isAlive = !packet.ReadBit();
@@ -300,7 +300,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var bit94 = packet.ReadBit();
 
             if (hasExtraMovementFlags)
-                packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13);
+                packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 13);
 
             var hasSplineElevation = !packet.ReadBit();
 
@@ -439,10 +439,10 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var bit95 = packet.ReadBit();
 
             if (hasMovementFlagsExtra)
-                packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13);
+                packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 13);
 
             if (hasMovementFlags)
-                packet.ReadEnum<MovementFlag>("Movement flags", 30);
+                packet.ReadBitsE<MovementFlag>("Movement flags", 30);
 
             var hasO = !packet.ReadBit();
 
@@ -917,7 +917,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var bit94 = packet.ReadBit();
 
             if (hasMovementFlags)
-                packet.ReadEnum<MovementFlag>("Movement flags", 30);
+                packet.ReadBitsE<MovementFlag>("Movement flags", 30);
 
             var bitB4 = packet.ReadBit();
             if (bit70)
@@ -945,7 +945,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var bit28 = !packet.ReadBit();
 
             if (hasExtraMovementFlags)
-                packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13);
+                packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 13);
 
             if (bit70)
             {
@@ -1060,10 +1060,10 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 var bitB4 = packet.ReadBit();
 
                 if (hasMovementFlags)
-                    packet.ReadEnum<MovementFlag>("Movement flags", 30);
+                    packet.ReadBitsE<MovementFlag>("Movement flags", 30);
 
                 if (hasExtraMovementFlags)
-                    packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13);
+                    packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 13);
 
                 if (bit94)
                     bit90 = packet.ReadBit();
@@ -1152,7 +1152,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             var hasMovementFlags = !packet.ReadBit();
             if (hasMovementFlags)
-                packet.ReadEnum<MovementFlag>("Movement flags", 30);
+                packet.ReadBitsE<MovementFlag>("Movement flags", 30);
 
             packet.StartBitStream(guid1, 2, 4, 5);
             var bit95 = packet.ReadBit();
@@ -1163,7 +1163,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             guid1[6] = packet.ReadBit();
             var bits98 = (int)packet.ReadBits(22);
             if (hasExtraMovementFlags)
-                packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13);
+                packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 13);
 
             var bit68 = packet.ReadBit();
             if (bit68)
@@ -1289,14 +1289,14 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 bit88 = packet.ReadBit();
 
             if (hasExtraMovementFlags)
-                packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13);
+                packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 13);
 
             packet.StartBitStream(guid1, 0, 1);
             var bit95 = packet.ReadBit();
             var hasMovementFlags = !packet.ReadBit();
 
             if (hasMovementFlags)
-                packet.ReadEnum<MovementFlag>("Movement flags", 30);
+                packet.ReadBitsE<MovementFlag>("Movement flags", 30);
 
             packet.ReadXORByte(guid1, 5);
             if (bit68)
@@ -1405,13 +1405,13 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             var hasExtraMovementFlags = !packet.ReadBit();
             if (hasExtraMovementFlags)
-                packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13);
+                packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 13);
 
             guid1[4] = packet.ReadBit();
 
             var hasMovementFlags = !packet.ReadBit();
             if (hasMovementFlags)
-                packet.ReadEnum<MovementFlag>("Movement flags", 30);
+                packet.ReadBitsE<MovementFlag>("Movement flags", 30);
 
             if (bit68)
             {
@@ -1513,7 +1513,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var bitCD = packet.ReadBit();
 
             if (hasExtraMovementFlags)
-                packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13);
+                packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 13);
 
             guid1[2] = packet.ReadBit();
             var bitC8 = !packet.ReadBit();
@@ -1530,7 +1530,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             guid1[6] = packet.ReadBit();
 
             if (hasMovementFlags)
-                packet.ReadEnum<MovementFlag>("Movement flags", 30);
+                packet.ReadBitsE<MovementFlag>("Movement flags", 30);
 
             var bit104 = packet.ReadBit();
             if (bitC4)
@@ -1684,14 +1684,14 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
                 var hasExtraMovementFlags = !packet.ReadBit();
                 if (hasExtraMovementFlags)
-                    packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13);
+                    packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 13);
 
                 if (bit8C)
                     bit88 = packet.ReadBit();
 
                 var hasMovementFlags = !packet.ReadBit();
                 if (hasMovementFlags)
-                    packet.ReadEnum<MovementFlag>("Movement flags", 30);
+                    packet.ReadBitsE<MovementFlag>("Movement flags", 30);
 
                 if (bit8C)
                 {

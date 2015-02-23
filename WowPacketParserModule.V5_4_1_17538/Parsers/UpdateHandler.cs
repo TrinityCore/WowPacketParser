@@ -229,13 +229,13 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
                     {
                         bit130 = packet.ReadBit();
                         hasSplineVerticalAcceleration = packet.ReadBit("has Spline Vertical Acceleration", index);
-                        packet.ReadEnum<SplineMode>("Spline Mode", 2, index);
+                        packet.ReadBitsE<SplineMode>("Spline Mode", 2, index);
                         if (bit130)
                         {
                             bits11C = packet.ReadBits(21);
                             packet.ReadBits("bits12C", 2, index);
                         }
-                        packet.ReadEnum<SplineFlag434>("Spline flags", 25, index);
+                        packet.ReadBitsE<SplineFlag434>("Spline flags", 25, index);
                         hasSplineStartTime = packet.ReadBit("Has Spline Start Time", index);
                         splineCount = packet.ReadBits("SplineWaypointsCount", 20, index);
                     }
@@ -246,7 +246,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
                 packet.ReadBit("bitA4", index);
                 hasMovementFlags = !packet.ReadBit();
                 if (hasMovementFlags)
-                    moveInfo.Flags = packet.ReadEnum<MovementFlag>("Movement Flags", 30, index);
+                    moveInfo.Flags = packet.ReadBitsE<MovementFlag>("Movement Flags", 30, index);
 
                 packet.ReadBit("bit8C", index);
                 packet.ReadBit("bit8D", index);
@@ -270,7 +270,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
                 hasMoveFlagsExtra = !packet.ReadBit();
                 hasPitch = !packet.ReadBit();
                 if (hasMoveFlagsExtra)
-                    moveInfo.FlagsExtra = packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13, index);
+                    moveInfo.FlagsExtra = packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 13, index);
             }
 
             if (hasGameObjectPosition)

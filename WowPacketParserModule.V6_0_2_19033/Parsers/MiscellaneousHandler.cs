@@ -407,7 +407,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_TUTORIAL_FLAG)]
         public static void HandleTutorialFlag(Packet packet)
         {
-            var action = packet.ReadEnum<TutorialAction>("TutorialAction", 2);
+            var action = packet.ReadBitsE<TutorialAction>("TutorialAction", 2);
 
             if (action == TutorialAction.Update)
                 packet.ReadInt32E<Tutorial>("TutorialBit");

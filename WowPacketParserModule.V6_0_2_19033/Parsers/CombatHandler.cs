@@ -164,7 +164,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_ATTACKSWING_ERROR)]
         public static void HandleAttackSwingError(Packet packet)
         {
-            packet.ReadEnum<AttackSwingErr>("Reason", 2);
+            packet.ReadBitsE<AttackSwingErr>("Reason", 2);
         }
 
         [Parser(Opcode.SMSG_COMBAT_EVENT_FAILED)]

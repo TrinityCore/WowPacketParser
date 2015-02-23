@@ -194,7 +194,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 bit94 = packet.ReadBit();
                 hasOrientation = !packet.ReadBit();
                 if (hasMovementFlags)
-                    moveInfo.Flags = packet.ReadEnum<MovementFlag>("Movement Flags", 30, index);
+                    moveInfo.Flags = packet.ReadBitsE<MovementFlag>("Movement Flags", 30, index);
 
                 hasTransportData = packet.ReadBit("Has Transport Data", index);
                 if (hasTransportData)
@@ -220,7 +220,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                     {
                         hasSplineStartTime = packet.ReadBit();
                         bit134 = packet.ReadBit();
-                        packet.ReadEnum<SplineMode>("Spline Mode", 2, index);
+                        packet.ReadBitsE<SplineMode>("Spline Mode", 2, index);
                         splineCount = packet.ReadBits("SplineWaypointsCount", 20, index);
                         hasSplineVerticalAcceleration = packet.ReadBit("Has Spline Vertical Acceleration", index);
                         if (bit134)
@@ -228,7 +228,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                             bits138 = packet.ReadBits(21);
                             packet.ReadBits("bits148", 2, index);
                         }
-                        packet.ReadEnum<SplineFlag434>("Spline flags", 25, index);
+                        packet.ReadBitsE<SplineFlag434>("Spline flags", 25, index);
                     }
                 }
 
@@ -236,7 +236,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 guid1[3] = packet.ReadBit();
                 bits98 = packet.ReadBits(22);
                 if (hasMoveFlagsExtra)
-                    moveInfo.FlagsExtra = packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13, index);
+                    moveInfo.FlagsExtra = packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 13, index);
 
                 hasFallData = packet.ReadBit("Has Fall Data", index);
                 if (hasFallData)
