@@ -194,35 +194,35 @@ namespace WowPacketParser.Store.Objects
             BroadcastTextId7 = BroadcastTextId[7];
         }
 
-        [DBFieldName("ProbabilityText0")]
+        [DBFieldName("Prob0")]
         public float Prob0;
         [DBFieldName("BroadcastTextId0")]
         public uint BroadcastTextId0;
-        [DBFieldName("ProbabilityText1")]
+        [DBFieldName("Prob1")]
         public float Prob1;
         [DBFieldName("BroadcastTextId1")]
         public uint BroadcastTextId1;
-        [DBFieldName("ProbabilityText2")]
+        [DBFieldName("Prob2")]
         public float Prob2;
         [DBFieldName("BroadcastTextId2")]
         public uint BroadcastTextId2;
-        [DBFieldName("ProbabilityText3")]
+        [DBFieldName("Prob3")]
         public float Prob3;
         [DBFieldName("BroadcastTextId3")]
         public uint BroadcastTextId3;
-        [DBFieldName("ProbabilityText4")]
+        [DBFieldName("Prob4")]
         public float Prob4;
         [DBFieldName("BroadcastTextId4")]
         public uint BroadcastTextId4;
-        [DBFieldName("ProbabilityText5")]
+        [DBFieldName("Prob5")]
         public float Prob5;
         [DBFieldName("BroadcastTextId5")]
         public uint BroadcastTextId5;
-        [DBFieldName("ProbabilityText6")]
+        [DBFieldName("Prob6")]
         public float Prob6;
         [DBFieldName("BroadcastTextId6")]
         public uint BroadcastTextId6;
-        [DBFieldName("ProbabilityText7")]
+        [DBFieldName("Prob7")]
         public float Prob7;
         [DBFieldName("BroadcastTextId7")]
         public uint BroadcastTextId7;

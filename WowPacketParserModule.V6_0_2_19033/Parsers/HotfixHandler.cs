@@ -324,7 +324,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     item.StatScalingFactor = db2File.ReadSingle("Stat Scaling Factor");
                     item.CurrencySubstitutionId = db2File.ReadUInt32("Currency Substitution Id");
                     item.CurrencySubstitutionCount = db2File.ReadUInt32("Currency Substitution Count");
-                    item.ItemNameDescriptionId = db2File.ReadUInt32("Item Name Description ID");
+                    item.flagsCustom = db2File.ReadUInt32("Flags Custom");
 
                     Storage.ObjectNames.Add(entry, new ObjectName {ObjectType = ObjectType.Item, Name = item.Name},
                         packet.TimeSpan);
