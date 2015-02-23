@@ -158,7 +158,7 @@ namespace WowPacketParserModule.V5_4_1_17359.Parsers
                     var broadcastText = new BroadcastText();
 
                     var id = db2File.ReadEntry("Id");
-                    broadcastText.language = db2File.ReadInt32("Language");
+                    broadcastText.Language = db2File.ReadInt32("Language");
                     if (db2File.ReadUInt16() > 0)
                         broadcastText.MaleText = db2File.ReadCString("Male Text");
                     if (db2File.ReadUInt16() > 0)
@@ -171,9 +171,9 @@ namespace WowPacketParserModule.V5_4_1_17359.Parsers
                     for (var i = 0; i < 3; ++i)
                         broadcastText.EmoteDelay[i] = (uint) db2File.ReadInt32("Emote Delay", i);
 
-                    broadcastText.soundId = db2File.ReadUInt32("Sound Id");
-                    broadcastText.unk1 = db2File.ReadUInt32("Unk MoP 1"); // unk emote
-                    broadcastText.unk2 = db2File.ReadUInt32("Unk MoP 2"); // kind of type?
+                    broadcastText.SoundId = db2File.ReadUInt32("Sound Id");
+                    broadcastText.UnkEmoteId = db2File.ReadUInt32("Unk MoP 1"); // unk emote
+                    broadcastText.Type = db2File.ReadUInt32("Unk MoP 2"); // kind of type?
 
                     Storage.BroadcastTexts.Add((uint) id.Key, broadcastText, packet.TimeSpan);
                     packet.AddSniffData(StoreNameType.BroadcastText, id.Key, "BROADCAST_TEXT");

@@ -122,8 +122,8 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
 
                 for (var i = 0; i < count2; ++i)
                 {
-                    packet.ReadByte("unk2");
-                    packet.ReadUInt32("unk1");
+                    packet.ReadByte("unk2", i);
+                    packet.ReadUInt32("unk1", i);
                 }
 
                 var playerGuid = new WowGuid64(BitConverter.ToUInt64(charGuids[c], 0));

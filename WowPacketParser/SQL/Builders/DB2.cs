@@ -19,9 +19,6 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.broadcast_text))
                return string.Empty;
 
-            foreach (var broadcastText in Storage.BroadcastTexts)
-                broadcastText.Value.Item1.ConvertToDBStruct();
-
             var entries = Storage.BroadcastTexts.Keys();
             var templatesDb = SQLDatabase.GetDict<uint, BroadcastText>(entries, "Id", Settings.HotfixesDatabase);
 

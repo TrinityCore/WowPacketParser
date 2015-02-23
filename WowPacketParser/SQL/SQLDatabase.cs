@@ -72,21 +72,21 @@ namespace WowPacketParser.SQL
 
                     uint id = Convert.ToUInt32(reader["Id"]);
 
-                    broadcastText.language = Convert.ToInt32(reader["Language"]);
+                    broadcastText.Language = Convert.ToInt32(reader["Language"]);
                     broadcastText.MaleText = Convert.ToString(reader["MaleText"]);
                     broadcastText.FemaleText = Convert.ToString(reader["FemaleText"]);
 
-                    broadcastText.emoteID0 = Convert.ToUInt32(reader["EmoteID1"]);
-                    broadcastText.emoteID1 = Convert.ToUInt32(reader["EmoteID2"]);
-                    broadcastText.emoteID2 = Convert.ToUInt32(reader["EmoteID3"]);
+                    broadcastText.EmoteID[0] = Convert.ToUInt32(reader["EmoteID1"]);
+                    broadcastText.EmoteID[1] = Convert.ToUInt32(reader["EmoteID2"]);
+                    broadcastText.EmoteID[2] = Convert.ToUInt32(reader["EmoteID3"]);
 
-                    broadcastText.emoteDelay0 = Convert.ToUInt32(reader["EmoteDelay1"]);
-                    broadcastText.emoteDelay1 = Convert.ToUInt32(reader["EmoteDelay2"]);
-                    broadcastText.emoteDelay2 = Convert.ToUInt32(reader["EmoteDelay3"]);
+                    broadcastText.EmoteDelay[0] = Convert.ToUInt32(reader["EmoteDelay1"]);
+                    broadcastText.EmoteDelay[1] = Convert.ToUInt32(reader["EmoteDelay2"]);
+                    broadcastText.EmoteDelay[2] = Convert.ToUInt32(reader["EmoteDelay3"]);
 
-                    broadcastText.soundId = Convert.ToUInt32(reader["SoundId"]);
-                    broadcastText.unk1 = Convert.ToUInt32(reader["UnkEmoteID"]);
-                    broadcastText.unk2 = Convert.ToUInt32(reader["Type"]);
+                    broadcastText.SoundId = Convert.ToUInt32(reader["SoundId"]);
+                    broadcastText.UnkEmoteId = Convert.ToUInt32(reader["UnkEmoteID"]);
+                    broadcastText.Type = Convert.ToUInt32(reader["Type"]);
 
                     var tuple = Tuple.Create(id, broadcastText);
                     BroadcastTextStores.Add(tuple);
