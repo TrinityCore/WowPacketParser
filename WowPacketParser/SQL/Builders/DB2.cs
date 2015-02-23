@@ -38,7 +38,7 @@ namespace WowPacketParser.SQL.Builders
                 return string.Empty;
 
             var entries = Storage.CurvePoints.Keys();
-            var templatesDb = SQLDatabase.GetDict<uint, CurvePoint>(entries, "ID", Settings.HotfixesDatabase);
+            var templatesDb = SQLDatabase.GetDict<uint, CurvePoint>(entries, "ID");
 
             return SQLUtil.CompareDicts(Storage.CurvePoints, templatesDb, StoreNameType.None, "ID");
         }
@@ -73,7 +73,7 @@ namespace WowPacketParser.SQL.Builders
                 return string.Empty;
 
             var entries = Storage.SpellMiscs.Keys();
-            var templatesDb = SQLDatabase.GetDict<uint, SpellMisc>(entries, "Id", Settings.HotfixesDatabase);
+            var templatesDb = SQLDatabase.GetDict<uint, SpellMisc>(entries, "Id");
 
             return SQLUtil.CompareDicts(Storage.SpellMiscs, templatesDb, StoreNameType.None);
         }

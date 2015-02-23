@@ -3,7 +3,7 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("curve_point")]
+    [DBTableName("curve_point", WPPDatabase.Hotfixes)]
     public sealed class CurvePoint
     {
         // ReSharper disable InconsistentNaming
