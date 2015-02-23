@@ -156,8 +156,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_INSPECT_HONOR_STATS)]
-        public static void HandleInspectHonorStats(Packet packet)
+        [Parser(Opcode.CMSG_REQUEST_HONOR_STATS)]
+        public static void HandleRequestHonorStats(Packet packet)
         {
             var guid = new byte[8];
 

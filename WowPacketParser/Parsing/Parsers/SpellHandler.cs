@@ -1209,7 +1209,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32E<MountResult>("Result");
         }
 
-        [Parser(Opcode.SMSG_DISMOUNTRESULT)]
+        [Parser(Opcode.SMSG_DISMOUNT_RESULT)]
         public static void HandleDismountResult(Packet packet)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595)) // Don't know for previous.

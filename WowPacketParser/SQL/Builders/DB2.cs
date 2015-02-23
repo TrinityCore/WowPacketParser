@@ -29,6 +29,64 @@ namespace WowPacketParser.SQL.Builders
         }
 
         [BuilderMethod]
+        public static string CurvePoint()
+        {
+            if (Storage.CurvePoints.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.curve_point))
+                return string.Empty;
+
+            var entries = Storage.CurvePoints.Keys();
+            var templatesDb = SQLDatabase.GetDict<uint, CurvePoint>(entries, "ID", Settings.HotfixesDatabase);
+
+            return SQLUtil.CompareDicts(Storage.CurvePoints, templatesDb, StoreNameType.None, "ID");
+        }
+
+        public static string Holidays() { throw new NotImplementedException(); }
+        public static string ItemAppearance() { throw new NotImplementedException(); }
+        public static string ItemBonus() { throw new NotImplementedException(); }
+        public static string ItemBonusTreeNode() { throw new NotImplementedException(); }
+        public static string ItemCurrencyCost() { throw new NotImplementedException(); }
+        public static string ItemEffect() { throw new NotImplementedException(); }
+        public static string ItemExtendedCost() { throw new NotImplementedException(); }
+        public static string ItemModifiedAppearance() { throw new NotImplementedException(); }
+        public static string ItemSparse() { throw new NotImplementedException(); }
+        public static string Item() { throw new NotImplementedException(); }
+        public static string ItemXBonusTree() { throw new NotImplementedException(); }
+        public static string KeyChain() { throw new NotImplementedException(); }
+        public static string Mount() { throw new NotImplementedException(); }
+        public static string OverrideSpellData() { throw new NotImplementedException(); }
+        public static string PhaseXPhaseGroup() { throw new NotImplementedException(); }
+        public static string SpellAuraRestrictions() { throw new NotImplementedException(); }
+        public static string SpellCastingRequirements() { throw new NotImplementedException(); }
+        public static string SpellClassOptions() { throw new NotImplementedException(); }
+        public static string SpellLearnSpell() { throw new NotImplementedException(); }
+
+        [BuilderMethod]
+        public static string SpellMisc()
+        {
+            if (Storage.SpellMiscs.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.spell_misc))
+                return string.Empty;
+
+            var entries = Storage.SpellMiscs.Keys();
+            var templatesDb = SQLDatabase.GetDict<uint, SpellMisc>(entries, "Id", Settings.HotfixesDatabase);
+
+            return SQLUtil.CompareDicts(Storage.SpellMiscs, templatesDb, StoreNameType.None);
+        }
+
+        public static string SpellPower() { throw new NotImplementedException(); }
+        public static string SpellReagents() { throw new NotImplementedException(); }
+        public static string SpellRuneCost() { throw new NotImplementedException(); }
+        public static string SpellTotems() { throw new NotImplementedException(); }
+        public static string TaxiNodes() { throw new NotImplementedException(); }
+        public static string TaxiPathNode() { throw new NotImplementedException(); }
+        public static string TaxiPath() { throw new NotImplementedException(); }
+
+        [BuilderMethod]
         public static string CreatureDifficulty()
         {
             if (Storage.CreatureDifficultys.IsEmpty())
@@ -98,6 +156,8 @@ namespace WowPacketParser.SQL.Builders
                         for (int i = 0; i < 5; i++)
                             row.AddValue("Flags" + (i + 1), creature.Value.Item1.Flags[i]);
 
+                        row.AddValue("VerifiedBuild", creature.Value.Item1.VerifiedBuild);
+
                         rowsIns.Add(row);
                     }
                 }
@@ -116,6 +176,8 @@ namespace WowPacketParser.SQL.Builders
 
                     for (int i = 0; i < 5; i++)
                         row.AddValue("Flags" + (i + 1), creature.Value.Item1.Flags[i]);
+
+                    row.AddValue("VerifiedBuild", creature.Value.Item1.VerifiedBuild);
 
                     rowsIns.Add(row);
                 }
@@ -138,21 +200,6 @@ namespace WowPacketParser.SQL.Builders
             var templatesDb = SQLDatabase.GetDict<uint, GameObjectTemplateDB2>(entries, "Id", Settings.HotfixesDatabase);
 
             return SQLUtil.CompareDicts(Storage.GameObjectTemplateDB2s, templatesDb, StoreNameType.GameObject);
-        }
-
-        [BuilderMethod]
-        public static string SpellMisc()
-        {
-            if (Storage.SpellMiscs.IsEmpty())
-                return String.Empty;
-
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.spell_misc))
-                return string.Empty;
-
-            var entries = Storage.SpellMiscs.Keys();
-            var templatesDb = SQLDatabase.GetDict<uint, SpellMisc>(entries, "Id", Settings.HotfixesDatabase);
-
-            return SQLUtil.CompareDicts(Storage.SpellMiscs, templatesDb, StoreNameType.Spell);
         }
     }
 }

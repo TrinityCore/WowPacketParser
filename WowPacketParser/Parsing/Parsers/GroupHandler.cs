@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
@@ -600,7 +599,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Player 2 name");
         }
 
-        [Parser(Opcode.CMSG_GROUP_ASSISTANT_LEADER)]
+        [Parser(Opcode.CMSG_SET_ASSISTANT_LEADER)]
         public static void HandleGroupAssistantLeader(Packet packet)
         {
             packet.ReadGuid("GUID");

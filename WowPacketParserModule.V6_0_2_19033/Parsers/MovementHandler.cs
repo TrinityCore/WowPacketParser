@@ -164,7 +164,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_MOVE_STOP_STRAFE)]
         [Parser(Opcode.CMSG_MOVE_STOP_SWIM)]
         [Parser(Opcode.CMSG_MOVE_STOP_TURN)]
-        [Parser(Opcode.SMSG_MOVE_SET_IGNORE_MOVEMENT_FORCES)]
         [Parser(Opcode.SMSG_MOVE_UPDATE_KNOCK_BACK)]
         [Parser(Opcode.SMSG_MOVE_UPDATE)]
         public static void HandlePlayerMove(Packet packet)
@@ -172,34 +171,46 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadMovementStats(packet);
         }
 
-        [Parser(Opcode.SMSG_ON_MONSTER_MOVE)]
-        public static void HandleMonsterMove(Packet packet)
+        public static void ReadMonsterSplineFilter(Packet packet, params object[] indexes)
         {
-            packet.ReadPackedGuid128("MoverGUID");
+            var count = packet.ReadUInt32("MonsterSplineFilterKey", indexes);
+            packet.ReadSingle("BaseSpeed", indexes);
+            packet.ReadUInt16("StartOffset", indexes);
+            packet.ReadSingle("DistToPrevFilterKey", indexes);
 
-            var pos = packet.ReadVector3("Position");
-            packet.ReadUInt32("Id");
-            packet.ReadVector3("Destination");
+            for (int i = 0; i < count; i++)
+            {
+                packet.ReadInt16("IDx", indexes, i);
+                packet.ReadUInt16("Speed", indexes, i);
+            }
 
-            packet.ReadInt32E<SplineFlag434>("Spline Flags");
-            packet.ReadByte("AnimTier");
-            packet.ReadUInt32("TierTransStartTime");
-            packet.ReadUInt32("Elapsed");
-            packet.ReadUInt32("MoveTime");
-            packet.ReadSingle("JumpGravity");
-            packet.ReadUInt32("SpecialTime");
-            var points = packet.ReadInt32("Waypoints");
+            packet.ReadUInt16("AddedToStart", indexes);
 
-            packet.ReadByte("Mode");
-            packet.ReadByte("VehicleExitVoluntary");
+            packet.ResetBitReader();
+            packet.ReadBits("FilterFlags", 2, indexes);
+        }
 
-            packet.ReadPackedGuid128("TransportGUID");
-            packet.ReadByte("VehicleSeat");
+        public static void ReadMovementSpline(Packet packet, Vector3 pos, params object[] indexes)
+        {
+            packet.ReadInt32E<SplineFlag434>("Flags", indexes);
+            packet.ReadByte("AnimTier", indexes);
+            packet.ReadUInt32("TierTransStartTime", indexes);
+            packet.ReadInt32("Elapsed", indexes);
+            packet.ReadUInt32("MoveTime", indexes);
+            packet.ReadSingle("JumpGravity", indexes);
+            packet.ReadUInt32("SpecialTime", indexes);
+            var pointsCount = packet.ReadInt32("PointsCount", indexes);
 
-            var packedDeltas = packet.ReadInt32();
+            packet.ReadByte("Mode", indexes);
+            packet.ReadByte("VehicleExitVoluntary", indexes);
+
+            packet.ReadPackedGuid128("TransportGUID", indexes);
+            packet.ReadSByte("VehicleSeat", indexes);
+
+            var packedDeltasCount = packet.ReadInt32("PackedDeltasCount", indexes);
 
             Vector3 endpos = new Vector3();
-            for (int i = 0; i < points; i++)
+            for (int i = 0; i < pointsCount; i++)
             {
                 var spot = packet.ReadVector3();
 
@@ -207,82 +218,79 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 if (i == 0)
                     endpos = spot;
 
-                packet.AddValue("Waypoint", spot, i);
+                packet.AddValue("Points", spot, indexes, i);
             }
 
-            var waypoints = new Vector3[packedDeltas];
-            for (int i = 0; i < packedDeltas; i++)
+            var waypoints = new Vector3[packedDeltasCount];
+            for (int i = 0; i < packedDeltasCount; i++)
             {
-                var vec = packet.ReadPackedVector3();
-                waypoints[i].X = vec.X;
-                waypoints[i].Y = vec.Y;
-                waypoints[i].Z = vec.Z;
+                var packedDeltas = packet.ReadPackedVector3();
+                waypoints[i].X = packedDeltas.X;
+                waypoints[i].Y = packedDeltas.Y;
+                waypoints[i].Z = packedDeltas.Z;
             }
 
             packet.ResetBitReader();
-            var type = packet.ReadBits("Face", 2);
-            var monsterSplineFilter = packet.ReadBit("Has MonsterSplineFilter");
+            var type = packet.ReadBits("Face", 2, indexes);
+            var monsterSplineFilter = packet.ReadBit("HasMonsterSplineFilter", indexes);
 
             switch (type)
             {
                 case 1:
-                {
-                   packet.ReadVector3("FaceSpot");
-                   break;
-                }
+                    packet.ReadVector3("FaceSpot", indexes);
+                    break;
                 case 2:
-                {
-                    packet.ReadSingle("FaceDirection");
-                    packet.ReadPackedGuid128("Facing GUID");
+                    packet.ReadSingle("FaceDirection", indexes);
+                    packet.ReadPackedGuid128("FacingGUID", indexes);
                     break;
-                }
                 case 3:
-                {
-                    packet.ReadSingle("FaceDirection");
+                    packet.ReadSingle("FaceDirection", indexes);
                     break;
-                }
             }
 
             if (monsterSplineFilter)
-            {
-                var count = packet.ReadUInt32("MonsterSplineFilterKey");
-                packet.ReadSingle("BaseSpeed");
-                packet.ReadInt16("StartOffset");
-                packet.ReadSingle("DistToPrevFilterKey");
-
-                for (int i = 0; i < count; i++)
-                {
-                    packet.ReadInt16("IDx", i);
-                    packet.ReadInt16("Speed", i);
-                }
-
-                packet.ReadInt16("AddedToStart");
-
-                packet.ResetBitReader();
-                packet.ReadBits("FilterFlags", 2);
-            }
-
-            packet.ResetBitReader();
-            packet.ReadBit("CrzTeleport");
-            packet.ReadBits("Unk Bit", 2);
+                ReadMonsterSplineFilter(packet, indexes, "MonsterSplineFilter");
 
             // Calculate mid pos
             var mid = new Vector3
             {
-                X = (pos.X + endpos.X)*0.5f,
-                Y = (pos.Y + endpos.Y)*0.5f,
-                Z = (pos.Z + endpos.Z)*0.5f
+                X = (pos.X + endpos.X) * 0.5f,
+                Y = (pos.Y + endpos.Y) * 0.5f,
+                Z = (pos.Z + endpos.Z) * 0.5f
             };
-            for (var i = 0; i < packedDeltas; ++i)
+
+            for (var i = 0; i < packedDeltasCount; ++i)
             {
                 var vec = new Vector3
                 {
                     X = mid.X - waypoints[i].X,
                     Y = mid.Y - waypoints[i].Y,
-                    Z = mid.Z - waypoints[i].Z,
+                    Z = mid.Z - waypoints[i].Z
                 };
-                packet.AddValue("Waypoint", vec, i);
+                packet.AddValue("WayPoints", vec, indexes, i);
             }
+        }
+
+        public static void ReadMovementMonsterSpline(Packet packet, Vector3 pos, params object[] indexes)
+        {
+            packet.ReadUInt32("Id", indexes);
+            packet.ReadVector3("Destination", indexes);
+
+            ReadMovementSpline(packet, pos, indexes, "MovementSpline");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("CrzTeleport", indexes);
+            packet.ReadBits("UnkBit", 2, indexes);
+        }
+
+        [Parser(Opcode.SMSG_ON_MONSTER_MOVE)]
+        public static void HandleOnMonsterMove(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+            var pos = packet.ReadVector3("Position");
+
+            ReadMovementMonsterSpline(packet, pos, "MovementMonsterSpline");
         }
 
         [Parser(Opcode.SMSG_SET_PHASE_SHIFT_CHANGE)]
@@ -476,14 +484,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_MOVE_SET_WATER_WALK)]
         [Parser(Opcode.SMSG_MOVE_SET_FEATHER_FALL)]
         [Parser(Opcode.SMSG_MOVE_SET_NORMAL_FALL)]
+        [Parser(Opcode.SMSG_MOVE_SET_IGNORE_MOVEMENT_FORCES)]
+        [Parser(Opcode.SMSG_MOVE_UNSET_IGNORE_MOVEMENT_FORCES)]
         public static void HandleMovementIndex(Packet packet)
         {
             packet.ReadPackedGuid128("MoverGUID");
             packet.ReadInt32("SequenceIndex");
         }
 
-        [Parser(Opcode.SMSG_FORCE_RUN_SPEED_CHANGE)]
-        [Parser(Opcode.SMSG_FORCE_SWIM_SPEED_CHANGE)]
+        [Parser(Opcode.SMSG_MOVE_SET_RUN_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SET_SWIM_SPEED)]
         [Parser(Opcode.SMSG_MOVE_SET_FLIGHT_SPEED)]
         [Parser(Opcode.SMSG_MOVE_SET_WALK_SPEED)]
         [Parser(Opcode.SMSG_MOVE_SET_RUN_BACK_SPEED)]

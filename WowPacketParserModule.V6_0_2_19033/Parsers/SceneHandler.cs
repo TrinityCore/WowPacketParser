@@ -6,19 +6,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class SceneHandler
     {
-        public static void ReadCriteriaProgress(Packet packet, params object[] idx)
-        {
-            packet.ReadInt32("Id");
-            packet.ReadInt64("Quantity");
-            packet.ReadPackedGuid128("Guid");
-            packet.ReadPackedTime("Date");
-            packet.ReadTime("TimeFromStart");
-            packet.ReadTime("TimeFromCreate");
-
-            packet.ResetBitReader();
-            packet.ReadBits("Flags", 4);
-        }
-
         [Parser(Opcode.SMSG_CANCEL_SCENE)]
         [Parser(Opcode.CMSG_SCENE_PLAYBACK_COMPLETE)]
         [Parser(Opcode.CMSG_SCENE_PLAYBACK_CANCELED)]
@@ -114,7 +101,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_SCENARIO_PROGRESS_UPDATE)]
         public static void HandleScenarioProgressUpdate(Packet packet)
         {
-            ReadCriteriaProgress(packet);
+            AchievementHandler.ReadCriteriaProgress(packet, "Progress");
         }
 
         [Parser(Opcode.SMSG_SCENARIO_STATE)]
@@ -131,7 +118,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var int20 = packet.ReadInt32("BonusObjectiveDataCount");
 
             for (int i = 0; i < int36; i++)
-                ReadCriteriaProgress(packet, i);
+                AchievementHandler.ReadCriteriaProgress(packet, "CriteriaProgress", i);
 
             for (int i = 0; i < int20; i++)
             {

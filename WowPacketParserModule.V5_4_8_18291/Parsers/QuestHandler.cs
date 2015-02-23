@@ -167,7 +167,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
                 var quest = new QuestTemplate
                 {
-                    Method = questIsntAutoComplete ? QuestMethod.Normal : QuestMethod.AutoComplete,
+                    Method = questIsntAutoComplete ? QuestMethod.Normal : QuestMethod.AutoComplete
                 };
 
                 quest.RewardCurrencyId = new uint[4];

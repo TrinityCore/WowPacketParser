@@ -887,7 +887,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
         }
 
-        [Parser(Opcode.SMSG_BATTLE_PET_NAME_RESPONSE)]
+        [Parser(Opcode.SMSG_QUERY_BATTLE_PET_NAME_RESPONSE)]
         public static void HandleBattlePetQueryResponse(Packet packet)
         {
             var bits19 = 0u;

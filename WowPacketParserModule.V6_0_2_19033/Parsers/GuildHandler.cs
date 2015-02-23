@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -9,14 +8,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     {
         [Parser(Opcode.CMSG_GUILD_GET_ROSTER)]
         [Parser(Opcode.CMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY_QUERY)]
-        [Parser(Opcode.CMSG_GUILD_REQUEST_CHALLENGE_INFO)]
+        [Parser(Opcode.CMSG_GUILD_CHALLENGE_UPDATE_REQUEST)]
         [Parser(Opcode.CMSG_GUILD_DELETE)]
         [Parser(Opcode.CMSG_GUILD_PERMISSIONS_QUERY)]
         [Parser(Opcode.CMSG_GUILD_REPLACE_GUILD_MASTER)]
         [Parser(Opcode.CMSG_ACCEPT_GUILD_INVITE)]
         [Parser(Opcode.CMSG_GUILD_LEAVE)]
         [Parser(Opcode.CMSG_GUILD_AUTO_DECLINE_INVITATION)]
-        [Parser(Opcode.CMSG_GUILD_DECLINE)]
+        [Parser(Opcode.CMSG_GUILD_DECLINE_INVITATION)]
         [Parser(Opcode.CMSG_GUILD_EVENT_LOG_QUERY)]
         [Parser(Opcode.SMSG_GUILD_MEMBER_DAILY_RESET)]
         [Parser(Opcode.SMSG_GUILD_EVENT_BANK_CONTENTS_CHANGED)]
@@ -208,7 +207,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Name", bits38);
         }
 
-        [Parser(Opcode.SMSG_GUILD_RECIPES)]
+        [Parser(Opcode.SMSG_GUILD_KNOWN_RECIPES)]
         public static void HandleGuildRecipes(Packet packet)
         {
             var count = packet.ReadInt32("Criteria count");
@@ -340,7 +339,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("GuildName", bits52);
         }
 
-        [Parser(Opcode.SMSG_GUILD_BANK_LIST)]
+        [Parser(Opcode.SMSG_GUILD_BANK_QUERY_RESULTS)]
         public static void HandleGuildBankList(Packet packet)
         {
             packet.ReadUInt64("Money");
@@ -427,7 +426,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt64("WeeklyBonusMoney");
         }
 
-        [Parser(Opcode.SMSG_GUILD_CHALLENGE_UPDATED)]
+        [Parser(Opcode.SMSG_GUILD_CHALLENGE_UPDATE)]
         public static void HandleGuildChallengeUpdated(Packet packet)
         {
             for (int i = 0; i < 6; ++i)
@@ -528,7 +527,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("GuildGUID");
         }
 
-        [Parser(Opcode.CMSG_GUILD_BANKER_ACTIVATE)]
+        [Parser(Opcode.CMSG_GUILD_BANK_ACTIVATE)]
         public static void HandleGuildBankActivate(Packet packet)
         {
             packet.ReadPackedGuid128("Banker");
@@ -821,6 +820,102 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("SkillRank");
             for (int i = 0; i < 0x12C; i++)
                 packet.ReadByte("SkillLineBitArray", i);
+        }
+
+        [Parser(Opcode.SMSG_PETITION_DECLINED)]
+        public static void HandlePetitionDeclined(Packet packet)
+        {
+            packet.ReadPackedGuid128("Decliner");
+        }
+
+        [Parser(Opcode.SMSG_PETITION_RENAME_GUILD_RESPONSE)]
+        public static void HandlePetitionRenameGuildResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetitionGuid");
+            var length = packet.ReadBits("NewGuildNameLength", 7);
+            packet.ResetBitReader();
+
+            packet.ReadWoWString("NewGuildName", length);
+        }
+
+        [Parser(Opcode.SMSG_TURN_IN_PETITION_RESULTS)]
+        public static void HandlePetitionTurnInResults(Packet packet)
+        {
+            packet.ReadEnum<PetitionResultType>("Result", 4);
+        }
+
+        [Parser(Opcode.SMSG_GUILD_INVITE_DECLINED)]
+        public static void HandleGuildInviteDeclined(Packet packet)
+        {
+            var nameLength = packet.ReadBits("NameLength", 6);
+            packet.ReadBit("AutoDecline");
+
+            packet.ResetBitReader();
+
+            packet.ReadUInt32("VirtualRealmAddress");
+            packet.ReadWoWString("Name", nameLength);
+        }
+
+        [Parser(Opcode.SMSG_GUILD_BANK_TEXT_QUERY_RESULT)]
+        public static void HandleGuildQueryBankText434(Packet packet)
+        {
+            packet.ReadInt32("Tab");
+
+            var textLength = packet.ReadBits("TextLength", 14);
+            packet.ResetBitReader();
+
+            packet.ReadWoWString("Text", textLength);
+        }
+
+        [Parser(Opcode.SMSG_GUILD_EVENT_TAB_MODIFIED)]
+        public static void HandleGuildEventTabModified(Packet packet)
+        {
+            packet.ReadInt32("Tab");
+
+            var nameLength = packet.ReadBits("NameLength", 7);
+            var iconLength = packet.ReadBits("IconLength", 9);
+            packet.ResetBitReader();
+
+            packet.ReadWoWString("Name", nameLength);
+            packet.ReadWoWString("Icon", iconLength);
+        }
+
+        public static void ReadLFGuildBrowseData(Packet packet, params object[] idx)
+        {
+            var guildNameLength = packet.ReadBits("GuildNameLength", 7, idx);
+            var commentLength = packet.ReadBits("CommentLength", 10, idx);
+            packet.ResetBitReader();
+
+            packet.ReadPackedGuid128("GuildGUID", idx);
+
+            packet.ReadUInt32("GuildVirtualRealm", idx);
+            // packet.ReadInt32("GuildLevel", idx);
+            packet.ReadInt32("GuildMembers", idx);
+            packet.ReadInt32("GuildAchievementPoints", idx);
+            packet.ReadInt32E<GuildFinderOptionsInterest>("PlayStyle", idx);
+            packet.ReadInt32E<GuildFinderOptionsAvailability>("Availability", idx);
+            packet.ReadInt32E<GuildFinderOptionsRoles>("ClassRoles", idx);
+            packet.ReadInt32E<GuildFinderOptionsLevel>("LevelRange", idx);
+            packet.ReadInt32("EmblemStyle", idx);
+            packet.ReadInt32("EmblemColor", idx);
+            packet.ReadInt32("BorderStyle", idx);
+            packet.ReadInt32("BorderColor", idx);
+            packet.ReadInt32("Background", idx);
+
+            packet.ReadSByte("Cached", idx);
+            packet.ReadSByte("MembershipRequested", idx);
+
+            packet.ReadWoWString("GuildName", guildNameLength);
+            packet.ReadWoWString("CommentLength", commentLength);
+        }
+
+        [Parser(Opcode.SMSG_LF_GUILD_BROWSE)]
+        public static void HandleLFGuildBrowse(Packet packet)
+        {
+            var count = packet.ReadInt32("PostCount");
+
+            for (var i = 0; i < count; ++i)
+                ReadLFGuildBrowseData(packet, "Post", i);
         }
     }
 }

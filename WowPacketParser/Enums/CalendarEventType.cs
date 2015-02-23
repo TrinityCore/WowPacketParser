@@ -1,6 +1,6 @@
 ﻿namespace WowPacketParser.Enums
 {
-    public enum  CalendarEventType
+    public enum CalendarEventType
     {
         Raid    = 0,
         Dungeon = 1,

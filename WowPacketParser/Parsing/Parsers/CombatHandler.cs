@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 
@@ -69,7 +68,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Rank");
         }
 
-        [Parser(Opcode.CMSG_SETSHEATHED)]
+        [Parser(Opcode.CMSG_SET_SHEATHED)]
         public static void HandleSetSheathed(Packet packet)
         {
             packet.ReadInt32E<SheathState>("Sheath");

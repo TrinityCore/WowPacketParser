@@ -147,7 +147,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.Write("[{0}] ", i++);
 
-                Handler.Parse(packet, isMultiple: true);
+                Handler.Parse(packet, true);
             }
             packet.WriteLine("}");
         }
@@ -477,8 +477,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Serial");
         }
 
-        [Parser(Opcode.CMSG_SET_ALLOW_LOW_LEVEL_RAID1)]
-        [Parser(Opcode.CMSG_SET_ALLOW_LOW_LEVEL_RAID2)]
+        [Parser(Opcode.CMSG_LOW_LEVEL_RAID1)]
+        [Parser(Opcode.CMSG_LOW_LEVEL_RAID2)]
         public static void HandleLowLevelRaidPackets(Packet packet)
         {
             packet.ReadBool("Allow");
@@ -623,7 +623,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_GAMETIME_SET)]
+        [Parser(Opcode.SMSG_GAME_TIME_SET)]
         public static void HandleGametimeSet(Packet packet)
         {
             packet.ReadUInt32("Unk time");
@@ -697,7 +697,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Instance Difficulty ID");
         }
 
-        [Parser(Opcode.CMSG_INSPECT_HONOR_STATS)]
+        [Parser(Opcode.CMSG_REQUEST_HONOR_STATS)]
         [Parser(Opcode.MSG_INSPECT_HONOR_STATS)]
         public static void HandleInspectHonorStats(Packet packet)
         {
@@ -784,11 +784,11 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Sound ID");
         }
 
-        [Parser(Opcode.SMSG_COMPLAIN_RESULT)]
+        [Parser(Opcode.SMSG_COMPLAINT_RESULT)]
         public static void HandleComplainResult(Packet packet)
         {
-            packet.ReadByte("Unknown1"); // value 1 resets CGChat::m_complaintsSystemStatus in client. (unused?)
-            packet.ReadByte("Unknown2"); // value 0xC generates a "CalendarError" in client. (found in 3.3.3a and 4.2.2a at least)
+            packet.ReadByte("Result"); // value 1 resets CGChat::m_complaintsSystemStatus in client. (unused?)
+            packet.ReadByte("ComplaintType"); // value 0xC generates a "CalendarError" in client. (found in 3.3.3a and 4.2.2a at least)
         }
 
         [Parser(Opcode.CMSG_MINIGAME_MOVE)]

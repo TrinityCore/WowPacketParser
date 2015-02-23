@@ -10,7 +10,7 @@
         OBJECT_FIELD_ENTRY = 0x0005, // Size: 1, Type: INT, Flags: PUBLIC
         OBJECT_FIELD_SCALE_X = 0x0006, // Size: 1, Type: FLOAT, Flags: PUBLIC
         OBJECT_FIELD_PADDING = 0x0007, // Size: 1, Type: INT, Flags: NONE
-        OBJECT_END = 0x0008,
+        OBJECT_END = 0x0008
     }
 
     public enum ItemField
@@ -58,7 +58,7 @@
         ITEM_FIELD_DURABILITY = ObjectField.OBJECT_END + 0x003F, // Size: 1, Type: INT, Flags: OWNER, UNUSED1
         ITEM_FIELD_MAXDURABILITY = ObjectField.OBJECT_END + 0x0040, // Size: 1, Type: INT, Flags: OWNER, UNUSED1
         ITEM_FIELD_CREATE_PLAYED_TIME = ObjectField.OBJECT_END + 0x0041, // Size: 1, Type: INT, Flags: PUBLIC
-        ITEM_END = ObjectField.OBJECT_END + 0x0042,
+        ITEM_END = ObjectField.OBJECT_END + 0x0042
     }
 
     public enum ContainerField
@@ -66,7 +66,7 @@
         CONTAINER_FIELD_NUM_SLOTS = ItemField.ITEM_END + 0x0000, // Size: 1, Type: INT, Flags: PUBLIC
         CONTAINER_ALIGN_PAD = ItemField.ITEM_END + 0x0001, // Size: 1, Type: BYTES, Flags: NONE
         CONTAINER_FIELD_SLOT_1 = ItemField.ITEM_END + 0x0002, // Size: 72, Type: LONG, Flags: PUBLIC
-        CONTAINER_END = ItemField.ITEM_END + 0x004A,
+        CONTAINER_END = ItemField.ITEM_END + 0x004A
     }
 
     public enum UnitField
@@ -180,7 +180,7 @@
         UNIT_FIELD_HOVERHEIGHT = ObjectField.OBJECT_END + 0x0087, // Size: 1, Type: FLOAT, Flags: PUBLIC
         UNIT_FIELD_MAXITEMLEVEL = ObjectField.OBJECT_END + 0x0088, // Size: 1, Type: INT, Flags: PUBLIC
         UNIT_FIELD_PADDING = ObjectField.OBJECT_END + 0x0089, // Size: 1, Type: INT, Flags: NONE
-        UNIT_END = ObjectField.OBJECT_END + 0x008A,
+        UNIT_END = ObjectField.OBJECT_END + 0x008A
     }
 
     public enum PlayerField
@@ -513,7 +513,7 @@
         PLAYER_FIELD_MOD_RANGED_HASTE = UnitField.UNIT_END + 0x04D3, // Size: 1, Type: FLOAT, Flags: PRIVATE
         PLAYER_FIELD_MOD_PET_HASTE = UnitField.UNIT_END + 0x04D4, // Size: 1, Type: FLOAT, Flags: PRIVATE
         PLAYER_FIELD_MOD_HASTE_REGEN = UnitField.UNIT_END + 0x04D5, // Size: 1, Type: FLOAT, Flags: PRIVATE
-        PLAYER_END = UnitField.UNIT_END + 0x04D6,
+        PLAYER_END = UnitField.UNIT_END + 0x04D6
     }
 
     public enum GameObjectField
@@ -526,7 +526,7 @@
         GAMEOBJECT_FACTION = ObjectField.OBJECT_END + 0x0009, // Size: 1, Type: INT, Flags: PUBLIC
         GAMEOBJECT_LEVEL = ObjectField.OBJECT_END + 0x000A, // Size: 1, Type: INT, Flags: PUBLIC
         GAMEOBJECT_BYTES_1 = ObjectField.OBJECT_END + 0x000B, // Size: 1, Type: BYTES, Flags: PUBLIC
-        GAMEOBJECT_END = ObjectField.OBJECT_END + 0x000C,
+        GAMEOBJECT_END = ObjectField.OBJECT_END + 0x000C
     }
 
     public enum DynamicObjectField
@@ -536,7 +536,7 @@
         DYNAMICOBJECT_SPELLID = ObjectField.OBJECT_END + 0x0003, // Size: 1, Type: INT, Flags: PUBLIC
         DYNAMICOBJECT_RADIUS = ObjectField.OBJECT_END + 0x0004, // Size: 1, Type: FLOAT, Flags: PUBLIC
         DYNAMICOBJECT_CASTTIME = ObjectField.OBJECT_END + 0x0005, // Size: 1, Type: INT, Flags: PUBLIC
-        DYNAMICOBJECT_END = ObjectField.OBJECT_END + 0x0006,
+        DYNAMICOBJECT_END = ObjectField.OBJECT_END + 0x0006
     }
 
     public enum CorpseField
@@ -549,7 +549,7 @@
         CORPSE_FIELD_BYTES_2 = ObjectField.OBJECT_END + 0x0019, // Size: 1, Type: BYTES, Flags: PUBLIC
         CORPSE_FIELD_FLAGS = ObjectField.OBJECT_END + 0x001A, // Size: 1, Type: INT, Flags: PUBLIC
         CORPSE_FIELD_DYNAMIC_FLAGS = ObjectField.OBJECT_END + 0x001B, // Size: 1, Type: INT, Flags: UNUSED2
-        CORPSE_END = ObjectField.OBJECT_END + 0x001C,
+        CORPSE_END = ObjectField.OBJECT_END + 0x001C
     }
 
     public enum AreaTriggerField
@@ -558,7 +558,7 @@
         AREATRIGGER_SPELLVISUALID = ObjectField.OBJECT_END + 0x0001, // Size: 1, Type: INT, Flags: PUBLIC
         AREATRIGGER_DURATION = ObjectField.OBJECT_END + 0x0002, // Size: 1, Type: INT, Flags: PUBLIC
         AREATRIGGER_FINAL_POS = ObjectField.OBJECT_END + 0x0003, // Size: 3, Type: FLOAT, Flags: PUBLIC
-        AREATRIGGER_END = ObjectField.OBJECT_END + 0x0006,
+        AREATRIGGER_END = ObjectField.OBJECT_END + 0x0006
     }
     // ReSharper restore InconsistentNaming
 }

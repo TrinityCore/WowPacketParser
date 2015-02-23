@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
@@ -26,7 +25,7 @@ namespace WowPacketParser.Parsing.Parsers
             Storage.DefenseMessages.Add(zoneId, message, packet.TimeSpan);
         }
 
-        [Parser(Opcode.CMSG_CHAT_IGNORED)]
+        [Parser(Opcode.CMSG_CHAT_REPORT_IGNORED)]
         public static void HandleChatIgnored(Packet packet)
         {
             packet.ReadGuid("GUID");

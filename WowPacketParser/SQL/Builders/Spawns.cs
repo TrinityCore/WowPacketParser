@@ -140,7 +140,7 @@ namespace WowPacketParser.SQL.Builders
                             continue;
 
                         auras += aura.SpellId + " ";
-                        commentAuras += aura.SpellId.ToString() + " - " + StoreGetters.GetName(StoreNameType.Spell, (int)aura.SpellId, false) + ", ";
+                        commentAuras += aura.SpellId + " - " + StoreGetters.GetName(StoreNameType.Spell, (int)aura.SpellId, false) + ", ";
                     }
 
                     auras = auras.TrimEnd(' ');

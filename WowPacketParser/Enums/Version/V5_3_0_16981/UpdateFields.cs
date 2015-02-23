@@ -10,7 +10,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
         OBJECT_FIELD_ENTRY                               = 0x0005, // Size =   1, Type: Flags UNUSED2
         OBJECT_FIELD_DYNAMIC_FLAGS                       = 0x0006, // Size =   1, Type: Flags UNUSED2 | DYNAMIC
         OBJECT_FIELD_SCALE_X                             = 0x0007, // Size =   1, Type: Flags PUBLIC
-        OBJECT_END                                       = 0x0008,
+        OBJECT_END                                       = 0x0008
     };
 
     public enum ItemField
@@ -30,7 +30,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
         ITEM_FIELD_MAX_DURABILITY                        = ObjectField.OBJECT_END + 0x003A, // Size =   1, Type: Flags OWNER
         ITEM_FIELD_CREATE_PLAYED_TIME                    = ObjectField.OBJECT_END + 0x003B, // Size =   1, Type: Flags PUBLIC
         ITEM_FIELD_MODIFIERS_MASK                        = ObjectField.OBJECT_END + 0x003C, // Size =   1, Type: Flags OWNER
-        ITEM_END                                         = ObjectField.OBJECT_END + 0x003D,
+        ITEM_END                                         = ObjectField.OBJECT_END + 0x003D
     };
 
 
@@ -44,7 +44,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
     {
         CONTAINER_FIELD_SLOTS                            = ItemField.ITEM_END + 0x0000, // Size =  72, Type: Flags PUBLIC
         CONTAINER_FIELD_NUM_SLOTS                        = ItemField.ITEM_END + 0x0048, // Size =   1, Type: Flags PUBLIC
-        CONTAINER_END                                    = ItemField.ITEM_END + 0x0049,
+        CONTAINER_END                                    = ItemField.ITEM_END + 0x0049
     };
 
 
@@ -128,7 +128,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
         UNIT_FIELD_MAX_ITEM_LEVEL                        = ObjectField.OBJECT_END + 0x0090, // Size =   1, Type: Flags PUBLIC
         UNIT_FIELD_WILD_BATTLEPET_LEVEL                  = ObjectField.OBJECT_END + 0x0091, // Size =   1, Type: Flags PUBLIC
         UNIT_FIELD_BATTLEPET_COMPANION_NAME_TIMESTAMP    = ObjectField.OBJECT_END + 0x0092, // Size =   1, Type: Flags PUBLIC
-        UNIT_FIELD_END                                   = ObjectField.OBJECT_END + 0x0093,
+        UNIT_FIELD_END                                   = ObjectField.OBJECT_END + 0x0093
     };
 
     public enum UnitDynamicField
@@ -231,7 +231,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
         PLAYER_FIELD_LOOT_SPEC_ID                        = UnitField.UNIT_FIELD_END + 0x071D, // Size =   1, Type: Flags PRIVATE
         PLAYER_FIELD_OVERRIDE_ZONE_PVP_TYPE              = UnitField.UNIT_FIELD_END + 0x071E, // Size =   1, Type: Flags PRIVATE
         PLAYER_FIELD_ITEM_LEVEL_DELTA                    = UnitField.UNIT_FIELD_END + 0x071F, // Size =   1, Type: Flags PRIVATE
-        PLAYER_FIELD_END                                 = UnitField.UNIT_FIELD_END + 0x0720,
+        PLAYER_FIELD_END                                 = UnitField.UNIT_FIELD_END + 0x0720
     };
 
     public enum PlayerDynamicField

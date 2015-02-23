@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -148,7 +147,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Guid");
         }
 
-        [Parser(Opcode.CMSG_SETSHEATHED)]
+        [Parser(Opcode.CMSG_SET_SHEATHED)]
         public static void HandleSetSheathed(Packet packet)
         {
             packet.ReadInt32E<SheathState>("CurrentSheathState");

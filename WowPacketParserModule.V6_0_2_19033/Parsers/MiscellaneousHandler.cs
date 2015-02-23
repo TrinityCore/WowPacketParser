@@ -69,6 +69,31 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("CharUndeleteEnabled");
         }
 
+        public static void ReadCliSavedThrottleObjectState(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt32("MaxTries", idx);
+            packet.ReadUInt32("PerMilliseconds", idx);
+            packet.ReadUInt32("TryCount", idx);
+            packet.ReadUInt32("LastResetTimeBeforeNow", idx);
+        }
+
+        public static void ReadCliEuropaTicketConfig(Packet packet, params object[] idx)
+        {
+            packet.ReadBit("TicketsEnabled", idx);
+            packet.ReadBit("BugsEnabled", idx);
+            packet.ReadBit("ComplaintsEnabled", idx);
+            packet.ReadBit("SuggestionsEnabled", idx);
+
+            ReadCliSavedThrottleObjectState(packet, idx, "ThrottleState");
+        }
+
+        public static void ReadClientSessionAlertConfig(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("Delay", idx);
+            packet.ReadInt32("Period", idx);
+            packet.ReadInt32("DisplayTime", idx);
+        }
+
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS)]
         public static void HandleFeatureSystemStatus(Packet packet)
         {
@@ -82,39 +107,25 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ResetBitReader();
 
             packet.ReadBit("VoiceEnabled");
-            var bit84 = packet.ReadBit("EuropaTicketSystemStatus");
+            var hasEuropaTicketSystemStatus = packet.ReadBit("HasEuropaTicketSystemStatus");
             packet.ReadBit("ScrollOfResurrectionEnabled");
             packet.ReadBit("BpayStoreEnabled");
             packet.ReadBit("BpayStoreAvailable");
             packet.ReadBit("BpayStoreDisabledByParentalControls");
             packet.ReadBit("ItemRestorationButtonEnabled");
             packet.ReadBit("BrowserEnabled");
-            var bit44 = packet.ReadBit("SessionAlert");
+            var hasSessionAlert = packet.ReadBit("HasSessionAlert");
             packet.ReadBit("RecruitAFriendSendingEnabled");
             packet.ReadBit("CharUndeleteEnabled");
-            packet.ReadBit("Unk bit21");
-            packet.ReadBit("Unk bit22");
-            packet.ReadBit("Unk bit90");
+            packet.ReadBit("RestrictedAccount");
+            packet.ReadBit("TutorialsEnabled");
+            packet.ReadBit("Unk bit90"); // Also tutorials related
 
-            if (bit84)
-            {
-                packet.ReadBit("Unk bit0");
-                packet.ReadBit("Unk bit1");
-                packet.ReadBit("TicketSystemEnabled");
-                packet.ReadBit("SubmitBugEnabled");
+            if (hasEuropaTicketSystemStatus)
+                ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
 
-                packet.ReadInt32("MaxTries");
-                packet.ReadInt32("PerMilliseconds");
-                packet.ReadInt32("TryCount");
-                packet.ReadInt32("LastResetTimeBeforeNow");
-            }
-
-            if (bit44)
-            {
-                packet.ReadInt32("Delay");
-                packet.ReadInt32("Period");
-                packet.ReadInt32("DisplayTime");
-            }
+            if (hasSessionAlert)
+                ReadClientSessionAlertConfig(packet, "SessionAlert");
         }
 
         [Parser(Opcode.SMSG_WORLD_SERVER_INFO)]
@@ -590,6 +601,31 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("Arg");
             packet.ReadByte("Type");
         }
+
+        [Parser(Opcode.SMSG_WEEKLY_LAST_RESET)]
+        public static void HandleLastWeeklyReset(Packet packet)
+        {
+            packet.ReadTime("Reset");
+        }
+
+        [Parser(Opcode.SMSG_SUMMON_REQUEST)]
+        public static void HandleSummonRequest(Packet packet)
+        {
+            packet.ReadPackedGuid128("SummonerGUID");
+            packet.ReadUInt32("SummonerVirtualRealmAddress");
+            packet.ReadInt32<AreaId>("AreaID");
+            packet.ReadBit("ConfirmSummon_NC");
+        }
+
+        // new opcode on 6.x, related to combat log and mostly used in garrisons
+        [Parser(Opcode.SMSG_COMBAT_LOG_UNK)]
+        public static void HandleCombatLogUnk(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadInt32("Arg1");
+            packet.ReadInt32("Arg2");
+            var length = packet.ReadBits("TextLength", 12);
+            packet.ReadWoWString("Text", length);
+        }
     }
 }
-

@@ -10,12 +10,12 @@ namespace WowPacketParser.Enums
         OBJECT_FIELD_PADDING,
         OBJECT_DYNAMIC_FLAGS,
         OBJECT_END,
-        OBJECT_FIELD_DATA,
+        OBJECT_FIELD_DATA
     }
 
     public enum ObjectDynamicField
     {
-        OBJECT_DYNAMIC_END,
+        OBJECT_DYNAMIC_END
     }
 
     public enum ItemField
@@ -65,14 +65,14 @@ namespace WowPacketParser.Enums
         ITEM_FIELD_PROPERTY_SEED,
         ITEM_FIELD_RANDOM_PROPERTIES_ID,
         ITEM_FIELD_SPELL_CHARGES,
-        ITEM_FIELD_STACK_COUNT,
+        ITEM_FIELD_STACK_COUNT
     }
 
     public enum ItemDynamicField
     {
         ITEM_DYNAMIC_FIELD_MODIFIERS,
         ITEM_DYNAMIC_FIELD_BONUSLIST_IDS,
-        ITEM_DYNAMIC_END,
+        ITEM_DYNAMIC_END
     }
 
     public enum ContainerField
@@ -80,12 +80,12 @@ namespace WowPacketParser.Enums
         CONTAINER_ALIGN_PAD,
         CONTAINER_END,
         CONTAINER_FIELD_NUM_SLOTS,
-        CONTAINER_FIELD_SLOT_1,
+        CONTAINER_FIELD_SLOT_1
     }
 
     public enum ContainerDynamicField
     {
-        CONTAINER_DYNAMIC_END,
+        CONTAINER_DYNAMIC_END
     }
 
     public enum UnitField
@@ -227,14 +227,14 @@ namespace WowPacketParser.Enums
         UNIT_VIRTUAL_ITEM_SLOT_ID1,
         UNIT_VIRTUAL_ITEM_SLOT_ID2,
         UNIT_VIRTUAL_ITEM_SLOT_ID3,
-        UNIT_FIELD_END,
+        UNIT_FIELD_END
     }
 
     public enum UnitDynamicField
     {
         UNIT_DYNAMIC_FIELD_PASSIVE_SPELLS,
         UNIT_DYNAMIC_FIELD_WORLD_EFFECTS,
-        UNIT_DYNAMIC_END,
+        UNIT_DYNAMIC_END
     }
 
     public enum PlayerField
@@ -646,7 +646,7 @@ namespace WowPacketParser.Enums
         PLAYER_XP,
         PLAYER__FIELD_KNOWN_TITLES,
         PLAYER__FIELD_KNOWN_TITLES1,
-        PLAYER__FIELD_KNOWN_TITLES2,
+        PLAYER__FIELD_KNOWN_TITLES2
     }
 
     public enum PlayerDynamicField
@@ -657,7 +657,7 @@ namespace WowPacketParser.Enums
         PLAYER_DYNAMIC_FIELD_AVAILABLE_QUEST_LINE_X_QUEST_ID,
         PLAYER_DYNAMIC_FIELD_HEIRLOOMS,
         PLAYER_DYNAMIC_FIELD_TOYS,
-        PLAYER_DYNAMIC_END,
+        PLAYER_DYNAMIC_END
     }
 
     public enum GameObjectField
@@ -671,12 +671,12 @@ namespace WowPacketParser.Enums
         GAMEOBJECT_FLAGS,
         GAMEOBJECT_LEVEL,
         GAMEOBJECT_PARENTROTATION,
-        GAMEOBJECT_STATE_SPELL_VISUAL_ID, // 5.x only
+        GAMEOBJECT_STATE_SPELL_VISUAL_ID // 5.x only
     }
 
     public enum GameObjectDynamicField
     {
-        GAMEOBJECT_DYNAMIC_END,
+        GAMEOBJECT_DYNAMIC_END
     }
 
     public enum DynamicObjectField
@@ -686,12 +686,12 @@ namespace WowPacketParser.Enums
         DYNAMICOBJECT_CASTTIME,
         DYNAMICOBJECT_END,
         DYNAMICOBJECT_RADIUS,
-        DYNAMICOBJECT_SPELLID,
+        DYNAMICOBJECT_SPELLID
     }
 
     public enum DynamicObjectDynamicField
     {
-        DYNAMICOBJECT_DYNAMIC_END,
+        DYNAMICOBJECT_DYNAMIC_END
     }
 
     public enum CorpseField
@@ -706,12 +706,12 @@ namespace WowPacketParser.Enums
         CORPSE_FIELD_ITEM,
         CORPSE_FIELD_OWNER,
         CORPSE_FIELD_PAD,
-        CORPSE_FIELD_PARTY,
+        CORPSE_FIELD_PARTY
     }
 
     public enum CorpseDynamicField
     {
-        CORPSE_DYNAMIC_END,
+        CORPSE_DYNAMIC_END
     }
 
     public enum AreaTriggerField
@@ -721,12 +721,12 @@ namespace WowPacketParser.Enums
         AREATRIGGER_EXPLICIT_SCALE,
         AREATRIGGER_FINAL_POS,
         AREATRIGGER_SPELLID,
-        AREATRIGGER_SPELLVISUALID,
+        AREATRIGGER_SPELLVISUALID
     }
 
     public enum AreaTriggerDynamicField
     {
-        AREATRIGGER_DYNAMIC_END,
+        AREATRIGGER_DYNAMIC_END
     }
 
     public enum SceneObjectField
@@ -735,7 +735,7 @@ namespace WowPacketParser.Enums
         SCENEOBJECT_FIELD_END,
         SCENEOBJECT_FIELD_RND_SEED_VAL,
         SCENEOBJECT_FIELD_SCENE_TYPE,
-        SCENEOBJECT_FIELD_SCRIPT_PACKAGE_ID,
+        SCENEOBJECT_FIELD_SCRIPT_PACKAGE_ID
     }
 
     public enum SceneObjectDynamicField
@@ -746,14 +746,14 @@ namespace WowPacketParser.Enums
     public enum ConversationField
     {
         CONTAINER_FIELD_SLOT_1,
-        CONVERSATION_END,
+        CONVERSATION_END
     }
 
     public enum ConversationDynamicField
     {
         CONVERSATION_DYNAMIC_FIELD_ACTORS,
         CONVERSATION_DYNAMIC_FIELD_LINES,
-        CONVERSATION_DYNAMIC_END,
+        CONVERSATION_DYNAMIC_END
     }
 
     // ReSharper restore InconsistentNaming, UnusedMember.Global

@@ -6,7 +6,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class LfgHandler
     {
-        public static void ReadRideTicket(Packet packet, params object[] idx)
+        public static void ReadCliRideTicket(Packet packet, params object[] idx)
         {
             packet.ReadPackedGuid128("RequesterGuid", idx);
             packet.ReadInt32("Id", idx);
@@ -32,7 +32,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        public static void ReadListBlacklistEntry(Packet packet, params object[] indexes)
+        public static void ReadLFGListBlacklistEntry(Packet packet, params object[] indexes)
         {
             packet.ReadInt32("ActivityID", indexes);
             packet.ReadInt32("Reason", indexes);
@@ -188,7 +188,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_LFG_JOIN_RESULT)]
         public static void HandleLfgJoinResult(Packet packet)
         {
-            ReadRideTicket(packet);
+            ReadCliRideTicket(packet);
 
             packet.ReadByte("Result");
             packet.ReadByte("ResultDetail");
@@ -213,7 +213,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_LFG_UPDATE_STATUS)]
         public static void HandleLfgQueueStatusUpdate(Packet packet)
         {
-            ReadRideTicket(packet);
+            ReadCliRideTicket(packet);
 
             packet.ReadByte("SubType");
             packet.ReadByte("Reason");
@@ -253,7 +253,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_LFG_QUEUE_STATUS)]
         public static void HandleLfgQueueStatusUpdate434(Packet packet)
         {
-            ReadRideTicket(packet);
+            ReadCliRideTicket(packet);
 
             packet.ReadInt32("Slot");
             packet.ReadInt32("AvgWaitTime");
@@ -271,7 +271,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_LFG_PROPOSAL_UPDATE)]
         public static void HandleLfgProposalUpdate(Packet packet)
         {
-            ReadRideTicket(packet);
+            ReadCliRideTicket(packet);
 
             packet.ReadInt64("InstanceID");
 
@@ -404,7 +404,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_DF_PROPOSAL_RESPONSE)]
         public static void HandleDFProposalResponse(Packet packet)
         {
-            ReadRideTicket(packet);
+            ReadCliRideTicket(packet);
             packet.ReadInt64("InstanceID");
             packet.ReadInt32("ProposalID");
             packet.ReadBit("Accepted");
@@ -415,13 +415,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             var count = packet.ReadInt32("BlacklistEntryCount");
             for (int i = 0; i < count; i++)
-                ReadListBlacklistEntry(packet, i, "ListBlacklistEntry");
+                ReadLFGListBlacklistEntry(packet, i, "ListBlacklistEntry");
         }
 
         [Parser(Opcode.SMSG_LFG_LIST_UPDATE_STATUS)]
         public static void HandleLFGListUpdateStatus(Packet packet)
         {
-            ReadRideTicket(packet, "RideTicket");
+            ReadCliRideTicket(packet, "RideTicket");
             ReadLFGListJoinRequest(packet, "LFGListJoinRequest");
             packet.ReadInt32("Unk");
             packet.ReadByte("Reason");
@@ -440,7 +440,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_LFG_LIST_INVITE_RESPONSE)]
         public static void HandleLFGListInviteResponse(Packet packet)
         {
-            ReadRideTicket(packet, "RideTicket");
+            ReadCliRideTicket(packet, "RideTicket");
 
             packet.ResetBitReader();
             packet.ReadBit("Accept");
@@ -462,7 +462,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_DF_LEAVE)]
         public static void HandleDFLeave(Packet packet)
         {
-            ReadRideTicket(packet, "RideTicket");
+            ReadCliRideTicket(packet, "RideTicket");
         }
 
         [Parser(Opcode.CMSG_LFG_LIST_JOIN)]
@@ -474,7 +474,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_LFG_LIST_LEAVE)]
         public static void HandleLFGListLeave(Packet packet)
         {
-            ReadRideTicket(packet, "RideTicket");
+            ReadCliRideTicket(packet, "RideTicket");
         }
 
         [Parser(Opcode.CMSG_LFG_LIST_SEARCH)] // To-Do: Rename Unks
@@ -494,7 +494,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadPackedGuid128("SmartGuid96", i); // PartyMember?
 
             for (int i = 0; i < int72; i++)
-                ReadListBlacklistEntry(packet, i, "ListBlacklistEntry");
+                ReadLFGListBlacklistEntry(packet, i, "ListBlacklistEntry");
         }
 
         [Parser(Opcode.CMSG_SET_LFG_BONUS_FACTION_ID)]

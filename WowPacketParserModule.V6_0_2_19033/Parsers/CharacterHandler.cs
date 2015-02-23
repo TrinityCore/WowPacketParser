@@ -363,7 +363,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (hasData == 0)
             {
-                var bits15 = (int)packet.ReadBits(7);
+                packet.ReadBit("IsDeleted");
+                var bits15 = (int)packet.ReadBits(6);
 
                 var count = new int[5];
                 for (var i = 0; i < 5; ++i)
@@ -489,8 +490,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             {
                 // sub_5F9390
                 packet.ReadPackedGuid128("GuildGUID");
-                packet.ReadInt32("GuildLevel");
                 packet.ReadInt32("NumGuildMembers");
+                packet.ReadInt32("GuildAchievementPoints");
             }
         }
 
@@ -525,7 +526,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("Bracket", idx);
         }
 
-        [Parser(Opcode.CMSG_REQUEST_INSPECT_PVP)]
+        [Parser(Opcode.CMSG_INSPECT_PVP)]
         public static void HandleRequestInspectPVP(Packet packet)
         {
             packet.ReadPackedGuid128("InspectTarget");
@@ -550,6 +551,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_TITLE_EARNED)]
+        [Parser(Opcode.SMSG_TITLE_LOST)]
         public static void HandleTitleEarned(Packet packet)
         {
             packet.ReadUInt32("Index");

@@ -23,7 +23,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.AddValue("Quest ID", StoreGetters.GetName(StoreNameType.Quest, quest[i]));
         }
 
-        [Parser(Opcode.CMSG_QUEST_NPC_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_QUEST_COMPLETION_NPCS)]
         public static void HandleQuestNpcQuery(Packet packet)
         {
             var count = packet.ReadBits("Count", 22);
@@ -32,7 +32,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadInt32<QuestId>("Quest ID", i);
         }
 
-        [Parser(Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE)]
+        [Parser(Opcode.SMSG_QUEST_COMPLETION_NPC_RESPONSE)]
         public static void HandleQuestNpcQueryResponse(Packet packet)
         {
             var bits10 = (int)packet.ReadBits(21);

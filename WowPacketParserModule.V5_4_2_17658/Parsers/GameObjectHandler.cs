@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -71,7 +70,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var objectName = new ObjectName
             {
                 ObjectType = ObjectType.GameObject,
-                Name = gameObject.Name,
+                Name = gameObject.Name
             };
             Storage.ObjectNames.Add((uint)entry.Key, objectName, packet.TimeSpan);
         }

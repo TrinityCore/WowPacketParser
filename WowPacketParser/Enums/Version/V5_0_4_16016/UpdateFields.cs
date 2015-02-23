@@ -9,7 +9,7 @@ namespace WowPacketParser.Enums.Version.V5_0_4_16016
         OBJECT_FIELD_TYPE = 0x0004,
         OBJECT_FIELD_ENTRY = 0x0005,
         OBJECT_FIELD_SCALE_X = 0x0006,
-        OBJECT_END = 0x0007,
+        OBJECT_END = 0x0007
     };
 
     public enum ItemField

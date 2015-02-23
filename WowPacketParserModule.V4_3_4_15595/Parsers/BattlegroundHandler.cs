@@ -1,5 +1,4 @@
-﻿using System;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -325,13 +324,13 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             var guid = packet.StartBitStream(5, 3, 7, 2, 6, 4, 1, 0);
 
             packet.ReadXORByte(guid, 6);
-            packet.ReadInt32<ZoneId>("Zone Id");
+            packet.ReadInt32<ZoneId>("ZoneID");
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 2);
             packet.ReadXORByte(guid, 0);
-            packet.ReadTime("Invite lasts until");
+            packet.ReadTime("ExpireTime");
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 5);
             packet.WriteGuid("Guid", guid);
@@ -455,7 +454,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("guid2", guid2);
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_ENTERED)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_ENTERING)]
         public static void HandleBattlefieldMgrEntered434(Packet packet)
         {
             var guid = new byte[8];

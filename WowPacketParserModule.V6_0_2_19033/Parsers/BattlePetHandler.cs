@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -95,7 +94,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("UnitGUID");
         }
 
-        [Parser(Opcode.SMSG_BATTLE_PET_NAME_RESPONSE)]
+        [Parser(Opcode.SMSG_QUERY_BATTLE_PET_NAME_RESPONSE)]
         public static void HandleBattlePetQueryResponse(Packet packet)
         {
             packet.ReadPackedGuid128("BattlePetID");
@@ -540,7 +539,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var slotResultCount = packet.ReadInt32("SlotResultCount");
 
-            LfgHandler.ReadRideTicket(packet, "RideTicket");
+            LfgHandler.ReadCliRideTicket(packet, "RideTicket");
 
             for (int i = 0; i < slotResultCount; i++)
                 packet.ReadInt32("SlotResult", i);
@@ -564,7 +563,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_LEAVE_PET_BATTLE_QUEUE)]
         public static void HandleLeavePetBattleQueue(Packet packet)
         {
-            LfgHandler.ReadRideTicket(packet, "RideTicket");
+            LfgHandler.ReadCliRideTicket(packet, "RideTicket");
         }
 
         [Parser(Opcode.CMSG_BATTLE_PET_REQUEST_UPDATE)]

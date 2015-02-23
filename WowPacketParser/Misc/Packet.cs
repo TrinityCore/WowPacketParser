@@ -88,7 +88,7 @@ namespace WowPacketParser.Misc
                 FileName = FileName,
                 ObjectType = type,
                 Id = id,
-                Data = data,
+                Data = data
             };
 
             Storage.SniffData.Add(item, TimeSpan);
@@ -227,9 +227,9 @@ namespace WowPacketParser.Misc
 
         public string GetHeader(bool isMultiple = false)
         {
-            return string.Format("{0}: {1} (0x{2}) Length: {3} ConnIdx: {4} EP: {5} Time: {6} Number: {7}{8}",
-                Direction, Opcodes.GetOpcodeName(Opcode, Direction), Opcode.ToString("X4"),
-                Length, ConnectionIndex, EndPoint, Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
+            return string.Format("{0}: {1} (0x{2}) Length: {3} ConnIdx: {4}{5} Time: {6} Number: {7}{8}",
+                Direction, Opcodes.GetOpcodeName(Opcode, Direction, false), Opcode.ToString("X4"),
+                Length, ConnectionIndex, EndPoint != null ? " EP: " + EndPoint : "", Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
                 Number, isMultiple ? " (part of another packet)" : "");
         }
 

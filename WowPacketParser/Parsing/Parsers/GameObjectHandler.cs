@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
@@ -59,7 +58,7 @@ namespace WowPacketParser.Parsing.Parsers
             var objectName = new ObjectName
             {
                 ObjectType = ObjectType.GameObject,
-                Name = gameObject.Name,
+                Name = gameObject.Name
             };
             Storage.ObjectNames.Add((uint)entry.Key, objectName, packet.TimeSpan);
         }
@@ -91,8 +90,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Anim");
         }
 
-        [Parser(Opcode.SMSG_GAME_OBJECT_ACTIVATE_ANIM_KIT)] // 4.3.4
-        public static void HandleGOActivateAnimKit(Packet packet)
+        [Parser(Opcode.SMSG_GAMEOBJECT_ACTIVATE_ANIM_KIT)] // 4.3.4
+        public static void HandleGameObjectActivateAnimKit(Packet packet)
         {
             var guid = packet.StartBitStream(5, 1, 0, 4, 7, 2, 3, 6);
             packet.ParseBitStream(guid, 5, 1, 0, 3, 4, 6, 2, 7);

@@ -12,6 +12,7 @@
         creature_template_addon,
         creature_addon,
         creature_text,
+        curve_point,
         defense_message,
         gameobject,
         gameobject_db2_position,

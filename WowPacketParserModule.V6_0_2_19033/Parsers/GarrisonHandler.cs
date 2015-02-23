@@ -273,7 +273,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("ArchivedMissions", i);
         }
 
-        [Parser(Opcode.SMSG_GARRISON_UNK2)] // GARRISON_FOLLOWER_XP_CHANGED
+        [Parser(Opcode.SMSG_GARRISON_FOLLOWER_CHANGED_XP)] // GARRISON_FOLLOWER_XP_CHANGED
         public static void HandleGarrisonUnk2(Packet packet)
         {
             packet.ReadInt32("Result");
@@ -304,7 +304,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         [Parser(Opcode.CMSG_CREATE_SHIPMENT)]
         [Parser(Opcode.CMSG_GET_SHIPMENT_INFO)]
-        [Parser(Opcode.CMSG_GARRISON_OPEN_MISSION_NPC)]
+        [Parser(Opcode.CMSG_OPEN_GARRISON_MISSION_NPC)]
         public static void HandleGarrisonNpcGUID(Packet packet)
         {
             packet.ReadPackedGuid128("NpcGUID");
@@ -351,8 +351,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadGarrisonFollower(packet);
         }
 
-        [Parser(Opcode.SMSG_GARRISON_OPEN_TRADESKILL)]
-        public static void HandleGarrisonOpenTradeskill(Packet packet)
+        [Parser(Opcode.CMSG_GARRISON_OPEN_TRADESKILL_NPC)]
+        public static void HandleGarrisonOpenTradeskillNpc(Packet packet)
+        {
+            packet.ReadInt32("Unk"); // maybe: SkillLineID?
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_OPEN_TRADESKILL_NPC_RESPONSE)]
+        public static void HandleGarrisonOpenTradeskillNpcResponse(Packet packet)
         {
             packet.ReadPackedGuid128("GUID");
 
@@ -496,6 +502,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadBit("Success");
             packet.ReadInt32("TrophyID");
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_LEARN_BLUEPRINT_RESULT)]
+        public static void HandleGarrisonLearnBlueprintResult(Packet packet)
+        {
+            packet.ReadInt32("Result");
+            packet.ReadInt32("BuildingID");
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_PLACE_BUILDING_RESULT)]
+        public static void HandleGarrisonPlaceBuildingResult(Packet packet)
+        {
+            packet.ReadInt32("Result");
+            ReadGarrisonBuildingInfo(packet, "BuildingInfo");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("UnkBit");
         }
     }
 }

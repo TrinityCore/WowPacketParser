@@ -68,16 +68,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_GOSSIP_SELECT_OPTION)]
         public static void HandleNpcGossipSelectOption(Packet packet)
         {
-            packet.ReadPackedGuid128("Guid");
+            packet.ReadPackedGuid128("GossipUnit");
 
-            var gossipId = packet.ReadUInt32("Gossip Id");
-            var menuEntry = packet.ReadUInt32("Menu Id");
+            var menuEntry = packet.ReadUInt32("GossipID");
+            var gossipIdx = packet.ReadUInt32("GossipIndex");
 
             var bits8 = packet.ReadBits(8);
             packet.ResetBitReader();
-            packet.ReadWoWString("Box Text", bits8);
+            packet.ReadWoWString("PromotionCode", bits8);
 
-            Storage.GossipSelects.Add(Tuple.Create(menuEntry, gossipId), null, packet.TimeSpan);
+            Storage.GossipSelects.Add(Tuple.Create(menuEntry, gossipIdx), null, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_GOSSIP_POI)]

@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -93,7 +92,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var objectName = new ObjectName
             {
                 ObjectType = ObjectType.Unit,
-                Name = creature.Name,
+                Name = creature.Name
             };
             Storage.ObjectNames.Add((uint)entry.Key, objectName, packet.TimeSpan);
         }
@@ -215,7 +214,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         var broadcastText = new BroadcastText();
 
                         var id = db2File.ReadEntry("Broadcast Text Entry");
-                        broadcastText.language = db2File.ReadUInt32("Language");
+                        broadcastText.language = db2File.ReadInt32("Language");
                         if (db2File.ReadUInt16() > 0)
                             broadcastText.MaleText = db2File.ReadCString("Male Text");
                         if (db2File.ReadUInt16() > 0)
@@ -317,13 +316,13 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         for (var i = 0; i < 10; i++)
                             item.StatValues[i] = db2File.ReadInt32("Stat Value", i);
 
-                        item.StatUnk1 = new int[10];
+                        item.ScalingValue = new int[10];
                         for (var i = 0; i < 10; i++)
-                            item.StatUnk1[i] = db2File.ReadInt32("Unk UInt32 1", i);
+                            item.ScalingValue[i] = db2File.ReadInt32("Scaling Value", i);
 
-                        item.StatUnk2 = new int[10];
+                        item.SocketCostRate = new int[10];
                         for (var i = 0; i < 10; i++)
-                            item.StatUnk2[i] = db2File.ReadInt32("Unk UInt32 2", i);
+                            item.SocketCostRate[i] = db2File.ReadInt32("Socket Cost Rate", i);
 
                         item.ScalingStatDistribution = db2File.ReadInt32("Scaling Stat Distribution");
                         item.DamageType = db2File.ReadInt32E<DamageType>("Damage Type");

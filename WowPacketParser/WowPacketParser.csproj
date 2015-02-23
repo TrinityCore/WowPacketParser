@@ -472,6 +472,7 @@
     <Compile Include="Store\Objects\CreatureDifficulty.cs" />
     <Compile Include="Store\Objects\CreatureEquipment.cs" />
     <Compile Include="Store\Objects\CreatureText.cs" />
+    <Compile Include="Store\Objects\CurvePoint.cs" />
     <Compile Include="Store\Objects\DefenseMessage.cs" />
     <Compile Include="Store\Objects\GameObject.cs" />
     <Compile Include="Store\Objects\GameObjectTemplate.cs" />

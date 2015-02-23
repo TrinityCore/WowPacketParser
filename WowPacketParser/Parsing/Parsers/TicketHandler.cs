@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 
@@ -6,7 +5,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class TicketHandler
     {
-        [Parser(Opcode.CMSG_GMSURVEY_SUBMIT)]
+        [Parser(Opcode.CMSG_GM_SURVEY_SUBMIT)]
         public static void HandleGMSurveySubmit(Packet packet)
         {
             var count = packet.ReadUInt32("Survey Question Count");
@@ -18,11 +17,11 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Question Number", i);
                 packet.ReadCString("Answer", i);
             }
-            packet.ReadCString("Comment");
 
+            packet.ReadCString("Comment");
         }
 
-        [Parser(Opcode.CMSG_GMTICKET_CREATE)]
+        [Parser(Opcode.CMSG_GM_TICKET_CREATE)]
         public static void HandleGMTicketCreate(Packet packet)
         {
             packet.ReadInt32<MapId>("Map ID");
@@ -41,7 +40,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 var decompCount = packet.ReadInt32();
                 var pkt = packet.Inflate(decompCount);
-                packet.ReadCString("String");
+                pkt.ReadCString("String");
                 pkt.ClosePacket(false);
             }
         }
@@ -49,13 +48,13 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GM_TICKET_STATUS_UPDATE)]
         public static void HandleGMTicketStatusUpdate(Packet packet)
         {
-              packet.ReadUInt32("Update");
+            packet.ReadInt32("StatusInt");
         }
 
-        [Parser(Opcode.SMSG_GMTICKET_SYSTEMSTATUS)]
+        [Parser(Opcode.SMSG_GM_TICKET_GET_SYSTEM_STATUS)]
         public static void HandleGMTicketSystemStatus(Packet packet)
         {
-              packet.ReadUInt32("Response");
+            packet.ReadUInt32("Response");
         }
 
         [Parser(Opcode.SMSG_GMRESPONSE_RECEIVED)]
@@ -68,7 +67,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadCString("Response", i);
         }
 
-        [Parser(Opcode.SMSG_GMTICKET_GETTICKET)]
+        [Parser(Opcode.SMSG_GM_TICKET_GET_TICKET)]
         public static void HandleGetGMTicket(Packet packet)
         {
             var ticketStatus = packet.ReadInt32E<GMTicketStatus>("TicketStatus");
@@ -90,15 +89,15 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_GMTICKET_CREATE)]
-        [Parser(Opcode.SMSG_GMTICKET_UPDATETEXT)]
-        [Parser(Opcode.SMSG_GMTICKET_DELETETICKET)]
+        [Parser(Opcode.SMSG_GM_TICKET_CREATE)]
+        [Parser(Opcode.SMSG_GM_TICKET_UPDATE_TEXT)]
+        [Parser(Opcode.SMSG_GM_TICKET_DELETE_TICKET)]
         public static void HandleCreateUpdateGMTicket(Packet packet)
         {
             packet.ReadInt32E<GMTicketResponse>("TicketResponse");
         }
 
-        [Parser(Opcode.CMSG_GMTICKET_UPDATETEXT)]
+        [Parser(Opcode.CMSG_GM_TICKET_UPDATE_TEXT)]
         public static void HandleGMTicketUpdatetext(Packet packet)
         {
             packet.ReadCString("New Ticket Text");
@@ -110,10 +109,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Get survey");
         }
 
-        [Parser(Opcode.CMSG_GMTICKET_GETTICKET)]
-        [Parser(Opcode.CMSG_GMTICKET_SYSTEMSTATUS)]
-        [Parser(Opcode.CMSG_GMRESPONSE_RESOLVE)]
-        [Parser(Opcode.CMSG_GMTICKET_DELETETICKET)]
+        [Parser(Opcode.CMSG_GM_TICKET_GET_TICKET)]
+        [Parser(Opcode.CMSG_GM_TICKET_GET_SYSTEM_STATUS)]
+        [Parser(Opcode.CMSG_GM_TICKET_RESPONSE_RESOLVE)]
+        [Parser(Opcode.CMSG_GM_TICKET_DELETE_TICKET)]
         public static void HandleTicketZeroLengthPackets(Packet packet)
         {
         }
@@ -134,7 +133,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_SUBMIT_BUG)]
+        [Parser(Opcode.CMSG_SUPPORT_TICKET_SUBMIT_BUG)]
         public static void HandleSubmitBug(Packet packet)
         {
             var length = packet.ReadBits(12);
@@ -149,7 +148,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.AddValue("Position", pos);
         }
 
-        [Parser(Opcode.CMSG_SUBMIT_COMPLAIN)]
+        [Parser(Opcode.CMSG_SUPPORT_TICKET_SUBMIT_COMPLAINT)]
         public static void HandleSubmitComplain(Packet packet)
         {
             var pos = new Vector4();

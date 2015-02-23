@@ -21,6 +21,6 @@ namespace WowPacketParser.Enums
         /// <summary>
         /// Bidirectional opcode (MSG, UMSG, TEST...)
         /// </summary>
-        Bidirectional    = 4,
+        Bidirectional    = 4
     }
 }

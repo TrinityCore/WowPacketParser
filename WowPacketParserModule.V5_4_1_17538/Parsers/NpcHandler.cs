@@ -65,7 +65,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
                     OptionIcon = packet.ReadByteE<GossipOptionIcon>("Icon", i),
                     RequiredMoney = packet.ReadUInt32("Required money", i),
                     BoxText = packet.ReadWoWString("Box Text", boxTextLen[i], i),
-                    Index = packet.ReadUInt32("Index", i),
+                    Index = packet.ReadUInt32("Index", i)
                 };
 
                 gossip.GossipOptions.Add(gossipOption);

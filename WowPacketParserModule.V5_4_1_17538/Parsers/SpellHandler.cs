@@ -440,7 +440,7 @@ namespace WowPacketParser.V5_4_1_17538.Parsers
             for (var i = 0; i < count; i++)
             {
                 var spellId = packet.ReadUInt32<SpellId>("Spell ID", i);
-                spells.Add((uint)spellId);
+                spells.Add(spellId);
             }
 
             var startSpell = new StartSpell { Spells = spells };

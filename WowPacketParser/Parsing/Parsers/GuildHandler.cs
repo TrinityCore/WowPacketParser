@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 
@@ -457,7 +456,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GUILD_CREATE)]
         [Parser(Opcode.CMSG_GUILD_INVITE)]
         [Parser(Opcode.CMSG_GUILD_PROMOTE_MEMBER)]
-        [Parser(Opcode.CMSG_GUILD_DEMOTE)]
+        [Parser(Opcode.CMSG_GUILD_DEMOTE_MEMBER)]
         [Parser(Opcode.CMSG_GUILD_OFFICER_REMOVE_MEMBER, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
         [Parser(Opcode.CMSG_GUILD_LEADER)]
         [Parser(Opcode.CMSG_GUILD_ADD_RANK, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -595,7 +594,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Note");
         }
 
-        [Parser(Opcode.CMSG_GUILD_BANKER_ACTIVATE)]
+        [Parser(Opcode.CMSG_GUILD_BANK_ACTIVATE)]
         public static void HandleGuildBankerActivate(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -612,7 +611,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBool("Full Slot List"); // false = only slots updated in last operation are shown. True = all slots updated
         }
 
-        [Parser(Opcode.SMSG_GUILD_BANK_LIST, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_GUILD_BANK_QUERY_RESULTS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildBankList(Packet packet)
         {
             packet.ReadUInt64("Money");
@@ -706,10 +705,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GUILD_BANK_UPDATE_TAB)]
         public static void HandleGuildBankUpdateTab(Packet packet)
         {
-            packet.ReadGuid("GUID");
-            packet.ReadByte("Tab Id");
-            packet.ReadCString("Tab Name");
-            packet.ReadCString("Tab Icon");
+            packet.ReadGuid("Banker");
+            packet.ReadByte("BankTab");
+            packet.ReadCString("Name");
+            packet.ReadCString("Icon");
         }
 
         [Parser(Opcode.CMSG_GUILD_GET_RANKS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
@@ -883,7 +882,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Money");
         }
 
-        [Parser(Opcode.CMSG_GUILD_BANK_QUERY_TEXT, ClientVersionBuild.V4_3_3_15354)]
+        [Parser(Opcode.CMSG_GUILD_BANK_TEXT_QUERY, ClientVersionBuild.V4_3_3_15354)]
         public static void HandleQueryGuildBankText(Packet packet)
         {
             packet.ReadUInt32("Tab Id");
@@ -897,7 +896,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadCString("Text");
         }
 
-        [Parser(Opcode.CMSG_SET_GUILD_BANK_TEXT, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_GUILD_BANK_SET_TAB_TEXT, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildSetBankText(Packet packet)
         {
             packet.ReadByte("Tab Id");
@@ -937,7 +936,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_GUILD_BANK_MONEY_WITHDRAWN_QUERY)]
+        [Parser(Opcode.CMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY_QUERY)]
         [Parser(Opcode.MSG_GUILD_BANK_MONEY_WITHDRAWN)]
         public static void HandleGuildBankMoneyWithdrawn(Packet packet)
         {
@@ -950,7 +949,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_GUILD_BANK_MONEY_WITHDRAWN)]
+        [Parser(Opcode.SMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY)]
         public static void HandleGuildBankMoneyWithdrawnResponse(Packet packet)
         {
             packet.ReadInt64("Remaining Money");
@@ -1201,7 +1200,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt64("XP");
         }
 
-        [Parser(Opcode.CMSG_GUILD_ACHIEVEMENT_PROGRESS_QUERY)]
+        [Parser(Opcode.CMSG_GUILD_SET_FOCUSED_ACHIEVEMENT)]
         public static void HandleGuildAchievementProgressQuery(Packet packet)
         {
             packet.ReadInt32<AchievementId>("Achievement Id");
@@ -1371,7 +1370,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GUILD_REQUEST_CHALLENGE_UPDATE)]
         [Parser(Opcode.CMSG_GUILD_GET_ROSTER, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
         [Parser(Opcode.CMSG_GUILD_ACCEPT)]
-        [Parser(Opcode.CMSG_GUILD_DECLINE)]
+        [Parser(Opcode.CMSG_GUILD_DECLINE_INVITATION)]
         [Parser(Opcode.CMSG_GUILD_INFO)]
         [Parser(Opcode.CMSG_GUILD_LEAVE)]
         [Parser(Opcode.CMSG_GUILD_DISBAND)]

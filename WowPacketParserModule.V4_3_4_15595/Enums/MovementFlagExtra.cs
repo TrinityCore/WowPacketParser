@@ -20,6 +20,6 @@ namespace WowPacketParserModule.V4_3_4_15595.Enums
         Unknown10                           = 0x0800, // might be wrong
         InterpolateMove                     = 0x2000, // 4.x (Interpolation is player only)
         InterpolateTurning                  = 0x4000,
-        InterpolatePitching                 = 0x8000,
+        InterpolatePitching                 = 0x8000
     }
 }

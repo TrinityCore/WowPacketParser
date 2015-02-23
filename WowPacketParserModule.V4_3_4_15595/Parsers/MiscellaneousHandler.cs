@@ -13,8 +13,8 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadWoWString("Message", length);
         }
 
-        [Parser(Opcode.CMSG_INSPECT_HONOR_STATS)]
-        public static void HandleInspectHonorStats434(Packet packet)
+        [Parser(Opcode.CMSG_REQUEST_HONOR_STATS)]
+        public static void HandleRequestHonorStats(Packet packet)
         {
             var guid = packet.StartBitStream(1, 5, 7, 3, 2, 4, 0, 6);
 

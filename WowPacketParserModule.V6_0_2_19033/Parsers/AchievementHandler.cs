@@ -21,66 +21,56 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_ACCOUNT_CRITERIA_UPDATE)]
         public static void HandleCriteriaUpdateAccount(Packet packet)
         {
-            packet.ReadInt32("Id");
-            packet.ReadInt64("Quantity");
-            packet.ReadPackedGuid128("Guid");
-            packet.ReadPackedTime("Date");
-            packet.ReadTime("TimeFromStart");
-            packet.ReadTime("TimeFromCreate");
-            packet.ReadBits("Flags", 4); // some flag... & 1 -> delete
+            ReadCriteriaProgress(packet, "Progress");
+        }
+
+        public static void ReadCriteriaProgress(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("Id", idx);
+            packet.ReadUInt64("Quantity", idx);
+            packet.ReadPackedGuid128("Player", idx);
+            packet.ReadPackedTime("Date", idx);
+            packet.ReadTime("TimeFromStart", idx);
+            packet.ReadTime("TimeFromCreate", idx);
+
+            packet.ResetBitReader();
+            packet.ReadBits("Flags", 4, idx); // some flag... & 1 -> delete
+        }
+
+        public static void ReadEarnedAchievement(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("Id", idx);
+            packet.ReadPackedTime("Date", idx);
+            packet.ReadPackedGuid128("Owner", idx);
+            packet.ReadInt32("VirtualRealmAddress", idx);
+            packet.ReadInt32("NativeRealmAddress", idx);
         }
 
         [Parser(Opcode.SMSG_ALL_ACCOUNT_CRITERIA)]
         public static void HandleAllAchievementCriteriaDataAccount(Packet packet)
         {
-            var count = packet.ReadUInt32("Criteria count");
+            var count = packet.ReadUInt32("ProgressCount");
 
-            // ClientAllAccountCriteria
             for (var i = 0; i < count; ++i)
-            {
-                packet.ReadInt32("Id", i);
+                ReadCriteriaProgress(packet, "Progress", i);
+        }
 
-                packet.ReadInt64("Quantity", i);
-                packet.ReadPackedGuid128("Guid", i);
+        public static void ReadAllAchievements(Packet packet, params object[] idx)
+        {
+            var earnedCount = packet.ReadUInt32("EarnedCount", idx);
+            var progressCount = packet.ReadUInt32("ProgressCount", idx);
 
-                packet.ReadPackedTime("Date", i);
-                packet.ReadTime("TimeFromStart", i);
-                packet.ReadTime("TimeFromCreate", i);
+            for (var i = 0; i < earnedCount; ++i)
+                ReadEarnedAchievement(packet, "Earned", i);
 
-                packet.ResetBitReader();
-                packet.ReadBits("Flags", 4, i); // some flag... & 1 -> delete
-            }
+            for (var i = 0; i < progressCount; ++i)
+                ReadCriteriaProgress(packet, "Progress", i);
         }
 
         [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_DATA)]
         public static void HandleAllAchievementDataPlayer(Packet packet)
         {
-            var int10 = packet.ReadUInt32("EarnedAchievementCount");
-            var int20 = packet.ReadUInt32("Criteria count");
-
-            for (var i = 0; i < int10; ++i)
-            {
-                packet.ReadInt32("Id", i);
-                packet.ReadPackedTime("Date", i);
-                packet.ReadPackedGuid128("Owner", i);
-                packet.ReadInt32("VirtualRealmAddress", i);
-                packet.ReadInt32("NativeRealmAddress", i);
-            }
-
-            for (var i = 0; i < int20; ++i)
-            {
-                packet.ReadInt32("Id", i);
-
-                packet.ReadInt64("Quantity", i);
-                packet.ReadPackedGuid128("Guid", i);
-
-                packet.ReadPackedTime("Date", i);
-                packet.ReadTime("TimeFromStart", i);
-                packet.ReadTime("TimeFromCreate", i);
-
-                packet.ResetBitReader();
-                packet.ReadBits("Flags", 4, i); // some flag... & 1 -> delete
-            }
+            ReadAllAchievements(packet, "Data");
         }
 
         [Parser(Opcode.SMSG_ACHIEVEMENT_EARNED)]
@@ -93,6 +83,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("EarnerNativeRealm");
             packet.ReadUInt32("EarnerVirtualRealm");
             packet.ReadBit("Initial");
+        }
+
+        [Parser(Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS)]
+        public static void HandleRespondInspectAchievements(Packet packet)
+        {
+            packet.ReadPackedGuid128("Player");
+            ReadAllAchievements(packet, "Data");
         }
     }
 }

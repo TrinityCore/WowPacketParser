@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 
@@ -680,9 +679,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_ENTRY_INVITE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleBattlefieldMgrInviteSend(Packet packet)
         {
-            packet.ReadInt32("Battle Id");
-            packet.ReadInt32<ZoneId>("Zone Id");
-            packet.ReadTime("Invite lasts until");
+            packet.ReadInt32("BattleID");
+            packet.ReadInt32<ZoneId>("ZoneID");
+            packet.ReadTime("ExpireTime");
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_INVITE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -709,14 +708,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Warmup");
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_ENTERED, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_ENTERING, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleBattlefieldMgrEntered406(Packet packet)
         {
             packet.ReadByte("Unk");
             packet.ReadGuid("BG Guid");
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_ENTERED, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_ENTERING, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandleBattlefieldMgrEntered(Packet packet)
         {
             packet.ReadInt32("Battle Id");

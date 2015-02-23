@@ -81,13 +81,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Channel Name");
         }
 
-        [Parser(Opcode.CMSG_ADD_VOICE_IGNORE)]
+        [Parser(Opcode.CMSG_VOICE_ADD_IGNORE)]
         public static void HandleAddVoiceIgnore(Packet packet)
         {
             packet.ReadCString("Name");
         }
 
-        [Parser(Opcode.CMSG_DEL_VOICE_IGNORE)]
+        [Parser(Opcode.CMSG_VOICE_DEL_IGNORE)]
         public static void HandleDelVoiceIgnore(Packet packet)
         {
             packet.ReadGuid("GUID");

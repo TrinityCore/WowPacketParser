@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -128,13 +127,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("NPC GUID", npcGUID);
         }
 
-        [Parser(Opcode.SMSG_ITEM_UPGRADE_RESULT)]
-        public static void HandleItemUpgradeResult(Packet packet)
-        {
-            packet.ReadBit("Successful");
-        }
-
-        [Parser(Opcode.CMSG_ITEM_REFUND_INFO)]
+        [Parser(Opcode.CMSG_GET_ITEM_PURCHASE_DATA)]
         public static void HandleItemRefundInfo(Packet packet)
         {
             var guid = new byte[8];

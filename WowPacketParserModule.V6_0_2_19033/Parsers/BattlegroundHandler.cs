@@ -1,5 +1,4 @@
-﻿using System;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -9,7 +8,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     {
         public static void ReadBattlefieldStatus_Header(Packet packet, params object[] indexes)
         {
-            LfgHandler.ReadRideTicket(packet);
+            LfgHandler.ReadCliRideTicket(packet);
 
             packet.ReadInt64("QueueID");
             packet.ReadByte("RangeMin");
@@ -68,7 +67,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_BATTLEFIELD_PORT)]
         public static void HandleBattlefieldPort(Packet packet)
         {
-            LfgHandler.ReadRideTicket(packet);
+            LfgHandler.ReadCliRideTicket(packet);
             packet.ReadBit("AcceptedInvite");
         }
 
@@ -262,7 +261,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_NONE)]
         public static void HandleBattlefieldStatus_None(Packet packet)
         {
-            LfgHandler.ReadRideTicket(packet);
+            LfgHandler.ReadCliRideTicket(packet);
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_ACTIVE)]
@@ -270,7 +269,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             ReadBattlefieldStatus_Header(packet);
 
-            packet.ReadInt32("Mapid");
+            packet.ReadInt32<MapId>("Mapid");
             packet.ReadInt32("StartTimer");
             packet.ReadInt32("ShutdownTimer");
 
@@ -283,7 +282,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleBattlefieldStatus_NeedConfirmation(Packet packet)
         {
             ReadBattlefieldStatus_Header(packet);
-            packet.ReadInt32("Mapid");
+            packet.ReadInt32<MapId>("Mapid");
             packet.ReadInt32("Timeout");
             packet.ReadByte("Role");
         }
@@ -291,7 +290,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_FAILED)]
         public static void HandleBattlefieldStatus_Failed(Packet packet)
         {
-            LfgHandler.ReadRideTicket(packet);
+            LfgHandler.ReadCliRideTicket(packet);
             packet.ReadInt64("QueueID");
             packet.ReadInt32("Reason");
             packet.ReadPackedGuid128("ClientID");
@@ -347,10 +346,100 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("MinLevel");       // unconfirmed order
             packet.ReadInt32("MaxLevel");       // unconfirmed order
             packet.ReadInt32("InstanceID");     // unconfirmed order
-            packet.ReadInt32("MapID");          // unconfirmed order
+            packet.ReadInt32<MapId>("MapID");          // unconfirmed order
             
             packet.ResetBitReader();
             packet.ReadBit("Index");
+        }
+
+        public static void ReadBattlegroundCapturePointInfo(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("Guid", idx);
+            packet.ReadVector2("Pos", idx);
+            var state = packet.ReadByte("State", idx);
+
+            if (state == 2 || state == 3)
+            {
+                packet.ReadUInt32("CaptureTime", idx);
+                packet.ReadUInt32("CaptureTotalDuration", idx);
+            }
+        }
+
+        [Parser(Opcode.SMSG_UPDATE_CAPTURE_POINT)]
+        public static void HandleUpdateCapturePoint(Packet packet)
+        {
+            ReadBattlegroundCapturePointInfo(packet, "CapturePointInfo");
+        }
+
+        [Parser(Opcode.SMSG_MAP_OBJECTIVES_INIT)]
+        public static void HandleMapObjectivesInit(Packet packet)
+        {
+            var count = packet.ReadInt32("CapturePointInfoCount");
+            for (var i = 0; i < count; ++i)
+                ReadBattlegroundCapturePointInfo(packet, "CapturePointInfo", i);
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING)]
+        public static void HandleBFMgrEjectPending(Packet packet)
+        {
+            packet.ReadUInt64("QueueID");
+            packet.ReadBit("Remove");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_ENTERING)]
+        public static void HandleBFMgrEntering(Packet packet)
+        {
+            packet.ReadBit("ClearedAFK");
+
+            packet.ReadBit("OnOffense | Relocated"); // NC
+            packet.ReadBit("OnOffense | Relocated"); // NC
+
+            packet.ResetBitReader();
+
+            packet.ReadUInt64("QueueID");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_ENTRY_INVITE)]
+        public static void HandleBFMgrEntryInvite(Packet packet)
+        {
+            packet.ReadUInt64("QueueID");
+            packet.ReadInt32<AreaId>("AreaID");
+            packet.ReadTime("ExpireTime");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_STATE_CHANGED)]
+        public static void HandleBFMgrStateChanged(Packet packet)
+        {
+            packet.ReadUInt64("QueueID");
+            packet.ReadInt32("State");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_WAITFORGROUPS)]
+        public static void HandleBattlefieldStatus_WaitForGroups(Packet packet)
+        {
+            ReadBattlefieldStatus_Header(packet, "Hdr");
+
+            packet.ReadUInt32<MapId>("Mapid");
+            packet.ReadUInt32("Timeout");
+
+            for (var i = 0; i < 2; ++i)
+            {
+                packet.ReadByte("TotalPlayers", i);
+                packet.ReadByte("AwaitingPlayers", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_DROP_TIMER_STARTED)]
+        public static void HandleBFMgrDropTimerStarted(Packet packet)
+        {
+            packet.ReadUInt64("QueueID");
+            packet.ReadInt32("Time");
+        }
+
+        [Parser(Opcode.SMSG_BATTLEFIELD_MGR_DROP_TIMER_CANCELED)]
+        public static void HandleBFMgrDropTimerCanceled(Packet packet)
+        {
+            packet.ReadUInt64("QueueID");
         }
     }
 }
