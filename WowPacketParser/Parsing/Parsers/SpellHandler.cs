@@ -1257,7 +1257,7 @@ namespace WowPacketParser.Parsing.Parsers
                 EquipmentSlotType.Back, EquipmentSlotType.Tabard };
 
             for (var i = 0; i < 11; ++i)
-                packet.ReadEntry<UInt32>(StoreNameType.Item, "[" + slots[i] + "] Item Entry");
+                packet.ReadUInt32<ItemId>("ItemEntry", slots[i]);
         }
 
         [Parser(Opcode.SMSG_CLEAR_COOLDOWN)]

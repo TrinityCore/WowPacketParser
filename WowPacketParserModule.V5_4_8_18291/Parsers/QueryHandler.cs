@@ -381,8 +381,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
                     item.TriggeredSpellIds = new int[5];
                     for (var i = 0; i < 5; i++)
-                        item.TriggeredSpellIds[i] = db2File.ReadEntry<Int32>(StoreNameType.Spell,
-                            "Triggered Spell ID", i);
+                        item.TriggeredSpellIds[i] = db2File.ReadInt32<SpellId>("Triggered Spell ID", i);
 
                     item.TriggeredSpellTypes = new ItemSpellTriggerType[5];
                     for (var i = 0; i < 5; i++)
