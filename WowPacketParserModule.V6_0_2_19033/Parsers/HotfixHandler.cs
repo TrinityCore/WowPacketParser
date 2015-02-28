@@ -192,7 +192,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 case DB2Hash.ItemExtendedCost: // New structure - 6.0.2
                 {
                     db2File.ReadUInt32("Item Extended Cost ID");
-                    if (!ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
+                    if (ClientVersion.RemovedInVersion(ClientVersionBuild.V6_1_0_19678))
                     {
                         db2File.ReadUInt32("Required Honor Points");
                         db2File.ReadUInt32("Required Arena Points");
