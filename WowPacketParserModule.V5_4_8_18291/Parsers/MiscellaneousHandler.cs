@@ -333,7 +333,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_ACTIVATE_TAXI_REPLY)]
         public static void HandleActivateTaxiReply(Packet packet)
         {
-            packet.ReadEnum<TaxiError>("Result", 4);
+            packet.ReadBitsE<TaxiError>("Result", 4);
         }
 
         [Parser(Opcode.CMSG_ACTIVATE_TAXI)]

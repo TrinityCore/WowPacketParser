@@ -9,7 +9,7 @@ namespace WowPacketParser.Misc
     {
         public BattlenetPacketHeader Header { get; set; }
         public int ProcessedBytes { get; set; }
-        public Packet Stream;
+        public readonly Packet Stream;
 
         private byte _bytePart;
         private int _count;

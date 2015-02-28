@@ -841,7 +841,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_TURN_IN_PETITION_RESULTS)]
         public static void HandlePetitionTurnInResults(Packet packet)
         {
-            packet.ReadEnum<PetitionResultType>("Result", 4);
+            packet.ReadBitsE<PetitionResultType>("Result", 4);
         }
 
         [Parser(Opcode.SMSG_GUILD_INVITE_DECLINED)]

@@ -97,12 +97,9 @@ namespace WowPacketParser.Parsing.Parsers
             npcTrainer.TrainerSpells = new List<TrainerSpell>(count);
             for (var i = 0; i < count; ++i)
             {
-                var trainerSpell = new TrainerSpell
-                {
-                    Spell = (uint) packet.ReadEntry<Int32>(StoreNameType.Spell, "Spell ID", i)
-                };
+                var trainerSpell = new TrainerSpell();
 
-
+                trainerSpell.Spell = packet.ReadUInt32<SpellId>("Spell ID", i);
                 packet.ReadByteE<TrainerSpellState>("State", i);
 
                 trainerSpell.Cost = packet.ReadUInt32("Cost", i);

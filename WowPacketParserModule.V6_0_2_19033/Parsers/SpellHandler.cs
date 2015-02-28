@@ -37,7 +37,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ResetBitReader();
 
-            packet.ReadEnum<TargetFlag>("Flags", 21, idx);
+            packet.ReadBitsE<TargetFlag>("Flags", 21, idx);
             var hasSrcLoc = packet.ReadBit("HasSrcLocation", idx);
             var hasDstLoc = packet.ReadBit("HasDstLocation", idx);
             var hasOrient = packet.ReadBit("HasOrientation", idx);

@@ -124,7 +124,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleTradeStatus434(Packet packet)
         {
             packet.ReadBit("Unk Bit");
-            var status = packet.ReadEnum<TradeStatus434>("Status", 5);
+            var status = packet.ReadBitsE<TradeStatus434>("Status", 5);
 
             switch (status)
             {

@@ -203,7 +203,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 hasFallData = packet.ReadBit();
                 packet.ReadBit("bit8C", index);
                 if (hasMoveFlagsExtra)
-                    moveInfo.FlagsExtra = packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13, index);
+                    moveInfo.FlagsExtra = packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 13, index);
 
                 guid1[0] = packet.ReadBit();
                 moveInfo.HasSplineData = packet.ReadBit();
@@ -212,7 +212,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                     hasFullSpline = packet.ReadBit();
                     if (hasFullSpline)
                     {
-                        packet.ReadEnum<SplineFlag434>("Spline flags", 25, index);
+                        packet.ReadBitsE<SplineFlag434>("Spline flags", 25, index);
                         hasSplineStartTime = packet.ReadBit("Has Spline Start Time", index);
                         splineCount = packet.ReadBits("SplineWaypointsCount", 20, index);
                         bit130 = packet.ReadBit();
@@ -222,7 +222,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                             packet.ReadBits("bits12C", 2, index);
                         }
 
-                        packet.ReadEnum<SplineMode>("Spline Mode", 2, index);
+                        packet.ReadBitsE<SplineMode>("Spline Mode", 2, index);
                         hasSplineVerticalAcceleration = packet.ReadBit("has Spline Vertical Acceleration", index);
                     }
                 }
@@ -238,7 +238,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 }
 
                 if (hasMovementFlags)
-                    moveInfo.Flags = packet.ReadEnum<MovementFlag>("Movement Flags", 30, index);
+                    moveInfo.Flags = packet.ReadBitsE<MovementFlag>("Movement Flags", 30, index);
 
                 if (hasFallData)
                     hasFallDirection = packet.ReadBit();

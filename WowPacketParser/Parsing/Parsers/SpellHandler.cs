@@ -507,13 +507,13 @@ namespace WowPacketParser.Parsing.Parsers
                 }
 
                 if (hasMovementFlags2)
-                    packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 13);
+                    packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 13);
 
                 if (hasFallData)
                     hasFallDirection = packet.ReadBit("Has Fall Direction");
 
                 if (hasMovementFlags)
-                    packet.ReadEnum<MovementFlag>("Movement Flags", 30);
+                    packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
 
                 packet.ReadXORByte(guid, 1);
                 packet.ReadXORByte(guid, 2);
@@ -645,10 +645,10 @@ namespace WowPacketParser.Parsing.Parsers
                 }
 
                 if (hasMovementFlags2)
-                    packet.ReadEnum<MovementFlagExtra>("Movement flags extra", 12);
+                    packet.ReadBitsE<MovementFlagExtra>("Movement flags extra", 12);
 
                 if (hasMovementFlags)
-                    packet.ReadEnum<MovementFlag>("Movement flags", 30);
+                    packet.ReadBitsE<MovementFlag>("Movement flags", 30);
 
                 if (hasFallData)
                     hasFallDirection = packet.ReadBit("hasFallDirection");
@@ -1257,7 +1257,7 @@ namespace WowPacketParser.Parsing.Parsers
                 EquipmentSlotType.Back, EquipmentSlotType.Tabard };
 
             for (var i = 0; i < 11; ++i)
-                packet.ReadEntry<UInt32>(StoreNameType.Item, "[" + slots[i] + "] Item Entry");
+                packet.ReadUInt32<ItemId>("ItemEntry", slots[i]);
         }
 
         [Parser(Opcode.SMSG_CLEAR_COOLDOWN)]

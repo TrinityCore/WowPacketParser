@@ -27,7 +27,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadBit("Periodic");
 
-            packet.ReadEnum<AttackerStateFlags>("Flags", 9);
+            packet.ReadBitsE<AttackerStateFlags>("Flags", 9);
 
             var bit148 = packet.ReadBit();
             var bit76 = packet.ReadBit("HasLogData");

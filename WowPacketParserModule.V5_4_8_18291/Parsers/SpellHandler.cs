@@ -126,7 +126,7 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
                 packet.StartBitStream(guid4, 4, 5, 3, 0, 7, 1, 6, 2);
 
             if (hasTargetMask)
-                packet.ReadEnum<TargetFlag>("Target Flags", 20);
+                packet.ReadBitsE<TargetFlag>("Target Flags", 20);
 
             if (hasCastFlags)
                 packet.ReadBits("hasCastFlags", 5);
@@ -348,7 +348,7 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
             var hasTargetFlags = !packet.ReadBit("hasTargetFlags");
 
             if (hasTargetFlags)
-                packet.ReadEnum<TargetFlag>("Target Flags", 20);
+                packet.ReadBitsE<TargetFlag>("Target Flags", 20);
 
             casterGUID[1] = packet.ReadBit();
             var hasPredictedHeal = !packet.ReadBit("hasPredictedHeal"); //106
@@ -639,7 +639,7 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
             }
 
             if (hasTargetMask)
-                packet.ReadEnum<TargetFlag>("Target Flags", 20);
+                packet.ReadBitsE<TargetFlag>("Target Flags", 20);
 
             var hasElevation = !packet.ReadBit();
             var hasRunesStateAfter = !packet.ReadBit();

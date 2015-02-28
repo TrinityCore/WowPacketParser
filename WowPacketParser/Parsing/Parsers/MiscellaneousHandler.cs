@@ -540,7 +540,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_NOTIFY_DANCE)]
         public static void HandleNotifyDance(Packet packet)
         {
-            var flag = packet.ReadEnum<>("Flag", TypeCode.Int32);
+            var flag = packet.ReadInt32E<?>("Flag");
 
             if (flag & 0x8)
             {
@@ -919,13 +919,13 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (hasMovementFlags)
-                packet.ReadEnum<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
 
             if (hasFallData)
                 hasFallDirection = packet.ReadBit();
 
             if (hasMovementFlags2)
-                packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 12);
+                packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
 
             packet.ReadXORByte(guid, 5);
             packet.ReadXORByte(guid, 3);

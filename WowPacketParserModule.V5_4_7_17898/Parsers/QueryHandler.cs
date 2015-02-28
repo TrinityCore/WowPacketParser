@@ -175,7 +175,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     var broadcastText = new BroadcastText();
 
                     var Id = db2File.ReadEntry("Id");
-                    broadcastText.language = db2File.ReadInt32("Language");
+                    broadcastText.Language = db2File.ReadInt32("Language");
                     if (db2File.ReadUInt16() > 0)
                         broadcastText.MaleText = db2File.ReadCString("Male Text");
                     if (db2File.ReadUInt16() > 0)
@@ -188,9 +188,9 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     for (var i = 0; i < 3; ++i)
                         broadcastText.EmoteDelay[i] = (uint) db2File.ReadInt32("Emote Delay", i);
 
-                    broadcastText.soundId = db2File.ReadUInt32("Sound Id");
-                    broadcastText.unk1 = db2File.ReadUInt32("Unk MoP 1"); // unk emote
-                    broadcastText.unk2 = db2File.ReadUInt32("Unk MoP 2"); // kind of type?
+                    broadcastText.SoundId = db2File.ReadUInt32("Sound Id");
+                    broadcastText.UnkEmoteId = db2File.ReadUInt32("Unk MoP 1"); // unk emote
+                    broadcastText.Type = db2File.ReadUInt32("Unk MoP 2"); // kind of type?
 
                     Storage.BroadcastTexts.Add((uint) Id.Key, broadcastText, packet.TimeSpan);
                     packet.AddSniffData(StoreNameType.BroadcastText, Id.Key, "BROADCAST_TEXT");
@@ -375,8 +375,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
                     item.TriggeredSpellIds = new int[5];
                     for (var i = 0; i < 5; i++)
-                        item.TriggeredSpellIds[i] = db2File.ReadEntry<Int32>(StoreNameType.Spell,
-                            "Triggered Spell ID", i);
+                        item.TriggeredSpellIds[i] = db2File.ReadInt32<SpellId>("Triggered Spell ID", i);
 
                     item.TriggeredSpellTypes = new ItemSpellTriggerType[5];
                     for (var i = 0; i < 5; i++)

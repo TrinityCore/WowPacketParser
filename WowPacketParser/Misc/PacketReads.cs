@@ -155,7 +155,7 @@ namespace WowPacketParser.Misc
             return new KeyValuePair<int, bool>((int)realEntry, realEntry != entry);
         }
 
-        public T ReadEntry<T>(StoreNameType type, string name, params object[] indexes) where T : struct
+        private T ReadEntry<T>(StoreNameType type, string name, params object[] indexes) where T : struct
         {
             var val = ReadValue<T>();
             var val32 = Convert.ToInt32(val);
@@ -412,7 +412,7 @@ namespace WowPacketParser.Misc
 
         public LfgEntry ReadLfgEntry(string name, params object[] indexes)
         {
-            return AddValue(name, new LfgEntry(ReadInt32()), indexes);
+            return AddValue(name, ReadLfgEntry(), indexes);
         }
 
         public long ReadValue(string name, TypeCode typeCode, params object[] indexes)
@@ -518,21 +518,30 @@ namespace WowPacketParser.Misc
             return value;
         }
 
-        private T ReadEnum<T>(int bits) where T : struct, IConvertible
+        private TEnum ReadBitsE<TEnum>(int bits) where TEnum : struct, IConvertible
         {
-            var type = typeof(T);
+            var type = typeof(TEnum);
             long rawVal = ReadBits(bits);
             var value = Enum.ToObject(type, rawVal);
-            return (T) value;
+            return (TEnum) value;
         }
 
-        public T ReadEnum<T>(string name, int bits, params object[] indexes) where T : struct, IConvertible
+        public TEnum ReadBitsE<TEnum>(string name, int bits, params object[] indexes) where TEnum : struct, IConvertible
         {
-            var val = ReadEnum<T>(bits);
+            var val = ReadBitsE<TEnum>(bits);
             var val64 = Convert.ToInt64(val);
             AddValue(name, FormatInteger(val64, val.ToString(CultureInfo.InvariantCulture)), indexes);
             return val;
         }
+
+        private uint ReadEntry(StoreNameType type, string name, int bits, params object[] indexes)
+        {
+            var val = ReadBits(bits);
+            AddValue(name, FormatInteger(val, StoreGetters.GetName(type, (int) val, false)), indexes);
+            return val;
+        }
+
+        public uint ReadBits<T>(string name, int bits, params object[] idx) where T : IId { return ReadEntry(StoreName.ToEnum<T>(), name, bits, idx); }
 
         public byte[] StartBitStream(params int[] values)
         {

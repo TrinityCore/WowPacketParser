@@ -322,7 +322,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.StartBitStream(guid1, 2, 4, 7, 0, 6, 1, 5, 3);
 
             if (hasTargetMask)
-                packet.ReadEnum<TargetFlag>("Target Flags", 20);
+                packet.ReadBitsE<TargetFlag>("Target Flags", 20);
 
             if (hasTargetString)
                 targetString = packet.ReadBits("hasTargetString", 7);

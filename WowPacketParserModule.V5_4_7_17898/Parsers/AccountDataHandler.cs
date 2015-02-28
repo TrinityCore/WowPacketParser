@@ -28,7 +28,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var data = pkt.ReadWoWString(decompCount);
             pkt.ClosePacket();
 
-            packet.ReadEnum<AccountDataType>("Data Type", 3);
+            packet.ReadBitsE<AccountDataType>("Data Type", 3);
             packet.AddValue("Account Data", data);
         }
     }

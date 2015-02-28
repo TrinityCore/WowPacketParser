@@ -165,7 +165,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var targetGUID = packet.StartBitStream(3, 0, 2, 7, 6, 4, 1, 5);
 
             if (unkBit)
-                packet.ReadEnum<CastFlag>("Cast Flags", 20);
+                packet.ReadBitsE<CastFlag>("Cast Flags", 20);
 
             if (hasbit1C)
                 packet.ReadBits("hasbit1C", 5);
@@ -323,7 +323,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var bit48 = packet.ReadBit();
 
             if (hasTargetFlags)
-                packet.ReadEnum<TargetFlag>("Target Flags", 20);
+                packet.ReadBitsE<TargetFlag>("Target Flags", 20);
 
             var hasRuneStateAfter = !packet.ReadBit();
 
@@ -641,7 +641,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.StartBitStream(guid9, 3, 5, 2, 1, 4, 0, 6, 7);
 
             if (hasTargetFlags)
-                packet.ReadEnum<TargetFlag>("Target Flags", 20);
+                packet.ReadBitsE<TargetFlag>("Target Flags", 20);
 
             if (hasSourceData)
             {
