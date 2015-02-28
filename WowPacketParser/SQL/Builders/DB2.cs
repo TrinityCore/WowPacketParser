@@ -52,7 +52,22 @@ namespace WowPacketParser.SQL.Builders
         public static string Item() { throw new NotImplementedException(); }
         public static string ItemXBonusTree() { throw new NotImplementedException(); }
         public static string KeyChain() { throw new NotImplementedException(); }
-        public static string Mount() { throw new NotImplementedException(); }
+
+        [BuilderMethod]
+        public static string Mount()
+        {
+            if (Storage.Mounts.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.mount))
+                return string.Empty;
+
+            var entries = Storage.Mounts.Keys();
+            var templatesDb = SQLDatabase.GetDict<uint, Mount>(entries, "ID", Settings.HotfixesDatabase);
+
+            return SQLUtil.CompareDicts(Storage.Mounts, templatesDb, StoreNameType.None, "ID");
+        }
+
         public static string OverrideSpellData() { throw new NotImplementedException(); }
         public static string PhaseXPhaseGroup() { throw new NotImplementedException(); }
         public static string SpellAuraRestrictions() { throw new NotImplementedException(); }

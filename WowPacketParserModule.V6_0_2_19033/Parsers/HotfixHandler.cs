@@ -227,6 +227,30 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     db2File.ReadUInt32<ItemId>("Item ID");
                     break;
                 }
+                case DB2Hash.Mount:
+                {
+                    var mount = new Mount();
+                    var id = db2File.ReadUInt32("ID");
+                    mount.MountTypeId = db2File.ReadUInt32("MountTypeId");
+                    mount.DisplayId = db2File.ReadUInt32("DisplayId");
+                    mount.Flags = db2File.ReadUInt32("Flags");
+
+                    var NameLength = db2File.ReadUInt16();
+                    mount.Name = db2File.ReadWoWString("Name", NameLength);
+
+                    var DescriptionLength = db2File.ReadUInt16();
+                    mount.Description = db2File.ReadWoWString("Description", DescriptionLength);
+
+                    var SourceDescriptionLength = db2File.ReadUInt16();
+                    mount.SourceDescription = db2File.ReadWoWString("SourceDescription", SourceDescriptionLength);
+
+                    mount.Source = db2File.ReadUInt32("Source");
+                    mount.SpellId = db2File.ReadUInt32("SpellId");
+                    mount.PlayerConditionId = db2File.ReadUInt32("PlayerConditionId");
+
+                    Storage.Mounts.Add(id, mount, packet.TimeSpan);
+                    break;
+                }
                 case DB2Hash.RulesetItemUpgrade:
                 {
                     db2File.ReadUInt32("ID");

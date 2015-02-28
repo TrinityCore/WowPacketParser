@@ -22,6 +22,7 @@ namespace WowPacketParser.Store
         // DB2
         public static readonly StoreDictionary<uint, BroadcastText> BroadcastTexts = new StoreDictionary<uint, BroadcastText>(new List<SQLOutput> { SQLOutput.broadcast_text });
         public static readonly StoreDictionary<uint, CurvePoint> CurvePoints = new StoreDictionary<uint, CurvePoint>(new List<SQLOutput> { SQLOutput.curve_point });
+        public static readonly StoreDictionary<uint, Mount> Mounts = new StoreDictionary<uint, Mount>(new List<SQLOutput> { SQLOutput.mount });
         public static readonly StoreDictionary<uint, SpellMisc> SpellMiscs = new StoreDictionary<uint, SpellMisc>(new List<SQLOutput> { SQLOutput.spell_misc });
         public static readonly StoreDictionary<uint, CreatureDifficulty> CreatureDifficultys = new StoreDictionary<uint, CreatureDifficulty>(new List<SQLOutput> { SQLOutput.creature_template });
         public static readonly StoreDictionary<uint, GameObjectTemplateDB2> GameObjectTemplateDB2s = new StoreDictionary<uint, GameObjectTemplateDB2>(new List<SQLOutput> { SQLOutput.gameobject_template });

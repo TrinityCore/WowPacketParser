@@ -487,6 +487,7 @@
     <Compile Include="Store\Objects\Loot.cs" />
     <Compile Include="Store\Objects\LootItem.cs" />
     <Compile Include="Store\Objects\ModelData.cs" />
+    <Compile Include="Store\Objects\Mount.cs" />
     <Compile Include="Store\Objects\NpcText.cs" />
     <Compile Include="Store\Objects\NpcSpellClick.cs" />
     <Compile Include="Store\Objects\NpcTrainer.cs" />

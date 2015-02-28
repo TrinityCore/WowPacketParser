@@ -21,6 +21,7 @@
         gossip_menu_option,
         item_template,
         LootTemplate,
+        mount,
         npc_text,
         npc_trainer,
         npc_vendor,
