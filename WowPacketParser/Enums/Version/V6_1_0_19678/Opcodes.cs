@@ -1,3 +1,4 @@
+using System;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Enums.Version.V6_1_0_19678
@@ -6,22 +7,18 @@ namespace WowPacketParser.Enums.Version.V6_1_0_19678
     {
         public static BiDictionary<Opcode, int> Opcodes(Direction direction)
         {
-            switch (direction)
-            {
-                case Direction.ClientToServer:
-                case Direction.BNClientToServer:
-                    return ClientOpcodes;
-                case Direction.ServerToClient:
-                case Direction.BNServerToClient:
-                    return ServerOpcodes;
-            }
-            return MiscOpcodes;
+            if (direction == Direction.ClientToServer)
+                return ClientOpcodes;
+            if (direction == Direction.ServerToClient)
+                return ServerOpcodes;
+            throw new ArgumentOutOfRangeException("direction");
         }
 
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
         {
             {Opcode.CMSG_AUTH_SESSION, 0x1872},
             {Opcode.CMSG_GUILD_QUERY, 0x19B3},
+            {Opcode.CMSG_LOG_DISCONNECT, 0x1432},
             {Opcode.CMSG_WARDEN_DATA, 0x11E3},
         };
 
@@ -34,8 +31,12 @@ namespace WowPacketParser.Enums.Version.V6_1_0_19678
             {Opcode.SMSG_BATTLE_PAY_GET_PURCHASE_LIST_RESPONSE, 0x1FC9}, 
             {Opcode.SMSG_CLIENTCACHE_VERSION, 0x116C},
             {Opcode.SMSG_CHAR_ENUM, 0x13F2},
+            {Opcode.SMSG_CHUNKED_PACKET, 0x0C23},
+            {Opcode.SMSG_COMPRESSED_PACKET, 0x0689},
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS_GLUE_SCREEN, 0x117A},
+            {Opcode.SMSG_FINAL_CHUNK, 0x0C14},
             {Opcode.SMSG_GUILD_QUERY_RESPONSE, 0x06F3},
+            {Opcode.SMSG_MULTIPLE_PACKETS, 0x0C33},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x0413},
             {Opcode.SMSG_SET_TIME_ZONE_INFORMATION, 0x15B4},
             {Opcode.SMSG_UNDELETE_COOLDOWN_STATUS_RESPONSE, 0x1DDB},
