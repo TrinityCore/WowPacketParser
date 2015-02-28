@@ -41,7 +41,22 @@ namespace WowPacketParser.SQL.Builders
         }
 
         public static string Holidays() { throw new NotImplementedException(); }
-        public static string ItemAppearance() { throw new NotImplementedException(); }
+
+        [BuilderMethod]
+        public static string ItemAppearance()
+        {
+            if (Storage.ItemAppearances.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.item_appearance))
+                return string.Empty;
+
+            var entries = Storage.ItemAppearances.Keys();
+            var templatesDb = SQLDatabase.GetDict<uint, ItemAppearance>(entries, "ID", Settings.HotfixesDatabase);
+
+            return SQLUtil.CompareDicts(Storage.ItemAppearances, templatesDb, StoreNameType.None, "ID");
+        }
+
         public static string ItemBonus() { throw new NotImplementedException(); }
         public static string ItemBonusTreeNode() { throw new NotImplementedException(); }
         public static string ItemCurrencyCost() { throw new NotImplementedException(); }

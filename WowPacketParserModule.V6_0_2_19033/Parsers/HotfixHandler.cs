@@ -259,6 +259,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     db2File.ReadUInt32<ItemId>("Item ID");
                     break;
                 }
+                case DB2Hash.ItemAppearance:
+                {
+                    var itemAppearance = new ItemAppearance();
+
+                    var id = db2File.ReadUInt32("ID");
+
+                    itemAppearance.DisplayID = db2File.ReadUInt32("Display ID");
+                    itemAppearance.IconFileDataID = db2File.ReadUInt32("File Data ID");
+
+                    Storage.ItemAppearances.Add(id, itemAppearance, packet.TimeSpan);
+                    break;
+                }
                 case DB2Hash.Item_sparse: // New structure - 6.0.2
                 {
                     var item = Storage.ItemTemplates.ContainsKey(entry)
