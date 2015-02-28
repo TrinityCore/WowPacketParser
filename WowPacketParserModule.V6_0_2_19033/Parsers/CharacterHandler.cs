@@ -66,6 +66,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 var nameLength = packet.ReadBits("Character Name Length", 6, i);
                 var firstLogin = packet.ReadBit("FirstLogin", i);
                 packet.ReadBit("BoostInProgress", i);
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
+                    packet.ReadBits("Unk Bits141", 5, i);
+
                 packet.ReadWoWString("Character Name", nameLength, i);
 
                 if (firstLogin)
