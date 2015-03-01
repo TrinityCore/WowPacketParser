@@ -60,6 +60,7 @@ namespace WowPacketParser.Enums.Version.V6_1_0_19678
             {Opcode.CMSG_MOVE_START_TURN_RIGHT, 0x0DAA},
             {Opcode.CMSG_MOVE_STOP, 0x0892},
             {Opcode.CMSG_MOVE_STOP_TURN, 0x05E9},
+            {Opcode.CMSG_NAME_QUERY, 0x0A3A},
             {Opcode.CMSG_NPC_TEXT_QUERY, 0x0E44},
             {Opcode.CMSG_PING, 0x167B},
             {Opcode.CMSG_PLAYER_LOGIN, 0x1D31},
