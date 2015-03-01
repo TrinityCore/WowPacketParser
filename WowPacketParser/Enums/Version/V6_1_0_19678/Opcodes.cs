@@ -30,7 +30,7 @@ namespace WowPacketParser.Enums.Version.V6_1_0_19678
             {Opcode.CMSG_CANCEL_TRADE, 0x1114},
             {Opcode.CMSG_CAST_SPELL, 0x1B02},
             {Opcode.CMSG_CHAR_CREATE, 0x133A},
-            {Opcode.CMSG_CHAR_DELETE, 0x1744},
+            {Opcode.CMSG_CHAR_DELETE, 0x1774},
             {Opcode.CMSG_CHAR_ENUM, 0x19E3},
             {Opcode.CMSG_CREATURE_QUERY, 0x007C},
             {Opcode.CMSG_DB_QUERY_BULK, 0x1731},
