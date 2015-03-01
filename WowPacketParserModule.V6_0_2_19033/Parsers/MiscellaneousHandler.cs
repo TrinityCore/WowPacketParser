@@ -156,7 +156,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("RestrictedAccount");
             packet.ReadBit("TutorialsEnabled");
             packet.ReadBit("Unk bit44"); // Also tutorials related
-            packet.ReadBit("Unk bit33");
+            packet.ReadBit("TwitterEnabled");
             var bit61 = packet.ReadBit("Unk bit61");
 
             if (hasEuropaTicketSystemStatus)
