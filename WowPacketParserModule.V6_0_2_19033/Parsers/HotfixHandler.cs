@@ -259,6 +259,40 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     db2File.ReadUInt32<ItemId>("Item ID");
                     break;
                 }
+                case DB2Hash.Holidays:
+                {
+                    var holiday = new HolidayData();
+
+                    var id = db2File.ReadUInt32("ID");
+
+                    holiday.Duration = new uint[10];
+                    for (var i = 0; i < 10; i++)
+                        holiday.Duration[i] = db2File.ReadUInt32("Duration", i);
+
+                    holiday.Date = new uint[16];
+                    for (var i = 0; i < 16; i++)
+                        holiday.Date[i] = db2File.ReadUInt32("Date", i);
+
+                    holiday.Region = db2File.ReadUInt32("Region");
+                    holiday.Looping = db2File.ReadUInt32("Looping");
+
+                    holiday.CalendarFlags = new uint[10];
+                    for (var i = 0; i < 10; i++)
+                        holiday.CalendarFlags[i] = db2File.ReadUInt32("CalendarFlags", i);
+
+                    holiday.HolidayNameID = db2File.ReadUInt32("HolidayNameID");
+                    holiday.HolidayDescriptionID = db2File.ReadUInt32("HolidayDescriptionID");
+
+                    var TextureFilenameLength = db2File.ReadUInt16();
+                    holiday.TextureFilename = db2File.ReadWoWString("SourceDescription", TextureFilenameLength);
+
+                    holiday.Priority = db2File.ReadUInt32("Priority");
+                    holiday.CalendarFilterType = db2File.ReadUInt32("CalendarFilterType");
+                    holiday.Flags = db2File.ReadUInt32("Flags");
+
+                    Storage.Holidays.Add(id, holiday, packet.TimeSpan);
+                    break;
+                }
                 case DB2Hash.ItemAppearance:
                 {
                     var itemAppearance = new ItemAppearance();

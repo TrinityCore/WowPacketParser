@@ -40,7 +40,20 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(Storage.CurvePoints, templatesDb, StoreNameType.None, "ID");
         }
 
-        public static string Holidays() { throw new NotImplementedException(); }
+        [BuilderMethod]
+        public static string HolidayData()
+        {
+            if (Storage.Holidays.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.holiday))
+                return string.Empty;
+
+            var entries = Storage.Holidays.Keys();
+            var templatesDb = SQLDatabase.GetDict<uint, HolidayData>(entries, "ID", Settings.HotfixesDatabase);
+
+            return SQLUtil.CompareDicts(Storage.Holidays, templatesDb, StoreNameType.None, "ID");
+        }
 
         [BuilderMethod]
         public static string ItemAppearance()

@@ -19,6 +19,7 @@
         gameobject_template,
         gossip_menu,
         gossip_menu_option,
+        holiday,
         item_appearance,
         item_template,
         LootTemplate,

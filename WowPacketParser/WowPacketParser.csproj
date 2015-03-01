@@ -482,6 +482,7 @@
     <Compile Include="Store\Objects\GameObjectTemplateNonWDB.cs" />
     <Compile Include="Store\Objects\Gossip.cs" />
     <Compile Include="Store\Objects\GossipPOI.cs" />
+    <Compile Include="Store\Objects\Holiday.cs" />
     <Compile Include="Store\Objects\Item.cs" />
     <Compile Include="Store\Objects\ItemAppearance.cs" />
     <Compile Include="Store\Objects\ItemTemplate.cs" />
