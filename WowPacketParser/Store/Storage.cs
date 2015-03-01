@@ -24,6 +24,7 @@ namespace WowPacketParser.Store
         public static readonly StoreDictionary<uint, CurvePoint> CurvePoints = new StoreDictionary<uint, CurvePoint>(new List<SQLOutput> { SQLOutput.curve_point });
         public static readonly StoreDictionary<uint, HolidayData> Holidays = new StoreDictionary<uint, HolidayData>(new List<SQLOutput> { SQLOutput.holiday });
         public static readonly StoreDictionary<uint, ItemAppearance> ItemAppearances = new StoreDictionary<uint, ItemAppearance>(new List<SQLOutput> { SQLOutput.item_appearance });
+        public static readonly StoreDictionary<uint, ItemBonus> ItemBonuses = new StoreDictionary<uint, ItemBonus>(new List<SQLOutput> { SQLOutput.item_bonus });
         public static readonly StoreDictionary<uint, Mount> Mounts = new StoreDictionary<uint, Mount>(new List<SQLOutput> { SQLOutput.mount });
         public static readonly StoreDictionary<uint, SpellMisc> SpellMiscs = new StoreDictionary<uint, SpellMisc>(new List<SQLOutput> { SQLOutput.spell_misc });
         public static readonly StoreDictionary<uint, CreatureDifficulty> CreatureDifficultys = new StoreDictionary<uint, CreatureDifficulty>(new List<SQLOutput> { SQLOutput.creature_template });

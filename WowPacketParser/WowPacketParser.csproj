@@ -486,6 +486,7 @@
     <Compile Include="Store\Objects\Holiday.cs" />
     <Compile Include="Store\Objects\Item.cs" />
     <Compile Include="Store\Objects\ItemAppearance.cs" />
+    <Compile Include="Store\Objects\ItemBonus.cs" />
     <Compile Include="Store\Objects\ItemTemplate.cs" />
     <Compile Include="Store\Objects\Loot.cs" />
     <Compile Include="Store\Objects\LootItem.cs" />

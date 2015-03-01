@@ -70,7 +70,21 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(Storage.ItemAppearances, templatesDb, StoreNameType.None, "ID");
         }
 
-        public static string ItemBonus() { throw new NotImplementedException(); }
+        [BuilderMethod]
+        public static string ItemBonus()
+        {
+            if (Storage.ItemBonuses.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.item_bonus))
+                return string.Empty;
+
+            var entries = Storage.ItemBonuses.Keys();
+            var templatesDb = SQLDatabase.GetDict<uint, ItemBonus>(entries, "ID", Settings.HotfixesDatabase);
+
+            return SQLUtil.CompareDicts(Storage.ItemBonuses, templatesDb, StoreNameType.None, "ID");
+        }
+
         public static string ItemBonusTreeNode() { throw new NotImplementedException(); }
         public static string ItemCurrencyCost() { throw new NotImplementedException(); }
         public static string ItemEffect() { throw new NotImplementedException(); }

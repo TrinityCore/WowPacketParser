@@ -21,6 +21,7 @@
         gossip_menu_option,
         holiday,
         item_appearance,
+        item_bonus,
         item_template,
         LootTemplate,
         mount,

@@ -305,6 +305,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     Storage.ItemAppearances.Add(id, itemAppearance, packet.TimeSpan);
                     break;
                 }
+                case DB2Hash.ItemBonus:
+                {
+                    var itemBonus = new ItemBonus();
+
+                    var id = db2File.ReadUInt32("ID");
+
+                    itemBonus.BonusListID = db2File.ReadUInt32("Bonus List ID");
+                    itemBonus.Type = db2File.ReadUInt32("Type");
+
+                    itemBonus.Value = new uint[2];
+                    for (var i = 0; i < 2; i++)
+                        itemBonus.Value[i] = db2File.ReadUInt32("Value", i);
+
+                    itemBonus.Index = db2File.ReadUInt32("Index");
+
+                    Storage.ItemBonuses.Add(id, itemBonus, packet.TimeSpan);
+                    break;
+                }
                 case DB2Hash.Item_sparse: // New structure - 6.0.2
                 {
                     var item = Storage.ItemTemplates.ContainsKey(entry)
