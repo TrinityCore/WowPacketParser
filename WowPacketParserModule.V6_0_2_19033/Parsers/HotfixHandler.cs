@@ -427,8 +427,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 }
                 case DB2Hash.KeyChain:
                 {
-                    db2File.ReadUInt32("Key Chain ID");
-                    db2File.ReadBytes("Key", 32);
+                    var key = new KeyChain();
+                    var id = db2File.ReadUInt32("ID");
+
+                    key.Key = new byte[32];
+                    for (var i = 0; i < 32; i++)
+                        key.Key[i] = db2File.ReadByte("Key", i);
+
+                    Storage.KeyChains.Add(id, key, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.SceneScript: // lua ftw!

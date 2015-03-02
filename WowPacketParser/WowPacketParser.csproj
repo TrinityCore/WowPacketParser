@@ -488,6 +488,7 @@
     <Compile Include="Store\Objects\ItemAppearance.cs" />
     <Compile Include="Store\Objects\ItemBonus.cs" />
     <Compile Include="Store\Objects\ItemTemplate.cs" />
+    <Compile Include="Store\Objects\KeyChain.cs" />
     <Compile Include="Store\Objects\Loot.cs" />
     <Compile Include="Store\Objects\LootItem.cs" />
     <Compile Include="Store\Objects\ModelData.cs" />

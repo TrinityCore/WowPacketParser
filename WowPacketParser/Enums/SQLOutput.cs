@@ -23,6 +23,7 @@
         item_appearance,
         item_bonus,
         item_template,
+        key_chain,
         LootTemplate,
         mount,
         npc_text,

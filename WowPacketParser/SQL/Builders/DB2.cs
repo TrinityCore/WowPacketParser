@@ -93,7 +93,21 @@ namespace WowPacketParser.SQL.Builders
         public static string ItemSparse() { throw new NotImplementedException(); }
         public static string Item() { throw new NotImplementedException(); }
         public static string ItemXBonusTree() { throw new NotImplementedException(); }
-        public static string KeyChain() { throw new NotImplementedException(); }
+
+        [BuilderMethod]
+        public static string KeyChain()
+        {
+            if (Storage.KeyChains.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.key_chain))
+                return string.Empty;
+
+            var entries = Storage.KeyChains.Keys();
+            var templatesDb = SQLDatabase.GetDict<uint, KeyChain>(entries, "ID", Settings.HotfixesDatabase);
+
+            return SQLUtil.CompareDicts(Storage.KeyChains, templatesDb, StoreNameType.None, "ID");
+        }
 
         [BuilderMethod]
         public static string Mount()
