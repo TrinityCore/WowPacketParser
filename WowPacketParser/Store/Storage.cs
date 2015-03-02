@@ -25,6 +25,7 @@ namespace WowPacketParser.Store
         public static readonly StoreDictionary<uint, HolidayData> Holidays = new StoreDictionary<uint, HolidayData>(new List<SQLOutput> { SQLOutput.holiday });
         public static readonly StoreDictionary<uint, ItemAppearance> ItemAppearances = new StoreDictionary<uint, ItemAppearance>(new List<SQLOutput> { SQLOutput.item_appearance });
         public static readonly StoreDictionary<uint, ItemBonus> ItemBonuses = new StoreDictionary<uint, ItemBonus>(new List<SQLOutput> { SQLOutput.item_bonus });
+        public static readonly StoreDictionary<uint, ItemBonusTreeNode> ItemBonusTreeNodes = new StoreDictionary<uint, ItemBonusTreeNode>(new List<SQLOutput> { SQLOutput.item_bonus_tree_node });
         public static readonly StoreDictionary<uint, KeyChain> KeyChains = new StoreDictionary<uint, KeyChain>(new List<SQLOutput> { SQLOutput.key_chain });
         public static readonly StoreDictionary<uint, Mount> Mounts = new StoreDictionary<uint, Mount>(new List<SQLOutput> { SQLOutput.mount });
         public static readonly StoreDictionary<uint, SpellMisc> SpellMiscs = new StoreDictionary<uint, SpellMisc>(new List<SQLOutput> { SQLOutput.spell_misc });

@@ -22,6 +22,7 @@
         holiday,
         item_appearance,
         item_bonus,
+        item_bonus_tree_node,
         item_template,
         key_chain,
         LootTemplate,

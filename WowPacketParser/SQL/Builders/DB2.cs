@@ -85,7 +85,21 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(Storage.ItemBonuses, templatesDb, StoreNameType.None, "ID");
         }
 
-        public static string ItemBonusTreeNode() { throw new NotImplementedException(); }
+        [BuilderMethod]
+        public static string ItemBonusTreeNode()
+        {
+            if (Storage.ItemBonusTreeNodes.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.item_bonus))
+                return string.Empty;
+
+            var entries = Storage.ItemBonusTreeNodes.Keys();
+            var templatesDb = SQLDatabase.GetDict<uint, ItemBonusTreeNode>(entries, "ID", Settings.HotfixesDatabase);
+
+            return SQLUtil.CompareDicts(Storage.ItemBonusTreeNodes, templatesDb, StoreNameType.None, "ID");
+        }
+
         public static string ItemCurrencyCost() { throw new NotImplementedException(); }
         public static string ItemEffect() { throw new NotImplementedException(); }
         public static string ItemExtendedCost() { throw new NotImplementedException(); }
