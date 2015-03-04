@@ -86,7 +86,7 @@ namespace WowPacketParser.Enums.Version.V6_1_0_19678
             {Opcode.CMSG_MOVE_STOP, 0x0892},
             {Opcode.CMSG_MOVE_STOP_STRAFE, 0x0D8A},
             {Opcode.CMSG_MOVE_STOP_TURN, 0x05E9},
-            {Opcode.CMSG_NAME_QUERY, 0x0A3A},
+            {Opcode.CMSG_NAME_QUERY, 0x15A2},
             {Opcode.CMSG_NPC_TEXT_QUERY, 0x0E44},
             {Opcode.CMSG_PARTY_INVITE, 0x19E2},
             {Opcode.CMSG_PARTY_INVITE_RESPONSE, 0x157A},
