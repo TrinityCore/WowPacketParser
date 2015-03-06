@@ -176,6 +176,7 @@ namespace WowPacketParser.Enums.Version.V6_1_0_19678
             {Opcode.SMSG_INITIAL_SPELLS, 0x12C2},
             {Opcode.SMSG_INIT_WORLD_STATES, 0x11F9},
             {Opcode.SMSG_LEARNED_SPELLS, 0x08E9},
+            {Opcode.SMSG_LEVELUP_INFO, 0x092C},
             {Opcode.SMSG_LIST_INVENTORY, 0x17A1},
             {Opcode.SMSG_LOAD_CUF_PROFILES, 0x17EA},
             {Opcode.SMSG_LOGIN_SETTIMESPEED, 0x1573},
