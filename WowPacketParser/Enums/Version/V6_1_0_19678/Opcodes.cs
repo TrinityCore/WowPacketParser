@@ -235,6 +235,7 @@ namespace WowPacketParser.Enums.Version.V6_1_0_19678
             {Opcode.SMSG_PONG, 0x0C34},
             {Opcode.SMSG_POWER_UPDATE, 0x1B0A},
             {Opcode.SMSG_PVP_SEASON, 0x13A1},
+            {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x0508},
             {Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE, 0x030F},
             {Opcode.SMSG_RANDOMIZE_CHAR_NAME, 0x195B},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x0413},

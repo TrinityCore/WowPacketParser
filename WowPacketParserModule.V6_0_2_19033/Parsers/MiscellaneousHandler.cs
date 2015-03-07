@@ -157,7 +157,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("TutorialsEnabled");
             packet.ReadBit("Unk bit44"); // Also tutorials related
             packet.ReadBit("TwitterEnabled");
-            var bit61 = packet.ReadBit("Unk bit61");
+
+            var bit61 = ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19702) ? (bool)packet.ReadBit("Unk bit61") : false;
 
             if (hasEuropaTicketSystemStatus)
                 ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
@@ -165,6 +166,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (hasSessionAlert)
                 ReadClientSessionAlertConfig(packet, "SessionAlert");
 
+            // Note: Only since ClientVersionBuild.V6_1_0_19702
             if (bit61)
             {
                 var int88 = packet.ReadInt32("int88");
