@@ -66,7 +66,7 @@ namespace WowPacketParser.Enums.Version.V6_1_0_19678
             {Opcode.CMSG_GAMEOBJECT_QUERY, 0x021A},
             {Opcode.CMSG_GET_UNDELETE_COOLDOWN_STATUS, 0x196A},
             {Opcode.CMSG_GM_TICKET_CREATE, 0x19A4},
-            {Opcode.CMSG_GM_TICKET_DELETE_TICKET, 0x1839},
+            {Opcode.CMSG_GM_TICKET_DELETE_TICKET, 0x1B39},
             {Opcode.CMSG_GM_TICKET_GET_CASE_STATUS, 0x17E1},
             {Opcode.CMSG_GM_TICKET_GET_SYSTEM_STATUS, 0x1BB9},
             {Opcode.CMSG_GM_TICKET_GET_TICKET, 0x1939},
