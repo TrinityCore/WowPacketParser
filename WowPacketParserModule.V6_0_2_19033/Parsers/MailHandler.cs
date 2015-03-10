@@ -117,8 +117,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("DeleteReason");
         }
 
-        [Parser(Opcode.SMSG_MAIL_QUERY_NEXT_TIME_RESULT)]
-        public static void HandleMailQueryNextTimeResult(Packet packet)
+        [Parser(Opcode.SMSG_MAIL_QUERY_NEXT_TIME_RESULT, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_0_3_19342)]
+        public static void HandleMailQueryNextTimeResult60x(Packet packet)
         {
             packet.ReadSingle("NextMailTime");
 
@@ -139,6 +139,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 if (bit12)
                     packet.ReadInt32("NativeRealmAddress", i);
+
+                packet.ReadSingle("TimeLeft", i);
+                packet.ReadInt32("AltSenderID", i);
+                packet.ReadByte("AltSenderType", i);
+                packet.ReadInt32("StationeryID", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_MAIL_QUERY_NEXT_TIME_RESULT, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleMailQueryNextTimeResult61x(Packet packet)
+        {
+            packet.ReadSingle("NextMailTime");
+
+            var int5 = packet.ReadInt32("NextCount");
+
+            for (int i = 0; i < int5; i++)
+            {
+                packet.ReadPackedGuid128("SenderGUID", i);
 
                 packet.ReadSingle("TimeLeft", i);
                 packet.ReadInt32("AltSenderID", i);

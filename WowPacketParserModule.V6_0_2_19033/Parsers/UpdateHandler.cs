@@ -513,7 +513,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_OBJECT_UPDATE_RESCUED)]
         public static void HandleObjectUpdateOrRescued(Packet packet)
         {
-            packet.ReadPackedGuid128("ObjectGUID");
+            if (!ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19702))
+                packet.ReadPackedGuid128("ObjectGUID");
         }
     }
 }

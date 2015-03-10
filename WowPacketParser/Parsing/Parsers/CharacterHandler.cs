@@ -18,6 +18,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_STAND_STATE_UPDATE)]
         public static void HandleStandStateUpdate(Packet packet)
         {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19702))
+                packet.ReadInt32("Unk4");
+
             packet.ReadByteE<StandState>("State");
         }
 
