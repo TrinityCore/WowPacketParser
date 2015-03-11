@@ -684,5 +684,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var length = packet.ReadBits("TextLength", 12);
             packet.ReadWoWString("Text", length);
         }
+
+        [Parser(Opcode.SMSG_NUKE_ALL_OBJECTS_DUE_TO_SEAMLESS_PORT)]
+        public static void HandleNukeAllObjectsDueToSeamlessPort(Packet packet)
+        {
+            packet.ReadUInt32("Unk5");
+            packet.ReadBits("Unk4", 2);
+        }
     }
 }
