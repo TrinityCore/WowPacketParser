@@ -307,8 +307,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("Serial");
         }
 
-        [Parser(Opcode.SMSG_INITIAL_SETUP)]
-        public static void HandleInitialSetup(Packet packet)
+        [Parser(Opcode.SMSG_INITIAL_SETUP, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_0_3_19342)]
+        public static void HandleInitialSetup60x(Packet packet)
         {
             var int6 = packet.ReadInt32("QuestsCompletedCount");
 
@@ -320,6 +320,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (var i = 0; i < int6; ++i)
                 packet.ReadByte("QuestsCompleted", i);
+        }
+
+        [Parser(Opcode.SMSG_INITIAL_SETUP, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleInitialSetup61x(Packet packet)
+        {
+            packet.ReadByte("ServerExpansionLevel");
+            packet.ReadByte("ServerExpansionTier");
+
+            packet.ReadInt32("ServerRegionID");
+            packet.ReadTime("RaidOrigin");
         }
 
         [Parser(Opcode.CMSG_AREATRIGGER)]

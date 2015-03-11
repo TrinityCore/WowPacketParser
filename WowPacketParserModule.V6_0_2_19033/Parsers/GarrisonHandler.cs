@@ -92,8 +92,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("Result");
         }
 
-        [Parser(Opcode.SMSG_GARRISON_REMOTE_INFO)]
-        public static void HandleGarrisonRemoteInfo(Packet packet)
+        [Parser(Opcode.SMSG_GARRISON_REMOTE_INFO, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleGarrisonRemoteInfo60x(Packet packet)
         {
             var int20 = packet.ReadInt32("InfoCount");
             for (int i = 0; i < int20; i++)
@@ -107,6 +107,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadInt32("GarrBuildingID", i, j);
                 }
             }
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_REMOTE_INFO, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleGarrisonRemoteInfo61x(Packet packet)
+        {
+            var int32 = packet.ReadInt32("InfoCount");
+            var int16 = packet.ReadInt32("Unk16");
+
+            for (int i = 0; i < int32; i++)
+                packet.ReadInt32("GarrSiteLevelID", i);
+
+            for (int i = 0; i < int16; i++)
+                packet.ReadInt32("Unk5");
+
         }
 
         [Parser(Opcode.CMSG_GARRISON_START_MISSION)]
@@ -220,8 +234,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("Result");
         }
 
-        [Parser(Opcode.SMSG_DISPLAY_TOAST)]
-        public static void HandleDisplayToast(Packet packet)
+        [Parser(Opcode.SMSG_DISPLAY_TOAST, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleDisplayToast60x(Packet packet)
         {
             packet.ReadInt32("Quantity");
             packet.ReadByte("DisplayToastMethod");
@@ -239,6 +253,26 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
 
             if (type == 1)
+                packet.ReadInt32("CurrencyID");
+        }
+
+        [Parser(Opcode.SMSG_DISPLAY_TOAST, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleDisplayToast61x(Packet packet)
+        {
+            packet.ReadInt32("Quantity");
+            packet.ReadByte("DisplayToastMethod");
+            packet.ReadBit("Mailed");
+            var type = packet.ReadBits("Type", 2);
+
+            if (type == 0)
+            {
+                packet.ReadBit("BonusRoll");
+                ItemHandler.ReadItemInstance(packet);
+                packet.ReadInt32("SpecializationID");
+                packet.ReadInt32("ItemQuantity?");
+            }
+
+            if (type == 2)
                 packet.ReadInt32("CurrencyID");
         }
 

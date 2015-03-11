@@ -698,11 +698,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Totem");
         }
 
-        [Parser(Opcode.SMSG_COOLDOWN_EVENT)]
-        public static void HandleCooldownEvent(Packet packet)
+        [Parser(Opcode.SMSG_COOLDOWN_EVENT, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleCooldownEvent60x(Packet packet)
         {
             packet.ReadPackedGuid128("CasterGUID");
             packet.ReadInt32<SpellId>("SpellID");
+        }
+
+        [Parser(Opcode.SMSG_COOLDOWN_EVENT, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleCooldownEvent61x(Packet packet)
+        {
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadBit("Unk16");
         }
 
         [Parser(Opcode.SMSG_LOSS_OF_CONTROL_AURA_UPDATE)]
@@ -820,12 +827,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("Reverse");
         }
 
-        [Parser(Opcode.SMSG_MODIFY_COOLDOWN)]
-        public static void HandleModifyCooldown(Packet packet)
+        [Parser(Opcode.SMSG_MODIFY_COOLDOWN, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleModifyCooldown60x(Packet packet)
         {
             packet.ReadUInt32<SpellId>("SpellID");
             packet.ReadPackedGuid128("UnitGUID");
             packet.ReadInt32("DeltaTime");
+        }
+
+        [Parser(Opcode.SMSG_MODIFY_COOLDOWN, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleModifyCooldown61x(Packet packet)
+        {
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32("DeltaTime");
+            packet.ReadBit("Unk24");
         }
 
         [Parser(Opcode.SMSG_CLEAR_TARGET)]

@@ -126,6 +126,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadInt32<SpellId>("SpellID");
             packet.ReadUInt32E<PowerType>("Type");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
+                packet.ReadPackedGuid128("Unk96");
+
             packet.ReadInt32("Amount");
 
             packet.ResetBitReader();
