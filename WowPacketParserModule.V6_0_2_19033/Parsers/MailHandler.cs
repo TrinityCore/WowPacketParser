@@ -27,16 +27,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("MailID", idx);
             packet.ReadByteE<MailType>("SenderType", idx);
 
-            packet.ResetBitReader();
+            if (!ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
+            {
+                packet.ResetBitReader();
 
-            var bit4 = packet.ReadBit();
-            var bit12 = packet.ReadBit();
+                var bit4 = packet.ReadBit();
+                var bit12 = packet.ReadBit();
 
-            if (bit4)
-                packet.ReadInt32("VirtualRealmAddress", idx);
+                if (bit4)
+                    packet.ReadInt32("VirtualRealmAddress", idx);
 
-            if (bit12)
-                packet.ReadInt32("NativeRealmAddress", idx);
+                if (bit12)
+                    packet.ReadInt32("NativeRealmAddress", idx);
+            }
 
             packet.ReadInt64("Cod", idx);
             packet.ReadInt32("PackageID", idx);
