@@ -154,6 +154,7 @@ namespace WowPacketParser.Enums.Version.V6_1_0_19678
             {Opcode.CMSG_SUSPEND_TOKEN_RESPONSE, 0x1273},
             {Opcode.CMSG_SWAP_INV_ITEM, 0x00C5},
             {Opcode.CMSG_SWAP_ITEM, 0x0206},
+            {Opcode.CMSG_TEXT_EMOTE, 0x0B2B},
             {Opcode.CMSG_TIME_SYNC_RESPONSE, 0x0B8C},
             {Opcode.CMSG_TOGGLE_PVP, 0x10A2},
             {Opcode.CMSG_UI_TIME_REQUEST, 0x1B7B},
