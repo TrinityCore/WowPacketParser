@@ -586,5 +586,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("NewSkinColor");
             packet.ReadUInt32("Unk");
         }
+
+        [Parser(Opcode.SMSG_STAND_STATE_UPDATE)]
+        public static void HandleStandStateUpdate(Packet packet)
+        {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
+                packet.ReadInt32("Unk4");
+
+            packet.ReadByteE<StandState>("State");
+        }
     }
 }
