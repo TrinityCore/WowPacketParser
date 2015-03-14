@@ -546,8 +546,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("CasterUnit");
             packet.ReadByte("CastID");
             packet.ReadUInt32<SpellId>("SpellID");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19702))
-                packet.ReadInt16E<SpellCastFailureReason>();
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
+                packet.ReadInt16E<SpellCastFailureReason>("Reason");
             else
                 packet.ReadByteE<SpellCastFailureReason>("Reason");
         }
@@ -558,7 +558,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("CasterUnit");
             packet.ReadByte("CastID");
             packet.ReadUInt32<SpellId>("SpellID");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19702))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
                 packet.ReadByteE<SpellCastFailureReason>("Reason");
             else
                 packet.ReadInt16E<SpellCastFailureReason>("Reason");
