@@ -108,13 +108,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("Crit");
             packet.ReadBit("Multistrike");
 
-            var bit128 = packet.ReadBit("HasCritRollMade");
-            var bit120 = packet.ReadBit("HasLogData");
+            var hasCritRollMade = packet.ReadBit("HasCritRollMade");
+            var hasCritRollNeeded = packet.ReadBit("HasCritRollNeeded");
+            var hasLogData = packet.ReadBit("HasLogData");
 
-            if (bit128)
+            if (hasCritRollMade)
                 packet.ReadSingle("CritRollMade");
 
-            if (bit120)
+            if (hasCritRollNeeded)
+                packet.ReadSingle("CritRollNeeded");
+
+            if (hasLogData)
                 SpellParsers.ReadSpellCastLogData(packet);
         }
 
