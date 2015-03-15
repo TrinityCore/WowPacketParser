@@ -177,6 +177,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
+        [Parser(Opcode.CMSG_AUCTION_REMOVE_ITEM)]
+        public static void HandleAuctionRemoveItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadInt32("AuctionItemID");
+        }
+
         [Parser(Opcode.SMSG_AUCTION_LIST_PENDING_SALES_RESULT)]
         public static void HandleAuctionListPendingSalesResult(Packet packet)
         {
