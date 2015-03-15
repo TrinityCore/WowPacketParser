@@ -675,8 +675,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         // new opcode on 6.x, related to combat log and mostly used in garrisons
-        [Parser(Opcode.SMSG_COMBAT_LOG_UNK)]
-        public static void HandleCombatLogUnk(Packet packet)
+        [Parser(Opcode.SMSG_WORLD_TEXT)]
+        public static void HandleWorldText(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");
             packet.ReadInt32("Arg1");

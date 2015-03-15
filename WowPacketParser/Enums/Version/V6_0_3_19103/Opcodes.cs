@@ -866,7 +866,6 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_CLIENT_CONTROL_UPDATE, 0x080E},
             {Opcode.SMSG_COIN_REMOVED, 0x0D30},
             {Opcode.SMSG_COMBAT_EVENT_FAILED, 0x1DAF},
-            {Opcode.SMSG_COMBAT_LOG_UNK, 0x1D8E},
             {Opcode.SMSG_COMMENTATOR_MAP_INFO, 0x1922},
             {Opcode.SMSG_COMMENTATOR_PLAYER_INFO, 0x1B23},
             {Opcode.SMSG_COMMENTATOR_STATE_CHANGED, 0x133A},
@@ -1598,6 +1597,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_WHO, 0x0601},
             {Opcode.SMSG_WHOIS, 0x1D30},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x11AC},
+            {Opcode.SMSG_WORLD_TEXT, 0x1D8E},
             {Opcode.SMSG_XP_GAIN_ABORTED, 0x031E},
             {Opcode.SMSG_XP_GAIN_ENABLED, 0x0FAA},
             {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x1401}
