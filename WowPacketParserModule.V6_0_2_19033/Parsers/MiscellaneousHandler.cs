@@ -17,6 +17,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_REQUEST_ARTIFACT_COMPLETION_HISTORY)]
+        [Parser(Opcode.CMSG_TWITTER_GET_STATUS)]
         public static void HandleMiscZero(Packet packet)
         {
         }
