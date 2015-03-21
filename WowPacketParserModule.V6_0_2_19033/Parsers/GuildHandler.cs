@@ -298,6 +298,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < size; i++)
             {
                 packet.ReadUInt32("ItemID", i);
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
+                    packet.ReadUInt32("Unk4", i);
+
                 var int1 = packet.ReadInt32("AchievementsRequiredCount", i);
                 packet.ReadUInt32("RaceMask", i);
                 packet.ReadInt32("MinGuildLevel", i);
@@ -708,6 +712,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Unit");
             packet.ReadUInt32("Price");
+        }
+    
+        [Parser(Opcode.CMSG_PETITION_BUY)]
+        public static void HandlePetitionBuy(Packet packet)
+        {
+            var length = packet.ReadBits(7);
+            packet.ReadPackedGuid128("Unit");
+            packet.ReadWoWString("Title", length);
         }
 
         [Parser(Opcode.CMSG_SIGN_PETITION)]

@@ -212,8 +212,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("RatedBattlegrounds");
         }
 
-        [Parser(Opcode.SMSG_REQUEST_PVP_REWARDS_RESPONSE)]
-        public static void HandleRequestPVPRewardsResponse(Packet packet)
+        [Parser(Opcode.SMSG_REQUEST_PVP_REWARDS_RESPONSE, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleRequestPVPRewardsResponse60x(Packet packet)
         {
             packet.ReadUInt32("RewardPointsThisWeek");
             packet.ReadUInt32("MaxRewardPointsThisWeek");
@@ -229,6 +229,29 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadUInt32("ArenaRewardPoints");
             packet.ReadUInt32("RatedRewardPoints");
+        }
+
+        [Parser(Opcode.SMSG_REQUEST_PVP_REWARDS_RESPONSE, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleRequestPVPRewardsResponse61x(Packet packet)
+        {
+            packet.ReadUInt32("RewardPointsThisWeek");
+            packet.ReadUInt32("MaxRewardPointsThisWeek");
+
+            packet.ReadUInt32("RatedRewardPointsThisWeek");
+            packet.ReadUInt32("RatedMaxRewardPointsThisWeek");
+
+            packet.ReadUInt32("RandomRewardPointsThisWeek");
+            packet.ReadUInt32("RandomMaxRewardPointsThisWeek");
+
+            packet.ReadUInt32("ArenaRewardPointsThisWeek");
+            packet.ReadUInt32("ArenaMaxRewardPointsThisWeek");
+
+            packet.ReadUInt32("ArenaRewardPoints");
+            packet.ReadUInt32("RatedRewardPoints");
+
+            for (int i = 0; i < 2; i++)
+                LfgHandler.ReadShortageReward(packet, i);
+            
         }
 
         [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_POSITIONS)]

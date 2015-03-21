@@ -726,12 +726,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_CLEAR_COOLDOWN)]
-        public static void HandleClearCooldown(Packet packet)
+        [Parser(Opcode.SMSG_CLEAR_COOLDOWN, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleClearCooldown60x(Packet packet)
         {
             packet.ReadPackedGuid128("CasterGUID");
             packet.ReadUInt32<SpellId>("SpellID");
             packet.ReadBit("ClearOnHold");
+        }
+
+        [Parser(Opcode.SMSG_CLEAR_COOLDOWN, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleClearCooldown61x(Packet packet)
+        {
+            packet.ReadUInt32<SpellId>("SpellID");
+            packet.ReadBit("ClearOnHold");
+            packet.ReadBit("Unk20");
         }
 
         [Parser(Opcode.SMSG_CLEAR_COOLDOWNS)]
@@ -1016,6 +1024,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Source");
             packet.ReadInt32("SpellVisualID");
+        }
+
+        [Parser(Opcode.SMSG_CANCEL_SPELL_VISUAL_KIT)]
+        public static void HandleCancelSpellVisualKit(Packet packet)
+        {
+            packet.ReadPackedGuid128("Source");
+            packet.ReadInt32("SpellVisualKitID");
         }
 
         [Parser(Opcode.SMSG_SPIRIT_HEALER_CONFIRM)]

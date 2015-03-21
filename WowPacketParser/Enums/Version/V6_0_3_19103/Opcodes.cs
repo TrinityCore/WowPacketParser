@@ -453,7 +453,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_PETITION_SHOW_SIGNATURES, 0x0BC4},
             {Opcode.CMSG_PET_ABANDON, 0x0005},
             {Opcode.CMSG_PET_ACTION, 0x133A},
-            {Opcode.CMSG_PET_BATTLE_FINAL_NOTIF, 0x0565},
+            {Opcode.CMSG_PET_BATTLE_FINAL_NOTIFY, 0x0565},
             {Opcode.CMSG_PET_BATTLE_INPUT, 0x0989},
             {Opcode.CMSG_PET_BATTLE_QUEUE_PROPOSE_MATCH_RESULT, 0x140A},
             {Opcode.CMSG_PET_BATTLE_QUIT_NOTIFY, 0x03D5},

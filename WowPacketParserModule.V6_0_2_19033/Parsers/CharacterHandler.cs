@@ -438,6 +438,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadWoWString("DeclinedName", count[i], i);
         }
 
+        [Parser(Opcode.SMSG_SET_PLAYER_DECLINED_NAMES_RESULT)]
+        public static void HandleSetPlayerDeclinedNamesResult(Packet packet)
+        {
+            packet.ReadInt32("ResultCode");
+            packet.ReadPackedGuid128("Player");
+        }
+
         [Parser(Opcode.SMSG_HEALTH_UPDATE)]
         public static void HandleHealthUpdate(Packet packet)
         {

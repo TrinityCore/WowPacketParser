@@ -59,12 +59,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("PlotType", indexes);
         }
 
-        private static void ReadCharacterShipment(Packet packet, params object[] indexes)
+        private static void ReadCharacterShipment60x(Packet packet, params object[] indexes)
         {
             packet.ReadInt32("ShipmentRecID", indexes);
             packet.ReadInt64("ShipmentID", indexes);
             packet.ReadTime("CreationTime", indexes);
             packet.ReadInt32("ShipmentDuration", indexes);
+        }
+
+        private static void ReadCharacterShipment61x(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("ShipmentRecID", indexes);
+            packet.ReadInt64("ShipmentID", indexes);
+            packet.ReadInt64("Unk2", indexes);
+            packet.ReadTime("CreationTime", indexes);
+            packet.ReadInt32("ShipmentDuration", indexes);
+            packet.ReadInt32("Unk8", indexes);
         }
 
         [Parser(Opcode.CMSG_GET_GARRISON_INFO)]
@@ -336,12 +346,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("Succeeded");
         }
 
-        [Parser(Opcode.CMSG_CREATE_SHIPMENT)]
+        [Parser(Opcode.CMSG_CREATE_SHIPMENT, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_1_0_19678)]
         [Parser(Opcode.CMSG_GET_SHIPMENT_INFO)]
         [Parser(Opcode.CMSG_OPEN_GARRISON_MISSION_NPC)]
         public static void HandleGarrisonNpcGUID(Packet packet)
         {
             packet.ReadPackedGuid128("NpcGUID");
+        }
+
+        [Parser(Opcode.CMSG_CREATE_SHIPMENT, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleCreateShipment61x(Packet packet)
+        {
+            packet.ReadPackedGuid128("NpcGUID");
+            packet.ReadUInt32("Unk4");
         }
 
         [Parser(Opcode.CMSG_OPEN_SHIPMENT_GAME_OBJ)]
@@ -361,7 +378,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("PlotInstanceID");
 
             for (int i = 0; i < characterShipmentCount; i++)
-                ReadCharacterShipment(packet);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
+                    ReadCharacterShipment61x(packet, i);
+                else
+                    ReadCharacterShipment60x(packet, i);
         }
 
         [Parser(Opcode.SMSG_CREATE_SHIPMENT_RESPONSE)]

@@ -297,6 +297,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_ATTACKSWING_LANDED_LOG)]
+        public static void HandleAttackswingLandedLog(Packet packet)
+        {
+            SpellParsers.ReadSpellCastLogData(packet);
+
+            packet.ReadInt32("Size");
+
+            CombatHandler.ReadAttackRoundInfo(packet);
+        }
+
+        [Parser(Opcode.CMSG_SET_ADVANCED_COMBAT_LOGGING)]
+        public static void HandleSetAdvancedCombatLogging(Packet packet)
+        {
+            packet.ReadBit("Enable");
+        }
+
         [Parser(Opcode.SMSG_PROC_RESIST)]
         public static void HandleProcResist(Packet packet)
         {
