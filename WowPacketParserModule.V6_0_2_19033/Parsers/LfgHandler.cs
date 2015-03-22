@@ -178,7 +178,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 // ShortageReward
                 for (var j = 0; j < int64; ++j)
-                    ReadShortageReward(packet, i ,j);
+                    ReadShortageReward(packet, i ,j, "ShortageReward");
 
                 packet.ResetBitReader();
 

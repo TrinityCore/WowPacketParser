@@ -398,7 +398,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
                     ReadPetBattleEffectTarget61x(packet, idx, "Targets", i);
                 else
-                    ReadPetBattleEffectTarget60x(packet, idx, "Targets", i); ;
+                    ReadPetBattleEffectTarget60x(packet, idx, "Targets", i);
         }
 
         public static void ReadPetBattleRoundResult(Packet packet, params object[] idx)

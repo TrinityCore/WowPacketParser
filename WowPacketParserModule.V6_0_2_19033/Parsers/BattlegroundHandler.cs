@@ -250,7 +250,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("RatedRewardPoints");
 
             for (int i = 0; i < 2; i++)
-                LfgHandler.ReadShortageReward(packet, i);
+                LfgHandler.ReadShortageReward(packet, i, "ShortageReward");
             
         }
 
