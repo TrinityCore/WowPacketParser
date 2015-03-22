@@ -1038,5 +1038,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Unit");
         }
+
+        [Parser(Opcode.CMSG_CANCEL_MOD_SPEED_NO_CONTROL_AURAS)]
+        public static void HandleCancelModSpeedNoControlAuras(Packet packet)
+        {
+            packet.ReadPackedGuid128("TargetGUID");
+        }
     }
 }
