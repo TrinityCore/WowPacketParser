@@ -88,21 +88,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var TitleLen = packet.ReadBits(8);
             var DescriptionLen = packet.ReadBits(11);
 
-            packet.ReadByte("EventType");
-
-            packet.ReadInt32("Flags");
-            packet.ReadTime("Time");
+            packet.ReadByteE<CalendarEventType>("EventType");
             packet.ReadInt32("TextureID");
-            var InviteInfoCount = packet.ReadInt32();
+            packet.ReadTime("Time");
+            packet.ReadInt32E<CalendarFlag>("Flags");
+
+            var inviteInfoCount = packet.ReadInt32();
 
             packet.ReadWoWString("Title", TitleLen);
             packet.ReadWoWString("Description", DescriptionLen);
 
-            for (int i = 0; i < InviteInfoCount; i++)
+            for (int i = 0; i < inviteInfoCount; i++)
             {
                 packet.ReadPackedGuid128("Guid");
-                packet.ReadByte("Status");
-                packet.ReadByte("Moderator");
+                packet.ReadByteE<CalendarEventStatus>("Status");
+                packet.ReadByteE<CalendarModerationRank>("Moderator");
             }
 
             packet.ReadInt32("MaxSize");
