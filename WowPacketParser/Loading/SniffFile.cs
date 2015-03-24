@@ -178,7 +178,7 @@ namespace WowPacketParser.Loading
                         {
                             ShowPercentProgress("Processing...", reader.PacketReader.GetCurrentSize(), reader.PacketReader.GetTotalSize());
 
-                            if (!packet.Status.HasAnyFlag(Settings.OutputFlag))
+                            if (!packet.Status.HasAnyFlag(Settings.OutputFlag) || !packet.WriteToFile)
                             {
                                 packet.ClosePacket();
                                 return;
