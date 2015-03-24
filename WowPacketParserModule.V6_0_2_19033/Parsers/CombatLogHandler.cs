@@ -108,13 +108,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("Crit");
             packet.ReadBit("Multistrike");
 
-            var bit128 = packet.ReadBit("HasCritRollMade");
-            var bit120 = packet.ReadBit("HasLogData");
+            var hasCritRollMade = packet.ReadBit("HasCritRollMade");
+            var hasCritRollNeeded = packet.ReadBit("HasCritRollNeeded");
+            var hasLogData = packet.ReadBit("HasLogData");
 
-            if (bit128)
+            if (hasCritRollMade)
                 packet.ReadSingle("CritRollMade");
 
-            if (bit120)
+            if (hasCritRollNeeded)
+                packet.ReadSingle("CritRollNeeded");
+
+            if (hasLogData)
                 SpellParsers.ReadSpellCastLogData(packet);
         }
 
@@ -126,6 +130,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadInt32<SpellId>("SpellID");
             packet.ReadUInt32E<PowerType>("Type");
+
             packet.ReadInt32("Amount");
 
             packet.ResetBitReader();
@@ -290,6 +295,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadSingle("HitRollNeededHitRollNeeded", i);
                 }
             }
+        }
+
+        [Parser(Opcode.SMSG_ATTACKSWING_LANDED_LOG)]
+        public static void HandleAttackswingLandedLog(Packet packet)
+        {
+            SpellParsers.ReadSpellCastLogData(packet);
+
+            packet.ReadInt32("Size");
+
+            CombatHandler.ReadAttackRoundInfo(packet);
+        }
+
+        [Parser(Opcode.CMSG_SET_ADVANCED_COMBAT_LOGGING)]
+        public static void HandleSetAdvancedCombatLogging(Packet packet)
+        {
+            packet.ReadBit("Enable");
         }
 
         [Parser(Opcode.SMSG_PROC_RESIST)]

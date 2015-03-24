@@ -145,8 +145,6 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_CHAR_FACTION_CHANGE, 0x0BBCC},
             {Opcode.CMSG_CHAR_RACE_CHANGE, 0x06EA4},
             {Opcode.CMSG_CHAR_RENAME, 0x027C4},
-            {Opcode.CMSG_CHAT_REPORT_FILTERED, 0x075A8},
-            {Opcode.CMSG_CHAT_REPORT_IGNORED, 0x0A78C},
             {Opcode.CMSG_CHEAT_DUMP_ITEMS_DEBUG_ONLY, 0x1015F}, //UnknownopcodeID
             {Opcode.CMSG_CHEAT_PLAYER_LOGIN, 0x1017D}, //UnknownopcodeID
             {Opcode.CMSG_CHEAT_PLAYER_LOOKUP, 0x1017E}, //UnknownopcodeID
@@ -462,6 +460,8 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_REMOVE_GLYPH, 0x101EC}, //UnknownopcodeID
             {Opcode.CMSG_REPAIR_ITEM, 0x039E4},
             {Opcode.CMSG_REPOP_REQUEST, 0x0A9E4},
+            {Opcode.CMSG_REPORT_FILTERED, 0x075A8},
+            {Opcode.CMSG_REPORT_IGNORED, 0x0A78C},
             {Opcode.CMSG_REPORT_PVP_AFK, 0x0E3AC},
             {Opcode.CMSG_REQUEST_ACCOUNT_DATA, 0x0EEAC},
             {Opcode.CMSG_REQUEST_GUILD_REWARDS_LIST, 0x02210},

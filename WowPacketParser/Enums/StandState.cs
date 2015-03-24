@@ -1,6 +1,6 @@
 ﻿namespace WowPacketParser.Enums
 {
-    enum StandState : uint
+    public enum StandState : uint
     {
         Stand          = 0,
         Sit            = 1,

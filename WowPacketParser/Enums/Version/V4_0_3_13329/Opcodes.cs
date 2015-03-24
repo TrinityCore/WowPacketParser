@@ -139,8 +139,6 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_CHAR_FACTION_CHANGE, 0x4F75}, // NF()(0x04D9) // // lua: CreateCharacter (PFC client response)
             {Opcode.CMSG_CHAR_RACE_CHANGE, 0x04F8}, // NF()(0x04F8) // // called from lua: CreateCharacter}, paid race change
             {Opcode.CMSG_CHAR_RENAME, 0x02C7}, // NF()(0x02C7) //
-            {Opcode.CMSG_CHAT_REPORT_FILTERED, 0x0331}, // NF()(0x0331) //
-            {Opcode.CMSG_CHAT_REPORT_IGNORED, 0x0225}, // NF()(0x0225) //
             {Opcode.CMSG_CHEAT_DUMP_ITEMS_DEBUG_ONLY, 0x039A}, // NF()(0x039A) //
             {Opcode.CMSG_CHEAT_PLAYER_LOGIN, 0x03C2}, // NF()(0x03C2) //
             {Opcode.CMSG_CHEAT_PLAYER_LOOKUP, 0x03C3}, // NF()(0x03C3) //
@@ -443,6 +441,8 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_REFER_A_FRIEND, 0x040E}, // NF()(0x040E) //
             {Opcode.CMSG_REMOVE_GLYPH, 0x048A}, // NF()(0x048A) //
             {Opcode.CMSG_REPAIR_ITEM, 0x02A8}, // NF()(0x02A8) //
+            {Opcode.CMSG_REPORT_FILTERED, 0x0331}, // NF()(0x0331) //
+            {Opcode.CMSG_REPORT_IGNORED, 0x0225}, // NF()(0x0225) //
             {Opcode.CMSG_REPOP_REQUEST, 0x057E}, // (0xAB3C)(0x015A) //
             {Opcode.CMSG_REPORT_PVP_AFK, 0x03E4}, // NF()(0x03E4) //
             {Opcode.CMSG_REQUEST_ACCOUNT_DATA, 0x475C}, // (0x0218)(0x020A) //

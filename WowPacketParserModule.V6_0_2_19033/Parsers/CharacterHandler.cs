@@ -66,6 +66,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 var nameLength = packet.ReadBits("Character Name Length", 6, i);
                 var firstLogin = packet.ReadBit("FirstLogin", i);
                 packet.ReadBit("BoostInProgress", i);
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
+                    packet.ReadBits("Unk Bits141", 5, i);
+
                 packet.ReadWoWString("Character Name", nameLength, i);
 
                 if (firstLogin)
@@ -344,6 +348,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Guid");
 
+            if (!ClientVersion.RemovedInVersion(ClientVersionBuild.V6_1_0_19678))
+                return;
+
             var bit4 = packet.ReadBit();
             var bit12 = packet.ReadBit();
 
@@ -429,6 +436,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (var i = 0; i < 5; ++i)
                 packet.ReadWoWString("DeclinedName", count[i], i);
+        }
+
+        [Parser(Opcode.SMSG_SET_PLAYER_DECLINED_NAMES_RESULT)]
+        public static void HandleSetPlayerDeclinedNamesResult(Packet packet)
+        {
+            packet.ReadInt32("ResultCode");
+            packet.ReadPackedGuid128("Player");
         }
 
         [Parser(Opcode.SMSG_HEALTH_UPDATE)]
@@ -578,6 +592,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("NewFacialHair");
             packet.ReadUInt32("NewSkinColor");
             packet.ReadUInt32("Unk");
+        }
+
+        [Parser(Opcode.SMSG_STAND_STATE_UPDATE)]
+        public static void HandleStandStateUpdate(Packet packet)
+        {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
+                packet.ReadInt32("Unk4");
+
+            packet.ReadByteE<StandState>("State");
         }
     }
 }

@@ -149,8 +149,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 Storage.Emotes.Add(guid, emote, packet.TimeSpan);
         }
 
-        [Parser(Opcode.CMSG_TEXT_EMOTE)]
-        public static void HandleTextEmote(Packet packet)
+        [Parser(Opcode.CMSG_TEXT_EMOTE, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_0_3_19103)]
+        public static void HandleTextEmote602(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");
 
@@ -158,13 +158,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32E<EmoteTextType>("Text Emote ID");
         }
 
+        [Parser(Opcode.CMSG_TEXT_EMOTE, ClientVersionBuild.V6_0_3_19103)]
+        public static void HandleTextEmote603(Packet packet)
+        {
+            packet.ReadPackedGuid128("TargetGUID");
+            packet.ReadInt32E<EmoteTextType>("Emote ID");
+            packet.ReadInt32("SoundIndex");
+        }
+
         [Parser(Opcode.SMSG_TEXT_EMOTE)]
         public static void HandleTextEmoteServer(Packet packet)
         {
             packet.ReadPackedGuid128("SourceGUID");
             packet.ReadPackedGuid128("WowAccountGUID");
-            packet.ReadInt32E<EmoteType>("EmoteID");
-            packet.ReadInt32E<EmoteTextType>("SoundIndex");
+            packet.ReadInt32E<EmoteTextType>("EmoteID");
+            packet.ReadInt32("SoundIndex");
             packet.ReadPackedGuid128("TargetGUID");
         }
 

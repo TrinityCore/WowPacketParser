@@ -4,6 +4,7 @@ using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
+using TutorialAction61x = WowPacketParser.Enums.Version.V6_1_0_19678.TutorialAction;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
@@ -16,6 +17,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_REQUEST_ARTIFACT_COMPLETION_HISTORY)]
+        [Parser(Opcode.CMSG_TWITTER_GET_STATUS)]
         public static void HandleMiscZero(Packet packet)
         {
         }
@@ -94,8 +96,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("DisplayTime", idx);
         }
 
-        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS)]
-        public static void HandleFeatureSystemStatus(Packet packet)
+        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleFeatureSystemStatus60x(Packet packet)
         {
             packet.ReadByte("ComplaintStatus");
 
@@ -126,6 +128,53 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (hasSessionAlert)
                 ReadClientSessionAlertConfig(packet, "SessionAlert");
+        }
+
+        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleFeatureSystemStatus61x(Packet packet)
+        {
+            packet.ReadByte("ComplaintStatus");
+
+            packet.ReadInt32("ScrollOfResurrectionRequestsRemaining");
+            packet.ReadInt32("ScrollOfResurrectionMaxRequestsPerDay");
+            packet.ReadInt32("CfgRealmID");
+            packet.ReadInt32("CfgRealmRecID");
+            packet.ReadInt32("Int27");
+            packet.ReadInt32("Int29");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("VoiceEnabled");
+            var hasEuropaTicketSystemStatus = packet.ReadBit("HasEuropaTicketSystemStatus");
+            packet.ReadBit("ScrollOfResurrectionEnabled");
+            packet.ReadBit("BpayStoreEnabled");
+            packet.ReadBit("BpayStoreAvailable");
+            packet.ReadBit("BpayStoreDisabledByParentalControls");
+            packet.ReadBit("ItemRestorationButtonEnabled");
+            packet.ReadBit("BrowserEnabled");
+            var hasSessionAlert = packet.ReadBit("HasSessionAlert");
+            packet.ReadBit("RecruitAFriendSendingEnabled");
+            packet.ReadBit("CharUndeleteEnabled");
+            packet.ReadBit("RestrictedAccount");
+            packet.ReadBit("TutorialsEnabled");
+            packet.ReadBit("Unk bit44"); // Also tutorials related
+            packet.ReadBit("TwitterEnabled");
+
+            var bit61 = ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19702) ? (bool)packet.ReadBit("Unk bit61") : false;
+
+            if (hasEuropaTicketSystemStatus)
+                ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
+
+            if (hasSessionAlert)
+                ReadClientSessionAlertConfig(packet, "SessionAlert");
+
+            // Note: Only since ClientVersionBuild.V6_1_0_19702
+            if (bit61)
+            {
+                var int88 = packet.ReadInt32("int88");
+                for (int i = 0; i < int88; i++)
+                    packet.ReadByte("byte23", i);
+            }
         }
 
         [Parser(Opcode.SMSG_WORLD_SERVER_INFO)]
@@ -260,8 +309,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("Serial");
         }
 
-        [Parser(Opcode.SMSG_INITIAL_SETUP)]
-        public static void HandleInitialSetup(Packet packet)
+        [Parser(Opcode.SMSG_INITIAL_SETUP, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_0_3_19342)]
+        public static void HandleInitialSetup60x(Packet packet)
         {
             var int6 = packet.ReadInt32("QuestsCompletedCount");
 
@@ -273,6 +322,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (var i = 0; i < int6; ++i)
                 packet.ReadByte("QuestsCompleted", i);
+        }
+
+        [Parser(Opcode.SMSG_INITIAL_SETUP, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleInitialSetup61x(Packet packet)
+        {
+            packet.ReadByte("ServerExpansionLevel");
+            packet.ReadByte("ServerExpansionTier");
+
+            packet.ReadInt32("ServerRegionID");
+            packet.ReadTime("RaidOrigin");
         }
 
         [Parser(Opcode.CMSG_AREATRIGGER)]
@@ -404,12 +463,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_TUTORIAL_FLAG)]
-        public static void HandleTutorialFlag(Packet packet)
+        [Parser(Opcode.CMSG_TUTORIAL_FLAG, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_0_3_19342)]
+        public static void HandleTutorialFlag6x(Packet packet)
         {
             var action = packet.ReadBitsE<TutorialAction>("TutorialAction", 2);
 
             if (action == TutorialAction.Update)
+                packet.ReadInt32E<Tutorial>("TutorialBit");
+        }
+
+        [Parser(Opcode.CMSG_TUTORIAL_FLAG, ClientVersionBuild.V6_0_3_19342)]
+        public static void HandleTutorialFlag61x(Packet packet)
+        {
+            var action = packet.ReadBitsE<TutorialAction61x>("TutorialAction", 2);
+
+            if (action == TutorialAction61x.Update)
                 packet.ReadInt32E<Tutorial>("TutorialBit");
         }
 
@@ -618,8 +686,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         // new opcode on 6.x, related to combat log and mostly used in garrisons
-        [Parser(Opcode.SMSG_COMBAT_LOG_UNK)]
-        public static void HandleCombatLogUnk(Packet packet)
+        [Parser(Opcode.SMSG_WORLD_TEXT)]
+        public static void HandleWorldText(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");
             packet.ReadInt32("Arg1");

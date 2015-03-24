@@ -7,16 +7,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class CombatHandler
     {
-        [Parser(Opcode.SMSG_ATTACKERSTATEUPDATE)]
-        public static void HandleAttackerStateUpdate(Packet packet)
+
+        public static void ReadAttackRoundInfo(Packet packet, params object[] indexes)
         {
-            var bit52 = packet.ReadBit("HasLogData");
-
-            if (bit52)
-                SpellParsers.ReadSpellCastLogData(packet);
-
-            packet.ReadInt32("Size");
-
             var hitInfo = packet.ReadInt32E<SpellHitInfo>("HitInfo");
 
             packet.ReadPackedGuid128("Attacker Guid");
@@ -68,6 +61,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK | SpellHitInfo.HITINFO_UNK12))
                 packet.ReadSingle("Unk Float");
+        }
+
+        [Parser(Opcode.SMSG_ATTACKERSTATEUPDATE)]
+        public static void HandleAttackerStateUpdate(Packet packet)
+        {
+            var bit52 = packet.ReadBit("HasLogData");
+
+            if (bit52)
+                SpellParsers.ReadSpellCastLogData(packet);
+
+            packet.ReadInt32("Size");
+
+            ReadAttackRoundInfo(packet);            
         }
 
         [Parser(Opcode.SMSG_ATTACKSTART)]

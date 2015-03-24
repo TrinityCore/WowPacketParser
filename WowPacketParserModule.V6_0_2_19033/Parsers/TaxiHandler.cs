@@ -6,12 +6,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class TaxiHandler
     {
-        [Parser(Opcode.CMSG_ACTIVATE_TAXI)]
-        public static void HandleActivateTaxi(Packet packet)
+        [Parser(Opcode.CMSG_ACTIVATE_TAXI, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleActivateTaxi60x(Packet packet)
         {
             packet.ReadPackedGuid128("Vendor");
             packet.ReadUInt32("StartNode");
             packet.ReadUInt32("DestNode");
+        }
+
+        [Parser(Opcode.CMSG_ACTIVATE_TAXI, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleActivateTaxi61x(Packet packet)
+        {
+            packet.ReadPackedGuid128("Vendor");
+            packet.ReadUInt32("Node");
         }
 
         [Parser(Opcode.CMSG_ACTIVATE_TAXI_EXPRESS)]

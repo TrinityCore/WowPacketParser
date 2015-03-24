@@ -192,8 +192,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 case DB2Hash.ItemExtendedCost: // New structure - 6.0.2
                 {
                     db2File.ReadUInt32("Item Extended Cost ID");
-                    db2File.ReadUInt32("Required Honor Points");
-                    db2File.ReadUInt32("Required Arena Points");
+                    if (ClientVersion.RemovedInVersion(ClientVersionBuild.V6_1_0_19678))
+                    {
+                        db2File.ReadUInt32("Required Honor Points");
+                        db2File.ReadUInt32("Required Arena Points");
+                    }
+
                     db2File.ReadUInt32("Required Arena Slot");
                     for (var i = 0; i < 5; ++i)
                         db2File.ReadUInt32("Required Item", i);
@@ -213,6 +217,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     db2File.ReadUInt32("Required Faction Standing");
                     db2File.ReadUInt32("Requirement Flags");
                     db2File.ReadInt32<AchievementId>("Required Achievement");
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
+                        db2File.ReadInt32("Unk1 Wod61x");
                     break;
                 }
                 case DB2Hash.ItemCurrencyCost:
@@ -221,12 +227,113 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     db2File.ReadUInt32<ItemId>("Item ID");
                     break;
                 }
+                case DB2Hash.Mount:
+                {
+                    var mount = new Mount();
+                    var id = db2File.ReadUInt32("ID");
+                    mount.MountTypeId = db2File.ReadUInt32("MountTypeId");
+                    mount.DisplayId = db2File.ReadUInt32("DisplayId");
+                    mount.Flags = db2File.ReadUInt32("Flags");
+
+                    var NameLength = db2File.ReadUInt16();
+                    mount.Name = db2File.ReadWoWString("Name", NameLength);
+
+                    var DescriptionLength = db2File.ReadUInt16();
+                    mount.Description = db2File.ReadWoWString("Description", DescriptionLength);
+
+                    var SourceDescriptionLength = db2File.ReadUInt16();
+                    mount.SourceDescription = db2File.ReadWoWString("SourceDescription", SourceDescriptionLength);
+
+                    mount.Source = db2File.ReadUInt32("Source");
+                    mount.SpellId = db2File.ReadUInt32("SpellId");
+                    mount.PlayerConditionId = db2File.ReadUInt32("PlayerConditionId");
+
+                    Storage.Mounts.Add(id, mount, packet.TimeSpan);
+                    break;
+                }
                 case DB2Hash.RulesetItemUpgrade:
                 {
                     db2File.ReadUInt32("ID");
                     db2File.ReadUInt32("Item Upgrade Level");
                     db2File.ReadUInt32("Item Upgrade ID");
                     db2File.ReadUInt32<ItemId>("Item ID");
+                    break;
+                }
+                case DB2Hash.Holidays:
+                {
+                    var holiday = new HolidayData();
+
+                    var id = db2File.ReadUInt32("ID");
+
+                    holiday.Duration = new uint[10];
+                    for (var i = 0; i < 10; i++)
+                        holiday.Duration[i] = db2File.ReadUInt32("Duration", i);
+
+                    holiday.Date = new uint[16];
+                    for (var i = 0; i < 16; i++)
+                        holiday.Date[i] = db2File.ReadUInt32("Date", i);
+
+                    holiday.Region = db2File.ReadUInt32("Region");
+                    holiday.Looping = db2File.ReadUInt32("Looping");
+
+                    holiday.CalendarFlags = new uint[10];
+                    for (var i = 0; i < 10; i++)
+                        holiday.CalendarFlags[i] = db2File.ReadUInt32("CalendarFlags", i);
+
+                    holiday.HolidayNameID = db2File.ReadUInt32("HolidayNameID");
+                    holiday.HolidayDescriptionID = db2File.ReadUInt32("HolidayDescriptionID");
+
+                    var TextureFilenameLength = db2File.ReadUInt16();
+                    holiday.TextureFilename = db2File.ReadWoWString("SourceDescription", TextureFilenameLength);
+
+                    holiday.Priority = db2File.ReadUInt32("Priority");
+                    holiday.CalendarFilterType = db2File.ReadUInt32("CalendarFilterType");
+                    holiday.Flags = db2File.ReadUInt32("Flags");
+
+                    Storage.Holidays.Add(id, holiday, packet.TimeSpan);
+                    break;
+                }
+                case DB2Hash.ItemAppearance:
+                {
+                    var itemAppearance = new ItemAppearance();
+
+                    var id = db2File.ReadUInt32("ID");
+
+                    itemAppearance.DisplayID = db2File.ReadUInt32("Display ID");
+                    itemAppearance.IconFileDataID = db2File.ReadUInt32("File Data ID");
+
+                    Storage.ItemAppearances.Add(id, itemAppearance, packet.TimeSpan);
+                    break;
+                }
+                case DB2Hash.ItemBonus:
+                {
+                    var itemBonus = new ItemBonus();
+
+                    var id = db2File.ReadUInt32("ID");
+
+                    itemBonus.BonusListID = db2File.ReadUInt32("Bonus List ID");
+                    itemBonus.Type = db2File.ReadUInt32("Type");
+
+                    itemBonus.Value = new uint[2];
+                    for (var i = 0; i < 2; i++)
+                        itemBonus.Value[i] = db2File.ReadUInt32("Value", i);
+
+                    itemBonus.Index = db2File.ReadUInt32("Index");
+
+                    Storage.ItemBonuses.Add(id, itemBonus, packet.TimeSpan);
+                    break;
+                }
+                case DB2Hash.ItemBonusTreeNode:
+                {
+                    var itemBonusTreeNode = new ItemBonusTreeNode();
+                    var id = db2File.ReadUInt32("ID");
+
+                    itemBonusTreeNode.BonusTreeID = db2File.ReadUInt32("BonusTreeID");
+                    itemBonusTreeNode.BonusTreeModID = db2File.ReadUInt32("BonusTreeModID");
+                    itemBonusTreeNode.SubTreeID = db2File.ReadUInt32("SubTreeID");
+                    itemBonusTreeNode.BonusListID = db2File.ReadUInt32("BonusListID");
+
+                    Storage.ItemBonusTreeNodes.Add(id, itemBonusTreeNode, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.Item_sparse: // New structure - 6.0.2
@@ -333,8 +440,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 }
                 case DB2Hash.KeyChain:
                 {
-                    db2File.ReadUInt32("Key Chain ID");
-                    db2File.ReadBytes("Key", 32);
+                    var key = new KeyChain();
+                    var id = db2File.ReadUInt32("ID");
+
+                    key.Key = new byte[32];
+                    for (var i = 0; i < 32; i++)
+                        key.Key[i] = db2File.ReadByte("Key", i);
+
+                    Storage.KeyChains.Add(id, key, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.SceneScript: // lua ftw!

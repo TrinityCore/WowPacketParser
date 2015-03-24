@@ -638,6 +638,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_QUEST_UPDATE_COMPLETE)]
+        [Parser(Opcode.CMSG_QUEST_CLOSE_AUTOACCEPT_QUEST)]
         public static void HandleQuestForceRemoved(Packet packet)
         {
             packet.ReadInt32<QuestId>("QuestID");
