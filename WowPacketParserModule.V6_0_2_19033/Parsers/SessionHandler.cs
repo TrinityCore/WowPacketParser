@@ -142,13 +142,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Account Name", accountNameLength);
             packet.ReadBit("UseIPv6");
 
-            var addonSize = packet.ReadUInt32("Addons Size");
+            var addonSize = packet.ReadInt32("Addons Size");
 
             if (addonSize > 0)
             {
-                var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
+                var addons = new Packet(packet.ReadBytes(addonSize), packet.Opcode, packet.Time, packet.Direction,
                 packet.Number, packet.Writer, packet.FileName);
-                //CoreParsers.AddonHandler.ReadClientAddonsList(addons);
+                CoreParsers.AddonHandler.ReadClientAddonsList(addons);
                 addons.ClosePacket(false);
             }
 
