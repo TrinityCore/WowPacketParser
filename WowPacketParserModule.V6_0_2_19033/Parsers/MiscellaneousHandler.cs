@@ -69,6 +69,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("BpayStoreAvailable");
             packet.ReadBit("BpayStoreDisabledByParentalControls");
             packet.ReadBit("CharUndeleteEnabled");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_2_19802))
+            {
+                packet.ReadBit("CommerceSystemEnabled");
+                packet.ReadBit("Unk14");
+                packet.ReadBit("WillKickFromWorld");
+                packet.ReadInt32("TokenPollTimeSeconds");
+                packet.ReadInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
+            }
         }
 
         public static void ReadCliSavedThrottleObjectState(Packet packet, params object[] idx)
@@ -130,8 +138,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 ReadClientSessionAlertConfig(packet, "SessionAlert");
         }
 
-        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS, ClientVersionBuild.V6_1_0_19678)]
-        public static void HandleFeatureSystemStatus61x(Packet packet)
+        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS, ClientVersionBuild.V6_1_0_19678, ClientVersionBuild.V6_1_2_19802)]
+        public static void HandleFeatureSystemStatus610(Packet packet)
         {
             packet.ReadByte("ComplaintStatus");
 
@@ -170,6 +178,58 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             // Note: Only since ClientVersionBuild.V6_1_0_19702
             if (bit61)
+            {
+                var int88 = packet.ReadInt32("int88");
+                for (int i = 0; i < int88; i++)
+                    packet.ReadByte("byte23", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS, ClientVersionBuild.V6_1_2_19802)]
+        public static void HandleFeatureSystemStatus612(Packet packet)
+        {
+            packet.ReadByte("ComplaintStatus");
+
+            packet.ReadInt32("ScrollOfResurrectionRequestsRemaining");
+            packet.ReadInt32("ScrollOfResurrectionMaxRequestsPerDay");
+            packet.ReadInt32("CfgRealmID");
+            packet.ReadInt32("CfgRealmRecID");
+            packet.ReadInt32("Int27");
+            packet.ReadInt32("TwitterMsTillCanPost");
+            packet.ReadInt32("TokenPollTimeSeconds");
+            packet.ReadInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("VoiceEnabled");
+            var hasEuropaTicketSystemStatus = packet.ReadBit("HasEuropaTicketSystemStatus");
+            packet.ReadBit("ScrollOfResurrectionEnabled");
+            packet.ReadBit("BpayStoreEnabled");
+            packet.ReadBit("BpayStoreAvailable");
+            packet.ReadBit("BpayStoreDisabledByParentalControls");
+            packet.ReadBit("ItemRestorationButtonEnabled");
+            packet.ReadBit("BrowserEnabled");
+            var hasSessionAlert = packet.ReadBit("HasSessionAlert");
+            packet.ReadBit("RecruitAFriendSendingEnabled");
+            packet.ReadBit("CharUndeleteEnabled");
+            packet.ReadBit("RestrictedAccount");
+            packet.ReadBit("TutorialsEnabled");
+            packet.ReadBit("Unk bit44"); // Also tutorials related
+            packet.ReadBit("TwitterEnabled");
+            packet.ReadBit("CommerceSystemEnabled");
+            packet.ReadBit("Unk67");
+            packet.ReadBit("WillKickFromWorld");
+            var bit4A = packet.ReadBit("Unk4A");
+
+            packet.ResetBitReader();
+
+            if (hasEuropaTicketSystemStatus)
+                ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
+
+            if (hasSessionAlert)
+                ReadClientSessionAlertConfig(packet, "SessionAlert");
+
+            if (bit4A)
             {
                 var int88 = packet.ReadInt32("int88");
                 for (int i = 0; i < int88; i++)
