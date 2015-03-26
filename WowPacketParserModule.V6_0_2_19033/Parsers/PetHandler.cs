@@ -99,8 +99,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadVector3("ActionPosition");
         }
 
-        [Parser(Opcode.CMSG_PET_RENAME)]
-        public static void HandlePetRename(Packet packet)
+        public static void ReadPetRenameData(Packet packet)
         {
             packet.ReadPackedGuid128("PetGUID");
             packet.ReadInt32("PetNumber");
@@ -119,6 +118,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
 
             packet.ReadWoWString("NewName", bits20);
+        }
+
+        [Parser(Opcode.SMSG_PET_NAME_INVALID)]
+        public static void HandlePetNameInvalid(Packet packet)
+        {
+            packet.ReadByte("Result");
+            ReadPetRenameData(packet);
+        }
+
+        [Parser(Opcode.CMSG_PET_RENAME)]
+        public static void HandlePetRename(Packet packet)
+        {
+            ReadPetRenameData(packet);
         }
         
         [Parser(Opcode.SMSG_PET_SPECIALIZATION)]
