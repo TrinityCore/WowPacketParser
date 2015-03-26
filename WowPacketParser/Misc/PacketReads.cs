@@ -34,7 +34,11 @@ namespace WowPacketParser.Misc
             var guidLowMask = ReadByte();
             var guidHighMask = ReadByte();
 
-            return new WowGuid128(ReadPackedUInt64(guidLowMask), ReadPackedUInt64(guidHighMask));
+            var guid = new WowGuid128(ReadPackedUInt64(guidLowMask), ReadPackedUInt64(guidHighMask));
+            if (WriteToFile)
+                WriteToFile = Filters.CheckFilter(guid);
+
+            return guid;
         }
 
         public WowGuid WriteGuid(string name, byte[] stream, params object[] indexes)

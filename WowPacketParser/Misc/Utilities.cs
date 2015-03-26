@@ -62,6 +62,9 @@ namespace WowPacketParser.Misc
                 case ObjectType.Item:
                     result = StoreNameType.Item;
                     break;
+                case ObjectType.Player:
+                    result = StoreNameType.Player;
+                    break;
                 case ObjectType.Corpse:
                 case ObjectType.Unit:
                     result = StoreNameType.Unit;
