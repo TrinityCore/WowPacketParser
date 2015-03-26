@@ -79,6 +79,7 @@ namespace WowPacketParser.Enums.Version.V6_1_2_19802
             {Opcode.CMSG_EMOTE, 0x0E03},
             {Opcode.CMSG_ENABLE_NAGLE, 0x0B55},
             {Opcode.CMSG_ENABLE_TAXI_NODE, 0x0926},
+            {Opcode.CMSG_ENGINE_SURVEY, 0x0FA0},
             {Opcode.CMSG_EQUIPMENT_SET_SAVE, 0x09E2},
             {Opcode.CMSG_GAMEOBJ_REPORT_USE, 0x18B2},
             {Opcode.CMSG_GAMEOBJ_USE, 0x08B1},
