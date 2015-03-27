@@ -12,7 +12,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("PetID");
         }
 
-        [Parser(Opcode.SMSG_PET_NAME_QUERY_RESPONSE)]
+        [Parser(Opcode.SMSG_QUERY_PET_NAME_RESPONSE)]
         public static void HandlePetNameQueryResponse(Packet packet)
         {
             packet.ReadPackedGuid128("PetID");
@@ -37,7 +37,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
 
-        [Parser(Opcode.SMSG_PET_SPELLS)]
+        [Parser(Opcode.SMSG_PET_SPELLS_MESSAGE)]
         public static void HandlePetSpells(Packet packet)
         {
             packet.ReadPackedGuid128("PetGUID");
@@ -146,8 +146,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("SpecGroupId");
         }
         
-        [Parser(Opcode.SMSG_PET_LEARNED_SPELL)]
-        [Parser(Opcode.SMSG_PET_REMOVED_SPELL)]
+        [Parser(Opcode.SMSG_PET_LEARNED_SPELLS)]
+        [Parser(Opcode.SMSG_PET_UNLEARNED_SPELLS)]
         public static void HandlePetSpellsLearnedRemoved(Packet packet)
         {
             var count = packet.ReadUInt32("Spell Count");

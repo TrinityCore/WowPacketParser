@@ -6,7 +6,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 {
     public static class GuildHandler
     {
-        [Parser(Opcode.SMSG_GUILD_QUERY_RESPONSE)]
+        [Parser(Opcode.SMSG_QUERY_GUILD_INFO_RESPONSE)]
         public static void HandleGuildQueryResponse(Packet packet)
         {
             var guid1 = new byte[8];

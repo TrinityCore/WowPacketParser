@@ -6,7 +6,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 {
     public static class CombatHandler
     {
-        [Parser(Opcode.SMSG_ATTACKSTART)]
+        [Parser(Opcode.SMSG_ATTACK_START)]
         public static void HandleAttackStartStart(Packet packet)
         {
             var AttackerGUID = new byte[8];
@@ -50,7 +50,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Victim GUID", VictimGUID);
         }
 
-        [Parser(Opcode.SMSG_ATTACKSTOP)]
+        [Parser(Opcode.SMSG_ATTACK_STOP)]
         public static void HandleAttackStartStop(Packet packet)
         {
             var VictimGUID = new byte[8];
@@ -108,7 +108,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_ATTACKERSTATEUPDATE)]
+        [Parser(Opcode.SMSG_ATTACKER_STATE_UPDATE)]
         public static void HandleAttackerStateUpdate(Packet packet)
         {
             packet.ReadInt32("Length");

@@ -505,7 +505,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.WriteGuid("GUID4", guid4);
         }
 
-        [Parser(Opcode.SMSG_INITIAL_SPELLS)]
+        [Parser(Opcode.SMSG_SEND_KNOWN_SPELLS)]
         public static void HandleInitialSpells(Packet packet)
         {
             var count = packet.ReadBits("Spell Count", 22);

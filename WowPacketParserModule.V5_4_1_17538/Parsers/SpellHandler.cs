@@ -31,7 +31,7 @@ namespace WowPacketParser.V5_4_1_17538.Parsers
                 packet.ReadUInt16("Talent Id", i);
         }
 
-        [Parser(Opcode.SMSG_TALENTS_INFO)]
+        [Parser(Opcode.SMSG_UPDATE_TALENT_DATA)]
         public static void ReadTalentInfo510(Packet packet)
         {
             var specCount = packet.ReadBits("Spec Group count", 19);
@@ -430,7 +430,7 @@ namespace WowPacketParser.V5_4_1_17538.Parsers
             packet.WriteGuid("Guid34", guid7);
         }
 
-        [Parser(Opcode.SMSG_INITIAL_SPELLS)]
+        [Parser(Opcode.SMSG_SEND_KNOWN_SPELLS)]
         public static void HandleInitialSpells(Packet packet)
         {
             packet.ReadBit("InitialLogin");

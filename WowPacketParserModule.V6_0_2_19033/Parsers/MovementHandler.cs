@@ -112,7 +112,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.AddSniffData(StoreNameType.Map, (int)WowPacketParser.Parsing.Parsers.MovementHandler.CurrentMapId, "NEW_WORLD");
         }
 
-        [Parser(Opcode.SMSG_LOGIN_SETTIMESPEED)]
+        [Parser(Opcode.SMSG_LOGIN_SET_TIME_SPEED)]
         public static void HandleLoginSetTimeSpeed(Packet packet)
         {
             packet.ReadPackedTime("ServerTime");
@@ -326,7 +326,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadMovementMonsterSpline(packet, guid, pos, "MovementMonsterSpline");
         }
 
-        [Parser(Opcode.SMSG_SET_PHASE_SHIFT_CHANGE)]
+        [Parser(Opcode.SMSG_PHASE_SHIFT_CHANGE)]
         public static void HandlePhaseShift(Packet packet)
         {
             packet.ReadPackedGuid128("Client");
@@ -508,11 +508,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_MOVE_SET_LAND_WALK)]
         [Parser(Opcode.SMSG_MOVE_ROOT)]
         [Parser(Opcode.SMSG_MOVE_SET_CAN_FLY)]
-        [Parser(Opcode.SMSG_MOVE_ENABLE_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY)]
-        [Parser(Opcode.SMSG_MOVE_SET_HOVER)]
+        [Parser(Opcode.SMSG_MOVE_ENABLE_TRANSITION_BETWEEN_SWIM_AND_FLY)]
+        [Parser(Opcode.SMSG_MOVE_SET_HOVERING)]
         [Parser(Opcode.SMSG_MOVE_UNSET_CAN_FLY)]
-        [Parser(Opcode.SMSG_MOVE_DISABLE_CAN_TRANSITION_BETWEEN_SWIM_AND_FLY)]
-        [Parser(Opcode.SMSG_MOVE_UNSET_HOVER)]
+        [Parser(Opcode.SMSG_MOVE_DISABLE_TRANSITION_BETWEEN_SWIM_AND_FLY)]
+        [Parser(Opcode.SMSG_MOVE_UNSET_HOVERING)]
         [Parser(Opcode.SMSG_MOVE_UNROOT)]
         [Parser(Opcode.SMSG_MOVE_SET_WATER_WALK)]
         [Parser(Opcode.SMSG_MOVE_SET_FEATHER_FALL)]
@@ -750,7 +750,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadSingle("Scale");
         }
 
-        [Parser(Opcode.SMSG_CLIENT_CONTROL_UPDATE)]
+        [Parser(Opcode.SMSG_CONTROL_UPDATE)]
         public static void HandleClientControlUpdate(Packet packet)
         {
             packet.ReadPackedGuid128("Unit");

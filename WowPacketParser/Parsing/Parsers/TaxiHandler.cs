@@ -13,7 +13,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
         }
 
-        [Parser(Opcode.SMSG_TAXINODE_STATUS)]
+        [Parser(Opcode.SMSG_TAXI_NODE_STATUS)]
         public static void HandleTaxiStatus(Packet packet)
         {
             packet.ReadGuid("GUID");

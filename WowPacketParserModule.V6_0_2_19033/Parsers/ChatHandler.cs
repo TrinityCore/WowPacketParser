@@ -123,7 +123,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 Storage.CreatureTexts.Add(entry, text, packet.TimeSpan);
         }
 
-        [Parser(Opcode.SMSG_SERVER_MESSAGE)]
+        [Parser(Opcode.SMSG_CHAT_SERVER_MESSAGE)]
         public static void HandleServerMessage(Packet packet)
         {
             packet.ReadInt32("MessageID");
@@ -184,7 +184,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("MessageText", len);
         }
 
-        [Parser(Opcode.SMSG_CHAT_PLAYER_NOT_FOUND)]
+        [Parser(Opcode.SMSG_CHAT_PLAYER_NOTFOUND)]
         public static void HandleChatPlayerNotFound(Packet packet)
         {
             var bits16 = packet.ReadBits(9);

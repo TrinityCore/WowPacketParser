@@ -66,7 +66,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Name");
         }
 
-        [Parser(Opcode.SMSG_CHAT_PLAYER_NOT_FOUND)]
+        [Parser(Opcode.SMSG_CHAT_PLAYER_NOTFOUND)]
         public static void HandleChatPlayerNotFound(Packet packet)
         {
             packet.ReadCString("Name");

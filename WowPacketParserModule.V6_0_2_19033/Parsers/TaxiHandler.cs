@@ -53,7 +53,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadByte("Nodes", i);
         }
 
-        [Parser(Opcode.SMSG_TAXINODE_STATUS)]
+        [Parser(Opcode.SMSG_TAXI_NODE_STATUS)]
         public static void HandleTaxiStatus(Packet packet)
         {
             packet.ReadPackedGuid128("Unit");

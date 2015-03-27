@@ -33,7 +33,7 @@ namespace WowPacketParser.Parsing.Parsers
             ReadSetInfo(packet);
         }
 
-        [Parser(Opcode.SMSG_EQUIPMENT_SET_SAVED)]
+        [Parser(Opcode.SMSG_EQUIPMENT_SET_ID)]
         public static void HandleEquipmentSetSaved(Packet packet)
         {
             packet.ReadInt32("Index");

@@ -11,7 +11,7 @@ namespace WowPacketParser.V5_4_0_17359.Parsers
 {
     public static class SpellHandler
     {
-        [Parser(Opcode.SMSG_INITIAL_SPELLS)]
+        [Parser(Opcode.SMSG_SEND_KNOWN_SPELLS)]
         public static void HandleInitialSpells(Packet packet)
         {
             var count = packet.ReadBits("Spell Count", 22);
@@ -55,7 +55,7 @@ namespace WowPacketParser.V5_4_0_17359.Parsers
                 packet.ReadUInt32<SpellId>("Spell ID", i);
         }
 
-        [Parser(Opcode.SMSG_SPELL_CATEGORY_COOLDOWN)]
+        [Parser(Opcode.SMSG_CATEGORY_COOLDOWN)]
         public static void HandleSpellCategoryCooldown(Packet packet)
         {
             var count = packet.ReadBits("Count", 21);

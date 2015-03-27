@@ -128,7 +128,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid12", guid12);
         }
 
-        [Parser(Opcode.SMSG_PERIODICAURALOG)]
+        [Parser(Opcode.SMSG_SPELL_PERIODIC_AURA_LOG)]
         public static void HandlePeriodicAuraLog(Packet packet)
         {
             var targetGUID = new byte[8];
@@ -363,7 +363,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Target GUID", targetGUID);
         }
 
-        [Parser(Opcode.SMSG_SPELL_DISPEL_LOG)]
+        [Parser(Opcode.SMSG_SPELL_DISPELL_LOG)]
         public static void SpellDispelLog(Packet packet)
         {
             var casterGUID = new byte[8];

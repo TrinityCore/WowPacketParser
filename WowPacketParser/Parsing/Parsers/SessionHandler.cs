@@ -463,7 +463,7 @@ namespace WowPacketParser.Parsing.Parsers
             LoginGuid = new WowGuid64(0);
         }
 
-        [Parser(Opcode.SMSG_REDIRECT_CLIENT, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
+        [Parser(Opcode.SMSG_CONNECT_TO, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandleRedirectClient(Packet packet)
         {
             packet.ReadIPAddress("IP Address");
@@ -472,7 +472,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBytes("Address SHA-1 Hash", 20);
         }
 
-        [Parser(Opcode.SMSG_REDIRECT_CLIENT, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_CONNECT_TO, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleRedirectClient406(Packet packet)
         {
             packet.ReadInt64("Int 64");
@@ -481,7 +481,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Int32");
         }
 
-        [Parser(Opcode.SMSG_REDIRECT_CLIENT, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_CONNECT_TO, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleRedirectClient422(Packet packet)
         {
             packet.ReadBytes("RSA Hash", 255);

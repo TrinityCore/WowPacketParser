@@ -18,7 +18,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.AddValue("Flag", (PetModeFlags) (petModeFlag & 0xFFFF0000));
         }
 
-        [Parser(Opcode.SMSG_PET_SPELLS)]
+        [Parser(Opcode.SMSG_PET_SPELLS_MESSAGE)]
         public static void HandlePetSpells(Packet packet)
         {
             var guid = packet.ReadGuid("GUID");
@@ -110,11 +110,11 @@ namespace WowPacketParser.Parsing.Parsers
             var number = packet.ReadInt32("Pet number").ToString(CultureInfo.InvariantCulture);
             var guid = packet.ReadGuid("Guid");
 
-            // Store temporary name (will be replaced in SMSG_PET_NAME_QUERY_RESPONSE)
+            // Store temporary name (will be replaced in SMSG_QUERY_PET_NAME_RESPONSE)
             StoreGetters.AddName(guid, number);
         }
 
-        [Parser(Opcode.SMSG_PET_NAME_QUERY_RESPONSE)]
+        [Parser(Opcode.SMSG_QUERY_PET_NAME_RESPONSE)]
         public static void HandlePetNameQueryResponse(Packet packet)
         {
             var number = packet.ReadInt32("Pet number").ToString(CultureInfo.InvariantCulture);
@@ -194,8 +194,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32<SpellId>("Spell ID");
         }
 
-        [Parser(Opcode.SMSG_PET_LEARNED_SPELL)]
-        [Parser(Opcode.SMSG_PET_REMOVED_SPELL)]
+        [Parser(Opcode.SMSG_PET_LEARNED_SPELLS)]
+        [Parser(Opcode.SMSG_PET_UNLEARNED_SPELLS)]
         public static void HandlePetSpellsLearnedRemoved(Packet packet)
         {
             packet.ReadInt32<SpellId>("Spell ID");

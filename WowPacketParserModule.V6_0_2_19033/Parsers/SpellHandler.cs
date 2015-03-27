@@ -121,7 +121,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("SuppressMessaging");
         }
 
-        [Parser(Opcode.SMSG_INITIAL_SPELLS)]
+        [Parser(Opcode.SMSG_SEND_KNOWN_SPELLS)]
         public static void HandleInitialSpells(Packet packet)
         {
             packet.ReadBit("InitialLogin");
@@ -154,7 +154,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
         }
 
-        [Parser(Opcode.SMSG_SPELL_CATEGORY_COOLDOWN)]
+        [Parser(Opcode.SMSG_CATEGORY_COOLDOWN)]
         public static void HandleSpellCategoryCooldown(Packet packet)
         {
             var count = packet.ReadUInt32("Spell Count");
@@ -253,7 +253,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_TALENTS_INFO)]
+        [Parser(Opcode.SMSG_UPDATE_TALENT_DATA)]
         public static void ReadTalentInfo(Packet packet)
         {
             ReadTalentInfoUpdate(packet, "Info");
@@ -435,7 +435,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("Uses");
         }
 
-        [Parser(Opcode.SMSG_CHANNEL_UPDATE)]
+        [Parser(Opcode.SMSG_SPELL_CHANNEL_UPDATE)]
         public static void HandleSpellChannelUpdate(Packet packet)
         {
             packet.ReadPackedGuid128("CasterGUID");
@@ -461,7 +461,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadSpellHealPrediction(packet, idx, "Predict");
         }
 
-        [Parser(Opcode.SMSG_CHANNEL_START)]
+        [Parser(Opcode.SMSG_SPELL_CHANNEL_START)]
         public static void HandleSpellChannelStart(Packet packet)
         {
             packet.ReadPackedGuid128("CasterGUID");
@@ -614,7 +614,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt16("ProcNum");
         }
 
-        [Parser(Opcode.SMSG_SPELL_DISPEL_LOG)]
+        [Parser(Opcode.SMSG_SPELL_DISPELL_LOG)]
         public static void HandleSpellDispelLog(Packet packet)
         {
             packet.ReadBit("Is Steal");
@@ -989,7 +989,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("RespecMaster");
         }
 
-        [Parser(Opcode.SMSG_SUPERCEDED_SPELL)]
+        [Parser(Opcode.SMSG_SUPERCEDED_SPELLS)]
         public static void HandleSupercededSpells(Packet packet)
         {
             var spellCount = packet.ReadInt32("");

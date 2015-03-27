@@ -204,7 +204,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 Storage.CreatureTexts.Add(entry, text, packet.TimeSpan);
         }
 
-        [Parser(Opcode.SMSG_CHAT_PLAYER_NOT_FOUND)]
+        [Parser(Opcode.SMSG_CHAT_PLAYER_NOTFOUND)]
         public static void HandleChatPlayerNotFound(Packet packet)
         {
             var len = packet.ReadBits(9);

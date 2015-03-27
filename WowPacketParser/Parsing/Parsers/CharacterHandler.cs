@@ -49,7 +49,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("New Name");
         }
 
-        [Parser(Opcode.SMSG_CHAR_RENAME)]
+        [Parser(Opcode.SMSG_CHARACTER_RENAME_RESULT)]
         public static void HandleServerCharRename(Packet packet)
         {
             if (packet.ReadByteE<ResponseCode>("Race") != ResponseCode.RESPONSE_SUCCESS)
@@ -60,8 +60,8 @@ namespace WowPacketParser.Parsing.Parsers
             StoreGetters.AddName(guid, name);
         }
 
-        [Parser(Opcode.SMSG_CHAR_CREATE)]
-        [Parser(Opcode.SMSG_CHAR_DELETE)]
+        [Parser(Opcode.SMSG_CREATE_CHAR)]
+        [Parser(Opcode.SMSG_DELETE_CHAR)]
         public static void HandleCharResponse(Packet packet)
         {
             packet.ReadByteE<ResponseCode>("Response");
@@ -115,7 +115,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Facial Hair");
         }
 
-        [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleCharEnum(Packet packet)
         {
             var count = packet.ReadByte("Count");
@@ -185,7 +185,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
+        [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleCharEnum422(Packet packet)
         {
             packet.ReadByte("Unk Flag");
@@ -317,7 +317,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_3_15354)]
+        [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_3_15354)]
         public static void HandleCharEnum430(Packet packet)
         {
             var count = packet.ReadBits("Char count", 17);
@@ -445,7 +445,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V4_3_3_15354, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT, ClientVersionBuild.V4_3_3_15354, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleCharEnum433(Packet packet)
         {
             var unkCounter = packet.ReadBits("Unk Counter", 23);
@@ -607,7 +607,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_0_5_16048)]
+        [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_0_5_16048)]
         public static void HandleCharEnum434(Packet packet)
         {
             var unkCounter = packet.ReadBits("Unk Counter", 23);
@@ -748,7 +748,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V5_0_5_16048, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT, ClientVersionBuild.V5_0_5_16048, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleCharEnum505(Packet packet)
         {
             packet.ReadBits("Unk Counter", 23);
@@ -885,7 +885,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_CHAR_ENUM, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleCharEnum510(Packet packet)
         {
             var unkCounter = packet.ReadBits("Unk Counter", 23);
@@ -1043,7 +1043,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBool("Print in chat");
         }
 
-        [Parser(Opcode.SMSG_LOG_XPGAIN)]
+        [Parser(Opcode.SMSG_LOG_XP_GAIN)]
         public static void HandleLogXPGain(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -1287,7 +1287,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_LEVELUP_INFO)]
+        [Parser(Opcode.SMSG_LEVEL_UP_INFO)]
         public static void HandleLevelUp(Packet packet)
         {
             packet.ReadInt32("Level");

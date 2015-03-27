@@ -55,11 +55,11 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid", guid);
             packet.AddValue("Pet Number", Number);
 
-            // Store temporary name (will be replaced in SMSG_PET_NAME_QUERY_RESPONSE)
+            // Store temporary name (will be replaced in SMSG_QUERY_PET_NAME_RESPONSE)
             StoreGetters.AddName(GUID, Number.ToString(CultureInfo.InvariantCulture));
         }
 
-        [Parser(Opcode.SMSG_PET_NAME_QUERY_RESPONSE)]
+        [Parser(Opcode.SMSG_QUERY_PET_NAME_RESPONSE)]
         public static void HandlePetNameQueryResponse(Packet packet)
         {
             var hasData = packet.ReadBit();
@@ -91,7 +91,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 StoreGetters.NameDict[guid] = petName;
         }
 
-        [Parser(Opcode.SMSG_PET_SPELLS)]
+        [Parser(Opcode.SMSG_PET_SPELLS_MESSAGE)]
         public static void HandlePetSpells(Packet packet)
         {
             var guid = new byte[8];
