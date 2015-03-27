@@ -46,6 +46,10 @@ namespace WowPacketParser.Enums.Battlenet
 
         GetStreamItemsResponse = 0x09,
 #endregion
+
+#region Profile
+        SettingsAvailable = 0x04,
+#endregion
     }
 
     struct OpcodeNameKey
@@ -64,7 +68,7 @@ namespace WowPacketParser.Enums.Battlenet
 
     public static class BattlenetOpcodeName
     {
-        private static readonly Dictionary<OpcodeNameKey, string> Names = new Dictionary<OpcodeNameKey, string>()
+        private static readonly Dictionary<OpcodeNameKey, string> Names = new Dictionary<OpcodeNameKey, string>
         {
             { new OpcodeNameKey(0, 0, Direction.BNClientToServer), "LogonRequest" },
             { new OpcodeNameKey(1, 0, Direction.BNClientToServer), "ResumeRequest" },
@@ -99,6 +103,8 @@ namespace WowPacketParser.Enums.Battlenet
 
             { new OpcodeNameKey(9, 11, Direction.BNClientToServer), "GetStreamItemsRequest" },
             { new OpcodeNameKey(9, 11, Direction.BNServerToClient), "GetStreamItemsResponse" },
+
+            { new OpcodeNameKey(4, 14, Direction.BNServerToClient), "SettingsAvailable" },
         };
 
         public static string GetName(ushort opcode, byte channel, Direction direction)

@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -11,6 +10,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_END)]
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_IN_COMBAT_RESURRECTION)]
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_PHASE_SHIFT_CHANGED)]
+        [Parser(Opcode.SMSG_RESET_FAILED_NOTIFY)]
         public static void HandleInstanceZero(Packet packet)
         {
         }
@@ -210,6 +210,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("MapID");
             packet.ReadBits("ResetFailedReason", 2);
+        }
+
+        [Parser(Opcode.SMSG_PENDING_RAID_LOCK)]
+        public static void HandlePendingRaidLock(Packet packet)
+        {
+            packet.ReadInt32("TimeUntilLock");
+            packet.ReadUInt32("CompletedMask");
+            packet.ReadBit("Extending");
+            packet.ReadBit("WarningOnly");
         }
     }
 }

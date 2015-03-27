@@ -251,7 +251,7 @@ namespace WowPacketParser.Enums
         Oneshot_Death                          = 592,
         State_TalkOnce                         = 595,
         State_Attack2h                         = 596,
-        State_Sit_Ground                       = 598,
+        State_Emote_Sit_Ground                 = 598,
         State_Work_Chopwood3                   = 599,
         State_CustomSpell01                    = 601,
         Oneshot_Combatwound                    = 602,
@@ -263,6 +263,8 @@ namespace WowPacketParser.Enums
         State_Work_Chopwood4                   = 614,
         State_CustomSpell02                    = 615,
         State_Read_And_Sit                     = 616,
-        State_Parry_Unarmed                    = 619
+        State_Parry_Unarmed                    = 619,
+        State_Block_Shield                     = 620,
+        State_Sit_Ground                       = 621
     }
 }

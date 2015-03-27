@@ -22,7 +22,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.CMSG_ADDON_REGISTERED_PREFIXES, 0x6049},
             {Opcode.CMSG_ADD_FRIEND, 0x5C57},
             {Opcode.CMSG_ADD_IGNORE, 0xCEEA},
-            {Opcode.CMSG_ADD_VOICE_IGNORE, 0xA7A},
+            {Opcode.CMSG_VOICE_ADD_IGNORE, 0xA7A},
             {Opcode.CMSG_ALTER_APPEARANCE, 0x5CE3},
             {Opcode.CMSG_AREATRIGGER, 0x5862},
             {Opcode.CMSG_AREA_SPIRIT_HEALER_QUERY, 0xDC7E},
@@ -114,7 +114,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.CMSG_DANCE_QUERY, 0x5C5E},
             {Opcode.CMSG_DEL_FRIEND, 0xC852},
             {Opcode.CMSG_DEL_IGNORE, 0x8ADA},
-            {Opcode.CMSG_DEL_VOICE_IGNORE, 0x8C73},
+            {Opcode.CMSG_VOICE_DEL_IGNORE, 0x8C73},
             {Opcode.CMSG_DESTROY_ITEM, 0x4E7A},
             {Opcode.CMSG_DUEL_ACCEPTED, 0x9CCB},
             {Opcode.CMSG_DUEL_CANCELLED, 0x1E4F},
@@ -147,13 +147,13 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.CMSG_GROUP_UNINVITE_GUID, 0xCE66},
             {Opcode.CMSG_GUILD_ACCEPT, 0x8889},
             {Opcode.CMSG_GUILD_ADD_RANK, 0x197A},
-            {Opcode.CMSG_GUILD_BANKER_ACTIVATE, 0x4E77},
+            {Opcode.CMSG_GUILD_BANK_ACTIVATE, 0x4E77},
             {Opcode.CMSG_GUILD_BANK_BUY_TAB, 0xDCF6},
             {Opcode.CMSG_GUILD_BANK_DEPOSIT_MONEY, 0x4847},
             {Opcode.CMSG_GUILD_BANK_SWAP_ITEMS, 0x85B},
             {Opcode.CMSG_GUILD_BANK_UPDATE_TAB, 0x98F2},
             {Opcode.CMSG_GUILD_BANK_WITHDRAW_MONEY, 0x5AFF},
-            {Opcode.CMSG_GUILD_DECLINE, 0x8D5A},
+            {Opcode.CMSG_GUILD_DECLINE_INVITATION, 0x8D5A},
             {Opcode.CMSG_GUILD_DELETE_RANK, 0x1972},
             {Opcode.CMSG_GUILD_DISBAND, 0x8958},
             {Opcode.CMSG_GUILD_GET_ROSTER, 0x9952},
@@ -258,7 +258,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.CMSG_QUESTGIVER_STATUS_QUERY, 0x88C6},
             {Opcode.CMSG_QUESTLOG_REMOVE_QUEST, 0x8EFF},
             {Opcode.CMSG_QUEST_CONFIRM_ACCEPT, 0x8CD3},
-            {Opcode.CMSG_QUEST_NPC_QUERY, 0x9ED6},
+            {Opcode.CMSG_QUERY_QUEST_COMPLETION_NPCS, 0x9ED6},
             {Opcode.CMSG_QUEST_POI_QUERY, 0x12A5},
             {Opcode.CMSG_QUEST_QUERY, 0xCE7F},
             {Opcode.CMSG_RANDOMIZE_CHAR_NAME, 0x8A99},
@@ -326,7 +326,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.CMSG_WARDEN_DATA, 0x5847},
             {Opcode.CMSG_WHO, 0x9AD7},
             {Opcode.CMSG_WHOIS, 0xCCE6},            //{Opcode.CMSG_WORLD_PORT_RESPONSE, 0x0A9A},
-            {Opcode.CMSG_ZONEUPDATE, 0x4AE2},
+            {Opcode.CMSG_ZONEUPDATE, 0x4AE2}
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -373,7 +373,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.SMSG_BATTLEFIELD_LIST, 0xB64E},
             {Opcode.SMSG_BATTLEFIELD_MGR_EJECTED, 0x32EC},
             {Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING, 0x724C},
-            {Opcode.SMSG_BATTLEFIELD_MGR_ENTERED, 0x66DC},
+            {Opcode.SMSG_BATTLEFIELD_MGR_ENTERING, 0x66DC},
             {Opcode.SMSG_BATTLEFIELD_MGR_ENTRY_INVITE, 0x70DE},
             {Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_INVITE, 0x644E},
             {Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_REQUEST_RESPONSE, 0x326E},
@@ -388,7 +388,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.SMSG_BINDZONEREPLY, 0x1A42},
             {Opcode.SMSG_BREAK_TARGET, 0x0E7E},
             {Opcode.SMSG_BUY_FAILED, 0x4A7F},
-            {Opcode.SMSG_BUY_ITEM, 0xCA67},
+            {Opcode.SMSG_BUY_SUCCEEDED, 0xCA67},
             {Opcode.SMSG_CALENDAR_COMMAND_RESULT, 0x9A4E},
             {Opcode.SMSG_CALENDAR_EVENT_REMOVED_ALERT, 0x5C72},
             {Opcode.SMSG_CALENDAR_EVENT_UPDATED_ALERT, 0x5CFA},
@@ -488,7 +488,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.SMSG_GROUP_LIST, 0x5C7E},
             {Opcode.SMSG_GROUP_SET_LEADER, 0xCCF2},
             {Opcode.SMSG_GROUP_UNINVITE, 0x9CEA},
-            {Opcode.SMSG_GUILD_BANK_LIST, 0x5EFB},
+            {Opcode.SMSG_GUILD_BANK_QUERY_RESULTS, 0x5EFB},
             {Opcode.SMSG_GUILD_CANCEL, 0x08C3}, // New 4.x?
             {Opcode.SMSG_GUILD_COMMAND_RESULT, 56023},
             {Opcode.SMSG_GUILD_DECLINE, 0x1E5B},
@@ -517,8 +517,8 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE, 0xDCE6},
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0x8EFB},
             {Opcode.SMSG_ITEM_REFUND_INFO_RESPONSE, 0x304E},
-            {Opcode.SMSG_ITEM_REFUND_RESULT, 0x60DC},
-            {Opcode.SMSG_ITEM_TEXT_QUERY_RESPONSE, 0x984A},
+            {Opcode.SMSG_ITEM_PURCHASE_REFUND_RESULT, 0x60DC},
+            {Opcode.SMSG_QUERY_ITEM_TEXT_RESPONSE, 0x984A},
             {Opcode.SMSG_ITEM_TIME_UPDATE, 0x8AEB},
             {Opcode.SMSG_KICK_REASON, 0x8A67},
             {Opcode.SMSG_LEARNED_DANCE_MOVES, 0xE52},
@@ -636,7 +636,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE, 0xDCFF},
             {Opcode.SMSG_QUEST_CONFIRM_ACCEPT, 0x184B},
             {Opcode.SMSG_QUEST_LOG_FULL, 0x4EDE},
-            {Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE, 0xF67C},
+            {Opcode.SMSG_QUEST_COMPLETION_NPC_RESPONSE, 0xF67C},
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x8CC3},
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x9E56},
             {Opcode.SMSG_QUEST_UPDATE_ADD_ITEM, 0x9CCF},
@@ -750,7 +750,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.SMSG_WEATHER, 0x4ECE},
             {Opcode.SMSG_WHO, 0x4C7F},
             {Opcode.SMSG_WHOIS, 0x9CFF},
-            {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x08CF},
+            {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x08CF}
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
@@ -808,7 +808,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57},
             {Opcode.TEST_422_13022, 13022},
             {Opcode.TEST_422_265C, 0x265C},
-            {Opcode.TEST_430_SYNC_PLAYER_MOVE, 0x5},            // CMSG Handlers
+            {Opcode.TEST_430_SYNC_PLAYER_MOVE, 0x5}            // CMSG Handlers
             // 4120 - sub_65D6A0 - CMSG_LFG_LFR_JOIN ?
             // 4152 - sub_65D540 - CMSG_LFG_LFR_LEAVE ?
             // 1061 - sub_664260

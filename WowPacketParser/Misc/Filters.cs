@@ -70,5 +70,15 @@ namespace WowPacketParser.Misc
 
             return result;
         }
+
+        public static bool CheckFilter(WowGuid128 guid)
+        {
+            var result = true;
+
+            if (guid.GetObjectType() == ObjectType.Player || guid.HasEntry())
+                result = CheckFilter(Utilities.ObjectTypeToStore(guid.GetObjectType()), (int)guid.GetEntry());
+
+            return result;
+        }
     }
 }

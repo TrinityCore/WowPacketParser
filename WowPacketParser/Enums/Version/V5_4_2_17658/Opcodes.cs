@@ -59,7 +59,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.CMSG_PLAYED_TIME, 0x0A12},
             {Opcode.CMSG_PLAYER_LOGIN, 0x0754},
             {Opcode.CMSG_QUERY_WORLD_COUNTDOWN_TIMER, 0x08DD},
-            {Opcode.CMSG_QUEST_NPC_QUERY, 0x0AB1},
+            {Opcode.CMSG_QUERY_QUEST_COMPLETION_NPCS, 0x0AB1},
             {Opcode.CMSG_QUEST_POI_QUERY, 0x0D52},
             {Opcode.CMSG_QUEST_QUERY, 0x066D},
             {Opcode.CMSG_RANDOMIZE_CHAR_NAME, 0x0DD1},
@@ -73,7 +73,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.CMSG_UI_TIME_REQUEST, 0x0574},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x0448},
             {Opcode.CMSG_WARDEN_DATA, 0x0573},
-            {Opcode.CMSG_WHO, 0x0CFD},
+            {Opcode.CMSG_WHO, 0x0CFD}
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -188,7 +188,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_WARDEN_DATA, 0x083E},
             {Opcode.SMSG_WEATHER, 0x0267},
             {Opcode.SMSG_WEEKLY_SPELL_USAGE, 0x0419},
-            {Opcode.SMSG_WORLD_SERVER_INFO, 0x134B},
+            {Opcode.SMSG_WORLD_SERVER_INFO, 0x134B}
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>();

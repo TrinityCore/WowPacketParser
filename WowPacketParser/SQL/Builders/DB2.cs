@@ -19,14 +19,154 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.broadcast_text))
                return string.Empty;
 
-            foreach (var broadcastText in Storage.BroadcastTexts)
-                broadcastText.Value.Item1.ConvertToDBStruct();
-
             var entries = Storage.BroadcastTexts.Keys();
             var templatesDb = SQLDatabase.GetDict<uint, BroadcastText>(entries, "Id", Settings.HotfixesDatabase);
 
             return SQLUtil.CompareDicts(Storage.BroadcastTexts, templatesDb, StoreNameType.BroadcastText, "ID");
         }
+
+        [BuilderMethod]
+        public static string CurvePoint()
+        {
+            if (Storage.CurvePoints.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.curve_point))
+                return string.Empty;
+
+            var entries = Storage.CurvePoints.Keys();
+            var templatesDb = SQLDatabase.GetDict<uint, CurvePoint>(entries, "ID", Settings.HotfixesDatabase);
+
+            return SQLUtil.CompareDicts(Storage.CurvePoints, templatesDb, StoreNameType.None, "ID");
+        }
+
+        [BuilderMethod]
+        public static string HolidayData()
+        {
+            if (Storage.Holidays.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.holiday))
+                return string.Empty;
+
+            var entries = Storage.Holidays.Keys();
+            var templatesDb = SQLDatabase.GetDict<uint, HolidayData>(entries, "ID", Settings.HotfixesDatabase);
+
+            return SQLUtil.CompareDicts(Storage.Holidays, templatesDb, StoreNameType.None, "ID");
+        }
+
+        [BuilderMethod]
+        public static string ItemAppearance()
+        {
+            if (Storage.ItemAppearances.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.item_appearance))
+                return string.Empty;
+
+            var entries = Storage.ItemAppearances.Keys();
+            var templatesDb = SQLDatabase.GetDict<uint, ItemAppearance>(entries, "ID", Settings.HotfixesDatabase);
+
+            return SQLUtil.CompareDicts(Storage.ItemAppearances, templatesDb, StoreNameType.None, "ID");
+        }
+
+        [BuilderMethod]
+        public static string ItemBonus()
+        {
+            if (Storage.ItemBonuses.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.item_bonus))
+                return string.Empty;
+
+            var entries = Storage.ItemBonuses.Keys();
+            var templatesDb = SQLDatabase.GetDict<uint, ItemBonus>(entries, "ID", Settings.HotfixesDatabase);
+
+            return SQLUtil.CompareDicts(Storage.ItemBonuses, templatesDb, StoreNameType.None, "ID");
+        }
+
+        [BuilderMethod]
+        public static string ItemBonusTreeNode()
+        {
+            if (Storage.ItemBonusTreeNodes.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.item_bonus))
+                return string.Empty;
+
+            var entries = Storage.ItemBonusTreeNodes.Keys();
+            var templatesDb = SQLDatabase.GetDict<uint, ItemBonusTreeNode>(entries, "ID", Settings.HotfixesDatabase);
+
+            return SQLUtil.CompareDicts(Storage.ItemBonusTreeNodes, templatesDb, StoreNameType.None, "ID");
+        }
+
+        public static string ItemCurrencyCost() { throw new NotImplementedException(); }
+        public static string ItemEffect() { throw new NotImplementedException(); }
+        public static string ItemExtendedCost() { throw new NotImplementedException(); }
+        public static string ItemModifiedAppearance() { throw new NotImplementedException(); }
+        public static string ItemSparse() { throw new NotImplementedException(); }
+        public static string Item() { throw new NotImplementedException(); }
+        public static string ItemXBonusTree() { throw new NotImplementedException(); }
+
+        [BuilderMethod]
+        public static string KeyChain()
+        {
+            if (Storage.KeyChains.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.key_chain))
+                return string.Empty;
+
+            var entries = Storage.KeyChains.Keys();
+            var templatesDb = SQLDatabase.GetDict<uint, KeyChain>(entries, "ID", Settings.HotfixesDatabase);
+
+            return SQLUtil.CompareDicts(Storage.KeyChains, templatesDb, StoreNameType.None, "ID");
+        }
+
+        [BuilderMethod]
+        public static string Mount()
+        {
+            if (Storage.Mounts.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.mount))
+                return string.Empty;
+
+            var entries = Storage.Mounts.Keys();
+            var templatesDb = SQLDatabase.GetDict<uint, Mount>(entries, "ID", Settings.HotfixesDatabase);
+
+            return SQLUtil.CompareDicts(Storage.Mounts, templatesDb, StoreNameType.None, "ID");
+        }
+
+        public static string OverrideSpellData() { throw new NotImplementedException(); }
+        public static string PhaseXPhaseGroup() { throw new NotImplementedException(); }
+        public static string SpellAuraRestrictions() { throw new NotImplementedException(); }
+        public static string SpellCastingRequirements() { throw new NotImplementedException(); }
+        public static string SpellClassOptions() { throw new NotImplementedException(); }
+        public static string SpellLearnSpell() { throw new NotImplementedException(); }
+
+        [BuilderMethod]
+        public static string SpellMisc()
+        {
+            if (Storage.SpellMiscs.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.spell_misc))
+                return string.Empty;
+
+            var entries = Storage.SpellMiscs.Keys();
+            var templatesDb = SQLDatabase.GetDict<uint, SpellMisc>(entries, "Id", Settings.HotfixesDatabase);
+
+            return SQLUtil.CompareDicts(Storage.SpellMiscs, templatesDb, StoreNameType.None);
+        }
+
+        public static string SpellPower() { throw new NotImplementedException(); }
+        public static string SpellReagents() { throw new NotImplementedException(); }
+        public static string SpellRuneCost() { throw new NotImplementedException(); }
+        public static string SpellTotems() { throw new NotImplementedException(); }
+        public static string TaxiNodes() { throw new NotImplementedException(); }
+        public static string TaxiPathNode() { throw new NotImplementedException(); }
+        public static string TaxiPath() { throw new NotImplementedException(); }
 
         [BuilderMethod]
         public static string CreatureDifficulty()
@@ -98,6 +238,8 @@ namespace WowPacketParser.SQL.Builders
                         for (int i = 0; i < 5; i++)
                             row.AddValue("Flags" + (i + 1), creature.Value.Item1.Flags[i]);
 
+                        row.AddValue("VerifiedBuild", creature.Value.Item1.VerifiedBuild);
+
                         rowsIns.Add(row);
                     }
                 }
@@ -116,6 +258,8 @@ namespace WowPacketParser.SQL.Builders
 
                     for (int i = 0; i < 5; i++)
                         row.AddValue("Flags" + (i + 1), creature.Value.Item1.Flags[i]);
+
+                    row.AddValue("VerifiedBuild", creature.Value.Item1.VerifiedBuild);
 
                     rowsIns.Add(row);
                 }
@@ -138,21 +282,6 @@ namespace WowPacketParser.SQL.Builders
             var templatesDb = SQLDatabase.GetDict<uint, GameObjectTemplateDB2>(entries, "Id", Settings.HotfixesDatabase);
 
             return SQLUtil.CompareDicts(Storage.GameObjectTemplateDB2s, templatesDb, StoreNameType.GameObject);
-        }
-
-        [BuilderMethod]
-        public static string SpellMisc()
-        {
-            if (Storage.SpellMiscs.IsEmpty())
-                return String.Empty;
-
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.spell_misc))
-                return string.Empty;
-
-            var entries = Storage.SpellMiscs.Keys();
-            var templatesDb = SQLDatabase.GetDict<uint, SpellMisc>(entries, "Id", Settings.HotfixesDatabase);
-
-            return SQLUtil.CompareDicts(Storage.SpellMiscs, templatesDb, StoreNameType.Spell);
         }
     }
 }

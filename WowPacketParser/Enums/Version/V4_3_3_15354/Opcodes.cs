@@ -28,9 +28,9 @@ namespace WowPacketParser.Enums.Version.V4_3_3_15354
             {Opcode.CMSG_GOSSIP_HELLO, 0x65AC},
             {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x2724},
             {Opcode.CMSG_GUILD_BANK_LOG_QUERY, 0x0218},
-            {Opcode.CMSG_GUILD_BANK_MONEY_WITHDRAWN_QUERY, 0x0290},
+            {Opcode.CMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY_QUERY, 0x0290},
             {Opcode.CMSG_GUILD_BANK_QUERY_TAB, 0x6F2D},
-            {Opcode.CMSG_GUILD_BANK_QUERY_TEXT, 0x0230},
+            {Opcode.CMSG_GUILD_BANK_TEXT_QUERY, 0x0230},
             {Opcode.CMSG_GUILD_GET_RANKS, 0x0255},
             {Opcode.CMSG_GUILD_GET_ROSTER, 0x0274},
             {Opcode.CMSG_GUILD_REQUEST_PARTY_STATE, 0x1390},
@@ -76,7 +76,7 @@ namespace WowPacketParser.Enums.Version.V4_3_3_15354
             {Opcode.CMSG_UPDATE_ACCOUNT_DATA, 0x38EC},
             {Opcode.CMSG_USE_ITEM, 0x352D},
             {Opcode.CMSG_WARDEN_DATA, 0x0202},
-            {Opcode.CMSG_ZONEUPDATE, 0x3125},
+            {Opcode.CMSG_ZONEUPDATE, 0x3125}
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -144,7 +144,7 @@ namespace WowPacketParser.Enums.Version.V4_3_3_15354
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x25A4},
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA,0x7565},
             {Opcode.SMSG_UPDATE_OBJECT, 0x6264},
-            {Opcode.SMSG_UPDATE_WORLD_STATE, 0x60A5},
+            {Opcode.SMSG_UPDATE_WORLD_STATE, 0x60A5}
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
@@ -179,7 +179,7 @@ namespace WowPacketParser.Enums.Version.V4_3_3_15354
             {Opcode.MSG_MOVE_STOP_SWIM, 0x1E11},
             {Opcode.MSG_MOVE_STOP_TURN, 0x1331},
             {Opcode.MSG_MOVE_TOGGLE_COLLISION_CHEAT, 0x1AF0},
-            {Opcode.MSG_SET_DUNGEON_DIFFICULTY, 0x22ED},
+            {Opcode.MSG_SET_DUNGEON_DIFFICULTY, 0x22ED}
         };
     }
 }

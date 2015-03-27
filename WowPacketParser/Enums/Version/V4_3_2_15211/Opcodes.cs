@@ -40,7 +40,7 @@ namespace WowPacketParser.Enums.Version.V4_3_2_15211
             {Opcode.CMSG_GAMEOBJECT_QUERY, 0x4523},
             {Opcode.CMSG_GOSSIP_HELLO, 0x6593},
             {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x6589},
-            {Opcode.CMSG_GUILD_BANKER_ACTIVATE, 0x0563},
+            {Opcode.CMSG_GUILD_BANK_ACTIVATE, 0x0563},
             {Opcode.CMSG_JOIN_CHANNEL, 0x2241},
             {Opcode.CMSG_LEAVE_CHANNEL, 0x2800},
             {Opcode.CMSG_LOGOUT_CANCEL, 0x2509},
@@ -59,7 +59,7 @@ namespace WowPacketParser.Enums.Version.V4_3_2_15211
             {Opcode.CMSG_REQUEST_CEMETERY_LIST, 0x03A4},
             {Opcode.CMSG_TRAINER_LIST, 0x4DD5},
             {Opcode.CMSG_UNLEARN_SKILL, 0x2DC7},
-            {Opcode.CMSG_USE_ITEM, 0x2549},
+            {Opcode.CMSG_USE_ITEM, 0x2549}
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -128,13 +128,13 @@ namespace WowPacketParser.Enums.Version.V4_3_2_15211
             {Opcode.SMSG_UNLEARNED_SPELLS, 0x0501},
             {Opcode.SMSG_UPDATE_OBJECT, 0x0D63},
             {Opcode.SMSG_UPDATE_WORLD_STATE, 0x45E5},
-            {Opcode.SMSG_WARDEN_DATA, 0x0CF0},
+            {Opcode.SMSG_WARDEN_DATA, 0x0CF0}
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
         {
             {Opcode.MSG_MOVE_HEARTBEAT, 0x2B81},
-            {Opcode.MSG_TABARDVENDOR_ACTIVATE, 0x05FB},
+            {Opcode.MSG_TABARDVENDOR_ACTIVATE, 0x05FB}
         };
     }
 }

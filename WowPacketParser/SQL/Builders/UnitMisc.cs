@@ -676,7 +676,7 @@ namespace WowPacketParser.SQL.Builders
         {
             if (_professionTrainers.Contains(subName))
                 return (uint)NPCFlags.ProfessionTrainer;
-            else if (_classTrainers.Contains(subName))
+            if (_classTrainers.Contains(subName))
                 return (uint)NPCFlags.ClassTrainer;
 
             return 0;
@@ -746,7 +746,7 @@ namespace WowPacketParser.SQL.Builders
                 {
                     UnitTemplate unitData;
                     var subname = GetSubName((int)unit.Key.GetEntry(), false); // Fall back
-                    if (Storage.UnitTemplates.TryGetValue((uint)unit.Key.GetEntry(), out unitData))
+                    if (Storage.UnitTemplates.TryGetValue(unit.Key.GetEntry(), out unitData))
                     {
                         if (unitData.SubName.Length > 0)
                             template.NpcFlag |= ProcessNpcFlags(unitData.SubName);

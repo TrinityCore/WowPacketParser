@@ -196,10 +196,10 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         }
 
         [Parser(Opcode.SMSG_TITLE_EARNED)]
-        [Parser(Opcode.SMSG_TITLE_REMOVED)]
+        [Parser(Opcode.SMSG_TITLE_LOST)]
         public static void HandleServerTitle(Packet packet)
         {
-            packet.ReadUInt32("Title Id");
+            packet.ReadInt32("Index");
         }
     }
 }

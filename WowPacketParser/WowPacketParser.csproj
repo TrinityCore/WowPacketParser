@@ -155,6 +155,7 @@
     <Compile Include="Enums\ClassMask.cs" />
     <Compile Include="Enums\ClientType.cs" />
     <Compile Include="Enums\ClientVersionBuild.cs" />
+    <Compile Include="Enums\ConsumableTokenRedeem.cs" />
     <Compile Include="Enums\ContactEntryFlag.cs" />
     <Compile Include="Enums\ContactListFlag.cs" />
     <Compile Include="Enums\ContactResult.cs" />
@@ -360,6 +361,11 @@
     <Compile Include="Enums\Version\V5_4_8_18291\Opcodes.cs" />
     <Compile Include="Enums\Version\V6_0_2_19033\Opcodes.cs" />
     <Compile Include="Enums\Version\V6_0_3_19103\Opcodes.cs" />
+    <Compile Include="Enums\Version\V6_1_0_19678\Opcodes.cs" />
+    <Compile Include="Enums\Version\V6_1_0_19678\SpellCastFailureReason.cs" />
+    <Compile Include="Enums\Version\V6_1_0_19678\TutorialAction.cs" />
+    <Compile Include="Enums\Version\V6_1_0_19678\UpdateFields.cs" />
+    <Compile Include="Enums\Version\V6_1_2_19802\Opcodes.cs" />
     <Compile Include="Enums\VictimStates.cs" />
     <Compile Include="Enums\VoidTransferError.cs" />
     <Compile Include="Enums\WardenCheckType.cs" />
@@ -472,6 +478,7 @@
     <Compile Include="Store\Objects\CreatureDifficulty.cs" />
     <Compile Include="Store\Objects\CreatureEquipment.cs" />
     <Compile Include="Store\Objects\CreatureText.cs" />
+    <Compile Include="Store\Objects\CurvePoint.cs" />
     <Compile Include="Store\Objects\DefenseMessage.cs" />
     <Compile Include="Store\Objects\GameObject.cs" />
     <Compile Include="Store\Objects\GameObjectTemplate.cs" />
@@ -479,11 +486,17 @@
     <Compile Include="Store\Objects\GameObjectTemplateNonWDB.cs" />
     <Compile Include="Store\Objects\Gossip.cs" />
     <Compile Include="Store\Objects\GossipPOI.cs" />
+    <Compile Include="Store\Objects\Holiday.cs" />
     <Compile Include="Store\Objects\Item.cs" />
+    <Compile Include="Store\Objects\ItemAppearance.cs" />
+    <Compile Include="Store\Objects\ItemBonus.cs" />
+    <Compile Include="Store\Objects\ItemBonusTreeNode.cs" />
     <Compile Include="Store\Objects\ItemTemplate.cs" />
+    <Compile Include="Store\Objects\KeyChain.cs" />
     <Compile Include="Store\Objects\Loot.cs" />
     <Compile Include="Store\Objects\LootItem.cs" />
     <Compile Include="Store\Objects\ModelData.cs" />
+    <Compile Include="Store\Objects\Mount.cs" />
     <Compile Include="Store\Objects\NpcText.cs" />
     <Compile Include="Store\Objects\NpcSpellClick.cs" />
     <Compile Include="Store\Objects\NpcTrainer.cs" />

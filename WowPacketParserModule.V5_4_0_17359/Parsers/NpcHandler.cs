@@ -116,7 +116,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                     BoxText = packet.ReadWoWString("Box Text", boxTextLen[i], i),
                     Box = packet.ReadBool("Box", i),
                     OptionText = packet.ReadWoWString("Text", optionTextLen[i], i),
-                    OptionIcon = packet.ReadByteE<GossipOptionIcon>("Icon", i),
+                    OptionIcon = packet.ReadByteE<GossipOptionIcon>("Icon", i)
                 };
 
                 gossip.GossipOptions.Add(gossipOption);

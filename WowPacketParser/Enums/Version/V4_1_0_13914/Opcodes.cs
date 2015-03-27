@@ -110,7 +110,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_GROUP_INVITE, 0x0AC2C}, // 4.1.0 13914
             {Opcode.SMSG_GROUP_SET_LEADER, 0x0AD2E}, // 4.1.0 13914
             {Opcode.SMSG_GROUP_UNINVITE, 0x03A3F}, // 4.1.0 13914
-            {Opcode.SMSG_GUILD_BANK_LIST, 0x09C6E}, // 4.1.0 13914
+            {Opcode.SMSG_GUILD_BANK_QUERY_RESULTS, 0x09C6E}, // 4.1.0 13914
             {Opcode.SMSG_GUILD_COMMAND_RESULT, 0x0FF7D}, // 4.1.0 13914
             {Opcode.SMSG_GUILD_DECLINE, 0x0087D}, // 4.1.0 13914
             {Opcode.SMSG_GUILD_EVENT, 0x0BC2D}, // 4.1.0 13914
@@ -129,7 +129,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_ITEM_COOLDOWN, 0x0FA6D}, // 4.1.0 13914
             {Opcode.SMSG_ITEM_NAME_QUERY_RESPONSE, 0x05D6D}, // 4.1.0 13914
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0x0DC2D}, // 4.1.0 13914
-            {Opcode.SMSG_ITEM_TEXT_QUERY_RESPONSE, 0x06A3F}, // 4.1.0 13914
+            {Opcode.SMSG_QUERY_ITEM_TEXT_RESPONSE, 0x06A3F}, // 4.1.0 13914
             {Opcode.SMSG_LEARNED_SPELL, 0x0882D}, // 4.1.0 13914
             {Opcode.SMSG_LEVELUP_INFO, 0x09F2C}, // 4.1.0 13914
             {Opcode.SMSG_LFG_LFR_LIST, 0x01D7E}, // 4.1.0 13914
@@ -243,7 +243,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_WARDEN_DATA, 0x08C3F}, // 4.1.0 13914
             {Opcode.SMSG_WHO, 0x01C3F}, // 4.1.0 13914
             {Opcode.SMSG_WHOIS, 0x07D3F}, // 4.1.0 13914
-            {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x0FA2F}, // 4.1.0 13914
+            {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x0FA2F} // 4.1.0 13914
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
@@ -265,7 +265,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.MSG_SAVE_GUILD_EMBLEM, 0x0286C}, // 4.1.0 13914
             {Opcode.MSG_TABARDVENDOR_ACTIVATE, 0x02A3E}, // 4.1.0 13914
             {Opcode.MSG_TALENT_WIPE_CONFIRM, 0x00C6F}, // 4.1.0 13914
-            {Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57}, // 4.1.0 13914
+            {Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57} // 4.1.0 13914
         };
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -52,11 +51,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     var broadcastText = new BroadcastText();
 
                     var id = db2File.ReadEntry("Id");
-                    broadcastText.language = db2File.ReadUInt32("Language");
-                    if (db2File.ReadUInt16() > 0)
-                        broadcastText.MaleText = db2File.ReadCString("Male Text");
-                    if (db2File.ReadUInt16() > 0)
-                        broadcastText.FemaleText = db2File.ReadCString("Female Text");
+                    broadcastText.Language = db2File.ReadInt32("Language");
+                    var maletextLength = db2File.ReadUInt16();
+                    broadcastText.MaleText = db2File.ReadWoWString("Male Text", maletextLength);
+                    var femaletextLength = db2File.ReadUInt16();
+                    broadcastText.FemaleText = db2File.ReadWoWString("Female Text", femaletextLength);
 
                     broadcastText.EmoteID = new uint[3];
                     broadcastText.EmoteDelay = new uint[3];
@@ -65,9 +64,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     for (var i = 0; i < 3; ++i)
                         broadcastText.EmoteDelay[i] = (uint) db2File.ReadInt32("Emote Delay", i);
 
-                    broadcastText.soundId = db2File.ReadUInt32("Sound Id");
-                    broadcastText.unk1 = db2File.ReadUInt32("Unk MoP 1"); // unk emote
-                    broadcastText.unk2 = db2File.ReadUInt32("Unk MoP 2"); // kind of type?
+                    broadcastText.SoundId = db2File.ReadUInt32("Sound Id");
+                    broadcastText.UnkEmoteId = db2File.ReadUInt32("Unk MoP 1"); // unk emote
+                    broadcastText.Type = db2File.ReadUInt32("Unk MoP 2"); // kind of type?
 
                     Storage.BroadcastTexts.Add((uint) id.Key, broadcastText, packet.TimeSpan);
                     packet.AddSniffData(StoreNameType.BroadcastText, id.Key, "BROADCAST_TEXT");
@@ -120,6 +119,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                         creatureDifficulty.Flags[i] = db2File.ReadUInt32("Flags", i);
 
                     Storage.CreatureDifficultys.Add((uint)id.Key, creatureDifficulty, packet.TimeSpan);
+                    break;
+                }
+                case DB2Hash.CurvePoint:
+                {
+                    var curvePoint = new CurvePoint();
+                    var id = db2File.ReadUInt32("ID");
+                    curvePoint.CurveID = db2File.ReadUInt32("CurveID");
+                    curvePoint.Index = db2File.ReadUInt32("Index");
+                    curvePoint.X = db2File.ReadSingle("X");
+                    curvePoint.Y = db2File.ReadSingle("Y");
+
+                    Storage.CurvePoints.Add(id, curvePoint, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.GameObjects: // New structure - 6.0.2
@@ -181,8 +192,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 case DB2Hash.ItemExtendedCost: // New structure - 6.0.2
                 {
                     db2File.ReadUInt32("Item Extended Cost ID");
-                    db2File.ReadUInt32("Required Honor Points");
-                    db2File.ReadUInt32("Required Arena Points");
+                    if (ClientVersion.RemovedInVersion(ClientVersionBuild.V6_1_0_19678))
+                    {
+                        db2File.ReadUInt32("Required Honor Points");
+                        db2File.ReadUInt32("Required Arena Points");
+                    }
+
                     db2File.ReadUInt32("Required Arena Slot");
                     for (var i = 0; i < 5; ++i)
                         db2File.ReadUInt32("Required Item", i);
@@ -202,6 +217,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     db2File.ReadUInt32("Required Faction Standing");
                     db2File.ReadUInt32("Requirement Flags");
                     db2File.ReadInt32<AchievementId>("Required Achievement");
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
+                        db2File.ReadInt32("Unk1 Wod61x");
                     break;
                 }
                 case DB2Hash.ItemCurrencyCost:
@@ -210,12 +227,113 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     db2File.ReadUInt32<ItemId>("Item ID");
                     break;
                 }
+                case DB2Hash.Mount:
+                {
+                    var mount = new Mount();
+                    var id = db2File.ReadUInt32("ID");
+                    mount.MountTypeId = db2File.ReadUInt32("MountTypeId");
+                    mount.DisplayId = db2File.ReadUInt32("DisplayId");
+                    mount.Flags = db2File.ReadUInt32("Flags");
+
+                    var NameLength = db2File.ReadUInt16();
+                    mount.Name = db2File.ReadWoWString("Name", NameLength);
+
+                    var DescriptionLength = db2File.ReadUInt16();
+                    mount.Description = db2File.ReadWoWString("Description", DescriptionLength);
+
+                    var SourceDescriptionLength = db2File.ReadUInt16();
+                    mount.SourceDescription = db2File.ReadWoWString("SourceDescription", SourceDescriptionLength);
+
+                    mount.Source = db2File.ReadUInt32("Source");
+                    mount.SpellId = db2File.ReadUInt32("SpellId");
+                    mount.PlayerConditionId = db2File.ReadUInt32("PlayerConditionId");
+
+                    Storage.Mounts.Add(id, mount, packet.TimeSpan);
+                    break;
+                }
                 case DB2Hash.RulesetItemUpgrade:
                 {
                     db2File.ReadUInt32("ID");
                     db2File.ReadUInt32("Item Upgrade Level");
                     db2File.ReadUInt32("Item Upgrade ID");
                     db2File.ReadUInt32<ItemId>("Item ID");
+                    break;
+                }
+                case DB2Hash.Holidays:
+                {
+                    var holiday = new HolidayData();
+
+                    var id = db2File.ReadUInt32("ID");
+
+                    holiday.Duration = new uint[10];
+                    for (var i = 0; i < 10; i++)
+                        holiday.Duration[i] = db2File.ReadUInt32("Duration", i);
+
+                    holiday.Date = new uint[16];
+                    for (var i = 0; i < 16; i++)
+                        holiday.Date[i] = db2File.ReadUInt32("Date", i);
+
+                    holiday.Region = db2File.ReadUInt32("Region");
+                    holiday.Looping = db2File.ReadUInt32("Looping");
+
+                    holiday.CalendarFlags = new uint[10];
+                    for (var i = 0; i < 10; i++)
+                        holiday.CalendarFlags[i] = db2File.ReadUInt32("CalendarFlags", i);
+
+                    holiday.HolidayNameID = db2File.ReadUInt32("HolidayNameID");
+                    holiday.HolidayDescriptionID = db2File.ReadUInt32("HolidayDescriptionID");
+
+                    var TextureFilenameLength = db2File.ReadUInt16();
+                    holiday.TextureFilename = db2File.ReadWoWString("SourceDescription", TextureFilenameLength);
+
+                    holiday.Priority = db2File.ReadUInt32("Priority");
+                    holiday.CalendarFilterType = db2File.ReadUInt32("CalendarFilterType");
+                    holiday.Flags = db2File.ReadUInt32("Flags");
+
+                    Storage.Holidays.Add(id, holiday, packet.TimeSpan);
+                    break;
+                }
+                case DB2Hash.ItemAppearance:
+                {
+                    var itemAppearance = new ItemAppearance();
+
+                    var id = db2File.ReadUInt32("ID");
+
+                    itemAppearance.DisplayID = db2File.ReadUInt32("Display ID");
+                    itemAppearance.IconFileDataID = db2File.ReadUInt32("File Data ID");
+
+                    Storage.ItemAppearances.Add(id, itemAppearance, packet.TimeSpan);
+                    break;
+                }
+                case DB2Hash.ItemBonus:
+                {
+                    var itemBonus = new ItemBonus();
+
+                    var id = db2File.ReadUInt32("ID");
+
+                    itemBonus.BonusListID = db2File.ReadUInt32("Bonus List ID");
+                    itemBonus.Type = db2File.ReadUInt32("Type");
+
+                    itemBonus.Value = new uint[2];
+                    for (var i = 0; i < 2; i++)
+                        itemBonus.Value[i] = db2File.ReadUInt32("Value", i);
+
+                    itemBonus.Index = db2File.ReadUInt32("Index");
+
+                    Storage.ItemBonuses.Add(id, itemBonus, packet.TimeSpan);
+                    break;
+                }
+                case DB2Hash.ItemBonusTreeNode:
+                {
+                    var itemBonusTreeNode = new ItemBonusTreeNode();
+                    var id = db2File.ReadUInt32("ID");
+
+                    itemBonusTreeNode.BonusTreeID = db2File.ReadUInt32("BonusTreeID");
+                    itemBonusTreeNode.BonusTreeModID = db2File.ReadUInt32("BonusTreeModID");
+                    itemBonusTreeNode.SubTreeID = db2File.ReadUInt32("SubTreeID");
+                    itemBonusTreeNode.BonusListID = db2File.ReadUInt32("BonusListID");
+
+                    Storage.ItemBonusTreeNodes.Add(id, itemBonusTreeNode, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.Item_sparse: // New structure - 6.0.2
@@ -261,13 +379,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     for (var i = 0; i < 10; i++)
                         item.StatValues[i] = db2File.ReadInt32("Stat Value", i);
 
-                    item.StatUnk1 = new int[10];
+                    item.ScalingValue = new int[10];
                     for (var i = 0; i < 10; i++)
-                        item.StatUnk1[i] = db2File.ReadInt32("Unk UInt32 1", i);
+                        item.ScalingValue[i] = db2File.ReadInt32("Scaling Value", i);
 
-                    item.StatUnk2 = new int[10];
+                    item.SocketCostRate = new int[10];
                     for (var i = 0; i < 10; i++)
-                        item.StatUnk2[i] = db2File.ReadInt32("Unk UInt32 2", i);
+                        item.SocketCostRate[i] = db2File.ReadInt32("Socket Cost Rate", i);
 
                     item.ScalingStatDistribution = db2File.ReadInt32("Scaling Stat Distribution");
                     item.DamageType = db2File.ReadInt32E<DamageType>("Damage Type");
@@ -275,15 +393,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     item.RangedMod = db2File.ReadSingle("Ranged Mod");
                     item.Bonding = db2File.ReadInt32E<ItemBonding>("Bonding");
 
-                    if (db2File.ReadUInt16() > 0)
-                        item.Name = db2File.ReadCString("Name", 0);
+                    var nameLength = db2File.ReadUInt16();
+                    item.Name = db2File.ReadWoWString("Name", nameLength, 0);
 
                     for (var i = 1; i < 4; ++i)
                         if (db2File.ReadUInt16() > 0)
                             db2File.ReadCString("Name", i);
 
-                    if (db2File.ReadUInt16() > 0)
-                        item.Description = db2File.ReadCString("Description");
+                    var descriptionLength = db2File.ReadUInt16();
+                    item.Description = db2File.ReadWoWString("Description", descriptionLength);
 
                     item.PageText = db2File.ReadUInt32("Page Text");
                     item.Language = db2File.ReadInt32E<Language>("Language");
@@ -322,18 +440,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 }
                 case DB2Hash.KeyChain:
                 {
-                    db2File.ReadUInt32("Key Chain ID");
-                    db2File.ReadBytes("Key", 32);
+                    var key = new KeyChain();
+                    var id = db2File.ReadUInt32("ID");
+
+                    key.Key = new byte[32];
+                    for (var i = 0; i < 32; i++)
+                        key.Key[i] = db2File.ReadByte("Key", i);
+
+                    Storage.KeyChains.Add(id, key, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.SceneScript: // lua ftw!
                 {
                     db2File.ReadUInt32("Scene Script ID");
-                    if (db2File.ReadUInt16() > 0)
-                        db2File.ReadCString("Name");
+                    var nameLength = db2File.ReadUInt16();
+                    db2File.ReadWoWString("Name", nameLength);
 
-                    if (db2File.ReadUInt16() > 0)
-                        db2File.ReadCString("Script");
+                    var scriptLength = db2File.ReadUInt16();
+                    db2File.ReadWoWString("Script", scriptLength);
                     db2File.ReadUInt32("Previous Scene Script Part");
                     db2File.ReadUInt32("Next Scene Script Part");
                     break;
@@ -344,23 +468,33 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                     var id = db2File.ReadEntry("ID");
 
-                    spellMisc.Attributes = new uint[14];
-                    for (var i = 0; i < 14; ++i)
-                        spellMisc.Attributes[i] = db2File.ReadUInt32("Attributes", i);
-
+                    spellMisc.Attributes = db2File.ReadUInt32("Attributes");
+                    spellMisc.AttributesEx = db2File.ReadUInt32("AttributesEx");
+                    spellMisc.AttributesExB = db2File.ReadUInt32("AttributesExB");
+                    spellMisc.AttributesExC = db2File.ReadUInt32("AttributesExC");
+                    spellMisc.AttributesExD = db2File.ReadUInt32("AttributesExD");
+                    spellMisc.AttributesExE = db2File.ReadUInt32("AttributesExE");
+                    spellMisc.AttributesExF = db2File.ReadUInt32("AttributesExF");
+                    spellMisc.AttributesExG = db2File.ReadUInt32("AttributesExG");
+                    spellMisc.AttributesExH = db2File.ReadUInt32("AttributesExH");
+                    spellMisc.AttributesExI = db2File.ReadUInt32("AttributesExI");
+                    spellMisc.AttributesExJ = db2File.ReadUInt32("AttributesExJ");
+                    spellMisc.AttributesExK = db2File.ReadUInt32("AttributesExK");
+                    spellMisc.AttributesExL = db2File.ReadUInt32("AttributesExL");
+                    spellMisc.AttributesExM = db2File.ReadUInt32("AttributesExM");
                     spellMisc.CastingTimeIndex = db2File.ReadUInt32("CastingTimeIndex");
                     spellMisc.DurationIndex = db2File.ReadUInt32("DurationIndex");
                     spellMisc.RangeIndex = db2File.ReadUInt32("RangeIndex");
                     spellMisc.Speed = db2File.ReadSingle("Speed");
 
-                    spellMisc.SpellVisualID = new uint[14];
+                    spellMisc.SpellVisualID = new uint[2];
                     for (var i = 0; i < 2; ++i)
                         spellMisc.SpellVisualID[i] = db2File.ReadUInt32("SpellVisualID", i);
 
                     spellMisc.SpellIconID = db2File.ReadUInt32("SpellIconID");
                     spellMisc.ActiveIconID = db2File.ReadUInt32("ActiveIconID");
                     spellMisc.SchoolMask = db2File.ReadUInt32("SchoolMask");
-                    spellMisc.UnkWoD1 = db2File.ReadSingle("UnkWoD1");
+                    spellMisc.MultistrikeSpeedMod = db2File.ReadSingle("MultistrikeSpeedMod");
 
                     Storage.SpellMiscs.Add((uint)id.Key, spellMisc, packet.TimeSpan);
                     break;
@@ -371,8 +505,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     db2File.ReadUInt32<ItemId>("Item ID");
                     db2File.ReadUInt32("Flags");
 
-                    if (db2File.ReadUInt16() > 0)
-                        db2File.ReadCString("Description");
+                    var descriptionLength = db2File.ReadUInt16();
+                    db2File.ReadWoWString("Description", descriptionLength);
 
                     db2File.ReadInt32("Source Type");
                     break;
@@ -380,8 +514,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 case DB2Hash.Vignette:
                 {
                     db2File.ReadUInt32("Vignette ID");
-                    if (db2File.ReadUInt16() > 0)
-                        db2File.ReadCString("Name");
+                    var nameLength = db2File.ReadUInt16();
+                    db2File.ReadWoWString("Name", nameLength);
 
                     db2File.ReadUInt32("Icon");
                     db2File.ReadUInt32("Flag"); // not 100% sure (8 & 32 as values only) - todo verify with more data
@@ -393,8 +527,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 {
                     db2File.ReadUInt32("Id");
 
-                    if (db2File.ReadUInt16() > 0)
-                        db2File.ReadCString("Address");
+                    var addressLength = db2File.ReadUInt16();
+                    db2File.ReadWoWString("Address", addressLength);
 
                     db2File.ReadUInt32("Unk MoP 1");
                     db2File.ReadUInt32("Unk MoP 2");

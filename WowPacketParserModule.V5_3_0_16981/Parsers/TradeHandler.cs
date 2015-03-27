@@ -11,7 +11,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         public static void HandleTradeStatus(Packet packet)
         {
             packet.ReadBit("Unk Bit");
-            var status = packet.ReadEnum<TradeStatus530>("Status", 5);
+            var status = packet.ReadBitsE<TradeStatus530>("Status", 5);
             switch (status)
             {
                 case TradeStatus530.BeginTrade:

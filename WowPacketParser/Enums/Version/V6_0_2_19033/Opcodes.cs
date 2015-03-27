@@ -58,7 +58,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.CMSG_PING, 0x1B75},
             {Opcode.CMSG_PET_NAME_QUERY, 0x05A7},
             {Opcode.CMSG_PLAYER_LOGIN, 0x03A8},
-            {Opcode.CMSG_QUEST_NPC_QUERY, 0x02A7},
+            {Opcode.CMSG_QUERY_QUEST_COMPLETION_NPCS, 0x02A7},
             {Opcode.CMSG_QUEST_POI_QUERY, 0x0A90},
             {Opcode.CMSG_QUEST_QUERY, 0x0A94},
             {Opcode.CMSG_QUESTGIVER_QUERY_QUEST, 0x0358},
@@ -76,7 +76,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.CMSG_UPDATE_ACCOUNT_DATA, 0x10EF},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x00D4},
             {Opcode.CMSG_WARDEN_DATA, 0x00F3},
-            {Opcode.CMSG_WHO, 0x11AF},
+            {Opcode.CMSG_WHO, 0x11AF}
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -169,7 +169,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE, 0x01CA},
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x03DE},
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x00D5},
-            {Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE, 0x01C6},
+            {Opcode.SMSG_QUEST_COMPLETION_NPC_RESPONSE, 0x01C6},
             {Opcode.SMSG_RANDOMIZE_CHAR_NAME, 0x0653},
             {Opcode.SMSG_REDIRECT_CLIENT, 0x1082},
             {Opcode.SMSG_RESUME_COMMS, 0x128A},
@@ -204,7 +204,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.SMSG_WEATHER, 0x01BF},
             {Opcode.SMSG_WEEKLY_SPELL_USAGE, 0x0E8C},
             {Opcode.SMSG_WHO, 0x080A},
-            {Opcode.SMSG_WORLD_SERVER_INFO, 0x1164},
+            {Opcode.SMSG_WORLD_SERVER_INFO, 0x1164}
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>();

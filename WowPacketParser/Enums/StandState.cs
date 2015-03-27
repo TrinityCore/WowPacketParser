@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WowPacketParser.Enums
+﻿namespace WowPacketParser.Enums
 {
-    enum StandState : uint
+    public enum StandState : uint
     {
         Stand          = 0,
         Sit            = 1,

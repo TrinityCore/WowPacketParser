@@ -69,6 +69,44 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("VoiceChat", lenVoiceChat, idx);
         }
 
+        public static void ReadShortageReward(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("Mask", idx);
+            packet.ReadInt32("RewardMoney", idx);
+            packet.ReadInt32("RewardXP", idx);
+
+            var int200 = packet.ReadInt32("ItemCount", idx);
+            var int360 = packet.ReadInt32("CurrencyCount", idx);
+            var int520 = packet.ReadInt32("QuantityCount", idx);
+
+            // Item
+            for (var k = 0; k < int200; ++k)
+            {
+                packet.ReadInt32("ItemID", idx, k);
+                packet.ReadInt32("Quantity", idx, k);
+            }
+
+            // Currency
+            for (var k = 0; k < int360; ++k)
+            {
+                packet.ReadInt32("CurrencyID", idx, k);
+                packet.ReadInt32("Quantity", idx, k);
+            }
+
+            // BonusCurrency
+            for (var k = 0; k < int520; ++k)
+            {
+                packet.ReadInt32("CurrencyID", idx, k);
+                packet.ReadInt32("Quantity", idx, k);
+            }
+
+            packet.ResetBitReader();
+
+            var bit30 = packet.ReadBit("HasBit30", idx);
+            if (bit30)
+                packet.ReadInt32("Unk 2", idx);
+        }
+
         [Parser(Opcode.CMSG_LFG_LIST_GET_STATUS)]
         [Parser(Opcode.CMSG_REQUEST_LFG_LIST_BLACKLIST)]
         public static void HandleLfgZero(Packet packet)
@@ -140,43 +178,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 // ShortageReward
                 for (var j = 0; j < int64; ++j)
-                {
-                    // Rewards
-                    packet.ReadInt32("Mask", i, j);
-                    packet.ReadInt32("RewardMoney", i, j);
-                    packet.ReadInt32("RewardXP", i, j);
-
-                    var int200 = packet.ReadInt32("ItemCount", i, j);
-                    var int360 = packet.ReadInt32("CurrencyCount", i, j);
-                    var int520 = packet.ReadInt32("QuantityCount", i, j);
-
-                    // Item
-                    for (var k = 0; k < int200; ++k)
-                    {
-                        packet.ReadInt32("ItemID", i, j, k);
-                        packet.ReadInt32("Quantity", i, j, k);
-                    }
-
-                    // Currency
-                    for (var k = 0; k < int360; ++k)
-                    {
-                        packet.ReadInt32("CurrencyID", i, j, k);
-                        packet.ReadInt32("Quantity", i, j, k);
-                    }
-
-                    // BonusCurrency
-                    for (var k = 0; k < int520; ++k)
-                    {
-                        packet.ReadInt32("CurrencyID", i, j, k);
-                        packet.ReadInt32("Quantity", i, j, k);
-                    }
-
-                    packet.ResetBitReader();
-
-                    var bit30 = packet.ReadBit("HasBit30", i, j);
-                    if (bit30)
-                        packet.ReadInt32("Unk 2", i, j);
-                }
+                    ReadShortageReward(packet, i ,j, "ShortageReward");
 
                 packet.ResetBitReader();
 

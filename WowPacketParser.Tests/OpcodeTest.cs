@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -60,7 +61,7 @@ namespace WowPacketParser.Tests
         }
 
         [Test]
-        public void HasValue()
+        public void TestHasValue()
         {
             var opcodes = Utilities.GetValues<Opcode>();
 
@@ -93,6 +94,46 @@ namespace WowPacketParser.Tests
             }
 
             Assert.IsTrue(allUsed, "Found unused opcodes defined.");
+        }
+
+
+        [Test]
+        public void TestHasHandler6x()
+        {
+            var clientOpcodes = Enums.Version.V6_0_3_19103.Opcodes_6_0_3.Opcodes(Direction.ClientToServer).Select(pair => pair.Key);
+            var serverOpcodes = Enums.Version.V6_0_3_19103.Opcodes_6_0_3.Opcodes(Direction.ServerToClient).Select(pair => pair.Key);
+
+            var assembly = Assembly.LoadFrom(AppDomain.CurrentDomain.BaseDirectory + "/" + "WowPacketParserModule.V6_0_2_19033.dll");
+            Dictionary<KeyValuePair<ClientVersionBuild, Opcode>, Action<Packet>> handlerDictionary = Handler.LoadHandlers(assembly, ClientVersionBuild.V6_0_3_19342);
+
+            var handledOpcodes = new HashSet<Opcode>(handlerDictionary.Select(pair => pair.Key.Value));
+            handledOpcodes.UnionWith(Handler.LoadDefaultHandlers().Select(pair => pair.Key.Value));
+
+            var unhandledOpcodes = new HashSet<Opcode>();
+
+            foreach (Opcode opcode in clientOpcodes)
+            {
+                if (!handledOpcodes.Contains(opcode))
+                    unhandledOpcodes.Add(opcode);
+            }
+
+            foreach (Opcode opcode in serverOpcodes)
+            {
+                if (!handledOpcodes.Contains(opcode))
+                    unhandledOpcodes.Add(opcode);
+            }
+
+            var anyUnhandled = unhandledOpcodes.Count > 0;
+
+            if (anyUnhandled)
+            {
+                foreach (var opc in unhandledOpcodes)
+                {
+                    Console.WriteLine("Warning: {0} does not have any handler in 6.0.2.", opc);
+                }
+            }
+
+            Assert.IsTrue(!anyUnhandled, "Found unhandled opcodes defined.");
         }
     }
 }

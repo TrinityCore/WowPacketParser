@@ -101,6 +101,7 @@
     <Compile Include="Parsers\SpellHandler.cs" />
     <Compile Include="Parsers\TaxiHandler.cs" />
     <Compile Include="Parsers\TicketHandler.cs" />
+    <Compile Include="Parsers\TokenHandler.cs" />
     <Compile Include="Parsers\TradeHandler.cs" />
     <Compile Include="Parsers\VoidStorageHandler.cs" />
     <Compile Include="Parsers\WardenHandler.cs" />

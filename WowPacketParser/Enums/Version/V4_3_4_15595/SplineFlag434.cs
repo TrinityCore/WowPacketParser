@@ -33,6 +33,6 @@ namespace WowPacketParser.Enums
         FinalAngle          = 0x10000000,
         Unknown7            = 0x20000000,           // NOT VERIFIED
         Unknown8            = 0x40000000,           // NOT VERIFIED
-        Unknown9            = 0x80000000,           // NOT VERIFIED
+        Unknown9            = 0x80000000           // NOT VERIFIED
     }
 }

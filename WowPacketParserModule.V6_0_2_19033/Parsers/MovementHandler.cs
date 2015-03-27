@@ -27,8 +27,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
 
-            packet.ReadEnum<MovementFlag>("Movement Flags", 30, idx);
-            packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 15, idx);
+            packet.ReadBitsE<MovementFlag>("Movement Flags", 30, idx);
+            packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 15, idx);
 
             var hasTransport = packet.ReadBit("Has Transport Data", idx);
             var hasFall = packet.ReadBit("Has Fall Data", idx);
@@ -167,7 +167,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_MOVE_STOP_STRAFE)]
         [Parser(Opcode.CMSG_MOVE_STOP_SWIM)]
         [Parser(Opcode.CMSG_MOVE_STOP_TURN)]
-        [Parser(Opcode.SMSG_MOVE_SET_IGNORE_MOVEMENT_FORCES)]
         [Parser(Opcode.SMSG_MOVE_UPDATE_KNOCK_BACK)]
         [Parser(Opcode.SMSG_MOVE_UPDATE)]
         public static void HandlePlayerMove(Packet packet)
@@ -244,21 +243,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             switch (type)
             {
                 case 1:
-                    {
-                        packet.ReadVector3("FaceSpot", indexes);
-                        break;
-                    }
+                    packet.ReadVector3("FaceSpot", indexes);
+                    break;
                 case 2:
-                    {
-                        packet.ReadSingle("FaceDirection", indexes);
-                        packet.ReadPackedGuid128("FacingGUID", indexes);
-                        break;
-                    }
+                    packet.ReadSingle("FaceDirection", indexes);
+                    packet.ReadPackedGuid128("FacingGUID", indexes);
+                    break;
                 case 3:
-                    {
-                        packet.ReadSingle("FaceDirection", indexes);
-                        break;
-                    }
+                    packet.ReadSingle("FaceDirection", indexes);
+                    break;
             }
 
             if (monsterSplineFilter)
@@ -278,7 +271,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 {
                     X = mid.X - waypoints[i].X,
                     Y = mid.Y - waypoints[i].Y,
-                    Z = mid.Z - waypoints[i].Z,
+                    Z = mid.Z - waypoints[i].Z
                 };
                 packet.AddValue("WayPoints", vec, indexes, i);
 
@@ -445,7 +438,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32<MapId>("MapID");
             packet.ReadByte("Arg");
-            packet.ReadEnum<TransferAbortReason>("TransfertAbort", 5);
+            packet.ReadBitsE<TransferAbortReason>("TransfertAbort", 5);
         }
 
         [Parser(Opcode.SMSG_ABORT_NEW_WORLD)]
@@ -524,6 +517,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_MOVE_SET_WATER_WALK)]
         [Parser(Opcode.SMSG_MOVE_SET_FEATHER_FALL)]
         [Parser(Opcode.SMSG_MOVE_SET_NORMAL_FALL)]
+        [Parser(Opcode.SMSG_MOVE_SET_IGNORE_MOVEMENT_FORCES)]
+        [Parser(Opcode.SMSG_MOVE_UNSET_IGNORE_MOVEMENT_FORCES)]
         public static void HandleMovementIndex(Packet packet)
         {
             packet.ReadPackedGuid128("MoverGUID");

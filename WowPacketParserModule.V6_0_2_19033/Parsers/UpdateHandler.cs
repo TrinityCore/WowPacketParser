@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -183,13 +182,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     {
                         packet.ResetBitReader();
 
-                        waypointInfo.SplineFlags = packet.ReadEnum<SplineFlag434>("SplineFlags", 25, index);
+                        waypointInfo.SplineFlags = packet.ReadBitsE<SplineFlag434>("SplineFlags", 25, index);
                         var face = packet.ReadBits("Face", 2, index);
 
                         var hasJumpGravity = packet.ReadBit("HasJumpGravity", index);
                         var hasSpecialTime = packet.ReadBit("HasSpecialTime", index);
 
-                        packet.ReadEnum<SplineMode>("Mode", 2, index);
+                        packet.ReadBitsE<SplineMode>("Mode", 2, index);
 
                         var hasSplineFilterKey = packet.ReadBit("HasSplineFilterKey", index);
 
@@ -467,8 +466,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
 
-            packet.ReadEnum<MovementFlag>("Movement Flags", 30, index);
-            moveInfo.FlagsExtra = packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 15, index);
+            packet.ReadBitsE<MovementFlag>("Movement Flags", 30, index);
+            moveInfo.FlagsExtra = packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 15, index);
 
             var hasTransport = packet.ReadBit("Has Transport Data", index);
             var hasFall = packet.ReadBit("Has Fall Data", index);
@@ -543,7 +542,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_OBJECT_UPDATE_RESCUED)]
         public static void HandleObjectUpdateOrRescued(Packet packet)
         {
-            packet.ReadPackedGuid128("ObjectGUID");
+            if (!ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19702))
+                packet.ReadPackedGuid128("ObjectGUID");
         }
     }
 }

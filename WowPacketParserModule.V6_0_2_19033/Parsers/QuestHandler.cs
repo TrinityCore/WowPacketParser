@@ -121,13 +121,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32<QuestId>("QuestID");
         }
 
-        [Parser(Opcode.CMSG_QUEST_NPC_QUERY)]
-        public static void HandleQuestNpcQuery(Packet packet)
+        [Parser(Opcode.CMSG_QUEST_POI_QUERY)]
+        public static void HandleQuestPOIQuery(Packet packet)
         {
-            packet.ReadUInt32("Count");
+            packet.ReadUInt32("MissingQuestCount");
 
             for (var i = 0; i < 50; i++)
-                packet.ReadInt32<QuestId>("Quest ID", i);
+                packet.ReadInt32<QuestId>("MissingQuestPOIs", i);
         }
 
         [Parser(Opcode.SMSG_QUEST_POI_QUERY_RESPONSE)]
@@ -343,13 +343,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             Storage.QuestTemplatesWod.Add((uint)id.Key, quest, packet.TimeSpan);
         }
 
-        [Parser(Opcode.CMSG_QUEST_POI_QUERY)]
-        public static void HandleQuestPoiQuery(Packet packet)
+        [Parser(Opcode.CMSG_QUERY_QUEST_COMPLETION_NPCS)]
+        public static void HandleQueryQuestCompletionNPCs(Packet packet)
         {
             var count = packet.ReadUInt32("Count");
 
             for (var i = 0; i < count; i++)
-                packet.ReadInt32<QuestId>("Quest ID", i);
+                packet.ReadInt32<QuestId>("QuestID", i);
         }
 
         [Parser(Opcode.SMSG_QUESTGIVER_QUEST_DETAILS)]
@@ -444,8 +444,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE)]
-        public static void HandleUnknown6462(Packet packet)
+        [Parser(Opcode.SMSG_QUEST_COMPLETION_NPC_RESPONSE)]
+        public static void HandleQuestCompletionNPCResponse(Packet packet)
         {
             var int1 = packet.ReadInt32("QuestCompletionNPCsCount");
 
@@ -638,6 +638,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_QUEST_UPDATE_COMPLETE)]
+        [Parser(Opcode.CMSG_QUEST_CLOSE_AUTOACCEPT_QUEST)]
         public static void HandleQuestForceRemoved(Packet packet)
         {
             packet.ReadInt32<QuestId>("QuestID");

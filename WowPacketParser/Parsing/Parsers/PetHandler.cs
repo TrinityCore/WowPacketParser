@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -205,17 +204,17 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PET_ACTION_FEEDBACK)]
         public static void HandlePetActionFeedback(Packet packet)
         {
-            var state = packet.ReadByteE<PetFeedback>("Pet state");
+            var state = packet.ReadByteE<PetFeedback>("Response");
 
             switch (state)
             {
                 case PetFeedback.NothingToAttack:
                     if (ClientVersion.AddedInVersion(ClientType.Cataclysm) || packet.CanRead())
-                        packet.ReadInt32<SpellId>("Spell ID");
+                        packet.ReadInt32<SpellId>("SpellID");
                     break;
                 case PetFeedback.CantAttackTarget:
                     if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
-                        packet.ReadInt32<SpellId>("Spell ID");    // sub_8ADA60 2nd parameter is SpellID, check sub_8B22C0
+                        packet.ReadInt32<SpellId>("SpellID");    // sub_8ADA60 2nd parameter is SpellID, check sub_8B22C0
                     break;
             }
         }

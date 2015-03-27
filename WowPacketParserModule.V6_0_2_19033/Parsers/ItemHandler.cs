@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -41,7 +40,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         public static void ReadItemPurchaseContents(Packet packet, params object[] indexes)
         {
-            packet.ReadInt32("");
+            packet.ReadInt32("Money");
 
             for (int i = 0; i < 5; i++)
                 ReadItemPurchaseRefundItem(packet, indexes, i, "ItemPurchaseRefundItem");
@@ -52,7 +51,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         public static void ReadItemPurchaseRefundItem(Packet packet, params object[] indexes)
         {
-            packet.ReadInt32("ItemID", indexes);
+            packet.ReadInt32<ItemId>("ItemID", indexes);
             packet.ReadInt32("ItemCount", indexes);
         }
 
@@ -60,6 +59,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("CurrencyID", indexes);
             packet.ReadInt32("CurrencyCount", indexes);
+        }
+
+        [Parser(Opcode.SMSG_ITEM_PURCHASE_REFUND_RESULT)]
+        public static void HandleItemPurchaseRefundResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("ItemGUID");
+            packet.ReadByte("Result");
+            var hasContents = packet.ReadBit("HasContents");
+            packet.ResetBitReader();
+
+            if (hasContents)
+                ReadItemPurchaseContents(packet, "Contents");
         }
 
         [Parser(Opcode.CMSG_SORT_BAGS)]
@@ -127,7 +138,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("Amount");
         }
 
-        [Parser(Opcode.SMSG_BUY_ITEM)]
+        [Parser(Opcode.SMSG_BUY_SUCCEEDED)]
         public static void HandleBuyItemResponse(Packet packet)
         {
             packet.ReadPackedGuid128("VendorGUID");
@@ -158,14 +169,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("Slot");
             packet.ReadPackedGuid128("CastItem");
 
-            SpellHandler.ReadSpellCastRequest(packet);
+            SpellHandler.ReadSpellCastRequest(packet, "Cast");
         }
 
         [Parser(Opcode.CMSG_USE_TOY)]
         public static void HandleUseToy(Packet packet)
         {
             packet.ReadInt32<ItemId>("ItemID");
-            SpellHandler.ReadSpellCastRequest(packet);
+            SpellHandler.ReadSpellCastRequest(packet, "Cast");
         }
 
         [Parser(Opcode.CMSG_DESTROY_ITEM)]
@@ -415,6 +426,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("Socket", i);
 
             packet.ReadInt32("SocketMatch");
+        }
+
+        public static void ReadCliItemTextCache(Packet packet, params object[] idx)
+        {
+            var length = packet.ReadBits("TextLength", 13, idx);
+            packet.ReadWoWString("Text", length, idx);
+        }
+
+        [Parser(Opcode.SMSG_QUERY_ITEM_TEXT_RESPONSE)]
+        public static void HandleQueryItemTextResponse(Packet packet)
+        {
+            packet.ReadBit("Valid");
+            packet.ResetBitReader();
+
+            packet.ReadPackedGuid128("Id");
+            ReadCliItemTextCache(packet, "Item");
         }
     }
 }

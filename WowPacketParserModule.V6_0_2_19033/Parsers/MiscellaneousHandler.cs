@@ -4,6 +4,7 @@ using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
+using TutorialAction61x = WowPacketParser.Enums.Version.V6_1_0_19678.TutorialAction;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
@@ -16,6 +17,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_REQUEST_ARTIFACT_COMPLETION_HISTORY)]
+        [Parser(Opcode.CMSG_TWITTER_GET_STATUS)]
         public static void HandleMiscZero(Packet packet)
         {
         }
@@ -67,10 +69,43 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("BpayStoreAvailable");
             packet.ReadBit("BpayStoreDisabledByParentalControls");
             packet.ReadBit("CharUndeleteEnabled");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_2_19802))
+            {
+                packet.ReadBit("CommerceSystemEnabled");
+                packet.ReadBit("Unk14");
+                packet.ReadBit("WillKickFromWorld");
+                packet.ReadInt32("TokenPollTimeSeconds");
+                packet.ReadInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
+            }
         }
 
-        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS)]
-        public static void HandleFeatureSystemStatus(Packet packet)
+        public static void ReadCliSavedThrottleObjectState(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt32("MaxTries", idx);
+            packet.ReadUInt32("PerMilliseconds", idx);
+            packet.ReadUInt32("TryCount", idx);
+            packet.ReadUInt32("LastResetTimeBeforeNow", idx);
+        }
+
+        public static void ReadCliEuropaTicketConfig(Packet packet, params object[] idx)
+        {
+            packet.ReadBit("TicketsEnabled", idx);
+            packet.ReadBit("BugsEnabled", idx);
+            packet.ReadBit("ComplaintsEnabled", idx);
+            packet.ReadBit("SuggestionsEnabled", idx);
+
+            ReadCliSavedThrottleObjectState(packet, idx, "ThrottleState");
+        }
+
+        public static void ReadClientSessionAlertConfig(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("Delay", idx);
+            packet.ReadInt32("Period", idx);
+            packet.ReadInt32("DisplayTime", idx);
+        }
+
+        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleFeatureSystemStatus60x(Packet packet)
         {
             packet.ReadByte("ComplaintStatus");
 
@@ -82,38 +117,123 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ResetBitReader();
 
             packet.ReadBit("VoiceEnabled");
-            var bit84 = packet.ReadBit("EuropaTicketSystemStatus");
+            var hasEuropaTicketSystemStatus = packet.ReadBit("HasEuropaTicketSystemStatus");
             packet.ReadBit("ScrollOfResurrectionEnabled");
             packet.ReadBit("BpayStoreEnabled");
             packet.ReadBit("BpayStoreAvailable");
             packet.ReadBit("BpayStoreDisabledByParentalControls");
             packet.ReadBit("ItemRestorationButtonEnabled");
             packet.ReadBit("BrowserEnabled");
-            var bit44 = packet.ReadBit("SessionAlert");
+            var hasSessionAlert = packet.ReadBit("HasSessionAlert");
             packet.ReadBit("RecruitAFriendSendingEnabled");
             packet.ReadBit("CharUndeleteEnabled");
-            packet.ReadBit("Unk bit21");
-            packet.ReadBit("Unk bit22");
-            packet.ReadBit("Unk bit90");
+            packet.ReadBit("RestrictedAccount");
+            packet.ReadBit("TutorialsEnabled");
+            packet.ReadBit("Unk bit90"); // Also tutorials related
 
-            if (bit84)
+            if (hasEuropaTicketSystemStatus)
+                ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
+
+            if (hasSessionAlert)
+                ReadClientSessionAlertConfig(packet, "SessionAlert");
+        }
+
+        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS, ClientVersionBuild.V6_1_0_19678, ClientVersionBuild.V6_1_2_19802)]
+        public static void HandleFeatureSystemStatus610(Packet packet)
+        {
+            packet.ReadByte("ComplaintStatus");
+
+            packet.ReadInt32("ScrollOfResurrectionRequestsRemaining");
+            packet.ReadInt32("ScrollOfResurrectionMaxRequestsPerDay");
+            packet.ReadInt32("CfgRealmID");
+            packet.ReadInt32("CfgRealmRecID");
+            packet.ReadInt32("Int27");
+            packet.ReadInt32("Int29");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("VoiceEnabled");
+            var hasEuropaTicketSystemStatus = packet.ReadBit("HasEuropaTicketSystemStatus");
+            packet.ReadBit("ScrollOfResurrectionEnabled");
+            packet.ReadBit("BpayStoreEnabled");
+            packet.ReadBit("BpayStoreAvailable");
+            packet.ReadBit("BpayStoreDisabledByParentalControls");
+            packet.ReadBit("ItemRestorationButtonEnabled");
+            packet.ReadBit("BrowserEnabled");
+            var hasSessionAlert = packet.ReadBit("HasSessionAlert");
+            packet.ReadBit("RecruitAFriendSendingEnabled");
+            packet.ReadBit("CharUndeleteEnabled");
+            packet.ReadBit("RestrictedAccount");
+            packet.ReadBit("TutorialsEnabled");
+            packet.ReadBit("Unk bit44"); // Also tutorials related
+            packet.ReadBit("TwitterEnabled");
+
+            var bit61 = ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19702) ? (bool)packet.ReadBit("Unk bit61") : false;
+
+            if (hasEuropaTicketSystemStatus)
+                ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
+
+            if (hasSessionAlert)
+                ReadClientSessionAlertConfig(packet, "SessionAlert");
+
+            // Note: Only since ClientVersionBuild.V6_1_0_19702
+            if (bit61)
             {
-                packet.ReadBit("Unk bit0");
-                packet.ReadBit("Unk bit1");
-                packet.ReadBit("TicketSystemEnabled");
-                packet.ReadBit("SubmitBugEnabled");
-
-                packet.ReadInt32("MaxTries");
-                packet.ReadInt32("PerMilliseconds");
-                packet.ReadInt32("TryCount");
-                packet.ReadInt32("LastResetTimeBeforeNow");
+                var int88 = packet.ReadInt32("int88");
+                for (int i = 0; i < int88; i++)
+                    packet.ReadByte("byte23", i);
             }
+        }
 
-            if (bit44)
+        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS, ClientVersionBuild.V6_1_2_19802)]
+        public static void HandleFeatureSystemStatus612(Packet packet)
+        {
+            packet.ReadByte("ComplaintStatus");
+
+            packet.ReadInt32("ScrollOfResurrectionRequestsRemaining");
+            packet.ReadInt32("ScrollOfResurrectionMaxRequestsPerDay");
+            packet.ReadInt32("CfgRealmID");
+            packet.ReadInt32("CfgRealmRecID");
+            packet.ReadInt32("Int27");
+            packet.ReadInt32("TwitterMsTillCanPost");
+            packet.ReadInt32("TokenPollTimeSeconds");
+            packet.ReadInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("VoiceEnabled");
+            var hasEuropaTicketSystemStatus = packet.ReadBit("HasEuropaTicketSystemStatus");
+            packet.ReadBit("ScrollOfResurrectionEnabled");
+            packet.ReadBit("BpayStoreEnabled");
+            packet.ReadBit("BpayStoreAvailable");
+            packet.ReadBit("BpayStoreDisabledByParentalControls");
+            packet.ReadBit("ItemRestorationButtonEnabled");
+            packet.ReadBit("BrowserEnabled");
+            var hasSessionAlert = packet.ReadBit("HasSessionAlert");
+            packet.ReadBit("RecruitAFriendSendingEnabled");
+            packet.ReadBit("CharUndeleteEnabled");
+            packet.ReadBit("RestrictedAccount");
+            packet.ReadBit("TutorialsEnabled");
+            packet.ReadBit("Unk bit44"); // Also tutorials related
+            packet.ReadBit("TwitterEnabled");
+            packet.ReadBit("CommerceSystemEnabled");
+            packet.ReadBit("Unk67");
+            packet.ReadBit("WillKickFromWorld");
+            var bit4A = packet.ReadBit("Unk4A");
+
+            packet.ResetBitReader();
+
+            if (hasEuropaTicketSystemStatus)
+                ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
+
+            if (hasSessionAlert)
+                ReadClientSessionAlertConfig(packet, "SessionAlert");
+
+            if (bit4A)
             {
-                packet.ReadInt32("Delay");
-                packet.ReadInt32("Period");
-                packet.ReadInt32("DisplayTime");
+                var int88 = packet.ReadInt32("int88");
+                for (int i = 0; i < int88; i++)
+                    packet.ReadByte("byte23", i);
             }
         }
 
@@ -249,8 +369,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("Serial");
         }
 
-        [Parser(Opcode.SMSG_INITIAL_SETUP)]
-        public static void HandleInitialSetup(Packet packet)
+        [Parser(Opcode.SMSG_INITIAL_SETUP, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_0_3_19342)]
+        public static void HandleInitialSetup60x(Packet packet)
         {
             var int6 = packet.ReadInt32("QuestsCompletedCount");
 
@@ -262,6 +382,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (var i = 0; i < int6; ++i)
                 packet.ReadByte("QuestsCompleted", i);
+        }
+
+        [Parser(Opcode.SMSG_INITIAL_SETUP, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleInitialSetup61x(Packet packet)
+        {
+            packet.ReadByte("ServerExpansionLevel");
+            packet.ReadByte("ServerExpansionTier");
+
+            packet.ReadInt32("ServerRegionID");
+            packet.ReadTime("RaidOrigin");
         }
 
         [Parser(Opcode.CMSG_AREATRIGGER)]
@@ -393,12 +523,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_TUTORIAL_FLAG)]
-        public static void HandleTutorialFlag(Packet packet)
+        [Parser(Opcode.CMSG_TUTORIAL_FLAG, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_0_3_19342)]
+        public static void HandleTutorialFlag6x(Packet packet)
         {
-            var action = packet.ReadEnum<TutorialAction>("TutorialAction", 2);
+            var action = packet.ReadBitsE<TutorialAction>("TutorialAction", 2);
 
             if (action == TutorialAction.Update)
+                packet.ReadInt32E<Tutorial>("TutorialBit");
+        }
+
+        [Parser(Opcode.CMSG_TUTORIAL_FLAG, ClientVersionBuild.V6_0_3_19342)]
+        public static void HandleTutorialFlag61x(Packet packet)
+        {
+            var action = packet.ReadBitsE<TutorialAction61x>("TutorialAction", 2);
+
+            if (action == TutorialAction61x.Update)
                 packet.ReadInt32E<Tutorial>("TutorialBit");
         }
 
@@ -596,6 +735,46 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadTime("Reset");
         }
+
+        [Parser(Opcode.SMSG_SUMMON_REQUEST)]
+        public static void HandleSummonRequest(Packet packet)
+        {
+            packet.ReadPackedGuid128("SummonerGUID");
+            packet.ReadUInt32("SummonerVirtualRealmAddress");
+            packet.ReadInt32<AreaId>("AreaID");
+            packet.ReadBit("ConfirmSummon_NC");
+        }
+
+        // new opcode on 6.x, related to combat log and mostly used in garrisons
+        [Parser(Opcode.SMSG_WORLD_TEXT)]
+        public static void HandleWorldText(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadInt32("Arg1");
+            packet.ReadInt32("Arg2");
+            var length = packet.ReadBits("TextLength", 12);
+            packet.ReadWoWString("Text", length);
+        }
+
+        [Parser(Opcode.CMSG_ENGINE_SURVEY)]
+        public static void HandleEngineSurvey(Packet packet)
+        {
+            packet.ReadUInt32("GPUVendorID");
+            packet.ReadUInt32("GPUModelID");
+            packet.ReadUInt32("Unk1C");
+            packet.ReadUInt32("Unk10");
+            packet.ReadUInt32("Unk38");
+            packet.ReadUInt32("DisplayResWidth");
+            packet.ReadUInt32("DisplayResHeight");
+            packet.ReadUInt32("Unk2C");
+            packet.ReadUInt32("MemoryCapacity");
+            packet.ReadUInt32("Unk30");
+            packet.ReadUInt32("Unk18");
+            packet.ReadByte("HasHDPlayerModels");
+            packet.ReadByte("Is64BitSystem");
+            packet.ReadByte("Unk3C");
+            packet.ReadByte("Unk3F");
+            packet.ReadByte("Unk3E");
+        }
     }
 }
-

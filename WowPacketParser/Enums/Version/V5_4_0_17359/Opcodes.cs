@@ -39,7 +39,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.CMSG_PET_NAME_QUERY, 0x1428},
             {Opcode.CMSG_PLAYER_LOGIN, 0x1BC7},
             {Opcode.CMSG_QUERY_WORLD_COUNTDOWN_TIMER, 0x10A8},
-            {Opcode.CMSG_QUEST_NPC_QUERY, 0x1084},
+            {Opcode.CMSG_QUERY_QUEST_COMPLETION_NPCS, 0x1084},
             {Opcode.CMSG_QUEST_POI_QUERY, 0x1287},
             {Opcode.CMSG_REALM_SPLIT, 0x129F},
             {Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS, 0x16CF},
@@ -74,7 +74,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.CMSG_UNKNOWN_822, 0x0336},
             {Opcode.CMSG_UNKNOWN_903, 0x0387},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x1927},
-            {Opcode.CMSG_WARDEN_DATA, 0x1702},
+            {Opcode.CMSG_WARDEN_DATA, 0x1702}
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -155,7 +155,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_PLAY_SPELL_VISUAL_KIT, 0x01A5},
             {Opcode.SMSG_PVP_SEASON, 0x0189},
             {Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, 0x142D},
-            {Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE, 0x193E},
+            {Opcode.SMSG_QUEST_COMPLETION_NPC_RESPONSE, 0x193E},
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x183F},
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 0x19AB},
             {Opcode.SMSG_REALM_QUERY_RESPONSE, 0x042B},
@@ -361,7 +361,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.SMSG_WARDEN_DATA, 0x0002},
             {Opcode.SMSG_WEATHER, 0x04A7},
             {Opcode.SMSG_WEEKLY_SPELL_USAGE, 0x1124},
-            {Opcode.SMSG_WORLD_SERVER_INFO, 0x052E},
+            {Opcode.SMSG_WORLD_SERVER_INFO, 0x052E}
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
@@ -374,7 +374,7 @@ namespace WowPacketParser.Enums.Version.V5_4_0_17359
             {Opcode.MSG_UNKNOWN_5383, 0x1507},
             {Opcode.MSG_UNKNOWN_5750, 0x1676},
             {Opcode.MSG_UNKNOWN_6127, 0x17EF},
-            {Opcode.MSG_UNKNOWN_6315, 0x18AB},
+            {Opcode.MSG_UNKNOWN_6315, 0x18AB}
         };
     }
 }

@@ -5,6 +5,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using SpellCastFailureReason = WowPacketParser.Enums.Version.V6_1_0_19678.SpellCastFailureReason;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
@@ -37,7 +38,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ResetBitReader();
 
-            packet.ReadEnum<TargetFlag>("Flags", 21, idx);
+            packet.ReadBitsE<TargetFlag>("Flags", ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678) ? 23 : 21, idx);
             var hasSrcLoc = packet.ReadBit("HasSrcLocation", idx);
             var hasDstLoc = packet.ReadBit("HasDstLocation", idx);
             var hasOrient = packet.ReadBit("HasOrientation", idx);
@@ -546,7 +547,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("CasterUnit");
             packet.ReadByte("CastID");
             packet.ReadUInt32<SpellId>("SpellID");
-            packet.ReadByteE<SpellCastFailureReason>("Reason");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
+                packet.ReadInt16E<SpellCastFailureReason>("Reason");
+            else
+                packet.ReadByteE<SpellCastFailureReason>("Reason");
         }
 
         [Parser(Opcode.SMSG_SPELL_FAILED_OTHER)]
@@ -555,7 +559,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("CasterUnit");
             packet.ReadByte("CastID");
             packet.ReadUInt32<SpellId>("SpellID");
-            packet.ReadInt16E<SpellCastFailureReason>("Reason");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
+                packet.ReadByteE<SpellCastFailureReason>("Reason");
+            else
+                packet.ReadInt16E<SpellCastFailureReason>("Reason");
         }
 
         [Parser(Opcode.SMSG_REFRESH_SPELL_HISTORY)]
@@ -692,11 +699,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Totem");
         }
 
-        [Parser(Opcode.SMSG_COOLDOWN_EVENT)]
-        public static void HandleCooldownEvent(Packet packet)
+        [Parser(Opcode.SMSG_COOLDOWN_EVENT, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleCooldownEvent60x(Packet packet)
         {
             packet.ReadPackedGuid128("CasterGUID");
             packet.ReadInt32<SpellId>("SpellID");
+        }
+
+        [Parser(Opcode.SMSG_COOLDOWN_EVENT, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleCooldownEvent61x(Packet packet)
+        {
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadBit("Unk16");
         }
 
         [Parser(Opcode.SMSG_LOSS_OF_CONTROL_AURA_UPDATE)]
@@ -712,12 +726,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_CLEAR_COOLDOWN)]
-        public static void HandleClearCooldown(Packet packet)
+        [Parser(Opcode.SMSG_CLEAR_COOLDOWN, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleClearCooldown60x(Packet packet)
         {
             packet.ReadPackedGuid128("CasterGUID");
             packet.ReadUInt32<SpellId>("SpellID");
             packet.ReadBit("ClearOnHold");
+        }
+
+        [Parser(Opcode.SMSG_CLEAR_COOLDOWN, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleClearCooldown61x(Packet packet)
+        {
+            packet.ReadUInt32<SpellId>("SpellID");
+            packet.ReadBit("ClearOnHold");
+            packet.ReadBit("Unk20");
         }
 
         [Parser(Opcode.SMSG_CLEAR_COOLDOWNS)]
@@ -814,12 +836,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("Reverse");
         }
 
-        [Parser(Opcode.SMSG_MODIFY_COOLDOWN)]
-        public static void HandleModifyCooldown(Packet packet)
+        [Parser(Opcode.SMSG_MODIFY_COOLDOWN, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleModifyCooldown60x(Packet packet)
         {
             packet.ReadUInt32<SpellId>("SpellID");
             packet.ReadPackedGuid128("UnitGUID");
             packet.ReadInt32("DeltaTime");
+        }
+
+        [Parser(Opcode.SMSG_MODIFY_COOLDOWN, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleModifyCooldown61x(Packet packet)
+        {
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32("DeltaTime");
+            packet.ReadBit("Unk24");
         }
 
         [Parser(Opcode.SMSG_CLEAR_TARGET)]
@@ -996,10 +1026,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("SpellVisualID");
         }
 
+        [Parser(Opcode.SMSG_CANCEL_SPELL_VISUAL_KIT)]
+        public static void HandleCancelSpellVisualKit(Packet packet)
+        {
+            packet.ReadPackedGuid128("Source");
+            packet.ReadInt32("SpellVisualKitID");
+        }
+
         [Parser(Opcode.SMSG_SPIRIT_HEALER_CONFIRM)]
         public static void HandleSpiritHealerConfirm(Packet packet)
         {
             packet.ReadPackedGuid128("Unit");
+        }
+
+        [Parser(Opcode.CMSG_CANCEL_MOD_SPEED_NO_CONTROL_AURAS)]
+        public static void HandleCancelModSpeedNoControlAuras(Packet packet)
+        {
+            packet.ReadPackedGuid128("TargetGUID");
         }
     }
 }

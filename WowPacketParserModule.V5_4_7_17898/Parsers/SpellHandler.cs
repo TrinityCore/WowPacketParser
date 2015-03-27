@@ -210,7 +210,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
                 packet.ReadBits("hasTargetString", 7);
 
             if (hasTargetMask)
-                packet.ReadEnum<TargetFlag>("Target Flags", 20);
+                packet.ReadBitsE<TargetFlag>("Target Flags", 20);
 
             for (var i = 0; i < archeologyCounter; ++i)
             {
@@ -440,7 +440,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             var hasAmmoDisplayId = !packet.ReadBit();
 
             if (hasTargetFlags)
-                packet.ReadEnum<TargetFlag>("Target Flags", 20);
+                packet.ReadBitsE<TargetFlag>("Target Flags", 20);
 
             var hasPredictedType = !packet.ReadBit();
             var hasUnkMovementField = !packet.ReadBit();
@@ -794,7 +794,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             }
 
             if (hasTargetFlags)
-                packet.ReadEnum<TargetFlag>("Target Flags", 20);
+                packet.ReadBitsE<TargetFlag>("Target Flags", 20);
             packet.ReadInt32<SpellId>("Spell ID");
 
             if (hasDestLocation)

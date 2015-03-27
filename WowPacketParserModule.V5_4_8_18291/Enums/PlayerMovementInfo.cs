@@ -1792,7 +1792,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Enums
             MovementStatusElements.MSECount,
             MovementStatusElements.MSEGuidByte0,
             MovementStatusElements.MSEGuidByte3,
-            MovementStatusElements.MSEEnd,
+            MovementStatusElements.MSEEnd
         };
 
         public MovementStatusElements[] MoveUnroot = // 5.4.8 18291
@@ -1814,7 +1814,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Enums
             MovementStatusElements.MSEGuidByte1,
             MovementStatusElements.MSEGuidByte3,
             MovementStatusElements.MSEGuidByte6,
-            MovementStatusElements.MSEEnd,
+            MovementStatusElements.MSEEnd
         };
 
         public MovementStatusElements[] MoveTeleport = // 5.4.8 18414

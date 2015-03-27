@@ -166,7 +166,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
 
                 if (hasMovementFlags)
                 {
-                    moveInfo.Flags = (MovementFlag)packet.ReadEnum<Enums.MovementFlag>("Movement Flags", 30, index);
+                    moveInfo.Flags = (MovementFlag)packet.ReadBitsE<Enums.MovementFlag>("Movement Flags", 30, index);
                     waypointInfo.MovementFlags = moveInfo.Flags;
                 }
 
@@ -199,7 +199,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     if (bit216)
                     {
                         /*var splineMode =*/
-                        packet.ReadEnum<SplineMode>("Spline Mode", 2, index);
+                        packet.ReadBitsE<SplineMode>("Spline Mode", 2, index);
                         hasSplineStartTime = packet.ReadBit("Has spline start time", index);
                         splineCount = packet.ReadBits("Spline Waypoints", 22, index);
                         var bits57 = packet.ReadBits(2);
@@ -225,7 +225,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                         hasSplineVerticalAcceleration = packet.ReadBit("Has spline vertical acceleration", index);
                         packet.AddValue("Spline type", splineType, index);
                         /*splineFlags =*/
-                        waypointInfo.SplineFlags = packet.ReadEnum<SplineFlag434>("Spline flags", 25, index);
+                        waypointInfo.SplineFlags = packet.ReadBitsE<SplineFlag434>("Spline flags", 25, index);
                     }
                 }
 
@@ -237,7 +237,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 guid2[1] = packet.ReadBit();
                 packet.ReadBit();
                 if (!packet.ReadBit())
-                    moveInfo.FlagsExtra = packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 12, index);
+                    moveInfo.FlagsExtra = packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12, index);
             }
 
             if (hasGameObjectPosition)
@@ -319,7 +319,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                             {
                                 Z = packet.ReadSingle(),
                                 X = packet.ReadSingle(),
-                                Y = packet.ReadSingle(),
+                                Y = packet.ReadSingle()
                             };
 
                             waypointData.Position = wp;
@@ -351,7 +351,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                             {
                                 X = packet.ReadSingle(),
                                 Z = packet.ReadSingle(),
-                                Y = packet.ReadSingle(),
+                                Y = packet.ReadSingle()
                             };
 
                             packet.AddValue("Facing Spot", point, index);
@@ -369,7 +369,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     {
                         Z = packet.ReadSingle(),
                         X = packet.ReadSingle(),
-                        Y = packet.ReadSingle(),
+                        Y = packet.ReadSingle()
                     };
 
                     packet.ReadUInt32("Spline Id", index);

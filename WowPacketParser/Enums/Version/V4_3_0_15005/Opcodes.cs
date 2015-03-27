@@ -172,15 +172,15 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.CMSG_GROUP_UNINVITE, 11812},
             {Opcode.CMSG_GUILD_ACCEPT, 18724},
             {Opcode.CMSG_GUILD_ADD_RANK, 2700},
-            {Opcode.CMSG_GUILD_BANKER_ACTIVATE, 4736},
+            {Opcode.CMSG_GUILD_BANK_ACTIVATE, 4736},
             {Opcode.CMSG_GUILD_BANK_BUY_TAB, 32386},
             {Opcode.CMSG_GUILD_BANK_DEPOSIT_MONEY, 8706},
-            {Opcode.CMSG_GUILD_BANK_MONEY_WITHDRAWN_QUERY, 712},
+            {Opcode.CMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY_QUERY, 712},
             {Opcode.CMSG_GUILD_BANK_SWAP_ITEMS, 10916},
             {Opcode.CMSG_GUILD_BANK_UPDATE_TAB, 26274},
             {Opcode.CMSG_GUILD_BANK_WITHDRAW_MONEY, 26112},
             {Opcode.CMSG_GUILD_CHANGE_NAME_REQUEST, 8780},
-            {Opcode.CMSG_GUILD_DECLINE, 2124},
+            {Opcode.CMSG_GUILD_DECLINE_INVITATION, 2124},
             {Opcode.CMSG_GUILD_GET_RANKS, 8268},
             {Opcode.CMSG_GUILD_GET_ROSTER, 2248},
             {Opcode.CMSG_GUILD_INVITE, 18742},
@@ -304,7 +304,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY, 4740},
             {Opcode.CMSG_QUESTGIVER_STATUS_QUERY, 32390},
             {Opcode.CMSG_QUESTLOG_REMOVE_QUEST, 3616},
-            {Opcode.CMSG_QUEST_NPC_QUERY, 13457},
+            {Opcode.CMSG_QUERY_QUEST_COMPLETION_NPCS, 13457},
             {Opcode.CMSG_QUEST_POI_QUERY, 9760},
             {Opcode.CMSG_QUEST_QUERY, 3110},
             {Opcode.CMSG_RANDOMIZE_CHAR_NAME, 17190},
@@ -399,7 +399,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.CMSG_WHO, 12838},
             {Opcode.CMSG_WHOIS, 17536},
             {Opcode.CMSG_WORLD_TELEPORT, 16740},
-            {Opcode.CMSG_ZONEUPDATE, 13824},
+            {Opcode.CMSG_ZONEUPDATE, 13824}
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -450,7 +450,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.SMSG_BATTLEFIELD_LIST, 9870},
             {Opcode.SMSG_BATTLEFIELD_MGR_EJECTED, 9752},
             {Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING, 11966},
-            {Opcode.SMSG_BATTLEFIELD_MGR_ENTERED, 17422},
+            {Opcode.SMSG_BATTLEFIELD_MGR_ENTERING, 17422},
             {Opcode.SMSG_BATTLEFIELD_MGR_ENTRY_INVITE, 19624},
             {Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_INVITE, 1544},
             {Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_REQUEST_RESPONSE, 3086},
@@ -471,7 +471,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.SMSG_BINDZONEREPLY, 16034},
             {Opcode.SMSG_BREAK_TARGET, 21028},
             {Opcode.SMSG_BUY_FAILED, 24576},
-            {Opcode.SMSG_BUY_ITEM, 32288},
+            {Opcode.SMSG_BUY_SUCCEEDED, 32288},
             {Opcode.SMSG_CALENDAR_ACTION_PENDING, 6304},
             {Opcode.SMSG_CALENDAR_ARENA_TEAM, 29186},
             {Opcode.SMSG_CALENDAR_COMMAND_RESULT, 26150},
@@ -598,9 +598,9 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.SMSG_GROUP_LIST, 30208},
             {Opcode.SMSG_GROUP_SET_LEADER, 11396},
             {Opcode.SMSG_GROUP_UNINVITE, 27776},
-            {Opcode.SMSG_GUILD_BANK_MONEY_WITHDRAWN, 3130},
+            {Opcode.SMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY, 3130},
             {Opcode.SMSG_GUILD_BANK_QUERY_RESULTS, 19496},
-            {Opcode.SMSG_GUILD_CHALLENGE_UPDATED, 17566},
+            {Opcode.SMSG_GUILD_CHALLENGE_UPDATE, 17566},
             {Opcode.SMSG_GUILD_CHANGE_NAME_RESULT, 9244},
             {Opcode.SMSG_GUILD_COMMAND_RESULT, 28314},
             {Opcode.SMSG_GUILD_CRITERIA_DATA, 19642},
@@ -641,8 +641,8 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.SMSG_ITEM_EXPIRE_PURCHASE_REFUND, 11272},
             {Opcode.SMSG_ITEM_PUSH_RESULT, 25120},
             {Opcode.SMSG_ITEM_REFUND_INFO_RESPONSE, 26286},
-            {Opcode.SMSG_ITEM_REFUND_RESULT, 11946},
-            {Opcode.SMSG_ITEM_TEXT_QUERY_RESPONSE, 5796},
+            {Opcode.SMSG_ITEM_PURCHASE_REFUND_RESULT, 11946},
+            {Opcode.SMSG_QUERY_ITEM_TEXT_RESPONSE, 5796},
             {Opcode.SMSG_ITEM_TIME_UPDATE, 15490},
             {Opcode.SMSG_JOINED_BATTLEGROUND_QUEUE, 19468},
             {Opcode.SMSG_KICK_REASON, 21670},
@@ -775,7 +775,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE, 38},
             {Opcode.SMSG_QUEST_CONFIRM_ACCEPT, 22562},
             {Opcode.SMSG_QUEST_LOG_FULL, 10884},
-            {Opcode.SMSG_QUEST_NPC_QUERY_RESPONSE, 11820},
+            {Opcode.SMSG_QUEST_COMPLETION_NPC_RESPONSE, 11820},
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 14338},
             {Opcode.SMSG_QUEST_QUERY_RESPONSE, 14464},
             {Opcode.SMSG_QUEST_UPDATE_ADD_KILL, 8322},
@@ -914,7 +914,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.SMSG_WHOIS, 9730},
             {Opcode.SMSG_WORLD_SERVER_INFO, 17976},
             {Opcode.SMSG_XP_GAIN_ABORTED, 11276},
-            {Opcode.SMSG_ZONE_UNDER_ATTACK, 2564},
+            {Opcode.SMSG_ZONE_UNDER_ATTACK, 2564}
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
@@ -980,7 +980,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.MSG_TABARDVENDOR_ACTIVATE, 27782},
             {Opcode.MSG_TALENT_WIPE_CONFIRM, 678},
             {Opcode.MSG_VERIFY_CONNECTIVITY, 20311},
-            {Opcode.TEST_430_SYNC_PLAYER_MOVE, 0x5},
+            {Opcode.TEST_430_SYNC_PLAYER_MOVE, 0x5}
         };
     }
 }

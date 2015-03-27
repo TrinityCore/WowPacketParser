@@ -444,7 +444,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_GUILD_BANK_LIST)]
+        [Parser(Opcode.SMSG_GUILD_BANK_QUERY_RESULTS)]
         public static void HandleGuildBankList434(Packet packet)
         {
             packet.ReadBit("Unk");
@@ -605,7 +605,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadTime("Time");
         }
 
-        [Parser(Opcode.SMSG_GUILD_BANK_QUERY_TEXT_RESULT)]
+        [Parser(Opcode.SMSG_GUILD_BANK_TEXT_QUERY_RESULT)]
         public static void HandleGuildQueryBankText434(Packet packet)
         {
             packet.ReadUInt32("Tab Id");
@@ -929,7 +929,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_GUILD_CHALLENGE_UPDATED)]
+        [Parser(Opcode.SMSG_GUILD_CHALLENGE_UPDATE)]
         public static void HandleGuildChallengeUpdated(Packet packet)
         {
             for (int i = 0; i < 4; ++i)

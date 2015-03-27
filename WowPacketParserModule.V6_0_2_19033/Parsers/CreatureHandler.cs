@@ -1,5 +1,4 @@
-﻿using System;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -94,7 +93,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var objectName = new ObjectName
             {
                 ObjectType = ObjectType.Unit,
-                Name = creature.Name,
+                Name = creature.Name
             };
             Storage.ObjectNames.Add((uint)entry.Key, objectName, packet.TimeSpan);
         }

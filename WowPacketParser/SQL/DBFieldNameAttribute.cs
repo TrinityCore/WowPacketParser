@@ -159,15 +159,16 @@ namespace WowPacketParser.SQL
                 var result = new StringBuilder();
                 for (var i = 1; i <= Count; i++)
                 {
+                    result.Append('`');
                     result.Append(Name);
                     result.Append(StartAtZero ? i - 1 : i);
+                    result.Append('`');
                     if (i != Count)
                         result.Append(",");
                 }
                 return result.ToString();
             }
-            else
-                return Name;
+            return SQLUtil.AddBackQuotes(Name);
         }
     }
 }

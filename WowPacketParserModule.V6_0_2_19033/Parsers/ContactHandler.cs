@@ -1,5 +1,4 @@
-﻿using System;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -8,7 +7,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     public static class ContactHandler
     {
         [Parser(Opcode.CMSG_ADD_IGNORE)]
-        [Parser(Opcode.CMSG_ADD_MUTE)]
+        [Parser(Opcode.CMSG_VOICE_ADD_IGNORE)]
         public static void HandleAddIgnoreOrMute(Packet packet)
         {
             var bits9 = packet.ReadBits(9);
@@ -25,14 +24,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Notes", bits10);
         }
 
+        public static void ReadQualifiedGUID(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("VirtualRealmAddress", indexes);
+            packet.ReadPackedGuid128("Guid", indexes);
+        }
+
         [Parser(Opcode.CMSG_DEL_FRIEND)]
         [Parser(Opcode.CMSG_DEL_IGNORE)]
-        [Parser(Opcode.CMSG_DEL_MUTE)]
+        [Parser(Opcode.CMSG_VOICE_DEL_IGNORE)]
         public static void HandleDeleteFriendOrIgnoreOrMute(Packet packet)
         {
-            // QualifiedGUID
-            packet.ReadInt32("VirtualRealmAddress");
-            packet.ReadPackedGuid128("Guid");
+            ReadQualifiedGUID(packet, "QualifiedGUID");
         }
 
         [Parser(Opcode.SMSG_CONTACT_STATUS)]
@@ -89,6 +92,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleSendContactList(Packet packet)
         {
             packet.ReadInt32("Flags");
+        }
+
+        [Parser(Opcode.CMSG_SET_CONTACT_NOTES)]
+        public static void HandleSetContactNotes(Packet packet)
+        {
+            ReadQualifiedGUID(packet, "QualifiedGUID");
+            var notesLength = packet.ReadBits(10);
+            packet.ReadWoWString("Notes", notesLength);
         }
     }
 }

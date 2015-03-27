@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -58,7 +57,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             var bit2630 = !packet.ReadBit();
             if (bit2630)
-                packet.ReadEnum<ChatTag>("Chat Tag", 9);
+                packet.ReadBitsE<ChatTag>("Chat Tag", 9);
 
             var hasLang = !packet.ReadBit();
             int prefixLen = 0;

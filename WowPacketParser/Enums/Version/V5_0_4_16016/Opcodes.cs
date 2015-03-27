@@ -32,7 +32,7 @@ namespace WowPacketParser.Enums.Version.V5_0_4_16016
             {Opcode.CMSG_SEND_MAIL, 0x09A8},
             {Opcode.CMSG_TAXI_NODE_STATUS_QUERY, 0x029D},
             {Opcode.CMSG_UI_TIME_REQUEST, 0x00D9},
-            {Opcode.CMSG_WHO, 0x04D1},
+            {Opcode.CMSG_WHO, 0x04D1}
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>();

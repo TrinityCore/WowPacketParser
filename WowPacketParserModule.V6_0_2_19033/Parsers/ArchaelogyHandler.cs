@@ -6,17 +6,26 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class ArchaelogyHandler
     {
+        public static void ReadResearchHistory(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("ProjectID", idx);
+            packet.ReadTime("FirstCompleted", idx);
+            packet.ReadInt32("CompletionCount", idx);
+        }
+
         [Parser(Opcode.SMSG_RESEARCH_SETUP_HISTORY)]
         public static void HandleResearchSetupHistory(Packet packet)
         {
             var count = packet.ReadInt32("ResearchHistoryCount");
 
-            for (int i = 0; i < count; ++i)
-            {
-                packet.ReadInt32("ProjectID", i);
-                packet.ReadTime("FirstCompleted", i);
-                packet.ReadInt32("CompletionCount", i);
-            }
+            for (var i = 0; i < count; ++i)
+                ReadResearchHistory(packet, "History", i);
+        }
+
+        [Parser(Opcode.SMSG_RESEARCH_COMPLETE)]
+        public static void HandleResearchComplete(Packet packet)
+        {
+            ReadResearchHistory(packet, "Research");
         }
 
         [Parser(Opcode.SMSG_ARCHAEOLOGY_SURVERY_CAST)]

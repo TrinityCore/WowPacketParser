@@ -318,7 +318,7 @@ namespace WowPacketParser.V5_4_0_17359.Parsers
             var bit194 = !packet.ReadBit();
 
             if (hasTargetMask)
-                packet.ReadEnum<TargetFlag>("Target Flags", 20);
+                packet.ReadBitsE<TargetFlag>("Target Flags", 20);
 
             var bits5C = packet.ReadBits(13);
             guid1[3] = packet.ReadBit();
@@ -625,7 +625,7 @@ namespace WowPacketParser.V5_4_0_17359.Parsers
             var bitC0 = !packet.ReadBit();
 
             if (hasTargetFlags)
-                packet.ReadEnum<TargetFlag>("Target Flags", 20);
+                packet.ReadBitsE<TargetFlag>("Target Flags", 20);
 
             guid1[2] = packet.ReadBit();
 
@@ -1132,7 +1132,7 @@ namespace WowPacketParser.V5_4_0_17359.Parsers
             }
 
             if (hasTargetMask)
-                packet.ReadEnum<TargetFlag>("Target Flags", 20);
+                packet.ReadBitsE<TargetFlag>("Target Flags", 20);
 
             packet.StartBitStream(guid3, 2, 1, 3, 6, 5, 4, 7, 0);
 

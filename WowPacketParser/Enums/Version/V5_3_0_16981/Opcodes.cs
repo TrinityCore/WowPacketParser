@@ -81,7 +81,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.CMSG_UPDATE_ACCOUNT_DATA, 0x0800},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x054B},
             {Opcode.CMSG_WHO, 0x0308},
-            {Opcode.CMSG_ZONEUPDATE, 0x2000},
+            {Opcode.CMSG_ZONEUPDATE, 0x2000}
         };
 
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
@@ -105,7 +105,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_BATTLEFIELD_LIST, 0x0ACC},
             {Opcode.SMSG_BATTLEFIELD_MGR_EJECTED, 0x0091},
             {Opcode.SMSG_BATTLEFIELD_MGR_EJECT_PENDING, 0x0095},
-            {Opcode.SMSG_BATTLEFIELD_MGR_ENTERED, 0x06D9},
+            {Opcode.SMSG_BATTLEFIELD_MGR_ENTERING, 0x06D9},
             {Opcode.SMSG_BATTLEFIELD_MGR_ENTRY_INVITE, 0x14D8},
             {Opcode.SMSG_BATTLEFIELD_MGR_EXIT_REQUEST, 0x05C5},
             {Opcode.SMSG_BATTLEFIELD_MGR_QUEUE_INVITE, 0x0485},
@@ -194,7 +194,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE, 0x0799},
             {Opcode.SMSG_ITEM_EXPIRE_PURCHASE_REFUND, 0x0F81},
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0x129D},
-            {Opcode.SMSG_ITEM_REFUND_RESULT, 0x06C5},
+            {Opcode.SMSG_ITEM_PURCHASE_REFUND_RESULT, 0x06C5},
             {Opcode.SMSG_ITEM_REMOVE_PASSIVE, 0x1298},
             {Opcode.SMSG_ITEM_SEND_PASSIVE, 0x0DDD},
             {Opcode.SMSG_ITEM_TIME_UPDATE, 0x0CC0},
@@ -341,7 +341,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_TIME_ADJUSTMENT, 0x159C},
             {Opcode.SMSG_TIME_SYNC_REQ, 0x0AD4},
             {Opcode.SMSG_TITLE_EARNED, 0x02D0},
-            {Opcode.SMSG_TITLE_REMOVED, 0x0484},
+            {Opcode.SMSG_TITLE_LOST, 0x0484},
             {Opcode.SMSG_TRADE_STATUS, 0x0DC0},
             {Opcode.SMSG_TRAINER_BUY_FAILED, 0x08C5},
             {Opcode.SMSG_TRAINER_LIST, 0x08C9},
@@ -411,7 +411,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.MSG_RAID_READY_CHECK, 0x0DDC},
             {Opcode.MSG_RAID_READY_CHECK_CONFIRM, 0x03C9},
             {Opcode.MSG_RAID_READY_CHECK_FINISHED, 0x1591},
-            {Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57},
+            {Opcode.MSG_VERIFY_CONNECTIVITY, 0x4F57}
         };
     }
 }

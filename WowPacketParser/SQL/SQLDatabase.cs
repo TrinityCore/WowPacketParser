@@ -60,7 +60,7 @@ namespace WowPacketParser.SQL
 
         private static void LoadBroadcastText()
         {
-            var query = new StringBuilder(string.Format("SELECT ID, Language, MaleText, FemaleText, EmoteID0, EmoteID1, EmoteID2, EmoteDelay0, EmoteDelay1, EmoteDelay2, SoundId, UnkMoP1, UnkMoP2 FROM {0}.broadcast_text;", Settings.HotfixesDatabase));
+            var query = new StringBuilder(string.Format("SELECT ID, Language, MaleText, FemaleText, EmoteID1, EmoteID2, EmoteID3, EmoteDelay1, EmoteDelay2, EmoteDelay3, SoundId, UnkEmoteID, Type FROM {0}.broadcast_text;", Settings.HotfixesDatabase));
             using (var reader = SQLConnector.ExecuteQuery(query.ToString()))
             {
                 if (reader == null)
@@ -72,21 +72,21 @@ namespace WowPacketParser.SQL
 
                     uint id = Convert.ToUInt32(reader["Id"]);
 
-                    broadcastText.language = Convert.ToUInt32(reader["Language"]);
+                    broadcastText.Language = Convert.ToInt32(reader["Language"]);
                     broadcastText.MaleText = Convert.ToString(reader["MaleText"]);
                     broadcastText.FemaleText = Convert.ToString(reader["FemaleText"]);
 
-                    broadcastText.emoteID0 = Convert.ToUInt32(reader["EmoteID0"]);
-                    broadcastText.emoteID1 = Convert.ToUInt32(reader["EmoteID1"]);
-                    broadcastText.emoteID2 = Convert.ToUInt32(reader["EmoteID2"]);
+                    broadcastText.EmoteID[0] = Convert.ToUInt32(reader["EmoteID1"]);
+                    broadcastText.EmoteID[1] = Convert.ToUInt32(reader["EmoteID2"]);
+                    broadcastText.EmoteID[2] = Convert.ToUInt32(reader["EmoteID3"]);
 
-                    broadcastText.emoteDelay0 = Convert.ToUInt32(reader["EmoteDelay0"]);
-                    broadcastText.emoteDelay1 = Convert.ToUInt32(reader["EmoteDelay1"]);
-                    broadcastText.emoteDelay2 = Convert.ToUInt32(reader["EmoteDelay2"]);
+                    broadcastText.EmoteDelay[0] = Convert.ToUInt32(reader["EmoteDelay1"]);
+                    broadcastText.EmoteDelay[1] = Convert.ToUInt32(reader["EmoteDelay2"]);
+                    broadcastText.EmoteDelay[2] = Convert.ToUInt32(reader["EmoteDelay3"]);
 
-                    broadcastText.soundId = Convert.ToUInt32(reader["SoundId"]);
-                    broadcastText.unk1 = Convert.ToUInt32(reader["UnkMoP1"]);
-                    broadcastText.unk2 = Convert.ToUInt32(reader["UnkMoP2"]);
+                    broadcastText.SoundId = Convert.ToUInt32(reader["SoundId"]);
+                    broadcastText.UnkEmoteId = Convert.ToUInt32(reader["UnkEmoteID"]);
+                    broadcastText.Type = Convert.ToUInt32(reader["Type"]);
 
                     var tuple = Tuple.Create(id, broadcastText);
                     BroadcastTextStores.Add(tuple);
@@ -173,7 +173,7 @@ namespace WowPacketParser.SQL
 
             var fieldCount = 1;
             var fieldNames = new StringBuilder();
-            fieldNames.Append(primaryKeyName + ",");
+            fieldNames.Append(SQLUtil.AddBackQuotes(primaryKeyName) + ",");
             foreach (var field in fields)
             {
                 fieldNames.Append(field.Item2);

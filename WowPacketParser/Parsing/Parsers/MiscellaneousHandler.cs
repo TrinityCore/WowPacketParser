@@ -147,7 +147,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 packet.Write("[{0}] ", i++);
 
-                Handler.Parse(packet, isMultiple: true);
+                Handler.Parse(packet, true);
             }
             packet.WriteLine("}");
         }
@@ -540,7 +540,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_NOTIFY_DANCE)]
         public static void HandleNotifyDance(Packet packet)
         {
-            var flag = packet.ReadEnum<>("Flag", TypeCode.Int32);
+            var flag = packet.ReadInt32E<?>("Flag");
 
             if (flag & 0x8)
             {
@@ -787,8 +787,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_COMPLAINT_RESULT)]
         public static void HandleComplainResult(Packet packet)
         {
-            packet.ReadByte("Unknown1"); // value 1 resets CGChat::m_complaintsSystemStatus in client. (unused?)
-            packet.ReadByte("Unknown2"); // value 0xC generates a "CalendarError" in client. (found in 3.3.3a and 4.2.2a at least)
+            packet.ReadByte("Result"); // value 1 resets CGChat::m_complaintsSystemStatus in client. (unused?)
+            packet.ReadByte("ComplaintType"); // value 0xC generates a "CalendarError" in client. (found in 3.3.3a and 4.2.2a at least)
         }
 
         [Parser(Opcode.CMSG_MINIGAME_MOVE)]
@@ -919,13 +919,13 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (hasMovementFlags)
-                packet.ReadEnum<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
 
             if (hasFallData)
                 hasFallDirection = packet.ReadBit();
 
             if (hasMovementFlags2)
-                packet.ReadEnum<MovementFlagExtra>("Extra Movement Flags", 12);
+                packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
 
             packet.ReadXORByte(guid, 5);
             packet.ReadXORByte(guid, 3);
