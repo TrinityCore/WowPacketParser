@@ -9,7 +9,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 {
     public static class CharacterHandler
     {
-        [Parser(Opcode.SMSG_CHAR_ENUM)]
+        [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT)]
         public static void HandleCharEnum(Packet packet)
         {
 
@@ -125,7 +125,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_LEVELUP_INFO)]
+        [Parser(Opcode.SMSG_LEVEL_UP_INFO)]
         public static void HandleLevelUp(Packet packet)
         {
             packet.ReadInt32("Health");
@@ -186,7 +186,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_TALENTS_INFO)]
+        [Parser(Opcode.SMSG_UPDATE_TALENT_DATA)]
         public static void ReadTalentInfo510(Packet packet)
         {
             var specCount = packet.ReadBits("Spec Group count", 19);

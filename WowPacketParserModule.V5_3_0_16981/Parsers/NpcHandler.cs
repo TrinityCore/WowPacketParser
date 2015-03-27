@@ -186,7 +186,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             Storage.NpcTrainers.Add(guid.GetEntry(), npcTrainer, packet.TimeSpan);
         }
 
-        [Parser(Opcode.SMSG_LIST_INVENTORY)]
+        [Parser(Opcode.SMSG_VENDOR_INVENTORY)]
         public static void HandleVendorInventoryList(Packet packet)
         {
             var npcVendor = new NpcVendor();

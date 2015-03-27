@@ -469,7 +469,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE)]
+        [Parser(Opcode.SMSG_QUERY_PAGE_TEXT_RESPONSE)]
         public static void HandlePageTextResponse(Packet packet)
         {
             var pageText = new PageText();

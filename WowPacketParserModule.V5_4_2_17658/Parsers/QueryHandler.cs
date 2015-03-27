@@ -16,7 +16,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_CREATURE_QUERY_RESPONSE)]
+        [Parser(Opcode.SMSG_QUERY_CREATURE_RESPONSE)]
         public static void HandleCreatureQueryResponse(Packet packet)
         {
             var creature = new UnitTemplate();
@@ -532,7 +532,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_PAGE_TEXT_QUERY_RESPONSE)]
+        [Parser(Opcode.SMSG_QUERY_PAGE_TEXT_RESPONSE)]
         public static void HandlePageTextResponse(Packet packet)
         {
             var pageText = new PageText();
@@ -557,7 +557,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             Storage.PageTexts.Add(entry, pageText, packet.TimeSpan);
         }
 
-        [Parser(Opcode.SMSG_NAME_QUERY_RESPONSE)]
+        [Parser(Opcode.SMSG_QUERY_PLAYER_NAME_RESPONSE)]
         public static void HandleNameQueryResponse(Packet packet)
         {
             var guid1 = new byte[8];

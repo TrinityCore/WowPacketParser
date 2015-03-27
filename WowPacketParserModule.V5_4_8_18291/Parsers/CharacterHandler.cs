@@ -73,7 +73,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_LOG_XPGAIN)]
+        [Parser(Opcode.SMSG_LOG_XP_GAIN)]
         public static void HandleLogXPGain(Packet packet)
         {
             var guid = new byte[8];

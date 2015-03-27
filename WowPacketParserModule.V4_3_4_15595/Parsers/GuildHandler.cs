@@ -125,7 +125,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadWoWString("Rank Name", length);
         }
 
-        [Parser(Opcode.SMSG_GUILD_PARTY_STATE_RESPONSE)]
+        [Parser(Opcode.SMSG_GUILD_PARTY_STATE)]
         public static void HandleGuildPartyStateResponse434(Packet packet)
         {
             packet.ReadBit("Is guild group");
@@ -587,7 +587,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_GUILD_REWARDS_LIST)]
+        [Parser(Opcode.SMSG_GUILD_REWARD_LIST)]
         public static void HandleGuildRewardsList434(Packet packet)
         {
             var size = packet.ReadBits("Size", 21);
@@ -682,7 +682,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_GUILD_BANK_LOG_QUERY_RESULT)]
+        [Parser(Opcode.SMSG_GUILD_BANK_LOG_QUERY_RESULTS)]
         public static void HandleGuildBankLogQueryResult434(Packet packet)
         {
             var hasWeekCashflow = packet.ReadBit("Has Cash flow Perk");

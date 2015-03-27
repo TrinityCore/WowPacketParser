@@ -375,7 +375,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.AddValue("Position", pos);
         }
 
-        [Parser(Opcode.SMSG_BINDPOINTUPDATE)]
+        [Parser(Opcode.SMSG_BIND_POINT_UPDATE)]
         public static void HandleBindPointUpdate(Packet packet)
         {
             var pos = new Vector3();
@@ -390,7 +390,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.AddValue("Position", pos);
         }
 
-        [Parser(Opcode.SMSG_LOGIN_SETTIMESPEED)]
+        [Parser(Opcode.SMSG_LOGIN_SET_TIME_SPEED)]
         public static void HandleLoginSetTimeSpeed(Packet packet)
         {
             packet.ReadInt32("Unk Int32");
@@ -878,7 +878,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.AddValue("Position", pos);
         }
 
-        [Parser(Opcode.SMSG_SET_PHASE_SHIFT_CHANGE)]
+        [Parser(Opcode.SMSG_PHASE_SHIFT_CHANGE)]
         public static void HandlePhaseShift(Packet packet)
         {
             CoreParsers.MovementHandler.ActivePhases.Clear();
@@ -920,7 +920,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.WriteGuid("GUID", guid);
         }
 
-        [Parser(Opcode.SMSG_CLIENT_CONTROL_UPDATE)]
+        [Parser(Opcode.SMSG_CONTROL_UPDATE)]
         public static void HandleClientControlUpdate(Packet packet)
         {
             var guid = new byte[8];

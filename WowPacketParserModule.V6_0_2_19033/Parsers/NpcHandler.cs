@@ -33,7 +33,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_NPC_TEXT_UPDATE)]
+        [Parser(Opcode.SMSG_QUERY_NPC_TEXT_RESPONSE)]
         public static void HandleNpcTextUpdate(Packet packet)
         {
             var npcText = new NpcTextMop();
@@ -174,7 +174,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_LIST_INVENTORY)]
+        [Parser(Opcode.SMSG_VENDOR_INVENTORY)]
         public static void HandleVendorInventoryList(Packet packet)
         {
             var npcVendor = new NpcVendor();
@@ -318,7 +318,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Healer");
         }
 
-        [Parser(Opcode.SMSG_TABARD_VENDOR_ACTIVATE)]
+        [Parser(Opcode.SMSG_PLAYER_TABARD_VENDOR_ACTIVATE)]
         public static void HandleTabardVendorActivate(Packet packet)
         {
             packet.ReadPackedGuid128("Vendor");

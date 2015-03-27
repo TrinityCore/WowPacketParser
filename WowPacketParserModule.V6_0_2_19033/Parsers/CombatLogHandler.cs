@@ -50,7 +50,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 SpellParsers.ReadSpellCastLogData(packet);
         }
 
-        [Parser(Opcode.SMSG_PERIODICAURALOG)]
+        [Parser(Opcode.SMSG_SPELL_PERIODIC_AURA_LOG)]
         public static void HandlePeriodicAuraLog(Packet packet)
         {
             packet.ReadPackedGuid128("TargetGUID");
@@ -219,7 +219,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 SpellHandler.ReadSpellCastLogData(packet);
         }
 
-        [Parser(Opcode.SMSG_ENVIRONMENTALDAMAGELOG)]
+        [Parser(Opcode.SMSG_ENVIRONMENTAL_DAMAGE_LOG)]
         public static void HandleEnvirenmentalDamageLog(Packet packet)
         {
             packet.ReadPackedGuid128("Victim");
@@ -297,7 +297,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_ATTACKSWING_LANDED_LOG)]
+        [Parser(Opcode.SMSG_ATTACK_SWING_LANDED_LOG)]
         public static void HandleAttackswingLandedLog(Packet packet)
         {
             SpellParsers.ReadSpellCastLogData(packet);

@@ -70,7 +70,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Slot");
         }
 
-        [Parser(Opcode.SMSG_SUPERCEDED_SPELL)]
+        [Parser(Opcode.SMSG_SUPERCEDED_SPELLS)]
         public static void HandleSupercededSpell(Packet packet)
         {
             packet.ReadInt32<SpellId>("Spell ID");
@@ -167,7 +167,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk Int32");
         }
 
-        [Parser(Opcode.SMSG_INITIAL_SPELLS, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.SMSG_SEND_KNOWN_SPELLS, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleInitialSpells(Packet packet)
         {
             packet.ReadByte("Talent Spec");
@@ -217,7 +217,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_INITIAL_SPELLS, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.SMSG_SEND_KNOWN_SPELLS, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleInitialSpells510(Packet packet)
         {
             var count = packet.ReadBits("Spell Count", 24);
@@ -1426,7 +1426,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32E<UnknownFlags>("Flags2");
         }
 
-        [Parser(Opcode.SMSG_SPELL_CATEGORY_COOLDOWN)]
+        [Parser(Opcode.SMSG_CATEGORY_COOLDOWN)]
         public static void HandleSpellCategoryCooldown(Packet packet)
         {
             var count = packet.ReadBits("Count", 23);

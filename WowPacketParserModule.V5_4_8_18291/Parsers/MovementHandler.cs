@@ -471,7 +471,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             ReadPlayerMovementInfo(packet, Info.MoveUnroot);
         }
 
-        [Parser(Opcode.SMSG_SET_PHASE_SHIFT_CHANGE)]
+        [Parser(Opcode.SMSG_PHASE_SHIFT_CHANGE)]
         public static void HandlePhaseShift(Packet packet)
         {
             CoreParsers.MovementHandler.ActivePhases.Clear();
@@ -756,7 +756,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             ReadPlayerMovementInfo(packet, Info.MoveTeleport);
         }
 
-        [Parser(Opcode.SMSG_LOGIN_SETTIMESPEED)]
+        [Parser(Opcode.SMSG_LOGIN_SET_TIME_SPEED)]
         public static void HandleLoginSetTimeSpeed(Packet packet)
         {
             packet.ReadInt32("Unk Int32");
@@ -907,7 +907,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("GUID", guid);
         }
 
-        [Parser(Opcode.SMSG_CLIENT_CONTROL_UPDATE)]
+        [Parser(Opcode.SMSG_CONTROL_UPDATE)]
         public static void HandleClientControlUpdate(Packet packet)
         {
             var guid = new byte[8];

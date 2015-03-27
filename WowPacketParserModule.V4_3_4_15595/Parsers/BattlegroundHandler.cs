@@ -599,7 +599,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_RATED_BG_STATS)]
+        [Parser(Opcode.SMSG_RATED_BATTLEFIELD_INFO)]
         public static void HandleRatedBGStats(Packet packet)
         {
             packet.ReadUInt32("BgWeeklyWins20vs20");
@@ -910,7 +910,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
 
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_NEEDCONFIRMATION)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_NEED_CONFIRMATION)]
         public static void HandleBattlefieldStatusNeedConfirmation(Packet packet)
         {
 
@@ -965,7 +965,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("BG Guid", guid2);
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_WAITFORGROUPS)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_WAIT_FOR_GROUPS)]
         public static void HandleBattlefieldStatusWaitForGroups(Packet packet)
         {
             packet.ReadByte("Unk Byte");

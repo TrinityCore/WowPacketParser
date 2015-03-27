@@ -78,7 +78,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_DETAILS)]
+        [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_DETAILS)]
         public static void HandleQuestgiverDetails(Packet packet)
         {
             packet.ReadUInt32E<QuestFlags>("Quest Flags");
@@ -231,7 +231,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS)]
+        [Parser(Opcode.SMSG_QUEST_GIVER_REQUEST_ITEMS)]
         public static void HandleQuestRequestItems(Packet packet)
         {
             var guid = new byte[8];

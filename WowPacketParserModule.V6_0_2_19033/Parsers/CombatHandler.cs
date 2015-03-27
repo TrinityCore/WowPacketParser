@@ -63,7 +63,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadSingle("Unk Float");
         }
 
-        [Parser(Opcode.SMSG_ATTACKERSTATEUPDATE)]
+        [Parser(Opcode.SMSG_ATTACKER_STATE_UPDATE)]
         public static void HandleAttackerStateUpdate(Packet packet)
         {
             var bit52 = packet.ReadBit("HasLogData");
@@ -76,14 +76,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadAttackRoundInfo(packet);            
         }
 
-        [Parser(Opcode.SMSG_ATTACKSTART)]
+        [Parser(Opcode.SMSG_ATTACK_START)]
         public static void HandleAttackStartStart(Packet packet)
         {
             packet.ReadPackedGuid128("Attacker Guid");
             packet.ReadPackedGuid128("Victim Guid");
         }
 
-        [Parser(Opcode.SMSG_ATTACKSTOP)]
+        [Parser(Opcode.SMSG_ATTACK_STOP)]
         public static void HandleAttackStartStop(Packet packet)
         {
             packet.ReadPackedGuid128("Attacker Guid");
@@ -167,7 +167,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("VictimGUID");
         }
 
-        [Parser(Opcode.SMSG_ATTACKSWING_ERROR)]
+        [Parser(Opcode.SMSG_ATTACK_SWING_ERROR)]
         public static void HandleAttackSwingError(Packet packet)
         {
             packet.ReadBitsE<AttackSwingErr>("Reason", 2);

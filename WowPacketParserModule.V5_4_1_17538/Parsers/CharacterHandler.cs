@@ -29,7 +29,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             packet.WriteGuid("GUID", playerGuid);
         }
 
-        [Parser(Opcode.SMSG_CHAR_ENUM)]
+        [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT)]
         public static void HandleCharEnum(Packet packet)
         {
             var count = packet.ReadBits("Char count", 16);

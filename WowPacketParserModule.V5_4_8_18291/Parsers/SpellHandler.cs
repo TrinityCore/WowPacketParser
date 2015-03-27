@@ -941,7 +941,7 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_INITIAL_SPELLS)]
+        [Parser(Opcode.SMSG_SEND_KNOWN_SPELLS)]
         public static void HandleInitialSpells(Packet packet)
         {
             packet.ReadBit("InitialLogin");
@@ -1100,7 +1100,7 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_TALENTS_INFO)]
+        [Parser(Opcode.SMSG_UPDATE_TALENT_DATA)]
         public static void ReadTalentInfo(Packet packet)
         {
             packet.ReadByte("Active Spec Group");
@@ -1140,7 +1140,7 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
             packet.ReadUInt32("Unk");
         }
 
-        [Parser(Opcode.SMSG_CHANNEL_START)]
+        [Parser(Opcode.SMSG_SPELL_CHANNEL_START)]
         public static void HandleSpellChannelStart(Packet packet)
         {
             var targetGUD = new byte[8];
@@ -1230,7 +1230,7 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
             packet.WriteGuid("CasterGUID", casterGUID);
         }
 
-        [Parser(Opcode.SMSG_CHANNEL_UPDATE)]
+        [Parser(Opcode.SMSG_SPELL_CHANNEL_UPDATE)]
         public static void HandleSpellChannelUpdate(Packet packet)
         {
             var guid = new byte[8];
@@ -1424,7 +1424,7 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPELL_CATEGORY_COOLDOWN)]
+        [Parser(Opcode.SMSG_CATEGORY_COOLDOWN)]
         public static void HandleSpellCategoryCooldown(Packet packet)
         {
             var count = packet.ReadBits("Count", 21);

@@ -301,7 +301,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("LeftEarly");        // unconfirmed order
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_NEEDCONFIRMATION)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_NEED_CONFIRMATION)]
         public static void HandleBattlefieldStatus_NeedConfirmation(Packet packet)
         {
             ReadBattlefieldStatus_Header(packet);
@@ -437,7 +437,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("State");
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_WAITFORGROUPS)]
+        [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_WAIT_FOR_GROUPS)]
         public static void HandleBattlefieldStatus_WaitForGroups(Packet packet)
         {
             ReadBattlefieldStatus_Header(packet, "Hdr");
