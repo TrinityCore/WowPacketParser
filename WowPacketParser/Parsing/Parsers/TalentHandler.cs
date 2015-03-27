@@ -118,7 +118,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("GUID", guid);
         }
 
-        [Parser(Opcode.SMSG_TALENTS_INFO, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.SMSG_UPDATE_TALENT_DATA, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleTalentsInfo(Packet packet)
         {
             var pet = packet.ReadBool("Pet Talents");
@@ -136,7 +136,7 @@ namespace WowPacketParser.Parsing.Parsers
                 ReadTalentInfo(packet);
         }
 
-        [Parser(Opcode.SMSG_TALENTS_INFO, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.SMSG_UPDATE_TALENT_DATA, ClientVersionBuild.V5_1_0_16309)]
         public static void ReadTalentInfo510(Packet packet)
         {
             var specCount = packet.ReadByte("Spec Group count");

@@ -7,7 +7,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 {
     public static class MovementHandler
     {
-        [Parser(Opcode.SMSG_BINDPOINTUPDATE)]
+        [Parser(Opcode.SMSG_BIND_POINT_UPDATE)]
         public static void HandleBindPointUpdate(Packet packet)
         {
             packet.ReadSingle("Position Z");
@@ -17,7 +17,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadSingle("Position X");
         }
 
-        [Parser(Opcode.SMSG_LOGIN_SETTIMESPEED)]
+        [Parser(Opcode.SMSG_LOGIN_SET_TIME_SPEED)]
         public static void HandleLoginSetTimeSpeed(Packet packet)
         {
             packet.ReadPackedTime("Game Time");
@@ -434,7 +434,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.AddValue("Position", pos);
         }
 
-        [Parser(Opcode.SMSG_SET_PHASE_SHIFT_CHANGE)]
+        [Parser(Opcode.SMSG_PHASE_SHIFT_CHANGE)]
         public static void HandlePhaseShift(Packet packet)
         {
             CoreParsers.MovementHandler.ActivePhases.Clear();

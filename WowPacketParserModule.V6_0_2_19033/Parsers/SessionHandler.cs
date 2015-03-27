@@ -171,7 +171,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBytes("Digest", 20);
         }
 
-        [Parser(Opcode.SMSG_REDIRECT_CLIENT)]
+        [Parser(Opcode.SMSG_CONNECT_TO)]
         public static void HandleRedirectClient422(Packet packet)
         {
             packet.ReadUInt64("Key");

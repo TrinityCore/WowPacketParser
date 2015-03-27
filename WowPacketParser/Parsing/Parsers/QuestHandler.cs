@@ -175,7 +175,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_QUEST_QUERY_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V5_0_5_16048)]
+        [Parser(Opcode.SMSG_QUERY_QUEST_INFO_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V5_0_5_16048)]
         public static void HandleQuestQueryResponse(Packet packet)
         {
             var id = packet.ReadEntry("Quest ID");
@@ -388,7 +388,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_QUEST_QUERY_RESPONSE, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.SMSG_QUERY_QUEST_INFO_RESPONSE, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestQueryResponse510(Packet packet)
         {
             var id = packet.ReadEntry("Quest ID");
@@ -748,7 +748,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
         }
 
-        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_LIST)]
+        [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_LIST_MESSAGE)]
         public static void HandleQuestgiverQuestList(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -790,7 +790,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Unk UInt32");
         }
 
-        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_DETAILS, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestgiverDetails(Packet packet)
         {
             packet.ReadGuid("GUID1");
@@ -859,7 +859,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_DETAILS, ClientVersionBuild.V5_1_0_16309, ClientVersionBuild.V5_1_0a_16357)]
+        [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_DETAILS, ClientVersionBuild.V5_1_0_16309, ClientVersionBuild.V5_1_0a_16357)]
         public static void HandleQuestgiverDetails510(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -914,7 +914,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Unk UInt32");
         }
 
-        [Parser(Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_QUEST_GIVER_REQUEST_ITEMS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleQuestRequestItems(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -954,7 +954,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.SMSG_QUEST_GIVER_REQUEST_ITEMS, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestRequestItems434(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -995,7 +995,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk flags 5"); // 64
         }
 
-        [Parser(Opcode.SMSG_QUESTGIVER_REQUEST_ITEMS, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.SMSG_QUEST_GIVER_REQUEST_ITEMS, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestRequestItems510(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -1036,7 +1036,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk flags 5"); // 64
         }
 
-        [Parser(Opcode.SMSG_QUESTGIVER_OFFER_REWARD)]
+        [Parser(Opcode.SMSG_QUEST_GIVER_OFFER_REWARD_MESSAGE)]
         public static void HandleQuestOfferReward(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -1084,20 +1084,20 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Reward");
         }
 
-        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_INVALID)]
+        [Parser(Opcode.SMSG_QUEST_GIVER_INVALID_QUEST)]
         public static void HandleQuestInvalid(Packet packet)
         {
             packet.ReadUInt32E<QuestReasonType>("Reason");
         }
 
-        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_FAILED)]
+        [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_FAILED)]
         public static void HandleQuestFailed(Packet packet)
         {
             packet.ReadUInt32<QuestId>("Quest ID");
             packet.ReadUInt32E<QuestReasonType>("Reason");
         }
 
-        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
+        [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_COMPLETE, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandleQuestCompleted(Packet packet)
         {
             packet.ReadInt32<QuestId>("Quest ID");
@@ -1108,7 +1108,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Arena Points");
         }
 
-        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_COMPLETE, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleQuestCompleted406(Packet packet)
         {
             packet.ReadBit("Unk");
@@ -1120,7 +1120,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Reward XP");
         }
 
-        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_COMPLETE, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleQuestCompleted422(Packet packet)
         {
             packet.ReadByte("Unk Byte");
@@ -1132,7 +1132,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Talent Points");
         }
 
-        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_COMPLETE, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestCompleted434(Packet packet)
         {
             packet.ReadInt32("Talent Points");
@@ -1145,7 +1145,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBit("Unk Bit 2");
         }
 
-        [Parser(Opcode.SMSG_QUESTGIVER_QUEST_COMPLETE, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_COMPLETE, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestCompleted510(Packet packet)
         {
             packet.ReadInt32("Talent Points");
@@ -1190,12 +1190,12 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByteE<QuestRequirementType>("Quest Requirement Type");
         }
 
-        [Parser(Opcode.SMSG_QUESTGIVER_STATUS)]
-        [Parser(Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE)]
+        [Parser(Opcode.SMSG_QUEST_GIVER_STATUS)]
+        [Parser(Opcode.SMSG_QUEST_GIVER_STATUS_MULTIPLE)]
         public static void HandleQuestgiverStatus(Packet packet)
         {
             uint count = 1;
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_QUESTGIVER_STATUS_MULTIPLE, Direction.ServerToClient))
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_QUEST_GIVER_STATUS_MULTIPLE, Direction.ServerToClient))
                 count = packet.ReadUInt32("Count");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))

@@ -75,7 +75,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         }
 
 
-        [Parser(Opcode.SMSG_REDIRECT_CLIENT)]
+        [Parser(Opcode.SMSG_CONNECT_TO)]
         public static void HandleRedirectClient(Packet packet)
         {
             packet.ReadUInt64("Unk Long");

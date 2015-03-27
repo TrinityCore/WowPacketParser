@@ -57,11 +57,11 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.WriteGuid("Guid", guid);
             packet.AddValue("Pet Number", Number);
 
-            // Store temporary name (will be replaced in SMSG_PET_NAME_QUERY_RESPONSE)
+            // Store temporary name (will be replaced in SMSG_QUERY_PET_NAME_RESPONSE)
             StoreGetters.AddName(GUID, Number.ToString(CultureInfo.InvariantCulture));
         }
 
-        [Parser(Opcode.SMSG_PET_NAME_QUERY_RESPONSE)]
+        [Parser(Opcode.SMSG_QUERY_PET_NAME_RESPONSE)]
         public static void HandlePetNameQueryResponse(Packet packet)
         {
             var number = packet.ReadUInt64("Pet number");

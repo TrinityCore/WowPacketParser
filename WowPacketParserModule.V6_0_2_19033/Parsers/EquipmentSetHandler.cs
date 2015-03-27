@@ -55,7 +55,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Set Icon", bits141);
         }
 
-        [Parser(Opcode.SMSG_EQUIPMENT_SET_SAVED)]
+        [Parser(Opcode.SMSG_EQUIPMENT_SET_ID)]
         public static void HandleEquipmentSetSaved(Packet packet)
         {
             packet.ReadUInt64("Set Guid");

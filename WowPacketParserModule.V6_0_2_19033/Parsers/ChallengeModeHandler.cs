@@ -101,7 +101,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 ReadChallengeModeAttempt(packet, i, "RealmLeaders");
         }
 
-        [Parser(Opcode.SMSG_CHALLENGE_MODE_REWARDS)]
+        [Parser(Opcode.SMSG_CHALLEGE_MODE_REWARDS)]
         public static void HandleChallegeModeRewards(Packet packet)
         {
             var int16 = packet.ReadInt32("MapChallengeModeRewardCount");

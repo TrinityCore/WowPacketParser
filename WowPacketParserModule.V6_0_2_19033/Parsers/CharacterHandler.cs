@@ -16,7 +16,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
         }
 
-        [Parser(Opcode.SMSG_CHAR_ENUM)]
+        [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT)]
         public static void HandleCharEnum(Packet packet)
         {
             packet.ReadBit("Success");
@@ -174,7 +174,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByteE<Gender>("Sex");
         }
 
-        [Parser(Opcode.SMSG_RANDOMIZE_CHAR_NAME)]
+        [Parser(Opcode.SMSG_GENERATE_RANDOM_CHARACTER_NAME_RESULT)]
         public static void HandleGenerateRandomCharacterNameResponse(Packet packet)
         {
             packet.ReadBit("Success");
@@ -194,7 +194,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("NewName", bits16);
         }
 
-        [Parser(Opcode.SMSG_CHAR_RENAME)]
+        [Parser(Opcode.SMSG_CHARACTER_RENAME_RESULT)]
         public static void HandleServerCharRename(Packet packet)
         {
             packet.ReadByte("Result");
@@ -244,7 +244,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadByte("FaceID");
         }
 
-        [Parser(Opcode.SMSG_CHAR_FACTION_CHANGE)]
+        [Parser(Opcode.SMSG_CHAR_FACTION_CHANGE_RESULT)]
         public static void HandleCharFactionChangeResult(Packet packet)
         {
             packet.ReadByte("Result");
@@ -320,7 +320,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("SpecID");
         }
 
-        [Parser(Opcode.SMSG_LOG_XPGAIN)]
+        [Parser(Opcode.SMSG_LOG_XP_GAIN)]
         public static void HandleLogXPGain(Packet packet)
         {
             packet.ReadPackedGuid128("Victim");
@@ -361,7 +361,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("NativeRealmAddress");
         }
 
-        [Parser(Opcode.SMSG_NAME_QUERY_RESPONSE)]
+        [Parser(Opcode.SMSG_QUERY_PLAYER_NAME_RESPONSE)]
         public static void HandleNameQueryResponse(Packet packet)
         {
             var hasData = packet.ReadByte("HasData");
@@ -410,7 +410,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("TriggerEvent");
         }
 
-        [Parser(Opcode.SMSG_LEVELUP_INFO)]
+        [Parser(Opcode.SMSG_LEVEL_UP_INFO)]
         public static void HandleLevelUpInfo(Packet packet)
         {
             packet.ReadInt32("Level");

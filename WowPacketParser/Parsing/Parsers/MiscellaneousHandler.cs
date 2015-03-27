@@ -375,13 +375,13 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Ping");
         }
 
-        [Parser(Opcode.SMSG_CLIENTCACHE_VERSION)]
+        [Parser(Opcode.SMSG_CACHE_VERSION)]
         public static void HandleClientCacheVersion(Packet packet)
         {
             packet.ReadInt32("Version");
         }
 
-        [Parser(Opcode.SMSG_TIME_SYNC_REQ)]
+        [Parser(Opcode.SMSG_TIME_SYNC_REQUEST)]
         public static void HandleTimeSyncReq(Packet packet)
         {
             packet.ReadInt32("Count");
@@ -646,7 +646,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBool("Apply");
         }
 
-        [Parser(Opcode.SMSG_SERVER_MESSAGE)]
+        [Parser(Opcode.SMSG_CHAT_SERVER_MESSAGE)]
         public static void HandleServerMessage(Packet packet)
         {
             packet.ReadUInt32("Server Message DBC Id");

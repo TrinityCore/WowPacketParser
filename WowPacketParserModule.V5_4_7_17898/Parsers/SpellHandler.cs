@@ -1003,7 +1003,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
                 packet.ReadUInt32<SpellId>("Spell ID", i);
         }
 
-        [Parser(Opcode.SMSG_INITIAL_SPELLS)]
+        [Parser(Opcode.SMSG_SEND_KNOWN_SPELLS)]
         public static void HandleInitialSpells(Packet packet)
         {
             packet.ReadBit("InitialLogin");
@@ -1082,7 +1082,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_TALENTS_INFO)]
+        [Parser(Opcode.SMSG_UPDATE_TALENT_DATA)]
         public static void ReadTalentInfo(Packet packet)
         {
             packet.ReadByte("Active Spec Group");
@@ -1163,7 +1163,7 @@ namespace WowPacketParser.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_SPELL_CATEGORY_COOLDOWN)]
+        [Parser(Opcode.SMSG_CATEGORY_COOLDOWN)]
         public static void HandleSpellCategoryCooldown(Packet packet)
         {
             var count = packet.ReadBits("Count", 21);

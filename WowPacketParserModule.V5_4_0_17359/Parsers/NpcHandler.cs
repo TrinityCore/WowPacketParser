@@ -267,7 +267,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("Guid1", guid1);
         }
 
-        [Parser(Opcode.SMSG_LIST_INVENTORY)]
+        [Parser(Opcode.SMSG_VENDOR_INVENTORY)]
         public static void HandleVendorInventoryList(Packet packet)
         {
             var npcVendor = new NpcVendor();

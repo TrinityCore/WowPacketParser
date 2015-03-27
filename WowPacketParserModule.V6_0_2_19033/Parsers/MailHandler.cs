@@ -11,7 +11,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
         }
 
-        [Parser(Opcode.SMSG_SEND_MAIL_RESULT)]
+        [Parser(Opcode.SMSG_MAIL_COMMAND_RESULT)]
         public static void HandleMailCommandResult(Packet packet)
         {
             packet.ReadUInt32("MailID");

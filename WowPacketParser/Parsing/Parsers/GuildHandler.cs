@@ -273,7 +273,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guild Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_GUILD_PARTY_STATE_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
+        [Parser(Opcode.SMSG_GUILD_PARTY_STATE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleGuildUpdatePartyStateResponse(Packet packet)
         {
             packet.ReadByte("Unk byte");
@@ -282,7 +282,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Unk UInt32 3");
         }
 
-        [Parser(Opcode.SMSG_GUILD_PARTY_STATE_RESPONSE, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_GUILD_PARTY_STATE, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildUpdatePartyStateResponse430(Packet packet)
         {
             packet.ReadSingle("Guild XP multiplier");
@@ -303,7 +303,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Guild Id");
         }
 
-        [Parser(Opcode.SMSG_GUILD_QUERY_RESPONSE)]
+        [Parser(Opcode.SMSG_QUERY_GUILD_INFO_RESPONSE)]
         public static void HandleGuildQueryResponse(Packet packet)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596)) // Not sure when it was changed
@@ -846,7 +846,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadGuid("Player GUID");
         }
 
-        [Parser(Opcode.SMSG_GUILD_REWARDS_LIST, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.SMSG_GUILD_REWARD_LIST, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildRewardsList(Packet packet)
         {
             packet.ReadUInt32("Guild Id");
@@ -1118,7 +1118,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("Petition GUID");
         }
 
-        [Parser(Opcode.SMSG_TURN_IN_PETITION_RESULTS)]
+        [Parser(Opcode.SMSG_TURN_IN_PETITION_RESULT)]
         public static void HandlePetitionTurnInResults(Packet packet)
         {
             packet.ReadUInt32E<PetitionResultType>("Result");

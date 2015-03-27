@@ -95,7 +95,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Combo Points");
         }
 
-        [Parser(Opcode.SMSG_ENVIRONMENTALDAMAGELOG)]
+        [Parser(Opcode.SMSG_ENVIRONMENTAL_DAMAGE_LOG)]
         public static void HandleEnvirenmentalDamageLog(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -111,14 +111,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadPackedGuid("Target GUID");
         }
 
-        [Parser(Opcode.SMSG_ATTACKSTART)]
+        [Parser(Opcode.SMSG_ATTACK_START)]
         public static void HandleAttackStartStart(Packet packet)
         {
             packet.ReadGuid("GUID");
             packet.ReadGuid("Victim GUID");
         }
 
-        [Parser(Opcode.SMSG_ATTACKSTOP)]
+        [Parser(Opcode.SMSG_ATTACK_STOP)]
         [Parser(Opcode.SMSG_COMBAT_EVENT_FAILED)]
         public static void HandleAttackStartStop(Packet packet)
         {
@@ -127,7 +127,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk int"); // Has something to do with facing?
         }
 
-        [Parser(Opcode.SMSG_ATTACKERSTATEUPDATE, ClientVersionBuild.V4_0_6_13596)]
+        [Parser(Opcode.SMSG_ATTACKER_STATE_UPDATE, ClientVersionBuild.V4_0_6_13596)]
         public static void HandleAttackerStateUpdate406(Packet packet)
         {
             var hitInfo = packet.ReadInt32E<SpellHitInfo>("HitInfo");
@@ -185,7 +185,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadSingle("Unk Float");
         }
 
-        [Parser(Opcode.SMSG_ATTACKERSTATEUPDATE, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
+        [Parser(Opcode.SMSG_ATTACKER_STATE_UPDATE, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6_13596)]
         public static void HandleAttackerStateUpdate(Packet packet)
         {
             var hitInfo = packet.ReadInt32E<SpellHitInfo>("HitInfo");

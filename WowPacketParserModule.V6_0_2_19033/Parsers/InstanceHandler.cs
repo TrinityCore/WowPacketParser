@@ -76,7 +76,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_SET_RAID_DIFFICULTY)]
-        [Parser(Opcode.SMSG_SET_RAID_DIFFICULTY)]
+        [Parser(Opcode.SMSG_RAID_DIFFICULTY_SET)]
         public static void HandleSetRaidDifficulty(Packet packet)
         {
             packet.ReadInt32("DifficultyID");

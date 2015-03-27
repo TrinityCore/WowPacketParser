@@ -14,7 +14,7 @@ namespace WowPacketParser.Store.Objects
 
         public int Level;
 
-        // Used when inserting data from SMSG_CHAR_ENUM into the Objects container
+        // Used when inserting data from SMSG_ENUM_CHARACTERS_RESULT into the Objects container
         public static WoWObject UpdatePlayerInfo(Player oldPlayer, Player newPlayer)
         {
             oldPlayer.Race = newPlayer.Race;

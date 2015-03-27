@@ -9,7 +9,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 {
     public static class CharacterHandler
     {
-        [Parser(Opcode.SMSG_CHAR_ENUM)]
+        [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT)]
         public static void HandleCharEnum(Packet packet)
         {
             //var unkCounter = packet.ReadBits("Unk Counter", 21);
@@ -168,7 +168,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.WriteGuid("GUID", playerGuid);
         }
 
-        [Parser(Opcode.SMSG_LOG_XPGAIN)]
+        [Parser(Opcode.SMSG_LOG_XP_GAIN)]
         public static void HandleLogXPGain(Packet packet)
         {
             var guid = new byte[8];

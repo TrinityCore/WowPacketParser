@@ -102,7 +102,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             CoreParsers.SessionHandler.LoginGuid = new WowGuid64(BitConverter.ToUInt64(guid, 0));
         }
 
-        [Parser(Opcode.SMSG_REDIRECT_CLIENT)]
+        [Parser(Opcode.SMSG_CONNECT_TO)]
         public static void HandleRedirectClient(Packet packet)
         {
             packet.ReadUInt64("Key");

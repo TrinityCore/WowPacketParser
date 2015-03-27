@@ -194,7 +194,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_NPC_TEXT_UPDATE)]
+        [Parser(Opcode.SMSG_QUERY_NPC_TEXT_RESPONSE)]
         public static void HandleNpcTextUpdate(Packet packet)
         {
             var npcText = new NpcTextMop();
@@ -225,7 +225,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             Storage.NpcTextsMop.Add((uint)entry.Key, npcText, packet.TimeSpan);
         }
 
-        [Parser(Opcode.SMSG_LIST_INVENTORY)]
+        [Parser(Opcode.SMSG_VENDOR_INVENTORY)]
         public static void HandleVendorInventoryList(Packet packet)
         {
             var npcVendor = new NpcVendor();

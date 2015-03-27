@@ -130,7 +130,7 @@ namespace WowPacketParserModule.V5_4_2_17659.Parsers
             packet.WriteGuid("TargetGUID", targetGUID);
         }
 
-        [Parser(Opcode.SMSG_ATTACKSTART)]
+        [Parser(Opcode.SMSG_ATTACK_START)]
         public static void HandleAttackStartStart(Packet packet)
         {
             var AttackerGUID = new byte[8];
@@ -174,7 +174,7 @@ namespace WowPacketParserModule.V5_4_2_17659.Parsers
             packet.WriteGuid("Victim GUID", VictimGUID);
         }
 
-        [Parser(Opcode.SMSG_ATTACKSTOP)]
+        [Parser(Opcode.SMSG_ATTACK_STOP)]
         public static void HandleAttackStartStop(Packet packet)
         {
             var VictimGUID = new byte[8];
@@ -231,7 +231,7 @@ namespace WowPacketParserModule.V5_4_2_17659.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_PERIODICAURALOG)]
+        [Parser(Opcode.SMSG_SPELL_PERIODIC_AURA_LOG)]
         public static void HandlePeriodicAuraLog(Packet packet)
         {
             var casterGUID = new byte[8];

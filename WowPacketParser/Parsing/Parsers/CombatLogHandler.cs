@@ -34,7 +34,7 @@ namespace WowPacketParser.Parsing.Parsers
                         ReadSpellEnergizeLog(packet, i);
                         break;
                     }
-                    case Opcode.SMSG_PERIODICAURALOG:
+                    case Opcode.SMSG_SPELL_PERIODIC_AURA_LOG:
                     {
                         ReadPeriodicAuraLog(packet, i); // sub_5EEE10
                         break;
@@ -55,7 +55,7 @@ namespace WowPacketParser.Parsing.Parsers
                         break;
                     }
                     case Opcode.SMSG_SPELL_STEAL_LOG:
-                    case Opcode.SMSG_SPELL_DISPEL_LOG:
+                    case Opcode.SMSG_SPELL_DISPELL_LOG:
                     case Opcode.SMSG_SPELL_BREAK_LOG:
                     {
                         ReadSpellRemoveLog(packet, i);
@@ -68,14 +68,14 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_SPELL_STEAL_LOG)]
-        [Parser(Opcode.SMSG_SPELL_DISPEL_LOG)]
+        [Parser(Opcode.SMSG_SPELL_DISPELL_LOG)]
         [Parser(Opcode.SMSG_SPELL_BREAK_LOG)]
         public static void HandleSpellRemoveLog(Packet packet)
         {
             ReadSpellRemoveLog(packet);
         }
 
-        [Parser(Opcode.SMSG_PERIODICAURALOG)]
+        [Parser(Opcode.SMSG_SPELL_PERIODIC_AURA_LOG)]
         public static void HandlePeriodicAuraLog(Packet packet)
         {
             ReadPeriodicAuraLog(packet);
