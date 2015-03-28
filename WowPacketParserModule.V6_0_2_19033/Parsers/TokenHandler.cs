@@ -78,5 +78,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadUInt32("UnkInt32");
         }
+
+        [Parser(Opcode.SMSG_TOKEN_UNK1)]
+        public static void HandleTokenUnk1(Packet packet)
+        {
+            var count1 = packet.ReadInt32("UnkCount1");
+            var count2 = packet.ReadInt32("UnkCount2");
+
+            for (int i = 0; i < count1; i++)
+                packet.ReadInt64("UnkInt64_1", i);
+
+            for (int i = 0; i < count2; i++)
+                packet.ReadInt64("UnkInt64_2", i);
+        }
     }
 }
