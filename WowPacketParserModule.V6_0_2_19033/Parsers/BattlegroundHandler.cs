@@ -28,8 +28,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
         }
 
-        [Parser(Opcode.SMSG_BATTLEFIELD_RATED_INFO)]
-        public static void HandleBattlefieldRatedInfo(Packet packet)
+        [Parser(Opcode.SMSG_RATED_BATTLEFIELD_INFO)]
+        public static void HandleRatedBattlefieldInfo(Packet packet)
         {
             for (int i = 0; i < 6; i++)
             {
