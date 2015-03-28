@@ -144,6 +144,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_CREATE_CHAR, 0x1495},
             {Opcode.SMSG_DELETE_CHAR, 0x14C1},
             {Opcode.SMSG_ENUM_CHARACTERS_RESULT, 0x0FDD},
+            {Opcode.SMSG_CHAT, 0x0699},
             {Opcode.SMSG_CHAT_IGNORED_ACCOUNT_MUTED, 0x02C5},
             {Opcode.SMSG_CLEAR_BOSS_EMOTES, 0x1395},
             {Opcode.SMSG_CACHE_VERSION, 0x1489},
@@ -235,7 +236,6 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             //{Opcode.SMSG_LOOT_UPDATED, 0x15C4}, new
             {Opcode.SMSG_MAIL_LIST_RESULT, 0x14C8},
             {Opcode.SMSG_MAP_OBJ_EVENTS, 0x0A84},
-            {Opcode.SMSG_MESSAGECHAT, 0x0699},
             {Opcode.SMSG_MESSAGE_BOX, 0x14D9},
             {Opcode.SMSG_MISSILE_CANCEL, 0x03CD},
             {Opcode.SMSG_MONEY_NOTIFY, 0x0DCC},

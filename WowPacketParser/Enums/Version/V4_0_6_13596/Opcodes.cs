@@ -713,6 +713,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_ENUM_CHARACTERS_RESULT, 0x0ECCC},
             {Opcode.SMSG_CHAR_FACTION_CHANGE_RESULT, 0x023AC},
             {Opcode.SMSG_CHARACTER_RENAME_RESULT, 0x0E0EC},
+            {Opcode.SMSG_CHAT, 0x061E4},
             {Opcode.SMSG_CHAT_PLAYER_AMBIGUOUS, 0x06AE8},
             {Opcode.SMSG_CHAT_PLAYER_NOTFOUND, 0x035A0},
             {Opcode.SMSG_CHAT_RESTRICTED, 0x03EC8},
@@ -935,7 +936,6 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_MEETINGSTONE_IN_PROGRESS, 0x0E7C4},
             {Opcode.SMSG_MEETINGSTONE_MEMBER_ADDED, 0x0B2A8},
             {Opcode.SMSG_MEETINGSTONE_SETQUEUE, 0x0ED88}, //(almost100%sureit'swrong)
-            {Opcode.SMSG_MESSAGECHAT, 0x061E4},
             {Opcode.SMSG_MINIGAME_MOVE_FAILED, 0x10109}, //UnknownopcodeID
             {Opcode.SMSG_MINIGAME_SETUP, 0x026A4},
             {Opcode.SMSG_MINIGAME_STATE, 0x0A5A8},

@@ -77,7 +77,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Message", len);
         }
 
-        [Parser(Opcode.SMSG_MESSAGECHAT)]
+        [Parser(Opcode.SMSG_CHAT)]
         public static void HandleServerChatMessage(Packet packet)
         {
             var text = new CreatureText
@@ -101,7 +101,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var prefixLen = packet.ReadBits(5);
             var channelLen = packet.ReadBits(7);
             var textLen = packet.ReadBits(12);
-            packet.ReadBits("ChatFlags", 10);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_2_19802))
+                packet.ReadBits("ChatFlags", 11);
+            else
+                packet.ReadBits("ChatFlags", 10);
 
             packet.ReadBit("HideChatLog");
             packet.ReadBit("FakeSenderName");

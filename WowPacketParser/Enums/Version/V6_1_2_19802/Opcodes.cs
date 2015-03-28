@@ -339,6 +339,7 @@ namespace WowPacketParser.Enums.Version.V6_1_2_19802
             {Opcode.CMSG_REALM_NAME_QUERY, 0x0F9F},
             {Opcode.CMSG_RECLAIM_CORPSE, 0x0DB1},
             {Opcode.CMSG_RECRUIT_A_FRIEND, 0x0F3E},
+            {Opcode.CMSG_REGISTER_ADDON_PREFIXES, 0x1D2A},
             {Opcode.CMSG_REORDER_CHARACTERS, 0x17B7},
             {Opcode.CMSG_REPAIR_ITEM, 0x19A2},
             {Opcode.CMSG_REPOP_REQUEST, 0x0D36},

@@ -107,7 +107,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("TargetGuid", targetGuid);
         }
 
-        [Parser(Opcode.SMSG_MESSAGECHAT)]
+        [Parser(Opcode.SMSG_CHAT)]
         public static void HandleServerChatMessage(Packet packet)
         {
             var text = new CreatureText();

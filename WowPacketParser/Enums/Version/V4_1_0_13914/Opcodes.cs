@@ -48,6 +48,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_CHANNEL_LIST, 0x09E2E}, // 4.1.0 13914
             {Opcode.SMSG_CHANNEL_MEMBER_COUNT, 0x03C3D}, // 4.1.0 13914
             {Opcode.SMSG_CHANNEL_NOTIFY, 0x02E2E}, // 4.1.0 13914
+            {Opcode.SMSG_CHAT, 0x0DD7C}, // 4.1.0 13914
             {Opcode.SMSG_CHAT_PLAYER_AMBIGUOUS, 0x0FA3E}, // 4.1.0 13914
             {Opcode.SMSG_CHAT_PLAYER_NOTFOUND, 0x01E2D}, // 4.1.0 13914
             {Opcode.SMSG_CHAT_RESTRICTED, 0x07E7C}, // 4.1.0 13914
@@ -140,7 +141,6 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_MAIL_LIST_RESULT, 0x03B7D}, // 4.1.0 13914
             {Opcode.SMSG_MEETINGSTONE_IN_PROGRESS, 0x0AD7D}, // 4.1.0 13914
             {Opcode.SMSG_MEETINGSTONE_MEMBER_ADDED, 0x02F6C}, // 4.1.0 13914
-            {Opcode.SMSG_MESSAGECHAT, 0x0DD7C}, // 4.1.0 13914
             {Opcode.SMSG_MIRROR_IMAGE_COMPONENTED_DATA, 0x01C3E}, // 4.1.0 13914
             {Opcode.SMSG_MOTD, 0x0987F}, // 4.1.0 13914
             {Opcode.SMSG_MOUNT_SPECIAL_ANIM, 0x0BC2C}, // 4.1.0 13914

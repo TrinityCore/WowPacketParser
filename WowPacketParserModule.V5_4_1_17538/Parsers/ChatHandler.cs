@@ -9,7 +9,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
 {
     public static class ChatHandler
     {
-        [Parser(Opcode.SMSG_MESSAGECHAT)]
+        [Parser(Opcode.SMSG_CHAT)]
         public static void HandleServerChatMessage(Packet packet)
         {
             var text = new CreatureText();

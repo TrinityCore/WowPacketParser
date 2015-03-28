@@ -673,6 +673,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_ENUM_CHARACTERS_RESULT, 0x775E}, // (0x429C)(0x003B) //
             {Opcode.SMSG_CHAR_FACTION_CHANGE_RESULT, 0xCC76}, // (0x42FD)(0x04DA) //to 1241 (PFC server response)
             {Opcode.SMSG_CHARACTER_RENAME_RESULT, 0xA47D}, // (0xA33C)(0x02C8) //
+            {Opcode.SMSG_CHAT, 0x867F}, // (0x0BD0)(0x0096) //
             {Opcode.SMSG_CHAT_PLAYER_AMBIGUOUS, 0x032D}, // NF()(0x032D) //
             {Opcode.SMSG_CHAT_PLAYER_NOTFOUND, 0x3654}, // (0xC2D0)(0x02A9) //
             {Opcode.SMSG_CHAT_RESTRICTED, 0x3674}, // (0x23BC)(0x02FD) //
@@ -875,7 +876,6 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_MEETINGSTONE_IN_PROGRESS, 0xF57D}, // (0xE318)(0x0298) //ome UPDATE_COOLDOWN events
             {Opcode.SMSG_MEETINGSTONE_MEMBER_ADDED, 0xF77C}, // (0x43FD)(0x0299) //rrors: ERR_NOT_IN_GROUP (2,51) and ERR_NOT_IN_RAID (3,39,40)
             {Opcode.SMSG_MEETINGSTONE_SETQUEUE, 0x245F}, // (0xA215)(0x0295) //howed in console
-            {Opcode.SMSG_MESSAGECHAT, 0x867F}, // (0x0BD0)(0x0096) //
             {Opcode.SMSG_MINIGAME_MOVE_FAILED, 0x02F9}, // NF()(0x02F9) //
             {Opcode.SMSG_MINIGAME_SETUP, 0x1824}, // (0x82FC)(0x02F6) //
             {Opcode.SMSG_MINIGAME_STATE, 0x482B}, // (0x6B9C)(0x02F7) //
