@@ -127,7 +127,7 @@ namespace WowPacketParser.Enums.Version.V6_1_0_19678
             {Opcode.CMSG_GM_TICKET_DELETE_TICKET, 0x1B39},
             {Opcode.CMSG_GM_TICKET_GET_SYSTEM_STATUS, 0x1BB9},
             {Opcode.CMSG_GM_TICKET_GET_TICKET, 0x1939},
-            {Opcode.CMSG_GM_TICKET_GET_WEB_TICKET, 0x17E1},
+            {Opcode.CMSG_GM_TICKET_GET_CASE_STATUS, 0x17E1},
             {Opcode.CMSG_GM_TICKET_RESPONSE_RESOLVE, 0x19FB},
             {Opcode.CMSG_GM_TICKET_UPDATE_TEXT, 0x19EB},
             {Opcode.CMSG_GOSSIP_HELLO, 0x0483},
