@@ -942,7 +942,6 @@ namespace WowPacketParser.Enums
         CMSG_SET_WORLDSTATE,
         CMSG_SHOWING_CLOAK,
         CMSG_SHOWING_HELM,
-        CMSG_SHOW_FRIENDS,
         CMSG_SHOW_TRADE_SKILL,
         CMSG_SIGN_PETITION,
         CMSG_SILENCE_PARTY_TALKER,
