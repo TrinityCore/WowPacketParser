@@ -4,7 +4,8 @@ using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
-using TutorialAction61x = WowPacketParser.Enums.Version.V6_1_0_19678.TutorialAction;
+using TutorialAction610 = WowPacketParser.Enums.Version.V6_1_0_19678.TutorialAction;
+using TutorialAction612 = WowPacketParser.Enums.Version.V6_1_2_19802.TutorialAction;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
@@ -524,7 +525,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_TUTORIAL_FLAG, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_0_3_19342)]
-        public static void HandleTutorialFlag6x(Packet packet)
+        public static void HandleTutorialFlag60x(Packet packet)
         {
             var action = packet.ReadBitsE<TutorialAction>("TutorialAction", 2);
 
@@ -532,12 +533,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32E<Tutorial>("TutorialBit");
         }
 
-        [Parser(Opcode.CMSG_TUTORIAL_FLAG, ClientVersionBuild.V6_0_3_19342)]
-        public static void HandleTutorialFlag61x(Packet packet)
+        [Parser(Opcode.CMSG_TUTORIAL_FLAG, ClientVersionBuild.V6_1_0_19678, ClientVersionBuild.V6_1_2_19802)]
+        public static void HandleTutorialFlag610(Packet packet)
         {
-            var action = packet.ReadBitsE<TutorialAction61x>("TutorialAction", 2);
+            var action = packet.ReadBitsE<TutorialAction610>("TutorialAction", 2);
 
-            if (action == TutorialAction61x.Update)
+            if (action == TutorialAction610.Update)
+                packet.ReadInt32E<Tutorial>("TutorialBit");
+        }
+
+        [Parser(Opcode.CMSG_TUTORIAL_FLAG, ClientVersionBuild.V6_1_2_19802)]
+        public static void HandleTutorialFlag612(Packet packet)
+        {
+            var action = packet.ReadBitsE<TutorialAction612>("TutorialAction", 2);
+
+            if (action == TutorialAction612.Update)
                 packet.ReadInt32E<Tutorial>("TutorialBit");
         }
 
