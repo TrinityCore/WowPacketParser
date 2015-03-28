@@ -723,7 +723,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_LFG_LOCK_INFO_REQUEST)]
+        [Parser(Opcode.CMSG_DF_GET_SYSTEM_INFO)]
         public static void HandleLFGLockInfoRequest(Packet packet)
         {
             packet.ReadBit("Player (1)/ Party (0)");
@@ -731,7 +731,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         [Parser(Opcode.CMSG_LFG_PLAYER_LOCK_INFO_REQUEST)]
         [Parser(Opcode.CMSG_LFG_PARTY_LOCK_INFO_REQUEST)]
-        [Parser(Opcode.CMSG_LFG_GET_STATUS)]
+        [Parser(Opcode.CMSG_DF_GET_JOIN_STATUS)]
         [Parser(Opcode.SMSG_LFG_DISABLED)]
         [Parser(Opcode.CMSG_LFG_LEAVE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleLFGNull(Packet packet)

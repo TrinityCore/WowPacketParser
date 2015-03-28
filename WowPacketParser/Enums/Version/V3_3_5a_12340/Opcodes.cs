@@ -342,7 +342,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.CMSG_BUY_BACK_ITEM, 0x290},
             {Opcode.CMSG_SET_SAVED_INSTANCE_EXTEND, 0x292},
             {Opcode.CMSG_TEST_DROP_RATE, 0x294},
-            {Opcode.CMSG_LFG_GET_STATUS, 0x296},
+            {Opcode.CMSG_DF_GET_JOIN_STATUS, 0x296},
             {Opcode.CMSG_GMTICKETSYSTEM_TOGGLE, 0x29A},
             {Opcode.CMSG_CANCEL_GROWTH_AURA, 0x29B},
             {Opcode.CMSG_LOOT_ROLL, 0x2A0},

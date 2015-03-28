@@ -245,7 +245,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Comment", bits56);
         }
 
-        [Parser(Opcode.CMSG_LFG_LOCK_INFO_REQUEST)]
+        [Parser(Opcode.CMSG_DF_GET_SYSTEM_INFO)]
         public static void HandleLFGLockInfoRequest(Packet packet)
         {
             packet.ReadBit("Player");

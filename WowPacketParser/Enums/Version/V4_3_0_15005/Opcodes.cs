@@ -205,7 +205,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.CMSG_KEEP_ALIVE, 26272},
             {Opcode.CMSG_LEARN_PREVIEW_TALENTS_PET, 28706},
             {Opcode.CMSG_LEAVE_CHANNEL, 1806},
-            {Opcode.CMSG_LFG_GET_STATUS, 16708},
+            {Opcode.CMSG_DF_GET_JOIN_STATUS, 16708},
             {Opcode.CMSG_LFG_GET_SYSTEM_INFO, 2342},
             {Opcode.CMSG_LFG_JOIN, 340},
             {Opcode.CMSG_LFG_LEAVE, 17158},
