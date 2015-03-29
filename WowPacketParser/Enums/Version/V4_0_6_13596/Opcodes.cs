@@ -472,7 +472,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS, 0x070C8},
             {Opcode.CMSG_REQUEST_PET_INFO, 0x0EAE4},
             {Opcode.CMSG_REQUEST_PLAYER_VEHICLE_EXIT, 0x0208C},
-            {Opcode.CMSG_REQUEST_PVP_OPTIONS_ENABLED, 0x00188},
+            {Opcode.CMSG_GET_PVP_OPTIONS_ENABLED, 0x00188},
             {Opcode.CMSG_REQUEST_RAID_INFO, 0x03DE4},
             {Opcode.CMSG_REQUEST_RATED_BG_INFO, 0x08501},
             {Opcode.CMSG_REQUEST_VEHICLE_EXIT, 0x0B3CC},

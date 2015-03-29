@@ -326,7 +326,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.CMSG_REQUEST_CATEGORY_COOLDOWNS, 0x08D2},
             {Opcode.CMSG_REQUEST_GUILD_REWARDS_LIST, 0x0177},
             {Opcode.CMSG_REQUEST_PET_INFO, 0x0068},
-            {Opcode.CMSG_REQUEST_PVP_OPTIONS_ENABLED, 0x0417},
+            {Opcode.CMSG_GET_PVP_OPTIONS_ENABLED, 0x0417},
             {Opcode.CMSG_REQUEST_RAID_INFO, 0x0D29},
             {Opcode.CMSG_RESET_INSTANCES, 0x0B2C},
             {Opcode.CMSG_ROLE_POLL_BEGIN, 0x01EB},

@@ -417,7 +417,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_REQUEST_INSPECT_RATED_BG_STATS, 0x3010},
             {Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS, 0x0C04},
             {Opcode.CMSG_REQUEST_PET_INFO, 0x4924},
-            {Opcode.CMSG_REQUEST_PVP_OPTIONS_ENABLED, 0x24A1},
+            {Opcode.CMSG_GET_PVP_OPTIONS_ENABLED, 0x24A1},
             {Opcode.CMSG_REQUEST_PVP_REWARDS, 0x780C},
             {Opcode.CMSG_REQUEST_RAID_INFO, 0x2F26},
             {Opcode.CMSG_REQUEST_RATED_BG_INFO, 0x2423},

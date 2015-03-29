@@ -527,7 +527,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_REQUEST_PARTY_JOIN_UPDATES, 0x071D},
             {Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS, 0x031D},
             {Opcode.CMSG_REQUEST_PET_INFO, 0x1B12},
-            {Opcode.CMSG_REQUEST_PVP_OPTIONS_ENABLED, 0x1101},
+            {Opcode.CMSG_GET_PVP_OPTIONS_ENABLED, 0x1101},
             {Opcode.CMSG_REQUEST_PVP_REWARDS, 0x1399},
             {Opcode.CMSG_REQUEST_RAID_INFO, 0x0104},
             {Opcode.CMSG_REQUEST_RATED_BATTLEFIELD_INFO, 0x1323},

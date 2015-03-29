@@ -325,7 +325,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.CMSG_REQUEST_HOTFIX, 2916},
             {Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS, 14880},
             {Opcode.CMSG_REQUEST_PET_INFO, 30886},
-            {Opcode.CMSG_REQUEST_PVP_OPTIONS_ENABLED, 854},
+            {Opcode.CMSG_GET_PVP_OPTIONS_ENABLED, 854},
             {Opcode.CMSG_REQUEST_PVP_REWARDS, 26257},
             {Opcode.CMSG_REQUEST_RAID_INFO, 31362},
             {Opcode.CMSG_REQUEST_RATED_BG_INFO, 16678},
