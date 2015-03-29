@@ -1392,6 +1392,7 @@ namespace WowPacketParser.Enums.Version.V6_1_2_19802
             {Opcode.SMSG_TRIGGER_MOVIE, 0x163A},
             {Opcode.SMSG_TURN_IN_PETITION_RESULT, 0x0A45},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x0E82},
+            {Opcode.SMSG_TWITTER_STATUS, 0x0CBB},
             {Opcode.SMSG_UI_TIME, 0x0DA1},
             {Opcode.SMSG_UNDELETE_CHARACTER_RESPONSE, 0x0CA5},
             {Opcode.SMSG_UNDELETE_COOLDOWN_STATUS_RESPONSE, 0x0B9F},

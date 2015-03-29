@@ -440,7 +440,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("PlayerConditionID", i);
         }
 
-        [Parser(Opcode.SMSG_SETUP_TROPHY)]
+        [Parser(Opcode.SMSG_GET_DISPLAYED_TROPHY_LIST_RESPONSE)]
         public static void HandleGarrisonSetupTrophy(Packet packet)
         {
             var count = packet.ReadInt32("TrophyCount");

@@ -1454,7 +1454,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_SERVER_PERF, 0x0319},
             {Opcode.SMSG_SERVER_TIME, 0x0339},
             {Opcode.SMSG_SETUP_CURRENCY,  0x0B06},
-            {Opcode.SMSG_SETUP_TROPHY, 0x0B63},
+            {Opcode.SMSG_GET_DISPLAYED_TROPHY_LIST_RESPONSE, 0x0B63},
             {Opcode.SMSG_SET_AI_ANIM_KIT, 0x0335},
             {Opcode.SMSG_SET_ALL_TASK_PROGRESS, 0x1B52},
             {Opcode.SMSG_SET_ANIM_TIER, 0x079E},

@@ -732,7 +732,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadUInt32("Arg2");
         }
 
-
         [Parser(Opcode.SMSG_RESTRICTED_ACCOUNT_WARNING)]
         public static void HandleRestrictedAccountWarning(Packet packet)
         {
@@ -785,6 +784,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("Unk3C");
             packet.ReadByte("Unk3F");
             packet.ReadByte("Unk3E");
+        }
+
+        [Parser(Opcode.SMSG_TWITTER_STATUS)]
+        public static void HandleTwitterStatus(Packet packet)
+        {
+            packet.ReadUInt32("StatusInt");
         }
     }
 }
