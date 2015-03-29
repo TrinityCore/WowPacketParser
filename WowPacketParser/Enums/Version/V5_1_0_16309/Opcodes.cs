@@ -393,7 +393,7 @@ namespace WowPacketParser.Enums.Version.V5_1_0_16309
             {Opcode.CMSG_WARDEN_DATA, 0x0796},
             {Opcode.CMSG_WARGAME_ACCEPT, 0x00AA},
             {Opcode.CMSG_WHO, 0x0D20},
-            {Opcode.CMSG_WHOIS, 0x0E25},
+            {Opcode.CMSG_WHO_IS, 0x0E25},
             {Opcode.CMSG_WRAP_ITEM, 0x076C},
             {Opcode.CMSG_ZONEUPDATE, 0x088D}
         };

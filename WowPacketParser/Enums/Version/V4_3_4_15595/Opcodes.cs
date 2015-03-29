@@ -515,7 +515,7 @@ namespace WowPacketParser.Enums.Version.V4_3_4_15595
             {Opcode.CMSG_WARGAME_ACCEPT, 0x2410},
             {Opcode.CMSG_WARGAME_START, 0x05A0},
             {Opcode.CMSG_WHO, 0x6C15},
-            {Opcode.CMSG_WHOIS, 0x6B05},
+            {Opcode.CMSG_WHO_IS, 0x6B05},
             {Opcode.CMSG_WORLD_TELEPORT, 0x24B2},
             {Opcode.CMSG_WRAP_ITEM, 0x4F06},
             {Opcode.CMSG_ZONEUPDATE, 0x4F37}

@@ -562,7 +562,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_VOICE_SET_TALKER_MUTED_REQUEST, 0x03A1}, // NF()(0x03A1) //
             {Opcode.CMSG_WARDEN_DATA, 0x467F}, // (0x233D)(0x02E7) //
             {Opcode.CMSG_WHO, 0x8E5E}, // (0x0AB0)(0x0062) //
-            {Opcode.CMSG_WHOIS, 0xD776}, // (0x235D)(0x0064) //
+            {Opcode.CMSG_WHO_IS, 0xD776}, // (0x235D)(0x0064) //
             {Opcode.CMSG_WORLD_TELEPORT, 0x0589}, // (0x5211)(0x0008) //
             {Opcode.CMSG_WRAP_ITEM, 0x01D3}, // NF()(0x01D3) //
             {Opcode.CMSG_ZONEUPDATE, 0x5C7D} // (0x2AD8)(0x01F4) //

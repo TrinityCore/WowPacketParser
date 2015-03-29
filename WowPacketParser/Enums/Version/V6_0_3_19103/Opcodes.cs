@@ -662,7 +662,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_VOID_SWAP_ITEM, 0x0619},
             {Opcode.CMSG_WARDEN_DATA, 0x0BA1},
             {Opcode.CMSG_WHO, 0x1322},
-            {Opcode.CMSG_WHOIS, 0x011F},
+            {Opcode.CMSG_WHO_IS, 0x011F},
             {Opcode.CMSG_WORLD_TELEPORT, 0x038A},
             {Opcode.CMSG_WRAP_ITEM, 0x0797}
         };

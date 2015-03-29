@@ -379,7 +379,7 @@ namespace WowPacketParser.Enums.Version.V4_2_0_14480
             {Opcode.CMSG_VOICE_SESSION_ENABLE, 0xBAA3},
             {Opcode.CMSG_WARDEN_DATA, 0xE2FB},
             {Opcode.CMSG_WHO, 0xF2B3},
-            {Opcode.CMSG_WHOIS, 0x26E3},
+            {Opcode.CMSG_WHO_IS, 0x26E3},
             {Opcode.CMSG_WORLD_TELEPORT, 0x80},
             {Opcode.CMSG_ZONEUPDATE, 0xAEB7}
         };

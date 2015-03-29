@@ -325,7 +325,7 @@ namespace WowPacketParser.Enums.Version.V4_2_2_14545
             {Opcode.CMSG_USE_ITEM, 0xD8EA},
             {Opcode.CMSG_WARDEN_DATA, 0x5847},
             {Opcode.CMSG_WHO, 0x9AD7},
-            {Opcode.CMSG_WHOIS, 0xCCE6},            //{Opcode.CMSG_WORLD_PORT_RESPONSE, 0x0A9A},
+            {Opcode.CMSG_WHO_IS, 0xCCE6},            //{Opcode.CMSG_WORLD_PORT_RESPONSE, 0x0A9A},
             {Opcode.CMSG_ZONEUPDATE, 0x4AE2}
         };
 

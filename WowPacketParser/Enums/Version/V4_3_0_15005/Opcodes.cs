@@ -397,7 +397,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
             {Opcode.CMSG_VOID_SWAP_ITEM, 12945},
             {Opcode.CMSG_WARDEN_DATA, 18740},
             {Opcode.CMSG_WHO, 12838},
-            {Opcode.CMSG_WHOIS, 17536},
+            {Opcode.CMSG_WHO_IS, 17536},
             {Opcode.CMSG_WORLD_TELEPORT, 16740},
             {Opcode.CMSG_ZONEUPDATE, 13824}
         };

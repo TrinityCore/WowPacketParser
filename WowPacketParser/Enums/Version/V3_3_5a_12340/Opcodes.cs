@@ -76,7 +76,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.CMSG_GAMEOBJECT_QUERY, 0x5E},
             {Opcode.CMSG_CREATURE_QUERY, 0x60},
             {Opcode.CMSG_WHO, 0x62},
-            {Opcode.CMSG_WHOIS, 0x64},
+            {Opcode.CMSG_WHO_IS, 0x64},
             {Opcode.CMSG_CONTACT_LIST, 0x66},
             {Opcode.CMSG_ADD_FRIEND, 0x69},
             {Opcode.CMSG_DEL_FRIEND, 0x6A},
