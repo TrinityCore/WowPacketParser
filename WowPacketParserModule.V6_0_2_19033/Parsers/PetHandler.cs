@@ -156,7 +156,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32<SpellId>("Spell ID", i);
         }
         
-        [Parser(Opcode.SMSG_PET_GUIDS)]
+        [Parser(Opcode.SMSG_PET_GUI_DS)]
         public static void HandlePetGuids(Packet packet)
         {
             var count = packet.ReadInt32("Count");

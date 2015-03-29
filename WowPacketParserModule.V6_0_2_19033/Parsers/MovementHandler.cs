@@ -325,7 +325,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_MOVE_SPLINE_SET_FLIGHT_SPEED)]
         [Parser(Opcode.SMSG_MOVE_SPLINE_SET_SWIM_SPEED)]
         [Parser(Opcode.SMSG_MOVE_SPLINE_SET_RUN_BACK_SPEED)]
-        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_WALK_BACK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_WALK_SPEED)]
         public static void HandleSplineSetSpeed(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");
@@ -339,7 +339,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadSingle("SplineDist");
         }
 
-        [Parser(Opcode.SMSG_SET_VIGNETTE)]
+        [Parser(Opcode.SMSG_VIGNETTE_UPDATE)]
         public static void HandleUnknown177(Packet packet)
         {
             packet.ReadBit("ForceUpdate");

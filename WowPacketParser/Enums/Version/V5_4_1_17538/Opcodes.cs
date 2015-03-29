@@ -58,7 +58,6 @@ namespace WowPacketParser.Enums.Version.V5_4_1_17538
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
         {
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x1486},
-            {Opcode.SMSG_ACTION_BUTTONS, 0x0406},
             {Opcode.SMSG_ADDON_INFO, 0x1136},
             {Opcode.SMSG_AUTH_CHALLENGE, 0x0C5D},
             {Opcode.SMSG_AUTH_RESPONSE, 0x0D05},
@@ -100,6 +99,7 @@ namespace WowPacketParser.Enums.Version.V5_4_1_17538
             {Opcode.SMSG_SET_TIME_ZONE_INFORMATION, 0x14AF},
             {Opcode.SMSG_SPELL_GO, 0x14EC},
             {Opcode.SMSG_SPELL_START, 0x0CCC},
+            {Opcode.SMSG_UPDATE_ACTION_BUTTONS, 0x0406},
             {Opcode.SMSG_UPDATE_TALENT_DATA, 0x0494},
             {Opcode.SMSG_TRAINER_LIST, 0x01BC},
             {Opcode.SMSG_TRANSFER_PENDING, 0x0917},

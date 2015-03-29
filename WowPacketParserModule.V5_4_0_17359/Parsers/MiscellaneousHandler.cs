@@ -2001,7 +2001,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_SET_VIGNETTE)]
+        [Parser(Opcode.SMSG_VIGNETTE_UPDATE)]
         public static void HandleUnknown177(Packet packet)
         {
 

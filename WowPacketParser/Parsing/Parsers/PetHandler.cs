@@ -235,7 +235,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Combo points");
         }
 
-        [Parser(Opcode.SMSG_PET_GUIDS)]
+        [Parser(Opcode.SMSG_PET_GUI_DS)]
         public static void HandlePetGuids(Packet packet)
         {
             var count = packet.ReadInt32("Count");

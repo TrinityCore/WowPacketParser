@@ -82,7 +82,6 @@ namespace WowPacketParser.Enums.Version.V4_3_3_15354
         private static readonly BiDictionary<Opcode, int> ServerOpcodes = new BiDictionary<Opcode, int>
         {
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x622D},
-            {Opcode.SMSG_ACTION_BUTTONS, 0x604C},
             {Opcode.SMSG_ADDON_INFO, 0x22AD},
             {Opcode.SMSG_ALL_ACHIEVEMENT_DATA, 0x390E},
             {Opcode.SMSG_ATTACKER_STATE_UPDATE, 0x306D},
@@ -102,7 +101,6 @@ namespace WowPacketParser.Enums.Version.V4_3_3_15354
             {Opcode.SMSG_DB_REPLY, 0x2546},
             {Opcode.SMSG_DESTROY_OBJECT, 0x3324},
             {Opcode.SMSG_EMOTE, 0x2525},
-            {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x6AED},
             {Opcode.SMSG_FEATURE_SYSTEM_STATUS, 0x7D06},
             {Opcode.SMSG_QUERY_GAME_OBJECT_RESPONSE, 0x64AC},
             {Opcode.SMSG_GOSSIP_COMPLETE, 0x21AC},
@@ -116,6 +114,7 @@ namespace WowPacketParser.Enums.Version.V4_3_3_15354
             {Opcode.SMSG_INIT_WORLD_STATES, 0x272C},
             {Opcode.SMSG_INSTANCE_DIFFICULTY, 0x1755},
             {Opcode.SMSG_LEARNED_DANCE_MOVES, 0x2CEC},
+            {Opcode.SMSG_LOAD_EQUIPMENT_SET, 0x6AED},
             {Opcode.SMSG_LOGIN_SET_TIME_SPEED, 0x6B2D},
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x3EE5},
             {Opcode.SMSG_MOTD, 0x3C6D},
@@ -139,6 +138,7 @@ namespace WowPacketParser.Enums.Version.V4_3_3_15354
             {Opcode.SMSG_SET_PROFICIENCY, 0x7324},
             {Opcode.SMSG_SPELL_GO, 0x6425},
             {Opcode.SMSG_SPELL_START, 0x212D},
+            {Opcode.SMSG_UPDATE_ACTION_BUTTONS, 0x604C},
             {Opcode.SMSG_UPDATE_TALENT_DATA, 0x7FA5},
             {Opcode.SMSG_TIME_SYNC_REQUEST, 0x650E},
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x25A4},

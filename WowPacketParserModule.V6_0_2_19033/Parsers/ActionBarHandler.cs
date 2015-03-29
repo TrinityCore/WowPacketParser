@@ -12,7 +12,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class ActionBarHandler
     {
-        [Parser(Opcode.SMSG_ACTION_BUTTONS)]
+        [Parser(Opcode.SMSG_UPDATE_ACTION_BUTTONS)]
         public static void HandleActionButtons(Packet packet)
         {
             const int buttonCount = 132;

@@ -8,7 +8,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
     {
         private const int NumSlots = 19;
 
-        [Parser(Opcode.SMSG_EQUIPMENT_SET_LIST)]
+        [Parser(Opcode.SMSG_LOAD_EQUIPMENT_SET)]
         public static void HandleEquipmentSetList(Packet packet)
         {
             var count = packet.ReadBits("Count", 19);

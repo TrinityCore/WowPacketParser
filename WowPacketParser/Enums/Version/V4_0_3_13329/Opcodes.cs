@@ -573,7 +573,6 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0xFD55}, // (0x82B5)(0x0209) //
             {Opcode.SMSG_ACHIEVEMENT_DELETED, 0x049F}, // NF()(0x049F) // // not changed 9626
             {Opcode.SMSG_ACHIEVEMENT_EARNED, 0x0468}, // NF()(0x0468) //
-            {Opcode.SMSG_ACTION_BUTTONS, 0x4574}, // (0xEB74)(0x0129) //
             {Opcode.SMSG_ACTIVATE_TAXI_REPLY, 0x6F7C}, // (0x23D5)(0x01AE) //
             {Opcode.SMSG_ADDON_INFO, 0xEE5D}, // (0x0AF9)(0x02EF) //
             {Opcode.SMSG_ADD_RUNE_POWER, 0xFF9A}, // NF(0x4A3D)(0x0488) //
@@ -735,7 +734,6 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_ENABLE_BARBER_SHOP, 0xC55E}, // (0x82D4)(0x0427) //
             {Opcode.SMSG_ENCHANTMENT_LOG, 0xD676}, // (0x435C)(0x01D7) //
             {Opcode.SMSG_ENVIRONMENTAL_DAMAGE_LOG, 0x7455}, // (0x6254)(0x01FC) //
-            {Opcode.SMSG_EQUIPMENT_SET_LIST, 0xDD7E}, // (0xCA99)(0x04BC) //ipment manager list?
             {Opcode.SMSG_EQUIPMENT_SET_ID, 0xAD55}, // (0xC294)(0x0137) //
             {Opcode.SMSG_EXPECTED_SPAM_RECORDS, 0xA108}, // (0xABDD)(0x0332) //
             {Opcode.SMSG_EXPLORATION_EXPERIENCE, 0xA476}, // (0x8B58)(0x01F8) //
@@ -762,7 +760,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_GAME_OBJECT_CUSTOM_ANIM, 0xA655}, // (0x8230)(0x00B3) //
             {Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM, 0x1E54}, // (0x62D4)(0x0215) //
             {Opcode.SMSG_QUERY_GAME_OBJECT_RESPONSE, 0x0577}, // (0x0231)(0x005F) //
-            {Opcode.SMSG_GAMEOBJECT_RESET_STATE, 0x4655}, // (0x0274)(0x02A7) //
+            {Opcode.SMSG_GAME_OBJECT_RESET_STATE, 0x4655}, // (0x0274)(0x02A7) //
             {Opcode.SMSG_GAME_SPEED_SET, 0xFF75}, // (0x2354)(0x0047) //
             {Opcode.SMSG_GAMETIMEBIAS_SET, 0x0314}, // NF()(0x0314) //
             {Opcode.SMSG_GAME_TIME_SET, 0x5D77}, // (0xE2BD)(0x0045) //
@@ -851,6 +849,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_LFG_UPDATE_PARTY, 0xA775}, // (0x0B1D)(0x0368) //8}, if (uint8) { uint8}, uint8}, uint8}, for (3) uint8}, uint8}, if (uint8) for (uint8) uint32}, string}
             {Opcode.SMSG_LFG_UPDATE_PLAYER, 0x0C5E}, // (0x0238)(0x0367) //8}, if (uint8) { uint8}, uint8}, uint8}, uint8}, if (uint8) for (uint8) uint32}, string}
             {Opcode.SMSG_VENDOR_INVENTORY, 0x4E5E}, // (0xE375)(0x019F) //
+            {Opcode.SMSG_LOAD_EQUIPMENT_SET, 0xDD7E}, // (0xCA99)(0x04BC) //ipment manager list?
             {Opcode.SMSG_LOGIN_SET_TIME_SPEED, 0x047C}, // (0x0A10)(0x0042) //
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0xEC7C}, // (0x4A5D)(0x0236) //
             {Opcode.SMSG_LOGOUT_CANCEL_ACK, 0xCD56}, // (0xA395)(0x004F) //
@@ -957,7 +956,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_PET_BROKEN, 0xE92B}, // (0x6A71)(0x02AF) //
             {Opcode.SMSG_PET_CAST_FAILED, 0xCD74}, // (0x0B51)(0x0138) //
             {Opcode.SMSG_PET_DISMISS_SOUND, 0x3E74}, // (0x43D5)(0x0325) //
-            {Opcode.SMSG_PET_GUIDS, 0xFA08}, // (0x03F0)(0x04AA) //
+            {Opcode.SMSG_PET_GUI_DS, 0xFA08}, // (0x03F0)(0x04AA) //
             //{Opcode.SMSG_PET_LEARNED_SPELLS, 0xC47D}, // (0x2290)(0x0499) //
             {Opcode.SMSG_PET_MODE, 0xFA0B}, // (0x4A1C)(0x017A) //
             {Opcode.SMSG_PET_NAME_INVALID, 0x1457}, // (0x42D9)(0x0178) //
@@ -1127,6 +1126,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.SMSG_UNLEARNED_SPELLS, 0x2456}, // (0x227D)(0x0203) //
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA, 0xBE57}, // (0x61A9)(0x020C) //
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA_COMPLETE, 0x7E76}, // (0x42D4)(0x0463) //
+            {Opcode.SMSG_UPDATE_ACTION_BUTTONS, 0x4574}, // (0xEB74)(0x0129) //
             {Opcode.SMSG_UPDATE_COMBO_POINTS, 0x039D}, // NF()(0x039D) //
             {Opcode.SMSG_UPDATE_INSTANCE_ENCOUNTER_UNIT, 0xFFC9}, // NF(0xC08D)(0x0214) //
             {Opcode.SMSG_UPDATE_INSTANCE_OWNERSHIP, 0x8321}, // (0xCB5D)(0x032B) //

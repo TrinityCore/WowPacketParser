@@ -603,7 +603,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x07280},
             {Opcode.SMSG_ACHIEVEMENT_DELETED, 0x0E6A0},
             {Opcode.SMSG_ACHIEVEMENT_EARNED, 0x0F5E4},
-            {Opcode.SMSG_ACTION_BUTTONS, 0x02CCC},
+            
             {Opcode.SMSG_ACTIVATE_TAXI_REPLY, 0x07A84},
             {Opcode.SMSG_ADDON_INFO, 0x0EA80},
             {Opcode.SMSG_ADD_RUNE_POWER, 0x0F5E8},
@@ -779,7 +779,6 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_ENABLE_BARBER_SHOP, 0x037E8},
             {Opcode.SMSG_ENCHANTMENT_LOG, 0x0F5AC},
             {Opcode.SMSG_ENVIRONMENTAL_DAMAGE_LOG, 0x0E1C8},
-            {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x0F1A8},
             {Opcode.SMSG_EQUIPMENT_SET_ID, 0x0B0C0},
             {Opcode.SMSG_EXPECTED_SPAM_RECORDS, 0x06084},
             {Opcode.SMSG_EXPLORATION_EXPERIENCE, 0x0A9C4},
@@ -806,7 +805,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_GAME_OBJECT_CUSTOM_ANIM, 0x02E8C}, //(0x8230)(0x00B3)//4.0.6a13623
             {Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM, 0x0BFA8},
             {Opcode.SMSG_QUERY_GAME_OBJECT_RESPONSE, 0x0F4E8},
-            {Opcode.SMSG_GAMEOBJECT_RESET_STATE, 0x022E0},
+            {Opcode.SMSG_GAME_OBJECT_RESET_STATE, 0x022E0},
             {Opcode.SMSG_GAME_SPEED_SET, 0x03EC0},
             {Opcode.SMSG_GAMETIMEBIAS_SET, 0x1011A}, //UnknownopcodeID
             {Opcode.SMSG_GAME_TIME_SET, 0x07888},
@@ -911,6 +910,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_LFG_UPDATE_PARTY, 0x02CE8},
             {Opcode.SMSG_LFG_UPDATE_PLAYER, 0x0E284},
             {Opcode.SMSG_VENDOR_INVENTORY, 0x0F8AC},
+            {Opcode.SMSG_LOAD_EQUIPMENT_SET, 0x0F1A8},
             {Opcode.SMSG_LOGIN_SET_TIME_SPEED, 0x039AC},
             {Opcode.SMSG_LOGIN_VERIFY_WORLD, 0x028C0},
             {Opcode.SMSG_LOGOUT_CANCEL_ACK, 0x0EE88},
@@ -1019,7 +1019,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_PET_BROKEN, 0x075E0},
             {Opcode.SMSG_PET_CAST_FAILED, 0x0A9CC},
             {Opcode.SMSG_PET_DISMISS_SOUND, 0x0B7E0},
-            {Opcode.SMSG_PET_GUIDS, 0x0E4E8},
+            {Opcode.SMSG_PET_GUI_DS, 0x0E4E8},
             {Opcode.SMSG_PET_LEARNED_SPELLS, 0x0B3C4},
             {Opcode.SMSG_PET_MODE, 0x079C0},
             {Opcode.SMSG_PET_NAME_INVALID, 0x01457}, //4.0.3a13329-403
@@ -1201,6 +1201,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_UNLEARNED_SPELLS, 0x07CA0},
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA, 0x0F7A0},
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA_COMPLETE, 0x0B1CC},
+            {Opcode.SMSG_UPDATE_ACTION_BUTTONS, 0x02CCC},
             {Opcode.SMSG_UPDATE_COMBO_POINTS, 0x037A8},
             {Opcode.SMSG_UPDATE_CURRENCY, 0x0405E},
             {Opcode.SMSG_UPDATE_CURRENCY_WEEK_LIMIT, 0x04C5C},

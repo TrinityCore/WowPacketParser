@@ -20,7 +20,6 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x0B86D}, // 4.1.0 13914
             {Opcode.SMSG_ACHIEVEMENT_DELETED, 0x03A6D}, // 4.1.0 13914
             {Opcode.SMSG_ACHIEVEMENT_EARNED, 0x0EA6C}, // 4.1.0 13914
-            {Opcode.SMSG_ACTION_BUTTONS, 0x0FD6F}, // 4.1.0 13914
             {Opcode.SMSG_AI_REACTION, 0x00B6E}, // 4.1.0 13914
             {Opcode.SMSG_ARENA_ERROR, 0x0787F}, // 4.1.0 13914
             {Opcode.SMSG_ARENA_OPPONENT_UPDATE, 0x0E96F}, // 4.1.0 13914
@@ -84,7 +83,6 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_EMOTE, 0x0AD7C}, // 4.1.0 13914
             {Opcode.SMSG_ENABLE_BARBER_SHOP, 0x0D97E}, // 4.1.0 13914
             {Opcode.SMSG_ENCHANTMENT_LOG, 0x0BB2F}, // 4.1.0 13914
-            {Opcode.SMSG_EQUIPMENT_SET_LIST, 0x0683D}, // 4.1.0 13914
             {Opcode.SMSG_EQUIPMENT_SET_ID, 0x01A7F}, // 4.1.0 13914
             {Opcode.SMSG_EXPECTED_SPAM_RECORDS, 0x01E3F}, // 4.1.0 13914
             {Opcode.SMSG_EXPLORATION_EXPERIENCE, 0x06B3F}, // 4.1.0 13914
@@ -97,7 +95,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_FRIEND_STATUS, 0x08C2C}, // 4.1.0 13914
             {Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM, 0x00A7D}, // 4.1.0 13914
             {Opcode.SMSG_QUERY_GAME_OBJECT_RESPONSE, 0x0AB7C}, // 4.1.0 13914
-            {Opcode.SMSG_GAMEOBJECT_RESET_STATE, 0x0B97F}, // 4.1.0 13914
+            {Opcode.SMSG_GAME_OBJECT_RESET_STATE, 0x0B97F}, // 4.1.0 13914
             {Opcode.SMSG_GAME_SPEED_SET, 0x09A2F}, // 4.1.0 13914
             {Opcode.SMSG_GAME_TIME_SET, 0x09F7D}, // 4.1.0 13914
             {Opcode.SMSG_GAME_TIME_UPDATE, 0x0982C}, // 4.1.0 13914
@@ -131,6 +129,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_ITEM_NAME_QUERY_RESPONSE, 0x05D6D}, // 4.1.0 13914
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0x0DC2D}, // 4.1.0 13914
             {Opcode.SMSG_QUERY_ITEM_TEXT_RESPONSE, 0x06A3F}, // 4.1.0 13914
+            {Opcode.SMSG_LOAD_EQUIPMENT_SET, 0x0683D}, // 4.1.0 13914
             {Opcode.SMSG_LEARNED_SPELL, 0x0882D}, // 4.1.0 13914
             {Opcode.SMSG_LEVEL_UP_INFO, 0x09F2C}, // 4.1.0 13914
             {Opcode.SMSG_LFG_LFR_LIST, 0x01D7E}, // 4.1.0 13914
@@ -163,7 +162,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_PET_BROKEN, 0x08B3C}, // 4.1.0 13914
             {Opcode.SMSG_PET_CAST_FAILED, 0x0CA3E}, // 4.1.0 13914
             {Opcode.SMSG_PET_DISMISS_SOUND, 0x01A7C}, // 4.1.0 13914
-            {Opcode.SMSG_PET_GUIDS, 0x04B6F}, // 4.1.0 13914
+            {Opcode.SMSG_PET_GUI_DS, 0x04B6F}, // 4.1.0 13914
             {Opcode.SMSG_PET_MODE, 0x0E83F}, // 4.1.0 13914
             {Opcode.SMSG_QUERY_PET_NAME_RESPONSE, 0x0587C}, // 4.1.0 13914
             {Opcode.SMSG_PET_SPELLS_MESSAGE, 0x00C2E}, // 4.1.0 13914
@@ -227,6 +226,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_TUTORIAL_FLAGS, 0x0787E}, // 4.1.0 13914
             {Opcode.SMSG_UNLEARNED_SPELLS, 0x0DB6E}, // 4.1.0 13914
             {Opcode.SMSG_UPDATE_ACCOUNT_DATA, 0x01C7D}, // 4.1.0 13914
+            {Opcode.SMSG_UPDATE_ACTION_BUTTONS, 0x0FD6F}, // 4.1.0 13914
             {Opcode.SMSG_UPDATE_INSTANCE_ENCOUNTER_UNIT, 0x0CA7D}, // 4.1.0 13914
             {Opcode.SMSG_UPDATE_INSTANCE_OWNERSHIP, 0x05D6E}, // 4.1.0 13914
             {Opcode.SMSG_UPDATE_LAST_INSTANCE, 0x09D2E}, // 4.1.0 13914

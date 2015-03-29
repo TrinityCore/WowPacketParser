@@ -77,7 +77,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GAMEOBJ_USE)]
         [Parser(Opcode.CMSG_GAMEOBJ_REPORT_USE)]
         [Parser(Opcode.SMSG_PAGE_TEXT)]
-        [Parser(Opcode.SMSG_GAMEOBJECT_RESET_STATE)]
+        [Parser(Opcode.SMSG_GAME_OBJECT_RESET_STATE)]
         public static void HandleGOMisc(Packet packet)
         {
             packet.ReadGuid("GUID");

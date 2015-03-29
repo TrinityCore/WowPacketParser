@@ -1013,7 +1013,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("New Health Value");
         }
 
-        [Parser(Opcode.SMSG_STREAMING_MOVIE)]
+        [Parser(Opcode.SMSG_STREAMING_MOVIES)]
         public static void HandleStreamingMovie(Packet packet)
         {
             var count = packet.ReadBits("Count", 25);

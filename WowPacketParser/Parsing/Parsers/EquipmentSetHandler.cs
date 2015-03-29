@@ -18,7 +18,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadPackedGuid("Item GUID " + j);
         }
 
-        [Parser(Opcode.SMSG_EQUIPMENT_SET_LIST)]
+        [Parser(Opcode.SMSG_LOAD_EQUIPMENT_SET)]
         public static void HandleEquipmentSetList(Packet packet)
         {
             var count = packet.ReadInt32("Count");
