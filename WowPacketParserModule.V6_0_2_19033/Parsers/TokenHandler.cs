@@ -91,5 +91,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < count2; i++)
                 packet.ReadInt64("UnkInt64_2", i);
         }
+
+        [Parser(Opcode.CMSG_UPDATE_LISTED_AUCTIONABLE_TOKENS)]
+        public static void HandleUpdateListedAuctionableTokens(Packet packet)
+        {
+            packet.ReadUInt32("UnkInt");
+        }
     }
 }
