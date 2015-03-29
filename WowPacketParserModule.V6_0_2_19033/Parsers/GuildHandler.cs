@@ -6,7 +6,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class GuildHandler
     {
-        [Parser(Opcode.CMSG_GUILD_GET_RECRUITMENT_SETTINGS)]
         [Parser(Opcode.CMSG_GUILD_GET_ROSTER)]
         [Parser(Opcode.CMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY_QUERY)]
         [Parser(Opcode.CMSG_GUILD_CHALLENGE_UPDATE_REQUEST)]
@@ -18,7 +17,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_GUILD_AUTO_DECLINE_INVITATION)]
         [Parser(Opcode.CMSG_GUILD_DECLINE_INVITATION)]
         [Parser(Opcode.CMSG_GUILD_EVENT_LOG_QUERY)]
-        [Parser(Opcode.CMSG_GUILD_REQUEST_MEMBERSHIP_LIST)]
         [Parser(Opcode.SMSG_GUILD_MEMBER_DAILY_RESET)]
         [Parser(Opcode.SMSG_GUILD_EVENT_BANK_CONTENTS_CHANGED)]
         [Parser(Opcode.SMSG_GUILD_EVENT_RANKS_UPDATED)]

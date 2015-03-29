@@ -70,7 +70,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_BATTLE_PET_NAME_QUERY, 0x041C},
             {Opcode.CMSG_BATTLE_PET_REQUEST_JOURNAL, 0x0117},
             {Opcode.CMSG_BATTLE_PET_REQUEST_JOURNAL_LOCK, 0x07AA},
-            {Opcode.CMSG_BATTLE_PET_REQUEST_UPDATE, 0x134A},
+            {Opcode.CMSG_PET_BATTLE_REQUEST_UPDATE, 0x134A},
             {Opcode.CMSG_BATTLE_PET_SET_BATTLE_SLOT, 0x120B},
             {Opcode.CMSG_BATTLE_PET_SET_FLAGS, 0x0BA2},
             {Opcode.CMSG_BATTLE_PET_SUMMON, 0x0B38},

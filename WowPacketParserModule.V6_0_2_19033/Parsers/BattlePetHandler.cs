@@ -609,7 +609,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             LfgHandler.ReadCliRideTicket(packet, "RideTicket");
         }
 
-        [Parser(Opcode.CMSG_BATTLE_PET_REQUEST_UPDATE)]
+        [Parser(Opcode.CMSG_PET_BATTLE_REQUEST_UPDATE)]
         public static void HandlePetBattleRequestUpdate(Packet packet)
         {
             packet.ReadPackedGuid128("TargetGUID");
