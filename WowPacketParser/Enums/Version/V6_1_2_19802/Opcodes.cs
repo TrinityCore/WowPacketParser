@@ -157,7 +157,7 @@ namespace WowPacketParser.Enums.Version.V6_1_2_19802
             {Opcode.CMSG_DF_BOOT_PLAYER_VOTE, 0x0EBF},
             {Opcode.CMSG_DF_GET_JOIN_STATUS, 0x1236},
             {Opcode.CMSG_DF_GET_SYSTEM_INFO, 0x1298},
-            {Opcode.CMSG_DF_JOIN, 0x0925},
+            {Opcode.CMSG_DF_JOIN, 0x1237},
             {Opcode.CMSG_DF_PROPOSAL_RESPONSE, 0x0795},
             {Opcode.CMSG_DF_SEARCH_JOIN, 0x1797},
             {Opcode.CMSG_DF_SEARCH_LEAVE, 0x0EB7},
