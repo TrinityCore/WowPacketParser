@@ -139,7 +139,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
              packet.ReadInt16("Specialization");
         }
         
-        [Parser(Opcode.CMSG_PET_SET_SPECIALIZATION)]
+        [Parser(Opcode.CMSG_LEARN_PET_SPECIALIZATION_GROUP)]
         public static void HandlePetSetSpecialization(Packet packet)
         {
             packet.ReadPackedGuid128("PetGUID");
