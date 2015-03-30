@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Enums\UpdateFields.cs" />
     <Compile Include="Enums\CharacterUndeleteResult.cs" />
+    <Compile Include="Enums\UpdateFields610.cs" />
     <Compile Include="Parsers\AchievementHandler.cs" />
     <Compile Include="Parsers\AccountDataHandler.cs" />
     <Compile Include="Parsers\ActionBarHandler.cs" />

@@ -364,7 +364,6 @@
     <Compile Include="Enums\Version\V6_1_0_19678\Opcodes.cs" />
     <Compile Include="Enums\Version\V6_1_0_19678\SpellCastFailureReason.cs" />
     <Compile Include="Enums\Version\V6_1_0_19678\TutorialAction.cs" />
-    <Compile Include="Enums\Version\V6_1_0_19678\UpdateFields.cs" />
     <Compile Include="Enums\Version\V6_1_2_19802\Opcodes.cs" />
     <Compile Include="Enums\Version\V6_1_2_19802\TutorialAction.cs" />
     <Compile Include="Enums\VictimStates.cs" />

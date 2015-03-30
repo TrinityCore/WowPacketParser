@@ -26,14 +26,14 @@ namespace WowPacketParser.Enums.Version
             UpdateFieldDictionaries.Clear();
         }
 
-        public static void LoadUFDictionaries(Assembly asm, ClientVersionBuild build)
+        public static bool LoadUFDictionaries(Assembly asm, ClientVersionBuild build)
         {
-            LoadUFDictionariesInto(UpdateFieldDictionaries, asm, build);
+            return LoadUFDictionariesInto(UpdateFieldDictionaries, asm, build);
         }
 
         private static readonly Dictionary<Type, BiDictionary<string, int>> UpdateFieldDictionaries = LoadDefaultUFDictionaries();
 
-        private static void LoadUFDictionariesInto(Dictionary<Type, BiDictionary<string, int>> dicts, Assembly asm, ClientVersionBuild build)
+        private static bool LoadUFDictionariesInto(Dictionary<Type, BiDictionary<string, int>> dicts, Assembly asm, ClientVersionBuild build)
         {
             Type[] enumTypes =
             {
@@ -45,6 +45,7 @@ namespace WowPacketParser.Enums.Version
                 typeof(CorpseDynamicField), typeof(AreaTriggerDynamicField), typeof(SceneObjectDynamicField), typeof(ConversationDynamicField)
             };
 
+            var loaded = false;
             foreach (var enumType in enumTypes)
             {
                 var vTypeString = string.Format("WowPacketParserModule.{0}.Enums.{1}", GetUpdateFieldDictionaryBuildName(build), enumType.Name);
@@ -66,7 +67,10 @@ namespace WowPacketParser.Enums.Version
                     result.Add(vNames[i], (int)vValues.GetValue(i));
 
                 dicts.Add(enumType, result);
+                loaded = true;
             }
+
+            return loaded;
         }
 
         public static int GetUpdateField<T>(T field)
@@ -241,9 +245,6 @@ namespace WowPacketParser.Enums.Version
                 }
                 case ClientVersionBuild.V6_1_0_19678:
                 case ClientVersionBuild.V6_1_0_19702:
-                {
-                    return "V6_1_0_19678";
-                }
                 case ClientVersionBuild.V6_1_2_19802:
                 {
                     return "V6_1_2_19802";
