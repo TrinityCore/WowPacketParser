@@ -342,7 +342,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        public static void ReadPetBattleEffectTarget61x(Packet packet, params object[] idx)
+        public static void ReadPetBattleEffectTarget610(Packet packet, params object[] idx)
         {
             var type = packet.ReadBits("Type", 3, idx); // enum PetBattleEffectTargetEx
 
@@ -381,6 +381,45 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     break;
             }
         }
+        public static void ReadPetBattleEffectTarget612(Packet packet, params object[] idx)
+        {
+            var type = packet.ReadBits("Type", 3, idx); // enum PetBattleEffectTargetEx
+
+            packet.ResetBitReader();
+
+            packet.ReadByte("Petx", idx);
+
+            switch (type)
+            {
+                case 5:
+                    packet.ReadInt32("AuraInstanceID", idx);
+                    packet.ReadInt32("AuraAbilityID", idx);
+                    packet.ReadInt32("RoundsRemaining", idx);
+                    packet.ReadInt32("CurrentRound", idx);
+                    break;
+                case 6:
+                    packet.ReadInt32("StateID", idx);
+                    packet.ReadInt32("StateValue", idx);
+                    break;
+                case 4:
+                    packet.ReadInt32("Health", idx);
+                    break;
+                case 1:
+                    packet.ReadInt32("NewStatValue", idx);
+                    break;
+                case 0:
+                    packet.ReadInt32("TriggerAbilityID", idx);
+                    break;
+                case 7:
+                    packet.ReadInt32("ChangedAbilityID", idx);
+                    packet.ReadInt32("CooldownRemaining", idx);
+                    packet.ReadInt32("LockdownRemaining", idx);
+                    break;
+                case 2:
+                    packet.ReadInt32("BroadcastTextID", idx);
+                    break;
+            }
+        }
 
         public static void ReadPetBattleEffect(Packet packet, params object[] idx)
         {
@@ -395,10 +434,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var targetsCount = packet.ReadInt32("TargetsCount", idx);
 
             for (var i = 0; i < targetsCount; ++i)
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
-                    ReadPetBattleEffectTarget61x(packet, idx, "Targets", i);
+            {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_2_19802))
+                    ReadPetBattleEffectTarget612(packet, idx, "Targets", i);
+                else if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
+                    ReadPetBattleEffectTarget610(packet, idx, "Targets", i);
                 else
                     ReadPetBattleEffectTarget60x(packet, idx, "Targets", i);
+            }
         }
 
         public static void ReadPetBattleRoundResult(Packet packet, params object[] idx)
