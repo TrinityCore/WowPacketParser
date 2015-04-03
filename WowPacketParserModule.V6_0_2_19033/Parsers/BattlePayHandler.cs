@@ -90,8 +90,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
 
-            var int11 = packet.ReadBits("BattlepayProductItemCount", 7);
-            packet.ReadBits("UnkWod612 2", 7);
+            var int11 = packet.ReadBits("BattlepayProductItemCount", 7, idx);
+            packet.ReadBits("UnkWod612 1", 7, idx);
 
             var bit5196 = packet.ReadBit("HasBattlepayDisplayInfo", idx);
 
