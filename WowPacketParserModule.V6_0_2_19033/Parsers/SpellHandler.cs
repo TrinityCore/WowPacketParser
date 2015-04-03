@@ -921,6 +921,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var count = packet.ReadInt32("UnlearnedSpellCount");
             for (int i = 0; i < count; i++)
                 packet.ReadUInt32<SpellId>("SpellID");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_2_19802))
+                packet.ReadBit("Unk612 1");
         }
 
         [Parser(Opcode.SMSG_ADD_LOSS_OF_CONTROL)]
