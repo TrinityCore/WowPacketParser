@@ -92,7 +92,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("MessageLog", len);
         }
 
-        [Parser(Opcode.CMSG_COMPLAIN)]
+        [Parser(Opcode.CMSG_COMPLAINT)]
         public static void HandleComplain(Packet packet)
         {
             var result = packet.ReadByte("ComplaintType");

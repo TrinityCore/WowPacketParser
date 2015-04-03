@@ -21,7 +21,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByteE<StandState>("State");
         }
 
-        [Parser(Opcode.CMSG_CHAR_CREATE)]
+        [Parser(Opcode.CMSG_CREATE_CHARACTER)]
         public static void HandleClientCharCreate(Packet packet)
         {
             packet.ReadCString("Name");
@@ -42,7 +42,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
         }
 
-        [Parser(Opcode.CMSG_CHAR_RENAME)]
+        [Parser(Opcode.CMSG_CHARACTER_RENAME_REQUEST)]
         public static void HandleClientCharRename(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -1031,7 +1031,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Vehicle Id");
         }
 
-        [Parser(Opcode.CMSG_PLAYED_TIME)]
+        [Parser(Opcode.CMSG_REQUEST_PLAYED_TIME)]
         [Parser(Opcode.SMSG_PLAYED_TIME)]
         public static void HandlePlayedTime(Packet packet)
         {
@@ -1334,7 +1334,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_CHAR_ENUM)]
+        [Parser(Opcode.CMSG_ENUM_CHARACTERS)]
         [Parser(Opcode.CMSG_HEARTH_AND_RESURRECT)]
         [Parser(Opcode.CMSG_SELF_RES)]
         public static void HandleCharacterNull(Packet packet)

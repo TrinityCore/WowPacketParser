@@ -18,7 +18,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_REQUEST_ARTIFACT_COMPLETION_HISTORY)]
-        [Parser(Opcode.CMSG_TWITTER_GET_STATUS)]
+        [Parser(Opcode.CMSG_TWITTER_CHECK_STATUS)]
         public static void HandleMiscZero(Packet packet)
         {
         }
@@ -30,7 +30,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.CMSG_LOAD_SCREEN)]
+        [Parser(Opcode.CMSG_LOADING_SCREEN_NOTIFY)]
         public static void HandleClientEnterWorld(Packet packet)
         {
             var mapId = packet.ReadInt32<MapId>("MapID");
@@ -395,7 +395,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadTime("RaidOrigin");
         }
 
-        [Parser(Opcode.CMSG_AREATRIGGER)]
+        [Parser(Opcode.CMSG_AREA_TRIGGER)]
         public static void HandleClientAreaTrigger(Packet packet)
         {
             var entry = packet.ReadEntry("Area Trigger Id");
@@ -462,7 +462,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32<ZoneId>("AreaID");
         }
 
-        [Parser(Opcode.CMSG_PAGE_TEXT_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_PAGE_TEXT)]
         public static void HandlePageTextQuery(Packet packet)
         {
             packet.ReadInt32("Entry");

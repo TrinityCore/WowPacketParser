@@ -50,15 +50,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32<BgId>("ListID");
         }
 
-        [Parser(Opcode.CMSG_BATTLEFIELD_MGR_ENTRY_INVITE_RESPONSE)]
-        [Parser(Opcode.CMSG_BATTLEFIELD_MGR_QUEUE_INVITE_RESPONSE)]
+        [Parser(Opcode.CMSG_BF_MGR_ENTRY_INVITE_RESPONSE)]
+        [Parser(Opcode.CMSG_BF_MGR_QUEUE_INVITE_RESPONSE)]
         public static void HandleBattlefieldMgrEntryOrQueueInviteResponse(Packet packet)
         {
             packet.ReadInt64("QueueID");
             packet.ReadBit("AcceptedInvite");
         }
 
-        [Parser(Opcode.CMSG_BATTLEFIELD_MGR_EXIT_REQUEST)]
+        [Parser(Opcode.CMSG_BF_MGR_QUEUE_EXIT_REQUEST)]
         public static void HandleBattlefieldMgrExitRequest(Packet packet)
         {
             packet.ReadInt64("QueueID");

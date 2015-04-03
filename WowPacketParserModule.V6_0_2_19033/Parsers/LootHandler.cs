@@ -26,7 +26,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
         }
 
-        [Parser(Opcode.CMSG_LOOT)]
+        [Parser(Opcode.CMSG_LOOT_UNIT)]
         public static void HandleLoot(Packet packet)
         {
             packet.ReadPackedGuid128("Unit");
@@ -39,7 +39,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("SoleLooter");
         }
 
-        [Parser(Opcode.CMSG_LOOT_METHOD)]
+        [Parser(Opcode.CMSG_SET_LOOT_METHOD)]
         public static void HandleLootMethod(Packet packet)
         {
             packet.ReadByteE<LootMethod>("Method");

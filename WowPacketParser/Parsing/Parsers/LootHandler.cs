@@ -22,14 +22,14 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Guild Gold");
         }
 
-        [Parser(Opcode.CMSG_LOOT, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.CMSG_LOOT_UNIT, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)]
         [Parser(Opcode.CMSG_LOOT_RELEASE, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleLoot(Packet packet)
         {
             packet.ReadGuid("GUID");
         }
 
-        [Parser(Opcode.CMSG_LOOT, ClientVersionBuild.V5_1_0_16309)]
+        [Parser(Opcode.CMSG_LOOT_UNIT, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleLoot510(Packet packet)
         {
             var guid = packet.StartBitStream(1, 2, 7, 3, 6, 0, 4, 5);
@@ -53,7 +53,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("Player GUID");
         }
 
-        [Parser(Opcode.CMSG_LOOT_METHOD)]
+        [Parser(Opcode.CMSG_SET_LOOT_METHOD)]
         public static void HandleLootMethod(Packet packet)
         {
             packet.ReadUInt32E<LootMethod>("Loot Method");

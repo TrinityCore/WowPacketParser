@@ -144,7 +144,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             packet.WriteGuid("GUID", guid);
         }
 
-        [Parser(Opcode.CMSG_NPC_TEXT_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_NPC_TEXT)]
         public static void HandleNpcTextQuery(Packet packet)
         {
             packet.ReadInt32("Entry");

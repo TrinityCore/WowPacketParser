@@ -11,7 +11,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     public static class CharacterHandler
     {
         [Parser(Opcode.SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI)]
-        [Parser(Opcode.CMSG_CHAR_UNDELETE_ENUM)]
+        [Parser(Opcode.CMSG_ENUM_CHARACTERS_DELETED_BY_CLIENT)]
         public static void HandleCharacterZero(Packet packet)
         {
         }
@@ -86,7 +86,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_CHAR_CREATE)]
+        [Parser(Opcode.CMSG_CREATE_CHARACTER)]
         public static void HandleClientCharCreate(Packet packet)
         {
             var bits29 = packet.ReadBits(6);
@@ -123,7 +123,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("CharacterGuid");
         }
 
-        [Parser(Opcode.CMSG_GET_UNDELETE_COOLDOWN_STATUS)]
+        [Parser(Opcode.CMSG_GET_UNDELETE_CHARACTER_COOLDOWN_STATUS)]
         public static void HandleGetUndeleteCooldownStatus(Packet packet)
         {
         }
@@ -167,7 +167,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("PlayerGUID");
         }
 
-        [Parser(Opcode.CMSG_RANDOMIZE_CHAR_NAME)]
+        [Parser(Opcode.CMSG_GENERATE_RANDOM_CHARACTER_NAME)]
         public static void HandleGenerateRandomCharacterNameQuery(Packet packet)
         {
             packet.ReadByteE<Race>("Race");
@@ -183,7 +183,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Name", bits17);
         }
 
-        [Parser(Opcode.CMSG_CHAR_RENAME)]
+        [Parser(Opcode.CMSG_CHARACTER_RENAME_REQUEST)]
         public static void HandleClientCharRename(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");
@@ -343,7 +343,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("XpAbortReason");
         }
 
-        [Parser(Opcode.CMSG_NAME_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_PLAYER_NAME)]
         public static void HandleNameQuery(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");
@@ -395,7 +395,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_PLAYED_TIME)]
+        [Parser(Opcode.CMSG_REQUEST_PLAYED_TIME)]
         public static void HandleClientPlayedTime(Packet packet)
         {
             packet.ReadBit("TriggerScriptEvent");

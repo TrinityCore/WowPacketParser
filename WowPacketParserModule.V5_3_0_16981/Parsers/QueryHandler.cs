@@ -8,7 +8,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 {
     public static class QueryHandler
     {
-        [Parser(Opcode.CMSG_CREATURE_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_CREATURE)]
         public static void HandleCreatureQuery(Packet packet)
         {
             packet.ReadInt32("Entry");
@@ -97,7 +97,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             Storage.ObjectNames.Add((uint)entry.Key, objectName, packet.TimeSpan);
         }
 
-        [Parser(Opcode.CMSG_NPC_TEXT_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_NPC_TEXT)]
         public static void HandleNpcTextQuery(Packet packet)
         {
             packet.ReadInt32("Entry");

@@ -104,7 +104,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByteE<PetTameFailureReason>("Reason");
         }
 
-        [Parser(Opcode.CMSG_PET_NAME_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_PET_NAME)]
         public static void HandlePetNameQuery(Packet packet)
         {
             var number = packet.ReadInt32("Pet number").ToString(CultureInfo.InvariantCulture);
@@ -235,7 +235,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Combo points");
         }
 
-        [Parser(Opcode.SMSG_PET_GUI_DS)]
+        [Parser(Opcode.SMSG_PET_GUIDS)]
         public static void HandlePetGuids(Packet packet)
         {
             var count = packet.ReadInt32("Count");

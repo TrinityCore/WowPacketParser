@@ -6,7 +6,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
 {
     public static class ChannelHandler
     {
-        [Parser(Opcode.CMSG_MESSAGECHAT_CHANNEL)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_CHANNEL)]
         public static void HandleClientChatMessageChannel(Packet packet)
         {
             packet.ReadInt32E<Language>("Language");
@@ -17,7 +17,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             packet.ReadWoWString("Message", msgLen);
         }
 
-        [Parser(Opcode.CMSG_CHANNEL_LIST)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_LIST)]
         public static void HandleChannelList(Packet packet)
         {
             packet.ReadUInt32("Flags");

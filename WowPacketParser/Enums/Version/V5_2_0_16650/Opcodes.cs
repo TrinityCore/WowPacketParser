@@ -17,13 +17,13 @@ namespace WowPacketParser.Enums.Version.V5_2_0_16650
         {
             {Opcode.CMSG_AUTH_CONTINUED_SESSION, 0x03F3},
             {Opcode.CMSG_AUTH_SESSION, 0x1A72},
-            {Opcode.CMSG_CREATURE_QUERY, 0x1C83},
+            {Opcode.CMSG_QUERY_CREATURE, 0x1C83},
             {Opcode.CMSG_DB_QUERY_BULK, 0x006A},
             {Opcode.CMSG_ENABLE_NAGLE, 0x06D2},
-            {Opcode.CMSG_GAMEOBJECT_QUERY, 0x0118},
-            {Opcode.CMSG_LOAD_SCREEN, 0x045D},
+            {Opcode.CMSG_QUERY_GAME_OBJECT, 0x0118},
+            {Opcode.CMSG_LOADING_SCREEN_NOTIFY, 0x045D},
             {Opcode.CMSG_PLAYER_LOGIN, 0x015D},
-            {Opcode.CMSG_QUEST_QUERY, 0x001F},
+            {Opcode.CMSG_QUERY_QUEST_INFO, 0x001F},
             {Opcode.CMSG_VIOLENCE_LEVEL, 0x10AC},
             {Opcode.CMSG_WARDEN_DATA, 0x007C}
         };

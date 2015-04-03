@@ -119,7 +119,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadWoWString("Addon", lengths[i], i);
         }
 
-        [Parser(Opcode.CMSG_UNREGISTER_ALL_ADDON_PREFIXES)]
+        [Parser(Opcode.CMSG_CHAT_UNREGISTER_ALL_ADDON_PREFIXES)]
         public static void HandleAddonNull(Packet packet)
         {
         }

@@ -162,7 +162,7 @@ namespace WowPacketParser.Enums.Version.V4_1_0_13914
             {Opcode.SMSG_PET_BROKEN, 0x08B3C}, // 4.1.0 13914
             {Opcode.SMSG_PET_CAST_FAILED, 0x0CA3E}, // 4.1.0 13914
             {Opcode.SMSG_PET_DISMISS_SOUND, 0x01A7C}, // 4.1.0 13914
-            {Opcode.SMSG_PET_GUI_DS, 0x04B6F}, // 4.1.0 13914
+            {Opcode.SMSG_PET_GUIDS, 0x04B6F}, // 4.1.0 13914
             {Opcode.SMSG_PET_MODE, 0x0E83F}, // 4.1.0 13914
             {Opcode.SMSG_QUERY_PET_NAME_RESPONSE, 0x0587C}, // 4.1.0 13914
             {Opcode.SMSG_PET_SPELLS_MESSAGE, 0x00C2E}, // 4.1.0 13914

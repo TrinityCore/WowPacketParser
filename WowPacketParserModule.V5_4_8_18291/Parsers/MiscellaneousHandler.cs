@@ -11,7 +11,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
     public static class MiscellaneousHandler
     {
         [HasSniffData]
-        [Parser(Opcode.CMSG_LOAD_SCREEN)]
+        [Parser(Opcode.CMSG_LOADING_SCREEN_NOTIFY)]
         public static void HandleClientEnterWorld(Packet packet)
         {
             var mapId = packet.ReadInt32<MapId>("MapID");
@@ -20,7 +20,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
         }
 
-        [Parser(Opcode.CMSG_AREATRIGGER)]
+        [Parser(Opcode.CMSG_AREA_TRIGGER)]
         public static void HandleClientAreaTrigger(Packet packet)
         {
             var entry = packet.ReadEntry("Area Trigger Id");
@@ -252,7 +252,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_SPELLCLICK)]
+        [Parser(Opcode.CMSG_SPELL_CLICK)]
         public static void HandleSpellClick(Packet packet)
         {
             var guidBytes = new byte[8];

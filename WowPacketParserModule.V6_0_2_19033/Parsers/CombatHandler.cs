@@ -141,7 +141,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32E<AIReaction>("Reaction");
         }
 
-        [Parser(Opcode.CMSG_ATTACKSWING)]
+        [Parser(Opcode.CMSG_ATTACK_SWING)]
         public static void HandleAttackSwing(Packet packet)
         {
             packet.ReadPackedGuid128("Victim");

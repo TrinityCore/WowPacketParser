@@ -9,9 +9,9 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 {
     public static class ChatHandler
     {
-        [Parser(Opcode.CMSG_MESSAGECHAT_GUILD)]
-        [Parser(Opcode.CMSG_MESSAGECHAT_YELL)]
-        [Parser(Opcode.CMSG_MESSAGECHAT_SAY)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_GUILD)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_YELL)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_SAY)]
         public static void HandleClientChatMessage(Packet packet)
         {
             packet.ReadInt32E<Language>("Language");
@@ -19,7 +19,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadWoWString("Message", len);
         }
 
-        [Parser(Opcode.CMSG_MESSAGECHAT_WHISPER)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_WHISPER)]
         public static void HandleClientChatMessageWhisper(Packet packet)
         {
             packet.ReadInt32E<Language>("Language");
@@ -29,7 +29,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadWoWString("Receivers Name", recvName);
         }
 
-        [Parser(Opcode.CMSG_MESSAGECHAT_CHANNEL)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_CHANNEL)]
         public static void HandleClientChatMessageChannel434(Packet packet)
         {
             packet.ReadInt32E<Language>("Language");
@@ -39,16 +39,16 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadWoWString("Channel Name", channelNameLen);
         }
 
-        [Parser(Opcode.CMSG_MESSAGECHAT_DND)]
-        [Parser(Opcode.CMSG_MESSAGECHAT_EMOTE)]
-        [Parser(Opcode.CMSG_MESSAGECHAT_AFK)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_DND)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_EMOTE)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_AFK)]
         public static void HandleMessageChatDND(Packet packet)
         {
             var len = packet.ReadBits(8);
             packet.ReadWoWString("Message", len);
         }
 
-        [Parser(Opcode.CMSG_TEXT_EMOTE)]
+        [Parser(Opcode.CMSG_SEND_TEXT_EMOTE)]
         public static void HandleTextEmote(Packet packet)
         {
             var guid = new byte[8];

@@ -7,7 +7,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class GameObjectHandler
     {
-        [Parser(Opcode.CMSG_GAMEOBJECT_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_GAME_OBJECT)]
         public static void HandleGameObjectQuery(Packet packet)
         {
             QueryHandler.ReadQueryHeader(packet);
@@ -74,8 +74,8 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM)]
-        [Parser(Opcode.CMSG_GAMEOBJ_USE)]
-        [Parser(Opcode.CMSG_GAMEOBJ_REPORT_USE)]
+        [Parser(Opcode.CMSG_GAME_OBJ_USE)]
+        [Parser(Opcode.CMSG_GAME_OBJ_REPORT_USE)]
         [Parser(Opcode.SMSG_PAGE_TEXT)]
         [Parser(Opcode.SMSG_GAME_OBJECT_RESET_STATE)]
         public static void HandleGOMisc(Packet packet)

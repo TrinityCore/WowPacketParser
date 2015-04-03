@@ -17,7 +17,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadWoWString("Message", len);
         }
 
-        [Parser(Opcode.CMSG_CHANNEL_LIST)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_LIST)]
         public static void HandleChannelList(Packet packet)
         {
             packet.ReadUInt32("Flags");
@@ -190,14 +190,14 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("Guid2", guid2);
         }
 
-        [Parser(Opcode.CMSG_MESSAGECHAT_GUILD)]
-        [Parser(Opcode.CMSG_MESSAGECHAT_INSTANCE)]
-        [Parser(Opcode.CMSG_MESSAGECHAT_OFFICER)]
-        [Parser(Opcode.CMSG_MESSAGECHAT_PARTY)]
-        [Parser(Opcode.CMSG_MESSAGECHAT_RAID)]
-        [Parser(Opcode.CMSG_MESSAGECHAT_RAID_WARNING)]
-        [Parser(Opcode.CMSG_MESSAGECHAT_SAY)]
-        [Parser(Opcode.CMSG_MESSAGECHAT_YELL)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_GUILD)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_INSTANCE_CHAT)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_OFFICER)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_PARTY)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_RAID)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_RAID_WARNING)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_SAY)]
+        [Parser(Opcode.CMSG_CHAT_MESSAGE_YELL)]
         public static void HandleClientChatMessage(Packet packet)
         {
             packet.ReadInt32E<Language>("Language");

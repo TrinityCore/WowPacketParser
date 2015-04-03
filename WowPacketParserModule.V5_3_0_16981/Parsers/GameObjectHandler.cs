@@ -8,7 +8,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 {
     public static class GameObjectHandler
     {
-        [Parser(Opcode.CMSG_GAMEOBJECT_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_GAME_OBJECT)]
         public static void HandleGameObjectQuery(Packet packet)
         {
             packet.ReadInt32("Entry");

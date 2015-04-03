@@ -447,7 +447,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("TutorialData", i);
         }
 
-        [Parser(Opcode.CMSG_AREATRIGGER)]
+        [Parser(Opcode.CMSG_AREA_TRIGGER)]
         public static void HandleClientAreaTrigger(Packet packet)
         {
             var entry = packet.ReadEntry("Area Trigger Id");
@@ -732,7 +732,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)] // Also named CMSG_LOADING_SCREEN_NOTIFY
+        [Parser(Opcode.CMSG_LOADING_SCREEN_NOTIFY, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)] // Also named CMSG_LOADING_SCREEN_NOTIFY
         public static void HandleClientEnterWorld(Packet packet)
         {
             packet.ReadBit("Showing");
@@ -744,7 +744,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.CMSG_LOAD_SCREEN, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_LOADING_SCREEN_NOTIFY, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleClientEnterWorld434(Packet packet)
         {
             var mapId = packet.ReadUInt32<MapId>("MapID");
@@ -827,7 +827,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBool("Accept");
         }
 
-        [Parser(Opcode.CMSG_SPELLCLICK)]
+        [Parser(Opcode.CMSG_SPELL_CLICK)]
         public static void HandleSpellClick(Packet packet)
         {
             var guid = packet.ReadGuid("GUID");
@@ -844,7 +844,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Total time (secs)");
         }
 
-        [Parser(Opcode.CMSG_SET_PREFERED_CEMETERY)] // 4.3.4
+        [Parser(Opcode.CMSG_SET_PREFERRED_CEMETERY)] // 4.3.4
         public static void HandleSetPreferedCemetery(Packet packet)
         {
             packet.ReadUInt32("Cemetery Id");
@@ -1121,7 +1121,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_FISH_ESCAPED)]
         [Parser(Opcode.SMSG_SUMMON_CANCEL)]
         [Parser(Opcode.CMSG_MEETINGSTONE_INFO)]
-        [Parser(Opcode.CMSG_PORT_GRAVEYARD)]
+        [Parser(Opcode.CMSG_CLIENT_PORT_GRAVEYARD)]
         [Parser(Opcode.CMSG_REQUEST_CEMETERY_LIST)]
         [Parser(Opcode.CMSG_REQUEST_RESEARCH_HISTORY)]
         [Parser(Opcode.CMSG_COMPLETE_MOVIE)]

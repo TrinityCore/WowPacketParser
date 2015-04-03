@@ -8,7 +8,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 {
     public static class GameObjectHandler
     {
-        [Parser(Opcode.CMSG_GAMEOBJECT_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_GAME_OBJECT)]
         public static void HandleGameObjectQuery(Packet packet)
         {
             var guid = new byte[8];
@@ -75,7 +75,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             Storage.ObjectNames.Add((uint)entry.Key, objectName, packet.TimeSpan);
         }
 
-        [Parser(Opcode.CMSG_GAMEOBJ_REPORT_USE)]
+        [Parser(Opcode.CMSG_GAME_OBJ_REPORT_USE)]
         public static void HandleGOReportUse(Packet packet)
         {
             var guid = new byte[8];
@@ -86,7 +86,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_GAMEOBJ_USE)]
+        [Parser(Opcode.CMSG_GAME_OBJ_USE)]
         public static void HandleGOUse(Packet packet)
         {
             var guid = new byte[8];

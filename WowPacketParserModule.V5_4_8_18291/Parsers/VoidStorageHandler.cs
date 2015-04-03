@@ -104,7 +104,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_VOID_SWAP_ITEM)]
+        [Parser(Opcode.CMSG_SWAP_VOID_ITEM)]
         public static void HandleVoidSwapItem(Packet packet)
         {
             packet.ReadInt32("New Slot");

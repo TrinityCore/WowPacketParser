@@ -842,7 +842,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadInt32("Int10");
         }
 
-        [Parser(Opcode.CMSG_BATTLE_PET_NAME_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_BATTLE_PET_NAME)]
         public static void HandleBattlePetQuery(Packet packet)
         {
             var guid = new byte[8];

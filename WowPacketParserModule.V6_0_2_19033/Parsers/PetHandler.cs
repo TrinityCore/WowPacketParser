@@ -6,7 +6,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class PetHandler
     {
-        [Parser(Opcode.CMSG_PET_NAME_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_PET_NAME)]
         public static void HandlePetNameQuery(Packet packet)
         {
             packet.ReadPackedGuid128("PetID");
@@ -156,7 +156,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32<SpellId>("Spell ID", i);
         }
         
-        [Parser(Opcode.SMSG_PET_GUI_DS)]
+        [Parser(Opcode.SMSG_PET_GUIDS)]
         public static void HandlePetGuids(Packet packet)
         {
             var count = packet.ReadInt32("Count");

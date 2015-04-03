@@ -5,7 +5,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class CombatHandler
     {
-        [Parser(Opcode.CMSG_ATTACKSWING)]
+        [Parser(Opcode.CMSG_ATTACK_SWING)]
         public static void HandleAttackSwing(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -249,7 +249,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         [Parser(Opcode.SMSG_DUEL_OUT_OF_BOUNDS)]
         [Parser(Opcode.SMSG_CANCEL_COMBAT)]
-        [Parser(Opcode.CMSG_ATTACKSTOP)]
+        [Parser(Opcode.CMSG_ATTACK_STOP)]
         [Parser(Opcode.SMSG_ATTACKSWING_NOTINRANGE)]
         [Parser(Opcode.SMSG_ATTACKSWING_BADFACING)]
         [Parser(Opcode.SMSG_ATTACKSWING_DEADTARGET)]

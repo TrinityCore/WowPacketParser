@@ -26,7 +26,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_VOID_SWAP_ITEM)]
+        [Parser(Opcode.CMSG_SWAP_VOID_ITEM)]
         public static void HandleVoidSwapItem(Packet packet)
         {
             packet.ReadPackedGuid128("Npc");
@@ -84,7 +84,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32E<VoidTransferError>("Error");
         }
 
-        [Parser(Opcode.CMSG_VOID_STORAGE_UNLOCK)]
+        [Parser(Opcode.CMSG_UNLOCK_VOID_STORAGE)]
         public static void HandleVoidStorageUnlock(Packet packet)
         {
             packet.ReadPackedGuid128("Npc");

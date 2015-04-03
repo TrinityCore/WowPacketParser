@@ -61,7 +61,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ReadInt32("Int10");
         }
 
-        [Parser(Opcode.CMSG_AREATRIGGER)]
+        [Parser(Opcode.CMSG_AREA_TRIGGER)]
         public static void HandleClientAreaTrigger(Packet packet)
         {
             var entry = packet.ReadEntry("Area Trigger Id");

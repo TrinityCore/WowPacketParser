@@ -16,10 +16,10 @@ namespace WowPacketParser.Enums.Version.V5_0_5_16048
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
         {
             {Opcode.CMSG_AUTH_SESSION, 0x008A},
-            {Opcode.CMSG_CHANNEL_MODERATOR, 0x0581},
+            {Opcode.CMSG_CHAT_CHANNEL_MODERATOR, 0x0581},
             {Opcode.CMSG_COMMENTATOR_START_WARGAME, 0x0361},
-            {Opcode.CMSG_CREATURE_QUERY, 0x0884},
-            {Opcode.CMSG_GAMEOBJECT_QUERY, 0x0CF8},
+            {Opcode.CMSG_QUERY_CREATURE, 0x0884},
+            {Opcode.CMSG_QUERY_GAME_OBJECT, 0x0CF8},
             {Opcode.CMSG_GROUP_RAID_CONVERT, 0x034F},
             {Opcode.CMSG_GUILD_DISBAND, 0x0062},
             {Opcode.CMSG_GUILD_EVENT_LOG_QUERY, 0x06C3},

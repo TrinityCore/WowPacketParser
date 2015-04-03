@@ -5,24 +5,24 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class ChannelHandler
     {
-        [Parser(Opcode.CMSG_CHANNEL_SILENCE_VOICE)]
-        [Parser(Opcode.CMSG_CHANNEL_UNSILENCE_VOICE)]
-        [Parser(Opcode.CMSG_CHANNEL_SILENCE_ALL)]
-        [Parser(Opcode.CMSG_CHANNEL_UNSILENCE_ALL)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_SILENCE_VOICE)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_UNSILENCE_VOICE)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_SILENCE_ALL)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_UNSILENCE_ALL)]
         public static void HandleChannelSilencing(Packet packet)
         {
             packet.ReadCString("Channel Name");
             packet.ReadCString("Player Name");
         }
 
-        [Parser(Opcode.CMSG_CHANNEL_LIST)]
-        [Parser(Opcode.CMSG_CHANNEL_OWNER)]
-        [Parser(Opcode.CMSG_CHANNEL_ANNOUNCEMENTS)]
-        [Parser(Opcode.CMSG_CHANNEL_VOICE_ON)]
-        [Parser(Opcode.CMSG_CHANNEL_VOICE_OFF)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_LIST)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_OWNER)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_ANNOUNCEMENTS)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_VOICE_ON)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_VOICE_OFF)]
         [Parser(Opcode.CMSG_SET_CHANNEL_WATCH)]
-        [Parser(Opcode.CMSG_CHANNEL_DECLINE_INVITE)]
-        [Parser(Opcode.CMSG_CHANNEL_DISPLAY_LIST)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_DECLINE_INVITE)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_DISPLAY_LIST)]
         public static void HandleChannelMisc(Packet packet)
         {
             packet.ReadCString("Channel Name");
@@ -137,7 +137,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_JOIN_CHANNEL, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_CHAT_JOIN_CHANNEL, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleChannelJoin(Packet packet)
         {
             packet.ReadInt32("Channel Id");
@@ -156,7 +156,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_CHANNEL_BAN)] // 4.3.4
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_BAN)] // 4.3.4
         public static void HandleChannelBan(Packet packet)
         {
             var channelLength = packet.ReadBits(8);
@@ -165,7 +165,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadWoWString("Player to ban", nameLength);
         }
 
-        [Parser(Opcode.CMSG_JOIN_CHANNEL, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_CHAT_JOIN_CHANNEL, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleChannelJoin434(Packet packet)
         {
             packet.ReadInt32("Channel Id");
@@ -177,7 +177,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadWoWString("Channel Pass", passwordLength);
         }
 
-        [Parser(Opcode.CMSG_LEAVE_CHANNEL)]
+        [Parser(Opcode.CMSG_CHAT_LEAVE_CHANNEL)]
         public static void HandleChannelLeave(Packet packet)
         {
             packet.ReadInt32("Channel Id");
@@ -204,14 +204,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Channel Name");
         }
 
-        [Parser(Opcode.CMSG_CHANNEL_PASSWORD, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_PASSWORD, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleChannelPassword(Packet packet)
         {
             packet.ReadCString("Channel Name");
             packet.ReadCString("Password");
         }
 
-        [Parser(Opcode.CMSG_CHANNEL_PASSWORD, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_PASSWORD, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleChannelPassword434(Packet packet)
         {
             var channelLen = packet.ReadBits(8);
@@ -221,14 +221,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadWoWString("Password", passLen);
         }
 
-        [Parser(Opcode.CMSG_CHANNEL_INVITE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_INVITE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleChannelInvite(Packet packet)
         {
             packet.ReadCString("Channel Name");
             packet.ReadCString("Name");
         }
 
-        [Parser(Opcode.CMSG_CHANNEL_INVITE, ClientVersionBuild.V4_3_4_15595)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_INVITE, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleChannelInvite434(Packet packet)
         {
             var nameLen = packet.ReadBits(7);

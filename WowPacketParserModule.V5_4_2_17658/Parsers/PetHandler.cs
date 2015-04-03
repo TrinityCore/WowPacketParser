@@ -9,7 +9,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 {
     public static class PetHandler
     {
-        [Parser(Opcode.CMSG_PET_NAME_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_PET_NAME)]
         public static void HandlePetNameQuery(Packet packet)
         {
             var number = new byte[8];

@@ -167,7 +167,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_QUEST_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_QUEST_INFO)]
         [Parser(Opcode.CMSG_PUSH_QUEST_TO_PARTY)]
         public static void HandleQuestQuery(Packet packet)
         {
@@ -740,9 +740,9 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBytes((int)packet.Length);
         }
 
-        [Parser(Opcode.CMSG_QUESTGIVER_STATUS_QUERY)]
-        [Parser(Opcode.CMSG_QUESTGIVER_HELLO)]
-        [Parser(Opcode.CMSG_QUESTGIVER_QUEST_AUTOLAUNCH)]
+        [Parser(Opcode.CMSG_QUEST_GIVER_STATUS_QUERY)]
+        [Parser(Opcode.CMSG_QUEST_GIVER_HELLO)]
+        [Parser(Opcode.CMSG_QUEST_GIVER_QUEST_AUTOLAUNCH)]
         public static void HandleQuestgiverStatusQuery(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -772,7 +772,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         }
 
-        [Parser(Opcode.CMSG_QUESTGIVER_QUERY_QUEST)]
+        [Parser(Opcode.CMSG_QUEST_GIVER_QUERY_QUEST)]
         public static void HandleQuestgiverQueryQuest(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -780,7 +780,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Start/End (1/2)");
         }
 
-        [Parser(Opcode.CMSG_QUESTGIVER_ACCEPT_QUEST)]
+        [Parser(Opcode.CMSG_QUEST_GIVER_ACCEPT_QUEST)]
         public static void HandleQuestgiverAcceptQuest(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -896,7 +896,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST)]
+        [Parser(Opcode.CMSG_QUEST_GIVER_COMPLETE_QUEST)]
         public static void HandleQuestCompleteQuest(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -905,7 +905,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Unk byte");
         }
 
-        [Parser(Opcode.CMSG_QUESTGIVER_REQUEST_REWARD)]
+        [Parser(Opcode.CMSG_QUEST_GIVER_REQUEST_REWARD)]
         public static void HandleQuestRequestReward(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -1076,7 +1076,7 @@ namespace WowPacketParser.Parsing.Parsers
             ReadExtraQuestInfo(packet);
         }
 
-        [Parser(Opcode.CMSG_QUESTGIVER_CHOOSE_REWARD)]
+        [Parser(Opcode.CMSG_QUEST_GIVER_CHOOSE_REWARD)]
         public static void HandleQuestChooseReward(Packet packet)
         {
             packet.ReadGuid("GUID");
@@ -1158,14 +1158,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBit("Unk Bit 2");
         }
 
-        [Parser(Opcode.CMSG_QUESTLOG_SWAP_QUEST)]
+        [Parser(Opcode.CMSG_QUEST_LOG_SWAP_QUEST)]
         public static void HandleQuestSwapQuest(Packet packet)
         {
             packet.ReadByte("Slot 1");
             packet.ReadByte("Slot 2");
         }
 
-        [Parser(Opcode.CMSG_QUESTLOG_REMOVE_QUEST)]
+        [Parser(Opcode.CMSG_QUEST_LOG_REMOVE_QUEST)]
         public static void HandleQuestRemoveQuest(Packet packet)
         {
             packet.ReadByte("Slot");
@@ -1239,8 +1239,8 @@ namespace WowPacketParser.Parsing.Parsers
 
         [Parser(Opcode.CMSG_QUERY_QUESTS_COMPLETED)]
         [Parser(Opcode.SMSG_QUEST_LOG_FULL)]
-        [Parser(Opcode.CMSG_QUESTGIVER_CANCEL)]
-        [Parser(Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY)]
+        [Parser(Opcode.CMSG_QUEST_GIVER_CANCEL)]
+        [Parser(Opcode.CMSG_QUEST_GIVER_STATUS_MULTIPLE_QUERY)]
         public static void HandleQuestZeroLengthPackets(Packet packet)
         {
         }

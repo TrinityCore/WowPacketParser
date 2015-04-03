@@ -132,7 +132,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_SET_ACTIONBAR_TOGGLES)]
+        [Parser(Opcode.CMSG_SET_ACTION_BAR_TOGGLES)]
         public static void HandleSetActionBarToggles(Packet packet)
         {
             packet.ReadByte("Action Bar");

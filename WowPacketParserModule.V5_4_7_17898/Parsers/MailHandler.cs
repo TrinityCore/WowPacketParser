@@ -63,7 +63,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_GET_MAIL_LIST)]
+        [Parser(Opcode.CMSG_MAIL_GET_LIST)]
         public static void HandleShowMailbox(Packet packet)
         {
             var guid = new byte[8];

@@ -13,7 +13,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("CompletionCount", idx);
         }
 
-        [Parser(Opcode.SMSG_RESEARCH_SETUP_HISTORY)]
+        [Parser(Opcode.SMSG_SETUP_RESEARCH_HISTORY)]
         public static void HandleResearchSetupHistory(Packet packet)
         {
             var count = packet.ReadInt32("ResearchHistoryCount");

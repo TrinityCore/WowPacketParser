@@ -9,7 +9,7 @@ namespace WowPacketParserModule.V5_4_1_17359.Parsers
 {
     public static class QueryHandler
     {
-        [Parser(Opcode.CMSG_CREATURE_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_CREATURE)]
         public static void HandleCreatureQuery(Packet packet)
         {
             packet.ReadInt32("Entry");

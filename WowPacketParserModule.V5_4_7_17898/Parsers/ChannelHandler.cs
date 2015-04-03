@@ -6,7 +6,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 {
     public static class ChannelHandler
     {
-        [Parser(Opcode.CMSG_CHANNEL_LIST)]
+        [Parser(Opcode.CMSG_CHAT_CHANNEL_LIST)]
         public static void HandleChannelList(Packet packet)
         {
             var channelLength = packet.ReadBits(7);
@@ -97,7 +97,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_JOIN_CHANNEL)]
+        [Parser(Opcode.CMSG_CHAT_JOIN_CHANNEL)]
         public static void HandleChannelJoin(Packet packet)
         {
             packet.ReadInt32("Channel Id");
@@ -109,7 +109,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadWoWString("Channel Name", channelLength);
         }
 
-        [Parser(Opcode.CMSG_LEAVE_CHANNEL)]
+        [Parser(Opcode.CMSG_CHAT_LEAVE_CHANNEL)]
         public static void HandleChannelLeave(Packet packet)
         {
             packet.ReadInt32("Channel Id");

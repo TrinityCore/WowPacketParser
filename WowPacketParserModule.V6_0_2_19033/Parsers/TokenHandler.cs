@@ -8,7 +8,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class TokenHandler
     {
-        [Parser(Opcode.CMSG_TOKEN_BUY_TOKEN)]
+        [Parser(Opcode.CMSG_BUY_WOW_TOKEN_START)]
         public static void HandleTokenBuyToken(Packet packet)
         {
             packet.ReadUInt32("UnkInt32");
@@ -16,7 +16,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt64("CurrentMarketPrice");
         }
 
-        [Parser(Opcode.CMSG_TOKEN_CONFIRM_BUY_TOKEN)]
+        [Parser(Opcode.CMSG_BUY_WOW_TOKEN_CONFIRM)]
         public static void HandleTokenConfirmBuyToken(Packet packet)
         {
             packet.ReadUInt32("UnkInt32");
@@ -25,7 +25,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("Confirmed");
         }
 
-        [Parser(Opcode.CMSG_TOKEN_CONFIRM_SELL_TOKEN)]
+        [Parser(Opcode.CMSG_SELL_WOW_TOKEN_CONFIRM)]
         public static void HandleTokenConfirmSellToken(Packet packet)
         {
             packet.ReadPackedGuid128("TokenGuid");
@@ -35,7 +35,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("Confirmed");
         }
 
-        [Parser(Opcode.CMSG_TOKEN_SELL_TOKEN)]
+        [Parser(Opcode.CMSG_SELL_WOW_TOKEN_START)]
         public static void HandleTokenSellToken(Packet packet)
         {
             packet.ReadUInt64("UnkInt64");
@@ -43,7 +43,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("UnkInt32");
         }
 
-        [Parser(Opcode.CMSG_TOKEN_CONFIRM_REDEEM_TOKEN)]
+        [Parser(Opcode.CMSG_REDEEM_WOW_TOKEN_CONFIRM)]
         public static void HandleConirmRedeemToken(Packet packet)
         {
             packet.ReadUInt32("UnkInt32");
@@ -53,7 +53,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("Confirm");
         }
 
-        [Parser(Opcode.CMSG_TOKEN_REDEEM_TOKEN)]
+        [Parser(Opcode.CMSG_REDEEM_WOW_TOKEN_START)]
         public static void HandleRedeemToken(Packet packet)
         {
             packet.ReadUInt64("Count");
@@ -61,13 +61,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("UnkInt32");
         }
 
-        [Parser(Opcode.CMSG_TOKEN_UPDATE_MARKET_PRICE)]
+        [Parser(Opcode.CMSG_REQUEST_WOW_TOKEN_MARKET_PRICE)]
         public static void HandleTokenUpdateMarketPrice(Packet packet)
         {
             packet.ReadUInt32("UnkInt32");
         }
 
-        [Parser(Opcode.CMSG_TOKEN_UPDATE_TOKEN_COUNT)]
+        [Parser(Opcode.CMSG_UPDATE_WOW_TOKEN_COUNT)]
         public static void HandleTokenUpdateTokenCount(Packet packet)
         {
             packet.ReadUInt32("UnkInt32");
@@ -92,7 +92,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt64("UnkInt64_2", i);
         }
 
-        [Parser(Opcode.CMSG_UPDATE_LISTED_AUCTIONABLE_TOKENS)]
+        [Parser(Opcode.CMSG_UPDATE_WOW_TOKEN_AUCTIONABLE_LIST)]
         public static void HandleUpdateListedAuctionableTokens(Packet packet)
         {
             packet.ReadUInt32("UnkInt");

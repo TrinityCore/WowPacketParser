@@ -138,7 +138,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_CHAR_CREATE)]
+        [Parser(Opcode.CMSG_CREATE_CHARACTER)]
         public static void HandleClientCharCreate(Packet packet)
         {
             packet.ReadByte("Hair Style");
@@ -207,7 +207,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_PLAYED_TIME)]
+        [Parser(Opcode.CMSG_REQUEST_PLAYED_TIME)]
         public static void HandlePlayedTime(Packet packet)
         {
             packet.ReadBool("Print in chat");

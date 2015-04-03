@@ -12,7 +12,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_SHOW_MAILBOX)]
-        [Parser(Opcode.CMSG_GET_MAIL_LIST)]
+        [Parser(Opcode.CMSG_MAIL_GET_LIST)]
         public static void HandleShowMailbox(Packet packet)
         {
             packet.ReadGuid("GUID");

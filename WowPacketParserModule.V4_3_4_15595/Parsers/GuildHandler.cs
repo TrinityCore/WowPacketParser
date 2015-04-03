@@ -134,7 +134,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadUInt32("Needed guild members");
         }
 
-        [Parser(Opcode.CMSG_GUILD_REQUEST_PARTY_STATE)]
+        [Parser(Opcode.CMSG_REQUEST_GUILD_PARTY_STATE)]
         public static void HandleGuildUpdatePartyState434(Packet packet)
         {
             var guid = packet.StartBitStream(0, 6, 7, 3, 5, 1, 2, 4);

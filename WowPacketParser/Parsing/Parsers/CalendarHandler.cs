@@ -446,7 +446,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBool("DeletePendingInvite");
         }
 
-        [Parser(Opcode.CMSG_CALENDAR_EVENT_SIGNUP)]
+        [Parser(Opcode.CMSG_CALENDAR_EVENT_SIGN_UP)]
         public static void HandleCalendarEventSignup(Packet packet)
         {
             packet.ReadInt64("Event ID");

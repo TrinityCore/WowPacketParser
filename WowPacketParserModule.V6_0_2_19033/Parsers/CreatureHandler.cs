@@ -8,7 +8,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class CreatureHandler
     {
-        [Parser(Opcode.CMSG_CREATURE_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_CREATURE)]
         public static void HandleCreatureQuery(Packet packet)
         {
             packet.ReadInt32("Entry");

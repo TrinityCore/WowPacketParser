@@ -25,7 +25,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_ADD_PVP_MEDAL_CHEAT, 0x100D0}, //UnknownopcodeID
             {Opcode.CMSG_VOICE_ADD_IGNORE, 0x0B888},
             {Opcode.CMSG_ALTER_APPEARANCE, 0x034A4},
-            {Opcode.CMSG_AREATRIGGER, 0x0ADA8},
+            {Opcode.CMSG_AREA_TRIGGER, 0x0ADA8},
             {Opcode.CMSG_AREA_SPIRIT_HEALER_QUERY, 0x0A6C0},
             {Opcode.CMSG_AREA_SPIRIT_HEALER_QUEUE, 0x0F388},
             {Opcode.CMSG_ARENA_TEAM_ACCEPT, 0x061AC},
@@ -38,8 +38,8 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_ARENA_TEAM_QUERY, 0x0B9C8},
             {Opcode.CMSG_ARENA_TEAM_REMOVE, 0x07E84},
             {Opcode.CMSG_ARENA_TEAM_ROSTER, 0x06BAC},
-            {Opcode.CMSG_ATTACKSTOP, 0x062C4},
-            {Opcode.CMSG_ATTACKSWING, 0x074A8},
+            {Opcode.CMSG_ATTACK_STOP, 0x062C4},
+            {Opcode.CMSG_ATTACK_SWING, 0x074A8},
             {Opcode.CMSG_AUCTION_LIST_BIDDER_ITEMS, 0x021C0},
             {Opcode.CMSG_AUCTION_LIST_ITEMS, 0x0E48C},
             {Opcode.CMSG_AUCTION_LIST_OWNER_ITEMS, 0x02D8C},
@@ -51,9 +51,9 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             //{Opcode.CMSG_AUTH_CONTINUED_SESSION, 0x00100},
             {Opcode.CMSG_AUTH_SESSION, 0x00E0E},
             {Opcode.CMSG_AUTOBANK_ITEM, 0x066E4},
-            {Opcode.CMSG_AUTOEQUIP_GROUND_ITEM, 0x10044}, //UnknownopcodeID
-            {Opcode.CMSG_AUTOEQUIP_ITEM, 0x0E1C0},
-            {Opcode.CMSG_AUTOEQUIP_ITEM_SLOT, 0x0E8A8},
+            {Opcode.CMSG_AUTO_EQUIP_GROUND_ITEM, 0x10044}, //UnknownopcodeID
+            {Opcode.CMSG_AUTO_EQUIP_ITEM, 0x0E1C0},
+            {Opcode.CMSG_AUTO_EQUIP_ITEM_SLOT, 0x0E8A8},
             {Opcode.CMSG_AUTOSTORE_BAG_ITEM, 0x0EDCC},
             {Opcode.CMSG_AUTOSTORE_BANK_ITEM, 0x0F2AC},
             {Opcode.CMSG_AUTOSTORE_GROUND_ITEM, 0x02FC8},
@@ -63,10 +63,10 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_BANKER_ACTIVATE, 0x0E7E0},
             {Opcode.CMSG_BATTLEFIELD_JOIN, 0x00C91},
             {Opcode.CMSG_BATTLEFIELD_LIST, 0x00508},
-            {Opcode.CMSG_BATTLEFIELD_MGR_ENTRY_INVITE_RESPONSE, 0x00100},
-            {Opcode.CMSG_BATTLEFIELD_MGR_EXIT_REQUEST, 0x08581},
-            {Opcode.CMSG_BATTLEFIELD_MGR_QUEUE_INVITE_RESPONSE, 0x08108},
-            {Opcode.CMSG_BATTLEFIELD_MGR_QUEUE_REQUEST, 0x00611},
+            {Opcode.CMSG_BF_MGR_ENTRY_INVITE_RESPONSE, 0x00100},
+            {Opcode.CMSG_BF_MGR_QUEUE_EXIT_REQUEST, 0x08581},
+            {Opcode.CMSG_BF_MGR_QUEUE_INVITE_RESPONSE, 0x08108},
+            {Opcode.CMSG_BF_MGR_QUEUE_REQUEST, 0x00611},
             {Opcode.CMSG_BATTLEFIELD_PORT, 0x00E11},
             {Opcode.CMSG_BATTLEFIELD_REQUEST_SCORE_DATA, 0x00493},
             {Opcode.CMSG_BATTLEFIELD_STATUS, 0x08188},
@@ -95,7 +95,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_CALENDAR_EVENT_MODERATOR_STATUS, 0x0BDE4},
             {Opcode.CMSG_CALENDAR_EVENT_REMOVE_INVITE, 0x0EBCC},
             {Opcode.CMSG_CALENDAR_EVENT_RSVP, 0x0757F},
-            {Opcode.CMSG_CALENDAR_EVENT_SIGNUP, 0x0DC74},
+            {Opcode.CMSG_CALENDAR_EVENT_SIGN_UP, 0x0DC74},
             {Opcode.CMSG_CALENDAR_EVENT_STATUS, 0x0BC84},
             //{Opcode.CMSG_CALENDAR_GET_CALENDAR, 0x0B2A4},
             {Opcode.CMSG_CALENDAR_GET_EVENT, 0x03580},
@@ -114,37 +114,37 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_CAST_SPELL, 0x065C4},
             {Opcode.CMSG_CHANGE_PERSONAL_ARENA_RATING, 0x101B2}, //UnknownopcodeID
             {Opcode.CMSG_CHANGE_SEATS_ON_CONTROLLED_VEHICLE, 0x0E988},
-            {Opcode.CMSG_CHANNEL_ANNOUNCEMENTS, 0x0004B},
-            {Opcode.CMSG_CHANNEL_BAN, 0x0000A},
-            {Opcode.CMSG_CHANNEL_DECLINE_INVITE, 0x0DF7F},
-            {Opcode.CMSG_CHANNEL_DISPLAY_LIST, 0x10185}, //UnknownopcodeID
-            {Opcode.CMSG_CHANNEL_INVITE, 0x00020},
-            {Opcode.CMSG_CHANNEL_KICK, 0x00068},
-            {Opcode.CMSG_CHANNEL_LIST, 0x07FE0},
-            {Opcode.CMSG_CHANNEL_MODERATE, 0x10018}, //UnknownopcodeID
-            {Opcode.CMSG_CHANNEL_MODERATOR, 0x00828},
-            {Opcode.CMSG_CHANNEL_MUTE, 0x00023},
-            {Opcode.CMSG_CHANNEL_OWNER, 0x00848},
-            {Opcode.CMSG_CHANNEL_PASSWORD, 0x0080A},
-            {Opcode.CMSG_CHANNEL_ROSTER_INFO, 0x00069},
-            {Opcode.CMSG_CHANNEL_SET_OWNER, 0x00800},
-            {Opcode.CMSG_CHANNEL_SILENCE_ALL, 0x01A90}, //UnknownopcodeID
-            {Opcode.CMSG_CHANNEL_SILENCE_VOICE, 0x07A18}, //UnknownopcodeID
-            {Opcode.CMSG_CHANNEL_UNBAN, 0x00048},
-            {Opcode.CMSG_CHANNEL_UNMODERATOR, 0x00809},
-            {Opcode.CMSG_CHANNEL_UNMUTE, 0x00841},
-            {Opcode.CMSG_CHANNEL_UNSILENCE_ALL, 0x10186}, //UnknownopcodeID
-            {Opcode.CMSG_CHANNEL_UNSILENCE_VOICE, 0x06A80}, //UnknownopcodeID
-            {Opcode.CMSG_CHANNEL_VOICE_OFF, 0x07A88}, //4.0.3a13329-403
-            {Opcode.CMSG_CHANNEL_VOICE_ON, 0x05A98}, //4.0.3a13329-403
+            {Opcode.CMSG_CHAT_CHANNEL_ANNOUNCEMENTS, 0x0004B},
+            {Opcode.CMSG_CHAT_CHANNEL_BAN, 0x0000A},
+            {Opcode.CMSG_CHAT_CHANNEL_DECLINE_INVITE, 0x0DF7F},
+            {Opcode.CMSG_CHAT_CHANNEL_DISPLAY_LIST, 0x10185}, //UnknownopcodeID
+            {Opcode.CMSG_CHAT_CHANNEL_INVITE, 0x00020},
+            {Opcode.CMSG_CHAT_CHANNEL_KICK, 0x00068},
+            {Opcode.CMSG_CHAT_CHANNEL_LIST, 0x07FE0},
+            {Opcode.CMSG_CHAT_CHANNEL_MODERATE, 0x10018}, //UnknownopcodeID
+            {Opcode.CMSG_CHAT_CHANNEL_MODERATOR, 0x00828},
+            {Opcode.CMSG_CHAT_CHANNEL_MUTE, 0x00023},
+            {Opcode.CMSG_CHAT_CHANNEL_OWNER, 0x00848},
+            {Opcode.CMSG_CHAT_CHANNEL_PASSWORD, 0x0080A},
+            {Opcode.CMSG_CHAT_CHANNEL_ROSTER_INFO, 0x00069},
+            {Opcode.CMSG_CHAT_CHANNEL_SET_OWNER, 0x00800},
+            {Opcode.CMSG_CHAT_CHANNEL_SILENCE_ALL, 0x01A90}, //UnknownopcodeID
+            {Opcode.CMSG_CHAT_CHANNEL_SILENCE_VOICE, 0x07A18}, //UnknownopcodeID
+            {Opcode.CMSG_CHAT_CHANNEL_UNBAN, 0x00048},
+            {Opcode.CMSG_CHAT_CHANNEL_UNMODERATOR, 0x00809},
+            {Opcode.CMSG_CHAT_CHANNEL_UNMUTE, 0x00841},
+            {Opcode.CMSG_CHAT_CHANNEL_UNSILENCE_ALL, 0x10186}, //UnknownopcodeID
+            {Opcode.CMSG_CHAT_CHANNEL_UNSILENCE_VOICE, 0x06A80}, //UnknownopcodeID
+            {Opcode.CMSG_CHAT_CHANNEL_VOICE_OFF, 0x07A88}, //4.0.3a13329-403
+            {Opcode.CMSG_CHAT_CHANNEL_VOICE_ON, 0x05A98}, //4.0.3a13329-403
             {Opcode.CMSG_CHARACTER_POINT_CHEAT, 0x100A0}, //UnknownopcodeID
-            {Opcode.CMSG_CHAR_CREATE, 0x07EEC},
+            {Opcode.CMSG_CREATE_CHARACTER, 0x07EEC},
             {Opcode.CMSG_CHAR_CUSTOMIZE, 0x06484},
             {Opcode.CMSG_CHAR_DELETE, 0x03B84},
-            {Opcode.CMSG_CHAR_ENUM, 0x06AA4},
+            {Opcode.CMSG_ENUM_CHARACTERS, 0x06AA4},
             {Opcode.CMSG_CHAR_FACTION_CHANGE, 0x0BBCC},
             {Opcode.CMSG_CHAR_RACE_CHANGE, 0x06EA4},
-            {Opcode.CMSG_CHAR_RENAME, 0x027C4},
+            {Opcode.CMSG_CHARACTER_RENAME_REQUEST, 0x027C4},
             {Opcode.CMSG_CHEAT_DUMP_ITEMS_DEBUG_ONLY, 0x1015F}, //UnknownopcodeID
             {Opcode.CMSG_CHEAT_PLAYER_LOGIN, 0x1017D}, //UnknownopcodeID
             {Opcode.CMSG_CHEAT_PLAYER_LOOKUP, 0x1017E}, //UnknownopcodeID
@@ -164,7 +164,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_COMMENTATOR_INSTANCE_COMMAND, 0x07D80},
             {Opcode.CMSG_COMMENTATOR_SKIRMISH_QUEUE_COMMAND, 0x06DC8},
             {Opcode.CMSG_COMMENTATOR_START_WARGAME, 0x08588},
-            {Opcode.CMSG_COMPLAIN, 0x068C8},
+            {Opcode.CMSG_COMPLAINT, 0x068C8},
             //{Opcode.CMSG_COMPLETED_ARTIFACTS, 0x00A13},
             {Opcode.CMSG_COMPLETE_ACHIEVEMENT_CHEAT, 0x101DC}, //UnknownopcodeID
             {Opcode.CMSG_COMPLETE_CINEMATIC, 0x02ACC},
@@ -172,7 +172,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_CONNECT_TO_FAILED, 0x10007}, //UnknownopcodeID
             {Opcode.CMSG_CONTACT_LIST, 0x0EAA4},
             {Opcode.CMSG_CORPSE_MAP_POSITION_QUERY, 0x023CC},
-            {Opcode.CMSG_CREATURE_QUERY, 0x0268C},
+            {Opcode.CMSG_QUERY_CREATURE, 0x0268C},
             {Opcode.CMSG_DANCE_QUERY, 0x022A0},
             {Opcode.CMSG_DEBUG_ACTIONS_START, 0x1011B}, //UnknownopcodeID
             {Opcode.CMSG_DEBUG_ACTIONS_STOP, 0x1011C}, //UnknownopcodeID
@@ -212,15 +212,15 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_FORCE_SWIM_SPEED_CHANGE_ACK, 0x0B1A0},
             {Opcode.CMSG_FORCE_TURN_RATE_CHANGE_ACK, 0x0E384},
             {Opcode.CMSG_FORCE_WALK_SPEED_CHANGE_ACK, 0x078CC},
-            {Opcode.CMSG_GAMEOBJECT_QUERY, 0x072A0},
-            {Opcode.CMSG_GAMEOBJ_REPORT_USE, 0x023A0},
-            {Opcode.CMSG_GAMEOBJ_USE, 0x029E4},
+            {Opcode.CMSG_QUERY_GAME_OBJECT, 0x072A0},
+            {Opcode.CMSG_GAME_OBJ_REPORT_USE, 0x023A0},
+            {Opcode.CMSG_GAME_OBJ_USE, 0x029E4},
             {Opcode.CMSG_GAMESPEED_SET, 0x02084},
             //{Opcode.CMSG_GAMETIME_SET, 0x020C4},
             {Opcode.CMSG_GETDEATHBINDZONE, 0x1005E}, //UnknownopcodeID
             {Opcode.CMSG_GET_CHANNEL_MEMBER_COUNT, 0x00009},
             {Opcode.CMSG_GET_ITEM_PURCHASE_DATA, 0x031E0},
-            {Opcode.CMSG_GET_MAIL_LIST, 0x0B284},
+            {Opcode.CMSG_MAIL_GET_LIST, 0x0B284},
             {Opcode.CMSG_GET_MIRROR_IMAGE_DATA, 0x0A08C},
             {Opcode.CMSG_GHOST, 0x10088}, //UnknownopcodeID
             {Opcode.CMSG_GM_TICKET_RESPONSE_RESOLVE, 0x062C8},
@@ -288,7 +288,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             //{Opcode.CMSG_GUILD_NEWS_SET_STICKY, 0x0252D},
             {Opcode.CMSG_GUILD_OFFICER_REMOVE_MEMBER, 0x0312D}, //opcode12589
             {Opcode.CMSG_GUILD_PROMOTE_MEMBER, 0x02109},
-            {Opcode.CMSG_GUILD_QUERY, 0x0AFC4},
+            {Opcode.CMSG_QUERY_GUILD_INFO, 0x0AFC4},
             //{Opcode.CMSG_GUILD_QUERY_MAX_XP, 0x0350D},
             {Opcode.CMSG_GUILD_QUERY_MEMBERS_FOR_RECIPE, 0x0210D},
             {Opcode.CMSG_GUILD_QUERY_MEMBER_RECIPES, 0x0212D},
@@ -297,7 +297,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             //{Opcode.CMSG_GUILD_RANK, 0x02709},
             //{Opcode.CMSG_GUILD_RANKS, 0x03129},
             //{Opcode.CMSG_GUILD_REQUEST_NEWS, 0x03129},
-            //{Opcode.CMSG_GUILD_REQUEST_PARTY_STATE, 0x02219},
+            //{Opcode.CMSG_REQUEST_GUILD_PARTY_STATE, 0x02219},
             {Opcode.CMSG_GUILD_SET_NOTE, 0x0232D},
             {Opcode.CMSG_GUILD_SWITCH_RANK, 0x03309}, //UnknownopcodeID
             //{Opcode.CMSG_GUILD_UPDATE_PARTY_STATE, 0x02219},
@@ -312,7 +312,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_ITEM_NAME_QUERY, 0x100E3}, //UnknownopcodeID
             {Opcode.CMSG_ITEM_PURCHASE_REFUND, 0x062E8},
             {Opcode.CMSG_ITEM_TEXT_QUERY, 0x0F280},
-            {Opcode.CMSG_JOIN_CHANNEL, 0x00002},
+            {Opcode.CMSG_CHAT_JOIN_CHANNEL, 0x00002},
             //{Opcode.CMSG_JOIN_RATED_BATTLEFIELD, 0x00591},
             {Opcode.CMSG_KEEP_ALIVE, 0x02CE0},
             {Opcode.CMSG_LEARN_DANCE_MOVE, 0x101C9}, //UnknownopcodeID
@@ -320,7 +320,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_LEARN_PREVIEW_TALENTS_PET, 0x0BCE8},
             {Opcode.CMSG_LEARN_TALENT, 0x0A7CC},
             {Opcode.CMSG_LEAVE_BATTLEFIELD, 0x07DC4},
-            {Opcode.CMSG_LEAVE_CHANNEL, 0x0000B},
+            {Opcode.CMSG_CHAT_LEAVE_CHANNEL, 0x0000B},
             //{Opcode.CMSG_LFD_PARTY_LOCK_INFO_REQUEST, 0x00574}, //4.0.3a13329-403
             //{Opcode.CMSG_LFD_PLAYER_LOCK_INFO_REQUEST, 0x0E5E8},// 0x00C76
             {Opcode.CMSG_LFG_JOIN, 0x063C0},
@@ -335,9 +335,9 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_LOAD_DANCES, 0x101C4}, //UnknownopcodeID
             {Opcode.CMSG_LOGOUT_CANCEL, 0x039E8},
             {Opcode.CMSG_LOGOUT_REQUEST, 0x0A7A8},
-            {Opcode.CMSG_LOOT, 0x0FCEC},
+            {Opcode.CMSG_LOOT_UNIT, 0x0FCEC},
             {Opcode.CMSG_LOOT_MASTER_GIVE, 0x03BA4},
-            {Opcode.CMSG_LOOT_METHOD, 0x0FCCC},
+            {Opcode.CMSG_SET_LOOT_METHOD, 0x0FCCC},
             {Opcode.CMSG_LOOT_MONEY, 0x079E0},
             {Opcode.CMSG_LOOT_RELEASE, 0x03CE8},
             {Opcode.CMSG_LOOT_ROLL, 0x0BDA8},
@@ -356,22 +356,22 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_MAIL_TAKE_MONEY, 0x0E8EC},
             {Opcode.CMSG_MEETINGSTONE_CHEAT, 0x100D5}, //UnknownopcodeID
             {Opcode.CMSG_MEETINGSTONE_INFO, 0x0F984},
-            {Opcode.CMSG_MESSAGECHAT_AFK, 0x0086B},
-            {Opcode.CMSG_MESSAGECHAT_BATTLEGROUND, 0x00063},
-            {Opcode.CMSG_MESSAGECHAT_BATTLEGROUND_LEADER, 0x00860},
-            {Opcode.CMSG_MESSAGECHAT_CHANNEL, 0x00821},
-            {Opcode.CMSG_MESSAGECHAT_DND, 0x00003},
-            {Opcode.CMSG_MESSAGECHAT_EMOTE, 0x00042},
-            {Opcode.CMSG_MESSAGECHAT_GUILD, 0x00823},
-            {Opcode.CMSG_MESSAGECHAT_OFFICER, 0x00861},
-            {Opcode.CMSG_MESSAGECHAT_PARTY, 0x0084B},
-            {Opcode.CMSG_MESSAGECHAT_PARTY_LEADER, 0x0080B},
-            {Opcode.CMSG_MESSAGECHAT_RAID, 0x00803},
-            {Opcode.CMSG_MESSAGECHAT_RAID_LEADER, 0x00863},
-            {Opcode.CMSG_MESSAGECHAT_RAID_WARNING, 0x00061},
-            {Opcode.CMSG_MESSAGECHAT_SAY, 0x0002A},
-            {Opcode.CMSG_MESSAGECHAT_WHISPER, 0x00000},
-            {Opcode.CMSG_MESSAGECHAT_YELL, 0x00802},
+            {Opcode.CMSG_CHAT_MESSAGE_AFK, 0x0086B},
+            {Opcode.CMSG_CHAT_MESSAGE_BATTLEGROUND, 0x00063},
+            {Opcode.CMSG_CHAT_MESSAGE_BATTLEGROUND_LEADER, 0x00860},
+            {Opcode.CMSG_CHAT_MESSAGE_CHANNEL, 0x00821},
+            {Opcode.CMSG_CHAT_MESSAGE_DND, 0x00003},
+            {Opcode.CMSG_CHAT_MESSAGE_EMOTE, 0x00042},
+            {Opcode.CMSG_CHAT_MESSAGE_GUILD, 0x00823},
+            {Opcode.CMSG_CHAT_MESSAGE_OFFICER, 0x00861},
+            {Opcode.CMSG_CHAT_MESSAGE_PARTY, 0x0084B},
+            {Opcode.CMSG_CHAT_MESSAGE_PARTY_LEADER, 0x0080B},
+            {Opcode.CMSG_CHAT_MESSAGE_RAID, 0x00803},
+            {Opcode.CMSG_CHAT_MESSAGE_RAID_LEADER, 0x00863},
+            {Opcode.CMSG_CHAT_MESSAGE_RAID_WARNING, 0x00061},
+            {Opcode.CMSG_CHAT_MESSAGE_SAY, 0x0002A},
+            {Opcode.CMSG_CHAT_MESSAGE_WHISPER, 0x00000},
+            {Opcode.CMSG_CHAT_MESSAGE_YELL, 0x00802},
             {Opcode.CMSG_MINIGAME_MOVE, 0x0B2E4},
             {Opcode.CMSG_MOUNT_SPECIAL_ANIM, 0x02EE4},
             {Opcode.CMSG_MOVE_CHNG_TRANSPORT, 0x10158}, //UnknownopcodeID
@@ -396,12 +396,12 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_NEW_SPELL_SLOT, 0x10057}, //UnknownopcodeID
             {Opcode.CMSG_NEXT_CINEMATIC_CAMERA, 0x0B2CC},
             {Opcode.CMSG_NO_SPELL_VARIANCE, 0x101A8}, //UnknownopcodeID
-            {Opcode.CMSG_NPC_TEXT_QUERY, 0x0A2EC},
+            {Opcode.CMSG_QUERY_NPC_TEXT, 0x0A2EC},
             {Opcode.CMSG_OFFER_PETITION, 0x07AC4},
             {Opcode.CMSG_OPENING_CINEMATIC, 0x0B1E8},
             {Opcode.CMSG_OPEN_ITEM, 0x0A2A8},
             {Opcode.CMSG_OPT_OUT_OF_LOOT, 0x075A4},
-            {Opcode.CMSG_PAGE_TEXT_QUERY, 0x0AC8C},
+            {Opcode.CMSG_QUERY_PAGE_TEXT, 0x0AC8C},
             {Opcode.CMSG_PARTY_SILENCE, 0x06CC4},
             {Opcode.CMSG_PARTY_UNSILENCE, 0x0FCA4},
             {Opcode.CMSG_PETITION_BUY, 0x0B3E4},
@@ -414,7 +414,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_PET_CANCEL_AURA, 0x0F6C0},
             {Opcode.CMSG_PET_CAST_SPELL, 0x02888},
             {Opcode.CMSG_PET_LEARN_TALENT, 0x0A7A0},
-            {Opcode.CMSG_PET_NAME_QUERY, 0x0F180},
+            {Opcode.CMSG_QUERY_PET_NAME, 0x0F180},
             {Opcode.CMSG_PET_RENAME, 0x038E8},
             {Opcode.CMSG_PET_SET_ACTION, 0x03C8C},
             {Opcode.CMSG_PET_SPELL_AUTOCAST, 0x0B6A4},
@@ -422,35 +422,35 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_PET_UNLEARN, 0x10105}, //UnknownopcodeID
             {Opcode.CMSG_PET_UNLEARN_TALENTS, 0x08F5D}, //4.0.3a13329-403
             {Opcode.CMSG_PING, 0x0064E},
-            {Opcode.CMSG_PLAYED_TIME, 0x0F480},
+            {Opcode.CMSG_REQUEST_PLAYED_TIME, 0x0F480},
             {Opcode.CMSG_PLAYER_AI_CHEAT, 0x100C2}, //UnknownopcodeID
             {Opcode.CMSG_PLAYER_DIFFICULTY_CHANGE, 0x03F88},
             {Opcode.CMSG_PLAYER_LOGIN, 0x08180},
             {Opcode.CMSG_PLAYER_LOGOUT, 0x0F78C},
             {Opcode.CMSG_PLAYER_VEHICLE_ENTER, 0x0AEC8},
             {Opcode.CMSG_PLAY_DANCE, 0x02288},
-            {Opcode.CMSG_PORT_GRAVEYARD, 0x00593},
+            {Opcode.CMSG_CLIENT_PORT_GRAVEYARD, 0x00593},
             {Opcode.CMSG_PUSH_QUEST_TO_PARTY, 0x029E8},
             //{Opcode.CMSG_QUERY_INSPECT_ACHIEVEMENTS, 0x069A0},
             {Opcode.CMSG_QUERY_QUESTS_COMPLETED, 0x0ECE8},
             {Opcode.CMSG_QUERY_SERVER_BUCK_DATA, 0x101AC}, //UnknownopcodeID
             {Opcode.CMSG_QUERY_TIME, 0x0B1C0},
             {Opcode.CMSG_QUERY_VEHICLE_STATUS, 0x069A0},
-            {Opcode.CMSG_QUESTGIVER_ACCEPT_QUEST, 0x020C4},
-            {Opcode.CMSG_QUESTGIVER_CANCEL, 0x061EC},
-            {Opcode.CMSG_QUESTGIVER_CHOOSE_REWARD, 0x06AC0},
-            {Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST, 0x0B5AC},
-            {Opcode.CMSG_QUESTGIVER_HELLO, 0x036AC},
-            {Opcode.CMSG_QUESTGIVER_QUERY_QUEST, 0x02CC0},
-            {Opcode.CMSG_QUESTGIVER_QUEST_AUTOLAUNCH, 0x10064}, //UnknownopcodeID
-            {Opcode.CMSG_QUESTGIVER_REQUEST_REWARD, 0x023A8},
-            {Opcode.CMSG_QUESTGIVER_STATUS_MULTIPLE_QUERY, 0x02DAC},
-            {Opcode.CMSG_QUESTGIVER_STATUS_QUERY, 0x0FDEC},
-            {Opcode.CMSG_QUESTLOG_REMOVE_QUEST, 0x0EDA8},
-            {Opcode.CMSG_QUESTLOG_SWAP_QUEST, 0x10068}, //UnknownopcodeID
+            {Opcode.CMSG_QUEST_GIVER_ACCEPT_QUEST, 0x020C4},
+            {Opcode.CMSG_QUEST_GIVER_CANCEL, 0x061EC},
+            {Opcode.CMSG_QUEST_GIVER_CHOOSE_REWARD, 0x06AC0},
+            {Opcode.CMSG_QUEST_GIVER_COMPLETE_QUEST, 0x0B5AC},
+            {Opcode.CMSG_QUEST_GIVER_HELLO, 0x036AC},
+            {Opcode.CMSG_QUEST_GIVER_QUERY_QUEST, 0x02CC0},
+            {Opcode.CMSG_QUEST_GIVER_QUEST_AUTOLAUNCH, 0x10064}, //UnknownopcodeID
+            {Opcode.CMSG_QUEST_GIVER_REQUEST_REWARD, 0x023A8},
+            {Opcode.CMSG_QUEST_GIVER_STATUS_MULTIPLE_QUERY, 0x02DAC},
+            {Opcode.CMSG_QUEST_GIVER_STATUS_QUERY, 0x0FDEC},
+            {Opcode.CMSG_QUEST_LOG_REMOVE_QUEST, 0x0EDA8},
+            {Opcode.CMSG_QUEST_LOG_SWAP_QUEST, 0x10068}, //UnknownopcodeID
             {Opcode.CMSG_QUEST_CONFIRM_ACCEPT, 0x06FCC},
             {Opcode.CMSG_QUEST_POI_QUERY, 0x07DE0},
-            {Opcode.CMSG_QUEST_QUERY, 0x0EFE8},
+            {Opcode.CMSG_QUERY_QUEST_INFO, 0x0EFE8},
             {Opcode.CMSG_READY_FOR_ACCOUNT_DATA_TIMES, 0x07DA8}, //4.0.613561
             {Opcode.CMSG_READ_ITEM, 0x0F3C0},
             {Opcode.CMSG_REALM_SPLIT, 0x060AC},
@@ -460,9 +460,9 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_REMOVE_GLYPH, 0x101EC}, //UnknownopcodeID
             {Opcode.CMSG_REPAIR_ITEM, 0x039E4},
             {Opcode.CMSG_REPOP_REQUEST, 0x0A9E4},
-            {Opcode.CMSG_REPORT_FILTERED, 0x075A8},
-            {Opcode.CMSG_REPORT_IGNORED, 0x0A78C},
-            {Opcode.CMSG_REPORT_PVP_AFK, 0x0E3AC},
+            {Opcode.CMSG_CHAT_REPORT_FILTERED, 0x075A8},
+            {Opcode.CMSG_CHAT_REPORT_IGNORED, 0x0A78C},
+            {Opcode.CMSG_REPORT_PVP_PLAYER_AFK, 0x0E3AC},
             {Opcode.CMSG_REQUEST_ACCOUNT_DATA, 0x0EEAC},
             {Opcode.CMSG_REQUEST_GUILD_REWARDS_LIST, 0x02210},
             {Opcode.CMSG_REQUEST_GUILD_XP, 0x03509},
@@ -497,7 +497,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_SERVER_BROADCAST, 0x100DE}, //UnknownopcodeID
             {Opcode.CMSG_SERVER_INFO_QUERY, 0x101F6}, //UnknownopcodeID
             {Opcode.CMSG_SETDEATHBINDPOINT, 0x0A94E},
-            {Opcode.CMSG_SET_ACTIONBAR_TOGGLES, 0x032C4},
+            {Opcode.CMSG_SET_ACTION_BAR_TOGGLES, 0x032C4},
             {Opcode.CMSG_SET_ACTION_BUTTON, 0x072E8},
             {Opcode.CMSG_SET_ACTIVE_MOVER, 0x06CA0},
             {Opcode.CMSG_SET_ACTIVE_VOICE_CHANNEL, 0x032A4},
@@ -537,7 +537,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_SKILL_BUY_RANK, 0x1009F}, //UnknownopcodeID
             {Opcode.CMSG_SKILL_BUY_STEP, 0x1009E}, //UnknownopcodeID
             {Opcode.CMSG_SOCKET_GEMS, 0x076C4},
-            {Opcode.CMSG_SPELLCLICK, 0x0F9A4},
+            {Opcode.CMSG_SPELL_CLICK, 0x0F9A4},
             {Opcode.CMSG_SPIRIT_HEALER_ACTIVATE, 0x0F3AC},
             {Opcode.CMSG_SPLIT_ITEM, 0x0FDAC},
             {Opcode.CMSG_STABLE_CHANGE_SLOT, 0x00291},
@@ -559,7 +559,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_TAXI_NODE_STATUS_QUERY, 0x0A1EC},
             {Opcode.CMSG_TAXI_QUERY_AVAILABLE_NODES, 0x0BE8E},
             {Opcode.CMSG_TELEPORT_TO_UNIT, 0x0E1AC},
-            {Opcode.CMSG_TEXT_EMOTE, 0x0E9E0},
+            {Opcode.CMSG_SEND_TEXT_EMOTE, 0x0E9E0},
             {Opcode.CMSG_TIME_SYNC_RESPONSE, 0x0A8AC},
             {Opcode.CMSG_TOGGLE_PVP, 0x06480},
             {Opcode.CMSG_TOTEM_DESTROYED, 0x034A0},
@@ -1019,7 +1019,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_PET_BROKEN, 0x075E0},
             {Opcode.SMSG_PET_CAST_FAILED, 0x0A9CC},
             {Opcode.SMSG_PET_DISMISS_SOUND, 0x0B7E0},
-            {Opcode.SMSG_PET_GUI_DS, 0x0E4E8},
+            {Opcode.SMSG_PET_GUIDS, 0x0E4E8},
             {Opcode.SMSG_PET_LEARNED_SPELLS, 0x0B3C4},
             {Opcode.SMSG_PET_MODE, 0x079C0},
             {Opcode.SMSG_PET_NAME_INVALID, 0x01457}, //4.0.3a13329-403

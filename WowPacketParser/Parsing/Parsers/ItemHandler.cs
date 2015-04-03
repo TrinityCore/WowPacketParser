@@ -394,7 +394,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.CMSG_AUTOSTORE_BANK_ITEM)]
-        [Parser(Opcode.CMSG_AUTOEQUIP_ITEM)]
+        [Parser(Opcode.CMSG_AUTO_EQUIP_ITEM)]
         [Parser(Opcode.CMSG_AUTOBANK_ITEM)]
         [Parser(Opcode.CMSG_OPEN_ITEM)]
         [Parser(Opcode.CMSG_READ_ITEM)]

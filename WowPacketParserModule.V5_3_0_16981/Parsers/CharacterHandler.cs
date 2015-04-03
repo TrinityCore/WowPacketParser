@@ -119,7 +119,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_CHAR_CREATE)]
+        [Parser(Opcode.CMSG_CREATE_CHARACTER)]
         public static void HandleClientCharCreate(Packet packet)
         {
             packet.ReadByte("Hair Style");

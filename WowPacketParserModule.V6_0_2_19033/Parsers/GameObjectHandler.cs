@@ -8,7 +8,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class GameObjectHandler
     {
-        [Parser(Opcode.CMSG_GAMEOBJECT_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_GAME_OBJECT)]
         public static void HandleGameObjectQuery(Packet packet)
         {
             packet.ReadInt32("Entry");
@@ -69,8 +69,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             Storage.ObjectNames.Add((uint)entry.Key, objectName, packet.TimeSpan);
         }
 
-        [Parser(Opcode.CMSG_GAMEOBJ_REPORT_USE)]
-        [Parser(Opcode.CMSG_GAMEOBJ_USE)]
+        [Parser(Opcode.CMSG_GAME_OBJ_REPORT_USE)]
+        [Parser(Opcode.CMSG_GAME_OBJ_USE)]
         [Parser(Opcode.SMSG_PAGE_TEXT)]
         public static void HandleGoMisc(Packet packet)
         {

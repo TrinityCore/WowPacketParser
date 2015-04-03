@@ -10,7 +10,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 {
     public static class QuestHandler
     {
-        [Parser(Opcode.CMSG_QUESTGIVER_STATUS_QUERY)]
+        [Parser(Opcode.CMSG_QUEST_GIVER_STATUS_QUERY)]
         public static void HandleQuestgiverStatusQuery(Packet packet)
         {
             var guid = packet.StartBitStream(4, 3, 2, 1, 0, 5, 7, 6);
@@ -67,7 +67,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_QUEST_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_QUEST_INFO)]
         public static void HandleQuestQuery(Packet packet)
         {
             var guid = new byte[8];
@@ -342,7 +342,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadInt32("Count");
         }
 
-        [Parser(Opcode.CMSG_QUESTGIVER_HELLO)]
+        [Parser(Opcode.CMSG_QUEST_GIVER_HELLO)]
         public static void HandleQuestgiverHello(Packet packet)
         {
             var guid = new byte[8];
@@ -573,7 +573,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_QUESTGIVER_REQUEST_REWARD)]
+        [Parser(Opcode.CMSG_QUEST_GIVER_REQUEST_REWARD)]
         public static void HandleQuestRequestReward(Packet packet)
         {
             var guid = new byte[8];
@@ -586,7 +586,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_QUESTGIVER_CHOOSE_REWARD)]
+        [Parser(Opcode.CMSG_QUEST_GIVER_CHOOSE_REWARD)]
         public static void HandleQuestChooseReward(Packet packet)
         {
             var guid = new byte[8];
@@ -607,7 +607,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_QUESTGIVER_COMPLETE_QUEST)]
+        [Parser(Opcode.CMSG_QUEST_GIVER_COMPLETE_QUEST)]
         public static void HandleQuestCompleteQuest(Packet packet)
         {
             var guid = new byte[8];

@@ -87,7 +87,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("HasJournalLock");
         }
 
-        [Parser(Opcode.CMSG_BATTLE_PET_NAME_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_BATTLE_PET_NAME)]
         public static void HandleBattlePetQuery(Packet packet)
         {
             packet.ReadPackedGuid128("BattlePetID");

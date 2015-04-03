@@ -85,7 +85,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBits("Type", 2);
         }
 
-        [Parser(Opcode.CMSG_MOVE_WORLDPORT_ACK)]
+        [Parser(Opcode.CMSG_WORLD_PORT_RESPONSE)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }
@@ -840,6 +840,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Unit");
             packet.ReadInt16("AnimKitID");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_CHANGE_VEHICLE_SEATS)]
+        public static void HandleMoveChangeVehicleSeats(Packet packet)
+        {
+            ReadMovementStats(packet);
+            packet.ReadPackedGuid128("DstVehicle");
+            packet.ReadByte("DstSeatIndex");
         }
     }
 }

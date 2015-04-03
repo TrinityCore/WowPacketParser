@@ -196,7 +196,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_PLAYED_TIME)]
+        [Parser(Opcode.CMSG_REQUEST_PLAYED_TIME)]
         public static void HandlePlayedTime(Packet packet)
         {
             packet.ReadBool("Print in chat");

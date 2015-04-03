@@ -80,7 +80,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_GET_GARRISON_INFO)]
         [Parser(Opcode.CMSG_GARRISON_REQUEST_LANDING_PAGE_SHIPMENT_INFO)]
         [Parser(Opcode.CMSG_GARRISON_REQUEST_BLUEPRINT_AND_SPECIALIZATION_DATA)]
-        [Parser(Opcode.CMSG_GARRISON_REQUEST_UPGRADEABLE)]
+        [Parser(Opcode.CMSG_GARRISON_CHECK_UPGRADEABLE)]
         [Parser(Opcode.CMSG_GARRISON_UNK1)]
         public static void HandleGarrisonZero(Packet packet)
         {
@@ -348,7 +348,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         [Parser(Opcode.CMSG_CREATE_SHIPMENT, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_1_0_19678)]
         [Parser(Opcode.CMSG_GET_SHIPMENT_INFO)]
-        [Parser(Opcode.CMSG_OPEN_GARRISON_MISSION_NPC)]
+        [Parser(Opcode.CMSG_OPEN_MISSION_NPC)]
         public static void HandleGarrisonNpcGUID(Packet packet)
         {
             packet.ReadPackedGuid128("NpcGUID");
@@ -361,7 +361,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("Unk4");
         }
 
-        [Parser(Opcode.CMSG_OPEN_SHIPMENT_GAME_OBJ)]
+        [Parser(Opcode.CMSG_COMPLETE_ALL_READY_SHIPMENTS)]
         public static void HandleGarrisonGameObjGUID(Packet packet)
         {
             packet.ReadPackedGuid128("GameObjectGUID");
@@ -405,7 +405,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadGarrisonFollower(packet);
         }
 
-        [Parser(Opcode.CMSG_GARRISON_OPEN_TRADESKILL_NPC)]
+        [Parser(Opcode.CMSG_OPEN_TRADESKILL_NPC)]
         public static void HandleGarrisonOpenTradeskillNpc(Packet packet)
         {
             packet.ReadInt32("Unk"); // maybe: SkillLineID?
@@ -477,14 +477,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_REPLACE_TROPHY)]
-        [Parser(Opcode.CMSG_CHANGE_TROPHY)]
+        [Parser(Opcode.CMSG_CHANGE_MONUMENT_APPEARANCE)]
         public static void HandleReplaceTrophy(Packet packet)
         {
             packet.ReadPackedGuid128("TrophyGUID");
             packet.ReadInt32("NewTrophyID");
         }
 
-        [Parser(Opcode.CMSG_REVERT_TROPHY)]
+        [Parser(Opcode.CMSG_REVERT_MONUMENT_APPEARANCE)]
         public static void HandleRevertTrophy(Packet packet)
         {
             packet.ReadPackedGuid128("TrophyGUID");

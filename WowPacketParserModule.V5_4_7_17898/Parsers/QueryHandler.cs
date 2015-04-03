@@ -9,7 +9,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 {
     public static class QueryHandler
     {
-        [Parser(Opcode.CMSG_CREATURE_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_CREATURE)]
         public static void HandleCreatureQuery(Packet packet)
         {
             packet.ReadInt32("Entry");
@@ -643,7 +643,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid1", guid1);
         }
 
-        [Parser(Opcode.CMSG_REALM_NAME_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_REALM_NAME)]
         public static void HandleRealmQuery(Packet packet)
         {
             packet.ReadInt32("Realm Id");
@@ -663,7 +663,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadWoWString("Realmname (without white char)", bits278);
         }
 
-        [Parser(Opcode.CMSG_QUEST_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_QUEST_INFO)]
         public static void HandleQuestQuery(Packet packet)
         {
             var guid = new byte[8];
@@ -831,7 +831,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadInt32("int2978");
         }
 
-        [Parser(Opcode.CMSG_PAGE_TEXT_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_PAGE_TEXT)]
         public static void HandlePageTextQuery(Packet packet)
         {
             var guid = new byte[8];

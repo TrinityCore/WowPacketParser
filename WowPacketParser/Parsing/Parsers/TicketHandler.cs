@@ -117,7 +117,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
         }
 
-        [Parser(Opcode.CMSG_COMPLAIN)]
+        [Parser(Opcode.CMSG_COMPLAINT)]
         public static void HandleComplain(Packet packet)
         {
             bool fromChat = packet.ReadBool("From Chat"); // false = from mail
