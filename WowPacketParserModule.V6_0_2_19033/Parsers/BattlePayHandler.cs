@@ -39,7 +39,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("Flags", idx);
         }
 
-        private static void ReadBattlePayProduct(Packet packet, params object[] idx)
+        private static void ReadBattlePayProduct60x(Packet packet, params object[] idx)
         {
             packet.ReadInt32("ProductID", idx);
 
@@ -78,28 +78,72 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (bit5196)
                 ReadBattlepayDisplayInfo(packet, idx);
         }
-
-        private static void ReadBattlePayDistributionObject(Packet packet, params object[] indexes)
+        private static void ReadBattlePayProduct612(Packet packet, params object[] idx)
         {
-            packet.ReadInt64("DistributionID", indexes);
+            packet.ReadInt32("ProductID", idx);
 
-            packet.ReadInt32("Status", indexes);
-            packet.ReadInt32("ProductID", indexes);
+            packet.ReadInt64("NormalPriceFixedPoint", idx);
+            packet.ReadInt64("CurrentPriceFixedPoint", idx);
 
-            packet.ReadPackedGuid128("TargetPlayer", indexes);
-            packet.ReadInt32("TargetVirtualRealm", indexes);
-            packet.ReadInt32("TargetNativeRealm", indexes);
-
-            packet.ReadInt64("PurchaseID", indexes);
+            packet.ReadByte("Type", idx);
+            packet.ReadInt32("Flags", idx);
 
             packet.ResetBitReader();
 
-            var bit5248 = packet.ReadBit("HasBattlePayProduct", indexes);
+            var int11 = packet.ReadBits("BattlepayProductItemCount", 7);
+            packet.ReadBits("UnkWod612 2", 7);
 
-            packet.ReadBit("Revoked", indexes);
+            var bit5196 = packet.ReadBit("HasBattlepayDisplayInfo", idx);
+
+            for (var j = 0; j < int11; j++)
+            {
+                packet.ReadInt32("ID", idx, j);
+                packet.ReadInt32("ItemID", idx, j);
+                packet.ReadInt32("Quantity", idx, j);
+
+                packet.ResetBitReader();
+
+                var bit5160 = packet.ReadBit("HasBattlepayDisplayInfo", idx, j);
+                packet.ReadBit("HasPet", idx, j);
+                var bit5172 = packet.ReadBit("HasBATTLEPETRESULT", idx, j);
+
+                if (bit5172)
+                    packet.ReadBits("PetResult", 4);
+
+                if (bit5160)
+                    ReadBattlepayDisplayInfo(packet, idx);
+            }
+
+            if (bit5196)
+                ReadBattlepayDisplayInfo(packet, idx);
+        }
+
+        private static void ReadBattlePayDistributionObject(Packet packet, params object[] index)
+        {
+            packet.ReadInt64("DistributionID", index);
+
+            packet.ReadInt32("Status", index);
+            packet.ReadInt32("ProductID", index);
+
+            packet.ReadPackedGuid128("TargetPlayer", index);
+            packet.ReadInt32("TargetVirtualRealm", index);
+            packet.ReadInt32("TargetNativeRealm", index);
+
+            packet.ReadInt64("PurchaseID", index);
+
+            packet.ResetBitReader();
+
+            var bit5248 = packet.ReadBit("HasBattlePayProduct", index);
+
+            packet.ReadBit("Revoked", index);
 
             if (bit5248)
-                ReadBattlePayProduct(packet, indexes);
+            {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_2_19802))
+                    ReadBattlePayProduct612(packet, index);
+                else
+                    ReadBattlePayProduct60x(packet, index);
+            }
         }
 
         private static void ReadBattlePayPurchase(Packet packet, params object[] indexes)
@@ -154,7 +198,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var int20 = packet.ReadUInt32("BattlePayShopEntryCount");
 
             for (uint index = 0; index < int52; index++)
-                ReadBattlePayProduct(packet, index);
+            {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_2_19802))
+                    ReadBattlePayProduct612(packet, index);
+                else
+                    ReadBattlePayProduct60x(packet, index);
+            }
 
             for (int i = 0; i < int36; i++)
             {
