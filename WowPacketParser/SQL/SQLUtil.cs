@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using MySql.Data.MySqlClient;
 using WowPacketParser.Enums;
@@ -293,7 +295,7 @@ namespace WowPacketParser.SQL
             var rowsIns = new List<QueryBuilder.SQLInsertRow>();
             var rowsUpd = new List<QueryBuilder.SQLUpdateRow>();
 
-            foreach (var elem1 in dict1)
+            foreach (var elem1 in Settings.SQLOrderByKey ? dict1.OrderBy(blub => blub.Key).ToList() : dict1.ToList())
             {
                 if (dict2 != null && dict2.ContainsKey(elem1.Key)) // update
                 {

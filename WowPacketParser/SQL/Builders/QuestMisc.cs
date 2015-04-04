@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
@@ -71,7 +72,7 @@ namespace WowPacketParser.SQL.Builders
             if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_poi_points))
             {
                 var rows = new List<QueryBuilder.SQLInsertRow>();
-                foreach (var quest in Storage.QuestPOIs)
+                foreach (var quest in Storage.QuestPOIs.OrderBy(blub => blub.Key.Item1))
                 {
                     var questPOI = quest.Value.Item1;
 
