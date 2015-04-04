@@ -145,20 +145,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 for (var j = 0; j < int2; ++j)
                 {
-                    var questPoi = new QuestPOI();
                     var idx = packet.ReadInt32("BlobIndex", i, j);
-                    questPoi.ObjectiveIndex = packet.ReadInt32("ObjectiveIndex", i, j);
-                    packet.ReadInt32("QuestObjectiveID", i, j);
-                    packet.ReadInt32("QuestObjectID", i, j);
-                    questPoi.Map = (uint)packet.ReadInt32("MapID", i, j);
-                    questPoi.WorldMapAreaId = (uint)packet.ReadInt32("WorldMapAreaID", i, j);
-                    questPoi.FloorId = (uint)packet.ReadInt32("Floor", i, j);
-                    packet.ReadInt32("Priority", i, j);
-                    packet.ReadInt32("Flags", i, j);
-                    packet.ReadInt32("WorldEffectID", i, j);
-                    packet.ReadInt32("PlayerConditionID", i, j);
+
+                    var questPoi = new QuestPOIWoD
+                    {
+                        ObjectiveIndex = packet.ReadInt32("ObjectiveIndex", i, j),
+                        QuestObjectiveID = packet.ReadInt32("QuestObjectiveID", i, j),
+                        QuestObjectID = packet.ReadInt32("QuestObjectID", i, j),
+                        MapID = (uint) packet.ReadInt32("MapID", i, j),
+                        WorldMapAreaId = (uint) packet.ReadInt32("WorldMapAreaID", i, j),
+                        Floor = (uint) packet.ReadInt32("Floor", i, j),
+                        Priority = packet.ReadInt32("Priority", i, j),
+                        Flags = packet.ReadInt32("Flags", i, j),
+                        WorldEffectID = packet.ReadInt32("WorldEffectID", i, j),
+                        PlayerConditionID = packet.ReadInt32("PlayerConditionID", i, j)
+                    };
+
                     packet.ReadInt32("NumPoints", i, j);
-                    packet.ReadInt32("Int12", i, j);
+                    questPoi.WoDUnk1 = packet.ReadInt32("WoDUnk1", i, j);
 
                     var int13 = packet.ReadInt32("QuestPOIBlobPoint", i, j);
                     questPoi.Points = new List<QuestPOIPoint>(int13);
@@ -173,7 +177,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                         questPoi.Points.Add(questPoiPoint);
                     }
 
-                    Storage.QuestPOIs.Add(new Tuple<uint, uint>(questId, (uint)idx), questPoi, packet.TimeSpan);
+                    Storage.QuestPOIWoDs.Add(new Tuple<uint, uint>(questId, (uint)idx), questPoi, packet.TimeSpan);
                 }
             }
         }

@@ -78,6 +78,7 @@ namespace WowPacketParser.Store
 
         // Quest POI (QuestId, Id)
         public static readonly StoreDictionary<Tuple<uint, uint>, QuestPOI> QuestPOIs = new StoreDictionary<Tuple<uint, uint>, QuestPOI>(new List<SQLOutput> { SQLOutput.quest_poi_points });
+        public static readonly StoreDictionary<Tuple<uint, uint>, QuestPOIWoD> QuestPOIWoDs = new StoreDictionary<Tuple<uint, uint>, QuestPOIWoD>(new List<SQLOutput> { SQLOutput.quest_poi_points }); // WoD
 
         // Quest Misc
         public static readonly StoreDictionary<uint, QuestGreeting> QuestGreetings = new StoreDictionary<uint, QuestGreeting>(new List<SQLOutput> { SQLOutput.quest_template });
