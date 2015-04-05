@@ -145,10 +145,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 for (var j = 0; j < int2; ++j)
                 {
-                    var idx = packet.ReadInt32("BlobIndex", i, j);
-
                     var questPoi = new QuestPOIWoD
                     {
+                        BlobIndex = packet.ReadInt32("BlobIndex", i, j),
                         ObjectiveIndex = packet.ReadInt32("ObjectiveIndex", i, j),
                         QuestObjectiveID = packet.ReadInt32("QuestObjectiveID", i, j),
                         QuestObjectID = packet.ReadInt32("QuestObjectID", i, j),
@@ -165,7 +164,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     questPoi.WoDUnk1 = packet.ReadInt32("WoDUnk1", i, j);
 
                     var int13 = packet.ReadInt32("QuestPOIBlobPoint", i, j);
-                    questPoi.Points = new List<QuestPOIPoint>(int13);
+                    questPoi.Points = new Dictionary<QuestPOIPoint, uint>(int13);
                     for (var k = 0u; k < int13; ++k)
                     {
                         var questPoiPoint = new QuestPOIPoint
@@ -174,10 +173,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                             X = packet.ReadInt32("X", i, j, (int)k),
                             Y = packet.ReadInt32("Y", i, j, (int)k)
                         };
-                        questPoi.Points.Add(questPoiPoint);
+                        questPoi.Points.Add(questPoiPoint, (uint)j);
                     }
 
-                    Storage.QuestPOIWoDs.Add(new Tuple<uint, uint>(questId, (uint)idx), questPoi, packet.TimeSpan);
+                    Storage.QuestPOIWoDs.Add(new Tuple<uint, uint>(questId, (uint)j), questPoi, packet.TimeSpan);
                 }
             }
         }

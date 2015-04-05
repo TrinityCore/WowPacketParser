@@ -35,6 +35,9 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("quest_poi")]
     public class QuestPOIWoD
     {
+        [DBFieldName("BlobIndex")]
+        public int BlobIndex;
+
         [DBFieldName("ObjectiveIndex")]
         public int ObjectiveIndex;
 
@@ -52,6 +55,7 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("Floor")]
         public uint Floor;
+
         [DBFieldName("Priority")]
         public int Priority;
 
@@ -71,6 +75,6 @@ namespace WowPacketParser.Store.Objects
         public int VerifiedBuild = ClientVersion.BuildInt;
 
         public uint Idx;
-        public ICollection<QuestPOIPoint> Points;
+        public Dictionary<QuestPOIPoint, uint> Points;
     }
 }

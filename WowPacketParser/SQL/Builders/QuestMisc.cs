@@ -111,9 +111,9 @@ namespace WowPacketParser.SQL.Builders
             if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_poi))
             {
                 var entries = Storage.QuestPOIWoDs.Keys();
-                var poiDb = SQLDatabase.GetDict<uint, uint, QuestPOIWoD>(entries, "QuestID", "BlobIndex");
+                var poiDb = SQLDatabase.GetDict<uint, uint, QuestPOIWoD>(entries, "QuestID", "Idx1");
 
-                sql = SQLUtil.CompareDicts(Storage.QuestPOIWoDs, poiDb, StoreNameType.Quest, StoreNameType.None, "QuestID", "BlobIndex");
+                sql = SQLUtil.CompareDicts(Storage.QuestPOIWoDs, poiDb, StoreNameType.Quest, StoreNameType.None, "QuestID", "Idx1");
             }
 
             // TODO: fix this piece of code so it compares with db
@@ -140,12 +140,13 @@ namespace WowPacketParser.SQL.Builders
                         {
                             var row = new QueryBuilder.SQLInsertRow();
 
-                            row.AddValue("questId", quest.Key.Item1);
-                            row.AddValue("id", quest.Key.Item2);
-                            row.AddValue("idx", point.Index); // Not on sniffs
-                            row.AddValue("x", point.X);
-                            row.AddValue("y", point.Y);
-                            row.AddValue("VerifiedBuild", point.VerifiedBuild);
+                            row.AddValue("QuestID", quest.Key.Item1);
+                            row.AddValue("BlobIndex", quest.Value.Item1.BlobIndex);
+                            row.AddValue("Idx1", point.Value);      // Not on sniffs
+                            row.AddValue("Idx2", point.Key.Index);  // Not on sniffs
+                            row.AddValue("X", point.Key.X);
+                            row.AddValue("Y", point.Key.Y);
+                            row.AddValue("VerifiedBuild", point.Key.VerifiedBuild);
                             row.Comment = StoreGetters.GetName(StoreNameType.Quest, (int)quest.Key.Item1, false);
 
                             rows.Add(row);
