@@ -536,6 +536,32 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     db2File.ReadUInt32("Unk MoP 4"); // flags?
                     break;
                 }
+                case DB2Hash.AreaPOI:
+                {
+                    db2File.ReadUInt32("Id");
+
+                    db2File.ReadUInt32("Flags");
+                    db2File.ReadUInt32("Importance");
+                    db2File.ReadUInt32("FactionID");
+                    db2File.ReadUInt32("MapID");
+                    db2File.ReadUInt32("AreaID");
+                    db2File.ReadUInt32("Icon");
+
+                    db2File.ReadSingle("PositionX");
+                    db2File.ReadSingle("PositionY");
+
+                    var len1 = db2File.ReadUInt16();
+                    db2File.ReadWoWString("Name", len1);
+
+                    var len2 = db2File.ReadUInt16();
+                    db2File.ReadWoWString("Description", len2);
+
+                    db2File.ReadUInt32("WorldStateID");
+                    db2File.ReadUInt32("PlayerConditionID");
+                    db2File.ReadUInt32("WorldMapLink");
+                    db2File.ReadUInt32("PortLocID");
+                    break;
+                }
                 default:
                 {
                     db2File.AddValue("Unknown DB2 file type", string.Format("{0} (0x{0:x})", type));
