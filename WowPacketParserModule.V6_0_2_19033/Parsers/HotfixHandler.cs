@@ -592,6 +592,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     db2File.ReadUInt32("DepartureEventID");
                     break;
                 }
+                case DB2Hash.Location:
+                {
+                    db2File.ReadUInt32("Id");
+
+                    db2File.ReadSingle("LocX");
+                    db2File.ReadSingle("LocY");
+                    db2File.ReadSingle("LocZ");
+
+                    db2File.ReadSingle("Rotation1");
+                    db2File.ReadSingle("Rotation2");
+                    db2File.ReadSingle("Rotation3");
+                    break;
+                }
                 default:
                 {
                     db2File.AddValue("Unknown DB2 file type", string.Format("{0} (0x{0:x})", type));
