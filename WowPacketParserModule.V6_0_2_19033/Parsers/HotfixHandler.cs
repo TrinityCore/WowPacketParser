@@ -562,6 +562,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     db2File.ReadUInt32("PortLocID");
                     break;
                 }
+                case DB2Hash.AreaPOIState:
+                {
+                    db2File.ReadUInt32("Id");
+
+                    db2File.ReadUInt32("AreaPOIID");
+                    db2File.ReadUInt32("State");
+                    db2File.ReadUInt32("Icon");
+
+                    var len2 = db2File.ReadUInt16();
+                    db2File.ReadWoWString("Description", len2);
+                    break;
+                }
                 default:
                 {
                     db2File.AddValue("Unknown DB2 file type", string.Format("{0} (0x{0:x})", type));
