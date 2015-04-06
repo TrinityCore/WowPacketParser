@@ -154,14 +154,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     gameObjectTemplateDB2.Size = db2File.ReadSingle("Size");
 
                     db2File.ReadInt32("Phase Use Flags");
-                    gameObjectTemplateDB2.PhaseId = db2File.ReadInt32("PhaseID");
-                    gameObjectTemplateDB2.PhaseGroupId = db2File.ReadInt32("PhaseGroupID");
+                    gameObjectTemplateDB2.PhaseId = db2File.ReadUInt32("PhaseID");
+                    gameObjectTemplateDB2.PhaseGroupId = db2File.ReadUInt32("PhaseGroupID");
 
                     gameObjectTemplateDB2.Type = db2File.ReadInt32E<GameObjectType>("Type");
 
-                    gameObjectTemplateDB2.Data = new int[8];
+                    gameObjectTemplateDB2.Data = new uint[8];
                     for (var i = 0; i < gameObjectTemplateDB2.Data.Length; i++)
-                        gameObjectTemplateDB2.Data[i] = db2File.ReadInt32("Data", i);
+                        gameObjectTemplateDB2.Data[i] = db2File.ReadUInt32("Data", i);
 
                     if (db2File.ReadUInt16() > 0)
                         gameObjectTemplateDB2.Name = db2File.ReadCString("Name");

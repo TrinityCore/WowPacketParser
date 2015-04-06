@@ -281,7 +281,7 @@ namespace WowPacketParser.SQL.Builders
             var entries = Storage.GameObjectTemplateDB2s.Keys();
             var templatesDb = SQLDatabase.GetDict<uint, GameObjectTemplateDB2>(entries, "Id", Settings.HotfixesDatabase);
 
-            return SQLUtil.CompareDicts(Storage.GameObjectTemplateDB2s, templatesDb, StoreNameType.GameObject);
+            return SQLUtil.CompareDicts(Storage.GameObjectTemplateDB2s, templatesDb, StoreNameType.GameObject, "Id");
         }
     }
 }

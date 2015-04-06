@@ -238,9 +238,9 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                     gameObjectTemplateDB2.Size = db2File.ReadSingle("Size");
                     gameObjectTemplateDB2.Type = db2File.ReadInt32E<GameObjectType>("Type");
 
-                    gameObjectTemplateDB2.Data = new int[4];
+                    gameObjectTemplateDB2.Data = new uint[4];
                     for (var i = 0; i < gameObjectTemplateDB2.Data.Length; i++)
-                        gameObjectTemplateDB2.Data[i] = db2File.ReadInt32("Data", i);
+                        gameObjectTemplateDB2.Data[i] = db2File.ReadUInt32("Data", i);
 
                     if (db2File.ReadUInt16() > 0)
                         gameObjectTemplateDB2.Name = db2File.ReadCString("Name");
