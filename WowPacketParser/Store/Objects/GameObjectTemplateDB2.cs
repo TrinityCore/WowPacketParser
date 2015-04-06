@@ -38,10 +38,10 @@ namespace WowPacketParser.Store.Objects
         public float Size;
 
         [DBFieldName("PhaseID", ClientVersionBuild.V6_0_2_19033)]
-        public int PhaseId;
+        public uint PhaseId;
 
         [DBFieldName("PhaseGroupID", ClientVersionBuild.V6_0_2_19033)]
-        public int PhaseGroupId;
+        public uint PhaseGroupId;
 
         [DBFieldName("Type")]
         public GameObjectType Type;

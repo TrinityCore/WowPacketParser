@@ -159,9 +159,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                     gameObjectTemplateDB2.Type = db2File.ReadInt32E<GameObjectType>("Type");
 
-                    gameObjectTemplateDB2.Data = new uint[8];
+                    gameObjectTemplateDB2.Data = new int[8];
                     for (var i = 0; i < gameObjectTemplateDB2.Data.Length; i++)
-                        gameObjectTemplateDB2.Data[i] = db2File.ReadUInt32("Data", i);
+                        gameObjectTemplateDB2.Data[i] = db2File.ReadInt32("Data", i);
 
                     if (db2File.ReadUInt16() > 0)
                         gameObjectTemplateDB2.Name = db2File.ReadCString("Name");
@@ -572,6 +572,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                     var len2 = db2File.ReadUInt16();
                     db2File.ReadWoWString("Description", len2);
+                    break;
+                }
+                case DB2Hash.TaxiPathNode:
+                {
+                    db2File.ReadUInt32("Id");
+
+                    db2File.ReadUInt32("PathID");
+                    db2File.ReadUInt32("NodeIndex");
+                    db2File.ReadUInt32("MapID");
+
+                    db2File.ReadSingle("LocX");
+                    db2File.ReadSingle("LocY");
+                    db2File.ReadSingle("LocZ");
+
+                    db2File.ReadUInt32("Flags");
+                    db2File.ReadUInt32("Delay");
+                    db2File.ReadUInt32("ArrivalEventID");
+                    db2File.ReadUInt32("DepartureEventID");
                     break;
                 }
                 default:
