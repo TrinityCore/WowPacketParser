@@ -138,6 +138,7 @@ namespace WowPacketParser.Enums
         SpellVisualKitAreaModel         = 0x208AB51D, // MoP - 5.4.0
         SpellVisualKitModelAttach       = 0xF07194C3, // MoP - 5.4.0
         SpellVisualMissile              = 0x51A28350, // MoP - 5.4.0
+        SpellXSpellVisual               = 0x27B7A01A, // WoD
         TaxiNodes                       = 0x50D91A78, // WoD - 6.0.1
         TaxiPath                        = 0xAB30A45C, // WoD - 6.0.1
         TaxiPathNode                    = 0xE5E988BC, // WoD - 6.0.1
