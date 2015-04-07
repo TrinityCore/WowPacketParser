@@ -1,4 +1,7 @@
-﻿using WowPacketParser.Enums;
+﻿using System;
+using System.Diagnostics;
+using System.Linq;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -13,11 +16,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32E<DB2Hash>("DB2 File");
 
-            uint count;
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_0_3_19103))
-                count = packet.ReadBits("Count", 13);
-            else
-                count = packet.ReadUInt32("Count");
+            var count = ClientVersion.AddedInVersion(ClientVersionBuild.V6_0_3_19103) ? packet.ReadBits("Count", 13) : packet.ReadUInt32("Count");
 
             for (var i = 0; i < count; ++i)
             {
@@ -30,17 +29,30 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_DB_REPLY)]
         public static void HandleDBReply(Packet packet)
         {
-            var type = packet.ReadUInt32E<DB2Hash>("DB2 File");
-            var entry = (uint)packet.ReadInt32("Entry");
-            packet.ReadTime("Hotfix date");
+            var type = packet.ReadUInt32E<DB2Hash>("TableHash");
+            var entry = (uint)packet.ReadInt32("RecordID");
+            packet.ReadTime("Timestamp");
 
             var size = packet.ReadInt32("Size");
             var data = packet.ReadBytes(size);
             var db2File = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
 
-            if ((int)entry < 0)
+            var hotfixData = new HotfixData();
+
+            if ((int) entry >= 0)
             {
-                packet.WriteLine("Row {0} has been removed.", -(int)entry);
+                if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)))
+                    hotfixData.Deleted = false;
+
+                Storage.HotfixDatas.Add(new Tuple<DB2Hash, int, uint>(type, (int)entry, Storage.HotfixDataStore[new Tuple<DB2Hash, int>(type, (int)entry)].Item1.Timestamp), hotfixData);
+            }
+            else
+            {
+                if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, -(int)entry)))
+                    hotfixData.Deleted = true;
+
+                Storage.HotfixDatas.Add(new Tuple<DB2Hash, int, uint>(type, -(int)entry, Storage.HotfixDataStore[new Tuple<DB2Hash, int>(type, -(int)entry)].Item1.Timestamp), hotfixData);
+                packet.WriteLine("Row {0} has been removed.", -(int) entry);
                 return;
             }
 
@@ -68,39 +80,51 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     broadcastText.UnkEmoteId = db2File.ReadUInt32("Unk MoP 1"); // unk emote
                     broadcastText.Type = db2File.ReadUInt32("Unk MoP 2"); // kind of type?
 
-                    Storage.BroadcastTexts.Add((uint) id.Key, broadcastText, packet.TimeSpan);
-                    packet.AddSniffData(StoreNameType.BroadcastText, id.Key, "BROADCAST_TEXT");
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.BroadcastTexts.Add((uint) id.Key, broadcastText, packet.TimeSpan);
+                    packet.AddSniffData(StoreNameType.None, id.Key, "BROADCAST_TEXT");
                     break;
                 }
                 case DB2Hash.Creature: // New structure - 6.0.2
                 {
-                    db2File.ReadUInt32("Creature ID");
-                    db2File.ReadInt32E<CreatureType>("Type");
+                    var creature = new Creature();
 
+                    var id = db2File.ReadEntry("CreatureID");
+                    creature.Type = db2File.ReadUInt32E<CreatureType>("Type");
+
+                    creature.ItemID = new uint[5];
                     for (var i = 0; i < 3; ++i)
-                        db2File.ReadUInt32<ItemId>("Item ID", i);
+                        creature.ItemID[i] = db2File.ReadUInt32<ItemId>("ItemID", i);
 
-                    db2File.ReadUInt32("Mount");
+                    creature.Mount = db2File.ReadUInt32("Mount");
+
+                    creature.DisplayID = new uint[5];
                     for (var i = 0; i < 4; ++i)
-                        db2File.ReadInt32("Display ID", i);
+                        creature.DisplayID[i] = db2File.ReadUInt32("DisplayID", i);
 
+                    creature.DisplayIDProbability = new float[5];
                     for (var i = 0; i < 4; ++i)
-                        db2File.ReadSingle("Display ID Probability", i);
+                        creature.DisplayIDProbability[i] = db2File.ReadSingle("DisplayIDProbability", i);
 
                     if (db2File.ReadUInt16() > 0)
-                        db2File.ReadCString("Name");
+                        creature.Name = db2File.ReadCString("Name");
 
                     if (db2File.ReadUInt16() > 0)
-                        db2File.ReadCString("Female Name");
+                        creature.FemaleName = db2File.ReadCString("FemaleName");
 
                     if (db2File.ReadUInt16() > 0)
-                        db2File.ReadCString("SubName");
+                        creature.SubName = db2File.ReadCString("SubName");
 
                     if (db2File.ReadUInt16() > 0)
-                        db2File.ReadCString("Female SubName");
+                        creature.FemaleSubName = db2File.ReadCString("FemaleSubName");
 
-                    db2File.ReadUInt32("Rank");
-                    db2File.ReadUInt32("Inhabit Type");
+                    creature.Rank = db2File.ReadUInt32("Rank");
+                    creature.InhabitType = db2File.ReadUInt32("InhabitType");
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.Creatures.Add((uint)id.Key, creature, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.CreatureDifficulty:
@@ -118,7 +142,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     for (var i = 0; i < 5; ++i)
                         creatureDifficulty.Flags[i] = db2File.ReadUInt32("Flags", i);
 
-                    Storage.CreatureDifficultys.Add((uint)id.Key, creatureDifficulty, packet.TimeSpan);
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.CreatureDifficultys.Add((uint)id.Key, creatureDifficulty, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.CurvePoint:
@@ -130,101 +156,161 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     curvePoint.X = db2File.ReadSingle("X");
                     curvePoint.Y = db2File.ReadSingle("Y");
 
-                    Storage.CurvePoints.Add(id, curvePoint, packet.TimeSpan);
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.CurvePoints.Add(id, curvePoint, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.GameObjects: // New structure - 6.0.2
                 {
-                    var gameObjectTemplateDB2 = new GameObjectTemplateDB2();
+                    var gameObjects = new GameObjects();
 
                     var id = db2File.ReadEntry("ID");
 
-                    gameObjectTemplateDB2.MapID = db2File.ReadUInt32("Map");
+                    gameObjects.MapID = db2File.ReadUInt32("Map");
 
-                    gameObjectTemplateDB2.DisplayId = db2File.ReadUInt32("DisplayID");
+                    gameObjects.DisplayId = db2File.ReadUInt32("DisplayID");
 
-                    gameObjectTemplateDB2.PositionX = db2File.ReadSingle("PositionX");
-                    gameObjectTemplateDB2.PositionY = db2File.ReadSingle("PositionY");
-                    gameObjectTemplateDB2.PositionZ = db2File.ReadSingle("PositionZ");
-                    gameObjectTemplateDB2.RotationX = db2File.ReadSingle("RotationX");
-                    gameObjectTemplateDB2.RotationY = db2File.ReadSingle("RotationY");
-                    gameObjectTemplateDB2.RotationZ = db2File.ReadSingle("RotationZ");
-                    gameObjectTemplateDB2.RotationW = db2File.ReadSingle("RotationW");
+                    gameObjects.PositionX = db2File.ReadSingle("PositionX");
+                    gameObjects.PositionY = db2File.ReadSingle("PositionY");
+                    gameObjects.PositionZ = db2File.ReadSingle("PositionZ");
+                    gameObjects.RotationX = db2File.ReadSingle("RotationX");
+                    gameObjects.RotationY = db2File.ReadSingle("RotationY");
+                    gameObjects.RotationZ = db2File.ReadSingle("RotationZ");
+                    gameObjects.RotationW = db2File.ReadSingle("RotationW");
 
-                    gameObjectTemplateDB2.Size = db2File.ReadSingle("Size");
+                    gameObjects.Size = db2File.ReadSingle("Size");
 
                     db2File.ReadInt32("Phase Use Flags");
-                    gameObjectTemplateDB2.PhaseId = db2File.ReadUInt32("PhaseID");
-                    gameObjectTemplateDB2.PhaseGroupId = db2File.ReadUInt32("PhaseGroupID");
+                    gameObjects.PhaseId = db2File.ReadUInt32("PhaseID");
+                    gameObjects.PhaseGroupId = db2File.ReadUInt32("PhaseGroupID");
 
-                    gameObjectTemplateDB2.Type = db2File.ReadInt32E<GameObjectType>("Type");
+                    gameObjects.Type = db2File.ReadInt32E<GameObjectType>("Type");
 
-                    gameObjectTemplateDB2.Data = new int[8];
-                    for (var i = 0; i < gameObjectTemplateDB2.Data.Length; i++)
-                        gameObjectTemplateDB2.Data[i] = db2File.ReadInt32("Data", i);
+                    gameObjects.Data = new int[8];
+                    for (var i = 0; i < gameObjects.Data.Length; i++)
+                        gameObjects.Data[i] = db2File.ReadInt32("Data", i);
 
                     if (db2File.ReadUInt16() > 0)
-                        gameObjectTemplateDB2.Name = db2File.ReadCString("Name");
+                        gameObjects.Name = db2File.ReadCString("Name");
 
-                    Storage.GameObjectTemplateDB2s.Add((uint)id.Key, gameObjectTemplateDB2, packet.TimeSpan);
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.GameObjects.Add((uint)id.Key, gameObjects, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.Item: // New structure - 6.0.2
                 {
-                    var item = Storage.ItemTemplates.ContainsKey(entry)
-                        ? Storage.ItemTemplates[entry].Item1
-                        : new ItemTemplate();
+                    var item = new Item();
 
-                    db2File.ReadUInt32<ItemId>("Item ID");
+                    var id = db2File.ReadUInt32<ItemId>("Item ID");
                     item.Class = db2File.ReadInt32E<ItemClass>("Class");
                     item.SubClass = db2File.ReadUInt32("Sub Class");
                     item.SoundOverrideSubclass = db2File.ReadInt32("Sound Override Subclass");
                     item.Material = db2File.ReadInt32E<Material>("Material");
                     item.InventoryType = db2File.ReadUInt32E<InventoryType>("Inventory Type");
-                    item.SheathType = db2File.ReadInt32E<SheathType>("Sheath Type");
-                    db2File.ReadInt32("Icon File Data ID");
-                    db2File.ReadInt32("Item Group Sounds ID");
+                    item.Sheath = db2File.ReadUInt32E<SheathType>("Sheath");
 
-                    Storage.ItemTemplates.Add(entry, item, packet.TimeSpan);
+                    item.FileDataID = db2File.ReadUInt32("FileDataID");
+                    item.GroupSoundsID = db2File.ReadUInt32("GroupSoundsID");
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.Items.Add(id, item, packet.TimeSpan);
                     packet.AddSniffData(StoreNameType.Item, (int) entry, "DB_REPLY");
+                    break;
+                }
+                case DB2Hash.ItemEffect:
+                {
+                    var itemEffect = new ItemEffect();
+
+                    var id = db2File.ReadUInt32("ID");
+
+                    itemEffect.ItemID = db2File.ReadUInt32<ItemId>("ItemID");
+                    itemEffect.OrderIndex = db2File.ReadUInt32<ItemId>("OrderIndex");
+                    itemEffect.SpellID = db2File.ReadUInt32<SpellId>("SpellID");
+                    itemEffect.Trigger = db2File.ReadUInt32("Trigger");
+                    itemEffect.Charges = db2File.ReadUInt32("Charges");
+                    itemEffect.Cooldown = db2File.ReadInt32("Cooldown");
+                    itemEffect.Category = db2File.ReadUInt32("Category");
+                    itemEffect.CategoryCooldown = db2File.ReadInt32("CategoryCooldown");
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.ItemEffects.Add(id, itemEffect, packet.TimeSpan);
+                    break;
+                }
+                case DB2Hash.ItemModifiedAppearance:
+                {
+                    var itemModifiedAppearance = new ItemModifiedAppearance();
+
+                    var id = db2File.ReadUInt32("ID");
+
+                    itemModifiedAppearance.ItemID = db2File.ReadUInt32<ItemId>("ItemID");
+                    itemModifiedAppearance.AppearanceModID = db2File.ReadUInt32<ItemId>("AppearanceModID");
+                    itemModifiedAppearance.AppearanceID = db2File.ReadUInt32<SpellId>("AppearanceID");
+                    itemModifiedAppearance.IconFileDataID = db2File.ReadUInt32("IconFileDataID");
+                    itemModifiedAppearance.Index = db2File.ReadUInt32("Index");
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.ItemModifiedAppearances.Add(id, itemModifiedAppearance, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.ItemExtendedCost: // New structure - 6.0.2
                 {
-                    db2File.ReadUInt32("Item Extended Cost ID");
+                    var itemExtendedCost = new ItemExtendedCost();
+
+                    var id = db2File.ReadUInt32("ItemExtendedCostID");
                     if (ClientVersion.RemovedInVersion(ClientVersionBuild.V6_1_0_19678))
                     {
-                        db2File.ReadUInt32("Required Honor Points");
-                        db2File.ReadUInt32("Required Arena Points");
+                        itemExtendedCost.RequiredHonorPoints = db2File.ReadUInt32("RequiredHonorPoints");
+                        itemExtendedCost.RequiredArenaPoints = db2File.ReadUInt32("RequiredArenaPoints");
                     }
 
-                    db2File.ReadUInt32("Required Arena Slot");
-                    for (var i = 0; i < 5; ++i)
-                        db2File.ReadUInt32("Required Item", i);
+                    itemExtendedCost.RequiredArenaSlot = db2File.ReadUInt32("RequiredArenaSlot");
 
+                    itemExtendedCost.RequiredItem = new uint[5];
                     for (var i = 0; i < 5; ++i)
-                        db2File.ReadUInt32("Required Item Count", i);
+                        itemExtendedCost.RequiredItem[i] = db2File.ReadUInt32("RequiredItem", i);
 
-                    db2File.ReadUInt32("Required Personal Arena Rating");
-                    db2File.ReadUInt32("Item Purchase Group");
+                    itemExtendedCost.RequiredItemCount = new uint[5];
                     for (var i = 0; i < 5; ++i)
-                        db2File.ReadUInt32("Required Currency", i);
+                        itemExtendedCost.RequiredItemCount[i] = db2File.ReadUInt32("RequiredItemCount", i);
 
+                    itemExtendedCost.RequiredPersonalArenaRating = db2File.ReadUInt32("RequiredPersonalArenaRating");
+                    itemExtendedCost.ItemPurchaseGroup = db2File.ReadUInt32("ItemPurchaseGroup");
+
+                    itemExtendedCost.RequiredCurrency = new uint[5];
                     for (var i = 0; i < 5; ++i)
-                        db2File.ReadUInt32("Required Currency Count", i);
+                        itemExtendedCost.RequiredCurrency[i] = db2File.ReadUInt32("RequiredCurrency", i);
 
-                    db2File.ReadUInt32("Required Faction ID");
-                    db2File.ReadUInt32("Required Faction Standing");
-                    db2File.ReadUInt32("Requirement Flags");
-                    db2File.ReadInt32<AchievementId>("Required Achievement");
+                    itemExtendedCost.RequiredCurrencyCount = new uint[5];
+                    for (var i = 0; i < 5; ++i)
+                        itemExtendedCost.RequiredCurrencyCount[i] = db2File.ReadUInt32("RequiredCurrencyCount", i);
+
+                    itemExtendedCost.RequiredFactionId = db2File.ReadUInt32("RequiredFactionId");
+                    itemExtendedCost.RequiredFactionStanding = db2File.ReadUInt32("RequiredFactionStanding");
+                    itemExtendedCost.RequirementFlags = db2File.ReadUInt32("RequirementFlags");
+                    itemExtendedCost.RequiredAchievement = db2File.ReadUInt32<AchievementId>("RequiredAchievement");
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
-                        db2File.ReadInt32("Unk1 Wod61x");
+                        itemExtendedCost.RequiredMoney = db2File.ReadUInt32("RequiredMoney");
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.ItemExtendedCosts.Add(id, itemExtendedCost, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.ItemCurrencyCost:
                 {
-                    db2File.ReadUInt32("ID");
-                    db2File.ReadUInt32<ItemId>("Item ID");
+                    var itemCurrencyCost = new ItemCurrencyCost();
+
+                    var id = db2File.ReadUInt32("ID");
+                    itemCurrencyCost.ItemId = db2File.ReadUInt32<ItemId>("ItemID");
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.ItemCurrencyCosts.Add(id, itemCurrencyCost, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.Mount:
@@ -235,14 +321,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     mount.DisplayId = db2File.ReadUInt32("DisplayId");
                     mount.Flags = db2File.ReadUInt32("Flags");
 
-                    var NameLength = db2File.ReadUInt16();
-                    mount.Name = db2File.ReadWoWString("Name", NameLength);
+                    var nameLength = db2File.ReadUInt16();
+                    mount.Name = db2File.ReadWoWString("Name", nameLength);
 
-                    var DescriptionLength = db2File.ReadUInt16();
-                    mount.Description = db2File.ReadWoWString("Description", DescriptionLength);
+                    var descriptionLength = db2File.ReadUInt16();
+                    mount.Description = db2File.ReadWoWString("Description", descriptionLength);
 
-                    var SourceDescriptionLength = db2File.ReadUInt16();
-                    mount.SourceDescription = db2File.ReadWoWString("SourceDescription", SourceDescriptionLength);
+                    var sourceDescriptionLength = db2File.ReadUInt16();
+                    mount.SourceDescription = db2File.ReadWoWString("SourceDescription", sourceDescriptionLength);
 
                     mount.Source = db2File.ReadUInt32("Source");
                     mount.SpellId = db2File.ReadUInt32("SpellId");
@@ -283,14 +369,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     holiday.HolidayNameID = db2File.ReadUInt32("HolidayNameID");
                     holiday.HolidayDescriptionID = db2File.ReadUInt32("HolidayDescriptionID");
 
-                    var TextureFilenameLength = db2File.ReadUInt16();
-                    holiday.TextureFilename = db2File.ReadWoWString("SourceDescription", TextureFilenameLength);
+                    var textureFilenameLength = db2File.ReadUInt16();
+                    holiday.TextureFilename = db2File.ReadWoWString("SourceDescription", textureFilenameLength);
 
                     holiday.Priority = db2File.ReadUInt32("Priority");
                     holiday.CalendarFilterType = db2File.ReadUInt32("CalendarFilterType");
                     holiday.Flags = db2File.ReadUInt32("Flags");
 
-                    Storage.Holidays.Add(id, holiday, packet.TimeSpan);
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.Holidays.Add(id, holiday, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.ItemAppearance:
@@ -302,7 +390,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     itemAppearance.DisplayID = db2File.ReadUInt32("Display ID");
                     itemAppearance.IconFileDataID = db2File.ReadUInt32("File Data ID");
 
-                    Storage.ItemAppearances.Add(id, itemAppearance, packet.TimeSpan);
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.ItemAppearances.Add(id, itemAppearance, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.ItemBonus:
@@ -320,7 +410,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                     itemBonus.Index = db2File.ReadUInt32("Index");
 
-                    Storage.ItemBonuses.Add(id, itemBonus, packet.TimeSpan);
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.ItemBonuses.Add(id, itemBonus, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.ItemBonusTreeNode:
@@ -333,22 +425,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     itemBonusTreeNode.SubTreeID = db2File.ReadUInt32("SubTreeID");
                     itemBonusTreeNode.BonusListID = db2File.ReadUInt32("BonusListID");
 
-                    Storage.ItemBonusTreeNodes.Add(id, itemBonusTreeNode, packet.TimeSpan);
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.ItemBonusTreeNodes.Add(id, itemBonusTreeNode, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.Item_sparse: // New structure - 6.0.2
                 {
-                    var item = Storage.ItemTemplates.ContainsKey(entry)
-                        ? Storage.ItemTemplates[entry].Item1
-                        : new ItemTemplate();
+                    var item = new ItemSparse();
 
-                    db2File.ReadUInt32<ItemId>("Item Sparse Entry");
+                    var id = db2File.ReadUInt32<ItemId>("Item Sparse Entry");
+
                     item.Quality = db2File.ReadInt32E<ItemQuality>("Quality");
-                    item.Flags1 = db2File.ReadUInt32E<ItemProtoFlags>("Flags 1");
-                    item.Flags2 = db2File.ReadInt32E<ItemFlagExtra>("Flags 2");
-                    item.Flags3 = db2File.ReadUInt32("Flags 3");
-                    item.Unk430_1 = db2File.ReadSingle("Unk430_1");
-                    item.Unk430_2 = db2File.ReadSingle("Unk430_2");
+                    item.Flags1 = db2File.ReadUInt32E<ItemProtoFlags>("Flags1");
+                    item.Flags2 = db2File.ReadInt32E<ItemFlagExtra>("Flags2");
+                    item.Flags3 = db2File.ReadUInt32("Flags3");
+                    item.Unk1 = db2File.ReadSingle("Unk430_1");
+                    item.Unk2 = db2File.ReadSingle("Unk430_2");
                     item.BuyCount = db2File.ReadUInt32("Buy count");
                     item.BuyPrice = db2File.ReadUInt32("Buy Price");
                     item.SellPrice = db2File.ReadUInt32("Sell Price");
@@ -357,84 +450,84 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     item.AllowedRaces = db2File.ReadInt32E<RaceMask>("Allowed Races");
                     item.ItemLevel = db2File.ReadUInt32("Item Level");
                     item.RequiredLevel = db2File.ReadUInt32("Required Level");
-                    item.RequiredSkillId = db2File.ReadUInt32("Required Skill ID");
-                    item.RequiredSkillLevel = db2File.ReadUInt32("Required Skill Level");
+                    item.RequiredLevel = db2File.ReadUInt32("RequiredSkillID");
+                    item.RequiredSkill = db2File.ReadUInt32("Required Skill Level");
                     item.RequiredSpell = (uint) db2File.ReadInt32<SpellId>("Required Spell");
                     item.RequiredHonorRank = db2File.ReadUInt32("Required Honor Rank");
                     item.RequiredCityRank = db2File.ReadUInt32("Required City Rank");
-                    item.RequiredRepFaction = db2File.ReadUInt32("Required Rep Faction");
-                    item.RequiredRepValue = db2File.ReadUInt32("Required Rep Value");
-                    item.MaxCount = db2File.ReadInt32("Max Count");
-                    item.MaxStackSize = db2File.ReadInt32("Max Stack Size");
-                    item.ContainerSlots = db2File.ReadUInt32("Container Slots");
+                    item.RequiredReputationFaction = db2File.ReadUInt32("RequiredReputationFaction");
+                    item.RequiredReputationRank = db2File.ReadUInt32("RequiredReputationRank");
+                    item.MaxCount = db2File.ReadInt32("MaxCount");
+                    item.Stackable = db2File.ReadInt32("Stackable");
+                    item.ContainerSlots = db2File.ReadUInt32("ContainerSlots");
 
-                    item.StatTypes = new ItemModType[10];
+                    item.ItemStatType = new ItemModType[10];
                     for (var i = 0; i < 10; i++)
-                    {
-                        var statType = db2File.ReadInt32E<ItemModType>("Stat Type", i);
-                        item.StatTypes[i] = statType == ItemModType.None ? ItemModType.Mana : statType; // TDB
-                    }
+                        item.ItemStatType[i] = db2File.ReadInt32E<ItemModType>("ItemStatType", i);
 
-                    item.StatValues = new int[10];
+                    item.ItemStatValue = new int[10];
                     for (var i = 0; i < 10; i++)
-                        item.StatValues[i] = db2File.ReadInt32("Stat Value", i);
+                        item.ItemStatValue[i] = db2File.ReadInt32("ItemStatValue", i);
 
-                    item.ScalingValue = new int[10];
+                    item.ItemStatAllocation = new int[10];
                     for (var i = 0; i < 10; i++)
-                        item.ScalingValue[i] = db2File.ReadInt32("Scaling Value", i);
+                        item.ItemStatAllocation[i] = db2File.ReadInt32("ItemStatAllocation", i);
 
-                    item.SocketCostRate = new int[10];
+                    item.ItemStatSocketCostMultiplier = new int[10];
                     for (var i = 0; i < 10; i++)
-                        item.SocketCostRate[i] = db2File.ReadInt32("Socket Cost Rate", i);
+                        item.ItemStatSocketCostMultiplier[i] = db2File.ReadInt32("ItemStatSocketCostMultiplier", i);
 
-                    item.ScalingStatDistribution = db2File.ReadInt32("Scaling Stat Distribution");
-                    item.DamageType = db2File.ReadInt32E<DamageType>("Damage Type");
+                    item.ScalingStatDistribution = db2File.ReadInt32("ScalingStatDistribution");
+                    item.DamageType = db2File.ReadInt32E<DamageType>("DamageType");
                     item.Delay = db2File.ReadUInt32("Delay");
-                    item.RangedMod = db2File.ReadSingle("Ranged Mod");
+                    item.RangedModRange = db2File.ReadSingle("RangedModRange");
                     item.Bonding = db2File.ReadInt32E<ItemBonding>("Bonding");
 
-                    var nameLength = db2File.ReadUInt16();
-                    item.Name = db2File.ReadWoWString("Name", nameLength, 0);
-
-                    for (var i = 1; i < 4; ++i)
-                        if (db2File.ReadUInt16() > 0)
-                            db2File.ReadCString("Name", i);
+                    item.Name = new string[4];
+                    for (var i = 0; i < 4; ++i)
+                    {
+                        var nameLength = db2File.ReadUInt16();
+                        item.Name[i] = db2File.ReadWoWString("Name", nameLength, i);
+                    }
 
                     var descriptionLength = db2File.ReadUInt16();
                     item.Description = db2File.ReadWoWString("Description", descriptionLength);
 
-                    item.PageText = db2File.ReadUInt32("Page Text");
-                    item.Language = db2File.ReadInt32E<Language>("Language");
-                    item.PageMaterial = db2File.ReadInt32E<PageMaterial>("Page Material");
-                    item.StartQuestId = (uint) db2File.ReadInt32<QuestId>("Start Quest");
-                    item.LockId = db2File.ReadUInt32("Lock ID");
+                    item.PageText = db2File.ReadUInt32("PageText");
+                    item.LanguageID = db2File.ReadInt32E<Language>("LanguageID");
+                    item.PageMaterial = db2File.ReadInt32E<PageMaterial>("PageMaterial");
+                    item.StartQuest = db2File.ReadUInt32<QuestId>("StartQuest");
+                    item.LockID = db2File.ReadUInt32("LockID");
                     item.Material = db2File.ReadInt32E<Material>("Material");
-                    item.SheathType = db2File.ReadInt32E<SheathType>("Sheath Type");
-                    item.RandomPropery = db2File.ReadInt32("Random Property");
+                    item.Sheath = db2File.ReadInt32E<SheathType>("Sheath");
+                    item.RandomProperty = db2File.ReadInt32("RandomProperty");
                     item.RandomSuffix = db2File.ReadUInt32("Random Suffix");
                     item.ItemSet = db2File.ReadUInt32("Item Set");
-                    item.AreaId = db2File.ReadUInt32<AreaId>("Area");
-                    item.MapId = db2File.ReadInt32<MapId>("Map ID");
-                    item.BagFamily = db2File.ReadInt32E<BagFamilyMask>("Bag Family");
-                    item.TotemCategory = db2File.ReadInt32E<TotemCategory>("Totem Category");
+                    item.Area = db2File.ReadUInt32<AreaId>("Area");
+                    item.Map = db2File.ReadInt32<MapId>("Map");
+                    item.BagFamily = db2File.ReadInt32E<BagFamilyMask>("BagFamily");
+                    item.TotemCategory = db2File.ReadInt32E<TotemCategory>("TotemCategory");
 
-                    item.ItemSocketColors = new ItemSocketColor[3];
+                    item.SocketColor = new ItemSocketColor[3];
                     for (var i = 0; i < 3; i++)
-                        item.ItemSocketColors[i] = db2File.ReadInt32E<ItemSocketColor>("Socket Color", i);
+                        item.SocketColor[i] = db2File.ReadInt32E<ItemSocketColor>("SocketColor", i);
 
-                    item.SocketBonus = db2File.ReadInt32("Socket Bonus");
-                    item.GemProperties = db2File.ReadInt32("Gem Properties");
-                    item.ArmorDamageModifier = db2File.ReadSingle("Armor Damage Modifier");
+                    item.SocketBonus = db2File.ReadInt32("SocketBonus");
+                    item.GemProperties = db2File.ReadInt32("GemProperties");
+                    item.ArmorDamageModifier = db2File.ReadSingle("ArmorDamageModifier");
                     item.Duration = db2File.ReadUInt32("Duration");
-                    item.ItemLimitCategory = db2File.ReadInt32("Limit Category");
-                    item.HolidayId = db2File.ReadInt32E<Holiday>("Holiday");
-                    item.StatScalingFactor = db2File.ReadSingle("Stat Scaling Factor");
-                    item.CurrencySubstitutionId = db2File.ReadUInt32("Currency Substitution Id");
-                    item.CurrencySubstitutionCount = db2File.ReadUInt32("Currency Substitution Count");
-                    item.ItemNameDescriptionId = db2File.ReadUInt32("Item Name Description ID");
+                    item.ItemLimitCategory = db2File.ReadInt32("LimitCategory");
+                    item.HolidayID = db2File.ReadInt32E<Holiday>("HolidayID");
+                    item.StatScalingFactor = db2File.ReadSingle("StatScalingFactor");
+                    item.CurrencySubstitutionID = db2File.ReadUInt32("CurrencySubstitutionID");
+                    item.CurrencySubstitutionCount = db2File.ReadUInt32("CurrencySubstitutionCount");
+                    item.ItemNameDescriptionID = db2File.ReadUInt32("ItemNameDescriptionID");
 
-                    Storage.ObjectNames.Add(entry, new ObjectName {ObjectType = ObjectType.Item, Name = item.Name},
-                        packet.TimeSpan);
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.ItemSparses.Add(id, item, packet.TimeSpan);
+
+                    Storage.ObjectNames.Add(entry, new ObjectName {ObjectType = ObjectType.Item, Name = item.Name[0]}, packet.TimeSpan);
                     packet.AddSniffData(StoreNameType.Item, (int) entry, "DB_REPLY");
                     break;
                 }
@@ -447,19 +540,29 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     for (var i = 0; i < 32; i++)
                         key.Key[i] = db2File.ReadByte("Key", i);
 
-                    Storage.KeyChains.Add(id, key, packet.TimeSpan);
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.KeyChains.Add(id, key, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.SceneScript: // lua ftw!
                 {
-                    db2File.ReadUInt32("Scene Script ID");
+                    var sceneScript = new SceneScript();
+
+                    var id = db2File.ReadUInt32("SceneScriptID");
+
                     var nameLength = db2File.ReadUInt16();
-                    db2File.ReadWoWString("Name", nameLength);
+                    sceneScript.Name = db2File.ReadWoWString("Name", nameLength);
 
                     var scriptLength = db2File.ReadUInt16();
-                    db2File.ReadWoWString("Script", scriptLength);
-                    db2File.ReadUInt32("Previous Scene Script Part");
-                    db2File.ReadUInt32("Next Scene Script Part");
+                    sceneScript.Script = db2File.ReadWoWString("Script", scriptLength);
+
+                    sceneScript.PreviousSceneScriptPart = db2File.ReadUInt32("PreviousSceneScriptPart");
+                    sceneScript.NextSceneScriptPart = db2File.ReadUInt32("NextSceneScriptPart");
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.SceneScripts.Add(id, sceneScript, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.SpellMisc: // New structure - 6.0.2
@@ -496,24 +599,190 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     spellMisc.SchoolMask = db2File.ReadUInt32("SchoolMask");
                     spellMisc.MultistrikeSpeedMod = db2File.ReadSingle("MultistrikeSpeedMod");
 
-                    Storage.SpellMiscs.Add((uint)id.Key, spellMisc, packet.TimeSpan);
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.SpellMiscs.Add((uint)id.Key, spellMisc, packet.TimeSpan);
+                    break;
+                }
+                case DB2Hash.SpellAuraRestrictions:
+                {
+                    var spellAuraRestrictions = new SpellAuraRestrictions();
+
+                    var id = db2File.ReadEntry("ID");
+
+                    spellAuraRestrictions.CasterAuraState = db2File.ReadUInt32("CasterAuraState");
+                    spellAuraRestrictions.TargetAuraState = db2File.ReadUInt32("TargetAuraState");
+                    spellAuraRestrictions.ExcludeCasterAuraState = db2File.ReadUInt32("ExcludeCasterAuraState");
+                    spellAuraRestrictions.ExcludeTargetAuraState = db2File.ReadUInt32("ExcludeTargetAuraState");
+                    spellAuraRestrictions.CasterAuraSpell = db2File.ReadUInt32("CasterAuraSpell");
+                    spellAuraRestrictions.TargetAuraSpell = db2File.ReadUInt32("TargetAuraSpell");
+                    spellAuraRestrictions.ExcludeCasterAuraSpell = db2File.ReadUInt32("ExcludeCasterAuraSpell");
+                    spellAuraRestrictions.ExcludeTargetAuraSpell = db2File.ReadUInt32("ExcludeTargetAuraSpell");
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.SpellAuraRestrictions.Add((uint)id.Key, spellAuraRestrictions, packet.TimeSpan);
+                    break;
+                }
+                case DB2Hash.SpellCastingRequirements:
+                {
+                    var spellCastingRequirements = new SpellCastingRequirements();
+
+                    var id = db2File.ReadEntry("ID");
+
+                    spellCastingRequirements.FacingCasterFlags = db2File.ReadUInt32("FacingCasterFlags");
+                    spellCastingRequirements.MinFactionID = db2File.ReadUInt32("MinFactionID");
+                    spellCastingRequirements.MinReputation = db2File.ReadUInt32("MinReputation");
+                    spellCastingRequirements.RequiredAreasID = db2File.ReadUInt32("RequiredAreasID");
+                    spellCastingRequirements.RequiredAuraVision = db2File.ReadUInt32("RequiredAuraVision");
+                    spellCastingRequirements.RequiresSpellFocus = db2File.ReadUInt32("RequiresSpellFocus");
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.SpellCastingRequirements.Add((uint)id.Key, spellCastingRequirements, packet.TimeSpan);
+                    break;
+                }
+                case DB2Hash.SpellClassOptions:
+                {
+                    var spellClassOptions = new SpellClassOptions();
+
+                    var id = db2File.ReadEntry("ID");
+
+                    spellClassOptions.ModalNextSpell = db2File.ReadUInt32("ModalNextSpell");
+
+                    spellClassOptions.SpellClassMask = new uint[4];
+                    for (var i = 0; i < 2; ++i)
+                        spellClassOptions.SpellClassMask[i] = db2File.ReadUInt32("SpellClassMask", i);
+
+                    spellClassOptions.SpellClassSet = db2File.ReadUInt32("SpellClassSet");
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.SpellClassOptions.Add((uint)id.Key, spellClassOptions, packet.TimeSpan);
+                    break;
+                }
+                case DB2Hash.SpellLearnSpell:
+                {
+                    var spellLearnSpell = new SpellLearnSpell();
+
+                    var id = db2File.ReadEntry("ID");
+
+                    spellLearnSpell.LearnSpellID = db2File.ReadUInt32("LearnSpellID");
+                    spellLearnSpell.SpellID = db2File.ReadUInt32("SpellID");
+                    spellLearnSpell.OverridesSpellID = db2File.ReadUInt32("OverridesSpellID");
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.SpellLearnSpells.Add((uint)id.Key, spellLearnSpell, packet.TimeSpan);
+                    break;
+                }
+                case DB2Hash.SpellTotems:
+                {
+                    var spellTotems = new SpellTotems();
+
+                    var id = db2File.ReadEntry("ID");
+
+                    spellTotems.RequiredTotemCategoryID = new uint[2];
+                    for (var i = 0; i < 2; ++i)
+                        spellTotems.RequiredTotemCategoryID[i] = db2File.ReadUInt32("RequiredTotemCategoryID", i);
+
+                    spellTotems.Totem = new uint[2];
+                    for (var i = 0; i < 2; ++i)
+                        spellTotems.Totem[i] = db2File.ReadUInt32("Totem", i);
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.SpellTotems.Add((uint)id.Key, spellTotems, packet.TimeSpan);
+                    break;
+                }
+                case DB2Hash.SpellPower:
+                {
+                    var spellPower = new SpellPower();
+
+                    var id = db2File.ReadEntry("ID");
+
+                    spellPower.SpellID = db2File.ReadUInt32("SpellID");
+                    spellPower.PowerIndex = db2File.ReadUInt32("PowerIndex");
+                    spellPower.ManaCost = db2File.ReadUInt32("ManaCost");
+                    spellPower.ManaCostPerLevel = db2File.ReadUInt32("ManaCostPerLevel");
+                    spellPower.ManaCostPerSecond = db2File.ReadUInt32("ManaCostPerSecond");
+                    spellPower.ManaCostAdditional = db2File.ReadUInt32("ManaCostAdditional");
+                    spellPower.PowerDisplayID = db2File.ReadUInt32("PowerDisplayID");
+                    spellPower.UnitPowerBarID = db2File.ReadUInt32("UnitPowerBarID");
+
+                    spellPower.ManaCostPercentage = db2File.ReadSingle("UnitPowerBarID");
+                    spellPower.ManaCostPercentagePerSecond = db2File.ReadSingle("UnitPowerBarID");
+
+                    spellPower.RequiredAura = db2File.ReadUInt32("RequiredAura");
+
+                    spellPower.HealthCostPercentage = db2File.ReadSingle("HealthCostPercentage");
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.SpellPowers.Add((uint)id.Key, spellPower, packet.TimeSpan);
+                    break;
+                }
+                case DB2Hash.SpellReagents:
+                {
+                    var spellReagents = new SpellReagents();
+
+                    var id = db2File.ReadEntry("ID");
+
+                    spellReagents.Reagent = new int[8];
+                    for (var i = 0; i < 2; ++i)
+                        spellReagents.Reagent[i] = db2File.ReadInt32("Reagent", i);
+
+                    spellReagents.ReagentCount = new uint[8];
+                    for (var i = 0; i < 2; ++i)
+                        spellReagents.ReagentCount[i] = db2File.ReadUInt32("ReagentCount", i);
+
+                    spellReagents.CurrencyID = db2File.ReadUInt32("CurrencyID");
+                    spellReagents.CurrencyCount = db2File.ReadUInt32("CurrencyCount");
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.SpellReagents.Add((uint)id.Key, spellReagents, packet.TimeSpan);
+                    break;
+                }
+                case DB2Hash.SpellRuneCost:
+                {
+                    var spellRuneCost = new SpellRuneCost();
+
+                    var id = db2File.ReadEntry("ID");
+
+                    spellRuneCost.Blood = db2File.ReadUInt32("Blood");
+                    spellRuneCost.Unholy = db2File.ReadUInt32("Unholy");
+                    spellRuneCost.Frost = db2File.ReadUInt32("Frost");
+                    spellRuneCost.Chromatic = db2File.ReadUInt32("Chromatic");
+                    spellRuneCost.RunicPower = db2File.ReadUInt32("RunicPower");
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.SpellRuneCosts.Add((uint)id.Key, spellRuneCost, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.Toy: // New structure - 6.0.2
                 {
-                    db2File.ReadUInt32("ID");
-                    db2File.ReadUInt32<ItemId>("Item ID");
-                    db2File.ReadUInt32("Flags");
+                    var toy = new Toy();
+
+                    var id = db2File.ReadUInt32("ID");
+
+                    toy.ItemID = db2File.ReadUInt32<ItemId>("ItemID");
+                    toy.Flags = db2File.ReadUInt32("Flags");
 
                     var descriptionLength = db2File.ReadUInt16();
-                    db2File.ReadWoWString("Description", descriptionLength);
+                    toy.Description = db2File.ReadWoWString("Description", descriptionLength);
 
-                    db2File.ReadInt32("Source Type");
+                    toy.SourceType = db2File.ReadInt32("SourceType");
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.Toys.Add(id, toy, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.Vignette:
                 {
-                    db2File.ReadUInt32("Vignette ID");
+                    db2File.ReadUInt32("ID");
                     var nameLength = db2File.ReadUInt16();
                     db2File.ReadWoWString("Name", nameLength);
 
@@ -538,71 +807,242 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 }
                 case DB2Hash.AreaPOI:
                 {
-                    db2File.ReadUInt32("Id");
+                    var areaPOI = new AreaPOI();
 
-                    db2File.ReadUInt32("Flags");
-                    db2File.ReadUInt32("Importance");
-                    db2File.ReadUInt32("FactionID");
-                    db2File.ReadUInt32("MapID");
-                    db2File.ReadUInt32("AreaID");
-                    db2File.ReadUInt32("Icon");
+                    var id = db2File.ReadUInt32("Id");
 
-                    db2File.ReadSingle("PositionX");
-                    db2File.ReadSingle("PositionY");
+                    areaPOI.Flags = db2File.ReadUInt32("Flags");
+                    areaPOI.Flags = db2File.ReadUInt32("Importance");
+                    areaPOI.FactionID = db2File.ReadUInt32("FactionID");
+                    areaPOI.MapID = db2File.ReadUInt32("MapID");
+                    areaPOI.AreaID = db2File.ReadUInt32("AreaID");
+                    areaPOI.Icon = db2File.ReadUInt32("Icon");
+
+                    areaPOI.PositionX = db2File.ReadSingle("PositionX");
+                    areaPOI.PositionY = db2File.ReadSingle("PositionY");
 
                     var len1 = db2File.ReadUInt16();
-                    db2File.ReadWoWString("Name", len1);
+                    areaPOI.Name = db2File.ReadWoWString("Name", len1);
 
                     var len2 = db2File.ReadUInt16();
-                    db2File.ReadWoWString("Description", len2);
+                    areaPOI.Description = db2File.ReadWoWString("Description", len2);
 
-                    db2File.ReadUInt32("WorldStateID");
-                    db2File.ReadUInt32("PlayerConditionID");
-                    db2File.ReadUInt32("WorldMapLink");
-                    db2File.ReadUInt32("PortLocID");
+                    areaPOI.WorldStateID = db2File.ReadUInt32("WorldStateID");
+                    areaPOI.PlayerConditionID = db2File.ReadUInt32("PlayerConditionID");
+                    areaPOI.WorldMapLink = db2File.ReadUInt32("WorldMapLink");
+                    areaPOI.PortLocID = db2File.ReadUInt32("PortLocID");
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.AreaPOIs.Add(id, areaPOI, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.AreaPOIState:
                 {
-                    db2File.ReadUInt32("Id");
+                    var areaPOIState = new AreaPOIState();
 
-                    db2File.ReadUInt32("AreaPOIID");
-                    db2File.ReadUInt32("State");
-                    db2File.ReadUInt32("Icon");
+                    var id = db2File.ReadUInt32("Id");
+
+                    areaPOIState.AreaPOIID = db2File.ReadUInt32("AreaPOIID");
+                    areaPOIState.State = db2File.ReadUInt32("State");
+                    areaPOIState.Icon = db2File.ReadUInt32("Icon");
 
                     var len2 = db2File.ReadUInt16();
-                    db2File.ReadWoWString("Description", len2);
+                    areaPOIState.Description = db2File.ReadWoWString("Description", len2);
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.AreaPOIStates.Add(id, areaPOIState, packet.TimeSpan);
+                    break;
+                }
+                case DB2Hash.TaxiNodes:
+                {
+                    var taxiNodes = new TaxiNodes();
+
+                    var id = db2File.ReadUInt32("Id");
+
+                    taxiNodes.MapID = db2File.ReadUInt32("MapID");
+
+                    taxiNodes.PosX = db2File.ReadSingle("PosX");
+                    taxiNodes.PosY = db2File.ReadSingle("PosY");
+                    taxiNodes.PosZ = db2File.ReadSingle("PosZ");
+
+                    var len = db2File.ReadInt16();
+                    taxiNodes.Name = db2File.ReadWoWString("Name", len);
+
+                    taxiNodes.MountCreatureID = new uint[2];
+                    for (var i = 0; i < 2; ++i)
+                        taxiNodes.MountCreatureID[i] = db2File.ReadUInt32("MountCreatureID", i);
+
+                    taxiNodes.ConditionID = db2File.ReadUInt32("ConditionID");
+                    taxiNodes.LearnableIndex = db2File.ReadUInt32("LearnableIndex");
+                    taxiNodes.Flags = db2File.ReadUInt32("Flags");
+
+                    taxiNodes.MapOffsetX = db2File.ReadSingle("MapOffsetX");
+                    taxiNodes.MapOffsetY = db2File.ReadSingle("MapOffsetY");
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.TaxiNodes.Add(id, taxiNodes, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.TaxiPathNode:
                 {
-                    db2File.ReadUInt32("Id");
+                    var taxiPathNode = new TaxiPathNode();
 
-                    db2File.ReadUInt32("PathID");
-                    db2File.ReadUInt32("NodeIndex");
-                    db2File.ReadUInt32("MapID");
+                    var id = db2File.ReadUInt32("Id");
 
-                    db2File.ReadSingle("LocX");
-                    db2File.ReadSingle("LocY");
-                    db2File.ReadSingle("LocZ");
+                    taxiPathNode.PathID = db2File.ReadUInt32("PathID");
+                    taxiPathNode.NodeIndex = db2File.ReadUInt32("NodeIndex");
+                    taxiPathNode.MapID = db2File.ReadUInt32("MapID");
 
-                    db2File.ReadUInt32("Flags");
-                    db2File.ReadUInt32("Delay");
-                    db2File.ReadUInt32("ArrivalEventID");
-                    db2File.ReadUInt32("DepartureEventID");
+                    taxiPathNode.LocX = db2File.ReadSingle("LocX");
+                    taxiPathNode.LocY = db2File.ReadSingle("LocY");
+                    taxiPathNode.LocZ = db2File.ReadSingle("LocZ");
+
+                    taxiPathNode.Flags = db2File.ReadUInt32("Flags");
+                    taxiPathNode.Delay = db2File.ReadUInt32("Delay");
+                    taxiPathNode.ArrivalEventID = db2File.ReadUInt32("ArrivalEventID");
+                    taxiPathNode.DepartureEventID = db2File.ReadUInt32("DepartureEventID");
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.TaxiPathNodes.Add(id, taxiPathNode, packet.TimeSpan);
+                    break;
+                }
+                case DB2Hash.TaxiPath:
+                {
+                    var taxiPath = new TaxiPath();
+
+                    var id = db2File.ReadUInt32("Id");
+
+                    taxiPath.From = db2File.ReadUInt32("From");
+                    taxiPath.To = db2File.ReadUInt32("To");
+                    taxiPath.Cost = db2File.ReadUInt32("Cost");
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.TaxiPaths.Add(id, taxiPath, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.Location:
                 {
-                    db2File.ReadUInt32("Id");
+                    var location = new Location();
 
-                    db2File.ReadSingle("LocX");
-                    db2File.ReadSingle("LocY");
-                    db2File.ReadSingle("LocZ");
+                    var id = db2File.ReadUInt32("Id");
 
-                    db2File.ReadSingle("Rotation1");
-                    db2File.ReadSingle("Rotation2");
-                    db2File.ReadSingle("Rotation3");
+                    location.LocX = db2File.ReadSingle("LocX");
+                    location.LocY = db2File.ReadSingle("LocY");
+                    location.LocZ = db2File.ReadSingle("LocZ");
+
+                    location.Rotation = new float[3];
+                    for (var i = 0; i < 3; ++i)
+                        location.Rotation[i] = db2File.ReadSingle("Rotation", i);
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.Locations.Add(id, location, packet.TimeSpan);
+                    break;
+                }
+                case DB2Hash.ChrUpgradeTier:
+                {
+                    var chrUpgradeTier = new ChrUpgradeTier();
+
+                    var id = db2File.ReadEntry("Id");
+
+                    chrUpgradeTier.TierIndex = db2File.ReadUInt32("TierIndex");
+
+                    var len = db2File.ReadUInt16();
+                    chrUpgradeTier.Name = db2File.ReadWoWString("Name", len);
+
+                    chrUpgradeTier.TalentTier = db2File.ReadUInt32("TalentTier");
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.ChrUpgradeTiers.Add((uint)id.Key, chrUpgradeTier, packet.TimeSpan);
+                    break;
+                }
+                case DB2Hash.ChrUpgradeBucket:
+                {
+                    var chrUpgradeBucket = new ChrUpgradeBucket();
+
+                    var id = db2File.ReadEntry("Id");
+
+                    chrUpgradeBucket.TierID = db2File.ReadUInt32("TierID");
+                    chrUpgradeBucket.SpecializationID = db2File.ReadUInt32("SpecializationID");
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.ChrUpgradeBuckets.Add((uint)id.Key, chrUpgradeBucket, packet.TimeSpan);
+                    break;
+                }
+                case DB2Hash.ChrUpgradeBucketSpell:
+                {
+                    var chrUpgradeBucketSpell = new ChrUpgradeBucketSpell();
+
+                    var id = db2File.ReadEntry("Id");
+
+                    chrUpgradeBucketSpell.BucketID = db2File.ReadUInt32("BucketID");
+                    chrUpgradeBucketSpell.SpellID = db2File.ReadUInt32("SpellID");
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.ChrUpgradeBucketSpells.Add((uint)id.Key, chrUpgradeBucketSpell, packet.TimeSpan);
+                    break;
+                }
+                case DB2Hash.BattlePetSpecies:
+                {
+                    var battlePetSpecies = new BattlePetSpecies();
+
+                    var id = db2File.ReadEntry("Id");
+
+                    battlePetSpecies.CreatureID = db2File.ReadUInt32("CreatureID");
+                    battlePetSpecies.IconFileID = db2File.ReadUInt32("IconFileID");
+                    battlePetSpecies.SummonSpellID = db2File.ReadUInt32("SummonSpellID");
+                    battlePetSpecies.PetType = db2File.ReadInt32("PetType");
+                    battlePetSpecies.Source = db2File.ReadUInt32("Source");
+                    battlePetSpecies.Flags = db2File.ReadUInt32("Flags");
+
+                    var len1 = db2File.ReadUInt16();
+                    battlePetSpecies.SourceText = db2File.ReadWoWString("SourceText", len1);
+
+                    var len2 = db2File.ReadUInt16();
+                    battlePetSpecies.Description = db2File.ReadWoWString("Description", len2);
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.BattlePetSpecies.Add((uint)id.Key, battlePetSpecies, packet.TimeSpan);
+                    break;
+                }
+                case DB2Hash.OverrideSpellData:
+                {
+                    var overrideSpellData = new OverrideSpellData();
+                    var id = db2File.ReadUInt32("Id");
+
+                    overrideSpellData.SpellID = new uint[10];
+                    for (var i = 0; i < 10; ++i)
+                        overrideSpellData.SpellID[i] = db2File.ReadUInt32("SpellID", i);
+
+                    overrideSpellData.Flags = db2File.ReadUInt32("Flags");
+                    overrideSpellData.PlayerActionbarFileDataID = db2File.ReadUInt32("PlayerActionbarFileDataID");
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.OverrideSpellDatas.Add(id, overrideSpellData, packet.TimeSpan);
+                    break;
+                }
+                case DB2Hash.PhaseXPhaseGroup:
+                {
+                    var phaseXPhaseGroup = new PhaseXPhaseGroup();
+
+                    var id = db2File.ReadUInt32("Id");
+
+                    phaseXPhaseGroup.PhaseID = db2File.ReadUInt32("PhaseID");
+                    phaseXPhaseGroup.PhaseGroupID = db2File.ReadUInt32("PhaseGroupID");
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.PhaseXPhaseGroups.Add(id, phaseXPhaseGroup, packet.TimeSpan);
                     break;
                 }
                 default:
@@ -613,8 +1053,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                         if (db2File.Length - 4 >= db2File.Position)
                         {
                             var blockVal = db2File.ReadUpdateField();
-                            string key = "Block Value " + i;
-                            string value = blockVal.UInt32Value + "/" + blockVal.SingleValue;
+                            var key = "Block Value " + i;
+                            var value = blockVal.UInt32Value + "/" + blockVal.SingleValue;
                             packet.AddValue(key, value);
                         }
                         else
@@ -622,7 +1062,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                             var left = db2File.Length - db2File.Position;
                             for (var j = 0; j < left; ++j)
                             {
-                                string key = "Byte Value " + i;
+                                var key = "Byte Value " + i;
                                 var value = db2File.ReadByte();
                                 packet.AddValue(key, value);
                             }
@@ -635,8 +1075,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (db2File.Length != db2File.Position)
             {
-                packet.WriteLine("Packet not fully read! Current position is {0}, length is {1}, and diff is {2}.",
-                    db2File.Position, db2File.Length, db2File.Length - db2File.Position);
+                packet.WriteLine(string.Format("Packet not fully read! Current position is {0}, length is {1}, and diff is {2}.",
+                    db2File.Position, db2File.Length, db2File.Length - db2File.Position));
 
                 if (db2File.Length < 300) // If the packet isn't "too big" and it is not full read, print its hex table
                     packet.AsHex();
@@ -652,9 +1092,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadInt32E<DB2Hash>("TableHash", i);
-                packet.ReadInt32("RecordID", i);
-                packet.ReadTime("Timestamp", i);
+                var hotfixData = new HotfixData();
+
+                var tableHash = packet.ReadUInt32E<DB2Hash>("TableHash", i);
+                var recordID = packet.ReadInt32("RecordID", i);
+                hotfixData.Timestamp = packet.ReadUInt32("Timestamp", i);
+
+                Storage.HotfixDataStore.Add(Tuple.Create(tableHash, recordID), hotfixData);
             }
         }
 

@@ -125,6 +125,7 @@ namespace WowPacketParser.Loading
                     }
 
                     Store.Store.SQLEnabledFlags = Settings.SQLOutputFlag;
+                    Store.Store.HotfixSQLEnabledFlags = Settings.HotfixSQLOutputFlag;
 
                     File.Delete(outFileName);
 
@@ -405,8 +406,8 @@ namespace WowPacketParser.Loading
             return "# TrinityCore - WowPacketParser" + Environment.NewLine +
                    "# File name: " + Path.GetFileName(fileName) + Environment.NewLine +
                    "# Detected build: " + ClientVersion.Build + Environment.NewLine +
-                   "# Parsing date: " + DateTime.Now.ToString(CultureInfo.InvariantCulture) +
-                   Environment.NewLine;
+                   "# Detected locale: " + BinaryPacketReader.GetClientLocale() + Environment.NewLine +
+                   "# Parsing date: " + DateTime.Now.ToString(CultureInfo.InvariantCulture) + Environment.NewLine;
         }
 
         private static long _lastPercent;

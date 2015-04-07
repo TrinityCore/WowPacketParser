@@ -185,7 +185,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     broadcastText.Type = db2File.ReadUInt32("Unk MoP 2"); // kind of type?
 
                     Storage.BroadcastTexts.Add((uint) Id.Key, broadcastText, packet.TimeSpan);
-                    packet.AddSniffData(StoreNameType.BroadcastText, Id.Key, "BROADCAST_TEXT");
+                    packet.AddSniffData(StoreNameType.None, Id.Key, "BROADCAST_TEXT");
                     break;
                 }
                 case DB2Hash.Creature: // New structure - 5.4.0
@@ -234,33 +234,33 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 }
                 case DB2Hash.GameObjects:
                 {
-                    var gameObjectTemplateDB2 = new GameObjectTemplateDB2();
+                    var gameObject = new GameObjects();
 
                     var Id = db2File.ReadEntry("GameObject Id");
 
-                    gameObjectTemplateDB2.MapID = db2File.ReadUInt32("Map");
+                    gameObject.MapID = db2File.ReadUInt32("Map");
 
-                    gameObjectTemplateDB2.DisplayId = db2File.ReadUInt32("Display Id");
+                    gameObject.DisplayId = db2File.ReadUInt32("Display Id");
 
-                    gameObjectTemplateDB2.PositionX = db2File.ReadSingle("Position X");
-                    gameObjectTemplateDB2.PositionY = db2File.ReadSingle("Position Y");
-                    gameObjectTemplateDB2.PositionZ = db2File.ReadSingle("Position Z");
-                    gameObjectTemplateDB2.RotationX = db2File.ReadSingle("Rotation X");
-                    gameObjectTemplateDB2.RotationY = db2File.ReadSingle("Rotation Y");
-                    gameObjectTemplateDB2.RotationZ = db2File.ReadSingle("Rotation Z");
-                    gameObjectTemplateDB2.RotationW = db2File.ReadSingle("Rotation W");
+                    gameObject.PositionX = db2File.ReadSingle("Position X");
+                    gameObject.PositionY = db2File.ReadSingle("Position Y");
+                    gameObject.PositionZ = db2File.ReadSingle("Position Z");
+                    gameObject.RotationX = db2File.ReadSingle("Rotation X");
+                    gameObject.RotationY = db2File.ReadSingle("Rotation Y");
+                    gameObject.RotationZ = db2File.ReadSingle("Rotation Z");
+                    gameObject.RotationW = db2File.ReadSingle("Rotation W");
 
-                    gameObjectTemplateDB2.Size = db2File.ReadSingle("Size");
-                    gameObjectTemplateDB2.Type = db2File.ReadInt32E<GameObjectType>("Type");
+                    gameObject.Size = db2File.ReadSingle("Size");
+                    gameObject.Type = db2File.ReadInt32E<GameObjectType>("Type");
 
-                    gameObjectTemplateDB2.Data = new int[4];
-                    for (var i = 0; i < gameObjectTemplateDB2.Data.Length; i++)
-                        gameObjectTemplateDB2.Data[i] = db2File.ReadInt32("Data", i);
+                    gameObject.Data = new int[4];
+                    for (var i = 0; i < gameObject.Data.Length; i++)
+                        gameObject.Data[i] = db2File.ReadInt32("Data", i);
 
                     if (db2File.ReadUInt16() > 0)
-                        gameObjectTemplateDB2.Name = db2File.ReadCString("Name");
+                        gameObject.Name = db2File.ReadCString("Name");
 
-                    Storage.GameObjectTemplateDB2s.Add((uint) Id.Key, gameObjectTemplateDB2, packet.TimeSpan);
+                    Storage.GameObjects.Add((uint) Id.Key, gameObject, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.Item:

@@ -11,7 +11,6 @@ namespace WowPacketParser.Enums
         Battleground,
         Unit,
         GameObject,
-        CreatureDifficulty,
         Item,
         Quest,
         QuestObjective,
@@ -19,7 +18,6 @@ namespace WowPacketParser.Enums
         Opcode, // Packet
         PageText,
         NpcText,
-        BroadcastText,
         Gossip,
         Zone,
         Area,
@@ -27,8 +25,6 @@ namespace WowPacketParser.Enums
         Phase,
         Player,
         Currency,
-        DefenseMessage,
-        VehicleTemplateAccessory,
         Achievement
     }
 

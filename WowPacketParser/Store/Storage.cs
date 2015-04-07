@@ -20,17 +20,49 @@ namespace WowPacketParser.Store
         /* Key: Entry */
 
         // DB2
-        public static readonly StoreDictionary<uint, BroadcastText> BroadcastTexts = new StoreDictionary<uint, BroadcastText>(new List<SQLOutput> { SQLOutput.broadcast_text });
-        public static readonly StoreDictionary<uint, CurvePoint> CurvePoints = new StoreDictionary<uint, CurvePoint>(new List<SQLOutput> { SQLOutput.curve_point });
-        public static readonly StoreDictionary<uint, HolidayData> Holidays = new StoreDictionary<uint, HolidayData>(new List<SQLOutput> { SQLOutput.holiday });
-        public static readonly StoreDictionary<uint, ItemAppearance> ItemAppearances = new StoreDictionary<uint, ItemAppearance>(new List<SQLOutput> { SQLOutput.item_appearance });
-        public static readonly StoreDictionary<uint, ItemBonus> ItemBonuses = new StoreDictionary<uint, ItemBonus>(new List<SQLOutput> { SQLOutput.item_bonus });
-        public static readonly StoreDictionary<uint, ItemBonusTreeNode> ItemBonusTreeNodes = new StoreDictionary<uint, ItemBonusTreeNode>(new List<SQLOutput> { SQLOutput.item_bonus_tree_node });
-        public static readonly StoreDictionary<uint, KeyChain> KeyChains = new StoreDictionary<uint, KeyChain>(new List<SQLOutput> { SQLOutput.key_chain });
-        public static readonly StoreDictionary<uint, Mount> Mounts = new StoreDictionary<uint, Mount>(new List<SQLOutput> { SQLOutput.mount });
-        public static readonly StoreDictionary<uint, SpellMisc> SpellMiscs = new StoreDictionary<uint, SpellMisc>(new List<SQLOutput> { SQLOutput.spell_misc });
-        public static readonly StoreDictionary<uint, CreatureDifficulty> CreatureDifficultys = new StoreDictionary<uint, CreatureDifficulty>(new List<SQLOutput> { SQLOutput.creature_template });
-        public static readonly StoreDictionary<uint, GameObjectTemplateDB2> GameObjectTemplateDB2s = new StoreDictionary<uint, GameObjectTemplateDB2>(new List<SQLOutput> { SQLOutput.gameobject_template });
+        public static readonly StoreDictionary<Tuple<DB2Hash, int>, HotfixData> HotfixDataStore = new StoreDictionary<Tuple<DB2Hash, int>, HotfixData>(new List<HotfixSQLOutput> { HotfixSQLOutput.hotfix_data });
+        public static readonly StoreDictionary<Tuple<DB2Hash, int, uint>, HotfixData> HotfixDatas = new StoreDictionary<Tuple<DB2Hash, int, uint>, HotfixData>(new List<HotfixSQLOutput> { HotfixSQLOutput.hotfix_data });
+
+        public static readonly StoreDictionary<uint, AreaPOI> AreaPOIs = new StoreDictionary<uint, AreaPOI>(new List<HotfixSQLOutput> { HotfixSQLOutput.area_poi });
+        public static readonly StoreDictionary<uint, AreaPOIState> AreaPOIStates = new StoreDictionary<uint, AreaPOIState>(new List<HotfixSQLOutput> { HotfixSQLOutput.area_poi_state });
+        public static readonly StoreDictionary<uint, BattlePetSpecies> BattlePetSpecies = new StoreDictionary<uint, BattlePetSpecies>(new List<HotfixSQLOutput> { HotfixSQLOutput.battle_pet_species });
+        public static readonly StoreDictionary<uint, BroadcastText> BroadcastTexts = new StoreDictionary<uint, BroadcastText>(new List<HotfixSQLOutput> { HotfixSQLOutput.broadcast_text });
+        public static readonly StoreDictionary<uint, ChrUpgradeTier> ChrUpgradeTiers = new StoreDictionary<uint, ChrUpgradeTier>(new List<HotfixSQLOutput> { HotfixSQLOutput.chr_upgrade });
+        public static readonly StoreDictionary<uint, ChrUpgradeBucket> ChrUpgradeBuckets = new StoreDictionary<uint, ChrUpgradeBucket>(new List<HotfixSQLOutput> { HotfixSQLOutput.chr_upgrade });
+        public static readonly StoreDictionary<uint, ChrUpgradeBucketSpell> ChrUpgradeBucketSpells = new StoreDictionary<uint, ChrUpgradeBucketSpell>(new List<HotfixSQLOutput> { HotfixSQLOutput.chr_upgrade });
+        public static readonly StoreDictionary<uint, Creature> Creatures = new StoreDictionary<uint, Creature>(new List<HotfixSQLOutput> { HotfixSQLOutput.creatureDB2 });
+        public static readonly StoreDictionary<uint, CreatureDifficulty> CreatureDifficultys = new StoreDictionary<uint, CreatureDifficulty>(new List<HotfixSQLOutput> { HotfixSQLOutput.creature_difficulty });
+        public static readonly StoreDictionary<uint, CurvePoint> CurvePoints = new StoreDictionary<uint, CurvePoint>(new List<HotfixSQLOutput> { HotfixSQLOutput.curve_point });
+        public static readonly StoreDictionary<uint, GameObjects> GameObjects = new StoreDictionary<uint, GameObjects>(new List<HotfixSQLOutput> { HotfixSQLOutput.gameobjectDB2 });
+        public static readonly StoreDictionary<uint, HolidayData> Holidays = new StoreDictionary<uint, HolidayData>(new List<HotfixSQLOutput> { HotfixSQLOutput.holidays });
+        public static readonly StoreDictionary<uint, Item> Items = new StoreDictionary<uint, Item>(new List<HotfixSQLOutput> { HotfixSQLOutput.item });
+        public static readonly StoreDictionary<uint, ItemAppearance> ItemAppearances = new StoreDictionary<uint, ItemAppearance>(new List<HotfixSQLOutput> { HotfixSQLOutput.item_appearance });
+        public static readonly StoreDictionary<uint, ItemBonus> ItemBonuses = new StoreDictionary<uint, ItemBonus>(new List<HotfixSQLOutput> { HotfixSQLOutput.item_bonus });
+        public static readonly StoreDictionary<uint, ItemBonusTreeNode> ItemBonusTreeNodes = new StoreDictionary<uint, ItemBonusTreeNode>(new List<HotfixSQLOutput> { HotfixSQLOutput.item_bonus_tree_node });
+        public static readonly StoreDictionary<uint, ItemCurrencyCost> ItemCurrencyCosts = new StoreDictionary<uint, ItemCurrencyCost>(new List<HotfixSQLOutput> { HotfixSQLOutput.item_currency_cost });
+        public static readonly StoreDictionary<uint, ItemEffect> ItemEffects = new StoreDictionary<uint, ItemEffect>(new List<HotfixSQLOutput> { HotfixSQLOutput.item_effect });
+        public static readonly StoreDictionary<uint, ItemExtendedCost> ItemExtendedCosts = new StoreDictionary<uint, ItemExtendedCost>(new List<HotfixSQLOutput> { HotfixSQLOutput.item_extended_cost });
+        public static readonly StoreDictionary<uint, ItemModifiedAppearance> ItemModifiedAppearances = new StoreDictionary<uint, ItemModifiedAppearance>(new List<HotfixSQLOutput> { HotfixSQLOutput.item_modified_appearance });
+        public static readonly StoreDictionary<uint, ItemSparse> ItemSparses = new StoreDictionary<uint, ItemSparse>(new List<HotfixSQLOutput> { HotfixSQLOutput.item_sparse });
+        public static readonly StoreDictionary<uint, KeyChain> KeyChains = new StoreDictionary<uint, KeyChain>(new List<HotfixSQLOutput> { HotfixSQLOutput.key_chain });
+        public static readonly StoreDictionary<uint, Location> Locations = new StoreDictionary<uint, Location>(new List<HotfixSQLOutput> { HotfixSQLOutput.location });
+        public static readonly StoreDictionary<uint, Mount> Mounts = new StoreDictionary<uint, Mount>(new List<HotfixSQLOutput> { HotfixSQLOutput.mount });
+        public static readonly StoreDictionary<uint, OverrideSpellData> OverrideSpellDatas = new StoreDictionary<uint, OverrideSpellData>(new List<HotfixSQLOutput> { HotfixSQLOutput.override_spell_data });
+        public static readonly StoreDictionary<uint, PhaseXPhaseGroup> PhaseXPhaseGroups = new StoreDictionary<uint, PhaseXPhaseGroup>(new List<HotfixSQLOutput> { HotfixSQLOutput.phase_group });
+        public static readonly StoreDictionary<uint, SceneScript> SceneScripts = new StoreDictionary<uint, SceneScript>(new List<HotfixSQLOutput> { HotfixSQLOutput.scene_script });
+        public static readonly StoreDictionary<uint, SpellAuraRestrictions> SpellAuraRestrictions = new StoreDictionary<uint, SpellAuraRestrictions>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_aura_restrictions });
+        public static readonly StoreDictionary<uint, SpellCastingRequirements> SpellCastingRequirements = new StoreDictionary<uint, SpellCastingRequirements>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_casting_requirements });
+        public static readonly StoreDictionary<uint, SpellClassOptions> SpellClassOptions = new StoreDictionary<uint, SpellClassOptions>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_class_options });
+        public static readonly StoreDictionary<uint, SpellLearnSpell> SpellLearnSpells = new StoreDictionary<uint, SpellLearnSpell>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_learn_spell });
+        public static readonly StoreDictionary<uint, SpellMisc> SpellMiscs = new StoreDictionary<uint, SpellMisc>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_misc });
+        public static readonly StoreDictionary<uint, SpellTotems> SpellTotems = new StoreDictionary<uint, SpellTotems>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_totems });
+        public static readonly StoreDictionary<uint, SpellPower> SpellPowers = new StoreDictionary<uint, SpellPower>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_power });
+        public static readonly StoreDictionary<uint, SpellReagents> SpellReagents = new StoreDictionary<uint, SpellReagents>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_power });
+        public static readonly StoreDictionary<uint, SpellRuneCost> SpellRuneCosts = new StoreDictionary<uint, SpellRuneCost>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_rune_cost });
+        public static readonly StoreDictionary<uint, TaxiNodes> TaxiNodes = new StoreDictionary<uint, TaxiNodes>(new List<HotfixSQLOutput> { HotfixSQLOutput.taxi_nodes });
+        public static readonly StoreDictionary<uint, TaxiPathNode> TaxiPathNodes = new StoreDictionary<uint, TaxiPathNode>(new List<HotfixSQLOutput> { HotfixSQLOutput.taxi_path_node });
+        public static readonly StoreDictionary<uint, TaxiPath> TaxiPaths = new StoreDictionary<uint, TaxiPath>(new List<HotfixSQLOutput> { HotfixSQLOutput.taxi_path_node });
+        public static readonly StoreDictionary<uint, Toy> Toys = new StoreDictionary<uint, Toy>(new List<HotfixSQLOutput> { HotfixSQLOutput.toy });
 
         // Templates
         public static readonly StoreDictionary<uint, GameObjectTemplate> GameObjectTemplates = new StoreDictionary<uint, GameObjectTemplate>(new List<SQLOutput> { SQLOutput.gameobject_template });
@@ -109,7 +141,7 @@ namespace WowPacketParser.Store
             Objects.Clear();
 
             CreatureDifficultys.Clear();
-            GameObjectTemplateDB2s.Clear();
+            GameObjects.Clear();
             BroadcastTexts.Clear();
             SpellMiscs.Clear();
 

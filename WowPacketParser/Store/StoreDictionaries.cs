@@ -12,13 +12,22 @@ namespace WowPacketParser.Store
     public abstract class Store
     {
         public static UInt64 SQLEnabledFlags { protected get; set; }
+        public static UInt64 HotfixSQLEnabledFlags { protected get; set; }
         public List<SQLOutput> Types { get; protected set; }
+        public List<HotfixSQLOutput> HotfixTypes { get; protected set; }
 
         protected bool ProcessFlags()
         {
             return Types.Count == 0 ||
                 Settings.DumpFormat == DumpFormatType.SniffDataOnly ||
                 Types.Any(sqlOutput => SQLEnabledFlags.HasAnyFlagBit(sqlOutput));
+        }
+
+        protected bool HotfixProcessFlags()
+        {
+            return HotfixTypes.Count == 0 ||
+                Settings.DumpFormat == DumpFormatType.SniffDataOnly ||
+                HotfixTypes.Any(hotfixOutput => HotfixSQLEnabledFlags.HasAnyFlag(hotfixOutput));
         }
 
         public abstract void Clear();
@@ -42,6 +51,13 @@ namespace WowPacketParser.Store
         {
             Types = types;
             Enabled = ProcessFlags();
+            _dictionary = Enabled ? new ConcurrentDictionary<T, Tuple<TK, TimeSpan?>>() : null;
+        }
+
+        public StoreDictionary(List<HotfixSQLOutput> types)
+        {
+            HotfixTypes = types;
+            Enabled = HotfixProcessFlags();
             _dictionary = Enabled ? new ConcurrentDictionary<T, Tuple<TK, TimeSpan?>>() : null;
         }
 

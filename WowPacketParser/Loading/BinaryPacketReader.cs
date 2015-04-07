@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -29,6 +30,7 @@ namespace WowPacketParser.Loading
         private uint _startTickCount;
         private int _snifferId;
         private short _snifferVersion;
+        private static string _locale;
 
         public BinaryPacketReader(SniffType type, string fileName, Encoding encoding)
         {
@@ -89,12 +91,12 @@ namespace WowPacketParser.Loading
                 }
                 case PktVersion.V3_1:
                 {
-                    _snifferId = _reader.ReadByte();            // sniffer id
-                    SetBuild(_reader.ReadUInt32());             // client build
-                    _reader.ReadBytes(4);                       // client locale
-                    _reader.ReadBytes(40);                      // session key
-                    _startTime = Utilities.GetDateTimeFromUnixTime(_reader.ReadUInt32()); // start time
-                    _startTickCount = _reader.ReadUInt32();     // start tick count
+                    _snifferId = _reader.ReadByte();                                        // sniffer id
+                    SetBuild(_reader.ReadUInt32());                                         // client build
+                    _locale = Encoding.ASCII.GetString(_reader.ReadBytes(4));               // client locale
+                    _reader.ReadBytes(40);                                                  // session key
+                    _startTime = Utilities.GetDateTimeFromUnixTime(_reader.ReadUInt32());   // start time
+                    _startTickCount = _reader.ReadUInt32();                                 // start tick count
                     additionalLength = _reader.ReadInt32();
                     var optionalData = _reader.ReadBytes(additionalLength);
                     if (_snifferId == 'S') // WSTC
@@ -120,6 +122,11 @@ namespace WowPacketParser.Loading
         static void SetBuild(uint build)
         {
             ClientVersion.SetVersion((ClientVersionBuild)build);
+        }
+
+        public static string GetClientLocale()
+        {
+            return _locale;
         }
 
         public bool CanRead()

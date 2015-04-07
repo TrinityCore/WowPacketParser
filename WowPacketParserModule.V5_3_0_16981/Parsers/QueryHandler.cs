@@ -232,7 +232,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         broadcastText.Type = db2File.ReadUInt32("Unk 2"); // kind of type?
 
                         Storage.BroadcastTexts.Add((uint)id.Key, broadcastText, packet.TimeSpan);
-                        packet.AddSniffData(StoreNameType.BroadcastText, id.Key, "BROADCAST_TEXT");
+                        packet.AddSniffData(StoreNameType.None, id.Key, "BROADCAST_TEXT");
                         break;
                     }
                 case DB2Hash.Creature:

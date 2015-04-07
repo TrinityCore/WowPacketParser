@@ -132,6 +132,7 @@ namespace WowPacketParser.Enums
         SpellPowerDifficulty            = 0x7EA08450, // WoD - 6.0.1
         SpellReagents                   = 0xAB66C99F, // MoP - 5.2.0
         SpellRuneCost                   = 0x1A27961E, // WoD - 6.0.1
+        SpellTotems                     = 0xA50F8A31, // WoD
         SpellVisual                     = 0xF72496D9, // MoP - 5.4.0
         SpellVisualEffectName           = 0x02E18F32, // MoP - 5.4.0
         SpellVisualKit                  = 0xF483EADB, // MoP - 5.4.0

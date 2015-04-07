@@ -378,6 +378,16 @@ namespace WowPacketParser.SQL
 
                     Delete = new SQLDelete(values, primaryKeys, tableName).Build();
                 }
+                else if (primaryKeyNumber == 3)
+                {
+                    ICollection<Tuple<string, string, string>> values =
+                        rows.FindAll(row => !row.NoData).Select(row => row.GetPrimaryKeysValues(primaryKeyNumber)).
+                            Select(vals => Tuple.Create(vals[0], vals[1], vals[2])).ToArray();
+
+                    var primaryKeys = Tuple.Create(TableStructure[0], TableStructure[1], TableStructure[2]);
+
+                    Delete = new SQLDelete(values, primaryKeys, tableName).Build();
+                }
                 else
                     throw new ArgumentOutOfRangeException("primaryKeyNumber");
             }
@@ -532,18 +542,20 @@ namespace WowPacketParser.SQL
 
         public class SQLDelete : ISQLQuery
         {
-            // TODO: Support any number of values (only single and double supported atm)
-            private readonly bool _double;
             private readonly bool _between;
+            readonly uint _primaryKeyNumber;
 
             private ISet<string> Values { get; set; }
             private ISet<Tuple<string, string>> ValuesDouble { get; set; }
-            private Tuple<string, string> ValuesBetween { get; set; }
+            private ISet<Tuple<string, string, string>> ValuesTriple { get; set; }
+            private Tuple<string, string> ValuesBetweenDouble { get; set; }
+            private Tuple<string, string, string> ValuesBetweenTriple { get; set; }
 
             private string Table { get; set; }
 
             private string PrimaryKey { get; set; }
-            private Tuple<string, string> PrimaryKeys { get; set; }
+            private Tuple<string, string> PrimaryKeyDouble { get; set; }
+            private Tuple<string, string, string> PrimaryKeyTriple { get; set; }
 
             /// <summary>
             /// <para>Creates a delete query with a single primary key and an arbitrary number of values</para>
@@ -559,8 +571,8 @@ namespace WowPacketParser.SQL
                 Table = tableName;
 
                 Values = new HashSet<string>(values);
-                _double = false;
                 _between = false;
+                _primaryKeyNumber = 1;
             }
 
             /// <summary>
@@ -572,12 +584,29 @@ namespace WowPacketParser.SQL
             /// <param name="tableName">Table name</param>
             public SQLDelete(IEnumerable<Tuple<string, string>> values, Tuple<string, string> primaryKeys, string tableName)
             {
-                PrimaryKeys = primaryKeys;
+                PrimaryKeyDouble = primaryKeys;
                 Table = tableName;
 
                 ValuesDouble = new HashSet<Tuple<string, string>>(values);
-                _double = true;
                 _between = false;
+                _primaryKeyNumber = 2;
+            }
+
+            /// <summary>
+            /// <para>Creates a delete query that uses two primary keys and an arbitrary number of values</para>
+            /// <code>DELETE FROM `tableName` WHERE (`primaryKeys[0]`=values[0][0] AND `primaryKeys[1]`=values[2][1][0]) AND ...);</code>
+            /// </summary>
+            /// <param name="values">Collection of pairs of values to be deleted</param>
+            /// <param name="primaryKeys">Collection of pairs of fields used in the WHERE clause</param>
+            /// <param name="tableName">Table name</param>
+            public SQLDelete(IEnumerable<Tuple<string, string, string>> values, Tuple<string, string, string> primaryKeys, string tableName)
+            {
+                PrimaryKeyTriple = primaryKeys;
+                Table = tableName;
+
+                ValuesTriple = new HashSet<Tuple<string, string, string>>(values);
+                _between = false;
+                _primaryKeyNumber = 3;
             }
 
             /// <summary>
@@ -592,9 +621,26 @@ namespace WowPacketParser.SQL
                 PrimaryKey = primaryKey;
                 Table = tableName;
 
-                ValuesBetween = values;
-                _double = true;
+                ValuesBetweenDouble = values;
                 _between = true;
+                _primaryKeyNumber = 2;
+            }
+
+            /// <summary>
+            /// <para>Creates a delete query that deletes between two values</para>
+            /// <code>DELETE FROM `tableName` WHERE `primaryKey` BETWEEN values[0] AND values[n];</code>
+            /// </summary>
+            /// <param name="values">Pair of values</param>
+            /// <param name="primaryKey">Field used in the WHERE clause</param>
+            /// <param name="tableName">Table name</param>
+            public SQLDelete(Tuple<string, string, string> values, string primaryKey, string tableName)
+            {
+                PrimaryKey = primaryKey;
+                Table = tableName;
+
+                ValuesBetweenTriple = values;
+                _between = true;
+                _primaryKeyNumber = 3;
             }
 
             /// <summary>
@@ -611,32 +657,72 @@ namespace WowPacketParser.SQL
 
                 if (_between)
                 {
-                    query.Append(SQLUtil.AddBackQuotes(PrimaryKey));
-                    query.Append(" BETWEEN ");
-                    query.Append(ValuesBetween.Item1);
-                    query.Append(" AND ");
-                    query.Append(ValuesBetween.Item2);
-                    query.Append(";");
+                    switch (_primaryKeyNumber)
+                    {
+                        case 2:
+                            query.Append(SQLUtil.AddBackQuotes(PrimaryKey));
+                            query.Append(" BETWEEN ");
+                            query.Append(ValuesBetweenDouble.Item1);
+                            query.Append(" AND ");
+                            query.Append(ValuesBetweenDouble.Item2);
+                            query.Append(";");
+                            break;
+                        case 3:
+                            query.Append(SQLUtil.AddBackQuotes(PrimaryKey));
+                            query.Append(" BETWEEN ");
+                            query.Append(ValuesBetweenTriple.Item1);
+                            query.Append(" AND ");
+                            query.Append(ValuesBetweenTriple.Item2);
+                            query.Append(" AND ");
+                            query.Append(ValuesBetweenTriple.Item3);
+                            query.Append(";");
+                            break;
+                    }
                 }
                 else
                 {
-                    if (_double)
+                    if (_primaryKeyNumber == 2)
                     {
                         var counter = 0;
                         foreach (var tuple in ValuesDouble)
                         {
                             counter++;
                             query.Append("(");
-                            query.Append(SQLUtil.AddBackQuotes(PrimaryKeys.Item1));
+                            query.Append(SQLUtil.AddBackQuotes(PrimaryKeyDouble.Item1));
                             query.Append("=");
                             query.Append(tuple.Item1);
                             query.Append(" AND ");
-                            query.Append(SQLUtil.AddBackQuotes(PrimaryKeys.Item2));
+                            query.Append(SQLUtil.AddBackQuotes(PrimaryKeyDouble.Item2));
                             query.Append("=");
                             query.Append(tuple.Item2);
                             query.Append(")");
                             // Append an OR if not end of items
                             if (ValuesDouble.Count != counter)
+                                query.Append(" OR ");
+                        }
+                        query.Append(";");
+                    }
+                    if (_primaryKeyNumber == 3)
+                    {
+                        var counter = 0;
+                        foreach (var tuple in ValuesTriple)
+                        {
+                            counter++;
+                            query.Append("(");
+                            query.Append(SQLUtil.AddBackQuotes(PrimaryKeyTriple.Item1));
+                            query.Append("=");
+                            query.Append(tuple.Item1);
+                            query.Append(" AND ");
+                            query.Append(SQLUtil.AddBackQuotes(PrimaryKeyTriple.Item2));
+                            query.Append("=");
+                            query.Append(tuple.Item2);
+                            query.Append(" AND ");
+                            query.Append(SQLUtil.AddBackQuotes(PrimaryKeyTriple.Item3));
+                            query.Append("=");
+                            query.Append(tuple.Item3);
+                            query.Append(")");
+                            // Append an OR if not end of items
+                            if (ValuesTriple.Count != counter)
                                 query.Append(" OR ");
                         }
                         query.Append(";");

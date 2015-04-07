@@ -5,7 +5,7 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("gameobjects")]
-    public sealed class GameObjectTemplateDB2
+    public sealed class GameObjects
     {
         [DBFieldName("MapID")]
         public uint MapID;
