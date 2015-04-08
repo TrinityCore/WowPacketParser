@@ -675,6 +675,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Guid");
         }
 
+        [Parser(Opcode.SMSG_DISMOUNT_RESULT)]
+        public static void HandleDismountResult(Packet packet)
+        {
+            packet.ReadUInt32("Result");
+        }
+
+        [Parser(Opcode.SMSG_DISPEL_FAILED)]
+        public static void HandleDispelFailed(Packet packet)
+        {
+            packet.ReadPackedGuid128("VictimGUID");
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadUInt32<SpellId>("SpellID");
+            var count = packet.ReadUInt32("FailedSpellsCount");
+            for (int i = 0; i < count; i++)
+                packet.ReadUInt32<SpellId>("FailedSpellID");
+        }
+
         [Parser(Opcode.SMSG_TOTEM_CREATED)]
         public static void HandleTotemCreated(Packet packet)
         {
