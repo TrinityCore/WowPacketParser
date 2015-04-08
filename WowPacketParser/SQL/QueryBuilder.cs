@@ -360,36 +360,42 @@ namespace WowPacketParser.SQL
                     return;
                 }
 
-                if (primaryKeyNumber == 1)
+                switch (primaryKeyNumber)
                 {
-                    ICollection<string> values =
-                        rows.FindAll(row => !row.NoData).Select(row => row.GetPrimaryKeysValues(primaryKeyNumber).First()).ToArray();
-                    var primaryKey = TableStructure[0];
+                    case 1:
+                    {
+                        ICollection<string> values =
+                            rows.FindAll(row => !row.NoData).Select(row => row.GetPrimaryKeysValues(primaryKeyNumber).First()).ToArray();
+                        var primaryKey = TableStructure[0];
 
-                    Delete = new SQLDelete(values, primaryKey, Table).Build();
+                        Delete = new SQLDelete(values, primaryKey, Table).Build();
+                        break;
+                    }
+                    case 2:
+                    {
+                        ICollection<Tuple<string, string>> values =
+                            rows.FindAll(row => !row.NoData).Select(row => row.GetPrimaryKeysValues(primaryKeyNumber)).
+                                Select(vals => Tuple.Create(vals[0], vals[1])).ToArray();
+
+                        var primaryKeys = Tuple.Create(TableStructure[0], TableStructure[1]);
+
+                        Delete = new SQLDelete(values, primaryKeys, tableName).Build();
+                        break;
+                    }
+                    case 3:
+                    {
+                        ICollection<Tuple<string, string, string>> values =
+                            rows.FindAll(row => !row.NoData).Select(row => row.GetPrimaryKeysValues(primaryKeyNumber)).
+                                Select(vals => Tuple.Create(vals[0], vals[1], vals[2])).ToArray();
+
+                        var primaryKeys = Tuple.Create(TableStructure[0], TableStructure[1], TableStructure[2]);
+
+                        Delete = new SQLDelete(values, primaryKeys, tableName).Build();
+                        break;
+                    }
+                    default:
+                        throw new ArgumentOutOfRangeException("primaryKeyNumber");
                 }
-                else if (primaryKeyNumber == 2)
-                {
-                    ICollection<Tuple<string, string>> values =
-                        rows.FindAll(row => !row.NoData).Select(row => row.GetPrimaryKeysValues(primaryKeyNumber)).
-                            Select(vals => Tuple.Create(vals[0], vals[1])).ToArray();
-
-                    var primaryKeys = Tuple.Create(TableStructure[0], TableStructure[1]);
-
-                    Delete = new SQLDelete(values, primaryKeys, tableName).Build();
-                }
-                else if (primaryKeyNumber == 3)
-                {
-                    ICollection<Tuple<string, string, string>> values =
-                        rows.FindAll(row => !row.NoData).Select(row => row.GetPrimaryKeysValues(primaryKeyNumber)).
-                            Select(vals => Tuple.Create(vals[0], vals[1], vals[2])).ToArray();
-
-                    var primaryKeys = Tuple.Create(TableStructure[0], TableStructure[1], TableStructure[2]);
-
-                    Delete = new SQLDelete(values, primaryKeys, tableName).Build();
-                }
-                else
-                    throw new ArgumentOutOfRangeException("primaryKeyNumber");
             }
 
             /// <summary>
@@ -681,70 +687,75 @@ namespace WowPacketParser.SQL
                 }
                 else
                 {
-                    if (_primaryKeyNumber == 2)
+                    switch (_primaryKeyNumber)
                     {
-                        var counter = 0;
-                        foreach (var tuple in ValuesDouble)
+                        case 2:
                         {
-                            counter++;
-                            query.Append("(");
-                            query.Append(SQLUtil.AddBackQuotes(PrimaryKeyDouble.Item1));
-                            query.Append("=");
-                            query.Append(tuple.Item1);
-                            query.Append(" AND ");
-                            query.Append(SQLUtil.AddBackQuotes(PrimaryKeyDouble.Item2));
-                            query.Append("=");
-                            query.Append(tuple.Item2);
-                            query.Append(")");
-                            // Append an OR if not end of items
-                            if (ValuesDouble.Count != counter)
-                                query.Append(" OR ");
-                        }
-                        query.Append(";");
-                    }
-                    if (_primaryKeyNumber == 3)
-                    {
-                        var counter = 0;
-                        foreach (var tuple in ValuesTriple)
-                        {
-                            counter++;
-                            query.Append("(");
-                            query.Append(SQLUtil.AddBackQuotes(PrimaryKeyTriple.Item1));
-                            query.Append("=");
-                            query.Append(tuple.Item1);
-                            query.Append(" AND ");
-                            query.Append(SQLUtil.AddBackQuotes(PrimaryKeyTriple.Item2));
-                            query.Append("=");
-                            query.Append(tuple.Item2);
-                            query.Append(" AND ");
-                            query.Append(SQLUtil.AddBackQuotes(PrimaryKeyTriple.Item3));
-                            query.Append("=");
-                            query.Append(tuple.Item3);
-                            query.Append(")");
-                            // Append an OR if not end of items
-                            if (ValuesTriple.Count != counter)
-                                query.Append(" OR ");
-                        }
-                        query.Append(";");
-                    }
-                    else
-                    {
-                        query.Append(SQLUtil.AddBackQuotes(PrimaryKey));
-                        query.Append(Values.Count == 1 ? "=" : " IN (");
-
-                        var counter = 0;
-                        foreach (var entry in Values)
-                        {
-                            counter++;
-                            query.Append(entry);
-                            // Append comma if not end of items
-                            if (Values.Count != counter)
-                                query.Append(SQLUtil.CommaSeparator);
-                            else if (Values.Count != 1)
+                            var counter = 0;
+                            foreach (var tuple in ValuesDouble)
+                            {
+                                counter++;
+                                query.Append("(");
+                                query.Append(SQLUtil.AddBackQuotes(PrimaryKeyDouble.Item1));
+                                query.Append("=");
+                                query.Append(tuple.Item1);
+                                query.Append(" AND ");
+                                query.Append(SQLUtil.AddBackQuotes(PrimaryKeyDouble.Item2));
+                                query.Append("=");
+                                query.Append(tuple.Item2);
                                 query.Append(")");
+                                // Append an OR if not end of items
+                                if (ValuesDouble.Count != counter)
+                                    query.Append(" OR ");
+                            }
+                            query.Append(";");
+                            break;
                         }
-                        query.Append(";");
+                        case 3:
+                        {
+                            var counter = 0;
+                            foreach (var tuple in ValuesTriple)
+                            {
+                                counter++;
+                                query.Append("(");
+                                query.Append(SQLUtil.AddBackQuotes(PrimaryKeyTriple.Item1));
+                                query.Append("=");
+                                query.Append(tuple.Item1);
+                                query.Append(" AND ");
+                                query.Append(SQLUtil.AddBackQuotes(PrimaryKeyTriple.Item2));
+                                query.Append("=");
+                                query.Append(tuple.Item2);
+                                query.Append(" AND ");
+                                query.Append(SQLUtil.AddBackQuotes(PrimaryKeyTriple.Item3));
+                                query.Append("=");
+                                query.Append(tuple.Item3);
+                                query.Append(")");
+                                // Append an OR if not end of items
+                                if (ValuesTriple.Count != counter)
+                                    query.Append(" OR ");
+                            }
+                            query.Append(";");
+                            break;
+                        }
+                        default:
+                        {
+                            query.Append(SQLUtil.AddBackQuotes(PrimaryKey));
+                            query.Append(Values.Count == 1 ? "=" : " IN (");
 
+                            var counter = 0;
+                            foreach (var entry in Values)
+                            {
+                                counter++;
+                                query.Append(entry);
+                                // Append comma if not end of items
+                                if (Values.Count != counter)
+                                    query.Append(SQLUtil.CommaSeparator);
+                                else if (Values.Count != 1)
+                                    query.Append(")");
+                            }
+                            query.Append(";");
+                            break;
+                        }
                     }
                 }
 
