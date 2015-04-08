@@ -42,16 +42,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if ((int) entry >= 0)
             {
                 if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)))
+                {
                     hotfixData.Deleted = false;
-
-                Storage.HotfixDatas.Add(new Tuple<DB2Hash, int, uint>(type, (int)entry, Storage.HotfixDataStore[new Tuple<DB2Hash, int>(type, (int)entry)].Item1.Timestamp), hotfixData);
+                    Storage.HotfixDatas.Add(new Tuple<DB2Hash, int, uint>(type, (int)entry, Storage.HotfixDataStore[new Tuple<DB2Hash, int>(type, (int)entry)].Item1.Timestamp), hotfixData);
+                }
             }
             else
             {
                 if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, -(int)entry)))
+                {
                     hotfixData.Deleted = true;
-
-                Storage.HotfixDatas.Add(new Tuple<DB2Hash, int, uint>(type, -(int)entry, Storage.HotfixDataStore[new Tuple<DB2Hash, int>(type, -(int)entry)].Item1.Timestamp), hotfixData);
+                    Storage.HotfixDatas.Add(new Tuple<DB2Hash, int, uint>(type, -(int)entry, Storage.HotfixDataStore[new Tuple<DB2Hash, int>(type, -(int)entry)].Item1.Timestamp), hotfixData);
+                }
                 packet.WriteLine("Row {0} has been removed.", -(int) entry);
                 return;
             }
