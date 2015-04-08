@@ -603,7 +603,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x07280},
             {Opcode.SMSG_ACHIEVEMENT_DELETED, 0x0E6A0},
             {Opcode.SMSG_ACHIEVEMENT_EARNED, 0x0F5E4},
-            
+
             {Opcode.SMSG_ACTIVATE_TAXI_REPLY, 0x07A84},
             {Opcode.SMSG_ADDON_INFO, 0x0EA80},
             {Opcode.SMSG_ADD_RUNE_POWER, 0x0F5E8},

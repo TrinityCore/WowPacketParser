@@ -9,10 +9,10 @@ namespace WowPacketParser.Store.Objects
     {
         [DBFieldName("RequiredHonorPoints", ClientVersionBuild.Zero, ClientVersionBuild.V6_1_0_19678)]
         public uint RequiredHonorPoints;
-        
+
         [DBFieldName("RequiredArenaPoints", ClientVersionBuild.Zero, ClientVersionBuild.V6_1_0_19678)]
         public uint RequiredArenaPoints;
-        
+
         [DBFieldName("RequiredArenaSlot")]
         public uint RequiredArenaSlot;
 
@@ -33,7 +33,7 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("RequiredCurrencyCount", 5)]
         public uint[] RequiredCurrencyCount;
-        
+
         [DBFieldName("RequiredFactionId")]
         public uint RequiredFactionId;
 

@@ -36,7 +36,7 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("Description")]
         public string Description;
-        
+
         [DBFieldName("WorldStateID")]
         public uint WorldStateID;
 
@@ -48,7 +48,7 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("PortLocID")]
         public uint PortLocID;
-        
+
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;
     }

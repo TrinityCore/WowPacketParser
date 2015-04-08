@@ -191,7 +191,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var eventNameLength = packet.ReadBits("EventNameLength", 8);
             packet.ResetBitReader();
 
-            packet.ReadWoWString("EventName", eventNameLength);  
+            packet.ReadWoWString("EventName", eventNameLength);
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE)]

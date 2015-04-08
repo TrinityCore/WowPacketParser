@@ -21,7 +21,7 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("RunicPower")]
         public uint RunicPower;
-        
+
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;
     }

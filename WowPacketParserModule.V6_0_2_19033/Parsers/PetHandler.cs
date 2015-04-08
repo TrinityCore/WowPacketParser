@@ -132,20 +132,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             ReadPetRenameData(packet);
         }
-        
+
         [Parser(Opcode.SMSG_PET_SPECIALIZATION)]
         public static void HandlePetSpecialization(Packet packet)
         {
              packet.ReadInt16("Specialization");
         }
-        
+
         [Parser(Opcode.CMSG_LEARN_PET_SPECIALIZATION_GROUP)]
         public static void HandlePetSetSpecialization(Packet packet)
         {
             packet.ReadPackedGuid128("PetGUID");
             packet.ReadInt32("SpecGroupId");
         }
-        
+
         [Parser(Opcode.SMSG_PET_LEARNED_SPELLS)]
         [Parser(Opcode.SMSG_PET_UNLEARNED_SPELLS)]
         public static void HandlePetSpellsLearnedRemoved(Packet packet)
@@ -155,7 +155,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < count; ++i)
                 packet.ReadInt32<SpellId>("Spell ID", i);
         }
-        
+
         [Parser(Opcode.SMSG_PET_GUIDS)]
         public static void HandlePetGuids(Packet packet)
         {

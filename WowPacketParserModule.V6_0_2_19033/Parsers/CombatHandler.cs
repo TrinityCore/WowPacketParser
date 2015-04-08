@@ -73,7 +73,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadInt32("Size");
 
-            ReadAttackRoundInfo(packet);            
+            ReadAttackRoundInfo(packet);
         }
 
         [Parser(Opcode.SMSG_ATTACK_START)]

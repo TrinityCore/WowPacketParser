@@ -15,7 +15,7 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("OverridesSpellID")]
         public uint OverridesSpellID;
-        
+
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;
     }

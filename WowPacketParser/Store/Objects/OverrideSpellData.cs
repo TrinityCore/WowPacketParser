@@ -14,7 +14,7 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("PlayerActionbarFileDataID")]
         public uint PlayerActionbarFileDataID;
-        
+
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;
     }

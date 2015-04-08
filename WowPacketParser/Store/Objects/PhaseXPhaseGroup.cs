@@ -11,7 +11,7 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("PhaseGroupID")]
         public uint PhaseGroupID;
-        
+
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;
     }

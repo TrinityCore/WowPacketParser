@@ -15,13 +15,13 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("AppearanceID")]
         public uint AppearanceID;
-        
+
         [DBFieldName("IconFileDataID")]
         public uint IconFileDataID;
 
         [DBFieldName("Index")]
         public uint Index;
-        
+
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;
     }

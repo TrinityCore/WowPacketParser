@@ -15,7 +15,7 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("SpellID")]
         public uint SpellID;
-        
+
         [DBFieldName("Trigger")]
         public uint Trigger;
 

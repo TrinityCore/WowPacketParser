@@ -42,7 +42,7 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("HealthCostPercentage")]
         public float HealthCostPercentage;
-        
+
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;
     }

@@ -402,7 +402,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt16E<ChatTag>("Chat Tag");
             else
                 packet.ReadByteE<ChatTag>("Chat Tag");
-            
+
             if (type == ChatMessageType.Achievement || type == ChatMessageType.GuildAchievement)
                 packet.ReadInt32<AchievementId>("Achievement Id");
         }

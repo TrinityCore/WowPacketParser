@@ -480,7 +480,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_QUERY_COUNTDOWN_TIMER, 0x09DE},
             {Opcode.CMSG_QUERY_INSPECT_ACHIEVEMENTS, 0x0A07},
             {Opcode.CMSG_QUERY_NEXT_MAIL_TIME, 0x0B31},
-            {Opcode.CMSG_QUERY_PETITION, 0x048B},       
+            {Opcode.CMSG_QUERY_PETITION, 0x048B},
             {Opcode.CMSG_QUERY_QUEST_COMPLETION_NPCS, 0x0BD9},
             {Opcode.CMSG_QUERY_SCENARIO_POI, 0x09A1},
             {Opcode.CMSG_QUERY_TIME, 0x1489},

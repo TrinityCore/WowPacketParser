@@ -15,22 +15,22 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("ExcludeCasterAuraState")]
         public uint ExcludeCasterAuraState;
-        
+
         [DBFieldName("ExcludeTargetAuraState")]
         public uint ExcludeTargetAuraState;
 
         [DBFieldName("CasterAuraSpell")]
         public uint CasterAuraSpell;
-        
+
         [DBFieldName("TargetAuraSpell")]
         public uint TargetAuraSpell;
 
         [DBFieldName("ExcludeCasterAuraSpell")]
         public uint ExcludeCasterAuraSpell;
-        
+
         [DBFieldName("ExcludeTargetAuraSpell")]
         public uint ExcludeTargetAuraSpell;
-        
+
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;
     }

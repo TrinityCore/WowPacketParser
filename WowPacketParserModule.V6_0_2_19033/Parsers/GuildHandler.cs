@@ -713,7 +713,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Unit");
             packet.ReadUInt32("Price");
         }
-    
+
         [Parser(Opcode.CMSG_PETITION_BUY)]
         public static void HandlePetitionBuy(Packet packet)
         {

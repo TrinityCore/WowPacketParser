@@ -8,10 +8,10 @@ namespace WowPacketParser.Store.Objects
     {
         [DBFieldName("PathID")]
         public uint PathID;
-        
+
         [DBFieldName("NodeIndex")]
         public uint NodeIndex;
-        
+
         [DBFieldName("MapID")]
         public uint MapID;
 
@@ -23,19 +23,19 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("LocZ")]
         public float LocZ;
-        
+
         [DBFieldName("Flags")]
         public uint Flags;
-        
+
         [DBFieldName("Delay")]
         public uint Delay;
-        
+
         [DBFieldName("ArrivalEventID")]
         public uint ArrivalEventID;
 
         [DBFieldName("DepartureEventID")]
         public float DepartureEventID;
-        
+
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;
     }

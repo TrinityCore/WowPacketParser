@@ -9,7 +9,7 @@ namespace WowPacketParser.Store.Objects
     {
         [DBFieldName("Reagent", 8)]
         public int[] Reagent;
-        
+
         [DBFieldName("ReagentCount", 8)]
         public uint[] ReagentCount;
 
@@ -18,7 +18,7 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("CurrencyCount")]
         public uint CurrencyCount;
-        
+
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;
     }

@@ -15,7 +15,7 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("SpellClassSet")]
         public uint SpellClassSet;
-        
+
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;
     }

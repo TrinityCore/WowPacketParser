@@ -15,7 +15,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         ///  <summary>
-        /// 
+        ///
         ///  </summary>
         ///  <param name="module">Battle.net module id as string</param>
         ///  <param name="data"></param>

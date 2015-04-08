@@ -8,28 +8,28 @@ namespace WowPacketParser.Store.Objects
     {
         [DBFieldName("CreatureID")]
         public uint CreatureID;
-        
+
         [DBFieldName("IconFileID")]
         public uint IconFileID;
-        
+
         [DBFieldName("SummonSpellID")]
         public uint SummonSpellID;
-        
+
         [DBFieldName("PetType")]
         public int PetType;
-        
+
         [DBFieldName("Source")]
         public uint Source;
-        
+
         [DBFieldName("Flags")]
         public uint Flags;
-        
+
         [DBFieldName("SourceText")]
         public string SourceText;
 
         [DBFieldName("Description")]
         public string Description;
-        
+
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;
     }

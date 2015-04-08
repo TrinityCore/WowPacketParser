@@ -20,16 +20,16 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("Name")]
         public string Name;
-        
+
         [DBFieldName("MountCreatureID", 2)]
         public uint[] MountCreatureID;
-        
+
         [DBFieldName("ConditionID")]
         public uint ConditionID;
-        
+
         [DBFieldName("LearnableIndex")]
         public uint LearnableIndex;
-        
+
         [DBFieldName("Flags")]
         public uint Flags;
 
@@ -38,7 +38,7 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("MapOffsetY")]
         public float MapOffsetY;
-        
+
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;
     }

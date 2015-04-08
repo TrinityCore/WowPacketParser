@@ -33,10 +33,10 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("FemaleSubName")]
         public string FemaleSubName;
-        
+
         [DBFieldName("Rank")]
         public uint Rank;
-        
+
         [DBFieldName("Rank")]
         public uint InhabitType;
 

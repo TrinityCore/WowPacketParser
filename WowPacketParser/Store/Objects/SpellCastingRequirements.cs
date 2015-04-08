@@ -15,16 +15,16 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("MinReputation")]
         public uint MinReputation;
-        
+
         [DBFieldName("RequiredAreasID")]
         public uint RequiredAreasID;
 
         [DBFieldName("RequiredAuraVision")]
         public uint RequiredAuraVision;
-        
+
         [DBFieldName("RequiresSpellFocus")]
         public uint RequiresSpellFocus;
-        
+
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;
     }
