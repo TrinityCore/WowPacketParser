@@ -82,6 +82,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_GARRISON_REQUEST_BLUEPRINT_AND_SPECIALIZATION_DATA)]
         [Parser(Opcode.CMSG_GARRISON_CHECK_UPGRADEABLE)]
         [Parser(Opcode.CMSG_GARRISON_UNK1)]
+        [Parser(Opcode.CMSG_GARRISON_GET_BUILDING_LANDMARKS)]
         public static void HandleGarrisonZero(Packet packet)
         {
         }
@@ -239,6 +240,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_GARRISON_UPGRADEABLE_RESULT)]
+        [Parser(Opcode.SMSG_GARRISON_IS_UPGRADEABLE_RESULT)]
         public static void HandleClientGarrisonUpgradeableResult(Packet packet)
         {
             packet.ReadInt32("Result");
@@ -349,6 +351,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_CREATE_SHIPMENT, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_1_0_19678)]
         [Parser(Opcode.CMSG_GET_SHIPMENT_INFO)]
         [Parser(Opcode.CMSG_OPEN_MISSION_NPC)]
+        [Parser(Opcode.CMSG_GARRISON_REQUEST_SHIPMENT_INFO)]
         public static void HandleGarrisonNpcGUID(Packet packet)
         {
             packet.ReadPackedGuid128("NpcGUID");
