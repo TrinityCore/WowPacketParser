@@ -85,14 +85,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             ++LastGossipPOIEntry;
 
-            var gossipPOI = new GossipPOI();
+            var gossipPOI = new GossipPOI {Flags = packet.ReadBits("Flags", 14)};
 
-            gossipPOI.Flags = packet.ReadBits("Flags", 14);
             var bit84 = packet.ReadBits(6);
             var pos = packet.ReadVector2("Coordinates");
             gossipPOI.Icon = packet.ReadUInt32E<GossipPOIIcon>("Icon");
-            gossipPOI.Importance = packet.ReadUInt32("Data");
-            gossipPOI.Name = packet.ReadWoWString("Icon Name", bit84);
+            gossipPOI.Importance = packet.ReadUInt32("Importance");
+            gossipPOI.Name = packet.ReadWoWString("Name", bit84);
 
             gossipPOI.PositionX = pos.X;
             gossipPOI.PositionY = pos.Y;

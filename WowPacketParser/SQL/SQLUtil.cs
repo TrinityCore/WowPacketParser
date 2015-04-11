@@ -55,6 +55,7 @@ namespace WowPacketParser.SQL
         public static string EscapeString(string str)
         {
             str = MySqlHelper.DoubleQuoteString(str);
+            str = str.Replace(Environment.NewLine, @"\n");
 
             // prevent double escaping
             return str.Replace("\"\"", "\"");

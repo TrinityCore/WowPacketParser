@@ -211,6 +211,7 @@
     <Compile Include="Enums\Holiday.cs" />
     <Compile Include="Enums\HotfixSQLOutput.cs" />
     <Compile Include="Enums\InhabitType.cs" />
+    <Compile Include="Enums\LocaleConstant.cs" />
     <Compile Include="Enums\MountResult.cs" />
     <Compile Include="Enums\RaidSummonFail.cs" />
     <Compile Include="Enums\StandState.cs" />
@@ -460,6 +461,7 @@
     <Compile Include="SQL\Builder.cs" />
     <Compile Include="SQL\Builders\BuilderAttributes.cs" />
     <Compile Include="SQL\Builders\DB2.cs" />
+    <Compile Include="SQL\Builders\Locales.cs" />
     <Compile Include="SQL\Builders\Miscellaneous.cs" />
     <Compile Include="SQL\Builders\QuestMisc.cs" />
     <Compile Include="SQL\Builders\Spawns.cs" />
@@ -505,6 +507,8 @@
     <Compile Include="Store\Objects\ItemSparse.cs" />
     <Compile Include="Store\Objects\ItemTemplate.cs" />
     <Compile Include="Store\Objects\KeyChain.cs" />
+    <Compile Include="Store\Objects\LocalesQuest.cs" />
+    <Compile Include="Store\Objects\LocalesQuestObjectives.cs" />
     <Compile Include="Store\Objects\Location.cs" />
     <Compile Include="Store\Objects\Loot.cs" />
     <Compile Include="Store\Objects\LootItem.cs" />

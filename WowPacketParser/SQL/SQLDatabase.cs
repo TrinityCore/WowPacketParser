@@ -16,6 +16,8 @@ namespace WowPacketParser.SQL
         public static readonly Dictionary<StoreNameType, Dictionary<int, string>> NameStores = new Dictionary<StoreNameType, Dictionary<int, string>>();
         public static readonly ICollection<Tuple<uint, BroadcastText>> BroadcastTextStores = new List<Tuple<uint, BroadcastText>>();
         public static readonly Dictionary<uint, CreatureDifficulty> CreatureDifficultyStores = new Dictionary<uint, CreatureDifficulty>();
+        public static readonly Dictionary<Tuple<uint, string>, LocalesQuest> LocalesQuestStores = new Dictionary<Tuple<uint, string>, LocalesQuest>();
+        public static readonly Dictionary<Tuple<uint, string>, LocalesQuestObjectives> LocalesQuestObjectiveStores = new Dictionary<Tuple<uint, string>, LocalesQuestObjectives>();
 
 
         private static readonly StoreNameType[] ObjectTypes =
@@ -52,6 +54,8 @@ namespace WowPacketParser.SQL
 
             LoadBroadcastText();
             LoadCreatureDifficulty();
+            LoadQuestTemplateLocale();
+            LoadQuestObjectivesLocale();
 
             var endTime = DateTime.Now;
             var span = endTime.Subtract(startTime);
@@ -121,6 +125,65 @@ namespace WowPacketParser.SQL
                         creatureDifficulty.Flags[i] = (uint)reader.GetValue(i + 6);
 
                     CreatureDifficultyStores.Add(id, creatureDifficulty);
+                }
+            }
+        }
+
+        private static void LoadQuestTemplateLocale()
+        {
+            //                                                  0       1
+            var query = new StringBuilder(string.Format("SELECT Id, locale, " +
+            //  2            3                 4                5                 6                  7                   8                   9                  10
+            "LogTitle, LogDescription, QuestDescription, AreaDescription, PortraitGiverText, PortraitGiverName, PortraitTurnInText, PortraitTurnInName, QuestCompletionLog" +
+            " FROM {0}.quest_template_locale;", Settings.TDBDatabase));
+            using (var reader = SQLConnector.ExecuteQuery(query.ToString()))
+            {
+                if (reader == null)
+                    return;
+
+                while (reader.Read())
+                {
+                    var localesQuest = new LocalesQuest();
+
+                    var id = (uint)reader.GetValue(0);
+                    var locale = (string)reader.GetValue(1);
+
+                    localesQuest.LogTitle = (string)reader.GetValue(2);
+                    localesQuest.LogDescription = (string)reader.GetValue(3);
+                    localesQuest.QuestDescription = (string)reader.GetValue(4);
+                    localesQuest.AreaDescription = (string)reader.GetValue(5);
+                    localesQuest.PortraitGiverText = (string)reader.GetValue(6);
+                    localesQuest.PortraitGiverName = (string)reader.GetValue(7);
+                    localesQuest.PortraitTurnInText = (string)reader.GetValue(8);
+                    localesQuest.PortraitTurnInName = (string)reader.GetValue(9);
+                    localesQuest.QuestCompletionLog = (string)reader.GetValue(10);
+
+                    LocalesQuestStores.Add(Tuple.Create(id, locale), localesQuest);
+                }
+            }
+        }
+
+        private static void LoadQuestObjectivesLocale()
+        {
+            //                                                  0      1       2          3             4
+            var query = new StringBuilder(string.Format("SELECT Id, locale, QuestId, StorageIndex, Description FROM {0}.quest_objectives_locale;", Settings.TDBDatabase));
+            using (var reader = SQLConnector.ExecuteQuery(query.ToString()))
+            {
+                if (reader == null)
+                    return;
+
+                while (reader.Read())
+                {
+                    var localesQuestObjectives = new LocalesQuestObjectives();
+
+                    var id = (uint)reader.GetValue(0);
+                    var locale = (string)reader.GetValue(1);
+
+                    localesQuestObjectives.QuestId = (uint)reader.GetValue(2);
+                    localesQuestObjectives.StorageIndex = Convert.ToInt16(reader.GetValue(3));
+                    localesQuestObjectives.Description = (string)reader.GetValue(4);
+
+                    LocalesQuestObjectiveStores.Add(Tuple.Create(id, locale), localesQuestObjectives);
                 }
             }
         }

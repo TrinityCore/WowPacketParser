@@ -134,6 +134,10 @@ namespace WowPacketParser.Store
         public static readonly StoreBag<WowGuid> NpcSpellClicks = new StoreBag<WowGuid>(new List<SQLOutput> { SQLOutput.npc_spellclick_spells });
         public static readonly StoreBag<NpcSpellClick> SpellClicks = new StoreBag<NpcSpellClick>(new List<SQLOutput> { SQLOutput.npc_spellclick_spells });
 
+        // Quest Misc
+        public static readonly StoreDictionary<Tuple<uint, string>, LocalesQuest> LocalesQuests = new StoreDictionary<Tuple<uint, string>, LocalesQuest>(new List<SQLOutput> { SQLOutput.locales_quest });
+        public static readonly StoreDictionary<Tuple<uint, string>, LocalesQuestObjectives> LocalesQuestObjectives = new StoreDictionary<Tuple<uint, string>, LocalesQuestObjectives>(new List<SQLOutput> { SQLOutput.locales_quest_objectives });
+
         public static void ClearContainers()
         {
             SniffData.Clear();

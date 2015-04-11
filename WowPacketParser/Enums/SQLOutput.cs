@@ -17,6 +17,8 @@
         gossip_menu,
         gossip_menu_option,
         item_template,
+        locales_quest,
+        locales_quest_objectives,
         LootTemplate,
         npc_spellclick_spells,
         npc_text,

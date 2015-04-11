@@ -1578,6 +1578,7 @@ namespace WowPacketParser.Enums.Version.V6_1_2_19802
             {Opcode.SMSG_UPDATE_TASK_PROGRESS, 0x1317},
             {Opcode.SMSG_UPDATE_WEEKLY_SPELL_USAGE, 0x103A},
             {Opcode.SMSG_UPDATE_WORLD_STATE, 0x1DF1},
+            {Opcode.SMSG_UPDATE_WOW_TOKEN_AUCTIONABLE_LIST_RESPONSE, 0x1836},
             {Opcode.SMSG_USERLIST_ADD, 0x15F0},
             {Opcode.SMSG_USERLIST_REMOVE, 0x10E4},
             {Opcode.SMSG_USERLIST_UPDATE, 0x18EF},

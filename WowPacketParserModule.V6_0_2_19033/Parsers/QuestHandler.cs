@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using WowPacketParser.Enums;
+using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -293,7 +294,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 };
 
                 var objectiveId = packet.ReadEntry("Id", i);
-                questInfoObjective.Type = packet.ReadByteE<QuestRequirementType>("Quest Requirement Type");
+                questInfoObjective.Type = packet.ReadByteE<QuestRequirementType>("Quest Requirement Type", i);
                 questInfoObjective.StorageIndex = packet.ReadSByte("StorageIndex", i);
                 questInfoObjective.ObjectID = packet.ReadInt32("ObjectID", i);
                 questInfoObjective.Amount = packet.ReadInt32("Amount", i);
@@ -317,6 +318,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 var bits6 = packet.ReadBits(8);
                 questInfoObjective.Description = packet.ReadWoWString("Description", bits6, i);
+
+                if (BinaryPacketReader.GetLocale() != LocaleConstant.enUS && questInfoObjective.Description != string.Empty)
+                {
+                    var localesQuestObjectives = new LocalesQuestObjectives
+                    {
+                        QuestId = (uint)id.Key,
+                        StorageIndex = questInfoObjective.StorageIndex,
+                        Description = questInfoObjective.Description
+                    };
+
+                    Storage.LocalesQuestObjectives.Add(Tuple.Create((uint)objectiveId.Key, BinaryPacketReader.GetClientLocale()), localesQuestObjectives, packet.TimeSpan);
+                }
 
                 Storage.QuestObjectives.Add((uint)objectiveId.Key, questInfoObjective, packet.TimeSpan);
             }
@@ -342,6 +355,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             quest.PortraitTurnInText = packet.ReadWoWString("PortraitTurnInText", bits2109);
             quest.PortraitTurnInName = packet.ReadWoWString("PortraitTurnInName", bits2365);
             quest.QuestCompletionLog = packet.ReadWoWString("QuestCompletionLog", bits2429);
+
+            if (BinaryPacketReader.GetLocale() != LocaleConstant.enUS)
+            {
+                var localesQuest = new LocalesQuest
+                {
+                    LogTitle            = quest.LogTitle,
+                    LogDescription      = quest.LogDescription,
+                    QuestDescription    = quest.QuestDescription,
+                    AreaDescription     = quest.AreaDescription,
+                    PortraitGiverText   = quest.PortraitGiverText,
+                    PortraitGiverName   = quest.PortraitGiverName,
+                    PortraitTurnInText  = quest.PortraitTurnInText,
+                    PortraitTurnInName  = quest.PortraitTurnInName,
+                    QuestCompletionLog  = quest.QuestCompletionLog
+                };
+
+                Storage.LocalesQuests.Add(Tuple.Create((uint)id.Key, BinaryPacketReader.GetClientLocale()), localesQuest, packet.TimeSpan);
+            }
 
             Storage.QuestTemplatesWod.Add((uint)id.Key, quest, packet.TimeSpan);
         }
