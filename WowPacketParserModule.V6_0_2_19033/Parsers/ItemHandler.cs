@@ -61,6 +61,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("CurrencyCount", indexes);
         }
 
+        public static void ReadInvUpdate(Packet packet, params object[] indexes)
+        {
+            var bits2 = packet.ReadBits("InvItemCount", 2, indexes);
+            for (int i = 0; i < bits2; i++)
+            {
+                packet.ReadByte("ContainerSlot", indexes, i, "Items");
+                packet.ReadByte("Slot", indexes, i, "Items");
+            }
+        }
+
         [Parser(Opcode.SMSG_ITEM_PURCHASE_REFUND_RESULT)]
         public static void HandleItemPurchaseRefundResult(Packet packet)
         {
