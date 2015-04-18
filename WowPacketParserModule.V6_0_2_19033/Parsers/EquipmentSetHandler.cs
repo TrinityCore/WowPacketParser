@@ -61,5 +61,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt64("Set Guid");
             packet.ReadInt32("SetID");
         }
+
+        [Parser(Opcode.CMSG_USE_EQUIPMENT_SET)]
+        public static void HandleUseEquipmentSet(Packet packet)
+        {
+            ItemHandler.ReadInvUpdate(packet, "InvUpdate");
+            for (int i = 0; i < NumSlots; i++)
+            {
+                packet.ReadPackedGuid128("Item");
+                packet.ReadByte("ContainerSlot");
+                packet.ReadByte("Slot");
+            }
+        }
     }
 }

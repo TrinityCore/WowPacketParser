@@ -229,6 +229,8 @@ namespace WowPacketParser.Loading
 
                         pwp.WaitForFinished(Timeout.Infinite);
 
+                        reader.PacketReader.Dispose();
+
                         _stats.SetEndTime(DateTime.Now);
                     }
 
