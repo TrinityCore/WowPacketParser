@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Misc;
+﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
@@ -8,9 +9,9 @@ namespace WowPacketParser.Store.Objects
     {
         [DBFieldName("Language")]
         public int Language;
-        [DBFieldName("MaleText")]
+        [DBFieldName("MaleText", LocaleConstant.enUS)]
         public string MaleText;
-        [DBFieldName("FemaleText")]
+        [DBFieldName("FemaleText", LocaleConstant.enUS)]
         public string FemaleText;
         [DBFieldName("EmoteID", 3)]
         public uint[] EmoteID = new uint[3];

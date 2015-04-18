@@ -53,6 +53,7 @@ namespace WowPacketParser.Store
         public static readonly StoreDictionary<uint, SpellAuraRestrictions> SpellAuraRestrictions = new StoreDictionary<uint, SpellAuraRestrictions>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_aura_restrictions });
         public static readonly StoreDictionary<uint, SpellCastingRequirements> SpellCastingRequirements = new StoreDictionary<uint, SpellCastingRequirements>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_casting_requirements });
         public static readonly StoreDictionary<uint, SpellClassOptions> SpellClassOptions = new StoreDictionary<uint, SpellClassOptions>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_class_options });
+        public static readonly StoreDictionary<uint, SpellEffectGroupSize> SpellEffectGroupSizes = new StoreDictionary<uint, SpellEffectGroupSize>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_effect_group_size });
         public static readonly StoreDictionary<uint, SpellLearnSpell> SpellLearnSpells = new StoreDictionary<uint, SpellLearnSpell>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_learn_spell });
         public static readonly StoreDictionary<uint, SpellMisc> SpellMiscs = new StoreDictionary<uint, SpellMisc>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_misc });
         public static readonly StoreDictionary<uint, SpellTotems> SpellTotems = new StoreDictionary<uint, SpellTotems>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_totems });
@@ -135,6 +136,7 @@ namespace WowPacketParser.Store
         public static readonly StoreBag<NpcSpellClick> SpellClicks = new StoreBag<NpcSpellClick>(new List<SQLOutput> { SQLOutput.npc_spellclick_spells });
 
         // Quest Misc
+        public static readonly StoreDictionary<Tuple<uint, string>, BroadcastTextLocale> BroadcastTextLocales = new StoreDictionary<Tuple<uint, string>, BroadcastTextLocale>(new List<HotfixSQLOutput> { HotfixSQLOutput.broadcast_text_locale });
         public static readonly StoreDictionary<Tuple<uint, string>, LocalesQuest> LocalesQuests = new StoreDictionary<Tuple<uint, string>, LocalesQuest>(new List<SQLOutput> { SQLOutput.locales_quest });
         public static readonly StoreDictionary<Tuple<uint, string>, LocalesQuestObjectives> LocalesQuestObjectives = new StoreDictionary<Tuple<uint, string>, LocalesQuestObjectives>(new List<SQLOutput> { SQLOutput.locales_quest_objectives });
 

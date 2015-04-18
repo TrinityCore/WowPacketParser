@@ -12,6 +12,65 @@ namespace WowPacketParser.SQL.Builders
     public static class Locales
     {
         [BuilderMethod]
+        public static string BroadcastTextLocale()
+        {
+            if (Storage.BroadcastTextLocales.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.broadcast_text_locale))
+                return String.Empty;
+
+            const string tableName = "broadcast_text_locale";
+
+            var rowsIns = new List<QueryBuilder.SQLInsertRow>();
+            var rowsUpd = new List<QueryBuilder.SQLUpdateRow>();
+
+            foreach (var broadcastTextLocale in Settings.SQLOrderByKey ? Storage.BroadcastTextLocales.OrderBy(blub => blub.Key).ToList() : Storage.BroadcastTextLocales.ToList())
+            {
+                if (SQLDatabase.BroadcastTextLocaleStores != null && SQLDatabase.BroadcastTextLocaleStores.ContainsKey(Tuple.Create(broadcastTextLocale.Key.Item1, broadcastTextLocale.Key.Item2)))
+                {
+                    var row = new QueryBuilder.SQLUpdateRow();
+                    var broadcastTextLocaleDB = SQLDatabase.BroadcastTextLocaleStores[Tuple.Create(broadcastTextLocale.Key.Item1, broadcastTextLocale.Key.Item2)];
+
+                    if (!Utilities.EqualValues(broadcastTextLocaleDB.MaleText_lang, broadcastTextLocale.Value.Item1.MaleText_lang))
+                        row.AddValue("MaleText_lang", broadcastTextLocale.Value.Item1.MaleText_lang);
+
+                    if (!Utilities.EqualValues(broadcastTextLocaleDB.FemaleText_lang, broadcastTextLocale.Value.Item1.FemaleText_lang))
+                        row.AddValue("FemaleText_lang", broadcastTextLocale.Value.Item1.FemaleText_lang);
+
+                    if (!Utilities.EqualValues(broadcastTextLocaleDB.VerifiedBuild, broadcastTextLocale.Value.Item1.VerifiedBuild))
+                        row.AddValue("VerifiedBuild", broadcastTextLocale.Value.Item1.VerifiedBuild);
+
+                    row.AddWhere("ID", broadcastTextLocale.Key.Item1);
+                    row.AddWhere("locale", broadcastTextLocale.Key.Item2);
+
+                    row.Table = tableName;
+
+                    rowsUpd.Add(row);
+                }
+                else // insert new
+                {
+                    var row = new QueryBuilder.SQLInsertRow();
+
+                    row.AddValue("ID", broadcastTextLocale.Key.Item1);
+                    row.AddValue("locale", broadcastTextLocale.Key.Item2);
+
+                    row.AddValue("MaleText_lang", broadcastTextLocale.Value.Item1.MaleText_lang);
+                    row.AddValue("FemaleText_lang", broadcastTextLocale.Value.Item1.FemaleText_lang);
+
+                    row.AddValue("VerifiedBuild", broadcastTextLocale.Value.Item1.VerifiedBuild);
+
+                    rowsIns.Add(row);
+                }
+            }
+
+            var result = new QueryBuilder.SQLInsert(tableName, rowsIns, deleteDuplicates: false, primaryKeyNumber: 2).Build() +
+                         new QueryBuilder.SQLUpdate(rowsUpd).Build();
+
+            return "SET NAMES 'utf8';" + Environment.NewLine + result + Environment.NewLine + "SET NAMES 'latin1';";
+        }
+
+        [BuilderMethod]
         public static string LocalesQuest()
         {
             if (Storage.LocalesQuests.IsEmpty())
@@ -44,7 +103,7 @@ namespace WowPacketParser.SQL.Builders
                     if (!Utilities.EqualValues(localesQuestDB.AreaDescription, localesQuest.Value.Item1.AreaDescription))
                         row.AddValue("AreaDescription", localesQuest.Value.Item1.AreaDescription);
 
-                    if (!Utilities.EqualValues(localesQuestDB.LogDescription, localesQuest.Value.Item1.QuestCompletionLog))
+                    if (!Utilities.EqualValues(localesQuestDB.QuestCompletionLog, localesQuest.Value.Item1.QuestCompletionLog))
                         row.AddValue("QuestCompletionLog", localesQuest.Value.Item1.QuestCompletionLog);
 
                     if (!Utilities.EqualValues(localesQuestDB.PortraitGiverText, localesQuest.Value.Item1.PortraitGiverText))

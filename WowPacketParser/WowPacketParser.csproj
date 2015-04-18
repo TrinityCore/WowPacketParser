@@ -481,6 +481,7 @@
     <Compile Include="Store\Objects\Aura.cs" />
     <Compile Include="Store\Objects\BattlePetSpecies.cs" />
     <Compile Include="Store\Objects\BroadcastText.cs" />
+    <Compile Include="Store\Objects\BroadcastTextLocale.cs" />
     <Compile Include="Store\Objects\ChrUpgrade.cs" />
     <Compile Include="Store\Objects\Creature.cs" />
     <Compile Include="Store\Objects\CreatureDifficulty.cs" />
@@ -532,6 +533,7 @@
     <Compile Include="Store\Objects\SpellAuraRestrictions.cs" />
     <Compile Include="Store\Objects\SpellCastingRequirements.cs" />
     <Compile Include="Store\Objects\SpellClassOptions.cs" />
+    <Compile Include="Store\Objects\SpellEffectGroupSize.cs" />
     <Compile Include="Store\Objects\SpellLearnSpell.cs" />
     <Compile Include="Store\Objects\SpellMisc.cs" />
     <Compile Include="Store\Objects\SpellPower.cs" />

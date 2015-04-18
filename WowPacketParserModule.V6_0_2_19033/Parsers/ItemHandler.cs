@@ -30,7 +30,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 var mask = packet.ReadUInt32();
                 for (var j = 1; j <= 8; ++j)
                     if ((mask & (1u << (j - 1))) != 0)
-                        packet.ReadInt32(((ItemModifier)j).ToString(), indexes);
+                        packet.ReadInt32(((ItemModifier) j).ToString(), indexes);
             }
 
             packet.ResetBitReader();
@@ -454,6 +454,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadPackedGuid128("Id");
             ReadCliItemTextCache(packet, "Item");
+        }
+
+        [Parser(Opcode.CMSG_WRAP_ITEM)]
+        public static void HandleWrapItem(Packet packet)
+        {
+            var bits2 = packet.ReadBits("InvItemCount", 2, "InvItem");
+            for (int i = 0; i < bits2; i++)
+            {
+                packet.ReadByte("ContainerSlot", "InvItem", i, "Items");
+                packet.ReadByte("Slot", "InvItem", i, "Items");
+            }
         }
     }
 }

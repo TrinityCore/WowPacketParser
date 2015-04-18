@@ -103,8 +103,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadByte("MinLevel");
             packet.ReadByte("MaxLevel");
-            packet.ReadInt32("ItemClass");
             packet.ReadInt32("InvType");
+            packet.ReadInt32("ItemClass");
             packet.ReadInt32("ItemSubclass");
             packet.ReadInt32("Quality");
             var sort = packet.ReadByte("SortCount");
