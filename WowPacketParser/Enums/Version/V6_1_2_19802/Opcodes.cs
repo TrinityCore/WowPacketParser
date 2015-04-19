@@ -1421,6 +1421,7 @@ namespace WowPacketParser.Enums.Version.V6_1_2_19802
             {Opcode.SMSG_REPORT_PVP_PLAYER_AFK_RESULT, 0x12B2},
             {Opcode.SMSG_REQUEST_CEMETERY_LIST_RESPONSE, 0x1398},
             {Opcode.SMSG_REQUEST_PVP_REWARDS_RESPONSE, 0x0218},
+            {Opcode.SMSG_REQUEST_WOW_TOKEN_MARKET_PRICE_RESPONSE, 0x1215},
             {Opcode.SMSG_RESEARCH_COMPLETE, 0x1335},
             {Opcode.SMSG_RESET_COMPRESSION_CONTEXT, 0x0059},
             {Opcode.SMSG_RESET_FAILED_NOTIFY, 0x040D},

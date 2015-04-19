@@ -67,6 +67,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("UnkInt32");
         }
 
+        [Parser(Opcode.SMSG_REQUEST_WOW_TOKEN_MARKET_PRICE_RESPONSE)]
+        public static void HandleTokenUpdateMarketPriceResponse(Packet packet)
+        {
+            packet.ReadUInt64("CurrentMarketPrice");
+            packet.ReadUInt32("UnkInt");
+            packet.ReadUInt32("Result");
+            packet.ReadUInt32("UnkInt2");
+        }
+
         [Parser(Opcode.CMSG_UPDATE_WOW_TOKEN_COUNT)]
         public static void HandleTokenUpdateTokenCount(Packet packet)
         {
@@ -108,9 +117,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             {
                 packet.ReadUInt64("UnkInt1", i);
                 packet.ReadUInt32("UnkInt2", i);
-                packet.ReadUInt32("UnkInt3", i);
-                packet.ReadUInt64("UnkInt4", i);
-                packet.ReadUInt32("UnkInt5", i);
+                packet.ReadUInt32("Owner", i);
+                packet.ReadUInt64("BuyoutPrice", i);
+                packet.ReadUInt32("EndTime", i);
             }
         }
     }

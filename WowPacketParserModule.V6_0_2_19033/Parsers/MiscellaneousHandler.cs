@@ -607,8 +607,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("ResurrectOffererGUID");
 
-            packet.ReadInt32("ResurrectOffererVirtualRealmAddress");
-            packet.ReadInt32("PetNumber");
+            packet.ReadUInt32("ResurrectOffererVirtualRealmAddress");
+            packet.ReadUInt32("PetNumber");
             packet.ReadInt32("SpellID");
 
             var len = packet.ReadBits(6);
