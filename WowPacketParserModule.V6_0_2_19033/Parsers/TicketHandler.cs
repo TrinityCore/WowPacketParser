@@ -132,8 +132,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ResetBitReader();
             packet.ReadWoWString("Description", descriptionLength);
 
-            packet.ReadBit("NeedMoreHelp");
             packet.ReadBit("NeedResponse");
+            packet.ReadBit("NeedMoreHelp");
             packet.ResetBitReader();
 
             var dataLength = packet.ReadInt32("DataLength");
