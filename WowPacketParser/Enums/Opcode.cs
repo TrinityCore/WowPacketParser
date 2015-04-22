@@ -2428,6 +2428,7 @@ namespace WowPacketParser.Enums
         SMSG_TITLE_EARNED,
         SMSG_TITLE_LOST,
         SMSG_TOGGLE_XP_GAIN,
+        SMSG_TOKEN_SELL_RESULT,
         SMSG_TOKEN_UNK1,
         SMSG_TOTEM_CREATED,
         SMSG_TOTEM_MOVED,

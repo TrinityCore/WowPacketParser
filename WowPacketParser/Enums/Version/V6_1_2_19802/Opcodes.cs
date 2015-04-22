@@ -1549,6 +1549,7 @@ namespace WowPacketParser.Enums.Version.V6_1_2_19802
             {Opcode.SMSG_TIME_SYNC_REQUEST, 0x1E23},
             {Opcode.SMSG_TITLE_EARNED, 0x1E03},
             {Opcode.SMSG_TITLE_LOST, 0x03B2},
+            {Opcode.SMSG_TOKEN_SELL_RESULT, 0x029E},
             {Opcode.SMSG_TOKEN_UNK1, 0x1796},
             {Opcode.SMSG_TOTEM_CREATED, 0x0BB7},
             {Opcode.SMSG_TOTEM_MOVED, 0x040E},

@@ -139,5 +139,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadUInt32("EndTime", i);
             }
         }
+
+        [Parser(Opcode.SMSG_TOKEN_SELL_RESULT)]
+        public static void HandleTokenSellResult(Packet packet)
+        {
+            packet.ReadUInt32("UnkInt");
+            packet.ReadUInt32("Result");
+        }
     }
 }
