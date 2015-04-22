@@ -61,8 +61,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_SET_FACTION_INACTIVE)]
         public static void HandleSetFactionInactive(Packet packet)
         {
-            packet.ReadUInt32("Faction Id");
-            packet.ReadBool("Inactive");
+            packet.ReadUInt32("Index");
+            packet.ReadBool("State");
         }
 
         [Parser(Opcode.CMSG_SET_FACTION_AT_WAR)]
