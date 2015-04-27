@@ -578,5 +578,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadBit("UnkBit");
         }
+
+        [Parser(Opcode.SMSG_GARRISON_CREATE_RESULT)]
+        public static void HandleGarrisonCreateResult(Packet packet)
+        {
+            packet.ReadInt32("Result");
+            packet.ReadInt32("GarrSiteID");
+        }
     }
 }
