@@ -11,9 +11,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt64("DbID", indexes);
             packet.ReadInt32("MissionRecID", indexes);
 
-            packet.ReadUInt32("OfferTime", indexes);
+            packet.ReadTime("OfferTime", indexes);
             packet.ReadUInt32("OfferDuration", indexes);
-            packet.ReadUInt32("StartTime", indexes);
+            packet.ReadTime("StartTime", indexes);
             packet.ReadUInt32("TravelDuration", indexes);
             packet.ReadUInt32("MissionDuration", indexes);
 
@@ -26,7 +26,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("GarrBuildingID", indexes);
             packet.ReadTime("TimeBuilt", indexes);
             packet.ReadInt32("CurrentGarSpecID", indexes);
-            packet.ReadInt32("Unk", indexes);
+            packet.ReadTime("TimeSpecCooldown", indexes);
 
             packet.ResetBitReader();
 
@@ -46,7 +46,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("CurrentBuildingID", indexes);
             packet.ReadInt32("CurrentMissionID", indexes);
             var int40 = packet.ReadInt32("AbilityCount", indexes);
-            packet.ReadInt32("UnkInt", indexes);
+            packet.ReadInt32("FollowerStatus", indexes);
 
             for (int i = 0; i < int40; i++)
                 packet.ReadInt32("AbilityID", indexes, i);
@@ -103,8 +103,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("Result");
         }
 
-        [Parser(Opcode.SMSG_GARRISON_REMOTE_INFO, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_1_0_19678)]
-        public static void HandleGarrisonRemoteInfo60x(Packet packet)
+        [Parser(Opcode.SMSG_GARRISON_REMOTE_INFO, ClientVersionBuild.V6_0_2_19033)]
+        public static void HandleGarrisonRemoteInfo(Packet packet)
         {
             var int20 = packet.ReadInt32("InfoCount");
             for (int i = 0; i < int20; i++)
@@ -118,20 +118,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadInt32("GarrBuildingID", i, j);
                 }
             }
-        }
-
-        [Parser(Opcode.SMSG_GARRISON_REMOTE_INFO, ClientVersionBuild.V6_1_0_19678)]
-        public static void HandleGarrisonRemoteInfo61x(Packet packet)
-        {
-            var int32 = packet.ReadInt32("InfoCount");
-            var int16 = packet.ReadInt32("Unk16");
-
-            for (int i = 0; i < int32; i++)
-                packet.ReadInt32("GarrSiteLevelID", i);
-
-            for (int i = 0; i < int16; i++)
-                packet.ReadInt32("Unk5");
-
         }
 
         [Parser(Opcode.CMSG_GARRISON_START_MISSION)]
@@ -584,6 +570,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("Result");
             packet.ReadInt32("GarrSiteID");
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_BUILDING_LANDMARKS)]
+        public static void HandleGarrisonBuildingLandmarks(Packet packet)
+        {
+            var count = packet.ReadInt32();
+            for (var i = 0; i < count; ++i)
+            {
+                packet.ReadUInt32("GarrBuildingPlotInstID", i);
+                packet.ReadVector3("Pos", i);
+            }
         }
     }
 }
