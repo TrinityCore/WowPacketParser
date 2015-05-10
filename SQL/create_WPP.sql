@@ -18,3 +18,11 @@ CREATE TABLE IF NOT EXISTS `WPP`.`ObjectNames` (
   `Name` text NOT NULL,
   PRIMARY KEY (`ObjectType`,`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Table structure for table `map_difficulty`
+CREATE TABLE `map_difficulty` (
+  `m_ID` int(11) NOT NULL DEFAULT '0',
+  `m_mapID` int(11) NOT NULL DEFAULT '0',
+  `m_difficultyID` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`m_ID`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
