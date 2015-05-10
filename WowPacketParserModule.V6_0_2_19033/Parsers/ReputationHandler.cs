@@ -66,5 +66,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ResetBitReader();
             packet.ReadBit("ShowVisual");
         }
+
+        [Parser(Opcode.CMSG_SET_FACTION_AT_WAR)]
+        public static void HandleSetFactionAtWar(Packet packet)
+        {
+            packet.ReadByte("FactionIndex");
+        }
+
+        [Parser(Opcode.CMSG_SET_FACTION_NOT_AT_WAR)]
+        public static void HandleSetFactionNotAtWar(Packet packet)
+        {
+            packet.ReadByte("FactionIndex");
+        }
     }
 }
