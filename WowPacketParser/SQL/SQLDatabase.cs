@@ -20,6 +20,9 @@ namespace WowPacketParser.SQL
         public static readonly Dictionary<Tuple<uint, string>, BroadcastTextLocale> BroadcastTextLocaleStores = new Dictionary<Tuple<uint, string>, BroadcastTextLocale>();
         public static readonly Dictionary<Tuple<uint, string>, LocalesQuest> LocalesQuestStores = new Dictionary<Tuple<uint, string>, LocalesQuest>();
         public static readonly Dictionary<Tuple<uint, string>, LocalesQuestObjectives> LocalesQuestObjectiveStores = new Dictionary<Tuple<uint, string>, LocalesQuestObjectives>();
+        // MapDifficulty
+        private static readonly Dictionary<Tuple<int, int>, int> MapDifficultyStores = new Dictionary<Tuple<int, int>, int>();
+        public static readonly Dictionary<int, int> MapSpawnMaskStores = new Dictionary<int, int>();
 
 
         private static readonly StoreNameType[] ObjectTypes =
@@ -60,6 +63,8 @@ namespace WowPacketParser.SQL
             LoadBroadcastTextLocale();
             LoadQuestTemplateLocale();
             LoadQuestObjectivesLocale();
+            // MapDifficulty
+            LoadMapDifficulty();
 
             var endTime = DateTime.Now;
             var span = endTime.Subtract(startTime);
@@ -215,6 +220,37 @@ namespace WowPacketParser.SQL
                     broadcastTextLocale.VerifiedBuild = Convert.ToInt16(reader.GetValue(4));
 
                     BroadcastTextLocaleStores.Add(Tuple.Create(id, locale), broadcastTextLocale);
+                }
+            }
+        }
+
+        private static void LoadMapDifficulty()
+        {
+            //                                                  0     1        2
+            var query = new StringBuilder(string.Format("SELECT m_ID, m_mapID, m_difficultyID FROM {0}.map_difficulty;", Settings.WPPDatabase));
+            using (var reader = SQLConnector.ExecuteQuery(query.ToString()))
+            {
+                if (reader == null)
+                    return;
+
+                while (reader.Read())
+                {
+                    var id = (int)reader.GetValue(0);
+                    var mapId = (int)reader.GetValue(1);
+                    var difficultyID = (int)reader.GetValue(2);
+
+                    MapDifficultyStores.Add(Tuple.Create(id, mapId), (1 << difficultyID));
+                }
+            }
+
+            if (MapDifficultyStores != null)
+            {
+                foreach (var mapDifficulty in MapDifficultyStores)
+                {
+                    if (MapSpawnMaskStores.ContainsKey(mapDifficulty.Key.Item2))
+                        MapSpawnMaskStores[mapDifficulty.Key.Item2] |= mapDifficulty.Value;
+                    else
+                        MapSpawnMaskStores.Add(mapDifficulty.Key.Item2, mapDifficulty.Value);
                 }
             }
         }
