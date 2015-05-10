@@ -204,11 +204,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("Durability", i);
                 var buyCount = packet.ReadInt32("StackCount", i);
                 vendorItem.ExtendedCostId = (uint)packet.ReadInt32("ExtendedCostID", i);
-                vendorItem.PlayerConditionFailed = packet.ReadInt32("PlayerConditionFailed", i);
+                vendorItem.PlayerConditionId = packet.ReadInt32("PlayerConditionFailed", i);
 
                 packet.ResetBitReader();
 
-                packet.ReadBit("DoNotFilterOnVendor", i);
+                vendorItem.IgnoreFiltering = packet.ReadBit("DoNotFilterOnVendor", i);
 
                 vendorItem.MaxCount = maxCount == -1 ? 0 : maxCount; // TDB
                 if (vendorItem.Type == 2)

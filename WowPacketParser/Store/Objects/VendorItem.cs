@@ -14,8 +14,11 @@ namespace WowPacketParser.Store.Objects
 
         public uint Type;
 
-        public int PlayerConditionFailed;
+        public int PlayerConditionId;
+
+        public bool IgnoreFiltering;
 
         public int VerifiedBuild = ClientVersion.BuildInt;
+
     }
 }
