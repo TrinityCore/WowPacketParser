@@ -189,6 +189,11 @@ namespace WowPacketParser.SQL.Builders
                     if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
                         row.AddValue("Type", vendorItem.Type);
 
+                    if (ClientVersion.AddedInVersion(ClientType.WarlordsOfDraenor))
+                        row.AddValue("PlayerConditionFailed", vendorItem.PlayerConditionFailed);
+
+                    row.AddValue("VerifiedBuild", vendorItem.VerifiedBuild);
+
                     row.Comment = StoreGetters.GetName(vendorItem.Type <= 1 ? StoreNameType.Item : StoreNameType.Currency, (int)vendorItem.ItemId, false);
                     rows.Add(row);
                 }

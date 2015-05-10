@@ -204,7 +204,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("Durability", i);
                 var buyCount = packet.ReadInt32("StackCount", i);
                 vendorItem.ExtendedCostId = (uint)packet.ReadInt32("ExtendedCostID", i);
-                packet.ReadInt32("PlayerConditionFailed", i);
+                vendorItem.PlayerConditionFailed = packet.ReadInt32("PlayerConditionFailed", i);
 
                 packet.ResetBitReader();
 
