@@ -111,7 +111,7 @@ namespace WowPacketParser.SQL.Builders
             if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_poi))
             {
                 var entries = Storage.QuestPOIWoDs.Keys();
-                var poiDb = SQLDatabase.GetDict<uint, uint, QuestPOIWoD>(entries, "QuestID", "Idx1");
+                var poiDb = SQLDatabase.GetDict<int, int, QuestPOIWoD>(entries, "QuestID", "Idx1");
 
                 sql = SQLUtil.CompareDicts(Storage.QuestPOIWoDs, poiDb, StoreNameType.Quest, StoreNameType.None, "QuestID", "Idx1");
             }
