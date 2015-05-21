@@ -9,6 +9,7 @@ namespace WowPacketParser.Enums
         Epic      = 4,
         Legendary = 5,
         Artifact  = 6,
-        Heirloom  = 7
+        Heirloom  = 7,
+        WowToken  = 8
     }
 }
