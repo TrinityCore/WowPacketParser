@@ -303,6 +303,7 @@
     <Compile Include="Enums\TaxiError.cs" />
     <Compile Include="Enums\TeamType.cs" />
     <Compile Include="Enums\TimerType.cs" />
+    <Compile Include="Enums\TokenResults.cs" />
     <Compile Include="Enums\TotemCategory.cs" />
     <Compile Include="Enums\TradeStatus.cs" />
     <Compile Include="Enums\TrainerSpellState.cs" />
@@ -310,6 +311,7 @@
     <Compile Include="Enums\TransferAbortReason.cs" />
     <Compile Include="Enums\Tutorial.cs" />
     <Compile Include="Enums\TutorialAction.cs" />
+    <Compile Include="Enums\TwitterResults.cs" />
     <Compile Include="Enums\TypeMask.cs" />
     <Compile Include="Enums\UnitDynamicFlags.cs" />
     <Compile Include="Enums\UnitFlags2.cs" />
