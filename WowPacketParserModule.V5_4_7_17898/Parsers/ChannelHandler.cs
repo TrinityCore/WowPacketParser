@@ -37,49 +37,49 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 case ChatNotificationType.Left:
                 case ChatNotificationType.VoiceOn:
                 case ChatNotificationType.VoiceOff:
-                case ChatNotificationType.Unknown1:
-                    {
-                        packet.ReadGuid("GUID");
-                        packet.ReadInt32("RealmId");
-                        break;
-                    }
+                case ChatNotificationType.TrialRestricted:
+                {
+                    packet.ReadGuid("GUID");
+                    packet.ReadInt32("RealmId");
+                    break;
+                }
                 case ChatNotificationType.YouJoined:
-                    {
-                        packet.ReadByteE<ChannelFlag>("Flags");
-                        packet.ReadInt32("Channel Id");
-                        packet.ReadInt32("Unk");
-                        break;
-                    }
+                {
+                    packet.ReadByteE<ChannelFlag>("Flags");
+                    packet.ReadInt32("Channel Id");
+                    packet.ReadInt32("Unk");
+                    break;
+                }
                 case ChatNotificationType.YouLeft:
-                    {
-                        packet.ReadInt32("Channel Id");
-                        packet.ReadBool("Unk");
-                        break;
-                    }
+                {
+                    packet.ReadInt32("Channel Id");
+                    packet.ReadBool("Unk");
+                    break;
+                }
                 case ChatNotificationType.PlayerNotFound:
                 case ChatNotificationType.ChannelOwner:
                 case ChatNotificationType.PlayerNotBanned:
                 case ChatNotificationType.PlayerInvited:
                 case ChatNotificationType.PlayerInviteBanned:
-                    {
-                        packet.ReadCString("Player Name");
-                        break;
-                    }
+                {
+                    packet.ReadCString("Player Name");
+                    break;
+                }
                 case ChatNotificationType.ModeChange:
-                    {
-                        packet.ReadGuid("GUID");
-                        packet.ReadByteE<ChannelMemberFlag>("Old Flags");
-                        packet.ReadByteE<ChannelMemberFlag>("New Flags");
-                        break;
-                    }
+                {
+                    packet.ReadGuid("GUID");
+                    packet.ReadByteE<ChannelMemberFlag>("Old Flags");
+                    packet.ReadByteE<ChannelMemberFlag>("New Flags");
+                    break;
+                }
                 case ChatNotificationType.PlayerKicked:
                 case ChatNotificationType.PlayerBanned:
                 case ChatNotificationType.PlayerUnbanned:
-                    {
-                        packet.ReadGuid("Bad");
-                        packet.ReadGuid("Good");
-                        break;
-                    }
+                {
+                    packet.ReadGuid("Bad");
+                    packet.ReadGuid("Good");
+                    break;
+                }
                 case ChatNotificationType.WrongPassword:
                 case ChatNotificationType.NotMember:
                 case ChatNotificationType.NotModerator:

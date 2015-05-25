@@ -3,7 +3,6 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using ChatMessageType540 = WowPacketParserModule.V5_4_0_17359.Enums.ChatMessageType;
 
 namespace WowPacketParserModule.V5_4_0_17359.Parsers
 {
@@ -106,7 +105,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             packet.ParseBitStream(receiverGUIDBytes, 0, 4, 1, 3, 5, 7, 2, 6);
 
-            text.Type = (ChatMessageType)packet.ReadByteE<ChatMessageType540>("Chat type");
+            text.Type = (ChatMessageType)packet.ReadByteE<ChatMessageTypeNew>("SlashCmd");
 
             packet.ParseBitStream(senderGUIDBytes, 7, 6, 5, 4, 0, 2, 1, 3);
 

@@ -3,7 +3,6 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using ChatMessageType530 = WowPacketParserModule.V5_3_0_16981.Enums.ChatMessageType;
 
 namespace WowPacketParserModule.V5_3_0_16981.Parsers
 {
@@ -84,7 +83,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             if (hasReceiver)
                 text.ReceiverName = packet.ReadWoWString("Receiver Name", receiverLen);
 
-            text.Type = (ChatMessageType)packet.ReadByteE<ChatMessageType530>("Chat type");
+            text.Type = (ChatMessageType)packet.ReadByteE<ChatMessageTypeNew>("Chat type");
             if (hasText)
                 text.Text = packet.ReadWoWString("Text", textLen);
 
