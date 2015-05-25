@@ -929,5 +929,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < count; ++i)
                 ReadLFGuildBrowseData(packet, "Post", i);
         }
+        
+        [Parser(Opcode.CMSG_LF_GUILD_SET_GUILD_POST, ClientVersionBuild.V6_1_2_19802)]
+        public static void HandleGuildFinderSetGuildPost612(Packet packet)
+        {
+            packet.ReadUInt32E<GuildFinderOptionsInterest>("Guild Interests"); // ok
+            packet.ReadUInt32E<GuildFinderOptionsAvailability>("Availability"); // ok
+            packet.ReadUInt32E<GuildFinderOptionsRoles>("Class Roles"); // ok
+            packet.ReadUInt32E<GuildFinderOptionsLevel>("Level");
+            packet.ReadBit("Listed");
+            var length = packet.ReadBits(11);
+            packet.ReadWoWString("Comment", length);
+        }
     }
 }
