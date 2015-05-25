@@ -38,6 +38,7 @@ namespace WowPacketParser.Enums
         NotInLfg            = 0x21,
         VoiceOn             = 0x22,
         VoiceOff            = 0x23,
-        Unknown1            = 0x24
+        TrialRestricted     = 0x24,
+        NotAllowedInChannel = 0x25
     }
 }

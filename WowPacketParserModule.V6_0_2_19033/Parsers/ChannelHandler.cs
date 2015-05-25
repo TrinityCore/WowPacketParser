@@ -48,9 +48,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_CHANNEL_NOTIFY)]
         public static void HandleChannelNotify(Packet packet)
         {
-            var type = (ChatNotificationType)packet.ReadBits("Type", 6);
-            var bits108 = packet.ReadBits(7);
-            var bits52 = packet.ReadBits(6);
+            var type = packet.ReadBitsE<ChatNotificationType>("Type", 6);
+            var channelLength = packet.ReadBits(7);
+            var senderLength = packet.ReadBits(6);
 
             packet.ReadPackedGuid128("SenderGuid");
             packet.ReadPackedGuid128("BnetAccountID");
@@ -68,8 +68,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadByteE<ChannelMemberFlag>("NewFlags");
             }
 
-            packet.ReadWoWString("Channel", bits108);
-            packet.ReadWoWString("Sender", bits52);
+            packet.ReadWoWString("Channel", channelLength);
+            packet.ReadWoWString("Sender", senderLength);
         }
 
         [Parser(Opcode.SMSG_CHANNEL_LIST)]

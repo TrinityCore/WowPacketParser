@@ -115,7 +115,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadGuid("Good");
                     break;
                 }
-                case ChatNotificationType.Unknown1:
+                case ChatNotificationType.TrialRestricted:
                 {
                     packet.ReadGuid("GUID");
                     break;
