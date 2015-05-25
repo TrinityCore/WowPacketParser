@@ -44,7 +44,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadByte("Subgroup", i);
                 packet.ReadByte("Flags", i);
                 packet.ReadByte("RolesAssigned", i);
-                packet.ReadByte("Unk Byte", i);
+                packet.ReadByteE<Class>("PlayerClass", i);
 
                 packet.ReadWoWString("Name", bits76, i);
             }
@@ -180,9 +180,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadInt32("SpellId", i);
                     packet.ReadByte("Scalings", i);
                     packet.ReadInt32("EffectMask", i);
-                    var byte3 = packet.ReadInt32("EffectCount", i);
+                    var scaleCount = packet.ReadInt32("ScaleCount", i);
 
-                    for (int j = 0; j < byte3; j++)
+                    for (int j = 0; j < scaleCount; j++)
                         packet.ReadSingle("Scale", i, j);
                 }
             }
@@ -292,7 +292,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (int i = 0; i < auraCount; i++)
             {
-                packet.ReadInt32("SpellId", i);
+                packet.ReadInt32<SpellId>("SpellId", i);
                 packet.ReadByte("Scalings", i);
                 packet.ReadInt32("EffectMask", i);
                 var byte3 = packet.ReadInt32("EffectCount", i);
@@ -314,7 +314,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 var petAuraCount = packet.ReadInt32("AuraCount");
                 for (int i = 0; i < petAuraCount; i++)
                 {
-                    packet.ReadInt32("SpellId", i);
+                    packet.ReadInt32<SpellId>("SpellId", i);
                     packet.ReadByte("Scalings", i);
                     packet.ReadInt32("EffectMask", i);
                     var byte3 = packet.ReadInt32("EffectCount", i);

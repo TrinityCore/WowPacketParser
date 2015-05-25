@@ -82,7 +82,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             var text = new CreatureText
             {
-                Type = (ChatMessageType) packet.ReadByte("Chat type"),
+                Type = (ChatMessageType)packet.ReadByteE<ChatMessageTypeNew>("SlashCmd"),
                 Language = packet.ReadByteE<Language>("Language"),
                 SenderGUID = packet.ReadPackedGuid128("SenderGUID")
             };
