@@ -938,8 +938,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32E<GuildFinderOptionsRoles>("Class Roles"); // ok
             packet.ReadUInt32E<GuildFinderOptionsLevel>("Level");
             packet.ReadBit("Listed");
-            var length = packet.ReadBits(11);
-            packet.ReadWoWString("Comment", length);
+            packet.ReadWoWString("Comment", packet.ReadBits(10));
         }
     }
 }
