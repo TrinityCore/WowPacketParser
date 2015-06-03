@@ -288,8 +288,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("CharName", bits19);
         }
 
-        [Parser(Opcode.SMSG_CHAR_CUSTOMIZE)]
-        public static void HandleServerCharCustomize(Packet packet)
+        [Parser(Opcode.SMSG_CHAR_CUSTOMIZE, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleServerCharCustomize60x(Packet packet)
         {
             packet.ReadPackedGuid128("CharGUID");
 
@@ -304,6 +304,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("FacialHairStyleID");
             packet.ReadByte("FaceID");
 
+            packet.ReadWoWString("Name", bits55);
+        }
+
+        [Parser(Opcode.SMSG_CHAR_CUSTOMIZE, ClientVersionBuild.V6_1_0_19678)]
+        public static void HandleServerCharCustomize61x(Packet packet)
+        {
+            packet.ReadPackedGuid128("CharGUID");
+            packet.ReadByte("SexID");
+            packet.ReadByte("SkinID");
+            packet.ReadByte("HairColorID");
+            packet.ReadByte("HairStyleID");
+            packet.ReadByte("FacialHairStyleID");
+            packet.ReadByte("FaceID");
+
+            packet.ResetBitReader();
+            var bits55 = packet.ReadBits(6);
             packet.ReadWoWString("Name", bits55);
         }
 
