@@ -184,48 +184,48 @@ namespace WowPacketParser.Store.Objects
             Prob6 = Probabilities[6];
             Prob7 = Probabilities[7];
 
-            BroadcastTextId0 = BroadcastTextId[0];
-            BroadcastTextId1 = BroadcastTextId[1];
-            BroadcastTextId2 = BroadcastTextId[2];
-            BroadcastTextId3 = BroadcastTextId[3];
-            BroadcastTextId4 = BroadcastTextId[4];
-            BroadcastTextId5 = BroadcastTextId[5];
-            BroadcastTextId6 = BroadcastTextId[6];
-            BroadcastTextId7 = BroadcastTextId[7];
+            BroadcastTextId0 = (int)BroadcastTextId[0];
+            BroadcastTextId1 = (int)BroadcastTextId[1];
+            BroadcastTextId2 = (int)BroadcastTextId[2];
+            BroadcastTextId3 = (int)BroadcastTextId[3];
+            BroadcastTextId4 = (int)BroadcastTextId[4];
+            BroadcastTextId5 = (int)BroadcastTextId[5];
+            BroadcastTextId6 = (int)BroadcastTextId[6];
+            BroadcastTextId7 = (int)BroadcastTextId[7];
         }
 
         [DBFieldName("Probability0")]
         public float Prob0;
         [DBFieldName("BroadcastTextId0")]
-        public uint BroadcastTextId0;
+        public int BroadcastTextId0;
         [DBFieldName("Probability1")]
         public float Prob1;
         [DBFieldName("BroadcastTextId1")]
-        public uint BroadcastTextId1;
+        public int BroadcastTextId1;
         [DBFieldName("Probability2")]
         public float Prob2;
         [DBFieldName("BroadcastTextId2")]
-        public uint BroadcastTextId2;
+        public int BroadcastTextId2;
         [DBFieldName("Probability3")]
         public float Prob3;
         [DBFieldName("BroadcastTextId3")]
-        public uint BroadcastTextId3;
+        public int BroadcastTextId3;
         [DBFieldName("Probability4")]
         public float Prob4;
         [DBFieldName("BroadcastTextId4")]
-        public uint BroadcastTextId4;
+        public int BroadcastTextId4;
         [DBFieldName("Probability5")]
         public float Prob5;
         [DBFieldName("BroadcastTextId5")]
-        public uint BroadcastTextId5;
+        public int BroadcastTextId5;
         [DBFieldName("Probability6")]
         public float Prob6;
         [DBFieldName("BroadcastTextId6")]
-        public uint BroadcastTextId6;
+        public int BroadcastTextId6;
         [DBFieldName("Probability7")]
         public float Prob7;
         [DBFieldName("BroadcastTextId7")]
-        public uint BroadcastTextId7;
+        public int BroadcastTextId7;
 
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;
