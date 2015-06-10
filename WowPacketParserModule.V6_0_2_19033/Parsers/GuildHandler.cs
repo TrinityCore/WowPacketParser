@@ -42,10 +42,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadPackedGuid128("Guild Guid");
                 packet.ReadInt32("VirtualRealmAddress");
                 var rankCount = packet.ReadInt32("RankCount");
-                packet.ReadInt32("EmblemStyle");
                 packet.ReadInt32("EmblemColor");
-                packet.ReadInt32("BorderStyle");
+                packet.ReadInt32("EmblemStyle");
                 packet.ReadInt32("BorderColor");
+                packet.ReadInt32("BorderStyle");
                 packet.ReadInt32("BackgroundColor");
 
                 for (var i = 0; i < rankCount; i++)
@@ -331,10 +331,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("GuildGUID");
             packet.ReadUInt32("OldGuildVirtualRealmAddress");
             packet.ReadPackedGuid128("OldGuildGUID");
-            packet.ReadUInt32("EmblemStyle");
             packet.ReadUInt32("EmblemColor");
-            packet.ReadUInt32("BorderStyle");
+            packet.ReadUInt32("EmblemStyle");
             packet.ReadUInt32("BorderColor");
+            packet.ReadUInt32("BorderStyle");
             packet.ReadUInt32("BackgroundColor");
             packet.ReadInt32("Level");
 
@@ -939,6 +939,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32E<GuildFinderOptionsLevel>("Level");
             packet.ReadBit("Listed");
             packet.ReadWoWString("Comment", packet.ReadBits(10));
+        }
+
+        [Parser(Opcode.CMSG_SAVE_GUILD_EMBLEM)]
+        public static void HandleSaveGuildEmblem(Packet packet) 
+        {
+            packet.ReadPackedGuid128("Vendor");
+            packet.ReadUInt32("EColor");
+            packet.ReadUInt32("EStyle");
+            packet.ReadUInt32("BColor");
+            packet.ReadUInt32("BStyle");
+            packet.ReadUInt32("Bg");
+        }
+
+        [Parser(Opcode.SMSG_PLAYER_SAVE_GUILD_EMBLEM)]
+        public static void HandlePlayerSaveGuildEmblem(Packet packet)
+        {
+            packet.ReadInt32E<GuildEmblemError>("Error");
         }
     }
 }
