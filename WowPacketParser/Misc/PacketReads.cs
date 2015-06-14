@@ -162,7 +162,11 @@ namespace WowPacketParser.Misc
         private T ReadEntry<T>(StoreNameType type, string name, params object[] indexes) where T : struct
         {
             var val = ReadValue<T>();
-            var val32 = Convert.ToInt32(val);
+            int val32;
+            if (val > Int32.MaxValue)
+                val32 = unchecked((int)Convert.ToUInt32(val));
+            else
+                val32 = Convert.ToInt32(val);
             AddValue(name, FormatInteger(val32, StoreGetters.GetName(type, val32, false)), indexes);
             return (T) Convert.ChangeType(val, typeof (T));
         }
