@@ -206,7 +206,16 @@ namespace WowPacketParser.Misc
 
             var highGUID = (HighGuidTypeLegacy)((Low & 0xF0F0000000000000) >> 52);
 
-            return (highGUID == 0 || (int)highGUID == 8) ? HighGuidTypeLegacy.Player : highGUID;
+            switch ((int)highGUID)
+            {
+                case 0x0:
+                case 0x8:
+                    return HighGuidTypeLegacy.Player;
+                case 0x408:
+                    return HighGuidTypeLegacy.Item;
+                default:
+                    return highGUID;
+            }
         }
 
         public override HighGuidType GetHighType()
@@ -244,7 +253,7 @@ namespace WowPacketParser.Misc
                 case HighGuidTypeLegacy.Vehicle:
                     return HighGuidType.Vehicle;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException("0x" + GetHighGuidTypeLegacy().ToString("X"));
             }
         }
 
