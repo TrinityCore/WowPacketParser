@@ -94,6 +94,12 @@ namespace WowPacketParser.Store
 
         public bool TryGetValue(T key, out TK value)
         {
+            if (key == null)
+            {
+                value = default(TK);
+                return false;
+            }
+
             if (Enabled)
             {
                 Tuple<TK, TimeSpan?> tuple;
@@ -110,6 +116,12 @@ namespace WowPacketParser.Store
 
         public bool TryGetValue(T key, out Tuple<TK, TimeSpan?> value)
         {
+            if (key == null)
+            {
+                value = null;
+                return false;
+            }
+
             if (Enabled)
                 return _dictionary.TryGetValue(key, out value);
             value = null;
