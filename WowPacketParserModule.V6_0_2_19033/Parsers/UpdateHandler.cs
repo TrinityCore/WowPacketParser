@@ -268,6 +268,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 moveInfo.Orientation = packet.ReadSingle();
 
                 packet.AddValue("Stationary Position", moveInfo.Position, index);
+                packet.AddValue("Stationary Orientation", moveInfo.Orientation, index);
             }
 
             if (hasCombatVictim) // 504

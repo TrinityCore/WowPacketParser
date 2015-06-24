@@ -186,7 +186,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("GarrBuildingID");
         }
 
-        [Parser(Opcode.SMSG_GARRISON_LANDINGPAGE_SHIPMENTS)]
+        [Parser(Opcode.SMSG_GARRISON_LANDING_PAGE_SHIPMENT_INFO)]
         public static void HandleGarrisonLandingPage(Packet packet)
         {
             var count = packet.ReadInt32("Count");
