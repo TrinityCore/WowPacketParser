@@ -260,6 +260,7 @@ namespace WowPacketParser.Enums.Version
                     return "V6_1_2_19802";
                 }
                 case ClientVersionBuild.V6_2_0_20173:
+                case ClientVersionBuild.V6_2_0_20182:
                 {
                     return "V6_2_0_20173";
                 }

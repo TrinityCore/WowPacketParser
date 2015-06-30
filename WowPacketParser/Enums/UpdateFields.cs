@@ -753,6 +753,7 @@ namespace WowPacketParser.Enums
 
     public enum GameObjectDynamicField
     {
+        GAMEOBJECT_DYNAMIC_ENABLE_DOODAD_SETS,
         GAMEOBJECT_DYNAMIC_END
     }
 
@@ -800,7 +801,10 @@ namespace WowPacketParser.Enums
         AREATRIGGER_FINAL_POS,
         AREATRIGGER_SPELLID,
         AREATRIGGER_SPELLVISUALID,
-        AREATRIGGER_CASTER
+        AREATRIGGER_CASTER,
+        AREATRIGGER_OVERRIDE_SCALE_CURVE,
+        AREATRIGGER_TIME_TO_TARGET_SCALE,
+        AREATRIGGER_BOUNDS_RADIUS_2D
     }
 
     public enum AreaTriggerDynamicField

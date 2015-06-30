@@ -1,7 +1,7 @@
 ﻿namespace WowPacketParserModule.V6_2_0_20173.Enums
 {
     // ReSharper disable InconsistentNaming
-    // 6.2.0.20173
+    // 6.2.0.20182
     public enum ObjectField
     {
         OBJECT_FIELD_GUID                                      = 0x000, // Size: 4, Flags: PUBLIC
@@ -353,7 +353,13 @@
     {
         AREATRIGGER_OVERRIDE_SCALE_CURVE                       = ObjectField.OBJECT_END + 0x000, // Size: 7, Flags: PUBLIC, URGENT
         AREATRIGGER_CASTER                                     = ObjectField.OBJECT_END + 0x007, // Size: 4, Flags: PUBLIC
-        AREATRIGGER_END                                        = ObjectField.OBJECT_END + 0x00B,
+        AREATRIGGER_DURATION                                   = ObjectField.OBJECT_END + 0x00B, // Size: 1, Flags: PUBLIC
+        AREATRIGGER_TIME_TO_TARGET_SCALE                       = ObjectField.OBJECT_END + 0x00C, // Size: 1, Flags: PUBLIC, URGENT
+        AREATRIGGER_SPELLID                                    = ObjectField.OBJECT_END + 0x00D, // Size: 1, Flags: PUBLIC
+        AREATRIGGER_SPELLVISUALID                              = ObjectField.OBJECT_END + 0x00E, // Size: 1, Flags: DYNAMIC
+        AREATRIGGER_BOUNDS_RADIUS_2D                           = ObjectField.OBJECT_END + 0x00F, // Size: 1, Flags: DYNAMIC, URGENT
+        AREATRIGGER_EXPLICIT_SCALE                             = ObjectField.OBJECT_END + 0x010, // Size: 1, Flags: PUBLIC, URGENT
+        AREATRIGGER_END                                        = ObjectField.OBJECT_END + 0x011,
     }
 
     public enum AreaTriggerDynamicField
