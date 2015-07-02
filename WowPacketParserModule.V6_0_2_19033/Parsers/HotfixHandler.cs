@@ -31,7 +31,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             var type = packet.ReadUInt32E<DB2Hash>("TableHash");
             var entry = (uint)packet.ReadInt32("RecordID");
+            var allow = (int)entry >= 0;
             packet.ReadTime("Timestamp");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
+                allow = packet.ReadBit("Allow");
 
             var size = packet.ReadInt32("Size");
             var data = packet.ReadBytes(size);
@@ -39,7 +42,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var hotfixData = new HotfixData();
 
-            if ((int) entry >= 0)
+            if (allow)
             {
                 if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)))
                 {
