@@ -205,6 +205,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 if (hasAura)
                 {
                     aura.SpellId = (uint)packet.ReadInt32<SpellId>("SpellID", i);
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
+                        packet.ReadUInt32("SpellXSpellVisualID", i);
                     aura.AuraFlags = packet.ReadByteE<AuraFlagMoP>("Flags", i);
                     packet.ReadInt32("ActiveFlags", i);
                     aura.Level = packet.ReadUInt16("CastLevel", i);
@@ -364,6 +366,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("CastID", idx);
 
             packet.ReadInt32<SpellId>("SpellID", idx);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
+                packet.ReadUInt32("SpellXSpellVisualID", idx);
+
             packet.ReadUInt32("CastFlags", idx);
             packet.ReadUInt32("CastTime", idx);
 
