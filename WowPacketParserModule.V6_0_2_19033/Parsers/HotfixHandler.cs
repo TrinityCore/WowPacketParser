@@ -595,9 +595,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     spellMisc.RangeIndex = db2File.ReadUInt32("RangeIndex");
                     spellMisc.Speed = db2File.ReadSingle("Speed");
 
-                    spellMisc.SpellVisualID = new uint[2];
-                    for (var i = 0; i < 2; ++i)
-                        spellMisc.SpellVisualID[i] = db2File.ReadUInt32("SpellVisualID", i);
+                    if (ClientVersion.RemovedInVersion(ClientVersionBuild.V6_2_0_20173))
+                    {
+                        spellMisc.SpellVisualID = new uint[2];
+                        for (var i = 0; i < 2; ++i)
+                            spellMisc.SpellVisualID[i] = db2File.ReadUInt32("SpellVisualID", i);
+                    }
 
                     spellMisc.SpellIconID = db2File.ReadUInt32("SpellIconID");
                     spellMisc.ActiveIconID = db2File.ReadUInt32("ActiveIconID");
