@@ -139,7 +139,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < int4; ++i)
             {
                 var questId = packet.ReadUInt32("QuestID", i);
-                packet.ReadUInt32("NumBlobs", i);
+
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V6_2_0_20173))
+                    packet.ReadUInt32("NumBlobs", i);
 
                 var int2 = packet.ReadInt32("QuestPOIBlobData", i);
 
@@ -160,7 +162,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                         PlayerConditionID = packet.ReadInt32("PlayerConditionID", i, j)
                     };
 
-                    packet.ReadInt32("NumPoints", i, j);
+                    if (ClientVersion.RemovedInVersion(ClientVersionBuild.V6_2_0_20173))
+                        packet.ReadInt32("NumPoints", i, j);
+
                     questPoi.WoDUnk1 = packet.ReadInt32("WoDUnk1", i, j);
 
                     var int13 = packet.ReadInt32("QuestPOIBlobPoint", i, j);
