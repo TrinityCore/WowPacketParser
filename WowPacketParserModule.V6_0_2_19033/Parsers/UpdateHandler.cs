@@ -181,13 +181,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     {
                         packet.ResetBitReader();
 
-                        packet.ReadBitsE<SplineFlag434>("SplineFlags", 25, index);
-                        var face = packet.ReadBits("Face", ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173) ? 4 : 2, index);
+                        packet.ReadBitsE<SplineFlag434>("SplineFlags", ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173) ? 27 : 25, index);
+                        var face = packet.ReadBits("Face", 2, index);
 
                         var hasJumpGravity = packet.ReadBit("HasJumpGravity", index);
                         var hasSpecialTime = packet.ReadBit("HasSpecialTime", index);
 
-                        packet.ReadBitsE<SplineMode>("Mode", ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173) ? 4 : 2, index);
+                        packet.ReadBitsE<SplineMode>("Mode", 2, index);
 
                         var hasSplineFilterKey = packet.ReadBit("HasSplineFilterKey", index);
 
