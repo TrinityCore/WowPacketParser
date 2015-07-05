@@ -620,6 +620,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Caster");
             packet.ReadPackedGuid128("Target");
             packet.ReadInt32("SpellID");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
+                packet.ReadInt32("SpellXSpellVisualID");
+
             packet.ReadInt16("ProcCount");
             packet.ReadInt16("ProcNum");
         }
