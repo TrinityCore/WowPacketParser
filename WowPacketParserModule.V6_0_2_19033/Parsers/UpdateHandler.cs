@@ -307,7 +307,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadBit("HasAttached", index);
                 packet.ReadBit("HasFaceMovementDir", index);
                 packet.ReadBit("HasFollowsTerrain", index);
-                packet.ReadBit("Unk bit WoD62x", index);
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
+                    packet.ReadBit("Unk bit WoD62x", index);
 
                 var hasTargetRollPitchYaw = packet.ReadBit("HasTargetRollPitchYaw", index);
                 var hasScaleCurveID = packet.ReadBit("HasScaleCurveID", index);

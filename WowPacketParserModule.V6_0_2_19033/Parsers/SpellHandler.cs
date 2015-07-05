@@ -553,6 +553,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("CasterUnit");
             packet.ReadByte("CastID");
             packet.ReadUInt32<SpellId>("SpellID");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
+                packet.ReadInt32("SpellXSpellVisualID");
+
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
                 packet.ReadInt16E<SpellCastFailureReason>("Reason");
             else
