@@ -160,6 +160,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 {
                     packet.ReadPackedGuid128("Id", index);
                     packet.ReadVector3("Direction", index);
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_2_19802)) // correct?
+                        packet.ReadVector3("TransportPosition", index);
                     packet.ReadInt32("TransportID", index);
                     packet.ReadSingle("Magnitude", index);
                     packet.ReadByte("Type", index);
@@ -222,6 +224,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                                 packet.ReadSingle("In", index, i);
                                 packet.ReadSingle("Out", index, i);
                             }
+
+                            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
+                                packet.ResetBitReader();
 
                             packet.ReadBits("FilterFlags", 2, index);
                         }
