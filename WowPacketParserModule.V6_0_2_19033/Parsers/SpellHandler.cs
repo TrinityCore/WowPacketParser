@@ -88,8 +88,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void ReadSpellCastRequest(Packet packet, params object[] idx)
         {
             packet.ReadByte("CastID", idx);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
+            {
+                for (var i = 0; i < 2; i++)
+                    packet.ReadInt32("Misc", idx, i);
+            }
+
             packet.ReadInt32<SpellId>("SpellID", idx);
-            packet.ReadInt32("Misc", idx);
+            packet.ReadInt32(ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173) ? "SpellXSpellVisualID" : "Misc", idx);
 
             ReadSpellTargetData(packet, idx, "Target");
 
