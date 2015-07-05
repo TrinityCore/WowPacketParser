@@ -417,7 +417,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
 
-            packet.ReadBits("CastFlagsEx", 18, idx);
+            packet.ReadBits("CastFlagsEx", ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173) ? 20 : 18, idx);
 
             var hasRuneData = packet.ReadBit("HasRuneData", idx);
             var hasProjectileVisual = packet.ReadBit("HasProjectileVisual", idx);
