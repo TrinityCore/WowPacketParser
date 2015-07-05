@@ -73,18 +73,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadMovementStats(packet);
             packet.ReadInt32("AckIndex");
         }
-        public static void ReadMovementForce(Packet packet)
+        public static void ReadMovementForce(Packet packet, params object[] idx)
         {
-            packet.ReadPackedGuid128("ID");
-            packet.ReadVector3("Direction");
+            packet.ReadPackedGuid128("ID", idx);
+            packet.ReadVector3("Direction", idx);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_2_19802)) // correct?
-                packet.ReadVector3("TransportPosition");
-            packet.ReadInt32("TransportID");
-            packet.ReadSingle("Magnitude");
+                packet.ReadVector3("TransportPosition", idx);
+            packet.ReadInt32("TransportID", idx);
+            packet.ReadSingle("Magnitude", idx);
 
             packet.ResetBitReader();
 
-            packet.ReadBits("Type", 2);
+            packet.ReadBits("Type", 2, idx);
         }
 
         [Parser(Opcode.CMSG_WORLD_PORT_RESPONSE)]
@@ -422,15 +422,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var int32 = packet.ReadInt32("MovementForcesCount");
             for (int i = 0; i < int32; i++)
-            {
-                packet.ReadPackedGuid128("ID", i);
-                packet.ReadVector3("Direction", i);
-                packet.ReadInt32("TransportID", i);
-                packet.ReadSingle("Magnitude", i);
-
-                packet.ResetBitReader();
-                packet.ReadBits("Type", 2, i);
-            }
+                ReadMovementForce(packet, i, "MovementForce");
 
             packet.ResetBitReader();
 
@@ -643,7 +635,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleMoveUpdateApplyMovementForce(Packet packet)
         {
             ReadMovementStats(packet);
-            ReadMovementForce(packet);
+            ReadMovementForce(packet, "MovementForce");
         }
 
         [Parser(Opcode.CMSG_MOVE_SET_COLLISION_HEIGHT_ACK)]
@@ -830,7 +822,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 }
 
                 if (bit104)
-                    ReadMovementForce(packet);
+                    ReadMovementForce(packet, "MovementForce");
 
                 if (bit128)
                     packet.ReadPackedGuid128("MoverGUID");
