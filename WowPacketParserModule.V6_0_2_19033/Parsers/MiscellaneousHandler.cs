@@ -130,7 +130,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("CharUndeleteEnabled");
             packet.ReadBit("RestrictedAccount");
             packet.ReadBit("TutorialsEnabled");
-            packet.ReadBit("Unk bit90"); // Also tutorials related
+            packet.ReadBit("NPETutorialsEnabled");
 
             if (hasEuropaTicketSystemStatus)
                 ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
@@ -166,7 +166,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("CharUndeleteEnabled");
             packet.ReadBit("RestrictedAccount");
             packet.ReadBit("TutorialsEnabled");
-            packet.ReadBit("Unk bit44"); // Also tutorials related
+            packet.ReadBit("NPETutorialsEnabled");
             packet.ReadBit("TwitterEnabled");
 
             var bit61 = ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19702) ? (bool)packet.ReadBit("Unk bit61") : false;
@@ -215,7 +215,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("CharUndeleteEnabled");
             packet.ReadBit("RestrictedAccount");
             packet.ReadBit("TutorialsEnabled");
-            packet.ReadBit("Unk bit44"); // Also tutorials related
+            packet.ReadBit("NPETutorialsEnabled");
             packet.ReadBit("TwitterEnabled");
             packet.ReadBit("CommerceSystemEnabled");
             packet.ReadBit("Unk67");
