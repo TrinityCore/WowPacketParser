@@ -346,6 +346,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("BattlePetBreedQuality");
             packet.ReadUInt32("BattlePetSpeciesID");
             packet.ReadUInt32("BattlePetLevel");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
+                packet.ReadInt32("Unk1 int WoD62x");
 
             packet.ReadPackedGuid128("ItemGUID");
 
@@ -353,6 +355,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadBit("Pushed");
             packet.ReadBit("DisplayText");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
+                packet.ReadBits("Unk2 bits2 WoD62x", 2);
             packet.ReadBit("Created");
             packet.ReadBit("IsBonusRoll");
         }
