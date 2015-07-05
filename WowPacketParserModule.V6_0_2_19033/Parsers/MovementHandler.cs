@@ -605,14 +605,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleMoveApplyMovementForceAck(Packet packet)
         {
             ReadMovementAck(packet);
-            packet.ReadPackedGuid128("TriggerGUID");
-            packet.ReadVector3("Direction");
-            packet.ReadInt32("TransportID");
-            packet.ReadSingle("Facing");
-
-            packet.ResetBitReader();
-
-            packet.ReadBits("Reason", 2);
+            ReadMovementForce(packet, "MovementForce");
         }
 
         [Parser(Opcode.SMSG_MOVE_APPLY_MOVEMENT_FORCE)]
@@ -621,14 +614,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("MoverGUID");
             packet.ReadInt32("SequenceIndex");
 
-            packet.ReadPackedGuid128("TriggerGUID");
-            packet.ReadVector3("Direction");
-            packet.ReadInt32("TransportID");
-            packet.ReadSingle("Facing");
-
-            packet.ResetBitReader();
-
-            packet.ReadBits("Reason", 2);
+            ReadMovementForce(packet, "MovementForce");
         }
 
         [Parser(Opcode.SMSG_MOVE_UPDATE_APPLY_MOVEMENT_FORCE)]
