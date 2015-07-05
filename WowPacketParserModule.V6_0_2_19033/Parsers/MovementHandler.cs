@@ -77,6 +77,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("ID");
             packet.ReadVector3("Direction");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_2_19802)) // correct?
+                packet.ReadVector3("TransportPosition");
             packet.ReadInt32("TransportID");
             packet.ReadSingle("Magnitude");
 
