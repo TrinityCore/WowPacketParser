@@ -442,6 +442,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadBit("ToyIsFavorite", i);
         }
 
+        [Parser(Opcode.SMSG_ACCOUNT_HEIRLOOM_UPDATE)]
+        public static void HandleAccountHeirloomUpdate(Packet packet)
+        {
+            packet.ReadBit("IsFullUpdate");
+
+            packet.ReadInt32("Unk");
+
+            var int32 = packet.ReadInt32("ItemCount");
+            var int16 = packet.ReadInt32("FlagsCount");
+
+            for (int i = 0; i < int32; i++)
+                packet.ReadInt32("ItemID", i);
+
+            for (int i = 0; i < int16; i++)
+                packet.ReadInt32("Flags", i);
+        }
+
         [Parser(Opcode.SMSG_PLAY_SOUND)]
         public static void HandlePlaySound(Packet packet)
         {
