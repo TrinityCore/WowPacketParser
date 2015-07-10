@@ -979,11 +979,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("LockoutSchoolMask");
         }
 
-        [Parser(Opcode.SMSG_SET_SPELL_CHARGES)]
+        [Parser(Opcode.SMSG_SET_SPELL_CHARGES, ClientVersionBuild.Zero, ClientVersionBuild.V6_2_0_20173)]
         public static void HandleSetSpellCharges(Packet packet)
         {
             packet.ReadUInt32("Category");
             packet.ReadSingle("Count");
+            packet.ReadBit("IsPet");
+        }
+
+        [Parser(Opcode.SMSG_SET_SPELL_CHARGES, ClientVersionBuild.V6_2_0_20173)]
+        public static void HandleSetSpellCharges62x(Packet packet)
+        {
+            packet.ReadUInt32("Category");
+            packet.ReadUInt32("RecoveryTime");
+            packet.ReadByte("ConsumedCharges");
             packet.ReadBit("IsPet");
         }
 

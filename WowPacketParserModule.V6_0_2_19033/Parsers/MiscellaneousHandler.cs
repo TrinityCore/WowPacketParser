@@ -169,7 +169,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("NPETutorialsEnabled");
             packet.ReadBit("TwitterEnabled");
 
-            var bit61 = ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19702) ? (bool)packet.ReadBit("Unk bit61") : false;
+            var bit61 = ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19702) && packet.ReadBit("Unk bit61");
 
             if (hasEuropaTicketSystemStatus)
                 ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
