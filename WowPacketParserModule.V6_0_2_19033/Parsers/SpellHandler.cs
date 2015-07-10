@@ -748,7 +748,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleCooldownEvent61x(Packet packet)
         {
             packet.ReadInt32<SpellId>("SpellID");
-            packet.ReadBit("Unk16");
+            packet.ReadBit("IsPet");
         }
 
         [Parser(Opcode.SMSG_LOSS_OF_CONTROL_AURA_UPDATE)]
@@ -777,7 +777,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadUInt32<SpellId>("SpellID");
             packet.ReadBit("ClearOnHold");
-            packet.ReadBit("Unk20");
+            packet.ReadBit("IsPet");
         }
 
         [Parser(Opcode.SMSG_CLEAR_COOLDOWNS)]
@@ -887,7 +887,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32<SpellId>("SpellID");
             packet.ReadInt32("DeltaTime");
-            packet.ReadBit("Unk24");
+            packet.ReadBit("IsPet");
         }
 
         [Parser(Opcode.SMSG_CLEAR_TARGET)]

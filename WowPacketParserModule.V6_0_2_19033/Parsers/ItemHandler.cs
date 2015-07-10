@@ -422,6 +422,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("ItemGuid");
             packet.ReadInt32("SpellID");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
+                packet.ReadInt32("Duration");
         }
 
         [Parser(Opcode.SMSG_CROSSED_INEBRIATION_THRESHOLD)]
