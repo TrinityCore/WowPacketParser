@@ -514,7 +514,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             Storage.PageTexts.Add(entry, pageText, packet.TimeSpan);
         }
 
+        [Parser(Opcode.SMSG_PLAY_ONE_SHOT_ANIM_KIT)]
         [Parser(Opcode.SMSG_SET_AI_ANIM_KIT)]
+        [Parser(Opcode.SMSG_SET_MELEE_ANIM_KIT)]
         public static void HandleSetAIAnimKit(Packet packet)
         {
             packet.ReadPackedGuid128("Unit");
@@ -601,13 +603,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("Scale");
             packet.ReadUInt32("SpellId");
             packet.ReadBit("Paused");
-        }
-
-        [Parser(Opcode.SMSG_PLAY_ONE_SHOT_ANIM_KIT)]
-        public static void HandlePlayOneShotAnimKit(Packet packet)
-        {
-            packet.ReadPackedGuid128("Unit");
-            packet.ReadUInt16("AnimKitID");
         }
 
         [Parser(Opcode.CMSG_BUG_REPORT)]
