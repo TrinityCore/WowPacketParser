@@ -957,5 +957,27 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32E<GuildEmblemError>("Error");
         }
+
+        [Parser(Opcode.CMSG_GUILD_BANK_SWAP_ITEMS)]
+        public static void HandleGuildBankSwapItems(Packet packet)
+        {
+            packet.ReadPackedGuid128("GuildBankSwapItems");
+            packet.ReadByte("BankTab");
+            packet.ReadByte("BankSlot");
+            packet.ReadInt32("ItemID");
+            packet.ReadByte("BankTab1");
+            packet.ReadByte("BankSlot1");
+            packet.ReadInt32("ItemID1");
+            packet.ReadInt32("BankItemCount");
+            packet.ReadByte("ContainerSlot");
+            packet.ReadByte("ContainerItemSlot");
+            packet.ReadByte("ToSlot");
+            packet.ReadInt32("StackCount");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("BankOnly");
+            packet.ReadBit("AutoStore");
+        }
     }
 }
