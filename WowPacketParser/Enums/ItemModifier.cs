@@ -2,13 +2,13 @@
 {
     public enum ItemModifier : uint
     {
-        TransmogrificationAppearanceModID = 1,
-        TransmogrificationItemID = 2,
-        UpgradeID = 3,
-        Unknown4 = 4,
-        Unknown5 = 5,
-        Unknown6 = 6,
-        Unknown7 = 7,
-        EnchantIllusion = 8
+        TransmogrificationAppearanceModID = 0,
+        TransmogrificationItemID = 1,
+        UpgradeID = 2,
+        BattlePetSpeciesID = 3,
+        BattlePetBreedData = 4,
+        BattlePetLevel = 5,
+        BattlePetDisplayID = 6,
+        EnchantIllusion = 7
     }
 }

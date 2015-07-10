@@ -28,8 +28,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (hasModifications)
             {
                 var mask = packet.ReadUInt32();
-                for (var j = 1; j <= 8; ++j)
-                    if ((mask & (1u << (j - 1))) != 0)
+                for (var j = 0; mask != 0; mask >>= 1, ++j)
+                    if ((mask & 1) != 0)
                         packet.ReadInt32(((ItemModifier)j).ToString(), indexes);
             }
 
