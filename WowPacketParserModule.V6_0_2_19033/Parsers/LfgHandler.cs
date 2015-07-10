@@ -488,6 +488,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("Int64");
             packet.ReadInt32("Int68");
             packet.ReadInt32("Int72");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
+                packet.ReadInt32("Int76");
             var int72 = packet.ReadInt32("BlacklistEntryCount");
 
             packet.ReadWoWString("String", len);
