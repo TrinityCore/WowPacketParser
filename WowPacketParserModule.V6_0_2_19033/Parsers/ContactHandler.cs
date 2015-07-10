@@ -38,8 +38,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadQualifiedGUID(packet, "QualifiedGUID");
         }
 
-        [Parser(Opcode.SMSG_CONTACT_STATUS)]
-        public static void HandleContactStatus(Packet packet)
+        [Parser(Opcode.SMSG_FRIEND_STATUS)]
+        public static void HandleFriendStatus(Packet packet)
         {
             packet.ReadByte("FriendResult");
 
