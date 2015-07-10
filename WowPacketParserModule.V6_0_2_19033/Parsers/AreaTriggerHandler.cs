@@ -29,7 +29,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("AreaTriggerID");
 
             packet.ReadBit("Entered");
-            packet.ResetBitReader();
         }
     }
 }

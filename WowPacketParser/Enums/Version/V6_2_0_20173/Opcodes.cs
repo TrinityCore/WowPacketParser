@@ -713,7 +713,7 @@ namespace WowPacketParser.Enums.Version.V6_2_0_20173
             {Opcode.SMSG_ALL_GUILD_ACHIEVEMENTS, 0x08E3},
             {Opcode.SMSG_ARCHAEOLOGY_SURVERY_CAST, 0x0825},
             {Opcode.SMSG_AREA_SPIRIT_HEALER_TIME, 0x03D5},
-            {Opcode.SMSG_AREA_TRIGGER_DENIED, 0x0922},
+            {Opcode.SMSG_AREA_TRIGGER_DENIED, 0x0436},
             {Opcode.SMSG_AREA_TRIGGER_NO_CORPSE, 0x0E90},
             {Opcode.SMSG_AREA_TRIGGER_RE_PATH, 0x05A5},
             {Opcode.SMSG_AREA_TRIGGER_RE_SHAPE, 0x0C13},
