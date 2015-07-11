@@ -35,6 +35,7 @@ namespace WowPacketParser.Enums.Version.V6_2_0_20173
             {Opcode.CMSG_ATTACK_SWING, 0x1D58},
             {Opcode.CMSG_AUCTION_HELLO_REQUEST, 0x04A0},
             {Opcode.CMSG_AUCTION_LIST_BIDDER_ITEMS, 0x0293},
+            {Opcode.CMSG_AUCTION_LIST_ITEMS, 0x0848},
             {Opcode.CMSG_AUCTION_LIST_OWNER_ITEMS, 0x0810},
             {Opcode.CMSG_AUCTION_LIST_PENDING_SALES, 0x0887},
             {Opcode.CMSG_AUCTION_PLACE_BID, 0x00D3},
