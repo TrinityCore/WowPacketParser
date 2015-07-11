@@ -73,8 +73,5 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;
-
-        public uint Idx;
-        public Dictionary<QuestPOIPoint, uint> Points;
     }
 }

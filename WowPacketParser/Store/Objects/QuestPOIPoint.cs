@@ -18,4 +18,17 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [DBTableName("quest_poi_points")]
+    public class QuestPOIPointWoD
+    {
+        [DBFieldName("X")]
+        public int X;
+
+        [DBFieldName("Y")]
+        public int Y;
+
+        [DBFieldName("VerifiedBuild")]
+        public int VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

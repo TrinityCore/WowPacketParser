@@ -576,8 +576,6 @@ namespace WowPacketParser.SQL
             var query = string.Format("SELECT {0} FROM {1}.{2} WHERE {3}",
                 fieldNames.ToString().TrimEnd(','), database ?? Settings.TDBDatabase, tableName, whereClause);
 
-            Trace.WriteLine(query);
-
             var dict = new Dictionary<Tuple<T, TG, TH>, TK>(entries.Count);
 
             using (var reader = SQLConnector.ExecuteQuery(query))

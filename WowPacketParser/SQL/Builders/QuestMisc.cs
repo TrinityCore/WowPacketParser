@@ -103,58 +103,26 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod]
         public static string QuestPOIWoD()
         {
-            if (Storage.QuestPOIWoDs.IsEmpty())
-                return String.Empty;
-
             var sql = string.Empty;
 
             if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_poi))
             {
-                var entries = Storage.QuestPOIWoDs.Keys();
-                var poiDb = SQLDatabase.GetDict<int, int, QuestPOIWoD>(entries, "QuestID", "Idx1");
-
-                sql = SQLUtil.CompareDicts(Storage.QuestPOIWoDs, poiDb, StoreNameType.Quest, StoreNameType.None, "QuestID", "Idx1");
+                if (!Storage.QuestPOIWoDs.IsEmpty())
+                {
+                    var entries = Storage.QuestPOIWoDs.Keys();
+                    var poiDb = SQLDatabase.GetDict<int, int, QuestPOIWoD>(entries, "QuestID", "Idx1");
+                    sql += SQLUtil.CompareDicts(Storage.QuestPOIWoDs, poiDb, StoreNameType.Quest, StoreNameType.None, "QuestID", "Idx1");
+                }
             }
-
-            // TODO: fix this piece of code so it compares with db
-            //var points = new StoreMulti<Tuple<uint, uint>, QuestPOIPoint>();
-            //
-            //foreach (KeyValuePair<Tuple<uint, uint>, Tuple<QuestPOI, TimeSpan?>> pair in Storage.QuestPOIs)
-            //    foreach (var point in pair.Value.Item1.Points)
-            //        points.Add(pair.Key, point, pair.Value.Item2);
-            //
-            //var entries2 = points.Keys();
-            //var poiPointsDb = SQLDatabase.GetDictMulti<uint, uint, QuestPOIPoint>(entries2, "questid", "id");
-
-            const string tableName2 = "quest_poi_points";
 
             if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_poi_points))
             {
-                var rows = new List<QueryBuilder.SQLInsertRow>();
-                foreach (var quest in Storage.QuestPOIWoDs.OrderBy(blub => blub.Key.Item1))
+                if (!Storage.QuestPOIPointWoDs.IsEmpty())
                 {
-                    var questPOI = quest.Value.Item1;
-
-                    if (questPOI.Points != null) // Needed?
-                        foreach (var point in questPOI.Points)
-                        {
-                            var row = new QueryBuilder.SQLInsertRow();
-
-                            row.AddValue("QuestID", quest.Key.Item1);
-                            row.AddValue("BlobIndex", quest.Value.Item1.BlobIndex);
-                            row.AddValue("Idx1", point.Value);      // Not on sniffs
-                            row.AddValue("Idx2", point.Key.Index);  // Not on sniffs
-                            row.AddValue("X", point.Key.X);
-                            row.AddValue("Y", point.Key.Y);
-                            row.AddValue("VerifiedBuild", point.Key.VerifiedBuild);
-                            row.Comment = StoreGetters.GetName(StoreNameType.Quest, (int)quest.Key.Item1, false);
-
-                            rows.Add(row);
-                        }
+                    var entries = Storage.QuestPOIPointWoDs.Keys();
+                    var poiDb = SQLDatabase.GetDict<int, int, int, QuestPOIPointWoD>(entries, "QuestID", "Idx1", "Idx2");
+                    sql += SQLUtil.CompareDicts(Storage.QuestPOIPointWoDs, poiDb, StoreNameType.Quest, StoreNameType.None, StoreNameType.None, "QuestID", "Idx1", "Idx2");
                 }
-
-                sql += new QueryBuilder.SQLInsert(tableName2, rows, 2).Build();
-
             }
 
             return sql;
