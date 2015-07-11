@@ -182,7 +182,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Mailbox");
             packet.ReadInt32("StationeryID");
-            packet.ReadInt32("PackageID");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V6_2_0_20173))
+                packet.ReadInt32("PackageID");
             packet.ReadInt64("SendMoney");
             packet.ReadInt64("Cod");
 
