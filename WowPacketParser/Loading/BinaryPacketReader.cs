@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using WowPacketParser.Enums;
@@ -127,6 +128,11 @@ namespace WowPacketParser.Loading
         public static string GetClientLocale()
         {
             return _locale;
+        }
+
+        public static LocaleConstant GetLocale()
+        {
+            return (LocaleConstant) Enum.Parse(typeof(LocaleConstant), _locale);
         }
 
         public bool CanRead()

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using WowPacketParser.Enums;
+using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.SQL
@@ -47,10 +48,49 @@ namespace WowPacketParser.SQL
         /// [addedInVersion, +inf[
         /// </summary>
         /// <param name="name">database field name</param>
+        /// <param name="locale">initial locale</param>
+        public DBFieldNameAttribute(string name, LocaleConstant locale)
+        {
+            if (BinaryPacketReader.GetLocale() == locale)
+            {
+                Name = name;
+                Count = 1;
+            }
+            else
+            {
+                Name = null;
+                Count = 0;
+            }
+        }
+
+        /// <summary>
+        /// [addedInVersion, +inf[
+        /// </summary>
+        /// <param name="name">database field name</param>
         /// <param name="addedInVersion">initial version</param>
         public DBFieldNameAttribute(string name, ClientVersionBuild addedInVersion)
         {
             if (ClientVersion.AddedInVersion(addedInVersion))
+            {
+                Name = name;
+                Count = 1;
+            }
+            else
+            {
+                Name = null;
+                Count = 0;
+            }
+        }
+
+        /// <summary>
+        /// [addedInVersion, +inf[
+        /// </summary>
+        /// <param name="name">database field name</param>
+        /// <param name="addedInVersion">initial version</param>
+        /// <param name="locale">initial locale</param>
+        public DBFieldNameAttribute(string name, ClientVersionBuild addedInVersion, LocaleConstant locale)
+        {
+            if (ClientVersion.AddedInVersion(addedInVersion) && BinaryPacketReader.GetLocale() == locale)
             {
                 Name = name;
                 Count = 1;
@@ -71,6 +111,27 @@ namespace WowPacketParser.SQL
         public DBFieldNameAttribute(string name, ClientVersionBuild addedInVersion, ClientVersionBuild removedInVersion)
         {
             if (ClientVersion.AddedInVersion(addedInVersion) && ClientVersion.RemovedInVersion(removedInVersion))
+            {
+                Name = name;
+                Count = 1;
+            }
+            else
+            {
+                Name = null;
+                Count = 0;
+            }
+        }
+
+        /// <summary>
+        /// [addedInVersion, removedInVersion[
+        /// </summary>
+        /// <param name="name">database field name</param>
+        /// <param name="addedInVersion">initial version</param>
+        /// <param name="removedInVersion">final version</param>
+        /// <param name="locale">initial locale</param>
+        public DBFieldNameAttribute(string name, ClientVersionBuild addedInVersion, ClientVersionBuild removedInVersion, LocaleConstant locale)
+        {
+            if (ClientVersion.AddedInVersion(addedInVersion) && ClientVersion.RemovedInVersion(removedInVersion) && BinaryPacketReader.GetLocale() == locale)
             {
                 Name = name;
                 Count = 1;

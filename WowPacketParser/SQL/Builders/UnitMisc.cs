@@ -742,10 +742,21 @@ namespace WowPacketParser.SQL.Builders
                 template.UnitFlag &= ~(uint)UnitFlags.PlayerControlled;
                 template.UnitFlag &= ~(uint)UnitFlags.Silenced;
                 template.UnitFlag &= ~(uint)UnitFlags.PossessedByPlayer;
-                template.DynamicFlag &= ~(uint)UnitDynamicFlags.Lootable;
-                template.DynamicFlag &= ~(uint)UnitDynamicFlags.Tapped;
-                template.DynamicFlag &= ~(uint)UnitDynamicFlags.TappedByPlayer;
-                template.DynamicFlag &= ~(uint)UnitDynamicFlags.TappedByAllThreatList;
+
+                if (!ClientVersion.AddedInVersion(ClientType.WarlordsOfDraenor))
+                {
+                    template.DynamicFlag &= ~(uint)UnitDynamicFlags.Lootable;
+                    template.DynamicFlag &= ~(uint)UnitDynamicFlags.Tapped;
+                    template.DynamicFlag &= ~(uint)UnitDynamicFlags.TappedByPlayer;
+                    template.DynamicFlag &= ~(uint)UnitDynamicFlags.TappedByAllThreatList;
+                }
+                else
+                {
+                    template.DynamicFlag &= ~(uint)UnitDynamicFlagsWOD.Lootable;
+                    template.DynamicFlag &= ~(uint)UnitDynamicFlagsWOD.Tapped;
+                    template.DynamicFlag &= ~(uint)UnitDynamicFlagsWOD.TappedByPlayer;
+                    template.DynamicFlag &= ~(uint)UnitDynamicFlagsWOD.TappedByAllThreatList;
+                }
 
                 // has trainer flag but doesn't have prof nor class trainer flag
                 if ((template.NpcFlag & (uint) NPCFlags.Trainer) != 0 &&
@@ -822,10 +833,20 @@ namespace WowPacketParser.SQL.Builders
                         template.UnitFlag &= ~(uint)UnitFlags.Silenced;
                         template.UnitFlag &= ~(uint)UnitFlags.PossessedByPlayer;
 
-                        template.DynamicFlag &= ~(uint)UnitDynamicFlags.Lootable;
-                        template.DynamicFlag &= ~(uint)UnitDynamicFlags.Tapped;
-                        template.DynamicFlag &= ~(uint)UnitDynamicFlags.TappedByPlayer;
-                        template.DynamicFlag &= ~(uint)UnitDynamicFlags.TappedByAllThreatList;
+                        if (!ClientVersion.AddedInVersion(ClientType.WarlordsOfDraenor))
+                        {
+                            template.DynamicFlag &= ~(uint)UnitDynamicFlags.Lootable;
+                            template.DynamicFlag &= ~(uint)UnitDynamicFlags.Tapped;
+                            template.DynamicFlag &= ~(uint)UnitDynamicFlags.TappedByPlayer;
+                            template.DynamicFlag &= ~(uint)UnitDynamicFlags.TappedByAllThreatList;
+                        }
+                        else
+                        {
+                            template.DynamicFlag &= ~(uint)UnitDynamicFlagsWOD.Lootable;
+                            template.DynamicFlag &= ~(uint)UnitDynamicFlagsWOD.Tapped;
+                            template.DynamicFlag &= ~(uint)UnitDynamicFlagsWOD.TappedByPlayer;
+                            template.DynamicFlag &= ~(uint)UnitDynamicFlagsWOD.TappedByAllThreatList;
+                        }
 
                         // has trainer flag but doesn't have prof nor class trainer flag
                         if ((template.NpcFlag & (uint)NPCFlags.Trainer) != 0 &&

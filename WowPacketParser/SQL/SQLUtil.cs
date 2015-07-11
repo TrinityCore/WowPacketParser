@@ -55,6 +55,8 @@ namespace WowPacketParser.SQL
         public static string EscapeString(string str)
         {
             str = MySqlHelper.DoubleQuoteString(str);
+            str = str.Replace(Environment.NewLine, @"\n");
+            str = str.Replace("’’", "’"); // french is gay ... 
 
             // prevent double escaping
             return str.Replace("\"\"", "\"");

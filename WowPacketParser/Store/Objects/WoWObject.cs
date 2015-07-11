@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
@@ -45,6 +46,12 @@ namespace WowPacketParser.Store.Objects
         {
             // 3 is the most common spawnmask outside of continents although it is not correct in all cases
             // TODO: read map/instance db to guess correct spawnmask
+            if (SQLDatabase.MapSpawnMaskStores != null)
+            {
+                if (SQLDatabase.MapSpawnMaskStores.ContainsKey((int)Map))
+                    return SQLDatabase.MapSpawnMaskStores[(int)Map];
+            }
+
             return MapIsContinent(Map) ? 1 : 3;
         }
 

@@ -54,7 +54,7 @@ namespace WowPacketParser.Misc
 
             for (var i = 0; i < names.Length; ++i)
             {
-                if (Conf.GetBoolean(names[i].ToString(), false))
+                if (Conf.GetBoolean(names[i], false))
                     result += (1ul << (int)values.GetValue(i));
             }
 
@@ -70,7 +70,7 @@ namespace WowPacketParser.Misc
 
             for (var i = 0; i < names.Length; ++i)
             {
-                if (Conf.GetBoolean(names[i].ToString(), false))
+                if (Conf.GetBoolean(names[i], false))
                     result += (1ul << (int)values.GetValue(i));
             }
 

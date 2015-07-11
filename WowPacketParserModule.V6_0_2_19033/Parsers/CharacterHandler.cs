@@ -607,7 +607,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("NewHairColor");
             packet.ReadUInt32("NewFacialHair");
             packet.ReadUInt32("NewSkinColor");
-            packet.ReadUInt32("Unk");
+            packet.ReadUInt32("NewFace");
         }
 
         [Parser(Opcode.SMSG_STAND_STATE_UPDATE)]

@@ -244,7 +244,7 @@ namespace WowPacketParser.Loading
 
                     Trace.WriteLine(string.Format("{0}: {1}", _logPrefix, _stats));
 
-                    if (Settings.SQLOutputFlag != 0)
+                    if (Settings.SQLOutputFlag != 0 || Settings.HotfixSQLOutputFlag != 0)
                         WriteSQLs();
 
                     if (Settings.LogPacketErrors)

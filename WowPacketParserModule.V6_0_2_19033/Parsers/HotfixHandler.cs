@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using WowPacketParser.Enums;
+using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -84,6 +85,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     broadcastText.SoundId = db2File.ReadUInt32("Sound Id");
                     broadcastText.UnkEmoteId = db2File.ReadUInt32("Unk MoP 1"); // unk emote
                     broadcastText.Type = db2File.ReadUInt32("Unk MoP 2"); // kind of type?
+
+                    if (BinaryPacketReader.GetLocale() != LocaleConstant.enUS)
+                    {
+                        var broadcastTextLocale = new BroadcastTextLocale
+                        {
+                            MaleText_lang = broadcastText.MaleText,
+                            FemaleText_lang = broadcastText.FemaleText
+                        };
+
+                        Storage.BroadcastTextLocales.Add(Tuple.Create((uint)id.Key, BinaryPacketReader.GetClientLocale()), broadcastTextLocale, packet.TimeSpan);
+                    }
 
                     if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
                         !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
@@ -667,6 +679,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
                         !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
                         Storage.SpellClassOptions.Add((uint)id.Key, spellClassOptions, packet.TimeSpan);
+                    break;
+                }
+                case DB2Hash.SpellEffectGroupSize:
+                {
+                    var spellEffectGroupSize = new SpellEffectGroupSize();
+
+                    var id = db2File.ReadEntry("ID");
+
+                    spellEffectGroupSize.SpellEffectID = db2File.ReadUInt32("SpellEffectID");
+                    spellEffectGroupSize.Size = db2File.ReadSingle("Size");
+
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        Storage.SpellEffectGroupSizes.Add((uint)id.Key, spellEffectGroupSize, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.SpellLearnSpell:

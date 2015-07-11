@@ -562,6 +562,21 @@ namespace WowPacketParser.SQL.Builders
         }
 
         [BuilderMethod]
+        public static string SpellEffectGroupSize()
+        {
+            if (Storage.SpellEffectGroupSizes.IsEmpty())
+                return String.Empty;
+
+            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.spell_effect_group_size))
+                return String.Empty;
+
+            var entries = Storage.SpellEffectGroupSizes.Keys();
+            var templatesDb = SQLDatabase.GetDict<uint, SpellEffectGroupSize>(entries, "ID", Settings.HotfixesDatabase);
+
+            return SQLUtil.CompareDicts(Storage.SpellEffectGroupSizes, templatesDb, StoreNameType.None, "ID");
+        }
+
+        [BuilderMethod]
         public static string SpellLearnSpell()
         {
             if (Storage.SpellLearnSpells.IsEmpty())
