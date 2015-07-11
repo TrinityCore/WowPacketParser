@@ -209,12 +209,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             quest.RewardNextQuest = packet.ReadUInt32("RewardNextQuest");
             quest.RewardXPDifficulty = packet.ReadUInt32("RewardXPDifficulty");
 
-            quest.Float10 = packet.ReadSingle("Float10");
+            quest.RewardXPMultiplier = packet.ReadSingle("RewardXPMultiplier");
 
             quest.RewardMoney = packet.ReadInt32("RewardMoney");
             quest.RewardMoneyDifficulty = packet.ReadUInt32("RewardMoneyDifficulty");
 
-            quest.Float13 = packet.ReadSingle("Float13");
+            quest.RewardMoneyMultiplier = packet.ReadSingle("RewardMoneyMultiplier");
 
             quest.RewardBonusMoney = packet.ReadUInt32("RewardBonusMoney");
             quest.RewardDisplaySpell = packet.ReadUInt32("RewardDisplaySpell");

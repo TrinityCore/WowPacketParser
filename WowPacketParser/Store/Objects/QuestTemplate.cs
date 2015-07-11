@@ -228,8 +228,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("RewardXPDifficulty")]
         public uint RewardXPDifficulty;
 
-        [DBFieldName("Float10")]
-        public float Float10;
+        [DBFieldName("RewardXPMultiplier")]
+        public float RewardXPMultiplier;
 
         [DBFieldName("RewardMoney")]
         public int RewardMoney;
@@ -237,8 +237,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("RewardMoneyDifficulty")]
         public uint RewardMoneyDifficulty;
 
-        [DBFieldName("Float13")]
-        public float Float13;
+        [DBFieldName("RewardMoneyMultiplier")]
+        public float RewardMoneyMultiplier;
 
         [DBFieldName("RewardBonusMoney")]
         public uint RewardBonusMoney;
