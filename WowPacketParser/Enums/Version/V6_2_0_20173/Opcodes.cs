@@ -1287,6 +1287,7 @@ namespace WowPacketParser.Enums.Version.V6_2_0_20173
             {Opcode.SMSG_PARTY_INVITE, 0x0208},
             {Opcode.SMSG_PARTY_KILL_LOG, 0x00A0},
             {Opcode.SMSG_PARTY_MEMBER_STATE, 0x06CF},
+            {Opcode.SMSG_PARTY_MEMBER_STATS, 0x0BC2},
             {Opcode.SMSG_PARTY_UPDATE, 0x0736},
             {Opcode.SMSG_PAUSE_MIRROR_TIMER, 0x00C3},
             {Opcode.SMSG_PENDING_RAID_LOCK, 0x0802},
