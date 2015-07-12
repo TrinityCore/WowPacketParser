@@ -614,7 +614,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleStandStateUpdate(Packet packet)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
-                packet.ReadInt32("Unk4");
+                packet.ReadInt32("AnimKitID");
 
             packet.ReadByteE<StandState>("State");
         }
