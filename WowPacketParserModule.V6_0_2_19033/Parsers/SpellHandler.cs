@@ -420,7 +420,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBits("CastFlagsEx", ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173) ? 20 : 18, idx);
 
             var hasRuneData = packet.ReadBit("HasRuneData", idx);
-            var hasProjectileVisual = packet.ReadBit("HasProjectileVisual", idx);
+            var hasProjectileVisual = ClientVersion.RemovedInVersion(ClientVersionBuild.V6_2_0_20173) && packet.ReadBit("HasProjectileVisual", idx);
 
             if (hasRuneData)
                 ReadRuneData(packet, idx, "RemainingRunes");
