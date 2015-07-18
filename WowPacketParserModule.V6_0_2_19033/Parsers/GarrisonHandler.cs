@@ -50,6 +50,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (int i = 0; i < int40; i++)
                 packet.ReadInt32("AbilityID", indexes, i);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
+            {
+                packet.ResetBitReader();
+
+                var len = packet.ReadBits(7);
+                packet.ReadWoWString("CustomName", len, indexes);
+            }
         }
 
         private static void ReadGarrisonPlotInfo(Packet packet, params object[] indexes)
@@ -75,6 +83,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadTime("CreationTime", indexes);
             packet.ReadInt32("ShipmentDuration", indexes);
             packet.ReadInt32("Unk8", indexes);
+        }
+        private static void ReadGarrisonMissionAreaBonus(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("GarrMssnBonusAbilityID", indexes);
+            packet.ReadInt32("StartTime", indexes);
         }
 
         [Parser(Opcode.CMSG_GET_GARRISON_INFO)]
@@ -285,24 +298,35 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var int52 = packet.ReadInt32("GarrisonPlotInfoCount");
             var int68 = packet.ReadInt32("GarrisonFollowerCount");
             var int36 = packet.ReadInt32("GarrisonMissionCount");
+            var areaBonusCount = ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173) ? packet.ReadInt32("GarrisonMissionAreaBonusCount") : 0;
+            var canStartMissionCount = ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173) ? packet.ReadInt32("CanStartMission") : 0;
             var int16 = packet.ReadInt32("ArchivedMissionsCount");
 
-            packet.ReadInt32("Unk1");
+            packet.ReadInt32("NumFollowerActivationsRemaining");
 
             for (int i = 0; i < int92; i++)
-                ReadGarrisonBuildingInfo(packet, i);
+                ReadGarrisonBuildingInfo(packet, "GarrisonBuildingInfo", i);
 
             for (int i = 0; i < int52; i++)
-                ReadGarrisonPlotInfo(packet, i);
+                ReadGarrisonPlotInfo(packet, "GarrisonPlotInfo", i);
 
             for (int i = 0; i < int68; i++)
-                ReadGarrisonFollower(packet, i);
+                ReadGarrisonFollower(packet, "GarrisonFollower", i);
 
             for (int i = 0; i < int36; i++)
-                ReadGarrisonMission(packet, i);
+                ReadGarrisonMission(packet, "GarrisonMission", i);
+
+            for (int i = 0; i < areaBonusCount; i++)
+                ReadGarrisonMissionAreaBonus(packet, "GarrisonMissionAreaBonus", i);
 
             for (int i = 0; i < int16; i++)
                 packet.ReadInt32("ArchivedMissions", i);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
+                packet.ResetBitReader();
+
+            for (int i = 0; i < canStartMissionCount; i++)
+                packet.ReadBit("CanStartMission", i);
         }
 
         [Parser(Opcode.SMSG_GARRISON_FOLLOWER_CHANGED_XP)] // GARRISON_FOLLOWER_XP_CHANGED
@@ -581,6 +605,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadUInt32("GarrBuildingPlotInstID", i);
                 packet.ReadVector3("Pos", i);
             }
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_REMOVE_FOLLOWER_RESULT)]
+        public static void HandleGarrisonRemoveFollowerResult(Packet packet)
+        {
+            packet.ReadInt64("FollowerDBID");
+            packet.ReadInt32("Result");
+            packet.ReadInt32("Destroyed");
         }
     }
 }
