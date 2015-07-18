@@ -312,6 +312,15 @@ namespace WowPacketParser.Loading
                     SessionSplitBinaryDump(packets);
                     break;
                 }
+                case DumpFormatType.PktLocaleDirectionSplit:
+                {
+                    var packets = ReadPackets();
+                    if (packets.Count == 0)
+                        break;
+
+                    LocaleDirectionSplitBinaryDump(packets);
+                    break;
+                }
                 case DumpFormatType.CompressSniff:
                 {
                     if (extension == null || extension.ToLower() == ".gz")
@@ -470,6 +479,12 @@ namespace WowPacketParser.Loading
         {
             Trace.WriteLine(string.Format("{0}: Copying {1} packets to .pkt format...", _logPrefix, packets.Count));
             BinaryPacketWriter.Write(SniffType.Pkt, fileName, Encoding.ASCII, packets);
+        }
+
+        private void LocaleDirectionSplitBinaryDump(ICollection<Packet> packets)
+        {
+            Trace.WriteLine(string.Format("{0}: Splitting {1} packets to multiple files...", _logPrefix, packets.Count));
+            SplitLocaleDirectionBinaryPacketWriter.Write(packets, Encoding.ASCII);
         }
 
         private void WriteSQLs()

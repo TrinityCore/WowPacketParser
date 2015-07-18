@@ -45,6 +45,8 @@ namespace WowPacketParser.Enums
         GarrisonBuilding2    = 43,
         GarrisonMonument     = 44,
         GarrisonShipment     = 45,
-        GarrisonMonumentPlaque = 46
+        GarrisonMonumentPlaque = 46,
+        DoNotUse3            = 47,
+        UiLink               = 48
     }
 }

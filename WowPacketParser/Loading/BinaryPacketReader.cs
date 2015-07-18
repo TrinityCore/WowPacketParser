@@ -45,6 +45,13 @@ namespace WowPacketParser.Loading
             var headerStart = _reader.ReadBytes(3);             // PKT
             if (Encoding.ASCII.GetString(headerStart) != "PKT")
             {
+                if (Encoding.ASCII.GetString(headerStart) == "Loc")
+                {
+                    SetBuild(_reader.ReadUInt32());                             // client build
+                    _locale = Encoding.ASCII.GetString(_reader.ReadBytes(4));   // client locale
+                    return;
+                }
+
                 // file does not have a header
                 _reader.BaseStream.Position = 0;
                 return;
