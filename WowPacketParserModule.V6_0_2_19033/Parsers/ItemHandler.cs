@@ -342,12 +342,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("WodUnk");
             packet.ReadUInt32("Quantity");
             packet.ReadUInt32("QuantityInInventory");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
+                packet.ReadInt32("Unk1 int WoD62x");
+
             packet.ReadUInt32("BattlePetBreedID");
             packet.ReadUInt32("BattlePetBreedQuality");
             packet.ReadUInt32("BattlePetSpeciesID");
             packet.ReadUInt32("BattlePetLevel");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
-                packet.ReadInt32("Unk1 int WoD62x");
 
             packet.ReadPackedGuid128("ItemGUID");
 
