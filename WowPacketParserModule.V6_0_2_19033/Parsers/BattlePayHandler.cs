@@ -175,7 +175,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadUInt32("Result");
 
-            var int6 = packet.ReadUInt32("BattlePayDistributionObjectCount");
+            var int6 = ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173) ?
+                packet.ReadBits("BattlePayDistributionObjectCount", 11) : packet.ReadUInt32("BattlePayDistributionObjectCount");
 
             for (uint index = 0; index < int6; index++)
                 ReadBattlePayDistributionObject(packet, index);
