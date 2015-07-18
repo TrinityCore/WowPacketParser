@@ -140,41 +140,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 var int64 = packet.ReadInt32("ShortageRewardCount", i);
 
-                // Rewards
-                packet.ReadUInt32("Mask", i);
-                packet.ReadInt32("RewardMoney", i);
-                packet.ReadInt32("RewardXP", i);
-
-                var int20 = packet.ReadInt32("ItemCount", i);
-                var int36 = packet.ReadInt32("CurrencyCount", i);
-                var int52 = packet.ReadInt32("BonusCurrencyCount", i);
-
-                // Item
-                for (var j = 0; j < int20; ++j)
-                {
-                    packet.ReadInt32("ItemID", i, j);
-                    packet.ReadInt32("Quantity", i, j);
-                }
-
-                // Currency
-                for (var j = 0; j < int36; ++j)
-                {
-                    packet.ReadInt32("CurrencyID", i, j);
-                    packet.ReadInt32("Quantity", i, j);
-                }
-
-                // BonusCurrency
-                for (var j = 0; j < int52; ++j)
-                {
-                    packet.ReadInt32("CurrencyID", i, j);
-                    packet.ReadInt32("Quantity", i, j);
-                }
-
-                packet.ResetBitReader();
-
-                var bit3 = packet.ReadBit("hasBit3", i);
-                if (bit3)
-                    packet.ReadInt32("Unk 1", i);
+                ReadShortageReward(packet, i, "ShortageReward");
 
                 // ShortageReward
                 for (var j = 0; j < int64; ++j)
