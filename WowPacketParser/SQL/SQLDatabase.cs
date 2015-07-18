@@ -227,7 +227,7 @@ namespace WowPacketParser.SQL
         private static void LoadMapDifficulty()
         {
             //                                                  0     1        2
-            var query = new StringBuilder(string.Format("SELECT m_ID, m_mapID, m_difficultyID FROM {0}.map_difficulty;", Settings.WPPDatabase));
+            var query = new StringBuilder(string.Format("SELECT ID, MapID, DifficultyID FROM {0}.map_difficulty;", Settings.WPPDatabase));
             using (var reader = SQLConnector.ExecuteQuery(query.ToString()))
             {
                 if (reader == null)

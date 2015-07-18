@@ -21,8 +21,9 @@ CREATE TABLE IF NOT EXISTS `WPP`.`ObjectNames` (
 
 -- Table structure for table `map_difficulty`
 CREATE TABLE `map_difficulty` (
-  `m_ID` int(11) NOT NULL DEFAULT '0',
-  `m_mapID` int(11) NOT NULL DEFAULT '0',
-  `m_difficultyID` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`m_ID`)
+  `ID` int(11) NOT NULL DEFAULT '0',
+  `MapID` int(11) NOT NULL DEFAULT '0',
+  `DifficultyID` int(11) NOT NULL DEFAULT '0',
+  `VerifiedBuild` smallint(5) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
