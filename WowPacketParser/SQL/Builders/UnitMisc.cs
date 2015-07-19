@@ -191,7 +191,7 @@ namespace WowPacketParser.SQL.Builders
 
                     if (ClientVersion.AddedInVersion(ClientType.MistsOfPandaria))
                     {
-                        row.AddValue("PlayerConditionId", vendorItem.PlayerConditionId);
+                        row.AddValue("PlayerConditionID", vendorItem.PlayerConditionID);
                         row.AddValue("IgnoreFiltering", vendorItem.IgnoreFiltering);
                     }
 

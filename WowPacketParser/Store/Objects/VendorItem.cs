@@ -14,7 +14,7 @@ namespace WowPacketParser.Store.Objects
 
         public uint Type;
 
-        public int PlayerConditionId;
+        public int PlayerConditionID;
 
         public bool IgnoreFiltering;
 
