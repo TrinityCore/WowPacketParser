@@ -6,6 +6,7 @@ using System.Reflection;
 using NUnit.Framework;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
+using WowPacketParser.Enums.Version.V6_0_3_19103;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -100,8 +101,8 @@ namespace WowPacketParser.Tests
         [Test]
         public void TestHasHandler6x()
         {
-            var clientOpcodes = Enums.Version.V6_0_3_19103.Opcodes_6_0_3.Opcodes(Direction.ClientToServer).Select(pair => pair.Key);
-            var serverOpcodes = Enums.Version.V6_0_3_19103.Opcodes_6_0_3.Opcodes(Direction.ServerToClient).Select(pair => pair.Key);
+            var clientOpcodes = Opcodes_6_0_3.Opcodes(Direction.ClientToServer).Select(pair => pair.Key);
+            var serverOpcodes = Opcodes_6_0_3.Opcodes(Direction.ServerToClient).Select(pair => pair.Key);
 
             var assembly = Assembly.LoadFrom(AppDomain.CurrentDomain.BaseDirectory + "/" + "WowPacketParserModule.V6_0_2_19033.dll");
             Dictionary<KeyValuePair<ClientVersionBuild, Opcode>, Action<Packet>> handlerDictionary = Handler.LoadHandlers(assembly, ClientVersionBuild.V6_0_3_19342);
