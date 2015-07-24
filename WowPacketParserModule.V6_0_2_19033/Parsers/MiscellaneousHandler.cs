@@ -812,5 +812,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("Percent");
         }
+
+        [Parser(Opcode.CMSG_TOY_SET_FAVORITE)]
+        public static void HandleToySetFavorite(Packet packet)
+        {
+            packet.ReadUInt32("ItemID");
+            packet.ReadBit("Favorite");
+        }
     }
 }
