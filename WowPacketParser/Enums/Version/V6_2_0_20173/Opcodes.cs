@@ -1433,7 +1433,7 @@ namespace WowPacketParser.Enums.Version.V6_2_0_20173
             {Opcode.SMSG_SCENARIO_BOOT, 0x00B6},
             {Opcode.SMSG_SCENARIO_COMPLETED, 0x0EA2},
             {Opcode.SMSG_SCENARIO_OUT_OF_BOUNDS, 0x0410},
-            {Opcode.SMSG_SCENARIO_PO_IS, 0x00CC},
+            {Opcode.SMSG_SCENARIO_POIS, 0x00CC},
             {Opcode.SMSG_SCENARIO_PROGRESS_UPDATE, 0x0AA5},
             {Opcode.SMSG_SCENARIO_STATE, 0x0E35},
             {Opcode.SMSG_SCENE_OBJECT_EVENT, 0x0644},
