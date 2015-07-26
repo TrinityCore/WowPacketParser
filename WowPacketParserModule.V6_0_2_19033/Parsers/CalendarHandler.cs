@@ -108,6 +108,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("MaxSize");
         }
 
+        [Parser(Opcode.CMSG_CALENDAR_COMPLAIN)]
+        public static void HandleCalenderComplain(Packet packet)
+        {
+            packet.ReadPackedGuid128("InvitedByGUID");
+            packet.ReadUInt64("EventID");
+            packet.ReadUInt64("InviteID");
+        }
+
+        [Parser(Opcode.CMSG_CALENDAR_COPY_EVENT)]
+        public static void HandleCalenderCopyEvent(Packet packet)
+        {
+            packet.ReadUInt64("ModeratorID");
+            packet.ReadUInt64("EventID");
+            packet.ReadPackedTime("Date");
+        }
+
         [Parser(Opcode.SMSG_CALENDAR_SEND_NUM_PENDING)]
         public static void HandleSendCalendarNumPending(Packet packet)
         {
