@@ -80,7 +80,7 @@ namespace WowPacketParser.SQL.Builders
                 if (creature.Movement.HasWpsOrRandMov)
                 {
                     movementType = 1;
-                    spawnDist = 5;
+                    spawnDist = 10;
                 }
 
 
