@@ -371,6 +371,7 @@
     <Compile Include="Enums\Version\V6_1_2_19802\Opcodes.cs" />
     <Compile Include="Enums\Version\V6_1_2_19802\TutorialAction.cs" />
     <Compile Include="Enums\Version\V6_2_0_20173\Opcodes.cs" />
+    <Compile Include="Enums\Version\V6_2_0_20173\TutorialAction.cs" />
     <Compile Include="Enums\VictimStates.cs" />
     <Compile Include="Enums\VoidTransferError.cs" />
     <Compile Include="Enums\WardenCheckType.cs" />
