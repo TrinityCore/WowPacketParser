@@ -618,5 +618,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadByteE<StandState>("State");
         }
+
+        [Parser(Opcode.CMSG_SET_PVP)]
+        public static void HandleSetPVP(Packet packet)
+        {
+            packet.ReadBit("EnablePVP");
+        }
     }
 }
