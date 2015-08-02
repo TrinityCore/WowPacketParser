@@ -101,9 +101,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
 
+            packet.ReadBit("Acquired");
             packet.ReadBit("PersonalLooting");
             packet.ReadBit("AELooting");
-            packet.ReadBit("Acquired");
         }
 
         [Parser(Opcode.SMSG_LOOT_LIST)]
