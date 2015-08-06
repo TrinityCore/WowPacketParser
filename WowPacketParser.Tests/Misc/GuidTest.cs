@@ -44,6 +44,8 @@ namespace WowPacketParser.Tests.Misc
         [Test]
         public void TestGetEntry()
         {
+            ClientVersion.SetVersion(ClientVersionBuild.V3_3_5a_12340);
+
             var guid1 = new WowGuid64(0xF130005C0500105F);
             var guid2 = new WowGuid64(0x600000002B2D7C9);
             var guid3 = new WowGuid64(0);

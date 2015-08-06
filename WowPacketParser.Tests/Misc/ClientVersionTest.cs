@@ -64,8 +64,14 @@ namespace WowPacketParser.Tests.Misc
             ClientVersion.SetVersion(new DateTime(2010, 6, 29));
             Assert.AreEqual(ClientVersionBuild.V3_3_5a_12340, ClientVersion.Build);
 
+            ClientVersion.SetVersion(new DateTime(2015, 7, 9));
+            Assert.AreEqual(ClientVersionBuild.V6_2_0_20253, ClientVersion.Build);
+
             ClientVersion.SetVersion(ClientVersionBuild.V1_12_1_5875);
             Assert.AreEqual(ClientVersionBuild.V1_12_1_5875, ClientVersion.Build);
+
+            ClientVersion.SetVersion(ClientVersionBuild.V6_2_0_20253);
+            Assert.AreEqual(ClientVersionBuild.V6_2_0_20253, ClientVersion.Build);
         }
     }
 }
