@@ -717,11 +717,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("QuestID");
         }
 
-        [Parser(Opcode.SMSG_QUESTGIVER_INVALID_QUEST)]
+        [Parser(Opcode.SMSG_QUEST_GIVER_INVALID_QUEST)]
         public static void HandleQuestGiverInvalidQuest(Packet packet)
         {
-            packet.ReadInt32("Reason");
-            packet.ReadBit("UnkBit");
+            packet.ReadUInt32E<QuestReasonTypeWoD>("Reason");
+            packet.ReadBit("NeedPreRequired");
 
             var len = packet.ReadBits(9);
             packet.ReadWoWString("ReasonText", len);
