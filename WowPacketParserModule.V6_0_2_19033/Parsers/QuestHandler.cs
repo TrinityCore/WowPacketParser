@@ -721,7 +721,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleQuestGiverInvalidQuest(Packet packet)
         {
             packet.ReadUInt32E<QuestReasonTypeWoD>("Reason");
-            packet.ReadBit("NeedPreRequired");
+            packet.ReadBit("SendErrorMessage");
 
             var len = packet.ReadBits(9);
             packet.ReadWoWString("ReasonText", len);
