@@ -15,7 +15,7 @@ namespace WowPacketParser.Loading
 
         public Reader(string fileName, string originalFileName)
         {
-            FileName = fileName;
+            FileName = originalFileName;
             PacketReader = GetPacketReader(fileName, originalFileName);
         }
 
