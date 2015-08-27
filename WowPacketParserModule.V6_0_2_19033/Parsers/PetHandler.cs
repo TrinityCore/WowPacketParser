@@ -51,7 +51,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var petModeFlag = packet.ReadUInt32("PetModeAndOrders");
             var reactState = (petModeFlag >> 0) & 0xFF;
             var commandState = (petModeFlag >> 8) & 0xFF;
-            var flag = petModeFlag & 0xFFFF0000;
+            var flag = petModeFlag >> 16;
 
             packet.AddValue("ReactState", (ReactState)reactState, indexes);
             packet.AddValue("CommandState", (CommandState)commandState, indexes);
