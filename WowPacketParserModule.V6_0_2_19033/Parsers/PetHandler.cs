@@ -36,6 +36,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Pet name", len);
         }
 
+        public static void ReadPetFlags(Packet packet, params object[] indexes)
+        {
+            var petModeFlag = packet.ReadUInt32("PetModeAndOrders");
+            var reactState = (petModeFlag >> 0) & 0xFF;
+            var commandState = (petModeFlag >> 8) & 0xFF;
+            var flag = petModeFlag & 0xFFFF0000;
+
+            packet.AddValue("ReactState", (ReactState) reactState, indexes);
+            packet.AddValue("CommandState", (CommandState) commandState, indexes);
+            packet.AddValue("Flag", flag, indexes);
+        }
 
         [Parser(Opcode.SMSG_PET_SPELLS_MESSAGE)]
         public static void HandlePetSpells(Packet packet)
@@ -44,23 +55,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt16("CreatureFamily");
             packet.ReadInt16("Specialization");
             packet.ReadInt32("TimeLimit");
-            packet.ReadInt32("PetModeAndOrders");
+            //packet.ReadInt32("PetModeAndOrders");
+            ReadPetFlags(packet, "PetModeAndOrders");
 
             // ActionButtons
             const int maxCreatureSpells = 10;
             for (var i = 0; i < maxCreatureSpells; i++) // Read pet/vehicle spell ids
             {
-                var action = packet.ReadInt32();
+                var action = packet.ReadUInt32();
 
                 if (action >> 26 != 8)
                 {
                     var spellID = action & 0xFFFFFF;
-                    var slot = (action >> 24) & 0x3F;
+                    var slot = (action >> 24);
 
-                    if (slot >= 8 && slot <= 17)
-                        packet.AddValue("Action", slot, i);
-
-                    packet.AddValue("Spell", StoreGetters.GetName(StoreNameType.Spell, spellID), i);
+                    packet.AddValue("Action", slot, i);
+                    packet.AddValue("Spell", StoreGetters.GetName(StoreNameType.Spell, (int)spellID), i);
                 }
             }
 
@@ -71,14 +81,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             // Actions
             for (int i = 0; i < int28; i++)
             {
-                var action = packet.ReadInt32();
+                var action = packet.ReadUInt32();
                 var spellID = action & 0xFFFFFF;
                 var slot = (action >> 24) & 0x3F;
 
-                if (slot == 1 || slot >= 8 && slot <= 17)
-                    packet.AddValue("Slot", slot, i);
-
-                packet.AddValue("Spell", StoreGetters.GetName(StoreNameType.Spell, spellID), i);
+                packet.AddValue("Slot", slot, i);
+                packet.AddValue("Spell", StoreGetters.GetName(StoreNameType.Spell, (int)spellID), i);
             }
 
             // PetSpellCooldown
@@ -103,9 +111,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandlePetAction(Packet packet)
         {
             packet.ReadPackedGuid128("PetGUID");
-            var action = (uint)packet.ReadUInt16() + (packet.ReadByte() << 16);
-            packet.AddValue("Action", action);
-            packet.ReadByte("Slot");
+
+            var action = packet.ReadInt32();
+            var spellID = action & 0xFFFFFF;
+            var slot = (action >> 24) & 0x3F;
+
+            packet.AddValue("Slot", slot);
+            packet.AddValue("Spell", StoreGetters.GetName(StoreNameType.Spell, spellID));
+
             packet.ReadPackedGuid128("TargetGUID");
             packet.ReadVector3("ActionPosition");
         }
@@ -192,10 +205,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandlePetMode(Packet packet)
         {
             packet.ReadPackedGuid128("PetGUID");
-            var petModeFlag = packet.ReadUInt32();
-            packet.AddValue("React state", (ReactState)((petModeFlag >> 8) & 0xFF));
-            packet.AddValue("Command state", (CommandState)((petModeFlag >> 16) & 0xFF));
-            packet.AddValue("Flag", (petModeFlag & 0xFFFF0000), (PetModeFlags)(petModeFlag & 0xFFFF0000));
+            ReadPetFlags(packet, "PetMode");
         }
 
         [Parser(Opcode.CMSG_PET_STOP_ATTACK)]
