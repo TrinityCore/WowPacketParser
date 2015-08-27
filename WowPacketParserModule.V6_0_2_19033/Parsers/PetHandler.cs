@@ -36,6 +36,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Pet name", len);
         }
 
+        public static void ReadPetAction(Packet packet, params object[] indexes)
+        {
+            var action = packet.ReadUInt32();
+            var spellID = action & 0xFFFFFF;
+            var slot = (action >> 24);
+
+            packet.AddValue("Action", slot, indexes);
+            packet.AddValue("SpellID", StoreGetters.GetName(StoreNameType.Spell, (int)spellID), indexes);
+        }
+
         public static void ReadPetFlags(Packet packet, params object[] indexes)
         {
             var petModeFlag = packet.ReadUInt32("PetModeAndOrders");
@@ -43,8 +53,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var commandState = (petModeFlag >> 8) & 0xFF;
             var flag = petModeFlag & 0xFFFF0000;
 
-            packet.AddValue("ReactState", (ReactState) reactState, indexes);
-            packet.AddValue("CommandState", (CommandState) commandState, indexes);
+            packet.AddValue("ReactState", (ReactState)reactState, indexes);
+            packet.AddValue("CommandState", (CommandState)commandState, indexes);
             packet.AddValue("Flag", flag, indexes);
         }
 
@@ -61,18 +71,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             // ActionButtons
             const int maxCreatureSpells = 10;
             for (var i = 0; i < maxCreatureSpells; i++) // Read pet/vehicle spell ids
-            {
-                var action = packet.ReadUInt32();
-
-                if (action >> 26 != 8)
-                {
-                    var spellID = action & 0xFFFFFF;
-                    var slot = (action >> 24);
-
-                    packet.AddValue("Action", slot, i);
-                    packet.AddValue("Spell", StoreGetters.GetName(StoreNameType.Spell, (int)spellID), i);
-                }
-            }
+                ReadPetAction(packet, "ActionButtons", i);
 
             var int28 = packet.ReadInt32("ActionsCount");
             var int44 = packet.ReadUInt32("CooldownsCount");
@@ -80,14 +79,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             // Actions
             for (int i = 0; i < int28; i++)
-            {
-                var action = packet.ReadUInt32();
-                var spellID = action & 0xFFFFFF;
-                var slot = (action >> 24) & 0x3F;
-
-                packet.AddValue("Slot", slot, i);
-                packet.AddValue("Spell", StoreGetters.GetName(StoreNameType.Spell, (int)spellID), i);
-            }
+                ReadPetAction(packet, "Actions", i);
 
             // PetSpellCooldown
             for (int i = 0; i < int44; i++)
@@ -112,12 +104,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("PetGUID");
 
-            var action = packet.ReadInt32();
-            var spellID = action & 0xFFFFFF;
-            var slot = (action >> 24) & 0x3F;
-
-            packet.AddValue("Slot", slot);
-            packet.AddValue("Spell", StoreGetters.GetName(StoreNameType.Spell, spellID));
+            ReadPetAction(packet, "Action");
 
             packet.ReadPackedGuid128("TargetGUID");
             packet.ReadVector3("ActionPosition");
