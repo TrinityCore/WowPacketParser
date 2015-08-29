@@ -207,10 +207,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("PetGUID");
             packet.ReadUInt32("Index");
 
-            //packet.ReadUInt32("Action");
-            var action = (uint)packet.ReadUInt16() + (packet.ReadByte() << 16);
-            packet.AddValue("Action", action);
-            packet.ReadByte("Unk");
+            ReadPetAction(packet, "Action");
         }
 
         public static void ReadPetStableInfo(Packet packet, params object[] indexes)
