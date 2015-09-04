@@ -57,6 +57,7 @@
     <Compile Include="Enums\CharacterUndeleteResult.cs" />
     <Compile Include="Enums\UpdateFields610.cs" />
     <Compile Include="Enums\UpdateFields620.cs" />
+    <Compile Include="Enums\UpdateFields622.cs" />
     <Compile Include="Parsers\AchievementHandler.cs" />
     <Compile Include="Parsers\AccountDataHandler.cs" />
     <Compile Include="Parsers\ActionBarHandler.cs" />
