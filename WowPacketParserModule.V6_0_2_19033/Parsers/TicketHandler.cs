@@ -17,8 +17,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_GM_TICKET_CASE_STATUS)]
         public static void HandleGMTicketCaseStatus(Packet packet)
         {
-            packet.ReadTime("OldestTicketTime");
-            packet.ReadTime("UpdateTime");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V6_2_2_20444))
+            {
+                packet.ReadTime("OldestTicketTime");
+                packet.ReadTime("UpdateTime");
+            }
 
             var int24 = packet.ReadInt32("CasesCount");
             for (int i = 0; i < int24; i++)

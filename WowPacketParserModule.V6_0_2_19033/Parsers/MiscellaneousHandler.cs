@@ -76,6 +76,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadBit("CommerceSystemEnabled");
                 packet.ReadBit("Unk14");
                 packet.ReadBit("WillKickFromWorld");
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_2_20444))
+                    packet.ReadBit("IsExpansionPreorderInStore");
+
                 packet.ReadInt32("TokenPollTimeSeconds");
                 packet.ReadInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
             }

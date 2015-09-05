@@ -6,6 +6,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class ChannelHandler
     {
+        private static void ReadChannelFlags(Packet packet)
+        {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_2_20444))
+                packet.ReadUInt32E<ChannelFlag>("ChannelFlags");
+            else
+                packet.ReadByteE<ChannelFlag>("ChannelFlags");
+        }
+
         [Parser(Opcode.CMSG_CHAT_JOIN_CHANNEL)]
         public static void HandleChannelJoin(Packet packet)
         {
@@ -28,7 +36,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var bits544 = packet.ReadBits(7);
             var bits24 = packet.ReadBits(10);
 
-            packet.ReadByte("ChannelFlags");
+            ReadChannelFlags(packet);
             packet.ReadInt32("ChatChannelID");
             packet.ReadInt64("InstanceID");
 
@@ -78,7 +86,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("Display");
             var bits108 = packet.ReadBits(7);
 
-            packet.ReadByte("ChannelFlags");
+            ReadChannelFlags(packet);
             var int20 = packet.ReadInt32("MembersCount");
 
             packet.ReadWoWString("Channel", bits108);
@@ -181,9 +189,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("AddedUserGUID");
 
-            packet.ReadByteE<ChannelFlag>("ChannelFlags");
             packet.ReadByteE<ChannelMemberFlag>("UserFlags");
-
+            ReadChannelFlags(packet);
             packet.ReadInt32("ChannelID");
 
             var len = packet.ReadBits(7);
@@ -195,8 +202,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("RemovedUserGUID");
 
-            packet.ReadByteE<ChannelFlag>("ChannelFlags");
-
+            ReadChannelFlags(packet);
             packet.ReadInt32("ChannelID");
 
             var len = packet.ReadBits(7);
@@ -208,9 +214,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("UpdatedUserGUID");
 
-            packet.ReadByteE<ChannelFlag>("ChannelFlags");
             packet.ReadByteE<ChannelMemberFlag>("UserFlags");
-
+            ReadChannelFlags(packet);
             packet.ReadInt32("ChannelID");
 
             var len = packet.ReadBits(7);
