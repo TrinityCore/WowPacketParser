@@ -2,6 +2,7 @@ namespace WowPacketParser.Enums
 {
     public enum DB2Hash : uint
     {
+        Achievement                     = 0xD2EE2CA7, // 6.2.2.20444
         AdventureJournal                = 0x8EEF1A97, // 6.2.0.20182
         AreaGroup                       = 0xF6DB5F8B, // 6.2.0.20182
         AreaGroupMember                 = 0x09626FB2, // 6.2.0.20182
@@ -45,6 +46,8 @@ namespace WowPacketParser.Enums
         CreatureImmunities              = 0x211E2DEF, // 6.2.0.20182
         CreatureMovementInfo            = 0xCF156785, // 6.2.0.20182
         CreatureType                    = 0x1F80AD3F, // 6.2.0.20182
+        Criteria                        = 0xEF23DC80, // 6.2.2.20444
+        CriteriaTree                    = 0x4AD4429C, // 6.2.2.20444
         CurrencyCategory                = 0xD3C46981, // 6.2.0.20182
         CurrencyTypes                   = 0x2F51378E, // 6.2.0.20182
         Curve                           = 0x4BD9DF7A, // MoP - 5.4.0
@@ -145,6 +148,7 @@ namespace WowPacketParser.Enums
         MarketingPromotionsXLocale      = 0xA1D3F1AD,
         ModelManifest                   = 0xC6253ECC, // WoD - 6.0.1
         ModelNameToManifest             = 0x730F0635, // WoD - 6.0.1
+        ModifierTree                    = 0x7E692D56, // 6.2.2.20444
         Mount                           = 0x96737A41, // WoD - 6.0.1
         MountCapability                 = 0xF66E0076, // 6.2.0.20182
         MountType                       = 0xC5B875A8, // 6.2.0.20182
@@ -159,6 +163,7 @@ namespace WowPacketParser.Enums
         ObjectEffectPackage             = 0x5E3E8F24, // 6.2.0.20182
         ObjectEffectPackageElem         = 0xCB2273C2, // 6.2.0.20182
         OverrideSpellData               = 0xCA75DF1C, // WoD - 6.0.1
+        PaperDollItemFrame              = 0xADDB889C, // 6.2.2.20444
         Path                            = 0x94F46395,
         PathNode                        = 0x3B9E4CA2,
         PathNodeProperty                = 0xFE21C024,
@@ -170,7 +175,10 @@ namespace WowPacketParser.Enums
         QuestLine                       = 0xEB57A423, // WoD - 6.0.1
         QuestLineXQuest                 = 0x8CC17856, // WoD - 6.0.1
         QuestMoneyReward                = 0xCF096091, // 6.2.0.20182
+        QuestObjective                  = 0x01325CA0, // 6.2.2.20444
         QuestObjectiveCliTask           = 0x9EE75AFD, // WoD - 6.0.1
+        QuestPOIBlob                    = 0xAE1CA308, // 6.2.2.20444
+        QuestPOIPoint                   = 0x83467FEB, // 6.2.2.20444
         QuestPOIPointCliTask            = 0x8FCA1265, // WoD - 6.0.1
         QuestPackageItem                = 0xCC2F84F0,
         QuestSort                       = 0x5479CB09, // 6.2.0.20182
@@ -237,6 +245,7 @@ namespace WowPacketParser.Enums
         SpellVisualMissile              = 0x51A28350, // MoP - 5.4.0
         SpellXSpellVisual               = 0x27B7A01A, // WoD
         Stationery                      = 0xAF0DC253, // 6.2.0.20182
+        StringLookups                   = 0x4A5D42EB, // 6.2.2.20444
         TaxiNodes                       = 0x50D91A78, // WoD - 6.0.1
         TaxiPath                        = 0xAB30A45C, // WoD - 6.0.1
         TaxiPathNode                    = 0xE5E988BC, // WoD - 6.0.1
@@ -261,6 +270,8 @@ namespace WowPacketParser.Enums
         WbPermissions                   = 0xF827ECFB, // MoP - 5.3.0
         WeaponTrail                     = 0xA42476ED, // WoD - 6.0.1
         WindSettings                    = 0x72B25981, // WoD - 6.0.1
-        WorldBossLockout                = 0xF416A54C  // WoD - 6.0.1
+        WorldBossLockout                = 0xF416A54C, // WoD - 6.0.1
+        WorldElapsedTimer               = 0xC7A973A1, // 6.2.2.20444
+        WorldMapOverlay                 = 0x1D740E72  // 6.2.2.20444
     }
 }
