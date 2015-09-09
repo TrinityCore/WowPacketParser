@@ -587,8 +587,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
 
-            packet.ReadBit("AutoSlotted");      // unconfirmed order
-            packet.ReadBit("NewSlotUnlocked");  // unconfirmed order
+            packet.ReadBit("NewSlotUnlocked");
+            packet.ReadBit("AutoSlotted");
         }
 
         [Parser(Opcode.CMSG_PET_BATTLE_REPLACE_FRONT_PET)]
@@ -657,6 +657,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("TargetGUID");
             packet.ReadBit("Canceled");
+        }
+
+        [Parser(Opcode.SMSG_BATTLE_PET_ERROR)]
+        public static void HandleBattlePetError(Packet packet)
+        {
+            packet.ReadBits("Result", 4);
+            packet.ResetBitReader();
+            packet.ReadInt32("CreatureID");
         }
     }
 }
