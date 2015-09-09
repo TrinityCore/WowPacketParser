@@ -130,6 +130,9 @@ namespace WowPacketParser.Loading
 
         public static LocaleConstant GetLocale()
         {
+            if (_locale == "enGB")
+                return LocaleConstant.enUS;
+
             return (LocaleConstant) Enum.Parse(typeof(LocaleConstant), _locale);
         }
 
