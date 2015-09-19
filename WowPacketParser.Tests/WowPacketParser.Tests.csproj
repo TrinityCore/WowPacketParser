@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Misc\BiDictionaryTest.cs" />
+    <Compile Include="Misc\BitTest.cs" />
     <Compile Include="Misc\ClientVersionTest.cs" />
     <Compile Include="Misc\ConfigurationTest.cs" />
     <Compile Include="Misc\StatisticsTest.cs" />
