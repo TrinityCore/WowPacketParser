@@ -288,8 +288,9 @@ namespace WowPacketParser.Misc
             UpdateFields.ResetUFDictionaries();
             try
             {
-                var asm = Assembly.LoadFrom(string.Format(AppDomain.CurrentDomain.BaseDirectory + "/Parsers/" + "WowPacketParserModule.{0}.dll", VersionDefiningBuild));
-                Trace.WriteLine(string.Format("Loading module WowPacketParserModule.{0}.dll", VersionDefiningBuild));
+                var asm = Assembly.Load($"WowPacketParserModule.{VersionDefiningBuild}");
+                Trace.WriteLine($"Loading module WowPacketParserModule.{VersionDefiningBuild}.dll");
+
                 Handler.LoadHandlers(asm, VersionDefiningBuild);
 
                 // This is a huge hack to handle the abnormal situation that appeared with builds 6.0 and 6.1 having mostly the same packet structures

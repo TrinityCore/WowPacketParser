@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("TrinityCore")]
 [assembly: AssemblyProduct("WowPacketParser")]
-[assembly: AssemblyCopyright("Copyright ©  2010-2014")]
+[assembly: AssemblyCopyright("Copyright © 2010-2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
