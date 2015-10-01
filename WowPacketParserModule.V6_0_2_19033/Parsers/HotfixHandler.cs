@@ -249,6 +249,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     itemEffect.Cooldown = db2File.ReadInt32("Cooldown");
                     itemEffect.Category = db2File.ReadUInt32("Category");
                     itemEffect.CategoryCooldown = db2File.ReadInt32("CategoryCooldown");
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20182))
+                        itemEffect.ChrSpecializationID = db2File.ReadUInt32("ChrSpecializationID");
 
                     if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
                         !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
