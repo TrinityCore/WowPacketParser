@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Collections.Generic;
+using System.Globalization;
 using WowPacketParser.Enums.Version.V3_3_5a_12340;
 using WowPacketParser.Enums.Version.V4_0_3_13329;
 using WowPacketParser.Enums.Version.V4_0_6_13596;
@@ -35,11 +36,29 @@ namespace WowPacketParser.Enums.Version
         private static BiDictionary<Opcode, int> ClientDict = GetOpcodeDictionary(ClientVersion.Build, Direction.ClientToServer);
         private static BiDictionary<Opcode, int> MiscDict = GetOpcodeDictionary(ClientVersion.Build, Direction.Bidirectional);
 
+        private static Dictionary<Opcode, string> ServerNameDict = new Dictionary<Opcode, string>();
+        private static Dictionary<Opcode, string> ClientNameDict = new Dictionary<Opcode, string>();
+        private static Dictionary<Opcode, string> MiscNameDict = new Dictionary<Opcode, string>();
+
         public static void InitializeOpcodeDictionary()
         {
             ServerDict = GetOpcodeDictionary(ClientVersion.Build, Direction.ServerToClient);
             ClientDict = GetOpcodeDictionary(ClientVersion.Build, Direction.ClientToServer);
             MiscDict = GetOpcodeDictionary(ClientVersion.Build, Direction.Bidirectional);
+
+            InitializeOpcodeNameDictionary();
+        }
+
+        private static void InitializeOpcodeNameDictionary()
+        {
+            foreach (var o in ServerDict)
+                ServerNameDict.Add(o.Key, o.Key.ToString());
+
+            foreach (var o in ClientDict)
+                ClientNameDict.Add(o.Key, o.Key.ToString());
+
+            foreach (var o in MiscDict)
+                MiscNameDict.Add(o.Key, o.Key.ToString());
         }
 
         public static BiDictionary<Opcode, int> GetOpcodeDictionary(ClientVersionBuild build, Direction direction)
@@ -251,7 +270,13 @@ namespace WowPacketParser.Enums.Version
             var opc = GetOpcode(opcodeId, direction);
 
             if (opc != 0)
-                return opc.ToString();
+            {
+                if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
+                    return ClientNameDict[opc];
+                if (direction == Direction.ServerToClient || direction == Direction.BNServerToClient)
+                    return ServerNameDict[opc];
+                return MiscNameDict[opc];
+            }
 
             if (hex)
                 return "0x" + opcodeId.ToString("X4", CultureInfo.InvariantCulture);
