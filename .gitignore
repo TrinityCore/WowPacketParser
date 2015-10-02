@@ -13,9 +13,12 @@ Thumbs.db
 [Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
+*.diagsession
+*.vspx
 
 packages/*
 !packages/repositories.config
 
 wpp.tgz
 cov-int
+
