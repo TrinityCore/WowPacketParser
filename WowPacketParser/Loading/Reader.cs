@@ -13,32 +13,26 @@ namespace WowPacketParser.Loading
         public string FileName { get; private set; }
         public IPacketReader PacketReader { get; private set; }
 
-        public Reader(string fileName, string originalFileName)
+        public Reader(string fileName, SniffType type)
         {
-            FileName = originalFileName;
-            PacketReader = GetPacketReader(fileName, originalFileName);
+            FileName = fileName;
+            PacketReader = GetPacketReader(fileName, type);
         }
 
-        private static IPacketReader GetPacketReader(string fileName, string oriFileName)
+        private static IPacketReader GetPacketReader(string fileName, SniffType type)
         {
-            var extension = Path.GetExtension(oriFileName);
-            if (extension == null)
-                throw new IOException("Invalid file type");
-
-            extension = extension.ToLower();
-
             IPacketReader reader;
 
-            switch (extension)
+            switch (type)
             {
-                case ".bin":
-                    reader = new BinaryPacketReader(SniffType.Bin, fileName, Encoding.ASCII);
+                case SniffType.Bin:
+                    reader = new BinaryPacketReader(type, fileName, Encoding.ASCII);
                     break;
-                case ".pkt":
-                    reader = new BinaryPacketReader(SniffType.Pkt, fileName, Encoding.ASCII);
+                case SniffType.Pkt:
+                    reader = new BinaryPacketReader(type, fileName, Encoding.ASCII);
                     break;
                 default:
-                    throw new IOException(String.Format("Invalid file type {0}", extension.ToLower()));
+                    throw new IOException(String.Format("Invalid file type {0}", fileName));
             }
 
             return reader;
@@ -95,9 +89,9 @@ namespace WowPacketParser.Loading
             return false;
         }
 
-        public static void Read(string fileName, string oriFileName, Action<Tuple<Packet, long, long>> action)
+        public static void Read(string fileName, SniffType type, Action<Tuple<Packet, long, long>> action)
         {
-            var reader = GetPacketReader(fileName, oriFileName);
+            var reader = GetPacketReader(fileName, type);
 
             try
             {

@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Security;
 using WowPacketParser.Enums;
@@ -159,6 +161,19 @@ namespace WowPacketParser.Misc
             }
 
             return true;
+        }
+
+        public static string GetCompressedFileExtension(FileCompression value)
+        {
+            FieldInfo fi = value.GetType().GetField(value.ToString());
+
+            FileCompressionAttribute[] attributes =
+                (FileCompressionAttribute[])fi.GetCustomAttributes(typeof(FileCompressionAttribute), false);
+
+            if (attributes.Length == 0)
+                throw new NotImplementedException();
+
+            return attributes[0].Extension;
         }
 
         /// <summary>

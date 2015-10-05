@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using WowPacketParser.Enums;
 
 namespace WowPacketParser.Misc
 {
@@ -215,6 +216,24 @@ namespace WowPacketParser.Misc
             }
 
             return list;
+        }
+
+        public static string GetExtension(this FileCompression value)
+        {
+            FileCompressionAttribute[] attributes = (FileCompressionAttribute[])value.GetType().GetField(value.ToString()).GetCustomAttributes(typeof(FileCompressionAttribute), false);
+            return (attributes.Length > 0) ? attributes[0].Extension : "";
+        }
+
+        public static FileCompression ToFileCompressionEnum(this string str)
+        {
+            foreach (FileCompression item in Enum.GetValues(typeof(FileCompression)))
+            {
+                FileCompressionAttribute[] attributes = (FileCompressionAttribute[])item.GetType().GetField(item.ToString()).GetCustomAttributes(typeof(FileCompressionAttribute), false);
+                if (attributes.Length > 0 && (attributes[0].Extension.Equals(str)))
+                    return item;
+            }
+
+            return FileCompression.None;
         }
     }
 }
