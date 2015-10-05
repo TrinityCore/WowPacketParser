@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
@@ -21,21 +20,7 @@ namespace WowPacketParser.Loading
 
         private static IPacketReader GetPacketReader(string fileName, SniffType type)
         {
-            IPacketReader reader;
-
-            switch (type)
-            {
-                case SniffType.Bin:
-                    reader = new BinaryPacketReader(type, fileName, Encoding.ASCII);
-                    break;
-                case SniffType.Pkt:
-                    reader = new BinaryPacketReader(type, fileName, Encoding.ASCII);
-                    break;
-                default:
-                    throw new IOException(String.Format("Invalid file type {0}", fileName));
-            }
-
-            return reader;
+            return new BinaryPacketReader(type, fileName, Encoding.ASCII);
         }
 
         private int _packetNum;
