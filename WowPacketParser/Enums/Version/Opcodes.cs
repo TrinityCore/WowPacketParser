@@ -36,9 +36,9 @@ namespace WowPacketParser.Enums.Version
         private static BiDictionary<Opcode, int> ClientDict = GetOpcodeDictionary(ClientVersion.Build, Direction.ClientToServer);
         private static BiDictionary<Opcode, int> MiscDict = GetOpcodeDictionary(ClientVersion.Build, Direction.Bidirectional);
 
-        private static Dictionary<Opcode, string> ServerNameDict = new Dictionary<Opcode, string>();
-        private static Dictionary<Opcode, string> ClientNameDict = new Dictionary<Opcode, string>();
-        private static Dictionary<Opcode, string> MiscNameDict = new Dictionary<Opcode, string>();
+        private static readonly Dictionary<ClientVersionBuild, Dictionary<Opcode, string>> ServerNameDict = new Dictionary<ClientVersionBuild, Dictionary<Opcode, string>>();
+        private static readonly Dictionary<ClientVersionBuild, Dictionary<Opcode, string>> ClientNameDict = new Dictionary<ClientVersionBuild, Dictionary<Opcode, string>>();
+        private static readonly Dictionary<ClientVersionBuild, Dictionary<Opcode, string>> MiscNameDict = new Dictionary<ClientVersionBuild, Dictionary<Opcode, string>>();
 
         public static void InitializeOpcodeDictionary()
         {
@@ -51,14 +51,32 @@ namespace WowPacketParser.Enums.Version
 
         private static void InitializeOpcodeNameDictionary()
         {
-            foreach (var o in ServerDict)
-                ServerNameDict.Add(o.Key, o.Key.ToString());
+            var tempDict = new Dictionary<Opcode, string>();
+            if (!ServerNameDict.ContainsKey(ClientVersion.Build))
+            {
+                foreach (var o in ServerDict)
+                    tempDict.Add(o.Key, o.Key.ToString());
 
-            foreach (var o in ClientDict)
-                ClientNameDict.Add(o.Key, o.Key.ToString());
+                ServerNameDict[ClientVersion.Build] = new Dictionary<Opcode, string>(tempDict);
+                tempDict.Clear();
+            }
 
-            foreach (var o in MiscDict)
-                MiscNameDict.Add(o.Key, o.Key.ToString());
+            if (!ClientNameDict.ContainsKey(ClientVersion.Build))
+            {
+                foreach (var o in ClientDict)
+                    tempDict.Add(o.Key, o.Key.ToString());
+
+                ClientNameDict[ClientVersion.Build] = new Dictionary<Opcode, string>(tempDict);
+                tempDict.Clear();
+            }
+
+            if (!MiscNameDict.ContainsKey(ClientVersion.Build))
+            {
+                foreach (var o in MiscDict)
+                    tempDict.Add(o.Key, o.Key.ToString());
+
+                MiscNameDict[ClientVersion.Build] = new Dictionary<Opcode, string>(tempDict);
+            }
         }
 
         public static BiDictionary<Opcode, int> GetOpcodeDictionary(ClientVersionBuild build, Direction direction)
@@ -272,10 +290,10 @@ namespace WowPacketParser.Enums.Version
             if (opc != 0)
             {
                 if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
-                    return ClientNameDict[opc];
+                    return ClientNameDict[ClientVersion.Build][opc];
                 if (direction == Direction.ServerToClient || direction == Direction.BNServerToClient)
-                    return ServerNameDict[opc];
-                return MiscNameDict[opc];
+                    return ServerNameDict[ClientVersion.Build][opc];
+                return MiscNameDict[ClientVersion.Build][opc];
             }
 
             if (hex)
