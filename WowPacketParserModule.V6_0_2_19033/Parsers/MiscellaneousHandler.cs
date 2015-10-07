@@ -47,14 +47,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var grade = packet.ReadSingle("Intensity");
             var unk = packet.ReadBit("Abrupt"); // Type
 
-            Storage.WeatherUpdates.Add(new WeatherUpdate
+            /*Storage.WeatherUpdates.Add(new WeatherUpdate
             {
                 MapId = CoreParsers.MovementHandler.CurrentMapId,
                 ZoneId = 0, // fixme
                 State = state,
                 Grade = grade,
                 Unk = unk
-            }, packet.TimeSpan);
+            }, packet.TimeSpan);*/
         }
 
         [Parser(Opcode.CMSG_SET_SELECTION)]
@@ -469,7 +469,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var sound = packet.ReadUInt32("SoundKitID");
             packet.ReadPackedGuid128("SourceObjectGUID");
 
-            Storage.Sounds.Add(sound, packet.TimeSpan);
+            //Storage.Sounds.Add(sound, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_PLAY_MUSIC)]
@@ -477,7 +477,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             var sound = packet.ReadUInt32("SoundKitID");
 
-            Storage.Sounds.Add(sound, packet.TimeSpan);
+            //Storage.Sounds.Add(sound, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_ZONE_UNDER_ATTACK)]

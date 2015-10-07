@@ -41,7 +41,7 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod(Units = true)]
         public static string Creature(Dictionary<WowGuid, Unit> units)
         {
-            if (units.Count == 0)
+            /*if (units.Count == 0)
                 return string.Empty;
 
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature))
@@ -51,11 +51,11 @@ namespace WowPacketParser.SQL.Builders
             const string addonTableName = "creature_addon";
 
             uint count = 0;
-            var rows = new List<QueryBuilder.SQLInsertRow>();
-            var addonRows = new List<QueryBuilder.SQLInsertRow>();
+            var rows = new List<SQLInsertRow>();
+            var addonRows = new List<SQLInsertRow>();
             foreach (var unit in units)
             {
-                var row = new QueryBuilder.SQLInsertRow();
+                var row = new SQLInsertRow();
                 var badTransport = false;
 
                 var creature = unit.Value;
@@ -149,7 +149,7 @@ namespace WowPacketParser.SQL.Builders
                     row.Comment += " (Auras: " + commentAuras + ")";
                 }
 
-                var addonRow = new QueryBuilder.SQLInsertRow();
+                var addonRow = new SQLInsertRow();
                 if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_addon))
                 {
                     addonRow.AddValue("guid", "@CGUID+" + count, noQuotes: true);
@@ -187,27 +187,28 @@ namespace WowPacketParser.SQL.Builders
             if (count > 0)
             {
                 // delete query for GUIDs
-                var delete = new QueryBuilder.SQLDelete(Tuple.Create("@CGUID+0", "@CGUID+" + --count), "guid", tableName);
-                result.Append(delete.Build());
-                var sql = new QueryBuilder.SQLInsert(tableName, rows, withDelete: false);
-                result.Append(sql.Build());
+                //var delete = new SQLDelete(Tuple.Create("@CGUID+0", "@CGUID+" + --count), "guid", tableName);
+                //result.Append(delete.Build());
+                //var sql = new SQLInsert(tableName, rows, withDelete: false);
+                //result.Append(sql.Build());
 
                 if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_addon))
                 {
-                    var addonDelete = new QueryBuilder.SQLDelete(Tuple.Create("@CGUID+0", "@CGUID+" + count), "guid", addonTableName);
-                    result.Append(addonDelete.Build());
-                    var addonSql = new QueryBuilder.SQLInsert(addonTableName, addonRows, withDelete: false);
-                    result.Append(addonSql.Build());
+                    //var addonDelete = new SQLDelete(Tuple.Create("@CGUID+0", "@CGUID+" + count), "guid", addonTableName);
+                    //result.Append(addonDelete.Build());
+                    //var addonSql = new SQLInsert(addonTableName, addonRows, withDelete: false);
+                    //result.Append(addonSql.Build());
                 }
             }
 
-            return result.ToString();
+            return result.ToString();*/
+            return string.Empty;
         }
 
         [BuilderMethod(Gameobjects = true)]
         public static string GameObject(Dictionary<WowGuid, GameObject> gameObjects)
         {
-            if (gameObjects.Count == 0)
+            /*if (gameObjects.Count == 0)
                 return string.Empty;
 
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject))
@@ -216,10 +217,10 @@ namespace WowPacketParser.SQL.Builders
             const string tableName = "gameobject";
 
             uint count = 0;
-            var rows = new List<QueryBuilder.SQLInsertRow>();
+            var rows = new List<SQLInsertRow>();
             foreach (var gameobject in gameObjects)
             {
-                var row = new QueryBuilder.SQLInsertRow();
+                var row = new SQLInsertRow();
 
                 var go = gameobject.Value;
 
@@ -329,13 +330,15 @@ namespace WowPacketParser.SQL.Builders
             if (count > 0)
             {
                 // delete query for GUIDs
-                var delete = new QueryBuilder.SQLDelete(Tuple.Create("@OGUID+0", "@OGUID+" + --count), "guid", tableName);
+                var delete = new SQLDelete(Tuple.Create("@OGUID+0", "@OGUID+" + --count), "guid");
                 result.Append(delete.Build());
             }
 
-            var sql = new QueryBuilder.SQLInsert(tableName, rows, withDelete: false);
+            var sql = new SQLInsert(tableName, rows, withDelete: false);
             result.Append(sql.Build());
-            return result.ToString();
+            return result.ToString();*/
+            return string.Empty;
+
         }
     }
 }

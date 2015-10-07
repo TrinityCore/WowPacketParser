@@ -640,7 +640,7 @@ namespace WowPacketParser.Parsing.Parsers
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_0_5_16048))
                     {
                         packet.ReadUInt32("World Effect ID", i, j);
-                        packet.ReadUInt32("Player Condition ID", i, j);
+                        packet.ReadUInt32("Player Row ID", i, j);
                     }
 
                     var pointsSize = packet.ReadInt32("Points Counter", i, j);

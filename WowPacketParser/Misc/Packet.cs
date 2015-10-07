@@ -91,7 +91,7 @@ namespace WowPacketParser.Misc
                 Data = data
             };
 
-            Storage.SniffData.Add(item, TimeSpan);
+            //Storage.SniffData.Add(item, TimeSpan);
         }
 
         public bool TryInflate(int inflatedSize, int index, byte[] arr, ref byte[] newarr)

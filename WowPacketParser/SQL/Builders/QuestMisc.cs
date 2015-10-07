@@ -44,7 +44,7 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod]
         public static string QuestPOI()
         {
-            if (Storage.QuestPOIs.IsEmpty())
+            /*if (Storage.QuestPOIs.IsEmpty())
                 return String.Empty;
 
             var sql = string.Empty;
@@ -71,7 +71,7 @@ namespace WowPacketParser.SQL.Builders
 
             if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_poi_points))
             {
-                var rows = new List<QueryBuilder.SQLInsertRow>();
+                var rows = new List<SQLInsertRow>();
                 foreach (var quest in Storage.QuestPOIs.OrderBy(blub => blub.Key.Item1))
                 {
                     var questPOI = quest.Value.Item1;
@@ -79,7 +79,7 @@ namespace WowPacketParser.SQL.Builders
                     if (questPOI.Points != null) // Needed?
                         foreach (var point in questPOI.Points)
                         {
-                            var row = new QueryBuilder.SQLInsertRow();
+                            var row = new SQLInsertRow();
 
                             row.AddValue("questId", quest.Key.Item1);
                             row.AddValue("id", quest.Key.Item2);
@@ -93,11 +93,12 @@ namespace WowPacketParser.SQL.Builders
                         }
                 }
 
-                sql += new QueryBuilder.SQLInsert(tableName2, rows, 2).Build();
+                sql += new SQLInsert(tableName2, rows, 2).Build();
 
             }
 
-            return sql;
+            return sql;*/
+            return string.Empty;
         }
 
         [BuilderMethod]

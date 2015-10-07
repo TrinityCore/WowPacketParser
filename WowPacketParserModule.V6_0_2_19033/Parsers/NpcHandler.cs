@@ -176,47 +176,37 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_VENDOR_INVENTORY)]
         public static void HandleVendorInventoryList(Packet packet)
         {
-            var npcVendor = new NpcVendor();
-
-            var guid = packet.ReadPackedGuid128("VendorGUID");
-
+            uint entry = packet.ReadPackedGuid128("VendorGUID").GetEntry();
             packet.ReadByte("Reason");
+            var count = packet.ReadInt32("VendorItems");
 
-            var int9 = packet.ReadInt32("VendorItems");
-
-            npcVendor.VendorItems = new List<VendorItem>(int9);
-            for (var i = 0; i < int9; ++i)
+            for (var i = 0; i < count; ++i)
             {
-                var vendorItem = new VendorItem();
-
-                vendorItem.Slot = (uint)packet.ReadInt32("Muid", i);
-                vendorItem.Type = (uint)packet.ReadInt32("Type", i);
-
-                // ItemInstance
-                //if (ItemInstance)
+                NpcVendor vendor = new NpcVendor
                 {
-                    vendorItem.ItemId = (uint)ItemHandler.ReadItemInstance(packet, i);
-                }
+                    Entry = entry,
+                    Slot = packet.ReadInt32("Muid", i),
+                    Type = (uint)packet.ReadInt32("Type", i),
+                    Item = ItemHandler.ReadItemInstance(packet, i)
+                };
 
                 var maxCount = packet.ReadInt32("Quantity", i);
                 packet.ReadInt32("Price", i);
                 packet.ReadInt32("Durability", i);
                 var buyCount = packet.ReadInt32("StackCount", i);
-                vendorItem.ExtendedCostId = (uint)packet.ReadInt32("ExtendedCostID", i);
-                vendorItem.PlayerConditionID = packet.ReadInt32("PlayerConditionFailed", i);
+                vendor.ExtendedCost = packet.ReadUInt32("ExtendedCostID", i);
+                vendor.PlayerConditionID = packet.ReadUInt32("PlayerConditionFailed", i);
 
                 packet.ResetBitReader();
 
-                vendorItem.IgnoreFiltering = packet.ReadBit("DoNotFilterOnVendor", i);
+                vendor.IgnoreFiltering = packet.ReadBit("DoNotFilterOnVendor", i);
 
-                vendorItem.MaxCount = maxCount == -1 ? 0 : maxCount; // TDB
-                if (vendorItem.Type == 2)
-                    vendorItem.MaxCount = buyCount;
+                vendor.MaxCount = maxCount == -1 ? 0 : (uint)maxCount; // TDB
+                if (vendor.Type == 2)
+                    vendor.MaxCount = (uint)buyCount;
 
-                npcVendor.VendorItems.Add(vendorItem);
+                Storage.NpcVendors.Add(vendor, packet.TimeSpan);
             }
-
-            Storage.NpcVendors.Add(guid.GetEntry(), npcVendor, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_TRAINER_LIST)]
@@ -280,8 +270,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var guid = packet.ReadPackedGuid128("SpellClickUnitGUID");
             packet.ReadBit("TryAutoDismount");
 
-            if (guid.GetObjectType() == ObjectType.Unit)
-                Storage.NpcSpellClicks.Add(guid, packet.TimeSpan);
+            /*if (guid.GetObjectType() == ObjectType.Unit)
+                Storage.NpcSpellClicks.Add(guid, packet.TimeSpan);*/
         }
 
         [Parser(Opcode.CMSG_BUY_BANK_SLOT)]

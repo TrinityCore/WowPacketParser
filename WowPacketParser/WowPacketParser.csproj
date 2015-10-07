@@ -93,6 +93,10 @@
       <HintPath>..\packages\DotNetZip.1.9.6\lib\net20\Ionic.Zip.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="JetBrains.Annotations, Version=9.2.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.9.2.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MySql.Data, Version=6.9.7.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.6.9.7\lib\net45\MySql.Data.dll</HintPath>
       <Private>True</Private>
@@ -475,6 +479,8 @@
     <Compile Include="SQL\Builders\Spawns.cs" />
     <Compile Include="SQL\Builders\UnitMisc.cs" />
     <Compile Include="SQL\Builders\WDBTemplates.cs" />
+    <Compile Include="SQL\RowList.cs" />
+    <Compile Include="SQL\IDataModel.cs" />
     <Compile Include="SQL\DBFieldNameAttribute.cs" />
     <Compile Include="SQL\DBTableNameAttribute.cs" />
     <Compile Include="SQL\ISQLQuery.cs" />
@@ -562,7 +568,6 @@
     <Compile Include="Store\Objects\UnitTemplate.cs" />
     <Compile Include="Store\Objects\UnitTemplateNonWDB.cs" />
     <Compile Include="Store\Objects\VehicleTemplateAccessory.cs" />
-    <Compile Include="Store\Objects\VendorItem.cs" />
     <Compile Include="Store\Objects\WeatherUpdate.cs" />
     <Compile Include="Store\Objects\WoWObject.cs" />
     <Compile Include="Store\Storage.cs" />

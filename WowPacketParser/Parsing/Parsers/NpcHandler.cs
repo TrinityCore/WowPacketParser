@@ -141,7 +141,7 @@ namespace WowPacketParser.Parsing.Parsers
             Storage.NpcTrainers.Add(guid.GetEntry(), npcTrainer, packet.TimeSpan);
         }
 
-        [Parser(Opcode.SMSG_VENDOR_INVENTORY, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
+        /*[Parser(Opcode.SMSG_VENDOR_INVENTORY, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleVendorInventoryList(Packet packet)
         {
             var npcVendor = new NpcVendor();
@@ -182,9 +182,9 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             Storage.NpcVendors.Add(guid.GetEntry(), npcVendor, packet.TimeSpan);
-        }
+        }*/
 
-        [Parser(Opcode.SMSG_VENDOR_INVENTORY, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
+        /*[Parser(Opcode.SMSG_VENDOR_INVENTORY, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleVendorInventoryList422(Packet packet)
         {
             var npcVendor = new NpcVendor();
@@ -231,9 +231,9 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             Storage.NpcVendors.Add(guid.GetEntry(), npcVendor, packet.TimeSpan);
-        }
+        }*/
 
-        [Parser(Opcode.SMSG_VENDOR_INVENTORY, ClientVersionBuild.V4_3_4_15595)]
+        /*[Parser(Opcode.SMSG_VENDOR_INVENTORY, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleVendorInventoryList434(Packet packet)
         {
             var npcVendor = new NpcVendor();
@@ -277,7 +277,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Price", i);
                 packet.ReadInt32("Display ID", i);
                 if (hasCondition[i])
-                    packet.ReadInt32("Condition ID", i);
+                    packet.ReadInt32("Row ID", i);
                 var maxCount = packet.ReadInt32("Max Count", i);
                 vendorItem.MaxCount = maxCount == -1 ? 0 : maxCount; // TDB
                 var buyCount = packet.ReadUInt32("Buy Count", i);
@@ -303,7 +303,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.WriteGuid("GUID", guidBytes);
 
             Storage.NpcVendors.Add(guid.GetEntry(), npcVendor, packet.TimeSpan);
-        }
+        }*/
 
         [Parser(Opcode.CMSG_GOSSIP_HELLO)]
         [Parser(Opcode.CMSG_TRAINER_LIST)]

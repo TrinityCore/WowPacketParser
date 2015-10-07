@@ -414,7 +414,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_PLAY_OBJECT_SOUND, Direction.ServerToClient))
                 packet.ReadGuid("GUID 2");
 
-            Storage.Sounds.Add(sound, packet.TimeSpan);
+            //Storage.Sounds.Add(sound, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_WEATHER)]
@@ -424,14 +424,14 @@ namespace WowPacketParser.Parsing.Parsers
             var grade = packet.ReadSingle("Grade");
             var unk = packet.ReadByte("Unk Byte"); // Type
 
-            Storage.WeatherUpdates.Add(new WeatherUpdate
+            /*Storage.WeatherUpdates.Add(new WeatherUpdate
             {
                 MapId = MovementHandler.CurrentMapId,
                 ZoneId = 0, // fixme
                 State = state,
                 Grade = grade,
                 Unk = unk
-            }, packet.TimeSpan);
+            }, packet.TimeSpan);*/
         }
 
         [Parser(Opcode.CMSG_TUTORIAL_FLAG)]
@@ -832,8 +832,8 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid = packet.ReadGuid("GUID");
 
-            if (guid.GetObjectType() == ObjectType.Unit)
-                Storage.NpcSpellClicks.Add(guid, packet.TimeSpan);
+            /*if (guid.GetObjectType() == ObjectType.Unit)
+                Storage.NpcSpellClicks.Add(guid, packet.TimeSpan);*/
         }
 
         [Parser(Opcode.SMSG_START_TIMER)]

@@ -898,7 +898,7 @@ namespace WowPacketParser.Parsing.Parsers
                     TargetGUID = targetGUID
                 };
 
-                Storage.SpellClicks.Add(spellClick, packet.TimeSpan);
+                //Storage.SpellClicks.Add(spellClick, packet.TimeSpan);
             }
 
             if (isSpellGo)

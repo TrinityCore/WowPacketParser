@@ -148,14 +148,14 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod]
         public static string CreatureDifficulty()
         {
-            if (Storage.CreatureDifficultys.IsEmpty())
+            /*if (Storage.CreatureDifficultys.IsEmpty())
                 return String.Empty;
 
             if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.creature_difficulty))
                 return String.Empty;
 
-            var rowsIns = new List<QueryBuilder.SQLInsertRow>();
-            var rowsUpd = new List<QueryBuilder.SQLUpdateRow>();
+            var rowsIns = new List<SQLInsertRow>();
+            var rowsUpd = new List<SQLUpdateRow>();
             foreach (var creature in Storage.CreatureDifficultys)
             {
                 if (SQLDatabase.CreatureDifficultyStores != null)
@@ -164,7 +164,7 @@ namespace WowPacketParser.SQL.Builders
                     {
                         foreach (var creatureDiff in SQLDatabase.CreatureDifficultyStores)
                         {
-                            var row = new QueryBuilder.SQLUpdateRow();
+                            var row = new SQLUpdateRow();
 
                             if (!Utilities.EqualValues(creature.Key, creatureDiff.Key))
                                 continue;
@@ -201,7 +201,7 @@ namespace WowPacketParser.SQL.Builders
                     }
                     else // insert
                     {
-                        var row = new QueryBuilder.SQLInsertRow();
+                        var row = new SQLInsertRow();
 
                         row.AddValue("ID", creature.Key);
                         row.AddValue("CreatureID", creature.Value.Item1.CreatureID);
@@ -222,7 +222,7 @@ namespace WowPacketParser.SQL.Builders
                 }
                 else // insert
                 {
-                    var row = new QueryBuilder.SQLInsertRow();
+                    var row = new SQLInsertRow();
 
                     row.AddValue("ID", creature.Key);
                     row.AddValue("CreatureID", creature.Value.Item1.CreatureID);
@@ -242,8 +242,10 @@ namespace WowPacketParser.SQL.Builders
                 }
             }
 
-            return new QueryBuilder.SQLInsert("creature_difficulty", rowsIns).Build() +
-                new QueryBuilder.SQLUpdate(rowsUpd).Build();
+            return new SQLInsert("creature_difficulty", rowsIns).Build() +
+                new SQLUpdate(rowsUpd).Build();
+                */
+            return string.Empty;
         }
 
         [BuilderMethod]

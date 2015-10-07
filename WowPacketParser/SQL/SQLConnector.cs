@@ -14,7 +14,7 @@ namespace WowPacketParser.SQL
 
         public static bool Enabled = Settings.DBEnabled;
 
-        private static void Connect()
+        public static void Connect()
         {
             if (!Enabled)
             {

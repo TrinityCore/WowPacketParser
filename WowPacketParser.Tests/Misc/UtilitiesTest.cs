@@ -156,19 +156,21 @@ namespace WowPacketParser.Tests.Misc
         [Test]
         public void TestGetFieldsAndAttribute()
         {
-            var a = Utilities.GetFieldsAndAttribute<TestNone, FieldTestAttribute>();
-            var b = Utilities.GetFieldsAndAttribute<TestFoo, FieldTestAttribute>();
+            var a = Utilities.GetFieldsAndAttributes<TestNone, FieldTestAttribute>();
+            var b = Utilities.GetFieldsAndAttributes<TestFoo, FieldTestAttribute>();
 
             Assert.IsNull(a);
             Assert.IsNotNull(b);
 
             Assert.AreEqual(2, b.Count);
 
-            CollectionAssert.Contains(b.Select(tuple => tuple.Item1), typeof(TestFoo).GetField("Bar"));
-            CollectionAssert.Contains(b.Select(tuple => tuple.Item1), typeof(TestFoo).GetField("Baz"));
-            CollectionAssert.DoesNotContain(b.Select(tuple => tuple.Item1), typeof(TestFoo).GetField("Foo"));
+            CollectionAssert.Contains(b.Select(tuple => tuple.Key), typeof(TestFoo).GetField("Bar"));
+            CollectionAssert.Contains(b.Select(tuple => tuple.Key), typeof(TestFoo).GetField("Baz"));
+            CollectionAssert.DoesNotContain(b.Select(tuple => tuple.Key), typeof(TestFoo).GetField("Foo"));
 
-            CollectionAssert.Contains(b.Select(tuple => tuple.Item2.GetType()), typeof(FieldTestAttribute));
+            foreach (var pair in b)
+                CollectionAssert.Contains(pair.Value.Select(attr => attr.GetType()), typeof(FieldTestAttribute));
+
         }
 
         [Test]

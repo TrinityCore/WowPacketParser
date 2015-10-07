@@ -6,6 +6,7 @@ using System.Linq;
 using Wintellect.PowerCollections;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store
 {
@@ -258,9 +259,16 @@ namespace WowPacketParser.Store
         }
     }
 
-    public class StoreBag<T> : Store, IEnumerable<Tuple<T, TimeSpan?>>
+    public class StoreBag<T> : Store, IEnumerable<Tuple<T, TimeSpan?>> where T : IDataModel
     {
         private readonly ConcurrentBag<Tuple<T, TimeSpan?>> _bag;
+
+        public StoreBag()
+        {
+            Types = new List<SQLOutput>();
+            Enabled = true;
+            _bag = new ConcurrentBag<Tuple<T, TimeSpan?>>();
+        }
 
         public StoreBag(List<SQLOutput> types)
         {
@@ -269,10 +277,36 @@ namespace WowPacketParser.Store
             _bag = Enabled ? new ConcurrentBag<Tuple<T, TimeSpan?>>() : null;
         }
 
+        public StoreBag(List<HotfixSQLOutput> types)
+        {
+            HotfixTypes = types;
+            Enabled = HotfixProcessFlags();
+            _bag = Enabled ? new ConcurrentBag<Tuple<T, TimeSpan?>>() : null;
+        }
+
+        public Tuple<T, TimeSpan?> this[T key]
+        {
+            get
+            {
+                return _bag.FirstOrDefault(c => SQLUtil.GetFields<T>()
+                        .Where(f => f.Item3.Any(g => g.IsPrimaryKey))
+                        .All(f => (f.Item2.GetValue(c).Equals(f.Item2.GetValue(key)))));
+            }
+        }
+
         public void Add(T item, TimeSpan? time)
         {
             if (Enabled)
                 _bag.Add(new Tuple<T, TimeSpan?>(item, time));
+        }
+
+        public bool ContainsKey(T key)
+        {
+            return _bag.Any(
+                c =>
+                    SQLUtil.GetFields<T>()
+                        .Where(f => f.Item3.Any(g => g.IsPrimaryKey))
+                        .All(f => (f.Item2.GetValue(c).Equals(f.Item2.GetValue(key)))));
         }
 
         public override void Clear()
