@@ -133,8 +133,8 @@
     <Compile Include="Enums\BattlegroundListFlags.cs" />
     <Compile Include="Enums\BattlegroundStatus.cs" />
     <Compile Include="Enums\BattlegroundUpdateFlags.cs" />
+    <Compile Include="Enums\Battlenet\Command.cs" />
     <Compile Include="Enums\Battlenet\BattlenetChannel.cs" />
-    <Compile Include="Enums\Battlenet\BattlenetOpcode.cs" />
     <Compile Include="Enums\BillingFlag.cs" />
     <Compile Include="Enums\CalendarError.cs" />
     <Compile Include="Enums\CalendarEventStatus.cs" />
@@ -421,7 +421,6 @@
     <Compile Include="Parsing\Parsers\ArchaelogyHandler.cs" />
     <Compile Include="Parsing\Parsers\AuctionHouseHandler.cs" />
     <Compile Include="Parsing\Parsers\BattlegroundHandler.cs" />
-    <Compile Include="Parsing\Parsers\BattlenetHandler.cs" />
     <Compile Include="Parsing\Parsers\BattlenetModuleHandler.cs" />
     <Compile Include="Parsing\Parsers\CalendarHandler.cs" />
     <Compile Include="Parsing\Parsers\ChannelHandler.cs" />

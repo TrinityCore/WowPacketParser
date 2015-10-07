@@ -26,10 +26,10 @@ namespace WowPacketParser.Misc
             Header.Direction = packet.Direction;
         }
 
-        public string GetHeader()
+        public string GetHeader(string packetName)
         {
             return string.Format("{0}: {1} (0x{2}) Channel: {3} Length: {4} Time: {5} Number: {6}",
-                Stream.Direction, BattlenetOpcodeName.GetName(Header.Opcode, (byte)Header.Channel, Stream.Direction), Header.Opcode.ToString("X2"), Header.Channel,
+                Stream.Direction, packetName, Header.Opcode.ToString("X2"), Header.Channel,
                 Stream.Length, Stream.Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
                 Stream.Number);
         }
@@ -69,55 +69,6 @@ namespace WowPacketParser.Misc
             return value;
         }
 
-        public T Read<T>()
-        {
-            var type = typeof(T).IsEnum ? typeof(T).GetEnumUnderlyingType() : typeof(T);
-            object value;
-            switch (Type.GetTypeCode(type))
-            {
-                case TypeCode.Boolean:
-                    value = Stream.ReadBoolean();
-                    break;
-                case TypeCode.SByte:
-                    value = Stream.ReadSByte();
-                    break;
-                case TypeCode.Byte:
-                    value = Stream.ReadByte();
-                    break;
-                case TypeCode.Char:
-                    value = Stream.ReadChar();
-                    break;
-                case TypeCode.Int16:
-                    value = Stream.ReadInt16();
-                    break;
-                case TypeCode.UInt16:
-                    value = Stream.ReadUInt16();
-                    break;
-                case TypeCode.Int32:
-                    value = Stream.ReadInt32();
-                    break;
-                case TypeCode.UInt32:
-                    value = Stream.ReadUInt32();
-                    break;
-                case TypeCode.Int64:
-                    value = Stream.ReadInt64();
-                    break;
-                case TypeCode.UInt64:
-                    value = Stream.ReadUInt64();
-                    break;
-                case TypeCode.Single:
-                    value = Stream.ReadSingle();
-                    break;
-                case TypeCode.Double:
-                    value = Stream.ReadDouble();
-                    break;
-                default:
-                    throw new InvalidCastException("");
-            }
-
-            return (T)value;
-        }
-
         public byte[] ReadBytes(int count)
         {
             _count = 0;
@@ -132,6 +83,7 @@ namespace WowPacketParser.Misc
             return Encoding.UTF8.GetString(ReadBytes(count));
         }
 
+        // TODO: Add "minValue" parameter, return value + minValue, needed for proper enum decoding
         public T Read<T>(int bits)
         {
             ulong value = 0;
@@ -140,9 +92,8 @@ namespace WowPacketParser.Misc
             {
                 if ((_count % 8) == 0)
                 {
-                    _bytePart = Read<byte>();
-
-                    ProcessedBytes += 1;
+                    _bytePart = Stream.ReadByte();
+                    ++ProcessedBytes;
                 }
 
                 var shiftedBits = _count & 7;
@@ -159,7 +110,7 @@ namespace WowPacketParser.Misc
                 _count += bitsToRead;
             }
 
-            return (T)Convert.ChangeType(value, typeof(T));
+            return (T)Convert.ChangeType(value, typeof(T).IsEnum ? typeof(T).GetEnumUnderlyingType() : typeof(T));
         }
 
         public string ReadFourCC()

@@ -6,7 +6,7 @@ namespace WowPacketParser.Enums.Battlenet
         Authentication = 0,
         Connection = 1,
         WoWRealm = 2,
-        Friend = 3,
+        Friends = 3,
         Presence = 4,
         Chat = 5,
         Support = 7,
