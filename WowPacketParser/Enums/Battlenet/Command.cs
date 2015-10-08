@@ -1,4 +1,7 @@
-﻿namespace WowPacketParser.Enums.Battlenet
+﻿using System;
+using System.Collections.Generic;
+
+namespace WowPacketParser.Enums.Battlenet
 {
     public enum AuthenticationClientCommand : ushort
     {
@@ -125,5 +128,41 @@
         ResolveToonHandleToNameResponse = 2,
         ResolveToonNameToHandleResponse = 3,
         SettingsAvailable = 4,
+    }
+
+    public static class CommandNames
+    {
+        private static readonly Dictionary<Tuple<BattlenetChannel, Direction>, Type> _commandTypes = new Dictionary<Tuple<BattlenetChannel, Direction>, Type>()
+        {
+            { Tuple.Create(BattlenetChannel.Authentication, Direction.BNClientToServer), typeof(AuthenticationClientCommand) },
+            { Tuple.Create(BattlenetChannel.Authentication, Direction.BNServerToClient), typeof(AuthenticationServerCommand) },
+            { Tuple.Create(BattlenetChannel.Connection, Direction.BNClientToServer), typeof(ConnectionClientCommand) },
+            { Tuple.Create(BattlenetChannel.Connection, Direction.BNServerToClient), typeof(ConnectionServerCommand) },
+            { Tuple.Create(BattlenetChannel.WoWRealm, Direction.BNClientToServer), typeof(WoWRealmClientCommand) },
+            { Tuple.Create(BattlenetChannel.WoWRealm, Direction.BNServerToClient), typeof(WoWRealmServerCommand) },
+            { Tuple.Create(BattlenetChannel.Friends, Direction.BNClientToServer), typeof(FriendsClientCommand) },
+            { Tuple.Create(BattlenetChannel.Friends, Direction.BNServerToClient), typeof(FriendsServerCommand) },
+            { Tuple.Create(BattlenetChannel.Presence, Direction.BNClientToServer), typeof(PresenceClientCommand) },
+            { Tuple.Create(BattlenetChannel.Presence, Direction.BNServerToClient), typeof(PresenceServerCommand) },
+            { Tuple.Create(BattlenetChannel.Chat, Direction.BNClientToServer), typeof(ChatClientCommand) },
+            { Tuple.Create(BattlenetChannel.Chat, Direction.BNServerToClient), typeof(ChatServerCommand) },
+            { Tuple.Create(BattlenetChannel.Support, Direction.BNClientToServer), typeof(SupportClientCommand) },
+            { Tuple.Create(BattlenetChannel.Support, Direction.BNServerToClient), typeof(SupportServerCommand) },
+            { Tuple.Create(BattlenetChannel.Achievement, Direction.BNClientToServer), typeof(AchievementClientCommand) },
+            { Tuple.Create(BattlenetChannel.Achievement, Direction.BNServerToClient), typeof(AchievementServerCommand) },
+            { Tuple.Create(BattlenetChannel.Cache, Direction.BNClientToServer), typeof(CacheClientCommand) },
+            { Tuple.Create(BattlenetChannel.Cache, Direction.BNServerToClient), typeof(CacheServerCommand) },
+            { Tuple.Create(BattlenetChannel.Profile, Direction.BNClientToServer), typeof(ProfileClientCommand) },
+            { Tuple.Create(BattlenetChannel.Profile, Direction.BNServerToClient), typeof(ProfileServerCommand) },
+        };
+
+        public static string Get(ushort command, BattlenetChannel channel, Direction direction)
+        {
+            var key = Tuple.Create(channel, direction);
+            if (_commandTypes.ContainsKey(key))
+                return _commandTypes[key].GetEnumName(command);
+
+            return "Unknown";
+        }
     }
 }

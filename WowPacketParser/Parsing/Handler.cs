@@ -188,21 +188,9 @@ namespace WowPacketParser.Parsing
             }
         }
 
-        private class BattlenetHandler
+        private static Dictionary<BattlenetPacketHeader, Action<BattlenetPacket>> LoadDefaultBattlenetHandlers()
         {
-            public BattlenetHandler(Action<BattlenetPacket> handler, string name)
-            {
-                Handler = handler;
-                PacketName = name;
-            }
-
-            public Action<BattlenetPacket> Handler { get; private set; }
-            public string PacketName { get; private set; }
-        }
-
-        private static Dictionary<BattlenetPacketHeader, BattlenetHandler> LoadDefaultBattlenetHandlers()
-        {
-            return LoadBattlenetHandlers(new Dictionary<BattlenetPacketHeader, BattlenetHandler>(), Assembly.GetExecutingAssembly());
+            return LoadBattlenetHandlers(new Dictionary<BattlenetPacketHeader, Action<BattlenetPacket>>(), Assembly.GetExecutingAssembly());
         }
 
         public static void LoadBattlenetHandlers(Assembly asm)
@@ -211,34 +199,34 @@ namespace WowPacketParser.Parsing
             LoadBattlenetHandlers(BattlenetHandlers, asm);
         }
 
-        private static Dictionary<BattlenetPacketHeader, BattlenetHandler> LoadBattlenetHandlers(Dictionary<BattlenetPacketHeader, BattlenetHandler> handlers, Assembly asm)
+        private static Dictionary<BattlenetPacketHeader, Action<BattlenetPacket>> LoadBattlenetHandlers(Dictionary<BattlenetPacketHeader, Action<BattlenetPacket>> handlers, Assembly asm)
         {
             foreach (var type in asm.GetTypes())
                 foreach (var methodInfo in type.GetMethods())
                     foreach (var msgAttr in (BattlenetParserAttribute[])methodInfo.GetCustomAttributes(typeof(BattlenetParserAttribute), false))
-                        handlers.Add(msgAttr.Header, new BattlenetHandler((Action<BattlenetPacket>)Delegate.CreateDelegate(typeof(Action<BattlenetPacket>), methodInfo), msgAttr.CommandName));
+                        handlers.Add(msgAttr.Header, (Action<BattlenetPacket>)Delegate.CreateDelegate(typeof(Action<BattlenetPacket>), methodInfo));
 
             return handlers;
         }
 
-        private static readonly Dictionary<BattlenetPacketHeader, BattlenetHandler> BattlenetHandlers = LoadDefaultBattlenetHandlers();
+        private static readonly Dictionary<BattlenetPacketHeader, Action<BattlenetPacket>> BattlenetHandlers = LoadDefaultBattlenetHandlers();
 
         public static void ParseBattlenet(Packet packet)
         {
             try
             {
                 var bnetPacket = new BattlenetPacket(packet);
-                BattlenetHandler handler;
+                Action<BattlenetPacket> handler;
+
+                bnetPacket.Stream.WriteLine(bnetPacket.GetHeader());
 
                 if (BattlenetHandlers.TryGetValue(bnetPacket.Header, out handler))
                 {
-                    bnetPacket.Stream.WriteLine(bnetPacket.GetHeader(handler.PacketName));
-                    handler.Handler(bnetPacket);
+                    handler(bnetPacket);
                     packet.Status = ParsedStatus.Success;
                 }
                 else
                 {
-                    bnetPacket.Stream.WriteLine(bnetPacket.GetHeader("Unknown"));
                     packet.AsHex();
                     packet.Status = ParsedStatus.NotParsed;
                 }

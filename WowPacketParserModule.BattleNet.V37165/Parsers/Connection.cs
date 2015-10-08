@@ -20,49 +20,48 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
         [BattlenetParser(ConnectionClientCommand.DisconnectRequest)]
         public static void HandleDisconnectRequest(BattlenetPacket packet)
         {
-            packet.Read<ushort>("Error", 16);
-            packet.Read<uint>("Timeout", 32);
+            packet.Read<ushort>("Error", 0, 16);
+            packet.Read<uint>("Timeout", 0, 32);
         }
 
         [BattlenetParser(ConnectionClientCommand.ConnectionClosing)]
         public static void HandleConnectionClosing(BattlenetPacket packet)
         {
-            var packets = packet.Read<int>(6);
+            var packets = packet.Read<int>(0, 6);
             for (var i = 0; i < packets; ++i)
             {
                 packet.ReadFourCC("Command", i);
-                packet.Read<uint>("Time", i, 32);
-                packet.Read<ushort>("Size", i, 16);
-                packet.ReadFourCC("Layer", i, 16);
-                packet.Read<ushort>("Offset", i, 16);
+                packet.Read<uint>("Time", 0, 32, i);
+                packet.Read<ushort>("Size", 0, 16, i);
+                packet.ReadFourCC("Layer", 0, 16, i);
+                packet.Read<ushort>("Offset", 0, 16, i);
             }
 
-            packet.Read<ClosingReason>("Reason", 4);
-            packet.ReadBytes("BadData", packet.Read<int>(8));
+            packet.Read<ClosingReason>("Reason", 0, 4);
+            packet.ReadByteArray("BadData", 0, 8);
 
-            if (packet.Read<bool>(1))
+            if (packet.ReadBoolean())
             {
-                packet.Read<ushort>("Command", 6);
-                if (packet.Read<bool>(1))
-                    packet.Read<ushort>("Channel", 4);
+                packet.Read<ushort>("Command", 0, 6);
+                if (packet.ReadBoolean())
+                    packet.Read<ushort>("Channel", 0, 4);
             }
 
-            packet.Read<uint>("Now", 32);
+            packet.Read<uint>("Now", 0, 32);
         }
 
         [BattlenetParser(ConnectionServerCommand.Boom)]
         public static void HandleBoom(BattlenetPacket packet)
         {
-            packet.Read<ushort>("Error", 16);
+            packet.Read<ushort>("Error", 0, 16);
         }
 
         public static void ReadRegulatorInfo(BattlenetPacket packet, string fieldName)
         {
-            var hasLeakyBucket = packet.Read<bool>(1);
-            if (hasLeakyBucket)
+            if (packet.ReadBoolean())
             {
-                packet.Read<uint>("Threshold", 32, fieldName);
-                packet.Read<uint>("Rate", 32, fieldName);
+                packet.Read<uint>("Threshold", 0, 32, fieldName);
+                packet.Read<uint>("Rate", 0, 32, fieldName);
             }
         }
 
@@ -75,7 +74,7 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
         [BattlenetParser(ConnectionServerCommand.ServerVersion)]
         public static void HandleServerVersion(BattlenetPacket packet)
         {
-            packet.Read<uint>("Version", 32);
+            packet.Read<uint>("Version", 0, 32);
         }
 
         [BattlenetParser(ConnectionServerCommand.STUNServers)]

@@ -19,56 +19,55 @@ namespace WowPacketParser.Parsing
         }
 
         public BattlenetParserAttribute(AuthenticationClientCommand command)
-            : this((ushort)command, BattlenetChannel.Authentication, Direction.BNClientToServer) { CommandName = command.ToString(); }
+            : this((ushort)command, BattlenetChannel.Authentication, Direction.BNClientToServer) { }
         public BattlenetParserAttribute(AuthenticationServerCommand command)
-            : this((ushort)command, BattlenetChannel.Authentication, Direction.BNServerToClient) { CommandName = command.ToString(); }
+            : this((ushort)command, BattlenetChannel.Authentication, Direction.BNServerToClient) { }
 
         public BattlenetParserAttribute(ConnectionClientCommand command)
-            : this((ushort)command, BattlenetChannel.Connection, Direction.BNClientToServer) { CommandName = command.ToString(); }
+            : this((ushort)command, BattlenetChannel.Connection, Direction.BNClientToServer) { }
         public BattlenetParserAttribute(ConnectionServerCommand command)
-            : this((ushort)command, BattlenetChannel.Connection, Direction.BNServerToClient) { CommandName = command.ToString(); }
+            : this((ushort)command, BattlenetChannel.Connection, Direction.BNServerToClient) { }
 
         public BattlenetParserAttribute(WoWRealmClientCommand command)
-            : this((ushort)command, BattlenetChannel.WoWRealm, Direction.BNClientToServer) { CommandName = command.ToString(); }
+            : this((ushort)command, BattlenetChannel.WoWRealm, Direction.BNClientToServer) { }
         public BattlenetParserAttribute(WoWRealmServerCommand command)
-            : this((ushort)command, BattlenetChannel.WoWRealm, Direction.BNServerToClient) { CommandName = command.ToString(); }
+            : this((ushort)command, BattlenetChannel.WoWRealm, Direction.BNServerToClient) { }
 
         public BattlenetParserAttribute(FriendsClientCommand command)
-            : this((ushort)command, BattlenetChannel.Friends, Direction.BNClientToServer) { CommandName = command.ToString(); }
+            : this((ushort)command, BattlenetChannel.Friends, Direction.BNClientToServer) {  }
         public BattlenetParserAttribute(FriendsServerCommand command)
-            : this((ushort)command, BattlenetChannel.Friends, Direction.BNServerToClient) { CommandName = command.ToString(); }
+            : this((ushort)command, BattlenetChannel.Friends, Direction.BNServerToClient) {  }
 
         public BattlenetParserAttribute(PresenceClientCommand command)
-            : this((ushort)command, BattlenetChannel.Presence, Direction.BNClientToServer) { CommandName = command.ToString(); }
+            : this((ushort)command, BattlenetChannel.Presence, Direction.BNClientToServer) { }
         public BattlenetParserAttribute(PresenceServerCommand command)
-            : this((ushort)command, BattlenetChannel.Presence, Direction.BNServerToClient) { CommandName = command.ToString(); }
+            : this((ushort)command, BattlenetChannel.Presence, Direction.BNServerToClient) { }
 
         public BattlenetParserAttribute(ChatClientCommand command)
-            : this((ushort)command, BattlenetChannel.Chat, Direction.BNClientToServer) { CommandName = command.ToString(); }
+            : this((ushort)command, BattlenetChannel.Chat, Direction.BNClientToServer) { }
         public BattlenetParserAttribute(ChatServerCommand command)
-            : this((ushort)command, BattlenetChannel.Chat, Direction.BNServerToClient) { CommandName = command.ToString(); }
+            : this((ushort)command, BattlenetChannel.Chat, Direction.BNServerToClient) { }
 
         public BattlenetParserAttribute(SupportClientCommand command)
-            : this((ushort)command, BattlenetChannel.Support, Direction.BNClientToServer) { CommandName = command.ToString(); }
+            : this((ushort)command, BattlenetChannel.Support, Direction.BNClientToServer) { }
         public BattlenetParserAttribute(SupportServerCommand command)
-            : this((ushort)command, BattlenetChannel.Support, Direction.BNServerToClient) { CommandName = command.ToString(); }
+            : this((ushort)command, BattlenetChannel.Support, Direction.BNServerToClient) { }
 
         public BattlenetParserAttribute(AchievementClientCommand command)
-            : this((ushort)command, BattlenetChannel.Achievement, Direction.BNClientToServer) { CommandName = command.ToString(); }
+            : this((ushort)command, BattlenetChannel.Achievement, Direction.BNClientToServer) { }
         public BattlenetParserAttribute(AchievementServerCommand command)
-            : this((ushort)command, BattlenetChannel.Achievement, Direction.BNServerToClient) { CommandName = command.ToString(); }
+            : this((ushort)command, BattlenetChannel.Achievement, Direction.BNServerToClient) { }
 
         public BattlenetParserAttribute(CacheClientCommand command)
-            : this((ushort)command, BattlenetChannel.Cache, Direction.BNClientToServer) { CommandName = command.ToString(); }
+            : this((ushort)command, BattlenetChannel.Cache, Direction.BNClientToServer) { }
         public BattlenetParserAttribute(CacheServerCommand command)
-            : this((ushort)command, BattlenetChannel.Cache, Direction.BNServerToClient) { CommandName = command.ToString(); }
+            : this((ushort)command, BattlenetChannel.Cache, Direction.BNServerToClient) { }
 
         public BattlenetParserAttribute(ProfileClientCommand command)
-            : this((ushort)command, BattlenetChannel.Profile, Direction.BNClientToServer) { CommandName = command.ToString(); }
+            : this((ushort)command, BattlenetChannel.Profile, Direction.BNClientToServer) { }
         public BattlenetParserAttribute(ProfileServerCommand command)
-            : this((ushort)command, BattlenetChannel.Profile, Direction.BNServerToClient) { CommandName = command.ToString(); }
+            : this((ushort)command, BattlenetChannel.Profile, Direction.BNServerToClient) { }
 
         public BattlenetPacketHeader Header { get; private set; }
-        public string CommandName { get; private set; }
     }
 }

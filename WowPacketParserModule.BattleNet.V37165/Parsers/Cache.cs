@@ -11,35 +11,35 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
         [BattlenetParser(CacheClientCommand.GetStreamItemsRequest)]
         public static void HandleGetStreamItemsRequest(BattlenetPacket packet)
         {
-            packet.Read<uint>(31);
-            packet.Read<uint>("Token", 32);
-            packet.Stream.AddValue("ReferenceTime", packet.Read<uint>(32) + int.MinValue);
-            packet.Read<StreamDirection>("Direction", 1);
-            packet.Read<byte>("MaxItems", 6);
+            packet.ReadSkip(31);
+            packet.Read<uint>("Token", 0, 32);
+            packet.Read<uint>("ReferenceTime", int.MinValue, 32);
+            packet.Read<StreamDirection>("Direction", 0, 1);
+            packet.Read<byte>("MaxItems", 0, 6);
             packet.ReadFourCC("Locale");
-            if (packet.Read<bool>(1))
+            if (packet.ReadBoolean())
             {
                 packet.ReadFourCC("ItemName");
                 packet.ReadFourCC("Channel");
             }
             else
-                packet.Read<ushort>("Index", 16);
+                packet.Read<ushort>("Index", 0, 16);
         }
 
         [BattlenetParser(CacheServerCommand.GetStreamItemsResponse)]
         public static void HandleGetStreamItemsResponse(BattlenetPacket packet)
         {
-            packet.Read<ushort>("Offset", 16);
-            packet.Read<ushort>("TotalNumItems", 16);
-            packet.Read<uint>("Token", 32);
-            var items = packet.Read<byte>(6);
+            packet.Read<ushort>("Offset", 0, 16);
+            packet.Read<ushort>("TotalNumItems", 0, 16);
+            packet.Read<uint>("Token", 0, 32);
+            var items = packet.Read<byte>(0, 6);
             for (var i = 0; i < items; ++i)
             {
-                packet.ReadString("Type", 4, "Items", i);
+                packet.ReadFixedLengthString("Type", 4, "Items", i);
                 packet.ReadFourCC("Region", "Items", i);
-                packet.Stream.AddValue("ModuleId", Utilities.ByteArrayToHexString(packet.ReadBytes(32)), "Items", i);
-                packet.Read<uint>(27);
-                packet.Read<uint>("PublicationTime", 32, "Items", i);
+                packet.ReadBytes("ModuleId", 32, "Items", i);
+                packet.ReadSkip(27);
+                packet.Read<uint>("PublicationTime", 0, 32, "Items", i);
             }
         }
     }

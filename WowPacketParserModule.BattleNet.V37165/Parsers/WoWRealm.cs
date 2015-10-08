@@ -20,55 +20,55 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
         [BattlenetParser(WoWRealmClientCommand.JoinRequestV2)]
         public static void HandleJoinRequestV2(BattlenetPacket packet)
         {
-            packet.Read<uint>("ClientSalt", 32);
-            packet.Read<uint>(20);
-            packet.Read<byte>("Region", 8);
-            packet.Read<short>(12);
-            packet.Read<byte>("Site", 8);
-            packet.Read<uint>("Realm", 32);
+            packet.Read<uint>("ClientSalt", 0, 32);
+            packet.ReadSkip(20);
+            packet.Read<byte>("Region", 0, 8);
+            packet.ReadSkip(12);
+            packet.Read<byte>("Site", 0, 8);
+            packet.Read<uint>("Realm", 0, 32);
         }
 
         [BattlenetParser(WoWRealmClientCommand.MultiLogonRequestV2)]
         public static void HandleMultiLogonRequestV2(BattlenetPacket packet)
         {
-            packet.Read<uint>("ClientSalt", 32);
+            packet.Read<uint>("ClientSalt", 0, 32);
         }
 
         [BattlenetParser(WoWRealmServerCommand.ListSubscribeResponse)]
         public static void HandleListSubscribeResponse(BattlenetPacket packet)
         {
-            if (packet.Read<bool>(1))
+            if (packet.ReadBoolean())
             {
-                packet.Read<WowAuthResult>("Failure", 8);
+                packet.Read<WowAuthResult>("Failure", 0, 8);
                 return;
             }
 
-            var charNumberCount = packet.Read<int>(7);
+            var charNumberCount = packet.Read<int>(0, 7);
             for (var i = 0; i < charNumberCount; ++i)
             {
-                packet.Read<byte>("Region", 8, "ToonCountEntry", i);
-                packet.Read<short>(12);
-                packet.Read<byte>("Site", 8, "ToonCountEntry", i);
-                packet.Read<uint>("Realm", 32, "ToonCountEntry", i);
-                packet.Read<short>("Count", 16, "ToonCountEntry", i);
+                packet.Read<byte>("Region", 0, 8, "ToonCountEntry", i);
+                packet.ReadSkip(12);
+                packet.Read<byte>("Site", 0, 8, "ToonCountEntry", i);
+                packet.Read<uint>("Realm", 0, 32, "ToonCountEntry", i);
+                packet.Read<short>("Count", 0, 16, "ToonCountEntry", i);
             }
         }
 
         [BattlenetParser(WoWRealmServerCommand.ListUpdate)]
         public static void HandleListUpdate(BattlenetPacket packet)
         {
-            if (packet.Read<bool>(1))
+            if (packet.ReadBoolean())
             {
-                packet.Read<uint>("Category", 32);
+                packet.Read<uint>("Category", 0, 32);
                 packet.ReadSingle("Population");
-                packet.Read<byte>("StateFlags", 8);
-                packet.Read<uint>(19);
-                packet.Stream.AddValue("Type", packet.Read<uint>(32) + int.MinValue);
-                packet.ReadString("Name", packet.Read<int>(10));
-                if (packet.Read<bool>(1))
+                packet.Read<byte>("StateFlags", 0, 8);
+                packet.ReadSkip(19);
+                packet.Read<uint>("Type", int.MinValue, 32);
+                packet.ReadString("Name", 0, 10);
+                if (packet.ReadBoolean())
                 {
-                    packet.ReadString("Version", packet.Read<int>(5), "PrivilegedData");
-                    packet.Read<uint>("ConfigId", 32, "PrivilegedData");
+                    packet.ReadString("Version", 0, 5, "PrivilegedData");
+                    packet.Read<uint>("ConfigId", 0, 32, "PrivilegedData");
 
                     var ip = packet.ReadBytes(4);
                     var port = packet.ReadBytes(2);
@@ -78,43 +78,42 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
                     packet.Stream.AddValue("Address", new IPEndPoint(new IPAddress(ip), BitConverter.ToUInt16(port, 0)), "PrivilegedData");
                 }
 
-                packet.Read<RealmInfoFlags>("InfoFlags", 8);
+                packet.Read<RealmInfoFlags>("InfoFlags", 0, 8);
             }
 
-            packet.Read<byte>("Region", 8);
-            packet.Read<short>(12);
-            packet.Read<byte>("Site", 8);
-            packet.Read<uint>("Realm", 32);
+            packet.Read<byte>("Region", 0, 8);
+            packet.ReadSkip(12);
+            packet.Read<byte>("Site", 0, 8);
+            packet.Read<uint>("Realm", 0, 32);
         }
 
         [BattlenetParser(WoWRealmServerCommand.ToonReady)]
         public static void HandleToonReady(BattlenetPacket packet)
         {
-            packet.Read<byte>("Region", 8, "Name");
+            packet.Read<byte>("Region", 0, 8, "Name");
             packet.ReadFourCC("ProgramId", "Name");
-            packet.Read<uint>("Realm", 32, "Name");
-            packet.ReadString("Name", packet.Read<int>(7) + 2, "Name");
-            packet.Read<uint>(21);
-            packet.Read<ulong>("Id", 64, "ProfileAddress");
-            packet.Read<uint>("Label", 32, "ProfileAddress");
-            packet.Read<uint>(21);
-            packet.Read<ulong>("Id", 64, "Handle");
-            packet.Read<uint>("Realm", 32, "Handle");
-            packet.Read<byte>("Region", 8, "Handle");
+            packet.Read<uint>("Realm", 0, 32, "Name");
+            packet.ReadString("Name", 2, 7, "Name");
+            packet.ReadSkip(21);
+            packet.Read<ulong>("Id", 0, 64, "ProfileAddress");
+            packet.Read<uint>("Label", 0, 32, "ProfileAddress");
+            packet.Read<ulong>("Id", 0, 64, "Handle");
+            packet.Read<uint>("Realm", 0, 32, "Handle");
+            packet.Read<byte>("Region", 0, 8, "Handle");
             packet.ReadFourCC("ProgramId", "Handle");
         }
 
         [BattlenetParser(WoWRealmServerCommand.JoinResponseV2)]
         public static void HandleJoinResponse(BattlenetPacket packet)
         {
-            if (packet.Read<bool>(1))
+            if (packet.ReadBoolean())
             {
-                packet.Read<WowAuthResult>("Failure", 8);
+                packet.Read<WowAuthResult>("Failure", 0, 8);
                 return;
             }
 
-            packet.Read<uint>("ServerSalt", 32);
-            var count = packet.Read<uint>(5);
+            packet.Read<uint>("ServerSalt", 0, 32);
+            var count = packet.Read<uint>(0, 5);
             for (var i = 0; i < count; ++i)
             {
                 var ip = packet.ReadBytes(4);
@@ -125,7 +124,7 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
                 packet.Stream.AddValue("Address", new IPEndPoint(new IPAddress(ip), BitConverter.ToUInt16(port, 0)), "v4", i);
             }
 
-            count = packet.Read<uint>(5);
+            count = packet.Read<uint>(0, 5);
             for (var i = 0; i < count; ++i)
             {
                 var ip = packet.ReadBytes(16);
