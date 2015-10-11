@@ -38,6 +38,7 @@
     <Compile Include="Enums\AccountFlags.cs" />
     <Compile Include="Enums\GameAccountFlags.cs" />
     <Compile Include="Enums\ClosingReason.cs" />
+    <Compile Include="Enums\PresenceFieldType.cs" />
     <Compile Include="Enums\RealmInfoFlags.cs" />
     <Compile Include="Enums\SettingsType.cs" />
     <Compile Include="Enums\StreamDirection.cs" />

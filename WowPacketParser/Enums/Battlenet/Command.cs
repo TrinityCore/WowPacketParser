@@ -61,42 +61,113 @@ namespace WowPacketParser.Enums.Battlenet
 
     public enum FriendsClientCommand : ushort
     {
+        FriendInvite = 1,
+        FriendInviteResponse = 2,
+        FriendRemove = 4,
+        FriendNote = 5,
+        ToonsOfFriendsRequest = 6,
+        BlockAdd = 8,
+        BlockRemove = 10,
+        GetFriendsOfFriend = 11,
+        SendInvitationRequest = 26
     }
 
     public enum FriendsServerCommand : ushort
     {
+        FriendInviteNotify = 1,
+        FriendInviteResult = 3,
+        ToonsOfFriendsNotify = 6,
+        BlockAddFailure = 9,
+        MaxFriendsNotify = 21,
+        SendInvitationResult = 27,
+        FriendInvitationAddedNotify = 28,
+        FriendInvitationRemovedNotify = 29,
+        FriendsListNotify5 = 30,
+        AccountBlockAddedNotify = 31,
+        AccountBlockRemovedNotify = 32,
+        ToonBlockNotify = 33,
+        FriendsOfFriendResult = 34
     }
 
     public enum PresenceClientCommand : ushort
     {
+        UpdateRequest = 0,
+        StatisticsSubscribe = 2
     }
 
     public enum PresenceServerCommand : ushort
     {
+        UpdateNotify = 0,
+        FieldSpecAnnounce = 1,
+        StatisticsUpdate = 3
     }
 
     public enum ChatClientCommand : ushort
     {
+        JoinRequest2 = 0,
+        LeaveRequest = 2,
+        InviteRequest = 3,
+        CreateAndInviteRequest = 10,
+        MessageSend = 11,
+        DatagramConnectionUpdate = 13,
+        ReportSpamRequest = 14,
+        WhisperSend = 19,
+        EnumCategoryDescriptions = 21,
+        EnumConferenceDescriptions = 23,
+        EnumConferenceMemberCounts = 25,
+        GetMemberCountRequest = 31,
+        ModifyChannelListRequest2 = 32,
+        GameDataSendRequest = 34
     }
 
     public enum ChatServerCommand : ushort
     {
+        MembershipChangeNotify = 1,
+        InviteNotify = 4,
+        InviteCanceled = 7,
+        MessageRecv = 11,
+        MessageUndeliverable = 12,
+        DatagramConnectionUpdate = 13,
+        InviteFailed = 15,
+        SystemMessage = 16,
+        MessageBlocked = 18,
+        WhisperRecv = 19,
+        WhisperUndeliverable = 20,
+        CategoryDescriptions = 22,
+        ConferenceDescriptions = 24,
+        ConferenceMemberCounts = 26,
+        JoinNotify2 = 27,
+        ConfigChanged = 29,
+        WhisperEchoRecv = 30,
+        GetMemberCountResponse = 31,
+        ModifyChannelListResponse2 = 33,
+        GameDataSendResponse = 35,
+        GameDataRecv = 36
     }
 
     public enum SupportClientCommand : ushort
     {
+        ComplaintRequest2 = 1
     }
 
     public enum SupportServerCommand : ushort
     {
+        // none
     }
 
     public enum AchievementClientCommand : ushort
     {
+        ListenRequest = 0,
+        CriteriaFlushRequest = 3,
+        SetTrophyCase = 5
     }
 
     public enum AchievementServerCommand : ushort
     {
+        Data = 2,
+        CriteriaFlushResponse = 3,
+        AchievementHandleUpdate = 4,
+        ChangeTrophyCaseResult = 6
     }
 
     public enum CacheClientCommand : ushort
@@ -119,6 +190,11 @@ namespace WowPacketParser.Enums.Battlenet
 
     public enum ProfileClientCommand : ushort
     {
+        ReadRequest = 0,
+        AddressQueryRequest = 1,
+        ResolveToonHandleToNameRequest = 2,
+        ResolveToonNameToHandleRequest = 3,
+        ChangeSettings = 5
     }
 
     public enum ProfileServerCommand : ushort
@@ -127,7 +203,7 @@ namespace WowPacketParser.Enums.Battlenet
         AddressQueryResponse = 1,
         ResolveToonHandleToNameResponse = 2,
         ResolveToonNameToHandleResponse = 3,
-        SettingsAvailable = 4,
+        SettingsAvailable = 4
     }
 
     public static class CommandNames
