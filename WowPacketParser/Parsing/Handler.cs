@@ -188,12 +188,20 @@ namespace WowPacketParser.Parsing
             }
         }
 
-        private static Dictionary<BattlenetPacketHeader, Action<BattlenetPacket>> LoadBattlenetHandlers()
+        private static Dictionary<BattlenetPacketHeader, Action<BattlenetPacket>> LoadDefaultBattlenetHandlers()
         {
-            var handlers = new Dictionary<BattlenetPacketHeader, Action<BattlenetPacket>>();
-            var currentAsm = Assembly.GetExecutingAssembly();
+            return LoadBattlenetHandlers(new Dictionary<BattlenetPacketHeader, Action<BattlenetPacket>>(), Assembly.GetExecutingAssembly());
+        }
 
-            foreach (var type in currentAsm.GetTypes())
+        public static void LoadBattlenetHandlers(Assembly asm)
+        {
+            BattlenetHandlers.Clear();
+            LoadBattlenetHandlers(BattlenetHandlers, asm);
+        }
+
+        private static Dictionary<BattlenetPacketHeader, Action<BattlenetPacket>> LoadBattlenetHandlers(Dictionary<BattlenetPacketHeader, Action<BattlenetPacket>> handlers, Assembly asm)
+        {
+            foreach (var type in asm.GetTypes())
                 foreach (var methodInfo in type.GetMethods())
                     foreach (var msgAttr in (BattlenetParserAttribute[])methodInfo.GetCustomAttributes(typeof(BattlenetParserAttribute), false))
                         handlers.Add(msgAttr.Header, (Action<BattlenetPacket>)Delegate.CreateDelegate(typeof(Action<BattlenetPacket>), methodInfo));
@@ -201,7 +209,7 @@ namespace WowPacketParser.Parsing
             return handlers;
         }
 
-        private static readonly Dictionary<BattlenetPacketHeader, Action<BattlenetPacket>> BattlenetHandlers = LoadBattlenetHandlers();
+        private static readonly Dictionary<BattlenetPacketHeader, Action<BattlenetPacket>> BattlenetHandlers = LoadDefaultBattlenetHandlers();
 
         public static void ParseBattlenet(Packet packet)
         {

@@ -36,6 +36,27 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Pet name", len);
         }
 
+        public static void ReadPetAction(Packet packet, params object[] indexes)
+        {
+            var action = packet.ReadUInt32();
+            var spellID = action & 0xFFFFFF;
+            var slot = (action >> 24);
+
+            packet.AddValue("Action", slot, indexes);
+            packet.AddValue("SpellID", StoreGetters.GetName(StoreNameType.Spell, (int)spellID), indexes);
+        }
+
+        public static void ReadPetFlags(Packet packet, params object[] indexes)
+        {
+            var petModeFlag = packet.ReadUInt32("PetModeAndOrders");
+            var reactState = (petModeFlag >> 0) & 0xFF;
+            var commandState = (petModeFlag >> 8) & 0xFF;
+            var flag = petModeFlag >> 16;
+
+            packet.AddValue("ReactState", (ReactState)reactState, indexes);
+            packet.AddValue("CommandState", (CommandState)commandState, indexes);
+            packet.AddValue("Flag", flag, indexes);
+        }
 
         [Parser(Opcode.SMSG_PET_SPELLS_MESSAGE)]
         public static void HandlePetSpells(Packet packet)
@@ -44,23 +65,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt16("CreatureFamily");
             packet.ReadInt16("Specialization");
             packet.ReadInt32("TimeLimit");
-            packet.ReadInt32("PetModeAndOrders");
+            //packet.ReadInt32("PetModeAndOrders");
+            ReadPetFlags(packet, "PetModeAndOrders");
 
             // ActionButtons
             const int maxCreatureSpells = 10;
             for (var i = 0; i < maxCreatureSpells; i++) // Read pet/vehicle spell ids
-            {
-                var spell16 = packet.ReadUInt16();
-                var spell8 = packet.ReadByte();
-                var spellId = spell16 + (spell8 << 16);
-                var slot = packet.ReadByte();
-
-                if (spellId <= 4)
-                    packet.AddValue("Action", spellId, i);
-                else
-                    packet.AddValue("Spell", StoreGetters.GetName(StoreNameType.Spell, spellId), i);
-                packet.AddValue("Slot", slot, i);
-            }
+                ReadPetAction(packet, "ActionButtons", i);
 
             var int28 = packet.ReadInt32("ActionsCount");
             var int44 = packet.ReadUInt32("CooldownsCount");
@@ -68,7 +79,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             // Actions
             for (int i = 0; i < int28; i++)
-                packet.ReadInt32("Actions", i);
+                ReadPetAction(packet, "Actions", i);
 
             // PetSpellCooldown
             for (int i = 0; i < int44; i++)
@@ -92,9 +103,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandlePetAction(Packet packet)
         {
             packet.ReadPackedGuid128("PetGUID");
-            var action = (uint)packet.ReadUInt16() + (packet.ReadByte() << 16);
-            packet.AddValue("Action", action);
-            packet.ReadByte("Slot");
+
+            ReadPetAction(packet, "Action");
+
             packet.ReadPackedGuid128("TargetGUID");
             packet.ReadVector3("ActionPosition");
         }
@@ -181,10 +192,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandlePetMode(Packet packet)
         {
             packet.ReadPackedGuid128("PetGUID");
-            var petModeFlag = packet.ReadUInt32();
-            packet.AddValue("React state", (ReactState)((petModeFlag >> 8) & 0xFF));
-            packet.AddValue("Command state", (CommandState)((petModeFlag >> 16) & 0xFF));
-            packet.AddValue("Flag", (petModeFlag & 0xFFFF0000), (PetModeFlags)(petModeFlag & 0xFFFF0000));
+            ReadPetFlags(packet, "PetMode");
         }
 
         [Parser(Opcode.CMSG_PET_STOP_ATTACK)]
@@ -199,10 +207,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("PetGUID");
             packet.ReadUInt32("Index");
 
-            //packet.ReadUInt32("Action");
-            var action = (uint)packet.ReadUInt16() + (packet.ReadByte() << 16);
-            packet.AddValue("Action", action);
-            packet.ReadByte("Unk");
+            ReadPetAction(packet, "Action");
         }
 
         public static void ReadPetStableInfo(Packet packet, params object[] indexes)

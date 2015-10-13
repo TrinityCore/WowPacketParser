@@ -770,7 +770,7 @@ namespace WowPacketParser.Enums.Version.V6_1_0_19678
             {Opcode.SMSG_QUERY_PAGE_TEXT_RESPONSE, 0x1F5B},
             {Opcode.SMSG_QUERY_PETITION_RESPONSE, 0x04A2},
             {Opcode.SMSG_QUERY_TIME_RESPONSE, 0x13B1},
-            {Opcode.SMSG_QUESTGIVER_INVALID_QUEST, 0x01AD},
+            {Opcode.SMSG_QUEST_GIVER_INVALID_QUEST, 0x01AD},
             {Opcode.SMSG_QUEST_GIVER_OFFER_REWARD_MESSAGE, 0x05A0},
             {Opcode.SMSG_QUEST_GIVER_QUEST_COMPLETE, 0x01A7},
             {Opcode.SMSG_QUEST_GIVER_QUEST_DETAILS, 0x0925},

@@ -17,8 +17,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_GM_TICKET_CASE_STATUS)]
         public static void HandleGMTicketCaseStatus(Packet packet)
         {
-            packet.ReadTime("OldestTicketTime");
-            packet.ReadTime("UpdateTime");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V6_2_2_20444))
+            {
+                packet.ReadTime("OldestTicketTime");
+                packet.ReadTime("UpdateTime");
+            }
 
             var int24 = packet.ReadInt32("CasesCount");
             for (int i = 0; i < int24; i++)
@@ -276,31 +279,32 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("GuildName", guildNameLength, idx);
         }
 
-        public static void Read5E4383(Packet packet, params object[] idx)
+        public static void ReadCliSupportTicketLFGListSearchResult(Packet packet, params object[] idx)
         {
             LfgHandler.ReadCliRideTicket(packet, "RideTicket", idx);
-            packet.ReadPackedGuid128("40", idx);
-            packet.ReadPackedGuid128("56", idx);
-            packet.ReadPackedGuid128("72", idx);
+            packet.ReadUInt32("GroupFinderActivityID", idx);
+            packet.ReadPackedGuid128("LastTitleAuthorGuid", idx);
+            packet.ReadPackedGuid128("LastDescriptionAuthorGuid", idx);
+            packet.ReadPackedGuid128("LastVoiceChatAuthorGuid", idx);
 
-            var length88 = packet.ReadBits("88", 8, idx);
-            var length217 = packet.ReadBits("217", 8, idx);
-            var length1242 = packet.ReadBits("1242", 8, idx);
+            var length88 = packet.ReadBits(8);
+            var length217 = packet.ReadBits(11);
+            var length1242 = packet.ReadBits(8);
 
             packet.ResetBitReader();
 
-            packet.ReadWoWString("88", length88, idx);
-            packet.ReadWoWString("217", length217, idx);
-            packet.ReadWoWString("1242", length1242, idx);
+            packet.ReadWoWString("Title", length88, idx);
+            packet.ReadWoWString("Description", length217, idx);
+            packet.ReadWoWString("VoiceChat", length1242, idx);
         }
 
-        public static void Read5E3DFB(Packet packet, params object[] idx)
+        public static void ReadCliSupportTicketLFGListApplicant(Packet packet, params object[] idx)
         {
             LfgHandler.ReadCliRideTicket(packet, "RideTicket", idx);
 
-            var length = packet.ReadBits("32", 9, idx);
+            var length = packet.ReadBits(9);
             packet.ResetBitReader();
-            packet.ReadWoWString("32", length, idx);
+            packet.ReadWoWString("Comment", length, idx);
         }
 
         [Parser(Opcode.CMSG_SUPPORT_TICKET_SUBMIT_COMPLAINT)]
@@ -319,8 +323,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var hasCalendarInfo = packet.ReadBit("HasCalendarInfo");
             var hasPetInfo = packet.ReadBit("HasPetInfo");
             var hasGuildInfo = packet.ReadBit("HasGuildInfo");
-            var has5E4383 = packet.ReadBit("Has5E4383");
-            var has5E3DFB = packet.ReadBit("Has5E3DFB");
+            var has5E4383 = packet.ReadBit("HasLFGListSearchResult");
+            var has5E3DFB = packet.ReadBit("HasLFGListApplicant");
 
             packet.ResetBitReader();
 
@@ -339,10 +343,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 ReadCliSupportTicketGuildInfo(packet, "GuidInfo");
 
             if (has5E4383)
-                Read5E4383(packet, "5E4383");
+                ReadCliSupportTicketLFGListSearchResult(packet, "LFGListSearchResult");
 
             if (has5E3DFB)
-                Read5E3DFB(packet, "5E3DFB");
+                ReadCliSupportTicketLFGListApplicant(packet, "LFGListApplicant");
         }
 
         [Parser(Opcode.SMSG_GM_TICKET_RESOLVE_RESPONSE)]

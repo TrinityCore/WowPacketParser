@@ -89,13 +89,13 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ionic.Zip, Version=1.9.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\DotNetZip.1.9.3\lib\net20\Ionic.Zip.dll</HintPath>
+    <Reference Include="Ionic.Zip, Version=1.9.6.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.9.6\lib\net20\Ionic.Zip.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="MySql.Data, Version=6.8.3.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MySql.Data.6.8.3\lib\net45\MySql.Data.dll</HintPath>
+    <Reference Include="MySql.Data, Version=6.9.7.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.7\lib\net45\MySql.Data.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PowerCollections, Version=1.0.2141.24679, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -133,8 +133,8 @@
     <Compile Include="Enums\BattlegroundListFlags.cs" />
     <Compile Include="Enums\BattlegroundStatus.cs" />
     <Compile Include="Enums\BattlegroundUpdateFlags.cs" />
+    <Compile Include="Enums\Battlenet\Command.cs" />
     <Compile Include="Enums\Battlenet\BattlenetChannel.cs" />
-    <Compile Include="Enums\Battlenet\BattlenetOpcode.cs" />
     <Compile Include="Enums\BillingFlag.cs" />
     <Compile Include="Enums\CalendarError.cs" />
     <Compile Include="Enums\CalendarEventStatus.cs" />
@@ -152,6 +152,7 @@
     <Compile Include="Enums\ChatRestrictionType.cs" />
     <Compile Include="Enums\ChatTag.cs" />
     <Compile Include="Enums\Class.cs" />
+    <Compile Include="Enums\FileCompression.cs" />
     <Compile Include="Enums\ClassMask.cs" />
     <Compile Include="Enums\ClientType.cs" />
     <Compile Include="Enums\ClientVersionBuild.cs" />
@@ -371,6 +372,8 @@
     <Compile Include="Enums\Version\V6_1_2_19802\Opcodes.cs" />
     <Compile Include="Enums\Version\V6_1_2_19802\TutorialAction.cs" />
     <Compile Include="Enums\Version\V6_2_0_20173\Opcodes.cs" />
+    <Compile Include="Enums\Version\V6_2_0_20173\TutorialAction.cs" />
+    <Compile Include="Enums\Version\V6_2_2_20444\Opcodes.cs" />
     <Compile Include="Enums\VictimStates.cs" />
     <Compile Include="Enums\VoidTransferError.cs" />
     <Compile Include="Enums\WardenCheckType.cs" />
@@ -379,6 +382,7 @@
     <Compile Include="Loading\BinaryPacketReader.cs" />
     <Compile Include="Loading\IPacketReader.cs" />
     <Compile Include="Loading\Reader.cs" />
+    <Compile Include="Misc\BattlenetBitStream.cs" />
     <Compile Include="Misc\BattlenetPacket.cs" />
     <Compile Include="Misc\BattlenetPacketHeader.cs" />
     <Compile Include="Misc\BiDictionary.cs" />
@@ -387,6 +391,7 @@
     <Compile Include="Misc\ConcurrentPriorityQueue.cs" />
     <Compile Include="Misc\Configuration.cs" />
     <Compile Include="Misc\Extensions.cs" />
+    <Compile Include="Misc\FileCompressionAttribute.cs" />
     <Compile Include="Misc\Filters.cs" />
     <Compile Include="Misc\WowGuid.cs" />
     <Compile Include="Misc\LfgEntry.cs" />
@@ -417,7 +422,6 @@
     <Compile Include="Parsing\Parsers\ArchaelogyHandler.cs" />
     <Compile Include="Parsing\Parsers\AuctionHouseHandler.cs" />
     <Compile Include="Parsing\Parsers\BattlegroundHandler.cs" />
-    <Compile Include="Parsing\Parsers\BattlenetHandler.cs" />
     <Compile Include="Parsing\Parsers\BattlenetModuleHandler.cs" />
     <Compile Include="Parsing\Parsers\CalendarHandler.cs" />
     <Compile Include="Parsing\Parsers\ChannelHandler.cs" />

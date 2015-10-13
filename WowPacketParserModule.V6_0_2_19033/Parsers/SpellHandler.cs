@@ -597,7 +597,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 packet.ResetBitReader();
 
+                var unused622_1 = false;
+                var unused622_2 = false;
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_2_20444))
+                {
+                    unused622_1 = packet.ReadBit();
+                    unused622_2 = packet.ReadBit();
+                }
+
                 packet.ReadBit("OnHold", i);
+
+                if (unused622_1)
+                    packet.ReadUInt32("Unk_622_1", i);
+
+                if (unused622_2)
+                    packet.ReadUInt32("Unk_622_2", i);
             }
         }
 

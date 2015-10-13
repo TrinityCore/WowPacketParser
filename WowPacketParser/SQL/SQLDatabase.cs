@@ -13,15 +13,46 @@ namespace WowPacketParser.SQL
 {
     public static class SQLDatabase
     {
+        /// <summary>
+        /// Represents a dictionary of ID-Name dictionaries accessed by <see cref="StoreNameType"/>.
+        /// </summary>
         public static readonly Dictionary<StoreNameType, Dictionary<int, string>> NameStores = new Dictionary<StoreNameType, Dictionary<int, string>>();
+
+        /// <summary>
+        /// Represents a list of broadcast id-<see cref="BroadcastText"/> tuples.
+        /// </summary>
         public static readonly ICollection<Tuple<uint, BroadcastText>> BroadcastTextStores = new List<Tuple<uint, BroadcastText>>();
+
+        /// <summary>
+        /// Represents a dictionary of <see cref="CreatureDifficulty"/> accessed by their ids.
+        /// </summary>
         public static readonly Dictionary<uint, CreatureDifficulty> CreatureDifficultyStores = new Dictionary<uint, CreatureDifficulty>();
+
         // Locale
+        /// <summary>
+        /// Represents a dictionary of <see cref="BroadcastTextLocale"/> accessed by a tuple of the broadcast text id and the locale string.
+        /// </summary>
         public static readonly Dictionary<Tuple<uint, string>, BroadcastTextLocale> BroadcastTextLocaleStores = new Dictionary<Tuple<uint, string>, BroadcastTextLocale>();
+
+        /// <summary>
+        /// Represents a dictionary of <see cref="LocalesQuest"/> accessed by a tuple of the quest id and the locale string.
+        /// </summary>
         public static readonly Dictionary<Tuple<uint, string>, LocalesQuest> LocalesQuestStores = new Dictionary<Tuple<uint, string>, LocalesQuest>();
+
+        /// <summary>
+        /// Represents a dictionary of <see cref="LocalesQuestObjectives"/> accessed by a tuple of the quest objective id and the locale string.
+        /// </summary>
         public static readonly Dictionary<Tuple<uint, string>, LocalesQuestObjectives> LocalesQuestObjectiveStores = new Dictionary<Tuple<uint, string>, LocalesQuestObjectives>();
+
         // MapDifficulty
+        /// <summary>
+        /// Represents a dictionary of map difficulties accessed by a tuple of the id and the map id.
+        /// </summary>
         private static readonly Dictionary<Tuple<int, int>, int> MapDifficultyStores = new Dictionary<Tuple<int, int>, int>();
+
+        /// <summary>
+        /// Represents a dictionary of spawn masks accessed by the map id.
+        /// </summary>
         public static readonly Dictionary<int, int> MapSpawnMaskStores = new Dictionary<int, int>();
 
 
@@ -41,15 +72,22 @@ namespace WowPacketParser.SQL
             StoreNameType.Achievement
         };
 
+        /// <summary>
+        /// Loads names of the objects from the database.
+        /// </summary>
         public static void GrabNameData()
         {
             if (!SQLConnector.Connected())
                 throw new DataException("Cannot get DB data without an active DB connection.");
 
             foreach (var objectType in ObjectTypes)
-                NameStores.Add(objectType, GetDict<int, string>(string.Format("SELECT `Id`, `Name` FROM `ObjectNames` WHERE `ObjectType`='{0}';", objectType)));
+                NameStores.Add(objectType, GetDict<int, string>(
+                    $"SELECT `Id`, `Name` FROM `ObjectNames` WHERE `ObjectType`='{objectType}';"));
         }
 
+        /// <summary>
+        /// Loads data necessary for the SQL generation from the database.
+        /// </summary>
         public static void LoadSQL()
         {
             if (!SQLConnector.Connected())
@@ -68,13 +106,17 @@ namespace WowPacketParser.SQL
 
             var endTime = DateTime.Now;
             var span = endTime.Subtract(startTime);
-            Trace.WriteLine(String.Format("SQL loaded in {0}.", span.ToFormattedString()));
+            Trace.WriteLine($"SQL loaded in {span.ToFormattedString()}.");
         }
 
+        /// <summary>
+        /// Loads the broadcast texts form the database.
+        /// </summary>
         private static void LoadBroadcastText()
         {
-            var query = new StringBuilder(string.Format("SELECT ID, Language, MaleText, FemaleText, EmoteID1, EmoteID2, EmoteID3, EmoteDelay1, EmoteDelay2, EmoteDelay3, SoundId, UnkEmoteID, Type FROM {0}.broadcast_text;", Settings.HotfixesDatabase));
-            using (var reader = SQLConnector.ExecuteQuery(query.ToString()))
+            string query =
+                $"SELECT ID, Language, MaleText, FemaleText, EmoteID1, EmoteID2, EmoteID3, EmoteDelay1, EmoteDelay2, EmoteDelay3, SoundId, UnkEmoteID, Type FROM {Settings.HotfixesDatabase}.broadcast_text;";
+            using (var reader = SQLConnector.ExecuteQuery(query))
             {
                 if (reader == null)
                     return;
@@ -107,11 +149,14 @@ namespace WowPacketParser.SQL
             }
         }
 
+        /// <summary>
+        /// Loads the creature difficulties form the database.
+        /// </summary>
         private static void LoadCreatureDifficulty()
         {
-            //                                                  0       1           2           3       4           5       6       7       8       9       10
-            var query = new StringBuilder(string.Format("SELECT ID, CreatureID, FactionID, Expansion, MinLevel, MaxLevel, Flags1, Flags2, Flags3, Flags4, Flags5 FROM {0}.creature_difficulty;", Settings.HotfixesDatabase));
-            using (var reader = SQLConnector.ExecuteQuery(query.ToString()))
+            string query =
+                $"SELECT ID, CreatureID, FactionID, Expansion, MinLevel, MaxLevel, Flags1, Flags2, Flags3, Flags4, Flags5 FROM {Settings.HotfixesDatabase}.creature_difficulty;";
+            using (var reader = SQLConnector.ExecuteQuery(query))
             {
                 if (reader == null)
                     return;
@@ -138,14 +183,15 @@ namespace WowPacketParser.SQL
             }
         }
 
+        /// <summary>
+        /// Loads the localized quest template strings from the database.
+        /// </summary>
         private static void LoadQuestTemplateLocale()
         {
-            //                                                  0       1
-            var query = new StringBuilder(string.Format("SELECT Id, locale, " +
-            //  2            3                 4                5                 6                  7                   8                   9                  10              11
-            "LogTitle, LogDescription, QuestDescription, AreaDescription, PortraitGiverText, PortraitGiverName, PortraitTurnInText, PortraitTurnInName, QuestCompletionLog, VerifiedBuild" +
-            " FROM {0}.quest_template_locale;", Settings.TDBDatabase));
-            using (var reader = SQLConnector.ExecuteQuery(query.ToString()))
+            string query = "SELECT Id, locale, " +
+                        "LogTitle, LogDescription, QuestDescription, AreaDescription, PortraitGiverText, PortraitGiverName, PortraitTurnInText, PortraitTurnInName, QuestCompletionLog, VerifiedBuild" +
+                        $" FROM {Settings.TDBDatabase}.quest_template_locale;";
+            using (var reader = SQLConnector.ExecuteQuery(query))
             {
                 if (reader == null)
                     return;
@@ -173,11 +219,14 @@ namespace WowPacketParser.SQL
             }
         }
 
+        /// <summary>
+        /// Loads the localized quest objective data from the database
+        /// </summary>
         private static void LoadQuestObjectivesLocale()
         {
-            //                                                  0      1       2          3             4            5
-            var query = new StringBuilder(string.Format("SELECT Id, locale, QuestId, StorageIndex, Description, VerifiedBuild FROM {0}.quest_objectives_locale;", Settings.TDBDatabase));
-            using (var reader = SQLConnector.ExecuteQuery(query.ToString()))
+            string query =
+                $"SELECT Id, locale, QuestId, StorageIndex, Description, VerifiedBuild FROM {Settings.TDBDatabase}.quest_objectives_locale;";
+            using (var reader = SQLConnector.ExecuteQuery(query))
             {
                 if (reader == null)
                     return;
@@ -199,11 +248,14 @@ namespace WowPacketParser.SQL
             }
         }
 
+        /// <summary>
+        /// Loads the localized broadcast texts from the database.
+        /// </summary>
         private static void LoadBroadcastTextLocale()
         {
-            //                                                  0   1       2              3                4
-            var query = new StringBuilder(string.Format("SELECT Id, locale, MaleText_lang, FemaleText_lang, VerifiedBuild FROM {0}.broadcast_text_locale;", Settings.HotfixesDatabase));
-            using (var reader = SQLConnector.ExecuteQuery(query.ToString()))
+            string query =
+                $"SELECT Id, locale, MaleText_lang, FemaleText_lang, VerifiedBuild FROM {Settings.HotfixesDatabase}.broadcast_text_locale;";
+            using (var reader = SQLConnector.ExecuteQuery(query))
             {
                 if (reader == null)
                     return;
@@ -224,11 +276,13 @@ namespace WowPacketParser.SQL
             }
         }
 
+        /// <summary>
+        /// Loads the map difficulties from the database.
+        /// </summary>
         private static void LoadMapDifficulty()
         {
-            //                                                  0     1        2
-            var query = new StringBuilder(string.Format("SELECT ID, MapID, DifficultyID FROM {0}.map_difficulty;", Settings.WPPDatabase));
-            using (var reader = SQLConnector.ExecuteQuery(query.ToString()))
+            string query = $"SELECT ID, MapID, DifficultyID FROM {Settings.WPPDatabase}.map_difficulty;";
+            using (var reader = SQLConnector.ExecuteQuery(query))
             {
                 if (reader == null)
                     return;
@@ -281,8 +335,8 @@ namespace WowPacketParser.SQL
         /// <typeparam name="T">Type of the elements of the list of entries (usually uint)</typeparam>
         /// <typeparam name="TK">Type of the struct</typeparam>
         /// <param name="entries">List of entries to select from DB</param>
-        /// <param name="primaryKeyName"></param>
-        /// <param name="database"></param>
+        /// <param name="primaryKeyName">Name of the primary key</param>
+        /// <param name="database">Database name. If null <see cref="Settings.TDBDatabase"/> is used</param>
         /// <returns>Dictionary of structs of type TK</returns>
         public static StoreDictionary<T, TK> GetDict<T, TK>(List<T> entries, string primaryKeyName = "entry", string database = null)
         {
@@ -382,7 +436,7 @@ namespace WowPacketParser.SQL
         /// <param name="entries">List of entries to select from DB</param>
         /// <param name="primaryKeyName1">Name of the first primary key</param>
         /// <param name="primaryKeyName2">Name of the second primary key</param>
-        /// <param name="database">Database name. If null TDB will be used.</param>
+        /// <param name="database">Database name. If null <see cref="Settings.TDBDatabase"/> is used</param>
         /// <returns>Dictionary of structs of type TK</returns>
         public static StoreDictionary<Tuple<T, TG>, TK> GetDict<T, TG, TK>(List<Tuple<T, TG>> entries, string primaryKeyName1, string primaryKeyName2, string database = null)
             where T : struct
@@ -518,7 +572,7 @@ namespace WowPacketParser.SQL
         /// <param name="primaryKeyName1">Name of the first primary key</param>
         /// <param name="primaryKeyName2">Name of the second primary key</param>
         /// <param name="primaryKeyName3">Name of the third primary key</param>
-        /// <param name="database">Database name. If null TDB will be used.</param>
+        /// <param name="database">Database name. If null <see cref="Settings.TDBDatabase"/> is used</param>
         /// <returns>Dictionary of structs of type TK</returns>
         public static StoreDictionary<Tuple<T, TG, TH>, TK> GetDict<T, TG, TH, TK>(List<Tuple<T, TG, TH>> entries, string primaryKeyName1, string primaryKeyName2, string primaryKeyName3, string database = null)
             where T : struct

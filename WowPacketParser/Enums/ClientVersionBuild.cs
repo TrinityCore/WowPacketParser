@@ -110,7 +110,15 @@
         V6_2_0_20182 = 20182,
         V6_2_0_20201 = 20201,
         V6_2_0_20216 = 20216,
-        V6_2_0_20253 = 20253
+        V6_2_0_20253 = 20253,
+        V6_2_0_20338 = 20338,
+        V6_2_2_20444 = 20444,
+        V6_2_2a_20490 = 20490,
+        V6_2_2a_20574 = 20574,
+
+        // Battle.net - should probably not mix this but oh well
+        BattleNetV37165 = 37165,
+
         // ReSharper restore InconsistentNaming
     }
 }

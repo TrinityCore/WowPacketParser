@@ -90,7 +90,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_PVP_LOG_DATA)]
-        public static void HandlePvPLogData434(Packet packet)
+        public static void HandlePvPLogData(Packet packet)
         {
             var bit44 = packet.ReadBit("HasRatings");
             var bit17 = packet.ReadBit("HasWinner");
@@ -123,7 +123,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadUInt32("HealingDone", i);
                 var int80 = packet.ReadUInt32("StatsCount", i);
                 packet.ReadUInt32("PrimaryTalentTree", i);
-                packet.ReadUInt32("Unk1", i);
+                packet.ReadUInt32("NameIndex", i);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_2_20444))
+                    packet.ReadUInt32E<Race>("Race", i);
 
                 for (int j = 0; j < int80; j++)
                     packet.ReadUInt32("Stats", i, j);

@@ -27,7 +27,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadBit("Periodic");
 
-            packet.ReadBitsE<AttackerStateFlags>("Flags", 9);
+            packet.ReadBitsE<AttackerStateFlags>("Flags", ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173) ? 8 : 9);
 
             var bit148 = packet.ReadBit();
             var bit76 = packet.ReadBit("HasLogData");

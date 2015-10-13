@@ -161,6 +161,19 @@ namespace WowPacketParser.Misc
             return true;
         }
 
+        public static string GetCompressedFileExtension(FileCompression value)
+        {
+            FieldInfo fi = value.GetType().GetField(value.ToString());
+
+            FileCompressionAttribute[] attributes =
+                (FileCompressionAttribute[])fi.GetCustomAttributes(typeof(FileCompressionAttribute), false);
+
+            if (attributes.Length == 0)
+                throw new NotImplementedException();
+
+            return attributes[0].Extension;
+        }
+
         /// <summary>
         /// Compares two objects (values) with special cases for floats and strings
         /// </summary>

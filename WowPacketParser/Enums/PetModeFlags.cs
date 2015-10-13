@@ -23,7 +23,8 @@ namespace WowPacketParser.Enums
     {
         Passive    = 0,
         Defensive  = 1,
-        Aggressive = 2
+        Aggressive = 2,
+        Assist     = 3
     }
 
     public enum CommandState
@@ -31,6 +32,7 @@ namespace WowPacketParser.Enums
         Stay    = 0,
         Follow  = 1,
         Attack  = 2,
-        Abandon = 3
+        Abandon = 3,
+        ToMove  = 4
     }
 }

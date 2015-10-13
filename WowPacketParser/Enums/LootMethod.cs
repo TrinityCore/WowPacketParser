@@ -6,6 +6,7 @@ namespace WowPacketParser.Enums
         RoundRobin      = 1,
         MasterLooter    = 2,
         GroupLoot       = 3,
-        NeedBeforeGreed = 4
+        NeedBeforeGreed = 4,
+        PersonalLoot    = 5
     }
 }

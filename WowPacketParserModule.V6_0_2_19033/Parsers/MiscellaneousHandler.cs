@@ -6,6 +6,7 @@ using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using TutorialAction610 = WowPacketParser.Enums.Version.V6_1_0_19678.TutorialAction;
 using TutorialAction612 = WowPacketParser.Enums.Version.V6_1_2_19802.TutorialAction;
+using TutorialAction620 = WowPacketParser.Enums.Version.V6_2_0_20173.TutorialAction;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
@@ -75,6 +76,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadBit("CommerceSystemEnabled");
                 packet.ReadBit("Unk14");
                 packet.ReadBit("WillKickFromWorld");
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_2_20444))
+                    packet.ReadBit("IsExpansionPreorderInStore");
+
                 packet.ReadInt32("TokenPollTimeSeconds");
                 packet.ReadInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
             }
@@ -564,12 +568,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32E<Tutorial>("TutorialBit");
         }
 
-        [Parser(Opcode.CMSG_TUTORIAL_FLAG, ClientVersionBuild.V6_1_2_19802)]
+        [Parser(Opcode.CMSG_TUTORIAL_FLAG, ClientVersionBuild.V6_1_2_19802, ClientVersionBuild.V6_2_0_20173)]
         public static void HandleTutorialFlag612(Packet packet)
         {
             var action = packet.ReadBitsE<TutorialAction612>("TutorialAction", 2);
 
             if (action == TutorialAction612.Update)
+                packet.ReadInt32E<Tutorial>("TutorialBit");
+        }
+
+        [Parser(Opcode.CMSG_TUTORIAL_FLAG, ClientVersionBuild.V6_2_0_20173)]
+        public static void HandleTutorialFlag620(Packet packet)
+        {
+            var action = packet.ReadBitsE<TutorialAction620>("TutorialAction", 2);
+
+            if (action == TutorialAction620.Update)
                 packet.ReadInt32E<Tutorial>("TutorialBit");
         }
 

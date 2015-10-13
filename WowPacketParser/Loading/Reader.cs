@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
@@ -13,35 +12,15 @@ namespace WowPacketParser.Loading
         public string FileName { get; private set; }
         public IPacketReader PacketReader { get; private set; }
 
-        public Reader(string fileName, string originalFileName)
+        public Reader(string fileName, SniffType type)
         {
             FileName = fileName;
-            PacketReader = GetPacketReader(fileName, originalFileName);
+            PacketReader = GetPacketReader(fileName, type);
         }
 
-        private static IPacketReader GetPacketReader(string fileName, string oriFileName)
+        private static IPacketReader GetPacketReader(string fileName, SniffType type)
         {
-            var extension = Path.GetExtension(oriFileName);
-            if (extension == null)
-                throw new IOException("Invalid file type");
-
-            extension = extension.ToLower();
-
-            IPacketReader reader;
-
-            switch (extension)
-            {
-                case ".bin":
-                    reader = new BinaryPacketReader(SniffType.Bin, fileName, Encoding.ASCII);
-                    break;
-                case ".pkt":
-                    reader = new BinaryPacketReader(SniffType.Pkt, fileName, Encoding.ASCII);
-                    break;
-                default:
-                    throw new IOException(String.Format("Invalid file type {0}", extension.ToLower()));
-            }
-
-            return reader;
+            return new BinaryPacketReader(type, fileName, Encoding.ASCII);
         }
 
         private int _packetNum;
@@ -95,9 +74,9 @@ namespace WowPacketParser.Loading
             return false;
         }
 
-        public static void Read(string fileName, string oriFileName, Action<Tuple<Packet, long, long>> action)
+        public static void Read(string fileName, SniffType type, Action<Tuple<Packet, long, long>> action)
         {
-            var reader = GetPacketReader(fileName, oriFileName);
+            var reader = GetPacketReader(fileName, type);
 
             try
             {

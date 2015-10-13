@@ -1354,7 +1354,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_QUERY_OBJ_ROTATION, 0x171A},
             {Opcode.SMSG_QUERY_PETITION_RESPONSE, 0x13AC},
             {Opcode.SMSG_QUERY_TIME_RESPONSE, 0x1DB0},
-            {Opcode.SMSG_QUESTGIVER_INVALID_QUEST, 0x15E1},
+            {Opcode.SMSG_QUEST_GIVER_INVALID_QUEST, 0x15E1},
             {Opcode.SMSG_QUEST_GIVER_OFFER_REWARD_MESSAGE, 0x17B2},
             {Opcode.SMSG_QUEST_GIVER_QUEST_COMPLETE, 0x1773},
             {Opcode.SMSG_QUEST_GIVER_QUEST_DETAILS, 0x15B3},

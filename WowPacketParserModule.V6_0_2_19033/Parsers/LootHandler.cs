@@ -42,8 +42,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_SET_LOOT_METHOD)]
         public static void HandleLootMethod(Packet packet)
         {
-            packet.ReadByteE<LootMethod>("Method");
             packet.ReadByte("PartyIndex");
+            packet.ReadByteE<LootMethod>("Method");
             packet.ReadPackedGuid128("Master");
             packet.ReadInt32E<ItemQuality>("Threshold");
         }
@@ -101,9 +101,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
 
+            packet.ReadBit("Acquired");
             packet.ReadBit("PersonalLooting");
             packet.ReadBit("AELooting");
-            packet.ReadBit("Acquired");
         }
 
         [Parser(Opcode.SMSG_LOOT_LIST)]

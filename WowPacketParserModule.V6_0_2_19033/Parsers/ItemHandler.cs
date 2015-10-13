@@ -339,11 +339,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             ReadItemInstance(packet);
 
-            packet.ReadUInt32("WodUnk");
+            packet.ReadUInt32("QuestLogItemID");
             packet.ReadUInt32("Quantity");
             packet.ReadUInt32("QuantityInInventory");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
-                packet.ReadInt32("Unk1 int WoD62x");
+                packet.ReadInt32("DungeonEncounterID");
 
             packet.ReadUInt32("BattlePetBreedID");
             packet.ReadUInt32("BattlePetBreedQuality");
@@ -355,11 +355,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ResetBitReader();
 
             packet.ReadBit("Pushed");
-            packet.ReadBit("DisplayText");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
-                packet.ReadBits("Unk2 bits2 WoD62x", 2);
             packet.ReadBit("Created");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
+                packet.ReadBits("DisplayText", 2);
             packet.ReadBit("IsBonusRoll");
+            packet.ReadBit("IsEncounterLoot");
         }
 
         [Parser(Opcode.SMSG_SELL_RESPONSE)]

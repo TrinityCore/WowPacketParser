@@ -448,10 +448,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("QuestTitle", bits516);
             packet.ReadWoWString("DescriptionText", bits1606);
             packet.ReadWoWString("LogDescription", bits715);
-            packet.ReadWoWString("PortraitTurnInText", bits260);
-            packet.ReadWoWString("PortraitTurnInName", bits650);
-            packet.ReadWoWString("PortraitGiverText", bits4);
-            packet.ReadWoWString("PortraitGiverName", bits1532);
+            packet.ReadWoWString("PortraitGiverText", bits260);
+            packet.ReadWoWString("PortraitGiverName", bits650);
+            packet.ReadWoWString("PortraitTurnInText", bits4);
+            packet.ReadWoWString("PortraitTurnInName", bits1532);
 
             Storage.QuestDetails.Add((uint)id, questDetails, packet.TimeSpan);
         }
@@ -561,10 +561,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadWoWString("QuestTitle", bits1139);
             questOfferReward.RewardText = packet.ReadWoWString("RewardText", bits69);
-            packet.ReadWoWString("PortraitTurnInText", bits883);
-            packet.ReadWoWString("PortraitTurnInName", bits819);
-            packet.ReadWoWString("PortraitGiverText", bits1268);
-            packet.ReadWoWString("PortraitGiverName", bits4);
+            packet.ReadWoWString("PortraitGiverText", bits883);
+            packet.ReadWoWString("PortraitGiverName", bits819);
+            packet.ReadWoWString("PortraitTurnInText", bits1268);
+            packet.ReadWoWString("PortraitTurnInName", bits4);
 
             Storage.QuestOfferRewards.Add((uint)id, questOfferReward, packet.TimeSpan);
         }
@@ -717,11 +717,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("QuestID");
         }
 
-        [Parser(Opcode.SMSG_QUESTGIVER_INVALID_QUEST)]
+        [Parser(Opcode.SMSG_QUEST_GIVER_INVALID_QUEST)]
         public static void HandleQuestGiverInvalidQuest(Packet packet)
         {
-            packet.ReadInt32("Reason");
-            packet.ReadBit("UnkBit");
+            packet.ReadUInt32E<QuestReasonTypeWoD>("Reason");
+            packet.ReadBit("SendErrorMessage");
 
             var len = packet.ReadBits(9);
             packet.ReadWoWString("ReasonText", len);
