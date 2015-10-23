@@ -210,6 +210,32 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("EventName", eventNameLength);
         }
 
+        [Parser(Opcode.SMSG_CALENDAR_EVENT_INITIAL_INVITES)]
+        public static void HandleCalendarEventInitialInvites(Packet packet)
+        {
+            var inviteInfoCount = packet.ReadUInt32();
+
+            for (int i = 0; i < inviteInfoCount; i++)
+            {
+                packet.ReadPackedGuid128("InviteGUID", i);
+                packet.ReadByte("Level", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_CALENDAR_EVENT_REMOVED_ALERT)]
+        public static void HandleCalendarEventRemovedAlert(Packet packet)
+        {
+            packet.ReadUInt64("EventID");
+            packet.ReadTime("Date");
+            packet.ResetBitReader();
+            packet.ReadBit("ClearPending");
+        }
+
+        [Parser(Opcode.SMSG_CALENDAR_CLEAR_PENDING_ACTION)]
+        public static void HandleClearPendingAction(Packet packet)
+        {
+        }
+
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE)]
         public static void HandleCalendarEventInvite(Packet packet)
         {
