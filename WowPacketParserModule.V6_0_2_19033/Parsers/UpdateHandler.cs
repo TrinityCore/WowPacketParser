@@ -239,8 +239,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (hasMovementTransport) // 456
             {
-                moveInfo.TransportGuid = packet.ReadPackedGuid128("PassengerGUID", index);
-                moveInfo.TransportOffset = packet.ReadVector4();
+                moveInfo.TransportGuid = packet.ReadPackedGuid128("TransportGUID", index);
+                moveInfo.TransportOffset = packet.ReadVector4("TransportPosition", index);
                 var seat = packet.ReadByte("VehicleSeatIndex", index);
                 packet.ReadUInt32("MoveTime", index);
 
@@ -280,7 +280,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadPackedGuid128("CombatVictim Guid", index);
 
             if (hasServerTime) // 516
-                packet.ReadPackedTime("ServerTime", index);
+                packet.ReadUInt32("ServerTime", index);
 
             if (hasVehicleCreate) // 528
             {
