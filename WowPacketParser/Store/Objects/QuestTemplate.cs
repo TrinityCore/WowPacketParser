@@ -1,355 +1,229 @@
-﻿using System.Collections.Generic;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("quest_template")]
-    public sealed class QuestTemplate
+    public sealed class QuestTemplate : IDataModel
     {
-        [DBFieldName("Method")]
-        public QuestMethod Method;
+        [DBFieldName("ID", true)]
+        public uint? ID;
 
-        [DBFieldName("Level")]
-        public int Level;
-
-        [DBFieldName("MinLevel")]
-        public int MinLevel;
-
-        [DBFieldName("ZoneOrSort")]
-        public QuestSort ZoneOrSort; // TODO: Read correct enum
-
-        [DBFieldName("Type")]
-        public QuestType Type;
-
-        [DBFieldName("SuggestedPlayers")]
-        public uint SuggestedPlayers;
-
-        [DBFieldName("RequiredFactionId", 2)]
-        public uint[] RequiredFactionId;
-
-        [DBFieldName("RequiredFactionValue", 2)]
-        public int[] RequiredFactionValue;
-
-        [DBFieldName("NextQuestIdChain")]
-        public uint NextQuestIdChain;
-
-        [DBFieldName("RewardXPId")]
-        public uint RewardXPId;
-
-        [DBFieldName("RewardOrRequiredMoney")]
-        public int RewardOrRequiredMoney;
-
-        [DBFieldName("RewardMoneyMaxLevel")]
-        public uint RewardMoneyMaxLevel;
-
-        [DBFieldName("RewardSpell")]
-        public uint RewardSpell;
-
-        [DBFieldName("RewardSpellCast")]
-        public int RewardSpellCast;
-
-        [DBFieldName("RewardHonor")]
-        public int RewardHonor;
-
-        [DBFieldName("RewardHonorMultiplier")]
-        public float RewardHonorMultiplier;
-
-        [DBFieldName("SourceItemId")]
-        public uint SourceItemId;
-
-        [DBFieldName("Flags")]
-        public QuestFlags Flags;
-
-        [DBFieldName("MinimapTargetMark", ClientVersionBuild.V4_0_1_13164)]
-        public uint MinimapTargetMark;
-
-        [DBFieldName("RewardTitleId")]
-        public uint RewardTitleId;
-
-        [DBFieldName("RequiredPlayerKills")]
-        public uint RequiredPlayerKills;
-
-        [DBFieldName("RewardTalents")]
-        public uint RewardTalents;
-
-        [DBFieldName("RewardArenaPoints")]
-        public uint RewardArenaPoints;
-
-        [DBFieldName("RewardSkillId", ClientVersionBuild.V4_0_1_13164)]
-        public uint RewardSkillId;
-
-        [DBFieldName("RewardSkillPoints", ClientVersionBuild.V4_0_1_13164)]
-        public uint RewardSkillPoints;
-
-        [DBFieldName("RewardReputationMask", ClientVersionBuild.V4_0_1_13164)]
-        public uint RewardReputationMask;
-
-        [DBFieldName("QuestGiverPortrait", ClientVersionBuild.V4_0_1_13164)]
-        public uint QuestGiverPortrait;
-
-        [DBFieldName("QuestTurnInPortrait", ClientVersionBuild.V4_0_1_13164)]
-        public uint QuestTurnInPortrait;
-
-        [DBFieldName("RewardItemId", 4)]
-        public uint[] RewardItemId;
-
-        [DBFieldName("RewardItemCount", 4)]
-        public uint[] RewardItemCount;
-
-        [DBFieldName("RewardChoiceItemId", 6)]
-        public uint[] RewardChoiceItemId;
-
-        [DBFieldName("RewardChoiceItemCount", 6)]
-        public uint[] RewardChoiceItemCount;
-
-        [DBFieldName("RewardFactionId", 5)]
-        public uint[] RewardFactionId;
-
-        [DBFieldName("RewardFactionValueId", 5)]
-        public int[] RewardFactionValueId;
-
-        [DBFieldName("RewardFactionValueIdOverride", 5)]
-        public uint[] RewardFactionValueIdOverride;
-
-        [DBFieldName("PointMapId")]
-        public uint PointMapId;
-
-        [DBFieldName("PointX")]
-        public float PointX;
-
-        [DBFieldName("PointY")]
-        public float PointY;
-
-        [DBFieldName("PointOption")]
-        public uint PointOption;
-
-        [DBFieldName("Title")]
-        public string Title;
-
-        [DBFieldName("Objectives")]
-        public string Objectives;
-
-        [DBFieldName("Details")]
-        public string Details;
-
-        [DBFieldName("EndText")]
-        public string EndText;
-
-        [DBFieldName("CompletedText")]
-        public string CompletedText;
-
-        [DBFieldName("RequiredNpcOrGo", 4)]
-        public int[] RequiredNpcOrGo;
-
-        [DBFieldName("RequiredNpcOrGoCount", 4)]
-        public uint[] RequiredNpcOrGoCount;
-
-        [DBFieldName("RequiredSourceItemId", 4)]
-        public uint[] RequiredSourceItemId;
-
-        [DBFieldName("RequiredSourceItemCount", 4)]
-        public uint[] RequiredSourceItemCount;
-
-        [DBFieldName("RequiredItemId", 6)]
-        public uint[] RequiredItemId;
-
-        [DBFieldName("RequiredItemCount", 6)]
-        public uint[] RequiredItemCount;
-
-        [DBFieldName("RequiredSpell", ClientVersionBuild.V4_0_1_13164)]
-        public uint RequiredSpell;
-
-        [DBFieldName("ObjectiveText", 4)]
-        public string[] ObjectiveText;
-
-        [DBFieldName("RewardCurrencyId", ClientVersionBuild.V4_0_1_13164, 4)]
-        public uint[] RewardCurrencyId;
-
-        [DBFieldName("RewardCurrencyCount", ClientVersionBuild.V4_0_1_13164, 4)]
-        public uint[] RewardCurrencyCount;
-
-        [DBFieldName("RequiredCurrencyId", ClientVersionBuild.V4_0_1_13164, 4)]
-        public uint[] RequiredCurrencyId;
-
-        [DBFieldName("RequiredCurrencyCount", ClientVersionBuild.V4_0_1_13164, 4)]
-        public uint[] RequiredCurrencyCount;
-
-        [DBFieldName("QuestGiverTextWindow", ClientVersionBuild.V4_0_1_13164)]
-        public string QuestGiverTextWindow;
-
-        [DBFieldName("QuestGiverTargetName", ClientVersionBuild.V4_0_1_13164)]
-        public string QuestGiverTargetName;
-
-        [DBFieldName("QuestTurnTextWindow", ClientVersionBuild.V4_0_1_13164)]
-        public string QuestTurnTextWindow;
-
-        [DBFieldName("QuestTurnTargetName", ClientVersionBuild.V4_0_1_13164)]
-        public string QuestTurnTargetName;
-
-        [DBFieldName("SoundAccept", ClientVersionBuild.V4_0_1_13164)]
-        public uint SoundAccept;
-
-        [DBFieldName("SoundTurnIn", ClientVersionBuild.V4_0_1_13164)]
-        public uint SoundTurnIn;
-
-        [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild = ClientVersion.BuildInt;
-    }
-
-    [DBTableName("quest_template")]
-    public sealed class QuestTemplateWod
-    {
         [DBFieldName("QuestType")]
-        public QuestMethod QuestType;
+        public QuestType? QuestType;
 
         [DBFieldName("QuestLevel")]
-        public int QuestLevel;
+        public int? QuestLevel;
 
-        [DBFieldName("QuestPackageID")]
-        public uint QuestPackageID;
+        [DBFieldName("QuestPackageID", TargetedDatabase.WarlordsOfDraenor)]
+        public uint? QuestPackageID;
 
         [DBFieldName("MinLevel")]
-        public int MinLevel;
+        public int? MinLevel;
+
+        [DBFieldName("MaxLevel", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        public uint? MaxLevel;
 
         [DBFieldName("QuestSortID")]
-        public QuestSort QuestSortID;
+        public QuestSort? QuestSortID;
 
         [DBFieldName("QuestInfoID")]
-        public QuestType QuestInfoID;
+        public QuestInfo? QuestInfoID;
 
         [DBFieldName("SuggestedGroupNum")]
-        public uint SuggestedGroupNum;
+        public uint? SuggestedGroupNum;
+
+        [DBFieldName("RequiredClasses", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        public uint? RequiredClasses;
+
+        [DBFieldName("RequiredSkillId", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        public uint? RequriedSkillID;
+
+        [DBFieldName("RequiredSkillPoints", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        public uint? RequiredSkillPoints;
+
+        [DBFieldName("RequiredFactionId", TargetedDatabase.Zero, TargetedDatabase.WarlordsOfDraenor, 2)]
+        public uint?[] RequiredFactionID;
+
+        [DBFieldName("RequiredFactionValue",TargetedDatabase.Zero, TargetedDatabase.WarlordsOfDraenor, 2)]
+        public int?[] RequiredFactionValue;
 
         [DBFieldName("RewardNextQuest")]
-        public uint RewardNextQuest;
+        public uint? RewardNextQuest;
 
         [DBFieldName("RewardXPDifficulty")]
-        public uint RewardXPDifficulty;
+        public uint? RewardXPDifficulty;
 
-        [DBFieldName("RewardXPMultiplier")]
-        public float RewardXPMultiplier;
+        [DBFieldName("RewardXPMultiplier", TargetedDatabase.WarlordsOfDraenor)]
+        public float? RewardXPMultiplier;
 
         [DBFieldName("RewardMoney")]
-        public int RewardMoney;
+        public int? RewardMoney;
 
-        [DBFieldName("RewardMoneyDifficulty")]
-        public uint RewardMoneyDifficulty;
+        [DBFieldName("RewardMoneyDifficulty", TargetedDatabase.WarlordsOfDraenor)]
+        public uint? RewardMoneyDifficulty;
 
-        [DBFieldName("RewardMoneyMultiplier")]
-        public float RewardMoneyMultiplier;
+        [DBFieldName("RewardMoneyMultiplier", TargetedDatabase.WarlordsOfDraenor)]
+        public float? RewardMoneyMultiplier;
 
         [DBFieldName("RewardBonusMoney")]
-        public uint RewardBonusMoney;
+        public uint? RewardBonusMoney;
 
         [DBFieldName("RewardDisplaySpell")]
-        public uint RewardDisplaySpell;
+        public uint? RewardDisplaySpell;
 
-        [DBFieldName("RewardSpell")]
-        public uint RewardSpell;
+        [DBFieldName("RewardSpell", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
+        public int? RewardSpell;
 
-        [DBFieldName("RewardHonor")]
-        public uint RewardHonor;
+        [DBFieldName("RewardSpell", TargetedDatabase.WarlordsOfDraenor)]
+        public uint? RewardSpellWod;
+
+        [DBFieldName("RequiredMinRepFaction", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        public uint? RequiredMinRepFaction;
+
+        [DBFieldName("RequiredMaxRepFaction", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        public uint? RequiredMaxRepFaction;
+
+        [DBFieldName("RequiredMinRepValue", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        public int? RequiredMinRepValue;
+
+        [DBFieldName("RequiredMaxRepValue", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        public int? RequiredMaxRepValue;
+
+        [DBFieldName("PrevQuestId", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        public int? PrevQuestID;
+
+        [DBFieldName("NextQuestId", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        public int? NextQuestID;
+
+        [DBFieldName("ExclusiveGroup", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        public int? ExclusiveGroup;
+
+        [DBFieldName("RewardHonor", TargetedDatabase.Zero, TargetedDatabase.WarlordsOfDraenor)]
+        public int? RewardHonor;
+
+        [DBFieldName("RewardHonor", TargetedDatabase.WarlordsOfDraenor)]
+        public uint? RewardHonorWod;
 
         [DBFieldName("RewardKillHonor")]
-        public float RewardKillHonor;
+        public float? RewardKillHonor;
 
         [DBFieldName("StartItem")]
-        public uint StartItem;
+        public uint? StartItem;
+
+        [DBFieldName("RewardMailTemplateId", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        public uint? RewardMailTemplateID;
+
+        [DBFieldName("RewardMailDelay", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        public int? RewardMailDelay;
+
+        [DBFieldName("SourceItemCount", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        public uint? SourceItemCount;
+
+        [DBFieldName("SourceSpellId", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        public uint? SourceSpellID;
 
         [DBFieldName("Flags")]
-        public QuestFlags Flags;
+        public QuestFlags? Flags;
 
-        [DBFieldName("FlagsEx")]
-        public uint FlagsEx;
+        [DBFieldName("SpecialFlags", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        [DBFieldName("FlagsEx", TargetedDatabase.WarlordsOfDraenor)]
+        public QuestFlags2? FlagsEx;
+
+        [DBFieldName("MinimapTargetMark", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        public uint? MinimapTargetMark;
+
+        [DBFieldName("RequiredPlayerKills", TargetedDatabase.Zero, TargetedDatabase.WarlordsOfDraenor)]
+        public uint? RequiredPlayerKills;
+
+        [DBFieldName("RewardSkillId", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        [DBFieldName("RewardSkillLineID", TargetedDatabase.WarlordsOfDraenor)]
+        public uint? RewardSkillLineID;
+
+        [DBFieldName("RewardSkillPoints", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        [DBFieldName("RewardNumSkillUps", TargetedDatabase.WarlordsOfDraenor)]
+        public uint? RewardNumSkillUps;
+
+        [DBFieldName("RewardReputationMask", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        public uint? RewardReputationMask;
+
+        [DBFieldName("QuestGiverPortrait", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        [DBFieldName("PortraitGiver", TargetedDatabase.WarlordsOfDraenor)]
+        public uint? QuestGiverPortrait;
+
+        [DBFieldName("QuestTurnInPortrait", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        [DBFieldName("PortraitTurnIn", TargetedDatabase.WarlordsOfDraenor)]
+        public uint? QuestTurnInPortrait;
 
         [DBFieldName("RewardItem", 4)]
-        public uint[] RewardItems;
+        public uint?[] RewardItem;
 
         [DBFieldName("RewardAmount", 4)]
-        public uint[] RewardAmount;
+        public uint?[] RewardAmount;
 
         [DBFieldName("ItemDrop", 4)]
-        public uint[] ItemDrop;
+        public uint?[] ItemDrop;
 
         [DBFieldName("ItemDropQuantity", 4)]
-        public uint[] ItemDropQuantity;
+        public uint?[] ItemDropQuantity;
 
         [DBFieldName("RewardChoiceItemID", 6)]
-        public uint[] RewardChoiceItemID;
+        public uint?[] RewardChoiceItemID;
 
         [DBFieldName("RewardChoiceItemQuantity", 6)]
-        public uint[] RewardChoiceItemQuantity;
+        public uint?[] RewardChoiceItemQuantity;
 
-        [DBFieldName("RewardChoiceItemDisplayID", 6)]
-        public uint[] RewardChoiceItemDisplayID;
+        [DBFieldName("RewardChoiceItemDisplayID", TargetedDatabase.WarlordsOfDraenor, 6)]
+        public uint?[] RewardChoiceItemDisplayID;
 
         [DBFieldName("POIContinent")]
-        public uint POIContinent;
+        public uint? POIContinent;
 
         [DBFieldName("POIx")]
-        public float POIx;
+        public float? POIx;
 
         [DBFieldName("POIy")]
-        public float POIy;
+        public float? POIy;
 
-        [DBFieldName("POIPriority")]
-        public int POIPriority;
+        [DBFieldName("POIPriority", TargetedDatabase.Zero, TargetedDatabase.WarlordsOfDraenor)]
+        public uint? POIPriority;
+
+        [DBFieldName("POIPriority", TargetedDatabase.WarlordsOfDraenor)]
+        public int? POIPriorityWod;
 
         [DBFieldName("RewardTitle")]
-        public uint RewardTitle;
+        public uint? RewardTitle;
 
         [DBFieldName("RewardTalents")]
-        public uint RewardTalents;
+        public uint? RewardTalents;
 
         [DBFieldName("RewardArenaPoints")]
-        public uint RewardArenaPoints;
-
-        [DBFieldName("RewardSkillLineID")]
-        public uint RewardSkillLineID;
-
-        [DBFieldName("RewardNumSkillUps")]
-        public uint RewardNumSkillUps;
-
-        [DBFieldName("PortraitGiver")]
-        public uint PortraitGiver;
-
-        [DBFieldName("PortraitTurnIn")]
-        public uint PortraitTurnIn;
+        public uint? RewardArenaPoints;
 
         [DBFieldName("RewardFactionID", 5)]
-        public uint[] RewardFactionID;
+        public uint?[] RewardFactionID;
 
         [DBFieldName("RewardFactionValue", 5)]
-        public int[] RewardFactionValue;
+        public int?[] RewardFactionValue;
 
         [DBFieldName("RewardFactionOverride", 5)]
-        public int[] RewardFactionOverride;
+        public int?[] RewardFactionOverride;
 
-        [DBFieldName("RewardFactionFlags")]
-        public uint RewardFactionFlags;
+        [DBFieldName("RewardFactionFlags", TargetedDatabase.WarlordsOfDraenor)]
+        public uint? RewardFactionFlags;
 
-        [DBFieldName("RewardCurrencyID", 4)]
-        public uint[] RewardCurrencyID;
-
-        [DBFieldName("RewardCurrencyQty", 4)]
-        public uint[] RewardCurrencyQty;
-
-        [DBFieldName("AcceptedSoundKitID")]
-        public uint AcceptedSoundKitID;
-
-        [DBFieldName("CompleteSoundKitID")]
-        public uint CompleteSoundKitID;
-
-        [DBFieldName("AreaGroupID")]
-        public uint AreaGroupID;
+        [DBFieldName("AreaGroupID", TargetedDatabase.WarlordsOfDraenor)]
+        public uint? AreaGroupID;
 
         [DBFieldName("TimeAllowed")]
-        public uint TimeAllowed;
+        public uint? TimeAllowed;
 
-        [DBFieldName("AllowableRaces")]
-        public int AllowableRaces;
+        [DBFieldName("AllowableRaces", TargetedDatabase.Zero, TargetedDatabase.WarlordsOfDraenor)]
+        public RaceMask? AllowableRaces;
+
+        [DBFieldName("AllowableRaces", TargetedDatabase.WarlordsOfDraenor)]
+        public int? AllowableRacesWod;
 
         [DBFieldName("LogTitle", LocaleConstant.enUS)]
         public string LogTitle;
@@ -363,68 +237,69 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("AreaDescription", LocaleConstant.enUS)]
         public string AreaDescription;
 
-        [DBFieldName("PortraitGiverText", LocaleConstant.enUS)]
-        public string PortraitGiverText;
-
-        [DBFieldName("PortraitGiverName", LocaleConstant.enUS)]
-        public string PortraitGiverName;
-
-        [DBFieldName("PortraitTurnInText", LocaleConstant.enUS)]
-        public string PortraitTurnInText;
-
-        [DBFieldName("PortraitTurnInName", LocaleConstant.enUS)]
-        public string PortraitTurnInName;
-
         [DBFieldName("QuestCompletionLog", LocaleConstant.enUS)]
         public string QuestCompletionLog;
 
+        [DBFieldName("RequiredNpcOrGo", TargetedDatabase.Zero, TargetedDatabase.WarlordsOfDraenor, 4)]
+        public int?[] RequiredNpcOrGo;
+
+        [DBFieldName("RequiredNpcOrGoCount", TargetedDatabase.Zero, TargetedDatabase.WarlordsOfDraenor, 4)]
+        public uint?[] RequiredNpcOrGoCount;
+
+        [DBFieldName("RequiredItemId", TargetedDatabase.Zero, TargetedDatabase.WarlordsOfDraenor, 6)]
+        public uint?[] RequiredItemID;
+
+        [DBFieldName("RequiredItemCount", TargetedDatabase.Zero, TargetedDatabase.WarlordsOfDraenor, 6)]
+        public uint?[] RequiredItemCount;
+
+        [DBFieldName("Unknown0", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
+        public uint? Unk0;
+
+        [DBFieldName("RequiredSpell", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        public uint? RequiredSpell;
+
+        [DBFieldName("ObjectiveText", TargetedDatabase.Zero, TargetedDatabase.WarlordsOfDraenor, 4)]
+        public string[] ObjectiveText;
+
+        [DBFieldName("RewardCurrencyId", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor, 4)]
+        [DBFieldName("RewardCurrencyID", TargetedDatabase.WarlordsOfDraenor, 4)]
+        public uint?[] RewardCurrencyID;
+
+        [DBFieldName("RewardCurrencyCount", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor, 4)]
+        [DBFieldName("RewardCurrencyQty", TargetedDatabase.WarlordsOfDraenor, 4)]
+        public uint?[] RewardCurrencyCount;
+
+        [DBFieldName("RequiredCurrencyId", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor, 4)]
+        public uint?[] RequiredCurrencyID;
+
+        [DBFieldName("RequiredCurrencyCount", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor, 4)]
+        public uint?[] RequiredCurrencyCount;
+
+        [DBFieldName("QuestGiverTextWindow", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        [DBFieldName("PortraitGiverText", TargetedDatabase.WarlordsOfDraenor, LocaleConstant.enUS)]
+        public string QuestGiverTextWindow;
+
+        [DBFieldName("QuestGiverTargetName", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        [DBFieldName("PortraitGiverName", TargetedDatabase.WarlordsOfDraenor, LocaleConstant.enUS)]
+        public string QuestGiverTargetName;
+
+        [DBFieldName("QuestTurnTextWindow", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        [DBFieldName("PortraitTurnInText", TargetedDatabase.WarlordsOfDraenor, LocaleConstant.enUS)]
+        public string QuestTurnTextWindow;
+
+        [DBFieldName("QuestTurnTargetName", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        [DBFieldName("PortraitTurnInName", TargetedDatabase.WarlordsOfDraenor, LocaleConstant.enUS)]
+        public string QuestTurnTargetName;
+
+        [DBFieldName("SoundAccept", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        [DBFieldName("AcceptedSoundKitID", TargetedDatabase.WarlordsOfDraenor)]
+        public uint? SoundAccept;
+
+        [DBFieldName("SoundTurnIn", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
+        [DBFieldName("CompleteSoundKitID", TargetedDatabase.WarlordsOfDraenor)]
+        public uint? SoundTurnIn;
+
         [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild = ClientVersion.BuildInt;
-    }
-
-    [DBTableName("quest_objectives")]
-    public sealed class QuestInfoObjective
-    {
-        [DBFieldName("QuestId")]
-        public uint QuestId;
-
-        [DBFieldName("Type")]
-        public QuestRequirementType Type;
-
-        [DBFieldName("StorageIndex")]
-        public int StorageIndex;
-
-        [DBFieldName("ObjectID")]
-        public int ObjectID;
-
-        [DBFieldName("Amount")]
-        public int Amount;
-
-        [DBFieldName("Flags")]
-        public uint Flags;
-
-        [DBFieldName("UnkFloat")]
-        public float UnkFloat;
-
-        public List<QuestVisualEffect> VisualEffectIds;
-
-        [DBFieldName("Description", LocaleConstant.enUS)]
-        public string Description;
-
-        [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild = ClientVersion.BuildInt;
-    }
-
-    [DBTableName("quest_visual_effect")]
-    public sealed class QuestVisualEffect
-    {
-        [DBFieldName("Index")]
-        public uint Index;
-
-        [DBFieldName("VisualEffect")]
-        public int VisualEffect;
-
-        [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild = ClientVersion.BuildInt;
+        public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }

@@ -4,9 +4,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using MySql.Data.MySqlClient;
-using Wintellect.PowerCollections;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
@@ -48,10 +46,10 @@ namespace WowPacketParser.SQL
             new Dictionary<Tuple<uint, string>, LocalesQuest>();
 
         /// <summary>
-        /// Represents a dictionary of <see cref="LocalesQuestObjectives"/> accessed by a tuple of the quest objective id and the locale string.
+        /// Represents a dictionary of <see cref="QuestObjectivesLocale"/> accessed by a tuple of the quest objective id and the locale string.
         /// </summary>
-        public static readonly Dictionary<Tuple<uint, string>, LocalesQuestObjectives> LocalesQuestObjectiveStores =
-            new Dictionary<Tuple<uint, string>, LocalesQuestObjectives>();
+        public static readonly Dictionary<Tuple<uint, string>, QuestObjectivesLocale> QuestObjectiveLocaleStores =
+            new Dictionary<Tuple<uint, string>, QuestObjectivesLocale>();
 
         // MapDifficulty
         /// <summary>
@@ -243,7 +241,7 @@ namespace WowPacketParser.SQL
 
                 while (reader.Read())
                 {
-                    var localesQuestObjectives = new LocalesQuestObjectives();
+                    var localesQuestObjectives = new QuestObjectivesLocale();
 
                     var id = (uint)reader.GetValue(0);
                     var locale = (string)reader.GetValue(1);
@@ -253,7 +251,7 @@ namespace WowPacketParser.SQL
                     localesQuestObjectives.Description = (string)reader.GetValue(4);
                     localesQuestObjectives.VerifiedBuild = Convert.ToInt16(reader.GetValue(5));
 
-                    LocalesQuestObjectiveStores.Add(Tuple.Create(id, locale), localesQuestObjectives);
+                    QuestObjectiveLocaleStores.Add(Tuple.Create(id, locale), localesQuestObjectives);
                 }
             }
         }
@@ -380,7 +378,7 @@ namespace WowPacketParser.SQL
 
             var result = new RowList<T>();
 
-            using (var reader = SQLConnector.ExecuteQuery(new SQLSelect<T>(rowList, database).Build()))
+            using (MySqlDataReader reader = SQLConnector.ExecuteQuery(new SQLSelect<T>(rowList, database).Build()))
             {
                 if (reader == null)
                     return null;
@@ -390,7 +388,7 @@ namespace WowPacketParser.SQL
                 while (reader.Read())
                 {
                     T instance = (T)Activator.CreateInstance(typeof(T));
-                    var values = GetValues(reader, SQLUtil.GetFields<T>().Count);
+                    var values = GetValues(reader, SQLUtil.GetFields<T>().Select(f => f.Item3.First().Count).Sum());
 
                     int i = 0;
                     foreach (var field in fields)
@@ -401,28 +399,35 @@ namespace WowPacketParser.SQL
                             field.Item2.SetValue(instance, Enum.Parse(field.Item2.FieldType, values[i].ToString()));
                         else if (field.Item2.FieldType.BaseType == typeof(Array))
                         {
-                            Array arr = Array.CreateInstance(field.Item2.FieldType.GetElementType(), field.Item3.Count);
+                            Array arr = Array.CreateInstance(field.Item2.FieldType.GetElementType(), field.Item3.First().Count);
 
                             for (int j = 0; j < arr.Length; j++)
                             {
                                 Type elemType = arr.GetType().GetElementType();
-
-                                object val = elemType.IsEnum
-                                    ? Enum.Parse(elemType, values[i + j].ToString())
-                                    : Convert.ChangeType(values[i + j], elemType);
-
-                                arr.SetValue(val, j);
+                                
+                                if (elemType.IsEnum)
+                                    arr.SetValue(Enum.Parse(elemType, values[i + j].ToString()), j);
+                                else if (Nullable.GetUnderlyingType(elemType) != null) //is nullable
+                                    arr.SetValue(Convert.ChangeType(values[i + j], Nullable.GetUnderlyingType(elemType)), j);
+                                else
+                                    arr.SetValue(Convert.ChangeType(values[i + j], elemType), j); 
                             }
                             field.Item2.SetValue(instance, arr);
                         }
                         else if (field.Item2.FieldType == typeof(bool))
                             field.Item2.SetValue(instance, Convert.ToBoolean(values[i]));
                         else if (Nullable.GetUnderlyingType(field.Item2.FieldType) != null) // is nullable
-                            field.Item2.SetValue(instance, Convert.ChangeType(values[i], Nullable.GetUnderlyingType(field.Item2.FieldType)));
+                        {
+                            Type uType = Nullable.GetUnderlyingType(field.Item2.FieldType);
+                            field.Item2.SetValue(instance,
+                                uType.IsEnum
+                                    ? Enum.Parse(uType, values[i].ToString())
+                                    : Convert.ChangeType(values[i], Nullable.GetUnderlyingType(field.Item2.FieldType)));
+                        }
                         else
                             field.Item2.SetValue(instance, values[i]);
 
-                        i += field.Item3.Count;
+                        i += field.Item3.First().Count;
                     }
 
                     result.Add(instance);

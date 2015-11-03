@@ -7,10 +7,10 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("item_extended_cost")]
     public sealed class ItemExtendedCost
     {
-        [DBFieldName("RequiredHonorPoints", ClientVersionBuild.Zero, ClientVersionBuild.V6_1_0_19678)]
+        [DBFieldName("RequiredHonorPoints", TargetedDatabase.Zero, TargetedDatabase.WarlordsOfDraenor)]
         public uint RequiredHonorPoints;
 
-        [DBFieldName("RequiredArenaPoints", ClientVersionBuild.Zero, ClientVersionBuild.V6_1_0_19678)]
+        [DBFieldName("RequiredArenaPoints", TargetedDatabase.Zero, TargetedDatabase.WarlordsOfDraenor)]
         public uint RequiredArenaPoints;
 
         [DBFieldName("RequiredArenaSlot")]
@@ -46,7 +46,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("RequiredAchievement")]
         public uint RequiredAchievement;
 
-        [DBFieldName("RequiredMoney", ClientVersionBuild.V6_1_0_19678)]
+        [DBFieldName("RequiredMoney", TargetedDatabase.WarlordsOfDraenor)]
         public uint RequiredMoney;
 
         [DBFieldName("VerifiedBuild")]

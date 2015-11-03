@@ -41,7 +41,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         {
             var guid = new byte[8];
             var menuEntry = packet.ReadUInt32("Menu Id");
-            var gossipId = packet.ReadUInt32("Gossip Id");
+            var gossipId = packet.ReadUInt32("GossipMenu Id");
             packet.StartBitStream(guid, 2, 0, 6, 4, 1, 5, 3, 7);
 
             var bits8 = packet.ReadBits(8);
@@ -61,12 +61,12 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var guidBytes = new byte[8];
 
             packet.StartBitStream(guidBytes, 0, 1);
-            var questgossips = packet.ReadBits("Amount of Quest gossips", 19);
+            uint questgossips = packet.ReadBits("Amount of Quest gossips", 19);
             guidBytes[2] = packet.ReadBit();
-            var amountOfOptions = packet.ReadBits("Amount of Options", 20);
+            uint amountOfOptions = packet.ReadBits("Amount of Options", 20);
 
             var titleLen = new uint[questgossips];
-            for (var i = 0; i < questgossips; ++i)
+            for (int i = 0; i < questgossips; ++i)
             {
                 packet.ReadBit("Change Icon", i);
                 titleLen[i] = packet.ReadBits(9);
@@ -75,7 +75,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             var optionTextLen = new uint[amountOfOptions];
             var boxTextLen = new uint[amountOfOptions];
-            for (var i = 0; i < amountOfOptions; ++i)
+            for (int i = 0; i < amountOfOptions; ++i)
             {
                 boxTextLen[i] = packet.ReadBits(12);
                 optionTextLen[i] = packet.ReadBits(12);
@@ -85,26 +85,24 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ResetBitReader();
             packet.ReadXORByte(guidBytes, 6);
 
-            var gossip = new Gossip();
-
-            gossip.GossipOptions = new List<GossipOption>((int)amountOfOptions);
-            for (var i = 0; i < amountOfOptions; ++i)
+            var gossipOptions = new List<GossipMenuOption>((int)amountOfOptions);
+            for (int i = 0; i < amountOfOptions; ++i)
             {
-                var gossipOption = new GossipOption
+                GossipMenuOption gossipOption = new GossipMenuOption
                 {
                     OptionText = packet.ReadWoWString("Text", optionTextLen[i], i),
                     BoxText = packet.ReadWoWString("Box Text", boxTextLen[i], i),
-                    RequiredMoney = packet.ReadUInt32("Required money", i),
+                    BoxMoney = packet.ReadUInt32("Required money", i),
                     OptionIcon = packet.ReadByteE<GossipOptionIcon>("Icon", i),
-                    Box = packet.ReadBool("Box", i),
-                    Index = packet.ReadUInt32("Index", i)
+                    BoxCoded = packet.ReadBool("Box", i),
+                    ID = packet.ReadUInt32("Index", i)
                 };
 
-                gossip.GossipOptions.Add(gossipOption);
+                gossipOptions.Add(gossipOption);
             }
             packet.ReadXORByte(guidBytes, 0);
 
-            for (var i = 0; i < questgossips; i++)
+            for (int i = 0; i < questgossips; i++)
             {
                 packet.ReadUInt32E<QuestFlags>("Flags", i);
                 packet.ReadWoWString("Title", titleLen[i], i);
@@ -114,12 +112,19 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadUInt32<QuestId>("Quest ID", i);
             }
 
-            var textId = packet.ReadUInt32("Text Id");
+            uint textId = packet.ReadUInt32("Text Id");
             packet.ReadXORBytes(guidBytes, 4, 3);
-            var menuId = packet.ReadUInt32("Menu Id");
+            uint menuId = packet.ReadUInt32("Menu Id");
             packet.ReadUInt32("Friendship Faction");
             packet.ReadXORBytes(guidBytes, 7, 1, 5, 2);
-            var guid = packet.WriteGuid("GUID", guidBytes);
+
+            GossipMenu gossip = new GossipMenu
+            {
+                Entry = menuId,
+                TextID = textId
+            };
+
+            WowGuid guid = packet.WriteGuid("GUID", guidBytes);
 
             gossip.ObjectType = guid.GetObjectType();
             gossip.ObjectEntry = guid.GetEntry();
@@ -128,17 +133,13 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 if (Storage.Objects.ContainsKey(guid))
                     ((Unit)Storage.Objects[guid].Item1).GossipId = menuId;
 
-            if (Storage.Gossips.ContainsKey(Tuple.Create(menuId, textId)))
+            gossipOptions.ForEach(g =>
             {
-                var oldGossipOptions = Storage.Gossips[Tuple.Create(menuId, textId)];
-                if (oldGossipOptions != null)
-                {
-                    foreach (var gossipOptions in gossip.GossipOptions)
-                        oldGossipOptions.Item1.GossipOptions.Add(gossipOptions);
-                }
-            }
-            else
-                Storage.Gossips.Add(Tuple.Create(menuId, textId), gossip, packet.TimeSpan);
+                g.MenuID = menuId;
+                Storage.GossipMenuOptions.Add(g, packet.TimeSpan);
+            });
+
+            Storage.Gossips.Add(gossip, packet.TimeSpan);
 
             packet.AddSniffData(StoreNameType.Gossip, (int)menuId, guid.GetEntry().ToString(CultureInfo.InvariantCulture));
         }

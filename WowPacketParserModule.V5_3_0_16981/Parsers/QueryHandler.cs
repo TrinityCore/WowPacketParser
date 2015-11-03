@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -6,6 +7,7 @@ using WowPacketParser.Store.Objects;
 
 namespace WowPacketParserModule.V5_3_0_16981.Parsers
 {
+    [SuppressMessage("ReSharper", "UseObjectOrCollectionInitializer")]
     public static class QueryHandler
     {
         [Parser(Opcode.CMSG_QUERY_CREATURE)]
@@ -19,31 +21,34 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         public static void HandleCreatureQueryResponse(Packet packet)
         {
             var entry = packet.ReadEntry("Entry");
-            var hasData = packet.ReadBit();
+            Bit hasData = packet.ReadBit();
             if (!hasData)
                 return; // nothing to do
 
-            var creature = new UnitTemplate();
+            CreatureTemplate creature = new CreatureTemplate
+            {
+                Entry = (uint)entry.Key
+            };
 
-            var lenS3 = (int)packet.ReadBits(11);
+            uint lenS3 = packet.ReadBits(11);
             creature.RacialLeader = packet.ReadBit("Racial Leader");
 
             var stringLens = new int[4][];
-            for (var i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 stringLens[i] = new int[2];
                 stringLens[i][0] = (int)packet.ReadBits(11);
                 stringLens[i][1] = (int)packet.ReadBits(11);
             }
 
-            var lenS4 = (int)packet.ReadBits(6);
-            var lenS5 = (int)packet.ReadBits(11);
-            var qItemCount = packet.ReadBits(22);
+            uint lenS4 = packet.ReadBits(6);
+            uint lenS5 = packet.ReadBits(11);
+            uint qItemCount = packet.ReadBits(22);
 
             packet.ResetBitReader();
 
             var name = new string[8];
-            for (var i = 0; i < 4; ++i)
+            for (int i = 0; i < 4; ++i)
             {
                 if (stringLens[i][0] > 1)
                     packet.ReadCString("Female Name", i);
@@ -52,49 +57,51 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             }
             creature.Name = name[0];
 
-            creature.Modifier1 = packet.ReadSingle("Modifier 1");
+            creature.HealthModifier = packet.ReadSingle("HealthModifier");
             if (lenS3 > 1)
                 creature.SubName = packet.ReadCString("Sub Name");
 
             creature.Rank = packet.ReadInt32E<CreatureRank>("Rank");
 
-            creature.QuestItems = new uint[qItemCount];
-            for (var i = 0; i < qItemCount; ++i)
-                creature.QuestItems[i] = (uint)packet.ReadInt32<ItemId>("Quest Item", i);
+            //TODO: move to creature_questitems
+            //creature.QuestItems = new uint[qItemCount];
+            for (int i = 0; i < qItemCount; ++i)
+                /*creature.QuestItems[i] = (uint)*/packet.ReadInt32<ItemId>("Quest Item", i);
 
             creature.Type = packet.ReadInt32E<CreatureType>("Type");
-            creature.KillCredits = new uint[2];
-            for (var i = 0; i < 2; ++i)
+            creature.KillCredits = new uint?[2];
+            for (int i = 0; i < 2; ++i)
                 creature.KillCredits[i] = packet.ReadUInt32("Kill Credit", i);
             creature.Family = packet.ReadInt32E<CreatureFamily>("Family");
             if (lenS4 > 1)
                 creature.IconName = packet.ReadCString("Icon Name");
 
-            creature.DisplayIds = new uint[4];
-            creature.DisplayIds[1] = packet.ReadUInt32("Display ID 1");
-            creature.DisplayIds[0] = packet.ReadUInt32("Display ID 0");
-            creature.MovementId = packet.ReadUInt32("Movement ID");
-            creature.DisplayIds[3] = packet.ReadUInt32("Display ID 3");
+            creature.ModelIDs = new uint?[4];
+            creature.ModelIDs[1] = packet.ReadUInt32("CreatureDisplayID", 1);
+            creature.ModelIDs[0] = packet.ReadUInt32("CreatureDisplayID", 0);
+            creature.MovementID = packet.ReadUInt32("MovementID");
+            creature.ModelIDs[3] = packet.ReadUInt32("CreatureDisplayID", 3);
 
             creature.TypeFlags = packet.ReadUInt32E<CreatureTypeFlag>("Type Flags");
             creature.TypeFlags2 = packet.ReadUInt32("Creature Type Flags 2"); // Missing enum
 
             if (lenS5 > 1)
                 packet.ReadCString("string5");
-            creature.DisplayIds[2] = packet.ReadUInt32("Display ID 2");
-            creature.Modifier2 = packet.ReadSingle("Modifier 2");
-            creature.Expansion = packet.ReadUInt32E<ClientType>("Expansion");
+            creature.ModelIDs[2] = packet.ReadUInt32("CreatureDisplayID", 2);
+            creature.ManaModifier = packet.ReadSingle("ManaModifier");
+            creature.ExpUnk = packet.ReadUInt32E<ClientType>("Expansion");
 
             packet.AddSniffData(StoreNameType.Unit, entry.Key, "QUERY_RESPONSE");
 
-            Storage.UnitTemplates.Add((uint)entry.Key, creature, packet.TimeSpan);
+            Storage.CreatureTemplates.Add(creature, packet.TimeSpan);
 
-            var objectName = new ObjectName
+            ObjectName objectName = new ObjectName
             {
                 ObjectType = ObjectType.Unit,
+                ID = entry.Key,
                 Name = creature.Name
             };
-            Storage.ObjectNames.Add((uint)entry.Key, objectName, packet.TimeSpan);
+            Storage.ObjectNames.Add(objectName, packet.TimeSpan);
         }
 
         [Parser(Opcode.CMSG_QUERY_NPC_TEXT)]
@@ -143,7 +150,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         public static void HandleRealmQueryResponse(Packet packet)
         {
             packet.ReadUInt32("Realm Id");
-            var byte20 = packet.ReadByte("byte20");
+            packet.ReadByte("byte20");
 
             var bits22 = packet.ReadBits(8);
             var bits278 = packet.ReadBits(8);
@@ -167,7 +174,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             var bits32 = packet.ReadBits(6);
             packet.StartBitStream(guid, 6, 4, 0);
-            var bit83 = packet.ReadBit();
+            packet.ReadBit();
             packet.StartBitStream(guid, 5, 7);
 
             packet.ReadXORByte(guid, 1);
@@ -260,30 +267,32 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                     }
                 case DB2Hash.Item:
                     {
-                        var item = Storage.ItemTemplates.ContainsKey(entry) ? Storage.ItemTemplates[entry].Item1 : new ItemTemplate();
+                        ItemTemplate key = new ItemTemplate {Entry = entry};
+                        ItemTemplate item = Storage.ItemTemplates.ContainsKey(key) ? Storage.ItemTemplates[key].Item1 : new ItemTemplate();
 
                         db2File.ReadUInt32<ItemId>("Item Entry");
                         item.Class = db2File.ReadInt32E<ItemClass>("Class");
                         item.SubClass = db2File.ReadUInt32("Sub Class");
                         item.SoundOverrideSubclass = db2File.ReadInt32("Sound Override Subclass");
                         item.Material = db2File.ReadInt32E<Material>("Material");
-                        item.DisplayId = db2File.ReadUInt32("Display ID");
+                        item.DisplayID = db2File.ReadUInt32("Display ID");
                         item.InventoryType = db2File.ReadUInt32E<InventoryType>("Inventory Type");
                         item.SheathType = db2File.ReadInt32E<SheathType>("Sheath Type");
 
-                        Storage.ItemTemplates.Add(entry, item, packet.TimeSpan);
+                        Storage.ItemTemplates.Add(item, packet.TimeSpan);
                         packet.AddSniffData(StoreNameType.Item, (int)entry, "DB_REPLY");
                         break;
                     }
                 case DB2Hash.Item_sparse:
                     {
-                        var item = Storage.ItemTemplates.ContainsKey(entry) ? Storage.ItemTemplates[entry].Item1 : new ItemTemplate();
+                        ItemTemplate key = new ItemTemplate { Entry = entry };
+                        ItemTemplate item = Storage.ItemTemplates.ContainsKey(key) ? Storage.ItemTemplates[key].Item1 : new ItemTemplate();
 
                         db2File.ReadUInt32<ItemId>("Item Sparse Entry");
                         item.Quality = db2File.ReadInt32E<ItemQuality>("Quality");
-                        item.Flags1 = db2File.ReadUInt32E<ItemProtoFlags>("Flags 1");
-                        item.Flags2 = db2File.ReadInt32E<ItemFlagExtra>("Flags 2");
-                        item.Flags3 = db2File.ReadUInt32("Flags 3");
+                        item.Flags = db2File.ReadUInt32E<ItemProtoFlags>("Flags 1");
+                        item.FlagsExtra = db2File.ReadInt32E<ItemFlagExtra>("Flags 2");
+                        db2File.ReadUInt32("Flags 3");
                         item.Unk430_1 = db2File.ReadSingle("Unk430_1");
                         item.Unk430_2 = db2File.ReadSingle("Unk430_2");
                         item.BuyCount = db2File.ReadUInt32("Buy count");
@@ -305,23 +314,23 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         item.MaxStackSize = db2File.ReadInt32("Max Stack Size");
                         item.ContainerSlots = db2File.ReadUInt32("Container Slots");
 
-                        item.StatTypes = new ItemModType[10];
-                        for (var i = 0; i < 10; i++)
+                        item.StatTypes = new ItemModType?[10];
+                        for (int i = 0; i < 10; i++)
                         {
-                            var statType = db2File.ReadInt32E<ItemModType>("Stat Type", i);
+                            ItemModType statType = db2File.ReadInt32E<ItemModType>("Stat Type", i);
                             item.StatTypes[i] = statType == ItemModType.None ? ItemModType.Mana : statType; // TDB
                         }
 
-                        item.StatValues = new int[10];
-                        for (var i = 0; i < 10; i++)
+                        item.StatValues = new int?[10];
+                        for (int i = 0; i < 10; i++)
                             item.StatValues[i] = db2File.ReadInt32("Stat Value", i);
 
-                        item.ScalingValue = new int[10];
+                        item.ScalingValue = new int?[10];
                         for (var i = 0; i < 10; i++)
                             item.ScalingValue[i] = db2File.ReadInt32("Scaling Value", i);
 
-                        item.SocketCostRate = new int[10];
-                        for (var i = 0; i < 10; i++)
+                        item.SocketCostRate = new int?[10];
+                        for (int i = 0; i < 10; i++)
                             item.SocketCostRate[i] = db2File.ReadInt32("Socket Cost Rate", i);
 
                         item.ScalingStatDistribution = db2File.ReadInt32("Scaling Stat Distribution");
@@ -329,28 +338,28 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         item.Delay = db2File.ReadUInt32("Delay");
                         item.RangedMod = db2File.ReadSingle("Ranged Mod");
 
-                        item.TriggeredSpellIds = new int[5];
-                        for (var i = 0; i < 5; i++)
+                        item.TriggeredSpellIds = new int?[5];
+                        for (int i = 0; i < 5; i++)
                             item.TriggeredSpellIds[i] = db2File.ReadInt32<SpellId>("Triggered Spell ID", i);
 
-                        item.TriggeredSpellTypes = new ItemSpellTriggerType[5];
-                        for (var i = 0; i < 5; i++)
+                        item.TriggeredSpellTypes = new ItemSpellTriggerType?[5];
+                        for (int i = 0; i < 5; i++)
                             item.TriggeredSpellTypes[i] = db2File.ReadInt32E<ItemSpellTriggerType>("Trigger Spell Type", i);
 
-                        item.TriggeredSpellCharges = new int[5];
-                        for (var i = 0; i < 5; i++)
+                        item.TriggeredSpellCharges = new int?[5];
+                        for (int i = 0; i < 5; i++)
                             item.TriggeredSpellCharges[i] = db2File.ReadInt32("Triggered Spell Charges", i);
 
-                        item.TriggeredSpellCooldowns = new int[5];
-                        for (var i = 0; i < 5; i++)
+                        item.TriggeredSpellCooldowns = new int?[5];
+                        for (int i = 0; i < 5; i++)
                             item.TriggeredSpellCooldowns[i] = db2File.ReadInt32("Triggered Spell Cooldown", i);
 
-                        item.TriggeredSpellCategories = new uint[5];
-                        for (var i = 0; i < 5; i++)
+                        item.TriggeredSpellCategories = new uint?[5];
+                        for (int i = 0; i < 5; i++)
                             item.TriggeredSpellCategories[i] = db2File.ReadUInt32("Triggered Spell Category", i);
 
-                        item.TriggeredSpellCategoryCooldowns = new int[5];
-                        for (var i = 0; i < 5; i++)
+                        item.TriggeredSpellCategoryCooldowns = new int?[5];
+                        for (int i = 0; i < 5; i++)
                             item.TriggeredSpellCategoryCooldowns[i] = db2File.ReadInt32("Triggered Spell Category Cooldown", i);
 
                         item.Bonding = db2File.ReadInt32E<ItemBonding>("Bonding");
@@ -358,7 +367,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         if (db2File.ReadUInt16() > 0)
                             item.Name = db2File.ReadCString("Name", 0);
 
-                        for (var i = 1; i < 4; ++i)
+                        for (int i = 1; i < 4; ++i)
                             if (db2File.ReadUInt16() > 0)
                                 db2File.ReadCString("Name", i);
 
@@ -375,18 +384,17 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         item.RandomPropery = db2File.ReadInt32("Random Property");
                         item.RandomSuffix = db2File.ReadUInt32("Random Suffix");
                         item.ItemSet = db2File.ReadUInt32("Item Set");
-                        item.AreaId = db2File.ReadUInt32<AreaId>("Area");
-                        var map = db2File.ReadInt32<MapId>("Map ID");
-                        item.MapId = map;
+                        item.AreaID = db2File.ReadUInt32<AreaId>("Area");
+                        item.MapID = db2File.ReadInt32<MapId>("Map ID");
                         item.BagFamily = db2File.ReadInt32E<BagFamilyMask>("Bag Family");
                         item.TotemCategory = db2File.ReadInt32E<TotemCategory>("Totem Category");
 
-                        item.ItemSocketColors = new ItemSocketColor[3];
-                        for (var i = 0; i < 3; i++)
+                        item.ItemSocketColors = new ItemSocketColor?[3];
+                        for (int i = 0; i < 3; i++)
                             item.ItemSocketColors[i] = db2File.ReadInt32E<ItemSocketColor>("Socket Color", i);
 
-                        item.SocketContent = new uint[3];
-                        for (var i = 0; i < 3; i++)
+                        item.SocketContent = new uint?[3];
+                        for (int i = 0; i < 3; i++)
                             item.SocketContent[i] = db2File.ReadUInt32("Socket Item", i);
 
                         item.SocketBonus = db2File.ReadInt32("Socket Bonus");
@@ -394,12 +402,12 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         item.ArmorDamageModifier = db2File.ReadSingle("Armor Damage Modifier");
                         item.Duration = db2File.ReadUInt32("Duration");
                         item.ItemLimitCategory = db2File.ReadInt32("Limit Category");
-                        item.HolidayId = db2File.ReadInt32E<Holiday>("Holiday");
+                        item.HolidayID = db2File.ReadInt32E<Holiday>("Holiday");
                         item.StatScalingFactor = db2File.ReadSingle("Stat Scaling Factor");
-                        item.CurrencySubstitutionId = db2File.ReadUInt32("Currency Substitution Id");
+                        item.CurrencySubstitutionID = db2File.ReadUInt32("Currency Substitution Id");
                         item.CurrencySubstitutionCount = db2File.ReadUInt32("Currency Substitution Count");
 
-                        Storage.ObjectNames.Add(entry, new ObjectName { ObjectType = ObjectType.Item, Name = item.Name }, packet.TimeSpan);
+                        Storage.ObjectNames.Add(new ObjectName { ObjectType = ObjectType.Item, ID = (int)entry, Name = item.Name }, packet.TimeSpan);
                         packet.AddSniffData(StoreNameType.Item, (int)entry, "DB_REPLY");
                         break;
                     }
@@ -442,35 +450,37 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         [Parser(Opcode.SMSG_QUERY_PAGE_TEXT_RESPONSE)]
         public static void HandlePageTextResponse(Packet packet)
         {
-            var pageText = new PageText();
+            uint entry = packet.ReadUInt32("Entry");
 
-            var entry = packet.ReadUInt32("Entry");
-            var hasData = packet.ReadBit();
+            Bit hasData = packet.ReadBit();
             if (!hasData)
                 return; // nothing to do
 
-            var textLen = (int)packet.ReadBits(12);
+            PageText pageText = new PageText();
+            pageText.ID = entry;
+
+            int textLen = (int)packet.ReadBits(12);
+
             packet.ResetBitReader();
+
             pageText.Text = packet.ReadWoWString("Page Text", textLen);
             pageText.NextPageID = packet.ReadUInt32("Next Page");
             packet.ReadUInt32("Entry");
 
             packet.AddSniffData(StoreNameType.PageText, (int)entry, "QUERY_RESPONSE");
-            Storage.PageTexts.Add(entry, pageText, packet.TimeSpan);
+            Storage.PageTexts.Add(pageText, packet.TimeSpan);
         }
 
         [HasSniffData]
         [Parser(Opcode.SMSG_QUERY_QUEST_INFO_RESPONSE)]
         public static void HandleQuestQueryResponse510(Packet packet)
         {
-            var hasData = packet.ReadBit();
+            Bit hasData = packet.ReadBit();
             if (!hasData)
             {
                 packet.ReadUInt32("Entry");
                 return; // nothing to do
             }
-
-            var quest = new QuestTemplate();
 
             var questTurnTextWindow = (int)packet.ReadBits(10);
             var details = (int)packet.ReadBits(12);
@@ -508,19 +518,19 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             }
 
             packet.ReadWoWString("string158", len158);
-            quest.NextQuestIdChain = (uint)packet.ReadInt32<QuestId>("Next Chain Quest");
+            packet.ReadInt32<QuestId>("Next Chain Quest");
             packet.ReadInt32("int2971");
-            quest.RewardSpellCast = packet.ReadInt32<SpellId>("Reward Spell Cast");
+            packet.ReadInt32<SpellId>("Reward Spell Cast");
             packet.ReadInt32("int2955");
-            quest.RewardHonorMultiplier = packet.ReadSingle("Reward Honor Multiplier");
+            packet.ReadSingle("Reward Honor Multiplier");
             packet.ReadInt32("int2970");
             packet.ReadInt32("int2984");
             packet.ReadInt32("int2979");
-            quest.MinLevel = packet.ReadInt32("Min Level");
-            quest.RewardSkillPoints = packet.ReadUInt32("RewSkillPoints");
-            quest.QuestGiverPortrait = packet.ReadUInt32("QuestGiverPortrait");
+            packet.ReadInt32("Min Level");
+            packet.ReadUInt32("RewSkillPoints");
+            packet.ReadUInt32("QuestGiverPortrait");
             packet.ReadInt32("int21");
-            quest.Type = packet.ReadInt32E<QuestType>("Type");
+            packet.ReadInt32E<QuestInfo>("Type");
             for (var i = 0; i < 5; ++i)
             {
                 packet.ReadInt32("int2986+40");
@@ -534,104 +544,106 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadInt32("int3001+16");
                 packet.ReadInt32("int3001+0");
             }
-            quest.SuggestedPlayers = packet.ReadUInt32("Suggested Players");
+            packet.ReadUInt32("Suggested Players");
             packet.ReadInt32("int2972");
             packet.ReadInt32("int2959");
-            quest.Title = packet.ReadWoWString("Title", title);
+            packet.ReadWoWString("Title", title);
             packet.ReadInt32("int2965");
             packet.ReadInt32("int2978");
-            quest.RewardSkillId = packet.ReadUInt32("RewSkillId");
+            packet.ReadUInt32("RewSkillId");
             packet.ReadInt32("int2982");
             packet.ReadInt32("int2968");
             packet.ReadInt32("int2964");
             packet.ReadInt32("int2957");
             packet.ReadInt32("int2969");
             packet.ReadInt32("int1786");
-            quest.SoundAccept = packet.ReadUInt32("Sound Accept");
+            packet.ReadUInt32("Sound Accept");
             packet.ReadInt32("int2981");
             packet.ReadInt32("int2961");
             packet.ReadInt32("int15");
             packet.ReadInt32("int2967");
-            quest.CompletedText = packet.ReadWoWString("Completed Text", completedText);
+            packet.ReadWoWString("Completed Text", completedText);
             packet.ReadInt32("int25");
             packet.ReadInt32("Quest Id");
-            quest.PointY = packet.ReadSingle("Point Y");
+            packet.ReadSingle("Point Y");
             packet.ReadInt32("int2974");
             packet.ReadInt32("int2952");
-            quest.Details = packet.ReadWoWString("Details", details);
-            quest.Level = packet.ReadInt32("Level");
-            quest.PointMapId = packet.ReadUInt32("Point Map ID");
+            packet.ReadWoWString("Details", details);
+            packet.ReadInt32("Level");
+            packet.ReadUInt32("Point Map ID");
             packet.ReadWoWString("string1658", len1658);
-            quest.PointX = packet.ReadSingle("Point X");
+            packet.ReadSingle("Point X");
             packet.ReadInt32("int17");
             packet.ReadInt32("int2962");
-            quest.QuestGiverTextWindow = packet.ReadWoWString("QuestGiver Text Window", questGiverTextWindow);
+            packet.ReadWoWString("QuestGiver Text Window", questGiverTextWindow);
             packet.ReadInt32("int2963");
             packet.ReadInt32("int2985");
-            quest.Method = packet.ReadInt32E<QuestMethod>("Method");
-            quest.RewardReputationMask = packet.ReadUInt32("RewRepMask");
+            packet.ReadInt32E<QuestType>("Method");
+            packet.ReadUInt32("RewRepMask");
             packet.ReadInt32("int2953");
             packet.ReadInt32("int2983");
             packet.ReadInt32("int9");
-            quest.QuestGiverTargetName = packet.ReadWoWString("QuestGiver Target Name", questGiverTargetName);
-            quest.ZoneOrSort = packet.ReadInt32E<QuestSort>("Sort");
+            packet.ReadWoWString("QuestGiver Target Name", questGiverTargetName);
+            packet.ReadInt32E<QuestSort>("Sort");
             packet.ReadInt32("int1788");
-            quest.SoundTurnIn = packet.ReadUInt32("Sound TurnIn");
-            quest.SourceItemId = packet.ReadUInt32<ItemId>("Source Item ID");
-            quest.QuestTurnTargetName = packet.ReadWoWString("QuestTurn Target Name", questTurnTargetName);
-            quest.QuestTurnInPortrait = packet.ReadUInt32("QuestTurnInPortrait");
-            quest.Flags = packet.ReadUInt32E<QuestFlags>("Flags");
+            packet.ReadUInt32("Sound TurnIn");
+            packet.ReadUInt32<ItemId>("Source Item ID");
+            packet.ReadWoWString("QuestTurn Target Name", questTurnTargetName);
+            packet.ReadUInt32("QuestTurnInPortrait");
+            packet.ReadUInt32E<QuestFlags>("Flags");
             packet.ReadInt32("int2954");
             packet.ReadInt32("int2958");
-            quest.RewardMoneyMaxLevel = packet.ReadUInt32("Reward Money Max Level");
+            packet.ReadUInt32("Reward Money Max Level");
             packet.ReadInt32("int1787");
-            quest.QuestTurnTextWindow = packet.ReadWoWString("QuestTurn Text Window", questTurnTextWindow);
+            packet.ReadWoWString("QuestTurn Text Window", questTurnTextWindow);
             packet.ReadInt32("int2977");
             packet.ReadInt32("int2980");
             packet.ReadInt32("int2975");
-            quest.RewardSpell = (uint)packet.ReadInt32<SpellId>("Reward Spell");
-            quest.RewardOrRequiredMoney = packet.ReadInt32("Reward Money");
+            packet.ReadInt32<SpellId>("Reward Spell");
+            packet.ReadInt32("Reward Money");
             packet.ReadInt32("int2973");
             packet.ReadInt32("int2966");
             packet.ReadInt32("int2976");
-            quest.PointOption = packet.ReadUInt32("Point Opt");
+            packet.ReadUInt32("Point Opt");
             packet.ReadInt32("int2956");
 
             var id = packet.ReadEntry("Quest ID");
 
             packet.AddSniffData(StoreNameType.Quest, id.Key, "QUERY_RESPONSE");
-            Storage.QuestTemplates.Add((uint)id.Key, quest, packet.TimeSpan);
         }
 
         [HasSniffData]
         [Parser(Opcode.SMSG_QUERY_NPC_TEXT_RESPONSE)]
         public static void HandleNpcTextUpdate(Packet packet)
         {
-            var npcText = new NpcTextMop();
-
             var entry = packet.ReadEntry("Entry");
             if (entry.Value) // Can be masked
                 return;
 
-            var size = packet.ReadInt32("Size");
+            int size = packet.ReadInt32("Size");
             var data = packet.ReadBytes(size);
-            var hasData = packet.ReadBit();
+            Bit hasData = packet.ReadBit();
             if (!hasData)
                 return; // nothing to do
 
-            var pkt = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+            NpcTextMop npcText = new NpcTextMop
+            {
+                ID = (uint)entry.Key
+            };
+
+            Packet pkt = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
             npcText.Probabilities = new float[8];
             npcText.BroadcastTextId = new uint[8];
-            for (var i = 0; i < 8; ++i)
+            for (int i = 0; i < 8; ++i)
                 npcText.Probabilities[i] = pkt.ReadSingle("Probability", i);
-            for (var i = 0; i < 8; ++i)
+            for (int i = 0; i < 8; ++i)
                 npcText.BroadcastTextId[i] = pkt.ReadUInt32("Broadcast Text Id", i);
 
             pkt.ClosePacket(false);
 
             packet.AddSniffData(StoreNameType.NpcText, entry.Key, "QUERY_RESPONSE");
 
-            Storage.NpcTextsMop.Add((uint)entry.Key, npcText, packet.TimeSpan);
+            Storage.NpcTextsMop.Add(npcText, packet.TimeSpan);
         }
     }
 }

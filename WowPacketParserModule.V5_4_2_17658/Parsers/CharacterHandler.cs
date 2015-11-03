@@ -12,8 +12,6 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT)]
         public static void HandleCharEnum(Packet packet)
         {
-            var guidB = new byte[8];
-
             var count2 = (int)packet.ReadBits(21);
             var count1 = (int)packet.ReadBits(16);
 
@@ -51,6 +49,8 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             for (int c = 0; c < count1; ++c)
             {
+                Vector3 pos = new Vector3();
+
                 packet.ReadInt32("Pet Level", c); // v4+112
                 var level = packet.ReadByte("Level", c);
 
@@ -69,7 +69,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadByte("List Order", c); //v4+57
                 packet.ReadByte("Hair Style", c); // v4+63
                 packet.ReadInt32E<CharacterFlag>("CharacterFlag", c);
-                var clss = packet.ReadByteE<Class>("Class", c); // v4+59
+                var klass = packet.ReadByteE<Class>("Class", c); // v4+59
 
                 packet.ReadXORByte(guildGuids[c], 7);
 
@@ -97,18 +97,18 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadByte("Skin", c); // v4+63
                 var mapId = packet.ReadInt32<MapId>("Map Id", c); //v4+72
                 packet.ReadInt32E<CharacterFlag>("CharacterFlag", c);
-                var y = packet.ReadSingle("Position Y", c); // v4+80
+                pos.Y = packet.ReadSingle("Position Y", c); // v4+80
 
                 packet.ReadXORByte(guildGuids[c], 0);
                 packet.ReadXORByte(charGuids[c], 4);
                 packet.ReadXORByte(charGuids[c], 1);
 
-                var z = packet.ReadSingle("Position Z", c); //v4+84
+                pos.Z = packet.ReadSingle("Position Z", c); //v4+84
 
                 packet.ReadXORByte(charGuids[c], 5);
 
                 packet.ReadByte("Face", c); // v4+62
-                var x = packet.ReadSingle("Position X", c); //v4+76
+                pos.X = packet.ReadSingle("Position X", c); //v4+76
 
                 var playerGuid = new WowGuid64(BitConverter.ToUInt64(charGuids[c], 0));
 
@@ -117,12 +117,11 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
                 if (firstLogins[c])
                 {
-                    var startPos = new StartPosition {Map = (uint) mapId, Position = new Vector3(x, y, z), Zone = zone};
-
-                    Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
+                    PlayerCreateInfo startPos = new PlayerCreateInfo { Race = race, Class = klass, Map = (uint)mapId, Zone = zone, Position = pos, Orientation = 0 };
+                    Storage.StartPositions.Add(startPos, packet.TimeSpan);
                 }
 
-                var playerInfo = new Player { Race = race, Class = clss, Name = name, FirstLogin = firstLogins[c], Level = level };
+                var playerInfo = new Player { Race = race, Class = klass, Name = name, FirstLogin = firstLogins[c], Level = level };
                 if (Storage.Objects.ContainsKey(playerGuid))
                     Storage.Objects[playerGuid] = new Tuple<WoWObject, TimeSpan?>(playerInfo, packet.TimeSpan);
                 else

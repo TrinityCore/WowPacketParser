@@ -5,7 +5,7 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("npc_text")]
-    public class NpcText
+    public class NpcText : IDataModel
     {
         public float[] Probabilities;
 
@@ -68,14 +68,14 @@ namespace WowPacketParser.Store.Objects
             Text6X[1] = Texts2[6];
             Text7X[1] = Texts2[7];
 
-            Em0X = new uint[6];
-            Em1X = new uint[6];
-            Em2X = new uint[6];
-            Em3X = new uint[6];
-            Em4X = new uint[6];
-            Em5X = new uint[6];
-            Em6X = new uint[6];
-            Em7X = new uint[6];
+            Em0X = new uint?[6];
+            Em1X = new uint?[6];
+            Em2X = new uint?[6];
+            Em3X = new uint?[6];
+            Em4X = new uint?[6];
+            Em5X = new uint?[6];
+            Em6X = new uint?[6];
+            Em7X = new uint?[6];
 
             Em0X[0] = (uint) EmoteIds[0][0];
             Em0X[1] = (uint) EmoteIds[0][1];
@@ -127,45 +127,112 @@ namespace WowPacketParser.Store.Objects
             Em7X[5] =     EmoteDelays[7][2];
         }
 
-        [DBFieldName("text0_", 2, true)] public string[] Text0X;
-        [DBFieldName("lang0")] public uint Lang0;
-        [DBFieldName("prob0")] public float Prob0;
-        [DBFieldName("em0_", 6, true)] public uint[] Em0X;
-        [DBFieldName("text1_", 2, true)] public string[] Text1X;
-        [DBFieldName("lang1")] public uint Lang1;
-        [DBFieldName("prob1")] public float Prob1;
-        [DBFieldName("em1_", 6, true)] public uint[] Em1X;
-        [DBFieldName("text2_", 2, true)] public string[] Text2X;
-        [DBFieldName("lang2")] public uint Lang2;
-        [DBFieldName("prob2")] public float Prob2;
-        [DBFieldName("em2_", 6, true)] public uint[] Em2X;
-        [DBFieldName("text3_", 2, true)] public string[] Text3X;
-        [DBFieldName("lang3")] public uint Lang3;
-        [DBFieldName("prob3")] public float Prob3;
-        [DBFieldName("em3_", 6, true)] public uint[] Em3X;
-        [DBFieldName("text4_", 2, true)] public string[] Text4X;
-        [DBFieldName("lang4")] public uint Lang4;
-        [DBFieldName("prob4")] public float Prob4;
-        [DBFieldName("em4_", 6, true)] public uint[] Em4X;
-        [DBFieldName("text5_", 2, true)] public string[] Text5X;
-        [DBFieldName("lang5")] public uint Lang5;
-        [DBFieldName("prob5")] public float Prob5;
-        [DBFieldName("em5_", 6, true)] public uint[] Em5X;
-        [DBFieldName("text6_", 2, true)] public string[] Text6X;
-        [DBFieldName("lang6")] public uint Lang6;
-        [DBFieldName("prob6")] public float Prob6;
-        [DBFieldName("em6_", 6, true)] public uint[] Em6X;
-        [DBFieldName("text7_", 2, true)] public string[] Text7X;
-        [DBFieldName("lang7")] public uint Lang7;
-        [DBFieldName("prob7")] public float Prob7;
-        [DBFieldName("em7_", 6, true)] public uint[] Em7X;
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("text0_", 2, true)]
+        public string[] Text0X;
+
+        [DBFieldName("lang0")]
+        public uint? Lang0;
+
+        [DBFieldName("prob0")]
+        public float? Prob0;
+
+        [DBFieldName("em0_", 6, true)]
+        public uint?[] Em0X;
+
+        [DBFieldName("text1_", 2, true)]
+        public string[] Text1X;
+
+        [DBFieldName("lang1")]
+        public uint? Lang1;
+
+        [DBFieldName("prob1")]
+
+        public float? Prob1;
+
+        [DBFieldName("em1_", 6, true)]
+        public uint?[] Em1X;
+
+        [DBFieldName("text2_", 2, true)]
+        public string[] Text2X;
+
+        [DBFieldName("lang2")]
+        public uint? Lang2;
+
+        [DBFieldName("prob2")]
+        public float? Prob2;
+
+        [DBFieldName("em2_", 6, true)]
+        public uint?[] Em2X;
+
+        [DBFieldName("text3_", 2, true)]
+        public string[] Text3X;
+
+        [DBFieldName("lang3")]
+        public uint? Lang3;
+
+        [DBFieldName("prob3")]
+        public float? Prob3;
+
+        [DBFieldName("em3_", 6, true)]
+        public uint?[] Em3X;
+
+        [DBFieldName("text4_", 2, true)]
+        public string[] Text4X;
+
+        [DBFieldName("lang4")]
+        public uint? Lang4;
+
+        [DBFieldName("prob4")]
+        public float? Prob4;
+
+        [DBFieldName("em4_", 6, true)]
+        public uint?[] Em4X;
+
+        [DBFieldName("text5_", 2, true)]
+        public string[] Text5X;
+
+        [DBFieldName("lang5")]
+        public uint? Lang5;
+
+        [DBFieldName("prob5")]
+        public float? Prob5;
+
+        [DBFieldName("em5_", 6, true)]
+        public uint?[] Em5X;
+
+        [DBFieldName("text6_", 2, true)]
+        public string[] Text6X;
+
+        [DBFieldName("lang6")]
+        public uint? Lang6;
+
+        [DBFieldName("prob6")]
+        public float? Prob6;
+
+        [DBFieldName("em6_", 6, true)]
+        public uint?[] Em6X;
+
+        [DBFieldName("text7_", 2, true)]
+        public string[] Text7X;
+
+        [DBFieldName("lang7")]
+        public uint? Lang7;
+
+        [DBFieldName("prob7")]
+        public float? Prob7;
+
+        [DBFieldName("em7_", 6, true)]
+        public uint?[] Em7X;
 
         [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild = ClientVersion.BuildInt;
+        public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 
     [DBTableName("npc_text")]
-    public class NpcTextMop
+    public class NpcTextMop : IDataModel
     {
         public float[] Probabilities;
 
@@ -194,40 +261,58 @@ namespace WowPacketParser.Store.Objects
             BroadcastTextId7 = BroadcastTextId[7];
         }
 
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
         [DBFieldName("Probability0")]
-        public float Prob0;
+        public float? Prob0;
+
         [DBFieldName("Probability1")]
-        public float Prob1;
+        public float? Prob1;
+
         [DBFieldName("Probability2")]
-        public float Prob2;
+        public float? Prob2;
+
         [DBFieldName("Probability3")]
-        public float Prob3;
+        public float? Prob3;
+
         [DBFieldName("Probability4")]
-        public float Prob4;
+        public float? Prob4;
+
         [DBFieldName("Probability5")]
-        public float Prob5;
+        public float? Prob5;
+
         [DBFieldName("Probability6")]
-        public float Prob6;
+        public float? Prob6;
+
         [DBFieldName("Probability7")]
-        public float Prob7;
+        public float? Prob7;
+
         [DBFieldName("BroadcastTextId0")]
-        public uint BroadcastTextId0;
+        public uint? BroadcastTextId0;
+
         [DBFieldName("BroadcastTextId1")]
-        public uint BroadcastTextId1;
+        public uint? BroadcastTextId1;
+
         [DBFieldName("BroadcastTextId2")]
-        public uint BroadcastTextId2;
+        public uint? BroadcastTextId2;
+
         [DBFieldName("BroadcastTextId3")]
-        public uint BroadcastTextId3;
+        public uint? BroadcastTextId3;
+
         [DBFieldName("BroadcastTextId4")]
-        public uint BroadcastTextId4;
+        public uint? BroadcastTextId4;
+
         [DBFieldName("BroadcastTextId5")]
-        public uint BroadcastTextId5;
+        public uint? BroadcastTextId5;
+
         [DBFieldName("BroadcastTextId6")]
-        public uint BroadcastTextId6;
+        public uint? BroadcastTextId6;
+
         [DBFieldName("BroadcastTextId7")]
-        public uint BroadcastTextId7;
+        public uint? BroadcastTextId7;
 
         [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild = ClientVersion.BuildInt;
+        public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }

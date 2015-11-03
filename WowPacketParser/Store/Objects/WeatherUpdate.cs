@@ -7,18 +7,18 @@ namespace WowPacketParser.Store.Objects
     public sealed class WeatherUpdate : IDataModel
     {
         [DBFieldName("map_id")]
-        public uint MapId;
+        public uint? MapId;
 
         [DBFieldName("zone_id")]
-        public uint ZoneId;
+        public uint? ZoneId;
 
         [DBFieldName("weather_state")]
-        public WeatherState State;
+        public WeatherState? State;
 
         [DBFieldName("grade")]
-        public float Grade;
+        public float? Grade;
 
         [DBFieldName("unk")]
-        public byte Unk;
+        public byte? Unk;
     }
 }

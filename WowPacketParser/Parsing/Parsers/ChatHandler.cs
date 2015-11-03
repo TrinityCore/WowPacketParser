@@ -16,13 +16,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_DEFENSE_MESSAGE)]
         public static void HandleDefenseMessage(Packet packet)
         {
-            var message = new DefenseMessage();
-
-            var zoneId = packet.ReadUInt32<ZoneId>("Zone Id");
+            packet.ReadUInt32<ZoneId>("Zone Id");
             packet.ReadInt32("Message Length");
-            message.Text = packet.ReadCString("Message");
-
-            Storage.DefenseMessages.Add(zoneId, message, packet.TimeSpan);
+            packet.ReadCString("Message");
         }
 
         [Parser(Opcode.CMSG_CHAT_REPORT_IGNORED)]

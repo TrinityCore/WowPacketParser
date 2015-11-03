@@ -72,9 +72,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
         UNIT_FIELD_LEVEL                                 = ObjectField.OBJECT_END + 0x002C, // Size =   1, Type: Flags PUBLIC
         UNIT_FIELD_EFFECTIVE_LEVEL                       = ObjectField.OBJECT_END + 0x002D, // Size =   1, Type: Flags PUBLIC
         UNIT_FIELD_FACTIONTEMPLATE                       = ObjectField.OBJECT_END + 0x002E, // Size =   1, Type: Flags PUBLIC
-        UNIT_VIRTUAL_ITEM_SLOT_ID1                       = ObjectField.OBJECT_END + 0x002F, // Size =   1, Type: Flags PUBLIC
-        UNIT_VIRTUAL_ITEM_SLOT_ID2                       = ObjectField.OBJECT_END + 0x0030, // Size =   1, Type: Flags PUBLIC
-        UNIT_VIRTUAL_ITEM_SLOT_ID3                       = ObjectField.OBJECT_END + 0x0031, // Size =   1, Type: Flags PUBLIC
+        UNIT_VIRTUAL_ITEM_SLOT_ID                        = ObjectField.OBJECT_END + 0x002F, // Size =   3, Type: Flags PUBLIC
         UNIT_FIELD_FLAGS                                 = ObjectField.OBJECT_END + 0x0032, // Size =   1, Type: Flags PUBLIC
         UNIT_FIELD_FLAGS_2                               = ObjectField.OBJECT_END + 0x0033, // Size =   1, Type: Flags PUBLIC
         UNIT_FIELD_AURASTATE                             = ObjectField.OBJECT_END + 0x0034, // Size =   1, Type: Flags PUBLIC

@@ -104,8 +104,6 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LOOT_RESPONSE)]
         public static void HandleLootResponse(Packet packet)
         {
-            var loot = new Loot();
-
             var guid = packet.ReadGuid("GUID");
             var lootType = packet.ReadByteE<LootType>("Loot Type");
             if (lootType == LootType.None)
@@ -114,26 +112,21 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
             }
 
-            loot.Gold = packet.ReadUInt32("Gold");
-
             var count = packet.ReadByte("Drop Count");
 
             byte currencyCount = 0;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
                 currencyCount = packet.ReadByte("Currency Count");
 
-            loot.LootItems = new List<LootItem>(count);
             for (var i = 0; i < count; ++i)
             {
-                var lootItem = new LootItem();
                 packet.ReadByte("Slot", i);
-                lootItem.ItemId = packet.ReadUInt32<ItemId>("Entry", i);
-                lootItem.Count = packet.ReadUInt32("Count", i);
+                packet.ReadUInt32<ItemId>("Entry", i);
+                packet.ReadUInt32("Count", i);
                 packet.ReadUInt32("Display ID", i);
                 packet.ReadInt32("Random Suffix", i);
                 packet.ReadInt32("Random Property Id", i);
                 packet.ReadByteE<LootSlotType>("Slot Type", i);
-                loot.LootItems.Add(lootItem);
             }
 
             for (int i = 0; i < currencyCount; ++i)
@@ -142,21 +135,6 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Currency Id", i);
                 packet.ReadInt32("Count", i); // unconfirmed
             }
-
-            // Items do not have item id in its guid, we need to query the wowobject store go
-            if (guid.GetObjectType() == ObjectType.Item)
-            {
-                WoWObject item;
-                UpdateField itemEntry;
-                if (Storage.Objects.TryGetValue(guid, out item))
-                    if (item.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out itemEntry))
-                    {
-                        Storage.Loots.Add(new Tuple<uint, ObjectType>(itemEntry.UInt32Value, guid.GetObjectType()), loot, packet.TimeSpan);
-                        return;
-                    }
-            }
-
-            Storage.Loots.Add(new Tuple<uint, ObjectType>(guid.GetEntry(), guid.GetObjectType()), loot, packet.TimeSpan);
         }
 
         [Parser(Opcode.CMSG_LOOT_ROLL)]

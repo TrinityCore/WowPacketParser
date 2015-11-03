@@ -32,7 +32,7 @@ namespace WowPacketParser.SQL.Builders
                 if (transportTemplates.IsEmpty())
                     return false;
 
-                mapId = transportTemplates[entry.UInt32Value].Item1.Data[6];
+                mapId = transportTemplates[entry.UInt32Value].Item1.Data[6].GetValueOrDefault();
             }
 
             return true;

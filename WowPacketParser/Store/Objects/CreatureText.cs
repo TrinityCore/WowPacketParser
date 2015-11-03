@@ -5,36 +5,39 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("creature_text")]
-    public sealed class CreatureText
+    public sealed class CreatureText : IDataModel
     {
-        [DBFieldName("groupid")]
-        public uint GroupId;
+        [DBFieldName("entry", true)]
+        public uint? Entry;
 
-        [DBFieldName("id")]
-        public uint Id;
+        [DBFieldName("groupid", true)]
+        public uint? GroupId;
+
+        [DBFieldName("id", true)]
+        public uint? ID;
 
         [DBFieldName("text")]
         public string Text;
 
         [DBFieldName("type")]
-        public ChatMessageType Type;
+        public ChatMessageType? Type;
 
         [DBFieldName("language")]
-        public Language Language;
+        public Language? Language;
 
         [DBFieldName("probability")]
-        public float Probability;
+        public float? Probability;
 
         [DBFieldName("emote")]
-        public EmoteType Emote;
+        public EmoteType? Emote;
 
         [DBFieldName("duration")]
-        public uint Duration;
+        public uint? Duration;
 
         [DBFieldName("sound")]
-        public uint Sound;
+        public uint? Sound;
 
-        [DBFieldName("BroadcastTextID")]
+        [DBFieldName("BroadcastTextId")]
         public string BroadcastTextID;
 
         [DBFieldName("comment")]

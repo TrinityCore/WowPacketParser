@@ -35,7 +35,7 @@ namespace WowPacketParser.SQL
                 if (_conditions.Count == 1)
                 {
                     whereClause.Append(" = ");
-                    whereClause.Append(field.Item2.GetValue(_conditions.First()));
+                    whereClause.Append(field.Item2.GetValue(_conditions.First().Data));
                 }
                 else
                 {
@@ -201,6 +201,23 @@ namespace WowPacketParser.SQL
             {
                 object value = field.Item2.GetValue(_value.Data);
 
+                Array arr = value as Array;
+                if (arr != null)
+                {
+                    for (int i = 0; i < arr.Length; i++)
+                    {
+                        object v = arr.GetValue(i);
+                        if (v == null)
+                            continue;
+
+                        query.Append(SQLUtil.AddBackQuotes(field.Item3.First().Name + (field.Item3.First().StartAtZero ? i : i+1)));
+                        query.Append("=");
+                        query.Append(SQLUtil.ToSQLValue(v));
+                        query.Append(SQLUtil.CommaSeparator);
+                    }
+                    continue;
+                }
+
                 if (value == null)
                     continue;
 
@@ -232,7 +249,7 @@ namespace WowPacketParser.SQL
         private readonly bool _withDelete;
         private readonly string _insertHeader;
 
-        // Add a new insert header every 500 rows
+        // Add a new insert header every 250 rows
         private const int MaxRowsPerInsert = 250;
 
         /// <summary>
@@ -380,10 +397,31 @@ namespace WowPacketParser.SQL
             foreach (object value in SQLUtil.GetFields<T>().Select(field => field.Item2.GetValue(_row.Data)))
             {
                 if (value == null)
-                    query.Append("NULL");
+                {
+                    query.Append("UNKNOWN");
+                    query.Append(SQLUtil.CommaSeparator);
+                }
                 else
-                    query.Append(SQLUtil.ToSQLValue(value));
-                query.Append(SQLUtil.CommaSeparator);
+                {
+                    Array arr = value as Array;
+                    if (arr != null)
+                    {
+                        foreach (object v in arr)
+                        {
+                            if (v == null)
+                                query.Append("UNKNOWN");
+                            else
+                                query.Append(SQLUtil.ToSQLValue(v));
+
+                            query.Append(SQLUtil.CommaSeparator);
+                        }
+                    }
+                    else
+                    {
+                        query.Append(SQLUtil.ToSQLValue(value));
+                        query.Append(SQLUtil.CommaSeparator);
+                    }
+                }
             }
             query.Remove(query.Length - SQLUtil.CommaSeparator.Length, SQLUtil.CommaSeparator.Length); // remove last ", "
             query.Append("),");

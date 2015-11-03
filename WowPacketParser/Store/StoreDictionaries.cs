@@ -320,6 +320,8 @@ namespace WowPacketParser.Store
 
     public class DataBag<T> : StoreBag<T> where T : IDataModel
     {
+        public DataBag() { }
+
         public DataBag(List<SQLOutput> types) : base(types) { }
 
         public DataBag(List<HotfixSQLOutput> types) : base(types) { }
@@ -330,7 +332,7 @@ namespace WowPacketParser.Store
             {
                     return Bag.FirstOrDefault(c => SQLUtil.GetFields<T>()
                         .Where(f => f.Item3.Any(g => g.IsPrimaryKey))
-                        .All(f => (f.Item2.GetValue(c).Equals(f.Item2.GetValue(key)))));
+                        .All(f => (f.Item2.GetValue(c.Item1).Equals(f.Item2.GetValue(key)))));
             }
         }
 
@@ -340,7 +342,15 @@ namespace WowPacketParser.Store
                 c =>
                     SQLUtil.GetFields<T>()
                         .Where(f => f.Item3.Any(g => g.IsPrimaryKey))
-                        .All(f => (f.Item2.GetValue(c).Equals(f.Item2.GetValue(key)))));
+                        .All(f => (f.Item2.GetValue(c.Item1).Equals(f.Item2.GetValue(key)))));
+        }
+
+        public bool Contains(T key)
+        {
+            return Bag.Any(
+                c => SQLUtil.GetFields<T>()
+                .Where(f => f.Item2.GetValue(key) != null)
+                .All(f => (f.Item2.GetValue(c.Item1).Equals(f.Item2.GetValue(key)))));
         }
     }
 }

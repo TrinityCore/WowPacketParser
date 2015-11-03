@@ -34,10 +34,16 @@ namespace WowPacketParser.SQL
         /// </summary>
         public readonly bool StartAtZero;
 
+        public readonly LocaleConstant? Locale = null;
+
         /// <summary>
         /// True if cctor that accepts multiple fields was used (name + count)
         /// </summary>
         private readonly bool _multipleFields;
+
+        private readonly TargetedDatabase? _addedInVersion = null;
+
+        private readonly TargetedDatabase? _removedInVersion = null;
 
         /// <summary>
         /// matches any version
@@ -59,18 +65,10 @@ namespace WowPacketParser.SQL
         /// <param name="isPrimaryKey">true if field is a primary key</param>
         public DBFieldNameAttribute(string name, LocaleConstant locale, bool isPrimaryKey = false)
         {
-            if (BinaryPacketReader.GetLocale() == locale)
-            {
-                Name = name;
-                IsPrimaryKey = isPrimaryKey;
-                Count = 1;
-            }
-            else
-            {
-                Name = null;
-                IsPrimaryKey = false;
-                Count = 0;
-            }
+            Name = name;
+            IsPrimaryKey = isPrimaryKey;
+            Count = 1;
+            Locale = locale;
         }
 
         /// <summary>
@@ -79,20 +77,12 @@ namespace WowPacketParser.SQL
         /// <param name="name">database field name</param>
         /// <param name="addedInVersion">initial version</param>
         /// <param name="isPrimaryKey">true if field is a primary key</param>
-        public DBFieldNameAttribute(string name, ClientVersionBuild addedInVersion, bool isPrimaryKey = false)
+        public DBFieldNameAttribute(string name, TargetedDatabase addedInVersion, bool isPrimaryKey = false)
         {
-            if (ClientVersion.AddedInVersion(addedInVersion))
-            {
-                Name = name;
-                IsPrimaryKey = isPrimaryKey;
-                Count = 1;
-            }
-            else
-            {
-                Name = null;
-                IsPrimaryKey = false;
-                Count = 0;
-            }
+            Name = name;
+            IsPrimaryKey = isPrimaryKey;
+            Count = 1;
+            _addedInVersion = addedInVersion;
         }
 
         /// <summary>
@@ -102,20 +92,13 @@ namespace WowPacketParser.SQL
         /// <param name="addedInVersion">initial version</param>
         /// <param name="locale">initial locale</param>
         /// <param name="isPrimaryKey">true if field is a primary key</param>
-        public DBFieldNameAttribute(string name, ClientVersionBuild addedInVersion, LocaleConstant locale, bool isPrimaryKey = false)
+        public DBFieldNameAttribute(string name, TargetedDatabase addedInVersion, LocaleConstant locale, bool isPrimaryKey = false)
         {
-            if (ClientVersion.AddedInVersion(addedInVersion) && BinaryPacketReader.GetLocale() == locale)
-            {
-                Name = name;
-                IsPrimaryKey = isPrimaryKey;
-                Count = 1;
-            }
-            else
-            {
-                Name = null;
-                IsPrimaryKey = false;
-                Count = 0;
-            }
+            Name = name;
+            IsPrimaryKey = isPrimaryKey;
+            Count = 1;
+            Locale = locale;
+            _addedInVersion = addedInVersion;
         }
 
         /// <summary>
@@ -125,20 +108,14 @@ namespace WowPacketParser.SQL
         /// <param name="addedInVersion">initial version</param>
         /// <param name="removedInVersion">final version</param>
         /// <param name="isPrimaryKey">true if field is a primary key</param>
-        public DBFieldNameAttribute(string name, ClientVersionBuild addedInVersion, ClientVersionBuild removedInVersion, bool isPrimaryKey = false)
+        public DBFieldNameAttribute(string name, TargetedDatabase addedInVersion, TargetedDatabase removedInVersion, bool isPrimaryKey = false)
         {
-            if (ClientVersion.AddedInVersion(addedInVersion) && ClientVersion.RemovedInVersion(removedInVersion))
-            {
-                Name = name;
-                IsPrimaryKey = isPrimaryKey;
-                Count = 1;
-            }
-            else
-            {
-                Name = null;
-                IsPrimaryKey = false;
-                Count = 0;
-            }
+            Name = name;
+            IsPrimaryKey = isPrimaryKey;
+            Count = 1;
+            _addedInVersion = addedInVersion;
+            _removedInVersion = removedInVersion;
+
         }
 
         /// <summary>
@@ -149,20 +126,14 @@ namespace WowPacketParser.SQL
         /// <param name="removedInVersion">final version</param>
         /// <param name="locale">initial locale</param>
         /// <param name="isPrimaryKey">true if field is a primary key</param>
-        public DBFieldNameAttribute(string name, ClientVersionBuild addedInVersion, ClientVersionBuild removedInVersion, LocaleConstant locale, bool isPrimaryKey = false)
+        public DBFieldNameAttribute(string name, TargetedDatabase addedInVersion, TargetedDatabase removedInVersion, LocaleConstant locale, bool isPrimaryKey = false)
         {
-            if (ClientVersion.AddedInVersion(addedInVersion) && ClientVersion.RemovedInVersion(removedInVersion) && BinaryPacketReader.GetLocale() == locale)
-            {
-                Name = name;
-                IsPrimaryKey = isPrimaryKey;
-                Count = 1;
-            }
-            else
-            {
-                Name = null;
-                IsPrimaryKey = false;
-                Count = 0;
-            }
+            Name = name;
+            IsPrimaryKey = isPrimaryKey;
+            Count = 1;
+            Locale = locale;
+            _addedInVersion = addedInVersion;
+            _removedInVersion = removedInVersion;
         }
 
         /// <summary>
@@ -189,20 +160,13 @@ namespace WowPacketParser.SQL
         /// <param name="count">number of fields</param>
         /// <param name="startAtZero">true if fields name start at 0</param>
         /// <param name="isPrimaryKey">true if field is a primary key</param>
-        public DBFieldNameAttribute(string name, ClientVersionBuild addedInVersion, int count, bool startAtZero = false, bool isPrimaryKey = false)
+        public DBFieldNameAttribute(string name, TargetedDatabase addedInVersion, int count, bool startAtZero = false,
+            bool isPrimaryKey = false)
         {
-            if (ClientVersion.AddedInVersion(addedInVersion))
-            {
-                Name = name;
-                IsPrimaryKey = isPrimaryKey;
-                Count = count;
-            }
-            else
-            {
-                Name = null;
-                IsPrimaryKey = false;
-                Count = 0;
-            }
+            Name = name;
+            IsPrimaryKey = isPrimaryKey;
+            Count = count;
+            _addedInVersion = addedInVersion;
 
             StartAtZero = startAtZero;
             _multipleFields = true;
@@ -217,23 +181,33 @@ namespace WowPacketParser.SQL
         /// <param name="count">number of fields</param>
         /// <param name="startAtZero">true if fields name start at 0</param>
         /// <param name="isPrimaryKey">true if field is a primary key</param>
-        public DBFieldNameAttribute(string name, ClientVersionBuild addedInVersion, ClientVersionBuild removedInVersion, int count, bool startAtZero = false, bool isPrimaryKey = false)
+        public DBFieldNameAttribute(string name, TargetedDatabase addedInVersion, TargetedDatabase removedInVersion,
+            int count, bool startAtZero = false, bool isPrimaryKey = false)
         {
-            if (ClientVersion.AddedInVersion(addedInVersion) && ClientVersion.RemovedInVersion(removedInVersion))
-            {
-                Name = name;
-                IsPrimaryKey = isPrimaryKey;
-                Count = count;
-            }
-            else
-            {
-                Name = null;
-                IsPrimaryKey = false;
-                Count = 0;
-            }
+            Name = name;
+            IsPrimaryKey = isPrimaryKey;
+            Count = count;
+            _addedInVersion = addedInVersion;
+            _removedInVersion = removedInVersion;
 
             StartAtZero = startAtZero;
             _multipleFields = true;
+        }
+
+        public bool IsVisible()
+        {
+            if (Locale != null && Locale != BinaryPacketReader.GetLocale())
+                return false;
+
+            TargetedDatabase target = Settings.TargetedDatabase;
+
+            if (_addedInVersion.HasValue && !_removedInVersion.HasValue)
+                return target >= _addedInVersion.Value;
+
+            if (_addedInVersion.HasValue && _removedInVersion.HasValue)
+                return target >= _addedInVersion.Value && target < _removedInVersion.Value;
+
+            return true;
         }
 
         /// <summary>
@@ -253,7 +227,7 @@ namespace WowPacketParser.SQL
             {
                 result.Append(SQLUtil.AddBackQuotes(Name + (StartAtZero ? i - 1 : i)));
                 if (i != Count)
-                    result.Append(",");
+                    result.Append(SQLUtil.CommaSeparator);
             }
             return result.ToString();
         }

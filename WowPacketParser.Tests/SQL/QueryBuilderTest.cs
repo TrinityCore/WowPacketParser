@@ -36,8 +36,8 @@ namespace WowPacketParser.Tests.SQL
             [DBFieldName("TestInt1", true)]
             public int? TestInt1;
 
-            [DBFieldName("TestInt2")]
-            public int? TestInt2;
+            [DBFieldName("TestInts", 2)]
+            public int?[] TestInts;
 
             [DBFieldName("TestString1")]
             public string TestString1;
@@ -92,6 +92,9 @@ namespace WowPacketParser.Tests.SQL
         {
             Assert.AreEqual("SELECT `ID`, `TestInt1`, `TestInt2`, `TestString1` FROM world.`test_data_one_p_k`",
                 new SQLSelect<TestDataOnePK>().Build());
+
+            Assert.AreEqual("SELECT `ID`, `TestInt1`, `TestInts1`, `TestInts2`, `TestString1` FROM world.`test_data_two_p_k`",
+                new SQLSelect<TestDataTwoPK>().Build());
         }
 
         [Test]
@@ -145,10 +148,9 @@ namespace WowPacketParser.Tests.SQL
         [Test]
         public void TestSQLInsert()
         {
-            Console.WriteLine(new SQLInsert<TestDataOnePK>(_valuesOnePk, false).Build());
             Assert.AreEqual("INSERT INTO `test_data_one_p_k` (`ID`, `TestInt1`, `TestInt2`, `TestString1`) VALUES\r\n" +
-                            "(4, 5, NULL, 'string2'),\r\n" +
-                            "(6, 7, NULL, NULL);\r\n",
+                            "(4, 5, UNKNOWN, 'string2'),\r\n" +
+                            "(6, 7, UNKNOWN, UNKNOWN);\r\n",
                             new SQLInsert<TestDataOnePK>(_valuesOnePk, false).Build());
         }
     }

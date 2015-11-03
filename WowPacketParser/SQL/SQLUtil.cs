@@ -123,7 +123,7 @@ namespace WowPacketParser.SQL
 
             if (value is Enum)
             {
-                var undertype = Enum.GetUnderlyingType(value.GetType());
+                Type undertype = Enum.GetUnderlyingType(value.GetType());
                 value = Convert.ChangeType(value, undertype);
             }
 
@@ -152,14 +152,12 @@ namespace WowPacketParser.SQL
         {
             var fields = new List<Tuple<string, FieldInfo, List<DBFieldNameAttribute>>>();
             //fields.RemoveAll(field => field.Item2.Name == null);
-            foreach (var field in Utilities.GetFieldsAndAttributes<T, DBFieldNameAttribute>(false))
+            foreach (var field in Utilities.GetFieldsAndAttributes<T, DBFieldNameAttribute>())
             {
-                string fieldName;
-                if (field.Value == null)
-                    fieldName = AddBackQuotes(field.Key.Name);
-                else
-                    fieldName = field.Value.First().ToString();
+                if (field.Value.All(f => !f.IsVisible()))
+                    continue;
 
+                string fieldName = field.Value.Single(f => f.IsVisible()).ToString();
                 fields.Add(new Tuple<string, FieldInfo, List<DBFieldNameAttribute>>(fieldName, field.Key, field.Value));
             }
 
@@ -233,28 +231,33 @@ namespace WowPacketParser.SQL
                         object val1 = field.Item2.GetValue(elem1.Item1);
                         object val2 = field.Item2.GetValue(elem2);
 
-                        /*Array arr1 = val1 as Array;
+                        Array arr1 = val1 as Array;
                         if (arr1 != null)
                         {
-                            var arr2 = (Array)val2;
+                            Array arr2 = (Array)val2;
 
-                            var isString = arr1.GetType().GetElementType() == typeof(string);
-
-                            for (var i = 0; i < field.Item2.Count; i++)
+                            for (int i = 0; i < field.Item3.First().Count; i++)
                             {
-                                var value1 = i >= arr1.Length ? (isString ? (object)string.Empty : 0) : arr1.GetValue(i);
-                                var value2 = i >= arr2.Length ? (isString ? (object)string.Empty : 0) : arr2.GetValue(i);
+                                object value1 = arr1.GetValue(i);
+                                object value2 = arr2.GetValue(i);
 
-                                if (!Utilities.EqualValues(value1, value2))
-                                    row.AddValue(field.Item2.Name + (field.Item2.StartAtZero ? i : i + 1), value1);
+                                if (Utilities.EqualValues(value1, value2))
+                                    arr1.SetValue(null, i);
                             }
-
+                            field.Item2.SetValue(elem1.Item1, arr1);
                             continue;
-                        }*/
+                        }
 
                         if ((val2 is Array) && val1 == null)
                             continue;
 
+                        if (val1 is string)
+                        {
+                            val1 = ((string)val1).Replace(Environment.NewLine, "\n");
+                            // prevent double escaping
+                            val1 =  ((string)val1).Replace("\"\"", "\"");
+                        }
+                    
                         if (Utilities.EqualValues(val1, val2))
                             field.Item2.SetValue(elem1.Item1, null);
                     }
@@ -266,26 +269,12 @@ namespace WowPacketParser.SQL
                 }
                 else // insert new
                 {
-                    var row = new Row<T>();
-
-                    foreach (var field in fields)
+                    var row = new Row<T>
                     {
-                        /*if (field.Item1.FieldType.BaseType == typeof(Array))
-                        {
-                            var arr = (Array)field.Item1.GetValue(elem1.Value.Item1);
-                            if (arr == null)
-                                continue;
+                        Comment = commentSetter(elem1.Item1),
+                        Data = elem1.Item1
+                    };
 
-                            for (var i = 0; i < arr.Length; i++)
-                                row.AddValue(field.Item2.Name + (field.Item2.StartAtZero ? i : i + 1), arr.GetValue(i));
-
-                            continue;
-                        }*/
-                    }
-
-                    row.Comment = commentSetter(elem1.Item1);
-
-                    row.Data = elem1.Item1;
                     rowsIns.Add(row);
                 }
             }

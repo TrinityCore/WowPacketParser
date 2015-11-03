@@ -10,7 +10,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Quality")]
         public ItemQuality Quality;
 
-        [DBFieldName("Flags1")]
+        [DBFieldName("Flags")]
         public ItemProtoFlags Flags1;
 
         [DBFieldName("Flags2")]

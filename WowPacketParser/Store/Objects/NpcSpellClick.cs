@@ -7,10 +7,10 @@ namespace WowPacketParser.Store.Objects
     public sealed class NpcSpellClick : IDataModel
     {
         [DBFieldName("npc_entry", true)]
-        public uint Entry;
+        public uint? Entry;
 
         [DBFieldName("spell_id", true)]
-        public uint SpellID;
+        public uint? SpellID;
 
         [DBFieldName("cast_flags")]
         public uint? CastFlags;

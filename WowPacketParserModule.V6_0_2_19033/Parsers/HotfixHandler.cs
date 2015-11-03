@@ -557,7 +557,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                         !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
                         Storage.ItemSparses.Add(id, item, packet.TimeSpan);
 
-                    Storage.ObjectNames.Add(entry, new ObjectName {ObjectType = ObjectType.Item, Name = item.Name[0]}, packet.TimeSpan);
+                    Storage.ObjectNames.Add(new ObjectName {ObjectType = ObjectType.Item, ID = (int)entry, Name = item.Name[0]}, packet.TimeSpan);
                     packet.AddSniffData(StoreNameType.Item, (int) entry, "DB_REPLY");
                     break;
                 }

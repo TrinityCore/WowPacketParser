@@ -17,18 +17,20 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUERY_GAME_OBJECT_RESPONSE)]
         public static void HandleGameObjectQueryResponse(Packet packet)
         {
-            var gameObject = new GameObjectTemplate();
-
             var entry = packet.ReadEntry("Entry");
 
             if (entry.Value) // entry is masked
                 return;
 
-            gameObject.Type = packet.ReadInt32E<GameObjectType>("Type");
-            gameObject.DisplayId = packet.ReadUInt32("Display ID");
+            GameObjectTemplate gameObject = new GameObjectTemplate
+            {
+                Entry = (uint)entry.Key,
+                Type = packet.ReadInt32E<GameObjectType>("Type"),
+                DisplayID = packet.ReadUInt32("Display ID")
+            };
 
             var name = new string[4];
-            for (var i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
                 name[i] = packet.ReadCString("Name", i);
             gameObject.Name = name[0];
 
@@ -36,16 +38,16 @@ namespace WowPacketParser.Parsing.Parsers
             gameObject.CastCaption = packet.ReadCString("Cast Caption");
             gameObject.UnkString = packet.ReadCString("Unk String");
 
-            gameObject.Data = new int[ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596) ? 32 : 24];
-            for (var i = 0; i < gameObject.Data.Length; i++)
+            gameObject.Data = new int?[ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596) ? 32 : 24];
+            for (int i = 0; i < gameObject.Data.Length; i++)
                 gameObject.Data[i] = packet.ReadInt32("Data", i);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056)) // not sure when it was added exactly - did not exist in 2.4.1 sniff
                 gameObject.Size = packet.ReadSingle("Size");
 
-            gameObject.QuestItems = new uint[ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ? 6 : 4];
+            gameObject.QuestItems = new uint?[ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ? 6 : 4];
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
-                for (var i = 0; i < gameObject.QuestItems.Length; i++)
+                for (int i = 0; i < gameObject.QuestItems.Length; i++)
                     gameObject.QuestItems[i] = (uint)packet.ReadInt32<ItemId>("Quest Item", i);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596))
@@ -53,14 +55,15 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.AddSniffData(StoreNameType.GameObject, entry.Key, "QUERY_RESPONSE");
 
-            Storage.GameObjectTemplates.Add((uint) entry.Key, gameObject, packet.TimeSpan);
+            Storage.GameObjectTemplates.Add(gameObject, packet.TimeSpan);
 
-            var objectName = new ObjectName
+            ObjectName objectName = new ObjectName
             {
                 ObjectType = ObjectType.GameObject,
+                ID = entry.Key,
                 Name = gameObject.Name
             };
-            Storage.ObjectNames.Add((uint)entry.Key, objectName, packet.TimeSpan);
+            Storage.ObjectNames.Add(objectName, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_DESTRUCTIBLE_BUILDING_DAMAGE)]

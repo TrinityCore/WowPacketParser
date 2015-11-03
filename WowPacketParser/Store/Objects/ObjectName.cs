@@ -1,11 +1,18 @@
 ﻿using WowPacketParser.Enums;
+using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    public class ObjectName
+    [DBTableName("objectnames")]
+    public sealed class ObjectName : IDataModel
     {
-        public ObjectType ObjectType;
+        [DBFieldName("ObjectType")]
+        public ObjectType? ObjectType;
 
+        [DBFieldName("Id")]
+        public int? ID;
+
+        [DBFieldName("Name")]
         public string Name;
     }
 }

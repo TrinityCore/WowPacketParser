@@ -221,9 +221,6 @@ namespace WowPacketParser.Misc
                 if (remove && attrs.Length <= 0)
                     continue;
 
-                if (attrs.Length <= 0)
-                    dict.Add(field, null);
-
                 dict.Add(field, ((TK[]) attrs).ToList());
             }
 

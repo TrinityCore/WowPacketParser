@@ -99,9 +99,7 @@ namespace WowPacketParser.Enums.Version.V4_3_0_15005
         // Size: 5, Type: FLOAT, Flags: PRIVATE, OWNER, PARTY_MEMBER
         UNIT_FIELD_LEVEL = ObjectField.OBJECT_END + 0x0028, // Size: 1, Type: INT, Flags: PUBLIC
         UNIT_FIELD_FACTIONTEMPLATE = ObjectField.OBJECT_END + 0x0029, // Size: 1, Type: INT, Flags: PUBLIC
-        UNIT_VIRTUAL_ITEM_SLOT_ID1 = ObjectField.OBJECT_END + 0x002A, // Size: 3, Type: INT, Flags: PUBLIC
-        UNIT_VIRTUAL_ITEM_SLOT_ID2 = ObjectField.OBJECT_END + 0x002B,
-        UNIT_VIRTUAL_ITEM_SLOT_ID3 = ObjectField.OBJECT_END + 0x002C,
+        UNIT_VIRTUAL_ITEM_SLOT_ID = ObjectField.OBJECT_END + 0x002A, // Size: 3, Type: INT, Flags: PUBLIC
         UNIT_FIELD_FLAGS = ObjectField.OBJECT_END + 0x002D, // Size: 1, Type: INT, Flags: PUBLIC
         UNIT_FIELD_FLAGS_2 = ObjectField.OBJECT_END + 0x002E, // Size: 1, Type: INT, Flags: PUBLIC
         UNIT_FIELD_AURASTATE = ObjectField.OBJECT_END + 0x002F, // Size: 1, Type: INT, Flags: PUBLIC

@@ -31,9 +31,10 @@ namespace WowPacketParser.Parsing.Parsers
             var objectName = new ObjectName
             {
                 ObjectType = ObjectType.Item,
+                ID = (int)entry,
                 Name = name
             };
-            Storage.ObjectNames.Add(entry, objectName, packet.TimeSpan);
+            Storage.ObjectNames.Add(objectName, packet.TimeSpan);
         }
 
         [Parser(Opcode.CMSG_SOCKET_GEMS)]
@@ -459,31 +460,33 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ITEM_QUERY_SINGLE_RESPONSE)]
         public static void HandleItemQueryResponse(Packet packet)
         {
-            var item = new ItemTemplate();
+            
 
             var entry = packet.ReadEntry("Entry");
             if (entry.Value)
                 return;
 
-            item.Class = packet.ReadInt32E<ItemClass>("Class");
-
-            item.SubClass = packet.ReadUInt32("Sub Class");
-
-            item.SoundOverrideSubclass = packet.ReadInt32("Sound Override Subclass");
+            ItemTemplate item = new ItemTemplate
+            {
+                Entry = (uint)entry.Key,
+                Class = packet.ReadInt32E<ItemClass>("Class"),
+                SubClass = packet.ReadUInt32("Sub Class"),
+                SoundOverrideSubclass = packet.ReadInt32("Sound Override Subclass")
+            };
 
             var name = new string[4];
-            for (var i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
                 name[i] = packet.ReadCString("Name", i);
             item.Name = name[0];
 
-            item.DisplayId = packet.ReadUInt32("Display ID");
+            item.DisplayID = packet.ReadUInt32("Display ID");
 
             item.Quality = packet.ReadInt32E<ItemQuality>("Quality");
 
-            item.Flags1 = packet.ReadUInt32E<ItemProtoFlags>("Flags 1");
+            item.Flags = packet.ReadUInt32E<ItemProtoFlags>("Flags 1");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
-                item.Flags2 = packet.ReadInt32E<ItemFlagExtra>("Flags 2");
+                item.FlagsExtra = packet.ReadInt32E<ItemFlagExtra>("Flags 2");
 
             item.BuyPrice = packet.ReadUInt32("Buy Price");
 
@@ -520,11 +523,11 @@ namespace WowPacketParser.Parsing.Parsers
             item.ContainerSlots = packet.ReadUInt32("Container Slots");
 
             item.StatsCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056) ? packet.ReadUInt32("Stats Count") : 10;
-            item.StatTypes = new ItemModType[item.StatsCount];
-            item.StatValues = new int[item.StatsCount];
-            for (var i = 0; i < item.StatsCount; i++)
+            item.StatTypes = new ItemModType?[item.StatsCount.GetValueOrDefault()];
+            item.StatValues = new int?[item.StatsCount.GetValueOrDefault()];
+            for (int i = 0; i < item.StatsCount; i++)
             {
-                var type = packet.ReadInt32E<ItemModType>("Stat Type", i);
+                ItemModType type = packet.ReadInt32E<ItemModType>("Stat Type", i);
                 item.StatTypes[i] = type == ItemModType.None ? ItemModType.Mana : type; // TDB
                 item.StatValues[i] = packet.ReadInt32("Stat Value", i);
             }
@@ -535,20 +538,25 @@ namespace WowPacketParser.Parsing.Parsers
                 item.ScalingStatValue = packet.ReadUInt32("SSD Value");
             }
 
-            var dmgCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767) ? 2 : 5;
-            item.DamageMins = new float[dmgCount];
-            item.DamageMaxs = new float[dmgCount];
-            item.DamageTypes = new DamageType[dmgCount];
-            for (var i = 0; i < dmgCount; i++)
+            int dmgCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767) ? 2 : 5;
+            item.DamageMins = new float?[dmgCount];
+            item.DamageMaxs = new float?[dmgCount];
+            item.DamageTypes = new DamageType?[dmgCount];
+            for (int i = 0; i < dmgCount; i++)
             {
                 item.DamageMins[i] = packet.ReadSingle("Damage Min", i);
                 item.DamageMaxs[i] = packet.ReadSingle("Damage Max", i);
                 item.DamageTypes[i] = packet.ReadInt32E<DamageType>("Damage Type", i);
             }
 
-            item.Resistances = new DamageType[7];
-            for (var i = 0; i < 7; i++)
-                item.Resistances[i] = packet.ReadUInt32E<DamageType>("Resistance");
+
+            item.Armor = packet.ReadUInt32("Armor");
+            item.HolyResistance = packet.ReadUInt32("HolyResistance");
+            item.FireResistance = packet.ReadUInt32("FireResistance");
+            item.NatureResistance = packet.ReadUInt32("NatureResistance");
+            item.FrostResistance = packet.ReadUInt32("FrostResistance");
+            item.ShadowResistance = packet.ReadUInt32("ShadowResistance");
+            item.ArcaneResistance = packet.ReadUInt32("ArcaneResistance");
 
             item.Delay = packet.ReadUInt32("Delay");
 
@@ -556,13 +564,13 @@ namespace WowPacketParser.Parsing.Parsers
 
             item.RangedMod = packet.ReadSingle("Ranged Mod");
 
-            item.TriggeredSpellIds = new int[5];
-            item.TriggeredSpellTypes = new ItemSpellTriggerType[5];
-            item.TriggeredSpellCharges = new int[5];
-            item.TriggeredSpellCooldowns = new int[5];
-            item.TriggeredSpellCategories = new uint[5];
-            item.TriggeredSpellCategoryCooldowns = new int[5];
-            for (var i = 0; i < 5; i++)
+            item.TriggeredSpellIds = new int?[5];
+            item.TriggeredSpellTypes = new ItemSpellTriggerType?[5];
+            item.TriggeredSpellCharges = new int?[5];
+            item.TriggeredSpellCooldowns = new int?[5];
+            item.TriggeredSpellCategories = new uint?[5];
+            item.TriggeredSpellCategoryCooldowns = new int?[5];
+            for (int i = 0; i < 5; i++)
             {
                 item.TriggeredSpellIds[i] = packet.ReadInt32<SpellId>("Triggered Spell ID", i);
                 item.TriggeredSpellTypes[i] = packet.ReadInt32E<ItemSpellTriggerType>("Trigger Spell Type", i);
@@ -600,18 +608,18 @@ namespace WowPacketParser.Parsing.Parsers
 
             item.MaxDurability = packet.ReadUInt32("Max Durability");
 
-            item.AreaId = packet.ReadUInt32<AreaId>("Area");
+            item.AreaID = packet.ReadUInt32<AreaId>("Area");
 
             // In this single (?) case, map 0 means no map
-            item.MapId = packet.ReadInt32<MapId>("Map");
+            item.MapID = packet.ReadInt32<MapId>("Map");
 
             item.BagFamily = packet.ReadInt32E<BagFamilyMask>("Bag Family");
 
             item.TotemCategory = packet.ReadInt32E<TotemCategory>("Totem Category");
 
-            item.ItemSocketColors = new ItemSocketColor[3];
-            item.SocketContent = new uint[3];
-            for (var i = 0; i < 3; i++)
+            item.ItemSocketColors = new ItemSocketColor?[3];
+            item.SocketContent = new uint?[3];
+            for (int i = 0; i < 3; i++)
             {
                 item.ItemSocketColors[i] = packet.ReadInt32E<ItemSocketColor>("Socket Color", i);
                 item.SocketContent[i] = packet.ReadUInt32("Socket Item", i);
@@ -632,11 +640,11 @@ namespace WowPacketParser.Parsing.Parsers
                 item.ItemLimitCategory = packet.ReadInt32("Limit Category");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
-                item.HolidayId = packet.ReadInt32E<Holiday>("Holiday");
+                item.HolidayID = packet.ReadInt32E<Holiday>("Holiday");
 
             packet.AddSniffData(StoreNameType.Item, entry.Key, "QUERY_RESPONSE");
 
-            Storage.ItemTemplates.Add((uint) entry.Key, item, packet.TimeSpan);
+            Storage.ItemTemplates.Add(item, packet.TimeSpan);
         }
 
         [Parser(Opcode.CMSG_REQUEST_HOTFIX, ClientVersionBuild.V4_3_4_15595)]
@@ -842,8 +850,10 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (size == 32)
             {
-                var itemId2 = packet.ReadUInt32<ItemId>("Entry");
-                var item = Storage.ItemTemplates.ContainsKey(itemId2) ? Storage.ItemTemplates[itemId2].Item1 : new ItemTemplate();
+                uint entry = packet.ReadUInt32<ItemId>("Entry");
+
+                ItemTemplate key = new ItemTemplate {Entry = entry};
+                ItemTemplate item = Storage.ItemTemplates.ContainsKey(key) ? Storage.ItemTemplates[key].Item1 : new ItemTemplate();
                 item.Class = packet.ReadInt32E<ItemClass>("Class");
                 item.SubClass = packet.ReadUInt32("Sub Class");
                 item.SoundOverrideSubclass = packet.ReadInt32("Sound Override Subclass");
@@ -852,7 +862,7 @@ namespace WowPacketParser.Parsing.Parsers
                 item.InventoryType = packet.ReadUInt32E<InventoryType>("Inventory Type");
                 item.SheathType = packet.ReadInt32E<SheathType>("Sheath Type");
 
-                Storage.ItemTemplates.Add(itemId2, item, packet.TimeSpan);
+                Storage.ItemTemplates.Add(item, packet.TimeSpan);
             }
             else if (size == 36)
             {
@@ -868,12 +878,14 @@ namespace WowPacketParser.Parsing.Parsers
             }
             else
             {
-                var itemId2 = packet.ReadUInt32<ItemId>("Entry");
-                var item = Storage.ItemTemplates.ContainsKey(itemId2) ? Storage.ItemTemplates[itemId2].Item1 : new ItemTemplate();
+                uint entry = packet.ReadUInt32<ItemId>("Entry");
+
+                ItemTemplate key = new ItemTemplate { Entry = entry };
+                ItemTemplate item = Storage.ItemTemplates.ContainsKey(key) ? Storage.ItemTemplates[key].Item1 : new ItemTemplate();
 
                 item.Quality = packet.ReadInt32E<ItemQuality>("Quality");
-                item.Flags1 = packet.ReadUInt32E<ItemProtoFlags>("Flags 1");
-                item.Flags2 = packet.ReadInt32E<ItemFlagExtra>("Flags 3");
+                item.Flags = packet.ReadUInt32E<ItemProtoFlags>("Flags 1");
+                item.FlagsExtra = packet.ReadInt32E<ItemFlagExtra>("Flags 3");
                 item.Unk430_1 = packet.ReadSingle("Unk430_1");
                 item.Unk430_2 = packet.ReadSingle("Unk430_2");
                 item.BuyCount = packet.ReadUInt32("Buy count");
@@ -895,23 +907,23 @@ namespace WowPacketParser.Parsing.Parsers
                 item.MaxStackSize = packet.ReadInt32("Max Stack Size");
                 item.ContainerSlots = packet.ReadUInt32("Container Slots");
 
-                item.StatTypes = new ItemModType[10];
-                for (var i = 0; i < 10; i++)
+                item.StatTypes = new ItemModType?[10];
+                for (int i = 0; i < 10; i++)
                 {
-                    var statType = packet.ReadInt32E<ItemModType>("Stat Type", i);
+                    ItemModType statType = packet.ReadInt32E<ItemModType>("Stat Type", i);
                     item.StatTypes[i] = statType == ItemModType.None ? ItemModType.Mana : statType; // TDB
                 }
 
-                item.StatValues = new int[10];
-                for (var i = 0; i < 10; i++)
+                item.StatValues = new int?[10];
+                for (int i = 0; i < 10; i++)
                     item.StatValues[i] = packet.ReadInt32("Stat Value", i);
 
-                item.ScalingValue = new int[10];
-                for (var i = 0; i < 10; i++)
+                item.ScalingValue = new int?[10];
+                for (int i = 0; i < 10; i++)
                     item.ScalingValue[i] = packet.ReadInt32("Scaling Value", i);
 
-                item.SocketCostRate = new int[10];
-                for (var i = 0; i < 10; i++)
+                item.SocketCostRate = new int?[10];
+                for (int i = 0; i < 10; i++)
                     item.SocketCostRate[i] = packet.ReadInt32("Socket Cost Rate", i);
 
                 item.ScalingStatDistribution = packet.ReadInt32("Scaling Stat Distribution");
@@ -919,28 +931,28 @@ namespace WowPacketParser.Parsing.Parsers
                 item.Delay = packet.ReadUInt32("Delay");
                 item.RangedMod = packet.ReadSingle("Ranged Mod");
 
-                item.TriggeredSpellIds = new int[5];
-                for (var i = 0; i < 5; i++)
+                item.TriggeredSpellIds = new int?[5];
+                for (int i = 0; i < 5; i++)
                     item.TriggeredSpellIds[i] = packet.ReadInt32<SpellId>("Triggered Spell ID", i);
 
-                item.TriggeredSpellTypes = new ItemSpellTriggerType[5];
-                for (var i = 0; i < 5; i++)
+                item.TriggeredSpellTypes = new ItemSpellTriggerType?[5];
+                for (int i = 0; i < 5; i++)
                     item.TriggeredSpellTypes[i] = packet.ReadInt32E<ItemSpellTriggerType>("Trigger Spell Type", i);
 
-                item.TriggeredSpellCharges = new int[5];
-                for (var i = 0; i < 5; i++)
+                item.TriggeredSpellCharges = new int?[5];
+                for (int i = 0; i < 5; i++)
                     item.TriggeredSpellCharges[i] = packet.ReadInt32("Triggered Spell Charges", i);
 
-                item.TriggeredSpellCooldowns = new int[5];
-                for (var i = 0; i < 5; i++)
+                item.TriggeredSpellCooldowns = new int?[5];
+                for (int i = 0; i < 5; i++)
                     item.TriggeredSpellCooldowns[i] = packet.ReadInt32("Triggered Spell Cooldown", i);
 
-                item.TriggeredSpellCategories = new uint[5];
-                for (var i = 0; i < 5; i++)
+                item.TriggeredSpellCategories = new uint?[5];
+                for (int i = 0; i < 5; i++)
                     item.TriggeredSpellCategories[i] = packet.ReadUInt32("Triggered Spell Category", i);
 
-                item.TriggeredSpellCategoryCooldowns = new int[5];
-                for (var i = 0; i < 5; i++)
+                item.TriggeredSpellCategoryCooldowns = new int?[5];
+                for (int i = 0; i < 5; i++)
                     item.TriggeredSpellCategoryCooldowns[i] = packet.ReadInt32("Triggered Spell Category Cooldown", i);
 
                 item.Bonding = packet.ReadInt32E<ItemBonding>("Bonding");
@@ -948,7 +960,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (packet.ReadUInt16() > 0)
                     item.Name = packet.ReadCString("Name", 0);
 
-                for (var i = 1; i < 4; ++i)
+                for (int i = 1; i < 4; ++i)
                     if (packet.ReadUInt16() > 0)
                         packet.ReadCString("Name", i);
 
@@ -965,17 +977,17 @@ namespace WowPacketParser.Parsing.Parsers
                 item.RandomPropery = packet.ReadInt32("Random Property");
                 item.RandomSuffix = packet.ReadUInt32("Random Suffix");
                 item.ItemSet = packet.ReadUInt32("Item Set");
-                item.AreaId = packet.ReadUInt32<AreaId>("Area");
-                item.MapId = packet.ReadInt32<MapId>("Map ID");
+                item.AreaID = packet.ReadUInt32<AreaId>("Area");
+                item.MapID = packet.ReadInt32<MapId>("Map ID");
                 item.BagFamily = packet.ReadInt32E<BagFamilyMask>("Bag Family");
                 item.TotemCategory = packet.ReadInt32E<TotemCategory>("Totem Category");
 
-                item.ItemSocketColors = new ItemSocketColor[3];
-                for (var i = 0; i < 3; i++)
+                item.ItemSocketColors = new ItemSocketColor?[3];
+                for (int i = 0; i < 3; i++)
                     item.ItemSocketColors[i] = packet.ReadInt32E<ItemSocketColor>("Socket Color", i);
 
-                item.SocketContent = new uint[3];
-                for (var i = 0; i < 3; i++)
+                item.SocketContent = new uint?[3];
+                for (int i = 0; i < 3; i++)
                     item.SocketContent[i] = packet.ReadUInt32("Socket Item", i);
 
                 item.SocketBonus = packet.ReadInt32("Socket Bonus");
@@ -983,12 +995,12 @@ namespace WowPacketParser.Parsing.Parsers
                 item.ArmorDamageModifier = packet.ReadSingle("Armor Damage Modifier");
                 item.Duration = packet.ReadUInt32("Duration");
                 item.ItemLimitCategory = packet.ReadInt32("Limit Category");
-                item.HolidayId = packet.ReadInt32E<Holiday>("Holiday");
+                item.HolidayID = packet.ReadInt32E<Holiday>("Holiday");
                 item.StatScalingFactor = packet.ReadSingle("Stat Scaling Factor");
-                item.CurrencySubstitutionId = packet.ReadUInt32("Currency Substitution Id");
+                item.CurrencySubstitutionID = packet.ReadUInt32("Currency Substitution Id");
                 item.CurrencySubstitutionCount = packet.ReadUInt32("Currency Substitution Count");
 
-                Storage.ObjectNames.Add(itemId2, new ObjectName { ObjectType = ObjectType.Item, Name = item.Name }, packet.TimeSpan);
+                Storage.ObjectNames.Add(new ObjectName { ObjectType = ObjectType.Item, ID = (int)entry, Name = item.Name }, packet.TimeSpan);
             }
 
             packet.ReadUInt32("Type");
@@ -1019,28 +1031,30 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 case DB2Hash.Item:
                 {
-                    var item = Storage.ItemTemplates.ContainsKey(itemId) ? Storage.ItemTemplates[itemId].Item1 : new ItemTemplate();
+                    ItemTemplate key = new ItemTemplate {Entry = itemId};
+                    ItemTemplate item = Storage.ItemTemplates.ContainsKey(key) ? Storage.ItemTemplates[key].Item1 : new ItemTemplate();
 
                     packet.ReadUInt32<ItemId>("Entry");
                     item.Class = packet.ReadInt32E<ItemClass>("Class");
                     item.SubClass = packet.ReadUInt32("Sub Class");
                     item.SoundOverrideSubclass = packet.ReadInt32("Sound Override Subclass");
                     item.Material = packet.ReadInt32E<Material>("Material");
-                    item.DisplayId = packet.ReadUInt32("Display ID");
+                    item.DisplayID = packet.ReadUInt32("Display ID");
                     item.InventoryType = packet.ReadUInt32E<InventoryType>("Inventory Type");
                     item.SheathType = packet.ReadInt32E<SheathType>("Sheath Type");
 
-                    Storage.ItemTemplates.Add(itemId, item, packet.TimeSpan);
+                    Storage.ItemTemplates.Add(item, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.Item_sparse:
                 {
-                    var item = Storage.ItemTemplates.ContainsKey(itemId) ? Storage.ItemTemplates[itemId].Item1 : new ItemTemplate();
+                    ItemTemplate key = new ItemTemplate { Entry = itemId };
+                    ItemTemplate item = Storage.ItemTemplates.ContainsKey(key) ? Storage.ItemTemplates[key].Item1 : new ItemTemplate();
 
                     packet.ReadUInt32<ItemId>("Entry");
                     item.Quality = packet.ReadInt32E<ItemQuality>("Quality");
-                    item.Flags1 = packet.ReadUInt32E<ItemProtoFlags>("Flags 1");
-                    item.Flags2 = packet.ReadInt32E<ItemFlagExtra>("Flags 2");
+                    item.Flags = packet.ReadUInt32E<ItemProtoFlags>("Flags 1");
+                    item.FlagsExtra = packet.ReadInt32E<ItemFlagExtra>("Flags 2");
                     item.Unk430_1 = packet.ReadSingle("Unk430_1");
                     item.Unk430_2 = packet.ReadSingle("Unk430_2");
                     item.BuyCount = packet.ReadUInt32("Buy count");
@@ -1062,23 +1076,23 @@ namespace WowPacketParser.Parsing.Parsers
                     item.MaxStackSize = packet.ReadInt32("Max Stack Size");
                     item.ContainerSlots = packet.ReadUInt32("Container Slots");
 
-                    item.StatTypes = new ItemModType[10];
-                    for (var i = 0; i < 10; i++)
+                    item.StatTypes = new ItemModType?[10];
+                    for (int i = 0; i < 10; i++)
                     {
-                        var statType = packet.ReadInt32E<ItemModType>("Stat Type", i);
+                        ItemModType statType = packet.ReadInt32E<ItemModType>("Stat Type", i);
                         item.StatTypes[i] = statType == ItemModType.None ? ItemModType.Mana : statType; // TDB
                     }
 
-                    item.StatValues = new int[10];
-                    for (var i = 0; i < 10; i++)
+                    item.StatValues = new int?[10];
+                    for (int i = 0; i < 10; i++)
                         item.StatValues[i] = packet.ReadInt32("Stat Value", i);
 
-                    item.ScalingValue = new int[10];
-                    for (var i = 0; i < 10; i++)
+                    item.ScalingValue = new int?[10];
+                    for (int i = 0; i < 10; i++)
                         item.ScalingValue[i] = packet.ReadInt32("Scaling Value", i);
 
-                    item.SocketCostRate = new int[10];
-                    for (var i = 0; i < 10; i++)
+                    item.SocketCostRate = new int?[10];
+                    for (int i = 0; i < 10; i++)
                         item.SocketCostRate[i] = packet.ReadInt32("Socket Cost Rate", i);
 
                     item.ScalingStatDistribution = packet.ReadInt32("Scaling Stat Distribution");
@@ -1086,28 +1100,28 @@ namespace WowPacketParser.Parsing.Parsers
                     item.Delay = packet.ReadUInt32("Delay");
                     item.RangedMod = packet.ReadSingle("Ranged Mod");
 
-                    item.TriggeredSpellIds = new int[5];
-                    for (var i = 0; i < 5; i++)
+                    item.TriggeredSpellIds = new int?[5];
+                    for (int i = 0; i < 5; i++)
                         item.TriggeredSpellIds[i] = packet.ReadInt32<SpellId>("Triggered Spell ID", i);
 
-                    item.TriggeredSpellTypes = new ItemSpellTriggerType[5];
-                    for (var i = 0; i < 5; i++)
+                    item.TriggeredSpellTypes = new ItemSpellTriggerType?[5];
+                    for (int i = 0; i < 5; i++)
                         item.TriggeredSpellTypes[i] = packet.ReadInt32E<ItemSpellTriggerType>("Trigger Spell Type", i);
 
-                    item.TriggeredSpellCharges = new int[5];
-                    for (var i = 0; i < 5; i++)
+                    item.TriggeredSpellCharges = new int?[5];
+                    for (int i = 0; i < 5; i++)
                         item.TriggeredSpellCharges[i] = packet.ReadInt32("Triggered Spell Charges", i);
 
-                    item.TriggeredSpellCooldowns = new int[5];
-                    for (var i = 0; i < 5; i++)
+                    item.TriggeredSpellCooldowns = new int?[5];
+                    for (int i = 0; i < 5; i++)
                         item.TriggeredSpellCooldowns[i] = packet.ReadInt32("Triggered Spell Cooldown", i);
 
-                    item.TriggeredSpellCategories = new uint[5];
-                    for (var i = 0; i < 5; i++)
+                    item.TriggeredSpellCategories = new uint?[5];
+                    for (int i = 0; i < 5; i++)
                         item.TriggeredSpellCategories[i] = packet.ReadUInt32("Triggered Spell Category", i);
 
-                    item.TriggeredSpellCategoryCooldowns = new int[5];
-                    for (var i = 0; i < 5; i++)
+                    item.TriggeredSpellCategoryCooldowns = new int?[5];
+                    for (int i = 0; i < 5; i++)
                         item.TriggeredSpellCategoryCooldowns[i] = packet.ReadInt32("Triggered Spell Category Cooldown", i);
 
                     item.Bonding = packet.ReadInt32E<ItemBonding>("Bonding");
@@ -1115,7 +1129,7 @@ namespace WowPacketParser.Parsing.Parsers
                     if (packet.ReadUInt16() > 0)
                         item.Name = packet.ReadCString("Name", 0);
 
-                    for (var i = 1; i < 4; ++i)
+                    for (int i = 1; i < 4; ++i)
                         if (packet.ReadUInt16() > 0)
                             packet.ReadCString("Name", i);
 
@@ -1132,17 +1146,17 @@ namespace WowPacketParser.Parsing.Parsers
                     item.RandomPropery = packet.ReadInt32("Random Property");
                     item.RandomSuffix = packet.ReadUInt32("Random Suffix");
                     item.ItemSet = packet.ReadUInt32("Item Set");
-                    item.AreaId = packet.ReadUInt32<AreaId>("Area");
-                    item.MapId = packet.ReadInt32("Map ID");
+                    item.AreaID = packet.ReadUInt32<AreaId>("Area");
+                    item.MapID = packet.ReadInt32("Map ID");
                     item.BagFamily = packet.ReadInt32E<BagFamilyMask>("Bag Family");
                     item.TotemCategory = packet.ReadInt32E<TotemCategory>("Totem Category");
 
-                    item.ItemSocketColors = new ItemSocketColor[3];
-                    for (var i = 0; i < 3; i++)
+                    item.ItemSocketColors = new ItemSocketColor?[3];
+                    for (int i = 0; i < 3; i++)
                         item.ItemSocketColors[i] = packet.ReadInt32E<ItemSocketColor>("Socket Color", i);
 
-                    item.SocketContent = new uint[3];
-                    for (var i = 0; i < 3; i++)
+                    item.SocketContent = new uint?[3];
+                    for (int i = 0; i < 3; i++)
                         item.SocketContent[i] = packet.ReadUInt32("Socket Item", i);
 
                     item.SocketBonus = packet.ReadInt32("Socket Bonus");
@@ -1150,12 +1164,12 @@ namespace WowPacketParser.Parsing.Parsers
                     item.ArmorDamageModifier = packet.ReadSingle("Armor Damage Modifier");
                     item.Duration = packet.ReadUInt32("Duration");
                     item.ItemLimitCategory = packet.ReadInt32("Limit Category");
-                    item.HolidayId = packet.ReadInt32E<Holiday>("Holiday");
+                    item.HolidayID = packet.ReadInt32E<Holiday>("Holiday");
                     item.StatScalingFactor = packet.ReadSingle("Stat Scaling Factor");
-                    item.CurrencySubstitutionId = packet.ReadUInt32("Currency Substitution Id");
+                    item.CurrencySubstitutionID = packet.ReadUInt32("Currency Substitution Id");
                     item.CurrencySubstitutionCount = packet.ReadUInt32("Currency Substitution Count");
 
-                    Storage.ObjectNames.Add(itemId, new ObjectName { ObjectType = ObjectType.Item, Name = item.Name }, packet.TimeSpan);
+                    Storage.ObjectNames.Add(new ObjectName { ObjectType = ObjectType.Item, ID = (int)itemId, Name = item.Name }, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.KeyChain:

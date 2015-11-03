@@ -20,19 +20,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             var entry = packet.ReadEntry("Entry");
 
-            var creature = new UnitTemplate();
-            var hasData = packet.ReadBit();
+            CreatureTemplate creature = new CreatureTemplate
+            {
+                Entry = (uint)entry.Key
+            };
+
+            Bit hasData = packet.ReadBit();
             if (!hasData)
                 return; // nothing to do
 
             packet.ResetBitReader();
-            var bits4 = packet.ReadBits(11);
-            var bits16 = packet.ReadBits(11);
-            var bits28 = packet.ReadBits(6);
+            uint bits4 = packet.ReadBits(11);
+            uint bits16 = packet.ReadBits(11);
+            uint bits28 = packet.ReadBits(6);
             creature.RacialLeader = packet.ReadBit("Leader");
 
             var stringLens = new int[4][];
-            for (var i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
                 stringLens[i] = new int[2];
                 stringLens[i][0] = (int)packet.ReadBits(11);
@@ -47,31 +51,29 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     creature.FemaleName = packet.ReadCString("NameAlt");
             }
 
-            //for (var i = 0; i < 2; ++i)
-            //{
             creature.TypeFlags = packet.ReadUInt32E<CreatureTypeFlag>("Type Flags");
             creature.TypeFlags2 = packet.ReadUInt32("Creature Type Flags 2");
-            //}
 
             creature.Type = packet.ReadInt32E<CreatureType>("CreatureType");
             creature.Family = packet.ReadInt32E<CreatureFamily>("CreatureFamily");
             creature.Rank = packet.ReadInt32E<CreatureRank>("Classification");
 
-            creature.KillCredits = new uint[2];
-            for (var i = 0; i < 2; ++i)
+            creature.KillCredits = new uint?[2];
+            for (int i = 0; i < 2; ++i)
                 creature.KillCredits[i] = packet.ReadUInt32("ProxyCreatureID", i);
 
-            creature.DisplayIds = new uint[4];
-            for (var i = 0; i < 4; ++i)
-                creature.DisplayIds[i] = packet.ReadUInt32("CreatureDisplayID", i);
+            creature.ModelIDs = new uint?[4];
+            for (int i = 0; i < 4; ++i)
+                creature.ModelIDs[i] = packet.ReadUInt32("CreatureDisplayID", i);
 
-            creature.Modifier1 = packet.ReadSingle("HpMulti");
-            creature.Modifier2 = packet.ReadSingle("EnergyMulti");
+            creature.HealthModifier = packet.ReadSingle("HpMulti");
+            creature.ManaModifier = packet.ReadSingle("EnergyMulti");
 
-            creature.QuestItems = new uint[6];
-            var questItems = packet.ReadInt32("QuestItems");
-            creature.MovementId = packet.ReadUInt32("CreatureMovementInfoID");
-            creature.Expansion = packet.ReadUInt32E<ClientType>("RequiredExpansion");
+            //TODO: move to creature_questitems
+            //creature.QuestItems = new uint[6];
+            int questItems = packet.ReadInt32("QuestItems");
+            creature.MovementID = packet.ReadUInt32("CreatureMovementInfoID");
+            creature.ExpUnk = packet.ReadUInt32E<ClientType>("RequiredExpansion");
             packet.ReadInt32("FlagQuest");
 
             if (bits4 > 1)
@@ -83,19 +85,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (bits28 > 1)
                 creature.IconName = packet.ReadCString("CursorName");
 
-            for (var i = 0; i < questItems; ++i)
-                creature.QuestItems[i] = (uint)packet.ReadInt32<ItemId>("Quest Item", i);
+            for (int i = 0; i < questItems; ++i)
+                /*creature.QuestItems[i] = (uint)*/packet.ReadInt32<ItemId>("Quest Item", i);
 
             packet.AddSniffData(StoreNameType.Unit, entry.Key, "QUERY_RESPONSE");
 
-            Storage.UnitTemplates.Add((uint)entry.Key, creature, packet.TimeSpan);
+            Storage.CreatureTemplates.Add(creature, packet.TimeSpan);
 
-            var objectName = new ObjectName
+            ObjectName objectName = new ObjectName
             {
                 ObjectType = ObjectType.Unit,
+                ID = entry.Key,
                 Name = creature.Name
             };
-            Storage.ObjectNames.Add((uint)entry.Key, objectName, packet.TimeSpan);
+            Storage.ObjectNames.Add(objectName, packet.TimeSpan);
         }
     }
 }

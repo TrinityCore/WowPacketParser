@@ -1,77 +1,57 @@
 ﻿using System.Collections.Generic;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("quest_poi")]
-    public class QuestPOI
+    public sealed class QuestPOI : IDataModel
     {
-        [DBFieldName("objIndex")]
-        public int ObjectiveIndex;
+        [DBFieldName("QuestID", true)]
+        public int? QuestID;
 
-        [DBFieldName("mapid")]
-        public uint Map;
+        [DBFieldName("BlobIndex", TargetedDatabase.WarlordsOfDraenor, true)]
+        public int? BlobIndex;
 
-        [DBFieldName("WorldMapAreaId")]
-        public uint WorldMapAreaId;
-
-        [DBFieldName("FloorId")]
-        public uint FloorId;
-
-        [DBFieldName("unk3")]
-        public uint UnkInt1;
-
-        [DBFieldName("unk4")]
-        public uint UnkInt2;
-
-        [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild = ClientVersion.BuildInt;
-
-        public uint Idx;
-        public ICollection<QuestPOIPoint> Points;
-    }
-
-    [DBTableName("quest_poi")]
-    public class QuestPOIWoD
-    {
-        [DBFieldName("BlobIndex")]
-        public int BlobIndex;
+        [DBFieldName("id", TargetedDatabase.Zero, TargetedDatabase.WarlordsOfDraenor, true)]
+        [DBFieldName("Idx1", TargetedDatabase.WarlordsOfDraenor, true)]
+        public int? ID;
 
         [DBFieldName("ObjectiveIndex")]
-        public int ObjectiveIndex;
+        public int? ObjectiveIndex;
 
-        [DBFieldName("QuestObjectiveID")]
-        public int QuestObjectiveID;
+        [DBFieldName("QuestObjectiveID", TargetedDatabase.WarlordsOfDraenor)]
+        public int? QuestObjectiveID;
 
-        [DBFieldName("QuestObjectID")]
-        public int QuestObjectID;
+        [DBFieldName("QuestObjectID", TargetedDatabase.WarlordsOfDraenor)]
+        public int? QuestObjectID;
 
         [DBFieldName("MapID")]
-        public int MapID;
+        public int? MapID;
 
         [DBFieldName("WorldMapAreaId")]
-        public int WorldMapAreaId;
+        public int? WorldMapAreaId;
 
         [DBFieldName("Floor")]
-        public int Floor;
+        public int? Floor;
 
         [DBFieldName("Priority")]
-        public int Priority;
+        public int? Priority;
 
         [DBFieldName("Flags")]
-        public int Flags;
+        public int? Flags;
 
-        [DBFieldName("WorldEffectID")]
-        public int WorldEffectID;
+        [DBFieldName("WorldEffectID", TargetedDatabase.WarlordsOfDraenor)]
+        public int? WorldEffectID;
 
-        [DBFieldName("PlayerConditionID")]
-        public int PlayerConditionID;
+        [DBFieldName("PlayerConditionID", TargetedDatabase.WarlordsOfDraenor)]
+        public int? PlayerConditionID;
 
-        [DBFieldName("WoDUnk1")]
-        public int WoDUnk1;
+        [DBFieldName("WoDUnk1", TargetedDatabase.WarlordsOfDraenor)]
+        public int? WoDUnk1;
 
         [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild = ClientVersion.BuildInt;
+        public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }

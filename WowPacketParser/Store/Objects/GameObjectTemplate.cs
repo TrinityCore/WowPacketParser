@@ -5,41 +5,50 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("gameobject_template")]
-    public sealed class GameObjectTemplate
+    public sealed class GameObjectTemplate : IDataModel
     {
+        [DBFieldName("entry", true)]
+        public uint? Entry;
+
         [DBFieldName("type")]
-        public GameObjectType Type;
+        public GameObjectType? Type;
 
         [DBFieldName("displayId")]
-        public uint DisplayId;
+        public uint? DisplayID;
 
-        [DBFieldName("name", LocaleConstant.enUS)] // ToDo: Added locale support
+        [DBFieldName("name", LocaleConstant.enUS)] // ToDo: Add locale support
         public string Name;
 
         [DBFieldName("IconName")]
         public string IconName;
 
-        [DBFieldName("castBarCaption", LocaleConstant.enUS)] // ToDo: Added locale support
+        [DBFieldName("castBarCaption", LocaleConstant.enUS)] // ToDo: Add locale support
         public string CastCaption;
 
         [DBFieldName("unk1")]
         public string UnkString;
 
+        [DBFieldName("faction")]
+        public uint? Faction;
+
+        [DBFieldName("flags")]
+        public GameObjectFlag? Flags;
+
         [DBFieldName("size")]
-        public float Size;
+        public float? Size;
 
-        [DBFieldName("questItem", ClientVersionBuild.Zero, ClientVersionBuild.V6_0_2_19033, 6)]
-        public uint[] QuestItems;
+        //TODO: move to gameobject_questitem
+        public uint?[] QuestItems;
 
-        [DBFieldName("Data", ClientVersionBuild.Zero, ClientVersionBuild.V4_0_1_13164, 24, true)]
-        [DBFieldName("Data", ClientVersionBuild.V4_0_1_13164, ClientVersionBuild.V6_0_3_19103, 32, true)]
-        [DBFieldName("Data", ClientVersionBuild.V6_0_3_19103, 33, true)]
-        public int[] Data;
+        [DBFieldName("Data", TargetedDatabase.Zero, TargetedDatabase.Cataclysm, 24, true)]
+        [DBFieldName("Data", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor, 32, true)]
+        [DBFieldName("Data", TargetedDatabase.WarlordsOfDraenor, 33, true)]
+        public int?[] Data;
 
-        [DBFieldName("unkInt32", ClientVersionBuild.V4_0_1_13164)]
-        public int UnknownInt;
+        [DBFieldName("unkInt32", TargetedDatabase.Cataclysm)]
+        public int? UnknownInt;
 
         [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild = ClientVersion.BuildInt;
+        public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }

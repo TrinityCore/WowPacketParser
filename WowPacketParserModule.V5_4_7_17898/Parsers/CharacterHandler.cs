@@ -109,7 +109,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 var mapId = packet.ReadInt32("Map", c);
                 packet.ReadInt32("Pet Family", c); // v4+116
                 packet.ReadByte("Hair Color", c);
-                var Class = packet.ReadByteE<Class>("Class", c);
+                var klass = packet.ReadByteE<Class>("Class", c);
 
                 packet.ReadXORByte(guildGuids[c], 4);
                 packet.ReadXORByte(charGuids[c], 2);
@@ -128,12 +128,11 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
                 if (firstLogins[c])
                 {
-                    var startPos = new StartPosition {Map = (uint) mapId, Position = pos, Zone = zone};
-
-                    Storage.StartPositions.Add(new Tuple<Race, Class>(race, Class), startPos, packet.TimeSpan);
+                    PlayerCreateInfo startPos = new PlayerCreateInfo { Race = race, Class = klass, Map = (uint)mapId, Zone = zone, Position = pos, Orientation = 0 };
+                    Storage.StartPositions.Add(startPos, packet.TimeSpan);
                 }
 
-                var playerInfo = new Player { Race = race, Class = Class, Name = name, FirstLogin = firstLogins[c], Level = level };
+                var playerInfo = new Player { Race = race, Class = klass, Name = name, FirstLogin = firstLogins[c], Level = level };
                 if (Storage.Objects.ContainsKey(playerGuid))
                     Storage.Objects[playerGuid] = new Tuple<WoWObject, TimeSpan?>(playerInfo, packet.TimeSpan);
                 else

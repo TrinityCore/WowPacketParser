@@ -4,18 +4,21 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("creature_model_info")]
-    public class ModelData
+    public sealed class ModelData : IDataModel
     {
+        [DBFieldName("DisplayID", true)]
+        public uint? DisplayID;
+
         [DBFieldName("BoundingRadius")]
-        public float BoundingRadius;
+        public float? BoundingRadius;
 
         [DBFieldName("CombatReach")]
-        public float CombatReach;
+        public float? CombatReach;
 
-        [DBFieldName("gender", ClientVersionBuild.Zero, ClientVersionBuild.V6_0_2_19033)]
-        public Gender Gender;
+        [DBFieldName("Gender", TargetedDatabase.Zero, TargetedDatabase.WarlordsOfDraenor)]
+        public Gender? Gender;
 
-        //[DBFieldName("modelid_other_gender")]
-        //public uint ModelIdOtherGender;
+        [DBFieldName("DisplayID_Other_Gender")]
+        public uint? DisplayIDOtherGender;
     }
 }

@@ -1,0 +1,24 @@
+using WowPacketParser.Misc;
+using WowPacketParser.SQL;
+
+namespace WowPacketParser.Store.Objects
+{
+    [DBTableName("quest_offer_reward")]
+    public sealed class QuestOfferReward : IDataModel
+    {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("Emote", 4)]
+        public uint?[] Emote;
+
+        [DBFieldName("EmoteDelay", 4)]
+        public uint?[] EmoteDelay;
+
+        [DBFieldName("RewardText")]
+        public string RewardText;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
+}

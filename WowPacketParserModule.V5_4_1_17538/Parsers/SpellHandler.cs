@@ -1,13 +1,8 @@
-using System;
-using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
-using CoreParsers = WowPacketParser.Parsing.Parsers;
 
-namespace WowPacketParser.V5_4_1_17538.Parsers
+namespace WowPacketParserModule.V5_4_1_17538.Parsers
 {
     public static class SpellHandler
     {
@@ -436,21 +431,9 @@ namespace WowPacketParser.V5_4_1_17538.Parsers
             packet.ReadBit("InitialLogin");
             var count = packet.ReadBits("Spell Count", 22);
 
-            var spells = new List<uint>((int)count);
             for (var i = 0; i < count; i++)
             {
-                var spellId = packet.ReadUInt32<SpellId>("Spell ID", i);
-                spells.Add(spellId);
-            }
-
-            var startSpell = new StartSpell { Spells = spells };
-
-            WoWObject character;
-            if (Storage.Objects.TryGetValue(CoreParsers.SessionHandler.LoginGuid, out character))
-            {
-                var player = character as Player;
-                if (player != null && player.FirstLogin)
-                    Storage.StartSpells.Add(new Tuple<Race, Class>(player.Race, player.Class), startSpell, packet.TimeSpan);
+                packet.ReadUInt32<SpellId>("Spell ID", i);;
             }
         }
 

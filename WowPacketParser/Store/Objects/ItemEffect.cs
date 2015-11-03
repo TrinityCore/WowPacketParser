@@ -31,7 +31,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("CategoryCooldown")]
         public int CategoryCooldown;
 
-        [DBFieldName("ChrSpecializationID", ClientVersionBuild.V6_2_0_20182)]
+        [DBFieldName("ChrSpecializationID", TargetedDatabase.WarlordsOfDraenor)]
         public uint ChrSpecializationID;
 
         [DBFieldName("VerifiedBuild")]

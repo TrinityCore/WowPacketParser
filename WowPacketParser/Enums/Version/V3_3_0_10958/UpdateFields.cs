@@ -94,9 +94,7 @@ namespace WowPacketParser.Enums.Version.V3_3_0_10958
         UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER = ObjectField.OBJECT_END + 0x0028, // Size: 7, Type: FLOAT, Flags: PRIVATE, OWNER
         UNIT_FIELD_LEVEL = ObjectField.OBJECT_END + 0x002F, // Size: 1, Type: INT, Flags: PUBLIC
         UNIT_FIELD_FACTIONTEMPLATE = ObjectField.OBJECT_END + 0x0030, // Size: 1, Type: INT, Flags: PUBLIC
-        UNIT_VIRTUAL_ITEM_SLOT_ID1 = ObjectField.OBJECT_END + 0x0031, // Size: 3, Type: INT, Flags: PUBLIC
-        UNIT_VIRTUAL_ITEM_SLOT_ID2 = ObjectField.OBJECT_END + 0x0032,
-        UNIT_VIRTUAL_ITEM_SLOT_ID3 = ObjectField.OBJECT_END + 0x0033,
+        UNIT_VIRTUAL_ITEM_SLOT_ID = ObjectField.OBJECT_END + 0x0031, // Size: 3, Type: INT, Flags: PUBLIC
         UNIT_FIELD_FLAGS = ObjectField.OBJECT_END + 0x0034, // Size: 1, Type: INT, Flags: PUBLIC
         UNIT_FIELD_FLAGS_2 = ObjectField.OBJECT_END + 0x0035, // Size: 1, Type: INT, Flags: PUBLIC
         UNIT_FIELD_AURASTATE = ObjectField.OBJECT_END + 0x0036, // Size: 1, Type: INT, Flags: PUBLIC

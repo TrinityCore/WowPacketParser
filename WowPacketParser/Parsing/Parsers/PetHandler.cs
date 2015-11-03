@@ -21,7 +21,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PET_SPELLS_MESSAGE)]
         public static void HandlePetSpells(Packet packet)
         {
-            var guid = packet.ReadGuid("GUID");
+            WowGuid guid = packet.ReadGuid("GUID");
             // Equal to "Clear spells" pre cataclysm
             if (guid.IsEmpty())
                 return;
@@ -36,17 +36,17 @@ namespace WowPacketParser.Parsing.Parsers
 
             ReadPetFlags(packet);
 
-            var isPet = guid.GetHighType() == HighGuidType.Pet;
-            var isVehicle = guid.GetHighType() == HighGuidType.Vehicle;
-            var isMinion = guid.GetHighType() == HighGuidType.Creature;
+            bool isPet = guid.GetHighType() == HighGuidType.Pet;
+            bool isVehicle = guid.GetHighType() == HighGuidType.Vehicle;
+            bool isMinion = guid.GetHighType() == HighGuidType.Creature;
             const int maxCreatureSpells = 10;
-            var spells = new List<uint>(maxCreatureSpells);
-            for (var i = 0; i < maxCreatureSpells; i++) // Read pet/vehicle spell ids
+            var spells = new List<uint?>(maxCreatureSpells);
+            for (int i = 0; i < maxCreatureSpells; i++) // Read pet/vehicle spell ids
             {
-                var spell16 = packet.ReadUInt16();
-                var spell8 = packet.ReadByte();
-                var spellId = spell16 + (spell8 << 16);
-                var slot = packet.ReadByte("Slot", i);
+                ushort spell16 = packet.ReadUInt16();
+                byte spell8 = packet.ReadByte();
+                int spellId = spell16 + (spell8 << 16);
+                byte slot = packet.ReadByte("Slot", i);
 
                 if (spellId <= 4)
                     packet.AddValue("Action", spellId, i);
@@ -61,20 +61,19 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (spells.Count != 0)
             {
-                SpellsX spellsCr;
-                spellsCr.Spells = spells.ToArray();
-                Storage.SpellsX.Add(guid.GetEntry(), spellsCr, packet.TimeSpan);
+                if (!Storage.SpellsX.ContainsKey(guid.GetEntry()))
+                    Storage.SpellsX.Add(guid.GetEntry(), spells);
             }
 
-            var spellCount = packet.ReadByte("Spell Count"); // vehicles -> 0, pets -> != 0. Could this be auras?
-            for (var i = 0; i < spellCount; i++)
+            byte spellCount = packet.ReadByte("Spell Count"); // vehicles -> 0, pets -> != 0. Could this be auras?
+            for (int i = 0; i < spellCount; i++)
             {
                 packet.ReadUInt16<SpellId>("Spell", i);
                 packet.ReadInt16("Active", i);
             }
 
-            var cdCount = packet.ReadByte("Cooldown count");
-            for (var i = 0; i < cdCount; i++)
+            byte cdCount = packet.ReadByte("Cooldown count");
+            for (int i = 0; i < cdCount; i++)
             {
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
                     packet.ReadUInt32<SpellId>("Spell", i);
@@ -88,8 +87,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
             {
-                var unkLoopCounter = packet.ReadByte("Unk count");
-                for (var i = 0; i < unkLoopCounter; i++)
+                byte unkLoopCounter = packet.ReadByte("Unk count");
+                for (int i = 0; i < unkLoopCounter; i++)
                 {
                     packet.ReadUInt32("Unk UInt32 1", i);
                     packet.ReadByte("Unk Byte", i);

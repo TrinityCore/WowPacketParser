@@ -5,21 +5,21 @@ namespace WowPacketParser.Store.Objects
     public sealed class NpcTrainer : IDataModel
     {
         [DBFieldName("ID", true)]
-        public uint ID;
+        public uint? ID;
 
         [DBFieldName("SpellID", true)]
-        public int SpellID;
+        public int? SpellID;
 
         [DBFieldName("MoneyCost")]
-        public uint MoneyCost;
+        public uint? MoneyCost;
 
         [DBFieldName("ReqSkillLine")]
-        public uint ReqSkillLine;
+        public uint? ReqSkillLine;
 
         [DBFieldName("ReqSkillRank")]
-        public uint ReqSkillRank;
+        public uint? ReqSkillRank;
 
         [DBFieldName("ReqLevel")]
-        public uint ReqLevel;
+        public uint? ReqLevel;
     }
 }

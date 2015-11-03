@@ -47,6 +47,7 @@ namespace WowPacketParser.Store.Objects
         public uint? Mount;
         public uint? Bytes1;
         public UnitDynamicFlags? DynamicFlags;
+        public UnitDynamicFlagsWOD? DynamicFlagsWod;
         public NPCFlags? NpcFlags;
         public EmoteType? EmoteState;
         public uint? ManaMod;
@@ -56,6 +57,7 @@ namespace WowPacketParser.Store.Objects
         public float? CombatReach;
         public float? HoverHeight;
         public uint? InteractSpellID;
+        public uint[] Resistances;
 
         // Fields calculated with bytes0
         public PowerType? PowerType;
@@ -104,15 +106,20 @@ namespace WowPacketParser.Store.Objects
             RangedTime    = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_RANGEDATTACKTIME);
             Model         = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_DISPLAYID);
             Mount         = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_MOUNTDISPLAYID);
-            DynamicFlags  = UpdateFields.GetEnum<UnitField, UnitDynamicFlags?>(UnitField.UNIT_DYNAMIC_FLAGS);
+            if (ClientVersion.AddedInVersion(ClientType.WarlordsOfDraenor))
+                DynamicFlagsWod = UpdateFields.GetEnum<UnitField, UnitDynamicFlagsWOD?>(UnitField.UNIT_DYNAMIC_FLAGS);
+            else
+                DynamicFlags  = UpdateFields.GetEnum<UnitField, UnitDynamicFlags?>(UnitField.UNIT_DYNAMIC_FLAGS);
             NpcFlags      = UpdateFields.GetEnum<UnitField, NPCFlags?>(UnitField.UNIT_NPC_FLAGS);
             EmoteState    = UpdateFields.GetEnum<UnitField, EmoteType?>(UnitField.UNIT_NPC_EMOTESTATE);
-            //Resistances   = UpdateFields.GetArray<UnitField, uint>(UnitField.UNIT_FIELD_RESISTANCES_ARMOR, 7);
+            Resistances   = UpdateFields.GetArray<UnitField, uint>(UnitField.UNIT_FIELD_RESISTANCES, 7);
             ManaMod       = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BASE_MANA);
             HealthMod     = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BASE_HEALTH);
             BoundingRadius= UpdateFields.GetValue<UnitField, float?>(UnitField.UNIT_FIELD_BOUNDINGRADIUS);
             CombatReach   = UpdateFields.GetValue<UnitField, float?>(UnitField.UNIT_FIELD_COMBATREACH);
             HoverHeight   = UpdateFields.GetValue<UnitField, float?>(UnitField.UNIT_FIELD_HOVERHEIGHT);
+
+
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_4_0_17359))
             {

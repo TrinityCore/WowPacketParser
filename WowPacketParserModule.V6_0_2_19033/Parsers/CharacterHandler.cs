@@ -1,5 +1,4 @@
-﻿using System;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -74,8 +73,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 if (firstLogin)
                 {
-                    var startPos = new StartPosition { Map = mapId, Position = pos, Zone = zone };
-                    Storage.StartPositions.Add(new Tuple<Race, Class>(race, klass), startPos, packet.TimeSpan);
+                    PlayerCreateInfo startPos = new PlayerCreateInfo { Race = race, Class = klass, Map = mapId, Zone = zone, Position = pos, Orientation = 0 };
+                    Storage.StartPositions.Add(startPos, packet.TimeSpan);
                 }
             }
 

@@ -497,25 +497,25 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_QUERY_PAGE_TEXT_RESPONSE)]
         public static void HandlePageTextResponse(Packet packet)
         {
-            var pageText = new PageText();
-
             packet.ReadUInt32("PageTextID");
-
             packet.ResetBitReader();
 
-            var hasData = packet.ReadBit("Allow");
+            Bit hasData = packet.ReadBit("Allow");
             if (!hasData)
                 return; // nothing to do
 
-            var entry = packet.ReadUInt32("ID");
+            PageText pageText = new PageText();
+
+            uint entry = packet.ReadUInt32("ID");
+            pageText.ID = entry;
             pageText.NextPageID = packet.ReadUInt32("NextPageID");
 
             packet.ResetBitReader();
-            var textLen = packet.ReadBits(12);
+            uint textLen = packet.ReadBits(12);
             pageText.Text = packet.ReadWoWString("Text", textLen);
 
             packet.AddSniffData(StoreNameType.PageText, (int)entry, "QUERY_RESPONSE");
-            Storage.PageTexts.Add(entry, pageText, packet.TimeSpan);
+            Storage.PageTexts.Add(pageText, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_PLAY_ONE_SHOT_ANIM_KIT)]

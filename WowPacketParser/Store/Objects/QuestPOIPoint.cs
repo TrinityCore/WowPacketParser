@@ -4,31 +4,24 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("quest_poi_points")]
-    public class QuestPOIPoint
+    public sealed class QuestPOIPoint : IDataModel
     {
-        [DBFieldName("idx")]
-        public uint Index; // Client expects a certain order although this is not on sniffs
+        [DBFieldName("QuestID", true)]
+        public int? QuestID;
 
-        [DBFieldName("x")]
-        public int X;
+        [DBFieldName("Idx1", true)]
+        public int? Idx1;
 
-        [DBFieldName("y")]
-        public int Y;
+        [DBFieldName("Idx2", true)]
+        public int? Idx2;
 
-        [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild = ClientVersion.BuildInt;
-    }
-
-    [DBTableName("quest_poi_points")]
-    public class QuestPOIPointWoD
-    {
         [DBFieldName("X")]
-        public int X;
+        public int? X;
 
         [DBFieldName("Y")]
-        public int Y;
+        public int? Y;
 
         [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild = ClientVersion.BuildInt;
+        public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }

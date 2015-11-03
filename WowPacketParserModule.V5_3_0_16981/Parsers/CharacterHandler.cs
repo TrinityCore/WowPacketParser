@@ -51,6 +51,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             for (int c = 0; c < count; ++c)
             {
+                Vector3 pos = new Vector3();
+
                 packet.ReadXORByte(charGuids[c], 4);
                 var race = packet.ReadByteE<Race>("Race", c);
                 packet.ReadXORByte(charGuids[c], 6);
@@ -59,7 +61,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadByte("Hair Style", c);
                 packet.ReadXORByte(guildGuids[c], 6);
                 packet.ReadXORByte(charGuids[c], 3);
-                var x = packet.ReadSingle("Position X", c);
+                pos.X = packet.ReadSingle("Position X", c);
                 packet.ReadInt32E<CharacterFlag>("CharacterFlag", c);
                 packet.ReadXORByte(guildGuids[c], 0);
                 packet.ReadInt32("Pet Level", c);
@@ -69,7 +71,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadXORByte(guildGuids[c], 4);
                 packet.ReadXORByte(charGuids[c], 2);
                 packet.ReadXORByte(charGuids[c], 5);
-                var y = packet.ReadSingle("Position Y", c);
+                pos.Y = packet.ReadSingle("Position Y", c);
                 packet.ReadInt32("Pet Family", c);
                 var name = packet.ReadWoWString("Name", (int)nameLenghts[c], c);
                 packet.ReadInt32("Pet Display ID", c);
@@ -86,10 +88,10 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                     packet.ReadByteE<InventoryType>("Item InventoryType", c, j);
                 }
 
-                var z = packet.ReadSingle("Position Z", c);
+                pos.Z = packet.ReadSingle("Position Z", c);
                 var zone = packet.ReadUInt32<ZoneId>("Zone Id", c);
                 packet.ReadByte("Facial Hair", c);
-                var clss = packet.ReadByteE<Class>("Class", c);
+                var klass = packet.ReadByteE<Class>("Class", c);
                 packet.ReadXORByte(guildGuids[c], 5);
                 packet.ReadByte("Skin", c);
                 packet.ReadByteE<Gender>("Gender", c);
@@ -104,12 +106,11 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
                 if (firstLogins[c])
                 {
-                    var startPos = new StartPosition {Map = (uint) mapId, Position = new Vector3(x, y, z), Zone = zone};
-
-                    Storage.StartPositions.Add(new Tuple<Race, Class>(race, clss), startPos, packet.TimeSpan);
+                    PlayerCreateInfo startPos = new PlayerCreateInfo { Race = race, Class = klass, Map = (uint)mapId, Zone = zone, Position = pos, Orientation = 0 };
+                    Storage.StartPositions.Add(startPos, packet.TimeSpan);
                 }
 
-                var playerInfo = new Player { Race = race, Class = clss, Name = name, FirstLogin = firstLogins[c], Level = level };
+                var playerInfo = new Player { Race = race, Class = klass, Name = name, FirstLogin = firstLogins[c], Level = level };
                 if (Storage.Objects.ContainsKey(playerGuid))
                     Storage.Objects[playerGuid] = new Tuple<WoWObject, TimeSpan?>(playerInfo, packet.TimeSpan);
                 else

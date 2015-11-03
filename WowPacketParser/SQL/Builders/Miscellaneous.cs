@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using MySql.Data.MySqlClient;
+﻿using System.Linq;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
@@ -17,104 +12,44 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod]
         public static string StartInformation()
         {
-            /*var result = String.Empty;
+            string result = string.Empty;
 
             if (!Storage.StartActions.IsEmpty() && Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.playercreateinfo_action))
             {
-                var rows = new List<SQLInsertRow>();
-                foreach (var startActions in Storage.StartActions)
+                result += SQLUtil.Compare(Storage.StartActions, SQLDatabase.Get(Storage.StartActions), a =>
                 {
-                    var comment = new SQLInsertRow
-                    {
-                        HeaderComment = startActions.Key.Item1 + " - " + startActions.Key.Item2
-                    };
-                    rows.Add(comment);
+                    if (a.Type == ActionButtonType.Spell)
+                        return StoreGetters.GetName(StoreNameType.Spell, (int)a.Action.GetValueOrDefault(), false);
+                    if (a.Type == ActionButtonType.Item)
+                        return StoreGetters.GetName(StoreNameType.Item, (int)a.Action.GetValueOrDefault(), false);
+                    
+                    return string.Empty;
+                });
 
-                    foreach (var action in startActions.Value.Item1.Actions)
-                    {
-                        var row = new SQLInsertRow();
-
-                        row.AddValue("race", startActions.Key.Item1);
-                        row.AddValue("class", startActions.Key.Item2);
-                        row.AddValue("button", action.Button);
-                        row.AddValue("action", action.Id);
-                        row.AddValue("type", action.Type);
-                        if (action.Type == ActionButtonType.Spell)
-                            row.Comment = StoreGetters.GetName(StoreNameType.Spell, (int)action.Id, false);
-                        if (action.Type == ActionButtonType.Item)
-                            row.Comment = StoreGetters.GetName(StoreNameType.Item, (int)action.Id, false);
-
-                        rows.Add(row);
-                    }
-                }
-
-                //result += new SQLInsert("playercreateinfo_action", rows, 2).Build();
             }
-
+            
             if (!Storage.StartPositions.IsEmpty() && Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.playercreateinfo))
             {
-                var entries = Storage.StartPositions.Keys();
-                var dataDb = SQLDatabase.GetDict<Race, Class, StartPosition>(entries, "race", "class");
+                var dataDb = SQLDatabase.Get(Storage.StartPositions);
 
-                result += SQLUtil.CompareDicts(Storage.StartPositions, dataDb, StoreNameType.None, StoreNameType.None, "race", "class");
+                result += SQLUtil.Compare(Storage.StartPositions, dataDb, StoreNameType.None);
             }
 
-            if (!Storage.StartSpells.IsEmpty() && Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.playercreateinfo_spell))
-            {
-                var rows = new List<SQLInsertRow>();
-                foreach (var startSpells in Storage.StartSpells)
-                {
-                    var comment = new SQLInsertRow
-                    {
-                        HeaderComment = startSpells.Key.Item1 + " - " + startSpells.Key.Item2
-                    };
-                    rows.Add(comment);
-
-                    foreach (var spell in startSpells.Value.Item1.Spells)
-                    {
-                        var row = new SQLInsertRow();
-
-                        row.AddValue("race", startSpells.Key.Item1);
-                        row.AddValue("class", startSpells.Key.Item2);
-                        row.AddValue("Spell", spell);
-                        row.AddValue("Note", StoreGetters.GetName(StoreNameType.Spell, (int)spell, false));
-
-                        rows.Add(row);
-                    }
-                }
-
-                //result += new SQLInsert("playercreateinfo_spell", rows, 2).Build();
-            }
-
-            return result;*/
-            return string.Empty;
+            return result;
         }
 
         [BuilderMethod]
         public static string ObjectNames()
         {
-            /*if (Storage.ObjectNames.IsEmpty())
+            if (Storage.ObjectNames.IsEmpty())
                 return string.Empty;
-
-            const string tableName = "ObjectNames";
 
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.ObjectNames))
                 return string.Empty;
 
-            var rows = new List<SQLInsertRow>();
-            foreach (var data in Storage.ObjectNames)
-            {
-                var row = new SQLInsertRow();
+            var templateDb = SQLDatabase.Get(Storage.ObjectNames);
 
-                row.AddValue("ObjectType", data.Value.Item1.ObjectType.ToString());
-                row.AddValue("Id", data.Key);
-                row.AddValue("Name", data.Value.Item1.Name);
-
-                rows.Add(row);
-            }
-
-            return new SQLInsert(tableName, rows, 2, ignore: true, withDelete: false).Build();*/
-            return string.Empty;
+            return SQLUtil.Compare(Storage.ObjectNames, templateDb, StoreNameType.None);
         }
 
         [BuilderMethod]
@@ -122,7 +57,6 @@ namespace WowPacketParser.SQL.Builders
         {
             if (Storage.SniffData.IsEmpty())
                 return string.Empty;
-
 
             if (Settings.DumpFormat != DumpFormatType.SniffDataOnly)
                 if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.SniffData) && !Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.SniffDataOpcodes))
@@ -134,7 +68,7 @@ namespace WowPacketParser.SQL.Builders
         }
 
         // Non-WDB data but nevertheless data that should be saved to gameobject_template
-        [BuilderMethod(Gameobjects = true)]
+        /*[BuilderMethod(Gameobjects = true)]
         public static string GameobjectTemplateNonWDB(Dictionary<WowGuid, GameObject> gameobjects)
         {
             if (gameobjects.Count == 0)
@@ -181,64 +115,7 @@ namespace WowPacketParser.SQL.Builders
 
             var templatesDb = SQLDatabase.GetDict<uint, GameObjectTemplateNonWDB>(templates.Keys());
             return SQLUtil.CompareDicts(templates, templatesDb, StoreNameType.GameObject);
-        }
-
-        [BuilderMethod]
-        public static string DefenseMessage()
-        {
-            /*if (Storage.DefenseMessages.IsEmpty())
-                return String.Empty;
-
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.defense_message))
-                return string.Empty;
-
-            const string tableName = "defense_message";
-
-            var rows = new List<SQLInsertRow>();
-            foreach (var message in Storage.DefenseMessages)
-            {
-                foreach (var messageValue in message.Value)
-                {
-                    var row = new SQLInsertRow();
-
-                    var query = new StringBuilder(string.Format("SELECT Id FROM {1}.broadcast_text WHERE MaleText='{0}' OR FemaleText='{0}';", MySqlHelper.DoubleQuoteString(messageValue.Item1.Text), Settings.HotfixesDatabase));
-
-                    string broadcastTextId = "";
-
-                    if (Settings.DevMode)
-                    {
-                        using (var reader = SQLConnector.ExecuteQuery(query.ToString()))
-                        {
-                            if (reader != null)
-                                while (reader.Read())
-                                {
-                                    var values = new object[1];
-                                    var count = reader.GetValues(values);
-                                    if (count != 1)
-                                        break; // error in query
-
-                                    if (!String.IsNullOrWhiteSpace(broadcastTextId))
-                                        broadcastTextId += " - " + Convert.ToInt32(values[0]);
-                                    else
-                                        broadcastTextId += Convert.ToInt32(values[0]);
-                                }
-                        }
-
-                    }
-
-                    row.AddValue("ZoneId", message.Key);
-                    row.AddValue("Id", "x", false, true);
-                    row.AddValue("Text", messageValue.Item1.Text);
-                    if (Settings.DevMode)
-                        row.AddValue("BroadcastTextId", broadcastTextId);
-
-                    rows.Add(row);
-                }
-            }
-
-            return new SQLInsert(tableName, rows, 1, false).Build();*/
-            return String.Empty;
-        }
+        }*/
 
         [BuilderMethod]
         public static string WeatherUpdates()
@@ -253,7 +130,7 @@ namespace WowPacketParser.SQL.Builders
             foreach (var row in Storage.WeatherUpdates.Select(weatherUpdate => new Row<WeatherUpdate>
             {
                 Data = weatherUpdate.Item1,
-                Comment = StoreGetters.GetName(StoreNameType.Map, (int)weatherUpdate.Item1.MapId, false) +
+                Comment = StoreGetters.GetName(StoreNameType.Map, (int)weatherUpdate.Item1.MapId.GetValueOrDefault(), false) +
                           " - " + weatherUpdate.Item1.State + " - " + weatherUpdate.Item1.Grade
             }))
             {

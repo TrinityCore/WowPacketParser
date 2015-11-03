@@ -1,28 +1,35 @@
-﻿using WowPacketParser.Misc;
+﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("playercreateinfo")]
-    public class StartPosition
+    public class PlayerCreateInfo : IDataModel
     {
-        [DBFieldName("map")]
-        public uint Map;
+        [DBFieldName("race", true)]
+        public Race? Race;
 
-        //[DBFieldName("zone")] always 0
-        public uint Zone;
+        [DBFieldName("class", true)]
+        public Class? Class;
+
+        [DBFieldName("map")]
+        public uint? Map;
+
+        [DBFieldName("zone")]
+        public uint? Zone;
 
         [DBFieldName("position_x")]
-        public float X;
+        public float? X;
 
         [DBFieldName("position_y")]
-        public float Y;
+        public float? Y;
 
         [DBFieldName("position_z")]
-        public float Z;
+        public float? Z;
 
-        //[DBFieldName("orientation")]
-        //public double O;
+        [DBFieldName("orientation")]
+        public float? Orientation;
 
         private Vector3 _position;
         public Vector3 Position

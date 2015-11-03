@@ -4,7 +4,6 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using Action = WowPacketParser.Store.Objects.Action;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -22,38 +21,38 @@ namespace WowPacketParser.Parsing.Parsers
                     return;
             }
 
-            var buttonCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ? 144 : 132;
+            int buttonCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ? 144 : 132;
 
-            var startAction = new StartAction { Actions = new List<Action>(buttonCount) };
-
-            for (var i = 0; i < buttonCount; i++)
+            for (int i = 0; i < buttonCount; i++)
             {
-                var action = new Action { Button = (uint)i };
+                PlayerCreateInfoAction action = new PlayerCreateInfoAction { Button = (uint)i };
 
-                var packed = packet.ReadInt32();
+                int packed = packet.ReadInt32();
 
                 if (packed == 0)
                     continue;
 
-                action.Id = (uint)(packed & 0x00FFFFFF);
-                packet.AddValue("Action", action.Id, i);
+                action.Action = (uint)(packed & 0x00FFFFFF);
+                packet.AddValue("Action", action.Action, i);
 
                 action.Type = (ActionButtonType)((packed & 0xFF000000) >> 24);
                 packet.AddValue("Type", action.Type, i);
 
-                startAction.Actions.Add(action);
+                WoWObject character;
+                if (Storage.Objects.TryGetValue(SessionHandler.LoginGuid, out character))
+                {
+                    Player player = character as Player;
+                    if (player != null && player.FirstLogin)
+                    {
+                        action.Race = player.Race;
+                        action.Class = player.Class;
+                        Storage.StartActions.Add(action, packet.TimeSpan);
+                    }
+                }
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
                 packet.ReadByte("Packet Type");
-
-            WoWObject character;
-            if (Storage.Objects.TryGetValue(SessionHandler.LoginGuid, out character))
-            {
-                var player = character as Player;
-                if (player != null && player.FirstLogin)
-                    Storage.StartActions.Add(new Tuple<Race, Class>(player.Race, player.Class), startAction, packet.TimeSpan);
-            }
         }
 
         [Parser(Opcode.SMSG_UPDATE_ACTION_BUTTONS, ClientVersionBuild.V5_1_0_16309)]
@@ -61,74 +60,75 @@ namespace WowPacketParser.Parsing.Parsers
         {
             const int buttonCount = 132;
 
-            var startAction = new StartAction { Actions = new List<Action>(buttonCount) };
-
             var buttons = new byte[buttonCount][];
 
-            for (var i = 0; i < buttonCount; i++)
+            for (int i = 0; i < buttonCount; i++)
             {
                 buttons[i] = new byte[8];
                 buttons[i][4] = packet.ReadBit();
             }
 
-            for (var i = 0; i < buttonCount; i++)
+            for (int i = 0; i < buttonCount; i++)
                 buttons[i][0] = packet.ReadBit();
-            for (var i = 0; i < buttonCount; i++)
+            for (int i = 0; i < buttonCount; i++)
                 buttons[i][7] = packet.ReadBit();
-            for (var i = 0; i < buttonCount; i++)
+            for (int i = 0; i < buttonCount; i++)
                 buttons[i][2] = packet.ReadBit();
-            for (var i = 0; i < buttonCount; i++)
+            for (int i = 0; i < buttonCount; i++)
                 buttons[i][6] = packet.ReadBit();
-            for (var i = 0; i < buttonCount; i++)
+            for (int i = 0; i < buttonCount; i++)
                 buttons[i][3] = packet.ReadBit();
-            for (var i = 0; i < buttonCount; i++)
+            for (int i = 0; i < buttonCount; i++)
                 buttons[i][1] = packet.ReadBit();
-            for (var i = 0; i < buttonCount; i++)
+            for (int i = 0; i < buttonCount; i++)
                 buttons[i][5] = packet.ReadBit();
 
-            for (var i = 0; i < buttonCount; i++)
+            for (int i = 0; i < buttonCount; i++)
                 packet.ReadXORByte(buttons[i], 0);
-            for (var i = 0; i < buttonCount; i++)
+            for (int i = 0; i < buttonCount; i++)
                 packet.ReadXORByte(buttons[i], 3);
-            for (var i = 0; i < buttonCount; i++)
+            for (int i = 0; i < buttonCount; i++)
                 packet.ReadXORByte(buttons[i], 5);
-            for (var i = 0; i < buttonCount; i++)
+            for (int i = 0; i < buttonCount; i++)
                 packet.ReadXORByte(buttons[i], 7);
-            for (var i = 0; i < buttonCount; i++)
+            for (int i = 0; i < buttonCount; i++)
                 packet.ReadXORByte(buttons[i], 6);
-            for (var i = 0; i < buttonCount; i++)
+            for (int i = 0; i < buttonCount; i++)
                 packet.ReadXORByte(buttons[i], 1);
-            for (var i = 0; i < buttonCount; i++)
+            for (int i = 0; i < buttonCount; i++)
                 packet.ReadXORByte(buttons[i], 4);
-            for (var i = 0; i < buttonCount; i++)
+            for (int i = 0; i < buttonCount; i++)
                 packet.ReadXORByte(buttons[i], 2);
 
             packet.ReadByte("Packet Type");
 
             for (int i = 0; i < buttonCount; i++)
             {
-                var actionId = BitConverter.ToInt32(buttons[i], 0);
+                int actionId = BitConverter.ToInt32(buttons[i], 0);
 
                 if (actionId == 0)
                     continue;
 
-                var action = new Action
+                PlayerCreateInfoAction action = new PlayerCreateInfoAction
                 {
                     Button = (uint)i,
-                    Id = (uint)actionId,
+                    Action = (uint)actionId,
                     Type = 0 // removed in MoP
                 };
 
-                packet.AddValue("Action", action.Id, i);
-                startAction.Actions.Add(action);
-            }
+                packet.AddValue("Action " + i, action.Action);
 
-            WoWObject character;
-            if (Storage.Objects.TryGetValue(SessionHandler.LoginGuid, out character))
-            {
-                var player = character as Player;
-                if (player != null && player.FirstLogin)
-                    Storage.StartActions.Add(new Tuple<Race, Class>(player.Race, player.Class), startAction, packet.TimeSpan);
+                WoWObject character;
+                if (Storage.Objects.TryGetValue(SessionHandler.LoginGuid, out character))
+                {
+                    Player player = character as Player;
+                    if (player != null && player.FirstLogin)
+                    {
+                        action.Race = player.Race;
+                        action.Class = player.Class;
+                        Storage.StartActions.Add(action, packet.TimeSpan);
+                    }
+                }
             }
         }
 

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
@@ -6,6 +7,7 @@ using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Parsing.Parsers
 {
+    [SuppressMessage("ReSharper", "UseObjectOrCollectionInitializer")]
     public static class QueryHandler
     {
         [Parser(Opcode.SMSG_QUERY_TIME_RESPONSE)]
@@ -72,9 +74,10 @@ namespace WowPacketParser.Parsing.Parsers
             var objectName = new ObjectName
             {
                 ObjectType = ObjectType.Player,
+                ID = (int)guid.GetLow(),
                 Name = name
             };
-            Storage.ObjectNames.Add((uint)guid.GetLow(), objectName, packet.TimeSpan);
+            Storage.ObjectNames.Add(objectName, packet.TimeSpan);
         }
 
         public static void ReadQueryHeader(Packet packet)
@@ -101,17 +104,20 @@ namespace WowPacketParser.Parsing.Parsers
             if (entry.Value)
                 return;
 
-            var creature = new UnitTemplate();
+            CreatureTemplate creature = new CreatureTemplate
+            {
+                Entry = (uint)entry.Key
+            };
 
             var name = new string[4];
-            for (var i = 0; i < name.Length; i++)
+            for (int i = 0; i < name.Length; i++)
                 name[i] = packet.ReadCString("Name", i);
             creature.Name = name[0];
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_1_0_13914))
             {
                 var femaleName = new string[4];
-                for (var i = 0; i < femaleName.Length; i++)
+                for (int i = 0; i < femaleName.Length; i++)
                     femaleName[i] = packet.ReadCString("Female Name", i);
                 creature.FemaleName = femaleName[0];
             }
@@ -136,49 +142,51 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
             {
-                creature.KillCredits = new uint[2];
-                for (var i = 0; i < 2; ++i)
+                creature.KillCredits = new uint?[2];
+                for (int i = 0; i < 2; ++i)
                     creature.KillCredits[i] = packet.ReadUInt32("Kill Credit", i);
             }
             else // Did they stop sending pet spell data after 3.1?
             {
-                creature.UnkInt = packet.ReadInt32("Unk Int");
-                creature.PetSpellData = packet.ReadUInt32("Pet Spell Data Id");
+                packet.ReadInt32("Unk Int");
+                creature.PetSpellDataID = packet.ReadUInt32("Pet Spell Data Id");
             }
 
-            creature.DisplayIds = new uint[4];
-            for (var i = 0; i < 4; i++)
-                creature.DisplayIds[i] = packet.ReadUInt32("Display ID", i);
+            creature.ModelIDs = new uint?[4];
+            for (int i = 0; i < 4; i++)
+                creature.ModelIDs[i] = packet.ReadUInt32("Model ID", i);
 
-            creature.Modifier1 = packet.ReadSingle("Modifier 1");
-            creature.Modifier2 = packet.ReadSingle("Modifier 2");
+            creature.HealthModifier = packet.ReadSingle("Modifier 1");
+            creature.ManaModifier = packet.ReadSingle("Modifier 2");
 
             creature.RacialLeader = packet.ReadBool("Racial Leader");
 
-            var qItemCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ? 6 : 4;
-            creature.QuestItems = new uint[qItemCount];
+            int qItemCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ? 6 : 4;
+            //TODO: Move to creature_questitem
+            //creature.QuestItems = new uint[qItemCount];
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
             {
-                for (var i = 0; i < qItemCount; i++)
-                    creature.QuestItems[i] = (uint)packet.ReadInt32<ItemId>("Quest Item", i);
+                for (int i = 0; i < qItemCount; i++)
+                    /*creature.QuestItems[i] = (uint)*/packet.ReadInt32<ItemId>("Quest Item", i);
 
-                creature.MovementId = packet.ReadUInt32("Movement ID");
+                creature.MovementID = packet.ReadUInt32("Movement ID");
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
-                creature.Expansion = packet.ReadUInt32E<ClientType>("Expansion");
+                creature.ExpUnk = packet.ReadUInt32E<ClientType>("Expansion");
 
             packet.AddSniffData(StoreNameType.Unit, entry.Key, "QUERY_RESPONSE");
 
-            Storage.UnitTemplates.Add((uint)entry.Key, creature, packet.TimeSpan);
+            Storage.CreatureTemplates.Add(creature, packet.TimeSpan);
 
-            var objectName = new ObjectName
+            ObjectName objectName = new ObjectName
             {
                 ObjectType = ObjectType.Unit,
+                ID = entry.Key,
                 Name = creature.Name
             };
-            Storage.ObjectNames.Add((uint)entry.Key, objectName, packet.TimeSpan);
+            Storage.ObjectNames.Add(objectName, packet.TimeSpan);
         }
 
         [Parser(Opcode.CMSG_QUERY_PAGE_TEXT)]
@@ -191,17 +199,17 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUERY_PAGE_TEXT_RESPONSE)]
         public static void HandlePageTextResponse(Packet packet)
         {
-            var pageText = new PageText();
+            PageText pageText = new PageText();
 
-            var entry = packet.ReadUInt32("Entry");
+            uint entry = packet.ReadUInt32("Entry");
 
+            pageText.ID = entry;
             pageText.Text = packet.ReadCString("Page Text");
-
             pageText.NextPageID = packet.ReadUInt32("Next Page");
 
             packet.AddSniffData(StoreNameType.PageText, (int)entry, "QUERY_RESPONSE");
 
-            Storage.PageTexts.Add(entry, pageText, packet.TimeSpan);
+            Storage.PageTexts.Add(pageText, packet.TimeSpan);
         }
 
         [Parser(Opcode.CMSG_QUERY_NPC_TEXT)]
@@ -214,11 +222,14 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUERY_NPC_TEXT_RESPONSE)]
         public static void HandleNpcTextUpdate(Packet packet)
         {
-            var npcText = new NpcText();
-
             var entry = packet.ReadEntry("Entry");
             if (entry.Value) // Can be masked
                 return;
+
+            NpcText npcText = new NpcText
+            {
+                ID = (uint)entry.Key
+            };
 
             npcText.Probabilities = new float[8];
             npcText.Texts1 = new string[8];
@@ -226,7 +237,7 @@ namespace WowPacketParser.Parsing.Parsers
             npcText.Languages = new Language[8];
             npcText.EmoteDelays = new uint[8][];
             npcText.EmoteIds = new EmoteType[8][];
-            for (var i = 0; i < 8; i++)
+            for (int i = 0; i < 8; i++)
             {
                 npcText.Probabilities[i] = packet.ReadSingle("Probability", i);
 
@@ -238,7 +249,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 npcText.EmoteDelays[i] = new uint[3];
                 npcText.EmoteIds[i] = new EmoteType[3];
-                for (var j = 0; j < 3; j++)
+                for (int j = 0; j < 3; j++)
                 {
                     npcText.EmoteDelays[i][j] = packet.ReadUInt32("Emote Delay", i, j);
                     npcText.EmoteIds[i][j] = packet.ReadUInt32E<EmoteType>("Emote ID", i, j);
@@ -247,7 +258,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.AddSniffData(StoreNameType.NpcText, entry.Key, "QUERY_RESPONSE");
 
-            Storage.NpcTexts.Add((uint)entry.Key, npcText, packet.TimeSpan);
+            Storage.NpcTexts.Add(npcText, packet.TimeSpan);
         }
     }
 }

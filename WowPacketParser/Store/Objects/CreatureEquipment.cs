@@ -3,15 +3,21 @@
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("creature_equip_template")]
-    public sealed class CreatureEquipment
+    public sealed class CreatureEquipment : IDataModel
     {
-        [DBFieldName("itemEntry1")]
-        public uint ItemEntry1;
+        [DBFieldName("CreatureID", true)]
+        public uint? CreatureID;
 
-        [DBFieldName("itemEntry2")]
-        public uint ItemEntry2;
+        [DBFieldName("ID", true)]
+        public uint? ID;
 
-        [DBFieldName("itemEntry3")]
-        public uint ItemEntry3;
+        [DBFieldName("ItemID1")]
+        public uint? ItemID1;
+
+        [DBFieldName("ItemID2")]
+        public uint? ItemID2;
+
+        [DBFieldName("ItemID3")]
+        public uint? ItemID3;
     }
 }

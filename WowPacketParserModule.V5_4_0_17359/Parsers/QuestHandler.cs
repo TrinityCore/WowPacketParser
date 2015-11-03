@@ -55,60 +55,79 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         {
             packet.ReadInt32("Count?");
 
-            var count = packet.ReadBits("Count", 20);
+            uint count = packet.ReadBits("Count", 20);
 
-            var POIcounter = new uint[count];
+            var poiCounter = new uint[count];
             var pointsSize = new uint[count][];
 
-            for (var i = 0; i < count; ++i)
+            for (int i = 0; i < count; ++i)
             {
-                POIcounter[i] = packet.ReadBits("POI Counter", 18, i);
-                pointsSize[i] = new uint[POIcounter[i]];
+                poiCounter[i] = packet.ReadBits("POI Counter", 18, i);
+                pointsSize[i] = new uint[poiCounter[i]];
 
-                for (var j = 0; j < POIcounter[i]; ++j)
+                for (int j = 0; j < poiCounter[i]; ++j)
                     pointsSize[i][j] = packet.ReadBits("Points Counter", 21, i, j);
             }
 
-            for (var i = 0; i < count; ++i)
+            for (int i = 0; i < count; ++i)
             {
                 var questPOIs = new List<QuestPOI>();
+                var questPoiPointsForQuest = new List<QuestPOIPoint>();
 
-                for (var j = 0; j < POIcounter[i]; ++j)
+                for (int j = 0; j < poiCounter[i]; ++j)
                 {
-                    var questPoi = new QuestPOI();
-                    questPoi.Points = new List<QuestPOIPoint>((int)pointsSize[i][j]);
+                    QuestPOI questPoi = new QuestPOI();
 
                     packet.ReadInt32("Unk Int32 1", i, j);
                     packet.ReadInt32("Unk Int32 2", i, j);
                     packet.ReadInt32("Unk Int32 3", i, j);
-                    questPoi.FloorId = packet.ReadUInt32("Floor Id", i, j);
-                    questPoi.WorldMapAreaId = packet.ReadUInt32("World Map Area ID", i, j);
+                    questPoi.Floor = (int)packet.ReadUInt32("Floor Id", i, j);
+                    questPoi.WorldMapAreaId = (int)packet.ReadUInt32("World Map Area ID", i, j);
 
-                    for (var k = 0u; k < pointsSize[i][j]; ++k)
+                    var questPoiPoints = new List<QuestPOIPoint>();
+                    for (int k = 0; k < pointsSize[i][j]; ++k)
                     {
-                        var questPoiPoint = new QuestPOIPoint
+                        QuestPOIPoint questPoiPoint = new QuestPOIPoint
                         {
-                            Index = k,
-                            Y = packet.ReadInt32("Point Y", i, j, (int)k),
-                            X = packet.ReadInt32("Point X", i, j, (int)k)
+                            Idx2 = k,
+                            Y = packet.ReadInt32("Point Y", i, j, k),
+                            X = packet.ReadInt32("Point X", i, j, k)
                         };
-                        questPoi.Points.Add(questPoiPoint);
+                        questPoiPoints.Add(questPoiPoint);
                     }
 
                     questPoi.ObjectiveIndex = packet.ReadInt32("Objective Index", i, j);
                     packet.ReadInt32("Points Counter?", i, j);
-                    questPoi.Map = packet.ReadUInt32<MapId>("Map Id", i, j);
+                    questPoi.MapID = (int)packet.ReadUInt32<MapId>("Map Id", i, j);
                     packet.ReadInt32("Player Condition ID", i, j);
                     packet.ReadInt32("World Effect ID", i, j);
-                    questPoi.Idx = (uint)packet.ReadInt32("POI Index", i, j);
+
+                    int idx = packet.ReadInt32("POI Index", i, j);
+                    questPoi.ID = idx;
+
+                    questPoiPoints.ForEach(p =>
+                    {
+                        p.Idx1 = idx;
+                        questPoiPointsForQuest.Add(p);
+                    });
+
                     questPOIs.Add(questPoi);
                 }
 
-                var questId = packet.ReadInt32<QuestId>("Quest ID", i);
+                int questId = packet.ReadInt32<QuestId>("Quest ID", i);
                 packet.ReadInt32("POI Counter?", i);
 
-                foreach (var questpoi in questPOIs)
-                    Storage.QuestPOIs.Add(new Tuple<uint, uint>((uint)questId, questpoi.Idx), questpoi, packet.TimeSpan);
+                questPoiPointsForQuest.ForEach(q =>
+                {
+                    q.QuestID = questId;
+                    Storage.QuestPOIPoints.Add(q, packet.TimeSpan);
+                });
+
+                questPOIs.ForEach(q =>
+                {
+                    q.QuestID = questId;
+                    Storage.QuestPOIs.Add(q, packet.TimeSpan);
+                });
             }
         }
 

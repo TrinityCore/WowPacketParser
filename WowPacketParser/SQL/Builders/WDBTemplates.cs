@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
@@ -11,266 +11,268 @@ namespace WowPacketParser.SQL.Builders
     public static class WDBTemplates
     {
         [BuilderMethod]
-        public static string Quest()
+        public static string QuestTemplate()
         {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+                return string.Empty;
+
             if (Storage.QuestTemplates.IsEmpty())
-                return String.Empty;
+                return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
-                return String.Empty;
+            var templatesDb = SQLDatabase.Get(Storage.QuestTemplates);
 
-            var entries = Storage.QuestTemplates.Keys();
-            var templatesDb = SQLDatabase.GetDict<uint, QuestTemplate>(entries, "Id");
-
-            return SQLUtil.CompareDicts(Storage.QuestTemplates, templatesDb, StoreNameType.Quest, "Id");
-        }
-
-        [BuilderMethod]
-        public static string QuestWod()
-        {
-            if (Storage.QuestTemplatesWod.IsEmpty())
-                return String.Empty;
-
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
-                return String.Empty;
-
-            var entries = Storage.QuestTemplatesWod.Keys();
-            var templatesDb = SQLDatabase.GetDict<uint, QuestTemplateWod>(entries, "Id");
-
-            return SQLUtil.CompareDicts(Storage.QuestTemplatesWod, templatesDb, StoreNameType.Quest, "Id");
+            return SQLUtil.Compare(Storage.QuestTemplates, templatesDb, StoreNameType.Quest);
         }
 
         [BuilderMethod]
         public static string QuestObjective()
         {
-            /*
-            var result = "";
-            if (Storage.QuestObjectives.IsEmpty())
-                return String.Empty;
-
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
-                return String.Empty;
+                return string.Empty;
 
-            var entries = Storage.QuestObjectives.Keys();
-            var templatesDb = SQLDatabase.GetDict<uint, QuestInfoObjective>(entries, "Id");
+            if (Settings.TargetedDatabase == TargetedDatabase.WrathOfTheLichKing ||
+                Settings.TargetedDatabase == TargetedDatabase.Cataclysm)
+                return string.Empty;
 
-            result += SQLUtil.CompareDicts(Storage.QuestObjectives, templatesDb, StoreNameType.QuestObjective, "Id");
+            if (Storage.QuestObjectives.IsEmpty())
+                return string.Empty;
 
-            var rowsIns = new List<SQLInsertRow>();
-            var rowsUpd = new List<SQLUpdateRow>();
+            var templatesDb = SQLDatabase.Get(Storage.QuestObjectives);
 
-            foreach (var questObjectives in Storage.QuestObjectives)
-            {
-                foreach (var visualEffectIds in questObjectives.Value.Item1.VisualEffectIds)
-                {
-                    if (SQLConnector.Enabled)
-                    {
-                        var query = string.Format("SELECT `VisualEffect`, `VerifiedBuild` FROM {0}.quest_visual_effect WHERE `Id`={1} AND `Index`={2};",
-                            Settings.TDBDatabase, questObjectives.Key, visualEffectIds.Index);
-
-                        using (var reader = SQLConnector.ExecuteQuery(query))
-                        {
-                            if (reader.HasRows) // possible update
-                            {
-                                while (reader.Read())
-                                {
-                                    var row = new SQLUpdateRow();
-
-                                    if (!Utilities.EqualValues(reader.GetValue(0), visualEffectIds.VisualEffect))
-                                        row.AddValue("VisualEffect", visualEffectIds.VisualEffect);
-
-                                    if (!Utilities.EqualValues(reader.GetValue(1), questObjectives.Value.Item1.VerifiedBuild))
-                                        row.AddValue("VerifiedBuild", questObjectives.Value.Item1.VerifiedBuild);
-
-                                    row.AddWhere("Id", questObjectives.Key);
-                                    row.AddWhere("Index", visualEffectIds.Index);
-
-                                    row.Table = "quest_visual_effect";
-
-                                    if (row.ValueCount != 0)
-                                        rowsUpd.Add(row);
-                                }
-                            }
-                            else // insert
-                            {
-                                var row = new SQLInsertRow();
-
-                                row.AddValue("Id", questObjectives.Key);
-                                row.AddValue("Index", visualEffectIds.Index);
-                                row.AddValue("VisualEffect", visualEffectIds.VisualEffect);
-                                row.AddValue("VerifiedBuild", questObjectives.Value.Item1.VerifiedBuild);
-
-                                rowsIns.Add(row);
-                            }
-                        }
-                    }
-                    else // insert
-                    {
-                        var row = new SQLInsertRow();
-
-                        row.AddValue("Id", questObjectives.Key);
-                        row.AddValue("Index", visualEffectIds.Index);
-                        row.AddValue("VisualEffect", visualEffectIds.VisualEffect);
-                        row.AddValue("VerifiedBuild", questObjectives.Value.Item1.VerifiedBuild);
-
-                        rowsIns.Add(row);
-                    }
-                }
-             }
-
-            result += new SQLInsert("quest_visual_effect", rowsIns, 2).Build() + new SQLUpdate(rowsUpd).Build();
-
-            return result;*/
-            return string.Empty;
+            return SQLUtil.Compare(Storage.QuestObjectives, templatesDb, StoreNameType.QuestObjective);  
         }
 
         [BuilderMethod]
-        public static string Npc()
+        public static string QuestVisualEffect()
         {
-            if (Storage.UnitTemplates.IsEmpty())
-                return String.Empty;
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+                return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template))
-                return String.Empty;
+            if (Settings.TargetedDatabase == TargetedDatabase.WrathOfTheLichKing ||
+                Settings.TargetedDatabase == TargetedDatabase.Cataclysm)
+                return string.Empty;
 
-            var entries = Storage.UnitTemplates.Keys();
-            var templatesDb = SQLDatabase.GetDict<uint, UnitTemplate>(entries);
+            if (Storage.QuestVisualEffects.IsEmpty())
+                return string.Empty;
 
-            return SQLUtil.CompareDicts(Storage.UnitTemplates, templatesDb, StoreNameType.Unit);
+            var templateDb = SQLDatabase.Get(Storage.QuestVisualEffects);
+
+            return SQLUtil.Compare(Storage.QuestVisualEffects, templateDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
-        public static string NpcName()
+        [BuilderMethod(Units = true)]
+        public static string CreatureTemplate(Dictionary<WowGuid, Unit> units)
         {
-            /*var result = "";
-
-            if (Storage.UnitTemplates.IsEmpty())
-                return String.Empty;
-
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template))
                 return string.Empty;
 
-            const string tableName = "creature_template";
+            if (Storage.CreatureTemplates.IsEmpty())
+                return string.Empty;
 
-            if (SQLConnector.Enabled)
+            var templatesDb = SQLDatabase.Get(Storage.CreatureTemplates);
+
+            foreach (var cre in Storage.CreatureTemplates) // set some default values
             {
-                var rowsUpd = new List<SQLUpdateRow>();
+                Unit unit = units.FirstOrDefault(p => p.Key.GetEntry() == cre.Item1.Entry.GetValueOrDefault()).Value;
+                var levels = UnitMisc.GetLevels(units);
 
-                foreach (var npcName in Storage.UnitTemplates)
+                if (unit != null)
                 {
-                    var query = string.Format("SELECT name FROM {0}.creature_template WHERE entry={1};",
-                        Settings.TDBDatabase, npcName.Key);
+                    if (unit.GossipId == 0)
+                        cre.Item1.GossipMenuID = null;
+                    else
+                        cre.Item1.GossipMenuID = unit.GossipId;
 
-                    using (var reader = SQLConnector.ExecuteQuery(query))
+                    cre.Item1.MinLevel = levels[cre.Item1.Entry.GetValueOrDefault()].Item1;
+                    cre.Item1.MaxLevel = levels[cre.Item1.Entry.GetValueOrDefault()].Item2;
+
+                    HashSet<uint> playerFactions = new HashSet<uint> { 1, 2, 3, 4, 5, 6, 115, 116, 1610, 1629, 2203, 2204 };
+                    cre.Item1.Faction = unit.Faction.GetValueOrDefault(35);
+                    if (playerFactions.Contains(unit.Faction.GetValueOrDefault()))
+                        cre.Item1.Faction = 35;
+                    
+                    cre.Item1.NpcFlag = unit.NpcFlags.GetValueOrDefault(NPCFlags.None);
+                    cre.Item1.SpeedWalk = unit.Movement.WalkSpeed;
+                    cre.Item1.SpeedRun = unit.Movement.RunSpeed;
+                    
+                    cre.Item1.BaseAttackTime = unit.MeleeTime.GetValueOrDefault(2000);
+                    cre.Item1.RangeAttackTime = unit.RangedTime.GetValueOrDefault(2000);
+                    
+                    cre.Item1.UnitClass = (uint)unit.Class.GetValueOrDefault(Class.Warrior);
+
+                    cre.Item1.UnitFlags = unit.UnitFlags.GetValueOrDefault(UnitFlags.None);
+                    cre.Item1.UnitFlags &= ~UnitFlags.IsInCombat;
+                    cre.Item1.UnitFlags &= ~UnitFlags.PetIsAttackingTarget;
+                    cre.Item1.UnitFlags &= ~UnitFlags.PlayerControlled;
+                    cre.Item1.UnitFlags &= ~UnitFlags.Silenced;
+                    cre.Item1.UnitFlags &= ~UnitFlags.PossessedByPlayer;
+
+                    cre.Item1.UnitFlags2 = unit.UnitFlags2.GetValueOrDefault(UnitFlags2.None);
+
+                    if (Settings.TargetedDatabase != TargetedDatabase.WarlordsOfDraenor)
                     {
-                        if (reader.HasRows) // possible update
-                        {
-                            while (reader.Read())
-                            {
-                                var row = new SQLUpdateRow();
+                        cre.Item1.DynamicFlags = unit.DynamicFlags.GetValueOrDefault(UnitDynamicFlags.None);
+                        cre.Item1.DynamicFlags &= ~UnitDynamicFlags.Lootable;
+                        cre.Item1.DynamicFlags &= ~UnitDynamicFlags.Tapped;
+                        cre.Item1.DynamicFlags &= ~UnitDynamicFlags.TappedByPlayer;
+                        cre.Item1.DynamicFlags &= ~UnitDynamicFlags.TappedByAllThreatList;
+                    }
+                    else
+                    {
+                        cre.Item1.DynamicFlagsWod = unit.DynamicFlagsWod.GetValueOrDefault(UnitDynamicFlagsWOD.None);
+                        cre.Item1.DynamicFlagsWod &= ~UnitDynamicFlagsWOD.Lootable;
+                        cre.Item1.DynamicFlagsWod &= ~UnitDynamicFlagsWOD.Tapped;
+                        cre.Item1.DynamicFlagsWod &= ~UnitDynamicFlagsWOD.TappedByPlayer;
+                        cre.Item1.DynamicFlagsWod &= ~UnitDynamicFlagsWOD.TappedByAllThreatList;
+                    }
+                    cre.Item1.VehicleID = unit.Movement.VehicleId;
+                    cre.Item1.HoverHeight = unit.HoverHeight.GetValueOrDefault(1.0f);
 
-                                if (!Utilities.EqualValues(reader.GetValue(0), npcName.Value.Item1.Name))
-                                    row.AddValue("name", npcName.Value.Item1.Name);
+                    //TODO: set TrainerType from SMSG_TRAINER_LIST
+                    cre.Item1.TrainerType = 0;
 
-                                if (Utilities.EqualValues(reader.GetValue(0), npcName.Value.Item1.Name) && npcName.Value.Item1.FemaleName != null)
-                                    row.AddValue("femaleName", npcName.Value.Item1.FemaleName);
+                    cre.Item1.Resistances = new uint?[] {0, 0, 0, 0, 0, 0};
+                    for (int i = 0; i < unit.Resistances.Length - 1; i++)
+                        cre.Item1.Resistances[i] = unit.Resistances[i + 1];
+                }
 
-                                row.AddWhere("entry", npcName.Key);
+                // has trainer flag but doesn't have prof nor class trainer flag
+                if (cre.Item1.NpcFlag.GetValueOrDefault().HasFlag(NPCFlags.Trainer) &&
+                    (!cre.Item1.NpcFlag.GetValueOrDefault().HasFlag(NPCFlags.ProfessionTrainer) ||
+                     !cre.Item1.NpcFlag.GetValueOrDefault().HasFlag(NPCFlags.ClassTrainer)))
+                {
+                    string name = StoreGetters.GetName(StoreNameType.Unit, (int)cre.Item1.Entry.GetValueOrDefault(), false);
+                    int firstIndex = name.LastIndexOf('<');
+                    int lastIndex = name.LastIndexOf('>');
+                    if (firstIndex != -1 && lastIndex != -1)
+                    {
+                        string subname = name.Substring(firstIndex + 1, lastIndex - firstIndex - 1);
 
-                                row.Table = tableName;
-
-                                if (row.ValueCount != 0)
-                                    rowsUpd.Add(row);
-                            }
-                        }
+                        if (UnitMisc._professionTrainers.Contains(subname))
+                            cre.Item1.NpcFlag |= NPCFlags.ProfessionTrainer;
+                        else if (UnitMisc._classTrainers.Contains(subname))
+                            cre.Item1.NpcFlag |= NPCFlags.ClassTrainer;
                     }
                 }
 
-                result += new SQLUpdate(rowsUpd).Build();
+                cre.Item1.DifficultyEntries = new uint?[] {null, null, null};
+                cre.Item1.Scale = 1;
+                cre.Item1.DmgSchool = 0;
+                cre.Item1.BaseVariance = 1;
+                cre.Item1.RangeVariance = 1;
+                cre.Item1.Resistances = new uint?[] {null, null, null, null, null, null};
+                cre.Item1.Spells = new uint?[] {0, 0, 0, 0, 0, 0, 0, 0};
+                cre.Item1.HealthModifierExtra = 1;
+                cre.Item1.ManaModifierExtra = 1;
+                cre.Item1.ArmorModifier = 1;
             }
 
-            return result;*/
-            return string.Empty;
+            foreach (
+                var cre in
+                    Storage.CreatureTemplates.Where(
+                        cre => Storage.SpellsX.ContainsKey(cre.Item1.Entry.GetValueOrDefault())))
+            {
+                cre.Item1.Spells = Storage.SpellsX[cre.Item1.Entry.GetValueOrDefault()].Item1.ToArray();
+            }
+
+            return SQLUtil.Compare(Storage.CreatureTemplates, templatesDb, StoreNameType.Unit);
         }
 
-        [BuilderMethod]
-        public static string GameObject()
+        [BuilderMethod(Gameobjects = true)]
+        public static string GameObjectTemplate(Dictionary<WowGuid, GameObject> gameobjects)
         {
-            if (Storage.GameObjectTemplates.IsEmpty())
-                return String.Empty;
-
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_template))
                 return string.Empty;
 
-            var entries = Storage.GameObjectTemplates.Keys();
-            var templatesDb = SQLDatabase.GetDict<uint, GameObjectTemplate>(entries);
+            if (Storage.GameObjectTemplates.IsEmpty())
+                return string.Empty;
 
-            return SQLUtil.CompareDicts(Storage.GameObjectTemplates, templatesDb, StoreNameType.GameObject);
+            var templatesDb = SQLDatabase.Get(Storage.GameObjectTemplates);
+
+            foreach (var goT in Storage.GameObjectTemplates)
+            {
+                GameObject go = gameobjects.FirstOrDefault(p => p.Key.GetEntry() == goT.Item1.Entry.GetValueOrDefault()).Value;
+
+                if (go != null)
+                {
+                    if (goT.Item1.Size == null) // only true for 3.x and 4.x. WDB field since 5.x
+                        goT.Item1.Size = go.Size.GetValueOrDefault(1.0f);
+
+                    HashSet<uint> playerFactions = new HashSet<uint> { 1, 2, 3, 4, 5, 6, 115, 116, 1610, 1629, 2203, 2204 };
+                    goT.Item1.Faction = go.Faction.GetValueOrDefault(0);
+                    if (playerFactions.Contains(go.Faction.GetValueOrDefault()))
+                        goT.Item1.Faction = 0;
+
+                    goT.Item1.Flags = go.Flags.GetValueOrDefault(GameObjectFlag.None);
+                    goT.Item1.Flags &= ~GameObjectFlag.Triggered;
+                    goT.Item1.Flags &= ~GameObjectFlag.Damaged;
+                    goT.Item1.Flags &= ~GameObjectFlag.Destroyed;
+                }
+            }
+
+            return SQLUtil.Compare(Storage.GameObjectTemplates, templatesDb, StoreNameType.GameObject);
         }
 
         [BuilderMethod]
-        public static string Item()
+        public static string ItemTemplate()
         {
-            if (Storage.ItemTemplates.IsEmpty())
-                return String.Empty;
-
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.item_template))
                 return string.Empty;
 
-            var entries = Storage.ItemTemplates.Keys();
-            var templatesDb = SQLDatabase.GetDict<uint, ItemTemplate>(entries);
+            if (Settings.TargetedDatabase == TargetedDatabase.WarlordsOfDraenor)
+                return string.Empty;
 
-            return SQLUtil.CompareDicts(Storage.ItemTemplates, templatesDb, StoreNameType.Item);
+            if (Storage.ItemTemplates.IsEmpty())
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.ItemTemplates);
+
+            return SQLUtil.Compare(Storage.ItemTemplates, templatesDb, StoreNameType.Item);
         }
 
         [BuilderMethod]
         public static string PageText()
         {
-            if (Storage.PageTexts.IsEmpty())
-                return String.Empty;
-
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.page_text))
                 return string.Empty;
 
-            var entries = Storage.PageTexts.Keys();
-            var templatesDb = SQLDatabase.GetDict<uint, PageText>(entries, "ID");
+            if (Storage.PageTexts.IsEmpty())
+                return string.Empty;
 
-            return SQLUtil.CompareDicts(Storage.PageTexts, templatesDb, StoreNameType.PageText, "ID");
+            var templatesDb = SQLDatabase.Get(Storage.PageTexts);
+
+            return SQLUtil.Compare(Storage.PageTexts, templatesDb, StoreNameType.PageText);
         }
 
         [BuilderMethod]
         public static string NpcText()
         {
-            if (!Storage.NpcTexts.IsEmpty())
-            {
-                if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_text))
-                    return string.Empty;
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_text))
+                return string.Empty;
 
+            if (!Storage.NpcTexts.IsEmpty() && 
+                (Settings.TargetedDatabase == TargetedDatabase.WrathOfTheLichKing || 
+                Settings.TargetedDatabase == TargetedDatabase.Cataclysm))
+            {
                 foreach (var npcText in Storage.NpcTexts)
-                    npcText.Value.Item1.ConvertToDBStruct();
+                    npcText.Item1.ConvertToDBStruct();
 
-                var entries = Storage.NpcTexts.Keys();
-                var templatesDb = SQLDatabase.GetDict<uint, NpcText>(entries, "ID");
+                var templatesDb = SQLDatabase.Get(Storage.NpcTexts);
 
-                return SQLUtil.CompareDicts(Storage.NpcTexts, templatesDb, StoreNameType.NpcText, "ID");
+                return SQLUtil.Compare(Storage.NpcTexts, templatesDb, StoreNameType.NpcText);
             }
 
-            if (!Storage.NpcTextsMop.IsEmpty())
+            if (!Storage.NpcTextsMop.IsEmpty() && Settings.TargetedDatabase == TargetedDatabase.WarlordsOfDraenor)
             {
-
-                if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_text))
-                    return string.Empty;
-
                 foreach (var npcText in Storage.NpcTextsMop)
-                    npcText.Value.Item1.ConvertToDBStruct();
+                    npcText.Item1.ConvertToDBStruct();
 
-                var entries = Storage.NpcTextsMop.Keys();
-                var templatesDb = SQLDatabase.GetDict<uint, NpcTextMop>(entries, "ID");
+                var templatesDb = SQLDatabase.Get(Storage.NpcTextsMop);
 
-                return SQLUtil.CompareDicts(Storage.NpcTextsMop, templatesDb, StoreNameType.NpcText, "ID");
+                return SQLUtil.Compare(Storage.NpcTextsMop, templatesDb, StoreNameType.NpcText);
             }
 
-            return String.Empty;
+            return string.Empty;
         }
     }
 }

@@ -37,17 +37,17 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Size")]
         public float Size;
 
-        [DBFieldName("PhaseID", ClientVersionBuild.V6_0_2_19033)]
+        [DBFieldName("PhaseID", TargetedDatabase.WarlordsOfDraenor)]
         public uint PhaseId;
 
-        [DBFieldName("PhaseGroupID", ClientVersionBuild.V6_0_2_19033)]
+        [DBFieldName("PhaseGroupID", TargetedDatabase.WarlordsOfDraenor)]
         public uint PhaseGroupId;
 
         [DBFieldName("Type")]
         public GameObjectType Type;
 
-        [DBFieldName("Data", ClientVersionBuild.Zero, ClientVersionBuild.V6_0_3_19103, 4, true)]
-        [DBFieldName("Data", ClientVersionBuild.V6_0_3_19103, 8, true)]
+        [DBFieldName("Data", TargetedDatabase.Zero, TargetedDatabase.WarlordsOfDraenor, 4, true)]
+        [DBFieldName("Data", TargetedDatabase.WarlordsOfDraenor, 8, true)]
         public int[] Data;
 
         [DBFieldName("Name")]
