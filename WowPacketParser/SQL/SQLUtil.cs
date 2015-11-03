@@ -181,10 +181,11 @@ namespace WowPacketParser.SQL
             return Utilities.GetAttributes<DBFieldNameAttribute>(field).Any(a => a.IsPrimaryKey);
         }
 
-        public static string Compare<T>(StoreBag<T> storeList, RowList<T> dbList, StoreNameType storeType)
+        /// <param name="storeType">Are we dealing with Spells, Quests, Units, ...?</param>
+        public static string Compare<T>(DataBag<T> storeList, RowList<T> dbList, StoreNameType storeType)
             where T : IDataModel
         {
-            return Compare(storeList, dbList, storeType, t => StoreGetters.GetName(storeType, Convert.ToInt32(GetFirstPrimaryKey<T>().GetValue(t)), false));
+            return Compare(storeList, dbList, t => StoreGetters.GetName(storeType, Convert.ToInt32(GetFirstPrimaryKey<T>().GetValue(t)), false));
         }
 
         /// <summary>
@@ -196,10 +197,9 @@ namespace WowPacketParser.SQL
         /// <typeparam name="T">Type of the primary key (uint)</typeparam>
         /// <param name="storeList">Dictionary retrieved from  parser</param>
         /// <param name="dbList">Dictionary retrieved from  DB</param>
-        /// <param name="storeType">Are we dealing with Spells, Quests, Units, ...?</param>
         /// <param name="commentSetter"></param>
         /// <returns>A string containing full SQL queries</returns>
-        public static string Compare<T>(StoreBag<T> storeList, RowList<T> dbList, StoreNameType storeType, Func<T, string> commentSetter)
+        public static string Compare<T>(DataBag<T> storeList, RowList<T> dbList, Func<T, string> commentSetter)
             where T : IDataModel
         {
             var fields = GetFields<T>();

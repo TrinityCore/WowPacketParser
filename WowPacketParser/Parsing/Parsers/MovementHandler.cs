@@ -176,11 +176,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_MONSTER_MOVE_TRANSPORT)]
         public static void HandleMonsterMove(Packet packet)
         {
-            var guid = packet.ReadPackedGuid("GUID");
+            WowGuid guid = packet.ReadPackedGuid("GUID");
 
             if (Storage.Objects != null && Storage.Objects.ContainsKey(guid))
             {
-                var obj = Storage.Objects[guid].Item1;
+                WoWObject obj = Storage.Objects[guid].Item1;
                 UpdateField uf;
                 if (obj.UpdateFields != null && obj.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_FLAGS), out uf))
                     if ((uf.UInt32Value & (uint)UnitFlags.IsInCombat) == 0) // movement could be because of aggro so ignore that
@@ -189,22 +189,22 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_MONSTER_MOVE_TRANSPORT, Direction.ServerToClient))
             {
-                var transportGuid = packet.ReadPackedGuid("Transport GUID");
+                WowGuid transportGuid = packet.ReadPackedGuid("Transport GUID");
 
-                var seat = -1;
+                int seat = -1;
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767)) // no idea when this was added exactly
                     seat = packet.ReadByte("Transport Seat");
 
                 if (transportGuid.HasEntry() && transportGuid.GetHighType() == HighGuidType.Vehicle &&
                     guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
                 {
-                    var vehicleAccessory = new VehicleTemplateAccessory
+                    VehicleTemplateAccessory vehicleAccessory = new VehicleTemplateAccessory
                     {
+                        Entry = transportGuid.GetEntry(),
                         AccessoryEntry = guid.GetEntry(),
                         SeatId = seat
                     };
-
-                    Storage.VehicleTemplateAccessorys.Add(transportGuid.GetEntry(), vehicleAccessory, packet.TimeSpan);
+                    Storage.VehicleTemplateAccessorys.Add(vehicleAccessory, packet.TimeSpan);
                 }
             }
 

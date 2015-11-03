@@ -178,9 +178,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             uint entry = packet.ReadPackedGuid128("VendorGUID").GetEntry();
             packet.ReadByte("Reason");
-            var count = packet.ReadInt32("VendorItems");
+            int count = packet.ReadInt32("VendorItems");
 
-            for (var i = 0; i < count; ++i)
+            for (int i = 0; i < count; ++i)
             {
                 NpcVendor vendor = new NpcVendor
                 {
@@ -190,10 +190,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     Item = ItemHandler.ReadItemInstance(packet, i)
                 };
 
-                var maxCount = packet.ReadInt32("Quantity", i);
+                int maxCount = packet.ReadInt32("Quantity", i);
                 packet.ReadInt32("Price", i);
                 packet.ReadInt32("Durability", i);
-                var buyCount = packet.ReadInt32("StackCount", i);
+                int buyCount = packet.ReadInt32("StackCount", i);
                 vendor.ExtendedCost = packet.ReadUInt32("ExtendedCostID", i);
                 vendor.PlayerConditionID = packet.ReadUInt32("PlayerConditionFailed", i);
 
@@ -212,48 +212,37 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_TRAINER_LIST)]
         public static void HandleServerTrainerList(Packet packet)
         {
-            var npcTrainer = new NpcTrainer();
+            NpcTrainer npcTrainer = new NpcTrainer();
 
-            var guid = packet.ReadPackedGuid128("TrainerGUID");
+            uint entry = packet.ReadPackedGuid128("TrainerGUID").GetEntry();
 
             packet.ReadInt32("TrainerType");
             packet.ReadInt32("TrainerID");
-            var int36 = packet.ReadInt32("Spells");
+            int count = packet.ReadInt32("Spells");
 
-            npcTrainer.TrainerSpells = new List<TrainerSpell>(int36);
-            // ClientTrainerListSpell
-            for (var i = 0; i < int36; ++i)
+            for (int i = 0; i < count; ++i)
             {
-                var trainerSpell = new TrainerSpell();
+                NpcTrainer trainer = new NpcTrainer
+                {
+                    ID = entry,
+                    SpellID = packet.ReadInt32<SpellId>("SpellID", i),
+                    MoneyCost = packet.ReadUInt32("MoneyCost", i),
+                    ReqSkillLine = packet.ReadUInt32("ReqSkillLine", i),
+                    ReqSkillRank = packet.ReadUInt32("ReqSkillRank", i)
+                };
 
-                trainerSpell.Spell = (uint)packet.ReadInt32<SpellId>("SpellID", i);
-                trainerSpell.Cost = (uint)packet.ReadInt32("MoneyCost", i);
-                trainerSpell.RequiredSkill = (uint)packet.ReadInt32("ReqSkillLine", i);
-                trainerSpell.RequiredSkillLevel = (uint)packet.ReadInt32("ReqSkillRank", i);
 
                 for (var j = 0; j < 3; ++j)
                     packet.ReadInt32("ReqAbility", i, j);
 
                 packet.ReadByteE<TrainerSpellState>("Usable", i);
-                trainerSpell.RequiredLevel = packet.ReadByte("ReqLevel", i);
-
-                npcTrainer.TrainerSpells.Add(trainerSpell);
+                trainer.ReqLevel = packet.ReadByte("ReqLevel", i);
             }
 
-            var bits56 = packet.ReadBits(11);
-            npcTrainer.Title = packet.ReadWoWString("Greeting", bits56);
+            uint bits56 = packet.ReadBits(11);
+            packet.ReadWoWString("Greeting", bits56);
 
-            if (Storage.NpcTrainers.ContainsKey(guid.GetEntry()))
-            {
-                var oldTrainer = Storage.NpcTrainers[guid.GetEntry()];
-                if (oldTrainer != null)
-                {
-                    foreach (var trainerSpell in npcTrainer.TrainerSpells)
-                        oldTrainer.Item1.TrainerSpells.Add(trainerSpell);
-                }
-            }
-            else
-                Storage.NpcTrainers.Add(guid.GetEntry(), npcTrainer, packet.TimeSpan);
+            Storage.NpcTrainers.Add(npcTrainer, packet.TimeSpan);
         }
 
         [Parser(Opcode.CMSG_TRAINER_BUY_SPELL)]
@@ -267,11 +256,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_SPELL_CLICK)]
         public static void HandleSpellClick(Packet packet)
         {
-            var guid = packet.ReadPackedGuid128("SpellClickUnitGUID");
+            WowGuid guid = packet.ReadPackedGuid128("SpellClickUnitGUID");
             packet.ReadBit("TryAutoDismount");
 
-            /*if (guid.GetObjectType() == ObjectType.Unit)
-                Storage.NpcSpellClicks.Add(guid, packet.TimeSpan);*/
+            if (guid.GetObjectType() == ObjectType.Unit)
+                Storage.NpcSpellClicks.Add(guid, packet.TimeSpan);
         }
 
         [Parser(Opcode.CMSG_BUY_BANK_SLOT)]

@@ -10,7 +10,7 @@ namespace WowPacketParser.Store
     {
         // Stores opcodes read, npc/GOs/spell/item/etc IDs found in sniffs
         // and other miscellaneous stuff
-        //public static readonly StoreBag<SniffData> SniffData = new StoreBag<SniffData>(new List<SQLOutput> { SQLOutput.SniffData, SQLOutput.SniffDataOpcodes });
+        public static readonly DataBag<SniffData> SniffData = new DataBag<SniffData>(new List<SQLOutput> { SQLOutput.SniffData, SQLOutput.SniffDataOpcodes });
 
         /* Key: Guid */
 
@@ -74,8 +74,8 @@ namespace WowPacketParser.Store
         public static readonly StoreDictionary<uint, UnitTemplate> UnitTemplates = new StoreDictionary<uint, UnitTemplate>(new List<SQLOutput> { SQLOutput.creature_template });
 
         // Vendor & trainer
-        public static readonly StoreDictionary<uint, NpcTrainer> NpcTrainers = new StoreDictionary<uint, NpcTrainer>(new List<SQLOutput> { SQLOutput.npc_trainer });
-        public static readonly StoreBag<NpcVendor> NpcVendors = new StoreBag<NpcVendor>(new List<SQLOutput> { SQLOutput.npc_vendor });
+        public static readonly DataBag<NpcTrainer> NpcTrainers = new DataBag<NpcTrainer>(new List<SQLOutput> { SQLOutput.npc_trainer });
+        public static readonly DataBag<NpcVendor> NpcVendors = new DataBag<NpcVendor>(new List<SQLOutput> { SQLOutput.npc_vendor });
 
         // Page & npc text
         public static readonly StoreDictionary<uint, PageText> PageTexts = new StoreDictionary<uint, PageText>(new List<SQLOutput> { SQLOutput.page_text });
@@ -90,7 +90,7 @@ namespace WowPacketParser.Store
 
         // "Helper" stores, do not match a specific table
         public static readonly StoreMulti<WowGuid, EmoteType> Emotes = new StoreMulti<WowGuid, EmoteType>(new List<SQLOutput> { SQLOutput.creature_text });
-        //public static readonly StoreBag<uint> Sounds = new StoreBag<uint>(new List<SQLOutput> { SQLOutput.creature_text });
+        public static readonly StoreBag<uint> Sounds = new StoreBag<uint>(new List<SQLOutput> { SQLOutput.creature_text });
         public static readonly StoreDictionary<uint, SpellsX> SpellsX = new StoreDictionary<uint, SpellsX>(new List<SQLOutput> { SQLOutput.creature_template }); // `creature_template`.`spellsX`
         public static readonly StoreDictionary<uint, QuestOffer> QuestOffers = new StoreDictionary<uint, QuestOffer>(new List<SQLOutput> { SQLOutput.quest_template });
         public static readonly StoreDictionary<uint, QuestReward> QuestRewards = new StoreDictionary<uint, QuestReward>(new List<SQLOutput> { SQLOutput.quest_template });
@@ -127,14 +127,14 @@ namespace WowPacketParser.Store
         public static readonly StoreMulti<uint, DefenseMessage> DefenseMessages = new StoreMulti<uint, DefenseMessage>(new List<SQLOutput> { SQLOutput.defense_message });
 
         // Vehicle Template Accessory
-        public static readonly StoreMulti<uint, VehicleTemplateAccessory> VehicleTemplateAccessorys = new StoreMulti<uint, VehicleTemplateAccessory>(new List<SQLOutput> { SQLOutput.vehicle_template_accessory });
+        public static readonly StoreBag<VehicleTemplateAccessory> VehicleTemplateAccessorys = new StoreBag<VehicleTemplateAccessory>(new List<SQLOutput> { SQLOutput.vehicle_template_accessory });
 
         // Weather updates
-        //public static readonly StoreBag<WeatherUpdate> WeatherUpdates = new StoreBag<WeatherUpdate>(new List<SQLOutput> { SQLOutput.weather_updates });
+        public static readonly DataBag<WeatherUpdate> WeatherUpdates = new DataBag<WeatherUpdate>(new List<SQLOutput> { SQLOutput.weather_updates });
 
         // Npc Spell Click
-        //public static readonly StoreBag<WowGuid> NpcSpellClicks = new StoreBag<WowGuid>(new List<SQLOutput> { SQLOutput.npc_spellclick_spells });
-        //public static readonly StoreBag<NpcSpellClick> SpellClicks = new StoreBag<NpcSpellClick>(new List<SQLOutput> { SQLOutput.npc_spellclick_spells });
+        public static readonly StoreBag<WowGuid> NpcSpellClicks = new StoreBag<WowGuid>(new List<SQLOutput> { SQLOutput.npc_spellclick_spells });
+        public static readonly DataBag<NpcSpellClick> SpellClicks = new DataBag<NpcSpellClick>(new List<SQLOutput> { SQLOutput.npc_spellclick_spells });
 
         // Quest Misc
         public static readonly StoreDictionary<Tuple<uint, string>, BroadcastTextLocale> BroadcastTextLocales = new StoreDictionary<Tuple<uint, string>, BroadcastTextLocale>(new List<HotfixSQLOutput> { HotfixSQLOutput.broadcast_text_locale });
@@ -143,7 +143,7 @@ namespace WowPacketParser.Store
 
         public static void ClearContainers()
         {
-            //SniffData.Clear();
+            SniffData.Clear();
 
             Objects.Clear();
 
@@ -171,7 +171,7 @@ namespace WowPacketParser.Store
             GossipPOIs.Clear();
 
             Emotes.Clear();
-            //Sounds.Clear();
+            Sounds.Clear();
             SpellsX.Clear();
             QuestOffers.Clear();
             QuestRewards.Clear();
@@ -198,10 +198,10 @@ namespace WowPacketParser.Store
 
             VehicleTemplateAccessorys.Clear();
 
-            //WeatherUpdates.Clear();
+            WeatherUpdates.Clear();
 
-            //NpcSpellClicks.Clear();
-            //SpellClicks.Clear();
+            NpcSpellClicks.Clear();
+            SpellClicks.Clear();
         }
     }
 }

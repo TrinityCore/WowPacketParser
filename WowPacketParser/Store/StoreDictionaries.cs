@@ -259,81 +259,88 @@ namespace WowPacketParser.Store
         }
     }
 
-    public class StoreBag<T> : Store, IEnumerable<Tuple<T, TimeSpan?>> where T : IDataModel
+    public class StoreBag<T> : Store, IEnumerable<Tuple<T, TimeSpan?>>
     {
-        private readonly ConcurrentBag<Tuple<T, TimeSpan?>> _bag;
+        protected readonly ConcurrentBag<Tuple<T, TimeSpan?>> Bag;
 
         public StoreBag()
         {
             Types = new List<SQLOutput>();
             Enabled = true;
-            _bag = new ConcurrentBag<Tuple<T, TimeSpan?>>();
+            Bag = new ConcurrentBag<Tuple<T, TimeSpan?>>();
         }
 
         public StoreBag(List<SQLOutput> types)
         {
             Types = types;
             Enabled = ProcessFlags();
-            _bag = Enabled ? new ConcurrentBag<Tuple<T, TimeSpan?>>() : null;
+            Bag = Enabled ? new ConcurrentBag<Tuple<T, TimeSpan?>>() : null;
         }
 
         public StoreBag(List<HotfixSQLOutput> types)
         {
             HotfixTypes = types;
             Enabled = HotfixProcessFlags();
-            _bag = Enabled ? new ConcurrentBag<Tuple<T, TimeSpan?>>() : null;
-        }
-
-        public Tuple<T, TimeSpan?> this[T key]
-        {
-            get
-            {
-                return _bag.FirstOrDefault(c => SQLUtil.GetFields<T>()
-                        .Where(f => f.Item3.Any(g => g.IsPrimaryKey))
-                        .All(f => (f.Item2.GetValue(c).Equals(f.Item2.GetValue(key)))));
-            }
+            Bag = Enabled ? new ConcurrentBag<Tuple<T, TimeSpan?>>() : null;
         }
 
         public void Add(T item, TimeSpan? time)
         {
             if (Enabled)
-                _bag.Add(new Tuple<T, TimeSpan?>(item, time));
-        }
-
-        public bool ContainsKey(T key)
-        {
-            return _bag.Any(
-                c =>
-                    SQLUtil.GetFields<T>()
-                        .Where(f => f.Item3.Any(g => g.IsPrimaryKey))
-                        .All(f => (f.Item2.GetValue(c).Equals(f.Item2.GetValue(key)))));
+                Bag.Add(new Tuple<T, TimeSpan?>(item, time));
         }
 
         public override void Clear()
         {
             if (Enabled)
             {
-                while (_bag.Count > 0)
+                while (Bag.Count > 0)
                 {
                     Tuple<T, TimeSpan?> t;
-                    _bag.TryTake(out t);
+                    Bag.TryTake(out t);
                 }
             }
         }
 
         public override bool IsEmpty()
         {
-            return !Enabled || _bag.Count == 0;
+            return !Enabled || Bag.Count == 0;
         }
 
         public IEnumerator<Tuple<T, TimeSpan?>> GetEnumerator()
         {
-            return Enabled ? _bag.GetEnumerator() : new Bag<Tuple<T, TimeSpan?>>().GetEnumerator();
+            return Enabled ? Bag.GetEnumerator() : new Bag<Tuple<T, TimeSpan?>>().GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+    }
+
+    public class DataBag<T> : StoreBag<T> where T : IDataModel
+    {
+        public DataBag(List<SQLOutput> types) : base(types) { }
+
+        public DataBag(List<HotfixSQLOutput> types) : base(types) { }
+
+        public Tuple<T, TimeSpan?> this[T key]
+        {
+            get
+            {
+                    return Bag.FirstOrDefault(c => SQLUtil.GetFields<T>()
+                        .Where(f => f.Item3.Any(g => g.IsPrimaryKey))
+                        .All(f => (f.Item2.GetValue(c).Equals(f.Item2.GetValue(key)))));
+            }
+        }
+
+        public bool ContainsKey(T key)
+        {
+            return Bag.Any(
+                c =>
+                    SQLUtil.GetFields<T>()
+                        .Where(f => f.Item3.Any(g => g.IsPrimaryKey))
+                        .All(f => (f.Item2.GetValue(c).Equals(f.Item2.GetValue(key)))));
         }
     }
 }

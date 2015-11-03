@@ -563,7 +563,6 @@
     <Compile Include="Store\Objects\TaxiPath.cs" />
     <Compile Include="Store\Objects\TaxiPathNode.cs" />
     <Compile Include="Store\Objects\Toy.cs" />
-    <Compile Include="Store\Objects\TrainerSpell.cs" />
     <Compile Include="Store\Objects\Unit.cs" />
     <Compile Include="Store\Objects\UnitTemplate.cs" />
     <Compile Include="Store\Objects\UnitTemplateNonWDB.cs" />

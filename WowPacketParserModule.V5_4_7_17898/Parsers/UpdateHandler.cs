@@ -519,13 +519,14 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     if (moveInfo.TransportGuid.HasEntry() && moveInfo.TransportGuid.GetHighType() == HighGuidType.Vehicle &&
                         guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
                     {
-                        var vehicleAccessory = new VehicleTemplateAccessory
+                        VehicleTemplateAccessory vehicleAccessory = new VehicleTemplateAccessory
                         {
+                            Entry = moveInfo.TransportGuid.GetEntry(),
                             AccessoryEntry = guid.GetEntry(),
                             SeatId = seat
                         };
 
-                        Storage.VehicleTemplateAccessorys.Add(moveInfo.TransportGuid.GetEntry(), vehicleAccessory, packet.TimeSpan);
+                        Storage.VehicleTemplateAccessorys.Add(vehicleAccessory, packet.TimeSpan);
                     }
                 }
 

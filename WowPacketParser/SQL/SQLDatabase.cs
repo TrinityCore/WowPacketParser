@@ -363,7 +363,7 @@ namespace WowPacketParser.SQL
             return values;
         }
 
-        public static RowList<T> Get<T>(StoreBag<T> conditionList, string database = null)
+        public static RowList<T> Get<T>(DataBag<T> conditionList, string database = null)
             where T : IDataModel
         {
             var cond = new RowList<T>();
@@ -378,7 +378,7 @@ namespace WowPacketParser.SQL
             if (!SQLConnector.Enabled)
                 return null;
 
-            RowList<T> result = new RowList<T>();
+            var result = new RowList<T>();
 
             using (var reader = SQLConnector.ExecuteQuery(new SQLSelect<T>(rowList, database).Build()))
             {
@@ -401,13 +401,13 @@ namespace WowPacketParser.SQL
                             field.Item2.SetValue(instance, Enum.Parse(field.Item2.FieldType, values[i].ToString()));
                         else if (field.Item2.FieldType.BaseType == typeof(Array))
                         {
-                            var arr = Array.CreateInstance(field.Item2.FieldType.GetElementType(), field.Item3.Count);
+                            Array arr = Array.CreateInstance(field.Item2.FieldType.GetElementType(), field.Item3.Count);
 
-                            for (var j = 0; j < arr.Length; j++)
+                            for (int j = 0; j < arr.Length; j++)
                             {
-                                var elemType = arr.GetType().GetElementType();
+                                Type elemType = arr.GetType().GetElementType();
 
-                                var val = elemType.IsEnum
+                                object val = elemType.IsEnum
                                     ? Enum.Parse(elemType, values[i + j].ToString())
                                     : Convert.ChangeType(values[i + j], elemType);
 

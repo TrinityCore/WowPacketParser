@@ -891,14 +891,14 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (flags.HasAnyFlag(CastFlag.Unknown21) && !isSpellGo)
             {
-                var spellClick = new NpcSpellClick
+                NpcSpellClick spellClick = new NpcSpellClick
                 {
-                    SpellId = (uint) spellId,
+                    SpellID = (uint) spellId,
                     CasterGUID = casterGUID,
                     TargetGUID = targetGUID
                 };
 
-                //Storage.SpellClicks.Add(spellClick, packet.TimeSpan);
+                Storage.SpellClicks.Add(spellClick, packet.TimeSpan);
             }
 
             if (isSpellGo)

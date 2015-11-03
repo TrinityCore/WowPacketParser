@@ -188,8 +188,6 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
         [Parser(Opcode.SMSG_VENDOR_INVENTORY)]
         public static void HandleVendorInventoryList(Packet packet)
         {
-            var npcVendor = new NpcVendor();
-
             var guid = new byte[8];
 
             packet.ReadByte("Byte18");
@@ -199,14 +197,14 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             guid[0] = packet.ReadBit();
             guid[2] = packet.ReadBit();
 
-            var itemCount = packet.ReadBits("itemCount", 18);
+            uint count = packet.ReadBits("itemCount", 18);
 
             guid[4] = packet.ReadBit();
 
-            var hasExtendedCost = new bool[itemCount];
-            var hasCondition = new bool[itemCount];
+            var hasExtendedCost = new bool[count];
+            var hasCondition = new bool[count];
 
-            for (int i = 0; i < itemCount; ++i)
+            for (int i = 0; i < count; ++i)
             {
                 hasExtendedCost[i] = !packet.ReadBit();
                 hasCondition[i] = !packet.ReadBit();
@@ -217,75 +215,83 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             guid[6] = packet.ReadBit();
             guid[7] = packet.ReadBit();
 
-            npcVendor.VendorItems = new List<VendorItem>((int)itemCount);
-            for (int i = 0; i < itemCount; ++i)
+            var tempList = new List<NpcVendor>();
+            for (int i = 0; i < count; ++i)
             {
-                var vendorItem = new VendorItem();
+                NpcVendor vendor = new NpcVendor();
 
-                vendorItem.ItemId = (uint)packet.ReadInt32<ItemId>("Item ID", i);
+                vendor.Item = packet.ReadInt32<ItemId>("Item ID", i);
 
                 if (hasCondition[i])
-                    packet.ReadInt32("Condition ID", i);
+                    vendor.PlayerConditionID = packet.ReadUInt32("Condition ID", i);
 
                 packet.ReadInt32("Price", i);
 
                 if (hasExtendedCost[i])
-                    vendorItem.ExtendedCostId = packet.ReadUInt32("Extended Cost", i);
+                    vendor.ExtendedCost = packet.ReadUInt32("Extended Cost", i);
 
                 packet.ReadInt32("Display ID", i);
-                var buyCount = packet.ReadUInt32("Buy Count", i);
-                vendorItem.Slot = packet.ReadUInt32("Item Position", i);
-                var maxCount = packet.ReadInt32("Max Count", i);
-                vendorItem.Type = packet.ReadUInt32("Type", i); // 1 - item, 2 - currency
+                uint buyCount = packet.ReadUInt32("Buy Count", i);
+                vendor.Slot = packet.ReadInt32("Item Position", i);
+                int maxCount = packet.ReadInt32("Max Count", i);
+                vendor.MaxCount = maxCount == -1 ? 0 : (uint)maxCount; // TDB
+                if (vendor.Type == 2)
+                    vendor.MaxCount = buyCount;
+
+                vendor.Type = packet.ReadUInt32("Type", i); // 1 - item, 2 - currency
                 packet.ReadInt32("Item Upgrade ID", i);
                 packet.ReadInt32("Max Durability", i);
 
-                npcVendor.VendorItems.Add(vendorItem);
+                tempList.Add(vendor);
             }
 
             packet.ParseBitStream(guid, 0, 2, 1, 3, 5, 7, 4, 6);
 
-            packet.WriteGuid("Guid", guid);
-
-            var vendorGUID = new WowGuid64(BitConverter.ToUInt64(guid, 0));
-            Storage.NpcVendors.Add(vendorGUID.GetEntry(), npcVendor, packet.TimeSpan);
+            uint entry = packet.WriteGuid("GUID", guid).GetEntry();
+            tempList.ForEach(v =>
+            {
+                v.Entry = entry;
+                Storage.NpcVendors.Add(v, packet.TimeSpan);
+            });
         }
 
         [Parser(Opcode.SMSG_TRAINER_LIST)]
         public static void HandleServerTrainerList(Packet packet)
         {
-            var npcTrainer = new NpcTrainer();
-
             var guid = new byte[8];
 
             guid[4] = packet.ReadBit();
             guid[0] = packet.ReadBit();
-            var count = (int)packet.ReadBits(19);
+            uint count = packet.ReadBits(19);
 
             guid[3] = packet.ReadBit();
             guid[7] = packet.ReadBit();
 
-            var titleLen = packet.ReadBits(11);
+            uint titleLen = packet.ReadBits(11);
 
             guid[5] = packet.ReadBit();
             guid[6] = packet.ReadBit();
             guid[2] = packet.ReadBit();
             guid[1] = packet.ReadBit();
 
-            npcTrainer.TrainerSpells = new List<TrainerSpell>(count);
-            for (var i = 0; i < count; ++i)
+            var tempList = new List<NpcTrainer>();
+            for (int i = 0; i < count; ++i)
             {
-                var trainerSpell = new TrainerSpell();
-                trainerSpell.Spell = (uint)packet.ReadInt32<SpellId>("Spell ID", i);
+                NpcTrainer trainer = new NpcTrainer
+                {
+                    SpellID = packet.ReadInt32<SpellId>("Spell ID", i)
+                };
 
                 for (var j = 0; j < 3; ++j)
                     packet.ReadInt32("Int818", i, j);
 
                 packet.ReadByteE<TrainerSpellState>("State", i);
-                trainerSpell.RequiredLevel = packet.ReadByte("Required Level", i);
-                trainerSpell.RequiredSkillLevel = packet.ReadUInt32("Required Skill Level", i);
-                trainerSpell.Cost = packet.ReadUInt32("Cost", i);
-                trainerSpell.RequiredSkill = packet.ReadUInt32("Required Skill", i);
+                trainer.ReqLevel = packet.ReadByte("Required Level", i);
+                trainer.ReqSkillRank = packet.ReadUInt32("Required Skill Level", i);
+                trainer.MoneyCost = packet.ReadUInt32("Cost", i);
+                trainer.ReqSkillLine = packet.ReadUInt32("Required Skill", i);
+
+                tempList.Add(trainer);
             }
 
             packet.ReadXORByte(guid, 4);
@@ -295,14 +301,19 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 6);
 
-            npcTrainer.Type = packet.ReadInt32E<TrainerType>("Type");
+            packet.ReadInt32E<TrainerType>("Type");
             packet.ReadWoWString("Title", titleLen);
             packet.ReadInt32("Unk Int32"); // Same unk exists in CMSG_TRAINER_BUY_SPELL
 
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 0);
 
-            packet.WriteGuid("Guid", guid);
+            uint entry = packet.WriteGuid("Guid", guid).GetEntry();
+            tempList.ForEach(v =>
+            {
+                v.ID = entry;
+                Storage.NpcTrainers.Add(v, packet.TimeSpan);
+            });
         }
     }
 }

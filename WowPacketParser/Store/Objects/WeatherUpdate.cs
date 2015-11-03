@@ -4,7 +4,7 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("weather_update")]
-    public class WeatherUpdate
+    public sealed class WeatherUpdate : IDataModel
     {
         [DBFieldName("map_id")]
         public uint MapId;

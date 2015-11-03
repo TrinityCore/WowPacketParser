@@ -12,7 +12,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.CMSG_UNKNOWN_903)]
         public static void HandleUnknow903(Packet packet)
         {
-            var len = packet.ReadBits(9);
+            uint len = packet.ReadBits(9);
             packet.ReadWoWString("File name", len);
         }
 
@@ -20,7 +20,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.CMSG_LOADING_SCREEN_NOTIFY)]
         public static void HandleClientEnterWorld(Packet packet)
         {
-            var mapId = packet.ReadUInt32<MapId>("MapID");
+            uint mapId = packet.ReadUInt32<MapId>("MapID");
             packet.ReadBit("Showing");
         }
 
@@ -41,8 +41,8 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_SET_TIME_ZONE_INFORMATION)]
         public static void HandleSetTimeZoneInformation(Packet packet)
         {
-            var len1 = packet.ReadBits(7);
-            var len2 = packet.ReadBits(7);
+            uint len1 = packet.ReadBits(7);
+            uint len2 = packet.ReadBits(7);
             packet.ReadWoWString("Server Location", len1);
             packet.ReadWoWString("Server Location", len2);
         }
@@ -51,7 +51,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_NEW_WORLD)]
         public static void HandleNewWorld(Packet packet)
         {
-            var pos = new Vector4();
+            Vector4 pos = new Vector4();
             pos.Y = packet.ReadSingle();
             pos.O = packet.ReadSingle();
             pos.Z = packet.ReadSingle();
@@ -65,7 +65,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_REALM_SPLIT)]
         public static void HandleServerRealmSplit(Packet packet)
         {
-            var len = packet.ReadBits(7);
+            uint len = packet.ReadBits(7);
             packet.ReadInt32E<PendingSplitState>("Split State");
             packet.ReadInt32E<ClientSplitState>("Client State");
             packet.ReadWoWString("Split Date", len);
@@ -84,9 +84,9 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_WEATHER)]
         public static void HandleWeatherStatus(Packet packet)
         {
-            var unk = packet.ReadBit("Unk bit");
-            var grade = packet.ReadSingle("Grade");
-            var state = packet.ReadInt32E<WeatherState>("State");
+            Bit unk = packet.ReadBit("Unk bit");
+            float grade = packet.ReadSingle("Grade");
+            WeatherState state = packet.ReadInt32E<WeatherState>("State");
 
             Storage.WeatherUpdates.Add(new WeatherUpdate
             {

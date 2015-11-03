@@ -120,31 +120,17 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod]
         public static string SniffData()
         {
-            /*if (Storage.SniffData.IsEmpty())
-                return String.Empty;
+            if (Storage.SniffData.IsEmpty())
+                return string.Empty;
 
-            const string tableName = "SniffData";
 
             if (Settings.DumpFormat != DumpFormatType.SniffDataOnly)
                 if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.SniffData) && !Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.SniffDataOpcodes))
                     return string.Empty;
 
-            var rows = new HashSet<SQLInsertRow>((IEqualityComparer<SQLInsertRow>)new SQLInsertRow());
-            foreach (var data in Storage.SniffData)
-            {
-                var row = new SQLInsertRow();
+            var templateDb = SQLDatabase.Get(Storage.SniffData);
 
-                row.AddValue("Build", ClientVersion.Build);
-                row.AddValue("SniffName", data.Item1.FileName);
-                row.AddValue("ObjectType", data.Item1.ObjectType.ToString());
-                row.AddValue("Id", data.Item1.Id);
-                row.AddValue("Data", data.Item1.Data);
-
-                rows.Add(row);
-            }
-
-            return new SQLInsert(tableName, rows.ToList(), ignore: true, withDelete: false).Build();*/
-            return String.Empty;
+            return SQLUtil.Compare(Storage.SniffData, templateDb, x => string.Empty);
         }
 
         // Non-WDB data but nevertheless data that should be saved to gameobject_template
@@ -257,35 +243,24 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod]
         public static string WeatherUpdates()
         {
-            /*if (Storage.WeatherUpdates.IsEmpty())
-                return String.Empty;
+            if (Storage.WeatherUpdates.IsEmpty())
+                return string.Empty;
 
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.weather_updates))
                 return string.Empty;
 
-            const string tableName = "weather_updates";
-
-            var rows = new List<SQLInsertRow>();
-            foreach (var weatherUpdate in Storage.WeatherUpdates)
+            var rows = new RowList<WeatherUpdate>();
+            foreach (var row in Storage.WeatherUpdates.Select(weatherUpdate => new Row<WeatherUpdate>
             {
-                var row = new SQLInsertRow();
-
-                var weather = weatherUpdate.Item1;
-
-                row.AddValue("map_id", weather.MapId);
-                row.AddValue("zone_id", weather.ZoneId);
-                row.AddValue("weather_state", (int)weather.State);
-                row.AddValue("timestamp", weatherUpdate.Item2.HasValue ? weatherUpdate.Item2.Value.ToFormattedString() : "null");
-                row.AddValue("grade", weather.Grade);
-                row.AddValue("unk", weather.Unk);
-
-                row.Comment = StoreGetters.GetName(StoreNameType.Map, (int)weather.MapId, false) +
-                    " - " + weather.State + " - " + weather.Grade;
+                Data = weatherUpdate.Item1,
+                Comment = StoreGetters.GetName(StoreNameType.Map, (int)weatherUpdate.Item1.MapId, false) +
+                          " - " + weatherUpdate.Item1.State + " - " + weatherUpdate.Item1.Grade
+            }))
+            {
                 rows.Add(row);
             }
 
-            return new SQLInsert(tableName, rows, ignore: true, withDelete: false).Build();*/
-            return string.Empty;
+            return new SQLInsert<WeatherUpdate>(rows, ignore: true, withDelete: false).Build();
         }
     }
 }

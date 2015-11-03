@@ -197,9 +197,9 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_WEATHER)]
         public static void HandleWeatherStatus(Packet packet)
         {
-            var state = packet.ReadInt32E<WeatherState>("State");
-            var grade = packet.ReadSingle("Grade");
-            var unk = packet.ReadBit("Unk Bit"); // Type
+            WeatherState state = packet.ReadInt32E<WeatherState>("State");
+            float grade = packet.ReadSingle("Grade");
+            Bit unk = packet.ReadBit("Unk Bit"); // Type
 
             Storage.WeatherUpdates.Add(new WeatherUpdate
             {
@@ -263,7 +263,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             packet.WriteGuid("Guid", guidBytes);
 
-            var guid = new WowGuid64(BitConverter.ToUInt64(guidBytes, 0));
+            WowGuid64 guid = new WowGuid64(BitConverter.ToUInt64(guidBytes, 0));
             if (guid.GetObjectType() == ObjectType.Unit)
                 Storage.NpcSpellClicks.Add(guid, packet.TimeSpan);
         }
@@ -281,10 +281,9 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             packet.StartBitStream(guid, 2, 3, 7, 6, 0, 5, 4, 1);
 
-            var sound = packet.ReadUInt32("Sound Id");
+            uint sound = packet.ReadUInt32("Sound Id");
 
             packet.ParseBitStream(guid, 3, 2, 4, 7, 5, 0, 6, 1);
-
             packet.WriteGuid("Guid", guid);
 
             Storage.Sounds.Add(sound, packet.TimeSpan);
@@ -318,7 +317,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadXORBytes(guid1, 7, 5, 3, 1);
             packet.ReadXORBytes(guid2, 3, 1);
 
-            var sound = packet.ReadUInt32("Sound Id");
+            uint sound = packet.ReadUInt32("Sound Id");
 
             packet.ReadXORByte(guid1, 4);
             packet.ReadXORBytes(guid2, 4, 7, 0, 6);

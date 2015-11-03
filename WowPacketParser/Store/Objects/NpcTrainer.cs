@@ -1,14 +1,25 @@
-﻿using System.Collections.Generic;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    public class NpcTrainer
+    public sealed class NpcTrainer : IDataModel
     {
-        public TrainerType Type;
+        [DBFieldName("ID", true)]
+        public uint ID;
 
-        public ICollection<TrainerSpell> TrainerSpells;
+        [DBFieldName("SpellID", true)]
+        public int SpellID;
 
-        public string Title;
+        [DBFieldName("MoneyCost")]
+        public uint MoneyCost;
+
+        [DBFieldName("ReqSkillLine")]
+        public uint ReqSkillLine;
+
+        [DBFieldName("ReqSkillRank")]
+        public uint ReqSkillRank;
+
+        [DBFieldName("ReqLevel")]
+        public uint ReqLevel;
     }
 }

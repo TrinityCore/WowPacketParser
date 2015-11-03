@@ -83,15 +83,15 @@ namespace WowPacketParser.Misc
             if (type != StoreNameType.Opcode && !SniffData)
                 return;
 
-            var item = new SniffData
+            SniffData item = new SniffData
             {
-                FileName = FileName,
+                SniffName = FileName,
                 ObjectType = type,
                 Id = id,
                 Data = data
             };
 
-            //Storage.SniffData.Add(item, TimeSpan);
+            Storage.SniffData.Add(item, TimeSpan);
         }
 
         public bool TryInflate(int inflatedSize, int index, byte[] arr, ref byte[] newarr)

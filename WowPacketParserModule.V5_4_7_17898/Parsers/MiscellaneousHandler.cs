@@ -13,9 +13,9 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.SMSG_WEATHER)]
         public static void HandleWeatherStatus(Packet packet)
         {
-            var grade = packet.ReadSingle("Grade");
-            var state = packet.ReadInt32E<WeatherState>("State");
-            var unk = packet.ReadBit("Unk Bit"); // Type
+            float grade = packet.ReadSingle("Grade");
+            WeatherState state = packet.ReadInt32E<WeatherState>("State");
+            Bit unk = packet.ReadBit("Unk Bit"); // Type
 
             Storage.WeatherUpdates.Add(new WeatherUpdate
             {
@@ -49,7 +49,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 5);
             packet.ReadXORByte(guid, 4);
-            var sound = packet.ReadUInt32("Sound Id");
+            uint sound = packet.ReadUInt32("Sound Id");
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 2);
             packet.ReadXORByte(guid, 0);
