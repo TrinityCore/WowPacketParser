@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL.Builders;
@@ -15,7 +16,7 @@ namespace WowPacketParser.SQL
     {
         public static void DumpSQL(string prefix, string fileName, string header)
         {
-            var startTime = DateTime.Now;
+            DateTime startTime = DateTime.Now;
 
             var units = Storage.Objects.IsEmpty()
                 ? new Dictionary<WowGuid, Unit>()                                                               // empty dict if there are no objects
@@ -35,7 +36,7 @@ namespace WowPacketParser.SQL
             foreach (var obj in Storage.Objects)
                 obj.Value.Item1.LoadValuesFromUpdateFields();
 
-            using (var store = new SQLFile(fileName))
+            using (SQLFile store = new SQLFile(fileName))
             {
                 var builderMethods = Assembly.GetExecutingAssembly()
                     .GetTypes()
@@ -44,10 +45,10 @@ namespace WowPacketParser.SQL
                     .Where(y => y.GetCustomAttributes().OfType<BuilderMethodAttribute>().Any())
                     .ToList();
 
-                var i = 0;
-                foreach (var method in builderMethods)
+                int i = 0;
+                foreach (MethodInfo method in builderMethods)
                 {
-                    var attr = method.GetCustomAttribute<BuilderMethodAttribute>();
+                    BuilderMethodAttribute attr = method.GetCustomAttribute<BuilderMethodAttribute>();
                     var parameters = new List<object>();
                     if (attr.Units)
                         parameters.Add(units);
@@ -55,16 +56,24 @@ namespace WowPacketParser.SQL
                     if (attr.Gameobjects)
                         parameters.Add(gameObjects);
 
-                    Trace.WriteLine(string.Format("{0}/{1} - Write {2}", ++i, builderMethods.Count, method.Name));
-                    store.WriteData(method.Invoke(null, parameters.ToArray()).ToString());
+                    Trace.WriteLine($"{++i}/{builderMethods.Count} - Write {method.Name}");
+                    try
+                    {
+                        store.WriteData(method.Invoke(null, parameters.ToArray()).ToString());
+                    }
+                    catch (TargetInvocationException e)
+                    {
+                        ExceptionDispatchInfo.Capture(e.InnerException).Throw();
+                    }
+                    
                 }
 
                 Trace.WriteLine(store.WriteToFile(header)
-                    ? String.Format("{0}: Saved file to '{1}'", prefix, fileName)
+                    ? $"{prefix}: Saved file to '{fileName}'"
                     : "No SQL files created -- empty.");
-                var endTime = DateTime.Now;
-                var span = endTime.Subtract(startTime);
-                Trace.WriteLine(String.Format("Finished SQL file in {0}.", span.ToFormattedString()));
+                DateTime endTime = DateTime.Now;
+                TimeSpan span = endTime.Subtract(startTime);
+                Trace.WriteLine($"Finished SQL file in {span.ToFormattedString()}.");
             }
         }
     }
