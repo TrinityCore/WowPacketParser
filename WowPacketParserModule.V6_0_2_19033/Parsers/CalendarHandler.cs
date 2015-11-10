@@ -108,6 +108,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("MaxSize");
         }
 
+        [Parser(Opcode.CMSG_CALENDAR_COMPLAIN)]
+        public static void HandleCalenderComplain(Packet packet)
+        {
+            packet.ReadPackedGuid128("InvitedByGUID");
+            packet.ReadUInt64("EventID");
+            packet.ReadUInt64("InviteID");
+        }
+
+        [Parser(Opcode.CMSG_CALENDAR_COPY_EVENT)]
+        public static void HandleCalenderCopyEvent(Packet packet)
+        {
+            packet.ReadUInt64("ModeratorID");
+            packet.ReadUInt64("EventID");
+            packet.ReadPackedTime("Date");
+        }
+
         [Parser(Opcode.SMSG_CALENDAR_SEND_NUM_PENDING)]
         public static void HandleSendCalendarNumPending(Packet packet)
         {
@@ -204,6 +220,27 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByteE<CalendarEventStatus>("Status");
             packet.ReadByteE<CalendarEventType>("Type");
             packet.ReadPackedTime("ResponseTime");
+            packet.ReadBit("ClearPending");
+        }
+
+        [Parser(Opcode.SMSG_CALENDAR_EVENT_INITIAL_INVITES)]
+        public static void HandleCalendarEventInitialInvites(Packet packet)
+        {
+            var inviteInfoCount = packet.ReadUInt32();
+
+            for (int i = 0; i < inviteInfoCount; i++)
+            {
+                packet.ReadPackedGuid128("InviteGUID", i);
+                packet.ReadByte("Level", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_CALENDAR_EVENT_REMOVED_ALERT)]
+        public static void HandleCalendarEventRemovedAlert(Packet packet)
+        {
+            packet.ReadUInt64("EventID");
+            packet.ReadPackedTime("Date");
+            packet.ResetBitReader();
             packet.ReadBit("ClearPending");
         }
 
