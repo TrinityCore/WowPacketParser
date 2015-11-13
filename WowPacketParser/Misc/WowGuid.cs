@@ -205,13 +205,11 @@ namespace WowPacketParser.Misc
                 return HighGuidTypeLegacy.None;
 
             var highGUID = (HighGuidTypeLegacy)((Low & 0xF0F0000000000000) >> 52);
-
-            switch ((int)highGUID)
+            switch ((int)highGUID & 0xF00)
             {
                 case 0x0:
-                case 0x8:
                     return HighGuidTypeLegacy.Player;
-                case 0x408:
+                case 0x400:
                     return HighGuidTypeLegacy.Item;
                 default:
                     return highGUID;
