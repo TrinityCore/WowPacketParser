@@ -53,7 +53,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_AUTO_EQUIP_GROUND_ITEM, 0x0106}, // NF()(0x0106) //
             {Opcode.CMSG_AUTO_EQUIP_ITEM, 0x8756}, // (0x0391)(0x010A) //
             {Opcode.CMSG_AUTO_EQUIP_ITEM_SLOT, 0x010F}, // NF()(0x010F) //
-            {Opcode.CMSG_AUTOSTORE_BAG_ITEM, 0x010B}, // NF()(0x010B) //
+            {Opcode.CMSG_AUTO_STORE_BAG_ITEM, 0x010B}, // NF()(0x010B) //
             {Opcode.CMSG_AUTOSTORE_BANK_ITEM, 0x1556}, // (0xA2D4)(0x0282) //
             {Opcode.CMSG_AUTOSTORE_GROUND_ITEM, 0x0107}, // NF()(0x0107) //
             {Opcode.CMSG_AUTOSTORE_LOOT_ITEM, 0xF457}, // (0x22DD)(0x0108) //
@@ -187,7 +187,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_ENABLE_NAGLE, 0x0510}, // NF()(0x0510) // // something with networking
             {Opcode.CMSG_ENABLE_TAXI_NODE, 0x0493}, // NF()(0x0493) //
             {Opcode.CMSG_EQUIPMENT_SET_DELETE, 0xEE7D}, // (0x8BD8)(0x013E) //
-            {Opcode.CMSG_EQUIPMENT_SET_SAVE, 0x04BD}, // NF()(0x04BD) // // CMSG}, lua: SaveEquipmentSet
+            {Opcode.CMSG_SAVE_EQUIPMENT_SET, 0x04BD}, // NF()(0x04BD) // // CMSG}, lua: SaveEquipmentSet
             {Opcode.CMSG_EQUIPMENT_SET_USE, 0x04D5}, // NF()(0x04D5) // // CMSG}, lua: UseEquipmentSet
             {Opcode.CMSG_EXPIRE_RAID_INSTANCE, 0x0415}, // NF()(0x0415) //
             {Opcode.CMSG_FAR_SIGHT, 0x027A}, // NF()(0x027A) //

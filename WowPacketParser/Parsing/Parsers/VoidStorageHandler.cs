@@ -291,7 +291,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Item Id", itemId);
         }
 
-        [Parser(Opcode.CMSG_VOID_STORAGE_QUERY)] // 4.3.4
+        [Parser(Opcode.CMSG_QUERY_VOID_STORAGE)] // 4.3.4
         public static void HandleVoidStorageQuery(Packet packet)
         {
             var guid = packet.StartBitStream(4, 0, 5, 7, 6, 3, 1, 2);

@@ -34,7 +34,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_EQUIPMENT_SET_SAVE)]
+        [Parser(Opcode.CMSG_SAVE_EQUIPMENT_SET)]
         public static void HandleEquipmentSetSave(Packet packet)
         {
             packet.ReadUInt64("Set Guid");

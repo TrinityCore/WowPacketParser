@@ -512,7 +512,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_AUTOSTORE_BAG_ITEM)]
+        [Parser(Opcode.CMSG_AUTO_STORE_BAG_ITEM)]
         public static void HandleSplitItem(Packet packet)
         {
             packet.ReadSByte("Bag");

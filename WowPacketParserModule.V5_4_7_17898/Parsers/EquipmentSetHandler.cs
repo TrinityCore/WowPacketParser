@@ -66,7 +66,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_EQUIPMENT_SET_SAVE)]
+        [Parser(Opcode.CMSG_SAVE_EQUIPMENT_SET)]
         public static void HandleEquipmentSetSave(Packet packet)
         {
             var guid1 = new byte[NumSlots][];

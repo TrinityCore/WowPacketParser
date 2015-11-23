@@ -258,7 +258,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("SrcSlot");
         }
 
-        [Parser(Opcode.CMSG_AUTOSTORE_BAG_ITEM)]
+        [Parser(Opcode.CMSG_AUTO_STORE_BAG_ITEM)]
         public static void HandleAutoBagItem(Packet packet)
         {
             var bits2 = packet.ReadBits("InvItemCount", 2);

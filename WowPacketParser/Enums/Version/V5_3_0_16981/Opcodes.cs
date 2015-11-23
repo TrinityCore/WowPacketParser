@@ -27,7 +27,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.CMSG_QUERY_CREATURE, 0x050F},
             {Opcode.CMSG_DB_QUERY_BULK, 0x0149},
             {Opcode.CMSG_DISMISS_CONTROLLED_VEHICLE, 0x0A56},
-            {Opcode.CMSG_EQUIPMENT_SET_SAVE, 0x1915},
+            {Opcode.CMSG_SAVE_EQUIPMENT_SET, 0x1915},
             {Opcode.CMSG_FORCE_MOVE_ROOT_ACK, 0x08CE},
             {Opcode.CMSG_QUERY_GAME_OBJECT, 0x058F},
             {Opcode.CMSG_GOSSIP_HELLO, 0x1414},

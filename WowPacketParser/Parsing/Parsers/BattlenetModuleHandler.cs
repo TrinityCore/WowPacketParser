@@ -64,6 +64,7 @@ namespace WowPacketParser.Parsing.Parsers
                     return HandleResume(reader, indexes);
                 case "8E86FBDD1EE515315E9E3E1B479B7889DE1ECEDA0703D9876F9441CE4D934576":    // Win
                 case "414BC08BCE5D224D1DF86E651F6ECCF21ECAB03A238D8AE8A0FEB0874576191A":    // Wn64
+                case "A0CA2BF4A9942B776A75E2B1E0BFFD917335A7D2F4A11C8BE2D06EA025DEEBBE":    // Mc64
                     AddValue("Name", "SingleSignOn", indexes);
                     return false;
             }

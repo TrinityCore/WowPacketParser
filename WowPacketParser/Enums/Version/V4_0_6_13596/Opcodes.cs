@@ -54,7 +54,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_AUTO_EQUIP_GROUND_ITEM, 0x10044}, //UnknownopcodeID
             {Opcode.CMSG_AUTO_EQUIP_ITEM, 0x0E1C0},
             {Opcode.CMSG_AUTO_EQUIP_ITEM_SLOT, 0x0E8A8},
-            {Opcode.CMSG_AUTOSTORE_BAG_ITEM, 0x0EDCC},
+            {Opcode.CMSG_AUTO_STORE_BAG_ITEM, 0x0EDCC},
             {Opcode.CMSG_AUTOSTORE_BANK_ITEM, 0x0F2AC},
             {Opcode.CMSG_AUTOSTORE_GROUND_ITEM, 0x02FC8},
             //{Opcode.CMSG_AUTOSTORE_LOOT_CURRENCY, 0x00991},
@@ -195,7 +195,7 @@ namespace WowPacketParser.Enums.Version.V4_0_6_13596
             {Opcode.CMSG_ENABLE_DAMAGE_LOG, 0x100CB}, //UnknownopcodeID
             {Opcode.CMSG_ENABLE_TAXI_NODE, 0x0328C},
             {Opcode.CMSG_EQUIPMENT_SET_DELETE, 0x0AEA0},
-            {Opcode.CMSG_EQUIPMENT_SET_SAVE, 0x0BFC0},
+            {Opcode.CMSG_SAVE_EQUIPMENT_SET, 0x0BFC0},
             {Opcode.CMSG_EQUIPMENT_SET_USE, 0x0E8A0},
             {Opcode.CMSG_EXPIRE_RAID_INSTANCE, 0x101A7}, //UnknownopcodeID
             {Opcode.CMSG_FAR_SIGHT, 0x0B2EC},

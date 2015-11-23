@@ -6,7 +6,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class VoidStorageHandler
     {
-        [Parser(Opcode.CMSG_VOID_STORAGE_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_VOID_STORAGE)]
         public static void HandleVoidStorageQuery(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");

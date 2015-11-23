@@ -27,7 +27,7 @@ namespace WowPacketParser.Enums.Version.V6_0_2_19033
             {Opcode.CMSG_CHAR_RACE_OR_FACTION_CHANGE, 0x08B7},
             {Opcode.CMSG_QUERY_CREATURE, 0x14D6},
             {Opcode.CMSG_DB_QUERY_BULK, 0x09AC},
-            {Opcode.CMSG_EQUIPMENT_SET_SAVE, 0x0114},
+            {Opcode.CMSG_SAVE_EQUIPMENT_SET, 0x0114},
             {Opcode.CMSG_QUERY_GAME_OBJECT, 0x0D97},
             {Opcode.CMSG_GARRISON_MISSION_BONUS_ROLL, 0x14C6},
             {Opcode.CMSG_GOSSIP_SELECT_OPTION, 0x1143},

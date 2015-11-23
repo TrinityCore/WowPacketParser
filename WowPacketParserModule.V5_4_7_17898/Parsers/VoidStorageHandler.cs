@@ -195,7 +195,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("NPC Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_VOID_STORAGE_QUERY)]
+        [Parser(Opcode.CMSG_QUERY_VOID_STORAGE)]
         public static void HandleVoidStorageQuery(Packet packet)
         {
             var guid = packet.StartBitStream(6, 3, 4, 0, 5, 1, 7, 2);

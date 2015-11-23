@@ -27,7 +27,7 @@ namespace WowPacketParser.Parsing.Parsers
                 ReadSetInfo(packet);
         }
 
-        [Parser(Opcode.CMSG_EQUIPMENT_SET_SAVE)]
+        [Parser(Opcode.CMSG_SAVE_EQUIPMENT_SET)]
         public static void HandleEquipmentSetSave(Packet packet)
         {
             ReadSetInfo(packet);
