@@ -250,6 +250,7 @@ namespace WowPacketParser.Enums.Version
                     return Opcodes_6_2_2.Opcodes(direction);
                 }
                 case ClientVersionBuild.V6_2_3_20726:
+                case ClientVersionBuild.V6_2_3_20779:
                 {
                     return Opcodes_6_2_3.Opcodes(direction);
                 }
