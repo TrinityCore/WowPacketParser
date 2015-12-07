@@ -5,55 +5,57 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("gameobjects")]
-    public sealed class GameObjects
+    public sealed class GameObjects : IDataModel
     {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
         [DBFieldName("MapID")]
-        public uint MapID;
+        public uint? MapID;
 
         [DBFieldName("DisplayID")]
-        public uint DisplayId;
+        public uint? DisplayID;
 
         [DBFieldName("PositionX")]
-        public float PositionX;
+        public float? PositionX;
 
         [DBFieldName("PositionY")]
-        public float PositionY;
+        public float? PositionY;
 
         [DBFieldName("PositionZ")]
-        public float PositionZ;
+        public float? PositionZ;
 
         [DBFieldName("RotationX")]
-        public float RotationX;
+        public float? RotationX;
 
         [DBFieldName("RotationY")]
-        public float RotationY;
+        public float? RotationY;
 
         [DBFieldName("RotationZ")]
-        public float RotationZ;
+        public float? RotationZ;
 
         [DBFieldName("RotationW")]
-        public float RotationW;
+        public float? RotationW;
 
         [DBFieldName("Size")]
-        public float Size;
+        public float? Size;
 
-        [DBFieldName("PhaseID", TargetedDatabase.WarlordsOfDraenor)]
-        public uint PhaseId;
+        [DBFieldName("PhaseID")]
+        public uint? PhaseID;
 
-        [DBFieldName("PhaseGroupID", TargetedDatabase.WarlordsOfDraenor)]
-        public uint PhaseGroupId;
+        [DBFieldName("PhaseGroupID")]
+        public uint? PhaseGroupID;
 
         [DBFieldName("Type")]
-        public GameObjectType Type;
+        public GameObjectType? Type;
 
-        [DBFieldName("Data", TargetedDatabase.Zero, TargetedDatabase.WarlordsOfDraenor, 4, true)]
-        [DBFieldName("Data", TargetedDatabase.WarlordsOfDraenor, 8, true)]
-        public int[] Data;
+        [DBFieldName("Data")]
+        public int?[] Data;
 
         [DBFieldName("Name")]
         public string Name;
 
         [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild = ClientVersion.BuildInt;
+        public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }

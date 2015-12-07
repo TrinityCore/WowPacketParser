@@ -4,39 +4,42 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("taxi_path_node")]
-    public sealed class TaxiPathNode
+    public sealed class TaxiPathNode : IDataModel
     {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
         [DBFieldName("PathID")]
-        public uint PathID;
+        public uint? PathID;
 
         [DBFieldName("NodeIndex")]
-        public uint NodeIndex;
+        public uint? NodeIndex;
 
         [DBFieldName("MapID")]
-        public uint MapID;
+        public uint? MapID;
 
         [DBFieldName("LocX")]
-        public float LocX;
+        public float? LocX;
 
         [DBFieldName("LocY")]
-        public float LocY;
+        public float? LocY;
 
         [DBFieldName("LocZ")]
-        public float LocZ;
+        public float? LocZ;
 
         [DBFieldName("Flags")]
-        public uint Flags;
+        public uint? Flags;
 
         [DBFieldName("Delay")]
-        public uint Delay;
+        public uint? Delay;
 
         [DBFieldName("ArrivalEventID")]
-        public uint ArrivalEventID;
+        public uint? ArrivalEventID;
 
         [DBFieldName("DepartureEventID")]
-        public float DepartureEventID;
+        public float? DepartureEventID;
 
         [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild = ClientVersion.BuildInt;
+        public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }

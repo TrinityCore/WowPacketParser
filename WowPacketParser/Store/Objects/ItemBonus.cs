@@ -4,21 +4,24 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("item_bonus")]
-    public sealed class ItemBonus
+    public sealed class ItemBonus : IDataModel
     {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
         [DBFieldName("BonusListID")]
-        public uint BonusListID;
+        public uint? BonusListID;
 
         [DBFieldName("Type")]
-        public uint Type;
+        public uint? Type;
 
         [DBFieldName("Value", 2)]
-        public uint[] Value;
+        public uint?[] Value;
 
         [DBFieldName("Index")]
-        public uint Index;
+        public uint? Index;
 
         [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild = ClientVersion.BuildInt;
+        public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }

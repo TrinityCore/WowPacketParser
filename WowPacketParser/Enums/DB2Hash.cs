@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace WowPacketParser.Enums
 {
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public enum DB2Hash : uint
     {
         Achievement                     = 0xD2EE2CA7, // 6.2.2.20444

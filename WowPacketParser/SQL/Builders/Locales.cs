@@ -13,62 +13,15 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod]
         public static string BroadcastTextLocale()
         {
-            /*if (Storage.BroadcastTextLocales.IsEmpty())
-                return String.Empty;
+            if (Storage.BroadcastTextLocales.IsEmpty())
+                return string.Empty;
 
             if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.broadcast_text_locale))
-                return String.Empty;
+                return string.Empty;
 
-            const string tableName = "broadcast_text_locale";
+            var templatesDb = SQLDatabase.Get(Storage.BroadcastTextLocales, Settings.HotfixesDatabase);
 
-            var rowsIns = new List<SQLInsertRow>();
-            var rowsUpd = new List<SQLUpdateRow>();
-
-            foreach (var broadcastTextLocale in Settings.SQLOrderByKey ? Storage.BroadcastTextLocales.OrderBy(blub => blub.Key).ToList() : Storage.BroadcastTextLocales.ToList())
-            {
-                if (SQLDatabase.BroadcastTextLocaleStores != null && SQLDatabase.BroadcastTextLocaleStores.ContainsKey(Tuple.Create(broadcastTextLocale.Key.Item1, broadcastTextLocale.Key.Item2)))
-                {
-                    var row = new SQLUpdateRow();
-                    var broadcastTextLocaleDB = SQLDatabase.BroadcastTextLocaleStores[Tuple.Create(broadcastTextLocale.Key.Item1, broadcastTextLocale.Key.Item2)];
-
-                    if (!Utilities.EqualValues(broadcastTextLocaleDB.MaleText_lang, broadcastTextLocale.Value.Item1.MaleText_lang))
-                        row.AddValue("MaleText_lang", broadcastTextLocale.Value.Item1.MaleText_lang);
-
-                    if (!Utilities.EqualValues(broadcastTextLocaleDB.FemaleText_lang, broadcastTextLocale.Value.Item1.FemaleText_lang))
-                        row.AddValue("FemaleText_lang", broadcastTextLocale.Value.Item1.FemaleText_lang);
-
-                    if (!Utilities.EqualValues(broadcastTextLocaleDB.VerifiedBuild, broadcastTextLocale.Value.Item1.VerifiedBuild))
-                        row.AddValue("VerifiedBuild", broadcastTextLocale.Value.Item1.VerifiedBuild);
-
-                    row.AddWhere("ID", broadcastTextLocale.Key.Item1);
-                    row.AddWhere("locale", broadcastTextLocale.Key.Item2);
-
-                    row.Table = tableName;
-
-                    rowsUpd.Add(row);
-                }
-                else // insert new
-                {
-                    var row = new SQLInsertRow();
-
-                    row.AddValue("ID", broadcastTextLocale.Key.Item1);
-                    row.AddValue("locale", broadcastTextLocale.Key.Item2);
-
-                    row.AddValue("MaleText_lang", broadcastTextLocale.Value.Item1.MaleText_lang);
-                    row.AddValue("FemaleText_lang", broadcastTextLocale.Value.Item1.FemaleText_lang);
-
-                    row.AddValue("VerifiedBuild", broadcastTextLocale.Value.Item1.VerifiedBuild);
-
-                    rowsIns.Add(row);
-                }
-            }
-
-            var result = new SQLInsert(tableName, rowsIns, deleteDuplicates: false, primaryKeyNumber: 2).Build() +
-                         new SQLUpdate(rowsUpd).Build();
-
-            return "SET NAMES 'utf8';" + Environment.NewLine + result + Environment.NewLine + "SET NAMES 'latin1';";
-            */
-            return string.Empty;
+            return "SET NAMES 'utf8';" + Environment.NewLine + SQLUtil.Compare(Storage.BroadcastTextLocales, templatesDb, StoreNameType.None) + Environment.NewLine + "SET NAMES 'latin1';";
         }
 
         [BuilderMethod]

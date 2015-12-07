@@ -4,12 +4,15 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("key_chain")]
-    public sealed class KeyChain
+    public sealed class KeyChain : IDataModel
     {
+        [DBFieldName("Id", true)]
+        public uint? ID;
+
         [DBFieldName("Key", 32)]
-        public byte[] Key;
+        public byte?[] Key;
 
         [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild = ClientVersion.BuildInt;
+        public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }

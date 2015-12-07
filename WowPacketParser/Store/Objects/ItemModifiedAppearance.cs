@@ -4,24 +4,27 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("item_modified_appearance")]
-    public sealed class ItemModifiedAppearance
+    public sealed class ItemModifiedAppearance : IDataModel
     {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
         [DBFieldName("ItemID")]
-        public uint ItemID;
+        public uint? ItemID;
 
         [DBFieldName("AppearanceModID")]
-        public uint AppearanceModID;
+        public uint? AppearanceModID;
 
         [DBFieldName("AppearanceID")]
-        public uint AppearanceID;
+        public uint? AppearanceID;
 
         [DBFieldName("IconFileDataID")]
-        public uint IconFileDataID;
+        public uint? IconFileDataID;
 
         [DBFieldName("Index")]
-        public uint Index;
+        public uint? Index;
 
         [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild = ClientVersion.BuildInt;
+        public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }

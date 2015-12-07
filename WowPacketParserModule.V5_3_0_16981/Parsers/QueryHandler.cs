@@ -218,27 +218,29 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             {
                 case DB2Hash.BroadcastText:
                     {
-                        var broadcastText = new BroadcastText();
+                        BroadcastText broadcastText = new BroadcastText();
 
                         var id = db2File.ReadEntry("Broadcast Text Entry");
+                        broadcastText.ID = (uint)id.Key;
+
                         broadcastText.Language = db2File.ReadInt32("Language");
                         if (db2File.ReadUInt16() > 0)
                             broadcastText.MaleText = db2File.ReadCString("Male Text");
                         if (db2File.ReadUInt16() > 0)
                             broadcastText.FemaleText = db2File.ReadCString("Female Text");
 
-                        broadcastText.EmoteID = new uint[3];
-                        broadcastText.EmoteDelay = new uint[3];
-                        for (var i = 0; i < 3; ++i)
+                        broadcastText.EmoteID = new uint?[3];
+                        broadcastText.EmoteDelay = new uint?[3];
+                        for (int i = 0; i < 3; ++i)
                             broadcastText.EmoteID[i] = (uint)db2File.ReadInt32("Emote ID", i);
-                        for (var i = 0; i < 3; ++i)
+                        for (int i = 0; i < 3; ++i)
                             broadcastText.EmoteDelay[i] = (uint)db2File.ReadInt32("Emote Delay", i);
 
                         broadcastText.SoundId = db2File.ReadUInt32("Sound Id");
                         broadcastText.UnkEmoteId = db2File.ReadUInt32("Unk 1"); // emote unk
                         broadcastText.Type = db2File.ReadUInt32("Unk 2"); // kind of type?
 
-                        Storage.BroadcastTexts.Add((uint)id.Key, broadcastText, packet.TimeSpan);
+                        Storage.BroadcastTexts.Add(broadcastText, packet.TimeSpan);
                         packet.AddSniffData(StoreNameType.None, id.Key, "BROADCAST_TEXT");
                         break;
                     }

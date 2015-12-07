@@ -4,21 +4,24 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("location")]
-    public sealed class Location
+    public sealed class Location : IDataModel
     {
-        [DBFieldName("LocX")]
-        public float LocX;
+        [DBFieldName("ID", true)]
+        public uint? ID;
 
         [DBFieldName("LocX")]
-        public float LocY;
+        public float? LocX;
 
         [DBFieldName("LocX")]
-        public float LocZ;
+        public float? LocY;
+
+        [DBFieldName("LocX")]
+        public float? LocZ;
 
         [DBFieldName("Rotation", 3)]
-        public float[] Rotation;
+        public float?[] Rotation;
 
         [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild = ClientVersion.BuildInt;
+        public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }

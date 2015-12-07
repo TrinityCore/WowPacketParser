@@ -4,18 +4,21 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("override_spell_data")]
-    public sealed class OverrideSpellData
+    public sealed class OverrideSpellData : IDataModel
     {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
         [DBFieldName("SpellID", 10)]
-        public uint[] SpellID;
+        public uint?[] SpellID;
 
         [DBFieldName("Flags")]
-        public uint Flags;
+        public uint? Flags;
 
         [DBFieldName("PlayerActionbarFileDataID")]
-        public uint PlayerActionbarFileDataID;
+        public uint? PlayerActionbarFileDataID;
 
         [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild = ClientVersion.BuildInt;
+        public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }

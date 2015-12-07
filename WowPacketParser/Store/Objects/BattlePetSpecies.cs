@@ -4,25 +4,28 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("battle_pet_species")]
-    public sealed class BattlePetSpecies
+    public sealed class BattlePetSpecies : IDataModel
     {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
         [DBFieldName("CreatureID")]
-        public uint CreatureID;
+        public uint? CreatureID;
 
         [DBFieldName("IconFileID")]
-        public uint IconFileID;
+        public uint? IconFileID;
 
         [DBFieldName("SummonSpellID")]
-        public uint SummonSpellID;
+        public uint? SummonSpellID;
 
         [DBFieldName("PetType")]
-        public int PetType;
+        public int? PetType;
 
         [DBFieldName("Source")]
-        public uint Source;
+        public uint? Source;
 
         [DBFieldName("Flags")]
-        public uint Flags;
+        public uint? Flags;
 
         [DBFieldName("SourceText")]
         public string SourceText;
@@ -31,6 +34,6 @@ namespace WowPacketParser.Store.Objects
         public string Description;
 
         [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild = ClientVersion.BuildInt;
+        public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }

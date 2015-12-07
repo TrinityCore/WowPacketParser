@@ -4,8 +4,11 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("scene_script")]
-    public sealed class SceneScript
+    public sealed class SceneScript : IDataModel
     {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
         [DBFieldName("Name")]
         public string Name;
 
@@ -13,12 +16,12 @@ namespace WowPacketParser.Store.Objects
         public string Script;
 
         [DBFieldName("PreviousSceneScriptPart")]
-        public uint PreviousSceneScriptPart;
+        public uint? PreviousSceneScriptPart;
 
         [DBFieldName("NextSceneScriptPart")]
-        public uint NextSceneScriptPart;
+        public uint? NextSceneScriptPart;
 
         [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild = ClientVersion.BuildInt;
+        public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }

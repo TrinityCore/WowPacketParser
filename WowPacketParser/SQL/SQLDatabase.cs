@@ -27,19 +27,6 @@ namespace WowPacketParser.SQL
             new List<Tuple<uint, BroadcastText>>();
 
         /// <summary>
-        /// Represents a dictionary of <see cref="CreatureDifficulty"/> accessed by their ids.
-        /// </summary>
-        public static readonly Dictionary<uint, CreatureDifficulty> CreatureDifficultyStores =
-            new Dictionary<uint, CreatureDifficulty>();
-
-        // Locale
-        /// <summary>
-        /// Represents a dictionary of <see cref="BroadcastTextLocale"/> accessed by a tuple of the broadcast text id and the locale string.
-        /// </summary>
-        public static readonly Dictionary<Tuple<uint, string>, BroadcastTextLocale> BroadcastTextLocaleStores =
-            new Dictionary<Tuple<uint, string>, BroadcastTextLocale>();
-
-        /// <summary>
         /// Represents a dictionary of <see cref="LocalesQuest"/> accessed by a tuple of the quest id and the locale string.
         /// </summary>
         public static readonly Dictionary<Tuple<uint, string>, LocalesQuest> LocalesQuestStores =
@@ -104,9 +91,7 @@ namespace WowPacketParser.SQL
             var startTime = DateTime.Now;
 
             LoadBroadcastText();
-            LoadCreatureDifficulty();
             // Locale
-            LoadBroadcastTextLocale();
             LoadQuestTemplateLocale();
             LoadQuestObjectivesLocale();
             // MapDifficulty
@@ -153,40 +138,6 @@ namespace WowPacketParser.SQL
 
                     var tuple = Tuple.Create(id, broadcastText);
                     BroadcastTextStores.Add(tuple);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Loads the creature difficulties form the database.
-        /// </summary>
-        private static void LoadCreatureDifficulty()
-        {
-            string query =
-                $"SELECT ID, CreatureID, FactionID, Expansion, MinLevel, MaxLevel, Flags1, Flags2, Flags3, Flags4, Flags5 FROM {Settings.HotfixesDatabase}.creature_difficulty;";
-            using (var reader = SQLConnector.ExecuteQuery(query))
-            {
-                if (reader == null)
-                    return;
-
-                while (reader.Read())
-                {
-                    var creatureDifficulty = new CreatureDifficulty();
-
-                    uint id = (uint)reader.GetValue(0);
-
-                    creatureDifficulty.CreatureID = (uint)reader.GetValue(1);
-                    creatureDifficulty.FactionID = (uint)reader.GetValue(2);
-
-                    creatureDifficulty.Expansion = (int)reader.GetValue(3);
-                    creatureDifficulty.MinLevel = (int)reader.GetValue(4);
-                    creatureDifficulty.MaxLevel = (int)reader.GetValue(5);
-
-                    creatureDifficulty.Flags = new uint[5];
-                    for (int i = 0; i < 5; i++)
-                        creatureDifficulty.Flags[i] = (uint)reader.GetValue(i + 6);
-
-                    CreatureDifficultyStores.Add(id, creatureDifficulty);
                 }
             }
         }
@@ -252,34 +203,6 @@ namespace WowPacketParser.SQL
                     localesQuestObjectives.VerifiedBuild = Convert.ToInt16(reader.GetValue(5));
 
                     QuestObjectiveLocaleStores.Add(Tuple.Create(id, locale), localesQuestObjectives);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Loads the localized broadcast texts from the database.
-        /// </summary>
-        private static void LoadBroadcastTextLocale()
-        {
-            string query =
-                $"SELECT Id, locale, MaleText_lang, FemaleText_lang, VerifiedBuild FROM {Settings.HotfixesDatabase}.broadcast_text_locale;";
-            using (var reader = SQLConnector.ExecuteQuery(query))
-            {
-                if (reader == null)
-                    return;
-
-                while (reader.Read())
-                {
-                    var broadcastTextLocale = new BroadcastTextLocale();
-
-                    var id = (uint)reader.GetValue(0);
-                    var locale = (string)reader.GetValue(1);
-
-                    broadcastTextLocale.MaleText_lang = (string)reader.GetValue(2);
-                    broadcastTextLocale.FemaleText_lang = (string)reader.GetValue(3);
-                    broadcastTextLocale.VerifiedBuild = Convert.ToInt16(reader.GetValue(4));
-
-                    BroadcastTextLocaleStores.Add(Tuple.Create(id, locale), broadcastTextLocale);
                 }
             }
         }

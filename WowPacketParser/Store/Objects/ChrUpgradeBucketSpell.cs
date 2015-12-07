@@ -3,17 +3,17 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("phase_group")]
-    public sealed class PhaseXPhaseGroup : IDataModel
+    [DBTableName("chr_upgrade_bucket_spell")]
+    public sealed class ChrUpgradeBucketSpell : IDataModel
     {
         [DBFieldName("ID", true)]
         public uint? ID;
 
-        [DBFieldName("PhaseID")]
-        public uint? PhaseID;
+        [DBFieldName("BucketID")]
+        public uint? BucketID;
 
-        [DBFieldName("PhaseGroupID")]
-        public uint? PhaseGroupID;
+        [DBFieldName("SpellID")]
+        public uint? SpellID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

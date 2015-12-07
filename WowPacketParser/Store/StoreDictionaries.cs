@@ -284,7 +284,7 @@ namespace WowPacketParser.Store
             Bag = Enabled ? new ConcurrentBag<Tuple<T, TimeSpan?>>() : null;
         }
 
-        public void Add(T item, TimeSpan? time)
+        public void Add(T item, TimeSpan? time = null)
         {
             if (Enabled)
                 Bag.Add(new Tuple<T, TimeSpan?>(item, time));

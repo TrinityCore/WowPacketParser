@@ -4,24 +4,27 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("spell_rune_cost")]
-    public sealed class SpellRuneCost
+    public sealed class SpellRuneCost : IDataModel
     {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
         [DBFieldName("Blood")]
-        public uint Blood;
+        public uint? Blood;
 
         [DBFieldName("Unholy")]
-        public uint Unholy;
+        public uint? Unholy;
 
         [DBFieldName("Frost")]
-        public uint Frost;
+        public uint? Frost;
 
         [DBFieldName("Chromatic")]
-        public uint Chromatic;
+        public uint? Chromatic;
 
         [DBFieldName("RunicPower")]
-        public uint RunicPower;
+        public uint? RunicPower;
 
         [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild = ClientVersion.BuildInt;
+        public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }

@@ -4,33 +4,36 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("spell_aura_restrictions")]
-    public sealed class SpellAuraRestrictions
+    public sealed class SpellAuraRestrictions : IDataModel
     {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
         [DBFieldName("CasterAuraState")]
-        public uint CasterAuraState;
+        public uint? CasterAuraState;
 
         [DBFieldName("TargetAuraState")]
-        public uint TargetAuraState;
+        public uint? TargetAuraState;
 
         [DBFieldName("ExcludeCasterAuraState")]
-        public uint ExcludeCasterAuraState;
+        public uint? ExcludeCasterAuraState;
 
         [DBFieldName("ExcludeTargetAuraState")]
-        public uint ExcludeTargetAuraState;
+        public uint? ExcludeTargetAuraState;
 
         [DBFieldName("CasterAuraSpell")]
-        public uint CasterAuraSpell;
+        public uint? CasterAuraSpell;
 
         [DBFieldName("TargetAuraSpell")]
-        public uint TargetAuraSpell;
+        public uint? TargetAuraSpell;
 
         [DBFieldName("ExcludeCasterAuraSpell")]
-        public uint ExcludeCasterAuraSpell;
+        public uint? ExcludeCasterAuraSpell;
 
         [DBFieldName("ExcludeTargetAuraSpell")]
-        public uint ExcludeTargetAuraSpell;
+        public uint? ExcludeTargetAuraSpell;
 
         [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild = ClientVersion.BuildInt;
+        public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }

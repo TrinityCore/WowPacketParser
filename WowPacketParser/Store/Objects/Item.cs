@@ -5,33 +5,36 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("item")]
-    public sealed class Item : WoWObject
+    public sealed class Item : WoWObject, IDataModel
     {
+        [DBFieldName("ID")]
+        public uint? ID;
+
         [DBFieldName("Class")]
-        public ItemClass Class;
+        public ItemClass? Class;
 
         [DBFieldName("SubClass")]
-        public uint SubClass;
+        public uint? SubClass;
 
         [DBFieldName("SoundOverrideSubclass")]
-        public int SoundOverrideSubclass;
+        public int? SoundOverrideSubclass;
 
         [DBFieldName("Material")]
-        public Material Material;
+        public Material? Material;
 
         [DBFieldName("InventoryType")]
-        public InventoryType InventoryType;
+        public InventoryType? InventoryType;
 
         [DBFieldName("Sheath")]
-        public SheathType Sheath;
+        public SheathType? Sheath;
 
         [DBFieldName("FileDataID")]
-        public uint FileDataID;
+        public uint? FileDataID;
 
         [DBFieldName("GroupSoundsID")]
-        public uint GroupSoundsID;
+        public uint? GroupSoundsID;
 
         [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild = ClientVersion.BuildInt;
+        public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }

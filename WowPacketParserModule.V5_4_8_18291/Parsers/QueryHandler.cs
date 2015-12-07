@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -6,6 +7,7 @@ using WowPacketParser.Store.Objects;
 
 namespace WowPacketParserModule.V5_4_8_18291.Parsers
 {
+    [SuppressMessage("ReSharper", "UseObjectOrCollectionInitializer")]
     public static class QueryHandler
     {
         [Parser(Opcode.CMSG_QUERY_CREATURE)]
@@ -165,28 +167,30 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             {
                 case DB2Hash.BroadcastText:
                 {
-                    var broadcastText = new BroadcastText();
+                    BroadcastText broadcastText = new BroadcastText();
 
-                    var Id = db2File.ReadEntry("Id");
+                    var id = db2File.ReadEntry("Id");
+                    broadcastText.ID = (uint)id.Key;
+
                     broadcastText.Language = db2File.ReadInt32("Language");
                     if (db2File.ReadUInt16() > 0)
                         broadcastText.MaleText = db2File.ReadCString("Male Text");
                     if (db2File.ReadUInt16() > 0)
                         broadcastText.FemaleText = db2File.ReadCString("Female Text");
 
-                    broadcastText.EmoteID = new uint[3];
-                    broadcastText.EmoteDelay = new uint[3];
-                    for (var i = 0; i < 3; ++i)
+                    broadcastText.EmoteID = new uint?[3];
+                    broadcastText.EmoteDelay = new uint?[3];
+                    for (int i = 0; i < 3; ++i)
                         broadcastText.EmoteID[i] = (uint) db2File.ReadInt32("Emote ID", i);
-                    for (var i = 0; i < 3; ++i)
+                    for (int i = 0; i < 3; ++i)
                         broadcastText.EmoteDelay[i] = (uint) db2File.ReadInt32("Emote Delay", i);
 
                     broadcastText.SoundId = db2File.ReadUInt32("Sound Id");
                     broadcastText.UnkEmoteId = db2File.ReadUInt32("Unk MoP 1"); // unk emote
                     broadcastText.Type = db2File.ReadUInt32("Unk MoP 2"); // kind of type?
 
-                    Storage.BroadcastTexts.Add((uint) Id.Key, broadcastText, packet.TimeSpan);
-                    packet.AddSniffData(StoreNameType.None, Id.Key, "BROADCAST_TEXT");
+                    Storage.BroadcastTexts.Add(broadcastText, packet.TimeSpan);
+                    packet.AddSniffData(StoreNameType.None, id.Key, "BROADCAST_TEXT");
                     break;
                 }
                 case DB2Hash.Creature: // New structure - 5.4.0
@@ -217,51 +221,48 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 }
                 case DB2Hash.CreatureDifficulty:
                 {
-                    var creatureDifficulty = new CreatureDifficulty();
+                    CreatureDifficulty creatureDifficulty = new CreatureDifficulty();
 
-                    var Id = db2File.ReadEntry("Id");
+                    creatureDifficulty.ID = (uint)db2File.ReadEntry("Id").Key;
+
                     creatureDifficulty.CreatureID = db2File.ReadUInt32("Creature Id");
                     creatureDifficulty.FactionID = db2File.ReadUInt32("Faction Template Id");
                     creatureDifficulty.Expansion = db2File.ReadInt32("Expansion");
                     creatureDifficulty.MinLevel = db2File.ReadInt32("Min Level");
                     creatureDifficulty.MaxLevel = db2File.ReadInt32("Max Level");
 
-                    creatureDifficulty.Flags = new uint[5];
+                    creatureDifficulty.Flags = new uint?[5];
                     for (var i = 0; i < 5; ++i)
                         creatureDifficulty.Flags[i] = db2File.ReadUInt32("Flags", i);
 
-                    Storage.CreatureDifficultys.Add((uint)Id.Key, creatureDifficulty, packet.TimeSpan);
+                    Storage.CreatureDifficulties.Add(creatureDifficulty, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.GameObjects:
                 {
-                    var gameObject = new GameObjects();
+                    db2File.ReadEntry("GameObject Id");
 
-                    var Id = db2File.ReadEntry("GameObject Id");
+                    db2File.ReadUInt32("Map");
 
-                    gameObject.MapID = db2File.ReadUInt32("Map");
+                    db2File.ReadUInt32("Display Id");
 
-                    gameObject.DisplayId = db2File.ReadUInt32("Display Id");
+                    db2File.ReadSingle("Position X");
+                    db2File.ReadSingle("Position Y");
+                    db2File.ReadSingle("Position Z");
+                    db2File.ReadSingle("Rotation X");
+                    db2File.ReadSingle("Rotation Y");
+                    db2File.ReadSingle("Rotation Z");
+                    db2File.ReadSingle("Rotation W");
 
-                    gameObject.PositionX = db2File.ReadSingle("Position X");
-                    gameObject.PositionY = db2File.ReadSingle("Position Y");
-                    gameObject.PositionZ = db2File.ReadSingle("Position Z");
-                    gameObject.RotationX = db2File.ReadSingle("Rotation X");
-                    gameObject.RotationY = db2File.ReadSingle("Rotation Y");
-                    gameObject.RotationZ = db2File.ReadSingle("Rotation Z");
-                    gameObject.RotationW = db2File.ReadSingle("Rotation W");
+                    db2File.ReadSingle("Size");
+                    db2File.ReadInt32E<GameObjectType>("Type");
 
-                    gameObject.Size = db2File.ReadSingle("Size");
-                    gameObject.Type = db2File.ReadInt32E<GameObjectType>("Type");
-
-                    gameObject.Data = new int[4];
-                    for (var i = 0; i < gameObject.Data.Length; i++)
-                        gameObject.Data[i] = db2File.ReadInt32("Data", i);
+                    for (int i = 0; i < 4; i++)
+                        db2File.ReadInt32("Data", i);
 
                     if (db2File.ReadUInt16() > 0)
-                        gameObject.Name = db2File.ReadCString("Name");
+                        db2File.ReadCString("Name");
 
-                    Storage.GameObjects.Add((uint) Id.Key, gameObject, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.Item:
