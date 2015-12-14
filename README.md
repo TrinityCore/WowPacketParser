@@ -7,7 +7,7 @@ WowPacketParser
 Usage
 -----
 
-* Compile WowPacketParser using Debug or Release.
+* Compile WowPacketParser using Debug or Release on Visual Studio 2015 or higher.
 * Edit "WowPacketParser.exe.config" to fit your needs.
 * Drag files to the executable.
 
