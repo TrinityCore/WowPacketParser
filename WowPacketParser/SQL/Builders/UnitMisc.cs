@@ -938,7 +938,7 @@ namespace WowPacketParser.SQL.Builders
 
                     // Set comment
                     string from = null, to = null;
-                    if (!textValue.Item1.SenderGUID.IsEmpty() || textValue.Item1.SenderGUID != null)
+                    if (!textValue.Item1.SenderGUID.IsEmpty())
                     {
                         if (textValue.Item1.SenderGUID.GetObjectType() == ObjectType.Player)
                             from = "Player";
@@ -946,7 +946,7 @@ namespace WowPacketParser.SQL.Builders
                             @from = !string.IsNullOrEmpty(textValue.Item1.SenderName) ? textValue.Item1.SenderName : StoreGetters.GetName(StoreNameType.Unit, (int)textValue.Item1.SenderGUID.GetEntry(), false);
                     }
 
-                    if (!textValue.Item1.ReceiverGUID.IsEmpty() || textValue.Item1.ReceiverGUID != null)
+                    if (!textValue.Item1.ReceiverGUID.IsEmpty())
                     {
                         if (textValue.Item1.ReceiverGUID.GetObjectType() == ObjectType.Player)
                             to = "Player";

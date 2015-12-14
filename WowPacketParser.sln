@@ -2,7 +2,7 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
-MinimumVisualStudioVersion = 10.0.40219.1
+MinimumVisualStudioVersion = 14.0.23107.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParser", "WowPacketParser\WowPacketParser.csproj", "{0BF6F270-0B6F-4705-8E1A-F57DB76DB407}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParser.Tests", "WowPacketParser.Tests\WowPacketParser.Tests.csproj", "{8C846C92-DEBC-47A7-BDF9-E86D8A5374DA}"
