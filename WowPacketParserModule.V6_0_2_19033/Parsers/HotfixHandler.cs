@@ -117,7 +117,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 }
                 case DB2Hash.Creature: // New structure - 6.0.2
                 {
-                    Creature creature = new Creature();
+                    CreatureDB2 creature = new CreatureDB2();
 
                     creature.ID = (uint)db2File.ReadEntry("CreatureID").Key;
                     creature.Type = db2File.ReadUInt32E<CreatureType>("Type");

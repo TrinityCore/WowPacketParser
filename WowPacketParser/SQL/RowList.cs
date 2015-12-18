@@ -17,6 +17,8 @@ namespace WowPacketParser.SQL
 
         public T Data { get; set; }
         public string Comment { get; set; } = string.Empty;
+
+        public bool CommentOut = false;
     }
 
     /// <summary>

@@ -501,12 +501,15 @@
     <Compile Include="Store\Objects\ChrUpgradeBucket.cs" />
     <Compile Include="Store\Objects\ChrUpgradeTier.cs" />
     <Compile Include="Store\Objects\Creature.cs" />
+    <Compile Include="Store\Objects\CreatureAddon.cs" />
+    <Compile Include="Store\Objects\CreatureDB2.cs" />
     <Compile Include="Store\Objects\CreatureDifficulty.cs" />
     <Compile Include="Store\Objects\CreatureEquipment.cs" />
     <Compile Include="Store\Objects\CreatureTemplateAddon.cs" />
     <Compile Include="Store\Objects\CreatureText.cs" />
     <Compile Include="Store\Objects\CurvePoint.cs" />
     <Compile Include="Store\Objects\GameObject.cs" />
+    <Compile Include="Store\Objects\GameObjectModel.cs" />
     <Compile Include="Store\Objects\GameObjects.cs" />
     <Compile Include="Store\Objects\GameObjectTemplate.cs" />
     <Compile Include="Store\Objects\GossipMenu.cs" />

@@ -4,8 +4,7 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("creature")]
-    public sealed class Creature : IDataModel
+    public sealed class GameObjectModel : IDataModel
     {
         [DBFieldName("guid")]
         public string GUID;
@@ -32,13 +31,7 @@ namespace WowPacketParser.Store.Objects
         public string PhaseID;
 
         [DBFieldName("PhaseGroup")]
-        public int? PhaseGroup;
-
-        [DBFieldName("modelid")]
-        public uint? ModelID;
-
-        [DBFieldName("equipment_id")]
-        public int EquipmentID;
+        public uint? PhaseGroup;
 
         [DBFieldName("position_x")]
         public float? PositionX;
@@ -52,32 +45,17 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("orientation")]
         public float? Orientation;
 
+        [DBFieldName("rotation", 4, true)]
+        public float?[] Rotation;
+
         [DBFieldName("spawntimesecs")]
-        public uint? SpawnTimeSecs;
+        public int? SpawnTimeSecs;
 
-        [DBFieldName("spawndist")]
-        public float? SpawnDist;
+        [DBFieldName("animprogress")]
+        public uint? AnimProgress;
 
-        [DBFieldName("currentwaypoint")]
-        public uint? CurrentWaypoint;
-
-        [DBFieldName("curhealth")]
-        public uint? CurHealth;
-
-        [DBFieldName("curmana")]
-        public uint? CurMana;
-
-        [DBFieldName("MovementType")]
-        public uint? MovementType;
-
-        [DBFieldName("npcflag")]
-        public uint? NpcFlag;
-
-        [DBFieldName("unit_flag")]
-        public uint? UnitFlag;
-
-        [DBFieldName("dynamicflag")]
-        public uint? DynamicFlag;
+        [DBFieldName("state")]
+        public uint? State;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

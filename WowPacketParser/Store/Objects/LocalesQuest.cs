@@ -4,8 +4,13 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("quest_template_locale")]
-    public sealed class LocalesQuest
+    public sealed class LocalesQuest : IDataModel
     {
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("locale", true)]
+        public string Locale;
 
         [DBFieldName("LogTitle")]
         public string LogTitle;
@@ -35,6 +40,6 @@ namespace WowPacketParser.Store.Objects
         public string QuestCompletionLog;
 
         [DBFieldName("VerifiedBuild")]
-        public int VerifiedBuild = ClientVersion.BuildInt;
+        public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }

@@ -1,9 +1,11 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    public sealed class GameObject : WoWObject
+    [DBTableName("gameobject")]
+    public sealed class GameObject : WoWObject, IDataModel
     {
         // Fields from UPDATE_FIELDS
         public float? Size;

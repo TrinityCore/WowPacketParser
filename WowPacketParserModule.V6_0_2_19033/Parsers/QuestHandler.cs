@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics.CodeAnalysis;
 using WowPacketParser.Enums;
 using WowPacketParser.Loading;
@@ -374,6 +373,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             {
                 LocalesQuest localesQuest = new LocalesQuest
                 {
+                    ID = (uint)id.Key,
+                    Locale = BinaryPacketReader.GetClientLocale(),
                     LogTitle            = quest.LogTitle,
                     LogDescription      = quest.LogDescription,
                     QuestDescription    = quest.QuestDescription,
@@ -385,7 +386,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     QuestCompletionLog  = quest.QuestCompletionLog
                 };
 
-                Storage.LocalesQuests.Add(Tuple.Create((uint)id.Key, BinaryPacketReader.GetClientLocale()), localesQuest, packet.TimeSpan);
+                Storage.LocalesQuests.Add(localesQuest, packet.TimeSpan);
             }
 
             Storage.QuestTemplates.Add(quest, packet.TimeSpan);

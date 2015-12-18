@@ -368,12 +368,6 @@ namespace WowPacketParser.SQL
         /// </summary>
         public bool NoData { get; private set; }
 
-        /// <summary>
-        /// <para>The row will be commented out</para>
-        /// <code>-- (a, ..., z), </code>
-        /// </summary>
-        public bool CommentOut { get; set; }
-
         public SQLInsertRow(Row<T> row)
         {
             _row = row;
@@ -389,7 +383,7 @@ namespace WowPacketParser.SQL
                 return "-- " + _headerComment + Environment.NewLine;
 
             StringBuilder query = new StringBuilder();
-            if (CommentOut)
+            if (_row.CommentOut)
                 query.Append("-- ");
 
             query.Append("(");

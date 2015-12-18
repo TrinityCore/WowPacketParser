@@ -35,11 +35,11 @@ namespace WowPacketParser.Store.Objects
             return Movement.TransportGuid != null && Movement.TransportGuid != WowGuid.Empty;
         }
 
-        public int GetDefaultSpawnTime()
+        public uint GetDefaultSpawnTime()
         {
             // If map is Continent use a lower respawn time
             // TODO: Rank and if npc is needed for quest kill should change spawntime as well
-            return MapIsContinent(Map) ? 120 : 7200;
+            return MapIsContinent(Map) ? 120u : 7200u;
         }
 
         public int GetDefaultSpawnMask()

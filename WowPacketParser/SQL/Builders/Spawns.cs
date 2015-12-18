@@ -28,11 +28,11 @@ namespace WowPacketParser.SQL.Builders
 
             if (SQLConnector.Enabled)
             {
-                var transportTemplates = SQLDatabase.GetDict<uint, GameObjectTemplate>(new List<uint> { entry.UInt32Value });
-                if (transportTemplates.IsEmpty())
+                var transportTemplates = SQLDatabase.Get(new RowList<GameObjectTemplate> {new GameObjectTemplate {Entry = entry.UInt32Value} });
+                if (transportTemplates.Count == 0)
                     return false;
 
-                mapId = transportTemplates[entry.UInt32Value].Item1.Data[6].GetValueOrDefault();
+                mapId = transportTemplates.First().Data.Data[6].GetValueOrDefault();
             }
 
             return true;
@@ -41,24 +41,21 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod(Units = true)]
         public static string Creature(Dictionary<WowGuid, Unit> units)
         {
-            /*if (units.Count == 0)
+            if (units.Count == 0)
                 return string.Empty;
 
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature))
                 return string.Empty;
 
-            const string tableName = "creature";
-            const string addonTableName = "creature_addon";
-
             uint count = 0;
-            var rows = new List<SQLInsertRow>();
-            var addonRows = new List<SQLInsertRow>();
+            var rows  = new RowList<Creature>();
+            var addonRows = new RowList<CreatureAddon>();
             foreach (var unit in units)
             {
-                var row = new SQLInsertRow();
-                var badTransport = false;
+                Row<Creature> row = new Row<Creature>();
+                bool badTransport = false;
 
-                var creature = unit.Value;
+                Unit creature = unit.Value;
 
                 if (Settings.AreaFilters.Length > 0)
                     if (!(creature.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
@@ -72,10 +69,10 @@ namespace WowPacketParser.SQL.Builders
                 if (!creature.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out uf))
                     continue;   // broken entry, nothing to spawn
 
-                var entry = uf.UInt32Value;
+                uint entry = uf.UInt32Value;
 
-                var movementType = 0;
-                var spawnDist = 0;
+                uint movementType = 0;
+                int spawnDist = 0;
 
                 if (creature.Movement.HasWpsOrRandMov)
                 {
@@ -83,54 +80,52 @@ namespace WowPacketParser.SQL.Builders
                     spawnDist = 10;
                 }
 
+                row.Data.GUID = "@CGUID" + count;
 
-                row.AddValue("guid", "@CGUID+" + count, noQuotes: true);
-                row.AddValue("id", entry);
+                row.Data.ID = entry;
                 if (!creature.IsOnTransport())
-                {
-                    row.AddValue("map", creature.Map);
-                }
+                    row.Data.Map = creature.Map;
                 else
                 {
                     int mapId;
                     badTransport = !GetTransportMap(creature, out mapId);
-                    row.AddValue("map", mapId);
+                    row.Data.Map = (uint)mapId;
                 }
 
-                row.AddValue("spawnMask", creature.GetDefaultSpawnMask());
-                row.AddValue("phaseMask", creature.PhaseMask);
+                row.Data.SpawnMask = (uint)creature.GetDefaultSpawnMask();
+                row.Data.PhaseMask = creature.PhaseMask;
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595) && creature.Phases != null)
-                    row.AddValue("phaseId", string.Join(" - ", creature.Phases));
+                    row.Data.PhaseID = string.Join(" - ", creature.Phases);
 
                 if (!creature.IsOnTransport())
                 {
-                    row.AddValue("position_x", creature.Movement.Position.X);
-                    row.AddValue("position_y", creature.Movement.Position.Y);
-                    row.AddValue("position_z", creature.Movement.Position.Z);
-                    row.AddValue("orientation", creature.Movement.Orientation);
+                    row.Data.PositionX = creature.Movement.Position.X;
+                    row.Data.PositionY = creature.Movement.Position.Y;
+                    row.Data.PositionZ = creature.Movement.Position.Z;
+                    row.Data.Orientation = creature.Movement.Orientation;
                 }
                 else
                 {
-                    row.AddValue("position_x", creature.Movement.TransportOffset.X);
-                    row.AddValue("position_y", creature.Movement.TransportOffset.Y);
-                    row.AddValue("position_z", creature.Movement.TransportOffset.Z);
-                    row.AddValue("orientation", creature.Movement.TransportOffset.O);
+                    row.Data.PositionX = creature.Movement.TransportOffset.X;
+                    row.Data.PositionY = creature.Movement.TransportOffset.Y;
+                    row.Data.PositionZ = creature.Movement.TransportOffset.Z;
+                    row.Data.Orientation = creature.Movement.TransportOffset.O;
                 }
 
-                row.AddValue("spawntimesecs", creature.GetDefaultSpawnTime());
-                row.AddValue("spawndist", spawnDist);
-                row.AddValue("MovementType", movementType);
+                row.Data.SpawnTimeSecs = creature.GetDefaultSpawnTime();
+                row.Data.SpawnDist = spawnDist;
+                row.Data.MovementType = movementType;
+
 
                 row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
                 row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, creature.Area, false) + ")";
 
-
-                var auras = string.Empty;
-                var commentAuras = string.Empty;
+                string auras = string.Empty;
+                string commentAuras = string.Empty;
                 if (creature.Auras != null && creature.Auras.Count() != 0)
                 {
-                    foreach (var aura in creature.Auras)
+                    foreach (Aura aura in creature.Auras)
                     {
                         if (aura == null)
                             continue;
@@ -149,16 +144,16 @@ namespace WowPacketParser.SQL.Builders
                     row.Comment += " (Auras: " + commentAuras + ")";
                 }
 
-                var addonRow = new SQLInsertRow();
+                var addonRow = new Row<CreatureAddon>();
                 if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_addon))
                 {
-                    addonRow.AddValue("guid", "@CGUID+" + count, noQuotes: true);
-                    addonRow.AddValue("mount", creature.Mount);
-                    addonRow.AddValue("bytes1", creature.Bytes1, true);
-                    addonRow.AddValue("bytes2", creature.Bytes2, true);
-                    addonRow.AddValue("auras", auras);
+                    addonRow.Data.GUID = "@CGUID+" + count;
+                    addonRow.Data.Mount = creature.Mount;
+                    addonRow.Data.Bytes1 = creature.Bytes1;
+                    addonRow.Data.Bytes2 = creature.Bytes2;
+                    addonRow.Data.Auras = auras;
                     addonRow.Comment += StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
-                    if (!String.IsNullOrWhiteSpace(auras))
+                    if (!string.IsNullOrWhiteSpace(auras))
                         addonRow.Comment += " - " + commentAuras;
                     addonRows.Add(addonRow);
                 }
@@ -182,47 +177,43 @@ namespace WowPacketParser.SQL.Builders
                 rows.Add(row);
             }
 
-            var result = new StringBuilder();
+            if (count == 0)
+                return string.Empty;
 
-            if (count > 0)
+            StringBuilder result = new StringBuilder();
+            // delete query for GUIDs
+            var delete = new SQLDelete<Creature>(Tuple.Create("@CGUID+0", "@CGUID+" + --count));
+            result.Append(delete.Build());
+            var sql = new SQLInsert<Creature>(rows, false);
+            result.Append(sql.Build());
+
+            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_addon))
             {
-                // delete query for GUIDs
-                //var delete = new SQLDelete(Tuple.Create("@CGUID+0", "@CGUID+" + --count), "guid", tableName);
-                //result.Append(delete.Build());
-                //var sql = new SQLInsert(tableName, rows, withDelete: false);
-                //result.Append(sql.Build());
-
-                if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_addon))
-                {
-                    //var addonDelete = new SQLDelete(Tuple.Create("@CGUID+0", "@CGUID+" + count), "guid", addonTableName);
-                    //result.Append(addonDelete.Build());
-                    //var addonSql = new SQLInsert(addonTableName, addonRows, withDelete: false);
-                    //result.Append(addonSql.Build());
-                }
+                var addonDelete = new SQLDelete<CreatureAddon>(Tuple.Create("@CGUID+0", "@CGUID+" + count));
+                result.Append(addonDelete.Build());
+                var addonSql = new SQLInsert<CreatureAddon>(addonRows, false);
+                result.Append(addonSql.Build());
             }
 
-            return result.ToString();*/
-            return string.Empty;
+            return result.ToString();
         }
 
         [BuilderMethod(Gameobjects = true)]
         public static string GameObject(Dictionary<WowGuid, GameObject> gameObjects)
         {
-            /*if (gameObjects.Count == 0)
+            if (gameObjects.Count == 0)
                 return string.Empty;
 
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject))
                 return string.Empty;
 
-            const string tableName = "gameobject";
-
             uint count = 0;
-            var rows = new List<SQLInsertRow>();
+            var rows = new RowList<GameObjectModel>();
             foreach (var gameobject in gameObjects)
             {
-                var row = new SQLInsertRow();
+                Row<GameObjectModel> row = new Row<GameObjectModel>();
 
-                var go = gameobject.Value;
+                GameObject go = gameobject.Value;
 
                 if (Settings.AreaFilters.Length > 0)
                     if (!(go.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
@@ -238,69 +229,59 @@ namespace WowPacketParser.SQL.Builders
                 if (!go.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out uf))
                     continue;   // broken entry, nothing to spawn
 
-                var entry = uf.UInt32Value;
-                var badTransport = false;
+                uint entry = uf.UInt32Value;
+                bool badTransport = false;
 
                 if (go.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(GameObjectField.GAMEOBJECT_BYTES_1), out uf))
                 {
-                    var bytes = uf.UInt32Value;
+                    uint bytes = uf.UInt32Value;
                     state = (bytes & 0x000000FF);
                     animprogress = Convert.ToUInt32((bytes & 0xFF000000) >> 24);
                 }
 
-                row.AddValue("guid", "@OGUID+" + count, noQuotes: true);
-                row.AddValue("id", entry);
+                row.Data.GUID = "@OGUID" + count;
+
+                row.Data.ID = entry;
                 if (!go.IsOnTransport())
-                {
-                    row.AddValue("map", go.Map);
-                }
+                    row.Data.Map = go.Map;
                 else
                 {
                     int mapId;
                     badTransport = !GetTransportMap(go, out mapId);
-                    row.AddValue("map", mapId);
+                    row.Data.Map = (uint)mapId;
                 }
 
-                row.AddValue("spawnMask", go.GetDefaultSpawnMask());
-                row.AddValue("phaseMask", go.PhaseMask);
+                row.Data.SpawnMask = (uint)go.GetDefaultSpawnMask();
+                row.Data.PhaseMask = go.PhaseMask;
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595) && go.Phases != null)
-                    row.AddValue("phaseId", string.Join(" - ", go.Phases));
+                    row.Data.PhaseID = string.Join(" - ", go.Phases);
 
                 if (!go.IsOnTransport())
                 {
-                    row.AddValue("position_x", go.Movement.Position.X);
-                    row.AddValue("position_y", go.Movement.Position.Y);
-                    row.AddValue("position_z", go.Movement.Position.Z);
-                    row.AddValue("orientation", go.Movement.Orientation);
+                    row.Data.PositionX = go.Movement.Position.X;
+                    row.Data.PositionY = go.Movement.Position.Y;
+                    row.Data.PositionZ = go.Movement.Position.Z;
+                    row.Data.Orientation = go.Movement.Orientation;
                 }
                 else
                 {
-                    row.AddValue("position_x", go.Movement.TransportOffset.X);
-                    row.AddValue("position_y", go.Movement.TransportOffset.Y);
-                    row.AddValue("position_z", go.Movement.TransportOffset.Z);
-                    row.AddValue("orientation", go.Movement.TransportOffset.O);
+                    row.Data.PositionX = go.Movement.TransportOffset.X;
+                    row.Data.PositionY = go.Movement.TransportOffset.Y;
+                    row.Data.PositionZ = go.Movement.TransportOffset.Z;
+                    row.Data.Orientation = go.Movement.TransportOffset.O;
                 }
 
                 var rotation = go.GetRotation();
                 if (rotation != null && rotation.Length == 4)
-                {
-                    row.AddValue("rotation0", rotation[0]);
-                    row.AddValue("rotation1", rotation[1]);
-                    row.AddValue("rotation2", rotation[2]);
-                    row.AddValue("rotation3", rotation[3]);
-                }
+                    row.Data.Rotation = rotation.Cast<float?>().ToArray();
                 else
-                {
-                    row.AddValue("rotation0", 0);
-                    row.AddValue("rotation1", 0);
-                    row.AddValue("rotation2", 0);
-                    row.AddValue("rotation3", 0);
-                }
+                    row.Data.Rotation = new float?[] { 0, 0, 0, 0 };
 
-                row.AddValue("spawntimesecs", go.GetDefaultSpawnTime());
-                row.AddValue("animprogress", animprogress);
-                row.AddValue("state", state);
+                row.Data.SpawnTimeSecs = (int)go.GetDefaultSpawnTime();
+                row.Data.AnimProgress = animprogress;
+                row.Data.State = state;
+
                 row.Comment = StoreGetters.GetName(StoreNameType.GameObject, (int)gameobject.Key.GetEntry(), false);
                 row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, go.Area, false) + ")";
 
@@ -325,20 +306,18 @@ namespace WowPacketParser.SQL.Builders
                 rows.Add(row);
             }
 
-            var result = new StringBuilder();
+            StringBuilder result = new StringBuilder();
 
             if (count > 0)
             {
                 // delete query for GUIDs
-                var delete = new SQLDelete(Tuple.Create("@OGUID+0", "@OGUID+" + --count), "guid");
+                var delete = new SQLDelete<GameObjectModel>(Tuple.Create("@OGUID+0", "@OGUID+" + --count));
                 result.Append(delete.Build());
             }
 
-            var sql = new SQLInsert(tableName, rows, withDelete: false);
+            var sql = new SQLInsert<GameObjectModel>(rows, false);
             result.Append(sql.Build());
-            return result.ToString();*/
-            return string.Empty;
-
+            return result.ToString();
         }
     }
 }

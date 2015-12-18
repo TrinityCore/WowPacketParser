@@ -30,7 +30,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<ChrUpgradeTier> ChrUpgradeTiers = new DataBag<ChrUpgradeTier>(new List<HotfixSQLOutput> { HotfixSQLOutput.chr_upgrade });
         public static readonly DataBag<ChrUpgradeBucket> ChrUpgradeBuckets = new DataBag<ChrUpgradeBucket>(new List<HotfixSQLOutput> { HotfixSQLOutput.chr_upgrade });
         public static readonly DataBag<ChrUpgradeBucketSpell> ChrUpgradeBucketSpells = new DataBag<ChrUpgradeBucketSpell>(new List<HotfixSQLOutput> { HotfixSQLOutput.chr_upgrade });
-        public static readonly DataBag<Creature> Creatures = new DataBag<Creature>(new List<HotfixSQLOutput> { HotfixSQLOutput.creatureDB2 });
+        public static readonly DataBag<CreatureDB2> Creatures = new DataBag<CreatureDB2>(new List<HotfixSQLOutput> { HotfixSQLOutput.creatureDB2 });
         public static readonly DataBag<CreatureDifficulty> CreatureDifficulties = new DataBag<CreatureDifficulty>(new List<HotfixSQLOutput> { HotfixSQLOutput.creature_difficulty });
         public static readonly DataBag<CurvePoint> CurvePoints = new DataBag<CurvePoint>(new List<HotfixSQLOutput> { HotfixSQLOutput.curve_point });
         public static readonly DataBag<GameObjects> GameObjects = new DataBag<GameObjects>(new List<HotfixSQLOutput> { HotfixSQLOutput.gameobjectDB2 });
@@ -113,7 +113,6 @@ namespace WowPacketParser.Store
         public static readonly DataBag<QuestGreeting> QuestGreetings = new DataBag<QuestGreeting>(new List<SQLOutput> { SQLOutput.quest_template });
         public static readonly DataBag<QuestDetails> QuestDetails = new DataBag<QuestDetails>(new List<SQLOutput> { SQLOutput.quest_template });
         public static readonly DataBag<QuestRequestItems> QuestRequestItems = new DataBag<QuestRequestItems>(new List<SQLOutput> { SQLOutput.quest_template });
-        //public static readonly StoreDictionary<uint, QuestOfferReward> QuestOfferRewards = new StoreDictionary<uint, QuestOfferReward>(new List<SQLOutput> { SQLOutput.quest_template });
 
         // Names
         public static readonly DataBag<ObjectName> ObjectNames = new DataBag<ObjectName>(new List<SQLOutput> { SQLOutput.ObjectNames });
@@ -130,7 +129,7 @@ namespace WowPacketParser.Store
 
         // Quest Misc
         public static readonly DataBag<BroadcastTextLocale> BroadcastTextLocales = new DataBag<BroadcastTextLocale>(new List<HotfixSQLOutput> { HotfixSQLOutput.broadcast_text_locale });
-        public static readonly StoreDictionary<Tuple<uint, string>, LocalesQuest> LocalesQuests = new StoreDictionary<Tuple<uint, string>, LocalesQuest>(new List<SQLOutput> { SQLOutput.locales_quest });
+        public static readonly DataBag<LocalesQuest> LocalesQuests = new DataBag<LocalesQuest>(new List<SQLOutput> { SQLOutput.locales_quest });
         public static readonly DataBag<QuestObjectivesLocale> LocalesQuestObjectives = new DataBag<QuestObjectivesLocale>(new List<SQLOutput> { SQLOutput.locales_quest_objectives });
 
         public static void ClearContainers()
@@ -164,8 +163,7 @@ namespace WowPacketParser.Store
             Emotes.Clear();
             Sounds.Clear();
             SpellsX.Clear();
-            //QuestOffers.Clear();
-            //QuestRewards.Clear();
+
             GossipSelects.Clear();
 
             StartActions.Clear();
