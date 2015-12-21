@@ -467,9 +467,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     item.AllowedRaces = db2File.ReadInt32E<RaceMask>("Allowed Races");
                     item.ItemLevel = db2File.ReadUInt32("Item Level");
                     item.RequiredLevel = db2File.ReadUInt32("Required Level");
-                    item.RequiredLevel = db2File.ReadUInt32("RequiredSkillID");
-                    item.RequiredSkill = db2File.ReadUInt32("Required Skill Level");
-                    item.RequiredSpell = (uint) db2File.ReadInt32<SpellId>("Required Spell");
+                    item.RequiredSkill = db2File.ReadUInt32("Required Skill");
+                    item.RequiredSkillRank = db2File.ReadUInt32("Required Skill Rank");
+                    item.RequiredSpell = db2File.ReadUInt32<SpellId>("Required Spell");
                     item.RequiredHonorRank = db2File.ReadUInt32("Required Honor Rank");
                     item.RequiredCityRank = db2File.ReadUInt32("Required City Rank");
                     item.RequiredReputationFaction = db2File.ReadUInt32("RequiredReputationFaction");
@@ -846,7 +846,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     var id = db2File.ReadUInt32("Id");
 
                     areaPOI.Flags = db2File.ReadUInt32("Flags");
-                    areaPOI.Flags = db2File.ReadUInt32("Importance");
+                    areaPOI.Importance = db2File.ReadUInt32("Importance");
                     areaPOI.FactionID = db2File.ReadUInt32("FactionID");
                     areaPOI.MapID = db2File.ReadUInt32("MapID");
                     areaPOI.AreaID = db2File.ReadUInt32("AreaID");
