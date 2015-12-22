@@ -2,6 +2,7 @@
 
 namespace WowPacketParser.Store.Objects
 {
+    [DBTableName("creature_template_addon")]
     public sealed class CreatureTemplateAddon : IDataModel
     {
         [DBFieldName("entry", true)]

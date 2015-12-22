@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace WowPacketParser.SQL
 {
-    public class Row<T> where T : IDataModel
+    public class Row<T> where T : IDataModel, new()
     {
         public Row()
         { }
@@ -15,7 +15,7 @@ namespace WowPacketParser.SQL
             Data = data;
         }
 
-        public T Data { get; set; }
+        public T Data { get; set; } = new T();
         public string Comment { get; set; } = string.Empty;
 
         public bool CommentOut = false;
@@ -25,7 +25,7 @@ namespace WowPacketParser.SQL
     /// This represents a list of IDataModel which act as conditions in e.g WHERE clauses.
     /// </summary>
     /// <typeparam name="T">The <see cref="IDataModel" /></typeparam>
-    public class RowList<T> : IEnumerable<Row<T>> where T : IDataModel
+    public class RowList<T> : IEnumerable<Row<T>> where T : IDataModel, new()
     {
         private readonly List<Row<T>> _rows = new List<Row<T>>();
         private readonly Dictionary<string, int> _pkDict = new Dictionary<string, int>(); 

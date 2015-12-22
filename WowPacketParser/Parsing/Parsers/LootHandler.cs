@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
 using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
-using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -104,7 +99,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LOOT_RESPONSE)]
         public static void HandleLootResponse(Packet packet)
         {
-            var guid = packet.ReadGuid("GUID");
+            packet.ReadGuid("GUID");
             var lootType = packet.ReadByteE<LootType>("Loot Type");
             if (lootType == LootType.None)
             {

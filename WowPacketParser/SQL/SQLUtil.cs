@@ -150,28 +150,15 @@ namespace WowPacketParser.SQL
 
         public static List<Tuple<string, FieldInfo, List<DBFieldNameAttribute>>> GetFields<T>() where T : IDataModel
         {
-            var fields = new List<Tuple<string, FieldInfo, List<DBFieldNameAttribute>>>();
-            //fields.RemoveAll(field => field.Item2.Name == null);
-            foreach (var field in Utilities.GetFieldsAndAttributes<T, DBFieldNameAttribute>())
-            {
-                if (field.Value.All(f => !f.IsVisible()))
-                    continue;
-
-                string fieldName = field.Value.Single(f => f.IsVisible()).ToString();
-                fields.Add(new Tuple<string, FieldInfo, List<DBFieldNameAttribute>>(fieldName, field.Key, field.Value));
-            }
-
-            return fields;
+            return (from field in Utilities.GetFieldsAndAttributes<T, DBFieldNameAttribute>()
+                    where field.Value.Any(f => f.IsVisible())
+                    let fieldName = field.Value.Single(f => f.IsVisible()).ToString()
+                    select new Tuple<string, FieldInfo, List<DBFieldNameAttribute>>(fieldName, field.Key, field.Value)).ToList();
         }
 
         public static FieldInfo GetFirstPrimaryKey<T>() where T : IDataModel
         {
-            FieldInfo pk = GetFields<T>().Where(f => f.Item3.Any(g => g.IsPrimaryKey)).Select(f => f.Item2).FirstOrDefault();
-
-            if (pk == null)
-                throw new InvalidOperationException();
-
-            return pk;
+            return GetFields<T>().Where(f => f.Item3.Any(g => g.IsPrimaryKey)).Select(f => f.Item2).FirstOrDefault();
         }
 
         public static bool IsPrimaryKey(FieldInfo field)
@@ -179,9 +166,11 @@ namespace WowPacketParser.SQL
             return Utilities.GetAttributes<DBFieldNameAttribute>(field).Any(a => a.IsPrimaryKey);
         }
 
+        /// <param name="storeList"><see cref="DataBag{T}"/> with items form sniff.</param>
+        /// <param name="dbList"><see cref="DataBag{T}"/> with items from database.</param>
         /// <param name="storeType">Are we dealing with Spells, Quests, Units, ...?</param>
         public static string Compare<T>(DataBag<T> storeList, RowList<T> dbList, StoreNameType storeType)
-            where T : IDataModel
+            where T : IDataModel, new()
         {
             return Compare(storeList, dbList, t => StoreGetters.GetName(storeType, Convert.ToInt32(GetFirstPrimaryKey<T>().GetValue(t)), false));
         }
@@ -198,7 +187,7 @@ namespace WowPacketParser.SQL
         /// <param name="commentSetter"></param>
         /// <returns>A string containing full SQL queries</returns>
         public static string Compare<T>(DataBag<T> storeList, RowList<T> dbList, Func<T, string> commentSetter)
-            where T : IDataModel
+            where T : IDataModel, new()
         {
             var fields = GetFields<T>();
             if (fields == null)

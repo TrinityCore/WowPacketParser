@@ -80,7 +80,7 @@ namespace WowPacketParser.SQL.Builders
                     spawnDist = 10;
                 }
 
-                row.Data.GUID = "@CGUID" + count;
+                row.Data.GUID = "@CGUID+" + count;
 
                 row.Data.ID = entry;
                 if (!creature.IsOnTransport())
@@ -96,7 +96,13 @@ namespace WowPacketParser.SQL.Builders
                 row.Data.PhaseMask = creature.PhaseMask;
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595) && creature.Phases != null)
-                    row.Data.PhaseID = string.Join(" - ", creature.Phases);
+                {
+                    string data = string.Join(" - ", creature.Phases);
+                    if (string.IsNullOrEmpty(data))
+                        data = "0";
+
+                    row.Data.PhaseID = data;
+                }
 
                 if (!creature.IsOnTransport())
                 {
@@ -117,13 +123,24 @@ namespace WowPacketParser.SQL.Builders
                 row.Data.SpawnDist = spawnDist;
                 row.Data.MovementType = movementType;
 
+                // set some defaults
+                row.Data.ZoneID = 0;
+                row.Data.AreaID = 0;
+                row.Data.PhaseGroup = 0;
+                row.Data.ModelID = 0;
+                row.Data.CurrentWaypoint = 0;
+                row.Data.CurHealth = 0;
+                row.Data.CurMana = 0;
+                row.Data.NpcFlag = 0;
+                row.Data.UnitFlag = 0;
+                row.Data.DynamicFlag = 0;
 
                 row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
                 row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, creature.Area, false) + ")";
 
                 string auras = string.Empty;
                 string commentAuras = string.Empty;
-                if (creature.Auras != null && creature.Auras.Count() != 0)
+                if (creature.Auras != null && creature.Auras.Count != 0)
                 {
                     foreach (Aura aura in creature.Auras)
                     {
@@ -148,9 +165,11 @@ namespace WowPacketParser.SQL.Builders
                 if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_addon))
                 {
                     addonRow.Data.GUID = "@CGUID+" + count;
-                    addonRow.Data.Mount = creature.Mount;
-                    addonRow.Data.Bytes1 = creature.Bytes1;
-                    addonRow.Data.Bytes2 = creature.Bytes2;
+                    addonRow.Data.PathID = 0;
+                    addonRow.Data.Mount = creature.Mount.GetValueOrDefault(0);
+                    addonRow.Data.Bytes1 = creature.Bytes1.GetValueOrDefault(0);
+                    addonRow.Data.Bytes2 = creature.Bytes2.GetValueOrDefault(0);
+                    addonRow.Data.Emote = 0;
                     addonRow.Data.Auras = auras;
                     addonRow.Comment += StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
                     if (!string.IsNullOrWhiteSpace(auras))
@@ -239,7 +258,7 @@ namespace WowPacketParser.SQL.Builders
                     animprogress = Convert.ToUInt32((bytes & 0xFF000000) >> 24);
                 }
 
-                row.Data.GUID = "@OGUID" + count;
+                row.Data.GUID = "@OGUID+" + count;
 
                 row.Data.ID = entry;
                 if (!go.IsOnTransport())
@@ -281,6 +300,11 @@ namespace WowPacketParser.SQL.Builders
                 row.Data.SpawnTimeSecs = (int)go.GetDefaultSpawnTime();
                 row.Data.AnimProgress = animprogress;
                 row.Data.State = state;
+
+                // set some defaults
+                row.Data.ZoneID = 0;
+                row.Data.AreaID = 0;
+                row.Data.PhaseGroup = 0;
 
                 row.Comment = StoreGetters.GetName(StoreNameType.GameObject, (int)gameobject.Key.GetEntry(), false);
                 row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, go.Area, false) + ")";

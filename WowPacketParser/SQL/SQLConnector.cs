@@ -43,8 +43,7 @@ namespace WowPacketParser.SQL
         public static void Disconnect()
         {
             Enabled = false;
-            if (Conn != null)
-                Conn.Close();
+            Conn?.Close();
         }
 
         [SuppressMessage("Microsoft.Security", "CA2100", Justification = "No user input.")]
@@ -84,9 +83,9 @@ namespace WowPacketParser.SQL
                     protocol = "ConnectionProtocol=Pipe;";
                 }
 
-                return String.Format("Server={0};{1}={2};Username={3};Password={4};Database={5};CharSet={6};ConnectionTimeout=5;{7}",
-                    server, portOrPipe, Settings.Port, Settings.Username, Settings.Password, Settings.WPPDatabase,
-                    Settings.CharacterSet, protocol);
+                return
+                    $"Server={server};{portOrPipe}={Settings.Port};Username={Settings.Username};Password={Settings.Password};" +
+                    $"Database={Settings.WPPDatabase};CharSet={Settings.CharacterSet};ConnectionTimeout=5;{protocol}";
             }
         }
 
@@ -121,7 +120,7 @@ namespace WowPacketParser.SQL
 
             var endTime = DateTime.Now;
             var span = endTime.Subtract(startTime);
-            Trace.WriteLine(String.Format("Finished loading DB in {0}.", span.ToFormattedString()));
+            Trace.WriteLine($"Finished loading DB in {span.ToFormattedString()}.");
             Trace.WriteLine(Environment.NewLine);
         }
     }

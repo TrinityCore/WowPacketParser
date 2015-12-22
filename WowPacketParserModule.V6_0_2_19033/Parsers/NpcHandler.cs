@@ -134,8 +134,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 };
 
                 gossipOption.ID = (uint)packet.ReadInt32("ClientOption", i);
-                packet.ReadByte("OptionNPC", i);
-                packet.ReadByte("OptionFlags", i);
+                gossipOption.OptionIcon = (GossipOptionIcon?)packet.ReadByte("OptionNPC", i);
+                gossipOption.BoxCoded = packet.ReadByte("OptionFlags", i) != 0;
                 gossipOption.BoxMoney = (uint)packet.ReadInt32("OptionCost", i);
 
                 uint bits3 = packet.ReadBits(12);
@@ -164,15 +164,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 uint bits13 = packet.ReadBits(9);
 
                 packet.ReadWoWString("QuestTitle", bits13, i);
-
-                if (guid.GetObjectType() == ObjectType.Unit)
-                    if (Storage.Objects.ContainsKey(guid))
-                        ((Unit)Storage.Objects[guid].Item1).GossipId = (uint)menuId;
-
-                Storage.Gossips.Add(gossip, packet.TimeSpan);
-
-                packet.AddSniffData(StoreNameType.Gossip, menuId, guid.GetEntry().ToString(CultureInfo.InvariantCulture));
             }
+
+            if (guid.GetObjectType() == ObjectType.Unit)
+                if (Storage.Objects.ContainsKey(guid))
+                    ((Unit)Storage.Objects[guid].Item1).GossipId = (uint)menuId;
+
+            Storage.Gossips.Add(gossip, packet.TimeSpan);
+
+            packet.AddSniffData(StoreNameType.Gossip, menuId, guid.GetEntry().ToString(CultureInfo.InvariantCulture));
         }
 
         [Parser(Opcode.SMSG_VENDOR_INVENTORY)]

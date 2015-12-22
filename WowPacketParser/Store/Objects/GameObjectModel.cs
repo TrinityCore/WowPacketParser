@@ -4,9 +4,10 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
+    [DBTableName("gameobject")]
     public sealed class GameObjectModel : IDataModel
     {
-        [DBFieldName("guid")]
+        [DBFieldName("guid", true)]
         public string GUID;
 
         [DBFieldName("id")]

@@ -12,7 +12,7 @@ namespace WowPacketParser.SQL
     ///  arrays ("dmg_min1, dmg_min2, dmg_min3" -> name = dmg_min, count = 3, startAtZero = false)
     /// </summary>
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true)]
-    sealed public class DBFieldNameAttribute : Attribute
+    public sealed class DBFieldNameAttribute : Attribute
     {
         /// <summary>
         /// Column name
@@ -34,16 +34,16 @@ namespace WowPacketParser.SQL
         /// </summary>
         public readonly bool StartAtZero;
 
-        public readonly LocaleConstant? Locale = null;
+        public readonly LocaleConstant? Locale;
 
         /// <summary>
         /// True if cctor that accepts multiple fields was used (name + count)
         /// </summary>
         private readonly bool _multipleFields;
 
-        private readonly TargetedDatabase? _addedInVersion = null;
+        private readonly TargetedDatabase? _addedInVersion;
 
-        private readonly TargetedDatabase? _removedInVersion = null;
+        private readonly TargetedDatabase? _removedInVersion;
 
         /// <summary>
         /// matches any version
@@ -217,13 +217,13 @@ namespace WowPacketParser.SQL
         public override string ToString()
         {
             if (Name == null)
-                return null;
+                return string.Empty;
 
             if (!_multipleFields)
                 return SQLUtil.AddBackQuotes(Name);
 
-            var result = new StringBuilder();
-            for (var i = 1; i <= Count; i++)
+            StringBuilder result = new StringBuilder();
+            for (int i = 1; i <= Count; i++)
             {
                 result.Append(SQLUtil.AddBackQuotes(Name + (StartAtZero ? i - 1 : i)));
                 if (i != Count)

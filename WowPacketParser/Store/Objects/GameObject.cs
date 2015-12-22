@@ -4,7 +4,6 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("gameobject")]
     public sealed class GameObject : WoWObject, IDataModel
     {
         // Fields from UPDATE_FIELDS

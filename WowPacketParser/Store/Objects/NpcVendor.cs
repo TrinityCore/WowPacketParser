@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using WowPacketParser.Misc;
+﻿using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects

@@ -25,7 +25,7 @@ namespace WowPacketParser.Store
 
         public static readonly DataBag<AreaPOI> AreaPOIs = new DataBag<AreaPOI>(new List<HotfixSQLOutput> { HotfixSQLOutput.area_poi });
         public static readonly DataBag<AreaPOIState> AreaPOIStates = new DataBag<AreaPOIState>(new List<HotfixSQLOutput> { HotfixSQLOutput.area_poi_state });
-        public static readonly DataBag<BattlePetSpecies> BattlePetSpecies = new DataBag<BattlePetSpecies>(new List<HotfixSQLOutput> { HotfixSQLOutput.battle_pet_species });
+        public static readonly DataBag<BattlePetSpecies> BattlePetSpeciesBag = new DataBag<BattlePetSpecies>(new List<HotfixSQLOutput> { HotfixSQLOutput.battle_pet_species });
         public static readonly DataBag<BroadcastText> BroadcastTexts = new DataBag<BroadcastText>(new List<HotfixSQLOutput> { HotfixSQLOutput.broadcast_text });
         public static readonly DataBag<ChrUpgradeTier> ChrUpgradeTiers = new DataBag<ChrUpgradeTier>(new List<HotfixSQLOutput> { HotfixSQLOutput.chr_upgrade });
         public static readonly DataBag<ChrUpgradeBucket> ChrUpgradeBuckets = new DataBag<ChrUpgradeBucket>(new List<HotfixSQLOutput> { HotfixSQLOutput.chr_upgrade });
@@ -33,8 +33,8 @@ namespace WowPacketParser.Store
         public static readonly DataBag<CreatureDB2> Creatures = new DataBag<CreatureDB2>(new List<HotfixSQLOutput> { HotfixSQLOutput.creatureDB2 });
         public static readonly DataBag<CreatureDifficulty> CreatureDifficulties = new DataBag<CreatureDifficulty>(new List<HotfixSQLOutput> { HotfixSQLOutput.creature_difficulty });
         public static readonly DataBag<CurvePoint> CurvePoints = new DataBag<CurvePoint>(new List<HotfixSQLOutput> { HotfixSQLOutput.curve_point });
-        public static readonly DataBag<GameObjects> GameObjects = new DataBag<GameObjects>(new List<HotfixSQLOutput> { HotfixSQLOutput.gameobjectDB2 });
-        public static readonly DataBag<Holidays> Holidays = new DataBag<Holidays>(new List<HotfixSQLOutput> { HotfixSQLOutput.holidays });
+        public static readonly DataBag<GameObjects> GameObjectsBag = new DataBag<GameObjects>(new List<HotfixSQLOutput> { HotfixSQLOutput.gameobjectDB2 });
+        public static readonly DataBag<Holidays> HolidaysBag = new DataBag<Holidays>(new List<HotfixSQLOutput> { HotfixSQLOutput.holidays });
         public static readonly DataBag<Item> Items = new DataBag<Item>(new List<HotfixSQLOutput> { HotfixSQLOutput.item });
         public static readonly DataBag<ItemAppearance> ItemAppearances = new DataBag<ItemAppearance>(new List<HotfixSQLOutput> { HotfixSQLOutput.item_appearance });
         public static readonly DataBag<ItemBonus> ItemBonuses = new DataBag<ItemBonus>(new List<HotfixSQLOutput> { HotfixSQLOutput.item_bonus });
@@ -50,17 +50,17 @@ namespace WowPacketParser.Store
         public static readonly DataBag<OverrideSpellData> OverrideSpellDatas = new DataBag<OverrideSpellData>(new List<HotfixSQLOutput> { HotfixSQLOutput.override_spell_data });
         public static readonly DataBag<PhaseXPhaseGroup> PhaseXPhaseGroups = new DataBag<PhaseXPhaseGroup>(new List<HotfixSQLOutput> { HotfixSQLOutput.phase_group });
         public static readonly DataBag<SceneScript> SceneScripts = new DataBag<SceneScript>(new List<HotfixSQLOutput> { HotfixSQLOutput.scene_script });
-        public static readonly DataBag<SpellAuraRestrictions> SpellAuraRestrictions = new DataBag<SpellAuraRestrictions>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_aura_restrictions });
-        public static readonly DataBag<SpellCastingRequirements> SpellCastingRequirements = new DataBag<SpellCastingRequirements>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_casting_requirements });
-        public static readonly DataBag<SpellClassOptions> SpellClassOptions = new DataBag<SpellClassOptions>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_class_options });
+        public static readonly DataBag<SpellAuraRestrictions> SpellAuraRestrictionsBag = new DataBag<SpellAuraRestrictions>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_aura_restrictions });
+        public static readonly DataBag<SpellCastingRequirements> SpellCastingRequirementsBag = new DataBag<SpellCastingRequirements>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_casting_requirements });
+        public static readonly DataBag<SpellClassOptions> SpellClassOptionsBag = new DataBag<SpellClassOptions>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_class_options });
         public static readonly DataBag<SpellEffectGroupSize> SpellEffectGroupSizes = new DataBag<SpellEffectGroupSize>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_effect_group_size });
         public static readonly DataBag<SpellLearnSpell> SpellLearnSpells = new DataBag<SpellLearnSpell>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_learn_spell });
         public static readonly DataBag<SpellMisc> SpellMiscs = new DataBag<SpellMisc>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_misc });
-        public static readonly DataBag<SpellTotems> SpellTotems = new DataBag<SpellTotems>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_totems });
+        public static readonly DataBag<SpellTotems> SpellTotemsBag = new DataBag<SpellTotems>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_totems });
         public static readonly DataBag<SpellPower> SpellPowers = new DataBag<SpellPower>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_power });
-        public static readonly DataBag<SpellReagents> SpellReagents = new DataBag<SpellReagents>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_power });
+        public static readonly DataBag<SpellReagents> SpellReagentsBag = new DataBag<SpellReagents>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_power });
         public static readonly DataBag<SpellRuneCost> SpellRuneCosts = new DataBag<SpellRuneCost>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_rune_cost });
-        public static readonly DataBag<TaxiNodes> TaxiNodes = new DataBag<TaxiNodes>(new List<HotfixSQLOutput> { HotfixSQLOutput.taxi_nodes });
+        public static readonly DataBag<TaxiNodes> TaxiNodesBag = new DataBag<TaxiNodes>(new List<HotfixSQLOutput> { HotfixSQLOutput.taxi_nodes });
         public static readonly DataBag<TaxiPath> TaxiPaths = new DataBag<TaxiPath>(new List<HotfixSQLOutput> { HotfixSQLOutput.taxi_path });
         public static readonly DataBag<TaxiPathNode> TaxiPathNodes = new DataBag<TaxiPathNode>(new List<HotfixSQLOutput> { HotfixSQLOutput.taxi_path_node });
         public static readonly DataBag<Toy> Toys = new DataBag<Toy>(new List<HotfixSQLOutput> { HotfixSQLOutput.toy });
@@ -102,7 +102,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<PlayerCreateInfo>StartPositions = new DataBag<PlayerCreateInfo>(new List<SQLOutput> { SQLOutput.playercreateinfo });
 
         // Gossips (MenuId, TextId)
-        public static readonly DataBag<GossipMenu> Gossips = new DataBag<GossipMenu>(new List<SQLOutput> { SQLOutput.gossip_menu_option });
+        public static readonly DataBag<GossipMenu> Gossips = new DataBag<GossipMenu>(new List<SQLOutput> { SQLOutput.gossip_menu });
         public static readonly DataBag<GossipMenuOption> GossipMenuOptions = new DataBag<GossipMenuOption>(new List<SQLOutput> { SQLOutput.gossip_menu_option }); 
 
         // Quest POI (QuestId, Id)
@@ -139,7 +139,7 @@ namespace WowPacketParser.Store
             Objects.Clear();
 
             CreatureDifficulties.Clear();
-            GameObjects.Clear();
+            GameObjectsBag.Clear();
             BroadcastTexts.Clear();
             SpellMiscs.Clear();
 

@@ -1,5 +1,4 @@
-﻿using JetBrains.Annotations;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 

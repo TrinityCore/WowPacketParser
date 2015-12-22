@@ -241,7 +241,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                     if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
                         !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
-                        Storage.GameObjects.Add(gameObjects, packet.TimeSpan);
+                        Storage.GameObjectsBag.Add(gameObjects, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.Item: // New structure - 6.0.2
@@ -429,7 +429,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                     if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
                         !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
-                        Storage.Holidays.Add(holiday, packet.TimeSpan);
+                        Storage.HolidaysBag.Add(holiday, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.ItemAppearance:
@@ -680,7 +680,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                     if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
                         !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
-                        Storage.SpellAuraRestrictions.Add(spellAuraRestrictions, packet.TimeSpan);
+                        Storage.SpellAuraRestrictionsBag.Add(spellAuraRestrictions, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.SpellCastingRequirements:
@@ -698,7 +698,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                     if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
                         !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
-                        Storage.SpellCastingRequirements.Add(spellCastingRequirements, packet.TimeSpan);
+                        Storage.SpellCastingRequirementsBag.Add(spellCastingRequirements, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.SpellClassOptions:
@@ -717,7 +717,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                     if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
                         !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
-                        Storage.SpellClassOptions.Add(spellClassOptions, packet.TimeSpan);
+                        Storage.SpellClassOptionsBag.Add(spellClassOptions, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.SpellEffectGroupSize:
@@ -765,7 +765,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                     if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
                         !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
-                        Storage.SpellTotems.Add(spellTotems, packet.TimeSpan);
+                        Storage.SpellTotemsBag.Add(spellTotems, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.SpellPower:
@@ -814,7 +814,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                     if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
                         !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
-                        Storage.SpellReagents.Add(spellReagents, packet.TimeSpan);
+                        Storage.SpellReagentsBag.Add(spellReagents, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.SpellRuneCost:
@@ -956,7 +956,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                     if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
                         !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
-                        Storage.TaxiNodes.Add(taxiNodes, packet.TimeSpan);
+                        Storage.TaxiNodesBag.Add(taxiNodes, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.TaxiPathNode:
@@ -1084,7 +1084,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                     if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
                         !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
-                        Storage.BattlePetSpecies.Add(battlePetSpecies, packet.TimeSpan);
+                        Storage.BattlePetSpeciesBag.Add(battlePetSpecies, packet.TimeSpan);
                     break;
                 }
                 case DB2Hash.OverrideSpellData:

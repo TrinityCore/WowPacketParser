@@ -4,7 +4,7 @@ namespace WowPacketParser.Store.Objects
 {
     public sealed class CreatureAddon : IDataModel
     {
-        [DBFieldName("guid")]
+        [DBFieldName("guid", true)]
         public string GUID;
 
         [DBFieldName("path_id")]

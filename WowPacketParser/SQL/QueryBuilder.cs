@@ -6,7 +6,7 @@ using WowPacketParser.Misc;
 
 namespace WowPacketParser.SQL
 {
-    public class SQLWhere<T> where T : IDataModel
+    public class SQLWhere<T> where T : IDataModel, new()
     {
         private readonly RowList<T> _conditions;
 
@@ -34,7 +34,7 @@ namespace WowPacketParser.SQL
                 whereClause.Append(field.Item1);
                 if (_conditions.Count == 1)
                 {
-                    whereClause.Append(" = ");
+                    whereClause.Append("=");
                     whereClause.Append(field.Item2.GetValue(_conditions.First().Data));
                 }
                 else
@@ -72,7 +72,7 @@ namespace WowPacketParser.SQL
 
                         whereClause.Append(field.Item1);
 
-                        whereClause.Append(" = ");
+                        whereClause.Append("=");
                         whereClause.Append(SQLUtil.ToSQLValue(value));
                         whereClause.Append(" AND ");
                     }
@@ -92,7 +92,7 @@ namespace WowPacketParser.SQL
     /// Represents a SQL SELECT statement of the specified data model.
     /// </summary>
     /// <typeparam name="T">The data model</typeparam>
-    public class SQLSelect<T> : ISQLQuery where T : IDataModel
+    public class SQLSelect<T> : ISQLQuery where T : IDataModel, new()
     {
         private readonly SQLWhere<T> _whereClause;
 
@@ -125,7 +125,7 @@ namespace WowPacketParser.SQL
         }
     }
 
-    public class SQLUpdate<T> : ISQLQuery where T : IDataModel
+    public class SQLUpdate<T> : ISQLQuery where T : IDataModel, new()
     {
         private readonly Dictionary<Row<T>, RowList<T>> _rows2;
 
@@ -160,7 +160,7 @@ namespace WowPacketParser.SQL
         }
     }
 
-    internal class SQLUpdateRow<T> : ISQLQuery where T : IDataModel
+    internal class SQLUpdateRow<T> : ISQLQuery where T : IDataModel, new()
     {
         /// <summary>
         /// <para>The row will be commented out</para>
@@ -243,7 +243,7 @@ namespace WowPacketParser.SQL
         }
     }
 
-    public class SQLInsert<T> : ISQLQuery where  T : IDataModel
+    public class SQLInsert<T> : ISQLQuery where  T : IDataModel, new()
     {
         private readonly RowList<T> _rows;
         private readonly bool _withDelete;
@@ -344,7 +344,7 @@ namespace WowPacketParser.SQL
     }
 
     internal class SQLInsertRow<T> : ISQLQuery
-        where T : IDataModel
+        where T : IDataModel, new()
     {
         private readonly Row<T> _row; 
 
@@ -427,13 +427,12 @@ namespace WowPacketParser.SQL
         }
     }
 
-    public class SQLDelete<T> : ISQLQuery where T: IDataModel
+    public class SQLDelete<T> : ISQLQuery where T: IDataModel, new()
     {
         private readonly bool _between;
 
         private readonly RowList<T> _rows;
-        private Tuple<string, string> ValuesBetweenDouble { get; set; }
-        private Tuple<string, string, string> ValuesBetweenTriple { get; set; }
+        private readonly Tuple<string, string> _valuesBetweenDouble;
 
         /// <summary>
         /// <para>Creates a delete query with a single primary key and an arbitrary number of values</para>
@@ -454,18 +453,7 @@ namespace WowPacketParser.SQL
         /// <param name="values">Pair of values</param>
         public SQLDelete(Tuple<string, string> values)
         {
-            ValuesBetweenDouble = values;
-            _between = true;
-        }
-
-        /// <summary>
-        /// <para>Creates a delete query that deletes between two values</para>
-        /// <code>DELETE FROM `tableName` WHERE `primaryKey` BETWEEN values[0] AND values[n];</code>
-        /// </summary>
-        /// <param name="values">Pair of values</param>
-        public SQLDelete(Tuple<string, string, string> values)
-        {
-            ValuesBetweenTriple = values;
+            _valuesBetweenDouble = values;
             _between = true;
         }
 
@@ -487,9 +475,9 @@ namespace WowPacketParser.SQL
 
                 query.Append(pk.Item1);
                 query.Append(" BETWEEN ");
-                query.Append(ValuesBetweenDouble.Item1);
+                query.Append(_valuesBetweenDouble.Item1);
                 query.Append(" AND ");
-                query.Append(ValuesBetweenDouble.Item2);
+                query.Append(_valuesBetweenDouble.Item2);
                 query.Append(";");
             }
             else

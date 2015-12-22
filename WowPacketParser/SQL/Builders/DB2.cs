@@ -52,15 +52,15 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod]
         public static string BattlePetSpecies()
         {
-            if (Storage.BattlePetSpecies.IsEmpty())
+            if (Storage.BattlePetSpeciesBag.IsEmpty())
                 return string.Empty;
 
             if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.battle_pet_species))
                 return string.Empty;
 
-            var templatesDb = SQLDatabase.Get(Storage.BattlePetSpecies, Settings.HotfixesDatabase);
+            var templatesDb = SQLDatabase.Get(Storage.BattlePetSpeciesBag, Settings.HotfixesDatabase);
 
-            return SQLUtil.Compare(Storage.BattlePetSpecies, templatesDb, StoreNameType.None);
+            return SQLUtil.Compare(Storage.BattlePetSpeciesBag, templatesDb, StoreNameType.None);
         }
 
         [BuilderMethod]
@@ -164,15 +164,15 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod]
         public static string HolidayData()
         {
-            if (Storage.Holidays.IsEmpty())
+            if (Storage.HolidaysBag.IsEmpty())
                 return string.Empty;
 
             if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.holidays))
                 return string.Empty;
 
-            var templatesDb = SQLDatabase.Get(Storage.Holidays, Settings.HotfixesDatabase);
+            var templatesDb = SQLDatabase.Get(Storage.HolidaysBag, Settings.HotfixesDatabase);
 
-            return SQLUtil.Compare(Storage.Holidays, templatesDb, StoreNameType.None);
+            return SQLUtil.Compare(Storage.HolidaysBag, templatesDb, StoreNameType.None);
         }
 
         [BuilderMethod]
@@ -251,7 +251,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.ItemEffects.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.item_extended_cost))
+            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.item_effect))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.ItemEffects, Settings.HotfixesDatabase);
@@ -279,7 +279,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.ItemModifiedAppearances.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.item_extended_cost))
+            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.item_modified_appearance))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.ItemModifiedAppearances, Settings.HotfixesDatabase);
@@ -304,15 +304,15 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod]
         public static string GameObjects()
         {
-            if (Storage.GameObjects.IsEmpty())
+            if (Storage.GameObjectsBag.IsEmpty())
                 return string.Empty;
 
             if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.gameobjectDB2))
                 return string.Empty;
 
-            var templatesDb = SQLDatabase.Get(Storage.GameObjects, Settings.HotfixesDatabase);
+            var templatesDb = SQLDatabase.Get(Storage.GameObjectsBag, Settings.HotfixesDatabase);
 
-            return SQLUtil.Compare(Storage.GameObjects, templatesDb, StoreNameType.GameObject);
+            return SQLUtil.Compare(Storage.GameObjectsBag, templatesDb, StoreNameType.GameObject);
         }
 
         [BuilderMethod]
@@ -402,43 +402,43 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod]
         public static string SpellAuraRestrictions()
         {
-            if (Storage.SpellAuraRestrictions.IsEmpty())
+            if (Storage.SpellAuraRestrictionsBag.IsEmpty())
                 return string.Empty;
 
             if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.spell_aura_restrictions))
                 return string.Empty;
 
-            var templatesDb = SQLDatabase.Get(Storage.SpellAuraRestrictions, Settings.HotfixesDatabase);
+            var templatesDb = SQLDatabase.Get(Storage.SpellAuraRestrictionsBag, Settings.HotfixesDatabase);
 
-            return SQLUtil.Compare(Storage.SpellAuraRestrictions, templatesDb, StoreNameType.None);
+            return SQLUtil.Compare(Storage.SpellAuraRestrictionsBag, templatesDb, StoreNameType.None);
         }
 
         [BuilderMethod]
         public static string SpellCastingRequirements()
         {
-            if (Storage.SpellCastingRequirements.IsEmpty())
+            if (Storage.SpellCastingRequirementsBag.IsEmpty())
                 return string.Empty;
 
             if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.spell_casting_requirements))
                 return string.Empty;
 
-            var templatesDb = SQLDatabase.Get(Storage.SpellCastingRequirements, Settings.HotfixesDatabase);
+            var templatesDb = SQLDatabase.Get(Storage.SpellCastingRequirementsBag, Settings.HotfixesDatabase);
 
-            return SQLUtil.Compare(Storage.SpellCastingRequirements, templatesDb, StoreNameType.None);
+            return SQLUtil.Compare(Storage.SpellCastingRequirementsBag, templatesDb, StoreNameType.None);
         }
 
         [BuilderMethod]
         public static string SpellClassOptions()
         {
-            if (Storage.SpellClassOptions.IsEmpty())
+            if (Storage.SpellClassOptionsBag.IsEmpty())
                 return string.Empty;
 
             if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.spell_class_options))
                 return string.Empty;
 
-            var templatesDb = SQLDatabase.Get(Storage.SpellClassOptions, Settings.HotfixesDatabase);
+            var templatesDb = SQLDatabase.Get(Storage.SpellClassOptionsBag, Settings.HotfixesDatabase);
 
-            return SQLUtil.Compare(Storage.SpellClassOptions, templatesDb, StoreNameType.None);
+            return SQLUtil.Compare(Storage.SpellClassOptionsBag, templatesDb, StoreNameType.None);
         }
 
         [BuilderMethod]
@@ -500,15 +500,15 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod]
         public static string SpellReagents()
         {
-            if (Storage.SpellReagents.IsEmpty())
+            if (Storage.SpellReagentsBag.IsEmpty())
                 return string.Empty;
 
             if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.spell_power))
                 return string.Empty;
 
-            var templatesDb = SQLDatabase.Get(Storage.SpellReagents, Settings.HotfixesDatabase);
+            var templatesDb = SQLDatabase.Get(Storage.SpellReagentsBag, Settings.HotfixesDatabase);
 
-            return SQLUtil.Compare(Storage.SpellReagents, templatesDb, StoreNameType.None);
+            return SQLUtil.Compare(Storage.SpellReagentsBag, templatesDb, StoreNameType.None);
         }
 
         public static string SpellRuneCost()
@@ -516,7 +516,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.SpellRuneCosts.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.spell_power))
+            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.spell_rune_cost))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.SpellRuneCosts, Settings.HotfixesDatabase);
@@ -527,28 +527,28 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod]
         public static string SpellTotems()
         {
-            if (Storage.SpellTotems.IsEmpty())
+            if (Storage.SpellTotemsBag.IsEmpty())
                 return string.Empty;
 
             if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.spell_totems))
                 return string.Empty;
 
-            var templatesDb = SQLDatabase.Get(Storage.SpellTotems, Settings.HotfixesDatabase);
+            var templatesDb = SQLDatabase.Get(Storage.SpellTotemsBag, Settings.HotfixesDatabase);
 
-            return SQLUtil.Compare(Storage.SpellTotems, templatesDb, StoreNameType.None);
+            return SQLUtil.Compare(Storage.SpellTotemsBag, templatesDb, StoreNameType.None);
         }
 
         public static string TaxiNodes()
         {
-            if (Storage.TaxiNodes.IsEmpty())
+            if (Storage.TaxiNodesBag.IsEmpty())
                 return string.Empty;
 
             if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.taxi_nodes))
                 return string.Empty;
 
-            var templatesDb = SQLDatabase.Get(Storage.TaxiNodes, Settings.HotfixesDatabase);
+            var templatesDb = SQLDatabase.Get(Storage.TaxiNodesBag, Settings.HotfixesDatabase);
 
-            return SQLUtil.Compare(Storage.TaxiNodes, templatesDb, StoreNameType.None);
+            return SQLUtil.Compare(Storage.TaxiNodesBag, templatesDb, StoreNameType.None);
         }
 
         public static string TaxiPathNode()

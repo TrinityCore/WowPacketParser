@@ -101,10 +101,12 @@ namespace WowPacketParser.SQL
                     broadcastText.MaleText = Convert.ToString(reader["MaleText"]);
                     broadcastText.FemaleText = Convert.ToString(reader["FemaleText"]);
 
+                    broadcastText.EmoteID = new uint?[3];
                     broadcastText.EmoteID[0] = Convert.ToUInt32(reader["EmoteID1"]);
                     broadcastText.EmoteID[1] = Convert.ToUInt32(reader["EmoteID2"]);
                     broadcastText.EmoteID[2] = Convert.ToUInt32(reader["EmoteID3"]);
 
+                    broadcastText.EmoteDelay = new uint?[3];
                     broadcastText.EmoteDelay[0] = Convert.ToUInt32(reader["EmoteDelay1"]);
                     broadcastText.EmoteDelay[1] = Convert.ToUInt32(reader["EmoteDelay2"]);
                     broadcastText.EmoteDelay[2] = Convert.ToUInt32(reader["EmoteDelay3"]);
@@ -148,15 +150,15 @@ namespace WowPacketParser.SQL
         }
 
         public static RowList<T> Get<T>(DataBag<T> conditionList, string database = null)
-            where T : IDataModel
+            where T : IDataModel, new()
         {
             var cond = new RowList<T>();
             cond.AddRange(conditionList.Select(c => c.Item1));
-            return Get(cond);
+            return Get(cond, database);
         } 
 
         public static RowList<T> Get<T>(RowList<T> rowList = null, string database = null)
-            where T : IDataModel
+            where T : IDataModel, new()
         {
             // TODO: Add new config option "Verify data against DB"
             if (!SQLConnector.Enabled)

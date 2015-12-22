@@ -564,7 +564,6 @@
     <Compile Include="Store\Objects\SpellRuneCost.cs" />
     <Compile Include="Store\Objects\SpellTotems.cs" />
     <Compile Include="Store\Objects\PlayerCreateInfoAction.cs" />
-    <Compile Include="Store\Objects\StartItem.cs" />
     <Compile Include="Store\Objects\PlayerCreateInfo.cs" />
     <Compile Include="Store\Objects\TaxiNodes.cs" />
     <Compile Include="Store\Objects\TaxiPath.cs" />

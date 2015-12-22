@@ -12,7 +12,6 @@
         creatureDB2,
         creature_difficulty,
         curve_point,
-        defense_message,
         gameobjectDB2,
         holidays,
         hotfix_data,
@@ -43,7 +42,7 @@
         taxi_nodes,
         taxi_path,
         taxi_path_node,
-        toy,
+        toy
 // ReSharper restore InconsistentNaming
     }
 }

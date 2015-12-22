@@ -47,7 +47,7 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.ObjectNames))
                 return string.Empty;
 
-            var templateDb = SQLDatabase.Get(Storage.ObjectNames);
+            var templateDb = SQLDatabase.Get(Storage.ObjectNames, Settings.WPPDatabase);
 
             return SQLUtil.Compare(Storage.ObjectNames, templateDb, StoreNameType.None);
         }
@@ -62,7 +62,7 @@ namespace WowPacketParser.SQL.Builders
                 if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.SniffData) && !Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.SniffDataOpcodes))
                     return string.Empty;
 
-            var templateDb = SQLDatabase.Get(Storage.SniffData);
+            var templateDb = SQLDatabase.Get(Storage.SniffData, Settings.WPPDatabase);
 
             return SQLUtil.Compare(Storage.SniffData, templateDb, x => string.Empty);
         }

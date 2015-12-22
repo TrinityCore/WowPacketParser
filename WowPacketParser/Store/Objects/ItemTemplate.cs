@@ -7,7 +7,7 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("item_template")]
     public sealed class ItemTemplate : IDataModel
     {
-        [DBFieldName("entry")]
+        [DBFieldName("entry", true)]
         public uint? Entry;
 
         [DBFieldName("class")]

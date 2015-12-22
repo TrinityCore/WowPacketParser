@@ -37,7 +37,7 @@ namespace WowPacketParser.SQL.Builders
 
                 string auras = string.Empty;
                 string commentAuras = string.Empty;
-                if (npc.Auras != null && npc.Auras.Count() != 0)
+                if (npc.Auras != null && npc.Auras.Count != 0)
                 {
                     foreach (Aura aura in npc.Auras)
                     {
@@ -68,7 +68,7 @@ namespace WowPacketParser.SQL.Builders
                 if (addons.ContainsKey(addon))
                     continue;
 
-                addons.Add(addon, null);
+                addons.Add(addon);
             }
 
             var addonsDb = SQLDatabase.Get(addons);
@@ -121,7 +121,7 @@ namespace WowPacketParser.SQL.Builders
                 model.CombatReach = npc.CombatReach.GetValueOrDefault(1.5f) / scale;
                 model.Gender = npc.Gender.GetValueOrDefault(Gender.Male);
 
-                models.Add(model, null);
+                models.Add(model);
             }
 
             var modelsDb = SQLDatabase.Get(models);
@@ -201,7 +201,7 @@ namespace WowPacketParser.SQL.Builders
                         break;
                 }
 
-                equips.Add(equip, null);
+                equips.Add(equip);
             }
 
             var equipsDb = SQLDatabase.Get(equips);
@@ -211,7 +211,7 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod]
         public static string Gossip()
         {
-            if (Storage.Gossips.IsEmpty())
+            if (Storage.Gossips.IsEmpty() && Storage.GossipMenuOptions.IsEmpty())
                 return string.Empty;
 
             string result = "";
@@ -233,7 +233,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.GossipPOIs.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu_option))
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.points_of_interest))
                 return string.Empty;
 
             string result = string.Empty;
@@ -259,7 +259,7 @@ namespace WowPacketParser.SQL.Builders
 
                 var menuOptions = new DataBag<GossipMenuOption>();
                 foreach (var u in gossipPOIsTable)
-                    menuOptions.Add(new GossipMenuOption {ID = u.Key.Item2, MenuID = u.Key.Item1, ActionPoiID = u.Value}, null);
+                    menuOptions.Add(new GossipMenuOption {ID = u.Key.Item2, MenuID = u.Key.Item1, ActionPoiID = u.Value});
 
                 result += SQLUtil.Compare(menuOptions, SQLDatabase.Get(menuOptions), StoreNameType.None);
             }
@@ -333,11 +333,11 @@ namespace WowPacketParser.SQL.Builders
             "Warrior Trainer"
         };
 
-        private static string GetSubName(int Entry, bool withEntry)
+        /*private static string GetSubName(int entry, bool withEntry)
         {
-            var name = StoreGetters.GetName(StoreNameType.Unit, Entry, withEntry);
-            var firstIndex = name.LastIndexOf('<');
-            var lastIndex = name.LastIndexOf('>');
+            string name = StoreGetters.GetName(StoreNameType.Unit, entry, withEntry);
+            int firstIndex = name.LastIndexOf('<');
+            int lastIndex = name.LastIndexOf('>');
             if (firstIndex != -1 && lastIndex != -1)
                 return name.Substring(firstIndex + 1, lastIndex - firstIndex - 1);
 
@@ -352,7 +352,7 @@ namespace WowPacketParser.SQL.Builders
                 return (uint)NPCFlags.ClassTrainer;
 
             return 0;
-        }
+        }*/
 
         // Non-WDB data but nevertheless data that should be saved to creature_template
         /*[BuilderMethod(Units = true)]
