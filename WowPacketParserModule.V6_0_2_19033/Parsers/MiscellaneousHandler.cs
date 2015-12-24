@@ -245,7 +245,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_WORLD_SERVER_INFO)]
         public static void HandleWorldServerInfo(Packet packet)
         {
-            packet.ReadInt32("DifficultyID");
+            CoreParsers.MovementHandler.CurrentDifficultyID = packet.ReadUInt32<DifficultyId>("DifficultyID");
             packet.ReadByte("IsTournamentRealm");
             packet.ReadTime("WeeklyReset");
 
@@ -354,7 +354,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadPackedGuid128("GuildGUID", i);
 
                 packet.ReadInt32("GuildVirtualRealmAddress", i);
-                packet.ReadInt32("AreaID", i);
+                packet.ReadInt32<AreaId>("AreaID", i);
 
                 packet.ResetBitReader();
                 var bits460 = packet.ReadBits(7);
@@ -457,7 +457,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var int16 = packet.ReadInt32("FlagsCount");
 
             for (int i = 0; i < int32; i++)
-                packet.ReadInt32("ItemID", i);
+                packet.ReadInt32<ItemId>("ItemID", i);
 
             for (int i = 0; i < int16; i++)
                 packet.ReadInt32("Flags", i);
@@ -483,7 +483,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_ZONE_UNDER_ATTACK)]
         public static void HandleZoneUpdate(Packet packet)
         {
-            packet.ReadInt32<ZoneId>("AreaID");
+            packet.ReadInt32<AreaId>("AreaID");
         }
 
         [Parser(Opcode.CMSG_QUERY_PAGE_TEXT)]
@@ -829,7 +829,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_TOY_SET_FAVORITE)]
         public static void HandleToySetFavorite(Packet packet)
         {
-            packet.ReadUInt32("ItemID");
+            packet.ReadUInt32<ItemId>("ItemID");
             packet.ReadBit("Favorite");
         }
     }

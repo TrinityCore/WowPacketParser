@@ -151,7 +151,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt16("Unk200000");
 
             if (bit770)
-                packet.ReadInt16("ZoneId");
+                packet.ReadInt16<ZoneId>("ZoneId");
 
             if (bit756)
                 packet.ReadInt16("Unk2000000");
@@ -269,7 +269,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt16("MaxPower");
             packet.ReadInt16("Level");
             packet.ReadInt16("Unk200000");
-            packet.ReadInt16("ZoneId");
+            packet.ReadInt16<ZoneId>("ZoneId");
 
             packet.ReadInt16("Unk2000000");
             packet.ReadInt32("Unk4000000");

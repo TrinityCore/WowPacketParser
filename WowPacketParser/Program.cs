@@ -7,6 +7,7 @@ using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing.Parsers;
 using WowPacketParser.SQL;
+using WowPacketParser.DBC;
 
 namespace WowPacketParser
 {
@@ -45,6 +46,9 @@ namespace WowPacketParser
                 Filters.Initialize();
 
             SQLConnector.ReadDB();
+
+            if (Settings.UseDBC)
+                DBC.DBC.Load();
 
             var count = 0;
             foreach (var file in files)

@@ -118,12 +118,13 @@ namespace WowPacketParser.SQL.Builders
                     row.AddValue("orientation", creature.Movement.TransportOffset.O);
                 }
 
-                row.AddValue("spawntimesecs", creature.GetDefaultSpawnTime());
+                row.AddValue("spawntimesecs", creature.GetDefaultSpawnTime(creature.DifficultyID));
                 row.AddValue("spawndist", spawnDist);
                 row.AddValue("MovementType", movementType);
 
                 row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
-                row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, creature.Area, false) + ")";
+                row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, creature.Area, false) + " - ";
+                row.Comment += "Difficulty: " + StoreGetters.GetName(StoreNameType.Difficulty, (int)creature.DifficultyID, false) + ")";
 
 
                 var auras = string.Empty;
@@ -297,11 +298,12 @@ namespace WowPacketParser.SQL.Builders
                     row.AddValue("rotation3", 0);
                 }
 
-                row.AddValue("spawntimesecs", go.GetDefaultSpawnTime());
+                row.AddValue("spawntimesecs", go.GetDefaultSpawnTime(go.DifficultyID));
                 row.AddValue("animprogress", animprogress);
                 row.AddValue("state", state);
                 row.Comment = StoreGetters.GetName(StoreNameType.GameObject, (int)gameobject.Key.GetEntry(), false);
-                row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, go.Area, false) + ")";
+                row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, go.Area, false) + " - ";
+                row.Comment += "Difficulty: " + StoreGetters.GetName(StoreNameType.Difficulty, (int)go.DifficultyID, false) + ")";
 
                 if (go.IsTemporarySpawn())
                 {

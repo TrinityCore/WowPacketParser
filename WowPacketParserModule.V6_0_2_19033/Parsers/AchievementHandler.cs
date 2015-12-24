@@ -78,7 +78,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Sender");
             packet.ReadPackedGuid128("Earner");
-            packet.ReadUInt32("AchievementID");
+            packet.ReadUInt32<AchievementId>("AchievementID");
             packet.ReadPackedTime("Time");
             packet.ReadUInt32("EarnerNativeRealm");
             packet.ReadUInt32("EarnerVirtualRealm");

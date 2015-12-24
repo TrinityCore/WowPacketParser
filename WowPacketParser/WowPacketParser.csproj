@@ -89,6 +89,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DBFilesClient.NET">
+      <HintPath>.\DBFilesClient.NET.dll</HintPath>
+    </Reference>
     <Reference Include="Ionic.Zip, Version=1.9.6.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetZip.1.9.6\lib\net20\Ionic.Zip.dll</HintPath>
       <Private>True</Private>
@@ -113,6 +116,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DBC\DataStoreFileNameAttribute.cs" />
+    <Compile Include="DBC\DBC.cs" />
+    <Compile Include="DBC\Structures\Warlords of Draenor\AchievementEntry.cs" />
+    <Compile Include="DBC\Structures\Warlords of Draenor\AreaTableEntry.cs" />
+    <Compile Include="DBC\Structures\Warlords of Draenor\CreatureFamilyEntry.cs" />
+    <Compile Include="DBC\Structures\Warlords of Draenor\DifficultyEntry.cs" />
+    <Compile Include="DBC\Structures\Warlords of Draenor\ItemEntry.cs" />
+    <Compile Include="DBC\Structures\Warlords of Draenor\ItemSparseEntry.cs" />
+    <Compile Include="DBC\Structures\Warlords of Draenor\MapDifficultyEntry.cs" />
+    <Compile Include="DBC\Structures\Warlords of Draenor\MapEntry.cs" />
+    <Compile Include="DBC\Structures\Warlords of Draenor\SpellEntry.cs" />
     <Compile Include="Enums\AccountDataType.cs" />
     <Compile Include="Enums\ActionButtonType.cs" />
     <Compile Include="Enums\AIReaction.cs" />
@@ -570,7 +584,9 @@
     <Compile Include="Enums\GuildNewsType.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
