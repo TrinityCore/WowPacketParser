@@ -82,7 +82,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             // Item
             for (var k = 0; k < int200; ++k)
             {
-                packet.ReadInt32("ItemID", idx, k);
+                packet.ReadInt32<ItemId>("ItemID", idx, k);
                 packet.ReadInt32("Quantity", idx, k);
             }
 

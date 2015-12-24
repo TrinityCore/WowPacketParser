@@ -15,7 +15,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadByte("ListPosition", idx);
             var race = packet.ReadByteE<Race>("RaceID", idx);
             var klass = packet.ReadByteE<Class>("ClassID", idx);
-            packet.ReadByte("SexID", idx);
+            packet.ReadByteE<Gender>("SexID", idx);
             packet.ReadByte("SkinID", idx);
             packet.ReadByte("FaceID", idx);
             packet.ReadByte("HairStyle", idx);
@@ -26,8 +26,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadByte("CustomDisplay", idx, j);
 
             packet.ReadByte("ExperienceLevel", idx);
-            var zone = packet.ReadUInt32("ZoneID", idx);
-            var mapId = packet.ReadUInt32("MapID", idx);
+            var zone = packet.ReadUInt32<ZoneId>("ZoneID", idx);
+            var mapId = packet.ReadUInt32<MapId>("MapID", idx);
 
             var pos = packet.ReadVector3("PreloadPos", idx);
 

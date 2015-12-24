@@ -77,7 +77,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandlePetSpells(Packet packet)
         {
             packet.ReadPackedGuid128("PetGUID");
-            packet.ReadInt16("CreatureFamily");
+            packet.ReadInt16<CreatureFamilyId>("CreatureFamily");
             packet.ReadInt16("Specialization");
             packet.ReadInt32("TimeLimit");
             ReadPetFlags(packet, "PetModeAndOrders");

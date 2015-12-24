@@ -126,7 +126,7 @@ namespace WowPacketParser.SQL.Builders
                     row.Data.Orientation = creature.Movement.TransportOffset.O;
                 }
 
-                row.Data.SpawnTimeSecs = creature.GetDefaultSpawnTime();
+                row.Data.SpawnTimeSecs = creature.GetDefaultSpawnTime(creature.DifficultyID);
                 row.Data.SpawnDist = spawnDist;
                 row.Data.MovementType = movementType;
 
@@ -141,7 +141,8 @@ namespace WowPacketParser.SQL.Builders
                 row.Data.DynamicFlag = 0;
 
                 row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
-                row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, creature.Area, false) + ")";
+                row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, creature.Area, false) + " - ";
+                row.Comment += "Difficulty: " + StoreGetters.GetName(StoreNameType.Difficulty, (int)creature.DifficultyID, false) + ")";
 
                 string auras = string.Empty;
                 string commentAuras = string.Empty;
@@ -340,7 +341,7 @@ namespace WowPacketParser.SQL.Builders
                         addonRows.Add(addonRow);
                 }
 
-                row.Data.SpawnTimeSecs = (int)go.GetDefaultSpawnTime();
+                row.Data.SpawnTimeSecs = go.GetDefaultSpawnTime(go.DifficultyID);
                 row.Data.AnimProgress = animprogress;
                 row.Data.State = state;
 
@@ -350,7 +351,8 @@ namespace WowPacketParser.SQL.Builders
                 row.Data.PhaseGroup = 0;
 
                 row.Comment = StoreGetters.GetName(StoreNameType.GameObject, (int)gameobject.Key.GetEntry(), false);
-                row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, go.Area, false) + ")";
+                row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, go.Area, false) + " - ";
+                row.Comment += "Difficulty: " + StoreGetters.GetName(StoreNameType.Difficulty, (int)go.DifficultyID, false) + ")";
 
                 if (go.IsTemporarySpawn())
                 {

@@ -14,6 +14,7 @@ namespace WowPacketParser.Parsing.Parsers
         [ThreadStatic]
         public static uint CurrentMapId;
 
+        public static uint CurrentDifficultyID = 1;
         public static int CurrentPhaseMask = 1;
 
         public static readonly ConcurrentBag<ushort> ActivePhases = new ConcurrentBag<ushort>();

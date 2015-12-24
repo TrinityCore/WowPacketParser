@@ -46,6 +46,10 @@ namespace WowPacketParser.Misc
         public static readonly string HotfixesDatabase = Conf.GetString("HotfixesDatabase", "hotfixes");
         public static readonly string CharacterSet = Conf.GetString("CharacterSet", "utf8");
 
+        // DB2
+        public static readonly string DBCPath = Conf.GetString("DbcPath", $"\\dbc");
+        public static readonly bool UseDBC = Conf.GetBoolean("UseDBC", false);
+
         private static ulong GetSQLOutputFlag()
         {
             var names = Enum.GetNames(typeof(SQLOutput));

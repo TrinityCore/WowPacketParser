@@ -121,7 +121,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadPackedGuid128("Guid", i);
 
                 packet.ReadUInt32("RankID", i);
-                packet.ReadUInt32("AreaID", i);
+                packet.ReadUInt32<AreaId>("AreaID", i);
                 packet.ReadUInt32("PersonalAchievementPoints", i);
                 packet.ReadUInt32("GuildReputation", i);
 
@@ -297,7 +297,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var size = packet.ReadUInt32("RewardItemsCount");
             for (int i = 0; i < size; i++)
             {
-                packet.ReadUInt32("ItemID", i);
+                packet.ReadUInt32<ItemId>("ItemID", i);
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
                     packet.ReadUInt32("Unk4", i);
@@ -414,7 +414,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadInt64("Money", i);
 
                 if (bit44)
-                    packet.ReadInt32("ItemID", i);
+                    packet.ReadInt32<ItemId>("ItemID", i);
 
                 if (bit52)
                     packet.ReadInt32("Count", i);
@@ -964,7 +964,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("GuildBankSwapItems");
             packet.ReadByte("BankTab");
             packet.ReadByte("BankSlot");
-            packet.ReadInt32("ItemID");
+            packet.ReadInt32<ItemId>("ItemID");
             packet.ReadByte("BankTab1");
             packet.ReadByte("BankSlot1");
             packet.ReadInt32("ItemID1");
