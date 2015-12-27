@@ -30,6 +30,10 @@ namespace WowPacketParser.Misc
                     if (DBC.DBC.Achievement.ContainsKey(entry))
                         return DBC.DBC.Achievement[entry].Title;
                     break;
+                case StoreNameType.Criteria:
+                    if (DBC.DBC.CriteriaStores.ContainsKey((ushort) entry))
+                        return DBC.DBC.CriteriaStores[(ushort) entry];
+                    break;
                 case StoreNameType.Map:
                     if (DBC.DBC.Map.ContainsKey(entry))
                         return DBC.DBC.Map[entry].MapName;

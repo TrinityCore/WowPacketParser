@@ -15,6 +15,7 @@ namespace WowPacketParser.DBC
         public static Storage<AreaTableEntry> AreaTable = new Storage<AreaTableEntry>(GetPath(), "AreaTable.db2");
         public static Storage<AchievementEntry> Achievement = new Storage<AchievementEntry>(GetPath(), "Achievement.db2");
         public static Storage<CreatureFamilyEntry> CreatureFamily = new Storage<CreatureFamilyEntry>(GetPath(), "CreatureFamily.db2");
+        public static Storage<CriteriaTreeEntry> CriteriaTree = new Storage<CriteriaTreeEntry>(GetPath(), "CriteriaTree.db2");
         public static Storage<DifficultyEntry> Difficulty = new Storage<DifficultyEntry>(GetPath(), "Difficulty.db2");
         public static Storage<ItemEntry> Item = new Storage<ItemEntry>(GetPath(), "Item.db2");
         public static Storage<ItemSparseEntry> ItemSparse = new Storage<ItemSparseEntry>(GetPath(), "Item-sparse.db2");
@@ -89,9 +90,38 @@ namespace WowPacketParser.DBC
                         MapSpawnMaskStores.Add(mapDifficulty.Value.MapID, difficultyID);
                 }
             }
+
+            if (CriteriaTree != null && Achievement != null)
+            {
+                ICollection<AchievementEntry> achievementLists = Achievement.Values;
+                var achievements = achievementLists.GroupBy(achievement => achievement.CriteriaTree)
+                    .ToDictionary(group => group.Key, group => group.ToList());
+
+                foreach (var criteriaTree in CriteriaTree)
+                {
+                    string result = "";
+                    List<AchievementEntry> achievementList;
+                    ushort criteriaTreeID = criteriaTree.Value.Parent > 0 ? criteriaTree.Value.Parent : (ushort)criteriaTree.Key;
+
+                    if (achievements.TryGetValue(criteriaTreeID, out achievementList))
+                        foreach (var achievement in achievementList)
+                            result = $"AchievementID: {achievement.ID} Description: \"{ achievement.Description }\"";
+
+                    if (!CriteriaStores.ContainsKey((ushort)criteriaTree.Value.CriteriaID))
+                    {
+                        if (criteriaTree.Value.Description != string.Empty)
+                            result += $" - CriteriaDescription: \"{criteriaTree.Value.Description }\"";
+
+                        CriteriaStores.Add((ushort)criteriaTree.Value.CriteriaID, result);
+                    }
+                    else
+                        CriteriaStores[(ushort)criteriaTree.Value.CriteriaID] += $" / CriteriaDescription: \"{ criteriaTree.Value.Description }\"";
+                }
+            }
         }
 
         public static readonly Dictionary<uint, string> Zones = new Dictionary<uint, string>();
         public static readonly Dictionary<int, int> MapSpawnMaskStores = new Dictionary<int, int>();
+        public static Dictionary<ushort, string> CriteriaStores = new Dictionary<ushort, string>();
     }
 }
