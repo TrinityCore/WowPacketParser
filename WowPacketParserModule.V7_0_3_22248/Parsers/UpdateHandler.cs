@@ -634,7 +634,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     }
                 }
 
-                packet.AddValue(key, value, index);
+                if (key == UnitField.UNIT_FIELD_FACTIONTEMPLATE.ToString()) // HACK...
+                    packet.AddValue(key, value + $" ({ StoreGetters.GetName(StoreNameType.Faction, (int)blockVal.UInt32Value, false) })", index);
+                else
+                    packet.AddValue(key, value, index);
+
                 dict.Add(i, blockVal);
             }
 

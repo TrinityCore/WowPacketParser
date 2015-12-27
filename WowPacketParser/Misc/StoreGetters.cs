@@ -54,6 +54,10 @@ namespace WowPacketParser.Misc
                     if (DBC.DBC.CreatureFamily.ContainsKey(entry))
                         return DBC.DBC.CreatureFamily[entry].Name;
                     break;
+                case StoreNameType.Faction:
+                    if (DBC.DBC.FactionStores.ContainsKey((uint)entry))
+                        return DBC.DBC.FactionStores[(uint)entry];
+                    break;
             }
 
             if (!SQLConnector.Enabled)

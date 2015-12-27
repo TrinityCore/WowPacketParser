@@ -7,6 +7,7 @@ using System.Reflection;
 using DBFilesClient.NET;
 using WowPacketParser.DBC.Structures;
 using WowPacketParser.Misc;
+using WowPacketParser.Store;
 
 namespace WowPacketParser.DBC
 {
@@ -17,6 +18,8 @@ namespace WowPacketParser.DBC
         public static Storage<CreatureFamilyEntry> CreatureFamily = new Storage<CreatureFamilyEntry>(GetPath(), "CreatureFamily.db2");
         public static Storage<CriteriaTreeEntry> CriteriaTree = new Storage<CriteriaTreeEntry>(GetPath(), "CriteriaTree.db2");
         public static Storage<DifficultyEntry> Difficulty = new Storage<DifficultyEntry>(GetPath(), "Difficulty.db2");
+        public static Storage<FactionEntry> Faction = new Storage<FactionEntry>(GetPath(), "Faction.db2");
+        public static Storage<FactionTemplateEntry> FactionTemplate = new Storage<FactionTemplateEntry>(GetPath(), "FactionTemplate.db2");
         public static Storage<ItemEntry> Item = new Storage<ItemEntry>(GetPath(), "Item.db2");
         public static Storage<ItemSparseEntry> ItemSparse = new Storage<ItemSparseEntry>(GetPath(), "Item-sparse.db2");
         public static Storage<MapEntry> Map = new Storage<MapEntry>(GetPath(), "Map.db2");
@@ -118,10 +121,20 @@ namespace WowPacketParser.DBC
                         CriteriaStores[(ushort)criteriaTree.Value.CriteriaID] += $" / CriteriaDescription: \"{ criteriaTree.Value.Description }\"";
                 }
             }
+
+            if (Faction != null && FactionTemplate != null)
+            {
+                foreach (var factionTemplate in FactionTemplate)
+                {
+                    if (Faction.ContainsKey(factionTemplate.Value.Faction))
+                        FactionStores.Add((uint)factionTemplate.Key, Faction[factionTemplate.Value.Faction].Name);
+                }
+            }
         }
 
         public static readonly Dictionary<uint, string> Zones = new Dictionary<uint, string>();
         public static readonly Dictionary<int, int> MapSpawnMaskStores = new Dictionary<int, int>();
         public static Dictionary<ushort, string> CriteriaStores = new Dictionary<ushort, string>();
+        public static Dictionary<uint, string> FactionStores = new Dictionary<uint, string>();
     }
 }
