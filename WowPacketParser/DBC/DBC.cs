@@ -1,12 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using DBFilesClient.NET;
 using WowPacketParser.DBC.Structures;
 using WowPacketParser.Misc;
-using System.Collections.Generic;
-using WowPacketParser.Enums;
 
 namespace WowPacketParser.DBC
 {
@@ -15,6 +15,7 @@ namespace WowPacketParser.DBC
         public static DBCStorage<AreaTableEntry> AreaTable = new DBCStorage<AreaTableEntry>();
         public static DB2Storage<AchievementEntry> Achievement = new DB2Storage<AchievementEntry>();
         public static DBCStorage<CreatureFamilyEntry> CreatureFamily = new DBCStorage<CreatureFamilyEntry>();
+        public static DB2Storage<CriteriaTreeEntry> CriteriaTree = new DB2Storage<CriteriaTreeEntry>();
         public static DBCStorage<DifficultyEntry> Difficulty = new DBCStorage<DifficultyEntry>();
         public static DB2Storage<ItemEntry> Item = new DB2Storage<ItemEntry>();
         [DataStoreFileName("Item-sparse")]
@@ -54,8 +55,8 @@ namespace WowPacketParser.DBC
                 Trace.WriteLine($"DBC folder \"{path}\" not found");
                 return;
             }
-            else
-                Trace.WriteLine($"DBC folder \"{path}\" found");
+
+            Trace.WriteLine($"DBC folder \"{path}\" found");
 
             foreach (var dbc in typeof(DBC).GetFields(BindingFlags.Static | BindingFlags.Public))
             {
@@ -118,9 +119,34 @@ namespace WowPacketParser.DBC
                         MapSpawnMaskStores.Add(mapDifficulty.MapID, difficultyID);
                 }
             }
+
+            if (CriteriaTree != null && Achievement != null)
+            {
+                ICollection<AchievementEntry> achievementLists = Achievement;
+                var achievements = achievementLists.GroupBy(achievement => achievement.CriteriaTree)
+                    .ToDictionary(group => group.Key, group => group.ToList());
+
+                foreach (var criteriaTree in CriteriaTree)
+                {
+                    string result = "";
+                    List<AchievementEntry> achievementList;
+                    uint criteriaTreeID = criteriaTree.Parent > 0 ? criteriaTree.Parent : criteriaTree.ID;
+                    if (achievements.TryGetValue(criteriaTreeID, out achievementList))
+                        foreach (var achievement in achievementList)
+                            result = $"Achievement: ID: {achievement.ID} \"{achievement.Description}\" - ";
+
+                    result += $"Criteria: \"{criteriaTree.Description}\"";
+
+                    if (!CriteriaStores.ContainsKey(criteriaTree.CriteriaID))
+                        CriteriaStores.Add(criteriaTree.CriteriaID, result);
+                    else
+                        CriteriaStores[criteriaTree.CriteriaID] += $" / Criteria: \"{criteriaTree.Description}\"";
+                }
+            }
         }
 
         public static readonly Dictionary<uint, string> Zones = new Dictionary<uint, string>();
         public static readonly Dictionary<int, int> MapSpawnMaskStores = new Dictionary<int, int>();
+        public static Dictionary<uint, string> CriteriaStores = new Dictionary<uint, string>();
     }
 }

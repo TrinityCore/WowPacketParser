@@ -27,6 +27,7 @@ namespace WowPacketParser.Enums
         Player,
         Currency,
         Achievement,
+        Criteria,
         CreatureFamily
     }
 
@@ -60,6 +61,8 @@ namespace WowPacketParser.Enums
                 return StoreNameType.Currency;
             if (typeof (T) == typeof (AchievementId))
                 return StoreNameType.Achievement;
+            if (typeof(T) == typeof(CriteriaId))
+                return StoreNameType.Criteria;
             if (typeof (T) ==  typeof (CreatureFamilyId))
                 return StoreNameType.CreatureFamily;
 
@@ -82,5 +85,6 @@ namespace WowPacketParser.Enums
     public struct AreaId : IId { }
     public struct CurrencyId : IId { }
     public struct AchievementId : IId { }
+    public struct CriteriaId : IId { }
     public struct CreatureFamilyId : IId { }
 }
