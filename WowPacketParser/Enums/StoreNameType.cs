@@ -28,7 +28,8 @@ namespace WowPacketParser.Enums
         Currency,
         Achievement,
         Criteria,
-        CreatureFamily
+        CreatureFamily,
+        Faction
     }
 
     public static class StoreName
@@ -65,6 +66,8 @@ namespace WowPacketParser.Enums
                 return StoreNameType.Criteria;
             if (typeof (T) ==  typeof (CreatureFamilyId))
                 return StoreNameType.CreatureFamily;
+            if (typeof(T) == typeof(FactionId))
+                return StoreNameType.Faction;
 
             throw new ArgumentOutOfRangeException(typeof(T).ToString());
         }
@@ -87,4 +90,5 @@ namespace WowPacketParser.Enums
     public struct AchievementId : IId { }
     public struct CriteriaId : IId { }
     public struct CreatureFamilyId : IId { }
+    public struct FactionId : IId { }
 }

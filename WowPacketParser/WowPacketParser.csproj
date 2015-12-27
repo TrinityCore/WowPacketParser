@@ -123,6 +123,8 @@
     <Compile Include="DBC\Structures\Warlords of Draenor\CreatureFamilyEntry.cs" />
     <Compile Include="DBC\Structures\Warlords of Draenor\CriteriaTreeEntry.cs" />
     <Compile Include="DBC\Structures\Warlords of Draenor\DifficultyEntry.cs" />
+    <Compile Include="DBC\Structures\Warlords of Draenor\FactionEntry.cs" />
+    <Compile Include="DBC\Structures\Warlords of Draenor\FactionTemplateEntry.cs" />
     <Compile Include="DBC\Structures\Warlords of Draenor\ItemEntry.cs" />
     <Compile Include="DBC\Structures\Warlords of Draenor\ItemSparseEntry.cs" />
     <Compile Include="DBC\Structures\Warlords of Draenor\MapDifficultyEntry.cs" />

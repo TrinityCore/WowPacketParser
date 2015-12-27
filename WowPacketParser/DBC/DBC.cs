@@ -17,6 +17,8 @@ namespace WowPacketParser.DBC
         public static DBCStorage<CreatureFamilyEntry> CreatureFamily = new DBCStorage<CreatureFamilyEntry>();
         public static DB2Storage<CriteriaTreeEntry> CriteriaTree = new DB2Storage<CriteriaTreeEntry>();
         public static DBCStorage<DifficultyEntry> Difficulty = new DBCStorage<DifficultyEntry>();
+        public static DBCStorage<FactionEntry> Faction = new DBCStorage<FactionEntry>();
+        public static DBCStorage<FactionTemplateEntry> FactionTemplate = new DBCStorage<FactionTemplateEntry>();
         public static DB2Storage<ItemEntry> Item = new DB2Storage<ItemEntry>();
         [DataStoreFileName("Item-sparse")]
         public static DB2Storage<ItemSparseEntry> ItemSparse = new DB2Storage<ItemSparseEntry>();
@@ -143,10 +145,20 @@ namespace WowPacketParser.DBC
                         CriteriaStores[criteriaTree.CriteriaID] += $" / Criteria: \"{criteriaTree.Description}\"";
                 }
             }
+
+            if (Faction != null && FactionTemplate != null)
+            {
+                foreach (var factionTemplate in FactionTemplate)
+                {
+                    if (Faction.ContainsKey(factionTemplate.Faction))
+                        FactionStores.Add(factionTemplate.ID, Faction[factionTemplate.Faction].Name_lang);
+                }
+            }
         }
 
         public static readonly Dictionary<uint, string> Zones = new Dictionary<uint, string>();
         public static readonly Dictionary<int, int> MapSpawnMaskStores = new Dictionary<int, int>();
         public static Dictionary<uint, string> CriteriaStores = new Dictionary<uint, string>();
+        public static Dictionary<uint, string> FactionStores = new Dictionary<uint, string>();
     }
 }

@@ -224,7 +224,11 @@ namespace WowPacketParser.Parsing.Parsers
                     }
                 }
 
-                packet.AddValue(key, value, index);
+                if (key == UnitField.UNIT_FIELD_FACTIONTEMPLATE.ToString() && ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_3_20726)) // HACK...
+                    packet.AddValue(key, StoreGetters.GetName(StoreNameType.Faction, (int)blockVal.UInt32Value, false) + $" ({value})", index);
+                else
+                    packet.AddValue(key, value, index);
+
                 dict.Add(i, blockVal);
             }
 
