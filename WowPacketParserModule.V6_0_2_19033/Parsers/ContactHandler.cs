@@ -77,7 +77,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 packet.ReadByte("Status", i);
 
-                packet.ReadInt32("AreaID", i);
+                packet.ReadInt32<AreaId>("AreaID", i);
                 packet.ReadInt32("Level", i);
                 packet.ReadInt32("ClassID", i);
 

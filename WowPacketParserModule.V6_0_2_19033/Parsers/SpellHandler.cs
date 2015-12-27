@@ -495,7 +495,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleUpdateChainTargets(Packet packet)
         {
             packet.ReadPackedGuid128("Caster GUID");
-            packet.ReadUInt32<SpellId>("Spell ID");
+            packet.ReadUInt32<SpellId>("SpellID");
             var count = packet.ReadInt32("Count");
             for (var i = 0; i < count; i++)
                 packet.ReadPackedGuid128("Targets", i);
@@ -546,7 +546,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_PET_CAST_FAILED)]
         public static void HandleCastFailed(Packet packet)
         {
-            packet.ReadInt32<SpellId>("Spell ID");
+            packet.ReadInt32<SpellId>("SpellID");
             packet.ReadInt32("Reason");
             packet.ReadInt32("FailedArg1");
             packet.ReadInt32("FailedArg2");
@@ -590,7 +590,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < int4; i++)
             {
                 packet.ReadUInt32<SpellId>("SpellID", i);
-                packet.ReadUInt32("ItemID", i);
+                packet.ReadUInt32<ItemId>("ItemID", i);
                 packet.ReadUInt32("Category", i);
                 packet.ReadInt32("RecoveryTime", i);
                 packet.ReadInt32("CategoryRecoveryTime", i);

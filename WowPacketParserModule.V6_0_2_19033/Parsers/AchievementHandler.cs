@@ -9,7 +9,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_CRITERIA_UPDATE)]
         public static void HandleCriteriaPlayer(Packet packet)
         {
-            packet.ReadInt32("Id");
+            packet.ReadInt32<CriteriaId>("Id");
             packet.ReadInt64("Quantity");
             packet.ReadPackedGuid128("Guid");
             packet.ReadInt32("Flags");
@@ -26,7 +26,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         public static void ReadCriteriaProgress(Packet packet, params object[] idx)
         {
-            packet.ReadInt32("Id", idx);
+            packet.ReadInt32<CriteriaId>("Id", idx);
             packet.ReadUInt64("Quantity", idx);
             packet.ReadPackedGuid128("Player", idx);
             packet.ReadPackedTime("Date", idx);
@@ -39,7 +39,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         public static void ReadEarnedAchievement(Packet packet, params object[] idx)
         {
-            packet.ReadInt32("Id", idx);
+            packet.ReadInt32<AchievementId>("Id", idx);
             packet.ReadPackedTime("Date", idx);
             packet.ReadPackedGuid128("Owner", idx);
             packet.ReadInt32("VirtualRealmAddress", idx);
@@ -78,7 +78,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Sender");
             packet.ReadPackedGuid128("Earner");
-            packet.ReadUInt32("AchievementID");
+            packet.ReadUInt32<AchievementId>("AchievementID");
             packet.ReadPackedTime("Time");
             packet.ReadUInt32("EarnerNativeRealm");
             packet.ReadUInt32("EarnerVirtualRealm");

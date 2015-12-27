@@ -38,8 +38,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadByte("HairColor", i);
                 packet.ReadByte("FacialHairStyle", i);
                 packet.ReadByte("ExperienceLevel", i);
-                var zone = packet.ReadUInt32("ZoneID", i);
-                var mapId = packet.ReadUInt32("MapID", i);
+                var zone = packet.ReadUInt32<ZoneId>("ZoneID", i);
+                var mapId = packet.ReadUInt32<MapId>("MapID", i);
 
                 var pos = packet.ReadVector3("PreloadPos", i);
 
@@ -50,7 +50,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadUInt32("Flags3", i);
                 packet.ReadUInt32("PetCreatureDisplayID", i);
                 packet.ReadUInt32("PetExperienceLevel", i);
-                packet.ReadUInt32("PetCreatureFamilyID", i);
+                packet.ReadUInt32<CreatureFamilyId>("PetCreatureFamilyID", i);
 
                 packet.ReadUInt32("ProfessionIDs", i, 0);
                 packet.ReadUInt32("ProfessionIDs", i, 1);

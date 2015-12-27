@@ -7,6 +7,7 @@ namespace WowPacketParser.Enums
         None,
         Spell,
         Map,
+        Difficulty,
         LFGDungeon,
         Battleground,
         Unit,
@@ -25,7 +26,10 @@ namespace WowPacketParser.Enums
         Phase,
         Player,
         Currency,
-        Achievement
+        Achievement,
+        Criteria,
+        CreatureFamily,
+        Faction
     }
 
     public static class StoreName
@@ -36,6 +40,8 @@ namespace WowPacketParser.Enums
                 return StoreNameType.Spell;
             if (typeof (T) == typeof (MapId))
                 return StoreNameType.Map;
+            if (typeof (T) == typeof (DifficultyId))
+                return StoreNameType.Difficulty;
             if (typeof (T) == typeof (LFGDungeonId))
                 return StoreNameType.LFGDungeon;
             if (typeof (T) == typeof (BgId))
@@ -56,6 +62,12 @@ namespace WowPacketParser.Enums
                 return StoreNameType.Currency;
             if (typeof (T) == typeof (AchievementId))
                 return StoreNameType.Achievement;
+            if (typeof(T) == typeof(CriteriaId))
+                return StoreNameType.Criteria;
+            if (typeof (T) ==  typeof (CreatureFamilyId))
+                return StoreNameType.CreatureFamily;
+            if (typeof(T) == typeof(FactionId))
+                return StoreNameType.Faction;
 
             throw new ArgumentOutOfRangeException(typeof(T).ToString());
         }
@@ -65,6 +77,7 @@ namespace WowPacketParser.Enums
 
     public struct SpellId :  IId { }
     public struct MapId : IId { }
+    public struct DifficultyId : IId { }
     public struct LFGDungeonId : IId { }
     public struct BgId : IId { }
     public struct UnitId : IId { }
@@ -75,5 +88,7 @@ namespace WowPacketParser.Enums
     public struct AreaId : IId { }
     public struct CurrencyId : IId { }
     public struct AchievementId : IId { }
-
+    public struct CriteriaId : IId { }
+    public struct CreatureFamilyId : IId { }
+    public struct FactionId : IId { }
 }

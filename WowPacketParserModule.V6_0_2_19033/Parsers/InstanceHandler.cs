@@ -72,14 +72,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_SET_DUNGEON_DIFFICULTY)]
         public static void HandleSetDungeonDifficulty(Packet packet)
         {
-            packet.ReadInt32("DifficultyID");
+            packet.ReadInt32<DifficultyId>("DifficultyID");
         }
 
         [Parser(Opcode.CMSG_SET_RAID_DIFFICULTY)]
         [Parser(Opcode.SMSG_RAID_DIFFICULTY_SET)]
         public static void HandleSetRaidDifficulty(Packet packet)
         {
-            packet.ReadInt32("DifficultyID");
+            packet.ReadInt32<DifficultyId>("DifficultyID");
             packet.ReadByte("Force");
         }
 
@@ -89,8 +89,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var int16 = packet.ReadInt32("LocksCount");
             for (int i = 0; i < int16; i++)
             {
-                packet.ReadInt32("MapID", i);
-                packet.ReadInt32("DifficultyID", i);
+                packet.ReadInt32<MapId>("MapID", i);
+                packet.ReadInt32<DifficultyId>("DifficultyID", i);
                 packet.ReadInt64("InstanceID", i);
                 packet.ReadInt32("TimeRemaining", i);
                 packet.ReadInt32("Completed_mask", i);
@@ -105,7 +105,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleSetSavedInstanceExtend(Packet packet)
         {
             packet.ReadInt32<MapId>("MapID");
-            packet.ReadInt32("DifficultyID");
+            packet.ReadInt32<DifficultyId>("DifficultyID");
             packet.ReadBit("Extended");
         }
 
@@ -114,8 +114,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadByte("Type");
 
-            packet.ReadInt32("MapID");
-            packet.ReadInt32("DifficultyID");
+            packet.ReadInt32<MapId>("MapID");
+            packet.ReadInt32<DifficultyId>("DifficultyID");
             packet.ReadInt32("TimeLeft");
 
             packet.ReadBit("Locked");
@@ -140,11 +140,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadUInt32("CooldownReason");
                     break;
                 case 11:
-                    packet.ReadUInt32("InstanceDifficultyID");
+                    packet.ReadUInt32<DifficultyId>("InstanceDifficultyID");
                     packet.ReadUInt32("DifficultyRecID");
                     break;
                 case 2:
-                    packet.ReadUInt32("MapID");
+                    packet.ReadUInt32<MapId>("MapID");
                     break;
                 case 4:
                     packet.ReadPackedGuid128("Guid");
@@ -192,7 +192,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleEncounterStart(Packet packet)
         {
             packet.ReadInt32("EncounterID");
-            packet.ReadInt32("DifficultyID");
+            packet.ReadInt32<DifficultyId>("DifficultyID");
             packet.ReadInt32("GroupSize");
         }
 
@@ -200,7 +200,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleEncounterStop(Packet packet)
         {
             packet.ReadInt32("EncounterID");
-            packet.ReadInt32("DifficultyID");
+            packet.ReadInt32<DifficultyId>("DifficultyID");
             packet.ReadInt32("GroupSize");
             packet.ReadBit("Success");
         }
@@ -208,7 +208,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_INSTANCE_RESET_FAILED)]
         public static void HandleInstanceResetFailed(Packet packet)
         {
-            packet.ReadInt32("MapID");
+            packet.ReadInt32<MapId>("MapID");
             packet.ReadBits("ResetFailedReason", 2);
         }
 

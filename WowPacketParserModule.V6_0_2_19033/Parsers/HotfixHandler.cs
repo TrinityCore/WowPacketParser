@@ -1,4 +1,5 @@
 ﻿using System;
+using WowPacketParser.DBC;
 using WowPacketParser.Enums;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
@@ -76,7 +77,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     broadcastText.EmoteID = new uint[3];
                     broadcastText.EmoteDelay = new uint[3];
                     for (var i = 0; i < 3; ++i)
-                        broadcastText.EmoteID[i] = (uint) db2File.ReadInt32("Emote ID", i);
+                        broadcastText.EmoteID[i] = (uint) db2File.ReadInt32("EmoteID", i);
                     for (var i = 0; i < 3; ++i)
                         broadcastText.EmoteDelay[i] = (uint) db2File.ReadInt32("Emote Delay", i);
 
@@ -148,7 +149,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                     var id = db2File.ReadEntry("Id");
                     creatureDifficulty.CreatureID = db2File.ReadUInt32("Creature Id");
-                    creatureDifficulty.FactionID = db2File.ReadUInt32("Faction Template Id");
+                    creatureDifficulty.FactionID = db2File.ReadUInt32<FactionId>("Faction Template Id");
                     creatureDifficulty.Expansion = db2File.ReadInt32("Expansion");
                     creatureDifficulty.MinLevel = db2File.ReadInt32("Min Level");
                     creatureDifficulty.MaxLevel = db2File.ReadInt32("Max Level");
@@ -554,7 +555,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     item.ItemNameDescriptionID = db2File.ReadUInt32("ItemNameDescriptionID");
 
                     if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) && !DBC.ItemSparse.ContainsKey(entry))
                         Storage.ItemSparses.Add(id, item, packet.TimeSpan);
 
                     Storage.ObjectNames.Add(entry, new ObjectName {ObjectType = ObjectType.Item, Name = item.Name[0]}, packet.TimeSpan);
@@ -862,7 +863,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     areaPOI.Importance = db2File.ReadUInt32("Importance");
                     areaPOI.FactionID = db2File.ReadUInt32("FactionID");
                     areaPOI.MapID = db2File.ReadUInt32("MapID");
-                    areaPOI.AreaID = db2File.ReadUInt32("AreaID");
+                    areaPOI.AreaID = db2File.ReadUInt32<AreaId>("AreaID");
                     areaPOI.Icon = db2File.ReadUInt32("Icon");
 
                     areaPOI.PositionX = db2File.ReadSingle("PositionX");
@@ -1030,7 +1031,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     var id = db2File.ReadEntry("Id");
 
                     chrUpgradeBucketSpell.BucketID = db2File.ReadUInt32("BucketID");
-                    chrUpgradeBucketSpell.SpellID = db2File.ReadUInt32("SpellID");
+                    chrUpgradeBucketSpell.SpellID = db2File.ReadUInt32<SpellId>("SpellID");
 
                     if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
                         !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
