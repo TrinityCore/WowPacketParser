@@ -224,9 +224,16 @@ namespace WowPacketParser.Parsing.Parsers
                         }
                     }
                 }
-
-                if (key == UnitField.UNIT_FIELD_FACTIONTEMPLATE.ToString() && ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_3_20726)) // HACK...
-                    packet.AddValue(key, value + $" ({ StoreGetters.GetName(StoreNameType.Faction, (int)blockVal.UInt32Value, false) })", index);
+                // HACK...
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_3_20726))
+                {
+                    if (key == UnitField.UNIT_FIELD_FACTIONTEMPLATE.ToString())
+                        packet.AddValue(key, value + $" ({ StoreGetters.GetName(StoreNameType.Faction, (int)blockVal.UInt32Value, false) })", index);
+                    else if (key == UnitField.UNIT_FIELD_DISPLAYID.ToString())
+                        packet.AddValue(key, value + $" ({ StoreGetters.GetName(StoreNameType.Model, (int)blockVal.UInt32Value, false) })", index);
+                    else
+                        packet.AddValue(key, value, index);
+                }
                 else
                     packet.AddValue(key, value, index);
 
