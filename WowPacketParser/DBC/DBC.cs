@@ -25,6 +25,7 @@ namespace WowPacketParser.DBC
         public static DB2Storage<ItemSparseEntry> ItemSparse = new DB2Storage<ItemSparseEntry>();
         public static DBCStorage<MapEntry> Map = new DBCStorage<MapEntry>();
         public static DBCStorage<MapDifficultyEntry> MapDifficulty = new DBCStorage<MapDifficultyEntry>();
+        public static DB2Storage<SoundEntriesEntry> SoundEntries = new DB2Storage<SoundEntriesEntry>();
         public static DBCStorage<SpellEntry> Spell = new DBCStorage<SpellEntry>();
 
         /*

@@ -1,4 +1,6 @@
-﻿namespace WowPacketParser.DBC.Structures
+﻿using DBFilesClient.NET;
+
+namespace WowPacketParser.DBC.Structures
 {
     public sealed class FactionTemplateEntry
     {
@@ -8,13 +10,9 @@
         public uint Mask;
         public uint FriendMask;
         public uint EnemyMask;
-        public uint Enemies1;
-        public uint Enemies2;
-        public uint Enemies3;
-        public uint Enemies4;
-        public uint Friends1;
-        public uint Friends2;
-        public uint Friends3;
-        public uint Friends4;
+        [StoragePresence(StoragePresenceOption.Include, ArraySize = 4)]
+        public uint[] Enemies;
+        [StoragePresence(StoragePresenceOption.Include, ArraySize = 4)]
+        public uint[] Friends;
     }
 }

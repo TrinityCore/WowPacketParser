@@ -1,10 +1,8 @@
-﻿using WowPacketParser.Enums;
-
-namespace WowPacketParser.DBC.Structures
+﻿namespace WowPacketParser.DBC.Structures
 {
     public sealed class MapEntry
     {
-        public uint ID;
+        public uint   ID;
         public string Directory;
         public uint   InstanceType;
         public uint   Flags;

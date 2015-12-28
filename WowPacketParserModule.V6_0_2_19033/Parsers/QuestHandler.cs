@@ -281,8 +281,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 quest.RewardCurrencyQty[i] = packet.ReadUInt32("RewardCurrencyQty");
             }
 
-            quest.AcceptedSoundKitID = packet.ReadUInt32("AcceptedSoundKitID");
-            quest.CompleteSoundKitID = packet.ReadUInt32("CompleteSoundKitID");
+            quest.AcceptedSoundKitID = packet.ReadUInt32<SoundId>("AcceptedSoundKitID");
+            quest.CompleteSoundKitID = packet.ReadUInt32<SoundId>("CompleteSoundKitID");
             quest.AreaGroupID = packet.ReadUInt32("AreaGroupID");
             quest.TimeAllowed = packet.ReadUInt32("TimeAllowed");
             var int2946 = packet.ReadUInt32("CliQuestInfoObjective");

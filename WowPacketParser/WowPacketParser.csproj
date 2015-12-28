@@ -130,6 +130,7 @@
     <Compile Include="DBC\Structures\Warlords of Draenor\ItemSparseEntry.cs" />
     <Compile Include="DBC\Structures\Warlords of Draenor\MapDifficultyEntry.cs" />
     <Compile Include="DBC\Structures\Warlords of Draenor\MapEntry.cs" />
+    <Compile Include="DBC\Structures\Warlords of Draenor\SoundEntriesEntry.cs" />
     <Compile Include="DBC\Structures\Warlords of Draenor\SpellEntry.cs" />
     <Compile Include="Enums\AccountDataType.cs" />
     <Compile Include="Enums\ActionButtonType.cs" />

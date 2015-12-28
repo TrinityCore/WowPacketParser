@@ -28,6 +28,7 @@ namespace WowPacketParser.Enums
         Quest,
         QuestGreeting,
         QuestObjective,
+        Sound,
         Spell,
         Unit,
         Zone,
@@ -65,6 +66,8 @@ namespace WowPacketParser.Enums
                 return StoreNameType.Model;
             if (typeof(T) == typeof(QuestId))
                 return StoreNameType.Quest;
+            if (typeof(T) == typeof(SoundId))
+                return StoreNameType.Sound;
             if (typeof(T) == typeof(SpellId))
                 return StoreNameType.Spell;
             if (typeof(T) == typeof(UnitId))
@@ -92,6 +95,7 @@ namespace WowPacketParser.Enums
     public struct MapId : IId { }
     public struct ModelId : IId { }
     public struct QuestId : IId { }
+    public struct SoundId : IId { }
     public struct SpellId :  IId { }
     public struct UnitId : IId { }
     public struct ZoneId : IId { }

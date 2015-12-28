@@ -72,6 +72,10 @@ namespace WowPacketParser.Misc
                         return modelText;
                     }
                     break;
+                case StoreNameType.Sound:
+                    if (DBC.DBC.SoundEntries.ContainsKey((uint)entry))
+                        return DBC.DBC.SoundEntries[(uint)entry].Name;
+                    break;
                 case StoreNameType.Spell:
                     if (DBC.DBC.Spell.ContainsKey((uint)entry))
                         return DBC.DBC.Spell[(uint)entry].SpellName;
