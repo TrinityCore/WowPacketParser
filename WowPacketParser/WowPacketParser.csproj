@@ -120,6 +120,7 @@
     <Compile Include="DBC\DBC.cs" />
     <Compile Include="DBC\Structures\Warlords of Draenor\AchievementEntry.cs" />
     <Compile Include="DBC\Structures\Warlords of Draenor\AreaTableEntry.cs" />
+    <Compile Include="DBC\Structures\Warlords of Draenor\CreatureDisplayInfoEntry.cs" />
     <Compile Include="DBC\Structures\Warlords of Draenor\CreatureFamilyEntry.cs" />
     <Compile Include="DBC\Structures\Warlords of Draenor\CriteriaTreeEntry.cs" />
     <Compile Include="DBC\Structures\Warlords of Draenor\DifficultyEntry.cs" />

@@ -14,6 +14,7 @@ namespace WowPacketParser.DBC
     {
         public static DBCStorage<AreaTableEntry> AreaTable = new DBCStorage<AreaTableEntry>();
         public static DB2Storage<AchievementEntry> Achievement = new DB2Storage<AchievementEntry>();
+        public static DB2Storage<CreatureDisplayInfoEntry> CreatureDisplayInfo = new DB2Storage<CreatureDisplayInfoEntry>();
         public static DBCStorage<CreatureFamilyEntry> CreatureFamily = new DBCStorage<CreatureFamilyEntry>();
         public static DB2Storage<CriteriaTreeEntry> CriteriaTree = new DB2Storage<CriteriaTreeEntry>();
         public static DBCStorage<DifficultyEntry> Difficulty = new DBCStorage<DifficultyEntry>();
