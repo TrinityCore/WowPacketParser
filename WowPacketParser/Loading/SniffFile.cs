@@ -145,8 +145,7 @@ namespace WowPacketParser.Loading
                         break;
                     }
 
-                    Store.Store.SQLEnabledFlags = Settings.SQLOutputFlag;
-                    Store.Store.HotfixSQLEnabledFlags = Settings.HotfixSQLOutputFlag;
+                    Store.Store.SQLEnabled = Settings.SQLOutputBit;
 
                     File.Delete(outFileName);
 
@@ -264,7 +263,7 @@ namespace WowPacketParser.Loading
 
                     Trace.WriteLine($"{_logPrefix}: {_stats}");
 
-                    if (Settings.SQLOutputFlag != 0 || Settings.HotfixSQLOutputFlag != 0)
+                    if (Settings.SQLOutputBit.Count != 0)
                         WriteSQLs();
 
                     if (Settings.LogPacketErrors)

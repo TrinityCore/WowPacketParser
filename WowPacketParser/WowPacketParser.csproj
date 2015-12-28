@@ -214,7 +214,6 @@
     <Compile Include="Enums\HighGuidMask.cs" />
     <Compile Include="Enums\HighGuidType.cs" />
     <Compile Include="Enums\Holiday.cs" />
-    <Compile Include="Enums\HotfixSQLOutput.cs" />
     <Compile Include="Enums\InhabitType.cs" />
     <Compile Include="Enums\LocaleConstant.cs" />
     <Compile Include="Enums\MountResult.cs" />

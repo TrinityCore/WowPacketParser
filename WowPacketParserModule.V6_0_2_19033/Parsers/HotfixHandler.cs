@@ -109,8 +109,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                         Storage.BroadcastTextLocales.Add(broadcastTextLocale, packet.TimeSpan);
                     }
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.BroadcastTexts.Add(broadcastText, packet.TimeSpan);
                     packet.AddSniffData(StoreNameType.None, id.Key, "BROADCAST_TEXT");
                     break;
@@ -151,8 +151,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     creature.Rank = db2File.ReadUInt32("Rank");
                     creature.InhabitType = db2File.ReadUInt32("InhabitType");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.Creatures.Add(creature, packet.TimeSpan);
                     break;
                 }
@@ -172,8 +172,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     for (int i = 0; i < 5; ++i)
                         creatureDifficulty.Flags[i] = db2File.ReadUInt32("Flags", i);
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.CreatureDifficulties.Add(creatureDifficulty, packet.TimeSpan);
                     break;
                 }
@@ -201,8 +201,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     curvePoint.X = db2File.ReadSingle("X");
                     curvePoint.Y = db2File.ReadSingle("Y");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.CurvePoints.Add(curvePoint, packet.TimeSpan);
                     break;
                 }
@@ -239,8 +239,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     if (db2File.ReadUInt16() > 0)
                         gameObjects.Name = db2File.ReadCString("Name");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.GameObjectsBag.Add(gameObjects, packet.TimeSpan);
                     break;
                 }
@@ -260,8 +260,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     item.FileDataID = db2File.ReadUInt32("FileDataID");
                     item.GroupSoundsID = db2File.ReadUInt32("GroupSoundsID");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.Items.Add(item, packet.TimeSpan);
                     packet.AddSniffData(StoreNameType.Item, (int) entry, "DB_REPLY");
                     break;
@@ -283,8 +283,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20182))
                         itemEffect.ChrSpecializationID = db2File.ReadUInt32("ChrSpecializationID");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.ItemEffects.Add(itemEffect, packet.TimeSpan);
                     break;
                 }
@@ -300,8 +300,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     itemModifiedAppearance.IconFileDataID = db2File.ReadUInt32("IconFileDataID");
                     itemModifiedAppearance.Index = db2File.ReadUInt32("Index");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.ItemModifiedAppearances.Add(itemModifiedAppearance, packet.TimeSpan);
                     break;
                 }
@@ -345,8 +345,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
                         itemExtendedCost.RequiredMoney = db2File.ReadUInt32("RequiredMoney");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.ItemExtendedCosts.Add(itemExtendedCost, packet.TimeSpan);
                     break;
                 }
@@ -357,8 +357,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     itemCurrencyCost.ID = db2File.ReadUInt32("ID");
                     itemCurrencyCost.ItemID = db2File.ReadUInt32<ItemId>("ItemID");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.ItemCurrencyCosts.Add(itemCurrencyCost, packet.TimeSpan);
                     break;
                 }
@@ -427,8 +427,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     holiday.CalendarFilterType = db2File.ReadUInt32("CalendarFilterType");
                     holiday.Flags = db2File.ReadUInt32("Flags");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.HolidaysBag.Add(holiday, packet.TimeSpan);
                     break;
                 }
@@ -441,8 +441,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     itemAppearance.DisplayID = db2File.ReadUInt32("Display ID");
                     itemAppearance.IconFileDataID = db2File.ReadUInt32("File Data ID");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.ItemAppearances.Add(itemAppearance, packet.TimeSpan);
                     break;
                 }
@@ -461,8 +461,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                     itemBonus.Index = db2File.ReadUInt32("Index");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.ItemBonuses.Add(itemBonus, packet.TimeSpan);
                     break;
                 }
@@ -476,8 +476,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     itemBonusTreeNode.SubTreeID = db2File.ReadUInt32("SubTreeID");
                     itemBonusTreeNode.BonusListID = db2File.ReadUInt32("BonusListID");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.ItemBonusTreeNodes.Add(itemBonusTreeNode, packet.TimeSpan);
                     break;
                 }
@@ -579,8 +579,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     item.CurrencySubstitutionCount = db2File.ReadUInt32("CurrencySubstitutionCount");
                     item.ItemNameDescriptionID = db2File.ReadUInt32("ItemNameDescriptionID");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.ItemSparses.Add(item, packet.TimeSpan);
 
                     Storage.ObjectNames.Add(new ObjectName {ObjectType = ObjectType.Item, ID = (int)entry, Name = item.Name}, packet.TimeSpan);
@@ -597,8 +597,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     for (int i = 0; i < 32; i++)
                         key.Key[i] = db2File.ReadByte("Key", i);
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.KeyChains.Add(key, packet.TimeSpan);
                     break;
                 }
@@ -617,8 +617,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     sceneScript.PreviousSceneScriptPart = db2File.ReadUInt32("PreviousSceneScriptPart");
                     sceneScript.NextSceneScriptPart = db2File.ReadUInt32("NextSceneScriptPart");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.SceneScripts.Add(sceneScript, packet.TimeSpan);
                     break;
                 }
@@ -658,8 +658,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     spellMisc.SchoolMask = db2File.ReadUInt32("SchoolMask");
                     spellMisc.MultistrikeSpeedMod = db2File.ReadSingle("MultistrikeSpeedMod");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.SpellMiscs.Add(spellMisc, packet.TimeSpan);
                     break;
                 }
@@ -678,8 +678,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     spellAuraRestrictions.ExcludeCasterAuraSpell = db2File.ReadUInt32("ExcludeCasterAuraSpell");
                     spellAuraRestrictions.ExcludeTargetAuraSpell = db2File.ReadUInt32("ExcludeTargetAuraSpell");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.SpellAuraRestrictionsBag.Add(spellAuraRestrictions, packet.TimeSpan);
                     break;
                 }
@@ -696,8 +696,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     spellCastingRequirements.RequiredAuraVision = db2File.ReadUInt32("RequiredAuraVision");
                     spellCastingRequirements.RequiresSpellFocus = db2File.ReadUInt32("RequiresSpellFocus");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.SpellCastingRequirementsBag.Add(spellCastingRequirements, packet.TimeSpan);
                     break;
                 }
@@ -715,8 +715,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                     spellClassOptions.SpellClassSet = db2File.ReadUInt32("SpellClassSet");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.SpellClassOptionsBag.Add(spellClassOptions, packet.TimeSpan);
                     break;
                 }
@@ -729,8 +729,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     spellEffectGroupSize.SpellEffectID = db2File.ReadUInt32("SpellEffectID");
                     spellEffectGroupSize.Size = db2File.ReadSingle("Size");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.SpellEffectGroupSizes.Add(spellEffectGroupSize, packet.TimeSpan);
                     break;
                 }
@@ -744,8 +744,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     spellLearnSpell.SpellID = db2File.ReadUInt32("SpellID");
                     spellLearnSpell.OverridesSpellID = db2File.ReadUInt32("OverridesSpellID");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.SpellLearnSpells.Add(spellLearnSpell, packet.TimeSpan);
                     break;
                 }
@@ -763,8 +763,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     for (int i = 0; i < 2; ++i)
                         spellTotems.Totem[i] = db2File.ReadUInt32("Totem", i);
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.SpellTotemsBag.Add(spellTotems, packet.TimeSpan);
                     break;
                 }
@@ -790,8 +790,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                     spellPower.HealthCostPercentage = db2File.ReadSingle("HealthCostPercentage");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.SpellPowers.Add(spellPower, packet.TimeSpan);
                     break;
                 }
@@ -812,8 +812,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     spellReagents.CurrencyID = db2File.ReadUInt32("CurrencyID");
                     spellReagents.CurrencyCount = db2File.ReadUInt32("CurrencyCount");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.SpellReagentsBag.Add(spellReagents, packet.TimeSpan);
                     break;
                 }
@@ -829,8 +829,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     spellRuneCost.Chromatic = db2File.ReadUInt32("Chromatic");
                     spellRuneCost.RunicPower = db2File.ReadUInt32("RunicPower");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.SpellRuneCosts.Add(spellRuneCost, packet.TimeSpan);
                     break;
                 }
@@ -848,8 +848,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                     toy.SourceType = db2File.ReadInt32("SourceType");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.Toys.Add(toy, packet.TimeSpan);
                     break;
                 }
@@ -905,8 +905,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     areaPOI.WorldMapLink = db2File.ReadUInt32("WorldMapLink");
                     areaPOI.PortLocID = db2File.ReadUInt32("PortLocID");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.AreaPOIs.Add(areaPOI, packet.TimeSpan);
                     break;
                 }
@@ -923,8 +923,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     ushort len2 = db2File.ReadUInt16();
                     areaPOIState.Description = db2File.ReadWoWString("Description", len2);
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.AreaPOIStates.Add(areaPOIState, packet.TimeSpan);
                     break;
                 }
@@ -954,8 +954,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     taxiNodes.MapOffsetX = db2File.ReadSingle("MapOffsetX");
                     taxiNodes.MapOffsetY = db2File.ReadSingle("MapOffsetY");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.TaxiNodesBag.Add(taxiNodes, packet.TimeSpan);
                     break;
                 }
@@ -978,8 +978,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     taxiPathNode.ArrivalEventID = db2File.ReadUInt32("ArrivalEventID");
                     taxiPathNode.DepartureEventID = db2File.ReadUInt32("DepartureEventID");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.TaxiPathNodes.Add(taxiPathNode, packet.TimeSpan);
                     break;
                 }
@@ -993,8 +993,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     taxiPath.To = db2File.ReadUInt32("To");
                     taxiPath.Cost = db2File.ReadUInt32("Cost");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.TaxiPaths.Add(taxiPath, packet.TimeSpan);
                     break;
                 }
@@ -1012,8 +1012,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     for (int i = 0; i < 3; ++i)
                         location.Rotation[i] = db2File.ReadSingle("Rotation", i);
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.Locations.Add(location, packet.TimeSpan);
                     break;
                 }
@@ -1030,8 +1030,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                     chrUpgradeTier.TalentTier = db2File.ReadUInt32("TalentTier");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.ChrUpgradeTiers.Add(chrUpgradeTier, packet.TimeSpan);
                     break;
                 }
@@ -1044,8 +1044,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     chrUpgradeBucket.TierID = db2File.ReadUInt32("TierID");
                     chrUpgradeBucket.SpecializationID = db2File.ReadUInt32("SpecializationID");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.ChrUpgradeBuckets.Add(chrUpgradeBucket, packet.TimeSpan);
                     break;
                 }
@@ -1058,8 +1058,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     chrUpgradeBucketSpell.BucketID = db2File.ReadUInt32("BucketID");
                     chrUpgradeBucketSpell.SpellID = db2File.ReadUInt32("SpellID");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.ChrUpgradeBucketSpells.Add(chrUpgradeBucketSpell, packet.TimeSpan);
                     break;
                 }
@@ -1082,8 +1082,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     ushort len2 = db2File.ReadUInt16();
                     battlePetSpecies.Description = db2File.ReadWoWString("Description", len2);
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.BattlePetSpeciesBag.Add(battlePetSpecies, packet.TimeSpan);
                     break;
                 }
@@ -1100,8 +1100,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     overrideSpellData.Flags = db2File.ReadUInt32("Flags");
                     overrideSpellData.PlayerActionbarFileDataID = db2File.ReadUInt32("PlayerActionbarFileDataID");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.OverrideSpellDatas.Add(overrideSpellData, packet.TimeSpan);
                     break;
                 }
@@ -1114,8 +1114,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     phaseXPhaseGroup.PhaseID = db2File.ReadUInt32("PhaseID");
                     phaseXPhaseGroup.PhaseGroupID = db2File.ReadUInt32("PhaseGroupID");
 
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
-                        !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data) ||
+                        !Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                         Storage.PhaseXPhaseGroups.Add(phaseXPhaseGroup, packet.TimeSpan);
                     break;
                 }

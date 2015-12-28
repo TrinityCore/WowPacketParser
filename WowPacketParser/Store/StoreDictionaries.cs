@@ -12,23 +12,14 @@ namespace WowPacketParser.Store
 {
     public abstract class Store
     {
-        public static UInt64 SQLEnabledFlags { protected get; set; }
-        public static UInt64 HotfixSQLEnabledFlags { protected get; set; }
+        public static BitArray SQLEnabled { protected get; set; }
         public List<SQLOutput> Types { get; protected set; }
-        public List<HotfixSQLOutput> HotfixTypes { get; protected set; }
 
-        protected bool ProcessFlags()
+        protected bool ProcessBool()
         {
             return Types.Count == 0 ||
                 Settings.DumpFormat == DumpFormatType.SniffDataOnly ||
-                Types.Any(sqlOutput => SQLEnabledFlags.HasAnyFlagBit(sqlOutput));
-        }
-
-        protected bool HotfixProcessFlags()
-        {
-            return HotfixTypes.Count == 0 ||
-                Settings.DumpFormat == DumpFormatType.SniffDataOnly ||
-                HotfixTypes.Any(hotfixOutput => HotfixSQLEnabledFlags.HasAnyFlag(hotfixOutput));
+                Types.Any(sqlOutput => SQLEnabled.Get((int)sqlOutput));
         }
 
         public abstract void Clear();
@@ -51,14 +42,7 @@ namespace WowPacketParser.Store
         public StoreDictionary(List<SQLOutput> types)
         {
             Types = types;
-            Enabled = ProcessFlags();
-            _dictionary = Enabled ? new ConcurrentDictionary<T, Tuple<TK, TimeSpan?>>() : null;
-        }
-
-        public StoreDictionary(List<HotfixSQLOutput> types)
-        {
-            HotfixTypes = types;
-            Enabled = HotfixProcessFlags();
+            Enabled = ProcessBool();
             _dictionary = Enabled ? new ConcurrentDictionary<T, Tuple<TK, TimeSpan?>>() : null;
         }
 
@@ -183,7 +167,7 @@ namespace WowPacketParser.Store
         public StoreMulti(List<SQLOutput> types)
         {
             Types = types;
-            Enabled = ProcessFlags();
+            Enabled = ProcessBool();
             _dictionary = Enabled ? new MultiDictionary<T, Tuple<TK, TimeSpan?>>(true) : null;
         }
 
@@ -273,14 +257,7 @@ namespace WowPacketParser.Store
         public StoreBag(List<SQLOutput> types)
         {
             Types = types;
-            Enabled = ProcessFlags();
-            Bag = Enabled ? new ConcurrentBag<Tuple<T, TimeSpan?>>() : null;
-        }
-
-        public StoreBag(List<HotfixSQLOutput> types)
-        {
-            HotfixTypes = types;
-            Enabled = HotfixProcessFlags();
+            Enabled = ProcessBool();
             Bag = Enabled ? new ConcurrentBag<Tuple<T, TimeSpan?>>() : null;
         }
 
@@ -323,8 +300,6 @@ namespace WowPacketParser.Store
         public DataBag() { }
 
         public DataBag(List<SQLOutput> types) : base(types) { }
-
-        public DataBag(List<HotfixSQLOutput> types) : base(types) { }
 
         public Tuple<T, TimeSpan?> this[T key]
         {

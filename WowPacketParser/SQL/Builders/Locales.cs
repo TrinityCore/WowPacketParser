@@ -14,7 +14,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.BroadcastTextLocales.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.broadcast_text_locale))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.broadcast_text_locale))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.BroadcastTextLocales, Settings.HotfixesDatabase);
@@ -28,7 +28,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.LocalesQuests.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.locales_quest))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.locales_quest))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.LocalesQuests);
@@ -42,7 +42,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.LocalesQuestObjectives.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.locales_quest_objectives))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.locales_quest_objectives))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.LocalesQuestObjectives);
