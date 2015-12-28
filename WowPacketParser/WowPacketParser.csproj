@@ -124,19 +124,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DBC\DBC.cs" />
-    <Compile Include="DBC\Structures\Warlords of Draenor\AchievementEntry.cs" />
-    <Compile Include="DBC\Structures\Warlords of Draenor\AreaTableEntry.cs" />
-    <Compile Include="DBC\Structures\Warlords of Draenor\CreatureDisplayInfoEntry.cs" />
-    <Compile Include="DBC\Structures\Warlords of Draenor\CreatureFamilyEntry.cs" />
-    <Compile Include="DBC\Structures\Warlords of Draenor\CriteriaTreeEntry.cs" />
-    <Compile Include="DBC\Structures\Warlords of Draenor\DifficultyEntry.cs" />
-    <Compile Include="DBC\Structures\Warlords of Draenor\FactionEntry.cs" />
-    <Compile Include="DBC\Structures\Warlords of Draenor\FactionTemplateEntry.cs" />
-    <Compile Include="DBC\Structures\Warlords of Draenor\ItemEntry.cs" />
-    <Compile Include="DBC\Structures\Warlords of Draenor\ItemSparseEntry.cs" />
-    <Compile Include="DBC\Structures\Warlords of Draenor\MapDifficultyEntry.cs" />
-    <Compile Include="DBC\Structures\Warlords of Draenor\MapEntry.cs" />
-    <Compile Include="DBC\Structures\Warlords of Draenor\SpellEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\AchievementEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\AreaTableEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\CreatureDisplayInfoEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\CreatureFamilyEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\CriteriaTreeEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\DifficultyEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\FactionEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\FactionTemplateEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\ItemEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\ItemSparseEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\MapDifficultyEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\MapEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\SoundKitEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\SpellEntry.cs" />
     <Compile Include="Enums\AccountDataType.cs" />
     <Compile Include="Enums\ActionButtonType.cs" />
     <Compile Include="Enums\AIReaction.cs" />

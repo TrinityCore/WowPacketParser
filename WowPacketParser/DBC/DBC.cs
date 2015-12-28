@@ -25,6 +25,7 @@ namespace WowPacketParser.DBC
         public static Storage<ItemSparseEntry> ItemSparse = new Storage<ItemSparseEntry>(GetPath(), "Item-sparse.db2");
         public static Storage<MapEntry> Map = new Storage<MapEntry>(GetPath(), "Map.db2");
         public static Storage<MapDifficultyEntry> MapDifficulty = new Storage<MapDifficultyEntry>(GetPath(), "MapDifficulty.db2");
+        public static Storage<SoundKitEntry> SoundKit = new Storage<SoundKitEntry>(GetPath(), "SoundKit.db2");
         public static Storage<SpellEntry> Spell = new Storage<SpellEntry>(GetPath(), "Spell.db2");
 
         private static string GetPath()
