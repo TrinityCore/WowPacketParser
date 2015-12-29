@@ -115,8 +115,8 @@ namespace WowPacketParser.Misc
                 Index = index;
             }
 
-            public T Data { get; private set; }
-            public int Index { get; private set; }
+            public T Data { get; }
+            public int Index { get; }
         }
 
         private readonly Task[] _workers;

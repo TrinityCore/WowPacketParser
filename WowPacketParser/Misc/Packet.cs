@@ -58,12 +58,12 @@ namespace WowPacketParser.Misc
         }
 
         public int Opcode { get; set; } // setter can't be private because it's used in multiple_packets
-        public DateTime Time { get; private set; }
-        public TimeSpan TimeSpan { get; private set; }
-        public Direction Direction { get; private set; }
-        public int Number { get; private set; }
+        public DateTime Time { get; }
+        public TimeSpan TimeSpan { get; }
+        public Direction Direction { get; }
+        public int Number { get; }
         public StringBuilder Writer { get; private set; }
-        public string FileName { get; private set; }
+        public string FileName { get; }
         public ParsedStatus Status { get; set; }
         public bool WriteToFile { get; private set; }
         public int ConnectionIndex { get; set; }
@@ -227,26 +227,21 @@ namespace WowPacketParser.Misc
 
         public string GetHeader(bool isMultiple = false)
         {
+            // ReSharper disable once UseStringInterpolation
             return string.Format("{0}: {1} (0x{2}) Length: {3} ConnIdx: {4}{5} Time: {6} Number: {7}{8}",
                 Direction, Opcodes.GetOpcodeName(Opcode, Direction, false), Opcode.ToString("X4"),
                 Length, ConnectionIndex, EndPoint != null ? " EP: " + EndPoint : "", Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
                 Number, isMultiple ? " (part of another packet)" : "");
         }
 
-        public long Position
-        {
-            get { return BaseStream.Position; }
-        }
+        public long Position => BaseStream.Position;
 
         public void SetPosition(long val)
         {
             BaseStream.Position = val;
         }
 
-        public long Length
-        {
-            get { return BaseStream.Length; }
-        }
+        public long Length => BaseStream.Length;
 
         public bool CanRead()
         {

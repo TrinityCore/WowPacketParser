@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace WowPacketParser.Enums
 {
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public enum ResponseCode
     {
         RESPONSE_SUCCESS = 0x00,

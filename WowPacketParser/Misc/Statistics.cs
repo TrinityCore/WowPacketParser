@@ -12,8 +12,6 @@ namespace WowPacketParser.Misc
     /// </summary>
     public class Statistics
     {
-        private readonly int _totalPacketCount;
-
         private int _successPacketCount;
         private int _withErrorsPacketCount;
         private int _notParsedPacketCount;
@@ -37,58 +35,40 @@ namespace WowPacketParser.Misc
         public Statistics(int packetCount)
         {
             if (packetCount <= 0)
-                throw new ArgumentOutOfRangeException("packetCount", packetCount, "Packet count must be higher than zero.");
+                throw new ArgumentOutOfRangeException(nameof(packetCount), packetCount, "Packet count must be higher than zero.");
 
-            _totalPacketCount = packetCount;
+            TotalPacketCount = packetCount;
         }
 
         /// <summary>
         /// Expected total number of packets.
         /// </summary>
-        public int TotalPacketCount
-        {
-            get { return _totalPacketCount; }
-        }
+        public int TotalPacketCount { get; }
 
         /// <summary>
         /// The total number of packets taken into account in calculations.
         /// </summary>
-        public int CalculatedTotalPacketCount
-        {
-            get { return _successPacketCount + _withErrorsPacketCount + _notParsedPacketCount + _noStructurePacketCount; }
-        }
+        public int CalculatedTotalPacketCount => _successPacketCount + _withErrorsPacketCount + _notParsedPacketCount + _noStructurePacketCount;
 
         /// <summary>
         /// Number of packets successfully parsed.
         /// </summary>
-        public int SuccessPacketCount
-        {
-            get { return _successPacketCount; }
-        }
+        public int SuccessPacketCount => _successPacketCount;
 
         /// <summary>
         /// Number of packets parsed with errors.
         /// </summary>
-        public int WithErrorsPacketCount
-        {
-            get { return _withErrorsPacketCount; }
-        }
+        public int WithErrorsPacketCount => _withErrorsPacketCount;
 
         /// <summary>
         /// Number of packets that were skipped.
         /// </summary>
-        public int NotParsedPacketCount
-        {
-            get { return _notParsedPacketCount; }
-        }
+        public int NotParsedPacketCount => _notParsedPacketCount;
 
         /// <summary>
         /// Number of packets that were skipped.
         /// </summary>
-        public int NoStructurePacketCount
-        {
-            get { return _noStructurePacketCount; }
-        }
+        public int NoStructurePacketCount => _noStructurePacketCount;
 
         /// <summary>
         /// Increments by one the number of packets successfully parsed.
@@ -213,7 +193,7 @@ namespace WowPacketParser.Misc
                 NotParsedPacketCount == 0 && NoStructurePacketCount == 0)
                 return "No packets parsed";
 
-            var sb = new StringBuilder("Parsed ")
+            StringBuilder sb = new StringBuilder("Parsed ")
                 .Append(SuccessPacketCount)
                 .Append(" (").AppendFormat("{0:F3}", GetSuccessPercentage()).Append("%) ")
                 .Append("packets successfully, ")
@@ -242,7 +222,7 @@ namespace WowPacketParser.Misc
         /// <returns>An instance of Statistics</returns>
         public static Statistics BuildStats(ICollection<Packet> packets)
         {
-            var stats = new Statistics(packets.Count);
+            Statistics stats = new Statistics(packets.Count);
 
             Parallel.ForEach(packets, packet =>
             {

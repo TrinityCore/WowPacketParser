@@ -222,7 +222,7 @@ namespace WowPacketParser.Parsing.Parsers
                     var value = packet.ReadUInt32();
                     var id = packet.ReadUInt32();
                     var rank = packet.ReadUInt32();
-                    packet.AddValue("Profession", string.Format("Id {0} - Value {1} - Rank {2}", id, value, rank), i, j);
+                    packet.AddValue("Profession", $"Id {id} - Value {value} - Rank {rank}", i, j);
                 }
 
             for (var i = 0; i < size; ++i)
@@ -1209,7 +1209,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GUILD_ROSTER_UPDATE)]
         public static void HandleGuildRosterUpdate(Packet packet)
         {
-            var count = packet.ReadBits("Count", 18);
+            uint count = packet.ReadBits("Count", 18);
             var guids = new byte[count][];
             var strlen = new uint[count][];
             var param = new bool[count][];
@@ -1248,10 +1248,10 @@ namespace WowPacketParser.Parsing.Parsers
 
                 for (int j = 0; j < 2; ++j)
                 {
-                    var rank = packet.ReadUInt32();
-                    var id = packet.ReadUInt32();
-                    var value = packet.ReadUInt32();
-                    packet.AddValue("Profession", string.Format("Id {0} - Value {1} - Rank {2}", id, value, rank), i, j);
+                    uint rank = packet.ReadUInt32();
+                    uint id = packet.ReadUInt32();
+                    uint value = packet.ReadUInt32();
+                    packet.AddValue("Profession", $"Id {id} - Value {value} - Rank {rank}", i, j);
                 }
 
                 packet.ReadXORByte(guids[i], 0);

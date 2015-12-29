@@ -8,7 +8,7 @@ namespace WowPacketParser.Parsing.Parsers
     public static class AuctionHouseHandler
     {
         // TODO: Use this in more places
-        private static readonly TypeCode _auctionSize = ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623) ? TypeCode.UInt64 : TypeCode.UInt32;
+        private static readonly TypeCode AuctionSize = ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623) ? TypeCode.UInt64 : TypeCode.UInt32;
 
         [Parser(Opcode.MSG_AUCTION_HELLO)]
         public static void HandleAuctionHello(Packet packet)
@@ -98,7 +98,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Auction Id");
 
             // I think Blizz got this wrong. Auction Id should be 64 on 4.x, not price.
-            packet.ReadValue("Price", _auctionSize);
+            packet.ReadValue("Price", AuctionSize);
         }
 
         [Parser(Opcode.SMSG_AUCTION_COMMAND_RESULT)]
@@ -115,12 +115,12 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 case AuctionHouseError.Ok:
                     if (action == AuctionHouseAction.Bid)
-                        packet.ReadValue("Diff", _auctionSize);
+                        packet.ReadValue("Diff", AuctionSize);
                     break;
                 case AuctionHouseError.HigherBid:
                     packet.ReadGuid("Bidder");
-                    packet.ReadValue("Bid", _auctionSize);
-                    packet.ReadValue("Diff", _auctionSize);
+                    packet.ReadValue("Bid", AuctionSize);
+                    packet.ReadValue("Diff", AuctionSize);
                     break;
             }
         }
@@ -131,8 +131,8 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Auction House ID");
             packet.ReadUInt32("Auction ID");
             packet.ReadGuid("Bidder GUID");
-            packet.ReadValue("Bid", _auctionSize);
-            packet.ReadValue("Diff", _auctionSize);
+            packet.ReadValue("Bid", AuctionSize);
+            packet.ReadValue("Diff", AuctionSize);
             packet.ReadUInt32<ItemId>("Item Entry");
             packet.ReadUInt32("Unk UInt32 1");
         }
@@ -141,8 +141,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleAuctionOwnerNotification(Packet packet)
         {
             packet.ReadUInt32("Auction ID");
-            packet.ReadValue("Bid", _auctionSize);
-            packet.ReadValue("Diff", _auctionSize);
+            packet.ReadValue("Bid", AuctionSize);
+            packet.ReadValue("Diff", AuctionSize);
             packet.ReadGuid("Bidder GUID");
             packet.ReadUInt32<ItemId>("Item Entry");
             packet.ReadUInt32("Unk UInt32 4");
@@ -189,12 +189,12 @@ namespace WowPacketParser.Parsing.Parsers
                 //packet.ReadUInt32E<ItemProtoFlags>("Item Flags", i);
                 packet.ReadUInt32("Unk UInt32 1", i);
                 packet.ReadGuid("Owner", i);
-                packet.ReadValue("Start Bid", _auctionSize, i);
-                packet.ReadValue("Out Bid", _auctionSize, i);
-                packet.ReadValue("Buyout ", _auctionSize, i);
+                packet.ReadValue("Start Bid", AuctionSize, i);
+                packet.ReadValue("Out Bid", AuctionSize, i);
+                packet.ReadValue("Buyout ", AuctionSize, i);
                 packet.ReadUInt32("Time Left", i);
                 packet.ReadGuid("Bidder", i);
-                packet.ReadValue("Bid", _auctionSize, i);
+                packet.ReadValue("Bid", AuctionSize, i);
             }
 
             packet.ReadUInt32("Total item count");

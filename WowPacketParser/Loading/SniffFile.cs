@@ -42,10 +42,7 @@ namespace WowPacketParser.Loading
             FileName = fileName;
             _dumpFormat = dumpFormat;
 
-            if (number == null)
-                _logPrefix = $"[{Path.GetFileName(FileName)}]";
-            else
-                _logPrefix = $"[{number.Item1}/{number.Item2} {Path.GetFileName(FileName)}]";
+            _logPrefix = number == null ? $"[{Path.GetFileName(FileName)}]" : $"[{number.Item1}/{number.Item2} {Path.GetFileName(FileName)}]";
         }
 
         private string FileName
@@ -53,17 +50,19 @@ namespace WowPacketParser.Loading
             get { return _fileName; }
             set
             {
-                string extension = Path.GetExtension(value).ToLower();
+                string extension = Path.GetExtension(value);
+                if (extension == null)
+                    throw new IOException($"Invalid file type {_fileName}");
+
                 _compression = extension.ToFileCompressionEnum();
 
-                if (_compression != FileCompression.None)
-                    _fileName = value.Remove(value.Length - extension.Length);
-                else
-                    _fileName = value;
+                _fileName = _compression != FileCompression.None ? value.Remove(value.Length - extension.Length) : value;
 
-                extension = Path.GetExtension(_fileName).ToLower();
+                extension = Path.GetExtension(_fileName);
+                if (extension == null)
+                    throw new IOException($"Invalid file type {_fileName}");
 
-                switch (extension)
+                switch (extension.ToLower())
                 {
                     case ".bin":
                         _sniffType = SniffType.Bin;
@@ -72,7 +71,7 @@ namespace WowPacketParser.Loading
                         _sniffType = SniffType.Pkt;
                         break;
                     default:
-                        throw new IOException(String.Format("Invalid file type {0}", _fileName));
+                        throw new IOException($"Invalid file type {_fileName}");
                 }
             }
         }
@@ -117,7 +116,8 @@ namespace WowPacketParser.Loading
                     Packet lastPacket = packets.Last();
 
                     // CSV format
-                    Trace.WriteLine(String.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
+                    // ReSharper disable once UseStringInterpolation
+                    Trace.WriteLine(string.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}",
                         FileName,                                                          // - sniff file name
                         firstPacket.Time,                                                  // - time of first packet
                         lastPacket.Time,                                                   // - time of last packet
@@ -135,7 +135,7 @@ namespace WowPacketParser.Loading
                 case DumpFormatType.Text:
                 case DumpFormatType.HexOnly:
                 {
-                    var outFileName = Path.ChangeExtension(FileName, null) + "_parsed.txt";
+                    string outFileName = Path.ChangeExtension(FileName, null) + "_parsed.txt";
 
                     if (Utilities.FileIsInUse(outFileName) && Settings.DumpFormat != DumpFormatType.SqlOnly)
                     {
@@ -158,17 +158,13 @@ namespace WowPacketParser.Loading
 
                     ThreadPool.SetMinThreads(threadCount + 2, 4);
 
-                    var written = false;
-                    using (var writer = (Settings.DumpFormatWithText() ? new StreamWriter(outFileName, true) : null))
+                    bool written = false;
+                    using (StreamWriter writer = (Settings.DumpFormatWithText() ? new StreamWriter(outFileName, true) : null))
                     {
-                        var firstRead = true;
-                        var firstWrite = true;
+                        bool firstRead = true;
+                        bool firstWrite = true;
 
-                        Reader reader;
-                        if (_compression != FileCompression.None)
-                            reader = new Reader(_tempName, _sniffType);
-                        else
-                            reader = new Reader(FileName, _sniffType);
+                        Reader reader = _compression != FileCompression.None ? new Reader(_tempName, _sniffType) : new Reader(FileName, _sniffType);
 
                         var pwp = new ParallelWorkProcessor<Packet>(() => // read
                         {
@@ -176,12 +172,12 @@ namespace WowPacketParser.Loading
                                 return Tuple.Create<Packet, bool>(null, true);
 
                             Packet packet;
-                            var b = reader.TryRead(out packet);
+                            bool b = reader.TryRead(out packet);
 
                             if (firstRead)
                             {
-                                Trace.WriteLine(string.Format("{0}: Parsing {1} of packets. Detected version {2}",
-                                    _logPrefix, Utilities.BytesToString(reader.PacketReader.GetTotalSize()), ClientVersion.VersionString));
+                                Trace.WriteLine(
+                                    $"{_logPrefix}: Parsing {Utilities.BytesToString(reader.PacketReader.GetTotalSize())} of packets. Detected version {ClientVersion.VersionString}");
 
                                 firstRead = false;
                             }
@@ -215,8 +211,7 @@ namespace WowPacketParser.Loading
                             if (firstWrite)
                             {
                                 // ReSharper disable AccessToDisposedClosure
-                                if (writer != null)
-                                    writer.WriteLine(GetHeader(FileName));
+                                writer?.WriteLine(GetHeader(FileName));
                                 // ReSharper restore AccessToDisposedClosure
 
                                 firstWrite = false;
@@ -260,14 +255,14 @@ namespace WowPacketParser.Loading
                     }
 
                     if (written)
-                        Trace.WriteLine(string.Format("{0}: Saved file to '{1}'", _logPrefix, outFileName));
+                        Trace.WriteLine($"{_logPrefix}: Saved file to '{outFileName}'");
                     else
                     {
-                        Trace.WriteLine(string.Format("{0}: No file produced", _logPrefix));
+                        Trace.WriteLine($"{_logPrefix}: No file produced");
                         File.Delete(outFileName);
                     }
 
-                    Trace.WriteLine(string.Format("{0}: {1}", _logPrefix, _stats));
+                    Trace.WriteLine($"{_logPrefix}: {_stats}");
 
                     if (Settings.SQLOutputFlag != 0 || Settings.HotfixSQLOutputFlag != 0)
                         WriteSQLs();
@@ -350,11 +345,7 @@ namespace WowPacketParser.Loading
                 }
                 case DumpFormatType.SniffVersionSplit:
                 {
-                    Reader reader;
-                    if (_compression != FileCompression.None)
-                        reader = new Reader(_tempName, _sniffType);
-                    else
-                        reader = new Reader(FileName, _sniffType);
+                    Reader reader = _compression != FileCompression.None ? new Reader(_tempName, _sniffType) : new Reader(FileName, _sniffType);
 
                     if (ClientVersion.IsUndefined() && reader.PacketReader.CanRead())
                     {
@@ -423,7 +414,7 @@ namespace WowPacketParser.Loading
                 }
                 default:
                 {
-                    Trace.WriteLine(string.Format("{0}: Dump format is none, nothing will be processed.", _logPrefix));
+                    Trace.WriteLine($"{_logPrefix}: Dump format is none, nothing will be processed.");
                     break;
                 }
             }
@@ -480,42 +471,37 @@ namespace WowPacketParser.Loading
 
         private void SplitBinaryDump(ICollection<Packet> packets)
         {
-            Trace.WriteLine(string.Format("{0}: Splitting {1} packets to multiple files...", _logPrefix, packets.Count));
+            Trace.WriteLine($"{_logPrefix}: Splitting {packets.Count} packets to multiple files...");
             SplitBinaryPacketWriter.Write(packets, Encoding.ASCII);
         }
 
         private void DirectionSplitBinaryDump(ICollection<Packet> packets)
         {
-            Trace.WriteLine(string.Format("{0}: Splitting {1} packets to multiple files...", _logPrefix, packets.Count));
+            Trace.WriteLine($"{_logPrefix}: Splitting {packets.Count} packets to multiple files...");
             SplitDirectionBinaryPacketWriter.Write(packets, Encoding.ASCII);
         }
 
         private void SessionSplitBinaryDump(ICollection<Packet> packets)
         {
-            Trace.WriteLine(string.Format("{0}: Splitting {1} packets to multiple files...", _logPrefix, packets.Count));
+            Trace.WriteLine($"{_logPrefix}: Splitting {packets.Count} packets to multiple files...");
             SplitSessionBinaryPacketWriter.Write(packets, Encoding.ASCII);
         }
 
         private void BinaryDump(string fileName, ICollection<Packet> packets)
         {
-            Trace.WriteLine(string.Format("{0}: Copying {1} packets to .pkt format...", _logPrefix, packets.Count));
+            Trace.WriteLine($"{_logPrefix}: Copying {packets.Count} packets to .pkt format...");
             BinaryPacketWriter.Write(SniffType.Pkt, fileName, Encoding.ASCII, packets);
         }
 
         private void WriteSQLs()
         {
-            string sqlFileName;
-            if (String.IsNullOrWhiteSpace(Settings.SQLFileName))
-                sqlFileName = string.Format("{0}_{1}.sql",
-                    Utilities.FormattedDateTimeForFiles(), Path.GetFileName(FileName));
-            else
-                sqlFileName = Settings.SQLFileName;
+            string sqlFileName = string.IsNullOrWhiteSpace(Settings.SQLFileName) ? $"{Utilities.FormattedDateTimeForFiles()}_{Path.GetFileName(FileName)}.sql" : Settings.SQLFileName;
 
-            if (String.IsNullOrWhiteSpace(Settings.SQLFileName))
-            {
-                Builder.DumpSQL(string.Format("{0}: Dumping sql", _logPrefix), sqlFileName, GetHeader(FileName));
-                Storage.ClearContainers();
-            }
+            if (!string.IsNullOrWhiteSpace(Settings.SQLFileName))
+                return;
+
+            Builder.DumpSQL($"{_logPrefix}: Dumping sql", sqlFileName, GetHeader(FileName));
+            Storage.ClearContainers();
         }
 
         private void WritePacketErrors()

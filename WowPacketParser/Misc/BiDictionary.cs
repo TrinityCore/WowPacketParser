@@ -40,13 +40,13 @@ namespace WowPacketParser.Misc
 
             if (_firstToSecond.TryGetValue(first, out snd))
             {
-                Trace.WriteLine(string.Format("BiDictionary already contains <{0}, {1}>", second, first));
+                Trace.WriteLine($"BiDictionary already contains <{second}, {first}>");
                 return;
             }
 
             if (_secondToFirst.TryGetValue(second, out frst))
             {
-                Trace.WriteLine(string.Format("BiDictionary already contains <{0}, {1}>", first, second));
+                Trace.WriteLine($"BiDictionary already contains <{first}, {second}>");
                 return;
             }
 
@@ -108,15 +108,9 @@ namespace WowPacketParser.Misc
             set { _firstToSecond[key] = value; }
         }
 
-        public ICollection<TFirst> Keys
-        {
-            get { return _firstToSecond.Keys; }
-        }
+        public ICollection<TFirst> Keys => _firstToSecond.Keys;
 
-        public ICollection<TSecond> Values
-        {
-            get { return _firstToSecond.Values; }
-        }
+        public ICollection<TSecond> Values => _firstToSecond.Values;
 
         public bool Remove(KeyValuePair<TFirst, TSecond> item)
         {
@@ -132,15 +126,9 @@ namespace WowPacketParser.Misc
             return _secondToFirst.Remove(item) && _firstToSecond.Remove(invertedPair);
         }
 
-        public int Count
-        {
-            get { return _firstToSecond.Count; }
-        }
+        public int Count => _firstToSecond.Count;
 
-        public bool IsReadOnly
-        {
-            get { return _firstToSecond.IsReadOnly; }
-        }
+        public bool IsReadOnly => _firstToSecond.IsReadOnly;
 
         public void Clear()
         {
@@ -205,7 +193,7 @@ namespace WowPacketParser.Misc
 
         public void SetByFirst(TFirst key, TSecond value)
         {
-            var oldVal = _firstToSecond[key];
+            TSecond oldVal = _firstToSecond[key];
 
             if (!typeof(TSecond).IsValueType && oldVal == null)
                 return;

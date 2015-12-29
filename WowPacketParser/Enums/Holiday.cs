@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace WowPacketParser.Enums
 {
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public enum Holiday
     {
         None                          = 0,

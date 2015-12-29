@@ -1,8 +1,10 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace WowPacketParser.Enums
 {
     [Flags]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     enum SpellHitType
     {
         SPELL_HIT_TYPE_UNK1 = 0x00000001,

@@ -208,7 +208,7 @@ namespace WowPacketParser.Enums.Battlenet
 
     public static class CommandNames
     {
-        private static readonly Dictionary<Tuple<BattlenetChannel, Direction>, Type> _commandTypes = new Dictionary<Tuple<BattlenetChannel, Direction>, Type>()
+        private static readonly Dictionary<Tuple<BattlenetChannel, Direction>, Type> CommandTypes = new Dictionary<Tuple<BattlenetChannel, Direction>, Type>()
         {
             { Tuple.Create(BattlenetChannel.Authentication, Direction.BNClientToServer), typeof(AuthenticationClientCommand) },
             { Tuple.Create(BattlenetChannel.Authentication, Direction.BNServerToClient), typeof(AuthenticationServerCommand) },
@@ -235,10 +235,7 @@ namespace WowPacketParser.Enums.Battlenet
         public static string Get(ushort command, BattlenetChannel channel, Direction direction)
         {
             var key = Tuple.Create(channel, direction);
-            if (_commandTypes.ContainsKey(key))
-                return _commandTypes[key].GetEnumName(command);
-
-            return "Unknown";
+            return CommandTypes.ContainsKey(key) ? CommandTypes[key].GetEnumName(command) : "Unknown";
         }
     }
 }

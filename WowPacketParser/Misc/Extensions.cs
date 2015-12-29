@@ -154,7 +154,7 @@ namespace WowPacketParser.Misc
         /// <returns>A string</returns>
         public static string ToFormattedString(this TimeSpan span)
         {
-            return string.Format("{0:00}:{1:00}:{2:00}.{3:000}", span.Hours, span.Minutes, span.Seconds, span.Milliseconds);
+            return $"{span.Hours:00}:{span.Minutes:00}:{span.Seconds:00}.{span.Milliseconds:000}";
         }
 
         public static void Clear<T>(this ConcurrentBag<T> bag)
@@ -226,10 +226,11 @@ namespace WowPacketParser.Misc
 
         public static FileCompression ToFileCompressionEnum(this string str)
         {
+            // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (FileCompression item in Enum.GetValues(typeof(FileCompression)))
             {
                 FileCompressionAttribute[] attributes = (FileCompressionAttribute[])item.GetType().GetField(item.ToString()).GetCustomAttributes(typeof(FileCompressionAttribute), false);
-                if (attributes.Length > 0 && (attributes[0].Extension.Equals(str)))
+                if (attributes.Length > 0 && (attributes[0].Extension.Equals(str.ToLower())))
                     return item;
             }
 

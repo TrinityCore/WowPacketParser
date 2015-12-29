@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
@@ -8,6 +9,7 @@ using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Parsing.Parsers
 {
+    [SuppressMessage("ReSharper", "UseObjectOrCollectionInitializer")]
     public static class SpellHandler
     {
         [Parser(Opcode.SMSG_SPELL_INTERRUPT_LOG)] // 4.3.4
@@ -630,9 +632,8 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (hasTrans)
                 {
-                    var tpos = new Vector4();
                     packet.ReadSByte("Transport Seat");
-                    tpos.O = packet.ReadSingle();
+                    packet.ReadSingle("O");
                     packet.ReadUInt32("Transport Time");
 
                     packet.ReadXORByte(transportGuid, 6);
@@ -641,11 +642,11 @@ namespace WowPacketParser.Parsing.Parsers
                     if (hasTransTime2)
                         packet.ReadUInt32("Transport Time 2");
 
-                    tpos.X = packet.ReadSingle();
+                    packet.ReadSingle("X");
 
                     packet.ReadXORByte(transportGuid, 4);
 
-                    tpos.Z = packet.ReadSingle();
+                    packet.ReadSingle("Z");
 
                     packet.ReadXORByte(transportGuid, 2);
                     packet.ReadXORByte(transportGuid, 0);
@@ -656,7 +657,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadXORByte(transportGuid, 1);
                     packet.ReadXORByte(transportGuid, 3);
 
-                    tpos.Y = packet.ReadSingle();
+                    packet.ReadSingle("Y");
 
                     packet.ReadXORByte(transportGuid, 7);
 

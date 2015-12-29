@@ -9,8 +9,8 @@ namespace WowPacketParser.Loading
 {
     public class Reader
     {
-        public string FileName { get; private set; }
-        public IPacketReader PacketReader { get; private set; }
+        public string FileName { get; }
+        public IPacketReader PacketReader { get; }
 
         public Reader(string fileName, SniffType type)
         {

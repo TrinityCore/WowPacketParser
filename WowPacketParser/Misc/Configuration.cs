@@ -26,14 +26,14 @@ namespace WowPacketParser.Misc
             var opts = new Dictionary<string, string>();
             string configFile = null;
             KeyValueConfigurationCollection settings = null;
-            for (var i = 1; i < args.Length - 1; ++i)
+            for (int i = 1; i < args.Length - 1; ++i)
             {
-                var opt = args[i];
+                string opt = args[i];
                 if (opt[0] != '/')
                     break;
 
                 // analyze options
-                var optname = opt.Substring(1);
+                string optname = opt.Substring(1);
                 switch (optname)
                 {
                     case "ConfigFile":
@@ -80,20 +80,20 @@ namespace WowPacketParser.Misc
 
         public string GetString(string key, string defValue)
         {
-            var s = _settingsCollection[key];
-            return (s == null || s.Value == null) ? defValue : s.Value;
+            KeyValueConfigurationElement s = _settingsCollection[key];
+            return s?.Value ?? defValue;
         }
 
         public string[] GetStringList(string key, string[] defValue)
         {
-            var s = _settingsCollection[key];
+            KeyValueConfigurationElement s = _settingsCollection[key];
 
-            if (s == null || s.Value == null)
+            if (s?.Value == null)
                 return defValue;
 
             var arr = s.Value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-            for (var i = 0; i < arr.Length; i++)
+            for (int i = 0; i < arr.Length; i++)
                 arr[i] = arr[i].Trim();
 
             return arr;
@@ -101,8 +101,8 @@ namespace WowPacketParser.Misc
 
         public bool GetBoolean(string key, bool defValue)
         {
-            var s = _settingsCollection[key];
-            if (s == null || s.Value == null)
+            KeyValueConfigurationElement s = _settingsCollection[key];
+            if (s?.Value == null)
                 return defValue;
 
             bool aux;
@@ -115,8 +115,8 @@ namespace WowPacketParser.Misc
 
         public int GetInt(string key, int defValue)
         {
-            var s = _settingsCollection[key];
-            if (s == null || s.Value == null || s.Value == string.Empty)
+            KeyValueConfigurationElement s = _settingsCollection[key];
+            if (string.IsNullOrEmpty(s?.Value))
                 return defValue;
 
             int aux;
@@ -129,8 +129,8 @@ namespace WowPacketParser.Misc
 
         public TEnum GetEnum<TEnum>(string key, TEnum defValue) where TEnum : struct
         {
-            var s = _settingsCollection[key];
-            if (s == null || s.Value == null || s.Value == string.Empty)
+            KeyValueConfigurationElement s = _settingsCollection[key];
+            if (string.IsNullOrEmpty(s?.Value))
                 return defValue;
 
             int value;

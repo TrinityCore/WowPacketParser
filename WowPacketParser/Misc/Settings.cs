@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using WowPacketParser.Enums;
 
 namespace WowPacketParser.Misc

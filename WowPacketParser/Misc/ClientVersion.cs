@@ -243,15 +243,9 @@ namespace WowPacketParser.Misc
             }
         }
 
-        public static int BuildInt
-        {
-            get { return (int) Build; }
-        }
+        public static int BuildInt => (int) Build;
 
-        public static string VersionString
-        {
-            get { return Build.ToString(); }
-        }
+        public static string VersionString => Build.ToString();
 
         private static ClientType GetExpansion(ClientVersionBuild build)
         {

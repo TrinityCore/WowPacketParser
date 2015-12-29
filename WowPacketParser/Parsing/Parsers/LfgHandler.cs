@@ -339,17 +339,17 @@ namespace WowPacketParser.Parsing.Parsers
             guid1[5] = packet.ReadBit();
             guid2[3] = packet.ReadBit();
 
-            var count = packet.ReadBits("Response Count", 23);
+            uint count = packet.ReadBits("Response Count", 23);
 
             guid2[7] = packet.ReadBit();
 
-            for (var i = 0; i < count; ++i)
+            for (int i = 0; i < count; ++i)
             {
                 var bits = new Bit[5];
-                for (var j = 0; j < 5; ++j)
+                for (int j = 0; j < 5; ++j)
                     bits[j] = packet.ReadBit();
-                packet.AddValue("Bits", string.Format("In Dungeon?: {0}, Same Group?: {1}, Accept: {2}, Answer: {3}, Self: {4}",
-                    bits[0], bits[1], bits[2], bits[3], bits[4]), i); // 0 and 1 could be swapped
+                packet.AddValue("Bits",
+                    $"In Dungeon?: {bits[0]}, Same Group?: {bits[1]}, Accept: {bits[2]}, Answer: {bits[3]}, Self: {bits[4]}", i); // 0 and 1 could be swapped
             }
 
             guid2[5] = packet.ReadBit();
@@ -368,7 +368,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid2, 5);
             packet.ReadXORByte(guid1, 1);
 
-            for (var i = 0; i < count; ++i)
+            for (int i = 0; i < count; ++i)
                 packet.ReadInt32E<LfgRoleFlag>("Roles", i);
 
             packet.ReadXORByte(guid2, 7);

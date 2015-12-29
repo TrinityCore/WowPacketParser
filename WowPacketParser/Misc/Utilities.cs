@@ -103,9 +103,8 @@ namespace WowPacketParser.Misc
         [SecurityCritical]
         internal static void GetMemUse(string prefix)
         {
-            var process = Process.GetCurrentProcess();
-            Trace.WriteLine(String.Format("Memory GC: {0,5}, Process: {1,5} - {2}",
-                BytesToString(GC.GetTotalMemory(true)), BytesToString(process.PrivateMemorySize64), prefix));
+            Process process = Process.GetCurrentProcess();
+            Trace.WriteLine($"Memory GC: {BytesToString(GC.GetTotalMemory(true)),5}, Process: {BytesToString(process.PrivateMemorySize64),5} - {prefix}");
         }
 
         public static void RemoveConfigOptions(ref List<string> files)
@@ -179,14 +178,12 @@ namespace WowPacketParser.Misc
                 return false;
 
             // Notice that if one of the values is DBNull, DBNull == "" must return true
-            var str1 = o1 as string;
-            var str2 = o2 as string;
+            string str1 = o1 as string;
+            string str2 = o2 as string;
 
-            if (str1 != null)
-                str1 = str1.TrimEnd('\r', '\n', ' ');
+            str1 = str1?.TrimEnd('\r', '\n', ' ');
 
-            if (str2 != null)
-                str2 = str2.TrimEnd('\r', '\n', ' ');
+            str2 = str2?.TrimEnd('\r', '\n', ' ');
 
             if (str1 != null && str2 == null)
                 return str1 == Convert.ToString(o2);

@@ -1,8 +1,10 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace WowPacketParser.Enums
 {
     [Flags]
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public enum SpellHitInfo
     {
         HITINFO_UNK0           = 0x00000001, // unused - debug flag, probably debugging visuals, no effect in non-ptr client

@@ -28,13 +28,13 @@ namespace WowPacketParser.Saving
 
         private static void WriteGroup(IGrouping<EndPoint, Packet> group)
         {
-            var fileName = Folder + "/" + (group.Key != null ? group.Key.GetHashCode().ToString(CultureInfo.InvariantCulture) : "0") + ".pkt";
+            string fileName = Folder + "/" + (group.Key?.GetHashCode().ToString(CultureInfo.InvariantCulture) ?? "0") + ".pkt";
 
-            using (var fileStream = new FileStream(fileName, FileMode.Append, FileAccess.Write))
+            using (FileStream fileStream = new FileStream(fileName, FileMode.Append, FileAccess.Write))
             {
-                using (var writer = new BinaryWriter(fileStream, _encoding))
+                using (BinaryWriter writer = new BinaryWriter(fileStream, _encoding))
                 {
-                    foreach (var packet in group)
+                    foreach (Packet packet in group)
                     {
                         writer.Write((ushort) packet.Opcode);
                         writer.Write((int) packet.Length);

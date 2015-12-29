@@ -1,14 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using WowPacketParser.Enums.Battlenet;
+﻿using WowPacketParser.Enums.Battlenet;
 
 namespace WowPacketParser.Misc
 {
     public sealed class BattlenetPacket
     {
         public BattlenetPacketHeader Header { get; set; }
-        public int ProcessedBytes { get { return BitStream.ProcessedBytes; } }
+        public int ProcessedBytes => BitStream.ProcessedBytes;
         public readonly Packet Stream;
         public readonly BattlenetBitStream BitStream;
 
@@ -17,16 +14,18 @@ namespace WowPacketParser.Misc
             BitStream = new BattlenetBitStream(packet);
             Stream = packet;
 
-            Header = new BattlenetPacketHeader {Opcode = BitStream.Read<byte>(0, 6)};
+            ushort opcode = BitStream.Read<byte>(0, 6);
 
+            BattlenetChannel channel = BattlenetChannel.Authentication;
             if (ReadBoolean())
-                Header.Channel = (BattlenetChannel)BitStream.Read<byte>(0, 4);
+                channel = (BattlenetChannel)BitStream.Read<byte>(0, 4);
 
-            Header.Direction = packet.Direction;
+            Header = new BattlenetPacketHeader(opcode, channel, packet.Direction);
         }
 
         public string GetHeader()
         {
+            // ReSharper disable once UseStringInterpolation
             return string.Format("{0}: {1} (0x{2}) Channel: {3} Length: {4} Time: {5} Number: {6}",
                 Stream.Direction, CommandNames.Get(Header.Opcode, Header.Channel, Stream.Direction), Header.Opcode.ToString("X2"), Header.Channel,
                 Stream.Length, Stream.Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),

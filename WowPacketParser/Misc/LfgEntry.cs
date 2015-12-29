@@ -11,15 +11,9 @@ namespace WowPacketParser.Misc
 
         public readonly int Full;
 
-        public LfgType LfgType
-        {
-            get { return (LfgType) ((Full & 0xFF000000) >> 24); }
-        }
+        public LfgType LfgType => (LfgType) ((Full & 0xFF000000) >> 24);
 
-        public int InstanceId
-        {
-            get { return (Full & 0x00FFFFFF) >> 0; }
-        }
+        public int InstanceId => (Full & 0x00FFFFFF) >> 0;
 
         public override string ToString()
         {

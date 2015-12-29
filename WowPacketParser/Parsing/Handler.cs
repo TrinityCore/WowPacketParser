@@ -38,7 +38,7 @@ namespace WowPacketParser.Parsing
         private static void LoadHandlersInto(Dictionary<KeyValuePair<ClientVersionBuild, Opcode>, Action<Packet>> handlers, Assembly asm, ClientVersionBuild build)
         {
             var types = asm.GetTypes();
-            foreach (var type in types)
+            foreach (Type type in types)
             {
                 //if (type.Namespace != "WowPacketParser.Parsing.Parsers")
                 //    continue;
@@ -51,7 +51,7 @@ namespace WowPacketParser.Parsing
 
                 var methods = type.GetMethods();
 
-                foreach (var method in methods)
+                foreach (MethodInfo method in methods)
                 {
                     if (!method.IsPublic)
                         continue;
@@ -69,9 +69,9 @@ namespace WowPacketParser.Parsing
                     if (parms[0].ParameterType != typeof(Packet))
                         continue;
 
-                    foreach (var attr in attrs)
+                    foreach (ParserAttribute attr in attrs)
                     {
-                        var opc = attr.Opcode;
+                        Opcode opc = attr.Opcode;
                         if (opc == Opcode.NULL_OPCODE)
                             continue;
 
@@ -88,7 +88,8 @@ namespace WowPacketParser.Parsing
                             // The last one would be MSG_, UMSG_, TEST_, etc... opcodes
                             // However that's just too much pain to do considering the mess Blizzard does
                             // by naming their opcodes sometimes without following their own rules.
-                            var direction = attr.Opcode.ToString()[0] == 'S' ? Direction.ServerToClient : Direction.ClientToServer;
+                            Direction direction = attr.Opcode.ToString()[0] == 'S' ? Direction.ServerToClient : Direction.ClientToServer;
+                            // ReSharper disable once UseStringInterpolation
                             Trace.WriteLine(string.Format("Error: (Build: {0}) tried to overwrite delegate for opcode {1} ({2}); new handler: {3}; old handler: {4}",
                                 ClientVersion.Build, Opcodes.GetOpcode(attr.Opcode, direction), attr.Opcode, del.Method, handlers[key].Method));
                             continue;

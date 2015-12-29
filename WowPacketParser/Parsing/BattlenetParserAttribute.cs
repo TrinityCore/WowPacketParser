@@ -10,12 +10,7 @@ namespace WowPacketParser.Parsing
     {
         private BattlenetParserAttribute(ushort opcode, BattlenetChannel channel, Direction direction)
         {
-            Header = new BattlenetPacketHeader
-            {
-                Opcode = opcode,
-                Channel = channel,
-                Direction = direction
-            };
+            Header = new BattlenetPacketHeader(opcode, channel, direction);
         }
 
         public BattlenetParserAttribute(AuthenticationClientCommand command)

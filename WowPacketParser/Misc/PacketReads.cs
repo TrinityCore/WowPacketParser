@@ -636,7 +636,7 @@ namespace WowPacketParser.Misc
         private static string FormatInteger(IFormattable value, string name)
         {
             if (Settings.DebugReads)
-                return string.Format("{0} ({1}) (0x{2:X4})", name, value, value);
+                return $"{name} ({value}) (0x{value:X4})";
             return name + " (" + value + ")";
         }
 

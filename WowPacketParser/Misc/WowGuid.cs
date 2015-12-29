@@ -137,8 +137,9 @@ namespace WowPacketParser.Misc
 
             if (HasEntry())
             {
-                var type = Utilities.ObjectTypeToStore(GetObjectType());
+                StoreNameType type = Utilities.ObjectTypeToStore(GetObjectType());
 
+                // ReSharper disable once UseStringInterpolation
                 return string.Format("Full: 0x{0}{1} {2}/{3} R{4}/S{5} Map: {6} Entry: {7} Low: {8}", High.ToString("X16"), Low.ToString("X16"),
                     GetHighType(), GetSubType(), GetRealmId(), GetServerId(), StoreGetters.GetName(StoreNameType.Map, GetMapId()),
                     StoreGetters.GetName(type, (int)GetEntry()), GetLow());
@@ -146,8 +147,9 @@ namespace WowPacketParser.Misc
 
             // TODO: Implement extra format for battleground, see WowGuid64.ToString()
 
-            var name = StoreGetters.GetName(this);
+            string name = StoreGetters.GetName(this);
 
+            // ReSharper disable once UseStringInterpolation
             return string.Format("Full: 0x{0}{1} {2}/{3} R{4}/S{5} Map: {6} Low: {7}", High.ToString("X16"), Low.ToString("X16"),
                     GetHighType(), GetSubType(), GetRealmId(), GetServerId(), StoreGetters.GetName(StoreNameType.Map, GetMapId()),
                     GetLow() + (String.IsNullOrEmpty(name) ? String.Empty : (" Name: " + name)));

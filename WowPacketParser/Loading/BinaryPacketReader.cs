@@ -270,12 +270,12 @@ namespace WowPacketParser.Loading
 
         public long GetTotalSize()
         {
-            return _reader != null ? _reader.BaseStream.Length : 0;
+            return _reader?.BaseStream.Length ?? 0;
         }
 
         public long GetCurrentSize()
         {
-            return _reader != null ? _reader.BaseStream.Position : 0;
+            return _reader?.BaseStream.Position ?? 0;
         }
 
         public void Dispose()

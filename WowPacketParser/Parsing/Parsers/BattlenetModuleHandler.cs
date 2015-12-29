@@ -7,7 +7,7 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public class BattlenetModuleHandler
     {
-        private Packet Packet { get; set; }
+        private Packet Packet { get; }
 
         public BattlenetModuleHandler(BattlenetPacket packet)
         {

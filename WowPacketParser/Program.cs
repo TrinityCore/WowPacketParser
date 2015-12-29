@@ -96,12 +96,12 @@ namespace WowPacketParser
 
             Trace.Listeners.Clear();
 
-            using (var consoleListener = new ConsoleTraceListener(true))
+            using (ConsoleTraceListener consoleListener = new ConsoleTraceListener(true))
                 Trace.Listeners.Add(consoleListener);
 
             if (Settings.ParsingLog)
             {
-                using (var fileListener = new TextWriterTraceListener(String.Format("{0}_log.txt", Utilities.FormattedDateTimeForFiles())))
+                using (TextWriterTraceListener fileListener = new TextWriterTraceListener($"{Utilities.FormattedDateTimeForFiles()}_log.txt"))
                 {
                     fileListener.Name = "ConsoleMirror";
                     Trace.Listeners.Add(fileListener);

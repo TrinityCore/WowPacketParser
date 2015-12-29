@@ -148,9 +148,9 @@ namespace WowPacketParser.SQL.Builders
                     {
                         string subname = name.Substring(firstIndex + 1, lastIndex - firstIndex - 1);
 
-                        if (UnitMisc._professionTrainers.Contains(subname))
+                        if (UnitMisc.ProfessionTrainers.Contains(subname))
                             cre.Item1.NpcFlag |= NPCFlags.ProfessionTrainer;
-                        else if (UnitMisc._classTrainers.Contains(subname))
+                        else if (UnitMisc.ClassTrainers.Contains(subname))
                             cre.Item1.NpcFlag |= NPCFlags.ClassTrainer;
                     }
                 }

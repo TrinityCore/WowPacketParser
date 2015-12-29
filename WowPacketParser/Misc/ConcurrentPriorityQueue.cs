@@ -30,7 +30,7 @@ namespace WowPacketParser.Misc
 
         public ConcurrentPriorityQueue(IEnumerable<KeyValuePair<TKey, TValue>> collection)
         {
-            if (collection == null) throw new ArgumentNullException("collection");
+            if (collection == null) throw new ArgumentNullException(nameof(collection));
             foreach (var item in collection) _minHeap.Insert(item);
         }
 
@@ -72,13 +72,12 @@ namespace WowPacketParser.Misc
             result = default(KeyValuePair<TKey, TValue>);
             lock (_syncLock)
             {
-                if (_minHeap.Count > 0)
-                {
-                    result = _minHeap.Remove();
-                    return true;
-                }
+                if (_minHeap.Count <= 0)
+                    return false;
+
+                result = _minHeap.Remove();
+                return true;
             }
-            return false;
         }
 
         /// <summary>Attempts to return the next prioritized item in the queue.</summary>
@@ -107,7 +106,7 @@ namespace WowPacketParser.Misc
         public void Clear() { lock (_syncLock) _minHeap.Clear(); }
 
         /// <summary>Gets whether the queue is empty.</summary>
-        public bool IsEmpty { get { return Count == 0; } }
+        public bool IsEmpty => Count == 0;
 
         /// <summary>Gets the number of elements contained in the queue.</summary>
         public int Count
@@ -134,7 +133,7 @@ namespace WowPacketParser.Misc
         {
             lock (_syncLock)
             {
-                var clonedHeap = new MinBinaryHeap(_minHeap);
+                MinBinaryHeap clonedHeap = new MinBinaryHeap(_minHeap);
                 var result = new KeyValuePair<TKey, TValue>[_minHeap.Count];
                 for (int i = 0; i < result.Length; i++)
                 {
@@ -200,22 +199,20 @@ namespace WowPacketParser.Misc
         /// <summary>
         /// Gets a value indicating whether access to the ICollection is synchronized with the SyncRoot.
         /// </summary>
-        bool ICollection.IsSynchronized { get { return true; } }
+        bool ICollection.IsSynchronized => true;
 
         /// <summary>
         /// Gets an object that can be used to synchronize access to the collection.
         /// </summary>
-        object ICollection.SyncRoot { get { return _syncLock; } }
+        object ICollection.SyncRoot => _syncLock;
 
         /// <summary>Implements a binary heap that prioritizes smaller values.</summary>
         private sealed class MinBinaryHeap
         {
-            private readonly List<KeyValuePair<TKey, TValue>> _items;
-
             /// <summary>Initializes an empty heap.</summary>
             public MinBinaryHeap()
             {
-                _items = new List<KeyValuePair<TKey, TValue>>();
+                Items = new List<KeyValuePair<TKey, TValue>>();
             }
 
             /// <summary>Initializes a heap as a copy of another heap instance.</summary>
@@ -223,18 +220,18 @@ namespace WowPacketParser.Misc
             /// <remarks>Key/Value values are not deep cloned.</remarks>
             public MinBinaryHeap(MinBinaryHeap heapToCopy)
             {
-                _items = new List<KeyValuePair<TKey, TValue>>(heapToCopy.Items);
+                Items = new List<KeyValuePair<TKey, TValue>>(heapToCopy.Items);
             }
 
             /// <summary>Empties the heap.</summary>
-            public void Clear() { _items.Clear(); }
+            public void Clear() { Items.Clear(); }
 
             /// <summary>Adds an item to the heap.</summary>
             public void Insert(KeyValuePair<TKey, TValue> entry)
             {
                 // Add the item to the list, making sure to keep track of where it was added.
-                _items.Add(entry);
-                int pos = _items.Count - 1;
+                Items.Add(entry);
+                int pos = Items.Count - 1;
 
                 // If the new item is the only item, we're done.
                 if (pos == 0) return;
@@ -247,45 +244,45 @@ namespace WowPacketParser.Misc
                     int nextPos = (pos - 1) / 2;
 
                     // Extract the entry at the next position
-                    var toCheck = _items[nextPos];
+                    var toCheck = Items[nextPos];
 
                     // Compare that entry to our new one.  If our entry has a smaller key, move it up.
                     // Otherwise, we're done.
                     if (entry.Key.CompareTo(toCheck.Key) < 0)
                     {
-                        _items[pos] = toCheck;
+                        Items[pos] = toCheck;
                         pos = nextPos;
                     }
                     else break;
                 }
 
                 // Make sure we put this entry back in, just in case
-                _items[pos] = entry;
+                Items[pos] = entry;
             }
 
             /// <summary>Returns the entry at the top of the heap.</summary>
             public KeyValuePair<TKey, TValue> Peek()
             {
                 // Returns the first item
-                if (_items.Count == 0) throw new InvalidOperationException("The heap is empty.");
-                return _items[0];
+                if (Items.Count == 0) throw new InvalidOperationException("The heap is empty.");
+                return Items[0];
             }
 
             /// <summary>Removes the entry at the top of the heap.</summary>
             public KeyValuePair<TKey, TValue> Remove()
             {
                 // Get the first item and save it for later (this is what will be returned).
-                if (_items.Count == 0) throw new InvalidOperationException("The heap is empty.");
-                KeyValuePair<TKey, TValue> toReturn = _items[0];
+                if (Items.Count == 0) throw new InvalidOperationException("The heap is empty.");
+                KeyValuePair<TKey, TValue> toReturn = Items[0];
 
                 // Remove the first item if there will only be 0 or 1 items left after doing so.
-                if (_items.Count <= 2) _items.RemoveAt(0);
+                if (Items.Count <= 2) Items.RemoveAt(0);
                 // A reheapify will be required for the removal
                 else
                 {
                     // Remove the first item and move the last item to the front.
-                    _items[0] = _items[_items.Count - 1];
-                    _items.RemoveAt(_items.Count - 1);
+                    Items[0] = Items[Items.Count - 1];
+                    Items.RemoveAt(Items.Count - 1);
 
                     // Start reheapify
                     int current = 0, possibleSwap = 0;
@@ -298,11 +295,11 @@ namespace WowPacketParser.Misc
                         int rightChildPos = leftChildPos + 1;
 
                         // Should we swap with the left child?
-                        if (leftChildPos < _items.Count)
+                        if (leftChildPos < Items.Count)
                         {
                             // Get the two entries to compare (node and its left child)
-                            var entry1 = _items[current];
-                            var entry2 = _items[leftChildPos];
+                            var entry1 = Items[current];
+                            var entry2 = Items[leftChildPos];
 
                             // If the child has a lower key than the parent, set that as a possible swap
                             if (entry2.Key.CompareTo(entry1.Key) < 0) possibleSwap = leftChildPos;
@@ -311,11 +308,11 @@ namespace WowPacketParser.Misc
 
                         // Should we swap with the right child?  Note that now we check with the possible swap
                         // position (which might be current and might be left child).
-                        if (rightChildPos < _items.Count)
+                        if (rightChildPos < Items.Count)
                         {
                             // Get the two entries to compare (node and its left child)
-                            var entry1 = _items[possibleSwap];
-                            var entry2 = _items[rightChildPos];
+                            var entry1 = Items[possibleSwap];
+                            var entry2 = Items[rightChildPos];
 
                             // If the child has a lower key than the parent, set that as a possible swap
                             if (entry2.Key.CompareTo(entry1.Key) < 0) possibleSwap = rightChildPos;
@@ -324,9 +321,9 @@ namespace WowPacketParser.Misc
                         // Now swap current and possible swap if necessary
                         if (current != possibleSwap)
                         {
-                            var temp = _items[current];
-                            _items[current] = _items[possibleSwap];
-                            _items[possibleSwap] = temp;
+                            var temp = Items[current];
+                            Items[current] = Items[possibleSwap];
+                            Items[possibleSwap] = temp;
                         }
                         else break; // if nothing to swap, we're done
 
@@ -340,9 +337,9 @@ namespace WowPacketParser.Misc
             }
 
             /// <summary>Gets the number of objects stored in the heap.</summary>
-            public int Count { get { return _items.Count; } }
+            public int Count => Items.Count;
 
-            internal List<KeyValuePair<TKey, TValue>> Items { get { return _items; } }
+            internal List<KeyValuePair<TKey, TValue>> Items { get; }
         }
 
         private readonly AutoResetEvent _newItem = new AutoResetEvent(false);

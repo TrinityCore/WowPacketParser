@@ -1,5 +1,8 @@
-﻿namespace WowPacketParser.Enums
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace WowPacketParser.Enums
 {
+    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public enum VictimStates
     {
         VICTIMSTATE_UNKNOWN1  = 0,

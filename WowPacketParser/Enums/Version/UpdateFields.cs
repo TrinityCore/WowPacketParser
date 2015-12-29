@@ -45,25 +45,27 @@ namespace WowPacketParser.Enums.Version
                 typeof(CorpseDynamicField), typeof(AreaTriggerDynamicField), typeof(SceneObjectDynamicField), typeof(ConversationDynamicField)
             };
 
-            var loaded = false;
-            foreach (var enumType in enumTypes)
+            bool loaded = false;
+            foreach (Type enumType in enumTypes)
             {
-                var vTypeString = string.Format("WowPacketParserModule.{0}.Enums.{1}", GetUpdateFieldDictionaryBuildName(build), enumType.Name);
-                var vEnumType = asm.GetType(vTypeString);
+                string vTypeString =
+                    $"WowPacketParserModule.{GetUpdateFieldDictionaryBuildName(build)}.Enums.{enumType.Name}";
+                Type vEnumType = asm.GetType(vTypeString);
                 if (vEnumType == null)
                 {
-                    vTypeString = string.Format("WowPacketParser.Enums.Version.{0}.{1}", GetUpdateFieldDictionaryBuildName(build), enumType.Name);
+                    vTypeString =
+                        $"WowPacketParser.Enums.Version.{GetUpdateFieldDictionaryBuildName(build)}.{enumType.Name}";
                     vEnumType = Assembly.GetExecutingAssembly().GetType(vTypeString);
                     if (vEnumType == null)
                         continue;   // versions prior to 4.3.0 do not have AreaTriggerField
                 }
 
-                var vValues = Enum.GetValues(vEnumType);
+                Array vValues = Enum.GetValues(vEnumType);
                 var vNames = Enum.GetNames(vEnumType);
 
                 var result = new BiDictionary<string, int>();
 
-                for (var i = 0; i < vValues.Length; ++i)
+                for (int i = 0; i < vValues.Length; ++i)
                     result.Add(vNames[i], (int)vValues.GetValue(i));
 
                 dicts.Add(enumType, result);

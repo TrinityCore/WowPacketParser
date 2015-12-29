@@ -291,7 +291,7 @@ namespace WowPacketParser.SQL.Builders
             return result.Count == 0 ? null : result;
         }
 
-        public static readonly HashSet<string> _professionTrainers = new HashSet<string>
+        public static readonly HashSet<string> ProfessionTrainers = new HashSet<string>
         {
             "Alchemy Trainer", "Armorsmith Trainer", "Armorsmithing Trainer", "Blacksmith Trainer",
             "Blacksmithing Trainer", "Blacksmithing Trainer & Supplies", "Cold Weather Flying Trainer",
@@ -322,7 +322,7 @@ namespace WowPacketParser.SQL.Builders
             "Riding Trainer", "Undead Horse Riding Trainer"
         };
 
-        public static readonly HashSet<string> _classTrainers = new HashSet<string>
+        public static readonly HashSet<string> ClassTrainers = new HashSet<string>
         {
             "Druid Trainer", "Portal Trainer", "Portal: Darnassus Trainer",
             "Portal: Ironforge Trainer", "Portal: Orgrimmar Trainer",
@@ -346,9 +346,9 @@ namespace WowPacketParser.SQL.Builders
 
         private static uint ProcessNpcFlags(string subName)
         {
-            if (_professionTrainers.Contains(subName))
+            if (ProfessionTrainers.Contains(subName))
                 return (uint)NPCFlags.ProfessionTrainer;
-            if (_classTrainers.Contains(subName))
+            if (ClassTrainers.Contains(subName))
                 return (uint)NPCFlags.ClassTrainer;
 
             return 0;
@@ -524,9 +524,9 @@ namespace WowPacketParser.SQL.Builders
                             {
                                 var subname = name.Substring(firstIndex + 1, lastIndex - firstIndex - 1);
 
-                                if (_professionTrainers.Contains(subname))
+                                if (ProfessionTrainers.Contains(subname))
                                     template.NpcFlag |= (uint)NPCFlags.ProfessionTrainer;
-                                else if (_classTrainers.Contains(subname))
+                                else if (ClassTrainers.Contains(subname))
                                     template.NpcFlag |= (uint)NPCFlags.ClassTrainer;
                             }
                         }

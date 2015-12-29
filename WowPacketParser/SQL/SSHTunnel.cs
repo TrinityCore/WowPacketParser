@@ -7,44 +7,44 @@ namespace WowPacketParser.SQL
 {
     public class MyUserInfo : UserInfo
     {
-        private readonly String _passwd;
+        private readonly string _passwd;
 
         public MyUserInfo(string password)
         {
             _passwd = password;
         }
 
-        public String getPassword() { return _passwd; }
-        public bool promptYesNo(String str) { return true; }
-        public String getPassphrase() { return null; }
-        public bool promptPassphrase(String message) { return true; }
-        public bool promptPassword(String message) { return true; }
-        public void showMessage(String message) { }
+        public string getPassword() { return _passwd; }
+        public bool promptYesNo(string str) { return true; }
+        public string getPassphrase() { return null; }
+        public bool promptPassphrase(string message) { return true; }
+        public bool promptPassword(string message) { return true; }
+        public void showMessage(string message) { }
     }
 
     public static class SSHTunnel
     {
         [ThreadStatic]
-        private static Session Session;
+        private static Session _session;
         public static bool Enabled = Settings.SSHEnabled;
 
         public static void Connect()
         {
             try
              {
-                 var jsch = new JSch();
+                 JSch jsch = new JSch();
 
-                 Session = jsch.getSession(Settings.SSHUsername, Settings.SSHHost, Settings.SSHPort);
-                 Session.setHost(Settings.SSHHost);
-                 Session.setPassword(Settings.SSHPassword);
+                 _session = jsch.getSession(Settings.SSHUsername, Settings.SSHHost, Settings.SSHPort);
+                 _session.setHost(Settings.SSHHost);
+                 _session.setPassword(Settings.SSHPassword);
                  UserInfo ui = new MyUserInfo(Settings.SSHPassword);
-                 Session.setUserInfo(ui);
-                 Session.connect();
+                 _session.setUserInfo(ui);
+                 _session.connect();
                  int port;
                  if (!int.TryParse(Settings.Port, out port))
                      port = 3306;
-                 Session.setPortForwardingL(Settings.SSHLocalPort, "localhost", port);
-                 if (!Session.isConnected())
+                 _session.setPortForwardingL(Settings.SSHLocalPort, "localhost", port);
+                 if (!_session.isConnected())
                     Enabled = false;
              }
              catch (Exception ex)
@@ -57,13 +57,12 @@ namespace WowPacketParser.SQL
 
         public static bool Connected()
         {
-            return Session != null && Session.isConnected();
+            return _session != null && _session.isConnected();
         }
 
         public static void Disconnect()
         {
-            if (Session != null)
-                Session.disconnect();
+            _session?.disconnect();
         }
     }
 }

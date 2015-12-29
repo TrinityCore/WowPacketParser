@@ -16,9 +16,10 @@ namespace WowPacketParser.Misc
             if (!Settings.LogErrors || !typeof(TEnum).IsEnum || !Attribute.IsDefined(typeof(TEnum), typeof(FlagsAttribute)))
                 return;
 
-            var key = typeof(TEnum).ToString().Replace("WowPacketParser.Enums.", "");
+            string key = typeof(TEnum).ToString().Replace("WowPacketParser.Enums.", "");
 
             // Remove all know values
+            // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (TEnum value in Enum.GetValues(typeof(TEnum)))
                 rawValue = rawValue & ~Convert.ToInt64(value, CultureInfo.InvariantCulture);
 
@@ -36,7 +37,7 @@ namespace WowPacketParser.Misc
 
         private static void AddEnumErrorLog(string key, long rawValue)
         {
-            var exists = EnumLogs.ContainsKey(key);
+            bool exists = EnumLogs.ContainsKey(key);
             var list = exists ? EnumLogs[key] : new List<long>();
 
             if (list.Contains(rawValue))
@@ -54,13 +55,13 @@ namespace WowPacketParser.Misc
             {
                 pair.Value.Sort();
 
-                var errors = "";
-                foreach (var error in pair.Value)
+                string errors = "";
+                foreach (long error in pair.Value)
                 {
                     if (errors.Length > 0)
                         errors += ", ";
 
-                    var str = "";
+                    string str = "";
                     UnknownFlags enumFlag;
                     if (Enum.TryParse(error.ToString(CultureInfo.InvariantCulture), out enumFlag))
                         str = enumFlag.ToString();
@@ -68,7 +69,7 @@ namespace WowPacketParser.Misc
                     errors += str;
                 }
 
-                Trace.WriteLine(string.Format("{0} has undefined flags: {1}", pair.Key, errors));
+                Trace.WriteLine($"{pair.Key} has undefined flags: {errors}");
             }
         }
     }
