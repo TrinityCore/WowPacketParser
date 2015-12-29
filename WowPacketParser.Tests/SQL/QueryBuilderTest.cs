@@ -101,7 +101,7 @@ namespace WowPacketParser.Tests.SQL
         public void TestSQLSelectWithCond()
         {
             Assert.AreEqual(
-                "SELECT `ID`, `TestInt1`, `TestInt2`, `TestString1` FROM world.`test_data_one_p_k` WHERE (`ID` = 1 AND `TestInt1` = 2 AND `TestString1` = 'string1') OR (`ID` = 2 AND `TestInt1` = 3)",
+                "SELECT `ID`, `TestInt1`, `TestInt2`, `TestString1` FROM world.`test_data_one_p_k` WHERE (`ID`=1 AND `TestInt1`=2 AND `TestString1`='string1') OR (`ID`=2 AND `TestInt1`=3)",
                 new SQLSelect<TestDataOnePK>(_conditionsOnePk, onlyPrimaryKeys: false).Build());
 
             Assert.AreEqual(
@@ -115,7 +115,7 @@ namespace WowPacketParser.Tests.SQL
             var where = new SQLWhere<TestDataOnePK>(_conditionsOnePk);
 
             Assert.AreEqual(
-                "(`ID` = 1 AND `TestInt1` = 2 AND `TestString1` = 'string1') OR (`ID` = 2 AND `TestInt1` = 3)",
+                "(`ID`=1 AND `TestInt1`=2 AND `TestString1`='string1') OR (`ID`=2 AND `TestInt1`=3)",
                 where.Build());
         }
 
@@ -126,7 +126,7 @@ namespace WowPacketParser.Tests.SQL
             Assert.AreEqual("`ID` IN (1, 2)", whereOnePk.Build());
 
             var whereTwoPk = new SQLWhere<TestDataTwoPK>(_conditionsTwoPk, true);
-            Assert.AreEqual("(`ID` = 10 AND `TestInt1` = 20) OR (`ID` = 20 AND `TestInt1` = 30)", whereTwoPk.Build());
+            Assert.AreEqual("(`ID`=10 AND `TestInt1`=20) OR (`ID`=20 AND `TestInt1`=30)", whereTwoPk.Build());
         }
 
         [Test]
