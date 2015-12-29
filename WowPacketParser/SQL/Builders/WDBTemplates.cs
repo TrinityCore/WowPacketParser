@@ -10,7 +10,7 @@ namespace WowPacketParser.SQL.Builders
     [BuilderClass]
     public static class WDBTemplates
     {
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string QuestTemplate()
         {
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
@@ -24,7 +24,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.QuestTemplates, templatesDb, StoreNameType.Quest);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string QuestObjective()
         {
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
@@ -42,7 +42,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.QuestObjectives, templatesDb, StoreNameType.QuestObjective);  
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string QuestVisualEffect()
         {
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
@@ -60,7 +60,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.QuestVisualEffects, templateDb, StoreNameType.None);
         }
 
-        [BuilderMethod(Units = true)]
+        [BuilderMethod(true, Units = true)]
         public static string CreatureTemplate(Dictionary<WowGuid, Unit> units)
         {
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template))
@@ -178,7 +178,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.CreatureTemplates, templatesDb, StoreNameType.Unit);
         }
 
-        [BuilderMethod(Gameobjects = true)]
+        [BuilderMethod(true, Gameobjects = true)]
         public static string GameObjectTemplate(Dictionary<WowGuid, GameObject> gameobjects)
         {
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_template))
@@ -213,7 +213,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.GameObjectTemplates, templatesDb, StoreNameType.GameObject);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string ItemTemplate()
         {
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.item_template))
@@ -230,7 +230,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.ItemTemplates, templatesDb, StoreNameType.Item);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string PageText()
         {
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.page_text))
@@ -244,7 +244,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.PageTexts, templatesDb, StoreNameType.PageText);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string NpcText()
         {
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_text))

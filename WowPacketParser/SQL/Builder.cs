@@ -49,6 +49,23 @@ namespace WowPacketParser.SQL
                 foreach (MethodInfo method in builderMethods)
                 {
                     BuilderMethodAttribute attr = method.GetCustomAttribute<BuilderMethodAttribute>();
+
+                    if (attr.CheckVersionMismatch)
+                    {
+                        if (!((ClientVersion.Expansion == ClientType.WrathOfTheLichKing &&
+                             Settings.TargetedDatabase == TargetedDatabase.WrathOfTheLichKing)
+                            ||
+                            (ClientVersion.Expansion == ClientType.Cataclysm &&
+                             Settings.TargetedDatabase == TargetedDatabase.Cataclysm)
+                            ||
+                            (ClientVersion.Expansion == ClientType.WarlordsOfDraenor &&
+                             Settings.TargetedDatabase == TargetedDatabase.WarlordsOfDraenor)))
+                        {
+                            Trace.WriteLine($"Error: Couldn't generate SQL output of {method.Name} since the targeted database and the sniff version don't match.");
+                            continue;
+                        }
+                    }
+
                     var parameters = new List<object>();
                     if (attr.Units)
                         parameters.Add(units);

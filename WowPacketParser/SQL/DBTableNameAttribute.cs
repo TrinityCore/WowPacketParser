@@ -7,7 +7,7 @@ namespace WowPacketParser.SQL
     /// Only usuable with structs or classes
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
-    sealed public class DBTableNameAttribute : Attribute
+    public sealed class DBTableNameAttribute : Attribute
     {
         /// <summary>
         /// Table name

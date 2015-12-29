@@ -247,6 +247,8 @@ namespace WowPacketParser.Misc
 
         public static string VersionString => Build.ToString();
 
+        public static ClientType Expansion => GetExpansion(Build);
+
         private static ClientType GetExpansion(ClientVersionBuild build)
         {
             if (build >= ClientVersionBuild.V6_0_2_19033)

@@ -426,6 +426,7 @@ namespace WowPacketParser.Loading
                    "# File name: " + Path.GetFileName(fileName) + Environment.NewLine +
                    "# Detected build: " + ClientVersion.Build + Environment.NewLine +
                    "# Detected locale: " + BinaryPacketReader.GetClientLocale() + Environment.NewLine +
+                   "# Targeted database: " + Settings.TargetedDatabase + Environment.NewLine +
                    "# Parsing date: " + DateTime.Now.ToString(CultureInfo.InvariantCulture) + Environment.NewLine;
         }
 
