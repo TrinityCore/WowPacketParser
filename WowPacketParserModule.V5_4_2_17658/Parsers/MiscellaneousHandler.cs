@@ -55,12 +55,6 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             }, packet.TimeSpan);
         }
 
-        [Parser(Opcode.CMSG_QUERY_WORLD_COUNTDOWN_TIMER)]
-        public static void HandleQueryWorldCountdownTimer(Packet packet)
-        {
-            packet.ReadInt32("Int10");
-        }
-
         [Parser(Opcode.CMSG_AREA_TRIGGER)]
         public static void HandleClientAreaTrigger(Packet packet)
         {

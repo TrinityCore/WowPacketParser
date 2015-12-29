@@ -3456,12 +3456,6 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadWoWString("Text", len1);
         }
 
-        [Parser(Opcode.CMSG_QUERY_WORLD_COUNTDOWN_TIMER)] // CMSG_TIME_SYNC_RESP?
-        public static void HandleQueryWorldCountdownTimer(Packet packet)
-        {
-            packet.ReadInt32("Int10");
-        }
-
         [Parser(Opcode.CMSG_UNKNOWN_4524)]
         public static void HandleUnknown4524(Packet packet)
         {
