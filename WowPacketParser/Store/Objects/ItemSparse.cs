@@ -92,7 +92,7 @@ namespace WowPacketParser.Store.Objects
         public int?[] ItemStatAllocation;
 
         [DBFieldName("ItemStatSocketCostMultiplier", 10)]
-        public int?[] ItemStatSocketCostMultiplier;
+        public float?[] ItemStatSocketCostMultiplier;
 
         [DBFieldName("ScalingStatDistribution")]
         public int? ScalingStatDistribution;

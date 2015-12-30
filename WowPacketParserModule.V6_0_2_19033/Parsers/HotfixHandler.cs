@@ -524,9 +524,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     for (int i = 0; i < 10; i++)
                         item.ItemStatAllocation[i] = db2File.ReadInt32("ItemStatAllocation", i);
 
-                    item.ItemStatSocketCostMultiplier = new int?[10];
+                    item.ItemStatSocketCostMultiplier = new float?[10];
                     for (int i = 0; i < 10; i++)
-                        item.ItemStatSocketCostMultiplier[i] = db2File.ReadInt32("ItemStatSocketCostMultiplier", i);
+                        item.ItemStatSocketCostMultiplier[i] = db2File.ReadSingle("ItemStatSocketCostMultiplier", i);
 
                     item.ScalingStatDistribution = db2File.ReadInt32("ScalingStatDistribution");
                     item.DamageType = db2File.ReadInt32E<DamageType>("DamageType");
