@@ -13,7 +13,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.HotfixDatas.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.hotfix_data))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.HotfixDatas, Settings.HotfixesDatabase);
@@ -27,7 +27,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.AreaPOIs.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.area_poi))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.area_poi))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.AreaPOIs, Settings.HotfixesDatabase);
@@ -41,7 +41,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.AreaPOIStates.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.area_poi_state))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.area_poi_state))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.AreaPOIStates, Settings.HotfixesDatabase);
@@ -55,7 +55,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.BattlePetSpeciesBag.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.battle_pet_species))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.battle_pet_species))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.BattlePetSpeciesBag, Settings.HotfixesDatabase);
@@ -69,7 +69,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.BroadcastTexts.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.broadcast_text))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.broadcast_text))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.BroadcastTexts, Settings.HotfixesDatabase);
@@ -83,7 +83,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.ChrUpgradeTiers.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.chr_upgrade))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.chr_upgrade))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.ChrUpgradeTiers, Settings.HotfixesDatabase);
@@ -97,7 +97,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.ChrUpgradeBuckets.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.chr_upgrade))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.chr_upgrade))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.ChrUpgradeBuckets, Settings.HotfixesDatabase);
@@ -111,7 +111,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.ChrUpgradeBucketSpells.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.chr_upgrade))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.chr_upgrade))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.ChrUpgradeBucketSpells, Settings.HotfixesDatabase);
@@ -125,7 +125,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.Creatures.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.creatureDB2))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.creatureDB2))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.Creatures, Settings.HotfixesDatabase);
@@ -139,7 +139,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.CreatureDifficulties.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.creature_difficulty))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.creature_difficulty))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.CreatureDifficulties, Settings.HotfixesDatabase);
@@ -153,7 +153,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.CurvePoints.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.curve_point))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.curve_point))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.CurvePoints, Settings.HotfixesDatabase);
@@ -167,7 +167,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.HolidaysBag.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.holidays))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.holidays))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.HolidaysBag, Settings.HotfixesDatabase);
@@ -181,7 +181,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.Items.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.item))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.item))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.Items, Settings.HotfixesDatabase);
@@ -195,7 +195,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.ItemAppearances.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.item_appearance))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.item_appearance))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.ItemAppearances, Settings.HotfixesDatabase);
@@ -209,7 +209,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.ItemBonuses.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.item_bonus))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.item_bonus))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.ItemBonuses, Settings.HotfixesDatabase);
@@ -223,7 +223,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.ItemBonusTreeNodes.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.item_bonus_tree_node))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.item_bonus_tree_node))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.ItemBonusTreeNodes, Settings.HotfixesDatabase);
@@ -237,7 +237,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.ItemCurrencyCosts.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.item_currency_cost))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.item_currency_cost))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.ItemCurrencyCosts, Settings.HotfixesDatabase);
@@ -251,7 +251,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.ItemEffects.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.item_effect))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.item_extended_cost))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.ItemEffects, Settings.HotfixesDatabase);
@@ -265,7 +265,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.ItemExtendedCosts.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.item_extended_cost))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.item_extended_cost))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.ItemExtendedCosts, Settings.HotfixesDatabase);
@@ -279,7 +279,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.ItemModifiedAppearances.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.item_modified_appearance))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.item_extended_cost))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.ItemModifiedAppearances, Settings.HotfixesDatabase);
@@ -293,7 +293,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.ItemSparses.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.item_sparse))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.item_sparse))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.ItemSparses, Settings.HotfixesDatabase);
@@ -307,7 +307,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.GameObjectsBag.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.gameobjectDB2))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.gameobjectDB2))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.GameObjectsBag, Settings.HotfixesDatabase);
@@ -321,7 +321,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.KeyChains.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.key_chain))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.key_chain))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.KeyChains, Settings.HotfixesDatabase);
@@ -335,7 +335,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.Locations.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.location))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.location))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.Locations, Settings.HotfixesDatabase);
@@ -349,7 +349,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.Mounts.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.mount))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.mount))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.Mounts, Settings.HotfixesDatabase);
@@ -363,7 +363,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.OverrideSpellDatas.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.override_spell_data))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.override_spell_data))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.OverrideSpellDatas, Settings.HotfixesDatabase);
@@ -377,7 +377,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.PhaseXPhaseGroups.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.phase_group))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.phase_group))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.PhaseXPhaseGroups, Settings.HotfixesDatabase);
@@ -391,7 +391,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.SceneScripts.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.scene_script))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.scene_script))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.SceneScripts, Settings.HotfixesDatabase);
@@ -405,7 +405,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.SpellAuraRestrictionsBag.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.spell_aura_restrictions))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.spell_aura_restrictions))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.SpellAuraRestrictionsBag, Settings.HotfixesDatabase);
@@ -419,7 +419,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.SpellCastingRequirementsBag.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.spell_casting_requirements))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.spell_casting_requirements))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.SpellCastingRequirementsBag, Settings.HotfixesDatabase);
@@ -432,8 +432,7 @@ namespace WowPacketParser.SQL.Builders
         {
             if (Storage.SpellClassOptionsBag.IsEmpty())
                 return string.Empty;
-
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.spell_class_options))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.spell_class_options))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.SpellClassOptionsBag, Settings.HotfixesDatabase);
@@ -447,7 +446,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.SpellEffectGroupSizes.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.spell_effect_group_size))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.spell_effect_group_size))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.SpellEffectGroupSizes, Settings.HotfixesDatabase);
@@ -461,7 +460,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.SpellLearnSpells.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.spell_learn_spell))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.spell_learn_spell))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.SpellLearnSpells, Settings.HotfixesDatabase);
@@ -475,7 +474,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.SpellMiscs.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.spell_misc))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.spell_misc))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.SpellMiscs, Settings.HotfixesDatabase);
@@ -489,7 +488,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.SpellPowers.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.spell_power))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.spell_power))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.SpellPowers, Settings.HotfixesDatabase);
@@ -503,7 +502,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.SpellReagentsBag.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.spell_power))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.spell_power))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.SpellReagentsBag, Settings.HotfixesDatabase);
@@ -516,7 +515,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.SpellRuneCosts.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.spell_rune_cost))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.spell_power))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.SpellRuneCosts, Settings.HotfixesDatabase);
@@ -530,7 +529,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.SpellTotemsBag.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.spell_totems))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.spell_totems))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.SpellTotemsBag, Settings.HotfixesDatabase);
@@ -543,7 +542,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.TaxiNodesBag.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.taxi_nodes))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.taxi_nodes))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.TaxiNodesBag, Settings.HotfixesDatabase);
@@ -556,7 +555,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.TaxiPathNodes.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.taxi_path_node))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.taxi_path_node))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.TaxiPathNodes, Settings.HotfixesDatabase);
@@ -569,7 +568,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.TaxiPaths.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.taxi_path))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.taxi_path))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.TaxiPaths, Settings.HotfixesDatabase);
@@ -583,7 +582,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.Toys.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.toy))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.toy))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.Toys, Settings.HotfixesDatabase);

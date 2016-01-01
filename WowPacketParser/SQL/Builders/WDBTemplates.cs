@@ -13,7 +13,7 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod(true)]
         public static string QuestTemplate()
         {
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.quest_template))
                 return string.Empty;
 
             if (Storage.QuestTemplates.IsEmpty())
@@ -27,7 +27,7 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod(true)]
         public static string QuestObjective()
         {
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.quest_template))
                 return string.Empty;
 
             if (Settings.TargetedDatabase == TargetedDatabase.WrathOfTheLichKing ||
@@ -45,7 +45,7 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod(true)]
         public static string QuestVisualEffect()
         {
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.quest_template))
                 return string.Empty;
 
             if (Settings.TargetedDatabase == TargetedDatabase.WrathOfTheLichKing ||
@@ -63,7 +63,7 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod(true, Units = true)]
         public static string CreatureTemplate(Dictionary<WowGuid, Unit> units)
         {
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.creature_template))
                 return string.Empty;
 
             if (Storage.CreatureTemplates.IsEmpty())
@@ -181,7 +181,7 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod(true, Gameobjects = true)]
         public static string GameObjectTemplate(Dictionary<WowGuid, GameObject> gameobjects)
         {
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_template))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.gameobject_template))
                 return string.Empty;
 
             if (Storage.GameObjectTemplates.IsEmpty())
@@ -216,7 +216,7 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod(true)]
         public static string ItemTemplate()
         {
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.item_template))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.item_template))
                 return string.Empty;
 
             if (Settings.TargetedDatabase == TargetedDatabase.WarlordsOfDraenor)
@@ -233,7 +233,7 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod(true)]
         public static string PageText()
         {
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.page_text))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.page_text))
                 return string.Empty;
 
             if (Storage.PageTexts.IsEmpty())
@@ -247,7 +247,7 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod(true)]
         public static string NpcText()
         {
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_text))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.npc_text))
                 return string.Empty;
 
             if (!Storage.NpcTexts.IsEmpty() && 

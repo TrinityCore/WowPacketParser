@@ -19,7 +19,7 @@ namespace WowPacketParser.SQL.Builders
             if (units.Count == 0)
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template_addon))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.creature_template_addon))
                 return string.Empty;
 
             var addons = new DataBag<CreatureTemplateAddon>();
@@ -88,7 +88,7 @@ namespace WowPacketParser.SQL.Builders
             if (units.Count == 0)
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_model_info))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.creature_model_info))
                 return string.Empty;
 
             var models = new DataBag<ModelData>();
@@ -134,7 +134,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.NpcTrainers.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_trainer))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.npc_trainer))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.NpcTrainers);
@@ -148,7 +148,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.NpcVendors.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_vendor))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.npc_vendor))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.NpcVendors);
@@ -163,7 +163,7 @@ namespace WowPacketParser.SQL.Builders
             if (units.Count == 0)
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_equip_template))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.creature_equip_template))
                 return string.Empty;
 
             var equips = new DataBag<CreatureEquipment>();
@@ -217,13 +217,13 @@ namespace WowPacketParser.SQL.Builders
             string result = "";
 
             // `gossip_menu`
-            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu))
+            if (Settings.SQLOutputBit.Get((int)SQLOutput.gossip_menu))
                 result += SQLUtil.Compare(Storage.Gossips, SQLDatabase.Get(Storage.Gossips), StoreNameType.Unit); // BUG: GOs can send gossips too
 
             // `gossip_menu_option`
-            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu_option))
+            if (Settings.SQLOutputBit.Get((int)SQLOutput.gossip_menu_option))
                 result += SQLUtil.Compare(Storage.GossipMenuOptions, SQLDatabase.Get(Storage.GossipMenuOptions), StoreNameType.None);
-            
+
             return result;
         }
 
@@ -233,7 +233,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.GossipPOIs.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.points_of_interest))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.points_of_interest))
                 return string.Empty;
 
             string result = string.Empty;
@@ -364,7 +364,7 @@ namespace WowPacketParser.SQL.Builders
             if (units.Count == 0)
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.creature_template))
                 return string.Empty;
 
             var levels = GetLevels(units);
@@ -457,7 +457,7 @@ namespace WowPacketParser.SQL.Builders
             if (units.Count == 0)
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.creature_template))
                 return string.Empty;
 
             var templates = new StoreDictionary<uint, CreatureDifficultyMisc>();
@@ -540,14 +540,14 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(templates, templatesDb, StoreNameType.Unit, "Id");
         }*/
 
-        
+
         [BuilderMethod]
         public static string CreatureText()
         {
             if (Storage.CreatureTexts.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_text))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.creature_text))
                 return string.Empty;
 
             // For each sound and emote, if the time they were send is in the +1/-1 seconds range of
@@ -658,7 +658,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.VehicleTemplateAccessorys.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.vehicle_template_accessory))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.vehicle_template_accessory))
                 return string.Empty;
 
             var rows = new RowList<VehicleTemplateAccessory>();
@@ -686,7 +686,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.NpcSpellClicks.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_spellclick_spells))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.npc_spellclick_spells))
                 return string.Empty;
 
             var rows = new RowList<NpcSpellClick>();
@@ -724,7 +724,7 @@ namespace WowPacketParser.SQL.Builders
             if (units.Count == 0)
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_spellclick_spells))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.npc_spellclick_spells))
                 return string.Empty;
 
             var rows = new RowList<NpcSpellClick>();

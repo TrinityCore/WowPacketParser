@@ -44,7 +44,7 @@ namespace WowPacketParser.SQL.Builders
             if (units.Count == 0)
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.creature))
                 return string.Empty;
 
             uint count = 0;
@@ -162,7 +162,7 @@ namespace WowPacketParser.SQL.Builders
                 }
 
                 var addonRow = new Row<CreatureAddon>();
-                if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_addon))
+                if (Settings.SQLOutputBit.Get((int)SQLOutput.creature_addon))
                 {
                     addonRow.Data.GUID = "@CGUID+" + count;
                     addonRow.Data.PathID = 0;
@@ -206,7 +206,7 @@ namespace WowPacketParser.SQL.Builders
             var sql = new SQLInsert<Creature>(rows, false);
             result.Append(sql.Build());
 
-            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_addon))
+            if (Settings.SQLOutputBit.Get((int)SQLOutput.creature_addon))
             {
                 var addonDelete = new SQLDelete<CreatureAddon>(Tuple.Create("@CGUID+0", "@CGUID+" + count));
                 result.Append(addonDelete.Build());
@@ -223,7 +223,7 @@ namespace WowPacketParser.SQL.Builders
             if (gameObjects.Count == 0)
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.gameobject))
                 return string.Empty;
 
             uint count = 0;

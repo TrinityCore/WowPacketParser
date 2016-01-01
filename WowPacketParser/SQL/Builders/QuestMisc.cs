@@ -13,7 +13,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.QuestOfferRewards.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.quest_template))
                 return string.Empty;
 
             var offerDb = SQLDatabase.Get(Storage.QuestOfferRewards);
@@ -29,14 +29,14 @@ namespace WowPacketParser.SQL.Builders
 
             string sql = string.Empty;
 
-            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_poi))
+            if (Settings.SQLOutputBit.Get((int)SQLOutput.quest_poi))
             {
                 var poiDb = SQLDatabase.Get(Storage.QuestPOIs);
 
                 sql = SQLUtil.Compare(Storage.QuestPOIs, poiDb, StoreNameType.Quest);
             }
 
-            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_poi_points))
+            if (Settings.SQLOutputBit.Get((int)SQLOutput.quest_poi_points))
             {
                 if (!Storage.QuestPOIPoints.IsEmpty())
                 {
@@ -52,7 +52,7 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod]
         public static string QuestGreeting()
         {
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.quest_template))
                 return string.Empty;
 
             if (Settings.TargetedDatabase == TargetedDatabase.WrathOfTheLichKing ||
@@ -70,7 +70,7 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod]
         public static string QuestDetails()
         {
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.quest_template))
                 return string.Empty;
 
             if (Storage.QuestDetails.IsEmpty())
@@ -84,7 +84,7 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod]
         public static string QuestRequestItems()
         {
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+            if (!Settings.SQLOutputBit.Get((int)SQLOutput.quest_template))
                 return string.Empty;
 
             if (Storage.QuestRequestItems.IsEmpty())
