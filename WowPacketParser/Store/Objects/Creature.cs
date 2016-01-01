@@ -73,10 +73,10 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("npcflag")]
         public uint? NpcFlag;
 
-        [DBFieldName("unit_flag")]
+        [DBFieldName("unit_flags")]
         public uint? UnitFlag;
 
-        [DBFieldName("dynamicflag")]
+        [DBFieldName("dynamicflags")]
         public uint? DynamicFlag;
 
         [DBFieldName("VerifiedBuild")]
