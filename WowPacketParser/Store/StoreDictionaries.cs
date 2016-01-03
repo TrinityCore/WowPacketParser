@@ -28,7 +28,7 @@ namespace WowPacketParser.Store
         {
             return HotfixTypes.Count == 0 ||
                 Settings.DumpFormat == DumpFormatType.SniffDataOnly ||
-                HotfixTypes.Any(hotfixOutput => HotfixSQLEnabledFlags.HasAnyFlag(hotfixOutput));
+                HotfixTypes.Any(hotfixOutput => HotfixSQLEnabledFlags.HasAnyFlagBit(hotfixOutput));
         }
 
         public abstract void Clear();
