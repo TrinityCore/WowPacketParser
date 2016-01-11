@@ -155,7 +155,7 @@ namespace WowPacketParser.SQL
             var cond = new RowList<T>();
             cond.AddRange(conditionList.Select(c => c.Item1));
             return Get(cond, database);
-        } 
+        }
 
         public static RowList<T> Get<T>(RowList<T> rowList = null, string database = null)
             where T : IDataModel, new()
@@ -192,13 +192,13 @@ namespace WowPacketParser.SQL
                             for (int j = 0; j < arr.Length; j++)
                             {
                                 Type elemType = arr.GetType().GetElementType();
-                                
+
                                 if (elemType.IsEnum)
                                     arr.SetValue(Enum.Parse(elemType, values[i + j].ToString()), j);
                                 else if (Nullable.GetUnderlyingType(elemType) != null) //is nullable
                                     arr.SetValue(Convert.ChangeType(values[i + j], Nullable.GetUnderlyingType(elemType)), j);
                                 else
-                                    arr.SetValue(Convert.ChangeType(values[i + j], elemType), j); 
+                                    arr.SetValue(Convert.ChangeType(values[i + j], elemType), j);
                             }
                             field.Item2.SetValue(instance, arr);
                         }

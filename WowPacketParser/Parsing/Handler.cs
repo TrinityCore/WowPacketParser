@@ -107,15 +107,12 @@ namespace WowPacketParser.Parsing
         {
             ParsedStatus status;
 
-            var opcode = Opcodes.GetOpcode(packet.Opcode, packet.Direction);
-            if (opcode == Opcode.NULL_OPCODE)
-                opcode = Opcodes.GetOpcode(packet.Opcode, Direction.Bidirectional);
-
             packet.WriteLine(packet.GetHeader(isMultiple));
 
             if (packet.Opcode == 0)
                 return;
 
+            var opcode = Opcodes.GetOpcode(packet.Opcode, packet.Direction);
             var key = new KeyValuePair<ClientVersionBuild, Opcode>(ClientVersion.VersionDefiningBuild, opcode);
 
             Action<Packet> handler;
