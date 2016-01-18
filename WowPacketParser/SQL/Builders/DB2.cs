@@ -7,7 +7,7 @@ namespace WowPacketParser.SQL.Builders
     [BuilderClass]
     public static class DB2
     {
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string HotfixData()
         {
             if (Storage.HotfixDatas.IsEmpty())
@@ -21,7 +21,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.HotfixDatas, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string AreaPOI()
         {
             if (Storage.AreaPOIs.IsEmpty())
@@ -35,7 +35,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.AreaPOIs, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string AreaPOIState()
         {
             if (Storage.AreaPOIStates.IsEmpty())
@@ -49,7 +49,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.AreaPOIStates, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string BattlePetSpecies()
         {
             if (Storage.BattlePetSpeciesBag.IsEmpty())
@@ -63,7 +63,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.BattlePetSpeciesBag, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string BroadcastText()
         {
             if (Storage.BroadcastTexts.IsEmpty())
@@ -77,7 +77,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.BroadcastTexts, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string ChrUpgradeTier()
         {
             if (Storage.ChrUpgradeTiers.IsEmpty())
@@ -91,7 +91,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.ChrUpgradeTiers, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string ChrUpgradeBucket()
         {
             if (Storage.ChrUpgradeBuckets.IsEmpty())
@@ -105,7 +105,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.ChrUpgradeBuckets, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string ChrUpgradeBucketSpell()
         {
             if (Storage.ChrUpgradeBucketSpells.IsEmpty())
@@ -119,7 +119,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.ChrUpgradeBucketSpells, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string Creature()
         {
             if (Storage.Creatures.IsEmpty())
@@ -133,7 +133,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.Creatures, templatesDb, StoreNameType.Unit);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string CreatureDifficulty()
         {
             if (Storage.CreatureDifficulties.IsEmpty())
@@ -147,7 +147,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.CreatureDifficulties, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string CurvePoint()
         {
             if (Storage.CurvePoints.IsEmpty())
@@ -161,7 +161,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.CurvePoints, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string HolidayData()
         {
             if (Storage.HolidaysBag.IsEmpty())
@@ -175,7 +175,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.HolidaysBag, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string Item()
         {
             if (Storage.Items.IsEmpty())
@@ -189,7 +189,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.Items, templatesDb, StoreNameType.Item);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string ItemAppearance()
         {
             if (Storage.ItemAppearances.IsEmpty())
@@ -203,7 +203,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.ItemAppearances, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string ItemBonus()
         {
             if (Storage.ItemBonuses.IsEmpty())
@@ -217,7 +217,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.ItemBonuses, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string ItemBonusTreeNode()
         {
             if (Storage.ItemBonusTreeNodes.IsEmpty())
@@ -231,7 +231,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.ItemBonusTreeNodes, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string ItemCurrencyCost()
         {
             if (Storage.ItemCurrencyCosts.IsEmpty())
@@ -245,7 +245,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.ItemCurrencyCosts, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string ItemEffect()
         {
             if (Storage.ItemEffects.IsEmpty())
@@ -259,7 +259,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.ItemEffects, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string ItemExtendedCost()
         {
             if (Storage.ItemExtendedCosts.IsEmpty())
@@ -273,7 +273,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.ItemExtendedCosts, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string ItemModifiedAppearance()
         {
             if (Storage.ItemModifiedAppearances.IsEmpty())
@@ -287,7 +287,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.ItemModifiedAppearances, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string ItemSparse()
         {
             if (Storage.ItemSparses.IsEmpty())
@@ -301,7 +301,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.ItemSparses, templatesDb, StoreNameType.Item);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string GameObjects()
         {
             if (Storage.GameObjectsBag.IsEmpty())
@@ -315,7 +315,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.GameObjectsBag, templatesDb, StoreNameType.GameObject);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string KeyChain()
         {
             if (Storage.KeyChains.IsEmpty())
@@ -329,7 +329,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.KeyChains, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string Location()
         {
             if (Storage.Locations.IsEmpty())
@@ -343,7 +343,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.Locations, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string Mount()
         {
             if (Storage.Mounts.IsEmpty())
@@ -357,7 +357,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.Mounts, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string OverrideSpellData()
         {
             if (Storage.OverrideSpellDatas.IsEmpty())
@@ -371,7 +371,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.OverrideSpellDatas, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string PhaseXPhaseGroup()
         {
             if (Storage.PhaseXPhaseGroups.IsEmpty())
@@ -385,7 +385,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.PhaseXPhaseGroups, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string SceneScript()
         {
             if (Storage.SceneScripts.IsEmpty())
@@ -399,7 +399,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.SceneScripts, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string SpellAuraRestrictions()
         {
             if (Storage.SpellAuraRestrictionsBag.IsEmpty())
@@ -413,7 +413,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.SpellAuraRestrictionsBag, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string SpellCastingRequirements()
         {
             if (Storage.SpellCastingRequirementsBag.IsEmpty())
@@ -427,7 +427,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.SpellCastingRequirementsBag, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string SpellClassOptions()
         {
             if (Storage.SpellClassOptionsBag.IsEmpty())
@@ -441,7 +441,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.SpellClassOptionsBag, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string SpellEffectGroupSize()
         {
             if (Storage.SpellEffectGroupSizes.IsEmpty())
@@ -455,7 +455,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.SpellEffectGroupSizes, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string SpellLearnSpell()
         {
             if (Storage.SpellLearnSpells.IsEmpty())
@@ -469,7 +469,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.SpellLearnSpells, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string SpellMisc()
         {
             if (Storage.SpellMiscs.IsEmpty())
@@ -483,7 +483,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.SpellMiscs, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string SpellPower()
         {
             if (Storage.SpellPowers.IsEmpty())
@@ -497,7 +497,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.SpellPowers, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string SpellReagents()
         {
             if (Storage.SpellReagentsBag.IsEmpty())
@@ -524,7 +524,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.SpellRuneCosts, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(true)]
         public static string SpellTotems()
         {
             if (Storage.SpellTotemsBag.IsEmpty())
