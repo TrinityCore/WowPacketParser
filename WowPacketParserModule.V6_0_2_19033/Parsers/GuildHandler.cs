@@ -828,8 +828,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Member");
             packet.ReadInt32("SkillLineID");
-            packet.ReadInt32("SkillStep");
             packet.ReadInt32("SkillRank");
+            packet.ReadInt32("SkillStep");      
             for (int i = 0; i < 0x12C; i++)
                 packet.ReadByte("SkillLineBitArray", i);
         }
