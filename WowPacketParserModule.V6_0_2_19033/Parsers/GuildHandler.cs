@@ -988,5 +988,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("SpellID");
             packet.ReadUInt32("UniqueBit");
         }
+
+        [Parser(Opcode.SMSG_GUILD_MEMBERS_WITH_RECIPE)]
+        public static void HandleGuildMembersWithRecipe(Packet packet)
+        {
+            packet.ReadUInt32("SkillLineID");
+            packet.ReadUInt32("SpellID");
+            var count = packet.ReadInt32("MembersCount");
+            for (var i = 0; i < count; ++i)
+                packet.ReadPackedGuid128("Member", i);
+        }
     }
 }
