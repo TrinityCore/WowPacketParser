@@ -979,5 +979,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("BankOnly");
             packet.ReadBit("AutoStore");
         }
+
+        [Parser(Opcode.CMSG_GUILD_QUERY_MEMBERS_FOR_RECIPE)]
+        public static void HandleGuildQueryMembersForRecipe(Packet packet)
+        {
+            packet.ReadPackedGuid128("GuildGUID");
+            packet.ReadUInt32("SkillLineID");
+            packet.ReadUInt32("SpellID");
+            packet.ReadUInt32("UniqueBit");
+        }
     }
 }
