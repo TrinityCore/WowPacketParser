@@ -15,5 +15,5 @@ Usage
 Nightly Builds
 --------------
 
-- **Debug 32/64 Bits**: [AppVeyor](https://ci.appveyor.com/project/DDuarte/wowpacketparser-191) -> `Configuration: Debug` -> `ARTIFACTS` -> `WPP.zip`
-- **Release 32/64 Bits**: [AppVeyor](https://ci.appveyor.com/project/DDuarte/wowpacketparser-191) -> `Configuration: Release` -> `ARTIFACTS` -> `WPP.zip`
+- [Debug 32/64 Bits](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Configuration:%20Debug)
+- [Release 32/64 Bits](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Configuration:%20Release)
