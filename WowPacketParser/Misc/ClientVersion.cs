@@ -274,7 +274,7 @@ namespace WowPacketParser.Misc
 
             for (var i = 1; i < ClientBuilds.Length; i++)
                 if (ClientBuilds[i].Value >= time)
-                    return ClientBuilds[i].Key;
+                    return ClientBuilds[i - 1].Key;
 
             return ClientBuilds[ClientBuilds.Length - 1].Key;
         }
