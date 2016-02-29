@@ -187,8 +187,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_REQUEST_VEHICLE_SWITCH_SEAT)]
         public static void HandleRequestVehicleSwitchSeat(Packet packet)
         {
-            packet.ReadPackedGuid("GUID");
-            packet.ReadByte("Seat");
+            packet.ReadPackedGuid("Vehicle");
+            packet.ReadByte("SeatIndex");
         }
 
         [Parser(Opcode.CMSG_CHANGE_SEATS_ON_CONTROLLED_VEHICLE)]
