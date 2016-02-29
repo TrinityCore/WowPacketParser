@@ -635,19 +635,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_SPELL_DISPELL_LOG)]
         public static void HandleSpellDispelLog(Packet packet)
         {
-            packet.ReadBit("Is Steal");
-            packet.ReadBit("Is Break");
-            packet.ReadPackedGuid128("Target GUID");
-            packet.ReadPackedGuid128("Caster GUID");
-            packet.ReadUInt32("Spell ID");
-            var dataSize = packet.ReadUInt32("Dispel count");
+            packet.ReadBit("IsSteal");
+            packet.ReadBit("IsBreak");
+            packet.ReadPackedGuid128("TargetGUID");
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadUInt32<SpellId>("DispelledBySpellID");
+            var dataSize = packet.ReadUInt32("DispelCount");
             for (var i = 0; i < dataSize; ++i)
             {
                 packet.ResetBitReader();
-                packet.ReadUInt32("Spell ID", i);
-                packet.ReadBit("Is Harmful", i);
-                var hasRolled = packet.ReadBit("Has Rolled", i);
-                var hasNeeded = packet.ReadBit("Has Needed", i);
+                packet.ReadUInt32<SpellId>("SpellID", i);
+                packet.ReadBit("Harmful", i);
+                var hasRolled = packet.ReadBit("HasRolled", i);
+                var hasNeeded = packet.ReadBit("HasNeeded", i);
                 if (hasRolled)
                     packet.ReadUInt32("Rolled", i);
                 if (hasNeeded)
