@@ -369,6 +369,15 @@ namespace WowPacketParser.Misc
             return val;
         }
 
+        public byte[] ReadBytesTable(string name, int length, params object[] indexes)
+        {
+            var val = ReadBytes(length);
+            AddValue(name, Utilities.ByteArrayToShortHexTable(val,
+                GetIndexString(indexes).Length + name.Length + ": ".Length),
+                indexes);
+            return val;
+        }
+
         public byte[] ReadBytes(string name, int length, params object[] indexes)
         {
             var val = ReadBytes(length);
