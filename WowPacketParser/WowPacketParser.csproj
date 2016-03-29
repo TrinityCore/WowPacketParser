@@ -137,6 +137,7 @@
     <Compile Include="Enums\BattlegroundListFlags.cs" />
     <Compile Include="Enums\BattlegroundStatus.cs" />
     <Compile Include="Enums\BattlegroundUpdateFlags.cs" />
+    <Compile Include="Enums\BattlenetRpcErrorCode.cs" />
     <Compile Include="Enums\Battlenet\Command.cs" />
     <Compile Include="Enums\Battlenet\BattlenetChannel.cs" />
     <Compile Include="Enums\BillingFlag.cs" />
