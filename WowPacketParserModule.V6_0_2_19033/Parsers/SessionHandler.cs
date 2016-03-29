@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Enums;
+﻿using System;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
@@ -372,6 +373,41 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadUInt32("Token");
             packet.ReadBit("Timeout");
+        }
+
+        public static void ReadMethodCall(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt64("Type", idx);
+            packet.ReadUInt64("ObjectId", idx);
+            packet.ReadUInt32("Token", idx);
+        }
+
+        [Parser(Opcode.CMSG_BATTLENET_REQUEST)]
+        public static void HandleBattlenetRequest(Packet packet)
+        {
+            ReadMethodCall(packet, "Method");
+
+            int protoSize = packet.ReadInt32();
+            packet.ReadBytesTable("Data", protoSize);
+        }
+
+        [Parser(Opcode.SMSG_BATTLENET_NOTIFICATION)]
+        public static void HandleBattlenetNotification(Packet packet)
+        {
+            ReadMethodCall(packet, "Method");
+
+            int protoSize = packet.ReadInt32();
+            packet.ReadBytesTable("Data", protoSize);
+        }
+
+        [Parser(Opcode.SMSG_BATTLENET_RESPONSE)]
+        public static void ReadBattlenetResponse(Packet packet)
+        {
+            packet.ReadInt32E<BattlenetRpcErrorCode>("BnetStatus");
+            ReadMethodCall(packet, "Method");
+
+            int protoSize = packet.ReadInt32();
+            packet.ReadBytesTable("Data", protoSize);
         }
 
         [Parser(Opcode.CMSG_UPDATE_CLIENT_SETTINGS)]
