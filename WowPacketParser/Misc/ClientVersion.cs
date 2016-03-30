@@ -326,6 +326,11 @@ namespace WowPacketParser.Misc
             SetVersion(GetVersion(time));
         }
 
+        public static bool InVersion(ClientVersionBuild build1, ClientVersionBuild build2)
+        {
+            return AddedInVersion(build1) && RemovedInVersion(build2);
+        }
+
         public static bool AddedInVersion(ClientVersionBuild build)
         {
             return Build >= build;
