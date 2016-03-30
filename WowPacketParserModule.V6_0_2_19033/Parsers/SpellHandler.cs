@@ -1008,10 +1008,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("CastID");
         }
 
-        [Parser(Opcode.SMSG_CLEAR_ALL_SPELL_CHARGE)]
+        [Parser(Opcode.SMSG_CLEAR_ALL_SPELL_CHARGES, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_1_0_19678)] // Bounds NOT confirmed
         public static void HandleClearAllSpellCharges(Packet packet)
         {
             packet.ReadPackedGuid128("Unit");
+        }
+
+        [Parser(Opcode.SMSG_CLEAR_ALL_SPELL_CHARGES, ClientVersionBuild.V6_1_0_19678)] // Bounds NOT confirmed
+        public static void HandleClearAllSpellCharges610(Packet packet)
+        {
+            packet.ReadBit("IsPet");
+        }
+
+        [Parser(Opcode.SMSG_CLEAR_SPELL_CHARGES)]
+        public static void HandleClearSpellCharges(Packet packet)
+        {
+            packet.ReadBit("IsPet");
+            packet.ReadInt32("Category"); // SpellCategoryEntry->ID
         }
 
         [Parser(Opcode.SMSG_PLAYER_BOUND)]

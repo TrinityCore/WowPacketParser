@@ -853,7 +853,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_CHAT_RESTRICTED, 0x0484},
             {Opcode.SMSG_CHEAT_IGNORE_DIMISHING_RETURNS, 0x194C},
             {Opcode.SMSG_CHECK_WARGAME_ENTRY, 0x1203},
-            {Opcode.SMSG_CLEAR_ALL_SPELL_CHARGE, 0x088B},
+            {Opcode.SMSG_CLEAR_ALL_SPELL_CHARGES, 0x088B},
             {Opcode.SMSG_CLEAR_BOSS_EMOTES, 0x118B},
             {Opcode.SMSG_CLEAR_COOLDOWN, 0x0226},
             {Opcode.SMSG_CLEAR_COOLDOWNS, 0x0BFA},
