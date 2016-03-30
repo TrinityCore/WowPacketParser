@@ -41,68 +41,30 @@ namespace WowPacketParser.Misc
             return data.Aggregate(String.Empty, (current, t) => current + t.ToString("X2", CultureInfo.InvariantCulture));
         }
 
-        public static string ByteArrayToHexTable(byte[] data)
+        public static string ByteArrayToHexTable(byte[] data, bool sh0rt = false, int offset = 0, bool noOffsetFirstLine = true)
         {
             var n = Environment.NewLine;
-            var hexDump = new StringBuilder();
+
+            var prefix = new string(' ', offset);
+
+            var hexDump = new StringBuilder(noOffsetFirstLine ? "" : prefix);
+
 
             var header = "|-------------------------------------------------|---------------------------------|" + n +
                          "| 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F | 0 1 2 3 4 5 6 7 8 9 A B C D E F |" + n +
                          "|-------------------------------------------------|---------------------------------|" + n;
 
-            hexDump.Append(header);
-
-            for (var i = 0; i < data.Length; i += 16)
-            {
-                var text = new StringBuilder();
-                var hex = new StringBuilder();
-                hex.Append("| ");
-
-                for (var j = 0; j < 16; j++)
-                {
-                    if (j + i < data.Length)
-                    {
-                        var val = data[j + i];
-                        hex.Append(data[j + i].ToString("X2"));
-                        hex.Append(" ");
-
-                        if (val >= 32 && val <= 127)
-                            text.Append((char)val);
-                        else
-                            text.Append(".");
-
-                        text.Append(" ");
-                    }
-                    else
-                    {
-                        hex.Append("   ");
-                        text.Append("  ");
-                    }
-                }
-
-                hex.Append("| ");
-                hex.Append(text + "|");
-                hex.Append(n);
-                hexDump.Append(hex);
-            }
-
-            hexDump.Append("|-------------------------------------------------|---------------------------------|");
-
-            return hexDump.ToString();
-        }
-
-        public static string ByteArrayToShortHexTable(byte[] data, int offset = 0)
-        {
-            var n = Environment.NewLine;
-            var hexDump = new StringBuilder();
-
-            var prefix = new string(' ', offset); 
+            if (!sh0rt)
+                hexDump.Append(header);
 
             for (var i = 0; i < data.Length; i += 16)
             {
                 var text = new StringBuilder();
                 var hex = new StringBuilder(i == 0 ? "" : prefix);
 
+                if (!sh0rt)
+                    hex.Append("| ");
+
                 for (var j = 0; j < 16; j++)
                 {
                     if (j + i < data.Length)
@@ -110,23 +72,34 @@ namespace WowPacketParser.Misc
                         var val = data[j + i];
                         hex.Append(data[j + i].ToString("X2"));
 
+                        if (!sh0rt)
+                            hex.Append(" ");
+
                         if (val >= 32 && val <= 127)
                             text.Append((char)val);
                         else
                             text.Append(".");
+
+                        if (!sh0rt)
+                            text.Append(" ");
                     }
                     else
                     {
-                        hex.Append("  ");
-                        text.Append(" ");
+                        hex.Append(sh0rt ? "  " : "   ");
+                        text.Append(sh0rt ? " " : "  ");
                     }
                 }
 
-                hex.Append("|");
+                hex.Append(sh0rt ? "|" : "| ");
                 hex.Append(text);
+                if (!sh0rt)
+                    hex.Append("|");
                 hex.Append(n);
                 hexDump.Append(hex);
             }
+
+            if (!sh0rt)
+                hexDump.Append("|-------------------------------------------------|---------------------------------|");
 
             return hexDump.ToString();
         }
