@@ -293,7 +293,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_INSPECT_PVP, 0x0382},
             {Opcode.CMSG_INSTANCE_LOCK_RESPONSE, 0x0808},
             {Opcode.CMSG_ITEM_PURCHASE_REFUND, 0x1111},
-            {Opcode.CMSG_BATTLEMASTER_JOIN_SKIRMISH, 0x09EB},
+            {Opcode.CMSG_BATTLEMASTER_JOIN_ARENA_SKIRMISH, 0x09EB},
             {Opcode.CMSG_CHAT_JOIN_CHANNEL, 0x0B4B},
             {Opcode.CMSG_JOIN_PET_BATTLE_QUEUE, 0x04F4},
             {Opcode.CMSG_JOIN_RATED_BATTLEGROUND, 0x065A},

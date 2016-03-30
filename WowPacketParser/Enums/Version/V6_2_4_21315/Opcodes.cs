@@ -59,7 +59,7 @@ namespace WowPacketParser.Enums.Version.V6_2_4_21315
             {Opcode.CMSG_BATTLEMASTER_HELLO, 0x31FC},
             {Opcode.CMSG_BATTLEMASTER_JOIN, 0x3489},
             {Opcode.CMSG_BATTLEMASTER_JOIN_ARENA, 0x348A},
-            {Opcode.CMSG_BATTLEMASTER_JOIN_SKIRMISH, 0x348B},
+            {Opcode.CMSG_BATTLEMASTER_JOIN_ARENA_SKIRMISH, 0x348B},
             {Opcode.CMSG_BATTLENET_CHALLENGE_RESPONSE, 0x3661},
             {Opcode.CMSG_BATTLENET_REQUEST, 0x3683},
             {Opcode.CMSG_BATTLENET_REQUEST_REALM_LIST_TICKET, 0x3684},
