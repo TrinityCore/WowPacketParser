@@ -401,13 +401,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_BATTLENET_RESPONSE)]
-        public static void ReadBattlenetResponse(Packet packet)
+        public static void HandleBattlenetResponse(Packet packet)
         {
             packet.ReadInt32E<BattlenetRpcErrorCode>("BnetStatus");
             ReadMethodCall(packet, "Method");
 
             int protoSize = packet.ReadInt32();
             packet.ReadBytesTable("Data", protoSize);
+        }
+
+        [Parser(Opcode.SMSG_BATTLENET_SET_SESSION_STATE)]
+        public static void HandleBattlenetSetSessionState(Packet packet)
+        {
+            packet.ReadBits("State", 2); // TODO: enum
         }
 
         [Parser(Opcode.CMSG_UPDATE_CLIENT_SETTINGS)]

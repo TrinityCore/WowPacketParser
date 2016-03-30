@@ -1135,6 +1135,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CLEAR_BOSS_EMOTES)]
         [Parser(Opcode.SMSG_NEW_WORLD_ABORT)]
         [Parser(Opcode.CMSG_ROLE_POLL_BEGIN)]
+        [Parser(Opcode.CMSG_UPDATE_VAS_PURCHASE_STATES)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }
