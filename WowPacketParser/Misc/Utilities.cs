@@ -195,7 +195,7 @@ namespace WowPacketParser.Misc
             {
                 try
                 {
-                    files = Directory.GetFiles(@".\", files[0]).ToList();
+                    files = Directory.GetFiles(@".", files[0]).ToList();
                 }
                 catch (Exception ex)
                 {
