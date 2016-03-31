@@ -141,7 +141,7 @@ namespace WowPacketParser.Tests.SQL
 
             var update = new SQLUpdate<TestDataOnePK>(values);
             Assert.AreEqual("UPDATE `test_data_one_p_k` SET `ID`=4, `TestInt1`=5, `TestString1`='string2' WHERE `ID` IN (1, 2);" + Environment.NewLine +
-			                "UPDATE `test_data_one_p_k` SET `ID`=6, `TestInt1`=7 WHERE `ID` IN (1, 2);" + Environment.NewLine,
+                            "UPDATE `test_data_one_p_k` SET `ID`=6, `TestInt1`=7 WHERE `ID` IN (1, 2);" + Environment.NewLine,
                 update.Build());
         }
 
@@ -149,8 +149,8 @@ namespace WowPacketParser.Tests.SQL
         public void TestSQLInsert()
         {
             Assert.AreEqual("INSERT INTO `test_data_one_p_k` (`ID`, `TestInt1`, `TestInt2`, `TestString1`) VALUES" + Environment.NewLine +
-			                "(4, 5, UNKNOWN, 'string2')," + Environment.NewLine +
-			                "(6, 7, UNKNOWN, UNKNOWN);" + Environment.NewLine,
+                            "(4, 5, UNKNOWN, 'string2')," + Environment.NewLine +
+                            "(6, 7, UNKNOWN, UNKNOWN);" + Environment.NewLine,
                             new SQLInsert<TestDataOnePK>(_valuesOnePk, false).Build());
         }
     }
