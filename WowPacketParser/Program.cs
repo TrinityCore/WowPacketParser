@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using WowPacketParser.Loading;
@@ -51,8 +52,16 @@ namespace WowPacketParser
             {
                 SessionHandler.ZStreams.Clear();
                 ClientVersion.SetVersion(Settings.ClientBuild);
-                var sf = new SniffFile(file, Settings.DumpFormat, Tuple.Create(++count, files.Count));
-                sf.ProcessFile();
+                try
+                {
+                    var sf = new SniffFile(file, Settings.DumpFormat, Tuple.Create(++count, files.Count));
+                    sf.ProcessFile();
+                }
+                catch (IOException ex)
+                {
+                    Console.WriteLine($"Can't process {file}. Skipping. Message: {ex.Message}");
+                }
+
             }
 
             if (!string.IsNullOrWhiteSpace(Settings.SQLFileName) && Settings.DumpFormatWithSQL())
