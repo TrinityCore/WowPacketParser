@@ -176,7 +176,7 @@ namespace WowPacketParser.Misc
         {
             for (var i = 0; i < files.Count - 1; ++i)
             {
-                if (files[i][0] == '/')
+                if (files[i].StartsWith("--", StringComparison.CurrentCultureIgnoreCase))
                 {
                     // remove value
                     files.RemoveAt(i + 1);

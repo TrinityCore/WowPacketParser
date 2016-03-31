@@ -83,9 +83,9 @@ namespace WowPacketParser
         {
             Console.WriteLine("Error: No files selected to be parsed.");
             Console.WriteLine("Usage: Drag a file, or group of files on the executable to parse it.");
-            Console.WriteLine("Command line usage: WowPacketParser.exe [/ConfigFile path /Option1 value1 ...] filetoparse1 ...");
-            Console.WriteLine("/ConfigFile path - file to read config from, default: WowPacketParser.exe.config.");
-            Console.WriteLine("/Option1 value1 - override Option1 setting from config file with value1.");
+            Console.WriteLine("Command line usage: WowPacketParser.exe [--ConfigFile path --Option1 value1 ...] filetoparse1 ...");
+            Console.WriteLine("--ConfigFile path - file to read config from, default: WowPacketParser.exe.config.");
+            Console.WriteLine("--Option1 value1 - override Option1 setting from config file with value1.");
             Console.WriteLine("Configuration: Modify WowPacketParser.exe.config file.");
             EndPrompt(true);
         }
