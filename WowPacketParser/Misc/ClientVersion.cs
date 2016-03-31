@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
@@ -284,11 +285,7 @@ namespace WowPacketParser.Misc
             if (time < ClientBuilds[0].Value)
                 return ClientVersionBuild.Zero;
 
-            for (var i = 1; i < ClientBuilds.Length; i++)
-                if (ClientBuilds[i].Value >= time)
-                    return ClientBuilds[i - 1].Key;
-
-            return ClientBuilds[ClientBuilds.Length - 1].Key;
+            return ClientBuilds.Last(a => a.Value <= time).Key;
         }
 
         public static void SetVersion(ClientVersionBuild version)
