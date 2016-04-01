@@ -1,15 +1,10 @@
-language: objective-c
+language: csharp
+solution: WowPacketParser.sln
 
-env:
- global:
-  - EnableNuGetPackageRestore=true 
- matrix:
-  - MONO_VERSION="3.2.5"
-
-before_install:
- - wget "http://download.xamarin.com/MonoFrameworkMDK/Macx86/MonoFramework-MDK-${MONO_VERSION}.macos10.xamarin.x86.pkg"
- - sudo installer -pkg "MonoFramework-MDK-${MONO_VERSION}.macos10.xamarin.x86.pkg" -target /
+install:
+  - nuget restore WowPacketParser.sln
+  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
 
 script:
- - xbuild
- - .ci/nunit.sh WowPacketParser.Tests/bin/Debug/WowPacketParser.Tests.dll
+  - xbuild
+  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./WowPacketParser.Tests/bin/Debug/WowPacketParser.Tests.dll
