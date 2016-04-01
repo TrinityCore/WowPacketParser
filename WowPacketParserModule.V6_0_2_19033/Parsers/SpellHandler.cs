@@ -635,19 +635,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_SPELL_DISPELL_LOG)]
         public static void HandleSpellDispelLog(Packet packet)
         {
-            packet.ReadBit("Is Steal");
-            packet.ReadBit("Is Break");
-            packet.ReadPackedGuid128("Target GUID");
-            packet.ReadPackedGuid128("Caster GUID");
-            packet.ReadUInt32("Spell ID");
-            var dataSize = packet.ReadUInt32("Dispel count");
+            packet.ReadBit("IsSteal");
+            packet.ReadBit("IsBreak");
+            packet.ReadPackedGuid128("TargetGUID");
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadUInt32<SpellId>("DispelledBySpellID");
+            var dataSize = packet.ReadUInt32("DispelCount");
             for (var i = 0; i < dataSize; ++i)
             {
                 packet.ResetBitReader();
-                packet.ReadUInt32("Spell ID", i);
-                packet.ReadBit("Is Harmful", i);
-                var hasRolled = packet.ReadBit("Has Rolled", i);
-                var hasNeeded = packet.ReadBit("Has Needed", i);
+                packet.ReadUInt32<SpellId>("SpellID", i);
+                packet.ReadBit("Harmful", i);
+                var hasRolled = packet.ReadBit("HasRolled", i);
+                var hasNeeded = packet.ReadBit("HasNeeded", i);
                 if (hasRolled)
                     packet.ReadUInt32("Rolled", i);
                 if (hasNeeded)
@@ -1008,10 +1008,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("CastID");
         }
 
-        [Parser(Opcode.SMSG_CLEAR_ALL_SPELL_CHARGE)]
+        [Parser(Opcode.SMSG_CLEAR_ALL_SPELL_CHARGES, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_1_0_19678)] // Bounds NOT confirmed
         public static void HandleClearAllSpellCharges(Packet packet)
         {
             packet.ReadPackedGuid128("Unit");
+        }
+
+        [Parser(Opcode.SMSG_CLEAR_ALL_SPELL_CHARGES, ClientVersionBuild.V6_1_0_19678)] // Bounds NOT confirmed
+        public static void HandleClearAllSpellCharges610(Packet packet)
+        {
+            packet.ReadBit("IsPet");
+        }
+
+        [Parser(Opcode.SMSG_CLEAR_SPELL_CHARGES)]
+        public static void HandleClearSpellCharges(Packet packet)
+        {
+            packet.ReadBit("IsPet");
+            packet.ReadInt32("Category"); // SpellCategoryEntry->ID
         }
 
         [Parser(Opcode.SMSG_PLAYER_BOUND)]

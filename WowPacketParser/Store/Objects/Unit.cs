@@ -107,7 +107,7 @@ namespace WowPacketParser.Store.Objects
             Model         = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_DISPLAYID);
             Mount         = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_MOUNTDISPLAYID);
             if (ClientVersion.AddedInVersion(ClientType.WarlordsOfDraenor))
-                DynamicFlagsWod = UpdateFields.GetEnum<UnitField, UnitDynamicFlagsWOD?>(UnitField.UNIT_DYNAMIC_FLAGS);
+                DynamicFlagsWod = UpdateFields.GetEnum<ObjectField, UnitDynamicFlagsWOD?>(ObjectField.OBJECT_DYNAMIC_FLAGS);
             else
                 DynamicFlags  = UpdateFields.GetEnum<UnitField, UnitDynamicFlags?>(UnitField.UNIT_DYNAMIC_FLAGS);
             NpcFlags      = UpdateFields.GetEnum<UnitField, NPCFlags?>(UnitField.UNIT_NPC_FLAGS);

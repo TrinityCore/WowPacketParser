@@ -61,6 +61,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadByteE<InventoryType>("InventoryItem InvType", i, j);
                 }
 
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_4_21315))
+                    packet.ReadTime("LastPlayedTime", i);
+
                 packet.ResetBitReader();
                 var nameLength = packet.ReadBits("Character Name Length", 6, i);
                 var firstLogin = packet.ReadBit("FirstLogin", i);

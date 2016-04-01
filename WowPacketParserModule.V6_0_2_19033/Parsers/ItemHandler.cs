@@ -447,8 +447,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("PurchaseTime");
         }
 
-        [Parser(Opcode.SMSG_SOCKET_GEMS)]
+        [Parser(Opcode.CMSG_SOCKET_GEMS)]
         public static void HandleSocketGems(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+            for (var i = 0; i < 3; ++i)
+                packet.ReadPackedGuid128("Gem GUID", i);
+        }
+
+        [Parser(Opcode.SMSG_SOCKET_GEMS)]
+        public static void HandleSocketGemsResult(Packet packet)
         {
             packet.ReadPackedGuid128("Item");
 

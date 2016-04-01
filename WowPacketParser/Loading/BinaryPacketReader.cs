@@ -29,7 +29,7 @@ namespace WowPacketParser.Loading
         private uint _startTickCount;
         private int _snifferId;
         private short _snifferVersion;
-        private static string _locale;
+        private static string _locale = "enUS";
 
         public BinaryPacketReader(SniffType type, string fileName, Encoding encoding)
         {

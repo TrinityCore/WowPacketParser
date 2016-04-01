@@ -247,7 +247,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_DISPLAY_TOAST, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_1_0_19678)]
-        public static void HandleDisplayToast60x(Packet packet)
+        public static void HandleDisplayToast600(Packet packet)
         {
             packet.ReadInt32("Quantity");
             packet.ReadByte("DisplayToastMethod");
@@ -267,7 +267,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_DISPLAY_TOAST, ClientVersionBuild.V6_1_0_19678, ClientVersionBuild.V6_2_0_20173)]
-        public static void HandleDisplayToast61x(Packet packet)
+        public static void HandleDisplayToast610(Packet packet)
         {
             packet.ReadInt32("Quantity");
             packet.ReadByte("DisplayToastMethod");
@@ -306,8 +306,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("CurrencyID");
         }
 
-        [Parser(Opcode.SMSG_DISPLAY_TOAST, ClientVersionBuild.V6_2_2_20444)]
-        public static void HandleDisplayToast62x(Packet packet)
+        [Parser(Opcode.SMSG_DISPLAY_TOAST, ClientVersionBuild.V6_2_2_20444, ClientVersionBuild.V6_2_3_20726)]
+        public static void HandleDisplayToast622(Packet packet)
         {
             packet.ReadInt32("Quantity");
             packet.ReadByte("DisplayToastMethod");
@@ -315,6 +315,46 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var type = packet.ReadBits("Type", 2);
 
             if (type == 2)
+            {
+                packet.ReadBit("BonusRoll");
+                ItemHandler.ReadItemInstance(packet);
+                packet.ReadInt32("SpecializationID");
+                packet.ReadInt32("ItemQuantity?");
+            }
+
+            if (type == 1)
+                packet.ReadInt32("CurrencyID");
+        }
+
+        [Parser(Opcode.SMSG_DISPLAY_TOAST, ClientVersionBuild.V6_2_3_20726, ClientVersionBuild.V6_2_4_21315)]
+        public static void HandleDisplayToast623(Packet packet)
+        {
+            packet.ReadInt32("Quantity");
+            packet.ReadByte("DisplayToastMethod");
+            packet.ReadBit("Mailed");
+            var type = packet.ReadBits("Type", 2);
+
+            if (type == 2)
+            {
+                packet.ReadBit("BonusRoll");
+                ItemHandler.ReadItemInstance(packet);
+                packet.ReadInt32("SpecializationID");
+                packet.ReadInt32("ItemQuantity?");
+            }
+
+            if (type == 1)
+                packet.ReadInt32("CurrencyID");
+        }
+
+        [Parser(Opcode.SMSG_DISPLAY_TOAST, ClientVersionBuild.V6_2_4_21315)]
+        public static void HandleDisplayToast624(Packet packet)
+        {
+            packet.ReadInt32("Quantity");
+            packet.ReadByte("DisplayToastMethod");
+            packet.ReadBit("Mailed");
+            var type = packet.ReadBits("Type", 2);
+
+            if (type == 0)
             {
                 packet.ReadBit("BonusRoll");
                 ItemHandler.ReadItemInstance(packet);

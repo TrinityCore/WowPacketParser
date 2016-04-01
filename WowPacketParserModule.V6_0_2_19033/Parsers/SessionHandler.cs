@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Enums;
+﻿using System;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
@@ -15,15 +16,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_AUTH_RESPONSE)]
         public static void HandleAuthResponse(Packet packet)
         {
-            packet.ReadByteE<ResponseCode>("Auth Code");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_4_21315))
+                packet.ReadUInt32E<BattlenetRpcErrorCode>("Result");
+            else
+                packet.ReadByteE<ResponseCode>("Auth Code");
+
             var ok = packet.ReadBit("Success");
             var queued = packet.ReadBit("Queued");
             if (ok)
             {
                 packet.ReadUInt32("VirtualRealmAddress");
                 var realms = packet.ReadUInt32();
-                packet.ReadUInt32("TimeRemaining");
-                packet.ReadUInt32("TimeOptions");
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V6_2_4_21315))
+                {
+                    packet.ReadUInt32("TimeRemaining");
+                    packet.ReadUInt32("TimeOptions");
+                }
                 packet.ReadUInt32("TimeRested");
                 packet.ReadByte("ActiveExpansionLevel");
                 packet.ReadByte("AccountExpansionLevel");
@@ -32,6 +40,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 var classes = packet.ReadUInt32("AvailableClasses");
                 var templates = packet.ReadUInt32("Templates");
                 packet.ReadUInt32("AccountCurrency");
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_4_21315))
+                {
+                    packet.ResetBitReader();
+                    packet.ReadUInt32("BillingPlan");
+                    packet.ReadUInt32("TimeRemain");
+                    packet.ReadBit("InGameRoom");
+                    packet.ReadBit("InGameRoom");
+                    packet.ReadBit("InGameRoom");
+                }
 
                 for (var i = 0; i < realms; ++i)
                 {
@@ -79,7 +97,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadBit("ForceCharacterTemplate");
                 var horde = packet.ReadBit(); // NumPlayersHorde
                 var alliance = packet.ReadBit(); // NumPlayersAlliance
-                packet.ReadBit("IsVeteranTrial");
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V6_2_4_21315))
+                    packet.ReadBit("IsVeteranTrial");
 
                 if (horde)
                     packet.ReadUInt16("NumPlayersHorde");
@@ -91,6 +110,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (queued)
             {
                 packet.ReadUInt32("QueuePos");
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_4_21315))
+                    packet.ReadUInt32("WaitTime");
                 packet.ResetBitReader();
                 packet.ReadBit("HasFCM");
             }
@@ -120,7 +141,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("GameTimeTZ", len2);
         }
 
-        [Parser(Opcode.CMSG_AUTH_SESSION)]
+        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.Zero, ClientVersionBuild.V6_2_4_21315)]
         public static void HandleAuthSession(Packet packet)
         {
             var sha = new byte[20];
@@ -155,6 +176,33 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
         }
 
+        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V6_2_4_21315)]
+        public static void HandleAuthSession624(Packet packet)
+        {
+            packet.ReadInt16E<ClientVersionBuild>("Build");
+            packet.ReadByte("BuildType");
+            packet.ReadUInt32("RegionID");
+            packet.ReadUInt32("BattlegroupID");
+            packet.ReadUInt32("RealmID");
+            packet.ReadBytes("LocalChallenge", 16);
+            packet.ReadBytes("Digest", 24);
+            packet.ReadUInt64("DosResponse");
+
+            var addonSize = packet.ReadInt32();
+            if (addonSize > 0)
+            {
+                var addons = new Packet(packet.ReadBytes(addonSize), packet.Opcode, packet.Time, packet.Direction,
+                packet.Number, packet.Writer, packet.FileName);
+                CoreParsers.AddonHandler.ReadClientAddonsList(addons);
+                addons.ClosePacket(false);
+            }
+
+            var realmJoinTicketSize = packet.ReadInt32();
+            packet.ReadBytes("RealmJoinTicket", realmJoinTicketSize);
+            packet.ReadBit("UseIPv6");
+
+        }
+
         [Parser(Opcode.CMSG_PLAYER_LOGIN)]
         public static void HandlePlayerLogin(Packet packet)
         {
@@ -168,7 +216,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt64("DosResponse");
             packet.ReadInt64("Key");
-            packet.ReadBytes("Digest", 20);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_4_21315))
+            {
+                packet.ReadBytes("LocalChallenge", 16);
+                packet.ReadBytes("Digest", 24);
+            }
+            else
+                packet.ReadBytes("Digest", 20);
         }
 
         [Parser(Opcode.SMSG_CONNECT_TO)]
@@ -183,9 +237,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_AUTH_CHALLENGE)]
         public static void HandleServerAuthChallenge(Packet packet)
         {
-            packet.ReadUInt32("Challenge");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V6_2_4_21315))
+                packet.ReadUInt32("Challenge");
             for (uint i = 0; i < 8; ++i)
                 packet.ReadUInt32("DosChallenge", i);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_4_21315))
+                packet.ReadBytes("Challenge", 16);
             packet.ReadByte("DosZeroBits");
         }
 
@@ -316,6 +373,47 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadUInt32("Token");
             packet.ReadBit("Timeout");
+        }
+
+        public static void ReadMethodCall(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt64("Type", idx);
+            packet.ReadUInt64("ObjectId", idx);
+            packet.ReadUInt32("Token", idx);
+        }
+
+        [Parser(Opcode.CMSG_BATTLENET_REQUEST)]
+        public static void HandleBattlenetRequest(Packet packet)
+        {
+            ReadMethodCall(packet, "Method");
+
+            int protoSize = packet.ReadInt32();
+            packet.ReadBytesTable("Data", protoSize);
+        }
+
+        [Parser(Opcode.SMSG_BATTLENET_NOTIFICATION)]
+        public static void HandleBattlenetNotification(Packet packet)
+        {
+            ReadMethodCall(packet, "Method");
+
+            int protoSize = packet.ReadInt32();
+            packet.ReadBytesTable("Data", protoSize);
+        }
+
+        [Parser(Opcode.SMSG_BATTLENET_RESPONSE)]
+        public static void HandleBattlenetResponse(Packet packet)
+        {
+            packet.ReadInt32E<BattlenetRpcErrorCode>("BnetStatus");
+            ReadMethodCall(packet, "Method");
+
+            int protoSize = packet.ReadInt32();
+            packet.ReadBytesTable("Data", protoSize);
+        }
+
+        [Parser(Opcode.SMSG_BATTLENET_SET_SESSION_STATE)]
+        public static void HandleBattlenetSetSessionState(Packet packet)
+        {
+            packet.ReadBits("State", 2); // TODO: enum
         }
 
         [Parser(Opcode.CMSG_UPDATE_CLIENT_SETTINGS)]

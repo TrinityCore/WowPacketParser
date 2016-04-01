@@ -137,6 +137,7 @@
     <Compile Include="Enums\BattlegroundListFlags.cs" />
     <Compile Include="Enums\BattlegroundStatus.cs" />
     <Compile Include="Enums\BattlegroundUpdateFlags.cs" />
+    <Compile Include="Enums\BattlenetRpcErrorCode.cs" />
     <Compile Include="Enums\Battlenet\Command.cs" />
     <Compile Include="Enums\Battlenet\BattlenetChannel.cs" />
     <Compile Include="Enums\BillingFlag.cs" />
@@ -380,6 +381,7 @@
     <Compile Include="Enums\Version\V6_2_0_20173\TutorialAction.cs" />
     <Compile Include="Enums\Version\V6_2_2_20444\Opcodes.cs" />
     <Compile Include="Enums\Version\V6_2_3_20726\Opcodes.cs" />
+    <Compile Include="Enums\Version\V6_2_4_21315\Opcodes.cs" />
     <Compile Include="Enums\VictimStates.cs" />
     <Compile Include="Enums\VoidTransferError.cs" />
     <Compile Include="Enums\WardenCheckType.cs" />

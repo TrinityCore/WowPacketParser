@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security;
+using System.Text;
 using WowPacketParser.Enums;
 
 namespace WowPacketParser.Misc
@@ -38,6 +39,70 @@ namespace WowPacketParser.Misc
         public static string ByteArrayToHexString(byte[] data)
         {
             return data.Aggregate(String.Empty, (current, t) => current + t.ToString("X2", CultureInfo.InvariantCulture));
+        }
+
+        public static string ByteArrayToHexTable(byte[] data, bool sh0rt = false, int offset = 0, bool noOffsetFirstLine = true)
+        {
+            var n = Environment.NewLine;
+
+            var prefix = new string(' ', offset);
+
+            var hexDump = new StringBuilder(noOffsetFirstLine ? "" : prefix);
+
+            if (!sh0rt)
+            {
+                var header = "|-------------------------------------------------|---------------------------------|" + n +
+                             "| 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F | 0 1 2 3 4 5 6 7 8 9 A B C D E F |" + n +
+                             "|-------------------------------------------------|---------------------------------|" + n;
+
+                hexDump.Append(header);
+            }
+
+            for (var i = 0; i < data.Length; i += 16)
+            {
+                var text = new StringBuilder();
+                var hex = new StringBuilder(i == 0 ? "" : prefix);
+
+                if (!sh0rt)
+                    hex.Append("| ");
+
+                for (var j = 0; j < 16; j++)
+                {
+                    if (j + i < data.Length)
+                    {
+                        var val = data[j + i];
+                        hex.Append(data[j + i].ToString("X2"));
+
+                        if (!sh0rt)
+                            hex.Append(" ");
+
+                        if (val >= 32 && val <= 127)
+                            text.Append((char)val);
+                        else
+                            text.Append(".");
+
+                        if (!sh0rt)
+                            text.Append(" ");
+                    }
+                    else
+                    {
+                        hex.Append(sh0rt ? "  " : "   ");
+                        text.Append(sh0rt ? " " : "  ");
+                    }
+                }
+
+                hex.Append(sh0rt ? "|" : "| ");
+                hex.Append(text);
+                if (!sh0rt)
+                    hex.Append("|");
+                hex.Append(n);
+                hexDump.Append(hex);
+            }
+
+            if (!sh0rt)
+                hexDump.Append("|-------------------------------------------------|---------------------------------|");
+
+            return hexDump.ToString();
         }
 
         public static DateTime GetDateTimeFromGameTime(int packedDate)
@@ -111,7 +176,7 @@ namespace WowPacketParser.Misc
         {
             for (var i = 0; i < files.Count - 1; ++i)
             {
-                if (files[i][0] == '/')
+                if (files[i].StartsWith("--", StringComparison.CurrentCultureIgnoreCase))
                 {
                     // remove value
                     files.RemoveAt(i + 1);
@@ -130,7 +195,7 @@ namespace WowPacketParser.Misc
             {
                 try
                 {
-                    files = Directory.GetFiles(@".\", files[0]).ToList();
+                    files = Directory.GetFiles(@".", files[0]).ToList();
                 }
                 catch (Exception ex)
                 {

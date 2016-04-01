@@ -72,55 +72,7 @@ namespace WowPacketParser.Misc
         /// <param name="packet">A packet</param>
         public static void AsHex(this Packet packet)
         {
-            var n = Environment.NewLine;
-            var hexDump = new StringBuilder();
-            var length = packet.Length;
-            var stream = packet.GetStream(0);
-
-            var header = "|-------------------------------------------------|---------------------------------|" + n +
-                         "| 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F | 0 1 2 3 4 5 6 7 8 9 A B C D E F |" + n +
-                         "|-------------------------------------------------|---------------------------------|" + n;
-
-            hexDump.Append(header);
-
-            var end = length;
-            for (var i = 0; i < end; i += 16)
-            {
-                var text = new StringBuilder();
-                var hex = new StringBuilder();
-                hex.Append("| ");
-
-                for (var j = 0; j < 16; j++)
-                {
-                    if (j + i < end)
-                    {
-                        var val = stream[j + i];
-                        hex.Append(stream[j + i].ToString("X2"));
-                        hex.Append(" ");
-
-                        if (val >= 32 && val <= 127)
-                            text.Append((char)val);
-                        else
-                            text.Append(".");
-
-                        text.Append(" ");
-                    }
-                    else
-                    {
-                        hex.Append("   ");
-                        text.Append("  ");
-                    }
-                }
-
-                hex.Append("| ");
-                hex.Append(text + "|");
-                hex.Append(n);
-                hexDump.Append(hex);
-            }
-
-            hexDump.Append("|-------------------------------------------------|---------------------------------|");
-
-            packet.WriteLine(hexDump.ToString());
+            packet.WriteLine(Utilities.ByteArrayToHexTable(packet.GetStream(0)));
         }
 
         /// <summary>

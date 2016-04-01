@@ -29,11 +29,11 @@ namespace WowPacketParser.Misc
             for (int i = 1; i < args.Length - 1; ++i)
             {
                 string opt = args[i];
-                if (opt[0] != '/')
+                if (!opt.StartsWith("--", StringComparison.CurrentCultureIgnoreCase))
                     break;
 
                 // analyze options
-                string optname = opt.Substring(1);
+                string optname = opt.Substring(2);
                 switch (optname)
                 {
                     case "ConfigFile":
@@ -52,11 +52,9 @@ namespace WowPacketParser.Misc
 
                 try
                 {
-                    // Map the new configuration file.
-                    var configFileMap = new ExeConfigurationFileMap { ExeConfigFilename = configPath };
-
                     // Get the mapped configuration file
-                    var config = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
+                    var config = ConfigurationManager.OpenExeConfiguration(configPath);
+
 
                     settings = ((AppSettingsSection)config.GetSection("appSettings")).Settings;
                 }

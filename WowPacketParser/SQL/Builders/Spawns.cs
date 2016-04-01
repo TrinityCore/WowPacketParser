@@ -89,7 +89,8 @@ namespace WowPacketParser.SQL.Builders
                 {
                     int mapId;
                     badTransport = !GetTransportMap(creature, out mapId);
-                    row.Data.Map = (uint)mapId;
+                    if (mapId != -1)
+                        row.Data.Map = (uint)mapId;
                 }
 
                 row.Data.SpawnMask = (uint)creature.GetDefaultSpawnMask();
@@ -267,7 +268,8 @@ namespace WowPacketParser.SQL.Builders
                 {
                     int mapId;
                     badTransport = !GetTransportMap(go, out mapId);
-                    row.Data.Map = (uint)mapId;
+                    if (mapId != -1)
+                        row.Data.Map = (uint)mapId;
                 }
 
                 row.Data.SpawnMask = (uint)go.GetDefaultSpawnMask();
