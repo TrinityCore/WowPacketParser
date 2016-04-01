@@ -19,7 +19,7 @@ Usage
 
 Optionally, WPP can connect to two kinds of MySQL databases: `world` from [TrinityCore](https://github.com/TrinityCore/TrinityCore)
 and its own database, `WPP`. This can be enabled by setting `<add key="DBEnabled" value="true" />`
-in the `.config` file.
+in the `.config` file. Remember to set <add key="TargetedDatabase" value="1"/> in accordance with the targeted version of the core. 
 
 The `world` database is used when creating SQL files after parsing to produce the mimimum number of
 changes needed to update the database. For example, if only the faction of a creature that appears
