@@ -118,7 +118,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Caster");
             packet.ReadPackedGuid128("Owner");
             packet.ReadInt32("Damage");
-            packet.ReadInt32("SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
         }
 
         [Parser(Opcode.SMSG_GAME_OBJECT_RESET_STATE)]

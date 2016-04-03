@@ -623,7 +623,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Caster");
             packet.ReadPackedGuid128("Target");
-            packet.ReadInt32("SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
                 packet.ReadInt32("SpellXSpellVisualID");
@@ -661,7 +661,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Guid");
             packet.ReadPackedGuid128("Target");
 
-            packet.ReadUInt32("SpellID");
+            packet.ReadUInt32<SpellId>("SpellID");
             packet.ReadUInt32("TimeRemaining");
             packet.ReadUInt32("TotalTime");
 
@@ -898,7 +898,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("PlayerGUID");
 
-            packet.ReadInt32("SpellId");
+            packet.ReadInt32<SpellId>("SpellID");
 
             var int4 = packet.ReadInt32("SkillLineCount");
             var int20 = packet.ReadInt32("SkillRankCount");
@@ -967,7 +967,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBits("Mechanic", 8);
             packet.ReadBits("Type", 8);
 
-            packet.ReadInt32("SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
 
             packet.ReadPackedGuid128("Caster");
 
@@ -998,7 +998,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Caster");
             packet.ReadPackedGuid128("DestTransport");
-            packet.ReadInt32("SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
             packet.ReadVector3("SourceLoc");
             packet.ReadVector3("DestLoc");
             packet.ReadSingle("MissileTrajectoryPitch");
@@ -1066,7 +1066,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleMissileTrajectoryCollision(Packet packet)
         {
             packet.ReadPackedGuid128("CasterGUID");
-            packet.ReadInt32("SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
             packet.ReadByte("CastID");
             packet.ReadVector3("CollisionPos");
         }
