@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using WowPacketParser.Enums;
@@ -182,6 +183,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("Reason");
             int count = packet.ReadInt32("VendorItems");
 
+            var tempList = new List<NpcVendor>();
             for (int i = 0; i < count; ++i)
             {
                 NpcVendor vendor = new NpcVendor
@@ -207,8 +209,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 if (vendor.Type == 2)
                     vendor.MaxCount = (uint)buyCount;
 
-                Storage.NpcVendors.Add(vendor, packet.TimeSpan);
+                tempList.Add(vendor);
             }
+
+            tempList.ForEach(v =>
+            {
+                v.Entry = entry;
+                Storage.NpcVendors.Add(v, packet.TimeSpan);
+            });
         }
 
         [Parser(Opcode.SMSG_TRAINER_LIST)]
