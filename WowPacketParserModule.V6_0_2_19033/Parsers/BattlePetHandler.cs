@@ -503,6 +503,46 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
+        public static void ReadPetBattleEffectTarget624(Packet packet, params object[] idx)
+        {
+            var type = packet.ReadBits("Type", 3, idx); // enum PetBattleEffectTargetEx
+
+            packet.ResetBitReader();
+
+            packet.ReadByte("Petx", idx);
+
+            switch (type)
+            {
+                case 1:
+                    packet.ReadInt32("AuraInstanceID", idx);
+                    packet.ReadInt32("AuraAbilityID", idx);
+                    packet.ReadInt32("RoundsRemaining", idx);
+                    packet.ReadInt32("CurrentRound", idx);
+                    break;
+                case 2:
+                    packet.ReadInt32("StateID", idx);
+                    packet.ReadInt32("StateValue", idx);
+                    break;
+                case 3:
+                    packet.ReadInt32("Health", idx);
+                    break;
+                case 4:
+                    packet.ReadInt32("NewStatValue", idx);
+                    break;
+                case 5:
+                    packet.ReadInt32("TriggerAbilityID", idx);
+                    break;
+                case 6:
+                    packet.ReadInt32("ChangedAbilityID", idx);
+                    packet.ReadInt32("CooldownRemaining", idx);
+                    packet.ReadInt32("LockdownRemaining", idx);
+                    break;
+                case 7:
+                    packet.ReadInt32("BroadcastTextID", idx);
+                    break;
+            }
+        }
+
         public static void ReadPetBattleEffect(Packet packet, params object[] idx)
         {
             packet.ReadUInt32("AbilityEffectID", idx);
@@ -517,7 +557,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (var i = 0; i < targetsCount; ++i)
             {
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_3_20886)) // not sure when this was changed
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_4_21315)) // not sure when this was changed
+                    ReadPetBattleEffectTarget624(packet, idx, "Targets", i);
+                else if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_3_20886)) // not sure when this was changed
                     ReadPetBattleEffectTarget623(packet, idx, "Targets", i);
                 else if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173)) // not sure when this was changed
                     ReadPetBattleEffectTarget620(packet, idx, "Targets", i);
