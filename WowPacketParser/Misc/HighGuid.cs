@@ -9,13 +9,7 @@ namespace WowPacketParser.Misc
 {
     public abstract class HighGuid
     {
-        protected byte high;
         protected HighGuidType highGuidType;
-
-        protected HighGuid(byte high)
-        {
-            this.high = high;
-        }
 
         public HighGuidType GetHighGuidType()
         {
@@ -26,6 +20,7 @@ namespace WowPacketParser.Misc
 
     public class HighGuidLegacy : HighGuid
     {
+        private HighGuidTypeLegacy high;
         private static readonly Dictionary<HighGuidTypeLegacy, HighGuidType> HighLegacyToHighType
             = new Dictionary<HighGuidTypeLegacy, HighGuidType>
         {
@@ -46,18 +41,20 @@ namespace WowPacketParser.Misc
             { HighGuidTypeLegacy.Vehicle, HighGuidType.Vehicle },
         };
 
-        public HighGuidLegacy(byte high) : base(high)
+        public HighGuidLegacy(HighGuidTypeLegacy high)
         {
-            if (!HighLegacyToHighType.ContainsKey((HighGuidTypeLegacy)high))
+            this.high = high;
+            if (!HighLegacyToHighType.ContainsKey(high))
                 throw new ArgumentOutOfRangeException("0x" + high.ToString("X"));
 
-            highGuidType = HighLegacyToHighType[(HighGuidTypeLegacy)high];
+            highGuidType = HighLegacyToHighType[high];
         }
     }
 
 
     public class HighGuid623 : HighGuid
     {
+        protected byte high;
         private static readonly Dictionary<HighGuidType623, HighGuidType> High623ToHighType
             = new Dictionary<HighGuidType623, HighGuidType>
         {
@@ -107,8 +104,9 @@ namespace WowPacketParser.Misc
             { HighGuidType623.BattlePet, HighGuidType.BattlePet }
         };
 
-        public HighGuid623(byte high) : base(high)
+        public HighGuid623(byte high)
         {
+            this.high = high;
             if (!High623ToHighType.ContainsKey((HighGuidType623)high))
                 throw new ArgumentOutOfRangeException("0x" + high.ToString("X"));
 
@@ -118,8 +116,11 @@ namespace WowPacketParser.Misc
 
     public class HighGuid624 : HighGuid
     {
-        public HighGuid624(byte high) : base(high)
+        protected byte high;
+
+        public HighGuid624(byte high)
         {
+            this.high = high;
             highGuidType = (HighGuidType)high;
         }
     }

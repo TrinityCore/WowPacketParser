@@ -165,7 +165,7 @@ namespace WowPacketParser.Misc
         public WowGuid64(ulong id)
         {
             Low = id;
-            HighGuid = new HighGuidLegacy((byte)((Low & 0xF0F0000000000000) >> 52));
+            HighGuid = new HighGuidLegacy(GetHighGuidTypeLegacy());
         }
 
         public WowGuid64()
