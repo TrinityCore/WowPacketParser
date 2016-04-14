@@ -614,7 +614,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("InitialValue");
             packet.ReadUInt32("MaxValue");
             packet.ReadInt32("Scale");
-            packet.ReadUInt32("SpellId");
+            packet.ReadUInt32<SpellId>("SpellID");
             packet.ReadBit("Paused");
         }
 
@@ -637,7 +637,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadUInt32("ResurrectOffererVirtualRealmAddress");
             packet.ReadUInt32("PetNumber");
-            packet.ReadInt32("SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
 
             var len = packet.ReadBits(6);
 

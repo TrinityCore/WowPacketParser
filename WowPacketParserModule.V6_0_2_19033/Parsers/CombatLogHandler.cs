@@ -56,7 +56,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("TargetGUID");
             packet.ReadPackedGuid128("CasterGUID");
 
-            packet.ReadInt32("SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
 
             var int24 = packet.ReadInt32("PeriodicAuraLogEffectCount");
 
@@ -98,7 +98,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("TargetGUID");
             packet.ReadPackedGuid128("CasterGUID");
 
-            packet.ReadInt32("SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
             packet.ReadInt32("Health");
             packet.ReadInt32("OverHeal");
             packet.ReadInt32("Absorbed");
@@ -145,7 +145,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Caster");
 
-            packet.ReadInt32("SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
 
             var int16 = packet.ReadInt32("EffectsCount");
             for (var i = 0; i < int16; i++)
@@ -206,7 +206,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Attacker");
             packet.ReadPackedGuid128("Defender");
-            packet.ReadInt32("SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
             packet.ReadInt32("TotalDamage");
             packet.ReadInt32("OverKill");
             packet.ReadInt32("SchoolMask");
@@ -260,7 +260,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Victim");
 
             packet.ReadInt32("InterruptedSpellID");
-            packet.ReadInt32("SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
         }
 
         [Parser(Opcode.SMSG_SPELL_OR_DAMAGE_IMMUNE)]
@@ -277,7 +277,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_SPELL_MISS_LOG)]
         public static void HandleSpellMissLog(Packet packet)
         {
-            packet.ReadInt32("SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
             packet.ReadPackedGuid128("Caster");
 
             var spellLogMissEntryCount = packet.ReadInt32("SpellLogMissEntryCount");
@@ -319,7 +319,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Caster");
             packet.ReadPackedGuid128("Target");
 
-            packet.ReadInt32("SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
 
             var bit20 = packet.ReadBit("HasRolled");    // unconfirmed order
             var bit32 = packet.ReadBit("HasNeeded");    // unconfirmed order

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -303,7 +304,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("CanAwardXP", idx);
         }
 
-        public static void ReadPetBattleEffectTarget60x(Packet packet, params object[] idx)
+        private static readonly int[] _petBattleEffectTargets602 = new int[] {5, 3, 2, 4, 7, 1, 0, 6};
+        private static readonly int[] _petBattleEffectTargets610 = new int[] {0, 4, 7, 1, 3, 5, 2, 6};
+        private static readonly int[] _petBattleEffectTargets612 = new int[] {5, 4, 7, 0, 3, 1, 2, 6};
+        private static readonly int[] _petBattleEffectTargets620 = new int[] {0, 2, 7, 6, 4, 1, 3, 5};
+        private static readonly int[] _petBattleEffectTargets623 = new int[] {0, 7, 1, 4, 3, 6, 5, 2};
+        private static readonly int[] _petBattleEffectTargets624 = new int[] {0, 1, 2, 3, 4, 5, 6, 7};
+
+        public static void ReadPetBattleEffectTarget(Packet packet, int[] targetTypeValueMap , params object[] idx)
         {
             var type = packet.ReadBits("Type", 3, idx); // enum PetBattleEffectTargetEx
 
@@ -311,9 +319,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadByte("Petx", idx);
 
-            switch (type)
+            switch (targetTypeValueMap[type])
             {
-                case 5:
+                case 1:
                     packet.ReadInt32("AuraInstanceID", idx);
                     packet.ReadInt32("AuraAbilityID", idx);
                     packet.ReadInt32("RoundsRemaining", idx);
@@ -322,182 +330,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 case 2:
                     packet.ReadInt32("StateID", idx);
                     packet.ReadInt32("StateValue", idx);
-                    break;
-                case 1:
-                    packet.ReadInt32("Health", idx);
                     break;
                 case 3:
-                    packet.ReadInt32("NewStatValue", idx);
-                    break;
-                case 0:
-                    packet.ReadInt32("TriggerAbilityID", idx);
-                    break;
-                case 7:
-                    packet.ReadInt32("ChangedAbilityID", idx);
-                    packet.ReadInt32("CooldownRemaining", idx);
-                    packet.ReadInt32("LockdownRemaining", idx);
-                    break;
-                case 4:
-                    packet.ReadInt32("BroadcastTextID", idx);
-                    break;
-            }
-        }
-
-        public static void ReadPetBattleEffectTarget610(Packet packet, params object[] idx)
-        {
-            var type = packet.ReadBits("Type", 3, idx); // enum PetBattleEffectTargetEx
-
-            packet.ResetBitReader();
-
-            packet.ReadByte("Petx", idx);
-
-            switch (type)
-            {
-                case 3:
-                    packet.ReadInt32("AuraInstanceID", idx);
-                    packet.ReadInt32("AuraAbilityID", idx);
-                    packet.ReadInt32("RoundsRemaining", idx);
-                    packet.ReadInt32("CurrentRound", idx);
-                    break;
-                case 6:
-                    packet.ReadInt32("StateID", idx);
-                    packet.ReadInt32("StateValue", idx);
-                    break;
-                case 4:
-                    packet.ReadInt32("Health", idx);
-                    break;
-                case 1:
-                    packet.ReadInt32("NewStatValue", idx);
-                    break;
-                case 5:
-                    packet.ReadInt32("TriggerAbilityID", idx);
-                    break;
-                case 7:
-                    packet.ReadInt32("ChangedAbilityID", idx);
-                    packet.ReadInt32("CooldownRemaining", idx);
-                    packet.ReadInt32("LockdownRemaining", idx);
-                    break;
-                case 2:
-                    packet.ReadInt32("BroadcastTextID", idx);
-                    break;
-            }
-        }
-
-        public static void ReadPetBattleEffectTarget612(Packet packet, params object[] idx)
-        {
-            var type = packet.ReadBits("Type", 3, idx); // enum PetBattleEffectTargetEx
-
-            packet.ResetBitReader();
-
-            packet.ReadByte("Petx", idx);
-
-            switch (type)
-            {
-                case 5:
-                    packet.ReadInt32("AuraInstanceID", idx);
-                    packet.ReadInt32("AuraAbilityID", idx);
-                    packet.ReadInt32("RoundsRemaining", idx);
-                    packet.ReadInt32("CurrentRound", idx);
-                    break;
-                case 6:
-                    packet.ReadInt32("StateID", idx);
-                    packet.ReadInt32("StateValue", idx);
-                    break;
-                case 4:
-                    packet.ReadInt32("Health", idx);
-                    break;
-                case 1:
-                    packet.ReadInt32("NewStatValue", idx);
-                    break;
-                case 0:
-                    packet.ReadInt32("TriggerAbilityID", idx);
-                    break;
-                case 7:
-                    packet.ReadInt32("ChangedAbilityID", idx);
-                    packet.ReadInt32("CooldownRemaining", idx);
-                    packet.ReadInt32("LockdownRemaining", idx);
-                    break;
-                case 2:
-                    packet.ReadInt32("BroadcastTextID", idx);
-                    break;
-            }
-        }
-
-        public static void ReadPetBattleEffectTarget620(Packet packet, params object[] idx)
-        {
-            var type = packet.ReadBits("Type", 3, idx); // enum PetBattleEffectTargetEx
-
-            packet.ResetBitReader();
-
-            packet.ReadByte("Petx", idx);
-
-            switch (type)
-            {
-                case 5:
-                    packet.ReadInt32("AuraInstanceID", idx);
-                    packet.ReadInt32("AuraAbilityID", idx);
-                    packet.ReadInt32("RoundsRemaining", idx);
-                    packet.ReadInt32("CurrentRound", idx);
-                    break;
-                case 1:
-                    packet.ReadInt32("StateID", idx);
-                    packet.ReadInt32("StateValue", idx);
-                    break;
-                case 6:
                     packet.ReadInt32("Health", idx);
                     break;
                 case 4:
                     packet.ReadInt32("NewStatValue", idx);
                     break;
-                case 7:
+                case 5:
                     packet.ReadInt32("TriggerAbilityID", idx);
-                    break;
-                case 3:
-                    packet.ReadInt32("ChangedAbilityID", idx);
-                    packet.ReadInt32("CooldownRemaining", idx);
-                    packet.ReadInt32("LockdownRemaining", idx);
-                    break;
-                case 2:
-                    packet.ReadInt32("BroadcastTextID", idx);
-                    break;
-            }
-        }
-
-        public static void ReadPetBattleEffectTarget623(Packet packet, params object[] idx)
-        {
-            var type = packet.ReadBits("Type", 3, idx); // enum PetBattleEffectTargetEx
-
-            packet.ResetBitReader();
-
-            packet.ReadByte("Petx", idx);
-
-            switch (type)
-            {
-                case 2:
-                    packet.ReadInt32("AuraInstanceID", idx);
-                    packet.ReadInt32("AuraAbilityID", idx);
-                    packet.ReadInt32("RoundsRemaining", idx);
-                    packet.ReadInt32("CurrentRound", idx);
-                    break;
-                case 7:
-                    packet.ReadInt32("StateID", idx);
-                    packet.ReadInt32("StateValue", idx);
-                    break;
-                case 4:
-                    packet.ReadInt32("Health", idx);
-                    break;
-                case 3:
-                    packet.ReadInt32("NewStatValue", idx);
                     break;
                 case 6:
-                    packet.ReadInt32("TriggerAbilityID", idx);
-                    break;
-                case 5:
                     packet.ReadInt32("ChangedAbilityID", idx);
                     packet.ReadInt32("CooldownRemaining", idx);
                     packet.ReadInt32("LockdownRemaining", idx);
                     break;
-                case 1:
+                case 7:
                     packet.ReadInt32("BroadcastTextID", idx);
                     break;
             }
@@ -515,19 +363,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var targetsCount = packet.ReadInt32("TargetsCount", idx);
 
-            for (var i = 0; i < targetsCount; ++i)
+            var targetTypeValueMap = _petBattleEffectTargets624;
+            if (!ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_4_21315))
             {
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_3_20886)) // not sure when this was changed
-                    ReadPetBattleEffectTarget623(packet, idx, "Targets", i);
-                else if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173)) // not sure when this was changed
-                    ReadPetBattleEffectTarget620(packet, idx, "Targets", i);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_3_20886))
+                    targetTypeValueMap = _petBattleEffectTargets623;
+                else if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
+                    targetTypeValueMap = _petBattleEffectTargets620;
                 else if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_2_19802))
-                    ReadPetBattleEffectTarget612(packet, idx, "Targets", i);
+                    targetTypeValueMap = _petBattleEffectTargets612;
                 else if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
-                    ReadPetBattleEffectTarget610(packet, idx, "Targets", i);
+                    targetTypeValueMap = _petBattleEffectTargets610;
                 else
-                    ReadPetBattleEffectTarget60x(packet, idx, "Targets", i);
+                    targetTypeValueMap = _petBattleEffectTargets602;
             }
+
+            for (var i = 0; i < targetsCount; ++i)
+                ReadPetBattleEffectTarget(packet, targetTypeValueMap, i);
         }
 
         public static void ReadPetBattleRoundResult(Packet packet, params object[] idx)

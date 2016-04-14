@@ -151,23 +151,17 @@ namespace WowPacketParser.Misc
         /// <returns>Flatten result</returns>
         public static IEnumerable<T> Flatten<T>(this IEnumerable<T> values)
         {
-            var list = values.ToList();
-
-            while (list.Any(o => o is IEnumerable<T>))
+            foreach (var item in values)
             {
-                for (var i = 0; i < list.Count; i++)
+                if (!(item is IEnumerable<T>))
+                    yield return item;
+                var childs = item as IEnumerable<T>;
+                if (childs == null) continue;
+                foreach (var child in childs.Flatten())
                 {
-                    var arr = list[i] as IEnumerable<T>;
-                    if (arr == null) continue;
-                    var arrList = arr.ToList();
-                    list.RemoveAt(i);
-
-                    list.InsertRange(i, arrList);
-                    i += arrList.Count - 1;
+                    yield return child;
                 }
             }
-
-            return list;
         }
 
         public static string GetExtension(this FileCompression value)

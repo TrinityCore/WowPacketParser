@@ -224,7 +224,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 MovementHandler.ReadClientMovementBlock(packet);
 
             if (hasSpellId)
-                packet.ReadInt32("SpellId");
+                packet.ReadInt32<SpellId>("SpellID");
 
             if (hasbitF8)
                 packet.ReadSingle("FloatF8");

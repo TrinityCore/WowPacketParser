@@ -382,7 +382,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     mount.SourceDescription = db2File.ReadWoWString("SourceDescription", sourceDescriptionLength);
 
                     mount.Source = db2File.ReadUInt32("Source");
-                    mount.SpellID = db2File.ReadUInt32("SpellId");
+                    mount.SpellID = db2File.ReadUInt32<SpellId>("SpellID");
                     mount.PlayerConditionID = db2File.ReadUInt32("PlayerConditionId");
 
                     Storage.Mounts.Add(mount, packet.TimeSpan);
@@ -741,7 +741,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     spellLearnSpell.ID = (uint)db2File.ReadEntry("ID").Key;
 
                     spellLearnSpell.LearnSpellID = db2File.ReadUInt32("LearnSpellID");
-                    spellLearnSpell.SpellID = db2File.ReadUInt32("SpellID");
+                    spellLearnSpell.SpellID = db2File.ReadUInt32<SpellId>("SpellID");
                     spellLearnSpell.OverridesSpellID = db2File.ReadUInt32("OverridesSpellID");
 
                     if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
@@ -774,7 +774,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                     spellPower.ID = (uint)db2File.ReadEntry("ID").Key;
 
-                    spellPower.SpellID = db2File.ReadUInt32("SpellID");
+                    spellPower.SpellID = db2File.ReadUInt32<SpellId>("SpellID");
                     spellPower.PowerIndex = db2File.ReadUInt32("PowerIndex");
                     spellPower.ManaCost = db2File.ReadUInt32("ManaCost");
                     spellPower.ManaCostPerLevel = db2File.ReadUInt32("ManaCostPerLevel");
@@ -1056,7 +1056,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     chrUpgradeBucketSpell.ID = (uint)db2File.ReadEntry("Id").Key;
 
                     chrUpgradeBucketSpell.BucketID = db2File.ReadUInt32("BucketID");
-                    chrUpgradeBucketSpell.SpellID = db2File.ReadUInt32("SpellID");
+                    chrUpgradeBucketSpell.SpellID = db2File.ReadUInt32<SpellId>("SpellID");
 
                     if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)) && Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data) ||
                         !Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.hotfix_data))

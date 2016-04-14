@@ -109,7 +109,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleShowTradeSkill(Packet packet)
         {
             packet.ReadPackedGuid128("PlayerGUID");
-            packet.ReadInt32("SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
             packet.ReadInt32("SkillLineID");
         }
     }

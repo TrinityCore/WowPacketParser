@@ -985,7 +985,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("GuildGUID");
             packet.ReadUInt32("SkillLineID");
-            packet.ReadUInt32("SpellID");
+            packet.ReadUInt32<SpellId>("SpellID");
             packet.ReadUInt32("UniqueBit");
         }
 
@@ -993,7 +993,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleGuildMembersWithRecipe(Packet packet)
         {
             packet.ReadUInt32("SkillLineID");
-            packet.ReadUInt32("SpellID");
+            packet.ReadUInt32<SpellId>("SpellID");
             var count = packet.ReadInt32("MembersCount");
             for (var i = 0; i < count; ++i)
                 packet.ReadPackedGuid128("Member", i);

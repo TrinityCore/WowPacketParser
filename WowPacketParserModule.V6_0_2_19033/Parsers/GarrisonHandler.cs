@@ -508,7 +508,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("GUID");
 
-            packet.ReadInt32("SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
 
             var int4 = packet.ReadInt32("SkillLineCount");
             var int20 = packet.ReadInt32("SkillRankCount");

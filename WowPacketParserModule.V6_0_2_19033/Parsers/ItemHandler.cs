@@ -422,7 +422,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleItemCooldown(Packet packet)
         {
             packet.ReadPackedGuid128("ItemGuid");
-            packet.ReadInt32("SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
                 packet.ReadInt32("Duration");
