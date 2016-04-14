@@ -124,6 +124,7 @@
         V6_2_4_21345 = 21345,
         V6_2_4_21348 = 21348,
         V6_2_4_21355 = 21355,
+        V6_2_4_21463 = 21463,
 
         // Battle.net - should probably not mix this but oh well
         BattleNetV37165 = 37165,
