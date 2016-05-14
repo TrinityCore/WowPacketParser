@@ -35,10 +35,10 @@ namespace WowPacketParser.Store.Objects
         public uint? GossipMenuID;
 
         [DBFieldName("minlevel")]
-        public uint? MinLevel;
+        public int? MinLevel;
 
         [DBFieldName("maxlevel")]
-        public uint? MaxLevel;
+        public int? MaxLevel;
 
         [DBFieldName("exp")]
         public ClientType? Expansion;
