@@ -1455,7 +1455,12 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_FORCE_MOVE_ROOT_ACK, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleSpecialMoveAckMessages2(Packet packet)
         {
-            var guid = packet.ReadPackedGuid("Guid");
+            WowGuid guid;
+            if (ClientVersion.Build < ClientVersionBuild.V3_0_2_9056)
+                guid = packet.ReadGuid("Guid");
+            else
+                guid = packet.ReadPackedGuid("Guid");
+
             packet.ReadInt32("Movement Counter");
 
             ReadMovementInfo(packet, guid);
@@ -1732,7 +1737,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_MOVE_TIME_SKIPPED, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleMoveTimeSkipped(Packet packet)
         {
-            packet.ReadPackedGuid("GUID");
+            if (ClientVersion.Build < ClientVersionBuild.V3_0_2_9056)
+                packet.ReadGuid("GUID");
+            else
+                packet.ReadPackedGuid("GUID");
             packet.ReadInt32("Time");
         }
 
