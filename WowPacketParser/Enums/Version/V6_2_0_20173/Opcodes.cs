@@ -834,7 +834,7 @@ namespace WowPacketParser.Enums.Version.V6_2_0_20173
             {Opcode.SMSG_CAN_DUEL_RESULT, 0x0098},
             {Opcode.SMSG_CAST_FAILED, 0x066E},
             {Opcode.SMSG_CATEGORY_COOLDOWN, 0x0C7E},
-            {Opcode.SMSG_CHALLEGE_MODE_REWARDS, 0x00E0},
+            {Opcode.SMSG_CHALLENGE_MODE_REWARDS, 0x00E0},
             {Opcode.SMSG_CHALLENGE_MODE_ALL_MAP_STATS, 0x0A22},
             {Opcode.SMSG_CHALLENGE_MODE_COMPLETE, 0x0935},
             {Opcode.SMSG_CHALLENGE_MODE_MAP_STATS_UPDATE, 0x0810},

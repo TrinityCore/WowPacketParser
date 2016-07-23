@@ -244,7 +244,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_CHALLENGE_MODE_MAP_STATS_UPDATE, 0x0C9A}, // NEW IN MOP
             {Opcode.SMSG_CHALLENGE_MODE_NEW_PLAYER_RECORD, 0x0C80},
             {Opcode.SMSG_CHALLENGE_MODE_REQUEST_LEADERS_RESULT, 0x0668},
-            {Opcode.SMSG_CHALLEGE_MODE_REWARDS, 0x1413},
+            {Opcode.SMSG_CHALLENGE_MODE_REWARDS, 0x1413},
             {Opcode.SMSG_CHANNEL_LIST, 0x06EE},
             {Opcode.SMSG_CHANNEL_NOTIFY, 0x11C5},
             {Opcode.SMSG_CHAT, 0x0E60},
