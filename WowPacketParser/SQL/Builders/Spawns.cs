@@ -28,7 +28,7 @@ namespace WowPacketParser.SQL.Builders
 
             if (SQLConnector.Enabled)
             {
-                var transportTemplates = SQLDatabase.Get(new RowList<GameObjectTemplate> {new GameObjectTemplate {Entry = entry.UInt32Value} });
+                var transportTemplates = SQLDatabase.Get(new RowList<GameObjectTemplate> { new GameObjectTemplate { Entry = entry.UInt32Value } });
                 if (transportTemplates.Count == 0)
                     return false;
 
@@ -48,7 +48,7 @@ namespace WowPacketParser.SQL.Builders
                 return string.Empty;
 
             uint count = 0;
-            var rows  = new RowList<Creature>();
+            var rows = new RowList<Creature>();
             var addonRows = new RowList<CreatureAddon>();
             foreach (var unit in units)
             {
@@ -229,6 +229,7 @@ namespace WowPacketParser.SQL.Builders
 
             uint count = 0;
             var rows = new RowList<GameObjectModel>();
+            var addonRows = new RowList<GameObjectAddon>();
             foreach (var gameobject in gameObjects)
             {
                 Row<GameObjectModel> row = new Row<GameObjectModel>();
@@ -293,11 +294,38 @@ namespace WowPacketParser.SQL.Builders
                     row.Data.Orientation = go.Movement.TransportOffset.O;
                 }
 
-                var rotation = go.GetRotation();
-                if (rotation != null && rotation.Length == 4)
-                    row.Data.Rotation = rotation.Cast<float?>().ToArray();
-                else
-                    row.Data.Rotation = new float?[] { 0, 0, 0, 0 };
+                var rotation = go.GetStaticRotation();
+                row.Data.Rotation = new float?[] { rotation.X, rotation.Y, rotation.Z, rotation.W };
+
+                bool add = true;
+                var addonRow = new Row<GameObjectAddon>();
+                if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_addon))
+                {
+                    addonRow.Data.GUID = "@OGUID+" + count;
+
+                    var parentRotation = go.GetParentRotation();
+
+                    if (parentRotation != null)
+                    {
+                        addonRow.Data.parentRot0 = parentRotation[0].GetValueOrDefault(0.0f);
+                        addonRow.Data.parentRot1 = parentRotation[1].GetValueOrDefault(0.0f);
+                        addonRow.Data.parentRot2 = parentRotation[2].GetValueOrDefault(0.0f);
+                        addonRow.Data.parentRot3 = parentRotation[3].GetValueOrDefault(1.0f);
+
+                        if (addonRow.Data.parentRot0 == 0.0f &&
+                            addonRow.Data.parentRot1 == 0.0f &&
+                            addonRow.Data.parentRot2 == 0.0f &&
+                            addonRow.Data.parentRot3 == 1.0f)
+                            add = false;
+                    }
+                    else
+                        add = false;
+
+                    addonRow.Comment += StoreGetters.GetName(StoreNameType.GameObject, (int)gameobject.Key.GetEntry(), false);
+
+                    if (add)
+                        addonRows.Add(addonRow);
+                }
 
                 row.Data.SpawnTimeSecs = (int)go.GetDefaultSpawnTime();
                 row.Data.AnimProgress = animprogress;
@@ -332,17 +360,25 @@ namespace WowPacketParser.SQL.Builders
                 rows.Add(row);
             }
 
-            StringBuilder result = new StringBuilder();
+            if (count == 0)
+                return String.Empty;
 
-            if (count > 0)
-            {
-                // delete query for GUIDs
-                var delete = new SQLDelete<GameObjectModel>(Tuple.Create("@OGUID+0", "@OGUID+" + --count));
-                result.Append(delete.Build());
-            }
+            StringBuilder result = new StringBuilder();
+            // delete query for GUIDs
+            var delete = new SQLDelete<GameObjectModel>(Tuple.Create("@OGUID+0", "@OGUID+" + --count));
+            result.Append(delete.Build());
 
             var sql = new SQLInsert<GameObjectModel>(rows, false);
             result.Append(sql.Build());
+
+            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_addon))
+            {
+                var addonDelete = new SQLDelete<GameObjectAddon>(Tuple.Create("@OGUID+0", "@OGUID+" + count));
+                result.Append(addonDelete.Build());
+                var addonSql = new SQLInsert<GameObjectAddon>(addonRows, false);
+                result.Append(addonSql.Build());
+            }
+
             return result.ToString();
         }
     }

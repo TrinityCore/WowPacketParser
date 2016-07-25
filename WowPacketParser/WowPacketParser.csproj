@@ -511,6 +511,7 @@
     <Compile Include="Store\Objects\CreatureTemplateAddon.cs" />
     <Compile Include="Store\Objects\CreatureText.cs" />
     <Compile Include="Store\Objects\CurvePoint.cs" />
+    <Compile Include="Store\Objects\GameObjectAddon.cs" />
     <Compile Include="Store\Objects\GameObject.cs" />
     <Compile Include="Store\Objects\GameObjectModel.cs" />
     <Compile Include="Store\Objects\GameObjects.cs" />
