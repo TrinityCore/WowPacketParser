@@ -820,7 +820,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_CHALLENGE_MODE_MAP_STATS_UPDATE, 0x0135},
             {Opcode.SMSG_CHALLENGE_MODE_NEW_PLAYER_RECORD, 0x13A3},
             {Opcode.SMSG_CHALLENGE_MODE_REQUEST_LEADERS_RESULT, 0x07AA},
-            {Opcode.SMSG_CHALLEGE_MODE_REWARDS, 0x1CC9},
+            {Opcode.SMSG_CHALLENGE_MODE_REWARDS, 0x1CC9},
             {Opcode.SMSG_CHALLENGE_MODE_START, 0x1221},
             {Opcode.SMSG_CHANGE_PLAYER_DIFFICULTY_RESULT, 0x0826},
             {Opcode.SMSG_CHANNEL_LIST, 0x1411},
