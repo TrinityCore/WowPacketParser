@@ -334,6 +334,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("Sequence");
         }
 
+        [Parser(Opcode.SMSG_SUSPEND_TOKEN)]
         [Parser(Opcode.SMSG_RESUME_TOKEN)]
         public static void HandleResumeTokenPacket(Packet packet)
         {
