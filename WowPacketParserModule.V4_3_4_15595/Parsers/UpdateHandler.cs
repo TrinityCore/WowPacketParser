@@ -460,7 +460,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             }
 
             if (hasGameObjectRotation)
-                packet.ReadPackedQuaternion("GameObject Rotation", index);
+                moveInfo.Rotation = packet.ReadPackedQuaternion("GameObject Rotation", index);
 
             if (bit456)
             {

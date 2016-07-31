@@ -827,7 +827,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             }
 
             if (hasGameObjectRotation)
-                packet.ReadPackedQuaternion("GameObject Rotation", index);
+                moveInfo.Rotation = packet.ReadPackedQuaternion("GameObject Rotation", index);
 
             if (hasAnimKits)
             {

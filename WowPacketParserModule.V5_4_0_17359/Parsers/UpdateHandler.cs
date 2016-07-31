@@ -846,7 +846,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             if (bit2A4)
                 packet.ReadInt32("int2A0", index);
             if (hasGameObjectRotation)
-                packet.ReadPackedQuaternion("GameObject Rotation", index);
+                moveInfo.Rotation = packet.ReadPackedQuaternion("GameObject Rotation", index);
 
             if (hasVehicleData)
             {

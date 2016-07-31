@@ -850,7 +850,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (hasGameObjectRotation)
-                packet.ReadPackedQuaternion("GameObject Rotation", index);
+                moveInfo.Rotation = packet.ReadPackedQuaternion("GameObject Rotation", index);
 
             return moveInfo;
         }
@@ -1329,7 +1329,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Transport path timer", index);
 
             if (hasGameObjectRotation)
-                packet.ReadPackedQuaternion("GameObject Rotation", index);
+                moveInfo.Rotation = packet.ReadPackedQuaternion("GameObject Rotation", index);
 
             if (hasVehicleData)
             {

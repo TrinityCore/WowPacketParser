@@ -849,7 +849,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             }
 
             if (hasGameObjectRotation)
-                packet.ReadPackedQuaternion("GameObject Rotation", index);
+                moveInfo.Rotation = packet.ReadPackedQuaternion("GameObject Rotation", index);
 
             if (hasAttackingTarget)
             {
