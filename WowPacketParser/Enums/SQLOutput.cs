@@ -11,6 +11,7 @@
         creature_template_addon,
         creature_text,
         gameobject,
+        gameobject_addon,
         gameobject_template,
         gossip_menu,
         gossip_menu_option,

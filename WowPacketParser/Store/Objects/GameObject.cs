@@ -31,9 +31,14 @@ namespace WowPacketParser.Store.Objects
             return false;
         }
 
-        public float[] GetRotation()
+        public Quaternion GetStaticRotation()
         {
-            return UpdateFields.GetArray<GameObjectField, float>(GameObjectField.GAMEOBJECT_PARENTROTATION, 4);
+            return Movement.Rotation;
+        }
+
+        public float?[] GetParentRotation()
+        {
+            return UpdateFields.GetArray<GameObjectField, float?>(GameObjectField.GAMEOBJECT_PARENTROTATION, 4);
         }
 
         public bool IsTransport()
