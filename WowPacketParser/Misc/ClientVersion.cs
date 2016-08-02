@@ -149,6 +149,23 @@ namespace WowPacketParser.Misc
             {
                 switch (Build)
                 {
+                    case ClientVersionBuild.V1_12_1_5875:
+                    case ClientVersionBuild.V2_0_1_6180:
+                    case ClientVersionBuild.V2_0_3_6299:
+                    case ClientVersionBuild.V2_0_6_6337:
+                    case ClientVersionBuild.V2_1_0_6692:
+                    case ClientVersionBuild.V2_1_1_6739:
+                    case ClientVersionBuild.V2_1_2_6803:
+                    case ClientVersionBuild.V2_1_3_6898:
+                    case ClientVersionBuild.V2_2_0_7272:
+                    case ClientVersionBuild.V2_2_2_7318:
+                    case ClientVersionBuild.V2_2_3_7359:
+                    case ClientVersionBuild.V2_3_0_7561:
+                    case ClientVersionBuild.V2_3_2_7741:
+                    case ClientVersionBuild.V2_3_3_7799:
+                    case ClientVersionBuild.V2_4_0_8089:
+                    case ClientVersionBuild.V2_4_1_8125:
+                    case ClientVersionBuild.V2_4_2_8209:
                     case ClientVersionBuild.V2_4_3_8606:
                     case ClientVersionBuild.V3_0_2_9056:
                     case ClientVersionBuild.V3_0_3_9183:
@@ -169,8 +186,12 @@ namespace WowPacketParser.Misc
                         return ClientVersionBuild.V3_3_0a_11159;
                     case ClientVersionBuild.V3_3_3_11685:
                     case ClientVersionBuild.V3_3_3a_11723:
+                    case ClientVersionBuild.V3_3_5_12213:
                     case ClientVersionBuild.V3_3_5a_12340:
                         return ClientVersionBuild.V3_3_5a_12340;
+                    case ClientVersionBuild.V4_0_1_13164:
+                    case ClientVersionBuild.V4_0_1a_13205:
+                    case ClientVersionBuild.V4_0_3_13329:
                     case ClientVersionBuild.V4_0_6_13596:
                     case ClientVersionBuild.V4_0_6a_13623:
                     case ClientVersionBuild.V4_1_0_13914:
@@ -178,10 +199,15 @@ namespace WowPacketParser.Misc
                         return ClientVersionBuild.V4_0_6_13596;
                     case ClientVersionBuild.V4_2_0_14333:
                     case ClientVersionBuild.V4_2_0a_14480:
+                    case ClientVersionBuild.V4_2_2_14545:
                         return ClientVersionBuild.V4_2_0_14333;
                     case ClientVersionBuild.V4_3_0_15005:
                     case ClientVersionBuild.V4_3_0a_15050:
+                    case ClientVersionBuild.V4_3_2_15211:
+                    case ClientVersionBuild.V4_3_3_15354:
+                    case ClientVersionBuild.V4_3_4_15595:
                         return ClientVersionBuild.V4_3_0a_15050;
+                    case ClientVersionBuild.V5_0_4_16016:
                     case ClientVersionBuild.V5_0_5_16048:
                     case ClientVersionBuild.V5_0_5a_16057:
                     case ClientVersionBuild.V5_0_5b_16135:
