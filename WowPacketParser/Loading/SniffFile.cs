@@ -188,7 +188,7 @@ namespace WowPacketParser.Loading
                             // Parse the packet, adding text to Writer and stuff to the stores
                             if (packet.Direction == Direction.BNClientToServer ||
                                 packet.Direction == Direction.BNServerToClient)
-                                Handler.ParseBattlenet(packet);
+                                BattlenetHandler.ParseBattlenet(packet);
                             else
                                 Handler.Parse(packet);
 

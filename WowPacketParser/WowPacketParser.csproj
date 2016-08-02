@@ -420,6 +420,7 @@
     <Compile Include="Misc\Vector2.cs" />
     <Compile Include="Misc\Vector3.cs" />
     <Compile Include="Misc\Vector4.cs" />
+    <Compile Include="Parsing\BattlenetHandler.cs" />
     <Compile Include="Parsing\Handler.cs" />
     <Compile Include="Parsing\HasSniffDataAttribute.cs" />
     <Compile Include="Parsing\BattlenetParserAttribute.cs" />
