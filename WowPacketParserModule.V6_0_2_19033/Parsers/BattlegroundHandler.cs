@@ -97,77 +97,88 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("JoinAsGroup");
         }
 
+        public static void ReadRatingData(Packet packet, params object[] idx)
+        {
+            for (int i = 0; i < 2; i++)
+                packet.ReadInt32("Prematch", i, idx);
+
+            for (int i = 0; i < 2; i++)
+                packet.ReadInt32("Postmatch", i, idx);
+
+            for (int i = 0; i < 2; i++)
+                packet.ReadInt32("PrematchMMR", i, idx);
+        }
+
+        public static void ReadHonorData(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt32("HonorKills", idx);
+            packet.ReadUInt32("Deaths", idx);
+            packet.ReadUInt32("ContributionPoints", idx);
+        }
+
+        public static void ReadPlayerData(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("PlayerGUID", idx);
+            packet.ReadUInt32("Kills", idx);
+            packet.ReadUInt32("DamageDone", idx);
+            packet.ReadUInt32("HealingDone", idx);
+            var statsCount = packet.ReadUInt32("StatsCount", idx);
+            packet.ReadUInt32("PrimaryTalentTree", idx);
+            packet.ReadUInt32("PrimaryTalentTreeNameIndex", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_2_20444))
+                packet.ReadUInt32E<Race>("Race", idx);
+
+            for (int j = 0; j < statsCount; j++)
+                packet.ReadUInt32("Stats", j, idx);
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Faction", idx);
+            packet.ReadBit("IsInWorld", idx);
+
+            var hasHonor = packet.ReadBit("HasHonor", idx);
+            var hasPreMatchRating = packet.ReadBit("HasPreMatchRating", idx);
+            var hasRatingChange = packet.ReadBit("HasRatingChange", idx);
+            var hasPreMatchMMR = packet.ReadBit("HasPreMatchMMR", idx);
+            var hasMmrChange = packet.ReadBit("HasMmrChange", idx);
+
+            packet.ResetBitReader();
+
+            if (hasHonor)
+                ReadHonorData(packet, "Honor");
+
+            if (hasPreMatchRating)
+                packet.ReadUInt32("PreMatchRating", idx);
+
+            if (hasRatingChange)
+                packet.ReadUInt32("RatingChange", idx);
+
+            if (hasPreMatchMMR)
+                packet.ReadUInt32("PreMatchMMR", idx);
+
+            if (hasMmrChange)
+                packet.ReadUInt32("MmrChange", idx);
+        }
+
         [Parser(Opcode.SMSG_PVP_LOG_DATA)]
         public static void HandlePvPLogData(Packet packet)
         {
-            var bit44 = packet.ReadBit("HasRatings");
-            var bit17 = packet.ReadBit("HasWinner");
+            var hasRatings = packet.ReadBit("HasRatings");
+            var hasWinner = packet.ReadBit("HasWinner");
 
-            var int48 = packet.ReadUInt32("PlayerCount");
+            var playersCount = packet.ReadUInt32("PlayersCount");
 
             for (int i = 0; i < 2; i++)
                 packet.ReadByte("PlayerCount", i);
 
-            if (bit44)
-            {
-                for (int i = 0; i < 2; i++)
-                    packet.ReadInt32("Prematch", i);
+            if (hasRatings)
+                ReadRatingData(packet, "Ratings");
 
-                for (int i = 0; i < 2; i++)
-                    packet.ReadInt32("Postmatch", i);
-
-                for (int i = 0; i < 2; i++)
-                    packet.ReadInt32("PrematchMMR", i);
-            }
-
-            if (bit17)
+            if (hasWinner)
                 packet.ReadByte("Winner");
 
-            for (int i = 0; i < int48; i++)
-            {
-                packet.ReadPackedGuid128("PlayerGUID", i);
-                packet.ReadUInt32("Kills", i);
-                packet.ReadUInt32("DamageDone", i);
-                packet.ReadUInt32("HealingDone", i);
-                var int80 = packet.ReadUInt32("StatsCount", i);
-                packet.ReadUInt32("PrimaryTalentTree", i);
-                packet.ReadUInt32("NameIndex", i);
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_2_20444))
-                    packet.ReadUInt32E<Race>("Race", i);
-
-                for (int j = 0; j < int80; j++)
-                    packet.ReadUInt32("Stats", i, j);
-
-                packet.ResetBitReader();
-
-                packet.ReadBit("Faction", i);
-                packet.ReadBit("IsInWorld", i);
-
-                var bit36 = packet.ReadBit("HasHonor", i);
-                var bit52 = packet.ReadBit("HasPreMatchRating", i);
-                var bit60 = packet.ReadBit("HasRatingChange", i);
-                var bit68 = packet.ReadBit("HasPreMatchMMR", i);
-                var bit76 = packet.ReadBit("HasMmrChange", i);
-
-                if (bit36)
-                {
-                    packet.ReadUInt32("HonorKills", i);
-                    packet.ReadUInt32("Deaths", i);
-                    packet.ReadUInt32("ContributionPoints", i);
-                }
-
-                if (bit52)
-                    packet.ReadUInt32("PreMatchRating", i);
-
-                if (bit60)
-                    packet.ReadUInt32("RatingChange", i);
-
-                if (bit68)
-                    packet.ReadUInt32("PreMatchMMR", i);
-
-                if (bit76)
-                    packet.ReadUInt32("MmrChange", i);
-            }
+            for (int i = 0; i < playersCount; i++)
+                ReadPlayerData(packet, "Players", i);
         }
 
         [Parser(Opcode.CMSG_AREA_SPIRIT_HEALER_QUERY)]
