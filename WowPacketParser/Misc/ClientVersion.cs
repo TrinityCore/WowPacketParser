@@ -289,6 +289,20 @@ namespace WowPacketParser.Misc
             }
         }
 
+        public static ClientVersionBuild FallbackVersionDefiningBuild
+        {
+            get
+            {
+                switch (VersionDefiningBuild)
+                {
+                    case ClientVersionBuild.V7_0_3_22280:
+                        return ClientVersionBuild.V6_0_2_19033;
+                    default:
+                        return ClientVersionBuild.Zero;
+                }
+            }
+        }
+
         public static int BuildInt => (int) Build;
 
         public static string VersionString => Build.ToString();
@@ -332,6 +346,20 @@ namespace WowPacketParser.Misc
             Opcodes.InitializeOpcodeDictionary();
             Handler.ResetHandlers();
             UpdateFields.ResetUFDictionaries();
+
+            if (FallbackVersionDefiningBuild != ClientVersionBuild.Zero)
+            {
+                try
+                {
+                    var asm = Assembly.Load($"WowPacketParserModule.{FallbackVersionDefiningBuild}");
+                    Trace.WriteLine($"Loading module WowPacketParserModule.{FallbackVersionDefiningBuild}.dll (fallback)");
+
+                    Handler.LoadHandlers(asm, FallbackVersionDefiningBuild);
+                }
+                catch (FileNotFoundException)
+                {
+                }
+            }
 
             try
             {
