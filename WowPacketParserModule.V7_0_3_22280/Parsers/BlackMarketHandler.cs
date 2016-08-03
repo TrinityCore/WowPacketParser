@@ -2,37 +2,17 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
-namespace WowPacketParserModule.V6_0_2_19033.Parsers
+namespace WowPacketParserModule.V7_0_3_22280.Parsers
 {
     public static class BlackMarketHandler
     {
-        [Parser(Opcode.CMSG_BLACK_MARKET_REQUEST_ITEMS)]
-        public static void HandleBlackMarketRequestItems(Packet packet)
-        {
-            packet.ReadPackedGuid128("NpcGUID");
-            packet.ReadTime("LastUpdateID");
-        }
-
         [Parser(Opcode.CMSG_BLACK_MARKET_BID_ON_ITEM)]
         public static void HandleBlackMarketBidOnItem(Packet packet)
         {
             packet.ReadPackedGuid128("NpcGUID");
             packet.ReadInt32("MarketID");
-            ItemHandler.ReadItemInstance(packet, "Item");
             packet.ReadUInt64("BidAmount");
-        }
-
-        [Parser(Opcode.CMSG_BLACK_MARKET_OPEN)]
-        public static void HandleBlackMarketOpen(Packet packet)
-        {
-            packet.ReadPackedGuid128("NpcGUID");
-        }
-
-        [Parser(Opcode.SMSG_BLACK_MARKET_OPEN_RESULT)]
-        public static void HandleBlackMarketOpenResult(Packet packet)
-        {
-            packet.ReadPackedGuid128("NpcGUID");
-            packet.ReadBit("Open");
+            V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, "Item");
         }
 
         [Parser(Opcode.SMSG_BLACK_MARKET_OUTBID)]
@@ -40,29 +20,29 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleBlackMarketOutbidOrWon(Packet packet)
         {
             packet.ReadInt32("MarketID");
-            ItemHandler.ReadItemInstance(packet, "Item");
             packet.ReadInt32("RandomPropertiesID");
+            V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, "Item");
         }
 
         [Parser(Opcode.SMSG_BLACK_MARKET_BID_ON_ITEM_RESULT)]
         public static void HandleBlackMarketBidOnItemResult(Packet packet)
         {
             packet.ReadInt32("MarketID");
-            ItemHandler.ReadItemInstance(packet, "Item");
             packet.ReadInt32("Result");
+            V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, "Item");
         }
 
         public static void ReadBlackMarketItem(Packet packet, params object[] idx)
         {
             packet.ReadInt32("MarketID", idx);
             packet.ReadInt32<UnitId>("SellerNPC", idx);
-            ItemHandler.ReadItemInstance(packet, "Item", idx);
             packet.ReadInt32("Quantity", idx);
             packet.ReadUInt64("MinBid", idx);
             packet.ReadUInt64("MinIncrement", idx);
             packet.ReadUInt64("CurrentBid", idx);
             packet.ReadInt32("SecondsRemaining", idx);
             packet.ReadInt32("NumBids", idx);
+            V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, "Item", idx);
             packet.ReadBit("HighBid", idx);
             packet.ResetBitReader();
         }
