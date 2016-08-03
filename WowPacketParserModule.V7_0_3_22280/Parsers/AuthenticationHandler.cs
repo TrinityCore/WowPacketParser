@@ -7,7 +7,7 @@ namespace WowPacketParserModule.V7_0_3_22280.Parsers
     public static class AuthenticationHandler
     {
         [Parser(Opcode.CMSG_AUTH_SESSION)]
-        public static void HandleAuthSession624(Packet packet)
+        public static void HandleAuthSession(Packet packet)
         {
             packet.ReadUInt64("DosResponse");
             packet.ReadInt16E<ClientVersionBuild>("Build");
