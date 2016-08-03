@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -45,8 +44,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var hasOwnerInfo = packet.ReadBit("HasOwnerInfo", idx);
             packet.ReadBit("NoRename", idx);
 
-            if (hasOwnerInfo) // OwnerInfo
-                ReadClientBattlePetOwnerInfo(packet, idx);
+            if (hasOwnerInfo)
+                ReadClientBattlePetOwnerInfo(packet, "OwnerInfo", idx);
 
             packet.ReadWoWString("CustomName", customNameLength, idx);
         }
@@ -304,12 +303,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("CanAwardXP", idx);
         }
 
-        private static readonly int[] _petBattleEffectTargets602 = new int[] {5, 3, 2, 4, 7, 1, 0, 6};
-        private static readonly int[] _petBattleEffectTargets610 = new int[] {0, 4, 7, 1, 3, 5, 2, 6};
-        private static readonly int[] _petBattleEffectTargets612 = new int[] {5, 4, 7, 0, 3, 1, 2, 6};
-        private static readonly int[] _petBattleEffectTargets620 = new int[] {0, 2, 7, 6, 4, 1, 3, 5};
-        private static readonly int[] _petBattleEffectTargets623 = new int[] {0, 7, 1, 4, 3, 6, 5, 2};
-        private static readonly int[] _petBattleEffectTargets624 = new int[] {0, 1, 2, 3, 4, 5, 6, 7};
+        private static readonly int[] _petBattleEffectTargets602 = {5, 3, 2, 4, 7, 1, 0, 6};
+        private static readonly int[] _petBattleEffectTargets610 = {0, 4, 7, 1, 3, 5, 2, 6};
+        private static readonly int[] _petBattleEffectTargets612 = {5, 4, 7, 0, 3, 1, 2, 6};
+        private static readonly int[] _petBattleEffectTargets620 = {0, 2, 7, 6, 4, 1, 3, 5};
+        private static readonly int[] _petBattleEffectTargets623 = {0, 7, 1, 4, 3, 6, 5, 2};
+        private static readonly int[] _petBattleEffectTargets624 = {0, 1, 2, 3, 4, 5, 6, 7};
 
         public static void ReadPetBattleEffectTarget(Packet packet, int[] targetTypeValueMap , params object[] idx)
         {
@@ -601,7 +600,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleBattlePetError(Packet packet)
         {
             packet.ReadBits("Result", 4);
-            packet.ResetBitReader();
             packet.ReadInt32("CreatureID");
         }
     }

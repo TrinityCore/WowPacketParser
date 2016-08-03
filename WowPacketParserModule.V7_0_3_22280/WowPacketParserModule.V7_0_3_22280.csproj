@@ -37,6 +37,7 @@
     <Compile Include="Parsers\AuctionHouseHandler.cs" />
     <Compile Include="Parsers\AuthenticationHandler.cs" />
     <Compile Include="Parsers\BattlegroundHandler.cs" />
+    <Compile Include="Parsers\BattlePetHandler.cs" />
     <Compile Include="Parsers\ItemHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
