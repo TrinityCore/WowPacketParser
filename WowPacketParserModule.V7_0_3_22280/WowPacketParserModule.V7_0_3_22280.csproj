@@ -39,6 +39,7 @@
     <Compile Include="Parsers\BattlegroundHandler.cs" />
     <Compile Include="Parsers\BattlePetHandler.cs" />
     <Compile Include="Parsers\BlackMarketHandler.cs" />
+    <Compile Include="Parsers\CalendarHandler.cs" />
     <Compile Include="Parsers\ItemHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
