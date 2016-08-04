@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Globalization;
 using WowPacketParser.Enums.Version.V3_3_5a_12340;
 using WowPacketParser.Enums.Version.V4_0_3_13329;
@@ -28,7 +28,7 @@ using WowPacketParser.Enums.Version.V6_2_0_20173;
 using WowPacketParser.Enums.Version.V6_2_2_20444;
 using WowPacketParser.Enums.Version.V6_2_3_20726;
 using WowPacketParser.Enums.Version.V6_2_4_21315;
-using WowPacketParser.Enums.Version.V7_0_3_22280;
+using WowPacketParser.Enums.Version.V7_0_3_22248;
 
 using WowPacketParser.Misc;
 
@@ -290,7 +290,8 @@ namespace WowPacketParser.Enums.Version
                 {
                     return Opcodes_6_2_4.Opcodes(direction);
                 }
-                case ClientVersionBuild.V7_0_3_22280:
+                case ClientVersionBuild.V7_0_3_22248:
+                case ClientVersionBuild.v7_0_3_22280:
                 case ClientVersionBuild.V7_0_3_22289:
                 case ClientVersionBuild.V7_0_3_22293:
                 case ClientVersionBuild.V7_0_3_22345:

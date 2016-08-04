@@ -7,8 +7,8 @@
     <ProjectGuid>{7A7109FD-A819-4906-9406-1BE84C6A527C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WowPacketParserModule.V7_0_3_22280</RootNamespace>
-    <AssemblyName>WowPacketParserModule.V7_0_3_22280</AssemblyName>
+    <RootNamespace>WowPacketParserModule.V7_0_3_22248</RootNamespace>
+    <AssemblyName>WowPacketParserModule.V7_0_3_22248</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,6 +40,7 @@
     <Compile Include="Parsers\BattlePetHandler.cs" />
     <Compile Include="Parsers\BlackMarketHandler.cs" />
     <Compile Include="Parsers\CalendarHandler.cs" />
+    <Compile Include="Parsers\CharacterHandler.cs" />
     <Compile Include="Parsers\ItemHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

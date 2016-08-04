@@ -42,7 +42,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{597FD2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParserModule.BattleNetV37165", "WowPacketParserModule.BattleNet.V37165\WowPacketParserModule.BattleNetV37165.csproj", "{61D9896F-2192-4D82-B9B2-71D4AFF431A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParserModule.V7_0_3_22280", "WowPacketParserModule.V7_0_3_22280\WowPacketParserModule.V7_0_3_22280.csproj", "{7A7109FD-A819-4906-9406-1BE84C6A527C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParserModule.V7_0_3_22248", "WowPacketParserModule.V7_0_3_22248\WowPacketParserModule.V7_0_3_22248.csproj", "{7A7109FD-A819-4906-9406-1BE84C6A527C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

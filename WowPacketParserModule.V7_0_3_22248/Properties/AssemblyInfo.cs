@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("WowPacketParserModule.V7_0_3_22280")]
+[assembly: AssemblyTitle("WowPacketParserModule.V7_0_3_22248")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("TrinityCore")]
-[assembly: AssemblyProduct("WowPacketParserModule.V7_0_3_22280")]
+[assembly: AssemblyProduct("WowPacketParserModule.V7_0_3_22248")]
 [assembly: AssemblyCopyright("Copyright © 2014-2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

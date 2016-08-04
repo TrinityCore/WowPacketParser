@@ -1,4 +1,4 @@
-﻿namespace WowPacketParser.Enums
+namespace WowPacketParser.Enums
 {
     public enum ClientVersionBuild
     {
@@ -127,7 +127,8 @@
         V6_2_4_21463 = 21463,
         V6_2_4_21676 = 21676,
         V6_2_4_21742 = 21742,
-        V7_0_3_22280 = 22280,
+        V7_0_3_22248 = 22248,
+        v7_0_3_22280 = 22280,
         V7_0_3_22289 = 22289,
         V7_0_3_22293 = 22293,
         V7_0_3_22345 = 22345,

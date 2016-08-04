@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -283,11 +283,12 @@ namespace WowPacketParser.Misc
                     case ClientVersionBuild.V6_2_4_21676:
                     case ClientVersionBuild.V6_2_4_21742:
                         return ClientVersionBuild.V6_0_2_19033;
-                    case ClientVersionBuild.V7_0_3_22280:
+                    case ClientVersionBuild.V7_0_3_22248:
+                    case ClientVersionBuild.V7_0_3_22280:                    
                     case ClientVersionBuild.V7_0_3_22289:
                     case ClientVersionBuild.V7_0_3_22293:
                     case ClientVersionBuild.V7_0_3_22345:
-                        return ClientVersionBuild.V7_0_3_22280;
+                        return ClientVersionBuild.V7_0_3_22248;
                     case ClientVersionBuild.Zero:
                     case ClientVersionBuild.BattleNetV37165:
                         return Build;
@@ -303,7 +304,7 @@ namespace WowPacketParser.Misc
             {
                 switch (VersionDefiningBuild)
                 {
-                    case ClientVersionBuild.V7_0_3_22280:
+                    case ClientVersionBuild.V7_0_3_22248:
                         return ClientVersionBuild.V6_0_2_19033;
                     default:
                         return ClientVersionBuild.Zero;
@@ -319,7 +320,7 @@ namespace WowPacketParser.Misc
 
         private static ClientType GetExpansion(ClientVersionBuild build)
         {
-            if (build >= ClientVersionBuild.V7_0_3_22280)
+            if (build >= ClientVersionBuild.V7_0_3_22248)
                 return ClientType.Legion;
             if (build >= ClientVersionBuild.V6_0_2_19033)
                 return ClientType.WarlordsOfDraenor;

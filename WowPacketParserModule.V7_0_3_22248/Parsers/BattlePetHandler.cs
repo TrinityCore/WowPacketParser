@@ -2,7 +2,7 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
-namespace WowPacketParserModule.V7_0_3_22280.Parsers
+namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
     public static class BattlePetHandler
     {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
@@ -314,12 +314,13 @@ namespace WowPacketParser.Enums.Version
                 {
                     return "V6_2_4_21315";
                 }
-                case ClientVersionBuild.V7_0_3_22280:
+                case ClientVersionBuild.V7_0_3_22248:
+                case ClientVersionBuild.v7_0_3_22280:
                 case ClientVersionBuild.V7_0_3_22289:
                 case ClientVersionBuild.V7_0_3_22293:
                 case ClientVersionBuild.V7_0_3_22345:
                 {
-                    return "V7_0_3_22280";
+                    return "V7_0_3_22248";
                 }
                 default:
                 {
