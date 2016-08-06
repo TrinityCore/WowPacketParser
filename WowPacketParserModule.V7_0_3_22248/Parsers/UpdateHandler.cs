@@ -242,15 +242,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                         packet.ReadSingle("DurationModifier", index);
                         packet.ReadSingle("NextDurationModifier", index);
 
-                        var pointsCount = packet.ReadUInt32("PointsCount", index);
-
-                        for (var i = 0; i < pointsCount; ++i)
-                            packet.ReadVector3("Points", index, i);
-
                         var face = packet.ReadBits("Face", 2, index);
 
                         var hasJumpGravity = packet.ReadBit("HasJumpGravity", index);
                         var hasSpecialTime = packet.ReadBit("HasSpecialTime", index);
+
+                        var pointsCount = packet.ReadBits("PointsCount", 16, index);
 
                         packet.ReadBitsE<SplineMode>("Mode", 2, index);
 
@@ -284,6 +281,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
                         if (hasSpecialTime)
                             packet.ReadInt32("SpecialTime", index);
+
+                        for (var i = 0; i < pointsCount; ++i)
+                            packet.ReadVector3("Points", index, i);
 
                         if (hasSpellEffectExtraData)
                         {
