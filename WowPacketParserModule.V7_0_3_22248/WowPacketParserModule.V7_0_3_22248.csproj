@@ -40,18 +40,20 @@
     <Compile Include="Parsers\BattlePetHandler.cs" />
     <Compile Include="Parsers\BlackMarketHandler.cs" />
     <Compile Include="Parsers\CalendarHandler.cs" />
-    <Compile Include="Parsers\CharacterHandler.cs" />
     <Compile Include="Parsers\ItemHandler.cs" />
+    <Compile Include="Parsers\UpdateHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WowPacketParserModule.V6_0_2_19033\WowPacketParserModule.V6_0_2_19033.csproj">
       <Project>{63484313-34d2-4133-b157-a19d12b69d9b}</Project>
       <Name>WowPacketParserModule.V6_0_2_19033</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\WowPacketParser\WowPacketParser.csproj">
       <Project>{0bf6f270-0b6f-4705-8e1a-f57db76db407}</Project>
       <Name>WowPacketParser</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
