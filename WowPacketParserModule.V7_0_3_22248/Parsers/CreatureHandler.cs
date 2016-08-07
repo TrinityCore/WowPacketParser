@@ -24,9 +24,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 return; // nothing to do
 
             packet.ResetBitReader();
-            uint bits4 = packet.ReadBits(11);
-            uint bits16 = packet.ReadBits(11);
-            uint bits28 = packet.ReadBits(6);
+            uint titleLen = packet.ReadBits(11);
+            uint titleAltLen = packet.ReadBits(11);
+            uint cursorNameLen = packet.ReadBits(6);
             creature.RacialLeader = packet.ReadBit("Leader");
 
             var stringLens = new int[4][];
@@ -71,13 +71,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32("FlagQuest");
             packet.ReadInt32("VignetteID");
 
-            if (bits4 > 1)
+            if (titleLen > 1)
                 creature.SubName = packet.ReadCString("Title");
 
-            if (bits16 > 1)
+            if (titleAltLen > 1)
                 packet.ReadCString("TitleAlt");
 
-            if (bits28 > 1)
+            if (cursorNameLen > 1)
                 creature.IconName = packet.ReadCString("CursorName");
 
             for (int i = 0; i < questItems; ++i)
