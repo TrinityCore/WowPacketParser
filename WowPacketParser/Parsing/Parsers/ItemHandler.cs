@@ -460,7 +460,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ITEM_QUERY_SINGLE_RESPONSE)]
         public static void HandleItemQueryResponse(Packet packet)
         {
-            
+
 
             var entry = packet.ReadEntry("Entry");
             if (entry.Value)
