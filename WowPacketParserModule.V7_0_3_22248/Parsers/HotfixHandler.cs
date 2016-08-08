@@ -1102,13 +1102,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 }
                 case DB2Hash.CreatureDifficulty:
                 {
-                    db2File.ReadInt32("0");
+                    db2File.ReadUInt32("CreatureID");
                     for (int i = 0; i < 7; ++i)
-                        db2File.ReadInt32("1", i);
-                    db2File.ReadInt16("2");
-                    db2File.ReadByte("3");
-                    db2File.ReadByte("4");
-                    db2File.ReadByte("5");
+                        db2File.ReadUInt32("Flags", i);
+                    db2File.ReadUInt16("FactionTemplateID");
+                    db2File.ReadSByte("Expansion");
+                    db2File.ReadSByte("MinLevel");
+                    db2File.ReadSByte("MaxLevel");
                     break;
                 }
                 case DB2Hash.CreatureDispXUiCamera:
