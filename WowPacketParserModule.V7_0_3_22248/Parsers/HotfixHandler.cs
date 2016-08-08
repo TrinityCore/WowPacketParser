@@ -2883,7 +2883,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     db2File.ReadByte("RequiredReputationRank");
                     db2File.ReadByte("ContainerSlots");
                     for (int i = 0; i < 10; ++i)
-                        db2File.ReadByte("ItemStatType", i);
+                        db2File.ReadSByte("ItemStatType", i);
                     db2File.ReadByte("DamageType");
                     db2File.ReadByte("Bonding");
                     db2File.ReadByte("LanguageID");
@@ -4846,7 +4846,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     db2File.ReadUInt32("SpellID");
                     db2File.ReadInt32("EquippedItemInventoryTypeMask");
                     db2File.ReadInt32("EquippedItemSubClassMask");
-                    db2File.ReadByte("EquippedItemClass");
+                    db2File.ReadSByte("EquippedItemClass");
                     break;
                 }
                 case DB2Hash.SpellFlyout:
