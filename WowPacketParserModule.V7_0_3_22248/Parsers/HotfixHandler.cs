@@ -1084,20 +1084,20 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 case DB2Hash.Creature:
                 {
                     for (int i = 0; i < 3; ++i)
-                        db2File.ReadInt32("0", i);
-                    db2File.ReadInt32("1");
+                        db2File.ReadUInt32("ItemID", i);
+                    db2File.ReadUInt32("Mount");
                     for (int i = 0; i < 4; ++i)
-                        db2File.ReadInt32("2", i);
+                        db2File.ReadUInt32("DisplayID", i);
                     for (int i = 0; i < 4; ++i)
-                        db2File.ReadSingle("3", i);
-                    db2File.ReadCString("4");
-                    db2File.ReadCString("5");
-                    db2File.ReadCString("6");
-                    db2File.ReadCString("7");
-                    db2File.ReadByte("8");
-                    db2File.ReadByte("9");
-                    db2File.ReadByte("10");
-                    db2File.ReadByte("11");
+                        db2File.ReadSingle("DisplayIDProbability", i);
+                    db2File.ReadCString("Name");
+                    db2File.ReadCString("FemaleName");
+                    db2File.ReadCString("SubName");
+                    db2File.ReadCString("FemaleSubName");
+                    db2File.ReadByte("Type");
+                    db2File.ReadByte("Family");
+                    db2File.ReadByte("Classification");
+                    db2File.ReadByte("InhabitType");
                     break;
                 }
                 case DB2Hash.CreatureDifficulty:
