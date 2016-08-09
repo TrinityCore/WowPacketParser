@@ -59,7 +59,10 @@ namespace WowPacketParser.SQL
                              Settings.TargetedDatabase == TargetedDatabase.Cataclysm)
                             ||
                             (ClientVersion.Expansion == ClientType.WarlordsOfDraenor &&
-                             Settings.TargetedDatabase == TargetedDatabase.WarlordsOfDraenor)))
+                             Settings.TargetedDatabase == TargetedDatabase.WarlordsOfDraenor)
+                            ||
+                            (ClientVersion.Expansion == ClientType.Legion &&
+                             Settings.TargetedDatabase == TargetedDatabase.Legion)))
                         {
                             Trace.WriteLine($"Error: Couldn't generate SQL output of {method.Name} since the targeted database and the sniff version don't match.");
                             continue;
@@ -82,7 +85,6 @@ namespace WowPacketParser.SQL
                     {
                         ExceptionDispatchInfo.Capture(e.InnerException).Throw();
                     }
-                    
                 }
 
                 Trace.WriteLine(store.WriteToFile(header)

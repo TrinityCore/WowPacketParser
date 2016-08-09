@@ -70,8 +70,11 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("RewardBonusMoney")]
         public uint? RewardBonusMoney;
 
-        [DBFieldName("RewardDisplaySpell")]
+        [DBFieldName("RewardDisplaySpell", TargetedDatabase.Zero, TargetedDatabase.WarlordsOfDraenor)]
         public uint? RewardDisplaySpell;
+
+        [DBFieldName("RewardDisplaySpell", TargetedDatabase.Legion, 3)]
+        public uint?[] RewardDisplaySpellLegion;
 
         [DBFieldName("RewardSpell", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
         public int? RewardSpell;
@@ -111,6 +114,15 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("StartItem")]
         public uint? StartItem;
+
+        [DBFieldName("RewardArtifactXPDifficulty", TargetedDatabase.Legion)]
+        public uint? RewardArtifactXPDifficulty;
+
+        [DBFieldName("RewardArtifactXPMultiplier", TargetedDatabase.Legion)]
+        public float? RewardArtifactXPMultiplier;
+
+        [DBFieldName("RewardArtifactCategoryID", TargetedDatabase.Legion)]
+        public uint? RewardArtifactCategoryID;
 
         [DBFieldName("RewardMailTemplateId", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
         public uint? RewardMailTemplateID;
@@ -195,7 +207,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("RewardTitle")]
         public uint? RewardTitle;
 
-        [DBFieldName("RewardTalents")]
+        [DBFieldName("RewardTalents", TargetedDatabase.Zero, TargetedDatabase.WarlordsOfDraenor)]
         public uint? RewardTalents;
 
         [DBFieldName("RewardArenaPoints")]
@@ -206,6 +218,9 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("RewardFactionValue", 5)]
         public int?[] RewardFactionValue;
+
+        [DBFieldName("RewardFactionCapIn", TargetedDatabase.Legion, 5)]
+        public int?[] RewardFactionCapIn;
 
         [DBFieldName("RewardFactionOverride", 5)]
         public int?[] RewardFactionOverride;
@@ -224,6 +239,9 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("AllowableRaces", TargetedDatabase.WarlordsOfDraenor)]
         public int? AllowableRacesWod;
+
+        [DBFieldName("QuestRewardID", TargetedDatabase.Legion)]
+        public int? QuestRewardID;
 
         [DBFieldName("LogTitle", LocaleConstant.enUS)]
         public string LogTitle;
