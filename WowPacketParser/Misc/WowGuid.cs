@@ -98,7 +98,9 @@ namespace WowPacketParser.Misc
         {
             Low = low;
             High = high;
-            if (ClientVersion.Build >= ClientVersionBuild.V6_2_4_21315)
+            if (ClientVersion.Build >= ClientVersionBuild.V7_0_3_22248)
+                HighGuid = new HighGuid703((byte)((High >> 58) & 0x3F));
+            else if (ClientVersion.Build >= ClientVersionBuild.V6_2_4_21315)
                 HighGuid = new HighGuid624((byte)((High >> 58) & 0x3F));
             else
                 HighGuid = new HighGuid623((byte)((High >> 58) & 0x3F));

@@ -44,6 +44,7 @@
     <Compile Include="Parsers\HotfixHandler.cs" />
     <Compile Include="Parsers\ItemHandler.cs" />
     <Compile Include="Parsers\QuestHandler.cs" />
+    <Compile Include="Parsers\SpellHandler.cs" />
     <Compile Include="Parsers\UpdateHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
