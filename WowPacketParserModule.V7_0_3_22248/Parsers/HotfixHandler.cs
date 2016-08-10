@@ -3477,7 +3477,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 {
                     for (int i = 0; i < 2; ++i)
                         db2File.ReadUInt32("Asset", i);
-                    db2File.ReadUInt32("Parent");
+                    db2File.ReadUInt16("Parent");
                     db2File.ReadByte("Type");
                     db2File.ReadByte("Unk700");
                     db2File.ReadByte("Operator");
