@@ -319,6 +319,7 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V7_0_3_22289:
                 case ClientVersionBuild.V7_0_3_22293:
                 case ClientVersionBuild.V7_0_3_22345:
+                case ClientVersionBuild.V7_0_3_22396:
                 {
                     return "V7_0_3_22248";
                 }
