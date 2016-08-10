@@ -173,7 +173,7 @@ namespace WowPacketParser.Misc
             { HighGuidType703.PVPQueueGroup,     HighGuidType.PVPQueueGroup },
             { HighGuidType703.UserClient,        HighGuidType.UserClient },
             { HighGuidType703.PetBattle,         HighGuidType.PetBattle },
-            { HighGuidType703.UniqueUserClient,  HighGuidType.UniqueUserClient },
+            { HighGuidType703.UniqUserClient,    HighGuidType.UniqUserClient },
             { HighGuidType703.BattlePet,         HighGuidType.BattlePet },
             { HighGuidType703.CommerceObj,       HighGuidType.CommerceObj },
             { HighGuidType703.ClientSession,     HighGuidType.ClientSession },
