@@ -124,6 +124,30 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
         }
 
+        public static void ReadTalentInfoUpdate(Packet packet, params object[] idx)
+        {
+            packet.ReadByte("ActiveGroup", idx);
+            packet.ReadInt32("PrimarySpecialization", idx);
+
+            var talentGroupsCount = packet.ReadInt32("TalentGroupsCount", idx);
+            for (var i = 0; i < talentGroupsCount; ++i)
+                ReadTalentGroupInfo(packet, idx, "TalentGroupsCount", i);
+        }
+
+        public static void ReadTalentGroupInfo(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt32("SpecId", idx);
+
+            var talentIDsCount = packet.ReadInt32("TalentIDsCount", idx);
+            var pvpTalentIDsCount = packet.ReadInt32("PvPTalentIDsCount", idx);
+
+            for (var i = 0; i < talentIDsCount; ++i)
+                packet.ReadUInt16("TalentID", idx, i);
+
+            for (var i = 0; i < pvpTalentIDsCount; ++i)
+                packet.ReadUInt16("PvPTalentID", idx, i);
+        }
+
         [Parser(Opcode.SMSG_SPELL_PREPARE)]
         public static void SpellPrepare(Packet packet)
         {
@@ -285,6 +309,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadInt32<SpellId>("FavoriteSpellID", i);
 
             packet.ReadBit("SuppressMessaging");
+        }
+
+        [Parser(Opcode.SMSG_UPDATE_TALENT_DATA)]
+        public static void ReadUpdateTalentData(Packet packet)
+        {
+            ReadTalentInfoUpdate(packet, "Info");
         }
     }
 }
