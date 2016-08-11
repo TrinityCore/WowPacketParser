@@ -230,5 +230,46 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 }
             }
         }
+
+        [Parser(Opcode.SMSG_CAST_FAILED)]
+        public static void HandleCastFailed(Packet packet)
+        {
+            packet.ReadPackedGuid128("CastID");
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32<SpellId>("SpellXSpellVisualID");
+            packet.ReadInt32("Reason");
+            packet.ReadInt32("FailedArg1");
+            packet.ReadInt32("FailedArg2");
+        }
+
+        [Parser(Opcode.SMSG_PET_CAST_FAILED)]
+        public static void HandlePetCastFailed(Packet packet)
+        {
+            packet.ReadPackedGuid128("CastID");
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32("Reason");
+            packet.ReadInt32("FailedArg1");
+            packet.ReadInt32("FailedArg2");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_FAILURE)]
+        public static void HandleSpellFailure(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterUnit");
+            packet.ReadPackedGuid128("CastID");
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadUInt32("SpellXSpellVisualID");
+            packet.ReadInt16E<SpellCastFailureReason>("Reason");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_FAILED_OTHER)]
+        public static void HandleSpellFailedOther(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterUnit");
+            packet.ReadPackedGuid128("CastID");
+            packet.ReadUInt32<SpellId>("SpellID");
+            packet.ReadUInt32("SpellXSpellVisualID");
+            packet.ReadByteE<SpellCastFailureReason>("Reason");
+        }
     }
 }
