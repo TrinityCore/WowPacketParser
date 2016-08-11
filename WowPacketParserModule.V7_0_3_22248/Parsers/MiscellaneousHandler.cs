@@ -25,5 +25,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32("TokenPollTimeSeconds");
             packet.ReadInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
         }
+
+        [Parser(Opcode.SMSG_INITIAL_SETUP)]
+        public static void HandleInitialSetup(Packet packet)
+        {
+            packet.ReadByte("ServerExpansionLevel");
+            packet.ReadByte("ServerExpansionTier");
+        }
     }
 }
