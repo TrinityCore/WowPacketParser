@@ -6,6 +6,60 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
     public static class MovementHandler
     {
+        public static void ReadMovementStats(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("MoverGUID", idx);
+
+            packet.ReadUInt32("MoveIndex", idx);
+            packet.ReadVector4("Position", idx);
+
+            packet.ReadSingle("Pitch", idx);
+            packet.ReadSingle("StepUpStartElevation", idx);
+
+            var int152 = packet.ReadInt32("RemoveForcesCount", idx);
+            packet.ReadInt32("MoveTime", idx);
+
+            for (var i = 0; i < int152; i++)
+                packet.ReadPackedGuid128("RemoveForcesIDs", idx, i);
+
+            packet.ResetBitReader();
+
+            packet.ReadBitsE<MovementFlag>("MovementFlags", 30, idx);
+            packet.ReadBitsE<MovementFlagExtra>("ExtraMovementFlags", 18, idx);
+
+            var hasTransport = packet.ReadBit("HasTransportData", idx);
+            var hasFall = packet.ReadBit("HasFallData", idx);
+            packet.ReadBit("HasSpline", idx);
+            packet.ReadBit("HeightChangeFailed", idx);
+            packet.ReadBit("RemoteTimeValid", idx);
+
+            if (hasTransport)
+                V6_0_2_19033.Parsers.MovementHandler.ReadTransportData(packet, idx, "TransportData");
+
+            if (hasFall)
+                V6_0_2_19033.Parsers.MovementHandler.ReadFallData(packet, idx, "FallData");
+        }
+
+        public static void ReadMovementAck(Packet packet)
+        {
+            ReadMovementStats(packet);
+            packet.ReadInt32("AckIndex");
+        }
+
+        public static void ReadMovementForce(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("ID", idx);
+            packet.ReadVector3("Origin", idx);
+            packet.ReadVector3("Direction", idx);
+            packet.ReadVector3("TransportPosition", idx);
+            packet.ReadInt32("TransportID", idx);
+            packet.ReadSingle("Magnitude", idx);
+
+            packet.ResetBitReader();
+
+            packet.ReadBits("Type", 2, idx);
+        }
+
         public static void ReadMovementMonsterSpline(Packet packet, Vector3 pos, params object[] indexes)
         {
             packet.ReadUInt32("Id", indexes);
@@ -137,6 +191,184 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var pos = packet.ReadVector3("Position");
 
             ReadMovementMonsterSpline(packet, pos, "MovementMonsterSpline");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_CHANGE_TRANSPORT)]
+        [Parser(Opcode.CMSG_MOVE_DISMISS_VEHICLE)]
+        [Parser(Opcode.CMSG_MOVE_FALL_LAND)]
+        [Parser(Opcode.CMSG_MOVE_FALL_RESET)]
+        [Parser(Opcode.CMSG_MOVE_HEARTBEAT)]
+        [Parser(Opcode.CMSG_MOVE_JUMP)]
+        [Parser(Opcode.CMSG_MOVE_REMOVE_MOVEMENT_FORCES)]
+        [Parser(Opcode.CMSG_MOVE_SET_FACING)]
+        [Parser(Opcode.CMSG_MOVE_SET_FLY)]
+        [Parser(Opcode.CMSG_MOVE_SET_PITCH)]
+        [Parser(Opcode.CMSG_MOVE_SET_RUN_MODE)]
+        [Parser(Opcode.CMSG_MOVE_SET_WALK_MODE)]
+        [Parser(Opcode.CMSG_MOVE_START_ASCEND)]
+        [Parser(Opcode.CMSG_MOVE_START_BACKWARD)]
+        [Parser(Opcode.CMSG_MOVE_START_DESCEND)]
+        [Parser(Opcode.CMSG_MOVE_START_FORWARD)]
+        [Parser(Opcode.CMSG_MOVE_START_PITCH_DOWN)]
+        [Parser(Opcode.CMSG_MOVE_START_PITCH_UP)]
+        [Parser(Opcode.CMSG_MOVE_START_SWIM)]
+        [Parser(Opcode.CMSG_MOVE_START_TURN_LEFT)]
+        [Parser(Opcode.CMSG_MOVE_START_TURN_RIGHT)]
+        [Parser(Opcode.CMSG_MOVE_START_STRAFE_LEFT)]
+        [Parser(Opcode.CMSG_MOVE_START_STRAFE_RIGHT)]
+        [Parser(Opcode.CMSG_MOVE_STOP)]
+        [Parser(Opcode.CMSG_MOVE_STOP_ASCEND)]
+        [Parser(Opcode.CMSG_MOVE_STOP_PITCH)]
+        [Parser(Opcode.CMSG_MOVE_STOP_STRAFE)]
+        [Parser(Opcode.CMSG_MOVE_STOP_SWIM)]
+        [Parser(Opcode.CMSG_MOVE_STOP_TURN)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_KNOCK_BACK)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE)]
+        public static void HandlePlayerMove(Packet packet)
+        {
+            ReadMovementStats(packet);
+        }
+
+        [Parser(Opcode.CMSG_MOVE_GRAVITY_DISABLE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_GRAVITY_ENABLE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_HOVER_ACK)]
+        [Parser(Opcode.CMSG_MOVE_KNOCK_BACK_ACK)]
+        [Parser(Opcode.CMSG_MOVE_WATER_WALK_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FORCE_ROOT_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FORCE_UNROOT_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_CAN_FLY_ACK)]
+        [Parser(Opcode.CMSG_MOVE_ENABLE_SWIM_TO_FLY_TRANS_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FEATHER_FALL_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_CAN_TURN_WHILE_FALLING_ACK)]
+        public static void HandleMovementAck(Packet packet)
+        {
+            ReadMovementAck(packet);
+        }
+
+        [Parser(Opcode.CMSG_MOVE_FORCE_FLIGHT_SPEED_CHANGE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FORCE_RUN_SPEED_CHANGE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FORCE_RUN_BACK_SPEED_CHANGE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FORCE_SWIM_SPEED_CHANGE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_FORCE_WALK_SPEED_CHANGE_ACK)]
+        public static void HandleMovementSpeedAck(Packet packet)
+        {
+            ReadMovementAck(packet);
+            packet.ReadSingle("Speed");
+        }
+
+        [Parser(Opcode.SMSG_MOVE_UPDATE_WALK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_RUN_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_RUN_BACK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_SWIM_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_SWIM_BACK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_TURN_RATE)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_FLIGHT_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_FLIGHT_BACK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_PITCH_RATE)]
+        public static void HandleMovementUpdateSpeed(Packet packet)
+        {
+            ReadMovementStats(packet);
+            packet.ReadSingle("Speed");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_SPLINE_DONE)]
+        public static void HandleMoveSplineDone(Packet packet)
+        {
+            ReadMovementStats(packet);
+            packet.ReadInt32("SplineID");
+        }
+
+        [Parser(Opcode.SMSG_MOVE_UPDATE_COLLISION_HEIGHT)]
+        public static void HandleMoveUpdateCollisionHeight434(Packet packet)
+        {
+            ReadMovementStats(packet);
+            packet.ReadSingle("Height");
+            packet.ReadSingle("Scale");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_SET_COLLISION_HEIGHT_ACK)]
+        public static void HandleMoveSetCollisionHeightAck(Packet packet)
+        {
+            ReadMovementAck(packet);
+            packet.ReadSingle("Height");
+            packet.ReadInt32("MountDisplayID");
+
+            packet.ResetBitReader();
+
+            packet.ReadBits("Reason", 2);
+        }
+
+        [Parser(Opcode.SMSG_MOVE_UPDATE_TELEPORT)]
+        public static void HandleMoveUpdateTeleport(Packet packet)
+        {
+            ReadMovementStats(packet);
+
+            var int32 = packet.ReadInt32("MovementForcesCount");
+            for (int i = 0; i < int32; i++)
+                ReadMovementForce(packet, i, "MovementForce");
+
+            packet.ResetBitReader();
+
+            var hasWalkSpeed = packet.ReadBit("HasWalkSpeed");
+            var hasRunSpeed = packet.ReadBit("HasRunSpeed");
+            var hasRunBackSpeed = packet.ReadBit("HasRunBackSpeed");
+            var hasSwimSpeed = packet.ReadBit("HasSwimSpeed");
+            var hasSwimBackSpeed = packet.ReadBit("HasSwimBackSpeed");
+            var hasFlightSpeed = packet.ReadBit("HasFlightSpeed");
+            var hasFlightBackSpeed = packet.ReadBit("HasFlightBackSpeed");
+            var hasTurnRate = packet.ReadBit("HasTurnRate");
+            var hasPitchRate = packet.ReadBit("HasPitchRate");
+
+            if (hasWalkSpeed)
+                packet.ReadSingle("WalkSpeed");
+
+            if (hasRunSpeed)
+                packet.ReadSingle("RunSpeed");
+
+            if (hasRunBackSpeed)
+                packet.ReadSingle("RunBackSpeed");
+
+            if (hasSwimSpeed)
+                packet.ReadSingle("SwimSpeed");
+
+            if (hasSwimBackSpeed)
+                packet.ReadSingle("SwimBackSpeed");
+
+            if (hasFlightSpeed)
+                packet.ReadSingle("FlightSpeed");
+
+            if (hasFlightBackSpeed)
+                packet.ReadSingle("FlightBackSpeed");
+
+            if (hasTurnRate)
+                packet.ReadSingle("TurnRate");
+
+            if (hasPitchRate)
+                packet.ReadSingle("PitchRate");
+        }
+
+        [Parser(Opcode.SMSG_MOVE_TELEPORT)]
+        public static void HandleMoveTeleport(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+            packet.ReadInt32("SequenceIndex");
+            packet.ReadVector3("Position");
+            packet.ReadSingle("Facing");
+            packet.ReadByte("PreloadWorld");
+
+            var hasVehicleTeleport = packet.ReadBit("HasVehicleTeleport");
+            var hasTransport = packet.ReadBit("HasTransport");
+
+            // VehicleTeleport
+            if (hasVehicleTeleport)
+            {
+                packet.ReadByte("VehicleSeatIndex");
+                packet.ReadBit("VehicleExitVoluntary");
+                packet.ReadBit("VehicleExitTeleport");
+            }
+
+            if (hasTransport)
+                packet.ReadPackedGuid128("TransportGUID");
         }
     }
 }

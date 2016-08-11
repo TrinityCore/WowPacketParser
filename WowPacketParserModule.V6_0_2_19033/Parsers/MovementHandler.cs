@@ -34,37 +34,43 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("RemoteTimeValid", idx);
 
             if (hasTransport)
-            {
-                packet.ReadPackedGuid128("TransportGuid", idx);
-                packet.ReadVector4("TransportPosition", idx);
-                packet.ReadByte("TransportSeat", idx);
-                packet.ReadInt32("TransportMoveTime", idx);
-
-                packet.ResetBitReader();
-
-                var hasPrevMoveTime = packet.ReadBit("HasPrevMoveTime", idx);
-                var hasVehicleRecID = packet.ReadBit("HasVehicleRecID", idx);
-
-                if (hasPrevMoveTime)
-                    packet.ReadUInt32("PrevMoveTime", idx);
-
-                if (hasVehicleRecID)
-                    packet.ReadUInt32("VehicleRecID", idx);
-            }
+                ReadTransportData(packet, idx, "TransportData");
 
             if (hasFall)
+                ReadFallData(packet, idx, "FallData");
+        }
+
+        public static void ReadTransportData(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("TransportGuid", idx);
+            packet.ReadVector4("TransportPosition", idx);
+            packet.ReadByte("TransportSeat", idx);
+            packet.ReadInt32("TransportMoveTime", idx);
+
+            packet.ResetBitReader();
+
+            var hasPrevMoveTime = packet.ReadBit("HasPrevMoveTime", idx);
+            var hasVehicleRecID = packet.ReadBit("HasVehicleRecID", idx);
+
+            if (hasPrevMoveTime)
+                packet.ReadUInt32("PrevMoveTime", idx);
+
+            if (hasVehicleRecID)
+                packet.ReadUInt32("VehicleRecID", idx);
+        }
+
+        public static void ReadFallData(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt32("FallTime", idx);
+            packet.ReadSingle("JumpVelocity", idx);
+
+            packet.ResetBitReader();
+
+            var bit20 = packet.ReadBit("HasFallDirection", idx);
+            if (bit20)
             {
-                packet.ReadUInt32("FallTime", idx);
-                packet.ReadSingle("JumpVelocity", idx);
-
-                packet.ResetBitReader();
-
-                var bit20 = packet.ReadBit("HasFallDirection", idx);
-                if (bit20)
-                {
-                    packet.ReadVector2("Direction", idx);
-                    packet.ReadSingle("HorizontalSpeed", idx);
-                }
+                packet.ReadVector2("Direction", idx);
+                packet.ReadSingle("HorizontalSpeed", idx);
             }
         }
 
@@ -73,6 +79,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadMovementStats(packet);
             packet.ReadInt32("AckIndex");
         }
+
         public static void ReadMovementForce(Packet packet, params object[] idx)
         {
             packet.ReadPackedGuid128("ID", idx);
