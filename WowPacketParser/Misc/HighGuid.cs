@@ -189,5 +189,4 @@ namespace WowPacketParser.Misc
             highGuidType = High703ToHighType[(HighGuidType703)high];
         }
     }
-
 }
