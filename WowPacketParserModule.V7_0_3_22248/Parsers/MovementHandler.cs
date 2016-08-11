@@ -40,10 +40,10 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 V6_0_2_19033.Parsers.MovementHandler.ReadFallData(packet, idx, "FallData");
         }
 
-        public static void ReadMovementAck(Packet packet)
+        public static void ReadMovementAck(Packet packet, params object[] idx)
         {
-            ReadMovementStats(packet);
-            packet.ReadInt32("AckIndex");
+            ReadMovementStats(packet, idx);
+            packet.ReadInt32("AckIndex", idx);
         }
 
         public static void ReadMovementForce(Packet packet, params object[] idx)
@@ -226,7 +226,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_MOVE_UPDATE)]
         public static void HandlePlayerMove(Packet packet)
         {
-            ReadMovementStats(packet);
+            ReadMovementStats(packet, "MovementStats");
         }
 
         [Parser(Opcode.CMSG_MOVE_GRAVITY_DISABLE_ACK)]
@@ -242,7 +242,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.CMSG_MOVE_SET_CAN_TURN_WHILE_FALLING_ACK)]
         public static void HandleMovementAck(Packet packet)
         {
-            ReadMovementAck(packet);
+            ReadMovementAck(packet, "MovementAck");
         }
 
         [Parser(Opcode.CMSG_MOVE_FORCE_FLIGHT_SPEED_CHANGE_ACK)]
@@ -252,7 +252,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.CMSG_MOVE_FORCE_WALK_SPEED_CHANGE_ACK)]
         public static void HandleMovementSpeedAck(Packet packet)
         {
-            ReadMovementAck(packet);
+            ReadMovementAck(packet, "MovementAck");
             packet.ReadSingle("Speed");
         }
 
@@ -267,21 +267,21 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_MOVE_UPDATE_PITCH_RATE)]
         public static void HandleMovementUpdateSpeed(Packet packet)
         {
-            ReadMovementStats(packet);
+            ReadMovementStats(packet, "MovementStats");
             packet.ReadSingle("Speed");
         }
 
         [Parser(Opcode.CMSG_MOVE_SPLINE_DONE)]
         public static void HandleMoveSplineDone(Packet packet)
         {
-            ReadMovementStats(packet);
+            ReadMovementStats(packet, "MovementStats");
             packet.ReadInt32("SplineID");
         }
 
         [Parser(Opcode.SMSG_MOVE_UPDATE_COLLISION_HEIGHT)]
         public static void HandleMoveUpdateCollisionHeight434(Packet packet)
         {
-            ReadMovementStats(packet);
+            ReadMovementStats(packet, "MovementStats");
             packet.ReadSingle("Height");
             packet.ReadSingle("Scale");
         }
@@ -289,7 +289,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.CMSG_MOVE_SET_COLLISION_HEIGHT_ACK)]
         public static void HandleMoveSetCollisionHeightAck(Packet packet)
         {
-            ReadMovementAck(packet);
+            ReadMovementAck(packet, "MovementAck");
             packet.ReadSingle("Height");
             packet.ReadInt32("MountDisplayID");
 
@@ -301,7 +301,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_MOVE_UPDATE_TELEPORT)]
         public static void HandleMoveUpdateTeleport(Packet packet)
         {
-            ReadMovementStats(packet);
+            ReadMovementStats(packet, "MovementStats");
 
             var int32 = packet.ReadInt32("MovementForcesCount");
             for (int i = 0; i < int32; i++)

@@ -271,5 +271,20 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadUInt32("SpellXSpellVisualID");
             packet.ReadByteE<SpellCastFailureReason>("Reason");
         }
+
+        [Parser(Opcode.SMSG_LEARNED_SPELLS)]
+        public static void HandleLearnedSpells(Packet packet)
+        {
+            var spellCount = packet.ReadUInt32("SpellCount");
+            var favoriteSpellCount = packet.ReadUInt32("FavoriteSpellCount");
+
+            for (var i = 0; i < spellCount; ++i)
+                packet.ReadInt32<SpellId>("SpellID", i);
+
+            for (var i = 0; i < favoriteSpellCount; ++i)
+                packet.ReadInt32<SpellId>("FavoriteSpellID", i);
+
+            packet.ReadBit("SuppressMessaging");
+        }
     }
 }
