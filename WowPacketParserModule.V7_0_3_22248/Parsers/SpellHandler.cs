@@ -1,6 +1,9 @@
+using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
@@ -92,6 +95,18 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadWoWString("Name", nameLength, idx);
         }
 
+        public static void ReadSandboxScalingData(Packet packet, params object[] idx)
+        {
+            packet.ReadBits("Type", 3, idx);
+            packet.ReadInt16("PlayerLevelDelta", idx);
+            packet.ReadByte("TargetLevel", idx);
+            packet.ReadByte("Expansion", idx);
+            packet.ReadByte("Class", idx);
+            packet.ReadByte("TargetMinScalingLevel", idx);
+            packet.ReadByte("TargetMaxScalingLevel", idx);
+            packet.ReadSByte("TargetScalingLevelDelta", idx);
+        }
+
         public static void ReadSpellCastLogData(Packet packet, params object[] idx)
         {
             packet.ReadInt64("Health", idx);
@@ -132,6 +147,88 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var hasLogData = packet.ReadBit();
             if (hasLogData)
                 ReadSpellCastLogData(packet, "LogData");
+        }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_AURA_UPDATE)]
+        public static void HandleAuraUpdate(Packet packet)
+        {
+            packet.ReadBit("UpdateAll");
+            var count = packet.ReadBits("AurasCount", 9);
+
+            var auras = new List<Aura>();
+            for (var i = 0; i < count; ++i)
+            {
+                var aura = new Aura();
+
+                packet.ReadByte("Slot", i);
+
+                packet.ResetBitReader();
+                var hasAura = packet.ReadBit("HasAura", i);
+                if (hasAura)
+                {
+                    packet.ReadPackedGuid128("CastID");
+                    aura.SpellId = (uint)packet.ReadInt32<SpellId>("SpellID", i);
+                    packet.ReadInt32("SpellXSpellVisualID", i);
+                    aura.AuraFlags = packet.ReadByteE<AuraFlagMoP>("Flags", i);
+                    packet.ReadInt32("ActiveFlags", i);
+                    aura.Level = packet.ReadUInt16("CastLevel", i);
+                    aura.Charges = packet.ReadByte("Applications", i);
+
+                    packet.ResetBitReader();
+
+                    var hasCastUnit = packet.ReadBit("HasCastUnit", i);
+                    var hasDuration = packet.ReadBit("HasDuration", i);
+                    var hasRemaining = packet.ReadBit("HasRemaining", i);
+
+                    var hasTimeMod = packet.ReadBit("HasTimeMod", i);
+
+                    var pointsCount = packet.ReadBits("PointsCount", 6, i);
+                    var effectCount = packet.ReadBits("EstimatedPoints", 6, i);
+
+                    var hasSandboxScaling = packet.ReadBit("HasSandboxScaling", i);
+
+                    if (hasCastUnit)
+                        packet.ReadPackedGuid128("CastUnit", i);
+
+                    aura.Duration = hasDuration ? (int)packet.ReadUInt32("Duration", i) : 0;
+                    aura.MaxDuration = hasRemaining ? (int)packet.ReadUInt32("Remaining", i) : 0;
+
+                    if (hasTimeMod)
+                        packet.ReadSingle("TimeMod");
+
+                    for (var j = 0; j < pointsCount; ++j)
+                        packet.ReadSingle("Points", i, j);
+
+                    for (var j = 0; j < effectCount; ++j)
+                        packet.ReadSingle("EstimatedPoints", i, j);
+
+                    if (hasSandboxScaling)
+                        ReadSandboxScalingData(packet, "SandboxScalingData", i);
+
+                    auras.Add(aura);
+                    packet.AddSniffData(StoreNameType.Spell, (int)aura.SpellId, "AURA_UPDATE");
+                }
+            }
+
+            var guid = packet.ReadPackedGuid128("UnitGUID");
+
+            if (Storage.Objects.ContainsKey(guid))
+            {
+                var unit = Storage.Objects[guid].Item1 as Unit;
+                if (unit != null)
+                {
+                    // If this is the first packet that sends auras
+                    // (hopefully at spawn time) add it to the "Auras" field,
+                    // if not create another row of auras in AddedAuras
+                    // (similar to ChangedUpdateFields)
+
+                    if (unit.Auras == null)
+                        unit.Auras = auras;
+                    else
+                        unit.AddedAuras.Add(auras);
+                }
+            }
         }
     }
 }
