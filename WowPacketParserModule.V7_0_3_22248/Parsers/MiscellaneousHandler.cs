@@ -32,5 +32,26 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadByte("ServerExpansionLevel");
             packet.ReadByte("ServerExpansionTier");
         }
+
+        [Parser(Opcode.SMSG_WORLD_SERVER_INFO)]
+        public static void HandleWorldServerInfo(Packet packet)
+        {
+            packet.ReadInt32("DifficultyID");
+            packet.ReadByte("IsTournamentRealm");
+
+            packet.ReadBit("XRealmPvpAlert");
+            var hasRestrictedAccountMaxLevel = packet.ReadBit("HasRestrictedAccountMaxLevel");
+            var hasRestrictedAccountMaxMoney = packet.ReadBit("HasRestrictedAccountMaxMoney");
+            var hasInstanceGroupSize = packet.ReadBit("HasInstanceGroupSize");
+
+            if (hasRestrictedAccountMaxLevel)
+                packet.ReadInt32("RestrictedAccountMaxLevel");
+
+            if (hasRestrictedAccountMaxMoney)
+                packet.ReadInt32("RestrictedAccountMaxMoney");
+
+            if (hasInstanceGroupSize)
+                packet.ReadInt32("InstanceGroupSize");
+        }
     }
 }
