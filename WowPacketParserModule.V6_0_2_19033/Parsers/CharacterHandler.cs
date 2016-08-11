@@ -9,6 +9,70 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class CharacterHandler
     {
+        public static void ReadFactionChangeRestrictionsData(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt32("Mask", idx);
+            packet.ReadByte("RaceID", idx);
+        }
+
+        public static void ReadCharactersData(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("Guid", idx);
+
+            packet.ReadByte("ListPosition", idx);
+            var race = packet.ReadByteE<Race>("RaceID", idx);
+            var klass = packet.ReadByteE<Class>("ClassID", idx);
+            packet.ReadByte("SexID", idx);
+            packet.ReadByte("SkinID", idx);
+            packet.ReadByte("FaceID", idx);
+            packet.ReadByte("HairStyle", idx);
+            packet.ReadByte("HairColor", idx);
+            packet.ReadByte("FacialHairStyle", idx);
+            packet.ReadByte("ExperienceLevel", idx);
+            var zone = packet.ReadUInt32("ZoneID", idx);
+            var mapId = packet.ReadUInt32("MapID", idx);
+
+            var pos = packet.ReadVector3("PreloadPos", idx);
+
+            packet.ReadPackedGuid128("GuildGUID", idx);
+
+            packet.ReadUInt32("Flags", idx);
+            packet.ReadUInt32("Flags2", idx);
+            packet.ReadUInt32("Flags3", idx);
+            packet.ReadUInt32("PetCreatureDisplayID", idx);
+            packet.ReadUInt32("PetExperienceLevel", idx);
+            packet.ReadUInt32("PetCreatureFamilyID", idx);
+
+            for (uint j = 0; j < 2; ++j)
+                packet.ReadUInt32("ProfessionIDs", idx, j);
+
+            for (uint j = 0; j < 23; ++j)
+            {
+                packet.ReadUInt32("InventoryItem DisplayID", idx, j);
+                packet.ReadUInt32("InventoryItem DisplayEnchantID", idx, j);
+                packet.ReadByteE<InventoryType>("InventoryItem InvType", idx, j);
+            }
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_4_21315))
+                packet.ReadTime("LastPlayedTime", idx);
+
+            packet.ResetBitReader();
+            var nameLength = packet.ReadBits("Character Name Length", 6, idx);
+            var firstLogin = packet.ReadBit("FirstLogin", idx);
+            packet.ReadBit("BoostInProgress", idx);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
+                packet.ReadBits("Unk Bits141", 5, idx);
+
+            packet.ReadWoWString("Character Name", nameLength, idx);
+
+            if (firstLogin)
+            {
+                PlayerCreateInfo startPos = new PlayerCreateInfo { Race = race, Class = klass, Map = mapId, Zone = zone, Position = pos, Orientation = 0 };
+                Storage.StartPositions.Add(startPos, packet.TimeSpan);
+            }
+        }
+
         [Parser(Opcode.SMSG_SHOW_NEUTRAL_PLAYER_FACTION_SELECT_UI)]
         [Parser(Opcode.CMSG_ENUM_CHARACTERS_DELETED_BY_CLIENT)]
         public static void HandleCharacterZero(Packet packet)
@@ -16,76 +80,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT)]
-        public static void HandleCharEnum(Packet packet)
+        public static void HandleEnumCharactersResult(Packet packet)
         {
             packet.ReadBit("Success");
             packet.ReadBit("IsDeletedCharacters");
+
             var charsCount = packet.ReadUInt32("Characters Count");
             var restrictionsCount = packet.ReadUInt32("FactionChangeRestrictionsCount");
 
             for (uint i = 0; i < charsCount; ++i)
-            {
-                packet.ReadPackedGuid128("Guid", i);
-
-                packet.ReadByte("ListPosition", i);
-                var race = packet.ReadByteE<Race>("RaceID", i);
-                var klass = packet.ReadByteE<Class>("ClassID", i);
-                packet.ReadByte("SexID", i);
-                packet.ReadByte("SkinID", i);
-                packet.ReadByte("FaceID", i);
-                packet.ReadByte("HairStyle", i);
-                packet.ReadByte("HairColor", i);
-                packet.ReadByte("FacialHairStyle", i);
-                packet.ReadByte("ExperienceLevel", i);
-                var zone = packet.ReadUInt32("ZoneID", i);
-                var mapId = packet.ReadUInt32("MapID", i);
-
-                var pos = packet.ReadVector3("PreloadPos", i);
-
-                packet.ReadPackedGuid128("GuildGUID", i);
-
-                packet.ReadUInt32("Flags", i);
-                packet.ReadUInt32("Flags2", i);
-                packet.ReadUInt32("Flags3", i);
-                packet.ReadUInt32("PetCreatureDisplayID", i);
-                packet.ReadUInt32("PetExperienceLevel", i);
-                packet.ReadUInt32("PetCreatureFamilyID", i);
-
-                packet.ReadUInt32("ProfessionIDs", i, 0);
-                packet.ReadUInt32("ProfessionIDs", i, 1);
-
-                for (uint j = 0; j < 23; ++j)
-                {
-                    packet.ReadUInt32("InventoryItem DisplayID", i, j);
-                    packet.ReadUInt32("InventoryItem DisplayEnchantID", i, j);
-                    packet.ReadByteE<InventoryType>("InventoryItem InvType", i, j);
-                }
-
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_4_21315))
-                    packet.ReadTime("LastPlayedTime", i);
-
-                packet.ResetBitReader();
-                var nameLength = packet.ReadBits("Character Name Length", 6, i);
-                var firstLogin = packet.ReadBit("FirstLogin", i);
-                packet.ReadBit("BoostInProgress", i);
-
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
-                    packet.ReadBits("Unk Bits141", 5, i);
-
-                packet.ReadWoWString("Character Name", nameLength, i);
-
-                if (firstLogin)
-                {
-                    PlayerCreateInfo startPos = new PlayerCreateInfo { Race = race, Class = klass, Map = mapId, Zone = zone, Position = pos, Orientation = 0 };
-                    Storage.StartPositions.Add(startPos, packet.TimeSpan);
-                }
-            }
+                ReadCharactersData(packet, i, "CharactersData");
 
             for (var i = 0; i < restrictionsCount; ++i)
-            {
-                packet.ReadUInt32("FactionChangeRestriction Mask", i);
-                packet.ReadByte("FactionChangeRestriction RaceID", i);
-            }
+                ReadFactionChangeRestrictionsData(packet, i, "FactionChangeRestrictionsData");
         }
 
         [Parser(Opcode.CMSG_CREATE_CHARACTER)]
