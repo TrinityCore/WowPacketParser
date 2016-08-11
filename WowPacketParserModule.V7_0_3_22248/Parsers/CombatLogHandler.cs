@@ -75,6 +75,31 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadSByte("TargetScalingLevelDelta", idx);
         }
 
+        public static void ReadPeriodicAuraLogEffectData(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("Effect", idx);
+            packet.ReadInt32("Amount", idx);
+            packet.ReadInt32("OverHealOrKill", idx);
+            packet.ReadInt32("SchoolMaskOrPower", idx);
+            packet.ReadInt32("AbsorbedOrAmplitude", idx);
+            packet.ReadInt32("Resisted", idx);
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Crit", idx);
+            var hasDebugData = packet.ReadBit("HasPeriodicAuraLogEffectDebugInfo", idx);
+            var hasSandboxScaling = packet.ReadBit("HasSandboxScaling", idx);
+
+            if (hasDebugData)
+            {
+                packet.ReadSingle("CritRollMade", idx);
+                packet.ReadSingle("CritRollNeeded", idx);
+            }
+
+            if (hasSandboxScaling)
+                ReadSandboxScalingData(packet, idx, "SandboxScalingData");
+        }
+
         [Parser(Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG)]
         public static void HandleSpellNonMeleeDmgLog(Packet packet)
         {
@@ -134,6 +159,25 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32("Size");
 
             ReadAttackRoundInfo(packet, "AttackRoundInfo");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_PERIODIC_AURA_LOG)]
+        public static void HandleSpellPeriodicAuraLog(Packet packet)
+        {
+            packet.ReadPackedGuid128("TargetGUID");
+            packet.ReadPackedGuid128("CasterGUID");
+
+            packet.ReadInt32<SpellId>("SpellID");
+
+            var periodicAuraLogEffectCount = packet.ReadInt32("PeriodicAuraLogEffectCount");
+            for (var i = 0; i < periodicAuraLogEffectCount; i++)
+                ReadPeriodicAuraLogEffectData(packet, "PeriodicAuraLogEffectData");
+
+            packet.ResetBitReader();
+
+            var hasLogData = packet.ReadBit("HasLogData");
+            if (hasLogData)
+                SpellHandler.ReadSpellCastLogData(packet, "SpellCastLogData");
         }
     }
 }
