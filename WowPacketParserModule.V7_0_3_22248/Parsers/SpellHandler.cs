@@ -236,7 +236,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             packet.ReadPackedGuid128("CastID");
             packet.ReadInt32<SpellId>("SpellID");
-            packet.ReadInt32<SpellId>("SpellXSpellVisualID");
+            packet.ReadInt32("SpellXSpellVisualID");
             packet.ReadInt32("Reason");
             packet.ReadInt32("FailedArg1");
             packet.ReadInt32("FailedArg2");

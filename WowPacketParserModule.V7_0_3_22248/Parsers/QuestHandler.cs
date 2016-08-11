@@ -9,6 +9,57 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
     public static class QuestHandler
     {
+        public static void ReadQuestRewards(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("ChoiceItemCount", idx);
+
+            for (var i = 0; i < 6; ++i)
+            {
+                packet.ReadInt32("ItemID", idx, i);
+                packet.ReadInt32("Quantity", idx, i);
+            }
+
+            packet.ReadInt32("ItemCount", idx);
+
+            for (var i = 0; i < 4; ++i)
+            {
+                packet.ReadInt32("ItemID", idx, i);
+                packet.ReadInt32("ItemQty", idx, i);
+            }
+
+            packet.ReadInt32("Money", idx);
+            packet.ReadInt32("XP", idx);
+            packet.ReadInt32("ArtifactXP", idx);
+            packet.ReadInt32("ArtifactCategoryID", idx);
+            packet.ReadInt32("Honor", idx);
+            packet.ReadInt32("Title", idx);
+            packet.ReadInt32("FactionFlags", idx);
+
+            for (var i = 0; i < 5; ++i)
+            {
+                packet.ReadInt32("FactionID", idx, i);
+                packet.ReadInt32("FactionOverride", idx, i);
+                packet.ReadInt32("FactionValue", idx, i);
+                packet.ReadInt32("FactionCapIn", idx, i);
+            }
+
+            packet.ReadInt32("SpellCompletionID", idx);
+
+            for (var i = 0; i < 4; ++i)
+            {
+                packet.ReadInt32("CurrencyID", idx, i);
+                packet.ReadInt32("CurrencyQty, idx", i);
+            }
+
+            packet.ReadInt32("SkillLineID", idx);
+            packet.ReadInt32("NumSkillUps", idx);
+            packet.ReadInt32("RewardID", idx);
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("IsBoostSpell", idx);
+        }
+
         [HasSniffData]
         [Parser(Opcode.SMSG_QUERY_QUEST_INFO_RESPONSE)]
         public static void HandleQuestQueryResponse(Packet packet)
@@ -220,6 +271,64 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
 
             Storage.QuestTemplates.Add(quest, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.SMSG_QUEST_GIVER_OFFER_REWARD_MESSAGE)]
+        public static void QuestGiverOfferReward(Packet packet)
+        {
+            packet.ReadPackedGuid128("QuestGiverGUID");
+
+            packet.ReadInt32("QuestGiverCreatureID");
+            int id = packet.ReadInt32("QuestID");
+
+            QuestOfferReward questOfferReward = new QuestOfferReward
+            {
+                ID = (uint)id
+            };
+
+            for (int i = 0; i < 2; i++)
+                packet.ReadInt32("QuestFlags", i);
+
+            packet.ReadInt32("SuggestedPartyMembers");
+
+            int emotesCount = packet.ReadInt32("EmotesCount");
+
+            // QuestDescEmote
+            questOfferReward.Emote = new uint?[] { 0, 0, 0, 0 };
+            questOfferReward.EmoteDelay = new uint?[] { 0, 0, 0, 0 };
+            for (int i = 0; i < emotesCount; i++)
+            {
+                questOfferReward.Emote[i] = (uint)packet.ReadInt32("Type");
+                questOfferReward.EmoteDelay[i] = packet.ReadUInt32("Delay");
+            }
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("AutoLaunched");
+
+            ReadQuestRewards(packet, "QuestRewards");
+
+            packet.ReadInt32("PortraitTurnIn");
+            packet.ReadInt32("PortraitGiver");
+            packet.ReadInt32("QuestPackageID");
+
+            packet.ResetBitReader();
+
+            uint questTitleLen = packet.ReadBits(9);
+            uint rewardTextLen = packet.ReadBits(12);
+            uint portraitGiverTextLen = packet.ReadBits(10);
+            uint portraitGiverNameLen = packet.ReadBits(8);
+            uint portraitTurnInTextLen = packet.ReadBits(10);
+            uint portraitTurnInNameLen = packet.ReadBits(8);
+
+            packet.ReadWoWString("QuestTitle", questTitleLen);
+            questOfferReward.RewardText = packet.ReadWoWString("RewardText", rewardTextLen);
+            packet.ReadWoWString("PortraitGiverText", portraitGiverTextLen);
+            packet.ReadWoWString("PortraitGiverName", portraitGiverNameLen);
+            packet.ReadWoWString("PortraitTurnInText", portraitTurnInTextLen);
+            packet.ReadWoWString("PortraitTurnInName", portraitTurnInNameLen);
+
+            Storage.QuestOfferRewards.Add(questOfferReward, packet.TimeSpan);
         }
     }
 }
