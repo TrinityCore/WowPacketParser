@@ -58,6 +58,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.AddValue("Flag", flag, indexes);
         }
 
+        public static void ReadPetSpellCooldownData(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("SpellID", idx);
+            packet.ReadInt32("Duration", idx);
+            packet.ReadInt32("CategoryDuration", idx);
+            packet.ReadInt16("Category", idx);
+        }
+
+        public static void ReadPetSpellHistoryData(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("CategoryID", idx);
+            packet.ReadInt32("RecoveryTime", idx);
+            packet.ReadSByte("ConsumedCharges", idx);
+        }
+
         [Parser(Opcode.SMSG_PET_SPELLS_MESSAGE)]
         public static void HandlePetSpells(Packet packet)
         {
@@ -65,38 +80,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt16("CreatureFamily");
             packet.ReadInt16("Specialization");
             packet.ReadInt32("TimeLimit");
-            //packet.ReadInt32("PetModeAndOrders");
             ReadPetFlags(packet, "PetModeAndOrders");
 
-            // ActionButtons
             const int maxCreatureSpells = 10;
-            for (var i = 0; i < maxCreatureSpells; i++) // Read pet/vehicle spell ids
+            for (var i = 0; i < maxCreatureSpells; i++) // Read pet / vehicle spell ids
                 ReadPetAction(packet, "ActionButtons", i);
 
-            var int28 = packet.ReadInt32("ActionsCount");
-            var int44 = packet.ReadUInt32("CooldownsCount");
-            var int60 = packet.ReadUInt32("SpellHistoryCount");
+            var actionsCount = packet.ReadInt32("ActionsCount");
+            var cooldownsCount = packet.ReadUInt32("CooldownsCount");
+            var spellHistoryCount = packet.ReadUInt32("SpellHistoryCount");
 
-            // Actions
-            for (int i = 0; i < int28; i++)
-                ReadPetAction(packet, "Actions", i);
+            for (int i = 0; i < actionsCount; i++)
+                ReadPetAction(packet, i, "Actions");
 
-            // PetSpellCooldown
-            for (int i = 0; i < int44; i++)
-            {
-                packet.ReadInt32("SpellID", i);
-                packet.ReadInt32("Duration", i);
-                packet.ReadInt32("CategoryDuration", i);
-                packet.ReadInt16("Category", i);
-            }
+            for (int i = 0; i < cooldownsCount; i++)
+                ReadPetSpellCooldownData(packet, i, "PetSpellCooldown");
 
-            // PetSpellHistory
-            for (int i = 0; i < int60; i++)
-            {
-                packet.ReadInt32("CategoryID", i);
-                packet.ReadInt32("RecoveryTime", i);
-                packet.ReadSByte("ConsumedCharges", i);
-            }
+            for (int i = 0; i < spellHistoryCount; i++)
+                ReadPetSpellHistoryData(packet, i, "PetSpellHistory");
         }
 
         [Parser(Opcode.CMSG_PET_ACTION)]
