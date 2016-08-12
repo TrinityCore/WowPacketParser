@@ -370,5 +370,17 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             if (hasTransport)
                 packet.ReadPackedGuid128("TransportGUID");
         }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_NEW_WORLD)]
+        public static void HandleNewWorld(Packet packet)
+        {
+            WowPacketParser.Parsing.Parsers.MovementHandler.CurrentMapId = (uint)packet.ReadInt32<MapId>("Map");
+            packet.ReadVector4("Position");
+            packet.ReadUInt32("Reason");
+            packet.ReadVector3("MovementOffset");
+
+            packet.AddSniffData(StoreNameType.Map, (int)WowPacketParser.Parsing.Parsers.MovementHandler.CurrentMapId, "NEW_WORLD");
+        }
     }
 }
