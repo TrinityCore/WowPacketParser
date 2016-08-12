@@ -96,5 +96,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (uint i = 0; i < charsCount; ++i)
                 ReadCharactersData(packet, i, "CharactersData");
         }
+
+        [Parser(Opcode.SMSG_HEALTH_UPDATE)]
+        public static void HandleHealthUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadInt64("Health");
+        }
     }
 }
