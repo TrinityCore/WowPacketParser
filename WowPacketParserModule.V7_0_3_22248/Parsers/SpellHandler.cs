@@ -388,5 +388,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (var i = 0; i < favoriteSpells; i++)
                 packet.ReadUInt32<SpellId>("FavoriteSpellId", i);
         }
+
+        [Parser(Opcode.CMSG_CANCEL_CAST)]
+        public static void HandleCancelCast(Packet packet)
+        {
+            packet.ReadPackedGuid128("CastID");
+            packet.ReadUInt32<SpellId>("SpellID");
+        }
     }
 }
