@@ -45,5 +45,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (int i = 0; i < spellHistoryCount; i++)
                 V6_0_2_19033.Parsers.PetHandler.ReadPetSpellHistoryData(packet, i, "PetSpellHistory");
         }
+
+        [Parser(Opcode.SMSG_PET_MODE)]
+        public static void HandlePetMode(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
+            ReadPetFlags(packet, "PetMode");
+        }
     }
 }
