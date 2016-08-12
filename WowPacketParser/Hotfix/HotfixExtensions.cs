@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WowPacketParser.Hotfix
 {
+    // TODO Drop this in favor of appending directly into StringBuilders.
     public static class HotfixExtensions
     {
         /// <summary>
@@ -15,10 +11,7 @@ namespace WowPacketParser.Hotfix
         /// 
         /// This <b>is</b> (and <b>should</b>) only be used by hotfix serializers.
         /// </summary>
-        public static void Append(this List<string> writer, string line)
-        {
-            writer.Add($"\"{line.Replace("\"", "\\\"")}\"");
-        }
+        public static void Append(this List<string> writer, string line) => writer.Add(string.Format(@"""{0}""", line.Replace(@"""", @"\""")));
 
         public static void Append(this List<string> writer, long line) => writer.Add(line.ToString());
         public static void Append(this List<string> writer, ulong line) => writer.Add(line.ToString());
