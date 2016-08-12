@@ -403,5 +403,16 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (int i = 0; i < talentCount; i++)
                 packet.ReadInt16("Talents");
         }
+
+        [Parser(Opcode.SMSG_RESYNC_RUNES)]
+        public static void HandleResyncRunes(Packet packet)
+        {
+            packet.ReadByte("Start");
+            packet.ReadByte("Count");
+
+            var cooldownCount = packet.ReadUInt32("CooldownCount");
+            for (var i = 0; i < cooldownCount; ++i)
+                packet.ReadByte("Cooldown");
+        }
     }
 }
