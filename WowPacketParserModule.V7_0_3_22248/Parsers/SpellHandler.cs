@@ -9,6 +9,36 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
     public static class SpellHandler
     {
+        public static void ReadSpellCastRequest(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("CastID", idx);
+
+            for (var i = 0; i < 2; i++)
+                packet.ReadInt32("Misc", idx, i);
+
+            packet.ReadInt32<SpellId>("SpellID", idx);
+            packet.ReadInt32("SpellXSpellVisualID", idx);
+
+            V6_0_2_19033.Parsers.SpellHandler.ReadMissileTrajectoryRequest(packet, idx, "MissileTrajectory");
+
+            packet.ReadPackedGuid128("Guid", idx);
+
+            packet.ResetBitReader();
+
+            packet.ReadBits("SendCastFlags", 5, idx);
+            var hasMoveUpdate = packet.ReadBit("HasMoveUpdate", idx);
+
+            var weightCount = packet.ReadBits("WeightCount", 2, idx);
+
+            ReadSpellTargetData(packet, idx, "Target");
+
+            if (hasMoveUpdate)
+                MovementHandler.ReadMovementStats(packet, idx, "MoveUpdate");
+
+            for (var i = 0; i < weightCount; ++i)
+                V6_0_2_19033.Parsers.SpellHandler.ReadSpellWeight(packet, idx, "Weight", i);
+        }
+
         public static void ReadSpellCastData(Packet packet, params object[] idx)
         {
             packet.ReadPackedGuid128("CasterGUID", idx);
@@ -153,6 +183,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             packet.ReadPackedGuid128("ClientCastID");
             packet.ReadPackedGuid128("ServerCastID");
+        }
+
+        [Parser(Opcode.CMSG_CAST_SPELL)]
+        public static void HandleCastSpell(Packet packet)
+        {
+            ReadSpellCastRequest(packet, "Cast");
         }
 
         [Parser(Opcode.SMSG_SPELL_START)]
