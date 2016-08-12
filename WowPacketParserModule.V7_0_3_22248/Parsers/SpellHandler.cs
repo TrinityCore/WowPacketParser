@@ -127,6 +127,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
         public static void ReadSandboxScalingData(Packet packet, params object[] idx)
         {
+            packet.ResetBitReader();
+
             packet.ReadBits("Type", 3, idx);
             packet.ReadInt16("PlayerLevelDelta", idx);
             packet.ReadByte("TargetLevel", idx);
@@ -227,7 +229,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 var hasAura = packet.ReadBit("HasAura", i);
                 if (hasAura)
                 {
-                    packet.ReadPackedGuid128("CastID");
+                    packet.ReadPackedGuid128("CastID", i);
                     aura.SpellId = (uint)packet.ReadInt32<SpellId>("SpellID", i);
                     packet.ReadInt32("SpellXSpellVisualID", i);
                     aura.AuraFlags = packet.ReadByteE<AuraFlagMoP>("Flags", i);
