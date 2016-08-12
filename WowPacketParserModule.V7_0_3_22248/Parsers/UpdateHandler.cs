@@ -383,6 +383,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 var hasMorphCurveID = packet.ReadBit("HasMorphCurveID", index);
                 var hasFacingCurveID = packet.ReadBit("HasFacingCurveID", index);
                 var hasMoveCurveID = packet.ReadBit("HasMoveCurveID", index);
+                var unkbit4C = packet.ReadBit();
+                var unkbit50 = packet.ReadBit();
+                var unkbit58 = packet.ReadBit();
                 var hasAreaTriggerSphere = packet.ReadBit("HasAreaTriggerSphere", index);
                 var hasAreaTriggerBox = packet.ReadBit("HasAreaTriggerBox", index);
                 var hasAreaTriggerPolygon = packet.ReadBit("HasAreaTriggerPolygon", index);
@@ -390,28 +393,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 var hasAreaTriggerSpline = packet.ReadBit("HasAreaTriggerSpline", index);
                 var hasAreaTriggerUnkType = packet.ReadBit("HasAreaTriggerUnkType", index);
 
-                if (hasAreaTriggerUnkType)
-                {
-                    packet.ResetBitReader();
-                    var unk1 = packet.ReadBit("AreaTriggerUnk1");
-                    var hasCenter = packet.ReadBit("HasCenter", index);
-                    packet.ReadBit("Unk bit 703 1", index);
-                    packet.ReadBit("Unk bit 703 2", index);
+                if (unkbit50)
+                    packet.ReadBit();
 
-                    packet.ReadUInt32();
-                    packet.ReadInt32();
-                    packet.ReadUInt32();
-                    packet.ReadSingle("Radius", index);
-                    packet.ReadSingle("BlendFromRadius", index);
-                    packet.ReadSingle("InitialAngel", index);
-                    packet.ReadSingle("ZOffset", index);
-
-                    if (unk1)
-                        packet.ReadPackedGuid128("AreaTriggerUnkGUID", index);
-
-                    if (hasCenter)
-                        packet.ReadVector3("Center", index);
-                }
+                if (hasAreaTriggerSpline)
+                    V6_0_2_19033.Parsers.AreaTriggerHandler.ReadAreaTriggerSpline(packet, index);
 
                 if (hasTargetRollPitchYaw)
                     packet.ReadVector3("TargetRollPitchYaw", index);
@@ -427,6 +413,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
                 if (hasMoveCurveID)
                     packet.ReadInt32("MoveCurveID", index);
+
+                if (unkbit4C)
+                    packet.ReadInt32();
+
+                if (unkbit58)
+                    packet.ReadUInt32();
 
                 if (hasAreaTriggerSphere)
                 {
@@ -464,8 +456,28 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     packet.ReadSingle("LocationZOffsetTarget", index);
                 }
 
-                if (hasAreaTriggerSpline)
-                    V6_0_2_19033.Parsers.AreaTriggerHandler.ReadAreaTriggerSpline(packet, index);
+                if (hasAreaTriggerUnkType)
+                {
+                    packet.ResetBitReader();
+                    var unk1 = packet.ReadBit("AreaTriggerUnk1");
+                    var hasCenter = packet.ReadBit("HasCenter", index);
+                    packet.ReadBit("Unk bit 703 1", index);
+                    packet.ReadBit("Unk bit 703 2", index);
+
+                    packet.ReadUInt32();
+                    packet.ReadInt32();
+                    packet.ReadUInt32();
+                    packet.ReadSingle("Radius", index);
+                    packet.ReadSingle("BlendFromRadius", index);
+                    packet.ReadSingle("InitialAngel", index);
+                    packet.ReadSingle("ZOffset", index);
+
+                    if (unk1)
+                        packet.ReadPackedGuid128("AreaTriggerUnkGUID", index);
+
+                    if (hasCenter)
+                        packet.ReadVector3("Center", index);
+                }
             }
 
             if (hasGameObject)
