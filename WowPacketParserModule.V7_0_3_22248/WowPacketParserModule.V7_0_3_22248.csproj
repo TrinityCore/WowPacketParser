@@ -47,6 +47,7 @@
     <Compile Include="Parsers\ItemHandler.cs" />
     <Compile Include="Parsers\MiscellaneousHandler.cs" />
     <Compile Include="Parsers\MovementHandler.cs" />
+    <Compile Include="Parsers\NpcHandler.cs" />
     <Compile Include="Parsers\QuestHandler.cs" />
     <Compile Include="Parsers\SpellHandler.cs" />
     <Compile Include="Parsers\UpdateHandler.cs" />
