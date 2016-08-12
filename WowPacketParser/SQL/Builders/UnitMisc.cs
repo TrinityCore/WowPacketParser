@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using WowPacketParser.Enums;
+using WowPacketParser.Hotfix;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
@@ -25,7 +26,7 @@ namespace WowPacketParser.SQL.Builders
             var addons = new DataBag<CreatureTemplateAddon>();
             foreach (var unit in units)
             {
-                Unit npc = unit.Value;
+                var npc = unit.Value;
 
                 if (Settings.AreaFilters.Length > 0)
                     if (!(npc.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
@@ -35,19 +36,16 @@ namespace WowPacketParser.SQL.Builders
                     if (!(npc.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
                         continue;
 
-                string auras = string.Empty;
-                string commentAuras = string.Empty;
+                var auras = string.Empty;
+                var commentAuras = string.Empty;
                 if (npc.Auras != null && npc.Auras.Count != 0)
                 {
-                    foreach (Aura aura in npc.Auras)
+                    foreach (var aura in npc.Auras.Where(aura =>
+                        aura != null &&
+                        (ClientVersion.AddedInVersion(ClientType.MistsOfPandaria) ?
+                            aura.AuraFlags.HasAnyFlag(AuraFlagMoP.NoCaster) :
+                            aura.AuraFlags.HasAnyFlag(AuraFlag.NotCaster))))
                     {
-                        if (aura == null)
-                            continue;
-
-                        // usually "template auras" do not have caster
-                        if (ClientVersion.AddedInVersion(ClientType.MistsOfPandaria) ? !aura.AuraFlags.HasAnyFlag(AuraFlagMoP.NoCaster) : !aura.AuraFlags.HasAnyFlag(AuraFlag.NotCaster))
-                            continue;
-
                         auras += aura.SpellId + " ";
                         commentAuras += StoreGetters.GetName(StoreNameType.Spell, (int) aura.SpellId, false) + ", ";
                     }
@@ -55,7 +53,7 @@ namespace WowPacketParser.SQL.Builders
                     commentAuras = commentAuras.TrimEnd(',', ' ');
                 }
 
-                CreatureTemplateAddon addon = new CreatureTemplateAddon
+                var addon = new CreatureTemplateAddon
                 {
                     Entry = unit.Key.GetEntry(),
                     MountID = npc.Mount.GetValueOrDefault(),
@@ -75,7 +73,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(addons, addonsDb,
                 addon =>
                 {
-                    string comment = StoreGetters.GetName(StoreNameType.Unit, (int)addon.Entry.GetValueOrDefault());
+                    var comment = StoreGetters.GetName(StoreNameType.Unit, (int)addon.Entry.GetValueOrDefault());
                     if (!string.IsNullOrEmpty(addon.CommentAuras))
                         comment += " - " + addon.CommentAuras;
                     return comment;
@@ -92,7 +90,7 @@ namespace WowPacketParser.SQL.Builders
                 return string.Empty;
 
             var models = new DataBag<ModelData>();
-            foreach (Unit npc in units.Select(unit => unit.Value))
+            foreach (var npc in units.Select(unit => unit.Value))
             {
                 if (Settings.AreaFilters.Length > 0)
                     if (!(npc.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
@@ -108,7 +106,7 @@ namespace WowPacketParser.SQL.Builders
                 else
                     continue;
 
-                ModelData model = new ModelData
+                var model = new ModelData
                 {
                     DisplayID = modelId
                 };
@@ -116,7 +114,7 @@ namespace WowPacketParser.SQL.Builders
                 if (models.ContainsKey(model))
                     continue;
 
-                float scale = npc.Size.GetValueOrDefault(1.0f);
+                var scale = npc.Size.GetValueOrDefault(1.0f);
                 model.BoundingRadius = npc.BoundingRadius.GetValueOrDefault(0.306f) / scale;
                 model.CombatReach = npc.CombatReach.GetValueOrDefault(1.5f) / scale;
                 model.Gender = npc.Gender.GetValueOrDefault(Gender.Male);
@@ -167,7 +165,7 @@ namespace WowPacketParser.SQL.Builders
                 return string.Empty;
 
             var equips = new DataBag<CreatureEquipment>();
-            foreach (KeyValuePair<WowGuid, Unit> npc in units)
+            foreach (var npc in units)
             {
                 if (Settings.AreaFilters.Length > 0)
                     if (!(npc.Value.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
@@ -183,7 +181,7 @@ namespace WowPacketParser.SQL.Builders
                 if (npc.Value.Equipment[0] == 0 && npc.Value.Equipment[1] == 0 && npc.Value.Equipment[2] == 0)
                     continue;
 
-                CreatureEquipment equip = new CreatureEquipment
+                var equip = new CreatureEquipment
                 {
                     CreatureID = npc.Key.GetEntry(),
                     ItemID1 = npc.Value.Equipment[0],
@@ -214,7 +212,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.Gossips.IsEmpty() && Storage.GossipMenuOptions.IsEmpty())
                 return string.Empty;
 
-            string result = "";
+            var result = "";
 
             // `gossip_menu`
             if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu))
@@ -237,7 +235,7 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.points_of_interest))
                 return string.Empty;
 
-            string result = string.Empty;
+            var result = string.Empty;
 
             if (!Storage.GossipSelects.IsEmpty())
             {
@@ -541,21 +539,35 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.CompareDicts(templates, templatesDb, StoreNameType.Unit, "Id");
         }*/
 
-        
+        static UnitMisc()
+        {
+            HotfixStoreMgr.OnRecordReceived += (hash, recordKey, added) =>
+            {
+                if (!added || hash != DB2Hash.BroadcastText)
+                    return;
+
+                var record = HotfixStoreMgr.GetStore(hash).GetRecord(recordKey) as IBroadcastTextEntry;
+                if (record == null)
+                    return;
+
+                if (!SQLDatabase.BroadcastMaleTexts.ContainsKey(record.MaleText))
+                    SQLDatabase.BroadcastMaleTexts[record.MaleText] = new List<int>();
+                SQLDatabase.BroadcastMaleTexts[record.MaleText].Add(recordKey);
+
+                if (!SQLDatabase.BroadcastFemaleTexts.ContainsKey(record.FemaleText))
+                    SQLDatabase.BroadcastFemaleTexts[record.FemaleText] = new List<int>();
+                SQLDatabase.BroadcastFemaleTexts[record.FemaleText].Add(recordKey);
+            };
+        }
+
         [BuilderMethod]
         public static string CreatureText()
         {
-            if (Storage.CreatureTexts.IsEmpty())
-                return string.Empty;
-
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_text))
+            if (Storage.CreatureTexts.IsEmpty() || !Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_text))
                 return string.Empty;
 
             // For each sound and emote, if the time they were send is in the +1/-1 seconds range of
             // our texts, add that sound and emote to our Storage.CreatureTexts
-
-            var broadcastTextStoresMale = SQLDatabase.BroadcastTextStores.GroupBy(blub => blub.Item2.MaleText).ToDictionary(group => group.Key, group => group.ToList());
-            var broadcastTextStoresFemale = SQLDatabase.BroadcastTextStores.GroupBy(blub => blub.Item2.FemaleText).ToDictionary(group => group.Key, group => group.ToList());
 
             foreach (var text in Storage.CreatureTexts)
             {
@@ -573,19 +585,10 @@ namespace WowPacketParser.SQL.Builders
                     foreach (var sound in from sound in Storage.Sounds let timeSpan = value.Item2 - sound.Item2 where timeSpan != null && timeSpan.Value.Duration() <= TimeSpan.FromSeconds(1) select sound)
                         textValue.Item1.Sound = sound.Item1;
 
-                    if (SQLDatabase.BroadcastTextStores != null)
-                    {
-                        List<Tuple<uint, BroadcastText>> textList;
-                        if (broadcastTextStoresMale.TryGetValue(textValue.Item1.Text, out textList) ||
-                            broadcastTextStoresFemale.TryGetValue(textValue.Item1.Text, out textList))
-                            foreach (var broadcastTextId in textList)
-                            {
-                                if (!string.IsNullOrWhiteSpace(textValue.Item1.BroadcastTextID))
-                                    textValue.Item1.BroadcastTextID += " - " + broadcastTextId.Item1;
-                                else
-                                    textValue.Item1.BroadcastTextID = broadcastTextId.Item1.ToString();
-                            }
-                    }
+                    List<int> textList;
+                    if (SQLDatabase.BroadcastMaleTexts.TryGetValue(textValue.Item1.Text, out textList) ||
+                        SQLDatabase.BroadcastFemaleTexts.TryGetValue(textValue.Item1.Text, out textList))
+                        textValue.Item1.BroadcastTextID = string.Join(" - ", textList);
 
                     // Set comment
                     string from = null, to = null;
@@ -594,7 +597,7 @@ namespace WowPacketParser.SQL.Builders
                         if (textValue.Item1.SenderGUID.GetObjectType() == ObjectType.Player)
                             from = "Player";
                         else
-                            @from = !string.IsNullOrEmpty(textValue.Item1.SenderName) ? textValue.Item1.SenderName : StoreGetters.GetName(StoreNameType.Unit, (int)textValue.Item1.SenderGUID.GetEntry(), false);
+                            from = !string.IsNullOrEmpty(textValue.Item1.SenderName) ? textValue.Item1.SenderName : StoreGetters.GetName(StoreNameType.Unit, (int)textValue.Item1.SenderGUID.GetEntry(), false);
                     }
 
                     if (!textValue.Item1.ReceiverGUID.IsEmpty())
@@ -656,20 +659,17 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod]
         public static string VehicleAccessory()
         {
-            if (Storage.VehicleTemplateAccessorys.IsEmpty())
-                return string.Empty;
-
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.vehicle_template_accessory))
+            if (Storage.VehicleTemplateAccessories.IsEmpty() || !Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.vehicle_template_accessory))
                 return string.Empty;
 
             var rows = new RowList<VehicleTemplateAccessory>();
-            foreach (var accessory in Storage.VehicleTemplateAccessorys)
+            foreach (var accessory in Storage.VehicleTemplateAccessories)
             {
-                var row = new Row<VehicleTemplateAccessory>();
-
                 if (accessory.Item1.SeatId < 0 || accessory.Item1.SeatId > 7)
                     continue;
 
+                // ReSharper disable once UseObjectOrCollectionInitializer
+                var row = new Row<VehicleTemplateAccessory>();
                 row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)accessory.Item1.Entry.GetValueOrDefault(), false) + " - ";
                 row.Comment += StoreGetters.GetName(StoreNameType.Unit, (int)accessory.Item1.AccessoryEntry.GetValueOrDefault(), false);
                 accessory.Item1.Description = row.Comment;
@@ -684,10 +684,7 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod]
         public static string NpcSpellClick()
         {
-            if (Storage.NpcSpellClicks.IsEmpty())
-                return string.Empty;
-
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_spellclick_spells))
+            if (Storage.NpcSpellClicks.IsEmpty() || !Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_spellclick_spells))
                 return string.Empty;
 
             var rows = new RowList<NpcSpellClick>();
@@ -722,10 +719,7 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod(Units = true)]
         public static string NpcSpellClickMop(Dictionary<WowGuid, Unit> units)
         {
-            if (units.Count == 0)
-                return string.Empty;
-
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_spellclick_spells))
+            if (units.Count == 0 || !Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_spellclick_spells))
                 return string.Empty;
 
             var rows = new RowList<NpcSpellClick>();
@@ -734,16 +728,16 @@ namespace WowPacketParser.SQL.Builders
             {
                 var row = new Row<NpcSpellClick>();
 
-                Unit npc = unit.Value;
+                var npc = unit.Value;
                 if (npc.InteractSpellID == null)
                     continue;
 
                 if (Settings.AreaFilters.Length > 0)
-                    if (!(npc.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
+                    if (!npc.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters))
                         continue;
 
                 if (Settings.MapFilters.Length > 0)
-                    if (!(npc.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
+                    if (!npc.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters))
                         continue;
 
                 row.Data.Entry = unit.Key.GetEntry();

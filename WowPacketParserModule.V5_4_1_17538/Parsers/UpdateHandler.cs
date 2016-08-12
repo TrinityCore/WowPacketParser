@@ -760,7 +760,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
                             AccessoryEntry = guid.GetEntry(),
                             SeatId = seat
                         };
-                        Storage.VehicleTemplateAccessorys.Add(vehicleAccessory, packet.TimeSpan);
+                        Storage.VehicleTemplateAccessories.Add(vehicleAccessory, packet.TimeSpan);
                     }
                 }
 

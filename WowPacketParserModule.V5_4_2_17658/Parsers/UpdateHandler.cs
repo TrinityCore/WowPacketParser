@@ -502,7 +502,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                             AccessoryEntry = guid.GetEntry(),
                             SeatId = seat
                         };
-                        Storage.VehicleTemplateAccessorys.Add(vehicleAccessory, packet.TimeSpan);
+                        Storage.VehicleTemplateAccessories.Add(vehicleAccessory, packet.TimeSpan);
                     }
                 }
 

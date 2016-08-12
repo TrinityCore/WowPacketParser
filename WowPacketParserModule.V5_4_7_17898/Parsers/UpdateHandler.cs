@@ -526,7 +526,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                             SeatId = seat
                         };
 
-                        Storage.VehicleTemplateAccessorys.Add(vehicleAccessory, packet.TimeSpan);
+                        Storage.VehicleTemplateAccessories.Add(vehicleAccessory, packet.TimeSpan);
                     }
                 }
 

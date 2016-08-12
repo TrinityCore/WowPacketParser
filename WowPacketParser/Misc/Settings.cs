@@ -16,8 +16,7 @@ namespace WowPacketParser.Misc
         public static readonly ClientVersionBuild ClientBuild = Conf.GetEnum("ClientBuild", ClientVersionBuild.Zero);
         public static readonly TargetedDatabase TargetedDatabase = Conf.GetEnum("TargetedDatabase", TargetedDatabase.WrathOfTheLichKing);
         public static readonly DumpFormatType DumpFormat = Conf.GetEnum("DumpFormat", DumpFormatType.Text);
-        public static readonly UInt64 SQLOutputFlag = GetSQLOutputFlag();
-        public static readonly UInt64 HotfixSQLOutputFlag = GetHotfixSQLOutputFlag();
+        public static readonly ulong SQLOutputFlag = GetSQLOutputFlag();
         public static readonly bool SQLOrderByKey = Conf.GetBoolean("SqlOrderByKey", false);
         public static readonly string SQLFileName = Conf.GetString("SQLFileName", string.Empty);
         public static readonly bool ShowEndPrompt = Conf.GetBoolean("ShowEndPrompt", false);
@@ -46,26 +45,10 @@ namespace WowPacketParser.Misc
         public static readonly string HotfixesDatabase = Conf.GetString("HotfixesDatabase", "hotfixes");
         public static readonly string CharacterSet = Conf.GetString("CharacterSet", "utf8");
 
-        private static UInt64 GetSQLOutputFlag()
+        private static ulong GetSQLOutputFlag()
         {
             var names = Enum.GetNames(typeof(SQLOutput));
             var values = Enum.GetValues(typeof(SQLOutput));
-
-            var result = 0ul;
-
-            for (var i = 0; i < names.Length; ++i)
-            {
-                if (Conf.GetBoolean(names[i], false))
-                    result += (1ul << (int)values.GetValue(i));
-            }
-
-            return result;
-        }
-
-        private static UInt64 GetHotfixSQLOutputFlag()
-        {
-            var names = Enum.GetNames(typeof(HotfixSQLOutput));
-            var values = Enum.GetValues(typeof(HotfixSQLOutput));
 
             var result = 0ul;
 

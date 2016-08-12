@@ -16,7 +16,7 @@ namespace WowPacketParser.SQL
     {
         public static void DumpSQL(string prefix, string fileName, string header)
         {
-            DateTime startTime = DateTime.Now;
+            var startTime = DateTime.Now;
 
             var units = Storage.Objects.IsEmpty()
                 ? new Dictionary<WowGuid, Unit>()                                                               // empty dict if there are no objects
@@ -36,7 +36,7 @@ namespace WowPacketParser.SQL
             foreach (var obj in Storage.Objects)
                 obj.Value.Item1.LoadValuesFromUpdateFields();
 
-            using (SQLFile store = new SQLFile(fileName))
+            using (var store = new SQLFile(fileName))
             {
                 var builderMethods = Assembly.GetExecutingAssembly()
                     .GetTypes()
@@ -45,10 +45,10 @@ namespace WowPacketParser.SQL
                     .Where(y => y.GetCustomAttributes().OfType<BuilderMethodAttribute>().Any())
                     .ToList();
 
-                int i = 0;
-                foreach (MethodInfo method in builderMethods)
+                var i = 0;
+                foreach (var method in builderMethods)
                 {
-                    BuilderMethodAttribute attr = method.GetCustomAttribute<BuilderMethodAttribute>();
+                    var attr = method.GetCustomAttribute<BuilderMethodAttribute>();
 
                     if (attr.CheckVersionMismatch)
                     {
@@ -90,8 +90,8 @@ namespace WowPacketParser.SQL
                 Trace.WriteLine(store.WriteToFile(header)
                     ? $"{prefix}: Saved file to '{fileName}'"
                     : "No SQL files created -- empty.");
-                DateTime endTime = DateTime.Now;
-                TimeSpan span = endTime.Subtract(startTime);
+                var endTime = DateTime.Now;
+                var span = endTime.Subtract(startTime);
                 Trace.WriteLine($"Finished SQL file in {span.ToFormattedString()}.");
             }
         }

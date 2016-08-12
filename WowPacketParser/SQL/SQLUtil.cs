@@ -72,7 +72,7 @@ namespace WowPacketParser.SQL
         /// <returns></returns>
         public static void ReplaceLast(this StringBuilder str, char oldChar, char newChar)
         {
-            for (int i = str.Length - 1; i > 0; i--)
+            for (var i = str.Length - 1; i > 0; i--)
                 if (str[i] == oldChar)
                 {
                     str[i] = newChar;
@@ -123,7 +123,7 @@ namespace WowPacketParser.SQL
 
             if (value is Enum)
             {
-                Type undertype = Enum.GetUnderlyingType(value.GetType());
+                var undertype = Enum.GetUnderlyingType(value.GetType());
                 value = Convert.ChangeType(value, undertype);
             }
 
@@ -144,7 +144,7 @@ namespace WowPacketParser.SQL
                 return tableAttrs[0].Name;
 
             //convert CamelCase name to camel_case
-            string name = typeof(T).Name;
+            var name = typeof(T).Name;
             return AddBackQuotes(string.Concat(name.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString().ToLower() : x.ToString().ToLower())));
         }
 
@@ -205,30 +205,30 @@ namespace WowPacketParser.SQL
                     var verBuildField = fields.FirstOrDefault(f => f.Item2.Name == "VerifiedBuild");
                     if (verBuildField != null)
                     {
-                        int buildvSniff = (int)lastField.Item2.GetValue(elem1.Item1);
-                        int buildvDB = (int)lastField.Item2.GetValue(dbList[elem1.Item1].Data);
+                        var buildvSniff = (int)lastField.Item2.GetValue(elem1.Item1);
+                        var buildvDB = (int)lastField.Item2.GetValue(dbList[elem1.Item1].Data);
 
                         if (buildvDB > buildvSniff) // skip update if DB already has a VerifiedBuild higher than this one
                             continue;
                     }
 
                     var row = new Row<T>();
-                    T elem2 = dbList[elem1.Item1].Data;
+                    var elem2 = dbList[elem1.Item1].Data;
 
                     foreach (var field in fields)
                     {
-                        object val1 = field.Item2.GetValue(elem1.Item1);
-                        object val2 = field.Item2.GetValue(elem2);
+                        var val1 = field.Item2.GetValue(elem1.Item1);
+                        var val2 = field.Item2.GetValue(elem2);
 
-                        Array arr1 = val1 as Array;
+                        var arr1 = val1 as Array;
                         if (arr1 != null)
                         {
-                            Array arr2 = (Array)val2;
+                            var arr2 = (Array)val2;
 
-                            for (int i = 0; i < field.Item3.First().Count; i++)
+                            for (var i = 0; i < field.Item3.First().Count; i++)
                             {
-                                object value1 = arr1.GetValue(i);
-                                object value2 = arr2.GetValue(i);
+                                var value1 = arr1.GetValue(i);
+                                var value2 = arr2.GetValue(i);
 
                                 if (Utilities.EqualValues(value1, value2))
                                     arr1.SetValue(null, i);

@@ -105,6 +105,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\XAct.Wintellect.PowerCollections.0.0.1\lib\net20\PowerCollections.dll</HintPath>
     </Reference>
+    <Reference Include="Sigil, Version=4.7.0.0, Culture=neutral, PublicKeyToken=2d06c3494341c8ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sigil.4.7.0\lib\net45\Sigil.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -215,7 +219,6 @@
     <Compile Include="Enums\HighGuidMask.cs" />
     <Compile Include="Enums\HighGuidType.cs" />
     <Compile Include="Enums\Holiday.cs" />
-    <Compile Include="Enums\HotfixSQLOutput.cs" />
     <Compile Include="Enums\InhabitType.cs" />
     <Compile Include="Enums\LocaleConstant.cs" />
     <Compile Include="Enums\MountResult.cs" />
@@ -388,6 +391,11 @@
     <Compile Include="Enums\WardenCheckType.cs" />
     <Compile Include="Enums\WardenOpcode.cs" />
     <Compile Include="Enums\WeatherState.cs" />
+    <Compile Include="Hotfix\HotfixConfiguration.cs" />
+    <Compile Include="Hotfix\HotfixExtensions.cs" />
+    <Compile Include="Hotfix\IHotfixSerializer.cs" />
+    <Compile Include="Hotfix\HotfixStore.cs" />
+    <Compile Include="Hotfix\HotfixStructureAttribute.cs" />
     <Compile Include="Loading\BinaryPacketReader.cs" />
     <Compile Include="Loading\IPacketReader.cs" />
     <Compile Include="Loading\Reader.cs" />
@@ -478,7 +486,7 @@
     <Compile Include="Saving\SplitBinaryPacketWriter.cs" />
     <Compile Include="SQL\Builder.cs" />
     <Compile Include="SQL\Builders\BuilderAttributes.cs" />
-    <Compile Include="SQL\Builders\DB2.cs" />
+    <Compile Include="SQL\Builders\HotfixBuilder.cs" />
     <Compile Include="SQL\Builders\Locales.cs" />
     <Compile Include="SQL\Builders\Miscellaneous.cs" />
     <Compile Include="SQL\Builders\QuestMisc.cs" />
@@ -496,51 +504,29 @@
     <Compile Include="SQL\SQLFile.cs" />
     <Compile Include="SQL\SQLUtil.cs" />
     <Compile Include="SQL\SSHTunnel.cs" />
-    <Compile Include="Store\Objects\AreaPOI.cs" />
-    <Compile Include="Store\Objects\AreaPOIState.cs" />
     <Compile Include="Store\Objects\Aura.cs" />
-    <Compile Include="Store\Objects\BattlePetSpecies.cs" />
-    <Compile Include="Store\Objects\BroadcastText.cs" />
     <Compile Include="Store\Objects\BroadcastTextLocale.cs" />
-    <Compile Include="Store\Objects\ChrUpgradeBucketSpell.cs" />
-    <Compile Include="Store\Objects\ChrUpgradeBucket.cs" />
-    <Compile Include="Store\Objects\ChrUpgradeTier.cs" />
     <Compile Include="Store\Objects\Creature.cs" />
     <Compile Include="Store\Objects\CreatureAddon.cs" />
-    <Compile Include="Store\Objects\CreatureDB2.cs" />
-    <Compile Include="Store\Objects\CreatureDifficulty.cs" />
     <Compile Include="Store\Objects\CreatureEquipment.cs" />
     <Compile Include="Store\Objects\CreatureTemplateAddon.cs" />
     <Compile Include="Store\Objects\CreatureText.cs" />
-    <Compile Include="Store\Objects\CurvePoint.cs" />
     <Compile Include="Store\Objects\GameObjectAddon.cs" />
     <Compile Include="Store\Objects\GameObject.cs" />
     <Compile Include="Store\Objects\GameObjectModel.cs" />
-    <Compile Include="Store\Objects\GameObjects.cs" />
     <Compile Include="Store\Objects\GameObjectTemplate.cs" />
     <Compile Include="Store\Objects\GossipMenu.cs" />
     <Compile Include="Store\Objects\GossipMenuOption.cs" />
+    <Compile Include="Store\Objects\IBroadcastTextEntry.cs" />
     <Compile Include="Store\Objects\PointsOfInterest.cs" />
-    <Compile Include="Store\Objects\Holiday.cs" />
     <Compile Include="Store\Objects\HotfixData.cs" />
     <Compile Include="Store\Objects\Item.cs" />
-    <Compile Include="Store\Objects\ItemAppearance.cs" />
-    <Compile Include="Store\Objects\ItemBonus.cs" />
-    <Compile Include="Store\Objects\ItemBonusTreeNode.cs" />
-    <Compile Include="Store\Objects\ItemCurrencyCost.cs" />
-    <Compile Include="Store\Objects\ItemEffect.cs" />
-    <Compile Include="Store\Objects\ItemExtendedCost.cs" />
-    <Compile Include="Store\Objects\ItemModifiedAppearance.cs" />
-    <Compile Include="Store\Objects\ItemSparse.cs" />
     <Compile Include="Store\Objects\ItemTemplate.cs" />
-    <Compile Include="Store\Objects\KeyChain.cs" />
     <Compile Include="Store\Objects\LocalesQuest.cs" />
     <Compile Include="Store\Objects\QuestDetails.cs" />
     <Compile Include="Store\Objects\QuestGreeting.cs" />
     <Compile Include="Store\Objects\QuestObjectivesLocale.cs" />
-    <Compile Include="Store\Objects\Location.cs" />
     <Compile Include="Store\Objects\ModelData.cs" />
-    <Compile Include="Store\Objects\Mount.cs" />
     <Compile Include="Store\Objects\NpcText.cs" />
     <Compile Include="Store\Objects\NpcSpellClick.cs" />
     <Compile Include="Store\Objects\NpcTrainer.cs" />
@@ -557,27 +543,11 @@
     <Compile Include="Store\Objects\QuestRequestItems.cs" />
     <Compile Include="Store\Objects\QuestTemplate.cs" />
     <Compile Include="Store\Objects\QuestVisualEffect.cs" />
-    <Compile Include="Store\Objects\SceneScript.cs" />
     <Compile Include="Store\Objects\SniffData.cs" />
-    <Compile Include="Store\Objects\SpellAuraRestrictions.cs" />
-    <Compile Include="Store\Objects\SpellCastingRequirements.cs" />
-    <Compile Include="Store\Objects\SpellClassOptions.cs" />
-    <Compile Include="Store\Objects\SpellEffectGroupSize.cs" />
-    <Compile Include="Store\Objects\SpellLearnSpell.cs" />
-    <Compile Include="Store\Objects\SpellMisc.cs" />
-    <Compile Include="Store\Objects\SpellPower.cs" />
-    <Compile Include="Store\Objects\SpellReagents.cs" />
-    <Compile Include="Store\Objects\SpellRuneCost.cs" />
-    <Compile Include="Store\Objects\SpellTotems.cs" />
     <Compile Include="Store\Objects\PlayerCreateInfoAction.cs" />
     <Compile Include="Store\Objects\PlayerCreateInfo.cs" />
-    <Compile Include="Store\Objects\TaxiNodes.cs" />
-    <Compile Include="Store\Objects\TaxiPath.cs" />
-    <Compile Include="Store\Objects\TaxiPathNode.cs" />
-    <Compile Include="Store\Objects\Toy.cs" />
     <Compile Include="Store\Objects\Unit.cs" />
     <Compile Include="Store\Objects\CreatureTemplate.cs" />
-    <Compile Include="Store\Objects\UnitTemplateNonWDB.cs" />
     <Compile Include="Store\Objects\VehicleTemplateAccessory.cs" />
     <Compile Include="Store\Objects\WeatherUpdate.cs" />
     <Compile Include="Store\Objects\WoWObject.cs" />

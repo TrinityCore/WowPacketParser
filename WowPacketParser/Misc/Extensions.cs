@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -166,7 +167,7 @@ namespace WowPacketParser.Misc
 
         public static string GetExtension(this FileCompression value)
         {
-            FileCompressionAttribute[] attributes = (FileCompressionAttribute[])value.GetType().GetField(value.ToString()).GetCustomAttributes(typeof(FileCompressionAttribute), false);
+            var attributes = (FileCompressionAttribute[])value.GetType().GetField(value.ToString()).GetCustomAttributes(typeof(FileCompressionAttribute), false);
             return (attributes.Length > 0) ? attributes[0].Extension : "";
         }
 
@@ -175,7 +176,7 @@ namespace WowPacketParser.Misc
             // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (FileCompression item in Enum.GetValues(typeof(FileCompression)))
             {
-                FileCompressionAttribute[] attributes = (FileCompressionAttribute[])item.GetType().GetField(item.ToString()).GetCustomAttributes(typeof(FileCompressionAttribute), false);
+                var attributes = (FileCompressionAttribute[])item.GetType().GetField(item.ToString()).GetCustomAttributes(typeof(FileCompressionAttribute), false);
                 if (attributes.Length > 0 && (attributes[0].Extension.Equals(str.ToLower())))
                     return item;
             }

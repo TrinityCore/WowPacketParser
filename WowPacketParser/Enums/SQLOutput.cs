@@ -34,6 +34,8 @@
         SniffDataOpcodes,
         vehicle_template_accessory,
         weather_updates,
+
+        hotfix_data
         // ReSharper restore InconsistentNaming
     }
 }

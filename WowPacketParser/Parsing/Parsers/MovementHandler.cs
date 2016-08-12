@@ -204,7 +204,7 @@ namespace WowPacketParser.Parsing.Parsers
                         AccessoryEntry = guid.GetEntry(),
                         SeatId = seat
                     };
-                    Storage.VehicleTemplateAccessorys.Add(vehicleAccessory, packet.TimeSpan);
+                    Storage.VehicleTemplateAccessories.Add(vehicleAccessory, packet.TimeSpan);
                 }
             }
 

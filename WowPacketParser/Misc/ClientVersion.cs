@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
+using WowPacketParser.Hotfix;
 using WowPacketParser.Parsing;
 
 namespace WowPacketParser.Misc
@@ -377,6 +378,7 @@ namespace WowPacketParser.Misc
                 var asm = Assembly.Load($"WowPacketParserModule.{VersionDefiningBuild}");
                 Trace.WriteLine($"Loading module WowPacketParserModule.{VersionDefiningBuild}.dll");
 
+                HotfixStoreMgr.LoadStores(asm);
                 Handler.LoadHandlers(asm, VersionDefiningBuild);
                 BattlenetHandler.LoadBattlenetHandlers(asm);
 

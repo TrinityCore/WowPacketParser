@@ -54,6 +54,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Enums\TradeStatus.cs" />
+    <Compile Include="Hotfix\BroadcastTextEntry.cs" />
+    <Compile Include="Hotfix\CreatureEntry.cs" />
+    <Compile Include="Hotfix\HotfixSerializer.cs" />
+    <Compile Include="Hotfix\ItemEntry.cs" />
+    <Compile Include="Hotfix\ItemSparseEntry.cs" />
+    <Compile Include="Hotfix\KeyChainEntry.cs" />
     <Compile Include="Parsers\AccountDataHandler.cs" />
     <Compile Include="Parsers\AchievementHandler.cs" />
     <Compile Include="Parsers\ActionBarHandler.cs" />
@@ -87,7 +93,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Sigil, Version=4.7.0.0, Culture=neutral, PublicKeyToken=2d06c3494341c8ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sigil.4.7.0\lib\net45\Sigil.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
