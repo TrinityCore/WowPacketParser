@@ -45,7 +45,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Data", TargetedDatabase.WarlordsOfDraenor, 33, true)]
         public int?[] Data;
 
-        [DBFieldName("Required Level", TargetedDatabase.Cataclysm)]
+        [DBFieldName("RequiredLevel", TargetedDatabase.Cataclysm)]
         public int? RequiredLevel;
 
         [DBFieldName("VerifiedBuild")]
