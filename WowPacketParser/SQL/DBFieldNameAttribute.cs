@@ -25,6 +25,11 @@ namespace WowPacketParser.SQL
         public bool IsPrimaryKey { get; set; }
 
         /// <summary>
+        /// True if field shouldn't be quoted.
+        /// </summary>
+        public bool NoQuotes { get; set; }
+
+        /// <summary>
         /// Number of fields
         /// </summary>
         public int Count { get; set; }
@@ -50,10 +55,11 @@ namespace WowPacketParser.SQL
         /// </summary>
         /// <param name="name">database field name</param>
         /// <param name="isPrimaryKey">true if field is a primary key</param>
-        public DBFieldNameAttribute(string name, bool isPrimaryKey = false)
+        public DBFieldNameAttribute(string name, bool isPrimaryKey = false, bool noQuotes = false)
         {
             Name = name;
             IsPrimaryKey = isPrimaryKey;
+            NoQuotes = noQuotes;
             Count = 1;
         }
 
@@ -63,10 +69,11 @@ namespace WowPacketParser.SQL
         /// <param name="name">database field name</param>
         /// <param name="locale">initial locale</param>
         /// <param name="isPrimaryKey">true if field is a primary key</param>
-        public DBFieldNameAttribute(string name, LocaleConstant locale, bool isPrimaryKey = false)
+        public DBFieldNameAttribute(string name, LocaleConstant locale, bool isPrimaryKey = false, bool noQuotes = false)
         {
             Name = name;
             IsPrimaryKey = isPrimaryKey;
+            NoQuotes = noQuotes;
             Count = 1;
             Locale = locale;
         }
@@ -77,10 +84,11 @@ namespace WowPacketParser.SQL
         /// <param name="name">database field name</param>
         /// <param name="addedInVersion">initial version</param>
         /// <param name="isPrimaryKey">true if field is a primary key</param>
-        public DBFieldNameAttribute(string name, TargetedDatabase addedInVersion, bool isPrimaryKey = false)
+        public DBFieldNameAttribute(string name, TargetedDatabase addedInVersion, bool isPrimaryKey = false, bool noQuotes = false)
         {
             Name = name;
             IsPrimaryKey = isPrimaryKey;
+            NoQuotes = noQuotes;
             Count = 1;
             _addedInVersion = addedInVersion;
         }
@@ -92,10 +100,11 @@ namespace WowPacketParser.SQL
         /// <param name="addedInVersion">initial version</param>
         /// <param name="locale">initial locale</param>
         /// <param name="isPrimaryKey">true if field is a primary key</param>
-        public DBFieldNameAttribute(string name, TargetedDatabase addedInVersion, LocaleConstant locale, bool isPrimaryKey = false)
+        public DBFieldNameAttribute(string name, TargetedDatabase addedInVersion, LocaleConstant locale, bool isPrimaryKey = false, bool noQuotes = false)
         {
             Name = name;
             IsPrimaryKey = isPrimaryKey;
+            NoQuotes = noQuotes;
             Count = 1;
             Locale = locale;
             _addedInVersion = addedInVersion;
@@ -108,10 +117,11 @@ namespace WowPacketParser.SQL
         /// <param name="addedInVersion">initial version</param>
         /// <param name="removedInVersion">final version</param>
         /// <param name="isPrimaryKey">true if field is a primary key</param>
-        public DBFieldNameAttribute(string name, TargetedDatabase addedInVersion, TargetedDatabase removedInVersion, bool isPrimaryKey = false)
+        public DBFieldNameAttribute(string name, TargetedDatabase addedInVersion, TargetedDatabase removedInVersion, bool isPrimaryKey = false, bool noQuotes = false)
         {
             Name = name;
             IsPrimaryKey = isPrimaryKey;
+            NoQuotes = noQuotes;
             Count = 1;
             _addedInVersion = addedInVersion;
             _removedInVersion = removedInVersion;
@@ -126,10 +136,11 @@ namespace WowPacketParser.SQL
         /// <param name="removedInVersion">final version</param>
         /// <param name="locale">initial locale</param>
         /// <param name="isPrimaryKey">true if field is a primary key</param>
-        public DBFieldNameAttribute(string name, TargetedDatabase addedInVersion, TargetedDatabase removedInVersion, LocaleConstant locale, bool isPrimaryKey = false)
+        public DBFieldNameAttribute(string name, TargetedDatabase addedInVersion, TargetedDatabase removedInVersion, LocaleConstant locale, bool isPrimaryKey = false, bool noQuotes = false)
         {
             Name = name;
             IsPrimaryKey = isPrimaryKey;
+            NoQuotes = noQuotes;
             Count = 1;
             Locale = locale;
             _addedInVersion = addedInVersion;
@@ -143,10 +154,11 @@ namespace WowPacketParser.SQL
         /// <param name="count">number of fields</param>
         /// <param name="startAtZero">true if fields name start at 0</param>
         /// <param name="isPrimaryKey">true if field is a primary key</param>
-        public DBFieldNameAttribute(string name, int count, bool startAtZero = false, bool isPrimaryKey = false)
+        public DBFieldNameAttribute(string name, int count, bool startAtZero = false, bool isPrimaryKey = false, bool noQuotes = false)
         {
             Name = name;
             IsPrimaryKey = isPrimaryKey;
+            NoQuotes = noQuotes;
             Count = count;
             StartAtZero = startAtZero;
             _multipleFields = true;
@@ -161,10 +173,11 @@ namespace WowPacketParser.SQL
         /// <param name="startAtZero">true if fields name start at 0</param>
         /// <param name="isPrimaryKey">true if field is a primary key</param>
         public DBFieldNameAttribute(string name, TargetedDatabase addedInVersion, int count, bool startAtZero = false,
-            bool isPrimaryKey = false)
+            bool isPrimaryKey = false, bool noQuotes = false)
         {
             Name = name;
             IsPrimaryKey = isPrimaryKey;
+            NoQuotes = noQuotes;
             Count = count;
             _addedInVersion = addedInVersion;
 
@@ -182,10 +195,11 @@ namespace WowPacketParser.SQL
         /// <param name="startAtZero">true if fields name start at 0</param>
         /// <param name="isPrimaryKey">true if field is a primary key</param>
         public DBFieldNameAttribute(string name, TargetedDatabase addedInVersion, TargetedDatabase removedInVersion,
-            int count, bool startAtZero = false, bool isPrimaryKey = false)
+            int count, bool startAtZero = false, bool isPrimaryKey = false, bool noQuotes = false)
         {
             Name = name;
             IsPrimaryKey = isPrimaryKey;
+            NoQuotes = noQuotes;
             Count = count;
             _addedInVersion = addedInVersion;
             _removedInVersion = removedInVersion;

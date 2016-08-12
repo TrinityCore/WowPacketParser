@@ -388,8 +388,10 @@ namespace WowPacketParser.SQL
 
             query.Append("(");
 
-            foreach (object value in SQLUtil.GetFields<T>().Select(field => field.Item2.GetValue(_row.Data)))
+            //foreach (object value in SQLUtil.GetFields<T>().Select(field => field.Item2.GetValue(_row.Data)))
+            foreach (var field in SQLUtil.GetFields<T>())
             {
+                object value = field.Item2.GetValue(_row.Data);
                 if (value == null)
                 {
                     query.Append("UNKNOWN");
@@ -412,7 +414,7 @@ namespace WowPacketParser.SQL
                     }
                     else
                     {
-                        query.Append(SQLUtil.ToSQLValue(value));
+                        query.Append(SQLUtil.ToSQLValue(value, noQuotes: field.Item3.Any(a => a.NoQuotes == true)));
                         query.Append(SQLUtil.CommaSeparator);
                     }
                 }

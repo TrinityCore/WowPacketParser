@@ -5,7 +5,7 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("gameobject_addon")]
     public sealed class GameObjectAddon : IDataModel
     {
-        [DBFieldName("guid", true)]
+        [DBFieldName("guid", true, true)]
         public string GUID;
 
         [DBFieldName("parent_rotation0")]
