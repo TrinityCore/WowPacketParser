@@ -122,6 +122,21 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadInt32("TemplateSetID");
         }
 
+        [Parser(Opcode.SMSG_LEVEL_UP_INFO)]
+        public static void HandleLevelUpInfo(Packet packet)
+        {
+            packet.ReadInt32("Level");
+            packet.ReadInt32("HealthDelta");
+
+            for (var i = 0; i < 6; i++)
+                packet.ReadInt32("PowerDelta", (PowerType)i);
+
+            for (var i = 0; i < 4; i++)
+                packet.ReadInt32("StatDelta", (StatType)i);
+
+            packet.ReadInt32("Cp");
+        }
+
         [Parser(Opcode.SMSG_HEALTH_UPDATE)]
         public static void HandleHealthUpdate(Packet packet)
         {
