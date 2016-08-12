@@ -90,7 +90,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 V6_0_2_19033.Parsers.SpellHandler.ReadSpellPowerData(packet, idx, "RemainingPower", i);
 
             if (hasRuneData)
-                V6_0_2_19033.Parsers.SpellHandler.ReadRuneData(packet, idx, "RemainingRunes");
+                ReadRuneData(packet, idx, "RemainingRunes");
 
             for (var i = 0; i < targetPointsCount; ++i)
                 V6_0_2_19033.Parsers.SpellHandler.ReadLocation(packet, idx, "TargetPoints", i);
@@ -123,6 +123,19 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadInt32("MapID", idx);
 
             packet.ReadWoWString("Name", nameLength, idx);
+        }
+
+        public static void ReadRuneData(Packet packet, params object[] idx)
+        {
+            packet.ReadByte("Start", idx);
+            packet.ReadByte("Count", idx);
+
+            packet.ResetBitReader();
+
+            var cooldownCount = packet.ReadInt32("CooldownCount", idx);
+
+            for (var i = 0; i < cooldownCount; ++i)
+                packet.ReadByte("Cooldowns", idx, i);
         }
 
         public static void ReadSandboxScalingData(Packet packet, params object[] idx)
@@ -190,6 +203,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.CMSG_CAST_SPELL)]
         public static void HandleCastSpell(Packet packet)
         {
+            ReadSpellCastRequest(packet, "Cast");
+        }
+
+        [Parser(Opcode.CMSG_PET_CAST_SPELL)]
+        public static void HandlePetCastSpell(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
             ReadSpellCastRequest(packet, "Cast");
         }
 
