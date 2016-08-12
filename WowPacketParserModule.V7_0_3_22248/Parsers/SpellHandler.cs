@@ -395,5 +395,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadPackedGuid128("CastID");
             packet.ReadUInt32<SpellId>("SpellID");
         }
+
+        [Parser(Opcode.CMSG_LEARN_TALENTS)]
+        public static void HandleLearnTalents(Packet packet)
+        {
+            var talentCount = packet.ReadBits("TalentCount", 6);
+            for (int i = 0; i < talentCount; i++)
+                packet.ReadInt16("Talents");
+        }
     }
 }
