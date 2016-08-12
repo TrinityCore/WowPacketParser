@@ -97,6 +97,31 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 ReadCharactersData(packet, i, "CharactersData");
         }
 
+        [Parser(Opcode.CMSG_CREATE_CHARACTER)]
+        public static void HandleClientCharCreate(Packet packet)
+        {
+            var nameLen = packet.ReadBits(6);
+            var hasTemplateSet = packet.ReadBit();
+
+            packet.ReadByteE<Race>("RaceID");
+            packet.ReadByteE<Class>("ClassID");
+            packet.ReadByteE<Gender>("SexID");
+            packet.ReadByte("SkinID");
+            packet.ReadByte("FaceID");
+            packet.ReadByte("HairStyleID");
+            packet.ReadByte("HairColorID");
+            packet.ReadByte("FacialHairStyleID");
+            packet.ReadByte("OutfitID");
+
+            for (uint i = 0; i < 3; ++i)
+                packet.ReadByte("CustomDisplay", i);
+
+            packet.ReadWoWString("Name", nameLen);
+
+            if (hasTemplateSet)
+                packet.ReadInt32("TemplateSetID");
+        }
+
         [Parser(Opcode.SMSG_HEALTH_UPDATE)]
         public static void HandleHealthUpdate(Packet packet)
         {
