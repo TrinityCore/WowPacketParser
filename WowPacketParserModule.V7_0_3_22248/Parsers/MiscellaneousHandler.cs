@@ -53,5 +53,21 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             if (hasInstanceGroupSize)
                 packet.ReadInt32("InstanceGroupSize");
         }
+
+        [Parser(Opcode.SMSG_ACCOUNT_MOUNT_UPDATE)]
+        public static void HandleAccountMountUpdate(Packet packet)
+        {
+            packet.ReadBit("IsFullUpdate");
+
+            var mountSpellIDsCount = packet.ReadInt32("MountSpellIDsCount");
+
+            for (int i = 0; i < mountSpellIDsCount; i++)
+            {
+                packet.ReadInt32("MountSpellIDs", i);
+
+                packet.ResetBitReader();
+                packet.ReadBits("MountIsFavorite", 2, i);
+            }
+        }
     }
 }
