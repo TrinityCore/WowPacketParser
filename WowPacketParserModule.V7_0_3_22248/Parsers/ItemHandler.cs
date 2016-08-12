@@ -43,5 +43,15 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, "ItemInstance");
         }
+
+        [Parser(Opcode.CMSG_USE_ITEM)]
+        public static void HandleUseItem(Packet packet)
+        {
+            packet.ReadByte("PackSlot");
+            packet.ReadByte("Slot");
+            packet.ReadPackedGuid128("CastItem");
+
+            SpellHandler.ReadSpellCastRequest(packet, "Cast");
+        }
     }
 }
