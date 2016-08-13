@@ -76,11 +76,11 @@ namespace WowPacketParser.SQL.Builders
                 Unit unit = units.FirstOrDefault(p => p.Key.GetEntry() == cre.Item1.Entry.GetValueOrDefault()).Value;
                 var levels = UnitMisc.GetLevels(units);
 
+                cre.Item1.GossipMenuID = 0;
+
                 if (unit != null)
                 {
                     if (unit.GossipId == 0)
-                        cre.Item1.GossipMenuID = null;
-                    else
                         cre.Item1.GossipMenuID = unit.GossipId;
 
                     cre.Item1.MinLevel = (int)levels[cre.Item1.Entry.GetValueOrDefault()].Item1;
@@ -157,16 +157,30 @@ namespace WowPacketParser.SQL.Builders
                     }
                 }
 
-                cre.Item1.DifficultyEntries = new uint?[] {null, null, null};
+                // Set some defaults
+                cre.Item1.DifficultyEntries = new uint?[] {0, 0, 0};
+                cre.Item1.FemaleName = "";
                 cre.Item1.Scale = 1;
                 cre.Item1.DmgSchool = 0;
                 cre.Item1.BaseVariance = 1;
                 cre.Item1.RangeVariance = 1;
-                cre.Item1.Resistances = new short?[] {null, null, null, null, null, null};
+                cre.Item1.TrainerType = TrainerType.Class;
+                cre.Item1.TrainerSpell = 0;
+                cre.Item1.TrainerRace = Race.None;
+                cre.Item1.LootID = 0;
+                cre.Item1.PickPocketLoot = 0;
+                cre.Item1.SkinLoot = 0;
+                cre.Item1.Resistances = new short?[] {0, 0, 0, 0, 0, 0};
                 cre.Item1.Spells = new uint?[] {0, 0, 0, 0, 0, 0, 0, 0};
+                cre.Item1.AIName = "";
                 cre.Item1.HealthModifierExtra = 1;
                 cre.Item1.ManaModifierExtra = 1;
                 cre.Item1.ArmorModifier = 1;
+                cre.Item1.ExperienceModifier = 1;
+                cre.Item1.RegenHealth = 1;
+                cre.Item1.MechanicImmuneMask = 1;
+                cre.Item1.FlagsExtra = 1;
+                cre.Item1.ScriptName = "";
             }
 
             foreach (
