@@ -235,6 +235,7 @@
     <Compile Include="Parsers\CharacterHandler.cs" />
     <Compile Include="Parsers\CombatLogHandler.cs" />
     <Compile Include="Parsers\CreatureHandler.cs" />
+    <Compile Include="Parsers\GameObjectHandler.cs" />
     <Compile Include="Parsers\GuildHandler.cs" />
     <Compile Include="Parsers\HotfixHandler.cs" />
     <Compile Include="Parsers\ItemHandler.cs" />
