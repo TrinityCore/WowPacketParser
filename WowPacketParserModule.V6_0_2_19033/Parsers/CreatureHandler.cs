@@ -73,8 +73,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             //creature.QuestItems = new uint[6];
             int questItems = packet.ReadInt32("QuestItems");
             creature.MovementID = packet.ReadUInt32("CreatureMovementInfoID");
-            creature.ExpUnk = packet.ReadUInt32E<ClientType>("RequiredExpansion");
-            packet.ReadInt32("FlagQuest");
+            creature.ExpUnk = packet.ReadUInt32E<ClientType>("HealthScalingExpansion");
+            packet.ReadUInt32E<ClientType>("RequiredExpansion");
 
             if (titleLen > 1)
                 creature.SubName = packet.ReadCString("Title");
