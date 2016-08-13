@@ -26,6 +26,9 @@ namespace WowPacketParser.Tests.SQL
 
             [DBFieldName("TestString1")]
             public string TestString1;
+
+            [DBFieldName("NoQuotes", noQuotes: true)]
+            public string noQuotes;
         }
 
         private class TestDataTwoPK : IDataModel
@@ -54,8 +57,8 @@ namespace WowPacketParser.Tests.SQL
 
             _valuesOnePk = new RowList<TestDataOnePK>
             {
-                new TestDataOnePK {ID = 4, TestInt1 = 5, TestString1 = "string2"},
-                new TestDataOnePK {ID = 6, TestInt1 = 7}
+                new TestDataOnePK {ID = 4, TestInt1 = 5, TestString1 = "string2", noQuotes="@CGUID"},
+                new TestDataOnePK {ID = 6, TestInt1 = 7, noQuotes = "@CGUID+1"}
             };
 
             _conditionsTwoPk = new RowList<TestDataTwoPK>
@@ -90,7 +93,7 @@ namespace WowPacketParser.Tests.SQL
         [Test]
         public void TestSQLSelectNoCond()
         {
-            Assert.AreEqual("SELECT `ID`, `TestInt1`, `TestInt2`, `TestString1` FROM world.`test_data_one_p_k`",
+            Assert.AreEqual("SELECT `ID`, `TestInt1`, `TestInt2`, `TestString1`, `NoQuotes` FROM world.`test_data_one_p_k`",
                 new SQLSelect<TestDataOnePK>().Build());
 
             Assert.AreEqual("SELECT `ID`, `TestInt1`, `TestInts1`, `TestInts2`, `TestString1` FROM world.`test_data_two_p_k`",
@@ -101,11 +104,11 @@ namespace WowPacketParser.Tests.SQL
         public void TestSQLSelectWithCond()
         {
             Assert.AreEqual(
-                "SELECT `ID`, `TestInt1`, `TestInt2`, `TestString1` FROM world.`test_data_one_p_k` WHERE (`ID`=1 AND `TestInt1`=2 AND `TestString1`='string1') OR (`ID`=2 AND `TestInt1`=3)",
+                "SELECT `ID`, `TestInt1`, `TestInt2`, `TestString1`, `NoQuotes` FROM world.`test_data_one_p_k` WHERE (`ID`=1 AND `TestInt1`=2 AND `TestString1`='string1') OR (`ID`=2 AND `TestInt1`=3)",
                 new SQLSelect<TestDataOnePK>(_conditionsOnePk, onlyPrimaryKeys: false).Build());
 
             Assert.AreEqual(
-                "SELECT `ID`, `TestInt1`, `TestInt2`, `TestString1` FROM world.`test_data_one_p_k` WHERE `ID` IN (1, 2)",
+                "SELECT `ID`, `TestInt1`, `TestInt2`, `TestString1`, `NoQuotes` FROM world.`test_data_one_p_k` WHERE `ID` IN (1, 2)",
                 new SQLSelect<TestDataOnePK>(_conditionsOnePk).Build());
         }
 
@@ -140,17 +143,17 @@ namespace WowPacketParser.Tests.SQL
             };
 
             var update = new SQLUpdate<TestDataOnePK>(values);
-            Assert.AreEqual("UPDATE `test_data_one_p_k` SET `ID`=4, `TestInt1`=5, `TestString1`='string2' WHERE `ID` IN (1, 2);" + Environment.NewLine +
-                            "UPDATE `test_data_one_p_k` SET `ID`=6, `TestInt1`=7 WHERE `ID` IN (1, 2);" + Environment.NewLine,
+            Assert.AreEqual("UPDATE `test_data_one_p_k` SET `ID`=4, `TestInt1`=5, `TestString1`='string2', `NoQuotes`=@CGUID WHERE `ID` IN (1, 2);" + Environment.NewLine +
+                            "UPDATE `test_data_one_p_k` SET `ID`=6, `TestInt1`=7, `NoQuotes`=@CGUID+1 WHERE `ID` IN (1, 2);" + Environment.NewLine,
                 update.Build());
         }
 
         [Test]
         public void TestSQLInsert()
         {
-            Assert.AreEqual("INSERT INTO `test_data_one_p_k` (`ID`, `TestInt1`, `TestInt2`, `TestString1`) VALUES" + Environment.NewLine +
-                            "(4, 5, UNKNOWN, 'string2')," + Environment.NewLine +
-                            "(6, 7, UNKNOWN, UNKNOWN);" + Environment.NewLine,
+            Assert.AreEqual("INSERT INTO `test_data_one_p_k` (`ID`, `TestInt1`, `TestInt2`, `TestString1`, `NoQuotes`) VALUES" + Environment.NewLine +
+                            "(4, 5, UNKNOWN, 'string2', @CGUID)," + Environment.NewLine +
+                            "(6, 7, UNKNOWN, UNKNOWN, @CGUID+1);" + Environment.NewLine,
                             new SQLInsert<TestDataOnePK>(_valuesOnePk, false).Build());
         }
     }

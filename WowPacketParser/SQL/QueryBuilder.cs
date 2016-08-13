@@ -212,7 +212,7 @@ namespace WowPacketParser.SQL
 
                         query.Append(SQLUtil.AddBackQuotes(field.Item3.First().Name + (field.Item3.First().StartAtZero ? i : i+1)));
                         query.Append("=");
-                        query.Append(SQLUtil.ToSQLValue(v));
+                        query.Append(SQLUtil.ToSQLValue(v, noQuotes: field.Item3.Any(a => a.NoQuotes)));
                         query.Append(SQLUtil.CommaSeparator);
                     }
                     continue;
@@ -224,7 +224,7 @@ namespace WowPacketParser.SQL
                 hasValues = true;
                 query.Append(field.Item1);
                 query.Append("=");
-                query.Append(SQLUtil.ToSQLValue(value));
+                query.Append(SQLUtil.ToSQLValue(value, noQuotes: field.Item3.Any(a => a.NoQuotes)));
                 query.Append(SQLUtil.CommaSeparator);
             }
             if (!hasValues)
@@ -388,7 +388,6 @@ namespace WowPacketParser.SQL
 
             query.Append("(");
 
-            //foreach (object value in SQLUtil.GetFields<T>().Select(field => field.Item2.GetValue(_row.Data)))
             foreach (var field in SQLUtil.GetFields<T>())
             {
                 object value = field.Item2.GetValue(_row.Data);
@@ -407,7 +406,7 @@ namespace WowPacketParser.SQL
                             if (v == null)
                                 query.Append("UNKNOWN");
                             else
-                                query.Append(SQLUtil.ToSQLValue(v));
+                                query.Append(SQLUtil.ToSQLValue(v, noQuotes: field.Item3.Any(a => a.NoQuotes)));
 
                             query.Append(SQLUtil.CommaSeparator);
                         }
