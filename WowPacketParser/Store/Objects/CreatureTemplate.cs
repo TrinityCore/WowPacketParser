@@ -25,10 +25,10 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("femaleName", TargetedDatabase.Cataclysm)]
         public string FemaleName = "";
 
-        [DBFieldName("subname")]
+        [DBFieldName("subname", nullable: true)]
         public string SubName;
 
-        [DBFieldName("IconName")]
+        [DBFieldName("IconName", nullable: true)]
         public string IconName;
 
         [DBFieldName("gossip_menu_id")]

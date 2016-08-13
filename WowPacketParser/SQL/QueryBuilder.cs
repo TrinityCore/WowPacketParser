@@ -393,8 +393,16 @@ namespace WowPacketParser.SQL
                 object value = field.Item2.GetValue(_row.Data);
                 if (value == null)
                 {
-                    query.Append("UNKNOWN");
-                    query.Append(SQLUtil.CommaSeparator);
+                    if (field.Item3.Any(a => a.Nullable))
+                    {
+                        query.Append("NULL");
+                        query.Append(SQLUtil.CommaSeparator);
+                    }
+                    else
+                    {
+                        query.Append("UNKNOWN");
+                        query.Append(SQLUtil.CommaSeparator);
+                    }
                 }
                 else
                 {
@@ -404,7 +412,12 @@ namespace WowPacketParser.SQL
                         foreach (object v in arr)
                         {
                             if (v == null)
-                                query.Append("UNKNOWN");
+                            {
+                                if (field.Item3.Any(a => a.Nullable))
+                                    query.Append("NULL");
+                                else
+                                    query.Append("UNKNOWN");
+                            }
                             else
                                 query.Append(SQLUtil.ToSQLValue(v, noQuotes: field.Item3.Any(a => a.NoQuotes)));
 
