@@ -20,6 +20,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ItemHandler.ReadItemInstance(packet, indexes, "ItemInstance");
         }
 
+        public static void ReadCurrenciesData(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt32("CurrencyID", idx);
+            packet.ReadUInt32("Quantity", idx);
+            packet.ReadByte("LootListId", idx);
+
+            packet.ResetBitReader();
+
+            packet.ReadBits("UiType", 3, idx);
+        }
+
         [Parser(Opcode.SMSG_AE_LOOT_TARGET_ACK)]
         [Parser(Opcode.SMSG_LOOT_RELEASE_ALL)]
         public static void HandleLootZero(Packet packet)
@@ -88,16 +99,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 ReadLootItem(packet, i, "LootItem");
 
             for (var i = 0; i < currencyCount; ++i)
-            {
-                // Order guessed
-                packet.ReadUInt32("CurrencyID", i);
-                packet.ReadUInt32("Quantity", i);
-                packet.ReadByte("LootListId", i);
-
-                packet.ResetBitReader();
-
-                packet.ReadBits("UiType", 3, i);
-            }
+                ReadCurrenciesData(packet, i, "Currencies");
 
             packet.ResetBitReader();
 
