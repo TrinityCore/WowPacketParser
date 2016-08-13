@@ -397,13 +397,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     packet.ReadBit();
 
                 if (hasAreaTriggerSpline)
-                    V6_0_2_19033.Parsers.AreaTriggerHandler.ReadAreaTriggerSpline(packet, index);
+                    AreaTriggerHandler.ReadAreaTriggerSpline(packet, index);
 
                 if (hasTargetRollPitchYaw)
                     packet.ReadVector3("TargetRollPitchYaw", index);
 
                 if (hasScaleCurveID)
-                    packet.ReadInt32("ScaleCurveID, index");
+                    packet.ReadInt32("ScaleCurveID", index);
 
                 if (hasMorphCurveID)
                     packet.ReadInt32("MorphCurveID", index);
