@@ -18,6 +18,7 @@ namespace WowPacketParser.Misc
         public static readonly DumpFormatType DumpFormat = Conf.GetEnum("DumpFormat", DumpFormatType.Text);
         public static readonly ulong SQLOutputFlag = GetSQLOutputFlag();
         public static readonly bool SQLOrderByKey = Conf.GetBoolean("SqlOrderByKey", false);
+        public static readonly bool SkipIncompleteTemplateRows = Conf.GetBoolean("SkipIncompleteTemplateRows", true);
         public static readonly string SQLFileName = Conf.GetString("SQLFileName", string.Empty);
         public static readonly bool ShowEndPrompt = Conf.GetBoolean("ShowEndPrompt", false);
         public static readonly bool LogErrors = Conf.GetBoolean("LogErrors", false);

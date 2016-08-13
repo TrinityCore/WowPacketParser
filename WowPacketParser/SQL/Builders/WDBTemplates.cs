@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -71,7 +72,13 @@ namespace WowPacketParser.SQL.Builders
 
             var templatesDb = SQLDatabase.Get(Storage.CreatureTemplates);
 
-            foreach (var cre in Storage.CreatureTemplates) // set some default values
+            IEnumerable<Tuple<CreatureTemplate, TimeSpan?>> creatures;
+            if (Settings.SkipIncompleteTemplateRows)
+                creatures = Storage.CreatureTemplates.Where(a => (units.FirstOrDefault(p => p.Key.GetEntry() == a.Item1.Entry.GetValueOrDefault()).Value != null));
+            else
+                creatures = Storage.CreatureTemplates;
+
+            foreach (var cre in creatures) // set some default values
             {
                 Unit unit = units.FirstOrDefault(p => p.Key.GetEntry() == cre.Item1.Entry.GetValueOrDefault()).Value;
                 var levels = UnitMisc.GetLevels(units);
@@ -185,13 +192,13 @@ namespace WowPacketParser.SQL.Builders
 
             foreach (
                 var cre in
-                    Storage.CreatureTemplates.Where(
+                    creatures.Where(
                         cre => Storage.SpellsX.ContainsKey(cre.Item1.Entry.GetValueOrDefault())))
             {
                 cre.Item1.Spells = Storage.SpellsX[cre.Item1.Entry.GetValueOrDefault()].Item1.ToArray();
             }
 
-            return SQLUtil.Compare(Storage.CreatureTemplates, templatesDb, StoreNameType.Unit);
+            return SQLUtil.Compare(creatures, templatesDb, StoreNameType.Unit);
         }
 
         [BuilderMethod(true, Gameobjects = true)]

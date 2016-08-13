@@ -169,7 +169,7 @@ namespace WowPacketParser.SQL
         /// <param name="storeList"><see cref="DataBag{T}"/> with items form sniff.</param>
         /// <param name="dbList"><see cref="DataBag{T}"/> with items from database.</param>
         /// <param name="storeType">Are we dealing with Spells, Quests, Units, ...?</param>
-        public static string Compare<T>(DataBag<T> storeList, RowList<T> dbList, StoreNameType storeType)
+        public static string Compare<T>(IEnumerable<Tuple<T, TimeSpan?>> storeList, RowList<T> dbList, StoreNameType storeType)
             where T : IDataModel, new()
         {
             return Compare(storeList, dbList, t => StoreGetters.GetName(storeType, Convert.ToInt32(GetFirstPrimaryKey<T>().GetValue(t)), false));
@@ -186,7 +186,7 @@ namespace WowPacketParser.SQL
         /// <param name="dbList">Dictionary retrieved from  DB</param>
         /// <param name="commentSetter"></param>
         /// <returns>A string containing full SQL queries</returns>
-        public static string Compare<T>(DataBag<T> storeList, RowList<T> dbList, Func<T, string> commentSetter)
+        public static string Compare<T>(IEnumerable<Tuple<T, TimeSpan?>> storeList, RowList<T> dbList, Func<T, string> commentSetter)
             where T : IDataModel, new()
         {
             var fields = GetFields<T>();
