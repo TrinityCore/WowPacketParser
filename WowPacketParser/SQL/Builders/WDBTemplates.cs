@@ -39,7 +39,7 @@ namespace WowPacketParser.SQL.Builders
 
             var templatesDb = SQLDatabase.Get(Storage.QuestObjectives);
 
-            return SQLUtil.Compare(Storage.QuestObjectives, templatesDb, StoreNameType.QuestObjective);  
+            return SQLUtil.Compare(Storage.QuestObjectives, templatesDb, StoreNameType.QuestObjective);
         }
 
         [BuilderMethod(true)]
@@ -90,14 +90,14 @@ namespace WowPacketParser.SQL.Builders
                     cre.Item1.Faction = unit.Faction.GetValueOrDefault(35);
                     if (playerFactions.Contains(unit.Faction.GetValueOrDefault()))
                         cre.Item1.Faction = 35;
-                    
+
                     cre.Item1.NpcFlag = unit.NpcFlags.GetValueOrDefault(NPCFlags.None);
                     cre.Item1.SpeedWalk = unit.Movement.WalkSpeed;
                     cre.Item1.SpeedRun = unit.Movement.RunSpeed;
-                    
+
                     cre.Item1.BaseAttackTime = unit.MeleeTime.GetValueOrDefault(2000);
                     cre.Item1.RangeAttackTime = unit.RangedTime.GetValueOrDefault(2000);
-                    
+
                     cre.Item1.UnitClass = (uint)unit.Class.GetValueOrDefault(Class.Warrior);
 
                     cre.Item1.UnitFlags = unit.UnitFlags.GetValueOrDefault(UnitFlags.None);
@@ -131,9 +131,11 @@ namespace WowPacketParser.SQL.Builders
                     //TODO: set TrainerType from SMSG_TRAINER_LIST
                     cre.Item1.TrainerType = 0;
 
-                    cre.Item1.Resistances = new uint?[] {0, 0, 0, 0, 0, 0};
-                    for (int i = 0; i < unit.Resistances.Length - 1; i++)
-                        cre.Item1.Resistances[i] = unit.Resistances[i + 1];
+                    cre.Item1.Resistances = new short?[] {0, 0, 0, 0, 0, 0};
+
+                    if (unit.Resistances != null)
+                        for (int i = 0; i < unit.Resistances.Length - 1; i++)
+                            cre.Item1.Resistances[i] = unit.Resistances[i + 1];
                 }
 
                 // has trainer flag but doesn't have prof nor class trainer flag
@@ -160,7 +162,7 @@ namespace WowPacketParser.SQL.Builders
                 cre.Item1.DmgSchool = 0;
                 cre.Item1.BaseVariance = 1;
                 cre.Item1.RangeVariance = 1;
-                cre.Item1.Resistances = new uint?[] {null, null, null, null, null, null};
+                cre.Item1.Resistances = new short?[] {null, null, null, null, null, null};
                 cre.Item1.Spells = new uint?[] {0, 0, 0, 0, 0, 0, 0, 0};
                 cre.Item1.HealthModifierExtra = 1;
                 cre.Item1.ManaModifierExtra = 1;
@@ -250,8 +252,8 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.npc_text))
                 return string.Empty;
 
-            if (!Storage.NpcTexts.IsEmpty() && 
-                (Settings.TargetedDatabase == TargetedDatabase.WrathOfTheLichKing || 
+            if (!Storage.NpcTexts.IsEmpty() &&
+                (Settings.TargetedDatabase == TargetedDatabase.WrathOfTheLichKing ||
                 Settings.TargetedDatabase == TargetedDatabase.Cataclysm))
             {
                 foreach (var npcText in Storage.NpcTexts)

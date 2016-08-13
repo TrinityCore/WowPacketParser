@@ -83,7 +83,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             for (int i = 0; i < qItemCount; ++i)
                 /*creature.QuestItems[i] = (uint)*/packet.ReadInt32<ItemId>("Quest Item", i);
 
-            creature.ExpUnk = packet.ReadUInt32E<ClientType>("Expansion");
+            creature.RequiredExpansion = packet.ReadUInt32E<ClientType>("Expansion");
 
             var name = new string[8];
             var femaleName = new string[4];

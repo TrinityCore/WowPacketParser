@@ -49,7 +49,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             packet.ResetBitReader();
 
             creature.Family = packet.ReadInt32E<CreatureFamily>("Family");
-            creature.ExpUnk = packet.ReadUInt32E<ClientType>("Expansion");
+            creature.RequiredExpansion = packet.ReadUInt32E<ClientType>("Expansion");
             creature.Type = packet.ReadInt32E<CreatureType>("Type");
 
             if (lenS5 > 1)

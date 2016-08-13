@@ -87,7 +87,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             creature.KillCredits[0] = packet.ReadUInt32();
             creature.Family = packet.ReadInt32E<CreatureFamily>("Family");
             creature.MovementID = packet.ReadUInt32("Movement ID");
-            creature.ExpUnk = packet.ReadUInt32E<ClientType>("Expansion");
+            creature.RequiredExpansion = packet.ReadUInt32E<ClientType>("Expansion");
 
             creature.ModelIDs[0] = packet.ReadUInt32();
             creature.ModelIDs[1] = packet.ReadUInt32();

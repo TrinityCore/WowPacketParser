@@ -43,8 +43,14 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("exp")]
         public ClientType? Expansion;
 
-        [DBFieldName("exp_unk", TargetedDatabase.Cataclysm)]
-        public ClientType? ExpUnk;
+        [DBFieldName("HealthScalingExpansion", TargetedDatabase.WarlordsOfDraenor)]
+        public ClientType? HealthScalingExpansion;
+
+        [DBFieldName("RequiredExpansion", TargetedDatabase.Cataclysm)]
+        public ClientType? RequiredExpansion;
+
+        [DBFieldName("VignetteID", TargetedDatabase.Legion)]
+        public uint? VignetteID;
 
         [DBFieldName("faction")]
         public uint? Faction;
@@ -128,7 +134,7 @@ namespace WowPacketParser.Store.Objects
         public uint? SkinLoot;
 
         [DBFieldName("resistance", 6)]
-        public uint?[] Resistances;
+        public short?[] Resistances;
 
         [DBFieldName("spell", 8)]
         public uint?[] Spells;

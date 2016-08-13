@@ -83,7 +83,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadCString("String1C");
 
             creature.MovementID = packet.ReadUInt32("Movement ID");
-            creature.ExpUnk = packet.ReadUInt32E<ClientType>("Expansion");
+            creature.RequiredExpansion = packet.ReadUInt32E<ClientType>("Expansion");
 
             if (bits2C > 1)
                 creature.IconName = packet.ReadCString("Icon Name");

@@ -56,7 +56,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             creature.KillCredits[0] = packet.ReadUInt32(); //+27
             creature.ModelIDs[3] = packet.ReadUInt32(); //+32
             creature.ModelIDs[2] = packet.ReadUInt32(); //+31
-            creature.ExpUnk = packet.ReadUInt32E<ClientType>("Expansion"); //+24
+            creature.RequiredExpansion = packet.ReadUInt32E<ClientType>("Expansion"); //+24
             creature.Type = packet.ReadInt32E<CreatureType>("Type"); //+12
             creature.HealthModifier = packet.ReadSingle("Modifier 1"); //+15
 

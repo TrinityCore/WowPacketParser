@@ -90,7 +90,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadCString("string5");
             creature.ModelIDs[2] = packet.ReadUInt32("CreatureDisplayID", 2);
             creature.ManaModifier = packet.ReadSingle("ManaModifier");
-            creature.ExpUnk = packet.ReadUInt32E<ClientType>("Expansion");
+            creature.RequiredExpansion = packet.ReadUInt32E<ClientType>("Expansion");
 
             packet.AddSniffData(StoreNameType.Unit, entry.Key, "QUERY_RESPONSE");
 
