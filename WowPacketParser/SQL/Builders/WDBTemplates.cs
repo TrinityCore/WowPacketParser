@@ -78,7 +78,9 @@ namespace WowPacketParser.SQL.Builders
 
                 if (unit != null)
                 {
-                    if (unit.GossipId != 0)
+                    if (unit.GossipId == 0)
+                        cre.Item1.GossipMenuID = null;
+                    else
                         cre.Item1.GossipMenuID = unit.GossipId;
 
                     cre.Item1.MinLevel = (int)levels[cre.Item1.Entry.GetValueOrDefault()].Item1;
@@ -126,7 +128,8 @@ namespace WowPacketParser.SQL.Builders
                     cre.Item1.VehicleID = unit.Movement.VehicleId;
                     cre.Item1.HoverHeight = unit.HoverHeight.GetValueOrDefault(1.0f);
 
-
+                    //TODO: set TrainerType from SMSG_TRAINER_LIST
+                    cre.Item1.TrainerType = 0;
 
                     cre.Item1.Resistances = new short?[] {0, 0, 0, 0, 0, 0};
 
@@ -153,8 +156,17 @@ namespace WowPacketParser.SQL.Builders
                             cre.Item1.NpcFlag |= NPCFlags.ClassTrainer;
                     }
                 }
-                //TODO: set TrainerType from SMSG_TRAINER_LIST
 
+                cre.Item1.DifficultyEntries = new uint?[] {null, null, null};
+                cre.Item1.Scale = 1;
+                cre.Item1.DmgSchool = 0;
+                cre.Item1.BaseVariance = 1;
+                cre.Item1.RangeVariance = 1;
+                cre.Item1.Resistances = new short?[] {null, null, null, null, null, null};
+                cre.Item1.Spells = new uint?[] {0, 0, 0, 0, 0, 0, 0, 0};
+                cre.Item1.HealthModifierExtra = 1;
+                cre.Item1.ManaModifierExtra = 1;
+                cre.Item1.ArmorModifier = 1;
             }
 
             foreach (

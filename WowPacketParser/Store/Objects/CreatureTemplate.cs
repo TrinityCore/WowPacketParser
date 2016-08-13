@@ -11,7 +11,7 @@ namespace WowPacketParser.Store.Objects
         public uint? Entry;
 
         [DBFieldName("difficulty_entry_", 3)]
-        public uint?[] DifficultyEntries = { 0, 0, 0 };
+        public uint?[] DifficultyEntries;
 
         [DBFieldName("KillCredit", 2)]
         public uint?[] KillCredits;
@@ -23,7 +23,7 @@ namespace WowPacketParser.Store.Objects
         public string Name;
 
         [DBFieldName("femaleName", TargetedDatabase.Cataclysm)]
-        public string FemaleName = "";
+        public string FemaleName;
 
         [DBFieldName("subname", nullable: true)]
         public string SubName;
@@ -32,7 +32,7 @@ namespace WowPacketParser.Store.Objects
         public string IconName;
 
         [DBFieldName("gossip_menu_id")]
-        public uint? GossipMenuID = 0;
+        public uint? GossipMenuID;
 
         [DBFieldName("minlevel")]
         public int? MinLevel;
@@ -65,13 +65,13 @@ namespace WowPacketParser.Store.Objects
         public float? SpeedRun;
 
         [DBFieldName("scale")]
-        public float? Scale = 1;
+        public float? Scale;
 
         [DBFieldName("rank")]
         public CreatureRank? Rank;
 
         [DBFieldName("dmgschool")]
-        public uint? DmgSchool = 0;
+        public uint? DmgSchool;
 
         [DBFieldName("BaseAttackTime")]
         public uint? BaseAttackTime;
@@ -80,10 +80,10 @@ namespace WowPacketParser.Store.Objects
         public uint? RangeAttackTime;
 
         [DBFieldName("BaseVariance")]
-        public float? BaseVariance = 1;
+        public float? BaseVariance;
 
         [DBFieldName("RangeVariance")]
-        public float? RangeVariance = 1;
+        public float? RangeVariance;
 
         [DBFieldName("unit_class")]
         public uint? UnitClass;
@@ -104,16 +104,16 @@ namespace WowPacketParser.Store.Objects
         public CreatureFamily? Family;
 
         [DBFieldName("trainer_type")]
-        public TrainerType? TrainerType = Enums.TrainerType.Class;
+        public TrainerType? TrainerType;
 
         [DBFieldName("trainer_spell", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
-        public uint? TrainerSpell = 0;
+        public uint? TrainerSpell;
 
         [DBFieldName("trainer_class")]
         public Class? TrainerClass;
 
         [DBFieldName("trainer_race")]
-        public Race? TrainerRace = 0;
+        public Race? TrainerRace;
 
         [DBFieldName("type")]
         public CreatureType? Type;
@@ -125,19 +125,19 @@ namespace WowPacketParser.Store.Objects
         public uint? TypeFlags2;
 
         [DBFieldName("lootid")]
-        public uint? LootID = 0;
+        public uint? LootID;
 
         [DBFieldName("pickpocketloot")]
-        public uint? PickPocketLoot = 0;
+        public uint? PickPocketLoot;
 
         [DBFieldName("skinloot")]
-        public uint? SkinLoot = 0;
+        public uint? SkinLoot;
 
         [DBFieldName("resistance", 6)]
-        public short?[] Resistances = { 0, 0, 0, 0, 0, 0 };
+        public short?[] Resistances;
 
         [DBFieldName("spell", 8)]
-        public uint?[] Spells = { 0, 0, 0, 0, 0, 0, 0, 0 };
+        public uint?[] Spells;
 
         [DBFieldName("PetSpellDataId", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
         public uint? PetSpellDataID;
@@ -152,7 +152,7 @@ namespace WowPacketParser.Store.Objects
         public uint? MaxGold;
 
         [DBFieldName("AIName")]
-        public string AIName = "";
+        public string AIName;
 
         [DBFieldName("MovementType")]
         public uint? MovementType;
@@ -167,22 +167,22 @@ namespace WowPacketParser.Store.Objects
         public float? HealthModifier;
 
         [DBFieldName("HealthModifierExtra", TargetedDatabase.Cataclysm)]
-        public float? HealthModifierExtra = 1;
+        public float? HealthModifierExtra;
 
         [DBFieldName("ManaModifier")]
         public float? ManaModifier;
 
         [DBFieldName("ManaModifierExtra", TargetedDatabase.Cataclysm)]
-        public float? ManaModifierExtra = 1;
+        public float? ManaModifierExtra;
 
         [DBFieldName("ArmorModifier")]
-        public float? ArmorModifier = 1;
+        public float? ArmorModifier;
 
         [DBFieldName("DamageModifier")]
         public float? DamageModifier;
 
         [DBFieldName("ExperienceModifier")]
-        public float? ExperienceModifier = 1;
+        public float? ExperienceModifier;
 
         [DBFieldName("RacialLeader")]
         public bool? RacialLeader;
@@ -191,16 +191,16 @@ namespace WowPacketParser.Store.Objects
         public uint? MovementID;
 
         [DBFieldName("RegenHealth")]
-        public uint? RegenHealth = 1;
+        public uint? RegenHealth;
 
         [DBFieldName("mechanic_immune_mask")]
-        public uint? MechanicImmuneMask = 1;
+        public uint? MechanicImmuneMask;
 
         [DBFieldName("flags_extra")]
-        public uint? FlagsExtra = 1;
+        public uint? FlagsExtra;
 
         [DBFieldName("ScriptName")]
-        public string ScriptName = "";
+        public string ScriptName;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
