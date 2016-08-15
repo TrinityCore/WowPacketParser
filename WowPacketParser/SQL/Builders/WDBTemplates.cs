@@ -185,8 +185,8 @@ namespace WowPacketParser.SQL.Builders
                 cre.Item1.ArmorModifier = 1;
                 cre.Item1.ExperienceModifier = 1;
                 cre.Item1.RegenHealth = 1;
-                cre.Item1.MechanicImmuneMask = 1;
-                cre.Item1.FlagsExtra = 1;
+                cre.Item1.MechanicImmuneMask = 0;
+                cre.Item1.FlagsExtra = 0;
                 cre.Item1.ScriptName = "";
             }
 
