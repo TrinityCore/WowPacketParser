@@ -153,11 +153,12 @@ namespace WowPacketParser.SQL
                     return null;
 
                 var fields = SQLUtil.GetFields<T>();
+                var fieldsCount = fields.Select(f => f.Item3.First().Count).Sum();
 
                 while (reader.Read())
                 {
                     var instance = (T)Activator.CreateInstance(typeof(T));
-                    var values = GetValues(reader, SQLUtil.GetFields<T>().Select(f => f.Item3.First().Count).Sum());
+                    var values = GetValues(reader, fieldsCount);
 
                     var i = 0;
                     foreach (var field in fields)
