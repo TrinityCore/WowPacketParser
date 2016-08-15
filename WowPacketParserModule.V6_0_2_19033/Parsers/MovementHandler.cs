@@ -349,7 +349,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_VIGNETTE_UPDATE)]
-        public static void HandleUnknown177(Packet packet)
+        public static void HandleVignetteUpdate(Packet packet)
         {
             packet.ReadBit("ForceUpdate");
 
