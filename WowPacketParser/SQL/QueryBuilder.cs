@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using WowPacketParser.Misc;
 
@@ -11,6 +12,9 @@ namespace WowPacketParser.SQL
         private readonly RowList<T> _conditions;
 
         private readonly bool _onlyPrimaryKeys;
+
+        private static readonly List<Tuple<string, FieldInfo, List<DBFieldNameAttribute>>> _databaseFields = SQLUtil.GetFields<T>();
+        private static readonly FieldInfo _primaryKeyReflectionField = SQLUtil.GetFirstPrimaryKey<T>();
 
         public SQLWhere(RowList<T> conditionList, bool onlyPrimaryKeys = false)
         {
@@ -29,7 +33,7 @@ namespace WowPacketParser.SQL
 
             if (_onlyPrimaryKeys && _conditions.GetPrimaryKeyCount() == 1)
             {
-                var field = SQLUtil.GetFields<T>().Single(f => f.Item2 == SQLUtil.GetFirstPrimaryKey<T>());
+                var field = _databaseFields.Single(f => f.Item2 == _primaryKeyReflectionField);
 
                 whereClause.Append(field.Item1);
                 if (_conditions.Count == 1)
@@ -61,7 +65,7 @@ namespace WowPacketParser.SQL
                 foreach (Row<T> condition in _conditions)
                 {
                     whereClause.Append("(");
-                    foreach (var field in SQLUtil.GetFields<T>())
+                    foreach (var field in _databaseFields)
                     {
                         object value = field.Item2.GetValue(condition.Data);
 
@@ -170,7 +174,9 @@ namespace WowPacketParser.SQL
 
         private readonly Row<T> _value;
 
-        protected readonly SQLWhere<T> WhereClause; 
+        protected readonly SQLWhere<T> WhereClause;
+
+        private static readonly List<Tuple<string, FieldInfo, List<DBFieldNameAttribute>>> _databaseFields = SQLUtil.GetFields<T>();
 
         public SQLUpdateRow(Row<T> value, RowList<T> conditions)
         {
@@ -197,7 +203,7 @@ namespace WowPacketParser.SQL
             query.Append(" SET ");
 
             bool hasValues = false;
-            foreach (var field in SQLUtil.GetFields<T>())
+            foreach (var field in _databaseFields)
             {
                 object value = field.Item2.GetValue(_value.Data);
 
@@ -305,6 +311,8 @@ namespace WowPacketParser.SQL
     {
         private readonly bool _ignore;
 
+        private static readonly List<Tuple<string, FieldInfo, List<DBFieldNameAttribute>>> _databaseFields = SQLUtil.GetFields<T>();
+
         /// <summary>
         /// <para>Creates the header of an INSERT query</para>
         /// <code>INSERT INTO `tableName` (fields[0], ..., fields[n]) VALUES</code>
@@ -330,7 +338,7 @@ namespace WowPacketParser.SQL
             query.Append(SQLUtil.GetTableName<T>());
 
             query.Append(" (");
-            foreach (var field in SQLUtil.GetFields<T>())
+            foreach (var field in _databaseFields)
             {
                 query.Append(field.Item1);
                 query.Append(SQLUtil.CommaSeparator);
@@ -349,6 +357,8 @@ namespace WowPacketParser.SQL
         private readonly Row<T> _row; 
 
         private string _headerComment;
+
+        private static readonly List<Tuple<string, FieldInfo, List<DBFieldNameAttribute>>> _databaseFields = SQLUtil.GetFields<T>();
 
         /// <summary>
         /// <para>The comment that will replace the values</para>
@@ -388,7 +398,7 @@ namespace WowPacketParser.SQL
 
             query.Append("(");
 
-            foreach (var field in SQLUtil.GetFields<T>())
+            foreach (var field in _databaseFields)
             {
                 object value = field.Item2.GetValue(_row.Data);
                 if (value == null)
@@ -448,6 +458,9 @@ namespace WowPacketParser.SQL
         private readonly RowList<T> _rows;
         private readonly Tuple<string, string> _valuesBetweenDouble;
 
+        private static readonly List<Tuple<string, FieldInfo, List<DBFieldNameAttribute>>> _databaseFields = SQLUtil.GetFields<T>();
+        private static readonly FieldInfo _primaryKeyReflectionField = SQLUtil.GetFirstPrimaryKey<T>();
+
         /// <summary>
         /// <para>Creates a delete query with a single primary key and an arbitrary number of values</para>
         /// <code>DELETE FROM `tableName` WHERE `primaryKey` IN (values[0], ..., values[n]);</code>
@@ -481,7 +494,7 @@ namespace WowPacketParser.SQL
 
             if (_between)
             {
-                var pk = SQLUtil.GetFields<T>().Single(f => f.Item2 == SQLUtil.GetFirstPrimaryKey<T>());
+                var pk = _databaseFields.Single(f => f.Item2 == _primaryKeyReflectionField);
 
                 query.Append("DELETE FROM ");
                 query.Append(SQLUtil.GetTableName<T>());

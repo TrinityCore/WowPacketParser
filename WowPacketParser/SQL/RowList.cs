@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 
 namespace WowPacketParser.SQL
 {
@@ -28,7 +30,11 @@ namespace WowPacketParser.SQL
     public class RowList<T> : IEnumerable<Row<T>> where T : IDataModel, new()
     {
         private readonly List<Row<T>> _rows = new List<Row<T>>();
-        private readonly Dictionary<string, int> _pkDict = new Dictionary<string, int>(); 
+        private readonly Dictionary<string, int> _pkDict = new Dictionary<string, int>();
+
+        private static readonly FieldInfo[] _fieldInfos = typeof(T).GetFields();
+        private static readonly IEnumerable<FieldInfo> _primaryKeyFieldInfos = typeof(T).GetFields().Where(SQLUtil.IsPrimaryKey).ToList();
+        private static readonly List<Tuple<string, FieldInfo, List<DBFieldNameAttribute>>> _dbFields = SQLUtil.GetFields<T>();
 
         /// <summary>
         /// Gets the number of conditions in the <see cref="RowList{T}" />.
@@ -61,13 +67,13 @@ namespace WowPacketParser.SQL
         /// <param name="row">The Row which should be added.</param>
         public RowList<T> Add(Row<T> row)
         {
-            if (typeof(T).GetFields().All(f => f.GetValue(row.Data) == null))
+            if (_fieldInfos.All(f => f.GetValue(row.Data) == null))
                 return this; // got empty Row. Do not add to list
 
             if (ContainsKey(row))
                 return this;
 
-            string pkString = typeof(T).GetFields().Where(SQLUtil.IsPrimaryKey).Aggregate(string.Empty, (current, field) => current + (field.GetValue(row.Data) + "--"));
+            string pkString = _primaryKeyFieldInfos.Aggregate(string.Empty, (current, field) => current + (field.GetValue(row.Data) + "--"));
 
             _pkDict.Add(pkString, _rows.Count);
             _rows.Add(row);
@@ -91,12 +97,12 @@ namespace WowPacketParser.SQL
 
         public int GetPrimaryKeyCount()
         {
-            return SQLUtil.GetFields<T>().Count(f => f.Item3.Any(g => g.IsPrimaryKey));
+            return _dbFields.Count(f => f.Item3.Any(g => g.IsPrimaryKey));
         }
 
         public bool ContainsKey(T key)
         {
-            string pkString = typeof(T).GetFields().Where(SQLUtil.IsPrimaryKey).Aggregate(string.Empty, (current, field) => current + (field.GetValue(key) + "--"));
+            string pkString = _primaryKeyFieldInfos.Aggregate(string.Empty, (current, field) => current + (field.GetValue(key) + "--"));
 
             return _pkDict.ContainsKey(pkString);
         }
@@ -114,7 +120,7 @@ namespace WowPacketParser.SQL
                     return null;
 
                 int index;
-                string pkString = typeof(T).GetFields().Where(SQLUtil.IsPrimaryKey).Aggregate(string.Empty, (current, field) => current + (field.GetValue(key) + "--"));
+                string pkString = _primaryKeyFieldInfos.Aggregate(string.Empty, (current, field) => current + (field.GetValue(key) + "--"));
                 _pkDict.TryGetValue(pkString, out index);
 
                 return _rows[index];

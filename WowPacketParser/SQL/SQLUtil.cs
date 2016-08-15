@@ -172,7 +172,8 @@ namespace WowPacketParser.SQL
         public static string Compare<T>(IEnumerable<Tuple<T, TimeSpan?>> storeList, RowList<T> dbList, StoreNameType storeType)
             where T : IDataModel, new()
         {
-            return Compare(storeList, dbList, t => StoreGetters.GetName(storeType, Convert.ToInt32(GetFirstPrimaryKey<T>().GetValue(t)), false));
+            var primaryKey = GetFirstPrimaryKey<T>();
+            return Compare(storeList, dbList, t => StoreGetters.GetName(storeType, Convert.ToInt32(primaryKey.GetValue(t)), false));
         }
 
         /// <summary>
