@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `WPP`.`ObjectNames` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Table structure for table `map_difficulty`
-CREATE TABLE `map_difficulty` (
+CREATE TABLE IF NOT EXISTS `WPP`.`map_difficulty` (
   `ID` int(11) NOT NULL DEFAULT '0',
   `MapID` int(11) NOT NULL DEFAULT '0',
   `DifficultyID` int(11) NOT NULL DEFAULT '0',

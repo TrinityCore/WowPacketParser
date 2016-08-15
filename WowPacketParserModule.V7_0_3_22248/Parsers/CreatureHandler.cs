@@ -67,7 +67,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             //creature.QuestItems = new uint[6];
             int questItems = packet.ReadInt32("QuestItems");
             creature.MovementID = packet.ReadUInt32("CreatureMovementInfoID");
-            creature.RequiredExpansion = packet.ReadUInt32E<ClientType>("HealthScalingExpansion");
+            creature.HealthScalingExpansion = packet.ReadUInt32E<ClientType>("HealthScalingExpansion");
             creature.RequiredExpansion = packet.ReadUInt32E<ClientType>("RequiredExpansion");
             creature.VignetteID = packet.ReadUInt32("VignetteID");
 
