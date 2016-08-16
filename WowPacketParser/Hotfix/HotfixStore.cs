@@ -15,9 +15,6 @@ namespace WowPacketParser.Hotfix
         bool RemoveRecord(int recordKey);
         object GetRecord(int recordKey);
 
-        Type RecordType { get; }
-        Dictionary<int, object> Records { get; }
-
         void Serialize(StringBuilder hotfixBuilder, StringBuilder localeBuilder);
     }
 
@@ -28,9 +25,7 @@ namespace WowPacketParser.Hotfix
             Serializer = serializer;
             Serializer.GenerateDeserializer();
             Serializer.GenerateSerializer();
-        } 
-
-        public Type RecordType => typeof (T);
+        }
 
         public Dictionary<int, object> Records { get; } = new Dictionary<int, object>();
         public void Serialize(StringBuilder hotfixBuilder, StringBuilder localeBuilder) => Serializer.SerializeStore(this, hotfixBuilder, localeBuilder);

@@ -45,26 +45,134 @@ namespace WowPacketParser.Hotfix
         }
 
         protected Func<Packet, T> _deserializer;
-        protected Action<T, List<string>> _serializer;
+        private Action<T, StringBuilder /* hotfixBuilder */, StringBuilder /* localeBuilder */> _serializer;
+
+        #region Static helpers for SQL serialization
+        // ReSharper disable StaticMemberInGenericType
+        private static MethodInfo stringReplace = typeof (string).GetMethod("Replace", new[] {typeof (string), typeof (string)});
+        private static MethodInfo stringFormat = typeof (string).GetMethod("Format", new[] {typeof (string), typeof (object)});
+        private static MethodInfo stringBuilderAppend = typeof (StringBuilder).GetMethod("Append", new[] {typeof (string)});
+        // ReSharper restore StaticMemberInGenericType
+
+        private static void SerializeValue(PropertyInfo propInfo,
+            Emit<Action<T, StringBuilder, StringBuilder>> serializationEmitter)
+        {
+            var isString = propInfo.PropertyType == typeof (string);
+
+            using (var stringLocal = serializationEmitter.DeclareLocal<string>())
+            {
+                serializationEmitter.LoadConstant(isString ? @"""{0}"", " : "{0}, ");
+                serializationEmitter.LoadArgument(0); // instance
+                serializationEmitter.CallVirtual(propInfo.GetGetMethod());
+                if (isString)
+                {
+                    serializationEmitter.LoadConstant(@"\""");
+                    serializationEmitter.LoadConstant(@"""");
+                    serializationEmitter.CallVirtual(stringReplace);
+                }
+                else
+                    serializationEmitter.Box(propInfo.PropertyType);
+                serializationEmitter.Call(stringFormat);
+                serializationEmitter.StoreLocal(stringLocal);
+
+                // Append to hotfix builder
+                serializationEmitter.LoadArgument(1); // hotfixBuilder
+                serializationEmitter.LoadLocal(stringLocal);
+                serializationEmitter.Call(stringBuilderAppend);
+                serializationEmitter.Pop();
+
+                // Append to locale builder if (localeBuilder != null)
+                var skipLocaleBuilderMark = serializationEmitter.DefineLabel();
+                serializationEmitter.LoadArgument(2); // instanceBuilder
+                serializationEmitter.LoadNull();
+                serializationEmitter.CompareEqual();
+                serializationEmitter.BranchIfTrue(skipLocaleBuilderMark);
+                serializationEmitter.LoadArgument(2); // instanceBuilder
+                serializationEmitter.LoadLocal(stringLocal);
+                serializationEmitter.Call(stringBuilderAppend);
+                serializationEmitter.Pop();
+                serializationEmitter.MarkLabel(skipLocaleBuilderMark);
+            }
+        }
+
+        private static void SerializeValueArray(PropertyInfo propInfo,
+            Emit<Action<T, StringBuilder, StringBuilder>> serializationEmitter)
+        {
+            var loopBodyLabel = serializationEmitter.DefineLabel();
+            var loopConditionLabel = serializationEmitter.DefineLabel();
+
+            var elementType = propInfo.PropertyType.GetElementType();
+            var isString = elementType == typeof(string);
+
+            using (var stringLocal = serializationEmitter.DeclareLocal<string>())
+            using (var iterationLocal = serializationEmitter.DeclareLocal<int>())
+            {
+                serializationEmitter.LoadConstant(0);
+                serializationEmitter.StoreLocal(iterationLocal);
+                serializationEmitter.Branch(loopConditionLabel);
+                serializationEmitter.MarkLabel(loopBodyLabel);
+
+                serializationEmitter.LoadConstant(isString ? @"""{0}"", " : "{0}, ");
+                serializationEmitter.LoadArgument(0); // instance
+                serializationEmitter.CallVirtual(propInfo.GetGetMethod());
+                serializationEmitter.LoadLocal(iterationLocal);
+                serializationEmitter.LoadElement(elementType);
+                if (isString)
+                {
+                    serializationEmitter.LoadConstant(@"\""");
+                    serializationEmitter.LoadConstant(@"""");
+                    serializationEmitter.CallVirtual(stringReplace);
+                }
+                else
+                    serializationEmitter.Box(elementType);
+                serializationEmitter.Call(stringFormat);
+                serializationEmitter.StoreLocal(stringLocal);
+
+                // Append to hotfix builder
+                serializationEmitter.LoadArgument(1); // hotfixBuilder
+                serializationEmitter.LoadLocal(stringLocal);
+                serializationEmitter.Call(stringBuilderAppend);
+                serializationEmitter.Pop();
+
+                // Append to locale builder if (localeBuilder != null)
+                serializationEmitter.LoadArgument(2); // instanceBuilder
+                serializationEmitter.LoadNull();
+                serializationEmitter.CompareEqual();
+                serializationEmitter.BranchIfTrue(loopConditionLabel);
+                serializationEmitter.LoadArgument(2); // instanceBuilder
+                serializationEmitter.LoadLocal(stringLocal);
+                serializationEmitter.Call(stringBuilderAppend);
+                serializationEmitter.Pop();
+
+                serializationEmitter.MarkLabel(loopConditionLabel);
+                serializationEmitter.LoadLocal(iterationLocal);
+                serializationEmitter.LoadConstant(1);
+                serializationEmitter.Add();
+                serializationEmitter.StoreLocal(iterationLocal);
+                serializationEmitter.LoadLocal(iterationLocal);
+                serializationEmitter.LoadArgument(0); // instance
+                serializationEmitter.CallVirtual(propInfo.GetGetMethod());
+                serializationEmitter.LoadLength(elementType);
+                serializationEmitter.Convert<int>();
+                serializationEmitter.CompareLessThan();
+                serializationEmitter.BranchIfTrue(loopBodyLabel);
+            }
+        }
+        #endregion
 
         public void GenerateSerializer()
         {
             try
             {
-                var serializationEmitter = Emit<Action<T, List<string>>>.NewDynamicMethod();
+                var serializationEmitter = Emit<Action<T, StringBuilder, StringBuilder>>.NewDynamicMethod();
 
-                foreach (var propInfo in typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance))
+                foreach (var propInfo in typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance).
+                    Where(propInfo => propInfo.GetGetMethod() != null && propInfo.GetSetMethod() != null && ShouldRead(propInfo)))
                 {
-                    if (propInfo.GetGetMethod() == null || propInfo.GetSetMethod() == null || !ShouldRead(propInfo))
-                        continue;
-
-                    serializationEmitter.LoadArgument(1);
-                    serializationEmitter.LoadArgument(0);
-
-                    serializationEmitter.CallVirtual(propInfo.GetGetMethod());
-                    serializationEmitter.Call(
-                        typeof(HotfixExtensions).GetMethod(propInfo.PropertyType.IsArray ? "AppendArray" : "Append",
-                            new[] { typeof(List<string>), propInfo.PropertyType }));
+                    if (propInfo.PropertyType.IsArray)
+                        SerializeValueArray(propInfo, serializationEmitter);
+                    else
+                        SerializeValue(propInfo, serializationEmitter);
                 }
                 serializationEmitter.Return();
                 _serializer = serializationEmitter.CreateDelegate();
@@ -74,9 +182,10 @@ namespace WowPacketParser.Hotfix
                 Console.WriteLine(sve);
             }
         }
+
         public abstract void GenerateDeserializer();
 
-        protected bool ShouldRead(PropertyInfo propInfo)
+        private static bool ShouldRead(MemberInfo propInfo)
         {
             var removedAttr = propInfo.GetCustomAttributes<HotfixVersionAttribute>();
 
@@ -161,17 +270,10 @@ namespace WowPacketParser.Hotfix
                 }
 
                 localeBuilder?.Append($"{BinaryPacketReader.GetLocale()}, ");
+                _serializer((T)kv.Value, hotfixBuilder, localeBuilder);
 
-                var lineTokens = new List<string>();
-                _serializer((T)kv.Value, lineTokens);
-                hotfixBuilder.Append(string.Join(", ", lineTokens));
-
-                hotfixBuilder.Append($", {ClientVersion.BuildInt}");
-                hotfixBuilder.AppendLine(remainingCount > 0 ? ")," : ");");
-
-                localeBuilder?.Append(string.Join(", ", lineTokens.Where(l => l[0] == '"')));
-                localeBuilder?.Append($", {ClientVersion.BuildInt}");
-                localeBuilder?.AppendLine(remainingCount > 0 ? ")," : ");");
+                hotfixBuilder.AppendLine(remainingCount > 0 ? $"{ClientVersion.BuildInt})," : $"{ClientVersion.BuildInt});");
+                localeBuilder?.AppendLine(remainingCount > 0 ? $"{ClientVersion.BuildInt})," : $"{ClientVersion.BuildInt});");
                 --remainingCount;
             }
 
