@@ -54,7 +54,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 db2File.ClosePacket(false);
             }
         }
-        
+
         [Parser(Opcode.SMSG_HOTFIX_NOTIFY_BLOB)]
         public static void HandleHotfixNotifyBlob(Packet packet)
         {
@@ -72,7 +72,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_HOTFIX_NOTIFY)]
         public static void HandleHotfixNotify(Packet packet)
         {
-            var tableHash = packet.ReadInt32E<DB2Hash>("TableHash");
+            var tableHash = packet.ReadUInt32E<DB2Hash>("TableHash");
             var recordID = packet.ReadInt32("RecordID");
             var timestamp = packet.ReadUInt32("Timestamp");
 
