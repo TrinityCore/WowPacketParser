@@ -171,6 +171,7 @@
     <Compile Include="Hotfix\RandPropPointsEntry.cs" />
     <Compile Include="Hotfix\RulesetItemUpgradeEntry.cs" />
     <Compile Include="Hotfix\ScalingStatDistributionEntry.cs" />
+    <Compile Include="Hotfix\SceneScriptEntry.cs" />
     <Compile Include="Hotfix\SkillLineAbilityEntry.cs" />
     <Compile Include="Hotfix\SkillLineEntry.cs" />
     <Compile Include="Hotfix\SkillRaceClassInfoEntry.cs" />
