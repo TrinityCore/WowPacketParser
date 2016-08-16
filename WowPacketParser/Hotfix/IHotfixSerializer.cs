@@ -185,7 +185,7 @@ namespace WowPacketParser.Hotfix
 
         public abstract void GenerateDeserializer();
 
-        private static bool ShouldRead(MemberInfo propInfo)
+        protected static bool ShouldRead(MemberInfo propInfo)
         {
             var removedAttr = propInfo.GetCustomAttributes<HotfixVersionAttribute>();
 
