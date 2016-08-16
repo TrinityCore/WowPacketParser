@@ -226,6 +226,7 @@
     <Compile Include="Hotfix\WorldMapOverlayEntry.cs" />
     <Compile Include="Hotfix\WorldMapTransformsEntry.cs" />
     <Compile Include="Hotfix\WorldSafeLocsEntry.cs" />
+    <Compile Include="Parsers\AchievementHandler.cs" />
     <Compile Include="Parsers\AreaTriggerHandler.cs" />
     <Compile Include="Parsers\AuctionHouseHandler.cs" />
     <Compile Include="Parsers\AuthenticationHandler.cs" />
@@ -247,6 +248,7 @@
     <Compile Include="Parsers\PetHandler.cs" />
     <Compile Include="Parsers\QuestHandler.cs" />
     <Compile Include="Parsers\ReputationHandler.cs" />
+    <Compile Include="Parsers\ScenarioHandler.cs" />
     <Compile Include="Parsers\SessionHandler.cs" />
     <Compile Include="Parsers\SpellHandler.cs" />
     <Compile Include="Parsers\UpdateHandler.cs" />
