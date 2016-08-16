@@ -391,7 +391,6 @@
     <Compile Include="Enums\WardenOpcode.cs" />
     <Compile Include="Enums\WeatherState.cs" />
     <Compile Include="Hotfix\HotfixConfiguration.cs" />
-    <Compile Include="Hotfix\HotfixExtensions.cs" />
     <Compile Include="Hotfix\IHotfixSerializer.cs" />
     <Compile Include="Hotfix\HotfixStore.cs" />
     <Compile Include="Hotfix\HotfixStructureAttribute.cs" />
