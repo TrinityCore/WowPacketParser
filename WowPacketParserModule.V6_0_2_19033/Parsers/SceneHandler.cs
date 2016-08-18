@@ -1,6 +1,9 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Loading;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
@@ -17,13 +20,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_PLAY_SCENE)]
         public static void HandlePlayScene(Packet packet)
         {
-            packet.ReadInt32("SceneID");
-            packet.ReadInt32("PlaybackFlags");
+            var sceneId = packet.ReadEntry("SceneID");
+            Scene scene = new Scene
+            {
+                SceneID = (uint)sceneId.Key
+            };
+
+            scene.Flags = packet.ReadUInt32("PlaybackFlags");
             packet.ReadInt32("SceneInstanceID");
-            packet.ReadInt32("SceneScriptPackageID");
+            scene.PackageID = packet.ReadUInt32("SceneScriptPackageID");
             packet.ReadPackedGuid128("TransportGUID");
             packet.ReadVector3("Pos");
             packet.ReadSingle("Facing");
+
+            Storage.Scenes.Add(scene, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_INITIAL_UPDATE)]

@@ -87,6 +87,9 @@ namespace WowPacketParser.Store
 
         public static readonly DataBag<HotfixData> HotfixDatas = new DataBag<HotfixData>(new List<SQLOutput> { SQLOutput.hotfix_data });
 
+        // Scenes
+        public static readonly DataBag<Scene> Scenes = new DataBag<Scene>(new List<SQLOutput> { SQLOutput.Scenes });
+
         public static void ClearContainers()
         {
             SniffData.Clear();
