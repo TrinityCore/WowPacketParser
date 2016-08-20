@@ -1,4 +1,6 @@
-﻿using WowPacketParser.Enums;
+﻿
+using System;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -533,7 +535,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (guid.GetObjectType() == ObjectType.Unit)
                 if (Storage.Objects.ContainsKey(guid))
-                    ((Unit)Storage.Objects[guid].Item1).AIAnimKit = animKitID;
+                {
+                    var timeSpan = Storage.Objects[guid].Item2 - packet.TimeSpan;
+                    if (timeSpan != null && timeSpan.Value.Duration() <= TimeSpan.FromSeconds(1))
+                        ((Unit)Storage.Objects[guid].Item1).AIAnimKit = animKitID;
+                }
         }
 
         [Parser(Opcode.SMSG_SET_MELEE_ANIM_KIT)]
@@ -544,7 +550,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (guid.GetObjectType() == ObjectType.Unit)
                 if (Storage.Objects.ContainsKey(guid))
-                    ((Unit)Storage.Objects[guid].Item1).MeleeAnimKit = animKitID;
+                {
+                    var timeSpan = Storage.Objects[guid].Item2 - packet.TimeSpan;
+                    if (timeSpan != null && timeSpan.Value.Duration() <= TimeSpan.FromSeconds(1))
+                        ((Unit)Storage.Objects[guid].Item1).MeleeAnimKit = animKitID;
+                }
         }
 
         [Parser(Opcode.SMSG_DISPLAY_PROMOTION)]
