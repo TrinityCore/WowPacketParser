@@ -1,6 +1,8 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
@@ -825,8 +827,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_MOVE_SET_ANIM_KIT)]
         public static void HandleSetMovementAnimKit(Packet packet)
         {
-            packet.ReadPackedGuid128("Unit");
-            packet.ReadInt16("AnimKitID");
+            var guid = packet.ReadPackedGuid128("Unit");
+            var animKitID = packet.ReadUInt16("AnimKitID");
+
+            if (guid.GetObjectType() == ObjectType.Unit)
+                if (Storage.Objects.ContainsKey(guid))
+                    ((Unit)Storage.Objects[guid].Item1).MovementAnimKit = animKitID;
         }
 
         [Parser(Opcode.CMSG_MOVE_CHANGE_VEHICLE_SEATS)]

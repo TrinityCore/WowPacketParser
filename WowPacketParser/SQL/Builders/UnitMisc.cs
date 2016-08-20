@@ -59,6 +59,9 @@ namespace WowPacketParser.SQL.Builders
                     MountID = npc.Mount.GetValueOrDefault(),
                     Bytes1 = npc.Bytes1.GetValueOrDefault(),
                     Bytes2 = npc.Bytes2.GetValueOrDefault(),
+                    AIAnimKit = npc.AIAnimKit.GetValueOrDefault(0),
+                    MovementAnimKit = npc.MovementAnimKit.GetValueOrDefault(0),
+                    MeleeAnimKit = npc.MeleeAnimKit.GetValueOrDefault(0),
                     Auras = auras,
                     CommentAuras = commentAuras
                 };
@@ -216,13 +219,13 @@ namespace WowPacketParser.SQL.Builders
 
             // `gossip_menu`
             if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu))
-                result += SQLUtil.Compare(Storage.Gossips, SQLDatabase.Get(Storage.Gossips), 
+                result += SQLUtil.Compare(Storage.Gossips, SQLDatabase.Get(Storage.Gossips),
                     t => StoreGetters.GetName(StoreNameType.Unit, (int)t.ObjectEntry)); // BUG: GOs can send gossips too
 
             // `gossip_menu_option`
             if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu_option))
                 result += SQLUtil.Compare(Storage.GossipMenuOptions, SQLDatabase.Get(Storage.GossipMenuOptions), StoreNameType.None);
-            
+
             return result;
         }
 

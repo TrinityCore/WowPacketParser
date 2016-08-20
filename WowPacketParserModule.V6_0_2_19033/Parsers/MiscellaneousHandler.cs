@@ -519,12 +519,32 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_PLAY_ONE_SHOT_ANIM_KIT)]
-        [Parser(Opcode.SMSG_SET_AI_ANIM_KIT)]
-        [Parser(Opcode.SMSG_SET_MELEE_ANIM_KIT)]
-        public static void HandleSetAIAnimKit(Packet packet)
+        public static void HandlePlayOneShotAnimKit(Packet packet)
         {
             packet.ReadPackedGuid128("Unit");
             packet.ReadUInt16("AnimKitID");
+        }
+
+        [Parser(Opcode.SMSG_SET_AI_ANIM_KIT)]
+        public static void SetAIAnimKitId(Packet packet)
+        {
+            var guid = packet.ReadPackedGuid128("Unit");
+            var animKitID = packet.ReadUInt16("AnimKitID");
+
+            if (guid.GetObjectType() == ObjectType.Unit)
+                if (Storage.Objects.ContainsKey(guid))
+                    ((Unit)Storage.Objects[guid].Item1).AIAnimKit = animKitID;
+        }
+
+        [Parser(Opcode.SMSG_SET_MELEE_ANIM_KIT)]
+        public static void SetMeleeAnimKitId(Packet packet)
+        {
+            var guid = packet.ReadPackedGuid128("Unit");
+            var animKitID = packet.ReadUInt16("AnimKitID");
+
+            if (guid.GetObjectType() == ObjectType.Unit)
+                if (Storage.Objects.ContainsKey(guid))
+                    ((Unit)Storage.Objects[guid].Item1).MeleeAnimKit = animKitID;
         }
 
         [Parser(Opcode.SMSG_DISPLAY_PROMOTION)]

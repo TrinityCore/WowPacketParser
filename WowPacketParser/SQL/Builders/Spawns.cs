@@ -172,6 +172,9 @@ namespace WowPacketParser.SQL.Builders
                     addonRow.Data.Bytes2 = creature.Bytes2.GetValueOrDefault(0);
                     addonRow.Data.Emote = 0;
                     addonRow.Data.Auras = auras;
+                    addonRow.Data.AIAnimKit = creature.AIAnimKit.GetValueOrDefault(0);
+                    addonRow.Data.MovementAnimKit = creature.MovementAnimKit.GetValueOrDefault(0);
+                    addonRow.Data.MeleeAnimKit = creature.MeleeAnimKit.GetValueOrDefault(0);
                     addonRow.Comment += StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
                     if (!string.IsNullOrWhiteSpace(auras))
                         addonRow.Comment += " - " + commentAuras;

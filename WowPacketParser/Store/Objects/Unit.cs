@@ -46,6 +46,9 @@ namespace WowPacketParser.Store.Objects
         public uint? Model;
         public uint? Mount;
         public uint? Bytes1;
+        public ushort? AIAnimKit;
+        public ushort? MovementAnimKit;
+        public ushort? MeleeAnimKit;
         public UnitDynamicFlags? DynamicFlags;
         public UnitDynamicFlagsWOD? DynamicFlagsWod;
         public NPCFlags? NpcFlags;
@@ -117,9 +120,7 @@ namespace WowPacketParser.Store.Objects
             HealthMod     = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BASE_HEALTH);
             BoundingRadius= UpdateFields.GetValue<UnitField, float?>(UnitField.UNIT_FIELD_BOUNDINGRADIUS);
             CombatReach   = UpdateFields.GetValue<UnitField, float?>(UnitField.UNIT_FIELD_COMBATREACH);
-            HoverHeight   = UpdateFields.GetValue<UnitField, float?>(UnitField.UNIT_FIELD_HOVERHEIGHT);
-
-
+            HoverHeight = UpdateFields.GetValue<UnitField, float?>(UnitField.UNIT_FIELD_HOVERHEIGHT);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_4_0_17359))
             {
