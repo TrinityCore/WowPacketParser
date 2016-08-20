@@ -56,9 +56,11 @@ namespace WowPacketParser.SQL.Builders
                 var addon = new CreatureTemplateAddon
                 {
                     Entry = unit.Key.GetEntry(),
+                    PathID = 0,
                     MountID = npc.Mount.GetValueOrDefault(),
                     Bytes1 = npc.Bytes1.GetValueOrDefault(),
                     Bytes2 = npc.Bytes2.GetValueOrDefault(),
+                    Emote = 0,
                     AIAnimKit = npc.AIAnimKit.GetValueOrDefault(0),
                     MovementAnimKit = npc.MovementAnimKit.GetValueOrDefault(0),
                     MeleeAnimKit = npc.MeleeAnimKit.GetValueOrDefault(0),
