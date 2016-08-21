@@ -207,7 +207,7 @@ namespace WowPacketParser.Misc
                     case ClientVersionBuild.V4_3_2_15211:
                     case ClientVersionBuild.V4_3_3_15354:
                     case ClientVersionBuild.V4_3_4_15595:
-                        return ClientVersionBuild.V4_3_0a_15050;
+                        return ClientVersionBuild.V4_3_4_15595;
                     case ClientVersionBuild.V5_0_4_16016:
                     case ClientVersionBuild.V5_0_5_16048:
                     case ClientVersionBuild.V5_0_5a_16057:
@@ -294,8 +294,9 @@ namespace WowPacketParser.Misc
                     case ClientVersionBuild.V7_0_3_22423:
                     case ClientVersionBuild.V7_0_3_22445:
                         return ClientVersionBuild.V7_0_3_22248;
-                    case ClientVersionBuild.Zero:
                     case ClientVersionBuild.BattleNetV37165:
+                        return ClientVersionBuild.BattleNetV37165;
+                    case ClientVersionBuild.Zero:
                         return Build;
                     default:
                         throw new ArgumentOutOfRangeException();
