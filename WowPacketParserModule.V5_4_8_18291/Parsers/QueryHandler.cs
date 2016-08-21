@@ -151,9 +151,8 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         public static void HandleDBReply(Packet packet)
         {
             var entry = packet.ReadInt32("Entry");
-            var type = packet.ReadUInt32E<DB2Hash>("DB2 File");
-
             packet.ReadTime("Hotfix date");
+            var type = packet.ReadUInt32E<DB2Hash>("DB2 File");
 
             var size = packet.ReadInt32("Size");
             var data = packet.ReadBytes(size);

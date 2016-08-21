@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using Sigil;
 using WowPacketParser.Hotfix;
@@ -27,35 +27,44 @@ namespace WowPacketParserModule.V5_4_1_17538.Hotfix
                     var propType = propInfo.PropertyType;
                     var isArray = propType.IsArray;
 
-                    deserializationEmitter.LoadLocal(deserializationResultLocal);
-
                     if (!isArray)
                     {
                         var typeCode = Type.GetTypeCode(propType);
 
-                        deserializationEmitter.LoadArgument(0);
-                        deserializationEmitter.LoadConstant(propInfo.Name);
-                        deserializationEmitter.LoadConstant(0);
-                        deserializationEmitter.NewArray<object>();
                         if (typeCode == TypeCode.String)
                         {
                             var conditionLabel = deserializationEmitter.DefineLabel();
-                            deserializationEmitter.CallVirtual(_binaryReaders[TypeCode.Int16]);
+                            deserializationEmitter.LoadArgument(0);
+                            deserializationEmitter.CallVirtual(typeof(Packet).GetMethod("ReadInt16", Type.EmptyTypes));
                             deserializationEmitter.LoadConstant(0);
                             deserializationEmitter.BranchIfLessOrEqual(conditionLabel);
+                            deserializationEmitter.LoadLocal(deserializationResultLocal);
                             deserializationEmitter.LoadArgument(0);
+                            deserializationEmitter.LoadConstant(propInfo.Name);
+                            deserializationEmitter.LoadConstant(0);
+                            deserializationEmitter.NewArray<object>();
                             deserializationEmitter.CallVirtual(_binaryReaders[typeCode]);
+                            deserializationEmitter.Call(propInfo.GetSetMethod());
                             deserializationEmitter.MarkLabel(conditionLabel);
                         }
                         else
+                        {
+                            deserializationEmitter.LoadLocal(deserializationResultLocal);
+                            deserializationEmitter.LoadArgument(0);
+                            deserializationEmitter.LoadConstant(propInfo.Name);
+                            deserializationEmitter.LoadConstant(0);
+                            deserializationEmitter.NewArray<object>();
                             deserializationEmitter.CallVirtual(_binaryReaders[typeCode]);
-                        deserializationEmitter.Call(propInfo.GetSetMethod());
+                            deserializationEmitter.Call(propInfo.GetSetMethod());
+                        }
                     }
                     else
                     {
                         var hotfixAttr = propInfo.GetCustomAttribute<HotfixArrayAttribute>();
+                        Trace.Assert(hotfixAttr != null);
                         var typeCode = Type.GetTypeCode(propType.GetElementType());
 
+                        deserializationEmitter.LoadLocal(deserializationResultLocal);
                         deserializationEmitter.LoadConstant(hotfixAttr.Size);
                         deserializationEmitter.NewArray(propType.GetElementType());
                         deserializationEmitter.CallVirtual(propInfo.GetSetMethod());
@@ -65,40 +74,67 @@ namespace WowPacketParserModule.V5_4_1_17538.Hotfix
 
                         using (var iterationLocal = deserializationEmitter.DeclareLocal<int>())
                         {
+                            // for (var i = 0; ...; ...)
                             deserializationEmitter.LoadConstant(0);
                             deserializationEmitter.StoreLocal(iterationLocal);
+
                             deserializationEmitter.Branch(loopConditionLabel);
                             deserializationEmitter.MarkLabel(loopBodyLabel);
-                            deserializationEmitter.LoadLocal(deserializationResultLocal);
-                            deserializationEmitter.CallVirtual(propInfo.GetGetMethod());
-                            deserializationEmitter.LoadLocal(iterationLocal);
-                            deserializationEmitter.LoadArgument(0);
-                            deserializationEmitter.LoadConstant(propInfo.Name);
-                            deserializationEmitter.LoadConstant(1);
-                            deserializationEmitter.NewArray<object>();
-                            deserializationEmitter.Duplicate();
-                            deserializationEmitter.LoadConstant(0);
-                            deserializationEmitter.LoadLocal(iterationLocal);
-                            deserializationEmitter.Box<int>();
-                            deserializationEmitter.StoreElement<object>();
                             if (typeCode == TypeCode.String)
                             {
                                 var conditionLabel = deserializationEmitter.DefineLabel();
-                                deserializationEmitter.CallVirtual(_binaryReaders[TypeCode.Int16]);
+
+                                // if (packet.ReadInt16() > 0)
+                                deserializationEmitter.LoadArgument(0); // Packet
+                                deserializationEmitter.CallVirtual(typeof(Packet).GetMethod("ReadInt16", Type.EmptyTypes));
                                 deserializationEmitter.LoadConstant(0);
-                                deserializationEmitter.BranchIfLessOrEqual(conditionLabel);
-                                deserializationEmitter.LoadArgument(0);
+                                deserializationEmitter.CompareGreaterThan();
+                                deserializationEmitter.BranchIfFalse(conditionLabel);
+
+                                // instance.Property[i] = packet.<Reader>("PropertyName", i);
+                                deserializationEmitter.LoadLocal(deserializationResultLocal);
+                                deserializationEmitter.CallVirtual(propInfo.GetGetMethod());
+                                deserializationEmitter.LoadLocal(iterationLocal);
+                                deserializationEmitter.LoadArgument(0); // Packet
+                                deserializationEmitter.LoadConstant(propInfo.Name);
+                                deserializationEmitter.LoadConstant(1);
+                                deserializationEmitter.NewArray<object>();
+                                deserializationEmitter.Duplicate();
+                                deserializationEmitter.LoadConstant(0);
+                                deserializationEmitter.LoadLocal(iterationLocal);
+                                deserializationEmitter.Box<int>();
+                                deserializationEmitter.StoreElement<object>();
                                 deserializationEmitter.CallVirtual(_binaryReaders[typeCode]);
+                                deserializationEmitter.StoreElement<string>();
+
                                 deserializationEmitter.MarkLabel(conditionLabel);
                             }
                             else
+                            {
+                                // instance.Property[i] = packet.<Reader>("PropertyName", i);
+                                deserializationEmitter.LoadLocal(deserializationResultLocal);
+                                deserializationEmitter.CallVirtual(propInfo.GetGetMethod());
+                                deserializationEmitter.LoadLocal(iterationLocal);
+                                deserializationEmitter.LoadArgument(0);
+                                deserializationEmitter.LoadConstant(propInfo.Name);
+                                deserializationEmitter.LoadConstant(1);
+                                deserializationEmitter.NewArray<object>();
+                                deserializationEmitter.Duplicate();
+                                deserializationEmitter.LoadConstant(0);
+                                deserializationEmitter.LoadLocal(iterationLocal);
+                                deserializationEmitter.Box<int>();
+                                deserializationEmitter.StoreElement<object>();
                                 deserializationEmitter.CallVirtual(_binaryReaders[typeCode]);
-                            deserializationEmitter.StoreElement(propType.GetElementType());
+                                deserializationEmitter.StoreElement(propType.GetElementType());
+                            }
+
+                            // for (...; ...; i += 1)
                             deserializationEmitter.LoadLocal(iterationLocal);
                             deserializationEmitter.LoadConstant(1);
                             deserializationEmitter.Add();
                             deserializationEmitter.StoreLocal(iterationLocal);
                             deserializationEmitter.MarkLabel(loopConditionLabel);
+                            // for (...; i < arraySize; ...)
                             deserializationEmitter.LoadLocal(iterationLocal);
                             deserializationEmitter.LoadConstant(hotfixAttr.Size);
                             deserializationEmitter.CompareLessThan();
@@ -107,8 +143,10 @@ namespace WowPacketParserModule.V5_4_1_17538.Hotfix
                     }
                 }
 
+                // return instance;
                 deserializationEmitter.LoadLocal(deserializationResultLocal);
                 deserializationEmitter.Return();
+
                 _deserializer = deserializationEmitter.CreateDelegate();
             }
             catch (SigilVerificationException sve)

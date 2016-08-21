@@ -1,7 +1,7 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
 
-namespace WowPacketParserModule.V5_4_7_17898.Hotfix
+namespace WowPacketParserModule.V5_4_8_18291.Hotfix
 {
     [HotfixStructure(DB2Hash.Creature)]
     public class CreatureEntry

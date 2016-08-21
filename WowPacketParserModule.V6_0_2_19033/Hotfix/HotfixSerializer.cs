@@ -13,6 +13,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Hotfix
         public HotfixSerializer()
         {
             // Override static data
+            // Not exactly liking this, buuuuut .... eh
             _binaryReaders[TypeCode.String] = typeof (Packet).GetMethod("ReadWoWString", new[] { typeof(string), typeof(int), typeof(object[]) });
         } 
 
@@ -42,7 +43,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Hotfix
                         deserializationEmitter.LoadArgument(0);
                         deserializationEmitter.LoadConstant(propInfo.Name);
                         if (typeCode == TypeCode.String)
-                            deserializationEmitter.CallVirtual(_binaryReaders[TypeCode.UInt16]);
+                            deserializationEmitter.CallVirtual(typeof(Packet).GetMethod("ReadInt16", Type.EmptyTypes));
                         deserializationEmitter.LoadConstant(0);
                         deserializationEmitter.NewArray<object>();
                         deserializationEmitter.CallVirtual(_binaryReaders[typeCode]);
@@ -72,7 +73,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Hotfix
                             deserializationEmitter.LoadArgument(0);
                             deserializationEmitter.LoadConstant(propInfo.Name);
                             if (typeCode == TypeCode.String)
-                                deserializationEmitter.CallVirtual(_binaryReaders[TypeCode.UInt16]);
+                                deserializationEmitter.CallVirtual(typeof (Packet).GetMethod("ReadInt16", Type.EmptyTypes));
                             deserializationEmitter.LoadConstant(1);
                             deserializationEmitter.NewArray<object>();
                             deserializationEmitter.Duplicate();

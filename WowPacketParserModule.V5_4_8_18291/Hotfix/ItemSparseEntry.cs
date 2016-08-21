@@ -1,7 +1,7 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
 
-namespace WowPacketParserModule.V5_4_7_17898.Hotfix
+namespace WowPacketParserModule.V5_4_8_18291.Hotfix
 {
     [HotfixStructure(DB2Hash.ItemSparse)]
     public class ItemSparseEntry
@@ -55,7 +55,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Hotfix
         [HotfixArray(5)]
         public int[] TriggeredSpellCategoryCooldown { get; set; }
         public int Bonding { get; set; }
-        public string Name { get; set; }
         [HotfixArray(4)]
         public string[] Names { get; set; }
         public string Description { get; set; }
@@ -79,7 +78,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Hotfix
         public int[] SocketItem { get; set; }
         public int SocketBonus { get; set; }
         public int GemProperties { get; set; }
-        public int ArmorDamageModifier { get; set; }
+        public float ArmorDamageModifier { get; set; }
         public int Duration { get; set; }
         public int LimitCategory { get; set; }
         public int Holiday { get; set; }
