@@ -64,9 +64,14 @@ namespace WowPacketParser.Hotfix
 
         public static void LoadStores(Assembly asm)
         {
-            var hotfixSerializer = asm.GetTypes().First(type => type.GetCustomAttributes(typeof(HotfixSerializerAttribute)).Any());
+            var types = asm.GetTypes();
+            var hotfixSerializers = types.Where(type => type.GetCustomAttributes(typeof(HotfixSerializerAttribute)).Any()).ToList();
+            if (hotfixSerializers.Count == 0)
+                return;
 
-            foreach (var typeInfo in asm.GetTypes())
+            var hotfixSerializer = hotfixSerializers.First();
+
+            foreach (var typeInfo in types)
             {
                 foreach (var attrInfo in typeInfo.GetCustomAttributes<HotfixStructureAttribute>())
                 {
