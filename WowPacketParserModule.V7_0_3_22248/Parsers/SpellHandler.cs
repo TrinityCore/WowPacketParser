@@ -158,6 +158,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32("AttackPower", idx);
             packet.ReadInt32("SpellPower", idx);
 
+            packet.ResetBitReader();
+
             var spellLogPowerDataCount = packet.ReadBits("SpellLogPowerData", 9, idx);
 
             // SpellLogPowerData
