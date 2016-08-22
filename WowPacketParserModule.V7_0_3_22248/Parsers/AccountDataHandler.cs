@@ -16,7 +16,29 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 var variableNameLen = packet.ReadBits(6);
                 var valueLen = packet.ReadBits(10);
 
-                packet.WriteLine($"VariableName: \"{ packet.ReadWoWString((int)variableNameLen) }\" Value: \"{ packet.ReadWoWString((int)valueLen) }\"");
+                packet.WriteLine($"[{i.ToString() }]VariableName: \"{ packet.ReadWoWString((int)variableNameLen) }\" Value: \"{ packet.ReadWoWString((int)valueLen) }\"");
+            }
+        }
+
+        [Parser(Opcode.CMSG_SAVE_ENABLED_ADDONS)]
+        public static void HandleSaveEnabledAddons(Packet packet)
+        {
+            var enableAddonsCount = packet.ReadUInt32("EnableAddonsCount");
+
+            for (var i = 0; i < enableAddonsCount; ++i)
+            {
+                packet.ResetBitReader();
+
+                var addonNameLen = packet.ReadBits(7);
+                var versionLen = packet.ReadBits(6);
+
+                packet.ReadBit("Loaded", i);
+                packet.ReadBit("Disabled", i);
+
+                if (addonNameLen > 1)
+                    packet.ReadCString("AddonName", i);
+                if (versionLen > 1)
+                    packet.ReadCString("Version", i);
             }
         }
     }
