@@ -718,6 +718,7 @@ namespace WowPacketParser.Enums.Version.V7_0_3_22248
             {Opcode.SMSG_ABORT_NEW_WORLD, 0x25AB},
             {Opcode.SMSG_ACCOUNT_CRITERIA_UPDATE, 0x264E},
             {Opcode.SMSG_ACCOUNT_DATA_TIMES, 0x2746},
+            {Opcode.SMSG_ACCOUNT_HEIRLOOM_UPDATE, 0x25C3},
             {Opcode.SMSG_ACCOUNT_MOUNT_UPDATE, 0x25C1},
             {Opcode.SMSG_ACCOUNT_TOYS_UPDATE, 0x25C2},
             {Opcode.SMSG_ACHIEVEMENT_DELETED, 0x271B},
