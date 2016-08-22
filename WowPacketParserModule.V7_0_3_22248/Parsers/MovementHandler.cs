@@ -385,7 +385,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.AddSniffData(StoreNameType.Map, (int)WowPacketParser.Parsing.Parsers.MovementHandler.CurrentMapId, "NEW_WORLD");
         }
 
-        [Parser(Opcode.SMSG_ENABLE_DOUBLE_JUMP)]
+        [Parser(Opcode.SMSG_MOVE_ENABLE_DOUBLE_JUMP)]
         public static void HandleMoveEnableDoubleJump(Packet packet)
         {
             packet.ReadPackedGuid128("MoverGUID");
