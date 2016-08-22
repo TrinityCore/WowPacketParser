@@ -224,6 +224,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.CMSG_MOVE_STOP_TURN)]
         [Parser(Opcode.SMSG_MOVE_UPDATE_KNOCK_BACK)]
         [Parser(Opcode.SMSG_MOVE_UPDATE)]
+        [Parser(Opcode.CMSG_MOVE_DOUBLE_JUMP)]
         public static void HandlePlayerMove(Packet packet)
         {
             ReadMovementStats(packet, "MovementStats");
@@ -240,6 +241,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.CMSG_MOVE_ENABLE_SWIM_TO_FLY_TRANS_ACK)]
         [Parser(Opcode.CMSG_MOVE_FEATHER_FALL_ACK)]
         [Parser(Opcode.CMSG_MOVE_SET_CAN_TURN_WHILE_FALLING_ACK)]
+        [Parser(Opcode.CMSG_MOVE_ENABLE_DOUBLE_JUMP_ACK)]
         public static void HandleMovementAck(Packet packet)
         {
             ReadMovementAck(packet, "MovementAck");
@@ -381,6 +383,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadVector3("MovementOffset");
 
             packet.AddSniffData(StoreNameType.Map, (int)WowPacketParser.Parsing.Parsers.MovementHandler.CurrentMapId, "NEW_WORLD");
+        }
+
+        [Parser(Opcode.SMSG_MOVE_ENABLE_DOUBLE_JUMP)]
+        public static void HandleMoveEnableDoubleJump(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+            packet.ReadUInt32("SequenceId");
         }
     }
 }
