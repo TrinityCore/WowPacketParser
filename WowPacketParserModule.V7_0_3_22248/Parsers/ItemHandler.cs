@@ -53,5 +53,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             SpellHandler.ReadSpellCastRequest(packet, "Cast");
         }
+
+        [Parser(Opcode.CMSG_USE_TOY)]
+        public static void HandleUseToy(Packet packet)
+        {
+            packet.ReadInt32<ItemId>("ItemID");
+            SpellHandler.ReadSpellCastRequest(packet, "Cast");
+        }
     }
 }
