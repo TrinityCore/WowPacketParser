@@ -17,7 +17,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadUInt32("Type", i);
                 packet.ReadUInt32("Quantity", i);
 
-                packet.ResetBitReader()<
+                packet.ResetBitReader();
 
                 var hasWeeklyQuantity = packet.ReadBit();
                 var hasMaxWeeklyQuantity = packet.ReadBit();
