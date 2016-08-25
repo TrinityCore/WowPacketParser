@@ -51,4 +51,20 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [DBTableName("gameobject_questitem")]
+    public sealed class GameObjectTemplateQuestItem : IDataModel
+    {
+        [DBFieldName("GameObjectEntry", true)]
+        public uint? GameObjectEntry;
+
+        [DBFieldName("Idx")]
+        public uint? Idx;
+
+        [DBFieldName("ItemId")]
+        public uint? ItemId;
+
+        [DBFieldName("VerifiedBuild", TargetedDatabase.WarlordsOfDraenor)]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }

@@ -237,6 +237,23 @@ namespace WowPacketParser.SQL.Builders
         }
 
         [BuilderMethod(true)]
+        public static string GameObjectTemplateQuestItem()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_template))
+                return string.Empty;
+
+            if (Settings.TargetedDatabase <= TargetedDatabase.WarlordsOfDraenor)
+                return string.Empty;
+
+            if (Storage.GameObjectTemplateQuestItems.IsEmpty())
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.GameObjectTemplateQuestItems);
+
+            return SQLUtil.Compare(Storage.GameObjectTemplateQuestItems, templatesDb, StoreNameType.GameObject);
+        }
+
+        [BuilderMethod(true)]
         public static string ItemTemplate()
         {
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.item_template))

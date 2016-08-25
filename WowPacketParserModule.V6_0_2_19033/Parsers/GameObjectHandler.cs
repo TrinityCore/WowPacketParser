@@ -54,11 +54,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             gameObject.Size = packet.ReadSingle("Size");
 
-            byte length = packet.ReadByte("QuestItems Length");
+            byte questItemsCount = packet.ReadByte("QuestItemsCount");
+            for (uint i = 0; i < questItemsCount; i++)
+            {
 
-            gameObject.QuestItems = new uint?[length];
-            for (int i = 0; i < length; i++)
-                gameObject.QuestItems[i] = (uint)packet.ReadInt32<ItemId>("Quest Item", i);
+                GameObjectTemplateQuestItem questItem = new GameObjectTemplateQuestItem
+                {
+                    GameObjectEntry = (uint)entry.Key,
+                    Idx = i,
+                    ItemId = packet.ReadUInt32<ItemId>("QuestItem", i)
+                };
+
+                Storage.GameObjectTemplateQuestItems.Add(questItem, packet.TimeSpan);
+            }
 
             packet.ReadUInt32E<ClientType>("Expansion");
 
