@@ -137,6 +137,7 @@ namespace WowPacketParser.Enums
         V7_0_3_22423 = 22423,
         V7_0_3_22445 = 22445,
         V7_0_3_22498 = 22498,
+        V7_0_3_22522 = 22522,
 
         // Battle.net - should probably not mix this but oh well
         BattleNetV37165 = 37165,
