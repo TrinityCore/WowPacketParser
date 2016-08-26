@@ -2780,6 +2780,7 @@ namespace WowPacketParser.Enums
         SMSG_WEEKLY_SPELL_USAGE_UPDATE,
         SMSG_WHO,
         SMSG_WHO_IS,
+        SMSG_WORLD_QUEST_UPDATE,
         SMSG_WORLD_SERVER_INFO,
         SMSG_WORLD_TEXT,
         SMSG_WOW_TOKEN_AUCTION_SOLD,

@@ -38,8 +38,15 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
         public static void ReadGarrisonBuildingInfo(Packet packet, params object[] indexes)
         {
-            packet.ReadInt32("GarrPlotInstanceID", indexes);
-            packet.ReadInt32("GarrBuildingID", indexes);
+            packet.ReadUInt32("GarrPlotInstanceID", indexes);
+            packet.ReadUInt32("GarrBuildingID", indexes);
+            packet.ReadUInt32("TimeBuilt", indexes);
+            packet.ReadUInt32("CurrentGarSpecID", indexes);
+            packet.ReadUInt32("TimeSpecCooldown", indexes);
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Active", indexes);
         }
 
         public static void ReadGarrisonFollower(Packet packet, params object[] indexes)

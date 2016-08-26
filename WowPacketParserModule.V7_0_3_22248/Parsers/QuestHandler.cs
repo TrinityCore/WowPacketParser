@@ -461,5 +461,20 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             Storage.QuestRequestItems.Add(questRequestItems, packet.TimeSpan);
         }
+
+        [Parser(Opcode.SMSG_WORLD_QUEST_UPDATE)]
+        public static void HandleWorldQuestUpdate(Packet packet)
+        {
+            var count = packet.ReadInt32("Count");
+
+            for (int i = 0; i < count; i++)
+            {
+                packet.ReadTime("LastUpdate", i);
+                packet.ReadUInt32<QuestId>("QuestID", i);
+                packet.ReadUInt32("Timer", i);
+                packet.ReadInt32("VariableID", i);
+                packet.ReadInt32("Value", i);
+            }
+        }
     }
 }

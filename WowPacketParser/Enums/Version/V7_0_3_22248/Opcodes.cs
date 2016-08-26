@@ -1646,6 +1646,7 @@ namespace WowPacketParser.Enums.Version.V7_0_3_22248
             {Opcode.SMSG_WEEKLY_SPELL_USAGE, 0x2C18},
             {Opcode.SMSG_WHO, 0x2BAE},
             {Opcode.SMSG_WHO_IS, 0x26CB},
+            {Opcode.SMSG_WORLD_QUEST_UPDATE,  0x283C},
             {Opcode.SMSG_WORLD_SERVER_INFO, 0x25C0},
             {Opcode.SMSG_WORLD_TEXT, 0x2824},
             {Opcode.SMSG_WOW_TOKEN_AUCTION_SOLD, 0x2813},
