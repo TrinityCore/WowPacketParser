@@ -41,5 +41,27 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     packet.ReadCString("Version", i);
             }
         }
+
+        [Parser(Opcode.SMSG_CACHE_INFO)]
+        public static void HandleCacheInfo(Packet packet)
+        {
+            var cacheInfoCount = packet.ReadUInt32("CacheInfoCount");
+
+            packet.ResetBitReader();
+
+            var signatureLen = packet.ReadBits(6);
+
+            for (var i = 0; i < cacheInfoCount; ++i)
+            {
+                packet.ResetBitReader();
+
+                var variableNameLen = packet.ReadBits(6);
+                var valueLen = packet.ReadBits(6);
+
+                packet.WriteLine($"[{ i.ToString() }] VariableName: \"{ packet.ReadWoWString((int)variableNameLen) }\" Value: \"{ packet.ReadWoWString((int)valueLen) }\"");
+            }
+
+            packet.ReadWoWString("Signature", signatureLen);
+        }
     }
 }
