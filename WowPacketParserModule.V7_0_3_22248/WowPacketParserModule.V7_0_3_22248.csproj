@@ -211,6 +211,7 @@
     <Compile Include="Hotfix\SpellTotemsEntry.cs" />
     <Compile Include="Hotfix\SpellXSpellVisualEntry.cs" />
     <Compile Include="Hotfix\SummonPropertiesEntry.cs" />
+    <Compile Include="Hotfix\TactKeyEntry.cs" />
     <Compile Include="Hotfix\TalentEntry.cs" />
     <Compile Include="Hotfix\TaxiNodesEntry.cs" />
     <Compile Include="Hotfix\TaxiPathEntry.cs" />
