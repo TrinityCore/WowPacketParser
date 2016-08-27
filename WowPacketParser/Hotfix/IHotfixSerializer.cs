@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Text;
 using System.Text.RegularExpressions;
 using Sigil;
@@ -81,17 +82,20 @@ namespace WowPacketParser.Hotfix
                 serializationEmitter.Call(stringBuilderAppend);
                 serializationEmitter.Pop();
 
-                // Append to locale builder if (localeBuilder != null)
-                var skipLocaleBuilderMark = serializationEmitter.DefineLabel();
-                serializationEmitter.LoadArgument(2); // instanceBuilder
-                serializationEmitter.LoadNull();
-                serializationEmitter.CompareEqual();
-                serializationEmitter.BranchIfTrue(skipLocaleBuilderMark);
-                serializationEmitter.LoadArgument(2); // instanceBuilder
-                serializationEmitter.LoadLocal(stringLocal);
-                serializationEmitter.Call(stringBuilderAppend);
-                serializationEmitter.Pop();
-                serializationEmitter.MarkLabel(skipLocaleBuilderMark);
+                if (isString)
+                {
+                    // Append to locale builder if (localeBuilder != null)
+                    var skipLocaleBuilderMark = serializationEmitter.DefineLabel();
+                    serializationEmitter.LoadArgument(2); // instanceBuilder
+                    serializationEmitter.LoadNull();
+                    serializationEmitter.CompareEqual();
+                    serializationEmitter.BranchIfTrue(skipLocaleBuilderMark);
+                    serializationEmitter.LoadArgument(2); // instanceBuilder
+                    serializationEmitter.LoadLocal(stringLocal);
+                    serializationEmitter.Call(stringBuilderAppend);
+                    serializationEmitter.Pop();
+                    serializationEmitter.MarkLabel(skipLocaleBuilderMark);
+                }
             }
         }
 
@@ -134,21 +138,27 @@ namespace WowPacketParser.Hotfix
                 serializationEmitter.Call(stringBuilderAppend);
                 serializationEmitter.Pop();
 
-                // Append to locale builder if (localeBuilder != null)
-                serializationEmitter.LoadArgument(2); // instanceBuilder
-                serializationEmitter.LoadNull();
-                serializationEmitter.CompareEqual();
-                serializationEmitter.BranchIfTrue(loopConditionLabel);
-                serializationEmitter.LoadArgument(2); // instanceBuilder
-                serializationEmitter.LoadLocal(stringLocal);
-                serializationEmitter.Call(stringBuilderAppend);
-                serializationEmitter.Pop();
+                if (isString)
+                {
+                    // Append to locale builder if (localeBuilder != null)
+                    var localeBuilderMarker = serializationEmitter.DefineLabel();
+                    serializationEmitter.LoadArgument(2); // instanceBuilder
+                    serializationEmitter.LoadNull();
+                    serializationEmitter.CompareEqual();
+                    serializationEmitter.BranchIfTrue(localeBuilderMarker);
+                    serializationEmitter.LoadArgument(2); // instanceBuilder
+                    serializationEmitter.LoadLocal(stringLocal);
+                    serializationEmitter.Call(stringBuilderAppend);
+                    serializationEmitter.Pop();
+                    serializationEmitter.MarkLabel(localeBuilderMarker);
+                }
 
-                serializationEmitter.MarkLabel(loopConditionLabel);
                 serializationEmitter.LoadLocal(iterationLocal);
                 serializationEmitter.LoadConstant(1);
                 serializationEmitter.Add();
                 serializationEmitter.StoreLocal(iterationLocal);
+
+                serializationEmitter.MarkLabel(loopConditionLabel);
                 serializationEmitter.LoadLocal(iterationLocal);
                 serializationEmitter.LoadArgument(0); // instance
                 serializationEmitter.CallVirtual(propInfo.GetGetMethod());
@@ -164,7 +174,13 @@ namespace WowPacketParser.Hotfix
         {
             try
             {
+                // var asmName = new AssemblyName("Serializer_" + typeof(T).Name);
+                // var asm = AppDomain.CurrentDomain.DefineDynamicAssembly(asmName, AssemblyBuilderAccess.Save);
+                // var mod = asm.DefineDynamicModule(asmName.Name, asmName.Name + ".dll");
+                // var typeBuilder = mod.DefineType("MyType", TypeAttributes.Public | TypeAttributes.Abstract);
+
                 var serializationEmitter = Emit<Action<T, StringBuilder, StringBuilder>>.NewDynamicMethod();
+                // var serializationEmitter = Emit<Action<T, StringBuilder, StringBuilder>>.BuildMethod(typeBuilder, "Build", MethodAttributes.Static | MethodAttributes.Public, CallingConventions.Standard);
 
                 foreach (var propInfo in typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance).
                     Where(propInfo => propInfo.GetGetMethod() != null && propInfo.GetSetMethod() != null && ShouldRead(propInfo)))
@@ -176,6 +192,10 @@ namespace WowPacketParser.Hotfix
                 }
                 serializationEmitter.Return();
                 _serializer = serializationEmitter.CreateDelegate();
+
+                // serializationEmitter.CreateMethod();
+                // typeBuilder.CreateType();
+                // asm.Save(asmName.Name + ".dll");
             }
             catch (SigilVerificationException sve)
             {
