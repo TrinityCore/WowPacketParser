@@ -476,5 +476,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadInt32("Value", i);
             }
         }
+
+        [Parser(Opcode.CMSG_REQUEST_WORLD_QUEST_UPDATE)]
+        public static void HandleQuestZero(Packet packet) { }
     }
 }
