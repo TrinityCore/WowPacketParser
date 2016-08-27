@@ -143,5 +143,18 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadPackedGuid128("Guid");
             packet.ReadInt64("Health");
         }
+
+        [Parser(Opcode.CMSG_ALTER_APPEARANCE)]
+        public static void HandleAlterAppearance(Packet packet)
+        {
+            packet.ReadUInt32("NewHairStyle");
+            packet.ReadUInt32("NewHairColor");
+            packet.ReadUInt32("NewFacialHair");
+            packet.ReadUInt32("NewSkinColor");
+            packet.ReadUInt32("NewFace");
+
+            for (uint i = 0; i < 3; ++i)
+                packet.ReadUInt32("NewCustomDisplay", i);
+        }
     }
 }
