@@ -224,6 +224,7 @@
     <Compile Include="Hotfix\TransportRotationEntry.cs" />
     <Compile Include="Hotfix\UnitPowerBarEntry.cs" />
     <Compile Include="Hotfix\VehicleEntry.cs" />
+    <Compile Include="Hotfix\VignetteEntry.cs" />
     <Compile Include="Hotfix\WMOAreaTableEntry.cs" />
     <Compile Include="Hotfix\WorldMapAreaEntry.cs" />
     <Compile Include="Hotfix\WorldMapOverlayEntry.cs" />
