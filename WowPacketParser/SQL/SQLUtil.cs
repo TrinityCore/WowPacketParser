@@ -269,7 +269,7 @@ namespace WowPacketParser.SQL
                 }
             }
 
-            return new SQLInsert<T>(rowsIns).Build() +
+            return new SQLInsert<T>(rowsIns).Build() + Environment.NewLine +
                    new SQLUpdate<T>(rowsUpd).Build();
         }
 
