@@ -57,7 +57,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             byte questItemsCount = packet.ReadByte("QuestItemsCount");
             for (uint i = 0; i < questItemsCount; i++)
             {
-
                 GameObjectTemplateQuestItem questItem = new GameObjectTemplateQuestItem
                 {
                     GameObjectEntry = (uint)entry.Key,
@@ -68,7 +67,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 Storage.GameObjectTemplateQuestItems.Add(questItem, packet.TimeSpan);
             }
 
-            packet.ReadUInt32E<ClientType>("Expansion");
+            gameObject.RequiredLevel = packet.ReadInt32("RequiredLevel");
 
             Storage.GameObjectTemplates.Add(gameObject, packet.TimeSpan);
 

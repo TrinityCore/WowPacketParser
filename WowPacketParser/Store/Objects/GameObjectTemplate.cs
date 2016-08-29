@@ -39,8 +39,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Data", TargetedDatabase.WarlordsOfDraenor, 33, true)]
         public int?[] Data;
 
-        [DBFieldName("unkInt32", TargetedDatabase.Cataclysm)]
-        public int? UnknownInt;
+        [DBFieldName("RequiredLevel", TargetedDatabase.Cataclysm)]
+        public int? RequiredLevel;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

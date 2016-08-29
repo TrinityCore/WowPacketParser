@@ -51,7 +51,7 @@ namespace WowPacketParser.Parsing.Parsers
                     gameObject.QuestItems[i] = (uint)packet.ReadInt32<ItemId>("Quest Item", i);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596))
-                gameObject.UnknownInt = packet.ReadInt32("Unknown UInt32");
+                gameObject.RequiredLevel = packet.ReadInt32("RequiredLevel");
 
             packet.AddSniffData(StoreNameType.GameObject, entry.Key, "QUERY_RESPONSE");
 

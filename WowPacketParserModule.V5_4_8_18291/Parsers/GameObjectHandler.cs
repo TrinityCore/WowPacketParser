@@ -67,7 +67,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             for (int i = 0; i < gameObject.QuestItems.Length; i++)
                 gameObject.QuestItems[i] = (uint)packet.ReadInt32<ItemId>("Quest Item", i);
 
-            packet.ReadUInt32E<ClientType>("Expansion");
+            gameObject.RequiredLevel = packet.ReadInt32("RequiredLevel");
 
             Storage.GameObjectTemplates.Add(gameObject, packet.TimeSpan);
 

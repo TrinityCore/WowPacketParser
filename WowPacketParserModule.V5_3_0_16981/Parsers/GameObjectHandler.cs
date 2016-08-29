@@ -55,7 +55,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             for (int i = 0; i < gameObject.QuestItems.Length; i++)
                 gameObject.QuestItems[i] = (uint)packet.ReadInt32<ItemId>("Quest Item", i);
 
-            packet.ReadUInt32E<ClientType>("Expansion");
+            gameObject.RequiredLevel = packet.ReadInt32("RequiredLevel");
 
             var entry = packet.ReadEntry("Entry");
             if (entry.Value) // entry is masked
