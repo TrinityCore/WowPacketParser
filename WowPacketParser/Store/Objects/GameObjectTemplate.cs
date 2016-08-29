@@ -28,12 +28,6 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("unk1")]
         public string UnkString;
 
-        [DBFieldName("faction")]
-        public uint? Faction;
-
-        [DBFieldName("flags")]
-        public GameObjectFlag? Flags;
-
         [DBFieldName("size")]
         public float? Size;
 

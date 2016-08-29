@@ -513,6 +513,7 @@
     <Compile Include="Store\Objects\GameObject.cs" />
     <Compile Include="Store\Objects\GameObjectModel.cs" />
     <Compile Include="Store\Objects\GameObjectTemplate.cs" />
+    <Compile Include="Store\Objects\GameObjectTemplateAddon.cs" />
     <Compile Include="Store\Objects\GossipMenu.cs" />
     <Compile Include="Store\Objects\GossipMenuOption.cs" />
     <Compile Include="Store\Objects\IBroadcastTextEntry.cs" />
