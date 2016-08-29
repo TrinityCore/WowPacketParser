@@ -63,6 +63,7 @@
     <Compile Include="Hotfix\ChrRacesEntry.cs" />
     <Compile Include="Hotfix\ChrSpecializationEntry.cs" />
     <Compile Include="Hotfix\CinematicSequencesEntry.cs" />
+    <Compile Include="Hotfix\CreatureEntry.cs" />
     <Compile Include="Hotfix\CreatureDisplayInfoEntry.cs" />
     <Compile Include="Hotfix\CreatureDisplayInfoExtraEntry.cs" />
     <Compile Include="Hotfix\CreatureFamilyEntry.cs" />
