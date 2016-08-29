@@ -52,7 +52,8 @@ namespace WowPacketParser.SQL
                 {
                     var type = FromObjectType(objectName.Item1.ObjectType.Value);
                     if (type != StoreNameType.None)
-                        SQLDatabase.NameStores[FromObjectType(objectName.Item1.ObjectType.Value)].Add(objectName.Item1.ID.Value, objectName.Item1.Name);
+                        if (!SQLDatabase.NameStores[FromObjectType(objectName.Item1.ObjectType.Value)].ContainsKey(objectName.Item1.ID.Value))
+                            SQLDatabase.NameStores[FromObjectType(objectName.Item1.ObjectType.Value)].Add(objectName.Item1.ID.Value, objectName.Item1.Name);
                 }
             }
         }
