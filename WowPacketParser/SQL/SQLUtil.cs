@@ -141,7 +141,7 @@ namespace WowPacketParser.SQL
             var tableAttrs =
                 (DBTableNameAttribute[])typeof(T).GetCustomAttributes(typeof(DBTableNameAttribute), false);
             if (tableAttrs.Length > 0)
-                return tableAttrs[0].Name;
+                return AddBackQuotes(tableAttrs[0].Name);
 
             //convert CamelCase name to camel_case
             var name = typeof(T).Name;
