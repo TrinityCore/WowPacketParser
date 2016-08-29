@@ -252,7 +252,7 @@ namespace WowPacketParser.SQL
                             field.Item2.SetValue(elem1.Item1, null);
                     }
 
-                    row.Comment = commentSetter(elem1.Item1);
+                    row.Comment = commentSetter(elem2);
 
                     row.Data = elem1.Item1;
                     rowsUpd.Add(row, new RowList<T>().Add(elem2));

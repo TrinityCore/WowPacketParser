@@ -14,9 +14,54 @@ namespace WowPacketParser.SQL
 {
     public static class Builder
     {
+        private static StoreNameType FromObjectType(ObjectType type)
+        {
+            switch (type)
+            {
+                case ObjectType.Item:
+                    return StoreNameType.Item;
+                case ObjectType.Unit:
+                    return StoreNameType.Unit;
+                case ObjectType.Player:
+                    return StoreNameType.Player;
+                case ObjectType.GameObject:
+                    return StoreNameType.GameObject;
+                case ObjectType.Map:
+                    return StoreNameType.Map;
+                case ObjectType.Object:
+                case ObjectType.Container:
+                case ObjectType.DynamicObject:
+                case ObjectType.Corpse:
+                case ObjectType.AreaTrigger:
+                case ObjectType.SceneObject:
+                case ObjectType.Conversation:
+                    return StoreNameType.None;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            }
+        }
+
+        /// <summary>
+        /// Update SQLDatabase.NameStores with names from Storage.ObjectNames
+        /// </summary>
+        private static void LoadNames()
+        {
+            foreach (var objectName in Storage.ObjectNames)
+            {
+                if (objectName.Item1.ObjectType != null && objectName.Item1.ID != null)
+                {
+                    var type = FromObjectType(objectName.Item1.ObjectType.Value);
+                    if (type != StoreNameType.None)
+                        SQLDatabase.NameStores[FromObjectType(objectName.Item1.ObjectType.Value)].Add(objectName.Item1.ID.Value, objectName.Item1.Name);
+                }
+            }
+        }
+
         public static void DumpSQL(string prefix, string fileName, string header)
         {
             var startTime = DateTime.Now;
+
+            LoadNames();
 
             var units = Storage.Objects.IsEmpty()
                 ? new Dictionary<WowGuid, Unit>()                                                               // empty dict if there are no objects

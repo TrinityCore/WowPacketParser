@@ -51,7 +51,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < gameObject.Data.Length; i++)
                 gameObject.Data[i] = packet.ReadInt32("Data", i);
 
-
             gameObject.Size = packet.ReadSingle("Size");
 
             byte questItemsCount = packet.ReadByte("QuestItemsCount");
@@ -77,6 +76,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 ID = entry.Key,
                 Name = gameObject.Name
             };
+
             Storage.ObjectNames.Add(objectName, packet.TimeSpan);
         }
 

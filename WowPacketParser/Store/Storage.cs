@@ -70,7 +70,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<QuestRequestItems> QuestRequestItems = new DataBag<QuestRequestItems>(new List<SQLOutput> { SQLOutput.quest_template });
 
         // Names
-        public static readonly DataBag<ObjectName> ObjectNames = new DataBag<ObjectName>(new List<SQLOutput> { SQLOutput.ObjectNames });
+        public static readonly DataBag<ObjectName> ObjectNames = new DataBag<ObjectName>();
 
         // Vehicle Template Accessory
         public static readonly DataBag<VehicleTemplateAccessory> VehicleTemplateAccessories = new DataBag<VehicleTemplateAccessory>(new List<SQLOutput> { SQLOutput.vehicle_template_accessory });
