@@ -42,10 +42,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Hotfix
 
                         deserializationEmitter.LoadArgument(0);
                         deserializationEmitter.LoadConstant(propInfo.Name);
+
                         if (typeCode == TypeCode.String)
-                            deserializationEmitter.CallVirtual(typeof(Packet).GetMethod("ReadInt16", Type.EmptyTypes));
+                        {
+                            deserializationEmitter.LoadArgument(0);
+                            deserializationEmitter.CallVirtual(typeof (Packet).GetMethod("ReadInt16", Type.EmptyTypes));
+                        }
                         deserializationEmitter.LoadConstant(0);
-                        deserializationEmitter.NewArray<object>();
+                        deserializationEmitter.NewArray<object>(); // object[0]
                         deserializationEmitter.CallVirtual(_binaryReaders[typeCode]);
                         deserializationEmitter.Call(propInfo.GetSetMethod());
                     }
@@ -73,7 +77,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Hotfix
                             deserializationEmitter.LoadArgument(0);
                             deserializationEmitter.LoadConstant(propInfo.Name);
                             if (typeCode == TypeCode.String)
-                                deserializationEmitter.CallVirtual(typeof (Packet).GetMethod("ReadInt16", Type.EmptyTypes));
+                            {
+                                deserializationEmitter.LoadArgument(0);
+                                deserializationEmitter.CallVirtual(typeof(Packet).GetMethod("ReadInt16", Type.EmptyTypes));
+                            }
                             deserializationEmitter.LoadConstant(1);
                             deserializationEmitter.NewArray<object>();
                             deserializationEmitter.Duplicate();

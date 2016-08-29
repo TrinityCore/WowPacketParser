@@ -1,7 +1,7 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
 
-namespace WowPacketParserModule.V5_4_7_17898.Hotfix
+namespace WowPacketParserModule.V6_0_2_19033.Hotfix
 {
     [HotfixStructure(DB2Hash.GameObjects)]
     public class GameObjectsEntry
