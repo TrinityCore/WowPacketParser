@@ -1,6 +1,8 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
@@ -67,6 +69,39 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
                 packet.ResetBitReader();
                 packet.ReadBits("MountIsFavorite", 2, i);
+            }
+        }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_QUERY_PAGE_TEXT_RESPONSE)]
+        public static void HandlePageTextResponse(Packet packet)
+        {
+            packet.ReadUInt32("PageTextID");
+            packet.ResetBitReader();
+
+            Bit hasData = packet.ReadBit("Allow");
+            if (!hasData)
+                return; // nothing to do
+
+            var pagesCount = packet.ReadInt32("PagesCount");
+
+            for (int i = 0; i < pagesCount; i++)
+            {
+                PageText pageText = new PageText();
+
+                uint entry = packet.ReadUInt32("ID", i);
+                pageText.ID = entry;
+                pageText.NextPageID = packet.ReadUInt32("NextPageID", i);
+
+                packet.ReadUInt32("PlayerConditionID", i);
+                packet.ReadByte("Flags", i);
+
+                packet.ResetBitReader();
+                uint textLen = packet.ReadBits(12);
+                pageText.Text = packet.ReadWoWString("Text", textLen, i);
+
+                packet.AddSniffData(StoreNameType.PageText, (int)entry, "QUERY_RESPONSE");
+                Storage.PageTexts.Add(pageText, packet.TimeSpan);
             }
         }
     }
