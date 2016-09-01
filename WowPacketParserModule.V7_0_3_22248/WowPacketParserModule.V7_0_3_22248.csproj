@@ -159,6 +159,7 @@
     <Compile Include="Hotfix\NamesReservedEntry.cs" />
     <Compile Include="Hotfix\NamesReservedLocaleEntry.cs" />
     <Compile Include="Hotfix\OverrideSpellDataEntry.cs" />
+    <Compile Include="Hotfix\PathNodeEntry.cs" />
     <Compile Include="Hotfix\PhaseEntry.cs" />
     <Compile Include="Hotfix\PhaseXPhaseGroupEntry.cs" />
     <Compile Include="Hotfix\PlayerConditionEntry.cs" />
