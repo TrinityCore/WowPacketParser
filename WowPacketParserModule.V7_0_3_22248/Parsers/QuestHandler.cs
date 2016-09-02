@@ -63,6 +63,24 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("IsBoostSpell", idx);
         }
 
+        public static void ReadGossipText(Packet packet, params object[] indexes)
+        {
+            packet.ReadUInt32("QuestID", indexes);
+            packet.ReadUInt32("QuestType", indexes);
+            packet.ReadUInt32("QuestLevel", indexes);
+
+            for (int i = 0; i < 2; i++)
+                packet.ReadUInt32("QuestFlags", indexes, i);
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Repeatable", indexes);
+            packet.ReadBit("IsQuestIgnored", indexes);
+
+            var guestTitleLen = packet.ReadBits(9);
+            packet.ReadWoWString("QuestTitle", guestTitleLen, indexes);
+        }
+
         [HasSniffData]
         [Parser(Opcode.SMSG_QUERY_QUEST_INFO_RESPONSE)]
         public static void HandleQuestQueryResponse(Packet packet)
@@ -479,5 +497,39 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
         [Parser(Opcode.CMSG_REQUEST_WORLD_QUEST_UPDATE)]
         public static void HandleQuestZero(Packet packet) { }
+
+        [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_LIST_MESSAGE)]
+        public static void HandleQuestgiverQuestList(Packet packet)
+        {
+            WowGuid guid = packet.ReadPackedGuid128("QuestGiverGUID");
+
+            QuestGreeting questGreeting = new QuestGreeting
+            {
+                ID = guid.GetEntry(),
+                GreetEmoteDelay = packet.ReadUInt32("GreetEmoteDelay"),
+                GreetEmoteType = packet.ReadUInt32("GreetEmoteType")
+            };
+
+            uint gossipTextCount = packet.ReadUInt32("GossipTextCount");
+            packet.ResetBitReader();
+            uint greetingLen = packet.ReadBits(11);
+
+            for (int i = 0; i < gossipTextCount; i++)
+                ReadGossipText(packet, i);
+
+            questGreeting.Greeting = packet.ReadWoWString("Greeting", greetingLen);
+
+            switch (guid.GetObjectType())
+            {
+                case ObjectType.Unit:
+                    questGreeting.Type = 0;
+                    break;
+                case ObjectType.GameObject:
+                    questGreeting.Type = 1;
+                    break;
+            }
+
+            Storage.QuestGreetings.Add(questGreeting, packet.TimeSpan);
+        }
     }
 }
