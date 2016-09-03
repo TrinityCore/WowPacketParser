@@ -69,9 +69,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             creature.HealthModifier = packet.ReadSingle("HpMulti");
             creature.ManaModifier = packet.ReadSingle("EnergyMulti");
 
-            //TODO: move to creature_questitems
-            //creature.QuestItems = new uint[6];
-            int questItems = packet.ReadInt32("QuestItems");
+            uint questItems = packet.ReadUInt32("QuestItems");
             creature.MovementID = packet.ReadUInt32("CreatureMovementInfoID");
             creature.HealthScalingExpansion = packet.ReadUInt32E<ClientType>("HealthScalingExpansion");
             creature.RequiredExpansion = packet.ReadUInt32E<ClientType>("RequiredExpansion");
@@ -85,8 +83,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (cursorNameLen > 1)
                 creature.IconName = packet.ReadCString("CursorName");
 
-            for (int i = 0; i < questItems; ++i)
-                /*creature.QuestItems[i] = (uint)*/packet.ReadInt32<ItemId>("Quest Item", i);
+            for (uint i = 0; i < questItems; ++i)
+            {
+                CreatureTemplateQuestItem questItem = new CreatureTemplateQuestItem
+                {
+                    CreatureEntry = (uint)entry.Key,
+                    Idx = i,
+                    ItemId = packet.ReadUInt32<ItemId>("QuestItem", i)
+                };
+
+                Storage.CreatureTemplateQuestItems.Add(questItem, packet.TimeSpan);
+            }
 
             packet.AddSniffData(StoreNameType.Unit, entry.Key, "QUERY_RESPONSE");
 

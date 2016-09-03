@@ -201,6 +201,23 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(creatures, templatesDb, StoreNameType.Unit);
         }
 
+        [BuilderMethod(true)]
+        public static string CreatureTemplateQuestItem()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template))
+                return string.Empty;
+
+            if (Settings.TargetedDatabase <= TargetedDatabase.WarlordsOfDraenor)
+                return string.Empty;
+
+            if (Storage.CreatureTemplateQuestItems.IsEmpty())
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.CreatureTemplateQuestItems);
+
+            return SQLUtil.Compare(Storage.CreatureTemplateQuestItems, templatesDb, StoreNameType.Unit);
+        }
+
         [BuilderMethod(true, Gameobjects = true)]
         public static string GameObjectTemplate(Dictionary<WowGuid, GameObject> gameobjects)
         {
