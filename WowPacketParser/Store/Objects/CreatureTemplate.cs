@@ -212,7 +212,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("CreatureEntry", true)]
         public uint? CreatureEntry;
 
-        [DBFieldName("Idx")]
+        [DBFieldName("Idx", true)]
         public uint? Idx;
 
         [DBFieldName("ItemId")]
