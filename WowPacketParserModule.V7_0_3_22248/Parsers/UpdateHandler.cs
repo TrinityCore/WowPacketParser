@@ -496,7 +496,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadBit("ReplaceActive", index);
                 var replaceObject = packet.ReadBit();
                 if (replaceObject)
-                    packet.ReadGuid("ReplaceObject", index);
+                    packet.ReadPackedGuid128("ReplaceObject", index);
             }
 
             if (sceneObjCreate)
