@@ -1,4 +1,5 @@
 ﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
@@ -20,5 +21,8 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("DisplayID_Other_Gender")]
         public uint? DisplayIDOtherGender;
+
+        [DBFieldName("VerifiedBuild", TargetedDatabase.Legion)]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }
