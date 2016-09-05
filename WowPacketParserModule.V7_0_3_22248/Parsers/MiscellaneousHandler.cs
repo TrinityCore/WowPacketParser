@@ -93,8 +93,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 pageText.ID = entry;
                 pageText.NextPageID = packet.ReadUInt32("NextPageID", i);
 
-                packet.ReadUInt32("PlayerConditionID", i);
-                packet.ReadByte("Flags", i);
+                pageText.PlayerConditionID = packet.ReadInt32("PlayerConditionID", i);
+                pageText.Flags = packet.ReadByte("Flags", i);
 
                 packet.ResetBitReader();
                 uint textLen = packet.ReadBits(12);

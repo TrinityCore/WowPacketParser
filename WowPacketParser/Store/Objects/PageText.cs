@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Misc;
+﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
@@ -14,6 +15,12 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("NextPageID")]
         public uint? NextPageID;
+
+        [DBFieldName("PlayerConditionID", TargetedDatabase.Legion)]
+        public int? PlayerConditionID;
+
+        [DBFieldName("Flags", TargetedDatabase.Legion)]
+        public byte? Flags;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
