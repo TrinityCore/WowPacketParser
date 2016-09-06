@@ -479,6 +479,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Saving\BinaryPacketWriter.cs" />
+    <Compile Include="Saving\FusionBinaryPacketWriter.cs" />
     <Compile Include="Saving\SplitDirectionBinaryPacketWriter.cs" />
     <Compile Include="Saving\SplitSessionBinaryPacketWriter.cs" />
     <Compile Include="Saving\SplitBinaryPacketWriter.cs" />
