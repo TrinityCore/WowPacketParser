@@ -212,26 +212,6 @@ namespace WowPacketParser.SQL.Builders
         }
 
         [BuilderMethod]
-        public static string Gossip()
-        {
-            if (Storage.Gossips.IsEmpty() && Storage.GossipMenuOptions.IsEmpty())
-                return string.Empty;
-
-            var result = "";
-
-            // `gossip_menu`
-            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu))
-                result += SQLUtil.Compare(Storage.Gossips, SQLDatabase.Get(Storage.Gossips),
-                    t => StoreGetters.GetName(StoreNameType.Unit, (int)t.ObjectEntry)); // BUG: GOs can send gossips too
-
-            // `gossip_menu_option`
-            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu_option))
-                result += SQLUtil.Compare(Storage.GossipMenuOptions, SQLDatabase.Get(Storage.GossipMenuOptions), StoreNameType.None);
-
-            return result;
-        }
-
-        [BuilderMethod]
         public static string PointsOfInterest()
         {
             if (Storage.GossipPOIs.IsEmpty())
@@ -263,12 +243,32 @@ namespace WowPacketParser.SQL.Builders
 
                 var menuOptions = new DataBag<GossipMenuOption>();
                 foreach (var u in gossipPOIsTable)
-                    menuOptions.Add(new GossipMenuOption {ID = u.Key.Item2, MenuID = u.Key.Item1, ActionPoiID = u.Value});
+                    menuOptions.Add(new GossipMenuOption { ID = u.Key.Item2, MenuID = u.Key.Item1, ActionPoiID = u.Value });
 
                 result += SQLUtil.Compare(menuOptions, SQLDatabase.Get(menuOptions), StoreNameType.None);
             }
 
             result += SQLUtil.Compare(Storage.GossipPOIs, SQLDatabase.Get(Storage.GossipPOIs), StoreNameType.None);
+
+            return result;
+        }
+
+        [BuilderMethod]
+        public static string Gossip()
+        {
+            if (Storage.Gossips.IsEmpty() && Storage.GossipMenuOptions.IsEmpty())
+                return string.Empty;
+
+            var result = "";
+
+            // `gossip_menu`
+            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu))
+                result += SQLUtil.Compare(Storage.Gossips, SQLDatabase.Get(Storage.Gossips),
+                    t => StoreGetters.GetName(StoreNameType.Unit, (int)t.ObjectEntry)); // BUG: GOs can send gossips too
+
+            // `gossip_menu_option`
+            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu_option))
+                result += SQLUtil.Compare(Storage.GossipMenuOptions, SQLDatabase.Get(Storage.GossipMenuOptions), t => t.BroadcastTextIDHelper);
 
             return result;
         }
