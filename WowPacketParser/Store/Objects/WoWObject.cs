@@ -14,6 +14,7 @@ namespace WowPacketParser.Store.Objects
         public uint Map;
 
         public int Area;
+        public int Zone;
 
         public Dictionary<int, UpdateField> UpdateFields; // SMSG_UPDATE_OBJECT - CreateObject
 

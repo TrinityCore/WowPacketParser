@@ -20,7 +20,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.AddValue("Field", field + " - Value: " + val, i);
             }
 
-            packet.ReadInt32<ZoneId>("Zone Id");
+            CoreParsers.WorldStateHandler.CurrentZoneId = packet.ReadInt32<ZoneId>("Zone Id");
             packet.ReadInt32<MapId>("Map ID");
         }
 

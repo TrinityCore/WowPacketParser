@@ -109,6 +109,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             obj.UpdateFields = updates;
             obj.Map = map;
             obj.Area = CoreParsers.WorldStateHandler.CurrentAreaId;
+            obj.Zone = CoreParsers.WorldStateHandler.CurrentZoneId;
             obj.PhaseMask = (uint)CoreParsers.MovementHandler.CurrentPhaseMask;
             obj.Phases = new HashSet<ushort>(CoreParsers.MovementHandler.ActivePhases);
 

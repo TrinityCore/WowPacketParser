@@ -93,6 +93,12 @@ namespace WowPacketParser.SQL.Builders
                         row.Data.Map = (uint)mapId;
                 }
 
+                if (creature.Area != -1)
+                    row.Data.AreaID = (uint)creature.Area;
+
+                if (creature.Zone != -1)
+                    row.Data.ZoneID = (uint)creature.Zone;
+
                 row.Data.SpawnMask = (uint)creature.GetDefaultSpawnMask();
                 row.Data.PhaseMask = creature.PhaseMask;
 
@@ -125,8 +131,6 @@ namespace WowPacketParser.SQL.Builders
                 row.Data.MovementType = movementType;
 
                 // set some defaults
-                row.Data.ZoneID = 0;
-                row.Data.AreaID = 0;
                 row.Data.PhaseGroup = 0;
                 row.Data.ModelID = 0;
                 row.Data.CurrentWaypoint = 0;
@@ -275,6 +279,12 @@ namespace WowPacketParser.SQL.Builders
                     if (mapId != -1)
                         row.Data.Map = (uint)mapId;
                 }
+
+                if (go.Area != -1)
+                    row.Data.AreaID = (uint)go.Area;
+
+                if (go.Zone != -1)
+                    row.Data.ZoneID = (uint)go.Zone;
 
                 row.Data.SpawnMask = (uint)go.GetDefaultSpawnMask();
                 row.Data.PhaseMask = go.PhaseMask;

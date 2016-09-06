@@ -94,6 +94,7 @@ namespace WowPacketParser.Parsing.Parsers
             obj.UpdateFields = updates;
             obj.Map = map;
             obj.Area = WorldStateHandler.CurrentAreaId;
+            obj.Zone = WorldStateHandler.CurrentZoneId;
             obj.PhaseMask = (uint) MovementHandler.CurrentPhaseMask;
 
             // If this is the second time we see the same object (same guid,
