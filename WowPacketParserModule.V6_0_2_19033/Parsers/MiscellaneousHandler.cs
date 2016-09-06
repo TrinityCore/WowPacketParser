@@ -720,10 +720,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_PLAY_OBJECT_SOUND)]
         public static void HandlePlayObjectSound(Packet packet)
         {
-            packet.ReadUInt32("SoundId");
+            uint sound = packet.ReadUInt32("SoundId");
             packet.ReadPackedGuid128("SourceObjectGUID");
             packet.ReadPackedGuid128("TargetObjectGUID");
             packet.ReadVector3("Position");
+
+            Storage.Sounds.Add(sound, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_PLAY_SPEAKERBOT_SOUND)]
