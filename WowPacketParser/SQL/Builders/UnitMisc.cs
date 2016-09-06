@@ -631,7 +631,7 @@ namespace WowPacketParser.SQL.Builders
             */
 
             var rows = new RowList<CreatureText>();
-            foreach (var text in Storage.CreatureTexts)
+            foreach (var text in Settings.SQLOrderByKey ? Storage.CreatureTexts.OrderBy(t => t.Key).ToList() : Storage.CreatureTexts.ToList())
             {
                 foreach (var textValue in text.Value)
                 {
@@ -646,9 +646,9 @@ namespace WowPacketParser.SQL.Builders
                             Type = textValue.Item1.Type,
                             Language = textValue.Item1.Language,
                             Probability = 100.0f,
-                            Emote = textValue.Item1.Emote,
+                            Emote = (textValue.Item1.Emote != null ? textValue.Item1.Emote : 0),
                             Duration = 0,
-                            Sound = textValue.Item1.Sound,
+                            Sound = (textValue.Item1.Sound != null ? textValue.Item1.Sound : 0),
                             BroadcastTextID = textValue.Item1.BroadcastTextID,
                             Comment = textValue.Item1.Comment
                         }
