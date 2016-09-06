@@ -411,6 +411,15 @@ namespace WowPacketParser.Loading
 
                     break;
                 }
+                case DumpFormatType.Fusion:
+                {
+                    var packets = ReadPackets();
+                    if (packets.Count == 0)
+                        break;
+
+                    FusionDump(packets);
+                    break;
+                }
                 default:
                 {
                     Trace.WriteLine($"{_logPrefix}: Dump format is none, nothing will be processed.");
@@ -467,6 +476,12 @@ namespace WowPacketParser.Loading
 
             // stats.SetEndTime(DateTime.Now);
             // Trace.WriteLine(string.Format("{0}: {1}", _logPrefix, _stats));
+        }
+
+        private void FusionDump(ICollection<Packet> packets)
+        {
+            Trace.WriteLine($"{_logPrefix}: Merge {packets.Count} packets to a file...");
+            FusionBinaryPacketWriter.Write(packets, Encoding.ASCII);
         }
 
         private void SplitBinaryDump(ICollection<Packet> packets)
