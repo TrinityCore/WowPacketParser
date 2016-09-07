@@ -95,21 +95,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadBit("ForEnemy");
             packet.ReadBit("FullUpdate");
-            var bit761 = packet.ReadBit("HasUnk761");
+            var bit761 = packet.ReadBit("HasPartyType");
             var bit790 = packet.ReadBit("HasStatus");
             var bit763 = packet.ReadBit("HasPowerType");
-            var bit322 = packet.ReadBit("HasUnk322");
-            var bit28 = packet.ReadBit("HasCurrentHealth");
+            var bit322 = packet.ReadBit("HasSpec");
+            var bit28 = packet.ReadBit("HasHealth");
             var bit316 = packet.ReadBit("HasMaxHealth");
-            var bit748 = packet.ReadBit("HasCurrentPower");
+            var bit748 = packet.ReadBit("HasPower");
             var bit766 = packet.ReadBit("HasMaxPower");
             var bit752 = packet.ReadBit("HasLevel");
-            var bit326 = packet.ReadBit("HasUnk326");
-            var bit770 = packet.ReadBit("HasZoneId");
-            var bit756 = packet.ReadBit("HasUnk756");
-            var bit776 = packet.ReadBit("HasUnk776");
+            var bit326 = packet.ReadBit("HasSpec");
+            var bit770 = packet.ReadBit("HasAreaId");
+            var bit756 = packet.ReadBit("HasWmoGroupID");
+            var bit776 = packet.ReadBit("HasWmoDoodadPlacementID");
             var bit786 = packet.ReadBit("HasPosition");
-            var bit20 = packet.ReadBit("HasVehicleSeat");
+            var bit20 = packet.ReadBit("HasVehicleSeatRecID");
             var bit308 = packet.ReadBit("HasAuras");
             var bit736 = packet.ReadBit("HasPet");
             var bit72 = packet.ReadBit("HasPhase");
@@ -120,26 +120,26 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             {
                 // sub_5FB6A9
                 for (int i = 0; i < 2; i++)
-                    packet.ReadByte("Unk761", i);
+                    packet.ReadByte("PartyType", i);
             }
 
             if (bit790)
-                packet.ReadInt16E<GroupMemberStatusFlag>("Status");
+                packet.ReadInt16E<GroupMemberStatusFlag>("Flags");
 
             if (bit763)
-                packet.ReadByte("PowerType");
+                packet.ReadByte("DisplayPower");
 
             if (bit322)
-                packet.ReadInt16("Unk322");
+                packet.ReadInt16("OverrideDisplayPower");
 
             if (bit28)
-                packet.ReadInt32("CurrentHealth");
+                packet.ReadInt32("Health");
 
             if (bit316)
                 packet.ReadInt32("MaxHealth");
 
             if (bit748)
-                packet.ReadInt16("CurrentPower");
+                packet.ReadInt16("Power");
 
             if (bit766)
                 packet.ReadInt16("MaxPower");
@@ -148,16 +148,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt16("Level");
 
             if (bit326)
-                packet.ReadInt16("Unk200000");
+                packet.ReadInt16("Spec");
 
             if (bit770)
-                packet.ReadInt16<ZoneId>("ZoneId");
+                packet.ReadInt16<ZoneId>("AreaID");
 
             if (bit756)
-                packet.ReadInt16("Unk2000000");
+                packet.ReadInt16("WmoGroupID");
 
             if (bit776)
-                packet.ReadInt32("Unk4000000");
+                packet.ReadInt32("WmoDoodadPlacementID");
 
             if (bit786)
             {
@@ -168,7 +168,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
 
             if (bit20)
-                packet.ReadInt32("VehicleSeat");
+                packet.ReadInt32("VehicleSeatRecID");
 
             if (bit308)
             {
@@ -177,13 +177,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 for (int i = 0; i < count; i++)
                 {
-                    packet.ReadInt32("SpellId", i);
-                    packet.ReadByte("Scalings", i);
-                    packet.ReadInt32("EffectMask", i);
-                    var scaleCount = packet.ReadInt32("ScaleCount", i);
+                    packet.ReadInt32<SpellId>("Aura", i);
+                    packet.ReadByte("Flags", i);
+                    packet.ReadInt32("ActiveFlags", i);
+                    var byte3 = packet.ReadInt32("PointsCount", i);
 
-                    for (int j = 0; j < scaleCount; j++)
-                        packet.ReadSingle("Scale", i, j);
+                    for (int j = 0; j < byte3; j++)
+                        packet.ReadSingle("Points", i, j);
                 }
             }
 
@@ -211,27 +211,27 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 }
 
                 if (bit156)
-                    packet.ReadInt16("PetModelId");
+                    packet.ReadInt16("PetDisplayID");
 
                 if (bit164)
-                    packet.ReadInt32("PetCurrentHealth");
+                    packet.ReadInt32("PetHealth");
 
                 if (bit172)
                     packet.ReadInt32("PetMaxHealth");
 
                 if (bit404)
                 {
-                    var count = packet.ReadInt32("AuraCount");
+                    var count = packet.ReadInt32("PetAuraCount");
 
                     for (int i = 0; i < count; i++)
                     {
-                        packet.ReadInt32("SpellId", i);
-                        packet.ReadByte("Scalings", i);
-                        packet.ReadInt32("EffectMask", i);
-                        var byte3 = packet.ReadInt32("EffectCount", i);
+                        packet.ReadInt32<SpellId>("PetAura", i);
+                        packet.ReadByte("PetFlags", i);
+                        packet.ReadInt32("PetActiveFlags", i);
+                        var byte3 = packet.ReadInt32("PetPointsCount", i);
 
                         for (int j = 0; j < byte3; j++)
-                            packet.ReadSingle("Scale", i, j);
+                            packet.ReadSingle("PetPoints", i, j);
                     }
                 }
             }
@@ -257,28 +257,29 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("MemberGuid");
 
             for (var i = 0; i < 2; i++)
-                packet.ReadByte("Unk704", i);
+                packet.ReadByte("PartyType", i);
 
-            packet.ReadInt16E<GroupMemberStatusFlag>("Status");
+            packet.ReadInt16E<GroupMemberStatusFlag>("Flags");
 
             packet.ReadByte("PowerType");
-            packet.ReadInt16("Unk322");
-            packet.ReadInt32("CurrentHealth");
+            packet.ReadInt16("OverrideDisplayPower");
+            packet.ReadInt32("Health");
             packet.ReadInt32("MaxHealth");
-            packet.ReadInt16("CurrentPower");
+            packet.ReadInt16("Power");
             packet.ReadInt16("MaxPower");
             packet.ReadInt16("Level");
-            packet.ReadInt16("Unk200000");
-            packet.ReadInt16<ZoneId>("ZoneId");
 
-            packet.ReadInt16("Unk2000000");
-            packet.ReadInt32("Unk4000000");
+            packet.ReadInt16("Spec");
+            packet.ReadInt16<ZoneId>("AreaID");
+
+            packet.ReadInt16("WmoGroupID");
+            packet.ReadInt32("WmoDoodadPlacementID");
 
             packet.ReadInt16("PositionX");
             packet.ReadInt16("PositionY");
             packet.ReadInt16("PositionZ");
 
-            packet.ReadInt32("VehicleSeat");
+            packet.ReadInt32("VehicleSeatRecID");
             var auraCount = packet.ReadInt32("AuraCount");
 
             packet.ReadInt32("PhaseShiftFlags");
@@ -292,13 +293,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (int i = 0; i < auraCount; i++)
             {
-                packet.ReadInt32<SpellId>("SpellId", i);
-                packet.ReadByte("Scalings", i);
-                packet.ReadInt32("EffectMask", i);
-                var byte3 = packet.ReadInt32("EffectCount", i);
+                packet.ReadInt32<SpellId>("Aura", i);
+                packet.ReadByte("Flags", i);
+                packet.ReadInt32("ActiveFlags", i);
+                var byte3 = packet.ReadInt32("PointsCount", i);
 
                 for (int j = 0; j < byte3; j++)
-                    packet.ReadSingle("Scale", i, j);
+                    packet.ReadSingle("Points", i, j);
             }
 
             packet.ResetBitReader();
@@ -306,21 +307,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var hasPet = packet.ReadBit("HasPet");
             if (hasPet) // Pet
             {
-                packet.ReadPackedGuid128("PetGUID");
-                packet.ReadInt16("PetModelId");
-                packet.ReadInt32("PetCurrentHealth");
+                packet.ReadPackedGuid128("PetGuid");
+                packet.ReadInt16("PetDisplayID");
                 packet.ReadInt32("PetMaxHealth");
+                packet.ReadInt32("PetHealth");
 
-                var petAuraCount = packet.ReadInt32("AuraCount");
+                var petAuraCount = packet.ReadInt32("PetAuraCount");
                 for (int i = 0; i < petAuraCount; i++)
                 {
-                    packet.ReadInt32<SpellId>("SpellId", i);
-                    packet.ReadByte("Scalings", i);
-                    packet.ReadInt32("EffectMask", i);
-                    var byte3 = packet.ReadInt32("EffectCount", i);
+                    packet.ReadInt32<SpellId>("PetAura", i);
+                    packet.ReadByte("PetFlags", i);
+                    packet.ReadInt32("PetActiveFlags", i);
+                    var byte3 = packet.ReadInt32("PetPointsCount", i);
 
                     for (int j = 0; j < byte3; j++)
-                        packet.ReadSingle("Scale", i, j);
+                        packet.ReadSingle("PetPoints", i, j);
                 }
 
                 packet.ResetBitReader();
