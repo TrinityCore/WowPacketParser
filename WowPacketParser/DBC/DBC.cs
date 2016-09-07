@@ -29,6 +29,7 @@ namespace WowPacketParser.DBC
         public static Storage<MapDifficultyEntry> MapDifficulty = new Storage<MapDifficultyEntry>(GetPath(), "MapDifficulty.db2");
         public static Storage<SoundKitEntry> SoundKit = new Storage<SoundKitEntry>(GetPath(), "SoundKit.db2");
         public static Storage<SpellEntry> Spell = new Storage<SpellEntry>(GetPath(), "Spell.db2");
+        public static Storage<SpellEffectEntry> SpellEffect = new Storage<SpellEffectEntry>(GetPath(), "SpellEffect.db2");
 
         private static string GetPath()
         {
@@ -45,14 +46,15 @@ namespace WowPacketParser.DBC
             else
                 Trace.WriteLine($"DBC folder \"{ GetPath() }\" found");
 
-            Console.WriteLine("File name                        Average time to load     Minimum time       Maximum time       Record count");
-            Console.WriteLine("------------------------------------------------------------------------------------------------------------");
+            Console.WriteLine("File name                           LoadTime             Record count");
+            Console.WriteLine("---------------------------------------------------------------------");
 
             foreach (var type in Assembly.GetAssembly(typeof(DBC)).GetTypes())
             {
                 if (!type.IsClass)
                     continue;
 
+                var startTime = DateTime.Now;
                 var attr = type.GetCustomAttribute<DBFileNameAttribute>();
                 if (attr == null)
                     continue;
@@ -61,17 +63,15 @@ namespace WowPacketParser.DBC
                 var recordCount = 0;
                 var instanceType = typeof(Storage<>).MakeGenericType(type);
                 var countGetter = instanceType.GetProperty("Count").GetGetMethod();
-                var stopwatch = Stopwatch.StartNew();
                 var instance = Activator.CreateInstance(instanceType, GetPath(), $"{ attr.FileName }.db2");
 
-                stopwatch.Stop();
-
-                times.Add(stopwatch.ElapsedTicks);
+                var endTime = DateTime.Now;
+                var span = endTime.Subtract(startTime);
 
                 if (recordCount == 0)
                     recordCount = (int)countGetter.Invoke(instance, new object[] { });
 
-                Console.WriteLine($"{ attr.FileName.PadRight(33) }{ TimeSpan.FromTicks((long)times.Average()).ToString().PadRight(25) }{ TimeSpan.FromTicks(times.Min()).ToString().PadRight(19) }{ TimeSpan.FromTicks(times.Max()).ToString().PadRight(19) }{ recordCount }");
+                Console.WriteLine($"{ attr.FileName.PadRight(33) } { TimeSpan.FromTicks(span.Ticks).ToString().PadRight(28) } { recordCount.ToString().PadRight(19) }");
             }
 
             if (AreaTable != null)
@@ -130,11 +130,19 @@ namespace WowPacketParser.DBC
                         FactionStores.Add((uint)factionTemplate.Key, Faction[factionTemplate.Value.Faction].Name);
                 }
             }
+
+            if (SpellEffect != null)
+                foreach (var effect in SpellEffect)
+                {
+                    var tuple = Tuple.Create(effect.Value.SpellID, effect.Value.EffectIndex);
+                    SpellEffectStores[tuple] = effect.Value;
+                }
         }
 
         public static readonly Dictionary<uint, string> Zones = new Dictionary<uint, string>();
         public static readonly Dictionary<int, int> MapSpawnMaskStores = new Dictionary<int, int>();
         public static Dictionary<ushort, string> CriteriaStores = new Dictionary<ushort, string>();
         public static Dictionary<uint, string> FactionStores = new Dictionary<uint, string>();
+        public static Dictionary<Tuple<uint, uint>, SpellEffectEntry> SpellEffectStores = new Dictionary<Tuple<uint, uint>, SpellEffectEntry>();
     }
 }

@@ -139,6 +139,7 @@
     <Compile Include="DBC\Structures\Legion\MapDifficultyEntry.cs" />
     <Compile Include="DBC\Structures\Legion\MapEntry.cs" />
     <Compile Include="DBC\Structures\Legion\SoundKitEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\SpellEffectEntry.cs" />
     <Compile Include="DBC\Structures\Legion\SpellEntry.cs" />
     <Compile Include="Enums\AccountDataType.cs" />
     <Compile Include="Enums\ActionButtonType.cs" />
@@ -330,6 +331,7 @@
     <Compile Include="Enums\StatType.cs" />
     <Compile Include="Enums\StoreNameType.cs" />
     <Compile Include="Enums\TargetFlag.cs" />
+    <Compile Include="Enums\SpellEnums.cs" />
     <Compile Include="Enums\TaxiError.cs" />
     <Compile Include="Enums\TeamType.cs" />
     <Compile Include="Enums\TimerType.cs" />
