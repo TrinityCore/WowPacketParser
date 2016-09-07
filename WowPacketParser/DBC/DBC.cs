@@ -57,21 +57,17 @@ namespace WowPacketParser.DBC
 
                 var times = new List<long>();
                 var recordCount = 0;
+                var instanceType = typeof(Storage<>).MakeGenericType(type);
+                var countGetter = instanceType.GetProperty("Count").GetGetMethod();
+                var stopwatch = Stopwatch.StartNew();
+                var instance = Activator.CreateInstance(instanceType, GetPath(), $"{ attr.FileName }.db2");
 
-                for (var i = 1; i <= 10; ++i)
-                {
-                    var instanceType = typeof(Storage<>).MakeGenericType(type);
+                stopwatch.Stop();
 
-                    var countGetter = instanceType.GetProperty("Count").GetGetMethod();
-                    var stopwatch = Stopwatch.StartNew();
-                    var instance = Activator.CreateInstance(instanceType, GetPath(), $"{ attr.FileName }.db2");
-                    stopwatch.Stop();
+                times.Add(stopwatch.ElapsedTicks);
 
-                    times.Add(stopwatch.ElapsedTicks);
-
-                    if (recordCount == 0)
-                        recordCount = (int)countGetter.Invoke(instance, new object[] { });
-                }
+                if (recordCount == 0)
+                    recordCount = (int)countGetter.Invoke(instance, new object[] { });
 
                 Console.WriteLine($"{ attr.FileName.PadRight(33) }{ TimeSpan.FromTicks((long)times.Average()).ToString().PadRight(25) }{ TimeSpan.FromTicks(times.Min()).ToString().PadRight(19) }{ TimeSpan.FromTicks(times.Max()).ToString().PadRight(19) }{ recordCount }");
             }

@@ -47,7 +47,7 @@ namespace WowPacketParser.Misc
         public static readonly string CharacterSet = Conf.GetString("CharacterSet", "utf8");
 
         // DB2
-        public static readonly string DBCPath = Conf.GetString("DbcPath", $"\\dbc");
+        public static readonly string DBCPath = Conf.GetString("DBCPath", $@"\dbc");
         public static readonly bool UseDBC = Conf.GetBoolean("UseDBC", false);
 
         private static ulong GetSQLOutputFlag()
