@@ -126,6 +126,7 @@
     <Compile Include="DBC\DBC.cs" />
     <Compile Include="DBC\Structures\Legion\AchievementEntry.cs" />
     <Compile Include="DBC\Structures\Legion\AreaTableEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\BroadcastTextEntry.cs" />
     <Compile Include="DBC\Structures\Legion\CreatureDisplayInfoEntry.cs" />
     <Compile Include="DBC\Structures\Legion\CreatureFamilyEntry.cs" />
     <Compile Include="DBC\Structures\Legion\CriteriaTreeEntry.cs" />
