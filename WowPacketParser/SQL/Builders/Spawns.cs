@@ -73,6 +73,8 @@ namespace WowPacketParser.SQL.Builders
 
                 uint movementType = 0;
                 int spawnDist = 0;
+                row.Data.AreaID = 0;
+                row.Data.ZoneID = 0;
 
                 if (creature.Movement.HasWpsOrRandMov)
                 {
@@ -281,6 +283,9 @@ namespace WowPacketParser.SQL.Builders
                         row.Data.Map = (uint)mapId;
                 }
 
+                row.Data.ZoneID = 0;
+                row.Data.AreaID = 0;
+
                 if (go.Area != -1)
                     row.Data.AreaID = (uint)go.Area;
 
@@ -346,8 +351,6 @@ namespace WowPacketParser.SQL.Builders
                 row.Data.State = state;
 
                 // set some defaults
-                row.Data.ZoneID = 0;
-                row.Data.AreaID = 0;
                 row.Data.PhaseGroup = 0;
 
                 row.Comment = StoreGetters.GetName(StoreNameType.GameObject, (int)gameobject.Key.GetEntry(), false);
