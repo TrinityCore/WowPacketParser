@@ -27,6 +27,10 @@ namespace WowPacketParser.Misc
                         if (DBC.DBC.AreaTable.ContainsKey(entry))
                             return DBC.DBC.AreaTable[entry].AreaName;
                         break;
+                    case StoreNameType.Unit:
+                        if (DBC.DBC.Creature.ContainsKey(entry))
+                            return DBC.DBC.Creature[entry].Name;
+                        break;
                     case StoreNameType.CreatureFamily:
                         if (DBC.DBC.CreatureFamily.ContainsKey(entry))
                             return DBC.DBC.CreatureFamily[entry].Name;
