@@ -110,16 +110,18 @@ namespace WowPacketParser.SQL
                         FemaleText = femaleText,
 
                     };
-
+                    broadcastText.EmoteID = new ushort[3];
                     broadcastText.EmoteID[0] = Convert.ToUInt16(reader["EmoteID1"]);
                     broadcastText.EmoteID[1] = Convert.ToUInt16(reader["EmoteID2"]);
                     broadcastText.EmoteID[2] = Convert.ToUInt16(reader["EmoteID3"]);
+                    broadcastText.EmoteDelay = new ushort[3];
                     broadcastText.EmoteDelay[0] = Convert.ToUInt16(reader["EmoteDelay1"]);
                     broadcastText.EmoteDelay[1] = Convert.ToUInt16(reader["EmoteDelay2"]);
                     broadcastText.EmoteDelay[2] = Convert.ToUInt16(reader["EmoteDelay3"]);
                     broadcastText.UnkEmoteID = Convert.ToUInt16(reader["UnkEmoteID"]);
                     broadcastText.Language = Convert.ToByte(reader["Language"]);
                     broadcastText.Type = Convert.ToByte(reader["Type"]);
+                    broadcastText.SoundID = new uint[2];
                     broadcastText.SoundID[0] = Convert.ToUInt32(reader["SoundID1"]);
                     broadcastText.SoundID[1] = Convert.ToUInt32(reader["SoundID2"]);
                     broadcastText.PlayerConditionID = Convert.ToUInt32(reader["PlayerConditionID"]);
