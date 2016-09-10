@@ -55,8 +55,6 @@ namespace WowPacketParser.SQL
 
         private readonly TargetedDatabase? _removedInVersion;
 
-        private readonly  TargetedDatabase target = Settings.TargetedDatabase;
-
         /// <summary>
         /// matches any version
         /// </summary>
@@ -189,15 +187,12 @@ namespace WowPacketParser.SQL
         public DBFieldNameAttribute(string name, TargetedDatabase addedInVersion, int count, bool startAtZero = false,
             bool isPrimaryKey = false, bool noQuotes = false, bool nullable = false)
         {
-            _addedInVersion = addedInVersion;
-            if (target <= _addedInVersion)
-                return;
-
             Name = name;
             IsPrimaryKey = isPrimaryKey;
             NoQuotes = noQuotes;
             Nullable = nullable;
             Count = count;
+            _addedInVersion = addedInVersion;
 
             StartAtZero = startAtZero;
             _multipleFields = true;
@@ -215,15 +210,13 @@ namespace WowPacketParser.SQL
         public DBFieldNameAttribute(string name, TargetedDatabase addedInVersion, TargetedDatabase removedInVersion,
             int count, bool startAtZero = false, bool isPrimaryKey = false, bool noQuotes = false, bool nullable = false)
         {
-            _addedInVersion = addedInVersion;
-            _removedInVersion = removedInVersion;
-            if (target <= _addedInVersion && target > _removedInVersion)
-                return;
-
+            Name = name;
             IsPrimaryKey = isPrimaryKey;
             NoQuotes = noQuotes;
             Nullable = nullable;
             Count = count;
+            _addedInVersion = addedInVersion;
+            _removedInVersion = removedInVersion;
 
             StartAtZero = startAtZero;
             _multipleFields = true;
@@ -233,6 +226,8 @@ namespace WowPacketParser.SQL
         {
             if (Locale != null && Locale != BinaryPacketReader.GetLocale())
                 return false;
+
+            TargetedDatabase target = Settings.TargetedDatabase;
 
             if (_addedInVersion.HasValue && !_removedInVersion.HasValue)
                 return target >= _addedInVersion.Value;
