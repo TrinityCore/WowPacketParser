@@ -147,7 +147,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                                 MapID = (ushort)mapID
                             };
 
-                            Storage.SpellTargetPositions.Add(spellTargetPosition);
+                            if (!Storage.SpellTargetPositions.ContainsKey(spellTargetPosition))
+                                Storage.SpellTargetPositions.Add(spellTargetPosition);
                         }
                     }
                 }
