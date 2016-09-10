@@ -190,7 +190,7 @@ namespace WowPacketParser.SQL
             bool isPrimaryKey = false, bool noQuotes = false, bool nullable = false)
         {
             _addedInVersion = addedInVersion;
-            if (target >= _addedInVersion)
+            if (target <= _addedInVersion)
                 return;
 
             Name = name;
@@ -217,7 +217,7 @@ namespace WowPacketParser.SQL
         {
             _addedInVersion = addedInVersion;
             _removedInVersion = removedInVersion;
-            if (target >= _addedInVersion && target < _removedInVersion)
+            if (target <= _addedInVersion && target > _removedInVersion)
                 return;
 
             IsPrimaryKey = isPrimaryKey;
