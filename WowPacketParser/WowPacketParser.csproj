@@ -513,6 +513,7 @@
     <Compile Include="SQL\Builders\Miscellaneous.cs" />
     <Compile Include="SQL\Builders\QuestMisc.cs" />
     <Compile Include="SQL\Builders\Spawns.cs" />
+    <Compile Include="SQL\Builders\Spells.cs" />
     <Compile Include="SQL\Builders\UnitMisc.cs" />
     <Compile Include="SQL\Builders\WDBTemplates.cs" />
     <Compile Include="SQL\RowList.cs" />
@@ -569,6 +570,7 @@
     <Compile Include="Store\Objects\SniffData.cs" />
     <Compile Include="Store\Objects\PlayerCreateInfoAction.cs" />
     <Compile Include="Store\Objects\PlayerCreateInfo.cs" />
+    <Compile Include="Store\Objects\SpellTargetPosition.cs" />
     <Compile Include="Store\Objects\Unit.cs" />
     <Compile Include="Store\Objects\CreatureTemplate.cs" />
     <Compile Include="Store\Objects\VehicleTemplateAccessory.cs" />
