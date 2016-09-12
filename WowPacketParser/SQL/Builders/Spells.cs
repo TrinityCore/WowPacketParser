@@ -16,9 +16,7 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.spell_target_position))
                 return string.Empty;
 
-            var offerDb = SQLDatabase.Get(Storage.SpellTargetPositions);
-
-            return SQLUtil.Compare(Storage.SpellTargetPositions, offerDb, StoreNameType.Spell);
+            return SQLUtil.Compare(Storage.SpellTargetPositions, SQLDatabase.Get(Storage.SpellTargetPositions), t => t.EffectHelper);
         }
     }
 }

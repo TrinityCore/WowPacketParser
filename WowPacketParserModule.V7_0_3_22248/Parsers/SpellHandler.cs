@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using WowPacketParser.DBC;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -137,6 +136,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                         var effect = DBC.SpellEffectStores[tuple];
                         if ((Targets)effect.ImplicitTarget[0] == Targets.TARGET_DEST_DB || (Targets)effect.ImplicitTarget[1] == Targets.TARGET_DEST_DB)
                         {
+                            string effectHelper = $"Spell: { StoreGetters.GetName(StoreNameType.Spell, (int)spellID) } Efffect: { effect.Effect } ({ (SpellEffects)effect.Effect })";
+
                             var spellTargetPosition = new SpellTargetPosition
                             {
                                 ID = spellID,
@@ -144,7 +145,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                                 PositionX = dstLocation.X,
                                 PositionY = dstLocation.Y,
                                 PositionZ = dstLocation.Z,
-                                MapID = (ushort)mapID
+                                MapID = (ushort)mapID,
+                                EffectHelper = effectHelper
                             };
 
                             if (!Storage.SpellTargetPositions.ContainsKey(spellTargetPosition))
