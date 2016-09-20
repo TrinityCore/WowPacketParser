@@ -156,7 +156,8 @@ namespace WowPacketParser.SQL
             return (from field in Utilities.GetFieldsAndAttributes<T, DBFieldNameAttribute>()
                     where field.Value.Any(f => f.IsVisible())
                     let fieldName = field.Value.Single(f => f.IsVisible()).ToString()
-                    select new Tuple<string, FieldInfo, List<DBFieldNameAttribute>>(fieldName, field.Key, field.Value)).ToList();
+                    let fieldValue = field.Value.FindAll(f => f.IsVisible())
+                    select new Tuple<string, FieldInfo, List<DBFieldNameAttribute>>(fieldName, field.Key, fieldValue)).ToList();
         }
 
         public static FieldInfo GetFirstPrimaryKey<T>() where T : IDataModel
