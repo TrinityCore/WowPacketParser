@@ -10,11 +10,11 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("entry", true)]
         public uint? Entry;
 
-        [DBFieldName("groupid", true)]
-        public uint? GroupId;
+        [DBFieldName("groupid", true, true)]
+        public string GroupId;
 
-        [DBFieldName("id", true)]
-        public uint? ID;
+        [DBFieldName("id", true, true)]
+        public string ID;
 
         [DBFieldName("text")]
         public string Text;

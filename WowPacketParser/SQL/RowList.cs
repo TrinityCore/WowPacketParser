@@ -11,7 +11,7 @@ namespace WowPacketParser.SQL
     {
         public Row()
         { }
-         
+
         public Row(T data)
         {
             Data = data;
