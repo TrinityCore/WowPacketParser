@@ -512,9 +512,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleCastVisualKit(Packet packet)
         {
             packet.ReadPackedGuid128("Unit");
+            packet.ReadInt32("KitRecID");
             packet.ReadInt32("KitType");
             packet.ReadUInt32("Duration");
-            packet.ReadInt32("KitRecID");
         }
 
         [Parser(Opcode.CMSG_UNLEARN_SKILL)]

@@ -55,7 +55,7 @@ namespace WowPacketParser.Store
 
         // Start info (Race, Class)
         public static readonly DataBag<PlayerCreateInfoAction> StartActions = new DataBag<PlayerCreateInfoAction>(new List<SQLOutput> { SQLOutput.playercreateinfo_action });
-        public static readonly DataBag<PlayerCreateInfo>StartPositions = new DataBag<PlayerCreateInfo>(new List<SQLOutput> { SQLOutput.playercreateinfo });
+        public static readonly DataBag<PlayerCreateInfo> StartPositions = new DataBag<PlayerCreateInfo>(new List<SQLOutput> { SQLOutput.playercreateinfo });
 
         // Gossips (MenuId, TextId)
         public static readonly DataBag<GossipMenu> Gossips = new DataBag<GossipMenu>(new List<SQLOutput> { SQLOutput.gossip_menu });
@@ -103,6 +103,7 @@ namespace WowPacketParser.Store
             ItemTemplates.Clear();
             QuestTemplates.Clear();
             QuestObjectives.Clear();
+            QuestVisualEffects.Clear();
             CreatureTemplates.Clear();
             CreatureTemplateQuestItems.Clear();
 
@@ -120,20 +121,21 @@ namespace WowPacketParser.Store
             Emotes.Clear();
             Sounds.Clear();
             SpellsX.Clear();
-
+            QuestOfferRewards.Clear();
             GossipSelects.Clear();
 
             StartActions.Clear();
             StartPositions.Clear();
 
             Gossips.Clear();
+            GossipMenuOptions.Clear();
 
             QuestPOIs.Clear();
+            QuestPOIPoints.Clear();
 
             QuestGreetings.Clear();
             QuestDetails.Clear();
             QuestRequestItems.Clear();
-            QuestOfferRewards.Clear();
 
             ObjectNames.Clear();
 
@@ -145,6 +147,9 @@ namespace WowPacketParser.Store
             SpellClicks.Clear();
 
             SpellTargetPositions.Clear();
+
+            LocalesQuests.Clear();
+            LocalesQuestObjectives.Clear();
 
             HotfixDatas.Clear();
         }
