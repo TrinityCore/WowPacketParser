@@ -533,7 +533,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_QUEST_GIVER_OFFER_REWARD_MESSAGE)]
         public static void HandleQuestOfferReward(Packet packet)
         {
-            
+
 
             packet.ReadPackedGuid128("QuestGiverGUID");
 
@@ -567,9 +567,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadBit("AutoLaunched");
 
+            packet.ReadInt32("QuestPackageID");
             packet.ReadInt32("PortraitTurnIn");
             packet.ReadInt32("PortraitGiver");
-            packet.ReadInt32("QuestPackageID");
 
             packet.ResetBitReader();
 

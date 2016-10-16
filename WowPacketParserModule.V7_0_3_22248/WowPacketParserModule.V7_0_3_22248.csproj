@@ -243,6 +243,7 @@
     <Compile Include="Parsers\CombatLogHandler.cs" />
     <Compile Include="Parsers\CreatureHandler.cs" />
     <Compile Include="Parsers\CurrencyHandler.cs" />
+    <Compile Include="Parsers\EquipmentSetHandler.cs" />
     <Compile Include="Parsers\GarrisonHandler.cs" />
     <Compile Include="Parsers\GroupHandler.cs" />
     <Compile Include="Parsers\GuildHandler.cs" />

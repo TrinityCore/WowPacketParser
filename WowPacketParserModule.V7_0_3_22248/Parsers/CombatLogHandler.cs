@@ -179,5 +179,38 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             if (hasLogData)
                 SpellHandler.ReadSpellCastLogData(packet, "SpellCastLogData");
         }
+
+        [Parser(Opcode.SMSG_SPELL_HEAL_LOG)]
+        public static void HandleSpellHealLog(Packet packet)
+        {
+            packet.ReadPackedGuid128("TargetGUID");
+            packet.ReadPackedGuid128("CasterGUID");
+
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32("Health");
+            packet.ReadInt32("OverHeal");
+            packet.ReadInt32("Absorbed");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Crit");
+            var hasCritRollMade = packet.ReadBit("HasCritRollMade");
+            var hasCritRollNeeded = packet.ReadBit("HasCritRollNeeded");
+            var hasLogData = packet.ReadBit("HasLogData");
+            var hasSandboxScaling = packet.ReadBit("HasLogData");
+
+            if (hasCritRollMade)
+                packet.ReadSingle("CritRollMade");
+
+            if (hasCritRollNeeded)
+                packet.ReadSingle("CritRollNeeded");
+
+            if (hasLogData)
+                SpellHandler.ReadSpellCastLogData(packet);
+
+
+            if (hasSandboxScaling)
+                ReadSandboxScalingData(packet, "SandboxScalingData");
+        }
     }
 }
