@@ -18,6 +18,7 @@ namespace WowPacketParser.Misc
                 case HighGuidType.Creature:
                 case HighGuidType.GameObject:
                 case HighGuidType.Vehicle:
+                case HighGuidType.AreaTrigger:
                     return true;
                 default:
                     return false;
@@ -50,6 +51,8 @@ namespace WowPacketParser.Misc
                 case HighGuidType.Creature:
                 case HighGuidType.Pet:
                     return ObjectType.Unit;
+                case HighGuidType.AreaTrigger:
+                    return ObjectType.AreaTrigger;
                 default:
                     return ObjectType.Object;
             }

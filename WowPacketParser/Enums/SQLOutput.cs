@@ -3,6 +3,8 @@
     public enum SQLOutput
     {
 // ReSharper disable InconsistentNaming
+        areatrigger_template,
+        areatrigger_template_polygon_vertices,
         creature,
         creature_addon,
         creature_equip_template,

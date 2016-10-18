@@ -67,6 +67,36 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.SniffData, templateDb, x => string.Empty);
         }
 
+        [BuilderMethod]
+        public static string AreaTriggerTemplateData()
+        {
+            if (Storage.AreaTriggerTemplates.IsEmpty())
+                return string.Empty;
+
+            if (Settings.DumpFormat != DumpFormatType.SniffDataOnly)
+                if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger_template))
+                    return string.Empty;
+
+            var templateDb = SQLDatabase.Get(Storage.AreaTriggerTemplates, Settings.WPPDatabase);
+
+            return SQLUtil.Compare(Storage.AreaTriggerTemplates, templateDb, x => string.Empty);
+        }
+
+        [BuilderMethod]
+        public static string AreaTriggerTemplateVerticesData()
+        {
+            if (Storage.AreaTriggerTemplates.IsEmpty())
+                return string.Empty;
+
+            if (Settings.DumpFormat != DumpFormatType.SniffDataOnly)
+                if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger_template_polygon_vertices))
+                    return string.Empty;
+
+            var templateDb = SQLDatabase.Get(Storage.AreaTriggerTemplatesVertices, Settings.WPPDatabase);
+
+            return SQLUtil.Compare(Storage.AreaTriggerTemplatesVertices, templateDb, x => string.Empty);
+        }
+
         // Non-WDB data but nevertheless data that should be saved to gameobject_template
         /*[BuilderMethod(Gameobjects = true)]
         public static string GameobjectTemplateNonWDB(Dictionary<WowGuid, GameObject> gameobjects)

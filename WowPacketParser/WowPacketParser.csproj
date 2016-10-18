@@ -506,6 +506,8 @@
     <Compile Include="SQL\SQLFile.cs" />
     <Compile Include="SQL\SQLUtil.cs" />
     <Compile Include="SQL\SSHTunnel.cs" />
+    <Compile Include="Store\Objects\AreaTriggerTemplate.cs" />
+    <Compile Include="Store\Objects\AreaTriggerTemplateVertices.cs" />
     <Compile Include="Store\Objects\Aura.cs" />
     <Compile Include="Store\Objects\BroadcastTextLocale.cs" />
     <Compile Include="Store\Objects\Creature.cs" />
