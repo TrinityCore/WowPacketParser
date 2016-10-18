@@ -447,7 +447,6 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
                 if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.AREATRIGGER_FLAG_HAS_POLYGON) != 0)
                 {
-
                     var verticesCount = packet.ReadInt32("VerticesCount", index);
                     var verticesTargetCount = packet.ReadInt32("VerticesTargetCount", index);
 

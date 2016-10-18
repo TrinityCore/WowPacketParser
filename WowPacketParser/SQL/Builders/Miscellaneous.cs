@@ -73,9 +73,8 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.AreaTriggerTemplates.IsEmpty())
                 return string.Empty;
 
-            if (Settings.DumpFormat != DumpFormatType.SniffDataOnly)
-                if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger_template))
-                    return string.Empty;
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger_template))
+                return string.Empty;
 
             var templateDb = SQLDatabase.Get(Storage.AreaTriggerTemplates, Settings.WPPDatabase);
 
@@ -88,9 +87,8 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.AreaTriggerTemplates.IsEmpty())
                 return string.Empty;
 
-            if (Settings.DumpFormat != DumpFormatType.SniffDataOnly)
-                if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger_template_polygon_vertices))
-                    return string.Empty;
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger_template_polygon_vertices))
+                return string.Empty;
 
             var templateDb = SQLDatabase.Get(Storage.AreaTriggerTemplatesVertices, Settings.WPPDatabase);
 
