@@ -42,6 +42,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 var classes = packet.ReadUInt32("AvailableClasses");
                 var templates = packet.ReadUInt32("Templates");
                 packet.ReadUInt32("AccountCurrency");
+                packet.ReadTime("Time");
 
                 for (var i = 0; i < races; ++i)
                 {

@@ -416,5 +416,95 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (var i = 0; i < cooldownCount; ++i)
                 packet.ReadByte("Cooldown");
         }
+
+        [Parser(Opcode.SMSG_SPELL_COOLDOWN, ClientVersionBuild.V7_1_0_22900)]
+        public static void HandleSpellCooldown(Packet packet)
+        {
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadByte("Flags");
+
+            var count = packet.ReadInt32("SpellCooldownsCount");
+            for (int i = 0; i < count; i++)
+            {
+                packet.ReadInt32("SrecID", i);
+                packet.ReadInt32("ForcedCooldown", i);
+                packet.ReadSingle("ModRate", i);
+            }
+        }
+        
+
+        [Parser(Opcode.SMSG_REFRESH_SPELL_HISTORY, ClientVersionBuild.V7_1_0_22900)]
+        [Parser(Opcode.SMSG_SEND_SPELL_HISTORY, ClientVersionBuild.V7_1_0_22900)]
+        public static void HandleSendSpellHistory(Packet packet)
+        {
+            var int4 = packet.ReadInt32("SpellHistoryEntryCount");
+            for (int i = 0; i < int4; i++)
+            {
+                packet.ReadUInt32<SpellId>("SpellID", i);
+                packet.ReadUInt32("ItemID", i);
+                packet.ReadUInt32("Category", i);
+                packet.ReadInt32("RecoveryTime", i);
+                packet.ReadInt32("CategoryRecoveryTime", i);
+                packet.ReadSingle("ModRate", i);
+
+                packet.ResetBitReader();
+                var unused622_1 = packet.ReadBit();
+                var unused622_2 = packet.ReadBit();
+
+                packet.ReadBit("OnHold", i);
+
+                if (unused622_1)
+                    packet.ReadUInt32("Unk_622_1", i);
+
+                if (unused622_2)
+                    packet.ReadUInt32("Unk_622_2", i);
+            }
+        }
+
+
+        [Parser(Opcode.SMSG_SEND_SPELL_CHARGES, ClientVersionBuild.V7_1_0_22900)]
+        public static void HandleSendSpellCharges(Packet packet)
+        {
+            var int4 = packet.ReadInt32("SpellChargeEntryCount");
+            for (int i = 0; i < int4; i++)
+            {
+                packet.ReadUInt32("Category", i);
+                packet.ReadUInt32("NextRecoveryTime", i);
+                packet.ReadByte("ConsumedCharges", i);
+                packet.ReadSingle("ChargeModRate", i);
+
+                packet.ReadBit("IsPet");
+            }
+        }
+
+        [Parser(Opcode.SMSG_RESURRECT_REQUEST, ClientVersionBuild.V7_1_0_22900)]
+        public static void HandleResurrectRequest(Packet packet)
+        {
+            packet.ReadPackedGuid128("ResurrectOffererGUID");
+
+            packet.ReadUInt32("ResurrectOffererVirtualRealmAddress");
+            packet.ReadUInt32("PetNumber");
+            packet.ReadInt32<SpellId>("SpellID");
+
+            var len = packet.ReadBits(11);
+
+            packet.ReadBit("UseTimer");
+            packet.ReadBit("Sickness");
+
+            packet.ReadWoWString("Name", len);
+        }
+
+        [Parser(Opcode.SMSG_TOTEM_CREATED, ClientVersionBuild.V7_1_0_22900)]
+        public static void HandleTotemCreated(Packet packet)
+        {
+            packet.ReadByte("Slot");
+            packet.ReadPackedGuid128("Totem");
+            packet.ReadUInt32("Duration");
+            packet.ReadUInt32<SpellId>("SpellID");
+            packet.ReadSingle("TimeMod");
+
+            packet.ResetBitReader();
+            packet.ReadBit("CannotDismiss");
+        }
     }
 }

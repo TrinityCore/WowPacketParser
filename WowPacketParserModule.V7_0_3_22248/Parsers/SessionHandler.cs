@@ -11,9 +11,21 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             packet.ReadTime("CurrentTime");
         }
+
         [Parser(Opcode.SMSG_ENABLE_ENCRYPTION)]
         public static void HandleSessionZero(Packet packet)
         {
+        }
+
+        [Parser(Opcode.SMSG_LOGOUT_COMPLETE, ClientVersionBuild.V7_1_0_22900)]
+        public static void HandleLogoutComplete(Packet packet)
+        {
+        }
+
+        [Parser(Opcode.CMSG_LOGOUT_REQUEST, ClientVersionBuild.V7_1_0_22900)]
+        public static void HandleLogoutRequest(Packet packet)
+        {
+            packet.ReadBit("IdleLogout");
         }
     }
 }

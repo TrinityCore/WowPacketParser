@@ -391,5 +391,21 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadPackedGuid128("MoverGUID");
             packet.ReadUInt32("SequenceId");
         }
+
+
+        [Parser(Opcode.SMSG_MOVE_SET_COLLISION_HEIGHT, ClientVersionBuild.V7_1_0_22900)]
+        public static void HandleSetCollisionHeight(Packet packet)
+        {
+            packet.ReadPackedGuid128("MoverGUID");
+            packet.ReadInt32("SequenceIndex");
+            packet.ReadSingle("Scale");
+            packet.ReadSingle("Height");
+            packet.ReadUInt32("MountDisplayID");
+            packet.ReadInt32("ScaleDuration");
+
+            packet.ResetBitReader();
+
+            packet.ReadBits("Reason", 2);
+        }
     }
 }
