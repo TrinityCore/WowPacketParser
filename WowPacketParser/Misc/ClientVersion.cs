@@ -150,6 +150,12 @@ namespace WowPacketParser.Misc
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V7_0_3_22498, new DateTime(2015, 08, 23)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V7_0_3_22522, new DateTime(2016, 08, 25)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V7_0_3_22566, new DateTime(2016, 09, 01)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V7_0_3_22594, new DateTime(2016, 09, 14)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V7_0_3_22624, new DateTime(2016, 09, 20)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V7_0_3_22747, new DateTime(2016, 10, 05)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V7_0_3_22810, new DateTime(2016, 10, 12)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V7_1_0_22900, new DateTime(2016, 10, 25)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V7_1_0_22908, new DateTime(2016, 10, 25, 15, 0, 0)),
         };
 
         private static ClientType _expansion;
@@ -314,6 +320,9 @@ namespace WowPacketParser.Misc
                     case ClientVersionBuild.V7_0_3_22747:
                     case ClientVersionBuild.V7_0_3_22810:
                         return ClientVersionBuild.V7_0_3_22248;
+                    case ClientVersionBuild.V7_1_0_22900:
+                    case ClientVersionBuild.V7_1_0_22908:
+                        return ClientVersionBuild.V7_1_0_22900;
                     case ClientVersionBuild.BattleNetV37165:
                         return ClientVersionBuild.BattleNetV37165;
                     case ClientVersionBuild.Zero:
@@ -332,6 +341,8 @@ namespace WowPacketParser.Misc
                 {
                     case ClientVersionBuild.V7_0_3_22248:
                         return ClientVersionBuild.V6_0_2_19033;
+                    case ClientVersionBuild.V7_1_0_22900:
+                        return ClientVersionBuild.V7_0_3_22248;
                     default:
                         return ClientVersionBuild.Zero;
                 }
