@@ -156,5 +156,28 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (uint i = 0; i < 3; ++i)
                 packet.ReadUInt32("NewCustomDisplay", i);
         }
+
+        public static void ReadPVPBracketData(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("Rating", idx);
+            packet.ReadInt32("Rank", idx);
+            packet.ReadInt32("WeeklyPlayed", idx);
+            packet.ReadInt32("WeeklyWon", idx);
+            packet.ReadInt32("SeasonPlayed", idx);
+            packet.ReadInt32("SeasonWon", idx);
+            packet.ReadInt32("WeeklyBestRating", idx);
+            packet.ReadInt32("Unk710");
+            packet.ReadByte("Bracket", idx);
+        }
+
+        [Parser(Opcode.SMSG_INSPECT_PVP)]
+        public static void HandleInspectPVP(Packet packet)
+        {
+            packet.ReadPackedGuid128("ClientGUID");
+
+            var bracketCount = packet.ReadBits(3);
+            for (var i = 0; i < bracketCount; i++)
+                ReadPVPBracketData(packet, i, "PVPBracketData");
+        }
     }
 }

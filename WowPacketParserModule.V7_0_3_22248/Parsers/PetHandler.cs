@@ -18,6 +18,23 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.AddValue("Flag", flag, idx);
         }
 
+        public static void ReadPetSpellCooldownData(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("SpellID", idx);
+            packet.ReadInt32("Duration", idx);
+            packet.ReadInt32("CategoryDuration", idx);
+            packet.ReadSingle("ModRate", idx);
+            packet.ReadInt16("Category", idx);
+        }
+
+        public static void ReadPetSpellHistoryData(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("CategoryID", idx);
+            packet.ReadInt32("RecoveryTime", idx);
+            packet.ReadSingle("ChargeModRate", idx);
+            packet.ReadSByte("ConsumedCharges", idx);
+        }
+
         [Parser(Opcode.SMSG_PET_SPELLS_MESSAGE)]
         public static void HandlePetSpells(Packet packet)
         {
@@ -40,10 +57,21 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 V6_0_2_19033.Parsers.PetHandler.ReadPetAction(packet, i, "Actions");
 
             for (int i = 0; i < cooldownsCount; i++)
-                V6_0_2_19033.Parsers.PetHandler.ReadPetSpellCooldownData(packet, i, "PetSpellCooldown");
+            {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_1_0_22900))
+                    ReadPetSpellCooldownData(packet, i, "PetSpellCooldown");
+                else
+                    V6_0_2_19033.Parsers.PetHandler.ReadPetSpellCooldownData(packet, i, "PetSpellCooldown");
+            }
 
             for (int i = 0; i < spellHistoryCount; i++)
-                V6_0_2_19033.Parsers.PetHandler.ReadPetSpellHistoryData(packet, i, "PetSpellHistory");
+            {
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_1_0_22900))
+                    ReadPetSpellHistoryData(packet, i, "PetSpellHistory");
+                else
+                    V6_0_2_19033.Parsers.PetHandler.ReadPetSpellHistoryData(packet, i, "PetSpellHistory");
+            }
         }
 
         [Parser(Opcode.SMSG_PET_MODE)]
