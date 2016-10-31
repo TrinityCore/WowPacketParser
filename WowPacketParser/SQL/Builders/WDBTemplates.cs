@@ -70,6 +70,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.CreatureTemplates.IsEmpty())
                 return string.Empty;
 
+            /*
             var templatesDb = SQLDatabase.Get(Storage.CreatureTemplates);
 
             IEnumerable<Tuple<CreatureTemplate, TimeSpan?>> creatures;
@@ -199,6 +200,10 @@ namespace WowPacketParser.SQL.Builders
             }
 
             return SQLUtil.Compare(creatures, templatesDb, StoreNameType.Unit);
+            */
+
+            var templatesDb = SQLDatabase.Get(Storage.CreatureTemplates);
+            return SQLUtil.Compare(Storage.CreatureTemplates, templatesDb, StoreNameType.Unit);
         }
 
         [BuilderMethod(true)]
