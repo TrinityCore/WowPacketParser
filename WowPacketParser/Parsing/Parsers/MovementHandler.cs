@@ -43,7 +43,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (packet.ReadGuid("GUID 2", index) != guid)
                     throw new InvalidDataException("Guids are not equal.");
 
-            packet.ReadInt32("Time", index);
+            packet.ReadUInt32("Time", index);
 
             info.Position = packet.ReadVector3("Position", index);
             info.Orientation = packet.ReadSingle("Orientation", index);
@@ -136,7 +136,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadGuid("GUID 2", index);
 
-            packet.ReadInt32("Time", index);
+            packet.ReadUInt32("Time", index);
 
             info.Position = packet.ReadVector3("Position", index);
             info.Orientation = packet.ReadSingle("Orientation", index);
@@ -504,7 +504,7 @@ namespace WowPacketParser.Parsing.Parsers
             else
             {
                 packet.ReadInt32E<MovementFlag>("Move Flags");
-                packet.ReadInt32("Time");
+                packet.ReadUInt32("Time");
             }
         }
 
@@ -546,7 +546,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (interPolatedTurning)
                 jumping = packet.ReadBit("Jumping");
 
-            packet.ReadInt32("Time");
+            packet.ReadUInt32("Time");
             packet.ReadVector4("Position");
 
             packet.ReadXORByte(guidBytes, 7);
@@ -645,7 +645,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (interPolatedTurning)
                 jumping = packet.ReadBit("Jumping");
 
-            packet.ReadInt32("Time");
+            packet.ReadUInt32("Time");
             packet.ReadVector4("Position");
 
             packet.ReadXORByte(guidBytes, 7);
@@ -748,7 +748,7 @@ namespace WowPacketParser.Parsing.Parsers
                 jumping = packet.ReadBit("HasFallDirection");
 
             packet.ReadVector3("Position");
-            packet.ReadInt32("Time");
+            packet.ReadUInt32("Time");
             packet.ReadSingle("Orientation");
 
             packet.ReadXORByte(guidBytes, 1);
@@ -1732,7 +1732,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleMoveTimeSkippedMsg(Packet packet)
         {
             packet.ReadPackedGuid("Guid");
-            packet.ReadInt32("Time");
+            packet.ReadUInt32("Time");
         }
 
         [Parser(Opcode.CMSG_MOVE_TIME_SKIPPED, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -1742,7 +1742,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadGuid("GUID");
             else
                 packet.ReadPackedGuid("GUID");
-            packet.ReadInt32("Time");
+            packet.ReadUInt32("Time");
         }
 
         [Parser(Opcode.SMSG_MOVE_SPLINE_ROOT, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
