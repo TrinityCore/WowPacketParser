@@ -398,6 +398,16 @@ namespace WowPacketParser.SQL.Builders
                     HoverHeight = npc.HoverHeight.GetValueOrDefault(1.0f)
                 };
 
+                if (Settings.UseDBC)
+                {
+                    var creatureDiff = DBC.DBC.CreatureDifficulty.Where(diff => diff.Value.CreatureID == unit.Key.GetEntry());
+                    if (creatureDiff.Any())
+                    {
+                        template.MinLevel = creatureDiff.Select(lv => lv.Value.MinLevel).First();
+                        template.MaxLevel = creatureDiff.Select(lv => lv.Value.MaxLevel).First();
+                    }
+                }
+
                 if (template.Faction == 1 || template.Faction == 2 || template.Faction == 3 ||
                     template.Faction == 4 || template.Faction == 5 || template.Faction == 6 ||
                     template.Faction == 115 || template.Faction == 116 || template.Faction == 1610 ||
