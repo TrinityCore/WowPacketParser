@@ -52,5 +52,19 @@ namespace WowPacketParser.SQL.Builders
 
             return SQLUtil.Compare(Storage.HotfixDatas, templatesDb, StoreNameType.None);
         }
+
+        [BuilderMethod(true)]
+        public static string BroadcastText()
+        {
+            if (Storage.BroadcastTexts.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.broadcast_text))
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.BroadcastTexts, Settings.HotfixesDatabase);
+
+            return SQLUtil.Compare(Storage.BroadcastTexts, templatesDb, StoreNameType.None);
+        }
     }
 }

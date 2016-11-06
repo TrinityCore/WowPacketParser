@@ -3,6 +3,7 @@ using WowPacketParser.Hotfix;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
@@ -31,7 +32,44 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             else
             {
                 packet.AddSniffData(StoreNameType.None, entry, type.ToString());
-                HotfixStoreMgr.AddRecord(type, entry, db2File);
+
+                switch (type)
+                {
+                    case DB2Hash.BroadcastText:
+                    {
+                        var bct = new BroadcastText()
+                        {
+                            ID = (uint)entry,
+                            MaleText = db2File.ReadCString("MaleText"),
+                            FemaleText = db2File.ReadCString("FemaleText"),
+                        };
+
+                        bct.EmoteID = new ushort?[3];
+                        bct.EmoteDelay = new ushort?[3];
+
+                        for (int i = 0; i < 3; ++i)
+                            bct.EmoteID[i] = db2File.ReadUInt16("EmoteID", i);
+                        for (int i = 0; i < 3; ++i)
+                            bct.EmoteDelay[i] = db2File.ReadUInt16("EmoteDelay", i);
+
+                        bct.UnkEmoteID = db2File.ReadUInt16("UnkEmoteID");
+                        bct.Language = db2File.ReadByte("Language");
+                        bct.Type = db2File.ReadByte("Type");
+                            
+                        bct.SoundID = new uint?[2];
+                        for (int i = 0; i < 2; ++i)
+                            bct.SoundID[i] = db2File.ReadUInt32("SoundID", i);
+
+                        bct.PlayerConditionID = db2File.ReadUInt32("PlayerConditionID");
+
+                        Storage.BroadcastTexts.Add(bct, packet.TimeSpan);
+                        break;
+                    }
+                    default:
+                        HotfixStoreMgr.AddRecord(type, entry, db2File);
+                        break;
+                }
+
                 Storage.AddHotfixData(entry, type, false, timeStamp);
                 db2File.ClosePacket(false);
             }
