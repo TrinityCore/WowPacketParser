@@ -405,6 +405,7 @@ namespace WowPacketParser.SQL.Builders
                     {
                         template.MinLevel = creatureDiff.Select(lv => lv.Value.MinLevel).First();
                         template.MaxLevel = creatureDiff.Select(lv => lv.Value.MaxLevel).First();
+                        template.Faction  = creatureDiff.Select(lv => lv.Value.FactionTemplateID).First();
                     }
                 }
 
