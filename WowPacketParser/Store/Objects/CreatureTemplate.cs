@@ -76,6 +76,55 @@ namespace WowPacketParser.Store.Objects
     {
         [DBFieldName("entry", true)]
         public uint? Entry;
+
+        [DBFieldName("gossip_menu_id")]
+        public uint? GossipMenuId;
+
+        [DBFieldName("minlevel")]
+        public int? MinLevel;
+
+        [DBFieldName("maxlevel")]
+        public int? MaxLevel;
+
+        [DBFieldName("faction")]
+        public uint? Faction;
+
+        [DBFieldName("npcflag")]
+        public NPCFlags? NpcFlag;
+
+        [DBFieldName("speed_walk")]
+        public float? SpeedWalk;
+
+        [DBFieldName("speed_run")]
+        public float? SpeedRun;
+
+        [DBFieldName("BaseAttackTime")]
+        public uint? BaseAttackTime;
+
+        [DBFieldName("RangeAttackTime")]
+        public uint? RangedAttackTime;
+
+        [DBFieldName("unit_class")]
+        public uint? UnitClass;
+
+        [DBFieldName("unit_flags")]
+        public UnitFlags? UnitFlags;
+
+        [DBFieldName("unit_flags2")]
+        public UnitFlags2? UnitFlags2;
+
+        [DBFieldName("dynamicflags", TargetedDatabase.Zero, TargetedDatabase.WarlordsOfDraenor)]
+        public UnitDynamicFlags? DynamicFlags;
+
+        [DBFieldName("dynamicflags", TargetedDatabase.WarlordsOfDraenor)]
+        public UnitDynamicFlagsWOD? DynamicFlagsWod;
+
+        [DBFieldName("VehicleId")]
+        public uint? VehicleID;
+
+        [DBFieldName("HoverHeight")]
+        public float? HoverHeight;
+
     }
 
     [DBTableName("creature_questitem")]
