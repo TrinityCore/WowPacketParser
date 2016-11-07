@@ -337,7 +337,6 @@ namespace WowPacketParser.SQL.Builders
             "Warrior Trainer"
         };
 
-        /*
         private static string GetSubName(int entry, bool withEntry)
         {
             string name = StoreGetters.GetName(StoreNameType.Unit, entry, withEntry);
@@ -358,7 +357,6 @@ namespace WowPacketParser.SQL.Builders
 
             return 0;
         }
-        */
 
         [BuilderMethod(true, Units = true)]
         public static string CreatureTemplateNonWDB(Dictionary<WowGuid, Unit> units)
@@ -434,6 +432,28 @@ namespace WowPacketParser.SQL.Builders
                     template.DynamicFlagsWod &= ~UnitDynamicFlagsWOD.Tapped;
                     template.DynamicFlagsWod &= ~UnitDynamicFlagsWOD.TappedByPlayer;
                     template.DynamicFlagsWod &= ~UnitDynamicFlagsWOD.TappedByAllThreatList;
+                }
+
+                // has trainer flag but doesn't have prof nor class trainer flag
+                if ((template.NpcFlag & NPCFlags.Trainer) != 0 &&
+                    ((template.NpcFlag & NPCFlags.ProfessionTrainer) == 0 ||
+                     (template.NpcFlag & NPCFlags.ClassTrainer) == 0))
+                {
+                    var subname = GetSubName((int)unit.Key.GetEntry(), false); // Fall back
+                    var entry = Storage.CreatureTemplates.Where(creature => creature.Item1.Entry == unit.Key.GetEntry());
+                    if (entry.Any())
+                    {
+                        var sub = entry.Select(creature => creature.Item1.SubName).First();
+                        if (sub.Length > 0)
+                        {
+                            template.NpcFlag |= ProcessNpcFlags(sub);
+                            Trace.WriteLine($"Entry: { unit.Key.GetEntry() } NpcFlag: { template.NpcFlag }");
+                        }
+                        else // If the SubName doesn't exist or is cached, fall back to DB method
+                            template.NpcFlag |= ProcessNpcFlags(subname);
+                    }
+                    else // In case we have NonWDB data which doesn't have an entry in CreatureTemplates
+                        template.NpcFlag |= ProcessNpcFlags(subname);
                 }
 
                 Storage.CreatureTemplatesNonWDB.Add(template);
