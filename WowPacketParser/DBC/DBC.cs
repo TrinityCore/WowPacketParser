@@ -7,6 +7,7 @@ using System.Reflection;
 using DBFilesClient.NET;
 using WowPacketParser.DBC.Structures;
 using WowPacketParser.Misc;
+using WowPacketParser.Loading;
 
 namespace WowPacketParser.DBC
 {
@@ -33,7 +34,7 @@ namespace WowPacketParser.DBC
 
         private static string GetPath()
         {
-            return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Settings.DBCPath + "\\";
+            return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Settings.DBCPath + @"\" + BinaryPacketReader.GetLocale() + @"\";
         }
 
         public static  void Load()
