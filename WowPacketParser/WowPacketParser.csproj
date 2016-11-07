@@ -89,8 +89,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DBFilesClient.NET, Version=1.0.0.2, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DBFilesClient.NET.1.0.0.2\lib\net452\DBFilesClient.NET.dll</HintPath>
+    <Reference Include="DBFilesClient.NET, Version=1.1.2.4, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DBFilesClient.NET.1.1.2.4\lib\net452\DBFilesClient.NET.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ionic.Zip, Version=1.9.6.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
