@@ -14,7 +14,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             var type = packet.ReadUInt32E<DB2Hash>("TableHash");
             var entry = packet.ReadInt32("RecordID");
-            var timeStamp = packet.ReadUInt32("Timestamp");
+            var timeStamp = packet.ReadUInt32();
+            packet.AddValue("Timestamp", Utilities.GetDateTimeFromUnixTime(timeStamp));
             var allow = packet.ReadBit("Allow");
 
             var size = packet.ReadInt32("Size");

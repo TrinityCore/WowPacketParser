@@ -33,7 +33,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var type = packet.ReadUInt32E<DB2Hash>("TableHash");
             var entry = packet.ReadInt32("RecordID");
             var allow = true;
-            var timeStamp = packet.ReadUInt32("Timestamp");
+            var timeStamp = packet.ReadUInt32();
+            packet.AddValue("Timestamp", Utilities.GetDateTimeFromUnixTime(timeStamp));
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
                 allow = packet.ReadBit("Allow");
 
@@ -64,8 +65,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             {
                 var tableHash = packet.ReadUInt32E<DB2Hash>("TableHash", i);
                 var recordID = packet.ReadInt32("RecordID", i);
-                var timestamp = packet.ReadUInt32("Timestamp", i);
-                Storage.AddHotfixData(recordID, tableHash, false, timestamp);
+                var timeStamp = packet.ReadUInt32();
+                packet.AddValue("Timestamp", Utilities.GetDateTimeFromUnixTime(timeStamp), i);
+                Storage.AddHotfixData(recordID, tableHash, false, timeStamp);
             }
         }
 
@@ -74,9 +76,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             var tableHash = packet.ReadUInt32E<DB2Hash>("TableHash");
             var recordID = packet.ReadInt32("RecordID");
-            var timestamp = packet.ReadUInt32("Timestamp");
+            var timeStamp = packet.ReadUInt32();
+            packet.AddValue("Timestamp", Utilities.GetDateTimeFromUnixTime(timeStamp));
 
-            Storage.AddHotfixData(recordID, tableHash, false, timestamp);
+            Storage.AddHotfixData(recordID, tableHash, false, timeStamp);
         }
     }
 }
