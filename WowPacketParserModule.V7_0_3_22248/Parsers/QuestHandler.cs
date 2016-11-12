@@ -38,8 +38,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (var i = 0; i < 5; ++i)
             {
                 packet.ReadInt32("FactionID", idx, i);
-                packet.ReadInt32("FactionOverride", idx, i);
                 packet.ReadInt32("FactionValue", idx, i);
+                packet.ReadInt32("FactionOverride", idx, i);
                 packet.ReadInt32("FactionCapIn", idx, i);
             }
 
@@ -176,8 +176,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (int i = 0; i < 5; ++i)
             {
                 quest.RewardFactionID[i] = packet.ReadUInt32("RewardFactionID", i);
-                quest.RewardFactionOverride[i] = packet.ReadInt32("RewardFactionOverride", i);
                 quest.RewardFactionValue[i] = packet.ReadInt32("RewardFactionValue", i);
+                quest.RewardFactionOverride[i] = packet.ReadInt32("RewardFactionOverride", i);
                 quest.RewardFactionCapIn[i] = packet.ReadInt32("RewardFactionCapIn", i);
             }
 
