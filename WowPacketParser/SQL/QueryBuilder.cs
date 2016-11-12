@@ -227,7 +227,9 @@ namespace WowPacketParser.SQL
                 if (value == null)
                     continue;
 
-                hasValues = true;
+                if (field.Item2.Name != "VerifiedBuild" || !Settings.SkipOnlyVerifiedBuildUpdateRows)
+                    hasValues = true;
+
                 query.Append(field.Item1);
                 query.Append("=");
                 query.Append(SQLUtil.ToSQLValue(value, noQuotes: field.Item3.Any(a => a.NoQuotes)));
