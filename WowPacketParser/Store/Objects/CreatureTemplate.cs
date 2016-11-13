@@ -40,7 +40,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("maxlevel")]
         public int? MaxLevel;
 
-        [DBFieldName("exp")]
+        [DBFieldName("exp", TargetedDatabase.Zero, TargetedDatabase.WarlordsOfDraenor)]
         public ClientType? Expansion = ClientType.WorldOfWarcraft;
 
         [DBFieldName("HealthScalingExpansion", TargetedDatabase.WarlordsOfDraenor)]
