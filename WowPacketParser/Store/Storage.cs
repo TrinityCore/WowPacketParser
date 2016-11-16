@@ -150,6 +150,8 @@ namespace WowPacketParser.Store
             LocalesQuestObjectives.Clear();
 
             HotfixDatas.Clear();
+
+            Scenes.Clear();
         }
 
         public static void AddHotfixData(int entry, DB2Hash type, bool deleted, uint timeStamp)

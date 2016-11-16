@@ -8,10 +8,10 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("SceneId", true)]
         public uint? SceneID;
 
-            [DBFieldName("Flags")]
+        [DBFieldName("Flags")]
         public uint? Flags;
 
-            [DBFieldName("ScriptPackageID", true)]
+        [DBFieldName("ScriptPackageID", true)]
         public uint? ScriptPackageID;
     }
 }
