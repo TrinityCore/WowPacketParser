@@ -106,71 +106,67 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_PARTY_UPDATE, ClientVersionBuild.V7_1_0_22900)]
         public static void HandlePartyUpdate(Packet packet)
         {
-            packet.ReadByte("PartyFlags");
+            packet.ReadUInt16("PartyFlags");
             packet.ReadByte("PartyIndex");
             packet.ReadByte("PartyType");
 
             packet.ReadInt32("MyIndex");
-            packet.ReadPackedGuid128("LeaderGUID");
-            packet.ReadInt32("SequenceNum");
             packet.ReadPackedGuid128("PartyGUID");
+            packet.ReadInt32("SequenceNum");
+            packet.ReadPackedGuid128("LeaderGUID");
 
-            var int13 = packet.ReadInt32("PlayerListCount");
-            for (int i = 0; i < int13; i++)
+            var playerCount = packet.ReadInt32("PlayerListCount");
+            var hasLFG = packet.ReadBit("HasLfgInfo");
+            var hasLootSettings = packet.ReadBit("HasLootSettings");
+            var hasDifficultySettings = packet.ReadBit("HasDifficultySettings");
+
+            for (int i = 0; i < playerCount; i++)
             {
                 packet.ResetBitReader();
-                var bits76 = packet.ReadBits(6);
+                var playerNameLength = packet.ReadBits(6);
                 packet.ReadBit("FromSocialQueue");
 
                 packet.ReadPackedGuid128("Guid", i);
 
-                packet.ReadByte("Connected", i);
+                packet.ReadByte("Status", i);
                 packet.ReadByte("Subgroup", i);
                 packet.ReadByte("Flags", i);
                 packet.ReadByte("RolesAssigned", i);
-                packet.ReadByteE<Class>("PlayerClass", i);
+                packet.ReadByteE<Class>("Class", i);
 
-                packet.ReadWoWString("Name", bits76, i);
+                packet.ReadWoWString("Name", playerNameLength, i);
             }
 
             packet.ResetBitReader();
 
-            var bit68 = packet.ReadBit("HasLfgInfo");
-            var bit144 = packet.ReadBit("HasLootSettings");
-            var bit164 = packet.ReadBit("HasDifficultySettings");
-
-            if (bit68)
+            if (hasLootSettings)
             {
-                packet.ReadByte("MyLfgFlags");
-                packet.ReadInt32("LfgSlot");
-                packet.ReadInt32("MyLfgRandomSlot");
-                packet.ReadByte("MyLfgPartialClear");
-                packet.ReadSingle("MyLfgGearDiff");
-                packet.ReadByte("MyLfgStrangerCount");
-                packet.ReadByte("MyLfgKickVoteCount");
-                packet.ReadByte("LfgBootCount");
-
-                packet.ResetBitReader();
-
-                packet.ReadBit("LfgAborted");
-                packet.ReadBit("MyLfgFirstReward");
+                packet.ReadByte("Method", "PartyLootSettings");
+                packet.ReadPackedGuid128("LootMaster", "PartyLootSettings");
+                packet.ReadByte("Threshold", "PartyLootSettings");
             }
 
-            if (bit144)
+            if (hasDifficultySettings)
             {
-                packet.ReadByte("LootMethod");
-                packet.ReadPackedGuid128("LootMaster");
-                packet.ReadByte("LootThreshold");
-            }
-
-            if (bit164)
-            {
-                packet.ReadInt32("Unk Int4");
-                //for (int i = 0; i < 2; i++)
-                //{
                 packet.ReadInt32("DungeonDifficultyID");
                 packet.ReadInt32("RaidDifficultyID");
-                //}
+                packet.ReadInt32("LegacyRaidDifficultyID");
+            }
+
+            if (hasLFG)
+            {
+                packet.ResetBitReader();
+
+                packet.ReadByte("MyFlags");
+                packet.ReadInt32("Slot");
+                packet.ReadInt32("MyRandomSlot");
+                packet.ReadByte("MyPartialClear");
+                packet.ReadSingle("MyGearDiff");
+                packet.ReadByte("MyStrangerCount");
+                packet.ReadByte("MyKickVoteCount");
+                packet.ReadByte("BootCount");
+                packet.ReadBit("Aborted");
+                packet.ReadBit("MyFirstReward");
             }
         }
     }
