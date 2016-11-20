@@ -116,7 +116,8 @@ namespace WowPacketParser.SQL.Builders
                     DisplayID = modelId
                 };
 
-                if (models.ContainsKey(model))
+                //if (models.ContainsKey(model))
+                if (models.Any(modelInfo => modelInfo.Item1.DisplayID == modelId))
                     continue;
 
                 var scale = npc.Size.GetValueOrDefault(1.0f);
