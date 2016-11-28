@@ -507,6 +507,7 @@
     <Compile Include="SQL\SSHTunnel.cs" />
     <Compile Include="Store\Objects\Aura.cs" />
     <Compile Include="Store\Objects\BroadcastTextLocale.cs" />
+    <Compile Include="Store\Objects\Scenes.cs" />
     <Compile Include="Store\Objects\Creature.cs" />
     <Compile Include="Store\Objects\CreatureAddon.cs" />
     <Compile Include="Store\Objects\CreatureEquipment.cs" />
