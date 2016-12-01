@@ -89,6 +89,9 @@ namespace WowPacketParser.Store
 
         public static readonly DataBag<HotfixData> HotfixDatas = new DataBag<HotfixData>(new List<SQLOutput> { SQLOutput.hotfix_data });
 
+        // Scenes
+        public static readonly DataBag<SceneTemplate> Scenes = new DataBag<SceneTemplate>(new List<SQLOutput> { SQLOutput.scene_template });
+
         public static void ClearContainers()
         {
             SniffData.Clear();
@@ -147,6 +150,8 @@ namespace WowPacketParser.Store
             LocalesQuestObjectives.Clear();
 
             HotfixDatas.Clear();
+
+            Scenes.Clear();
         }
 
         public static void AddHotfixData(int entry, DB2Hash type, bool deleted, uint timeStamp)
