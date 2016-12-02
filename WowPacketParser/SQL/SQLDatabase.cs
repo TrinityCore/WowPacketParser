@@ -65,8 +65,6 @@ namespace WowPacketParser.SQL
             var startTime = DateTime.Now;
 
             LoadBroadcastText();
-            // MapDifficulty
-            //LoadMapDifficulty();
 
             var endTime = DateTime.Now;
             var span = DateTime.Now.Subtract(startTime);
