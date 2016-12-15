@@ -51,7 +51,7 @@ namespace WowPacketParser.SQL
 
             foreach (var objectType in ObjectTypes)
                 NameStores.Add(objectType, GetDict<int, string>(
-                    $"SELECT `Id`, `Name` FROM `ObjectNames` WHERE `ObjectType`='{objectType}';"));
+                    $"SELECT `Id`, `Name` FROM `object_names` WHERE `ObjectType`='{objectType}';"));
         }
 
         /// <summary>
