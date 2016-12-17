@@ -494,15 +494,14 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleTeleportAck(Packet packet)
         {
             var guid = packet.ReadPackedGuid("Guid");
+            packet.ReadInt32("Movement Counter");
 
             if (packet.Direction == Direction.ServerToClient)
             {
-                packet.ReadInt32("Movement Counter");
                 ReadMovementInfo(packet, guid);
             }
             else
             {
-                packet.ReadInt32E<MovementFlag>("Move Flags");
                 packet.ReadUInt32("Time");
             }
         }
