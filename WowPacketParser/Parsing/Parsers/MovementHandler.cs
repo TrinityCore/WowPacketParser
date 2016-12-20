@@ -39,7 +39,7 @@ namespace WowPacketParser.Parsing.Parsers
                 info.FlagsExtra = packet.ReadByteE<MovementFlagExtra>("Extra Movement Flags", index);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                if (packet.ReadGuid("GUID 2", index) != guid)
+                if (packet.ReadGuid("Guid 2", index) != guid)
                     throw new InvalidDataException("Guids are not equal.");
 
             packet.ReadUInt32("Time", index);
@@ -1269,7 +1269,7 @@ namespace WowPacketParser.Parsing.Parsers
             WowGuid guid;
             if ((ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ||
                 packet.Direction == Direction.ServerToClient) && ClientVersion.Build != ClientVersionBuild.V4_2_2_14545)
-                guid = packet.ReadPackedGuid("GUID");
+                guid = packet.ReadPackedGuid("Guid");
             else
                 guid = new WowGuid64();
 
@@ -1596,7 +1596,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.StartBitStream(3, 7, 1, 6, 0, 4, 5, 2);
             packet.ParseBitStream(guid, 4, 3, 0, 6, 2, 7, 5, 1);
 
-            packet.WriteGuid("GUID", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_PHASE_SHIFT_CHANGE, ClientVersionBuild.V5_1_0_16309)]
@@ -1638,7 +1638,7 @@ namespace WowPacketParser.Parsing.Parsers
             for (var i = 0; i < count; ++i)
                 packet.ReadInt16<MapId>("Inactive Terrain swap", i);
 
-            packet.WriteGuid("GUID", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_TRANSFER_PENDING, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
