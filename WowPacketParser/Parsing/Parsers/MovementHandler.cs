@@ -1361,7 +1361,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleForceSpeedChange(Packet packet)
         {
             packet.ReadPackedGuid("Guid");
-            packet.ReadUInt32("MoveEvent"); // Movement Counter?
+            packet.ReadUInt32("Movement Counter");
 
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_FORCE_RUN_SPEED_CHANGE, Direction.ServerToClient))
                 packet.ReadByte("Unk Byte");
