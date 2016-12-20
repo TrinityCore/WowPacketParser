@@ -1795,6 +1795,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                     using (var newPacket = new Packet(data, opc, pkt.Time, pkt.Direction, pkt.Number, packet.Writer, packet.FileName))
                         Handler.Parse(newPacket, true);
+                    packet.WriteLine();
                 }
             }
 
