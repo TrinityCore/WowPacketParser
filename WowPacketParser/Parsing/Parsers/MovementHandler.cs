@@ -1719,7 +1719,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleMoveKnockBack(Packet packet)
         {
             packet.ReadPackedGuid("GUID");
-            packet.ReadUInt32("Counter");
+            packet.ReadUInt32("Movement Counter");
             packet.ReadSingle("X direction");
             packet.ReadSingle("Y direction");
             packet.ReadSingle("Horizontal Speed");
