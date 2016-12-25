@@ -53,6 +53,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Enums\MovementFlag.cs" />
     <Compile Include="Enums\UpdateFields.cs" />
     <Compile Include="Enums\CharacterUndeleteResult.cs" />
     <Compile Include="Enums\UpdateFields610.cs" />

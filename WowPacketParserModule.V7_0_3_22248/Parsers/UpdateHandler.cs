@@ -157,7 +157,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 for (var i = 0; i < removeForcesIDsCount; i++)
                     packet.ReadPackedGuid128("RemoveForcesIDs", index, i);
 
-                moveInfo.Flags = packet.ReadBitsE<MovementFlag>("Movement Flags", 30, index);
+                moveInfo.Flags = (MovementFlag)packet.ReadBitsE<WowPacketParserModule.V6_0_2_19033.Enums.MovementFlag>("Movement Flags", 30, index);
                 moveInfo.FlagsExtra = packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 18, index);
 
                 var hasTransport = packet.ReadBit("Has Transport Data", index);
