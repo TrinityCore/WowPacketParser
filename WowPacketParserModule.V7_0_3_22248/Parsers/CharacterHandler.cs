@@ -200,5 +200,16 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (int i = 0; i < talentCount; i++)
                 packet.ReadUInt16("Talents");
         }
+
+        [Parser(Opcode.SMSG_LEARN_PVP_TALENTS_FAILED)]
+        public static void HandleLearnPvPTalentsFailed(Packet packet)
+        {
+            packet.ReadBits("Reason", 4);
+            packet.ReadUInt32<SpellId>("SpellID");
+
+            var talentCount = packet.ReadUInt32("TalentCount");
+            for (int i = 0; i < talentCount; i++)
+                packet.ReadUInt16("Talents");
+        }
     }
 }
