@@ -39,12 +39,21 @@
   <ItemGroup>
     <Compile Include="Enums\UpdateFields.cs" />
     <Compile Include="Enums\UpdateFields710.cs" />
+    <Compile Include="Enums\UpdateFields715.cs" />
     <Compile Include="Hotfix\AchievementEntry.cs" />
     <Compile Include="Hotfix\AnimKitEntry.cs" />
     <Compile Include="Hotfix\AreaGroupMemberEntry.cs" />
     <Compile Include="Hotfix\AreaTableEntry.cs" />
     <Compile Include="Hotfix\AreaTriggerEntry.cs" />
     <Compile Include="Hotfix\ArmorLocationEntry.cs" />
+    <Compile Include="Hotfix\ArtifactAppearanceEntry.cs" />
+    <Compile Include="Hotfix\ArtifactAppearanceSetEntry.cs" />
+    <Compile Include="Hotfix\ArtifactCategoryEntry.cs" />
+    <Compile Include="Hotfix\ArtifactEntry.cs" />
+    <Compile Include="Hotfix\ArtifactPowerEntry.cs" />
+    <Compile Include="Hotfix\ArtifactPowerLinkEntry.cs" />
+    <Compile Include="Hotfix\ArtifactPowerRankEntry.cs" />
+    <Compile Include="Hotfix\ArtifactQuestXPEntry.cs" />
     <Compile Include="Hotfix\AuctionHouseEntry.cs" />
     <Compile Include="Hotfix\BankBagSlotPricesEntry.cs" />
     <Compile Include="Hotfix\BannedAddOnsEntry.cs" />
@@ -74,6 +83,7 @@
     <Compile Include="Hotfix\CriteriaEntry.cs" />
     <Compile Include="Hotfix\CriteriaTreeEntry.cs" />
     <Compile Include="Hotfix\CurrencyTypesEntry.cs" />
+    <Compile Include="Hotfix\CurveEntry.cs" />
     <Compile Include="Hotfix\CurvePointEntry.cs" />
     <Compile Include="Hotfix\DestructibleModelDataEntry.cs" />
     <Compile Include="Hotfix\DifficultyEntry.cs" />
@@ -99,7 +109,9 @@
     <Compile Include="Hotfix\GarrSiteLevelEntry.cs" />
     <Compile Include="Hotfix\GarrSiteLevelPlotInstEntry.cs" />
     <Compile Include="Hotfix\GemPropertiesEntry.cs" />
+    <Compile Include="Hotfix\GlyphBindableSpellEntry.cs" />
     <Compile Include="Hotfix\GlyphPropertiesEntry.cs" />
+    <Compile Include="Hotfix\GlyphRequiredSpecEntry.cs" />
     <Compile Include="Hotfix\GuildColorBackgroundEntry.cs" />
     <Compile Include="Hotfix\GuildColorBorderEntry.cs" />
     <Compile Include="Hotfix\GuildColorEmblemEntry.cs" />
@@ -117,7 +129,9 @@
     <Compile Include="Hotfix\ItemArmorTotalEntry.cs" />
     <Compile Include="Hotfix\ItemBagFamilyEntry.cs" />
     <Compile Include="Hotfix\ItemBonusEntry.cs" />
+    <Compile Include="Hotfix\ItemBonusListLevelDeltaEntry.cs" />
     <Compile Include="Hotfix\ItemBonusTreeNodeEntry.cs" />
+    <Compile Include="Hotfix\ItemChildEquipmentEntry.cs" />
     <Compile Include="Hotfix\ItemClassEntry.cs" />
     <Compile Include="Hotfix\ItemCurrencyCostEntry.cs" />
     <Compile Include="Hotfix\ItemDamageAmmoEntry.cs" />
@@ -165,6 +179,7 @@
     <Compile Include="Hotfix\PhaseXPhaseGroupEntry.cs" />
     <Compile Include="Hotfix\PlayerConditionEntry.cs" />
     <Compile Include="Hotfix\PowerDisplayEntry.cs" />
+    <Compile Include="Hotfix\PowerTypeEntry.cs" />
     <Compile Include="Hotfix\PvPDifficultyEntry.cs" />
     <Compile Include="Hotfix\QuestFactionRewardEntry.cs" />
     <Compile Include="Hotfix\QuestMoneyRewardEntry.cs" />
@@ -175,7 +190,10 @@
     <Compile Include="Hotfix\RandPropPointsEntry.cs" />
     <Compile Include="Hotfix\RulesetItemUpgradeEntry.cs" />
     <Compile Include="Hotfix\ScalingStatDistributionEntry.cs" />
+    <Compile Include="Hotfix\ScenarioEntry.cs" />
+    <Compile Include="Hotfix\ScenarioStepEntry.cs" />
     <Compile Include="Hotfix\SceneScriptEntry.cs" />
+    <Compile Include="Hotfix\SceneScriptPackageEntry.cs" />
     <Compile Include="Hotfix\SkillLineAbilityEntry.cs" />
     <Compile Include="Hotfix\SkillLineEntry.cs" />
     <Compile Include="Hotfix\SkillRaceClassInfoEntry.cs" />
@@ -226,6 +244,7 @@
     <Compile Include="Hotfix\TransportRotationEntry.cs" />
     <Compile Include="Hotfix\UnitPowerBarEntry.cs" />
     <Compile Include="Hotfix\VehicleEntry.cs" />
+    <Compile Include="Hotfix\VehicleSeatEntry.cs" />
     <Compile Include="Hotfix\VignetteEntry.cs" />
     <Compile Include="Hotfix\WMOAreaTableEntry.cs" />
     <Compile Include="Hotfix\WorldMapAreaEntry.cs" />

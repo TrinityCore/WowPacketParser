@@ -3,7 +3,7 @@ using WowPacketParser.Hotfix;
 
 namespace WowPacketParserModule.V7_0_3_22248.Hotfix
 {
-    [HotfixStructure(DB2Hash.SpellEffect, HasIndexInData = false)]
+    [HotfixStructure(DB2Hash.SpellEffect)]
     public class SpellEffectEntry
     {
         public float EffectAmplitude { get; set; }
@@ -20,9 +20,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Hotfix
         public uint Effect { get; set; }
         public uint EffectAura { get; set; }
         public uint EffectAuraPeriod { get; set; }
-        public uint EffectBasePoints { get; set; }
+        public int EffectBasePoints { get; set; }
         public uint EffectChainTargets { get; set; }
-        public uint EffectDieSides { get; set; }
+        public int EffectDieSides { get; set; }
         public uint EffectItemType { get; set; }
         public uint EffectMechanic { get; set; }
         public int EffectMiscValue { get; set; }

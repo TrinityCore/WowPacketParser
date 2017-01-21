@@ -11,6 +11,6 @@ namespace WowPacketParserModule.V7_0_3_22248.Hotfix
         public byte Flags { get; set; }
         public byte UsesPerWeek { get; set; }
         public byte MaxCharges { get; set; }
-        public uint Unk703 { get; set; }
+        public uint ChargeCategoryType { get; set; }
     }
 }

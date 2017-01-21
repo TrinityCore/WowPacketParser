@@ -35,7 +35,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Hotfix
         public uint FoleyMaterialID { get; set; }
         public uint FootstepEffectID { get; set; }
         public uint DeathThudEffectID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V7_1_0_22900, true)]
         public uint FootstepShakeSize { get; set; }
+        [HotfixVersion(ClientVersionBuild.V7_1_0_22900, true)]
         public uint DeathThudShakeSize { get; set; }
         public uint SoundID { get; set; }
         public uint CreatureGeosetDataID { get; set; }

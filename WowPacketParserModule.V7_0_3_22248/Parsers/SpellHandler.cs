@@ -403,7 +403,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             var talentCount = packet.ReadBits("TalentCount", 6);
             for (int i = 0; i < talentCount; i++)
-                packet.ReadInt16("Talents");
+                packet.ReadUInt16("Talents");
         }
 
         [Parser(Opcode.SMSG_RESYNC_RUNES)]
@@ -431,7 +431,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadSingle("ModRate", i);
             }
         }
-        
+
 
         [Parser(Opcode.SMSG_REFRESH_SPELL_HISTORY, ClientVersionBuild.V7_1_0_22900)]
         [Parser(Opcode.SMSG_SEND_SPELL_HISTORY, ClientVersionBuild.V7_1_0_22900)]
