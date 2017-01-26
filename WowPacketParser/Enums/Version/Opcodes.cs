@@ -323,6 +323,7 @@ namespace WowPacketParser.Enums.Version
                     return Opcodes_7_1_0.Opcodes(direction);
                 }
                 case ClientVersionBuild.V7_1_5_23360:
+                case ClientVersionBuild.V7_1_5_23420:
                 {
                     return Opcodes_7_1_5.Opcodes(direction);
                 }
