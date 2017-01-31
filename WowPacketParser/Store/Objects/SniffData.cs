@@ -4,7 +4,7 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("sniffdata")]
+    [DBTableName("sniff_data")]
     public sealed class SniffData : IDataModel
     {
         [DBFieldName("Build", true)]

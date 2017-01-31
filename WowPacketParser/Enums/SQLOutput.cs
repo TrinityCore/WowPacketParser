@@ -33,6 +33,7 @@
         quest_poi_points,
         quest_template,
         spell_target_position,
+        scene_template,
         SniffData,
         SniffDataOpcodes,
         vehicle_template_accessory,
