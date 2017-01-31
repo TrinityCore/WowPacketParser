@@ -136,17 +136,13 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             packet.WriteLine("{");
-            int i = 0;
+            packet.WriteLine();
             while (packet.CanRead())
             {
                 packet.Opcode = packet.ReadUInt16();
 
-                if (i > 0)
-                    packet.WriteLine();
-
-                packet.Write("[{0}] ", i++);
-
                 Handler.Parse(packet, true);
+                packet.WriteLine();
             }
             packet.WriteLine("}");
         }
