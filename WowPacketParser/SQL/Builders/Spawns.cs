@@ -393,140 +393,280 @@ namespace WowPacketParser.SQL.Builders
             var addonRows = new RowList<GameObjectAddon>();
             foreach (var gameobject in gameObjects)
             {
-                Row<GameObjectModel> row = new Row<GameObjectModel>();
-
+                
                 GameObject go = gameobject.Value;
 
-                if (Settings.AreaFilters.Length > 0)
-                    if (!(go.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
-                        continue;
-
-                if (Settings.MapFilters.Length > 0)
-                    if (!(go.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
-                        continue;
-
-                uint animprogress = 0;
-                uint state = 0;
-                UpdateField uf;
-                if (!go.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out uf))
-                    continue;   // broken entry, nothing to spawn
-
-                uint entry = uf.UInt32Value;
-                bool badTransport = false;
-
-                if (go.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(GameObjectField.GAMEOBJECT_BYTES_1), out uf))
-                {
-                    uint bytes = uf.UInt32Value;
-                    state = (bytes & 0x000000FF);
-                    animprogress = Convert.ToUInt32((bytes & 0xFF000000) >> 24);
-                }
-
-                row.Data.GUID = "@OGUID+" + count;
-
-                row.Data.ID = entry;
-                if (!go.IsOnTransport())
-                    row.Data.Map = go.Map;
-                else
-                {
-                    int mapId;
-                    badTransport = !GetTransportMap(go, out mapId);
-                    if (mapId != -1)
-                        row.Data.Map = (uint)mapId;
-                }
-
-                row.Data.ZoneID = 0;
-                row.Data.AreaID = 0;
-
-                if (go.Area != -1)
-                    row.Data.AreaID = (uint)go.Area;
-
-                if (go.Zone != -1)
-                    row.Data.ZoneID = (uint)go.Zone;
-
-                row.Data.SpawnMask = (uint)go.GetDefaultSpawnMask();
-                row.Data.PhaseMask = go.PhaseMask;
-
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595) && go.Phases != null)
-                    row.Data.PhaseID = string.Join(" - ", go.Phases);
-
-                if (!go.IsOnTransport())
                 {
-                    row.Data.PositionX = go.Movement.Position.X;
-                    row.Data.PositionY = go.Movement.Position.Y;
-                    row.Data.PositionZ = go.Movement.Position.Z;
-                    row.Data.Orientation = go.Movement.Orientation;
+                    foreach(var goPhase in go.Phases)
+                    {
+                        Row<GameObjectModel> row = new Row<GameObjectModel>();
+                        if (Settings.AreaFilters.Length > 0)
+                            if (!(go.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
+                                continue;
+
+                        if (Settings.MapFilters.Length > 0)
+                            if (!(go.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
+                                continue;
+
+                        uint animprogress = 0;
+                        uint state = 0;
+                        UpdateField uf;
+                        if (!go.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out uf))
+                            continue;   // broken entry, nothing to spawn
+
+                        uint entry = uf.UInt32Value;
+                        bool badTransport = false;
+
+                        if (go.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(GameObjectField.GAMEOBJECT_BYTES_1), out uf))
+                        {
+                            uint bytes = uf.UInt32Value;
+                            state = (bytes & 0x000000FF);
+                            animprogress = Convert.ToUInt32((bytes & 0xFF000000) >> 24);
+                        }
+
+                        row.Data.GUID = "@OGUID+" + count;
+
+                        row.Data.ID = entry;
+                        if (!go.IsOnTransport())
+                            row.Data.Map = go.Map;
+                        else
+                        {
+                            int mapId;
+                            badTransport = !GetTransportMap(go, out mapId);
+                            if (mapId != -1)
+                                row.Data.Map = (uint)mapId;
+                        }
+
+                        row.Data.ZoneID = 0;
+                        row.Data.AreaID = 0;
+
+                        if (go.Area != -1)
+                            row.Data.AreaID = (uint)go.Area;
+
+                        if (go.Zone != -1)
+                            row.Data.ZoneID = (uint)go.Zone;
+
+                        row.Data.SpawnMask = (uint)go.GetDefaultSpawnMask();
+                        row.Data.PhaseMask = go.PhaseMask;
+
+
+                        row.Data.PhaseID = goPhase;
+
+                        if (!go.IsOnTransport())
+                        {
+                            row.Data.PositionX = go.Movement.Position.X;
+                            row.Data.PositionY = go.Movement.Position.Y;
+                            row.Data.PositionZ = go.Movement.Position.Z;
+                            row.Data.Orientation = go.Movement.Orientation;
+                        }
+                        else
+                        {
+                            row.Data.PositionX = go.Movement.TransportOffset.X;
+                            row.Data.PositionY = go.Movement.TransportOffset.Y;
+                            row.Data.PositionZ = go.Movement.TransportOffset.Z;
+                            row.Data.Orientation = go.Movement.TransportOffset.O;
+                        }
+
+                        var rotation = go.GetStaticRotation();
+                        row.Data.Rotation = new float?[] { rotation.X, rotation.Y, rotation.Z, rotation.W };
+
+                        bool add = true;
+                        var addonRow = new Row<GameObjectAddon>();
+                        if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_addon))
+                        {
+                            addonRow.Data.GUID = "@OGUID+" + count;
+
+                            var parentRotation = go.GetParentRotation();
+
+                            if (parentRotation != null)
+                            {
+                                addonRow.Data.parentRot0 = parentRotation[0].GetValueOrDefault(0.0f);
+                                addonRow.Data.parentRot1 = parentRotation[1].GetValueOrDefault(0.0f);
+                                addonRow.Data.parentRot2 = parentRotation[2].GetValueOrDefault(0.0f);
+                                addonRow.Data.parentRot3 = parentRotation[3].GetValueOrDefault(1.0f);
+
+                                if (addonRow.Data.parentRot0 == 0.0f &&
+                                    addonRow.Data.parentRot1 == 0.0f &&
+                                    addonRow.Data.parentRot2 == 0.0f &&
+                                    addonRow.Data.parentRot3 == 1.0f)
+                                    add = false;
+                            }
+                            else
+                                add = false;
+
+                            addonRow.Comment += StoreGetters.GetName(StoreNameType.GameObject, (int)gameobject.Key.GetEntry(), false);
+
+                            if (add)
+                                addonRows.Add(addonRow);
+                        }
+
+                        row.Data.SpawnTimeSecs = go.GetDefaultSpawnTime(go.DifficultyID);
+                        row.Data.AnimProgress = animprogress;
+                        row.Data.State = state;
+
+                        // set some defaults
+                        row.Data.PhaseGroup = 0;
+
+                        row.Comment = StoreGetters.GetName(StoreNameType.GameObject, (int)gameobject.Key.GetEntry(), false);
+                        row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, go.Area, false) + " - ";
+                        row.Comment += "Difficulty: " + StoreGetters.GetName(StoreNameType.Difficulty, (int)go.DifficultyID, false) + ")";
+
+                        if (go.IsTemporarySpawn())
+                        {
+                            row.CommentOut = true;
+                            row.Comment += " - !!! might be temporary spawn !!!";
+                        }
+                        else if (go.IsTransport())
+                        {
+                            row.CommentOut = true;
+                            row.Comment += " - !!! transport !!!";
+                        }
+                        else if (go.IsOnTransport() && badTransport)
+                        {
+                            row.CommentOut = true;
+                            row.Comment += " - !!! on transport - transport template not found !!!";
+                        }
+                        else
+                            ++count;
+
+                        rows.Add(row);
+                    }
+                    
                 }
                 else
                 {
-                    row.Data.PositionX = go.Movement.TransportOffset.X;
-                    row.Data.PositionY = go.Movement.TransportOffset.Y;
-                    row.Data.PositionZ = go.Movement.TransportOffset.Z;
-                    row.Data.Orientation = go.Movement.TransportOffset.O;
-                }
+                    Row<GameObjectModel> row = new Row<GameObjectModel>();
 
-                var rotation = go.GetStaticRotation();
-                row.Data.Rotation = new float?[] { rotation.X, rotation.Y, rotation.Z, rotation.W };
+                    if (Settings.AreaFilters.Length > 0)
+                        if (!(go.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
+                            continue;
 
-                bool add = true;
-                var addonRow = new Row<GameObjectAddon>();
-                if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_addon))
-                {
-                    addonRow.Data.GUID = "@OGUID+" + count;
+                    if (Settings.MapFilters.Length > 0)
+                        if (!(go.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
+                            continue;
 
-                    var parentRotation = go.GetParentRotation();
+                    uint animprogress = 0;
+                    uint state = 0;
+                    UpdateField uf;
+                    if (!go.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out uf))
+                        continue;   // broken entry, nothing to spawn
 
-                    if (parentRotation != null)
+                    uint entry = uf.UInt32Value;
+                    bool badTransport = false;
+
+                    if (go.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(GameObjectField.GAMEOBJECT_BYTES_1), out uf))
                     {
-                        addonRow.Data.parentRot0 = parentRotation[0].GetValueOrDefault(0.0f);
-                        addonRow.Data.parentRot1 = parentRotation[1].GetValueOrDefault(0.0f);
-                        addonRow.Data.parentRot2 = parentRotation[2].GetValueOrDefault(0.0f);
-                        addonRow.Data.parentRot3 = parentRotation[3].GetValueOrDefault(1.0f);
+                        uint bytes = uf.UInt32Value;
+                        state = (bytes & 0x000000FF);
+                        animprogress = Convert.ToUInt32((bytes & 0xFF000000) >> 24);
+                    }
 
-                        if (addonRow.Data.parentRot0 == 0.0f &&
-                            addonRow.Data.parentRot1 == 0.0f &&
-                            addonRow.Data.parentRot2 == 0.0f &&
-                            addonRow.Data.parentRot3 == 1.0f)
-                            add = false;
+                    row.Data.GUID = "@OGUID+" + count;
+
+                    row.Data.ID = entry;
+                    if (!go.IsOnTransport())
+                        row.Data.Map = go.Map;
+                    else
+                    {
+                        int mapId;
+                        badTransport = !GetTransportMap(go, out mapId);
+                        if (mapId != -1)
+                            row.Data.Map = (uint)mapId;
+                    }
+
+                    row.Data.ZoneID = 0;
+                    row.Data.AreaID = 0;
+
+                    if (go.Area != -1)
+                        row.Data.AreaID = (uint)go.Area;
+
+                    if (go.Zone != -1)
+                        row.Data.ZoneID = (uint)go.Zone;
+
+                    row.Data.SpawnMask = (uint)go.GetDefaultSpawnMask();
+                    row.Data.PhaseMask = go.PhaseMask;
+
+                    if (!go.IsOnTransport())
+                    {
+                        row.Data.PositionX = go.Movement.Position.X;
+                        row.Data.PositionY = go.Movement.Position.Y;
+                        row.Data.PositionZ = go.Movement.Position.Z;
+                        row.Data.Orientation = go.Movement.Orientation;
                     }
                     else
-                        add = false;
+                    {
+                        row.Data.PositionX = go.Movement.TransportOffset.X;
+                        row.Data.PositionY = go.Movement.TransportOffset.Y;
+                        row.Data.PositionZ = go.Movement.TransportOffset.Z;
+                        row.Data.Orientation = go.Movement.TransportOffset.O;
+                    }
 
-                    addonRow.Comment += StoreGetters.GetName(StoreNameType.GameObject, (int)gameobject.Key.GetEntry(), false);
+                    var rotation = go.GetStaticRotation();
+                    row.Data.Rotation = new float?[] { rotation.X, rotation.Y, rotation.Z, rotation.W };
 
-                    if (add)
-                        addonRows.Add(addonRow);
+                    bool add = true;
+                    var addonRow = new Row<GameObjectAddon>();
+                    if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_addon))
+                    {
+                        addonRow.Data.GUID = "@OGUID+" + count;
+
+                        var parentRotation = go.GetParentRotation();
+
+                        if (parentRotation != null)
+                        {
+                            addonRow.Data.parentRot0 = parentRotation[0].GetValueOrDefault(0.0f);
+                            addonRow.Data.parentRot1 = parentRotation[1].GetValueOrDefault(0.0f);
+                            addonRow.Data.parentRot2 = parentRotation[2].GetValueOrDefault(0.0f);
+                            addonRow.Data.parentRot3 = parentRotation[3].GetValueOrDefault(1.0f);
+
+                            if (addonRow.Data.parentRot0 == 0.0f &&
+                                addonRow.Data.parentRot1 == 0.0f &&
+                                addonRow.Data.parentRot2 == 0.0f &&
+                                addonRow.Data.parentRot3 == 1.0f)
+                                add = false;
+                        }
+                        else
+                            add = false;
+
+                        addonRow.Comment += StoreGetters.GetName(StoreNameType.GameObject, (int)gameobject.Key.GetEntry(), false);
+
+                        if (add)
+                            addonRows.Add(addonRow);
+                    }
+
+                    row.Data.SpawnTimeSecs = go.GetDefaultSpawnTime(go.DifficultyID);
+                    row.Data.AnimProgress = animprogress;
+                    row.Data.State = state;
+
+                    // set some defaults
+                    row.Data.PhaseGroup = 0;
+
+                    row.Comment = StoreGetters.GetName(StoreNameType.GameObject, (int)gameobject.Key.GetEntry(), false);
+                    row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, go.Area, false) + " - ";
+                    row.Comment += "Difficulty: " + StoreGetters.GetName(StoreNameType.Difficulty, (int)go.DifficultyID, false) + ")";
+
+                    if (go.IsTemporarySpawn())
+                    {
+                        row.CommentOut = true;
+                        row.Comment += " - !!! might be temporary spawn !!!";
+                    }
+                    else if (go.IsTransport())
+                    {
+                        row.CommentOut = true;
+                        row.Comment += " - !!! transport !!!";
+                    }
+                    else if (go.IsOnTransport() && badTransport)
+                    {
+                        row.CommentOut = true;
+                        row.Comment += " - !!! on transport - transport template not found !!!";
+                    }
+                    else
+                        ++count;
+
+                    rows.Add(row);
+
                 }
-
-                row.Data.SpawnTimeSecs = go.GetDefaultSpawnTime(go.DifficultyID);
-                row.Data.AnimProgress = animprogress;
-                row.Data.State = state;
-
-                // set some defaults
-                row.Data.PhaseGroup = 0;
-
-                row.Comment = StoreGetters.GetName(StoreNameType.GameObject, (int)gameobject.Key.GetEntry(), false);
-                row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, go.Area, false) + " - ";
-                row.Comment += "Difficulty: " + StoreGetters.GetName(StoreNameType.Difficulty, (int)go.DifficultyID, false) + ")";
-
-                if (go.IsTemporarySpawn())
-                {
-                    row.CommentOut = true;
-                    row.Comment += " - !!! might be temporary spawn !!!";
-                }
-                else if (go.IsTransport())
-                {
-                    row.CommentOut = true;
-                    row.Comment += " - !!! transport !!!";
-                }
-                else if (go.IsOnTransport() && badTransport)
-                {
-                    row.CommentOut = true;
-                    row.Comment += " - !!! on transport - transport template not found !!!";
-                }
-                else
-                    ++count;
-
-                rows.Add(row);
             }
 
             if (count == 0)
