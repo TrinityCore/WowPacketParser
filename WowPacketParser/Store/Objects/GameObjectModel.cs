@@ -29,7 +29,7 @@ namespace WowPacketParser.Store.Objects
         public uint? PhaseMask;
 
         [DBFieldName("PhaseId", TargetedDatabase.Cataclysm)]
-        public string PhaseID;
+        public uint? PhaseID;
 
         [DBFieldName("PhaseGroup")]
         public uint? PhaseGroup;

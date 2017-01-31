@@ -44,14 +44,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
 
             for (var i = 0; i < 3; ++i)
-                packet.ReadInt32("SpellCompletionDisplayID", i);
+                packet.ReadInt32("SpellCompletionDisplayID", idx, i);
 
             packet.ReadInt32("SpellCompletionID", idx);
 
             for (var i = 0; i < 4; ++i)
             {
                 packet.ReadInt32("CurrencyID", idx, i);
-                packet.ReadInt32("CurrencyQty, idx", i);
+                packet.ReadInt32("CurrencyQty", idx, i);
             }
 
             packet.ReadInt32("SkillLineID", idx);
