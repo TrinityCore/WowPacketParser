@@ -179,5 +179,37 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (var i = 0; i < bracketCount; i++)
                 ReadPVPBracketData(packet, i, "PVPBracketData");
         }
+
+        [Parser(Opcode.SMSG_POWER_UPDATE)]
+        public static void HandlePowerUpdate(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+
+            var int32 = packet.ReadInt32("Count");
+            for (var i = 0; i < int32; i++)
+            {
+                packet.ReadInt32("Power", i);
+                packet.ReadByteE<PowerType>("PowerType", i);
+            }
+        }
+
+        [Parser(Opcode.CMSG_LEARN_PVP_TALENTS)]
+        public static void HandleLearnPvPTalents(Packet packet)
+        {
+            var talentCount = packet.ReadBits("TalentCount", 6);
+            for (int i = 0; i < talentCount; i++)
+                packet.ReadUInt16("Talents");
+        }
+
+        [Parser(Opcode.SMSG_LEARN_PVP_TALENTS_FAILED)]
+        public static void HandleLearnPvPTalentsFailed(Packet packet)
+        {
+            packet.ReadBits("Reason", 4);
+            packet.ReadUInt32<SpellId>("SpellID");
+
+            var talentCount = packet.ReadUInt32("TalentCount");
+            for (int i = 0; i < talentCount; i++)
+                packet.ReadUInt16("Talents");
+        }
     }
 }

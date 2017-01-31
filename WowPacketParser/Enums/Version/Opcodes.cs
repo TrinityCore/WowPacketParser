@@ -30,6 +30,7 @@ using WowPacketParser.Enums.Version.V6_2_3_20726;
 using WowPacketParser.Enums.Version.V6_2_4_21315;
 using WowPacketParser.Enums.Version.V7_0_3_22248;
 using WowPacketParser.Enums.Version.V7_1_0_22900;
+using WowPacketParser.Enums.Version.V7_1_5_23360;
 
 using WowPacketParser.Misc;
 
@@ -316,8 +317,15 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V7_1_0_22989:
                 case ClientVersionBuild.V7_1_0_22995:
                 case ClientVersionBuild.V7_1_0_22996:
+                case ClientVersionBuild.V7_1_0_23171:
+                case ClientVersionBuild.V7_1_0_23222:
                 {
                     return Opcodes_7_1_0.Opcodes(direction);
+                }
+                case ClientVersionBuild.V7_1_5_23360:
+                case ClientVersionBuild.V7_1_5_23420:
+                {
+                    return Opcodes_7_1_5.Opcodes(direction);
                 }
                 default:
                 {
@@ -338,6 +346,7 @@ namespace WowPacketParser.Enums.Version
                         return opcode;
                     break;
                 case Direction.ServerToClient:
+                case Direction.Bidirectional:
                     if (_serverDict.TryGetBySecond(opcodeId, out opcode))
                         return opcode;
                     if (_miscDict.TryGetBySecond(opcodeId, out opcode))
@@ -359,6 +368,7 @@ namespace WowPacketParser.Enums.Version
                         return opcode;
                     break;
                 case Direction.ServerToClient:
+                case Direction.Bidirectional:
                     if (_serverDict.TryGetByFirst(opcodeId, out opcode))
                         return opcode;
                     if (_miscDict.TryGetByFirst(opcodeId, out opcode))
