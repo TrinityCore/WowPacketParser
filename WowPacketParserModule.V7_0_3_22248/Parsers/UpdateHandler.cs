@@ -377,61 +377,93 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadVector3("RollPitchYaw1", index);
 
                 areaTriggerTemplate.Flags   = 0;
-                areaTriggerTemplate.Flags  |= packet.ReadBit("HasAbsoluteOrientation", index);
-                areaTriggerTemplate.Flags  |= (packet.ReadBit("HasDynamicShape",        index) << 1);
-                areaTriggerTemplate.Flags  |= (packet.ReadBit("HasAttached",            index) << 2);
-                areaTriggerTemplate.Flags  |= (packet.ReadBit("HasFaceMovementDir",     index) << 3);
-                areaTriggerTemplate.Flags  |= (packet.ReadBit("HasFollowsTerrain",      index) << 4);
-                areaTriggerTemplate.Flags  |= (packet.ReadBit("Unk bit WoD62x",         index) << 5);
-                areaTriggerTemplate.Flags  |= (packet.ReadBit("HasTargetRollPitchYaw",  index) << 6);
-                areaTriggerTemplate.Flags  |= (packet.ReadBit("HasScaleCurveID",        index) << 7);
-                areaTriggerTemplate.Flags  |= (packet.ReadBit("HasMorphCurveID",        index) << 8);
-                areaTriggerTemplate.Flags  |= (packet.ReadBit("HasFacingCurveID",       index) << 9);
-                areaTriggerTemplate.Flags  |= (packet.ReadBit("HasMoveCurveID",         index) << 10);
-                areaTriggerTemplate.Flags  |= (packet.ReadBit("unkbit4C",               index) << 11);
-                areaTriggerTemplate.Flags  |= (packet.ReadBit("unkbit50",               index) << 12);
-                areaTriggerTemplate.Flags  |= (packet.ReadBit("unkbit58",               index) << 13);
-                areaTriggerTemplate.Flags  |= (packet.ReadBit("HasAreaTriggerSphere",   index) << 14);
-                areaTriggerTemplate.Flags  |= (packet.ReadBit("HasAreaTriggerBox",      index) << 15);
-                areaTriggerTemplate.Flags  |= (packet.ReadBit("HasAreaTriggerPolygon",  index) << 16);
-                areaTriggerTemplate.Flags  |= (packet.ReadBit("HasAreaTriggerCylinder", index) << 17);
-                areaTriggerTemplate.Flags  |= (packet.ReadBit("HasAreaTriggerSpline",   index) << 18);
-                areaTriggerTemplate.Flags  |= (packet.ReadBit("HasAreaTriggerUnkType",  index) << 20);
 
-                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.AREATRIGGER_FLAG_UNK3) != 0)
+                if (packet.ReadBit("HasAbsoluteOrientation", index))
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasAbsoluteOrientation;
+
+                if (packet.ReadBit("HasDynamicShape", index))
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasDynamicShape;
+
+                if (packet.ReadBit("HasAttached", index))
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasAttached;
+
+                if (packet.ReadBit("HasFaceMovementDir", index))
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.FaceMovementDirection;
+
+                if (packet.ReadBit("HasFollowsTerrain", index))
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.FollowsTerrain;
+
+                if (packet.ReadBit("Unk bit WoD62x", index))
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk1;
+
+                if (packet.ReadBit("HasTargetRollPitchYaw", index))
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasTargetRollPitchYaw;
+
+                bool hasScaleCurveID = packet.ReadBit("HasScaleCurveID", index);
+                bool hasMorphCurveID = packet.ReadBit("HasMorphCurveID", index);
+                bool hasFacingCurveID = packet.ReadBit("HasFacingCurveID", index);
+                bool hasMoveCurveID = packet.ReadBit("HasMoveCurveID", index);
+
+                if (packet.ReadBit("unkbit4C", index))
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk2;
+
+                if (packet.ReadBit("unkbit50", index))
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk3;
+
+                if (packet.ReadBit("unkbit58", index))
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk4;
+
+                if (packet.ReadBit("HasAreaTriggerSphere", index))
+                    areaTriggerTemplate.Type = (byte)AreaTriggerType.Sphere;
+
+                if (packet.ReadBit("HasAreaTriggerBox", index))
+                    areaTriggerTemplate.Type = (byte)AreaTriggerType.Box;
+
+                if (packet.ReadBit("HasAreaTriggerPolygon", index))
+                    areaTriggerTemplate.Type = (byte)AreaTriggerType.Polygon;
+
+                if (packet.ReadBit("HasAreaTriggerCylinder", index))
+                    areaTriggerTemplate.Type = (byte)AreaTriggerType.Cylinder;
+
+                bool hasAreaTriggerSpline = packet.ReadBit("HasAreaTriggerSpline", index);
+
+                if (packet.ReadBit("HasAreaTriggerUnkType", index))
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk5;
+
+                if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.Unk3) != 0)
                     packet.ReadBit();
 
-                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.AREATRIGGER_FLAG_HAS_SPLINE) != 0)
+                if (hasAreaTriggerSpline)
                     AreaTriggerHandler.ReadAreaTriggerSpline(packet, index);
 
-                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.AREATRIGGER_FLAG_HAS_TARGET_ROLL_PITCH_YAW) != 0)
+                if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.HasTargetRollPitchYaw) != 0)
                     packet.ReadVector3("TargetRollPitchYaw", index);
 
-                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.AREATRIGGER_FLAG_HAS_SCALE_CURVE) != 0)
-                    areaTriggerTemplate.ScaleCurveId = packet.ReadInt32("ScaleCurveID", index);
+                if (hasScaleCurveID)
+                    packet.ReadInt32("ScaleCurveID", index);
 
-                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.AREATRIGGER_FLAG_HAS_MORPH_CURVE) != 0)
-                    areaTriggerTemplate.MorphCurveId = packet.ReadInt32("MorphCurveID", index);
+                if (hasMorphCurveID)
+                    packet.ReadInt32("MorphCurveID", index);
 
-                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.AREATRIGGER_FLAG_HAS_FACING_CURVE) != 0)
-                    areaTriggerTemplate.FacingCurveId = packet.ReadInt32("FacingCurveID", index);
+                if (hasFacingCurveID)
+                    packet.ReadInt32("FacingCurveID", index);
 
-                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.AREATRIGGER_FLAG_HAS_MOVE_CURVE) != 0)
-                    areaTriggerTemplate.MoveCurveId = packet.ReadInt32("MoveCurveID", index);
+                if (hasMoveCurveID)
+                    packet.ReadInt32("MoveCurveID", index);
 
-                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.AREATRIGGER_FLAG_UNK2) != 0)
+                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.Unk2) != 0)
                     packet.ReadInt32();
 
-                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.AREATRIGGER_FLAG_UNK4) != 0)
+                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.Unk4) != 0)
                     packet.ReadUInt32();
 
-                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.AREATRIGGER_FLAG_HAS_SPHERE) != 0)
+                if (areaTriggerTemplate.Type == (byte)AreaTriggerType.Sphere)
                 {
                     areaTriggerTemplate.Data[0] = packet.ReadSingle("Radius", index);
                     areaTriggerTemplate.Data[1] = packet.ReadSingle("RadiusTarget", index);
                 }
 
-                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.AREATRIGGER_FLAG_HAS_BOX) != 0)
+                if (areaTriggerTemplate.Type == (byte)AreaTriggerType.Box)
                 {
                     Vector3 Extents = packet.ReadVector3("Extents", index);
                     Vector3 ExtentsTarget = packet.ReadVector3("ExtentsTarget", index);
@@ -445,7 +477,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     areaTriggerTemplate.Data[5] = ExtentsTarget.Z;
                 }
 
-                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.AREATRIGGER_FLAG_HAS_POLYGON) != 0)
+                if (areaTriggerTemplate.Type == (byte)AreaTriggerType.Polygon)
                 {
                     var verticesCount = packet.ReadInt32("VerticesCount", index);
                     var verticesTargetCount = packet.ReadInt32("VerticesTargetCount", index);
@@ -483,7 +515,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                         Storage.AreaTriggerTemplatesVertices.Add(vertice);
                 }
 
-                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.AREATRIGGER_FLAG_HAS_CYLINDER) != 0)
+                if (areaTriggerTemplate.Type == (byte)AreaTriggerType.Cylinder)
                 {
                     areaTriggerTemplate.Data[0] = packet.ReadSingle("Radius", index);
                     areaTriggerTemplate.Data[1] = packet.ReadSingle("RadiusTarget", index);
@@ -493,7 +525,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     areaTriggerTemplate.Data[5] = packet.ReadSingle("LocationZOffsetTarget", index);
                 }
 
-                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.AREATRIGGER_FLAG_UNK5) != 0)
+                if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.Unk5) != 0)
                 {
                     packet.ResetBitReader();
                     var unk1 = packet.ReadBit("AreaTriggerUnk1");

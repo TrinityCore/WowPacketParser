@@ -76,9 +76,9 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger_template))
                 return string.Empty;
 
-            var templateDb = SQLDatabase.Get(Storage.AreaTriggerTemplates, Settings.WPPDatabase);
+            var templateDb = SQLDatabase.Get(Storage.AreaTriggerTemplates);
 
-            return SQLUtil.Compare(Storage.AreaTriggerTemplates, templateDb, x => string.Empty);
+            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.AreaTriggerTemplates.OrderBy(x => x.Item1.Id).ToArray() : Storage.AreaTriggerTemplates.ToArray(), templateDb, x => string.Empty);
         }
 
         [BuilderMethod]
@@ -90,9 +90,9 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger_template_polygon_vertices))
                 return string.Empty;
 
-            var templateDb = SQLDatabase.Get(Storage.AreaTriggerTemplatesVertices, Settings.WPPDatabase);
+            var templateDb = SQLDatabase.Get(Storage.AreaTriggerTemplatesVertices);
 
-            return SQLUtil.Compare(Storage.AreaTriggerTemplatesVertices, templateDb, x => string.Empty);
+            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.AreaTriggerTemplatesVertices.OrderBy(x => x.Item1.AreaTriggerId).ToArray() : Storage.AreaTriggerTemplatesVertices.ToArray(), templateDb, x => string.Empty);
         }
 
         // Non-WDB data but nevertheless data that should be saved to gameobject_template

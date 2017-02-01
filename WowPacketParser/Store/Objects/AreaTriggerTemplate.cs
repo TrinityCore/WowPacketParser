@@ -10,20 +10,11 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Id", true)]
         public uint? Id;
 
+        [DBFieldName("Type")]
+        public byte? Type;
+
         [DBFieldName("Flags")]
-        public int? Flags;
-
-        [DBFieldName("ScaleCurveId")]
-        public int? ScaleCurveId = 0;
-
-        [DBFieldName("MorphCurveId")]
-        public int? MorphCurveId = 0;
-
-        [DBFieldName("FacingCurveId")]
-        public int? FacingCurveId = 0;
-
-        [DBFieldName("MoveCurveId")]
-        public int? MoveCurveId = 0;
+        public uint? Flags;
 
         [DBFieldName("Data", 6, true)]
         public float?[] Data = { 0, 0, 0, 0, 0, 0 };

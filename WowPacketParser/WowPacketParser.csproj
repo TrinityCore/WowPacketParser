@@ -125,6 +125,7 @@
     <Compile Include="Enums\AIReaction.cs" />
     <Compile Include="Enums\AmmoType.cs" />
     <Compile Include="Enums\AreaTriggerTemplateFlag.cs" />
+    <Compile Include="Enums\AreaTriggerType.cs" />
     <Compile Include="Enums\ArenaCommandResult.cs" />
     <Compile Include="Enums\ArenaError.cs" />
     <Compile Include="Enums\ArenaEvent.cs" />
