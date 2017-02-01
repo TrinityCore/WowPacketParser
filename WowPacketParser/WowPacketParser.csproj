@@ -488,6 +488,7 @@
     <Compile Include="Saving\SplitSessionBinaryPacketWriter.cs" />
     <Compile Include="Saving\SplitBinaryPacketWriter.cs" />
     <Compile Include="SQL\Builder.cs" />
+    <Compile Include="SQL\Builders\AreaTriggers.cs" />
     <Compile Include="SQL\Builders\BuilderAttributes.cs" />
     <Compile Include="SQL\Builders\GameObjectMisc.cs" />
     <Compile Include="SQL\Builders\HotfixBuilder.cs" />
