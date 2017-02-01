@@ -16,5 +16,5 @@ namespace WowPacketParser.Enums
         Unk3                    = 0x00100,
         Unk4                    = 0x00200,
         Unk5                    = 0x00400
-    };
+    }
 }
