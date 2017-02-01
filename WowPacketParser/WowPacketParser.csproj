@@ -124,6 +124,8 @@
     <Compile Include="Enums\ActionButtonType.cs" />
     <Compile Include="Enums\AIReaction.cs" />
     <Compile Include="Enums\AmmoType.cs" />
+    <Compile Include="Enums\AreaTriggerTemplateFlag.cs" />
+    <Compile Include="Enums\AreaTriggerType.cs" />
     <Compile Include="Enums\ArenaCommandResult.cs" />
     <Compile Include="Enums\ArenaError.cs" />
     <Compile Include="Enums\ArenaEvent.cs" />
@@ -486,6 +488,7 @@
     <Compile Include="Saving\SplitSessionBinaryPacketWriter.cs" />
     <Compile Include="Saving\SplitBinaryPacketWriter.cs" />
     <Compile Include="SQL\Builder.cs" />
+    <Compile Include="SQL\Builders\AreaTriggers.cs" />
     <Compile Include="SQL\Builders\BuilderAttributes.cs" />
     <Compile Include="SQL\Builders\GameObjectMisc.cs" />
     <Compile Include="SQL\Builders\HotfixBuilder.cs" />
@@ -506,6 +509,8 @@
     <Compile Include="SQL\SQLFile.cs" />
     <Compile Include="SQL\SQLUtil.cs" />
     <Compile Include="SQL\SSHTunnel.cs" />
+    <Compile Include="Store\Objects\AreaTriggerTemplate.cs" />
+    <Compile Include="Store\Objects\AreaTriggerTemplateVertices.cs" />
     <Compile Include="Store\Objects\Aura.cs" />
     <Compile Include="Store\Objects\BroadcastTextLocale.cs" />
     <Compile Include="Store\Objects\Creature.cs" />

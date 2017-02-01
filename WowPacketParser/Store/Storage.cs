@@ -20,6 +20,8 @@ namespace WowPacketParser.Store
         /* Key: Entry */
 
         // Templates
+        public static readonly DataBag<AreaTriggerTemplate> AreaTriggerTemplates = new DataBag<AreaTriggerTemplate>(new List<SQLOutput> { SQLOutput.areatrigger_template });
+        public static readonly DataBag<AreaTriggerTemplateVertices> AreaTriggerTemplatesVertices = new DataBag<AreaTriggerTemplateVertices>(new List<SQLOutput> { SQLOutput.areatrigger_template_polygon_vertices });
         public static readonly DataBag<GameObjectTemplate> GameObjectTemplates = new DataBag<GameObjectTemplate>(new List<SQLOutput> { SQLOutput.gameobject_template });
         public static readonly DataBag<GameObjectTemplateQuestItem> GameObjectTemplateQuestItems = new DataBag<GameObjectTemplateQuestItem>(new List<SQLOutput> { SQLOutput.gameobject_template });
         public static readonly DataBag<ItemTemplate> ItemTemplates = new DataBag<ItemTemplate>(new List<SQLOutput> { SQLOutput.item_template });
@@ -98,6 +100,8 @@ namespace WowPacketParser.Store
 
             Objects.Clear();
 
+            AreaTriggerTemplates.Clear();
+            AreaTriggerTemplatesVertices.Clear();
             GameObjectTemplates.Clear();
             GameObjectTemplateQuestItems.Clear();
             ItemTemplates.Clear();
