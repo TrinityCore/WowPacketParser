@@ -147,6 +147,8 @@
     <Compile Include="Enums\ActionButtonType.cs" />
     <Compile Include="Enums\AIReaction.cs" />
     <Compile Include="Enums\AmmoType.cs" />
+    <Compile Include="Enums\AreaTriggerTemplateFlag.cs" />
+    <Compile Include="Enums\AreaTriggerType.cs" />
     <Compile Include="Enums\ArenaCommandResult.cs" />
     <Compile Include="Enums\ArenaError.cs" />
     <Compile Include="Enums\ArenaEvent.cs" />
@@ -410,6 +412,7 @@
     <Compile Include="Enums\Version\V6_2_4_21315\Opcodes.cs" />
     <Compile Include="Enums\Version\V7_0_3_22248\Opcodes.cs" />
     <Compile Include="Enums\Version\V7_1_0_22900\Opcodes.cs" />
+    <Compile Include="Enums\Version\V7_1_5_23360\Opcodes.cs" />
     <Compile Include="Enums\VictimStates.cs" />
     <Compile Include="Enums\VoidTransferError.cs" />
     <Compile Include="Enums\WardenCheckType.cs" />
@@ -509,6 +512,7 @@
     <Compile Include="Saving\SplitSessionBinaryPacketWriter.cs" />
     <Compile Include="Saving\SplitBinaryPacketWriter.cs" />
     <Compile Include="SQL\Builder.cs" />
+    <Compile Include="SQL\Builders\AreaTriggers.cs" />
     <Compile Include="SQL\Builders\BuilderAttributes.cs" />
     <Compile Include="SQL\Builders\GameObjectMisc.cs" />
     <Compile Include="SQL\Builders\HotfixBuilder.cs" />
@@ -530,6 +534,8 @@
     <Compile Include="SQL\SQLFile.cs" />
     <Compile Include="SQL\SQLUtil.cs" />
     <Compile Include="SQL\SSHTunnel.cs" />
+    <Compile Include="Store\Objects\AreaTriggerTemplate.cs" />
+    <Compile Include="Store\Objects\AreaTriggerTemplateVertices.cs" />
     <Compile Include="Store\Objects\Aura.cs" />
     <Compile Include="Store\Objects\BroadcastText.cs" />
     <Compile Include="Store\Objects\BroadcastTextLocale.cs" />
@@ -571,6 +577,7 @@
     <Compile Include="Store\Objects\QuestRequestItems.cs" />
     <Compile Include="Store\Objects\QuestTemplate.cs" />
     <Compile Include="Store\Objects\QuestVisualEffect.cs" />
+    <Compile Include="Store\Objects\SceneTemplate.cs" />
     <Compile Include="Store\Objects\SniffData.cs" />
     <Compile Include="Store\Objects\PlayerCreateInfoAction.cs" />
     <Compile Include="Store\Objects\PlayerCreateInfo.cs" />

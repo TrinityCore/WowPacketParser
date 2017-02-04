@@ -1,6 +1,7 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using MovementFlag = WowPacketParserModule.V6_0_2_19033.Enums.MovementFlag;
 
 namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
