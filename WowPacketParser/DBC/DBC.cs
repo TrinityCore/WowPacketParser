@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 using DBFilesClient.NET;
 using WowPacketParser.DBC.Structures;
 using WowPacketParser.Misc;
@@ -37,7 +38,7 @@ namespace WowPacketParser.DBC
             return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Settings.DBCPath + @"\" + BinaryPacketReader.GetLocale() + @"\";
         }
 
-        public static  void Load()
+        public static async void Load()
         {
             if (!Directory.Exists(GetPath()))
             {
@@ -50,15 +51,15 @@ namespace WowPacketParser.DBC
             Console.WriteLine("File name                           LoadTime             Record count");
             Console.WriteLine("---------------------------------------------------------------------");
 
-            foreach (var type in Assembly.GetAssembly(typeof(DBC)).GetTypes())
+            Parallel.ForEach(Assembly.GetAssembly(typeof(DBC)).GetTypes(), type =>
             {
                 if (!type.IsClass)
-                    continue;
+                    return;
 
                 var startTime = DateTime.Now;
                 var attr = type.GetCustomAttribute<DBFileNameAttribute>();
                 if (attr == null)
-                    continue;
+                    return;
 
                 var times = new List<long>();
                 var recordCount = 0;
@@ -73,77 +74,85 @@ namespace WowPacketParser.DBC
                     recordCount = (int)countGetter.Invoke(instance, new object[] { });
 
                 Console.WriteLine($"{ attr.FileName.PadRight(33) } { TimeSpan.FromTicks(span.Ticks).ToString().PadRight(28) } { recordCount.ToString().PadRight(19) }");
-            }
+            });
 
-            if (AreaTable != null)
-                foreach (var db2Info in AreaTable)
-                {
-                    if (db2Info.Value.ParentAreaID != 0 && !Zones.ContainsKey(db2Info.Value.ParentAreaID))
-                        Zones.Add(db2Info.Value.ParentAreaID, db2Info.Value.ZoneName);
-                }
-
-            if (MapDifficulty != null)
+            await Task.WhenAll(Task.Run(() =>
             {
-                foreach (var mapDifficulty in MapDifficulty)
-                {
-                    int difficultyID = 1 << mapDifficulty.Value.DifficultyID;
-
-                    if (MapSpawnMaskStores.ContainsKey(mapDifficulty.Value.MapID))
-                        MapSpawnMaskStores[mapDifficulty.Value.MapID] |= difficultyID;
-                    else
-                        MapSpawnMaskStores.Add(mapDifficulty.Value.MapID, difficultyID);
-                }
-            }
-
-            if (CriteriaTree != null && Achievement != null)
-            {
-                ICollection<AchievementEntry> achievementLists = Achievement.Values;
-                var achievements = achievementLists.GroupBy(achievement => achievement.CriteriaTree)
-                    .ToDictionary(group => group.Key, group => group.ToList());
-
-                foreach (var criteriaTree in CriteriaTree)
-                {
-                    string result = "";
-                    List<AchievementEntry> achievementList;
-                    ushort criteriaTreeID = criteriaTree.Value.Parent > 0 ? criteriaTree.Value.Parent : (ushort)criteriaTree.Key;
-
-                    if (achievements.TryGetValue(criteriaTreeID, out achievementList))
-                        foreach (var achievement in achievementList)
-                            result = $"AchievementID: {achievement.ID} Description: \"{ achievement.Description }\"";
-
-                    if (!CriteriaStores.ContainsKey((ushort)criteriaTree.Value.CriteriaID))
+                if (AreaTable != null)
+                    foreach (var db2Info in AreaTable)
                     {
-                        if (criteriaTree.Value.Description != string.Empty)
-                            result += $" - CriteriaDescription: \"{criteriaTree.Value.Description }\"";
-
-                        CriteriaStores.Add((ushort)criteriaTree.Value.CriteriaID, result);
+                        if (db2Info.Value.ParentAreaID != 0 && !Zones.ContainsKey(db2Info.Value.ParentAreaID))
+                            Zones.Add(db2Info.Value.ParentAreaID, db2Info.Value.ZoneName);
                     }
-                    else
-                        CriteriaStores[(ushort)criteriaTree.Value.CriteriaID] += $" / CriteriaDescription: \"{ criteriaTree.Value.Description }\"";
-                }
-            }
-
-            if (Faction != null && FactionTemplate != null)
+            }), Task.Run(() =>
             {
-                foreach (var factionTemplate in FactionTemplate)
-                {
-                    if (Faction.ContainsKey(factionTemplate.Value.Faction))
-                        FactionStores.Add((uint)factionTemplate.Key, Faction[factionTemplate.Value.Faction].Name);
-                }
-            }
 
-            if (SpellEffect != null)
-                foreach (var effect in SpellEffect)
+                if (MapDifficulty != null)
                 {
-                    var tuple = Tuple.Create(effect.Value.SpellID, effect.Value.EffectIndex);
-                    SpellEffectStores[tuple] = effect.Value;
+                    foreach (var mapDifficulty in MapDifficulty)
+                    {
+                        int difficultyID = 1 << mapDifficulty.Value.DifficultyID;
+
+                        if (MapSpawnMaskStores.ContainsKey(mapDifficulty.Value.MapID))
+                            MapSpawnMaskStores[mapDifficulty.Value.MapID] |= difficultyID;
+                        else
+                            MapSpawnMaskStores.Add(mapDifficulty.Value.MapID, difficultyID);
+                    }
                 }
+            }), Task.Run(() =>
+            {
+                if (CriteriaTree != null && Achievement != null)
+                {
+                    ICollection<AchievementEntry> achievementLists = Achievement.Values;
+                    var achievements = achievementLists.GroupBy(achievement => achievement.CriteriaTree)
+                        .ToDictionary(group => group.Key, group => group.ToList());
+
+                    foreach (var criteriaTree in CriteriaTree)
+                    {
+                        string result = "";
+                        List<AchievementEntry> achievementList;
+                        ushort criteriaTreeID = criteriaTree.Value.Parent > 0 ? criteriaTree.Value.Parent : (ushort)criteriaTree.Key;
+
+                        if (achievements.TryGetValue(criteriaTreeID, out achievementList))
+                            foreach (var achievement in achievementList)
+                                result = $"AchievementID: {achievement.ID} Description: \"{ achievement.Description }\"";
+
+                        if (!CriteriaStores.ContainsKey((ushort)criteriaTree.Value.CriteriaID))
+                        {
+                            if (criteriaTree.Value.Description != string.Empty)
+                                result += $" - CriteriaDescription: \"{criteriaTree.Value.Description }\"";
+
+                            CriteriaStores.Add((ushort)criteriaTree.Value.CriteriaID, result);
+                        }
+                        else
+                            CriteriaStores[(ushort)criteriaTree.Value.CriteriaID] += $" / CriteriaDescription: \"{ criteriaTree.Value.Description }\"";
+                    }
+                }
+            }), Task.Run(() =>
+            {
+                if (Faction != null && FactionTemplate != null)
+                {
+                    foreach (var factionTemplate in FactionTemplate)
+                    {
+                        if (Faction.ContainsKey(factionTemplate.Value.Faction))
+                            FactionStores.Add((uint)factionTemplate.Key, Faction[factionTemplate.Value.Faction].Name);
+                    }
+                }
+            }), Task.Run(() =>
+            {
+                if (SpellEffect != null)
+                    foreach (var effect in SpellEffect)
+                    {
+                        var tuple = Tuple.Create(effect.Value.SpellID, effect.Value.EffectIndex);
+                        SpellEffectStores[tuple] = effect.Value;
+                    }
+            }));
         }
 
         public static readonly Dictionary<uint, string> Zones = new Dictionary<uint, string>();
         public static readonly Dictionary<int, int> MapSpawnMaskStores = new Dictionary<int, int>();
-        public static Dictionary<ushort, string> CriteriaStores = new Dictionary<ushort, string>();
-        public static Dictionary<uint, string> FactionStores = new Dictionary<uint, string>();
-        public static Dictionary<Tuple<uint, uint>, SpellEffectEntry> SpellEffectStores = new Dictionary<Tuple<uint, uint>, SpellEffectEntry>();
+        public static readonly Dictionary<ushort, string> CriteriaStores = new Dictionary<ushort, string>();
+        public static readonly Dictionary<uint, string> FactionStores = new Dictionary<uint, string>();
+        public static readonly Dictionary<Tuple<uint, uint>, SpellEffectEntry> SpellEffectStores = new Dictionary<Tuple<uint, uint>, SpellEffectEntry>();
     }
 }

@@ -49,7 +49,14 @@ namespace WowPacketParser
             SQLConnector.ReadDB();
 
             if (Settings.UseDBC)
+            {
+                var startTime = DateTime.Now;
+
                 DBC.DBC.Load();
+
+                var span = DateTime.Now.Subtract(startTime);
+                Trace.WriteLine($"DBC loaded in { span.ToFormattedString() }.");
+            }
 
             var count = 0;
             foreach (var file in files)
