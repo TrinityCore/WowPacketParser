@@ -56,167 +56,170 @@ namespace WowPacketParser.SQL.Builders
  
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595) && creature.Phases != null)
                 {
-                    //Creatures with PhaseID and PhaseGroup
-                    var queryresult = SQLConnector.ExecuteQuery("SELECT distinct PhaseGroup FROM PhaseXPhaseGroup WHERE PhaseID IN (" + String.Join(", ", creature.Phases.ToArray()) + ");");
-                    List<ushort> phaseGroupList = new List<ushort>();
-                    while(queryresult.Read())
+                    if(creature.Phases.Count > 0)
                     {
-                        phaseGroupList.Add(Convert.ToUInt16(queryresult["PhaseGroup"]));
-                    }
-                    queryresult.Close();
- 
-                    foreach(var phaseGroup in phaseGroupList)
-                    {
-                        var query = SQLConnector.ExecuteQuery("SELECT PhaseID FROM PhaseXPhaseGroup WHERE PhaseGroup = " + phaseGroup + ";");
-                        while(query.Read())
+                        //Creatures with PhaseID and PhaseGroup
+                        var queryresult = SQLConnector.ExecuteQuery("SELECT distinct PhaseGroup FROM PhaseXPhaseGroup WHERE PhaseID IN (" + String.Join(", ", creature.Phases.ToArray()) + ");");
+                        List<ushort> phaseGroupList = new List<ushort>();
+                        while(queryresult.Read())
                         {
-                            creature.Phases.Remove((ushort)query["PhaseID"]);
+                            phaseGroupList.Add(Convert.ToUInt16(queryresult["PhaseGroup"]));
                         }
-                        query.Close();
-                        Row<Creature> row = new Row<Creature>();
-                        bool badTransport = false;
+                        queryresult.Close();
  
-                        if (Settings.AreaFilters.Length > 0)
-                            if (!(creature.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
-                                continue;
- 
-                        if (Settings.MapFilters.Length > 0)
-                            if (!(creature.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
-                                continue;
- 
-                        UpdateField uf;
-                        if (!creature.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out uf))
-                            continue;   // broken entry, nothing to spawn
- 
-                        uint entry = uf.UInt32Value;
- 
-                        uint movementType = 0;
-                        int spawnDist = 0;
-                        row.Data.AreaID = 0;
-                        row.Data.ZoneID = 0;
- 
-                        if (creature.Movement.HasWpsOrRandMov)
+                        foreach(var phaseGroup in phaseGroupList)
                         {
-                            movementType = 1;
-                            spawnDist = 10;
-                        }
- 
-                        row.Data.GUID = "@CGUID+" + count;
- 
-                        row.Data.ID = entry;
-                        if (!creature.IsOnTransport())
-                            row.Data.Map = creature.Map;
-                        else
-                        {
-                            int mapId;
-                            badTransport = !GetTransportMap(creature, out mapId);
-                            if (mapId != -1)
-                                row.Data.Map = (uint)mapId;
-                        }
- 
-                        if (creature.Area != -1)
-                            row.Data.AreaID = (uint)creature.Area;
- 
-                        if (creature.Zone != -1)
-                            row.Data.ZoneID = (uint)creature.Zone;
- 
-                        row.Data.SpawnMask = (uint)creature.GetDefaultSpawnMask();
-                        row.Data.PhaseMask = creature.PhaseMask;
- 
-                        row.Data.PhaseID = 0;
- 
-                        if (!creature.IsOnTransport())
-                        {
-                            row.Data.PositionX = creature.Movement.Position.X;
-                            row.Data.PositionY = creature.Movement.Position.Y;
-                            row.Data.PositionZ = creature.Movement.Position.Z;
-                            row.Data.Orientation = creature.Movement.Orientation;
-                        }
-                        else
-                        {
-                            row.Data.PositionX = creature.Movement.TransportOffset.X;
-                            row.Data.PositionY = creature.Movement.TransportOffset.Y;
-                            row.Data.PositionZ = creature.Movement.TransportOffset.Z;
-                            row.Data.Orientation = creature.Movement.TransportOffset.O;
-                        }
- 
-                        row.Data.SpawnTimeSecs = creature.GetDefaultSpawnTime(creature.DifficultyID);
-                        row.Data.SpawnDist = spawnDist;
-                        row.Data.MovementType = movementType;
- 
-                        // set some defaults
-                        row.Data.PhaseGroup = phaseGroup;
-                        row.Data.ModelID = 0;
-                        row.Data.CurrentWaypoint = 0;
-                        row.Data.CurHealth = 0;
-                        row.Data.CurMana = 0;
-                        row.Data.NpcFlag = 0;
-                        row.Data.UnitFlag = 0;
-                        row.Data.DynamicFlag = 0;
- 
-                        row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
-                        row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, creature.Area, false) + " - ";
-                        row.Comment += "Difficulty: " + StoreGetters.GetName(StoreNameType.Difficulty, (int)creature.DifficultyID, false) + ")";
- 
-                        string auras = string.Empty;
-                        string commentAuras = string.Empty;
-                        if (creature.Auras != null && creature.Auras.Count != 0)
-                        {
-                            foreach (Aura aura in creature.Auras)
+                            var query = SQLConnector.ExecuteQuery("SELECT PhaseID FROM PhaseXPhaseGroup WHERE PhaseGroup = " + phaseGroup + ";");
+                            while(query.Read())
                             {
-                                if (aura == null)
+                                creature.Phases.Remove((ushort)query["PhaseID"]);
+                            }
+                            query.Close();
+                            Row<Creature> row = new Row<Creature>();
+                            bool badTransport = false;
+ 
+                            if (Settings.AreaFilters.Length > 0)
+                                if (!(creature.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
                                     continue;
  
-                                // usually "template auras" do not have caster
-                                if (ClientVersion.AddedInVersion(ClientType.MistsOfPandaria) ? !aura.AuraFlags.HasAnyFlag(AuraFlagMoP.NoCaster) : !aura.AuraFlags.HasAnyFlag(AuraFlag.NotCaster))
+                            if (Settings.MapFilters.Length > 0)
+                                if (!(creature.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
                                     continue;
  
-                                auras += aura.SpellId + " ";
-                                commentAuras += aura.SpellId + " - " + StoreGetters.GetName(StoreNameType.Spell, (int)aura.SpellId, false) + ", ";
+                            UpdateField uf;
+                            if (!creature.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out uf))
+                                continue;   // broken entry, nothing to spawn
+ 
+                            uint entry = uf.UInt32Value;
+ 
+                            uint movementType = 0;
+                            int spawnDist = 0;
+                            row.Data.AreaID = 0;
+                            row.Data.ZoneID = 0;
+ 
+                            if (creature.Movement.HasWpsOrRandMov)
+                            {
+                                movementType = 1;
+                                spawnDist = 10;
                             }
  
-                            auras = auras.TrimEnd(' ');
-                            commentAuras = commentAuras.TrimEnd(',', ' ');
+                            row.Data.GUID = "@CGUID+" + count;
  
-                            row.Comment += " (Auras: " + commentAuras + ")";
+                            row.Data.ID = entry;
+                            if (!creature.IsOnTransport())
+                                row.Data.Map = creature.Map;
+                            else
+                            {
+                                int mapId;
+                                badTransport = !GetTransportMap(creature, out mapId);
+                                if (mapId != -1)
+                                    row.Data.Map = (uint)mapId;
+                            }
+ 
+                            if (creature.Area != -1)
+                                row.Data.AreaID = (uint)creature.Area;
+ 
+                            if (creature.Zone != -1)
+                                row.Data.ZoneID = (uint)creature.Zone;
+ 
+                            row.Data.SpawnMask = (uint)creature.GetDefaultSpawnMask();
+                            row.Data.PhaseMask = creature.PhaseMask;
+ 
+                            row.Data.PhaseID = 0;
+ 
+                            if (!creature.IsOnTransport())
+                            {
+                                row.Data.PositionX = creature.Movement.Position.X;
+                                row.Data.PositionY = creature.Movement.Position.Y;
+                                row.Data.PositionZ = creature.Movement.Position.Z;
+                                row.Data.Orientation = creature.Movement.Orientation;
+                            }
+                            else
+                            {
+                                row.Data.PositionX = creature.Movement.TransportOffset.X;
+                                row.Data.PositionY = creature.Movement.TransportOffset.Y;
+                                row.Data.PositionZ = creature.Movement.TransportOffset.Z;
+                                row.Data.Orientation = creature.Movement.TransportOffset.O;
+                            }
+ 
+                            row.Data.SpawnTimeSecs = creature.GetDefaultSpawnTime(creature.DifficultyID);
+                            row.Data.SpawnDist = spawnDist;
+                            row.Data.MovementType = movementType;
+ 
+                            // set some defaults
+                            row.Data.PhaseGroup = phaseGroup;
+                            row.Data.ModelID = 0;
+                            row.Data.CurrentWaypoint = 0;
+                            row.Data.CurHealth = 0;
+                            row.Data.CurMana = 0;
+                            row.Data.NpcFlag = 0;
+                            row.Data.UnitFlag = 0;
+                            row.Data.DynamicFlag = 0;
+ 
+                            row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
+                            row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, creature.Area, false) + " - ";
+                            row.Comment += "Difficulty: " + StoreGetters.GetName(StoreNameType.Difficulty, (int)creature.DifficultyID, false) + ")";
+ 
+                            string auras = string.Empty;
+                            string commentAuras = string.Empty;
+                            if (creature.Auras != null && creature.Auras.Count != 0)
+                            {
+                                foreach (Aura aura in creature.Auras)
+                                {
+                                    if (aura == null)
+                                        continue;
+ 
+                                    // usually "template auras" do not have caster
+                                    if (ClientVersion.AddedInVersion(ClientType.MistsOfPandaria) ? !aura.AuraFlags.HasAnyFlag(AuraFlagMoP.NoCaster) : !aura.AuraFlags.HasAnyFlag(AuraFlag.NotCaster))
+                                        continue;
+ 
+                                    auras += aura.SpellId + " ";
+                                    commentAuras += aura.SpellId + " - " + StoreGetters.GetName(StoreNameType.Spell, (int)aura.SpellId, false) + ", ";
+                                }
+ 
+                                auras = auras.TrimEnd(' ');
+                                commentAuras = commentAuras.TrimEnd(',', ' ');
+ 
+                                row.Comment += " (Auras: " + commentAuras + ")";
+                            }
+ 
+                            var addonRow = new Row<CreatureAddon>();
+                            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_addon))
+                            {
+                                addonRow.Data.GUID = "@CGUID+" + count;
+                                addonRow.Data.PathID = 0;
+                                addonRow.Data.Mount = creature.Mount.GetValueOrDefault(0);
+                                addonRow.Data.Bytes1 = creature.Bytes1.GetValueOrDefault(0);
+                                addonRow.Data.Bytes2 = creature.Bytes2.GetValueOrDefault(0);
+                                addonRow.Data.Emote = 0;
+                                addonRow.Data.Auras = auras;
+                                addonRow.Data.AIAnimKit = creature.AIAnimKit.GetValueOrDefault(0);
+                                addonRow.Data.MovementAnimKit = creature.MovementAnimKit.GetValueOrDefault(0);
+                                addonRow.Data.MeleeAnimKit = creature.MeleeAnimKit.GetValueOrDefault(0);
+                                addonRow.Comment += StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
+                                if (!string.IsNullOrWhiteSpace(auras))
+                                    addonRow.Comment += " - " + commentAuras;
+                                addonRows.Add(addonRow);
+                            }
+ 
+                            if (creature.IsTemporarySpawn())
+                            {
+                                row.CommentOut = true;
+                                row.Comment += " - !!! might be temporary spawn !!!";
+                            }
+                            else if (creature.IsOnTransport() && badTransport)
+                            {
+                                row.CommentOut = true;
+                                row.Comment += " - !!! on transport - transport template not found !!!";
+                            }
+                            else
+                                ++count;
+ 
+                            if (creature.Movement.HasWpsOrRandMov)
+                                row.Comment += " (possible waypoints or random movement)";
+ 
+                            rows.Add(row);
                         }
- 
-                        var addonRow = new Row<CreatureAddon>();
-                        if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_addon))
-                        {
-                            addonRow.Data.GUID = "@CGUID+" + count;
-                            addonRow.Data.PathID = 0;
-                            addonRow.Data.Mount = creature.Mount.GetValueOrDefault(0);
-                            addonRow.Data.Bytes1 = creature.Bytes1.GetValueOrDefault(0);
-                            addonRow.Data.Bytes2 = creature.Bytes2.GetValueOrDefault(0);
-                            addonRow.Data.Emote = 0;
-                            addonRow.Data.Auras = auras;
-                            addonRow.Data.AIAnimKit = creature.AIAnimKit.GetValueOrDefault(0);
-                            addonRow.Data.MovementAnimKit = creature.MovementAnimKit.GetValueOrDefault(0);
-                            addonRow.Data.MeleeAnimKit = creature.MeleeAnimKit.GetValueOrDefault(0);
-                            addonRow.Comment += StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
-                            if (!string.IsNullOrWhiteSpace(auras))
-                                addonRow.Comment += " - " + commentAuras;
-                            addonRows.Add(addonRow);
-                        }
- 
-                        if (creature.IsTemporarySpawn())
-                        {
-                            row.CommentOut = true;
-                            row.Comment += " - !!! might be temporary spawn !!!";
-                        }
-                        else if (creature.IsOnTransport() && badTransport)
-                        {
-                            row.CommentOut = true;
-                            row.Comment += " - !!! on transport - transport template not found !!!";
-                        }
-                        else
-                            ++count;
- 
-                        if (creature.Movement.HasWpsOrRandMov)
-                            row.Comment += " (possible waypoints or random movement)";
- 
-                        rows.Add(row);
                     }
                     foreach(var phase in creature.Phases)
                     {
@@ -271,7 +274,10 @@ namespace WowPacketParser.SQL.Builders
                         row.Data.SpawnMask = (uint)creature.GetDefaultSpawnMask();
                         row.Data.PhaseMask = creature.PhaseMask;
  
-                        row.Data.PhaseID = phase;
+                        uint phaseid = 0;
+                        if(phase.ToString() != "")
+                            phaseid = phase;
+                        row.Data.PhaseID = phaseid;
  
                         if (!creature.IsOnTransport())
                         {
@@ -555,152 +561,155 @@ namespace WowPacketParser.SQL.Builders
                 GameObject go = gameobject.Value;
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595) && go.Phases != null)
                 {
-                    var queryresult = SQLConnector.ExecuteQuery("SELECT distinct PhaseGroup FROM PhaseXPhaseGroup WHERE PhaseID IN (" + String.Join(", ", go.Phases.ToArray()) + ");");
-                    List<ushort> phaseGroupList = new List<ushort>();
-                    while(queryresult.Read())
+                    if(go.Phases.Count > 0)
                     {
-                        phaseGroupList.Add(Convert.ToUInt16(queryresult["PhaseGroup"]));
-                    }
-                    queryresult.Close();
-                    foreach(var phaseGroup in phaseGroupList)
-                    {
-                        var query = SQLConnector.ExecuteQuery("SELECT PhaseID FROM PhaseXPhaseGroup WHERE PhaseGroup = " + phaseGroup + ";");
-                        while(query.Read())
+                        var queryresult = SQLConnector.ExecuteQuery("SELECT distinct PhaseGroup FROM PhaseXPhaseGroup WHERE PhaseID IN (" + String.Join(", ", go.Phases.ToArray()) + ");");
+                        List<ushort> phaseGroupList = new List<ushort>();
+                        while(queryresult.Read())
                         {
-                            go.Phases.Remove((ushort)query["PhaseID"]);
+                            phaseGroupList.Add(Convert.ToUInt16(queryresult["PhaseGroup"]));
                         }
-                        query.Close();
-                        Row<GameObjectModel> row = new Row<GameObjectModel>();
- 
-                        if (Settings.AreaFilters.Length > 0)
-                            if (!(go.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
-                                continue;
- 
-                        if (Settings.MapFilters.Length > 0)
-                            if (!(go.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
-                                continue;
- 
-                        uint animprogress = 0;
-                        uint state = 0;
-                        UpdateField uf;
-                        if (!go.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out uf))
-                            continue;   // broken entry, nothing to spawn
- 
-                        uint entry = uf.UInt32Value;
-                        bool badTransport = false;
- 
-                        if (go.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(GameObjectField.GAMEOBJECT_BYTES_1), out uf))
+                        queryresult.Close();
+                        foreach(var phaseGroup in phaseGroupList)
                         {
-                            uint bytes = uf.UInt32Value;
-                            state = (bytes & 0x000000FF);
-                            animprogress = Convert.ToUInt32((bytes & 0xFF000000) >> 24);
-                        }
- 
-                        row.Data.GUID = "@OGUID+" + count;
- 
-                        row.Data.ID = entry;
-                        if (!go.IsOnTransport())
-                            row.Data.Map = go.Map;
-                        else
-                        {
-                            int mapId;
-                            badTransport = !GetTransportMap(go, out mapId);
-                            if (mapId != -1)
-                                row.Data.Map = (uint)mapId;
-                        }
- 
-                        row.Data.ZoneID = 0;
-                        row.Data.AreaID = 0;
- 
-                        if (go.Area != -1)
-                            row.Data.AreaID = (uint)go.Area;
- 
-                        if (go.Zone != -1)
-                            row.Data.ZoneID = (uint)go.Zone;
- 
-                        row.Data.SpawnMask = (uint)go.GetDefaultSpawnMask();
-                        row.Data.PhaseMask = go.PhaseMask;
-
-                        row.Data.PhaseID = 0;
-
-                        if (!go.IsOnTransport())
-                        {
-                            row.Data.PositionX = go.Movement.Position.X;
-                            row.Data.PositionY = go.Movement.Position.Y;
-                            row.Data.PositionZ = go.Movement.Position.Z;
-                            row.Data.Orientation = go.Movement.Orientation;
-                        }
-                        else
-                        {
-                            row.Data.PositionX = go.Movement.TransportOffset.X;
-                            row.Data.PositionY = go.Movement.TransportOffset.Y;
-                            row.Data.PositionZ = go.Movement.TransportOffset.Z;
-                            row.Data.Orientation = go.Movement.TransportOffset.O;
-                        }
- 
-                        var rotation = go.GetStaticRotation();
-                        row.Data.Rotation = new float?[] { rotation.X, rotation.Y, rotation.Z, rotation.W };
- 
-                        bool add = true;
-                        var addonRow = new Row<GameObjectAddon>();
-                        if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_addon))
-                        {
-                            addonRow.Data.GUID = "@OGUID+" + count;
- 
-                            var parentRotation = go.GetParentRotation();
- 
-                            if (parentRotation != null)
+                            var query = SQLConnector.ExecuteQuery("SELECT PhaseID FROM PhaseXPhaseGroup WHERE PhaseGroup = " + phaseGroup + ";");
+                            while(query.Read())
                             {
-                                addonRow.Data.parentRot0 = parentRotation[0].GetValueOrDefault(0.0f);
-                                addonRow.Data.parentRot1 = parentRotation[1].GetValueOrDefault(0.0f);
-                                addonRow.Data.parentRot2 = parentRotation[2].GetValueOrDefault(0.0f);
-                                addonRow.Data.parentRot3 = parentRotation[3].GetValueOrDefault(1.0f);
+                                go.Phases.Remove((ushort)query["PhaseID"]);
+                            }
+                            query.Close();
+                            Row<GameObjectModel> row = new Row<GameObjectModel>();
  
-                                if (addonRow.Data.parentRot0 == 0.0f &&
-                                    addonRow.Data.parentRot1 == 0.0f &&
-                                    addonRow.Data.parentRot2 == 0.0f &&
-                                    addonRow.Data.parentRot3 == 1.0f)
-                                    add = false;
+                            if (Settings.AreaFilters.Length > 0)
+                                if (!(go.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
+                                    continue;
+ 
+                            if (Settings.MapFilters.Length > 0)
+                                if (!(go.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
+                                    continue;
+ 
+                            uint animprogress = 0;
+                            uint state = 0;
+                            UpdateField uf;
+                            if (!go.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out uf))
+                                continue;   // broken entry, nothing to spawn
+ 
+                            uint entry = uf.UInt32Value;
+                            bool badTransport = false;
+ 
+                            if (go.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(GameObjectField.GAMEOBJECT_BYTES_1), out uf))
+                            {
+                                uint bytes = uf.UInt32Value;
+                                state = (bytes & 0x000000FF);
+                                animprogress = Convert.ToUInt32((bytes & 0xFF000000) >> 24);
+                            }
+ 
+                            row.Data.GUID = "@OGUID+" + count;
+ 
+                            row.Data.ID = entry;
+                            if (!go.IsOnTransport())
+                                row.Data.Map = go.Map;
+                            else
+                            {
+                                int mapId;
+                                badTransport = !GetTransportMap(go, out mapId);
+                                if (mapId != -1)
+                                    row.Data.Map = (uint)mapId;
+                            }
+ 
+                            row.Data.ZoneID = 0;
+                            row.Data.AreaID = 0;
+ 
+                            if (go.Area != -1)
+                                row.Data.AreaID = (uint)go.Area;
+ 
+                            if (go.Zone != -1)
+                                row.Data.ZoneID = (uint)go.Zone;
+ 
+                            row.Data.SpawnMask = (uint)go.GetDefaultSpawnMask();
+                            row.Data.PhaseMask = go.PhaseMask;
+
+                            row.Data.PhaseID = 0;
+
+                            if (!go.IsOnTransport())
+                            {
+                                row.Data.PositionX = go.Movement.Position.X;
+                                row.Data.PositionY = go.Movement.Position.Y;
+                                row.Data.PositionZ = go.Movement.Position.Z;
+                                row.Data.Orientation = go.Movement.Orientation;
                             }
                             else
-                                add = false;
+                            {
+                                row.Data.PositionX = go.Movement.TransportOffset.X;
+                                row.Data.PositionY = go.Movement.TransportOffset.Y;
+                                row.Data.PositionZ = go.Movement.TransportOffset.Z;
+                                row.Data.Orientation = go.Movement.TransportOffset.O;
+                            }
  
-                            addonRow.Comment += StoreGetters.GetName(StoreNameType.GameObject, (int)gameobject.Key.GetEntry(), false);
+                            var rotation = go.GetStaticRotation();
+                            row.Data.Rotation = new float?[] { rotation.X, rotation.Y, rotation.Z, rotation.W };
  
-                            if (add)
-                                addonRows.Add(addonRow);
+                            bool add = true;
+                            var addonRow = new Row<GameObjectAddon>();
+                            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_addon))
+                            {
+                                addonRow.Data.GUID = "@OGUID+" + count;
+ 
+                                var parentRotation = go.GetParentRotation();
+ 
+                                if (parentRotation != null)
+                                {
+                                    addonRow.Data.parentRot0 = parentRotation[0].GetValueOrDefault(0.0f);
+                                    addonRow.Data.parentRot1 = parentRotation[1].GetValueOrDefault(0.0f);
+                                    addonRow.Data.parentRot2 = parentRotation[2].GetValueOrDefault(0.0f);
+                                    addonRow.Data.parentRot3 = parentRotation[3].GetValueOrDefault(1.0f);
+ 
+                                    if (addonRow.Data.parentRot0 == 0.0f &&
+                                        addonRow.Data.parentRot1 == 0.0f &&
+                                        addonRow.Data.parentRot2 == 0.0f &&
+                                        addonRow.Data.parentRot3 == 1.0f)
+                                        add = false;
+                                }
+                                else
+                                    add = false;
+ 
+                                addonRow.Comment += StoreGetters.GetName(StoreNameType.GameObject, (int)gameobject.Key.GetEntry(), false);
+ 
+                                if (add)
+                                    addonRows.Add(addonRow);
+                            }
+ 
+                            row.Data.SpawnTimeSecs = go.GetDefaultSpawnTime(go.DifficultyID);
+                            row.Data.AnimProgress = animprogress;
+                            row.Data.State = state;
+ 
+                            // set some defaults
+                            row.Data.PhaseGroup = phaseGroup;
+ 
+                            row.Comment = StoreGetters.GetName(StoreNameType.GameObject, (int)gameobject.Key.GetEntry(), false);
+                            row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, go.Area, false) + " - ";
+                            row.Comment += "Difficulty: " + StoreGetters.GetName(StoreNameType.Difficulty, (int)go.DifficultyID, false) + ")";
+ 
+                            if (go.IsTemporarySpawn())
+                            {
+                                row.CommentOut = true;
+                                row.Comment += " - !!! might be temporary spawn !!!";
+                            }
+                            else if (go.IsTransport())
+                            {
+                                row.CommentOut = true;
+                                row.Comment += " - !!! transport !!!";
+                            }
+                            else if (go.IsOnTransport() && badTransport)
+                            {
+                                row.CommentOut = true;
+                                row.Comment += " - !!! on transport - transport template not found !!!";
+                            }
+                            else
+                                ++count;
+ 
+                            rows.Add(row);
                         }
- 
-                        row.Data.SpawnTimeSecs = go.GetDefaultSpawnTime(go.DifficultyID);
-                        row.Data.AnimProgress = animprogress;
-                        row.Data.State = state;
- 
-                        // set some defaults
-                        row.Data.PhaseGroup = phaseGroup;
- 
-                        row.Comment = StoreGetters.GetName(StoreNameType.GameObject, (int)gameobject.Key.GetEntry(), false);
-                        row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, go.Area, false) + " - ";
-                        row.Comment += "Difficulty: " + StoreGetters.GetName(StoreNameType.Difficulty, (int)go.DifficultyID, false) + ")";
- 
-                        if (go.IsTemporarySpawn())
-                        {
-                            row.CommentOut = true;
-                            row.Comment += " - !!! might be temporary spawn !!!";
-                        }
-                        else if (go.IsTransport())
-                        {
-                            row.CommentOut = true;
-                            row.Comment += " - !!! transport !!!";
-                        }
-                        else if (go.IsOnTransport() && badTransport)
-                        {
-                            row.CommentOut = true;
-                            row.Comment += " - !!! on transport - transport template not found !!!";
-                        }
-                        else
-                            ++count;
- 
-                        rows.Add(row);
                     }
                     foreach(var phase in go.Phases)
                     {
@@ -755,7 +764,10 @@ namespace WowPacketParser.SQL.Builders
                         row.Data.SpawnMask = (uint)go.GetDefaultSpawnMask();
                         row.Data.PhaseMask = go.PhaseMask;
 
-                        row.Data.PhaseID = phase;
+                        uint phaseid = 0;
+                        if(phase.ToString() != "")
+                            phaseid = phase;
+                        row.Data.PhaseID = phaseid;
 
                         if (!go.IsOnTransport())
                         {
