@@ -305,6 +305,7 @@ namespace WowPacketParser.Store
         {
             get
             {
+                if (!Enabled) return null;
                 return Bag.FirstOrDefault(c => SQLUtil.GetFields<T>()
                     .Where(f => f.Item3.Any(g => g.IsPrimaryKey))
                     .All(f => (f.Item2.GetValue(c.Item1).Equals(f.Item2.GetValue(key)))));
@@ -313,7 +314,7 @@ namespace WowPacketParser.Store
 
         public bool ContainsKey(T key)
         {
-            return Bag.Any(
+            return Enabled && Bag.Any(
                 c =>
                     SQLUtil.GetFields<T>()
                         .Where(f => f.Item3.Any(g => g.IsPrimaryKey))
@@ -322,7 +323,7 @@ namespace WowPacketParser.Store
 
         public bool Contains(T key)
         {
-            return Bag.Any(
+            return Enabled && Bag.Any(
                 c => SQLUtil.GetFields<T>()
                 .Where(f => f.Item2.GetValue(key) != null)
                 .All(f => (f.Item2.GetValue(c.Item1).Equals(f.Item2.GetValue(key)))));
