@@ -41,7 +41,7 @@ namespace WowPacketParser.Hotfix
     {
         public static event Action<DB2Hash, int, bool> OnRecordReceived;
 
-        private static Dictionary<DB2Hash, IHotfixStore> _stores = new Dictionary<DB2Hash, IHotfixStore>();
+        private static readonly Dictionary<DB2Hash, IHotfixStore> _stores = new Dictionary<DB2Hash, IHotfixStore>();
 
         public static IHotfixStore GetStore(DB2Hash hash)
         {

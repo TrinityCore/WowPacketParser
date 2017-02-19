@@ -97,26 +97,27 @@ namespace WowPacketParser.SQL
                     .Where(y => y.GetCustomAttributes().OfType<BuilderMethodAttribute>().Any())
                     .ToList();
 
-                var i = 0;
-                foreach (var method in builderMethods)
+                for (int i = 1; i <= builderMethods.Count; i++)
                 {
+                    var method = builderMethods[i - 1];
                     var attr = method.GetCustomAttribute<BuilderMethodAttribute>();
 
                     if (attr.CheckVersionMismatch)
                     {
                         if (!((ClientVersion.Expansion == ClientType.WrathOfTheLichKing &&
-                             Settings.TargetedDatabase == TargetedDatabase.WrathOfTheLichKing)
-                            ||
-                            (ClientVersion.Expansion == ClientType.Cataclysm &&
-                             Settings.TargetedDatabase == TargetedDatabase.Cataclysm)
-                            ||
-                            (ClientVersion.Expansion == ClientType.WarlordsOfDraenor &&
-                             Settings.TargetedDatabase == TargetedDatabase.WarlordsOfDraenor)
-                            ||
-                            (ClientVersion.Expansion == ClientType.Legion &&
-                             Settings.TargetedDatabase == TargetedDatabase.Legion)))
+                               Settings.TargetedDatabase == TargetedDatabase.WrathOfTheLichKing)
+                              ||
+                              (ClientVersion.Expansion == ClientType.Cataclysm &&
+                               Settings.TargetedDatabase == TargetedDatabase.Cataclysm)
+                              ||
+                              (ClientVersion.Expansion == ClientType.WarlordsOfDraenor &&
+                               Settings.TargetedDatabase == TargetedDatabase.WarlordsOfDraenor)
+                              ||
+                              (ClientVersion.Expansion == ClientType.Legion &&
+                               Settings.TargetedDatabase == TargetedDatabase.Legion)))
                         {
-                            Trace.WriteLine($"Error: Couldn't generate SQL output of {method.Name} since the targeted database and the sniff version don't match.");
+                            Trace.WriteLine(
+                                $"{i}/{builderMethods.Count} - Error: Couldn't generate SQL output of {method.Name} since the targeted database and the sniff version don't match.");
                             continue;
                         }
                     }
@@ -128,14 +129,15 @@ namespace WowPacketParser.SQL
                     if (attr.Gameobjects)
                         parameters.Add(gameObjects);
 
-                    Trace.WriteLine($"{++i}/{builderMethods.Count} - Write {method.Name}");
+                    Trace.WriteLine($"{i}/{builderMethods.Count} - Write {method.Name}");
                     try
                     {
                         store.WriteData(method.Invoke(null, parameters.ToArray()).ToString());
                     }
                     catch (TargetInvocationException e)
                     {
-                        ExceptionDispatchInfo.Capture(e.InnerException).Throw();
+                        Trace.WriteLine($"{i}/{builderMethods.Count} - Error: Failed writing {method.Name}");
+                        Trace.TraceError(e.InnerException?.ToString() ?? e.ToString());
                     }
                 }
 
