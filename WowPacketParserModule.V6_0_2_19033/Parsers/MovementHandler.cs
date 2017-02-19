@@ -102,7 +102,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void ReadMoveStateChange(Packet packet, params object[] idx)
         {
             var opcode = packet.ReadInt16();
-            var opcodeName = Opcodes.GetOpcodeName(packet.Opcode, packet.Direction);
+            var opcodeName = Opcodes.GetOpcodeName(opcode, packet.Direction);
             packet.AddValue("MessageID", $"{ opcodeName } (0x{ opcode.ToString("X4") })", idx);
 
             packet.ReadInt32("SequenceIndex", idx);
