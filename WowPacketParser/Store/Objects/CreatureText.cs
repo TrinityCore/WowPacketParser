@@ -38,7 +38,7 @@ namespace WowPacketParser.Store.Objects
         public uint? Sound;
 
         [DBFieldName("BroadcastTextId")]
-        public string BroadcastTextID;
+        public uint? BroadcastTextID;
 
         [DBFieldName("comment")]
         public string Comment;
@@ -47,5 +47,7 @@ namespace WowPacketParser.Store.Objects
         public string SenderName;
         public WowGuid ReceiverGUID;
         public string ReceiverName;
+
+        public string BroadcastTextIDHelper;
     }
 }

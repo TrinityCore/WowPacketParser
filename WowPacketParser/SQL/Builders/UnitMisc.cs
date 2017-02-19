@@ -527,7 +527,16 @@ namespace WowPacketParser.SQL.Builders
                     List<int> textList;
                     if (SQLDatabase.BroadcastMaleTexts.TryGetValue(textValue.Item1.Text, out textList) ||
                         SQLDatabase.BroadcastFemaleTexts.TryGetValue(textValue.Item1.Text, out textList))
-                        textValue.Item1.BroadcastTextID = string.Join(" - ", textList);
+                    {
+                        if (textList.Count == 1)
+                            textValue.Item1.BroadcastTextID = (uint)textList.First();
+                        else
+                        {
+                            textValue.Item1.BroadcastTextIDHelper = "BroadcastTextID: ";
+                            textValue.Item1.BroadcastTextIDHelper += string.Join(" - ", textList);
+                        }
+
+                    }
 
                     // Set comment
                     string from = null, to = null;
@@ -592,7 +601,9 @@ namespace WowPacketParser.SQL.Builders
                             Sound = (textValue.Item1.Sound != null ? textValue.Item1.Sound : 0),
                             BroadcastTextID = textValue.Item1.BroadcastTextID,
                             Comment = textValue.Item1.Comment
-                        }
+                        },
+
+                        Comment = textValue.Item1.BroadcastTextIDHelper
                     };
 
                     if (!entryCount.ContainsKey(text.Key))
