@@ -180,19 +180,33 @@ namespace WowPacketParser.SQL.Builders
                     if (!(npc.Value.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
                         continue;
 
-                if (npc.Value.Equipment == null || npc.Value.Equipment.Length != 3)
+                if (npc.Value.EquipmentItemId == null || npc.Value.EquipmentItemId.Length != 3)
                     continue;
 
-                if (npc.Value.Equipment[0] == 0 && npc.Value.Equipment[1] == 0 && npc.Value.Equipment[2] == 0)
+                if (npc.Value.EquipmentItemId[0] == 0 && npc.Value.EquipmentItemId[1] == 0 && npc.Value.EquipmentItemId[2] == 0)
                     continue;
 
                 var equip = new CreatureEquipment
                 {
                     CreatureID = npc.Key.GetEntry(),
-                    ItemID1 = npc.Value.Equipment[0],
-                    ItemID2 = npc.Value.Equipment[1],
-                    ItemID3 = npc.Value.Equipment[2]
+                    ItemID1 = npc.Value.EquipmentItemId[0],
+                    ItemID2 = npc.Value.EquipmentItemId[1],
+                    ItemID3 = npc.Value.EquipmentItemId[2]
                 };
+
+                if (npc.Value.EquipmentAppearanceModId != null && npc.Value.EquipmentAppearanceModId.Length == 3)
+                {
+                    equip.AppearanceModID1 = npc.Value.EquipmentAppearanceModId[0];
+                    equip.AppearanceModID2 = npc.Value.EquipmentAppearanceModId[1];
+                    equip.AppearanceModID3 = npc.Value.EquipmentAppearanceModId[2];
+                }
+
+                if (npc.Value.EquipmentItemVisual != null && npc.Value.EquipmentItemVisual.Length == 3)
+                {
+                    equip.ItemVisual1 = npc.Value.EquipmentItemVisual[0];
+                    equip.ItemVisual2 = npc.Value.EquipmentItemVisual[1];
+                    equip.ItemVisual3 = npc.Value.EquipmentItemVisual[2];
+                }
 
                 if (equips.Contains(equip))
                     continue;
