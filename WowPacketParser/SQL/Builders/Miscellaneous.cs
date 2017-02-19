@@ -149,7 +149,7 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.scene_template))
                 return string.Empty;
 
-            var templateDb = SQLDatabase.Get(Storage.Scenes, Settings.WPPDatabase);
+            var templateDb = SQLDatabase.Get(Storage.Scenes, Settings.TDBDatabase);
 
             return SQLUtil.Compare(Storage.Scenes, templateDb, StoreNameType.None);
         }
