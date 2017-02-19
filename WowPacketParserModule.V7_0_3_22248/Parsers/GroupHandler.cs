@@ -103,6 +103,36 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("TargetRealm", lenTargetRealm);
         }
 
+        [Parser(Opcode.SMSG_PARTY_INVITE)]
+        public static void HandlePartyInvite(Packet packet)
+        {
+            packet.ReadBit("CanAccept");
+            packet.ReadBit("MightCRZYou");
+            packet.ReadBit("IsXRealm");
+            packet.ReadBit("MustBeBNetFriend");
+            packet.ReadBit("AllowMultipleRoles");
+            var len = packet.ReadBits(6);
+
+            packet.ResetBitReader();
+            packet.ReadInt32("InviterVirtualRealmAddress");
+            packet.ReadBit("IsLocal");
+            packet.ReadBit("Unk2");
+            var bits2 = packet.ReadBits(8);
+            var bits258 = packet.ReadBits(8);
+            packet.ReadWoWString("InviterRealmNameActual", bits2);
+            packet.ReadWoWString("InviterRealmNameNormalized", bits258);
+
+            packet.ReadPackedGuid128("InviterGuid");
+            packet.ReadPackedGuid128("InviterBNetAccountID");
+            packet.ReadInt16("Unk1");
+            packet.ReadInt32("ProposedRoles");
+            var lfgSlots = packet.ReadInt32();
+            packet.ReadInt32("LfgCompletedMask");
+            packet.ReadWoWString("InviterName", len);
+            for (int i = 0; i < lfgSlots; i++)
+                packet.ReadInt32("LfgSlots", i);
+        }
+
         [Parser(Opcode.SMSG_PARTY_UPDATE, ClientVersionBuild.V7_1_0_22900)]
         public static void HandlePartyUpdate(Packet packet)
         {
@@ -124,7 +154,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             {
                 packet.ResetBitReader();
                 var playerNameLength = packet.ReadBits(6);
-                packet.ReadBit("FromSocialQueue");
+                packet.ReadBit("FromSocialQueue", i);
 
                 packet.ReadPackedGuid128("Guid", i);
 
