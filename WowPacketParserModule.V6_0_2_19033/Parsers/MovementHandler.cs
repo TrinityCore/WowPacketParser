@@ -1,5 +1,6 @@
 ﻿using System;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -96,6 +97,50 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ResetBitReader();
 
             packet.ReadBits("Type", 2, idx);
+        }
+
+        public static void ReadMoveStateChange(Packet packet, params object[] idx)
+        {
+            var opcode = packet.ReadInt16();
+            var opcodeName = Opcodes.GetOpcodeName(packet.Opcode, packet.Direction);
+            packet.AddValue("MessageID", $"{ opcodeName } (0x{ opcode.ToString("X4") })", idx);
+
+            packet.ReadInt32("SequenceIndex", idx);
+
+            packet.ResetBitReader();
+
+            var hasSpeed = packet.ReadBit("HasSpeed", idx);
+            var hasKnockBack = packet.ReadBit("HasKnockBack", idx);
+            var hasVehicle = packet.ReadBit("HasVehicle", idx);
+            var hasCollisionHeight = packet.ReadBit("HasCollisionHeight", idx);
+            var hasMovementForce = packet.ReadBit("HasMovementForce", idx);
+            var hasMoverGUID = packet.ReadBit("HasMoverGUID", idx);
+
+            if (hasSpeed)
+                packet.ReadSingle("Speed", idx);
+
+            if (hasKnockBack)
+            {
+                packet.ReadSingle("HorzSpeed", idx);
+                packet.ReadVector2("InitVertSpeed", idx);
+                packet.ReadSingle("InitVertSpeed", idx);
+            }
+
+            if (hasVehicle)
+                packet.ReadInt32("VehicleRecID", idx);
+
+            if (hasCollisionHeight)
+            {
+                packet.ReadSingle("Height", idx);
+                packet.ReadSingle("Scale", idx);
+                packet.ReadBits("UpdateCollisionHeightReason", 2, idx);
+            }
+
+            if (hasMovementForce)
+                ReadMovementForce(packet, "MovementForce", idx);
+
+            if (hasMoverGUID)
+                packet.ReadPackedGuid128("MoverGUID", idx);
         }
 
         [Parser(Opcode.CMSG_WORLD_PORT_RESPONSE)]
@@ -785,45 +830,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var moveStateChangeCount = packet.ReadInt32("MoveStateChangeCount");
             for (int i = 0; i < moveStateChangeCount; i++)
-            {
-                packet.ReadInt16("MessageID");
-                packet.ReadInt32("SequenceIndex");
-
-                packet.ResetBitReader();
-
-                var bit12 = packet.ReadBit("HasSpeed");
-                var bit32 = packet.ReadBit("HasKnockBack");
-                var bit40 = packet.ReadBit("HasVehicle");
-                var bit56 = packet.ReadBit("HasCollisionHeight");
-                var bit104 = packet.ReadBit("HasMovementForce");
-                var bit128 = packet.ReadBit("HasMoverGUID");
-
-                if (bit12)
-                    packet.ReadSingle("Speed");
-
-                if (bit32)
-                {
-                    packet.ReadSingle("HorzSpeed");
-                    packet.ReadVector2("InitVertSpeed");
-                    packet.ReadSingle("InitVertSpeed");
-                }
-
-                if (bit40)
-                    packet.ReadInt32("VehicleRecID");
-
-                if (bit56)
-                {
-                    packet.ReadSingle("Height");
-                    packet.ReadSingle("Scale");
-                    packet.ReadBits("UpdateCollisionHeightReason", 2);
-                }
-
-                if (bit104)
-                    ReadMovementForce(packet, "MovementForce");
-
-                if (bit128)
-                    packet.ReadPackedGuid128("MoverGUID");
-            }
+                ReadMoveStateChange(packet, "MoveStateChange", i);
         }
 
         [Parser(Opcode.SMSG_MOVE_SET_ANIM_KIT)]
