@@ -212,6 +212,7 @@ namespace WowPacketParser.Enums
         Group         = 0x105,
         BattleGround2 = 0x109,
         MOTransport   = 0x10C,
+        Unknown270    = 0x10E, // pets and mounts?
         Guild         = 0x10F,
         Item          = 0x400, // Container
         DynObject     = 0xF00, // Corpses

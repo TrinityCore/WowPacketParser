@@ -27,7 +27,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Hotfix
         public uint RangeIndex { get; set; }
         public Single Speed { get; set; }
         [HotfixVersion(ClientVersionBuild.V6_2_0_20173, true)]
-        public uint[] SpellXSpellVisualID { get; set; }
+        public uint SpellXSpellVisualID { get; set; }
         public uint SpellIconID { get; set; }
         public uint ActiveIconID { get; set; }
         public uint SchoolMask { get; set; }

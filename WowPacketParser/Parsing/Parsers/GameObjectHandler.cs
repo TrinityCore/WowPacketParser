@@ -10,7 +10,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_QUERY_GAME_OBJECT)]
         public static void HandleGameObjectQuery(Packet packet)
         {
-            QueryHandler.ReadQueryHeader(packet);
+            var entry = packet.ReadInt32<GOId>("Entry");
+            var guid = packet.ReadGuid("GUID");
+
+            if (guid.HasEntry() && (entry != guid.GetEntry()))
+                packet.AddValue("Error", "Entry does not match calculated GUID entry");
         }
 
         [HasSniffData]

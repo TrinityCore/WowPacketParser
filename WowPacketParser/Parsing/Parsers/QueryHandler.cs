@@ -80,20 +80,14 @@ namespace WowPacketParser.Parsing.Parsers
             Storage.ObjectNames.Add(objectName, packet.TimeSpan);
         }
 
-        public static void ReadQueryHeader(Packet packet)
-        {
-            var entry = packet.ReadInt32("Entry");
-            var guid = packet.ReadGuid("GUID");
-
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_QUERY_CREATURE, Direction.ClientToServer) || packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_QUERY_GAME_OBJECT, Direction.ClientToServer))
-                if (guid.HasEntry() && (entry != guid.GetEntry()))
-                    packet.AddValue("Error", "Entry does not match calculated GUID entry");
-        }
-
         [Parser(Opcode.CMSG_QUERY_CREATURE)]
         public static void HandleCreatureQuery(Packet packet)
         {
-            ReadQueryHeader(packet);
+            var entry = packet.ReadInt32<UnitId>("Entry");
+            var guid = packet.ReadGuid("GUID");
+
+            if (guid.HasEntry() && (entry != guid.GetEntry()))
+                packet.AddValue("Error", "Entry does not match calculated GUID entry");
         }
 
         [HasSniffData]
@@ -192,7 +186,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_QUERY_PAGE_TEXT)]
         public static void HandlePageTextQuery(Packet packet)
         {
-            ReadQueryHeader(packet);
+            packet.ReadInt32("Entry");
+            packet.ReadGuid("GUID");
         }
 
         [HasSniffData]
@@ -215,7 +210,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_QUERY_NPC_TEXT)]
         public static void HandleNpcTextQuery(Packet packet)
         {
-            ReadQueryHeader(packet);
+            packet.ReadInt32("Entry");
+            packet.ReadGuid("GUID");
         }
 
         [HasSniffData]
