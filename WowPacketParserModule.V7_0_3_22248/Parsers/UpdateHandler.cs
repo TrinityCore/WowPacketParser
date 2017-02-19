@@ -67,8 +67,6 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         private static void ReadCreateObjectBlock(Packet packet, WowGuid guid, uint map, object index)
         {
             var objType = packet.ReadByteE<ObjectType>("Object Type", index);
-            var moves = ReadMovementUpdateBlock(packet, guid, index);
-            var updates = ReadValuesUpdateBlock(packet, objType, index, true);
 
             WoWObject obj;
             switch (objType)
@@ -85,10 +83,16 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 case ObjectType.Player:
                     obj = new Player();
                     break;
+                case ObjectType.AreaTrigger:
+                    obj = new SpellAreaTrigger();
+                    break;
                 default:
                     obj = new WoWObject();
                     break;
             }
+
+            var moves = ReadMovementUpdateBlock(packet, guid, obj, index);
+            var updates = ReadValuesUpdateBlock(packet, objType, index, true);
 
             obj.Type = objType;
             obj.Movement = moves;
@@ -112,7 +116,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.AddSniffData(Utilities.ObjectTypeToStore(objType), (int)guid.GetEntry(), "SPAWN");
         }
 
-        private static MovementInfo ReadMovementUpdateBlock(Packet packet, WowGuid guid, object index)
+        private static MovementInfo ReadMovementUpdateBlock(Packet packet, WowGuid guid, WoWObject obj, object index)
         {
             var moveInfo = new MovementInfo();
 
@@ -362,12 +366,15 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 }
             }
 
-            if (hasAreaTrigger)
+            if (hasAreaTrigger && obj is SpellAreaTrigger)
             {
                 AreaTriggerTemplate areaTriggerTemplate = new AreaTriggerTemplate
                 {
                     Id = guid.GetEntry()
                 };
+
+                SpellAreaTrigger spellAreaTrigger = (SpellAreaTrigger)obj;
+                spellAreaTrigger.AreaTriggerId = guid.GetEntry();
 
                 packet.ResetBitReader();
 
@@ -440,16 +447,16 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     packet.ReadVector3("TargetRollPitchYaw", index);
 
                 if (hasScaleCurveID)
-                    packet.ReadInt32("ScaleCurveID", index);
+                    spellAreaTrigger.ScaleCurveId = packet.ReadInt32("ScaleCurveID", index);
 
                 if (hasMorphCurveID)
-                    packet.ReadInt32("MorphCurveID", index);
+                    spellAreaTrigger.MorphCurveId = packet.ReadInt32("MorphCurveID", index);
 
                 if (hasFacingCurveID)
-                    packet.ReadInt32("FacingCurveID", index);
+                    spellAreaTrigger.FacingCurveId = packet.ReadInt32("FacingCurveID", index);
 
                 if (hasMoveCurveID)
-                    packet.ReadInt32("MoveCurveID", index);
+                    spellAreaTrigger.MoveCurveId = packet.ReadInt32("MoveCurveID", index);
 
                 if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.Unk2) != 0)
                     packet.ReadInt32();
