@@ -25,7 +25,7 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod]
         public static string AreaTriggerTemplateVerticesData()
         {
-            if (Storage.AreaTriggerTemplates.IsEmpty())
+            if (Storage.AreaTriggerTemplatesVertices.IsEmpty())
                 return string.Empty;
 
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger_template_polygon_vertices))
