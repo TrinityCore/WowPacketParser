@@ -532,6 +532,7 @@ namespace WowPacketParser.SQL.Builders
                             textValue.Item1.BroadcastTextID = (uint)textList.First();
                         else
                         {
+                            textValue.Item1.BroadcastTextID = "PLEASE_SET_A_BROADCASTTEXT_ID";
                             textValue.Item1.BroadcastTextIDHelper = "BroadcastTextID: ";
                             textValue.Item1.BroadcastTextIDHelper += string.Join(" - ", textList);
                         }

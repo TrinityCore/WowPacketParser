@@ -37,8 +37,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("sound")]
         public uint? Sound;
 
-        [DBFieldName("BroadcastTextId")]
-        public uint? BroadcastTextID;
+        [DBFieldName("BroadcastTextId", false, true)]
+        public object BroadcastTextID;
 
         [DBFieldName("comment")]
         public string Comment;
