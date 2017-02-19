@@ -63,7 +63,13 @@ namespace WowPacketParser.Store
             if (_dictionary.ContainsKey(key))
                 return;
 
-            while (!_dictionary.TryAdd(key, new Tuple<TK, TimeSpan?>(value, time))) { }
+            var newValue = new Tuple<TK, TimeSpan?>(value, time);
+            _dictionary.AddOrUpdate(key, newValue, (k, oldval) =>
+            {
+                if (oldval.Item2.HasValue && time.HasValue && oldval.Item2.Value > time)
+                    return oldval;
+                return newValue;
+            });
         }
 
         public bool Remove(T key)

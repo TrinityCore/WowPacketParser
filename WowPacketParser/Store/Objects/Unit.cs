@@ -38,7 +38,9 @@ namespace WowPacketParser.Store.Objects
         public uint? MaxHealth;
         public uint? Level;
         public uint? Faction;
-        public uint[] Equipment;
+        public uint[] EquipmentItemId;
+        public ushort[] EquipmentAppearanceModId;
+        public ushort[] EquipmentItemVisual;
         public UnitFlags? UnitFlags;
         public UnitFlags2? UnitFlags2;
         public uint? MeleeTime;
@@ -68,6 +70,8 @@ namespace WowPacketParser.Store.Objects
         public Class? Class;
         public Race? Race;
 
+        private uint[] EquipmentRaw;
+
         // Must be called AFTER LoadValuesFromUpdateFields
         private void ComputeBytes0()
         {
@@ -93,6 +97,26 @@ namespace WowPacketParser.Store.Objects
             Race      = (Race)      ((Bytes0 & 0x000000FF) >>  0);
         }
 
+        private void ComputeEquipment()
+        {
+            if (EquipmentRaw == null)
+            {
+                EquipmentItemId = null;
+                EquipmentAppearanceModId = null;
+                EquipmentItemVisual = null;
+                return;
+            }
+
+            if (ClientVersion.AddedInVersion(ClientType.Legion))
+            {
+                EquipmentItemId = new uint[3] { EquipmentRaw[0], EquipmentRaw[2], EquipmentRaw[4] };
+                EquipmentAppearanceModId = new ushort[3] { (ushort)(EquipmentRaw[1] & 0xFFFF), (ushort)(EquipmentRaw[3] & 0xFFFF), (ushort)(EquipmentRaw[5] & 0xFFFF) };
+                EquipmentItemVisual = new ushort[3] { (ushort)((EquipmentRaw[1] >> 16) & 0xFFFF), (ushort)((EquipmentRaw[3] >> 16) & 0xFFFF), (ushort)((EquipmentRaw[5] >> 16) & 0xFFFF) };
+            }
+            else
+                EquipmentItemId = EquipmentRaw;
+        }
+
         public override void LoadValuesFromUpdateFields()
         {
             Bytes0        = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BYTES_0);
@@ -102,7 +126,10 @@ namespace WowPacketParser.Store.Objects
             MaxHealth     = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_MAXHEALTH);
             Level         = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_LEVEL);
             Faction       = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_FACTIONTEMPLATE);
-            Equipment     = UpdateFields.GetArray<UnitField, uint>(UnitField.UNIT_VIRTUAL_ITEM_SLOT_ID, 3);
+            if (ClientVersion.AddedInVersion(ClientType.Legion))
+                EquipmentRaw = UpdateFields.GetArray<UnitField, uint>(UnitField.UNIT_VIRTUAL_ITEM_SLOT_ID, 6);
+            else
+                EquipmentRaw = UpdateFields.GetArray<UnitField, uint>(UnitField.UNIT_VIRTUAL_ITEM_SLOT_ID, 3);
             UnitFlags     = UpdateFields.GetEnum<UnitField, UnitFlags?>(UnitField.UNIT_FIELD_FLAGS);
             UnitFlags2    = UpdateFields.GetEnum<UnitField, UnitFlags2?>(UnitField.UNIT_FIELD_FLAGS_2);
             MeleeTime     = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BASEATTACKTIME);
@@ -129,6 +156,7 @@ namespace WowPacketParser.Store.Objects
             }
 
             ComputeBytes0();
+            ComputeEquipment();
         }
     }
 
