@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Enums;
+﻿using System;
+using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -21,14 +22,27 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             var size = packet.ReadInt32("Size");
             var data = packet.ReadBytes(size);
-            var db2File = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer,
-                packet.FileName);
+            var db2File = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+
+            HotfixData hotfixData = new HotfixData
+            {
+                TableHash = type,
+            };
 
             if (entry < 0 || !allow)
             {
                 packet.WriteLine("Row {0} has been removed.", -entry);
                 HotfixStoreMgr.RemoveRecord(type, entry);
-                Storage.AddHotfixData(entry, type, true, timeStamp);
+                if (HotfixSettings.Instance.ShouldLog(type))
+                {
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, -(int)entry)))
+                    {
+                        hotfixData.Deleted = true;
+                        hotfixData.RecordID = -(int)entry;
+                        hotfixData.Timestamp = Storage.HotfixDataStore[new Tuple<DB2Hash, int>(type, -(int)entry)].Item1.Timestamp;
+                        Storage.HotfixDatas.Add(hotfixData);
+                    }
+                }
             }
             else
             {
@@ -56,7 +70,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                         bct.UnkEmoteID = db2File.ReadUInt16("UnkEmoteID");
                         bct.Language = db2File.ReadByte("Language");
                         bct.Type = db2File.ReadByte("Type");
-                            
+
                         bct.SoundID = new uint?[2];
                         for (int i = 0; i < 2; ++i)
                             bct.SoundID[i] = db2File.ReadUInt32("SoundID", i);
@@ -71,7 +85,17 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                         break;
                 }
 
-                Storage.AddHotfixData(entry, type, false, timeStamp);
+                if (HotfixSettings.Instance.ShouldLog(type))
+                {
+                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)))
+                    {
+                        hotfixData.Deleted = false;
+                        hotfixData.RecordID = (int)entry;
+                        hotfixData.Timestamp = Storage.HotfixDataStore[new Tuple<DB2Hash, int>(type, (int)entry)].Item1.Timestamp;
+                        Storage.HotfixDatas.Add(hotfixData);
+                    }
+                }
+
                 db2File.ClosePacket(false);
             }
         }

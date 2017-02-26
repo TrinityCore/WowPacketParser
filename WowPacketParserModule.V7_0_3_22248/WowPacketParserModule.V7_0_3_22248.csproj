@@ -72,6 +72,7 @@
     <Compile Include="Hotfix\ChrClassesXPowerTypesEntry.cs" />
     <Compile Include="Hotfix\ChrRacesEntry.cs" />
     <Compile Include="Hotfix\ChrSpecializationEntry.cs" />
+    <Compile Include="Hotfix\CinematicCameraEntry.cs" />
     <Compile Include="Hotfix\CinematicSequencesEntry.cs" />
     <Compile Include="Hotfix\CreatureEntry.cs" />
     <Compile Include="Hotfix\CreatureDifficultyEntry.cs" />

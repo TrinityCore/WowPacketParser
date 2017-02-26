@@ -94,6 +94,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<SpellTargetPosition> SpellTargetPositions = new DataBag<SpellTargetPosition>(new List<SQLOutput> { SQLOutput.spell_target_position });
 
         public static readonly DataBag<HotfixData> HotfixDatas = new DataBag<HotfixData>(new List<SQLOutput> { SQLOutput.hotfix_data });
+        public static readonly StoreDictionary<Tuple<DB2Hash, int>, HotfixData> HotfixDataStore = new StoreDictionary<Tuple<DB2Hash, int>, HotfixData>(new List<SQLOutput> { SQLOutput.hotfix_data });
 
         // Scenes
         public static readonly DataBag<SceneTemplate> Scenes = new DataBag<SceneTemplate>(new List<SQLOutput> { SQLOutput.scene_template });
@@ -166,17 +167,6 @@ namespace WowPacketParser.Store
             Scenes.Clear();
 
             BroadcastTexts.Clear();
-        }
-
-        public static void AddHotfixData(int entry, DB2Hash type, bool deleted, uint timeStamp)
-        {
-            HotfixDatas.Add(new HotfixData
-            {
-                RecordID = entry,
-                TableHash = type,
-                Deleted = deleted,
-                Timestamp = timeStamp
-            });
         }
     }
 }

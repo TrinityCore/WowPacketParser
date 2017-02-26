@@ -11,6 +11,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Hotfix
         public string TextureFilename { get; set; }
         public string Description { get; set; }
         public uint PlayerConditionID { get; set; }
+        public float MinItemLevel { get; set; }
         public ushort MaxLevel { get; set; }
         public ushort TargetLevelMax { get; set; }
         public short MapID { get; set; }

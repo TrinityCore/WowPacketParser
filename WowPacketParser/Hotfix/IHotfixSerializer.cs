@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Reflection.Emit;
 using System.Text;
 using System.Text.RegularExpressions;
 using Sigil;
@@ -234,26 +233,29 @@ namespace WowPacketParser.Hotfix
             Debug.Assert(hotfixStructureAttribute != null);
 
             var propertiesInfos = typeof (T).GetProperties(BindingFlags.Instance | BindingFlags.Public);
-            var tableName = Regex.Replace(hotfixStructureAttribute.Hash.ToString(), @"((?<=.)[A-Z][a-zA-Z]*)|((?<=[a-zA-Z])\d+)",
+            var tableName = Regex.Replace(hotfixStructureAttribute.Hash.ToString(), @"(?<=[a-z])([A-Z])|(?<=[A-Z])([A-Z][a-z])",
                 @"_$1$2", RegexOptions.Compiled).ToLower();
 
             if (localeBuilder != null && propertiesInfos.Any(
                 propInfo => propInfo.PropertyType == typeof (string) || propInfo.PropertyType == typeof (string[])))
             {
-                localeBuilder.AppendLine("SET NAMES 'utf8';");
+                localeBuilder.AppendLine($"TRUNCATE `{tableName}_locale`;");
                 localeBuilder.Append($"INSERT INTO `{tableName}_locale` (");
                 if (!hotfixStructureAttribute.HasIndexInData)
                     localeBuilder.Append("`ID`, ");
                 localeBuilder.Append("`locale`, ");
             }
 
-            hotfixBuilder.AppendLine("SET NAMES 'utf8';");
+            hotfixBuilder.AppendLine($"TRUNCATE `{tableName}`;");
             hotfixBuilder.Append($"INSERT INTO `{tableName}` (");
             if (!hotfixStructureAttribute.HasIndexInData)
                 hotfixBuilder.Append("`ID`, ");
 
             foreach (var propInfo in propertiesInfos)
             {
+                if (!ShouldRead(propInfo))
+                    continue;
+
                 if (propInfo.PropertyType.IsArray)
                 {
                     var isString = propInfo.PropertyType.GetElementType() == typeof (string);
@@ -261,9 +263,9 @@ namespace WowPacketParser.Hotfix
                     var arraySizeAttribute = propInfo.GetCustomAttribute<HotfixArrayAttribute>();
                     for (var i = 0; i < arraySizeAttribute.Size; ++i)
                     {
-                        hotfixBuilder.Append($"`{propInfo.Name}{i}`, ");
+                        hotfixBuilder.Append($"`{propInfo.Name}{ i + 1 }`, ");
                         if (localeBuilder != null && isString)
-                            localeBuilder.Append($"{propInfo.Name}{i}_lang`, ");
+                            localeBuilder.Append($"{propInfo.Name}{ i + 1 }_lang`, ");
                     }
                 }
                 else
