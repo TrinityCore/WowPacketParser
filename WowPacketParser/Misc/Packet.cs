@@ -20,7 +20,7 @@ namespace WowPacketParser.Misc
         private static DateTime _firstPacketTime;
 
         [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "MemoryStream is disposed in ClosePacket().")]
-        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, StringBuilder writer, string fileName)
+        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, IPacketWriter writer, string fileName)
             : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
         {
             Opcode = opcode;
@@ -62,7 +62,7 @@ namespace WowPacketParser.Misc
         public TimeSpan TimeSpan { get; }
         public Direction Direction { get; }
         public int Number { get; }
-        public StringBuilder Writer { get; private set; }
+        public IPacketWriter Writer { get; private set; }
         public string FileName { get; }
         public ParsedStatus Status { get; set; }
         public bool WriteToFile { get; private set; }
@@ -248,26 +248,16 @@ namespace WowPacketParser.Misc
             return Position != Length;
         }
 
-        public void Write(string value)
-        {
-            if (!Settings.DumpFormatWithText())
-                return;
-
-            if (Writer == null)
-                Writer = new StringBuilder();
-
-            Writer.Append(value);
-        }
-
         public void Write(string format, params object[] args)
         {
             if (!Settings.DumpFormatWithText())
                 return;
 
             if (Writer == null)
-                Writer = new StringBuilder();
+                Writer = new TextPacketWriter();
 
-            Writer.AppendFormat(format, args);
+            //Writer.Append(string.Format(format, args));
+            Writer.WriteLine(string.Format(format, args));
         }
 
         public void WriteLine()
@@ -276,9 +266,9 @@ namespace WowPacketParser.Misc
                 return;
 
             if (Writer == null)
-                Writer = new StringBuilder();
+                Writer = new TextPacketWriter();
 
-            Writer.AppendLine();
+            Writer.WriteLine("","");
         }
 
         public void WriteLine(string value)
@@ -287,9 +277,9 @@ namespace WowPacketParser.Misc
                 return;
 
             if (Writer == null)
-                Writer = new StringBuilder();
+                Writer = new TextPacketWriter();
 
-            Writer.AppendLine(value);
+            Writer.WriteLine(value,"");
         }
 
         public void WriteLine(string format, params object[] args)
@@ -298,9 +288,9 @@ namespace WowPacketParser.Misc
                 return;
 
             if (Writer == null)
-                Writer = new StringBuilder();
+                Writer = new TextPacketWriter();
 
-            Writer.AppendLine(string.Format(format, args));
+            Writer.WriteLine(format, args);
         }
 
         public void ClosePacket(bool clearWriter = true)
