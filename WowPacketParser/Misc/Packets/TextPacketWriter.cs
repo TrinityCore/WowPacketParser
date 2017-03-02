@@ -15,22 +15,24 @@ namespace WowPacketParser.Misc
             _writer = new StringBuilder();
         }
 
-        public void WriteLine(string format, params object[] args)
+        public void WriteItem(string format, params object[] args)
         {
             _writer.AppendLine(string.Format(format, args));
         }
 
-        public void Clear()
+        //Workaround method, will be removed asap
+        public void WriteItem(string format, bool noNewLine, params object[] args)
+        {
+            if (noNewLine)
+                _writer.Append(string.Format(format, args));
+        }
+
+        public void CloseItem()
         {
             _writer.Clear();
         }
 
-        public void WriteLine(string value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override String ToString()
+        public override string ToString()
         {
             return _writer.ToString();
         }

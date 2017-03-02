@@ -9,12 +9,9 @@ namespace WowPacketParser.Misc
     public interface IPacketWriter
     {
         //Previousely: WriteLine(string format, params object[] args)
-        void WriteLine(string format, params object[] args);
+        void WriteItem(string format, params object[] args);
 
-        //Previousely: WriteLine(string value)
-        void WriteLine(string value);
-
-        void Clear();
+        void CloseItem();
 
     }
 }

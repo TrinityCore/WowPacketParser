@@ -257,7 +257,7 @@ namespace WowPacketParser.Misc
                 Writer = new TextPacketWriter();
 
             //Writer.Append(string.Format(format, args));
-            Writer.WriteLine(string.Format(format, args));
+            Writer.WriteItem(format, false, args);
         }
 
         public void WriteLine()
@@ -268,7 +268,7 @@ namespace WowPacketParser.Misc
             if (Writer == null)
                 Writer = new TextPacketWriter();
 
-            Writer.WriteLine("","");
+            Writer.WriteItem("","");
         }
 
         public void WriteLine(string value)
@@ -279,7 +279,7 @@ namespace WowPacketParser.Misc
             if (Writer == null)
                 Writer = new TextPacketWriter();
 
-            Writer.WriteLine(value,"");
+            Writer.WriteItem(value,"");
         }
 
         public void WriteLine(string format, params object[] args)
@@ -290,7 +290,7 @@ namespace WowPacketParser.Misc
             if (Writer == null)
                 Writer = new TextPacketWriter();
 
-            Writer.WriteLine(format, args);
+            Writer.WriteItem(format, args);
         }
 
         public void ClosePacket(bool clearWriter = true)
@@ -298,7 +298,7 @@ namespace WowPacketParser.Misc
             if (clearWriter && Writer != null)
             {
                 if (Settings.DumpFormatWithText())
-                    Writer.Clear();
+                    Writer.CloseItem();
                 Writer = null;
             }
 
