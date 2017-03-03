@@ -143,10 +143,10 @@ namespace WowPacketParser.Loading
             try
             {
                 if (Settings.DumpFormatWithText() && Settings.DumpTextFormat == TextFormatType.Txt)
-                    writer = new TextDumpWriter(outFileName);
+                    writer = new TextDumpWriter(outFileName + ".txt");
                 //var writer = (Settings.DumpFormatWithText() ? new StreamWriter(outFileName, true) : null
                 else if (Settings.DumpFormatWithText() && Settings.DumpTextFormat == TextFormatType.Xml)
-                    writer = new XmlDumpWriter();
+                    writer = new XmlDumpWriter(outFileName + ".xml");
 
                 var firstWrite = true;
                 var pwp = new ParallelWorkProcessor<Packet>(() => // read
@@ -191,7 +191,8 @@ namespace WowPacketParser.Loading
                     written = true;
                     if (firstWrite)
                     {
-                        writer?.WriteHeader(GetHeader(FileName));
+                        //writer?.WriteHeader(GetHeader(FileName));
+                        writer?.WriteHeader(FileName);
                         firstWrite = false;
                     }
 
@@ -317,7 +318,7 @@ namespace WowPacketParser.Loading
                 case DumpFormatType.Text:
                 case DumpFormatType.HexOnly:
                 {
-                    var outFileName = Path.ChangeExtension(FileName, null) + "_parsed.txt";
+                    var outFileName = Path.ChangeExtension(FileName, null) + "_parsed";
 
                     if (Utilities.FileIsInUse(outFileName) && Settings.DumpFormat != DumpFormatType.SqlOnly)
                     {

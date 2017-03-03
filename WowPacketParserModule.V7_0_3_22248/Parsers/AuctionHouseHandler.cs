@@ -115,7 +115,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             var size = packet.ReadInt32("DataSize");
             var data = packet.ReadBytes(size);
-            var sorts = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+            var sorts = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Formatter, packet.FileName);
             for (var i = 0; i < sort; ++i)
             {
                 sorts.ReadByte("Type", i);

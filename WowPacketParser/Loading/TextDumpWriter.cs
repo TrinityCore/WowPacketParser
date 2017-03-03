@@ -9,7 +9,7 @@ using WowPacketParser.Misc;
 
 namespace WowPacketParser.Loading
 {
-    class TextDumpWriter : IDumpWriter
+    public class TextDumpWriter : IDumpWriter
     {
         private StreamWriter _writer;
 
@@ -25,14 +25,14 @@ namespace WowPacketParser.Loading
 
         public void WriteItem(Packet packet)
         {
-            _writer.WriteLine(packet.Writer);
+            _writer.WriteLine(packet.Formatter);
             _writer.Flush();
         }
 
         public void Dispose()
         {
-
-            throw new NotImplementedException();
+            _writer.Dispose();
+            _writer = null;
         }
 
        

@@ -182,7 +182,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             int size = packet.ReadInt32("Size");
             var data = packet.ReadBytes(size);
 
-            Packet pkt = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+            Packet pkt = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Formatter, packet.FileName);
             npcText.Probabilities = new float[8];
             npcText.BroadcastTextId = new uint[8];
             for (int i = 0; i < 8; ++i)

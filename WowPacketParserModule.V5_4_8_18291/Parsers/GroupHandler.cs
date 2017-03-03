@@ -294,7 +294,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             var size = packet.ReadInt32("Size");
             var data = packet.ReadBytes(size);
-            var updateFlagPacket = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+            var updateFlagPacket = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Formatter, packet.FileName);
 
             if (updateFlags.HasFlag(GroupUpdateFlag548.Status)) // 0x1
                 updateFlagPacket.ReadInt16E<GroupMemberStatusFlag>("Status");

@@ -20,14 +20,14 @@ namespace WowPacketParser.Misc
         private static DateTime _firstPacketTime;
 
         [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "MemoryStream is disposed in ClosePacket().")]
-        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, IPacketWriter writer, string fileName)
+        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, IPacketFormatter formatter, string fileName)
             : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
         {
             Opcode = opcode;
             Time = time;
             Direction = direction;
             Number = number;
-            Writer = writer;
+            Formatter = formatter;
             FileName = fileName;
             Status = ParsedStatus.None;
             WriteToFile = true;
@@ -46,10 +46,13 @@ namespace WowPacketParser.Misc
             Time = time;
             Direction = direction;
             Number = number;
-            Writer = null;
             FileName = fileName;
             Status = ParsedStatus.None;
             WriteToFile = true;
+            if(Settings.DumpTextFormat == TextFormatType.Xml)
+                Formatter = new XMLPacketFormatter();
+            else
+                Formatter = new TextPacketFormatter();
 
             if (number == 0)
                 _firstPacketTime = Time;
@@ -62,7 +65,7 @@ namespace WowPacketParser.Misc
         public TimeSpan TimeSpan { get; }
         public Direction Direction { get; }
         public int Number { get; }
-        public IPacketWriter Writer { get; private set; }
+        public IPacketFormatter Formatter { get; private set; }
         public string FileName { get; }
         public ParsedStatus Status { get; set; }
         public bool WriteToFile { get; private set; }
@@ -159,7 +162,7 @@ namespace WowPacketParser.Misc
             }
 
             // Cannot use "using" here
-            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer, FileName)
+            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Formatter, FileName)
             {
                 ConnectionIndex = ConnectionIndex
             };
@@ -209,7 +212,7 @@ namespace WowPacketParser.Misc
             }
 
             // Cannot use "using" here
-            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer, FileName)
+            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Formatter, FileName)
             {
                 ConnectionIndex = ConnectionIndex
             };
@@ -248,58 +251,13 @@ namespace WowPacketParser.Misc
             return Position != Length;
         }
 
-        public void Write(string format, params object[] args)
-        {
-            if (!Settings.DumpFormatWithText())
-                return;
-
-            if (Writer == null)
-                Writer = new TextPacketWriter();
-
-            //Writer.Append(string.Format(format, args));
-            Writer.WriteItem(format, false, args);
-        }
-
-        public void WriteLine()
-        {
-            if (!Settings.DumpFormatWithText())
-                return;
-
-            if (Writer == null)
-                Writer = new TextPacketWriter();
-
-            Writer.WriteItem("","");
-        }
-
-        public void WriteLine(string value)
-        {
-            if (!Settings.DumpFormatWithText())
-                return;
-
-            if (Writer == null)
-                Writer = new TextPacketWriter();
-
-            Writer.WriteItem(value,"");
-        }
-
-        public void WriteLine(string format, params object[] args)
-        {
-            if (!Settings.DumpFormatWithText())
-                return;
-
-            if (Writer == null)
-                Writer = new TextPacketWriter();
-
-            Writer.WriteItem(format, args);
-        }
-
         public void ClosePacket(bool clearWriter = true)
         {
-            if (clearWriter && Writer != null)
+            if (clearWriter && Formatter != null)
             {
                 if (Settings.DumpFormatWithText())
-                    Writer.CloseItem();
-                Writer = null;
+                    Formatter.CloseItem();
+                Formatter = null;
             }
 
             BaseStream.Close();
@@ -309,7 +267,12 @@ namespace WowPacketParser.Misc
 
         public T AddValue<T>(string name, T obj, params object[] indexes)
         {
-            WriteLine("{0}{1}: {2}", GetIndexString(indexes), name, obj);
+            if (Settings.DumpTextFormat == TextFormatType.Xml)
+            {
+                Formatter.AppendItemWithContent(name, obj.ToString(), "id", GetIndexString(indexes));
+            }
+            else
+                Formatter.AppendItem("{0}{1}: {2}", GetIndexString(indexes), name, obj);
             return obj;
         }
     }

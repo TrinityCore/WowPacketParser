@@ -165,11 +165,11 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             var size = packet.ReadInt32("Size");
             var data = packet.ReadBytes(size);
-            var db2File = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+            var db2File = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Formatter, packet.FileName);
 
             if (entry < 0)
             {
-                packet.WriteLine("Row {0} has been removed.", -entry);
+                packet.Formatter.AppendItem("Row {0} has been removed.", -entry);
                 HotfixStoreMgr.RemoveRecord(type, entry);
             }
             else

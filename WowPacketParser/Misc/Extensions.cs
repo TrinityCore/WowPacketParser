@@ -73,7 +73,8 @@ namespace WowPacketParser.Misc
         /// <param name="packet">A packet</param>
         public static void AsHex(this Packet packet)
         {
-            packet.WriteLine(Utilities.ByteArrayToHexTable(packet.GetStream(0)));
+            var data = Utilities.ByteArrayToHexTable(packet.GetStream(0));
+            packet.Formatter.AppendItem(data);
         }
 
         /// <summary>

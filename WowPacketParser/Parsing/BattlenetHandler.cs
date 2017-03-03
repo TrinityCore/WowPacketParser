@@ -38,7 +38,7 @@ namespace WowPacketParser.Parsing
                 var bnetPacket = new BattlenetPacket(packet);
                 Action<BattlenetPacket> handler;
 
-                bnetPacket.Stream.WriteLine(bnetPacket.GetHeader());
+                bnetPacket.Stream.Formatter.AppendItem(bnetPacket.GetHeader());
 
                 if (BattlenetHandlers.TryGetValue(bnetPacket.Header, out handler))
                 {
@@ -53,9 +53,9 @@ namespace WowPacketParser.Parsing
             }
             catch (Exception ex)
             {
-                packet.WriteLine(ex.GetType().ToString());
-                packet.WriteLine(ex.Message);
-                packet.WriteLine(ex.StackTrace);
+                packet.Formatter.AppendItem(ex.GetType().ToString());
+                packet.Formatter.AppendItem(ex.Message);
+                packet.Formatter.AppendItem(ex.StackTrace);
 
                 packet.Status = ParsedStatus.WithErrors;
             }

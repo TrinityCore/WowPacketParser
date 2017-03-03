@@ -83,7 +83,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_MULTIPLE_PACKETS)]
         public static void HandleMultiplePackets(Packet packet)
         {
-            packet.WriteLine("{");
+            packet.Formatter.OpenCollection("");
             int i = 0;
             while (packet.CanRead())
             {
@@ -111,16 +111,18 @@ namespace WowPacketParser.Parsing.Parsers
                 if (bytes == null || len == 0)
                     continue;
 
+                //if (i > 0)
+                //    packet.WriteLi();
+
+                //packet.Write("[{0}] ", i++);
                 if (i > 0)
-                    packet.WriteLine();
+                    packet.Formatter.AppendItem("[{0}] ", i++);
 
-                packet.Write("[{0}] ", i++);
-
-                using (Packet newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
+                using (Packet newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Formatter, packet.FileName))
                     Handler.Parse(newpacket, true);
 
             }
-            packet.WriteLine("}");
+            packet.Formatter.CloseCollection("");
         }
 
         [Parser(Opcode.SMSG_MULTIPLE_PACKETS_2)]
@@ -135,16 +137,16 @@ namespace WowPacketParser.Parsing.Parsers
                 // Some sort of infinite loop happens here...
             }
 
-            packet.WriteLine("{");
-            packet.WriteLine();
+            packet.Formatter.OpenCollection("");
+            //packet.WriteLine();
             while (packet.CanRead())
             {
                 packet.Opcode = packet.ReadUInt16();
 
                 Handler.Parse(packet, true);
-                packet.WriteLine();
+                //packet.WriteLine();
             }
-            packet.WriteLine("}");
+            packet.Formatter.CloseCollection("");
         }
 
         [Parser(Opcode.SMSG_STOP_DANCE)]

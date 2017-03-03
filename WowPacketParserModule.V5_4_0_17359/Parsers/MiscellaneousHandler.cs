@@ -1108,7 +1108,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         {
             if (packet.Direction == Direction.ClientToServer)
             {
-                packet.WriteLine("ClientToServer: CMSG_ADDON_REGISTERED_PREFIXES");
+                packet.Formatter.AppendItem("ClientToServer: CMSG_ADDON_REGISTERED_PREFIXES");
                 var count = packet.ReadBits("Count", 24);
                 var lengths = new int[count];
                 for (var i = 0; i < count; ++i)
@@ -1119,7 +1119,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             }
             else
             {
-                packet.WriteLine("ServerToClient: SMSG_QUEST_GIVER_QUEST_COMPLETE");
+                packet.Formatter.AppendItem("ServerToClient: SMSG_QUEST_GIVER_QUEST_COMPLETE");
 
                 packet.ReadInt32("Reward XP");
                 packet.ReadInt32<QuestId>("Quest ID");
@@ -3448,7 +3448,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.MSG_MULTIPLE_PACKETS1)] // CMSG_TIME_SYNC_RESP?
         public static void HandleMultiplePackets1(Packet packet)
         {
-            packet.WriteLine("ClientToServer: CMSG_UNKNOWN_4278"); // Addon?
+            packet.Formatter.AppendItem("ClientToServer: CMSG_UNKNOWN_4278"); // Addon?
             var len1 = packet.ReadByte();
             var len2 = packet.ReadBits(5);
 
