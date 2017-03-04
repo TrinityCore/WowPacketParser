@@ -190,5 +190,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var bits16 = packet.ReadBits(9);
             packet.ReadWoWString("Name", bits16);
         }
+
+        [Parser(Opcode.SMSG_PRINT_NOTIFICATION)]
+        public static void HandlePrintNotification(Packet packet)
+        {
+            var notifyTextLen = packet.ReadBits(12);
+
+            packet.ReadWoWString("NotifyText", notifyTextLen);
+        }
     }
 }

@@ -582,6 +582,7 @@
     <Compile Include="Store\Objects\PlayerCreateInfoAction.cs" />
     <Compile Include="Store\Objects\PlayerCreateInfo.cs" />
     <Compile Include="Store\Objects\SpellTargetPosition.cs" />
+    <Compile Include="Store\Objects\SpellAreaTrigger.cs" />
     <Compile Include="Store\Objects\Unit.cs" />
     <Compile Include="Store\Objects\CreatureTemplate.cs" />
     <Compile Include="Store\Objects\VehicleTemplateAccessory.cs" />

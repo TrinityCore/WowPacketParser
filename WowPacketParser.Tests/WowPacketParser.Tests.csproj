@@ -53,6 +53,7 @@
     <Compile Include="Misc\BiDictionaryTest.cs" />
     <Compile Include="Misc\BitTest.cs" />
     <Compile Include="Misc\ClientVersionTest.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQL\RowListTest.cs" />
     <Compile Include="Misc\ConfigurationTest.cs" />
     <Compile Include="SQL\QueryBuilderTest.cs" />
@@ -107,9 +108,7 @@
       <Name>WowPacketParser</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

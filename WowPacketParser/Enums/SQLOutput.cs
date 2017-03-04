@@ -36,6 +36,7 @@
         quest_template,
         scene_template,
         spell_target_position,
+        spell_areatrigger,
         SniffData,
         SniffDataOpcodes,
         vehicle_template_accessory,

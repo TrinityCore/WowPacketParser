@@ -94,10 +94,10 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
         public static void ReadMonsterSplineSpellEffectExtraData(Packet packet, params object[] indexes)
         {
-            packet.ReadPackedGuid128("GUID", indexes);
-            packet.ReadUInt32("Int 1", indexes);
-            packet.ReadUInt32("Int 2", indexes);
-            packet.ReadUInt32("Int 3", indexes);
+            packet.ReadPackedGuid128("TargetGUID", indexes);
+            packet.ReadUInt32("SpellVisualID", indexes);
+            packet.ReadUInt32("ProgressCurveID", indexes);
+            packet.ReadUInt32("ParabolicCurveID", indexes);
         }
 
         public static void ReadMovementSpline(Packet packet, Vector3 pos, params object[] indexes)
