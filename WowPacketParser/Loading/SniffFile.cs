@@ -212,10 +212,18 @@ namespace WowPacketParser.Loading
                         }
                     }
 
+                    // Write to file
                     if (writer != null)
                     {
-                        // Write to file
-                        writer.WriteItem(packet);
+                        //UNCOMMENT FOR DEBUGGING PURPOSES:
+                        /*
+                        try
+                        {*/
+                            writer.WriteItem(packet);
+                        /*}catch(Exception e)
+                        {
+                            writer.WriteItem(packet);
+                        }*/
                     }
 
                     // Close Writer, Stream - Dispose

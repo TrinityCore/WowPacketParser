@@ -100,7 +100,7 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
                     packet.Read<uint>("Type", 0, 32, "Start");
                     break;
                 case 1:
-                    var raw = packet.ReadBytes(packet.Read<int>(0, 14));
+                    var raw = packet.Translator.ReadBytes(packet.Read<int>(0, 14));
                     using (var reader = new BinaryReader(new MemoryStream(raw)))
                     {
                         while (reader.BaseStream.Position < reader.BaseStream.Length)

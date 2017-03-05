@@ -20,11 +20,10 @@ namespace WowPacketParser.Loading
             settings.ConformanceLevel = ConformanceLevel.Fragment;
             settings.Encoding = Encoding.UTF8;
             _writer = XmlWriter.Create(fileName, settings);
+            //_writer.WriteStartDocument();
         }
         public void WriteItem(Packet packet)
         {
-            try
-            {
                 var formatter = (XMLPacketFormatter)packet.Formatter;
                 var node = formatter.ToNode();
                 _writer.WriteStartElement(sanitizeString(node.Name));
@@ -34,10 +33,7 @@ namespace WowPacketParser.Loading
                 //_writer.WriteCData(objContacts[i].Address1);
 
                 _writer.WriteEndElement();
-            }catch(Exception e)
-            {
-
-            }
+            _writer.Flush();
         }
 
         public void WriteHeader(string headers)
@@ -98,6 +94,7 @@ namespace WowPacketParser.Loading
         }
         public void Dispose()
         {
+           // _writer.WriteEndDocument();
             _writer.Close();
             _writer = null;
         }

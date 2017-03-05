@@ -10,6 +10,13 @@ using WowPacketParser.Enums;
 
 namespace WowPacketParser.Misc
 {
+    /// <summary>
+    /// This class is the only responsible for the translation
+    /// process of the sniffed data from binary to the output format.</summary>
+    /// <seealso cref="IPacketFormatter">
+    /// Injected from the <seealso cref="Packet"/>, the formatter is 
+    /// responsible for the concrete implementation of the specific
+    /// elements output.</seealso>
     public sealed class PacketTranslator : BinaryReader
     {
         /** to correct errors **/
@@ -678,10 +685,10 @@ namespace WowPacketParser.Misc
         {
             if (Settings.DumpTextFormat == TextFormatType.Xml)
             {
-                //Formatter.AppendItemWithContent(name, obj.ToString(), "id", GetIndexString(indexes));
+                _formatter.AppendItemWithContent(name, obj.ToString(), "id", GetIndexString(indexes));
             }
-            //else
-            //Formatter.AppendItem("{0}{1}: {2}", GetIndexString(indexes), name, obj);
+            else
+                _formatter.AppendItem("{0}{1}: {2}", GetIndexString(indexes), name, obj);
             return obj;
         }
 

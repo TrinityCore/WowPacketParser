@@ -45,7 +45,7 @@ namespace WowPacketParser.Misc
         public static readonly string TDBDatabase = Conf.GetString("TDBDatabase", "world");
         public static readonly string HotfixesDatabase = Conf.GetString("HotfixesDatabase", "hotfixes");
         public static readonly string CharacterSet = Conf.GetString("CharacterSet", "utf8");
-        public static readonly TextFormatType DumpTextFormat = TextFormatType.Xml;
+        public static readonly TextFormatType DumpTextFormat = TextFormatType.Txt;
 
         private static ulong GetSQLOutputFlag()
         {

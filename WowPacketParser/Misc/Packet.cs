@@ -12,14 +12,29 @@ using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Misc
 {
-    public sealed partial class Packet : BinaryReader
+    /// <summary>
+    /// This class is the basic data transfer object (DTO) between the 
+    /// different components at the processing stage.</summary>
+    /// <remarks>
+    /// In future developments it should be much more decoupled from
+    /// methods dealing with the translation and storing processes.
+    /// The "AddValue" method will soon disappear.</remarks>
+    /// 
+    /// <seealso cref="PacketTranslator">
+    /// It uses a Translator class which is responsible for transforming 
+    /// the binary representation into the one selected by the output
+    /// in <seealso cref="Settings.DumpTextFormat"/>.</seealso>
+    /// 
+    /// <seealso cref="IPacketFormatter">
+    /// In the translation process uses a packet formatter to properly
+    /// build the concrete representation depending on the different uses.</seealso>
+    public sealed class Packet : BinaryReader
     {
         private static readonly bool SniffData = Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.SniffData) || Settings.DumpFormat == DumpFormatType.SniffDataOnly;
         private static readonly bool SniffDataOpcodes = Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.SniffDataOpcodes) || Settings.DumpFormat == DumpFormatType.SniffDataOnly;
 
         private static DateTime _firstPacketTime;
 
-        //private static PacketPresenter _presenter;
         public PacketTranslator Translator;
 
         [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "MemoryStream is disposed in ClosePacket().")]
@@ -33,6 +48,11 @@ namespace WowPacketParser.Misc
             FileName = fileName;
             WriteToFile = true;
             Status = ParsedStatus.None;
+
+            if(opcode == 0x04F6)
+            {
+                ;
+            }
 
             Formatter = formatter;
             Translator = new PacketTranslator(input, Length, WriteToFile, formatter, this);
@@ -235,11 +255,8 @@ namespace WowPacketParser.Misc
 
         public string GetHeader(bool isMultiple = false)
         {
-            // ReSharper disable once UseStringInterpolation
-            return string.Format("{0}: {1} (0x{2}) Length: {3} ConnIdx: {4}{5} Time: {6} Number: {7}{8}",
-                Direction, Opcodes.GetOpcodeName(Opcode, Direction, false), Opcode.ToString("X4"),
-                Length, ConnectionIndex, EndPoint != null ? " EP: " + EndPoint : "", Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
-                Number, isMultiple ? " (part of another packet)" : "");
+            return Formatter.AppendHeaders(Direction, Opcode, Length, 
+                ConnectionIndex, EndPoint, Time, Number, isMultiple);
         }
 
         public long Position => BaseStream.Position;
