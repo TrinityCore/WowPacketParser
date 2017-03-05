@@ -14,46 +14,46 @@ namespace WowPacketParser.Parsing.Parsers
     {
         private static void ReadExtraQuestInfo510(Packet packet)
         {
-            packet.Translator.ReadUInt32("Choice Item Count");
+            packet.ReadUInt32("Choice Item Count");
             for (var i = 0; i < 6; i++)
             {
-                packet.Translator.ReadUInt32<ItemId>("Choice Item Id", i);
-                packet.Translator.ReadUInt32("Choice Item Count", i);
-                packet.Translator.ReadUInt32("Choice Item Display Id", i);
+                packet.ReadUInt32<ItemId>("Choice Item Id", i);
+                packet.ReadUInt32("Choice Item Count", i);
+                packet.ReadUInt32("Choice Item Display Id", i);
             }
 
-            packet.Translator.ReadUInt32("Reward Item Count");
+            packet.ReadUInt32("Reward Item Count");
 
             for (var i = 0; i < 4; i++)
-                packet.Translator.ReadUInt32<ItemId>("Reward Item Id", i);
+                packet.ReadUInt32<ItemId>("Reward Item Id", i);
             for (var i = 0; i < 4; i++)
-                packet.Translator.ReadUInt32("Reward Item Count", i);
+                packet.ReadUInt32("Reward Item Count", i);
             for (var i = 0; i < 4; i++)
-                packet.Translator.ReadUInt32("Reward Item Display Id", i);
+                packet.ReadUInt32("Reward Item Display Id", i);
 
-            packet.Translator.ReadUInt32("Money");
-            packet.Translator.ReadUInt32("XP");
-            packet.Translator.ReadUInt32("Title Id");
-            packet.Translator.ReadUInt32("Bonus Talents");
-            packet.Translator.ReadUInt32("Reward Reputation Mask");
+            packet.ReadUInt32("Money");
+            packet.ReadUInt32("XP");
+            packet.ReadUInt32("Title Id");
+            packet.ReadUInt32("Bonus Talents");
+            packet.ReadUInt32("Reward Reputation Mask");
 
             for (var i = 0; i < 5; i++)
-                packet.Translator.ReadUInt32("Reputation Faction", i);
+                packet.ReadUInt32("Reputation Faction", i);
             for (var i = 0; i < 5; i++)
-                packet.Translator.ReadUInt32("Reputation Value Id", i);
+                packet.ReadUInt32("Reputation Value Id", i);
             for (var i = 0; i < 5; i++)
-                packet.Translator.ReadInt32("Reputation Value", i);
+                packet.ReadInt32("Reputation Value", i);
 
-            packet.Translator.ReadInt32<SpellId>("Spell Id");
-            packet.Translator.ReadInt32<SpellId>("Spell Cast Id");
+            packet.ReadInt32<SpellId>("Spell Id");
+            packet.ReadInt32<SpellId>("Spell Cast Id");
 
             for (var i = 0; i < 4; i++)
-                packet.Translator.ReadUInt32("Currency Id", i);
+                packet.ReadUInt32("Currency Id", i);
             for (var i = 0; i < 4; i++)
-                packet.Translator.ReadUInt32("Currency Count", i);
+                packet.ReadUInt32("Currency Count", i);
 
-            packet.Translator.ReadUInt32("Reward SkillId");
-            packet.Translator.ReadUInt32("Reward Skill Points");
+            packet.ReadUInt32("Reward SkillId");
+            packet.ReadUInt32("Reward Skill Points");
         }
 
         private static void ReadExtraQuestInfo(Packet packet, bool readFlags = true)
@@ -64,108 +64,108 @@ namespace WowPacketParser.Parsing.Parsers
                 return;
             }
 
-            var choiceCount = packet.Translator.ReadUInt32("Choice Item Count");
+            var choiceCount = packet.ReadUInt32("Choice Item Count");
             var effectiveChoiceCount = ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164) ? 6 : choiceCount;
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
                 for (var i = 0; i < effectiveChoiceCount; i++)
-                    packet.Translator.ReadUInt32<ItemId>("Choice Item Id", i);
+                    packet.ReadUInt32<ItemId>("Choice Item Id", i);
                 for (var i = 0; i < effectiveChoiceCount; i++)
-                    packet.Translator.ReadUInt32("Choice Item Count", i);
+                    packet.ReadUInt32("Choice Item Count", i);
                 for (var i = 0; i < effectiveChoiceCount; i++)
-                    packet.Translator.ReadUInt32("Choice Item Display Id", i);
+                    packet.ReadUInt32("Choice Item Display Id", i);
 
-                packet.Translator.ReadUInt32("Reward Item Count");
+                packet.ReadUInt32("Reward Item Count");
                 const int effectiveRewardCount = 4;
 
                 for (var i = 0; i < effectiveRewardCount; i++)
-                    packet.Translator.ReadUInt32<ItemId>("Reward Item Id", i);
+                    packet.ReadUInt32<ItemId>("Reward Item Id", i);
                 for (var i = 0; i < effectiveRewardCount; i++)
-                    packet.Translator.ReadUInt32("Reward Item Count", i);
+                    packet.ReadUInt32("Reward Item Count", i);
                 for (var i = 0; i < effectiveRewardCount; i++)
-                    packet.Translator.ReadUInt32("Reward Item Display Id", i);
+                    packet.ReadUInt32("Reward Item Display Id", i);
             }
             else
             {
                 for (var i = 0; i < choiceCount; i++)
                 {
-                    packet.Translator.ReadUInt32<ItemId>("Choice Item Id", i);
-                    packet.Translator.ReadUInt32("Choice Item Count", i);
-                    packet.Translator.ReadUInt32("Choice Item Display Id", i);
+                    packet.ReadUInt32<ItemId>("Choice Item Id", i);
+                    packet.ReadUInt32("Choice Item Count", i);
+                    packet.ReadUInt32("Choice Item Display Id", i);
                 }
 
-                var rewardCount = packet.Translator.ReadUInt32("Reward Item Count");
+                var rewardCount = packet.ReadUInt32("Reward Item Count");
                 for (var i = 0; i < rewardCount; i++)
                 {
-                    packet.Translator.ReadUInt32<ItemId>("Reward Item Id", i);
-                    packet.Translator.ReadUInt32("Reward Item Count", i);
-                    packet.Translator.ReadUInt32("Reward Item Display Id", i);
+                    packet.ReadUInt32<ItemId>("Reward Item Id", i);
+                    packet.ReadUInt32("Reward Item Count", i);
+                    packet.ReadUInt32("Reward Item Display Id", i);
                 }
             }
 
-            packet.Translator.ReadUInt32("Money");
+            packet.ReadUInt32("Money");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_2_10482))
-                packet.Translator.ReadUInt32("XP");
+                packet.ReadUInt32("XP");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
-                packet.Translator.ReadUInt32("Title Id");
-                packet.Translator.ReadUInt32("Unknown UInt32 1");
-                packet.Translator.ReadSingle("Unknown float");
-                packet.Translator.ReadUInt32("Bonus Talents");
-                packet.Translator.ReadUInt32("Unknown UInt32 2");
-                packet.Translator.ReadUInt32("Reward Reputation Mask");
+                packet.ReadUInt32("Title Id");
+                packet.ReadUInt32("Unknown UInt32 1");
+                packet.ReadSingle("Unknown float");
+                packet.ReadUInt32("Bonus Talents");
+                packet.ReadUInt32("Unknown UInt32 2");
+                packet.ReadUInt32("Reward Reputation Mask");
             }
             else
             {
-                packet.Translator.ReadUInt32("Honor Points");
+                packet.ReadUInt32("Honor Points");
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
-                    packet.Translator.ReadSingle("Honor Multiplier");
+                    packet.ReadSingle("Honor Multiplier");
 
                 if (readFlags)
-                        packet.Translator.ReadUInt32E<QuestFlags>("Quest Flags");
+                        packet.ReadUInt32E<QuestFlags>("Quest Flags");
 
-                packet.Translator.ReadInt32<SpellId>("Spell Id");
-                packet.Translator.ReadInt32<SpellId>("Spell Cast Id");
-                packet.Translator.ReadUInt32("Title Id");
+                packet.ReadInt32<SpellId>("Spell Id");
+                packet.ReadInt32<SpellId>("Spell Cast Id");
+                packet.ReadUInt32("Title Id");
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
-                    packet.Translator.ReadUInt32("Bonus Talents");
+                    packet.ReadUInt32("Bonus Talents");
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 {
-                    packet.Translator.ReadUInt32("Arena Points");
-                    packet.Translator.ReadUInt32("Unk UInt32");
+                    packet.ReadUInt32("Arena Points");
+                    packet.ReadUInt32("Unk UInt32");
                 }
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
             {
                 for (var i = 0; i < 5; i++)
-                    packet.Translator.ReadUInt32("Reputation Faction", i);
+                    packet.ReadUInt32("Reputation Faction", i);
 
                 for (var i = 0; i < 5; i++)
-                    packet.Translator.ReadUInt32("Reputation Value Id", i);
+                    packet.ReadUInt32("Reputation Value Id", i);
 
                 for (var i = 0; i < 5; i++)
-                    packet.Translator.ReadInt32("Reputation Value", i);
+                    packet.ReadInt32("Reputation Value", i);
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
-                packet.Translator.ReadInt32<SpellId>("Spell Id");
-                packet.Translator.ReadInt32<SpellId>("Spell Cast Id");
+                packet.ReadInt32<SpellId>("Spell Id");
+                packet.ReadInt32<SpellId>("Spell Cast Id");
 
                 for (var i = 0; i < 4; i++)
-                    packet.Translator.ReadUInt32("Currency Id", i);
+                    packet.ReadUInt32("Currency Id", i);
                 for (var i = 0; i < 4; i++)
-                    packet.Translator.ReadUInt32("Currency Count", i);
+                    packet.ReadUInt32("Currency Count", i);
 
-                packet.Translator.ReadUInt32("Reward SkillId");
-                packet.Translator.ReadUInt32("Reward Skill Points");
+                packet.ReadUInt32("Reward SkillId");
+                packet.ReadUInt32("Reward Skill Points");
             }
         }
 
@@ -173,14 +173,14 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_PUSH_QUEST_TO_PARTY)]
         public static void HandleQuestQuery(Packet packet)
         {
-            packet.Translator.ReadInt32("Entry");
+            packet.ReadInt32("Entry");
         }
 
         [HasSniffData]
         [Parser(Opcode.SMSG_QUERY_QUEST_INFO_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V5_0_5_16048)]
         public static void HandleQuestQueryResponse(Packet packet)
         {
-            var id = packet.Translator.ReadEntry("Quest ID");
+            var id = packet.ReadEntry("Quest ID");
             if (id.Value) // entry is masked
                 return;
 
@@ -189,85 +189,85 @@ namespace WowPacketParser.Parsing.Parsers
                 ID = (uint)id.Key
             };
 
-            quest.QuestType = packet.Translator.ReadInt32E<QuestType>("QuestType");
-            quest.QuestLevel = packet.Translator.ReadInt32("QuestLevel");
+            quest.QuestType = packet.ReadInt32E<QuestType>("QuestType");
+            quest.QuestLevel = packet.ReadInt32("QuestLevel");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
-                quest.MinLevel = packet.Translator.ReadInt32("QuestMinLevel");
+                quest.MinLevel = packet.ReadInt32("QuestMinLevel");
 
-            quest.QuestSortID = packet.Translator.ReadInt32E<QuestSort>("QuestSortID");
+            quest.QuestSortID = packet.ReadInt32E<QuestSort>("QuestSortID");
 
-            quest.QuestInfoID = packet.Translator.ReadInt32E<QuestInfo>("QuestInfoID");
+            quest.QuestInfoID = packet.ReadInt32E<QuestInfo>("QuestInfoID");
 
-            quest.SuggestedGroupNum = packet.Translator.ReadUInt32("SuggestedGroupNum");
+            quest.SuggestedGroupNum = packet.ReadUInt32("SuggestedGroupNum");
 
             quest.RequiredFactionID = new uint?[2];
             quest.RequiredFactionValue = new int?[2];
             for (int i = 0; i < 2; i++)
             {
-                quest.RequiredFactionID[i] = packet.Translator.ReadUInt32("RequiredFactionID", i);
-                quest.RequiredFactionValue[i] = packet.Translator.ReadInt32("RequiredFactionValue", i);
+                quest.RequiredFactionID[i] = packet.ReadUInt32("RequiredFactionID", i);
+                quest.RequiredFactionValue[i] = packet.ReadInt32("RequiredFactionValue", i);
             }
 
-            quest.NextQuestID = packet.Translator.ReadInt32<QuestId>("NextQuestID");
+            quest.NextQuestID = packet.ReadInt32<QuestId>("NextQuestID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
-                quest.RewardXPDifficulty = packet.Translator.ReadUInt32("RewardXPDifficulty");
+                quest.RewardXPDifficulty = packet.ReadUInt32("RewardXPDifficulty");
 
-            quest.RewardMoney = packet.Translator.ReadInt32("RewardMoney");
-            quest.RewardBonusMoney = packet.Translator.ReadUInt32("RewardBonusMoney");
-            quest.RewardDisplaySpell = (uint)packet.Translator.ReadInt32<SpellId>("RewardDisplaySpell");
-            quest.RewardSpell = packet.Translator.ReadInt32<SpellId>("RewardSpell");
-            quest.RewardHonor = packet.Translator.ReadInt32("RewardHonor");
+            quest.RewardMoney = packet.ReadInt32("RewardMoney");
+            quest.RewardBonusMoney = packet.ReadUInt32("RewardBonusMoney");
+            quest.RewardDisplaySpell = (uint)packet.ReadInt32<SpellId>("RewardDisplaySpell");
+            quest.RewardSpell = packet.ReadInt32<SpellId>("RewardSpell");
+            quest.RewardHonor = packet.ReadInt32("RewardHonor");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
-                quest.RewardKillHonor = packet.Translator.ReadSingle("RewardKillHonor");
+                quest.RewardKillHonor = packet.ReadSingle("RewardKillHonor");
 
-            quest.StartItem = packet.Translator.ReadUInt32<ItemId>("StartItem");
-            quest.Flags = packet.Translator.ReadUInt32E<QuestFlags>("Flags");
+            quest.StartItem = packet.ReadUInt32<ItemId>("StartItem");
+            quest.Flags = packet.ReadUInt32E<QuestFlags>("Flags");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
-                quest.MinimapTargetMark = packet.Translator.ReadUInt32("MinimapTargetMark"); // missing enum. 1- Skull, 16 - Unknown, but exists
+                quest.MinimapTargetMark = packet.ReadUInt32("MinimapTargetMark"); // missing enum. 1- Skull, 16 - Unknown, but exists
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_4_0_8089))
-                quest.RewardTitle = packet.Translator.ReadUInt32("RewardTitle");
+                quest.RewardTitle = packet.ReadUInt32("RewardTitle");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
             {
-                quest.RequiredPlayerKills = packet.Translator.ReadUInt32("RequiredPlayerKills");
-                quest.RewardTalents = packet.Translator.ReadUInt32("RewardTalents");
+                quest.RequiredPlayerKills = packet.ReadUInt32("RequiredPlayerKills");
+                quest.RewardTalents = packet.ReadUInt32("RewardTalents");
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
-                quest.RewardArenaPoints = packet.Translator.ReadUInt32("RewardArenaPoints");
+                quest.RewardArenaPoints = packet.ReadUInt32("RewardArenaPoints");
 
             // TODO: Find when was this added/removed and what is it
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958) && (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_0_1_13164)))
-                packet.Translator.ReadInt32("Unknown Int32");
+                packet.ReadInt32("Unknown Int32");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
-                quest.RewardSkillLineID = packet.Translator.ReadUInt32("RewardSkillLineID");
-                quest.RewardNumSkillUps = packet.Translator.ReadUInt32("RewardNumSkillUps");
-                quest.RewardReputationMask = packet.Translator.ReadUInt32("RewardReputationMask");
-                quest.QuestGiverPortrait = packet.Translator.ReadUInt32("QuestGiverPortrait");
-                quest.QuestTurnInPortrait = packet.Translator.ReadUInt32("QuestTurnInPortrait");
+                quest.RewardSkillLineID = packet.ReadUInt32("RewardSkillLineID");
+                quest.RewardNumSkillUps = packet.ReadUInt32("RewardNumSkillUps");
+                quest.RewardReputationMask = packet.ReadUInt32("RewardReputationMask");
+                quest.QuestGiverPortrait = packet.ReadUInt32("QuestGiverPortrait");
+                quest.QuestTurnInPortrait = packet.ReadUInt32("QuestTurnInPortrait");
             }
 
             quest.RewardItem = new uint?[4];
             quest.RewardAmount = new uint?[4];
             for (int i = 0; i < 4; i++)
             {
-                quest.RewardItem[i] = (uint) packet.Translator.ReadInt32<ItemId>("RewardItems", i);
-                quest.RewardAmount[i] = packet.Translator.ReadUInt32("RewardAmount", i);
+                quest.RewardItem[i] = (uint) packet.ReadInt32<ItemId>("RewardItems", i);
+                quest.RewardAmount[i] = packet.ReadUInt32("RewardAmount", i);
             }
 
             quest.RewardChoiceItemID = new uint?[6];
             quest.RewardChoiceItemQuantity = new uint?[6];
             for (int i = 0; i < 6; i++)
             {
-                quest.RewardChoiceItemID[i] = (uint) packet.Translator.ReadInt32<ItemId>("RewardChoiceItemID", i);
-                quest.RewardChoiceItemQuantity[i] = packet.Translator.ReadUInt32("RewardChoiceItemQuantity", i);
+                quest.RewardChoiceItemID[i] = (uint) packet.ReadInt32<ItemId>("RewardChoiceItemID", i);
+                quest.RewardChoiceItemQuantity[i] = packet.ReadUInt32("RewardChoiceItemQuantity", i);
             }
 
             const int repCount = 5;
@@ -277,26 +277,26 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
             {
                 for (int i = 0; i < repCount; i++)
-                    quest.RewardFactionID[i] = packet.Translator.ReadUInt32("RewardFactionID", i);
+                    quest.RewardFactionID[i] = packet.ReadUInt32("RewardFactionID", i);
 
                 for (int i = 0; i < repCount; i++)
-                    quest.RewardFactionValue[i] = packet.Translator.ReadInt32("RewardFactionValue", i);
+                    quest.RewardFactionValue[i] = packet.ReadInt32("RewardFactionValue", i);
 
                 for (int i = 0; i < repCount; i++)
-                    quest.RewardFactionOverride[i] = (int)packet.Translator.ReadUInt32("RewardFactionOverride", i);
+                    quest.RewardFactionOverride[i] = (int)packet.ReadUInt32("RewardFactionOverride", i);
             }
 
-            quest.POIContinent = packet.Translator.ReadUInt32("POIContinent");
-            quest.POIx = packet.Translator.ReadSingle("POIx");
-            quest.POIy = packet.Translator.ReadSingle("POIy");
-            quest.POIPriority = packet.Translator.ReadUInt32("POIPriority");
-            quest.LogTitle = packet.Translator.ReadCString("LogTitle");
-            quest.LogDescription = packet.Translator.ReadCString("LogDescription");
-            quest.QuestDescription = packet.Translator.ReadCString("QuestDescription");
-            quest.AreaDescription = packet.Translator.ReadCString("AreaDescription");
+            quest.POIContinent = packet.ReadUInt32("POIContinent");
+            quest.POIx = packet.ReadSingle("POIx");
+            quest.POIy = packet.ReadSingle("POIy");
+            quest.POIPriority = packet.ReadUInt32("POIPriority");
+            quest.LogTitle = packet.ReadCString("LogTitle");
+            quest.LogDescription = packet.ReadCString("LogDescription");
+            quest.QuestDescription = packet.ReadCString("QuestDescription");
+            quest.AreaDescription = packet.ReadCString("AreaDescription");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
-                quest.QuestCompletionLog = packet.Translator.ReadCString("QuestCompletionLog");
+                quest.QuestCompletionLog = packet.ReadCString("QuestCompletionLog");
 
             var reqId = new KeyValuePair<int, bool>[4];
             quest.RequiredNpcOrGo = new int?[4];
@@ -309,25 +309,25 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (int i = 0; i < 4; i++)
             {
-                reqId[i] = packet.Translator.ReadEntry();
+                reqId[i] = packet.ReadEntry();
                 bool isGo = reqId[i].Value;
                 quest.RequiredNpcOrGo[i] = reqId[i].Key * (isGo ? -1 : 1);
 
                 packet.AddValue("Required", (isGo ? "GO" : "NPC") +
                     " ID: " + StoreGetters.GetName(isGo ? StoreNameType.GameObject : StoreNameType.Unit, reqId[i].Key), i);
 
-                quest.RequiredNpcOrGoCount[i] = packet.Translator.ReadUInt32("RequiredCount", i);
+                quest.RequiredNpcOrGoCount[i] = packet.ReadUInt32("RequiredCount", i);
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
-                    quest.RequiredItemID[i] = (uint) packet.Translator.ReadInt32<ItemId>("RequiredItemID", i);
+                    quest.RequiredItemID[i] = (uint) packet.ReadInt32<ItemId>("RequiredItemID", i);
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
-                    quest.RequiredItemCount[i] = packet.Translator.ReadUInt32("RequiredItemCount", i);
+                    quest.RequiredItemCount[i] = packet.ReadUInt32("RequiredItemCount", i);
 
                 if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_0_8_9464))
                 {
-                    quest.RequiredItemID[i] = (uint) packet.Translator.ReadInt32<ItemId>("RequiredItemID", i);
-                    quest.RequiredItemCount[i] = packet.Translator.ReadUInt32("RequiredItemCount", i);
+                    quest.RequiredItemID[i] = (uint) packet.ReadInt32<ItemId>("RequiredItemID", i);
+                    quest.RequiredItemCount[i] = packet.ReadUInt32("RequiredItemCount", i);
                 }
             }
 
@@ -335,17 +335,17 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 for (int i = 0; i < reqItemFieldCount; i++)
                 {
-                    quest.RequiredItemID[i] = (uint) packet.Translator.ReadInt32<ItemId>("RequiredItemID", i);
-                    quest.RequiredItemCount[i] = packet.Translator.ReadUInt32("RequiredItemCount", i);
+                    quest.RequiredItemID[i] = (uint) packet.ReadInt32<ItemId>("RequiredItemID", i);
+                    quest.RequiredItemCount[i] = packet.ReadUInt32("RequiredItemCount", i);
                 }
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
-                quest.RequiredSpell = packet.Translator.ReadUInt32<SpellId>("RequiredSpell");
+                quest.RequiredSpell = packet.ReadUInt32<SpellId>("RequiredSpell");
 
             quest.ObjectiveText = new string[4];
             for (int i = 0; i < 4; i++)
-                quest.ObjectiveText[i] = packet.Translator.ReadCString("Objective Text", i);
+                quest.ObjectiveText[i] = packet.ReadCString("Objective Text", i);
 
             quest.RewardCurrencyID = new uint?[4];
             quest.RewardCurrencyCount = new uint?[4];
@@ -355,23 +355,23 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 for (int i = 0; i < 4; ++i)
                 {
-                    quest.RewardCurrencyID[i] = packet.Translator.ReadUInt32("Reward Currency ID", i);
-                    quest.RewardCurrencyCount[i] = packet.Translator.ReadUInt32("Reward Currency Count", i);
+                    quest.RewardCurrencyID[i] = packet.ReadUInt32("Reward Currency ID", i);
+                    quest.RewardCurrencyCount[i] = packet.ReadUInt32("Reward Currency Count", i);
                 }
 
                 for (int i = 0; i < 4; ++i)
                 {
-                    quest.RequiredCurrencyID[i] = packet.Translator.ReadUInt32("Required Currency ID", i);
-                    quest.RequiredCurrencyCount[i] = packet.Translator.ReadUInt32("Required Currency Count", i);
+                    quest.RequiredCurrencyID[i] = packet.ReadUInt32("Required Currency ID", i);
+                    quest.RequiredCurrencyCount[i] = packet.ReadUInt32("Required Currency Count", i);
                 }
 
-                quest.QuestGiverTextWindow = packet.Translator.ReadCString("QuestGiver Text Window");
-                quest.QuestGiverTargetName = packet.Translator.ReadCString("QuestGiver Target Name");
-                quest.QuestTurnTextWindow = packet.Translator.ReadCString("QuestTurn Text Window");
-                quest.QuestTurnTargetName = packet.Translator.ReadCString("QuestTurn Target Name");
+                quest.QuestGiverTextWindow = packet.ReadCString("QuestGiver Text Window");
+                quest.QuestGiverTargetName = packet.ReadCString("QuestGiver Target Name");
+                quest.QuestTurnTextWindow = packet.ReadCString("QuestTurn Text Window");
+                quest.QuestTurnTargetName = packet.ReadCString("QuestTurn Target Name");
 
-                quest.SoundAccept = packet.Translator.ReadUInt32("Sound Accept");
-                quest.SoundTurnIn = packet.Translator.ReadUInt32("Sound TurnIn");
+                quest.SoundAccept = packet.ReadUInt32("Sound Accept");
+                quest.SoundTurnIn = packet.ReadUInt32("Sound TurnIn");
             }
 
             packet.AddSniffData(StoreNameType.Quest, id.Key, "QUERY_RESPONSE");
@@ -383,7 +383,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUERY_QUEST_INFO_RESPONSE, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestQueryResponse510(Packet packet)
         {
-            var id = packet.Translator.ReadEntry("Quest ID");
+            var id = packet.ReadEntry("Quest ID");
             if (id.Value) // entry is masked
                 return;
 
@@ -392,48 +392,48 @@ namespace WowPacketParser.Parsing.Parsers
                 ID = (uint)id.Key
             };
 
-            quest.QuestType = packet.Translator.ReadInt32E<QuestType>("QuestType");
-            quest.QuestLevel = packet.Translator.ReadInt32("QuestLevel");
+            quest.QuestType = packet.ReadInt32E<QuestType>("QuestType");
+            quest.QuestLevel = packet.ReadInt32("QuestLevel");
 
-            quest.QuestPackageID = packet.Translator.ReadUInt32("QuestPackageID");
-            quest.MinLevel = packet.Translator.ReadInt32("QuestMinLevel");
-            quest.QuestSortID = packet.Translator.ReadInt32E<QuestSort>("QuestSortID");
-            quest.QuestInfoID = packet.Translator.ReadInt32E<QuestInfo>("QuestInfoID");
-            quest.SuggestedGroupNum = packet.Translator.ReadUInt32("SuggestedGroupNum");
-            quest.RewardNextQuest = (uint)packet.Translator.ReadInt32<QuestId>("RewardNextQuest");
-            quest.RewardXPDifficulty = packet.Translator.ReadUInt32("RewardXPDifficulty");
-            quest.RewardMoney = packet.Translator.ReadInt32("RewardMoney");
-            quest.RewardBonusMoney = packet.Translator.ReadUInt32("RewardBonusMoney");
-            quest.RewardDisplaySpell = (uint)packet.Translator.ReadInt32<SpellId>("RewardDisplaySpell");
-            quest.RewardSpell = packet.Translator.ReadInt32<SpellId>("RewardSpell");
-            quest.RewardHonor = packet.Translator.ReadInt32("Reward Honor");
-            quest.RewardKillHonor = packet.Translator.ReadSingle("RewardKillHonor");
-            quest.StartItem = packet.Translator.ReadUInt32<ItemId>("StartItem");
-            quest.Flags = packet.Translator.ReadUInt32E<QuestFlags>("Flags");
-            quest.FlagsEx = packet.Translator.ReadUInt32E<QuestFlags2>("FlagsEx");
-            quest.MinimapTargetMark = packet.Translator.ReadUInt32("MinimapTargetMark"); // missing enum. 1- Skull, 16 - Unknown, but exists
-            quest.RewardTitle = packet.Translator.ReadUInt32("RewardTitle");
-            quest.RequiredPlayerKills = packet.Translator.ReadUInt32("RequiredPlayerKills");
-            quest.RewardSkillLineID = packet.Translator.ReadUInt32("RewardSkillLineID");
-            quest.RewardNumSkillUps = packet.Translator.ReadUInt32("RewardNumSkillUps");
-            quest.RewardReputationMask = packet.Translator.ReadUInt32("RewRepMask");
-            quest.QuestGiverPortrait = packet.Translator.ReadUInt32("QuestGiverPortrait");
-            quest.QuestTurnInPortrait = packet.Translator.ReadUInt32("QuestTurnInPortrait");
+            quest.QuestPackageID = packet.ReadUInt32("QuestPackageID");
+            quest.MinLevel = packet.ReadInt32("QuestMinLevel");
+            quest.QuestSortID = packet.ReadInt32E<QuestSort>("QuestSortID");
+            quest.QuestInfoID = packet.ReadInt32E<QuestInfo>("QuestInfoID");
+            quest.SuggestedGroupNum = packet.ReadUInt32("SuggestedGroupNum");
+            quest.RewardNextQuest = (uint)packet.ReadInt32<QuestId>("RewardNextQuest");
+            quest.RewardXPDifficulty = packet.ReadUInt32("RewardXPDifficulty");
+            quest.RewardMoney = packet.ReadInt32("RewardMoney");
+            quest.RewardBonusMoney = packet.ReadUInt32("RewardBonusMoney");
+            quest.RewardDisplaySpell = (uint)packet.ReadInt32<SpellId>("RewardDisplaySpell");
+            quest.RewardSpell = packet.ReadInt32<SpellId>("RewardSpell");
+            quest.RewardHonor = packet.ReadInt32("Reward Honor");
+            quest.RewardKillHonor = packet.ReadSingle("RewardKillHonor");
+            quest.StartItem = packet.ReadUInt32<ItemId>("StartItem");
+            quest.Flags = packet.ReadUInt32E<QuestFlags>("Flags");
+            quest.FlagsEx = packet.ReadUInt32E<QuestFlags2>("FlagsEx");
+            quest.MinimapTargetMark = packet.ReadUInt32("MinimapTargetMark"); // missing enum. 1- Skull, 16 - Unknown, but exists
+            quest.RewardTitle = packet.ReadUInt32("RewardTitle");
+            quest.RequiredPlayerKills = packet.ReadUInt32("RequiredPlayerKills");
+            quest.RewardSkillLineID = packet.ReadUInt32("RewardSkillLineID");
+            quest.RewardNumSkillUps = packet.ReadUInt32("RewardNumSkillUps");
+            quest.RewardReputationMask = packet.ReadUInt32("RewRepMask");
+            quest.QuestGiverPortrait = packet.ReadUInt32("QuestGiverPortrait");
+            quest.QuestTurnInPortrait = packet.ReadUInt32("QuestTurnInPortrait");
 
             quest.RewardItem = new uint?[4];
             quest.RewardAmount = new uint?[4];
             for (int i = 0; i < 4; i++)
             {
-                quest.RewardItem[i] = (uint)packet.Translator.ReadInt32<ItemId>("Reward Item ID", i);
-                quest.RewardAmount[i] = packet.Translator.ReadUInt32("Reward Item Count", i);
+                quest.RewardItem[i] = (uint)packet.ReadInt32<ItemId>("Reward Item ID", i);
+                quest.RewardAmount[i] = packet.ReadUInt32("Reward Item Count", i);
             }
 
             quest.RewardChoiceItemID = new uint?[6];
             quest.RewardChoiceItemQuantity = new uint?[6];
             for (int i = 0; i < 6; i++)
             {
-                quest.RewardChoiceItemID[i] = (uint)packet.Translator.ReadInt32<ItemId>("Reward Choice Item ID", i);
-                quest.RewardChoiceItemQuantity[i] = packet.Translator.ReadUInt32("Reward Choice Item Count", i);
+                quest.RewardChoiceItemID[i] = (uint)packet.ReadInt32<ItemId>("Reward Choice Item ID", i);
+                quest.RewardChoiceItemQuantity[i] = packet.ReadUInt32("Reward Choice Item Count", i);
             }
 
             const int repCount = 5;
@@ -441,92 +441,92 @@ namespace WowPacketParser.Parsing.Parsers
             quest.RewardFactionValue = new int?[repCount];
             quest.RewardFactionOverride = new int?[repCount];
             for (int i = 0; i < repCount; i++)
-                quest.RewardFactionID[i] = packet.Translator.ReadUInt32("RewardFactionID", i);
+                quest.RewardFactionID[i] = packet.ReadUInt32("RewardFactionID", i);
 
             for (int i = 0; i < repCount; i++)
-                quest.RewardFactionValue[i] = packet.Translator.ReadInt32("RewardFactionValue", i);
+                quest.RewardFactionValue[i] = packet.ReadInt32("RewardFactionValue", i);
 
             for (int i = 0; i < repCount; i++)
-                quest.RewardFactionOverride[i] = packet.Translator.ReadInt32("RewardFactionOverride", i);
+                quest.RewardFactionOverride[i] = packet.ReadInt32("RewardFactionOverride", i);
 
             quest.RewardCurrencyID = new uint?[4];
             quest.RewardCurrencyCount = new uint?[4];
             for (int i = 0; i < 4; i++)
             {
-                quest.RewardCurrencyID[i] = packet.Translator.ReadUInt32("Reward Currency ID", i);
-                quest.RewardCurrencyCount[i] = packet.Translator.ReadUInt32("Reward Currency Count", i);
+                quest.RewardCurrencyID[i] = packet.ReadUInt32("Reward Currency ID", i);
+                quest.RewardCurrencyCount[i] = packet.ReadUInt32("Reward Currency Count", i);
             }
 
-            quest.POIContinent = packet.Translator.ReadUInt32("POIContinent");
-            quest.POIx = packet.Translator.ReadSingle("POIx");
-            quest.POIy = packet.Translator.ReadSingle("POIy");
-            quest.POIPriority = packet.Translator.ReadUInt32("POIPriority");
+            quest.POIContinent = packet.ReadUInt32("POIContinent");
+            quest.POIx = packet.ReadSingle("POIx");
+            quest.POIy = packet.ReadSingle("POIy");
+            quest.POIPriority = packet.ReadUInt32("POIPriority");
 
-            quest.LogTitle = packet.Translator.ReadCString("LogTitle");
-            quest.LogDescription = packet.Translator.ReadCString("LogDescription");
-            quest.QuestDescription = packet.Translator.ReadCString("QuestDescription");
-            quest.AreaDescription = packet.Translator.ReadCString("AreaDescription");
-            quest.QuestCompletionLog = packet.Translator.ReadCString("QuestCompletionLog");
-            quest.QuestGiverTextWindow = packet.Translator.ReadCString("QuestGiver Text Window");
-            quest.QuestGiverTargetName = packet.Translator.ReadCString("QuestGiver Target Name");
-            quest.QuestTurnTextWindow = packet.Translator.ReadCString("QuestTurn Text Window");
-            quest.QuestTurnTargetName = packet.Translator.ReadCString("QuestTurn Target Name");
+            quest.LogTitle = packet.ReadCString("LogTitle");
+            quest.LogDescription = packet.ReadCString("LogDescription");
+            quest.QuestDescription = packet.ReadCString("QuestDescription");
+            quest.AreaDescription = packet.ReadCString("AreaDescription");
+            quest.QuestCompletionLog = packet.ReadCString("QuestCompletionLog");
+            quest.QuestGiverTextWindow = packet.ReadCString("QuestGiver Text Window");
+            quest.QuestGiverTargetName = packet.ReadCString("QuestGiver Target Name");
+            quest.QuestTurnTextWindow = packet.ReadCString("QuestTurn Text Window");
+            quest.QuestTurnTargetName = packet.ReadCString("QuestTurn Target Name");
 
-            quest.SoundAccept = packet.Translator.ReadUInt32("Sound Accept");
-            quest.SoundTurnIn = packet.Translator.ReadUInt32("Sound TurnIn");
+            quest.SoundAccept = packet.ReadUInt32("Sound Accept");
+            quest.SoundTurnIn = packet.ReadUInt32("Sound TurnIn");
 
             quest.RequiredItemID = new uint?[4];
             quest.RequiredItemCount = new uint?[4];
             for (int i = 0; i < 4; i++)
             {
-                quest.RequiredItemID[i] = (uint)packet.Translator.ReadInt32<ItemId>("RequiredItemID", i);
-                quest.RequiredItemCount[i] = packet.Translator.ReadUInt32("RequiredItemCount", i);
+                quest.RequiredItemID[i] = (uint)packet.ReadInt32<ItemId>("RequiredItemID", i);
+                quest.RequiredItemCount[i] = packet.ReadUInt32("RequiredItemCount", i);
             }
 
-            byte requirementCount = packet.Translator.ReadByte("Requirement Count");
+            byte requirementCount = packet.ReadByte("Requirement Count");
             for (int i = 0; i < requirementCount; i++)
             {
-                packet.Translator.ReadUInt32("Unk UInt32", i);
+                packet.ReadUInt32("Unk UInt32", i);
 
-                QuestRequirementType reqType = packet.Translator.ReadByteE<QuestRequirementType>("Requirement Type", i);
+                QuestRequirementType reqType = packet.ReadByteE<QuestRequirementType>("Requirement Type", i);
                 switch (reqType)
                 {
                     case QuestRequirementType.CreatureKill:
                     case QuestRequirementType.CreatureInteract:
                     case QuestRequirementType.PetBattleDefeatCreature:
-                        packet.Translator.ReadInt32<UnitId>("Required Creature ID", i);
+                        packet.ReadInt32<UnitId>("Required Creature ID", i);
                         break;
                     case QuestRequirementType.Item:
-                        packet.Translator.ReadInt32<ItemId>("Required Item ID", i);
+                        packet.ReadInt32<ItemId>("Required Item ID", i);
                         break;
                     case QuestRequirementType.GameObject:
-                        packet.Translator.ReadInt32<GOId>("Required GameObject ID", i);
+                        packet.ReadInt32<GOId>("Required GameObject ID", i);
                         break;
                     case QuestRequirementType.Currency:
-                        packet.Translator.ReadUInt32("Required Currency ID", i);
+                        packet.ReadUInt32("Required Currency ID", i);
                         break;
                     case QuestRequirementType.Spell:
-                        packet.Translator.ReadInt32<SpellId>("Required Spell ID", i);
+                        packet.ReadInt32<SpellId>("Required Spell ID", i);
                         break;
                     case QuestRequirementType.FactionRepHigher:
                     case QuestRequirementType.FactionRepLower:
-                        packet.Translator.ReadUInt32("Required Faction ID", i);
+                        packet.ReadUInt32("Required Faction ID", i);
                         break;
                     case QuestRequirementType.PetBattleDefeatSpecies:
-                        packet.Translator.ReadUInt32("Required Species ID", i);
+                        packet.ReadUInt32("Required Species ID", i);
                         break;
                     default:
-                        packet.Translator.ReadInt32("Required ID", i);
+                        packet.ReadInt32("Required ID", i);
                         break;
                 }
 
-                packet.Translator.ReadInt32("Required Count", i);
-                packet.Translator.ReadUInt32("Unk UInt32", i);
-                packet.Translator.ReadCString("Objective Text", i);
-                packet.Translator.ReadByte("Unk Byte", i);
-                byte count = packet.Translator.ReadByte("Unk Byte", i);
+                packet.ReadInt32("Required Count", i);
+                packet.ReadUInt32("Unk UInt32", i);
+                packet.ReadCString("Objective Text", i);
+                packet.ReadByte("Unk Byte", i);
+                byte count = packet.ReadByte("Unk Byte", i);
                 for (int j = 0; j < count; j++)
-                    packet.Translator.ReadUInt32("Unk UInt32", i, j);
+                    packet.ReadUInt32("Unk UInt32", i, j);
             }
 
             // unused in MoP, but required for SQL building
@@ -550,55 +550,55 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_QUERY_QUEST_COMPLETION_NPCS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleQuestPoiQuery(Packet packet)
         {
-            var count = packet.Translator.ReadUInt32("Count");
+            var count = packet.ReadUInt32("Count");
 
             for (var i = 0; i < count; i++)
-                packet.Translator.ReadInt32<QuestId>("Quest ID", i);
+                packet.ReadInt32<QuestId>("Quest ID", i);
         }
 
         [Parser(Opcode.CMSG_QUERY_QUEST_COMPLETION_NPCS, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleQuestNPCQuery430(Packet packet)
         {
-            var count = packet.Translator.ReadBits("Count", 24);
+            var count = packet.ReadBits("Count", 24);
             for (int i = 0; i < count; ++i)
-                packet.Translator.ReadUInt32<QuestId>("Quest", i);
+                packet.ReadUInt32<QuestId>("Quest", i);
         }
 
         [Parser(Opcode.SMSG_QUEST_COMPLETION_NPC_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleQuestNpcQueryResponse(Packet packet)
         {
-            var count = packet.Translator.ReadUInt32("Count");
+            var count = packet.ReadUInt32("Count");
 
             for (var i = 0; i < count; ++i)
             {
-                var count2 = packet.Translator.ReadUInt32("Number of NPC", i);
+                var count2 = packet.ReadUInt32("Number of NPC", i);
                 for (var j = 0; j < count2; ++j)
                 {
-                    var entry = packet.Translator.ReadEntry();
+                    var entry = packet.ReadEntry();
                     packet.AddValue(!entry.Value ? "Creature" : "GameObject",
                         StoreGetters.GetName(entry.Value ? StoreNameType.GameObject : StoreNameType.Unit, entry.Key), i, j);
                 }
             }
 
             for (var i = 0; i < count; ++i)
-                packet.Translator.ReadInt32<QuestId>("Quest ID", i);
+                packet.ReadInt32<QuestId>("Quest ID", i);
         }
 
         [Parser(Opcode.SMSG_QUEST_COMPLETION_NPC_RESPONSE, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleQuestNpcQueryResponse434(Packet packet)
         {
-            var count = packet.Translator.ReadBits("Count", 23);
+            var count = packet.ReadBits("Count", 23);
             var counts = new uint[count];
 
             for (int i = 0; i < count; ++i)
-                counts[i] = packet.Translator.ReadBits("Count", 24, i);
+                counts[i] = packet.ReadBits("Count", 24, i);
 
             for (int i = 0; i < count; ++i)
             {
-                packet.Translator.ReadInt32<QuestId>("Quest ID", i);
+                packet.ReadInt32<QuestId>("Quest ID", i);
                 for (int j = 0; j < counts[i]; ++j)
                 {
-                    var entry = packet.Translator.ReadEntry();
+                    var entry = packet.ReadEntry();
                     packet.AddValue(!entry.Value ? "Creature" : "GameObject",
                         StoreGetters.GetName(entry.Value ? StoreNameType.GameObject : StoreNameType.Unit, entry.Key), i, j);
                 }
@@ -608,40 +608,40 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUEST_POI_QUERY_RESPONSE)]
         public static void HandleQuestPoiQueryResponse(Packet packet)
         {
-            int count = packet.Translator.ReadInt32("Count");
+            int count = packet.ReadInt32("Count");
 
             for (int i = 0; i < count; ++i)
             {
-                int questId = packet.Translator.ReadInt32<QuestId>("Quest ID", i);
+                int questId = packet.ReadInt32<QuestId>("Quest ID", i);
 
-                int counter = packet.Translator.ReadInt32("POI Counter", i);
+                int counter = packet.ReadInt32("POI Counter", i);
                 for (int j = 0; j < counter; ++j)
                 {
-                    int idx = packet.Translator.ReadInt32("POI Index", i, j);
+                    int idx = packet.ReadInt32("POI Index", i, j);
                     QuestPOI questPoi = new QuestPOI
                     {
                         QuestID = questId,
                         ID = idx
                     };
 
-                    questPoi.ObjectiveIndex = packet.Translator.ReadInt32("Objective Index", i, j);
+                    questPoi.ObjectiveIndex = packet.ReadInt32("Objective Index", i, j);
 
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_0_5_16048))
-                        packet.Translator.ReadUInt32("Unk Int32 1", i, j);
+                        packet.ReadUInt32("Unk Int32 1", i, j);
 
-                    questPoi.MapID = (int)packet.Translator.ReadUInt32<MapId>("Map Id", i);
-                    questPoi.WorldMapAreaId = (int)packet.Translator.ReadUInt32("World Map Area ID", i, j);
-                    questPoi.Floor = (int)packet.Translator.ReadUInt32("Floor Id", i, j);
-                    questPoi.Priority = (int)packet.Translator.ReadUInt32("Unk Int32 2", i, j);
-                    questPoi.Flags = (int)packet.Translator.ReadUInt32("Unk Int32 3", i, j);
+                    questPoi.MapID = (int)packet.ReadUInt32<MapId>("Map Id", i);
+                    questPoi.WorldMapAreaId = (int)packet.ReadUInt32("World Map Area ID", i, j);
+                    questPoi.Floor = (int)packet.ReadUInt32("Floor Id", i, j);
+                    questPoi.Priority = (int)packet.ReadUInt32("Unk Int32 2", i, j);
+                    questPoi.Flags = (int)packet.ReadUInt32("Unk Int32 3", i, j);
 
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_0_5_16048))
                     {
-                        packet.Translator.ReadUInt32("World Effect ID", i, j);
-                        packet.Translator.ReadUInt32("Player Row ID", i, j);
+                        packet.ReadUInt32("World Effect ID", i, j);
+                        packet.ReadUInt32("Player Row ID", i, j);
                     }
 
-                    int pointsSize = packet.Translator.ReadInt32("Points Counter", i, j);
+                    int pointsSize = packet.ReadInt32("Points Counter", i, j);
                     for (int k = 0; k < pointsSize; ++k)
                     {
                         QuestPOIPoint questPoiPoint = new QuestPOIPoint
@@ -649,8 +649,8 @@ namespace WowPacketParser.Parsing.Parsers
                             QuestID = questId,
                             Idx1 = idx,
                             Idx2 = k,
-                            X = packet.Translator.ReadInt32("Point X", i, j, k),
-                            Y = packet.Translator.ReadInt32("Point Y", i, j, k)
+                            X = packet.ReadInt32("Point X", i, j, k),
+                            Y = packet.ReadInt32("Point Y", i, j, k)
                         };
                         Storage.QuestPOIPoints.Add(questPoiPoint, packet.TimeSpan);
                     }
@@ -668,30 +668,30 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUEST_UPDATE_COMPLETE, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestForceRemoved(Packet packet)
         {
-            packet.Translator.ReadInt32<QuestId>("QuestID");
+            packet.ReadInt32<QuestId>("QuestID");
         }
 
         [Parser(Opcode.SMSG_QUEST_UPDATE_COMPLETE, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleQuestUpdateComplete422(Packet packet)
         {
-            packet.Translator.ReadGuid("Guid");
-            packet.Translator.ReadUInt32<QuestId>("Quest ID");
-            packet.Translator.ReadCString("Title");
-            packet.Translator.ReadCString("Complete Text");
-            packet.Translator.ReadCString("QuestGiver Text Window");
-            packet.Translator.ReadCString("QuestGiver Target Name");
-            packet.Translator.ReadCString("QuestTurn Text Window");
-            packet.Translator.ReadCString("QuestTurn Target Name");
-            packet.Translator.ReadInt32("QuestGiver Portrait");
-            packet.Translator.ReadInt32("QuestTurn Portrait");
-            packet.Translator.ReadByte("Unk Byte");
-            packet.Translator.ReadUInt32E<QuestFlags>("Quest Flags");
-            packet.Translator.ReadInt32("Unk Int32");
-            var emoteCount = packet.Translator.ReadUInt32("Quest Emote Count");
+            packet.ReadGuid("Guid");
+            packet.ReadUInt32<QuestId>("Quest ID");
+            packet.ReadCString("Title");
+            packet.ReadCString("Complete Text");
+            packet.ReadCString("QuestGiver Text Window");
+            packet.ReadCString("QuestGiver Target Name");
+            packet.ReadCString("QuestTurn Text Window");
+            packet.ReadCString("QuestTurn Target Name");
+            packet.ReadInt32("QuestGiver Portrait");
+            packet.ReadInt32("QuestTurn Portrait");
+            packet.ReadByte("Unk Byte");
+            packet.ReadUInt32E<QuestFlags>("Quest Flags");
+            packet.ReadInt32("Unk Int32");
+            var emoteCount = packet.ReadUInt32("Quest Emote Count");
             for (var i = 0; i < emoteCount; i++)
             {
-                packet.Translator.ReadUInt32("Emote Id", i);
-                packet.Translator.ReadUInt32("Emote Delay (ms)", i);
+                packet.ReadUInt32("Emote Id", i);
+                packet.ReadUInt32("Emote Delay (ms)", i);
             }
 
             ReadExtraQuestInfo(packet);
@@ -700,27 +700,27 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUEST_UPDATE_COMPLETE, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestUpdateComplete510(Packet packet)
         {
-            packet.Translator.ReadGuid("Guid");
-            packet.Translator.ReadUInt32<QuestId>("Quest ID");
-            packet.Translator.ReadInt32("Unk Int32");
-            packet.Translator.ReadCString("Title");
-            packet.Translator.ReadCString("Complete Text");
-            packet.Translator.ReadCString("QuestGiver Text Window");
-            packet.Translator.ReadCString("QuestGiver Target Name");
-            packet.Translator.ReadCString("QuestTurn Text Window");
-            packet.Translator.ReadCString("QuestTurn Target Name");
-            packet.Translator.ReadInt32("QuestGiver Portrait");
-            packet.Translator.ReadInt32("QuestTurn Portrait");
-            packet.Translator.ReadByte("Unk Byte");
-            packet.Translator.ReadUInt32E<QuestFlags>("Quest Flags");
-            packet.Translator.ReadUInt32E<QuestFlags2>("Quest Flags 2");
-            packet.Translator.ReadInt32("Unk Int32");
+            packet.ReadGuid("Guid");
+            packet.ReadUInt32<QuestId>("Quest ID");
+            packet.ReadInt32("Unk Int32");
+            packet.ReadCString("Title");
+            packet.ReadCString("Complete Text");
+            packet.ReadCString("QuestGiver Text Window");
+            packet.ReadCString("QuestGiver Target Name");
+            packet.ReadCString("QuestTurn Text Window");
+            packet.ReadCString("QuestTurn Target Name");
+            packet.ReadInt32("QuestGiver Portrait");
+            packet.ReadInt32("QuestTurn Portrait");
+            packet.ReadByte("Unk Byte");
+            packet.ReadUInt32E<QuestFlags>("Quest Flags");
+            packet.ReadUInt32E<QuestFlags2>("Quest Flags 2");
+            packet.ReadInt32("Unk Int32");
 
-            var emoteCount = packet.Translator.ReadUInt32("Quest Emote Count");
+            var emoteCount = packet.ReadUInt32("Quest Emote Count");
             for (var i = 0; i < emoteCount; i++)
             {
-                packet.Translator.ReadUInt32("Emote Delay (ms)", i);
-                packet.Translator.ReadUInt32("Emote Id", i);
+                packet.ReadUInt32("Emote Delay (ms)", i);
+                packet.ReadUInt32("Emote Id", i);
             }
 
             ReadExtraQuestInfo(packet);
@@ -729,14 +729,14 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUERY_QUESTS_COMPLETED_RESPONSE)]
         public static void HandleQuestCompletedResponse(Packet packet)
         {
-            packet.Translator.ReadInt32("Count");
+            packet.ReadInt32("Count");
             // Prints ~4k lines of quest IDs, should be DEBUG only or something...
             /*
             for (var i = 0; i < count; i++)
-                packet.Translator.ReadInt32<QuestId>("Rewarded Quest");
+                packet.ReadInt32<QuestId>("Rewarded Quest");
             */
             packet.AddValue("Error", "Packet is currently not printed");
-            packet.Translator.ReadBytes((int)packet.Length);
+            packet.ReadBytes((int)packet.Length);
         }
 
         [Parser(Opcode.CMSG_QUEST_GIVER_STATUS_QUERY)]
@@ -744,29 +744,29 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_QUEST_GIVER_QUEST_AUTOLAUNCH)]
         public static void HandleQuestgiverStatusQuery(Packet packet)
         {
-            packet.Translator.ReadGuid("GUID");
+            packet.ReadGuid("GUID");
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_LIST_MESSAGE)]
         public static void HandleQuestgiverQuestList(Packet packet)
         {
-            packet.Translator.ReadGuid("GUID");
-            packet.Translator.ReadCString("Title");
-            packet.Translator.ReadUInt32("Delay");
-            packet.Translator.ReadUInt32("Emote");
+            packet.ReadGuid("GUID");
+            packet.ReadCString("Title");
+            packet.ReadUInt32("Delay");
+            packet.ReadUInt32("Emote");
 
-            var count = packet.Translator.ReadByte("Count");
+            var count = packet.ReadByte("Count");
             for (var i = 0; i < count; i++)
             {
-                packet.Translator.ReadUInt32<QuestId>("Quest ID", i);
-                packet.Translator.ReadUInt32("Quest Icon", i);
-                packet.Translator.ReadInt32("Quest Level", i);
-                packet.Translator.ReadUInt32E<QuestFlags>("Quest Flags", i);
+                packet.ReadUInt32<QuestId>("Quest ID", i);
+                packet.ReadUInt32("Quest Icon", i);
+                packet.ReadInt32("Quest Level", i);
+                packet.ReadUInt32E<QuestFlags>("Quest Flags", i);
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
-                    packet.Translator.ReadUInt32E<QuestFlags2>("Quest Flags 2", i);
+                    packet.ReadUInt32E<QuestFlags2>("Quest Flags 2", i);
 
-                packet.Translator.ReadBool("Change icon", i);
-                packet.Translator.ReadCString("Title", i);
+                packet.ReadBool("Change icon", i);
+                packet.ReadCString("Title", i);
             }
 
         }
@@ -774,152 +774,152 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_QUEST_GIVER_QUERY_QUEST)]
         public static void HandleQuestgiverQueryQuest(Packet packet)
         {
-            packet.Translator.ReadGuid("GUID");
-            packet.Translator.ReadUInt32<QuestId>("Quest ID");
-            packet.Translator.ReadByte("Start/End (1/2)");
+            packet.ReadGuid("GUID");
+            packet.ReadUInt32<QuestId>("Quest ID");
+            packet.ReadByte("Start/End (1/2)");
         }
 
         [Parser(Opcode.CMSG_QUEST_GIVER_ACCEPT_QUEST)]
         public static void HandleQuestgiverAcceptQuest(Packet packet)
         {
-            packet.Translator.ReadGuid("GUID");
-            packet.Translator.ReadUInt32<QuestId>("Quest ID");
+            packet.ReadGuid("GUID");
+            packet.ReadUInt32<QuestId>("Quest ID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_2_9901))
-                packet.Translator.ReadUInt32("Unk UInt32");
+                packet.ReadUInt32("Unk UInt32");
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_DETAILS, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestgiverDetails(Packet packet)
         {
-            packet.Translator.ReadGuid("GUID1");
+            packet.ReadGuid("GUID1");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
-                packet.Translator.ReadGuid("Unk NPC GUID");
+                packet.ReadGuid("Unk NPC GUID");
 
-            packet.Translator.ReadUInt32<QuestId>("Quest ID");
-            packet.Translator.ReadCString("Title");
-            packet.Translator.ReadCString("Details");
-            packet.Translator.ReadCString("Objectives");
+            packet.ReadUInt32<QuestId>("Quest ID");
+            packet.ReadCString("Title");
+            packet.ReadCString("Details");
+            packet.ReadCString("Objectives");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
-                packet.Translator.ReadCString("QuestGiver Text Window");
-                packet.Translator.ReadCString("QuestGiver Target Name");
-                packet.Translator.ReadCString("QuestTurn Text Window");
-                packet.Translator.ReadCString("QuestTurn Target Name");
-                packet.Translator.ReadUInt32("QuestGiver Portrait");
-                packet.Translator.ReadUInt32("QuestTurn Portrait");
+                packet.ReadCString("QuestGiver Text Window");
+                packet.ReadCString("QuestGiver Target Name");
+                packet.ReadCString("QuestTurn Text Window");
+                packet.ReadCString("QuestTurn Target Name");
+                packet.ReadUInt32("QuestGiver Portrait");
+                packet.ReadUInt32("QuestTurn Portrait");
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
-                packet.Translator.ReadBool("Auto Accept");
+                packet.ReadBool("Auto Accept");
             else
-                packet.Translator.ReadBool<Int32>("Auto Accept");
+                packet.ReadBool<Int32>("Auto Accept");
 
             var flags = QuestFlags.None;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
-                flags = packet.Translator.ReadUInt32E<QuestFlags>("Quest Flags");
+                flags = packet.ReadUInt32E<QuestFlags>("Quest Flags");
 
-            packet.Translator.ReadUInt32("Suggested Players");
+            packet.ReadUInt32("Suggested Players");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
-                packet.Translator.ReadByte("Unknown byte");
+                packet.ReadByte("Unknown byte");
 
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_3_3a_11723))
             {
-                packet.Translator.ReadByte("Unk");
-                packet.Translator.ReadByte("Unk");
+                packet.ReadByte("Unk");
+                packet.ReadByte("Unk");
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
-                packet.Translator.ReadBool("Starts at AreaTrigger");
-                packet.Translator.ReadInt32<SpellId>("Required Spell");
+                packet.ReadBool("Starts at AreaTrigger");
+                packet.ReadInt32<SpellId>("Required Spell");
             }
 
             if (flags.HasAnyFlag(QuestFlags.HiddenRewards) && ClientVersion.RemovedInVersion(ClientVersionBuild.V3_3_5a_12340))
             {
-                packet.Translator.ReadUInt32("Hidden Chosen Items");
-                packet.Translator.ReadUInt32("Hidden Items");
-                packet.Translator.ReadUInt32("Hidden Money");
+                packet.ReadUInt32("Hidden Chosen Items");
+                packet.ReadUInt32("Hidden Items");
+                packet.ReadUInt32("Hidden Money");
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_2_10482))
-                    packet.Translator.ReadUInt32("Hidden XP");
+                    packet.ReadUInt32("Hidden XP");
             }
 
             ReadExtraQuestInfo(packet, false);
 
-            var emoteCount = packet.Translator.ReadUInt32("Quest Emote Count");
+            var emoteCount = packet.ReadUInt32("Quest Emote Count");
             for (var i = 0; i < emoteCount; i++)
             {
-                packet.Translator.ReadUInt32("Emote Id", i);
-                packet.Translator.ReadUInt32("Emote Delay (ms)", i);
+                packet.ReadUInt32("Emote Id", i);
+                packet.ReadUInt32("Emote Delay (ms)", i);
             }
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_DETAILS, ClientVersionBuild.V5_1_0_16309, ClientVersionBuild.V5_1_0a_16357)]
         public static void HandleQuestgiverDetails510(Packet packet)
         {
-            packet.Translator.ReadGuid("GUID");
-            packet.Translator.ReadGuid("Unk NPC GUID");
-            packet.Translator.ReadUInt32<QuestId>("Quest ID");
-            packet.Translator.ReadInt32("Unk Int32");
-            packet.Translator.ReadCString("Title");
-            packet.Translator.ReadCString("Details");
-            packet.Translator.ReadCString("Objectives");
-            packet.Translator.ReadCString("QuestGiver Text Window");
-            packet.Translator.ReadCString("QuestGiver Target Name");
-            packet.Translator.ReadCString("QuestTurn Text Window");
-            packet.Translator.ReadCString("QuestTurn Target Name");
-            packet.Translator.ReadUInt32("QuestGiver Portrait");
-            packet.Translator.ReadUInt32("QuestTurn Portrait");
-            packet.Translator.ReadBool("Auto Accept");
-            packet.Translator.ReadUInt32E<QuestFlags>("Quest Flags");
-            packet.Translator.ReadUInt32E<QuestFlags2>("Quest Flags 2");
-            packet.Translator.ReadUInt32("Suggested Players");
-            packet.Translator.ReadByte("Unknown byte");
-            packet.Translator.ReadBool("Starts at AreaTrigger");
+            packet.ReadGuid("GUID");
+            packet.ReadGuid("Unk NPC GUID");
+            packet.ReadUInt32<QuestId>("Quest ID");
+            packet.ReadInt32("Unk Int32");
+            packet.ReadCString("Title");
+            packet.ReadCString("Details");
+            packet.ReadCString("Objectives");
+            packet.ReadCString("QuestGiver Text Window");
+            packet.ReadCString("QuestGiver Target Name");
+            packet.ReadCString("QuestTurn Text Window");
+            packet.ReadCString("QuestTurn Target Name");
+            packet.ReadUInt32("QuestGiver Portrait");
+            packet.ReadUInt32("QuestTurn Portrait");
+            packet.ReadBool("Auto Accept");
+            packet.ReadUInt32E<QuestFlags>("Quest Flags");
+            packet.ReadUInt32E<QuestFlags2>("Quest Flags 2");
+            packet.ReadUInt32("Suggested Players");
+            packet.ReadByte("Unknown byte");
+            packet.ReadBool("Starts at AreaTrigger");
 
-            var reqSpellCount = packet.Translator.ReadUInt32("Required Spell Count");
+            var reqSpellCount = packet.ReadUInt32("Required Spell Count");
             for (var i = 0; i < reqSpellCount; i++)
-                packet.Translator.ReadInt32<SpellId>("Required Spell", i);
+                packet.ReadInt32<SpellId>("Required Spell", i);
 
             ReadExtraQuestInfo(packet, false);
 
-            var emoteCount = packet.Translator.ReadUInt32("Quest Emote Count");
+            var emoteCount = packet.ReadUInt32("Quest Emote Count");
             for (var i = 0; i < emoteCount; i++)
             {
-                packet.Translator.ReadUInt32("Emote Id", i);
-                packet.Translator.ReadUInt32("Emote Delay (ms)", i);
+                packet.ReadUInt32("Emote Id", i);
+                packet.ReadUInt32("Emote Delay (ms)", i);
             }
         }
 
         [Parser(Opcode.CMSG_QUEST_GIVER_COMPLETE_QUEST)]
         public static void HandleQuestCompleteQuest(Packet packet)
         {
-            packet.Translator.ReadGuid("GUID");
-            packet.Translator.ReadUInt32<QuestId>("Quest ID");
+            packet.ReadGuid("GUID");
+            packet.ReadUInt32<QuestId>("Quest ID");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
-                packet.Translator.ReadByte("Unk byte");
+                packet.ReadByte("Unk byte");
         }
 
         [Parser(Opcode.CMSG_QUEST_GIVER_REQUEST_REWARD)]
         public static void HandleQuestRequestReward(Packet packet)
         {
-            packet.Translator.ReadGuid("GUID");
-            packet.Translator.ReadUInt32<QuestId>("Quest ID");
+            packet.ReadGuid("GUID");
+            packet.ReadUInt32<QuestId>("Quest ID");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005) && ClientVersion.RemovedInVersion(ClientVersionBuild.V4_3_4_15595)) // remove confirmed for 434
-                packet.Translator.ReadUInt32("Unk UInt32");
+                packet.ReadUInt32("Unk UInt32");
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_REQUEST_ITEMS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleQuestRequestItems(Packet packet)
         {
-            packet.Translator.ReadGuid("GUID");
-            uint entry = packet.Translator.ReadUInt32<QuestId>("Quest ID");
-            packet.Translator.ReadCString("Title");
-            string text = packet.Translator.ReadCString("Text");
+            packet.ReadGuid("GUID");
+            uint entry = packet.ReadUInt32<QuestId>("Quest ID");
+            packet.ReadCString("Title");
+            string text = packet.ReadCString("Text");
 
             QuestRequestItems requestItems = new QuestRequestItems
             {
@@ -927,34 +927,34 @@ namespace WowPacketParser.Parsing.Parsers
                 CompletionText = text
             };
 
-            requestItems.EmoteOnComplete = packet.Translator.ReadUInt32("Emote");
-            packet.Translator.ReadUInt32("Unk UInt32 1");
-            packet.Translator.ReadUInt32("Close Window on Cancel");
+            requestItems.EmoteOnComplete = packet.ReadUInt32("Emote");
+            packet.ReadUInt32("Unk UInt32 1");
+            packet.ReadUInt32("Close Window on Cancel");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
-                packet.Translator.ReadUInt32E<QuestFlags>("Quest Flags");
+                packet.ReadUInt32E<QuestFlags>("Quest Flags");
 
-            packet.Translator.ReadUInt32("Suggested Players");
-            packet.Translator.ReadUInt32("Money");
+            packet.ReadUInt32("Suggested Players");
+            packet.ReadUInt32("Money");
 
-            uint count = packet.Translator.ReadUInt32("Number of Required Items");
+            uint count = packet.ReadUInt32("Number of Required Items");
             for (int i = 0; i < count; i++)
             {
-                packet.Translator.ReadUInt32<ItemId>("Required Item Id", i);
-                packet.Translator.ReadUInt32("Required Item Count", i);
-                packet.Translator.ReadUInt32("Required Item Display Id", i);
+                packet.ReadUInt32<ItemId>("Required Item Id", i);
+                packet.ReadUInt32("Required Item Count", i);
+                packet.ReadUInt32("Required Item Display Id", i);
             }
 
             // flags
-            packet.Translator.ReadUInt32("Unk flags 1");
-            packet.Translator.ReadUInt32("Unk flags 2");
-            packet.Translator.ReadUInt32("Unk flags 3");
-            packet.Translator.ReadUInt32("Unk flags 4");
+            packet.ReadUInt32("Unk flags 1");
+            packet.ReadUInt32("Unk flags 2");
+            packet.ReadUInt32("Unk flags 3");
+            packet.ReadUInt32("Unk flags 4");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
-                packet.Translator.ReadUInt32("Unk flags 5");
-                packet.Translator.ReadUInt32("Unk flags 6");
+                packet.ReadUInt32("Unk flags 5");
+                packet.ReadUInt32("Unk flags 6");
             }
             requestItems.EmoteOnCompleteDelay = 0;
             Storage.QuestRequestItems.Add(requestItems, packet.TimeSpan);
@@ -963,11 +963,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUEST_GIVER_REQUEST_ITEMS, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestRequestItems434(Packet packet)
         {
-            packet.Translator.ReadGuid("GUID");
-            uint entry = packet.Translator.ReadUInt32<QuestId>("Quest ID");
+            packet.ReadGuid("GUID");
+            uint entry = packet.ReadUInt32<QuestId>("Quest ID");
             
-            packet.Translator.ReadCString("Title");
-            string text = packet.Translator.ReadCString("Text");
+            packet.ReadCString("Title");
+            string text = packet.ReadCString("Text");
 
             QuestRequestItems requestItems = new QuestRequestItems
             {
@@ -975,35 +975,35 @@ namespace WowPacketParser.Parsing.Parsers
                 CompletionText = text
             };
 
-            requestItems.EmoteOnCompleteDelay = packet.Translator.ReadUInt32("Delay");  // not confirmed
-            requestItems.EmoteOnComplete = packet.Translator.ReadUInt32("Emote");  // not confirmed
+            requestItems.EmoteOnCompleteDelay = packet.ReadUInt32("Delay");  // not confirmed
+            requestItems.EmoteOnComplete = packet.ReadUInt32("Emote");  // not confirmed
 
-            packet.Translator.ReadUInt32("Close Window on Cancel");
-            packet.Translator.ReadUInt32E<QuestFlags>("Quest Flags");
-            packet.Translator.ReadUInt32("Suggested Players");
-            packet.Translator.ReadUInt32("Money");
+            packet.ReadUInt32("Close Window on Cancel");
+            packet.ReadUInt32E<QuestFlags>("Quest Flags");
+            packet.ReadUInt32("Suggested Players");
+            packet.ReadUInt32("Money");
 
-            uint countItems = packet.Translator.ReadUInt32("Number of Required Items");
+            uint countItems = packet.ReadUInt32("Number of Required Items");
             for (int i = 0; i < countItems; i++)
             {
-                packet.Translator.ReadUInt32<ItemId>("Required Item Id", i);
-                packet.Translator.ReadUInt32("Required Item Count", i);
-                packet.Translator.ReadUInt32("Required Item Display Id", i);
+                packet.ReadUInt32<ItemId>("Required Item Id", i);
+                packet.ReadUInt32("Required Item Count", i);
+                packet.ReadUInt32("Required Item Display Id", i);
             }
 
-            uint countCurrencies = packet.Translator.ReadUInt32("Number of Required Currencies");
+            uint countCurrencies = packet.ReadUInt32("Number of Required Currencies");
             for (int i = 0; i < countCurrencies; i++)
             {
-                packet.Translator.ReadUInt32("Required Currency Id", i);
-                packet.Translator.ReadUInt32("Required Currency Count", i);
+                packet.ReadUInt32("Required Currency Id", i);
+                packet.ReadUInt32("Required Currency Count", i);
             }
 
             // flags, if any of these flags is 0 quest is not completable
-            packet.Translator.ReadUInt32("Unk flags 1"); // 2
-            packet.Translator.ReadUInt32("Unk flags 2"); // 4
-            packet.Translator.ReadUInt32("Unk flags 3"); // 8
-            packet.Translator.ReadUInt32("Unk flags 4"); // 16
-            packet.Translator.ReadUInt32("Unk flags 5"); // 64
+            packet.ReadUInt32("Unk flags 1"); // 2
+            packet.ReadUInt32("Unk flags 2"); // 4
+            packet.ReadUInt32("Unk flags 3"); // 8
+            packet.ReadUInt32("Unk flags 4"); // 16
+            packet.ReadUInt32("Unk flags 5"); // 64
 
             Storage.QuestRequestItems.Add(requestItems, packet.TimeSpan);
         }
@@ -1011,10 +1011,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUEST_GIVER_REQUEST_ITEMS, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestRequestItems510(Packet packet)
         {
-            packet.Translator.ReadGuid("GUID");
-            uint entry = packet.Translator.ReadUInt32<QuestId>("Quest ID");
-            packet.Translator.ReadCString("Title");
-            string text = packet.Translator.ReadCString("Text");
+            packet.ReadGuid("GUID");
+            uint entry = packet.ReadUInt32<QuestId>("Quest ID");
+            packet.ReadCString("Title");
+            string text = packet.ReadCString("Text");
 
             QuestRequestItems requestItems = new QuestRequestItems
             {
@@ -1022,35 +1022,35 @@ namespace WowPacketParser.Parsing.Parsers
                 CompletionText = text
             };
 
-            requestItems.EmoteOnComplete = packet.Translator.ReadUInt32("Emote");
-            requestItems.EmoteOnCompleteDelay = packet.Translator.ReadUInt32("Delay");
-            packet.Translator.ReadUInt32("Close Window on Cancel");
-            packet.Translator.ReadUInt32E<QuestFlags>("Quest Flags");
-            packet.Translator.ReadUInt32E<QuestFlags2>("Quest Flags 2");
-            packet.Translator.ReadUInt32("Suggested Players");
-            packet.Translator.ReadUInt32("Money");
+            requestItems.EmoteOnComplete = packet.ReadUInt32("Emote");
+            requestItems.EmoteOnCompleteDelay = packet.ReadUInt32("Delay");
+            packet.ReadUInt32("Close Window on Cancel");
+            packet.ReadUInt32E<QuestFlags>("Quest Flags");
+            packet.ReadUInt32E<QuestFlags2>("Quest Flags 2");
+            packet.ReadUInt32("Suggested Players");
+            packet.ReadUInt32("Money");
 
-            uint countItems = packet.Translator.ReadUInt32("Number of Required Items");
+            uint countItems = packet.ReadUInt32("Number of Required Items");
             for (int i = 0; i < countItems; i++)
             {
-                packet.Translator.ReadUInt32<ItemId>("Required Item Id", i);
-                packet.Translator.ReadUInt32("Required Item Count", i);
-                packet.Translator.ReadUInt32("Required Item Display Id", i);
+                packet.ReadUInt32<ItemId>("Required Item Id", i);
+                packet.ReadUInt32("Required Item Count", i);
+                packet.ReadUInt32("Required Item Display Id", i);
             }
 
-            uint countCurrencies = packet.Translator.ReadUInt32("Number of Required Currencies");
+            uint countCurrencies = packet.ReadUInt32("Number of Required Currencies");
             for (int i = 0; i < countCurrencies; i++)
             {
-                packet.Translator.ReadUInt32("Required Currency Id", i);
-                packet.Translator.ReadUInt32("Required Currency Count", i);
+                packet.ReadUInt32("Required Currency Id", i);
+                packet.ReadUInt32("Required Currency Count", i);
             }
 
             // flags, if any of these flags is 0 quest is not completable
-            packet.Translator.ReadUInt32("Unk flags 1"); // 2
-            packet.Translator.ReadUInt32("Unk flags 2"); // 4
-            packet.Translator.ReadUInt32("Unk flags 3"); // 8
-            packet.Translator.ReadUInt32("Unk flags 4"); // 16
-            packet.Translator.ReadUInt32("Unk flags 5"); // 64
+            packet.ReadUInt32("Unk flags 1"); // 2
+            packet.ReadUInt32("Unk flags 2"); // 4
+            packet.ReadUInt32("Unk flags 3"); // 8
+            packet.ReadUInt32("Unk flags 4"); // 16
+            packet.ReadUInt32("Unk flags 5"); // 64
 
             Storage.QuestRequestItems.Add(requestItems, packet.TimeSpan);
         }
@@ -1058,10 +1058,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUEST_GIVER_OFFER_REWARD_MESSAGE)]
         public static void HandleQuestOfferReward(Packet packet)
         {
-            packet.Translator.ReadGuid("GUID");
-            uint entry = packet.Translator.ReadUInt32<QuestId>("Quest ID");
-            packet.Translator.ReadCString("Title");
-            string text = packet.Translator.ReadCString("Text");
+            packet.ReadGuid("GUID");
+            uint entry = packet.ReadUInt32<QuestId>("Quest ID");
+            packet.ReadCString("Title");
+            string text = packet.ReadCString("Text");
             QuestOfferReward offerReward = new QuestOfferReward
             {
                 ID = entry,
@@ -1070,31 +1070,31 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
             {
-                packet.Translator.ReadCString("QuestGiver Text Window");
-                packet.Translator.ReadCString("QuestGiver Target Name");
-                packet.Translator.ReadCString("QuestTurn Text Window");
-                packet.Translator.ReadCString("QuestTurn Target Name");
-                packet.Translator.ReadUInt32("QuestGiverPortrait");
-                packet.Translator.ReadUInt32("QuestTurnInPortrait");
+                packet.ReadCString("QuestGiver Text Window");
+                packet.ReadCString("QuestGiver Target Name");
+                packet.ReadCString("QuestTurn Text Window");
+                packet.ReadCString("QuestTurn Target Name");
+                packet.ReadUInt32("QuestGiverPortrait");
+                packet.ReadUInt32("QuestTurnInPortrait");
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
-                packet.Translator.ReadBool("Auto Finish");
+                packet.ReadBool("Auto Finish");
             else
-                packet.Translator.ReadBool<Int32>("Auto Finish");
+                packet.ReadBool<Int32>("Auto Finish");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
-                packet.Translator.ReadUInt32E<QuestFlags>("Quest Flags");
+                packet.ReadUInt32E<QuestFlags>("Quest Flags");
 
-            packet.Translator.ReadUInt32("Suggested Players");
+            packet.ReadUInt32("Suggested Players");
 
-            uint count1 = packet.Translator.ReadUInt32("Emote Count");
+            uint count1 = packet.ReadUInt32("Emote Count");
             uint?[] emoteIDs = {0, 0, 0, 0};
             uint?[] emoteDelays = {0, 0, 0, 0};
             for (int i = 0; i < count1; i++)
             {
-                emoteDelays[i] = packet.Translator.ReadUInt32("Emote Delay", i);
-                emoteIDs[i] = (uint)packet.Translator.ReadUInt32E<EmoteType>("Emote Id", i);
+                emoteDelays[i] = packet.ReadUInt32("Emote Delay", i);
+                emoteIDs[i] = (uint)packet.ReadUInt32E<EmoteType>("Emote Id", i);
             }
             offerReward.Emote = emoteIDs;
             offerReward.EmoteDelay = emoteDelays;
@@ -1107,115 +1107,115 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_QUEST_GIVER_CHOOSE_REWARD)]
         public static void HandleQuestChooseReward(Packet packet)
         {
-            packet.Translator.ReadGuid("GUID");
-            packet.Translator.ReadUInt32<QuestId>("Quest ID");
-            packet.Translator.ReadUInt32("Reward");
+            packet.ReadGuid("GUID");
+            packet.ReadUInt32<QuestId>("Quest ID");
+            packet.ReadUInt32("Reward");
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_INVALID_QUEST)]
         public static void HandleQuestInvalid(Packet packet)
         {
-            packet.Translator.ReadUInt32E<QuestReasonType>("Reason");
+            packet.ReadUInt32E<QuestReasonType>("Reason");
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_FAILED)]
         public static void HandleQuestFailed(Packet packet)
         {
-            packet.Translator.ReadUInt32<QuestId>("Quest ID");
-            packet.Translator.ReadUInt32E<QuestReasonType>("Reason");
+            packet.ReadUInt32<QuestId>("Quest ID");
+            packet.ReadUInt32E<QuestReasonType>("Reason");
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_COMPLETE, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandleQuestCompleted(Packet packet)
         {
-            packet.Translator.ReadInt32<QuestId>("Quest ID");
-            packet.Translator.ReadInt32("Reward");
-            packet.Translator.ReadInt32("Money");
-            packet.Translator.ReadInt32("Honor");
-            packet.Translator.ReadInt32("Talents");
-            packet.Translator.ReadInt32("Arena Points");
+            packet.ReadInt32<QuestId>("Quest ID");
+            packet.ReadInt32("Reward");
+            packet.ReadInt32("Money");
+            packet.ReadInt32("Honor");
+            packet.ReadInt32("Talents");
+            packet.ReadInt32("Arena Points");
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_COMPLETE, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleQuestCompleted406(Packet packet)
         {
-            packet.Translator.ReadBit("Unk");
-            packet.Translator.ReadUInt32("Reward Skill Id");
-            packet.Translator.ReadInt32<QuestId>("Quest ID");
-            packet.Translator.ReadInt32("Money");
-            packet.Translator.ReadInt32("Talent Points");
-            packet.Translator.ReadUInt32("Reward Skill Points");
-            packet.Translator.ReadInt32("Reward XP");
+            packet.ReadBit("Unk");
+            packet.ReadUInt32("Reward Skill Id");
+            packet.ReadInt32<QuestId>("Quest ID");
+            packet.ReadInt32("Money");
+            packet.ReadInt32("Talent Points");
+            packet.ReadUInt32("Reward Skill Points");
+            packet.ReadInt32("Reward XP");
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_COMPLETE, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleQuestCompleted422(Packet packet)
         {
-            packet.Translator.ReadByte("Unk Byte");
-            packet.Translator.ReadInt32("Reward XP");
-            packet.Translator.ReadInt32("Money");
-            packet.Translator.ReadInt32("Reward Skill Points");
-            packet.Translator.ReadInt32<QuestId>("Quest ID");
-            packet.Translator.ReadInt32("Reward Skill Id");
-            packet.Translator.ReadInt32("Talent Points");
+            packet.ReadByte("Unk Byte");
+            packet.ReadInt32("Reward XP");
+            packet.ReadInt32("Money");
+            packet.ReadInt32("Reward Skill Points");
+            packet.ReadInt32<QuestId>("Quest ID");
+            packet.ReadInt32("Reward Skill Id");
+            packet.ReadInt32("Talent Points");
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_COMPLETE, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestCompleted434(Packet packet)
         {
-            packet.Translator.ReadInt32("Talent Points");
-            packet.Translator.ReadInt32("RewSkillPoints");
-            packet.Translator.ReadInt32("Money");
-            packet.Translator.ReadInt32("XP");
-            packet.Translator.ReadInt32<QuestId>("Quest ID");
-            packet.Translator.ReadInt32("RewSkillId");
-            packet.Translator.ReadBit("Unk Bit 1"); // if true EVENT_QUEST_FINISHED is fired, target cleared and gossip window is open
-            packet.Translator.ReadBit("Unk Bit 2");
+            packet.ReadInt32("Talent Points");
+            packet.ReadInt32("RewSkillPoints");
+            packet.ReadInt32("Money");
+            packet.ReadInt32("XP");
+            packet.ReadInt32<QuestId>("Quest ID");
+            packet.ReadInt32("RewSkillId");
+            packet.ReadBit("Unk Bit 1"); // if true EVENT_QUEST_FINISHED is fired, target cleared and gossip window is open
+            packet.ReadBit("Unk Bit 2");
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_COMPLETE, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestCompleted510(Packet packet)
         {
-            packet.Translator.ReadInt32("Talent Points");
-            packet.Translator.ReadInt32("Money");
-            packet.Translator.ReadInt32<QuestId>("Quest ID");
-            packet.Translator.ReadInt32("XP");
-            packet.Translator.ReadInt32("RewSkillPoints");
-            packet.Translator.ReadInt32("RewSkillId");
-            packet.Translator.ReadBit("Unk Bit 1"); // if true EVENT_QUEST_FINISHED is fired, target cleared and gossip window is open
-            packet.Translator.ReadBit("Unk Bit 2");
+            packet.ReadInt32("Talent Points");
+            packet.ReadInt32("Money");
+            packet.ReadInt32<QuestId>("Quest ID");
+            packet.ReadInt32("XP");
+            packet.ReadInt32("RewSkillPoints");
+            packet.ReadInt32("RewSkillId");
+            packet.ReadBit("Unk Bit 1"); // if true EVENT_QUEST_FINISHED is fired, target cleared and gossip window is open
+            packet.ReadBit("Unk Bit 2");
         }
 
         [Parser(Opcode.CMSG_QUEST_LOG_SWAP_QUEST)]
         public static void HandleQuestSwapQuest(Packet packet)
         {
-            packet.Translator.ReadByte("Slot 1");
-            packet.Translator.ReadByte("Slot 2");
+            packet.ReadByte("Slot 1");
+            packet.ReadByte("Slot 2");
         }
 
         [Parser(Opcode.CMSG_QUEST_LOG_REMOVE_QUEST)]
         public static void HandleQuestRemoveQuest(Packet packet)
         {
-            packet.Translator.ReadByte("Slot");
+            packet.ReadByte("Slot");
         }
 
         [Parser(Opcode.SMSG_QUEST_UPDATE_ADD_KILL)]
         [Parser(Opcode.SMSG_QUEST_UPDATE_ADD_ITEM)]
         public static void HandleQuestUpdateAdd(Packet packet)
         {
-            packet.Translator.ReadInt32<QuestId>("Quest ID");
-            var entry = packet.Translator.ReadEntry();
+            packet.ReadInt32<QuestId>("Quest ID");
+            var entry = packet.ReadEntry();
             packet.AddValue("Entry", StoreGetters.GetName(entry.Value ? StoreNameType.GameObject : StoreNameType.Unit, entry.Key));
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
-                packet.Translator.ReadInt16("Count");
+                packet.ReadInt16("Count");
             else
-                packet.Translator.ReadInt32("Count");
+                packet.ReadInt32("Count");
 
-            packet.Translator.ReadInt32("Required Count");
-            packet.Translator.ReadGuid("GUID");
+            packet.ReadInt32("Required Count");
+            packet.ReadGuid("GUID");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
-                packet.Translator.ReadByteE<QuestRequirementType>("Quest Requirement Type");
+                packet.ReadByteE<QuestRequirementType>("Quest Requirement Type");
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_STATUS)]
@@ -1224,45 +1224,45 @@ namespace WowPacketParser.Parsing.Parsers
         {
             uint count = 1;
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_QUEST_GIVER_STATUS_MULTIPLE, Direction.ServerToClient))
-                count = packet.Translator.ReadUInt32("Count");
+                count = packet.ReadUInt32("Count");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
                 for (var i = 0; i < count; i++)
                 {
-                    packet.Translator.ReadGuid("GUID", i);
-                    packet.Translator.ReadInt32E<QuestGiverStatus4x>("Status", i);
+                    packet.ReadGuid("GUID", i);
+                    packet.ReadInt32E<QuestGiverStatus4x>("Status", i);
                 }
             else
                 for (var i = 0; i < count; i++)
                 {
-                    packet.Translator.ReadGuid("GUID", i);
-                    packet.Translator.ReadByteE<QuestGiverStatus>("Status", i);
+                    packet.ReadGuid("GUID", i);
+                    packet.ReadByteE<QuestGiverStatus>("Status", i);
                 }
         }
 
         [Parser(Opcode.SMSG_QUEST_UPDATE_ADD_PVP_CREDIT)]
         public static void HandleQuestUpdateAddPvPCredit(Packet packet)
         {
-            packet.Translator.ReadInt32<QuestId>("Quest ID");
-            packet.Translator.ReadInt32("Count");
-            packet.Translator.ReadInt32("Required Count");
+            packet.ReadInt32<QuestId>("Quest ID");
+            packet.ReadInt32("Count");
+            packet.ReadInt32("Required Count");
         }
 
         [Parser(Opcode.SMSG_QUEST_CONFIRM_ACCEPT)]
         public static void HandleQuestConfirAccept(Packet packet)
         {
-            packet.Translator.ReadInt32<QuestId>("Quest ID");
-            packet.Translator.ReadCString("Title");
-            packet.Translator.ReadGuid("GUID");
+            packet.ReadInt32<QuestId>("Quest ID");
+            packet.ReadCString("Title");
+            packet.ReadGuid("GUID");
         }
 
         [Parser(Opcode.MSG_QUEST_PUSH_RESULT)]
         public static void HandleQuestPushResult(Packet packet)
         {
-            packet.Translator.ReadGuid("GUID");
+            packet.ReadGuid("GUID");
             if (packet.Direction == Direction.ClientToServer)
-                packet.Translator.ReadUInt32("Quest Id");
-            packet.Translator.ReadByteE<QuestPartyResult>("Result");
+                packet.ReadUInt32("Quest Id");
+            packet.ReadByteE<QuestPartyResult>("Result");
         }
 
         [Parser(Opcode.CMSG_QUERY_QUESTS_COMPLETED)]

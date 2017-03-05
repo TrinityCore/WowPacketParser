@@ -11,7 +11,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.SMSG_PLAYER_DIFFICULTY_CHANGE)]
         public static void HandleSetDifficulty(Packet packet)
         {
-            packet.Translator.ReadInt32E<MapDifficulty>("Difficulty");
+            packet.ReadInt32E<MapDifficulty>("Difficulty");
         }
     }
 }

@@ -60,7 +60,7 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
             if (packet.ReadBoolean())
             {
                 packet.Read<uint>("Category", 0, 32);
-                packet.Translator.ReadSingle("Population");
+                packet.ReadSingle("Population");
                 packet.Read<byte>("StateFlags", 0, 8);
                 packet.ReadSkip(19);
                 packet.Read<uint>("Type", int.MinValue, 32);
@@ -70,8 +70,8 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
                     packet.ReadString("Version", 0, 5, "PrivilegedData");
                     packet.Read<uint>("ConfigId", 0, 32, "PrivilegedData");
 
-                    var ip = packet.Translator.ReadBytes(4);
-                    var port = packet.Translator.ReadBytes(2);
+                    var ip = packet.ReadBytes(4);
+                    var port = packet.ReadBytes(2);
 
                     Array.Reverse(port);
 
@@ -116,8 +116,8 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
             var count = packet.Read<uint>(0, 5);
             for (var i = 0; i < count; ++i)
             {
-                var ip = packet.Translator.ReadBytes(4);
-                var port = packet.Translator.ReadBytes(2);
+                var ip = packet.ReadBytes(4);
+                var port = packet.ReadBytes(2);
 
                 Array.Reverse(port);
 
@@ -127,8 +127,8 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
             count = packet.Read<uint>(0, 5);
             for (var i = 0; i < count; ++i)
             {
-                var ip = packet.Translator.ReadBytes(16);
-                var port = packet.Translator.ReadBytes(2);
+                var ip = packet.ReadBytes(16);
+                var port = packet.ReadBytes(2);
 
                 Array.Reverse(port);
 

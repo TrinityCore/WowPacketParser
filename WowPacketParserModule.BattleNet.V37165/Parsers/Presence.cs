@@ -29,7 +29,7 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
             for (var i = 0; i < count; ++i)
                 handles.Add(packet.Read<uint>(0, 32));
 
-            var data = packet.Translator.ReadBytes(packet.Read<int>(0, 11));
+            var data = packet.ReadBytes(packet.Read<int>(0, 11));
             HandleUpdateNotifyFields(packet.Stream, handles, data, varSizes);
 
             if (packet.ReadBoolean())

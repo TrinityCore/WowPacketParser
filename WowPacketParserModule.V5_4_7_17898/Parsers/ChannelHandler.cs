@@ -9,19 +9,19 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.CMSG_CHAT_CHANNEL_LIST)]
         public static void HandleChannelList(Packet packet)
         {
-            var channelLength = packet.Translator.ReadBits(7);
-            packet.Translator.ReadWoWString("Channel Name", channelLength);
+            var channelLength = packet.ReadBits(7);
+            packet.ReadWoWString("Channel Name", channelLength);
         }
 
         [Parser(Opcode.SMSG_CHANNEL_NOTIFY)]
         public static void HandleChannelNotify(Packet packet)
         {
-            var type = packet.Translator.ReadByteE<ChatNotificationType>("Notification Type");
+            var type = packet.ReadByteE<ChatNotificationType>("Notification Type");
 
             if (type == ChatNotificationType.InvalidName) // hack, because of some silly reason this type
-                packet.Translator.ReadBytes(3);                      // has 3 null bytes before the invalid channel name
+                packet.ReadBytes(3);                      // has 3 null bytes before the invalid channel name
 
-            packet.Translator.ReadCString("Channel Name");
+            packet.ReadCString("Channel Name");
 
             switch (type)
             {
@@ -39,21 +39,21 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 case ChatNotificationType.VoiceOff:
                 case ChatNotificationType.TrialRestricted:
                 {
-                    packet.Translator.ReadGuid("GUID");
-                    packet.Translator.ReadInt32("RealmId");
+                    packet.ReadGuid("GUID");
+                    packet.ReadInt32("RealmId");
                     break;
                 }
                 case ChatNotificationType.YouJoined:
                 {
-                    packet.Translator.ReadByteE<ChannelFlag>("Flags");
-                    packet.Translator.ReadInt32("Channel Id");
-                    packet.Translator.ReadInt32("Unk");
+                    packet.ReadByteE<ChannelFlag>("Flags");
+                    packet.ReadInt32("Channel Id");
+                    packet.ReadInt32("Unk");
                     break;
                 }
                 case ChatNotificationType.YouLeft:
                 {
-                    packet.Translator.ReadInt32("Channel Id");
-                    packet.Translator.ReadBool("Unk");
+                    packet.ReadInt32("Channel Id");
+                    packet.ReadBool("Unk");
                     break;
                 }
                 case ChatNotificationType.PlayerNotFound:
@@ -62,22 +62,22 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 case ChatNotificationType.PlayerInvited:
                 case ChatNotificationType.PlayerInviteBanned:
                 {
-                    packet.Translator.ReadCString("Player Name");
+                    packet.ReadCString("Player Name");
                     break;
                 }
                 case ChatNotificationType.ModeChange:
                 {
-                    packet.Translator.ReadGuid("GUID");
-                    packet.Translator.ReadByteE<ChannelMemberFlag>("Old Flags");
-                    packet.Translator.ReadByteE<ChannelMemberFlag>("New Flags");
+                    packet.ReadGuid("GUID");
+                    packet.ReadByteE<ChannelMemberFlag>("Old Flags");
+                    packet.ReadByteE<ChannelMemberFlag>("New Flags");
                     break;
                 }
                 case ChatNotificationType.PlayerKicked:
                 case ChatNotificationType.PlayerBanned:
                 case ChatNotificationType.PlayerUnbanned:
                 {
-                    packet.Translator.ReadGuid("Bad");
-                    packet.Translator.ReadGuid("Good");
+                    packet.ReadGuid("Bad");
+                    packet.ReadGuid("Good");
                     break;
                 }
                 case ChatNotificationType.WrongPassword:
@@ -100,35 +100,35 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.CMSG_CHAT_JOIN_CHANNEL)]
         public static void HandleChannelJoin(Packet packet)
         {
-            packet.Translator.ReadInt32("Channel Id");
-            var passwordLength = packet.Translator.ReadBits(7);
-            packet.Translator.ReadBit("Joined by zone update");
-            var channelLength = packet.Translator.ReadBits(7);
-            packet.Translator.ReadBit("Has Voice");
-            packet.Translator.ReadWoWString("Channel Pass", passwordLength);
-            packet.Translator.ReadWoWString("Channel Name", channelLength);
+            packet.ReadInt32("Channel Id");
+            var passwordLength = packet.ReadBits(7);
+            packet.ReadBit("Joined by zone update");
+            var channelLength = packet.ReadBits(7);
+            packet.ReadBit("Has Voice");
+            packet.ReadWoWString("Channel Pass", passwordLength);
+            packet.ReadWoWString("Channel Name", channelLength);
         }
 
         [Parser(Opcode.CMSG_CHAT_LEAVE_CHANNEL)]
         public static void HandleChannelLeave(Packet packet)
         {
-            packet.Translator.ReadInt32("Channel Id");
-            var channelLength = packet.Translator.ReadBits(7);
-            packet.Translator.ReadWoWString("Channel Name", channelLength);
+            packet.ReadInt32("Channel Id");
+            var channelLength = packet.ReadBits(7);
+            packet.ReadWoWString("Channel Name", channelLength);
         }
 
         [Parser(Opcode.SMSG_CHANNEL_LIST)]
         public static void HandleChannelSendList(Packet packet)
         {
-            packet.Translator.ReadByte("Type");
-            packet.Translator.ReadCString("Channel Name");
-            packet.Translator.ReadByteE<ChannelFlag>("Flags");
-            var count = packet.Translator.ReadInt32("Counter");
+            packet.ReadByte("Type");
+            packet.ReadCString("Channel Name");
+            packet.ReadByteE<ChannelFlag>("Flags");
+            var count = packet.ReadInt32("Counter");
             for (var i = 0; i < count; i++)
             {
-                packet.Translator.ReadGuid("Player GUID " + i);
-                packet.Translator.ReadByteE<ChannelMemberFlag>("Player Flags " + i);
-                packet.Translator.ReadUInt32("unk");
+                packet.ReadGuid("Player GUID " + i);
+                packet.ReadByteE<ChannelMemberFlag>("Player Flags " + i);
+                packet.ReadUInt32("unk");
             }
         }
     }

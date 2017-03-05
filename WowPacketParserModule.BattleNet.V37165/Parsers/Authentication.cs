@@ -51,7 +51,7 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
             for (var i = 0; i < modules; ++i)
             {
                 var dataSize = packet.Read<int>("Data size", 0, 10, i);
-                var data = packet.Translator.ReadBytes(dataSize);
+                var data = packet.ReadBytes(dataSize);
                 if (!module.HandleData(ModulesWaitingForData[i], data, i).HasValue)
                     packet.Stream.AddValue("Data", data, i);
             }
@@ -94,9 +94,9 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
                 {
                     packet.ReadFixedLengthString("Type", 4, "Strings");
                     packet.ReadFourCC("Region", "Strings");
-                    var id = Utilities.ByteArrayToHexString(packet.Translator.ReadBytes("ModuleId", 32, "Strings"));
+                    var id = Utilities.ByteArrayToHexString(packet.ReadBytes("ModuleId", 32, "Strings"));
                     var dataSize = packet.Read<int>("Data size", 0, 10);
-                    var data = packet.Translator.ReadBytes(dataSize);
+                    var data = packet.ReadBytes(dataSize);
                     var module = new BattlenetModuleHandler(packet);
 
                     if (!module.HandleData(id, data).HasValue)
@@ -118,9 +118,9 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
                 {
                     packet.ReadFixedLengthString("Type", 4, "FinalRequest", i);
                     packet.ReadFourCC("Region", "FinalRequest", i);
-                    var id = Utilities.ByteArrayToHexString(packet.Translator.ReadBytes("ModuleId", 32, "FinalRequest", i));
+                    var id = Utilities.ByteArrayToHexString(packet.ReadBytes("ModuleId", 32, "FinalRequest", i));
                     var dataSize = packet.Read<int>("Data size", 0, 10, i);
-                    var data = packet.Translator.ReadBytes(dataSize);
+                    var data = packet.ReadBytes(dataSize);
 
                     if (!module.HandleData(id, data, i).HasValue)
                         packet.Stream.AddValue("Data", data, "FinalRequest", i);
@@ -157,9 +157,9 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
                 {
                     packet.ReadFixedLengthString("Type", 4, "Strings");
                     packet.ReadFourCC("Region", "Strings");
-                    var id = Utilities.ByteArrayToHexString(packet.Translator.ReadBytes("ModuleId", 32, "Strings"));
+                    var id = Utilities.ByteArrayToHexString(packet.ReadBytes("ModuleId", 32, "Strings"));
                     var dataSize = packet.Read<int>("Data size", 0, 10);
-                    var data = packet.Translator.ReadBytes(dataSize);
+                    var data = packet.ReadBytes(dataSize);
                     var module = new BattlenetModuleHandler(packet);
 
                     if (!module.HandleData(id, data).HasValue)
@@ -181,9 +181,9 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
                 {
                     packet.ReadFixedLengthString("Type", 4, "FinalRequest", i);
                     packet.ReadFourCC("Region", "FinalRequest", i);
-                    var id = Utilities.ByteArrayToHexString(packet.Translator.ReadBytes("ModuleId", 32, "FinalRequest", i));
+                    var id = Utilities.ByteArrayToHexString(packet.ReadBytes("ModuleId", 32, "FinalRequest", i));
                     var dataSize = packet.Read<int>("Data size", 0, 10, i);
-                    var data = packet.Translator.ReadBytes(dataSize);
+                    var data = packet.ReadBytes(dataSize);
 
                     if (!module.HandleData(id, data, i).HasValue)
                         packet.Stream.AddValue("Data", data, "FinalRequest", i);
@@ -205,9 +205,9 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
             {
                 packet.ReadFixedLengthString("Type", 4, i);
                 packet.ReadFourCC("Region", i);
-                var id = Utilities.ByteArrayToHexString(packet.Translator.ReadBytes("ModuleId", 32, i));
+                var id = Utilities.ByteArrayToHexString(packet.ReadBytes("ModuleId", 32, i));
                 var dataSize = packet.Read<int>("Data size", 0, 10, i);
-                var data = packet.Translator.ReadBytes(dataSize);
+                var data = packet.ReadBytes(dataSize);
 
                 var result = module.HandleData(id, data, i);
                 if (!result.HasValue)

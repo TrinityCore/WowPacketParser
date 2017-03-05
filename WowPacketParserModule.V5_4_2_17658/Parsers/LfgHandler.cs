@@ -9,8 +9,8 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         [Parser(Opcode.CMSG_DUNGEON_FINDER_GET_SYSTEM_INFO)]
         public static void HandleDungeonFinderGetSystemInfo(Packet packet)
         {
-            packet.Translator.ReadByte("Unk Byte");
-            packet.Translator.ReadBit("Unk boolean");
+            packet.ReadByte("Unk Byte");
+            packet.ReadBit("Unk boolean");
         }
     }
 }

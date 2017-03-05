@@ -17,7 +17,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             uint[] guildNameLength;
             uint[] playerNameLength;
 
-            var counter = packet.Translator.ReadBits(6);
+            var counter = packet.ReadBits(6);
 
             var bitEB = 0;
             var bit214 = 0;
@@ -35,115 +35,115 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
                 playerGUID[i] = new byte[8];
                 guildGUID[i] = new byte[8];
 
-                playerGUID[i][5] = packet.Translator.ReadBit();
-                accountId[i][4] = packet.Translator.ReadBit();
-                guildGUID[i][1] = packet.Translator.ReadBit();
+                playerGUID[i][5] = packet.ReadBit();
+                accountId[i][4] = packet.ReadBit();
+                guildGUID[i][1] = packet.ReadBit();
 
-                guildNameLength[i] = packet.Translator.ReadBits(7);
-                playerNameLength[i] = packet.Translator.ReadBits(6);
+                guildNameLength[i] = packet.ReadBits(7);
+                playerNameLength[i] = packet.ReadBits(6);
 
-                accountId[i][2] = packet.Translator.ReadBit();
-                guildGUID[i][2] = packet.Translator.ReadBit();
-                guildGUID[i][5] = packet.Translator.ReadBit();
-                playerGUID[i][3] = packet.Translator.ReadBit();
-                playerGUID[i][1] = packet.Translator.ReadBit();
-                playerGUID[i][0] = packet.Translator.ReadBit();
-                guildGUID[i][4] = packet.Translator.ReadBit();
+                accountId[i][2] = packet.ReadBit();
+                guildGUID[i][2] = packet.ReadBit();
+                guildGUID[i][5] = packet.ReadBit();
+                playerGUID[i][3] = packet.ReadBit();
+                playerGUID[i][1] = packet.ReadBit();
+                playerGUID[i][0] = packet.ReadBit();
+                guildGUID[i][4] = packet.ReadBit();
 
-                bitEB = packet.Translator.ReadBit();
+                bitEB = packet.ReadBit();
 
-                accountId[i][6] = packet.Translator.ReadBit();
-                guildGUID[i][0] = packet.Translator.ReadBit();
-                guildGUID[i][3] = packet.Translator.ReadBit();
-                playerGUID[i][4] = packet.Translator.ReadBit();
-                guildGUID[i][6] = packet.Translator.ReadBit();
+                accountId[i][6] = packet.ReadBit();
+                guildGUID[i][0] = packet.ReadBit();
+                guildGUID[i][3] = packet.ReadBit();
+                playerGUID[i][4] = packet.ReadBit();
+                guildGUID[i][6] = packet.ReadBit();
 
                 bits14[i] = new uint[5];
                 for (var j = 0; j < 5; ++j)
-                    bits14[i][j] = packet.Translator.ReadBits(7);
+                    bits14[i][j] = packet.ReadBits(7);
 
-                guildGUID[i][7] = packet.Translator.ReadBit();
-                playerGUID[i][6] = packet.Translator.ReadBit();
-                accountId[i][3] = packet.Translator.ReadBit();
-                playerGUID[i][2] = packet.Translator.ReadBit();
-                playerGUID[i][7] = packet.Translator.ReadBit();
-                accountId[i][7] = packet.Translator.ReadBit();
-                accountId[i][1] = packet.Translator.ReadBit();
-                accountId[i][5] = packet.Translator.ReadBit();
+                guildGUID[i][7] = packet.ReadBit();
+                playerGUID[i][6] = packet.ReadBit();
+                accountId[i][3] = packet.ReadBit();
+                playerGUID[i][2] = packet.ReadBit();
+                playerGUID[i][7] = packet.ReadBit();
+                accountId[i][7] = packet.ReadBit();
+                accountId[i][1] = packet.ReadBit();
+                accountId[i][5] = packet.ReadBit();
 
-                bit214 = packet.Translator.ReadBit();
+                bit214 = packet.ReadBit();
 
-                accountId[i][0] = packet.Translator.ReadBit();
+                accountId[i][0] = packet.ReadBit();
             }
 
             for (var i = 0; i < counter; ++i)
             {
-                packet.Translator.ReadByteE<Gender>("Gender", i);
+                packet.ReadByteE<Gender>("Gender", i);
 
-                packet.Translator.ReadXORByte(guildGUID[i], 3);
-                packet.Translator.ReadXORByte(guildGUID[i], 1);
+                packet.ReadXORByte(guildGUID[i], 3);
+                packet.ReadXORByte(guildGUID[i], 1);
 
-                packet.Translator.ReadXORByte(accountId[i], 5);
+                packet.ReadXORByte(accountId[i], 5);
 
-                packet.Translator.ReadXORByte(playerGUID[i], 3);
-                packet.Translator.ReadXORByte(playerGUID[i], 6);
+                packet.ReadXORByte(playerGUID[i], 3);
+                packet.ReadXORByte(playerGUID[i], 6);
 
-                packet.Translator.ReadXORByte(accountId[i], 6);
+                packet.ReadXORByte(accountId[i], 6);
 
-                packet.Translator.ReadByteE<Race>("Race", i);
-                packet.Translator.ReadInt32("RealmId", i);
+                packet.ReadByteE<Race>("Race", i);
+                packet.ReadInt32("RealmId", i);
 
-                packet.Translator.ReadXORByte(accountId[i], 1);
+                packet.ReadXORByte(accountId[i], 1);
 
-                packet.Translator.ReadWoWString("Player Name", playerNameLength[i], i);
+                packet.ReadWoWString("Player Name", playerNameLength[i], i);
 
-                packet.Translator.ReadXORByte(guildGUID[i], 5);
-                packet.Translator.ReadXORByte(guildGUID[i], 0);
+                packet.ReadXORByte(guildGUID[i], 5);
+                packet.ReadXORByte(guildGUID[i], 0);
 
-                packet.Translator.ReadXORByte(playerGUID[i], 4);
+                packet.ReadXORByte(playerGUID[i], 4);
 
-                packet.Translator.ReadByteE<Class>("Class", i);
+                packet.ReadByteE<Class>("Class", i);
 
-                packet.Translator.ReadXORByte(guildGUID[i], 6);
+                packet.ReadXORByte(guildGUID[i], 6);
 
-                packet.Translator.ReadUInt32<ZoneId>("Zone Id", i);
+                packet.ReadUInt32<ZoneId>("Zone Id", i);
 
-                packet.Translator.ReadXORByte(accountId[i], 0);
+                packet.ReadXORByte(accountId[i], 0);
 
-                packet.Translator.ReadInt32("RealmID", i);
+                packet.ReadInt32("RealmID", i);
 
-                packet.Translator.ReadXORByte(playerGUID[i], 1);
+                packet.ReadXORByte(playerGUID[i], 1);
 
-                packet.Translator.ReadXORByte(accountId[i], 4);
+                packet.ReadXORByte(accountId[i], 4);
 
-                packet.Translator.ReadByte("Level", i);
+                packet.ReadByte("Level", i);
 
-                packet.Translator.ReadXORByte(guildGUID[i], 4);
-                packet.Translator.ReadXORByte(playerGUID[i], 2);
+                packet.ReadXORByte(guildGUID[i], 4);
+                packet.ReadXORByte(playerGUID[i], 2);
 
-                packet.Translator.ReadWoWString("Guild Name", guildNameLength[i], i);
+                packet.ReadWoWString("Guild Name", guildNameLength[i], i);
 
-                packet.Translator.ReadXORByte(playerGUID[i], 7);
-                packet.Translator.ReadXORByte(playerGUID[i], 0);
+                packet.ReadXORByte(playerGUID[i], 7);
+                packet.ReadXORByte(playerGUID[i], 0);
 
-                packet.Translator.ReadXORByte(accountId[i], 2);
-                packet.Translator.ReadXORByte(accountId[i], 7);
+                packet.ReadXORByte(accountId[i], 2);
+                packet.ReadXORByte(accountId[i], 7);
 
-                packet.Translator.ReadInt32("Unk1", i);
+                packet.ReadInt32("Unk1", i);
 
-                packet.Translator.ReadXORByte(playerGUID[i], 5);
+                packet.ReadXORByte(playerGUID[i], 5);
 
-                packet.Translator.ReadXORByte(guildGUID[i], 7);
+                packet.ReadXORByte(guildGUID[i], 7);
 
-                packet.Translator.ReadXORByte(accountId[i], 3);
+                packet.ReadXORByte(accountId[i], 3);
 
                 for (var j = 0; j < 5; ++j)
-                    packet.Translator.ReadWoWString("String14", bits14[i][j], i, j);
+                    packet.ReadWoWString("String14", bits14[i][j], i, j);
 
-                packet.Translator.ReadXORByte(guildGUID[i], 2);
+                packet.ReadXORByte(guildGUID[i], 2);
 
-                packet.Translator.WriteGuid("PlayerGUID", playerGUID[i], i);
-                packet.Translator.WriteGuid("GuildGUID", guildGUID[i], i);
+                packet.WriteGuid("PlayerGUID", playerGUID[i], i);
+                packet.WriteGuid("GuildGUID", guildGUID[i], i);
                 packet.AddValue("Account", BitConverter.ToUInt64(accountId[i], 0), i);
             }
         }
@@ -151,9 +151,9 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
         [Parser(Opcode.CMSG_AREA_TRIGGER)]
         public static void HandleClientAreaTrigger(Packet packet)
         {
-            var entry = packet.Translator.ReadEntry("Area Trigger Id");
-            packet.Translator.ReadBit("Unk bit1");
-            packet.Translator.ReadBit("Unk bit2");
+            var entry = packet.ReadEntry("Area Trigger Id");
+            packet.ReadBit("Unk bit1");
+            packet.ReadBit("Unk bit2");
 
             packet.AddSniffData(StoreNameType.AreaTrigger, entry.Key, "AREATRIGGER");
         }
@@ -161,16 +161,16 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
         [Parser(Opcode.SMSG_SET_PROFICIENCY)]
         public static void HandleSetProficency(Packet packet)
         {
-            packet.Translator.ReadUInt32E<UnknownFlags>("Mask");
-            packet.Translator.ReadByteE<ItemClass>("Class");
+            packet.ReadUInt32E<UnknownFlags>("Mask");
+            packet.ReadByteE<ItemClass>("Class");
         }
 
         [Parser(Opcode.CMSG_DESTROY_ITEM)]
         public static void HandleDestroyItem(Packet packet)
         {
-            packet.Translator.ReadUInt32("Count");
-            packet.Translator.ReadSByte("Bag");
-            packet.Translator.ReadByte("Slot");
+            packet.ReadUInt32("Count");
+            packet.ReadSByte("Bag");
+            packet.ReadByte("Slot");
         }
     }
 }

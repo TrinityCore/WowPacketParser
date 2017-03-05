@@ -9,59 +9,59 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.CMSG_SAVE_CLIENT_VARIABLES)]
         public static void HandleSaveClientVarables(Packet packet)
         {
-            var varablesCount = packet.Translator.ReadUInt32("VarablesCount");
+            var varablesCount = packet.ReadUInt32("VarablesCount");
 
             for (var i = 0; i < varablesCount; ++i)
             {
-                var variableNameLen = packet.Translator.ReadBits(6);
-                var valueLen = packet.Translator.ReadBits(10);
+                var variableNameLen = packet.ReadBits(6);
+                var valueLen = packet.ReadBits(10);
 
-                packet.Formatter.AppendItem($"[{ i.ToString() }] VariableName: \"{ packet.Translator.ReadWoWString((int)variableNameLen) }\" Value: \"{ packet.Translator.ReadWoWString((int)valueLen) }\"");
+                packet.Formatter.AppendItem($"[{ i.ToString() }] VariableName: \"{ packet.ReadWoWString((int)variableNameLen) }\" Value: \"{ packet.ReadWoWString((int)valueLen) }\"");
             }
         }
 
         [Parser(Opcode.CMSG_SAVE_ENABLED_ADDONS)]
         public static void HandleSaveEnabledAddons(Packet packet)
         {
-            var enableAddonsCount = packet.Translator.ReadUInt32("EnableAddonsCount");
+            var enableAddonsCount = packet.ReadUInt32("EnableAddonsCount");
 
             for (var i = 0; i < enableAddonsCount; ++i)
             {
-                packet.Translator.ResetBitReader();
+                packet.ResetBitReader();
 
-                var addonNameLen = packet.Translator.ReadBits(7);
-                var versionLen = packet.Translator.ReadBits(6);
+                var addonNameLen = packet.ReadBits(7);
+                var versionLen = packet.ReadBits(6);
 
-                packet.Translator.ReadBit("Loaded", i);
-                packet.Translator.ReadBit("Disabled", i);
+                packet.ReadBit("Loaded", i);
+                packet.ReadBit("Disabled", i);
 
                 if (addonNameLen > 1)
-                    packet.Translator.ReadCString("AddonName", i);
+                    packet.ReadCString("AddonName", i);
                 if (versionLen > 1)
-                    packet.Translator.ReadCString("Version", i);
+                    packet.ReadCString("Version", i);
             }
         }
 
         [Parser(Opcode.SMSG_CACHE_INFO)]
         public static void HandleCacheInfo(Packet packet)
         {
-            var cacheInfoCount = packet.Translator.ReadUInt32("CacheInfoCount");
+            var cacheInfoCount = packet.ReadUInt32("CacheInfoCount");
 
-            packet.Translator.ResetBitReader();
+            packet.ResetBitReader();
 
-            var signatureLen = packet.Translator.ReadBits(6);
+            var signatureLen = packet.ReadBits(6);
 
             for (var i = 0; i < cacheInfoCount; ++i)
             {
-                packet.Translator.ResetBitReader();
+                packet.ResetBitReader();
 
-                var variableNameLen = packet.Translator.ReadBits(6);
-                var valueLen = packet.Translator.ReadBits(6);
+                var variableNameLen = packet.ReadBits(6);
+                var valueLen = packet.ReadBits(6);
 
-                packet.Formatter.AppendItem($"[{ i.ToString() }] VariableName: \"{ packet.Translator.ReadWoWString((int)variableNameLen) }\" Value: \"{ packet.Translator.ReadWoWString((int)valueLen) }\"");
+                packet.Formatter.AppendItem($"[{ i.ToString() }] VariableName: \"{ packet.ReadWoWString((int)variableNameLen) }\" Value: \"{ packet.ReadWoWString((int)valueLen) }\"");
             }
 
-            packet.Translator.ReadWoWString("Signature", signatureLen);
+            packet.ReadWoWString("Signature", signatureLen);
         }
     }
 }

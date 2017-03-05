@@ -9,7 +9,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static void ReadClientAddonsList(Packet packet)
         {
-            var decompCount = packet.Translator.ReadInt32();
+            var decompCount = packet.ReadInt32();
             if (decompCount == 0)
                 return;
 
@@ -17,18 +17,18 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_8_9464))
             {
-                var count = newPacket.Translator.ReadInt32("Addons Count");
+                var count = newPacket.ReadInt32("Addons Count");
                 _addonCount = count;
 
                 for (var i = 0; i < count; i++)
                 {
-                    newPacket.Translator.ReadCString("Name", i);
-                    newPacket.Translator.ReadBool("Uses public key", i);
-                    newPacket.Translator.ReadInt32("Public key CRC", i);
-                    newPacket.Translator.ReadInt32("URL file CRC", i);
+                    newPacket.ReadCString("Name", i);
+                    newPacket.ReadBool("Uses public key", i);
+                    newPacket.ReadInt32("Public key CRC", i);
+                    newPacket.ReadInt32("URL file CRC", i);
                 }
 
-                newPacket.Translator.ReadTime("Time");
+                newPacket.ReadTime("Time");
             }
             else
             {
@@ -36,10 +36,10 @@ namespace WowPacketParser.Parsing.Parsers
 
                 while (newPacket.Position != newPacket.Length)
                 {
-                    newPacket.Translator.ReadCString("Name");
-                    newPacket.Translator.ReadBool("Enabled");
-                    newPacket.Translator.ReadInt32("CRC");
-                    newPacket.Translator.ReadInt32("Unk Int32");
+                    newPacket.ReadCString("Name");
+                    newPacket.ReadBool("Enabled");
+                    newPacket.ReadInt32("CRC");
+                    newPacket.ReadInt32("Unk Int32");
 
                     count++;
                 }
@@ -63,37 +63,37 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < _addonCount; i++)
             {
-                packet.Translator.ReadByte("Addon State", i);
+                packet.ReadByte("Addon State", i);
 
-                var sendCrc = packet.Translator.ReadBool("Use CRC", i);
+                var sendCrc = packet.ReadBool("Use CRC", i);
 
                 if (sendCrc)
                 {
-                    var usePublicKey = packet.Translator.ReadBool("Use Public Key", i);
+                    var usePublicKey = packet.ReadBool("Use Public Key", i);
 
                     if (usePublicKey)
-                        packet.Translator.ReadBytes("Name MD5", 256);
+                        packet.ReadBytes("Name MD5", 256);
 
-                    packet.Translator.ReadInt32("Unk Int32", i);
+                    packet.ReadInt32("Unk Int32", i);
                 }
 
-                if (packet.Translator.ReadBool("Use URL File", i))
-                    packet.Translator.ReadCString("Addon URL File", i);
+                if (packet.ReadBool("Use URL File", i))
+                    packet.ReadCString("Addon URL File", i);
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_8_9464))
             {
-                var bannedCount = packet.Translator.ReadInt32("Banned Addons Count");
+                var bannedCount = packet.ReadInt32("Banned Addons Count");
 
                 for (var i = 0; i < bannedCount; i++)
                 {
-                    packet.Translator.ReadInt32("ID", i);
-                    packet.Translator.ReadBytes("Name MD5", 16);
-                    packet.Translator.ReadBytes("Version MD5", 16);
-                    packet.Translator.ReadTime("Time", i);
+                    packet.ReadInt32("ID", i);
+                    packet.ReadBytes("Name MD5", 16);
+                    packet.ReadBytes("Version MD5", 16);
+                    packet.ReadTime("Time", i);
 
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3a_11723))
-                        packet.Translator.ReadInt32("Is banned", i);
+                        packet.ReadInt32("Is banned", i);
                 }
             }
         }
@@ -102,21 +102,21 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_ADDON_REGISTERED_PREFIXES, ClientVersionBuild.V4_1_0_13914, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleAddonPrefixes(Packet packet)
         {
-            var count = packet.Translator.ReadUInt32("Count");
+            var count = packet.ReadUInt32("Count");
             for (var i = 0; i < count; ++i)
-                packet.Translator.ReadCString("Addon", i);
+                packet.ReadCString("Addon", i);
         }
 
         [Parser(Opcode.CMSG_ADDON_REGISTERED_PREFIXES, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleAddonPrefixes434(Packet packet)
         {
-            var count = packet.Translator.ReadBits("Count", 25);
+            var count = packet.ReadBits("Count", 25);
             var lengths = new int[count];
             for (var i = 0; i < count; ++i)
-                lengths[i] = (int)packet.Translator.ReadBits(5);
+                lengths[i] = (int)packet.ReadBits(5);
 
             for (var i = 0; i < count; ++i)
-                packet.Translator.ReadWoWString("Addon", lengths[i], i);
+                packet.ReadWoWString("Addon", lengths[i], i);
         }
 
         [Parser(Opcode.CMSG_CHAT_UNREGISTER_ALL_ADDON_PREFIXES)]

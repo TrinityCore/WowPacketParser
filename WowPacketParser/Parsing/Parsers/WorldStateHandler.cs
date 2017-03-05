@@ -10,19 +10,19 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_INIT_WORLD_STATES)]
         public static void HandleInitWorldStates(Packet packet)
         {
-            packet.Translator.ReadInt32<MapId>("Map ID");
-            packet.Translator.ReadInt32<ZoneId>("Zone Id");
-            CurrentAreaId = packet.Translator.ReadInt32<AreaId>("Area Id");
+            packet.ReadInt32<MapId>("Map ID");
+            packet.ReadInt32<ZoneId>("Zone Id");
+            CurrentAreaId = packet.ReadInt32<AreaId>("Area Id");
 
-            var numFields = packet.Translator.ReadInt16("Field Count");
+            var numFields = packet.ReadInt16("Field Count");
             for (var i = 0; i < numFields; i++)
                 ReadWorldStateBlock(packet, i);
         }
 
         public static void ReadWorldStateBlock(Packet packet, params object[] indexes)
         {
-            var field = packet.Translator.ReadInt32();
-            var val = packet.Translator.ReadInt32();
+            var field = packet.ReadInt32();
+            var val = packet.ReadInt32();
             packet.AddValue("Field", field + " - Value: " + val, indexes);
         }
 
@@ -32,13 +32,13 @@ namespace WowPacketParser.Parsing.Parsers
             ReadWorldStateBlock(packet);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                packet.Translator.ReadByte("Unk byte");
+                packet.ReadByte("Unk byte");
         }
 
         [Parser(Opcode.SMSG_UI_TIME)]
         public static void HandleUITimer(Packet packet)
         {
-            packet.Translator.ReadTime("Time");
+            packet.ReadTime("Time");
         }
     }
 }

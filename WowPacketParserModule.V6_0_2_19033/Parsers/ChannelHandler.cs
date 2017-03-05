@@ -9,134 +9,134 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         private static void ReadChannelFlags(Packet packet)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_2_20444))
-                packet.Translator.ReadUInt32E<ChannelFlag>("ChannelFlags");
+                packet.ReadUInt32E<ChannelFlag>("ChannelFlags");
             else
-                packet.Translator.ReadByteE<ChannelFlag>("ChannelFlags");
+                packet.ReadByteE<ChannelFlag>("ChannelFlags");
         }
 
         [Parser(Opcode.CMSG_CHAT_JOIN_CHANNEL)]
         public static void HandleChannelJoin(Packet packet)
         {
-            packet.Translator.ReadInt32("Channel Id");
-            packet.Translator.ReadBit("CreateVoiceSession");
-            packet.Translator.ReadBit("Internal");
+            packet.ReadInt32("Channel Id");
+            packet.ReadBit("CreateVoiceSession");
+            packet.ReadBit("Internal");
 
-            var channelLength = packet.Translator.ReadBits(7);
-            var passwordLength = packet.Translator.ReadBits(7);
+            var channelLength = packet.ReadBits(7);
+            var passwordLength = packet.ReadBits(7);
 
-            packet.Translator.ResetBitReader();
+            packet.ResetBitReader();
 
-            packet.Translator.ReadWoWString("ChannelName", channelLength);
-            packet.Translator.ReadWoWString("Password", passwordLength);
+            packet.ReadWoWString("ChannelName", channelLength);
+            packet.ReadWoWString("Password", passwordLength);
         }
 
         [Parser(Opcode.SMSG_CHANNEL_NOTIFY_JOINED)]
         public static void HandleChannelNotifyJoined(Packet packet)
         {
-            var bits544 = packet.Translator.ReadBits(7);
-            var bits24 = packet.Translator.ReadBits(10);
+            var bits544 = packet.ReadBits(7);
+            var bits24 = packet.ReadBits(10);
 
             ReadChannelFlags(packet);
-            packet.Translator.ReadInt32("ChatChannelID");
-            packet.Translator.ReadInt64("InstanceID");
+            packet.ReadInt32("ChatChannelID");
+            packet.ReadInt64("InstanceID");
 
-            packet.Translator.ReadWoWString("Channel", bits544);
-            packet.Translator.ReadWoWString("ChannelWelcomeMsg", bits24);
+            packet.ReadWoWString("Channel", bits544);
+            packet.ReadWoWString("ChannelWelcomeMsg", bits24);
         }
 
         [Parser(Opcode.SMSG_CHANNEL_NOTIFY_LEFT)]
         public static void HandleChannelNotifyLeft(Packet packet)
         {
-            var bits20 = packet.Translator.ReadBits(7);
-            packet.Translator.ReadBit("Suspended");
-            packet.Translator.ReadInt32("ChatChannelID");
-            packet.Translator.ReadWoWString("Channel", bits20);
+            var bits20 = packet.ReadBits(7);
+            packet.ReadBit("Suspended");
+            packet.ReadInt32("ChatChannelID");
+            packet.ReadWoWString("Channel", bits20);
         }
 
         [Parser(Opcode.SMSG_CHANNEL_NOTIFY)]
         public static void HandleChannelNotify(Packet packet)
         {
-            var type = packet.Translator.ReadBitsE<ChatNotificationType>("Type", 6);
-            var channelLength = packet.Translator.ReadBits(7);
-            var senderLength = packet.Translator.ReadBits(6);
+            var type = packet.ReadBitsE<ChatNotificationType>("Type", 6);
+            var channelLength = packet.ReadBits(7);
+            var senderLength = packet.ReadBits(6);
 
-            packet.Translator.ReadPackedGuid128("SenderGuid");
-            packet.Translator.ReadPackedGuid128("BnetAccountID");
+            packet.ReadPackedGuid128("SenderGuid");
+            packet.ReadPackedGuid128("BnetAccountID");
 
-            packet.Translator.ReadInt32("SenderVirtualRealm");
+            packet.ReadInt32("SenderVirtualRealm");
 
-            packet.Translator.ReadPackedGuid128("TargetGuid");
+            packet.ReadPackedGuid128("TargetGuid");
 
-            packet.Translator.ReadInt32("TargetVirtualRealm");
-            packet.Translator.ReadInt32("ChatChannelID");
+            packet.ReadInt32("TargetVirtualRealm");
+            packet.ReadInt32("ChatChannelID");
 
             if (type == ChatNotificationType.ModeChange)
             {
-                packet.Translator.ReadByteE<ChannelMemberFlag>("OldFlags");
-                packet.Translator.ReadByteE<ChannelMemberFlag>("NewFlags");
+                packet.ReadByteE<ChannelMemberFlag>("OldFlags");
+                packet.ReadByteE<ChannelMemberFlag>("NewFlags");
             }
 
-            packet.Translator.ReadWoWString("Channel", channelLength);
-            packet.Translator.ReadWoWString("Sender", senderLength);
+            packet.ReadWoWString("Channel", channelLength);
+            packet.ReadWoWString("Sender", senderLength);
         }
 
         [Parser(Opcode.SMSG_CHANNEL_LIST)]
         public static void HandleChannelSendList(Packet packet)
         {
-            packet.Translator.ReadBit("Display");
-            var bits108 = packet.Translator.ReadBits(7);
+            packet.ReadBit("Display");
+            var bits108 = packet.ReadBits(7);
 
             ReadChannelFlags(packet);
-            var int20 = packet.Translator.ReadInt32("MembersCount");
+            var int20 = packet.ReadInt32("MembersCount");
 
-            packet.Translator.ReadWoWString("Channel", bits108);
+            packet.ReadWoWString("Channel", bits108);
 
             for (var i = 0; i < int20; i++)
             {
-                packet.Translator.ReadPackedGuid128("Guid", i);
-                packet.Translator.ReadUInt32("VirtualRealmAddress", i);
-                packet.Translator.ReadByte("Flags", i);
+                packet.ReadPackedGuid128("Guid", i);
+                packet.ReadUInt32("VirtualRealmAddress", i);
+                packet.ReadByte("Flags", i);
             }
         }
 
         [Parser(Opcode.CMSG_CHAT_LEAVE_CHANNEL)]
         public static void HandleChannelLeave(Packet packet)
         {
-            packet.Translator.ReadInt32("ZoneChannelID");
-            var bits108 = packet.Translator.ReadBits(7);
-            packet.Translator.ReadWoWString("ChannelName", bits108);
+            packet.ReadInt32("ZoneChannelID");
+            var bits108 = packet.ReadBits(7);
+            packet.ReadWoWString("ChannelName", bits108);
         }
 
         [Parser(Opcode.CMSG_SET_ACTIVE_VOICE_CHANNEL)]
         public static void HandleSetActiveVoiceChannel(Packet packet)
         {
-            packet.Translator.ReadByte("ChannelType");
-            var bits108 = packet.Translator.ReadBits(7);
-            packet.Translator.ReadWoWString("ChannelName", bits108);
+            packet.ReadByte("ChannelType");
+            var bits108 = packet.ReadBits(7);
+            packet.ReadWoWString("ChannelName", bits108);
         }
 
         [Parser(Opcode.SMSG_AVAILABLE_VOICE_CHANNEL)]
         public static void HandleAvailableVoiceChannel(Packet packet)
         {
-            packet.Translator.ReadPackedGuid128("SessionGUID");
-            packet.Translator.ReadPackedGuid128("LocalGUID");
-            packet.Translator.ReadByte("ChannelType");
-            var bits108 = packet.Translator.ReadBits(7);
-            packet.Translator.ReadWoWString("ChannelName", bits108);
+            packet.ReadPackedGuid128("SessionGUID");
+            packet.ReadPackedGuid128("LocalGUID");
+            packet.ReadByte("ChannelType");
+            var bits108 = packet.ReadBits(7);
+            packet.ReadWoWString("ChannelName", bits108);
         }
 
         [Parser(Opcode.CMSG_VOICE_SESSION_ENABLE)]
         public static void HandleVoiceSessionEnable(Packet packet)
         {
-            packet.Translator.ReadBit("EnableVoiceChat");
-            packet.Translator.ReadBit("EnableMicrophone");
+            packet.ReadBit("EnableVoiceChat");
+            packet.ReadBit("EnableMicrophone");
         }
 
         [Parser(Opcode.SMSG_VOICE_SESSION_LEAVE)]
         public static void HandleVoiceLeave(Packet packet)
         {
-            packet.Translator.ReadPackedGuid128("LocalGUID");
-            packet.Translator.ReadPackedGuid128("SessionGUID");
+            packet.ReadPackedGuid128("LocalGUID");
+            packet.ReadPackedGuid128("SessionGUID");
         }
 
         [Parser(Opcode.CMSG_CHAT_CHANNEL_SET_OWNER)]
@@ -154,11 +154,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_CHAT_CHANNEL_UNSILENCE_ALL)]
         public static void HandleChannelMisc1(Packet packet)
         {
-            var lenChannelName = packet.Translator.ReadBits(7);
-            var lenName = packet.Translator.ReadBits(9);
+            var lenChannelName = packet.ReadBits(7);
+            var lenName = packet.ReadBits(9);
 
-            packet.Translator.ReadWoWString("ChannelName", lenChannelName);
-            packet.Translator.ReadWoWString("Name", lenName);
+            packet.ReadWoWString("ChannelName", lenChannelName);
+            packet.ReadWoWString("Name", lenName);
         }
 
         [Parser(Opcode.CMSG_CHAT_CHANNEL_LIST)]
@@ -170,56 +170,56 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_CHAT_CHANNEL_OWNER)]
         public static void HandleChannelMisc2(Packet packet)
         {
-            var bits108 = packet.Translator.ReadBits(7);
-            packet.Translator.ReadWoWString("ChannelName", bits108);
+            var bits108 = packet.ReadBits(7);
+            packet.ReadWoWString("ChannelName", bits108);
         }
 
         [Parser(Opcode.CMSG_CHAT_CHANNEL_PASSWORD)]
         public static void HandleChannelPassword(Packet packet)
         {
-            var lenChannelName = packet.Translator.ReadBits(7);
-            var lenName = packet.Translator.ReadBits(7);
+            var lenChannelName = packet.ReadBits(7);
+            var lenName = packet.ReadBits(7);
 
-            packet.Translator.ReadWoWString("ChannelName", lenChannelName);
-            packet.Translator.ReadWoWString("Name", lenName);
+            packet.ReadWoWString("ChannelName", lenChannelName);
+            packet.ReadWoWString("Name", lenName);
         }
 
         [Parser(Opcode.SMSG_USERLIST_ADD)]
         public static void HandleChannelUserListAdd(Packet packet)
         {
-            packet.Translator.ReadPackedGuid128("AddedUserGUID");
+            packet.ReadPackedGuid128("AddedUserGUID");
 
-            packet.Translator.ReadByteE<ChannelMemberFlag>("UserFlags");
+            packet.ReadByteE<ChannelMemberFlag>("UserFlags");
             ReadChannelFlags(packet);
-            packet.Translator.ReadInt32("ChannelID");
+            packet.ReadInt32("ChannelID");
 
-            var len = packet.Translator.ReadBits(7);
-            packet.Translator.ReadWoWString("ChannelName", len);
+            var len = packet.ReadBits(7);
+            packet.ReadWoWString("ChannelName", len);
         }
 
         [Parser(Opcode.SMSG_USERLIST_REMOVE)]
         public static void HandleChannelUserListRemove(Packet packet)
         {
-            packet.Translator.ReadPackedGuid128("RemovedUserGUID");
+            packet.ReadPackedGuid128("RemovedUserGUID");
 
             ReadChannelFlags(packet);
-            packet.Translator.ReadInt32("ChannelID");
+            packet.ReadInt32("ChannelID");
 
-            var len = packet.Translator.ReadBits(7);
-            packet.Translator.ReadWoWString("ChannelName", len);
+            var len = packet.ReadBits(7);
+            packet.ReadWoWString("ChannelName", len);
         }
 
         [Parser(Opcode.SMSG_USERLIST_UPDATE)]
         public static void HandleChannelUserListUpdate(Packet packet)
         {
-            packet.Translator.ReadPackedGuid128("UpdatedUserGUID");
+            packet.ReadPackedGuid128("UpdatedUserGUID");
 
-            packet.Translator.ReadByteE<ChannelMemberFlag>("UserFlags");
+            packet.ReadByteE<ChannelMemberFlag>("UserFlags");
             ReadChannelFlags(packet);
-            packet.Translator.ReadInt32("ChannelID");
+            packet.ReadInt32("ChannelID");
 
-            var len = packet.Translator.ReadBits(7);
-            packet.Translator.ReadWoWString("ChannelName", len);
+            var len = packet.ReadBits(7);
+            packet.ReadWoWString("ChannelName", len);
         }
     }
 }

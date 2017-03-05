@@ -37,7 +37,7 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
             {
                 packet.ReadFixedLengthString("Type", 4, "Items", i);
                 packet.ReadFourCC("Region", "Items", i);
-                packet.Translator.ReadBytes("ModuleId", 32, "Items", i);
+                packet.ReadBytes("ModuleId", 32, "Items", i);
                 packet.ReadSkip(27);
                 packet.Read<uint>("PublicationTime", 0, 32, "Items", i);
             }

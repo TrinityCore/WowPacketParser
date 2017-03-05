@@ -11,11 +11,11 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         [Parser(Opcode.CMSG_QUERY_GAME_OBJECT)]
         public static void HandleGameObjectQuery(Packet packet)
         {
-            packet.Translator.ReadInt32("Entry");
+            packet.ReadInt32("Entry");
 
-            var guid = packet.Translator.StartBitStream(1, 2, 7, 6, 4, 3, 0, 5);
-            packet.Translator.ParseBitStream(guid, 6, 7, 3, 4, 0, 2, 5, 1);
-            packet.Translator.WriteGuid("GUID", guid);
+            var guid = packet.StartBitStream(1, 2, 7, 6, 4, 3, 0, 5);
+            packet.ParseBitStream(guid, 6, 7, 3, 4, 0, 2, 5, 1);
+            packet.WriteGuid("GUID", guid);
         }
 
         [HasSniffData]
@@ -24,46 +24,46 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         {
             GameObjectTemplate gameObject = new GameObjectTemplate();
 
-            int unk1 = packet.Translator.ReadInt32("Unk1 UInt32");
+            int unk1 = packet.ReadInt32("Unk1 UInt32");
             if (unk1 == 0)
             {
-                packet.Translator.ReadEntry("Entry");
-                packet.Translator.ReadByte("Unk1 Byte");
+                packet.ReadEntry("Entry");
+                packet.ReadByte("Unk1 Byte");
                 return;
             }
-            gameObject.Type = packet.Translator.ReadInt32E<GameObjectType>("Type");
-            gameObject.DisplayID = packet.Translator.ReadUInt32("Display ID");
+            gameObject.Type = packet.ReadInt32E<GameObjectType>("Type");
+            gameObject.DisplayID = packet.ReadUInt32("Display ID");
 
             var name = new string[4];
             for (int i = 0; i < 4; i++)
-                name[i] = packet.Translator.ReadCString("Name", i);
+                name[i] = packet.ReadCString("Name", i);
             gameObject.Name = name[0];
 
-            gameObject.IconName = packet.Translator.ReadCString("Icon Name");
-            gameObject.CastCaption = packet.Translator.ReadCString("Cast Caption");
-            gameObject.UnkString = packet.Translator.ReadCString("Unk String");
+            gameObject.IconName = packet.ReadCString("Icon Name");
+            gameObject.CastCaption = packet.ReadCString("Cast Caption");
+            gameObject.UnkString = packet.ReadCString("Unk String");
 
             gameObject.Data = new int?[32];
             for (int i = 0; i < gameObject.Data.Length; i++)
-                gameObject.Data[i] = packet.Translator.ReadInt32("Data", i);
+                gameObject.Data[i] = packet.ReadInt32("Data", i);
 
 
-            gameObject.Size = packet.Translator.ReadSingle("Size");
+            gameObject.Size = packet.ReadSingle("Size");
 
-            gameObject.QuestItems = new uint?[packet.Translator.ReadByte("QuestItems Length")]; // correct?
+            gameObject.QuestItems = new uint?[packet.ReadByte("QuestItems Length")]; // correct?
 
             for (int i = 0; i < gameObject.QuestItems.Length; i++)
-                gameObject.QuestItems[i] = (uint)packet.Translator.ReadInt32<ItemId>("Quest Item", i);
+                gameObject.QuestItems[i] = (uint)packet.ReadInt32<ItemId>("Quest Item", i);
 
-            gameObject.RequiredLevel = packet.Translator.ReadInt32("RequiredLevel");
+            gameObject.RequiredLevel = packet.ReadInt32("RequiredLevel");
 
-            var entry = packet.Translator.ReadEntry("Entry");
+            var entry = packet.ReadEntry("Entry");
             if (entry.Value) // entry is masked
                 return;
 
             gameObject.Entry = (uint)entry.Key;
 
-            packet.Translator.ReadByte("Unk Byte");
+            packet.ReadByte("Unk Byte");
 
             Storage.GameObjectTemplates.Add(gameObject, packet.TimeSpan);
 
@@ -80,18 +80,18 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         public static void HandleGOCustomAnim(Packet packet)
         {
             var guid = new byte[8];
-            packet.Translator.ReadBit("Unk bit");
-            packet.Translator.StartBitStream(guid, 6, 3, 4);
-            var hasAnim = !packet.Translator.ReadBit();
-            packet.Translator.StartBitStream(guid, 5, 1, 2, 0, 7);
-            packet.Translator.ResetBitReader();
+            packet.ReadBit("Unk bit");
+            packet.StartBitStream(guid, 6, 3, 4);
+            var hasAnim = !packet.ReadBit();
+            packet.StartBitStream(guid, 5, 1, 2, 0, 7);
+            packet.ResetBitReader();
 
-            packet.Translator.ReadXORBytes(guid, 0, 2, 5, 7, 4, 3, 1);
+            packet.ReadXORBytes(guid, 0, 2, 5, 7, 4, 3, 1);
             if (hasAnim)
-                packet.Translator.ReadInt32("Anim");
+                packet.ReadInt32("Anim");
 
-            packet.Translator.ReadXORByte(guid, 6);
-            packet.Translator.WriteGuid("GUID", guid);
+            packet.ReadXORByte(guid, 6);
+            packet.WriteGuid("GUID", guid);
         }
     }
 }

@@ -9,9 +9,9 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_MAIL_LIST_RESULT)]
         public static void HandleMailListResult(Packet packet)
         {
-            packet.Translator.ReadUInt32("Total Mails");
+            packet.ReadUInt32("Total Mails");
 
-            var count = packet.Translator.ReadBits(18);
+            var count = packet.ReadBits(18);
 
             var guid = new byte[count][];
 
@@ -26,80 +26,80 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             for (var i = 0; i < count; ++i)
             {
-                bit1C[i] = packet.Translator.ReadBit();
-                bit24[i] = packet.Translator.ReadBit();
-                subjectLength[i] = packet.Translator.ReadBits(8);
-                itemCount[i] = packet.Translator.ReadBits(17);
-                bodyLength[i] = packet.Translator.ReadBits(13);
+                bit1C[i] = packet.ReadBit();
+                bit24[i] = packet.ReadBit();
+                subjectLength[i] = packet.ReadBits(8);
+                itemCount[i] = packet.ReadBits(17);
+                bodyLength[i] = packet.ReadBits(13);
 
                 for (var j = 0; j < itemCount[i]; ++j)
-                    packet.Translator.ReadBit("bit84", i, j);
+                    packet.ReadBit("bit84", i, j);
 
-                bit10[i] = packet.Translator.ReadBit();
+                bit10[i] = packet.ReadBit();
 
                 if (bit10[i])
                 {
                     guid[i] = new byte[8];
-                    packet.Translator.StartBitStream(guid[i], 2, 0, 4, 5, 6, 3, 1, 7);
+                    packet.StartBitStream(guid[i], 2, 0, 4, 5, 6, 3, 1, 7);
                 }
 
-                bit2C[i] = packet.Translator.ReadBit();
+                bit2C[i] = packet.ReadBit();
             }
 
             for (var i = 0; i < count; ++i)
             {
                 if (bit10[i])
                 {
-                    packet.Translator.ParseBitStream(guid[i], 6, 4, 2, 7, 3, 1, 0, 5);
-                    packet.Translator.WriteGuid("Guid", guid[i]);
+                    packet.ParseBitStream(guid[i], 6, 4, 2, 7, 3, 1, 0, 5);
+                    packet.WriteGuid("Guid", guid[i]);
                 }
 
                 for (var j = 0; j < itemCount[i]; ++j)
                 {
-                    packet.Translator.ReadInt32("Int14", i, j);
+                    packet.ReadInt32("Int14", i, j);
 
                     for (var k = 0; k < 8; ++k)
                     {
-                        packet.Translator.ReadInt32("Int14", i, j, k);
-                        packet.Translator.ReadInt32("Int14", i, j, k);
-                        packet.Translator.ReadInt32("Int14", i, j, k);
+                        packet.ReadInt32("Int14", i, j, k);
+                        packet.ReadInt32("Int14", i, j, k);
+                        packet.ReadInt32("Int14", i, j, k);
                     }
 
-                    packet.Translator.ReadUInt32<ItemId>("Item Id", i, j);
+                    packet.ReadUInt32<ItemId>("Item Id", i, j);
 
-                    var len = packet.Translator.ReadInt32();
+                    var len = packet.ReadInt32();
 
-                    packet.Translator.ReadBytes(len);
+                    packet.ReadBytes(len);
 
-                    packet.Translator.ReadInt32("IntED", i, j);
-                    packet.Translator.ReadInt32("IntED", i, j);
-                    packet.Translator.ReadInt32("IntED", i, j);
-                    packet.Translator.ReadInt32("IntED", i, j);
-                    packet.Translator.ReadInt32("IntED", i, j);
-                    packet.Translator.ReadInt32("IntED", i, j);
-                    packet.Translator.ReadByte("ByteED", i, j);
+                    packet.ReadInt32("IntED", i, j);
+                    packet.ReadInt32("IntED", i, j);
+                    packet.ReadInt32("IntED", i, j);
+                    packet.ReadInt32("IntED", i, j);
+                    packet.ReadInt32("IntED", i, j);
+                    packet.ReadInt32("IntED", i, j);
+                    packet.ReadByte("ByteED", i, j);
                 }
 
-                packet.Translator.ReadWoWString("Subject", subjectLength[i], i);
-                packet.Translator.ReadInt32("IntED", i);
-                packet.Translator.ReadInt32("IntED", i);
-                packet.Translator.ReadWoWString("Body", bodyLength[i], i);
-                packet.Translator.ReadInt32("IntED", i);
-                packet.Translator.ReadSingle("Time", i);
-                packet.Translator.ReadByte("ByteED", i);
-                packet.Translator.ReadInt64("Int30", i);
-                packet.Translator.ReadInt32("IntED", i);
-                packet.Translator.ReadInt32("Int14", i);
-                packet.Translator.ReadInt64("Int40", i);
+                packet.ReadWoWString("Subject", subjectLength[i], i);
+                packet.ReadInt32("IntED", i);
+                packet.ReadInt32("IntED", i);
+                packet.ReadWoWString("Body", bodyLength[i], i);
+                packet.ReadInt32("IntED", i);
+                packet.ReadSingle("Time", i);
+                packet.ReadByte("ByteED", i);
+                packet.ReadInt64("Int30", i);
+                packet.ReadInt32("IntED", i);
+                packet.ReadInt32("Int14", i);
+                packet.ReadInt64("Int40", i);
 
                 if (bit1C[i])
-                    packet.Translator.ReadInt32("IntED", i);
+                    packet.ReadInt32("IntED", i);
 
                 if (bit24[i])
-                    packet.Translator.ReadInt32("IntED", i);
+                    packet.ReadInt32("IntED", i);
 
                 if (bit2C[i])
-                    packet.Translator.ReadInt32("IntED", i);
+                    packet.ReadInt32("IntED", i);
             }
 
         }

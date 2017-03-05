@@ -12,15 +12,15 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var bits10 = 0;
             var bits18 = 0;
 
-            packet.Translator.ReadInt32("Int34");
-            packet.Translator.ReadInt32("Step");
-            packet.Translator.ReadInt32("Scenario ID");
-            packet.Translator.ReadInt32("Int30");
-            packet.Translator.ReadInt32("Int38");
-            packet.Translator.ReadInt32("Int3C");
-            packet.Translator.ReadInt32("Int24");
-            var bit40 = packet.Translator.ReadBit();
-            bits10 = (int)packet.Translator.ReadBits(19);
+            packet.ReadInt32("Int34");
+            packet.ReadInt32("Step");
+            packet.ReadInt32("Scenario ID");
+            packet.ReadInt32("Int30");
+            packet.ReadInt32("Int38");
+            packet.ReadInt32("Int3C");
+            packet.ReadInt32("Int24");
+            var bit40 = packet.ReadBit();
+            bits10 = (int)packet.ReadBits(19);
 
             var guid1 = new byte[bits10][];
             var guid2 = new byte[bits10][];
@@ -30,51 +30,51 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 guid1[i] = new byte[8];
                 guid2[i] = new byte[8];
 
-                guid1[i][2] = packet.Translator.ReadBit();
-                bits18 = (int)packet.Translator.ReadBits(4);
-                guid1[i][6] = packet.Translator.ReadBit();
-                guid2[i][2] = packet.Translator.ReadBit();
-                guid2[i][7] = packet.Translator.ReadBit();
-                guid1[i][1] = packet.Translator.ReadBit();
-                guid2[i][3] = packet.Translator.ReadBit();
-                guid2[i][5] = packet.Translator.ReadBit();
-                guid1[i][7] = packet.Translator.ReadBit();
-                guid1[i][3] = packet.Translator.ReadBit();
-                guid1[i][5] = packet.Translator.ReadBit();
-                guid2[i][4] = packet.Translator.ReadBit();
-                guid2[i][0] = packet.Translator.ReadBit();
-                guid2[i][1] = packet.Translator.ReadBit();
-                guid1[i][4] = packet.Translator.ReadBit();
-                guid2[i][6] = packet.Translator.ReadBit();
-                guid1[i][0] = packet.Translator.ReadBit();
+                guid1[i][2] = packet.ReadBit();
+                bits18 = (int)packet.ReadBits(4);
+                guid1[i][6] = packet.ReadBit();
+                guid2[i][2] = packet.ReadBit();
+                guid2[i][7] = packet.ReadBit();
+                guid1[i][1] = packet.ReadBit();
+                guid2[i][3] = packet.ReadBit();
+                guid2[i][5] = packet.ReadBit();
+                guid1[i][7] = packet.ReadBit();
+                guid1[i][3] = packet.ReadBit();
+                guid1[i][5] = packet.ReadBit();
+                guid2[i][4] = packet.ReadBit();
+                guid2[i][0] = packet.ReadBit();
+                guid2[i][1] = packet.ReadBit();
+                guid1[i][4] = packet.ReadBit();
+                guid2[i][6] = packet.ReadBit();
+                guid1[i][0] = packet.ReadBit();
             }
 
-            var bit20 = packet.Translator.ReadBit();
+            var bit20 = packet.ReadBit();
 
             for (var i = 0; i < bits10; ++i)
             {
-                packet.Translator.ReadXORByte(guid1[i], 6);
-                packet.Translator.ReadXORByte(guid2[i], 3);
-                packet.Translator.ReadXORByte(guid1[i], 3);
-                packet.Translator.ReadInt32("Int54");
-                packet.Translator.ReadInt32("Int60");
-                packet.Translator.ReadXORByte(guid1[i], 0);
-                packet.Translator.ReadXORByte(guid2[i], 7);
-                packet.Translator.ReadXORByte(guid1[i], 2);
-                packet.Translator.ReadXORByte(guid2[i], 1);
-                packet.Translator.ReadXORByte(guid2[i], 6);
-                packet.Translator.ReadXORByte(guid2[i], 0);
-                packet.Translator.ReadXORByte(guid1[i], 1);
-                packet.Translator.ReadXORByte(guid2[i], 2);
-                packet.Translator.ReadXORByte(guid1[i], 5);
-                packet.Translator.ReadXORByte(guid2[i], 4);
-                packet.Translator.ReadPackedTime("Time", i);
-                packet.Translator.ReadXORByte(guid1[i], 4);
-                packet.Translator.ReadXORByte(guid2[i], 5);
-                packet.Translator.ReadInt32("Int14");
-                packet.Translator.ReadXORByte(guid1[i], 7);
-                packet.Translator.WriteGuid("Guid1", guid1[i], i);
-                packet.Translator.WriteGuid("Guid2", guid2[i], i);
+                packet.ReadXORByte(guid1[i], 6);
+                packet.ReadXORByte(guid2[i], 3);
+                packet.ReadXORByte(guid1[i], 3);
+                packet.ReadInt32("Int54");
+                packet.ReadInt32("Int60");
+                packet.ReadXORByte(guid1[i], 0);
+                packet.ReadXORByte(guid2[i], 7);
+                packet.ReadXORByte(guid1[i], 2);
+                packet.ReadXORByte(guid2[i], 1);
+                packet.ReadXORByte(guid2[i], 6);
+                packet.ReadXORByte(guid2[i], 0);
+                packet.ReadXORByte(guid1[i], 1);
+                packet.ReadXORByte(guid2[i], 2);
+                packet.ReadXORByte(guid1[i], 5);
+                packet.ReadXORByte(guid2[i], 4);
+                packet.ReadPackedTime("Time", i);
+                packet.ReadXORByte(guid1[i], 4);
+                packet.ReadXORByte(guid2[i], 5);
+                packet.ReadInt32("Int14");
+                packet.ReadXORByte(guid1[i], 7);
+                packet.WriteGuid("Guid1", guid1[i], i);
+                packet.WriteGuid("Guid2", guid2[i], i);
             }
         }
 
@@ -86,88 +86,88 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             var bits28 = 0;
 
-            guid4[7] = packet.Translator.ReadBit();
-            guid4[0] = packet.Translator.ReadBit();
-            guid4[4] = packet.Translator.ReadBit();
-            bits28 = (int)packet.Translator.ReadBits(4);
-            guid3[3] = packet.Translator.ReadBit();
-            guid3[4] = packet.Translator.ReadBit();
-            guid3[0] = packet.Translator.ReadBit();
-            guid4[6] = packet.Translator.ReadBit();
-            guid3[2] = packet.Translator.ReadBit();
-            guid4[3] = packet.Translator.ReadBit();
-            guid3[7] = packet.Translator.ReadBit();
-            guid4[5] = packet.Translator.ReadBit();
-            guid3[6] = packet.Translator.ReadBit();
-            guid3[5] = packet.Translator.ReadBit();
-            guid3[1] = packet.Translator.ReadBit();
-            guid4[2] = packet.Translator.ReadBit();
-            guid4[1] = packet.Translator.ReadBit();
-            packet.Translator.ReadXORByte(guid4, 5);
-            packet.Translator.ReadXORByte(guid3, 2);
-            packet.Translator.ReadXORByte(guid3, 6);
-            packet.Translator.ReadXORByte(guid4, 4);
-            packet.Translator.ReadXORByte(guid3, 4);
-            packet.Translator.ReadXORByte(guid4, 6);
-            packet.Translator.ReadXORByte(guid3, 3);
-            packet.Translator.ReadPackedTime("Time");
-            packet.Translator.ReadXORByte(guid4, 7);
-            packet.Translator.ReadXORByte(guid3, 5);
-            packet.Translator.ReadXORByte(guid3, 7);
-            packet.Translator.ReadXORByte(guid3, 0);
-            packet.Translator.ReadXORByte(guid4, 1);
-            packet.Translator.ReadXORByte(guid3, 1);
-            packet.Translator.ReadXORByte(guid4, 2);
-            packet.Translator.ReadXORByte(guid4, 3);
-            packet.Translator.ReadInt32("Int50");
-            packet.Translator.ReadInt32("Int4C");
-            packet.Translator.ReadInt32("Criteria ID");
-            packet.Translator.ReadXORByte(guid4, 0);
+            guid4[7] = packet.ReadBit();
+            guid4[0] = packet.ReadBit();
+            guid4[4] = packet.ReadBit();
+            bits28 = (int)packet.ReadBits(4);
+            guid3[3] = packet.ReadBit();
+            guid3[4] = packet.ReadBit();
+            guid3[0] = packet.ReadBit();
+            guid4[6] = packet.ReadBit();
+            guid3[2] = packet.ReadBit();
+            guid4[3] = packet.ReadBit();
+            guid3[7] = packet.ReadBit();
+            guid4[5] = packet.ReadBit();
+            guid3[6] = packet.ReadBit();
+            guid3[5] = packet.ReadBit();
+            guid3[1] = packet.ReadBit();
+            guid4[2] = packet.ReadBit();
+            guid4[1] = packet.ReadBit();
+            packet.ReadXORByte(guid4, 5);
+            packet.ReadXORByte(guid3, 2);
+            packet.ReadXORByte(guid3, 6);
+            packet.ReadXORByte(guid4, 4);
+            packet.ReadXORByte(guid3, 4);
+            packet.ReadXORByte(guid4, 6);
+            packet.ReadXORByte(guid3, 3);
+            packet.ReadPackedTime("Time");
+            packet.ReadXORByte(guid4, 7);
+            packet.ReadXORByte(guid3, 5);
+            packet.ReadXORByte(guid3, 7);
+            packet.ReadXORByte(guid3, 0);
+            packet.ReadXORByte(guid4, 1);
+            packet.ReadXORByte(guid3, 1);
+            packet.ReadXORByte(guid4, 2);
+            packet.ReadXORByte(guid4, 3);
+            packet.ReadInt32("Int50");
+            packet.ReadInt32("Int4C");
+            packet.ReadInt32("Criteria ID");
+            packet.ReadXORByte(guid4, 0);
 
-            packet.Translator.WriteGuid("Guid3", guid3);
-            packet.Translator.WriteGuid("Guid4", guid4);
+            packet.WriteGuid("Guid3", guid3);
+            packet.WriteGuid("Guid4", guid4);
 
         }
 
         [Parser(Opcode.SMSG_SCENARIO_POIS)]
         public static void HandleScenarioPoi(Packet packet)
         {
-            var bits20 = packet.Translator.ReadBits(21);
+            var bits20 = packet.ReadBits(21);
 
             var bits4 = new uint[bits20];
             var bits34 = new uint[bits20][];
 
             for (var i = 0; i < bits20; ++i)
             {
-                bits4[i] = packet.Translator.ReadBits(19);
+                bits4[i] = packet.ReadBits(19);
 
                 bits34[i] = new uint[bits4[i]];
 
                 for (var j = 0; j < bits4[i]; ++j)
-                    bits34[i][j] = packet.Translator.ReadBits(21);
+                    bits34[i][j] = packet.ReadBits(21);
             }
 
             for (var i = 0; i < bits20; ++i)
             {
                 for (var j = 0; j < bits4[i]; ++j)
                 {
-                    packet.Translator.ReadInt32<MapId>("Map Id");
-                    packet.Translator.ReadInt32("Int10", i, j);
-                    packet.Translator.ReadInt32("Int16", i, j);
-                    packet.Translator.ReadInt32("World Effect ID", i, j);
-                    packet.Translator.ReadInt32("World Map Area ID", i, j);
+                    packet.ReadInt32<MapId>("Map Id");
+                    packet.ReadInt32("Int10", i, j);
+                    packet.ReadInt32("Int16", i, j);
+                    packet.ReadInt32("World Effect ID", i, j);
+                    packet.ReadInt32("World Map Area ID", i, j);
 
                     for (var k = 0; k < bits34[i][j]; ++k)
                     {
-                        packet.Translator.ReadInt32("Point X", i, j, k);
-                        packet.Translator.ReadInt32("Point Y", i, j, k);
+                        packet.ReadInt32("Point X", i, j, k);
+                        packet.ReadInt32("Point Y", i, j, k);
                     }
 
-                    packet.Translator.ReadInt32("Int12", i, j);
-                    packet.Translator.ReadInt32("Int20", i, j);
-                    packet.Translator.ReadInt32("Player Condition ID", i, j);
+                    packet.ReadInt32("Int12", i, j);
+                    packet.ReadInt32("Int20", i, j);
+                    packet.ReadInt32("Player Condition ID", i, j);
                 }
-                packet.Translator.ReadInt32("Criteria Tree ID", i);
+                packet.ReadInt32("Criteria Tree ID", i);
             }
         }
     }

@@ -9,13 +9,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_RAID_INSTANCE_MESSAGE)]
         public static void HandleRaidInstanceMessage(Packet packet)
         {
-            packet.Translator.ReadByte("Type");
+            packet.ReadByte("Type");
 
-            packet.Translator.ReadUInt32<MapId>("MapID");
-            packet.Translator.ReadUInt32("DifficultyID");
+            packet.ReadUInt32<MapId>("MapID");
+            packet.ReadUInt32("DifficultyID");
 
-            packet.Translator.ReadBit("Locked");
-            packet.Translator.ReadBit("Extended");
+            packet.ReadBit("Locked");
+            packet.ReadBit("Extended");
         }
     }
 }

@@ -28,7 +28,7 @@ namespace WowPacketParser.Misc
     /// <seealso cref="IPacketFormatter">
     /// In the translation process uses a packet formatter to properly
     /// build the concrete representation depending on the different uses.</seealso>
-    public sealed class Packet : BinaryReader
+    public sealed partial class Packet : BinaryReader
     {
         private static readonly bool SniffData = Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.SniffData) || Settings.DumpFormat == DumpFormatType.SniffDataOnly;
         private static readonly bool SniffDataOpcodes = Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.SniffDataOpcodes) || Settings.DumpFormat == DumpFormatType.SniffDataOnly;

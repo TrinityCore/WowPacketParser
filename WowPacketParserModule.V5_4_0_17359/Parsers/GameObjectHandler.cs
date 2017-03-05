@@ -12,8 +12,8 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_QUERY_GAME_OBJECT_RESPONSE)]
         public static void HandleGameObjectQueryResponse(Packet packet)
         {
-            packet.Translator.ReadByte("Unk1 Byte");
-            var entry = packet.Translator.ReadEntry("Entry");
+            packet.ReadByte("Unk1 Byte");
+            var entry = packet.ReadEntry("Entry");
             if (entry.Value) // entry is masked
                 return;
 
@@ -22,35 +22,35 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 Entry = (uint)entry.Key
             };
 
-            int unk1 = packet.Translator.ReadInt32("Unk1 UInt32");
+            int unk1 = packet.ReadInt32("Unk1 UInt32");
             if (unk1 == 0)
                 return;
 
-            gameObject.Type = packet.Translator.ReadInt32E<GameObjectType>("Type");
-            gameObject.DisplayID = packet.Translator.ReadUInt32("Display ID");
+            gameObject.Type = packet.ReadInt32E<GameObjectType>("Type");
+            gameObject.DisplayID = packet.ReadUInt32("Display ID");
 
             var name = new string[4];
             for (int i = 0; i < 4; i++)
-                name[i] = packet.Translator.ReadCString("Name", i);
+                name[i] = packet.ReadCString("Name", i);
             gameObject.Name = name[0];
 
-            gameObject.IconName = packet.Translator.ReadCString("Icon Name");
-            gameObject.CastCaption = packet.Translator.ReadCString("Cast Caption");
-            gameObject.UnkString = packet.Translator.ReadCString("Unk String");
+            gameObject.IconName = packet.ReadCString("Icon Name");
+            gameObject.CastCaption = packet.ReadCString("Cast Caption");
+            gameObject.UnkString = packet.ReadCString("Unk String");
 
             gameObject.Data = new int?[32];
             for (int i = 0; i < gameObject.Data.Length; i++)
-                gameObject.Data[i] = packet.Translator.ReadInt32("Data", i);
+                gameObject.Data[i] = packet.ReadInt32("Data", i);
 
 
-            gameObject.Size = packet.Translator.ReadSingle("Size");
+            gameObject.Size = packet.ReadSingle("Size");
 
-            gameObject.QuestItems = new uint?[packet.Translator.ReadByte("QuestItems Length")]; // correct?
+            gameObject.QuestItems = new uint?[packet.ReadByte("QuestItems Length")]; // correct?
 
             for (int i = 0; i < gameObject.QuestItems.Length; i++)
-                gameObject.QuestItems[i] = (uint)packet.Translator.ReadInt32<ItemId>("Quest Item", i);
+                gameObject.QuestItems[i] = (uint)packet.ReadInt32<ItemId>("Quest Item", i);
 
-            packet.Translator.ReadUInt32E<ClientType>("Expansion");
+            packet.ReadUInt32E<ClientType>("Expansion");
 
             Storage.GameObjectTemplates.Add(gameObject, packet.TimeSpan);
 
@@ -68,12 +68,12 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         {
             var guid = new byte[8];
 
-            packet.Translator.ReadInt32("Entry");
+            packet.ReadInt32("Entry");
 
-            guid = packet.Translator.StartBitStream(2, 4, 3, 7, 0, 6, 1, 5);
-            packet.Translator.ParseBitStream(guid, 1, 7, 2, 3, 6, 5, 4, 0);
+            guid = packet.StartBitStream(2, 4, 3, 7, 0, 6, 1, 5);
+            packet.ParseBitStream(guid, 1, 7, 2, 3, 6, 5, 4, 0);
 
-            packet.Translator.WriteGuid("GUID", guid);
+            packet.WriteGuid("GUID", guid);
         }
     }
 }

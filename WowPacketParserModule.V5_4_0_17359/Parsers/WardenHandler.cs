@@ -10,7 +10,7 @@ namespace WowPacketParser.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_WARDEN_DATA)]
         public static void HandleWardenData(Packet packet)
         {
-            var opcode = packet.Translator.ReadInt32E<WardenServerOpcode>("Warden Opcode");
+            var opcode = packet.ReadInt32E<WardenServerOpcode>("Warden Opcode");
 
             packet.ReadToEnd(); // Hack
         }

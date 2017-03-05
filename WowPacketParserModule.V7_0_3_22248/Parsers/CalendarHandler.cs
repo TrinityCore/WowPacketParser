@@ -9,11 +9,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_CALENDAR_SEND_CALENDAR)]
         public static void HandleCalendarSendCalendar(Packet packet)
         {
-            packet.Translator.ReadInt32("ServerTime");
+            packet.ReadInt32("ServerTime");
 
-            var invitesCount = packet.Translator.ReadInt32("InvitesCount");
-            var eventsCount = packet.Translator.ReadInt32("EventsCount");
-            var raidLockoutsCount = packet.Translator.ReadInt32("RaidLockoutsCount");
+            var invitesCount = packet.ReadInt32("InvitesCount");
+            var eventsCount = packet.ReadInt32("EventsCount");
+            var raidLockoutsCount = packet.ReadInt32("RaidLockoutsCount");
 
             for (int i = 0; i < invitesCount; i++)
                 V6_0_2_19033.Parsers.CalendarHandler.ReadCalendarSendCalendarInviteInfo(packet, "Invites", i);
@@ -28,30 +28,30 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_CALENDAR_SEND_EVENT)]
         public static void HandleCalendarSendEvent(Packet packet)
         {
-            packet.Translator.ReadByte("EventType");
-            packet.Translator.ReadPackedGuid128("OwnerGUID");
-            packet.Translator.ReadInt64("EventID");
-            packet.Translator.ReadByte("GetEventType");
-            packet.Translator.ReadInt32("TextureID");
-            packet.Translator.ReadUInt32("Flags");
-            packet.Translator.ReadUInt32("Date");
-            packet.Translator.ReadUInt32("LockDate");
-            packet.Translator.ReadPackedGuid128("EventGuildID");
+            packet.ReadByte("EventType");
+            packet.ReadPackedGuid128("OwnerGUID");
+            packet.ReadInt64("EventID");
+            packet.ReadByte("GetEventType");
+            packet.ReadInt32("TextureID");
+            packet.ReadUInt32("Flags");
+            packet.ReadUInt32("Date");
+            packet.ReadUInt32("LockDate");
+            packet.ReadPackedGuid128("EventGuildID");
 
-            var inviteCount = packet.Translator.ReadInt32("InviteCount");
+            var inviteCount = packet.ReadInt32("InviteCount");
 
-            packet.Translator.ResetBitReader();
+            packet.ResetBitReader();
 
-            var lenEventName = packet.Translator.ReadBits(8);
-            var lenDescription = packet.Translator.ReadBits(11);
+            var lenEventName = packet.ReadBits(8);
+            var lenDescription = packet.ReadBits(11);
 
-            packet.Translator.ResetBitReader();
+            packet.ResetBitReader();
 
             for (int i = 0; i < inviteCount; i++)
                 V6_0_2_19033.Parsers.CalendarHandler.ReadCalendarEventInviteInfo(packet, "Invites", i);
 
-            packet.Translator.ReadWoWString("EventName", lenEventName);
-            packet.Translator.ReadWoWString("Description", lenDescription);
+            packet.ReadWoWString("EventName", lenEventName);
+            packet.ReadWoWString("Description", lenDescription);
         }
     }
 }

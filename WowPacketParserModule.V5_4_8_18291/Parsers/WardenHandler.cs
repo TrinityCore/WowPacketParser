@@ -10,9 +10,9 @@ namespace WowPacketParser.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_WARDEN_DATA)]
         public static void HandleWardenData(Packet packet)
         {
-            var len = packet.Translator.ReadInt32();
+            var len = packet.ReadInt32();
 
-            packet.Translator.ReadBytes(len);
+            packet.ReadBytes(len);
         }
     }
 }

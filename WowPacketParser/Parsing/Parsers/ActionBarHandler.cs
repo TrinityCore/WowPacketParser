@@ -16,7 +16,7 @@ namespace WowPacketParser.Parsing.Parsers
                 // State = 0: Looks to be sent when initial action buttons get sent, however on Trinity we use 1 since 0 had some difficulties
                 // State = 1: Used in any SMSG_ACTION_BUTTONS packet with button data on Trinity. Only used after spec swaps on retail.
                 // State = 2: Clears the action bars client sided. This is sent during spec swap before unlearning and before sending the new buttons
-                if (packet.Translator.ReadByte("Packet Type") == 2)
+                if (packet.ReadByte("Packet Type") == 2)
                     return;
             }
 
@@ -26,7 +26,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 PlayerCreateInfoAction action = new PlayerCreateInfoAction { Button = (uint)i };
 
-                int packed = packet.Translator.ReadInt32();
+                int packed = packet.ReadInt32();
 
                 if (packed == 0)
                     continue;
@@ -51,7 +51,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
-                packet.Translator.ReadByte("Packet Type");
+                packet.ReadByte("Packet Type");
         }
 
         [Parser(Opcode.SMSG_UPDATE_ACTION_BUTTONS, ClientVersionBuild.V5_1_0_16309)]
@@ -64,42 +64,42 @@ namespace WowPacketParser.Parsing.Parsers
             for (int i = 0; i < buttonCount; i++)
             {
                 buttons[i] = new byte[8];
-                buttons[i][4] = packet.Translator.ReadBit();
+                buttons[i][4] = packet.ReadBit();
             }
 
             for (int i = 0; i < buttonCount; i++)
-                buttons[i][0] = packet.Translator.ReadBit();
+                buttons[i][0] = packet.ReadBit();
             for (int i = 0; i < buttonCount; i++)
-                buttons[i][7] = packet.Translator.ReadBit();
+                buttons[i][7] = packet.ReadBit();
             for (int i = 0; i < buttonCount; i++)
-                buttons[i][2] = packet.Translator.ReadBit();
+                buttons[i][2] = packet.ReadBit();
             for (int i = 0; i < buttonCount; i++)
-                buttons[i][6] = packet.Translator.ReadBit();
+                buttons[i][6] = packet.ReadBit();
             for (int i = 0; i < buttonCount; i++)
-                buttons[i][3] = packet.Translator.ReadBit();
+                buttons[i][3] = packet.ReadBit();
             for (int i = 0; i < buttonCount; i++)
-                buttons[i][1] = packet.Translator.ReadBit();
+                buttons[i][1] = packet.ReadBit();
             for (int i = 0; i < buttonCount; i++)
-                buttons[i][5] = packet.Translator.ReadBit();
+                buttons[i][5] = packet.ReadBit();
 
             for (int i = 0; i < buttonCount; i++)
-                packet.Translator.ReadXORByte(buttons[i], 0);
+                packet.ReadXORByte(buttons[i], 0);
             for (int i = 0; i < buttonCount; i++)
-                packet.Translator.ReadXORByte(buttons[i], 3);
+                packet.ReadXORByte(buttons[i], 3);
             for (int i = 0; i < buttonCount; i++)
-                packet.Translator.ReadXORByte(buttons[i], 5);
+                packet.ReadXORByte(buttons[i], 5);
             for (int i = 0; i < buttonCount; i++)
-                packet.Translator.ReadXORByte(buttons[i], 7);
+                packet.ReadXORByte(buttons[i], 7);
             for (int i = 0; i < buttonCount; i++)
-                packet.Translator.ReadXORByte(buttons[i], 6);
+                packet.ReadXORByte(buttons[i], 6);
             for (int i = 0; i < buttonCount; i++)
-                packet.Translator.ReadXORByte(buttons[i], 1);
+                packet.ReadXORByte(buttons[i], 1);
             for (int i = 0; i < buttonCount; i++)
-                packet.Translator.ReadXORByte(buttons[i], 4);
+                packet.ReadXORByte(buttons[i], 4);
             for (int i = 0; i < buttonCount; i++)
-                packet.Translator.ReadXORByte(buttons[i], 2);
+                packet.ReadXORByte(buttons[i], 2);
 
-            packet.Translator.ReadByte("Packet Type");
+            packet.ReadByte("Packet Type");
 
             for (int i = 0; i < buttonCount; i++)
             {
@@ -134,7 +134,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_SET_ACTION_BAR_TOGGLES)]
         public static void HandleSetActionBarToggles(Packet packet)
         {
-            packet.Translator.ReadByte("Action Bar");
+            packet.ReadByte("Action Bar");
         }
     }
 }

@@ -23,8 +23,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     Button = (uint)i
                 };
 
-                action.Action = packet.Translator.ReadUInt32();
-                uint type = packet.Translator.ReadUInt32();
+                action.Action = packet.ReadUInt32();
+                uint type = packet.ReadUInt32();
 
                 packet.AddValue("Action " + i, action.Action);
                 packet.AddValue("Type " + i, type);
@@ -48,18 +48,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 }
             }
 
-            packet.Translator.ReadByte("Packet Type");
+            packet.ReadByte("Packet Type");
         }
 
         [Parser(Opcode.CMSG_SET_ACTION_BUTTON)]
         public static void HandleSetActionButton(Packet packet)
         {
-            uint action = packet.Translator.ReadUInt32();
-            uint type = packet.Translator.ReadUInt32();
+            uint action = packet.ReadUInt32();
+            uint type = packet.ReadUInt32();
 
             packet.AddValue("Action ", action);
             packet.AddValue("Type ", type);
-            packet.Translator.ReadByte("Slot Id");
+            packet.ReadByte("Slot Id");
         }
     }
 }

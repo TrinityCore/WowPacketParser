@@ -80,14 +80,14 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
         [BattlenetParser(ConnectionServerCommand.STUNServers)]
         public static void HandleSTUNServers(BattlenetPacket packet)
         {
-            var ip = packet.Translator.ReadBytes(4);
-            var port = packet.Translator.ReadBytes(2);
+            var ip = packet.ReadBytes(4);
+            var port = packet.ReadBytes(2);
             Array.Reverse(port);
 
             packet.Stream.AddValue("Server1", new IPEndPoint(new IPAddress(ip), BitConverter.ToUInt16(port, 0)));
 
-            ip = packet.Translator.ReadBytes(4);
-            port = packet.Translator.ReadBytes(2);
+            ip = packet.ReadBytes(4);
+            port = packet.ReadBytes(2);
             Array.Reverse(port);
 
             packet.Stream.AddValue("Server2", new IPEndPoint(new IPAddress(ip), BitConverter.ToUInt16(port, 0)));

@@ -9,78 +9,78 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_SET_EVERYONE_IS_ASSISTANT)]
         public static void HandleEveryoneIsAssistant(Packet packet)
         {
-            packet.Translator.ReadBit("Active");
+            packet.ReadBit("Active");
         }
 
         [Parser(Opcode.CMSG_GROUP_SET_ROLES, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGroupSetRoles(Packet packet)
         {
-            packet.Translator.ReadUInt32("Role");
-            packet.Translator.ReadGuid("GUID");
+            packet.ReadUInt32("Role");
+            packet.ReadGuid("GUID");
         }
 
         [Parser(Opcode.CMSG_GROUP_SET_ROLES, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGroupSetRoles434(Packet packet)
         {
-            packet.Translator.ReadInt32E<LfgRoleFlag>("Role");
-            var guid = packet.Translator.StartBitStream(2, 6, 3, 7, 5, 1, 0, 4);
-            packet.Translator.ParseBitStream(guid, 6, 4, 1, 3, 0, 5, 2, 7);
-            packet.Translator.WriteGuid("Guid", guid);
+            packet.ReadInt32E<LfgRoleFlag>("Role");
+            var guid = packet.StartBitStream(2, 6, 3, 7, 5, 1, 0, 4);
+            packet.ParseBitStream(guid, 6, 4, 1, 3, 0, 5, 2, 7);
+            packet.WriteGuid("Guid", guid);
 
         }
 
         [Parser(Opcode.SMSG_GROUP_LIST)]
         public static void HandleGroupList(Packet packet)
         {
-            var grouptype = packet.Translator.ReadByteE<GroupTypeFlag>("Group Type");
-            packet.Translator.ReadByte("Sub Group");
-            packet.Translator.ReadByteE<GroupUpdateFlag>("Flags");
-            packet.Translator.ReadByte("Player Roles Assigned");
+            var grouptype = packet.ReadByteE<GroupTypeFlag>("Group Type");
+            packet.ReadByte("Sub Group");
+            packet.ReadByteE<GroupUpdateFlag>("Flags");
+            packet.ReadByte("Player Roles Assigned");
 
             if (grouptype.HasFlag(GroupTypeFlag.LookingForDungeon))
             {
-                packet.Translator.ReadByteE<InstanceStatus>("Group Type Status");
-                packet.Translator.ReadLfgEntry("LFG Entry");
+                packet.ReadByteE<InstanceStatus>("Group Type Status");
+                packet.ReadLfgEntry("LFG Entry");
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
-                    packet.Translator.ReadBool("Unk bool");
+                    packet.ReadBool("Unk bool");
             }
 
-            packet.Translator.ReadGuid("Group GUID");
+            packet.ReadGuid("Group GUID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
-                packet.Translator.ReadInt32("Counter");
+                packet.ReadInt32("Counter");
 
-            var numFields = packet.Translator.ReadInt32("Member Count");
+            var numFields = packet.ReadInt32("Member Count");
             for (var i = 0; i < numFields; i++)
             {
-                var name = packet.Translator.ReadCString("Name", i);
-                var guid = packet.Translator.ReadGuid("GUID", i);
+                var name = packet.ReadCString("Name", i);
+                var guid = packet.ReadGuid("GUID", i);
                 StoreGetters.AddName(guid, name);
-                packet.Translator.ReadByteE<GroupMemberStatusFlag>("Status", i);
-                packet.Translator.ReadByte("Sub Group", i);
-                packet.Translator.ReadByteE<GroupUpdateFlag>("Update Flags", i);
+                packet.ReadByteE<GroupMemberStatusFlag>("Status", i);
+                packet.ReadByte("Sub Group", i);
+                packet.ReadByteE<GroupUpdateFlag>("Update Flags", i);
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
-                    packet.Translator.ReadByteE<LfgRoleFlag>("Role", i);
+                    packet.ReadByteE<LfgRoleFlag>("Role", i);
             }
 
-            packet.Translator.ReadGuid("Leader GUID");
+            packet.ReadGuid("Leader GUID");
 
             if (numFields <= 0)
                 return;
 
-            packet.Translator.ReadByteE<LootMethod>("Loot Method");
-            packet.Translator.ReadGuid("Looter GUID");
-            packet.Translator.ReadByteE<ItemQuality>("Loot Threshold");
+            packet.ReadByteE<LootMethod>("Loot Method");
+            packet.ReadGuid("Looter GUID");
+            packet.ReadByteE<ItemQuality>("Loot Threshold");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
-                packet.Translator.ReadByteE<MapDifficulty>("Dungeon Difficulty");
+                packet.ReadByteE<MapDifficulty>("Dungeon Difficulty");
 
-            packet.Translator.ReadByteE<MapDifficulty>("Raid Difficulty");
+            packet.ReadByteE<MapDifficulty>("Raid Difficulty");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958) &&
                 ClientVersion.RemovedInVersion(ClientVersionBuild.V4_0_6a_13623))
-                packet.Translator.ReadByte("Unk Byte"); // Has something to do with difficulty too
+                packet.ReadByte("Unk Byte"); // Has something to do with difficulty too
         }
 
         [Parser(Opcode.SMSG_PARTY_MEMBER_STATS, ClientVersionBuild.V4_2_2_14545)]
@@ -88,60 +88,60 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandlePartyMemberStats422(Packet packet)
         {
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_PARTY_MEMBER_STATS_FULL, Direction.ServerToClient))
-                packet.Translator.ReadBool("Add arena opponent");
+                packet.ReadBool("Add arena opponent");
 
-            packet.Translator.ReadPackedGuid("GUID");
-            var updateFlags = packet.Translator.ReadInt32E<GroupUpdateFlag422>("Update Flags");
+            packet.ReadPackedGuid("GUID");
+            var updateFlags = packet.ReadInt32E<GroupUpdateFlag422>("Update Flags");
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.Status))
-                packet.Translator.ReadInt16E<GroupMemberStatusFlag>("Status");
+                packet.ReadInt16E<GroupMemberStatusFlag>("Status");
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.CurrentHealth))
             {
                 if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
-                    packet.Translator.ReadInt32("Current Health");
+                    packet.ReadInt32("Current Health");
                 else
-                    packet.Translator.ReadUInt16("Current Health");
+                    packet.ReadUInt16("Current Health");
             }
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.MaxHealth))
             {
                 if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
-                    packet.Translator.ReadInt32("Max Health");
+                    packet.ReadInt32("Max Health");
                 else
-                    packet.Translator.ReadUInt16("Max Health");
+                    packet.ReadUInt16("Max Health");
             }
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.PowerType))
-                packet.Translator.ReadByteE<PowerType>("Power type");
+                packet.ReadByteE<PowerType>("Power type");
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.CurrentPower))
-                packet.Translator.ReadInt16("Current Power");
+                packet.ReadInt16("Current Power");
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.MaxPower))
-                packet.Translator.ReadInt16("Max Power");
+                packet.ReadInt16("Max Power");
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.Level))
-                packet.Translator.ReadInt16("Level");
+                packet.ReadInt16("Level");
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.Zone))
-                packet.Translator.ReadInt16<ZoneId>("Zone Id");
+                packet.ReadInt16<ZoneId>("Zone Id");
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.Unk100))
-                packet.Translator.ReadInt16("Unk");
+                packet.ReadInt16("Unk");
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.Position))
             {
-                packet.Translator.ReadInt16("X");
-                packet.Translator.ReadInt16("Y");
-                packet.Translator.ReadInt16("Z");
+                packet.ReadInt16("X");
+                packet.ReadInt16("Y");
+                packet.ReadInt16("Z");
             }
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.Auras))
             {
-                packet.Translator.ReadByte("Unk byte");
-                var mask = packet.Translator.ReadUInt64("Aura mask");
-                var cnt = packet.Translator.ReadUInt32("Aura count");
+                packet.ReadByte("Unk byte");
+                var mask = packet.ReadUInt64("Aura mask");
+                var cnt = packet.ReadUInt32("Aura count");
                 for (var i = 0; i < cnt; ++i)
                 {
                     if (mask == 0) // bad packet
@@ -150,68 +150,68 @@ namespace WowPacketParser.Parsing.Parsers
                     if ((mask & (1ul << i)) == 0)
                         continue;
 
-                    packet.Translator.ReadUInt32<SpellId>("Spell Id", i);
+                    packet.ReadUInt32<SpellId>("Spell Id", i);
 
-                    var aflags = packet.Translator.ReadUInt16E<AuraFlag>("Aura Flags", i);
+                    var aflags = packet.ReadUInt16E<AuraFlag>("Aura Flags", i);
                     if (aflags.HasFlag(AuraFlag.Scalable))
                         for (var j = 0; j < 3; ++j)
-                            packet.Translator.ReadInt32("Effect BasePoints", i, j);
+                            packet.ReadInt32("Effect BasePoints", i, j);
                 }
             }
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.PetGuid))
-                packet.Translator.ReadUInt64("Pet GUID");
+                packet.ReadUInt64("Pet GUID");
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.PetName))
-                packet.Translator.ReadCString("Pet Name");
+                packet.ReadCString("Pet Name");
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.PetModelId))
-                packet.Translator.ReadUInt16("Pet Model Id");
+                packet.ReadUInt16("Pet Model Id");
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.PetCurrentHealth))
-                packet.Translator.ReadUInt32("Pet Current Health");
+                packet.ReadUInt32("Pet Current Health");
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.PetMaxHealth))
-                packet.Translator.ReadUInt32("Pet Max Health");
+                packet.ReadUInt32("Pet Max Health");
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.PetPowerType))
-                packet.Translator.ReadByteE<PowerType>("Pet Power type");
+                packet.ReadByteE<PowerType>("Pet Power type");
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.PetCurrentPower))
-                packet.Translator.ReadInt16("Pet Current Power");
+                packet.ReadInt16("Pet Current Power");
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.PetMaxPower))
-                packet.Translator.ReadInt16("Pet Max Power");
+                packet.ReadInt16("Pet Max Power");
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.PetAuras))
             {
-                packet.Translator.ReadByte("Unk byte");
-                var mask = packet.Translator.ReadUInt64("Pet Aura mask");
-                var cnt = packet.Translator.ReadUInt32("Pet Aura count");
+                packet.ReadByte("Unk byte");
+                var mask = packet.ReadUInt64("Pet Aura mask");
+                var cnt = packet.ReadUInt32("Pet Aura count");
                 for (var i = 0; i < cnt; ++i)
                 {
                     if ((mask & (1ul << i)) == 0)
                         continue;
 
-                    packet.Translator.ReadUInt32<SpellId>("Spell Id", i);
+                    packet.ReadUInt32<SpellId>("Spell Id", i);
 
-                    var aflags = packet.Translator.ReadUInt16E<AuraFlag>("Aura Flags", i);
+                    var aflags = packet.ReadUInt16E<AuraFlag>("Aura Flags", i);
                     if (aflags.HasFlag(AuraFlag.Scalable))
                         for (var j = 0; j < 3; ++j)
-                            packet.Translator.ReadInt32("Effect BasePoints", i, j);
+                            packet.ReadInt32("Effect BasePoints", i, j);
                 }
             }
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.VehicleSeat))
-                packet.Translator.ReadInt32("Vehicle Seat?");
+                packet.ReadInt32("Vehicle Seat?");
 
             if (updateFlags.HasFlag(GroupUpdateFlag422.Phase))
             {
-                packet.Translator.ReadInt32("Unk Int32");
+                packet.ReadInt32("Unk Int32");
 
-                var count = packet.Translator.ReadInt32("Phase Count");
+                var count = packet.ReadInt32("Phase Count");
                 for (var i = 0; i < count; ++i)
-                    packet.Translator.ReadInt16("Phase Id");
+                    packet.ReadInt16("Phase Id");
             }
         }
 
@@ -221,54 +221,54 @@ namespace WowPacketParser.Parsing.Parsers
         {
             if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) &&
                 packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_PARTY_MEMBER_STATS_FULL, Direction.ServerToClient))
-                packet.Translator.ReadBool("Add arena opponent");
+                packet.ReadBool("Add arena opponent");
 
-            packet.Translator.ReadPackedGuid("GUID");
-            var updateFlags = packet.Translator.ReadUInt32E<GroupUpdateFlag>("Update Flags");
+            packet.ReadPackedGuid("GUID");
+            var updateFlags = packet.ReadUInt32E<GroupUpdateFlag>("Update Flags");
 
             if (updateFlags.HasFlag(GroupUpdateFlag.Status))
-                packet.Translator.ReadInt16E<GroupMemberStatusFlag>("Status");
+                packet.ReadInt16E<GroupMemberStatusFlag>("Status");
 
             if (updateFlags.HasFlag(GroupUpdateFlag.CurrentHealth))
             {
                 if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
-                    packet.Translator.ReadInt32("Current Health");
+                    packet.ReadInt32("Current Health");
                 else
-                    packet.Translator.ReadUInt16("Current Health");
+                    packet.ReadUInt16("Current Health");
             }
 
             if (updateFlags.HasFlag(GroupUpdateFlag.MaxHealth))
             {
                 if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
-                    packet.Translator.ReadInt32("Max Health");
+                    packet.ReadInt32("Max Health");
                 else
-                    packet.Translator.ReadUInt16("Max Health");
+                    packet.ReadUInt16("Max Health");
             }
 
             if (updateFlags.HasFlag(GroupUpdateFlag.PowerType))
-                packet.Translator.ReadByteE<PowerType>("Power type");
+                packet.ReadByteE<PowerType>("Power type");
 
             if (updateFlags.HasFlag(GroupUpdateFlag.CurrentPower))
-                packet.Translator.ReadInt16("Current Power");
+                packet.ReadInt16("Current Power");
 
             if (updateFlags.HasFlag(GroupUpdateFlag.MaxPower))
-                packet.Translator.ReadInt16("Max Power");
+                packet.ReadInt16("Max Power");
 
             if (updateFlags.HasFlag(GroupUpdateFlag.Level))
-                packet.Translator.ReadInt16("Level");
+                packet.ReadInt16("Level");
 
             if (updateFlags.HasFlag(GroupUpdateFlag.Zone))
-                packet.Translator.ReadInt16<ZoneId>("Zone Id");
+                packet.ReadInt16<ZoneId>("Zone Id");
 
             if (updateFlags.HasFlag(GroupUpdateFlag.Position))
             {
-                packet.Translator.ReadInt16("Position X");
-                packet.Translator.ReadInt16("Position Y");
+                packet.ReadInt16("Position X");
+                packet.ReadInt16("Position Y");
             }
 
             if (updateFlags.HasFlag(GroupUpdateFlag.Auras))
             {
-                var auraMask = packet.Translator.ReadUInt64("Aura Mask");
+                var auraMask = packet.ReadUInt64("Aura Mask");
 
                 var maxAura = ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? 64 : 56;
                 for (var i = 0; i < maxAura; ++i)
@@ -277,51 +277,51 @@ namespace WowPacketParser.Parsing.Parsers
                         continue;
 
                     if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
-                        packet.Translator.ReadUInt32<SpellId>("Spell Id", i);
+                        packet.ReadUInt32<SpellId>("Spell Id", i);
                     else
-                        packet.Translator.ReadUInt16<SpellId>("Spell Id", i);
+                        packet.ReadUInt16<SpellId>("Spell Id", i);
 
-                    packet.Translator.ReadByteE<AuraFlag>("Aura Flags", i);
+                    packet.ReadByteE<AuraFlag>("Aura Flags", i);
                 }
             }
 
             if (updateFlags.HasFlag(GroupUpdateFlag.PetGuid))
-                packet.Translator.ReadGuid("Pet GUID");
+                packet.ReadGuid("Pet GUID");
 
             if (updateFlags.HasFlag(GroupUpdateFlag.PetName))
-                packet.Translator.ReadCString("Pet Name");
+                packet.ReadCString("Pet Name");
 
             if (updateFlags.HasFlag(GroupUpdateFlag.PetModelId))
-                packet.Translator.ReadInt16("Pet Modelid");
+                packet.ReadInt16("Pet Modelid");
 
             if (updateFlags.HasFlag(GroupUpdateFlag.PetCurrentHealth))
             {
                 if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
-                    packet.Translator.ReadInt32("Pet Current Health");
+                    packet.ReadInt32("Pet Current Health");
                 else
-                    packet.Translator.ReadUInt16("Pet Current Health");
+                    packet.ReadUInt16("Pet Current Health");
             }
 
             if (updateFlags.HasFlag(GroupUpdateFlag.PetMaxHealth))
             {
                 if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
-                    packet.Translator.ReadInt32("Pet Max Health");
+                    packet.ReadInt32("Pet Max Health");
                 else
-                    packet.Translator.ReadUInt16("Pet Max Health");
+                    packet.ReadUInt16("Pet Max Health");
             }
 
             if (updateFlags.HasFlag(GroupUpdateFlag.PetPowerType))
-                packet.Translator.ReadByteE<PowerType>("Pet Power type");
+                packet.ReadByteE<PowerType>("Pet Power type");
 
             if (updateFlags.HasFlag(GroupUpdateFlag.PetCurrentPower))
-                packet.Translator.ReadInt16("Pet Current Power");
+                packet.ReadInt16("Pet Current Power");
 
             if (updateFlags.HasFlag(GroupUpdateFlag.PetMaxPower))
-                packet.Translator.ReadInt16("Pet Max Power");
+                packet.ReadInt16("Pet Max Power");
 
             if (updateFlags.HasFlag(GroupUpdateFlag.PetAuras))
             {
-                var auraMask = packet.Translator.ReadUInt64("Pet Auramask");
+                var auraMask = packet.ReadUInt64("Pet Auramask");
 
                 var maxAura = ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) ? 64 : 56;
                 for (var i = 0; i < maxAura; ++i)
@@ -330,230 +330,230 @@ namespace WowPacketParser.Parsing.Parsers
                         continue;
 
                     if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
-                        packet.Translator.ReadUInt32<SpellId>("Spell Id", i);
+                        packet.ReadUInt32<SpellId>("Spell Id", i);
                     else
-                        packet.Translator.ReadUInt16<SpellId>("Spell Id", i);
+                        packet.ReadUInt16<SpellId>("Spell Id", i);
 
-                    packet.Translator.ReadByteE<AuraFlag>("Aura Flags", i);
+                    packet.ReadByteE<AuraFlag>("Aura Flags", i);
                 }
             }
 
             if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing) && // no idea when this was added exactly, doesn't exist in 2.4.1
                 updateFlags.HasFlag(GroupUpdateFlag.VehicleSeat))
-                packet.Translator.ReadInt32("Vehicle Seat");
+                packet.ReadInt32("Vehicle Seat");
         }
 
         [Parser(Opcode.CMSG_GROUP_SET_LEADER)]
         public static void HandleGroupSetLeader(Packet packet)
         {
-            packet.Translator.ReadGuid("GUID");
+            packet.ReadGuid("GUID");
         }
 
         [Parser(Opcode.SMSG_GROUP_SET_LEADER)]
         [Parser(Opcode.SMSG_GROUP_DECLINE)]
         public static void HandleGroupDecline(Packet packet)
         {
-            packet.Translator.ReadCString("Name");
+            packet.ReadCString("Name");
         }
 
         [Parser(Opcode.CMSG_GROUP_INVITE, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleGroupInvite(Packet packet)
         {
-            packet.Translator.ReadCString("Name");
-            packet.Translator.ReadInt32("Unk Int32");
+            packet.ReadCString("Name");
+            packet.ReadInt32("Unk Int32");
         }
 
         [Parser(Opcode.CMSG_GROUP_INVITE, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
         public static void HandleGroupInvite422(Packet packet)
         {
             // note: this handler is different in 4.3.0, it got a bit fancy.
-            var guidBytes = packet.Translator.StartBitStream(6, 5, 0, 3, 4, 7, 1, 2);
+            var guidBytes = packet.StartBitStream(6, 5, 0, 3, 4, 7, 1, 2);
 
-            packet.Translator.ReadInt32("Unk0"); // Always 0
-            packet.Translator.ReadInt32("Unk1"); // Non-zero in cross realm parties (1383)
-            packet.Translator.ReadCString("Name");
+            packet.ReadInt32("Unk0"); // Always 0
+            packet.ReadInt32("Unk1"); // Non-zero in cross realm parties (1383)
+            packet.ReadCString("Name");
 
-            packet.Translator.ReadXORByte(guidBytes, 0);
-            packet.Translator.ReadXORByte(guidBytes, 7);
-            packet.Translator.ReadXORByte(guidBytes, 4);
-            packet.Translator.ReadXORByte(guidBytes, 1);
-            packet.Translator.ReadXORByte(guidBytes, 2);
-            packet.Translator.ReadXORByte(guidBytes, 6);
-            packet.Translator.ReadXORByte(guidBytes, 5);
+            packet.ReadXORByte(guidBytes, 0);
+            packet.ReadXORByte(guidBytes, 7);
+            packet.ReadXORByte(guidBytes, 4);
+            packet.ReadXORByte(guidBytes, 1);
+            packet.ReadXORByte(guidBytes, 2);
+            packet.ReadXORByte(guidBytes, 6);
+            packet.ReadXORByte(guidBytes, 5);
 
-            packet.Translator.ReadCString("Realm Name"); // Non-empty in cross realm parties
+            packet.ReadCString("Realm Name"); // Non-empty in cross realm parties
 
-            packet.Translator.ReadXORByte(guidBytes, 3);
+            packet.ReadXORByte(guidBytes, 3);
 
-            packet.Translator.WriteGuid("Guid", guidBytes); // Non-zero in cross realm parties
+            packet.WriteGuid("Guid", guidBytes); // Non-zero in cross realm parties
         }
 
         [Parser(Opcode.CMSG_GROUP_INVITE, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGroupInvite434(Packet packet)
         {
-            packet.Translator.ReadInt32("Unk Int32"); // Non-zero in cross realm parties (1383)
-            packet.Translator.ReadInt32("Unk Int32"); // Always 0
+            packet.ReadInt32("Unk Int32"); // Non-zero in cross realm parties (1383)
+            packet.ReadInt32("Unk Int32"); // Always 0
             var guid = new byte[8];
-            guid[2] = packet.Translator.ReadBit();
-            guid[7] = packet.Translator.ReadBit();
-            var strLen = packet.Translator.ReadBits(9);
-            guid[3] = packet.Translator.ReadBit();
-            var nameLen = packet.Translator.ReadBits(10);
-            guid[5] = packet.Translator.ReadBit();
-            guid[4] = packet.Translator.ReadBit();
-            guid[6] = packet.Translator.ReadBit();
-            guid[0] = packet.Translator.ReadBit();
-            guid[1] = packet.Translator.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            var strLen = packet.ReadBits(9);
+            guid[3] = packet.ReadBit();
+            var nameLen = packet.ReadBits(10);
+            guid[5] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
 
-            packet.Translator.ReadXORByte(guid, 4);
-            packet.Translator.ReadXORByte(guid, 7);
-            packet.Translator.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 6);
 
-            packet.Translator.ReadWoWString("Name", nameLen);
-            packet.Translator.ReadWoWString("Realm Name", strLen); // Non-empty in cross realm parties
+            packet.ReadWoWString("Name", nameLen);
+            packet.ReadWoWString("Realm Name", strLen); // Non-empty in cross realm parties
 
-            packet.Translator.ReadXORByte(guid, 1);
-            packet.Translator.ReadXORByte(guid, 0);
-            packet.Translator.ReadXORByte(guid, 5);
-            packet.Translator.ReadXORByte(guid, 3);
-            packet.Translator.ReadXORByte(guid, 2);
-            packet.Translator.WriteGuid("Guid", guid); // Non-zero in cross realm parties
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 2);
+            packet.WriteGuid("Guid", guid); // Non-zero in cross realm parties
         }
 
         [Parser(Opcode.SMSG_GROUP_INVITE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGroupInviteResponse(Packet packet)
         {
-            packet.Translator.ReadBool("invited/already in group flag?");
-            packet.Translator.ReadCString("Name");
-            packet.Translator.ReadInt32("Unk Int32 1");
-            var count = packet.Translator.ReadByte("Count");
+            packet.ReadBool("invited/already in group flag?");
+            packet.ReadCString("Name");
+            packet.ReadInt32("Unk Int32 1");
+            var count = packet.ReadByte("Count");
             for (var i = 0; i < count; ++i)
-                packet.Translator.ReadUInt32("Unk Uint32", i);
+                packet.ReadUInt32("Unk Uint32", i);
 
-            packet.Translator.ReadInt32("Unk Int32 2");
+            packet.ReadInt32("Unk Int32 2");
         }
 
         [Parser(Opcode.SMSG_GROUP_INVITE, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGroupInviteSmsg434(Packet packet)
         {
             var guid = new byte[8];
-            packet.Translator.ReadBit("Replied");
-            guid[0] = packet.Translator.ReadBit();
-            guid[3] = packet.Translator.ReadBit();
-            guid[2] = packet.Translator.ReadBit();
-            packet.Translator.ReadBit("Not Already In Group");
-            guid[6] = packet.Translator.ReadBit();
-            guid[5] = packet.Translator.ReadBit();
-            var count = packet.Translator.ReadBits(9);
-            guid[4] = packet.Translator.ReadBit();
-            var count2 = packet.Translator.ReadBits(7);
-            var count3 = packet.Translator.ReadBits("int32 count", 24);
-            packet.Translator.ReadBit("Print Something?");
-            guid[1] = packet.Translator.ReadBit();
-            guid[7] = packet.Translator.ReadBit();
+            packet.ReadBit("Replied");
+            guid[0] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            packet.ReadBit("Not Already In Group");
+            guid[6] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            var count = packet.ReadBits(9);
+            guid[4] = packet.ReadBit();
+            var count2 = packet.ReadBits(7);
+            var count3 = packet.ReadBits("int32 count", 24);
+            packet.ReadBit("Print Something?");
+            guid[1] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
 
-            packet.Translator.ReadXORByte(guid, 1);
-            packet.Translator.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 4);
 
-            packet.Translator.ReadInt32("Timestamp?");
-            packet.Translator.ReadInt32("Unk Int 32");
-            packet.Translator.ReadInt32("Unk Int 32");
+            packet.ReadInt32("Timestamp?");
+            packet.ReadInt32("Unk Int 32");
+            packet.ReadInt32("Unk Int 32");
 
-            packet.Translator.ReadXORByte(guid, 6);
-            packet.Translator.ReadXORByte(guid, 0);
-            packet.Translator.ReadXORByte(guid, 2);
-            packet.Translator.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 3);
 
             for (var i = 0; i < count3; i++)
-                packet.Translator.ReadInt32("Unk Int 32", i);
+                packet.ReadInt32("Unk Int 32", i);
 
-            packet.Translator.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 5);
 
-            packet.Translator.ReadWoWString("Realm Name", count);
+            packet.ReadWoWString("Realm Name", count);
 
-            packet.Translator.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 7);
 
-            packet.Translator.ReadWoWString("Invited", count2);
+            packet.ReadWoWString("Invited", count2);
 
-            packet.Translator.ReadInt32("Unk Int 32");
+            packet.ReadInt32("Unk Int 32");
 
-            packet.Translator.WriteGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
 
         }
 
         [Parser(Opcode.CMSG_GROUP_UNINVITE_GUID)]
         public static void HandleGroupUninviteGuid(Packet packet)
         {
-            packet.Translator.ReadGuid("GUID");
-            packet.Translator.ReadCString("Reason");
+            packet.ReadGuid("GUID");
+            packet.ReadCString("Reason");
         }
 
         [Parser(Opcode.CMSG_GROUP_ACCEPT)]
         public static void HandleGroupAccept(Packet packet)
         {
-            packet.Translator.ReadInt32("Unk Int32");
+            packet.ReadInt32("Unk Int32");
         }
 
         [Parser(Opcode.CMSG_GROUP_ACCEPT_DECLINE)]
         public static void HandleGroupAcceptDecline(Packet packet)
         {
-            packet.Translator.ReadBit("Accepted");
+            packet.ReadBit("Accepted");
             // 7 0 bits here
-            packet.Translator.ReadUInt32("Unknown");
+            packet.ReadUInt32("Unknown");
         }
 
         [Parser(Opcode.MSG_RANDOM_ROLL)]
         public static void HandleRandomRollPackets(Packet packet)
         {
-            packet.Translator.ReadInt32("Minimum");
-            packet.Translator.ReadInt32("Maximum");
+            packet.ReadInt32("Minimum");
+            packet.ReadInt32("Maximum");
 
             if (packet.Direction == Direction.ClientToServer)
                 return;
 
-            packet.Translator.ReadInt32("Roll");
-            packet.Translator.ReadGuid("GUID");
+            packet.ReadInt32("Roll");
+            packet.ReadGuid("GUID");
         }
 
         [Parser(Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS)]
         public static void HandleRequestPartyMemberStats(Packet packet)
         {
-            packet.Translator.ReadGuid("GUID");
+            packet.ReadGuid("GUID");
         }
 
         [Parser(Opcode.SMSG_PARTY_COMMAND_RESULT)]
         public static void HandlePartyCommandResult(Packet packet)
         {
-            packet.Translator.ReadUInt32E<PartyCommand>("Command");
-            packet.Translator.ReadCString("Member");
-            packet.Translator.ReadUInt32E<PartyResult>("Result");
+            packet.ReadUInt32E<PartyCommand>("Command");
+            packet.ReadCString("Member");
+            packet.ReadUInt32E<PartyResult>("Result");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
-                packet.Translator.ReadUInt32("LFG Boot Cooldown");
+                packet.ReadUInt32("LFG Boot Cooldown");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
-                packet.Translator.ReadGuid("Player Guid"); // Usually 0
+                packet.ReadGuid("Player Guid"); // Usually 0
         }
 
         [Parser(Opcode.SMSG_RAID_GROUP_ONLY)]
         public static void HandleRaidGroupOnly(Packet packet)
         {
-            packet.Translator.ReadInt32("Time left");
-            packet.Translator.ReadInt32E<InstanceStatus>("Group Type Status?");
+            packet.ReadInt32("Time left");
+            packet.ReadInt32E<InstanceStatus>("Group Type Status?");
         }
 
         [Parser(Opcode.SMSG_REAL_GROUP_UPDATE)]
         public static void HandleRealGroupUpdate(Packet packet)
         {
-            packet.Translator.ReadByteE<GroupTypeFlag>("Group Type");
-            packet.Translator.ReadUInt32("Member Count");
-            packet.Translator.ReadGuid("Leader GUID");
+            packet.ReadByteE<GroupTypeFlag>("Group Type");
+            packet.ReadUInt32("Member Count");
+            packet.ReadGuid("Leader GUID");
         }
 
         [Parser(Opcode.CMSG_GROUP_CHANGE_SUB_GROUP)]
         public static void HandleGroupChangesubgroup(Packet packet)
         {
-            packet.Translator.ReadCString("Name");
-            packet.Translator.ReadByte("Group");
+            packet.ReadCString("Name");
+            packet.ReadByte("Group");
         }
 
         [Parser(Opcode.MSG_RAID_READY_CHECK)]
@@ -563,56 +563,56 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 // Packet is sent in two different methods. One sends a byte and one doesn't
                 if (packet.CanRead())
-                    packet.Translator.ReadBool("Ready");
+                    packet.ReadBool("Ready");
             }
             else
-                packet.Translator.ReadGuid("GUID");
+                packet.ReadGuid("GUID");
         }
 
         [Parser(Opcode.MSG_RAID_READY_CHECK_CONFIRM)]
         public static void HandleRaidReadyCheckConfirm(Packet packet)
         {
-            packet.Translator.ReadGuid("GUID");
-            packet.Translator.ReadBool("Ready");
+            packet.ReadGuid("GUID");
+            packet.ReadBool("Ready");
         }
 
         [Parser(Opcode.MSG_MINIMAP_PING)]
         public static void HandleServerMinimapPing(Packet packet)
         {
             if (packet.Direction == Direction.ServerToClient)
-                packet.Translator.ReadGuid("GUID");
+                packet.ReadGuid("GUID");
 
-            packet.Translator.ReadVector2("Position");
+            packet.ReadVector2("Position");
         }
 
         [Parser(Opcode.CMSG_GROUP_RAID_CONVERT)]
         public static void HandleGroupRaidConvert(Packet packet)
         {
             if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
-                packet.Translator.ReadBool("ToRaid");
+                packet.ReadBool("ToRaid");
         }
 
         [Parser(Opcode.CMSG_GROUP_SWAP_SUB_GROUP)]
         public static void HandleGroupSwapSubGroup(Packet packet)
         {
-            packet.Translator.ReadCString("Player 1 name");
-            packet.Translator.ReadCString("Player 2 name");
+            packet.ReadCString("Player 1 name");
+            packet.ReadCString("Player 2 name");
         }
 
         [Parser(Opcode.CMSG_SET_ASSISTANT_LEADER)]
         public static void HandleGroupAssistantLeader(Packet packet)
         {
-            packet.Translator.ReadGuid("GUID");
-            packet.Translator.ReadBool("Promote"); // False = demote
+            packet.ReadGuid("GUID");
+            packet.ReadBool("Promote"); // False = demote
         }
 
         [Parser(Opcode.MSG_PARTY_ASSIGNMENT)]
         public static void HandlePartyAssigment(Packet packet)
         {
             //if (packet.Direction == Direction.ClientToServer)
-            packet.Translator.ReadByte("Assigment");
-            packet.Translator.ReadBool("Apply");
-            packet.Translator.ReadGuid("Guid");
+            packet.ReadByte("Assigment");
+            packet.ReadBool("Apply");
+            packet.ReadGuid("Guid");
         }
 
         [Parser(Opcode.SMSG_GROUP_SET_ROLE)] // 4.3.4
@@ -620,86 +620,86 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var guid1 = new byte[8];
             var guid2 = new byte[8];
-            guid1[1] = packet.Translator.ReadBit();
-            guid2[0] = packet.Translator.ReadBit();
-            guid2[2] = packet.Translator.ReadBit();
-            guid2[4] = packet.Translator.ReadBit();
-            guid2[7] = packet.Translator.ReadBit();
-            guid2[3] = packet.Translator.ReadBit();
-            guid1[7] = packet.Translator.ReadBit();
-            guid2[5] = packet.Translator.ReadBit();
+            guid1[1] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            guid1[7] = packet.ReadBit();
+            guid2[5] = packet.ReadBit();
 
-            guid1[5] = packet.Translator.ReadBit();
-            guid1[4] = packet.Translator.ReadBit();
-            guid1[3] = packet.Translator.ReadBit();
-            guid2[6] = packet.Translator.ReadBit();
-            guid1[2] = packet.Translator.ReadBit();
-            guid1[6] = packet.Translator.ReadBit();
-            guid2[1] = packet.Translator.ReadBit();
-            guid1[0] = packet.Translator.ReadBit();
+            guid1[5] = packet.ReadBit();
+            guid1[4] = packet.ReadBit();
+            guid1[3] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+            guid1[2] = packet.ReadBit();
+            guid1[6] = packet.ReadBit();
+            guid2[1] = packet.ReadBit();
+            guid1[0] = packet.ReadBit();
 
-            packet.Translator.ReadXORByte(guid1, 7);
-            packet.Translator.ReadXORByte(guid2, 3);
-            packet.Translator.ReadXORByte(guid1, 6);
-            packet.Translator.ReadXORByte(guid2, 4);
-            packet.Translator.ReadXORByte(guid2, 0);
-            packet.Translator.ReadInt32E<LfgRoleFlag>("New Roles");
-            packet.Translator.ReadXORByte(guid2, 6);
-            packet.Translator.ReadXORByte(guid2, 2);
-            packet.Translator.ReadXORByte(guid1, 0);
+            packet.ReadXORByte(guid1, 7);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(guid1, 6);
+            packet.ReadXORByte(guid2, 4);
+            packet.ReadXORByte(guid2, 0);
+            packet.ReadInt32E<LfgRoleFlag>("New Roles");
+            packet.ReadXORByte(guid2, 6);
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guid1, 0);
 
-            packet.Translator.ReadXORByte(guid1, 4);
-            packet.Translator.ReadXORByte(guid2, 1);
-            packet.Translator.ReadXORByte(guid1, 3);
-            packet.Translator.ReadXORByte(guid1, 5);
-            packet.Translator.ReadXORByte(guid1, 2);
-            packet.Translator.ReadXORByte(guid2, 5);
-            packet.Translator.ReadXORByte(guid2, 7);
-            packet.Translator.ReadXORByte(guid1, 1);
+            packet.ReadXORByte(guid1, 4);
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid1, 3);
+            packet.ReadXORByte(guid1, 5);
+            packet.ReadXORByte(guid1, 2);
+            packet.ReadXORByte(guid2, 5);
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadXORByte(guid1, 1);
 
-            packet.Translator.ReadInt32E<LfgRoleFlag>("Old Roles");
-            packet.Translator.WriteGuid("Assigner Guid", guid1);
-            packet.Translator.WriteGuid("Target Guid", guid2);
+            packet.ReadInt32E<LfgRoleFlag>("Old Roles");
+            packet.WriteGuid("Assigner Guid", guid1);
+            packet.WriteGuid("Target Guid", guid2);
         }
 
         [Parser(Opcode.SMSG_RAID_MARKERS_CHANGED)]
         public static void HandleRaidMarkersChanged(Packet packet)
         {
-            packet.Translator.ReadUInt32("Unk Uint32");
+            packet.ReadUInt32("Unk Uint32");
         }
 
         [Parser(Opcode.CMSG_GROUP_INVITE_RESPONSE)]
         public static void HandleGroupInviteResponse434(Packet packet)
         {
-            if (packet.Translator.ReadBit("Accepted"))
-                packet.Translator.ReadUInt32("Unk Uint32");
+            if (packet.ReadBit("Accepted"))
+                packet.ReadUInt32("Unk Uint32");
         }
 
         [Parser(Opcode.SMSG_RAID_SUMMON_FAILED)] // 4.3.4
         public static void HandleRaidSummonFailed(Packet packet)
         {
-            var count = packet.Translator.ReadBits("Count", 23);
+            var count = packet.ReadBits("Count", 23);
 
             var guids = new byte[count][];
 
             for (int i = 0; i < count; ++i)
-                guids[i] = packet.Translator.StartBitStream(5, 3, 1, 7, 2, 0, 6, 4);
+                guids[i] = packet.StartBitStream(5, 3, 1, 7, 2, 0, 6, 4);
 
             for (int i = 0; i < count; ++i)
             {
-                packet.Translator.ReadXORByte(guids[i], 4);
-                packet.Translator.ReadXORByte(guids[i], 2);
-                packet.Translator.ReadXORByte(guids[i], 0);
-                packet.Translator.ReadXORByte(guids[i], 6);
-                packet.Translator.ReadXORByte(guids[i], 5);
+                packet.ReadXORByte(guids[i], 4);
+                packet.ReadXORByte(guids[i], 2);
+                packet.ReadXORByte(guids[i], 0);
+                packet.ReadXORByte(guids[i], 6);
+                packet.ReadXORByte(guids[i], 5);
 
-                packet.Translator.ReadInt32E<RaidSummonFail>("Error", i);
+                packet.ReadInt32E<RaidSummonFail>("Error", i);
 
-                packet.Translator.ReadXORByte(guids[i], 7);
-                packet.Translator.ReadXORByte(guids[i], 3);
-                packet.Translator.ReadXORByte(guids[i], 1);
+                packet.ReadXORByte(guids[i], 7);
+                packet.ReadXORByte(guids[i], 3);
+                packet.ReadXORByte(guids[i], 1);
 
-                packet.Translator.WriteGuid("Guid", guids[i], i);
+                packet.WriteGuid("Guid", guids[i], i);
             }
 
         }

@@ -9,194 +9,194 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_PARTY_MEMBER_STATE)]
         public static void HandlePartyMemberState(Packet packet)
         {
-            packet.Translator.ReadBit("ForEnemy");
+            packet.ReadBit("ForEnemy");
 
             for (var i = 0; i < 2; i++)
-                packet.Translator.ReadByte("PartyType", i);
+                packet.ReadByte("PartyType", i);
 
-            packet.Translator.ReadInt16E<GroupMemberStatusFlag>("Flags");
+            packet.ReadInt16E<GroupMemberStatusFlag>("Flags");
 
-            packet.Translator.ReadByte("PowerType");
-            packet.Translator.ReadInt16("OverrideDisplayPower");
-            packet.Translator.ReadInt32("CurrentHealth");
-            packet.Translator.ReadInt32("MaxHealth");
-            packet.Translator.ReadInt16("MaxPower");
-            packet.Translator.ReadInt16("MaxPower");
-            packet.Translator.ReadInt16("Level");
-            packet.Translator.ReadInt16("Spec");
-            packet.Translator.ReadInt16("AreaID");
+            packet.ReadByte("PowerType");
+            packet.ReadInt16("OverrideDisplayPower");
+            packet.ReadInt32("CurrentHealth");
+            packet.ReadInt32("MaxHealth");
+            packet.ReadInt16("MaxPower");
+            packet.ReadInt16("MaxPower");
+            packet.ReadInt16("Level");
+            packet.ReadInt16("Spec");
+            packet.ReadInt16("AreaID");
 
-            packet.Translator.ReadInt16("WmoGroupID");
-            packet.Translator.ReadInt32("WmoDoodadPlacementID");
+            packet.ReadInt16("WmoGroupID");
+            packet.ReadInt32("WmoDoodadPlacementID");
 
-            packet.Translator.ReadInt16("PositionX");
-            packet.Translator.ReadInt16("PositionY");
-            packet.Translator.ReadInt16("PositionZ");
+            packet.ReadInt16("PositionX");
+            packet.ReadInt16("PositionY");
+            packet.ReadInt16("PositionZ");
 
-            packet.Translator.ReadInt32("VehicleSeatRecID");
-            var auraCount = packet.Translator.ReadInt32("AuraCount");
+            packet.ReadInt32("VehicleSeatRecID");
+            var auraCount = packet.ReadInt32("AuraCount");
 
-            packet.Translator.ReadInt32("PhaseShiftFlags");
-            var int4 = packet.Translator.ReadInt32("PhaseCount");
-            packet.Translator.ReadPackedGuid128("PersonalGUID");
+            packet.ReadInt32("PhaseShiftFlags");
+            var int4 = packet.ReadInt32("PhaseCount");
+            packet.ReadPackedGuid128("PersonalGUID");
             for (int i = 0; i < int4; i++)
             {
-                packet.Translator.ReadInt16("PhaseFlags", i);
-                packet.Translator.ReadInt16("Id", i);
+                packet.ReadInt16("PhaseFlags", i);
+                packet.ReadInt16("Id", i);
             }
 
             for (int i = 0; i < auraCount; i++)
             {
-                packet.Translator.ReadInt32<SpellId>("Aura", i);
-                packet.Translator.ReadByte("Flags", i);
-                packet.Translator.ReadInt32("ActiveFlags", i);
-                var byte3 = packet.Translator.ReadInt32("PointsCount", i);
+                packet.ReadInt32<SpellId>("Aura", i);
+                packet.ReadByte("Flags", i);
+                packet.ReadInt32("ActiveFlags", i);
+                var byte3 = packet.ReadInt32("PointsCount", i);
 
                 for (int j = 0; j < byte3; j++)
-                    packet.Translator.ReadSingle("Points", i, j);
+                    packet.ReadSingle("Points", i, j);
             }
 
-            packet.Translator.ResetBitReader();
+            packet.ResetBitReader();
 
-            var hasPet = packet.Translator.ReadBit("HasPet");
+            var hasPet = packet.ReadBit("HasPet");
             if (hasPet) // Pet
             {
-                packet.Translator.ReadPackedGuid128("PetGuid");
-                packet.Translator.ReadInt16("PetDisplayID");
-                packet.Translator.ReadInt32("PetMaxHealth");
-                packet.Translator.ReadInt32("PetHealth");
+                packet.ReadPackedGuid128("PetGuid");
+                packet.ReadInt16("PetDisplayID");
+                packet.ReadInt32("PetMaxHealth");
+                packet.ReadInt32("PetHealth");
 
-                var petAuraCount = packet.Translator.ReadInt32("PetAuraCount");
+                var petAuraCount = packet.ReadInt32("PetAuraCount");
                 for (int i = 0; i < petAuraCount; i++)
                 {
-                    packet.Translator.ReadInt32<SpellId>("PetAura", i);
-                    packet.Translator.ReadByte("PetFlags", i);
-                    packet.Translator.ReadInt32("PetActiveFlags", i);
-                    var byte3 = packet.Translator.ReadInt32("PetPointsCount", i);
+                    packet.ReadInt32<SpellId>("PetAura", i);
+                    packet.ReadByte("PetFlags", i);
+                    packet.ReadInt32("PetActiveFlags", i);
+                    var byte3 = packet.ReadInt32("PetPointsCount", i);
 
                     for (int j = 0; j < byte3; j++)
-                        packet.Translator.ReadSingle("PetPoints", i, j);
+                        packet.ReadSingle("PetPoints", i, j);
                 }
 
-                packet.Translator.ResetBitReader();
+                packet.ResetBitReader();
 
-                var len = packet.Translator.ReadBits(8);
-                packet.Translator.ReadWoWString("PetName", len);
+                var len = packet.ReadBits(8);
+                packet.ReadWoWString("PetName", len);
             }
 
-            packet.Translator.ReadPackedGuid128("MemberGuid");
+            packet.ReadPackedGuid128("MemberGuid");
         }
 
         [Parser(Opcode.CMSG_PARTY_INVITE, ClientVersionBuild.V7_1_0_22900)]
         public static void HandleClientPartyInvite(Packet packet)
         {
-            packet.Translator.ReadByte("PartyIndex");
-            packet.Translator.ReadInt32("ProposedRoles");
-            packet.Translator.ReadPackedGuid128("TargetGuid");
+            packet.ReadByte("PartyIndex");
+            packet.ReadInt32("ProposedRoles");
+            packet.ReadPackedGuid128("TargetGuid");
 
-            packet.Translator.ResetBitReader();
+            packet.ResetBitReader();
 
-            var lenTargetName = packet.Translator.ReadBits(9);
-            var lenTargetRealm = packet.Translator.ReadBits(9);
+            var lenTargetName = packet.ReadBits(9);
+            var lenTargetRealm = packet.ReadBits(9);
 
-            packet.Translator.ReadWoWString("TargetName", lenTargetName);
-            packet.Translator.ReadWoWString("TargetRealm", lenTargetRealm);
+            packet.ReadWoWString("TargetName", lenTargetName);
+            packet.ReadWoWString("TargetRealm", lenTargetRealm);
         }
 
         [Parser(Opcode.SMSG_PARTY_INVITE)]
         public static void HandlePartyInvite(Packet packet)
         {
-            packet.Translator.ReadBit("CanAccept");
-            packet.Translator.ReadBit("MightCRZYou");
-            packet.Translator.ReadBit("IsXRealm");
-            packet.Translator.ReadBit("MustBeBNetFriend");
-            packet.Translator.ReadBit("AllowMultipleRoles");
-            var len = packet.Translator.ReadBits(6);
+            packet.ReadBit("CanAccept");
+            packet.ReadBit("MightCRZYou");
+            packet.ReadBit("IsXRealm");
+            packet.ReadBit("MustBeBNetFriend");
+            packet.ReadBit("AllowMultipleRoles");
+            var len = packet.ReadBits(6);
 
-            packet.Translator.ResetBitReader();
-            packet.Translator.ReadInt32("InviterVirtualRealmAddress");
-            packet.Translator.ReadBit("IsLocal");
-            packet.Translator.ReadBit("Unk2");
-            var bits2 = packet.Translator.ReadBits(8);
-            var bits258 = packet.Translator.ReadBits(8);
-            packet.Translator.ReadWoWString("InviterRealmNameActual", bits2);
-            packet.Translator.ReadWoWString("InviterRealmNameNormalized", bits258);
+            packet.ResetBitReader();
+            packet.ReadInt32("InviterVirtualRealmAddress");
+            packet.ReadBit("IsLocal");
+            packet.ReadBit("Unk2");
+            var bits2 = packet.ReadBits(8);
+            var bits258 = packet.ReadBits(8);
+            packet.ReadWoWString("InviterRealmNameActual", bits2);
+            packet.ReadWoWString("InviterRealmNameNormalized", bits258);
 
-            packet.Translator.ReadPackedGuid128("InviterGuid");
-            packet.Translator.ReadPackedGuid128("InviterBNetAccountID");
-            packet.Translator.ReadInt16("Unk1");
-            packet.Translator.ReadInt32("ProposedRoles");
-            var lfgSlots = packet.Translator.ReadInt32();
-            packet.Translator.ReadInt32("LfgCompletedMask");
-            packet.Translator.ReadWoWString("InviterName", len);
+            packet.ReadPackedGuid128("InviterGuid");
+            packet.ReadPackedGuid128("InviterBNetAccountID");
+            packet.ReadInt16("Unk1");
+            packet.ReadInt32("ProposedRoles");
+            var lfgSlots = packet.ReadInt32();
+            packet.ReadInt32("LfgCompletedMask");
+            packet.ReadWoWString("InviterName", len);
             for (int i = 0; i < lfgSlots; i++)
-                packet.Translator.ReadInt32("LfgSlots", i);
+                packet.ReadInt32("LfgSlots", i);
         }
 
         [Parser(Opcode.SMSG_PARTY_UPDATE, ClientVersionBuild.V7_1_0_22900)]
         public static void HandlePartyUpdate(Packet packet)
         {
-            packet.Translator.ReadUInt16("PartyFlags");
-            packet.Translator.ReadByte("PartyIndex");
-            packet.Translator.ReadByte("PartyType");
+            packet.ReadUInt16("PartyFlags");
+            packet.ReadByte("PartyIndex");
+            packet.ReadByte("PartyType");
 
-            packet.Translator.ReadInt32("MyIndex");
-            packet.Translator.ReadPackedGuid128("PartyGUID");
-            packet.Translator.ReadInt32("SequenceNum");
-            packet.Translator.ReadPackedGuid128("LeaderGUID");
+            packet.ReadInt32("MyIndex");
+            packet.ReadPackedGuid128("PartyGUID");
+            packet.ReadInt32("SequenceNum");
+            packet.ReadPackedGuid128("LeaderGUID");
 
-            var playerCount = packet.Translator.ReadInt32("PlayerListCount");
-            var hasLFG = packet.Translator.ReadBit("HasLfgInfo");
-            var hasLootSettings = packet.Translator.ReadBit("HasLootSettings");
-            var hasDifficultySettings = packet.Translator.ReadBit("HasDifficultySettings");
+            var playerCount = packet.ReadInt32("PlayerListCount");
+            var hasLFG = packet.ReadBit("HasLfgInfo");
+            var hasLootSettings = packet.ReadBit("HasLootSettings");
+            var hasDifficultySettings = packet.ReadBit("HasDifficultySettings");
 
             for (int i = 0; i < playerCount; i++)
             {
-                packet.Translator.ResetBitReader();
-                var playerNameLength = packet.Translator.ReadBits(6);
-                packet.Translator.ReadBit("FromSocialQueue", i);
+                packet.ResetBitReader();
+                var playerNameLength = packet.ReadBits(6);
+                packet.ReadBit("FromSocialQueue", i);
 
-                packet.Translator.ReadPackedGuid128("Guid", i);
+                packet.ReadPackedGuid128("Guid", i);
 
-                packet.Translator.ReadByte("Status", i);
-                packet.Translator.ReadByte("Subgroup", i);
-                packet.Translator.ReadByte("Flags", i);
-                packet.Translator.ReadByte("RolesAssigned", i);
-                packet.Translator.ReadByteE<Class>("Class", i);
+                packet.ReadByte("Status", i);
+                packet.ReadByte("Subgroup", i);
+                packet.ReadByte("Flags", i);
+                packet.ReadByte("RolesAssigned", i);
+                packet.ReadByteE<Class>("Class", i);
 
-                packet.Translator.ReadWoWString("Name", playerNameLength, i);
+                packet.ReadWoWString("Name", playerNameLength, i);
             }
 
-            packet.Translator.ResetBitReader();
+            packet.ResetBitReader();
 
             if (hasLootSettings)
             {
-                packet.Translator.ReadByte("Method", "PartyLootSettings");
-                packet.Translator.ReadPackedGuid128("LootMaster", "PartyLootSettings");
-                packet.Translator.ReadByte("Threshold", "PartyLootSettings");
+                packet.ReadByte("Method", "PartyLootSettings");
+                packet.ReadPackedGuid128("LootMaster", "PartyLootSettings");
+                packet.ReadByte("Threshold", "PartyLootSettings");
             }
 
             if (hasDifficultySettings)
             {
-                packet.Translator.ReadInt32("DungeonDifficultyID");
-                packet.Translator.ReadInt32("RaidDifficultyID");
-                packet.Translator.ReadInt32("LegacyRaidDifficultyID");
+                packet.ReadInt32("DungeonDifficultyID");
+                packet.ReadInt32("RaidDifficultyID");
+                packet.ReadInt32("LegacyRaidDifficultyID");
             }
 
             if (hasLFG)
             {
-                packet.Translator.ResetBitReader();
+                packet.ResetBitReader();
 
-                packet.Translator.ReadByte("MyFlags");
-                packet.Translator.ReadInt32("Slot");
-                packet.Translator.ReadInt32("MyRandomSlot");
-                packet.Translator.ReadByte("MyPartialClear");
-                packet.Translator.ReadSingle("MyGearDiff");
-                packet.Translator.ReadByte("MyStrangerCount");
-                packet.Translator.ReadByte("MyKickVoteCount");
-                packet.Translator.ReadByte("BootCount");
-                packet.Translator.ReadBit("Aborted");
-                packet.Translator.ReadBit("MyFirstReward");
+                packet.ReadByte("MyFlags");
+                packet.ReadInt32("Slot");
+                packet.ReadInt32("MyRandomSlot");
+                packet.ReadByte("MyPartialClear");
+                packet.ReadSingle("MyGearDiff");
+                packet.ReadByte("MyStrangerCount");
+                packet.ReadByte("MyKickVoteCount");
+                packet.ReadByte("BootCount");
+                packet.ReadBit("Aborted");
+                packet.ReadBit("MyFirstReward");
             }
         }
     }

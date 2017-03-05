@@ -20,42 +20,42 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             for (int i = 0; i < buttonCount; i++)
             {
                 buttons[i] = new byte[8];
-                buttons[i][0] = packet.Translator.ReadBit();
+                buttons[i][0] = packet.ReadBit();
             }
 
             for (int i = 0; i < buttonCount; i++)
-                buttons[i][4] = packet.Translator.ReadBit();
+                buttons[i][4] = packet.ReadBit();
             for (int i = 0; i < buttonCount; i++)
-                buttons[i][6] = packet.Translator.ReadBit();
+                buttons[i][6] = packet.ReadBit();
             for (int i = 0; i < buttonCount; i++)
-                buttons[i][7] = packet.Translator.ReadBit();
+                buttons[i][7] = packet.ReadBit();
             for (int i = 0; i < buttonCount; i++)
-                buttons[i][3] = packet.Translator.ReadBit();
+                buttons[i][3] = packet.ReadBit();
             for (int i = 0; i < buttonCount; i++)
-                buttons[i][2] = packet.Translator.ReadBit();
+                buttons[i][2] = packet.ReadBit();
             for (int i = 0; i < buttonCount; i++)
-                buttons[i][1] = packet.Translator.ReadBit();
+                buttons[i][1] = packet.ReadBit();
             for (int i = 0; i < buttonCount; i++)
-                buttons[i][5] = packet.Translator.ReadBit();
+                buttons[i][5] = packet.ReadBit();
 
             for (int i = 0; i < buttonCount; i++)
-                packet.Translator.ReadXORByte(buttons[i], 5);
+                packet.ReadXORByte(buttons[i], 5);
             for (int i = 0; i < buttonCount; i++)
-                packet.Translator.ReadXORByte(buttons[i], 3);
+                packet.ReadXORByte(buttons[i], 3);
             for (int i = 0; i < buttonCount; i++)
-                packet.Translator.ReadXORByte(buttons[i], 4);
+                packet.ReadXORByte(buttons[i], 4);
             for (int i = 0; i < buttonCount; i++)
-                packet.Translator.ReadXORByte(buttons[i], 6);
+                packet.ReadXORByte(buttons[i], 6);
             for (int i = 0; i < buttonCount; i++)
-                packet.Translator.ReadXORByte(buttons[i], 1);
+                packet.ReadXORByte(buttons[i], 1);
             for (int i = 0; i < buttonCount; i++)
-                packet.Translator.ReadXORByte(buttons[i], 7);
+                packet.ReadXORByte(buttons[i], 7);
             for (int i = 0; i < buttonCount; i++)
-                packet.Translator.ReadXORByte(buttons[i], 2);
+                packet.ReadXORByte(buttons[i], 2);
             for (int i = 0; i < buttonCount; i++)
-                packet.Translator.ReadXORByte(buttons[i], 0);
+                packet.ReadXORByte(buttons[i], 0);
 
-            packet.Translator.ReadByte("Packet Type");
+            packet.ReadByte("Packet Type");
 
             for (int i = 0; i < buttonCount; i++)
             {
@@ -90,9 +90,9 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.CMSG_SET_ACTION_BUTTON)]
         public static void HandleSetActionButton(Packet packet)
         {
-            packet.Translator.ReadByte("Slot Id");
-            var actionId = packet.Translator.StartBitStream(4, 7, 6, 3, 2, 0, 5, 1);
-            packet.Translator.ParseBitStream(actionId, 3, 6, 1, 5, 7, 4, 2, 0);
+            packet.ReadByte("Slot Id");
+            var actionId = packet.StartBitStream(4, 7, 6, 3, 2, 0, 5, 1);
+            packet.ParseBitStream(actionId, 3, 6, 1, 5, 7, 4, 2, 0);
             packet.AddValue("Action Id", BitConverter.ToUInt32(actionId, 0));
         }
     }

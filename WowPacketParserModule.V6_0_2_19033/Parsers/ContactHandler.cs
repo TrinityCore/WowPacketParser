@@ -10,24 +10,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_VOICE_ADD_IGNORE)]
         public static void HandleAddIgnoreOrMute(Packet packet)
         {
-            var bits9 = packet.Translator.ReadBits(9);
-            packet.Translator.ReadWoWString("Name", bits9);
+            var bits9 = packet.ReadBits(9);
+            packet.ReadWoWString("Name", bits9);
         }
 
         [Parser(Opcode.CMSG_ADD_FRIEND)]
         public static void HandleAddFriend(Packet packet)
         {
-            var bits16 = packet.Translator.ReadBits(9);
-            var bits10 = packet.Translator.ReadBits(10);
+            var bits16 = packet.ReadBits(9);
+            var bits10 = packet.ReadBits(10);
 
-            packet.Translator.ReadWoWString("Name", bits16);
-            packet.Translator.ReadWoWString("Notes", bits10);
+            packet.ReadWoWString("Name", bits16);
+            packet.ReadWoWString("Notes", bits10);
         }
 
         public static void ReadQualifiedGUID(Packet packet, params object[] indexes)
         {
-            packet.Translator.ReadInt32("VirtualRealmAddress", indexes);
-            packet.Translator.ReadPackedGuid128("Guid", indexes);
+            packet.ReadInt32("VirtualRealmAddress", indexes);
+            packet.ReadPackedGuid128("Guid", indexes);
         }
 
         [Parser(Opcode.CMSG_DEL_FRIEND)]
@@ -41,65 +41,65 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_FRIEND_STATUS)]
         public static void HandleFriendStatus(Packet packet)
         {
-            packet.Translator.ReadByte("FriendResult");
+            packet.ReadByte("FriendResult");
 
-            packet.Translator.ReadPackedGuid128("Guid");
-            packet.Translator.ReadPackedGuid128("WowAccount");
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadPackedGuid128("WowAccount");
 
-            packet.Translator.ReadInt32("VirtualRealmAddress");
+            packet.ReadInt32("VirtualRealmAddress");
 
-            packet.Translator.ReadByteE<ContactStatus>("Status");
+            packet.ReadByteE<ContactStatus>("Status");
 
-            packet.Translator.ReadInt32<AreaId>("AreaID");
-            packet.Translator.ReadInt32("Level");
-            packet.Translator.ReadInt32E<Class>("ClassID");
+            packet.ReadInt32<AreaId>("AreaID");
+            packet.ReadInt32("Level");
+            packet.ReadInt32E<Class>("ClassID");
 
-            packet.Translator.ResetBitReader();
+            packet.ResetBitReader();
 
-            var bits28 = packet.Translator.ReadBits(10);
-            packet.Translator.ReadWoWString("Notes", bits28);
+            var bits28 = packet.ReadBits(10);
+            packet.ReadWoWString("Notes", bits28);
         }
 
         [Parser(Opcode.SMSG_CONTACT_LIST)]
         public static void HandleContactList(Packet packet)
         {
-            packet.Translator.ReadInt32E<ContactListFlag>("List Flags");
-            var bits6 = packet.Translator.ReadBits("ContactInfoCount", 8);
+            packet.ReadInt32E<ContactListFlag>("List Flags");
+            var bits6 = packet.ReadBits("ContactInfoCount", 8);
 
             for (var i = 0; i < bits6; i++)
             {
-                packet.Translator.ReadPackedGuid128("Guid", i);
-                packet.Translator.ReadPackedGuid128("WowAccount", i);
+                packet.ReadPackedGuid128("Guid", i);
+                packet.ReadPackedGuid128("WowAccount", i);
 
-                packet.Translator.ReadInt32("VirtualRealmAddr", i);
-                packet.Translator.ReadInt32("NativeRealmAddr", i);
-                packet.Translator.ReadInt32("TypeFlags", i);
+                packet.ReadInt32("VirtualRealmAddr", i);
+                packet.ReadInt32("NativeRealmAddr", i);
+                packet.ReadInt32("TypeFlags", i);
 
-                packet.Translator.ReadByte("Status", i);
+                packet.ReadByte("Status", i);
 
-                packet.Translator.ReadInt32("AreaID", i);
-                packet.Translator.ReadInt32("Level", i);
-                packet.Translator.ReadInt32("ClassID", i);
+                packet.ReadInt32("AreaID", i);
+                packet.ReadInt32("Level", i);
+                packet.ReadInt32("ClassID", i);
 
-                packet.Translator.ResetBitReader();
+                packet.ResetBitReader();
 
-                var bits44 = packet.Translator.ReadBits(10);
-                packet.Translator.ReadWoWString("Notes", bits44, i);
+                var bits44 = packet.ReadBits(10);
+                packet.ReadWoWString("Notes", bits44, i);
             }
         }
 
         [Parser(Opcode.CMSG_SEND_CONTACT_LIST)]
         public static void HandleSendContactList(Packet packet)
         {
-            packet.Translator.ReadInt32("Flags");
+            packet.ReadInt32("Flags");
         }
 
         [Parser(Opcode.CMSG_SET_CONTACT_NOTES)]
         public static void HandleSetContactNotes(Packet packet)
         {
             ReadQualifiedGUID(packet, "QualifiedGUID");
-            var notesLength = packet.Translator.ReadBits(10);
-            packet.Translator.ReadWoWString("Notes", notesLength);
+            var notesLength = packet.ReadBits(10);
+            packet.ReadWoWString("Notes", notesLength);
         }
     }
 }

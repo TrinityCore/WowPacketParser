@@ -13,21 +13,21 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
     {
         public static void ReadGossipQuestTextData(Packet packet, params object[] idx)
         {
-            packet.Translator.ReadInt32("QuestID", idx);
-            packet.Translator.ReadInt32("QuestType", idx);
-            packet.Translator.ReadInt32("QuestLevel", idx);
+            packet.ReadInt32("QuestID", idx);
+            packet.ReadInt32("QuestType", idx);
+            packet.ReadInt32("QuestLevel", idx);
 
             for (int j = 0; j < 2; ++j)
-                packet.Translator.ReadInt32("QuestFlags", idx, j);
+                packet.ReadInt32("QuestFlags", idx, j);
 
-            packet.Translator.ResetBitReader();
+            packet.ResetBitReader();
 
-            packet.Translator.ReadBit("Repeatable");
-            packet.Translator.ReadBit("Ignored");
+            packet.ReadBit("Repeatable");
+            packet.ReadBit("Ignored");
 
-            uint questTitleLen = packet.Translator.ReadBits(9);
+            uint questTitleLen = packet.ReadBits(9);
 
-            packet.Translator.ReadWoWString("QuestTitle", questTitleLen, idx);
+            packet.ReadWoWString("QuestTitle", questTitleLen, idx);
         }
 
         [HasSniffData]
@@ -36,20 +36,20 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             GossipMenu gossip = new GossipMenu();
 
-            WowGuid guid = packet.Translator.ReadPackedGuid128("GossipGUID");
+            WowGuid guid = packet.ReadPackedGuid128("GossipGUID");
 
             gossip.ObjectType = guid.GetObjectType();
             gossip.ObjectEntry = guid.GetEntry();
 
-            int menuId = packet.Translator.ReadInt32("GossipID");
+            int menuId = packet.ReadInt32("GossipID");
             gossip.Entry = (uint)menuId;
 
-            packet.Translator.ReadInt32("FriendshipFactionID");
+            packet.ReadInt32("FriendshipFactionID");
 
-            gossip.TextID = (uint)packet.Translator.ReadInt32("TextID");
+            gossip.TextID = (uint)packet.ReadInt32("TextID");
 
-            int int44 = packet.Translator.ReadInt32("GossipOptions");
-            int int60 = packet.Translator.ReadInt32("GossipText");
+            int int44 = packet.ReadInt32("GossipOptions");
+            int int60 = packet.ReadInt32("GossipText");
 
             for (int i = 0; i < int44; ++i)
                 V6_0_2_19033.Parsers.NpcHandler.ReadGossipOptionsData((uint)menuId, packet, i, "GossipOptions");
@@ -69,28 +69,28 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_VENDOR_INVENTORY)]
         public static void HandleVendorInventory(Packet packet)
         {
-            uint entry = packet.Translator.ReadPackedGuid128("VendorGUID").GetEntry();
-            packet.Translator.ReadByte("Reason");
-            int count = packet.Translator.ReadInt32("VendorItems");
+            uint entry = packet.ReadPackedGuid128("VendorGUID").GetEntry();
+            packet.ReadByte("Reason");
+            int count = packet.ReadInt32("VendorItems");
 
             for (int i = 0; i < count; ++i)
             {
                 NpcVendor vendor = new NpcVendor
                 {
                     Entry = entry,
-                    Slot = packet.Translator.ReadInt32("Muid", i),
-                    Type = (uint)packet.Translator.ReadInt32("Type", i)
+                    Slot = packet.ReadInt32("Muid", i),
+                    Type = (uint)packet.ReadInt32("Type", i)
                 };
 
-                int maxCount = packet.Translator.ReadInt32("Quantity", i);
-                packet.Translator.ReadInt64("Price", i);
-                packet.Translator.ReadInt32("Durability", i);
-                int buyCount = packet.Translator.ReadInt32("StackCount", i);
-                vendor.ExtendedCost = packet.Translator.ReadUInt32("ExtendedCostID", i);
-                vendor.PlayerConditionID = packet.Translator.ReadUInt32("PlayerConditionFailed", i);
+                int maxCount = packet.ReadInt32("Quantity", i);
+                packet.ReadInt64("Price", i);
+                packet.ReadInt32("Durability", i);
+                int buyCount = packet.ReadInt32("StackCount", i);
+                vendor.ExtendedCost = packet.ReadUInt32("ExtendedCostID", i);
+                vendor.PlayerConditionID = packet.ReadUInt32("PlayerConditionFailed", i);
 
                 vendor.Item = V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, i);
-                vendor.IgnoreFiltering = packet.Translator.ReadBit("DoNotFilterOnVendor", i);
+                vendor.IgnoreFiltering = packet.ReadBit("DoNotFilterOnVendor", i);
 
                 vendor.MaxCount = maxCount == -1 ? 0 : (uint)maxCount; // TDB
                 if (vendor.Type == 2)

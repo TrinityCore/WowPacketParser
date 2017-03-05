@@ -13,24 +13,24 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             var guid = new byte[8];
 
             for (var i = 0; i < 2; ++i)
-                packet.Translator.ReadInt32("Blacklisted MapId", i);
+                packet.ReadInt32("Blacklisted MapId", i);
 
-            guid[1] = packet.Translator.ReadBit();
-            guid[7] = packet.Translator.ReadBit();
-            guid[0] = packet.Translator.ReadBit();
-            guid[3] = packet.Translator.ReadBit();
-            packet.Translator.ReadBit("As Group");
-            guid[4] = packet.Translator.ReadBit();
-            var hasRoleMask = !packet.Translator.ReadBit("!HasRoleMask");
-            guid[6] = packet.Translator.ReadBit();
-            guid[2] = packet.Translator.ReadBit();
-            guid[5] = packet.Translator.ReadBit();
-            packet.Translator.ParseBitStream(guid, 7, 2, 4, 5, 0, 6, 3, 1);
+            guid[1] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            packet.ReadBit("As Group");
+            guid[4] = packet.ReadBit();
+            var hasRoleMask = !packet.ReadBit("!HasRoleMask");
+            guid[6] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            packet.ParseBitStream(guid, 7, 2, 4, 5, 0, 6, 3, 1);
 
             if (hasRoleMask)
-                packet.Translator.ReadByte("RoleMask");
+                packet.ReadByte("RoleMask");
 
-            packet.Translator.WriteGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
     }
 }

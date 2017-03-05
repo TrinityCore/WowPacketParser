@@ -13,19 +13,19 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         {
             var guid = new byte[8];
 
-            packet.Translator.ReadInt32("Entry");
+            packet.ReadInt32("Entry");
 
-            packet.Translator.StartBitStream(guid, 1, 7, 0, 3, 5, 4, 6, 2);
-            packet.Translator.ParseBitStream(guid, 3, 6, 1, 2, 0, 7, 5, 4);
+            packet.StartBitStream(guid, 1, 7, 0, 3, 5, 4, 6, 2);
+            packet.ParseBitStream(guid, 3, 6, 1, 2, 0, 7, 5, 4);
 
-            packet.Translator.WriteGuid("GUID", guid);
+            packet.WriteGuid("GUID", guid);
         }
 
         [HasSniffData]
         [Parser(Opcode.SMSG_QUERY_GAME_OBJECT_RESPONSE)]
         public static void HandleGameObjectQueryResponse(Packet packet)
         {
-            var entry = packet.Translator.ReadEntry("Entry");
+            var entry = packet.ReadEntry("Entry");
             if (entry.Value) // entry is masked
                 return;
 
@@ -34,40 +34,40 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 Entry = (uint)entry.Key
             };
 
-            int unk1 = packet.Translator.ReadInt32("Unk1 UInt32");
+            int unk1 = packet.ReadInt32("Unk1 UInt32");
             if (unk1 == 0)
             {
-                packet.Translator.ReadByte("Unk1 Byte");
+                packet.ReadByte("Unk1 Byte");
                 return;
             }
 
-            gameObject.Type = packet.Translator.ReadInt32E<GameObjectType>("Type");
-            gameObject.DisplayID = packet.Translator.ReadUInt32("Display ID");
+            gameObject.Type = packet.ReadInt32E<GameObjectType>("Type");
+            gameObject.DisplayID = packet.ReadUInt32("Display ID");
 
             var name = new string[4];
             for (int i = 0; i < 4; i++)
-                name[i] = packet.Translator.ReadCString("Name", i);
+                name[i] = packet.ReadCString("Name", i);
             gameObject.Name = name[0];
 
-            gameObject.IconName = packet.Translator.ReadCString("Icon Name");
-            gameObject.CastCaption = packet.Translator.ReadCString("Cast Caption");
-            gameObject.UnkString = packet.Translator.ReadCString("Unk String");
+            gameObject.IconName = packet.ReadCString("Icon Name");
+            gameObject.CastCaption = packet.ReadCString("Cast Caption");
+            gameObject.UnkString = packet.ReadCString("Unk String");
 
             gameObject.Data = new int?[32];
             for (int i = 0; i < gameObject.Data.Length; i++)
-                gameObject.Data[i] = packet.Translator.ReadInt32("Data", i);
+                gameObject.Data[i] = packet.ReadInt32("Data", i);
 
 
-            gameObject.Size = packet.Translator.ReadSingle("Size");
+            gameObject.Size = packet.ReadSingle("Size");
 
-            gameObject.QuestItems = new uint?[packet.Translator.ReadByte("QuestItems Length")];
+            gameObject.QuestItems = new uint?[packet.ReadByte("QuestItems Length")];
 
             for (int i = 0; i < gameObject.QuestItems.Length; i++)
-                gameObject.QuestItems[i] = (uint)packet.Translator.ReadInt32<ItemId>("Quest Item", i);
+                gameObject.QuestItems[i] = (uint)packet.ReadInt32<ItemId>("Quest Item", i);
 
-            gameObject.RequiredLevel = packet.Translator.ReadInt32("RequiredLevel");
+            gameObject.RequiredLevel = packet.ReadInt32("RequiredLevel");
 
-            packet.Translator.ReadByte("Unk1 Byte");
+            packet.ReadByte("Unk1 Byte");
 
             Storage.GameObjectTemplates.Add(gameObject, packet.TimeSpan);
 
@@ -85,10 +85,10 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         {
             var guid = new byte[8];
 
-            packet.Translator.StartBitStream(guid, 7, 0, 3, 2, 1, 6, 5, 4);
-            packet.Translator.ParseBitStream(guid, 1, 3, 5, 4, 6, 7, 2, 0);
+            packet.StartBitStream(guid, 7, 0, 3, 2, 1, 6, 5, 4);
+            packet.ParseBitStream(guid, 1, 3, 5, 4, 6, 7, 2, 0);
 
-            packet.Translator.WriteGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_GAME_OBJ_USE)]
@@ -96,10 +96,10 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         {
             var guid = new byte[8];
 
-            packet.Translator.StartBitStream(guid, 4, 7, 6, 5, 1, 3, 2, 0);
-            packet.Translator.ParseBitStream(guid, 4, 3, 2, 0, 5, 6, 1, 7);
+            packet.StartBitStream(guid, 4, 7, 6, 5, 1, 3, 2, 0);
+            packet.ParseBitStream(guid, 4, 3, 2, 0, 5, 6, 1, 7);
 
-            packet.Translator.WriteGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM)]
@@ -107,10 +107,10 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         {
             var guid = new byte[8];
 
-            packet.Translator.StartBitStream(guid, 1, 2, 0, 6, 4, 5, 3, 7);
-            packet.Translator.ParseBitStream(guid, 0, 5, 1, 7, 2, 3, 4, 6);
+            packet.StartBitStream(guid, 1, 2, 0, 6, 4, 5, 3, 7);
+            packet.ParseBitStream(guid, 0, 5, 1, 7, 2, 3, 4, 6);
 
-            packet.Translator.WriteGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_GAME_OBJECT_CUSTOM_ANIM)]
@@ -118,28 +118,28 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         {
             var guid = new byte[8];
 
-            guid[0] = packet.Translator.ReadBit();
-            guid[6] = packet.Translator.ReadBit();
-            bool hasAnim = !packet.Translator.ReadBit();
-            guid[4] = packet.Translator.ReadBit();
-            guid[1] = packet.Translator.ReadBit();
-            guid[7] = packet.Translator.ReadBit();
-            guid[5] = packet.Translator.ReadBit();
-            packet.Translator.ReadBit();
-            guid[3] = packet.Translator.ReadBit();
-            guid[2] = packet.Translator.ReadBit();
-            packet.Translator.ReadXORByte(guid, 1);
+            guid[0] = packet.ReadBit();
+            guid[6] = packet.ReadBit();
+            bool hasAnim = !packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+            guid[5] = packet.ReadBit();
+            packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            packet.ReadXORByte(guid, 1);
             if (hasAnim)
-                packet.Translator.ReadInt32("Anim");
-            packet.Translator.ReadXORByte(guid, 6);
-            packet.Translator.ReadXORByte(guid, 7);
-            packet.Translator.ReadXORByte(guid, 5);
-            packet.Translator.ReadXORByte(guid, 4);
-            packet.Translator.ReadXORByte(guid, 3);
-            packet.Translator.ReadXORByte(guid, 0);
-            packet.Translator.ReadXORByte(guid, 2);
+                packet.ReadInt32("Anim");
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 2);
 
-            packet.Translator.WriteGuid("Guid", guid);
+            packet.WriteGuid("Guid", guid);
         }
     }
 }

@@ -9,15 +9,15 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_ACCOUNT_DATA_TIMES)]
         public static void HandleAccountDataTimes(Packet packet)
         {
-            packet.Translator.ReadBit("Unk Bit");
+            packet.ReadBit("Unk Bit");
 
             for (var i = 0; i < 8; ++i)
             {
-                packet.Translator.ReadTime("[" + (AccountDataType)i + "]" + " Time");
+                packet.ReadTime("[" + (AccountDataType)i + "]" + " Time");
             }
 
-            packet.Translator.ReadUInt32("unk24");
-            packet.Translator.ReadTime("Server Time");
+            packet.ReadUInt32("unk24");
+            packet.ReadTime("Server Time");
         }
 
         [Parser(Opcode.SMSG_UPDATE_ACCOUNT_DATA)]
@@ -25,32 +25,32 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         {
             var guid = new byte[8];
 
-            packet.Translator.ReadBitsE<AccountDataType>("Data Type", 3);
+            packet.ReadBitsE<AccountDataType>("Data Type", 3);
 
-            packet.Translator.StartBitStream(guid, 5, 1, 3, 7, 0, 4, 2, 6);
+            packet.StartBitStream(guid, 5, 1, 3, 7, 0, 4, 2, 6);
 
-            packet.Translator.ReadXORBytes(guid, 3, 1, 5);
+            packet.ReadXORBytes(guid, 3, 1, 5);
 
-            var decompCount = packet.Translator.ReadInt32();
-            var compCount = packet.Translator.ReadInt32();
+            var decompCount = packet.ReadInt32();
+            var compCount = packet.ReadInt32();
 
             var pkt = packet.Inflate(compCount, decompCount, false);
-            var data = pkt.Translator.ReadWoWString(decompCount);
+            var data = pkt.ReadWoWString(decompCount);
             pkt.ClosePacket(false);
 
             packet.AddValue("Account Data", data);
 
-            packet.Translator.ReadXORBytes(guid, 7, 4, 0, 6, 2);
+            packet.ReadXORBytes(guid, 7, 4, 0, 6, 2);
 
-            packet.Translator.ReadTime("Login Time");
+            packet.ReadTime("Login Time");
 
-            packet.Translator.WriteGuid("GUID", guid);
+            packet.WriteGuid("GUID", guid);
         }
 
         [Parser(Opcode.CMSG_REQUEST_ACCOUNT_DATA)]
         public static void HandleRequestAccountData(Packet packet)
         {
-            packet.Translator.ReadBitsE<AccountDataType>("Data Type", 3);
+            packet.ReadBitsE<AccountDataType>("Data Type", 3);
         }
 
     }

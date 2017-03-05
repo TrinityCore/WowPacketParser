@@ -14,64 +14,64 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_SETUP_CURRENCY)]
         public static void HandleInitCurrency(Packet packet)
         {
-            var count = packet.Translator.ReadInt32("SetupCurrencyRecord");
+            var count = packet.ReadInt32("SetupCurrencyRecord");
 
             // ClientSetupCurrencyRecord
             for (var i = 0; i < count; ++i)
             {
-                packet.Translator.ReadUInt32("Type", i);
-                packet.Translator.ReadUInt32("Quantity", i);
+                packet.ReadUInt32("Type", i);
+                packet.ReadUInt32("Quantity", i);
 
-                var hasWeeklyQuantity = packet.Translator.ReadBit();
-                var hasMaxWeeklyQuantity = packet.Translator.ReadBit();
-                var hasTrackedQuantity = packet.Translator.ReadBit();
-                packet.Translator.ReadBits("Flags", 5, i);
+                var hasWeeklyQuantity = packet.ReadBit();
+                var hasMaxWeeklyQuantity = packet.ReadBit();
+                var hasTrackedQuantity = packet.ReadBit();
+                packet.ReadBits("Flags", 5, i);
 
                 if (hasWeeklyQuantity)
-                    packet.Translator.ReadUInt32("WeeklyQuantity", i);
+                    packet.ReadUInt32("WeeklyQuantity", i);
 
                 if (hasMaxWeeklyQuantity)
-                    packet.Translator.ReadUInt32("MaxWeeklyQuantity", i);
+                    packet.ReadUInt32("MaxWeeklyQuantity", i);
 
                 if (hasTrackedQuantity)
-                    packet.Translator.ReadUInt32("TrackedQuantity", i);
+                    packet.ReadUInt32("TrackedQuantity", i);
             }
         }
 
         [Parser(Opcode.SMSG_SET_MAX_WEEKLY_QUANTITY)]
         public static void HandleSetMaxWeeklyQuantity(Packet packet)
         {
-            packet.Translator.ReadInt32("Type");
-            packet.Translator.ReadInt32("MaxWeeklyQuantity");
+            packet.ReadInt32("Type");
+            packet.ReadInt32("MaxWeeklyQuantity");
         }
 
         [Parser(Opcode.SMSG_SET_CURRENCY)]
         public static void HandleSetCurrency(Packet packet)
         {
-            packet.Translator.ReadInt32("Type");
-            packet.Translator.ReadInt32("Quantity");
-            packet.Translator.ReadInt32("Flags");
+            packet.ReadInt32("Type");
+            packet.ReadInt32("Quantity");
+            packet.ReadInt32("Flags");
 
-            var bit32 = packet.Translator.ReadBit("HasTrackedQuantity");
-            var bit40 = packet.Translator.ReadBit("HasWeeklyQuantity");
-            packet.Translator.ReadBit("SuppressChatLog");
+            var bit32 = packet.ReadBit("HasTrackedQuantity");
+            var bit40 = packet.ReadBit("HasWeeklyQuantity");
+            packet.ReadBit("SuppressChatLog");
 
             if (bit32)
-                packet.Translator.ReadInt32("TrackedQuantity");
+                packet.ReadInt32("TrackedQuantity");
 
             if (bit40)
-                packet.Translator.ReadInt32("WeeklyQuantity");
+                packet.ReadInt32("WeeklyQuantity");
         }
 
         [Parser(Opcode.SMSG_CONQUEST_FORMULA_CONSTANTS)]
         public static void HandleConquestFormulaConstants(Packet packet)
         {
             // Order guessed
-            packet.Translator.ReadInt32("PvpMinCPPerWeek");
-            packet.Translator.ReadInt32("PvpMaxCPPerWeek");
-            packet.Translator.ReadSingle("PvpCPBaseCoefficient");
-            packet.Translator.ReadSingle("PvpCPExpCoefficient");
-            packet.Translator.ReadSingle("PvpCPNumerator");
+            packet.ReadInt32("PvpMinCPPerWeek");
+            packet.ReadInt32("PvpMaxCPPerWeek");
+            packet.ReadSingle("PvpCPBaseCoefficient");
+            packet.ReadSingle("PvpCPExpCoefficient");
+            packet.ReadSingle("PvpCPNumerator");
         }
     }
 }

@@ -139,7 +139,7 @@ namespace WowPacketParser.Loading
 
             var written = false;
             IDumpWriter writer = null;
-            // this is done to ensure disposal of IDumpWriter (extended form of using(var ...) {...} 
+            // this is done to ensure disposal of IDumpWriter - extended form of "using(var ...) {...}" -
             try
             {
                 if (Settings.DumpFormatWithText() && Settings.DumpTextFormat == TextFormatType.Txt)

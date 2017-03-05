@@ -17,103 +17,103 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var receiverGUIDBytes = new byte[8];
             var groupGUIDBytes = new byte[8];
 
-            var hasSender = !packet.Translator.ReadBit();
-            var hasText = !packet.Translator.ReadBit();
+            var hasSender = !packet.ReadBit();
+            var hasText = !packet.ReadBit();
 
-            packet.Translator.ReadBit(); // fake bit
+            packet.ReadBit(); // fake bit
 
-            packet.Translator.StartBitStream(groupGUIDBytes, 1, 0, 6, 7, 3, 4, 2, 5);
+            packet.StartBitStream(groupGUIDBytes, 1, 0, 6, 7, 3, 4, 2, 5);
 
-            var hasReceiver = !packet.Translator.ReadBit();
-            var hasRealmId = !packet.Translator.ReadBit();
+            var hasReceiver = !packet.ReadBit();
+            var hasRealmId = !packet.ReadBit();
 
-            packet.Translator.ReadBit(); // fake bit
+            packet.ReadBit(); // fake bit
 
-            var bit1495 = packet.Translator.ReadBit();
-            var bit11 = !packet.Translator.ReadBit();
-            var hasChannel = !packet.Translator.ReadBit();
+            var bit1495 = packet.ReadBit();
+            var bit11 = !packet.ReadBit();
+            var hasChannel = !packet.ReadBit();
 
-            packet.Translator.StartBitStream(guildGUIDBytes, 0, 7, 6, 4, 1, 3, 2, 5);
+            packet.StartBitStream(guildGUIDBytes, 0, 7, 6, 4, 1, 3, 2, 5);
 
             var senderNameLen = 0u;
             if (hasSender)
-                senderNameLen = packet.Translator.ReadBits(11);
+                senderNameLen = packet.ReadBits(11);
 
             var textLen = 0u;
             if (hasText)
-                textLen = packet.Translator.ReadBits(12);
+                textLen = packet.ReadBits(12);
 
-            packet.Translator.ReadBit(); // fake bit
+            packet.ReadBit(); // fake bit
 
-            var hasAchi = !packet.Translator.ReadBit();
+            var hasAchi = !packet.ReadBit();
 
-            packet.Translator.StartBitStream(senderGUIDBytes, 4, 2, 7, 5, 1, 3, 0, 6);
+            packet.StartBitStream(senderGUIDBytes, 4, 2, 7, 5, 1, 3, 0, 6);
 
-            var bit148C = !packet.Translator.ReadBit();
-            var hasPrefix = !packet.Translator.ReadBit();
+            var bit148C = !packet.ReadBit();
+            var hasPrefix = !packet.ReadBit();
 
             var prefixLen = 0u;
             if (hasPrefix)
-                prefixLen = packet.Translator.ReadBits(5);
+                prefixLen = packet.ReadBits(5);
 
             var channelLen = 0u;
             if (hasChannel)
-                channelLen = packet.Translator.ReadBits(7);
+                channelLen = packet.ReadBits(7);
 
-            var bit1494 = packet.Translator.ReadBit();
-            var bit1490 = !packet.Translator.ReadBit();
+            var bit1494 = packet.ReadBit();
+            var bit1490 = !packet.ReadBit();
 
-            packet.Translator.ReadBit(); // fake bit
+            packet.ReadBit(); // fake bit
 
             var bits148C = 0u;
 
             if (bit148C)
-                bits148C = packet.Translator.ReadBits(9);
+                bits148C = packet.ReadBits(9);
 
-            packet.Translator.StartBitStream(receiverGUIDBytes, 1, 5, 4, 6, 3, 2, 7, 0);
+            packet.StartBitStream(receiverGUIDBytes, 1, 5, 4, 6, 3, 2, 7, 0);
 
             var receiverNameLen = 0u;
             if (hasReceiver)
-                receiverNameLen = packet.Translator.ReadBits(11);
+                receiverNameLen = packet.ReadBits(11);
 
             if (hasReceiver)
-                text.ReceiverName = packet.Translator.ReadWoWString("Receiver Name", receiverNameLen);
+                text.ReceiverName = packet.ReadWoWString("Receiver Name", receiverNameLen);
 
             if (hasRealmId)
-                packet.Translator.ReadInt32("Realm Id");
+                packet.ReadInt32("Realm Id");
 
-            packet.Translator.ParseBitStream(groupGUIDBytes, 2, 3, 1, 4, 0, 5, 6, 7);
-            packet.Translator.ParseBitStream(receiverGUIDBytes, 2, 7, 5, 0, 3, 4, 1, 6);
-            packet.Translator.ParseBitStream(senderGUIDBytes, 5, 7, 3, 1, 6, 2, 4, 0);
-            packet.Translator.ParseBitStream(guildGUIDBytes, 5, 7, 4, 1, 2, 0, 6, 3);
+            packet.ParseBitStream(groupGUIDBytes, 2, 3, 1, 4, 0, 5, 6, 7);
+            packet.ParseBitStream(receiverGUIDBytes, 2, 7, 5, 0, 3, 4, 1, 6);
+            packet.ParseBitStream(senderGUIDBytes, 5, 7, 3, 1, 6, 2, 4, 0);
+            packet.ParseBitStream(guildGUIDBytes, 5, 7, 4, 1, 2, 0, 6, 3);
 
             if (hasChannel)
-                packet.Translator.ReadWoWString("Channel Name", channelLen);
+                packet.ReadWoWString("Channel Name", channelLen);
 
             if (hasAchi)
-                packet.Translator.ReadInt32<AchievementId>("Achievement Id");
+                packet.ReadInt32<AchievementId>("Achievement Id");
 
             if (hasPrefix)
-                packet.Translator.ReadWoWString("Addon Message Prefix", prefixLen);
+                packet.ReadWoWString("Addon Message Prefix", prefixLen);
 
             if (bit11)
-                packet.Translator.ReadByte("Byte11");
+                packet.ReadByte("Byte11");
 
             if (bit1490)
-                packet.Translator.ReadSingle("Float1490");
+                packet.ReadSingle("Float1490");
 
             if (hasSender)
-                text.SenderName = packet.Translator.ReadWoWString("Sender Name", senderNameLen);
+                text.SenderName = packet.ReadWoWString("Sender Name", senderNameLen);
 
             if (hasText)
-                text.Text = packet.Translator.ReadWoWString("Text", textLen);
+                text.Text = packet.ReadWoWString("Text", textLen);
 
-            text.Type = (ChatMessageType)packet.Translator.ReadByteE<ChatMessageTypeNew>("SlashCmd");
+            text.Type = (ChatMessageType)packet.ReadByteE<ChatMessageTypeNew>("SlashCmd");
 
-            text.SenderGUID = packet.Translator.WriteGuid("SenderGUID", senderGUIDBytes);
-            text.ReceiverGUID = packet.Translator.WriteGuid("ReceiverGUID", receiverGUIDBytes);
-            packet.Translator.WriteGuid("GuildGUID", guildGUIDBytes);
-            packet.Translator.WriteGuid("GroupGUID", groupGUIDBytes);
+            text.SenderGUID = packet.WriteGuid("SenderGUID", senderGUIDBytes);
+            text.ReceiverGUID = packet.WriteGuid("ReceiverGUID", receiverGUIDBytes);
+            packet.WriteGuid("GuildGUID", guildGUIDBytes);
+            packet.WriteGuid("GroupGUID", groupGUIDBytes);
 
             uint entry = 0;
             if (text.SenderGUID.GetObjectType() == ObjectType.Unit)
@@ -136,9 +136,9 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         [Parser(Opcode.CMSG_CHAT_MESSAGE_YELL)]
         public static void HandleClientChatMessage(Packet packet)
         {
-            packet.Translator.ReadInt32E<Language>("Language");
-            var len = packet.Translator.ReadBits(8);
-            packet.Translator.ReadWoWString("Message", len);
+            packet.ReadInt32E<Language>("Language");
+            var len = packet.ReadBits(8);
+            packet.ReadWoWString("Message", len);
         }
 
         [Parser(Opcode.SMSG_TEXT_EMOTE)]
@@ -147,53 +147,53 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var guid1 = new byte[8];
             var guid2 = new byte[8];
 
-            packet.Translator.ReadInt32E<EmoteType>("Emote ID");
-            packet.Translator.ReadInt32E<EmoteTextType>("Text Emote ID");
+            packet.ReadInt32E<EmoteType>("Emote ID");
+            packet.ReadInt32E<EmoteTextType>("Text Emote ID");
 
-            guid2[1] = packet.Translator.ReadBit();
-            guid1[3] = packet.Translator.ReadBit();
-            guid2[3] = packet.Translator.ReadBit();
-            guid2[5] = packet.Translator.ReadBit();
-            guid1[2] = packet.Translator.ReadBit();
-            guid2[6] = packet.Translator.ReadBit();
-            guid1[0] = packet.Translator.ReadBit();
-            guid1[6] = packet.Translator.ReadBit();
-            guid1[1] = packet.Translator.ReadBit();
-            guid2[2] = packet.Translator.ReadBit();
-            guid2[4] = packet.Translator.ReadBit();
-            guid1[7] = packet.Translator.ReadBit();
-            guid2[0] = packet.Translator.ReadBit();
-            guid1[5] = packet.Translator.ReadBit();
-            guid1[4] = packet.Translator.ReadBit();
-            guid2[7] = packet.Translator.ReadBit();
+            guid2[1] = packet.ReadBit();
+            guid1[3] = packet.ReadBit();
+            guid2[3] = packet.ReadBit();
+            guid2[5] = packet.ReadBit();
+            guid1[2] = packet.ReadBit();
+            guid2[6] = packet.ReadBit();
+            guid1[0] = packet.ReadBit();
+            guid1[6] = packet.ReadBit();
+            guid1[1] = packet.ReadBit();
+            guid2[2] = packet.ReadBit();
+            guid2[4] = packet.ReadBit();
+            guid1[7] = packet.ReadBit();
+            guid2[0] = packet.ReadBit();
+            guid1[5] = packet.ReadBit();
+            guid1[4] = packet.ReadBit();
+            guid2[7] = packet.ReadBit();
 
-            packet.Translator.ReadXORByte(guid2, 5);
-            packet.Translator.ReadXORByte(guid2, 7);
-            packet.Translator.ReadXORByte(guid1, 1);
-            packet.Translator.ReadXORByte(guid2, 3);
-            packet.Translator.ReadXORByte(guid1, 7);
-            packet.Translator.ReadXORByte(guid2, 1);
-            packet.Translator.ReadXORByte(guid1, 6);
-            packet.Translator.ReadXORByte(guid1, 4);
-            packet.Translator.ReadXORByte(guid2, 4);
-            packet.Translator.ReadXORByte(guid2, 6);
-            packet.Translator.ReadXORByte(guid2, 2);
-            packet.Translator.ReadXORByte(guid1, 0);
-            packet.Translator.ReadXORByte(guid1, 2);
-            packet.Translator.ReadXORByte(guid1, 5);
-            packet.Translator.ReadXORByte(guid1, 3);
-            packet.Translator.ReadXORByte(guid2, 0);
+            packet.ReadXORByte(guid2, 5);
+            packet.ReadXORByte(guid2, 7);
+            packet.ReadXORByte(guid1, 1);
+            packet.ReadXORByte(guid2, 3);
+            packet.ReadXORByte(guid1, 7);
+            packet.ReadXORByte(guid2, 1);
+            packet.ReadXORByte(guid1, 6);
+            packet.ReadXORByte(guid1, 4);
+            packet.ReadXORByte(guid2, 4);
+            packet.ReadXORByte(guid2, 6);
+            packet.ReadXORByte(guid2, 2);
+            packet.ReadXORByte(guid1, 0);
+            packet.ReadXORByte(guid1, 2);
+            packet.ReadXORByte(guid1, 5);
+            packet.ReadXORByte(guid1, 3);
+            packet.ReadXORByte(guid2, 0);
 
-            packet.Translator.WriteGuid("Guid1", guid1);
-            packet.Translator.WriteGuid("Guid2", guid2);
+            packet.WriteGuid("Guid1", guid1);
+            packet.WriteGuid("Guid2", guid2);
         }
 
         [Parser(Opcode.SMSG_DEFENSE_MESSAGE)]
         public static void HandleDefenseMessage(Packet packet)
         {
-            var len = packet.Translator.ReadBits(12);
-            packet.Translator.ReadInt32<ZoneId>("Zone Id");
-            packet.Translator.ReadWoWString("Message", len);
+            var len = packet.ReadBits(12);
+            packet.ReadInt32<ZoneId>("Zone Id");
+            packet.ReadWoWString("Message", len);
         }
     }
 }
