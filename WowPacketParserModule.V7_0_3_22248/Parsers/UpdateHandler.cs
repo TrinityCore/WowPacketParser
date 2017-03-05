@@ -291,10 +291,10 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
                         if (hasSpellEffectExtraData)
                         {
-                            packet.Translator.ReadPackedGuid128("SpellEffectExtraGUID", index);
-                            packet.Translator.ReadUInt32("SpellEffectExtra int 1", index);
-                            packet.Translator.ReadUInt32("SpellEffectExtra int 2", index);
-                            packet.Translator.ReadUInt32("SpellEffectExtra int 3", index);
+                            packet.Translator.ReadPackedGuid128("TargetGUID", index);
+                            packet.Translator.ReadUInt32("SpellVisualID", index);
+                            packet.Translator.ReadUInt32("ProgressCurveID", index);
+                            packet.Translator.ReadUInt32("ParabolicCurveID", index);
                         }
                     }
                 }
