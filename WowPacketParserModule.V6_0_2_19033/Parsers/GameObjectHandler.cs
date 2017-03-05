@@ -11,15 +11,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_QUERY_GAME_OBJECT)]
         public static void HandleGameObjectQuery(Packet packet)
         {
-            packet.ReadInt32("Entry");
-            packet.ReadPackedGuid128("GUID");
+            packet.Translator.ReadInt32("Entry");
+            packet.Translator.ReadPackedGuid128("GUID");
         }
 
         [HasSniffData]
         [Parser(Opcode.SMSG_QUERY_GAME_OBJECT_RESPONSE)]
         public static void HandleGameObjectQueryResponse(Packet packet)
         {
-            var entry = packet.ReadEntry("Entry");
+            var entry = packet.Translator.ReadEntry("Entry");
             if (entry.Value) // entry is masked
                 return;
 
@@ -28,45 +28,45 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 Entry = (uint)entry.Key
             };
 
-            packet.ReadBit("Allow");
+            packet.Translator.ReadBit("Allow");
 
-            int dataSize = packet.ReadInt32("DataSize");
+            int dataSize = packet.Translator.ReadInt32("DataSize");
             if (dataSize == 0)
                 return;
 
-            gameObject.Type = packet.ReadInt32E<GameObjectType>("Type");
+            gameObject.Type = packet.Translator.ReadInt32E<GameObjectType>("Type");
 
-            gameObject.DisplayID = packet.ReadUInt32("Display ID");
+            gameObject.DisplayID = packet.Translator.ReadUInt32("Display ID");
 
             var name = new string[4];
             for (int i = 0; i < 4; i++)
-                name[i] = packet.ReadCString("Name", i);
+                name[i] = packet.Translator.ReadCString("Name", i);
             gameObject.Name = name[0];
 
-            gameObject.IconName = packet.ReadCString("Icon Name");
-            gameObject.CastCaption = packet.ReadCString("Cast Caption");
-            gameObject.UnkString = packet.ReadCString("Unk String");
+            gameObject.IconName = packet.Translator.ReadCString("Icon Name");
+            gameObject.CastCaption = packet.Translator.ReadCString("Cast Caption");
+            gameObject.UnkString = packet.Translator.ReadCString("Unk String");
 
             gameObject.Data = new int?[33];
             for (int i = 0; i < gameObject.Data.Length; i++)
-                gameObject.Data[i] = packet.ReadInt32("Data", i);
+                gameObject.Data[i] = packet.Translator.ReadInt32("Data", i);
 
-            gameObject.Size = packet.ReadSingle("Size");
+            gameObject.Size = packet.Translator.ReadSingle("Size");
 
-            byte questItemsCount = packet.ReadByte("QuestItemsCount");
+            byte questItemsCount = packet.Translator.ReadByte("QuestItemsCount");
             for (uint i = 0; i < questItemsCount; i++)
             {
                 GameObjectTemplateQuestItem questItem = new GameObjectTemplateQuestItem
                 {
                     GameObjectEntry = (uint)entry.Key,
                     Idx = i,
-                    ItemId = packet.ReadUInt32<ItemId>("QuestItem", i)
+                    ItemId = packet.Translator.ReadUInt32<ItemId>("QuestItem", i)
                 };
 
                 Storage.GameObjectTemplateQuestItems.Add(questItem, packet.TimeSpan);
             }
 
-            gameObject.RequiredLevel = packet.ReadInt32("RequiredLevel");
+            gameObject.RequiredLevel = packet.Translator.ReadInt32("RequiredLevel");
 
             Storage.GameObjectTemplates.Add(gameObject, packet.TimeSpan);
 
@@ -85,53 +85,53 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_PAGE_TEXT)]
         public static void HandleGoMisc(Packet packet)
         {
-            packet.ReadPackedGuid128("GameObjectGUID");
+            packet.Translator.ReadPackedGuid128("GameObjectGUID");
         }
 
         [Parser(Opcode.SMSG_GAME_OBJECT_CUSTOM_ANIM)]
         public static void HandleGoCustomAnim(Packet packet)
         {
-            packet.ReadPackedGuid128("ObjectGUID");
-            packet.ReadInt32("CustomAnim");
-            packet.ReadBit("PlayAsDespawn");
+            packet.Translator.ReadPackedGuid128("ObjectGUID");
+            packet.Translator.ReadInt32("CustomAnim");
+            packet.Translator.ReadBit("PlayAsDespawn");
         }
 
         [Parser(Opcode.SMSG_GAME_OBJECT_DESPAWN)]
         public static void HandleGameObjectDespawn(Packet packet)
         {
-            packet.ReadPackedGuid128("ObjectGUID");
+            packet.Translator.ReadPackedGuid128("ObjectGUID");
         }
 
         [Parser(Opcode.SMSG_GAME_OBJECT_ACTIVATE_ANIM_KIT)]
         public static void HandleGameObjectActivateAnimKit(Packet packet)
         {
-            packet.ReadPackedGuid128("ObjectGUID");
-            packet.ReadInt32("AnimKitID");
-            packet.ReadBit("Maintain");
+            packet.Translator.ReadPackedGuid128("ObjectGUID");
+            packet.Translator.ReadInt32("AnimKitID");
+            packet.Translator.ReadBit("Maintain");
         }
 
         [Parser(Opcode.SMSG_GAME_OBJECT_PLAY_SPELL_VISUAL)]
         public static void HandleGameObjectPlaySpellVisual(Packet packet)
         {
-            packet.ReadPackedGuid128("ObjectGUID");
-            packet.ReadPackedGuid128("ActivatorGUID");
-            packet.ReadInt32("SpellVisualID");
+            packet.Translator.ReadPackedGuid128("ObjectGUID");
+            packet.Translator.ReadPackedGuid128("ActivatorGUID");
+            packet.Translator.ReadInt32("SpellVisualID");
         }
 
         [Parser(Opcode.SMSG_DESTRUCTIBLE_BUILDING_DAMAGE)]
         public static void HandleDestructibleBuildingDamage(Packet packet)
         {
-            packet.ReadPackedGuid128("Target");
-            packet.ReadPackedGuid128("Caster");
-            packet.ReadPackedGuid128("Owner");
-            packet.ReadInt32("Damage");
-            packet.ReadInt32<SpellId>("SpellID");
+            packet.Translator.ReadPackedGuid128("Target");
+            packet.Translator.ReadPackedGuid128("Caster");
+            packet.Translator.ReadPackedGuid128("Owner");
+            packet.Translator.ReadInt32("Damage");
+            packet.Translator.ReadInt32<SpellId>("SpellID");
         }
 
         [Parser(Opcode.SMSG_GAME_OBJECT_RESET_STATE)]
         public static void HandleGameObjectResetState(Packet packet)
         {
-            packet.ReadPackedGuid128("ObjectGUID");
+            packet.Translator.ReadPackedGuid128("ObjectGUID");
         }
     }
 }

@@ -9,9 +9,9 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         [Parser(Opcode.SMSG_CORPSE_RECLAIM_DELAY)]
         public static void HandleCorpseReclaimDelay(Packet packet)
         {
-            var hasDelay = !packet.ReadBit();
+            var hasDelay = !packet.Translator.ReadBit();
             if (hasDelay)
-                packet.ReadInt32("Delay");
+                packet.Translator.ReadInt32("Delay");
         }
     }
 }

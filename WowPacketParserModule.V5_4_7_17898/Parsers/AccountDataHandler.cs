@@ -9,26 +9,26 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.SMSG_ACCOUNT_DATA_TIMES)]
         public static void HandleAccountDataTimes(Packet packet)
         {
-            packet.ReadUInt32("unk24");
-            packet.ReadTime("Server Time");
+            packet.Translator.ReadUInt32("unk24");
+            packet.Translator.ReadTime("Server Time");
 
             for (var i = 0; i < 8; ++i)
-                packet.ReadTime("[" + (AccountDataType)i + "]" + " Time");
-            packet.ReadBit("Unk Bit");
+                packet.Translator.ReadTime("[" + (AccountDataType)i + "]" + " Time");
+            packet.Translator.ReadBit("Unk Bit");
         }
 
         [Parser(Opcode.CMSG_UPDATE_ACCOUNT_DATA)]
         public static void HandleClientUpdateAccountData(Packet packet)
         {
-            var decompCount = packet.ReadInt32();
-            packet.ReadTime("Login Time");
-            var compCount = packet.ReadInt32();
+            var decompCount = packet.Translator.ReadInt32();
+            packet.Translator.ReadTime("Login Time");
+            var compCount = packet.Translator.ReadInt32();
 
             var pkt = packet.Inflate(compCount, decompCount, false);
-            var data = pkt.ReadWoWString(decompCount);
+            var data = pkt.Translator.ReadWoWString(decompCount);
             pkt.ClosePacket();
 
-            packet.ReadBitsE<AccountDataType>("Data Type", 3);
+            packet.Translator.ReadBitsE<AccountDataType>("Data Type", 3);
             packet.AddValue("Account Data", data);
         }
     }

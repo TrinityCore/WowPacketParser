@@ -19,66 +19,66 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
         {
             var guidBytes = new byte[8];
 
-            uint amountOfOptions = packet.ReadBits(20);
-            packet.StartBitStream(guidBytes, 5, 1, 7, 2);
-            uint questgossips = packet.ReadBits(19);
-            packet.StartBitStream(guidBytes, 6, 4, 0);
+            uint amountOfOptions = packet.Translator.ReadBits(20);
+            packet.Translator.StartBitStream(guidBytes, 5, 1, 7, 2);
+            uint questgossips = packet.Translator.ReadBits(19);
+            packet.Translator.StartBitStream(guidBytes, 6, 4, 0);
 
             var titleLen = new uint[questgossips];
             for (int i = 0; i < questgossips; ++i)
             {
-                packet.ReadBit("Change Icon", i);
-                titleLen[i] = packet.ReadBits(9);
+                packet.Translator.ReadBit("Change Icon", i);
+                titleLen[i] = packet.Translator.ReadBits(9);
             }
 
             var optionTextLen = new uint[amountOfOptions];
             var boxTextLen = new uint[amountOfOptions];
             for (int i = 0; i < amountOfOptions; ++i)
             {
-                boxTextLen[i] = packet.ReadBits(12);
-                optionTextLen[i] = packet.ReadBits(12);
+                boxTextLen[i] = packet.Translator.ReadBits(12);
+                optionTextLen[i] = packet.Translator.ReadBits(12);
             }
 
-            guidBytes[3] = packet.ReadBit();
+            guidBytes[3] = packet.Translator.ReadBit();
             for (int i = 0; i < questgossips; i++)
             {
-                packet.ReadUInt32E<QuestFlags>("Flags", i);
-                packet.ReadUInt32("Icon", i);
-                packet.ReadInt32("Level", i);
-                packet.ReadWoWString("Title", titleLen[i], i);
-                packet.ReadUInt32<QuestId>("Quest ID", i);
-                packet.ReadUInt32E<QuestFlags2>("Flags 2", i);
+                packet.Translator.ReadUInt32E<QuestFlags>("Flags", i);
+                packet.Translator.ReadUInt32("Icon", i);
+                packet.Translator.ReadInt32("Level", i);
+                packet.Translator.ReadWoWString("Title", titleLen[i], i);
+                packet.Translator.ReadUInt32<QuestId>("Quest ID", i);
+                packet.Translator.ReadUInt32E<QuestFlags2>("Flags 2", i);
             }
 
-            packet.ReadXORByte(guidBytes, 2);
-            packet.ReadXORByte(guidBytes, 1);
+            packet.Translator.ReadXORByte(guidBytes, 2);
+            packet.Translator.ReadXORByte(guidBytes, 1);
 
-            uint menuId = packet.ReadUInt32("Menu Id");
+            uint menuId = packet.Translator.ReadUInt32("Menu Id");
 
             for (int i = 0; i < amountOfOptions; ++i)
             {
                 GossipMenuOption gossipOption = new GossipMenuOption
                 {
                     MenuID = menuId,
-                    OptionText = packet.ReadWoWString("Text", optionTextLen[i], i),
-                    BoxCoded = packet.ReadBool("Box", i),
-                    OptionIcon = packet.ReadByteE<GossipOptionIcon>("Icon", i),
-                    BoxMoney = packet.ReadUInt32("Required money", i),
-                    BoxText = packet.ReadWoWString("Box Text", boxTextLen[i], i),
-                    ID = packet.ReadUInt32("Index", i)
+                    OptionText = packet.Translator.ReadWoWString("Text", optionTextLen[i], i),
+                    BoxCoded = packet.Translator.ReadBool("Box", i),
+                    OptionIcon = packet.Translator.ReadByteE<GossipOptionIcon>("Icon", i),
+                    BoxMoney = packet.Translator.ReadUInt32("Required money", i),
+                    BoxText = packet.Translator.ReadWoWString("Box Text", boxTextLen[i], i),
+                    ID = packet.Translator.ReadUInt32("Index", i)
                 };
 
                 Storage.GossipMenuOptions.Add(gossipOption, packet.TimeSpan);
             }
 
-            packet.ReadXORByte(guidBytes, 7);
-            packet.ReadXORByte(guidBytes, 4);
-            packet.ReadXORByte(guidBytes, 6);
-            packet.ReadUInt32("Friendship Faction");
-            packet.ReadXORByte(guidBytes, 0);
-            packet.ReadXORByte(guidBytes, 5);
-            uint textId = packet.ReadUInt32("Text Id");
-            packet.ReadXORByte(guidBytes, 3);
+            packet.Translator.ReadXORByte(guidBytes, 7);
+            packet.Translator.ReadXORByte(guidBytes, 4);
+            packet.Translator.ReadXORByte(guidBytes, 6);
+            packet.Translator.ReadUInt32("Friendship Faction");
+            packet.Translator.ReadXORByte(guidBytes, 0);
+            packet.Translator.ReadXORByte(guidBytes, 5);
+            uint textId = packet.Translator.ReadUInt32("Text Id");
+            packet.Translator.ReadXORByte(guidBytes, 3);
 
             GossipMenu gossip = new GossipMenu
             {
@@ -86,7 +86,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
                 TextID = textId
             };
 
-            WowGuid guid = packet.WriteGuid("Guid", guidBytes);
+            WowGuid guid = packet.Translator.WriteGuid("Guid", guidBytes);
 
             gossip.ObjectType = guid.GetObjectType();
             gossip.ObjectEntry = guid.GetEntry();
@@ -104,13 +104,13 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
         [Parser(Opcode.SMSG_QUERY_NPC_TEXT_RESPONSE)]
         public static void HandleNpcTextUpdate(Packet packet)
         {
-            var entry = packet.ReadEntry("Entry");
+            var entry = packet.Translator.ReadEntry("Entry");
             if (entry.Value) // Can be masked
                 return;
 
-            int size = packet.ReadInt32("Size");
-            var data = packet.ReadBytes(size);
-            Bit hasData = packet.ReadBit();
+            int size = packet.Translator.ReadInt32("Size");
+            var data = packet.Translator.ReadBytes(size);
+            Bit hasData = packet.Translator.ReadBit();
             if (!hasData)
                 return; // nothing to do
 
@@ -123,9 +123,9 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             npcText.Probabilities = new float[8];
             npcText.BroadcastTextId = new uint[8];
             for (int i = 0; i < 8; ++i)
-                npcText.Probabilities[i] = pkt.ReadSingle("Probability", i);
+                npcText.Probabilities[i] = pkt.Translator.ReadSingle("Probability", i);
             for (int i = 0; i < 8; ++i)
-                npcText.BroadcastTextId[i] = pkt.ReadUInt32("Broadcast Text Id", i);
+                npcText.BroadcastTextId[i] = pkt.Translator.ReadUInt32("Broadcast Text Id", i);
 
             pkt.ClosePacket(false);
 
@@ -138,20 +138,20 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
         public static void HandleGossipHello(Packet packet)
         {
             var guid = new byte[8];
-            packet.StartBitStream(guid, 2, 0, 1, 5, 7, 6, 4, 3);
-            packet.ParseBitStream(guid, 6, 3, 2, 0, 5, 1, 7, 4);
-            packet.WriteGuid("GUID", guid);
+            packet.Translator.StartBitStream(guid, 2, 0, 1, 5, 7, 6, 4, 3);
+            packet.Translator.ParseBitStream(guid, 6, 3, 2, 0, 5, 1, 7, 4);
+            packet.Translator.WriteGuid("GUID", guid);
         }
 
         [Parser(Opcode.CMSG_QUERY_NPC_TEXT)]
         public static void HandleNpcTextQuery(Packet packet)
         {
-            packet.ReadInt32("Entry");
+            packet.Translator.ReadInt32("Entry");
 
             var guid = new byte[8];
-            packet.StartBitStream(guid, 4, 7, 2, 5, 3, 0, 1, 6);
-            packet.ParseBitStream(guid, 6, 4, 1, 3, 2, 5, 7, 0);
-            packet.WriteGuid("GUID", guid);
+            packet.Translator.StartBitStream(guid, 4, 7, 2, 5, 3, 0, 1, 6);
+            packet.Translator.ParseBitStream(guid, 6, 4, 1, 3, 2, 5, 7, 0);
+            packet.Translator.WriteGuid("GUID", guid);
         }
 
         [Parser(Opcode.CMSG_GOSSIP_SELECT_OPTION)]
@@ -159,29 +159,29 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
         {
             var guid = new byte[8];
 
-            var gossipId = packet.ReadUInt32("GossipMenu Id");
-            var menuEntry = packet.ReadUInt32("Menu Id");
+            var gossipId = packet.Translator.ReadUInt32("GossipMenu Id");
+            var menuEntry = packet.Translator.ReadUInt32("Menu Id");
 
-            packet.StartBitStream(guid, 4, 0, 6, 3, 2, 7, 1);
+            packet.Translator.StartBitStream(guid, 4, 0, 6, 3, 2, 7, 1);
 
-            var bits8 = packet.ReadBits(8);
+            var bits8 = packet.Translator.ReadBits(8);
 
-            guid[5] = packet.ReadBit();
+            guid[5] = packet.Translator.ReadBit();
 
-            packet.ReadXORByte(guid, 5);
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid, 3);
-            packet.ReadXORByte(guid, 0);
-            packet.ReadXORByte(guid, 1);
+            packet.Translator.ReadXORByte(guid, 5);
+            packet.Translator.ReadXORByte(guid, 6);
+            packet.Translator.ReadXORByte(guid, 3);
+            packet.Translator.ReadXORByte(guid, 0);
+            packet.Translator.ReadXORByte(guid, 1);
 
-            packet.ReadWoWString("Box Text", bits8);
+            packet.Translator.ReadWoWString("Box Text", bits8);
 
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid, 7);
-            packet.ReadXORByte(guid, 4);
+            packet.Translator.ReadXORByte(guid, 2);
+            packet.Translator.ReadXORByte(guid, 7);
+            packet.Translator.ReadXORByte(guid, 4);
 
             Storage.GossipSelects.Add(Tuple.Create(menuEntry, gossipId), null, packet.TimeSpan);
-            packet.WriteGuid("GUID", guid);
+            packet.Translator.WriteGuid("GUID", guid);
         }
 
         [Parser(Opcode.SMSG_VENDOR_INVENTORY)]
@@ -189,64 +189,64 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
         {
             var guid = new byte[8];
 
-            packet.ReadByte("Byte18");
+            packet.Translator.ReadByte("Byte18");
 
-            guid[1] = packet.ReadBit();
-            guid[5] = packet.ReadBit();
-            guid[0] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
+            guid[1] = packet.Translator.ReadBit();
+            guid[5] = packet.Translator.ReadBit();
+            guid[0] = packet.Translator.ReadBit();
+            guid[2] = packet.Translator.ReadBit();
 
-            uint count = packet.ReadBits("itemCount", 18);
+            uint count = packet.Translator.ReadBits("itemCount", 18);
 
-            guid[4] = packet.ReadBit();
+            guid[4] = packet.Translator.ReadBit();
 
             var hasExtendedCost = new bool[count];
             var hasCondition = new bool[count];
 
             for (int i = 0; i < count; ++i)
             {
-                hasExtendedCost[i] = !packet.ReadBit();
-                hasCondition[i] = !packet.ReadBit();
-                packet.ReadBit("Unk bit", i);
+                hasExtendedCost[i] = !packet.Translator.ReadBit();
+                hasCondition[i] = !packet.Translator.ReadBit();
+                packet.Translator.ReadBit("Unk bit", i);
             }
 
-            guid[3] = packet.ReadBit();
-            guid[6] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
+            guid[3] = packet.Translator.ReadBit();
+            guid[6] = packet.Translator.ReadBit();
+            guid[7] = packet.Translator.ReadBit();
 
             var tempList = new List<NpcVendor>();
             for (int i = 0; i < count; ++i)
             {
                 NpcVendor vendor = new NpcVendor();
 
-                vendor.Item = packet.ReadInt32<ItemId>("Item ID", i);
+                vendor.Item = packet.Translator.ReadInt32<ItemId>("Item ID", i);
 
                 if (hasCondition[i])
-                    vendor.PlayerConditionID = packet.ReadUInt32("Condition ID", i);
+                    vendor.PlayerConditionID = packet.Translator.ReadUInt32("Condition ID", i);
 
-                packet.ReadInt32("Price", i);
+                packet.Translator.ReadInt32("Price", i);
 
                 if (hasExtendedCost[i])
-                    vendor.ExtendedCost = packet.ReadUInt32("Extended Cost", i);
+                    vendor.ExtendedCost = packet.Translator.ReadUInt32("Extended Cost", i);
 
-                packet.ReadInt32("Display ID", i);
-                uint buyCount = packet.ReadUInt32("Buy Count", i);
-                vendor.Slot = packet.ReadInt32("Item Position", i);
-                int maxCount = packet.ReadInt32("Max Count", i);
+                packet.Translator.ReadInt32("Display ID", i);
+                uint buyCount = packet.Translator.ReadUInt32("Buy Count", i);
+                vendor.Slot = packet.Translator.ReadInt32("Item Position", i);
+                int maxCount = packet.Translator.ReadInt32("Max Count", i);
                 vendor.MaxCount = maxCount == -1 ? 0 : (uint)maxCount; // TDB
                 if (vendor.Type == 2)
                     vendor.MaxCount = buyCount;
 
-                vendor.Type = packet.ReadUInt32("Type", i); // 1 - item, 2 - currency
-                packet.ReadInt32("Item Upgrade ID", i);
-                packet.ReadInt32("Max Durability", i);
+                vendor.Type = packet.Translator.ReadUInt32("Type", i); // 1 - item, 2 - currency
+                packet.Translator.ReadInt32("Item Upgrade ID", i);
+                packet.Translator.ReadInt32("Max Durability", i);
 
                 tempList.Add(vendor);
             }
 
-            packet.ParseBitStream(guid, 0, 2, 1, 3, 5, 7, 4, 6);
+            packet.Translator.ParseBitStream(guid, 0, 2, 1, 3, 5, 7, 4, 6);
 
-            uint entry = packet.WriteGuid("GUID", guid).GetEntry();
+            uint entry = packet.Translator.WriteGuid("GUID", guid).GetEntry();
             tempList.ForEach(v =>
             {
                 v.Entry = entry;
@@ -259,55 +259,55 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
         {
             var guid = new byte[8];
 
-            guid[4] = packet.ReadBit();
-            guid[0] = packet.ReadBit();
-            uint count = packet.ReadBits(19);
+            guid[4] = packet.Translator.ReadBit();
+            guid[0] = packet.Translator.ReadBit();
+            uint count = packet.Translator.ReadBits(19);
 
-            guid[3] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
+            guid[3] = packet.Translator.ReadBit();
+            guid[7] = packet.Translator.ReadBit();
 
-            uint titleLen = packet.ReadBits(11);
+            uint titleLen = packet.Translator.ReadBits(11);
 
-            guid[5] = packet.ReadBit();
-            guid[6] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
-            guid[1] = packet.ReadBit();
+            guid[5] = packet.Translator.ReadBit();
+            guid[6] = packet.Translator.ReadBit();
+            guid[2] = packet.Translator.ReadBit();
+            guid[1] = packet.Translator.ReadBit();
 
             var tempList = new List<NpcTrainer>();
             for (int i = 0; i < count; ++i)
             {
                 NpcTrainer trainer = new NpcTrainer
                 {
-                    SpellID = packet.ReadInt32<SpellId>("Spell ID", i)
+                    SpellID = packet.Translator.ReadInt32<SpellId>("Spell ID", i)
                 };
 
                 for (var j = 0; j < 3; ++j)
-                    packet.ReadInt32("Int818", i, j);
+                    packet.Translator.ReadInt32("Int818", i, j);
 
-                packet.ReadByteE<TrainerSpellState>("State", i);
-                trainer.ReqLevel = packet.ReadByte("Required Level", i);
-                trainer.ReqSkillRank = packet.ReadUInt32("Required Skill Level", i);
-                trainer.MoneyCost = packet.ReadUInt32("Cost", i);
-                trainer.ReqSkillLine = packet.ReadUInt32("Required Skill", i);
+                packet.Translator.ReadByteE<TrainerSpellState>("State", i);
+                trainer.ReqLevel = packet.Translator.ReadByte("Required Level", i);
+                trainer.ReqSkillRank = packet.Translator.ReadUInt32("Required Skill Level", i);
+                trainer.MoneyCost = packet.Translator.ReadUInt32("Cost", i);
+                trainer.ReqSkillLine = packet.Translator.ReadUInt32("Required Skill", i);
 
                 tempList.Add(trainer);
             }
 
-            packet.ReadXORByte(guid, 4);
-            packet.ReadXORByte(guid, 3);
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid, 5);
-            packet.ReadXORByte(guid, 1);
-            packet.ReadXORByte(guid, 6);
+            packet.Translator.ReadXORByte(guid, 4);
+            packet.Translator.ReadXORByte(guid, 3);
+            packet.Translator.ReadXORByte(guid, 2);
+            packet.Translator.ReadXORByte(guid, 5);
+            packet.Translator.ReadXORByte(guid, 1);
+            packet.Translator.ReadXORByte(guid, 6);
 
-            packet.ReadInt32E<TrainerType>("Type");
-            packet.ReadWoWString("Title", titleLen);
-            packet.ReadInt32("Unk Int32"); // Same unk exists in CMSG_TRAINER_BUY_SPELL
+            packet.Translator.ReadInt32E<TrainerType>("Type");
+            packet.Translator.ReadWoWString("Title", titleLen);
+            packet.Translator.ReadInt32("Unk Int32"); // Same unk exists in CMSG_TRAINER_BUY_SPELL
 
-            packet.ReadXORByte(guid, 7);
-            packet.ReadXORByte(guid, 0);
+            packet.Translator.ReadXORByte(guid, 7);
+            packet.Translator.ReadXORByte(guid, 0);
 
-            uint entry = packet.WriteGuid("Guid", guid).GetEntry();
+            uint entry = packet.Translator.WriteGuid("Guid", guid).GetEntry();
             tempList.ForEach(v =>
             {
                 v.ID = entry;

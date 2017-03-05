@@ -11,13 +11,13 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         {
             for (var i = 0; i < 256; i++)
             {
-                packet.ReadUInt32E<ReputationRank>("Faction Standing", i);
-                packet.ReadByteE<FactionFlag>("Faction Flags", i);
+                packet.Translator.ReadUInt32E<ReputationRank>("Faction Standing", i);
+                packet.Translator.ReadByteE<FactionFlag>("Faction Flags", i);
             }
 
             for (var i = 0; i < 256; i++)
             {
-                var bit1296 = packet.ReadBit("Count");
+                var bit1296 = packet.Translator.ReadBit("Count");
             }
         }
     }

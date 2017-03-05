@@ -12,8 +12,8 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT)]
         public static void HandleCharEnum(Packet packet)
         {
-            var count2 = (int)packet.ReadBits(21);
-            var count1 = (int)packet.ReadBits(16);
+            var count2 = (int)packet.Translator.ReadBits(21);
+            var count1 = (int)packet.Translator.ReadBits(16);
 
             var charGuids = new byte[count1][];
             var guildGuids = new byte[count1][];
@@ -25,95 +25,95 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 charGuids[c] = new byte[8];
                 guildGuids[c] = new byte[8];
 
-                charGuids[c][0] = packet.ReadBit();
-                guildGuids[c][4] = packet.ReadBit();
-                charGuids[c][7] = packet.ReadBit();
-                guildGuids[c][3] = packet.ReadBit();
-                guildGuids[c][7] = packet.ReadBit();
-                charGuids[c][5] = packet.ReadBit();
-                charGuids[c][4] = packet.ReadBit();
-                charGuids[c][6] = packet.ReadBit();
-                guildGuids[c][1] = packet.ReadBit();
-                charGuids[c][3] = packet.ReadBit();
-                charGuids[c][2] = packet.ReadBit();
-                guildGuids[c][0] = packet.ReadBit();
-                guildGuids[c][2] = packet.ReadBit();
-                charGuids[c][1] = packet.ReadBit();
-                guildGuids[c][5] = packet.ReadBit();
-                firstLogins[c] = packet.ReadBit();
-                guildGuids[c][6] = packet.ReadBit();
-                nameLenghts[c] = packet.ReadBits(6);
+                charGuids[c][0] = packet.Translator.ReadBit();
+                guildGuids[c][4] = packet.Translator.ReadBit();
+                charGuids[c][7] = packet.Translator.ReadBit();
+                guildGuids[c][3] = packet.Translator.ReadBit();
+                guildGuids[c][7] = packet.Translator.ReadBit();
+                charGuids[c][5] = packet.Translator.ReadBit();
+                charGuids[c][4] = packet.Translator.ReadBit();
+                charGuids[c][6] = packet.Translator.ReadBit();
+                guildGuids[c][1] = packet.Translator.ReadBit();
+                charGuids[c][3] = packet.Translator.ReadBit();
+                charGuids[c][2] = packet.Translator.ReadBit();
+                guildGuids[c][0] = packet.Translator.ReadBit();
+                guildGuids[c][2] = packet.Translator.ReadBit();
+                charGuids[c][1] = packet.Translator.ReadBit();
+                guildGuids[c][5] = packet.Translator.ReadBit();
+                firstLogins[c] = packet.Translator.ReadBit();
+                guildGuids[c][6] = packet.Translator.ReadBit();
+                nameLenghts[c] = packet.Translator.ReadBits(6);
             }
 
-            packet.ReadBit("Unk bit");
+            packet.Translator.ReadBit("Unk bit");
 
             for (int c = 0; c < count1; ++c)
             {
                 Vector3 pos = new Vector3();
 
-                packet.ReadInt32("Pet Level", c); // v4+112
-                var level = packet.ReadByte("Level", c);
+                packet.Translator.ReadInt32("Pet Level", c); // v4+112
+                var level = packet.Translator.ReadByte("Level", c);
 
-                packet.ReadXORByte(guildGuids[c], 2);
-                packet.ReadXORByte(guildGuids[c], 3);
+                packet.Translator.ReadXORByte(guildGuids[c], 2);
+                packet.Translator.ReadXORByte(guildGuids[c], 3);
 
                 for (int j = 0; j < 23; ++j)
                 {
-                    packet.ReadByteE<InventoryType>("Item InventoryType", c, j);
-                    packet.ReadInt32("Item EnchantID", c, j);
-                    packet.ReadInt32("Item DisplayID", c, j);
+                    packet.Translator.ReadByteE<InventoryType>("Item InventoryType", c, j);
+                    packet.Translator.ReadInt32("Item EnchantID", c, j);
+                    packet.Translator.ReadInt32("Item DisplayID", c, j);
                 }
 
-                packet.ReadXORByte(guildGuids[c], 6);
+                packet.Translator.ReadXORByte(guildGuids[c], 6);
 
-                packet.ReadByte("List Order", c); //v4+57
-                packet.ReadByte("Hair Style", c); // v4+63
-                packet.ReadInt32E<CharacterFlag>("CharacterFlag", c);
-                var klass = packet.ReadByteE<Class>("Class", c); // v4+59
+                packet.Translator.ReadByte("List Order", c); //v4+57
+                packet.Translator.ReadByte("Hair Style", c); // v4+63
+                packet.Translator.ReadInt32E<CharacterFlag>("CharacterFlag", c);
+                var klass = packet.Translator.ReadByteE<Class>("Class", c); // v4+59
 
-                packet.ReadXORByte(guildGuids[c], 7);
+                packet.Translator.ReadXORByte(guildGuids[c], 7);
 
-                packet.ReadXORByte(charGuids[c], 0);
+                packet.Translator.ReadXORByte(charGuids[c], 0);
 
-                packet.ReadInt32("Pet Family", c); // v4+116
+                packet.Translator.ReadInt32("Pet Family", c); // v4+116
 
-                packet.ReadXORByte(guildGuids[c], 1);
-                packet.ReadXORByte(charGuids[c], 3);
-                packet.ReadXORByte(charGuids[c], 7);
-                packet.ReadXORByte(charGuids[c], 2);
-                packet.ReadXORByte(guildGuids[c], 5);
+                packet.Translator.ReadXORByte(guildGuids[c], 1);
+                packet.Translator.ReadXORByte(charGuids[c], 3);
+                packet.Translator.ReadXORByte(charGuids[c], 7);
+                packet.Translator.ReadXORByte(charGuids[c], 2);
+                packet.Translator.ReadXORByte(guildGuids[c], 5);
 
-                packet.ReadByteE<Gender>("Gender", c); //v4+60
-                packet.ReadInt32("Pet Display ID", c); //v4+108
-                var zone = packet.ReadUInt32<ZoneId>("Zone Id", c);
-                packet.ReadXORByte(charGuids[c], 6);
-                packet.ReadByte("Hair Color", c); // v4+64
-                packet.ReadByte("Facial Hair", c); // v4+65
-                var name = packet.ReadWoWString("Name", (int)nameLenghts[c], c); // v4 + 8
-                var race = packet.ReadByteE<Race>("Race", c); //v4+58
+                packet.Translator.ReadByteE<Gender>("Gender", c); //v4+60
+                packet.Translator.ReadInt32("Pet Display ID", c); //v4+108
+                var zone = packet.Translator.ReadUInt32<ZoneId>("Zone Id", c);
+                packet.Translator.ReadXORByte(charGuids[c], 6);
+                packet.Translator.ReadByte("Hair Color", c); // v4+64
+                packet.Translator.ReadByte("Facial Hair", c); // v4+65
+                var name = packet.Translator.ReadWoWString("Name", (int)nameLenghts[c], c); // v4 + 8
+                var race = packet.Translator.ReadByteE<Race>("Race", c); //v4+58
 
-                packet.ReadXORByte(guildGuids[c], 4);
+                packet.Translator.ReadXORByte(guildGuids[c], 4);
 
-                packet.ReadByte("Skin", c); // v4+63
-                var mapId = packet.ReadInt32<MapId>("Map Id", c); //v4+72
-                packet.ReadInt32E<CharacterFlag>("CharacterFlag", c);
-                pos.Y = packet.ReadSingle("Position Y", c); // v4+80
+                packet.Translator.ReadByte("Skin", c); // v4+63
+                var mapId = packet.Translator.ReadInt32<MapId>("Map Id", c); //v4+72
+                packet.Translator.ReadInt32E<CharacterFlag>("CharacterFlag", c);
+                pos.Y = packet.Translator.ReadSingle("Position Y", c); // v4+80
 
-                packet.ReadXORByte(guildGuids[c], 0);
-                packet.ReadXORByte(charGuids[c], 4);
-                packet.ReadXORByte(charGuids[c], 1);
+                packet.Translator.ReadXORByte(guildGuids[c], 0);
+                packet.Translator.ReadXORByte(charGuids[c], 4);
+                packet.Translator.ReadXORByte(charGuids[c], 1);
 
-                pos.Z = packet.ReadSingle("Position Z", c); //v4+84
+                pos.Z = packet.Translator.ReadSingle("Position Z", c); //v4+84
 
-                packet.ReadXORByte(charGuids[c], 5);
+                packet.Translator.ReadXORByte(charGuids[c], 5);
 
-                packet.ReadByte("Face", c); // v4+62
-                pos.X = packet.ReadSingle("Position X", c); //v4+76
+                packet.Translator.ReadByte("Face", c); // v4+62
+                pos.X = packet.Translator.ReadSingle("Position X", c); //v4+76
 
                 var playerGuid = new WowGuid64(BitConverter.ToUInt64(charGuids[c], 0));
 
-                packet.WriteGuid("Character GUID", charGuids[c], c);
-                packet.WriteGuid("Guild GUID", guildGuids[c], c);
+                packet.Translator.WriteGuid("Character GUID", charGuids[c], c);
+                packet.Translator.WriteGuid("Guild GUID", guildGuids[c], c);
 
                 if (firstLogins[c])
                 {
@@ -132,29 +132,29 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             for (var i = 0; i < count2; ++i)
             {
-                packet.ReadUInt32("unk1", i);
-                packet.ReadByte("unk2", i);
+                packet.Translator.ReadUInt32("unk1", i);
+                packet.Translator.ReadByte("unk2", i);
             }
         }
 
         [Parser(Opcode.CMSG_CREATE_CHARACTER)]
         public static void HandleClientCharCreate(Packet packet)
         {
-            packet.ReadByte("Hair Style");
-            packet.ReadByteE<Gender>("Gender");
-            packet.ReadByte("Skin");
-            packet.ReadByte("Hair Color");
-            packet.ReadByte("Facial Hair");
-            packet.ReadByteE<Class>("Class");
-            packet.ReadByteE<Race>("Race");
-            packet.ReadByte("Face");
-            packet.ReadByte("Outfit Id");
+            packet.Translator.ReadByte("Hair Style");
+            packet.Translator.ReadByteE<Gender>("Gender");
+            packet.Translator.ReadByte("Skin");
+            packet.Translator.ReadByte("Hair Color");
+            packet.Translator.ReadByte("Facial Hair");
+            packet.Translator.ReadByteE<Class>("Class");
+            packet.Translator.ReadByteE<Race>("Race");
+            packet.Translator.ReadByte("Face");
+            packet.Translator.ReadByte("Outfit Id");
 
-            var unk = packet.ReadBit("unk");
-            var nameLength = packet.ReadBits(6);
-            packet.ReadWoWString("Name", (int)nameLength);
+            var unk = packet.Translator.ReadBit("unk");
+            var nameLength = packet.Translator.ReadBits(6);
+            packet.Translator.ReadWoWString("Name", (int)nameLength);
             if (unk)
-                packet.ReadUInt32("unk20");
+                packet.Translator.ReadUInt32("unk20");
         }
 
         [Parser(Opcode.CMSG_CHAR_DELETE)]
@@ -162,16 +162,16 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         {
             var playerGuid = new byte[8];
 
-            packet.StartBitStream(playerGuid, 7, 0, 1, 3, 5, 2, 4, 6);
-            packet.ParseBitStream(playerGuid, 6, 7, 5, 0, 4, 2, 3, 1);
+            packet.Translator.StartBitStream(playerGuid, 7, 0, 1, 3, 5, 2, 4, 6);
+            packet.Translator.ParseBitStream(playerGuid, 6, 7, 5, 0, 4, 2, 3, 1);
 
-            packet.WriteGuid("GUID", playerGuid);
+            packet.Translator.WriteGuid("GUID", playerGuid);
         }
 
         [Parser(Opcode.SMSG_SETUP_CURRENCY)]
         public static void HandleInitCurrency(Packet packet)
         {
-            var count = packet.ReadBits("Count", 21);
+            var count = packet.Translator.ReadBits("Count", 21);
             if (count == 0)
                 return;
 
@@ -182,34 +182,34 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             for (var i = 0; i < count; ++i)
             {
-                flags[i] = packet.ReadBits(5);          // 20h
-                hasWeekCount[i] = packet.ReadBit();
-                hasWeekCap[i] = packet.ReadBit();
-                hasSeasonTotal[i] = packet.ReadBit();
+                flags[i] = packet.Translator.ReadBits(5);          // 20h
+                hasWeekCount[i] = packet.Translator.ReadBit();
+                hasWeekCap[i] = packet.Translator.ReadBit();
+                hasSeasonTotal[i] = packet.Translator.ReadBit();
             }
 
             for (var i = 0; i < count; ++i)
             {
                 packet.AddValue("Flags", flags[i], i); // 20h
-                packet.ReadUInt32("Currency count", i);
+                packet.Translator.ReadUInt32("Currency count", i);
 
                 if (hasWeekCap[i]) // 14h
-                    packet.ReadUInt32("Weekly cap", i);
+                    packet.Translator.ReadUInt32("Weekly cap", i);
 
-                packet.ReadUInt32("Currency id", i);
+                packet.Translator.ReadUInt32("Currency id", i);
 
                 if (hasSeasonTotal[i]) // 0Ch
-                    packet.ReadUInt32("Season total earned", i);
+                    packet.Translator.ReadUInt32("Season total earned", i);
 
                 if (hasWeekCount[i]) // 1Ch
-                    packet.ReadUInt32("Weekly count", i);
+                    packet.Translator.ReadUInt32("Weekly count", i);
             }
         }
 
         [Parser(Opcode.CMSG_REQUEST_PLAYED_TIME)]
         public static void HandlePlayedTime(Packet packet)
         {
-            packet.ReadBool("Print in chat");
+            packet.Translator.ReadBool("Print in chat");
         }
     }
 }

@@ -14,18 +14,18 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var caster = new byte[8];
             var powerTargetGUID = new byte[8];
 
-            packet.ReadUInt32("Damage");
-            packet.ReadUInt32("Resist");
-            packet.ReadInt32E<AttackerStateFlags>("Attacker State Flags");
-            packet.ReadUInt32("Blocked");
-            packet.ReadUInt32<SpellId>("Spell ID");
-            packet.ReadInt32("Overkill");
-            packet.ReadUInt32("Absorb");
-            packet.ReadByte("SchoolMask");
+            packet.Translator.ReadUInt32("Damage");
+            packet.Translator.ReadUInt32("Resist");
+            packet.Translator.ReadInt32E<AttackerStateFlags>("Attacker State Flags");
+            packet.Translator.ReadUInt32("Blocked");
+            packet.Translator.ReadUInt32<SpellId>("Spell ID");
+            packet.Translator.ReadInt32("Overkill");
+            packet.Translator.ReadUInt32("Absorb");
+            packet.Translator.ReadByte("SchoolMask");
 
-            var hasDebugOutput = packet.ReadBit("Has Debug Output");
-            packet.StartBitStream(caster, 1, 7);
-            target[1] = packet.ReadBit();
+            var hasDebugOutput = packet.Translator.ReadBit("Has Debug Output");
+            packet.Translator.StartBitStream(caster, 1, 7);
+            target[1] = packet.Translator.ReadBit();
 
             var bit2C = false;
             var bit10 = false;
@@ -39,94 +39,94 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var bit30 = false;
             if (hasDebugOutput)
             {
-                bit2C = !packet.ReadBit();
-                bit10 = !packet.ReadBit();
-                bit1C = !packet.ReadBit();
-                bit24 = !packet.ReadBit();
-                bit20 = !packet.ReadBit();
-                bit34 = !packet.ReadBit();
-                bit18 = !packet.ReadBit();
-                bit14 = !packet.ReadBit();
-                bit28 = !packet.ReadBit();
-                bit30 = !packet.ReadBit();
+                bit2C = !packet.Translator.ReadBit();
+                bit10 = !packet.Translator.ReadBit();
+                bit1C = !packet.Translator.ReadBit();
+                bit24 = !packet.Translator.ReadBit();
+                bit20 = !packet.Translator.ReadBit();
+                bit34 = !packet.Translator.ReadBit();
+                bit18 = !packet.Translator.ReadBit();
+                bit14 = !packet.Translator.ReadBit();
+                bit28 = !packet.Translator.ReadBit();
+                bit30 = !packet.Translator.ReadBit();
             }
 
-            packet.ReadBit("bit44");
-            packet.StartBitStream(target, 5, 0, 3, 6, 2);
-            packet.StartBitStream(caster, 6, 5, 4);
-            var hasPawerData = packet.ReadBit();
+            packet.Translator.ReadBit("bit44");
+            packet.Translator.StartBitStream(target, 5, 0, 3, 6, 2);
+            packet.Translator.StartBitStream(caster, 6, 5, 4);
+            var hasPawerData = packet.Translator.ReadBit();
 
             var bits8C = 0u;
             if (hasPawerData)
             {
-                packet.StartBitStream(powerTargetGUID, 1, 5, 7, 4, 6, 3);
-                bits8C = packet.ReadBits(21);
-                packet.StartBitStream(powerTargetGUID, 2, 0);
+                packet.Translator.StartBitStream(powerTargetGUID, 1, 5, 7, 4, 6, 3);
+                bits8C = packet.Translator.ReadBits(21);
+                packet.Translator.StartBitStream(powerTargetGUID, 2, 0);
             }
 
-            target[7] = packet.ReadBit();
-            caster[3] = packet.ReadBit();
-            target[4] = packet.ReadBit();
-            packet.StartBitStream(caster, 0, 2);
-            packet.ReadBit("bit50");
-            packet.ResetBitReader();
+            target[7] = packet.Translator.ReadBit();
+            caster[3] = packet.Translator.ReadBit();
+            target[4] = packet.Translator.ReadBit();
+            packet.Translator.StartBitStream(caster, 0, 2);
+            packet.Translator.ReadBit("bit50");
+            packet.Translator.ResetBitReader();
 
             if (hasDebugOutput)
             {
                 if (bit28)
-                    packet.ReadSingle("float28");
+                    packet.Translator.ReadSingle("float28");
                 if (bit20)
-                    packet.ReadSingle("float20");
+                    packet.Translator.ReadSingle("float20");
                 if (bit24)
-                    packet.ReadSingle("float24");
+                    packet.Translator.ReadSingle("float24");
                 if (bit1C)
-                    packet.ReadSingle("float1C");
+                    packet.Translator.ReadSingle("float1C");
                 if (bit30)
-                    packet.ReadSingle("float30");
+                    packet.Translator.ReadSingle("float30");
                 if (bit18)
-                    packet.ReadSingle("float18");
+                    packet.Translator.ReadSingle("float18");
                 if (bit14)
-                    packet.ReadSingle("float14");
+                    packet.Translator.ReadSingle("float14");
                 if (bit10)
-                    packet.ReadSingle("float10");
+                    packet.Translator.ReadSingle("float10");
                 if (bit2C)
-                    packet.ReadSingle("float2C");
+                    packet.Translator.ReadSingle("float2C");
                 if (bit34)
-                    packet.ReadSingle("float34");
+                    packet.Translator.ReadSingle("float34");
             }
 
-            packet.ReadXORByte(caster, 7);
+            packet.Translator.ReadXORByte(caster, 7);
             if (hasPawerData)
             {
-                packet.ReadXORByte(powerTargetGUID, 3);
-                packet.ReadInt32("Attack Power");
-                packet.ReadXORBytes(powerTargetGUID, 5, 1, 7);
+                packet.Translator.ReadXORByte(powerTargetGUID, 3);
+                packet.Translator.ReadInt32("Attack Power");
+                packet.Translator.ReadXORBytes(powerTargetGUID, 5, 1, 7);
                 for (var i = 0; i < bits8C; ++i)
                 {
-                    packet.ReadInt32("Value", i);
-                    packet.ReadUInt32E<PowerType>("Power type", i);
+                    packet.Translator.ReadInt32("Value", i);
+                    packet.Translator.ReadUInt32E<PowerType>("Power type", i);
                 }
 
-                packet.ReadXORBytes(powerTargetGUID, 4, 0);
-                packet.ReadInt32("Current Health");
-                packet.ReadXORByte(powerTargetGUID, 6);
-                packet.ReadInt32("Spell power");
-                packet.ReadXORByte(powerTargetGUID, 2);
-                packet.WriteGuid("Power Target GUID", powerTargetGUID);
+                packet.Translator.ReadXORBytes(powerTargetGUID, 4, 0);
+                packet.Translator.ReadInt32("Current Health");
+                packet.Translator.ReadXORByte(powerTargetGUID, 6);
+                packet.Translator.ReadInt32("Spell power");
+                packet.Translator.ReadXORByte(powerTargetGUID, 2);
+                packet.Translator.WriteGuid("Power Target GUID", powerTargetGUID);
             }
 
-            packet.ReadXORBytes(target, 2, 1);
-            packet.ReadXORByte(caster, 1);
-            packet.ReadXORBytes(target, 4, 7);
-            packet.ReadXORByte(caster, 6);
-            packet.ReadXORByte(target, 5);
-            packet.ReadXORBytes(caster, 2, 3);
-            packet.ReadXORByte(target, 6);
-            packet.ReadXORBytes(caster, 0, 4, 5);
-            packet.ReadXORBytes(target, 3, 0);
+            packet.Translator.ReadXORBytes(target, 2, 1);
+            packet.Translator.ReadXORByte(caster, 1);
+            packet.Translator.ReadXORBytes(target, 4, 7);
+            packet.Translator.ReadXORByte(caster, 6);
+            packet.Translator.ReadXORByte(target, 5);
+            packet.Translator.ReadXORBytes(caster, 2, 3);
+            packet.Translator.ReadXORByte(target, 6);
+            packet.Translator.ReadXORBytes(caster, 0, 4, 5);
+            packet.Translator.ReadXORBytes(target, 3, 0);
 
-            packet.WriteGuid("CasterGUID", caster);
-            packet.WriteGuid("TargetGUID", target);
+            packet.Translator.WriteGuid("CasterGUID", caster);
+            packet.Translator.WriteGuid("TargetGUID", target);
         }
 
         [Parser(Opcode.SMSG_SPELL_HEAL_LOG)]
@@ -136,71 +136,71 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var guid2 = new byte[8];
             var powerGUID = new byte[8];
 
-            packet.ReadBit("Critical");
-            guid1[5] = packet.ReadBit();
-            packet.StartBitStream(guid2, 4, 2, 7, 0);
-            var bit14 = packet.ReadBit();
-            guid1[1] = packet.ReadBit();
-            packet.StartBitStream(guid2, 6, 5);
-            guid1[7] = packet.ReadBit();
-            guid2[3] = packet.ReadBit();
-            packet.StartBitStream(guid1, 0, 2, 3);
-            var hasPowerData = packet.ReadBit();
-            var bit24 = packet.ReadBit();
+            packet.Translator.ReadBit("Critical");
+            guid1[5] = packet.Translator.ReadBit();
+            packet.Translator.StartBitStream(guid2, 4, 2, 7, 0);
+            var bit14 = packet.Translator.ReadBit();
+            guid1[1] = packet.Translator.ReadBit();
+            packet.Translator.StartBitStream(guid2, 6, 5);
+            guid1[7] = packet.Translator.ReadBit();
+            guid2[3] = packet.Translator.ReadBit();
+            packet.Translator.StartBitStream(guid1, 0, 2, 3);
+            var hasPowerData = packet.Translator.ReadBit();
+            var bit24 = packet.Translator.ReadBit();
 
             var powerCount = 0u;
             if (hasPowerData)
             {
-                packet.StartBitStream(powerGUID, 0, 4, 6, 2, 5);
-                powerCount = packet.ReadBits(21);
-                packet.StartBitStream(powerGUID, 1, 7, 3);
+                packet.Translator.StartBitStream(powerGUID, 0, 4, 6, 2, 5);
+                powerCount = packet.Translator.ReadBits(21);
+                packet.Translator.StartBitStream(powerGUID, 1, 7, 3);
             }
-            packet.StartBitStream(guid1, 6, 4);
-            guid2[1] = packet.ReadBit();
-            packet.ResetBitReader();
+            packet.Translator.StartBitStream(guid1, 6, 4);
+            guid2[1] = packet.Translator.ReadBit();
+            packet.Translator.ResetBitReader();
 
-            packet.ReadXORByte(guid2, 4);
+            packet.Translator.ReadXORByte(guid2, 4);
             if (bit24)
-                packet.ReadSingle("float24");
+                packet.Translator.ReadSingle("float24");
 
-            packet.ReadXORByte(guid1, 6);
-            packet.ReadInt32("int2C");
+            packet.Translator.ReadXORByte(guid1, 6);
+            packet.Translator.ReadInt32("int2C");
             if (hasPowerData)
             {
-                packet.ReadInt32("Spell power");
-                packet.ReadInt32("Current health");
-                packet.ReadInt32("Attack power");
-                packet.ReadXORByte(powerGUID, 3);
+                packet.Translator.ReadInt32("Spell power");
+                packet.Translator.ReadInt32("Current health");
+                packet.Translator.ReadInt32("Attack power");
+                packet.Translator.ReadXORByte(powerGUID, 3);
                 for (var i = 0; i < powerCount; ++i)
                 {
-                    packet.ReadInt32E<PowerType>("Power type", i); // Actually powertype for class
-                    packet.ReadInt32("Value", i);
+                    packet.Translator.ReadInt32E<PowerType>("Power type", i); // Actually powertype for class
+                    packet.Translator.ReadInt32("Value", i);
                 }
 
-                packet.ReadXORBytes(powerGUID, 0, 1, 7, 2, 4, 6, 5);
-                packet.WriteGuid("Power GUID", powerGUID);
+                packet.Translator.ReadXORBytes(powerGUID, 0, 1, 7, 2, 4, 6, 5);
+                packet.Translator.WriteGuid("Power GUID", powerGUID);
             }
 
-            packet.ReadXORBytes(guid2, 6, 0);
-            packet.ReadXORBytes(guid1, 1, 3, 7);
-            packet.ReadXORByte(guid2, 5);
-            packet.ReadXORByte(guid1, 0);
-            packet.ReadXORByte(guid2, 7);
-            packet.ReadInt32("Damage");
-            packet.ReadXORByte(guid1, 5);
-            packet.ReadXORByte(guid2, 2);
-            packet.ReadXORByte(guid1, 2);
+            packet.Translator.ReadXORBytes(guid2, 6, 0);
+            packet.Translator.ReadXORBytes(guid1, 1, 3, 7);
+            packet.Translator.ReadXORByte(guid2, 5);
+            packet.Translator.ReadXORByte(guid1, 0);
+            packet.Translator.ReadXORByte(guid2, 7);
+            packet.Translator.ReadInt32("Damage");
+            packet.Translator.ReadXORByte(guid1, 5);
+            packet.Translator.ReadXORByte(guid2, 2);
+            packet.Translator.ReadXORByte(guid1, 2);
 
             if (bit14)
-                packet.ReadSingle("float10");
+                packet.Translator.ReadSingle("float10");
 
-            packet.ReadXORByte(guid2, 3);
-            packet.ReadXORByte(guid1, 4);
-            packet.ReadInt32<SpellId>("Spell ID");
-            packet.ReadXORByte(guid2, 1);
-            packet.ReadInt32("Overheal");
-            packet.WriteGuid("GUID1", guid1);
-            packet.WriteGuid("GUID2", guid2);
+            packet.Translator.ReadXORByte(guid2, 3);
+            packet.Translator.ReadXORByte(guid1, 4);
+            packet.Translator.ReadInt32<SpellId>("Spell ID");
+            packet.Translator.ReadXORByte(guid2, 1);
+            packet.Translator.ReadInt32("Overheal");
+            packet.Translator.WriteGuid("GUID1", guid1);
+            packet.Translator.WriteGuid("GUID2", guid2);
         }
 
         [Parser(Opcode.SMSG_SPELL_PERIODIC_AURA_LOG)]
@@ -210,26 +210,26 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var powerGUID = new byte[8];
             var casterGUID = new byte[8];
 
-            casterGUID[7] = packet.ReadBit();
+            casterGUID[7] = packet.Translator.ReadBit();
 
-            var hasPowerData = packet.ReadBit();
+            var hasPowerData = packet.Translator.ReadBit();
 
-            packet.StartBitStream(casterGUID, 3, 5);
+            packet.Translator.StartBitStream(casterGUID, 3, 5);
 
             var bits34 = 0u;
             if (hasPowerData)
             {
-                packet.StartBitStream(powerGUID, 4, 6, 7, 1, 0, 2);
-                bits34 = packet.ReadBits(21);
-                packet.StartBitStream(powerGUID, 5, 3);
+                packet.Translator.StartBitStream(powerGUID, 4, 6, 7, 1, 0, 2);
+                bits34 = packet.Translator.ReadBits(21);
+                packet.Translator.StartBitStream(powerGUID, 5, 3);
             }
 
-            casterGUID[6] = packet.ReadBit();
-            targetGUID[1] = packet.ReadBit();
-            var bits58 = packet.ReadBits(21);
-            packet.StartBitStream(casterGUID, 2, 1);
-            packet.StartBitStream(targetGUID, 2, 4);
-            casterGUID[4] = packet.ReadBit();
+            casterGUID[6] = packet.Translator.ReadBit();
+            targetGUID[1] = packet.Translator.ReadBit();
+            var bits58 = packet.Translator.ReadBits(21);
+            packet.Translator.StartBitStream(casterGUID, 2, 1);
+            packet.Translator.StartBitStream(targetGUID, 2, 4);
+            casterGUID[4] = packet.Translator.ReadBit();
 
             var bit8 = new bool[bits58];
             var hasSpellProto = new bool[bits58];
@@ -238,83 +238,83 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             for (var i = 0; i < bits58; ++i)
             {
-                packet.ReadBit(); // fake bit
+                packet.Translator.ReadBit(); // fake bit
 
-                hasOverDamage[i] = !packet.ReadBit();
-                hasAbsorb[i] = !packet.ReadBit();
-                hasSpellProto[i] = !packet.ReadBit();
-                bit8[i] = !packet.ReadBit();
+                hasOverDamage[i] = !packet.Translator.ReadBit();
+                hasAbsorb[i] = !packet.Translator.ReadBit();
+                hasSpellProto[i] = !packet.Translator.ReadBit();
+                bit8[i] = !packet.Translator.ReadBit();
             }
 
-            casterGUID[0] = packet.ReadBit();
+            casterGUID[0] = packet.Translator.ReadBit();
 
-            packet.StartBitStream(targetGUID, 0, 7, 3, 6, 5);
-            packet.ReadXORByte(targetGUID, 5);
-            packet.ReadXORByte(casterGUID, 7);
+            packet.Translator.StartBitStream(targetGUID, 0, 7, 3, 6, 5);
+            packet.Translator.ReadXORByte(targetGUID, 5);
+            packet.Translator.ReadXORByte(casterGUID, 7);
 
             for (var i = 0; i < bits58; ++i)
             {
                 if (bit8[i])
-                    packet.ReadInt32("bit8", i);
+                    packet.Translator.ReadInt32("bit8", i);
 
-                var aura = packet.ReadUInt32E<AuraType>("Aura Type", i);
+                var aura = packet.Translator.ReadUInt32E<AuraType>("Aura Type", i);
 
                 if (hasOverDamage[i])
-                    packet.ReadInt32("Over damage", i);
+                    packet.Translator.ReadInt32("Over damage", i);
 
                 if (hasAbsorb[i])
-                    packet.ReadInt32("Absorb", i);
+                    packet.Translator.ReadInt32("Absorb", i);
 
-                packet.ReadInt32("Damage", i);
+                packet.Translator.ReadInt32("Damage", i);
 
                 if (hasSpellProto[i])
-                    packet.ReadUInt32("Spell Proto", i);
+                    packet.Translator.ReadUInt32("Spell Proto", i);
             }
 
-            packet.ReadXORByte(targetGUID, 0);
-            packet.ReadXORByte(targetGUID, 4);
-            packet.ReadXORByte(targetGUID, 2);
+            packet.Translator.ReadXORByte(targetGUID, 0);
+            packet.Translator.ReadXORByte(targetGUID, 4);
+            packet.Translator.ReadXORByte(targetGUID, 2);
 
             if (hasPowerData)
             {
-                packet.ReadXORByte(powerGUID, 0);
-                packet.ReadXORByte(powerGUID, 3);
-                packet.ReadInt32("Attack power");
-                packet.ReadInt32("Spell power");
-                packet.ReadXORByte(powerGUID, 4);
-                packet.ReadXORByte(powerGUID, 1);
-                packet.ReadXORByte(powerGUID, 5);
-                packet.ReadXORByte(powerGUID, 2);
-                packet.ReadInt32("Current health");
+                packet.Translator.ReadXORByte(powerGUID, 0);
+                packet.Translator.ReadXORByte(powerGUID, 3);
+                packet.Translator.ReadInt32("Attack power");
+                packet.Translator.ReadInt32("Spell power");
+                packet.Translator.ReadXORByte(powerGUID, 4);
+                packet.Translator.ReadXORByte(powerGUID, 1);
+                packet.Translator.ReadXORByte(powerGUID, 5);
+                packet.Translator.ReadXORByte(powerGUID, 2);
+                packet.Translator.ReadInt32("Current health");
 
                 for (var i = 0; i < bits34; ++i)
                 {
-                    packet.ReadInt32("Value", i);
-                    packet.ReadInt32E<PowerType>("Power type", i); // Actually powertype for class
+                    packet.Translator.ReadInt32("Value", i);
+                    packet.Translator.ReadInt32E<PowerType>("Power type", i); // Actually powertype for class
                 }
 
-                packet.ReadXORByte(powerGUID, 6);
-                packet.ReadXORByte(powerGUID, 7);
-                packet.WriteGuid("Power GUID", powerGUID);
+                packet.Translator.ReadXORByte(powerGUID, 6);
+                packet.Translator.ReadXORByte(powerGUID, 7);
+                packet.Translator.WriteGuid("Power GUID", powerGUID);
             }
 
-            packet.ReadXORByte(casterGUID, 4);
-            packet.ReadXORByte(casterGUID, 3);
-            packet.ReadXORByte(targetGUID, 1);
-            packet.ReadXORByte(casterGUID, 0);
-            packet.ReadXORByte(casterGUID, 5);
+            packet.Translator.ReadXORByte(casterGUID, 4);
+            packet.Translator.ReadXORByte(casterGUID, 3);
+            packet.Translator.ReadXORByte(targetGUID, 1);
+            packet.Translator.ReadXORByte(casterGUID, 0);
+            packet.Translator.ReadXORByte(casterGUID, 5);
 
-            packet.ReadInt32<SpellId>("Spell ID");
+            packet.Translator.ReadInt32<SpellId>("Spell ID");
 
-            packet.ReadXORByte(casterGUID, 1);
-            packet.ReadXORByte(targetGUID, 7);
-            packet.ReadXORByte(casterGUID, 2);
-            packet.ReadXORByte(targetGUID, 6);
-            packet.ReadXORByte(targetGUID, 3);
-            packet.ReadXORByte(casterGUID, 6);
+            packet.Translator.ReadXORByte(casterGUID, 1);
+            packet.Translator.ReadXORByte(targetGUID, 7);
+            packet.Translator.ReadXORByte(casterGUID, 2);
+            packet.Translator.ReadXORByte(targetGUID, 6);
+            packet.Translator.ReadXORByte(targetGUID, 3);
+            packet.Translator.ReadXORByte(casterGUID, 6);
 
-            packet.WriteGuid("Target GUID", targetGUID);
-            packet.WriteGuid("Caster GUID", casterGUID);
+            packet.Translator.WriteGuid("Target GUID", targetGUID);
+            packet.Translator.WriteGuid("Caster GUID", casterGUID);
         }
 
         [Parser(Opcode.SMSG_ATTACK_START)]
@@ -323,36 +323,36 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var AttackerGUID = new byte[8];
             var VictimGUID = new byte[8];
 
-            packet.StartBitStream(VictimGUID, 6, 1);
-            packet.StartBitStream(AttackerGUID, 7, 5);
-            VictimGUID[2] = packet.ReadBit();
-            packet.StartBitStream(AttackerGUID, 2, 1);
-            VictimGUID[0] = packet.ReadBit();
-            packet.StartBitStream(AttackerGUID, 4, 0);
-            packet.StartBitStream(VictimGUID, 4, 7, 5);
-            AttackerGUID[3] = packet.ReadBit();
-            VictimGUID[3] = packet.ReadBit();
-            AttackerGUID[6] = packet.ReadBit();
+            packet.Translator.StartBitStream(VictimGUID, 6, 1);
+            packet.Translator.StartBitStream(AttackerGUID, 7, 5);
+            VictimGUID[2] = packet.Translator.ReadBit();
+            packet.Translator.StartBitStream(AttackerGUID, 2, 1);
+            VictimGUID[0] = packet.Translator.ReadBit();
+            packet.Translator.StartBitStream(AttackerGUID, 4, 0);
+            packet.Translator.StartBitStream(VictimGUID, 4, 7, 5);
+            AttackerGUID[3] = packet.Translator.ReadBit();
+            VictimGUID[3] = packet.Translator.ReadBit();
+            AttackerGUID[6] = packet.Translator.ReadBit();
 
-            packet.ReadXORByte(AttackerGUID, 6);
-            packet.ReadXORByte(AttackerGUID, 2);
-            packet.ReadXORByte(AttackerGUID, 0);
-            packet.ReadXORByte(VictimGUID, 5);
-            packet.ReadXORByte(VictimGUID, 6);
-            packet.ReadXORByte(VictimGUID, 0);
-            packet.ReadXORByte(VictimGUID, 1);
-            packet.ReadXORByte(AttackerGUID, 7);
-            packet.ReadXORByte(AttackerGUID, 4);
-            packet.ReadXORByte(VictimGUID, 7);
-            packet.ReadXORByte(AttackerGUID, 3);
-            packet.ReadXORByte(VictimGUID, 3);
-            packet.ReadXORByte(VictimGUID, 2);
-            packet.ReadXORByte(VictimGUID, 4);
-            packet.ReadXORByte(AttackerGUID, 1);
-            packet.ReadXORByte(AttackerGUID, 5);
+            packet.Translator.ReadXORByte(AttackerGUID, 6);
+            packet.Translator.ReadXORByte(AttackerGUID, 2);
+            packet.Translator.ReadXORByte(AttackerGUID, 0);
+            packet.Translator.ReadXORByte(VictimGUID, 5);
+            packet.Translator.ReadXORByte(VictimGUID, 6);
+            packet.Translator.ReadXORByte(VictimGUID, 0);
+            packet.Translator.ReadXORByte(VictimGUID, 1);
+            packet.Translator.ReadXORByte(AttackerGUID, 7);
+            packet.Translator.ReadXORByte(AttackerGUID, 4);
+            packet.Translator.ReadXORByte(VictimGUID, 7);
+            packet.Translator.ReadXORByte(AttackerGUID, 3);
+            packet.Translator.ReadXORByte(VictimGUID, 3);
+            packet.Translator.ReadXORByte(VictimGUID, 2);
+            packet.Translator.ReadXORByte(VictimGUID, 4);
+            packet.Translator.ReadXORByte(AttackerGUID, 1);
+            packet.Translator.ReadXORByte(AttackerGUID, 5);
 
-            packet.WriteGuid("Attacker GUID", AttackerGUID);
-            packet.WriteGuid("Victim GUID", VictimGUID);
+            packet.Translator.WriteGuid("Attacker GUID", AttackerGUID);
+            packet.Translator.WriteGuid("Victim GUID", VictimGUID);
         }
 
         [Parser(Opcode.SMSG_ATTACK_STOP)]
@@ -361,44 +361,44 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var AttackerGUID = new byte[8];
             var VictimGUID = new byte[8];
 
-            AttackerGUID[0] = packet.ReadBit();
-            VictimGUID[4] = packet.ReadBit();
-            AttackerGUID[1] = packet.ReadBit();
-            VictimGUID[7] = packet.ReadBit();
-            packet.StartBitStream(AttackerGUID, 6, 3);
+            AttackerGUID[0] = packet.Translator.ReadBit();
+            VictimGUID[4] = packet.Translator.ReadBit();
+            AttackerGUID[1] = packet.Translator.ReadBit();
+            VictimGUID[7] = packet.Translator.ReadBit();
+            packet.Translator.StartBitStream(AttackerGUID, 6, 3);
 
-            packet.ReadBit("Unk bit");
+            packet.Translator.ReadBit("Unk bit");
 
-            AttackerGUID[5] = packet.ReadBit();
-            packet.StartBitStream(VictimGUID, 1, 0);
-            AttackerGUID[7] = packet.ReadBit();
+            AttackerGUID[5] = packet.Translator.ReadBit();
+            packet.Translator.StartBitStream(VictimGUID, 1, 0);
+            AttackerGUID[7] = packet.Translator.ReadBit();
 
-            VictimGUID[6] = packet.ReadBit();
-            AttackerGUID[4] = packet.ReadBit();
-            AttackerGUID[2] = packet.ReadBit();
-            VictimGUID[3] = packet.ReadBit();
-            VictimGUID[2] = packet.ReadBit();
-            VictimGUID[5] = packet.ReadBit();
+            VictimGUID[6] = packet.Translator.ReadBit();
+            AttackerGUID[4] = packet.Translator.ReadBit();
+            AttackerGUID[2] = packet.Translator.ReadBit();
+            VictimGUID[3] = packet.Translator.ReadBit();
+            VictimGUID[2] = packet.Translator.ReadBit();
+            VictimGUID[5] = packet.Translator.ReadBit();
 
-            packet.ReadXORByte(VictimGUID, 2);
-            packet.ReadXORByte(VictimGUID, 7);
-            packet.ReadXORByte(AttackerGUID, 0);
-            packet.ReadXORByte(VictimGUID, 5);
-            packet.ReadXORByte(AttackerGUID, 5);
-            packet.ReadXORByte(VictimGUID, 3);
-            packet.ReadXORByte(AttackerGUID, 7);
-            packet.ReadXORByte(AttackerGUID, 1);
-            packet.ReadXORByte(AttackerGUID, 3);
-            packet.ReadXORByte(VictimGUID, 0);
-            packet.ReadXORByte(AttackerGUID, 4);
-            packet.ReadXORByte(AttackerGUID, 6);
-            packet.ReadXORByte(VictimGUID, 1);
-            packet.ReadXORByte(VictimGUID, 6);
-            packet.ReadXORByte(AttackerGUID, 2);
-            packet.ReadXORByte(VictimGUID, 4);
+            packet.Translator.ReadXORByte(VictimGUID, 2);
+            packet.Translator.ReadXORByte(VictimGUID, 7);
+            packet.Translator.ReadXORByte(AttackerGUID, 0);
+            packet.Translator.ReadXORByte(VictimGUID, 5);
+            packet.Translator.ReadXORByte(AttackerGUID, 5);
+            packet.Translator.ReadXORByte(VictimGUID, 3);
+            packet.Translator.ReadXORByte(AttackerGUID, 7);
+            packet.Translator.ReadXORByte(AttackerGUID, 1);
+            packet.Translator.ReadXORByte(AttackerGUID, 3);
+            packet.Translator.ReadXORByte(VictimGUID, 0);
+            packet.Translator.ReadXORByte(AttackerGUID, 4);
+            packet.Translator.ReadXORByte(AttackerGUID, 6);
+            packet.Translator.ReadXORByte(VictimGUID, 1);
+            packet.Translator.ReadXORByte(VictimGUID, 6);
+            packet.Translator.ReadXORByte(AttackerGUID, 2);
+            packet.Translator.ReadXORByte(VictimGUID, 4);
 
-            packet.WriteGuid("Attacker GUID", AttackerGUID);
-            packet.WriteGuid("Victim GUID", VictimGUID);
+            packet.Translator.WriteGuid("Attacker GUID", AttackerGUID);
+            packet.Translator.WriteGuid("Victim GUID", VictimGUID);
         }
 
         [Parser(Opcode.SMSG_ATTACKER_STATE_UPDATE)]
@@ -406,96 +406,96 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         {
             var guid = new Byte[8];
 
-            var hitInfo = packet.ReadInt32E<SpellHitInfo>("HitInfo");
-            packet.ReadPackedGuid("AttackerGUID");
-            packet.ReadPackedGuid("TargetGUID");
-            packet.ReadInt32("Damage");
-            packet.ReadInt32("OverDamage");
+            var hitInfo = packet.Translator.ReadInt32E<SpellHitInfo>("HitInfo");
+            packet.Translator.ReadPackedGuid("AttackerGUID");
+            packet.Translator.ReadPackedGuid("TargetGUID");
+            packet.Translator.ReadInt32("Damage");
+            packet.Translator.ReadInt32("OverDamage");
 
-            var subDmgCount = packet.ReadByte();
+            var subDmgCount = packet.Translator.ReadByte();
 
             for (var i = 0; i < subDmgCount; ++i)
             {
-                packet.ReadInt32("SchoolMask", i);
-                packet.ReadSingle("Float Damage", i);
-                packet.ReadInt32("Int Damage", i);
+                packet.Translator.ReadInt32("SchoolMask", i);
+                packet.Translator.ReadSingle("Float Damage", i);
+                packet.Translator.ReadInt32("Int Damage", i);
             }
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_ABSORB | SpellHitInfo.HITINFO_FULL_ABSORB))
                 for (var i = 0; i < subDmgCount; ++i)
-                    packet.ReadInt32("Damage Absorbed", i);
+                    packet.Translator.ReadInt32("Damage Absorbed", i);
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_RESIST | SpellHitInfo.HITINFO_FULL_RESIST))
                 for (var i = 0; i < subDmgCount; ++i)
-                    packet.ReadInt32("Damage Resisted", i);
+                    packet.Translator.ReadInt32("Damage Resisted", i);
 
-            var state = packet.ReadByteE<VictimStates>("VictimState");
-            packet.ReadInt32("Unk Attacker State 0");
+            var state = packet.Translator.ReadByteE<VictimStates>("VictimState");
+            packet.Translator.ReadInt32("Unk Attacker State 0");
 
-            packet.ReadInt32<SpellId>("Melee Spell ID ");
+            packet.Translator.ReadInt32<SpellId>("Melee Spell ID ");
 
             var block = 0;
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK))
-                block = packet.ReadInt32("Block Amount");
+                block = packet.Translator.ReadInt32("Block Amount");
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_RAGE_GAIN))
-                packet.ReadInt32("Rage Gained");
+                packet.Translator.ReadInt32("Rage Gained");
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_UNK0))
             {
-                packet.ReadInt32("Unk Attacker State 3 1");
-                packet.ReadSingle("Unk Attacker State 3 2");
-                packet.ReadSingle("Unk Attacker State 3 3");
-                packet.ReadSingle("Unk Attacker State 3 4");
-                packet.ReadSingle("Unk Attacker State 3 5");
-                packet.ReadSingle("Unk Attacker State 3 6");
-                packet.ReadSingle("Unk Attacker State 3 7");
-                packet.ReadSingle("Unk Attacker State 3 8");
-                packet.ReadSingle("Unk Attacker State 3 9");
-                packet.ReadSingle("Unk Attacker State 3 10");
-                packet.ReadSingle("Unk Attacker State 3 11");
+                packet.Translator.ReadInt32("Unk Attacker State 3 1");
+                packet.Translator.ReadSingle("Unk Attacker State 3 2");
+                packet.Translator.ReadSingle("Unk Attacker State 3 3");
+                packet.Translator.ReadSingle("Unk Attacker State 3 4");
+                packet.Translator.ReadSingle("Unk Attacker State 3 5");
+                packet.Translator.ReadSingle("Unk Attacker State 3 6");
+                packet.Translator.ReadSingle("Unk Attacker State 3 7");
+                packet.Translator.ReadSingle("Unk Attacker State 3 8");
+                packet.Translator.ReadSingle("Unk Attacker State 3 9");
+                packet.Translator.ReadSingle("Unk Attacker State 3 10");
+                packet.Translator.ReadSingle("Unk Attacker State 3 11");
 
                 for (var i = 0; i < 2; ++i)
                 {
-                    packet.ReadSingle("Unk1 Float", i);
-                    packet.ReadSingle("Unk2 Float", i);
+                    packet.Translator.ReadSingle("Unk1 Float", i);
+                    packet.Translator.ReadSingle("Unk2 Float", i);
 
                 }
 
-                packet.ReadInt32("Unk Attacker State 3 12");
+                packet.Translator.ReadInt32("Unk Attacker State 3 12");
             }
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK | SpellHitInfo.HITINFO_UNK12))
-                packet.ReadSingle("Unk Float");
+                packet.Translator.ReadSingle("Unk Float");
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_UNK26))
             {
-                packet.ReadInt32("Unk4");
-                packet.ReadInt32("Player current HP");
-                packet.ReadInt32("Unk3");
+                packet.Translator.ReadInt32("Unk4");
+                packet.Translator.ReadInt32("Player current HP");
+                packet.Translator.ReadInt32("Unk3");
 
-                packet.StartBitStream(guid, 4, 5, 6, 7, 0, 2, 3, 1);
+                packet.Translator.StartBitStream(guid, 4, 5, 6, 7, 0, 2, 3, 1);
 
 
-                var counter = packet.ReadBits(21);
+                var counter = packet.Translator.ReadBits(21);
 
-                packet.ReadXORByte(guid, 2);
-                packet.ReadXORByte(guid, 7);
-                packet.ReadXORByte(guid, 0);
-                packet.ReadXORByte(guid, 3);
-                packet.ReadXORByte(guid, 5);
-                packet.ReadXORByte(guid, 4);
+                packet.Translator.ReadXORByte(guid, 2);
+                packet.Translator.ReadXORByte(guid, 7);
+                packet.Translator.ReadXORByte(guid, 0);
+                packet.Translator.ReadXORByte(guid, 3);
+                packet.Translator.ReadXORByte(guid, 5);
+                packet.Translator.ReadXORByte(guid, 4);
 
                 for (var i = 0; i < counter; ++i)
                 {
-                    packet.ReadUInt32("unk14", i);
-                    packet.ReadUInt32("unk6", i);
+                    packet.Translator.ReadUInt32("unk14", i);
+                    packet.Translator.ReadUInt32("unk6", i);
                 }
 
-                packet.ReadXORByte(guid, 1);
-                packet.ReadXORByte(guid, 6);
+                packet.Translator.ReadXORByte(guid, 1);
+                packet.Translator.ReadXORByte(guid, 6);
 
-                packet.WriteGuid("GUID", guid);
+                packet.Translator.WriteGuid("GUID", guid);
             }
         }
 
@@ -506,84 +506,84 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var targetGUID = new byte[8];
             var powerGUID = new byte[8];
 
-            packet.StartBitStream(casterGUID, 2, 5, 0, 1);
-            targetGUID[1] = packet.ReadBit();
-            casterGUID[4] = packet.ReadBit();
-            var hasPowerData = packet.ReadBit();
-            targetGUID[0] = packet.ReadBit();
+            packet.Translator.StartBitStream(casterGUID, 2, 5, 0, 1);
+            targetGUID[1] = packet.Translator.ReadBit();
+            casterGUID[4] = packet.Translator.ReadBit();
+            var hasPowerData = packet.Translator.ReadBit();
+            targetGUID[0] = packet.Translator.ReadBit();
 
             var powerCount = 0u;
             if (hasPowerData)
             {
-                packet.StartBitStream(powerGUID, 1, 0, 2, 5);
-                powerCount = packet.ReadBits(21);
-                packet.StartBitStream(powerGUID, 7, 3, 4, 6);
+                packet.Translator.StartBitStream(powerGUID, 1, 0, 2, 5);
+                powerCount = packet.Translator.ReadBits(21);
+                packet.Translator.StartBitStream(powerGUID, 7, 3, 4, 6);
             }
 
-            packet.StartBitStream(targetGUID, 3, 5);
-            casterGUID[6] = packet.ReadBit();
-            packet.StartBitStream(targetGUID, 4, 2, 7);
-            casterGUID[3] = packet.ReadBit();
-            targetGUID[6] = packet.ReadBit();
-            casterGUID[7] = packet.ReadBit();
+            packet.Translator.StartBitStream(targetGUID, 3, 5);
+            casterGUID[6] = packet.Translator.ReadBit();
+            packet.Translator.StartBitStream(targetGUID, 4, 2, 7);
+            casterGUID[3] = packet.Translator.ReadBit();
+            targetGUID[6] = packet.Translator.ReadBit();
+            casterGUID[7] = packet.Translator.ReadBit();
 
             if (hasPowerData)
             {
-                packet.ReadInt32("Spell power");
-                packet.ReadInt32("Current Health");
+                packet.Translator.ReadInt32("Spell power");
+                packet.Translator.ReadInt32("Current Health");
 
-                packet.ReadXORByte(powerGUID, 6);
-                packet.ReadXORByte(powerGUID, 0);
-                packet.ReadXORByte(powerGUID, 1);
-                packet.ReadXORByte(powerGUID, 2);
-                packet.ReadXORByte(powerGUID, 7);
-                packet.ReadXORByte(powerGUID, 5);
-                packet.ReadXORByte(powerGUID, 3);
+                packet.Translator.ReadXORByte(powerGUID, 6);
+                packet.Translator.ReadXORByte(powerGUID, 0);
+                packet.Translator.ReadXORByte(powerGUID, 1);
+                packet.Translator.ReadXORByte(powerGUID, 2);
+                packet.Translator.ReadXORByte(powerGUID, 7);
+                packet.Translator.ReadXORByte(powerGUID, 5);
+                packet.Translator.ReadXORByte(powerGUID, 3);
 
                 for (var i = 0; i < powerCount; i++)
                 {
-                    packet.ReadInt32("Power Value", i);
-                    packet.ReadUInt32E<PowerType>("Power Type", i);
+                    packet.Translator.ReadInt32("Power Value", i);
+                    packet.Translator.ReadUInt32E<PowerType>("Power Type", i);
                 }
 
-                packet.ReadXORByte(powerGUID, 4);
-                packet.ReadInt32("Attack power");
+                packet.Translator.ReadXORByte(powerGUID, 4);
+                packet.Translator.ReadInt32("Attack power");
 
-                packet.WriteGuid("Power GUID", powerGUID);
+                packet.Translator.WriteGuid("Power GUID", powerGUID);
             }
 
-            packet.ReadXORByte(targetGUID, 3);
-            packet.ReadInt32("Amount");
-            packet.ReadXORByte(casterGUID, 4);
-            packet.ReadXORByte(casterGUID, 5);
-            packet.ReadXORByte(casterGUID, 2);
-            packet.ReadXORByte(targetGUID, 0);
-            packet.ReadXORByte(targetGUID, 6);
-            packet.ReadXORByte(casterGUID, 7);
-            packet.ReadXORByte(casterGUID, 6);
-            packet.ReadInt32<SpellId>("Spell ID");
-            packet.ReadXORByte(casterGUID, 3);
-            packet.ReadUInt32E<PowerType>("Power Type");
-            packet.ReadXORByte(targetGUID, 7);
-            packet.ReadXORByte(targetGUID, 2);
-            packet.ReadXORByte(targetGUID, 4);
-            packet.ReadXORByte(targetGUID, 1);
-            packet.ReadXORByte(casterGUID, 1);
-            packet.ReadXORByte(targetGUID, 5);
-            packet.ReadXORByte(casterGUID, 0);
+            packet.Translator.ReadXORByte(targetGUID, 3);
+            packet.Translator.ReadInt32("Amount");
+            packet.Translator.ReadXORByte(casterGUID, 4);
+            packet.Translator.ReadXORByte(casterGUID, 5);
+            packet.Translator.ReadXORByte(casterGUID, 2);
+            packet.Translator.ReadXORByte(targetGUID, 0);
+            packet.Translator.ReadXORByte(targetGUID, 6);
+            packet.Translator.ReadXORByte(casterGUID, 7);
+            packet.Translator.ReadXORByte(casterGUID, 6);
+            packet.Translator.ReadInt32<SpellId>("Spell ID");
+            packet.Translator.ReadXORByte(casterGUID, 3);
+            packet.Translator.ReadUInt32E<PowerType>("Power Type");
+            packet.Translator.ReadXORByte(targetGUID, 7);
+            packet.Translator.ReadXORByte(targetGUID, 2);
+            packet.Translator.ReadXORByte(targetGUID, 4);
+            packet.Translator.ReadXORByte(targetGUID, 1);
+            packet.Translator.ReadXORByte(casterGUID, 1);
+            packet.Translator.ReadXORByte(targetGUID, 5);
+            packet.Translator.ReadXORByte(casterGUID, 0);
 
-            packet.WriteGuid("Caster GUID", casterGUID);
-            packet.WriteGuid("Target GUID", targetGUID);
+            packet.Translator.WriteGuid("Caster GUID", casterGUID);
+            packet.Translator.WriteGuid("Target GUID", targetGUID);
         }
 
         [Parser(Opcode.SMSG_CANCEL_AUTO_REPEAT)]
         public static void HandleCancelAutoRepeat(Packet packet)
         {
             var guid = new byte[8];
-            packet.StartBitStream(guid, 3, 7, 2, 5, 4, 1, 0, 6);
-            packet.ParseBitStream(guid, 4, 1, 0, 7, 2, 3, 6, 5);
+            packet.Translator.StartBitStream(guid, 3, 7, 2, 5, 4, 1, 0, 6);
+            packet.Translator.ParseBitStream(guid, 4, 1, 0, 7, 2, 3, 6, 5);
 
-            packet.WriteGuid("Guid", guid);
+            packet.Translator.WriteGuid("Guid", guid);
         }
     }
 }

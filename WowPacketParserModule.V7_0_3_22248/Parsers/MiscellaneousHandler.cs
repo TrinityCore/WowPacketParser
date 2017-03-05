@@ -11,83 +11,83 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS_GLUE_SCREEN, ClientVersionBuild.V7_0_3_22248, ClientVersionBuild.V7_1_0_22900)]
         public static void HandleFeatureSystemStatusGlueScreen(Packet packet)
         {
-            packet.ReadBit("BpayStoreEnabled");
-            packet.ReadBit("BpayStoreAvailable");
-            packet.ReadBit("BpayStoreDisabledByParentalControls");
-            packet.ReadBit("CharUndeleteEnabled");
-            packet.ReadBit("CommerceSystemEnabled");
-            packet.ReadBit("Unk14");
-            packet.ReadBit("WillKickFromWorld");
-            packet.ReadBit("IsExpansionPreorderInStore");
-            packet.ReadBit("KioskModeEnabled");
-            packet.ReadBit("NoHandler"); // not accessed in handler
-            packet.ReadBit("TrialBoostEnabled");
+            packet.Translator.ReadBit("BpayStoreEnabled");
+            packet.Translator.ReadBit("BpayStoreAvailable");
+            packet.Translator.ReadBit("BpayStoreDisabledByParentalControls");
+            packet.Translator.ReadBit("CharUndeleteEnabled");
+            packet.Translator.ReadBit("CommerceSystemEnabled");
+            packet.Translator.ReadBit("Unk14");
+            packet.Translator.ReadBit("WillKickFromWorld");
+            packet.Translator.ReadBit("IsExpansionPreorderInStore");
+            packet.Translator.ReadBit("KioskModeEnabled");
+            packet.Translator.ReadBit("NoHandler"); // not accessed in handler
+            packet.Translator.ReadBit("TrialBoostEnabled");
 
-            packet.ReadInt32("TokenPollTimeSeconds");
-            packet.ReadInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
+            packet.Translator.ReadInt32("TokenPollTimeSeconds");
+            packet.Translator.ReadInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
         }
 
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS_GLUE_SCREEN, ClientVersionBuild.V7_1_0_22900, ClientVersionBuild.V7_1_5_23360)]
         public static void HandleFeatureSystemStatusGlueScreen710(Packet packet)
         {
-            packet.ReadBit("BpayStoreEnabled");
-            packet.ReadBit("BpayStoreAvailable");
-            packet.ReadBit("BpayStoreDisabledByParentalControls");
-            packet.ReadBit("CharUndeleteEnabled");
-            packet.ReadBit("CommerceSystemEnabled");
-            packet.ReadBit("Unk14");
-            packet.ReadBit("WillKickFromWorld");
-            packet.ReadBit("IsExpansionPreorderInStore");
-            packet.ReadBit("KioskModeEnabled");
-            packet.ReadBit("CompetitiveModeEnabled");
-            packet.ReadBit("NoHandler"); // not accessed in handler
-            packet.ReadBit("TrialBoostEnabled");
+            packet.Translator.ReadBit("BpayStoreEnabled");
+            packet.Translator.ReadBit("BpayStoreAvailable");
+            packet.Translator.ReadBit("BpayStoreDisabledByParentalControls");
+            packet.Translator.ReadBit("CharUndeleteEnabled");
+            packet.Translator.ReadBit("CommerceSystemEnabled");
+            packet.Translator.ReadBit("Unk14");
+            packet.Translator.ReadBit("WillKickFromWorld");
+            packet.Translator.ReadBit("IsExpansionPreorderInStore");
+            packet.Translator.ReadBit("KioskModeEnabled");
+            packet.Translator.ReadBit("CompetitiveModeEnabled");
+            packet.Translator.ReadBit("NoHandler"); // not accessed in handler
+            packet.Translator.ReadBit("TrialBoostEnabled");
 
-            packet.ReadInt32("TokenPollTimeSeconds");
-            packet.ReadInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
+            packet.Translator.ReadInt32("TokenPollTimeSeconds");
+            packet.Translator.ReadInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
         }
 
         [Parser(Opcode.SMSG_INITIAL_SETUP)]
         public static void HandleInitialSetup(Packet packet)
         {
-            packet.ReadByte("ServerExpansionLevel");
-            packet.ReadByte("ServerExpansionTier");
+            packet.Translator.ReadByte("ServerExpansionLevel");
+            packet.Translator.ReadByte("ServerExpansionTier");
         }
 
         [Parser(Opcode.SMSG_WORLD_SERVER_INFO)]
         public static void HandleWorldServerInfo(Packet packet)
         {
-            packet.ReadInt32("DifficultyID");
-            packet.ReadByte("IsTournamentRealm");
+            packet.Translator.ReadInt32("DifficultyID");
+            packet.Translator.ReadByte("IsTournamentRealm");
 
-            packet.ReadBit("XRealmPvpAlert");
-            var hasRestrictedAccountMaxLevel = packet.ReadBit("HasRestrictedAccountMaxLevel");
-            var hasRestrictedAccountMaxMoney = packet.ReadBit("HasRestrictedAccountMaxMoney");
-            var hasInstanceGroupSize = packet.ReadBit("HasInstanceGroupSize");
+            packet.Translator.ReadBit("XRealmPvpAlert");
+            var hasRestrictedAccountMaxLevel = packet.Translator.ReadBit("HasRestrictedAccountMaxLevel");
+            var hasRestrictedAccountMaxMoney = packet.Translator.ReadBit("HasRestrictedAccountMaxMoney");
+            var hasInstanceGroupSize = packet.Translator.ReadBit("HasInstanceGroupSize");
 
             if (hasRestrictedAccountMaxLevel)
-                packet.ReadInt32("RestrictedAccountMaxLevel");
+                packet.Translator.ReadInt32("RestrictedAccountMaxLevel");
 
             if (hasRestrictedAccountMaxMoney)
-                packet.ReadInt32("RestrictedAccountMaxMoney");
+                packet.Translator.ReadInt32("RestrictedAccountMaxMoney");
 
             if (hasInstanceGroupSize)
-                packet.ReadInt32("InstanceGroupSize");
+                packet.Translator.ReadInt32("InstanceGroupSize");
         }
 
         [Parser(Opcode.SMSG_ACCOUNT_MOUNT_UPDATE)]
         public static void HandleAccountMountUpdate(Packet packet)
         {
-            packet.ReadBit("IsFullUpdate");
+            packet.Translator.ReadBit("IsFullUpdate");
 
-            var mountSpellIDsCount = packet.ReadInt32("MountSpellIDsCount");
+            var mountSpellIDsCount = packet.Translator.ReadInt32("MountSpellIDsCount");
 
             for (int i = 0; i < mountSpellIDsCount; i++)
             {
-                packet.ReadInt32("MountSpellIDs", i);
+                packet.Translator.ReadInt32("MountSpellIDs", i);
 
-                packet.ResetBitReader();
-                packet.ReadBits("MountIsFavorite", 2, i);
+                packet.Translator.ResetBitReader();
+                packet.Translator.ReadBits("MountIsFavorite", 2, i);
             }
         }
 
@@ -95,29 +95,29 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_QUERY_PAGE_TEXT_RESPONSE)]
         public static void HandlePageTextResponse(Packet packet)
         {
-            packet.ReadUInt32("PageTextID");
-            packet.ResetBitReader();
+            packet.Translator.ReadUInt32("PageTextID");
+            packet.Translator.ResetBitReader();
 
-            Bit hasData = packet.ReadBit("Allow");
+            Bit hasData = packet.Translator.ReadBit("Allow");
             if (!hasData)
                 return; // nothing to do
 
-            var pagesCount = packet.ReadInt32("PagesCount");
+            var pagesCount = packet.Translator.ReadInt32("PagesCount");
 
             for (int i = 0; i < pagesCount; i++)
             {
                 PageText pageText = new PageText();
 
-                uint entry = packet.ReadUInt32("ID", i);
+                uint entry = packet.Translator.ReadUInt32("ID", i);
                 pageText.ID = entry;
-                pageText.NextPageID = packet.ReadUInt32("NextPageID", i);
+                pageText.NextPageID = packet.Translator.ReadUInt32("NextPageID", i);
 
-                pageText.PlayerConditionID = packet.ReadInt32("PlayerConditionID", i);
-                pageText.Flags = packet.ReadByte("Flags", i);
+                pageText.PlayerConditionID = packet.Translator.ReadInt32("PlayerConditionID", i);
+                pageText.Flags = packet.Translator.ReadByte("Flags", i);
 
-                packet.ResetBitReader();
-                uint textLen = packet.ReadBits(12);
-                pageText.Text = packet.ReadWoWString("Text", textLen, i);
+                packet.Translator.ResetBitReader();
+                uint textLen = packet.Translator.ReadBits(12);
+                pageText.Text = packet.Translator.ReadWoWString("Text", textLen, i);
 
                 packet.AddSniffData(StoreNameType.PageText, (int)entry, "QUERY_RESPONSE");
                 Storage.PageTexts.Add(pageText, packet.TimeSpan);
@@ -127,66 +127,66 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS, ClientVersionBuild.V7_1_0_22900, ClientVersionBuild.V7_1_5_23360)]
         public static void HandleFeatureSystemStatus710(Packet packet)
         {
-            packet.ReadByte("ComplaintStatus");
+            packet.Translator.ReadByte("ComplaintStatus");
 
-            packet.ReadUInt32("ScrollOfResurrectionRequestsRemaining");
-            packet.ReadUInt32("ScrollOfResurrectionMaxRequestsPerDay");
-            packet.ReadUInt32("CfgRealmID");
-            packet.ReadInt32("CfgRealmRecID");
-            packet.ReadUInt32("TwitterPostThrottleLimit");
-            packet.ReadUInt32("TwitterPostThrottleCooldown");
-            packet.ReadUInt32("TokenPollTimeSeconds");
-            packet.ReadUInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
+            packet.Translator.ReadUInt32("ScrollOfResurrectionRequestsRemaining");
+            packet.Translator.ReadUInt32("ScrollOfResurrectionMaxRequestsPerDay");
+            packet.Translator.ReadUInt32("CfgRealmID");
+            packet.Translator.ReadInt32("CfgRealmRecID");
+            packet.Translator.ReadUInt32("TwitterPostThrottleLimit");
+            packet.Translator.ReadUInt32("TwitterPostThrottleCooldown");
+            packet.Translator.ReadUInt32("TokenPollTimeSeconds");
+            packet.Translator.ReadUInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
 
-            packet.ResetBitReader();
+            packet.Translator.ResetBitReader();
 
-            packet.ReadBit("VoiceEnabled");
-            var hasEuropaTicketSystemStatus = packet.ReadBit("HasEuropaTicketSystemStatus");
-            packet.ReadBit("ScrollOfResurrectionEnabled");
-            packet.ReadBit("BpayStoreEnabled");
-            packet.ReadBit("BpayStoreAvailable");
-            packet.ReadBit("BpayStoreDisabledByParentalControls");
-            packet.ReadBit("ItemRestorationButtonEnabled");
-            packet.ReadBit("BrowserEnabled");
-            var hasSessionAlert = packet.ReadBit("HasSessionAlert");
-            packet.ReadBit("RecruitAFriendSendingEnabled");
-            packet.ReadBit("CharUndeleteEnabled");
-            packet.ReadBit("RestrictedAccount");
-            packet.ReadBit("TutorialsEnabled");
-            packet.ReadBit("NPETutorialsEnabled");
-            packet.ReadBit("TwitterEnabled");
-            packet.ReadBit("CommerceSystemEnabled");
-            packet.ReadBit("Unk67");
-            packet.ReadBit("WillKickFromWorld");
-            packet.ReadBit("KioskModeEnabled");
-            packet.ReadBit("CompetitiveModeEnabled");
-            var hasRaceClassExpansionLevels = packet.ReadBit("RaceClassExpansionLevels");
+            packet.Translator.ReadBit("VoiceEnabled");
+            var hasEuropaTicketSystemStatus = packet.Translator.ReadBit("HasEuropaTicketSystemStatus");
+            packet.Translator.ReadBit("ScrollOfResurrectionEnabled");
+            packet.Translator.ReadBit("BpayStoreEnabled");
+            packet.Translator.ReadBit("BpayStoreAvailable");
+            packet.Translator.ReadBit("BpayStoreDisabledByParentalControls");
+            packet.Translator.ReadBit("ItemRestorationButtonEnabled");
+            packet.Translator.ReadBit("BrowserEnabled");
+            var hasSessionAlert = packet.Translator.ReadBit("HasSessionAlert");
+            packet.Translator.ReadBit("RecruitAFriendSendingEnabled");
+            packet.Translator.ReadBit("CharUndeleteEnabled");
+            packet.Translator.ReadBit("RestrictedAccount");
+            packet.Translator.ReadBit("TutorialsEnabled");
+            packet.Translator.ReadBit("NPETutorialsEnabled");
+            packet.Translator.ReadBit("TwitterEnabled");
+            packet.Translator.ReadBit("CommerceSystemEnabled");
+            packet.Translator.ReadBit("Unk67");
+            packet.Translator.ReadBit("WillKickFromWorld");
+            packet.Translator.ReadBit("KioskModeEnabled");
+            packet.Translator.ReadBit("CompetitiveModeEnabled");
+            var hasRaceClassExpansionLevels = packet.Translator.ReadBit("RaceClassExpansionLevels");
 
             {
-                packet.ResetBitReader();
-                packet.ReadBit("ToastsDisabled");
-                packet.ReadSingle("ToastDuration");
-                packet.ReadSingle("DelayDuration");
-                packet.ReadSingle("QueueMultiplier");
-                packet.ReadSingle("PlayerMultiplier");
-                packet.ReadSingle("PlayerFriendValue");
-                packet.ReadSingle("PlayerGuildValue");
-                packet.ReadSingle("ThrottleInitialThreshold");
-                packet.ReadSingle("ThrottleDecayTime");
-                packet.ReadSingle("ThrottlePrioritySpike");
-                packet.ReadSingle("ThrottleMinThreshold");
-                packet.ReadSingle("ThrottlePvPPriorityNormal");
-                packet.ReadSingle("ThrottlePvPPriorityLow");
-                packet.ReadSingle("ThrottlePvPHonorThreshold");
-                packet.ReadSingle("ThrottleLfgListPriorityDefault");
-                packet.ReadSingle("ThrottleLfgListPriorityAbove");
-                packet.ReadSingle("ThrottleLfgListPriorityBelow");
-                packet.ReadSingle("ThrottleLfgListIlvlScalingAbove");
-                packet.ReadSingle("ThrottleLfgListIlvlScalingBelow");
-                packet.ReadSingle("ThrottleRfPriorityAbove");
-                packet.ReadSingle("ThrottleRfIlvlScalingAbove");
-                packet.ReadSingle("ThrottleDfMaxItemLevel");
-                packet.ReadSingle("ThrottleDfBestPriority");
+                packet.Translator.ResetBitReader();
+                packet.Translator.ReadBit("ToastsDisabled");
+                packet.Translator.ReadSingle("ToastDuration");
+                packet.Translator.ReadSingle("DelayDuration");
+                packet.Translator.ReadSingle("QueueMultiplier");
+                packet.Translator.ReadSingle("PlayerMultiplier");
+                packet.Translator.ReadSingle("PlayerFriendValue");
+                packet.Translator.ReadSingle("PlayerGuildValue");
+                packet.Translator.ReadSingle("ThrottleInitialThreshold");
+                packet.Translator.ReadSingle("ThrottleDecayTime");
+                packet.Translator.ReadSingle("ThrottlePrioritySpike");
+                packet.Translator.ReadSingle("ThrottleMinThreshold");
+                packet.Translator.ReadSingle("ThrottlePvPPriorityNormal");
+                packet.Translator.ReadSingle("ThrottlePvPPriorityLow");
+                packet.Translator.ReadSingle("ThrottlePvPHonorThreshold");
+                packet.Translator.ReadSingle("ThrottleLfgListPriorityDefault");
+                packet.Translator.ReadSingle("ThrottleLfgListPriorityAbove");
+                packet.Translator.ReadSingle("ThrottleLfgListPriorityBelow");
+                packet.Translator.ReadSingle("ThrottleLfgListIlvlScalingAbove");
+                packet.Translator.ReadSingle("ThrottleLfgListIlvlScalingBelow");
+                packet.Translator.ReadSingle("ThrottleRfPriorityAbove");
+                packet.Translator.ReadSingle("ThrottleRfIlvlScalingAbove");
+                packet.Translator.ReadSingle("ThrottleDfMaxItemLevel");
+                packet.Translator.ReadSingle("ThrottleDfBestPriority");
             }
 
             if (hasSessionAlert)
@@ -194,12 +194,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             if (hasRaceClassExpansionLevels)
             {
-                var int88 = packet.ReadInt32("RaceClassExpansionLevelsCount");
+                var int88 = packet.Translator.ReadInt32("RaceClassExpansionLevelsCount");
                 for (int i = 0; i < int88; i++)
-                    packet.ReadByte("RaceClassExpansionLevels", i);
+                    packet.Translator.ReadByte("RaceClassExpansionLevels", i);
             }
 
-            packet.ResetBitReader();
+            packet.Translator.ResetBitReader();
 
             if (hasEuropaTicketSystemStatus)
                 V6_0_2_19033.Parsers.MiscellaneousHandler.ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
@@ -208,68 +208,68 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS, ClientVersionBuild.V7_1_5_23360)]
         public static void HandleFeatureSystemStatus715(Packet packet)
         {
-            packet.ReadByte("ComplaintStatus");
+            packet.Translator.ReadByte("ComplaintStatus");
 
-            packet.ReadUInt32("ScrollOfResurrectionRequestsRemaining");
-            packet.ReadUInt32("ScrollOfResurrectionMaxRequestsPerDay");
-            packet.ReadUInt32("CfgRealmID");
-            packet.ReadInt32("CfgRealmRecID");
-            packet.ReadUInt32("TwitterPostThrottleLimit");
-            packet.ReadUInt32("TwitterPostThrottleCooldown");
-            packet.ReadUInt32("TokenPollTimeSeconds");
-            packet.ReadUInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
-            packet.ReadUInt64("TokenBalanceAmount");
+            packet.Translator.ReadUInt32("ScrollOfResurrectionRequestsRemaining");
+            packet.Translator.ReadUInt32("ScrollOfResurrectionMaxRequestsPerDay");
+            packet.Translator.ReadUInt32("CfgRealmID");
+            packet.Translator.ReadInt32("CfgRealmRecID");
+            packet.Translator.ReadUInt32("TwitterPostThrottleLimit");
+            packet.Translator.ReadUInt32("TwitterPostThrottleCooldown");
+            packet.Translator.ReadUInt32("TokenPollTimeSeconds");
+            packet.Translator.ReadUInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
+            packet.Translator.ReadUInt64("TokenBalanceAmount");
 
-            packet.ResetBitReader();
+            packet.Translator.ResetBitReader();
 
-            packet.ReadBit("VoiceEnabled");
-            var hasEuropaTicketSystemStatus = packet.ReadBit("HasEuropaTicketSystemStatus");
-            packet.ReadBit("ScrollOfResurrectionEnabled");
-            packet.ReadBit("BpayStoreEnabled");
-            packet.ReadBit("BpayStoreAvailable");
-            packet.ReadBit("BpayStoreDisabledByParentalControls");
-            packet.ReadBit("ItemRestorationButtonEnabled");
-            packet.ReadBit("BrowserEnabled");
-            var hasSessionAlert = packet.ReadBit("HasSessionAlert");
-            packet.ReadBit("RecruitAFriendSendingEnabled");
-            packet.ReadBit("CharUndeleteEnabled");
-            packet.ReadBit("RestrictedAccount");
-            packet.ReadBit("TutorialsEnabled");
-            packet.ReadBit("NPETutorialsEnabled");
-            packet.ReadBit("TwitterEnabled");
-            packet.ReadBit("CommerceSystemEnabled");
-            packet.ReadBit("Unk67");
-            packet.ReadBit("WillKickFromWorld");
-            packet.ReadBit("KioskModeEnabled");
-            packet.ReadBit("CompetitiveModeEnabled");
-            var hasRaceClassExpansionLevels = packet.ReadBit("RaceClassExpansionLevels");
-            packet.ReadBit("TokenBalanceEnabled");
+            packet.Translator.ReadBit("VoiceEnabled");
+            var hasEuropaTicketSystemStatus = packet.Translator.ReadBit("HasEuropaTicketSystemStatus");
+            packet.Translator.ReadBit("ScrollOfResurrectionEnabled");
+            packet.Translator.ReadBit("BpayStoreEnabled");
+            packet.Translator.ReadBit("BpayStoreAvailable");
+            packet.Translator.ReadBit("BpayStoreDisabledByParentalControls");
+            packet.Translator.ReadBit("ItemRestorationButtonEnabled");
+            packet.Translator.ReadBit("BrowserEnabled");
+            var hasSessionAlert = packet.Translator.ReadBit("HasSessionAlert");
+            packet.Translator.ReadBit("RecruitAFriendSendingEnabled");
+            packet.Translator.ReadBit("CharUndeleteEnabled");
+            packet.Translator.ReadBit("RestrictedAccount");
+            packet.Translator.ReadBit("TutorialsEnabled");
+            packet.Translator.ReadBit("NPETutorialsEnabled");
+            packet.Translator.ReadBit("TwitterEnabled");
+            packet.Translator.ReadBit("CommerceSystemEnabled");
+            packet.Translator.ReadBit("Unk67");
+            packet.Translator.ReadBit("WillKickFromWorld");
+            packet.Translator.ReadBit("KioskModeEnabled");
+            packet.Translator.ReadBit("CompetitiveModeEnabled");
+            var hasRaceClassExpansionLevels = packet.Translator.ReadBit("RaceClassExpansionLevels");
+            packet.Translator.ReadBit("TokenBalanceEnabled");
 
             {
-                packet.ResetBitReader();
-                packet.ReadBit("ToastsDisabled");
-                packet.ReadSingle("ToastDuration");
-                packet.ReadSingle("DelayDuration");
-                packet.ReadSingle("QueueMultiplier");
-                packet.ReadSingle("PlayerMultiplier");
-                packet.ReadSingle("PlayerFriendValue");
-                packet.ReadSingle("PlayerGuildValue");
-                packet.ReadSingle("ThrottleInitialThreshold");
-                packet.ReadSingle("ThrottleDecayTime");
-                packet.ReadSingle("ThrottlePrioritySpike");
-                packet.ReadSingle("ThrottleMinThreshold");
-                packet.ReadSingle("ThrottlePvPPriorityNormal");
-                packet.ReadSingle("ThrottlePvPPriorityLow");
-                packet.ReadSingle("ThrottlePvPHonorThreshold");
-                packet.ReadSingle("ThrottleLfgListPriorityDefault");
-                packet.ReadSingle("ThrottleLfgListPriorityAbove");
-                packet.ReadSingle("ThrottleLfgListPriorityBelow");
-                packet.ReadSingle("ThrottleLfgListIlvlScalingAbove");
-                packet.ReadSingle("ThrottleLfgListIlvlScalingBelow");
-                packet.ReadSingle("ThrottleRfPriorityAbove");
-                packet.ReadSingle("ThrottleRfIlvlScalingAbove");
-                packet.ReadSingle("ThrottleDfMaxItemLevel");
-                packet.ReadSingle("ThrottleDfBestPriority");
+                packet.Translator.ResetBitReader();
+                packet.Translator.ReadBit("ToastsDisabled");
+                packet.Translator.ReadSingle("ToastDuration");
+                packet.Translator.ReadSingle("DelayDuration");
+                packet.Translator.ReadSingle("QueueMultiplier");
+                packet.Translator.ReadSingle("PlayerMultiplier");
+                packet.Translator.ReadSingle("PlayerFriendValue");
+                packet.Translator.ReadSingle("PlayerGuildValue");
+                packet.Translator.ReadSingle("ThrottleInitialThreshold");
+                packet.Translator.ReadSingle("ThrottleDecayTime");
+                packet.Translator.ReadSingle("ThrottlePrioritySpike");
+                packet.Translator.ReadSingle("ThrottleMinThreshold");
+                packet.Translator.ReadSingle("ThrottlePvPPriorityNormal");
+                packet.Translator.ReadSingle("ThrottlePvPPriorityLow");
+                packet.Translator.ReadSingle("ThrottlePvPHonorThreshold");
+                packet.Translator.ReadSingle("ThrottleLfgListPriorityDefault");
+                packet.Translator.ReadSingle("ThrottleLfgListPriorityAbove");
+                packet.Translator.ReadSingle("ThrottleLfgListPriorityBelow");
+                packet.Translator.ReadSingle("ThrottleLfgListIlvlScalingAbove");
+                packet.Translator.ReadSingle("ThrottleLfgListIlvlScalingBelow");
+                packet.Translator.ReadSingle("ThrottleRfPriorityAbove");
+                packet.Translator.ReadSingle("ThrottleRfIlvlScalingAbove");
+                packet.Translator.ReadSingle("ThrottleDfMaxItemLevel");
+                packet.Translator.ReadSingle("ThrottleDfBestPriority");
             }
 
             if (hasSessionAlert)
@@ -277,12 +277,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             if (hasRaceClassExpansionLevels)
             {
-                var int88 = packet.ReadInt32("RaceClassExpansionLevelsCount");
+                var int88 = packet.Translator.ReadInt32("RaceClassExpansionLevelsCount");
                 for (int i = 0; i < int88; i++)
-                    packet.ReadByte("RaceClassExpansionLevels", i);
+                    packet.Translator.ReadByte("RaceClassExpansionLevels", i);
             }
 
-            packet.ResetBitReader();
+            packet.Translator.ResetBitReader();
 
             if (hasEuropaTicketSystemStatus)
                 V6_0_2_19033.Parsers.MiscellaneousHandler.ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
@@ -291,22 +291,22 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS_GLUE_SCREEN, ClientVersionBuild.V7_1_5_23360)]
         public static void HandleFeatureSystemStatusGlueScreen715(Packet packet)
         {
-            packet.ReadBit("BpayStoreEnabled");
-            packet.ReadBit("BpayStoreAvailable");
-            packet.ReadBit("BpayStoreDisabledByParentalControls");
-            packet.ReadBit("CharUndeleteEnabled");
-            packet.ReadBit("CommerceSystemEnabled");
-            packet.ReadBit("Unk14");
-            packet.ReadBit("WillKickFromWorld");
-            packet.ReadBit("IsExpansionPreorderInStore");
-            packet.ReadBit("KioskModeEnabled");
-            packet.ReadBit("NoHandler"); // not accessed in handler
-            packet.ReadBit("TrialBoostEnabled");
-            packet.ReadBit("TokenBalanceEnabled");
+            packet.Translator.ReadBit("BpayStoreEnabled");
+            packet.Translator.ReadBit("BpayStoreAvailable");
+            packet.Translator.ReadBit("BpayStoreDisabledByParentalControls");
+            packet.Translator.ReadBit("CharUndeleteEnabled");
+            packet.Translator.ReadBit("CommerceSystemEnabled");
+            packet.Translator.ReadBit("Unk14");
+            packet.Translator.ReadBit("WillKickFromWorld");
+            packet.Translator.ReadBit("IsExpansionPreorderInStore");
+            packet.Translator.ReadBit("KioskModeEnabled");
+            packet.Translator.ReadBit("NoHandler"); // not accessed in handler
+            packet.Translator.ReadBit("TrialBoostEnabled");
+            packet.Translator.ReadBit("TokenBalanceEnabled");
 
-            packet.ReadInt32("TokenPollTimeSeconds");
-            packet.ReadInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
-            packet.ReadInt64("TokenBalanceAmount");
+            packet.Translator.ReadInt32("TokenPollTimeSeconds");
+            packet.Translator.ReadInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
+            packet.Translator.ReadInt64("TokenBalanceAmount");
         }
     }
 }

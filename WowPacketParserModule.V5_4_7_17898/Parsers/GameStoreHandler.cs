@@ -14,8 +14,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.SMSG_GAME_STORE_LIST)]
         public static void HandleGameStoreListResponse(Packet packet)
         {
-            var bits10 = packet.ReadBits(19);
-            var bits38 = packet.ReadBits(20);
+            var bits10 = packet.Translator.ReadBits(19);
+            var bits38 = packet.Translator.ReadBits(20);
 
             var bits18 = new uint[bits10];
             var bit143C = new bool[bits10][];
@@ -45,7 +45,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             for (var i = 0; i < bits10; i++)
             {
-                bits18[i] = packet.ReadBits(20);
+                bits18[i] = packet.Translator.ReadBits(20);
 
                 bit143C[i] = new bool[bits18[i]];
                 bit1440[i] = new bool[bits18[i]];
@@ -64,43 +64,43 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
                 for (var j = 0; j < bits18[i]; j++)
                 {
-                    bit143C[i][j] = packet.ReadBit();
-                    bit1440[i][j] = packet.ReadBit();
+                    bit143C[i][j] = packet.Translator.ReadBit();
+                    bit1440[i][j] = packet.Translator.ReadBit();
 
                     if (bit143C[i][j])
-                        bits1C[i][j] = packet.ReadBits(4);
+                        bits1C[i][j] = packet.Translator.ReadBits(4);
 
-                    bit1440[i][j] = packet.ReadBit();
+                    bit1440[i][j] = packet.Translator.ReadBit();
                     if (bit1440[i][j])
                     {
-                        bit20[i][j] = packet.ReadBit();
-                        bits24[i][j] = packet.ReadBits(10);
-                        bit18[i][j] = packet.ReadBit();
-                        bit142C[i][j] = packet.ReadBit();
-                        bits225[i][j] = packet.ReadBits(10);
-                        bit10[i][j] = packet.ReadBit();
-                        bits426[i][j] = packet.ReadBits(13);
+                        bit20[i][j] = packet.Translator.ReadBit();
+                        bits24[i][j] = packet.Translator.ReadBits(10);
+                        bit18[i][j] = packet.Translator.ReadBit();
+                        bit142C[i][j] = packet.Translator.ReadBit();
+                        bits225[i][j] = packet.Translator.ReadBits(10);
+                        bit10[i][j] = packet.Translator.ReadBit();
+                        bits426[i][j] = packet.Translator.ReadBits(13);
                     }
 
-                    bit28[i][j] = packet.ReadBit();
+                    bit28[i][j] = packet.Translator.ReadBit();
                 }
 
-                bits28[i] = packet.ReadBits(2);
-                bit1454[i] = packet.ReadBit();
+                bits28[i] = packet.Translator.ReadBits(2);
+                bit1454[i] = packet.Translator.ReadBit();
 
                 if (bit1454[i])
                 {
-                    bits44A[i] = packet.ReadBits(13);
-                    bit44[i] = packet.ReadBit();
-                    bit34[i] = packet.ReadBit();
-                    bit3C[i] = packet.ReadBit();
-                    bits48[i] = packet.ReadBits(10);
-                    bit1450[i] = packet.ReadBit();
-                    bits249[i] = packet.ReadBits(10);
+                    bits44A[i] = packet.Translator.ReadBits(13);
+                    bit44[i] = packet.Translator.ReadBit();
+                    bit34[i] = packet.Translator.ReadBit();
+                    bit3C[i] = packet.Translator.ReadBit();
+                    bits48[i] = packet.Translator.ReadBits(10);
+                    bit1450[i] = packet.Translator.ReadBit();
+                    bits249[i] = packet.Translator.ReadBits(10);
                 }
             }
 
-            var bits20 = packet.ReadBits(19);
+            var bits20 = packet.Translator.ReadBits(19);
 
             var bit143 = new bool[bits20];
 
@@ -114,92 +114,92 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             for (var i = 0; i < bits20; i++)
             {
-                bit143[i] = packet.ReadBit();
+                bit143[i] = packet.Translator.ReadBit();
 
                 if (bit143[i])
                 {
-                    bits30[i] = packet.ReadBits(10);
-                    bits432[i] = packet.ReadBits(13);
-                    bit1C[i] = packet.ReadBit();
-                    bit24[i] = packet.ReadBit();
-                    bit2C[i] = packet.ReadBit();
-                    bit1438[i] = packet.ReadBit();
-                    bits231[i] = packet.ReadBits(10);
+                    bits30[i] = packet.Translator.ReadBits(10);
+                    bits432[i] = packet.Translator.ReadBits(13);
+                    bit1C[i] = packet.Translator.ReadBit();
+                    bit24[i] = packet.Translator.ReadBit();
+                    bit2C[i] = packet.Translator.ReadBit();
+                    bit1438[i] = packet.Translator.ReadBit();
+                    bits231[i] = packet.Translator.ReadBits(10);
                 }
             }
 
             var bits3C = new uint[bits38];
             for (var i = 0; i < bits38; i++)
-                bits3C[i] = packet.ReadBits(8);
+                bits3C[i] = packet.Translator.ReadBits(8);
 
             for (var i = 0; i < bits38; i++)
             {
-                packet.ReadWoWString("Category", bits3C[i], i);
-                packet.ReadInt32("Int3C", i);
-                packet.ReadInt32("Int3C", i);
-                packet.ReadInt32("Int3C", i);
-                packet.ReadByte("Byte3C", i);
+                packet.Translator.ReadWoWString("Category", bits3C[i], i);
+                packet.Translator.ReadInt32("Int3C", i);
+                packet.Translator.ReadInt32("Int3C", i);
+                packet.Translator.ReadInt32("Int3C", i);
+                packet.Translator.ReadByte("Byte3C", i);
             }
 
             for (var i = 0; i < bits10; i++)
             {
-                packet.ReadByte("ByteED", i);
+                packet.Translator.ReadByte("ByteED", i);
 
                 if (bit1454[i])
                 {
-                    packet.ReadWoWString("Item Name", bits48[i], i);
+                    packet.Translator.ReadWoWString("Item Name", bits48[i], i);
 
                     if (bit34[i])
-                        packet.ReadInt32("Display Id", i);
+                        packet.Translator.ReadInt32("Display Id", i);
 
                     if (bit3C[i])
-                        packet.ReadInt32("IntED", i);
+                        packet.Translator.ReadInt32("IntED", i);
 
-                    packet.ReadWoWString("Description", bits44A[i], i);
+                    packet.Translator.ReadWoWString("Description", bits44A[i], i);
 
                     if (bit44[i])
 
-                        packet.ReadInt32("IntED", i);
+                        packet.Translator.ReadInt32("IntED", i);
 
                     if (bit1450[i])
-                        packet.ReadInt32("IntED", i);
+                        packet.Translator.ReadInt32("IntED", i);
 
-                    packet.ReadWoWString("StringED", bits249[i], i);
+                    packet.Translator.ReadWoWString("StringED", bits249[i], i);
                 }
 
-                packet.ReadInt64("Price", i);
-                packet.ReadInt32("Int14", i);
+                packet.Translator.ReadInt64("Price", i);
+                packet.Translator.ReadInt32("Int14", i);
 
                 for (var j = 0; j < bits18[i]; j++)
                 {
                     if (bit143C[i][j])
                     {
-                        packet.ReadWoWString("String225", bits225[i][j], i, j);
+                        packet.Translator.ReadWoWString("String225", bits225[i][j], i, j);
 
                         if (bit142C[i][j])
-                            packet.ReadInt32("IntED", i, j);
+                            packet.Translator.ReadInt32("IntED", i, j);
 
-                        packet.ReadWoWString("StringED", bits426[i][j], i, j);
+                        packet.Translator.ReadWoWString("StringED", bits426[i][j], i, j);
 
                         if (bit18[i][j])
-                            packet.ReadUInt32<ItemId>("Item Id", i, j);
+                            packet.Translator.ReadUInt32<ItemId>("Item Id", i, j);
 
                         if (bit10[i][j])
-                            packet.ReadInt32("IntED", i, j);
+                            packet.Translator.ReadInt32("IntED", i, j);
 
                         if (bit20[i][j])
-                            packet.ReadInt32("IntED", i, j);
+                            packet.Translator.ReadInt32("IntED", i, j);
 
-                        packet.ReadWoWString("StringED", bits24[i][j], i, j);
+                        packet.Translator.ReadWoWString("StringED", bits24[i][j], i, j);
                     }
 
-                    packet.ReadUInt32<ItemId>("Item Id", i, j);
-                    packet.ReadInt32("Int14", i, j);
-                    packet.ReadInt32("Buy Count", i, j);
+                    packet.Translator.ReadUInt32<ItemId>("Item Id", i, j);
+                    packet.Translator.ReadInt32("Int14", i, j);
+                    packet.Translator.ReadInt32("Buy Count", i, j);
                 }
 
-                packet.ReadInt64("Price", i);
-                packet.ReadInt32("IntED", i);
+                packet.Translator.ReadInt64("Price", i);
+                packet.Translator.ReadInt32("IntED", i);
             }
 
             for (var i = 0; i < bits20; i++)
@@ -207,33 +207,33 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 if (bit143[i])
                 {
                     if (bit2C[i])
-                        packet.ReadInt32("IntED", i);
+                        packet.Translator.ReadInt32("IntED", i);
 
                     if (bit24[i])
-                        packet.ReadInt32("IntED", i);
+                        packet.Translator.ReadInt32("IntED", i);
 
-                    packet.ReadWoWString("StringED", bits432[i], i);
-                    packet.ReadWoWString("StringED", bits30[i], i);
+                    packet.Translator.ReadWoWString("StringED", bits432[i], i);
+                    packet.Translator.ReadWoWString("StringED", bits30[i], i);
 
                     if (bit1C[i])
-                        packet.ReadInt32("IntED", i);
+                        packet.Translator.ReadInt32("IntED", i);
 
-                    packet.ReadWoWString("StringED", bits231[i], i);
+                    packet.Translator.ReadWoWString("StringED", bits231[i], i);
 
                     if (bit1438[i])
-                        packet.ReadInt32("IntED", i);
+                        packet.Translator.ReadInt32("IntED", i);
                 }
 
-                packet.ReadInt32("IntED", i);
-                packet.ReadInt32("IntED", i);
-                packet.ReadInt32("IntED", i);
-                packet.ReadInt32("IntED", i);
-                packet.ReadByte("ByteED", i);
-                packet.ReadInt32("Int24", i);
+                packet.Translator.ReadInt32("IntED", i);
+                packet.Translator.ReadInt32("IntED", i);
+                packet.Translator.ReadInt32("IntED", i);
+                packet.Translator.ReadInt32("IntED", i);
+                packet.Translator.ReadByte("ByteED", i);
+                packet.Translator.ReadInt32("Int24", i);
             }
 
-            packet.ReadInt32("Int30");
-            packet.ReadInt32("Int34");
+            packet.Translator.ReadInt32("Int30");
+            packet.Translator.ReadInt32("Int34");
         }
 
         [Parser(Opcode.CMSG_GAME_STORE_BUY)]
@@ -241,63 +241,63 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         {
             var guid = new byte[8];
 
-            packet.ReadInt32("Int18");
-            packet.ReadInt32("Int1C");
+            packet.Translator.ReadInt32("Int18");
+            packet.Translator.ReadInt32("Int1C");
 
-            packet.StartBitStream(guid, 7, 2, 0, 6, 3, 5, 1, 4);
-            packet.ParseBitStream(guid, 1, 5, 4, 6, 7, 2, 3, 0);
+            packet.Translator.StartBitStream(guid, 7, 2, 0, 6, 3, 5, 1, 4);
+            packet.Translator.ParseBitStream(guid, 1, 5, 4, 6, 7, 2, 3, 0);
 
-            packet.WriteGuid("Guid", guid);
+            packet.Translator.WriteGuid("Guid", guid);
 
         }
 
         [Parser(Opcode.SMSG_GAME_STORE_BUY_RESULT)]
         public static void HandlGameStoreBuyResult(Packet packet)
         {
-            packet.ReadInt32("Int1C");
-            packet.ReadInt32("Int18");
-            packet.ReadInt64("Int10");
+            packet.Translator.ReadInt32("Int1C");
+            packet.Translator.ReadInt32("Int18");
+            packet.Translator.ReadInt64("Int10");
 
         }
 
         [Parser(Opcode.SMSG_GAME_STORE_AUTH_BUY_FAILED)]
         public static void HandleGameStoreAuthBuyFailed(Packet packet)
         {
-            var bits10 = packet.ReadBits(19);
+            var bits10 = packet.Translator.ReadBits(19);
 
             var bits0 = new uint[bits10];
 
             for (var i = 0; i < bits10; ++i)
-                bits0[i] = packet.ReadBits(8);
+                bits0[i] = packet.Translator.ReadBits(8);
 
             for (var i = 0; i < bits10; ++i)
             {
-                packet.ReadInt32("IntED", i);
-                packet.ReadWoWString("StringED", bits0[i], i);
-                packet.ReadInt64("IntED", i);
-                packet.ReadInt32("IntED", i);
-                packet.ReadInt32("IntED", i);
+                packet.Translator.ReadInt32("IntED", i);
+                packet.Translator.ReadWoWString("StringED", bits0[i], i);
+                packet.Translator.ReadInt64("IntED", i);
+                packet.Translator.ReadInt32("IntED", i);
+                packet.Translator.ReadInt32("IntED", i);
             }
         }
 
         [Parser(Opcode.SMSG_GAME_STORE_INGAME_BUY_FAILED)]
         public static void HandleGameStoreIngameBuyFailed(Packet packet)
         {
-            packet.ReadInt32("Int20");
-            var bits10 = packet.ReadBits(19);
+            packet.Translator.ReadInt32("Int20");
+            var bits10 = packet.Translator.ReadBits(19);
 
             var bits0 = new uint[bits10];
 
             for (var i = 0; i < bits10; ++i)
-                bits0[i] = packet.ReadBits(8);
+                bits0[i] = packet.Translator.ReadBits(8);
 
             for (var i = 0; i < bits10; ++i)
             {
-                packet.ReadWoWString("StringED", bits0[i], i);
-                packet.ReadInt32("IntED", i);
-                packet.ReadInt64("IntED", i);
-                packet.ReadInt32("IntED", i);
-                packet.ReadInt32("IntED", i);
+                packet.Translator.ReadWoWString("StringED", bits0[i], i);
+                packet.Translator.ReadInt32("IntED", i);
+                packet.Translator.ReadInt64("IntED", i);
+                packet.Translator.ReadInt32("IntED", i);
+                packet.Translator.ReadInt32("IntED", i);
             }
         }
     }

@@ -10,27 +10,27 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.SMSG_CONTACT_LIST)]
         public static void HandleContactList(Packet packet)
         {
-            packet.ReadInt32E<ContactListFlag>("List Flags");
-            var count = packet.ReadInt32("Count");
+            packet.Translator.ReadInt32E<ContactListFlag>("List Flags");
+            var count = packet.Translator.ReadInt32("Count");
 
             for (var i = 0; i < count; i++)
             {
-                packet.ReadGuid("GUID");
-                packet.ReadInt32("Realm Id");
-                packet.ReadInt32("Realm Id");
-                var flag = packet.ReadInt32E<ContactEntryFlag>("Flags");
-                packet.ReadCString("Note");
+                packet.Translator.ReadGuid("GUID");
+                packet.Translator.ReadInt32("Realm Id");
+                packet.Translator.ReadInt32("Realm Id");
+                var flag = packet.Translator.ReadInt32E<ContactEntryFlag>("Flags");
+                packet.Translator.ReadCString("Note");
 
                 if (!flag.HasAnyFlag(ContactEntryFlag.Friend))
                     continue;
 
-                var status = packet.ReadByteE<ContactStatus>("Status");
+                var status = packet.Translator.ReadByteE<ContactStatus>("Status");
                 if (status == 0) // required any flag
                     continue;
 
-                packet.ReadInt32<AreaId>("Area");
-                packet.ReadInt32("Level");
-                packet.ReadInt32E<Class>("Class");
+                packet.Translator.ReadInt32<AreaId>("Area");
+                packet.Translator.ReadInt32("Level");
+                packet.Translator.ReadInt32E<Class>("Class");
             }
 
             // still needed?

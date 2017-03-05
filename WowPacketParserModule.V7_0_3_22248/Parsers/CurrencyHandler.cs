@@ -9,33 +9,33 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_SETUP_CURRENCY)]
         public static void HandleSetupCurrency(Packet packet)
         {
-            var count = packet.ReadInt32("SetupCurrencyRecord");
+            var count = packet.Translator.ReadInt32("SetupCurrencyRecord");
 
             // ClientSetupCurrencyRecord
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadUInt32("Type", i);
-                packet.ReadUInt32("Quantity", i);
+                packet.Translator.ReadUInt32("Type", i);
+                packet.Translator.ReadUInt32("Quantity", i);
 
-                packet.ResetBitReader();
+                packet.Translator.ResetBitReader();
 
-                var hasWeeklyQuantity = packet.ReadBit();
-                var hasMaxWeeklyQuantity = packet.ReadBit();
-                var hasTrackedQuantity = packet.ReadBit();
-                var hasMaxQuantity = packet.ReadBit();
-                packet.ReadBits("Flags", 5, i);
+                var hasWeeklyQuantity = packet.Translator.ReadBit();
+                var hasMaxWeeklyQuantity = packet.Translator.ReadBit();
+                var hasTrackedQuantity = packet.Translator.ReadBit();
+                var hasMaxQuantity = packet.Translator.ReadBit();
+                packet.Translator.ReadBits("Flags", 5, i);
 
                 if (hasWeeklyQuantity)
-                    packet.ReadUInt32("WeeklyQuantity", i);
+                    packet.Translator.ReadUInt32("WeeklyQuantity", i);
 
                 if (hasMaxWeeklyQuantity)
-                    packet.ReadUInt32("MaxWeeklyQuantity", i);
+                    packet.Translator.ReadUInt32("MaxWeeklyQuantity", i);
 
                 if (hasTrackedQuantity)
-                    packet.ReadUInt32("TrackedQuantity", i);
+                    packet.Translator.ReadUInt32("TrackedQuantity", i);
 
                 if (hasMaxQuantity)
-                    packet.ReadUInt32("MaxQuantity", i);
+                    packet.Translator.ReadUInt32("MaxQuantity", i);
             }
         }
     }

@@ -9,57 +9,57 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_ACCEPT_TRADE)]
         public static void HandleAcceptTrade(Packet packet)
         {
-            packet.ReadUInt32("StateIndex");
+            packet.Translator.ReadUInt32("StateIndex");
         }
 
         [Parser(Opcode.SMSG_TRADE_UPDATED)]
         public static void HandleTradeUpdated(Packet packet)
         {
-            packet.ReadByte("WhichPlayer");
+            packet.Translator.ReadByte("WhichPlayer");
 
-            packet.ReadInt32("ID");
-            packet.ReadInt32("CurrentStateIndex");
-            packet.ReadInt32("ClientStateIndex");
+            packet.Translator.ReadInt32("ID");
+            packet.Translator.ReadInt32("CurrentStateIndex");
+            packet.Translator.ReadInt32("ClientStateIndex");
 
-            packet.ReadInt64("Gold");
+            packet.Translator.ReadInt64("Gold");
 
             // Order guessed
-            packet.ReadInt32("CurrencyType");
-            packet.ReadInt32("CurrencyQuantity");
-            packet.ReadInt32("ProposedEnchantment");
+            packet.Translator.ReadInt32("CurrencyType");
+            packet.Translator.ReadInt32("CurrencyQuantity");
+            packet.Translator.ReadInt32("ProposedEnchantment");
 
-            var count = packet.ReadInt32("ItemCount");
+            var count = packet.Translator.ReadInt32("ItemCount");
 
             for (int i = 0; i < count; i++)
             {
-                packet.ReadByte("Slot", i);
-                packet.ReadInt32("EntryID", i);
-                packet.ReadInt32("StackCount", i);
+                packet.Translator.ReadByte("Slot", i);
+                packet.Translator.ReadInt32("EntryID", i);
+                packet.Translator.ReadInt32("StackCount", i);
 
-                packet.ReadPackedGuid128("GiftCreator", i);
+                packet.Translator.ReadPackedGuid128("GiftCreator", i);
 
-                packet.ResetBitReader();
+                packet.Translator.ResetBitReader();
 
-                var bit32 = packet.ReadBit("HasUnwrapped", i);
+                var bit32 = packet.Translator.ReadBit("HasUnwrapped", i);
                 if (bit32)
                 {
                     ItemHandler.ReadItemInstance(packet, i);
 
-                    packet.ReadInt32("EnchantID", i);
-                    packet.ReadInt32("OnUseEnchantmentID", i);
+                    packet.Translator.ReadInt32("EnchantID", i);
+                    packet.Translator.ReadInt32("OnUseEnchantmentID", i);
 
                     for (int j = 0; j < 3; j++)
-                        packet.ReadInt32("SocketEnchant", i, j);
+                        packet.Translator.ReadInt32("SocketEnchant", i, j);
 
-                    packet.ReadPackedGuid128("Creator", i);
+                    packet.Translator.ReadPackedGuid128("Creator", i);
 
-                    packet.ReadInt32("MaxDurability", i);
-                    packet.ReadInt32("Durability", i);
-                    packet.ReadInt32("Charges", i);
+                    packet.Translator.ReadInt32("MaxDurability", i);
+                    packet.Translator.ReadInt32("Durability", i);
+                    packet.Translator.ReadInt32("Charges", i);
 
-                    packet.ResetBitReader();
+                    packet.Translator.ResetBitReader();
 
-                    packet.ReadBit("Lock", i);
+                    packet.Translator.ReadBit("Lock", i);
                 }
             }
         }
@@ -67,50 +67,50 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_TRADE_STATUS)]
         public static void HandleTradeStatus(Packet packet)
         {
-            packet.ReadBit("FailureForYou");
+            packet.Translator.ReadBit("FailureForYou");
 
-            var status = packet.ReadBits("Status", 5);
+            var status = packet.Translator.ReadBits("Status", 5);
 
             if (status == 13)
-                packet.ReadBit("PartnerIsSameBnetAccount");
+                packet.Translator.ReadBit("PartnerIsSameBnetAccount");
 
             if (status == 13)
             {
-                packet.ReadInt32("CurrencyType");
-                packet.ReadInt32("CurrencyQuantity");
+                packet.Translator.ReadInt32("CurrencyType");
+                packet.Translator.ReadInt32("CurrencyQuantity");
             }
 
             if (status == 31)
-                packet.ReadInt32("ID");
+                packet.Translator.ReadInt32("ID");
 
             if (status == 4)
             {
-                packet.ReadPackedGuid128("PartnerGuid");
-                packet.ReadPackedGuid128("PartnerWowAccount");
+                packet.Translator.ReadPackedGuid128("PartnerGuid");
+                packet.Translator.ReadPackedGuid128("PartnerWowAccount");
             }
 
             if (status == 1 || status == 0)
-                packet.ReadByte("TradeSlot");
+                packet.Translator.ReadByte("TradeSlot");
 
             if (status == 8 || status == 21)
             {
-                packet.ReadInt32("BagResult");
-                packet.ReadInt32("ItemID");
+                packet.Translator.ReadInt32("BagResult");
+                packet.Translator.ReadInt32("ItemID");
             }
         }
 
         [Parser(Opcode.CMSG_INITIATE_TRADE)]
         public static void HandleInitiateTrade(Packet packet)
         {
-            packet.ReadPackedGuid128("Guid");
+            packet.Translator.ReadPackedGuid128("Guid");
         }
 
         [Parser(Opcode.CMSG_SHOW_TRADE_SKILL)]
         public static void HandleShowTradeSkill(Packet packet)
         {
-            packet.ReadPackedGuid128("PlayerGUID");
-            packet.ReadInt32<SpellId>("SpellID");
-            packet.ReadInt32("SkillLineID");
+            packet.Translator.ReadPackedGuid128("PlayerGUID");
+            packet.Translator.ReadInt32<SpellId>("SpellID");
+            packet.Translator.ReadInt32("SkillLineID");
         }
     }
 }

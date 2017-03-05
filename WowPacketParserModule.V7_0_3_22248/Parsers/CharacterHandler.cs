@@ -10,60 +10,60 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
     {
         public static void ReadCharactersData(Packet packet, params object[] idx)
         {
-            packet.ReadPackedGuid128("Guid", idx);
+            packet.Translator.ReadPackedGuid128("Guid", idx);
 
-            packet.ReadByte("ListPosition", idx);
-            var race = packet.ReadByteE<Race>("RaceID", idx);
-            var klass = packet.ReadByteE<Class>("ClassID", idx);
-            packet.ReadByte("SexID", idx);
-            packet.ReadByte("SkinID", idx);
-            packet.ReadByte("FaceID", idx);
-            packet.ReadByte("HairStyle", idx);
-            packet.ReadByte("HairColor", idx);
-            packet.ReadByte("FacialHairStyle", idx);
+            packet.Translator.ReadByte("ListPosition", idx);
+            var race = packet.Translator.ReadByteE<Race>("RaceID", idx);
+            var klass = packet.Translator.ReadByteE<Class>("ClassID", idx);
+            packet.Translator.ReadByte("SexID", idx);
+            packet.Translator.ReadByte("SkinID", idx);
+            packet.Translator.ReadByte("FaceID", idx);
+            packet.Translator.ReadByte("HairStyle", idx);
+            packet.Translator.ReadByte("HairColor", idx);
+            packet.Translator.ReadByte("FacialHairStyle", idx);
 
             for (uint j = 0; j < 3; ++j)
-                packet.ReadByte("CustomDisplay", idx, j);
+                packet.Translator.ReadByte("CustomDisplay", idx, j);
 
-            packet.ReadByte("ExperienceLevel", idx);
-            var zone = packet.ReadUInt32("ZoneID", idx);
-            var mapId = packet.ReadUInt32("MapID", idx);
+            packet.Translator.ReadByte("ExperienceLevel", idx);
+            var zone = packet.Translator.ReadUInt32("ZoneID", idx);
+            var mapId = packet.Translator.ReadUInt32("MapID", idx);
 
-            var pos = packet.ReadVector3("PreloadPos", idx);
+            var pos = packet.Translator.ReadVector3("PreloadPos", idx);
 
-            packet.ReadPackedGuid128("GuildGUID", idx);
+            packet.Translator.ReadPackedGuid128("GuildGUID", idx);
 
-            packet.ReadUInt32("Flags", idx);
-            packet.ReadUInt32("Flags2", idx);
-            packet.ReadUInt32("Flags3", idx);
-            packet.ReadUInt32("PetCreatureDisplayID", idx);
-            packet.ReadUInt32("PetExperienceLevel", idx);
-            packet.ReadUInt32("PetCreatureFamilyID", idx);
+            packet.Translator.ReadUInt32("Flags", idx);
+            packet.Translator.ReadUInt32("Flags2", idx);
+            packet.Translator.ReadUInt32("Flags3", idx);
+            packet.Translator.ReadUInt32("PetCreatureDisplayID", idx);
+            packet.Translator.ReadUInt32("PetExperienceLevel", idx);
+            packet.Translator.ReadUInt32("PetCreatureFamilyID", idx);
 
             for (uint j = 0; j < 2; ++j)
-                packet.ReadUInt32("ProfessionIDs", idx, j);
+                packet.Translator.ReadUInt32("ProfessionIDs", idx, j);
 
             for (uint j = 0; j < 23; ++j)
             {
-                packet.ReadUInt32("InventoryItem DisplayID", idx, j);
-                packet.ReadUInt32("InventoryItem DisplayEnchantID", idx, j);
-                packet.ReadByteE<InventoryType>("InventoryItem InvType", idx, j);
+                packet.Translator.ReadUInt32("InventoryItem DisplayID", idx, j);
+                packet.Translator.ReadUInt32("InventoryItem DisplayEnchantID", idx, j);
+                packet.Translator.ReadByteE<InventoryType>("InventoryItem InvType", idx, j);
             }
 
-            packet.ReadTime("LastPlayedTime", idx);
+            packet.Translator.ReadTime("LastPlayedTime", idx);
 
-            packet.ReadUInt16("SpecID", idx);
-            packet.ReadUInt32("Unknown703", idx);
-            packet.ReadUInt32("Flags4", idx);
+            packet.Translator.ReadUInt16("SpecID", idx);
+            packet.Translator.ReadUInt32("Unknown703", idx);
+            packet.Translator.ReadUInt32("Flags4", idx);
 
-            packet.ResetBitReader();
+            packet.Translator.ResetBitReader();
 
-            var nameLength = packet.ReadBits("Character Name Length", 6, idx);
-            var firstLogin = packet.ReadBit("FirstLogin", idx);
-            packet.ReadBit("BoostInProgress", idx);
-            packet.ReadBits("UnkWod61x", 5, idx);
+            var nameLength = packet.Translator.ReadBits("Character Name Length", 6, idx);
+            var firstLogin = packet.Translator.ReadBit("FirstLogin", idx);
+            packet.Translator.ReadBit("BoostInProgress", idx);
+            packet.Translator.ReadBits("UnkWod61x", 5, idx);
 
-            packet.ReadWoWString("Character Name", nameLength, idx);
+            packet.Translator.ReadWoWString("Character Name", nameLength, idx);
 
             if (firstLogin)
             {
@@ -75,20 +75,20 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT)]
         public static void HandleEnumCharactersResult(Packet packet)
         {
-            packet.ReadBit("Success");
-            packet.ReadBit("IsDeletedCharacters");
-            packet.ReadBit("IsDemonHunterCreationAllowed");
-            packet.ReadBit("HasDemonHunterOnRealm");
-            packet.ReadBit("HasLevel70OnRealm");
-            packet.ReadBit("Unknown7x");
+            packet.Translator.ReadBit("Success");
+            packet.Translator.ReadBit("IsDeletedCharacters");
+            packet.Translator.ReadBit("IsDemonHunterCreationAllowed");
+            packet.Translator.ReadBit("HasDemonHunterOnRealm");
+            packet.Translator.ReadBit("HasLevel70OnRealm");
+            packet.Translator.ReadBit("Unknown7x");
 
-            var hasDisabledClassesMask = packet.ReadBit("HasDisabledClassesMask");
+            var hasDisabledClassesMask = packet.Translator.ReadBit("HasDisabledClassesMask");
 
-            var charsCount = packet.ReadUInt32("CharactersCount");
-            var restrictionsCount = packet.ReadUInt32("FactionChangeRestrictionsCount");
+            var charsCount = packet.Translator.ReadUInt32("CharactersCount");
+            var restrictionsCount = packet.Translator.ReadUInt32("FactionChangeRestrictionsCount");
 
             if (hasDisabledClassesMask)
-                packet.ReadUInt32("DisabledClassesMask");
+                packet.Translator.ReadUInt32("DisabledClassesMask");
 
             for (var i = 0; i < restrictionsCount; ++i)
                 V6_0_2_19033.Parsers.CharacterHandler.ReadFactionChangeRestrictionsData(packet, i, "FactionChangeRestrictionsData");
@@ -100,82 +100,82 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.CMSG_CREATE_CHARACTER)]
         public static void HandleClientCharCreate(Packet packet)
         {
-            var nameLen = packet.ReadBits(6);
-            var hasTemplateSet = packet.ReadBit();
+            var nameLen = packet.Translator.ReadBits(6);
+            var hasTemplateSet = packet.Translator.ReadBit();
 
-            packet.ReadByteE<Race>("RaceID");
-            packet.ReadByteE<Class>("ClassID");
-            packet.ReadByteE<Gender>("SexID");
-            packet.ReadByte("SkinID");
-            packet.ReadByte("FaceID");
-            packet.ReadByte("HairStyleID");
-            packet.ReadByte("HairColorID");
-            packet.ReadByte("FacialHairStyleID");
-            packet.ReadByte("OutfitID");
+            packet.Translator.ReadByteE<Race>("RaceID");
+            packet.Translator.ReadByteE<Class>("ClassID");
+            packet.Translator.ReadByteE<Gender>("SexID");
+            packet.Translator.ReadByte("SkinID");
+            packet.Translator.ReadByte("FaceID");
+            packet.Translator.ReadByte("HairStyleID");
+            packet.Translator.ReadByte("HairColorID");
+            packet.Translator.ReadByte("FacialHairStyleID");
+            packet.Translator.ReadByte("OutfitID");
 
             for (uint i = 0; i < 3; ++i)
-                packet.ReadByte("CustomDisplay", i);
+                packet.Translator.ReadByte("CustomDisplay", i);
 
-            packet.ReadWoWString("Name", nameLen);
+            packet.Translator.ReadWoWString("Name", nameLen);
 
             if (hasTemplateSet)
-                packet.ReadInt32("TemplateSetID");
+                packet.Translator.ReadInt32("TemplateSetID");
         }
 
         [Parser(Opcode.SMSG_LEVEL_UP_INFO)]
         public static void HandleLevelUpInfo(Packet packet)
         {
-            packet.ReadInt32("Level");
-            packet.ReadInt32("HealthDelta");
+            packet.Translator.ReadInt32("Level");
+            packet.Translator.ReadInt32("HealthDelta");
 
             for (var i = 0; i < 6; i++)
-                packet.ReadInt32("PowerDelta", (PowerType)i);
+                packet.Translator.ReadInt32("PowerDelta", (PowerType)i);
 
             for (var i = 0; i < 4; i++)
-                packet.ReadInt32("StatDelta", (StatType)i);
+                packet.Translator.ReadInt32("StatDelta", (StatType)i);
 
-            packet.ReadInt32("Cp");
+            packet.Translator.ReadInt32("Cp");
         }
 
         [Parser(Opcode.SMSG_HEALTH_UPDATE)]
         public static void HandleHealthUpdate(Packet packet)
         {
-            packet.ReadPackedGuid128("Guid");
-            packet.ReadInt64("Health");
+            packet.Translator.ReadPackedGuid128("Guid");
+            packet.Translator.ReadInt64("Health");
         }
 
         [Parser(Opcode.CMSG_ALTER_APPEARANCE)]
         public static void HandleAlterAppearance(Packet packet)
         {
-            packet.ReadUInt32("NewHairStyle");
-            packet.ReadUInt32("NewHairColor");
-            packet.ReadUInt32("NewFacialHair");
-            packet.ReadUInt32("NewSkinColor");
-            packet.ReadUInt32("NewFace");
+            packet.Translator.ReadUInt32("NewHairStyle");
+            packet.Translator.ReadUInt32("NewHairColor");
+            packet.Translator.ReadUInt32("NewFacialHair");
+            packet.Translator.ReadUInt32("NewSkinColor");
+            packet.Translator.ReadUInt32("NewFace");
 
             for (uint i = 0; i < 3; ++i)
-                packet.ReadUInt32("NewCustomDisplay", i);
+                packet.Translator.ReadUInt32("NewCustomDisplay", i);
         }
 
         public static void ReadPVPBracketData(Packet packet, params object[] idx)
         {
-            packet.ReadInt32("Rating", idx);
-            packet.ReadInt32("Rank", idx);
-            packet.ReadInt32("WeeklyPlayed", idx);
-            packet.ReadInt32("WeeklyWon", idx);
-            packet.ReadInt32("SeasonPlayed", idx);
-            packet.ReadInt32("SeasonWon", idx);
-            packet.ReadInt32("WeeklyBestRating", idx);
-            packet.ReadInt32("Unk710");
-            packet.ReadByte("Bracket", idx);
+            packet.Translator.ReadInt32("Rating", idx);
+            packet.Translator.ReadInt32("Rank", idx);
+            packet.Translator.ReadInt32("WeeklyPlayed", idx);
+            packet.Translator.ReadInt32("WeeklyWon", idx);
+            packet.Translator.ReadInt32("SeasonPlayed", idx);
+            packet.Translator.ReadInt32("SeasonWon", idx);
+            packet.Translator.ReadInt32("WeeklyBestRating", idx);
+            packet.Translator.ReadInt32("Unk710");
+            packet.Translator.ReadByte("Bracket", idx);
         }
 
         [Parser(Opcode.SMSG_INSPECT_PVP)]
         public static void HandleInspectPVP(Packet packet)
         {
-            packet.ReadPackedGuid128("ClientGUID");
+            packet.Translator.ReadPackedGuid128("ClientGUID");
 
-            var bracketCount = packet.ReadBits(3);
+            var bracketCount = packet.Translator.ReadBits(3);
             for (var i = 0; i < bracketCount; i++)
                 ReadPVPBracketData(packet, i, "PVPBracketData");
         }
@@ -183,33 +183,33 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_POWER_UPDATE)]
         public static void HandlePowerUpdate(Packet packet)
         {
-            packet.ReadPackedGuid128("Guid");
+            packet.Translator.ReadPackedGuid128("Guid");
 
-            var int32 = packet.ReadInt32("Count");
+            var int32 = packet.Translator.ReadInt32("Count");
             for (var i = 0; i < int32; i++)
             {
-                packet.ReadInt32("Power", i);
-                packet.ReadByteE<PowerType>("PowerType", i);
+                packet.Translator.ReadInt32("Power", i);
+                packet.Translator.ReadByteE<PowerType>("PowerType", i);
             }
         }
 
         [Parser(Opcode.CMSG_LEARN_PVP_TALENTS)]
         public static void HandleLearnPvPTalents(Packet packet)
         {
-            var talentCount = packet.ReadBits("TalentCount", 6);
+            var talentCount = packet.Translator.ReadBits("TalentCount", 6);
             for (int i = 0; i < talentCount; i++)
-                packet.ReadUInt16("Talents");
+                packet.Translator.ReadUInt16("Talents");
         }
 
         [Parser(Opcode.SMSG_LEARN_PVP_TALENTS_FAILED)]
         public static void HandleLearnPvPTalentsFailed(Packet packet)
         {
-            packet.ReadBits("Reason", 4);
-            packet.ReadUInt32<SpellId>("SpellID");
+            packet.Translator.ReadBits("Reason", 4);
+            packet.Translator.ReadUInt32<SpellId>("SpellID");
 
-            var talentCount = packet.ReadUInt32("TalentCount");
+            var talentCount = packet.Translator.ReadUInt32("TalentCount");
             for (int i = 0; i < talentCount; i++)
-                packet.ReadUInt16("Talents");
+                packet.Translator.ReadUInt16("Talents");
         }
     }
 }

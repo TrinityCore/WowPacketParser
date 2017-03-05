@@ -16,13 +16,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_DB_QUERY_BULK)]
         public static void HandleDbQueryBulk(Packet packet)
         {
-            packet.ReadInt32E<DB2Hash>("DB2 File");
+            packet.Translator.ReadInt32E<DB2Hash>("DB2 File");
 
-            var count = ClientVersion.AddedInVersion(ClientVersionBuild.V6_0_3_19103) ? packet.ReadBits("Count", 13) : packet.ReadUInt32("Count");
+            var count = ClientVersion.AddedInVersion(ClientVersionBuild.V6_0_3_19103) ? packet.Translator.ReadBits("Count", 13) : packet.Translator.ReadUInt32("Count");
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadPackedGuid128("Guid", i);
-                packet.ReadInt32("Entry", i);
+                packet.Translator.ReadPackedGuid128("Guid", i);
+                packet.Translator.ReadInt32("Entry", i);
             }
         }
 
@@ -30,16 +30,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_DB_REPLY)]
         public static void HandleDBReply(Packet packet)
         {
-            var type = packet.ReadUInt32E<DB2Hash>("TableHash");
-            var entry = packet.ReadInt32("RecordID");
+            var type = packet.Translator.ReadUInt32E<DB2Hash>("TableHash");
+            var entry = packet.Translator.ReadInt32("RecordID");
             var allow = true;
-            var timeStamp = packet.ReadUInt32();
+            var timeStamp = packet.Translator.ReadUInt32();
             packet.AddValue("Timestamp", Utilities.GetDateTimeFromUnixTime(timeStamp));
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
-                allow = packet.ReadBit("Allow");
+                allow = packet.Translator.ReadBit("Allow");
 
-            var size = packet.ReadInt32("Size");
-            var data = packet.ReadBytes(size);
+            var size = packet.Translator.ReadInt32("Size");
+            var data = packet.Translator.ReadBytes(size);
             var db2File = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Formatter, packet.FileName);
             if (entry < 0 || !allow)
             {
@@ -59,13 +59,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_HOTFIX_NOTIFY_BLOB)]
         public static void HandleHotfixNotifyBlob(Packet packet)
         {
-            var count = packet.ReadUInt32("HotfixCount");
+            var count = packet.Translator.ReadUInt32("HotfixCount");
 
             for (var i = 0; i < count; ++i)
             {
-                var tableHash = packet.ReadUInt32E<DB2Hash>("TableHash", i);
-                var recordID = packet.ReadInt32("RecordID", i);
-                var timeStamp = packet.ReadUInt32();
+                var tableHash = packet.Translator.ReadUInt32E<DB2Hash>("TableHash", i);
+                var recordID = packet.Translator.ReadInt32("RecordID", i);
+                var timeStamp = packet.Translator.ReadUInt32();
                 packet.AddValue("Timestamp", Utilities.GetDateTimeFromUnixTime(timeStamp), i);
                 Storage.AddHotfixData(recordID, tableHash, false, timeStamp);
             }
@@ -74,9 +74,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_HOTFIX_NOTIFY)]
         public static void HandleHotfixNotify(Packet packet)
         {
-            var tableHash = packet.ReadUInt32E<DB2Hash>("TableHash");
-            var recordID = packet.ReadInt32("RecordID");
-            var timeStamp = packet.ReadUInt32();
+            var tableHash = packet.Translator.ReadUInt32E<DB2Hash>("TableHash");
+            var recordID = packet.Translator.ReadInt32("RecordID");
+            var timeStamp = packet.Translator.ReadUInt32();
             packet.AddValue("Timestamp", Utilities.GetDateTimeFromUnixTime(timeStamp));
 
             Storage.AddHotfixData(recordID, tableHash, false, timeStamp);

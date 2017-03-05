@@ -8,39 +8,39 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
     {
         public static void ReadLootItem(Packet packet, params object[] indexes)
         {
-            packet.ResetBitReader();
+            packet.Translator.ResetBitReader();
 
-            packet.ReadBits("ItemType", 2, indexes);
-            packet.ReadBits("ItemUiType", 3, indexes);
-            packet.ReadBit("CanTradeToTapList", indexes);
+            packet.Translator.ReadBits("ItemType", 2, indexes);
+            packet.Translator.ReadBits("ItemUiType", 3, indexes);
+            packet.Translator.ReadBit("CanTradeToTapList", indexes);
 
             V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, indexes, "ItemInstance");
 
-            packet.ReadUInt32("Quantity", indexes);
-            packet.ReadByte("LootItemType", indexes);
-            packet.ReadByte("LootListID", indexes);
+            packet.Translator.ReadUInt32("Quantity", indexes);
+            packet.Translator.ReadByte("LootItemType", indexes);
+            packet.Translator.ReadByte("LootListID", indexes);
         }
 
         [Parser(Opcode.SMSG_LOOT_RESPONSE)]
         public static void HandleLootResponse(Packet packet)
         {
-            packet.ReadPackedGuid128("Owner");
-            packet.ReadPackedGuid128("LootObj");
-            packet.ReadByteE<LootError>("FailureReason");
-            packet.ReadByteE<LootType>("AcquireReason");
-            packet.ReadByteE<LootMethod>("LootMethod");
-            packet.ReadByteE<ItemQuality>("Threshold");
+            packet.Translator.ReadPackedGuid128("Owner");
+            packet.Translator.ReadPackedGuid128("LootObj");
+            packet.Translator.ReadByteE<LootError>("FailureReason");
+            packet.Translator.ReadByteE<LootType>("AcquireReason");
+            packet.Translator.ReadByteE<LootMethod>("LootMethod");
+            packet.Translator.ReadByteE<ItemQuality>("Threshold");
 
-            packet.ReadUInt32("Coins");
+            packet.Translator.ReadUInt32("Coins");
 
-            var itemCount = packet.ReadUInt32("ItemCount");
-            var currencyCount = packet.ReadUInt32("CurrencyCount");
+            var itemCount = packet.Translator.ReadUInt32("ItemCount");
+            var currencyCount = packet.Translator.ReadUInt32("CurrencyCount");
 
-            packet.ResetBitReader();
+            packet.Translator.ResetBitReader();
 
-            packet.ReadBit("Acquired");
-            packet.ReadBit("AELooting");
-            packet.ReadBit("PersonalLooting");
+            packet.Translator.ReadBit("Acquired");
+            packet.Translator.ReadBit("AELooting");
+            packet.Translator.ReadBit("PersonalLooting");
 
             for (var i = 0; i < itemCount; ++i)
                 ReadLootItem(packet, i, "LootItem");
@@ -52,40 +52,40 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_START_LOOT_ROLL)]
         public static void HandleLootStartRoll(Packet packet)
         {
-            packet.ReadPackedGuid128("LootObj");
-            packet.ReadInt32<MapId>("MapID");
-            packet.ReadUInt32("RollTime");
-            packet.ReadByte("ValidRolls");
-            packet.ReadByteE<LootMethod>("Method");
+            packet.Translator.ReadPackedGuid128("LootObj");
+            packet.Translator.ReadInt32<MapId>("MapID");
+            packet.Translator.ReadUInt32("RollTime");
+            packet.Translator.ReadByte("ValidRolls");
+            packet.Translator.ReadByteE<LootMethod>("Method");
             ReadLootItem(packet, "LootItem");
         }
 
         [Parser(Opcode.SMSG_LOOT_ROLL)]
         public static void HandleLootRollServer(Packet packet)
         {
-            packet.ReadPackedGuid128("LootObj");
-            packet.ReadPackedGuid128("Player");
-            packet.ReadInt32("Roll");
-            packet.ReadByte("RollType");
+            packet.Translator.ReadPackedGuid128("LootObj");
+            packet.Translator.ReadPackedGuid128("Player");
+            packet.Translator.ReadInt32("Roll");
+            packet.Translator.ReadByte("RollType");
             ReadLootItem(packet, "LootItem");
-            packet.ReadBit("Autopassed");
+            packet.Translator.ReadBit("Autopassed");
         }
 
         [Parser(Opcode.SMSG_LOOT_ROLL_WON)]
         public static void HandleLootRollWon(Packet packet)
         {
-            packet.ReadPackedGuid128("LootObj");
-            packet.ReadPackedGuid128("Player");
-            packet.ReadInt32("Roll");
-            packet.ReadByte("RollType");
+            packet.Translator.ReadPackedGuid128("LootObj");
+            packet.Translator.ReadPackedGuid128("Player");
+            packet.Translator.ReadInt32("Roll");
+            packet.Translator.ReadByte("RollType");
             ReadLootItem(packet, "LootItem");
-            packet.ReadBit("MainSpec");
+            packet.Translator.ReadBit("MainSpec");
         }
 
         [Parser(Opcode.SMSG_LOOT_ALL_PASSED)]
         public static void HandleLootAllPassed(Packet packet)
         {
-            packet.ReadPackedGuid128("LootObj");
+            packet.Translator.ReadPackedGuid128("LootObj");
             ReadLootItem(packet, "LootItem");
         }
     }

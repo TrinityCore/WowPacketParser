@@ -8,8 +8,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
     {
         public static void ReadPetFlags(Packet packet, params object[] idx)
         {
-            var petModeFlag = packet.ReadUInt16();
-            var reactState = packet.ReadByte();
+            var petModeFlag = packet.Translator.ReadUInt16();
+            var reactState = packet.Translator.ReadByte();
             var flag = petModeFlag >> 16;
             var commandState = (petModeFlag & flag);
 
@@ -20,28 +20,28 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
         public static void ReadPetSpellCooldownData(Packet packet, params object[] idx)
         {
-            packet.ReadInt32("SpellID", idx);
-            packet.ReadInt32("Duration", idx);
-            packet.ReadInt32("CategoryDuration", idx);
-            packet.ReadSingle("ModRate", idx);
-            packet.ReadInt16("Category", idx);
+            packet.Translator.ReadInt32("SpellID", idx);
+            packet.Translator.ReadInt32("Duration", idx);
+            packet.Translator.ReadInt32("CategoryDuration", idx);
+            packet.Translator.ReadSingle("ModRate", idx);
+            packet.Translator.ReadInt16("Category", idx);
         }
 
         public static void ReadPetSpellHistoryData(Packet packet, params object[] idx)
         {
-            packet.ReadInt32("CategoryID", idx);
-            packet.ReadInt32("RecoveryTime", idx);
-            packet.ReadSingle("ChargeModRate", idx);
-            packet.ReadSByte("ConsumedCharges", idx);
+            packet.Translator.ReadInt32("CategoryID", idx);
+            packet.Translator.ReadInt32("RecoveryTime", idx);
+            packet.Translator.ReadSingle("ChargeModRate", idx);
+            packet.Translator.ReadSByte("ConsumedCharges", idx);
         }
 
         [Parser(Opcode.SMSG_PET_SPELLS_MESSAGE)]
         public static void HandlePetSpells(Packet packet)
         {
-            packet.ReadPackedGuid128("PetGUID");
-            packet.ReadInt16("CreatureFamily");
-            packet.ReadInt16("Specialization");
-            packet.ReadInt32("TimeLimit");
+            packet.Translator.ReadPackedGuid128("PetGUID");
+            packet.Translator.ReadInt16("CreatureFamily");
+            packet.Translator.ReadInt16("Specialization");
+            packet.Translator.ReadInt32("TimeLimit");
 
             ReadPetFlags(packet, "PetModeAndOrders");
 
@@ -49,9 +49,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (var i = 0; i < maxCreatureSpells; i++) // Read pet / vehicle spell ids
                 V6_0_2_19033.Parsers.PetHandler.ReadPetAction(packet, "ActionButtons", i);
 
-            var actionsCount = packet.ReadInt32("ActionsCount");
-            var cooldownsCount = packet.ReadUInt32("CooldownsCount");
-            var spellHistoryCount = packet.ReadUInt32("SpellHistoryCount");
+            var actionsCount = packet.Translator.ReadInt32("ActionsCount");
+            var cooldownsCount = packet.Translator.ReadUInt32("CooldownsCount");
+            var spellHistoryCount = packet.Translator.ReadUInt32("SpellHistoryCount");
 
             for (int i = 0; i < actionsCount; i++)
                 V6_0_2_19033.Parsers.PetHandler.ReadPetAction(packet, i, "Actions");
@@ -77,7 +77,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_PET_MODE)]
         public static void HandlePetMode(Packet packet)
         {
-            packet.ReadPackedGuid128("PetGUID");
+            packet.Translator.ReadPackedGuid128("PetGUID");
             ReadPetFlags(packet, "PetMode");
         }
     }

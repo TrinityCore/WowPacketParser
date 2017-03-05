@@ -19,6 +19,9 @@ namespace WowPacketParser.Misc
 
         private static DateTime _firstPacketTime;
 
+        //private static PacketPresenter _presenter;
+        public PacketTranslator Translator;
+
         [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "MemoryStream is disposed in ClosePacket().")]
         public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, IPacketFormatter formatter, string fileName)
             : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
@@ -27,10 +30,12 @@ namespace WowPacketParser.Misc
             Time = time;
             Direction = direction;
             Number = number;
-            Formatter = formatter;
             FileName = fileName;
-            Status = ParsedStatus.None;
             WriteToFile = true;
+            Status = ParsedStatus.None;
+
+            Formatter = formatter;
+            Translator = new PacketTranslator(input, Length, WriteToFile, formatter, this);
 
             if (number == 0)
                 _firstPacketTime = Time;
@@ -40,24 +45,18 @@ namespace WowPacketParser.Misc
 
         [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "MemoryStream is disposed in ClosePacket().")]
         public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, string fileName)
-            : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
+            : this(input, opcode, time, direction, number, formatterSelector(), fileName)
         {
-            Opcode = opcode;
-            Time = time;
-            Direction = direction;
-            Number = number;
-            FileName = fileName;
-            Status = ParsedStatus.None;
-            WriteToFile = true;
-            if(Settings.DumpTextFormat == TextFormatType.Xml)
-                Formatter = new XMLPacketFormatter();
+        }
+
+        private static IPacketFormatter formatterSelector()
+        {
+            IPacketFormatter formatter;
+            if (Settings.DumpTextFormat == TextFormatType.Xml)
+                formatter = new XMLPacketFormatter();
             else
-                Formatter = new TextPacketFormatter();
-
-            if (number == 0)
-                _firstPacketTime = Time;
-
-            TimeSpan = Time - _firstPacketTime;
+                formatter = new TextPacketFormatter();
+            return formatter;
         }
 
         public int Opcode { get; set; } // setter can't be private because it's used in multiple_packets
@@ -65,12 +64,12 @@ namespace WowPacketParser.Misc
         public TimeSpan TimeSpan { get; }
         public Direction Direction { get; }
         public int Number { get; }
-        public IPacketFormatter Formatter { get; private set; }
         public string FileName { get; }
         public ParsedStatus Status { get; set; }
-        public bool WriteToFile { get; private set; }
         public int ConnectionIndex { get; set; }
         public IPEndPoint EndPoint { get; set; }
+
+        public IPacketFormatter Formatter { get; private set; }
 
         public void AddSniffData(StoreNameType type, int id, string data)
         {
@@ -228,6 +227,12 @@ namespace WowPacketParser.Misc
             return buffer;
         }
 
+        public byte[] ReadToEnd()
+        {
+            var length = (int)(Length - Position);
+            return Translator.ReadBytes(length);
+        }
+
         public string GetHeader(bool isMultiple = false)
         {
             // ReSharper disable once UseStringInterpolation
@@ -245,6 +250,8 @@ namespace WowPacketParser.Misc
         }
 
         public long Length => BaseStream.Length;
+
+        public bool WriteToFile { get; private set; }
 
         public bool CanRead()
         {
@@ -269,10 +276,10 @@ namespace WowPacketParser.Misc
         {
             if (Settings.DumpTextFormat == TextFormatType.Xml)
             {
-                Formatter.AppendItemWithContent(name, obj.ToString(), "id", GetIndexString(indexes));
+                Formatter.AppendItemWithContent(name, obj.ToString(), "id", Translator.GetIndexString(indexes));
             }
             else
-                Formatter.AppendItem("{0}{1}: {2}", GetIndexString(indexes), name, obj);
+                Formatter.AppendItem("{0}{1}: {2}", Translator.GetIndexString(indexes), name, obj);
             return obj;
         }
     }

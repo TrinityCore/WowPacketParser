@@ -12,43 +12,43 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             var itemGUID = new byte[8];
             var playerGUID = new byte[8];
 
-            itemGUID[4] = packet.ReadBit();
-            itemGUID[0] = packet.ReadBit();
-            playerGUID[3] = packet.ReadBit();
-            itemGUID[3] = packet.ReadBit();
-            playerGUID[2] = packet.ReadBit();
-            playerGUID[6] = packet.ReadBit();
-            playerGUID[7] = packet.ReadBit();
-            itemGUID[1] = packet.ReadBit();
-            playerGUID[4] = packet.ReadBit();
-            itemGUID[6] = packet.ReadBit();
-            itemGUID[5] = packet.ReadBit();
-            playerGUID[0] = packet.ReadBit();
-            itemGUID[2] = packet.ReadBit();
-            playerGUID[5] = packet.ReadBit();
-            playerGUID[1] = packet.ReadBit();
-            itemGUID[7] = packet.ReadBit();
-            packet.ReadInt32("Slot");
-            packet.ReadXORByte(playerGUID, 4);
-            packet.ReadXORByte(playerGUID, 2);
-            packet.ReadXORByte(itemGUID, 5);
-            packet.ReadXORByte(itemGUID, 4);
-            packet.ReadXORByte(playerGUID, 6);
-            packet.ReadXORByte(itemGUID, 1);
-            packet.ReadXORByte(playerGUID, 0);
-            packet.ReadXORByte(playerGUID, 1);
-            packet.ReadXORByte(itemGUID, 6);
-            packet.ReadXORByte(itemGUID, 2);
-            packet.ReadXORByte(playerGUID, 7);
-            packet.ReadXORByte(itemGUID, 0);
-            packet.ReadXORByte(itemGUID, 3);
-            packet.ReadXORByte(itemGUID, 7);
-            packet.ReadXORByte(playerGUID, 3);
-            packet.ReadXORByte(playerGUID, 5);
-            packet.ReadInt32("Duration");
+            itemGUID[4] = packet.Translator.ReadBit();
+            itemGUID[0] = packet.Translator.ReadBit();
+            playerGUID[3] = packet.Translator.ReadBit();
+            itemGUID[3] = packet.Translator.ReadBit();
+            playerGUID[2] = packet.Translator.ReadBit();
+            playerGUID[6] = packet.Translator.ReadBit();
+            playerGUID[7] = packet.Translator.ReadBit();
+            itemGUID[1] = packet.Translator.ReadBit();
+            playerGUID[4] = packet.Translator.ReadBit();
+            itemGUID[6] = packet.Translator.ReadBit();
+            itemGUID[5] = packet.Translator.ReadBit();
+            playerGUID[0] = packet.Translator.ReadBit();
+            itemGUID[2] = packet.Translator.ReadBit();
+            playerGUID[5] = packet.Translator.ReadBit();
+            playerGUID[1] = packet.Translator.ReadBit();
+            itemGUID[7] = packet.Translator.ReadBit();
+            packet.Translator.ReadInt32("Slot");
+            packet.Translator.ReadXORByte(playerGUID, 4);
+            packet.Translator.ReadXORByte(playerGUID, 2);
+            packet.Translator.ReadXORByte(itemGUID, 5);
+            packet.Translator.ReadXORByte(itemGUID, 4);
+            packet.Translator.ReadXORByte(playerGUID, 6);
+            packet.Translator.ReadXORByte(itemGUID, 1);
+            packet.Translator.ReadXORByte(playerGUID, 0);
+            packet.Translator.ReadXORByte(playerGUID, 1);
+            packet.Translator.ReadXORByte(itemGUID, 6);
+            packet.Translator.ReadXORByte(itemGUID, 2);
+            packet.Translator.ReadXORByte(playerGUID, 7);
+            packet.Translator.ReadXORByte(itemGUID, 0);
+            packet.Translator.ReadXORByte(itemGUID, 3);
+            packet.Translator.ReadXORByte(itemGUID, 7);
+            packet.Translator.ReadXORByte(playerGUID, 3);
+            packet.Translator.ReadXORByte(playerGUID, 5);
+            packet.Translator.ReadInt32("Duration");
 
-            packet.WriteGuid("Player GUID", playerGUID);
-            packet.WriteGuid("Item GUID", itemGUID);
+            packet.Translator.WriteGuid("Player GUID", playerGUID);
+            packet.Translator.WriteGuid("Item GUID", itemGUID);
         }
 
         [Parser(Opcode.CMSG_GET_ITEM_PURCHASE_DATA)]
@@ -56,10 +56,10 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         {
             var guid = new byte[8];
 
-            packet.StartBitStream(guid, 1, 0, 3, 2, 7, 4, 5, 6);
-            packet.ParseBitStream(guid, 3, 7, 5, 1, 0, 6, 4, 2);
+            packet.Translator.StartBitStream(guid, 1, 0, 3, 2, 7, 4, 5, 6);
+            packet.Translator.ParseBitStream(guid, 3, 7, 5, 1, 0, 6, 4, 2);
 
-            packet.WriteGuid("Guid", guid);
+            packet.Translator.WriteGuid("Guid", guid);
         }
     }
 }

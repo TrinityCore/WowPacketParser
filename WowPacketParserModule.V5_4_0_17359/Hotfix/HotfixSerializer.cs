@@ -84,7 +84,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Hotfix
                             {
                                 var conditionLabel = deserializationEmitter.DefineLabel();
 
-                                // if (packet.ReadInt16() > 0)
+                                // if (packet.Translator.ReadInt16() > 0)
                                 deserializationEmitter.LoadArgument(0); // Packet
                                 deserializationEmitter.CallVirtual(typeof(Packet).GetMethod("ReadInt16", Type.EmptyTypes));
                                 deserializationEmitter.LoadConstant(0);

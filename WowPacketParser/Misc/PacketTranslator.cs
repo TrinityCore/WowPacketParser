@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
@@ -9,13 +10,28 @@ using WowPacketParser.Enums;
 
 namespace WowPacketParser.Misc
 {
-    public sealed partial class Packet
+    public sealed class PacketTranslator : BinaryReader
     {
+        /** to correct errors **/
+        private bool _writeToFile;
+        private IPacketFormatter _formatter;
+        private long _length;
+        private Packet _caller;
+        
+        public PacketTranslator(byte[] input, long length, bool writeToFile, IPacketFormatter formatter, Packet packet) : 
+            base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
+        {
+            _writeToFile = writeToFile;
+            _formatter = formatter;
+            _length = length;
+            _caller = packet;
+        }
+
         public WowGuid ReadGuid()
         {
             var guid = new WowGuid64(ReadUInt64());
-            if (WriteToFile)
-                WriteToFile = Filters.CheckFilter(guid);
+            if (_writeToFile)
+                _writeToFile = Filters.CheckFilter(guid);
             return guid;
         }
 
@@ -23,8 +39,8 @@ namespace WowPacketParser.Misc
         {
             var guid = new WowGuid64(ReadPackedUInt64());
 
-            if (!guid.IsEmpty() && WriteToFile)
-                WriteToFile = Filters.CheckFilter(guid);
+            if (!guid.IsEmpty() && _writeToFile)
+                _writeToFile = Filters.CheckFilter(guid);
 
             return guid;
         }
@@ -35,8 +51,8 @@ namespace WowPacketParser.Misc
             var guidHighMask = ReadByte();
 
             var guid = new WowGuid128(ReadPackedUInt64(guidLowMask), ReadPackedUInt64(guidHighMask));
-            if (WriteToFile)
-                WriteToFile = Filters.CheckFilter(guid);
+            if (_writeToFile)
+                _writeToFile = Filters.CheckFilter(guid);
 
             return guid;
         }
@@ -77,7 +93,7 @@ namespace WowPacketParser.Misc
 
         public DateTime ReadMillisecondTime()
         {
-            return Utilities.GetDateTimeFromUnixTime((double)ReadInt32()/1000);
+            return Utilities.GetDateTimeFromUnixTime((double)ReadInt32() / 1000);
         }
 
         public DateTime ReadPackedTime()
@@ -98,9 +114,9 @@ namespace WowPacketParser.Misc
         public Vector3 ReadPackedVector3()
         {
             int packed = ReadInt32();
-            float x = ((packed & 0x7FF) << 21 >> 21)*0.25f;
-            float y = ((((packed >> 11) & 0x7FF) << 21) >> 21)*0.25f;
-            float z = ((packed >> 22 << 22) >> 22)*0.25f;
+            float x = ((packed & 0x7FF) << 21 >> 21) * 0.25f;
+            float y = ((((packed >> 11) & 0x7FF) << 21) >> 21) * 0.25f;
+            float z = ((packed >> 22 << 22) >> 22) * 0.25f;
             return new Vector3(x, y, z);
         }
 
@@ -112,13 +128,13 @@ namespace WowPacketParser.Misc
         public Quaternion ReadPackedQuaternion()
         {
             long packed = ReadInt64();
-            float x = (packed >> 42)*(1.0f/2097152.0f);
-            float y = (((packed << 22) >> 32) >> 11)*(1.0f/1048576.0f);
-            float z = (packed << 43 >> 43)*(1.0f/1048576.0f);
+            float x = (packed >> 42) * (1.0f / 2097152.0f);
+            float y = (((packed << 22) >> 32) >> 11) * (1.0f / 1048576.0f);
+            float z = (packed << 43 >> 43) * (1.0f / 1048576.0f);
 
-            float w = x*x + y*y + z*z;
-            if (Math.Abs(w - 1.0f) >= (1/1048576.0f))
-                w = (float) Math.Sqrt(1.0f - w);
+            float w = x * x + y * y + z * z;
+            if (Math.Abs(w - 1.0f) >= (1 / 1048576.0f))
+                w = (float)Math.Sqrt(1.0f - w);
             else
                 w = 0.0f;
 
@@ -138,7 +154,7 @@ namespace WowPacketParser.Misc
             var bytes = new List<byte>();
 
             byte b;
-            while (CanRead() && (b = ReadByte()) != 0)  // CDataStore::GetCString calls CanRead too
+            while (_caller.CanRead() && (b = ReadByte()) != 0)  // CDataStore::GetCString calls CanRead too
                 bytes.Add(b);
 
             return encoding.GetString(bytes.ToArray());
@@ -168,7 +184,7 @@ namespace WowPacketParser.Misc
             else
                 val32 = Convert.ToInt32(val);
             AddValue(name, FormatInteger(val32, StoreGetters.GetName(type, val32, false)), indexes);
-            return (T) Convert.ChangeType(val, typeof (T));
+            return (T)Convert.ChangeType(val, typeof(T));
         }
 
         public LfgEntry ReadLfgEntry()
@@ -193,17 +209,11 @@ namespace WowPacketParser.Misc
         public T ReadStruct<T>()
             where T : struct
         {
-            byte[] rawData = ReadBytes(Marshal.SizeOf(typeof (T)));
+            byte[] rawData = ReadBytes(Marshal.SizeOf(typeof(T)));
             GCHandle handle = GCHandle.Alloc(rawData, GCHandleType.Pinned);
-            var returnObject = (T) Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof (T));
+            var returnObject = (T)Marshal.PtrToStructure(handle.AddrOfPinnedObject(), typeof(T));
             handle.Free();
             return returnObject;
-        }
-
-        public byte[] ReadToEnd()
-        {
-            var length = (int) (Length - Position);
-            return ReadBytes(length);
         }
 
         private TEnum ReadEnum<TEnum, T>(string name, params object[] indexes) where TEnum : struct, IConvertible
@@ -439,9 +449,10 @@ namespace WowPacketParser.Misc
             return val;
         }
 
+
         private long ReadValue<T>() where T : struct
         {
-            var code = Type.GetTypeCode(typeof (T));
+            var code = Type.GetTypeCode(typeof(T));
             return ReadValue(code);
         }
 
@@ -472,7 +483,7 @@ namespace WowPacketParser.Misc
                     rawValue = ReadInt64();
                     break;
                 case TypeCode.UInt64:
-                    rawValue = (long) ReadUInt64();
+                    rawValue = (long)ReadUInt64();
                     break;
             }
             return rawValue;
@@ -481,15 +492,15 @@ namespace WowPacketParser.Misc
         private TEnum ReadEnum<TEnum, T>() where TEnum : struct, IConvertible where T : struct
         {
             var rawValue = Convert.ToInt64(ReadValue<T>());
-            var value = Enum.ToObject(typeof (TEnum), rawValue);
+            var value = Enum.ToObject(typeof(TEnum), rawValue);
 
             if (rawValue > 0)
                 Logger.CheckForMissingValues<TEnum>(rawValue);
 
-            return (TEnum) value;
+            return (TEnum)value;
         }
 
-#region BitStream
+        #region BitStream
 
         private byte _bitpos = 8;
         private byte _curbitval;
@@ -540,7 +551,7 @@ namespace WowPacketParser.Misc
             var type = typeof(TEnum);
             long rawVal = ReadBits(bits);
             var value = Enum.ToObject(type, rawVal);
-            return (TEnum) value;
+            return (TEnum)value;
         }
 
         public TEnum ReadBitsE<TEnum>(string name, int bits, params object[] indexes) where TEnum : struct, IConvertible
@@ -554,7 +565,7 @@ namespace WowPacketParser.Misc
         private uint ReadEntry(StoreNameType type, string name, int bits, params object[] indexes)
         {
             var val = ReadBits(bits);
-            AddValue(name, FormatInteger(val, StoreGetters.GetName(type, (int) val, false)), indexes);
+            AddValue(name, FormatInteger(val, StoreGetters.GetName(type, (int)val, false)), indexes);
             return val;
         }
 
@@ -615,7 +626,9 @@ namespace WowPacketParser.Misc
                     stream[value] ^= ReadByte();
         }
 
-#endregion
+        #endregion
+
+
 
         private static string FormatInteger(IFormattable value)
         {
@@ -649,7 +662,7 @@ namespace WowPacketParser.Misc
             return name + " (" + value + ")";
         }
 
-        private static string GetIndexString(params object[] values)
+        public string GetIndexString(params object[] values)
         {
             var list = values.Flatten();
 
@@ -660,5 +673,17 @@ namespace WowPacketParser.Misc
                     return current + (s[0] + value.ToString() + s[1] + ' ');
                 });
         }
+
+        private T AddValue<T>(string name, T obj, params object[] indexes)
+        {
+            if (Settings.DumpTextFormat == TextFormatType.Xml)
+            {
+                //Formatter.AppendItemWithContent(name, obj.ToString(), "id", GetIndexString(indexes));
+            }
+            //else
+            //Formatter.AppendItem("{0}{1}: {2}", GetIndexString(indexes), name, obj);
+            return obj;
+        }
+
     }
 }

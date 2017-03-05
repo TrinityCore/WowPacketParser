@@ -9,19 +9,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_RECRUIT_A_FRIEND)]
         public static void HandleRecruitAFriend(Packet packet)
         {
-            var bits16 = packet.ReadBits(7);
-            var bits273 = packet.ReadBits(9);
-            var bits338 = packet.ReadBits(10);
+            var bits16 = packet.Translator.ReadBits(7);
+            var bits273 = packet.Translator.ReadBits(9);
+            var bits338 = packet.Translator.ReadBits(10);
 
-            packet.ReadWoWString("Name", bits16);
-            packet.ReadWoWString("Email", bits273);
-            packet.ReadWoWString("Text", bits338);
+            packet.Translator.ReadWoWString("Name", bits16);
+            packet.Translator.ReadWoWString("Email", bits273);
+            packet.Translator.ReadWoWString("Text", bits338);
         }
 
         [Parser(Opcode.SMSG_RECRUIT_A_FRIEND_RESPONSE)]
         public static void HandleRecruitAFriendResponse(Packet packet)
         {
-            packet.ReadBits("Result", 3)
+            packet.Translator.ReadBits("Result", 3)
                 ;
         }
     }

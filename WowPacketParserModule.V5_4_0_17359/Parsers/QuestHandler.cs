@@ -13,10 +13,10 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.CMSG_QUEST_POI_QUERY)]
         public static void HandleQuestPoiQuery(Packet packet)
         {
-            var count = packet.ReadUInt32("Count");
+            var count = packet.Translator.ReadUInt32("Count");
 
             for (var i = 0; i < count; i++) // for (var i = 0; i < 50; i++)
-                packet.ReadInt32<QuestId>("Quest ID", i);
+                packet.Translator.ReadInt32<QuestId>("Quest ID", i);
 
             packet.ReadToEnd(); // Hack
         }
@@ -24,49 +24,49 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.CMSG_QUERY_QUEST_COMPLETION_NPCS)]
         public static void HandleQuestNpcQuery(Packet packet)
         {
-            var count = packet.ReadBits("Count", 22);
-            packet.ResetBitReader();
+            var count = packet.Translator.ReadBits("Count", 22);
+            packet.Translator.ResetBitReader();
 
             for (var i = 0; i < count; i++)
-                packet.ReadInt32<QuestId>("Quest ID", i);
+                packet.Translator.ReadInt32<QuestId>("Quest ID", i);
         }
 
         [Parser(Opcode.SMSG_QUEST_COMPLETION_NPC_RESPONSE)]
         public static void HandleUnknown6462(Packet packet)
         {
-            var bits10 = (int)packet.ReadBits(21);
+            var bits10 = (int)packet.Translator.ReadBits(21);
 
             var bits4 = new uint[bits10];
 
             for (var i = 0; i < bits10; ++i)
-                bits4[i] = packet.ReadBits(22);
+                bits4[i] = packet.Translator.ReadBits(22);
 
             for (var i = 0; i < bits10; ++i)
             {
                 for (var j = 0; j < bits4[i]; ++j)
-                    packet.ReadInt32("Creature", i, j);
+                    packet.Translator.ReadInt32("Creature", i, j);
 
-                packet.ReadInt32("Quest Id", i);
+                packet.Translator.ReadInt32("Quest Id", i);
             }
         }
 
         [Parser(Opcode.SMSG_QUEST_POI_QUERY_RESPONSE)]
         public static void HandleQuestPoiQueryResponse(Packet packet)
         {
-            packet.ReadInt32("Count?");
+            packet.Translator.ReadInt32("Count?");
 
-            uint count = packet.ReadBits("Count", 20);
+            uint count = packet.Translator.ReadBits("Count", 20);
 
             var poiCounter = new uint[count];
             var pointsSize = new uint[count][];
 
             for (int i = 0; i < count; ++i)
             {
-                poiCounter[i] = packet.ReadBits("POI Counter", 18, i);
+                poiCounter[i] = packet.Translator.ReadBits("POI Counter", 18, i);
                 pointsSize[i] = new uint[poiCounter[i]];
 
                 for (int j = 0; j < poiCounter[i]; ++j)
-                    pointsSize[i][j] = packet.ReadBits("Points Counter", 21, i, j);
+                    pointsSize[i][j] = packet.Translator.ReadBits("Points Counter", 21, i, j);
             }
 
             for (int i = 0; i < count; ++i)
@@ -78,11 +78,11 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 {
                     QuestPOI questPoi = new QuestPOI();
 
-                    packet.ReadInt32("Unk Int32 1", i, j);
-                    packet.ReadInt32("Unk Int32 2", i, j);
-                    packet.ReadInt32("Unk Int32 3", i, j);
-                    questPoi.Floor = (int)packet.ReadUInt32("Floor Id", i, j);
-                    questPoi.WorldMapAreaId = (int)packet.ReadUInt32("World Map Area ID", i, j);
+                    packet.Translator.ReadInt32("Unk Int32 1", i, j);
+                    packet.Translator.ReadInt32("Unk Int32 2", i, j);
+                    packet.Translator.ReadInt32("Unk Int32 3", i, j);
+                    questPoi.Floor = (int)packet.Translator.ReadUInt32("Floor Id", i, j);
+                    questPoi.WorldMapAreaId = (int)packet.Translator.ReadUInt32("World Map Area ID", i, j);
 
                     var questPoiPoints = new List<QuestPOIPoint>();
                     for (int k = 0; k < pointsSize[i][j]; ++k)
@@ -90,19 +90,19 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                         QuestPOIPoint questPoiPoint = new QuestPOIPoint
                         {
                             Idx2 = k,
-                            Y = packet.ReadInt32("Point Y", i, j, k),
-                            X = packet.ReadInt32("Point X", i, j, k)
+                            Y = packet.Translator.ReadInt32("Point Y", i, j, k),
+                            X = packet.Translator.ReadInt32("Point X", i, j, k)
                         };
                         questPoiPoints.Add(questPoiPoint);
                     }
 
-                    questPoi.ObjectiveIndex = packet.ReadInt32("Objective Index", i, j);
-                    packet.ReadInt32("Points Counter?", i, j);
-                    questPoi.MapID = (int)packet.ReadUInt32<MapId>("Map Id", i, j);
-                    packet.ReadInt32("Player Condition ID", i, j);
-                    packet.ReadInt32("World Effect ID", i, j);
+                    questPoi.ObjectiveIndex = packet.Translator.ReadInt32("Objective Index", i, j);
+                    packet.Translator.ReadInt32("Points Counter?", i, j);
+                    questPoi.MapID = (int)packet.Translator.ReadUInt32<MapId>("Map Id", i, j);
+                    packet.Translator.ReadInt32("Player Condition ID", i, j);
+                    packet.Translator.ReadInt32("World Effect ID", i, j);
 
-                    int idx = packet.ReadInt32("POI Index", i, j);
+                    int idx = packet.Translator.ReadInt32("POI Index", i, j);
                     questPoi.ID = idx;
 
                     questPoiPoints.ForEach(p =>
@@ -114,8 +114,8 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                     questPOIs.Add(questPoi);
                 }
 
-                int questId = packet.ReadInt32<QuestId>("Quest ID", i);
-                packet.ReadInt32("POI Counter?", i);
+                int questId = packet.Translator.ReadInt32<QuestId>("Quest ID", i);
+                packet.Translator.ReadInt32("POI Counter?", i);
 
                 questPoiPointsForQuest.ForEach(q =>
                 {
@@ -137,143 +137,143 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var guid1 = new byte[8];
             var guid2 = new byte[8];
 
-            packet.ReadInt32("Int21E8");
-            packet.ReadInt32("Int21F8");
+            packet.Translator.ReadInt32("Int21E8");
+            packet.Translator.ReadInt32("Int21F8");
 
             for (var i = 0; i < 5; i++)
             {
-                packet.ReadUInt32("Reputation Value Id", i);
-                packet.ReadUInt32("Reputation Faction", i);
-                packet.ReadInt32("Reputation Value", i);
+                packet.Translator.ReadUInt32("Reputation Value Id", i);
+                packet.Translator.ReadUInt32("Reputation Faction", i);
+                packet.Translator.ReadInt32("Reputation Value", i);
             }
 
-            packet.ReadInt32("Int2224");
-            packet.ReadInt32("Int21BC");
-            packet.ReadInt32("Int21D0");
-            packet.ReadInt32("Int2260");
-            packet.ReadInt32("Int225C");
-            packet.ReadInt32("Int21DC"); // Level?
-            packet.ReadInt32("Int2228");
-            packet.ReadInt32("Int2258");
-            packet.ReadInt32("Int222C");
-            packet.ReadInt32("IntFEC"); // QuestId?
-            packet.ReadInt32("Int2220");
-            packet.ReadInt32("Int2214");
-            packet.ReadInt32("Int2248");
-            packet.ReadInt32("Int2210");
-            packet.ReadInt32("IntFF0");
-            packet.ReadInt32("Int21F0");
-            packet.ReadInt32("Int220C");
-            packet.ReadInt32("Int24D0");
-            packet.ReadInt32("Int221C");
-            packet.ReadInt32("Int21D4");
-            packet.ReadInt32("Int2268");
-            packet.ReadInt32("Int21D8");
-            packet.ReadInt32("Int24E4");
-            packet.ReadInt32("Int21EC");
-            packet.ReadInt32("Int21FC");
+            packet.Translator.ReadInt32("Int2224");
+            packet.Translator.ReadInt32("Int21BC");
+            packet.Translator.ReadInt32("Int21D0");
+            packet.Translator.ReadInt32("Int2260");
+            packet.Translator.ReadInt32("Int225C");
+            packet.Translator.ReadInt32("Int21DC"); // Level?
+            packet.Translator.ReadInt32("Int2228");
+            packet.Translator.ReadInt32("Int2258");
+            packet.Translator.ReadInt32("Int222C");
+            packet.Translator.ReadInt32("IntFEC"); // QuestId?
+            packet.Translator.ReadInt32("Int2220");
+            packet.Translator.ReadInt32("Int2214");
+            packet.Translator.ReadInt32("Int2248");
+            packet.Translator.ReadInt32("Int2210");
+            packet.Translator.ReadInt32("IntFF0");
+            packet.Translator.ReadInt32("Int21F0");
+            packet.Translator.ReadInt32("Int220C");
+            packet.Translator.ReadInt32("Int24D0");
+            packet.Translator.ReadInt32("Int221C");
+            packet.Translator.ReadInt32("Int21D4");
+            packet.Translator.ReadInt32("Int2268");
+            packet.Translator.ReadInt32("Int21D8");
+            packet.Translator.ReadInt32("Int24E4");
+            packet.Translator.ReadInt32("Int21EC");
+            packet.Translator.ReadInt32("Int21FC");
 
             for (var i = 0; i < 4; i++)
             {
-                packet.ReadUInt32("Currency Id", i);
-                packet.ReadUInt32("Currency Count", i);
+                packet.Translator.ReadUInt32("Currency Id", i);
+                packet.Translator.ReadUInt32("Currency Count", i);
             }
 
-            packet.ReadInt32("Int21F4");
-            packet.ReadInt32("Int2238");
-            packet.ReadInt32("Int2208");
-            packet.ReadInt32("Int2200");
-            packet.ReadInt32("Int2230");
-            packet.ReadInt32("Int2218");
-            packet.ReadInt32("Int2264");
-            packet.ReadInt32("Int224C");
-            packet.ReadInt32("Int2250");
-            packet.ReadInt32("IntFD4");
-            packet.ReadInt32("Int223C");
-            packet.ReadInt32("Int21E0");
-            packet.ReadInt32("Int2204");
-            packet.ReadInt32("Int2234");
-            packet.ReadInt32("Int2254");
-            packet.ReadInt32("Int21E4");
-            packet.ReadInt32("Int226C");
-            packet.ReadInt32("Int2270");
-            packet.ReadInt32("Int24E8");
-            packet.ReadInt32("Int2240");
-            packet.ReadInt32("Int2244");
-            guid1[4] = packet.ReadBit();
-            guid2[0] = packet.ReadBit();
-            guid2[3] = packet.ReadBit();
-            var bits756 = (int)packet.ReadBits(10);
-            guid1[2] = packet.ReadBit();
-            guid1[1] = packet.ReadBit();
-            var bits7353 = (int)packet.ReadBits(10);
-            var bits6 = (int)packet.ReadBits(12);
-            guid1[5] = packet.ReadBit();
-            var bitFD0 = packet.ReadBit();
-            guid1[0] = packet.ReadBit();
-            var bits24D4 = (int)packet.ReadBits(21);
-            var bits21C0 = (int)packet.ReadBits(22);
-            var bits1024 = (int)packet.ReadBits(12);
-            var bitsFD8b = (int)packet.ReadBits(20);
-            var bits1774 = (int)packet.ReadBits(8);
-            guid2[5] = packet.ReadBit();
-            guid2[4] = packet.ReadBit();
-            guid2[2] = packet.ReadBit();
-            guid2[7] = packet.ReadBit();
-            var bits8377 = (int)packet.ReadBits(8);
-            var bits2228 = (int)packet.ReadBits(9);
-            guid2[6] = packet.ReadBit();
-            var bitFE8 = packet.ReadBit();
-            guid1[3] = packet.ReadBit();
-            guid2[1] = packet.ReadBit();
-            guid1[7] = packet.ReadBit();
-            guid1[6] = packet.ReadBit();
-            var bit1CB8 = packet.ReadBit();
+            packet.Translator.ReadInt32("Int21F4");
+            packet.Translator.ReadInt32("Int2238");
+            packet.Translator.ReadInt32("Int2208");
+            packet.Translator.ReadInt32("Int2200");
+            packet.Translator.ReadInt32("Int2230");
+            packet.Translator.ReadInt32("Int2218");
+            packet.Translator.ReadInt32("Int2264");
+            packet.Translator.ReadInt32("Int224C");
+            packet.Translator.ReadInt32("Int2250");
+            packet.Translator.ReadInt32("IntFD4");
+            packet.Translator.ReadInt32("Int223C");
+            packet.Translator.ReadInt32("Int21E0");
+            packet.Translator.ReadInt32("Int2204");
+            packet.Translator.ReadInt32("Int2234");
+            packet.Translator.ReadInt32("Int2254");
+            packet.Translator.ReadInt32("Int21E4");
+            packet.Translator.ReadInt32("Int226C");
+            packet.Translator.ReadInt32("Int2270");
+            packet.Translator.ReadInt32("Int24E8");
+            packet.Translator.ReadInt32("Int2240");
+            packet.Translator.ReadInt32("Int2244");
+            guid1[4] = packet.Translator.ReadBit();
+            guid2[0] = packet.Translator.ReadBit();
+            guid2[3] = packet.Translator.ReadBit();
+            var bits756 = (int)packet.Translator.ReadBits(10);
+            guid1[2] = packet.Translator.ReadBit();
+            guid1[1] = packet.Translator.ReadBit();
+            var bits7353 = (int)packet.Translator.ReadBits(10);
+            var bits6 = (int)packet.Translator.ReadBits(12);
+            guid1[5] = packet.Translator.ReadBit();
+            var bitFD0 = packet.Translator.ReadBit();
+            guid1[0] = packet.Translator.ReadBit();
+            var bits24D4 = (int)packet.Translator.ReadBits(21);
+            var bits21C0 = (int)packet.Translator.ReadBits(22);
+            var bits1024 = (int)packet.Translator.ReadBits(12);
+            var bitsFD8b = (int)packet.Translator.ReadBits(20);
+            var bits1774 = (int)packet.Translator.ReadBits(8);
+            guid2[5] = packet.Translator.ReadBit();
+            guid2[4] = packet.Translator.ReadBit();
+            guid2[2] = packet.Translator.ReadBit();
+            guid2[7] = packet.Translator.ReadBit();
+            var bits8377 = (int)packet.Translator.ReadBits(8);
+            var bits2228 = (int)packet.Translator.ReadBits(9);
+            guid2[6] = packet.Translator.ReadBit();
+            var bitFE8 = packet.Translator.ReadBit();
+            guid1[3] = packet.Translator.ReadBit();
+            guid2[1] = packet.Translator.ReadBit();
+            guid1[7] = packet.Translator.ReadBit();
+            guid1[6] = packet.Translator.ReadBit();
+            var bit1CB8 = packet.Translator.ReadBit();
 
             for (var i = 0; i < bits24D4; i++)
             {
-                packet.ReadInt32("IntED", i);
-                packet.ReadInt32("IntED", i);
+                packet.Translator.ReadInt32("IntED", i);
+                packet.Translator.ReadInt32("IntED", i);
             }
 
-            packet.ReadXORByte(guid2, 4);
-            packet.ReadXORByte(guid2, 5);
-            packet.ReadWoWString("String1CB9", bits7353);
-            packet.ReadWoWString("StringBD0", bits756);
-            packet.ReadXORByte(guid2, 1);
-            packet.ReadXORByte(guid1, 0);
+            packet.Translator.ReadXORByte(guid2, 4);
+            packet.Translator.ReadXORByte(guid2, 5);
+            packet.Translator.ReadWoWString("String1CB9", bits7353);
+            packet.Translator.ReadWoWString("StringBD0", bits756);
+            packet.Translator.ReadXORByte(guid2, 1);
+            packet.Translator.ReadXORByte(guid1, 0);
 
             for (var i = 0; i < bitsFD8b; i++)
             {
-                packet.ReadByte("ByteED", i);
-                packet.ReadInt32("IntED", i);
-                packet.ReadInt32("IntFDC", i);
-                packet.ReadInt32("IntED", i);
+                packet.Translator.ReadByte("ByteED", i);
+                packet.Translator.ReadInt32("IntED", i);
+                packet.Translator.ReadInt32("IntFDC", i);
+                packet.Translator.ReadInt32("IntED", i);
             }
 
-            packet.ReadXORByte(guid2, 0);
-            packet.ReadXORByte(guid1, 4);
-            packet.ReadXORByte(guid1, 3);
-            packet.ReadWoWString("String1BB8", bits1774);
-            packet.ReadWoWString("String20B9", bits8377);
-            packet.ReadXORByte(guid2, 2);
+            packet.Translator.ReadXORByte(guid2, 0);
+            packet.Translator.ReadXORByte(guid1, 4);
+            packet.Translator.ReadXORByte(guid1, 3);
+            packet.Translator.ReadWoWString("String1BB8", bits1774);
+            packet.Translator.ReadWoWString("String20B9", bits8377);
+            packet.Translator.ReadXORByte(guid2, 2);
             for (var i = 0; i < bits21C0; i++)
-                packet.ReadInt32("IntEA", i);
+                packet.Translator.ReadInt32("IntEA", i);
 
-            packet.ReadXORByte(guid2, 6);
-            packet.ReadWoWString("String22D0", bits2228);
-            packet.ReadXORByte(guid1, 7);
-            packet.ReadWoWString("String1000", bits1024);
-            packet.ReadXORByte(guid1, 2);
-            packet.ReadXORByte(guid2, 3);
-            packet.ReadXORByte(guid1, 6);
-            packet.ReadWoWString("String18", bits6);
-            packet.ReadXORByte(guid1, 5);
-            packet.ReadXORByte(guid2, 7);
-            packet.ReadXORByte(guid1, 1);
+            packet.Translator.ReadXORByte(guid2, 6);
+            packet.Translator.ReadWoWString("String22D0", bits2228);
+            packet.Translator.ReadXORByte(guid1, 7);
+            packet.Translator.ReadWoWString("String1000", bits1024);
+            packet.Translator.ReadXORByte(guid1, 2);
+            packet.Translator.ReadXORByte(guid2, 3);
+            packet.Translator.ReadXORByte(guid1, 6);
+            packet.Translator.ReadWoWString("String18", bits6);
+            packet.Translator.ReadXORByte(guid1, 5);
+            packet.Translator.ReadXORByte(guid2, 7);
+            packet.Translator.ReadXORByte(guid1, 1);
 
-            packet.WriteGuid("Guid1", guid1);
-            packet.WriteGuid("Guid2", guid2);
+            packet.Translator.WriteGuid("Guid1", guid1);
+            packet.Translator.WriteGuid("Guid2", guid2);
 
         }
     }

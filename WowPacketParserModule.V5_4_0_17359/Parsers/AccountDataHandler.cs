@@ -9,15 +9,15 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_ACCOUNT_DATA_TIMES)]
         public static void HandleAccountDataTimes(Packet packet)
         {
-            packet.ReadTime("Server Time");
+            packet.Translator.ReadTime("Server Time");
 
             for (var i = 0; i < 8; ++i)
             {
-                packet.ReadTime("[" + (AccountDataType)i + "]" + " Time");
+                packet.Translator.ReadTime("[" + (AccountDataType)i + "]" + " Time");
             }
 
-            packet.ReadUInt32("unk24");
-            packet.ReadByte("Unk Byte");
+            packet.Translator.ReadUInt32("unk24");
+            packet.Translator.ReadByte("Unk Byte");
         }
     }
 }

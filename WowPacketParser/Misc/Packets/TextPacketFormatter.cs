@@ -15,6 +15,7 @@ namespace WowPacketParser.Misc
         public TextPacketFormatter()
         {
             _writer = new StringBuilder();
+            _collections = new List<string>();
         }
 
         public void AppendItem(string itemName, params object[] args)

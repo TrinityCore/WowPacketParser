@@ -9,13 +9,13 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         [Parser(Opcode.CMSG_CHAT_CHANNEL_LIST)]
         public static void HandleChannelList(Packet packet)
         {
-            packet.ReadUInt32("Flags");
-            packet.ReadBit();
-            packet.ReadBits(7);
-            packet.ReadBit();
-            var length = packet.ReadBits(7);
+            packet.Translator.ReadUInt32("Flags");
+            packet.Translator.ReadBit();
+            packet.Translator.ReadBits(7);
+            packet.Translator.ReadBit();
+            var length = packet.Translator.ReadBits(7);
 
-            packet.ReadWoWString("Channel Name", length);
+            packet.Translator.ReadWoWString("Channel Name", length);
         }
     }
 }

@@ -9,8 +9,8 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_PVP_SEASON)]
         public static void HandlePvPSeason(Packet packet)
         {
-            packet.ReadUInt32("Last Season");
-            packet.ReadUInt32("Active Season");
+            packet.Translator.ReadUInt32("Last Season");
+            packet.Translator.ReadUInt32("Active Season");
         }
     }
 }

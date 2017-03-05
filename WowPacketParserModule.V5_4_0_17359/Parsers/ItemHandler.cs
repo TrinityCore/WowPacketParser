@@ -9,8 +9,8 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_SET_PROFICIENCY)]
         public static void HandleSetProficency(Packet packet)
         {
-            packet.ReadUInt32E<UnknownFlags>("Mask");
-            packet.ReadByteE<ItemClass>("Class");
+            packet.Translator.ReadUInt32E<UnknownFlags>("Mask");
+            packet.Translator.ReadByteE<ItemClass>("Class");
         }
 
         [Parser(Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE)]
@@ -18,36 +18,36 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         {
             var itemGuid = new byte[8];
             var playerGuid = new byte[8];
-            itemGuid[3] = packet.ReadBit();
-            playerGuid[4] = packet.ReadBit();
-            itemGuid[0] = packet.ReadBit();
-            playerGuid[7] = packet.ReadBit();
-            itemGuid[2] = packet.ReadBit();
-            playerGuid[6] = packet.ReadBit();
-            packet.StartBitStream(itemGuid, 6, 1);
-            playerGuid[2] = packet.ReadBit();
-            itemGuid[7] = packet.ReadBit();
-            packet.StartBitStream(playerGuid, 3, 1);
-            itemGuid[5] = packet.ReadBit();
-            packet.StartBitStream(playerGuid, 5, 0);
-            itemGuid[4] = packet.ReadBit();
-            packet.ResetBitReader();
+            itemGuid[3] = packet.Translator.ReadBit();
+            playerGuid[4] = packet.Translator.ReadBit();
+            itemGuid[0] = packet.Translator.ReadBit();
+            playerGuid[7] = packet.Translator.ReadBit();
+            itemGuid[2] = packet.Translator.ReadBit();
+            playerGuid[6] = packet.Translator.ReadBit();
+            packet.Translator.StartBitStream(itemGuid, 6, 1);
+            playerGuid[2] = packet.Translator.ReadBit();
+            itemGuid[7] = packet.Translator.ReadBit();
+            packet.Translator.StartBitStream(playerGuid, 3, 1);
+            itemGuid[5] = packet.Translator.ReadBit();
+            packet.Translator.StartBitStream(playerGuid, 5, 0);
+            itemGuid[4] = packet.Translator.ReadBit();
+            packet.Translator.ResetBitReader();
 
-            packet.ReadUInt32("Duration");
-            packet.ReadXORBytes(playerGuid, 2, 3);
-            packet.ReadXORByte(itemGuid, 7);
-            packet.ReadXORByte(playerGuid, 0);
-            packet.ReadUInt32("Slot");
-            packet.ReadXORByte(itemGuid, 3);
-            packet.ReadXORByte(playerGuid, 6);
-            packet.ReadXORBytes(itemGuid, 6, 4, 2);
-            packet.ReadXORByte(playerGuid, 1);
-            packet.ReadXORByte(itemGuid, 5);
-            packet.ReadXORBytes(playerGuid, 5, 4, 7);
-            packet.ReadXORBytes(itemGuid, 0, 1);
+            packet.Translator.ReadUInt32("Duration");
+            packet.Translator.ReadXORBytes(playerGuid, 2, 3);
+            packet.Translator.ReadXORByte(itemGuid, 7);
+            packet.Translator.ReadXORByte(playerGuid, 0);
+            packet.Translator.ReadUInt32("Slot");
+            packet.Translator.ReadXORByte(itemGuid, 3);
+            packet.Translator.ReadXORByte(playerGuid, 6);
+            packet.Translator.ReadXORBytes(itemGuid, 6, 4, 2);
+            packet.Translator.ReadXORByte(playerGuid, 1);
+            packet.Translator.ReadXORByte(itemGuid, 5);
+            packet.Translator.ReadXORBytes(playerGuid, 5, 4, 7);
+            packet.Translator.ReadXORBytes(itemGuid, 0, 1);
 
-            packet.WriteGuid("Player GUID", playerGuid);
-            packet.WriteGuid("Item GUID", itemGuid);
+            packet.Translator.WriteGuid("Player GUID", playerGuid);
+            packet.Translator.WriteGuid("Item GUID", itemGuid);
         }
     }
 }

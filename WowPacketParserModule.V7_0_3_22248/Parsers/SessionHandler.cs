@@ -9,7 +9,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_QUERY_TIME_RESPONSE)]
         public static void HandleQueryTimeResponse(Packet packet)
         {
-            packet.ReadTime("CurrentTime");
+            packet.Translator.ReadTime("CurrentTime");
         }
 
         [Parser(Opcode.SMSG_ENABLE_ENCRYPTION)]
@@ -25,7 +25,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.CMSG_LOGOUT_REQUEST, ClientVersionBuild.V7_1_0_22900)]
         public static void HandleLogoutRequest(Packet packet)
         {
-            packet.ReadBit("IdleLogout");
+            packet.Translator.ReadBit("IdleLogout");
         }
     }
 }

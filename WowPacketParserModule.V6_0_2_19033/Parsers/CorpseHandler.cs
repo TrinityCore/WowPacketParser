@@ -14,17 +14,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_RECLAIM_CORPSE)]
         public static void HandleReclaimCorpse(Packet packet)
         {
-            packet.ReadPackedGuid128("CorpseGUID");
+            packet.Translator.ReadPackedGuid128("CorpseGUID");
         }
 
         [Parser(Opcode.SMSG_CORPSE_LOCATION)]
         public static void HandleCorpseLocation(Packet packet)
         {
-            packet.ReadBit("Valid");
-            packet.ReadInt32("ActualMapID");
-            packet.ReadVector3("Position");
-            packet.ReadInt32("MapID");
-            packet.ReadPackedGuid128("Transport");
+            packet.Translator.ReadBit("Valid");
+            packet.Translator.ReadInt32("ActualMapID");
+            packet.Translator.ReadVector3("Position");
+            packet.Translator.ReadInt32("MapID");
+            packet.Translator.ReadPackedGuid128("Transport");
         }
     }
 }

@@ -14,148 +14,148 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var guid = new byte[8];
             var transportGUID = new byte[8];
 
-            guid[7] = packet.ReadBit();
+            guid[7] = packet.Translator.ReadBit();
 
-            var hasExtraMovementFlags = !packet.ReadBit();
-            var hasPitch = !packet.ReadBit();
-            var hasSplineElevation = !packet.ReadBit();
-            var bit95 = packet.ReadBit();
-            var isAlive = !packet.ReadBit();
+            var hasExtraMovementFlags = !packet.Translator.ReadBit();
+            var hasPitch = !packet.Translator.ReadBit();
+            var hasSplineElevation = !packet.Translator.ReadBit();
+            var bit95 = packet.Translator.ReadBit();
+            var isAlive = !packet.Translator.ReadBit();
 
-            guid[6] = packet.ReadBit();
+            guid[6] = packet.Translator.ReadBit();
 
-            var bit94 = packet.ReadBit();
+            var bit94 = packet.Translator.ReadBit();
 
-            guid[0] = packet.ReadBit();
+            guid[0] = packet.Translator.ReadBit();
 
-            var hasTransportData = packet.ReadBit();
+            var hasTransportData = packet.Translator.ReadBit();
 
             bool hasTransportTime2 = false;
             bool hasTransportTime3 = false;
 
             if (hasTransportData)
             {
-                transportGUID[4] = packet.ReadBit();
-                transportGUID[1] = packet.ReadBit();
-                transportGUID[6] = packet.ReadBit();
-                transportGUID[0] = packet.ReadBit();
-                hasTransportTime2 = packet.ReadBit();
-                hasTransportTime3 = packet.ReadBit();
-                transportGUID[2] = packet.ReadBit();
-                transportGUID[7] = packet.ReadBit();
-                transportGUID[3] = packet.ReadBit();
-                transportGUID[5] = packet.ReadBit();
+                transportGUID[4] = packet.Translator.ReadBit();
+                transportGUID[1] = packet.Translator.ReadBit();
+                transportGUID[6] = packet.Translator.ReadBit();
+                transportGUID[0] = packet.Translator.ReadBit();
+                hasTransportTime2 = packet.Translator.ReadBit();
+                hasTransportTime3 = packet.Translator.ReadBit();
+                transportGUID[2] = packet.Translator.ReadBit();
+                transportGUID[7] = packet.Translator.ReadBit();
+                transportGUID[3] = packet.Translator.ReadBit();
+                transportGUID[5] = packet.Translator.ReadBit();
             }
 
-            guid[4] = packet.ReadBit();
-            var hasMovementFlags = !packet.ReadBit();
-            guid[5] = packet.ReadBit();
-            guid[3] = packet.ReadBit();
-            var hasOrientation = !packet.ReadBit();
-            guid[1] = packet.ReadBit();
-            var hasTimeStamp = !packet.ReadBit();
-            guid[2] = packet.ReadBit();
-            var bits98 = (int)packet.ReadBits(22);
+            guid[4] = packet.Translator.ReadBit();
+            var hasMovementFlags = !packet.Translator.ReadBit();
+            guid[5] = packet.Translator.ReadBit();
+            guid[3] = packet.Translator.ReadBit();
+            var hasOrientation = !packet.Translator.ReadBit();
+            guid[1] = packet.Translator.ReadBit();
+            var hasTimeStamp = !packet.Translator.ReadBit();
+            guid[2] = packet.Translator.ReadBit();
+            var bits98 = (int)packet.Translator.ReadBits(22);
 
             if (hasExtraMovementFlags)
-                packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 13);
+                packet.Translator.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 13);
 
-            var bitAC = packet.ReadBit();
+            var bitAC = packet.Translator.ReadBit();
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.Translator.ReadBitsE<MovementFlag>("Movement Flags", 30);
 
-            var hasFallData = packet.ReadBit();
+            var hasFallData = packet.Translator.ReadBit();
 
             var hasFallDirection = false;
             if (hasFallData)
-                hasFallDirection = packet.ReadBit();
+                hasFallDirection = packet.Translator.ReadBit();
 
             if (hasFallData)
             {
                 if (hasFallDirection)
                 {
-                    packet.ReadSingle("Horizontal Speed");
-                    packet.ReadSingle("Fall Sin");
-                    packet.ReadSingle("Fall Cos");
+                    packet.Translator.ReadSingle("Horizontal Speed");
+                    packet.Translator.ReadSingle("Fall Sin");
+                    packet.Translator.ReadSingle("Fall Cos");
                 }
 
-                packet.ReadInt32("Fall Time");
-                packet.ReadSingle("Velocity Speed");
+                packet.Translator.ReadInt32("Fall Time");
+                packet.Translator.ReadSingle("Velocity Speed");
             }
 
             if (hasTransportData)
             {
                 var transPos = new Vector4();
 
-                packet.ReadXORByte(transportGUID, 1);
+                packet.Translator.ReadXORByte(transportGUID, 1);
 
-                transPos.Y = packet.ReadSingle();
+                transPos.Y = packet.Translator.ReadSingle();
 
                 if (hasTransportTime2)
-                    packet.ReadInt32("Transport Time 2");
+                    packet.Translator.ReadInt32("Transport Time 2");
 
-                packet.ReadXORByte(transportGUID, 5);
+                packet.Translator.ReadXORByte(transportGUID, 5);
 
-                transPos.X = packet.ReadSingle();
-                packet.ReadByte("Seat");
-                packet.ReadInt32("Transport Time");
+                transPos.X = packet.Translator.ReadSingle();
+                packet.Translator.ReadByte("Seat");
+                packet.Translator.ReadInt32("Transport Time");
 
-                packet.ReadXORByte(transportGUID, 3);
-                packet.ReadXORByte(transportGUID, 6);
+                packet.Translator.ReadXORByte(transportGUID, 3);
+                packet.Translator.ReadXORByte(transportGUID, 6);
 
-                transPos.O = packet.ReadSingle();
-                transPos.Z = packet.ReadSingle();
+                transPos.O = packet.Translator.ReadSingle();
+                transPos.Z = packet.Translator.ReadSingle();
 
                 if (hasTransportTime3)
-                    packet.ReadInt32("Transport Time 3");
+                    packet.Translator.ReadInt32("Transport Time 3");
 
-                packet.ReadXORByte(transportGUID, 7);
-                packet.ReadXORByte(transportGUID, 4);
-                packet.ReadXORByte(transportGUID, 2);
-                packet.ReadXORByte(transportGUID, 0);
+                packet.Translator.ReadXORByte(transportGUID, 7);
+                packet.Translator.ReadXORByte(transportGUID, 4);
+                packet.Translator.ReadXORByte(transportGUID, 2);
+                packet.Translator.ReadXORByte(transportGUID, 0);
 
-                packet.WriteGuid("Transport Guid", transportGUID);
+                packet.Translator.WriteGuid("Transport Guid", transportGUID);
                 packet.AddValue("Transport Position", transPos);
             }
 
-            packet.ReadXORByte(guid, 3);
+            packet.Translator.ReadXORByte(guid, 3);
 
-            pos.Y = packet.ReadSingle();
+            pos.Y = packet.Translator.ReadSingle();
 
             if (hasPitch)
-                packet.ReadSingle("Pitch");
+                packet.Translator.ReadSingle("Pitch");
 
             for (var i = 0; i < bits98; ++i)
-                packet.ReadInt32("IntEA", i);
+                packet.Translator.ReadInt32("IntEA", i);
 
-            packet.ReadXORByte(guid, 5);
-            packet.ReadXORByte(guid, 0);
-            packet.ReadXORByte(guid, 7);
-            packet.ReadXORByte(guid, 6);
+            packet.Translator.ReadXORByte(guid, 5);
+            packet.Translator.ReadXORByte(guid, 0);
+            packet.Translator.ReadXORByte(guid, 7);
+            packet.Translator.ReadXORByte(guid, 6);
 
             if (hasTimeStamp)
-                packet.ReadInt32("Timestamp");
+                packet.Translator.ReadInt32("Timestamp");
 
-            pos.Z = packet.ReadSingle();
+            pos.Z = packet.Translator.ReadSingle();
 
             if (hasSplineElevation)
-                packet.ReadSingle("Spline Elevation");
+                packet.Translator.ReadSingle("Spline Elevation");
 
-            packet.ReadXORByte(guid, 1);
+            packet.Translator.ReadXORByte(guid, 1);
 
             if (isAlive)
-                packet.ReadInt32("time(isAlive)");
+                packet.Translator.ReadInt32("time(isAlive)");
 
-            pos.X = packet.ReadSingle();
+            pos.X = packet.Translator.ReadSingle();
 
             if (hasOrientation)
-                pos.O = packet.ReadSingle();
+                pos.O = packet.Translator.ReadSingle();
 
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid, 4);
+            packet.Translator.ReadXORByte(guid, 2);
+            packet.Translator.ReadXORByte(guid, 4);
 
-            packet.WriteGuid("Guid", guid);
+            packet.Translator.WriteGuid("Guid", guid);
             packet.AddValue("Position", pos);
         }
 
@@ -168,94 +168,94 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var factingTargetGUID = new byte[8];
             var ownerGUID = new byte[8];
 
-            ownerGUID[4] = packet.ReadBit();
+            ownerGUID[4] = packet.Translator.ReadBit();
 
-            var bit40 = !packet.ReadBit();
-            var hasTime = !packet.ReadBit();
+            var bit40 = !packet.Translator.ReadBit();
+            var hasTime = !packet.Translator.ReadBit();
 
-            ownerGUID[3] = packet.ReadBit();
+            ownerGUID[3] = packet.Translator.ReadBit();
 
-            var bit30 = !packet.ReadBit();
+            var bit30 = !packet.Translator.ReadBit();
 
-            packet.ReadBit(); // fake bit
+            packet.Translator.ReadBit(); // fake bit
 
-            var splineCount = (int)packet.ReadBits(20);
-            var bit98 = packet.ReadBit();
-            var splineType = (int)packet.ReadBits(3);
+            var splineCount = (int)packet.Translator.ReadBits(20);
+            var bit98 = packet.Translator.ReadBit();
+            var splineType = (int)packet.Translator.ReadBits(3);
 
             if (splineType == 3)
-                packet.StartBitStream(factingTargetGUID, 0, 7, 3, 4, 5, 6, 1, 2);
+                packet.Translator.StartBitStream(factingTargetGUID, 0, 7, 3, 4, 5, 6, 1, 2);
 
-            var bit55 = !packet.ReadBit();
-            var bit60 = !packet.ReadBit();
-            var bit54 = !packet.ReadBit();
-            var bit34 = !packet.ReadBit();
+            var bit55 = !packet.Translator.ReadBit();
+            var bit60 = !packet.Translator.ReadBit();
+            var bit54 = !packet.Translator.ReadBit();
+            var bit34 = !packet.Translator.ReadBit();
 
-            ownerGUID[6] = packet.ReadBit();
-            ownerGUID[1] = packet.ReadBit();
-            ownerGUID[0] = packet.ReadBit();
+            ownerGUID[6] = packet.Translator.ReadBit();
+            ownerGUID[1] = packet.Translator.ReadBit();
+            ownerGUID[0] = packet.Translator.ReadBit();
 
-            packet.StartBitStream(guid2, 1, 3, 4, 5, 6, 0, 7, 2);
+            packet.Translator.StartBitStream(guid2, 1, 3, 4, 5, 6, 0, 7, 2);
 
-            ownerGUID[5] = packet.ReadBit();
-            var bit20 = packet.ReadBit();
-            ownerGUID[7] = packet.ReadBit();
-            var bit2D = !packet.ReadBit();
+            ownerGUID[5] = packet.Translator.ReadBit();
+            var bit20 = packet.Translator.ReadBit();
+            ownerGUID[7] = packet.Translator.ReadBit();
+            var bit2D = !packet.Translator.ReadBit();
 
             var bits84 = 0u;
             if (bit98)
             {
-                packet.ReadBits("bits74", 2);
-                bits84 = packet.ReadBits(22);
+                packet.Translator.ReadBits("bits74", 2);
+                bits84 = packet.Translator.ReadBits(22);
             }
 
-            var hasFlags = !packet.ReadBit();
-            ownerGUID[2] = packet.ReadBit();
-            var bits64 = (int)packet.ReadBits(22);
-            var bit0 = !packet.ReadBit();
-            packet.ReadSingle("Float14");
+            var hasFlags = !packet.Translator.ReadBit();
+            ownerGUID[2] = packet.Translator.ReadBit();
+            var bits64 = (int)packet.Translator.ReadBits(22);
+            var bit0 = !packet.Translator.ReadBit();
+            packet.Translator.ReadSingle("Float14");
 
             if (splineType == 3)
             {
-                packet.ParseBitStream(factingTargetGUID, 1, 6, 4, 3, 5, 0, 2, 7);
-                packet.WriteGuid("Facting Target GUID", factingTargetGUID);
+                packet.Translator.ParseBitStream(factingTargetGUID, 1, 6, 4, 3, 5, 0, 2, 7);
+                packet.Translator.WriteGuid("Facting Target GUID", factingTargetGUID);
             }
 
-            packet.ReadXORByte(ownerGUID, 5);
+            packet.Translator.ReadXORByte(ownerGUID, 5);
             if (bit54)
-                packet.ReadByte("Byte54");
-            packet.ReadXORByte(ownerGUID, 4);
+                packet.Translator.ReadByte("Byte54");
+            packet.Translator.ReadXORByte(ownerGUID, 4);
             if (bit98)
             {
-                packet.ReadSingle("Float88");
+                packet.Translator.ReadSingle("Float88");
                 for (var i = 0; i < bits84; ++i)
                 {
-                    packet.ReadInt16("short74+2", i);
-                    packet.ReadInt16("short74+0", i);
+                    packet.Translator.ReadInt16("short74+2", i);
+                    packet.Translator.ReadInt16("short74+0", i);
                 }
 
-                packet.ReadInt16("Int8C");
-                packet.ReadInt16("Int94");
-                packet.ReadSingle("Float90");
+                packet.Translator.ReadInt16("Int8C");
+                packet.Translator.ReadInt16("Int94");
+                packet.Translator.ReadSingle("Float90");
             }
 
             if (hasFlags)
-                packet.ReadInt32E<SplineFlag434>("Spline Flags");
+                packet.Translator.ReadInt32E<SplineFlag434>("Spline Flags");
 
             if (bit40)
-                packet.ReadInt32("Int40");
+                packet.Translator.ReadInt32("Int40");
 
             if (bit2D)
-                packet.ReadByte("Byte2D");
+                packet.Translator.ReadByte("Byte2D");
 
             Vector3 endpos = new Vector3();
             for (var i = 0; i < splineCount; ++i)
             {
                 var spot = new Vector3
                 {
-                    Y = packet.ReadSingle(),
-                    X = packet.ReadSingle(),
-                    Z = packet.ReadSingle()
+                    Y = packet.Translator.ReadSingle(),
+                    X = packet.Translator.ReadSingle(),
+                    Z = packet.Translator.ReadSingle()
                 };
                 // client always taking first point
                 if (i == 0)
@@ -266,30 +266,30 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.AddValue("Spline Waypoint", spot, i);
             }
 
-            packet.ParseBitStream(guid2, 6, 7, 2, 5, 3, 4, 1, 0);
+            packet.Translator.ParseBitStream(guid2, 6, 7, 2, 5, 3, 4, 1, 0);
 
             if (bit55)
-                packet.ReadByte("Byte55");
+                packet.Translator.ReadByte("Byte55");
 
-            packet.ReadInt32("Move Ticks");
+            packet.Translator.ReadInt32("Move Ticks");
 
-            packet.ReadXORByte(ownerGUID, 0);
+            packet.Translator.ReadXORByte(ownerGUID, 0);
 
             if (splineType == 4)
-                packet.ReadSingle("Facing Angle");
+                packet.Translator.ReadSingle("Facing Angle");
 
-            pos.Y = packet.ReadSingle();
+            pos.Y = packet.Translator.ReadSingle();
 
             if (bit0)
-                packet.ReadSingle("Float3C");
+                packet.Translator.ReadSingle("Float3C");
 
-            packet.ReadXORByte(ownerGUID, 7);
-            packet.ReadXORByte(ownerGUID, 1);
+            packet.Translator.ReadXORByte(ownerGUID, 7);
+            packet.Translator.ReadXORByte(ownerGUID, 1);
 
             var waypoints = new Vector3[bits64];
             for (var i = 0; i < bits64; ++i)
             {
-                var vec = packet.ReadPackedVector3();
+                var vec = packet.Translator.ReadPackedVector3();
                 waypoints[i].X = vec.X;
                 waypoints[i].Y = vec.Y;
                 waypoints[i].Z = vec.Z;
@@ -297,31 +297,31 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             if (splineType == 2)
             {
-                packet.ReadSingle("FloatA8");
-                packet.ReadSingle("FloatAC");
-                packet.ReadSingle("FloatB0");
+                packet.Translator.ReadSingle("FloatA8");
+                packet.Translator.ReadSingle("FloatAC");
+                packet.Translator.ReadSingle("FloatB0");
             }
 
             if (hasTime)
-                packet.ReadInt32("Move Time in ms");
+                packet.Translator.ReadInt32("Move Time in ms");
 
             if (bit30)
-                packet.ReadInt32("Int30");
+                packet.Translator.ReadInt32("Int30");
 
-            packet.ReadXORByte(ownerGUID, 6);
-            packet.ReadSingle("Float1C");
-            packet.ReadXORByte(ownerGUID, 3);
-            pos.X = packet.ReadSingle();
-            packet.ReadXORByte(ownerGUID, 2);
+            packet.Translator.ReadXORByte(ownerGUID, 6);
+            packet.Translator.ReadSingle("Float1C");
+            packet.Translator.ReadXORByte(ownerGUID, 3);
+            pos.X = packet.Translator.ReadSingle();
+            packet.Translator.ReadXORByte(ownerGUID, 2);
 
             if (bit34)
-                packet.ReadInt32("Int34");
+                packet.Translator.ReadInt32("Int34");
 
             if (bit60)
-                packet.ReadByte("Byte60");
+                packet.Translator.ReadByte("Byte60");
 
-            packet.ReadSingle("Float18");
-            pos.Z = packet.ReadSingle();
+            packet.Translator.ReadSingle("Float18");
+            pos.Z = packet.Translator.ReadSingle();
 
             // Calculate mid pos
             var mid = new Vector3();
@@ -339,8 +339,8 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.AddValue("Waypoint", vec, i);
             }
 
-            packet.WriteGuid("Owner GUID", ownerGUID);
-            packet.WriteGuid("GUID2", guid2);
+            packet.Translator.WriteGuid("Owner GUID", ownerGUID);
+            packet.Translator.WriteGuid("GUID2", guid2);
             packet.AddValue("Position", pos);
         }
 
@@ -350,11 +350,11 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         {
             var pos = new Vector4();
 
-            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadInt32<MapId>("Map");
-            pos.X = packet.ReadSingle();
-            pos.O = packet.ReadSingle();
-            pos.Y = packet.ReadSingle();
-            pos.Z = packet.ReadSingle();
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.Translator.ReadInt32<MapId>("Map");
+            pos.X = packet.Translator.ReadSingle();
+            pos.O = packet.Translator.ReadSingle();
+            pos.Y = packet.Translator.ReadSingle();
+            pos.Z = packet.Translator.ReadSingle();
 
             packet.AddValue("Position", pos);
             packet.AddSniffData(StoreNameType.Map, (int)CoreParsers.MovementHandler.CurrentMapId, "NEW_WORLD");
@@ -366,11 +366,11 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         {
             var pos = new Vector4();
 
-            pos.Y = packet.ReadSingle();
-            packet.ReadInt32<MapId>("Map");
-            pos.X = packet.ReadSingle();
-            pos.Z = packet.ReadSingle();
-            pos.O = packet.ReadSingle();
+            pos.Y = packet.Translator.ReadSingle();
+            packet.Translator.ReadInt32<MapId>("Map");
+            pos.X = packet.Translator.ReadSingle();
+            pos.Z = packet.Translator.ReadSingle();
+            pos.O = packet.Translator.ReadSingle();
 
             packet.AddValue("Position", pos);
         }
@@ -380,12 +380,12 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         {
             var pos = new Vector3();
 
-            packet.ReadInt32<AreaId>("Area Id");
-            pos.Z = packet.ReadSingle();
-            pos.X = packet.ReadSingle();
-            pos.Y = packet.ReadSingle();
+            packet.Translator.ReadInt32<AreaId>("Area Id");
+            pos.Z = packet.Translator.ReadSingle();
+            pos.X = packet.Translator.ReadSingle();
+            pos.Y = packet.Translator.ReadSingle();
 
-            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadInt32<MapId>("Map");
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.Translator.ReadInt32<MapId>("Map");
 
             packet.AddValue("Position", pos);
         }
@@ -393,30 +393,30 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         [Parser(Opcode.SMSG_LOGIN_SET_TIME_SPEED)]
         public static void HandleLoginSetTimeSpeed(Packet packet)
         {
-            packet.ReadInt32("Unk Int32");
-            packet.ReadInt32("Unk Int32");
-            packet.ReadPackedTime("Game Time");
-            packet.ReadSingle("Game Speed");
+            packet.Translator.ReadInt32("Unk Int32");
+            packet.Translator.ReadInt32("Unk Int32");
+            packet.Translator.ReadPackedTime("Game Time");
+            packet.Translator.ReadSingle("Game Speed");
 
-            packet.ReadInt32("Unk Int32");
+            packet.Translator.ReadInt32("Unk Int32");
         }
 
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]
         public static void HandleTransferPending(Packet packet)
         {
-            var customLoadScreenSpell = packet.ReadBit();
-            var hasTransport = packet.ReadBit();
+            var customLoadScreenSpell = packet.Translator.ReadBit();
+            var hasTransport = packet.Translator.ReadBit();
 
-            packet.ReadInt32<MapId>("Map ID");
+            packet.Translator.ReadInt32<MapId>("Map ID");
 
             if (hasTransport)
             {
-                packet.ReadInt32<MapId>("Transport Map ID");
-                packet.ReadInt32("Transport Entry");
+                packet.Translator.ReadInt32<MapId>("Transport Map ID");
+                packet.Translator.ReadInt32("Transport Entry");
             }
 
             if (customLoadScreenSpell)
-                packet.ReadUInt32<SpellId>("Spell ID");
+                packet.Translator.ReadUInt32<SpellId>("Spell ID");
         }
 
         [Parser(Opcode.SMSG_MOVE_TELEPORT)]
@@ -427,125 +427,125 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var transGuid = new byte[8];
             var guid = new byte[8];
 
-            var onTransport = packet.ReadBit();
+            var onTransport = packet.Translator.ReadBit();
 
-            guid[3] = packet.ReadBit();
-
-            if (onTransport)
-                packet.StartBitStream(transGuid, 1, 3, 6, 4, 5, 7, 0, 2);
-
-            guid[4] = packet.ReadBit();
-            guid[5] = packet.ReadBit();
-            guid[0] = packet.ReadBit();
-
-            var bit17 = packet.ReadBit();
-            if (bit17)
-            {
-                packet.ReadBit("Unk bit 50");
-                packet.ReadBit("Unk bit 51");
-            }
-
-            guid[7] = packet.ReadBit();
-            guid[6] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
-            guid[1] = packet.ReadBit();
+            guid[3] = packet.Translator.ReadBit();
 
             if (onTransport)
+                packet.Translator.StartBitStream(transGuid, 1, 3, 6, 4, 5, 7, 0, 2);
+
+            guid[4] = packet.Translator.ReadBit();
+            guid[5] = packet.Translator.ReadBit();
+            guid[0] = packet.Translator.ReadBit();
+
+            var bit17 = packet.Translator.ReadBit();
+            if (bit17)
             {
-                packet.ParseBitStream(transGuid, 2, 3, 5, 0, 4, 6, 1, 7);
-                packet.WriteGuid("Transport Guid", transGuid);
+                packet.Translator.ReadBit("Unk bit 50");
+                packet.Translator.ReadBit("Unk bit 51");
+            }
+
+            guid[7] = packet.Translator.ReadBit();
+            guid[6] = packet.Translator.ReadBit();
+            guid[2] = packet.Translator.ReadBit();
+            guid[1] = packet.Translator.ReadBit();
+
+            if (onTransport)
+            {
+                packet.Translator.ParseBitStream(transGuid, 2, 3, 5, 0, 4, 6, 1, 7);
+                packet.Translator.WriteGuid("Transport Guid", transGuid);
             }
 
             if (bit17)
-                packet.ReadByte("Byte14");
+                packet.Translator.ReadByte("Byte14");
 
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid, 1);
-            pos.O = packet.ReadSingle();
-            pos.Z = packet.ReadSingle();
-            packet.ReadXORByte(guid, 3);
-            pos.Y = packet.ReadSingle();
-            packet.ReadUInt32("Time");
-            pos.X = packet.ReadSingle();
-            packet.ReadXORByte(guid, 7);
-            packet.ReadXORByte(guid, 4);
-            packet.ReadXORByte(guid, 5);
-            packet.ReadXORByte(guid, 0);
-            packet.ReadXORByte(guid, 2);
+            packet.Translator.ReadXORByte(guid, 6);
+            packet.Translator.ReadXORByte(guid, 1);
+            pos.O = packet.Translator.ReadSingle();
+            pos.Z = packet.Translator.ReadSingle();
+            packet.Translator.ReadXORByte(guid, 3);
+            pos.Y = packet.Translator.ReadSingle();
+            packet.Translator.ReadUInt32("Time");
+            pos.X = packet.Translator.ReadSingle();
+            packet.Translator.ReadXORByte(guid, 7);
+            packet.Translator.ReadXORByte(guid, 4);
+            packet.Translator.ReadXORByte(guid, 5);
+            packet.Translator.ReadXORByte(guid, 0);
+            packet.Translator.ReadXORByte(guid, 2);
 
             packet.AddValue("Destination", pos);
-            packet.WriteGuid("Guid", guid);
+            packet.Translator.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_MOVE_SET_RUN_SPEED)]
         public static void HandleMoveSetRunSpeed(Packet packet)
         {
-            var guid = packet.StartBitStream(3, 4, 5, 7, 1, 2, 6, 0);
-            packet.ReadXORByte(guid, 5);
-            packet.ReadXORByte(guid, 3);
-            packet.ReadSingle("Speed");
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid, 7);
-            packet.ReadInt32("Unk Int32");
-            packet.ReadXORByte(guid, 1);
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid, 0);
-            packet.ReadXORByte(guid, 4);
-            packet.WriteGuid("Guid", guid);
+            var guid = packet.Translator.StartBitStream(3, 4, 5, 7, 1, 2, 6, 0);
+            packet.Translator.ReadXORByte(guid, 5);
+            packet.Translator.ReadXORByte(guid, 3);
+            packet.Translator.ReadSingle("Speed");
+            packet.Translator.ReadXORByte(guid, 2);
+            packet.Translator.ReadXORByte(guid, 7);
+            packet.Translator.ReadInt32("Unk Int32");
+            packet.Translator.ReadXORByte(guid, 1);
+            packet.Translator.ReadXORByte(guid, 6);
+            packet.Translator.ReadXORByte(guid, 0);
+            packet.Translator.ReadXORByte(guid, 4);
+            packet.Translator.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_MOVE_SET_WALK_SPEED)]
         public static void HandleMoveSetWalkSpeed(Packet packet)
         {
-            var guid = packet.StartBitStream(2, 6, 1, 0, 3, 5, 4, 7);
-            packet.ReadXORByte(guid, 4);
-            packet.ReadXORByte(guid, 7);
-            packet.ReadXORByte(guid, 5);
-            packet.ReadSingle("Speed");
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid, 3);
-            packet.ReadXORByte(guid, 1);
-            packet.ReadXORByte(guid, 0);
-            packet.ReadXORByte(guid, 6);
-            packet.ReadInt32("Unk Int32");
+            var guid = packet.Translator.StartBitStream(2, 6, 1, 0, 3, 5, 4, 7);
+            packet.Translator.ReadXORByte(guid, 4);
+            packet.Translator.ReadXORByte(guid, 7);
+            packet.Translator.ReadXORByte(guid, 5);
+            packet.Translator.ReadSingle("Speed");
+            packet.Translator.ReadXORByte(guid, 2);
+            packet.Translator.ReadXORByte(guid, 3);
+            packet.Translator.ReadXORByte(guid, 1);
+            packet.Translator.ReadXORByte(guid, 0);
+            packet.Translator.ReadXORByte(guid, 6);
+            packet.Translator.ReadInt32("Unk Int32");
 
-            packet.WriteGuid("Guid", guid);
+            packet.Translator.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_MOVE_SET_SWIM_SPEED)]
         public static void HandleMoveSetSwimSpeed(Packet packet)
         {
-            var guid = packet.StartBitStream(5, 1, 4, 3, 0, 7, 2, 6);
-            packet.ReadXORByte(guid, 7);
-            packet.ReadSingle("Speed");
-            packet.ReadXORByte(guid, 5);
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid, 1);
-            packet.ReadXORByte(guid, 4);
-            packet.ReadInt32("Unk Int32");
-            packet.ReadXORByte(guid, 3);
-            packet.ReadXORByte(guid, 0);
+            var guid = packet.Translator.StartBitStream(5, 1, 4, 3, 0, 7, 2, 6);
+            packet.Translator.ReadXORByte(guid, 7);
+            packet.Translator.ReadSingle("Speed");
+            packet.Translator.ReadXORByte(guid, 5);
+            packet.Translator.ReadXORByte(guid, 2);
+            packet.Translator.ReadXORByte(guid, 6);
+            packet.Translator.ReadXORByte(guid, 1);
+            packet.Translator.ReadXORByte(guid, 4);
+            packet.Translator.ReadInt32("Unk Int32");
+            packet.Translator.ReadXORByte(guid, 3);
+            packet.Translator.ReadXORByte(guid, 0);
 
-            packet.WriteGuid("Guid", guid);
+            packet.Translator.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_MOVE_SET_FLIGHT_SPEED)]
         public static void HandleMoveSetFlightSpeed(Packet packet)
         {
-            var guid = packet.StartBitStream(1, 5, 3, 0, 6, 7, 4, 2);
-            packet.ReadXORByte(guid, 4);
-            packet.ReadXORByte(guid, 5);
-            packet.ReadXORByte(guid, 1);
-            packet.ReadXORByte(guid, 3);
-            packet.ReadXORByte(guid, 2);
-            packet.ReadInt32("Unk Int32");
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid, 0);
-            packet.ReadSingle("Speed");
-            packet.ReadXORByte(guid, 7);
+            var guid = packet.Translator.StartBitStream(1, 5, 3, 0, 6, 7, 4, 2);
+            packet.Translator.ReadXORByte(guid, 4);
+            packet.Translator.ReadXORByte(guid, 5);
+            packet.Translator.ReadXORByte(guid, 1);
+            packet.Translator.ReadXORByte(guid, 3);
+            packet.Translator.ReadXORByte(guid, 2);
+            packet.Translator.ReadInt32("Unk Int32");
+            packet.Translator.ReadXORByte(guid, 6);
+            packet.Translator.ReadXORByte(guid, 0);
+            packet.Translator.ReadSingle("Speed");
+            packet.Translator.ReadXORByte(guid, 7);
 
-            packet.WriteGuid("Guid", guid);
+            packet.Translator.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_MOVE_SET_CAN_FLY)]
@@ -553,18 +553,18 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         {
             var guid = new byte[8];
 
-            packet.StartBitStream(guid, 2, 4, 7, 0, 6, 3, 5, 1);
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid, 1);
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid, 0);
-            packet.ReadXORByte(guid, 3);
-            packet.ReadXORByte(guid, 5);
-            packet.ReadXORByte(guid, 7);
-            packet.ReadInt32("Movement Counter");
-            packet.ReadXORByte(guid, 4);
+            packet.Translator.StartBitStream(guid, 2, 4, 7, 0, 6, 3, 5, 1);
+            packet.Translator.ReadXORByte(guid, 2);
+            packet.Translator.ReadXORByte(guid, 1);
+            packet.Translator.ReadXORByte(guid, 6);
+            packet.Translator.ReadXORByte(guid, 0);
+            packet.Translator.ReadXORByte(guid, 3);
+            packet.Translator.ReadXORByte(guid, 5);
+            packet.Translator.ReadXORByte(guid, 7);
+            packet.Translator.ReadInt32("Movement Counter");
+            packet.Translator.ReadXORByte(guid, 4);
 
-            packet.WriteGuid("Guid", guid);
+            packet.Translator.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_MOVE_UNSET_CAN_FLY)]
@@ -572,11 +572,11 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         {
             var guid = new byte[8];
 
-            packet.StartBitStream(guid, 2, 6, 1, 7, 4, 5, 3, 0);
-            packet.ParseBitStream(guid, 2, 4, 5, 1, 7, 6, 3, 0);
-            packet.ReadInt32("Movement Counter");
+            packet.Translator.StartBitStream(guid, 2, 6, 1, 7, 4, 5, 3, 0);
+            packet.Translator.ParseBitStream(guid, 2, 4, 5, 1, 7, 6, 3, 0);
+            packet.Translator.ReadInt32("Movement Counter");
 
-            packet.WriteGuid("Guid", guid);
+            packet.Translator.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_MOVE_SET_FACING)]
@@ -591,134 +591,134 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var bit64 = false;
             var hasFallDirection = false;
 
-            pos.Y = packet.ReadSingle();
-            pos.X = packet.ReadSingle();
-            pos.Z = packet.ReadSingle();
+            pos.Y = packet.Translator.ReadSingle();
+            pos.X = packet.Translator.ReadSingle();
+            pos.Z = packet.Translator.ReadSingle();
 
-            var hasSplineElevation  = !packet.ReadBit();
+            var hasSplineElevation  = !packet.Translator.ReadBit();
 
-            guid[6] = packet.ReadBit();
-            guid[0] = packet.ReadBit();
+            guid[6] = packet.Translator.ReadBit();
+            guid[0] = packet.Translator.ReadBit();
 
-            var hasRotation = packet.ReadBit();
-            var hasTime = !packet.ReadBit();
-            var bit20 = !packet.ReadBit();
-            var hasTrans = packet.ReadBit();
-            var bits98 = (int)packet.ReadBits(22);
-            var hasFallData = packet.ReadBit();
+            var hasRotation = packet.Translator.ReadBit();
+            var hasTime = !packet.Translator.ReadBit();
+            var bit20 = !packet.Translator.ReadBit();
+            var hasTrans = packet.Translator.ReadBit();
+            var bits98 = (int)packet.Translator.ReadBits(22);
+            var hasFallData = packet.Translator.ReadBit();
 
-            guid[4] = packet.ReadBit();
+            guid[4] = packet.Translator.ReadBit();
 
-            var bitAC = packet.ReadBit();
+            var bitAC = packet.Translator.ReadBit();
 
-            guid[3] = packet.ReadBit();
+            guid[3] = packet.Translator.ReadBit();
 
-            var hasPitch = !packet.ReadBit();
+            var hasPitch = !packet.Translator.ReadBit();
 
-            guid[1] = packet.ReadBit();
+            guid[1] = packet.Translator.ReadBit();
 
-            var bitA8 = !packet.ReadBit();
-            var bit94 = packet.ReadBit();
+            var bitA8 = !packet.Translator.ReadBit();
+            var bit94 = packet.Translator.ReadBit();
 
-            guid[7] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
-            guid[5] = packet.ReadBit();
+            guid[7] = packet.Translator.ReadBit();
+            guid[2] = packet.Translator.ReadBit();
+            guid[5] = packet.Translator.ReadBit();
 
-            var hasMovementFlags = !packet.ReadBit();
-            var hasMovementFlagsExtra = !packet.ReadBit();
+            var hasMovementFlags = !packet.Translator.ReadBit();
+            var hasMovementFlagsExtra = !packet.Translator.ReadBit();
 
             if (hasTrans)
             {
-                transportGuid[3] = packet.ReadBit();
-                bit64 = packet.ReadBit();
-                transportGuid[2] = packet.ReadBit();
-                bit5C = packet.ReadBit();
-                transportGuid[5] = packet.ReadBit();
-                transportGuid[7] = packet.ReadBit();
-                transportGuid[6] = packet.ReadBit();
-                transportGuid[1] = packet.ReadBit();
-                transportGuid[4] = packet.ReadBit();
-                transportGuid[0] = packet.ReadBit();
+                transportGuid[3] = packet.Translator.ReadBit();
+                bit64 = packet.Translator.ReadBit();
+                transportGuid[2] = packet.Translator.ReadBit();
+                bit5C = packet.Translator.ReadBit();
+                transportGuid[5] = packet.Translator.ReadBit();
+                transportGuid[7] = packet.Translator.ReadBit();
+                transportGuid[6] = packet.Translator.ReadBit();
+                transportGuid[1] = packet.Translator.ReadBit();
+                transportGuid[4] = packet.Translator.ReadBit();
+                transportGuid[0] = packet.Translator.ReadBit();
             }
 
             if (hasMovementFlagsExtra)
-                packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 13);
+                packet.Translator.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 13);
 
             if (hasFallData)
-                hasFallDirection = packet.ReadBit();
+                hasFallDirection = packet.Translator.ReadBit();
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.Translator.ReadBitsE<MovementFlag>("Movement Flags", 30);
 
-            packet.ParseBitStream(guid, 3, 6, 4, 7, 0, 2, 5, 1);
+            packet.Translator.ParseBitStream(guid, 3, 6, 4, 7, 0, 2, 5, 1);
 
             for (var i = 0; i < bits98; ++i)
-                packet.ReadInt32("IntED", i);
+                packet.Translator.ReadInt32("IntED", i);
 
             if (hasTrans)
             {
-                packet.ReadSingle("Float48");
+                packet.Translator.ReadSingle("Float48");
 
-                packet.ReadXORByte(transportGuid, 2);
-                packet.ReadXORByte(transportGuid, 6);
-                packet.ReadXORByte(transportGuid, 7);
+                packet.Translator.ReadXORByte(transportGuid, 2);
+                packet.Translator.ReadXORByte(transportGuid, 6);
+                packet.Translator.ReadXORByte(transportGuid, 7);
 
                 if (bit5C)
-                    packet.ReadInt32("Int58");
+                    packet.Translator.ReadInt32("Int58");
 
-                packet.ReadXORByte(transportGuid, 4);
+                packet.Translator.ReadXORByte(transportGuid, 4);
 
-                packet.ReadInt32("Int54");
-                packet.ReadByte("Byte50");
+                packet.Translator.ReadInt32("Int54");
+                packet.Translator.ReadByte("Byte50");
 
-                packet.ReadXORByte(transportGuid, 1);
-                packet.ReadXORByte(transportGuid, 5);
+                packet.Translator.ReadXORByte(transportGuid, 1);
+                packet.Translator.ReadXORByte(transportGuid, 5);
 
                 if (bit64)
-                    packet.ReadInt32("Int60");
+                    packet.Translator.ReadInt32("Int60");
 
-                packet.ReadSingle("Float4C");
-                packet.ReadXORByte(transportGuid, 3);
-                packet.ReadXORByte(transportGuid, 0);
-                packet.ReadSingle("Float44");
-                packet.ReadSingle("Float40");
+                packet.Translator.ReadSingle("Float4C");
+                packet.Translator.ReadXORByte(transportGuid, 3);
+                packet.Translator.ReadXORByte(transportGuid, 0);
+                packet.Translator.ReadSingle("Float44");
+                packet.Translator.ReadSingle("Float40");
 
-                packet.WriteGuid("Transport Guid", transportGuid);
+                packet.Translator.WriteGuid("Transport Guid", transportGuid);
             }
 
             if (hasFallData)
             {
-                packet.ReadSingle("Vertical Speed");
+                packet.Translator.ReadSingle("Vertical Speed");
 
                 if (hasFallDirection)
                 {
-                    packet.ReadSingle("Fall Cos");
-                    packet.ReadSingle("Fall Sin");
-                    packet.ReadSingle("Horizontal Speed");
+                    packet.Translator.ReadSingle("Fall Cos");
+                    packet.Translator.ReadSingle("Fall Sin");
+                    packet.Translator.ReadSingle("Horizontal Speed");
                 }
 
-                packet.ReadUInt32("Fall time");
+                packet.Translator.ReadUInt32("Fall time");
             }
 
             if (hasRotation)
-                pos.O = packet.ReadSingle();
+                pos.O = packet.Translator.ReadSingle();
 
             if (hasTime)
-                packet.ReadUInt32("Timestamp");
+                packet.Translator.ReadUInt32("Timestamp");
 
             if (bitA8)
-                packet.ReadInt32("IntA8");
+                packet.Translator.ReadInt32("IntA8");
 
             if (bit20)
-                packet.ReadInt32("Int20");
+                packet.Translator.ReadInt32("Int20");
 
             if (hasSplineElevation)
-                packet.ReadSingle("Spline elevation");
+                packet.Translator.ReadSingle("Spline elevation");
 
             if (hasPitch)
-                packet.ReadSingle("Pitch");
+                packet.Translator.ReadSingle("Pitch");
 
-            packet.WriteGuid("Guid", guid);
+            packet.Translator.WriteGuid("Guid", guid);
             packet.AddValue("Position", pos);
         }
 
@@ -727,18 +727,18 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         {
             var guid = new byte[8];
 
-            packet.StartBitStream(guid, 4, 0, 7, 2, 3, 6, 5, 1);
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid, 5);
-            packet.ReadSingle("Duration modifier");
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid, 4);
-            packet.ReadXORByte(guid, 3);
-            packet.ReadXORByte(guid, 1);
-            packet.ReadXORByte(guid, 7);
-            packet.ReadXORByte(guid, 0);
+            packet.Translator.StartBitStream(guid, 4, 0, 7, 2, 3, 6, 5, 1);
+            packet.Translator.ReadXORByte(guid, 2);
+            packet.Translator.ReadXORByte(guid, 5);
+            packet.Translator.ReadSingle("Duration modifier");
+            packet.Translator.ReadXORByte(guid, 6);
+            packet.Translator.ReadXORByte(guid, 4);
+            packet.Translator.ReadXORByte(guid, 3);
+            packet.Translator.ReadXORByte(guid, 1);
+            packet.Translator.ReadXORByte(guid, 7);
+            packet.Translator.ReadXORByte(guid, 0);
 
-            packet.WriteGuid("GUID", guid);
+            packet.Translator.WriteGuid("GUID", guid);
         }
 
         [Parser(Opcode.CMSG_MOVE_HEARTBEAT)]
@@ -753,128 +753,128 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var hasTransportTime3 = false;
             var hasFallDirection = false;
 
-            pos.X = packet.ReadSingle();
-            pos.Y = packet.ReadSingle();
-            pos.Z = packet.ReadSingle();
+            pos.X = packet.Translator.ReadSingle();
+            pos.Y = packet.Translator.ReadSingle();
+            pos.Z = packet.Translator.ReadSingle();
 
-            guid[2] = packet.ReadBit();
-            guid[6] = packet.ReadBit();
-            var hasPitch = !packet.ReadBit();
-            var hasFallData = packet.ReadBit();
-            var bits98 = (int)packet.ReadBits(22);
-            var bit95 = packet.ReadBit();
-            guid[1] = packet.ReadBit();
-            guid[3] = packet.ReadBit();
-            var hasTrans = packet.ReadBit();
-            guid[5] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
-            guid[4] = packet.ReadBit();
-            var hasOrientation = !packet.ReadBit();
-            var bit94 = packet.ReadBit();
-            var bitA8 = !packet.ReadBit();
-            var hasTimestamp = !packet.ReadBit();
-            guid[0] = packet.ReadBit();
-            var bitAC = packet.ReadBit();
-            var hasMovementFlagExtra = !packet.ReadBit();
-            var bit90 = !packet.ReadBit();
-            var hasMovementFlag = !packet.ReadBit();
+            guid[2] = packet.Translator.ReadBit();
+            guid[6] = packet.Translator.ReadBit();
+            var hasPitch = !packet.Translator.ReadBit();
+            var hasFallData = packet.Translator.ReadBit();
+            var bits98 = (int)packet.Translator.ReadBits(22);
+            var bit95 = packet.Translator.ReadBit();
+            guid[1] = packet.Translator.ReadBit();
+            guid[3] = packet.Translator.ReadBit();
+            var hasTrans = packet.Translator.ReadBit();
+            guid[5] = packet.Translator.ReadBit();
+            guid[7] = packet.Translator.ReadBit();
+            guid[4] = packet.Translator.ReadBit();
+            var hasOrientation = !packet.Translator.ReadBit();
+            var bit94 = packet.Translator.ReadBit();
+            var bitA8 = !packet.Translator.ReadBit();
+            var hasTimestamp = !packet.Translator.ReadBit();
+            guid[0] = packet.Translator.ReadBit();
+            var bitAC = packet.Translator.ReadBit();
+            var hasMovementFlagExtra = !packet.Translator.ReadBit();
+            var bit90 = !packet.Translator.ReadBit();
+            var hasMovementFlag = !packet.Translator.ReadBit();
 
             if (hasMovementFlagExtra)
-                packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 13);
+                packet.Translator.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 13);
 
             if (hasTrans)
             {
-                transportGuid[3] = packet.ReadBit();
-                hasTransportTime3 = packet.ReadBit();
-                transportGuid[4] = packet.ReadBit();
-                transportGuid[6] = packet.ReadBit();
-                transportGuid[7] = packet.ReadBit();
-                transportGuid[0] = packet.ReadBit();
-                transportGuid[2] = packet.ReadBit();
-                hasTransportTime2 = packet.ReadBit();
-                transportGuid[1] = packet.ReadBit();
-                transportGuid[5] = packet.ReadBit();
+                transportGuid[3] = packet.Translator.ReadBit();
+                hasTransportTime3 = packet.Translator.ReadBit();
+                transportGuid[4] = packet.Translator.ReadBit();
+                transportGuid[6] = packet.Translator.ReadBit();
+                transportGuid[7] = packet.Translator.ReadBit();
+                transportGuid[0] = packet.Translator.ReadBit();
+                transportGuid[2] = packet.Translator.ReadBit();
+                hasTransportTime2 = packet.Translator.ReadBit();
+                transportGuid[1] = packet.Translator.ReadBit();
+                transportGuid[5] = packet.Translator.ReadBit();
             }
 
             if (hasFallData)
-                hasFallDirection = packet.ReadBit();
+                hasFallDirection = packet.Translator.ReadBit();
 
             if (hasMovementFlag)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.Translator.ReadBitsE<MovementFlag>("Movement Flags", 30);
 
-            packet.ReadXORByte(guid, 3);
-            packet.ReadXORByte(guid, 5);
-            packet.ReadXORByte(guid, 4);
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid, 1);
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid, 7);
+            packet.Translator.ReadXORByte(guid, 3);
+            packet.Translator.ReadXORByte(guid, 5);
+            packet.Translator.ReadXORByte(guid, 4);
+            packet.Translator.ReadXORByte(guid, 6);
+            packet.Translator.ReadXORByte(guid, 1);
+            packet.Translator.ReadXORByte(guid, 2);
+            packet.Translator.ReadXORByte(guid, 7);
 
             for (var i = 0; i < bits98; ++i)
-                packet.ReadInt32("IntED", i);
+                packet.Translator.ReadInt32("IntED", i);
 
-            packet.ReadXORByte(guid, 0);
+            packet.Translator.ReadXORByte(guid, 0);
 
             if (hasTrans)
             {
                 var tpos = new Vector4();
 
-                tpos.Y = packet.ReadSingle();
-                tpos.X = packet.ReadSingle();
-                packet.ReadByte("Transport Seat");
-                packet.ReadXORByte(transportGuid, 7);
-                tpos.O = packet.ReadSingle();
-                packet.ReadXORByte(transportGuid, 1);
-                packet.ReadXORByte(transportGuid, 0);
-                packet.ReadXORByte(transportGuid, 2);
+                tpos.Y = packet.Translator.ReadSingle();
+                tpos.X = packet.Translator.ReadSingle();
+                packet.Translator.ReadByte("Transport Seat");
+                packet.Translator.ReadXORByte(transportGuid, 7);
+                tpos.O = packet.Translator.ReadSingle();
+                packet.Translator.ReadXORByte(transportGuid, 1);
+                packet.Translator.ReadXORByte(transportGuid, 0);
+                packet.Translator.ReadXORByte(transportGuid, 2);
 
                 if (hasTransportTime3)
-                    packet.ReadUInt32("Transport Time 3");
+                    packet.Translator.ReadUInt32("Transport Time 3");
 
-                packet.ReadXORByte(transportGuid, 3);
-                packet.ReadUInt32("Transport Time");
+                packet.Translator.ReadXORByte(transportGuid, 3);
+                packet.Translator.ReadUInt32("Transport Time");
 
                 if (hasTransportTime2)
-                    packet.ReadUInt32("Transport Time 2");
+                    packet.Translator.ReadUInt32("Transport Time 2");
 
-                packet.ReadXORByte(transportGuid, 5);
-                tpos.Z = packet.ReadSingle();
-                packet.ReadXORByte(transportGuid, 4);
-                packet.ReadXORByte(transportGuid, 6);
+                packet.Translator.ReadXORByte(transportGuid, 5);
+                tpos.Z = packet.Translator.ReadSingle();
+                packet.Translator.ReadXORByte(transportGuid, 4);
+                packet.Translator.ReadXORByte(transportGuid, 6);
 
-                packet.WriteGuid("Transport Guid", transportGuid);
+                packet.Translator.WriteGuid("Transport Guid", transportGuid);
                 packet.AddValue("Transport Position", tpos);
             }
 
             if (hasFallData)
             {
-                packet.ReadUInt32("Fall time");
-                packet.ReadSingle("Vertical Speed");
+                packet.Translator.ReadUInt32("Fall time");
+                packet.Translator.ReadSingle("Vertical Speed");
 
                 if (hasFallDirection)
                 {
-                    packet.ReadSingle("Fall Cos");
-                    packet.ReadSingle("Horizontal Speed");
-                    packet.ReadSingle("Fall Sin");
+                    packet.Translator.ReadSingle("Fall Cos");
+                    packet.Translator.ReadSingle("Horizontal Speed");
+                    packet.Translator.ReadSingle("Fall Sin");
                 }
             }
 
             if (bit90)
-                packet.ReadSingle("Float90");
+                packet.Translator.ReadSingle("Float90");
 
             if (hasTimestamp)
-                packet.ReadUInt32("Timestamp");
+                packet.Translator.ReadUInt32("Timestamp");
 
             if (hasOrientation)
-                pos.O = packet.ReadSingle();
+                pos.O = packet.Translator.ReadSingle();
 
             if (bitA8)
-                packet.ReadInt32("IntA8");
+                packet.Translator.ReadInt32("IntA8");
 
             if (hasPitch)
-                packet.ReadSingle("Pitch");
+                packet.Translator.ReadSingle("Pitch");
 
-            packet.WriteGuid("Guid2", guid);
+            packet.Translator.WriteGuid("Guid2", guid);
             packet.AddValue("Position", pos);
         }
 
@@ -883,41 +883,41 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         {
             CoreParsers.MovementHandler.ActivePhases.Clear();
 
-            var guid = packet.StartBitStream(7, 5, 0, 4, 3, 1, 6, 2);
-            packet.ParseBitStream(guid, 4, 5, 2);
+            var guid = packet.Translator.StartBitStream(7, 5, 0, 4, 3, 1, 6, 2);
+            packet.Translator.ParseBitStream(guid, 4, 5, 2);
 
-            packet.ReadUInt32("UInt32 1");
+            packet.Translator.ReadUInt32("UInt32 1");
 
-            packet.ParseBitStream(guid, 1);
+            packet.Translator.ParseBitStream(guid, 1);
 
-            var count = packet.ReadUInt32() / 2;
+            var count = packet.Translator.ReadUInt32() / 2;
             packet.AddValue("Inactive Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadInt16<MapId>("Inactive Terrain swap", i);
+                packet.Translator.ReadInt16<MapId>("Inactive Terrain swap", i);
 
-            count = packet.ReadUInt32() / 2;
+            count = packet.Translator.ReadUInt32() / 2;
             packet.AddValue("Active Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadInt16<MapId>("Active Terrain swap", i);
+                packet.Translator.ReadInt16<MapId>("Active Terrain swap", i);
 
-            packet.ParseBitStream(guid, 3);
+            packet.Translator.ParseBitStream(guid, 3);
 
 
-            count = packet.ReadUInt32() / 2;
+            count = packet.Translator.ReadUInt32() / 2;
             packet.AddValue("Phases count", count);
             for (var i = 0; i < count; ++i)
-                CoreParsers.MovementHandler.ActivePhases.Add(packet.ReadUInt16("Phase id", i)); // Phase.dbc
+                CoreParsers.MovementHandler.ActivePhases.Add(packet.Translator.ReadUInt16("Phase id", i)); // Phase.dbc
 
-            packet.ParseBitStream(guid, 7, 0);
+            packet.Translator.ParseBitStream(guid, 7, 0);
 
-            count = packet.ReadUInt32() / 2;
+            count = packet.Translator.ReadUInt32() / 2;
             packet.AddValue("WorldMapArea swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadUInt16("WorldMapArea swap", i);
+                packet.Translator.ReadUInt16("WorldMapArea swap", i);
 
-            packet.ParseBitStream(guid, 6);
+            packet.Translator.ParseBitStream(guid, 6);
 
-            packet.WriteGuid("GUID", guid);
+            packet.Translator.WriteGuid("GUID", guid);
         }
 
         [Parser(Opcode.SMSG_CONTROL_UPDATE)]
@@ -925,11 +925,11 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         {
             var guid = new byte[8];
 
-            packet.StartBitStream(guid, 0, 2, 4, 6, 5, 3, 1, 7);
-            packet.ReadBit("AllowMove");
-            packet.ParseBitStream(guid, 5, 2, 6, 4, 7, 0, 3, 1);
+            packet.Translator.StartBitStream(guid, 0, 2, 4, 6, 5, 3, 1, 7);
+            packet.Translator.ReadBit("AllowMove");
+            packet.Translator.ParseBitStream(guid, 5, 2, 6, 4, 7, 0, 3, 1);
 
-            packet.WriteGuid("Guid", guid);
+            packet.Translator.WriteGuid("Guid", guid);
         }
     }
 }

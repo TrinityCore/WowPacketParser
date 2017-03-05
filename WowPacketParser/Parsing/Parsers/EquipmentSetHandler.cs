@@ -9,19 +9,19 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static void ReadSetInfo(Packet packet)
         {
-            packet.ReadPackedGuid("Set ID");
-            packet.ReadInt32("Index");
-            packet.ReadCString("Set Name");
-            packet.ReadCString("Set Icon");
+            packet.Translator.ReadPackedGuid("Set ID");
+            packet.Translator.ReadInt32("Index");
+            packet.Translator.ReadCString("Set Name");
+            packet.Translator.ReadCString("Set Icon");
 
             for (var j = 0; j < NumSlots; j++)
-                packet.ReadPackedGuid("Item GUID " + j);
+                packet.Translator.ReadPackedGuid("Item GUID " + j);
         }
 
         [Parser(Opcode.SMSG_LOAD_EQUIPMENT_SET)]
         public static void HandleEquipmentSetList(Packet packet)
         {
-            var count = packet.ReadInt32("Count");
+            var count = packet.Translator.ReadInt32("Count");
 
             for (var i = 0; i < count; i++)
                 ReadSetInfo(packet);
@@ -36,9 +36,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_EQUIPMENT_SET_ID)]
         public static void HandleEquipmentSetSaved(Packet packet)
         {
-            packet.ReadInt32("Index");
+            packet.Translator.ReadInt32("Index");
 
-            packet.ReadPackedGuid("Set ID");
+            packet.Translator.ReadPackedGuid("Set ID");
         }
 
         [Parser(Opcode.CMSG_EQUIPMENT_SET_USE)]
@@ -46,24 +46,24 @@ namespace WowPacketParser.Parsing.Parsers
         {
             for (var i = 0; i < NumSlots; i++)
             {
-                packet.ReadPackedGuid("Item GUID ", i);
+                packet.Translator.ReadPackedGuid("Item GUID ", i);
 
-                packet.ReadByte("Source Bag", i);
+                packet.Translator.ReadByte("Source Bag", i);
 
-                packet.ReadByte("Source Slot", i);
+                packet.Translator.ReadByte("Source Slot", i);
             }
         }
 
         [Parser(Opcode.SMSG_USE_EQUIPMENT_SET_RESULT)]
         public static void HandleUseEquipmentSetResult(Packet packet)
         {
-            packet.ReadByte("Result");
+            packet.Translator.ReadByte("Result");
         }
 
         [Parser(Opcode.CMSG_EQUIPMENT_SET_DELETE)]
         public static void HandleEquipmentSetDelete(Packet packet)
         {
-            packet.ReadPackedGuid("Set ID");
+            packet.Translator.ReadPackedGuid("Set ID");
         }
     }
 }

@@ -8,219 +8,219 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_LOOT_MONEY_NOTIFY)]
         public static void HandleLootMoneyNotify(Packet packet)
         {
-            packet.ReadUInt32("Gold");
+            packet.Translator.ReadUInt32("Gold");
 
             if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing)) // no idea when this was added, doesn't exist in 2.4.1
-                packet.ReadBool("Solo Loot"); // true = YOU_LOOT_MONEY, false = LOOT_MONEY_SPLIT
+                packet.Translator.ReadBool("Solo Loot"); // true = YOU_LOOT_MONEY, false = LOOT_MONEY_SPLIT
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623) && ClientVersion.RemovedInVersion(ClientVersionBuild.V4_3_0_15005)) // remove confirmed for 430
-                packet.ReadUInt32("Guild Gold");
+                packet.Translator.ReadUInt32("Guild Gold");
         }
 
         [Parser(Opcode.CMSG_LOOT_UNIT, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)]
         [Parser(Opcode.CMSG_LOOT_RELEASE, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleLoot(Packet packet)
         {
-            packet.ReadGuid("GUID");
+            packet.Translator.ReadGuid("GUID");
         }
 
         [Parser(Opcode.CMSG_LOOT_UNIT, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleLoot510(Packet packet)
         {
-            var guid = packet.StartBitStream(1, 2, 7, 3, 6, 0, 4, 5);
-            packet.ParseBitStream(guid, 1, 3, 5, 4, 0, 7, 6, 2);
-            packet.WriteGuid("GUID", guid);
+            var guid = packet.Translator.StartBitStream(1, 2, 7, 3, 6, 0, 4, 5);
+            packet.Translator.ParseBitStream(guid, 1, 3, 5, 4, 0, 7, 6, 2);
+            packet.Translator.WriteGuid("GUID", guid);
         }
 
         [Parser(Opcode.CMSG_LOOT_RELEASE, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleLootRelease510(Packet packet)
         {
-            var guid = packet.StartBitStream(4, 0, 6, 2, 3, 7, 1, 5);
-            packet.ParseBitStream(guid, 0, 4, 1, 6, 7, 5, 3, 2);
-            packet.WriteGuid("GUID", guid);
+            var guid = packet.Translator.StartBitStream(4, 0, 6, 2, 3, 7, 1, 5);
+            packet.Translator.ParseBitStream(guid, 0, 4, 1, 6, 7, 5, 3, 2);
+            packet.Translator.WriteGuid("GUID", guid);
         }
 
         [Parser(Opcode.CMSG_LOOT_MASTER_GIVE)]
         public static void HandleLootMasterGive(Packet packet)
         {
-            packet.ReadGuid("Loot GUID");
-            packet.ReadByte("Slot");
-            packet.ReadGuid("Player GUID");
+            packet.Translator.ReadGuid("Loot GUID");
+            packet.Translator.ReadByte("Slot");
+            packet.Translator.ReadGuid("Player GUID");
         }
 
         [Parser(Opcode.CMSG_SET_LOOT_METHOD)]
         public static void HandleLootMethod(Packet packet)
         {
-            packet.ReadUInt32E<LootMethod>("Loot Method");
-            packet.ReadGuid("Master GUID");
-            packet.ReadUInt32E<ItemQuality>("Loot Threshold");
+            packet.Translator.ReadUInt32E<LootMethod>("Loot Method");
+            packet.Translator.ReadGuid("Master GUID");
+            packet.Translator.ReadUInt32E<ItemQuality>("Loot Threshold");
         }
 
         [Parser(Opcode.CMSG_OPT_OUT_OF_LOOT)]
         public static void HandleOptOutOfLoot(Packet packet)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595))
-                packet.ReadBool("Always Pass");
+                packet.Translator.ReadBool("Always Pass");
             else
-                packet.ReadUInt32("Always Pass");
+                packet.Translator.ReadUInt32("Always Pass");
         }
 
         [Parser(Opcode.SMSG_LOOT_ALL_PASSED)]
         public static void HandleLootAllPassed(Packet packet)
         {
-            packet.ReadGuid("GUID");
-            packet.ReadUInt32("Slot");
-            packet.ReadUInt32<ItemId>("Entry");
-            packet.ReadInt32("Random Property Id");
-            packet.ReadInt32("Random Suffix");
+            packet.Translator.ReadGuid("GUID");
+            packet.Translator.ReadUInt32("Slot");
+            packet.Translator.ReadUInt32<ItemId>("Entry");
+            packet.Translator.ReadInt32("Random Property Id");
+            packet.Translator.ReadInt32("Random Suffix");
         }
 
         [Parser(Opcode.SMSG_LOOT_LIST)]
         public static void Handle(Packet packet)
         {
-            packet.ReadGuid("Creature GUID");
-            packet.ReadPackedGuid("Master Loot GUID?");
-            packet.ReadPackedGuid("Looter GUID");
+            packet.Translator.ReadGuid("Creature GUID");
+            packet.Translator.ReadPackedGuid("Master Loot GUID?");
+            packet.Translator.ReadPackedGuid("Looter GUID");
         }
 
         [Parser(Opcode.SMSG_LOOT_RELEASE)]
         public static void HandleLootReleaseResponse(Packet packet)
         {
-            packet.ReadGuid("GUID");
-            packet.ReadBool("Unk Bool"); // true calls CGUnit_C::UpdateLootAnimKit and CGameUI::CloseLoot
+            packet.Translator.ReadGuid("GUID");
+            packet.Translator.ReadBool("Unk Bool"); // true calls CGUnit_C::UpdateLootAnimKit and CGameUI::CloseLoot
         }
 
         [Parser(Opcode.SMSG_LOOT_REMOVED)]
         public static void HandleLootRemoved(Packet packet)
         {
-            packet.ReadByte("Slot");
+            packet.Translator.ReadByte("Slot");
         }
 
         [Parser(Opcode.SMSG_LOOT_RESPONSE)]
         public static void HandleLootResponse(Packet packet)
         {
-            packet.ReadGuid("GUID");
-            var lootType = packet.ReadByteE<LootType>("Loot Type");
+            packet.Translator.ReadGuid("GUID");
+            var lootType = packet.Translator.ReadByteE<LootType>("Loot Type");
             if (lootType == LootType.None)
             {
-                packet.ReadByte("Slot");
+                packet.Translator.ReadByte("Slot");
                 return;
             }
 
-            var count = packet.ReadByte("Drop Count");
+            var count = packet.Translator.ReadByte("Drop Count");
 
             byte currencyCount = 0;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
-                currencyCount = packet.ReadByte("Currency Count");
+                currencyCount = packet.Translator.ReadByte("Currency Count");
 
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadByte("Slot", i);
-                packet.ReadUInt32<ItemId>("Entry", i);
-                packet.ReadUInt32("Count", i);
-                packet.ReadUInt32("Display ID", i);
-                packet.ReadInt32("Random Suffix", i);
-                packet.ReadInt32("Random Property Id", i);
-                packet.ReadByteE<LootSlotType>("Slot Type", i);
+                packet.Translator.ReadByte("Slot", i);
+                packet.Translator.ReadUInt32<ItemId>("Entry", i);
+                packet.Translator.ReadUInt32("Count", i);
+                packet.Translator.ReadUInt32("Display ID", i);
+                packet.Translator.ReadInt32("Random Suffix", i);
+                packet.Translator.ReadInt32("Random Property Id", i);
+                packet.Translator.ReadByteE<LootSlotType>("Slot Type", i);
             }
 
             for (int i = 0; i < currencyCount; ++i)
             {
-                packet.ReadByte("Slot", i);
-                packet.ReadInt32("Currency Id", i);
-                packet.ReadInt32("Count", i); // unconfirmed
+                packet.Translator.ReadByte("Slot", i);
+                packet.Translator.ReadInt32("Currency Id", i);
+                packet.Translator.ReadInt32("Count", i); // unconfirmed
             }
         }
 
         [Parser(Opcode.CMSG_LOOT_ROLL)]
         public static void HandleLootRoll(Packet packet)
         {
-            packet.ReadGuid("GUID");
-            packet.ReadUInt32("Slot");
-            packet.ReadByteE<LootRollType>("Roll Type");
+            packet.Translator.ReadGuid("GUID");
+            packet.Translator.ReadUInt32("Slot");
+            packet.Translator.ReadByteE<LootRollType>("Roll Type");
         }
 
         [Parser(Opcode.SMSG_LOOT_ROLL)]
         public static void HandleLootRollResponse(Packet packet)
         {
-            packet.ReadGuid("GUID");
-            packet.ReadUInt32("Slot");
-            packet.ReadGuid("Player GUID");
-            packet.ReadUInt32<ItemId>("Entry");
-            packet.ReadInt32("Random Property Id");
-            packet.ReadInt32("Random Suffix");
+            packet.Translator.ReadGuid("GUID");
+            packet.Translator.ReadUInt32("Slot");
+            packet.Translator.ReadGuid("Player GUID");
+            packet.Translator.ReadUInt32<ItemId>("Entry");
+            packet.Translator.ReadInt32("Random Property Id");
+            packet.Translator.ReadInt32("Random Suffix");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
-                packet.ReadInt32("Roll Number");
+                packet.Translator.ReadInt32("Roll Number");
             else
-                packet.ReadByte("Roll Number");
-            packet.ReadByteE<LootRollType>("Roll Type");
-            packet.ReadBool("Auto Pass");
+                packet.Translator.ReadByte("Roll Number");
+            packet.Translator.ReadByteE<LootRollType>("Roll Type");
+            packet.Translator.ReadBool("Auto Pass");
         }
 
         [Parser(Opcode.SMSG_LOOT_ROLL_WON)]
         public static void HandleLootWon(Packet packet)
         {
-            packet.ReadGuid("GUID");
-            packet.ReadUInt32("Slot");
-            packet.ReadUInt32<ItemId>("Entry");
-            packet.ReadInt32("Random Property Id");
-            packet.ReadInt32("Random Suffix");
-            packet.ReadGuid("Player GUID");
+            packet.Translator.ReadGuid("GUID");
+            packet.Translator.ReadUInt32("Slot");
+            packet.Translator.ReadUInt32<ItemId>("Entry");
+            packet.Translator.ReadInt32("Random Property Id");
+            packet.Translator.ReadInt32("Random Suffix");
+            packet.Translator.ReadGuid("Player GUID");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
-                packet.ReadInt32("Roll Number");
+                packet.Translator.ReadInt32("Roll Number");
             else
-                packet.ReadByte("Roll Number");
-            packet.ReadByteE<LootRollType>("Roll Type");
+                packet.Translator.ReadByte("Roll Number");
+            packet.Translator.ReadByteE<LootRollType>("Roll Type");
         }
 
         [Parser(Opcode.SMSG_LOOT_START_ROLL)]
         public static void HandleStartLoot(Packet packet)
         {
-            packet.ReadGuid("GUID");
-            packet.ReadInt32<MapId>("Map ID");
+            packet.Translator.ReadGuid("GUID");
+            packet.Translator.ReadInt32<MapId>("Map ID");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685)) // probably earlier
-                packet.ReadUInt32("Slot");
-            packet.ReadUInt32<ItemId>("Entry");
-            packet.ReadInt32("Random Suffix");
-            packet.ReadInt32("Random Property Id");
-            packet.ReadUInt32("Count");
-            packet.ReadUInt32("Roll time");
-            packet.ReadByteE<LootVoteFlags>("Roll Vote Mask");
+                packet.Translator.ReadUInt32("Slot");
+            packet.Translator.ReadUInt32<ItemId>("Entry");
+            packet.Translator.ReadInt32("Random Suffix");
+            packet.Translator.ReadInt32("Random Property Id");
+            packet.Translator.ReadUInt32("Count");
+            packet.Translator.ReadUInt32("Roll time");
+            packet.Translator.ReadByteE<LootVoteFlags>("Roll Vote Mask");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
-                packet.ReadByte("unk"); //amount of players? need verification.
+                packet.Translator.ReadByte("unk"); //amount of players? need verification.
         }
 
         [Parser(Opcode.SMSG_LOOT_SLOT_CHANGED)]
         public static void HandleLootSlotChanged(Packet packet)
         {
-            packet.ReadGuid("GUID");
-            packet.ReadByte("Slot");
-            packet.ReadUInt32<ItemId>("Entry");
-            packet.ReadUInt32("Display ID");
-            packet.ReadInt32("Unk UInt32 1");
-            packet.ReadInt32("Unk UInt32 2"); // only seen 0
-            packet.ReadUInt32("Count");
+            packet.Translator.ReadGuid("GUID");
+            packet.Translator.ReadByte("Slot");
+            packet.Translator.ReadUInt32<ItemId>("Entry");
+            packet.Translator.ReadUInt32("Display ID");
+            packet.Translator.ReadInt32("Unk UInt32 1");
+            packet.Translator.ReadInt32("Unk UInt32 2"); // only seen 0
+            packet.Translator.ReadUInt32("Count");
         }
 
         [Parser(Opcode.SMSG_LOOT_MASTER_LIST)]
         public static void HandleLootMasterList(Packet packet)
         {
-            var count = packet.ReadByte("Count");
+            var count = packet.Translator.ReadByte("Count");
             for (var i = 0; i < count; i++)
-                packet.ReadGuid("GUID", i);
+                packet.Translator.ReadGuid("GUID", i);
         }
 
         [Parser(Opcode.SMSG_LOOT_CONTENTS)] //4.3.4
         public static void HandleLootContents(Packet packet)
         {
-            var count1 = packet.ReadBits("Loot Items Count", 21);
+            var count1 = packet.Translator.ReadBits("Loot Items Count", 21);
             for (var i = 0; i < count1; i++)
             {
-                packet.ReadUInt32("Display ID", i);
-                packet.ReadInt32("Random Suffix Factor", i);
-                packet.ReadInt32("Item Count", i);
-                packet.ReadUInt32<ItemId>("Item Entry", i);
-                packet.ReadInt32("Unk Int32", i); // possibly random property id or looted count
+                packet.Translator.ReadUInt32("Display ID", i);
+                packet.Translator.ReadInt32("Random Suffix Factor", i);
+                packet.Translator.ReadInt32("Item Count", i);
+                packet.Translator.ReadUInt32<ItemId>("Item Entry", i);
+                packet.Translator.ReadInt32("Unk Int32", i); // possibly random property id or looted count
             }
         }
 
@@ -228,7 +228,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CURRENCY_LOOT_REMOVED)]
         public static void HandleLootCurrency(Packet packet)
         {
-            packet.ReadByte("Slot");
+            packet.Translator.ReadByte("Slot");
         }
 
         [Parser(Opcode.SMSG_LOOT_CLEAR_MONEY)]
