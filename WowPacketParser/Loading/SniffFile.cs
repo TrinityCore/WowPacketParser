@@ -94,7 +94,7 @@ namespace WowPacketParser.Loading
             {
                 if (_tempName != null)
                 {
-                    File.Delete(_tempName);
+                    //File.Delete(_tempName);
                     Trace.WriteLine(_logPrefix + " Deleted temporary file " + Path.GetFileName(_tempName));
                 }
             }
@@ -217,7 +217,7 @@ namespace WowPacketParser.Loading
             var threadCount = setupThreads(outFileName);
 
             var written = false;
-            using (var writer = (Settings.DumpFormatWithText() ? new StreamWriter(outFileName, true) : null))
+            using (var writer = (Settings.DumpFormatWithText() ? GetWriter(outFileName) : null))
             {
                 var firstRead = true;
                 var firstWrite = true;
@@ -258,7 +258,7 @@ namespace WowPacketParser.Loading
                     if (firstWrite)
                     {
                         // ReSharper disable AccessToDisposedClosure
-                        writer?.WriteLine(GetHeader(FileName));
+                        writer?.Write(GetHeader(FileName));
                         // ReSharper restore AccessToDisposedClosure
                         firstWrite = false;
                     }
@@ -291,6 +291,24 @@ namespace WowPacketParser.Loading
                 WritePacketErrors();
 
             GC.Collect(); // Force a GC collect after parsing a file. It seems to help.
+        }
+
+        private static IWritingStrategy GetWriter(string outFileName)
+        {
+            IWritingStrategy writingStrategy = null;
+
+            switch (Settings.DumpTextFormat)
+            {
+                case TextOutputFormat.Txt:
+                    writingStrategy = new TextDumpWriter(outFileName);
+                    break;
+                case TextOutputFormat.Xml:
+                    writingStrategy = new XmlDumpWriter(outFileName);
+                    break;
+                default:
+                    break;
+            }
+            return writingStrategy;
         }
 
         private int setupThreads(string outFileName)
@@ -333,7 +351,7 @@ namespace WowPacketParser.Loading
             _stats.AddByStatus(packet.Status);
         }
 
-        private void writingProcedure(Packet packet, StreamWriter writer)
+        private void writingProcedure(Packet packet, IWritingStrategy writer)
         {
             // get packet header if necessary
             if (Settings.LogPacketErrors)
@@ -356,8 +374,11 @@ namespace WowPacketParser.Loading
             if (writer != null)
             {
                 // Write to file
-                writer.WriteLine(packet.Writer);
+                writer.Write(packet.Writer);
                 writer.Flush();
+                //Console.Write("\r\n Continue...");
+                //Console.ReadKey();
+                //Console.Write("\r");
             }
             // ReSharper restore AccessToDisposedClosure
             // Close Writer, Stream - Dispose

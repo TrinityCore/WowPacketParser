@@ -20,6 +20,11 @@ namespace WowPacketParser.Misc
             _builder.Append(value);
         }
 
+        public override string ToString()
+        {
+            return _builder.ToString();
+        }
+
         public void Clear()
         {
             _builder.Clear();

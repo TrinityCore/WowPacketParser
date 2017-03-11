@@ -114,6 +114,7 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.XML" />
     <Reference Include="Tamir.SharpSSH, Version=1.1.1.13, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Tamir.SharpSSH.1.1.1.13\lib\Tamir.SharpSSH.dll</HintPath>
@@ -400,7 +401,10 @@
     <Compile Include="Hotfix\HotfixStructureAttribute.cs" />
     <Compile Include="Loading\BinaryPacketReader.cs" />
     <Compile Include="Loading\IPacketReader.cs" />
+    <Compile Include="Loading\IWritingStrategy.cs" />
     <Compile Include="Loading\Reader.cs" />
+    <Compile Include="Loading\TextDumpWriter.cs" />
+    <Compile Include="Loading\XmlDumpWriter.cs" />
     <Compile Include="Misc\BattlenetBitStream.cs" />
     <Compile Include="Misc\BattlenetPacket.cs" />
     <Compile Include="Misc\BattlenetPacketHeader.cs" />
