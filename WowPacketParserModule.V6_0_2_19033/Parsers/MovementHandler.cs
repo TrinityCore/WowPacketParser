@@ -1,5 +1,7 @@
 ﻿using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using WowPacketParser.DBC;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
@@ -12,7 +14,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class MovementHandler
     {
-        public static readonly ConcurrentBag<ushort> ActivePhases = new ConcurrentBag<ushort>();
+        public static readonly HashSet<ushort> ActivePhases = new HashSet<ushort>();
 
         public static void ReadMovementStats(Packet packet, params object[] idx)
         {
@@ -370,6 +372,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 var flags = packet.ReadUInt16("PhaseFlags", i);
                 var id = packet.ReadUInt16("Id", i);
                 ActivePhases.Add(id);
+            }
+
+            if (DBC.Phases.Any())
+            {
+                foreach (var phaseGroup in DBC.GetPhaseGroups(ActivePhases))
+                    packet.WriteLine($"PhaseGroup: { phaseGroup } Phases: { string.Join(" - ", DBC.Phases[phaseGroup]) }");
             }
 
             var preloadMapIDCount = packet.ReadInt32("PreloadMapIDsCount") / 2;
