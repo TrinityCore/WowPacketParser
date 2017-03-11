@@ -49,8 +49,8 @@ namespace WowPacketParser.DBC
             else
                 Trace.WriteLine($"DBC folder \"{ GetPath() }\" found");
 
-            Console.WriteLine("File name                           LoadTime             Record count");
-            Console.WriteLine("---------------------------------------------------------------------");
+            Trace.WriteLine("File name                           LoadTime             Record count");
+            Trace.WriteLine("---------------------------------------------------------------------");
 
             Parallel.ForEach(Assembly.GetAssembly(typeof(DBC)).GetTypes(), type =>
             {
@@ -74,7 +74,7 @@ namespace WowPacketParser.DBC
                 if (recordCount == 0)
                     recordCount = (int)countGetter.Invoke(instance, new object[] { });
 
-                Console.WriteLine($"{ attr.FileName.PadRight(33) } { TimeSpan.FromTicks(span.Ticks).ToString().PadRight(28) } { recordCount.ToString().PadRight(19) }");
+                Trace.WriteLine($"{ attr.FileName.PadRight(33) } { TimeSpan.FromTicks(span.Ticks).ToString().PadRight(28) } { recordCount.ToString().PadRight(19) }");
             });
 
             await Task.WhenAll(Task.Run(() =>
@@ -191,6 +191,6 @@ namespace WowPacketParser.DBC
         public static readonly Dictionary<ushort, string> CriteriaStores = new Dictionary<ushort, string>();
         public static readonly Dictionary<uint, string> FactionStores = new Dictionary<uint, string>();
         public static readonly Dictionary<Tuple<uint, uint>, SpellEffectEntry> SpellEffectStores = new Dictionary<Tuple<uint, uint>, SpellEffectEntry>();
-        public static readonly SortedDictionary<ushort, List<ushort>> Phases = new SortedDictionary<ushort, List<ushort>>();
+        public static readonly Dictionary<ushort, List<ushort>> Phases = new Dictionary<ushort, List<ushort>>();
     }
 }
