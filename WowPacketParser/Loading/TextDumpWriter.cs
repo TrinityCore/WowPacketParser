@@ -1,40 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WowPacketParser.Enums;
-using WowPacketParser.Misc;
 
 namespace WowPacketParser.Loading
 {
-    public class TextDumpWriter : IDumpWriter
+    public class TextDumpWriter : IWritingStrategy
     {
         private StreamWriter _writer;
 
-        public TextDumpWriter(string fileName)
+        public TextDumpWriter(string outFileName)
         {
-            _writer = new StreamWriter(fileName, true);
+            _writer = new StreamWriter(outFileName, true);
         }
 
-        public void WriteHeader(string headers)
+        public void Write(object input)
         {
-            _writer.WriteLine(headers);
+            _writer.WriteLine(input.ToString());
         }
 
-        public void WriteItem(Packet packet)
+        public void Flush()
         {
-            _writer.WriteLine(packet.Formatter);
             _writer.Flush();
         }
 
         public void Dispose()
         {
             _writer.Dispose();
-            _writer = null;
         }
-
-       
     }
 }

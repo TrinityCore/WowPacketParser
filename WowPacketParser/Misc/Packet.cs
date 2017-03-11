@@ -12,22 +12,6 @@ using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.Misc
 {
-    /// <summary>
-    /// This class is the basic data transfer object (DTO) between the 
-    /// different components at the processing stage.</summary>
-    /// <remarks>
-    /// In future developments it should be much more decoupled from
-    /// methods dealing with the translation and storing processes.
-    /// The "AddValue" method will soon disappear.</remarks>
-    /// 
-    /// <seealso cref="PacketTranslator">
-    /// It uses a Translator class which is responsible for transforming 
-    /// the binary representation into the one selected by the output
-    /// in <seealso cref="Settings.DumpTextFormat"/>.</seealso>
-    /// 
-    /// <seealso cref="IPacketFormatter">
-    /// In the translation process uses a packet formatter to properly
-    /// build the concrete representation depending on the different uses.</seealso>
     public sealed partial class Packet : BinaryReader
     {
         private static readonly bool SniffData = Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.SniffData) || Settings.DumpFormat == DumpFormatType.SniffDataOnly;
@@ -35,27 +19,18 @@ namespace WowPacketParser.Misc
 
         private static DateTime _firstPacketTime;
 
-        public PacketTranslator Translator;
-
         [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "MemoryStream is disposed in ClosePacket().")]
-        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, IPacketFormatter formatter, string fileName)
+        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, IOutputBuilder writer, string fileName)
             : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
         {
             Opcode = opcode;
             Time = time;
             Direction = direction;
             Number = number;
+            Writer = writer;
             FileName = fileName;
-            WriteToFile = true;
             Status = ParsedStatus.None;
-
-            if(opcode == 0x04F6)
-            {
-                ;
-            }
-
-            Formatter = formatter;
-            Translator = new PacketTranslator(input, Length, WriteToFile, formatter, this);
+            WriteToFile = true;
 
             if (number == 0)
                 _firstPacketTime = Time;
@@ -65,18 +40,8 @@ namespace WowPacketParser.Misc
 
         [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "MemoryStream is disposed in ClosePacket().")]
         public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, string fileName)
-            : this(input, opcode, time, direction, number, formatterSelector(), fileName)
+            : this(input, opcode, time, direction, number, null, fileName)
         {
-        }
-
-        private static IPacketFormatter formatterSelector()
-        {
-            IPacketFormatter formatter;
-            if (Settings.DumpTextFormat == TextFormatType.Xml)
-                formatter = new XMLPacketFormatter();
-            else
-                formatter = new TextPacketFormatter();
-            return formatter;
         }
 
         public int Opcode { get; set; } // setter can't be private because it's used in multiple_packets
@@ -84,12 +49,12 @@ namespace WowPacketParser.Misc
         public TimeSpan TimeSpan { get; }
         public Direction Direction { get; }
         public int Number { get; }
+        public IOutputBuilder Writer { get; private set; }
         public string FileName { get; }
         public ParsedStatus Status { get; set; }
+        public bool WriteToFile { get; private set; }
         public int ConnectionIndex { get; set; }
         public IPEndPoint EndPoint { get; set; }
-
-        public IPacketFormatter Formatter { get; private set; }
 
         public void AddSniffData(StoreNameType type, int id, string data)
         {
@@ -181,7 +146,7 @@ namespace WowPacketParser.Misc
             }
 
             // Cannot use "using" here
-            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Formatter, FileName)
+            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer, FileName)
             {
                 ConnectionIndex = ConnectionIndex
             };
@@ -231,7 +196,7 @@ namespace WowPacketParser.Misc
             }
 
             // Cannot use "using" here
-            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Formatter, FileName)
+            var pkt = new Packet(newarr, Opcode, Time, Direction, Number, Writer, FileName)
             {
                 ConnectionIndex = ConnectionIndex
             };
@@ -247,16 +212,13 @@ namespace WowPacketParser.Misc
             return buffer;
         }
 
-        public byte[] ReadToEnd()
-        {
-            var length = (int)(Length - Position);
-            return Translator.ReadBytes(length);
-        }
-
         public string GetHeader(bool isMultiple = false)
         {
-            return Formatter.AppendHeaders(Direction, Opcode, Length, 
-                ConnectionIndex, EndPoint, Time, Number, isMultiple);
+            // ReSharper disable once UseStringInterpolation
+            return string.Format("{0}: {1} (0x{2}) Length: {3} ConnIdx: {4}{5} Time: {6} Number: {7}{8}",
+                Direction, Opcodes.GetOpcodeName(Opcode, Direction, false), Opcode.ToString("X4"),
+                Length, ConnectionIndex, EndPoint != null ? " EP: " + EndPoint : "", Time.ToString("MM/dd/yyyy HH:mm:ss.fff"),
+                Number, isMultiple ? " (part of another packet)" : "");
         }
 
         public long Position => BaseStream.Position;
@@ -268,20 +230,73 @@ namespace WowPacketParser.Misc
 
         public long Length => BaseStream.Length;
 
-        public bool WriteToFile { get; private set; }
-
         public bool CanRead()
         {
             return Position != Length;
         }
 
+        public void Write(string value)
+        {
+            if (!Settings.DumpFormatWithText())
+                return;
+
+            if (Writer == null)
+                Writer = new TextOutputBuilder();
+
+            Writer.Append(value);
+        }
+
+        public void Write(string format, params object[] args)
+        {
+            if (!Settings.DumpFormatWithText())
+                return;
+
+            if (Writer == null)
+                Writer = new TextOutputBuilder();
+
+            Writer.Append(string.Format(format, args)); 
+        }
+
+        public void WriteLine()
+        {
+            if (!Settings.DumpFormatWithText())
+                return;
+
+            if (Writer == null)
+                Writer = new TextOutputBuilder();
+
+            Writer.Append(Environment.NewLine);
+        }
+
+        public void WriteLine(string value)
+        {
+            if (!Settings.DumpFormatWithText())
+                return;
+
+            if (Writer == null)
+                Writer = new TextOutputBuilder();
+
+            Writer.Append(value + Environment.NewLine);
+        }
+
+        public void WriteLine(string format, params object[] args)
+        {
+            if (!Settings.DumpFormatWithText())
+                return;
+
+            if (Writer == null)
+                Writer = new TextOutputBuilder();
+
+            Writer.Append(string.Format(format, args) + Environment.NewLine);
+        }
+
         public void ClosePacket(bool clearWriter = true)
         {
-            if (clearWriter && Formatter != null)
+            if (clearWriter && Writer != null)
             {
                 if (Settings.DumpFormatWithText())
-                    Formatter.CloseItem();
-                Formatter = null;
+                    Writer.Clear();
+                Writer = null;
             }
 
             BaseStream.Close();
@@ -291,12 +306,7 @@ namespace WowPacketParser.Misc
 
         public T AddValue<T>(string name, T obj, params object[] indexes)
         {
-            if (Settings.DumpTextFormat == TextFormatType.Xml)
-            {
-                Formatter.AppendItemWithContent(name, obj.ToString(), "id", Translator.GetIndexString(indexes));
-            }
-            else
-                Formatter.AppendItem("{0}{1}: {2}", Translator.GetIndexString(indexes), name, obj);
+            WriteLine("{0}{1}: {2}", GetIndexString(indexes), name, obj);
             return obj;
         }
     }
