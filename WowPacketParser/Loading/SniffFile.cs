@@ -80,7 +80,6 @@ namespace WowPacketParser.Loading
 
         public void ProcessFile()
         {
-
             try
             {
                 ProcessFileImpl();
@@ -246,7 +245,25 @@ namespace WowPacketParser.Loading
                 },
                 packet => // write
                 {
-                    writingProcedure(packet, reader, writer, written, firstWrite);
+                    ShowPercentProgress("Processing...", reader.PacketReader.GetCurrentSize(), reader.PacketReader.GetTotalSize());
+
+                    if (!packet.Status.HasAnyFlag(Settings.OutputFlag) || !packet.WriteToFile)
+                    {
+                        packet.ClosePacket();
+                        return;
+                    }
+
+                    written = true;
+
+                    if (firstWrite)
+                    {
+                        // ReSharper disable AccessToDisposedClosure
+                        writer?.WriteLine(GetHeader(FileName));
+                        // ReSharper restore AccessToDisposedClosure
+                        firstWrite = false;
+                    }
+
+                    writingProcedure(packet, writer);
 
                 }, threadCount);
 
@@ -316,26 +333,8 @@ namespace WowPacketParser.Loading
             _stats.AddByStatus(packet.Status);
         }
 
-        private void writingProcedure(Packet packet, Reader reader, StreamWriter writer, bool written, bool firstWrite)
+        private void writingProcedure(Packet packet, StreamWriter writer)
         {
-            ShowPercentProgress("Processing...", reader.PacketReader.GetCurrentSize(), reader.PacketReader.GetTotalSize());
-
-            if (!packet.Status.HasAnyFlag(Settings.OutputFlag) || !packet.WriteToFile)
-            {
-                packet.ClosePacket();
-                return;
-            }
-
-            written = true;
-
-            if (firstWrite)
-            {
-                // ReSharper disable AccessToDisposedClosure
-                writer?.WriteLine(GetHeader(FileName));
-                // ReSharper restore AccessToDisposedClosure
-                firstWrite = false;
-            }
-
             // get packet header if necessary
             if (Settings.LogPacketErrors)
             {
