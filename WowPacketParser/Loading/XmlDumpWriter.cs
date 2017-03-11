@@ -46,7 +46,6 @@ namespace WowPacketParser.Loading
         {
             _document.Save(_writer);
             _writer.Dispose();
-            //_reader.Dispose();
         }
     }
 }

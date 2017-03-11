@@ -94,7 +94,7 @@ namespace WowPacketParser.Loading
             {
                 if (_tempName != null)
                 {
-                    //File.Delete(_tempName);
+                    File.Delete(_tempName);
                     Trace.WriteLine(_logPrefix + " Deleted temporary file " + Path.GetFileName(_tempName));
                 }
             }
