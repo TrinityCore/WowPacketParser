@@ -29,7 +29,7 @@ namespace WowPacketParser.Misc
         public static readonly bool DevMode = Conf.GetBoolean("DevMode", false);
         public static readonly int Threads = Conf.GetInt("Threads", 8);
 
-        public static readonly TextOutputFormat DumpTextFormat = TextOutputFormat.Txt;
+        public static readonly OutputFormat OutputTextFormat = OutputFormat.Txt;
 
         public static readonly bool SSHEnabled = Conf.GetBoolean("SSHEnabled", false);
         public static readonly string SSHHost = Conf.GetString("SSHHost", "localhost");

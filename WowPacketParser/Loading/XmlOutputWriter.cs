@@ -4,12 +4,12 @@ using System.Xml;
 
 namespace WowPacketParser.Loading
 {
-    public class XmlDumpWriter : IWritingStrategy
+    public class XmlOutputWriter : IWritingStrategy
     {
         private StreamWriter _writer;
         private XmlDocument _document;
         
-        public XmlDumpWriter(string outFileName)
+        public XmlOutputWriter(string outFileName)
         {
             _document = new XmlDocument();
 

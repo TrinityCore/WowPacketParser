@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WowPacketParser.Misc
 {
-    public enum TextOutputFormat
+    public enum OutputFormat
     {
         Txt,
         Xml

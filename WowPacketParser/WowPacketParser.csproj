@@ -403,8 +403,8 @@
     <Compile Include="Loading\IPacketReader.cs" />
     <Compile Include="Loading\IWritingStrategy.cs" />
     <Compile Include="Loading\Reader.cs" />
-    <Compile Include="Loading\TextDumpWriter.cs" />
-    <Compile Include="Loading\XmlDumpWriter.cs" />
+    <Compile Include="Loading\TextOutputWriter.cs" />
+    <Compile Include="Loading\XmlOutputWriter.cs" />
     <Compile Include="Misc\BattlenetBitStream.cs" />
     <Compile Include="Misc\BattlenetPacket.cs" />
     <Compile Include="Misc\BattlenetPacketHeader.cs" />
@@ -419,7 +419,7 @@
     <Compile Include="Misc\HighGuid.cs" />
     <Compile Include="Misc\IOutputBuilder.cs" />
     <Compile Include="Misc\TextOutputBuilder.cs" />
-    <Compile Include="Misc\TextOutputFormat.cs" />
+    <Compile Include="Misc\OutputFormat.cs" />
     <Compile Include="Misc\WowGuid.cs" />
     <Compile Include="Misc\LfgEntry.cs" />
     <Compile Include="Misc\Logger.cs" />

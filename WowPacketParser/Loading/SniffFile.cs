@@ -113,7 +113,7 @@ namespace WowPacketParser.Loading
                     if (packets.Count == 0)
                         break;
 
-                    statsAnalysis(packets);
+                    StatsAnalysis(packets);
                     break;
                 }
                 case DumpFormatType.SniffDataOnly:
@@ -131,7 +131,7 @@ namespace WowPacketParser.Loading
                         break;
                     }
 
-                    launchProcessing(outFileName);
+                    LaunchProcessing(outFileName);
                     break;
                 }
                 case DumpFormatType.Pkt:
@@ -140,7 +140,7 @@ namespace WowPacketParser.Loading
                     if (packets.Count == 0)
                         break;
 
-                    processPacket(packets);
+                    ProcessPacket(packets);
                     break;
                 }
                 case DumpFormatType.PktSplit:
@@ -183,7 +183,7 @@ namespace WowPacketParser.Loading
                 }
                 case DumpFormatType.SniffVersionSplit:
                 {
-                    processVersion();
+                    ProcessVersion();
                     break;
                 }
                 case DumpFormatType.ConnectionIndexes:
@@ -192,7 +192,7 @@ namespace WowPacketParser.Loading
                     if (packets.Count == 0)
                         break;
 
-                    processIndexes(packets);
+                    ProcessIndexes(packets);
                     break;
                 }
                 case DumpFormatType.Fusion:
@@ -212,9 +212,9 @@ namespace WowPacketParser.Loading
             }
         }
 
-        private void launchProcessing(string outFileName)
+        private void LaunchProcessing(string outFileName)
         {
-            var threadCount = setupThreads(outFileName);
+            var threadCount = SetupThreads(outFileName);
 
             var written = false;
             using (var writer = (Settings.DumpFormatWithText() ? GetWriter(outFileName) : null))
@@ -226,7 +226,7 @@ namespace WowPacketParser.Loading
 
                 var pwp = new ParallelWorkProcessor<Packet>(() => // read
                 {
-                    var tuple = readingProcedure(reader);
+                    var tuple = ReadingProcedure(reader);
 
                     if (firstRead)
                     {
@@ -239,7 +239,7 @@ namespace WowPacketParser.Loading
                     return tuple;
                 }, packet => // process
                 {
-                    processingProcedure(packet);
+                    ProcessingProcedure(packet);
                     
                     return packet;
                 },
@@ -263,7 +263,7 @@ namespace WowPacketParser.Loading
                         firstWrite = false;
                     }
 
-                    writingProcedure(packet, writer);
+                    WritingProcedure(packet, writer);
 
                 }, threadCount);
 
@@ -297,13 +297,13 @@ namespace WowPacketParser.Loading
         {
             IWritingStrategy writingStrategy = null;
 
-            switch (Settings.DumpTextFormat)
+            switch (Settings.OutputTextFormat)
             {
-                case TextOutputFormat.Txt:
-                    writingStrategy = new TextDumpWriter(outFileName);
+                case OutputFormat.Txt:
+                    writingStrategy = new TextOutputWriter(outFileName);
                     break;
-                case TextOutputFormat.Xml:
-                    writingStrategy = new XmlDumpWriter(outFileName);
+                case OutputFormat.Xml:
+                    writingStrategy = new XmlOutputWriter(outFileName);
                     break;
                 default:
                     break;
@@ -311,7 +311,7 @@ namespace WowPacketParser.Loading
             return writingStrategy;
         }
 
-        private int setupThreads(string outFileName)
+        private int SetupThreads(string outFileName)
         {
             Store.Store.SQLEnabledFlags = Settings.SQLOutputFlag;
             File.Delete(outFileName);
@@ -327,7 +327,7 @@ namespace WowPacketParser.Loading
             return threadCount;
         }
 
-        private Tuple<Packet,bool> readingProcedure(Reader reader)
+        private Tuple<Packet,bool> ReadingProcedure(Reader reader)
         {
             if (!reader.PacketReader.CanRead())
                 return Tuple.Create<Packet, bool>(null, true);
@@ -338,7 +338,7 @@ namespace WowPacketParser.Loading
             return Tuple.Create(packet, b);
         }
 
-        private void processingProcedure(Packet packet)
+        private void ProcessingProcedure(Packet packet)
         {
             // Parse the packet, adding text to Writer and stuff to the stores
             if (packet.Direction == Direction.BNClientToServer ||
@@ -351,7 +351,7 @@ namespace WowPacketParser.Loading
             _stats.AddByStatus(packet.Status);
         }
 
-        private void writingProcedure(Packet packet, IWritingStrategy writer)
+        private void WritingProcedure(Packet packet, IWritingStrategy writer)
         {
             // get packet header if necessary
             if (Settings.LogPacketErrors)
@@ -385,7 +385,7 @@ namespace WowPacketParser.Loading
             packet.ClosePacket();
         }
 
-        private void statsAnalysis(List<Packet> packets)
+        private void StatsAnalysis(List<Packet> packets)
         {
 
             var firstPacket = packets.First();
@@ -406,7 +406,7 @@ namespace WowPacketParser.Loading
 
         }
 
-        private void processIndexes(List<Packet> packets)
+        private void ProcessIndexes(List<Packet> packets)
         {
             using (var writer = new StreamWriter(Path.ChangeExtension(FileName, null) + "_connidx.txt"))
             {
@@ -440,7 +440,7 @@ namespace WowPacketParser.Loading
             }
         }
 
-        private void processVersion()
+        private void ProcessVersion()
         {
             var reader = _compression != FileCompression.None ? new Reader(_tempName, _sniffType) : new Reader(FileName, _sniffType);
 
@@ -470,7 +470,7 @@ namespace WowPacketParser.Loading
 
         }
 
-        private void processPacket(List<Packet> packets)
+        private void ProcessPacket(List<Packet> packets)
         {
             if (Settings.FilterPacketsNum < 0)
             {

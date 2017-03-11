@@ -3,11 +3,11 @@ using System.IO;
 
 namespace WowPacketParser.Loading
 {
-    public class TextDumpWriter : IWritingStrategy
+    public class TextOutputWriter : IWritingStrategy
     {
         private StreamWriter _writer;
 
-        public TextDumpWriter(string outFileName)
+        public TextOutputWriter(string outFileName)
         {
             _writer = new StreamWriter(outFileName, true);
         }
