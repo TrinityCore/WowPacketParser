@@ -29,6 +29,7 @@ namespace WowPacketParser.DBC
         public static Storage<ItemSparseEntry> ItemSparse = new Storage<ItemSparseEntry>(GetPath() + "Item-sparse.db2");
         public static Storage<MapEntry> Map = new Storage<MapEntry>(GetPath() + "Map.db2");
         public static Storage<MapDifficultyEntry> MapDifficulty = new Storage<MapDifficultyEntry>(GetPath() + "MapDifficulty.db2");
+        public static Storage<PhaseXPhaseGroupEntry> PhaseXPhaseGroup = new Storage<PhaseXPhaseGroupEntry>(GetPath() + "PhaseXPhaseGroup.db2");
         public static Storage<SoundKitEntry> SoundKit = new Storage<SoundKitEntry>(GetPath() + "SoundKit.db2");
         public static Storage<SpellEntry> Spell = new Storage<SpellEntry>(GetPath() + "Spell.db2");
         public static Storage<SpellEffectEntry> SpellEffect = new Storage<SpellEffectEntry>(GetPath() + "SpellEffect.db2");
@@ -110,10 +111,9 @@ namespace WowPacketParser.DBC
                     foreach (var criteriaTree in CriteriaTree)
                     {
                         string result = "";
-                        List<AchievementEntry> achievementList;
                         ushort criteriaTreeID = criteriaTree.Value.Parent > 0 ? criteriaTree.Value.Parent : (ushort)criteriaTree.Key;
 
-                        if (achievements.TryGetValue(criteriaTreeID, out achievementList))
+                        if (achievements.TryGetValue(criteriaTreeID, out List<AchievementEntry> achievementList))
                             foreach (var achievement in achievementList)
                                 result = $"AchievementID: {achievement.ID} Description: \"{ achievement.Description }\"";
 
@@ -146,7 +146,44 @@ namespace WowPacketParser.DBC
                         var tuple = Tuple.Create(effect.Value.SpellID, effect.Value.EffectIndex);
                         SpellEffectStores[tuple] = effect.Value;
                     }
+            }), Task.Run(() =>
+            {
+                if (PhaseXPhaseGroup != null)
+                    foreach (var phase in PhaseXPhaseGroup)
+                    {
+                        if (!Phases.ContainsKey(phase.Value.PhaseGroupID))
+                            Phases.Add(phase.Value.PhaseGroupID, new List<ushort>() { phase.Value.PhaseID });
+                        else
+                            Phases[phase.Value.PhaseGroupID].Add(phase.Value.PhaseID);
+                    }
             }));
+        }
+
+        public static HashSet<ushort> GetPhaseGroups(HashSet<ushort> phases)
+        {
+            if (!phases.Any())
+                return new HashSet<ushort>();
+
+            HashSet<ushort> phaseGroups = new HashSet<ushort>();
+
+            foreach (var phaseGroup in Phases)
+            {
+                bool valid = true;
+
+                foreach (var phase in phaseGroup.Value)
+                {
+                    if (!phases.Contains(phase))
+                        valid = false;
+                }
+
+                if (valid)
+                {
+                    Trace.WriteLine($"PhaseGroup: { phaseGroup.Key } Phases: { string.Join(" - ", phaseGroup.Value) }");
+                    phaseGroups.Add(phaseGroup.Key);
+                }
+            }
+
+            return phaseGroups;
         }
 
         public static readonly Dictionary<uint, string> Zones = new Dictionary<uint, string>();
@@ -154,5 +191,6 @@ namespace WowPacketParser.DBC
         public static readonly Dictionary<ushort, string> CriteriaStores = new Dictionary<ushort, string>();
         public static readonly Dictionary<uint, string> FactionStores = new Dictionary<uint, string>();
         public static readonly Dictionary<Tuple<uint, uint>, SpellEffectEntry> SpellEffectStores = new Dictionary<Tuple<uint, uint>, SpellEffectEntry>();
+        public static readonly SortedDictionary<ushort, List<ushort>> Phases = new SortedDictionary<ushort, List<ushort>>();
     }
 }

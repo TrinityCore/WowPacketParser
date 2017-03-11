@@ -140,6 +140,7 @@
     <Compile Include="DBC\Structures\Legion\ItemSparseEntry.cs" />
     <Compile Include="DBC\Structures\Legion\MapDifficultyEntry.cs" />
     <Compile Include="DBC\Structures\Legion\MapEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\PhaseXPhaseGroupEntry.cs" />
     <Compile Include="DBC\Structures\Legion\SoundKitEntry.cs" />
     <Compile Include="DBC\Structures\Legion\SpellEffectEntry.cs" />
     <Compile Include="DBC\Structures\Legion\SpellEntry.cs" />
