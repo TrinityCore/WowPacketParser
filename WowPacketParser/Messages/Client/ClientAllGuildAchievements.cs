@@ -139,7 +139,7 @@ namespace WowPacketParser.Messages.Client
             var count = packet.ReadUInt32();
             for (var i = 0; i < count; ++i)
             {
-                EarnedAchievement.ReadEarnedAchievement602(packet, "Earned", i);
+                EarnedAchievement.Read6(packet, "Earned", i);
             }
         }
     }

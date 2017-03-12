@@ -1,4 +1,5 @@
 ﻿using WowPacketParser.Enums;
+using WowPacketParser.Messages.Submessages;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -6,75 +7,6 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
     public static class CombatLogHandler
     {
-        public static void ReadAttackRoundInfo(Packet packet, params object[] indexes)
-        {
-            var hitInfo = packet.ReadInt32E<SpellHitInfo>("HitInfo", indexes);
-
-            packet.ReadPackedGuid128("AttackerGUID", indexes);
-            packet.ReadPackedGuid128("TargetGUID", indexes);
-
-            packet.ReadInt32("Damage", indexes);
-            packet.ReadInt32("OverDamage", indexes);
-
-            var subDmgCount = packet.ReadBool("HasSubDmg", indexes);
-            if (subDmgCount)
-            {
-                packet.ReadInt32("SchoolMask", indexes);
-                packet.ReadSingle("FloatDamage", indexes);
-                packet.ReadInt32("IntDamage", indexes);
-
-                if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_ABSORB | SpellHitInfo.HITINFO_FULL_ABSORB))
-                    packet.ReadInt32("DamageAbsorbed", indexes);
-
-                if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_RESIST | SpellHitInfo.HITINFO_FULL_RESIST))
-                    packet.ReadInt32("DamageResisted", indexes);
-            }
-
-            packet.ReadByteE<VictimStates>("VictimState", indexes);
-            packet.ReadInt32("AttackerState", indexes);
-
-            packet.ReadInt32<SpellId>("MeleeSpellID", indexes);
-
-            if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK))
-                packet.ReadInt32("BlockAmount", indexes);
-
-            if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_RAGE_GAIN))
-                packet.ReadInt32("RageGained", indexes);
-
-            if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_UNK0))
-            {
-                packet.ReadInt32("Unk Attacker State 3 1", indexes);
-                packet.ReadSingle("Unk Attacker State 3 2", indexes);
-                packet.ReadSingle("Unk Attacker State 3 3", indexes);
-                packet.ReadSingle("Unk Attacker State 3 4", indexes);
-                packet.ReadSingle("Unk Attacker State 3 5", indexes);
-                packet.ReadSingle("Unk Attacker State 3 6", indexes);
-                packet.ReadSingle("Unk Attacker State 3 7", indexes);
-                packet.ReadSingle("Unk Attacker State 3 8", indexes);
-                packet.ReadSingle("Unk Attacker State 3 9", indexes);
-                packet.ReadSingle("Unk Attacker State 3 10", indexes);
-                packet.ReadSingle("Unk Attacker State 3 11", indexes);
-                packet.ReadInt32("Unk Attacker State 3 12", indexes);
-            }
-
-            if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK | SpellHitInfo.HITINFO_UNK12))
-                packet.ReadSingle("Unk Float", indexes);
-
-            ReadSandboxScalingData(packet, indexes, "SandboxScalingData");
-        }
-
-        public static void ReadSandboxScalingData(Packet packet, params object[] idx)
-        {
-            packet.ReadByte("Type", idx);
-            packet.ReadByte("TargetLevel", idx);
-            packet.ReadByte("Expansion", idx);
-            packet.ReadByte("Class", idx);
-            packet.ReadByte("TargetMinScalingLevel", idx);
-            packet.ReadByte("TargetMaxScalingLevel", idx);
-            packet.ReadInt16("PlayerLevelDelta", idx);
-            packet.ReadSByte("TargetScalingLevelDelta", idx);
-        }
-
         public static void ReadPeriodicAuraLogEffectData(Packet packet, params object[] idx)
         {
             packet.ReadInt32("Effect", idx);
@@ -97,7 +29,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
 
             if (hasSandboxScaling)
-                ReadSandboxScalingData(packet, idx, "SandboxScalingData");
+                SandboxScalingData.Read7(packet, idx, "SandboxScalingData");
         }
 
         [Parser(Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG)]
@@ -142,10 +74,10 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
 
             if (hasLogData)
-                SpellHandler.ReadSpellCastLogData(packet, "SpellCastLogData");
+                SpellCastLogData.Read7(packet, "SpellCastLogData");
 
             if (hasSandboxScaling)
-                ReadSandboxScalingData(packet, "SandboxScalingData");
+                SandboxScalingData.Read7(packet, "SandboxScalingData");
         }
 
         [Parser(Opcode.SMSG_ATTACKER_STATE_UPDATE)]
@@ -154,11 +86,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var hasLogData = packet.ReadBit("HasLogData");
 
             if (hasLogData)
-                SpellHandler.ReadSpellCastLogData(packet);
+                SpellCastLogData.Read7(packet);
 
             packet.ReadInt32("Size");
 
-            ReadAttackRoundInfo(packet, "AttackRoundInfo");
+            AttackRoundInfoData.Read7(packet, "AttackRoundInfo");
         }
 
         [Parser(Opcode.SMSG_SPELL_PERIODIC_AURA_LOG)]
@@ -177,7 +109,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             var hasLogData = packet.ReadBit("HasLogData");
             if (hasLogData)
-                SpellHandler.ReadSpellCastLogData(packet, "SpellCastLogData");
+                SpellCastLogData.Read7(packet, "SpellCastLogData");
         }
 
         [Parser(Opcode.SMSG_SPELL_HEAL_LOG)]
@@ -197,7 +129,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var hasCritRollMade = packet.ReadBit("HasCritRollMade");
             var hasCritRollNeeded = packet.ReadBit("HasCritRollNeeded");
             var hasLogData = packet.ReadBit("HasLogData");
-            var hasSandboxScaling = packet.ReadBit("HasLogData");
+            var hasSandboxScaling = packet.ReadBit("HasSandboxScaling");
 
             if (hasCritRollMade)
                 packet.ReadSingle("CritRollMade");
@@ -206,11 +138,10 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadSingle("CritRollNeeded");
 
             if (hasLogData)
-                SpellHandler.ReadSpellCastLogData(packet);
-
+                SpellCastLogData.Read7(packet);
 
             if (hasSandboxScaling)
-                ReadSandboxScalingData(packet, "SandboxScalingData");
+                SandboxScalingData.Read7(packet, "SandboxScalingData");
         }
     }
 }

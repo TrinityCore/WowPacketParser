@@ -1,4 +1,5 @@
 ﻿using WowPacketParser.Enums;
+using WowPacketParser.Messages.Submessages;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -110,7 +111,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_SCENARIO_PROGRESS_UPDATE)]
         public static void HandleScenarioProgressUpdate(Packet packet)
         {
-            WowPacketParser.Messages.Submessages.CriteriaProgress.ReadCriteriaProgress602(packet, "Progress");
+            CriteriaProgress.Read6(packet, "Progress");
         }
 
         [Parser(Opcode.SMSG_SCENARIO_STATE)]
@@ -127,7 +128,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var int20 = packet.ReadInt32("BonusObjectiveDataCount");
 
             for (int i = 0; i < int36; i++)
-                WowPacketParser.Messages.Submessages.CriteriaProgress.ReadCriteriaProgress602(packet, "CriteriaProgress", i);
+                CriteriaProgress.Read6(packet, "CriteriaProgress", i);
 
             for (int i = 0; i < int20; i++)
             {

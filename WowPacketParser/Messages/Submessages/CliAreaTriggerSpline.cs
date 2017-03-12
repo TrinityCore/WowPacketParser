@@ -9,7 +9,7 @@ namespace WowPacketParser.Messages.Submessages
         public uint ElapsedTimeForMovement;
         public List<Vector3> Points;
 
-        public static void ReadAreaTriggerSpline6(Packet packet, params object[] indexes)
+        public static void Read6(Packet packet, params object[] indexes)
         {
             packet.ReadInt32("TimeToTarget", indexes);
             packet.ReadInt32("ElapsedTimeForMovement", indexes);
@@ -19,7 +19,7 @@ namespace WowPacketParser.Messages.Submessages
                 packet.ReadVector3("Points", indexes, i);
         }
 
-        public static void ReadAreaTriggerSpline7(Packet packet, params object[] indexes)
+        public static void Read7(Packet packet, params object[] indexes)
         {
             packet.ReadInt32("TimeToTarget", indexes);
             packet.ReadInt32("ElapsedTimeForMovement", indexes);

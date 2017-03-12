@@ -1,4 +1,3 @@
-using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -68,99 +67,6 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             packet.WriteGuid("Attacker GUID", attackerGUID);
             packet.WriteGuid("Victim GUID", victimGUID);
-        }
-
-        [Parser(Opcode.SMSG_ATTACKER_STATE_UPDATE)]
-        public static void HandleAttackerStateUpdate(Packet packet)
-        {
-            var guid = new Byte[8];
-
-            var hitInfo = packet.ReadInt32E<SpellHitInfo>("HitInfo");
-            packet.ReadPackedGuid("AttackerGUID");
-            packet.ReadPackedGuid("TargetGUID");
-            packet.ReadInt32("Damage");
-            packet.ReadInt32("OverDamage");
-
-            var subDmgCount = packet.ReadByte();
-
-            for (var i = 0; i < subDmgCount; ++i)
-            {
-                packet.ReadInt32("SchoolMask", i);
-                packet.ReadSingle("Float Damage", i);
-                packet.ReadInt32("Int Damage", i);
-            }
-
-            if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_ABSORB | SpellHitInfo.HITINFO_FULL_ABSORB))
-                for (var i = 0; i < subDmgCount; ++i)
-                    packet.ReadInt32("Damage Absorbed", i);
-
-            if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_RESIST | SpellHitInfo.HITINFO_FULL_RESIST))
-                for (var i = 0; i < subDmgCount; ++i)
-                    packet.ReadInt32("Damage Resisted", i);
-
-            packet.ReadByteE<VictimStates>("VictimState");
-            packet.ReadInt32("Unk Attacker State 0");
-
-            packet.ReadInt32<SpellId>("Melee Spell ID ");
-
-            if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK))
-                packet.ReadInt32("Block Amount");
-
-            if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_RAGE_GAIN))
-                packet.ReadInt32("Rage Gained");
-
-            if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_UNK0))
-            {
-                packet.ReadInt32("Unk Attacker State 3 1");
-                packet.ReadSingle("Unk Attacker State 3 2");
-                packet.ReadSingle("Unk Attacker State 3 3");
-                packet.ReadSingle("Unk Attacker State 3 4");
-                packet.ReadSingle("Unk Attacker State 3 5");
-                packet.ReadSingle("Unk Attacker State 3 6");
-                packet.ReadSingle("Unk Attacker State 3 7");
-                packet.ReadSingle("Unk Attacker State 3 8");
-                packet.ReadSingle("Unk Attacker State 3 9");
-                packet.ReadSingle("Unk Attacker State 3 10");
-                packet.ReadSingle("Unk Attacker State 3 11");
-                packet.ReadInt32("Unk Attacker State 3 12");
-            }
-
-            if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK | SpellHitInfo.HITINFO_UNK12))
-                packet.ReadSingle("Unk Float");
-
-            if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_UNK26))
-            {
-                packet.ReadInt32("Unk4");
-                packet.ReadInt32("Player current HP");
-                packet.ReadInt32("Unk3");
-
-                guid[7] = packet.ReadBit();
-                guid[6] = packet.ReadBit();
-                var counter = packet.ReadBits(21);
-                guid[2] = packet.ReadBit();
-                guid[0] = packet.ReadBit();
-                guid[3] = packet.ReadBit();
-                guid[5] = packet.ReadBit();
-                guid[1] = packet.ReadBit();
-                guid[4] = packet.ReadBit();
-
-                packet.ReadXORByte(guid, 0);
-                packet.ReadXORByte(guid, 5);
-                packet.ReadXORByte(guid, 6);
-                packet.ReadXORByte(guid, 2);
-
-                for (var i = 0; i < counter; ++i)
-                {
-                    packet.ReadUInt32("unk14");
-                    packet.ReadUInt32("unk6");
-                }
-                packet.ReadXORByte(guid, 3);
-                packet.ReadXORByte(guid, 4);
-                packet.ReadXORByte(guid, 1);
-                packet.ReadXORByte(guid, 7);
-
-                packet.ReadGuid("GUID");
-            }
         }
     }
 }

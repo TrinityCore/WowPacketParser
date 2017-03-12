@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
+using WowPacketParser.Messages.Submessages;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -441,7 +442,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     packet.ReadBit();
 
                 if (hasAreaTriggerSpline)
-                    AreaTriggerHandler.ReadAreaTriggerSpline(packet, index);
+                    CliAreaTriggerSpline.Read7(packet, index);
 
                 if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.HasTargetRollPitchYaw) != 0)
                     packet.ReadVector3("TargetRollPitchYaw", index);

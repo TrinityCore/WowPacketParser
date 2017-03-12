@@ -46,7 +46,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleInspectAchievementDataResponse(Packet packet)
         {
             packet.ReadPackedGuid("Player GUID");
-            Messages.Submessages.AllAchievements.ReadAllAchievementData3(packet);
+            Messages.Submessages.AllAchievements.Read3(packet);
         }
 
         [Parser(Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS, ClientVersionBuild.V4_3_4_15595)]

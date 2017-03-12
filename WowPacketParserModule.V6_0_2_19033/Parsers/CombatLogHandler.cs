@@ -1,7 +1,7 @@
 ﻿using WowPacketParser.Enums;
+using WowPacketParser.Messages.Submessages;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using SpellParsers = WowPacketParserModule.V6_0_2_19033.Parsers.SpellHandler;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
@@ -47,7 +47,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
 
             if (bit76)
-                SpellParsers.ReadSpellCastLogData(packet);
+                SpellCastLogData.Read6(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_PERIODIC_AURA_LOG)]
@@ -89,7 +89,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var bit56 = packet.ReadBit("HasLogData");
             if (bit56)
-                SpellParsers.ReadSpellCastLogData(packet);
+                SpellCastLogData.Read6(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_HEAL_LOG)]
@@ -119,7 +119,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadSingle("CritRollNeeded");
 
             if (hasLogData)
-                SpellParsers.ReadSpellCastLogData(packet);
+                SpellCastLogData.Read6(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_ENERGIZE_LOG)]
@@ -137,7 +137,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var bit100 = packet.ReadBit("HasLogData");
             if (bit100)
-                SpellParsers.ReadSpellCastLogData(packet);
+                SpellCastLogData.Read6(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_EXECUTE_LOG)]
@@ -198,7 +198,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var bit160 = packet.ReadBit("HasLogData");
             if (bit160)
-                SpellParsers.ReadSpellCastLogData(packet);
+                SpellCastLogData.Read6(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_DAMAGE_SHIELD)]
@@ -216,7 +216,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var bit76 = packet.ReadBit("HasLogData");
             if (bit76)
-                SpellHandler.ReadSpellCastLogData(packet);
+                SpellCastLogData.Read6(packet);
         }
 
         [Parser(Opcode.SMSG_ENVIRONMENTAL_DAMAGE_LOG)]
@@ -232,7 +232,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var bit76 = packet.ReadBit("HasLogData");
             if (bit76)
-                SpellHandler.ReadSpellCastLogData(packet);
+                SpellCastLogData.Read6(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_ABSORB_LOG)]
@@ -250,7 +250,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var bit100 = packet.ReadBit("HasLogData");
             if (bit100)
-                SpellParsers.ReadSpellCastLogData(packet);
+                SpellCastLogData.Read6(packet);
         }
 
         [Parser(Opcode.SMSG_SPELL_INTERRUPT_LOG)]
@@ -300,11 +300,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_ATTACK_SWING_LANDED_LOG)]
         public static void HandleAttackswingLandedLog(Packet packet)
         {
-            SpellParsers.ReadSpellCastLogData(packet);
+            SpellCastLogData.Read6(packet);
 
             packet.ReadInt32("Size");
 
-            CombatHandler.ReadAttackRoundInfo(packet);
+            AttackRoundInfoData.Read6(packet);
         }
 
         [Parser(Opcode.CMSG_SET_ADVANCED_COMBAT_LOGGING)]

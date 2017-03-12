@@ -165,7 +165,7 @@ namespace WowPacketParser.Messages.Client
         [Parser(Opcode.SMSG_ACCOUNT_CRITERIA_UPDATE, ClientVersionBuild.V6_0_2_19033)]
         public static void HandleCriteriaUpdateAccount602(Packet packet)
         {
-            CriteriaProgress.ReadCriteriaProgress602(packet, "Progress");
+            CriteriaProgress.Read6(packet, "Progress");
         }
     }
 }

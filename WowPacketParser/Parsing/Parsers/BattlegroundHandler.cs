@@ -746,14 +746,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBool("Remote");
         }
 
-        [Parser(Opcode.SMSG_ARENA_ERROR)]
-        public static void HandleArenaError(Packet packet)
-        {
-            var error = packet.ReadUInt32E<ArenaError>("Error");
-            if (error == ArenaError.NoTeam)
-                packet.ReadByte("Arena Type"); // 2, 3, 5
-        }
-
         [Parser(Opcode.SMSG_ARENA_TEAM_ROSTER)]
         public static void HandleArenaTeamRoster(Packet packet)
         {

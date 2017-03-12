@@ -10,7 +10,7 @@ namespace WowPacketParser.Messages.Submessages
         public uint VirtualRealmAddress;
         public uint NativeRealmAddress;
 
-        public static void ReadEarnedAchievement602(Packet packet, params object[] idx)
+        public static void Read6(Packet packet, params object[] idx)
         {
             packet.ReadInt32("Id", idx);
             packet.ReadPackedTime("Date", idx);

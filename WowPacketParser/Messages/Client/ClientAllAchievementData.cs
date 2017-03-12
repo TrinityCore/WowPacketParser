@@ -13,7 +13,7 @@ namespace WowPacketParser.Messages.Client
         [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_DATA, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandleAllAchievementData(Packet packet)
         {
-            AllAchievements.ReadAllAchievementData3(packet);
+            AllAchievements.Read3(packet);
         }
 
         [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_DATA, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_1_0_13914)]
@@ -640,7 +640,7 @@ namespace WowPacketParser.Messages.Client
         [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_DATA, ClientVersionBuild.V6_0_2_19033)]
         public static void HandleAllAchievementDataPlayer(Packet packet)
         {
-            AllAchievements.ReadAllAchievements602(packet, "Data");
+            AllAchievements.Read6(packet, "Data");
         }
     }
 }

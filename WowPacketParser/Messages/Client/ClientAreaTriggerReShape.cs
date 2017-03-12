@@ -20,7 +20,7 @@ namespace WowPacketParser.Messages.Client
             var hasAreaTriggerUnkType = packet.ReadBit("HasAreaTriggerUnkType");
 
             if (hasAreaTriggerSpline)
-                CliAreaTriggerSpline.ReadAreaTriggerSpline7(packet);
+                CliAreaTriggerSpline.Read7(packet);
 
             if (hasAreaTriggerUnkType)
             {

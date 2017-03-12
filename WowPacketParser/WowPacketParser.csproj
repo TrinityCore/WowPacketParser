@@ -2238,6 +2238,7 @@
     <Compile Include="Messages\Submessages\ResearchHistory.cs" />
     <Compile Include="Messages\Submessages\ResyncRune.cs" />
     <Compile Include="Messages\Submessages\RuneData.cs" />
+    <Compile Include="Messages\Submessages\SandboxScalingData.cs" />
     <Compile Include="Messages\Submessages\ScenarioBlobData.cs" />
     <Compile Include="Messages\Submessages\ScenarioPOIData.cs" />
     <Compile Include="Messages\Submessages\ScenarioPOIPointData.cs" />
@@ -2251,6 +2252,7 @@
     <Compile Include="Messages\Submessages\SpawnTrackerData.cs" />
     <Compile Include="Messages\Submessages\SpellAmmo.cs" />
     <Compile Include="Messages\Submessages\SpellCastData.cs" />
+    <Compile Include="Messages\Submessages\AttackRoundInfoData.cs" />
     <Compile Include="Messages\Submessages\SpellCastLogData.cs" />
     <Compile Include="Messages\Submessages\SpellCastRequest.cs" />
     <Compile Include="Messages\Submessages\SpellChannelStartInterruptImmunities.cs" />

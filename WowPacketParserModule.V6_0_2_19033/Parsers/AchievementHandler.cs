@@ -1,4 +1,5 @@
 using WowPacketParser.Enums;
+using WowPacketParser.Messages.Submessages;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
@@ -22,7 +23,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleRespondInspectAchievements(Packet packet)
         {
             packet.ReadPackedGuid128("Player");
-            WowPacketParser.Messages.Submessages.AllAchievements.ReadAllAchievements602(packet, "Data");
+            AllAchievements.Read6(packet, "Data");
         }
     }
 }

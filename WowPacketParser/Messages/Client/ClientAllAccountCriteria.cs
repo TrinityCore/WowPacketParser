@@ -151,7 +151,7 @@ namespace WowPacketParser.Messages.Client
             var count = packet.ReadUInt32("ProgressCount");
 
             for (var i = 0; i < count; ++i)
-                CriteriaProgress.ReadCriteriaProgress602(packet, "Progress", i);
+                CriteriaProgress.Read6(packet, "Progress", i);
         }
     }
 }

@@ -381,7 +381,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 }
 
                 if (hasAreaTriggerSpline)
-                    CliAreaTriggerSpline.ReadAreaTriggerSpline(packet, index);
+                    CliAreaTriggerSpline.Read6(packet, index);
             }
 
             if (hasGameObject) // 788

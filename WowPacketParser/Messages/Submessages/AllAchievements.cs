@@ -9,7 +9,7 @@ namespace WowPacketParser.Messages.Submessages
         public List<EarnedAchievement> Earned;
         public List<CriteriaProgress> Progress;
 
-        public static void ReadAllAchievementData3(Packet packet)
+        public static void Read3(Packet packet)
         {
             while (true)
             {
@@ -38,16 +38,16 @@ namespace WowPacketParser.Messages.Submessages
             }
         }
 
-        public static void ReadAllAchievements602(Packet packet, params object[] idx)
+        public static void Read6(Packet packet, params object[] idx)
         {
             var earnedCount = packet.ReadUInt32("EarnedCount", idx);
             var progressCount = packet.ReadUInt32("ProgressCount", idx);
 
             for (var i = 0; i < earnedCount; ++i)
-                EarnedAchievement.ReadEarnedAchievement602(packet, "Earned", i);
+                EarnedAchievement.Read6(packet, "Earned", i);
 
             for (var i = 0; i < progressCount; ++i)
-                CriteriaProgress.ReadCriteriaProgress602(packet, "Progress", i);
+                CriteriaProgress.Read6(packet, "Progress", i);
         }
     }
 }

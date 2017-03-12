@@ -12,7 +12,7 @@ namespace WowPacketParser.Messages.Submessages
         public UnixTime TimeFromStart;
         public UnixTime TimeFromCreate;
 
-        public static void ReadCriteriaProgress602(Packet packet, params object[] idx)
+        public static void Read6(Packet packet, params object[] idx)
         {
             packet.ReadInt32("Id", idx);
             packet.ReadUInt64("Quantity", idx);
