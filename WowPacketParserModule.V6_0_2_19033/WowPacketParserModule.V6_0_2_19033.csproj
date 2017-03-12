@@ -109,7 +109,6 @@
     <Compile Include="Parsers\AchievementHandler.cs" />
     <Compile Include="Parsers\AccountDataHandler.cs" />
     <Compile Include="Parsers\ActionBarHandler.cs" />
-    <Compile Include="Parsers\AddonHandler.cs" />
     <Compile Include="Parsers\ArchaelogyHandler.cs" />
     <Compile Include="Parsers\ArenaHandler.cs" />
     <Compile Include="Parsers\AreaTriggerHandler.cs" />
