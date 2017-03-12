@@ -8,52 +8,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 {
     public static class ChatHandler
     {
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_GUILD)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_INSTANCE_CHAT)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_OFFICER)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_PARTY)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_RAID)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_RAID_WARNING)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_SAY)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_YELL)]
-        public static void HandleClientChatMessage(Packet packet)
-        {
-            packet.ReadInt32E<Language>("Language");
-            var len = packet.ReadBits(8);
-            packet.ReadWoWString("Message", len);
-        }
-
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_DND)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_EMOTE)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_AFK)]
-        public static void HandleMessageChatDND(Packet packet)
-        {
-            var len = packet.ReadBits(8);
-            packet.ReadWoWString("Message", len);
-        }
-
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_WHISPER)]
-        public static void HandleClientChatMessageWhisper(Packet packet)
-        {
-            packet.ReadInt32E<Language>("Language");
-            var msgLen = packet.ReadBits(9);
-            var recvName = packet.ReadBits(8);
-
-            packet.ReadWoWString("Receivers Name", recvName);
-            packet.ReadWoWString("Message", msgLen);
-        }
-
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_CHANNEL)]
-        public static void HandleClientChatMessageChannel434(Packet packet)
-        {
-            packet.ReadInt32E<Language>("Language");
-            var msgLen = packet.ReadBits(8);
-            var channelNameLen = packet.ReadBits(9);
-
-            packet.ReadWoWString("Channel Name", channelNameLen);
-            packet.ReadWoWString("Message", msgLen);
-        }
-
         [Parser(Opcode.SMSG_CHAT)]
         public static void HandleServerChatMessage(Packet packet)
         {

@@ -126,21 +126,6 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
         }
 
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_GUILD)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_INSTANCE_CHAT)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_OFFICER)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_PARTY)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_RAID)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_RAID_WARNING)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_SAY)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_YELL)]
-        public static void HandleClientChatMessage(Packet packet)
-        {
-            packet.ReadInt32E<Language>("Language");
-            var len = packet.ReadBits(8);
-            packet.ReadWoWString("Message", len);
-        }
-
         [Parser(Opcode.SMSG_TEXT_EMOTE)]
         public static void HandleTextEmoteServer(Packet packet)
         {

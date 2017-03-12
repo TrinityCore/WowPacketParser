@@ -8,49 +8,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class ChatHandler
     {
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_GUILD)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_YELL)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_SAY)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_PARTY)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_INSTANCE_CHAT)]
-        public static void HandleClientChatMessage(Packet packet)
-        {
-            packet.ReadInt32E<Language>("Language");
-            var len = packet.ReadBits(8);
-            packet.ReadWoWString("Text", len);
-        }
-
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_CHANNEL)]
-        public static void HandleClientChatMessageChannel434(Packet packet)
-        {
-            packet.ReadInt32E<Language>("Language");
-            var channelNameLen = packet.ReadBits(9);
-            var msgLen = packet.ReadBits(8);
-            packet.ResetBitReader();
-            packet.ReadWoWString("Channel Name", channelNameLen);
-            packet.ReadWoWString("Message", msgLen);
-        }
-
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_WHISPER)]
-        public static void HandleClientChatMessageWhisper(Packet packet)
-        {
-            packet.ReadInt32E<Language>("Language");
-            var recvName = packet.ReadBits(9);
-            var msgLen = packet.ReadBits(8);
-
-            packet.ReadWoWString("Target", recvName);
-            packet.ReadWoWString("Text", msgLen);
-        }
-
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_DND)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_EMOTE)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_AFK)]
-        public static void HandleMessageChatDND(Packet packet)
-        {
-            var len = packet.ReadBits(8);
-            packet.ReadWoWString("Message", len);
-        }
-
         [Parser(Opcode.SMSG_CHAT)]
         public static void HandleServerChatMessage(Packet packet)
         {

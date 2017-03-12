@@ -65,7 +65,6 @@
     <Compile Include="Hotfix\SceneScriptEntry.cs" />
     <Compile Include="Hotfix\VignetteEntry.cs" />
     <Compile Include="Parsers\ActionBarHandler.cs" />
-    <Compile Include="Parsers\ChannelHandler.cs" />
     <Compile Include="Parsers\CharacterHandler.cs" />
     <Compile Include="Parsers\ChatHandler.cs" />
     <Compile Include="Parsers\GameObjectHandler.cs" />

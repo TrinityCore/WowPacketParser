@@ -155,52 +155,6 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.WriteGuid("GUID", guid);
         }
 
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_GUILD)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_INSTANCE_CHAT)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_OFFICER)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_PARTY)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_RAID)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_RAID_WARNING)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_SAY)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_YELL)]
-        public static void HandleClientChatMessage(Packet packet)
-        {
-            packet.ReadInt32E<Language>("Language");
-            var len = packet.ReadBits(8);
-            packet.ReadWoWString("Message", len);
-        }
-
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_AFK)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_DND)]
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_EMOTE)]
-        public static void HandleClientChatMessage2(Packet packet)
-        {
-            var len = packet.ReadBits(8);
-            packet.ReadWoWString("Message", len);
-        }
-
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_CHANNEL)]
-        public static void HandleClientChatMessageChannel(Packet packet)
-        {
-            packet.ReadInt32E<Language>("Language");
-            var msgLen = packet.ReadBits(8);
-            var channelNameLen = packet.ReadBits(9);
-
-            packet.ReadWoWString("Message", msgLen);
-            packet.ReadWoWString("Channel Name", channelNameLen);
-        }
-
-        [Parser(Opcode.CMSG_CHAT_MESSAGE_WHISPER)]
-        public static void HandleClientChatMessageWhisper(Packet packet)
-        {
-            packet.ReadInt32E<Language>("Language");
-            var recvName = packet.ReadBits(9);
-            var msgLen = packet.ReadBits(8);
-
-            packet.ReadWoWString("Message", msgLen);
-            packet.ReadWoWString("Receivers Name", recvName);
-        }
-
         [Parser(Opcode.SMSG_DEFENSE_MESSAGE)]
         public static void HandleDefenseMessage(Packet packet)
         {
