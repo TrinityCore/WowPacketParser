@@ -401,6 +401,7 @@
     <Compile Include="Loading\BinaryPacketReader.cs" />
     <Compile Include="Loading\IPacketReader.cs" />
     <Compile Include="Loading\Reader.cs" />
+    <Compile Include="Messages\CliChatAddonMessageBattleground.cs" />
     <Compile Include="Messages\Submessages\AccountObjectGetProfile.cs" />
     <Compile Include="Messages\Submessages\AccountObjectSetCheats.cs" />
     <Compile Include="Messages\Submessages\AccountObjectSetProfile.cs" />

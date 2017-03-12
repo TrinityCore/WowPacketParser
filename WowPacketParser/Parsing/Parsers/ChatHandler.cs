@@ -257,56 +257,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadWoWString("Message", msgLen);
         }
 
-        [Parser(Opcode.CMSG_CHAT_ADDON_MESSAGE_PARTY, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_3_15354)]
-        [Parser(Opcode.CMSG_CHAT_ADDON_MESSAGE_GUILD, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_3_15354)]
-        [Parser(Opcode.CMSG_CHAT_ADDON_MESSAGE_RAID, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_3_15354)]
-        [Parser(Opcode.CMSG_CHAT_ADDON_MESSAGE_BATTLEGROUND, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_3_15354)]
-        public static void HandleClientChatMessageAddon(Packet packet)
-        {
-            packet.ReadCString("Message");
-            packet.ReadCString("Prefix");
-        }
-
-        [Parser(Opcode.CMSG_CHAT_ADDON_MESSAGE_GUILD, ClientVersionBuild.V4_3_3_15354)]
-        [Parser(Opcode.CMSG_CHAT_ADDON_MESSAGE_BATTLEGROUND, ClientVersionBuild.V4_3_3_15354)]
-        public static void HandleClientChatMessageAddon434(Packet packet)
-        {
-            var length1 = packet.ReadBits(9);
-            var length2 = packet.ReadBits(5);
-            packet.ReadWoWString("Message", length1);
-            packet.ReadWoWString("Prefix", length2);
-        }
-
-        [Parser(Opcode.CMSG_CHAT_ADDON_MESSAGE_PARTY, ClientVersionBuild.V4_3_3_15354)]
-        [Parser(Opcode.CMSG_CHAT_ADDON_MESSAGE_RAID, ClientVersionBuild.V4_3_3_15354)]
-        [Parser(Opcode.CMSG_CHAT_ADDON_MESSAGE_OFFICER, ClientVersionBuild.V4_3_3_15354)]
-        public static void HandleClientChatMessageAddonRaid434(Packet packet)
-        {
-            var length1 = packet.ReadBits(5);
-            var length2 = packet.ReadBits(9);
-            packet.ReadWoWString("Prefix", length1);
-            packet.ReadWoWString("Message", length2);
-        }
-
-        [Parser(Opcode.CMSG_CHAT_ADDON_MESSAGE_WHISPER, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_3_15354)]
-        public static void HandleClientChatMessageAddonWhisper(Packet packet)
-        {
-            packet.ReadCString("Prefix");
-            packet.ReadCString("Target Name");
-            packet.ReadCString("Message");
-        }
-
-        [Parser(Opcode.CMSG_CHAT_ADDON_MESSAGE_WHISPER, ClientVersionBuild.V4_3_3_15354)]
-        public static void HandleClientChatMessageAddonWhisper434(Packet packet)
-        {
-            var msgLen = packet.ReadBits(9);
-            var prefixLen = packet.ReadBits(5);
-            var targetLen = packet.ReadBits(10);
-            packet.ReadWoWString("Message", msgLen);
-            packet.ReadWoWString("Prefix", prefixLen);
-            packet.ReadWoWString("Target Name", targetLen);
-        }
-
         [Parser(Opcode.CMSG_CHAT_MESSAGE_EMOTE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleClientChatMessageEmote(Packet packet)
         {
