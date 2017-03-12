@@ -8,6 +8,6 @@ namespace WowPacketParser.Messages
         public int SpellID;
         public ulong Caster;
         public List<ClientSpellLogEffect> Effects;
-        public SpellCastLogData LogData; // Optional
+        public SpellCastLogData? LogData; // Optional
     }
 }

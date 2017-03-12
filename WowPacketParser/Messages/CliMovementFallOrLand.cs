@@ -7,6 +7,6 @@ namespace WowPacketParser.Messages
     {
         public uint Time;
         public float JumpVelocity;
-        public CliMovementFallVelocity Velocity; // Optional
+        public CliMovementFallVelocity? Velocity; // Optional
     }
 }

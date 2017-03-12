@@ -5,6 +5,6 @@ namespace WowPacketParser.Messages
 {
     public unsafe struct ClientLFGuildPost
     {
-        public GuildPostData Post; // Optional
+        public GuildPostData? Post; // Optional
     }
 }

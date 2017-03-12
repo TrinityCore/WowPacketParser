@@ -8,9 +8,9 @@ namespace WowPacketParser.Messages
         public ulong PlayerGUID;
         public uint TimeOffset;
         public sbyte EntryType;
-        public ulong Money; // Optional
-        public int ItemID; // Optional
-        public int Count; // Optional
-        public sbyte OtherTab; // Optional
+        public ulong? Money; // Optional
+        public int? ItemID; // Optional
+        public int? Count; // Optional
+        public sbyte? OtherTab; // Optional
     }
 }

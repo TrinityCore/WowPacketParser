@@ -8,7 +8,7 @@ namespace WowPacketParser.Messages
         public ulong Guid;
         public ushort MoveMsgID;
         public float Speed;
-        public CliMovementStatus Status; // Optional
+        public CliMovementStatus? Status; // Optional
         public float Pitch;
         public Vector3 ImpactPos;
         public int SpellID;

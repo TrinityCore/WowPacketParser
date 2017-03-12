@@ -15,7 +15,7 @@ namespace WowPacketParser.Messages
         public float FlightBackSpeed;
         public float TurnRate;
         public float PitchRate;
-        public CliMovementSpline Spline; // Optional
+        public CliMovementSpline? Spline; // Optional
         public List<CliMovementForce> MovementForces;
     }
 }

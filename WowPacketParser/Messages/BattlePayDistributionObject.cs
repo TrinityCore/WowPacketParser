@@ -12,7 +12,7 @@ namespace WowPacketParser.Messages
         public uint TargetVirtualRealm;
         public uint TargetNativeRealm;
         public ulong PurchaseID;
-        public BattlePayProduct Product; // Optional
+        public BattlePayProduct? Product; // Optional
         public bool Revoked;
     }
 }

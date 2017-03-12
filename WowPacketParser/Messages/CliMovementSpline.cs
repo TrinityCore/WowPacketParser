@@ -7,6 +7,6 @@ namespace WowPacketParser.Messages
     {
         public uint ID;
         public Vector3 Destination;
-        public CliMovementSplineMove Move; // Optional
+        public CliMovementSplineMove? Move; // Optional
     }
 }

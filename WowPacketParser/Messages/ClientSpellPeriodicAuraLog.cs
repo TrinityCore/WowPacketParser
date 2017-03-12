@@ -7,7 +7,7 @@ namespace WowPacketParser.Messages
     {
         public ulong TargetGUID;
         public List<PeriodicAuraLogEffect> Entries;
-        public SpellCastLogData LogData; // Optional
+        public SpellCastLogData? LogData; // Optional
         public ulong CasterGUID;
         public int SpellID;
     }

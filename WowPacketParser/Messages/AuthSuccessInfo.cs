@@ -18,8 +18,8 @@ namespace WowPacketParser.Messages
         public List<RaceClassAvailability> AvailableClasses;
         public List<AvailableCharacterTemplateSet> Templates;
         public bool ForceCharacterTemplate;
-        public ushort NumPlayersHorde; // Optional
-        public ushort NumPlayersAlliance; // Optional
+        public ushort? NumPlayersHorde; // Optional
+        public ushort? NumPlayersAlliance; // Optional
         public bool IsVeteranTrial;
         public uint CurrencyID;
     }

@@ -7,9 +7,9 @@ namespace WowPacketParser.Messages
     {
         public int MailID;
         public byte SenderType;
-        public ulong SenderCharacter; // Optional
+        public ulong? SenderCharacter; // Optional
         public PlayerGuidLookupHint SenderHint;
-        public int AltSenderID; // Optional
+        public int? AltSenderID; // Optional
         public ulong Cod;
         public int PackageID;
         public int StationeryID;

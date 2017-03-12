@@ -18,7 +18,7 @@ namespace WowPacketParser.Messages
         public int MaxHealth;
         public int Speed;
         public string CustomName;
-        public ClientBattlePetOwnerInfo OwnerInfo; // Optional
+        public ClientBattlePetOwnerInfo? OwnerInfo; // Optional
         public bool NoRename;
         public byte BreedQuality;
     }

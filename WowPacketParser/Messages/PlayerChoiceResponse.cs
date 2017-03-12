@@ -9,6 +9,6 @@ namespace WowPacketParser.Messages
         public string Answer;
         public string Description;
         public int ChoiceArtFileID;
-        public PlayerChoiceResponseReward Reward; // Optional
+        public PlayerChoiceResponseReward? Reward; // Optional
     }
 }

@@ -5,8 +5,8 @@ namespace WowPacketParser.Messages
 {
     public unsafe struct ClientAuthResponse
     {
-        public AuthWaitInfo WaitInfo; // Optional
+        public AuthWaitInfo? WaitInfo; // Optional
         public byte Result;
-        public AuthSuccessInfo SuccessInfo; // Optional
+        public AuthSuccessInfo? SuccessInfo; // Optional
     }
 }

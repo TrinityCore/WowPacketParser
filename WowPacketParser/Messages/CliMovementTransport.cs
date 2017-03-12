@@ -10,7 +10,7 @@ namespace WowPacketParser.Messages
         public float Facing;
         public byte VehicleSeatIndex;
         public uint MoveTime;
-        public uint PrevMoveTime; // Optional
-        public int VehicleRecID; // Optional
+        public uint? PrevMoveTime; // Optional
+        public int? VehicleRecID; // Optional
     }
 }

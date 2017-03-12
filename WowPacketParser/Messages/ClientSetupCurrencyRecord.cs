@@ -7,9 +7,9 @@ namespace WowPacketParser.Messages
     {
         public int Type;
         public int Quantity;
-        public int WeeklyQuantity; // Optional
-        public int MaxWeeklyQuantity; // Optional
-        public int TrackedQuantity; // Optional
+        public int? WeeklyQuantity; // Optional
+        public int? MaxWeeklyQuantity; // Optional
+        public int? TrackedQuantity; // Optional
         public byte Flags;
     }
 }

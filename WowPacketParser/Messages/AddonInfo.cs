@@ -15,4 +15,3 @@ namespace WowPacketParser.Messages
         public fixed sbyte KeyData[256];
     }
 }
-once 

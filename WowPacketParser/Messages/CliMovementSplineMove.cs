@@ -11,11 +11,11 @@ namespace WowPacketParser.Messages
         public uint Duration;
         public float DurationModifier;
         public float NextDurationModifier;
-        public float JumpGravity; // Optional
-        public uint SpecialTime; // Optional
+        public float? JumpGravity; // Optional
+        public uint? SpecialTime; // Optional
         public List<Vector3> Points;
         public byte Mode;
-        public CliSplineFilter SplineFilter; // Optional
+        public CliSplineFilter? SplineFilter; // Optional
         public float FaceDirection;
         public ulong FaceGUID;
         public Vector3 FaceSpot;

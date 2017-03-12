@@ -8,7 +8,7 @@ namespace WowPacketParser.Messages
         public int Status;
         public List<int> SlotResult;
         public CliRideTicket Ticket;
-        public long AverageWaitTime; // Optional
-        public long ClientWaitTime; // Optional
+        public long? AverageWaitTime; // Optional
+        public long? ClientWaitTime; // Optional
     }
 }

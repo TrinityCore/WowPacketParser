@@ -5,7 +5,7 @@ namespace WowPacketParser.Messages
 {
     public unsafe struct ClientSpellGo
     {
-        public SpellCastLogData LogData; // Optional
+        public SpellCastLogData? LogData; // Optional
         public SpellCastData Cast;
     }
 }

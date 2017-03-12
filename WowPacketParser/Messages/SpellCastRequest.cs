@@ -11,7 +11,7 @@ namespace WowPacketParser.Messages
         public byte SendCastFlags;
         public SpellTargetData Target;
         public MissileTrajectoryRequest MissileTrajectory;
-        public CliMovementStatus MoveUpdate; // Optional
+        public CliMovementStatus? MoveUpdate; // Optional
         public List<SpellWeight> Weight;
     }
 }

@@ -7,6 +7,6 @@ namespace WowPacketParser.Messages
     {
         public byte PartyIndex;
         public bool Accept;
-        public uint RolesDesired; // Optional
+        public uint? RolesDesired; // Optional
     }
 }

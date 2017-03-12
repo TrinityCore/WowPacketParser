@@ -14,7 +14,7 @@ namespace WowPacketParser.Messages
         public byte ClassID;
         public byte OutfitID;
         public byte HairColorID;
-        public int TemplateSetID; // Optional
+        public int? TemplateSetID; // Optional
         public string Name;
     }
 }

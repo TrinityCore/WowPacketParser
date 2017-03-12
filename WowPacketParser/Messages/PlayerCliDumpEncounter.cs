@@ -5,6 +5,6 @@ namespace WowPacketParser.Messages
 {
     public unsafe struct PlayerCliDumpEncounter
     {
-        public int DungeonEncounterID; // Optional
+        public int? DungeonEncounterID; // Optional
     }
 }

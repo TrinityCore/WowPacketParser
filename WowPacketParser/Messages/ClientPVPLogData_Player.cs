@@ -9,13 +9,13 @@ namespace WowPacketParser.Messages
         public uint Kills;
         public byte Faction;
         public bool IsInWorld;
-        public ClientPVPLogData_Honor Honor; // Optional
+        public ClientPVPLogData_Honor? Honor; // Optional
         public uint DamageDone;
         public uint HealingDone;
-        public uint PreMatchRating; // Optional
-        public int RatingChange; // Optional
-        public uint PreMatchMMR; // Optional
-        public int MmrChange; // Optional
+        public uint? PreMatchRating; // Optional
+        public int? RatingChange; // Optional
+        public uint? PreMatchMMR; // Optional
+        public int? MmrChange; // Optional
         public List<int> Stats;
         public int PrimaryTalentTree;
     }

@@ -13,6 +13,6 @@ namespace WowPacketParser.Messages
         public int Resisted;
         public bool Crit;
         public bool Multistrike;
-        public PeriodicAuraLogEffectDebugInfo DebugInfo; // Optional
+        public PeriodicAuraLogEffectDebugInfo? DebugInfo; // Optional
     }
 }

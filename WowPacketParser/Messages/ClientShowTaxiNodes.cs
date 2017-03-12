@@ -5,7 +5,7 @@ namespace WowPacketParser.Messages
 {
     public unsafe struct ClientShowTaxiNodes
     {
-        public ClientShowTaxiNodesWindowInfo WindowInfo; // Optional
+        public ClientShowTaxiNodesWindowInfo? WindowInfo; // Optional
         public List<byte> Nodes;
     }
 }

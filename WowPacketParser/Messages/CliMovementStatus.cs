@@ -11,9 +11,9 @@ namespace WowPacketParser.Messages
         public uint MoveTime;
         public Vector3 Position;
         public float Facing;
-        public CliMovementTransport Transport; // Optional
+        public CliMovementTransport? Transport; // Optional
         public float Pitch;
-        public CliMovementFallOrLand Fall; // Optional
+        public CliMovementFallOrLand? Fall; // Optional
         public float StepUpStartElevation;
         public bool HasSpline;
         public bool HeightChangeFailed;

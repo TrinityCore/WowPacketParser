@@ -6,6 +6,6 @@ namespace WowPacketParser.Messages
     public unsafe struct CliSupportTicketChatLog
     {
         public List<CliSupportTicketChatLine> Lines;
-        public uint ReportLineIndex; // Optional
+        public uint? ReportLineIndex; // Optional
     }
 }

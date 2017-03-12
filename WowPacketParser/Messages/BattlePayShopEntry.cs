@@ -11,6 +11,6 @@ namespace WowPacketParser.Messages
         public int Ordering;
         public uint Flags;
         public byte BannerType;
-        public BattlepayDisplayInfo DisplayInfo; // Optional
+        public BattlepayDisplayInfo? DisplayInfo; // Optional
     }
 }

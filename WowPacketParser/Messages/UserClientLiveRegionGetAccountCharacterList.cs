@@ -8,6 +8,6 @@ namespace WowPacketParser.Messages
         public string DevRealmOverride;
         public uint Token;
         public string DevCharOverride;
-        public byte RegionID; // Optional
+        public byte? RegionID; // Optional
     }
 }

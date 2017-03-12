@@ -7,6 +7,6 @@ namespace WowPacketParser.Messages
     {
         public byte Result;
         public ulong ItemGUID;
-        public ClientItemPurchaseContents Contents; // Optional
+        public ClientItemPurchaseContents? Contents; // Optional
     }
 }

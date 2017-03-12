@@ -5,7 +5,7 @@ namespace WowPacketParser.Messages
 {
     public unsafe struct CliSceneObjCreate
     {
-        public CliSceneLocalScriptData LocalScriptData; // Optional
-        public PetBattleFullUpdate PetBattleFullUpdate; // Optional
+        public CliSceneLocalScriptData? LocalScriptData; // Optional
+        public PetBattleFullUpdate? PetBattleFullUpdate; // Optional
     }
 }

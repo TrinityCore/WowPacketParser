@@ -12,6 +12,6 @@ namespace WowPacketParser.Messages
         public byte Type;
         public byte ChoiceType;
         public uint Flags;
-        public BattlepayDisplayInfo DisplayInfo; // Optional
+        public BattlepayDisplayInfo? DisplayInfo; // Optional
     }
 }

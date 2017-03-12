@@ -5,7 +5,7 @@ namespace WowPacketParser.Messages
 {
     public unsafe struct ClientGuildBankLogQueryResults
     {
-        public ulong WeeklyBonusMoney; // Optional
+        public ulong? WeeklyBonusMoney; // Optional
         public List<GuildBankLogEntry> Entry;
         public int Tab;
     }

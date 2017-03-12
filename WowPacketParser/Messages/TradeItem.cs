@@ -9,6 +9,6 @@ namespace WowPacketParser.Messages
         public int EntryID;
         public int StackCount;
         public ulong GiftCreator;
-        public UnwrappedTradeItem Unwrapped; // Optional
+        public UnwrappedTradeItem? Unwrapped; // Optional
     }
 }

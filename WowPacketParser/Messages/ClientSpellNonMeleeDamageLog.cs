@@ -13,9 +13,9 @@ namespace WowPacketParser.Messages
         public bool Periodic;
         public byte SchoolMask;
         public ulong CasterGUID;
-        public SpellCastLogData LogData; // Optional
+        public SpellCastLogData? LogData; // Optional
         public int Damage;
-        public ClientSpellNonMeleeDamageLogDebugInfo DebugInfo; // Optional
+        public ClientSpellNonMeleeDamageLogDebugInfo? DebugInfo; // Optional
         public int Flags;
         public int OverKill;
     }

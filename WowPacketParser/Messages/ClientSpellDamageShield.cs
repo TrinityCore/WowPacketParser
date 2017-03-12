@@ -7,7 +7,7 @@ namespace WowPacketParser.Messages
     {
         public int SpellID;
         public ulong Defender;
-        public SpellCastLogData LogData; // Optional
+        public SpellCastLogData? LogData; // Optional
         public int OverKill;
         public int TotalDamage;
         public ulong Attacker;

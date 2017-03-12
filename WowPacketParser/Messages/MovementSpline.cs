@@ -19,7 +19,7 @@ namespace WowPacketParser.Messages
         public ulong TransportGUID;
         public sbyte VehicleSeat;
         public List<uint> PackedDeltas;
-        public MonsterSplineFilter SplineFilter; // Optional
+        public MonsterSplineFilter? SplineFilter; // Optional
         public float FaceDirection;
         public ulong FaceGUID;
         public Vector3 FaceSpot;

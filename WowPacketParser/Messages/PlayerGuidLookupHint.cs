@@ -5,7 +5,7 @@ namespace WowPacketParser.Messages
 {
     public unsafe struct PlayerGuidLookupHint
     {
-        public uint VirtualRealmAddress; // Optional
-        public uint NativeRealmAddress; // Optional
+        public uint? VirtualRealmAddress; // Optional
+        public uint? NativeRealmAddress; // Optional
     }
 }

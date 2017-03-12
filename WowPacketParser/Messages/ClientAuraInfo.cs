@@ -6,6 +6,6 @@ namespace WowPacketParser.Messages
     public unsafe struct ClientAuraInfo
     {
         public byte Slot;
-        public ClientAuraDataInfo AuraData; // Optional
+        public ClientAuraDataInfo? AuraData; // Optional
     }
 }

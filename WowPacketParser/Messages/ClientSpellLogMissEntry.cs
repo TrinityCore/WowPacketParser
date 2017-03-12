@@ -7,6 +7,6 @@ namespace WowPacketParser.Messages
     {
         public ulong Victim;
         public byte MissReason;
-        public ClientSpellLogMissDebug Debug; // Optional
+        public ClientSpellLogMissDebug? Debug; // Optional
     }
 }

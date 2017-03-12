@@ -7,6 +7,6 @@ namespace WowPacketParser.Messages
     {
         public string Name;
         public byte Result;
-        public ulong Guid; // Optional
+        public ulong? Guid; // Optional
     }
 }

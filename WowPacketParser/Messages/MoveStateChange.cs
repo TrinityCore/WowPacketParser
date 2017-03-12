@@ -7,10 +7,10 @@ namespace WowPacketParser.Messages
     {
         public ushort MessageID;
         public uint SequenceIndex;
-        public float Speed; // Optional
-        public KnockBackInfo KnockBack; // Optional
-        public int VehicleRecID; // Optional
-        public CollisionHeightInfo CollisionHeight; // Optional
-        public CliMovementForce MovementForce; // Optional
+        public float? Speed; // Optional
+        public KnockBackInfo? KnockBack; // Optional
+        public int? VehicleRecID; // Optional
+        public CollisionHeightInfo? CollisionHeight; // Optional
+        public CliMovementForce? MovementForce; // Optional
     }
 }

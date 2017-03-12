@@ -7,6 +7,6 @@ namespace WowPacketParser.Messages
     {
         public byte Result;
         public ulong Guid;
-        public CharFactionChangeDisplayInfo Display; // Optional
+        public CharFactionChangeDisplayInfo? Display; // Optional
     }
 }

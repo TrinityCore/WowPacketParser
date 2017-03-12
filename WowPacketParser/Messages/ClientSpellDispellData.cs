@@ -7,7 +7,7 @@ namespace WowPacketParser.Messages
     {
         public int SpellID;
         public bool Harmful;
-        public int Rolled; // Optional
-        public int Needed; // Optional
+        public int? Rolled; // Optional
+        public int? Needed; // Optional
     }
 }

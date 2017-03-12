@@ -17,10 +17,10 @@ namespace WowPacketParser.Messages
         public List<SpellMissStatus> MissStatus;
         public SpellTargetData Target;
         public List<SpellPowerData> RemainingPower;
-        public RuneData RemainingRunes; // Optional
+        public RuneData? RemainingRunes; // Optional
         public MissileTrajectoryResult MissileTrajectory;
         public SpellAmmo Ammo;
-        public ProjectileVisual ProjectileVisual; // Optional
+        public ProjectileVisual? ProjectileVisual; // Optional
         public byte DestLocSpellCastIndex;
         public List<Location> TargetPoints;
         public CreatureImmunities Immunities;

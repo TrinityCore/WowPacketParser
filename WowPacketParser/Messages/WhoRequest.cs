@@ -17,6 +17,6 @@ namespace WowPacketParser.Messages
         public bool ShowEnemies;
         public bool ShowArenaPlayers;
         public bool ExactName;
-        public WhoRequestServerInfo ServerInfo; // Optional
+        public WhoRequestServerInfo? ServerInfo; // Optional
     }
 }

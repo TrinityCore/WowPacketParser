@@ -9,7 +9,7 @@ namespace WowPacketParser.Messages
         public int ClassID;
         public List<ushort> Talents;
         public List<ushort> Glyphs;
-        public CliInspectGuildData GuildData; // Optional
+        public CliInspectGuildData? GuildData; // Optional
         public ulong InspecteeGUID;
         public int SpecializationID;
     }

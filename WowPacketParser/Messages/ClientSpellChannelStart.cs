@@ -6,9 +6,9 @@ namespace WowPacketParser.Messages
     public unsafe struct ClientSpellChannelStart
     {
         public int SpellID;
-        public SpellChannelStartInterruptImmunities InterruptImmunities; // Optional
+        public SpellChannelStartInterruptImmunities? InterruptImmunities; // Optional
         public ulong CasterGUID;
-        public SpellTargetedHealPrediction HealPrediction; // Optional
+        public SpellTargetedHealPrediction? HealPrediction; // Optional
         public uint ChannelDuration;
     }
 }

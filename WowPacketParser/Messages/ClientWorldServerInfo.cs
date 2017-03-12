@@ -5,12 +5,12 @@ namespace WowPacketParser.Messages
 {
     public unsafe struct ClientWorldServerInfo
     {
-        public uint IneligibleForLootMask; // Optional
+        public uint? IneligibleForLootMask; // Optional
         public UnixTime WeeklyReset;
-        public uint InstanceGroupSize; // Optional
+        public uint? InstanceGroupSize; // Optional
         public byte IsTournamentRealm;
-        public uint RestrictedAccountMaxLevel; // Optional
-        public uint RestrictedAccountMaxMoney; // Optional
+        public uint? RestrictedAccountMaxLevel; // Optional
+        public uint? RestrictedAccountMaxMoney; // Optional
         public uint DifficultyID;
     }
 }

@@ -8,8 +8,8 @@ namespace WowPacketParser.Messages
         public uint Flags;
         public ulong Unit;
         public ulong Item;
-        public Location SrcLocation; // Optional
-        public Location DstLocation; // Optional
+        public Location? SrcLocation; // Optional
+        public Location? DstLocation; // Optional
         public string Name;
     }
 }

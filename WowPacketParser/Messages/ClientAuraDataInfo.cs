@@ -10,9 +10,9 @@ namespace WowPacketParser.Messages
         public uint ActiveFlags;
         public ushort CastLevel;
         public byte Applications;
-        public ulong CastUnit; // Optional
-        public int Duration; // Optional
-        public int Remaining; // Optional
+        public ulong? CastUnit; // Optional
+        public int? Duration; // Optional
+        public int? Remaining; // Optional
         public List<float> Points;
         public List<float> EstimatedPoints;
     }
