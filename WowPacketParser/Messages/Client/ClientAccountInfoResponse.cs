@@ -3,7 +3,7 @@ using WowPacketParser.Messages.Submessages;
 
 namespace WowPacketParser.Messages.Client
 {
-    public unsafe struct ClientAccountInfoResponse
+    public unsafe struct ClientAccountInfoResponse // FIXME: No handlers
     {
         public int BnetAccountID;
         public List<CliBnetLicense> GameAccountLicenses;

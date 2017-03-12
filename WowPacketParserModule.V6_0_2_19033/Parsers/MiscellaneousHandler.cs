@@ -414,23 +414,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.AddSniffData(StoreNameType.AreaTrigger, entry.Key, "AREATRIGGER");
         }
 
-        [Parser(Opcode.SMSG_ACCOUNT_MOUNT_UPDATE)]
-        public static void HandleAccountMountUpdate(Packet packet)
-        {
-            packet.ReadBit("IsFullUpdate");
-
-            var int32 = packet.ReadInt32("MountSpellIDsCount");
-            var int16 = packet.ReadInt32("MountIsFavoriteCount");
-
-            for (int i = 0; i < int32; i++)
-                packet.ReadInt32("MountSpellIDs", i);
-
-            packet.ResetBitReader();
-
-            for (int i = 0; i < int16; i++)
-                packet.ReadBit("MountIsFavorite", i);
-        }
-
         [Parser(Opcode.SMSG_ACCOUNT_TOYS_UPDATE)]
         public static void HandleAccountToysUpdate(Packet packet)
         {

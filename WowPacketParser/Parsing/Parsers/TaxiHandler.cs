@@ -57,12 +57,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Node 2 ID");
         }
 
-        [Parser(Opcode.SMSG_ACTIVATE_TAXI_REPLY)]
-        public static void HandleActivateTaxiReply(Packet packet)
-        {
-            packet.ReadUInt32E<TaxiError>("Result");
-        }
-
         [Parser(Opcode.CMSG_ACTIVATE_TAXI_EXPRESS)]
         public static void HandleActivateTaxiExpress(Packet packet)
         {

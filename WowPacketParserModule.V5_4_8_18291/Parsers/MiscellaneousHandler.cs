@@ -329,12 +329,6 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             Storage.Sounds.Add(sound, packet.TimeSpan);
         }
 
-        [Parser(Opcode.SMSG_ACTIVATE_TAXI_REPLY)]
-        public static void HandleActivateTaxiReply(Packet packet)
-        {
-            packet.ReadBitsE<TaxiError>("Result", 4);
-        }
-
         [Parser(Opcode.CMSG_ACTIVATE_TAXI)]
         public static void HandleActivateTaxi(Packet packet)
         {

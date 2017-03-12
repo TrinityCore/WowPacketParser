@@ -67,18 +67,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadAllAchievements(packet, "Data");
         }
 
-        [Parser(Opcode.SMSG_ACHIEVEMENT_EARNED)]
-        public static void HandleAchievementEarned(Packet packet)
-        {
-            packet.ReadPackedGuid128("Sender");
-            packet.ReadPackedGuid128("Earner");
-            packet.ReadUInt32("AchievementID");
-            packet.ReadPackedTime("Time");
-            packet.ReadUInt32("EarnerNativeRealm");
-            packet.ReadUInt32("EarnerVirtualRealm");
-            packet.ReadBit("Initial");
-        }
-
         [Parser(Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS)]
         public static void HandleRespondInspectAchievements(Packet packet)
         {

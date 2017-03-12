@@ -23,15 +23,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Linked Name");
         }
 
-        [Parser(Opcode.SMSG_ACHIEVEMENT_EARNED)]
-        public static void HandleAchievementEarned(Packet packet)
-        {
-            packet.ReadPackedGuid("Player GUID");
-            packet.ReadInt32<AchievementId>("Achievement Id");
-            packet.ReadPackedTime("Time");
-            packet.ReadInt32("Unk Int32");
-        }
-
         [Parser(Opcode.SMSG_CRITERIA_UPDATE)]
         public static void HandleCriteriaUpdate(Packet packet)
         {

@@ -1,6 +1,6 @@
 namespace WowPacketParser.Messages.Cli
 {
-    public unsafe struct CliChatGMChat
+    public unsafe struct CliChatGMChat // FIXME: No handlers
     {
         public string Source;
         public string Arguments;
