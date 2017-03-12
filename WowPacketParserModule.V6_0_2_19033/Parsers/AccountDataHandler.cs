@@ -6,8 +6,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class AccountDataHandler
     {
-
-
         [Parser(Opcode.CMSG_UPDATE_ACCOUNT_DATA)]
         public static void HandleClientUpdateAccountData(Packet packet)
         {

@@ -5,8 +5,6 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class AddonHandler
     {
-        private static int _addonCount = -1;
-
         public static void ReadClientAddonsList(Packet packet)
         {
             var decompCount = packet.ReadInt32();
@@ -18,7 +16,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_8_9464))
             {
                 var count = newPacket.ReadInt32("Addons Count");
-                _addonCount = count;
+                Messages.ClientAddonInfo._addonCount = count;
 
                 for (var i = 0; i < count; i++)
                 {
@@ -44,58 +42,10 @@ namespace WowPacketParser.Parsing.Parsers
                     count++;
                 }
 
-                _addonCount = count;
+                Messages.ClientAddonInfo._addonCount = count;
             }
 
             newPacket.ClosePacket(false);
-        }
-
-        [Parser(Opcode.SMSG_ADDON_INFO)]
-        public static void HandleServerAddonsList(Packet packet)
-        {
-            // This packet requires _addonCount from CMSG_AUTH_SESSION to be parsed.
-            if (_addonCount == -1)
-            {
-                packet.AddValue("Error", "CMSG_AUTH_SESSION was not received - cannot successfully parse this packet.");
-                packet.ReadToEnd();
-                return;
-            }
-
-            for (var i = 0; i < _addonCount; i++)
-            {
-                packet.ReadByte("Addon State", i);
-
-                var sendCrc = packet.ReadBool("Use CRC", i);
-
-                if (sendCrc)
-                {
-                    var usePublicKey = packet.ReadBool("Use Public Key", i);
-
-                    if (usePublicKey)
-                        packet.ReadBytes("Name MD5", 256);
-
-                    packet.ReadInt32("Unk Int32", i);
-                }
-
-                if (packet.ReadBool("Use URL File", i))
-                    packet.ReadCString("Addon URL File", i);
-            }
-
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_8_9464))
-            {
-                var bannedCount = packet.ReadInt32("Banned Addons Count");
-
-                for (var i = 0; i < bannedCount; i++)
-                {
-                    packet.ReadInt32("ID", i);
-                    packet.ReadBytes("Name MD5", 16);
-                    packet.ReadBytes("Version MD5", 16);
-                    packet.ReadTime("Time", i);
-
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3a_11723))
-                        packet.ReadInt32("Is banned", i);
-                }
-            }
         }
 
         // Changed on 4.3.0, bitshifted
