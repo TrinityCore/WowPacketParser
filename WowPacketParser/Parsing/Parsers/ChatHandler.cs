@@ -21,13 +21,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Message");
         }
 
-        [Parser(Opcode.CMSG_CHAT_REPORT_IGNORED)]
-        public static void HandleChatIgnored(Packet packet)
-        {
-            packet.ReadGuid("GUID");
-            packet.ReadByte("Unk Byte");
-        }
-
         [Parser(Opcode.CMSG_EMOTE)]
         public static void HandleEmoteClient(Packet packet)
         {
