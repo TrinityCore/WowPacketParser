@@ -651,7 +651,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.AddValue("Position", pos);
         }
 
-        [Parser(Opcode.CMSG_MOVE_CHNG_TRANSPORT)]
+        [Parser(Opcode.CMSG_MOVE_CHANGE_TRANSPORT)]
         public static void HandleMoveChngTransport434(Packet packet)
         {
             var guid = new byte[8];

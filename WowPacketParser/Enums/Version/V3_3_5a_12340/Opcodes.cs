@@ -437,7 +437,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.CMSG_MAELSTROM_INVALIDATE_CACHE, 0x387},
             {Opcode.CMSG_SET_TAXI_BENCHMARK_MODE, 0x389},
             {Opcode.CMSG_REALM_SPLIT, 0x38C},
-            {Opcode.CMSG_MOVE_CHNG_TRANSPORT, 0x38D},
+            {Opcode.CMSG_MOVE_CHANGE_TRANSPORT, 0x38D},
             {Opcode.CMSG_TIME_SYNC_RESPONSE, 0x391},
             {Opcode.CMSG_SEND_LOCAL_EVENT, 0x392},
             {Opcode.CMSG_SEND_GENERAL_TRIGGER, 0x393},
