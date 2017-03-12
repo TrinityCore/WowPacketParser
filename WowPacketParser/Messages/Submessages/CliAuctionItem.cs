@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using WowPacketParser.Messages.Submessages;
-using WowPacketParser.Misc;
 
-namespace WowPacketParser.Messages
+namespace WowPacketParser.Messages.Submessages
 {
     public unsafe struct CliAuctionItem
     {
