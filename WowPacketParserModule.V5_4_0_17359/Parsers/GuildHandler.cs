@@ -202,38 +202,6 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadBit("Is guild group");
         }
 
-        [Parser(Opcode.SMSG_ALL_GUILD_ACHIEVEMENTS)]
-        public static void HandleGuildAchievementData(Packet packet)
-        {
-            var count = packet.ReadBits("Achievement count", 20);
-
-            var guid = new byte[count][];
-
-            for (var i = 0; i < count; ++i)
-            {
-                guid[i] = new byte[8];
-                packet.StartBitStream(guid[i], 4, 6, 3, 7, 0, 2, 5, 1);
-            }
-
-            for (var i = 0; i < count; ++i)
-            {
-                packet.ReadXORByte(guid[i], 6);
-                packet.ReadInt32<AchievementId>("Achievement Id", i);
-                packet.ReadInt32("Unk 1", i);
-                packet.ReadXORByte(guid[i], 3);
-                packet.ReadXORByte(guid[i], 7);
-                packet.ReadXORByte(guid[i], 1);
-                packet.ReadXORByte(guid[i], 0);
-                packet.ReadInt32("Unk 2", i);
-                packet.ReadXORByte(guid[i], 5);
-                packet.ReadXORByte(guid[i], 4);
-                packet.ReadPackedTime("Date", i);
-                packet.ReadXORByte(guid[i], 2);
-
-                packet.WriteGuid("GUID", guid[i], i);
-            }
-        }
-
         [Parser(Opcode.SMSG_GUILD_REPUTATION_WEEKLY_CAP)]
         public static void HandleGuildReputationWeeklyCap(Packet packet)
         {

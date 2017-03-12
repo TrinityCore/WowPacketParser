@@ -234,20 +234,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadSingle("Guild XP multiplier");
         }
 
-        [Parser(Opcode.SMSG_ALL_GUILD_ACHIEVEMENTS)]
-        public static void HandleGuildAchievementData(Packet packet)
-        {
-            var int10 = packet.ReadUInt32("EarnedAchievementCount");
-            for (var i = 0; i < int10; ++i)
-            {
-                packet.ReadInt32("Id", i);
-                packet.ReadPackedTime("Date", i);
-                packet.ReadPackedGuid128("Owner", i);
-                packet.ReadInt32("VirtualRealmAddress", i);
-                packet.ReadInt32("NativeRealmAddress", i);
-            }
-        }
-
         [Parser(Opcode.SMSG_GUILD_PERMISSIONS_QUERY_RESULTS)]
         public static void HandleGuildPermissionsQueryResult(Packet packet)
         {

@@ -188,13 +188,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("HealerGuid");
         }
 
-        [Parser(Opcode.SMSG_AREA_SPIRIT_HEALER_TIME)]
-        public static void HandleAreaSpiritHealerTime(Packet packet)
-        {
-            packet.ReadPackedGuid128("HealerGuid");
-            packet.ReadUInt32("TimeLeft");
-        }
-
         [Parser(Opcode.SMSG_REPORT_PVP_AFK_RESULT)]
         public static void HandleReportPvPPlayerAFKResult(Packet packet)
         {
