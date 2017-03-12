@@ -6,12 +6,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 {
     public static class ChannelHandler
     {
-        [Parser(Opcode.CMSG_CHAT_CHANNEL_LIST)]
-        public static void HandleChannelList(Packet packet)
-        {
-            var channelLength = packet.ReadBits(7);
-            packet.ReadWoWString("Channel Name", channelLength);
-        }
+
 
         [Parser(Opcode.SMSG_CHANNEL_NOTIFY)]
         public static void HandleChannelNotify(Packet packet)
