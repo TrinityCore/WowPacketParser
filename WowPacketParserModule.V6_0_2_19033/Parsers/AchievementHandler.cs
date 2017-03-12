@@ -18,12 +18,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadTime("TimeFromCreate");
         }
 
-        [Parser(Opcode.SMSG_ACCOUNT_CRITERIA_UPDATE)]
-        public static void HandleCriteriaUpdateAccount(Packet packet)
-        {
-            ReadCriteriaProgress(packet, "Progress");
-        }
-
         public static void ReadCriteriaProgress(Packet packet, params object[] idx)
         {
             packet.ReadInt32("Id", idx);
