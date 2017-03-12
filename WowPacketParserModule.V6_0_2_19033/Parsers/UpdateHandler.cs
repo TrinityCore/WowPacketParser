@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using WowPacketParser.Enums;
+using WowPacketParser.Messages.Submessages;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -380,7 +381,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 }
 
                 if (hasAreaTriggerSpline)
-                    AreaTriggerHandler.ReadAreaTriggerSpline(packet, index);
+                    CliAreaTriggerSpline.ReadAreaTriggerSpline(packet, index);
             }
 
             if (hasGameObject) // 788
