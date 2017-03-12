@@ -96,12 +96,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("New Rune Type");
         }
 
-        [Parser(Opcode.SMSG_ADD_RUNE_POWER)]
-        public static void HandleAddRunePower(Packet packet)
-        {
-            packet.ReadUInt32("Mask?"); // TC: 1 << index
-        }
-
         [Parser(Opcode.SMSG_COOLDOWN_CHEAT)]
         public static void HandleCooldownCheat(Packet packet)
         {

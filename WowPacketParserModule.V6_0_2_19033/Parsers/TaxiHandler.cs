@@ -7,7 +7,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     public static class TaxiHandler
     {
         [Parser(Opcode.CMSG_ACTIVATE_TAXI, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_1_0_19678)]
-        public static void HandleActivateTaxi60x(Packet packet)
+        public static void HandleActivateTaxi60X(Packet packet)
         {
             packet.ReadPackedGuid128("Vendor");
             packet.ReadUInt32("StartNode");
@@ -15,7 +15,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_ACTIVATE_TAXI, ClientVersionBuild.V6_1_0_19678)]
-        public static void HandleActivateTaxi61x(Packet packet)
+        public static void HandleActivateTaxi61X(Packet packet)
         {
             packet.ReadPackedGuid128("Vendor");
             packet.ReadUInt32("Node");
@@ -64,12 +64,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleTaxinodeStatusQuery(Packet packet)
         {
             packet.ReadPackedGuid128("UnitGUID");
-        }
-
-        [Parser(Opcode.SMSG_ACTIVATE_TAXI_REPLY)]
-        public static void HandleActivateTaxiReply(Packet packet)
-        {
-            packet.ReadBitsE<TaxiError>("Result", 4);
         }
     }
 }

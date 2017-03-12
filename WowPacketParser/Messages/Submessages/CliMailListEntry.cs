@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using WowPacketParser.Messages.Player;
 
-namespace WowPacketParser.Messages.Cli
+namespace WowPacketParser.Messages.Submessages
 {
     public unsafe struct CliMailListEntry
     {

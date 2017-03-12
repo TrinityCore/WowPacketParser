@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using WowPacketParser.Messages.Submessages;
 
-namespace WowPacketParser.Messages.Cli
+namespace WowPacketParser.Messages.Submessages
 {
     public unsafe struct CliGarrisonRemoteSiteInfo
     {

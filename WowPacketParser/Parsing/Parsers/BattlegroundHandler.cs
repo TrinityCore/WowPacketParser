@@ -58,13 +58,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByte("Unk5");
         }
 
-        [Parser(Opcode.SMSG_AREA_SPIRIT_HEALER_TIME)]
-        public static void HandleAreaSpiritHealerTime(Packet packet)
-        {
-            packet.ReadGuid("GUID");
-            packet.ReadUInt32("Timer");
-        }
-
         [Parser(Opcode.MSG_BATTLEGROUND_PLAYER_POSITIONS)]
         public static void HandleBattlegrounPlayerPositions(Packet packet)
         {
