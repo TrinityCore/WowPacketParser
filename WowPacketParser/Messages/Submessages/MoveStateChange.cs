@@ -1,3 +1,5 @@
+using WowPacketParser.Messages.Cli;
+
 namespace WowPacketParser.Messages.Submessages
 {
     public unsafe struct MoveStateChange

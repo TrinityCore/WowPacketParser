@@ -1,3 +1,5 @@
+using WowPacketParser.Messages.Player;
+
 namespace WowPacketParser.Messages.Submessages
 {
     public unsafe struct WhoEntry

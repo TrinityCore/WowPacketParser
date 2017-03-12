@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using WowPacketParser.Messages.Cli;
 
 namespace WowPacketParser.Messages.Submessages
 {

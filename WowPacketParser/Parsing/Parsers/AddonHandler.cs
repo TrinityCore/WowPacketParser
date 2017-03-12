@@ -1,4 +1,5 @@
 using WowPacketParser.Enums;
+using WowPacketParser.Messages.Client;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Parsing.Parsers
@@ -16,7 +17,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_8_9464))
             {
                 var count = newPacket.ReadInt32("Addons Count");
-                Messages.ClientAddonInfo._addonCount = count;
+                ClientAddonInfo._addonCount = count;
 
                 for (var i = 0; i < count; i++)
                 {
@@ -42,7 +43,7 @@ namespace WowPacketParser.Parsing.Parsers
                     count++;
                 }
 
-                Messages.ClientAddonInfo._addonCount = count;
+                ClientAddonInfo._addonCount = count;
             }
 
             newPacket.ClosePacket(false);
