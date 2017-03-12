@@ -133,13 +133,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("GUID");
         }
 
-        [Parser(Opcode.SMSG_AI_REACTION)]
-        public static void HandleAIReaction(Packet packet)
-        {
-            packet.ReadPackedGuid128("UnitGUID");
-            packet.ReadInt32E<AIReaction>("Reaction");
-        }
-
         [Parser(Opcode.CMSG_ATTACK_SWING)]
         public static void HandleAttackSwing(Packet packet)
         {

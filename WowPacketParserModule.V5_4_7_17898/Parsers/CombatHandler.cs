@@ -239,25 +239,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Victim GUID", victimGUID);
         }
 
-        [Parser(Opcode.SMSG_AI_REACTION)]
-        public static void HandleAIReaction(Packet packet)
-        {
-            var guid = new byte[8];
-
-            packet.StartBitStream(guid, 2, 1, 4, 3, 6, 5, 7, 0);
-            packet.ReadXORByte(guid, 1);
-            packet.ReadInt32E<AIReaction>("Reaction");
-            packet.ReadXORByte(guid, 0);
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid, 4);
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid, 7);
-            packet.ReadXORByte(guid, 3);
-            packet.ReadXORByte(guid, 5);
-
-            packet.WriteGuid("Guid", guid);
-        }
-
         [Parser(Opcode.SMSG_CANCEL_COMBAT)]
         public static void HandleCanelCombat(Packet packet)
         {

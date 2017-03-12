@@ -180,25 +180,6 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 packet.ReadSingle("Unk Float");
         }
 
-        [Parser(Opcode.SMSG_AI_REACTION)]
-        public static void HandleAIReaction(Packet packet)
-        {
-            var guid = new byte[8];
-
-            packet.StartBitStream(guid, 5, 7, 0, 4, 6, 2, 3, 1);
-            packet.ReadXORByte(guid, 4);
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid, 5);
-            packet.ReadInt32E<AIReaction>("Reaction");
-            packet.ReadXORByte(guid, 7);
-            packet.ReadXORByte(guid, 1);
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid, 0);
-            packet.ReadXORByte(guid, 3);
-
-            packet.WriteGuid("Guid", guid);
-        }
-
         [Parser(Opcode.SMSG_ENVIRONMENTAL_DAMAGE_LOG)]
         public static void HandleEnvirenmentalDamageLog(Packet packet)
         {

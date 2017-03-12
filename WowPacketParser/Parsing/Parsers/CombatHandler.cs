@@ -81,13 +81,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("Victim GUID");
         }
 
-        [Parser(Opcode.SMSG_AI_REACTION)]
-        public static void HandleAIReaction(Packet packet)
-        {
-            packet.ReadGuid("GUID");
-            packet.ReadInt32E<AIReaction>("Reaction");
-        }
-
         [Parser(Opcode.SMSG_UPDATE_COMBO_POINTS)]
         public static void HandleUpdateComboPoints(Packet packet)
         {

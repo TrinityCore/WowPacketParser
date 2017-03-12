@@ -31,7 +31,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBits("UiType", 3, idx);
         }
 
-        [Parser(Opcode.SMSG_AE_LOOT_TARGET_ACK)]
         [Parser(Opcode.SMSG_LOOT_RELEASE_ALL)]
         public static void HandleLootZero(Packet packet)
         {
@@ -71,12 +70,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleLootRelease(Packet packet)
         {
             packet.ReadPackedGuid128("Object GUID");
-        }
-
-        [Parser(Opcode.SMSG_AE_LOOT_TARGETS)]
-        public static void HandleClientAELootTargets(Packet packet)
-        {
-            packet.ReadUInt32("Count");
         }
 
         [Parser(Opcode.SMSG_LOOT_RESPONSE)]

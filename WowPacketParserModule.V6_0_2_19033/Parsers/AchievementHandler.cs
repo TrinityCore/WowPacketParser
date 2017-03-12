@@ -40,15 +40,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("NativeRealmAddress", idx);
         }
 
-        [Parser(Opcode.SMSG_ALL_ACCOUNT_CRITERIA)]
-        public static void HandleAllAchievementCriteriaDataAccount(Packet packet)
-        {
-            var count = packet.ReadUInt32("ProgressCount");
-
-            for (var i = 0; i < count; ++i)
-                ReadCriteriaProgress(packet, "Progress", i);
-        }
-
         public static void ReadAllAchievements(Packet packet, params object[] idx)
         {
             var earnedCount = packet.ReadUInt32("EarnedCount", idx);

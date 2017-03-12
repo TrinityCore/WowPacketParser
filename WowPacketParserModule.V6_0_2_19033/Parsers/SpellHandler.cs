@@ -959,21 +959,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadBit("Unk612 1");
         }
 
-        [Parser(Opcode.SMSG_ADD_LOSS_OF_CONTROL)]
-        public static void HandleAddLossOfControl(Packet packet)
-        {
-            packet.ReadBits("Mechanic", 8);
-            packet.ReadBits("Type", 8);
-
-            packet.ReadInt32<SpellId>("SpellID");
-
-            packet.ReadPackedGuid128("Caster");
-
-            packet.ReadInt32("Duration");
-            packet.ReadInt32("DurationRemaining");
-            packet.ReadInt32("LockoutSchoolMask");
-        }
-
         [Parser(Opcode.SMSG_SET_SPELL_CHARGES, ClientVersionBuild.Zero, ClientVersionBuild.V6_2_0_20173)]
         public static void HandleSetSpellCharges(Packet packet)
         {

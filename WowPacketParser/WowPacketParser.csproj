@@ -401,6 +401,7 @@
     <Compile Include="Loading\BinaryPacketReader.cs" />
     <Compile Include="Loading\IPacketReader.cs" />
     <Compile Include="Loading\Reader.cs" />
+    <Compile Include="Messages\Client\ClientAELootTargetAck.cs" />
     <Compile Include="Messages\Cli\CliChatAddonMessageBattleground.cs" />
     <Compile Include="Messages\Cli\CliChatMessageBattleground.cs" />
     <Compile Include="Messages\Cli\CliChatMessagePartyLeader.cs" />
