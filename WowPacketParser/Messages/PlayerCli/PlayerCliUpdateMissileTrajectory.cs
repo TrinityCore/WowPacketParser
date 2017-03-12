@@ -1,4 +1,5 @@
 using WowPacketParser.Messages.Cli;
+using WowPacketParser.Messages.Submessages;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Messages.PlayerCli
