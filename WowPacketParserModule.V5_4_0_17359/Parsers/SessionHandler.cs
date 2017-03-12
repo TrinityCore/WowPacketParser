@@ -33,52 +33,6 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadUInt32("Server Seed");
         }
 
-        [Parser(Opcode.CMSG_AUTH_SESSION)]
-        public static void HandleAuthSession(Packet packet)
-        {
-            var sha = new byte[20];
-            packet.ReadUInt32("UInt32 2");
-            sha[4] = packet.ReadByte();
-            packet.ReadUInt32("UInt32 4");
-            packet.ReadByte("Unk Byte");
-            sha[19] = packet.ReadByte();
-            sha[12] = packet.ReadByte();
-            sha[9]= packet.ReadByte();
-            sha[6] = packet.ReadByte();
-            sha[18] = packet.ReadByte();
-            sha[17] = packet.ReadByte();
-            sha[8] = packet.ReadByte();
-            sha[13] = packet.ReadByte();
-            sha[1] = packet.ReadByte();
-            sha[10] = packet.ReadByte();
-            sha[11] = packet.ReadByte();
-            sha[15] = packet.ReadByte();
-            packet.ReadUInt32("Client seed");
-            sha[3] = packet.ReadByte();
-            sha[14] = packet.ReadByte();
-            sha[7] = packet.ReadByte();
-            packet.ReadInt64("Int64");
-            packet.ReadByte("Unk Byte");
-            packet.ReadUInt32("UInt32 1");
-            sha[5] = packet.ReadByte();
-            sha[0] = packet.ReadByte();
-            packet.ReadInt16E<ClientVersionBuild>("Client Build");//20
-            sha[16] = packet.ReadByte();
-            sha[2] = packet.ReadByte();
-            packet.ReadUInt32("UInt32 3");
-
-            var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
-                packet.Number, packet.Writer, packet.FileName);
-            CoreParsers.AddonHandler.ReadClientAddonsList(addons);
-            addons.ClosePacket(false);
-
-            var size = (int)packet.ReadBits(11);
-            packet.ReadBit("Unk bit");
-            packet.ResetBitReader();
-            packet.ReadBytesString("Account name", size);
-            packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
-        }
-
         [Parser(Opcode.SMSG_AUTH_RESPONSE)]
         public static void HandleAuthResponse(Packet packet)
         {
@@ -203,35 +157,6 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadByte("Unk Byte");
             packet.ReadUInt32("Token");
             packet.ReadBytes("RSA Hash", 0x100);
-        }
-
-        [Parser(Opcode.CMSG_AUTH_CONTINUED_SESSION)]
-        public static void HandleRedirectAuthProof(Packet packet)
-        {
-            var sha = new byte[20];
-            packet.ReadInt64("Int64 Unk1"); // Key or DosResponse
-            packet.ReadInt64("Int64 Unk2"); // Key or DosResponse
-            sha[0] = packet.ReadByte();
-            sha[12] = packet.ReadByte();
-            sha[1] = packet.ReadByte();
-            sha[4] = packet.ReadByte();
-            sha[5] = packet.ReadByte();
-            sha[7] = packet.ReadByte();
-            sha[18] = packet.ReadByte();
-            sha[2] = packet.ReadByte();
-            sha[19] = packet.ReadByte();
-            sha[8] = packet.ReadByte();
-            sha[11] = packet.ReadByte();
-            sha[13] = packet.ReadByte();
-            sha[14] = packet.ReadByte();
-            sha[9] = packet.ReadByte();
-            sha[6] = packet.ReadByte();
-            sha[3] = packet.ReadByte();
-            sha[10] = packet.ReadByte();
-            sha[15] = packet.ReadByte();
-            sha[17] = packet.ReadByte();
-            sha[16] = packet.ReadByte();
-            packet.AddValue("SHA-1 Hash", sha);
         }
     }
 }

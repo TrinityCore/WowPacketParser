@@ -141,88 +141,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("GameTimeTZ", len2);
         }
 
-        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.Zero, ClientVersionBuild.V6_2_4_21315)]
-        public static void HandleAuthSession(Packet packet)
-        {
-            var sha = new byte[20];
-            packet.ReadUInt32("Grunt ServerId");
-            packet.ReadInt16E<ClientVersionBuild>("Client Build");
-            packet.ReadUInt32("Region");
-            packet.ReadUInt32("Battlegroup");
-            packet.ReadUInt32("RealmIndex");
-            packet.ReadByte("Login Server Type");
-            packet.ReadByte("Unk");
-            packet.ReadUInt32("Client Seed");
-            packet.ReadUInt64("DosResponse");
-
-            for (uint i = 0; i < 20; ++i)
-                sha[i] = packet.ReadByte();
-
-            var accountNameLength = packet.ReadBits("Account Name Length", 11);
-            packet.ResetBitReader();
-            packet.ReadWoWString("Account Name", accountNameLength);
-            packet.ReadBit("UseIPv6");
-
-            var addonSize = packet.ReadInt32("Addons Size");
-
-            if (addonSize > 0)
-            {
-                var addons = new Packet(packet.ReadBytes(addonSize), packet.Opcode, packet.Time, packet.Direction,
-                packet.Number, packet.Writer, packet.FileName);
-                CoreParsers.AddonHandler.ReadClientAddonsList(addons);
-                addons.ClosePacket(false);
-            }
-
-            packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
-        }
-
-        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V6_2_4_21315)]
-        public static void HandleAuthSession624(Packet packet)
-        {
-            packet.ReadInt16E<ClientVersionBuild>("Build");
-            packet.ReadByte("BuildType");
-            packet.ReadUInt32("RegionID");
-            packet.ReadUInt32("BattlegroupID");
-            packet.ReadUInt32("RealmID");
-            packet.ReadBytes("LocalChallenge", 16);
-            packet.ReadBytes("Digest", 24);
-            packet.ReadUInt64("DosResponse");
-
-            var addonSize = packet.ReadInt32();
-            if (addonSize > 0)
-            {
-                var addons = new Packet(packet.ReadBytes(addonSize), packet.Opcode, packet.Time, packet.Direction,
-                packet.Number, packet.Writer, packet.FileName);
-                CoreParsers.AddonHandler.ReadClientAddonsList(addons);
-                addons.ClosePacket(false);
-            }
-
-            var realmJoinTicketSize = packet.ReadInt32();
-            packet.ReadBytes("RealmJoinTicket", realmJoinTicketSize);
-            packet.ReadBit("UseIPv6");
-
-        }
-
         [Parser(Opcode.CMSG_PLAYER_LOGIN)]
         public static void HandlePlayerLogin(Packet packet)
         {
             var guid = packet.ReadPackedGuid128("Guid");
             ReadClientSettings(packet, "ClientSettings");
             CoreParsers.SessionHandler.LoginGuid = guid;
-        }
-
-        [Parser(Opcode.CMSG_AUTH_CONTINUED_SESSION)]
-        public static void HandleRedirectAuthProof(Packet packet)
-        {
-            packet.ReadInt64("DosResponse");
-            packet.ReadInt64("Key");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_4_21315))
-            {
-                packet.ReadBytes("LocalChallenge", 16);
-                packet.ReadBytes("Digest", 24);
-            }
-            else
-                packet.ReadBytes("Digest", 20);
         }
 
         [Parser(Opcode.SMSG_CONNECT_TO)]
@@ -259,19 +183,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (int i = 0; i < 4; i++)
                 packet.ReadInt32("Secrets", i);
-        }
-
-        [Parser(Opcode.CMSG_SUSPEND_COMMS_ACK)]
-        public static void HandleSuspendCommsAck(Packet packet)
-        {
-            packet.ReadInt32("Serial");
-            packet.ReadInt32("Timestamp");
-        }
-
-        [Parser(Opcode.CMSG_QUEUED_MESSAGES_END)]
-        public static void HandleQueuedMessagesEnd(Packet packet)
-        {
-            packet.ReadInt32("Timestamp");
         }
 
         [Parser(Opcode.SMSG_WAIT_QUEUE_UPDATE)]
@@ -328,25 +239,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadSByte("Con");
         }
 
-        [Parser(Opcode.CMSG_SUSPEND_TOKEN_RESPONSE)]
-        public static void HandleSuspendToken(Packet packet)
-        {
-            packet.ReadUInt32("Sequence");
-        }
-
         [Parser(Opcode.SMSG_SUSPEND_TOKEN)]
         [Parser(Opcode.SMSG_RESUME_TOKEN)]
         public static void HandleResumeTokenPacket(Packet packet)
         {
             packet.ReadUInt32("Sequence");
             packet.ReadBits("Reason", 2);
-        }
-
-        [Parser(Opcode.CMSG_LOG_STREAMING_ERROR)]
-        public static void HandleRouterClientLogStreamingError(Packet packet)
-        {
-            var bits16 = packet.ReadBits(9);
-            packet.ReadWoWString("Error", bits16);
         }
 
         [Parser(Opcode.SMSG_BATTLENET_CHALLENGE_START)]

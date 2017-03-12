@@ -6,22 +6,6 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
     public static class AuthenticationHandler
     {
-        [Parser(Opcode.CMSG_AUTH_SESSION)]
-        public static void HandleAuthSession(Packet packet)
-        {
-            packet.ReadUInt64("DosResponse");
-            packet.ReadInt16E<ClientVersionBuild>("Build");
-            packet.ReadByte("BuildType");
-            packet.ReadUInt32("RegionID");
-            packet.ReadUInt32("BattlegroupID");
-            packet.ReadUInt32("RealmID");
-            packet.ReadBytes("LocalChallenge", 16);
-            packet.ReadBytes("Digest", 24);
-            packet.ReadBit("UseIPv6");
-
-            var realmJoinTicketSize = packet.ReadInt32();
-            packet.ReadBytes("RealmJoinTicket", realmJoinTicketSize);
-        }
 
         [Parser(Opcode.SMSG_AUTH_RESPONSE)]
         public static void HandleAuthResponse(Packet packet)

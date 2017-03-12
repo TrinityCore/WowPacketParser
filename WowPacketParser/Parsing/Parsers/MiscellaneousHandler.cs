@@ -11,14 +11,6 @@ namespace WowPacketParser.Parsing.Parsers
     [SuppressMessage("ReSharper", "UseObjectOrCollectionInitializer")]
     public static class MiscellaneousParsers
     {
-        [Parser(Opcode.CMSG_LOG_DISCONNECT)]
-        public static void HandleLogDisconnect(Packet packet)
-        {
-            packet.ReadUInt32("Reason");
-            // 4 is inability for client to decrypt RSA
-            // 3 is not receiving "WORLD OF WARCRAFT CONNECTION - SERVER TO CLIENT"
-            // 11 is sent on receiving opcode 0x140 with some specific data
-        }
 
         [Parser(Opcode.CMSG_VIOLENCE_LEVEL)]
         public static void HandleSetViolenceLevel(Packet packet)
@@ -58,12 +50,6 @@ namespace WowPacketParser.Parsing.Parsers
         {
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V4_3_4_15595))
                 packet.ReadUInt32("Enable");
-        }
-
-        [Parser(Opcode.CMSG_SUSPEND_TOKEN_RESPONSE)]
-        public static void HandleSuspendToken(Packet packet)
-        {
-            packet.ReadUInt32("Count");
         }
 
         [Parser(Opcode.SMSG_SUSPEND_TOKEN)]
@@ -357,13 +343,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Split Date");
         }
 
-        [Parser(Opcode.CMSG_PING)]
-        public static void HandleClientPing(Packet packet)
-        {
-            packet.ReadInt32("Ping");
-            packet.ReadInt32("Ping Count");
-        }
-
         [Parser(Opcode.SMSG_PONG)]
         public static void HandleServerPong(Packet packet)
         {
@@ -466,7 +445,6 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_SUSPEND_COMMS)]
-        [Parser(Opcode.CMSG_SUSPEND_COMMS_ACK)]
         public static void HandleSuspendCommsPackets(Packet packet)
         {
             packet.ReadInt32("Serial");

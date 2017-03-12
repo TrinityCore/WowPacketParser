@@ -23,52 +23,6 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadByte("Unk Byte");
         }
 
-        [Parser(Opcode.CMSG_AUTH_SESSION)]
-        public static void HandleAuthSession(Packet packet)
-        {
-            var sha = new byte[20];
-            packet.ReadUInt32("UInt32 2");//16
-            sha[8] = packet.ReadByte();//40
-            sha[13] = packet.ReadByte();//45
-            sha[3] = packet.ReadByte();//35
-            packet.ReadUInt32("UInt32 3");//28
-            sha[6] = packet.ReadByte();//38
-            packet.ReadInt16E<ClientVersionBuild>("Client Build");//20
-            sha[2] = packet.ReadByte();//34
-            sha[0] = packet.ReadByte();//32
-            sha[7] = packet.ReadByte();//39
-            sha[11] = packet.ReadByte();//43
-            packet.ReadUInt32("UInt32 4");//56
-            sha[5] = packet.ReadByte();//37
-            sha[15] = packet.ReadByte();//47
-            sha[14] = packet.ReadByte();//46
-            sha[12] = packet.ReadByte();//44
-            packet.ReadInt64("Int64");//64,68
-            packet.ReadByte("Unk Byte");//61
-            packet.ReadUInt32("Client seed");//52
-            packet.ReadUInt32("UInt32 1");//24
-            sha[1] = packet.ReadByte();//33
-            sha[9] = packet.ReadByte();//41
-            sha[4] = packet.ReadByte();//36
-            sha[17] = packet.ReadByte();//49
-            sha[16] = packet.ReadByte();//48
-            sha[19] = packet.ReadByte();//51
-            sha[18] = packet.ReadByte();//50
-            sha[10] = packet.ReadByte();//42
-            packet.ReadByte("Unk Byte");//60
-
-            var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
-                packet.Number, packet.Writer, packet.FileName);
-            CoreParsers.AddonHandler.ReadClientAddonsList(addons);
-            addons.ClosePacket(false);
-
-            packet.ReadBit("Unk bit");
-            var size = (int)packet.ReadBits(11);
-            packet.ResetBitReader();
-            packet.ReadBytesString("Account name", size);
-            packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
-        }
-
         [Parser(Opcode.SMSG_AUTH_RESPONSE)]
         public static void HandleAuthResponse(Packet packet)
         {
