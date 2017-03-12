@@ -111,7 +111,6 @@
     <Compile Include="Parsers\ActionBarHandler.cs" />
     <Compile Include="Parsers\ArchaelogyHandler.cs" />
     <Compile Include="Parsers\ArenaHandler.cs" />
-    <Compile Include="Parsers\AreaTriggerHandler.cs" />
     <Compile Include="Parsers\AuctionHandler.cs" />
     <Compile Include="Parsers\BattlegroundHandler.cs" />
     <Compile Include="Parsers\BattlePetHandler.cs" />

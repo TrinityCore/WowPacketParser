@@ -252,7 +252,6 @@
     <Compile Include="Hotfix\WorldMapTransformsEntry.cs" />
     <Compile Include="Hotfix\WorldSafeLocsEntry.cs" />
     <Compile Include="Parsers\AccountDataHandler.cs" />
-    <Compile Include="Parsers\AreaTriggerHandler.cs" />
     <Compile Include="Parsers\AuctionHouseHandler.cs" />
     <Compile Include="Parsers\AuthenticationHandler.cs" />
     <Compile Include="Parsers\BattlegroundHandler.cs" />
