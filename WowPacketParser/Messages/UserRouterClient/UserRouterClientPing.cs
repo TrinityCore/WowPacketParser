@@ -9,14 +9,14 @@ namespace WowPacketParser.Messages.UserRouterClient
         public uint Serial;
         public uint Latency;
 
-        [Parser(Opcode.CMSG_PING)]
+        [Parser(Opcode.CMSG_PING, ClientVersionBuild.Zero, ClientVersionBuild.V6_0_2_19033)]
         public static void HandleClientPing(Packet packet)
         {
-            packet.ReadInt32("Ping");
-            packet.ReadInt32("Ping Count");
+            packet.ReadInt32("Latency");
+            packet.ReadInt32("Serial");
         }
 
-        [Parser(Opcode.CMSG_PING, ClientVersionBuild.Zero, ClientVersionBuild.V6_0_2_19033)]
+        [Parser(Opcode.CMSG_PING, ClientVersionBuild.V6_0_2_19033)]
         public static void HandleClientPing602(Packet packet)
         {
             packet.ReadInt32("Serial");

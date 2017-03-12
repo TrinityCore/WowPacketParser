@@ -13,13 +13,13 @@ namespace WowPacketParser.Messages.UserRouterClient
         public static void HandleSuspendCommsAck(Packet packet)
         {
             packet.ReadInt32("Serial");
-            packet.ReadInt32("Timestamp");
         }
 
         [Parser(Opcode.CMSG_SUSPEND_COMMS_ACK, ClientVersionBuild.V6_0_2_19033)]
         public static void HandleSuspendCommsPackets(Packet packet)
         {
             packet.ReadInt32("Serial");
+            packet.ReadInt32("Timestamp");
         }
     }
 }

@@ -1,7 +1,6 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParser.Messages.UserRouterClient
 {
@@ -180,6 +179,5 @@ namespace WowPacketParser.Messages.UserRouterClient
             else
                 packet.ReadBytes("Digest", 20);
         }
-
     }
 }

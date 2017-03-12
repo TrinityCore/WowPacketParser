@@ -8,16 +8,10 @@ namespace WowPacketParser.Messages.UserRouterClient
     {
         public uint Sequence;
 
-        [Parser(Opcode.CMSG_SUSPEND_TOKEN_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V6_0_2_19033)]
+        [Parser(Opcode.CMSG_SUSPEND_TOKEN_RESPONSE)]
         public static void HandleSuspendToken(Packet packet)
         {
             packet.ReadUInt32("Sequence");
-        }
-
-        [Parser(Opcode.CMSG_SUSPEND_TOKEN_RESPONSE, ClientVersionBuild.V6_0_2_19033)]
-        public static void HandleSuspendToken602(Packet packet)
-        {
-            packet.ReadUInt32("Count");
         }
     }
 }

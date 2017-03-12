@@ -4,7 +4,6 @@ using WowPacketParser.Messages.Submessages;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Parsing.Parsers;
-using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParser.Messages.UserRouterClient
 {
@@ -191,7 +190,52 @@ namespace WowPacketParser.Messages.UserRouterClient
             packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
         }
 
-        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_0_5_16048)]
+        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_0_5_16048)]
+        public static void HandleAuthSession434(Packet packet)
+        {
+            var sha = new byte[20];
+            packet.ReadUInt32("UInt32 1");
+            packet.ReadUInt32("UInt32 2");
+            packet.ReadByte("Unk Byte");
+            sha[10] = packet.ReadByte();
+            sha[18] = packet.ReadByte();
+            sha[12] = packet.ReadByte();
+            sha[5] = packet.ReadByte();
+            packet.ReadInt64("Int64");
+            sha[15] = packet.ReadByte();
+            sha[9] = packet.ReadByte();
+            sha[19] = packet.ReadByte();
+            sha[4] = packet.ReadByte();
+            sha[7] = packet.ReadByte();
+            sha[16] = packet.ReadByte();
+            sha[3] = packet.ReadByte();
+            packet.ReadInt16E<ClientVersionBuild>("Client Build");
+            sha[8] = packet.ReadByte();
+            packet.ReadUInt32("UInt32 3");
+            packet.ReadByte("Unk Byte");
+            sha[17] = packet.ReadByte();
+            sha[6] = packet.ReadByte();
+            sha[0] = packet.ReadByte();
+            sha[1] = packet.ReadByte();
+            sha[11] = packet.ReadByte();
+            packet.ReadUInt32("Client seed");
+            sha[2] = packet.ReadByte();
+            packet.ReadUInt32("UInt32 4");
+            sha[14] = packet.ReadByte();
+            sha[13] = packet.ReadByte();
+
+            var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
+                packet.Number, packet.Writer, packet.FileName);
+            AddonHandler.ReadClientAddonsList(addons);
+            addons.ClosePacket(false);
+
+            packet.ReadBit("Unk bit");
+            var size = (int)packet.ReadBits(12);
+            packet.ReadBytesString("Account name", size);
+            packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
+        }
+
+        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_0_5_16048, ClientVersionBuild.V5_3_0_16981)]
         public static void HandleAuthSession505(Packet packet)
         {
             var sha = new byte[20];
@@ -236,52 +280,7 @@ namespace WowPacketParser.Messages.UserRouterClient
             packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
         }
 
-        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V4_3_3_15354, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleAuthSession434(Packet packet)
-        {
-            var sha = new byte[20];
-            packet.ReadUInt32("UInt32 1");
-            packet.ReadUInt32("UInt32 2");
-            packet.ReadByte("Unk Byte");
-            sha[10] = packet.ReadByte();
-            sha[18] = packet.ReadByte();
-            sha[12] = packet.ReadByte();
-            sha[5] = packet.ReadByte();
-            packet.ReadInt64("Int64");
-            sha[15] = packet.ReadByte();
-            sha[9] = packet.ReadByte();
-            sha[19] = packet.ReadByte();
-            sha[4] = packet.ReadByte();
-            sha[7] = packet.ReadByte();
-            sha[16] = packet.ReadByte();
-            sha[3] = packet.ReadByte();
-            packet.ReadInt16E<ClientVersionBuild>("Client Build");
-            sha[8] = packet.ReadByte();
-            packet.ReadUInt32("UInt32 3");
-            packet.ReadByte("Unk Byte");
-            sha[17] = packet.ReadByte();
-            sha[6] = packet.ReadByte();
-            sha[0] = packet.ReadByte();
-            sha[1] = packet.ReadByte();
-            sha[11] = packet.ReadByte();
-            packet.ReadUInt32("Client seed");
-            sha[2] = packet.ReadByte();
-            packet.ReadUInt32("UInt32 4");
-            sha[14] = packet.ReadByte();
-            sha[13] = packet.ReadByte();
-
-            var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
-                packet.Number, packet.Writer, packet.FileName);
-            CoreParsers.AddonHandler.ReadClientAddonsList(addons);
-            addons.ClosePacket(false);
-
-            packet.ReadBit("Unk bit");
-            var size = (int)packet.ReadBits(12);
-            packet.ReadBytesString("Account name", size);
-            packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
-        }
-
-        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_3_0_16981)]
+        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_3_0_16981, ClientVersionBuild.V5_4_0_17359)]
         public static void HandleAuthSession530(Packet packet)
         {
             var sha = new byte[20];
@@ -317,7 +316,7 @@ namespace WowPacketParser.Messages.UserRouterClient
 
             var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
                 packet.Number, packet.Writer, packet.FileName);
-            CoreParsers.AddonHandler.ReadClientAddonsList(addons);
+            AddonHandler.ReadClientAddonsList(addons);
             addons.ClosePacket(false);
 
             packet.ReadBit("Unk bit");
@@ -327,7 +326,7 @@ namespace WowPacketParser.Messages.UserRouterClient
             packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
         }
 
-        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_3_0_16981, ClientVersionBuild.V5_4_0_17359)]
+        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_4_0_17359, ClientVersionBuild.V5_4_1_17538)]
         public static void HandleAuthSession540(Packet packet)
         {
             var sha = new byte[20];
@@ -363,7 +362,7 @@ namespace WowPacketParser.Messages.UserRouterClient
 
             var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
                 packet.Number, packet.Writer, packet.FileName);
-            CoreParsers.AddonHandler.ReadClientAddonsList(addons);
+            AddonHandler.ReadClientAddonsList(addons);
             addons.ClosePacket(false);
 
             var size = (int)packet.ReadBits(11);
@@ -373,7 +372,7 @@ namespace WowPacketParser.Messages.UserRouterClient
             packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
         }
 
-        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_4_0_17359, ClientVersionBuild.V5_4_1_17538)]
+        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_4_1_17538, ClientVersionBuild.V5_4_2_17658)]
         public static void HandleAuthSession541(Packet packet)
         {
             var sha = new byte[20];
@@ -410,7 +409,7 @@ namespace WowPacketParser.Messages.UserRouterClient
 
             var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
                 packet.Number, packet.Writer, packet.FileName);
-            CoreParsers.AddonHandler.ReadClientAddonsList(addons);
+            AddonHandler.ReadClientAddonsList(addons);
             addons.ClosePacket(false);
 
             var size = (int)packet.ReadBits(11);
@@ -420,7 +419,7 @@ namespace WowPacketParser.Messages.UserRouterClient
             packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
         }
 
-        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_4_1_17538, ClientVersionBuild.V5_4_7_17898)]
+        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V6_0_2_19033)]
         public static void HandleAuthSession547(Packet packet)
         {
             var sha = new byte[20];
@@ -469,7 +468,7 @@ namespace WowPacketParser.Messages.UserRouterClient
 
             var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
                 packet.Number, packet.Writer, packet.FileName);
-            CoreParsers.AddonHandler.ReadClientAddonsList(addons);
+            AddonHandler.ReadClientAddonsList(addons);
             addons.ClosePacket(false);
 
             var size = (int)packet.ReadBits(11);
@@ -479,7 +478,7 @@ namespace WowPacketParser.Messages.UserRouterClient
             packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
         }
 
-        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_4_7_17898, ClientVersionBuild.V6_2_4_21315)]
+        [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_2_4_21315)]
         public static void HandleAuthSession602(Packet packet)
         {
             var sha = new byte[20];
@@ -507,7 +506,7 @@ namespace WowPacketParser.Messages.UserRouterClient
             {
                 var addons = new Packet(packet.ReadBytes(addonSize), packet.Opcode, packet.Time, packet.Direction,
                 packet.Number, packet.Writer, packet.FileName);
-                CoreParsers.AddonHandler.ReadClientAddonsList(addons);
+                AddonHandler.ReadClientAddonsList(addons);
                 addons.ClosePacket(false);
             }
 
@@ -531,7 +530,7 @@ namespace WowPacketParser.Messages.UserRouterClient
             {
                 var addons = new Packet(packet.ReadBytes(addonSize), packet.Opcode, packet.Time, packet.Direction,
                 packet.Number, packet.Writer, packet.FileName);
-                CoreParsers.AddonHandler.ReadClientAddonsList(addons);
+                AddonHandler.ReadClientAddonsList(addons);
                 addons.ClosePacket(false);
             }
 
