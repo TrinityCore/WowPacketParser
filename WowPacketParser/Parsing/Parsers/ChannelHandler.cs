@@ -120,44 +120,6 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_CHAT_JOIN_CHANNEL, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleChannelJoin(Packet packet)
-        {
-            packet.ReadInt32("Channel Id");
-            packet.ReadBool("Has Voice");
-            packet.ReadBool("Joined by zone update");
-
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
-            {
-                packet.ReadCString("Channel Pass");
-                packet.ReadCString("Channel Name");
-            }
-            else
-            {
-                packet.ReadCString("Channel Name");
-                packet.ReadCString("Channel Pass");
-            }
-        }
-
-        [Parser(Opcode.CMSG_CHAT_JOIN_CHANNEL, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleChannelJoin434(Packet packet)
-        {
-            packet.ReadInt32("Channel Id");
-            packet.ReadBit("Has Voice");
-            packet.ReadBit("Joined by zone update");
-            var channelLength = packet.ReadBits(8);
-            var passwordLength = packet.ReadBits(8);
-            packet.ReadWoWString("Channel Name", channelLength);
-            packet.ReadWoWString("Channel Pass", passwordLength);
-        }
-
-        [Parser(Opcode.CMSG_CHAT_LEAVE_CHANNEL)]
-        public static void HandleChannelLeave(Packet packet)
-        {
-            packet.ReadInt32("Channel Id");
-            packet.ReadCString("Channel Name");
-        }
-
         [Parser(Opcode.SMSG_USERLIST_REMOVE)]
         public static void HandleChannelUserListRemove(Packet packet)
         {

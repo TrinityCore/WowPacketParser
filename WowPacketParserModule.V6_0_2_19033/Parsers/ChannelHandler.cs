@@ -14,22 +14,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadByteE<ChannelFlag>("ChannelFlags");
         }
 
-        [Parser(Opcode.CMSG_CHAT_JOIN_CHANNEL)]
-        public static void HandleChannelJoin(Packet packet)
-        {
-            packet.ReadInt32("Channel Id");
-            packet.ReadBit("CreateVoiceSession");
-            packet.ReadBit("Internal");
-
-            var channelLength = packet.ReadBits(7);
-            var passwordLength = packet.ReadBits(7);
-
-            packet.ResetBitReader();
-
-            packet.ReadWoWString("ChannelName", channelLength);
-            packet.ReadWoWString("Password", passwordLength);
-        }
-
         [Parser(Opcode.SMSG_CHANNEL_NOTIFY_JOINED)]
         public static void HandleChannelNotifyJoined(Packet packet)
         {
@@ -97,14 +81,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadUInt32("VirtualRealmAddress", i);
                 packet.ReadByte("Flags", i);
             }
-        }
-
-        [Parser(Opcode.CMSG_CHAT_LEAVE_CHANNEL)]
-        public static void HandleChannelLeave(Packet packet)
-        {
-            packet.ReadInt32("ZoneChannelID");
-            var bits108 = packet.ReadBits(7);
-            packet.ReadWoWString("ChannelName", bits108);
         }
 
         [Parser(Opcode.CMSG_SET_ACTIVE_VOICE_CHANNEL)]

@@ -92,26 +92,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_CHAT_JOIN_CHANNEL)]
-        public static void HandleChannelJoin(Packet packet)
-        {
-            packet.ReadInt32("Channel Id");
-            var passwordLength = packet.ReadBits(7);
-            packet.ReadBit("Joined by zone update");
-            var channelLength = packet.ReadBits(7);
-            packet.ReadBit("Has Voice");
-            packet.ReadWoWString("Channel Pass", passwordLength);
-            packet.ReadWoWString("Channel Name", channelLength);
-        }
-
-        [Parser(Opcode.CMSG_CHAT_LEAVE_CHANNEL)]
-        public static void HandleChannelLeave(Packet packet)
-        {
-            packet.ReadInt32("Channel Id");
-            var channelLength = packet.ReadBits(7);
-            packet.ReadWoWString("Channel Name", channelLength);
-        }
-
         [Parser(Opcode.SMSG_CHANNEL_LIST)]
         public static void HandleChannelSendList(Packet packet)
         {
