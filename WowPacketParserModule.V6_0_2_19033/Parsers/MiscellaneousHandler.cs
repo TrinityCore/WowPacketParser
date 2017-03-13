@@ -366,12 +366,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_PONG)]
-        public static void HandleServerPong(Packet packet)
-        {
-            packet.ReadInt32("Serial");
-        }
-
         [Parser(Opcode.SMSG_INITIAL_SETUP, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_0_3_19342)]
         public static void HandleInitialSetup60x(Packet packet)
         {

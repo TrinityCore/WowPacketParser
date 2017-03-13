@@ -12,82 +12,6 @@ namespace WowPacketParser.Parsing.Parsers
         public static WowGuid LoginGuid;
         public static Dictionary<int, ZlibCodec> ZStreams = new Dictionary<int, ZlibCodec>();
 
-        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_1a_13205)]
-        public static void HandleServerAuthChallenge(Packet packet)
-        {
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
-                packet.ReadInt32("Shuffle Count");
-
-            packet.ReadUInt32("Server Seed");
-
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
-            {
-                var stateCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685) ? 8 : 4;
-                for (var i = 0; i < stateCount; i++)
-                    packet.ReadInt32("Server State", i);
-            }
-        }
-
-        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V4_0_1a_13205, ClientVersionBuild.V4_0_3_13329)]
-        public static void HandleServerAuthChallenge401(Packet packet)
-        {
-            packet.ReadUInt32("Key pt3");
-            packet.ReadUInt32("Key pt5");
-            packet.ReadByte("Unk Byte");
-            packet.ReadUInt32("Server Seed");
-            packet.ReadUInt32("Key pt7");
-            packet.ReadUInt32("Key pt6");
-            packet.ReadUInt32("Key pt1");
-            packet.ReadUInt32("Key pt2");
-            packet.ReadUInt32("Key pt8");
-            packet.ReadUInt32("Key pt4");
-        }
-
-        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V4_0_3_13329, ClientVersionBuild.V4_2_2_14545)]
-        public static void HandleServerAuthChallenge403(Packet packet)
-        {
-            packet.ReadUInt32("Key pt5");
-            packet.ReadUInt32("Key pt8");
-            packet.ReadUInt32("Server Seed");
-            packet.ReadUInt32("Key pt1");
-            packet.ReadByte("Unk Byte");
-            packet.ReadUInt32("Key pt7");
-            packet.ReadUInt32("Key pt4");
-            packet.ReadUInt32("Key pt3");
-            packet.ReadUInt32("Key pt6");
-            packet.ReadUInt32("Key pt2");
-        }
-
-        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleServerAuthChallenge422(Packet packet)
-        {
-            packet.ReadUInt32("Unk1");
-            packet.ReadUInt32("Unk2");
-            packet.ReadUInt32("Unk3");
-            packet.ReadUInt32("Unk4");
-            packet.ReadUInt32("Server Seed");
-            packet.ReadByte("Unk Byte");
-            packet.ReadUInt32("Unk5");
-            packet.ReadUInt32("Unk6");
-            packet.ReadUInt32("Unk7");
-            packet.ReadUInt32("Unk8");
-        }
-
-        [Parser(Opcode.SMSG_AUTH_CHALLENGE, ClientVersionBuild.V5_0_5_16048)]
-        public static void HandleServerAuthChallenge505(Packet packet)
-        {
-            packet.ReadUInt32("Server Seed");
-            packet.ReadUInt32("Key pt1");
-            packet.ReadUInt32("Key pt2");
-            packet.ReadUInt32("Key pt3");
-            packet.ReadUInt32("Key pt4");
-            packet.ReadUInt32("Key pt5");
-            packet.ReadUInt32("Key pt6");
-            packet.ReadUInt32("Key pt7");
-            packet.ReadUInt32("Key pt8");
-            packet.ReadByte("Unk Byte");
-        }
-
         [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleAuthResponse(Packet packet)
         {
@@ -249,33 +173,6 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleLogoutComplete(Packet packet)
         {
             LoginGuid = new WowGuid64(0);
-        }
-
-        [Parser(Opcode.SMSG_CONNECT_TO, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
-        public static void HandleRedirectClient(Packet packet)
-        {
-            packet.ReadIPAddress("IP Address");
-            packet.ReadUInt16("Port");
-            packet.ReadInt32("Token");
-            packet.ReadBytes("Address SHA-1 Hash", 20);
-        }
-
-        [Parser(Opcode.SMSG_CONNECT_TO, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_2_14545)]
-        public static void HandleRedirectClient406(Packet packet)
-        {
-            packet.ReadInt64("Int 64");
-            packet.ReadBytes("RSA Hash", 256);
-            packet.ReadByte("Byte");
-            packet.ReadInt32("Int32");
-        }
-
-        [Parser(Opcode.SMSG_CONNECT_TO, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleRedirectClient422(Packet packet)
-        {
-            packet.ReadBytes("RSA Hash", 255);
-            packet.ReadInt16("Int 16");
-            packet.ReadInt32E<UnknownFlags>("Unknown int32 flag");
-            packet.ReadInt64("Int 64");
         }
 
         [Parser(Opcode.CMSG_CONNECT_TO_FAILED, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_1_13164)]

@@ -18,21 +18,6 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_AUTH_CHALLENGE)]
-        public static void HandleServerAuthChallenge(Packet packet)
-        {
-            packet.ReadUInt32("Key pt1");
-            packet.ReadUInt32("Key pt2");
-            packet.ReadUInt32("Key pt3");
-            packet.ReadUInt32("Key pt4");
-            packet.ReadUInt32("Key pt5");
-            packet.ReadUInt32("Key pt6");
-            packet.ReadUInt32("Key pt7");
-            packet.ReadUInt32("Key pt8");
-            packet.ReadByte("Unk Byte");
-            packet.ReadUInt32("Server Seed");
-        }
-
         [Parser(Opcode.SMSG_AUTH_RESPONSE)]
         public static void HandleAuthResponse(Packet packet)
         {
@@ -148,15 +133,6 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             for (var i = 0; i < lineCount; i++)
                 packet.ReadWoWString("Line", lineLength[i], i);
-        }
-
-        [Parser(Opcode.SMSG_CONNECT_TO)]
-        public static void HandleRedirectClient(Packet packet)
-        {
-            packet.ReadUInt64("Unk Long");
-            packet.ReadByte("Unk Byte");
-            packet.ReadUInt32("Token");
-            packet.ReadBytes("RSA Hash", 0x100);
         }
     }
 }

@@ -343,12 +343,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Split Date");
         }
 
-        [Parser(Opcode.SMSG_PONG)]
-        public static void HandleServerPong(Packet packet)
-        {
-            packet.ReadInt32("Ping");
-        }
-
         [Parser(Opcode.SMSG_CACHE_VERSION)]
         public static void HandleClientCacheVersion(Packet packet)
         {
@@ -444,11 +438,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Unk String");
         }
 
-        [Parser(Opcode.SMSG_SUSPEND_COMMS)]
-        public static void HandleSuspendCommsPackets(Packet packet)
-        {
-            packet.ReadInt32("Serial");
-        }
+
 
         [Parser(Opcode.CMSG_LOW_LEVEL_RAID1)]
         [Parser(Opcode.CMSG_LOW_LEVEL_RAID2)]

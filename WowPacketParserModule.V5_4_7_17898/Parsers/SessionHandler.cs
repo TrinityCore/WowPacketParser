@@ -44,16 +44,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadWoWString("Server Location", len1);
         }
 
-
-        [Parser(Opcode.SMSG_CONNECT_TO)]
-        public static void HandleRedirectClient(Packet packet)
-        {
-            packet.ReadUInt64("Unk Long");
-            packet.ReadBytes("RSA Hash", 0x100);
-            packet.ReadByte("Unk Byte");
-            packet.ReadUInt32("Token");
-        }
-
         [Parser(Opcode.SMSG_AUTH_RESPONSE)]
         public static void HandleAuthResponse(Packet packet)
         {

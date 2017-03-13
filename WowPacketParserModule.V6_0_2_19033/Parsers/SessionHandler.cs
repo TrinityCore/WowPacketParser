@@ -149,27 +149,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             CoreParsers.SessionHandler.LoginGuid = guid;
         }
 
-        [Parser(Opcode.SMSG_CONNECT_TO)]
-        public static void HandleRedirectClient422(Packet packet)
-        {
-            packet.ReadUInt64("Key");
-            packet.ReadUInt32("Serial");
-            packet.ReadBytes("Where (RSA encrypted)", 256);
-            packet.ReadByte("Con");
-        }
-
-        [Parser(Opcode.SMSG_AUTH_CHALLENGE)]
-        public static void HandleServerAuthChallenge(Packet packet)
-        {
-            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V6_2_4_21315))
-                packet.ReadUInt32("Challenge");
-            for (uint i = 0; i < 8; ++i)
-                packet.ReadUInt32("DosChallenge", i);
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_4_21315))
-                packet.ReadBytes("Challenge", 16);
-            packet.ReadByte("DosZeroBits");
-        }
-
         [Parser(Opcode.SMSG_LOGOUT_COMPLETE)]
         public static void HandleLogoutComplete(Packet packet)
         {

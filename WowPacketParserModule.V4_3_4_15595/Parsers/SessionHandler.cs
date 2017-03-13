@@ -8,21 +8,6 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
 {
     public static class SessionHandler
     {
-        [Parser(Opcode.SMSG_AUTH_CHALLENGE)]
-        public static void HandleServerAuthChallenge(Packet packet)
-        {
-            packet.ReadUInt32("Key pt1");
-            packet.ReadUInt32("Key pt2");
-            packet.ReadUInt32("Key pt3");
-            packet.ReadUInt32("Key pt4");
-            packet.ReadUInt32("Key pt5");
-            packet.ReadUInt32("Key pt6");
-            packet.ReadUInt32("Key pt7");
-            packet.ReadUInt32("Key pt8");
-            packet.ReadInt32("Server Seed");
-            packet.ReadByte("Unk Byte");
-        }
-
         [Parser(Opcode.SMSG_AUTH_RESPONSE)]
         public static void HandleAuthResponse(Packet packet)
         {
@@ -55,16 +40,6 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ParseBitStream(guid, 2, 7, 0, 3, 5, 6, 1, 4);
             packet.WriteGuid("Guid", guid);
             CoreParsers.SessionHandler.LoginGuid = new WowGuid64(BitConverter.ToUInt64(guid, 0));
-        }
-
-        [Parser(Opcode.SMSG_CONNECT_TO)]
-        public static void HandleRedirectClient(Packet packet)
-        {
-            packet.ReadUInt64("Key");
-            packet.ReadUInt32("Serial");
-            packet.ReadBytes("RSA Hash", 0x100);
-            packet.ReadByte("Con"); // 1 == Connecting to world server
-        }
-        
+        }        
     }
 }

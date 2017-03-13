@@ -19,21 +19,6 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_AUTH_CHALLENGE)]
-        public static void HandleServerAuthChallenge(Packet packet)
-        {
-            packet.ReadByte("Unk Byte");
-            packet.ReadUInt32("Key pt1");
-            packet.ReadUInt32("Key pt2");
-            packet.ReadUInt32("Key pt3");
-            packet.ReadUInt32("Key pt4");
-            packet.ReadUInt32("Key pt5");
-            packet.ReadUInt32("Key pt6");
-            packet.ReadUInt32("Key pt7");
-            packet.ReadUInt32("Key pt8");
-            packet.ReadUInt32("Server Seed");
-        }
-
         [Parser(Opcode.SMSG_MOTD)]
         public static void HandleMessageOfTheDay(Packet packet)
         {

@@ -151,15 +151,6 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_CONNECT_TO)]
-        public static void HandleRedirectClient(Packet packet)
-        {
-            packet.ReadBytes("RSA Hash", 0x100);
-            packet.ReadByte("Unk Byte");
-            packet.ReadUInt32("Token");
-            packet.ReadUInt64("Unk Long");
-        }
-
         [Parser(Opcode.SMSG_LOGOUT_RESPONSE)]
         public static void HandlePlayerLogoutResponse(Packet packet)
         {
