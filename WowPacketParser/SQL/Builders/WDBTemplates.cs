@@ -90,8 +90,16 @@ namespace WowPacketParser.SQL.Builders
                     if (unit.GossipId == 0)
                         cre.Item1.GossipMenuID = unit.GossipId;
 
-                    cre.Item1.MinLevel = (int)levels[cre.Item1.Entry.GetValueOrDefault()].Item1;
-                    cre.Item1.MaxLevel = (int)levels[cre.Item1.Entry.GetValueOrDefault()].Item2;
+                    if (unit.ScalingMinLevel != null && unit.ScalingMaxLevel != null)
+                    {
+                        cre.Item1.MinLevel = (int)unit.ScalingMinLevel;
+                        cre.Item1.MaxLevel = (int)unit.ScalingMaxLevel;
+                    }
+                    else
+                    {
+                        cre.Item1.MinLevel = (int)levels[cre.Item1.Entry.GetValueOrDefault()].Item1;
+                        cre.Item1.MaxLevel = (int)levels[cre.Item1.Entry.GetValueOrDefault()].Item2;
+                    }
 
                     HashSet<uint> playerFactions = new HashSet<uint> { 1, 2, 3, 4, 5, 6, 115, 116, 1610, 1629, 2203, 2204 };
                     cre.Item1.Faction = unit.Faction.GetValueOrDefault(35);
