@@ -199,13 +199,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32E<BankSlotResult>("Result");
         }
 
-        [Parser(Opcode.CMSG_ADD_FRIEND)]
-        public static void HandleAddFriend(Packet packet)
-        {
-            packet.ReadCString("Name");
-            packet.ReadCString("Note");
-        }
-
         [Parser(Opcode.CMSG_ADD_IGNORE)]
         public static void HandleAddIgnore(Packet packet)
         {

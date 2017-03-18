@@ -57,13 +57,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt64("QueueID");
             packet.ReadBit("AcceptedInvite");
         }
-
-        [Parser(Opcode.CMSG_BF_MGR_QUEUE_EXIT_REQUEST)]
-        public static void HandleBattlefieldMgrExitRequest(Packet packet)
-        {
-            packet.ReadInt64("QueueID");
-        }
-
+        
         [Parser(Opcode.CMSG_BATTLEFIELD_PORT)]
         public static void HandleBattlefieldPort(Packet packet)
         {

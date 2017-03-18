@@ -236,14 +236,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_BATTLE_PAY_START_PURCHASE)]
-        public static void HandleBattlePayStartPurchase(Packet packet)
-        {
-            packet.ReadInt32("ClientToken");
-            packet.ReadInt32("ProductID");
-            packet.ReadPackedGuid128("TargetCharacter");
-        }
-
         [Parser(Opcode.SMSG_BATTLE_PAY_START_PURCHASE_RESPONSE)]
         public static void HandleBattlePayStartPurchaseResponse(Packet packet)
         {
@@ -269,14 +261,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("ServerToken");
         }
 
-        [Parser(Opcode.CMSG_BATTLE_PAY_CONFIRM_PURCHASE_RESPONSE)]
-        public static void HandleBattlePayConfirmPurchaseResponse(Packet packet)
-        {
-            packet.ReadBit("ConfirmPurchase");
-            packet.ReadInt32("ServerToken");
-            packet.ReadInt64("ClientCurrentPriceFixedPoint");
-        }
-
         [Parser(Opcode.SMSG_BATTLE_PAY_DELIVERY_ENDED)]
         public static void HandleBattlePayDeliveryEnded(Packet packet)
         {
@@ -285,15 +269,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var itemCount = packet.ReadInt32("ItemCount");
             for (int i = 0; i < itemCount; i++)
                 ItemHandler.ReadItemInstance(packet, i);
-        }
-
-        [Parser(Opcode.CMSG_BATTLE_PAY_DISTRIBUTION_ASSIGN_TO_TARGET)]
-        public static void HandleBattlePayDistributionAssignToTarget(Packet packet)
-        {
-            packet.ReadInt32("ClientToken");
-            packet.ReadInt64("DistributionID");
-            packet.ReadPackedGuid128("TargetCharacter");
-            packet.ReadInt32("ProductChoice");
         }
 
         [Parser(Opcode.SMSG_CHARACTER_UPGRADE_STARTED)]

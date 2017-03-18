@@ -120,53 +120,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadWoWString("Name", bits49);
         }
-
-        [Parser(Opcode.CMSG_BATTLE_PET_DELETE_PET)]
-        [Parser(Opcode.CMSG_BATTLE_PET_DELETE_PET_CHEAT)]
-        [Parser(Opcode.CMSG_BATTLE_PET_SUMMON)]
+        
         [Parser(Opcode.CMSG_CAGE_BATTLE_PET)]
         [Parser(Opcode.SMSG_BATTLE_PET_DELETED)]
         public static void HandleBattlePetDeletePet(Packet packet)
         {
             packet.ReadPackedGuid128("BattlePetGUID");
-        }
-
-        [Parser(Opcode.CMSG_BATTLE_PET_MODIFY_NAME)]
-        public static void HandleBattlePetModifyName(Packet packet)
-        {
-            packet.ReadPackedGuid128("BattlePetGUID");
-
-            packet.ResetBitReader();
-
-            var bits342 = packet.ReadBits(7);
-            var bit341 = packet.ReadBit("HasDeclinedNames");
-
-            packet.ReadWoWString("Name", bits342);
-
-            if (bit341)
-            {
-                var bits97 = new uint[5];
-                for (int i = 0; i < 5; i++)
-                    bits97[i] = packet.ReadBits(7);
-
-                for (int i = 0; i < 5; i++)
-                    packet.ReadWoWString("DeclinedNames", bits97[i]);
-            }
-        }
-
-        [Parser(Opcode.CMSG_BATTLE_PET_SET_BATTLE_SLOT)]
-        public static void HandleBattlePetSetBattleSlot(Packet packet)
-        {
-            packet.ReadPackedGuid128("BattlePetGUID");
-            packet.ReadByte("SlotIndex");
-        }
-
-        [Parser(Opcode.CMSG_BATTLE_PET_SET_FLAGS)]
-        public static void HandleBattlePetSetFlags(Packet packet)
-        {
-            packet.ReadPackedGuid128("BattlePetGUID");
-            packet.ReadInt32("Flags");
-            packet.ReadBits("ControlType", 2);
         }
 
         [Parser(Opcode.SMSG_BATTLE_PET_UPDATES)]

@@ -6,22 +6,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class ContactHandler
     {
-        [Parser(Opcode.CMSG_ADD_IGNORE)]
         [Parser(Opcode.CMSG_VOICE_ADD_IGNORE)]
         public static void HandleAddIgnoreOrMute(Packet packet)
         {
             var bits9 = packet.ReadBits(9);
             packet.ReadWoWString("Name", bits9);
-        }
-
-        [Parser(Opcode.CMSG_ADD_FRIEND)]
-        public static void HandleAddFriend(Packet packet)
-        {
-            var bits16 = packet.ReadBits(9);
-            var bits10 = packet.ReadBits(10);
-
-            packet.ReadWoWString("Name", bits16);
-            packet.ReadWoWString("Notes", bits10);
         }
 
         public static void ReadQualifiedGUID(Packet packet, params object[] indexes)

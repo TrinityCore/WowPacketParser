@@ -234,18 +234,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("ChallengeURL", bits16);
         }
 
-        [Parser(Opcode.CMSG_BATTLENET_CHALLENGE_RESPONSE)]
-        public static void HandleBattlenetChallengeResponse(Packet packet)
-        {
-            packet.ReadUInt32("Token");
-            var result = packet.ReadBits(3);
-            if (result == 3)
-            {
-                var bits24 = packet.ReadBits(6);
-                packet.ReadWoWString("BattlenetError", bits24);
-            }
-        }
-
         [Parser(Opcode.SMSG_BATTLENET_CHALLENGE_ABORT)]
         public static void HandleBattlenetChallengeAbort(Packet packet)
         {
