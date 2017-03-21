@@ -48,6 +48,7 @@ namespace WowPacketParser.Misc
 
         // DB2
         public static readonly string DBCPath = Conf.GetString("DBCPath", $@"\dbc");
+        public static readonly string DBCLocale = Conf.GetString("DBCLocale", "enUS");
         public static readonly bool UseDBC = Conf.GetBoolean("UseDBC", false);
         public static readonly bool ParseSpellInfos = Conf.GetBoolean("ParseSpellInfos", false);
 
