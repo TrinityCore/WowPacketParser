@@ -168,7 +168,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (addonSize > 0)
             {
                 var addons = new Packet(packet.ReadBytes(addonSize), packet.Opcode, packet.Time, packet.Direction,
-                packet.Number, packet.Writer, packet.FileName);
+                packet.Number, packet.Formatter, packet.FileName);
                 CoreParsers.AddonHandler.ReadClientAddonsList(addons);
                 addons.ClosePacket(false);
             }
@@ -192,7 +192,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (addonSize > 0)
             {
                 var addons = new Packet(packet.ReadBytes(addonSize), packet.Opcode, packet.Time, packet.Direction,
-                packet.Number, packet.Writer, packet.FileName);
+                packet.Number, packet.Formatter, packet.FileName);
                 CoreParsers.AddonHandler.ReadClientAddonsList(addons);
                 addons.ClosePacket(false);
             }

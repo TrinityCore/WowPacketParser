@@ -139,14 +139,14 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         {
             var size = packet.ReadInt32("Size");
             var data = packet.ReadBytes(size);
-            var db2File = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+            var db2File = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Formatter, packet.FileName);
 
             var type = packet.ReadUInt32E<DB2Hash>("DB2 File");
             packet.ReadTime("Hotfix date");
             var entry = packet.ReadInt32("Entry");
             if (entry < 0)
             {
-                packet.WriteLine("Row {0} has been removed.", -entry);
+                packet.Formatter.AppendItem("Row {0} has been removed.", -entry);
                 HotfixStoreMgr.RemoveRecord(type, entry);
             }
             else
@@ -217,7 +217,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 ID = (uint)entry.Key
             };
 
-            Packet pkt = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+            Packet pkt = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Formatter, packet.FileName);
             npcText.Probabilities = new float[8];
             npcText.BroadcastTextId = new uint[8];
             for (int i = 0; i < 8; ++i)

@@ -20,7 +20,7 @@ namespace WowPacketParser.Tests.Misc
             var packet = new Packet(bytes, 1, new DateTime(2012, 1, 1), Direction.ClientToServer, 1, "Test");
             packet.AsHex();
 
-            var actual = packet.Writer.ToString();
+            var actual = packet.Formatter.ToString();
 
             var expected =
             "|-------------------------------------------------|---------------------------------|" + Environment.NewLine +

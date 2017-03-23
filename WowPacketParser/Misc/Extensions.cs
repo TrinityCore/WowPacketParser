@@ -71,9 +71,10 @@ namespace WowPacketParser.Misc
         /// Shows our hex representation of a packet
         /// </summary>
         /// <param name="packet">A packet</param>
-        public static void AsHex(this Packet packet)
+        public static string AsHex(this Packet packet)
         {
-            packet.WriteLine(Utilities.ByteArrayToHexTable(packet.GetStream(0)));
+            return Utilities.ByteArrayToHexTable(packet.GetStream(0));
+            //packet.Formatter.AppendItem(data);
         }
 
         /// <summary>

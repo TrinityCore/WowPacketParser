@@ -119,7 +119,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
                 ID = (uint)entry.Key
             };
 
-            Packet pkt = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+            Packet pkt = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Formatter, packet.FileName);
             npcText.Probabilities = new float[8];
             npcText.BroadcastTextId = new uint[8];
             for (int i = 0; i < 8; ++i)

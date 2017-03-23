@@ -20,7 +20,7 @@ namespace WowPacketParser.Misc
         private static DateTime _firstPacketTime;
 
         [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "MemoryStream is disposed in ClosePacket().")]
-        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, StringBuilder writer, string fileName)
+        public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, IOutputBuilder writer, string fileName)
             : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
         {
             Opcode = opcode;
@@ -40,21 +40,8 @@ namespace WowPacketParser.Misc
 
         [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "MemoryStream is disposed in ClosePacket().")]
         public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, string fileName)
-            : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
+            : this(input, opcode, time, direction, number, null, fileName)
         {
-            Opcode = opcode;
-            Time = time;
-            Direction = direction;
-            Number = number;
-            Writer = null;
-            FileName = fileName;
-            Status = ParsedStatus.None;
-            WriteToFile = true;
-
-            if (number == 0)
-                _firstPacketTime = Time;
-
-            TimeSpan = Time - _firstPacketTime;
         }
 
         public int Opcode { get; set; } // setter can't be private because it's used in multiple_packets
@@ -62,7 +49,7 @@ namespace WowPacketParser.Misc
         public TimeSpan TimeSpan { get; }
         public Direction Direction { get; }
         public int Number { get; }
-        public StringBuilder Writer { get; private set; }
+        public IOutputBuilder Writer { get; private set; }
         public string FileName { get; }
         public ParsedStatus Status { get; set; }
         public bool WriteToFile { get; private set; }
@@ -254,7 +241,7 @@ namespace WowPacketParser.Misc
                 return;
 
             if (Writer == null)
-                Writer = new StringBuilder();
+                Writer = new TextOutputBuilder();
 
             Writer.Append(value);
         }
@@ -265,9 +252,9 @@ namespace WowPacketParser.Misc
                 return;
 
             if (Writer == null)
-                Writer = new StringBuilder();
+                Writer = new TextOutputBuilder();
 
-            Writer.AppendFormat(format, args);
+            Writer.Append(string.Format(format, args)); 
         }
 
         public void WriteLine()
@@ -276,9 +263,9 @@ namespace WowPacketParser.Misc
                 return;
 
             if (Writer == null)
-                Writer = new StringBuilder();
+                Writer = new TextOutputBuilder();
 
-            Writer.AppendLine();
+            Writer.Append(Environment.NewLine);
         }
 
         public void WriteLine(string value)
@@ -287,9 +274,9 @@ namespace WowPacketParser.Misc
                 return;
 
             if (Writer == null)
-                Writer = new StringBuilder();
+                Writer = new TextOutputBuilder();
 
-            Writer.AppendLine(value);
+            Writer.Append(value + Environment.NewLine);
         }
 
         public void WriteLine(string format, params object[] args)
@@ -298,9 +285,9 @@ namespace WowPacketParser.Misc
                 return;
 
             if (Writer == null)
-                Writer = new StringBuilder();
+                Writer = new TextOutputBuilder();
 
-            Writer.AppendLine(string.Format(format, args));
+            Writer.Append(string.Format(format, args) + Environment.NewLine);
         }
 
         public void ClosePacket(bool clearWriter = true)

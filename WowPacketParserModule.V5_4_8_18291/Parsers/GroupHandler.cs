@@ -294,7 +294,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             var size = packet.ReadInt32("Size");
             var data = packet.ReadBytes(size);
-            var updateFlagPacket = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+            var updateFlagPacket = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Formatter, packet.FileName);
 
             if (updateFlags.HasFlag(GroupUpdateFlag548.Status)) // 0x1
                 updateFlagPacket.ReadInt16E<GroupMemberStatusFlag>("Status");
@@ -368,10 +368,10 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             }
 
             if (updateFlags.HasFlag(GroupUpdateFlag548.PetGuid)) // 0x2000
-                updateFlagPacket.ReadGuid("Pet GUID");
+                updateFlagpacket.ReadGuid("Pet GUID");
 
             if (updateFlags.HasFlag(GroupUpdateFlag548.PetName)) // 0x4000
-                updateFlagPacket.ReadCString("Pet Name");
+                updateFlagpacket.ReadCString("Pet Name");
 
             if (updateFlags.HasFlag(GroupUpdateFlag548.PetModelId)) // 0x8000
                 updateFlagPacket.ReadInt16("Pet Modelid");
@@ -425,7 +425,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             {
                 updateFlagPacket.ReadInt32("Unk Int32");
 
-                var count = updateFlagPacket.ReadBits("Phase Count", 23);
+                var count = updateFlagpacket.ReadBits("Phase Count", 23);
                 for (var i = 0; i < count; ++i)
                     updateFlagPacket.ReadUInt16("Phase Id");
             }

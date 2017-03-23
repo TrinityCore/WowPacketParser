@@ -486,7 +486,7 @@ namespace WowPacketParser.Parsing.Parsers
             var remainingLength = packet.Length - packet.Position;
             var bytes = packet.ReadBytes((int)remainingLength);
 
-            using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
+            using (var newpacket = new Packet(bytes, opcode, packet.Time, packet.Direction, packet.Number, packet.Formatter, packet.FileName))
                 Handler.Parse(newpacket, true);
         }
 
@@ -1788,8 +1788,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_COMPRESSED_MOVES)]
         public static void HandleCompressedMoves(Packet packet)
         {
-            packet.WriteLine("{"); // To be able to see what is inside this packet.
-            packet.WriteLine();
+            packet.Formatter.OpenCollection(""); // To be able to see what is inside this packet.
+            //packet.WriteLine();
 
             using (var pkt = packet.Inflate(packet.ReadInt32()))
             {
@@ -1799,13 +1799,13 @@ namespace WowPacketParser.Parsing.Parsers
                     var opc = pkt.ReadInt16();
                     var data = pkt.ReadBytes(size - 2);
 
-                    using (var newPacket = new Packet(data, opc, pkt.Time, pkt.Direction, pkt.Number, packet.Writer, packet.FileName))
+                    using (var newPacket = new Packet(data, opc, pkt.Time, pkt.Direction, pkt.Number, packet.Formatter, packet.FileName))
                         Handler.Parse(newPacket, true);
-                    packet.WriteLine();
+                    //packet.WriteLine();
                 }
             }
 
-            packet.WriteLine("}");
+            packet.Formatter.CloseCollection("");
             packet.ReadToEnd();
         }
 

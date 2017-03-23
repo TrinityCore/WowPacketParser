@@ -193,7 +193,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Digest (6)", i);
 
             var pkt = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
-                packet.Number, packet.Writer, packet.FileName);
+                packet.Number, packet.Formatter, packet.FileName);
             AddonHandler.ReadClientAddonsList(pkt);
             pkt.ClosePacket(false);
 
@@ -243,7 +243,7 @@ namespace WowPacketParser.Parsing.Parsers
             sha[13] = packet.ReadByte();
 
             var pkt = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
-                packet.Number, packet.Writer, packet.FileName);
+                packet.Number, packet.Formatter, packet.FileName);
             AddonHandler.ReadClientAddonsList(pkt);
             pkt.ClosePacket(false);
 
@@ -290,7 +290,7 @@ namespace WowPacketParser.Parsing.Parsers
             sha[1] = packet.ReadByte();//23
 
             var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
-                packet.Number, packet.Writer, packet.FileName);
+                packet.Number, packet.Formatter, packet.FileName);
             AddonHandler.ReadClientAddonsList(addons);
             addons.ClosePacket(false);
 

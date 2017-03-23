@@ -101,7 +101,7 @@ namespace WowPacketParser.Parsing
         {
             ParsedStatus status;
 
-            packet.WriteLine(packet.GetHeader(isMultiple));
+            packet.Formatter.AppendItem(packet.GetHeader(isMultiple));
 
             if (packet.Opcode == 0)
                 return;
@@ -150,20 +150,22 @@ namespace WowPacketParser.Parsing
                     {
                         var pos = packet.Position;
                         var len = packet.Length;
-                        packet.WriteLine("Packet not fully read! Current position: {0} Length: {1} Bytes remaining: {2}.",
-                            pos, len, len - pos);
+                        
+                        if (len < 300)
+                        { // If the packet isn't "too big" and it is not full read, print its hex table
+                            var content = "Packet not fully read! Current position: " + pos + " Length: " + len + " Bytes remaining: " + (len - pos) + ".\n\r" + packet.AsHex();
+                            packet.Formatter.AppendItemWithContent("discarded", content);
 
-                        if (len < 300) // If the packet isn't "too big" and it is not full read, print its hex table
-                            packet.AsHex();
+                        }
 
                         status = ParsedStatus.WithErrors;
                     }
                 }
                 catch (Exception ex)
                 {
-                    packet.WriteLine(ex.GetType().ToString());
-                    packet.WriteLine(ex.Message);
-                    packet.WriteLine(ex.StackTrace);
+                    packet.Formatter.AppendItem(ex.GetType().ToString());
+                    packet.Formatter.AppendItem(ex.Message);
+                    packet.Formatter.AppendItem(ex.StackTrace);
 
                     status = ParsedStatus.WithErrors;
                 }

@@ -70,7 +70,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             //packet.ReadUInt32("UInt32 5");
 
             var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
-                packet.Number, packet.Writer, packet.FileName);
+                packet.Number, packet.Formatter, packet.FileName);
             CoreParsers.AddonHandler.ReadClientAddonsList(addons);
             addons.ClosePacket(false);
 
