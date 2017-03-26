@@ -13,4 +13,5 @@ matrix:
   allow_failures:
     - dotnet: 1.0.1
 
+install: ./scripts/travis-install.sh
 script: ./scripts/travis-build.sh
