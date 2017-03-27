@@ -104,9 +104,9 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     for (var i = 0; i < waypoints - 1; ++i)
                     {
                         var vec = packet.ReadPackedVector3();
-                        vec.X += mid.X;
-                        vec.Y += mid.Y;
-                        vec.Z += mid.Z;
+                        vec.X = mid.X - vec.X;
+                        vec.Y = mid.Y - vec.Y;
+                        vec.Z = mid.Z - vec.Z;
 
                         packet.AddValue("Waypoint", vec, i);
                     }
