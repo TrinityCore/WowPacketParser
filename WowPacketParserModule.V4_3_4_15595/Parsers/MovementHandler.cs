@@ -92,32 +92,23 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             {
                 var newpos = packet.ReadVector3("Waypoint Endpoint");
 
-                var mid = new Vector3
+                if (waypoints > 1)
                 {
-                    X = (pos.X + newpos.X)*0.5f,
-                    Y = (pos.Y + newpos.Y)*0.5f,
-                    Z = (pos.Z + newpos.Z)*0.5f
-                };
-
-                if (waypoints != 1)
-                {
-                    var vec = packet.ReadPackedVector3();
-                    vec.X += mid.X;
-                    vec.Y += mid.Y;
-                    vec.Z += mid.Z;
-                    packet.AddValue("Waypoint", vec, 0);
-
-                    if (waypoints > 2)
+                    var mid = new Vector3
                     {
-                        for (var i = 1; i < waypoints - 1; ++i)
-                        {
-                            vec = packet.ReadPackedVector3();
-                            vec.X += mid.X;
-                            vec.Y += mid.Y;
-                            vec.Z += mid.Z;
+                        X = (pos.X + newpos.X) * 0.5f,
+                        Y = (pos.Y + newpos.Y) * 0.5f,
+                        Z = (pos.Z + newpos.Z) * 0.5f
+                    };
 
-                            packet.AddValue("Waypoint", vec, i);
-                        }
+                    for (var i = 0; i < waypoints - 1; ++i)
+                    {
+                        var vec = packet.ReadPackedVector3();
+                        vec.X += mid.X;
+                        vec.Y += mid.Y;
+                        vec.Z += mid.Z;
+
+                        packet.AddValue("Waypoint", vec, i);
                     }
                 }
             }
