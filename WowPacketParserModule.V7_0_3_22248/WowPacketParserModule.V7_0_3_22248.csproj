@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WowPacketParserModule.V7_0_3_22248</RootNamespace>
     <AssemblyName>WowPacketParserModule.V7_0_3_22248</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,6 +41,7 @@
     <Compile Include="Enums\UpdateFields.cs" />
     <Compile Include="Enums\UpdateFields710.cs" />
     <Compile Include="Enums\UpdateFields715.cs" />
+    <Compile Include="Enums\UpdateFields720.cs" />
     <Compile Include="Hotfix\AchievementEntry.cs" />
     <Compile Include="Hotfix\AnimKitEntry.cs" />
     <Compile Include="Hotfix\AreaGroupMemberEntry.cs" />
