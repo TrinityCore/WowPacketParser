@@ -38,45 +38,70 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
         }
 
-        [HasSniffData]
-        [Parser(Opcode.SMSG_DB_REPLY_BULK)]
-        public static void HandleDBReplyBulk(Packet packet)
+        [Parser(Opcode.CMSG_HOTFIX_QUERY)]
+        public static void HandleHotfixQuery(Packet packet)
         {
-            var count = packet.ReadInt32("HotfixCount");
+            var hotfixCount = packet.ReadUInt32();
+            for (var i = 0u; i < hotfixCount; ++i)
+                packet.ReadInt32("HotfixID", i);
+        }
 
-            for (var i = 0; i < count; i++)
+        [Parser(Opcode.SMSG_HOTFIX_LIST)]
+        public static void HandleHotfixList(Packet packet)
+        {
+            packet.ReadInt32("HotfixCacheVersion");
+            var hotfixCount = packet.ReadUInt32();
+            for (var i = 0u; i < hotfixCount; ++i)
+                packet.ReadInt32("HotfixID", i);
+        }
+
+        static void ReadHotfixRecord(Packet packet, int hotfixId, params object[] indexes)
+        {
+            packet.ResetBitReader();
+            var type = packet.ReadUInt32E<DB2Hash>("TableHash", indexes);
+            var entry = packet.ReadInt32("RecordID", indexes);
+            var allow = packet.ReadBit("Allow", indexes);
+            var dataSize = packet.ReadInt32();
+            var data = packet.ReadBytes(dataSize);
+            var db2File = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer,
+                packet.FileName);
+
+            // TODO: new table for hotfix list
+            // concept
+            // TABLE `hotfixes`
+            // COLUMN `HotfixID` PK - critical to maintain between server restarts, client uses it to determine whether it should request the hotfix
+            // COLUMN `TableHash` PK
+            // COLUMN `RecordID` PK
+            // COLUMN `Deleted`
+            if (entry < 0 || !allow)
             {
-                packet.ReadUInt32("Index", i);
-                var count2 = packet.ReadInt32("Count", i);
-
-                for (var j = 0; j < count2; j++)
-                {
-                    var type = packet.ReadUInt32E<DB2Hash>("TableHash", i, j);
-                    var entry = packet.ReadInt32("RecordID", i, j);
-
-                    packet.ResetBitReader();
-
-                    var allow = packet.ReadBit("Allow", i, j);
-
-                    var size = packet.ReadInt32("Size", i, j);
-                    var data = packet.ReadBytes(size);
-                    var db2File = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer,
-                        packet.FileName);
-
-                    if (entry < 0 || !allow)
-                    {
-                        packet.WriteLine($"[{ i.ToString() }] [{ j.ToString() }] Row { -entry } has been removed.");
-                        HotfixStoreMgr.RemoveRecord(type, entry);
-                        //Storage.AddHotfixData(entry, type, true);
-                    }
-                    else
-                    {
-                        HotfixStoreMgr.AddRecord(type, entry, db2File);
-                        //Storage.AddHotfixData(entry, type, false);
-                        db2File.ClosePacket(false);
-                    }
-                }
+                packet.WriteLine("Row {0} has been removed.", -entry);
+                HotfixStoreMgr.RemoveRecord(type, entry);
             }
+            else
+            {
+                packet.AddSniffData(StoreNameType.None, entry, type.ToString());
+                HotfixStoreMgr.AddRecord(type, entry, db2File);
+                db2File.ClosePacket(false);
+            }
+        }
+
+        static void ReadHotfixData(Packet packet, params object[] indexes)
+        {
+            var hotfixId = packet.ReadInt32("HotfixID", indexes);
+            var recordCount = packet.ReadUInt32();
+            for (var i = 0u; i < recordCount; ++i)
+                ReadHotfixRecord(packet, hotfixId, indexes, i, "HotfixRecord");
+        }
+
+        //[HasSniffData]
+        [Parser(Opcode.SMSG_HOTFIXES)]
+        [Parser(Opcode.SMSG_HOTFIX_QUERY_RESPONSE)]
+        public static void HandleHotixData(Packet packet)
+        {
+            var hotfixCount = packet.ReadUInt32();
+            for (var i = 0u; i < hotfixCount; ++i)
+                ReadHotfixData(packet, i, "HotfixData");
         }
     }
 }
