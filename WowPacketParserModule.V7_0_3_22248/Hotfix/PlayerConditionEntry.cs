@@ -108,6 +108,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Hotfix
         public uint MinAvgItemLevel { get; set; }
         public uint MaxAvgItemLevel { get; set; }
         [HotfixArray(2)]
-        public uint[] Unknown700 { get; set; }
+        public uint[] MovementFlags { get; set; }
+        [HotfixVersion(ClientVersionBuild.V7_2_0_23826, false)]
+        public uint MainHandItemSubclassMask { get; set; }
     }
 }

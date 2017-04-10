@@ -1663,6 +1663,7 @@ namespace WowPacketParser.Enums
         SMSG_DBLOOKUP,
         SMSG_DB_LOOKUP_RESULTS,
         SMSG_DB_REPLY,
+        SMSG_DB_REPLY_BULK,
         SMSG_DEATH_RELEASE_LOC,
         SMSG_DEBUGAURAPROC,
         SMSG_DEBUG_AISTATE,

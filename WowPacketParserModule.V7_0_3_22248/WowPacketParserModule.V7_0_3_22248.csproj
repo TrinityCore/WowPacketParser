@@ -49,6 +49,7 @@
     <Compile Include="Hotfix\AreaTriggerEntry.cs" />
     <Compile Include="Hotfix\ArmorLocationEntry.cs" />
     <Compile Include="Hotfix\ArtifactAppearanceEntry.cs" />
+    <Compile Include="Hotfix\ArtifactAppearanceEntry720.cs" />
     <Compile Include="Hotfix\ArtifactAppearanceSetEntry.cs" />
     <Compile Include="Hotfix\ArtifactCategoryEntry.cs" />
     <Compile Include="Hotfix\ArtifactEntry.cs" />
@@ -75,6 +76,8 @@
     <Compile Include="Hotfix\ChrRacesEntry.cs" />
     <Compile Include="Hotfix\ChrSpecializationEntry.cs" />
     <Compile Include="Hotfix\CinematicSequencesEntry.cs" />
+    <Compile Include="Hotfix\CinematicSequencesEntry720.cs" />
+    <Compile Include="Hotfix\CreatureDisplayInfoEntry720.cs" />
     <Compile Include="Hotfix\CreatureEntry.cs" />
     <Compile Include="Hotfix\CreatureDifficultyEntry.cs" />
     <Compile Include="Hotfix\CreatureDisplayInfoEntry.cs" />
@@ -84,12 +87,15 @@
     <Compile Include="Hotfix\CreatureTypeEntry.cs" />
     <Compile Include="Hotfix\CriteriaEntry.cs" />
     <Compile Include="Hotfix\CriteriaTreeEntry.cs" />
+    <Compile Include="Hotfix\CriteriaTreeEntry720.cs" />
     <Compile Include="Hotfix\CurrencyTypesEntry.cs" />
     <Compile Include="Hotfix\CurveEntry.cs" />
     <Compile Include="Hotfix\CurvePointEntry.cs" />
     <Compile Include="Hotfix\DestructibleModelDataEntry.cs" />
     <Compile Include="Hotfix\DifficultyEntry.cs" />
+    <Compile Include="Hotfix\DifficultyEntry720.cs" />
     <Compile Include="Hotfix\DungeonEncounterEntry.cs" />
+    <Compile Include="Hotfix\DungeonEncounterEntry720.cs" />
     <Compile Include="Hotfix\DurabilityCostsEntry.cs" />
     <Compile Include="Hotfix\DurabilityQualityEntry.cs" />
     <Compile Include="Hotfix\EmotesEntry.cs" />
@@ -103,12 +109,14 @@
     <Compile Include="Hotfix\GarrBuildingEntry.cs" />
     <Compile Include="Hotfix\GarrBuildingPlotInstEntry.cs" />
     <Compile Include="Hotfix\GarrClassSpecEntry.cs" />
+    <Compile Include="Hotfix\GarrClassSpecEntry720.cs" />
     <Compile Include="Hotfix\GarrFollowerEntry.cs" />
     <Compile Include="Hotfix\GarrFollowerXAbilityEntry.cs" />
     <Compile Include="Hotfix\GarrPlotBuildingEntry.cs" />
     <Compile Include="Hotfix\GarrPlotEntry.cs" />
     <Compile Include="Hotfix\GarrPlotInstanceEntry.cs" />
     <Compile Include="Hotfix\GarrSiteLevelEntry.cs" />
+    <Compile Include="Hotfix\GarrSiteLevelEntry720.cs" />
     <Compile Include="Hotfix\GarrSiteLevelPlotInstEntry.cs" />
     <Compile Include="Hotfix\GemPropertiesEntry.cs" />
     <Compile Include="Hotfix\GlyphBindableSpellEntry.cs" />
@@ -120,6 +128,7 @@
     <Compile Include="Hotfix\GuildPerkSpellsEntry.cs" />
     <Compile Include="Hotfix\HeirloomEntry.cs" />
     <Compile Include="Hotfix\HolidaysEntry.cs" />
+    <Compile Include="Hotfix\HolidaysEntry720.cs" />
     <Compile Include="Hotfix\HotfixSerializer.cs" />
     <Compile Include="Hotfix\ImportPriceArmorEntry.cs" />
     <Compile Include="Hotfix\ImportPriceQualityEntry.cs" />
@@ -154,12 +163,14 @@
     <Compile Include="Hotfix\ItemSetEntry.cs" />
     <Compile Include="Hotfix\ItemSetSpellEntry.cs" />
     <Compile Include="Hotfix\ItemSparseEntry.cs" />
+    <Compile Include="Hotfix\ItemSparseEntry720.cs" />
     <Compile Include="Hotfix\ItemSpecEntry.cs" />
     <Compile Include="Hotfix\ItemSpecOverrideEntry.cs" />
     <Compile Include="Hotfix\ItemUpgradeEntry.cs" />
     <Compile Include="Hotfix\ItemXBonusTreeEntry.cs" />
     <Compile Include="Hotfix\KeyChainEntry.cs" />
     <Compile Include="Hotfix\LfgDungeonsEntry.cs" />
+    <Compile Include="Hotfix\LfgDungeonsEntry720.cs" />
     <Compile Include="Hotfix\LightEntry.cs" />
     <Compile Include="Hotfix\LiquidTypeEntry.cs" />
     <Compile Include="Hotfix\LockEntry.cs" />
@@ -169,7 +180,9 @@
     <Compile Include="Hotfix\ModifierTreeEntry.cs" />
     <Compile Include="Hotfix\MountCapabilityEntry.cs" />
     <Compile Include="Hotfix\MountEntry.cs" />
+    <Compile Include="Hotfix\MountEntry720.cs" />
     <Compile Include="Hotfix\MountTypeXCapabilityEntry.cs" />
+    <Compile Include="Hotfix\MountXDisplayEntry.cs" />
     <Compile Include="Hotfix\MovieEntry.cs" />
     <Compile Include="Hotfix\NameGenEntry.cs" />
     <Compile Include="Hotfix\NamesProfanityEntry.cs" />
@@ -186,6 +199,7 @@
     <Compile Include="Hotfix\QuestFactionRewardEntry.cs" />
     <Compile Include="Hotfix\QuestMoneyRewardEntry.cs" />
     <Compile Include="Hotfix\QuestPackageItemEntry.cs" />
+    <Compile Include="Hotfix\QuestPackageItemEntry720.cs" />
     <Compile Include="Hotfix\QuestSortEntry.cs" />
     <Compile Include="Hotfix\QuestV2Entry.cs" />
     <Compile Include="Hotfix\QuestXPEntry.cs" />
@@ -197,6 +211,7 @@
     <Compile Include="Hotfix\SceneScriptEntry.cs" />
     <Compile Include="Hotfix\SceneScriptPackageEntry.cs" />
     <Compile Include="Hotfix\SkillLineAbilityEntry.cs" />
+    <Compile Include="Hotfix\SkillLineAbilityEntry720.cs" />
     <Compile Include="Hotfix\SkillLineEntry.cs" />
     <Compile Include="Hotfix\SkillRaceClassInfoEntry.cs" />
     <Compile Include="Hotfix\SoundKitEntry.cs" />
@@ -210,7 +225,9 @@
     <Compile Include="Hotfix\SpellClassOptionsEntry.cs" />
     <Compile Include="Hotfix\SpellCooldownsEntry.cs" />
     <Compile Include="Hotfix\SpellDurationEntry.cs" />
+    <Compile Include="Hotfix\SpellDurationEntry720.cs" />
     <Compile Include="Hotfix\SpellEffectEntry.cs" />
+    <Compile Include="Hotfix\SpellEffectEntry720.cs" />
     <Compile Include="Hotfix\SpellEffectScalingEntry.cs" />
     <Compile Include="Hotfix\SpellEntry.cs" />
     <Compile Include="Hotfix\SpellEquippedItemsEntry.cs" />
@@ -221,6 +238,7 @@
     <Compile Include="Hotfix\SpellLearnSpellEntry.cs" />
     <Compile Include="Hotfix\SpellLevelsEntry.cs" />
     <Compile Include="Hotfix\SpellMiscEntry.cs" />
+    <Compile Include="Hotfix\SpellMiscEntry720.cs" />
     <Compile Include="Hotfix\SpellPowerDifficultyEntry.cs" />
     <Compile Include="Hotfix\SpellPowerEntry.cs" />
     <Compile Include="Hotfix\SpellProcsPerMinuteEntry.cs" />
@@ -231,9 +249,11 @@
     <Compile Include="Hotfix\SpellScalingEntry.cs" />
     <Compile Include="Hotfix\SpellShapeshiftEntry.cs" />
     <Compile Include="Hotfix\SpellShapeshiftFormEntry.cs" />
+    <Compile Include="Hotfix\SpellShapeshiftFormEntry720.cs" />
     <Compile Include="Hotfix\SpellTargetRestrictionsEntry.cs" />
     <Compile Include="Hotfix\SpellTotemsEntry.cs" />
     <Compile Include="Hotfix\SpellXSpellVisualEntry.cs" />
+    <Compile Include="Hotfix\SpellXSpellVisualEntry720.cs" />
     <Compile Include="Hotfix\SummonPropertiesEntry.cs" />
     <Compile Include="Hotfix\TactKeyEntry.cs" />
     <Compile Include="Hotfix\TalentEntry.cs" />

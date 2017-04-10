@@ -1,9 +1,9 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
 
-namespace WowPacketParserModule.V7_0_3_22248.Hotfix
+namespace WowPacketParserModule.V7_2_0_23826.Hotfix
 {
-    [HotfixStructure(DB2Hash.SpellMisc, ClientVersionBuild.V7_0_3_22248, ClientVersionBuild.V7_2_0_23826, HasIndexInData = false)]
+    [HotfixStructure(DB2Hash.SpellMisc, ClientVersionBuild.V7_2_0_23826, HasIndexInData = false)]
     public class SpellMiscEntry
     {
         public uint Attributes { get; set; }
@@ -25,8 +25,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Hotfix
         public ushort CastingTimeIndex { get; set; }
         public ushort DurationIndex { get; set; }
         public ushort RangeIndex { get; set; }
-        public ushort SpellIconID { get; set; }
-        public ushort ActiveIconID { get; set; }
         public byte SchoolMask { get; set; }
+        public uint IconFileDataID { get; set; }
+        public uint ActiveIconFileDataID { get; set; }
     }
 }

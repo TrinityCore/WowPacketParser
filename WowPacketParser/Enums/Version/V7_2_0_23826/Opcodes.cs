@@ -959,6 +959,7 @@ namespace WowPacketParser.Enums.Version.V7_2_0_23826
             {Opcode.SMSG_DAMAGE_CALC_LOG, 0x2808},
             {Opcode.SMSG_DANCE_STUDIO_CREATE_RESULT, 0x27A3},
             {Opcode.SMSG_DB_REPLY, 0x25A0},
+            {Opcode.SMSG_DB_REPLY_BULK, 0x25A3},
             {Opcode.SMSG_DEATH_RELEASE_LOC, 0x2705},
             {Opcode.SMSG_DEFENSE_MESSAGE, 0x2BB6},
             {Opcode.SMSG_DELETE_CHAR, 0x273F},
