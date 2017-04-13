@@ -3,7 +3,7 @@ using WowPacketParser.Hotfix;
 
 namespace WowPacketParserModule.V7_0_3_22248.Hotfix
 {
-    [HotfixStructure(DB2Hash.SpellEffect)]
+    [HotfixStructure(DB2Hash.SpellEffect, ClientVersionBuild.V7_0_3_22248, ClientVersionBuild.V7_2_0_23826)]
     public class SpellEffectEntry
     {
         public float EffectAmplitude { get; set; }

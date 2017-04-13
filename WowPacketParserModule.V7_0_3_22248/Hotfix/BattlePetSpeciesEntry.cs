@@ -15,5 +15,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Hotfix
         public byte PetType { get; set; }
         public sbyte Source { get; set; }
         public uint ID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V7_2_0_23826, false)]
+        public uint CardModelSceneID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V7_2_0_23826, false)]
+        public uint LoadoutModelSceneID { get; set; }
     }
 }

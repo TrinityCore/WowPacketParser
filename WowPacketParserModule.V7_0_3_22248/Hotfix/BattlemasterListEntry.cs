@@ -9,6 +9,10 @@ namespace WowPacketParserModule.V7_0_3_22248.Hotfix
         public string Name { get; set; }
         public uint IconFileDataID { get; set; }
         public string GameType { get; set; }
+        [HotfixVersion(ClientVersionBuild.V7_2_0_23826, false)]
+        public string ShortDescription { get; set; }
+        [HotfixVersion(ClientVersionBuild.V7_2_0_23826, false)]
+        public string LongDescription { get; set; }
         [HotfixArray(16)]
         public short[] MapID { get; set; }
         public ushort HolidayWorldState { get; set; }

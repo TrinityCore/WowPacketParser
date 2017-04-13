@@ -22,6 +22,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Hotfix
         [HotfixArray(4)]
         public ushort[] ReputationFlags { get; set; }
         public ushort ParentFactionID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V7_2_0_23826, false)]
+        public ushort ParagonFactionID { get; set; }
         public byte ParentFactionCapIn { get; set; }
         public byte ParentFactionCapOut { get; set; }
         public byte Expansion { get; set; }

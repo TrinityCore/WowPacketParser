@@ -3,7 +3,7 @@ using WowPacketParser.Hotfix;
 
 namespace WowPacketParserModule.V7_0_3_22248.Hotfix
 {
-    [HotfixStructure(DB2Hash.SpellMisc, HasIndexInData = false)]
+    [HotfixStructure(DB2Hash.SpellMisc, ClientVersionBuild.V7_0_3_22248, ClientVersionBuild.V7_2_0_23826, HasIndexInData = false)]
     public class SpellMiscEntry
     {
         public uint Attributes { get; set; }
