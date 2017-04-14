@@ -289,7 +289,7 @@ namespace WowPacketParser.Hotfix
                     localeBuilder?.Append($"{kv.Key}, ");
                 }
 
-                localeBuilder?.Append($"{BinaryPacketReader.GetLocale()}, ");
+                localeBuilder?.Append($"'{BinaryPacketReader.GetLocale()}', ");
                 _serializer((T)kv.Value, hotfixBuilder, localeBuilder);
 
                 hotfixBuilder.AppendLine(remainingCount > 0 ? $"{ClientVersion.BuildInt})," : $"{ClientVersion.BuildInt});");
