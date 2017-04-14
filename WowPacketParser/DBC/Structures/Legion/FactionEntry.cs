@@ -3,9 +3,10 @@ using DBFilesClient.NET;
 
 namespace WowPacketParser.DBC.Structures
 {
-    [DBFileName("Faction")]
+    [DBFile("Faction")]
     public sealed class FactionEntry
     {
+        public uint ID;
         public uint[] ReputationRaceMask;
         public int[] ReputationBase;
         public float[] ParentFactionMod;
@@ -16,6 +17,7 @@ namespace WowPacketParser.DBC.Structures
         public ushort[] ReputationClassMask;
         public ushort[] ReputationFlags;
         public ushort ParentFactionID;
+        public ushort ParagonFactionID;
         public byte[] ParentFactionCap;
         public byte Expansion;
         public byte Flags;

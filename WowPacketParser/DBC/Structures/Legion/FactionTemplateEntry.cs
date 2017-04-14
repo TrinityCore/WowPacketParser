@@ -2,7 +2,7 @@
 
 namespace WowPacketParser.DBC.Structures
 {
-    [DBFileName("FactionTemplate")]
+    [DBFile("FactionTemplate")]
     public sealed class FactionTemplateEntry
     {
         public ushort Faction;

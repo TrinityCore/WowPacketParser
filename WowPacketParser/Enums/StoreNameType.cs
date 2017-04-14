@@ -18,7 +18,6 @@ namespace WowPacketParser.Enums
         Gossip,
         Item,
         LFGDungeon,
-        Model,
         Map,
         NpcText,
         Opcode, // Packet
@@ -62,8 +61,6 @@ namespace WowPacketParser.Enums
                 return StoreNameType.LFGDungeon;
             if (typeof(T) == typeof(MapId))
                 return StoreNameType.Map;
-            if (typeof(T) == typeof(ModelId))
-                return StoreNameType.Model;
             if (typeof(T) == typeof(QuestId))
                 return StoreNameType.Quest;
             if (typeof(T) == typeof(SoundId))
@@ -93,7 +90,6 @@ namespace WowPacketParser.Enums
     public struct ItemId : IId { }
     public struct LFGDungeonId : IId { }
     public struct MapId : IId { }
-    public struct ModelId : IId { }
     public struct QuestId : IId { }
     public struct SoundId : IId { }
     public struct SpellId :  IId { }

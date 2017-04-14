@@ -2,7 +2,7 @@
 
 namespace WowPacketParser.DBC.Structures
 {
-    [DBFileName("AreaTable")]
+    [DBFile("AreaTable")]
     public sealed class AreaTableEntry
     {
         public uint[] Flags;

@@ -2,15 +2,15 @@
 
 namespace WowPacketParser.DBC.Structures
 {
-    [DBFileName("CriteriaTree")]
+    [DBFile("CriteriaTree")]
     public sealed class CriteriaTreeEntry
     {
-        public uint CriteriaID;
         public uint Amount;
         public string Description;
         public ushort Parent;
         public ushort Flags;
         public byte Operator;
-        public uint OrderIndex;
+        public uint CriteriaID;
+        public int OrderIndex;
     }
 }

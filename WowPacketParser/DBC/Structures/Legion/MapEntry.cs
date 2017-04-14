@@ -2,7 +2,7 @@
 
 namespace WowPacketParser.DBC.Structures
 {
-    [DBFileName("Map")]
+    [DBFile("Map")]
     public sealed class MapEntry
     {
         public string Directory;
@@ -12,6 +12,8 @@ namespace WowPacketParser.DBC.Structures
         public string MapName;
         public string MapDescription0;
         public string MapDescription1;
+        public string ShortDescription;
+        public string LongDescription;
         public ushort AreaTableID;
         public ushort LoadingScreenID;
         public short CorpseMapID;

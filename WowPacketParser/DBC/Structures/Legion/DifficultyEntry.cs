@@ -2,11 +2,14 @@
 
 namespace WowPacketParser.DBC.Structures
 {
-    [DBFileName("Difficulty")]
+    [DBFile("Difficulty")]
 
     public sealed class DifficultyEntry
     {
         public string Name;
+        public ushort GroupSizeHealthCurveID;
+        public ushort GroupSizeDmgCurveID;
+        public ushort GroupSizeSpellPointsCurveID;
         public byte FallbackDifficultyID;
         public byte InstanceType;
         public byte MinPlayers;
@@ -14,9 +17,6 @@ namespace WowPacketParser.DBC.Structures
         public sbyte OldEnumValue;
         public byte Flags;
         public byte ToggleDifficultyID;
-        public byte GroupSizeHealthCurveID;
-        public byte GroupSizeDmgCurveID;
-        public byte GroupSizeSpellPointsCurveID;
         public byte ItemBonusTreeModID;
         public byte OrderIndex;
     }

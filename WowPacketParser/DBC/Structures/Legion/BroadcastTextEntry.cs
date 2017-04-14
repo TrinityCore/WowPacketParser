@@ -2,7 +2,7 @@
 
 namespace WowPacketParser.DBC.Structures
 {
-    [DBFileName("BroadcastText")]
+    [DBFile("BroadcastText")]
 
     public sealed class BroadcastTextEntry
     {

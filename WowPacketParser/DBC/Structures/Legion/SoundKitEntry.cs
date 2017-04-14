@@ -2,7 +2,7 @@
 
 namespace WowPacketParser.DBC.Structures
 {
-    [DBFileName("SoundKit")]
+    [DBFile("SoundKit")]
     public sealed class SoundKitEntry
     {
         public string Name;

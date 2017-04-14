@@ -2,14 +2,14 @@
 
 namespace WowPacketParser.DBC.Structures
 {
-    [DBFileName("CreatureFamily")]
+    [DBFile("CreatureFamily")]
 
     public sealed class CreatureFamilyEntry
     {
         public float MinScale;
         public float MaxScale;
         public string Name;
-        public string IconFile;
+        public uint IconFileDataID;
         public ushort[] SkillLine;
         public ushort PetFoodMask;
         public byte MinScaleLevel;

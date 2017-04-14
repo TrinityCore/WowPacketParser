@@ -26,7 +26,7 @@ namespace WowPacketParser.DBC
         public static Storage<FactionEntry> Faction = new Storage<FactionEntry>(GetPath() + "Faction.db2");
         public static Storage<FactionTemplateEntry> FactionTemplate = new Storage<FactionTemplateEntry>(GetPath() + "FactionTemplate.db2");
         public static Storage<ItemEntry> Item = new Storage<ItemEntry>(GetPath() + "Item.db2");
-        public static Storage<ItemSparseEntry> ItemSparse = new Storage<ItemSparseEntry>(GetPath() + "Item-sparse.db2");
+        public static Storage<ItemSparseEntry> ItemSparse = new Storage<ItemSparseEntry>(GetPath() + "ItemSparse.db2");
         public static Storage<MapEntry> Map = new Storage<MapEntry>(GetPath() + "Map.db2");
         public static Storage<MapDifficultyEntry> MapDifficulty = new Storage<MapDifficultyEntry>(GetPath() + "MapDifficulty.db2");
         public static Storage<PhaseXPhaseGroupEntry> PhaseXPhaseGroup = new Storage<PhaseXPhaseGroupEntry>(GetPath() + "PhaseXPhaseGroup.db2");
@@ -58,7 +58,7 @@ namespace WowPacketParser.DBC
                     return;
 
                 var startTime = DateTime.Now;
-                var attr = type.GetCustomAttribute<DBFileNameAttribute>();
+                var attr = type.GetCustomAttribute<DBFileAttribute>();
                 if (attr == null)
                     return;
 
@@ -66,7 +66,7 @@ namespace WowPacketParser.DBC
                 var recordCount = 0;
                 var instanceType = typeof(Storage<>).MakeGenericType(type);
                 var countGetter = instanceType.GetProperty("Count").GetGetMethod();
-                var instance = Activator.CreateInstance(instanceType, $"{ GetPath() + attr.FileName }.db2");
+                var instance = Activator.CreateInstance(instanceType, $"{ GetPath() + attr.FileName }.db2", true);
 
                 var endTime = DateTime.Now;
                 var span = endTime.Subtract(startTime);

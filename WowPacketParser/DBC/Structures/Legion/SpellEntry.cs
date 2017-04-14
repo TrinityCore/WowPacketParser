@@ -2,7 +2,7 @@
 
 namespace WowPacketParser.DBC.Structures
 {
-    [DBFileName("Spell")]
+    [DBFile("Spell")]
 
     public sealed class SpellEntry
     {

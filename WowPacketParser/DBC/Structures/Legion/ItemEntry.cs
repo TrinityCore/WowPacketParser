@@ -2,7 +2,7 @@
 
 namespace WowPacketParser.DBC.Structures
 {
-    [DBFileName("Item")]
+    [DBFile("Item")]
     public sealed class ItemEntry
     {
         public uint FileDataID;

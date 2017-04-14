@@ -2,7 +2,7 @@
 
 namespace WowPacketParser.DBC.Structures
 {
-    [DBFileName("MapDifficulty")]
+    [DBFile("MapDifficulty")]
 
     public sealed class MapDifficultyEntry
     {

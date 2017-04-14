@@ -1,30 +1,32 @@
-﻿using DBFilesClient.NET;
+﻿using System.Runtime.InteropServices;
 
 namespace WowPacketParser.DBC.Structures
 {
-    [DBFileName("CreatureDisplayInfo")]
+    [DBFile("CreatureDisplayInfo")]
     public sealed class CreatureDisplayInfoEntry
     {
-        public uint ExtendedDisplayInfoID;
+        public uint ID;
         public float CreatureModelScale;
-        public float PlayerModelScale;
-        public uint[] TextureVariation;
-        public string PortraitTextureName;
-        public uint PortraitCreatureDisplayInfoID;
-        public uint CreatureGeosetData;
-        public uint StateSpellVisualKitID;
-        public float InstanceOtherPlayerPetScale;
-        public ushort ModelID;
-        public ushort SoundID;
-        public ushort NPCSoundID;
-        public ushort ParticleColorID;
-        public ushort ObjectEffectPackageID;
-        public ushort AnimReplacementSetID;
-        public byte CreatureModelAlpha;
+        public short ModelID;
+        public short NPCSoundID;
         public byte SizeClass;
-        public byte BloodID;
         public byte Flags;
         public sbyte Gender;
-        public sbyte Unk700;
+        public uint ExtendedDisplayInfoID;
+        public uint[] TextureVariation;
+        public uint PortraitTextureFileDataID;
+        public byte CreatureModelAlpha;
+        public short SoundID;
+        public float PlayerModelScale;
+        public int PortraitCreatureDisplayInfoID;
+        public byte BloodID;
+        public short ParticleColorID;
+        public uint CreatureGeosetData;
+        public short ObjectEffectPackageID;
+        public short AnimReplacementSetID;
+        public sbyte UnarmedWeaponSubclass;
+        public int StateSpellVisualKitID;
+        public float InstanceOtherPlayerPetScale;                             // scale of not own player pets inside dungeons/raids/scenarios
+        public int MountSpellVisualKitID;
     }
 }

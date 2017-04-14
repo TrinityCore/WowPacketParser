@@ -55,13 +55,6 @@ namespace WowPacketParser.Misc
                         if (DBC.DBC.Map.ContainsKey(entry))
                             return DBC.DBC.Map[entry].MapName;
                         break;
-                    case StoreNameType.Model:
-                        if (DBC.DBC.CreatureDisplayInfo.ContainsKey(entry))
-                        {
-                            if (DBC.DBC.CreatureDisplayInfo[entry].PortraitTextureName != string.Empty)
-                                return DBC.DBC.CreatureDisplayInfo[entry].PortraitTextureName;
-                        }
-                        break;
                     case StoreNameType.Sound:
                         if (DBC.DBC.SoundKit.ContainsKey(entry))
                             return DBC.DBC.SoundKit[entry].Name;

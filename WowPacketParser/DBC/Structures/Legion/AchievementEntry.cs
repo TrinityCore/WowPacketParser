@@ -2,7 +2,7 @@
 
 namespace WowPacketParser.DBC.Structures
 {
-    [DBFileName("Achievement")]
+    [DBFile("Achievement")]
 
     public sealed class AchievementEntry
     {
@@ -14,12 +14,12 @@ namespace WowPacketParser.DBC.Structures
         public ushort Supercedes;
         public ushort Category;
         public ushort UIOrder;
-        public ushort IconID;
         public ushort SharesCriteria;
         public ushort CriteriaTree;
         public sbyte Faction;
         public byte Points;
         public byte MinimumCriteria;
         public uint ID;
+        public uint IconFileDataID;
     }
 }

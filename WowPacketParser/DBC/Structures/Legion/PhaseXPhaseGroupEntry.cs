@@ -2,7 +2,7 @@
 
 namespace WowPacketParser.DBC.Structures
 {
-    [DBFileName("PhaseXPhaseGroup")]
+    [DBFile("PhaseXPhaseGroup")]
 
     public sealed class PhaseXPhaseGroupEntry
     {
