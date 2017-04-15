@@ -123,7 +123,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var type = packet.ReadUInt32E<DB2Hash>("TableHash", indexes);
             var entry = packet.ReadInt32("RecordID", indexes);
             var allow = packet.ReadBit("Allow", indexes);
-            var dataSize = packet.ReadInt32();
+            var dataSize = packet.ReadInt32("Size", indexes);
             var data = packet.ReadBytes(dataSize);
             var db2File = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer,
                 packet.FileName);
@@ -137,13 +137,20 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             // COLUMN `Deleted`
             if (entry < 0 || !allow)
             {
-                packet.WriteLine("Row {0} has been removed.", -entry);
+                packet.WriteLine($"Row { -entry } has been removed.");
                 HotfixStoreMgr.RemoveRecord(type, entry);
             }
             else
             {
                 packet.AddSniffData(StoreNameType.None, entry, type.ToString());
                 HotfixStoreMgr.AddRecord(type, entry, db2File);
+
+                if (db2File.Position != db2File.Length)
+                {
+                    db2File.WriteLine($"(Entry: { entry } TableHash: { type }) has missing structure");
+                    db2File.AsHex();
+                }
+
                 db2File.ClosePacket(false);
             }
         }
