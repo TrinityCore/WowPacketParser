@@ -3,8 +3,8 @@ WowPacketParser (WPP)
 
 [![GitHub license](https://img.shields.io/github/license/TrinityCore/WowPacketParser.svg?style=flat-square)](https://github.com/TrinityCore/WowPacketParser/blob/WowPacketParser/COPYING)
 [![Coverity Scan Build Status](https://img.shields.io/coverity/scan/2618.svg?style=flat-square)](https://scan.coverity.com/projects/2618)
-[![Build Status TravisCI](https://img.shields.io/travis/TrinityCore/WowPacketParser.svg?style=flat-square)](https://travis-ci.org/TrinityCore/WowPacketParser)
-[![Build status AppVeyor](https://img.shields.io/appveyor/ci/DDuarte/wowpacketparser-191.svg?style=flat-square)](https://ci.appveyor.com/project/DDuarte/wowpacketparser-191)
+[![Build Status TravisCI](https://img.shields.io/travis/TrinityCore/WowPacketParser/master.svg?style=flat-square)](https://travis-ci.org/TrinityCore/WowPacketParser)
+[![Build Status AppVeyor](https://img.shields.io/appveyor/ci/DDuarte/wowpacketparser-191/master.svg?style=flat-square)](https://ci.appveyor.com/project/DDuarte/wowpacketparser-191)
 
 Usage
 -----
