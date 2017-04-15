@@ -9,7 +9,7 @@ WowPacketParser (WPP)
 Usage
 -----
 
-* Compile WowPacketParser using Visual Studio 2015 or higher (Windows) or Mono 4.0 or higher (Linux/OSX).
+* Compile WowPacketParser using Visual Studio 2017 or higher (Windows) or Mono 4.0 or higher (Linux/OSX).
   Alternatively you can download compiled binaries from the links [below](#nightly-builds).
 * Edit `WowPacketParser.exe.config` to fit your needs.
 * Drag one or more files (.pkt or .bin) to `WowPacketParser.exe`.
