@@ -113,7 +113,8 @@ namespace WowPacketParser.DBC
                         string result = "";
                         ushort criteriaTreeID = criteriaTree.Value.Parent > 0 ? criteriaTree.Value.Parent : (ushort)criteriaTree.Key;
 
-                        if (achievements.TryGetValue(criteriaTreeID, out List<AchievementEntry> achievementList))
+                        List<AchievementEntry> achievementList;
+                        if (achievements.TryGetValue(criteriaTreeID, out achievementList))
                             foreach (var achievement in achievementList)
                                 result = $"AchievementID: {achievement.ID} Description: \"{ achievement.Description }\"";
 
