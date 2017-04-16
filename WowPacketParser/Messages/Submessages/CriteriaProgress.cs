@@ -1,3 +1,4 @@
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Messages.Submessages
