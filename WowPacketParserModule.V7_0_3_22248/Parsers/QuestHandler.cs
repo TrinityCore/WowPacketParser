@@ -29,7 +29,10 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             packet.ReadInt32("Money", idx);
             packet.ReadInt32("XP", idx);
-            packet.ReadInt32("ArtifactXP", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+                packet.ReadInt64("ArtifactXP", idx);
+            else
+                packet.ReadInt32("ArtifactXP", idx);
             packet.ReadInt32("ArtifactCategoryID", idx);
             packet.ReadInt32("Honor", idx);
             packet.ReadInt32("Title", idx);
@@ -75,7 +78,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ResetBitReader();
 
             packet.ReadBit("Repeatable", indexes);
-            packet.ReadBit("IsQuestIgnored", indexes);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+                packet.ReadBit("IsQuestIgnored", indexes);
 
             var guestTitleLen = packet.ReadBits(9);
             packet.ReadWoWString("QuestTitle", guestTitleLen, indexes);
@@ -198,6 +202,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             uint int2946 = packet.ReadUInt32("CliQuestInfoObjective");
             quest.AllowableRacesWod = packet.ReadInt32("AllowableRaces");
             quest.QuestRewardID = packet.ReadInt32("QuestRewardID");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+                quest.Expansion = packet.ReadInt32("Expansion");
 
             packet.ResetBitReader();
 
@@ -376,7 +383,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32("PortraitTurnIn");
             int learnSpellsCount = packet.ReadInt32("LearnSpellsCount");
 
-            ReadQuestRewards(packet);
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_2_0_23826))
+                ReadQuestRewards(packet);
 
             int descEmotesCount = packet.ReadInt32("DescEmotesCount");
             int objectivesCount = packet.ReadInt32("ObjectivesCount");
@@ -414,8 +422,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("DisplayPopup");
             packet.ReadBit("StartCheat");
             packet.ReadBit("AutoLaunched");
-            packet.ReadBit("CanIgnoreQuest");
-            packet.ReadBit("IsQuestIgnored");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+            {
+                packet.ReadBit("CanIgnoreQuest");
+                packet.ReadBit("IsQuestIgnored");
+            }
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+                ReadQuestRewards(packet);
 
             packet.ReadWoWString("QuestTitle", questTitleLen);
             packet.ReadWoWString("DescriptionText", descriptionTextLen);
@@ -468,8 +482,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ResetBitReader();
 
             packet.ReadBit("AutoLaunched");
-            packet.ReadBit("CanIgnoreQuest");
-            packet.ReadBit("IsQuestIgnored");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+            {
+                packet.ReadBit("CanIgnoreQuest");
+                packet.ReadBit("IsQuestIgnored");
+            }
 
             packet.ResetBitReader();
 
@@ -532,6 +550,39 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
 
             Storage.QuestGreetings.Add(questGreeting, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.SMSG_QUEST_GIVER_INVALID_QUEST, ClientVersionBuild.V7_2_0_23826)]
+        public static void HandleQuestGiverInvalidQuest(Packet packet)
+        {
+            packet.ReadUInt32E<QuestReasonTypeWoD>("Reason");
+            packet.ReadInt32("ContributionRewardID");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("SendErrorMessage");
+
+            var len = packet.ReadBits(9);
+            packet.ReadWoWString("ReasonText", len);
+        }
+
+        [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_COMPLETE)]
+        public static void HandlQuestGiverQuestComplete(Packet packet)
+        {
+            packet.ReadInt32("QuestId");
+            packet.ReadInt32("XpReward");
+            packet.ReadInt64("MoneyReward");
+            packet.ReadInt32("SkillLineIDReward");
+            packet.ReadInt32("NumSkillUpsReward");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("UseQuestReward");
+            packet.ReadBit("LaunchGossip");
+            packet.ReadBit("LaunchQuest");
+            packet.ReadBit("HideChatMessage");
+
+            V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, "ItemReward");
         }
     }
 }

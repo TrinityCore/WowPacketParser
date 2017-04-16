@@ -94,5 +94,55 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadWoWString("WelcomeText", bits2037);
             packet.ReadWoWString("InfoText", bits9);
         }
+
+        [Parser(Opcode.SMSG_GUILD_BANK_QUERY_RESULTS, ClientVersionBuild.V7_2_0_23826)]
+        public static void HandleGuildBankQueryResults(Packet packet)
+        {
+            packet.ReadUInt64("Money");
+            packet.ReadInt32("Tab");
+            packet.ReadInt32("WithdrawalsRemaining");
+
+            var tabInfoCount = packet.ReadInt32("TabInfoCount");
+            var itemInfoCount = packet.ReadInt32("ItemInfoCount");
+
+            for (int i = 0; i < tabInfoCount; i++)
+            {
+                packet.ReadInt32("TabIndex", i);
+
+                packet.ResetBitReader();
+
+                var bits1 = packet.ReadBits(7);
+                var bits69 = packet.ReadBits(9);
+
+                packet.ReadWoWString("Name", bits1, i);
+                packet.ReadWoWString("Icon", bits69, i);
+            }
+
+            for (int i = 0; i < itemInfoCount; i++)
+            {
+                packet.ReadInt32("Slot", i);
+
+                packet.ReadInt32("Count", i);
+                packet.ReadInt32("EnchantmentID", i);
+                packet.ReadInt32("Charges", i);
+                packet.ReadInt32("OnUseEnchantmentID", i);
+                var int76 = packet.ReadInt32("SocketEnchant", i);
+                packet.ReadInt32("Flags", i);
+
+                V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, i, "ItemInstance");
+
+                for (int j = 0; j < int76; j++)
+                {
+                    packet.ReadInt32("SocketIndex", i, j);
+                    packet.ReadInt32("SocketEnchantID", i, j);
+                }
+
+                packet.ResetBitReader();
+                packet.ReadBit("Locked");
+            }
+
+            packet.ResetBitReader();
+            packet.ReadBit("FullUpdate");
+        }
     }
 }

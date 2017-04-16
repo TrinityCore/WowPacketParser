@@ -178,6 +178,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             packet.ReadBits("Type", 3, idx);
             packet.ReadInt16("PlayerLevelDelta", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+                packet.ReadUInt16("PlayerItemLevel", idx);
             packet.ReadByte("TargetLevel", idx);
             packet.ReadByte("Expansion", idx);
             packet.ReadByte("Class", idx);
@@ -306,6 +308,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
                     var hasSandboxScaling = packet.ReadBit("HasSandboxScaling", i);
 
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+                    {
+                        if (hasSandboxScaling)
+                            ReadSandboxScalingData(packet, "SandboxScalingData", i);
+                    }
+
                     if (hasCastUnit)
                         packet.ReadPackedGuid128("CastUnit", i);
 
@@ -321,8 +329,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     for (var j = 0; j < effectCount; ++j)
                         packet.ReadSingle("EstimatedPoints", i, j);
 
-                    if (hasSandboxScaling)
-                        ReadSandboxScalingData(packet, "SandboxScalingData", i);
+                    if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_2_0_23826))
+                    {
+                        if (hasSandboxScaling)
+                            ReadSandboxScalingData(packet, "SandboxScalingData", i);
+                    }
 
                     auras.Add(aura);
                     packet.AddSniffData(StoreNameType.Spell, (int)aura.SpellId, "AURA_UPDATE");
@@ -539,6 +550,43 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             packet.ResetBitReader();
             packet.ReadBit("CannotDismiss");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_CHANNEL_START, ClientVersionBuild.V7_2_0_23826)]
+        public static void HandleSpellChannelStart(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32("SpellXSpellVisualID");
+            packet.ReadInt32("ChannelDuration");
+
+            var hasInterruptImmunities = packet.ReadBit("HasInterruptImmunities");
+            var hasHealPrediction = packet.ReadBit("HasHealPrediction");
+
+            if (hasInterruptImmunities)
+                V6_0_2_19033.Parsers.SpellHandler.ReadSpellChannelStartInterruptImmunities(packet, "InterruptImmunities");
+
+            if (hasHealPrediction)
+                V6_0_2_19033.Parsers.SpellHandler.ReadSpellTargetedHealPrediction(packet, "HealPrediction");
+        }
+
+        [Parser(Opcode.SMSG_RESUME_CAST_BAR, ClientVersionBuild.V7_2_0_23826)]
+        public static void HandleResumeCastBar(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadPackedGuid128("Target");
+
+            packet.ReadUInt32<SpellId>("SpellID");
+            packet.ReadInt32("SpellXSpellVisualID");
+            packet.ReadUInt32("TimeRemaining");
+            packet.ReadUInt32("TotalTime");
+
+            var result = packet.ReadBit("HasInterruptImmunities");
+            if (result)
+            {
+                packet.ReadUInt32("SchoolImmunities");
+                packet.ReadUInt32("Immunities");
+            }
         }
     }
 }

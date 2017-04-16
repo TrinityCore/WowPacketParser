@@ -23,7 +23,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ResetBitReader();
 
             packet.ReadBit("Repeatable");
-            packet.ReadBit("Ignored");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_2_0_23826))
+                packet.ReadBit("Ignored");
 
             uint questTitleLen = packet.ReadBits(9);
 

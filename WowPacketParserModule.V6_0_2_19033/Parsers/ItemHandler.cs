@@ -71,6 +71,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
+        public static void ReadItemReward(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32<ItemId>("ItemID", indexes);
+            packet.ReadInt32("ItemDisplayID", indexes);
+            packet.ReadUInt32("Quantity", indexes);
+        }
+
         [Parser(Opcode.SMSG_ITEM_PURCHASE_REFUND_RESULT)]
         public static void HandleItemPurchaseRefundResult(Packet packet)
         {

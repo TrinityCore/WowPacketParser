@@ -284,6 +284,7 @@
     <Compile Include="Parsers\BlackMarketHandler.cs" />
     <Compile Include="Parsers\CalendarHandler.cs" />
     <Compile Include="Parsers\CharacterHandler.cs" />
+    <Compile Include="Parsers\ChatHandler.cs" />
     <Compile Include="Parsers\CombatLogHandler.cs" />
     <Compile Include="Parsers\CreatureHandler.cs" />
     <Compile Include="Parsers\CurrencyHandler.cs" />
