@@ -44,5 +44,11 @@ Nightly Builds
 
 ##### .NET 4.5 (AnyCPU) by AppVeyor
 
-- [Debug](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Configuration:%20Debug&branch=master)
-- [Release](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Configuration:%20Release&branch=master)
+- Visual Studio 2015
+  - [Debug](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Visual%20Studio%202015;%20Configuration:%20Debug&branch=master)
+  - [Release](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Visual%20Studio%202015;%20Configuration:%20Release&branch=master)
+
+- Visual Studio 2017
+  - [Debug](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Visual%20Studio%202017;%20Configuration:%20Debug&branch=master)
+  - [Release](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Visual%20Studio%202017;%20Configuration:%20Release&branch=master)
+  
