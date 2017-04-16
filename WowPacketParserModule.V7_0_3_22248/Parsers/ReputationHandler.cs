@@ -20,14 +20,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_FACTION_BONUS_INFO, ClientVersionBuild.V2_2_0_7272)]
+        [Parser(Opcode.SMSG_FACTION_BONUS_INFO, ClientVersionBuild.V7_2_0_23826)]
         public static void HandleFactionBonusInfo(Packet packet)
         {
             for (var i = 0; i < FactionCount; i++)
                 packet.ReadBit("FactionHasBonus", i);
         }
 
-        [Parser(Opcode.SMSG_INITIALIZE_FACTIONS, ClientVersionBuild.V2_2_0_7272)]
+        [Parser(Opcode.SMSG_INITIALIZE_FACTIONS, ClientVersionBuild.V7_2_0_23826)]
         public static void HandleInitializeFactions(Packet packet)
         {
             for (var i = 0; i < FactionCount; i++)
