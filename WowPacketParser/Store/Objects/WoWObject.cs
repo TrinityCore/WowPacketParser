@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
+using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParser.Store.Objects
 {
@@ -14,6 +15,7 @@ namespace WowPacketParser.Store.Objects
         public uint Map;
 
         public int Area;
+        public int Zone;
 
         public Dictionary<int, UpdateField> UpdateFields; // SMSG_UPDATE_OBJECT - CreateObject
 
@@ -22,6 +24,8 @@ namespace WowPacketParser.Store.Objects
         public uint PhaseMask;
 
         public HashSet<ushort> Phases; // Possible phases
+
+        public uint DifficultyID;
 
         public bool ForceTemporarySpawn;
 
@@ -35,21 +39,41 @@ namespace WowPacketParser.Store.Objects
             return Movement.TransportGuid != null && Movement.TransportGuid != WowGuid.Empty;
         }
 
-        public uint GetDefaultSpawnTime()
+        public int GetDefaultSpawnTime(uint difficultyID)
         {
-            // If map is Continent use a lower respawn time
-            // TODO: Rank and if npc is needed for quest kill should change spawntime as well
-            return MapIsContinent(Map) ? 120u : 7200u;
+             if (DBC.DBC.Map != null)
+             {
+                 if (DBC.DBC.Map.ContainsKey((int)Map))
+                 {
+                     switch (DBC.DBC.Map[(int)Map].InstanceType)
+                     {
+                        case 0: // MAP_COMMON
+                            return 120;
+                        case 1: // MAP_INSTANCE
+                            return difficultyID == 2 ? 86400 : 7200;
+                        case 3: // MAP_BATTLEGROUND
+                        case 4: // MAP_ARENA
+                        case 5: // MAP_SCENARIO
+                            return 7200;
+                        case 2: // MAP_RAID
+                            return 604800;
+                     }
+                 }
+             }
+
+             // If map is Continent use a lower respawn time
+             // TODO: Rank and if npc is needed for quest kill should change spawntime as well
+             return MapIsContinent(Map) ? 120 : 7200;
         }
 
         public int GetDefaultSpawnMask()
         {
             // 3 is the most common spawnmask outside of continents although it is not correct in all cases
             // TODO: read map/instance db to guess correct spawnmask
-            if (SQLDatabase.MapSpawnMaskStores != null)
+            if (DBC.DBC.MapSpawnMaskStores != null)
             {
-                if (SQLDatabase.MapSpawnMaskStores.ContainsKey((int)Map))
-                    return SQLDatabase.MapSpawnMaskStores[(int)Map];
+                if (DBC.DBC.MapSpawnMaskStores.ContainsKey((int)Map))
+                    return DBC.DBC.MapSpawnMaskStores[(int)Map];
             }
 
             return MapIsContinent(Map) ? 1 : 3;

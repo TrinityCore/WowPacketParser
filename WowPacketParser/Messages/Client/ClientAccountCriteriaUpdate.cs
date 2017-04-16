@@ -48,7 +48,7 @@ namespace WowPacketParser.Messages.Client
             packet.ReadXORByte(accountId, 3);
             packet.ReadXORByte(counter, 1);
             packet.ReadXORByte(accountId, 0);
-            packet.ReadInt32("Criteria ID");
+            packet.ReadInt32<CriteriaId>("Criteria ID");
             packet.ReadXORByte(counter, 0);
             packet.ReadXORByte(counter, 7);
 
@@ -101,7 +101,7 @@ namespace WowPacketParser.Messages.Client
             packet.ReadXORByte(accountId, 1);
             packet.ReadXORByte(counter, 5);
             packet.ReadXORByte(accountId, 3);
-            packet.ReadInt32("Criteria ID");
+            packet.ReadInt32<CriteriaId>("Criteria ID");
             packet.ReadPackedTime("Time");
             packet.ReadXORByte(accountId, 2);
             packet.ReadXORByte(counter, 4);
@@ -139,7 +139,7 @@ namespace WowPacketParser.Messages.Client
 
             packet.ReadXORByte(accountId, 7);
             packet.ReadUInt32("Timer 2");
-            packet.ReadInt32("Criteria ID");
+            packet.ReadInt32<CriteriaId>("Criteria ID");
             packet.ReadXORByte(counter, 7);
             packet.ReadUInt32("Timer 1");
             packet.ReadXORByte(accountId, 4);

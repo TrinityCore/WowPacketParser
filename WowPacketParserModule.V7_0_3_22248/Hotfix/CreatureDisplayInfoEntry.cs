@@ -3,7 +3,7 @@ using WowPacketParser.Hotfix;
 
 namespace WowPacketParserModule.V7_0_3_22248.Hotfix
 {
-    [HotfixStructure(DB2Hash.CreatureDisplayInfo, HasIndexInData = false)]
+    [HotfixStructure(DB2Hash.CreatureDisplayInfo, ClientVersionBuild.V7_0_3_22248, ClientVersionBuild.V7_2_0_23826, HasIndexInData = false)]
     public class CreatureDisplayInfoEntry
     {
         public uint ExtendedDisplayInfoID { get; set; }

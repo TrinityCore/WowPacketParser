@@ -383,7 +383,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Caster");
             packet.ReadPackedGuid128("Owner");
             packet.ReadPackedGuid128("ItemGUID");
-            packet.ReadUInt32("ItemID");
+            packet.ReadUInt32<ItemId>("ItemID");
             packet.ReadUInt32("Enchantment");
             packet.ReadUInt32("EnchantSlot");
         }
@@ -433,7 +433,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Guid");
             packet.ReadInt32("Threshold");
-            packet.ReadInt32("ItemID");
+            packet.ReadInt32<ItemId>("ItemID");
         }
 
         [Parser(Opcode.SMSG_SET_ITEM_PURCHASE_DATA)]

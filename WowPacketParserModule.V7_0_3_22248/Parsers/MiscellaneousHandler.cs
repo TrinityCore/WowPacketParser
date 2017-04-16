@@ -3,6 +3,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
@@ -57,7 +58,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_WORLD_SERVER_INFO)]
         public static void HandleWorldServerInfo(Packet packet)
         {
-            packet.ReadInt32("DifficultyID");
+            CoreParsers.MovementHandler.CurrentDifficultyID = packet.ReadUInt32<DifficultyId>("DifficultyID");
             packet.ReadByte("IsTournamentRealm");
 
             packet.ReadBit("XRealmPvpAlert");

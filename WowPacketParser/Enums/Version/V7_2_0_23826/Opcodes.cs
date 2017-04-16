@@ -332,6 +332,7 @@ namespace WowPacketParser.Enums.Version.V7_2_0_23826
             {Opcode.CMSG_GUILD_UPDATE_INFO_TEXT, 0x3075},
             {Opcode.CMSG_GUILD_UPDATE_MOTD_TEXT, 0x3074},
             {Opcode.CMSG_HEARTH_AND_RESURRECT, 0x34FE},
+            {Opcode.CMSG_HOTFIX_QUERY, 0x35E5},
             {Opcode.CMSG_IGNORE_TRADE, 0x3159},
             {Opcode.CMSG_INITIATE_ROLE_POLL, 0x35DA},
             {Opcode.CMSG_INITIATE_TRADE, 0x3156},
@@ -1138,6 +1139,9 @@ namespace WowPacketParser.Enums.Version.V7_2_0_23826
             {Opcode.SMSG_GUILD_SEND_RANK_CHANGE, 0x29B9},
             {Opcode.SMSG_HEALTH_UPDATE, 0x26FC},
             {Opcode.SMSG_HIGHEST_THREAT_UPDATE, 0x270C},
+            {Opcode.SMSG_HOTFIXES, 0x25A2},
+            {Opcode.SMSG_HOTFIX_LIST, 0x25A1},
+            {Opcode.SMSG_HOTFIX_QUERY_RESPONSE, 0x25A3},
             {Opcode.SMSG_INITIALIZE_FACTIONS, 0x2765},
             {Opcode.SMSG_INITIAL_SETUP, 0x257F},
             {Opcode.SMSG_INIT_WORLD_STATES, 0x278B},
@@ -1690,7 +1694,7 @@ namespace WowPacketParser.Enums.Version.V7_2_0_23826
             {Opcode.SMSG_WOW_TOKEN_UPDATE_AUCTIONABLE_LIST_RESPONSE, 0x281F},
             {Opcode.SMSG_XP_GAIN_ABORTED, 0x25E0},
             {Opcode.SMSG_XP_GAIN_ENABLED, 0x27ED},
-            {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x2BB5}
+            {Opcode.SMSG_ZONE_UNDER_ATTACK, 0x2BB5},
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>();

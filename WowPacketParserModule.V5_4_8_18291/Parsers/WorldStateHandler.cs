@@ -12,7 +12,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         {
             packet.ReadInt32<MapId>("Map ID");
             CoreParsers.WorldStateHandler.CurrentAreaId = packet.ReadInt32<AreaId>("Area Id");
-            packet.ReadInt32<ZoneId>("Zone Id");
+            CoreParsers.WorldStateHandler.CurrentZoneId = packet.ReadInt32<ZoneId>("Zone Id");
 
             var numFields = packet.ReadBits("Field Count", 21);
 

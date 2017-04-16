@@ -55,7 +55,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             creature.TypeFlags2 = packet.ReadUInt32("Creature Type Flags 2");
 
             creature.Type = packet.ReadInt32E<CreatureType>("CreatureType");
-            creature.Family = packet.ReadInt32E<CreatureFamily>("CreatureFamily");
+            creature.Family = (CreatureFamily) packet.ReadInt32<CreatureFamilyId>("CreatureFamily");
             creature.Rank = packet.ReadInt32E<CreatureRank>("Classification");
 
             creature.KillCredits = new uint?[2];
@@ -63,7 +63,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 creature.KillCredits[i] = packet.ReadUInt32("ProxyCreatureID", i);
 
             creature.ModelIDs = new uint?[4];
-            for (int i = 0; i < 4; ++i)
+            for (var i = 0; i < 4; ++i)
                 creature.ModelIDs[i] = packet.ReadUInt32("CreatureDisplayID", i);
 
             creature.HealthModifier = packet.ReadSingle("HpMulti");

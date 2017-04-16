@@ -1,5 +1,6 @@
 ﻿using System;
 using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 
 namespace WowPacketParser.Hotfix
 {
@@ -13,6 +14,18 @@ namespace WowPacketParser.Hotfix
         {
             Hash = hash;
         }
+
+        public HotfixStructureAttribute(DB2Hash hash, ClientVersionBuild addedInVersio)
+        {
+            if (ClientVersion.AddedInVersion(addedInVersio))
+                Hash = hash;
+        }
+
+        public HotfixStructureAttribute(DB2Hash hash, ClientVersionBuild addedInVersion, ClientVersionBuild removedInVersion)
+        {
+            if (ClientVersion.InVersion(addedInVersion, removedInVersion))
+                Hash = hash;
+        }
     }
 
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
@@ -25,11 +38,11 @@ namespace WowPacketParser.Hotfix
             Size = arraySize;
         }
     }
-    
+
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     public class HotfixSerializerAttribute : Attribute
     {
-        
+
     }
 
     [AttributeUsage(AttributeTargets.Property)]

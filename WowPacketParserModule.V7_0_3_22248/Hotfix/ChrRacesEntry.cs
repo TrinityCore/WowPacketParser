@@ -23,13 +23,16 @@ namespace WowPacketParserModule.V7_0_3_22248.Hotfix
         public float[] FemaleCustomizeOffset { get; set; }
         public uint LowResScreenFileDataID { get; set; }
         public ushort FactionID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V7_2_0_23826, true)]
         public ushort ExplorationSoundID { get; set; }
         public ushort MaleDisplayID { get; set; }
         public ushort FemaleDisplayID { get; set; }
         public ushort ResSicknessSpellID { get; set; }
         public ushort SplashSoundID { get; set; }
         public ushort CinematicSequenceID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V7_2_0_23826, true)]
         public ushort UAMaleCreatureSoundDataID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V7_2_0_23826, true)]
         public ushort UAFemaleCreatureSoundDataID { get; set; }
         public byte BaseLanguage { get; set; }
         public byte CreatureType { get; set; }

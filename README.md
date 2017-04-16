@@ -3,13 +3,13 @@ WowPacketParser (WPP)
 
 [![GitHub license](https://img.shields.io/github/license/TrinityCore/WowPacketParser.svg?style=flat-square)](https://github.com/TrinityCore/WowPacketParser/blob/WowPacketParser/COPYING)
 [![Coverity Scan Build Status](https://img.shields.io/coverity/scan/2618.svg?style=flat-square)](https://scan.coverity.com/projects/2618)
-[![Build Status TravisCI](https://img.shields.io/travis/TrinityCore/WowPacketParser.svg?style=flat-square)](https://travis-ci.org/TrinityCore/WowPacketParser)
-[![Build status AppVeyor](https://img.shields.io/appveyor/ci/DDuarte/wowpacketparser-191.svg?style=flat-square)](https://ci.appveyor.com/project/DDuarte/wowpacketparser-191)
+[![Build Status TravisCI](https://img.shields.io/travis/TrinityCore/WowPacketParser/master.svg?style=flat-square)](https://travis-ci.org/TrinityCore/WowPacketParser)
+[![Build Status AppVeyor](https://img.shields.io/appveyor/ci/DDuarte/wowpacketparser-191/master.svg?style=flat-square)](https://ci.appveyor.com/project/DDuarte/wowpacketparser-191)
 
 Usage
 -----
 
-* Compile WowPacketParser using Visual Studio 2015 or higher (Windows) or Mono 4.0 or higher (Linux/OSX).
+* Compile WowPacketParser using Visual Studio 2015 or higher (Windows) or Mono 4.4 or higher (Linux/OSX).
   Alternatively you can download compiled binaries from the links [below](#nightly-builds).
 * Edit `WowPacketParser.exe.config` to fit your needs.
 * Drag one or more files (.pkt or .bin) to `WowPacketParser.exe`.
@@ -44,5 +44,11 @@ Nightly Builds
 
 ##### .NET 4.5 (AnyCPU) by AppVeyor
 
-- [Debug](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Configuration:%20Debug&branch=master)
-- [Release](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Configuration:%20Release&branch=master)
+- Visual Studio 2015
+  - [Debug](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Visual%20Studio%202015;%20Configuration:%20Debug&branch=master)
+  - [Release](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Visual%20Studio%202015;%20Configuration:%20Release&branch=master)
+
+- Visual Studio 2017
+  - [Debug](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Visual%20Studio%202017;%20Configuration:%20Debug&branch=master)
+  - [Release](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Visual%20Studio%202017;%20Configuration:%20Release&branch=master)
+  

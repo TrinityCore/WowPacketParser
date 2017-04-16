@@ -10,7 +10,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_CRITERIA_UPDATE)]
         public static void HandleCriteriaPlayer(Packet packet)
         {
-            packet.ReadInt32("Id");
+            packet.ReadInt32<CriteriaId>("Id");
             packet.ReadInt64("Quantity");
             packet.ReadPackedGuid128("Guid");
             packet.ReadInt32("Flags");

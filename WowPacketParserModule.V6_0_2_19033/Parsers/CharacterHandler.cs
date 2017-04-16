@@ -29,8 +29,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("HairColor", idx);
             packet.ReadByte("FacialHairStyle", idx);
             packet.ReadByte("ExperienceLevel", idx);
-            var zone = packet.ReadUInt32("ZoneID", idx);
-            var mapId = packet.ReadUInt32("MapID", idx);
+            var zone = packet.ReadUInt32<ZoneId>("ZoneID", idx);
+            var mapId = packet.ReadUInt32<MapId>("MapID", idx);
 
             var pos = packet.ReadVector3("PreloadPos", idx);
 

@@ -151,7 +151,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt16("Spec");
 
             if (bit770)
-                packet.ReadInt16("AreaID");
+                packet.ReadInt16<ZoneId>("AreaID");
 
             if (bit756)
                 packet.ReadInt16("WmoGroupID");
@@ -268,8 +268,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt16("Power");
             packet.ReadInt16("MaxPower");
             packet.ReadInt16("Level");
+
             packet.ReadInt16("Spec");
-            packet.ReadInt16("AreaID");
+            packet.ReadInt16<ZoneId>("AreaID");
 
             packet.ReadInt16("WmoGroupID");
             packet.ReadInt32("WmoDoodadPlacementID");

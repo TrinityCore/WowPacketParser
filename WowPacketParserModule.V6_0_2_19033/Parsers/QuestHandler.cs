@@ -17,7 +17,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (var i = 0; i < 6; ++i)
             {
-                packet.ReadInt32("ItemID", i);
+                packet.ReadInt32<ItemId>("ItemID", i);
                 packet.ReadInt32("Quantity", i);
             }
 
@@ -25,7 +25,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (var i = 0; i < 4; ++i)
             {
-                packet.ReadInt32("ItemID", i);
+                packet.ReadInt32<ItemId>("ItemID", i);
                 packet.ReadInt32("ItemQty", i);
             }
 
@@ -290,8 +290,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 quest.RewardCurrencyCount[i] = packet.ReadUInt32("RewardCurrencyQty");
             }
 
-            quest.SoundAccept = packet.ReadUInt32("AcceptedSoundKitID");
-            quest.SoundTurnIn = packet.ReadUInt32("CompleteSoundKitID");
+            quest.SoundAccept = packet.ReadUInt32<SoundId>("AcceptedSoundKitID");
+            quest.SoundTurnIn = packet.ReadUInt32<SoundId>("CompleteSoundKitID");
             quest.AreaGroupID = packet.ReadUInt32("AreaGroupID");
             quest.TimeAllowed = packet.ReadUInt32("TimeAllowed");
             uint int2946 = packet.ReadUInt32("CliQuestInfoObjective");

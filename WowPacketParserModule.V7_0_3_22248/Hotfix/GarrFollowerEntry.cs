@@ -14,6 +14,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Hotfix
         public uint AlliancePortraitIconID { get; set; }
         public uint HordeAddedBroadcastTextID { get; set; }
         public uint AllianceAddedBroadcastTextID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V7_2_0_23826, false)]
+        public string Name { get; set; }
         public ushort HordeGarrFollItemSetID { get; set; }
         public ushort AllianceGarrFollItemSetID { get; set; }
         public ushort ItemLevelWeapon { get; set; }

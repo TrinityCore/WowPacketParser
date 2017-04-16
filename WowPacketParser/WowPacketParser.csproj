@@ -32,7 +32,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -76,6 +76,7 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <Prefer32Bit>false</Prefer32Bit>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -89,6 +90,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DBFilesClient.NET, Version=1.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DBFilesClient.NET.1.1.4\lib\net452\DBFilesClient.NET.dll</HintPath>
+    </Reference>
     <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
     </Reference>
@@ -114,6 +118,27 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DBC\DBC.cs" />
+    <Compile Include="DBC\Structures\Legion\AchievementEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\AreaTableEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\BroadcastTextEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\CreatureDifficultyEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\CreatureEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\CreatureDisplayInfoEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\CreatureFamilyEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\CriteriaTreeEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\DBFileAttribute.cs" />
+    <Compile Include="DBC\Structures\Legion\DifficultyEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\FactionEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\FactionTemplateEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\ItemEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\ItemSparseEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\MapDifficultyEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\MapEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\PhaseXPhaseGroupEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\SoundKitEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\SpellEffectEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\SpellEntry.cs" />
     <Compile Include="Enums\AccountDataType.cs" />
     <Compile Include="Enums\ActionButtonType.cs" />
     <Compile Include="Enums\AIReaction.cs" />
@@ -306,6 +331,7 @@
     <Compile Include="Enums\StatType.cs" />
     <Compile Include="Enums\StoreNameType.cs" />
     <Compile Include="Enums\TargetFlag.cs" />
+    <Compile Include="Enums\SpellEnums.cs" />
     <Compile Include="Enums\TaxiError.cs" />
     <Compile Include="Enums\TeamType.cs" />
     <Compile Include="Enums\TimerType.cs" />
@@ -2622,6 +2648,7 @@
     <Compile Include="SQL\Builders\Miscellaneous.cs" />
     <Compile Include="SQL\Builders\QuestMisc.cs" />
     <Compile Include="SQL\Builders\Spawns.cs" />
+    <Compile Include="SQL\Builders\Spells.cs" />
     <Compile Include="SQL\Builders\UnitMisc.cs" />
     <Compile Include="SQL\Builders\WDBTemplates.cs" />
     <Compile Include="SQL\RowList.cs" />
@@ -2638,6 +2665,7 @@
     <Compile Include="Store\Objects\AreaTriggerTemplate.cs" />
     <Compile Include="Store\Objects\AreaTriggerTemplateVertices.cs" />
     <Compile Include="Store\Objects\Aura.cs" />
+    <Compile Include="Store\Objects\BroadcastText.cs" />
     <Compile Include="Store\Objects\BroadcastTextLocale.cs" />
     <Compile Include="Store\Objects\Creature.cs" />
     <Compile Include="Store\Objects\CreatureAddon.cs" />
@@ -2681,6 +2709,7 @@
     <Compile Include="Store\Objects\SniffData.cs" />
     <Compile Include="Store\Objects\PlayerCreateInfoAction.cs" />
     <Compile Include="Store\Objects\PlayerCreateInfo.cs" />
+    <Compile Include="Store\Objects\SpellTargetPosition.cs" />
     <Compile Include="Store\Objects\SpellAreaTrigger.cs" />
     <Compile Include="Store\Objects\Unit.cs" />
     <Compile Include="Store\Objects\CreatureTemplate.cs" />
@@ -2692,7 +2721,9 @@
     <Compile Include="Enums\GuildNewsType.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

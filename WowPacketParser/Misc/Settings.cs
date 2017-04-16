@@ -18,7 +18,7 @@ namespace WowPacketParser.Misc
         public static readonly DumpFormatType DumpFormat = Conf.GetEnum("DumpFormat", DumpFormatType.Text);
         public static readonly ulong SQLOutputFlag = GetSQLOutputFlag();
         public static readonly bool SQLOrderByKey = Conf.GetBoolean("SqlOrderByKey", false);
-        public static readonly bool SkipIncompleteTemplateRows = Conf.GetBoolean("SkipIncompleteTemplateRows", true);
+        public static readonly bool SkipOnlyVerifiedBuildUpdateRows = Conf.GetBoolean("SkipOnlyVerifiedBuildUpdateRows", false);
         public static readonly string SQLFileName = Conf.GetString("SQLFileName", string.Empty);
         public static readonly bool ShowEndPrompt = Conf.GetBoolean("ShowEndPrompt", false);
         public static readonly bool LogErrors = Conf.GetBoolean("LogErrors", false);
@@ -45,6 +45,11 @@ namespace WowPacketParser.Misc
         public static readonly string TDBDatabase = Conf.GetString("TDBDatabase", "world");
         public static readonly string HotfixesDatabase = Conf.GetString("HotfixesDatabase", "hotfixes");
         public static readonly string CharacterSet = Conf.GetString("CharacterSet", "utf8");
+
+        // DB2
+        public static readonly string DBCPath = Conf.GetString("DBCPath", $@"\dbc");
+        public static readonly bool UseDBC = Conf.GetBoolean("UseDBC", false);
+        public static readonly bool ParseSpellInfos = Conf.GetBoolean("ParseSpellInfos", false);
 
         private static ulong GetSQLOutputFlag()
         {

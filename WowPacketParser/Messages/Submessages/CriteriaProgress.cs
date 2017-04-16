@@ -14,7 +14,7 @@ namespace WowPacketParser.Messages.Submessages
 
         public static void Read6(Packet packet, params object[] idx)
         {
-            packet.ReadInt32("Id", idx);
+            packet.ReadInt32<CriteriaId>("Id", idx);
             packet.ReadUInt64("Quantity", idx);
             packet.ReadPackedGuid128("Player", idx);
             packet.ReadPackedTime("Date", idx);

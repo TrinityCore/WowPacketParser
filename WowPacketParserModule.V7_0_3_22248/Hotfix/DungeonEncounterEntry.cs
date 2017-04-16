@@ -3,9 +3,10 @@ using WowPacketParser.Hotfix;
 
 namespace WowPacketParserModule.V7_0_3_22248.Hotfix
 {
-    [HotfixStructure(DB2Hash.DungeonEncounter, HasIndexInData = false)]
+    [HotfixStructure(DB2Hash.DungeonEncounter, ClientVersionBuild.V7_0_3_22248, ClientVersionBuild.V7_2_0_23826)]
     public class DungeonEncounterEntry
     {
+        public uint ID { get; set; }
         public string Name { get; set; }
         public uint CreatureDisplayID { get; set; }
         public ushort MapID { get; set; }
