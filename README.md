@@ -52,3 +52,13 @@ Nightly Builds
   - [Debug](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Visual%20Studio%202017;%20Configuration:%20Debug&branch=master)
   - [Release](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Visual%20Studio%202017;%20Configuration:%20Release&branch=master)
   
+Docker (experimental)
+---------------------
+
+It is possible run WPP on Docker by running the following commands:
+
+- Build the image: `docker build -t wpp .`
+- Run it: `docker run -it --rm -v /place/where/sniffs/are/kept:/usr/src/app/build/sniffs wpp:latest sniffs/sniffname.pkt # Run`
+
+*/place/where/sniffs/are/kept* should your local directory containing the .pkt file and *sniffname.pkt* the file to be parsed.
+Output of the parser will be added to */place/where/sniffs/are/kept*
