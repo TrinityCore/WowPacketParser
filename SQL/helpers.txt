@@ -1,0 +1,5 @@
+INSERT IGNORE INTO `object_names` (`ObjectType`, `Id`, `Name`) SELECT 'Quest', `Id`, `LogTitle` FROM `world`.`quest_template`
+INSERT IGNORE INTO `object_names` (`ObjectType`, `Id`, `Name`) SELECT 'Unit', `entry`, `Name` FROM `world`.`creature_template`
+INSERT IGNORE INTO `object_names` (`ObjectType`, `Id`, `Name`) SELECT 'GameObject', `entry`, `Name` FROM `world`.`gameobject_template`
+
+mysqldump wpp object_names > object_names.sql
