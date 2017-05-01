@@ -17,4 +17,4 @@ CREATE TABLE IF NOT EXISTS `wpp`.`object_names` (
   `Id` int(10) NOT NULL,
   `Name` text NOT NULL,
   PRIMARY KEY (`ObjectType`,`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='WPP''s ObjectTypes Names DataBase';
