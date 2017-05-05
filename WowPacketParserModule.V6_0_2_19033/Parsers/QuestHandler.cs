@@ -762,169 +762,69 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleDisplayPlayerChoice(Packet packet)
         {
             packet.ReadInt32("ChoiceID");
-            var int5 = packet.ReadInt32("PlayerChoiceResponseCount");
-            packet.ReadPackedGuid128("Guid");
-
-            for (int i = 0; i < int5; i++)
-            {
-                packet.ReadInt32("ResponseID", i);
-                packet.ReadInt32("ChoiceArtFileID", i);
-
-                packet.ResetBitReader();
-
-                var bits4 = packet.ReadBits(9);
-                var bits404 = packet.ReadBits(11);
-                var bit2112 = packet.ReadBit("HasPlayerChoiceResponseReward", i);
-
-                packet.ReadWoWString("Answer", bits4);
-                packet.ReadWoWString("Description", bits404);
-
-                if (bit2112)
-                {
-                    packet.ReadInt32("TitleID", i);
-                    packet.ReadInt32("PackageID", i);
-                    packet.ReadInt32("SkillLineID", i);
-                    packet.ReadInt32("SkillPointCount", i);
-                    packet.ReadInt32("ArenaPointCount", i);
-                    packet.ReadInt32("HonorPointCount", i);
-                    packet.ReadInt64("Money", i);
-                    packet.ReadInt32("Xp", i);
-
-                    var int36 = packet.ReadInt32("ItemsCount", i);
-                    var int52 = packet.ReadInt32("CurrenciesCount", i);
-                    var int68 = packet.ReadInt32("FactionsCount", i);
-                    var int84 = packet.ReadInt32("ItemChoicesCount", i);
-
-                    for (int j = 0; j < int36; j++) // @To-Do: need verification
-                    {
-                        packet.ReadInt32("Id", i, j);
-                        packet.ReadInt32("DisplayID", i, j);
-                        packet.ReadInt32("Quantity", i, j);
-
-                        packet.ResetBitReader();
-
-                        var bit32 = packet.ReadBit("HasBit32", i, j);
-                        var bit56 = packet.ReadBit("HasBit56", i, j);
-
-                        if (bit32)
-                        {
-                            // sub_5ED78D
-                            packet.ReadByte("", i, j);
-
-                            var int1 = packet.ReadUInt32("", i, j);
-                            for (int k = 0; k < int1; k++)
-                                packet.ReadUInt32("", i, j, k);
-                        }
-
-                        if (bit56)
-                        {
-                            // sub_5ECDA0
-                            var int4 = packet.ReadInt32("", i, j);
-                            packet.ReadWoWString("", int4, i, j);
-                        }
-
-                        packet.ReadInt32("", i, j);
-                    }
-
-                    for (int j = 0; j < int52; j++)
-                    {
-                        packet.ReadInt32("", i, j);
-                        packet.ReadInt32("", i, j);
-                        packet.ReadInt32("", i, j);
-
-                        packet.ResetBitReader();
-
-                        var bit32 = packet.ReadBit("", i, j);
-                        var bit56 = packet.ReadBit("", i, j);
-
-                        if (bit32)
-                        {
-                            // sub_5ED78D
-                            packet.ReadByte("", i, j);
-
-                            var int1 = packet.ReadUInt32("", i, j);
-                            for (int k = 0; k < int1; k++)
-                                packet.ReadUInt32("", i, j, k);
-                        }
-
-                        if (bit56)
-                        {
-                            // sub_5ECDA0
-                            var int4 = packet.ReadInt32("", i, j);
-                            packet.ReadWoWString("", int4, i, j);
-                        }
-
-                        packet.ReadInt32("", i, j);
-                    }
-
-                    for (int j = 0; j < int68; j++)
-                    {
-                        packet.ReadInt32("", i, j);
-                        packet.ReadInt32("", i, j);
-                        packet.ReadInt32("", i, j);
-
-                        packet.ResetBitReader();
-
-                        var bit32 = packet.ReadBit("", i, j);
-                        var bit56 = packet.ReadBit("", i, j);
-
-                        if (bit32)
-                        {
-                            // sub_5ED78D
-                            packet.ReadByte("", i, j);
-
-                            var int1 = packet.ReadUInt32("", i, j);
-                            for (int k = 0; k < int1; k++)
-                                packet.ReadUInt32("", i, j, k);
-                        }
-
-                        if (bit56)
-                        {
-                            // sub_5ECDA0
-                            var int4 = packet.ReadInt32("", i, j);
-                            packet.ReadWoWString("", int4, i, j);
-                        }
-
-                        packet.ReadInt32("", i, j);
-                    }
-
-                    for (int j = 0; j < int84; j++)
-                    {
-                        packet.ReadInt32("", i, j);
-                        packet.ReadInt32("", i, j);
-                        packet.ReadInt32("", i, j);
-
-                        packet.ResetBitReader();
-
-                        var bit32 = packet.ReadBit("", i, j);
-                        var bit56 = packet.ReadBit("", i, j);
-
-                        if (bit32)
-                        {
-                            // sub_5ED78D
-                            packet.ReadByte("", i, j);
-
-                            var int1 = packet.ReadUInt32("", i, j);
-                            for (int k = 0; k < int1; k++)
-                                packet.ReadUInt32("", i, j, k);
-                        }
-
-                        if (bit56)
-                        {
-                            // sub_5ECDA0
-                            var int4 = packet.ReadInt32("", i, j);
-                            packet.ReadWoWString("", int4, i, j);
-                        }
-
-                        packet.ReadInt32("", i, j);
-                    }
-                }
-            }
+            var responseCount = packet.ReadUInt32();
+            packet.ReadPackedGuid128("NpcGUID");
+            for (var i = 0u; i < responseCount; ++i)
+                ReadPlayerChoiceResponse(packet, "PlayerChoiceResponse", i);
 
             packet.ResetBitReader();
 
-            var len = packet.ReadBits(8);
-            packet.ReadWoWString("Question", len);
+            var questionLength = packet.ReadBits(8);
+            packet.ReadWoWString("Question", questionLength);
+        }
+
+        public static void ReadPlayerChoiceResponse(Packet packet, params object[] indexes)
+        {
+            packet.ResetBitReader();
+
+            packet.ReadInt32("ResponseID", indexes);
+            packet.ReadInt32("ChoiceArtFileID", indexes);
+
+            var answerLength = packet.ReadBits(9);
+            var descriptionLength = packet.ReadBits(11);
+            var hasReward = packet.ReadBit();
+
+            packet.ReadWoWString("Answer", answerLength, indexes);
+            packet.ReadWoWString("Description", descriptionLength, indexes);
+
+            if (hasReward)
+                ReadPlayerChoiceResponseReward(packet, "PlayerChoiceResponseReward", indexes);
+        }
+
+        public static void ReadPlayerChoiceResponseReward(Packet packet, params object[] indexes)
+        {
+            packet.ResetBitReader();
+            packet.ReadInt32("TitleID", indexes);
+            packet.ReadInt32("PackageID", indexes);
+            packet.ReadInt32("SkillLineID", indexes);
+            packet.ReadUInt32("SkillPointCount", indexes);
+            packet.ReadUInt32("ArenaPointCount", indexes);
+            packet.ReadUInt32("HonorPointCount", indexes);
+            packet.ReadUInt64("Money", indexes);
+            packet.ReadUInt32("Xp", indexes);
+
+            var itemCount = packet.ReadUInt32();
+            var currencyCount = packet.ReadUInt32();
+            var factionCount = packet.ReadUInt32();
+            var itemChoiceCount = packet.ReadUInt32();
+
+            for (var i = 0u; i < itemCount; ++i)
+                ReadPlayerChoiceResponseRewardEntry(packet, "Item", i);
+
+            for (var i = 0u; i < currencyCount; ++i)
+                ReadPlayerChoiceResponseRewardEntry(packet, "Currency", i);
+
+            for (var i = 0u; i < factionCount; ++i)
+                ReadPlayerChoiceResponseRewardEntry(packet, "Faction", i);
+
+            for (var i = 0u; i < itemChoiceCount; ++i)
+                ReadPlayerChoiceResponseRewardEntry(packet, "ItemChoice", i);
+        }
+
+        public static void ReadPlayerChoiceResponseRewardEntry(Packet packet, params object[] indexes)
+        {
+            ItemHandler.ReadItemInstance(packet, indexes);
+            packet.ReadInt32("Quantity", indexes);
         }
 
         [Parser(Opcode.SMSG_DAILY_QUESTS_RESET)]
