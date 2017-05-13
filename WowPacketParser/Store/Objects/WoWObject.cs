@@ -70,7 +70,7 @@ namespace WowPacketParser.Store.Objects
         {
             // 3 is the most common spawnmask outside of continents although it is not correct in all cases
             // TODO: read map/instance db to guess correct spawnmask
-            if (DBC.DBC.MapSpawnMaskStores != null)
+            if (Settings.UseDBC && DBC.DBC.MapSpawnMaskStores != null)
             {
                 if (DBC.DBC.MapSpawnMaskStores.ContainsKey((int)Map))
                     return DBC.DBC.MapSpawnMaskStores[(int)Map];
