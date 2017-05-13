@@ -85,6 +85,20 @@ namespace WowPacketParser.SQL.Builders
                 });
         }
 
+        [BuilderMethod]
+        public static string CreatureTemplateScalingData()
+        {
+            if (Storage.CreatureTemplateScalings.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template))
+                return string.Empty;
+
+            var templateDb = SQLDatabase.Get(Storage.CreatureTemplateScalings);
+
+            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.CreatureTemplateScalings.OrderBy(x => x.Item1.entry).ToArray() : Storage.CreatureTemplateScalings.ToArray(), templateDb, x => string.Empty);
+        }
+
         [BuilderMethod(Units = true)]
         public static string ModelData(Dictionary<WowGuid, Unit> units)
         {
