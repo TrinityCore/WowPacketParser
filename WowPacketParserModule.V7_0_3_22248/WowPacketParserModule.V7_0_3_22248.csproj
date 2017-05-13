@@ -200,6 +200,8 @@
     <Compile Include="Hotfix\PrestigeLevelInfoEntry.cs" />
     <Compile Include="Hotfix\PvPDifficultyEntry.cs" />
     <Compile Include="Hotfix\PvpRewardEntry.cs" />
+    <Compile Include="Hotfix\PvpTalentEntry.cs" />
+    <Compile Include="Hotfix\PvpTalentUnlockEntry.cs" />
     <Compile Include="Hotfix\QuestFactionRewardEntry.cs" />
     <Compile Include="Hotfix\QuestMoneyRewardEntry.cs" />
     <Compile Include="Hotfix\QuestPackageItemEntry.cs" />
