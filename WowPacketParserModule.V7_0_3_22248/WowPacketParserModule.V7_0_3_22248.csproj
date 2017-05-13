@@ -204,6 +204,7 @@
     <Compile Include="Hotfix\PvpTalentUnlockEntry.cs" />
     <Compile Include="Hotfix\QuestFactionRewardEntry.cs" />
     <Compile Include="Hotfix\QuestMoneyRewardEntry.cs" />
+    <Compile Include="Hotfix\QuestObjectiveEntry.cs" />
     <Compile Include="Hotfix\QuestPackageItemEntry.cs" />
     <Compile Include="Hotfix\QuestPackageItemEntry720.cs" />
     <Compile Include="Hotfix\QuestSortEntry.cs" />
