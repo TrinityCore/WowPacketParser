@@ -3,9 +3,10 @@ using WowPacketParser.Hotfix;
 
 namespace WowPacketParserModule.V7_0_3_22248.Hotfix
 {
-    [HotfixStructure(DB2Hash.WorldMapOverlay, HasIndexInData = false)]
+    [HotfixStructure(DB2Hash.WorldMapOverlay)]
     public class WorldMapOverlayEntry
     {
+        public uint ID { get; set; }
         public string TextureName { get; set; }
         public ushort TextureWidth { get; set; }
         public ushort TextureHeight { get; set; }

@@ -29,6 +29,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<QuestObjective> QuestObjectives = new DataBag<QuestObjective>(new List<SQLOutput> { SQLOutput.quest_template });
         public static readonly DataBag<QuestVisualEffect> QuestVisualEffects = new DataBag<QuestVisualEffect>(new List<SQLOutput> { SQLOutput.quest_template });
         public static readonly DataBag<CreatureTemplate> CreatureTemplates = new DataBag<CreatureTemplate>(new List<SQLOutput> { SQLOutput.creature_template });
+        public static readonly DataBag<CreatureTemplateNonWDB> CreatureTemplatesNonWDB = new DataBag<CreatureTemplateNonWDB>(new List<SQLOutput> { SQLOutput.creature_template });
         public static readonly DataBag<CreatureTemplateQuestItem> CreatureTemplateQuestItems = new DataBag<CreatureTemplateQuestItem>(new List<SQLOutput> { SQLOutput.creature_template });
         public static readonly DataBag<CreatureTemplateScaling> CreatureTemplateScalings = new DataBag<CreatureTemplateScaling>(new List<SQLOutput> { SQLOutput.creature_template });
 
@@ -90,10 +91,15 @@ namespace WowPacketParser.Store
         public static readonly DataBag<LocalesQuest> LocalesQuests = new DataBag<LocalesQuest>(new List<SQLOutput> { SQLOutput.locales_quest });
         public static readonly DataBag<QuestObjectivesLocale> LocalesQuestObjectives = new DataBag<QuestObjectivesLocale>(new List<SQLOutput> { SQLOutput.locales_quest_objectives });
 
+        // Spell Target Position
+        public static readonly DataBag<SpellTargetPosition> SpellTargetPositions = new DataBag<SpellTargetPosition>(new List<SQLOutput> { SQLOutput.spell_target_position });
+
         public static readonly DataBag<HotfixData> HotfixDatas = new DataBag<HotfixData>(new List<SQLOutput> { SQLOutput.hotfix_data });
 
         // Scenes
         public static readonly DataBag<SceneTemplate> Scenes = new DataBag<SceneTemplate>(new List<SQLOutput> { SQLOutput.scene_template });
+
+        public static readonly DataBag<BroadcastText> BroadcastTexts = new DataBag<BroadcastText>(new List<SQLOutput> { SQLOutput.broadcast_text });
 
         public static void ClearContainers()
         {
@@ -152,23 +158,16 @@ namespace WowPacketParser.Store
             NpcSpellClicks.Clear();
             SpellClicks.Clear();
 
+            SpellTargetPositions.Clear();
+
             LocalesQuests.Clear();
             LocalesQuestObjectives.Clear();
 
             HotfixDatas.Clear();
 
             Scenes.Clear();
-        }
 
-        public static void AddHotfixData(int entry, DB2Hash type, bool deleted, uint timeStamp)
-        {
-            HotfixDatas.Add(new HotfixData
-            {
-                RecordID = entry,
-                TableHash = type,
-                Deleted = deleted,
-                Timestamp = timeStamp
-            });
+            BroadcastTexts.Clear();
         }
     }
 }

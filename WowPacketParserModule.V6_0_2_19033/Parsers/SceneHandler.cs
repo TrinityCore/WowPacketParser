@@ -118,7 +118,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("ScenarioID");
             packet.ReadInt32("CurrentStep");
-            packet.ReadInt32("DifficultyID");
+            packet.ReadInt32<DifficultyId>("DifficultyID");
             packet.ReadInt32("WaveCurrent");
             packet.ReadInt32("WaveMax");
             packet.ReadInt32("TimerDuration");

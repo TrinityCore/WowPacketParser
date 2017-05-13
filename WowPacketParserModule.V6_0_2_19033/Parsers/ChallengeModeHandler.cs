@@ -24,13 +24,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        public static void ReadItemReward(Packet packet, params object[] indexes)
-        {
-            packet.ReadInt32("ItemID", indexes);
-            packet.ReadInt32("ItemDisplayID", indexes);
-            packet.ReadUInt32("Quantity", indexes);
-        }
-
         public static void ReadMapChallengeModeReward(Packet packet, params object[] indexes)
         {
             packet.ReadInt32("MapId", indexes);
@@ -45,7 +38,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 for (int j = 0; j < int1; j++)
                 {
                     // sub_5FB0EE
-                    ReadItemReward(packet, indexes, i, j);
+                    ItemHandler.ReadItemReward(packet, indexes, i, j);
                 }
 
                 for (int j = 0; j < in16; j++)
@@ -116,7 +109,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < int32; i++)
             {
                 // sub_5FB0EE
-                ReadItemReward(packet, i, "ItemReward");
+                ItemHandler.ReadItemReward(packet, i, "ItemReward");
             }
         }
 

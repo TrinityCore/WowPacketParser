@@ -73,6 +73,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadByte("TargetMaxScalingLevel", idx);
             packet.ReadInt16("PlayerLevelDelta", idx);
             packet.ReadSByte("TargetScalingLevelDelta", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+                packet.ReadUInt16("PlayerItemLevel", idx);
         }
 
         public static void ReadPeriodicAuraLogEffectData(Packet packet, params object[] idx)
@@ -108,6 +110,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadPackedGuid128("CastID");
 
             packet.ReadInt32<SpellId>("SpellID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+                packet.ReadInt32("SpellXSpellVisualID");
             packet.ReadInt32("Damage");
             packet.ReadInt32("OverKill");
 
@@ -161,7 +165,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             ReadAttackRoundInfo(packet, "AttackRoundInfo");
         }
 
-        [Parser(Opcode.SMSG_SPELL_PERIODIC_AURA_LOG)]
+        [Parser(Opcode.SMSG_SPELL_PERIODIC_AURA_LOG, ClientVersionBuild.V7_0_3_22248, ClientVersionBuild.V7_2_0_23826)]
         public static void HandleSpellPeriodicAuraLog(Packet packet)
         {
             packet.ReadPackedGuid128("TargetGUID");
@@ -176,6 +180,26 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ResetBitReader();
 
             var hasLogData = packet.ReadBit("HasLogData");
+            if (hasLogData)
+                SpellHandler.ReadSpellCastLogData(packet, "SpellCastLogData");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_PERIODIC_AURA_LOG, ClientVersionBuild.V7_2_0_23826)]
+        public static void HandleSpellPeriodicAuraLog720(Packet packet)
+        {
+            packet.ReadPackedGuid128("TargetGUID");
+            packet.ReadPackedGuid128("CasterGUID");
+
+            packet.ReadInt32<SpellId>("SpellID");
+
+            var periodicAuraLogEffectCount = packet.ReadInt32("PeriodicAuraLogEffectCount");
+
+            packet.ResetBitReader();
+            var hasLogData = packet.ReadBit("HasLogData");
+
+            for (var i = 0; i < periodicAuraLogEffectCount; i++)
+                ReadPeriodicAuraLogEffectData(packet, "PeriodicAuraLogEffectData");
+
             if (hasLogData)
                 SpellHandler.ReadSpellCastLogData(packet, "SpellCastLogData");
         }
@@ -199,18 +223,45 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var hasLogData = packet.ReadBit("HasLogData");
             var hasSandboxScaling = packet.ReadBit("HasLogData");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+            {
+                if (hasLogData)
+                    SpellHandler.ReadSpellCastLogData(packet);
+            }
+
             if (hasCritRollMade)
                 packet.ReadSingle("CritRollMade");
 
             if (hasCritRollNeeded)
                 packet.ReadSingle("CritRollNeeded");
 
-            if (hasLogData)
-                SpellHandler.ReadSpellCastLogData(packet);
-
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_2_0_23826))
+            {
+                if (hasLogData)
+                    SpellHandler.ReadSpellCastLogData(packet);
+            }
 
             if (hasSandboxScaling)
                 ReadSandboxScalingData(packet, "SandboxScalingData");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_ENERGIZE_LOG, ClientVersionBuild.V7_2_0_23826)]
+        public static void HandleSpellEnergizeLog(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadPackedGuid128("TargetGUID");
+
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadUInt32E<PowerType>("Type");
+
+            packet.ReadInt32("Amount");
+            packet.ReadInt32("OverEnergize");
+
+            packet.ResetBitReader();
+
+            var bit100 = packet.ReadBit("HasLogData");
+            if (bit100)
+                V6_0_2_19033.Parsers.SpellHandler.ReadSpellCastLogData(packet);
         }
     }
 }

@@ -5,6 +5,7 @@ using WowPacketParser.Hotfix;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.SQL.Builders
 {
@@ -48,9 +49,34 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.hotfix_data))
                 return string.Empty;
 
-            var templatesDb = SQLDatabase.Get(Storage.HotfixDatas, Settings.HotfixesDatabase);
+            var rows = new RowList<HotfixData>();
 
-            return SQLUtil.Compare(Storage.HotfixDatas, templatesDb, StoreNameType.None);
+            foreach (var hotfix in Storage.HotfixDatas)
+            {
+                var row = new Row<HotfixData>
+                {
+                    Data = hotfix.Item1,
+                    Comment = hotfix.Item1.TableHash.ToString()
+                };
+
+                rows.Add(row);
+            }
+
+            return "TRUNCATE `hotfix_data`;" + Environment.NewLine + new SQLInsert<HotfixData>(rows, false).Build();
+        }
+
+        [BuilderMethod(true)]
+        public static string BroadcastText()
+        {
+            if (Storage.BroadcastTexts.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.broadcast_text))
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.BroadcastTexts, Settings.HotfixesDatabase);
+
+            return SQLUtil.Compare(Storage.BroadcastTexts, templatesDb, StoreNameType.None);
         }
     }
 }

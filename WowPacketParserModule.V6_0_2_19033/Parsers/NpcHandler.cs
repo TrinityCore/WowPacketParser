@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.SQL;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -31,6 +33,36 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             gossipOption.OptionText = packet.ReadWoWString("Text", textLen, idx);
             gossipOption.BoxText = packet.ReadWoWString("Confirm", confirmLen, idx);
+
+            List<int> boxTextList;
+            List<int> optionTextList;
+
+            if (gossipOption.BoxText != string.Empty && SQLDatabase.BroadcastMaleTexts.TryGetValue(gossipOption.BoxText, out boxTextList))
+            {
+                if (boxTextList.Count == 1)
+                    gossipOption.BoxBroadcastTextID = boxTextList[0];
+                else
+                {
+                    gossipOption.BroadcastTextIDHelper += "BoxBroadcastTextID: ";
+                    gossipOption.BroadcastTextIDHelper += string.Join(" - ", boxTextList);
+                }
+            }
+            else
+                gossipOption.BoxBroadcastTextID = 0;
+
+            if (gossipOption.OptionText != string.Empty && SQLDatabase.BroadcastMaleTexts.TryGetValue(gossipOption.OptionText, out optionTextList))
+            {
+                if (optionTextList.Count == 1)
+                    gossipOption.OptionBroadcastTextID = optionTextList[0];
+                else
+                {
+                    gossipOption.BroadcastTextIDHelper += "OptionBroadcastTextID: ";
+                    gossipOption.BroadcastTextIDHelper += string.Join(" - ", optionTextList);
+                }
+            }
+            else
+                gossipOption.OptionBroadcastTextID = 0;
+
 
             Storage.GossipMenuOptions.Add(gossipOption, packet.TimeSpan);
         }

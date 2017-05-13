@@ -243,6 +243,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("QuestRewardID", TargetedDatabase.Legion)]
         public int? QuestRewardID;
 
+        [DBFieldName("Expansion", TargetedDatabase.Legion)]
+        public int? Expansion;
+
         [DBFieldName("LogTitle", LocaleConstant.enUS)]
         public string LogTitle;
 

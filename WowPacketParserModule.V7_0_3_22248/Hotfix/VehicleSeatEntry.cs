@@ -8,8 +8,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Hotfix
     {
         [HotfixArray(3)]
         public uint[] Flags { get; set; }
-        [HotfixArray(3)]
-        public float[] AttachmentOffset { get; set; }
+        public float AttachmentOffsetX { get; set; }
+        public float AttachmentOffsetY { get; set; }
+        public float AttachmentOffsetZ { get; set; }
         public float EnterPreDelay { get; set; }
         public float EnterSpeed { get; set; }
         public float EnterGravity { get; set; }
@@ -33,8 +34,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Hotfix
         public float CameraEnteringDuration { get; set; }
         public float CameraExitingDelay { get; set; }
         public float CameraExitingDuration { get; set; }
-        [HotfixArray(3)]
-        public float[] CameraOffset { get; set; }
+        public float CameraOffsetX { get; set; }
+        public float CameraOffsetY { get; set; }
+        public float CameraOffsetZ { get; set; }
         public float CameraPosChaseRate { get; set; }
         public float CameraFacingChaseRate { get; set; }
         public float CameraEnteringZoom { get; set; }

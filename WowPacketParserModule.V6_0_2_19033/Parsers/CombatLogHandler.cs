@@ -179,7 +179,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 for (var j = 0; j < int36; j++)
                 {
                     packet.ReadPackedGuid128("Victim", i, j);
-                    packet.ReadInt32("ItemID", i, j);
+                    packet.ReadInt32<ItemId>("ItemID", i, j);
                     packet.ReadInt32("Amount", i, j);
                 }
 
@@ -189,11 +189,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 // ClientSpellLogEffectTradeSkillItemParams
                 for (var j = 0; j < int68; j++)
-                    packet.ReadInt32("ItemID", i, j);
+                    packet.ReadInt32<ItemId>("ItemID", i, j);
 
                 // ClientSpellLogEffectFeedPetParams
                 for (var j = 0; j < int84; j++)
-                    packet.ReadInt32("ItemID", i, j);
+                    packet.ReadInt32<ItemId>("ItemID", i, j);
             }
 
             var bit160 = packet.ReadBit("HasLogData");

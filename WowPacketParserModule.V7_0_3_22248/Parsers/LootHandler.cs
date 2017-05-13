@@ -40,7 +40,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             packet.ReadBit("Acquired");
             packet.ReadBit("AELooting");
-            packet.ReadBit("PersonalLooting");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_2_0_23826))
+                packet.ReadBit("PersonalLooting");
 
             for (var i = 0; i < itemCount; ++i)
                 ReadLootItem(packet, i, "LootItem");
@@ -87,6 +88,22 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             packet.ReadPackedGuid128("LootObj");
             ReadLootItem(packet, "LootItem");
+        }
+
+        [Parser(Opcode.SMSG_LOOT_LIST, ClientVersionBuild.V7_2_0_23826)]
+        public static void HandleLootList(Packet packet)
+        {
+            packet.ReadPackedGuid128("Owner");
+            packet.ReadPackedGuid128("LootObj");
+
+            var hasMaster = packet.ReadBit("HasMaster");
+            var hasRoundRobin = packet.ReadBit("HasRoundRobinWinner");
+
+            if (hasMaster)
+                packet.ReadPackedGuid128("Master");
+
+            if (hasRoundRobin)
+                packet.ReadPackedGuid128("RoundRobinWinner");
         }
     }
 }

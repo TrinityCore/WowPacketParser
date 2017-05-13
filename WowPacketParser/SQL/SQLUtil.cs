@@ -133,6 +133,9 @@ namespace WowPacketParser.SQL
             if (value is uint && isFlag)
                 value = Hexify((uint)value);
 
+            if (value is float)
+                value = string.Format("{0:F20}", value).Substring(0, 20).TrimEnd('0').TrimEnd('.');
+
             return value;
         }
 
@@ -251,7 +254,7 @@ namespace WowPacketParser.SQL
                             // prevent double escaping
                             val1 =  ((string)val1).Replace("\"\"", "\"");
                         }
-                    
+
                         if (Utilities.EqualValues(val1, val2))
                             field.Item2.SetValue(elem1.Item1, null);
                     }

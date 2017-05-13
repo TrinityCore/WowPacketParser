@@ -53,7 +53,7 @@ namespace WowPacketParser.Store.Objects
         public float? Orientation;
 
         [DBFieldName("spawntimesecs")]
-        public uint? SpawnTimeSecs;
+        public int? SpawnTimeSecs;
 
         [DBFieldName("spawndist")]
         public float? SpawnDist;

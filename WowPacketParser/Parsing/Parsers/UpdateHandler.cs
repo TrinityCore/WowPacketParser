@@ -95,6 +95,7 @@ namespace WowPacketParser.Parsing.Parsers
             obj.UpdateFields = updates;
             obj.Map = map;
             obj.Area = WorldStateHandler.CurrentAreaId;
+            obj.Zone = WorldStateHandler.CurrentZoneId;
             obj.PhaseMask = (uint) MovementHandler.CurrentPhaseMask;
 
             // If this is the second time we see the same object (same guid,
@@ -224,8 +225,17 @@ namespace WowPacketParser.Parsing.Parsers
                         }
                     }
                 }
+                // HACK...
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_3_20726))
+                {
+                    if (key == UnitField.UNIT_FIELD_FACTIONTEMPLATE.ToString())
+                        packet.AddValue(key, value + $" ({ StoreGetters.GetName(StoreNameType.Faction, (int)blockVal.UInt32Value, false) })", index);
+                    else
+                        packet.AddValue(key, value, index);
+                }
+                else
+                    packet.AddValue(key, value, index);
 
-                packet.AddValue(key, value, index);
                 dict.Add(i, blockVal);
             }
 

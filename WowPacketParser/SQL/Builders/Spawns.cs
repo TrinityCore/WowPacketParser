@@ -73,6 +73,8 @@ namespace WowPacketParser.SQL.Builders
 
                 uint movementType = 0;
                 int spawnDist = 0;
+                row.Data.AreaID = 0;
+                row.Data.ZoneID = 0;
 
                 if (creature.Movement.HasWpsOrRandMov)
                 {
@@ -92,6 +94,12 @@ namespace WowPacketParser.SQL.Builders
                     if (mapId != -1)
                         row.Data.Map = (uint)mapId;
                 }
+
+                if (creature.Area != -1)
+                    row.Data.AreaID = (uint)creature.Area;
+
+                if (creature.Zone != -1)
+                    row.Data.ZoneID = (uint)creature.Zone;
 
                 row.Data.SpawnMask = (uint)creature.GetDefaultSpawnMask();
                 row.Data.PhaseMask = creature.PhaseMask;
@@ -120,13 +128,11 @@ namespace WowPacketParser.SQL.Builders
                     row.Data.Orientation = creature.Movement.TransportOffset.O;
                 }
 
-                row.Data.SpawnTimeSecs = creature.GetDefaultSpawnTime();
+                row.Data.SpawnTimeSecs = creature.GetDefaultSpawnTime(creature.DifficultyID);
                 row.Data.SpawnDist = spawnDist;
                 row.Data.MovementType = movementType;
 
                 // set some defaults
-                row.Data.ZoneID = 0;
-                row.Data.AreaID = 0;
                 row.Data.PhaseGroup = 0;
                 row.Data.ModelID = 0;
                 row.Data.CurrentWaypoint = 0;
@@ -137,7 +143,8 @@ namespace WowPacketParser.SQL.Builders
                 row.Data.DynamicFlag = 0;
 
                 row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
-                row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, creature.Area, false) + ")";
+                row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, creature.Area, false) + " - ";
+                row.Comment += "Difficulty: " + StoreGetters.GetName(StoreNameType.Difficulty, (int)creature.DifficultyID, false) + ")";
 
                 string auras = string.Empty;
                 string commentAuras = string.Empty;
@@ -276,6 +283,15 @@ namespace WowPacketParser.SQL.Builders
                         row.Data.Map = (uint)mapId;
                 }
 
+                row.Data.ZoneID = 0;
+                row.Data.AreaID = 0;
+
+                if (go.Area != -1)
+                    row.Data.AreaID = (uint)go.Area;
+
+                if (go.Zone != -1)
+                    row.Data.ZoneID = (uint)go.Zone;
+
                 row.Data.SpawnMask = (uint)go.GetDefaultSpawnMask();
                 row.Data.PhaseMask = go.PhaseMask;
 
@@ -330,17 +346,16 @@ namespace WowPacketParser.SQL.Builders
                         addonRows.Add(addonRow);
                 }
 
-                row.Data.SpawnTimeSecs = (int)go.GetDefaultSpawnTime();
+                row.Data.SpawnTimeSecs = go.GetDefaultSpawnTime(go.DifficultyID);
                 row.Data.AnimProgress = animprogress;
                 row.Data.State = state;
 
                 // set some defaults
-                row.Data.ZoneID = 0;
-                row.Data.AreaID = 0;
                 row.Data.PhaseGroup = 0;
 
                 row.Comment = StoreGetters.GetName(StoreNameType.GameObject, (int)gameobject.Key.GetEntry(), false);
-                row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, go.Area, false) + ")";
+                row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, go.Area, false) + " - ";
+                row.Comment += "Difficulty: " + StoreGetters.GetName(StoreNameType.Difficulty, (int)go.DifficultyID, false) + ")";
 
                 if (go.IsTemporarySpawn())
                 {

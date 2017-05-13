@@ -86,5 +86,28 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBits("Result", 3);
             packet.ReadInt32("CreatureID");
         }
+
+        [Parser(Opcode.CMSG_BATTLE_PET_MODIFY_NAME, ClientVersionBuild.V7_2_0_23826)]
+        public static void HandleBattlePetModifyName(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlePetGUID");
+
+            packet.ResetBitReader();
+
+            var nameLen = packet.ReadBits(7);
+            var hasDeclinedNames = packet.ReadBit("HasDeclinedNames");
+
+            if (hasDeclinedNames)
+            {
+                var declinedNamesLen = new uint[5];
+                for (int i = 0; i < 5; i++)
+                    declinedNamesLen[i] = packet.ReadBits(7);
+
+                for (int i = 0; i < 5; i++)
+                    packet.ReadWoWString("DeclinedNames", declinedNamesLen[i]);
+            }
+
+            packet.ReadWoWString("Name", nameLen);
+        }
     }
 }

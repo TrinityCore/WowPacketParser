@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
@@ -45,13 +46,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             {
                 packet.WriteLine("Row {0} has been removed.", -entry);
                 HotfixStoreMgr.RemoveRecord(type, entry);
-                Storage.AddHotfixData(entry, type, true, timeStamp);
             }
             else
             {
                 packet.AddSniffData(StoreNameType.None, entry, type.ToString());
                 HotfixStoreMgr.AddRecord(type, entry, db2File);
-                Storage.AddHotfixData(entry, type, false, timeStamp);
                 db2File.ClosePacket(false);
             }
         }
@@ -63,11 +62,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (var i = 0; i < count; ++i)
             {
-                var tableHash = packet.ReadUInt32E<DB2Hash>("TableHash", i);
-                var recordID = packet.ReadInt32("RecordID", i);
-                var timeStamp = packet.ReadUInt32();
-                packet.AddValue("Timestamp", Utilities.GetDateTimeFromUnixTime(timeStamp), i);
-                Storage.AddHotfixData(recordID, tableHash, false, timeStamp);
+                packet.ReadUInt32E<DB2Hash>("TableHash", i);
+                packet.ReadInt32("RecordID", i);
+                packet.ReadUInt32("Timestamp", i);
             }
         }
 
@@ -78,8 +75,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var recordID = packet.ReadInt32("RecordID");
             var timeStamp = packet.ReadUInt32();
             packet.AddValue("Timestamp", Utilities.GetDateTimeFromUnixTime(timeStamp));
-
-            Storage.AddHotfixData(recordID, tableHash, false, timeStamp);
         }
     }
 }

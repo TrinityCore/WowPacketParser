@@ -21,17 +21,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("OptionBroadcastTextID")]
         public int? OptionBroadcastTextID;
 
-        [DBFieldName("option_id")]
-        public uint? OptionID;
-
-        [DBFieldName("npc_option_npcflag")]
-        public uint? NpcOptionNpcFlag;
-
-        [DBFieldName("action_menu_id")]
-        public uint? ActionMenuID;
-
         [DBFieldName("action_poi_id")]
-        public uint? ActionPoiID;
+        public uint? ActionPoiID = 0;
 
         [DBFieldName("box_coded")]
         public bool? BoxCoded;
@@ -44,5 +35,7 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("BoxBroadcastTextID")]
         public int? BoxBroadcastTextID;
+
+        public string BroadcastTextIDHelper;
     }
 }

@@ -1,10 +1,17 @@
+dist: trusty
+sudo: false
+
 language: csharp
 solution: WowPacketParser.sln
 
-install:
-  - nuget restore WowPacketParser.sln
-  - nuget install NUnit.Runners -Version 2.6.4 -OutputDirectory testrunner
+matrix:
+  include:
+    - dotnet: 1.0.1
+      mono: none
+      env: DOTNETCORE=1
+    - mono: latest
+  allow_failures:
+    - dotnet: 1.0.1
 
-script:
-  - xbuild
-  - mono ./testrunner/NUnit.Runners.2.6.4/tools/nunit-console.exe ./WowPacketParser.Tests/bin/Debug/WowPacketParser.Tests.dll
+install: ./scripts/travis-install.sh
+script: ./scripts/travis-build.sh

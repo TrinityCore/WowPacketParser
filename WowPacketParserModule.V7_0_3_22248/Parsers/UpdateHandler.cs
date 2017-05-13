@@ -99,8 +99,10 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             obj.UpdateFields = updates;
             obj.Map = map;
             obj.Area = CoreParsers.WorldStateHandler.CurrentAreaId;
+            obj.Zone = CoreParsers.WorldStateHandler.CurrentZoneId;
             obj.PhaseMask = (uint)CoreParsers.MovementHandler.CurrentPhaseMask;
-            obj.Phases = new HashSet<ushort>(CoreParsers.MovementHandler.ActivePhases);
+            obj.Phases = new HashSet<ushort>(V6_0_2_19033.Parsers.MovementHandler.ActivePhases);
+            obj.DifficultyID = CoreParsers.MovementHandler.CurrentDifficultyID;
 
             // If this is the second time we see the same object (same guid,
             // same position) update its phasemask
@@ -711,7 +713,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     }
                 }
 
-                packet.AddValue(key, value, index);
+                // HACK...
+                if (key == UnitField.UNIT_FIELD_FACTIONTEMPLATE.ToString())
+                    packet.AddValue(key, value + $" ({ StoreGetters.GetName(StoreNameType.Faction, (int)blockVal.UInt32Value, false) })", index);
+                else
+                    packet.AddValue(key, value, index);
+
                 dict.Add(i, blockVal);
             }
 

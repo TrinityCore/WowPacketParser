@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using WowPacketParser.DBC;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
@@ -11,6 +14,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class MovementHandler
     {
+        public static readonly HashSet<ushort> ActivePhases = new HashSet<ushort>();
+
         public static void ReadMovementStats(Packet packet, params object[] idx)
         {
             packet.ReadPackedGuid128("MoverGUID", idx);
@@ -354,6 +359,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_PHASE_SHIFT_CHANGE)]
         public static void HandlePhaseShift(Packet packet)
         {
+            ActivePhases.Clear();
+
             packet.ReadPackedGuid128("Client");
 
             // PhaseShiftData
@@ -362,8 +369,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("PersonalGUID");
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadInt16("PhaseFlags", i);
-                packet.ReadInt16("Id", i);
+                var flags = packet.ReadUInt16("PhaseFlags", i);
+                var id = packet.ReadUInt16("Id", i);
+                ActivePhases.Add(id);
+            }
+
+            if (DBC.Phases.Any())
+            {
+                foreach (var phaseGroup in DBC.GetPhaseGroups(ActivePhases))
+                    packet.WriteLine($"PhaseGroup: { phaseGroup } Phases: { string.Join(" - ", DBC.Phases[phaseGroup]) }");
             }
 
             var preloadMapIDCount = packet.ReadInt32("PreloadMapIDsCount") / 2;

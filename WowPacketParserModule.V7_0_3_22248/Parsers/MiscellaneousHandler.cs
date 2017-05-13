@@ -3,6 +3,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
@@ -57,7 +58,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_WORLD_SERVER_INFO)]
         public static void HandleWorldServerInfo(Packet packet)
         {
-            packet.ReadInt32("DifficultyID");
+            CoreParsers.MovementHandler.CurrentDifficultyID = packet.ReadUInt32<DifficultyId>("DifficultyID");
             packet.ReadByte("IsTournamentRealm");
 
             packet.ReadBit("XRealmPvpAlert");
@@ -307,6 +308,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32("TokenPollTimeSeconds");
             packet.ReadInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
             packet.ReadInt64("TokenBalanceAmount");
+        }
+
+        [Parser(Opcode.SMSG_CUSTOM_LOAD_SCREEN)]
+        public static void HandleCustomLoadScreen(Packet packet)
+        {
+            packet.ReadUInt32("TeleportSpellID");
+            packet.ReadUInt32("LoadingScreenID");
         }
     }
 }

@@ -7,6 +7,7 @@ using MySql.Data.MySqlClient;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
+using WowPacketParser.DBC.Structures;
 
 namespace WowPacketParser.SQL
 {
@@ -77,7 +78,8 @@ namespace WowPacketParser.SQL
         private static void LoadBroadcastText()
         {
             string query =
-                $"SELECT ID, MaleText, FemaleText FROM {Settings.HotfixesDatabase}.broadcast_text;";
+                "SELECT ID, MaleText, FemaleText, EmoteID1, EmoteID2, EmoteID3, EmoteDelay1, EmoteDelay2, EmoteDelay3, UnkEmoteID, Language, Type, SoundID1, SoundID2, PlayerConditionID " +
+                $"FROM {Settings.HotfixesDatabase}.broadcast_text;";
             using (var reader = SQLConnector.ExecuteQuery(query))
             {
                 if (reader == null)
@@ -96,6 +98,36 @@ namespace WowPacketParser.SQL
                     if (!BroadcastFemaleTexts.ContainsKey(femaleText))
                         BroadcastFemaleTexts[femaleText] = new List<int>();
                     BroadcastFemaleTexts[femaleText].Add(id);
+
+                    if (!Settings.UseDBC)
+                        continue;
+
+                    var broadcastText = new BroadcastTextEntry()
+                    {
+                        MaleText = maleText,
+                        FemaleText = femaleText,
+
+                    };
+                    broadcastText.EmoteID = new ushort[3];
+                    broadcastText.EmoteID[0] = Convert.ToUInt16(reader["EmoteID1"]);
+                    broadcastText.EmoteID[1] = Convert.ToUInt16(reader["EmoteID2"]);
+                    broadcastText.EmoteID[2] = Convert.ToUInt16(reader["EmoteID3"]);
+                    broadcastText.EmoteDelay = new ushort[3];
+                    broadcastText.EmoteDelay[0] = Convert.ToUInt16(reader["EmoteDelay1"]);
+                    broadcastText.EmoteDelay[1] = Convert.ToUInt16(reader["EmoteDelay2"]);
+                    broadcastText.EmoteDelay[2] = Convert.ToUInt16(reader["EmoteDelay3"]);
+                    broadcastText.UnkEmoteID = Convert.ToUInt16(reader["UnkEmoteID"]);
+                    broadcastText.Language = Convert.ToByte(reader["Language"]);
+                    broadcastText.Type = Convert.ToByte(reader["Type"]);
+                    broadcastText.SoundID = new uint[2];
+                    broadcastText.SoundID[0] = Convert.ToUInt32(reader["SoundID1"]);
+                    broadcastText.SoundID[1] = Convert.ToUInt32(reader["SoundID2"]);
+                    broadcastText.PlayerConditionID = Convert.ToUInt32(reader["PlayerConditionID"]);
+
+                    if (!DBC.DBC.BroadcastText.ContainsKey(id))
+                        DBC.DBC.BroadcastText.Add(id, broadcastText);
+                    else
+                        DBC.DBC.BroadcastText[id] = broadcastText;
                 }
             }
         }

@@ -234,7 +234,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.CMSG_MOVE_GRAVITY_DISABLE_ACK)]
         [Parser(Opcode.CMSG_MOVE_GRAVITY_ENABLE_ACK)]
         [Parser(Opcode.CMSG_MOVE_HOVER_ACK)]
-        [Parser(Opcode.CMSG_MOVE_KNOCK_BACK_ACK)]
+        [Parser(Opcode.CMSG_MOVE_KNOCK_BACK_ACK, ClientVersionBuild.V7_0_3_22248, ClientVersionBuild.V7_2_0_23826)]
         [Parser(Opcode.CMSG_MOVE_WATER_WALK_ACK)]
         [Parser(Opcode.CMSG_MOVE_FORCE_ROOT_ACK)]
         [Parser(Opcode.CMSG_MOVE_FORCE_UNROOT_ACK)]
@@ -246,6 +246,21 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         public static void HandleMovementAck(Packet packet)
         {
             ReadMovementAck(packet, "MovementAck");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_KNOCK_BACK_ACK, ClientVersionBuild.V7_2_0_23826)]
+        public static void HandleMoveKnockBackAck(Packet packet)
+        {
+            ReadMovementAck(packet, "MovementAck");
+
+            packet.ResetBitReader();
+
+            var hasSpeeds = packet.ReadBit("HasSpeeds");
+            if (hasSpeeds)
+            {
+                packet.ReadSingle("HorzSpeed");
+                packet.ReadSingle("VertSpeed");
+            }
         }
 
         [Parser(Opcode.CMSG_MOVE_FORCE_FLIGHT_SPEED_CHANGE_ACK)]
@@ -301,7 +316,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBits("Reason", 2);
         }
 
-        [Parser(Opcode.SMSG_MOVE_UPDATE_TELEPORT)]
+        [Parser(Opcode.SMSG_MOVE_UPDATE_TELEPORT, ClientVersionBuild.V7_0_3_22248, ClientVersionBuild.V7_2_0_23826)]
         public static void HandleMoveUpdateTeleport(Packet packet)
         {
             ReadMovementStats(packet, "MovementStats");
@@ -321,6 +336,56 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var hasFlightBackSpeed = packet.ReadBit("HasFlightBackSpeed");
             var hasTurnRate = packet.ReadBit("HasTurnRate");
             var hasPitchRate = packet.ReadBit("HasPitchRate");
+
+            if (hasWalkSpeed)
+                packet.ReadSingle("WalkSpeed");
+
+            if (hasRunSpeed)
+                packet.ReadSingle("RunSpeed");
+
+            if (hasRunBackSpeed)
+                packet.ReadSingle("RunBackSpeed");
+
+            if (hasSwimSpeed)
+                packet.ReadSingle("SwimSpeed");
+
+            if (hasSwimBackSpeed)
+                packet.ReadSingle("SwimBackSpeed");
+
+            if (hasFlightSpeed)
+                packet.ReadSingle("FlightSpeed");
+
+            if (hasFlightBackSpeed)
+                packet.ReadSingle("FlightBackSpeed");
+
+            if (hasTurnRate)
+                packet.ReadSingle("TurnRate");
+
+            if (hasPitchRate)
+                packet.ReadSingle("PitchRate");
+        }
+
+        [Parser(Opcode.SMSG_MOVE_UPDATE_TELEPORT, ClientVersionBuild.V7_2_0_23826)]
+        public static void HandleMoveUpdateTeleport720(Packet packet)
+        {
+            ReadMovementStats(packet, "MovementStats");
+
+            var movementForcesCount = packet.ReadUInt32("MovementForcesCount");
+
+            packet.ResetBitReader();
+
+            var hasWalkSpeed = packet.ReadBit("HasWalkSpeed");
+            var hasRunSpeed = packet.ReadBit("HasRunSpeed");
+            var hasRunBackSpeed = packet.ReadBit("HasRunBackSpeed");
+            var hasSwimSpeed = packet.ReadBit("HasSwimSpeed");
+            var hasSwimBackSpeed = packet.ReadBit("HasSwimBackSpeed");
+            var hasFlightSpeed = packet.ReadBit("HasFlightSpeed");
+            var hasFlightBackSpeed = packet.ReadBit("HasFlightBackSpeed");
+            var hasTurnRate = packet.ReadBit("HasTurnRate");
+            var hasPitchRate = packet.ReadBit("HasPitchRate");
+
+            for (int i = 0; i < movementForcesCount; i++)
+                ReadMovementForce(packet, i, "MovementForce");
 
             if (hasWalkSpeed)
                 packet.ReadSingle("WalkSpeed");

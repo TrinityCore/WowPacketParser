@@ -167,8 +167,72 @@ namespace WowPacketParser.Misc
                 val32 = unchecked((int)Convert.ToUInt32(val));
             else
                 val32 = Convert.ToInt32(val);
-            AddValue(name, FormatInteger(val32, StoreGetters.GetName(type, val32, false)), indexes);
+
+            if (type == StoreNameType.Spell && Settings.ParseSpellInfos)
+                ReadSpellEntry((uint)val32, name, indexes);
+            else
+                AddValue(name, FormatInteger(val32, StoreGetters.GetName(type, val32, false)), indexes);
+
             return (T) Convert.ChangeType(val, typeof (T));
+        }
+
+        public string ReadSpellEntry(uint spellID, string name, params object[] indexes)
+        {
+            AddValue(name, FormatInteger(spellID, StoreGetters.GetName(StoreNameType.Spell, (int)spellID, false)), indexes);
+
+            string spellInfo = string.Empty;
+            for (uint idx = 0; idx < 32; idx++)
+            {
+                var tuple = Tuple.Create(spellID, idx);
+                if (DBC.DBC.SpellEffectStores.ContainsKey(tuple))
+                {
+                    spellInfo += Environment.NewLine;
+                    var effect = DBC.DBC.SpellEffectStores[tuple];
+                    var difficulty = DBC.DBC.Difficulty.ContainsKey((int)effect.DifficultyID) ? DBC.DBC.Difficulty[(int)effect.DifficultyID].Name : "DIFFICULTY_NONE";
+                    var aura = (AuraTypeLegion)effect.EffectAura;
+                    var misc = effect.EffectMiscValue[0];
+
+                    AddValue("SpellInfo", $"Effect { effect.EffectIndex }: Id { effect.Effect  } ({ (SpellEffects)effect.Effect  }) { difficulty }", indexes);
+                    AddValue("SpellInfo", $"Targets ({  effect.ImplicitTarget[0] }, { effect.ImplicitTarget[1] }) ({ (Targets)effect.ImplicitTarget[0] }, { (Targets)effect.ImplicitTarget[1] })", indexes);
+
+                    if (effect.EffectAura == 0)
+                    {
+                        AddValue("SpellInfo", $"EffectMiscValueA = { effect.EffectMiscValue[0] }", indexes);
+                        AddValue("SpellInfo", $"EffectMiscValueB = { effect.EffectMiscValue[1] }", indexes);
+                        AddValue("SpellInfo", $"EffectAmplitude = { effect.EffectAmplitude }", indexes);
+                        continue;
+                    }
+
+                    string auraInfo = string.Empty;
+                    auraInfo += $"Aura Id {aura:D} ({ aura })";
+                    auraInfo += $", value = { effect.EffectBasePoints }";
+                    auraInfo += $", misc = { misc } (";
+
+                    switch (aura)
+                    {
+                        case AuraTypeLegion.SPELL_AURA_MOD_STAT:
+                            spellInfo += $"{ (UnitMods)misc }";
+                            break;
+                        case AuraTypeLegion.SPELL_AURA_MOD_RATING:
+                        case AuraTypeLegion.SPELL_AURA_MOD_RATING_PCT:
+                            spellInfo += $"{ (CombatRating)misc }";
+                            break;
+                        case AuraTypeLegion.SPELL_AURA_ADD_FLAT_MODIFIER:
+                        case AuraTypeLegion.SPELL_AURA_ADD_PCT_MODIFIER:
+                            spellInfo += $"{ (SpellModOp)misc }";
+                            break;
+                        default:
+                            spellInfo += $"{ misc }";
+                            break;
+                    }
+
+                    auraInfo += $"), miscB = { effect.EffectMiscValue[1] } , amplitude = { effect.EffectAmplitude }, periodic = { effect.EffectAuraPeriod }";
+
+                    AddValue("SpellInfo", auraInfo, indexes);
+                }
+            }
+
+            return spellInfo;
         }
 
         public LfgEntry ReadLfgEntry()
@@ -627,7 +691,7 @@ namespace WowPacketParser.Misc
         private static string FormatFloat(float value)
         {
             if (!Settings.DebugReads)
-                return value.ToString(CultureInfo.InvariantCulture);
+                return string.Format("{0:F20}", value).Substring(0, 20).TrimEnd('0').TrimEnd('.');
 
             var bytes = BitConverter.GetBytes(value);
             return value + " (0x" + BitConverter.ToString(bytes) + ")";
@@ -645,8 +709,8 @@ namespace WowPacketParser.Misc
         private static string FormatInteger(IFormattable value, string name)
         {
             if (Settings.DebugReads)
-                return $"{name} ({value}) (0x{value:X4})";
-            return name + " (" + value + ")";
+                return $"{value} (0x{value:X4}) ({name})";
+            return value + " (" + name + ")";
         }
 
         private static string GetIndexString(params object[] values)

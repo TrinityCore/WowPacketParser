@@ -373,7 +373,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleBFMgrQueueRequestResponse(Packet packet)
         {
             packet.ReadInt64("QueueID");
-            packet.ReadInt32("AreaID");
+            packet.ReadInt32<AreaId>("AreaID");
             packet.ReadSByte("BattleState");
             packet.ReadPackedGuid128("FailedPlayerGUID");
             packet.ReadSByte("Result");
