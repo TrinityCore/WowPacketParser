@@ -85,6 +85,20 @@ namespace WowPacketParser.SQL.Builders
                 });
         }
 
+        [BuilderMethod]
+        public static string CreatureTemplateScalingData()
+        {
+            if (Storage.CreatureTemplateScalings.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template))
+                return string.Empty;
+
+            var templateDb = SQLDatabase.Get(Storage.CreatureTemplateScalings);
+
+            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.CreatureTemplateScalings.OrderBy(x => x.Item1.Entry).ToArray() : Storage.CreatureTemplateScalings.ToArray(), templateDb, x => string.Empty);
+        }
+
         [BuilderMethod(Units = true)]
         public static string ModelData(Dictionary<WowGuid, Unit> units)
         {
@@ -386,17 +400,29 @@ namespace WowPacketParser.SQL.Builders
 
             foreach (var unit in units)
             {
-                if (Storage.CreatureTemplatesNonWDB.Where(creature => creature.Item1.Entry == unit.Key.GetEntry()).Any())
+                if (Storage.CreatureTemplatesNonWDB.Any(creature => creature.Item1.Entry == unit.Key.GetEntry()))
                     continue;
 
                 var npc = unit.Value;
+                int minLevel, maxLevel;
+
+                if (npc.ScalingMinLevel != null && npc.ScalingMaxLevel != null)
+                {
+                    minLevel = (int)npc.ScalingMinLevel;
+                    maxLevel = (int)npc.ScalingMaxLevel;
+                }
+                else
+                {
+                    minLevel = (int)levels[unit.Key.GetEntry()].Item1;
+                    maxLevel = (int)levels[unit.Key.GetEntry()].Item2;
+                }
 
                 var template = new CreatureTemplateNonWDB
                 {
                     Entry = unit.Key.GetEntry(),
                     GossipMenuId = npc.GossipId,
-                    MinLevel = (int)levels[unit.Key.GetEntry()].Item1,
-                    MaxLevel = (int)levels[unit.Key.GetEntry()].Item2,
+                    MinLevel = minLevel,
+                    MaxLevel = maxLevel,
                     Faction = npc.Faction.GetValueOrDefault(35),
                     NpcFlag = npc.NpcFlags.GetValueOrDefault(NPCFlags.None),
                     SpeedRun = npc.Movement.RunSpeed,

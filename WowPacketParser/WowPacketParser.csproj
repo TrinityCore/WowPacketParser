@@ -540,6 +540,7 @@
     <Compile Include="Store\Objects\CreatureAddon.cs" />
     <Compile Include="Store\Objects\CreatureEquipment.cs" />
     <Compile Include="Store\Objects\CreatureTemplateAddon.cs" />
+    <Compile Include="Store\Objects\CreatureTemplateScaling.cs" />
     <Compile Include="Store\Objects\CreatureText.cs" />
     <Compile Include="Store\Objects\GameObjectAddon.cs" />
     <Compile Include="Store\Objects\GameObject.cs" />
