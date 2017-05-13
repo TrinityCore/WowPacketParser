@@ -9,11 +9,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Hotfix
         public uint SpellID { get; set; }
         public uint OverridesSpellID { get; set; }
         public string Description { get; set; }
-        public uint TierID { get; set; }
-        public uint ColumnIndex { get; set; }
-        public uint Flags { get; set; }
-        public uint ClassID { get; set; }
-        public uint SpecID { get; set; }
-        public uint Unknown { get; set; }
+        public int TierID { get; set; }
+        public int ColumnIndex { get; set; }
+        public int Flags { get; set; }
+        public int ClassID { get; set; }
+        public int SpecID { get; set; }
+        public int Role { get; set; }
     }
 }
