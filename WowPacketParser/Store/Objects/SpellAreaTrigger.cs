@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Enums;
+﻿using System;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
@@ -46,6 +47,32 @@ namespace WowPacketParser.Store.Objects
             DecalPropertiesId   = UpdateFields.GetValue<AreaTriggerField, uint>(AreaTriggerField.AREATRIGGER_DECAL_PROPERTIES_ID);
             TimeToTarget        = UpdateFields.GetValue<AreaTriggerField, uint>(AreaTriggerField.AREATRIGGER_TIME_TO_TARGET);
             TimeToTargetScale   = UpdateFields.GetValue<AreaTriggerField, uint>(AreaTriggerField.AREATRIGGER_TIME_TO_TARGET_SCALE);
+
+            if (Settings.UseDBC)
+            {
+                for (uint idx = 0; idx < 32; idx++)
+                {
+                    var tuple = Tuple.Create(spellId, idx);
+                    if (DBC.DBC.SpellEffectStores.ContainsKey(tuple))
+                    {
+                        var effect = DBC.DBC.SpellEffectStores[tuple];
+
+                        if (effect.Effect == (uint)SpellEffects.SPELL_EFFECT_CREATE_AREATRIGGER ||
+                            effect.EffectAura == (uint)AuraTypeLegion.SPELL_AURA_AREA_TRIGGER)
+                        {
+                            // If we already had a SPELL_EFFECT_CREATE_AREATRIGGER, spell has multiple areatrigger,
+                            // so we can't deduce SpellMiscId, erase previous value & break
+                            if (SpellMiscId != null)
+                            {
+                                SpellMiscId = null;
+                                break;
+                            }
+
+                            SpellMiscId = (uint)effect.EffectMiscValue[0];
+                        }
+                    }
+                }
+            }
         }
     }
 }

@@ -36,7 +36,7 @@ namespace WowPacketParser.DBC
 
         private static string GetPath()
         {
-            return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Settings.DBCPath + @"\" + BinaryPacketReader.GetLocale() + @"\";
+            return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Settings.DBCPath + @"\" + Settings.DBCLocale + @"\";
         }
 
         public static async void Load()
