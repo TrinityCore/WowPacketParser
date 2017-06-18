@@ -81,6 +81,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32("Flags", indexes);
         }
 
+        public static void ReadFollowerSoftCapInfo(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("GarrFollowerTypeID", indexes);
+            packet.ReadUInt32("Count", indexes);
+        }
+
         [Parser(Opcode.SMSG_DISPLAY_TOAST)]
         public static void HandleDisplayToast(Packet packet)
         {
@@ -112,6 +118,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32("FactionIndex");
             var garrisonCount = packet.ReadUInt32("GarrisonCount");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_5_24330))
+            {
+                var followerSoftcapCount = packet.ReadUInt32("FollowerSoftCapCount");
+                for (var i = 0u; i < followerSoftcapCount; ++i)
+                    ReadFollowerSoftCapInfo(packet, i);
+            }
+
             for (int i = 0; i < garrisonCount; i++)
             {
                 packet.ReadInt32("GarrTypeID", i);
@@ -131,15 +144,19 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
                 packet.ReadInt32("NumFollowerActivationsRemaining", i);
                 packet.ReadUInt32("NumMissionsStartedToday", i);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826) && ClientVersion.RemovedInVersion(ClientVersionBuild.V7_2_5_24330))
+                    packet.ReadInt32("FollowerSoftCap", i);
 
-                for (int j = 0; j < garrisonBuildingInfoCount; j++)
-                    ReadGarrisonBuildingInfo(packet, "BuildingInfo", i, j);
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_2_0_23826))
+                    for (int j = 0; j < garrisonBuildingInfoCount; j++)
+                        ReadGarrisonBuildingInfo(packet, "BuildingInfo", i, j);
 
                 for (int j = 0; j < garrisonPlotInfoCount; j++)
                     V6_0_2_19033.Parsers.GarrisonHandler.ReadGarrisonPlotInfo(packet, "PlotInfo", i, j);
 
-                for (int j = 0; j < garrisonFollowerCount; j++)
-                    ReadGarrisonFollower(packet, "Follower", i, j);
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_2_0_23826))
+                    for (int j = 0; j < garrisonFollowerCount; j++)
+                        ReadGarrisonFollower(packet, "Follower", i, j);
 
                 for (int j = 0; j < garrisonMissionCount; j++)
                     ReadGarrisonMission(packet, "Mission", i, j);
@@ -159,10 +176,20 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 for (int j = 0; j < archivedMissionsCount; j++)
                     packet.ReadInt32("ArchivedMissions", i, j);
 
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+                    for (int j = 0; j < garrisonBuildingInfoCount; j++)
+                        ReadGarrisonBuildingInfo(packet, "BuildingInfo", i, j);
+
                 packet.ResetBitReader();
 
                 for (int j = 0; j < canStartMissionCount; j++)
                     packet.ReadBit("CanStartMission", i, j);
+
+                packet.ResetBitReader();
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+                    for (int j = 0; j < garrisonFollowerCount; j++)
+                        ReadGarrisonFollower(packet, "Follower", i, j);
             }
         }
     }

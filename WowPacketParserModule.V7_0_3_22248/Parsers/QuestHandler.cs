@@ -338,9 +338,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             ReadQuestRewards(packet, "QuestRewards");
 
-            packet.ReadInt32("PortraitTurnIn");
-            packet.ReadInt32("PortraitGiver");
             packet.ReadInt32("QuestPackageID");
+            packet.ReadInt32("PortraitGiver");
+            packet.ReadInt32("PortraitTurnIn");
 
             packet.ResetBitReader();
 
@@ -375,12 +375,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             packet.ReadInt32("QuestPackageID");
             packet.ReadInt32("PortraitGiver");
-            packet.ReadInt32("SuggestedPartyMembers");
+            packet.ReadInt32("PortraitTurnIn");
 
             for (int i = 0; i < 2; i++)
                 packet.ReadInt32("QuestFlags", i);
 
-            packet.ReadInt32("PortraitTurnIn");
+            packet.ReadInt32("SuggestedPartyMembers");
             int learnSpellsCount = packet.ReadInt32("LearnSpellsCount");
 
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_2_0_23826))
@@ -422,7 +422,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("DisplayPopup");
             packet.ReadBit("StartCheat");
             packet.ReadBit("AutoLaunched");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_2_0_23826))
             {
                 packet.ReadBit("CanIgnoreQuest");
                 packet.ReadBit("IsQuestIgnored");

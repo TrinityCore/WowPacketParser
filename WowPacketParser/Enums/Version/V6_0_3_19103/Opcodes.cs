@@ -1492,7 +1492,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.SMSG_SHOW_TRADE_SKILL_RESPONSE, 0x15C0},
             {Opcode.SMSG_SHOW_ZONES_CHEAT_RESULT, 0x1123},
             {Opcode.SMSG_SOCKET_GEMS, 0x1302},
-            {Opcode.SMSG_SORT_BAGS_ACK, 0x09E4}, // Trigger on CMSG_SORT_BAGS / CMSG_SORT_BANK_BAGS / CMSG_SORT_REAGENT_BANK_BAGS
+            {Opcode.SMSG_SORT_BAGS_RESULT, 0x09E4}, // Trigger on CMSG_SORT_BAGS / CMSG_SORT_BANK_BAGS / CMSG_SORT_REAGENT_BANK_BAGS
             {Opcode.SMSG_SOR_START_EXPERIENCE_INCOMPLETE, 0x198B},
             {Opcode.SMSG_SPECIAL_MOUNT_ANIM, 0x159F},
             {Opcode.SMSG_SPELL_ABSORB_LOG, 0x188A},
