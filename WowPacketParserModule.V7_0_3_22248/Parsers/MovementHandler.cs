@@ -2,6 +2,7 @@
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using MovementFlag = WowPacketParserModule.V6_0_2_19033.Enums.MovementFlag;
+using SplineFlag = WowPacketParserModule.V7_0_3_22248.Enums.SplineFlag;
 
 namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
@@ -102,7 +103,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
         public static void ReadMovementSpline(Packet packet, Vector3 pos, params object[] indexes)
         {
-            packet.ReadInt32E<SplineFlag434>("Flags", indexes);
+            packet.ReadInt32E<SplineFlag>("Flags", indexes);
             packet.ReadByte("AnimTier", indexes);
             packet.ReadUInt32("TierTransStartTime", indexes);
             packet.ReadInt32("Elapsed", indexes);
