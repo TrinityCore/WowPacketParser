@@ -156,7 +156,17 @@ namespace WowPacketParser.Store.Objects
                 DynamicFlagsWod = UpdateFields.GetEnum<ObjectField, UnitDynamicFlagsWOD?>(ObjectField.OBJECT_DYNAMIC_FLAGS);
             else
                 DynamicFlags  = UpdateFields.GetEnum<UnitField, UnitDynamicFlags?>(UnitField.UNIT_DYNAMIC_FLAGS);
-            NpcFlags      = UpdateFields.GetEnum<UnitField, NPCFlags?>(UnitField.UNIT_NPC_FLAGS);
+
+            if (ClientVersion.AddedInVersion(ClientType.Legion))
+            {
+                // @TODO TEMPORARY HACK
+                // For read NpcFlags as ulong
+                uint[] tempNpcFlags = UpdateFields.GetArray<UnitField, uint>(UnitField.UNIT_NPC_FLAGS, 2);
+                NpcFlags = (NPCFlags)(tempNpcFlags[0] | (ulong)tempNpcFlags[1] << 32);
+            }
+            else
+                NpcFlags = UpdateFields.GetEnum<UnitField, NPCFlags?>(UnitField.UNIT_NPC_FLAGS);
+
             EmoteState    = UpdateFields.GetEnum<UnitField, EmoteType?>(UnitField.UNIT_NPC_EMOTESTATE);
             Resistances   = UpdateFields.GetArray<UnitField, short>(UnitField.UNIT_FIELD_RESISTANCES, 7);
             ManaMod       = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BASE_MANA);
