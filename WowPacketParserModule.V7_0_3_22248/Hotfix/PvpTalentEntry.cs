@@ -10,7 +10,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Hotfix
         public uint OverridesSpellID { get; set; }
         public string Description { get; set; }
         [HotfixVersion(ClientVersionBuild.V7_2_5_24330, false)]
-        public uint UnkSpellID { get; set; }
+        public uint ExtraSpellID { get; set; }
         public int TierID { get; set; }
         public int ColumnIndex { get; set; }
         public int Flags { get; set; }
