@@ -3,7 +3,7 @@
 namespace WowPacketParser.Enums
 {
     [Flags]
-    public enum NPCFlags
+    public enum NPCFlags : ulong
     {
         None                = 0x0000000000,
         Gossip              = 0x0000000001,
