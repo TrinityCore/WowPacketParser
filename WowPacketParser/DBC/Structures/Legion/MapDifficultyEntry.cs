@@ -12,6 +12,7 @@ namespace WowPacketParser.DBC.Structures
         public byte RaidDurationType;
         public byte MaxPlayers;
         public byte LockID;
+        public byte Flags;
         public byte ItemBonusTreeModID;
         public uint Context;
     }
