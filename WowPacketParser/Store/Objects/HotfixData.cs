@@ -7,7 +7,7 @@ namespace WowPacketParser.Store.Objects
     public sealed class HotfixData : IDataModel
     {
         [DBFieldName("Id", true)]
-        public int? ID;
+        public uint? ID;
 
         [DBFieldName("TableHash", true)]
         public DB2Hash? TableHash;
