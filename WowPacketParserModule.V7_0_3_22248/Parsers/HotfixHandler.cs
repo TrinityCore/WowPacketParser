@@ -82,8 +82,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 {
                     var id = packet.ReadUInt64();
 
-                    packet.AddValue("HotfixID", packet.PAIR64_LOPART(id), i);
-                    packet.AddValue("TableHash", (DB2Hash)packet.PAIR64_HIPART(id), i);
+                    packet.AddValue("HotfixID", Utilities.PAIR64_LOPART(id), i);
+                    packet.AddValue("TableHash", (DB2Hash)Utilities.PAIR64_HIPART(id), i);
                 }
                 else
                     packet.ReadInt32("HotfixID", i);
@@ -101,8 +101,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 {
                     var id = packet.ReadUInt64();
 
-                    packet.AddValue("HotfixID", packet.PAIR64_LOPART(id), i);
-                    packet.AddValue("TableHash", (DB2Hash)packet.PAIR64_HIPART(id), i);
+                    packet.AddValue("HotfixID", Utilities.PAIR64_LOPART(id), i);
+                    packet.AddValue("TableHash", (DB2Hash)Utilities.PAIR64_HIPART(id), i);
                 }
                 else
                     packet.ReadInt32("HotfixID", i);
@@ -154,8 +154,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ResetBitReader();
 
             var id = packet.ReadUInt64();
-            var hotfixId = packet.AddValue("HotfixID", packet.PAIR64_LOPART(id), indexes);
-            var type = packet.AddValue("TableHash", (DB2Hash)packet.PAIR64_HIPART(id), indexes);
+            var hotfixId = packet.AddValue("HotfixID", Utilities.PAIR64_LOPART(id), indexes);
+            var type = packet.AddValue("TableHash", (DB2Hash)Utilities.PAIR64_HIPART(id), indexes);
 
             var entry = packet.ReadInt32("RecordID", indexes);
             var allow = packet.ReadBit("Allow", indexes);

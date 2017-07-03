@@ -679,21 +679,6 @@ namespace WowPacketParser.Misc
                     stream[value] ^= ReadByte();
         }
 
-        public ulong MAKE_PAIR64(uint l, uint h)
-        {
-            return (l | (ulong)h << 32);
-        }
-
-        public uint PAIR64_HIPART(ulong x)
-        {
-            return (uint)((x >> 32) & 0x00000000FFFFFFFF);
-        }
-
-        public uint PAIR64_LOPART(ulong x)
-        {
-            return (uint)(x & 0x00000000FFFFFFFF);
-        }
-
 #endregion
 
         private static string FormatInteger(IFormattable value)

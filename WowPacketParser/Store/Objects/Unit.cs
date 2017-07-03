@@ -162,7 +162,7 @@ namespace WowPacketParser.Store.Objects
                 // @TODO TEMPORARY HACK
                 // For read NpcFlags as ulong
                 uint[] tempNpcFlags = UpdateFields.GetArray<UnitField, uint>(UnitField.UNIT_NPC_FLAGS, 2);
-                NpcFlags = (NPCFlags)(tempNpcFlags[0] | (ulong)tempNpcFlags[1] << 32);
+                NpcFlags = (NPCFlags)Utilities.MAKE_PAIR64(tempNpcFlags[0], tempNpcFlags[1]);
             }
             else
                 NpcFlags = UpdateFields.GetEnum<UnitField, NPCFlags?>(UnitField.UNIT_NPC_FLAGS);
