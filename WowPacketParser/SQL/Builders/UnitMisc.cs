@@ -432,6 +432,7 @@ namespace WowPacketParser.SQL.Builders
                     UnitClass = (uint)npc.Class.GetValueOrDefault(Class.Warrior),
                     UnitFlags = npc.UnitFlags.GetValueOrDefault(UnitFlags.None),
                     UnitFlags2 = npc.UnitFlags2.GetValueOrDefault(UnitFlags2.None),
+                    UnitFlags3 = npc.UnitFlags3.GetValueOrDefault(UnitFlags3.None),
                     DynamicFlags = npc.DynamicFlags.GetValueOrDefault(UnitDynamicFlags.None),
                     VehicleID = npc.Movement.VehicleId,
                     HoverHeight = npc.HoverHeight.GetValueOrDefault(1.0f)

@@ -348,6 +348,7 @@
     <Compile Include="Enums\UnitDynamicFlags.cs" />
     <Compile Include="Enums\UnitFlags2.cs" />
     <Compile Include="Enums\UnitFlags.cs" />
+    <Compile Include="Enums\UnitFlags3.cs" />
     <Compile Include="Enums\UnknownFlags.cs" />
     <Compile Include="Enums\UpdateFields.cs" />
     <Compile Include="Enums\UpdateFlag.cs" />
