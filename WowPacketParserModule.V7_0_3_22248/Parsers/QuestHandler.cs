@@ -68,9 +68,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
         public static void ReadGossipText(Packet packet, params object[] indexes)
         {
-            packet.ReadUInt32("QuestID", indexes);
-            packet.ReadUInt32("QuestType", indexes);
-            packet.ReadUInt32("QuestLevel", indexes);
+            packet.ReadInt32("QuestID", indexes);
+            packet.ReadInt32("QuestType", indexes);
+            packet.ReadInt32("QuestLevel", indexes);
 
             for (int i = 0; i < 2; i++)
                 packet.ReadUInt32("QuestFlags", indexes, i);
@@ -652,6 +652,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, indexes);
             packet.ReadInt32("Quantity", indexes);
+        }
+
+        [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_MESSAGE)]
+        public static void HandleQuestgiverQuestMessage(Packet packet)
+        {
+            packet.ReadPackedGuid128("QuestGiverGUID");
+            ReadGossipText(packet);
         }
     }
 }
