@@ -228,6 +228,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     QuestID = (uint)id.Key
                 };
                 questInfoObjective.Type = packet.ReadByteE<QuestRequirementType>("Quest Requirement Type", i);
+                questInfoObjective.Order = (uint) i;
                 questInfoObjective.StorageIndex = packet.ReadSByte("StorageIndex", i);
                 questInfoObjective.ObjectID = packet.ReadInt32("ObjectID", i);
                 questInfoObjective.Amount = packet.ReadInt32("Amount", i);

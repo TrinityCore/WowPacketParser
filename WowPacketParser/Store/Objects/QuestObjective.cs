@@ -16,6 +16,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Type")]
         public QuestRequirementType? Type;
 
+        [DBFieldName("Order")]
+        public uint? Order;
+
         [DBFieldName("StorageIndex")]
         public int? StorageIndex;
 
