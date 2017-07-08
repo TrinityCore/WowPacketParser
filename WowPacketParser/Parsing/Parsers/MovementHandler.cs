@@ -1252,6 +1252,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.MSG_MOVE_STOP_SWIM, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.MSG_MOVE_START_SWIM_CHEAT)]
         [Parser(Opcode.MSG_MOVE_STOP_SWIM_CHEAT)]
+        [Parser(Opcode.SMSG_MOVE_SET_FLYING)]
+        [Parser(Opcode.SMSG_MOVE_UNSET_FLYING)]
         [Parser(Opcode.MSG_MOVE_HEARTBEAT, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
         [Parser(Opcode.MSG_MOVE_FALL_LAND, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         [Parser(Opcode.MSG_MOVE_UPDATE_CAN_FLY)]
