@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
@@ -18,6 +19,7 @@ namespace WowPacketParser.Store.Objects
         public int Zone;
 
         public Dictionary<int, UpdateField> UpdateFields; // SMSG_UPDATE_OBJECT - CreateObject
+        public Dictionary<int, List<UpdateField>> DynamicUpdateFields; // SMSG_UPDATE_OBJECT - CreateObject
 
         public ICollection<Dictionary<int, UpdateField>> ChangedUpdateFieldsList; // SMSG_UPDATE_OBJECT - Values
 
