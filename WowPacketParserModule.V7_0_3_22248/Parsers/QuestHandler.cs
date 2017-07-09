@@ -218,7 +218,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             uint questTurnTargetNameLen = packet.ReadBits(8);
             uint questCompletionLogLen = packet.ReadBits(11);
 
-            for (int i = 0; i < int2946; ++i)
+            for (uint i = 0; i < int2946; ++i)
             {
                 var objectiveId = packet.ReadEntry("Id", i);
 
@@ -229,6 +229,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 };
                 questInfoObjective.Type = packet.ReadByteE<QuestRequirementType>("Quest Requirement Type", i);
                 questInfoObjective.StorageIndex = packet.ReadSByte("StorageIndex", i);
+                questInfoObjective.Order = i;
                 questInfoObjective.ObjectID = packet.ReadInt32("ObjectID", i);
                 questInfoObjective.Amount = packet.ReadInt32("Amount", i);
                 questInfoObjective.Flags = packet.ReadUInt32("Flags", i);
@@ -237,12 +238,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 questInfoObjective.ProgressBarWeight = packet.ReadSingle("ProgressBarWeight", i);
 
                 int visualEffectsCount = packet.ReadInt32("VisualEffects", i);
-                for (int j = 0; j < visualEffectsCount; ++j)
+                for (uint j = 0; j < visualEffectsCount; ++j)
                 {
                     QuestVisualEffect questVisualEffect = new QuestVisualEffect
                     {
                         ID = questInfoObjective.ID,
-                        Index = (uint) j,
+                        Index = j,
                         VisualEffect = packet.ReadInt32("VisualEffectId", i, j)
                     };
 
