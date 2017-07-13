@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using DBFilesClient.NET;
 using WowPacketParser.DBC.Structures;
 using WowPacketParser.Misc;
-using WowPacketParser.Loading;
 
 namespace WowPacketParser.DBC
 {
@@ -63,16 +62,13 @@ namespace WowPacketParser.DBC
                     return;
 
                 var times = new List<long>();
-                var recordCount = 0;
                 var instanceType = typeof(Storage<>).MakeGenericType(type);
                 var countGetter = instanceType.GetProperty("Count").GetGetMethod();
                 var instance = Activator.CreateInstance(instanceType, $"{ GetPath() + attr.FileName }.db2", true);
+                var recordCount = (int)countGetter.Invoke(instance, new object[] { });
 
                 var endTime = DateTime.Now;
                 var span = endTime.Subtract(startTime);
-
-                if (recordCount == 0)
-                    recordCount = (int)countGetter.Invoke(instance, new object[] { });
 
                 Trace.WriteLine($"{ attr.FileName.PadRight(33) } { TimeSpan.FromTicks(span.Ticks).ToString().PadRight(28) } { recordCount.ToString().PadRight(19) }");
             });
