@@ -23,7 +23,7 @@ namespace WowPacketParser.Store.Objects
         public override void LoadValuesFromUpdateFields()
         {
             Id = UpdateFields.GetValue<ObjectField, uint>(ObjectField.OBJECT_FIELD_ENTRY);
-            LastLineEndTime = UpdateFields.GetValue<ConversationField, uint>(ConversationField.CONVERSATION_FIELD_LAST_LINE_DURATION);
+            LastLineEndTime = UpdateFields.GetValue<ConversationField, uint>(ConversationField.CONVERSATION_LAST_LINE_END_TIME);
 
             var actorTemplates = new List<ConversationActorTemplate>();
             var actors = new List<UpdateField>();
