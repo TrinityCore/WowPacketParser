@@ -41,7 +41,7 @@ namespace WowPacketParser.Store.Objects
 
         public int GetDefaultSpawnTime(uint difficultyID)
         {
-             if (DBC.DBC.Map != null)
+             if (Settings.UseDBC && DBC.DBC.Map != null)
              {
                  if (DBC.DBC.Map.ContainsKey((int)Map))
                  {
