@@ -139,7 +139,9 @@ namespace WowPacketParser.Store.Objects
                 {
                     CreatureTemplateScaling creatureTemplateScaling = new CreatureTemplateScaling();
                     creatureTemplateScaling.Entry                   = UpdateFields.GetValue<ObjectField, uint>(ObjectField.OBJECT_FIELD_ENTRY);
-                    creatureTemplateScaling.LevelScalingDelta       = UpdateFields.GetValue<UnitField, uint>(UnitField.UNIT_FIELD_SCALING_LEVEL_DELTA);
+                    creatureTemplateScaling.LevelScalingMin         = ScalingMinLevel;
+                    creatureTemplateScaling.LevelScalingMax         = ScalingMaxLevel;
+                    creatureTemplateScaling.LevelScalingDelta       = UpdateFields.GetValue<UnitField, int>(UnitField.UNIT_FIELD_SCALING_LEVEL_DELTA);
                     Storage.CreatureTemplateScalings.Add(creatureTemplateScaling);
                 }
 

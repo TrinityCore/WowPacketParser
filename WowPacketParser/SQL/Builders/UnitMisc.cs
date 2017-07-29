@@ -91,7 +91,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.CreatureTemplateScalings.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template))
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template_scaling))
                 return string.Empty;
 
             var templateDb = SQLDatabase.Get(Storage.CreatureTemplateScalings);
