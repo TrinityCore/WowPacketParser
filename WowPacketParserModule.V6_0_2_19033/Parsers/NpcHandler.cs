@@ -250,37 +250,39 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_TRAINER_LIST)]
         public static void HandleServerTrainerList(Packet packet)
         {
-            NpcTrainer npcTrainer = new NpcTrainer();
+            Trainer trainer = new Trainer();
 
-            uint entry = packet.ReadPackedGuid128("TrainerGUID").GetEntry();
+            packet.ReadPackedGuid128("TrainerGUID");
 
-            packet.ReadInt32("TrainerType");
-            packet.ReadInt32("TrainerID");
-            int count = packet.ReadInt32("Spells");
+            trainer.Type = packet.ReadInt32E<TrainerType>("TrainerType");
+            trainer.Id = packet.ReadUInt32("TrainerID");
+            var count = packet.ReadUInt32("Spells");
 
-            for (int i = 0; i < count; ++i)
+            for (var i = 0u; i < count; ++i)
             {
-                NpcTrainer trainer = new NpcTrainer
+                TrainerSpell trainerSpell = new TrainerSpell
                 {
-                    ID = entry,
-                    SpellID = packet.ReadInt32<SpellId>("SpellID", i),
+                    TrainerId = trainer.Id,
+                    SpellId = packet.ReadUInt32<SpellId>("SpellID", i),
                     MoneyCost = packet.ReadUInt32("MoneyCost", i),
                     ReqSkillLine = packet.ReadUInt32("ReqSkillLine", i),
                     ReqSkillRank = packet.ReadUInt32("ReqSkillRank", i)
                 };
 
-
+                trainerSpell.ReqAbility = new uint[3];
                 for (var j = 0; j < 3; ++j)
-                    packet.ReadInt32("ReqAbility", i, j);
+                    trainerSpell.ReqAbility[j] = packet.ReadUInt32("ReqAbility", i, j);
 
                 packet.ReadByteE<TrainerSpellState>("Usable", i);
-                trainer.ReqLevel = packet.ReadByte("ReqLevel", i);
+                trainerSpell.ReqLevel = packet.ReadByte("ReqLevel", i);
+
+                Storage.TrainerSpells.Add(trainerSpell, packet.TimeSpan);
             }
 
-            uint bits56 = packet.ReadBits(11);
-            packet.ReadWoWString("Greeting", bits56);
+            uint greetingLength = packet.ReadBits(11);
+            trainer.Greeting = packet.ReadWoWString("Greeting", greetingLength);
 
-            Storage.NpcTrainers.Add(npcTrainer, packet.TimeSpan);
+            Storage.Trainers.Add(trainer, packet.TimeSpan);
         }
 
         [Parser(Opcode.CMSG_TRAINER_BUY_SPELL)]

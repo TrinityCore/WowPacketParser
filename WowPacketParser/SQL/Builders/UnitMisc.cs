@@ -161,6 +161,38 @@ namespace WowPacketParser.SQL.Builders
         }
 
         [BuilderMethod]
+        public static string Trainer()
+        {
+            Debugger.Launch();
+            Debugger.Break();
+            if (Storage.Trainers.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.trainer))
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.Trainers);
+
+            return SQLUtil.Compare(Storage.Trainers, templatesDb, StoreNameType.None);
+        }
+
+        [BuilderMethod]
+        public static string TrainerSpell()
+        {
+            Debugger.Launch();
+            Debugger.Break();
+            if (Storage.TrainerSpells.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.trainer_spell))
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.TrainerSpells);
+
+            return SQLUtil.Compare(Storage.TrainerSpells, templatesDb, StoreNameType.None);
+        }
+
+        [BuilderMethod]
         public static string NpcVendor()
         {
             if (Storage.NpcVendors.IsEmpty())
