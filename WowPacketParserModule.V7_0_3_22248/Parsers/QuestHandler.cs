@@ -661,5 +661,36 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadPackedGuid128("QuestGiverGUID");
             ReadGossipText(packet);
         }
+
+        [Parser(Opcode.CMSG_QUERY_QUEST_REWARDS)]
+        public static void HandleQueryQuestRewards(Packet packet)
+        {
+            packet.ReadInt32("QuestId");
+            packet.ReadInt32("QuestTimer");
+        }
+
+        [Parser(Opcode.SMSG_QUERY_QUEST_REWARD_RESPONSE)]
+        public static void HandleQueryQuestRewardResponse(Packet packet)
+        {
+            packet.ReadInt32("QuestId");
+            packet.ReadInt32("QuestTimer");
+
+            var itemCount = packet.ReadInt32("ItemCount");
+            int currencyCount = packet.ReadInt32("CurrencyCount");
+
+            packet.ReadInt64("MoneyReward");
+
+            for (var i = 0; i < itemCount; ++i)
+            {
+                V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, i);
+                packet.ReadInt32("Quantity", i);
+            }
+
+            for (int i = 0; i < currencyCount; i++)
+            {
+                packet.ReadInt32("CurrencyID", i);
+                packet.ReadInt32("Amount", i);
+            }
+        }
     }
 }
