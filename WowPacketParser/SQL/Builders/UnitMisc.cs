@@ -163,8 +163,6 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod]
         public static string Trainer()
         {
-            Debugger.Launch();
-            Debugger.Break();
             if (Storage.Trainers.IsEmpty())
                 return string.Empty;
 
@@ -179,8 +177,6 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod]
         public static string TrainerSpell()
         {
-            Debugger.Launch();
-            Debugger.Break();
             if (Storage.TrainerSpells.IsEmpty())
                 return string.Empty;
 
