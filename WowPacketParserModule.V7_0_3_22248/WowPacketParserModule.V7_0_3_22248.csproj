@@ -274,6 +274,10 @@
     <Compile Include="Hotfix\TaxiPathNodeEntry.cs" />
     <Compile Include="Hotfix\TotemCategoryEntry.cs" />
     <Compile Include="Hotfix\ToyEntry.cs" />
+    <Compile Include="Hotfix\TransmogHolidayEntry.cs" />
+    <Compile Include="Hotfix\TransmogSetEntry.cs" />
+    <Compile Include="Hotfix\TransmogSetGroupEntry.cs" />
+    <Compile Include="Hotfix\TransmogSetItemEntry.cs" />
     <Compile Include="Hotfix\TransportAnimationEntry.cs" />
     <Compile Include="Hotfix\TransportRotationEntry.cs" />
     <Compile Include="Hotfix\UnitPowerBarEntry.cs" />
