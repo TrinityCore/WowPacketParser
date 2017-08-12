@@ -37,12 +37,8 @@ namespace WowPacketParser.Store.Objects
 
                     if (actor.Type == (uint)ActorType.WorldObjectActor)
                     {
-                        ulong lowPart = 0;
-                        lowPart |= actors[i + 0].UInt32Value;
-                        lowPart |= (ulong)(actors[i + 1].UInt32Value) << 32;
-                        ulong highPart = 0;
-                        highPart |= actors[i + 2].UInt32Value;
-                        highPart |= (ulong)(actors[i + 3].UInt32Value) << 32;
+                        ulong lowPart = Utilities.MAKE_PAIR64(actors[i + 0].UInt32Value, actors[i + 1].UInt32Value);
+                        ulong highPart = Utilities.MAKE_PAIR64(actors[i + 2].UInt32Value, actors[i + 3].UInt32Value);
                         actor.Guid = new WowGuid128(lowPart, highPart);
                     }
                     if (actor.Type == (uint)ActorType.CreatureActor)
