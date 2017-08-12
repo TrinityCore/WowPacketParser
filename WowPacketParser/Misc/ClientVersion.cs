@@ -183,7 +183,7 @@ namespace WowPacketParser.Misc
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V7_2_5_24415, new DateTime(2017, 06, 22, 21, 41, 18)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V7_2_5_24430, new DateTime(2017, 06, 26)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V7_2_5_24461, new DateTime(2017, 06, 29)),
-            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V7_2_5_24742, new DateTime(2017, 06, 12))
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V7_2_5_24742, new DateTime(2017, 08, 03))
         };
 
         private static ClientType _expansion;
