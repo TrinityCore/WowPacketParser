@@ -54,7 +54,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int j = 0; j < int11; j++)
             {
                 packet.ReadInt32("ID", idx, j);
-                packet.ReadInt32("ItemID", idx, j);
+                packet.ReadInt32<ItemId>("ItemID", idx, j);
                 packet.ReadInt32("Quantity", idx, j);
 
                 packet.ResetBitReader();
@@ -98,7 +98,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var j = 0; j < int11; j++)
             {
                 packet.ReadInt32("ID", idx, j);
-                packet.ReadInt32("ItemID", idx, j);
+                packet.ReadInt32<ItemId>("ItemID", idx, j);
                 packet.ReadInt32("Quantity", idx, j);
 
                 packet.ResetBitReader();
@@ -285,6 +285,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var itemCount = packet.ReadInt32("ItemCount");
             for (int i = 0; i < itemCount; i++)
                 ItemHandler.ReadItemInstance(packet, i);
+        }
+
+        [Parser(Opcode.CMSG_BATTLE_PAY_DISTRIBUTION_ASSIGN_TO_TARGET)]
+        public static void HandleBattlePayDistributionAssignToTarget(Packet packet)
+        {
+            packet.ReadInt32("ClientToken");
+            packet.ReadInt64("DistributionID");
+            packet.ReadPackedGuid128("TargetCharacter");
+            packet.ReadInt32("ProductChoice");
+        }
+
+        [Parser(Opcode.SMSG_CHARACTER_UPGRADE_STARTED)]
+        public static void HandleCharacterUpgradeStarted(Packet packet)
+        {
+            packet.ReadPackedGuid128("CharacterGUID");
         }
     }
 }

@@ -9,20 +9,6 @@ namespace WowPacketParser.SQL.Builders
     public static class Locales
     {
         [BuilderMethod]
-        public static string BroadcastTextLocale()
-        {
-            if (Storage.BroadcastTextLocales.IsEmpty())
-                return string.Empty;
-
-            if (!Settings.HotfixSQLOutputFlag.HasAnyFlagBit(HotfixSQLOutput.broadcast_text_locale))
-                return string.Empty;
-
-            var templatesDb = SQLDatabase.Get(Storage.BroadcastTextLocales, Settings.HotfixesDatabase);
-
-            return "SET NAMES 'utf8';" + Environment.NewLine + SQLUtil.Compare(Storage.BroadcastTextLocales, templatesDb, StoreNameType.None) + Environment.NewLine + "SET NAMES 'latin1';";
-        }
-
-        [BuilderMethod]
         public static string LocalesQuest()
         {
             if (Storage.LocalesQuests.IsEmpty())

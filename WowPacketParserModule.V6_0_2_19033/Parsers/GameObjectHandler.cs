@@ -51,16 +51,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < gameObject.Data.Length; i++)
                 gameObject.Data[i] = packet.ReadInt32("Data", i);
 
-
             gameObject.Size = packet.ReadSingle("Size");
 
-            gameObject.QuestItems = new uint?[6];
+            byte questItemsCount = packet.ReadByte("QuestItemsCount");
+            for (uint i = 0; i < questItemsCount; i++)
+            {
+                GameObjectTemplateQuestItem questItem = new GameObjectTemplateQuestItem
+                {
+                    GameObjectEntry = (uint)entry.Key,
+                    Idx = i,
+                    ItemId = packet.ReadUInt32<ItemId>("QuestItem", i)
+                };
 
-            byte length = packet.ReadByte("QuestItems Length");
-            for (int i = 0; i < length; i++)
-                gameObject.QuestItems[i] = (uint)packet.ReadInt32<ItemId>("Quest Item", i);
+                Storage.GameObjectTemplateQuestItems.Add(questItem, packet.TimeSpan);
+            }
 
-            packet.ReadUInt32E<ClientType>("Expansion");
+            gameObject.RequiredLevel = packet.ReadInt32("RequiredLevel");
 
             Storage.GameObjectTemplates.Add(gameObject, packet.TimeSpan);
 
@@ -70,6 +76,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 ID = entry.Key,
                 Name = gameObject.Name
             };
+
             Storage.ObjectNames.Add(objectName, packet.TimeSpan);
         }
 
@@ -118,7 +125,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Caster");
             packet.ReadPackedGuid128("Owner");
             packet.ReadInt32("Damage");
-            packet.ReadInt32("SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
         }
 
         [Parser(Opcode.SMSG_GAME_OBJECT_RESET_STATE)]

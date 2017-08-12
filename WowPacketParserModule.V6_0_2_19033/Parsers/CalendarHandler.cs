@@ -137,22 +137,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("ServerTime");
             packet.ReadTime("RaidOrigin");
 
-            var int52 = packet.ReadInt32("CalendarSendCalendarInviteInfoCount");
-            var int68 = packet.ReadInt32("CalendarSendCalendarEventInfoCount");
-            var int36 = packet.ReadInt32("CalendarSendCalendarRaidLockoutInfoCount");
-            var int16 = packet.ReadInt32("CalendarSendCalendarRaidResetInfoCount");
+            var invitesCount = packet.ReadInt32("InvitesCount");
+            var eventsCount = packet.ReadInt32("EventsCount");
+            var raidLockoutsCount = packet.ReadInt32("RaidLockoutsCount");
+            var raidResetsCount = packet.ReadInt32("RaidResetsCount");
 
-            for (int i = 0; i < int52; i++)
-                ReadCalendarSendCalendarInviteInfo(packet, i, "CalendarSendCalendarInviteInfo");
+            for (int i = 0; i < invitesCount; i++)
+                ReadCalendarSendCalendarInviteInfo(packet, "Invites", i);
 
-            for (int i = 0; i < int68; i++)
-                ReadCalendarSendCalendarEventInfo(packet, i, "CalendarSendCalendarEventInfo");
+            for (int i = 0; i < eventsCount; i++)
+                ReadCalendarSendCalendarEventInfo(packet, "Events", i);
 
-            for (int i = 0; i < int36; i++)
-                ReadCalendarSendCalendarRaidLockoutInfo(packet, i, "CalendarSendCalendarRaidLockoutInfo");
+            for (int i = 0; i < raidLockoutsCount; i++)
+                ReadCalendarSendCalendarRaidLockoutInfo(packet, "RaidLockouts", i);
 
-            for (int i = 0; i < int16; i++)
-                ReadCalendarSendCalendarRaidResetInfo(packet, i, "CalendarSendCalendarRaidResetInfo");
+            for (int i = 0; i < raidResetsCount; i++)
+                ReadCalendarSendCalendarRaidResetInfo(packet, "RaidResets", i);
         }
 
         [Parser(Opcode.SMSG_CALENDAR_SEND_EVENT)]
@@ -170,7 +170,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var inviteCount = packet.ReadInt32("InviteCount");
             for (int i = 0; i < inviteCount; i++)
-                ReadCalendarEventInviteInfo(packet, i, "CalendarEventInviteInfo");
+                ReadCalendarEventInviteInfo(packet, "Invites", i);
 
             packet.ResetBitReader();
 

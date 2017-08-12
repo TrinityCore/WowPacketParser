@@ -7,7 +7,7 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("creature")]
     public sealed class Creature : IDataModel
     {
-        [DBFieldName("guid", true)]
+        [DBFieldName("guid", true, true)]
         public string GUID;
 
         [DBFieldName("id")]
@@ -53,7 +53,7 @@ namespace WowPacketParser.Store.Objects
         public float? Orientation;
 
         [DBFieldName("spawntimesecs")]
-        public uint? SpawnTimeSecs;
+        public int? SpawnTimeSecs;
 
         [DBFieldName("spawndist")]
         public float? SpawnDist;
@@ -73,10 +73,10 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("npcflag")]
         public uint? NpcFlag;
 
-        [DBFieldName("unit_flag")]
+        [DBFieldName("unit_flags")]
         public uint? UnitFlag;
 
-        [DBFieldName("dynamicflag")]
+        [DBFieldName("dynamicflags")]
         public uint? DynamicFlag;
 
         [DBFieldName("VerifiedBuild")]

@@ -31,7 +31,7 @@ namespace WowPacketParser.Parsing
         /// <param name="removedInVersion"></param>
         public ParserAttribute(Opcode opcode, ClientVersionBuild addedInVersion, ClientVersionBuild removedInVersion)
         {
-            if (ClientVersion.AddedInVersion(addedInVersion) && ClientVersion.RemovedInVersion(removedInVersion))
+            if (ClientVersion.InVersion(addedInVersion, removedInVersion))
                 Opcode = opcode;
         }
 

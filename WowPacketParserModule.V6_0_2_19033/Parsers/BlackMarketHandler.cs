@@ -18,7 +18,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("NpcGUID");
             packet.ReadInt32("MarketID");
-            ItemHandler.ReadItemInstance(packet);
+            ItemHandler.ReadItemInstance(packet, "Item");
             packet.ReadUInt64("BidAmount");
         }
 
@@ -40,7 +40,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleBlackMarketOutbidOrWon(Packet packet)
         {
             packet.ReadInt32("MarketID");
-            ItemHandler.ReadItemInstance(packet);
+            ItemHandler.ReadItemInstance(packet, "Item");
             packet.ReadInt32("RandomPropertiesID");
         }
 
@@ -48,8 +48,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleBlackMarketBidOnItemResult(Packet packet)
         {
             packet.ReadInt32("MarketID");
-            ItemHandler.ReadItemInstance(packet);
+            ItemHandler.ReadItemInstance(packet, "Item");
             packet.ReadInt32("Result");
+        }
+
+        public static void ReadBlackMarketItem(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("MarketID", idx);
+            packet.ReadInt32<UnitId>("SellerNPC", idx);
+            ItemHandler.ReadItemInstance(packet, "Item", idx);
+            packet.ReadInt32("Quantity", idx);
+            packet.ReadUInt64("MinBid", idx);
+            packet.ReadUInt64("MinIncrement", idx);
+            packet.ReadUInt64("CurrentBid", idx);
+            packet.ReadInt32("SecondsRemaining", idx);
+            packet.ReadInt32("NumBids", idx);
+            packet.ReadBit("HighBid", idx);
+            packet.ResetBitReader();
         }
 
         [Parser(Opcode.SMSG_BLACK_MARKET_REQUEST_ITEMS_RESULT)]
@@ -59,18 +74,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var count = packet.ReadInt32("ItemsCount");
 
             for (int i = 0; i < count; i++)
-            {
-                packet.ReadInt32("MarketID", i);
-                packet.ReadInt32("SellerNPC", i);
-                ItemHandler.ReadItemInstance(packet, i);
-                packet.ReadInt32("Quantity", i);
-                packet.ReadUInt64("MinBid", i);
-                packet.ReadUInt64("MinIncrement", i);
-                packet.ReadUInt64("CurrentBid", i);
-                packet.ReadInt32("SecondsRemaining", i);
-                packet.ReadBit("HighBid", i);
-                packet.ReadInt32("NumBids", i);
-            }
+                ReadBlackMarketItem(packet, "Items", i);
         }
     }
 }

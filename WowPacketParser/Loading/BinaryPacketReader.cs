@@ -29,7 +29,7 @@ namespace WowPacketParser.Loading
         private uint _startTickCount;
         private int _snifferId;
         private short _snifferVersion;
-        private static string _locale;
+        private static string _locale = "enUS";
 
         public BinaryPacketReader(SniffType type, string fileName, Encoding encoding)
         {
@@ -106,6 +106,9 @@ namespace WowPacketParser.Loading
                             _snifferVersion = BitConverter.ToInt16(optionalData, 1);
                         else
                             _snifferVersion = 0x0105;
+
+                        if (_snifferVersion >= 0x0107)
+                            _startTime = DateTime.FromFileTime(BitConverter.ToInt64(optionalData, 3));
                     }
                     break;
                 }
@@ -207,6 +210,7 @@ namespace WowPacketParser.Loading
                             cIndex = _reader.ReadInt32(); // session id, connection index
                             var tickCount = _reader.ReadUInt32();
                             time = _startTime.AddMilliseconds(tickCount - _startTickCount);
+                            time = TimeZone.CurrentTimeZone.ToLocalTime(time);
                         }
 
                         int additionalSize = _reader.ReadInt32();

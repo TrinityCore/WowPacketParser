@@ -10,9 +10,6 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ID", true)]
         public uint? ID;
 
-        [DBFieldName("Language")]
-        public int? Language;
-
         [DBFieldName("MaleText", LocaleConstant.enUS)]
         public string MaleText;
 
@@ -20,19 +17,25 @@ namespace WowPacketParser.Store.Objects
         public string FemaleText;
 
         [DBFieldName("EmoteID", 3)]
-        public uint?[] EmoteID;
+        public ushort?[] EmoteID;
 
         [DBFieldName("EmoteDelay", 3)]
-        public uint?[] EmoteDelay;
-
-        [DBFieldName("SoundId")]
-        public uint? SoundId;
+        public ushort?[] EmoteDelay;
 
         [DBFieldName("UnkEmoteID")]
-        public uint? UnkEmoteId;
+        public ushort? UnkEmoteID;
+
+        [DBFieldName("Language")]
+        public byte? Language;
 
         [DBFieldName("Type")]
-        public uint? Type;
+        public byte? Type;
+
+        [DBFieldName("SoundID", 2)]
+        public uint?[] SoundID;
+
+        [DBFieldName("PlayerConditionID")]
+        public uint? PlayerConditionID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

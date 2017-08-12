@@ -1,15 +1,17 @@
-language: objective-c
+dist: trusty
+sudo: false
 
-env:
- global:
-  - EnableNuGetPackageRestore=true 
- matrix:
-  - MONO_VERSION="3.2.5"
+language: csharp
+solution: WowPacketParser.sln
 
-before_install:
- - wget "http://download.xamarin.com/MonoFrameworkMDK/Macx86/MonoFramework-MDK-${MONO_VERSION}.macos10.xamarin.x86.pkg"
- - sudo installer -pkg "MonoFramework-MDK-${MONO_VERSION}.macos10.xamarin.x86.pkg" -target /
+matrix:
+  include:
+    - dotnet: 1.0.1
+      mono: none
+      env: DOTNETCORE=1
+    - mono: latest
+  allow_failures:
+    - dotnet: 1.0.1
 
-script:
- - xbuild
- - .ci/nunit.sh WowPacketParser.Tests/bin/Debug/WowPacketParser.Tests.dll
+install: ./scripts/travis-install.sh
+script: ./scripts/travis-build.sh

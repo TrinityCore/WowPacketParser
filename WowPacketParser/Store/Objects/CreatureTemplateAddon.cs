@@ -1,4 +1,5 @@
-﻿using WowPacketParser.SQL;
+﻿using WowPacketParser.Enums;
+using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
@@ -22,6 +23,15 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("emote")]
         public uint? Emote;
+
+        [DBFieldName("aiAnimKit", TargetedDatabase.Legion)]
+        public ushort? AIAnimKit;
+
+        [DBFieldName("movementAnimKit", TargetedDatabase.Legion)]
+        public ushort? MovementAnimKit;
+
+        [DBFieldName("meleeAnimKit", TargetedDatabase.Legion)]
+        public ushort? MeleeAnimKit;
 
         [DBFieldName("auras")]
         public string Auras;

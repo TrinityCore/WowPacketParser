@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WowPacketParserModule.V6_0_2_19033</RootNamespace>
     <AssemblyName>WowPacketParserModule.V6_0_2_19033</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -33,6 +33,7 @@
     <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
     <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <OutputPath>..\WowPacketParser\bin\Release\Parsers\</OutputPath>
@@ -53,12 +54,59 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Enums\MovementFlag.cs" />
     <Compile Include="Enums\UpdateFields.cs" />
     <Compile Include="Enums\CharacterUndeleteResult.cs" />
     <Compile Include="Enums\UpdateFields610.cs" />
     <Compile Include="Enums\UpdateFields620.cs" />
     <Compile Include="Enums\UpdateFields622.cs" />
     <Compile Include="Enums\UpdateFields623.cs" />
+    <Compile Include="Enums\UpdateFields624.cs" />
+    <Compile Include="Hotfix\AreaPOIEntry.cs" />
+    <Compile Include="Hotfix\AreaPOIStateEntry.cs" />
+    <Compile Include="Hotfix\BattlePetSpeciesEntry.cs" />
+    <Compile Include="Hotfix\BroadcastTextEntry.cs" />
+    <Compile Include="Hotfix\ChrUpgradeBucketEntry.cs" />
+    <Compile Include="Hotfix\ChrUpgradeBucketSpellEntry.cs" />
+    <Compile Include="Hotfix\ChrUpgradeTierEntry.cs" />
+    <Compile Include="Hotfix\CreatureEntry.cs" />
+    <Compile Include="Hotfix\CriteriaTreeEntry.cs" />
+    <Compile Include="Hotfix\CurvePointEntry.cs" />
+    <Compile Include="Hotfix\GameObjectsEntry.cs" />
+    <Compile Include="Hotfix\HolidaysEntry.cs" />
+    <Compile Include="Hotfix\HotfixSerializer.cs" />
+    <Compile Include="Hotfix\ItemAppearanceEntry.cs" />
+    <Compile Include="Hotfix\ItemBonusEntry.cs" />
+    <Compile Include="Hotfix\ItemBonusTreeNodeEntry.cs" />
+    <Compile Include="Hotfix\ItemCurrencyCostEntry.cs" />
+    <Compile Include="Hotfix\ItemEffectEntry.cs" />
+    <Compile Include="Hotfix\ItemEntry.cs" />
+    <Compile Include="Hotfix\ItemExtendedCost.cs" />
+    <Compile Include="Hotfix\ItemModifiedAppearanceEntry.cs" />
+    <Compile Include="Hotfix\ItemSparseEntry.cs" />
+    <Compile Include="Hotfix\KeyChainEntry.cs" />
+    <Compile Include="Hotfix\LocationEntry.cs" />
+    <Compile Include="Hotfix\OverrideSpellDataEntry.cs" />
+    <Compile Include="Hotfix\PhaseXPhaseGroupEntry.cs" />
+    <Compile Include="Hotfix\RulesetItemUpgradeEntry.cs" />
+    <Compile Include="Hotfix\SceneScriptEntry.cs" />
+    <Compile Include="Hotfix\MountEntry.cs" />
+    <Compile Include="Hotfix\SpellAuraRestrictionsEntry.cs" />
+    <Compile Include="Hotfix\SpellCastingRequirementsEntry.cs" />
+    <Compile Include="Hotfix\SpellClassOptionsEntry.cs" />
+    <Compile Include="Hotfix\SpellEffectGroupSizeEntry.cs" />
+    <Compile Include="Hotfix\SpellLearnSpellEntry.cs" />
+    <Compile Include="Hotfix\SpellMiscEntry.cs" />
+    <Compile Include="Hotfix\SpellPowerEntry.cs" />
+    <Compile Include="Hotfix\SpellReagentsEntry.cs" />
+    <Compile Include="Hotfix\SpellRuneCostEntry.cs" />
+    <Compile Include="Hotfix\SpellTotemsEntry.cs" />
+    <Compile Include="Hotfix\TaxiNodesEntry.cs" />
+    <Compile Include="Hotfix\TaxiPathEntry.cs" />
+    <Compile Include="Hotfix\TaxiPathNodeEntry.cs" />
+    <Compile Include="Hotfix\ToyEntry.cs" />
+    <Compile Include="Hotfix\VignetteEntry.cs" />
+    <Compile Include="Hotfix\WbAccessControlListEntry.cs" />
     <Compile Include="Parsers\AchievementHandler.cs" />
     <Compile Include="Parsers\AccountDataHandler.cs" />
     <Compile Include="Parsers\ActionBarHandler.cs" />
@@ -121,9 +169,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Sigil, Version=4.7.0.0, Culture=neutral, PublicKeyToken=2d06c3494341c8ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sigil.4.7.0\lib\net45\Sigil.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

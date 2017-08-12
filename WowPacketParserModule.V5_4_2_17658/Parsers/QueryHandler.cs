@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using WowPacketParser.Enums;
+using WowPacketParser.Hotfix;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -82,7 +83,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 packet.ReadCString("String1C");
 
             creature.MovementID = packet.ReadUInt32("Movement ID");
-            creature.ExpUnk = packet.ReadUInt32E<ClientType>("Expansion");
+            creature.RequiredExpansion = packet.ReadUInt32E<ClientType>("Expansion");
 
             if (bits2C > 1)
                 creature.IconName = packet.ReadCString("Icon Name");
@@ -136,7 +137,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         [Parser(Opcode.SMSG_DB_REPLY)]
         public static void HandleDBReply(Packet packet)
         {
-            var entry = (uint)packet.ReadInt32("Entry");
+            var entry = packet.ReadInt32("Entry");
             packet.ReadTime("Hotfix date");
 
             var size = packet.ReadInt32("Size");
@@ -144,364 +145,17 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var db2File = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
 
             var type = packet.ReadUInt32E<DB2Hash>("DB2 File");
-            if ((int)entry < 0)
+            if (entry < 0)
             {
-                packet.WriteLine("Row {0} has been removed.", -(int)entry);
-                return;
+                packet.WriteLine("Row {0} has been removed.", -entry);
+                HotfixStoreMgr.RemoveRecord(type, entry);
             }
-
-            switch (type)
+            else
             {
-                case DB2Hash.BroadcastText:
-                {
-                    BroadcastText broadcastText = new BroadcastText();
-
-                    var id = db2File.ReadEntry("Id");
-                    broadcastText.ID = (uint)id.Key;
-
-                    broadcastText.Language = db2File.ReadInt32("Language");
-                    if (db2File.ReadUInt16() > 0)
-                        broadcastText.MaleText = db2File.ReadCString("Male Text");
-                    if (db2File.ReadUInt16() > 0)
-                        broadcastText.FemaleText = db2File.ReadCString("Female Text");
-
-                    broadcastText.EmoteID = new uint?[3];
-                    broadcastText.EmoteDelay = new uint?[3];
-                    for (int i = 0; i < 3; ++i)
-                        broadcastText.EmoteID[i] = (uint) db2File.ReadInt32("Emote ID", i);
-                    for (int i = 0; i < 3; ++i)
-                        broadcastText.EmoteDelay[i] = (uint) db2File.ReadInt32("Emote Delay", i);
-
-                    broadcastText.SoundId = db2File.ReadUInt32("Sound Id");
-                    broadcastText.UnkEmoteId = db2File.ReadUInt32("Unk MoP 1"); // unk emote
-                    broadcastText.Type = db2File.ReadUInt32("Unk MoP 2"); // kind of type?
-
-                    Storage.BroadcastTexts.Add(broadcastText, packet.TimeSpan);
-                    packet.AddSniffData(StoreNameType.None, id.Key, "BROADCAST_TEXT");
-                    break;
-                }
-                case DB2Hash.Creature: // New structure - 5.4.0
-                {
-                    db2File.ReadUInt32("Creature Id");
-                    db2File.ReadUInt32("Item Id 1");
-                    db2File.ReadUInt32("Item Id 2");
-                    db2File.ReadUInt32("Item Id 3");
-                    db2File.ReadUInt32("Mount");
-                    for (var i = 0; i < 4; ++i)
-                        db2File.ReadInt32("Display Id", i);
-
-                    for (var i = 0; i < 4; ++i)
-                        db2File.ReadSingle("Display Id Probability", i);
-
-                    if (db2File.ReadUInt16() > 0)
-                        db2File.ReadCString("Name");
-
-                    if (db2File.ReadUInt16() > 0)
-                        db2File.ReadCString("SubName");
-
-                    if (db2File.ReadUInt16() > 0)
-                        db2File.ReadCString("Female SubName");
-
-                    db2File.ReadUInt32("Rank");
-                    db2File.ReadUInt32("Inhabit Type");
-                    break;
-                }
-                case DB2Hash.CreatureDifficulty:
-                {
-                    CreatureDifficulty creatureDifficulty = new CreatureDifficulty();
-
-                    creatureDifficulty.ID = (uint)db2File.ReadEntry("Id").Key;
-
-                    creatureDifficulty.CreatureID = db2File.ReadUInt32("Creature Id");
-                    creatureDifficulty.FactionID = db2File.ReadUInt32("Faction Template Id");
-                    creatureDifficulty.Expansion = db2File.ReadInt32("Expansion");
-                    creatureDifficulty.MinLevel = db2File.ReadInt32("Min Level");
-                    creatureDifficulty.MaxLevel = db2File.ReadInt32("Max Level");
-
-                    creatureDifficulty.Flags = new uint?[5];
-                    for (int i = 0; i < 5; ++i)
-                        creatureDifficulty.Flags[i] = db2File.ReadUInt32("Flags", i);
-
-                    Storage.CreatureDifficulties.Add(creatureDifficulty, packet.TimeSpan);
-                    break;
-                }
-                case DB2Hash.GameObjects:
-                {
-                    db2File.ReadEntry("GameObject Id");
-
-                    db2File.ReadUInt32("Map");
-
-                    db2File.ReadUInt32("Display Id");
-
-                    db2File.ReadSingle("Position X");
-                    db2File.ReadSingle("Position Y");
-                    db2File.ReadSingle("Position Z");
-                    db2File.ReadSingle("Rotation X");
-                    db2File.ReadSingle("Rotation Y");
-                    db2File.ReadSingle("Rotation Z");
-                    db2File.ReadSingle("Rotation W");
-
-                    db2File.ReadSingle("Size");
-                    db2File.ReadInt32E<GameObjectType>("Type");
-
-                    for (int i = 0; i < 4; i++)
-                        db2File.ReadInt32("Data", i);
-
-                    if (db2File.ReadUInt16() > 0)
-                        db2File.ReadCString("Name");
-
-                    break;
-                }
-                case DB2Hash.Item:
-                {
-                    ItemTemplate key = new ItemTemplate {Entry = entry};
-                    ItemTemplate item = Storage.ItemTemplates.ContainsKey(key)
-                        ? Storage.ItemTemplates[key].Item1
-                        : new ItemTemplate();
-
-                    db2File.ReadUInt32<ItemId>("Item Entry");
-                    item.Class = db2File.ReadInt32E<ItemClass>("Class");
-                    item.SubClass = db2File.ReadUInt32("Sub Class");
-                    item.SoundOverrideSubclass = db2File.ReadInt32("Sound Override Subclass");
-                    item.Material = db2File.ReadInt32E<Material>("Material");
-                    item.DisplayID = db2File.ReadUInt32("Display ID");
-                    item.InventoryType = db2File.ReadUInt32E<InventoryType>("Inventory Type");
-                    item.SheathType = db2File.ReadInt32E<SheathType>("Sheath Type");
-
-                    Storage.ItemTemplates.Add(item, packet.TimeSpan);
-                    packet.AddSniffData(StoreNameType.Item, (int) entry, "DB_REPLY");
-                    break;
-                }
-                case DB2Hash.ItemExtendedCost:
-                {
-                    db2File.ReadUInt32("Item Extended Cost Entry");
-                    db2File.ReadUInt32("Required Honor Points");
-                    db2File.ReadUInt32("Required Arena Points");
-                    db2File.ReadUInt32("Required Arena Slot");
-                    for (var i = 0; i < 5; ++i)
-                        db2File.ReadUInt32("Required Item", i);
-
-                    for (var i = 0; i < 5; ++i)
-                        db2File.ReadUInt32("Required Item Count", i);
-
-                    db2File.ReadUInt32("Required Personal Arena Rating");
-                    db2File.ReadUInt32("Item Purchase Group");
-                    for (var i = 0; i < 5; ++i)
-                        db2File.ReadUInt32("Required Currency", i);
-
-                    for (var i = 0; i < 5; ++i)
-                        db2File.ReadUInt32("Required Currency Count", i);
-
-                    db2File.ReadUInt32("Required Faction Id");
-                    db2File.ReadUInt32("Required Faction Standing");
-                    db2File.ReadUInt32("Requirement Flags");
-                    db2File.ReadUInt32("Required Guild Level");
-                    db2File.ReadInt32<AchievementId>("Required Achievement");
-                    break;
-                }
-                case DB2Hash.Item_sparse:
-                {
-                    ItemTemplate key = new ItemTemplate {Entry = entry};
-                    ItemTemplate item = Storage.ItemTemplates.ContainsKey(key)
-                        ? Storage.ItemTemplates[key].Item1
-                        : new ItemTemplate();
-
-                    db2File.ReadUInt32<ItemId>("Item Sparse Entry");
-                    item.Quality = db2File.ReadInt32E<ItemQuality>("Quality");
-                    item.Flags = db2File.ReadUInt32E<ItemProtoFlags>("Flags 1");
-                    item.FlagsExtra = db2File.ReadInt32E<ItemFlagExtra>("Flags 2");
-                    db2File.ReadUInt32("Flags 3");
-                    item.Unk430_1 = db2File.ReadSingle("Unk430_1");
-                    item.Unk430_2 = db2File.ReadSingle("Unk430_2");
-                    item.BuyCount = db2File.ReadUInt32("Buy count");
-                    item.BuyPrice = db2File.ReadUInt32("Buy Price");
-                    item.SellPrice = db2File.ReadUInt32("Sell Price");
-                    item.InventoryType = db2File.ReadInt32E<InventoryType>("Inventory Type");
-                    item.AllowedClasses = db2File.ReadInt32E<ClassMask>("Allowed Classes");
-                    item.AllowedRaces = db2File.ReadInt32E<RaceMask>("Allowed Races");
-                    item.ItemLevel = db2File.ReadUInt32("Item Level");
-                    item.RequiredLevel = db2File.ReadUInt32("Required Level");
-                    item.RequiredSkillId = db2File.ReadUInt32("Required Skill ID");
-                    item.RequiredSkillLevel = db2File.ReadUInt32("Required Skill Level");
-                    item.RequiredSpell = (uint) db2File.ReadInt32<SpellId>("Required Spell");
-                    item.RequiredHonorRank = db2File.ReadUInt32("Required Honor Rank");
-                    item.RequiredCityRank = db2File.ReadUInt32("Required City Rank");
-                    item.RequiredRepFaction = db2File.ReadUInt32("Required Rep Faction");
-                    item.RequiredRepValue = db2File.ReadUInt32("Required Rep Value");
-                    item.MaxCount = db2File.ReadInt32("Max Count");
-                    item.MaxStackSize = db2File.ReadInt32("Max Stack Size");
-                    item.ContainerSlots = db2File.ReadUInt32("Container Slots");
-
-                    item.StatTypes = new ItemModType?[10];
-                    for (int i = 0; i < 10; i++)
-                    {
-                        var statType = db2File.ReadInt32E<ItemModType>("Stat Type", i);
-                        item.StatTypes[i] = statType == ItemModType.None ? ItemModType.Mana : statType; // TDB
-                    }
-
-                    item.StatValues = new int?[10];
-                    for (int i = 0; i < 10; i++)
-                        item.StatValues[i] = db2File.ReadInt32("Stat Value", i);
-
-                    item.ScalingValue = new int?[10];
-                    for (int i = 0; i < 10; i++)
-                        item.ScalingValue[i] = db2File.ReadInt32("Scaling Value", i);
-
-                    item.SocketCostRate = new int?[10];
-                    for (int i = 0; i < 10; i++)
-                        item.SocketCostRate[i] = db2File.ReadInt32("Socket Cost Rate", i);
-
-                    item.ScalingStatDistribution = db2File.ReadInt32("Scaling Stat Distribution");
-                    item.DamageType = db2File.ReadInt32E<DamageType>("Damage Type");
-                    item.Delay = db2File.ReadUInt32("Delay");
-                    item.RangedMod = db2File.ReadSingle("Ranged Mod");
-
-                    item.TriggeredSpellIds = new int?[5];
-                    for (int i = 0; i < 5; i++)
-                        item.TriggeredSpellIds[i] = db2File.ReadInt32<SpellId>("Triggered Spell ID", i);
-
-                    item.TriggeredSpellTypes = new ItemSpellTriggerType?[5];
-                    for (int i = 0; i < 5; i++)
-                        item.TriggeredSpellTypes[i] = db2File.ReadInt32E<ItemSpellTriggerType>("Trigger Spell Type", i);
-
-                    item.TriggeredSpellCharges = new int?[5];
-                    for (int i = 0; i < 5; i++)
-                        item.TriggeredSpellCharges[i] = db2File.ReadInt32("Triggered Spell Charges", i);
-
-                    item.TriggeredSpellCooldowns = new int?[5];
-                    for (int i = 0; i < 5; i++)
-                        item.TriggeredSpellCooldowns[i] = db2File.ReadInt32("Triggered Spell Cooldown", i);
-
-                    item.TriggeredSpellCategories = new uint?[5];
-                    for (int i = 0; i < 5; i++)
-                        item.TriggeredSpellCategories[i] = db2File.ReadUInt32("Triggered Spell Category", i);
-
-                    item.TriggeredSpellCategoryCooldowns = new int?[5];
-                    for (int i = 0; i < 5; i++)
-                        item.TriggeredSpellCategoryCooldowns[i] = db2File.ReadInt32(
-                            "Triggered Spell Category Cooldown", i);
-
-                    item.Bonding = db2File.ReadInt32E<ItemBonding>("Bonding");
-
-                    if (db2File.ReadUInt16() > 0)
-                        item.Name = db2File.ReadCString("Name", 0);
-
-                    for (int i = 1; i < 4; ++i)
-                        if (db2File.ReadUInt16() > 0)
-                            db2File.ReadCString("Name", i);
-
-                    if (db2File.ReadUInt16() > 0)
-                        item.Description = db2File.ReadCString("Description");
-
-                    item.PageText = db2File.ReadUInt32("Page Text");
-                    item.Language = db2File.ReadInt32E<Language>("Language");
-                    item.PageMaterial = db2File.ReadInt32E<PageMaterial>("Page Material");
-                    item.StartQuestId = (uint) db2File.ReadInt32<QuestId>("Start Quest");
-                    item.LockId = db2File.ReadUInt32("Lock ID");
-                    item.Material = db2File.ReadInt32E<Material>("Material");
-                    item.SheathType = db2File.ReadInt32E<SheathType>("Sheath Type");
-                    item.RandomPropery = db2File.ReadInt32("Random Property");
-                    item.RandomSuffix = db2File.ReadUInt32("Random Suffix");
-                    item.ItemSet = db2File.ReadUInt32("Item Set");
-                    item.AreaID = db2File.ReadUInt32<AreaId>("Area");
-                    item.MapID = db2File.ReadInt32<MapId>("Map ID");
-                    item.TotemCategory = db2File.ReadInt32E<TotemCategory>("Totem Category");
-
-                    item.ItemSocketColors = new ItemSocketColor?[3];
-                    for (int i = 0; i < 3; i++)
-                        item.ItemSocketColors[i] = db2File.ReadInt32E<ItemSocketColor>("Socket Color", i);
-
-                    item.SocketContent = new uint?[3];
-                    for (int i = 0; i < 3; i++)
-                        item.SocketContent[i] = db2File.ReadUInt32("Socket Item", i);
-
-                    item.SocketBonus = db2File.ReadInt32("Socket Bonus");
-                    item.GemProperties = db2File.ReadInt32("Gem Properties");
-                    item.ArmorDamageModifier = db2File.ReadSingle("Armor Damage Modifier");
-                    item.Duration = db2File.ReadUInt32("Duration");
-                    item.ItemLimitCategory = db2File.ReadInt32("Limit Category");
-                    item.HolidayID = db2File.ReadInt32E<Holiday>("Holiday");
-                    item.StatScalingFactor = db2File.ReadSingle("Stat Scaling Factor");
-                    item.CurrencySubstitutionID = db2File.ReadUInt32("Currency Substitution Id");
-                    item.CurrencySubstitutionCount = db2File.ReadUInt32("Currency Substitution Count");
-
-                    Storage.ObjectNames.Add(new ObjectName {ObjectType = ObjectType.Item, ID = (int)entry, Name = item.Name},
-                        packet.TimeSpan);
-                    packet.AddSniffData(StoreNameType.Item, (int) entry, "DB_REPLY");
-                    break;
-                }
-                case DB2Hash.KeyChain:
-                {
-                    db2File.ReadUInt32("Key Chain Id");
-                    db2File.ReadBytes("Key", 32);
-                    break;
-                }
-                case DB2Hash.SceneScript: // lua ftw!
-                {
-                    db2File.ReadUInt32("Scene Script Id");
-                    if (db2File.ReadUInt16() > 0)
-                        db2File.ReadCString("Name");
-
-                    if (db2File.ReadUInt16() > 0)
-                        db2File.ReadCString("Script");
-                    db2File.ReadUInt32("Previous Scene Script Part");
-                    db2File.ReadUInt32("Next Scene Script Part");
-                    break;
-                }
-                case DB2Hash.Vignette:
-                {
-                    db2File.ReadUInt32("Vignette Entry");
-                    if (db2File.ReadUInt16() > 0)
-                        db2File.ReadCString("Name");
-
-                    db2File.ReadUInt32("Icon");
-                    db2File.ReadUInt32("Flag"); // not 100% sure (8 & 32 as values only) - todo verify with more data
-                    db2File.ReadSingle("Unk Float 1");
-                    db2File.ReadSingle("Unk Float 2");
-                    break;
-                }
-                case DB2Hash.WbAccessControlList:
-                {
-                    db2File.ReadUInt32("Id");
-
-                    if (db2File.ReadUInt16() > 0)
-                        db2File.ReadCString("Address");
-
-                    db2File.ReadUInt32("Unk MoP 1");
-                    db2File.ReadUInt32("Unk MoP 2");
-                    db2File.ReadUInt32("Unk MoP 3");
-                    db2File.ReadUInt32("Unk MoP 4"); // flags?
-                    break;
-                }
-                default:
-                {
-                    db2File.AddValue("Unknown DB2 file type", string.Format("{0} (0x{0:x})", type));
-                    for (var i = 0;; ++i)
-                    {
-                        if (db2File.Length - 4 >= db2File.Position)
-                        {
-                            var blockVal = db2File.ReadUpdateField();
-                            string key = "Block Value " + i;
-                            string value = blockVal.UInt32Value + "/" + blockVal.SingleValue;
-                            packet.AddValue(key, value);
-                        }
-                        else
-                        {
-                            var left = db2File.Length - db2File.Position;
-                            for (var j = 0; j < left; ++j)
-                            {
-                                string key = "Byte Value " + i;
-                                var value = db2File.ReadByte();
-                                packet.AddValue(key, value);
-                            }
-                            break;
-                        }
-                    }
-                    break;
-                }
+                packet.AddSniffData(StoreNameType.None, entry, type.ToString());
+                HotfixStoreMgr.AddRecord(type, entry, db2File);
+                db2File.ClosePacket(false);
             }
-
-            db2File.ClosePacket(false);
         }
 
         [Parser(Opcode.CMSG_NAME_QUERY)]

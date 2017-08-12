@@ -10,7 +10,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_QUERY_GAME_OBJECT)]
         public static void HandleGameObjectQuery(Packet packet)
         {
-            QueryHandler.ReadQueryHeader(packet);
+            var entry = packet.ReadInt32<GOId>("Entry");
+            var guid = packet.ReadGuid("GUID");
+
+            if (guid.HasEntry() && (entry != guid.GetEntry()))
+                packet.AddValue("Error", "Entry does not match calculated GUID entry");
         }
 
         [HasSniffData]
@@ -51,7 +55,7 @@ namespace WowPacketParser.Parsing.Parsers
                     gameObject.QuestItems[i] = (uint)packet.ReadInt32<ItemId>("Quest Item", i);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596))
-                gameObject.UnknownInt = packet.ReadInt32("Unknown UInt32");
+                gameObject.RequiredLevel = packet.ReadInt32("RequiredLevel");
 
             packet.AddSniffData(StoreNameType.GameObject, entry.Key, "QUERY_RESPONSE");
 

@@ -7,7 +7,7 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("gameobject")]
     public sealed class GameObjectModel : IDataModel
     {
-        [DBFieldName("guid", true)]
+        [DBFieldName("guid", true, true)]
         public string GUID;
 
         [DBFieldName("id")]

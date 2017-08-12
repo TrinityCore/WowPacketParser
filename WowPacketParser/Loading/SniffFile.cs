@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
+using WowPacketParser.Hotfix;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Saving;
@@ -50,7 +51,7 @@ namespace WowPacketParser.Loading
             get { return _fileName; }
             set
             {
-                string extension = Path.GetExtension(value);
+                var extension = Path.GetExtension(value);
                 if (extension == null)
                     throw new IOException($"Invalid file type {_fileName}");
 
@@ -112,8 +113,8 @@ namespace WowPacketParser.Loading
                     if (packets.Count == 0)
                         break;
 
-                    Packet firstPacket = packets.First();
-                    Packet lastPacket = packets.Last();
+                    var firstPacket = packets.First();
+                    var lastPacket = packets.Last();
 
                     // CSV format
                     // ReSharper disable once UseStringInterpolation
@@ -135,7 +136,7 @@ namespace WowPacketParser.Loading
                 case DumpFormatType.Text:
                 case DumpFormatType.HexOnly:
                 {
-                    string outFileName = Path.ChangeExtension(FileName, null) + "_parsed.txt";
+                    var outFileName = Path.ChangeExtension(FileName, null) + "_parsed.txt";
 
                     if (Utilities.FileIsInUse(outFileName) && Settings.DumpFormat != DumpFormatType.SqlOnly)
                     {
@@ -146,25 +147,23 @@ namespace WowPacketParser.Loading
                     }
 
                     Store.Store.SQLEnabledFlags = Settings.SQLOutputFlag;
-                    Store.Store.HotfixSQLEnabledFlags = Settings.HotfixSQLOutputFlag;
-
                     File.Delete(outFileName);
 
                     _stats.SetStartTime(DateTime.Now);
 
-                    int threadCount = Settings.Threads;
+                    var threadCount = Settings.Threads;
                     if (threadCount == 0)
                         threadCount = Environment.ProcessorCount;
 
                     ThreadPool.SetMinThreads(threadCount + 2, 4);
 
-                    bool written = false;
-                    using (StreamWriter writer = (Settings.DumpFormatWithText() ? new StreamWriter(outFileName, true) : null))
+                    var written = false;
+                    using (var writer = (Settings.DumpFormatWithText() ? new StreamWriter(outFileName, true) : null))
                     {
-                        bool firstRead = true;
-                        bool firstWrite = true;
+                        var firstRead = true;
+                        var firstWrite = true;
 
-                        Reader reader = _compression != FileCompression.None ? new Reader(_tempName, _sniffType) : new Reader(FileName, _sniffType);
+                        var reader = _compression != FileCompression.None ? new Reader(_tempName, _sniffType) : new Reader(FileName, _sniffType);
 
                         var pwp = new ParallelWorkProcessor<Packet>(() => // read
                         {
@@ -172,7 +171,7 @@ namespace WowPacketParser.Loading
                                 return Tuple.Create<Packet, bool>(null, true);
 
                             Packet packet;
-                            bool b = reader.TryRead(out packet);
+                            var b = reader.TryRead(out packet);
 
                             if (firstRead)
                             {
@@ -188,7 +187,7 @@ namespace WowPacketParser.Loading
                             // Parse the packet, adding text to Writer and stuff to the stores
                             if (packet.Direction == Direction.BNClientToServer ||
                                 packet.Direction == Direction.BNServerToClient)
-                                Handler.ParseBattlenet(packet);
+                                BattlenetHandler.ParseBattlenet(packet);
                             else
                                 Handler.Parse(packet);
 
@@ -264,7 +263,7 @@ namespace WowPacketParser.Loading
 
                     Trace.WriteLine($"{_logPrefix}: {_stats}");
 
-                    if (Settings.SQLOutputFlag != 0 || Settings.HotfixSQLOutputFlag != 0)
+                    if (Settings.SQLOutputFlag != 0 || HotfixSettings.Instance.ShouldLog())
                         WriteSQLs();
 
                     if (Settings.LogPacketErrors)
@@ -282,12 +281,12 @@ namespace WowPacketParser.Loading
 
                     if (Settings.FilterPacketsNum < 0)
                     {
-                        int packetsPerSplit = Math.Abs(Settings.FilterPacketsNum);
-                        int totalPackets = packets.Count;
+                        var packetsPerSplit = Math.Abs(Settings.FilterPacketsNum);
+                        var totalPackets = packets.Count;
 
-                        int numberOfSplits = (int)Math.Ceiling((double)totalPackets/packetsPerSplit);
+                        var numberOfSplits = (int)Math.Ceiling((double)totalPackets/packetsPerSplit);
 
-                        for (int i = 0; i < numberOfSplits; ++i)
+                        for (var i = 0; i < numberOfSplits; ++i)
                         {
                             var fileNamePart = FileName + "_part_" + (i + 1) + ".pkt";
 
@@ -345,7 +344,7 @@ namespace WowPacketParser.Loading
                 }
                 case DumpFormatType.SniffVersionSplit:
                 {
-                    Reader reader = _compression != FileCompression.None ? new Reader(_tempName, _sniffType) : new Reader(FileName, _sniffType);
+                    var reader = _compression != FileCompression.None ? new Reader(_tempName, _sniffType) : new Reader(FileName, _sniffType);
 
                     if (ClientVersion.IsUndefined() && reader.PacketReader.CanRead())
                     {
@@ -356,14 +355,14 @@ namespace WowPacketParser.Loading
 
                     reader.PacketReader.Dispose();
 
-                    string version = ClientVersion.IsUndefined() ? "unknown" : ClientVersion.VersionString;
+                    var version = ClientVersion.IsUndefined() ? "unknown" : ClientVersion.VersionString;
 
-                    string realFileName = GetCompressedFileName();
+                    var realFileName = GetCompressedFileName();
 
-                    string destPath = Path.Combine(Path.GetDirectoryName(realFileName), version,
+                    var destPath = Path.Combine(Path.GetDirectoryName(realFileName), version,
                         Path.GetFileName(realFileName));
 
-                    string destDir = Path.GetDirectoryName(destPath);
+                    var destDir = Path.GetDirectoryName(destPath);
                     if (!Directory.Exists(destDir))
                         Directory.CreateDirectory(destDir);
 
@@ -388,18 +387,18 @@ namespace WowPacketParser.Loading
                             .GroupBy(packet => Tuple.Create(packet.Opcode, packet.Direction))
                             .OrderBy(grouping => grouping.Key.Item2);
 
-                        foreach (IGrouping<Tuple<int, Direction>, Packet> groupOpcode in groupsOpcode)
+                        foreach (var groupOpcode in groupsOpcode)
                         {
-                            List<IGrouping<int, Packet>> groups = groupOpcode
+                            var groups = groupOpcode
                                 .GroupBy(packet => packet.ConnectionIndex)
                                 .OrderBy(grouping => grouping.Key)
                                 .ToList();
 
                             writer.Write("{0} {1,-50}: ", groupOpcode.Key.Item2, Opcodes.GetOpcodeName(groupOpcode.Key.Item1, groupOpcode.Key.Item2));
 
-                            for (int i = 0; i < groups.Count; i++)
+                            for (var i = 0; i < groups.Count; i++)
                             {
-                                int idx = groups[i].Key;
+                                var idx = groups[i].Key;
                                 writer.Write("{0} ({1}{2})", idx, (idx & 1) != 0 ? "INSTANCE" : "REALM", (idx & 2) != 0 ? "_NEW" : "");
 
                                 if (i != groups.Count - 1)
@@ -410,6 +409,15 @@ namespace WowPacketParser.Loading
                         }
                     }
 
+                    break;
+                }
+                case DumpFormatType.Fusion:
+                {
+                    var packets = ReadPackets();
+                    if (packets.Count == 0)
+                        break;
+
+                    FusionDump(packets);
                     break;
                 }
                 default:
@@ -450,7 +458,7 @@ namespace WowPacketParser.Loading
 
             // stats.SetStartTime(DateTime.Now);
 
-            string fileName = FileName;
+            var fileName = FileName;
             if (_compression != FileCompression.None)
                 fileName = _tempName;
 
@@ -468,6 +476,12 @@ namespace WowPacketParser.Loading
 
             // stats.SetEndTime(DateTime.Now);
             // Trace.WriteLine(string.Format("{0}: {1}", _logPrefix, _stats));
+        }
+
+        private void FusionDump(ICollection<Packet> packets)
+        {
+            Trace.WriteLine($"{_logPrefix}: Merge {packets.Count} packets to a file...");
+            FusionBinaryPacketWriter.Write(packets, Encoding.ASCII);
         }
 
         private void SplitBinaryDump(ICollection<Packet> packets)
@@ -496,7 +510,7 @@ namespace WowPacketParser.Loading
 
         private void WriteSQLs()
         {
-            string sqlFileName = string.IsNullOrWhiteSpace(Settings.SQLFileName) ? $"{Utilities.FormattedDateTimeForFiles()}_{Path.GetFileName(FileName)}.sql" : Settings.SQLFileName;
+            var sqlFileName = string.IsNullOrWhiteSpace(Settings.SQLFileName) ? $"{Utilities.FormattedDateTimeForFiles()}_{Path.GetFileName(FileName)}.sql" : Settings.SQLFileName;
 
             if (!string.IsNullOrWhiteSpace(Settings.SQLFileName))
                 return;
@@ -543,7 +557,7 @@ namespace WowPacketParser.Loading
 
         private void Compress()
         {
-            FileInfo fileToCompress = new FileInfo(FileName);
+            var fileToCompress = new FileInfo(FileName);
             _compression = FileCompression.GZip;
 
             using (var originalFileStream = fileToCompress.OpenRead())
@@ -562,7 +576,7 @@ namespace WowPacketParser.Loading
 
         public string Decompress()
         {
-            FileInfo fileToDecompress = new FileInfo(GetCompressedFileName());
+            var fileToDecompress = new FileInfo(GetCompressedFileName());
 
             using (var originalFileStream = fileToDecompress.OpenRead())
             {

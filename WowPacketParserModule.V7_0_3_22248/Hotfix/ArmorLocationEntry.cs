@@ -1,0 +1,12 @@
+using WowPacketParser.Enums;
+using WowPacketParser.Hotfix;
+
+namespace WowPacketParserModule.V7_0_3_22248.Hotfix
+{
+    [HotfixStructure(DB2Hash.ArmorLocation, HasIndexInData = false)]
+    public class ArmorLocationEntry
+    {
+        [HotfixArray(5)]
+        public float[] Modifier { get; set; }
+    }
+}

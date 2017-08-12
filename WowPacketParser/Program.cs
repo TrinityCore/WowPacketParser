@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing.Parsers;
 using WowPacketParser.SQL;
+using WowPacketParser.DBC;
 
 namespace WowPacketParser
 {
@@ -46,13 +48,31 @@ namespace WowPacketParser
 
             SQLConnector.ReadDB();
 
+            if (Settings.UseDBC)
+            {
+                var startTime = DateTime.Now;
+
+                DBC.DBC.Load();
+
+                var span = DateTime.Now.Subtract(startTime);
+                Trace.WriteLine($"DBC loaded in { span.ToFormattedString() }.");
+            }
+
             var count = 0;
             foreach (var file in files)
             {
                 SessionHandler.ZStreams.Clear();
                 ClientVersion.SetVersion(Settings.ClientBuild);
-                var sf = new SniffFile(file, Settings.DumpFormat, Tuple.Create(++count, files.Count));
-                sf.ProcessFile();
+                try
+                {
+                    var sf = new SniffFile(file, Settings.DumpFormat, Tuple.Create(++count, files.Count));
+                    sf.ProcessFile();
+                }
+                catch (IOException ex)
+                {
+                    Console.WriteLine($"Can't process {file}. Skipping. Message: {ex.Message}");
+                }
+
             }
 
             if (!string.IsNullOrWhiteSpace(Settings.SQLFileName) && Settings.DumpFormatWithSQL())
@@ -83,9 +103,9 @@ namespace WowPacketParser
         {
             Console.WriteLine("Error: No files selected to be parsed.");
             Console.WriteLine("Usage: Drag a file, or group of files on the executable to parse it.");
-            Console.WriteLine("Command line usage: WowPacketParser.exe [/ConfigFile path /Option1 value1 ...] filetoparse1 ...");
-            Console.WriteLine("/ConfigFile path - file to read config from, default: WowPacketParser.exe.config.");
-            Console.WriteLine("/Option1 value1 - override Option1 setting from config file with value1.");
+            Console.WriteLine("Command line usage: WowPacketParser.exe [--ConfigFile path --Option1 value1 ...] filetoparse1 ...");
+            Console.WriteLine("--ConfigFile path - file to read config from, default: WowPacketParser.exe.config.");
+            Console.WriteLine("--Option1 value1 - override Option1 setting from config file with value1.");
             Console.WriteLine("Configuration: Modify WowPacketParser.exe.config file.");
             EndPrompt(true);
         }

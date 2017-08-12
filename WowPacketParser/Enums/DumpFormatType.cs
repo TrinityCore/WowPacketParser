@@ -14,6 +14,7 @@
         SniffVersionSplit,
         HexOnly,
         PktDirectionSplit,
-        ConnectionIndexes
+        ConnectionIndexes,
+        Fusion
     }
 }

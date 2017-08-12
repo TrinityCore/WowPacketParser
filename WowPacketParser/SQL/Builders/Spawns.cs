@@ -28,7 +28,7 @@ namespace WowPacketParser.SQL.Builders
 
             if (SQLConnector.Enabled)
             {
-                var transportTemplates = SQLDatabase.Get(new RowList<GameObjectTemplate> {new GameObjectTemplate {Entry = entry.UInt32Value} });
+                var transportTemplates = SQLDatabase.Get(new RowList<GameObjectTemplate> { new GameObjectTemplate { Entry = entry.UInt32Value } });
                 if (transportTemplates.Count == 0)
                     return false;
 
@@ -48,7 +48,7 @@ namespace WowPacketParser.SQL.Builders
                 return string.Empty;
 
             uint count = 0;
-            var rows  = new RowList<Creature>();
+            var rows = new RowList<Creature>();
             var addonRows = new RowList<CreatureAddon>();
             foreach (var unit in units)
             {
@@ -73,6 +73,8 @@ namespace WowPacketParser.SQL.Builders
 
                 uint movementType = 0;
                 int spawnDist = 0;
+                row.Data.AreaID = 0;
+                row.Data.ZoneID = 0;
 
                 if (creature.Movement.HasWpsOrRandMov)
                 {
@@ -89,8 +91,15 @@ namespace WowPacketParser.SQL.Builders
                 {
                     int mapId;
                     badTransport = !GetTransportMap(creature, out mapId);
-                    row.Data.Map = (uint)mapId;
+                    if (mapId != -1)
+                        row.Data.Map = (uint)mapId;
                 }
+
+                if (creature.Area != -1)
+                    row.Data.AreaID = (uint)creature.Area;
+
+                if (creature.Zone != -1)
+                    row.Data.ZoneID = (uint)creature.Zone;
 
                 row.Data.SpawnMask = (uint)creature.GetDefaultSpawnMask();
                 row.Data.PhaseMask = creature.PhaseMask;
@@ -119,13 +128,11 @@ namespace WowPacketParser.SQL.Builders
                     row.Data.Orientation = creature.Movement.TransportOffset.O;
                 }
 
-                row.Data.SpawnTimeSecs = creature.GetDefaultSpawnTime();
+                row.Data.SpawnTimeSecs = creature.GetDefaultSpawnTime(creature.DifficultyID);
                 row.Data.SpawnDist = spawnDist;
                 row.Data.MovementType = movementType;
 
                 // set some defaults
-                row.Data.ZoneID = 0;
-                row.Data.AreaID = 0;
                 row.Data.PhaseGroup = 0;
                 row.Data.ModelID = 0;
                 row.Data.CurrentWaypoint = 0;
@@ -136,7 +143,8 @@ namespace WowPacketParser.SQL.Builders
                 row.Data.DynamicFlag = 0;
 
                 row.Comment = StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
-                row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, creature.Area, false) + ")";
+                row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, creature.Area, false) + " - ";
+                row.Comment += "Difficulty: " + StoreGetters.GetName(StoreNameType.Difficulty, (int)creature.DifficultyID, false) + ")";
 
                 string auras = string.Empty;
                 string commentAuras = string.Empty;
@@ -171,6 +179,9 @@ namespace WowPacketParser.SQL.Builders
                     addonRow.Data.Bytes2 = creature.Bytes2.GetValueOrDefault(0);
                     addonRow.Data.Emote = 0;
                     addonRow.Data.Auras = auras;
+                    addonRow.Data.AIAnimKit = creature.AIAnimKit.GetValueOrDefault(0);
+                    addonRow.Data.MovementAnimKit = creature.MovementAnimKit.GetValueOrDefault(0);
+                    addonRow.Data.MeleeAnimKit = creature.MeleeAnimKit.GetValueOrDefault(0);
                     addonRow.Comment += StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
                     if (!string.IsNullOrWhiteSpace(auras))
                         addonRow.Comment += " - " + commentAuras;
@@ -228,6 +239,7 @@ namespace WowPacketParser.SQL.Builders
 
             uint count = 0;
             var rows = new RowList<GameObjectModel>();
+            var addonRows = new RowList<GameObjectAddon>();
             foreach (var gameobject in gameObjects)
             {
                 Row<GameObjectModel> row = new Row<GameObjectModel>();
@@ -267,8 +279,18 @@ namespace WowPacketParser.SQL.Builders
                 {
                     int mapId;
                     badTransport = !GetTransportMap(go, out mapId);
-                    row.Data.Map = (uint)mapId;
+                    if (mapId != -1)
+                        row.Data.Map = (uint)mapId;
                 }
+
+                row.Data.ZoneID = 0;
+                row.Data.AreaID = 0;
+
+                if (go.Area != -1)
+                    row.Data.AreaID = (uint)go.Area;
+
+                if (go.Zone != -1)
+                    row.Data.ZoneID = (uint)go.Zone;
 
                 row.Data.SpawnMask = (uint)go.GetDefaultSpawnMask();
                 row.Data.PhaseMask = go.PhaseMask;
@@ -291,23 +313,49 @@ namespace WowPacketParser.SQL.Builders
                     row.Data.Orientation = go.Movement.TransportOffset.O;
                 }
 
-                var rotation = go.GetRotation();
-                if (rotation != null && rotation.Length == 4)
-                    row.Data.Rotation = rotation.Cast<float?>().ToArray();
-                else
-                    row.Data.Rotation = new float?[] { 0, 0, 0, 0 };
+                var rotation = go.GetStaticRotation();
+                row.Data.Rotation = new float?[] { rotation.X, rotation.Y, rotation.Z, rotation.W };
 
-                row.Data.SpawnTimeSecs = (int)go.GetDefaultSpawnTime();
+                bool add = true;
+                var addonRow = new Row<GameObjectAddon>();
+                if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_addon))
+                {
+                    addonRow.Data.GUID = "@OGUID+" + count;
+
+                    var parentRotation = go.GetParentRotation();
+
+                    if (parentRotation != null)
+                    {
+                        addonRow.Data.parentRot0 = parentRotation[0].GetValueOrDefault(0.0f);
+                        addonRow.Data.parentRot1 = parentRotation[1].GetValueOrDefault(0.0f);
+                        addonRow.Data.parentRot2 = parentRotation[2].GetValueOrDefault(0.0f);
+                        addonRow.Data.parentRot3 = parentRotation[3].GetValueOrDefault(1.0f);
+
+                        if (addonRow.Data.parentRot0 == 0.0f &&
+                            addonRow.Data.parentRot1 == 0.0f &&
+                            addonRow.Data.parentRot2 == 0.0f &&
+                            addonRow.Data.parentRot3 == 1.0f)
+                            add = false;
+                    }
+                    else
+                        add = false;
+
+                    addonRow.Comment += StoreGetters.GetName(StoreNameType.GameObject, (int)gameobject.Key.GetEntry(), false);
+
+                    if (add)
+                        addonRows.Add(addonRow);
+                }
+
+                row.Data.SpawnTimeSecs = go.GetDefaultSpawnTime(go.DifficultyID);
                 row.Data.AnimProgress = animprogress;
                 row.Data.State = state;
 
                 // set some defaults
-                row.Data.ZoneID = 0;
-                row.Data.AreaID = 0;
                 row.Data.PhaseGroup = 0;
 
                 row.Comment = StoreGetters.GetName(StoreNameType.GameObject, (int)gameobject.Key.GetEntry(), false);
-                row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, go.Area, false) + ")";
+                row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, go.Area, false) + " - ";
+                row.Comment += "Difficulty: " + StoreGetters.GetName(StoreNameType.Difficulty, (int)go.DifficultyID, false) + ")";
 
                 if (go.IsTemporarySpawn())
                 {
@@ -330,17 +378,25 @@ namespace WowPacketParser.SQL.Builders
                 rows.Add(row);
             }
 
-            StringBuilder result = new StringBuilder();
+            if (count == 0)
+                return String.Empty;
 
-            if (count > 0)
-            {
-                // delete query for GUIDs
-                var delete = new SQLDelete<GameObjectModel>(Tuple.Create("@OGUID+0", "@OGUID+" + --count));
-                result.Append(delete.Build());
-            }
+            StringBuilder result = new StringBuilder();
+            // delete query for GUIDs
+            var delete = new SQLDelete<GameObjectModel>(Tuple.Create("@OGUID+0", "@OGUID+" + --count));
+            result.Append(delete.Build());
 
             var sql = new SQLInsert<GameObjectModel>(rows, false);
             result.Append(sql.Build());
+
+            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_addon))
+            {
+                var addonDelete = new SQLDelete<GameObjectAddon>(Tuple.Create("@OGUID+0", "@OGUID+" + count));
+                result.Append(addonDelete.Build());
+                var addonSql = new SQLInsert<GameObjectAddon>(addonRows, false);
+                result.Append(addonSql.Build());
+            }
+
             return result.ToString();
         }
     }

@@ -72,7 +72,7 @@ namespace WowPacketParser.SQL
         /// <returns></returns>
         public static void ReplaceLast(this StringBuilder str, char oldChar, char newChar)
         {
-            for (int i = str.Length - 1; i > 0; i--)
+            for (var i = str.Length - 1; i > 0; i--)
                 if (str[i] == oldChar)
                 {
                     str[i] = newChar;
@@ -123,7 +123,7 @@ namespace WowPacketParser.SQL
 
             if (value is Enum)
             {
-                Type undertype = Enum.GetUnderlyingType(value.GetType());
+                var undertype = Enum.GetUnderlyingType(value.GetType());
                 value = Convert.ChangeType(value, undertype);
             }
 
@@ -133,6 +133,9 @@ namespace WowPacketParser.SQL
             if (value is uint && isFlag)
                 value = Hexify((uint)value);
 
+            if (value is float)
+                value = string.Format("{0:F20}", value).Substring(0, 20).TrimEnd('0').TrimEnd('.');
+
             return value;
         }
 
@@ -141,10 +144,10 @@ namespace WowPacketParser.SQL
             var tableAttrs =
                 (DBTableNameAttribute[])typeof(T).GetCustomAttributes(typeof(DBTableNameAttribute), false);
             if (tableAttrs.Length > 0)
-                return tableAttrs[0].Name;
+                return AddBackQuotes(tableAttrs[0].Name);
 
             //convert CamelCase name to camel_case
-            string name = typeof(T).Name;
+            var name = typeof(T).Name;
             return AddBackQuotes(string.Concat(name.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString().ToLower() : x.ToString().ToLower())));
         }
 
@@ -153,7 +156,8 @@ namespace WowPacketParser.SQL
             return (from field in Utilities.GetFieldsAndAttributes<T, DBFieldNameAttribute>()
                     where field.Value.Any(f => f.IsVisible())
                     let fieldName = field.Value.Single(f => f.IsVisible()).ToString()
-                    select new Tuple<string, FieldInfo, List<DBFieldNameAttribute>>(fieldName, field.Key, field.Value)).ToList();
+                    let fieldValue = field.Value.FindAll(f => f.IsVisible())
+                    select new Tuple<string, FieldInfo, List<DBFieldNameAttribute>>(fieldName, field.Key, fieldValue)).ToList();
         }
 
         public static FieldInfo GetFirstPrimaryKey<T>() where T : IDataModel
@@ -169,10 +173,14 @@ namespace WowPacketParser.SQL
         /// <param name="storeList"><see cref="DataBag{T}"/> with items form sniff.</param>
         /// <param name="dbList"><see cref="DataBag{T}"/> with items from database.</param>
         /// <param name="storeType">Are we dealing with Spells, Quests, Units, ...?</param>
-        public static string Compare<T>(DataBag<T> storeList, RowList<T> dbList, StoreNameType storeType)
+        public static string Compare<T>(IEnumerable<Tuple<T, TimeSpan?>> storeList, RowList<T> dbList, StoreNameType storeType)
             where T : IDataModel, new()
         {
-            return Compare(storeList, dbList, t => StoreGetters.GetName(storeType, Convert.ToInt32(GetFirstPrimaryKey<T>().GetValue(t)), false));
+            var primaryKey = GetFirstPrimaryKey<T>();
+            return Compare(storeList, dbList,
+                t => storeType != StoreNameType.None
+                    ? StoreGetters.GetName(storeType, Convert.ToInt32(primaryKey.GetValue(t)), false)
+                    : "");
         }
 
         /// <summary>
@@ -186,7 +194,7 @@ namespace WowPacketParser.SQL
         /// <param name="dbList">Dictionary retrieved from  DB</param>
         /// <param name="commentSetter"></param>
         /// <returns>A string containing full SQL queries</returns>
-        public static string Compare<T>(DataBag<T> storeList, RowList<T> dbList, Func<T, string> commentSetter)
+        public static string Compare<T>(IEnumerable<Tuple<T, TimeSpan?>> storeList, RowList<T> dbList, Func<T, string> commentSetter)
             where T : IDataModel, new()
         {
             var fields = GetFields<T>();
@@ -205,30 +213,30 @@ namespace WowPacketParser.SQL
                     var verBuildField = fields.FirstOrDefault(f => f.Item2.Name == "VerifiedBuild");
                     if (verBuildField != null)
                     {
-                        int buildvSniff = (int)lastField.Item2.GetValue(elem1.Item1);
-                        int buildvDB = (int)lastField.Item2.GetValue(dbList[elem1.Item1].Data);
+                        var buildvSniff = (int)lastField.Item2.GetValue(elem1.Item1);
+                        var buildvDB = (int)lastField.Item2.GetValue(dbList[elem1.Item1].Data);
 
                         if (buildvDB > buildvSniff) // skip update if DB already has a VerifiedBuild higher than this one
                             continue;
                     }
 
                     var row = new Row<T>();
-                    T elem2 = dbList[elem1.Item1].Data;
+                    var elem2 = dbList[elem1.Item1].Data;
 
                     foreach (var field in fields)
                     {
-                        object val1 = field.Item2.GetValue(elem1.Item1);
-                        object val2 = field.Item2.GetValue(elem2);
+                        var val1 = field.Item2.GetValue(elem1.Item1);
+                        var val2 = field.Item2.GetValue(elem2);
 
-                        Array arr1 = val1 as Array;
+                        var arr1 = val1 as Array;
                         if (arr1 != null)
                         {
-                            Array arr2 = (Array)val2;
+                            var arr2 = (Array)val2;
 
-                            for (int i = 0; i < field.Item3.First().Count; i++)
+                            for (var i = 0; i < field.Item3.First().Count; i++)
                             {
-                                object value1 = arr1.GetValue(i);
-                                object value2 = arr2.GetValue(i);
+                                var value1 = arr1.GetValue(i);
+                                var value2 = arr2.GetValue(i);
 
                                 if (Utilities.EqualValues(value1, value2))
                                     arr1.SetValue(null, i);
@@ -246,12 +254,12 @@ namespace WowPacketParser.SQL
                             // prevent double escaping
                             val1 =  ((string)val1).Replace("\"\"", "\"");
                         }
-                    
+
                         if (Utilities.EqualValues(val1, val2))
                             field.Item2.SetValue(elem1.Item1, null);
                     }
 
-                    row.Comment = commentSetter(elem1.Item1);
+                    row.Comment = commentSetter(elem2);
 
                     row.Data = elem1.Item1;
                     rowsUpd.Add(row, new RowList<T>().Add(elem2));
@@ -268,7 +276,7 @@ namespace WowPacketParser.SQL
                 }
             }
 
-            return new SQLInsert<T>(rowsIns).Build() +
+            return new SQLInsert<T>(rowsIns).Build() + Environment.NewLine +
                    new SQLUpdate<T>(rowsUpd).Build();
         }
 

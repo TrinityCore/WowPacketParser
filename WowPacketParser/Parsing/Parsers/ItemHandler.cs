@@ -460,7 +460,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ITEM_QUERY_SINGLE_RESPONSE)]
         public static void HandleItemQueryResponse(Packet packet)
         {
-            
+
 
             var entry = packet.ReadEntry("Entry");
             if (entry.Value)
@@ -1046,7 +1046,7 @@ namespace WowPacketParser.Parsing.Parsers
                     Storage.ItemTemplates.Add(item, packet.TimeSpan);
                     break;
                 }
-                case DB2Hash.Item_sparse:
+                case DB2Hash.ItemSparse:
                 {
                     ItemTemplate key = new ItemTemplate { Entry = itemId };
                     ItemTemplate item = Storage.ItemTemplates.ContainsKey(key) ? Storage.ItemTemplates[key].Item1 : new ItemTemplate();

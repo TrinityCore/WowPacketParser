@@ -28,12 +28,6 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("unk1")]
         public string UnkString;
 
-        [DBFieldName("faction")]
-        public uint? Faction;
-
-        [DBFieldName("flags")]
-        public GameObjectFlag? Flags;
-
         [DBFieldName("size")]
         public float? Size;
 
@@ -45,10 +39,26 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Data", TargetedDatabase.WarlordsOfDraenor, 33, true)]
         public int?[] Data;
 
-        [DBFieldName("unkInt32", TargetedDatabase.Cataclysm)]
-        public int? UnknownInt;
+        [DBFieldName("RequiredLevel", TargetedDatabase.Cataclysm)]
+        public int? RequiredLevel;
 
         [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
+
+    [DBTableName("gameobject_questitem")]
+    public sealed class GameObjectTemplateQuestItem : IDataModel
+    {
+        [DBFieldName("GameObjectEntry", true)]
+        public uint? GameObjectEntry;
+
+        [DBFieldName("Idx", true)]
+        public uint? Idx;
+
+        [DBFieldName("ItemId")]
+        public uint? ItemId;
+
+        [DBFieldName("VerifiedBuild", TargetedDatabase.WarlordsOfDraenor)]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }

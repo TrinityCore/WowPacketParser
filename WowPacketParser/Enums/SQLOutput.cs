@@ -2,16 +2,22 @@
 {
     public enum SQLOutput
     {
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
+        areatrigger_template,
+        areatrigger_template_polygon_vertices,
+        broadcast_text,
         creature,
         creature_addon,
         creature_equip_template,
         creature_model_info,
         creature_template,
         creature_template_addon,
+        creature_template_scaling,
         creature_text,
         gameobject,
+        gameobject_addon,
         gameobject_template,
+        gameobject_template_addon,
         gossip_menu,
         gossip_menu_option,
         item_template,
@@ -29,10 +35,17 @@
         quest_poi,
         quest_poi_points,
         quest_template,
+        scene_template,
+        spell_target_position,
+        spell_areatrigger,
         SniffData,
         SniffDataOpcodes,
+        trainer,
+        trainer_spell,
         vehicle_template_accessory,
         weather_updates,
+
+        hotfix_data
         // ReSharper restore InconsistentNaming
     }
 }

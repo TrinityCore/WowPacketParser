@@ -1,5 +1,4 @@
-﻿using System.Data;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using WowPacketParser.SQL;
 
 #pragma warning disable 414

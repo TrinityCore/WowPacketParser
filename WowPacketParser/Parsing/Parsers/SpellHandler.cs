@@ -1354,10 +1354,10 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Time Casted");
             packet.ReadInt32("Cast time");
 
-            if (packet.ReadBool("Unknown bool"))
+            if (packet.ReadBool("HasImmunities"))
             {
-                packet.ReadUInt32("Unk");
-                packet.ReadUInt32("Unk");
+                packet.ReadUInt32("Cast School Immunities");
+                packet.ReadUInt32("Cast Immunities");
             }
         }
 

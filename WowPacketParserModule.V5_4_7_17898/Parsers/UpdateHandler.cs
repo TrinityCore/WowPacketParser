@@ -118,6 +118,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             obj.UpdateFields = updates;
             obj.Map = map;
             obj.Area = CoreParsers.WorldStateHandler.CurrentAreaId;
+            obj.Zone = CoreParsers.WorldStateHandler.CurrentZoneId;
             obj.PhaseMask = (uint)CoreParsers.MovementHandler.CurrentPhaseMask;
             obj.Phases = new HashSet<ushort>(CoreParsers.MovementHandler.ActivePhases);
 
@@ -526,7 +527,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                             SeatId = seat
                         };
 
-                        Storage.VehicleTemplateAccessorys.Add(vehicleAccessory, packet.TimeSpan);
+                        Storage.VehicleTemplateAccessories.Add(vehicleAccessory, packet.TimeSpan);
                     }
                 }
 
@@ -614,7 +615,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadBytes("Bytes", (int)bits2AA);
 
             if (hasGameObjectRotation)
-                packet.ReadPackedQuaternion("GameObject Rotation", index);
+                moveInfo.Rotation = packet.ReadPackedQuaternion("GameObject Rotation", index);
 
             if (hasVehicleData)
             {

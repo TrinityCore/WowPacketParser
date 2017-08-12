@@ -5,8 +5,9 @@ namespace WowPacketParser.Misc
 {
     public abstract class WowGuid
     {
-        public ulong Low { get; set; }
-        public ulong High { get; set; }
+        public ulong Low { get; protected set; }
+        public HighGuid HighGuid { get; protected set; }
+        public ulong High { get; protected set; }
 
         public static WowGuid Empty = new WowGuid64(0);
 
@@ -16,7 +17,9 @@ namespace WowPacketParser.Misc
             {
                 case HighGuidType.Creature:
                 case HighGuidType.GameObject:
+                case HighGuidType.Pet:
                 case HighGuidType.Vehicle:
+                case HighGuidType.AreaTrigger:
                     return true;
                 default:
                     return false;
@@ -25,7 +28,11 @@ namespace WowPacketParser.Misc
 
         public abstract ulong GetLow();
         public abstract uint GetEntry();
-        public abstract HighGuidType GetHighType();
+
+        public HighGuidType GetHighType()
+        {
+            return HighGuid.GetHighGuidType();
+        }
 
         public ObjectType GetObjectType()
         {
@@ -45,6 +52,8 @@ namespace WowPacketParser.Misc
                 case HighGuidType.Creature:
                 case HighGuidType.Pet:
                     return ObjectType.Unit;
+                case HighGuidType.AreaTrigger:
+                    return ObjectType.AreaTrigger;
                 default:
                     return ObjectType.Object;
             }
@@ -93,11 +102,12 @@ namespace WowPacketParser.Misc
         {
             Low = low;
             High = high;
-        }
-
-        public override HighGuidType GetHighType()
-        {
-            return (HighGuidType)(byte)((High >> 58) & 0x3F);
+            if (ClientVersion.Build >= ClientVersionBuild.V7_0_3_22248)
+                HighGuid = new HighGuid703((byte)((High >> 58) & 0x3F));
+            else if (ClientVersion.Build >= ClientVersionBuild.V6_2_4_21315)
+                HighGuid = new HighGuid624((byte)((High >> 58) & 0x3F));
+            else
+                HighGuid = new HighGuid623((byte)((High >> 58) & 0x3F));
         }
 
         public byte GetSubType() // move to base?
@@ -161,6 +171,7 @@ namespace WowPacketParser.Misc
         public WowGuid64(ulong id)
         {
             Low = id;
+            HighGuid = new HighGuidLegacy(GetHighGuidTypeLegacy());
         }
 
         public WowGuid64()
@@ -215,45 +226,6 @@ namespace WowPacketParser.Misc
                     return HighGuidTypeLegacy.Item;
                 default:
                     return highGUID;
-            }
-        }
-
-        public override HighGuidType GetHighType()
-        {
-            switch (GetHighGuidTypeLegacy())
-            {
-                case HighGuidTypeLegacy.None:
-                    return HighGuidType.Null;
-                case HighGuidTypeLegacy.Player:
-                    return HighGuidType.Player;
-                case HighGuidTypeLegacy.BattleGround1:
-                    return HighGuidType.PVPQueueGroup; // ?? unused in wpp
-                case HighGuidTypeLegacy.InstanceSave:
-                    return HighGuidType.LFGList; // ?? unused in wpp
-                case HighGuidTypeLegacy.Group:
-                    return HighGuidType.RaidGroup;
-                case HighGuidTypeLegacy.BattleGround2:
-                    return HighGuidType.PVPQueueGroup; // ?? unused in wpp
-                case HighGuidTypeLegacy.MOTransport:
-                    return HighGuidType.Transport; // ?? unused in wpp
-                case HighGuidTypeLegacy.Guild:
-                    return HighGuidType.Guild;
-                case HighGuidTypeLegacy.Item:
-                    return HighGuidType.Item;
-                case HighGuidTypeLegacy.DynObject:
-                    return HighGuidType.DynamicObject;
-                case HighGuidTypeLegacy.GameObject:
-                    return HighGuidType.GameObject;
-                case HighGuidTypeLegacy.Transport:
-                    return HighGuidType.Transport;
-                case HighGuidTypeLegacy.Unit:
-                    return HighGuidType.Creature;
-                case HighGuidTypeLegacy.Pet:
-                    return HighGuidType.Pet;
-                case HighGuidTypeLegacy.Vehicle:
-                    return HighGuidType.Vehicle;
-                default:
-                    throw new ArgumentOutOfRangeException("0x" + GetHighGuidTypeLegacy().ToString("X"));
             }
         }
 

@@ -136,17 +136,13 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             packet.WriteLine("{");
-            int i = 0;
+            packet.WriteLine();
             while (packet.CanRead())
             {
                 packet.Opcode = packet.ReadUInt16();
 
-                if (i > 0)
-                    packet.WriteLine();
-
-                packet.Write("[{0}] ", i++);
-
                 Handler.Parse(packet, true);
+                packet.WriteLine();
             }
             packet.WriteLine("}");
         }
@@ -187,8 +183,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_REQUEST_VEHICLE_SWITCH_SEAT)]
         public static void HandleRequestVehicleSwitchSeat(Packet packet)
         {
-            packet.ReadPackedGuid("GUID");
-            packet.ReadByte("Seat");
+            packet.ReadPackedGuid("Vehicle");
+            packet.ReadByte("SeatIndex");
         }
 
         [Parser(Opcode.CMSG_CHANGE_SEATS_ON_CONTROLLED_VEHICLE)]
@@ -1135,6 +1131,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CLEAR_BOSS_EMOTES)]
         [Parser(Opcode.SMSG_NEW_WORLD_ABORT)]
         [Parser(Opcode.CMSG_ROLE_POLL_BEGIN)]
+        [Parser(Opcode.CMSG_UPDATE_VAS_PURCHASE_STATES)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
         }

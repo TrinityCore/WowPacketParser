@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -32,7 +32,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -76,6 +76,7 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <Prefer32Bit>false</Prefer32Bit>
     <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -89,25 +90,25 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ionic.Zip, Version=1.9.6.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetZip.1.9.6\lib\net20\Ionic.Zip.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DBFilesClient.NET, Version=1.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DBFilesClient.NET.1.1.4\lib\net452\DBFilesClient.NET.dll</HintPath>
     </Reference>
-    <Reference Include="JetBrains.Annotations, Version=9.2.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <HintPath>..\packages\JetBrains.Annotations.9.2.0\lib\net20\JetBrains.Annotations.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data, Version=6.9.7.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <HintPath>..\packages\MySql.Data.6.9.7\lib\net45\MySql.Data.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="PowerCollections, Version=1.0.2141.24679, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\XAct.Wintellect.PowerCollections.0.0.1\lib\net20\PowerCollections.dll</HintPath>
     </Reference>
+    <Reference Include="Sigil, Version=4.7.0.0, Culture=neutral, PublicKeyToken=2d06c3494341c8ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sigil.4.7.0\lib\net45\Sigil.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Configuration" />
@@ -117,10 +118,33 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DBC\DBC.cs" />
+    <Compile Include="DBC\Structures\Legion\AchievementEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\AreaTableEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\BroadcastTextEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\CreatureDifficultyEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\CreatureEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\CreatureDisplayInfoEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\CreatureFamilyEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\CriteriaTreeEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\DBFileAttribute.cs" />
+    <Compile Include="DBC\Structures\Legion\DifficultyEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\FactionEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\FactionTemplateEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\ItemEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\ItemSparseEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\MapDifficultyEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\MapEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\PhaseXPhaseGroupEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\SoundKitEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\SpellEffectEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\SpellEntry.cs" />
     <Compile Include="Enums\AccountDataType.cs" />
     <Compile Include="Enums\ActionButtonType.cs" />
     <Compile Include="Enums\AIReaction.cs" />
     <Compile Include="Enums\AmmoType.cs" />
+    <Compile Include="Enums\AreaTriggerTemplateFlag.cs" />
+    <Compile Include="Enums\AreaTriggerType.cs" />
     <Compile Include="Enums\ArenaCommandResult.cs" />
     <Compile Include="Enums\ArenaError.cs" />
     <Compile Include="Enums\ArenaEvent.cs" />
@@ -137,6 +161,7 @@
     <Compile Include="Enums\BattlegroundListFlags.cs" />
     <Compile Include="Enums\BattlegroundStatus.cs" />
     <Compile Include="Enums\BattlegroundUpdateFlags.cs" />
+    <Compile Include="Enums\BattlenetRpcErrorCode.cs" />
     <Compile Include="Enums\Battlenet\Command.cs" />
     <Compile Include="Enums\Battlenet\BattlenetChannel.cs" />
     <Compile Include="Enums\BillingFlag.cs" />
@@ -214,7 +239,6 @@
     <Compile Include="Enums\HighGuidMask.cs" />
     <Compile Include="Enums\HighGuidType.cs" />
     <Compile Include="Enums\Holiday.cs" />
-    <Compile Include="Enums\HotfixSQLOutput.cs" />
     <Compile Include="Enums\InhabitType.cs" />
     <Compile Include="Enums\LocaleConstant.cs" />
     <Compile Include="Enums\MountResult.cs" />
@@ -307,6 +331,7 @@
     <Compile Include="Enums\StatType.cs" />
     <Compile Include="Enums\StoreNameType.cs" />
     <Compile Include="Enums\TargetFlag.cs" />
+    <Compile Include="Enums\SpellEnums.cs" />
     <Compile Include="Enums\TaxiError.cs" />
     <Compile Include="Enums\TeamType.cs" />
     <Compile Include="Enums\TimerType.cs" />
@@ -323,6 +348,7 @@
     <Compile Include="Enums\UnitDynamicFlags.cs" />
     <Compile Include="Enums\UnitFlags2.cs" />
     <Compile Include="Enums\UnitFlags.cs" />
+    <Compile Include="Enums\UnitFlags3.cs" />
     <Compile Include="Enums\UnknownFlags.cs" />
     <Compile Include="Enums\UpdateFields.cs" />
     <Compile Include="Enums\UpdateFlag.cs" />
@@ -380,11 +406,21 @@
     <Compile Include="Enums\Version\V6_2_0_20173\TutorialAction.cs" />
     <Compile Include="Enums\Version\V6_2_2_20444\Opcodes.cs" />
     <Compile Include="Enums\Version\V6_2_3_20726\Opcodes.cs" />
+    <Compile Include="Enums\Version\V6_2_4_21315\Opcodes.cs" />
+    <Compile Include="Enums\Version\V7_0_3_22248\Opcodes.cs" />
+    <Compile Include="Enums\Version\V7_1_0_22900\Opcodes.cs" />
+    <Compile Include="Enums\Version\V7_1_5_23360\Opcodes.cs" />
+    <Compile Include="Enums\Version\V7_2_0_23826\Opcodes.cs" />
+    <Compile Include="Enums\Version\V7_2_5_24330\Opcodes.cs" />
     <Compile Include="Enums\VictimStates.cs" />
     <Compile Include="Enums\VoidTransferError.cs" />
     <Compile Include="Enums\WardenCheckType.cs" />
     <Compile Include="Enums\WardenOpcode.cs" />
     <Compile Include="Enums\WeatherState.cs" />
+    <Compile Include="Hotfix\HotfixConfiguration.cs" />
+    <Compile Include="Hotfix\IHotfixSerializer.cs" />
+    <Compile Include="Hotfix\HotfixStore.cs" />
+    <Compile Include="Hotfix\HotfixStructureAttribute.cs" />
     <Compile Include="Loading\BinaryPacketReader.cs" />
     <Compile Include="Loading\IPacketReader.cs" />
     <Compile Include="Loading\Reader.cs" />
@@ -399,6 +435,7 @@
     <Compile Include="Misc\Extensions.cs" />
     <Compile Include="Misc\FileCompressionAttribute.cs" />
     <Compile Include="Misc\Filters.cs" />
+    <Compile Include="Misc\HighGuid.cs" />
     <Compile Include="Misc\WowGuid.cs" />
     <Compile Include="Misc\LfgEntry.cs" />
     <Compile Include="Misc\Logger.cs" />
@@ -417,6 +454,7 @@
     <Compile Include="Misc\Vector2.cs" />
     <Compile Include="Misc\Vector3.cs" />
     <Compile Include="Misc\Vector4.cs" />
+    <Compile Include="Parsing\BattlenetHandler.cs" />
     <Compile Include="Parsing\Handler.cs" />
     <Compile Include="Parsing\HasSniffDataAttribute.cs" />
     <Compile Include="Parsing\BattlenetParserAttribute.cs" />
@@ -468,16 +506,20 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Saving\BinaryPacketWriter.cs" />
+    <Compile Include="Saving\FusionBinaryPacketWriter.cs" />
     <Compile Include="Saving\SplitDirectionBinaryPacketWriter.cs" />
     <Compile Include="Saving\SplitSessionBinaryPacketWriter.cs" />
     <Compile Include="Saving\SplitBinaryPacketWriter.cs" />
     <Compile Include="SQL\Builder.cs" />
+    <Compile Include="SQL\Builders\AreaTriggers.cs" />
     <Compile Include="SQL\Builders\BuilderAttributes.cs" />
-    <Compile Include="SQL\Builders\DB2.cs" />
+    <Compile Include="SQL\Builders\GameObjectMisc.cs" />
+    <Compile Include="SQL\Builders\HotfixBuilder.cs" />
     <Compile Include="SQL\Builders\Locales.cs" />
     <Compile Include="SQL\Builders\Miscellaneous.cs" />
     <Compile Include="SQL\Builders\QuestMisc.cs" />
     <Compile Include="SQL\Builders\Spawns.cs" />
+    <Compile Include="SQL\Builders\Spells.cs" />
     <Compile Include="SQL\Builders\UnitMisc.cs" />
     <Compile Include="SQL\Builders\WDBTemplates.cs" />
     <Compile Include="SQL\RowList.cs" />
@@ -491,50 +533,34 @@
     <Compile Include="SQL\SQLFile.cs" />
     <Compile Include="SQL\SQLUtil.cs" />
     <Compile Include="SQL\SSHTunnel.cs" />
-    <Compile Include="Store\Objects\AreaPOI.cs" />
-    <Compile Include="Store\Objects\AreaPOIState.cs" />
+    <Compile Include="Store\Objects\AreaTriggerTemplate.cs" />
+    <Compile Include="Store\Objects\AreaTriggerTemplateVertices.cs" />
     <Compile Include="Store\Objects\Aura.cs" />
-    <Compile Include="Store\Objects\BattlePetSpecies.cs" />
     <Compile Include="Store\Objects\BroadcastText.cs" />
     <Compile Include="Store\Objects\BroadcastTextLocale.cs" />
-    <Compile Include="Store\Objects\ChrUpgradeBucketSpell.cs" />
-    <Compile Include="Store\Objects\ChrUpgradeBucket.cs" />
-    <Compile Include="Store\Objects\ChrUpgradeTier.cs" />
     <Compile Include="Store\Objects\Creature.cs" />
     <Compile Include="Store\Objects\CreatureAddon.cs" />
-    <Compile Include="Store\Objects\CreatureDB2.cs" />
-    <Compile Include="Store\Objects\CreatureDifficulty.cs" />
     <Compile Include="Store\Objects\CreatureEquipment.cs" />
     <Compile Include="Store\Objects\CreatureTemplateAddon.cs" />
+    <Compile Include="Store\Objects\CreatureTemplateScaling.cs" />
     <Compile Include="Store\Objects\CreatureText.cs" />
-    <Compile Include="Store\Objects\CurvePoint.cs" />
+    <Compile Include="Store\Objects\GameObjectAddon.cs" />
     <Compile Include="Store\Objects\GameObject.cs" />
     <Compile Include="Store\Objects\GameObjectModel.cs" />
-    <Compile Include="Store\Objects\GameObjects.cs" />
     <Compile Include="Store\Objects\GameObjectTemplate.cs" />
+    <Compile Include="Store\Objects\GameObjectTemplateAddon.cs" />
     <Compile Include="Store\Objects\GossipMenu.cs" />
     <Compile Include="Store\Objects\GossipMenuOption.cs" />
+    <Compile Include="Store\Objects\IBroadcastTextEntry.cs" />
     <Compile Include="Store\Objects\PointsOfInterest.cs" />
-    <Compile Include="Store\Objects\Holiday.cs" />
     <Compile Include="Store\Objects\HotfixData.cs" />
     <Compile Include="Store\Objects\Item.cs" />
-    <Compile Include="Store\Objects\ItemAppearance.cs" />
-    <Compile Include="Store\Objects\ItemBonus.cs" />
-    <Compile Include="Store\Objects\ItemBonusTreeNode.cs" />
-    <Compile Include="Store\Objects\ItemCurrencyCost.cs" />
-    <Compile Include="Store\Objects\ItemEffect.cs" />
-    <Compile Include="Store\Objects\ItemExtendedCost.cs" />
-    <Compile Include="Store\Objects\ItemModifiedAppearance.cs" />
-    <Compile Include="Store\Objects\ItemSparse.cs" />
     <Compile Include="Store\Objects\ItemTemplate.cs" />
-    <Compile Include="Store\Objects\KeyChain.cs" />
     <Compile Include="Store\Objects\LocalesQuest.cs" />
     <Compile Include="Store\Objects\QuestDetails.cs" />
     <Compile Include="Store\Objects\QuestGreeting.cs" />
     <Compile Include="Store\Objects\QuestObjectivesLocale.cs" />
-    <Compile Include="Store\Objects\Location.cs" />
     <Compile Include="Store\Objects\ModelData.cs" />
-    <Compile Include="Store\Objects\Mount.cs" />
     <Compile Include="Store\Objects\NpcText.cs" />
     <Compile Include="Store\Objects\NpcSpellClick.cs" />
     <Compile Include="Store\Objects\NpcTrainer.cs" />
@@ -551,27 +577,16 @@
     <Compile Include="Store\Objects\QuestRequestItems.cs" />
     <Compile Include="Store\Objects\QuestTemplate.cs" />
     <Compile Include="Store\Objects\QuestVisualEffect.cs" />
-    <Compile Include="Store\Objects\SceneScript.cs" />
+    <Compile Include="Store\Objects\SceneTemplate.cs" />
     <Compile Include="Store\Objects\SniffData.cs" />
-    <Compile Include="Store\Objects\SpellAuraRestrictions.cs" />
-    <Compile Include="Store\Objects\SpellCastingRequirements.cs" />
-    <Compile Include="Store\Objects\SpellClassOptions.cs" />
-    <Compile Include="Store\Objects\SpellEffectGroupSize.cs" />
-    <Compile Include="Store\Objects\SpellLearnSpell.cs" />
-    <Compile Include="Store\Objects\SpellMisc.cs" />
-    <Compile Include="Store\Objects\SpellPower.cs" />
-    <Compile Include="Store\Objects\SpellReagents.cs" />
-    <Compile Include="Store\Objects\SpellRuneCost.cs" />
-    <Compile Include="Store\Objects\SpellTotems.cs" />
     <Compile Include="Store\Objects\PlayerCreateInfoAction.cs" />
     <Compile Include="Store\Objects\PlayerCreateInfo.cs" />
-    <Compile Include="Store\Objects\TaxiNodes.cs" />
-    <Compile Include="Store\Objects\TaxiPath.cs" />
-    <Compile Include="Store\Objects\TaxiPathNode.cs" />
-    <Compile Include="Store\Objects\Toy.cs" />
+    <Compile Include="Store\Objects\SpellTargetPosition.cs" />
+    <Compile Include="Store\Objects\SpellAreaTrigger.cs" />
+    <Compile Include="Store\Objects\Trainer.cs" />
+    <Compile Include="Store\Objects\TrainerSpell.cs" />
     <Compile Include="Store\Objects\Unit.cs" />
     <Compile Include="Store\Objects\CreatureTemplate.cs" />
-    <Compile Include="Store\Objects\UnitTemplateNonWDB.cs" />
     <Compile Include="Store\Objects\VehicleTemplateAccessory.cs" />
     <Compile Include="Store\Objects\WeatherUpdate.cs" />
     <Compile Include="Store\Objects\WoWObject.cs" />
@@ -580,7 +595,9 @@
     <Compile Include="Enums\GuildNewsType.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

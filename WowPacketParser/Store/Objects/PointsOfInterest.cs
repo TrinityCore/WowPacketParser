@@ -22,8 +22,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Flags")]
         public uint? Flags;
 
-        [DBFieldName("Data", TargetedDatabase.Zero, TargetedDatabase.WarlordsOfDraenor)]
-        [DBFieldName("Importance", TargetedDatabase.WarlordsOfDraenor)]
+        [DBFieldName("Importance")]
         public uint? Importance;
 
         [DBFieldName("Name")]

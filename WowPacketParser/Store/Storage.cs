@@ -19,63 +19,25 @@ namespace WowPacketParser.Store
 
         /* Key: Entry */
 
-        // DB2
-        public static readonly StoreDictionary<Tuple<DB2Hash, int>, HotfixData> HotfixDataStore = new StoreDictionary<Tuple<DB2Hash, int>, HotfixData>(new List<HotfixSQLOutput> { HotfixSQLOutput.hotfix_data });
-        public static readonly DataBag<HotfixData> HotfixDatas = new DataBag<HotfixData>(new List<HotfixSQLOutput> { HotfixSQLOutput.hotfix_data });
-
-        public static readonly DataBag<AreaPOI> AreaPOIs = new DataBag<AreaPOI>(new List<HotfixSQLOutput> { HotfixSQLOutput.area_poi });
-        public static readonly DataBag<AreaPOIState> AreaPOIStates = new DataBag<AreaPOIState>(new List<HotfixSQLOutput> { HotfixSQLOutput.area_poi_state });
-        public static readonly DataBag<BattlePetSpecies> BattlePetSpeciesBag = new DataBag<BattlePetSpecies>(new List<HotfixSQLOutput> { HotfixSQLOutput.battle_pet_species });
-        public static readonly DataBag<BroadcastText> BroadcastTexts = new DataBag<BroadcastText>(new List<HotfixSQLOutput> { HotfixSQLOutput.broadcast_text });
-        public static readonly DataBag<ChrUpgradeTier> ChrUpgradeTiers = new DataBag<ChrUpgradeTier>(new List<HotfixSQLOutput> { HotfixSQLOutput.chr_upgrade });
-        public static readonly DataBag<ChrUpgradeBucket> ChrUpgradeBuckets = new DataBag<ChrUpgradeBucket>(new List<HotfixSQLOutput> { HotfixSQLOutput.chr_upgrade });
-        public static readonly DataBag<ChrUpgradeBucketSpell> ChrUpgradeBucketSpells = new DataBag<ChrUpgradeBucketSpell>(new List<HotfixSQLOutput> { HotfixSQLOutput.chr_upgrade });
-        public static readonly DataBag<CreatureDB2> Creatures = new DataBag<CreatureDB2>(new List<HotfixSQLOutput> { HotfixSQLOutput.creatureDB2 });
-        public static readonly DataBag<CreatureDifficulty> CreatureDifficulties = new DataBag<CreatureDifficulty>(new List<HotfixSQLOutput> { HotfixSQLOutput.creature_difficulty });
-        public static readonly DataBag<CurvePoint> CurvePoints = new DataBag<CurvePoint>(new List<HotfixSQLOutput> { HotfixSQLOutput.curve_point });
-        public static readonly DataBag<GameObjects> GameObjectsBag = new DataBag<GameObjects>(new List<HotfixSQLOutput> { HotfixSQLOutput.gameobjectDB2 });
-        public static readonly DataBag<Holidays> HolidaysBag = new DataBag<Holidays>(new List<HotfixSQLOutput> { HotfixSQLOutput.holidays });
-        public static readonly DataBag<Item> Items = new DataBag<Item>(new List<HotfixSQLOutput> { HotfixSQLOutput.item });
-        public static readonly DataBag<ItemAppearance> ItemAppearances = new DataBag<ItemAppearance>(new List<HotfixSQLOutput> { HotfixSQLOutput.item_appearance });
-        public static readonly DataBag<ItemBonus> ItemBonuses = new DataBag<ItemBonus>(new List<HotfixSQLOutput> { HotfixSQLOutput.item_bonus });
-        public static readonly DataBag<ItemBonusTreeNode> ItemBonusTreeNodes = new DataBag<ItemBonusTreeNode>(new List<HotfixSQLOutput> { HotfixSQLOutput.item_bonus_tree_node });
-        public static readonly DataBag<ItemCurrencyCost> ItemCurrencyCosts = new DataBag<ItemCurrencyCost>(new List<HotfixSQLOutput> { HotfixSQLOutput.item_currency_cost });
-        public static readonly DataBag<ItemEffect> ItemEffects = new DataBag<ItemEffect>(new List<HotfixSQLOutput> { HotfixSQLOutput.item_effect });
-        public static readonly DataBag<ItemExtendedCost> ItemExtendedCosts = new DataBag<ItemExtendedCost>(new List<HotfixSQLOutput> { HotfixSQLOutput.item_extended_cost });
-        public static readonly DataBag<ItemModifiedAppearance> ItemModifiedAppearances = new DataBag<ItemModifiedAppearance>(new List<HotfixSQLOutput> { HotfixSQLOutput.item_modified_appearance });
-        public static readonly DataBag<ItemSparse> ItemSparses = new DataBag<ItemSparse>(new List<HotfixSQLOutput> { HotfixSQLOutput.item_sparse });
-        public static readonly DataBag<KeyChain> KeyChains = new DataBag<KeyChain>(new List<HotfixSQLOutput> { HotfixSQLOutput.key_chain });
-        public static readonly DataBag<Location> Locations = new DataBag<Location>(new List<HotfixSQLOutput> { HotfixSQLOutput.location });
-        public static readonly DataBag<Mount> Mounts = new DataBag<Mount>(new List<HotfixSQLOutput> { HotfixSQLOutput.mount });
-        public static readonly DataBag<OverrideSpellData> OverrideSpellDatas = new DataBag<OverrideSpellData>(new List<HotfixSQLOutput> { HotfixSQLOutput.override_spell_data });
-        public static readonly DataBag<PhaseXPhaseGroup> PhaseXPhaseGroups = new DataBag<PhaseXPhaseGroup>(new List<HotfixSQLOutput> { HotfixSQLOutput.phase_group });
-        public static readonly DataBag<SceneScript> SceneScripts = new DataBag<SceneScript>(new List<HotfixSQLOutput> { HotfixSQLOutput.scene_script });
-        public static readonly DataBag<SpellAuraRestrictions> SpellAuraRestrictionsBag = new DataBag<SpellAuraRestrictions>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_aura_restrictions });
-        public static readonly DataBag<SpellCastingRequirements> SpellCastingRequirementsBag = new DataBag<SpellCastingRequirements>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_casting_requirements });
-        public static readonly DataBag<SpellClassOptions> SpellClassOptionsBag = new DataBag<SpellClassOptions>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_class_options });
-        public static readonly DataBag<SpellEffectGroupSize> SpellEffectGroupSizes = new DataBag<SpellEffectGroupSize>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_effect_group_size });
-        public static readonly DataBag<SpellLearnSpell> SpellLearnSpells = new DataBag<SpellLearnSpell>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_learn_spell });
-        public static readonly DataBag<SpellMisc> SpellMiscs = new DataBag<SpellMisc>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_misc });
-        public static readonly DataBag<SpellTotems> SpellTotemsBag = new DataBag<SpellTotems>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_totems });
-        public static readonly DataBag<SpellPower> SpellPowers = new DataBag<SpellPower>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_power });
-        public static readonly DataBag<SpellReagents> SpellReagentsBag = new DataBag<SpellReagents>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_power });
-        public static readonly DataBag<SpellRuneCost> SpellRuneCosts = new DataBag<SpellRuneCost>(new List<HotfixSQLOutput> { HotfixSQLOutput.spell_rune_cost });
-        public static readonly DataBag<TaxiNodes> TaxiNodesBag = new DataBag<TaxiNodes>(new List<HotfixSQLOutput> { HotfixSQLOutput.taxi_nodes });
-        public static readonly DataBag<TaxiPath> TaxiPaths = new DataBag<TaxiPath>(new List<HotfixSQLOutput> { HotfixSQLOutput.taxi_path });
-        public static readonly DataBag<TaxiPathNode> TaxiPathNodes = new DataBag<TaxiPathNode>(new List<HotfixSQLOutput> { HotfixSQLOutput.taxi_path_node });
-        public static readonly DataBag<Toy> Toys = new DataBag<Toy>(new List<HotfixSQLOutput> { HotfixSQLOutput.toy });
-
         // Templates
+        public static readonly DataBag<AreaTriggerTemplate> AreaTriggerTemplates = new DataBag<AreaTriggerTemplate>(new List<SQLOutput> { SQLOutput.areatrigger_template });
+        public static readonly DataBag<AreaTriggerTemplateVertices> AreaTriggerTemplatesVertices = new DataBag<AreaTriggerTemplateVertices>(new List<SQLOutput> { SQLOutput.areatrigger_template_polygon_vertices });
         public static readonly DataBag<GameObjectTemplate> GameObjectTemplates = new DataBag<GameObjectTemplate>(new List<SQLOutput> { SQLOutput.gameobject_template });
+        public static readonly DataBag<GameObjectTemplateQuestItem> GameObjectTemplateQuestItems = new DataBag<GameObjectTemplateQuestItem>(new List<SQLOutput> { SQLOutput.gameobject_template });
         public static readonly DataBag<ItemTemplate> ItemTemplates = new DataBag<ItemTemplate>(new List<SQLOutput> { SQLOutput.item_template });
         public static readonly DataBag<QuestTemplate> QuestTemplates = new DataBag<QuestTemplate>(new List<SQLOutput> { SQLOutput.quest_template });
         public static readonly DataBag<QuestObjective> QuestObjectives = new DataBag<QuestObjective>(new List<SQLOutput> { SQLOutput.quest_template });
-        public static readonly DataBag<QuestVisualEffect> QuestVisualEffects = new DataBag<QuestVisualEffect>(new List<SQLOutput> { SQLOutput.quest_template }); 
+        public static readonly DataBag<QuestVisualEffect> QuestVisualEffects = new DataBag<QuestVisualEffect>(new List<SQLOutput> { SQLOutput.quest_template });
         public static readonly DataBag<CreatureTemplate> CreatureTemplates = new DataBag<CreatureTemplate>(new List<SQLOutput> { SQLOutput.creature_template });
+        public static readonly DataBag<CreatureTemplateNonWDB> CreatureTemplatesNonWDB = new DataBag<CreatureTemplateNonWDB>(new List<SQLOutput> { SQLOutput.creature_template });
+        public static readonly DataBag<CreatureTemplateQuestItem> CreatureTemplateQuestItems = new DataBag<CreatureTemplateQuestItem>(new List<SQLOutput> { SQLOutput.creature_template });
+        public static readonly DataBag<CreatureTemplateScaling> CreatureTemplateScalings = new DataBag<CreatureTemplateScaling>(new List<SQLOutput> { SQLOutput.creature_template_scaling });
 
         // Vendor & trainer
-        public static readonly DataBag<NpcTrainer> NpcTrainers = new DataBag<NpcTrainer>(new List<SQLOutput> { SQLOutput.npc_trainer });
+        public static readonly DataBag<NpcTrainer> NpcTrainers = new DataBag<NpcTrainer>(new List<SQLOutput> { SQLOutput.npc_trainer }); // legacy 3.3.5 support
         public static readonly DataBag<NpcVendor> NpcVendors = new DataBag<NpcVendor>(new List<SQLOutput> { SQLOutput.npc_vendor });
+        public static readonly DataBag<Trainer> Trainers = new DataBag<Trainer>(new List<SQLOutput> { SQLOutput.trainer });
+        public static readonly DataBag<TrainerSpell> TrainerSpells = new DataBag<TrainerSpell>(new List<SQLOutput> { SQLOutput.trainer_spell });
 
         // Page & npc text
         public static readonly DataBag<PageText> PageTexts = new DataBag<PageText>(new List<SQLOutput> { SQLOutput.page_text });
@@ -99,11 +61,11 @@ namespace WowPacketParser.Store
 
         // Start info (Race, Class)
         public static readonly DataBag<PlayerCreateInfoAction> StartActions = new DataBag<PlayerCreateInfoAction>(new List<SQLOutput> { SQLOutput.playercreateinfo_action });
-        public static readonly DataBag<PlayerCreateInfo>StartPositions = new DataBag<PlayerCreateInfo>(new List<SQLOutput> { SQLOutput.playercreateinfo });
+        public static readonly DataBag<PlayerCreateInfo> StartPositions = new DataBag<PlayerCreateInfo>(new List<SQLOutput> { SQLOutput.playercreateinfo });
 
         // Gossips (MenuId, TextId)
         public static readonly DataBag<GossipMenu> Gossips = new DataBag<GossipMenu>(new List<SQLOutput> { SQLOutput.gossip_menu });
-        public static readonly DataBag<GossipMenuOption> GossipMenuOptions = new DataBag<GossipMenuOption>(new List<SQLOutput> { SQLOutput.gossip_menu_option }); 
+        public static readonly DataBag<GossipMenuOption> GossipMenuOptions = new DataBag<GossipMenuOption>(new List<SQLOutput> { SQLOutput.gossip_menu_option });
 
         // Quest POI (QuestId, Id)
         public static readonly DataBag<QuestPOI> QuestPOIs = new DataBag<QuestPOI>(new List<SQLOutput> { SQLOutput.quest_poi_points });
@@ -115,10 +77,10 @@ namespace WowPacketParser.Store
         public static readonly DataBag<QuestRequestItems> QuestRequestItems = new DataBag<QuestRequestItems>(new List<SQLOutput> { SQLOutput.quest_template });
 
         // Names
-        public static readonly DataBag<ObjectName> ObjectNames = new DataBag<ObjectName>(new List<SQLOutput> { SQLOutput.ObjectNames });
+        public static readonly DataBag<ObjectName> ObjectNames = new DataBag<ObjectName>();
 
         // Vehicle Template Accessory
-        public static readonly DataBag<VehicleTemplateAccessory> VehicleTemplateAccessorys = new DataBag<VehicleTemplateAccessory>(new List<SQLOutput> { SQLOutput.vehicle_template_accessory });
+        public static readonly DataBag<VehicleTemplateAccessory> VehicleTemplateAccessories = new DataBag<VehicleTemplateAccessory>(new List<SQLOutput> { SQLOutput.vehicle_template_accessory });
 
         // Weather updates
         public static readonly DataBag<WeatherUpdate> WeatherUpdates = new DataBag<WeatherUpdate>(new List<SQLOutput> { SQLOutput.weather_updates });
@@ -128,9 +90,18 @@ namespace WowPacketParser.Store
         public static readonly DataBag<NpcSpellClick> SpellClicks = new DataBag<NpcSpellClick>(new List<SQLOutput> { SQLOutput.npc_spellclick_spells });
 
         // Quest Misc
-        public static readonly DataBag<BroadcastTextLocale> BroadcastTextLocales = new DataBag<BroadcastTextLocale>(new List<HotfixSQLOutput> { HotfixSQLOutput.broadcast_text_locale });
         public static readonly DataBag<LocalesQuest> LocalesQuests = new DataBag<LocalesQuest>(new List<SQLOutput> { SQLOutput.locales_quest });
         public static readonly DataBag<QuestObjectivesLocale> LocalesQuestObjectives = new DataBag<QuestObjectivesLocale>(new List<SQLOutput> { SQLOutput.locales_quest_objectives });
+
+        // Spell Target Position
+        public static readonly DataBag<SpellTargetPosition> SpellTargetPositions = new DataBag<SpellTargetPosition>(new List<SQLOutput> { SQLOutput.spell_target_position });
+
+        public static readonly DataBag<HotfixData> HotfixDatas = new DataBag<HotfixData>(new List<SQLOutput> { SQLOutput.hotfix_data });
+
+        // Scenes
+        public static readonly DataBag<SceneTemplate> Scenes = new DataBag<SceneTemplate>(new List<SQLOutput> { SQLOutput.scene_template });
+
+        public static readonly DataBag<BroadcastText> BroadcastTexts = new DataBag<BroadcastText>(new List<SQLOutput> { SQLOutput.broadcast_text });
 
         public static void ClearContainers()
         {
@@ -138,19 +109,22 @@ namespace WowPacketParser.Store
 
             Objects.Clear();
 
-            CreatureDifficulties.Clear();
-            GameObjectsBag.Clear();
-            BroadcastTexts.Clear();
-            SpellMiscs.Clear();
-
+            AreaTriggerTemplates.Clear();
+            AreaTriggerTemplatesVertices.Clear();
             GameObjectTemplates.Clear();
+            GameObjectTemplateQuestItems.Clear();
             ItemTemplates.Clear();
             QuestTemplates.Clear();
             QuestObjectives.Clear();
+            QuestVisualEffects.Clear();
             CreatureTemplates.Clear();
+            CreatureTemplateQuestItems.Clear();
+            CreatureTemplateScalings.Clear();
 
             NpcTrainers.Clear();
             NpcVendors.Clear();
+            Trainers.Clear();
+            TrainerSpells.Clear();
 
             PageTexts.Clear();
             NpcTexts.Clear();
@@ -163,29 +137,41 @@ namespace WowPacketParser.Store
             Emotes.Clear();
             Sounds.Clear();
             SpellsX.Clear();
-
+            QuestOfferRewards.Clear();
             GossipSelects.Clear();
 
             StartActions.Clear();
             StartPositions.Clear();
 
             Gossips.Clear();
+            GossipMenuOptions.Clear();
 
             QuestPOIs.Clear();
+            QuestPOIPoints.Clear();
 
             QuestGreetings.Clear();
             QuestDetails.Clear();
             QuestRequestItems.Clear();
-            QuestOfferRewards.Clear();
 
             ObjectNames.Clear();
 
-            VehicleTemplateAccessorys.Clear();
+            VehicleTemplateAccessories.Clear();
 
             WeatherUpdates.Clear();
 
             NpcSpellClicks.Clear();
             SpellClicks.Clear();
+
+            SpellTargetPositions.Clear();
+
+            LocalesQuests.Clear();
+            LocalesQuestObjectives.Clear();
+
+            HotfixDatas.Clear();
+
+            Scenes.Clear();
+
+            BroadcastTexts.Clear();
         }
     }
 }

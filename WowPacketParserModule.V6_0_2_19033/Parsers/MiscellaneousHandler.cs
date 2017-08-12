@@ -1,4 +1,6 @@
-﻿using WowPacketParser.Enums;
+﻿
+using System;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -199,8 +201,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("ScrollOfResurrectionMaxRequestsPerDay");
             packet.ReadInt32("CfgRealmID");
             packet.ReadInt32("CfgRealmRecID");
-            packet.ReadInt32("Int27");
-            packet.ReadInt32("TwitterMsTillCanPost");
+            packet.ReadInt32("TwitterPostThrottleLimit");
+            packet.ReadInt32("TwitterPostThrottleCooldown");
             packet.ReadInt32("TokenPollTimeSeconds");
             packet.ReadInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
 
@@ -245,7 +247,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_WORLD_SERVER_INFO)]
         public static void HandleWorldServerInfo(Packet packet)
         {
-            packet.ReadInt32("DifficultyID");
+            CoreParsers.MovementHandler.CurrentDifficultyID = packet.ReadUInt32<DifficultyId>("DifficultyID");
             packet.ReadByte("IsTournamentRealm");
             packet.ReadTime("WeeklyReset");
 
@@ -354,7 +356,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadPackedGuid128("GuildGUID", i);
 
                 packet.ReadInt32("GuildVirtualRealmAddress", i);
-                packet.ReadInt32("AreaID", i);
+                packet.ReadInt32<AreaId>("AreaID", i);
 
                 packet.ResetBitReader();
                 var bits460 = packet.ReadBits(7);
@@ -457,7 +459,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             int int16 = packet.ReadInt32("FlagsCount");
 
             for (int i = 0; i < int32; i++)
-                packet.ReadInt32("ItemID", i);
+                packet.ReadInt32<ItemId>("ItemID", i);
 
             for (int i = 0; i < int16; i++)
                 packet.ReadInt32("Flags", i);
@@ -466,7 +468,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_PLAY_SOUND)]
         public static void HandlePlaySound(Packet packet)
         {
-            uint sound = packet.ReadUInt32("SoundKitID");
+            uint sound = packet.ReadUInt32<SoundId>("SoundKitID");
             packet.ReadPackedGuid128("SourceObjectGUID");
 
             Storage.Sounds.Add(sound, packet.TimeSpan);
@@ -475,7 +477,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_PLAY_MUSIC)]
         public static void HandlePlayMusic(Packet packet)
         {
-            uint sound = packet.ReadUInt32("SoundKitID");
+            uint sound = packet.ReadUInt32<SoundId>("SoundKitID");
 
             Storage.Sounds.Add(sound, packet.TimeSpan);
         }
@@ -483,7 +485,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_ZONE_UNDER_ATTACK)]
         public static void HandleZoneUpdate(Packet packet)
         {
-            packet.ReadInt32<ZoneId>("AreaID");
+            packet.ReadInt32<AreaId>("AreaID");
         }
 
         [Parser(Opcode.CMSG_QUERY_PAGE_TEXT)]
@@ -519,12 +521,40 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_PLAY_ONE_SHOT_ANIM_KIT)]
-        [Parser(Opcode.SMSG_SET_AI_ANIM_KIT)]
-        [Parser(Opcode.SMSG_SET_MELEE_ANIM_KIT)]
-        public static void HandleSetAIAnimKit(Packet packet)
+        public static void HandlePlayOneShotAnimKit(Packet packet)
         {
             packet.ReadPackedGuid128("Unit");
             packet.ReadUInt16("AnimKitID");
+        }
+
+        [Parser(Opcode.SMSG_SET_AI_ANIM_KIT)]
+        public static void SetAIAnimKitId(Packet packet)
+        {
+            var guid = packet.ReadPackedGuid128("Unit");
+            var animKitID = packet.ReadUInt16("AnimKitID");
+
+            if (guid.GetObjectType() == ObjectType.Unit)
+                if (Storage.Objects.ContainsKey(guid))
+                {
+                    var timeSpan = Storage.Objects[guid].Item2 - packet.TimeSpan;
+                    if (timeSpan != null && timeSpan.Value.Duration() <= TimeSpan.FromSeconds(1))
+                        ((Unit)Storage.Objects[guid].Item1).AIAnimKit = animKitID;
+                }
+        }
+
+        [Parser(Opcode.SMSG_SET_MELEE_ANIM_KIT)]
+        public static void SetMeleeAnimKitId(Packet packet)
+        {
+            var guid = packet.ReadPackedGuid128("Unit");
+            var animKitID = packet.ReadUInt16("AnimKitID");
+
+            if (guid.GetObjectType() == ObjectType.Unit)
+                if (Storage.Objects.ContainsKey(guid))
+                {
+                    var timeSpan = Storage.Objects[guid].Item2 - packet.TimeSpan;
+                    if (timeSpan != null && timeSpan.Value.Duration() <= TimeSpan.FromSeconds(1))
+                        ((Unit)Storage.Objects[guid].Item1).MeleeAnimKit = animKitID;
+                }
         }
 
         [Parser(Opcode.SMSG_DISPLAY_PROMOTION)]
@@ -614,7 +644,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("InitialValue");
             packet.ReadUInt32("MaxValue");
             packet.ReadInt32("Scale");
-            packet.ReadUInt32("SpellId");
+            packet.ReadUInt32<SpellId>("SpellID");
             packet.ReadBit("Paused");
         }
 
@@ -637,7 +667,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadUInt32("ResurrectOffererVirtualRealmAddress");
             packet.ReadUInt32("PetNumber");
-            packet.ReadInt32("SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
 
             var len = packet.ReadBits(6);
 
@@ -690,10 +720,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_PLAY_OBJECT_SOUND)]
         public static void HandlePlayObjectSound(Packet packet)
         {
-            packet.ReadUInt32("SoundId");
+            uint sound = packet.ReadUInt32<SoundId>("SoundId");
             packet.ReadPackedGuid128("SourceObjectGUID");
             packet.ReadPackedGuid128("TargetObjectGUID");
             packet.ReadVector3("Position");
+
+            Storage.Sounds.Add(sound, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_PLAY_SPEAKERBOT_SOUND)]
@@ -823,7 +855,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_TOY_SET_FAVORITE)]
         public static void HandleToySetFavorite(Packet packet)
         {
-            packet.ReadUInt32("ItemID");
+            packet.ReadUInt32<ItemId>("ItemID");
             packet.ReadBit("Favorite");
         }
     }

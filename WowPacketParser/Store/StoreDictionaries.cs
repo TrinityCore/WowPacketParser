@@ -12,23 +12,14 @@ namespace WowPacketParser.Store
 {
     public abstract class Store
     {
-        public static UInt64 SQLEnabledFlags { protected get; set; }
-        public static UInt64 HotfixSQLEnabledFlags { protected get; set; }
+        public static ulong SQLEnabledFlags { protected get; set; }
         public List<SQLOutput> Types { get; protected set; }
-        public List<HotfixSQLOutput> HotfixTypes { get; protected set; }
 
         protected bool ProcessFlags()
         {
             return Types.Count == 0 ||
                 Settings.DumpFormat == DumpFormatType.SniffDataOnly ||
                 Types.Any(sqlOutput => SQLEnabledFlags.HasAnyFlagBit(sqlOutput));
-        }
-
-        protected bool HotfixProcessFlags()
-        {
-            return HotfixTypes.Count == 0 ||
-                Settings.DumpFormat == DumpFormatType.SniffDataOnly ||
-                HotfixTypes.Any(hotfixOutput => HotfixSQLEnabledFlags.HasAnyFlag(hotfixOutput));
         }
 
         public abstract void Clear();
@@ -55,13 +46,6 @@ namespace WowPacketParser.Store
             _dictionary = Enabled ? new ConcurrentDictionary<T, Tuple<TK, TimeSpan?>>() : null;
         }
 
-        public StoreDictionary(List<HotfixSQLOutput> types)
-        {
-            HotfixTypes = types;
-            Enabled = HotfixProcessFlags();
-            _dictionary = Enabled ? new ConcurrentDictionary<T, Tuple<TK, TimeSpan?>>() : null;
-        }
-
         public StoreDictionary(Dictionary<T, TK> dict)
         {
             _dictionary =
@@ -79,7 +63,13 @@ namespace WowPacketParser.Store
             if (_dictionary.ContainsKey(key))
                 return;
 
-            while (!_dictionary.TryAdd(key, new Tuple<TK, TimeSpan?>(value, time))) { }
+            var newValue = new Tuple<TK, TimeSpan?>(value, time);
+            _dictionary.AddOrUpdate(key, newValue, (k, oldval) =>
+            {
+                if (oldval.Item2.HasValue && time.HasValue && oldval.Item2.Value > time)
+                    return oldval;
+                return newValue;
+            });
         }
 
         public bool Remove(T key)
@@ -277,13 +267,6 @@ namespace WowPacketParser.Store
             Bag = Enabled ? new ConcurrentBag<Tuple<T, TimeSpan?>>() : null;
         }
 
-        public StoreBag(List<HotfixSQLOutput> types)
-        {
-            HotfixTypes = types;
-            Enabled = HotfixProcessFlags();
-            Bag = Enabled ? new ConcurrentBag<Tuple<T, TimeSpan?>>() : null;
-        }
-
         public void Add(T item, TimeSpan? time = null)
         {
             if (Enabled)
@@ -324,21 +307,20 @@ namespace WowPacketParser.Store
 
         public DataBag(List<SQLOutput> types) : base(types) { }
 
-        public DataBag(List<HotfixSQLOutput> types) : base(types) { }
-
         public Tuple<T, TimeSpan?> this[T key]
         {
             get
             {
-                    return Bag.FirstOrDefault(c => SQLUtil.GetFields<T>()
-                        .Where(f => f.Item3.Any(g => g.IsPrimaryKey))
-                        .All(f => (f.Item2.GetValue(c.Item1).Equals(f.Item2.GetValue(key)))));
+                if (!Enabled) return null;
+                return Bag.FirstOrDefault(c => SQLUtil.GetFields<T>()
+                    .Where(f => f.Item3.Any(g => g.IsPrimaryKey))
+                    .All(f => (f.Item2.GetValue(c.Item1).Equals(f.Item2.GetValue(key)))));
             }
         }
 
         public bool ContainsKey(T key)
         {
-            return Bag.Any(
+            return Enabled && Bag.Any(
                 c =>
                     SQLUtil.GetFields<T>()
                         .Where(f => f.Item3.Any(g => g.IsPrimaryKey))
@@ -347,7 +329,7 @@ namespace WowPacketParser.Store
 
         public bool Contains(T key)
         {
-            return Bag.Any(
+            return Enabled && Bag.Any(
                 c => SQLUtil.GetFields<T>()
                 .Where(f => f.Item2.GetValue(key) != null)
                 .All(f => (f.Item2.GetValue(c.Item1).Equals(f.Item2.GetValue(key)))));

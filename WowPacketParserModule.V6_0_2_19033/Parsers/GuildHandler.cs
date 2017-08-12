@@ -121,7 +121,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadPackedGuid128("Guid", i);
 
                 packet.ReadUInt32("RankID", i);
-                packet.ReadUInt32("AreaID", i);
+                packet.ReadUInt32<AreaId>("AreaID", i);
                 packet.ReadUInt32("PersonalAchievementPoints", i);
                 packet.ReadUInt32("GuildReputation", i);
 
@@ -297,7 +297,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var size = packet.ReadUInt32("RewardItemsCount");
             for (int i = 0; i < size; i++)
             {
-                packet.ReadUInt32("ItemID", i);
+                packet.ReadUInt32<ItemId>("ItemID", i);
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
                     packet.ReadUInt32("Unk4", i);
@@ -414,7 +414,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadInt64("Money", i);
 
                 if (bit44)
-                    packet.ReadInt32("ItemID", i);
+                    packet.ReadInt32<ItemId>("ItemID", i);
 
                 if (bit52)
                     packet.ReadInt32("Count", i);
@@ -828,8 +828,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Member");
             packet.ReadInt32("SkillLineID");
-            packet.ReadInt32("SkillStep");
             packet.ReadInt32("SkillRank");
+            packet.ReadInt32("SkillStep");      
             for (int i = 0; i < 0x12C; i++)
                 packet.ReadByte("SkillLineBitArray", i);
         }
@@ -964,7 +964,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("GuildBankSwapItems");
             packet.ReadByte("BankTab");
             packet.ReadByte("BankSlot");
-            packet.ReadInt32("ItemID");
+            packet.ReadInt32<ItemId>("ItemID");
             packet.ReadByte("BankTab1");
             packet.ReadByte("BankSlot1");
             packet.ReadInt32("ItemID1");
@@ -978,6 +978,25 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadBit("BankOnly");
             packet.ReadBit("AutoStore");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_QUERY_MEMBERS_FOR_RECIPE)]
+        public static void HandleGuildQueryMembersForRecipe(Packet packet)
+        {
+            packet.ReadPackedGuid128("GuildGUID");
+            packet.ReadUInt32("SkillLineID");
+            packet.ReadUInt32<SpellId>("SpellID");
+            packet.ReadUInt32("UniqueBit");
+        }
+
+        [Parser(Opcode.SMSG_GUILD_MEMBERS_WITH_RECIPE)]
+        public static void HandleGuildMembersWithRecipe(Packet packet)
+        {
+            packet.ReadUInt32("SkillLineID");
+            packet.ReadUInt32<SpellId>("SpellID");
+            var count = packet.ReadInt32("MembersCount");
+            for (var i = 0; i < count; ++i)
+                packet.ReadPackedGuid128("Member", i);
         }
     }
 }

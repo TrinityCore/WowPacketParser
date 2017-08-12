@@ -3,7 +3,7 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("objectnames")]
+    [DBTableName("object_names")]
     public sealed class ObjectName : IDataModel
     {
         [DBFieldName("ObjectType", true)]

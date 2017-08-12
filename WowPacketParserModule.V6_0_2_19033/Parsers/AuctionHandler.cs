@@ -244,12 +244,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_AUCTION_REPLICATE_RESPONSE)]
         public static void HandleAuctionReplicateResponse(Packet packet)
         {
-            // TODO: Order is not confirmed
-            packet.ReadUInt32("ChangeNumberCursor");
-            packet.ReadUInt32("ChangeNumberGlobal");
-            packet.ReadUInt32("DesiredDelay");
-            packet.ReadUInt32("ChangeNumberTombstone");
             packet.ReadUInt32("Result");
+            packet.ReadUInt32("DesiredDelay");
+            packet.ReadUInt32("ChangeNumberGlobal");
+            packet.ReadUInt32("ChangeNumberCursor");
+            packet.ReadUInt32("ChangeNumberTombstone");
 
             var itemsCount = packet.ReadInt32("ItemsCount");
             for (var i = 0; i < itemsCount; ++i)
@@ -260,10 +259,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleAuctionReplicateItems(Packet packet)
         {
             packet.ReadPackedGuid128("Auctioneer");
-            packet.ReadInt32("Count");
             packet.ReadInt32("ChangeNumberGlobal");
             packet.ReadInt32("ChangeNumberCursor");
             packet.ReadInt32("ChangeNumberTombstone");
+            packet.ReadInt32("Count");
         }
 
         [Parser(Opcode.CMSG_AUCTION_PLACE_BID)]

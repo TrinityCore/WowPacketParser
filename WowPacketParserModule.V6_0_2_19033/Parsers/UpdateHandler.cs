@@ -93,8 +93,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             obj.UpdateFields = updates;
             obj.Map = map;
             obj.Area = CoreParsers.WorldStateHandler.CurrentAreaId;
+            obj.Zone = CoreParsers.WorldStateHandler.CurrentZoneId;
             obj.PhaseMask = (uint)CoreParsers.MovementHandler.CurrentPhaseMask;
-            obj.Phases = new HashSet<ushort>(CoreParsers.MovementHandler.ActivePhases);
+            obj.Phases = new HashSet<ushort>(V6_0_2_19033.Parsers.MovementHandler.ActivePhases);
+            obj.DifficultyID = CoreParsers.MovementHandler.CurrentDifficultyID;
 
             // If this is the second time we see the same object (same guid,
             // same position) update its phasemask
@@ -264,7 +266,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                         AccessoryEntry = guid.GetEntry(),
                         SeatId = seat
                     };
-                    Storage.VehicleTemplateAccessorys.Add(vehicleAccessory, packet.TimeSpan);
+                    Storage.VehicleTemplateAccessories.Add(vehicleAccessory, packet.TimeSpan);
                 }
             }
 
@@ -297,7 +299,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
 
             if (hasRotation) // 552
-                packet.ReadPackedQuaternion("GameObject Rotation", index);
+                moveInfo.Rotation = packet.ReadPackedQuaternion("GameObject Rotation", index);
 
             if (hasAreaTrigger) // 772
             {
@@ -447,7 +449,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
 
-            packet.ReadBitsE<MovementFlag>("Movement Flags", 30, index);
+            moveInfo.Flags = (MovementFlag)packet.ReadBitsE<Enums.MovementFlag>("Movement Flags", 30, index);
             moveInfo.FlagsExtra = packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173) ? 16 : 15, index);
 
             var hasTransport = packet.ReadBit("Has Transport Data", index);

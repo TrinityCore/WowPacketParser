@@ -30,9 +30,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 return; // nothing to do
 
             packet.ResetBitReader();
-            uint bits4 = packet.ReadBits(11);
-            uint bits16 = packet.ReadBits(11);
-            uint bits28 = packet.ReadBits(6);
+            uint titleLen = packet.ReadBits(11);
+            uint titleAltLen = packet.ReadBits(11);
+            uint cursorNameLen = packet.ReadBits(6);
             creature.RacialLeader = packet.ReadBit("Leader");
 
             var stringLens = new int[4][];
@@ -55,7 +55,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             creature.TypeFlags2 = packet.ReadUInt32("Creature Type Flags 2");
 
             creature.Type = packet.ReadInt32E<CreatureType>("CreatureType");
-            creature.Family = packet.ReadInt32E<CreatureFamily>("CreatureFamily");
+            creature.Family = (CreatureFamily) packet.ReadInt32<CreatureFamilyId>("CreatureFamily");
             creature.Rank = packet.ReadInt32E<CreatureRank>("Classification");
 
             creature.KillCredits = new uint?[2];
@@ -63,30 +63,37 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 creature.KillCredits[i] = packet.ReadUInt32("ProxyCreatureID", i);
 
             creature.ModelIDs = new uint?[4];
-            for (int i = 0; i < 4; ++i)
+            for (var i = 0; i < 4; ++i)
                 creature.ModelIDs[i] = packet.ReadUInt32("CreatureDisplayID", i);
 
             creature.HealthModifier = packet.ReadSingle("HpMulti");
             creature.ManaModifier = packet.ReadSingle("EnergyMulti");
 
-            //TODO: move to creature_questitems
-            //creature.QuestItems = new uint[6];
-            int questItems = packet.ReadInt32("QuestItems");
+            uint questItems = packet.ReadUInt32("QuestItems");
             creature.MovementID = packet.ReadUInt32("CreatureMovementInfoID");
-            creature.ExpUnk = packet.ReadUInt32E<ClientType>("RequiredExpansion");
-            packet.ReadInt32("FlagQuest");
+            creature.HealthScalingExpansion = packet.ReadUInt32E<ClientType>("HealthScalingExpansion");
+            creature.RequiredExpansion = packet.ReadUInt32E<ClientType>("RequiredExpansion");
 
-            if (bits4 > 1)
+            if (titleLen > 1)
                 creature.SubName = packet.ReadCString("Title");
 
-            if (bits16 > 1)
+            if (titleAltLen > 1)
                 packet.ReadCString("TitleAlt");
 
-            if (bits28 > 1)
+            if (cursorNameLen > 1)
                 creature.IconName = packet.ReadCString("CursorName");
 
-            for (int i = 0; i < questItems; ++i)
-                /*creature.QuestItems[i] = (uint)*/packet.ReadInt32<ItemId>("Quest Item", i);
+            for (uint i = 0; i < questItems; ++i)
+            {
+                CreatureTemplateQuestItem questItem = new CreatureTemplateQuestItem
+                {
+                    CreatureEntry = (uint)entry.Key,
+                    Idx = i,
+                    ItemId = packet.ReadUInt32<ItemId>("QuestItem", i)
+                };
+
+                Storage.CreatureTemplateQuestItems.Add(questItem, packet.TimeSpan);
+            }
 
             packet.AddSniffData(StoreNameType.Unit, entry.Key, "QUERY_RESPONSE");
 

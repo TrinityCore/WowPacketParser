@@ -69,32 +69,32 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("VoiceChat", lenVoiceChat, idx);
         }
 
-        public static void ReadShortageReward(Packet packet, params object[] idx)
+        public static void ReadLfgPlayerQuestReward(Packet packet, params object[] idx)
         {
             packet.ReadInt32("Mask", idx);
             packet.ReadInt32("RewardMoney", idx);
             packet.ReadInt32("RewardXP", idx);
 
-            var int200 = packet.ReadInt32("ItemCount", idx);
-            var int360 = packet.ReadInt32("CurrencyCount", idx);
-            var int520 = packet.ReadInt32("QuantityCount", idx);
+            var itemCount = packet.ReadInt32("ItemCount", idx);
+            var currencyCount = packet.ReadInt32("CurrencyCount", idx);
+            var bonusCurrencyCount = packet.ReadInt32("QuantityCount", idx);
 
             // Item
-            for (var k = 0; k < int200; ++k)
+            for (var k = 0; k < itemCount; ++k)
             {
-                packet.ReadInt32("ItemID", idx, k);
+                packet.ReadInt32<ItemId>("ItemID", idx, k);
                 packet.ReadInt32("Quantity", idx, k);
             }
 
             // Currency
-            for (var k = 0; k < int360; ++k)
+            for (var k = 0; k < currencyCount; ++k)
             {
                 packet.ReadInt32("CurrencyID", idx, k);
                 packet.ReadInt32("Quantity", idx, k);
             }
 
             // BonusCurrency
-            for (var k = 0; k < int520; ++k)
+            for (var k = 0; k < bonusCurrencyCount; ++k)
             {
                 packet.ReadInt32("CurrencyID", idx, k);
                 packet.ReadInt32("Quantity", idx, k);
@@ -102,9 +102,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
 
-            var bit30 = packet.ReadBit("HasBit30", idx);
-            if (bit30)
-                packet.ReadInt32("Unk 2", idx);
+            var hasRewardSpellId = packet.ReadBit("HasRewardSpellID", idx);
+            var hasUnused1 = false;
+            var hasUnused2 = false;
+            var hasHonor = false;
+            if (ClientVersion.AddedInVersion(ClientType.Legion))
+            {
+                hasUnused1 = packet.ReadBit();
+                hasUnused2 = packet.ReadBit();
+                hasHonor = packet.ReadBit("HasHonor", idx);
+            }
+            if (hasRewardSpellId)
+                packet.ReadInt32("RewardSpellID", idx);
+            if (hasUnused1)
+                packet.ReadInt32("Unused1", idx);
+            if (hasUnused2)
+                packet.ReadUInt64("Unused2", idx);
+            if (hasHonor)
+                packet.ReadInt32("Honor", idx);
         }
 
         [Parser(Opcode.CMSG_LFG_LIST_GET_STATUS)]
@@ -123,7 +138,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             // LfgPlayerDungeonInfo
             for (var i = 0; i < int16; ++i)
             {
-                packet.ReadInt32("Slot", i);
+                packet.ReadUInt32("Slot", i);
                 packet.ReadInt32("CompletionQuantity", i);
                 packet.ReadInt32("CompletionLimit", i);
                 packet.ReadInt32("CompletionCurrencyID", i);
@@ -136,20 +151,29 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("PurseQuantity", i);
                 packet.ReadInt32("PurseLimit", i);
                 packet.ReadInt32("Quantity", i);
-                packet.ReadInt32("CompletedMask", i);
+                packet.ReadUInt32("CompletedMask", i);
+                if (ClientVersion.AddedInVersion(ClientType.Legion))
+                    packet.ReadUInt32("EncounterMask", i);
 
-                var int64 = packet.ReadInt32("ShortageRewardCount", i);
-
-                ReadShortageReward(packet, i, "ShortageReward");
-
-                // ShortageReward
-                for (var j = 0; j < int64; ++j)
-                    ReadShortageReward(packet, i ,j, "ShortageReward");
+                var shortageRewardCount = packet.ReadInt32("ShortageRewardCount", i);
+                if (ClientVersion.RemovedInVersion(ClientType.Legion))
+                {
+                    ReadLfgPlayerQuestReward(packet, i, "Rewards");
+                    for (var j = 0; j < shortageRewardCount; ++j)
+                        ReadLfgPlayerQuestReward(packet, i, j, "ShortageReward");
+                }
 
                 packet.ResetBitReader();
 
                 packet.ReadBit("FirstReward", i);
                 packet.ReadBit("ShortageEligible", i);
+
+                if (ClientVersion.AddedInVersion(ClientType.Legion))
+                {
+                    ReadLfgPlayerQuestReward(packet, i, "Rewards");
+                    for (var j = 0; j < shortageRewardCount; ++j)
+                        ReadLfgPlayerQuestReward(packet, i, j, "ShortageReward");
+                }
             }
         }
 
@@ -186,8 +210,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("SubType");
             packet.ReadByte("Reason");
 
-            for (int i = 0; i < 3; i++)
-                packet.ReadByte("Needs", i);
+            if (ClientVersion.RemovedInVersion(ClientType.Legion))
+                for (int i = 0; i < 3; i++)
+                    packet.ReadByte("Needs", i);
 
             var int8 = packet.ReadInt32("SlotsCount");
             packet.ReadInt32("RequestedRoles");
@@ -206,9 +231,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("Joined");
             packet.ReadBit("LfgJoined");
             packet.ReadBit("Queued");
+            if (ClientVersion.AddedInVersion(ClientType.Legion))
+                packet.ReadBit("Unused");
 
-            var bits56 = packet.ReadBits(8);
-            packet.ReadWoWString("Comment", bits56);
+            if (ClientVersion.RemovedInVersion(ClientType.Legion))
+            {
+                var commentLength = packet.ReadBits(8);
+                packet.ReadWoWString("Comment", commentLength);
+            }
         }
 
         [Parser(Opcode.CMSG_DF_GET_SYSTEM_INFO)]

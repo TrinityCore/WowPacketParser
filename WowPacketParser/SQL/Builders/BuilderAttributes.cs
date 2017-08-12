@@ -16,6 +16,7 @@ namespace WowPacketParser.SQL.Builders
         {
             CheckVersionMismatch = checkVersionMissmatch;
         }
+
         /// <summary>
         /// True if mismatch between targeted database and sniff version should be checked
         /// </summary>

@@ -92,32 +92,23 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             {
                 var newpos = packet.ReadVector3("Waypoint Endpoint");
 
-                var mid = new Vector3
+                if (waypoints > 1)
                 {
-                    X = (pos.X + newpos.X)*0.5f,
-                    Y = (pos.Y + newpos.Y)*0.5f,
-                    Z = (pos.Z + newpos.Z)*0.5f
-                };
-
-                if (waypoints != 1)
-                {
-                    var vec = packet.ReadPackedVector3();
-                    vec.X += mid.X;
-                    vec.Y += mid.Y;
-                    vec.Z += mid.Z;
-                    packet.AddValue("Waypoint", vec, 0);
-
-                    if (waypoints > 2)
+                    var mid = new Vector3
                     {
-                        for (var i = 1; i < waypoints - 1; ++i)
-                        {
-                            vec = packet.ReadPackedVector3();
-                            vec.X += mid.X;
-                            vec.Y += mid.Y;
-                            vec.Z += mid.Z;
+                        X = (pos.X + newpos.X) * 0.5f,
+                        Y = (pos.Y + newpos.Y) * 0.5f,
+                        Z = (pos.Z + newpos.Z) * 0.5f
+                    };
 
-                            packet.AddValue("Waypoint", vec, i);
-                        }
+                    for (var i = 0; i < waypoints - 1; ++i)
+                    {
+                        var vec = packet.ReadPackedVector3();
+                        vec.X = mid.X - vec.X;
+                        vec.Y = mid.Y - vec.Y;
+                        vec.Z = mid.Z - vec.Z;
+
+                        packet.AddValue("Waypoint", vec, i);
                     }
                 }
             }
@@ -651,7 +642,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.AddValue("Position", pos);
         }
 
-        [Parser(Opcode.CMSG_MOVE_CHNG_TRANSPORT)]
+        [Parser(Opcode.CMSG_MOVE_CHANGE_TRANSPORT)]
         public static void HandleMoveChngTransport434(Packet packet)
         {
             var guid = new byte[8];
@@ -4526,22 +4517,6 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         {
             var guid = packet.StartBitStream(3, 7, 1, 0, 4, 2, 6, 5);
             packet.ParseBitStream(guid, 3, 5, 6, 7, 2, 1, 0, 4);
-            packet.WriteGuid("Guid", guid);
-        }
-
-        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_FEATHER_FALL)]
-        public static void HandleSplineMoveFeatherFall434(Packet packet)
-        {
-            var guid = packet.StartBitStream(3, 2, 7, 5, 4, 6, 1, 0);
-            packet.ParseBitStream(guid, 1, 4, 7, 6, 2, 0, 5, 3);
-            packet.WriteGuid("Guid", guid);
-        }
-
-        [Parser(Opcode.SMSG_MOVE_SPLINE_SET_NORMAL_FALL)]
-        public static void HandleSplineMoveNormalFall434(Packet packet)
-        {
-            var guid = packet.StartBitStream(3, 5, 1, 0, 7, 6, 2, 4);
-            packet.ParseBitStream(guid, 7, 6, 2, 0, 5, 4, 3, 1);
             packet.WriteGuid("Guid", guid);
         }
 

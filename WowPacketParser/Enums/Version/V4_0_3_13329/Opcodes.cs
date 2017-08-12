@@ -357,7 +357,7 @@ namespace WowPacketParser.Enums.Version.V4_0_3_13329
             {Opcode.CMSG_CHAT_MESSAGE_YELL, 0x3A10}, // (0x7200)(0x0000) //
             {Opcode.CMSG_MINIGAME_MOVE, 0x02F8}, // NF()(0x02F8) //
             {Opcode.CMSG_MOUNT_SPECIAL_ANIM, 0x0171}, // NF()(0x0171) //
-            {Opcode.CMSG_MOVE_CHNG_TRANSPORT, 0x038D}, // NF()(0x038D) //
+            {Opcode.CMSG_MOVE_CHANGE_TRANSPORT, 0x038D}, // NF()(0x038D) //
             {Opcode.CMSG_MOVE_FALL_RESET, 0x02CA}, // NF()(0x02CA) //
             {Opcode.CMSG_MOVE_FEATHER_FALL_ACK, 0x02CF}, // NF()(0x02CF) //
             {Opcode.CMSG_MOVE_FLIGHT_ACK, 0x0340}, // NF()(0x0340) //

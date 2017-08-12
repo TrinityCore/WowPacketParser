@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -72,55 +73,7 @@ namespace WowPacketParser.Misc
         /// <param name="packet">A packet</param>
         public static void AsHex(this Packet packet)
         {
-            var n = Environment.NewLine;
-            var hexDump = new StringBuilder();
-            var length = packet.Length;
-            var stream = packet.GetStream(0);
-
-            var header = "|-------------------------------------------------|---------------------------------|" + n +
-                         "| 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F | 0 1 2 3 4 5 6 7 8 9 A B C D E F |" + n +
-                         "|-------------------------------------------------|---------------------------------|" + n;
-
-            hexDump.Append(header);
-
-            var end = length;
-            for (var i = 0; i < end; i += 16)
-            {
-                var text = new StringBuilder();
-                var hex = new StringBuilder();
-                hex.Append("| ");
-
-                for (var j = 0; j < 16; j++)
-                {
-                    if (j + i < end)
-                    {
-                        var val = stream[j + i];
-                        hex.Append(stream[j + i].ToString("X2"));
-                        hex.Append(" ");
-
-                        if (val >= 32 && val <= 127)
-                            text.Append((char)val);
-                        else
-                            text.Append(".");
-
-                        text.Append(" ");
-                    }
-                    else
-                    {
-                        hex.Append("   ");
-                        text.Append("  ");
-                    }
-                }
-
-                hex.Append("| ");
-                hex.Append(text + "|");
-                hex.Append(n);
-                hexDump.Append(hex);
-            }
-
-            hexDump.Append("|-------------------------------------------------|---------------------------------|");
-
-            packet.WriteLine(hexDump.ToString());
+            packet.WriteLine(Utilities.ByteArrayToHexTable(packet.GetStream(0)));
         }
 
         /// <summary>
@@ -199,28 +152,22 @@ namespace WowPacketParser.Misc
         /// <returns>Flatten result</returns>
         public static IEnumerable<T> Flatten<T>(this IEnumerable<T> values)
         {
-            var list = values.ToList();
-
-            while (list.Any(o => o is IEnumerable<T>))
+            foreach (var item in values)
             {
-                for (var i = 0; i < list.Count; i++)
+                if (!(item is IEnumerable<T>))
+                    yield return item;
+                var childs = item as IEnumerable<T>;
+                if (childs == null) continue;
+                foreach (var child in childs.Flatten())
                 {
-                    var arr = list[i] as IEnumerable<T>;
-                    if (arr == null) continue;
-                    var arrList = arr.ToList();
-                    list.RemoveAt(i);
-
-                    list.InsertRange(i, arrList);
-                    i += arrList.Count - 1;
+                    yield return child;
                 }
             }
-
-            return list;
         }
 
         public static string GetExtension(this FileCompression value)
         {
-            FileCompressionAttribute[] attributes = (FileCompressionAttribute[])value.GetType().GetField(value.ToString()).GetCustomAttributes(typeof(FileCompressionAttribute), false);
+            var attributes = (FileCompressionAttribute[])value.GetType().GetField(value.ToString()).GetCustomAttributes(typeof(FileCompressionAttribute), false);
             return (attributes.Length > 0) ? attributes[0].Extension : "";
         }
 
@@ -229,7 +176,7 @@ namespace WowPacketParser.Misc
             // ReSharper disable once LoopCanBeConvertedToQuery
             foreach (FileCompression item in Enum.GetValues(typeof(FileCompression)))
             {
-                FileCompressionAttribute[] attributes = (FileCompressionAttribute[])item.GetType().GetField(item.ToString()).GetCustomAttributes(typeof(FileCompressionAttribute), false);
+                var attributes = (FileCompressionAttribute[])item.GetType().GetField(item.ToString()).GetCustomAttributes(typeof(FileCompressionAttribute), false);
                 if (attributes.Length > 0 && (attributes[0].Extension.Equals(str.ToLower())))
                     return item;
             }

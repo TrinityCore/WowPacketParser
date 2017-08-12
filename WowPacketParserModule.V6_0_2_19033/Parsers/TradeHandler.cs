@@ -95,7 +95,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (status == 8 || status == 21)
             {
                 packet.ReadInt32("BagResult");
-                packet.ReadInt32("ItemID");
+                packet.ReadInt32<ItemId>("ItemID");
             }
         }
 
@@ -109,7 +109,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleShowTradeSkill(Packet packet)
         {
             packet.ReadPackedGuid128("PlayerGUID");
-            packet.ReadInt32("SpellID");
+            packet.ReadInt32<SpellId>("SpellID");
             packet.ReadInt32("SkillLineID");
         }
     }

@@ -7,7 +7,7 @@ using MySql.Data.MySqlClient;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
+using WowPacketParser.DBC.Structures;
 
 namespace WowPacketParser.SQL
 {
@@ -16,20 +16,15 @@ namespace WowPacketParser.SQL
         /// <summary>
         /// Represents a dictionary of ID-Name dictionaries accessed by <see cref="StoreNameType"/>.
         /// </summary>
-        public static readonly Dictionary<StoreNameType, Dictionary<int, string>> NameStores =
-            new Dictionary<StoreNameType, Dictionary<int, string>>();
-
-        /// <summary>
-        /// Represents a list of broadcast id-<see cref="BroadcastText"/> tuples.
-        /// </summary>
-        public static readonly ICollection<Tuple<uint, BroadcastText>> BroadcastTextStores =
-            new List<Tuple<uint, BroadcastText>>();
+        public static readonly Dictionary<StoreNameType, Dictionary<int, string>> NameStores = new Dictionary<StoreNameType, Dictionary<int, string>>();
 
         /// <summary>
         /// Represents a dictionary of spawn masks accessed by the map id.
         /// </summary>
         public static readonly Dictionary<int, int> MapSpawnMaskStores = new Dictionary<int, int>();
 
+        public static Dictionary<string, List<int>> BroadcastMaleTexts { get; } = new Dictionary<string, List<int>>();
+        public static Dictionary<string, List<int>> BroadcastFemaleTexts { get; } = new Dictionary<string, List<int>>();
 
         private static readonly StoreNameType[] ObjectTypes =
         {
@@ -55,9 +50,9 @@ namespace WowPacketParser.SQL
             if (!SQLConnector.Connected())
                 throw new DataException("Cannot get DB data without an active DB connection.");
 
-            foreach (StoreNameType objectType in ObjectTypes)
+            foreach (var objectType in ObjectTypes)
                 NameStores.Add(objectType, GetDict<int, string>(
-                    $"SELECT `Id`, `Name` FROM `ObjectNames` WHERE `ObjectType`='{objectType}';"));
+                    $"SELECT `Id`, `Name` FROM `object_names` WHERE `ObjectType`='{objectType}';"));
         }
 
         /// <summary>
@@ -68,14 +63,12 @@ namespace WowPacketParser.SQL
             if (!SQLConnector.Connected())
                 throw new DataException("Cannot get DB data without an active DB connection.");
 
-            DateTime startTime = DateTime.Now;
+            var startTime = DateTime.Now;
 
             LoadBroadcastText();
-            // MapDifficulty
-            //LoadMapDifficulty();
 
-            DateTime endTime = DateTime.Now;
-            TimeSpan span = endTime.Subtract(startTime);
+            var endTime = DateTime.Now;
+            var span = DateTime.Now.Subtract(startTime);
             Trace.WriteLine($"SQL loaded in {span.ToFormattedString()}.");
         }
 
@@ -85,38 +78,56 @@ namespace WowPacketParser.SQL
         private static void LoadBroadcastText()
         {
             string query =
-                $"SELECT ID, Language, MaleText, FemaleText, EmoteID1, EmoteID2, EmoteID3, EmoteDelay1, EmoteDelay2, EmoteDelay3, SoundId, UnkEmoteID, Type FROM {Settings.HotfixesDatabase}.broadcast_text;";
-            using (MySqlDataReader reader = SQLConnector.ExecuteQuery(query))
+                "SELECT ID, MaleText, FemaleText, EmoteID1, EmoteID2, EmoteID3, EmoteDelay1, EmoteDelay2, EmoteDelay3, UnkEmoteID, Language, Type, SoundID1, SoundID2, PlayerConditionID " +
+                $"FROM {Settings.HotfixesDatabase}.broadcast_text;";
+            using (var reader = SQLConnector.ExecuteQuery(query))
             {
                 if (reader == null)
                     return;
 
                 while (reader.Read())
                 {
-                    BroadcastText broadcastText = new BroadcastText();
+                    var id = Convert.ToInt32(reader["Id"]);
+                    var maleText = Convert.ToString(reader["MaleText"]);
+                    var femaleText = Convert.ToString(reader["FemaleText"]);
 
-                    uint id = Convert.ToUInt32(reader["Id"]);
+                    if (!BroadcastMaleTexts.ContainsKey(maleText))
+                        BroadcastMaleTexts[maleText] = new List<int>();
+                    BroadcastMaleTexts[maleText].Add(id);
 
-                    broadcastText.Language = Convert.ToInt32(reader["Language"]);
-                    broadcastText.MaleText = Convert.ToString(reader["MaleText"]);
-                    broadcastText.FemaleText = Convert.ToString(reader["FemaleText"]);
+                    if (!BroadcastFemaleTexts.ContainsKey(femaleText))
+                        BroadcastFemaleTexts[femaleText] = new List<int>();
+                    BroadcastFemaleTexts[femaleText].Add(id);
 
-                    broadcastText.EmoteID = new uint?[3];
-                    broadcastText.EmoteID[0] = Convert.ToUInt32(reader["EmoteID1"]);
-                    broadcastText.EmoteID[1] = Convert.ToUInt32(reader["EmoteID2"]);
-                    broadcastText.EmoteID[2] = Convert.ToUInt32(reader["EmoteID3"]);
+                    if (!Settings.UseDBC)
+                        continue;
 
-                    broadcastText.EmoteDelay = new uint?[3];
-                    broadcastText.EmoteDelay[0] = Convert.ToUInt32(reader["EmoteDelay1"]);
-                    broadcastText.EmoteDelay[1] = Convert.ToUInt32(reader["EmoteDelay2"]);
-                    broadcastText.EmoteDelay[2] = Convert.ToUInt32(reader["EmoteDelay3"]);
+                    var broadcastText = new BroadcastTextEntry()
+                    {
+                        MaleText = maleText,
+                        FemaleText = femaleText,
 
-                    broadcastText.SoundId = Convert.ToUInt32(reader["SoundId"]);
-                    broadcastText.UnkEmoteId = Convert.ToUInt32(reader["UnkEmoteID"]);
-                    broadcastText.Type = Convert.ToUInt32(reader["Type"]);
+                    };
+                    broadcastText.EmoteID = new ushort[3];
+                    broadcastText.EmoteID[0] = Convert.ToUInt16(reader["EmoteID1"]);
+                    broadcastText.EmoteID[1] = Convert.ToUInt16(reader["EmoteID2"]);
+                    broadcastText.EmoteID[2] = Convert.ToUInt16(reader["EmoteID3"]);
+                    broadcastText.EmoteDelay = new ushort[3];
+                    broadcastText.EmoteDelay[0] = Convert.ToUInt16(reader["EmoteDelay1"]);
+                    broadcastText.EmoteDelay[1] = Convert.ToUInt16(reader["EmoteDelay2"]);
+                    broadcastText.EmoteDelay[2] = Convert.ToUInt16(reader["EmoteDelay3"]);
+                    broadcastText.UnkEmoteID = Convert.ToUInt16(reader["UnkEmoteID"]);
+                    broadcastText.Language = Convert.ToByte(reader["Language"]);
+                    broadcastText.Type = Convert.ToByte(reader["Type"]);
+                    broadcastText.SoundID = new uint[2];
+                    broadcastText.SoundID[0] = Convert.ToUInt32(reader["SoundID1"]);
+                    broadcastText.SoundID[1] = Convert.ToUInt32(reader["SoundID2"]);
+                    broadcastText.PlayerConditionID = Convert.ToUInt32(reader["PlayerConditionID"]);
 
-                    var tuple = Tuple.Create(id, broadcastText);
-                    BroadcastTextStores.Add(tuple);
+                    if (!DBC.DBC.BroadcastText.ContainsKey(id))
+                        DBC.DBC.BroadcastText.Add(id, broadcastText);
+                    else
+                        DBC.DBC.BroadcastText[id] = broadcastText;
                 }
             }
         }
@@ -125,7 +136,7 @@ namespace WowPacketParser.SQL
         // TODO: Drop this and use the GetDict<T, TK> method below
         private static Dictionary<T, TK> GetDict<T, TK>(string query)
         {
-            using (MySqlDataReader reader = SQLConnector.ExecuteQuery(query))
+            using (var reader = SQLConnector.ExecuteQuery(query))
             {
                 if (reader == null)
                     return null;
@@ -142,7 +153,7 @@ namespace WowPacketParser.SQL
         private static object[] GetValues(MySqlDataReader reader, int fieldCount)
         {
             var values = new object[fieldCount];
-            int count = reader.GetValues(values);
+            var count = reader.GetValues(values);
             if (count != fieldCount)
                 throw new InvalidConstraintException(
                     "Number of fields from DB is different of the number of fields with DBFieldName attribute");
@@ -155,7 +166,7 @@ namespace WowPacketParser.SQL
             var cond = new RowList<T>();
             cond.AddRange(conditionList.Select(c => c.Item1));
             return Get(cond, database);
-        } 
+        }
 
         public static RowList<T> Get<T>(RowList<T> rowList = null, string database = null)
             where T : IDataModel, new()
@@ -166,19 +177,20 @@ namespace WowPacketParser.SQL
 
             var result = new RowList<T>();
 
-            using (MySqlDataReader reader = SQLConnector.ExecuteQuery(new SQLSelect<T>(rowList, database).Build()))
+            using (var reader = SQLConnector.ExecuteQuery(new SQLSelect<T>(rowList, database).Build()))
             {
                 if (reader == null)
                     return null;
 
                 var fields = SQLUtil.GetFields<T>();
+                var fieldsCount = fields.Select(f => f.Item3.First().Count).Sum();
 
                 while (reader.Read())
                 {
-                    T instance = (T)Activator.CreateInstance(typeof(T));
-                    var values = GetValues(reader, SQLUtil.GetFields<T>().Select(f => f.Item3.First().Count).Sum());
+                    var instance = (T)Activator.CreateInstance(typeof(T));
+                    var values = GetValues(reader, fieldsCount);
 
-                    int i = 0;
+                    var i = 0;
                     foreach (var field in fields)
                     {
                         if (values[i] is DBNull && field.Item2.FieldType == typeof(string))
@@ -187,18 +199,18 @@ namespace WowPacketParser.SQL
                             field.Item2.SetValue(instance, Enum.Parse(field.Item2.FieldType, values[i].ToString()));
                         else if (field.Item2.FieldType.BaseType == typeof(Array))
                         {
-                            Array arr = Array.CreateInstance(field.Item2.FieldType.GetElementType(), field.Item3.First().Count);
+                            var arr = Array.CreateInstance(field.Item2.FieldType.GetElementType(), field.Item3.First().Count);
 
-                            for (int j = 0; j < arr.Length; j++)
+                            for (var j = 0; j < arr.Length; j++)
                             {
-                                Type elemType = arr.GetType().GetElementType();
-                                
+                                var elemType = arr.GetType().GetElementType();
+
                                 if (elemType.IsEnum)
                                     arr.SetValue(Enum.Parse(elemType, values[i + j].ToString()), j);
                                 else if (Nullable.GetUnderlyingType(elemType) != null) //is nullable
                                     arr.SetValue(Convert.ChangeType(values[i + j], Nullable.GetUnderlyingType(elemType)), j);
                                 else
-                                    arr.SetValue(Convert.ChangeType(values[i + j], elemType), j); 
+                                    arr.SetValue(Convert.ChangeType(values[i + j], elemType), j);
                             }
                             field.Item2.SetValue(instance, arr);
                         }
@@ -206,7 +218,7 @@ namespace WowPacketParser.SQL
                             field.Item2.SetValue(instance, Convert.ToBoolean(values[i]));
                         else if (Nullable.GetUnderlyingType(field.Item2.FieldType) != null) // is nullable
                         {
-                            Type uType = Nullable.GetUnderlyingType(field.Item2.FieldType);
+                            var uType = Nullable.GetUnderlyingType(field.Item2.FieldType);
                             field.Item2.SetValue(instance,
                                 uType.IsEnum
                                     ? Enum.Parse(uType, values[i].ToString())

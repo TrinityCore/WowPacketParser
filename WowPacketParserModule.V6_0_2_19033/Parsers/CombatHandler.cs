@@ -7,7 +7,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class CombatHandler
     {
-
         public static void ReadAttackRoundInfo(Packet packet, params object[] indexes)
         {
             var hitInfo = packet.ReadInt32E<SpellHitInfo>("HitInfo");

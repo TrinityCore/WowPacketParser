@@ -139,5 +139,19 @@ namespace WowPacketParser.SQL.Builders
 
             return new SQLInsert<WeatherUpdate>(rows, ignore: true, withDelete: false).Build();
         }
+
+        [BuilderMethod]
+        public static string SceneTemplates()
+        {
+            if (Storage.Scenes.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.scene_template))
+                return string.Empty;
+
+            var templateDb = SQLDatabase.Get(Storage.Scenes, Settings.TDBDatabase);
+
+            return SQLUtil.Compare(Storage.Scenes, templateDb, StoreNameType.None);
+        }
     }
 }
