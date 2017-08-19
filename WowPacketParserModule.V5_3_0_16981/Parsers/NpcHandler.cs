@@ -6,6 +6,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V5_3_0_16981.Parsers
 {
@@ -32,8 +33,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadXORByte(guid, 2);
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 3);
-            packet.WriteGuid("GUID", guid);
 
+            CoreParsers.NpcHandler.LastGossipOption.Guid = packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_GOSSIP_SELECT_OPTION)]
@@ -86,19 +87,21 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadXORByte(guidBytes, 6);
 
             var gossipOptions = new List<GossipMenuOption>((int)amountOfOptions);
+            var gossipOptionBoxes = new List<GossipMenuOptionBox>((int)amountOfOptions);
             for (int i = 0; i < amountOfOptions; ++i)
             {
-                GossipMenuOption gossipOption = new GossipMenuOption
-                {
-                    OptionText = packet.ReadWoWString("Text", optionTextLen[i], i),
-                    BoxText = packet.ReadWoWString("Box Text", boxTextLen[i], i),
-                    BoxMoney = packet.ReadUInt32("Required money", i),
-                    OptionIcon = packet.ReadByteE<GossipOptionIcon>("Icon", i),
-                    BoxCoded = packet.ReadBool("Box", i),
-                    ID = packet.ReadUInt32("Index", i)
-                };
+                GossipMenuOption gossipOption = new GossipMenuOption();
+                GossipMenuOptionBox gossipMenuOptionBox = new GossipMenuOptionBox();
+                gossipOption.OptionText = packet.ReadWoWString("Text", optionTextLen[i], i);
+                gossipMenuOptionBox.BoxText = packet.ReadWoWString("Box Text", boxTextLen[i], i);
+                gossipMenuOptionBox.BoxMoney = packet.ReadUInt32("Required money", i);
+                gossipOption.OptionIcon = packet.ReadByteE<GossipOptionIcon>("Icon", i);
+                gossipMenuOptionBox.BoxCoded = packet.ReadBool("Box", i);
+                gossipOption.OptionIndex = gossipMenuOptionBox.OptionIndex = packet.ReadUInt32("Index", i);
 
                 gossipOptions.Add(gossipOption);
+                if (!gossipMenuOptionBox.IsEmpty)
+                    gossipOptionBoxes.Add(gossipMenuOptionBox);
             }
             packet.ReadXORByte(guidBytes, 0);
 
@@ -135,11 +138,19 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             gossipOptions.ForEach(g =>
             {
-                g.MenuID = menuId;
+                g.MenuId = menuId;
                 Storage.GossipMenuOptions.Add(g, packet.TimeSpan);
+            });
+            gossipOptionBoxes.ForEach(gb =>
+            {
+                gb.MenuId = menuId;
+                Storage.GossipMenuOptionBoxes.Add(gb, packet.TimeSpan);
             });
 
             Storage.Gossips.Add(gossip, packet.TimeSpan);
+            var lastGossipOption = CoreParsers.NpcHandler.LastGossipOption;
+            if (lastGossipOption.HasSelection)
+                Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = lastGossipOption.MenuId, OptionIndex = lastGossipOption.OptionIndex, ActionMenuId = gossip.Entry }, packet.TimeSpan);
 
             packet.AddSniffData(StoreNameType.Gossip, (int)menuId, guid.GetEntry().ToString(CultureInfo.InvariantCulture));
         }
@@ -148,51 +159,59 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         public static void HandleServerTrainerList(Packet packet)
         {
             var guidBytes = new byte[8];
-            
+
             guidBytes[0] = packet.ReadBit();
-            uint count = packet.ReadBits("Count", 19);
+            uint count = packet.ReadBits("Spells", 19);
             packet.StartBitStream(guidBytes, 2, 6);
             uint titleLen = packet.ReadBits(11);
             packet.StartBitStream(guidBytes, 3, 7, 1, 4, 5);
             packet.ResetBitReader();
 
-            var tempList = new List<NpcTrainer>();
+            var tempList = new List<TrainerSpell>();
             for (int i = 0; i < count; ++i)
             {
-                NpcTrainer trainer = new NpcTrainer();
-                trainer.ReqSkillLine = packet.ReadUInt32("Required Skill", i);
-                trainer.ReqSkillRank = packet.ReadUInt32("Required Skill Level", i);
-                trainer.MoneyCost = packet.ReadUInt32("Cost", i);
+                TrainerSpell trainerSpell = new TrainerSpell
+                {
+                    ReqSkillLine = packet.ReadUInt32("ReqSkillLine", i),
+                    ReqSkillRank = packet.ReadUInt32("ReqSkillRank", i),
+                    MoneyCost = packet.ReadUInt32("MoneyCost", i),
+                    ReqLevel = packet.ReadByte("ReqLevel", i),
+                    ReqAbility = new uint[3]
+                };
+                for (var j = 0; j < 3; ++j)
+                    trainerSpell.ReqAbility[j] = packet.ReadUInt32<SpellId>("ReqAbility", i);
 
-                trainer.ReqLevel = packet.ReadByte("Required Level", i);
-                packet.ReadInt32<SpellId>("Required Spell ID", i);
-                packet.ReadInt32("Profession Dialog", i);
-                packet.ReadInt32("Profession Button", i);
+                trainerSpell.SpellId = packet.ReadUInt32<SpellId>("SpellID", i);
+                packet.ReadByteE<TrainerSpellState>("Usable", i);
 
-                trainer.SpellID = packet.ReadInt32<SpellId>("Spell ID", i);
-                packet.ReadByteE<TrainerSpellState>("State", i);
-
-                tempList.Add(trainer);
+                tempList.Add(trainerSpell);
             }
 
+            Trainer trainer = new Trainer();
             packet.ReadXORBytes(guidBytes, 3, 2);
-            packet.ReadWoWString("Title", titleLen);
+            trainer.Greeting = packet.ReadWoWString("Title", titleLen);
             packet.ReadXORBytes(guidBytes, 7, 6, 4, 1, 0, 5);
 
-            packet.ReadInt32E<TrainerType>("Type");
-            packet.ReadInt32("Unk Int32"); // Same unk exists in CMSG_TRAINER_BUY_SPELL
+            trainer.Type = packet.ReadInt32E<TrainerType>("Type");
+            trainer.Id = packet.ReadUInt32("TrainerID");
 
-            uint entry = packet.WriteGuid("Guid", guidBytes).GetEntry();
-            tempList.ForEach(v =>
+            packet.WriteGuid("TrainerGUID", guidBytes);
+            Storage.Trainers.Add(trainer, packet.TimeSpan);
+            tempList.ForEach(trainerSpell =>
             {
-                v.ID = entry;
-                Storage.NpcTrainers.Add(v, packet.TimeSpan);
+                trainerSpell.TrainerId = trainer.Id;
+                Storage.TrainerSpells.Add(trainerSpell, packet.TimeSpan);
             });
+            var lastGossipOption = CoreParsers.NpcHandler.LastGossipOption;
+            if (lastGossipOption.HasSelection)
+                Storage.GossipMenuOptionTrainers.Add(new GossipMenuOptionTrainer { MenuId = lastGossipOption.MenuId, OptionIndex = lastGossipOption.OptionIndex, TrainerId = trainer.Id }, packet.TimeSpan);
+            else
+                Storage.CreatureDefaultTrainers.Add(new CreatureDefaultTrainer { CreatureId = lastGossipOption.Guid.GetEntry(), TrainerId = trainer.Id }, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_VENDOR_INVENTORY)]
         public static void HandleVendorInventoryList(Packet packet)
-        {   
+        {
             var guid = new byte[8];
 
             packet.StartBitStream(guid, 5, 4, 7, 1, 2, 3);

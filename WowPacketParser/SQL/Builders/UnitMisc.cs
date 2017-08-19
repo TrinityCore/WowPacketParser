@@ -180,12 +180,24 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.TrainerSpells.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.trainer_spell))
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.trainer))
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.TrainerSpells);
 
             return SQLUtil.Compare(Storage.TrainerSpells, templatesDb, StoreNameType.None);
+        }
+
+        [BuilderMethod]
+        public static string CreatureDefaultTrainer()
+        {
+            if (Storage.CreatureDefaultTrainers.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.trainer))
+                return string.Empty;
+
+            return SQLUtil.Compare(Storage.CreatureDefaultTrainers, SQLDatabase.Get(Storage.CreatureDefaultTrainers), StoreNameType.None);
         }
 
         [BuilderMethod]
@@ -277,37 +289,7 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.points_of_interest))
                 return string.Empty;
 
-            var result = string.Empty;
-
-            if (!Storage.GossipSelects.IsEmpty())
-            {
-                var gossipPOIsTable = new Dictionary<Tuple<uint, uint>, uint>();
-
-                foreach (var poi in Storage.GossipPOIs)
-                {
-                    foreach (var gossipSelect in Storage.GossipSelects)
-                    {
-                        var tuple = Tuple.Create(gossipSelect.Key.Item1, gossipSelect.Key.Item2);
-
-                        if (gossipPOIsTable.ContainsKey(tuple))
-                            continue;
-
-                        var timeSpan = poi.Item2 - gossipSelect.Value.Item2;
-                        if (timeSpan != null && timeSpan.Value.Duration() <= TimeSpan.FromSeconds(1))
-                            gossipPOIsTable.Add(tuple, poi.Item1.ID.GetValueOrDefault());
-                    }
-                }
-
-                var menuOptions = new DataBag<GossipMenuOption>();
-                foreach (var u in gossipPOIsTable)
-                    menuOptions.Add(new GossipMenuOption { ID = u.Key.Item2, MenuID = u.Key.Item1, ActionPoiID = u.Value });
-
-                result += SQLUtil.Compare(menuOptions, SQLDatabase.Get(menuOptions), StoreNameType.None);
-            }
-
-            result += SQLUtil.Compare(Storage.GossipPOIs, SQLDatabase.Get(Storage.GossipPOIs), StoreNameType.None);
-
-            return result;
+            return SQLUtil.Compare(Storage.GossipPOIs, SQLDatabase.Get(Storage.GossipPOIs), StoreNameType.None);
         }
 
         [BuilderMethod]
@@ -325,7 +307,12 @@ namespace WowPacketParser.SQL.Builders
 
             // `gossip_menu_option`
             if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu_option))
+            {
                 result += SQLUtil.Compare(Storage.GossipMenuOptions, SQLDatabase.Get(Storage.GossipMenuOptions), t => t.BroadcastTextIDHelper);
+                result += SQLUtil.Compare(Storage.GossipMenuOptionActions, SQLDatabase.Get(Storage.GossipMenuOptionActions), StoreNameType.None);
+                result += SQLUtil.Compare(Storage.GossipMenuOptionBoxes, SQLDatabase.Get(Storage.GossipMenuOptionBoxes), t => t.BroadcastTextIdHelper);
+                result += SQLUtil.Compare(Storage.GossipMenuOptionTrainers, SQLDatabase.Get(Storage.GossipMenuOptionTrainers), StoreNameType.None);
+            }
 
             return result;
         }

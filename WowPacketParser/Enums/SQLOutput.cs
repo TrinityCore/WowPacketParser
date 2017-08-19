@@ -41,7 +41,6 @@
         SniffData,
         SniffDataOpcodes,
         trainer,
-        trainer_spell,
         vehicle_template_accessory,
         weather_updates,
 
