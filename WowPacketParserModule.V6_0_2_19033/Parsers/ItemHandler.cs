@@ -71,6 +71,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
+        public static void ReadItemReward(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32<ItemId>("ItemID", indexes);
+            packet.ReadInt32("ItemDisplayID", indexes);
+            packet.ReadUInt32("Quantity", indexes);
+        }
+
         [Parser(Opcode.SMSG_ITEM_PURCHASE_REFUND_RESULT)]
         public static void HandleItemPurchaseRefundResult(Packet packet)
         {
@@ -86,7 +93,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_SORT_BAGS)]
         [Parser(Opcode.CMSG_SORT_BANK_BAGS)]
         [Parser(Opcode.CMSG_SORT_REAGENT_BANK_BAGS)]
-        [Parser(Opcode.SMSG_SORT_BAGS_ACK)]
+        [Parser(Opcode.SMSG_SORT_BAGS_RESULT)]
         public static void HandleItemZero(Packet packet)
         {
         }

@@ -61,19 +61,16 @@ namespace WowPacketParserModule.V5_4_2_17659.Parsers
             if (hasPawerData)
             {
                 var bits74 = packet.ReadBits(21);
-                if (hasPawerData)
+                packet.ReadInt32("Int70");
+
+                for (var i = 0; i < bits74; ++i)
                 {
-                    packet.ReadInt32("Int70");
-
-                    for (var i = 0; i < bits74; ++i)
-                    {
-                        packet.ReadInt32("IntED", i);
-                        packet.ReadInt32("IntED", i);
-                    }
-
-                    packet.ReadInt32("Int6C");
-                    packet.ReadInt32("Int68");
+                    packet.ReadInt32("IntED", i);
+                    packet.ReadInt32("IntED", i);
                 }
+
+                packet.ReadInt32("Int6C");
+                packet.ReadInt32("Int68");
 
             }
 

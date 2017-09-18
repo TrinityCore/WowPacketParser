@@ -60,5 +60,32 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32<ItemId>("ItemID");
             SpellHandler.ReadSpellCastRequest(packet, "Cast");
         }
+
+        [Parser(Opcode.CMSG_BUY_ITEM)]
+        public static void HandleBuyItem(Packet packet)
+        {
+            packet.ReadPackedGuid128("VendorGUID");
+            packet.ReadPackedGuid128("ContainerGUID");
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_2_0_23826))
+                V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, "ItemInstance");
+
+            packet.ReadInt32("Quantity");
+            packet.ReadUInt32("Muid");
+            packet.ReadUInt32("Slot");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+                V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, "ItemInstance");
+
+            packet.ResetBitReader();
+
+            packet.ReadBits("ItemType", 2);
+        }
+
+        [Parser(Opcode.SMSG_SOCKET_GEMS)]
+        public static void HandleSocketGemsResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("Item");
+        }
     }
 }

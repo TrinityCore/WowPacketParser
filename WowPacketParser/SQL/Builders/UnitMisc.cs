@@ -85,6 +85,20 @@ namespace WowPacketParser.SQL.Builders
                 });
         }
 
+        [BuilderMethod]
+        public static string CreatureTemplateScalingData()
+        {
+            if (Storage.CreatureTemplateScalings.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template_scaling))
+                return string.Empty;
+
+            var templateDb = SQLDatabase.Get(Storage.CreatureTemplateScalings);
+
+            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.CreatureTemplateScalings.OrderBy(x => x.Item1.Entry).ToArray() : Storage.CreatureTemplateScalings.ToArray(), templateDb, x => string.Empty);
+        }
+
         [BuilderMethod(Units = true)]
         public static string ModelData(Dictionary<WowGuid, Unit> units)
         {
@@ -144,6 +158,46 @@ namespace WowPacketParser.SQL.Builders
             var templatesDb = SQLDatabase.Get(Storage.NpcTrainers);
 
             return SQLUtil.Compare(Storage.NpcTrainers, templatesDb, StoreNameType.Unit);
+        }
+
+        [BuilderMethod]
+        public static string Trainer()
+        {
+            if (Storage.Trainers.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.trainer))
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.Trainers);
+
+            return SQLUtil.Compare(Storage.Trainers, templatesDb, StoreNameType.None);
+        }
+
+        [BuilderMethod]
+        public static string TrainerSpell()
+        {
+            if (Storage.TrainerSpells.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.trainer))
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.TrainerSpells);
+
+            return SQLUtil.Compare(Storage.TrainerSpells, templatesDb, StoreNameType.None);
+        }
+
+        [BuilderMethod]
+        public static string CreatureDefaultTrainer()
+        {
+            if (Storage.CreatureDefaultTrainers.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.trainer))
+                return string.Empty;
+
+            return SQLUtil.Compare(Storage.CreatureDefaultTrainers, SQLDatabase.Get(Storage.CreatureDefaultTrainers), StoreNameType.None);
         }
 
         [BuilderMethod]
@@ -235,37 +289,7 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.points_of_interest))
                 return string.Empty;
 
-            var result = string.Empty;
-
-            if (!Storage.GossipSelects.IsEmpty())
-            {
-                var gossipPOIsTable = new Dictionary<Tuple<uint, uint>, uint>();
-
-                foreach (var poi in Storage.GossipPOIs)
-                {
-                    foreach (var gossipSelect in Storage.GossipSelects)
-                    {
-                        var tuple = Tuple.Create(gossipSelect.Key.Item1, gossipSelect.Key.Item2);
-
-                        if (gossipPOIsTable.ContainsKey(tuple))
-                            continue;
-
-                        var timeSpan = poi.Item2 - gossipSelect.Value.Item2;
-                        if (timeSpan != null && timeSpan.Value.Duration() <= TimeSpan.FromSeconds(1))
-                            gossipPOIsTable.Add(tuple, poi.Item1.ID.GetValueOrDefault());
-                    }
-                }
-
-                var menuOptions = new DataBag<GossipMenuOption>();
-                foreach (var u in gossipPOIsTable)
-                    menuOptions.Add(new GossipMenuOption { ID = u.Key.Item2, MenuID = u.Key.Item1, ActionPoiID = u.Value });
-
-                result += SQLUtil.Compare(menuOptions, SQLDatabase.Get(menuOptions), StoreNameType.None);
-            }
-
-            result += SQLUtil.Compare(Storage.GossipPOIs, SQLDatabase.Get(Storage.GossipPOIs), StoreNameType.None);
-
-            return result;
+            return SQLUtil.Compare(Storage.GossipPOIs, SQLDatabase.Get(Storage.GossipPOIs), StoreNameType.None);
         }
 
         [BuilderMethod]
@@ -283,7 +307,12 @@ namespace WowPacketParser.SQL.Builders
 
             // `gossip_menu_option`
             if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu_option))
+            {
                 result += SQLUtil.Compare(Storage.GossipMenuOptions, SQLDatabase.Get(Storage.GossipMenuOptions), t => t.BroadcastTextIDHelper);
+                result += SQLUtil.Compare(Storage.GossipMenuOptionActions, SQLDatabase.Get(Storage.GossipMenuOptionActions), StoreNameType.None);
+                result += SQLUtil.Compare(Storage.GossipMenuOptionBoxes, SQLDatabase.Get(Storage.GossipMenuOptionBoxes), t => t.BroadcastTextIdHelper);
+                result += SQLUtil.Compare(Storage.GossipMenuOptionTrainers, SQLDatabase.Get(Storage.GossipMenuOptionTrainers), StoreNameType.None);
+            }
 
             return result;
         }
@@ -386,17 +415,29 @@ namespace WowPacketParser.SQL.Builders
 
             foreach (var unit in units)
             {
-                if (Storage.CreatureTemplatesNonWDB.Where(creature => creature.Item1.Entry == unit.Key.GetEntry()).Any())
+                if (Storage.CreatureTemplatesNonWDB.Any(creature => creature.Item1.Entry == unit.Key.GetEntry()))
                     continue;
 
                 var npc = unit.Value;
+                int minLevel, maxLevel;
+
+                if (npc.ScalingMinLevel != null && npc.ScalingMaxLevel != null)
+                {
+                    minLevel = (int)npc.ScalingMinLevel;
+                    maxLevel = (int)npc.ScalingMaxLevel;
+                }
+                else
+                {
+                    minLevel = (int)levels[unit.Key.GetEntry()].Item1;
+                    maxLevel = (int)levels[unit.Key.GetEntry()].Item2;
+                }
 
                 var template = new CreatureTemplateNonWDB
                 {
                     Entry = unit.Key.GetEntry(),
                     GossipMenuId = npc.GossipId,
-                    MinLevel = (int)levels[unit.Key.GetEntry()].Item1,
-                    MaxLevel = (int)levels[unit.Key.GetEntry()].Item2,
+                    MinLevel = minLevel,
+                    MaxLevel = maxLevel,
                     Faction = npc.Faction.GetValueOrDefault(35),
                     NpcFlag = npc.NpcFlags.GetValueOrDefault(NPCFlags.None),
                     SpeedRun = npc.Movement.RunSpeed,
@@ -406,6 +447,7 @@ namespace WowPacketParser.SQL.Builders
                     UnitClass = (uint)npc.Class.GetValueOrDefault(Class.Warrior),
                     UnitFlags = npc.UnitFlags.GetValueOrDefault(UnitFlags.None),
                     UnitFlags2 = npc.UnitFlags2.GetValueOrDefault(UnitFlags2.None),
+                    UnitFlags3 = npc.UnitFlags3.GetValueOrDefault(UnitFlags3.None),
                     DynamicFlags = npc.DynamicFlags.GetValueOrDefault(UnitDynamicFlags.None),
                     VehicleID = npc.Movement.VehicleId,
                     HoverHeight = npc.HoverHeight.GetValueOrDefault(1.0f)

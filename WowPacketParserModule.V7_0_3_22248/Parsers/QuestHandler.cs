@@ -29,7 +29,10 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             packet.ReadInt32("Money", idx);
             packet.ReadInt32("XP", idx);
-            packet.ReadInt32("ArtifactXP", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+                packet.ReadInt64("ArtifactXP", idx);
+            else
+                packet.ReadInt32("ArtifactXP", idx);
             packet.ReadInt32("ArtifactCategoryID", idx);
             packet.ReadInt32("Honor", idx);
             packet.ReadInt32("Title", idx);
@@ -65,9 +68,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
         public static void ReadGossipText(Packet packet, params object[] indexes)
         {
-            packet.ReadUInt32("QuestID", indexes);
-            packet.ReadUInt32("QuestType", indexes);
-            packet.ReadUInt32("QuestLevel", indexes);
+            packet.ReadInt32("QuestID", indexes);
+            packet.ReadInt32("QuestType", indexes);
+            packet.ReadInt32("QuestLevel", indexes);
 
             for (int i = 0; i < 2; i++)
                 packet.ReadUInt32("QuestFlags", indexes, i);
@@ -75,7 +78,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ResetBitReader();
 
             packet.ReadBit("Repeatable", indexes);
-            packet.ReadBit("IsQuestIgnored", indexes);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+                packet.ReadBit("IsQuestIgnored", indexes);
 
             var guestTitleLen = packet.ReadBits(9);
             packet.ReadWoWString("QuestTitle", guestTitleLen, indexes);
@@ -199,6 +203,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             quest.AllowableRacesWod = packet.ReadInt32("AllowableRaces");
             quest.QuestRewardID = packet.ReadInt32("QuestRewardID");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+                quest.Expansion = packet.ReadInt32("Expansion");
+
             packet.ResetBitReader();
 
             uint logTitleLen = packet.ReadBits(9);
@@ -211,7 +218,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             uint questTurnTargetNameLen = packet.ReadBits(8);
             uint questCompletionLogLen = packet.ReadBits(11);
 
-            for (int i = 0; i < int2946; ++i)
+            for (uint i = 0; i < int2946; ++i)
             {
                 var objectiveId = packet.ReadEntry("Id", i);
 
@@ -222,6 +229,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 };
                 questInfoObjective.Type = packet.ReadByteE<QuestRequirementType>("Quest Requirement Type", i);
                 questInfoObjective.StorageIndex = packet.ReadSByte("StorageIndex", i);
+                questInfoObjective.Order = i;
                 questInfoObjective.ObjectID = packet.ReadInt32("ObjectID", i);
                 questInfoObjective.Amount = packet.ReadInt32("Amount", i);
                 questInfoObjective.Flags = packet.ReadUInt32("Flags", i);
@@ -230,12 +238,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 questInfoObjective.ProgressBarWeight = packet.ReadSingle("ProgressBarWeight", i);
 
                 int visualEffectsCount = packet.ReadInt32("VisualEffects", i);
-                for (int j = 0; j < visualEffectsCount; ++j)
+                for (uint j = 0; j < visualEffectsCount; ++j)
                 {
                     QuestVisualEffect questVisualEffect = new QuestVisualEffect
                     {
                         ID = questInfoObjective.ID,
-                        Index = (uint) j,
+                        Index = j,
                         VisualEffect = packet.ReadInt32("VisualEffectId", i, j)
                     };
 
@@ -331,9 +339,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             ReadQuestRewards(packet, "QuestRewards");
 
-            packet.ReadInt32("PortraitTurnIn");
-            packet.ReadInt32("PortraitGiver");
             packet.ReadInt32("QuestPackageID");
+            packet.ReadInt32("PortraitGiver");
+            packet.ReadInt32("PortraitTurnIn");
 
             packet.ResetBitReader();
 
@@ -368,15 +376,16 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             packet.ReadInt32("QuestPackageID");
             packet.ReadInt32("PortraitGiver");
-            packet.ReadInt32("SuggestedPartyMembers");
+            packet.ReadInt32("PortraitTurnIn");
 
             for (int i = 0; i < 2; i++)
                 packet.ReadInt32("QuestFlags", i);
 
-            packet.ReadInt32("PortraitTurnIn");
+            packet.ReadInt32("SuggestedPartyMembers");
             int learnSpellsCount = packet.ReadInt32("LearnSpellsCount");
 
-            ReadQuestRewards(packet);
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_2_0_23826))
+                ReadQuestRewards(packet);
 
             int descEmotesCount = packet.ReadInt32("DescEmotesCount");
             int objectivesCount = packet.ReadInt32("ObjectivesCount");
@@ -414,8 +423,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("DisplayPopup");
             packet.ReadBit("StartCheat");
             packet.ReadBit("AutoLaunched");
-            packet.ReadBit("CanIgnoreQuest");
-            packet.ReadBit("IsQuestIgnored");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_2_0_23826))
+            {
+                packet.ReadBit("CanIgnoreQuest");
+                packet.ReadBit("IsQuestIgnored");
+            }
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+                ReadQuestRewards(packet);
 
             packet.ReadWoWString("QuestTitle", questTitleLen);
             packet.ReadWoWString("DescriptionText", descriptionTextLen);
@@ -468,8 +483,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ResetBitReader();
 
             packet.ReadBit("AutoLaunched");
-            packet.ReadBit("CanIgnoreQuest");
-            packet.ReadBit("IsQuestIgnored");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+            {
+                packet.ReadBit("CanIgnoreQuest");
+                packet.ReadBit("IsQuestIgnored");
+            }
 
             packet.ResetBitReader();
 
@@ -532,6 +551,115 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
 
             Storage.QuestGreetings.Add(questGreeting, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.SMSG_QUEST_GIVER_INVALID_QUEST, ClientVersionBuild.V7_2_0_23826)]
+        public static void HandleQuestGiverInvalidQuest(Packet packet)
+        {
+            packet.ReadUInt32E<QuestReasonTypeWoD>("Reason");
+            packet.ReadInt32("ContributionRewardID");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("SendErrorMessage");
+
+            var len = packet.ReadBits(9);
+            packet.ReadWoWString("ReasonText", len);
+        }
+
+        [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_COMPLETE)]
+        public static void HandlQuestGiverQuestComplete(Packet packet)
+        {
+            packet.ReadInt32("QuestId");
+            packet.ReadInt32("XpReward");
+            packet.ReadInt64("MoneyReward");
+            packet.ReadInt32("SkillLineIDReward");
+            packet.ReadInt32("NumSkillUpsReward");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("UseQuestReward");
+            packet.ReadBit("LaunchGossip");
+            packet.ReadBit("LaunchQuest");
+            packet.ReadBit("HideChatMessage");
+
+            V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, "ItemReward");
+        }
+
+        [Parser(Opcode.SMSG_DISPLAY_PLAYER_CHOICE)]
+        public static void HandleDisplayPlayerChoice(Packet packet)
+        {
+            packet.ReadInt32("ChoiceID");
+            var responseCount = packet.ReadUInt32();
+            packet.ReadPackedGuid128("NpcGUID");
+            var questionLength = packet.ReadBits(8);
+
+            for (var i = 0u; i < responseCount; ++i)
+                ReadPlayerChoiceResponse(packet, "PlayerChoiceResponse", i);
+
+            packet.ReadWoWString("Question", questionLength);
+        }
+
+        public static void ReadPlayerChoiceResponse(Packet packet, params object[] indexes)
+        {
+            packet.ResetBitReader();
+            packet.ReadInt32("ResponseID", indexes);
+            packet.ReadInt32("ChoiceArtFileID", indexes);
+            var answerLength = packet.ReadBits(9);
+            var headerLength = packet.ReadBits(9);
+            var descriptionLength = packet.ReadBits(11);
+            var confirmationTextLength = packet.ReadBits(7);
+            var hasReward = packet.ReadBit();
+            if (hasReward)
+                ReadPlayerChoiceResponseReward(packet, "PlayerChoiceResponseReward", indexes);
+
+            packet.ReadWoWString("Answer", answerLength, indexes);
+            packet.ReadWoWString("Header", headerLength, indexes);
+            packet.ReadWoWString("Description", descriptionLength, indexes);
+            packet.ReadWoWString("ConfirmationText", confirmationTextLength, indexes);
+        }
+
+        public static void ReadPlayerChoiceResponseReward(Packet packet, params object[] indexes)
+        {
+            packet.ResetBitReader();
+            packet.ReadInt32("TitleID", indexes);
+            packet.ReadInt32("PackageID", indexes);
+            packet.ReadInt32("SkillLineID", indexes);
+            packet.ReadUInt32("SkillPointCount", indexes);
+            packet.ReadUInt32("ArenaPointCount", indexes);
+            packet.ReadUInt32("HonorPointCount", indexes);
+            packet.ReadUInt64("Money", indexes);
+            packet.ReadUInt32("Xp", indexes);
+
+            var itemCount = packet.ReadUInt32();
+            var currencyCount = packet.ReadUInt32();
+            var factionCount = packet.ReadUInt32();
+            var itemChoiceCount = packet.ReadUInt32();
+
+            for (var i = 0u; i < itemCount; ++i)
+                ReadPlayerChoiceResponseRewardEntry(packet, "Item", i);
+
+            for (var i = 0u; i < currencyCount; ++i)
+                ReadPlayerChoiceResponseRewardEntry(packet, "Currency", i);
+
+            for (var i = 0u; i < factionCount; ++i)
+                ReadPlayerChoiceResponseRewardEntry(packet, "Faction", i);
+
+            for (var i = 0u; i < itemChoiceCount; ++i)
+                ReadPlayerChoiceResponseRewardEntry(packet, "ItemChoice", i);
+        }
+
+        public static void ReadPlayerChoiceResponseRewardEntry(Packet packet, params object[] indexes)
+        {
+            V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, indexes);
+            packet.ReadInt32("Quantity", indexes);
+        }
+
+        [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_MESSAGE)]
+        public static void HandleQuestgiverQuestMessage(Packet packet)
+        {
+            packet.ReadPackedGuid128("QuestGiverGUID");
+            ReadGossipText(packet);
         }
     }
 }

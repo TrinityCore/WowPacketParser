@@ -8,35 +8,39 @@ using System.Threading.Tasks;
 using DBFilesClient.NET;
 using WowPacketParser.DBC.Structures;
 using WowPacketParser.Misc;
-using WowPacketParser.Loading;
 
 namespace WowPacketParser.DBC
 {
     public static class DBC
     {
-        public static Storage<AreaTableEntry> AreaTable = new Storage<AreaTableEntry>(GetPath() + "AreaTable.db2");
-        public static Storage<AchievementEntry> Achievement = new Storage<AchievementEntry>(GetPath() + "Achievement.db2");
-        public static Storage<BroadcastTextEntry> BroadcastText = new Storage<BroadcastTextEntry>(GetPath() + "BroadcastText.db2");
-        public static Storage<CreatureEntry> Creature = new Storage<CreatureEntry> (GetPath() + "Creature.db2");
-        public static Storage<CreatureDifficultyEntry> CreatureDifficulty = new Storage<CreatureDifficultyEntry>(GetPath() + "CreatureDifficulty.db2");
-        public static Storage<CreatureFamilyEntry> CreatureFamily = new Storage<CreatureFamilyEntry>(GetPath() + "CreatureFamily.db2");
-        public static Storage<CreatureDisplayInfoEntry> CreatureDisplayInfo = new Storage<CreatureDisplayInfoEntry>(GetPath() + "CreatureDisplayInfo.db2");
-        public static Storage<CriteriaTreeEntry> CriteriaTree = new Storage<CriteriaTreeEntry>(GetPath() + "CriteriaTree.db2");
-        public static Storage<DifficultyEntry> Difficulty = new Storage<DifficultyEntry>(GetPath() + "Difficulty.db2");
-        public static Storage<FactionEntry> Faction = new Storage<FactionEntry>(GetPath() + "Faction.db2");
-        public static Storage<FactionTemplateEntry> FactionTemplate = new Storage<FactionTemplateEntry>(GetPath() + "FactionTemplate.db2");
-        public static Storage<ItemEntry> Item = new Storage<ItemEntry>(GetPath() + "Item.db2");
-        public static Storage<ItemSparseEntry> ItemSparse = new Storage<ItemSparseEntry>(GetPath() + "ItemSparse.db2");
-        public static Storage<MapEntry> Map = new Storage<MapEntry>(GetPath() + "Map.db2");
-        public static Storage<MapDifficultyEntry> MapDifficulty = new Storage<MapDifficultyEntry>(GetPath() + "MapDifficulty.db2");
-        public static Storage<PhaseXPhaseGroupEntry> PhaseXPhaseGroup = new Storage<PhaseXPhaseGroupEntry>(GetPath() + "PhaseXPhaseGroup.db2");
-        public static Storage<SoundKitEntry> SoundKit = new Storage<SoundKitEntry>(GetPath() + "SoundKit.db2");
-        public static Storage<SpellEntry> Spell = new Storage<SpellEntry>(GetPath() + "Spell.db2");
-        public static Storage<SpellEffectEntry> SpellEffect = new Storage<SpellEffectEntry>(GetPath() + "SpellEffect.db2");
+        public static Storage<AreaTableEntry> AreaTable = new Storage<AreaTableEntry>(GetPath("AreaTable.db2"));
+        public static Storage<AchievementEntry> Achievement = new Storage<AchievementEntry>(GetPath("Achievement.db2"));
+        public static Storage<BroadcastTextEntry> BroadcastText = new Storage<BroadcastTextEntry>(GetPath("BroadcastText.db2"));
+        public static Storage<CreatureEntry> Creature = new Storage<CreatureEntry> (GetPath("Creature.db2"));
+        public static Storage<CreatureDifficultyEntry> CreatureDifficulty = new Storage<CreatureDifficultyEntry>(GetPath("CreatureDifficulty.db2"));
+        public static Storage<CreatureFamilyEntry> CreatureFamily = new Storage<CreatureFamilyEntry>(GetPath("CreatureFamily.db2"));
+        public static Storage<CreatureDisplayInfoEntry> CreatureDisplayInfo = new Storage<CreatureDisplayInfoEntry>(GetPath("CreatureDisplayInfo.db2"));
+        public static Storage<CriteriaTreeEntry> CriteriaTree = new Storage<CriteriaTreeEntry>(GetPath("CriteriaTree.db2"));
+        public static Storage<DifficultyEntry> Difficulty = new Storage<DifficultyEntry>(GetPath("Difficulty.db2"));
+        public static Storage<FactionEntry> Faction = new Storage<FactionEntry>(GetPath("Faction.db2"));
+        public static Storage<FactionTemplateEntry> FactionTemplate = new Storage<FactionTemplateEntry>(GetPath("FactionTemplate.db2"));
+        public static Storage<ItemEntry> Item = new Storage<ItemEntry>(GetPath("Item.db2"));
+        public static Storage<ItemSparseEntry> ItemSparse = new Storage<ItemSparseEntry>(GetPath("ItemSparse.db2"));
+        public static Storage<MapEntry> Map = new Storage<MapEntry>(GetPath("Map.db2"));
+        public static Storage<MapDifficultyEntry> MapDifficulty = new Storage<MapDifficultyEntry>(GetPath("MapDifficulty.db2"));
+        public static Storage<PhaseXPhaseGroupEntry> PhaseXPhaseGroup = new Storage<PhaseXPhaseGroupEntry>(GetPath("PhaseXPhaseGroup.db2"));
+        public static Storage<SoundKitEntry> SoundKit = new Storage<SoundKitEntry>(GetPath("SoundKit.db2"));
+        public static Storage<SpellEntry> Spell = new Storage<SpellEntry>(GetPath("Spell.db2"));
+        public static Storage<SpellEffectEntry> SpellEffect = new Storage<SpellEffectEntry>(GetPath("SpellEffect.db2"));
 
         private static string GetPath()
         {
-            return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + Settings.DBCPath + @"\" + BinaryPacketReader.GetLocale() + @"\";
+            return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Settings.DBCPath, Settings.DBCLocale);
+        }
+
+        private static string GetPath(string fileName)
+        {
+            return Path.Combine(GetPath(), fileName);
         }
 
         public static async void Load()
@@ -63,16 +67,13 @@ namespace WowPacketParser.DBC
                     return;
 
                 var times = new List<long>();
-                var recordCount = 0;
                 var instanceType = typeof(Storage<>).MakeGenericType(type);
                 var countGetter = instanceType.GetProperty("Count").GetGetMethod();
-                var instance = Activator.CreateInstance(instanceType, $"{ GetPath() + attr.FileName }.db2", true);
+                var instance = Activator.CreateInstance(instanceType, $"{ GetPath(attr.FileName) }.db2", true);
+                var recordCount = (int)countGetter.Invoke(instance, new object[] { });
 
                 var endTime = DateTime.Now;
                 var span = endTime.Subtract(startTime);
-
-                if (recordCount == 0)
-                    recordCount = (int)countGetter.Invoke(instance, new object[] { });
 
                 Trace.WriteLine($"{ attr.FileName.PadRight(33) } { TimeSpan.FromTicks(span.Ticks).ToString().PadRight(28) } { recordCount.ToString().PadRight(19) }");
             });
@@ -87,7 +88,6 @@ namespace WowPacketParser.DBC
                     }
             }), Task.Run(() =>
             {
-
                 if (MapDifficulty != null)
                 {
                     foreach (var mapDifficulty in MapDifficulty)

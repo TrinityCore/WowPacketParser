@@ -293,5 +293,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
             packet.ReadInt64("TokenBalanceAmount");
         }
+
+        [Parser(Opcode.SMSG_CUSTOM_LOAD_SCREEN)]
+        public static void HandleCustomLoadScreen(Packet packet)
+        {
+            packet.ReadUInt32("TeleportSpellID");
+            packet.ReadUInt32("LoadingScreenID");
+        }
     }
 }

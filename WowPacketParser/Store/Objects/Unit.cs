@@ -37,12 +37,16 @@ namespace WowPacketParser.Store.Objects
         public uint? Bytes0;
         public uint? MaxHealth;
         public uint? Level;
+        public uint? ScalingMinLevel;
+        public uint? ScalingMaxLevel;
+        public uint? ScalingDelta;
         public uint? Faction;
         public uint[] EquipmentItemId;
         public ushort[] EquipmentAppearanceModId;
         public ushort[] EquipmentItemVisual;
         public UnitFlags? UnitFlags;
         public UnitFlags2? UnitFlags2;
+        public UnitFlags3? UnitFlags3;
         public uint? MeleeTime;
         public uint? RangedTime;
         public uint? Model;
@@ -127,11 +131,30 @@ namespace WowPacketParser.Store.Objects
             Level         = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_LEVEL);
             Faction       = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_FACTIONTEMPLATE);
             if (ClientVersion.AddedInVersion(ClientType.Legion))
+            {
+                ScalingMinLevel = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_SCALING_LEVEL_MIN);
+                ScalingMaxLevel = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_SCALING_LEVEL_MAX);
+
+                if (ScalingMinLevel != null && ScalingMaxLevel != null)
+                {
+                    CreatureTemplateScaling creatureTemplateScaling = new CreatureTemplateScaling();
+                    creatureTemplateScaling.Entry                   = UpdateFields.GetValue<ObjectField, uint>(ObjectField.OBJECT_FIELD_ENTRY);
+                    creatureTemplateScaling.LevelScalingMin         = ScalingMinLevel;
+                    creatureTemplateScaling.LevelScalingMax         = ScalingMaxLevel;
+                    creatureTemplateScaling.LevelScalingDelta       = UpdateFields.GetValue<UnitField, int>(UnitField.UNIT_FIELD_SCALING_LEVEL_DELTA);
+                    Storage.CreatureTemplateScalings.Add(creatureTemplateScaling);
+                }
+
                 EquipmentRaw = UpdateFields.GetArray<UnitField, uint>(UnitField.UNIT_VIRTUAL_ITEM_SLOT_ID, 6);
+            }
             else
                 EquipmentRaw = UpdateFields.GetArray<UnitField, uint>(UnitField.UNIT_VIRTUAL_ITEM_SLOT_ID, 3);
+
             UnitFlags     = UpdateFields.GetEnum<UnitField, UnitFlags?>(UnitField.UNIT_FIELD_FLAGS);
             UnitFlags2    = UpdateFields.GetEnum<UnitField, UnitFlags2?>(UnitField.UNIT_FIELD_FLAGS_2);
+            if (ClientVersion.AddedInVersion(ClientType.Legion))
+                UnitFlags3    = UpdateFields.GetEnum<UnitField, UnitFlags3?>(UnitField.UNIT_FIELD_FLAGS_3);
+
             MeleeTime     = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BASEATTACKTIME);
             RangedTime    = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_RANGEDATTACKTIME);
             Model         = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_DISPLAYID);
@@ -140,7 +163,17 @@ namespace WowPacketParser.Store.Objects
                 DynamicFlagsWod = UpdateFields.GetEnum<ObjectField, UnitDynamicFlagsWOD?>(ObjectField.OBJECT_DYNAMIC_FLAGS);
             else
                 DynamicFlags  = UpdateFields.GetEnum<UnitField, UnitDynamicFlags?>(UnitField.UNIT_DYNAMIC_FLAGS);
-            NpcFlags      = UpdateFields.GetEnum<UnitField, NPCFlags?>(UnitField.UNIT_NPC_FLAGS);
+
+            if (ClientVersion.AddedInVersion(ClientType.Legion))
+            {
+                // @TODO TEMPORARY HACK
+                // For read NpcFlags as ulong
+                uint[] tempNpcFlags = UpdateFields.GetArray<UnitField, uint>(UnitField.UNIT_NPC_FLAGS, 2);
+                NpcFlags = (NPCFlags)Utilities.MAKE_PAIR64(tempNpcFlags[0], tempNpcFlags[1]);
+            }
+            else
+                NpcFlags = UpdateFields.GetEnum<UnitField, NPCFlags?>(UnitField.UNIT_NPC_FLAGS);
+
             EmoteState    = UpdateFields.GetEnum<UnitField, EmoteType?>(UnitField.UNIT_NPC_EMOTESTATE);
             Resistances   = UpdateFields.GetArray<UnitField, short>(UnitField.UNIT_FIELD_RESISTANCES, 7);
             ManaMod       = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BASE_MANA);

@@ -5,6 +5,7 @@ namespace WowPacketParser.Misc
 {
     public sealed class MovementInfo
     {
+        // NOTE: Do not use flag fields in a generic way to handle anything for producing spawns - different versions have different flags
         public MovementFlag Flags;
 
         public MovementFlagExtra FlagsExtra;

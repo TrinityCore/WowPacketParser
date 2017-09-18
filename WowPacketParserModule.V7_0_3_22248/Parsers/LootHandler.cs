@@ -40,7 +40,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             packet.ReadBit("Acquired");
             packet.ReadBit("AELooting");
-            packet.ReadBit("PersonalLooting");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_2_0_23826))
+                packet.ReadBit("PersonalLooting");
 
             for (var i = 0; i < itemCount; ++i)
                 ReadLootItem(packet, i, "LootItem");

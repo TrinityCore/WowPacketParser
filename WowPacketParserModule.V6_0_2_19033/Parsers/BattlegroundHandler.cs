@@ -258,8 +258,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("RatedRewardPoints");
 
             for (int i = 0; i < 2; i++)
-                LfgHandler.ReadShortageReward(packet, i, "ShortageReward");
-
+                LfgHandler.ReadLfgPlayerQuestReward(packet, i, "ShortageReward");
         }
 
         [Parser(Opcode.SMSG_BATTLEGROUND_PLAYER_POSITIONS)]

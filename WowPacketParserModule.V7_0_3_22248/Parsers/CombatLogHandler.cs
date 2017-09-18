@@ -7,6 +7,77 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
     public static class CombatLogHandler
     {
+        public static void ReadAttackRoundInfo(Packet packet, params object[] indexes)
+        {
+            var hitInfo = packet.ReadInt32E<SpellHitInfo>("HitInfo", indexes);
+
+            packet.ReadPackedGuid128("AttackerGUID", indexes);
+            packet.ReadPackedGuid128("TargetGUID", indexes);
+
+            packet.ReadInt32("Damage", indexes);
+            packet.ReadInt32("OverDamage", indexes);
+
+            var subDmgCount = packet.ReadBool("HasSubDmg", indexes);
+            if (subDmgCount)
+            {
+                packet.ReadInt32("SchoolMask", indexes);
+                packet.ReadSingle("FloatDamage", indexes);
+                packet.ReadInt32("IntDamage", indexes);
+
+                if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_ABSORB | SpellHitInfo.HITINFO_FULL_ABSORB))
+                    packet.ReadInt32("DamageAbsorbed", indexes);
+
+                if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_RESIST | SpellHitInfo.HITINFO_FULL_RESIST))
+                    packet.ReadInt32("DamageResisted", indexes);
+            }
+
+            packet.ReadByteE<VictimStates>("VictimState", indexes);
+            packet.ReadInt32("AttackerState", indexes);
+
+            packet.ReadInt32<SpellId>("MeleeSpellID", indexes);
+
+            if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK))
+                packet.ReadInt32("BlockAmount", indexes);
+
+            if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_RAGE_GAIN))
+                packet.ReadInt32("RageGained", indexes);
+
+            if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_UNK0))
+            {
+                packet.ReadInt32("Unk Attacker State 3 1", indexes);
+                packet.ReadSingle("Unk Attacker State 3 2", indexes);
+                packet.ReadSingle("Unk Attacker State 3 3", indexes);
+                packet.ReadSingle("Unk Attacker State 3 4", indexes);
+                packet.ReadSingle("Unk Attacker State 3 5", indexes);
+                packet.ReadSingle("Unk Attacker State 3 6", indexes);
+                packet.ReadSingle("Unk Attacker State 3 7", indexes);
+                packet.ReadSingle("Unk Attacker State 3 8", indexes);
+                packet.ReadSingle("Unk Attacker State 3 9", indexes);
+                packet.ReadSingle("Unk Attacker State 3 10", indexes);
+                packet.ReadSingle("Unk Attacker State 3 11", indexes);
+                packet.ReadInt32("Unk Attacker State 3 12", indexes);
+            }
+
+            if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK | SpellHitInfo.HITINFO_UNK12))
+                packet.ReadSingle("Unk Float", indexes);
+
+            ReadSandboxScalingData(packet, indexes, "SandboxScalingData");
+        }
+
+        public static void ReadSandboxScalingData(Packet packet, params object[] idx)
+        {
+            packet.ReadByte("Type", idx);
+            packet.ReadByte("TargetLevel", idx);
+            packet.ReadByte("Expansion", idx);
+            packet.ReadByte("Class", idx);
+            packet.ReadByte("TargetMinScalingLevel", idx);
+            packet.ReadByte("TargetMaxScalingLevel", idx);
+            packet.ReadInt16("PlayerLevelDelta", idx);
+            packet.ReadSByte("TargetScalingLevelDelta", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+                packet.ReadUInt16("PlayerItemLevel", idx);
+        }
+
         public static void ReadPeriodicAuraLogEffectData(Packet packet, params object[] idx)
         {
             packet.ReadInt32("Effect", idx);
@@ -29,7 +100,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
 
             if (hasSandboxScaling)
-                SandboxScalingData.Read7(packet, idx, "SandboxScalingData");
+                SpellHandler.ReadSandboxScalingData(packet, idx, "SandboxScalingData");
         }
 
         [Parser(Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG)]
@@ -40,6 +111,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadPackedGuid128("CastID");
 
             packet.ReadInt32<SpellId>("SpellID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+                packet.ReadInt32("SpellXSpellVisualID");
             packet.ReadInt32("Damage");
             packet.ReadInt32("OverKill");
 
@@ -77,7 +150,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 SpellCastLogData.Read7(packet, "SpellCastLogData");
 
             if (hasSandboxScaling)
-                SandboxScalingData.Read7(packet, "SandboxScalingData");
+                SpellHandler.ReadSandboxScalingData(packet, "SandboxScalingData");
         }
 
         [Parser(Opcode.SMSG_ATTACKER_STATE_UPDATE)]
@@ -86,14 +159,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var hasLogData = packet.ReadBit("HasLogData");
 
             if (hasLogData)
-                SpellCastLogData.Read7(packet);
+                SpellHandler.ReadSpellCastLogData(packet);
 
             packet.ReadInt32("Size");
 
-            AttackRoundInfoData.Read7(packet, "AttackRoundInfo");
+            ReadAttackRoundInfo(packet, "AttackRoundInfo");
         }
 
-        [Parser(Opcode.SMSG_SPELL_PERIODIC_AURA_LOG)]
+        [Parser(Opcode.SMSG_SPELL_PERIODIC_AURA_LOG, ClientVersionBuild.V7_0_3_22248, ClientVersionBuild.V7_2_0_23826)]
         public static void HandleSpellPeriodicAuraLog(Packet packet)
         {
             packet.ReadPackedGuid128("TargetGUID");
@@ -109,7 +182,27 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             var hasLogData = packet.ReadBit("HasLogData");
             if (hasLogData)
-                SpellCastLogData.Read7(packet, "SpellCastLogData");
+                SpellHandler.ReadSpellCastLogData(packet, "SpellCastLogData");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_PERIODIC_AURA_LOG, ClientVersionBuild.V7_2_0_23826)]
+        public static void HandleSpellPeriodicAuraLog720(Packet packet)
+        {
+            packet.ReadPackedGuid128("TargetGUID");
+            packet.ReadPackedGuid128("CasterGUID");
+
+            packet.ReadInt32<SpellId>("SpellID");
+
+            var periodicAuraLogEffectCount = packet.ReadInt32("PeriodicAuraLogEffectCount");
+
+            packet.ResetBitReader();
+            var hasLogData = packet.ReadBit("HasLogData");
+
+            for (var i = 0; i < periodicAuraLogEffectCount; i++)
+                ReadPeriodicAuraLogEffectData(packet, "PeriodicAuraLogEffectData");
+
+            if (hasLogData)
+                SpellHandler.ReadSpellCastLogData(packet, "SpellCastLogData");
         }
 
         [Parser(Opcode.SMSG_SPELL_HEAL_LOG)]
@@ -131,17 +224,45 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var hasLogData = packet.ReadBit("HasLogData");
             var hasSandboxScaling = packet.ReadBit("HasSandboxScaling");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+            {
+                if (hasLogData)
+                    SpellHandler.ReadSpellCastLogData(packet);
+            }
+
             if (hasCritRollMade)
                 packet.ReadSingle("CritRollMade");
 
             if (hasCritRollNeeded)
                 packet.ReadSingle("CritRollNeeded");
 
-            if (hasLogData)
-                SpellCastLogData.Read7(packet);
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_2_0_23826))
+            {
+                if (hasLogData)
+                    SpellHandler.ReadSpellCastLogData(packet);
+            }
 
             if (hasSandboxScaling)
-                SandboxScalingData.Read7(packet, "SandboxScalingData");
+                SpellHandler.ReadSandboxScalingData(packet, "SandboxScalingData");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_ENERGIZE_LOG, ClientVersionBuild.V7_2_0_23826)]
+        public static void HandleSpellEnergizeLog(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadPackedGuid128("TargetGUID");
+
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadUInt32E<PowerType>("Type");
+
+            packet.ReadInt32("Amount");
+            packet.ReadInt32("OverEnergize");
+
+            packet.ResetBitReader();
+
+            var bit100 = packet.ReadBit("HasLogData");
+            if (bit100)
+                V6_0_2_19033.Parsers.SpellHandler.ReadSpellCastLogData(packet);
         }
     }
 }

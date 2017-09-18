@@ -6,6 +6,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
@@ -23,7 +24,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ResetBitReader();
 
             packet.ReadBit("Repeatable");
-            packet.ReadBit("Ignored");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_2_0_23826))
+                packet.ReadBit("Ignored");
 
             uint questTitleLen = packet.ReadBits(9);
 
@@ -62,6 +64,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     ((Unit)Storage.Objects[guid].Item1).GossipId = (uint)menuId;
 
             Storage.Gossips.Add(gossip, packet.TimeSpan);
+            var lastGossipOption = CoreParsers.NpcHandler.LastGossipOption;
+            if (lastGossipOption.HasSelection)
+                Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = lastGossipOption.MenuId, OptionIndex = lastGossipOption.OptionIndex, ActionMenuId = gossip.Entry }, packet.TimeSpan);
 
             packet.AddSniffData(StoreNameType.Gossip, menuId, guid.GetEntry().ToString(CultureInfo.InvariantCulture));
         }

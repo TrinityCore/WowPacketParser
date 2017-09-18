@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WowPacketParserModule.V7_0_3_22248</RootNamespace>
     <AssemblyName>WowPacketParserModule.V7_0_3_22248</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -39,10 +39,13 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\MovementFlags2.cs" />
+    <Compile Include="Enums\SplineFlag.cs" />
     <Compile Include="Enums\UpdateFields.cs" />
     <Compile Include="Enums\UpdateFields710.cs" />
     <Compile Include="Enums\UpdateFields715.cs" />
     <Compile Include="Enums\UpdateFields720.cs" />
+    <Compile Include="Enums\UpdateFields725.cs" />
     <Compile Include="Hotfix\AchievementEntry.cs" />
     <Compile Include="Hotfix\AnimKitEntry.cs" />
     <Compile Include="Hotfix\AreaGroupMemberEntry.cs" />
@@ -197,15 +200,22 @@
     <Compile Include="Hotfix\PlayerConditionEntry.cs" />
     <Compile Include="Hotfix\PowerDisplayEntry.cs" />
     <Compile Include="Hotfix\PowerTypeEntry.cs" />
+    <Compile Include="Hotfix\PrestigeLevelInfoEntry.cs" />
     <Compile Include="Hotfix\PvPDifficultyEntry.cs" />
+    <Compile Include="Hotfix\PvpRewardEntry.cs" />
+    <Compile Include="Hotfix\PvpTalentEntry.cs" />
+    <Compile Include="Hotfix\PvpTalentUnlockEntry.cs" />
     <Compile Include="Hotfix\QuestFactionRewardEntry.cs" />
     <Compile Include="Hotfix\QuestMoneyRewardEntry.cs" />
+    <Compile Include="Hotfix\QuestObjectiveEntry.cs" />
     <Compile Include="Hotfix\QuestPackageItemEntry.cs" />
     <Compile Include="Hotfix\QuestPackageItemEntry720.cs" />
     <Compile Include="Hotfix\QuestSortEntry.cs" />
     <Compile Include="Hotfix\QuestV2Entry.cs" />
     <Compile Include="Hotfix\QuestXPEntry.cs" />
     <Compile Include="Hotfix\RandPropPointsEntry.cs" />
+    <Compile Include="Hotfix\RewardPackEntry.cs" />
+    <Compile Include="Hotfix\RewardPackXItemEntry.cs" />
     <Compile Include="Hotfix\RulesetItemUpgradeEntry.cs" />
     <Compile Include="Hotfix\ScalingStatDistributionEntry.cs" />
     <Compile Include="Hotfix\ScenarioEntry.cs" />
@@ -283,6 +293,9 @@
     <Compile Include="Parsers\BlackMarketHandler.cs" />
     <Compile Include="Parsers\CalendarHandler.cs" />
     <Compile Include="Parsers\CharacterHandler.cs" />
+    <Compile Include="Parsers\ChatHandler.cs" />
+    <Compile Include="Parsers\CombatHandler.cs" />
+    <Compile Include="Parsers\CorpseHandler.cs" />
     <Compile Include="Parsers\CombatLogHandler.cs" />
     <Compile Include="Parsers\CreatureHandler.cs" />
     <Compile Include="Parsers\CurrencyHandler.cs" />

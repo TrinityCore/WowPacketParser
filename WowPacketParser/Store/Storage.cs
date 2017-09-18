@@ -31,10 +31,14 @@ namespace WowPacketParser.Store
         public static readonly DataBag<CreatureTemplate> CreatureTemplates = new DataBag<CreatureTemplate>(new List<SQLOutput> { SQLOutput.creature_template });
         public static readonly DataBag<CreatureTemplateNonWDB> CreatureTemplatesNonWDB = new DataBag<CreatureTemplateNonWDB>(new List<SQLOutput> { SQLOutput.creature_template });
         public static readonly DataBag<CreatureTemplateQuestItem> CreatureTemplateQuestItems = new DataBag<CreatureTemplateQuestItem>(new List<SQLOutput> { SQLOutput.creature_template });
+        public static readonly DataBag<CreatureTemplateScaling> CreatureTemplateScalings = new DataBag<CreatureTemplateScaling>(new List<SQLOutput> { SQLOutput.creature_template_scaling });
 
         // Vendor & trainer
-        public static readonly DataBag<NpcTrainer> NpcTrainers = new DataBag<NpcTrainer>(new List<SQLOutput> { SQLOutput.npc_trainer });
+        public static readonly DataBag<NpcTrainer> NpcTrainers = new DataBag<NpcTrainer>(new List<SQLOutput> { SQLOutput.npc_trainer }); // legacy 3.3.5 support
         public static readonly DataBag<NpcVendor> NpcVendors = new DataBag<NpcVendor>(new List<SQLOutput> { SQLOutput.npc_vendor });
+        public static readonly DataBag<Trainer> Trainers = new DataBag<Trainer>(new List<SQLOutput> { SQLOutput.trainer });
+        public static readonly DataBag<TrainerSpell> TrainerSpells = new DataBag<TrainerSpell>(new List<SQLOutput> { SQLOutput.trainer });
+        public static readonly DataBag<CreatureDefaultTrainer> CreatureDefaultTrainers = new DataBag<CreatureDefaultTrainer>(new List<SQLOutput> { SQLOutput.trainer });
 
         // Page & npc text
         public static readonly DataBag<PageText> PageTexts = new DataBag<PageText>(new List<SQLOutput> { SQLOutput.page_text });
@@ -63,6 +67,9 @@ namespace WowPacketParser.Store
         // Gossips (MenuId, TextId)
         public static readonly DataBag<GossipMenu> Gossips = new DataBag<GossipMenu>(new List<SQLOutput> { SQLOutput.gossip_menu });
         public static readonly DataBag<GossipMenuOption> GossipMenuOptions = new DataBag<GossipMenuOption>(new List<SQLOutput> { SQLOutput.gossip_menu_option });
+        public static readonly DataBag<GossipMenuOptionAction> GossipMenuOptionActions = new DataBag<GossipMenuOptionAction>(new List<SQLOutput> { SQLOutput.gossip_menu_option });
+        public static readonly DataBag<GossipMenuOptionBox> GossipMenuOptionBoxes = new DataBag<GossipMenuOptionBox>(new List<SQLOutput> { SQLOutput.gossip_menu_option });
+        public static readonly DataBag<GossipMenuOptionTrainer> GossipMenuOptionTrainers = new DataBag<GossipMenuOptionTrainer>(new List<SQLOutput> { SQLOutput.gossip_menu_option });
 
         // Quest POI (QuestId, Id)
         public static readonly DataBag<QuestPOI> QuestPOIs = new DataBag<QuestPOI>(new List<SQLOutput> { SQLOutput.quest_poi_points });
@@ -94,7 +101,6 @@ namespace WowPacketParser.Store
         public static readonly DataBag<SpellTargetPosition> SpellTargetPositions = new DataBag<SpellTargetPosition>(new List<SQLOutput> { SQLOutput.spell_target_position });
 
         public static readonly DataBag<HotfixData> HotfixDatas = new DataBag<HotfixData>(new List<SQLOutput> { SQLOutput.hotfix_data });
-        public static readonly StoreDictionary<Tuple<DB2Hash, int>, HotfixData> HotfixDataStore = new StoreDictionary<Tuple<DB2Hash, int>, HotfixData>(new List<SQLOutput> { SQLOutput.hotfix_data });
 
         // Scenes
         public static readonly DataBag<SceneTemplate> Scenes = new DataBag<SceneTemplate>(new List<SQLOutput> { SQLOutput.scene_template });
@@ -117,9 +123,13 @@ namespace WowPacketParser.Store
             QuestVisualEffects.Clear();
             CreatureTemplates.Clear();
             CreatureTemplateQuestItems.Clear();
+            CreatureTemplateScalings.Clear();
 
             NpcTrainers.Clear();
             NpcVendors.Clear();
+            Trainers.Clear();
+            TrainerSpells.Clear();
+            CreatureDefaultTrainers.Clear();
 
             PageTexts.Clear();
             NpcTexts.Clear();
@@ -140,6 +150,9 @@ namespace WowPacketParser.Store
 
             Gossips.Clear();
             GossipMenuOptions.Clear();
+            GossipMenuOptionActions.Clear();
+            GossipMenuOptionBoxes.Clear();
+            GossipMenuOptionTrainers.Clear();
 
             QuestPOIs.Clear();
             QuestPOIPoints.Clear();

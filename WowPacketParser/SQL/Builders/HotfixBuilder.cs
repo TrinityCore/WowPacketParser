@@ -51,19 +51,12 @@ namespace WowPacketParser.SQL.Builders
 
             var rows = new RowList<HotfixData>();
 
-            foreach (var hofix in Storage.HotfixDatas)
+            foreach (var hotfix in Storage.HotfixDatas)
             {
                 var row = new Row<HotfixData>
                 {
-                    Data = new HotfixData
-                    {
-                        TableHash = hofix.Item1.TableHash,
-                        RecordID = hofix.Item1.RecordID,
-                        Timestamp = hofix.Item1.Timestamp,
-                        Deleted = hofix.Item1.Deleted
-                    },
-
-                    Comment = hofix.Item1.TableHash.ToString()
+                    Data = hotfix.Item1,
+                    Comment = hotfix.Item1.TableHash.ToString()
                 };
 
                 rows.Add(row);

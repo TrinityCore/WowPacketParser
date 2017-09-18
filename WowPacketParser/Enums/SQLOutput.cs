@@ -12,6 +12,7 @@
         creature_model_info,
         creature_template,
         creature_template_addon,
+        creature_template_scaling,
         creature_text,
         gameobject,
         gameobject_addon,
@@ -39,6 +40,7 @@
         spell_areatrigger,
         SniffData,
         SniffDataOpcodes,
+        trainer,
         vehicle_template_accessory,
         weather_updates,
 

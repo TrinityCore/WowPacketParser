@@ -22,3 +22,4 @@ packages/*
 wpp.tgz
 cov-int
 
+/.vs

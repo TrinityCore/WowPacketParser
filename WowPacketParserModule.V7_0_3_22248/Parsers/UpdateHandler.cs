@@ -8,6 +8,7 @@ using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
+using SplineFlag = WowPacketParserModule.V7_0_3_22248.Enums.SplineFlag;
 
 namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
@@ -164,8 +165,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 for (var i = 0; i < removeForcesIDsCount; i++)
                     packet.ReadPackedGuid128("RemoveForcesIDs", index, i);
 
-                moveInfo.Flags = (MovementFlag)packet.ReadBitsE<WowPacketParserModule.V6_0_2_19033.Enums.MovementFlag>("Movement Flags", 30, index);
-                moveInfo.FlagsExtra = packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 18, index);
+                moveInfo.Flags = (MovementFlag)packet.ReadBitsE<V6_0_2_19033.Enums.MovementFlag>("Movement Flags", 30, index);
+                moveInfo.FlagsExtra = (MovementFlagExtra)packet.ReadBitsE<Enums.MovementFlags2>("Extra Movement Flags", 18, index);
 
                 var hasTransport = packet.ReadBit("Has Transport Data", index);
                 var hasFall = packet.ReadBit("Has Fall Data", index);
@@ -243,7 +244,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     {
                         packet.ResetBitReader();
 
-                        packet.ReadUInt32E<SplineFlag434>("SplineFlags", index);
+                        packet.ReadUInt32E<SplineFlag>("SplineFlags", index);
                         packet.ReadUInt32("Elapsed", index);
                         packet.ReadUInt32("Duration", index);
                         packet.ReadSingle("DurationModifier", index);

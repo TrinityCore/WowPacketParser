@@ -24,30 +24,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var data = packet.ReadBytes(size);
             var db2File = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
 
-            HotfixData hotfixData = new HotfixData
-            {
-                TableHash = type,
-            };
-
             if (entry < 0 || !allow)
             {
                 packet.WriteLine("Row {0} has been removed.", -entry);
                 HotfixStoreMgr.RemoveRecord(type, entry);
-                if (HotfixSettings.Instance.ShouldLog(type))
-                {
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, -(int)entry)))
-                    {
-                        hotfixData.Deleted = true;
-                        hotfixData.RecordID = -(int)entry;
-                        hotfixData.Timestamp = Storage.HotfixDataStore[new Tuple<DB2Hash, int>(type, -(int)entry)].Item1.Timestamp;
-                        Storage.HotfixDatas.Add(hotfixData);
-                    }
-                }
             }
             else
             {
-                packet.AddSniffData(StoreNameType.None, entry, type.ToString());
-
                 switch (type)
                 {
                     case DB2Hash.BroadcastText:
@@ -85,17 +68,6 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                         break;
                 }
 
-                if (HotfixSettings.Instance.ShouldLog(type))
-                {
-                    if (Storage.HotfixDataStore.ContainsKey(Tuple.Create(type, (int)entry)))
-                    {
-                        hotfixData.Deleted = false;
-                        hotfixData.RecordID = (int)entry;
-                        hotfixData.Timestamp = Storage.HotfixDataStore[new Tuple<DB2Hash, int>(type, (int)entry)].Item1.Timestamp;
-                        Storage.HotfixDatas.Add(hotfixData);
-                    }
-                }
-
                 db2File.ClosePacket(false);
             }
         }
@@ -103,18 +75,38 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.CMSG_HOTFIX_QUERY)]
         public static void HandleHotfixQuery(Packet packet)
         {
-            var hotfixCount = packet.ReadUInt32();
+            var hotfixCount = packet.ReadUInt32("HotfixCount");
             for (var i = 0u; i < hotfixCount; ++i)
-                packet.ReadInt32("HotfixID", i);
+            {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_5_24330))
+                {
+                    var id = packet.ReadUInt64();
+
+                    packet.AddValue("HotfixID", Utilities.PAIR64_LOPART(id), i);
+                    packet.AddValue("TableHash", (DB2Hash)Utilities.PAIR64_HIPART(id), i);
+                }
+                else
+                    packet.ReadInt32("HotfixID", i);
+            }
         }
 
         [Parser(Opcode.SMSG_HOTFIX_LIST)]
         public static void HandleHotfixList(Packet packet)
         {
             packet.ReadInt32("HotfixCacheVersion");
-            var hotfixCount = packet.ReadUInt32();
+            var hotfixCount = packet.ReadUInt32("HotfixCount");
             for (var i = 0u; i < hotfixCount; ++i)
-                packet.ReadInt32("HotfixID", i);
+            {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_5_24330))
+                {
+                    var id = packet.ReadUInt64();
+
+                    packet.AddValue("HotfixID", Utilities.PAIR64_LOPART(id), i);
+                    packet.AddValue("TableHash", (DB2Hash)Utilities.PAIR64_HIPART(id), i);
+                }
+                else
+                    packet.ReadInt32("HotfixID", i);
+            }
         }
 
         static void ReadHotfixRecord(Packet packet, int hotfixId, params object[] indexes)
@@ -125,19 +117,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var allow = packet.ReadBit("Allow", indexes);
             var dataSize = packet.ReadInt32("Size", indexes);
             var data = packet.ReadBytes(dataSize);
-            var db2File = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer,
-                packet.FileName);
+            var db2File = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
 
-            // TODO: new table for hotfix list
-            // concept
-            // TABLE `hotfixes`
-            // COLUMN `HotfixID` PK - critical to maintain between server restarts, client uses it to determine whether it should request the hotfix
-            // COLUMN `TableHash` PK
-            // COLUMN `RecordID` PK
-            // COLUMN `Deleted`
-            if (entry < 0 || !allow)
+            if (!allow)
             {
-                packet.WriteLine($"Row { -entry } has been removed.");
+                packet.WriteLine($"Row {entry} has been removed.");
                 HotfixStoreMgr.RemoveRecord(type, entry);
             }
             else
@@ -147,28 +131,87 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
                 if (db2File.Position != db2File.Length)
                 {
-                    db2File.WriteLine($"(Entry: { entry } TableHash: { type }) has missing structure");
+                    db2File.WriteLine($"(Entry: {entry} TableHash: {type}) has missing structure");
                     db2File.AsHex();
                 }
 
                 db2File.ClosePacket(false);
             }
+
+            HotfixData hotfixData = new HotfixData
+            {
+                ID = (uint)hotfixId,
+                TableHash = type,
+                RecordID = entry,
+                Deleted = !allow
+            };
+
+            Storage.HotfixDatas.Add(hotfixData);
+        }
+
+        static void ReadHotfixRecord725(Packet packet, params object[] indexes)
+        {
+            packet.ResetBitReader();
+
+            var id = packet.ReadUInt64();
+            var hotfixId = packet.AddValue("HotfixID", Utilities.PAIR64_LOPART(id), indexes);
+            var type = packet.AddValue("TableHash", (DB2Hash)Utilities.PAIR64_HIPART(id), indexes);
+
+            var entry = packet.ReadInt32("RecordID", indexes);
+            var allow = packet.ReadBit("Allow", indexes);
+            var dataSize = packet.ReadInt32("Size", indexes);
+            var data = packet.ReadBytes(dataSize);
+            var db2File = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+
+            if (!allow)
+            {
+                packet.WriteLine($"Row {entry} has been removed.");
+                HotfixStoreMgr.RemoveRecord(type, entry);
+            }
+            else
+            {
+                packet.AddSniffData(StoreNameType.None, entry, type.ToString());
+                HotfixStoreMgr.AddRecord(type, entry, db2File);
+
+                if (db2File.Position != db2File.Length)
+                {
+                    db2File.WriteLine($"(Entry: {entry} TableHash: {type}) has missing structure");
+                    db2File.AsHex();
+                }
+
+                db2File.ClosePacket(false);
+            }
+
+            HotfixData hotfixData = new HotfixData
+            {
+                ID = hotfixId,
+                TableHash = type,
+                RecordID = entry,
+                Deleted = !allow
+            };
+
+            Storage.HotfixDatas.Add(hotfixData);
         }
 
         static void ReadHotfixData(Packet packet, params object[] indexes)
         {
-            var hotfixId = packet.ReadInt32("HotfixID", indexes);
-            var recordCount = packet.ReadUInt32();
-            for (var i = 0u; i < recordCount; ++i)
-                ReadHotfixRecord(packet, hotfixId, indexes, i, "HotfixRecord");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_5_24330))
+                ReadHotfixRecord725(packet, indexes, "HotfixRecord");
+            else
+            {
+                var hotfixId = packet.ReadInt32("HotfixID", indexes);
+                var recordCount = packet.ReadUInt32("RecordCount");
+                for (var i = 0u; i < recordCount; ++i)
+                    ReadHotfixRecord(packet, hotfixId, indexes, i, "HotfixRecord");
+            }
         }
 
-        //[HasSniffData]
+        [HasSniffData]
         [Parser(Opcode.SMSG_HOTFIXES)]
         [Parser(Opcode.SMSG_HOTFIX_QUERY_RESPONSE)]
         public static void HandleHotixData(Packet packet)
         {
-            var hotfixCount = packet.ReadUInt32();
+            var hotfixCount = packet.ReadUInt32("HotfixCount");
             for (var i = 0u; i < hotfixCount; ++i)
                 ReadHotfixData(packet, i, "HotfixData");
         }
