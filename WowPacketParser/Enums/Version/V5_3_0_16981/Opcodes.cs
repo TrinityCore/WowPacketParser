@@ -322,6 +322,7 @@ namespace WowPacketParser.Enums.Version.V5_3_0_16981
             {Opcode.SMSG_SHOW_RATINGS, 0x0A85},
             {Opcode.SMSG_SOR_START_EXPERIENCE_INCOMPLETE, 0x11DC},
             {Opcode.SMSG_SPELL_FAILURE, 0x108C},
+            {Opcode.SMSG_SPELL_ENERGIZE_LOG, 0x0E67},
             {Opcode.SMSG_SPELL_GO, 0x036E},
             {Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG, 0x0B7F},
             {Opcode.SMSG_SPELL_START, 0x0765},
