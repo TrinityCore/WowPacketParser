@@ -6,6 +6,7 @@ using System.Linq;
 using NUnit.Framework;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using System.Reflection;
 
 namespace WowPacketParser.Tests.Misc
 {
@@ -94,9 +95,12 @@ namespace WowPacketParser.Tests.Misc
             Assert.IsFalse(Utilities.GetFiles(ref empty));
             Assert.IsTrue(empty.Count == 0);
 
-            var files = new List<string> { "a", "WowPacketParser.Tests.dll", "b" };
+            string path = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar;
+            string realFile = path + "WowPacketParser.Tests.dll";
+            var files = new List<string> { "a", realFile, "b" };
             Assert.IsTrue(Utilities.GetFiles(ref files));
-            Assert.IsTrue(files.Contains("WowPacketParser.Tests.dll"));
+
+            Assert.IsTrue(files.Contains(realFile));
             Assert.IsFalse(files.Contains("a"));
             Assert.IsFalse(files.Contains("b"));
 
@@ -179,9 +183,10 @@ namespace WowPacketParser.Tests.Misc
             Assert.IsFalse(Utilities.FileIsInUse("Blablabla"));
             Assert.IsFalse(Utilities.FileIsInUse("WowPacketParser.Tests.dll"));
 
-            using (File.Create("test.test"))
+            string path = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar;
+            using (File.Create(path + "test.test"))
             {
-                Assert.IsTrue(Utilities.FileIsInUse("test.test"));
+                Assert.IsTrue(Utilities.FileIsInUse(path + "test.test"));
             }
 
             File.Delete("test.test");

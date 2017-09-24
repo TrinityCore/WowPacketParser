@@ -20,11 +20,11 @@ namespace WowPacketParser.Tests.Misc
         {
             Bit bit = true;
             Assert.IsTrue(bit);
-            Assert.AreEqual(1, bit);
+            Assert.AreEqual(1, (int)bit);
 
             bit = false;
             Assert.IsFalse(bit);
-            Assert.AreEqual(0, bit);
+            Assert.AreEqual(0, (int)bit);
 
             bit = 1;
             Assert.IsTrue(bit);

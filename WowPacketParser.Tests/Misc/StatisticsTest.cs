@@ -126,7 +126,7 @@ namespace WowPacketParser.Tests.Misc
 
             var str = stats.ToString();
 
-            Assert.IsNotNullOrEmpty(str);
+            Assert.That(str, Is.Not.Null.And.Not.Empty);
         }
 
         [Test]

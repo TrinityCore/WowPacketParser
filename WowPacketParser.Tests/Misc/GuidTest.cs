@@ -121,7 +121,7 @@ namespace WowPacketParser.Tests.Misc
             Assert.AreNotEqual(guid1.GetHashCode(), guid2.GetHashCode());
         }
 
-        [Test, Ignore]
+        [Test, Ignore("To Do")]
         public void TestToString()
         {
             // ...
