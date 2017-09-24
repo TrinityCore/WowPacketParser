@@ -189,6 +189,25 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadSByte("TargetScalingLevelDelta", idx);
         }
 
+        public static void ReadSpellCastLogData(Packet packet, params object[] idx)
+        {
+            packet.ReadInt64("Health", idx);
+            packet.ReadInt32("AttackPower", idx);
+            packet.ReadInt32("SpellPower", idx);
+
+            packet.ResetBitReader();
+
+            var spellLogPowerDataCount = packet.ReadBits("SpellLogPowerData", 9, idx);
+
+            // SpellLogPowerData
+            for (var i = 0; i < spellLogPowerDataCount; ++i)
+            {
+                packet.ReadInt32("PowerType", idx, i);
+                packet.ReadInt32("Amount", idx, i);
+                packet.ReadInt32("Cost", idx, i);
+            }
+        }
+
         public static void ReadTalentInfoUpdate(Packet packet, params object[] idx)
         {
             packet.ReadByte("ActiveGroup", idx);
