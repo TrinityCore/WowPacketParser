@@ -11,6 +11,29 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class SpellHandler
     {
+        public static void ReadSpellCastLogData(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("Health", idx);
+            packet.ReadInt32("AttackPower", idx);
+            packet.ReadInt32("SpellPower", idx);
+
+            var int3 = packet.ReadInt32("SpellLogPowerData", idx);
+
+            // SpellLogPowerData
+            for (var i = 0; i < int3; ++i)
+            {
+                packet.ReadInt32("PowerType", idx, i);
+                packet.ReadInt32("Amount", idx, i);
+            }
+
+            packet.ResetBitReader();
+
+            var bit32 = packet.ReadBit("bit32", idx);
+
+            if (bit32)
+                packet.ReadSingle("Float7", idx);
+        }
+
         public static void ReadSpellTargetData(Packet packet, params object[] idx)
         {
             packet.ResetBitReader();
