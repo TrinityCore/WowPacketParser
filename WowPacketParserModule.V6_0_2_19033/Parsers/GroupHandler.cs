@@ -487,8 +487,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("ResultGUID");
             packet.ReadWoWString("Name", nameLength);
         }
-
-        [Parser(Opcode.CMSG_LEAVE_GROUP)]
+        
         [Parser(Opcode.CMSG_REQUEST_PARTY_JOIN_UPDATES)]
         public static void HandleLeaveGroup(Packet packet)
         {

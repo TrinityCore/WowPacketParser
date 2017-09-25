@@ -344,14 +344,6 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_GUILD_SET_GUILD_MASTER)]
-        public static void HandleGuildSetGuildMaster(Packet packet)
-        {
-            var nameLength = packet.ReadBits(7);
-            packet.ReadBit("Is Dethroned"); // Most probably related to guild finder inactivity
-            packet.ReadWoWString("New GuildMaster name", nameLength);
-        }
-
         [Parser(Opcode.CMSG_GUILD_SET_RANK_PERMISSIONS, ClientVersionBuild.V4_0_6_13596, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGuildRank406(Packet packet)
         {

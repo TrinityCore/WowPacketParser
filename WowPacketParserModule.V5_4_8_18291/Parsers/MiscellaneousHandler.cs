@@ -10,15 +10,6 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 {
     public static class MiscellaneousHandler
     {
-        [HasSniffData]
-        [Parser(Opcode.CMSG_LOADING_SCREEN_NOTIFY)]
-        public static void HandleClientEnterWorld(Packet packet)
-        {
-            var mapId = packet.ReadInt32<MapId>("MapID");
-            packet.ReadBit("Showing");
-
-            packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
-        }
 
         [Parser(Opcode.CMSG_AREA_TRIGGER)]
         public static void HandleClientAreaTrigger(Packet packet)

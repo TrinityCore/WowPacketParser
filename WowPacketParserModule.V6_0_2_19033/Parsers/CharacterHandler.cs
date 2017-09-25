@@ -148,13 +148,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_GENERATE_RANDOM_CHARACTER_NAME)]
-        public static void HandleGenerateRandomCharacterNameQuery(Packet packet)
-        {
-            packet.ReadByteE<Race>("Race");
-            packet.ReadByteE<Gender>("Sex");
-        }
-
         [Parser(Opcode.SMSG_GENERATE_RANDOM_CHARACTER_NAME_RESULT)]
         public static void HandleGenerateRandomCharacterNameResponse(Packet packet)
         {
@@ -484,13 +477,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("SeasonWon", idx);
             packet.ReadInt32("WeeklyBestRating", idx);
             packet.ReadByte("Bracket", idx);
-        }
-
-        [Parser(Opcode.CMSG_INSPECT_PVP)]
-        public static void HandleRequestInspectPVP(Packet packet)
-        {
-            packet.ReadPackedGuid128("InspectTarget");
-            packet.ReadInt32("InspectRealmAddress");
         }
 
         [Parser(Opcode.SMSG_INSPECT_PVP)]

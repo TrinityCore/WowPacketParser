@@ -5,39 +5,6 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class GuildFinderHandler
     {
-
-        [Parser(Opcode.CMSG_LF_GUILD_BROWSE)]
-        public static void HandleGuildFinderBrowse(Packet packet)
-        {
-            packet.ReadUInt32E<GuildFinderOptionsRoles>("Class Roles");
-            packet.ReadUInt32E<GuildFinderOptionsAvailability>("Availability");
-            packet.ReadUInt32E<GuildFinderOptionsInterest>("Guild Interests");
-            packet.ReadUInt32("Player Level");
-        }
-
-        [Parser(Opcode.CMSG_LF_GUILD_SET_GUILD_POST, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleGuildFinderSetGuildPost422(Packet packet)
-        {
-            packet.ReadBit("Join");
-            packet.ReadUInt32E<GuildFinderOptionsAvailability>("Availability");
-            packet.ReadUInt32E<GuildFinderOptionsRoles>("Class Roles");
-            packet.ReadUInt32E<GuildFinderOptionsInterest>("Guild Interests");
-            packet.ReadUInt32E<GuildFinderOptionsLevel>("Level");
-            packet.ReadCString("Comment");
-        }
-
-        [Parser(Opcode.CMSG_LF_GUILD_SET_GUILD_POST, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleGuildFinderSetGuildPost434(Packet packet)
-        {
-            packet.ReadUInt32E<GuildFinderOptionsLevel>("Level");
-            packet.ReadUInt32E<GuildFinderOptionsAvailability>("Availability");
-            packet.ReadUInt32E<GuildFinderOptionsInterest>("Guild Interests");
-            packet.ReadUInt32E<GuildFinderOptionsRoles>("Class Roles");
-            var length = packet.ReadBits(11);
-            packet.ReadBit("Listed");
-            packet.ReadWoWString("Comment", length);
-        }
-
         [Parser(Opcode.SMSG_LF_GUILD_POST_UPDATED)]
         public static void HandleGuildFinderPostUpdated(Packet packet)
         {
@@ -325,40 +292,6 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.StartBitStream(0, 4, 3, 5, 7, 6, 2, 1);
             packet.ParseBitStream(guid, 4, 0, 3, 6, 5, 1, 2, 7);
             packet.WriteGuid("Guid", guid);
-        }
-
-        [Parser(Opcode.CMSG_LF_GUILD_ADD_RECRUIT)]
-        public static void HandleLFGuildAddRecruit(Packet packet)
-        {
-            var guid = new byte[8];
-
-            packet.ReadUInt32E<GuildFinderOptionsRoles>("Class Roles");
-            packet.ReadUInt32E<GuildFinderOptionsInterest>("Guild Interests");
-            packet.ReadUInt32E<GuildFinderOptionsAvailability>("Availability");
-
-            guid[3] = packet.ReadBit();
-            guid[0] = packet.ReadBit();
-            guid[6] = packet.ReadBit();
-            guid[1] = packet.ReadBit();
-            var comment = packet.ReadBits(11);
-            guid[5] = packet.ReadBit();
-            guid[4] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
-            var player = packet.ReadBits(7);
-            guid[2] = packet.ReadBit();
-
-            packet.ReadXORByte(guid, 4);
-            packet.ReadXORByte(guid, 5);
-            packet.ReadWoWString("Comment", comment);
-            packet.ReadWoWString("Player name", player);
-            packet.ReadXORByte(guid, 7);
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid, 0);
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid, 1);
-            packet.ReadXORByte(guid, 3);
-
-            packet.WriteGuid("Guild GUID", guid);
         }
 
         [Parser(Opcode.CMSG_LF_GUILD_GET_GUILD_POST)]

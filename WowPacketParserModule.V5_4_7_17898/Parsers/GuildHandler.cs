@@ -490,13 +490,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadWoWString("Param", paramLen);
         }
 
-        [Parser(Opcode.CMSG_GUILD_SET_GUILD_MASTER)]
-        public static void HandleGuildSetGuildMaster(Packet packet)
-        {
-            var nameLength = packet.ReadBits(9);
-            packet.ReadWoWString("New GuildMaster name", nameLength);
-        }
-
         [Parser(Opcode.CMSG_GUILD_SET_RANK_PERMISSIONS)]
         public static void HandleGuildRank(Packet packet)
         {

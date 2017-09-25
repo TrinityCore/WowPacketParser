@@ -5,46 +5,6 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class TicketHandler
     {
-        [Parser(Opcode.CMSG_GM_SURVEY_SUBMIT)]
-        public static void HandleGMSurveySubmit(Packet packet)
-        {
-            var count = packet.ReadUInt32("Survey Question Count");
-            for (var i = 0; i < count; ++i)
-            {
-                var gmsurveyid = packet.ReadUInt32("GM Survey Id", i);
-                if (gmsurveyid == 0)
-                    break;
-                packet.ReadByte("Question Number", i);
-                packet.ReadCString("Answer", i);
-            }
-
-            packet.ReadCString("Comment");
-        }
-
-        [Parser(Opcode.CMSG_GM_TICKET_CREATE)]
-        public static void HandleGMTicketCreate(Packet packet)
-        {
-            packet.ReadInt32<MapId>("Map ID");
-            packet.ReadVector3("Position");
-            packet.ReadCString("Text");
-            packet.ReadUInt32("Need Response");
-            packet.ReadBool("Need GM interaction");
-            var count = packet.ReadInt32("Count");
-
-            for (int i = 0; i < count; i++)
-                packet.AddValue("Sent", (packet.Time - packet.ReadTime()).ToFormattedString(), i);
-
-            if (count == 0)
-                packet.ReadInt32("Unk Int32");
-            else
-            {
-                var decompCount = packet.ReadInt32();
-                var pkt = packet.Inflate(decompCount);
-                pkt.ReadCString("String");
-                pkt.ClosePacket(false);
-            }
-        }
-
         [Parser(Opcode.SMSG_GM_TICKET_STATUS_UPDATE)]
         public static void HandleGMTicketStatusUpdate(Packet packet)
         {
@@ -95,12 +55,6 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleCreateUpdateGMTicket(Packet packet)
         {
             packet.ReadInt32E<GMTicketResponse>("TicketResponse");
-        }
-
-        [Parser(Opcode.CMSG_GM_TICKET_UPDATE_TEXT)]
-        public static void HandleGMTicketUpdatetext(Packet packet)
-        {
-            packet.ReadCString("New Ticket Text");
         }
 
         [Parser(Opcode.SMSG_GMRESPONSE_STATUS_UPDATE)]

@@ -16,14 +16,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadWoWString("File name", len);
         }
 
-        [HasSniffData]
-        [Parser(Opcode.CMSG_LOADING_SCREEN_NOTIFY)]
-        public static void HandleClientEnterWorld(Packet packet)
-        {
-            uint mapId = packet.ReadUInt32<MapId>("MapID");
-            packet.ReadBit("Showing");
-        }
-
+        
         [Parser(Opcode.CMSG_SET_SELECTION)]
         public static void HandleSetSelection(Packet packet)
         {

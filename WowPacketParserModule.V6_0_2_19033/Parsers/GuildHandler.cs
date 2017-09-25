@@ -251,13 +251,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_GUILD_INVITE_BY_NAME)]
-        public static void HandleGuildInviteByName(Packet packet)
-        {
-            var bits16 = packet.ReadBits(9);
-            packet.ReadWoWString("Name", bits16);
-        }
-
         [Parser(Opcode.SMSG_GUILD_CRITERIA_UPDATE)]
         public static void HandleGuildCriteriaUpdate(Packet packet)
         {
@@ -915,18 +908,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < count; ++i)
                 ReadLFGuildBrowseData(packet, "Post", i);
         }
-        
-        [Parser(Opcode.CMSG_LF_GUILD_SET_GUILD_POST, ClientVersionBuild.V6_1_2_19802)]
-        public static void HandleGuildFinderSetGuildPost612(Packet packet)
-        {
-            packet.ReadUInt32E<GuildFinderOptionsInterest>("Guild Interests"); // ok
-            packet.ReadUInt32E<GuildFinderOptionsAvailability>("Availability"); // ok
-            packet.ReadUInt32E<GuildFinderOptionsRoles>("Class Roles"); // ok
-            packet.ReadUInt32E<GuildFinderOptionsLevel>("Level");
-            packet.ReadBit("Listed");
-            packet.ReadWoWString("Comment", packet.ReadBits(10));
-        }
-
         [Parser(Opcode.CMSG_SAVE_GUILD_EMBLEM)]
         public static void HandleSaveGuildEmblem(Packet packet) 
         {

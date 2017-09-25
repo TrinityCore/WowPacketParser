@@ -15,7 +15,7 @@ namespace WowPacketParser.Tests
     [TestFixture]
     public class OpcodeTest
     {
-        [Test]
+        [Test, Ignore("Slow")]
         public void TestHasHandler()
         {
             var opcodes = Utilities.GetValues<Opcode>();
@@ -61,7 +61,7 @@ namespace WowPacketParser.Tests
             Assert.IsTrue(allUsed, "Found unused opcodes defined.");
         }
 
-        [Test]
+        [Test, Ignore("Slow")]
         public void TestHasValue()
         {
             var opcodes = Utilities.GetValues<Opcode>();

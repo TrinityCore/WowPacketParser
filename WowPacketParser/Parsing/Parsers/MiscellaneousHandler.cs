@@ -429,15 +429,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Unk String");
         }
 
-
-
-        [Parser(Opcode.CMSG_LOW_LEVEL_RAID1)]
-        [Parser(Opcode.CMSG_LOW_LEVEL_RAID2)]
-        public static void HandleLowLevelRaidPackets(Packet packet)
-        {
-            packet.ReadBool("Allow");
-        }
-
         [Parser(Opcode.SMSG_EXPLORATION_EXPERIENCE)]
         public static void HandleExplorationExperience(Packet packet)
         {
@@ -685,29 +676,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [HasSniffData]
-        [Parser(Opcode.CMSG_LOADING_SCREEN_NOTIFY, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)] // Also named CMSG_LOADING_SCREEN_NOTIFY
-        public static void HandleClientEnterWorld(Packet packet)
-        {
-            packet.ReadBit("Showing");
-            var mapId = packet.ReadUInt32<MapId>("MapID");
-            MovementHandler.CurrentMapId = mapId;
-
-            if (mapId < 1000) // Getting some weird results in a couple of packets
-                packet.AddSniffData(StoreNameType.Map, (int) mapId, "LOAD_SCREEN");
-        }
-
-        [HasSniffData]
-        [Parser(Opcode.CMSG_LOADING_SCREEN_NOTIFY, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleClientEnterWorld434(Packet packet)
-        {
-            var mapId = packet.ReadUInt32<MapId>("MapID");
-            packet.ReadBit("Showing");
-            MovementHandler.CurrentMapId = mapId;
-
-            if (mapId < 1000) // Getting some weird results in a couple of packets
-                packet.AddSniffData(StoreNameType.Map, (int) mapId, "LOAD_SCREEN");
-        }
+        
 
         [Parser(Opcode.MSG_VERIFY_CONNECTIVITY)]
         public static void HandleServerInfo(Packet packet)

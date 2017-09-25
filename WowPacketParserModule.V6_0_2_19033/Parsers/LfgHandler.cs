@@ -52,23 +52,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("VotesNeeded", idx);
             packet.ReadWoWString("Reason", len, idx);
         }
-
-        public static void ReadLFGListJoinRequest(Packet packet, params object[] idx)
-        {
-            packet.ReadInt32("ActivityID", idx);
-            packet.ReadSingle("RequiredItemLevel", idx);
-
-            packet.ResetBitReader();
-
-            var lenName = packet.ReadBits(8);
-            var lenComment = packet.ReadBits(11);
-            var lenVoiceChat = packet.ReadBits(8);
-
-            packet.ReadWoWString("Name", lenName, idx);
-            packet.ReadWoWString("Comment", lenComment, idx);
-            packet.ReadWoWString("VoiceChat", lenVoiceChat, idx);
-        }
-
+        
         public static void ReadLfgPlayerQuestReward(Packet packet, params object[] idx)
         {
             packet.ReadInt32("Mask", idx);
@@ -406,18 +390,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
             packet.ReadBit("Accept");
-        }
-
-        [Parser(Opcode.CMSG_LFG_LIST_JOIN)]
-        public static void HandleLFGListJoin(Packet packet)
-        {
-            ReadLFGListJoinRequest(packet, "LFGListJoinRequest");
-        }
-
-        [Parser(Opcode.CMSG_LFG_LIST_LEAVE)]
-        public static void HandleLFGListLeave(Packet packet)
-        {
-            ReadCliRideTicket(packet, "RideTicket");
         }
 
         [Parser(Opcode.CMSG_LFG_LIST_SEARCH)] // To-Do: Rename Unks

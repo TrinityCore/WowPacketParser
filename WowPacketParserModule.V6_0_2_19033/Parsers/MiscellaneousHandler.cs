@@ -32,16 +32,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Guid");
         }
 
-        [HasSniffData]
-        [Parser(Opcode.CMSG_LOADING_SCREEN_NOTIFY)]
-        public static void HandleClientEnterWorld(Packet packet)
-        {
-            var mapId = packet.ReadInt32<MapId>("MapID");
-            packet.ReadBit("Showing");
-
-            packet.AddSniffData(StoreNameType.Map, mapId, "LOAD_SCREEN");
-        }
-
         [Parser(Opcode.SMSG_WEATHER)]
         public static void HandleWeatherStatus(Packet packet)
         {

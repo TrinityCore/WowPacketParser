@@ -480,33 +480,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("AutoSlotted");
         }
 
-        [Parser(Opcode.CMSG_PET_BATTLE_REPLACE_FRONT_PET)]
-        public static void HandlePetBattleReplaceFrontPet(Packet packet)
-        {
-            packet.ReadSByte("FrontPet");
-        }
-
-        public static void ReadPetBattleInput(Packet packet, params object[] idx)
-        {
-            packet.ReadByte("MoveType");
-            packet.ReadSByte("NewFrontPet");
-            packet.ReadByte("DebugFlags");
-            packet.ReadByte("BattleInterrupted");
-
-            packet.ReadInt32("AbilityID");
-            packet.ReadInt32("Round");
-
-            packet.ResetBitReader();
-
-            packet.ReadBit("IgnoreAbandonPenalty");
-        }
-
-        [Parser(Opcode.CMSG_PET_BATTLE_INPUT)]
-        public static void HandlePetBattleInput(Packet packet)
-        {
-            ReadPetBattleInput(packet, "PetBattleInput");
-        }
-
         [Parser(Opcode.SMSG_PET_BATTLE_QUEUE_STATUS)]
         public static void HandlePetBattleQueueStatus(Packet packet)
         {
