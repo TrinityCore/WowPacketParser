@@ -21,27 +21,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadByteE<StandState>("State");
         }
 
-        [Parser(Opcode.CMSG_CREATE_CHARACTER)]
-        public static void HandleClientCharCreate(Packet packet)
-        {
-            packet.ReadCString("Name");
-            packet.ReadByteE<Race>("Race");
-            packet.ReadByteE<Class>("Class");
-            packet.ReadByteE<Gender>("Gender");
-            packet.ReadByte("Skin");
-            packet.ReadByte("Face");
-            packet.ReadByte("Hair Style");
-            packet.ReadByte("Hair Color");
-            packet.ReadByte("Facial Hair");
-            packet.ReadByte("Outfit Id");
-        }
-
-        [Parser(Opcode.CMSG_CHAR_DELETE)]
-        public static void HandleClientCharDelete(Packet packet)
-        {
-            packet.ReadGuid("GUID");
-        }
-
         [Parser(Opcode.CMSG_CHARACTER_RENAME_REQUEST)]
         public static void HandleClientCharRename(Packet packet)
         {
@@ -83,18 +62,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32E<BarberShopResult>("Result");
         }
 
-        [Parser(Opcode.CMSG_CHAR_CUSTOMIZE)]
-        public static void HandleClientCharCustomize(Packet packet)
-        {
-            packet.ReadGuid("GUID");
-            packet.ReadCString("New Name");
-            packet.ReadByteE<Gender>("Gender");
-            packet.ReadByte("Skin");
-            packet.ReadByte("Face");
-            packet.ReadByte("Hair Style");
-            packet.ReadByte("Hair Color");
-            packet.ReadByte("Facial Hair");
-        }
+        
 
         [Parser(Opcode.SMSG_CHAR_CUSTOMIZE)]
         public static void HandleServerCharCustomize(Packet packet)

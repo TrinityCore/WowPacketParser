@@ -137,37 +137,6 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_CREATE_CHARACTER)]
-        public static void HandleClientCharCreate(Packet packet)
-        {
-            packet.ReadByte("Hair Style");
-            packet.ReadByteE<Gender>("Gender");
-            packet.ReadByte("Skin");
-            packet.ReadByte("Hair Color");
-            packet.ReadByte("Facial Hair");
-            packet.ReadByteE<Class>("Class");
-            packet.ReadByteE<Race>("Race");
-            packet.ReadByte("Face");
-            packet.ReadByte("Outfit Id");
-
-            var unk = packet.ReadBit("unk");
-            var nameLength = packet.ReadBits(6);
-            packet.ReadWoWString("Name", (int)nameLength);
-            if (unk)
-                packet.ReadUInt32("unk20");
-        }
-
-        [Parser(Opcode.CMSG_CHAR_DELETE)]
-        public static void HandleClientCharDelete(Packet packet)
-        {
-            var playerGuid = new byte[8];
-
-            packet.StartBitStream(playerGuid, 7, 0, 1, 3, 5, 2, 4, 6);
-            packet.ParseBitStream(playerGuid, 6, 7, 5, 0, 4, 2, 3, 1);
-
-            packet.WriteGuid("GUID", playerGuid);
-        }
-
         [Parser(Opcode.SMSG_SETUP_CURRENCY)]
         public static void HandleInitCurrency(Packet packet)
         {

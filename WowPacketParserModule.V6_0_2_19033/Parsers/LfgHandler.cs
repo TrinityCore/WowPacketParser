@@ -320,27 +320,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 ReadLFGPlayerRewards(packet, i);
         }
 
-        [Parser(Opcode.CMSG_DF_JOIN)]
-        public static void HandleDFJoin(Packet packet)
-        {
-            packet.ReadBit("QueueAsGroup");
-            var commentLength = packet.ReadBits("UnkBits8", 8);
-
-            packet.ResetBitReader();
-
-            packet.ReadByte("PartyIndex");
-            packet.ReadInt32E<LfgRoleFlag>("Roles");
-            var slotsCount = packet.ReadInt32();
-
-            for (var i = 0; i < 3; ++i) // Needs
-                packet.ReadUInt32("Need", i);
-
-            packet.ReadWoWString("Comment", commentLength);
-
-            for (var i = 0; i < slotsCount; ++i) // Slots
-                packet.ReadUInt32("Slot", i);
-        }
-
         public static void ReadLFGRoleCheckUpdateMember(Packet packet, params object[] idx)
         {
             packet.ReadPackedGuid128("Guid", idx);
@@ -393,21 +372,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadLfgBootInfo(packet);
         }
 
-        [Parser(Opcode.CMSG_DF_BOOT_PLAYER_VOTE)]
-        public static void HandleDFBootPlayerVote(Packet packet)
-        {
-            packet.ReadBit("Vote");
-        }
-
-        [Parser(Opcode.CMSG_DF_PROPOSAL_RESPONSE)]
-        public static void HandleDFProposalResponse(Packet packet)
-        {
-            ReadCliRideTicket(packet);
-            packet.ReadInt64("InstanceID");
-            packet.ReadInt32("ProposalID");
-            packet.ReadBit("Accepted");
-        }
-
         [Parser(Opcode.SMSG_LFG_LIST_UPDATE_BLACKLIST)]
         public static void HandleLFGListUpdateBlacklist(Packet packet)
         {
@@ -442,25 +406,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
             packet.ReadBit("Accept");
-        }
-
-        [Parser(Opcode.CMSG_DF_TELEPORT)]
-        public static void HandleDFTeleport(Packet packet)
-        {
-            packet.ReadBit("TeleportOut");
-        }
-
-        [Parser(Opcode.CMSG_DF_SET_ROLES)]
-        public static void HandleDFSetRoles(Packet packet)
-        {
-            packet.ReadUInt32("RolesDesired");
-            packet.ReadByte("PartyIndex");
-        }
-
-        [Parser(Opcode.CMSG_DF_LEAVE)]
-        public static void HandleDFLeave(Packet packet)
-        {
-            ReadCliRideTicket(packet, "RideTicket");
         }
 
         [Parser(Opcode.CMSG_LFG_LIST_JOIN)]

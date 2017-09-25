@@ -147,17 +147,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_CHAR_DELETE)]
-        public static void HandleClientCharDelete(Packet packet)
-        {
-            var playerGuid = new byte[8];
-
-            packet.StartBitStream(playerGuid, 6, 4, 5, 1, 7, 3, 2, 0);
-            packet.ParseBitStream(playerGuid, 1, 2, 3, 4, 0, 7, 6, 5);
-
-            packet.WriteGuid("GUID", playerGuid);
-        }
-
+        
         [Parser(Opcode.SMSG_SETUP_CURRENCY)]
         public static void HandleInitCurrency(Packet packet)
         {

@@ -95,28 +95,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 ReadFactionChangeRestrictionsData(packet, i, "FactionChangeRestrictionsData");
         }
 
-        [Parser(Opcode.CMSG_CREATE_CHARACTER)]
-        public static void HandleClientCharCreate(Packet packet)
-        {
-            var bits29 = packet.ReadBits(6);
-            var bit24 = packet.ReadBit();
-
-            packet.ReadByteE<Race>("RaceID");
-            packet.ReadByteE<Class>("ClassID");
-            packet.ReadByteE<Gender>("SexID");
-            packet.ReadByte("SkinID");
-            packet.ReadByte("FaceID");
-            packet.ReadByte("HairStyleID");
-            packet.ReadByte("HairColorID");
-            packet.ReadByte("FacialHairStyleID");
-            packet.ReadByte("OutfitID");
-
-            packet.ReadWoWString("Name", bits29);
-
-            if (bit24)
-                packet.ReadInt32("TemplateSetID");
-        }
-
         [Parser(Opcode.CMSG_UNDELETE_CHARACTER)]
         public static void HandleUndeleteCharacter(Packet packet)
         {
@@ -170,12 +148,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_CHAR_DELETE)]
-        public static void HandleClientCharDelete(Packet packet)
-        {
-            packet.ReadPackedGuid128("PlayerGUID");
-        }
-
         [Parser(Opcode.CMSG_GENERATE_RANDOM_CHARACTER_NAME)]
         public static void HandleGenerateRandomCharacterNameQuery(Packet packet)
         {
@@ -218,40 +190,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Name", bits41);
         }
 
-        [Parser(Opcode.CMSG_CHAR_RACE_OR_FACTION_CHANGE)]
-        public static void HandleCharRaceOrFactionChange(Packet packet)
-        {
-            packet.ReadBit("FactionChange");
-
-            var bits20 = packet.ReadBits(6);
-
-            var bit93 = packet.ReadBit("HasSkinID");
-            var bit96 = packet.ReadBit("HasHairColor");
-            var bit89 = packet.ReadBit("HasHairStyleID");
-            var bit17 = packet.ReadBit("HasFacialHairStyleID");
-            var bit19 = packet.ReadBit("HasFaceID");
-
-            packet.ReadPackedGuid128("Guid");
-            packet.ReadByte("SexID");
-            packet.ReadByte("RaceID");
-
-            packet.ReadWoWString("Name", bits20);
-
-            if (bit93)
-                packet.ReadByte("SkinID");
-
-            if (bit96)
-                packet.ReadByte("HairColorID");
-
-            if (bit89)
-                packet.ReadByte("HairStyleID");
-
-            if (bit17)
-                packet.ReadByte("FacialHairStyleID");
-
-            if (bit19)
-                packet.ReadByte("FaceID");
-        }
+        
 
         [Parser(Opcode.SMSG_CHAR_FACTION_CHANGE_RESULT)]
         public static void HandleCharFactionChangeResult(Packet packet)
@@ -277,24 +216,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 packet.ReadWoWString("Name", bits55);
             }
-        }
-
-        [Parser(Opcode.CMSG_CHAR_CUSTOMIZE)]
-        public static void HandleClientCharCustomize(Packet packet)
-        {
-            packet.ReadPackedGuid128("CharGUID");
-
-            packet.ReadByte("SexID");
-            packet.ReadByte("SkinID");
-            packet.ReadByte("HairColorID");
-            packet.ReadByte("HairStyleID");
-            packet.ReadByte("FacialHairStyleID");
-            packet.ReadByte("FaceID");
-
-            packet.ResetBitReader();
-
-            var bits19 = packet.ReadBits(6);
-            packet.ReadWoWString("CharName", bits19);
         }
 
         [Parser(Opcode.SMSG_CHAR_CUSTOMIZE, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_1_0_19678)]

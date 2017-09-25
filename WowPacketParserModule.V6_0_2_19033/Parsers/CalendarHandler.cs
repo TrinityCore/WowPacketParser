@@ -81,32 +81,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
         }
 
-        [Parser(Opcode.CMSG_CALENDAR_ADD_EVENT)]
-        public static void HandleUserClientCalendarAddEvent(Packet packet)
-        {
-            packet.ResetBitReader();
-            var TitleLen = packet.ReadBits(8);
-            var DescriptionLen = packet.ReadBits(11);
-
-            packet.ReadByteE<CalendarEventType>("EventType");
-            packet.ReadInt32("TextureID");
-            packet.ReadTime("Time");
-            packet.ReadInt32E<CalendarFlag>("Flags");
-
-            var inviteInfoCount = packet.ReadInt32();
-
-            packet.ReadWoWString("Title", TitleLen);
-            packet.ReadWoWString("Description", DescriptionLen);
-
-            for (int i = 0; i < inviteInfoCount; i++)
-            {
-                packet.ReadPackedGuid128("Guid");
-                packet.ReadByteE<CalendarEventStatus>("Status");
-                packet.ReadByteE<CalendarModerationRank>("Moderator");
-            }
-
-            packet.ReadInt32("MaxSize");
-        }
+        
 
         [Parser(Opcode.CMSG_CALENDAR_COMPLAIN)]
         public static void HandleCalenderComplain(Packet packet)
@@ -210,18 +185,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("EventName", eventNameLength);
         }
 
-        [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE)]
-        public static void HandleCalendarEventInvite(Packet packet)
-        {
-            packet.ReadPackedGuid128("InviteGUID");
-            packet.ReadUInt64("EventID");
-            packet.ReadUInt64("InviteID");
-            packet.ReadByte("Level");
-            packet.ReadByteE<CalendarEventStatus>("Status");
-            packet.ReadByteE<CalendarEventType>("Type");
-            packet.ReadPackedTime("ResponseTime");
-            packet.ReadBit("ClearPending");
-        }
+       
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INITIAL_INVITES)]
         public static void HandleCalendarEventInitialInvites(Packet packet)
@@ -253,18 +217,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("ClearPending");
         }
 
-        [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_NOTES)]
-        public static void HandleCalendarEventInviteNotes(Packet packet)
-        {
-            packet.ReadPackedGuid128("InviteGUID");
-            packet.ReadUInt64("EventID");
-
-            var notesLength = packet.ReadBits(8);
-            packet.ReadBit("ClearPending");
-            packet.ResetBitReader();
-
-            packet.ReadWoWString("Notes", notesLength);
-        }
+        
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_NOTES_ALERT)]
         public static void HandleCalendarEventInviteNotesAlert(Packet packet)

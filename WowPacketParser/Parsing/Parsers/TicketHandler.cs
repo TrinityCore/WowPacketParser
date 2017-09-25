@@ -117,22 +117,6 @@ namespace WowPacketParser.Parsing.Parsers
         {
         }
 
-        [Parser(Opcode.CMSG_COMPLAINT)]
-        public static void HandleComplain(Packet packet)
-        {
-            bool fromChat = packet.ReadBool("From Chat"); // false = from mail
-            packet.ReadGuid("Guid");
-            packet.ReadInt32E<Language>("Language");
-            packet.ReadInt32E<ChatMessageType>("Type");
-            packet.ReadInt32("Channel ID");
-
-            if (fromChat)
-            {
-                packet.ReadTime("Time ago");
-                packet.ReadCString("Complain");
-            }
-        }
-
         [Parser(Opcode.CMSG_SUPPORT_TICKET_SUBMIT_BUG)]
         public static void HandleSubmitBug(Packet packet)
         {

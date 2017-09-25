@@ -9,25 +9,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
 {
     public static class CharacterHandler
     {
-        [Parser(Opcode.CMSG_CHAR_DELETE)]
-        public static void HandleClientCharDelete(Packet packet)
-        {
-            var playerGuid = new byte[8];
-
-            playerGuid[1] = packet.ReadBit();
-            playerGuid[4] = packet.ReadBit();
-            playerGuid[7] = packet.ReadBit();
-            playerGuid[5] = packet.ReadBit();
-            playerGuid[3] = packet.ReadBit();
-            playerGuid[2] = packet.ReadBit();
-            playerGuid[0] = packet.ReadBit();
-            playerGuid[6] = packet.ReadBit();
-
-            packet.ParseBitStream(playerGuid, 2, 0, 4, 1, 5, 3, 7, 6);
-
-            var guid = new WowGuid64(BitConverter.ToUInt64(playerGuid, 0));
-            packet.WriteGuid("GUID", playerGuid);
-        }
+        
 
         [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT)]
         public static void HandleCharEnum(Packet packet)

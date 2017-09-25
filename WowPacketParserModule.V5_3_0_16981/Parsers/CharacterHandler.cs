@@ -120,55 +120,6 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_CREATE_CHARACTER)]
-        public static void HandleClientCharCreate(Packet packet)
-        {
-            packet.ReadByte("Hair Style");
-            packet.ReadByte("Face");
-            packet.ReadByte("Facial Hair");
-            packet.ReadByte("Hair Color");
-            packet.ReadByteE<Race>("Race");
-            packet.ReadByteE<Class>("Class");
-            packet.ReadByte("Skin");
-            packet.ReadByteE<Gender>("Gender");
-            packet.ReadByte("Outfit Id");
-
-            var nameLength = packet.ReadBits(6);
-            var unk = packet.ReadBit("unk");
-            packet.ReadWoWString("Name", (int)nameLength);
-            if (unk)
-                packet.ReadUInt32("unk20");
-        }
-
-        [Parser(Opcode.CMSG_CHAR_DELETE)]
-        public static void HandleClientCharDelete(Packet packet)
-        {
-            var playerGuid = new byte[8];
-
-            playerGuid[2] = packet.ReadBit();
-            playerGuid[1] = packet.ReadBit();
-            playerGuid[5] = packet.ReadBit();
-            playerGuid[7] = packet.ReadBit();
-            playerGuid[6] = packet.ReadBit();
-
-            packet.ReadBit();
-
-            playerGuid[3] = packet.ReadBit();
-            playerGuid[0] = packet.ReadBit();
-            playerGuid[4] = packet.ReadBit();
-
-            packet.ReadXORByte(playerGuid, 1);
-            packet.ReadXORByte(playerGuid, 3);
-            packet.ReadXORByte(playerGuid, 4);
-            packet.ReadXORByte(playerGuid, 0);
-            packet.ReadXORByte(playerGuid, 7);
-            packet.ReadXORByte(playerGuid, 2);
-            packet.ReadXORByte(playerGuid, 5);
-            packet.ReadXORByte(playerGuid, 6);
-
-            packet.WriteGuid("GUID", playerGuid);
-        }
-
         [Parser(Opcode.SMSG_LOG_XP_GAIN)]
         public static void HandleLogXPGain(Packet packet)
         {

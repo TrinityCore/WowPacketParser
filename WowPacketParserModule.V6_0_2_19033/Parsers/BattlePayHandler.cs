@@ -236,14 +236,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_BATTLE_PAY_START_PURCHASE_RESPONSE)]
-        public static void HandleBattlePayStartPurchaseResponse(Packet packet)
-        {
-            packet.ReadUInt64("PurchaseID");
-            packet.ReadInt32("ClientToken");
-            packet.ReadInt32("PurchaseResult");
-        }
-
         [Parser(Opcode.SMSG_BATTLE_PAY_PURCHASE_UPDATE)]
         public static void HandleBattlePayPurchaseUpdate(Packet packet)
         {

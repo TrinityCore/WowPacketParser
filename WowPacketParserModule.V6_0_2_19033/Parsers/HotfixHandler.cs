@@ -14,18 +14,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     [SuppressMessage("ReSharper", "UseObjectOrCollectionInitializer")]
     public static class HotfixHandler
     {
-        [Parser(Opcode.CMSG_DB_QUERY_BULK)]
-        public static void HandleDbQueryBulk(Packet packet)
-        {
-            packet.ReadInt32E<DB2Hash>("DB2 File");
-
-            var count = ClientVersion.AddedInVersion(ClientVersionBuild.V6_0_3_19103) ? packet.ReadBits("Count", 13) : packet.ReadUInt32("Count");
-            for (var i = 0; i < count; ++i)
-            {
-                packet.ReadPackedGuid128("Guid", i);
-                packet.ReadInt32("Entry", i);
-            }
-        }
 
         [HasSniffData]
         [Parser(Opcode.SMSG_DB_REPLY)]

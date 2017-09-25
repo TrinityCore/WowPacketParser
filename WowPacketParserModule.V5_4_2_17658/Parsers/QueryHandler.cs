@@ -111,28 +111,6 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             Storage.ObjectNames.Add(objectName, packet.TimeSpan);
         }
 
-        [Parser(Opcode.CMSG_DB_QUERY_BULK)]
-        public static void HandleDBQueryBulk(Packet packet)
-        {
-            packet.ReadInt32E<DB2Hash>("DB2 File");
-            uint count = packet.ReadBits(21);
-
-            var guids = new byte[count][];
-            for (int i = 0; i < count; ++i)
-            {
-                guids[i] = new byte[8];
-                packet.StartBitStream(guids[i], 3, 7, 5, 6, 2, 0, 4, 1);
-            }
-
-            packet.ResetBitReader();
-            for (int i = 0; i < count; ++i)
-            {
-                packet.ReadXORBytes(guids[i], 5, 1, 4, 6, 7, 2, 0, 3);
-                packet.ReadInt32("Entry", i);
-                packet.WriteGuid("Guid", guids[i], i);
-            }
-        }
-
         [HasSniffData]
         [Parser(Opcode.SMSG_DB_REPLY)]
         public static void HandleDBReply(Packet packet)

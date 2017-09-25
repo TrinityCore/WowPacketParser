@@ -121,13 +121,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_CALENDAR_GUILD_FILTER)]
-        public static void HandleCalendarGuildFilter(Packet packet)
-        {
-            packet.ReadInt32("Min Level");
-            packet.ReadInt32("Max Level");
-            packet.ReadInt32("Min Rank");
-        }
+       
 
         [Parser(Opcode.CMSG_CALENDAR_ARENA_TEAM)]
         public static void HandleCalendarArenaTeam(Packet packet)
@@ -285,15 +279,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32E<CalendarEventStatus>("Status");
         }
 
-        [Parser(Opcode.CMSG_CALENDAR_EVENT_MODERATOR_STATUS)]
-        public static void HandleCalendarEventModeratorStatus(Packet packet)
-        {
-            packet.ReadPackedGuid("Invitee GUID");
-            packet.ReadInt64("Event ID");
-            packet.ReadInt64("Invite ID");
-            packet.ReadInt64("Owner Invite ID"); // sender's invite id?
-            packet.ReadInt32E<CalendarModerationRank>("Rank");
-        }
+        
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_STATUS)]
         public static void HandleSendCalendarEventStatus(Packet packet)
@@ -314,21 +300,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt64("Event ID");
             packet.ReadByteE<CalendarModerationRank>("Rank");
             packet.ReadBool("Unk Boolean");
-        }
-
-        [Parser(Opcode.CMSG_CALENDAR_COMPLAIN, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleCalendarComplain(Packet packet)
-        {
-            packet.ReadInt64("Event ID");
-            packet.ReadGuid("GUID");
-        }
-
-        [Parser(Opcode.CMSG_CALENDAR_COMPLAIN, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandleCalendarComplain434(Packet packet)
-        {
-            packet.ReadGuid("GUID");
-            packet.ReadInt64("Event ID");
-            packet.ReadInt64("Invite ID");
         }
 
         [Parser(Opcode.SMSG_CALENDAR_SEND_NUM_PENDING)]
@@ -446,12 +417,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBool("DeletePendingInvite");
         }
 
-        [Parser(Opcode.CMSG_CALENDAR_EVENT_SIGN_UP)]
-        public static void HandleCalendarEventSignup(Packet packet)
-        {
-            packet.ReadInt64("Event ID");
-            packet.ReadByteE<CalendarEventStatus>("Status");
-        }
+        
 
         [Parser(Opcode.CMSG_CALENDAR_GET_CALENDAR)]
         [Parser(Opcode.CMSG_CALENDAR_GET_NUM_PENDING)]

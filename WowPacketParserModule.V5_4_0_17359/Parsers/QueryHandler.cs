@@ -17,29 +17,6 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var entry = packet.ReadInt32("Entry");
         }
 
-        [Parser(Opcode.CMSG_DB_QUERY_BULK)]
-        public static void HandleDBQueryBulk(Packet packet)
-        {
-            packet.ReadInt32E<DB2Hash>("DB2 File");
-            var count = packet.ReadBits(21);
-
-            var guids = new byte[count][];
-            for (var i = 0; i < count; ++i)
-            {
-                guids[i] = new byte[8];
-                packet.StartBitStream(guids[i], 3, 4, 7, 2, 5, 1, 6, 0);
-            }
-
-            packet.ResetBitReader();
-            for (var i = 0; i < count; ++i)
-            {
-                packet.ReadXORBytes(guids[i], 6, 1, 2);
-                packet.ReadInt32("Entry", i);
-                packet.ReadXORBytes(guids[i], 4, 5, 7, 0, 3);
-                packet.WriteGuid("Guid", guids[i], i);
-            }
-        }
-
         [HasSniffData]
         [Parser(Opcode.SMSG_QUERY_CREATURE_RESPONSE)]
         public static void HandleCreatureQueryResponse(Packet packet)

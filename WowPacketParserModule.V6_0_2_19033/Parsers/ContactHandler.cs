@@ -6,12 +6,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class ContactHandler
     {
-        [Parser(Opcode.CMSG_VOICE_ADD_IGNORE)]
-        public static void HandleAddIgnoreOrMute(Packet packet)
-        {
-            var bits9 = packet.ReadBits(9);
-            packet.ReadWoWString("Name", bits9);
-        }
 
         public static void ReadQualifiedGUID(Packet packet, params object[] indexes)
         {
@@ -19,8 +13,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Guid", indexes);
         }
 
-        [Parser(Opcode.CMSG_DEL_FRIEND)]
-        [Parser(Opcode.CMSG_DEL_IGNORE)]
         [Parser(Opcode.CMSG_VOICE_DEL_IGNORE)]
         public static void HandleDeleteFriendOrIgnoreOrMute(Packet packet)
         {

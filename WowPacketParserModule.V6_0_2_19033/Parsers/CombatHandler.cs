@@ -143,11 +143,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("Accepted");
         }
 
-        [Parser(Opcode.CMSG_CAN_DUEL)]
-        public static void HandleCanDuel(Packet packet)
-        {
-            packet.ReadPackedGuid128("TargetGUID");
-        }
+        
 
         [Parser(Opcode.SMSG_PVP_CREDIT)]
         public static void HandlePvPCredit(Packet packet)

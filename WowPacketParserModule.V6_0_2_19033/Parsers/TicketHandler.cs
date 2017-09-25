@@ -77,47 +77,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        public static void ReadComplaintOffender(Packet packet, params object[] indexes)
-        {
-            packet.ReadPackedGuid128("PlayerGuid", indexes);
-            packet.ReadInt32("RealmAddress", indexes);
-            packet.ReadInt32("TimeSinceOffence", indexes);
-        }
-
-        public static void ReadComplaintChat(Packet packet, params object[] indexes)
-        {
-            packet.ReadInt32("Command");
-            packet.ReadInt32("ChannelID");
-
-            packet.ResetBitReader();
-
-            var len = packet.ReadBits(12);
-            packet.ReadWoWString("MessageLog", len);
-        }
-
-        [Parser(Opcode.CMSG_COMPLAINT)]
-        public static void HandleComplain(Packet packet)
-        {
-            var result = packet.ReadByte("ComplaintType");
-
-            ReadComplaintOffender(packet, "Offender");
-
-            switch (result)
-            {
-                case 0: // Mail
-                    packet.ReadInt32("MailID");
-                    break;
-                case 1: // Chat
-                    ReadComplaintChat(packet, "Chat");
-                    break;
-                case 2: // Calendar
-                    // Order guessed
-                    packet.ReadInt64("EventGuid");
-                    packet.ReadInt64("InviteGuid");
-                    break;
-            }
-        }
-
         [Parser(Opcode.CMSG_GM_TICKET_ACKNOWLEDGE_SURVEY)]
         public static void HandleGMTicketAcknowledgeSurvey(Packet packet)
         {

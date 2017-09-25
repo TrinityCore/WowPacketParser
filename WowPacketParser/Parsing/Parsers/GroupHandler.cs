@@ -549,13 +549,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("Leader GUID");
         }
 
-        [Parser(Opcode.CMSG_GROUP_CHANGE_SUB_GROUP)]
-        public static void HandleGroupChangesubgroup(Packet packet)
-        {
-            packet.ReadCString("Name");
-            packet.ReadByte("Group");
-        }
-
         [Parser(Opcode.MSG_RAID_READY_CHECK)]
         public static void HandleRaidReadyCheck(Packet packet)
         {

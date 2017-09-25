@@ -138,8 +138,6 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_SET_SELECTION, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)]
         [Parser(Opcode.CMSG_INSPECT)]
         [Parser(Opcode.CMSG_BUY_BANK_SLOT)]
-        [Parser(Opcode.CMSG_DEL_FRIEND)]
-        [Parser(Opcode.CMSG_DEL_IGNORE)]
         [Parser(Opcode.CMSG_DUEL_ACCEPTED)]
         [Parser(Opcode.CMSG_DUEL_CANCELLED)]
         [Parser(Opcode.SMSG_REFER_A_FRIEND_EXPIRED)]

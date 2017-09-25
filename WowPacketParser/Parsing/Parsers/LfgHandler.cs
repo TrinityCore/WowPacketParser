@@ -709,12 +709,6 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_DUNGEON_FINDER_GET_SYSTEM_INFO)]
-        public static void HandleDungeonFinderGetSystemInfo(Packet packet)
-        {
-            packet.ReadBit("Unk boolean");
-        }
-
         [Parser(Opcode.SMSG_ROLE_POLL_BEGIN)]
         public static void HandleRollPollBegin(Packet packet)
         {
