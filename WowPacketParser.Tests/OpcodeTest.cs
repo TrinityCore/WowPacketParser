@@ -15,7 +15,7 @@ namespace WowPacketParser.Tests
     [TestFixture]
     public class OpcodeTest
     {
-        [Test, Ignore("Unknown")]
+        [Test]
         public void TestHasHandler()
         {
             var opcodes = Utilities.GetValues<Opcode>();
@@ -47,7 +47,7 @@ namespace WowPacketParser.Tests
             {
                 usedOpcodes[action.Key.Value] = true;
             }
-
+            
             var allUsed = usedOpcodes.All(pair => pair.Value);
 
             if (!allUsed)
@@ -61,7 +61,7 @@ namespace WowPacketParser.Tests
             Assert.IsTrue(allUsed, "Found unused opcodes defined.");
         }
 
-        [Test, Ignore("Unknown")]
+        [Test]
         public void TestHasValue()
         {
             var opcodes = Utilities.GetValues<Opcode>();

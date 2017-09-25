@@ -15,11 +15,14 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 *.diagsession
 *.vspx
+.vs/
+VisualStudio.coverage
+VisualStudio.coveragexml
+
+.sonarqube/
 
 packages/*
 !packages/repositories.config
 
 wpp.tgz
 cov-int
-
-/.vs
