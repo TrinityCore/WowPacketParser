@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using WowPacketParser.Messages.Cli;
+using WowPacketParser.Messages.CliChat;
 
 namespace WowPacketParser.Messages.Submessages
 {

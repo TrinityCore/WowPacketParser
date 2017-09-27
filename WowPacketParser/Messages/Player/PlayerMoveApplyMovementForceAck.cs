@@ -1,4 +1,4 @@
-using WowPacketParser.Messages.Cli;
+using WowPacketParser.Messages.CliChat;
 using WowPacketParser.Messages.Submessages;
 using WowPacketParser.Misc;
 
