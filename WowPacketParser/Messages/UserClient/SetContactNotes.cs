@@ -10,7 +10,7 @@ namespace WowPacketParser.Messages.UserClient
         public QualifiedGUID Player;
         public string Notes;
 
-        [Parser(Opcode.CMSG_SET_CONTACT_NOTES, ClientVersionBuild.Zero, ClientVersionBuild.V6_0_2_1903)]
+        [Parser(Opcode.CMSG_SET_CONTACT_NOTES, ClientVersionBuild.Zero, ClientVersionBuild.V6_0_2_19033)]
         public static void HandleSetContactNotes(Packet packet)
         {
             packet.ReadGuid("GUID");

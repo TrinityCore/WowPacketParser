@@ -14,6 +14,7 @@ namespace WowPacketParser.Messages.UserClient.LFGList
         {
             readLFGListJoinRequest(packet, "LFGListJoinRequest");
         }
+
         private static void readLFGListJoinRequest(Packet packet, params object[] idx)
         {
             packet.ReadInt32("ActivityID", idx);

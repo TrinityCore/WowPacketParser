@@ -368,13 +368,29 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleLFGListUpdateStatus(Packet packet)
         {
             ReadCliRideTicket(packet, "RideTicket");
-            ReadLFGListJoinRequest(packet, "LFGListJoinRequest");
+            readLFGListJoinRequest(packet, "LFGListJoinRequest");
             packet.ReadInt32("Unk");
             packet.ReadByte("Reason");
 
             packet.ResetBitReader();
 
             packet.ReadBit("Listed");
+        }
+
+        private static void readLFGListJoinRequest(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("ActivityID", idx);
+            packet.ReadSingle("RequiredItemLevel", idx);
+
+            packet.ResetBitReader();
+
+            var lenName = packet.ReadBits(8);
+            var lenComment = packet.ReadBits(11);
+            var lenVoiceChat = packet.ReadBits(8);
+
+            packet.ReadWoWString("Name", lenName, idx);
+            packet.ReadWoWString("Comment", lenComment, idx);
+            packet.ReadWoWString("VoiceChat", lenVoiceChat, idx);
         }
 
         [Parser(Opcode.SMSG_LFG_TELEPORT_DENIED)]

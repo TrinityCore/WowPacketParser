@@ -1,3 +1,7 @@
+using WowPacketParser.Enums;
+using WowPacketParser.Misc;
+using WowPacketParser.Parsing;
+
 namespace WowPacketParser.Messages.UserClient
 {
     public unsafe struct UpdateRaidTarget

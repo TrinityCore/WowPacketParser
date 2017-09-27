@@ -13,7 +13,7 @@ namespace WowPacketParser.Messages.UserClient
         public string TargetRealm;
         public uint TargetCfgRealmID;
 
-        [Parser(Opcode.CMSG_PARTY_INVITE, CClientVersionBuild.Zero, ClientVersionBuild.V7_1_0_22900)]
+        [Parser(Opcode.CMSG_PARTY_INVITE, ClientVersionBuild.Zero, ClientVersionBuild.V7_1_0_22900)]
         public static void HandleClientPartyInvite(Packet packet)
         {
             packet.ReadByte("PartyIndex");
