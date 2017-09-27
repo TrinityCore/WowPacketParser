@@ -73,15 +73,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadWoWString("Name", strlen, i);
             }
         }
-
-        [Parser(Opcode.CMSG_SET_DUNGEON_DIFFICULTY)]
+        
         [Parser(Opcode.SMSG_SET_DUNGEON_DIFFICULTY)]
         public static void HandleSetDungeonDifficulty(Packet packet)
         {
             packet.ReadInt32<DifficultyId>("DifficultyID");
         }
-
-        [Parser(Opcode.CMSG_SET_RAID_DIFFICULTY)]
+        
         [Parser(Opcode.SMSG_RAID_DIFFICULTY_SET)]
         public static void HandleSetRaidDifficulty(Packet packet)
         {
@@ -105,14 +103,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadBit("Locked", i);
                 packet.ReadBit("Extended", i);
             }
-        }
-
-        [Parser(Opcode.CMSG_SET_SAVED_INSTANCE_EXTEND)]
-        public static void HandleSetSavedInstanceExtend(Packet packet)
-        {
-            packet.ReadInt32<MapId>("MapID");
-            packet.ReadInt32<DifficultyId>("DifficultyID");
-            packet.ReadBit("Extended");
         }
 
         [Parser(Opcode.SMSG_RAID_INSTANCE_MESSAGE)]

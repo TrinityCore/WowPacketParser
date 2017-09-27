@@ -6,12 +6,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class GroupHandler
     {
-        [Parser(Opcode.CMSG_MINIMAP_PING)]
-        public static void HandleClientMinimapPing(Packet packet)
-        {
-            packet.ReadVector2("Position");
-            packet.ReadByte("PartyIndex");
-        }
 
         [Parser(Opcode.SMSG_MINIMAP_PING)]
         public static void HandleServerMinimapPing(Packet packet)
@@ -394,21 +388,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("LfgSlots", i);
         }
 
-        [Parser(Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS)]
-        public static void HandleRequestPartyMemberStats(Packet packet)
-        {
-            packet.ReadByte("PartyIndex");
-            packet.ReadPackedGuid128("Target");
-        }
-
-        [Parser(Opcode.CMSG_UPDATE_RAID_TARGET)]
-        public static void HandleUpdateRaidTarget(Packet packet)
-        {
-            packet.ReadByte("PartyIndex");
-            packet.ReadPackedGuid128("Target");
-            packet.ReadByte("Symbol");
-        }
-
         [Parser(Opcode.SMSG_SEND_RAID_TARGET_UPDATE_SINGLE)]
         public static void HandleSendRaidTargetUpdateSingle(Packet packet)
         {
@@ -447,14 +426,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("Duration");
         }
 
-        [Parser(Opcode.CMSG_READY_CHECK_RESPONSE)]
-        public static void HandleClientReadyCheckResponse(Packet packet)
-        {
-            packet.ReadByte("PartyIndex");
-            packet.ReadPackedGuid128("PartyGUID");
-            packet.ReadBit("IsReady");
-        }
-
         [Parser(Opcode.SMSG_READY_CHECK_COMPLETED)]
         public static void HandleReadyCheckCompleted(Packet packet)
         {
@@ -486,67 +457,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("ResultData");
             packet.ReadPackedGuid128("ResultGUID");
             packet.ReadWoWString("Name", nameLength);
-        }
-        
-        [Parser(Opcode.CMSG_REQUEST_PARTY_JOIN_UPDATES)]
-        public static void HandleLeaveGroup(Packet packet)
-        {
-            packet.ReadByte("PartyIndex");
-        }
-
-        [Parser(Opcode.CMSG_PARTY_INVITE_RESPONSE)]
-        public static void HandlePartyInviteResponse(Packet packet)
-        {
-            packet.ReadByte("PartyIndex");
-
-            packet.ResetBitReader();
-
-            packet.ReadBit("Accept");
-            var hasRolesDesired = packet.ReadBit("HasRolesDesired");
-            if (hasRolesDesired)
-                packet.ReadInt32("RolesDesired");
-        }
-
-        [Parser(Opcode.CMSG_PARTY_UNINVITE)]
-        public static void HandlePartyUninvite(Packet packet)
-        {
-            packet.ReadByte("PartyIndex");
-            packet.ReadPackedGuid128("TargetGuid");
-
-            var len = packet.ReadBits(8);
-            packet.ReadWoWString("Reason", len);
-        }
-
-        [Parser(Opcode.CMSG_SET_ROLE)]
-        public static void HandleSetRole(Packet packet)
-        {
-            packet.ReadByte("PartyIndex");
-            packet.ReadPackedGuid128("ChangedUnit");
-            packet.ReadInt32("Role");
-        }
-
-        [Parser(Opcode.CMSG_SET_PARTY_LEADER)]
-        public static void HandleSetPartyLeader(Packet packet)
-        {
-            packet.ReadByte("PartyIndex");
-            packet.ReadPackedGuid128("Target");
-        }
-
-        [Parser(Opcode.CMSG_PARTY_INVITE)]
-        public static void HandleClientPartyInvite(Packet packet)
-        {
-            packet.ReadByte("PartyIndex");
-            packet.ReadInt32("ProposedRoles");
-            packet.ReadPackedGuid128("TargetGuid");
-            packet.ReadInt32("TargetCfgRealmID");
-
-            packet.ResetBitReader();
-
-            var lenTargetName = packet.ReadBits(9);
-            var lenTargetRealm = packet.ReadBits(9);
-
-            packet.ReadWoWString("TargetName", lenTargetName);
-            packet.ReadWoWString("TargetRealm", lenTargetRealm);
         }
     }
 }

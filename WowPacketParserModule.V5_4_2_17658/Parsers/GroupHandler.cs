@@ -147,16 +147,5 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.WriteGuid("Group GUID", groupGUID);
         }
 
-        [Parser(Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS)]
-        public static void HandleRequestPartyMemberStats(Packet packet)
-        {
-            var guid = new byte[8];
-
-            packet.ReadByte("Online?");
-            packet.StartBitStream(guid, 7, 1, 4, 3, 6, 5, 0, 2);
-            packet.ParseBitStream(guid, 3, 4, 7, 6, 0, 1, 5, 2);
-
-            packet.WriteGuid("GUID", guid);
-        }
     }
 }

@@ -262,53 +262,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("InstanceGroupSize");
         }
 
-        [Parser(Opcode.CMSG_WHO)]
-        public static void HandleWhoRequest(Packet packet)
-        {
-            var bits728 = packet.ReadBits("WhoWordCount", 4);
-
-            packet.ReadInt32("MinLevel");
-            packet.ReadInt32("MaxLevel");
-            packet.ReadInt32("RaceFilter");
-            packet.ReadInt32("ClassFilter");
-
-            packet.ResetBitReader();
-
-            var bits2 = packet.ReadBits(6);
-            var bits57 = packet.ReadBits(9);
-            var bits314 = packet.ReadBits(7);
-            var bits411 = packet.ReadBits(9);
-            var bit169 = packet.ReadBits(3);
-
-            packet.ReadBit("ShowEnemies");
-            packet.ReadBit("ShowArenaPlayers");
-            packet.ReadBit("ExactName");
-            var bit708 = packet.ReadBit("HasServerInfo");
-
-            packet.ReadWoWString("Name", bits2);
-            packet.ReadWoWString("VirtualRealmName", bits57);
-            packet.ReadWoWString("Guild", bits314);
-            packet.ReadWoWString("GuildVirtualRealmName", bits411);
-
-            for (var i = 0; i < bit169; ++i)
-            {
-                packet.ResetBitReader();
-                var bits0 = packet.ReadBits(7);
-                packet.ReadWoWString("Word", bits0, i);
-            }
-
-            // WhoRequestServerInfo
-            if (bit708)
-            {
-                packet.ReadInt32("FactionGroup");
-                packet.ReadInt32("Locale");
-                packet.ReadInt32("RequesterVirtualRealmAddress");
-            }
-
-            for (var i = 0; i < bits728; ++i)
-                packet.ReadUInt32<AreaId>("Area", i);
-        }
-
         [Parser(Opcode.SMSG_WHO)]
         public static void HandleWho(Packet packet)
         {
@@ -625,13 +578,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Name", len);
         }
 
-        [Parser(Opcode.CMSG_RESURRECT_RESPONSE)]
-        public static void HandleResurrectResponse(Packet packet)
-        {
-            packet.ReadPackedGuid128("Resurrecter");
-            packet.ReadInt32("Response");
-        }
-
         [Parser(Opcode.CMSG_ACCEPT_LEVEL_GRANT)]
         public static void HandleAcceptLevelGrant(Packet packet)
         {
@@ -694,14 +640,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("TimerID");
             packet.ReadBit("KeepTimer");
-        }
-
-        [Parser(Opcode.CMSG_RANDOM_ROLL)]
-        public static void HandleRandomRoll(Packet packet)
-        {
-            packet.ReadInt32("Min");
-            packet.ReadInt32("Max");
-            packet.ReadByte("PartyIndex");
         }
 
         [Parser(Opcode.SMSG_RANDOM_ROLL)]

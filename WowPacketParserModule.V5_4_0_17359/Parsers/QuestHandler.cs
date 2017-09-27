@@ -10,16 +10,6 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 {
     public static class QuestHandler
     {
-        [Parser(Opcode.CMSG_QUEST_POI_QUERY)]
-        public static void HandleQuestPoiQuery(Packet packet)
-        {
-            var count = packet.ReadUInt32("Count");
-
-            for (var i = 0; i < count; i++) // for (var i = 0; i < 50; i++)
-                packet.ReadInt32<QuestId>("Quest ID", i);
-
-            packet.ReadToEnd(); // Hack
-        }
 
         [Parser(Opcode.CMSG_QUERY_QUEST_COMPLETION_NPCS)]
         public static void HandleQuestNpcQuery(Packet packet)

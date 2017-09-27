@@ -291,18 +291,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBit("Is guild group");
         }
 
-        [Parser(Opcode.CMSG_QUERY_GUILD_INFO)]
-        public static void HandleGuildQuery(Packet packet)
-        {
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596)) // Not sure when it was changed
-            {
-                packet.ReadGuid("Guild GUID");
-                packet.ReadGuid("Player GUID");
-            }
-            else
-                packet.ReadUInt32("Guild Id");
-        }
-
         [Parser(Opcode.SMSG_QUERY_GUILD_INFO_RESPONSE)]
         public static void HandleGuildQueryResponse(Packet packet)
         {

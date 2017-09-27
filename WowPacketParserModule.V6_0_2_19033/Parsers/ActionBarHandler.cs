@@ -50,16 +50,5 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadByte("Packet Type");
         }
-
-        [Parser(Opcode.CMSG_SET_ACTION_BUTTON)]
-        public static void HandleSetActionButton(Packet packet)
-        {
-            uint action = packet.ReadUInt32();
-            uint type = packet.ReadUInt32();
-
-            packet.AddValue("Action ", action);
-            packet.AddValue("Type ", type);
-            packet.ReadByte("Slot Id");
-        }
     }
 }

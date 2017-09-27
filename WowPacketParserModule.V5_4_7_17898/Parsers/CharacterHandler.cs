@@ -282,35 +282,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_REORDER_CHARACTERS)]
-        public static void HandleReorderCharacters(Packet packet)
-        {
-            var count = packet.ReadBits("Count", 9);
-
-            var guids = new byte[count][];
-
-            for (int i = 0; i < count; ++i)
-            {
-                guids[i] = new byte[8];
-                packet.StartBitStream(guids[i], 3, 7, 4, 1, 2, 5, 0, 6);
-            }
-
-            for (int i = 0; i < count; ++i)
-            {
-                packet.ReadXORByte(guids[i], 4);
-                packet.ReadXORByte(guids[i], 7);
-                packet.ReadXORByte(guids[i], 0);
-                packet.ReadXORByte(guids[i], 2);
-                packet.ReadByte("Slot", i);
-                packet.ReadXORByte(guids[i], 6);
-                packet.ReadXORByte(guids[i], 3);
-                packet.ReadXORByte(guids[i], 1);
-                packet.ReadXORByte(guids[i], 5);
-
-                packet.WriteGuid("Character Guid", guids[i], i);
-            }
-        }
-
         [Parser(Opcode.SMSG_XP_GAIN_ABORTED)]
         public static void HandleXPGainAborted(Packet packet)
         {

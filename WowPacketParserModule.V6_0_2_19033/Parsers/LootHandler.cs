@@ -49,15 +49,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("SoleLooter");
         }
 
-        [Parser(Opcode.CMSG_SET_LOOT_METHOD)]
-        public static void HandleLootMethod(Packet packet)
-        {
-            packet.ReadByte("PartyIndex");
-            packet.ReadByteE<LootMethod>("Method");
-            packet.ReadPackedGuid128("Master");
-            packet.ReadInt32E<ItemQuality>("Threshold");
-        }
-
         [Parser(Opcode.SMSG_LOOT_REMOVED)]
         public static void HandleLootRemoved(Packet packet)
         {

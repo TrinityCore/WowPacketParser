@@ -64,29 +64,6 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_WARDEN_DATA)]
-        public static void HandleClientWardenData(Packet packet)
-        {
-            var opcode = packet.ReadByteE<WardenClientOpcode>("Warden Client Opcode");
-
-            switch (opcode)
-            {
-                case WardenClientOpcode.CheatCheckResults:
-                {
-                    var length = packet.ReadUInt16("Check Result Length");
-                    packet.ReadInt32("Check Result Checksum");
-                    packet.ReadBytes("Check Results", length);
-
-                    break;
-                }
-                case WardenClientOpcode.TransformedSeed:
-                {
-                    packet.ReadBytes("SHA1 Seed", 20);
-                    break;
-                }
-            }
-        }
-
         [Parser(Opcode.SMSG_CHECK_FOR_BOTS)]
         public static void HandleCheckForBots(Packet packet)
         {

@@ -6,11 +6,6 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class GroupHandler
     {
-        [Parser(Opcode.CMSG_SET_EVERYONE_IS_ASSISTANT)]
-        public static void HandleEveryoneIsAssistant(Packet packet)
-        {
-            packet.ReadBit("Active");
-        }
 
         [Parser(Opcode.CMSG_GROUP_SET_ROLES, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGroupSetRoles(Packet packet)
@@ -515,12 +510,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("GUID");
         }
 
-        [Parser(Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS)]
-        public static void HandleRequestPartyMemberStats(Packet packet)
-        {
-            packet.ReadGuid("GUID");
-        }
-
         [Parser(Opcode.SMSG_PARTY_COMMAND_RESULT)]
         public static void HandlePartyCommandResult(Packet packet)
         {
@@ -590,13 +579,6 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadCString("Player 1 name");
             packet.ReadCString("Player 2 name");
-        }
-
-        [Parser(Opcode.CMSG_SET_ASSISTANT_LEADER)]
-        public static void HandleGroupAssistantLeader(Packet packet)
-        {
-            packet.ReadGuid("GUID");
-            packet.ReadBool("Promote"); // False = demote
         }
 
         [Parser(Opcode.MSG_PARTY_ASSIGNMENT)]

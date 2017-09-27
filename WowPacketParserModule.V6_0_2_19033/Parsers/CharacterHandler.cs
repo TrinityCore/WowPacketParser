@@ -95,13 +95,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 ReadFactionChangeRestrictionsData(packet, i, "FactionChangeRestrictionsData");
         }
 
-        [Parser(Opcode.CMSG_UNDELETE_CHARACTER)]
-        public static void HandleUndeleteCharacter(Packet packet)
-        {
-            packet.ReadInt32("ClientToken");
-            packet.ReadPackedGuid128("CharacterGuid");
-        }
-
         [Parser(Opcode.SMSG_UNDELETE_CHARACTER_RESPONSE)]
         public static void HandleUndeleteCharacterResponse(Packet packet)
         {
@@ -136,17 +129,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_REORDER_CHARACTERS)]
-        public static void HandleReorderCharacters(Packet packet)
-        {
-            var count = packet.ReadBits("CharactersCount", 9);
-
-            for (var i = 0; i < count; ++i)
-            {
-                packet.ReadPackedGuid128("PlayerGUID");
-                packet.ReadByte("NewPosition", i);
-            }
-        }
 
         [Parser(Opcode.SMSG_GENERATE_RANDOM_CHARACTER_NAME_RESULT)]
         public static void HandleGenerateRandomCharacterNameResponse(Packet packet)
@@ -282,24 +264,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("XpAbortReason");
         }
 
-        [Parser(Opcode.CMSG_QUERY_PLAYER_NAME)]
-        public static void HandleNameQuery(Packet packet)
-        {
-            packet.ReadPackedGuid128("Guid");
-
-            if (!ClientVersion.RemovedInVersion(ClientVersionBuild.V6_1_0_19678))
-                return;
-
-            var bit4 = packet.ReadBit();
-            var bit12 = packet.ReadBit();
-
-            if (bit4)
-                packet.ReadInt32("VirtualRealmAddress");
-
-            if (bit12)
-                packet.ReadInt32("NativeRealmAddress");
-        }
-
         [Parser(Opcode.SMSG_QUERY_PLAYER_NAME_RESPONSE)]
         public static void HandleNameQueryResponse(Packet packet)
         {
@@ -362,19 +326,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("StatDelta", (StatType)i);
 
             packet.ReadInt32("Cp");
-        }
-
-        [Parser(Opcode.CMSG_SET_PLAYER_DECLINED_NAMES)]
-        public static void HandleSetPlayerDeclinedNames(Packet packet)
-        {
-            packet.ReadPackedGuid128("Player");
-
-            var count = new int[5];
-            for (var i = 0; i < 5; ++i)
-                count[i] = (int)packet.ReadBits(7);
-
-            for (var i = 0; i < 5; ++i)
-                packet.ReadWoWString("DeclinedName", count[i], i);
         }
 
         [Parser(Opcode.SMSG_SET_PLAYER_DECLINED_NAMES_RESULT)]
@@ -487,13 +438,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var bracketCount = packet.ReadBits(3);
             for (var i = 0; i < bracketCount; i++)
                 ReadPVPBracketData(packet, i, "PVPBracketData");
-        }
-
-        [Parser(Opcode.CMSG_MOUNT_SET_FAVORITE)]
-        public static void HandleMountSetFavorite(Packet packet)
-        {
-            packet.ReadInt32("MountSpellID");
-            packet.ReadBit("IsFavorite");
         }
 
         [Parser(Opcode.SMSG_TITLE_EARNED)]

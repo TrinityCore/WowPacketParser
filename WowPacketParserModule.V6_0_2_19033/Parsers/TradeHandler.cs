@@ -104,13 +104,5 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Guid");
         }
-
-        [Parser(Opcode.CMSG_SHOW_TRADE_SKILL)]
-        public static void HandleShowTradeSkill(Packet packet)
-        {
-            packet.ReadPackedGuid128("PlayerGUID");
-            packet.ReadInt32<SpellId>("SpellID");
-            packet.ReadInt32("SkillLineID");
-        }
     }
 }

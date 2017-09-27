@@ -87,13 +87,5 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_SET_ACTION_BUTTON)]
-        public static void HandleSetActionButton(Packet packet)
-        {
-            packet.ReadByte("Slot Id");
-            var actionId = packet.StartBitStream(3, 5, 2, 1, 0, 6, 4, 7);
-            packet.ParseBitStream(actionId, 4, 0, 7, 2, 1, 3, 6, 5);
-            packet.AddValue("Action Id", BitConverter.ToUInt32(actionId, 0));
-        }
     }
 }

@@ -24,13 +24,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
         }
 
-        [Parser(Opcode.CMSG_QUERY_GUILD_INFO)]
-        public static void HandleGuildQuery(Packet packet)
-        {
-            packet.ReadPackedGuid128("Guild Guid");
-            packet.ReadPackedGuid128("Player Guid");
-        }
-
         [Parser(Opcode.SMSG_QUERY_GUILD_INFO_RESPONSE)]
         public static void HandleGuildQueryResponse(Packet packet)
         {

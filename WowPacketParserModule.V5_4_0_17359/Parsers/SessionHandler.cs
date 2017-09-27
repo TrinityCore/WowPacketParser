@@ -8,15 +8,6 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 {
     public static class SessionHandler
     {
-        [Parser(Opcode.CMSG_PLAYER_LOGIN)]
-        public static void HandlePlayerLogin(Packet packet)
-        {
-            packet.ReadSingle("Unk Float");
-            var guid = packet.StartBitStream(2, 3, 7, 4, 0, 1, 5, 6);
-            packet.ParseBitStream(guid, 0, 1, 3, 4, 7, 6, 2, 5);
-            CoreParsers.SessionHandler.LoginGuid = new WowGuid64(BitConverter.ToUInt64(guid, 0));
-            packet.WriteGuid("Guid", guid);
-        }
 
         [Parser(Opcode.SMSG_AUTH_RESPONSE)]
         public static void HandleAuthResponse(Packet packet)

@@ -114,17 +114,5 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadUInt32("Item Low GUID");
             packet.ReadUInt32("Item count");
         }
-
-        [Parser(Opcode.CMSG_MAIL_RETURN_TO_SENDER)]
-        public static void HandleMailReturnToSender(Packet packet)
-        {
-            packet.ReadUInt32("Mail Id");
-
-            var guid = new byte[8];
-
-            packet.StartBitStream(guid, 2, 0, 4, 6, 3, 1, 7, 5);
-            packet.ParseBitStream(guid, 5, 6, 2, 0, 3, 1, 4, 7);
-            packet.WriteGuid("Mailbox Guid", guid);
-        }
     }
 }

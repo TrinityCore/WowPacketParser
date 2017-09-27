@@ -107,50 +107,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBool("Realm Has Free Character Migration");
         }
 
-        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
-        public static void HandlePlayerLogin(Packet packet)
-        {
-            var guid = packet.ReadGuid("GUID");
-            LoginGuid = guid;
-        }
-
-        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_0_15005)]
-        public static void HandlePlayerLogin422(Packet packet)
-        {
-            var guid = packet.StartBitStream(0, 4, 7, 1, 3, 2, 5, 6);
-            packet.ParseBitStream(guid, 5, 0, 3, 4, 7, 2, 6, 1);
-            packet.WriteGuid("Guid", guid);
-            LoginGuid = new WowGuid64(BitConverter.ToUInt64(guid, 0));
-        }
-
-        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V4_3_0_15005, ClientVersionBuild.V4_3_3_15354)]
-        public static void HandlePlayerLogin430(Packet packet)
-        {
-            var guid = packet.StartBitStream(0, 5, 3, 4, 7, 6, 2, 1);
-            packet.ParseBitStream(guid, 4, 1, 7, 2, 6, 5, 3, 0);
-
-            packet.WriteGuid("Guid", guid);
-            LoginGuid = new WowGuid64(BitConverter.ToUInt64(guid, 0));
-        }
-
-        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V4_3_3_15354, ClientVersionBuild.V4_3_4_15595)]
-        public static void HandlePlayerLogin433(Packet packet)
-        {
-            var guid = packet.StartBitStream(6, 7, 4, 5, 0, 1, 3, 2);
-            packet.ParseBitStream(guid, 1, 4, 7, 2, 3, 6, 0, 5);
-            packet.WriteGuid("Guid", guid);
-            LoginGuid = new WowGuid64(BitConverter.ToUInt64(guid, 0));
-        }
-
-        [Parser(Opcode.CMSG_PLAYER_LOGIN, ClientVersionBuild.V5_1_0_16309)]
-        public static void HandlePlayerLogin510(Packet packet)
-        {
-            var guid = packet.StartBitStream(1, 5, 0, 2, 7, 6, 3, 4);
-            packet.ParseBitStream(guid, 6, 4, 3, 5, 0, 2, 7, 1);
-            packet.WriteGuid("Guid", guid);
-            packet.ReadSingle("Unk Float");
-            LoginGuid = new WowGuid64(BitConverter.ToUInt64(guid, 0));
-        }
+        
 
         [Parser(Opcode.SMSG_CHARACTER_LOGIN_FAILED)]
         public static void HandleLoginFailed(Packet packet)

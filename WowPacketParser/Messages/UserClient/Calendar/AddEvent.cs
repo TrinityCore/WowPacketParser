@@ -11,7 +11,7 @@ namespace WowPacketParser.Messages.UserClient.Calendar
         public ClientCalendarAddEventInfo EventInfo;
 
         [Parser(Opcode.CMSG_CALENDAR_ADD_EVENT)]
-        public static void HandleUserClientCalendarAddEvent(Packet packet)
+        public static void HandleCalendarAddEvent(Packet packet)
         {
             packet.ResetBitReader();
             var TitleLen = packet.ReadBits(8);

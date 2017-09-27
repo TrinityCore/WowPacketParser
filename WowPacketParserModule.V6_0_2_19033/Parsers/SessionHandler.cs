@@ -141,14 +141,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("GameTimeTZ", len2);
         }
 
-        [Parser(Opcode.CMSG_PLAYER_LOGIN)]
-        public static void HandlePlayerLogin(Packet packet)
-        {
-            var guid = packet.ReadPackedGuid128("Guid");
-            ReadClientSettings(packet, "ClientSettings");
-            CoreParsers.SessionHandler.LoginGuid = guid;
-        }
-
         [Parser(Opcode.SMSG_LOGOUT_COMPLETE)]
         public static void HandleLogoutComplete(Packet packet)
         {
@@ -174,12 +166,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_WAIT_QUEUE_FINISH)]
         public static void HandleZeroLengthPackets(Packet packet)
         {
-        }
-
-        [Parser(Opcode.CMSG_QUERY_REALM_NAME)]
-        public static void HandleRealmQuery(Packet packet)
-        {
-            packet.ReadInt32("VirtualRealmAddress");
         }
 
         [Parser(Opcode.SMSG_REALM_QUERY_RESPONSE)]
@@ -280,12 +266,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleBattlenetSetSessionState(Packet packet)
         {
             packet.ReadBits("State", 2); // TODO: enum
-        }
-
-        [Parser(Opcode.CMSG_UPDATE_CLIENT_SETTINGS)]
-        public static void HandleUpdateClientSettings(Packet packet)
-        {
-            ReadClientSettings(packet, "ClientSettings");
         }
     }
 }

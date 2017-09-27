@@ -87,22 +87,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("MemberGuid");
         }
 
-        [Parser(Opcode.CMSG_PARTY_INVITE, ClientVersionBuild.V7_1_0_22900)]
-        public static void HandleClientPartyInvite(Packet packet)
-        {
-            packet.ReadByte("PartyIndex");
-            packet.ReadInt32("ProposedRoles");
-            packet.ReadPackedGuid128("TargetGuid");
-
-            packet.ResetBitReader();
-
-            var lenTargetName = packet.ReadBits(9);
-            var lenTargetRealm = packet.ReadBits(9);
-
-            packet.ReadWoWString("TargetName", lenTargetName);
-            packet.ReadWoWString("TargetRealm", lenTargetRealm);
-        }
-
         [Parser(Opcode.SMSG_PARTY_INVITE)]
         public static void HandlePartyInvite(Packet packet)
         {

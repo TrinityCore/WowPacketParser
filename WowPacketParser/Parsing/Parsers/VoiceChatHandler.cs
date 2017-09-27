@@ -5,12 +5,6 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class VoiceChatHandler
     {
-        [Parser(Opcode.CMSG_VOICE_SESSION_ENABLE)]
-        public static void HandleVoiceSessionEnable(Packet packet)
-        {
-            packet.ReadBool("Voice Enabled");
-            packet.ReadBool("Microphone Enabled");
-        }
 
         [Parser(Opcode.SMSG_VOICE_SESSION_ROSTER_UPDATE)]
         public static void HandleVoiceRosterUpdate(Packet packet)
@@ -79,18 +73,6 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadInt32("Channel ID");
             packet.ReadCString("Channel Name");
-        }
-
-        [Parser(Opcode.CMSG_VOICE_ADD_IGNORE)]
-        public static void HandleAddVoiceIgnore(Packet packet)
-        {
-            packet.ReadCString("Name");
-        }
-
-        [Parser(Opcode.CMSG_VOICE_DEL_IGNORE)]
-        public static void HandleDelVoiceIgnore(Packet packet)
-        {
-            packet.ReadGuid("GUID");
         }
 
         [Parser(Opcode.SMSG_VOICE_CHAT_STATUS)]

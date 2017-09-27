@@ -5,11 +5,6 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class AccountDataHandler
     {
-        [Parser(Opcode.CMSG_REQUEST_ACCOUNT_DATA)]
-        public static void HandleRequestAccountData(Packet packet)
-        {
-            packet.ReadInt32E<AccountDataType>("Data Type");
-        }
 
         public static void ReadUpdateAccountDataBlock(Packet packet)
         {
@@ -21,12 +16,6 @@ namespace WowPacketParser.Parsing.Parsers
             var pkt = packet.Inflate(decompCount, false);
             pkt.ReadWoWString("Account Data", decompCount);
             pkt.ClosePacket(false);
-        }
-
-        [Parser(Opcode.CMSG_UPDATE_ACCOUNT_DATA)]
-        public static void HandleClientUpdateAccountData(Packet packet)
-        {
-            ReadUpdateAccountDataBlock(packet);
         }
 
         [Parser(Opcode.SMSG_UPDATE_ACCOUNT_DATA)]

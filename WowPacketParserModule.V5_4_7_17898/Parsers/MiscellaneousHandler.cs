@@ -184,50 +184,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_WHO)]
-        public static void HandleWhoRequest(Packet packet)
-        {
-            packet.ReadInt32("RaceMask");
-            packet.ReadInt32("Max Level");
-            packet.ReadInt32("Min Level");
-            packet.ReadInt32("ClassMask");
-            var guildNameLen = packet.ReadBits(7);
-            packet.ReadBit("bit2C6");
-            var patterns = packet.ReadBits(3);
-            packet.ReadBit("bit2C5");
-            var zones = packet.ReadBits(4);
-
-            var bits2B8 = new uint[patterns];
-
-            for (var i = 0; i < patterns; ++i)
-                bits2B8[i] = packet.ReadBits(7);
-
-            var bits73 = packet.ReadBits(9);
-            var PlayerNameLen = packet.ReadBits(6);
-            packet.ReadBit("bit2C4");
-            var bit2D4 = packet.ReadBit();
-            var bits1AB = packet.ReadBits(9);
-
-            packet.ReadWoWString("string73", bits73);
-
-            for (var i = 0; i < zones; ++i)
-                packet.ReadInt32<ZoneId>("Zone Id");
-
-            packet.ReadWoWString("Guild Name", guildNameLen);
-            packet.ReadWoWString("string1AB", bits1AB);
-            packet.ReadWoWString("Player Name", PlayerNameLen);
-
-            for (var i = 0; i < patterns; ++i)
-                packet.ReadWoWString("Pattern", bits2B8[i], i);
-
-            if (bit2D4)
-            {
-                packet.ReadInt32("Int2C8");
-                packet.ReadInt32("Int2D0");
-                packet.ReadInt32("Int2CC");
-            }
-        }
-
         [Parser(Opcode.SMSG_WHO)]
         public static void HandleWho(Packet packet)
         {

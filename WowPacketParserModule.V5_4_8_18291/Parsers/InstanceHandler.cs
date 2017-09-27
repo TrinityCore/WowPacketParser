@@ -6,8 +6,6 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 {
     public static class InstanceHandler
     {
-        [Parser(Opcode.CMSG_SET_DUNGEON_DIFFICULTY)]
-        [Parser(Opcode.CMSG_SET_RAID_DIFFICULTY)]
         [Parser(Opcode.SMSG_RAID_DIFFICULTY_SET)]
         public static void HandleSetDifficulty(Packet packet)
         {

@@ -644,16 +644,6 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_QUEST_POI_QUERY)]
-        public static void HandleQuestPoiQuery(Packet packet)
-        {
-            var count = packet.ReadBits("Count", 22);
-            packet.ResetBitReader();
-
-            for (var i = 0; i < count; i++)
-                packet.ReadInt32<QuestId>("Quest ID", i);
-        }
-
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_COMPLETE)]
         public static void HandleQuestCompleted(Packet packet)
         {

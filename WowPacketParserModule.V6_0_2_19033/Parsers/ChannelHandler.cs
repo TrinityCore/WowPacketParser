@@ -83,14 +83,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_SET_ACTIVE_VOICE_CHANNEL)]
-        public static void HandleSetActiveVoiceChannel(Packet packet)
-        {
-            packet.ReadByte("ChannelType");
-            var bits108 = packet.ReadBits(7);
-            packet.ReadWoWString("ChannelName", bits108);
-        }
-
         [Parser(Opcode.SMSG_AVAILABLE_VOICE_CHANNEL)]
         public static void HandleAvailableVoiceChannel(Packet packet)
         {
@@ -99,13 +91,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("ChannelType");
             var bits108 = packet.ReadBits(7);
             packet.ReadWoWString("ChannelName", bits108);
-        }
-
-        [Parser(Opcode.CMSG_VOICE_SESSION_ENABLE)]
-        public static void HandleVoiceSessionEnable(Packet packet)
-        {
-            packet.ReadBit("EnableVoiceChat");
-            packet.ReadBit("EnableMicrophone");
         }
 
         [Parser(Opcode.SMSG_VOICE_SESSION_LEAVE)]

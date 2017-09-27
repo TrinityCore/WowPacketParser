@@ -48,14 +48,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("Player GUID");
         }
 
-        [Parser(Opcode.CMSG_SET_LOOT_METHOD)]
-        public static void HandleLootMethod(Packet packet)
-        {
-            packet.ReadUInt32E<LootMethod>("Loot Method");
-            packet.ReadGuid("Master GUID");
-            packet.ReadUInt32E<ItemQuality>("Loot Threshold");
-        }
-
         [Parser(Opcode.CMSG_OPT_OUT_OF_LOOT)]
         public static void HandleOptOutOfLoot(Packet packet)
         {

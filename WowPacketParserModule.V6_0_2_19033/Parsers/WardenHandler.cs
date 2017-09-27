@@ -6,7 +6,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class WardenHandler
     {
-        [Parser(Opcode.CMSG_WARDEN_DATA)]
         [Parser(Opcode.SMSG_WARDEN_DATA)]
         public static void HandleWardenData(Packet packet)
         {

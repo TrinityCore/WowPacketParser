@@ -1233,31 +1233,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBool("Auto decline");
         }
 
-        [Parser(Opcode.CMSG_REORDER_CHARACTERS)] // 4.3.4
-        public static void HandleReorderCharacters(Packet packet)
-        {
-            var count = packet.ReadBits("Count", 10);
-
-            var guids = new byte[count][];
-
-            for (int i = 0; i < count; ++i)
-                guids[i] = packet.StartBitStream(1, 4, 5, 3, 0, 7, 6, 2);
-
-            for (int i = 0; i < count; ++i)
-            {
-                packet.ReadXORByte(guids[i], 6);
-                packet.ReadXORByte(guids[i], 5);
-                packet.ReadXORByte(guids[i], 1);
-                packet.ReadXORByte(guids[i], 4);
-                packet.ReadXORByte(guids[i], 0);
-                packet.ReadXORByte(guids[i], 3);
-                packet.ReadByte("Slot", i);
-                packet.ReadXORByte(guids[i], 2);
-                packet.ReadXORByte(guids[i], 7);
-
-                packet.WriteGuid("Character Guid", guids[i], i);
-            }
-        }
 
         [Parser(Opcode.SMSG_LEVEL_UP_INFO)]
         public static void HandleLevelUp(Packet packet)

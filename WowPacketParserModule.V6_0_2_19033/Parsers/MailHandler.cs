@@ -177,33 +177,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("AttachID");
         }
 
-        [Parser(Opcode.CMSG_SEND_MAIL)]
-        public static void HandleSendMail(Packet packet)
-        {
-            packet.ReadPackedGuid128("Mailbox");
-            packet.ReadInt32("StationeryID");
-            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V6_2_0_20173))
-                packet.ReadInt32("PackageID");
-            packet.ReadInt64("SendMoney");
-            packet.ReadInt64("Cod");
-
-            var nameLength = packet.ReadBits(9);
-            var subjectLength = packet.ReadBits(9);
-            var bodyLength = packet.ReadBits(11);
-            var itemCount = packet.ReadBits(5);
-            packet.ResetBitReader();
-
-            packet.ReadWoWString("Target", nameLength);
-            packet.ReadWoWString("Subject", subjectLength);
-            packet.ReadWoWString("Body", bodyLength);
-
-            for (var i = 0; i < itemCount; i++)
-            {
-                packet.ReadByte("AttachPosition", i);
-                packet.ReadPackedGuid128("ItemGUID", i);
-            }
-        }
-
         [Parser(Opcode.CMSG_MAIL_MARK_AS_READ)]
         public static void HandleMailMarkAsRead(Packet packet)
         {
@@ -233,13 +206,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleNotifyReceivedMail(Packet packet)
         {
             packet.ReadSingle("Delay");
-        }
-
-        [Parser(Opcode.CMSG_MAIL_RETURN_TO_SENDER)]
-        public static void HandleMailReturnToSender(Packet packet)
-        {
-            packet.ReadInt32("MailID");
-            packet.ReadPackedGuid128("SenderGUID");
         }
 
         [Parser(Opcode.SMSG_SHOW_MAILBOX)]

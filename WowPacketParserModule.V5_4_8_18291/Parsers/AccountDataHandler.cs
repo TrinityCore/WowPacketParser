@@ -33,11 +33,5 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("GUID", guid);
         }
 
-        [Parser(Opcode.CMSG_REQUEST_ACCOUNT_DATA)]
-        public static void HandleRequestAccountData(Packet packet)
-        {
-            packet.ReadBitsE<AccountDataType>("Data Type", 3);
-        }
-
     }
 }

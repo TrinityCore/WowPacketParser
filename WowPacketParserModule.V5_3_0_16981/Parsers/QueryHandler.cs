@@ -115,32 +115,6 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.WriteGuid("GUID", guid);
         }
 
-        [Parser(Opcode.CMSG_QUERY_PLAYER_NAME)]
-        public static void HandlePlayerQueryName(Packet packet)
-        {
-            var guid = new byte[8];
-
-            guid[3] = packet.ReadBit();
-            guid[1] = packet.ReadBit();
-            guid[4] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
-            guid[0] = packet.ReadBit();
-            guid[5] = packet.ReadBit();
-            var bit16 = packet.ReadBit("bit16");
-            guid[6] = packet.ReadBit();
-            var bit24 = packet.ReadBit("bit24");
-
-            packet.ParseBitStream(guid, 6, 0, 2, 3, 4, 5, 7, 1);
-
-            if (bit24)
-                packet.ReadUInt32("unk28");
-
-            if (bit16)
-                packet.ReadUInt32("unk20");
-            packet.WriteGuid("Guid", guid);
-        }
-
         [Parser(Opcode.CMSG_REALM_QUERY)]
         public static void HandleRealmQuery(Packet packet)
         {

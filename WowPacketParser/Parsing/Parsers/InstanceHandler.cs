@@ -172,14 +172,6 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_SET_SAVED_INSTANCE_EXTEND)]
-        public static void HandleSetSavedInstanceExtend(Packet packet)
-        {
-            packet.ReadInt32<MapId>("Map Id");
-            packet.ReadInt32E<MapDifficulty>("Difficulty");
-            packet.ReadBool("Extended");
-        }
-
         [Parser(Opcode.SMSG_UPDATE_INSTANCE_OWNERSHIP)]
         [Parser(Opcode.SMSG_INSTANCE_SAVE_CREATED)]
         public static void HandleUpdateInstanceOwnership(Packet packet)

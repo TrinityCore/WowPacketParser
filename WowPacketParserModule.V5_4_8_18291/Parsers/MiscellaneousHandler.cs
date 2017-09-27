@@ -139,52 +139,6 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_WHO)]
-        public static void HandleWhoRequest(Packet packet)
-        {
-            packet.ReadInt32("ClassMask");
-            packet.ReadInt32("RaceMask");
-            packet.ReadInt32("Max Level");
-            packet.ReadInt32("Min Level");
-
-
-            packet.ReadBit("bit2C4");
-            packet.ReadBit("bit2C6");
-            var bit2D4 = packet.ReadBit();
-            var bits1AB = packet.ReadBits(9);
-            packet.ReadBit("bit2C5");
-            var PlayerNameLen = packet.ReadBits(6);
-            var zones = packet.ReadBits(4);
-            var bits73 = packet.ReadBits(9);
-            var guildNameLen = packet.ReadBits(7);
-            var patterns = packet.ReadBits(3);
-
-            var bits2B8 = new uint[patterns];
-            for (var i = 0; i < patterns; ++i)
-                bits2B8[i] = packet.ReadBits(7);
-
-            for (var i = 0; i < patterns; ++i)
-                packet.ReadWoWString("Pattern", bits2B8[i], i);
-
-            packet.ReadWoWString("string1AB", bits1AB);
-
-            for (var i = 0; i < zones; ++i)
-                packet.ReadInt32<ZoneId>("Zone Id");
-
-            packet.ReadWoWString("Player Name", PlayerNameLen);
-
-            packet.ReadWoWString("string73", bits73);
-
-            packet.ReadWoWString("Guild Name", guildNameLen);
-
-            if (bit2D4)
-            {
-                packet.ReadInt32("Int2C8");
-                packet.ReadInt32("Int2D0");
-                packet.ReadInt32("Int2CC");
-            }
-        }
-
         [Parser(Opcode.SMSG_WEATHER)]
         public static void HandleWeatherStatus(Packet packet)
         {

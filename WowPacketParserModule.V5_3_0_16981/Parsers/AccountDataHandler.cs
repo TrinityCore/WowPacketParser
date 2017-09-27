@@ -6,20 +6,6 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 {
     public static class AccountDataHandler
     {
-        [Parser(Opcode.CMSG_UPDATE_ACCOUNT_DATA)]
-        public static void HandleClientUpdateAccountData(Packet packet)
-        {
-            packet.ReadTime("Login Time");
-
-            var decompCount = packet.ReadInt32();
-            var compCount = packet.ReadInt32();
-            var pkt = packet.Inflate(compCount, decompCount, false);
-            var data = pkt.ReadWoWString(decompCount);
-            pkt.ClosePacket();
-
-            packet.AddValue("Account Data", data);
-            packet.ReadBitsE<AccountDataType>("Data Type", 3);
-        }
 
         [Parser(Opcode.SMSG_UPDATE_ACCOUNT_DATA)]
         public static void HandleServerUpdateAccountData(Packet packet)

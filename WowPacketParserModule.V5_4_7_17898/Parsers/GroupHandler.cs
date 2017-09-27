@@ -34,33 +34,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_SET_ASSISTANT_LEADER)]
-        public static void HandleGroupAssistantLeader(Packet packet)
-        {
-            var guid = new byte[8];
-
-            packet.ReadBool("Promote");
-            guid[1] = packet.ReadBit();
-            var bit11 = packet.ReadBit();
-            guid[0] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
-            guid[5] = packet.ReadBit();
-            guid[3] = packet.ReadBit();
-            guid[4] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
-            guid[6] = packet.ReadBit();
-
-            packet.ReadXORByte(guid, 7);
-            packet.ReadXORByte(guid, 4);
-            packet.ReadXORByte(guid, 1);
-            packet.ReadXORByte(guid, 6);
-            packet.ReadXORByte(guid, 0);
-            packet.ReadXORByte(guid, 2);
-            packet.ReadXORByte(guid, 3);
-            packet.ReadXORByte(guid, 5);
-
-            packet.WriteGuid("Guid", guid);
-        }
 
         [Parser(Opcode.CMSG_GROUP_RAID_CONVERT)]
         public static void HandleGroupRaidConvert(Packet packet)
@@ -437,19 +410,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.WriteGuid("groupGUID", groupGUID);
             packet.WriteGuid("leaderGUID", leaderGUID);
-        }
-
-        [Parser(Opcode.CMSG_REQUEST_PARTY_MEMBER_STATS)]
-        public static void HandleRequestPartyMemberStats(Packet packet)
-        {
-            var guid = new byte[8];
-
-            packet.ReadByte("Online?");
-
-            packet.StartBitStream(guid, 5, 3, 4, 1, 6, 0, 2, 7);
-            packet.ParseBitStream(guid, 0, 3, 1, 2, 7, 5, 4, 6);
-
-            packet.WriteGuid("Guid", guid);
         }
     }
 }

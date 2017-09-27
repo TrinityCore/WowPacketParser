@@ -7,18 +7,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     public static class ContactHandler
     {
 
-        public static void ReadQualifiedGUID(Packet packet, params object[] indexes)
-        {
-            packet.ReadInt32("VirtualRealmAddress", indexes);
-            packet.ReadPackedGuid128("Guid", indexes);
-        }
-
-        [Parser(Opcode.CMSG_VOICE_DEL_IGNORE)]
-        public static void HandleDeleteFriendOrIgnoreOrMute(Packet packet)
-        {
-            ReadQualifiedGUID(packet, "QualifiedGUID");
-        }
-
         [Parser(Opcode.SMSG_FRIEND_STATUS)]
         public static void HandleFriendStatus(Packet packet)
         {
@@ -67,20 +55,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 var bits44 = packet.ReadBits(10);
                 packet.ReadWoWString("Notes", bits44, i);
             }
-        }
-
-        [Parser(Opcode.CMSG_SEND_CONTACT_LIST)]
-        public static void HandleSendContactList(Packet packet)
-        {
-            packet.ReadInt32("Flags");
-        }
-
-        [Parser(Opcode.CMSG_SET_CONTACT_NOTES)]
-        public static void HandleSetContactNotes(Packet packet)
-        {
-            ReadQualifiedGUID(packet, "QualifiedGUID");
-            var notesLength = packet.ReadBits(10);
-            packet.ReadWoWString("Notes", notesLength);
         }
     }
 }

@@ -1,6 +1,6 @@
 namespace WowPacketParser.Messages.UserClient
 {
-    public unsafe struct UserClientGMShowComplaints
+    public unsafe struct GMShowComplaints
     {
         public string Name;
     }

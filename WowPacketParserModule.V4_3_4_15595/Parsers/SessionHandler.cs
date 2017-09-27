@@ -32,14 +32,6 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             if (isQueued)
                 packet.ReadInt32("Queue Position");
         }
-
-        [Parser(Opcode.CMSG_PLAYER_LOGIN)]
-        public static void HandlePlayerLogin(Packet packet)
-        {
-            var guid = packet.StartBitStream(2, 3, 0, 6, 4, 5, 1, 7);
-            packet.ParseBitStream(guid, 2, 7, 0, 3, 5, 6, 1, 4);
-            packet.WriteGuid("Guid", guid);
-            CoreParsers.SessionHandler.LoginGuid = new WowGuid64(BitConverter.ToUInt64(guid, 0));
-        }        
+   
     }
 }

@@ -203,13 +203,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Name");
         }
 
-        [Parser(Opcode.CMSG_SET_CONTACT_NOTES)]
-        public static void HandleSetContactNotes(Packet packet)
-        {
-            packet.ReadGuid("GUID");
-            packet.ReadCString("Name");
-        }
-
         [Parser(Opcode.CMSG_BUG)]
         public static void HandleBug(Packet packet)
         {
@@ -218,24 +211,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Content");
             packet.ReadUInt32("Text Lenght");
             packet.ReadCString("Text");
-        }
-
-        [Parser(Opcode.CMSG_SET_ACTION_BUTTON, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)]
-        public static void HandleActionButton(Packet packet)
-        {
-            packet.ReadByte("Button");
-            var data = packet.ReadInt32();
-            packet.AddValue("Type", (ActionButtonType)((data & 0xFF000000) >> 24));
-            packet.AddValue("ID", data & 0x00FFFFFF);
-        }
-
-        [Parser(Opcode.CMSG_SET_ACTION_BUTTON, ClientVersionBuild.V5_1_0_16309)]
-        public static void HandleSetActionButton(Packet packet)
-        {
-            packet.ReadByte("Slot Id");
-            var actionId = packet.StartBitStream(0, 7, 6, 1, 3, 5, 2, 4);
-            packet.ParseBitStream(actionId, 3, 0, 1, 4, 7, 2, 6, 5);
-            packet.AddValue("Action Id", BitConverter.ToUInt32(actionId, 0));
         }
 
         [Parser(Opcode.SMSG_RESURRECT_REQUEST)]
@@ -248,13 +223,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBool("Use Timer");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
                 packet.ReadInt32<SpellId>("Spell ID");   // Used only for: <if (Spell ID == 83968 && Unit_HasAura(95223) return 1;>
-        }
-
-        [Parser(Opcode.CMSG_RESURRECT_RESPONSE)]
-        public static void HandleResurrectResponse(Packet packet)
-        {
-            packet.ReadGuid("GUID");
-            packet.ReadBool("Accept");
         }
 
         [Parser(Opcode.CMSG_REPOP_REQUEST)]
@@ -516,25 +484,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Unk int32 4");
         }
 
-        [Parser(Opcode.CMSG_WHO)]
-        public static void HandleWhoRequest(Packet packet)
-        {
-            packet.ReadInt32("Min Level");
-            packet.ReadInt32("Max Level");
-            packet.ReadCString("Player Name");
-            packet.ReadCString("Guild Name");
-            packet.ReadInt32("RaceMask");
-            packet.ReadInt32("ClassMask");
-
-            var zones = packet.ReadUInt32("Zones count");
-            for (var i = 0; i < zones; ++i)
-                packet.ReadUInt32<ZoneId>("Zone Id");
-
-            var patterns = packet.ReadUInt32("Pattern count");
-            for (var i = 0; i < patterns; ++i)
-                packet.ReadCString("Pattern", i);
-        }
-
         [Parser(Opcode.SMSG_WHO)]
         public static void HandleWho(Packet packet)
         {
@@ -741,13 +690,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadGuid("Summoner GUID");
             packet.ReadInt32<AreaId>("Area ID");
             packet.ReadTime("Summon Confirm Time");
-        }
-
-        [Parser(Opcode.CMSG_SUMMON_RESPONSE)]
-        public static void HandleSummonResponse(Packet packet)
-        {
-            packet.ReadGuid("Summoner GUID");
-            packet.ReadBool("Accept");
         }
 
         [Parser(Opcode.CMSG_SPELL_CLICK)]

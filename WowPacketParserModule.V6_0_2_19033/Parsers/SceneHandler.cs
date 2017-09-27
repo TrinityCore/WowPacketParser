@@ -65,14 +65,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("SceneObjectGUID");
         }
 
-        [Parser(Opcode.CMSG_QUERY_SCENARIO_POI)]
-        public static void HandleQueryScenarioPOI(Packet packet)
-        {
-            var missingScenarioPOITreeCount = packet.ReadInt32("MissingScenarioPOITreeCount");
-            for (var i = 0; i < missingScenarioPOITreeCount; i++)
-                packet.ReadInt32("MissingScenarioPOITreeIDs", i);
-        }
-
         [Parser(Opcode.SMSG_SCENARIO_POIS)]
         public static void HandleScenarioPOIs(Packet packet)
         {
