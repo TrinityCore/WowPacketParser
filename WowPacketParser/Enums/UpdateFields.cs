@@ -832,6 +832,8 @@ namespace WowPacketParser.Enums
     public enum ConversationField
     {
         CONVERSATION_FIELD_DUMMY,
+        CONVERSATION_FIELD_LAST_LINE_DURATION,
+        CONVERSATION_LAST_LINE_END_TIME,
         CONVERSATION_END
     }
 

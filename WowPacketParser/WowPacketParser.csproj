@@ -514,6 +514,7 @@
     <Compile Include="SQL\Builder.cs" />
     <Compile Include="SQL\Builders\AreaTriggers.cs" />
     <Compile Include="SQL\Builders\BuilderAttributes.cs" />
+    <Compile Include="SQL\Builders\Conversations.cs" />
     <Compile Include="SQL\Builders\GameObjectMisc.cs" />
     <Compile Include="SQL\Builders\HotfixBuilder.cs" />
     <Compile Include="SQL\Builders\Locales.cs" />
@@ -539,6 +540,10 @@
     <Compile Include="Store\Objects\Aura.cs" />
     <Compile Include="Store\Objects\BroadcastText.cs" />
     <Compile Include="Store\Objects\BroadcastTextLocale.cs" />
+    <Compile Include="Store\Objects\ConversationActor.cs" />
+    <Compile Include="Store\Objects\ConversationActorTemplate.cs" />
+    <Compile Include="Store\Objects\ConversationLineTemplate.cs" />
+    <Compile Include="Store\Objects\ConversationTemplate.cs" />
     <Compile Include="Store\Objects\Creature.cs" />
     <Compile Include="Store\Objects\CreatureAddon.cs" />
     <Compile Include="Store\Objects\CreatureDefaultTrainer.cs" />

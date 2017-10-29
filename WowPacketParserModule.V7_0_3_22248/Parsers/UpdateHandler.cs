@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
@@ -44,6 +45,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
                         WoWObject obj;
                         var updates = ReadValuesUpdateBlock(packet, guid.GetObjectType(), i, false);
+                        var dynamicUpdates = ReadDynamicValuesUpdateBlock(packet, guid.GetObjectType(), i, false);
 
                         if (Storage.Objects.TryGetValue(guid, out obj))
                         {
@@ -87,6 +89,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 case ObjectType.AreaTrigger:
                     obj = new SpellAreaTrigger();
                     break;
+                case ObjectType.Conversation:
+                    obj = new ConversationTemplate();
+                    break;
                 default:
                     obj = new WoWObject();
                     break;
@@ -94,10 +99,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             var moves = ReadMovementUpdateBlock(packet, guid, obj, index);
             var updates = ReadValuesUpdateBlock(packet, objType, index, true);
+            var dynamicUpdates = ReadDynamicValuesUpdateBlock(packet, objType, index, true);
 
             obj.Type = objType;
             obj.Movement = moves;
             obj.UpdateFields = updates;
+            obj.DynamicUpdateFields = dynamicUpdates;
             obj.Map = map;
             obj.Area = CoreParsers.WorldStateHandler.CurrentAreaId;
             obj.Zone = CoreParsers.WorldStateHandler.CurrentZoneId;
@@ -723,106 +730,118 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 dict.Add(i, blockVal);
             }
 
-            objectEnd = UpdateFields.GetUpdateField(ObjectDynamicField.OBJECT_DYNAMIC_END);
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_0_4_16016))
+            return dict;
+        }
+ 
+        private static Dictionary<int, List<UpdateField>> ReadDynamicValuesUpdateBlock(Packet packet, ObjectType type, object index, bool isCreating)
+        {
+            var dict = new Dictionary<int, List<UpdateField>>();
+
+            if (!ClientVersion.AddedInVersion(ClientVersionBuild.V5_0_4_16016))
+                return dict;
+
+            int objectEnd = UpdateFields.GetUpdateField(ObjectDynamicField.OBJECT_DYNAMIC_END);
+            var maskSize = packet.ReadByte();
+            var updateMask = new int[maskSize];
+            for (var i = 0; i < maskSize; i++)
+                updateMask[i] = packet.ReadInt32();
+
+            var mask = new BitArray(updateMask);
+            for (var i = 0; i < mask.Count; ++i)
             {
-                maskSize = packet.ReadByte();
-                updateMask = new int[maskSize];
-                for (var i = 0; i < maskSize; i++)
-                    updateMask[i] = packet.ReadInt32();
+                if (!mask[i])
+                    continue;
 
-                mask = new BitArray(updateMask);
-                for (var i = 0; i < mask.Count; ++i)
+                string key = "Dynamic Block Value " + i;
+                if (i < objectEnd)
+                    key = UpdateFields.GetUpdateFieldName<ObjectDynamicField>(i);
+                else
                 {
-                    if (!mask[i])
-                        continue;
-
-                    string key = "Dynamic Block Value " + i;
-                    if (i < objectEnd)
-                        key = UpdateFields.GetUpdateFieldName<ObjectDynamicField>(i);
-                    else
+                    switch (type)
                     {
-                        switch (type)
+                        case ObjectType.Container:
                         {
-                            case ObjectType.Container:
-                            {
-                                if (i < UpdateFields.GetUpdateField(ItemDynamicField.ITEM_DYNAMIC_END))
-                                    goto case ObjectType.Item;
+                            if (i < UpdateFields.GetUpdateField(ItemDynamicField.ITEM_DYNAMIC_END))
+                                goto case ObjectType.Item;
 
-                                key = UpdateFields.GetUpdateFieldName<ContainerDynamicField>(i);
-                                break;
-                            }
-                            case ObjectType.Item:
-                            {
-                                key = UpdateFields.GetUpdateFieldName<ItemDynamicField>(i);
-                                break;
-                            }
-                            case ObjectType.Player:
-                            {
-                                if (i < UpdateFields.GetUpdateField(UnitDynamicField.UNIT_DYNAMIC_END))
-                                    goto case ObjectType.Unit;
+                            key = UpdateFields.GetUpdateFieldName<ContainerDynamicField>(i);
+                            break;
+                        }
+                        case ObjectType.Item:
+                        {
+                            key = UpdateFields.GetUpdateFieldName<ItemDynamicField>(i);
+                            break;
+                        }
+                        case ObjectType.Player:
+                        {
+                            if (i < UpdateFields.GetUpdateField(UnitDynamicField.UNIT_DYNAMIC_END))
+                                goto case ObjectType.Unit;
 
-                                key = UpdateFields.GetUpdateFieldName<PlayerDynamicField>(i);
-                                break;
-                            }
-                            case ObjectType.Unit:
-                            {
-                                key = UpdateFields.GetUpdateFieldName<UnitDynamicField>(i);
-                                break;
-                            }
-                            case ObjectType.GameObject:
-                            {
-                                key = UpdateFields.GetUpdateFieldName<GameObjectDynamicField>(i);
-                                break;
-                            }
-                            case ObjectType.DynamicObject:
-                            {
-                                key = UpdateFields.GetUpdateFieldName<DynamicObjectDynamicField>(i);
-                                break;
-                            }
-                            case ObjectType.Corpse:
-                            {
-                                key = UpdateFields.GetUpdateFieldName<CorpseDynamicField>(i);
-                                break;
-                            }
-                            case ObjectType.AreaTrigger:
-                            {
-                                key = UpdateFields.GetUpdateFieldName<AreaTriggerDynamicField>(i);
-                                break;
-                            }
-                            case ObjectType.SceneObject:
-                            {
-                                key = UpdateFields.GetUpdateFieldName<SceneObjectDynamicField>(i);
-                                break;
-                            }
-                            case ObjectType.Conversation:
-                            {
-                                key = UpdateFields.GetUpdateFieldName<ConversationDynamicField>(i);
-                                break;
-                            }
+                            key = UpdateFields.GetUpdateFieldName<PlayerDynamicField>(i);
+                            break;
+                        }
+                        case ObjectType.Unit:
+                        {
+                            key = UpdateFields.GetUpdateFieldName<UnitDynamicField>(i);
+                            break;
+                        }
+                        case ObjectType.GameObject:
+                        {
+                            key = UpdateFields.GetUpdateFieldName<GameObjectDynamicField>(i);
+                            break;
+                        }
+                        case ObjectType.DynamicObject:
+                        {
+                            key = UpdateFields.GetUpdateFieldName<DynamicObjectDynamicField>(i);
+                            break;
+                        }
+                        case ObjectType.Corpse:
+                        {
+                            key = UpdateFields.GetUpdateFieldName<CorpseDynamicField>(i);
+                            break;
+                        }
+                        case ObjectType.AreaTrigger:
+                        {
+                            key = UpdateFields.GetUpdateFieldName<AreaTriggerDynamicField>(i);
+                            break;
+                        }
+                        case ObjectType.SceneObject:
+                        {
+                            key = UpdateFields.GetUpdateFieldName<SceneObjectDynamicField>(i);
+                            break;
+                        }
+                        case ObjectType.Conversation:
+                        {
+                            key = UpdateFields.GetUpdateFieldName<ConversationDynamicField>(i);
+                            break;
                         }
                     }
-
-                    var flag = packet.ReadUInt16();
-                    var cnt = flag & 0x7FFF;
-                    if ((flag & 0x8000) != 0)
-                        packet.ReadUInt32(key + " Size", index);
-
-                    var vals = new int[cnt];
-                    for (var j = 0; j < cnt; ++j)
-                        vals[j] = packet.ReadInt32();
-
-                    var fieldMask = new BitArray(vals);
-                    for (var j = 0; j < fieldMask.Count; ++j)
-                    {
-                        if (!fieldMask[j])
-                            continue;
-
-                        var blockVal = packet.ReadUpdateField();
-                        string value = blockVal.UInt32Value + "/" + blockVal.SingleValue;
-                        packet.AddValue(key, value, index, j);
-                    }
                 }
+
+                var flag = packet.ReadUInt16();
+                var cnt = flag & 0x7FFF;
+                if ((flag & 0x8000) != 0)
+                    packet.ReadUInt32(key + " Size", index);
+
+                var vals = new int[cnt];
+                for (var j = 0; j < cnt; ++j)
+                    vals[j] = packet.ReadInt32();
+
+                var values = new List<UpdateField>();
+                var fieldMask = new BitArray(vals);
+                for (var j = 0; j < fieldMask.Count; ++j)
+                {
+                    if (!fieldMask[j])
+                        continue;
+
+                    var blockVal = packet.ReadUpdateField();
+                    string value = blockVal.UInt32Value + "/" + blockVal.SingleValue;
+                    packet.AddValue(key, value, index, j);
+
+                    values.Add(blockVal);
+                }
+
+                dict.Add(i, values);
             }
 
             return dict;
