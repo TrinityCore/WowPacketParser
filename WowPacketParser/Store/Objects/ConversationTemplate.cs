@@ -33,7 +33,7 @@ namespace WowPacketParser.Store.Objects
                 for (var i = 0; i + ActorSize <= actors.Count; i += ActorSize)
                 {
                     var actor = new ConversationActorTemplate();
-                    actor.Type = actors[4].UInt32Value;
+                    actor.Type = actors[i + 4].UInt32Value;
 
                     if (actor.Type == (uint)ActorType.WorldObjectActor)
                     {
