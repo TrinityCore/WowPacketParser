@@ -1,6 +1,6 @@
 ﻿using WowPacketParser.Misc;
 
-namespace WowPacketParser.Enums.Version.V7_3_0_24931
+namespace WowPacketParser.Enums.Version.V7_3_0_24920
 {
     public static class Opcodes_7_3_0
     {
@@ -557,6 +557,8 @@ namespace WowPacketParser.Enums.Version.V7_3_0_24931
            {Opcode.CMSG_REPAIR_ITEM, 0x34F2},
            {Opcode.CMSG_REPLACE_TROPHY, 0x32F1},
            {Opcode.CMSG_REPOP_REQUEST, 0x352C},
+           {Opcode.CMSG_REPORT_CLIENT_VARIABLES, 0x3702},
+           {Opcode.CMSG_REPORT_ENABLED_ADDONS, 0x3701},
            {Opcode.CMSG_REPORT_PVP_PLAYER_AFK, 0x34FA},
            {Opcode.CMSG_REQUEST_ACCOUNT_DATA, 0x3698},
            {Opcode.CMSG_REQUEST_AREA_POI_UPDATE, 0x3339},
@@ -593,9 +595,7 @@ namespace WowPacketParser.Enums.Version.V7_3_0_24931
            {Opcode.CMSG_RESURRECT_RESPONSE, 0x3687},
            {Opcode.CMSG_REVERT_MONUMENT_APPEARANCE, 0x32F3},
            {Opcode.CMSG_RIDE_VEHICLE_INTERACT, 0x322D},
-           {Opcode.CMSG_SAVE_CLIENT_VARIABLES, 0x3702},
            {Opcode.CMSG_SAVE_CUF_PROFILES, 0x318A},
-           {Opcode.CMSG_SAVE_ENABLED_ADDONS, 0x3701},
            {Opcode.CMSG_SAVE_EQUIPMENT_SET, 0x3511},
            {Opcode.CMSG_SAVE_GUILD_EMBLEM, 0x3295},
            {Opcode.CMSG_SCENE_PLAYBACK_CANCELED, 0x3214},

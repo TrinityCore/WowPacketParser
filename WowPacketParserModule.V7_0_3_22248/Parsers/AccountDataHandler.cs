@@ -6,7 +6,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
     public static class AccountDataHandler
     {
-        [Parser(Opcode.CMSG_SAVE_CLIENT_VARIABLES)]
+        [Parser(Opcode.CMSG_REPORT_CLIENT_VARIABLES)]
         public static void HandleSaveClientVarables(Packet packet)
         {
             var varablesCount = packet.ReadUInt32("VarablesCount");
@@ -20,7 +20,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_SAVE_ENABLED_ADDONS)]
+        [Parser(Opcode.CMSG_REPORT_ENABLED_ADDONS)]
         public static void HandleSaveEnabledAddons(Packet packet)
         {
             var enableAddonsCount = packet.ReadUInt32("EnableAddonsCount");
