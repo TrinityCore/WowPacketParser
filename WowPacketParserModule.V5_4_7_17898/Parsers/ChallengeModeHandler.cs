@@ -22,13 +22,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadInt16("IntEA", i);
             }
         }
-        [Parser(Opcode.SMSG_CHALLENGE_MODE_DELETE_LEADER_RESULT)]
-        public static void HandleChallengeModeDeleteLeaderResult(Packet packet)
-        {
-            packet.ReadInt32("Int5");
-            packet.ReadInt32("Int4");
-            packet.ReadBit("unk");
-        }
 
         [Parser(Opcode.SMSG_CHALLENGE_MODE_ALL_MAP_STATS)]
         public static void HandleChallengeModeAllMapStats(Packet packet)

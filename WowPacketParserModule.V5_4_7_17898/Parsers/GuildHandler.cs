@@ -93,36 +93,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadWoWString("Text", (int)packet.ReadBits(10));
         }
 
-        [Parser(Opcode.CMSG_GUILD_NEWS_UPDATE_STICKY)]
-        public static void HandleGuildNewsUpdateSticky(Packet packet)
-        {
-            var guid = new byte[8];
-
-            packet.ReadInt32("Int1C");
-            guid[3] = packet.ReadBit();
-            guid[2] = packet.ReadBit();
-            guid[7] = packet.ReadBit();
-            packet.ReadBit("Sticky");
-            guid[5] = packet.ReadBit();
-            guid[0] = packet.ReadBit();
-            guid[6] = packet.ReadBit();
-            guid[1] = packet.ReadBit();
-            guid[4] = packet.ReadBit();
-
-            packet.ParseBitStream(guid, 3, 4, 7, 2, 5, 1, 6, 0);
-
-            packet.WriteGuid("Guid2", guid);
-
-        }
-
-        [Parser(Opcode.CMSG_GUILD_GET_RANKS)]
-        public static void HandleGuildRanks(Packet packet)
-        {
-            var guid = packet.StartBitStream(2, 7, 0, 5, 6, 3, 4, 1);
-            packet.ParseBitStream(guid, 6, 0, 1, 7, 2, 3, 4, 5);
-            packet.WriteGuid("Guid", guid);
-        }
-
         [Parser(Opcode.SMSG_GUILD_RANKS)]
         public static void HandleGuildRankServer(Packet packet)
         {
@@ -150,51 +120,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadInt32("Gold Per Day", i);
                 packet.ReadInt32("Rights Order", i);
             }
-        }
-
-        [Parser(Opcode.CMSG_GUILD_GET_ROSTER)]
-        public static void HandleGuildRosterRequest(Packet packet)
-        {
-            // Seems to have some previous formula, processed GUIDS does not fit any know guid
-            var guid1 = new byte[8];
-            var guid2 = new byte[8];
-
-            guid2[2] = packet.ReadBit();
-            guid2[7] = packet.ReadBit();
-            guid1[7] = packet.ReadBit();
-            guid1[2] = packet.ReadBit();
-            guid1[6] = packet.ReadBit();
-            guid2[3] = packet.ReadBit();
-            guid2[6] = packet.ReadBit();
-            guid2[4] = packet.ReadBit();
-            guid2[5] = packet.ReadBit();
-            guid1[0] = packet.ReadBit();
-            guid1[4] = packet.ReadBit();
-            guid2[0] = packet.ReadBit();
-            guid1[1] = packet.ReadBit();
-            guid1[5] = packet.ReadBit();
-            guid1[3] = packet.ReadBit();
-            guid2[1] = packet.ReadBit();
-
-            packet.ReadXORByte(guid2, 4);
-            packet.ReadXORByte(guid2, 7);
-            packet.ReadXORByte(guid2, 6);
-            packet.ReadXORByte(guid2, 5);
-            packet.ReadXORByte(guid1, 6);
-            packet.ReadXORByte(guid2, 3);
-            packet.ReadXORByte(guid2, 2);
-            packet.ReadXORByte(guid1, 4);
-            packet.ReadXORByte(guid1, 5);
-            packet.ReadXORByte(guid1, 7);
-            packet.ReadXORByte(guid2, 1);
-            packet.ReadXORByte(guid1, 0);
-            packet.ReadXORByte(guid2, 0);
-            packet.ReadXORByte(guid1, 2);
-            packet.ReadXORByte(guid1, 3);
-            packet.ReadXORByte(guid1, 1);
-
-            packet.WriteGuid("Guid1", guid1);
-            packet.WriteGuid("Guid2", guid2);
         }
 
         [Parser(Opcode.SMSG_GUILD_ROSTER)]
@@ -396,14 +321,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_REQUEST_GUILD_XP)]
-        public static void HandleRequestGuildXP(Packet packet)
-        {
-            var guid = packet.StartBitStream(3, 2, 7, 5, 6, 0, 1, 4);
-            packet.ParseBitStream(guid, 3, 7, 2, 1, 5, 4, 0, 6);
-            packet.WriteGuid("GUID", guid);
-        }
-
         [Parser(Opcode.SMSG_GUILD_XP)]
         public static void HandleGuildXP(Packet packet)
         {
@@ -445,50 +362,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             var paramLen = packet.ReadBits(8);
             packet.ReadWoWString("Param", paramLen);
-        }
-
-        [Parser(Opcode.CMSG_GUILD_SET_RANK_PERMISSIONS)]
-        public static void HandleGuildRank(Packet packet)
-        {
-            packet.ReadUInt32("Old Rank Id");
-
-            for (var i = 0; i < 8; ++i)
-            {
-                packet.ReadUInt32E<GuildBankRightsFlag>("Tab Rights", i);
-                packet.ReadUInt32("Tab Slot", i);
-            }
-
-            packet.ReadUInt32("Money Per Day");
-            packet.ReadUInt32E<GuildRankRightsFlag>("New Rights");
-            packet.ReadUInt32("New Rank Id");
-            packet.ReadUInt32E<GuildRankRightsFlag>("Old Rights");
-
-            var length = packet.ReadBits(7);
-            packet.ReadWoWString("Rank Name", length);
-        }
-
-        [Parser(Opcode.CMSG_GUILD_OFFICER_REMOVE_MEMBER)]
-        public static void HandleGuildRemove(Packet packet)
-        {
-            var guid = packet.StartBitStream(3, 1, 6, 0, 7, 2, 5, 4);
-            packet.ParseBitStream(guid, 2, 6, 0, 1, 4, 3, 5, 7);
-            packet.WriteGuid("GUID", guid);
-        }
-
-        [Parser(Opcode.CMSG_GUILD_DEMOTE_MEMBER)]
-        public static void HandleGuildDemote(Packet packet)
-        {
-            var guid = packet.StartBitStream(1, 0, 7, 5, 3, 2, 4, 6);
-            packet.ParseBitStream(guid, 3, 4, 1, 0, 7, 2, 5, 6);
-            packet.WriteGuid("GUID", guid);
-        }
-
-        [Parser(Opcode.CMSG_GUILD_PROMOTE_MEMBER)]
-        public static void HandleGuildPromote(Packet packet)
-        {
-            var guid = packet.StartBitStream(4, 0, 3, 5, 7, 1, 2, 6);
-            packet.ParseBitStream(guid, 7, 0, 5, 2, 3, 6, 4, 1);
-            packet.WriteGuid("GUID", guid);
         }
     }
 }

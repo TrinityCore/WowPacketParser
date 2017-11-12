@@ -6,7 +6,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class GuildHandler
     {
-        [Parser(Opcode.CMSG_GUILD_GET_ROSTER)]
         [Parser(Opcode.CMSG_GUILD_BANK_REMAINING_WITHDRAW_MONEY_QUERY)]
         [Parser(Opcode.CMSG_GUILD_CHALLENGE_UPDATE_REQUEST)]
         [Parser(Opcode.CMSG_GUILD_DELETE)]
@@ -68,13 +67,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Banker");
             packet.ReadByte("BankTab");
-        }
-
-        [Parser(Opcode.CMSG_GUILD_GET_RANKS)]
-        [Parser(Opcode.CMSG_GUILD_QUERY_RECIPES)]
-        public static void HandleGuildGuildGUID(Packet packet)
-        {
-            packet.ReadPackedGuid128("GuildGUID");
         }
 
         [Parser(Opcode.SMSG_GUILD_RANKS)]
@@ -433,14 +425,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("RankID");
         }
 
-        [Parser(Opcode.CMSG_GUILD_SET_ACHIEVEMENT_TRACKING)]
-        public static void HandleGuildSetAchievementTracking(Packet packet)
-        {
-            var count = packet.ReadUInt32("Count");
-            for (var i = 0; i < count; ++i)
-                packet.ReadInt32<AchievementId>("AchievementIDs", i);
-        }
-
         [Parser(Opcode.SMSG_GUILD_COMMAND_RESULT)]
         public static void HandleGuildCommandResult(Packet packet)
         {
@@ -497,12 +481,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_GUILD_QUERY_NEWS)]
-        public static void HandleGuildQueryNews(Packet packet)
-        {
-            packet.ReadPackedGuid128("GuildGUID");
-        }
-
         [Parser(Opcode.CMSG_GUILD_BANK_ACTIVATE)]
         public static void HandleGuildBankActivate(Packet packet)
         {
@@ -510,27 +488,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
             packet.ReadBit("FullUpdate");
-        }
-
-        [Parser(Opcode.CMSG_GUILD_SET_RANK_PERMISSIONS)]
-        public static void HandlelGuildSetRankPermissions(Packet packet)
-        {
-            packet.ReadInt32("RankID");
-            packet.ReadInt32("RankOrder");
-            packet.ReadUInt32E<GuildRankRightsFlag>("Flags");
-            packet.ReadUInt32E<GuildRankRightsFlag>("OldFlags");
-            packet.ReadInt32("WithdrawGoldLimit");
-
-            for (var i = 0; i < 8; ++i)
-            {
-                packet.ReadInt32E<GuildBankRightsFlag>("TabFlags", i);
-                packet.ReadInt32("TabWithdrawItemLimit", i);
-            }
-
-            packet.ResetBitReader();
-            var rankNameLen = packet.ReadBits(7);
-
-            packet.ReadWoWString("RankName", rankNameLen);
         }
 
         [Parser(Opcode.CMSG_REQUEST_GUILD_REWARDS_LIST)]
@@ -706,20 +663,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadUInt32("PetitionID");
             packet.ReadPackedGuid128("ItemGUID");
-        }
-
-        [Parser(Opcode.CMSG_GUILD_SET_FOCUSED_ACHIEVEMENT)]
-        public static void HandleGuildSetFocusedAchievement(Packet packet)
-        {
-            packet.ReadUInt32("AchievementID");
-        }
-
-        [Parser(Opcode.CMSG_GUILD_QUERY_MEMBER_RECIPES)]
-        public static void HandleGuildQueryMemberRecipes(Packet packet)
-        {
-            packet.ReadPackedGuid128("GuildMember");
-            packet.ReadPackedGuid128("GuildGUID");
-            packet.ReadUInt32("SkillLineID");
         }
 
         [Parser(Opcode.SMSG_PETITION_SIGN_RESULTS)]
@@ -938,15 +881,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadBit("BankOnly");
             packet.ReadBit("AutoStore");
-        }
-
-        [Parser(Opcode.CMSG_GUILD_QUERY_MEMBERS_FOR_RECIPE)]
-        public static void HandleGuildQueryMembersForRecipe(Packet packet)
-        {
-            packet.ReadPackedGuid128("GuildGUID");
-            packet.ReadUInt32("SkillLineID");
-            packet.ReadUInt32<SpellId>("SpellID");
-            packet.ReadUInt32("UniqueBit");
         }
 
         [Parser(Opcode.SMSG_GUILD_MEMBERS_WITH_RECIPE)]

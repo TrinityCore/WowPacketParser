@@ -6,23 +6,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class ChallengeModeHandler
     {
-        public static void ReadChallengeModeAttempt(Packet packet, params object[] indexes)
-        {
-            packet.ReadInt32("InstanceRealmAddress", indexes);
-            packet.ReadInt32("AttemptID", indexes);
-            packet.ReadInt32("CompletionTime", indexes);
-            packet.ReadPackedTime("CompletionDate", indexes);
-            packet.ReadInt32("MedalEarned", indexes);
-
-            var int12 = packet.ReadInt32("MembersCount", indexes);
-            for (int i = 0; i < int12; i++)
-            {
-                packet.ReadInt32("VirtualRealmAddress", indexes, i);
-                packet.ReadInt32("NativeRealmAddress", indexes, i);
-                packet.ReadPackedGuid128("Guid", indexes, i);
-                packet.ReadInt32("SpecializationID", indexes, i);
-            }
-        }
 
         public static void ReadMapChallengeModeReward(Packet packet, params object[] indexes)
         {
@@ -67,31 +50,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_GET_CHALLENGE_MODE_REWARDS)]
         public static void HandleChallengeModeZero(Packet packet)
         {
-        }
-
-        [Parser(Opcode.CMSG_CHALLENGE_MODE_REQUEST_LEADERS)]
-        public static void HandleChallengeModeRequestLeaders(Packet packet)
-        {
-            packet.ReadInt32("MapId");
-            packet.ReadTime("LastGuildUpdate");
-            packet.ReadTime("LastRealmUpdate");
-        }
-
-        [Parser(Opcode.SMSG_CHALLENGE_MODE_REQUEST_LEADERS_RESULT)]
-        public static void HandleChallengeModeRequestLeadersResult(Packet packet)
-        {
-            packet.ReadInt32("MapID");
-            packet.ReadTime("LastGuildUpdate");
-            packet.ReadTime("LastRealmUpdate");
-
-            var int4 = packet.ReadInt32("GuildLeadersCount");
-            var int9 = packet.ReadInt32("RealmLeadersCount");
-
-            for (int i = 0; i < int4; i++)
-                ReadChallengeModeAttempt(packet, i, "GuildLeaders");
-
-            for (int i = 0; i < int9; i++)
-                ReadChallengeModeAttempt(packet, i, "RealmLeaders");
         }
 
         [Parser(Opcode.SMSG_CHALLENGE_MODE_REWARDS)]

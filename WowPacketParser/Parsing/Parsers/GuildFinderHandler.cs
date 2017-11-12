@@ -156,12 +156,6 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_LF_GUILD_GET_RECRUITS)]
-        public static void HandlerLFGuildGetRecruits(Packet packet)
-        {
-            packet.ReadTime("Unk Time");
-        }
-
         [Parser(Opcode.SMSG_LF_GUILD_RECRUIT_LIST_UPDATED)] // 4.3.4
         public static void HandlerLFGuildRecruitListUpdated(Packet packet)
         {
@@ -276,22 +270,6 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             packet.ReadInt32("Left applications count");
-        }
-
-        [Parser(Opcode.CMSG_LF_GUILD_DECLINE_RECRUIT)] // 4.3.4
-        public static void HandleLFGuildDeclineRecruit(Packet packet)
-        {
-            var guid = packet.StartBitStream(1, 4, 5, 2, 6, 7, 0, 3);
-            packet.ParseBitStream(guid, 5, 7, 2, 3, 4, 1, 0, 6);
-            packet.WriteGuid("Guid", guid);
-        }
-
-        [Parser(Opcode.CMSG_LF_GUILD_REMOVE_RECRUIT)] // 4.3.4
-        public static void HandleLFGuildRemoveRecruit(Packet packet)
-        {
-            var guid = packet.StartBitStream(0, 4, 3, 5, 7, 6, 2, 1);
-            packet.ParseBitStream(guid, 4, 0, 3, 6, 5, 1, 2, 7);
-            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_LF_GUILD_GET_GUILD_POST)]
