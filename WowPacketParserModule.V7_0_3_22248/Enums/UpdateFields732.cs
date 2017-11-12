@@ -1,4 +1,4 @@
-namespace WowPacketParserModule.V7_3_2_25383.Enums
+namespace WowPacketParserModule.V7_3_2_25326.Enums
 {
     // ReSharper disable InconsistentNaming
     // 7.3.2.25383
