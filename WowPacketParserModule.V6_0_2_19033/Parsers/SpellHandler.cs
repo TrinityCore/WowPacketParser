@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using WowPacketParser.Enums;
+using WowPacketParser.Messages.Player.Move;
 using WowPacketParser.Messages.Submessages;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -112,7 +113,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var weightCount = packet.ReadBits("WeightCount", 2, idx);
 
             if (hasMoveUpdate)
-                MovementHandler.ReadMovementStats(packet, idx, "MoveUpdate");
+                MovementHelper.ReadMovementStats(packet, idx, "MoveUpdate");
 
             for (var i = 0; i < weightCount; ++i)
                 ReadSpellWeight(packet, idx, "Weight", i);

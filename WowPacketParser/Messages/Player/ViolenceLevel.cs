@@ -6,7 +6,7 @@ namespace WowPacketParser.Messages.Player
 {
     public unsafe struct ViolenceLevel
     {
-        public sbyte ViolenceLevel;
+        public sbyte ViolenceLevelData;
 
         [Parser(Opcode.CMSG_VIOLENCE_LEVEL)]
         public static void HandleSetViolenceLevel(Packet packet)

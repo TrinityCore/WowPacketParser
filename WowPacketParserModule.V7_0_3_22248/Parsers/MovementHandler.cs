@@ -1,4 +1,5 @@
 ﻿using WowPacketParser.Enums;
+using WowPacketParser.Messages.Player.Move;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParserModule.V7_0_3_22248.Enums;
@@ -9,43 +10,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
     public static class MovementHandler
     {
-        public static void ReadMovementStats(Packet packet, params object[] idx)
-        {
-            packet.ReadPackedGuid128("MoverGUID", idx);
-
-            packet.ReadUInt32("MoveIndex", idx);
-            packet.ReadVector4("Position", idx);
-
-            packet.ReadSingle("Pitch", idx);
-            packet.ReadSingle("StepUpStartElevation", idx);
-
-            var int152 = packet.ReadInt32("RemoveForcesCount", idx);
-            packet.ReadInt32("MoveTime", idx);
-
-            for (var i = 0; i < int152; i++)
-                packet.ReadPackedGuid128("RemoveForcesIDs", idx, i);
-
-            packet.ResetBitReader();
-
-            packet.ReadBitsE<MovementFlag>("MovementFlags", 30, idx);
-            packet.ReadBitsE<MovementFlags2>("ExtraMovementFlags", 18, idx);
-
-            var hasTransport = packet.ReadBit("HasTransportData", idx);
-            var hasFall = packet.ReadBit("HasFallData", idx);
-            packet.ReadBit("HasSpline", idx);
-            packet.ReadBit("HeightChangeFailed", idx);
-            packet.ReadBit("RemoteTimeValid", idx);
-
-            if (hasTransport)
-                V6_0_2_19033.Parsers.MovementHandler.ReadTransportData(packet, idx, "TransportData");
-
-            if (hasFall)
-                V6_0_2_19033.Parsers.MovementHandler.ReadFallData(packet, idx, "FallData");
-        }
+        
 
         public static void ReadMovementAck(Packet packet, params object[] idx)
         {
-            ReadMovementStats(packet, idx);
+            MovementHelper.ReadMovementStats(packet, idx);
             packet.ReadInt32("AckIndex", idx);
         }
 
@@ -230,7 +199,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.CMSG_MOVE_DOUBLE_JUMP)]
         public static void HandlePlayerMove(Packet packet)
         {
-            ReadMovementStats(packet, "MovementStats");
+            MovementHelper.ReadMovementStats(packet, "MovementStats");
         }
 
         [Parser(Opcode.CMSG_MOVE_GRAVITY_DISABLE_ACK)]
@@ -287,21 +256,21 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_MOVE_UPDATE_PITCH_RATE)]
         public static void HandleMovementUpdateSpeed(Packet packet)
         {
-            ReadMovementStats(packet, "MovementStats");
+            MovementHelper.ReadMovementStats(packet, "MovementStats");
             packet.ReadSingle("Speed");
         }
 
         [Parser(Opcode.CMSG_MOVE_SPLINE_DONE)]
         public static void HandleMoveSplineDone(Packet packet)
         {
-            ReadMovementStats(packet, "MovementStats");
+            MovementHelper.ReadMovementStats(packet, "MovementStats");
             packet.ReadInt32("SplineID");
         }
 
         [Parser(Opcode.SMSG_MOVE_UPDATE_COLLISION_HEIGHT)]
         public static void HandleMoveUpdateCollisionHeight434(Packet packet)
         {
-            ReadMovementStats(packet, "MovementStats");
+            MovementHelper.ReadMovementStats(packet, "MovementStats");
             packet.ReadSingle("Height");
             packet.ReadSingle("Scale");
         }
@@ -321,7 +290,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_MOVE_UPDATE_TELEPORT, ClientVersionBuild.V7_0_3_22248, ClientVersionBuild.V7_2_0_23826)]
         public static void HandleMoveUpdateTeleport(Packet packet)
         {
-            ReadMovementStats(packet, "MovementStats");
+            MovementHelper.ReadMovementStats(packet, "MovementStats");
 
             var int32 = packet.ReadInt32("MovementForcesCount");
             for (int i = 0; i < int32; i++)
@@ -370,7 +339,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_MOVE_UPDATE_TELEPORT, ClientVersionBuild.V7_2_0_23826)]
         public static void HandleMoveUpdateTeleport720(Packet packet)
         {
-            ReadMovementStats(packet, "MovementStats");
+            MovementHelper.ReadMovementStats(packet, "MovementStats");
 
             var movementForcesCount = packet.ReadUInt32("MovementForcesCount");
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using WowPacketParser.DBC;
 using WowPacketParser.Enums;
+using WowPacketParser.Messages.Player.Move;
 using WowPacketParser.Messages.Submessages;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -36,7 +37,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             ReadSpellTargetData(packet, spellId, idx, "Target");
 
             if (hasMoveUpdate)
-                MovementHandler.ReadMovementStats(packet, idx, "MoveUpdate");
+                MovementHelper.ReadMovementStats(packet, idx, "MoveUpdate");
 
             for (var i = 0; i < weightCount; ++i)
                 V6_0_2_19033.Parsers.SpellHandler.ReadSpellWeight(packet, idx, "Weight", i);

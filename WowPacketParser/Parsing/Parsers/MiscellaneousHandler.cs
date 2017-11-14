@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
+using WowPacketParser.Messages.Player.Move;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
@@ -171,7 +172,7 @@ namespace WowPacketParser.Parsing.Parsers
             var guid = packet.ReadPackedGuid("Vehicle GUID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3a_11723))
-                MovementHandler.ReadMovementInfo(packet, guid);
+                MovementHelper.ReadMovementInfo(packet, guid);
 
             packet.ReadPackedGuid("Accessory GUID");
             packet.ReadByte("Seat");

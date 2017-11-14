@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using WowPacketParser.Messages.Player;
+using WowPacketParser.Messages.Player.Choice;
 
 namespace WowPacketParser.Messages.Client
 {
@@ -7,6 +7,6 @@ namespace WowPacketParser.Messages.Client
     {
         public int ChoiceID;
         public string Question;
-        public List<PlayerChoiceResponse> Responses;
+        public List<Response> Responses;
     }
 }

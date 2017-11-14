@@ -9,7 +9,7 @@ using WowPacketParser.Misc;
 
 namespace WowPacketParser.Messages.Player.Move
 {
-    class MovementHelper
+    public class MovementHelper
     {
         public static MovementInfo ReadMovementInfo(Packet packet, WowGuid guid, object index = null)
         {
@@ -163,6 +163,95 @@ namespace WowPacketParser.Messages.Player.Move
                 packet.ReadSingle("Spline Elevation", index);
 
             return info;
+        }
+
+        public static void ReadMovementForce(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("ID", idx);
+            packet.ReadVector3("Direction", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_2_19802)) // correct?
+                packet.ReadVector3("TransportPosition", idx);
+            packet.ReadInt32("TransportID", idx);
+            packet.ReadSingle("Magnitude", idx);
+
+            packet.ResetBitReader();
+
+            packet.ReadBits("Type", 2, idx);
+        }
+
+        public static void ReadMovementAck(Packet packet)
+        {
+            ReadMovementStats(packet);
+            packet.ReadInt32("AckIndex");
+        }
+        public static void ReadMovementStats(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("MoverGUID", idx);
+
+            packet.ReadUInt32("MoveIndex", idx);
+            packet.ReadVector4("Position", idx);
+
+            packet.ReadSingle("Pitch", idx);
+            packet.ReadSingle("StepUpStartElevation", idx);
+
+            var int152 = packet.ReadInt32("RemoveForcesCount", idx);
+            packet.ReadInt32("MoveTime", idx);
+
+            for (var i = 0; i < int152; i++)
+                packet.ReadPackedGuid128("RemoveForcesIDs", idx, i);
+
+            packet.ResetBitReader();
+
+            packet.ReadBitsE<MovementFlag>("Movement Flags", 30, idx);
+            packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173) ? 16 : 15, idx);
+
+            var hasTransport = packet.ReadBit("Has Transport Data", idx);
+            var hasFall = packet.ReadBit("Has Fall Data", idx);
+            packet.ReadBit("HasSpline", idx);
+            packet.ReadBit("HeightChangeFailed", idx);
+            packet.ReadBit("RemoteTimeValid", idx);
+
+            if (hasTransport)
+                ReadTransportData(packet, idx, "TransportData");
+
+            if (hasFall)
+                ReadFallData(packet, idx, "FallData");
+        }
+
+
+
+        public static void ReadTransportData(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("TransportGuid", idx);
+            packet.ReadVector4("TransportPosition", idx);
+            packet.ReadByte("TransportSeat", idx);
+            packet.ReadInt32("TransportMoveTime", idx);
+
+            packet.ResetBitReader();
+
+            var hasPrevMoveTime = packet.ReadBit("HasPrevMoveTime", idx);
+            var hasVehicleRecID = packet.ReadBit("HasVehicleRecID", idx);
+
+            if (hasPrevMoveTime)
+                packet.ReadUInt32("PrevMoveTime", idx);
+
+            if (hasVehicleRecID)
+                packet.ReadUInt32("VehicleRecID", idx);
+        }
+
+        public static void ReadFallData(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt32("FallTime", idx);
+            packet.ReadSingle("JumpVelocity", idx);
+
+            packet.ResetBitReader();
+
+            var bit20 = packet.ReadBit("HasFallDirection", idx);
+            if (bit20)
+            {
+                packet.ReadVector2("Direction", idx);
+                packet.ReadSingle("HorizontalSpeed", idx);
+            }
         }
     }
 }

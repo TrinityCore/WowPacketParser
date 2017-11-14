@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
+using WowPacketParser.Messages.Player.Move;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
@@ -2551,7 +2552,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (flags.HasAnyFlag(UpdateFlag.Living))
             {
-                moveInfo = MovementHandler.ReadMovementInfo(packet, guid, index);
+                moveInfo = MovementHelper.ReadMovementInfo(packet, guid, index);
                 var moveFlags = moveInfo.Flags;
 
                 for (var i = 0; i < 9; ++i)

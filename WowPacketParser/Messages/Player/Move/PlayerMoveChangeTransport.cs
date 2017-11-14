@@ -1,5 +1,6 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
+using WowPacketParser.Messages.Player.Move;
 using WowPacketParser.Messages.Submessages;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -20,7 +21,7 @@ namespace WowPacketParser.Messages.Player
             else
                 guid = new WowGuid64();
 
-            ReadMovementInfo(packet, guid);
+            MovementHelper.ReadMovementInfo(packet, guid);
 
             if (packet.Opcode != Opcodes.GetOpcode(Opcode.MSG_MOVE_KNOCK_BACK, Direction.Bidirectional))
                 return;
@@ -29,14 +30,6 @@ namespace WowPacketParser.Messages.Player
             packet.ReadSingle("Cos Angle");
             packet.ReadSingle("Speed");
             packet.ReadSingle("Velocity");
-        }
-
-        public static MovementInfo ReadMovementInfo(Packet packet, WowGuid guid, object index = null)
-        {
-            if (ClientVersion.Build == ClientVersionBuild.V4_2_0_14333)
-                return ReadMovementInfo420(packet, index);
-
-            return ReadMovementInfoGen(packet, guid, index);
         }
     }
 }
