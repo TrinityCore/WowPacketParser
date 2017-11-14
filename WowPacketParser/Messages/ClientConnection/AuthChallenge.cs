@@ -2,9 +2,9 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
-namespace WowPacketParser.Messages.ClientConnection
+namespace WowPacketParser.Messages.ClientConnection 
 {
-    public unsafe struct ClientConnectionAuthChallenge
+    public unsafe struct AuthChallenge
     {
         public uint Challenge;
         public fixed uint DosChallenge[8];

@@ -389,18 +389,6 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32E<GuildCommandError>("Command Result");
         }
 
-        [Parser(Opcode.MSG_SAVE_GUILD_EMBLEM)]
-        public static void HandleGuildEmblem(Packet packet)
-        {
-            if (packet.Direction == Direction.ClientToServer)
-            {
-                packet.ReadGuid("GUID");
-                ReadEmblemInfo(packet);
-            }
-            else
-                packet.ReadUInt32E<GuildEmblemError>("Result");
-        }
-
         [Parser(Opcode.CMSG_GUILD_SET_PUBLIC_NOTE)]
         public static void HandleGuildSetPublicNote(Packet packet)
         {

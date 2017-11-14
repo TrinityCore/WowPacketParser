@@ -4,12 +4,12 @@ using WowPacketParser.Parsing;
 
 namespace WowPacketParser.Messages.ClientConnection
 {
-    public unsafe struct ClientConnectionPong
+    public unsafe struct SuspendComms
     {
         public uint Serial;
 
-        [Parser(Opcode.SMSG_PONG)]
-        public static void HandleServerPong(Packet packet)
+        [Parser(Opcode.SMSG_SUSPEND_COMMS)]
+        public static void HandleSuspendCommsPackets(Packet packet)
         {
             packet.ReadInt32("Serial");
         }

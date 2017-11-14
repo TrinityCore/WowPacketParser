@@ -6,6 +6,6 @@ namespace WowPacketParser.Messages.Client
     {
         public ulong Player;
         public byte Result;
-        public PlayerGuidLookupData Data;
+        public GuidLookupData Data;
     }
 }

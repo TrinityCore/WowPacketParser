@@ -913,7 +913,6 @@ namespace WowPacketParser.Parsing.Parsers
 
         [Parser(Opcode.CMSG_CANCEL_AURA)]
         [Parser(Opcode.SMSG_UNLEARNED_SPELLS, ClientVersionBuild.V3_1_0_9767)]
-        [Parser(Opcode.CMSG_CANCEL_CHANNELLING)]
         public static void HandleRemovedSpell2(Packet packet)
         {
             packet.ReadUInt32<SpellId>("Spell ID");

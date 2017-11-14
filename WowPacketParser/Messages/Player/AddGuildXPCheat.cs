@@ -1,6 +1,6 @@
 namespace WowPacketParser.Messages.Player
 {
-    public unsafe struct PlayerAddGuildXPCheat
+    public unsafe struct AddGuildXPCheat
     {
         public int Xp;
     }

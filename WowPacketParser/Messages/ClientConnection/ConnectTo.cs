@@ -4,7 +4,7 @@ using WowPacketParser.Parsing;
 
 namespace WowPacketParser.Messages.ClientConnection
 {
-    public unsafe struct ClientConnectionConnectTo
+    public unsafe struct ConnectTo
     {
         public ulong Key;
         public uint Serial;

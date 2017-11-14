@@ -844,22 +844,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < count; ++i)
                 ReadLFGuildBrowseData(packet, "Post", i);
         }
-        [Parser(Opcode.CMSG_SAVE_GUILD_EMBLEM)]
-        public static void HandleSaveGuildEmblem(Packet packet) 
-        {
-            packet.ReadPackedGuid128("Vendor");
-            packet.ReadUInt32("EColor");
-            packet.ReadUInt32("EStyle");
-            packet.ReadUInt32("BColor");
-            packet.ReadUInt32("BStyle");
-            packet.ReadUInt32("Bg");
-        }
-
-        [Parser(Opcode.SMSG_PLAYER_SAVE_GUILD_EMBLEM)]
-        public static void HandlePlayerSaveGuildEmblem(Packet packet)
-        {
-            packet.ReadInt32E<GuildEmblemError>("Error");
-        }
 
         [Parser(Opcode.CMSG_GUILD_BANK_SWAP_ITEMS)]
         public static void HandleGuildBankSwapItems(Packet packet)

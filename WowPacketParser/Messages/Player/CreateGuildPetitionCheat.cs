@@ -1,6 +1,6 @@
 namespace WowPacketParser.Messages.Player
 {
-    public unsafe struct PlayerCreateGuildPetitionCheat
+    public unsafe struct CreateGuildPetitionCheat
     {
         public string GuildName;
     }

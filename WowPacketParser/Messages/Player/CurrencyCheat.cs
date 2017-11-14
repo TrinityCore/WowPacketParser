@@ -1,6 +1,6 @@
 namespace WowPacketParser.Messages.Player
 {
-    public unsafe struct PlayerCurrencyCheat
+    public unsafe struct CurrencyCheat
     {
         public string CheatArg;
     }

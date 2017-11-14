@@ -2933,16 +2933,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.CMSG_SET_ACTIVE_MOVER)]
-        public static void HandleSetActiveMover(Packet packet)
-        {
-            packet.ReadBit("unk");
-
-            var guid = packet.StartBitStream(1, 3, 2, 6, 7, 5, 4, 0);
-            packet.ParseBitStream(guid, 5, 1, 7, 2, 6, 3, 4, 0);
-            packet.WriteGuid("Guid", guid);
-        }
-
         [Parser(Opcode.SMSG_MOVE_SPLINE_ROOT)]
         public static void HandleSplineMoveRoot(Packet packet)
         {

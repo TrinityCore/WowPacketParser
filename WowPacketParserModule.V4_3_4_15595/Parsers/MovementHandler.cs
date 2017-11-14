@@ -6913,14 +6913,6 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
         }
 
-        [Parser(Opcode.SMSG_MOVE_SET_ACTIVE_MOVER)]
-        public static void HandleMoveSetActiveMover434(Packet packet)
-        {
-            var guid = packet.StartBitStream(5, 7, 3, 6, 0, 4, 1, 2);
-            packet.ParseBitStream(guid, 6, 2, 3, 0, 5, 7, 1, 4);
-            packet.WriteGuid("Guid", guid);
-        }
-
         [Parser(Opcode.SMSG_MOVE_SET_COMPOUND_STATE)]
         public static void HandleMoveSetCompoundState434(Packet packet)
         {

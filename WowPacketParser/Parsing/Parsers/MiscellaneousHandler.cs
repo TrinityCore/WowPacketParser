@@ -12,12 +12,6 @@ namespace WowPacketParser.Parsing.Parsers
     public static class MiscellaneousParsers
     {
 
-        [Parser(Opcode.CMSG_VIOLENCE_LEVEL)]
-        public static void HandleSetViolenceLevel(Packet packet)
-        {
-            packet.ReadByte("Level");
-        }
-
         [Parser(Opcode.SMSG_HOTFIX_NOTIFY)]
         public static void HandleHotfixNotify(Packet packet)
         {
@@ -502,21 +496,6 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_TIME_SYNC_RESPONSE)]
-        public static void HandleTimeSyncResp(Packet packet)
-        {
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545) && ClientVersion.RemovedInVersion(ClientVersionBuild.V4_3_4_15595)) // no idea when this was added exactly
-            {
-                packet.ReadUInt32("Ticks");
-                packet.ReadUInt32("Counter");
-            }
-            else
-            {
-                packet.ReadUInt32("Counter");
-                packet.ReadUInt32("Ticks");
-            }
-        }
-
         [Parser(Opcode.SMSG_GAME_TIME_SET)]
         public static void HandleGametimeSet(Packet packet)
         {
@@ -938,12 +917,6 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleNotification(Packet packet)
         {
             packet.ReadCString("Notification");
-        }
-
-        [Parser(Opcode.CMSG_TIME_SYNC_RESPONSE_FAILED)]
-        public static void HandleTimeSyncRespFailed(Packet packet)
-        {
-            packet.ReadUInt32("SequenceIndex");
         }
 
         [Parser(Opcode.SMSG_AREA_TRIGGER_MESSAGE)]

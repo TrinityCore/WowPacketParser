@@ -1,6 +1,6 @@
 namespace WowPacketParser.Messages.Player
 {
-    public unsafe struct PlayerGuildAwardChallengeCheat
+    public unsafe struct GuildAwardChallengeCheat
     {
         public int ChallengeType;
     }

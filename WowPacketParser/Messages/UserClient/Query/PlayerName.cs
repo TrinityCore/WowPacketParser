@@ -8,7 +8,7 @@ namespace WowPacketParser.Messages.UserClient.Query
     public unsafe struct PlayerName
     {
         public ulong Player;
-        public PlayerGuidLookupHint Hint;
+        public GuidLookupHint Hint;
 
         [Parser(Opcode.CMSG_QUERY_PLAYER_NAME, ClientVersionBuild.Zero, ClientVersionBuild.V5_4_1_17538)]
         public static void HandlePlayerQueryName(Packet packet)

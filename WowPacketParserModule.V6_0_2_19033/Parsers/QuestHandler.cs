@@ -742,13 +742,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("ReasonText", len);
         }
 
-        [Parser(Opcode.CMSG_CHOICE_RESPONSE)]
-        public static void HandleChoiceResponse(Packet packet)
-        {
-            packet.ReadInt32("ChoiceID");
-            packet.ReadInt32("ResponseID");
-        }
-
         [Parser(Opcode.SMSG_DISPLAY_PLAYER_CHOICE)]
         public static void HandleDisplayPlayerChoice(Packet packet)
         {

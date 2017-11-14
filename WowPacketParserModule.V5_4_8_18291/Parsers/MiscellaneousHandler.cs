@@ -21,13 +21,6 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.AddSniffData(StoreNameType.AreaTrigger, entry.Key, "AREATRIGGER");
         }
 
-        [Parser(Opcode.CMSG_TIME_SYNC_RESPONSE)]
-        public static void HandleTimeSyncResp(Packet packet)
-        {
-            packet.ReadUInt32("Counter");
-            packet.ReadUInt32("Ticks");
-        }
-
         [Parser(Opcode.SMSG_WHO)]
         public static void HandleWho(Packet packet)
         {

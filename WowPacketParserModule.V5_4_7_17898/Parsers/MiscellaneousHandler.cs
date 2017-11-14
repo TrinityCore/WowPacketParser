@@ -79,13 +79,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.WriteGuid("Player GUID: ", guid);
         }
 
-        [Parser(Opcode.CMSG_TIME_SYNC_RESPONSE)]
-        public static void HandleTimeSyncResp(Packet packet)
-        {
-            packet.ReadUInt32("Counter");
-            packet.ReadUInt32("Ticks");
-        }
-
         [Parser(Opcode.SMSG_WORLD_SERVER_INFO)]
         public static void HandleWorldServerInfo(Packet packet)
         {

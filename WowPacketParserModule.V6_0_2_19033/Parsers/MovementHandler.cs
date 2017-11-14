@@ -670,14 +670,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadMovementStats(packet);
             packet.ReadPackedGuid128("TriggerGUID");
         }
-
-        [Parser(Opcode.CMSG_MOVE_APPLY_MOVEMENT_FORCE_ACK)]
-        public static void HandleMoveApplyMovementForceAck(Packet packet)
-        {
-            ReadMovementAck(packet);
-            ReadMovementForce(packet, "MovementForce");
-        }
-
+        
         [Parser(Opcode.SMSG_MOVE_APPLY_MOVEMENT_FORCE)]
         public static void HandleMoveApplyMovementForce(Packet packet)
         {
@@ -713,8 +706,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("AckIndex");
             packet.ReadInt32("MoveTime");
         }
-
-        [Parser(Opcode.SMSG_MOVE_SET_ACTIVE_MOVER)]
+        
         [Parser(Opcode.SMSG_MOVE_SPLINE_ROOT)]
         [Parser(Opcode.SMSG_MOVE_SPLINE_UNROOT)]
         [Parser(Opcode.SMSG_MOVE_SPLINE_DISABLE_GRAVITY)]
@@ -774,12 +766,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("SplineID");
         }
 
-        [Parser(Opcode.CMSG_SET_ACTIVE_MOVER)]
-        public static void HandleSetActiveMover(Packet packet)
-        {
-            packet.ReadPackedGuid128("ActiveMover");
-        }
-
         [Parser(Opcode.SMSG_MOVE_UPDATE_COLLISION_HEIGHT)]
         public static void HandleMoveUpdateCollisionHeight434(Packet packet)
         {
@@ -809,19 +795,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadVector2("Direction");
             packet.ReadSingle("HorzSpeed");
             packet.ReadSingle("VertSpeed");
-        }
-
-        [Parser(Opcode.CMSG_DISCARDED_TIME_SYNC_ACKS)]
-        public static void HandleDiscardedTimeSyncAcks(Packet packet)
-        {
-            packet.ReadUInt32("MaxSequenceIndex");
-        }
-
-        [Parser(Opcode.CMSG_TIME_SYNC_RESPONSE_DROPPED)]
-        public static void HandleTimeSyncResponseDropped(Packet packet)
-        {
-            packet.ReadUInt32("SequenceIndexFirst");
-            packet.ReadUInt32("SequenceIndexLast");
         }
 
         [Parser(Opcode.SMSG_PLAYER_SKINNED)]

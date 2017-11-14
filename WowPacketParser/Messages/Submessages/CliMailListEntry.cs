@@ -8,7 +8,7 @@ namespace WowPacketParser.Messages.Submessages
         public int MailID;
         public byte SenderType;
         public ulong? SenderCharacter; // Optional
-        public PlayerGuidLookupHint SenderHint;
+        public GuidLookupHint SenderHint;
         public int? AltSenderID; // Optional
         public ulong Cod;
         public int PackageID;

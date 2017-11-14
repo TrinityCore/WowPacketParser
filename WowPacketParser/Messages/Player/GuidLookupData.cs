@@ -1,6 +1,6 @@
 namespace WowPacketParser.Messages.Player
 {
-    public unsafe struct PlayerGuidLookupData
+    public unsafe struct GuidLookupData
     {
         public bool IsDeleted;
         public uint AccountID;

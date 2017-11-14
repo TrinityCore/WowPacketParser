@@ -2,9 +2,9 @@ using WowPacketParser.Messages.Submessages;
 
 namespace WowPacketParser.Messages.Player
 {
-    public unsafe struct PlayerProgressiveEventCheat
+    public unsafe struct ProgressiveEventCheat
     {
-        public ProgressiveEventCheat Type;
+        public Submessages.ProgressiveEventCheat Type;
         public int ItemID;
         public int Count;
         public int EventID;
