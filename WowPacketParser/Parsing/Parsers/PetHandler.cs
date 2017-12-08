@@ -268,30 +268,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_SET_PET_SLOT)]
         public static void HandleSetPetSlot(Packet packet)
         {
-            packet.ReadInt32("PetNumber");
-            packet.ReadByte("NewPetSlot");
-            packet.ReadPackedGuid128("StableMasterGUID");
-        }
-
-        [Parser(Opcode.SMSG_PET_SLOT_UPDATED)]
-        public static void HandlePetSlotUpdated(Packet packet)
-        {
-            packet.ReadInt32("PetNumber");
-            packet.ReadInt32("NewPetSlot");
-            packet.ReadInt32("Unk1");
-            packet.ReadInt32("OldPetSlot");
-        }
-
-        [Parser(Opcode.SMSG_PET_STABLE_RESULT)]
-        public static void HandlePetStableResult(Packet packet)
-        {
-            packet.ReadByteE<PetStableResult>("StableResult");
-        }
-
-        [Parser(Opcode.CMSG_REQUEST_STABLED_PETS)]
-        public static void HandleRequestStabledPets(Packet packet)
-        {
-            packet.ReadPackedGuid128("StableMasterGUID");
+            packet.ReadInt32("Unk 0");
+            packet.ReadByte("Unk 1");
+            var guid = packet.StartBitStream(3, 2, 0, 7, 5, 6, 1, 4);
+            packet.ParseBitStream(guid, 5, 3, 1, 7, 4, 0, 6, 2);
+            packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_PET_CAST_SPELL)]
