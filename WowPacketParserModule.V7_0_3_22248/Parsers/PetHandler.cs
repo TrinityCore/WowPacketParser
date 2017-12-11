@@ -85,29 +85,29 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         public static void HandleSetPetSlot(Packet packet)
         {
             packet.ReadInt32("PetNumber");
-            packet.ReadByte("NewPetSlot");
-            packet.ReadPackedGuid128("StableMasterGUID");
+            packet.ReadByte("DestSlot");
+            packet.ReadPackedGuid128("StableMaster");
         }
 
         [Parser(Opcode.SMSG_PET_SLOT_UPDATED)]
         public static void HandlePetSlotUpdated(Packet packet)
         {
-            packet.ReadInt32("PetNumber");
-            packet.ReadInt32("NewPetSlot");
-            packet.ReadInt32("Unk1");
-            packet.ReadInt32("OldPetSlot");
+            packet.ReadInt32("PetNumberA");
+            packet.ReadInt32("PetSlotA");
+            packet.ReadInt32("PetNumberB");
+            packet.ReadInt32("PetSlotB");
         }
 
         [Parser(Opcode.SMSG_PET_STABLE_RESULT)]
         public static void HandlePetStableResult(Packet packet)
         {
-            packet.ReadByteE<PetStableResult>("StableResult");
+            packet.ReadByteE<PetStableResult>("Result");
         }
 
         [Parser(Opcode.CMSG_REQUEST_STABLED_PETS)]
         public static void HandleRequestStabledPets(Packet packet)
         {
-            packet.ReadPackedGuid128("StableMasterGUID");
+            packet.ReadPackedGuid128("StableMaster");
         }
     }
 }
