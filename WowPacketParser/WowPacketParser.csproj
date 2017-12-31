@@ -505,6 +505,7 @@
     <Compile Include="Parsing\Parsers\VoidStorageHandler.cs" />
     <Compile Include="Parsing\Parsers\WardenHandler.cs" />
     <Compile Include="Parsing\Parsers\WorldStateHandler.cs" />
+    <Compile Include="Enums\PetStableResult.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Saving\BinaryPacketWriter.cs" />
