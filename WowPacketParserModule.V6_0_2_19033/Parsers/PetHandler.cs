@@ -265,7 +265,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("PetSlotB");
         }
 
-        [Parser(Opcode.SMSG_PET_STABLE_RESULT, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V7_3_2_25383)]
+        [Parser(Opcode.SMSG_PET_STABLE_RESULT)]
         public static void HandlePetStableResult(Packet packet)
         {
             packet.ReadByteE<PetStableResult>("Result");

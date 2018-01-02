@@ -73,12 +73,5 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     V6_0_2_19033.Parsers.PetHandler.ReadPetSpellHistoryData(packet, i, "PetSpellHistory");
             }
         }
-
-        [Parser(Opcode.SMSG_PET_STABLE_RESULT, ClientVersionBuild.V7_3_2_25383)]
-        public static void HandlePetStableResult(Packet packet)
-        {
-            packet.ReadByteE<PetStableResult732>("Result");
-        }
-
     }
 }
