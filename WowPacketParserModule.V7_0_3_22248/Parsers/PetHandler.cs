@@ -74,40 +74,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_PET_MODE)]
-        public static void HandlePetMode(Packet packet)
-        {
-            packet.ReadPackedGuid128("PetGUID");
-            ReadPetFlags(packet, "PetMode");
-        }
-
-        [Parser(Opcode.CMSG_SET_PET_SLOT)]
-        public static void HandleSetPetSlot(Packet packet)
-        {
-            packet.ReadInt32("PetNumber");
-            packet.ReadByte("DestSlot");
-            packet.ReadPackedGuid128("StableMaster");
-        }
-
-        [Parser(Opcode.SMSG_PET_SLOT_UPDATED)]
-        public static void HandlePetSlotUpdated(Packet packet)
-        {
-            packet.ReadInt32("PetNumberA");
-            packet.ReadInt32("PetSlotA");
-            packet.ReadInt32("PetNumberB");
-            packet.ReadInt32("PetSlotB");
-        }
-
-        [Parser(Opcode.SMSG_PET_STABLE_RESULT)]
+        [Parser(Opcode.SMSG_PET_STABLE_RESULT, ClientVersionBuild.V7_3_2_25383)]
         public static void HandlePetStableResult(Packet packet)
         {
-            packet.ReadByteE<PetStableResult>("Result");
+            packet.ReadByteE<PetStableResult732>("Result");
         }
 
-        [Parser(Opcode.CMSG_REQUEST_STABLED_PETS)]
-        public static void HandleRequestStabledPets(Packet packet)
-        {
-            packet.ReadPackedGuid128("StableMaster");
-        }
     }
 }
