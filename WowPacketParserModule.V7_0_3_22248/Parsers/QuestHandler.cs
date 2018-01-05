@@ -286,7 +286,6 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 LocalesQuest localesQuest = new LocalesQuest
                 {
                     ID = (uint)id.Key,
-                    Locale = BinaryPacketReader.GetClientLocale(),
                     LogTitle            = quest.LogTitle,
                     LogDescription      = quest.LogDescription,
                     QuestDescription    = quest.QuestDescription,
