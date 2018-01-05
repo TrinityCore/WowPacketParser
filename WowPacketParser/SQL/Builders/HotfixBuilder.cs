@@ -65,6 +65,7 @@ namespace WowPacketParser.SQL.Builders
             return "TRUNCATE `hotfix_data`;" + Environment.NewLine + new SQLInsert<HotfixData>(rows, false).Build();
         }
 
+        // Special Hotfix Builders
         [BuilderMethod(true)]
         public static string BroadcastText()
         {
@@ -74,9 +75,25 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.broadcast_text))
                 return string.Empty;
 
-            var templatesDb = SQLDatabase.Get(Storage.BroadcastTexts, Settings.HotfixesDatabase);
+            // pass empty list, because we want to select the whole db table (faster than select only needed columns)
+            var templatesDb = SQLDatabase.Get(new RowList<Store.Objects.BroadcastText>(), Settings.HotfixesDatabase);
 
             return SQLUtil.Compare(Storage.BroadcastTexts, templatesDb, StoreNameType.None);
+        }
+
+        [BuilderMethod(true)]
+        public static string BroadcastTextLocales()
+        {
+            if (Storage.BroadcastTextLocales.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.broadcast_text_locale))
+                return string.Empty;
+
+            // pass empty list, because we want to select the whole db table (faster than select only needed columns)
+            var templatesDb = SQLDatabase.Get(new RowList<Store.Objects.BroadcastTextLocale>(), Settings.HotfixesDatabase);
+
+            return "SET NAMES 'utf8';" + Environment.NewLine + SQLUtil.Compare(Storage.BroadcastTextLocales, templatesDb, StoreNameType.None) + Environment.NewLine + "SET NAMES 'latin1';";
         }
     }
 }

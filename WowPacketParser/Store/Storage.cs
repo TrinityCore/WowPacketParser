@@ -110,6 +110,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<SceneTemplate> Scenes = new DataBag<SceneTemplate>(new List<SQLOutput> { SQLOutput.scene_template });
 
         public static readonly DataBag<BroadcastText> BroadcastTexts = new DataBag<BroadcastText>(new List<SQLOutput> { SQLOutput.broadcast_text });
+        public static readonly DataBag<BroadcastTextLocale> BroadcastTextLocales = new DataBag<BroadcastTextLocale>(new List<SQLOutput> { SQLOutput.broadcast_text_locale });
 
         public static void ClearContainers()
         {
@@ -188,6 +189,7 @@ namespace WowPacketParser.Store
             Scenes.Clear();
 
             BroadcastTexts.Clear();
+            BroadcastTextLocales.Clear();
         }
     }
 }

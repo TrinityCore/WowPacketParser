@@ -6,6 +6,7 @@
         areatrigger_template,
         areatrigger_template_polygon_vertices,
         broadcast_text,
+        broadcast_text_locale,
         conversation_actor_template,
         conversation_actors,
         conversation_line_template,

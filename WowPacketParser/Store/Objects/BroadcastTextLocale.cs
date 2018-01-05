@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Misc;
+﻿using WowPacketParser.Loading;
+using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
@@ -10,11 +11,11 @@ namespace WowPacketParser.Store.Objects
         public uint? ID;
 
         [DBFieldName("locale", true)]
-        public string Locale;
+        public string Locale = BinaryPacketReader.GetClientLocale();
 
         [DBFieldName("MaleText_lang")]
         public string MaleTextLang;
-        
+
         [DBFieldName("FemaleText_lang")]
         public string FemaleTextLang;
 
