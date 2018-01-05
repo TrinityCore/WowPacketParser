@@ -97,7 +97,8 @@ namespace WowPacketParser.Store
         public static readonly StoreBag<WowGuid> NpcSpellClicks = new StoreBag<WowGuid>(new List<SQLOutput> { SQLOutput.npc_spellclick_spells });
         public static readonly DataBag<NpcSpellClick> SpellClicks = new DataBag<NpcSpellClick>(new List<SQLOutput> { SQLOutput.npc_spellclick_spells });
 
-        // Quest Misc
+        // Locales
+        public static readonly DataBag<CreatureTemplateLocale> LocalesCreatures = new DataBag<CreatureTemplateLocale>(new List<SQLOutput> { SQLOutput.creature_template_locale });
         public static readonly DataBag<LocalesQuest> LocalesQuests = new DataBag<LocalesQuest>(new List<SQLOutput> { SQLOutput.locales_quest });
         public static readonly DataBag<QuestObjectivesLocale> LocalesQuestObjectives = new DataBag<QuestObjectivesLocale>(new List<SQLOutput> { SQLOutput.locales_quest_objectives });
 
@@ -181,6 +182,7 @@ namespace WowPacketParser.Store
 
             SpellTargetPositions.Clear();
 
+            LocalesCreatures.Clear();
             LocalesQuests.Clear();
             LocalesQuestObjectives.Clear();
 

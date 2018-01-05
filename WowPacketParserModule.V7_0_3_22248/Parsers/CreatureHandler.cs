@@ -1,4 +1,5 @@
 ﻿using WowPacketParser.Enums;
+using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -40,9 +41,17 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (var i = 0; i < 4; ++i)
             {
                 if (stringLens[i][0] > 1)
-                    creature.Name = packet.ReadCString("Name");
+                {
+                    string name = packet.ReadCString("Name");
+                    if (i == 0)
+                        creature.Name = name;
+                }
                 if (stringLens[i][1] > 1)
-                    creature.FemaleName = packet.ReadCString("NameAlt");
+                {
+                    string nameAlt = packet.ReadCString("NameAlt");
+                    if (i == 0)
+                        creature.FemaleName = nameAlt;
+                }
             }
 
             creature.TypeFlags = packet.ReadUInt32E<CreatureTypeFlag>("Type Flags");
@@ -73,7 +82,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 creature.SubName = packet.ReadCString("Title");
 
             if (titleAltLen > 1)
-                packet.ReadCString("TitleAlt");
+                creature.TitleAlt = packet.ReadCString("TitleAlt");
 
             if (cursorNameLen > 1)
                 creature.IconName = packet.ReadCString("CursorName");
@@ -93,6 +102,20 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.AddSniffData(StoreNameType.Unit, entry.Key, "QUERY_RESPONSE");
 
             Storage.CreatureTemplates.Add(creature, packet.TimeSpan);
+
+            if (BinaryPacketReader.GetLocale() != LocaleConstant.enUS)
+            {
+                CreatureTemplateLocale localesCreature = new CreatureTemplateLocale
+                {
+                    ID = (uint)entry.Key,
+                    Name = creature.Name,
+                    NameAlt = creature.FemaleName,
+                    Title = creature.SubName,
+                    TitleAlt = creature.TitleAlt
+                };
+
+                Storage.LocalesCreatures.Add(localesCreature, packet.TimeSpan);
+            }
 
             ObjectName objectName = new ObjectName
             {

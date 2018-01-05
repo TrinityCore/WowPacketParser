@@ -17,6 +17,7 @@
         creature_model_info,
         creature_template,
         creature_template_addon,
+        creature_template_locale,
         creature_template_scaling,
         creature_text,
         gameobject,

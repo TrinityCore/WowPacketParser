@@ -551,6 +551,7 @@
     <Compile Include="Store\Objects\CreatureDefaultTrainer.cs" />
     <Compile Include="Store\Objects\CreatureEquipment.cs" />
     <Compile Include="Store\Objects\CreatureTemplateAddon.cs" />
+    <Compile Include="Store\Objects\CreatureTemplateLocale.cs" />
     <Compile Include="Store\Objects\CreatureTemplateScaling.cs" />
     <Compile Include="Store\Objects\CreatureText.cs" />
     <Compile Include="Store\Objects\GameObjectAddon.cs" />

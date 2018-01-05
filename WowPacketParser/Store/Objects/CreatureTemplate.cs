@@ -25,6 +25,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("subname", nullable: true)]
         public string SubName;
 
+        [DBFieldName("TitleAlt", TargetedDatabase.WarlordsOfDraenor /*Mists of Pandaria*/, nullable: true)]
+        public string TitleAlt;
+
         [DBFieldName("IconName", nullable: true)]
         public string IconName;
 

@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
+using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -78,9 +79,8 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             creature.HealthModifier = packet.ReadSingle("Modifier 1");
 
-
             if (bits24 > 1)
-                packet.ReadCString("String1C");
+                creature.SubName = packet.ReadCString("Sub Name");
 
             creature.MovementID = packet.ReadUInt32("Movement ID");
             creature.RequiredExpansion = packet.ReadUInt32E<ClientType>("Expansion");
@@ -93,7 +93,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             creature.Rank = packet.ReadInt32E<CreatureRank>("Rank");
 
             if (bits1C > 1)
-                creature.SubName = packet.ReadCString("Sub Name");
+                creature.TitleAlt = packet.ReadCString("TitleAlt");
 
             var entry = packet.ReadEntry("Entry");
             creature.Entry = (uint)entry.Key;
@@ -101,6 +101,20 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.AddSniffData(StoreNameType.Unit, entry.Key, "QUERY_RESPONSE");
 
             Storage.CreatureTemplates.Add(creature, packet.TimeSpan);
+
+            if (BinaryPacketReader.GetLocale() != LocaleConstant.enUS)
+            {
+                CreatureTemplateLocale localesCreature = new CreatureTemplateLocale
+                {
+                    ID = (uint)entry.Key,
+                    Name = creature.Name,
+                    NameAlt = creature.FemaleName,
+                    Title = creature.SubName,
+                    TitleAlt = creature.TitleAlt
+                };
+
+                Storage.LocalesCreatures.Add(localesCreature, packet.TimeSpan);
+            }
 
             ObjectName objectName = new ObjectName
             {
