@@ -475,5 +475,27 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             packet.ReadBits("Reason", 2);
         }
+
+        [Parser(Opcode.SMSG_TRANSFER_PENDING)]
+        public static void HandleTransferPending(Packet packet)
+        {
+            packet.ReadInt32<MapId>("MapID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_0_24920))
+                packet.ReadVector3("OldMapPosition");
+
+            packet.ResetBitReader();
+
+            var hasShipTransferPending = packet.ReadBit();
+            var hasTransferSpell = packet.ReadBit();
+
+            if (hasShipTransferPending)
+            {
+                packet.ReadUInt32<GOId>("ID");
+                packet.ReadInt32<MapId>("OriginMapID");
+            }
+
+            if (hasTransferSpell)
+                packet.ReadUInt32<SpellId>("TransferSpellID");
+        }
     }
 }

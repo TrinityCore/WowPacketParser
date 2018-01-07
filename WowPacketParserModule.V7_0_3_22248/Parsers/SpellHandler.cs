@@ -67,7 +67,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             packet.ResetBitReader();
 
-            packet.ReadBits("CastFlagsEx", 22, idx);
+            packet.ReadBits("CastFlagsEx", ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_2_25383) ? 23 : 22, idx);
             var hitTargetsCount = packet.ReadBits("HitTargetsCount", 16, idx);
             var missTargetsCount = packet.ReadBits("MissTargetsCount", 16, idx);
             var missStatusCount = packet.ReadBits("MissStatusCount", 16, idx);
