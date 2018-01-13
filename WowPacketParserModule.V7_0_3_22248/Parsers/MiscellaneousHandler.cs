@@ -306,9 +306,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("NoHandler"); // not accessed in handler
             packet.ReadBit("TrialBoostEnabled");
             packet.ReadBit("TokenBalanceEnabled");
-            packet.ReadBit("LiveRegionCharacterListEnabled");
-            packet.ReadBit("LiveRegionCharacterCopyEnabled");
-            packet.ReadBit("LiveRegionAccountCopyEnabled");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_0_24920))
+            {
+                packet.ReadBit("LiveRegionCharacterListEnabled");
+                packet.ReadBit("LiveRegionCharacterCopyEnabled");
+                packet.ReadBit("LiveRegionAccountCopyEnabled");
+            }
 
             packet.ReadInt32("TokenPollTimeSeconds");
             packet.ReadInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
