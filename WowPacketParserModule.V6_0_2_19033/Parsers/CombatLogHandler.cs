@@ -19,9 +19,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadByte("SchoolMask");
 
-            packet.ReadInt32("ShieldBlock");
-            packet.ReadInt32("Resisted");
             packet.ReadInt32("Absorbed");
+            packet.ReadInt32("Resisted");
+            packet.ReadInt32("ShieldBlock");
 
             packet.ResetBitReader();
 
