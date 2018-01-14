@@ -679,16 +679,16 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             packet.ReadInt64("MoneyReward");
 
-            for (var i = 0; i < itemCount; ++i)
-            {
-                V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, i);
-                packet.ReadInt32("Quantity", i);
-            }
-
             for (int i = 0; i < currencyCount; i++)
             {
                 packet.ReadInt32("CurrencyID", i);
                 packet.ReadInt32("Amount", i);
+            }
+
+            for (var i = 0; i < itemCount; ++i)
+            {
+                V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, i);
+                packet.ReadInt32("Quantity", i);
             }
         }
     }
