@@ -47,6 +47,7 @@
     <Compile Include="Enums\UpdateFields720.cs" />
     <Compile Include="Enums\UpdateFields725.cs" />
     <Compile Include="Enums\UpdateFields732.cs" />
+    <Compile Include="Enums\UpdateFields735.cs" />
     <Compile Include="Hotfix\AchievementEntry.cs" />
     <Compile Include="Hotfix\AnimKitEntry.cs" />
     <Compile Include="Hotfix\AreaGroupMemberEntry.cs" />
