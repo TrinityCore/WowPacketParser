@@ -9,17 +9,29 @@ namespace WowPacketParser.Misc
         public UpdateField(uint val)
         {
             SingleValue = 0; // CS0171
+            Int32Value = 0;
             UInt32Value = val;
         }
 
         public UpdateField(float val)
         {
             UInt32Value = 0; // CS0171
+            Int32Value = 0;
             SingleValue = val;
+        }
+
+        public UpdateField(int val)
+        {
+            SingleValue = 0; // CS0171
+            UInt32Value = 0;
+            Int32Value = val;
         }
 
         [FieldOffset(0)]
         public readonly uint UInt32Value;
+
+        [FieldOffset(0)]
+        public readonly int Int32Value;
 
         [FieldOffset(0)]
         public readonly float SingleValue;
@@ -34,6 +46,9 @@ namespace WowPacketParser.Misc
         public bool Equals(UpdateField other)
         {
             if (UInt32Value == other.UInt32Value)
+                return true;
+
+            if (Int32Value == other.Int32Value)
                 return true;
 
             if (Math.Abs(SingleValue - other.SingleValue) < float.Epsilon)

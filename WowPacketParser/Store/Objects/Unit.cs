@@ -206,10 +206,13 @@ namespace WowPacketParser.Store.Objects
         public static TK GetValue<T, TK>(this Dictionary<int, UpdateField> dict, T updateField)
         {
             var isInt = false;
+            var isUInt = false;
             var type = typeof(TK);
             switch (Type.GetTypeCode(type))
             {
                 case TypeCode.UInt32:
+                    isUInt = true;
+                    break;
                 case TypeCode.Int32:
                     isInt = true;
                     break;
@@ -221,6 +224,8 @@ namespace WowPacketParser.Store.Objects
                     switch (Type.GetTypeCode(Nullable.GetUnderlyingType(type)))
                     {
                         case TypeCode.UInt32:
+                            isUInt = true;
+                            break;
                         case TypeCode.Int32:
                             isInt = true;
                             break;
@@ -237,8 +242,10 @@ namespace WowPacketParser.Store.Objects
             UpdateField uf;
             if (dict.TryGetValue(UpdateFields.GetUpdateField(updateField), out uf))
             {
-                if (isInt)
+                if (isUInt)
                     return (TK)(object)uf.UInt32Value;
+                if (isInt)
+                    return (TK)(object)uf.Int32Value;
                 return (TK)(object)uf.SingleValue;
             }
 
