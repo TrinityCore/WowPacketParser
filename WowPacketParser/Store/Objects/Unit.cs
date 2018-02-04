@@ -195,6 +195,36 @@ namespace WowPacketParser.Store.Objects
 
     public static class Ext // TODO: Rename & move
     {
+        private static TypeCode GetTypeCodeOfReturnValue<TK>()
+        {
+            var type = typeof(TK);
+            var typeCode = Type.GetTypeCode(type);
+            switch (typeCode)
+            {
+                case TypeCode.UInt32:
+                case TypeCode.Int32:
+                case TypeCode.Single:
+                case TypeCode.Double:
+                    return typeCode;
+                default:
+                {
+                    typeCode = Type.GetTypeCode(Nullable.GetUnderlyingType(type));
+                    switch (typeCode)
+                    {
+                        case TypeCode.UInt32:
+                        case TypeCode.Int32:
+                        case TypeCode.Single:
+                        case TypeCode.Double:
+                            return typeCode;
+                        default:
+                            break;
+                    }
+                    break;
+                }
+            }
+            return TypeCode.Empty;
+        }
+
         /// <summary>
         /// Grabs a value from a dictionary of UpdateFields
         /// </summary>
@@ -205,41 +235,23 @@ namespace WowPacketParser.Store.Objects
         /// <returns></returns>
         public static TK GetValue<T, TK>(this Dictionary<int, UpdateField> dict, T updateField)
         {
-            var isInt = false;
-            var type = typeof(TK);
-            switch (Type.GetTypeCode(type))
-            {
-                case TypeCode.UInt32:
-                case TypeCode.Int32:
-                    isInt = true;
-                    break;
-                case TypeCode.Single:
-                case TypeCode.Double:
-                    break;
-                default:
-                {
-                    switch (Type.GetTypeCode(Nullable.GetUnderlyingType(type)))
-                    {
-                        case TypeCode.UInt32:
-                        case TypeCode.Int32:
-                            isInt = true;
-                            break;
-                        case TypeCode.Single:
-                        case TypeCode.Double:
-                            break;
-                        default:
-                            return default(TK);
-                    }
-                    break;
-                }
-            }
-
             UpdateField uf;
             if (dict.TryGetValue(UpdateFields.GetUpdateField(updateField), out uf))
             {
-                if (isInt)
-                    return (TK)(object)uf.UInt32Value;
-                return (TK)(object)uf.SingleValue;
+                var type = GetTypeCodeOfReturnValue<TK>();
+                switch (type)
+                {
+                    case TypeCode.UInt32:
+                        return (TK)(object)uf.UInt32Value;
+                    case TypeCode.Int32:
+                        return (TK)(object)(int)uf.UInt32Value;
+                    case TypeCode.Single:
+                        return (TK)(object)uf.SingleValue;
+                    case TypeCode.Double:
+                        return (TK)(object)(double)uf.SingleValue;
+                    default:
+                        break;
+                }
             }
 
             return default(TK);
@@ -256,48 +268,31 @@ namespace WowPacketParser.Store.Objects
         /// <returns></returns>
         public static TK[] GetArray<T, TK>(this Dictionary<int, UpdateField> dict, T firstUpdateField, int count)
         {
-            var isInt = false;
-            var type = typeof(TK);
-            switch (Type.GetTypeCode(type))
-            {
-                case TypeCode.UInt32:
-                case TypeCode.Int32:
-                    isInt = true;
-                    break;
-                case TypeCode.Single:
-                case TypeCode.Double:
-                    break;
-                default:
-                    {
-                        switch (Type.GetTypeCode(Nullable.GetUnderlyingType(type)))
-                        {
-                            case TypeCode.UInt32:
-                            case TypeCode.Int32:
-                                isInt = true;
-                                break;
-                            case TypeCode.Single:
-                            case TypeCode.Double:
-                                break;
-                            default:
-                                return null;
-                        }
-                        break;
-                    }
-            }
-
             var result = new TK[count];
-            UpdateField uf;
-            if (isInt)
+            var type = GetTypeCodeOfReturnValue<TK>();
+            for (var i = 0; i < count; i++)
             {
-                for (var i = 0; i < count; i++)
-                    if (dict.TryGetValue(UpdateFields.GetUpdateField(firstUpdateField) + i, out uf))
-                        result[i] = (TK)(object)uf.UInt32Value;
-            }
-            else
-            {
-                for (var i = 0; i < count; i++)
-                    if (dict.TryGetValue(UpdateFields.GetUpdateField(firstUpdateField) + i, out uf))
-                        result[i] = (TK)(object)uf.SingleValue;
+                UpdateField uf;
+                if (dict.TryGetValue(UpdateFields.GetUpdateField(firstUpdateField) + i, out uf))
+                {
+                    switch (type)
+                    {
+                        case TypeCode.UInt32:
+                            result[i] = (TK)(object)uf.UInt32Value;
+                            break;
+                        case TypeCode.Int32:
+                            result[i] = (TK)(object)(int)uf.UInt32Value;
+                            break;
+                        case TypeCode.Single:
+                            result[i] = (TK)(object)uf.SingleValue;
+                            break;
+                        case TypeCode.Double:
+                            result[i] = (TK)(object)(double)uf.SingleValue;
+                            break;
+                        default:
+                            break;
+                    }
+                }
             }
 
             return result;
