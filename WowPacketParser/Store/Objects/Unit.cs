@@ -39,7 +39,7 @@ namespace WowPacketParser.Store.Objects
         public uint? Level;
         public uint? ScalingMinLevel;
         public uint? ScalingMaxLevel;
-        public uint? ScalingDelta;
+        public int? ScalingDelta;
         public uint? Faction;
         public uint[] EquipmentItemId;
         public ushort[] EquipmentAppearanceModId;
@@ -134,17 +134,7 @@ namespace WowPacketParser.Store.Objects
             {
                 ScalingMinLevel = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_SCALING_LEVEL_MIN);
                 ScalingMaxLevel = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_SCALING_LEVEL_MAX);
-
-                if (ScalingMinLevel != null && ScalingMaxLevel != null)
-                {
-                    CreatureTemplateScaling creatureTemplateScaling = new CreatureTemplateScaling();
-                    creatureTemplateScaling.Entry                   = UpdateFields.GetValue<ObjectField, uint>(ObjectField.OBJECT_FIELD_ENTRY);
-                    creatureTemplateScaling.LevelScalingMin         = ScalingMinLevel;
-                    creatureTemplateScaling.LevelScalingMax         = ScalingMaxLevel;
-                    creatureTemplateScaling.LevelScalingDelta       = UpdateFields.GetValue<UnitField, int>(UnitField.UNIT_FIELD_SCALING_LEVEL_DELTA);
-                    Storage.CreatureTemplateScalings.Add(creatureTemplateScaling);
-                }
-
+                ScalingDelta = UpdateFields.GetValue<UnitField, int>(UnitField.UNIT_FIELD_SCALING_LEVEL_DELTA); ;
                 EquipmentRaw = UpdateFields.GetArray<UnitField, uint>(UnitField.UNIT_VIRTUAL_ITEM_SLOT_ID, 6);
             }
             else

@@ -15,8 +15,11 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("LevelScalingMax")]
         public uint? LevelScalingMax;
 
-        [DBFieldName("LevelScalingDelta")]
-        public int? LevelScalingDelta;
+        [DBFieldName("LevelScalingDeltaMin")]
+        public int? LevelScalingDeltaMin;
+
+        [DBFieldName("LevelScalingDeltaMax")]
+        public int? LevelScalingDeltaMax;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
