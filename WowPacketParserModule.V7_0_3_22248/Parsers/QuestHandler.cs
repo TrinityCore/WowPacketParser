@@ -72,13 +72,17 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32("QuestType", indexes);
             packet.ReadInt32("QuestLevel", indexes);
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_25848))
+                packet.ReadInt32("QuestMaxScalingLevel", indexes);
+
             for (int i = 0; i < 2; i++)
                 packet.ReadUInt32("QuestFlags", indexes, i);
 
             packet.ResetBitReader();
 
             packet.ReadBit("Repeatable", indexes);
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_2_0_23826))
                 packet.ReadBit("IsQuestIgnored", indexes);
 
             var guestTitleLen = packet.ReadBits(9);
@@ -104,6 +108,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             quest.QuestType = packet.ReadInt32E<QuestType>("QuestType");
             quest.QuestLevel = packet.ReadInt32("QuestLevel");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_25848))
+                quest.QuestMaxScalingLevel = packet.ReadInt32("QuestMaxScalingLevel");
             quest.QuestPackageID = packet.ReadUInt32("QuestPackageID");
             quest.MinLevel = packet.ReadInt32("QuestMinLevel");
             quest.QuestSortID = (QuestSort)packet.ReadUInt32("QuestSortID");
@@ -200,7 +206,10 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             quest.AreaGroupID = packet.ReadUInt32("AreaGroupID");
             quest.TimeAllowed = packet.ReadUInt32("TimeAllowed");
             uint int2946 = packet.ReadUInt32("CliQuestInfoObjective");
-            quest.AllowableRacesWod = packet.ReadInt32("AllowableRaces");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_25848))
+                quest.AllowableRacesWod = (long)packet.ReadUInt64("AllowableRaces");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_0_3_22248) && ClientVersion.RemovedInVersion(ClientVersionBuild.V7_3_5_25848))
+                quest.AllowableRacesWod = packet.ReadInt32("AllowableRaces");
             quest.QuestRewardID = packet.ReadInt32("QuestRewardID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
