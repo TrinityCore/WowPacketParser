@@ -184,12 +184,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                         Storage.QuestPOIPoints.Add(questPoiPoint, packet.TimeSpan);
                     }
 
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_25848))
-                    {
-                        packet.ResetBitReader();
-                        questPoi.AlwaysAllowMergingBlobs = packet.ReadBit("AlwaysAllowMergingBlobs", i, j);
-                    }
-
                     Storage.QuestPOIs.Add(questPoi, packet.TimeSpan);
                 }
             }

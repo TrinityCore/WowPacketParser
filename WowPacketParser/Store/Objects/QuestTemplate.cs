@@ -16,7 +16,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("QuestLevel")]
         public int? QuestLevel;
 
-        [DBFieldName("QuestMaxScalingLevel", TargetedDatabase.Legion)]
+        [DBFieldName("MaxScalingLevel", TargetedDatabase.Legion)]
         public int? QuestMaxScalingLevel;
 
         [DBFieldName("QuestPackageID", TargetedDatabase.WarlordsOfDraenor)]
