@@ -27,7 +27,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         }
 
         [Parser(Opcode.CMSG_ACTIVATE_TAXI)]
-        public static void HandleActivateTaxi61x(Packet packet)
+        public static void HandleActivateTaxi(Packet packet)
         {
             packet.ReadPackedGuid128("Vendor");
             packet.ReadUInt32("Node");

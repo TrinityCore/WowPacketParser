@@ -588,5 +588,30 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadUInt32("Immunities");
             }
         }
+
+        [Parser(Opcode.SMSG_MIRROR_IMAGE_COMPONENTED_DATA)]
+        public static void HandleMirrorImageData(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+            packet.ReadInt32("DisplayID");
+
+            packet.ReadByte("RaceID");
+            packet.ReadByte("Gender");
+            packet.ReadByte("ClassID");
+            packet.ReadByte("SkinColor");
+            packet.ReadByte("FaceVariation");
+            packet.ReadByte("HairVariation");
+            packet.ReadByte("HairColor");
+            packet.ReadByte("BeardVariation");
+
+            for (var i = 0; i < 3; i++)
+                packet.ReadByte("CustomDisplayOption", i);
+
+            packet.ReadPackedGuid128("GuildGUID");
+
+            var count = packet.ReadInt32("ItemDisplayCount");
+            for (var i = 0; i < count; i++)
+                packet.ReadInt32("ItemDisplayID", i);
+        }
     }
 }
