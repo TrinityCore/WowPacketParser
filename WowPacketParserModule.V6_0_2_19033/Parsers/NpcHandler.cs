@@ -332,10 +332,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 };
 
                 uint moneyCost = packet.ReadUInt32("MoneyCost", i);
-                uint moneyCostOriginal = (uint)(moneyCost / discount);
+                uint moneyCostOriginal = moneyCost;
 
                 if (Settings.RecalcDiscount)
+                {
+                    moneyCostOriginal = (uint)(Math.Round((moneyCost / discount) / 5)) * 5;
                     packet.WriteLine("[{0}] MoneyCostOriginal: {1}", i, moneyCostOriginal);
+                }
 
                 trainerSpell.MoneyCost = moneyCostOriginal;
                 trainerSpell.ReqSkillLine = packet.ReadUInt32("ReqSkillLine", i);
