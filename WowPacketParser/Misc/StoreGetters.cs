@@ -45,7 +45,7 @@ namespace WowPacketParser.Misc
                         break;
                     case StoreNameType.Faction:
                         if (DBC.DBC.FactionStores.ContainsKey((uint)entry))
-                            return DBC.DBC.FactionStores[(uint)entry];
+                            return DBC.DBC.FactionStores[(uint)entry].Name;
                         break;
                     case StoreNameType.Item:
                         if (DBC.DBC.ItemSparse.ContainsKey(entry))
