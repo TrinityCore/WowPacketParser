@@ -75,6 +75,9 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.broadcast_text))
                 return string.Empty;
 
+            foreach (var broadcastText in Storage.BroadcastTexts)
+                broadcastText.Item1.ConvertToDBStruct();
+
             // pass empty list, because we want to select the whole db table (faster than select only needed columns)
             var templatesDb = SQLDatabase.Get(new RowList<Store.Objects.BroadcastText>(), Settings.HotfixesDatabase);
 

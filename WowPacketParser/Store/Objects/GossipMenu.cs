@@ -1,4 +1,5 @@
 using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
@@ -11,6 +12,9 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("TextId", true)]
         public uint? TextID;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
 
         public ObjectType ObjectType;
 

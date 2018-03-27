@@ -7,6 +7,7 @@ using MySql.Data.MySqlClient;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 using WowPacketParser.DBC.Structures;
 
 namespace WowPacketParser.SQL
@@ -23,8 +24,9 @@ namespace WowPacketParser.SQL
         /// </summary>
         public static readonly Dictionary<int, int> MapSpawnMaskStores = new Dictionary<int, int>();
 
-        public static Dictionary<string, List<int>> BroadcastMaleTexts { get; } = new Dictionary<string, List<int>>();
-        public static Dictionary<string, List<int>> BroadcastFemaleTexts { get; } = new Dictionary<string, List<int>>();
+        public static Dictionary<string, List<int>> BroadcastTexts { get; } = new Dictionary<string, List<int>>();
+        public static Dictionary<string, List<int>> BroadcastText1s { get; } = new Dictionary<string, List<int>>();
+        public static List<POIData> POIs { get; } = new List<POIData>();
 
         private static readonly StoreNameType[] ObjectTypes =
         {
@@ -40,6 +42,17 @@ namespace WowPacketParser.SQL
             StoreNameType.Area,
             StoreNameType.Player,
             StoreNameType.Achievement
+        };
+
+        public struct POIData
+        {
+            public uint ID;
+            public float PositionX;
+            public float PositionY;
+            public uint Icon;
+            public uint Flags;
+            public uint Importance;
+            public string Name;
         };
 
         /// <summary>
@@ -66,6 +79,7 @@ namespace WowPacketParser.SQL
             var startTime = DateTime.Now;
 
             LoadBroadcastText();
+            LoadPointsOfinterest();
 
             var endTime = DateTime.Now;
             var span = DateTime.Now.Subtract(startTime);
@@ -78,7 +92,7 @@ namespace WowPacketParser.SQL
         private static void LoadBroadcastText()
         {
             string query =
-                "SELECT ID, MaleText, FemaleText, EmoteID1, EmoteID2, EmoteID3, EmoteDelay1, EmoteDelay2, EmoteDelay3, UnkEmoteID, Language, Type, SoundID1, SoundID2, PlayerConditionID " +
+                "SELECT ID, Text, Text1, EmoteID1, EmoteID2, EmoteID3, EmoteDelay1, EmoteDelay2, EmoteDelay3, EmotesID, LanguageID, Flags, ConditionID, SoundEntriesID1, SoundEntriesID2 " +
                 $"FROM {Settings.HotfixesDatabase}.broadcast_text;";
             using (var reader = SQLConnector.ExecuteQuery(query))
             {
@@ -88,24 +102,24 @@ namespace WowPacketParser.SQL
                 while (reader.Read())
                 {
                     var id = Convert.ToInt32(reader["Id"]);
-                    var maleText = Convert.ToString(reader["MaleText"]);
-                    var femaleText = Convert.ToString(reader["FemaleText"]);
+                    var text = Convert.ToString(reader["Text"]);
+                    var text1 = Convert.ToString(reader["Text1"]);
 
-                    if (!BroadcastMaleTexts.ContainsKey(maleText))
-                        BroadcastMaleTexts[maleText] = new List<int>();
-                    BroadcastMaleTexts[maleText].Add(id);
+                    if (!BroadcastTexts.ContainsKey(text))
+                        BroadcastTexts[text] = new List<int>();
+                    BroadcastTexts[text].Add(id);
 
-                    if (!BroadcastFemaleTexts.ContainsKey(femaleText))
-                        BroadcastFemaleTexts[femaleText] = new List<int>();
-                    BroadcastFemaleTexts[femaleText].Add(id);
+                    if (!BroadcastText1s.ContainsKey(text1))
+                        BroadcastText1s[text1] = new List<int>();
+                    BroadcastText1s[text1].Add(id);
 
                     if (!Settings.UseDBC)
                         continue;
 
                     var broadcastText = new BroadcastTextEntry()
                     {
-                        MaleText = maleText,
-                        FemaleText = femaleText,
+                        Text = text,
+                        Text1 = text1,
 
                     };
                     broadcastText.EmoteID = new ushort[3];
@@ -116,18 +130,46 @@ namespace WowPacketParser.SQL
                     broadcastText.EmoteDelay[0] = Convert.ToUInt16(reader["EmoteDelay1"]);
                     broadcastText.EmoteDelay[1] = Convert.ToUInt16(reader["EmoteDelay2"]);
                     broadcastText.EmoteDelay[2] = Convert.ToUInt16(reader["EmoteDelay3"]);
-                    broadcastText.UnkEmoteID = Convert.ToUInt16(reader["UnkEmoteID"]);
-                    broadcastText.Language = Convert.ToByte(reader["Language"]);
-                    broadcastText.Type = Convert.ToByte(reader["Type"]);
-                    broadcastText.SoundID = new uint[2];
-                    broadcastText.SoundID[0] = Convert.ToUInt32(reader["SoundID1"]);
-                    broadcastText.SoundID[1] = Convert.ToUInt32(reader["SoundID2"]);
-                    broadcastText.PlayerConditionID = Convert.ToUInt32(reader["PlayerConditionID"]);
+                    broadcastText.EmotesID = Convert.ToUInt16(reader["EmotesID"]);
+                    broadcastText.LanguageID = Convert.ToByte(reader["LanguageID"]);
+                    broadcastText.Flags = Convert.ToByte(reader["Flags"]);
+                    broadcastText.ConditionID = Convert.ToUInt32(reader["ConditionID"]);
+                    broadcastText.SoundEntriesID = new uint[2];
+                    broadcastText.SoundEntriesID[0] = Convert.ToUInt32(reader["SoundEntriesID1"]);
+                    broadcastText.SoundEntriesID[1] = Convert.ToUInt32(reader["SoundEntriesID2"]);
 
                     if (!DBC.DBC.BroadcastText.ContainsKey(id))
                         DBC.DBC.BroadcastText.Add(id, broadcastText);
                     else
                         DBC.DBC.BroadcastText[id] = broadcastText;
+                }
+            }
+        }
+
+        private static void LoadPointsOfinterest()
+        {
+            string query =
+                "SELECT ID, PositionX, PositionY, Icon, Flags, Importance, Name " +
+                $"FROM {Settings.TDBDatabase}.points_of_interest ORDER BY ID;";
+            using (var reader = SQLConnector.ExecuteQuery(query))
+            {
+                if (reader == null)
+                    return;
+
+                while (reader.Read())
+                {
+                    var poiData = new POIData()
+                    {
+                        ID = Convert.ToUInt32(reader["ID"]),
+                        PositionX = Convert.ToSingle(reader["PositionX"]),
+                        PositionY = Convert.ToSingle(reader["PositionY"]),
+                        Icon = Convert.ToUInt32(reader["Icon"]),
+                        Flags = Convert.ToUInt32(reader["Flags"]),
+                        Importance = Convert.ToUInt32(reader["Importance"]),
+                        Name = Convert.ToString(reader["Name"])
+                    };
+
+                    POIs.Add(poiData);
                 }
             }
         }

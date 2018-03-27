@@ -9,8 +9,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Hotfix
     {
         public int ID { get; set; }
         public int Language { get; set; }
-        public string MaleText { get; set; }
-        public string FemaleText { get; set; }
+        public string Text { get; set; }
+        public string Text1 { get; set; }
         [HotfixArray(3)]
         public int[] EmoteID { get; set; }
         [HotfixArray(3)]

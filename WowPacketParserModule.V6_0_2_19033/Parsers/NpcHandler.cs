@@ -44,7 +44,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             List<int> boxTextList;
             List<int> optionTextList;
 
-            if (gossipMenuOptionBox.BoxText != string.Empty && SQLDatabase.BroadcastMaleTexts.TryGetValue(gossipMenuOptionBox.BoxText, out boxTextList))
+            if (gossipMenuOptionBox.BoxText != string.Empty && SQLDatabase.BroadcastTexts.TryGetValue(gossipMenuOptionBox.BoxText, out boxTextList))
             {
                 if (boxTextList.Count == 1)
                     gossipMenuOptionBox.BoxBroadcastTextId = boxTextList[0];
@@ -57,7 +57,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             else
                 gossipMenuOptionBox.BoxBroadcastTextId = 0;
 
-            if (gossipOption.OptionText != string.Empty && SQLDatabase.BroadcastMaleTexts.TryGetValue(gossipOption.OptionText, out optionTextList))
+            if (gossipOption.OptionText != string.Empty && SQLDatabase.BroadcastTexts.TryGetValue(gossipOption.OptionText, out optionTextList))
             {
                 if (optionTextList.Count == 1)
                     gossipOption.OptionBroadcastTextId = optionTextList[0];
@@ -168,13 +168,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             CoreParsers.NpcHandler.LastGossipOption.MenuId = menuEntry;
             CoreParsers.NpcHandler.LastGossipOption.OptionIndex = gossipIdx;
-        }
+            CoreParsers.NpcHandler.LastGossipOption.ActionMenuId = null;
+            CoreParsers.NpcHandler.LastGossipOption.ActionPoiId = null;
+
+            CoreParsers.NpcHandler.TempGossipOptionPOI.MenuId = menuEntry;
+            CoreParsers.NpcHandler.TempGossipOptionPOI.OptionIndex = gossipIdx;
+            CoreParsers.NpcHandler.TempGossipOptionPOI.ActionMenuId = null;
+            CoreParsers.NpcHandler.TempGossipOptionPOI.ActionPoiId = null;
+
+    }
 
         [Parser(Opcode.SMSG_GOSSIP_POI)]
         public static void HandleGossipPoi(Packet packet)
         {
             PointsOfInterest gossipPOI = new PointsOfInterest();
-            gossipPOI.ID = ++LastGossipPOIEntry;
 
             gossipPOI.Flags = packet.ReadBits("Flags", 14);
             uint bit84 = packet.ReadBits(6);
@@ -187,10 +194,66 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             gossipPOI.Importance = packet.ReadUInt32("Importance");
             gossipPOI.Name = packet.ReadWoWString("Name", bit84);
 
-            Storage.GossipPOIs.Add(gossipPOI, packet.TimeSpan);
             var lastGossipOption = CoreParsers.NpcHandler.LastGossipOption;
-            if (lastGossipOption.HasSelection)
-                Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = lastGossipOption.MenuId, OptionIndex = lastGossipOption.OptionIndex, ActionPoiId = gossipPOI.ID }, packet.TimeSpan);
+            var tempGossipOptionPOI = CoreParsers.NpcHandler.TempGossipOptionPOI;
+
+            // DB PART STARTS HERE
+            if (Settings.DBEnabled)
+            {
+                foreach (var poi in SQLDatabase.POIs)
+                {
+                    if (gossipPOI.Name == poi.Name && (uint)gossipPOI.Icon == poi.Icon && gossipPOI.Flags == poi.Flags)
+                    {
+                        if (Math.Abs(pos.X - poi.PositionX) <= 0.01f && Math.Abs(pos.Y - poi.PositionY) <= 0.01f)
+                        {
+                            gossipPOI.ID = poi.ID;
+                            break;
+                        }
+                    }
+                }
+
+                if (gossipPOI.ID == null)
+                {
+                    gossipPOI.ID = (SQLDatabase.POIs[SQLDatabase.POIs.Count - 1].ID + 1);
+
+                    // Add to list to prevent double data while parsing
+                    var poiData = new SQLDatabase.POIData()
+                    {
+                        ID = (uint)gossipPOI.ID,
+                        PositionX = (float)gossipPOI.PositionX,
+                        PositionY = (float)gossipPOI.PositionY,
+                        Icon = (uint)gossipPOI.Icon,
+                        Flags = (uint)gossipPOI.Flags,
+                        Importance = (uint)gossipPOI.Importance,
+                        Name = gossipPOI.Name
+                    };
+
+                    SQLDatabase.POIs.Add(poiData);
+                }
+            }
+            else
+            {
+                gossipPOI.ID = "@PID+" + LastGossipPOIEntry.ToString();
+                ++LastGossipPOIEntry;
+            }
+
+            lastGossipOption.ActionPoiId = gossipPOI.ID;
+            tempGossipOptionPOI.ActionPoiId = gossipPOI.ID;
+
+            Storage.GossipPOIs.Add(gossipPOI, packet.TimeSpan);
+
+            if (tempGossipOptionPOI.HasSelection)
+            {
+                if (tempGossipOptionPOI.ActionMenuId != null)
+                {
+                    Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = tempGossipOptionPOI.MenuId, OptionIndex = tempGossipOptionPOI.OptionIndex, ActionMenuId = tempGossipOptionPOI.ActionMenuId, ActionPoiId = gossipPOI.ID }, packet.TimeSpan);
+                    //clear temp
+                    tempGossipOptionPOI.MenuId = null;
+                    tempGossipOptionPOI.OptionIndex = null;
+                    tempGossipOptionPOI.ActionMenuId = null;
+                    tempGossipOptionPOI.ActionPoiId = null;
+                }
+            }
         }
 
         [HasSniffData]
@@ -226,8 +289,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             Storage.Gossips.Add(gossip, packet.TimeSpan);
             var lastGossipOption = CoreParsers.NpcHandler.LastGossipOption;
+            var tempGossipOptionPOI = CoreParsers.NpcHandler.TempGossipOptionPOI;
             if (lastGossipOption.HasSelection)
-                Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = lastGossipOption.MenuId, OptionIndex = lastGossipOption.OptionIndex, ActionMenuId = gossip.Entry }, packet.TimeSpan);
+            {
+                Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = lastGossipOption.MenuId, OptionIndex = lastGossipOption.OptionIndex, ActionMenuId = gossip.Entry, ActionPoiId = lastGossipOption.ActionPoiId }, packet.TimeSpan);
+
+                //keep temp data
+                tempGossipOptionPOI.MenuId = lastGossipOption.MenuId;
+                tempGossipOptionPOI.OptionIndex = lastGossipOption.OptionIndex;
+                tempGossipOptionPOI.ActionMenuId = gossip.Entry;
+                tempGossipOptionPOI.ActionPoiId = lastGossipOption.ActionPoiId;
+
+                // clear lastgossip
+                lastGossipOption.MenuId = null;
+                lastGossipOption.OptionIndex = null;
+                lastGossipOption.ActionMenuId = null;
+                lastGossipOption.ActionPoiId = null;
+            }
 
             packet.AddSniffData(StoreNameType.Gossip, menuId, guid.GetEntry().ToString(CultureInfo.InvariantCulture));
         }
