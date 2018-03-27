@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
 using WowPacketParser.Misc;
@@ -345,7 +346,41 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.points_of_interest))
                 return string.Empty;
 
-            return SQLUtil.Compare(Storage.GossipPOIs, SQLDatabase.Get(Storage.GossipPOIs), StoreNameType.None);
+            if (Settings.DBEnabled)
+                return SQLUtil.Compare(Storage.GossipPOIs, SQLDatabase.Get(Storage.GossipPOIs), StoreNameType.None);
+            else
+            {
+                uint count = 0;
+                var rows = new RowList<PointsOfInterest>();
+
+                foreach (var pointOfInterest in Storage.GossipPOIs)
+                {
+                    Row<PointsOfInterest> row = new Row<PointsOfInterest>();
+
+                    row.Data.ID = "@PID+" + count;
+                    row.Data.PositionX = pointOfInterest.Item1.PositionX;
+                    row.Data.PositionY = pointOfInterest.Item1.PositionY;
+                    row.Data.Icon = pointOfInterest.Item1.Icon;
+                    row.Data.Flags = pointOfInterest.Item1.Flags;
+                    row.Data.Importance = pointOfInterest.Item1.Importance;
+                    row.Data.Name = pointOfInterest.Item1.Name;
+                    row.Data.VerifiedBuild = pointOfInterest.Item1.VerifiedBuild;
+
+                    ++count;
+
+                    rows.Add(row);
+                }
+
+                StringBuilder result = new StringBuilder();
+                // delete query for GUIDs
+                var delete = new SQLDelete<PointsOfInterest>(Tuple.Create("@PID+0", "@PID+" + --count));
+                result.Append(delete.Build());
+
+                var sql = new SQLInsert<PointsOfInterest>(rows, false);
+                result.Append(sql.Build());
+
+                return result.ToString();
+            }
         }
 
         [BuilderMethod]
@@ -587,13 +622,13 @@ namespace WowPacketParser.SQL.Builders
                 if (record == null)
                     return;
 
-                if (!SQLDatabase.BroadcastMaleTexts.ContainsKey(record.MaleText))
-                    SQLDatabase.BroadcastMaleTexts[record.MaleText] = new List<int>();
-                SQLDatabase.BroadcastMaleTexts[record.MaleText].Add(recordKey);
+                if (!SQLDatabase.BroadcastTexts.ContainsKey(record.Text))
+                    SQLDatabase.BroadcastTexts[record.Text] = new List<int>();
+                SQLDatabase.BroadcastTexts[record.Text].Add(recordKey);
 
-                if (!SQLDatabase.BroadcastFemaleTexts.ContainsKey(record.FemaleText))
-                    SQLDatabase.BroadcastFemaleTexts[record.FemaleText] = new List<int>();
-                SQLDatabase.BroadcastFemaleTexts[record.FemaleText].Add(recordKey);
+                if (!SQLDatabase.BroadcastText1s.ContainsKey(record.Text1))
+                    SQLDatabase.BroadcastText1s[record.Text1] = new List<int>();
+                SQLDatabase.BroadcastText1s[record.Text1].Add(recordKey);
             };
         }
 
@@ -623,8 +658,8 @@ namespace WowPacketParser.SQL.Builders
                         textValue.Item1.Sound = sound.Item1;
 
                     List<int> textList;
-                    if (SQLDatabase.BroadcastMaleTexts.TryGetValue(textValue.Item1.Text, out textList) ||
-                        SQLDatabase.BroadcastFemaleTexts.TryGetValue(textValue.Item1.Text, out textList))
+                    if (SQLDatabase.BroadcastTexts.TryGetValue(textValue.Item1.Text, out textList) ||
+                        SQLDatabase.BroadcastText1s.TryGetValue(textValue.Item1.Text, out textList))
                     {
                         if (textList.Count == 1)
                             textValue.Item1.BroadcastTextID = (uint)textList.First();

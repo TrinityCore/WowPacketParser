@@ -19,10 +19,14 @@ namespace WowPacketParser.Parsing.Parsers
                 _guid = value;
                 MenuId = null;
                 OptionIndex = null;
+                ActionMenuId = null;
+                ActionPoiId = null;
             }
         }
         public uint? MenuId { get; set; }
         public uint? OptionIndex { get; set; }
+        public uint? ActionMenuId { get; set; }
+        public object ActionPoiId { get; set; }
 
         public bool HasSelection { get { return MenuId.HasValue && OptionIndex.HasValue; } }
 
@@ -33,15 +37,17 @@ namespace WowPacketParser.Parsing.Parsers
     {
         public static uint LastGossipPOIEntry;
         public static GossipOptionSelection LastGossipOption = new GossipOptionSelection();
+        public static GossipOptionSelection TempGossipOptionPOI = new GossipOptionSelection();
 
         [Parser(Opcode.SMSG_GOSSIP_POI)]
         public static void HandleGossipPoi(Packet packet)
         {
             PointsOfInterest gossipPOI = new PointsOfInterest
             {
-                ID = ++LastGossipPOIEntry,
+                ID = "@PID+" + LastGossipPOIEntry.ToString(),
                 Flags = (uint)packet.ReadInt32E<UnknownFlags>("Flags")
             };
+            ++LastGossipPOIEntry;
 
             Vector2 pos = packet.ReadVector2("Coordinates");
             gossipPOI.PositionX = pos.X;
@@ -423,6 +429,15 @@ namespace WowPacketParser.Parsing.Parsers
                 Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = LastGossipOption.MenuId, OptionIndex = LastGossipOption.OptionIndex, ActionMenuId = menuId }, packet.TimeSpan);
 
             packet.AddSniffData(StoreNameType.Gossip, (int)menuId, guid.GetEntry().ToString(CultureInfo.InvariantCulture));
+        }
+
+        [Parser(Opcode.SMSG_GOSSIP_COMPLETE)]
+        public static void HandleGossipComplete(Packet packet)
+        {
+            LastGossipOption.ActionMenuId = null;
+            LastGossipOption.ActionPoiId = null;
+            LastGossipOption.MenuId = null;
+            LastGossipOption.OptionIndex = null;
         }
 
         [Parser(Opcode.SMSG_THREAT_UPDATE)]

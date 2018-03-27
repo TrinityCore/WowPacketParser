@@ -222,8 +222,9 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.SMSG_GOSSIP_POI)]
         public static void HandleGossipPoi(Packet packet)
         {
+            ++LastGossipPOIEntry;
             PointsOfInterest gossipPOI = new PointsOfInterest();
-            gossipPOI.ID = ++LastGossipPOIEntry;
+            gossipPOI.ID = "@ID+" + LastGossipPOIEntry.ToString();
 
             gossipPOI.Flags = (uint)packet.ReadInt32E<UnknownFlags>("Flags");
 

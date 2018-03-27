@@ -6,14 +6,14 @@ namespace WowPacketParser.DBC.Structures
 
     public sealed class BroadcastTextEntry
     {
-        public string MaleText;
-        public string FemaleText;
+        public string Text;
+        public string Text1;
         public ushort[] EmoteID;
         public ushort[] EmoteDelay;
-        public ushort UnkEmoteID;
-        public byte Language;
-        public byte Type;
-        public uint[] SoundID;
-        public uint PlayerConditionID;
+        public ushort EmotesID;
+        public byte LanguageID;
+        public byte Flags;
+        public uint[] SoundEntriesID;
+        public uint ConditionID;
     }
 }
