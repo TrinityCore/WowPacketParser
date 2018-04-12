@@ -722,6 +722,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 }
 
                 // HACK...
+                if (key == UnitField.UNIT_FIELD_SCALING_LEVEL_DELTA.ToString())
+                    value = (int)blockVal.UInt32Value + "/" + blockVal.SingleValue;
+
                 if (key == UnitField.UNIT_FIELD_FACTIONTEMPLATE.ToString())
                     packet.AddValue(key, value + $" ({ StoreGetters.GetName(StoreNameType.Faction, (int)blockVal.UInt32Value, false) })", index);
                 else

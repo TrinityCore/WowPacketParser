@@ -85,18 +85,71 @@ namespace WowPacketParser.SQL.Builders
                 });
         }
 
-        [BuilderMethod]
-        public static string CreatureTemplateScalingData()
+        public static Dictionary<uint, Tuple<int, int>> GetScalingDeltaLevels(Dictionary<WowGuid, Unit> units)
         {
-            if (Storage.CreatureTemplateScalings.IsEmpty())
+            if (units.Count == 0)
+                return null;
+
+            var entries = units.GroupBy(unit => unit.Key.GetEntry());
+            var list = new Dictionary<uint, List<int>>();
+
+            foreach (var pair in entries.SelectMany(entry => entry))
+            {
+                if (list.ContainsKey(pair.Key.GetEntry()))
+                    list[pair.Key.GetEntry()].Add(pair.Value.ScalingDelta.GetValueOrDefault(1));
+                else
+                    list.Add(pair.Key.GetEntry(), new List<int> { pair.Value.ScalingDelta.GetValueOrDefault(1) });
+            }
+
+            var result = list.ToDictionary(pair => pair.Key, pair => Tuple.Create(pair.Value.Min(), pair.Value.Max()));
+
+            return result.Count == 0 ? null : result;
+        }
+
+        [BuilderMethod(true, Units = true)]
+        public static string CreatureTemplateScalingData(Dictionary<WowGuid, Unit> units)
+        {
+            if (units.Count == 0)
                 return string.Empty;
 
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template_scaling))
                 return string.Empty;
 
-            var templateDb = SQLDatabase.Get(Storage.CreatureTemplateScalings);
+            var scalingdeltalevels = GetScalingDeltaLevels(units);
 
-            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.CreatureTemplateScalings.OrderBy(x => x.Item1.Entry).ToArray() : Storage.CreatureTemplateScalings.ToArray(), templateDb, x => string.Empty);
+            foreach (var unit in units)
+            {
+                if (Storage.CreatureTemplateScalings.Any(creature => creature.Item1.Entry == unit.Key.GetEntry()))
+                    continue;
+
+                var npc = unit.Value;
+
+                if (npc.ScalingMinLevel != null && npc.ScalingMaxLevel != null)
+                {
+                    uint minLevel, maxLevel;
+                    int minDelta, maxDelta;
+
+                    minLevel = (uint)npc.ScalingMinLevel;
+                    maxLevel = (uint)npc.ScalingMaxLevel;
+                    minDelta = (int)scalingdeltalevels[unit.Key.GetEntry()].Item1;
+                    maxDelta = (int)scalingdeltalevels[unit.Key.GetEntry()].Item2;
+
+                    var template = new CreatureTemplateScaling
+                    {
+                        Entry = unit.Key.GetEntry(),
+                        LevelScalingMin = minLevel,
+                        LevelScalingMax = maxLevel,
+                        LevelScalingDeltaMin = minDelta,
+                        LevelScalingDeltaMax = maxDelta
+                    };
+
+                    Storage.CreatureTemplateScalings.Add(template);
+                }
+            }
+
+            var templatesDb = SQLDatabase.Get(Storage.CreatureTemplateScalings);
+
+            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.CreatureTemplateScalings.OrderBy(x => x.Item1.Entry).ToArray() : Storage.CreatureTemplateScalings.ToArray(), templatesDb, x => string.Empty);
         }
 
         [BuilderMethod(Units = true)]
