@@ -96,9 +96,9 @@ namespace WowPacketParser.SQL.Builders
             foreach (var pair in entries.SelectMany(entry => entry))
             {
                 if (list.ContainsKey(pair.Key.GetEntry()))
-                    list[pair.Key.GetEntry()].Add(pair.Value.ScalingDelta.GetValueOrDefault(1));
+                    list[pair.Key.GetEntry()].Add(pair.Value.ScalingDelta.GetValueOrDefault(0));
                 else
-                    list.Add(pair.Key.GetEntry(), new List<int> { pair.Value.ScalingDelta.GetValueOrDefault(1) });
+                    list.Add(pair.Key.GetEntry(), new List<int> { pair.Value.ScalingDelta.GetValueOrDefault(0) });
             }
 
             var result = list.ToDictionary(pair => pair.Key, pair => Tuple.Create(pair.Value.Min(), pair.Value.Max()));
