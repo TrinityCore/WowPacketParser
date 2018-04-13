@@ -205,7 +205,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             quest.SoundTurnIn = packet.ReadUInt32("CompleteSoundKitID");
             quest.AreaGroupID = packet.ReadUInt32("AreaGroupID");
             quest.TimeAllowed = packet.ReadUInt32("TimeAllowed");
-            uint int2946 = packet.ReadUInt32("CliQuestInfoObjective");
+            uint cliQuestInfoObjective = packet.ReadUInt32("CliQuestInfoObjective");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_25848))
                 quest.AllowableRacesWod = packet.ReadUInt64("AllowableRaces");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_0_3_22248) && ClientVersion.RemovedInVersion(ClientVersionBuild.V7_3_5_25848))
@@ -227,7 +227,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             uint questTurnTargetNameLen = packet.ReadBits(8);
             uint questCompletionLogLen = packet.ReadBits(11);
 
-            for (uint i = 0; i < int2946; ++i)
+            for (uint i = 0; i < cliQuestInfoObjective; ++i)
             {
                 var objectiveId = packet.ReadEntry("Id", i);
 
@@ -705,15 +705,15 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         public static void HandleQuestPoiQueryResponse(Packet packet)
         {
             packet.ReadInt32("NumPOIs");
-            int int4 = packet.ReadInt32("QuestPOIData");
+            int questPOIData = packet.ReadInt32("QuestPOIData");
 
-            for (int i = 0; i < int4; ++i)
+            for (int i = 0; i < questPOIData; ++i)
             {
                 int questId = packet.ReadInt32("QuestID", i);
 
-                int int2 = packet.ReadInt32("QuestPOIBlobData", i);
+                int questPOIBlobData = packet.ReadInt32("QuestPOIBlobData", i);
 
-                for (int j = 0; j < int2; ++j)
+                for (int j = 0; j < questPOIBlobData; ++j)
                 {
                     QuestPOI questPoi = new QuestPOI
                     {
