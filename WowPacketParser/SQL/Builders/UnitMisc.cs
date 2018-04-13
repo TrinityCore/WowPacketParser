@@ -236,9 +236,12 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.trainer))
                 return string.Empty;
 
+            foreach (var trainerSpell in Storage.TrainerSpells)
+                trainerSpell.Item1.ConvertToDBStruct();
+
             var templatesDb = SQLDatabase.Get(Storage.TrainerSpells);
 
-            return SQLUtil.Compare(Storage.TrainerSpells, templatesDb, StoreNameType.None);
+            return SQLUtil.Compare(Storage.TrainerSpells, templatesDb, t => t.FactionHelper);
         }
 
         [BuilderMethod]

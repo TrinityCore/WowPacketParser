@@ -295,7 +295,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             quest.AreaGroupID = packet.ReadUInt32("AreaGroupID");
             quest.TimeAllowed = packet.ReadUInt32("TimeAllowed");
             uint int2946 = packet.ReadUInt32("CliQuestInfoObjective");
-            quest.AllowableRacesWod = packet.ReadInt32("AllowableRaces");
+            quest.AllowableRacesWod = (uint)packet.ReadInt32("AllowableRaces");
 
             for (int i = 0; i < int2946; ++i)
             {

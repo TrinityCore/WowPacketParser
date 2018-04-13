@@ -169,6 +169,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="DBFilesClient.NET">
+      <HintPath>..\packages\DBFilesClient.NET.1.1.4\lib\net452\DBFilesClient.NET.dll</HintPath>
+    </Reference>
     <Reference Include="Sigil, Version=4.7.0.0, Culture=neutral, PublicKeyToken=2d06c3494341c8ab, processorArchitecture=MSIL">
       <HintPath>..\packages\Sigil.4.7.0\lib\net45\Sigil.dll</HintPath>
       <Private>True</Private>

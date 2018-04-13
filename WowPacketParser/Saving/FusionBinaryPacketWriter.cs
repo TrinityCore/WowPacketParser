@@ -20,7 +20,7 @@ namespace WowPacketParser.Saving
             var groups = packets.GroupBy(p => p.Opcode);
 
             // since we have one file per opcode it's possible to parallelize groups writing
-            Parallel.ForEach(groups, WriteGroup);
+            Parallel.ForEach(groups, new ParallelOptions { MaxDegreeOfParallelism = 1 }, WriteGroup);
         }
 
         private static void WriteGroup(IGrouping<int, Packet> groups)

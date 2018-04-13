@@ -9,6 +9,8 @@ using WowPacketParser.SQL;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
+using WowPacketParser.DBC;
+using WowPacketParser.Enums.Version;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
@@ -271,10 +273,56 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             Trainer trainer = new Trainer();
 
-            packet.ReadPackedGuid128("TrainerGUID");
+            WowGuid guid = packet.ReadPackedGuid128("TrainerGUID");
+            bool hasFaction = false;
+            float discount = 1.0f;
+
+            if (Settings.UseDBC && Settings.RecalcDiscount)
+                if (Storage.Objects != null && Storage.Objects.ContainsKey(guid))
+                {
+                    WoWObject obj = Storage.Objects[guid].Item1;
+                    if (obj.Type == ObjectType.Unit)
+                    {
+                        int factionTemplateId = 0;
+                        uint faction = 0;
+                        UpdateField uf;
+
+                        if (obj.UpdateFields != null && obj.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_FACTIONTEMPLATE), out uf))
+                            factionTemplateId = (int)uf.UInt32Value;
+
+
+                        if (factionTemplateId != 0 && DBC.FactionTemplate.ContainsKey(factionTemplateId))
+                            faction = DBC.FactionTemplate[factionTemplateId].Faction;
+
+                        ulong reputation = 0;
+
+                        if (AchievementHandler.FactionReputationStore.ContainsKey(faction))
+                        {
+                            reputation = AchievementHandler.FactionReputationStore[faction];
+                            hasFaction = true;
+                        }
+
+                        uint multiplier = 0;
+
+                        if (reputation >= 3000) // Friendly
+                            multiplier = 1;
+                        if (reputation >= 9000) // Honored
+                            multiplier = 2;
+                        if (reputation >= 21000) // Revered
+                            multiplier = 3;
+                        if (reputation >= 42000) // Exalted
+                            multiplier = 4;
+
+                        if (multiplier != 0)
+                            discount = 1.0f - 0.05f * multiplier;
+
+                        packet.WriteLine("ReputationDiscount: {0}%", (int)((discount * 100) - 100));
+                    }
+                }
 
             trainer.Type = packet.ReadInt32E<TrainerType>("TrainerType");
             trainer.Id = packet.ReadUInt32("TrainerID");
+
             var count = packet.ReadUInt32("Spells");
 
             for (var i = 0u; i < count; ++i)
@@ -282,11 +330,26 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 TrainerSpell trainerSpell = new TrainerSpell
                 {
                     TrainerId = trainer.Id,
-                    SpellId = packet.ReadUInt32<SpellId>("SpellID", i),
-                    MoneyCost = packet.ReadUInt32("MoneyCost", i),
-                    ReqSkillLine = packet.ReadUInt32("ReqSkillLine", i),
-                    ReqSkillRank = packet.ReadUInt32("ReqSkillRank", i)
+                    SpellId = packet.ReadUInt32<SpellId>("SpellID", i)
                 };
+
+                uint moneyCost = packet.ReadUInt32("MoneyCost", i);
+                uint moneyCostOriginal = moneyCost;
+
+                if (Settings.UseDBC && Settings.RecalcDiscount && hasFaction)
+                {
+                    moneyCostOriginal = (uint)(Math.Round((moneyCost / discount) / 5)) * 5;
+                    packet.WriteLine("[{0}] MoneyCostOriginal: {1}", i, moneyCostOriginal);
+                }
+
+                if (Settings.UseDBC && Settings.RecalcDiscount && !hasFaction)
+                {
+                    trainerSpell.FactionHelper = "No Faction found! MoneyCost not recalculated!";
+                }
+
+                trainerSpell.MoneyCost = moneyCostOriginal;
+                trainerSpell.ReqSkillLine = packet.ReadUInt32("ReqSkillLine", i);
+                trainerSpell.ReqSkillRank = packet.ReadUInt32("ReqSkillRank", i);
 
                 trainerSpell.ReqAbility = new uint[3];
                 for (var j = 0; j < 3; ++j)

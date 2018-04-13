@@ -72,13 +72,17 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32("QuestType", indexes);
             packet.ReadInt32("QuestLevel", indexes);
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_25848))
+                packet.ReadInt32("QuestMaxScalingLevel", indexes);
+
             for (int i = 0; i < 2; i++)
                 packet.ReadUInt32("QuestFlags", indexes, i);
 
             packet.ResetBitReader();
 
             packet.ReadBit("Repeatable", indexes);
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_2_0_23826))
                 packet.ReadBit("IsQuestIgnored", indexes);
 
             var guestTitleLen = packet.ReadBits(9);
@@ -104,6 +108,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             quest.QuestType = packet.ReadInt32E<QuestType>("QuestType");
             quest.QuestLevel = packet.ReadInt32("QuestLevel");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_25848))
+                quest.QuestMaxScalingLevel = packet.ReadInt32("QuestMaxScalingLevel");
             quest.QuestPackageID = packet.ReadUInt32("QuestPackageID");
             quest.MinLevel = packet.ReadInt32("QuestMinLevel");
             quest.QuestSortID = (QuestSort)packet.ReadUInt32("QuestSortID");
@@ -199,8 +205,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             quest.SoundTurnIn = packet.ReadUInt32("CompleteSoundKitID");
             quest.AreaGroupID = packet.ReadUInt32("AreaGroupID");
             quest.TimeAllowed = packet.ReadUInt32("TimeAllowed");
-            uint int2946 = packet.ReadUInt32("CliQuestInfoObjective");
-            quest.AllowableRacesWod = packet.ReadInt32("AllowableRaces");
+            uint cliQuestInfoObjective = packet.ReadUInt32("CliQuestInfoObjective");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_25848))
+                quest.AllowableRacesWod = packet.ReadUInt64("AllowableRaces");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_0_3_22248) && ClientVersion.RemovedInVersion(ClientVersionBuild.V7_3_5_25848))
+                quest.AllowableRacesWod = (uint)packet.ReadInt32("AllowableRaces");
             quest.QuestRewardID = packet.ReadInt32("QuestRewardID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
@@ -218,7 +227,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             uint questTurnTargetNameLen = packet.ReadBits(8);
             uint questCompletionLogLen = packet.ReadBits(11);
 
-            for (uint i = 0; i < int2946; ++i)
+            for (uint i = 0; i < cliQuestInfoObjective; ++i)
             {
                 var objectiveId = packet.ReadEntry("Id", i);
 
@@ -689,6 +698,64 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             {
                 packet.ReadInt32("CurrencyID", i);
                 packet.ReadInt32("Amount", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_QUEST_POI_QUERY_RESPONSE)]
+        public static void HandleQuestPoiQueryResponse(Packet packet)
+        {
+            packet.ReadInt32("NumPOIs");
+            int questPOIData = packet.ReadInt32("QuestPOIData");
+
+            for (int i = 0; i < questPOIData; ++i)
+            {
+                int questId = packet.ReadInt32("QuestID", i);
+
+                int questPOIBlobData = packet.ReadInt32("QuestPOIBlobData", i);
+
+                for (int j = 0; j < questPOIBlobData; ++j)
+                {
+                    QuestPOI questPoi = new QuestPOI
+                    {
+                        QuestID = questId,
+                        ID = j,
+                        BlobIndex = packet.ReadInt32("BlobIndex", i, j),
+                        ObjectiveIndex = packet.ReadInt32("ObjectiveIndex", i, j),
+                        QuestObjectiveID = packet.ReadInt32("QuestObjectiveID", i, j),
+                        QuestObjectID = packet.ReadInt32("QuestObjectID", i, j),
+                        MapID = packet.ReadInt32("MapID", i, j),
+                        WorldMapAreaId = packet.ReadInt32("WorldMapAreaID", i, j),
+                        Floor = packet.ReadInt32("Floor", i, j),
+                        Priority = packet.ReadInt32("Priority", i, j),
+                        Flags = packet.ReadInt32("Flags", i, j),
+                        WorldEffectID = packet.ReadInt32("WorldEffectID", i, j),
+                        PlayerConditionID = packet.ReadInt32("PlayerConditionID", i, j)
+                    };
+
+                    questPoi.WoDUnk1 = packet.ReadInt32("WoDUnk1", i, j);
+
+                    int questPOIBlobPoint = packet.ReadInt32("QuestPOIBlobPoint", i, j);
+                    for (int k = 0; k < questPOIBlobPoint; ++k)
+                    {
+                        QuestPOIPoint questPoiPoint = new QuestPOIPoint
+                        {
+                            QuestID = questId,
+                            Idx1 = j,
+                            Idx2 = k,
+                            X = packet.ReadInt32("X", i, j, k),
+                            Y = packet.ReadInt32("Y", i, j, k)
+                        };
+                        Storage.QuestPOIPoints.Add(questPoiPoint, packet.TimeSpan);
+                    }
+
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_25848))
+                    {
+                        packet.ResetBitReader();
+                        questPoi.AlwaysAllowMergingBlobs = packet.ReadBit("AlwaysAllowMergingBlobs", i, j);
+                    }
+
+                    Storage.QuestPOIs.Add(questPoi, packet.TimeSpan);
+                }
             }
         }
     }

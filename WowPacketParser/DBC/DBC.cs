@@ -21,6 +21,7 @@ namespace WowPacketParser.DBC
         public static Storage<CreatureFamilyEntry> CreatureFamily = new Storage<CreatureFamilyEntry>(GetPath("CreatureFamily.db2"));
         public static Storage<CreatureDisplayInfoEntry> CreatureDisplayInfo = new Storage<CreatureDisplayInfoEntry>(GetPath("CreatureDisplayInfo.db2"));
         public static Storage<CriteriaTreeEntry> CriteriaTree = new Storage<CriteriaTreeEntry>(GetPath("CriteriaTree.db2"));
+        public static Storage<CriteriaEntry> Criteria = new Storage<CriteriaEntry>(GetPath("Criteria.db2"));
         public static Storage<DifficultyEntry> Difficulty = new Storage<DifficultyEntry>(GetPath("Difficulty.db2"));
         public static Storage<FactionEntry> Faction = new Storage<FactionEntry>(GetPath("Faction.db2"));
         public static Storage<FactionTemplateEntry> FactionTemplate = new Storage<FactionTemplateEntry>(GetPath("FactionTemplate.db2"));
@@ -136,7 +137,7 @@ namespace WowPacketParser.DBC
                     foreach (var factionTemplate in FactionTemplate)
                     {
                         if (Faction.ContainsKey(factionTemplate.Value.Faction))
-                            FactionStores.Add((uint)factionTemplate.Key, Faction[factionTemplate.Value.Faction].Name);
+                            FactionStores.Add((uint)factionTemplate.Key, Faction[factionTemplate.Value.Faction]);
                     }
                 }
             }), Task.Run(() =>
@@ -190,7 +191,7 @@ namespace WowPacketParser.DBC
         public static readonly Dictionary<uint, string> Zones = new Dictionary<uint, string>();
         public static readonly Dictionary<int, int> MapSpawnMaskStores = new Dictionary<int, int>();
         public static readonly Dictionary<ushort, string> CriteriaStores = new Dictionary<ushort, string>();
-        public static readonly Dictionary<uint, string> FactionStores = new Dictionary<uint, string>();
+        public static readonly Dictionary<uint, FactionEntry> FactionStores = new Dictionary<uint, FactionEntry>();
         public static readonly Dictionary<Tuple<uint, uint>, SpellEffectEntry> SpellEffectStores = new Dictionary<Tuple<uint, uint>, SpellEffectEntry>();
         public static readonly Dictionary<ushort, List<ushort>> Phases = new Dictionary<ushort, List<ushort>>();
     }

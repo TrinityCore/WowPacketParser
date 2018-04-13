@@ -50,6 +50,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("WoDUnk1", TargetedDatabase.WarlordsOfDraenor)]
         public int? WoDUnk1;
 
+        [DBFieldName("AlwaysAllowMergingBlobs", TargetedDatabase.Legion)]
+        public bool AlwaysAllowMergingBlobs;
+
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }

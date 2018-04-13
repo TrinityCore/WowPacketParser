@@ -17,13 +17,15 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32("QuestID", idx);
             packet.ReadInt32("QuestType", idx);
             packet.ReadInt32("QuestLevel", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_25848))
+                packet.ReadInt32("QuestMaxScalingLevel", idx);
 
             for (int j = 0; j < 2; ++j)
                 packet.ReadInt32("QuestFlags", idx, j);
 
             packet.ResetBitReader();
 
-            packet.ReadBit("Repeatable");
+            packet.ReadBit("Repeatable", idx);
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_2_0_23826))
                 packet.ReadBit("Ignored");
 

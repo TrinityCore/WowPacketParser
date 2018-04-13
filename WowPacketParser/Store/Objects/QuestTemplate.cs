@@ -16,6 +16,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("QuestLevel")]
         public int? QuestLevel;
 
+        [DBFieldName("MaxScalingLevel", TargetedDatabase.Legion)]
+        public int? QuestMaxScalingLevel;
+
         [DBFieldName("QuestPackageID", TargetedDatabase.WarlordsOfDraenor)]
         public uint? QuestPackageID;
 
@@ -238,7 +241,7 @@ namespace WowPacketParser.Store.Objects
         public RaceMask? AllowableRaces;
 
         [DBFieldName("AllowableRaces", TargetedDatabase.WarlordsOfDraenor)]
-        public int? AllowableRacesWod;
+        public ulong? AllowableRacesWod;
 
         [DBFieldName("QuestRewardID", TargetedDatabase.Legion)]
         public int? QuestRewardID;
