@@ -241,7 +241,7 @@ namespace WowPacketParser.SQL.Builders
 
             var templatesDb = SQLDatabase.Get(Storage.TrainerSpells);
 
-            return SQLUtil.Compare(Storage.TrainerSpells, templatesDb, StoreNameType.None);
+            return SQLUtil.Compare(Storage.TrainerSpells, templatesDb, t => t.FactionHelper);
         }
 
         [BuilderMethod]

@@ -44,5 +44,7 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
+
+        public string FactionHelper;
     }
 }

@@ -274,6 +274,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             Trainer trainer = new Trainer();
 
             WowGuid guid = packet.ReadPackedGuid128("TrainerGUID");
+            bool hasFaction = false;
             float discount = 1.0f;
 
             if (Settings.UseDBC && Settings.RecalcDiscount)
@@ -283,7 +284,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     if (obj.Type == ObjectType.Unit)
                     {
                         int factionTemplateId = 0;
-                        uint faction = 35;
+                        uint faction = 0;
                         UpdateField uf;
 
                         if (obj.UpdateFields != null && obj.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_FACTIONTEMPLATE), out uf))
@@ -298,6 +299,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                         if (AchievementHandler.FactionReputationStore.ContainsKey(faction))
                         {
                             reputation = AchievementHandler.FactionReputationStore[faction];
+                            hasFaction = true;
                         }
 
                         uint multiplier = 0;
@@ -334,10 +336,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 uint moneyCost = packet.ReadUInt32("MoneyCost", i);
                 uint moneyCostOriginal = moneyCost;
 
-                if (Settings.RecalcDiscount)
+                if (Settings.UseDBC && Settings.RecalcDiscount && hasFaction)
                 {
                     moneyCostOriginal = (uint)(Math.Round((moneyCost / discount) / 5)) * 5;
                     packet.WriteLine("[{0}] MoneyCostOriginal: {1}", i, moneyCostOriginal);
+                }
+
+                if (Settings.UseDBC && Settings.RecalcDiscount && !hasFaction)
+                {
+                    trainerSpell.FactionHelper = "No Faction found! MoneyCost not recalculated!";
                 }
 
                 trainerSpell.MoneyCost = moneyCostOriginal;
