@@ -734,8 +734,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
                     questPoi.WoDUnk1 = packet.ReadInt32("WoDUnk1", i, j);
 
-                    int int13 = packet.ReadInt32("QuestPOIBlobPoint", i, j);
-                    for (int k = 0; k < int13; ++k)
+                    int questPOIBlobPoint = packet.ReadInt32("QuestPOIBlobPoint", i, j);
+                    for (int k = 0; k < questPOIBlobPoint; ++k)
                     {
                         QuestPOIPoint questPoiPoint = new QuestPOIPoint
                         {
