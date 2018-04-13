@@ -207,9 +207,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             quest.TimeAllowed = packet.ReadUInt32("TimeAllowed");
             uint int2946 = packet.ReadUInt32("CliQuestInfoObjective");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_25848))
-                quest.AllowableRacesWod = (long)packet.ReadUInt64("AllowableRaces");
+                quest.AllowableRacesWod = packet.ReadUInt64("AllowableRaces");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_0_3_22248) && ClientVersion.RemovedInVersion(ClientVersionBuild.V7_3_5_25848))
-                quest.AllowableRacesWod = packet.ReadInt32("AllowableRaces");
+                quest.AllowableRacesWod = (uint)packet.ReadInt32("AllowableRaces");
             quest.QuestRewardID = packet.ReadInt32("QuestRewardID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
