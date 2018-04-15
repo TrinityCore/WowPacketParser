@@ -1,4 +1,4 @@
-﻿using WowPacketParser.Enums;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
@@ -7,34 +7,34 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("creature_text")]
     public sealed class CreatureText : IDataModel
     {
-        [DBFieldName("entry", true)]
+        [DBFieldName("CreatureID", true)]
         public uint? Entry;
 
-        [DBFieldName("groupid", true, true)]
+        [DBFieldName("GroupID", true, true)]
         public string GroupId;
 
-        [DBFieldName("id", true, true)]
+        [DBFieldName("ID", true, true)]
         public string ID;
 
-        [DBFieldName("text")]
+        [DBFieldName("Text")]
         public string Text;
 
-        [DBFieldName("type")]
+        [DBFieldName("Type")]
         public ChatMessageType? Type;
 
-        [DBFieldName("language")]
+        [DBFieldName("Language")]
         public Language? Language;
 
-        [DBFieldName("probability")]
+        [DBFieldName("Probability")]
         public float? Probability;
 
-        [DBFieldName("emote")]
+        [DBFieldName("Emote")]
         public EmoteType? Emote;
 
-        [DBFieldName("duration")]
+        [DBFieldName("Duration")]
         public uint? Duration;
 
-        [DBFieldName("sound")]
+        [DBFieldName("Sound")]
         public uint? Sound;
 
         [DBFieldName("BroadcastTextId", false, true)]
