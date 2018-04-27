@@ -258,7 +258,7 @@ namespace WowPacketParser.Misc
                 return str1 == str2;
 
             if (o1 is ulong && o2 is ulong)
-                return o1 == o2;
+                return Convert.ToUInt64(o1) == Convert.ToUInt64(o2);
 
             // this still works if objects are booleans or enums
             return Convert.ToInt64(o1) == Convert.ToInt64(o2);
