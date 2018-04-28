@@ -19,7 +19,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("name")]
         public string Name;
 
-        [DBFieldName("femaleName", TargetedDatabase.Cataclysm, nullable: true)]
+        [DBFieldName("femaleName", TargetedDatabase.Cataclysm)]
         public string FemaleName;
 
         [DBFieldName("subname", nullable: true)]
