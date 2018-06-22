@@ -66,6 +66,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ResetBitReader();
                 packet.ReadUInt32("BillingPlan");
                 packet.ReadUInt32("TimeRemain");
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_26822))
+                    packet.ReadUInt32("Unk735");
+
                 packet.ReadBit("InGameRoom");
                 packet.ReadBit("InGameRoom");
                 packet.ReadBit("InGameRoom");
