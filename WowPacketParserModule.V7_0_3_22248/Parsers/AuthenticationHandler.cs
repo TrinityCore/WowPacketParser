@@ -38,17 +38,23 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadByte("ActiveExpansionLevel");
                 packet.ReadByte("AccountExpansionLevel");
                 packet.ReadUInt32("TimeSecondsUntilPCKick");
-                var races = packet.ReadUInt32("AvailableRaces");
+                var races = 0u;
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_3_5_25848))
+                    races = packet.ReadUInt32("AvailableRaces");
+
                 var classes = packet.ReadUInt32("AvailableClasses");
                 var templates = packet.ReadUInt32("Templates");
                 packet.ReadUInt32("AccountCurrency");
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_1_0_22900))
                     packet.ReadTime("Time");
 
-                for (var i = 0; i < races; ++i)
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_3_5_25848))
                 {
-                    packet.ReadByteE<Race>("Race", "AvailableRaces", i);
-                    packet.ReadByteE<ClientType>("RequiredExpansion", "AvailableRaces", i);
+                    for (var i = 0; i < races; ++i)
+                    {
+                        packet.ReadByteE<Race>("Race", "AvailableRaces", i);
+                        packet.ReadByteE<ClientType>("RequiredExpansion", "AvailableRaces", i);
+                    }
                 }
 
                 for (var i = 0; i < classes; ++i)
@@ -67,7 +73,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadUInt32("BillingPlan");
                 packet.ReadUInt32("TimeRemain");
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_26822))
-                    packet.ReadUInt32("Unk735");
+                    packet.ReadUInt32("Unk_V7_3_5_26822");
 
                 packet.ReadBit("InGameRoom");
                 packet.ReadBit("InGameRoom");
