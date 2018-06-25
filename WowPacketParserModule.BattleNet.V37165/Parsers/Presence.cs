@@ -25,7 +25,7 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
                 varSizes.Enqueue(packet.Read<ushort>(0, 16));
 
             count = packet.Read<int>(0, 4);
-            var handles = new List<uint>();
+            var handles = new List<uint>(count);
             for (var i = 0; i < count; ++i)
                 handles.Add(packet.Read<uint>(0, 32));
 

@@ -282,8 +282,6 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_VENDOR_INVENTORY)]
         public static void HandleVendorInventoryList(Packet packet)
         {
-
-
             var guid = new byte[8];
 
             guid[5] = packet.ReadBit();
@@ -305,10 +303,10 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 1);
 
-            var tempList = new List<NpcVendor>();
+            var tempArray = new NpcVendor[count];
             for (int i = 0; i < count; ++i)
             {
-                NpcVendor vendor = new NpcVendor();
+                var vendor = new NpcVendor();
 
                 int maxCount = packet.ReadInt32("Max Count", i);
                 vendor.Type = packet.ReadUInt32("Type", i); // 1 - item, 2 - currency
@@ -331,7 +329,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 if (vendor.Type == 2)
                     vendor.MaxCount = buyCount;
 
-                tempList.Add(vendor);
+                tempArray[i] = vendor;
             }
 
             packet.ReadXORByte(guid, 2);
@@ -343,11 +341,11 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadXORByte(guid, 3);
 
             uint entry = packet.WriteGuid("GUID", guid).GetEntry();
-            tempList.ForEach(v =>
+            for(int i = 0; i < count; ++i)
             {
-                v.Entry = entry;
-                Storage.NpcVendors.Add(v, packet.TimeSpan);
-            });
+                tempArray[i].Entry = entry;
+                Storage.NpcVendors.Add(tempArray[i], packet.TimeSpan);
+            }
         }
 
         [Parser(Opcode.SMSG_TRAINER_LIST)]

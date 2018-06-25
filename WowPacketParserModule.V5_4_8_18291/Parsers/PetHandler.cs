@@ -109,7 +109,6 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             guid[1] = packet.ReadBit();
 
             const int maxCreatureSpells = 10;
-            var spells = new List<uint>(maxCreatureSpells);
             for (var i = 0; i < maxCreatureSpells; i++) // Read pet/vehicle spell ids
             {
                 var spell16 = packet.ReadUInt16();

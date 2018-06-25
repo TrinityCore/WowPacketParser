@@ -259,11 +259,11 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.ReadXORByte(guidBytes, 3);
 
-            var tempList = new List<TrainerSpell>();
+            var tempArray = new TrainerSpell[count];
             for (int i = 0; i < count; ++i)
             {
                 packet.ReadByteE<TrainerSpellState>("Usable", i);
-                TrainerSpell trainerSpell = new TrainerSpell
+                var trainerSpell = new TrainerSpell
                 {
                     SpellId = packet.ReadUInt32<SpellId>("SpellID", i),
                     ReqSkillLine = packet.ReadUInt32("ReqSkillLine", i),
@@ -276,7 +276,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 trainerSpell.ReqLevel = packet.ReadByte("ReqLevel", i);
                 trainerSpell.ReqSkillRank = packet.ReadUInt32("ReqSkillRank", i);
 
-                tempList.Add(trainerSpell);
+                tempArray[i] = trainerSpell;
             }
 
             Trainer trainer = new Trainer();
@@ -293,11 +293,13 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.WriteGuid("TrainerGUID", guidBytes);
             Storage.Trainers.Add(trainer, packet.TimeSpan);
-            tempList.ForEach(trainerSpell =>
+
+            for(int i = 0; i < count; ++i)
             {
-                trainerSpell.TrainerId = trainer.Id;
-                Storage.TrainerSpells.Add(trainerSpell, packet.TimeSpan);
-            });
+                tempArray[i].TrainerId = trainer.Id;
+                Storage.TrainerSpells.Add(tempArray[i], packet.TimeSpan);
+            }
+
             var lastGossipOption = CoreParsers.NpcHandler.LastGossipOption;
             if (lastGossipOption.HasSelection)
                 Storage.GossipMenuOptionTrainers.Add(new GossipMenuOptionTrainer { MenuId = lastGossipOption.MenuId, OptionIndex = lastGossipOption.OptionIndex, TrainerId = trainer.Id }, packet.TimeSpan);
@@ -355,10 +357,10 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.ReadXORByte(guid, 3);
 
-            var tempList = new List<NpcVendor>();
+            var tempArray = new NpcVendor[count];
             for (int i = 0; i < count; ++i)
             {
-                NpcVendor vendor = new NpcVendor();
+                var vendor = new NpcVendor();
                 packet.ReadInt32("Max Durability", i);
                 vendor.Type = packet.ReadUInt32("Type", i); // 1 - item, 2 - currency
                 uint buyCount = packet.ReadUInt32("Buy Count", i);
@@ -381,7 +383,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadInt32("Item Upgrade ID", i);
                 packet.ReadInt32("Display ID", i);
 
-                tempList.Add(vendor);
+                tempArray[i] = vendor;
             }
 
             packet.ReadXORByte(guid, 6);
@@ -394,11 +396,11 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid, 7);
 
             uint entry = packet.WriteGuid("GUID", guid).GetEntry();
-            tempList.ForEach(v =>
+            for(int i = 0; i < count; ++i)
             {
-                v.Entry = entry;
-                Storage.NpcVendors.Add(v, packet.TimeSpan);
-            });
+                tempArray[i].Entry = entry;
+                Storage.NpcVendors.Add(tempArray[i], packet.TimeSpan);
+            }
         }
 
         [Parser(Opcode.CMSG_BUY_BANK_SLOT)]

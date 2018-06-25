@@ -276,10 +276,10 @@ namespace WowPacketParser.Parsing.Parsers
 
             guidBytes[4] = packet.ReadBit();
 
-            var tempList = new List<NpcVendor>();
+            var tempArray = new NpcVendor[count];
             for (int i = 0; i < count; ++i)
             {
-                NpcVendor npcVendor = new NpcVendor
+                var npcVendor = new NpcVendor
                 {
                     Slot = packet.ReadInt32("Item Position", i)
                 };
@@ -300,7 +300,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (npcVendor.Type == 2)
                     npcVendor.MaxCount = buyCount;
 
-                tempList.Add(npcVendor);
+                tempArray[i] = npcVendor;
             }
 
             packet.ReadXORByte(guidBytes, 5);
@@ -316,11 +316,11 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guidBytes, 7);
 
             uint entry = packet.WriteGuid("GUID", guidBytes).GetEntry();
-            tempList.ForEach(v =>
+            for(int i = 0; i < count; ++i)
             {
-                v.Entry = entry;
-                Storage.NpcVendors.Add(v, packet.TimeSpan);
-            });
+                tempArray[i].Entry = entry;
+                Storage.NpcVendors.Add(tempArray[i], packet.TimeSpan);
+            }
         }
 
         [Parser(Opcode.CMSG_GOSSIP_HELLO)]
