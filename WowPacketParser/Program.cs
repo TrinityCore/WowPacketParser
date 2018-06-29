@@ -37,6 +37,16 @@ namespace WowPacketParser
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 
+            if (Settings.UseDBC)
+            {
+                var startTime = DateTime.Now;
+
+                DBC.DBC.Load();
+
+                var span = DateTime.Now.Subtract(startTime);
+                Trace.WriteLine($"DBC loaded in { span.ToFormattedString() }.");
+            }
+
             // Disable DB when we don't need its data (dumping to a binary file)
             if (!Settings.DumpFormatWithSQL())
             {
@@ -47,16 +57,6 @@ namespace WowPacketParser
                 Filters.Initialize();
 
             SQLConnector.ReadDB();
-
-            if (Settings.UseDBC)
-            {
-                var startTime = DateTime.Now;
-
-                DBC.DBC.Load();
-
-                var span = DateTime.Now.Subtract(startTime);
-                Trace.WriteLine($"DBC loaded in { span.ToFormattedString() }.");
-            }
 
             var count = 0;
             foreach (var file in files)
