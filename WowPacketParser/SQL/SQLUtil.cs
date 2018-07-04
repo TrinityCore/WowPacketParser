@@ -202,7 +202,7 @@ namespace WowPacketParser.SQL
 
             foreach (var elem1 in storeList)
             {
-                if (dbList != null && dbList.ContainsKey(elem1.Item1)) // update
+                if (dbList != null && dbList.ContainsKey(elem1.Item1) && !Settings.ForceInsertQueries) // update
                 {
 
                     var lastField = fields[fields.Count - 1];
