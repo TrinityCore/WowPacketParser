@@ -326,5 +326,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadUInt32("TeleportSpellID");
             packet.ReadUInt32("LoadingScreenID");
         }
+
+        [Parser(Opcode.SMSG_OPEN_ALLIED_RACE_DETAILS_GIVER)]
+        public static void HandleOpenAlliedRaceDetailsGiver(Packet packet)
+        {
+            packet.ReadGuid("GobGUID");
+            packet.ReadUInt32("RaceID");
+        }
     }
 }
