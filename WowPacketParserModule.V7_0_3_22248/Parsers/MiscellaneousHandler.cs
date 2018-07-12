@@ -330,7 +330,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_OPEN_ALLIED_RACE_DETAILS_GIVER)]
         public static void HandleOpenAlliedRaceDetailsGiver(Packet packet)
         {
-            packet.ReadGuid("GobGUID");
+            packet.ReadGuid("GUID"); // Creature or GameObject
             packet.ReadUInt32("RaceID");
         }
     }
