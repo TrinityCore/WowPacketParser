@@ -331,7 +331,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         public static void HandleOpenAlliedRaceDetailsGiver(Packet packet)
         {
             packet.ReadPackedGuid128("GUID"); // Creature or GameObject
-            packet.ReadUInt32("RaceID");
+            packet.ReadInt32("RaceID");
         }
     }
 }
