@@ -14,8 +14,9 @@ namespace WowPacketParser.Enums.Version.V6_1_0_19678
                 case Direction.ServerToClient:
                 case Direction.BNServerToClient:
                     return ServerOpcodes;
+                default:
+                    return MiscOpcodes;
             }
-            return MiscOpcodes;
         }
 
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
