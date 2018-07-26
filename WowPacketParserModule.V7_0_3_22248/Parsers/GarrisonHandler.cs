@@ -25,15 +25,18 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             var missionRewardCount = packet.ReadInt32("MissionRewardCount", indexes);
             for (int i = 0; i < missionRewardCount; i++)
-            {
-                packet.ReadInt32<ItemId>("ItemID", indexes, i);
-                packet.ReadUInt32("Quantity", indexes, i);
-                packet.ReadInt32("CurrencyID", indexes, i);
-                packet.ReadUInt32("CurrencyQuantity", indexes, i);
-                packet.ReadUInt32("FollowerXP", indexes, i);
-                packet.ReadUInt32("BonusAbilityID", indexes, i);
-                packet.ReadInt32("Unknown", indexes, i);
-            }
+                ReadGarrisonMissionRewards(packet, indexes, "Rewards", i);
+        }
+
+        public static void ReadGarrisonMissionRewards(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32<ItemId>("ItemID", indexes);
+            packet.ReadUInt32("Quantity", indexes);
+            packet.ReadInt32("CurrencyID", indexes);
+            packet.ReadUInt32("CurrencyQuantity", indexes);
+            packet.ReadUInt32("FollowerXP", indexes);
+            packet.ReadUInt32("BonusAbilityID", indexes);
+            packet.ReadInt32("Unknown", indexes);
         }
 
         public static void ReadGarrisonBuildingInfo(Packet packet, params object[] indexes)
@@ -191,6 +194,27 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     for (int j = 0; j < garrisonFollowerCount; j++)
                         ReadGarrisonFollower(packet, "Follower", i, j);
             }
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_ADD_MISSION_RESULT)]
+        public static void HandleGarrisonAddMissionResult(Packet packet)
+        {
+            packet.ReadInt32("GarrTypeID");
+            packet.ReadInt32("Result");
+            packet.ReadInt8("State");
+            ReadGarrisonMission(packet);
+
+            var rewardsCount = packet.ReadUInt32("RewardsCount");
+            var overmaxRewardsCount = packet.ReadUInt32("OvermaxRewardsCount");
+            
+            for (int i = 0; i < rewardsCount; i++)
+                ReadGarrisonMissionRewards(packet, "MissionRewards", i);
+            
+            for (int i = 0; i < rewardsCount; i++)
+                ReadGarrisonMissionRewards(packet, "MissionRewards", i);
+
+            packet.ReadBit("Success");
+            packet.ResetBitReader();
         }
     }
 }
