@@ -201,17 +201,17 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             packet.ReadInt32("GarrTypeID");
             packet.ReadInt32("Result");
-            packet.ReadInt8("State");
+            packet.ReadByte("State");
             ReadGarrisonMission(packet);
 
             var rewardsCount = packet.ReadUInt32("RewardsCount");
-            var overmaxRewardsCount = packet.ReadUInt32("OvermaxRewardsCount");
+            var bonusRewardsCount = packet.ReadUInt32("BonusRewardsCount");
             
             for (int i = 0; i < rewardsCount; i++)
                 ReadGarrisonMissionRewards(packet, "MissionRewards", i);
             
-            for (int i = 0; i < overmaxRewardsCount; i++)
-                ReadGarrisonMissionRewards(packet, "MissionRewards", i);
+            for (int i = 0; i < bonusRewardsCount; i++)
+                ReadGarrisonMissionRewards(packet, "MissionBonusRewards", i);
 
             packet.ReadBit("Success");
             packet.ResetBitReader();
