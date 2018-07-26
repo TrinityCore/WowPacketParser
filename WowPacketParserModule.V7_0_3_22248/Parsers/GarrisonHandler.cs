@@ -210,7 +210,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (int i = 0; i < rewardsCount; i++)
                 ReadGarrisonMissionRewards(packet, "MissionRewards", i);
             
-            for (int i = 0; i < rewardsCount; i++)
+            for (int i = 0; i < overmaxRewardsCount; i++)
                 ReadGarrisonMissionRewards(packet, "MissionRewards", i);
 
             packet.ReadBit("Success");
