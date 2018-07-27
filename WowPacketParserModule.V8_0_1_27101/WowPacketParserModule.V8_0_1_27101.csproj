@@ -44,9 +44,18 @@
     <Compile Include="Enums\MovementFlag.cs" />
     <Compile Include="Enums\MovementFlags2.cs" />
     <Compile Include="Enums\UpdateFields.cs" />
+    <Compile Include="Parsers\CharacterHandler.cs" />
+    <Compile Include="Parsers\MiscellaneousHandler.cs" />
+    <Compile Include="Parsers\QuestHandler.cs" />
+    <Compile Include="Parsers\SpellHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WowPacketParserModule.V6_0_2_19033\WowPacketParserModule.V6_0_2_19033.csproj">
+      <Project>{63484313-34d2-4133-b157-a19d12b69d9b}</Project>
+      <Name>WowPacketParserModule.V6_0_2_19033</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\WowPacketParserModule.V7_0_3_22248\WowPacketParserModule.V7_0_3_22248.csproj">
       <Project>{7a7109fd-a819-4906-9406-1be84c6a527c}</Project>
       <Name>WowPacketParserModule.V7_0_3_22248</Name>
