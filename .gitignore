@@ -3,6 +3,7 @@ Thumbs.db
 #Ignore files build by Visual Studio
 */bin/*
 */obj/*
+.vs/*
 *.suo
 *.cache
 [Bb]in
