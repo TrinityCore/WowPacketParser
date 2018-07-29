@@ -71,6 +71,9 @@ namespace WowPacketParser.Loading
                     case ".pkt":
                         _sniffType = SniffType.Pkt;
                         break;
+                    case ".sqlite":
+                        _sniffType = SniffType.Sqlite;
+                        break;
                     default:
                         throw new IOException($"Invalid file type {_fileName}");
                 }
