@@ -20,7 +20,13 @@ namespace WowPacketParser.Loading
 
         private static IPacketReader GetPacketReader(string fileName, SniffType type)
         {
-            return new BinaryPacketReader(type, fileName, Encoding.ASCII);
+            switch (type)
+            {
+                case SniffType.Sqlite:
+                    return new SqLitePacketReader(type, fileName, Encoding.ASCII);
+                default: // .pkt
+                    return new BinaryPacketReader(type, fileName, Encoding.ASCII);
+            }
         }
 
         private int _packetNum;
