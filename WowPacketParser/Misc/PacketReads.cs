@@ -112,17 +112,7 @@ namespace WowPacketParser.Misc
         public Quaternion ReadPackedQuaternion()
         {
             long packed = ReadInt64();
-            float x = (packed >> 42)*(1.0f/2097152.0f);
-            float y = (((packed << 22) >> 32) >> 11)*(1.0f/1048576.0f);
-            float z = (packed << 43 >> 43)*(1.0f/1048576.0f);
-
-            float w = x*x + y*y + z*z;
-            if (Math.Abs(w - 1.0f) >= (1/1048576.0f))
-                w = (float) Math.Sqrt(1.0f - w);
-            else
-                w = 0.0f;
-
-            return new Quaternion(x, y, z, w);
+            return new Quaternion(packed);
         }
 
         public string ReadWoWString(int len)
