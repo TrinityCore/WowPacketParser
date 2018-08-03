@@ -33,12 +33,26 @@ namespace WowPacketParser.Store.Objects
 
         public Quaternion GetStaticRotation()
         {
-            return Movement.Rotation;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
+                return Movement.Rotation;
+            else if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056)) // packed quaternion
+            {
+                long packedQuat = UpdateFields.GetValue<GameObjectField, long>(GameObjectField.GAMEOBJECT_ROTATION);
+                return new Quaternion(packedQuat);
+            }
+            else
+            {
+                float []rotation = UpdateFields.GetArray<GameObjectField, float>(GameObjectField.GAMEOBJECT_ROTATION, 4);
+                return new Quaternion(rotation[0], rotation[1], rotation[2], rotation[3]);
+            }
         }
 
         public float?[] GetParentRotation()
         {
-            return UpdateFields.GetArray<GameObjectField, float?>(GameObjectField.GAMEOBJECT_PARENTROTATION, 4);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
+                return UpdateFields.GetArray<GameObjectField, float?>(GameObjectField.GAMEOBJECT_PARENTROTATION, 4);
+            else
+                return null;
         }
 
         public bool IsTransport()
