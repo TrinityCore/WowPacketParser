@@ -75,7 +75,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         private static void ReadCreateObjectBlock(Packet packet, WowGuid guid, uint map, object index)
         {
-            var objType = packet.ReadByteE<ObjectType>("Object Type", index);
+            ObjectType objType = ObjectTypeConverter.Convert(packet.ReadByteE<ObjectTypeLegacy>("Object Type", index));
             var moves = ReadMovementUpdateBlock(packet, guid, index);
             var updates = ReadValuesUpdateBlock(packet, objType, index, true);
 

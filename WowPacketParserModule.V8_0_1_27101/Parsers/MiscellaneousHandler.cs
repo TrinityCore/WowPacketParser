@@ -19,7 +19,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadUInt32("TwitterPostThrottleCooldown");
             packet.ReadUInt32("TokenPollTimeSeconds");
             packet.ReadUInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
-            packet.ReadUInt64("TokenBalanceAmount");
+            packet.ReadInt64("TokenBalanceAmount");
             packet.ReadUInt32("BpayStoreProductDeliveryDelay");
             packet.ReadUInt32("UnkUInt32_801");
 
@@ -85,18 +85,57 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             if (hasRaceClassExpansionLevels)
             {
-                var int88 = packet.ReadInt32("RaceClassExpansionLevelsCount");
+                var int88 = packet.ReadUInt32("RaceClassExpansionLevelsCount");
                 for (int i = 0; i < int88; i++)
                     packet.ReadByte("RaceClassExpansionLevels", i);
             }
             packet.ResetBitReader();
 
-            packet.ReadByte("UnkByte");
-            packet.ReadPackedGuid128("UnkGUID");
-            packet.ReadPackedGuid128("UnkGUID2");
+            packet.ReadByte("Unk801_Byte");
+            packet.ReadPackedGuid128("Unk801_GUID");
+            packet.ReadPackedGuid128("Unk801_GUID2");
 
             if (hasEuropaTicketSystemStatus)
                 V6_0_2_19033.Parsers.MiscellaneousHandler.ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
+        }
+
+        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS_GLUE_SCREEN)]
+        public static void HandleFeatureSystemStatusGlueScreen715(Packet packet)
+        {
+            packet.ReadBit("BpayStoreEnabled");
+            packet.ReadBit("BpayStoreAvailable");
+            packet.ReadBit("BpayStoreDisabledByParentalControls");
+            packet.ReadBit("CharUndeleteEnabled");
+            packet.ReadBit("CommerceSystemEnabled");
+            packet.ReadBit("Unk14");
+            packet.ReadBit("WillKickFromWorld");
+            packet.ReadBit("IsExpansionPreorderInStore");
+            packet.ReadBit("KioskModeEnabled");
+            packet.ReadBit("IsCompetitiveModeEnabled");
+            packet.ReadBit("NoHandler"); // not accessed in handler
+            packet.ReadBit("TrialBoostEnabled");
+            packet.ReadBit("TokenBalanceEnabled");
+            packet.ReadBit("LiveRegionCharacterListEnabled");
+            packet.ReadBit("LiveRegionCharacterCopyEnabled");
+            packet.ReadBit("LiveRegionAccountCopyEnabled");
+
+            packet.ReadUInt32("TokenPollTimeSeconds");
+            packet.ReadUInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
+            packet.ReadInt64("TokenBalanceAmount");
+            packet.ReadInt32("MaxCharactersPerRealm");
+
+            packet.ReadUInt32("BpayStoreProductDeliveryDelay");
+            packet.ReadInt32("ActiveCharacterUpgradeBoostType");
+            packet.ReadInt32("ActiveClassTrialBoostType");
+            packet.ReadInt32("NumExpansions");
+            packet.ReadInt32("MaximumExpansionLevel");
+        }
+
+        [Parser(Opcode.SMSG_LIGHTNING_STORM_START)]
+        [Parser(Opcode.SMSG_LIGHTNING_STORM_END)]
+        public static void HandleLightningStorm(Packet packet)
+        {
+            packet.ReadUInt32("LightningStormId");
         }
     }
 }

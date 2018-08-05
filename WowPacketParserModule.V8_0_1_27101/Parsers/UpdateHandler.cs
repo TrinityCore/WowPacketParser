@@ -1,16 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using WowPacketParserModule.V7_0_3_22248.Parsers;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using SplineFlag = WowPacketParserModule.V7_0_3_22248.Enums.SplineFlag;
 
-namespace WowPacketParserModule.V7_0_3_22248.Parsers
+namespace WowPacketParserModule.V8_0_1_27101.Parsers
 {
     public static class UpdateHandler
     {
@@ -21,12 +21,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var count = packet.ReadUInt32("NumObjUpdates");
             uint map = packet.ReadUInt16<MapId>("MapID");
             packet.ResetBitReader();
-            var bit552 = packet.ReadBit("HasDestroyObjects");
-            if (bit552)
+            var hasDestroyObject = packet.ReadBit("HasDestroyObjects");
+            if (hasDestroyObject)
             {
                 packet.ReadInt16("Int0");
-                var int8 = packet.ReadUInt32("DestroyObjectsCount");
-                for (var i = 0; i < int8; i++)
+                var destroyObjCount = packet.ReadUInt32("DestroyObjectsCount");
+                for (var i = 0; i < destroyObjCount; i++)
                     packet.ReadPackedGuid128("Object GUID", i);
             }
             packet.ReadUInt32("Data size");
@@ -69,8 +69,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
         private static void ReadCreateObjectBlock(Packet packet, WowGuid guid, uint map, object index)
         {
-            ObjectType objType = ObjectTypeConverter.Convert(packet.ReadByteE<ObjectTypeLegacy>("Object Type", index));
-
+            ObjectType objType = ObjectTypeConverter.Convert(packet.ReadByteE<ObjectType801>("Object Type", index));
+            packet.ReadInt32("HeirFlags", index);
             WoWObject obj;
             switch (objType)
             {
@@ -109,7 +109,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             obj.Area = CoreParsers.WorldStateHandler.CurrentAreaId;
             obj.Zone = CoreParsers.WorldStateHandler.CurrentZoneId;
             obj.PhaseMask = (uint)CoreParsers.MovementHandler.CurrentPhaseMask;
-            obj.Phases = new HashSet<ushort>(MovementHandler.ActivePhases.Keys);
+            obj.Phases = new HashSet<ushort>(V6_0_2_19033.Parsers.MovementHandler.ActivePhases.Keys);
             obj.DifficultyID = CoreParsers.MovementHandler.CurrentDifficultyID;
 
             // If this is the second time we see the same object (same guid,
@@ -124,6 +124,36 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             if (guid.HasEntry() && (objType == ObjectType.Unit || objType == ObjectType.GameObject))
                 packet.AddSniffData(Utilities.ObjectTypeToStore(objType), (int)guid.GetEntry(), "SPAWN");
+        }
+
+        public static void ReadTransportData(MovementInfo moveInfo, WowGuid guid, Packet packet, object index)
+        {
+            packet.ResetBitReader();
+            moveInfo.TransportGuid = packet.ReadPackedGuid128("TransportGUID", index);
+            moveInfo.TransportOffset = packet.ReadVector4("TransportPosition", index);
+            var seat = packet.ReadByte("VehicleSeatIndex", index);
+            packet.ReadUInt32("MoveTime", index);
+
+            var hasPrevMoveTime = packet.ReadBit("HasPrevMoveTime", index);
+            var hasVehicleRecID = packet.ReadBit("HasVehicleRecID", index);
+
+            if (hasPrevMoveTime)
+                packet.ReadUInt32("PrevMoveTime", index);
+
+            if (hasVehicleRecID)
+                packet.ReadInt32("VehicleRecID", index);
+
+            if (moveInfo.TransportGuid.HasEntry() && moveInfo.TransportGuid.GetHighType() == HighGuidType.Vehicle &&
+                guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
+            {
+                VehicleTemplateAccessory vehicleAccessory = new VehicleTemplateAccessory
+                {
+                    Entry = moveInfo.TransportGuid.GetEntry(),
+                    AccessoryEntry = guid.GetEntry(),
+                    SeatId = seat
+                };
+                Storage.VehicleTemplateAccessories.Add(vehicleAccessory, packet.TimeSpan);
+            }
         }
 
         private static MovementInfo ReadMovementUpdateBlock(Packet packet, WowGuid guid, WoWObject obj, object index)
@@ -181,34 +211,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadBit("RemoteTimeValid", index);
 
                 if (hasTransport)
-                {
-                    packet.ResetBitReader();
-                    moveInfo.TransportGuid = packet.ReadPackedGuid128("Transport Guid", index);
-                    moveInfo.TransportOffset = packet.ReadVector4("Transport Position", index);
-                    var seat = packet.ReadSByte("Transport Seat", index);
-                    packet.ReadInt32("Transport Time", index);
-
-                    var hasPrevMoveTime = packet.ReadBit("HasPrevMoveTime", index);
-                    var hasVehicleRecID = packet.ReadBit("HasVehicleRecID", index);
-
-                    if (hasPrevMoveTime)
-                        packet.ReadUInt32("PrevMoveTime", index);
-
-                    if (hasVehicleRecID)
-                        packet.ReadUInt32("VehicleRecID", index);
-
-                    if (moveInfo.TransportGuid.HasEntry() && moveInfo.TransportGuid.GetHighType() == HighGuidType.Vehicle &&
-                        guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
-                    {
-                        VehicleTemplateAccessory vehicleAccessory = new VehicleTemplateAccessory
-                        {
-                            Entry = moveInfo.TransportGuid.GetEntry(),
-                            AccessoryEntry = guid.GetEntry(),
-                            SeatId = seat
-                        };
-                        Storage.VehicleTemplateAccessories.Add(vehicleAccessory, packet.TimeSpan);
-                    }
-                }
+                    ReadTransportData(moveInfo, guid, packet, index);
 
                 if (hasFall)
                 {
@@ -234,7 +237,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadSingle("TurnRate", index);
                 packet.ReadSingle("PitchRate", index);
 
-                var movementForceCount = packet.ReadInt32("MovementForceCount", index);
+                var movementForceCount = packet.ReadUInt32("MovementForceCount", index);
 
                 packet.ResetBitReader();
 
@@ -246,7 +249,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     packet.ReadPackedGuid128("Id", index);
                     packet.ReadVector3("Origin", index);
                     packet.ReadVector3("Direction", index);
-                    packet.ReadInt32("TransportID", index);
+                    packet.ReadUInt32("TransportID", index);
                     packet.ReadSingle("Magnitude", index);
                     packet.ReadBits("Type", 2, index);
                 }
@@ -263,14 +266,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                         packet.ResetBitReader();
 
                         packet.ReadUInt32E<SplineFlag>("SplineFlags", index);
-                        packet.ReadUInt32("Elapsed", index);
+                        packet.ReadInt32("Elapsed", index);
                         packet.ReadUInt32("Duration", index);
                         packet.ReadSingle("DurationModifier", index);
                         packet.ReadSingle("NextDurationModifier", index);
 
                         var face = packet.ReadBits("Face", 2, index);
-
-                        var hasJumpGravity = packet.ReadBit("HasJumpGravity", index);
                         var hasSpecialTime = packet.ReadBit("HasSpecialTime", index);
 
                         var pointsCount = packet.ReadBits("PointsCount", 16, index);
@@ -279,6 +280,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
                         var hasSplineFilterKey = packet.ReadBit("HasSplineFilterKey", index);
                         var hasSpellEffectExtraData = packet.ReadBit("HasSpellEffectExtraData", index);
+                        var unk801 = packet.ReadBit("Unk801", index);
 
                         if (hasSplineFilterKey)
                         {
@@ -293,30 +295,35 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                             packet.ReadBits("FilterFlags", 2, index);
                         }
 
-                        if (face == 3)
-                            packet.ReadSingle("FaceDirection", index);
-
-                        if (face == 2)
-                            packet.ReadPackedGuid128("FaceGUID", index);
-
-                        if (face == 1)
-                            packet.ReadVector3("FaceSpot", index);
-
-                        if (hasJumpGravity)
-                            packet.ReadSingle("JumpGravity", index);
+                        switch (face)
+                        {
+                            case 1:
+                                packet.ReadVector3("FaceSpot", index);
+                                break;
+                            case 2:
+                                packet.ReadPackedGuid128("FaceGUID", index);
+                                break;
+                            case 3:
+                                packet.ReadSingle("FaceDirection", index);
+                                break;
+                            default:
+                                break;
+                        }
 
                         if (hasSpecialTime)
-                            packet.ReadInt32("SpecialTime", index);
+                            packet.ReadUInt32("SpecialTime", index);
 
                         for (var i = 0; i < pointsCount; ++i)
                             packet.ReadVector3("Points", index, i);
 
                         if (hasSpellEffectExtraData)
+                            MovementHandler.ReadMonsterSplineSpellEffectExtraData(packet, index);
+
+                        if (unk801)
                         {
-                            packet.ReadPackedGuid128("TargetGUID", index);
-                            packet.ReadUInt32("SpellVisualID", index);
-                            packet.ReadUInt32("ProgressCurveID", index);
-                            packet.ReadUInt32("ParabolicCurveID", index);
+                            packet.ReadSingle("Unk801_Float_1");
+                            packet.ReadUInt32("Unk801_UInt32_1");
+                            packet.ReadUInt32("Unk801_UInt32_2");
                         }
                     }
                 }
@@ -341,7 +348,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             if (hasVehicleCreate)
             {
-                moveInfo.VehicleId = packet.ReadUInt32("RecID", index);
+                moveInfo.VehicleId = (uint)packet.ReadInt32("RecID", index);
                 packet.ReadSingle("InitialRawFacing", index);
             }
 
@@ -356,37 +363,10 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 moveInfo.Rotation = packet.ReadPackedQuaternion("GameObject Rotation", index);
 
             for (var i = 0; i < pauseTimesCount; ++i)
-                packet.ReadInt32("PauseTimes", index, i);
+                packet.ReadUInt32("PauseTimes", index, i);
 
             if (hasMovementTransport)
-            {
-                packet.ResetBitReader();
-                moveInfo.TransportGuid = packet.ReadPackedGuid128("TransportGUID", index);
-                moveInfo.TransportOffset = packet.ReadVector4("TransportPosition", index);
-                var seat = packet.ReadByte("VehicleSeatIndex", index);
-                packet.ReadUInt32("MoveTime", index);
-
-                var hasPrevMoveTime = packet.ReadBit("HasPrevMoveTime", index);
-                var hasVehicleRecID = packet.ReadBit("HasVehicleRecID", index);
-
-                if (hasPrevMoveTime)
-                    packet.ReadUInt32("PrevMoveTime", index);
-
-                if (hasVehicleRecID)
-                    packet.ReadInt32("VehicleRecID", index);
-
-                if (moveInfo.TransportGuid.HasEntry() && moveInfo.TransportGuid.GetHighType() == HighGuidType.Vehicle &&
-                    guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
-                {
-                    VehicleTemplateAccessory vehicleAccessory = new VehicleTemplateAccessory
-                    {
-                        Entry = moveInfo.TransportGuid.GetEntry(),
-                        AccessoryEntry = guid.GetEntry(),
-                        SeatId = seat
-                    };
-                    Storage.VehicleTemplateAccessories.Add(vehicleAccessory, packet.TimeSpan);
-                }
-            }
+                ReadTransportData(moveInfo, guid, packet, index);
 
             if (hasAreaTrigger && obj is SpellAreaTrigger)
             {
@@ -401,7 +381,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ResetBitReader();
 
                 // CliAreaTrigger
-                packet.ReadInt32("ElapsedMs", index);
+                packet.ReadUInt32("ElapsedMs", index);
 
                 packet.ReadVector3("RollPitchYaw1", index);
 
@@ -442,6 +422,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 if (packet.ReadBit("unkbit58", index))
                     areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk4;
 
+                bool hasUnk801 = packet.ReadBit("unkbit801", index);
+
                 if (packet.ReadBit("HasAreaTriggerSphere", index))
                     areaTriggerTemplate.Type = (byte)AreaTriggerType.Sphere;
 
@@ -469,22 +451,25 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     packet.ReadVector3("TargetRollPitchYaw", index);
 
                 if (hasScaleCurveID)
-                    spellAreaTrigger.ScaleCurveId = packet.ReadInt32("ScaleCurveID", index);
+                    spellAreaTrigger.ScaleCurveId = (int)packet.ReadUInt32("ScaleCurveID", index);
 
                 if (hasMorphCurveID)
-                    spellAreaTrigger.MorphCurveId = packet.ReadInt32("MorphCurveID", index);
+                    spellAreaTrigger.MorphCurveId = (int)packet.ReadUInt32("MorphCurveID", index);
 
                 if (hasFacingCurveID)
-                    spellAreaTrigger.FacingCurveId = packet.ReadInt32("FacingCurveID", index);
+                    spellAreaTrigger.FacingCurveId = (int)packet.ReadUInt32("FacingCurveID", index);
 
                 if (hasMoveCurveID)
-                    spellAreaTrigger.MoveCurveId = packet.ReadInt32("MoveCurveID", index);
+                    spellAreaTrigger.MoveCurveId = (int)packet.ReadUInt32("MoveCurveID", index);
 
                 if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.Unk2) != 0)
                     packet.ReadInt32();
 
                 if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.Unk4) != 0)
-                    packet.ReadUInt32();
+                    packet.ReadInt32();
+
+                if (hasUnk801)
+                    packet.ReadUInt32("Unk801", index);
 
                 if (areaTriggerTemplate.Type == (byte)AreaTriggerType.Sphere)
                 {
@@ -508,8 +493,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
                 if (areaTriggerTemplate.Type == (byte)AreaTriggerType.Polygon)
                 {
-                    var verticesCount = packet.ReadInt32("VerticesCount", index);
-                    var verticesTargetCount = packet.ReadInt32("VerticesTargetCount", index);
+                    var verticesCount = packet.ReadUInt32("VerticesCount", index);
+                    var verticesTargetCount = packet.ReadUInt32("VerticesTargetCount", index);
 
                     List<AreaTriggerTemplateVertices> verticesList = new List<AreaTriggerTemplateVertices>();
 
@@ -583,11 +568,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             if (hasGameObject)
             {
                 packet.ResetBitReader();
-                packet.ReadInt32("WorldEffectID", index);
+                packet.ReadUInt32("WorldEffectID", index);
 
                 var bit8 = packet.ReadBit("bit8", index);
                 if (bit8)
-                    packet.ReadInt32("Int1", index);
+                    packet.ReadUInt32("Int1", index);
             }
 
             if (hasSmoothPhasing)
@@ -625,7 +610,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
                 if (hasSceneInstanceIDs)
                 {
-                    var sceneInstanceIDs = packet.ReadInt32("SceneInstanceIDsCount");
+                    var sceneInstanceIDs = packet.ReadUInt32("SceneInstanceIDsCount");
                     for (var i = 0; i < sceneInstanceIDs; ++i)
                         packet.ReadInt32("SceneInstanceIDs", index, i);
                 }
@@ -687,12 +672,33 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                             key = UpdateFields.GetUpdateFieldName<ItemField>(i);
                             break;
                         }
+                        case ObjectType.AzeriteEmpoweredItem:
+                        {
+                            if (i < UpdateFields.GetUpdateField(ItemField.ITEM_END))
+                                goto case ObjectType.Item;
+                            key = UpdateFields.GetUpdateFieldName<AzeriteEmpoweredItemField>(i);
+                            break;
+                        }
+                        case ObjectType.AzeriteItem:
+                        {
+                            if (i < UpdateFields.GetUpdateField(ItemField.ITEM_END))
+                                goto case ObjectType.Item;
+                            key = UpdateFields.GetUpdateFieldName<AzeriteItemField>(i);
+                            break;
+                        }
                         case ObjectType.Player:
                         {
                             if (i < UpdateFields.GetUpdateField(UnitField.UNIT_END) || i < UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_END))
                                 goto case ObjectType.Unit;
 
                             key = UpdateFields.GetUpdateFieldName<PlayerField>(i);
+                            break;
+                        }
+                        case ObjectType.ActivePlayer:
+                        {
+                            if (i < UpdateFields.GetUpdateField(PlayerField.PLAYER_END))
+                                goto case ObjectType.Player;
+                            key = UpdateFields.GetUpdateFieldName<ActivePlayerField>(i);
                             break;
                         }
                         case ObjectType.Unit:
@@ -752,9 +758,6 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             var dict = new Dictionary<int, List<UpdateField>>();
 
-            if (!ClientVersion.AddedInVersion(ClientVersionBuild.V5_0_4_16016))
-                return dict;
-
             int objectEnd = UpdateFields.GetUpdateField(ObjectDynamicField.OBJECT_DYNAMIC_END);
             var maskSize = packet.ReadByte();
             var updateMask = new int[maskSize];
@@ -787,12 +790,33 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                             key = UpdateFields.GetUpdateFieldName<ItemDynamicField>(i);
                             break;
                         }
+                        case ObjectType.AzeriteEmpoweredItem:
+                        {
+                            if (i < UpdateFields.GetUpdateField(ItemDynamicField.ITEM_DYNAMIC_END))
+                                goto case ObjectType.Item;
+                            key = UpdateFields.GetUpdateFieldName<AzeriteEmpoweredItemDynamicField>(i);
+                            break;
+                        }
+                        case ObjectType.AzeriteItem:
+                        {
+                            if (i < UpdateFields.GetUpdateField(ItemDynamicField.ITEM_DYNAMIC_END))
+                                goto case ObjectType.Item;
+                            key = UpdateFields.GetUpdateFieldName<AzeriteItemDynamicField>(i);
+                            break;
+                        }
                         case ObjectType.Player:
                         {
                             if (i < UpdateFields.GetUpdateField(UnitDynamicField.UNIT_DYNAMIC_END))
                                 goto case ObjectType.Unit;
 
                             key = UpdateFields.GetUpdateFieldName<PlayerDynamicField>(i);
+                            break;
+                        }
+                        case ObjectType.ActivePlayer:
+                        {
+                            if (i < UpdateFields.GetUpdateField(PlayerDynamicField.PLAYER_DYNAMIC_END))
+                                goto case ObjectType.Player;
+                            key = UpdateFields.GetUpdateFieldName<ActivePlayerDynamicField>(i);
                             break;
                         }
                         case ObjectType.Unit:

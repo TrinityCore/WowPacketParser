@@ -473,6 +473,7 @@
     <Compile Include="Misc\FileCompressionAttribute.cs" />
     <Compile Include="Misc\Filters.cs" />
     <Compile Include="Misc\HighGuid.cs" />
+    <Compile Include="Misc\ObjectTypeConverter.cs" />
     <Compile Include="Misc\WowGuid.cs" />
     <Compile Include="Misc\LfgEntry.cs" />
     <Compile Include="Misc\Logger.cs" />

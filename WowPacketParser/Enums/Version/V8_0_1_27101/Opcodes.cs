@@ -1,4 +1,4 @@
-﻿using WowPacketParser.Misc;
+using WowPacketParser.Misc;
 
 namespace WowPacketParser.Enums.Version.V8_0_1_27101
 {
