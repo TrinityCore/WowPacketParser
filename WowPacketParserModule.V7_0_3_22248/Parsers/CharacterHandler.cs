@@ -54,6 +54,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             packet.ReadUInt16("SpecID", idx);
             packet.ReadUInt32("Unknown703", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_25848))
+                packet.ReadUInt32("LastLoginBuild", idx);
             packet.ReadUInt32("Flags4", idx);
 
             packet.ResetBitReader();
@@ -72,6 +74,15 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
         }
 
+        public static void ReadRaceUnlockData(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32E<Race>("RaceID", idx);
+            packet.ResetBitReader();
+            packet.ReadBit("HasExpansion", idx);
+            packet.ReadBit("HasAchievement", idx);
+            packet.ReadBit("HasHeritageArmor", idx);
+        }
+
         [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT)]
         public static void HandleEnumCharactersResult(Packet packet)
         {
@@ -79,22 +90,42 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("IsDeletedCharacters");
             packet.ReadBit("IsDemonHunterCreationAllowed");
             packet.ReadBit("HasDemonHunterOnRealm");
-            packet.ReadBit("HasLevel70OnRealm");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_3_5_25848))
+                packet.ReadBit("HasLevel70OnRealm");
             packet.ReadBit("Unknown7x");
 
             var hasDisabledClassesMask = packet.ReadBit("HasDisabledClassesMask");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_25848))
+                packet.ReadBit("IsAlliedRacesCreationAllowed");
 
             var charsCount = packet.ReadUInt32("CharactersCount");
-            var restrictionsCount = packet.ReadUInt32("FactionChangeRestrictionsCount");
+            uint count = 0;
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_3_5_25848))
+                count = packet.ReadUInt32("FactionChangeRestrictionsCount");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_25848))
+            {
+                packet.ReadInt32("MaxCharacterLevel");
+                count = packet.ReadUInt32("RaceUnlockCount");
+            }
 
             if (hasDisabledClassesMask)
                 packet.ReadUInt32("DisabledClassesMask");
 
-            for (var i = 0; i < restrictionsCount; ++i)
-                V6_0_2_19033.Parsers.CharacterHandler.ReadFactionChangeRestrictionsData(packet, i, "FactionChangeRestrictionsData");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_3_5_25848))
+            {
+                for (var i = 0; i < count; ++i)
+                    V6_0_2_19033.Parsers.CharacterHandler.ReadFactionChangeRestrictionsData(packet, i, "FactionChangeRestrictionsData");
+            }
 
             for (uint i = 0; i < charsCount; ++i)
                 ReadCharactersData(packet, i, "CharactersData");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_25848))
+            {
+                for (var i = 0; i < count; ++i)
+                    ReadRaceUnlockData(packet, i, "RaceUnlockData");
+            }
         }
 
         [Parser(Opcode.CMSG_CREATE_CHARACTER)]
