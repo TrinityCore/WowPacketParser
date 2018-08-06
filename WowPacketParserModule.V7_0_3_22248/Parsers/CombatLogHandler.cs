@@ -92,14 +92,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var hasDebugData = packet.ReadBit("HasPeriodicAuraLogEffectDebugInfo", idx);
             var hasSandboxScaling = packet.ReadBit("HasSandboxScaling", idx);
 
+            if (hasSandboxScaling)
+                SpellHandler.ReadSandboxScalingData(packet, idx, "SandboxScalingData");
+
             if (hasDebugData)
             {
                 packet.ReadSingle("CritRollMade", idx);
                 packet.ReadSingle("CritRollNeeded", idx);
             }
-
-            if (hasSandboxScaling)
-                SpellHandler.ReadSandboxScalingData(packet, idx, "SandboxScalingData");
         }
 
         [Parser(Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG)]
