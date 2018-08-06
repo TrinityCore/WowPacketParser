@@ -102,6 +102,20 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
         }
 
+        public static void ReadSpellNonMeleeDebugData(Packet packet, params object[] idx)
+        {
+            packet.ReadSingle("CritRoll", idx);
+            packet.ReadSingle("CritNeeded", idx);
+            packet.ReadSingle("HitRoll", idx);
+            packet.ReadSingle("HitNeeded", idx);
+            packet.ReadSingle("MissChance", idx);
+            packet.ReadSingle("DodgeChance", idx);
+            packet.ReadSingle("ParryChance", idx);
+            packet.ReadSingle("BlockChance", idx);
+            packet.ReadSingle("GlanceChance", idx);
+            packet.ReadSingle("CrushChance", idx);
+        }
+
         [Parser(Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG)]
         public static void HandleSpellNonMeleeDmgLog(Packet packet)
         {
@@ -131,22 +145,22 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var hasLogData = packet.ReadBit("HasLogData");
             var hasSandboxScaling = packet.ReadBit("HasSandboxScaling");
 
-            if (hasDebugData)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
             {
-                packet.ReadSingle("CritRoll");
-                packet.ReadSingle("CritNeeded");
-                packet.ReadSingle("HitRoll");
-                packet.ReadSingle("HitNeeded");
-                packet.ReadSingle("MissChance");
-                packet.ReadSingle("DodgeChance");
-                packet.ReadSingle("ParryChance");
-                packet.ReadSingle("BlockChance");
-                packet.ReadSingle("GlanceChance");
-                packet.ReadSingle("CrushChance");
-            }
+                if (hasLogData)
+                    SpellHandler.ReadSpellCastLogData(packet, "SpellCastLogData");
 
-            if (hasLogData)
-                SpellHandler.ReadSpellCastLogData(packet, "SpellCastLogData");
+                if (hasDebugData)
+                    ReadSpellNonMeleeDebugData(packet, "DebugData");
+            }
+            else
+            {
+                if (hasDebugData)
+                    ReadSpellNonMeleeDebugData(packet, "DebugData");
+
+                if (hasLogData)
+                    SpellHandler.ReadSpellCastLogData(packet, "SpellCastLogData");
+            }
 
             if (hasSandboxScaling)
                 SpellHandler.ReadSandboxScalingData(packet, "SandboxScalingData");
