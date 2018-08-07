@@ -688,16 +688,34 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             packet.ReadInt64("MoneyReward");
 
-            for (var i = 0; i < itemCount; ++i)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23706))
             {
-                V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, i);
-                packet.ReadInt32("Quantity", i);
-            }
+                for (int i = 0; i < currencyCount; i++)
+                {
+                    packet.ReadInt32("CurrencyID", i);
+                    packet.ReadInt32("Amount", i);
+                }
 
-            for (int i = 0; i < currencyCount; i++)
+                for (var i = 0; i < itemCount; ++i)
+                {
+                    V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, i);
+                    packet.ReadInt32("Quantity", i);
+                }
+            }
+            else
             {
-                packet.ReadInt32("CurrencyID", i);
-                packet.ReadInt32("Amount", i);
+                for (var i = 0; i < itemCount; ++i)
+                {
+                    packet.ReadInt32<ItemId>("ItemId");
+                    packet.ReadInt32("Quantity");
+                    packet.ReadByte("Context");
+                }
+
+                for (int i = 0; i < currencyCount; i++)
+                {
+                    packet.ReadInt32("CurrencyID", i);
+                    packet.ReadInt32("Amount", i);
+                }
             }
         }
 
