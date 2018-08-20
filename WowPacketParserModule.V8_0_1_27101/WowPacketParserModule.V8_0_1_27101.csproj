@@ -40,20 +40,29 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\AttackSwingErr.cs" />
     <Compile Include="Enums\CharacterUndeleteResult.cs" />
     <Compile Include="Enums\MovementFlag.cs" />
     <Compile Include="Enums\MovementFlags2.cs" />
     <Compile Include="Enums\UpdateFields.cs" />
+    <Compile Include="Parsers\AccountDataHandler.cs" />
     <Compile Include="Parsers\AuthenticationHandler.cs" />
+    <Compile Include="Parsers\BattlegroundHandler.cs" />
+    <Compile Include="Parsers\ChallengeModeHandler.cs" />
     <Compile Include="Parsers\CharacterHandler.cs" />
     <Compile Include="Parsers\ChatHandler.cs" />
     <Compile Include="Parsers\CombatHandler.cs" />
     <Compile Include="Parsers\CombatLogHandler.cs" />
     <Compile Include="Parsers\CreatureHandler.cs" />
     <Compile Include="Parsers\GameObjectHandler.cs" />
+    <Compile Include="Parsers\GroupHandler.cs" />
+    <Compile Include="Parsers\LootHandler.cs" />
     <Compile Include="Parsers\MiscellaneousHandler.cs" />
     <Compile Include="Parsers\MovementHandler.cs" />
+    <Compile Include="Parsers\NpcHandler.cs" />
+    <Compile Include="Parsers\PetHandler.cs" />
     <Compile Include="Parsers\QuestHandler.cs" />
+    <Compile Include="Parsers\SessionHandler.cs" />
     <Compile Include="Parsers\SpellHandler.cs" />
     <Compile Include="Parsers\UpdateHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

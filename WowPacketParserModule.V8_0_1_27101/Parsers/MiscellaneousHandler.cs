@@ -6,6 +6,13 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 {
     public static class MiscellaneousHandler
     {
+        public static void ReadVoiceChatManagerSettings(Packet packet, params object[] idx)
+        {
+            packet.ReadBit("Enabled", idx);
+            packet.ReadPackedGuid128("BnetAccountID", idx);
+            packet.ReadPackedGuid128("Unk801_GUID2", idx);
+        }
+
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS)]
         public static void HandleFeatureSystemStatus(Packet packet)
         {
@@ -21,7 +28,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadUInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
             packet.ReadInt64("TokenBalanceAmount");
             packet.ReadUInt32("BpayStoreProductDeliveryDelay");
-            packet.ReadUInt32("UnkUInt32_801");
+            packet.ReadUInt32("ClubsPresenceUpdateTimer");
 
             packet.ResetBitReader();
             packet.ReadBit("VoiceEnabled");
@@ -36,22 +43,22 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadBit("RecruitAFriendSendingEnabled");
             packet.ReadBit("CharUndeleteEnabled");
             packet.ReadBit("RestrictedAccount");
+            packet.ReadBit("CommerceSystemEnabled");
             packet.ReadBit("TutorialsEnabled");
             packet.ReadBit("NPETutorialsEnabled");
             packet.ReadBit("TwitterEnabled");
-            packet.ReadBit("CommerceSystemEnabled");
             packet.ReadBit("Unk67");
             packet.ReadBit("WillKickFromWorld");
             packet.ReadBit("KioskModeEnabled");
             packet.ReadBit("CompetitiveModeEnabled");
             var hasRaceClassExpansionLevels = packet.ReadBit("RaceClassExpansionLevels");
             packet.ReadBit("TokenBalanceEnabled");
-            packet.ReadBit("UnkBit23");
-            packet.ReadBit("UnkBit24");
-            packet.ReadBit("UnkBit25");
-            packet.ReadBit("UnkBit26");
-            packet.ReadBit("UnkBit27");
-            packet.ReadBit("UnkBit28");
+            packet.ReadBit("WarModeFeatureEnabled");
+            packet.ReadBit("ClubsEnabled");
+            packet.ReadBit("ClubsBattleNetClubTypeAllowed");
+            packet.ReadBit("ClubsCharacterClubTypeAllowed");
+            packet.ReadBit("VoiceChatDisabledByParentalControl");
+            packet.ReadBit("VoiceChatMutedByParentalControl");
 
             {
                 packet.ResetBitReader();
@@ -89,18 +96,19 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 for (int i = 0; i < int88; i++)
                     packet.ReadByte("RaceClassExpansionLevels", i);
             }
-            packet.ResetBitReader();
 
-            packet.ReadByte("Unk801_Byte");
-            packet.ReadPackedGuid128("Unk801_GUID");
-            packet.ReadPackedGuid128("Unk801_GUID2");
+            packet.ResetBitReader();
+            ReadVoiceChatManagerSettings(packet, "VoiceChatManagerSettings");
 
             if (hasEuropaTicketSystemStatus)
+            {
+                packet.ResetBitReader();
                 V6_0_2_19033.Parsers.MiscellaneousHandler.ReadCliEuropaTicketConfig(packet, "EuropaTicketSystemStatus");
+            }
         }
 
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS_GLUE_SCREEN)]
-        public static void HandleFeatureSystemStatusGlueScreen715(Packet packet)
+        public static void HandleFeatureSystemStatusGlueScreen(Packet packet)
         {
             packet.ReadBit("BpayStoreEnabled");
             packet.ReadBit("BpayStoreAvailable");
@@ -123,11 +131,10 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadUInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
             packet.ReadInt64("TokenBalanceAmount");
             packet.ReadInt32("MaxCharactersPerRealm");
-
             packet.ReadUInt32("BpayStoreProductDeliveryDelay");
             packet.ReadInt32("ActiveCharacterUpgradeBoostType");
             packet.ReadInt32("ActiveClassTrialBoostType");
-            packet.ReadInt32("NumExpansions");
+            packet.ReadInt32("MinimumExpansionLevel");
             packet.ReadInt32("MaximumExpansionLevel");
         }
 
@@ -136,6 +143,79 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         public static void HandleLightningStorm(Packet packet)
         {
             packet.ReadUInt32("LightningStormId");
+        }
+
+        [Parser(Opcode.SMSG_UPDATE_EXPANSION_LEVEL)]
+        public static void HandleUpdateExpansionLevel(Packet packet)
+        {
+            var hasActiveExpansionLevel = packet.ReadBit();
+            var hasAccountExpansionLevel = packet.ReadBit();
+            var hasUpgradingFromExpansionTrial = packet.ReadBit();
+
+            if (hasUpgradingFromExpansionTrial)
+                packet.ReadBit("UpgradingFromExpansionTrial");
+
+            var availableClasses = packet.ReadInt32("AvailableClasses"); // Maybe available races if some special bit is set???
+
+            if (hasActiveExpansionLevel)
+                packet.ReadByteE<ClientType>("ActiveExpansionLevel");
+
+            if (hasAccountExpansionLevel)
+                packet.ReadByteE<ClientType>("AccountExpansionLevel");
+
+            for (var i = 0; i < availableClasses; i++)
+            {
+                packet.ReadByteE<Class>("ClassID", i); // Maybe also Race if some special bit is set???
+                packet.ReadByteE<ClientType>("RequiredExpansion", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_WHO)]
+        public static void HandleWho(Packet packet)
+        {
+            var bits568 = packet.ReadBits("List count", 6);
+
+            for (var i = 0; i < bits568; ++i)
+            {
+                packet.ResetBitReader();
+                packet.ReadBit("IsDeleted", i);
+                var bits15 = packet.ReadBits(6);
+
+                var declinedNamesLen = new int[5];
+                for (var j = 0; j < 5; ++j)
+                {
+                    packet.ResetBitReader();
+                    declinedNamesLen[j] = (int)packet.ReadBits(7);
+                }
+
+                for (var j = 0; j < 5; ++j)
+                    packet.ReadWoWString("DeclinedNames", declinedNamesLen[j], i, j);
+
+                packet.ReadPackedGuid128("AccountID", i);
+                packet.ReadPackedGuid128("BnetAccountID", i);
+                packet.ReadPackedGuid128("GuidActual", i);
+
+                packet.ReadUInt64("CommunityDbID", i);
+                packet.ReadUInt32("VirtualRealmAddress", i);
+
+                packet.ReadByteE<Race>("Race", i);
+                packet.ReadByteE<Gender>("Sex", i);
+                packet.ReadByteE<Class>("ClassId", i);
+                packet.ReadByte("Level", i);
+
+                packet.ReadWoWString("Name", bits15, i);
+
+                packet.ReadPackedGuid128("GuildGUID", i);
+
+                packet.ReadInt32("GuildVirtualRealmAddress", i);
+                packet.ReadInt32<AreaId>("AreaID", i);
+
+                packet.ResetBitReader();
+                var bits460 = packet.ReadBits(7);
+                packet.ReadBit("IsGM", i);
+
+                packet.ReadWoWString("GuildName", bits460, i);
+            }
         }
     }
 }

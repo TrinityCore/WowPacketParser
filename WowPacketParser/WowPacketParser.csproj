@@ -224,6 +224,7 @@
     <Compile Include="Enums\ItemModifier.cs" />
     <Compile Include="Enums\LootError.cs" />
     <Compile Include="Enums\QuestFlags2.cs" />
+    <Compile Include="Enums\QuestFlags3.cs" />
     <Compile Include="Enums\QuestRequirementType.cs" />
     <Compile Include="Enums\CreatureFamily.cs" />
     <Compile Include="Enums\CreatureRank.cs" />

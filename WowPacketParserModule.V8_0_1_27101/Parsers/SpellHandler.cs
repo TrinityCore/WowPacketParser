@@ -234,5 +234,55 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 }
             }
         }
+
+        [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL)]
+        public static void HandleCastVisual(Packet packet)
+        {
+            packet.ReadPackedGuid128("Source");
+            packet.ReadPackedGuid128("Target");
+            packet.ReadPackedGuid128("UnkGuid");
+
+            packet.ReadVector3("TargetPosition");
+
+            packet.ReadInt32("SpellVisualID");
+            packet.ReadSingle("TravelSpeed");
+
+            packet.ReadUInt16("MissReason");
+            packet.ReadUInt16("ReflectStatus");
+
+            packet.ReadSingle("Orientation");
+            packet.ReadSingle("UnkFloat");
+
+            packet.ReadBit("SpeedAsTime");
+        }
+
+        [Parser(Opcode.SMSG_PLAY_ORPHAN_SPELL_VISUAL)]
+        public static void HandlePlayOrphanSpellVisual(Packet packet)
+        {
+            packet.ReadVector3("SourceLocation");
+            packet.ReadVector3("SourceOrientation");
+            packet.ReadVector3("TargetLocation");
+            packet.ReadPackedGuid128("Target");
+            packet.ReadInt32("SpellVisualID");
+            packet.ReadSingle("TravelSpeed");
+            packet.ReadSingle("UnkFloat");
+            packet.ReadSingle("801_UnkFloat");
+            packet.ReadBit("SpeedAsTime");
+        }
+
+        [Parser(Opcode.SMSG_ADD_LOSS_OF_CONTROL)]
+        public static void HandleAddLossOfControl(Packet packet)
+        {
+            packet.ReadPackedGuid128("Victim");
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadPackedGuid128("Caster");
+
+            packet.ReadUInt32("Duration");
+            packet.ReadUInt32("DurationRemaining");
+            packet.ReadUInt32E<SpellSchoolMask>("LockoutSchoolMask");
+
+            packet.ReadByteE<SpellMechanic>("Mechanic");
+            packet.ReadByte("Type");
+        }
     }
 }

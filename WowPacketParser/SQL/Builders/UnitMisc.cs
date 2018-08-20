@@ -357,7 +357,12 @@ namespace WowPacketParser.SQL.Builders
                 {
                     Row<PointsOfInterest> row = new Row<PointsOfInterest>();
 
-                    row.Data.ID = "@PID+" + count;
+                    Type t = pointOfInterest.Item1.ID.GetType();
+                    if (t.Equals(typeof(int)))
+                        row.Data.ID = pointOfInterest.Item1.ID;
+                    else
+                        row.Data.ID = "@PID+" + count;
+
                     row.Data.PositionX = pointOfInterest.Item1.PositionX;
                     row.Data.PositionY = pointOfInterest.Item1.PositionY;
                     row.Data.Icon = pointOfInterest.Item1.Icon;

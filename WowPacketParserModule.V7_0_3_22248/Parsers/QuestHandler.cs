@@ -785,10 +785,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                         Priority = packet.ReadInt32("Priority", i, j),
                         Flags = packet.ReadInt32("Flags", i, j),
                         WorldEffectID = packet.ReadInt32("WorldEffectID", i, j),
-                        PlayerConditionID = packet.ReadInt32("PlayerConditionID", i, j)
+                        PlayerConditionID = packet.ReadInt32("PlayerConditionID", i, j),
+                        SpawnTrackingID = packet.ReadInt32("SpawnTrackingID", i, j),
                     };
-
-                    questPoi.WoDUnk1 = packet.ReadInt32("WoDUnk1", i, j);
 
                     int questPOIBlobPoint = packet.ReadInt32("QuestPOIBlobPoint", i, j);
                     for (int k = 0; k < questPOIBlobPoint; ++k)
