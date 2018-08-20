@@ -168,7 +168,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     if (ClientVersion.RemovedInVersion(ClientVersionBuild.V6_2_0_20173))
                         packet.ReadInt32("NumPoints", i, j);
 
-                    questPoi.WoDUnk1 = packet.ReadInt32("WoDUnk1", i, j);
+                    questPoi.SpawnTrackingID = packet.ReadInt32("SpawnTrackingID", i, j);
 
                     int int13 = packet.ReadInt32("QuestPOIBlobPoint", i, j);
                     for (int k = 0; k < int13; ++k)

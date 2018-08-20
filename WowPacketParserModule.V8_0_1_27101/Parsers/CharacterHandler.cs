@@ -115,9 +115,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         {
             packet.ReadBit("Success");
             packet.ReadBit("IsDeletedCharacters");
-            packet.ReadBit("IsDemonHunterCreationAllowed");
+            packet.ReadBit("IsTestDemonHunterCreationAllowed");
             packet.ReadBit("HasDemonHunterOnRealm");
-            packet.ReadBit("Unknown7x");
+            packet.ReadBit("IsDemonHunterCreationAllowed");
 
             var hasDisabledClassesMask = packet.ReadBit("HasDisabledClassesMask");
             packet.ReadBit("IsAlliedRacesCreationAllowed");
@@ -160,7 +160,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             packet.ResetBitReader();
             var hasGuildData = packet.ReadBit("HasGuildData");
-            var hasAzeriteLevel = packet.ReadBit("Unk801Bit");
+            var hasAzeriteLevel = packet.ReadBit("HasAzeriteLevel");
 
             for (int i = 0; i < itemCount; i++)
             {
@@ -200,6 +200,84 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             }
             if (hasAzeriteLevel)
                 packet.ReadInt32("AzeriteLevel");
+        }
+
+        [Parser(Opcode.CMSG_CREATE_CHARACTER)]
+        public static void HandleClientCharCreate(Packet packet)
+        {
+            var nameLen = packet.ReadBits(6);
+            var hasTemplateSet = packet.ReadBit();
+
+            packet.ReadBit("IsTrialBoost");
+            packet.ReadByteE<Race>("RaceID");
+            packet.ReadByteE<Class>("ClassID");
+            packet.ReadByteE<Gender>("SexID");
+            packet.ReadByte("SkinID");
+            packet.ReadByte("FaceID");
+            packet.ReadByte("HairStyleID");
+            packet.ReadByte("HairColorID");
+            packet.ReadByte("FacialHairStyleID");
+            packet.ReadByte("OutfitID");
+
+            packet.ReadWoWString("Name", nameLen);
+
+            if (hasTemplateSet)
+                packet.ReadInt32("TemplateSetID");
+        }
+
+        [Parser(Opcode.SMSG_CREATE_CHAR)]
+        public static void HandleCharResponse(Packet packet)
+        {
+            packet.ReadByteE<ResponseCode>("Response");
+            packet.ReadPackedGuid128("GUID");
+        }
+
+        public static void ReadPVPBracketData(Packet packet, params object[] idx)
+        {
+            packet.ReadByte("Bracket", idx);
+            packet.ReadInt32("Rating", idx);
+            packet.ReadInt32("Rank", idx);
+            packet.ReadInt32("WeeklyPlayed", idx);
+            packet.ReadInt32("WeeklyWon", idx);
+            packet.ReadInt32("SeasonPlayed", idx);
+            packet.ReadInt32("SeasonWon", idx);
+            packet.ReadInt32("WeeklyBestRating", idx);
+            packet.ReadInt32("Unk710");
+            packet.ReadInt32("Unk801");
+            packet.ReadBit("Unk801_Bit");
+        }
+
+        [Parser(Opcode.SMSG_INSPECT_PVP)]
+        public static void HandleInspectPVP(Packet packet)
+        {
+            packet.ReadPackedGuid128("ClientGUID");
+
+            var bracketCount = packet.ReadBits(3);
+            for (var i = 0; i < bracketCount; i++)
+                ReadPVPBracketData(packet, i, "PVPBracketData");
+        }
+
+        [Parser(Opcode.SMSG_LEVEL_UP_INFO)]
+        public static void HandleLevelUpInfo(Packet packet)
+        {
+            packet.ReadInt32("Level");
+            packet.ReadInt32("HealthDelta");
+
+            for (var i = 0; i < 6; i++)
+                packet.ReadInt32("PowerDelta", (PowerType)i);
+
+            for (var i = 0; i < 4; i++)
+                packet.ReadInt32("StatDelta", (StatType)i);
+
+            packet.ReadInt32("NumNewTalents");
+            packet.ReadInt32("NumNewPvpTalentSlots");
+        }
+
+        [Parser(Opcode.SMSG_AZERITE_XP_GAIN)]
+        public static void HandleAzeriteXpGain(Packet packet)
+        {
+            packet.ReadPackedGuid128("Item");
+            packet.ReadUInt64("AzeriteXPGained");
         }
     }
 }

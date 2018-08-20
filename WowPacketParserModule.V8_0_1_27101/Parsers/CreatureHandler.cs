@@ -71,8 +71,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             for (var i = 0; i < displayIdCount; ++i)
             {
                 creature.ModelIDs[i] = (uint)packet.ReadInt32("CreatureDisplayID", i);
+                packet.ReadSingle("DisplayScale", i);
                 packet.ReadSingle("Probability", i);
-                packet.ReadSingle("ProbabilityAlt", i);
             }
 
             creature.HealthModifier = packet.ReadSingle("HpMulti");
