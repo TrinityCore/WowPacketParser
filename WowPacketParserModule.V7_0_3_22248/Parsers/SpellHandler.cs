@@ -613,5 +613,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (var i = 0; i < count; i++)
                 packet.ReadInt32("ItemDisplayID", i);
         }
+
+        [Parser(Opcode.CMSG_UPDATE_SPELL_VISUAL)]
+        public static void HandleUpdateSpellVisual(Packet packet)
+        {
+            packet.ReadUInt32("SpellID");
+            packet.ReadUInt32("SpellXSpellVisualID");
+            packet.ReadPackedGuid128("GUID");
+        }
     }
 }
