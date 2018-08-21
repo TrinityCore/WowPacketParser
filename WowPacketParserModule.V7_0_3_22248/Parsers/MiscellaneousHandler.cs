@@ -333,5 +333,25 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadPackedGuid128("GUID"); // Creature or GameObject
             packet.ReadInt32("RaceID");
         }
+
+        public static void ReadUnkAreaPoiUpdate(Packet packet, params object[] idx)
+        {
+            packet.ReadTime("UnkTime", idx);
+            packet.ReadInt32("UnkInt32_1", idx);    // AreaID?
+            packet.ReadInt32("UnkInt32_2", idx);
+            packet.ReadUInt32("UnkUInt32_3", idx);
+            packet.ReadUInt32("UnkUInt32_4", idx);
+        }
+
+        [Parser(Opcode.SMSG_AREA_POI_UPDATE)]
+        public static void HandleAreaPoiUpdate(Packet packet)
+        {
+            var count = packet.ReadInt32("Count");
+
+            for (var i = 0; i < count; i++)
+            {
+                ReadUnkAreaPoiUpdate(packet, i);
+            }
+        }        
     }
 }
