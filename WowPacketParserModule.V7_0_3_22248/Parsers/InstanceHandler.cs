@@ -77,7 +77,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         public static void HandleStartChallengeMode(Packet packet)
         {
             packet.ReadByte("Bag");
-            packet.ReadUInt32("Slot");
+            packet.ReadInt32("Slot");
             packet.ReadPackedGuid128("GobGUID");
         }
     }
