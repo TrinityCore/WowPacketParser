@@ -613,5 +613,20 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (var i = 0; i < count; i++)
                 packet.ReadInt32("ItemDisplayID", i);
         }
+
+        [Parser(Opcode.SMSG_LOSS_OF_CONTROL_AURA_UPDATE)]
+        public static void HandleLossOfControlAuraUpdate(Packet packet)
+        {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_5_24330))
+                packet.ReadPackedGuid128("AffectedGUID");
+            var count = packet.ReadInt32("LossOfControlInfoCount");
+            for (int i = 0; i < count; i++)
+            {
+                packet.ReadByte("AuraSlot", i);
+                packet.ReadByte("EffectIndex", i);
+                packet.ReadByte("Type", i);
+                packet.ReadByte("Mechanic", i);
+            }
+        }
     }
 }
