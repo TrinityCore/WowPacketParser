@@ -2,10 +2,38 @@
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 
-namespace WowPacketParserModule.V6_0_2_19033.Parsers
+namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
     public static class GroupHandler
     {
+        public static void ReadAuraInfos(Packet packet, params object[] index)
+        {
+            packet.ReadUInt32<SpellId>("Aura", index);
+            packet.ReadByte("Flags", index);
+            packet.ReadInt32("ActiveFlags", index);
+            var byte3 = packet.ReadInt32("PointsCount", index);
+
+            for (int j = 0; j < byte3; j++)
+                packet.ReadSingle("Points", index, j);
+        }
+
+        public static void ReadPetInfos(Packet packet, params object[] index)
+        {
+            packet.ReadPackedGuid128("PetGuid", index);
+            packet.ReadUInt32("PetDisplayID", index);
+            packet.ReadUInt32("PetMaxHealth", index);
+            packet.ReadUInt32("PetHealth", index);
+
+            var petAuraCount = packet.ReadInt32("PetAuraCount", index);
+            for (int i = 0; i < petAuraCount; i++)
+                ReadAuraInfos(packet, index, i);
+
+            packet.ResetBitReader();
+
+            var len = packet.ReadBits(8);
+            packet.ReadWoWString("PetName", len, index);
+        }
+
         [Parser(Opcode.SMSG_PARTY_MEMBER_STATE)]
         public static void HandlePartyMemberState(Packet packet)
         {
@@ -36,53 +64,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("VehicleSeatRecID");
             var auraCount = packet.ReadInt32("AuraCount");
 
-            packet.ReadInt32("PhaseShiftFlags");
-            var int4 = packet.ReadInt32("PhaseCount");
-            packet.ReadPackedGuid128("PersonalGUID");
-            for (int i = 0; i < int4; i++)
-            {
-                packet.ReadInt16("PhaseFlags", i);
-                packet.ReadInt16("Id", i);
-            }
+            V6_0_2_19033.Parsers.GroupHandler.ReadPhaseInfos(packet, "Phase");
 
             for (int i = 0; i < auraCount; i++)
-            {
-                packet.ReadInt32<SpellId>("Aura", i);
-                packet.ReadByte("Flags", i);
-                packet.ReadInt32("ActiveFlags", i);
-                var byte3 = packet.ReadInt32("PointsCount", i);
-
-                for (int j = 0; j < byte3; j++)
-                    packet.ReadSingle("Points", i, j);
-            }
+                ReadAuraInfos(packet, "Aura", i);
 
             packet.ResetBitReader();
 
             var hasPet = packet.ReadBit("HasPet");
             if (hasPet) // Pet
-            {
-                packet.ReadPackedGuid128("PetGuid");
-                packet.ReadInt16("PetDisplayID");
-                packet.ReadInt32("PetMaxHealth");
-                packet.ReadInt32("PetHealth");
-
-                var petAuraCount = packet.ReadInt32("PetAuraCount");
-                for (int i = 0; i < petAuraCount; i++)
-                {
-                    packet.ReadInt32<SpellId>("PetAura", i);
-                    packet.ReadByte("PetFlags", i);
-                    packet.ReadInt32("PetActiveFlags", i);
-                    var byte3 = packet.ReadInt32("PetPointsCount", i);
-
-                    for (int j = 0; j < byte3; j++)
-                        packet.ReadSingle("PetPoints", i, j);
-                }
-
-                packet.ResetBitReader();
-
-                var len = packet.ReadBits(8);
-                packet.ReadWoWString("PetName", len);
-            }
+                ReadPetInfos(packet, "Pet");
 
             packet.ReadPackedGuid128("MemberGuid");
         }
