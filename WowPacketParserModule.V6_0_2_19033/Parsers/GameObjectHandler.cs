@@ -133,5 +133,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("ObjectGUID");
         }
+
+        [Parser(Opcode.SMSG_GAME_OBJECT_UI_ACTION)]
+        public static void HandleGameObjectUiAction(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+            packet.ReadInt32("UILink");
+        }
     }
 }
