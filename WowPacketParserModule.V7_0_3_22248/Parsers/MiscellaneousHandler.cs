@@ -334,13 +334,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32("RaceID");
         }
 
-        public static void ReadUnkAreaPoiUpdate(Packet packet, params object[] idx)
+        public static void ReadAreaPoiData(Packet packet, params object[] idx)
         {
-            packet.ReadTime("UnkTime", idx);
-            packet.ReadInt32("UnkInt32_1", idx);    // AreaID?
-            packet.ReadInt32("UnkInt32_2", idx);
-            packet.ReadUInt32("UnkUInt32_3", idx);
-            packet.ReadUInt32("UnkUInt32_4", idx);
+            packet.ReadTime("StartTime", idx);
+            packet.ReadInt32("AreaPoiID", idx);
+            packet.ReadInt32("DurationSec", idx);
+            packet.ReadUInt32("WorldStateVariableID", idx);
+            packet.ReadUInt32("WorldStateValue", idx);
         }
 
         [Parser(Opcode.SMSG_AREA_POI_UPDATE)]
@@ -350,7 +350,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             for (var i = 0; i < count; i++)
             {
-                ReadUnkAreaPoiUpdate(packet, i);
+                ReadAreaPoiData(packet, i);
             }
         }        
     }
