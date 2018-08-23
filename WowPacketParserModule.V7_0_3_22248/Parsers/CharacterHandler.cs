@@ -242,5 +242,63 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (int i = 0; i < talentCount; i++)
                 packet.ReadUInt16("Talents");
         }
+
+        [Parser(Opcode.SMSG_INSPECT_RESULT)]
+        public static void HandleInspectResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("InspecteeGUID");
+
+            var int48 = packet.ReadInt32("ItemsCount");
+            var int80 = packet.ReadInt32("GlyphsCount");
+            var int112 = packet.ReadInt32("TalentsCount");
+            var int144 = packet.ReadInt32("PvpTalentsCount");
+            packet.ReadUInt32E<Class>("ClassID");
+            packet.ReadUInt32("SpecializationID");
+            packet.ReadUInt32E<Gender>("Gender");
+
+            for (int i = 0; i < int80; i++)
+                packet.ReadInt16("Glyphs", i);
+
+            for (int i = 0; i < int112; i++)
+                packet.ReadInt16("Talents", i);
+
+            for (int i = 0; i < int144; i++)
+                packet.ReadInt16("PvpTalents", i);
+
+            packet.ResetBitReader();
+            var hasGuildData = packet.ReadBit("HasGuildData");
+
+            for (int i = 0; i < int48; i++)
+            {
+                packet.ReadPackedGuid128("CreatorGUID", i);
+                packet.ReadByte("Index", i);
+
+                V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, i);
+
+                packet.ResetBitReader();
+                packet.ReadBit("Usable", i);
+                var enchantsCount = packet.ReadBits("EnchantsCount", 4, i);
+                var gemsCount = packet.ReadBits("GemsCount", 2, i);
+
+                for (int j = 0; j < gemsCount; j++)
+                {
+                    packet.ReadByte("Slot", i, j);
+                    V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, i, j);
+                }
+
+                for (int j = 0; j < enchantsCount; j++)
+                {
+                    packet.ReadInt32("Id", i, j);
+                    packet.ReadByte("Index", i, j);
+                }
+            }
+
+            if (hasGuildData)
+            {
+                packet.ReadPackedGuid128("GuildGUID");
+                packet.ReadUInt32("NumGuildMembers");
+                packet.ReadUInt32("GuildAchievementPoints");
+            }
+        }
     }
 }
