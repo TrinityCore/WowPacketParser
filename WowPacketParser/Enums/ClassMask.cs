@@ -16,6 +16,7 @@ namespace WowPacketParser.Enums
         Mage        = 0x0080,
         Warlock     = 0x0100,
         Monk        = 0x0200,
-        Druid       = 0x0400
+        Druid       = 0x0400,
+        DemonHunter = 0x0800
     }
 }
