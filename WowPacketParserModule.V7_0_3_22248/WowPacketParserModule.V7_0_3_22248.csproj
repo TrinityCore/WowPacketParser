@@ -322,6 +322,7 @@
     <Compile Include="Parsers\PetHandler.cs" />
     <Compile Include="Parsers\QuestHandler.cs" />
     <Compile Include="Parsers\ReputationHandler.cs" />
+    <Compile Include="Parsers\ScenarioHandler.cs" />
     <Compile Include="Parsers\SessionHandler.cs" />
     <Compile Include="Parsers\SpellHandler.cs" />
     <Compile Include="Parsers\TaxiHandler.cs" />
