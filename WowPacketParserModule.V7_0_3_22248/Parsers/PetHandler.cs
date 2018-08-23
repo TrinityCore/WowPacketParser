@@ -66,12 +66,26 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             for (int i = 0; i < spellHistoryCount; i++)
             {
-
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_1_0_22900))
                     ReadPetSpellHistoryData(packet, i, "PetSpellHistory");
                 else
                     V6_0_2_19033.Parsers.PetHandler.ReadPetSpellHistoryData(packet, i, "PetSpellHistory");
             }
+        }
+
+        [Parser(Opcode.SMSG_PET_NAME_INVALID)]
+        public static void HandlePetNameInvalid(Packet packet)
+        {
+            V6_0_2_19033.Parsers.PetHandler.ReadPetRenameData(packet);
+        }
+
+        [Parser(Opcode.CMSG_PET_SPELL_AUTOCAST)]
+        public static void HandlePetSpellAutocast(Packet packet)
+        {
+            packet.ReadGuid("PetGUID");
+            packet.ReadUInt32<SpellId>("SpellID");
+            packet.ResetBitReader();
+            packet.ReadBit("AutocastEnabled");
         }
     }
 }

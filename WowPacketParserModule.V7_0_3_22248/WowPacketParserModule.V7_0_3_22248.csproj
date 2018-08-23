@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Enums\MovementFlags2.cs" />
     <Compile Include="Enums\SplineFlag.cs" />
+    <Compile Include="Enums\TradeStatus.cs" />
     <Compile Include="Enums\UpdateFields.cs" />
     <Compile Include="Enums\UpdateFields710.cs" />
     <Compile Include="Enums\UpdateFields715.cs" />
@@ -292,7 +293,9 @@
     <Compile Include="Hotfix\WorldMapTransformsEntry.cs" />
     <Compile Include="Hotfix\WorldSafeLocsEntry.cs" />
     <Compile Include="Parsers\AccountDataHandler.cs" />
+    <Compile Include="Parsers\AchievementHandler.cs" />
     <Compile Include="Parsers\AreaTriggerHandler.cs" />
+    <Compile Include="Parsers\ArtifactHandler.cs" />
     <Compile Include="Parsers\AuctionHouseHandler.cs" />
     <Compile Include="Parsers\AuthenticationHandler.cs" />
     <Compile Include="Parsers\BattlegroundHandler.cs" />
@@ -310,6 +313,7 @@
     <Compile Include="Parsers\GameObjectHandler.cs" />
     <Compile Include="Parsers\GarrisonHandler.cs" />
     <Compile Include="Parsers\GroupHandler.cs" />
+    <Compile Include="Parsers\GuildFinderHandler.cs" />
     <Compile Include="Parsers\GuildHandler.cs" />
     <Compile Include="Parsers\HotfixHandler.cs" />
     <Compile Include="Parsers\InstanceHandler.cs" />
@@ -322,10 +326,14 @@
     <Compile Include="Parsers\PetHandler.cs" />
     <Compile Include="Parsers\QuestHandler.cs" />
     <Compile Include="Parsers\ReputationHandler.cs" />
+    <Compile Include="Parsers\ScenarioHandler.cs" />
     <Compile Include="Parsers\SessionHandler.cs" />
     <Compile Include="Parsers\SpellHandler.cs" />
     <Compile Include="Parsers\TaxiHandler.cs" />
+    <Compile Include="Parsers\TradeHandler.cs" />
+    <Compile Include="Parsers\TransmogrificationHandler.cs" />
     <Compile Include="Parsers\UpdateHandler.cs" />
+    <Compile Include="Parsers\VoidStorageHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

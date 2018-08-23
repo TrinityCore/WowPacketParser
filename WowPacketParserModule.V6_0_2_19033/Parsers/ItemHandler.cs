@@ -227,8 +227,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (var i = 0; i < int16; ++i)
             {
-                packet.ReadPackedGuid128("LootObj", i);
-                packet.ReadByte("Slot", i);
+                packet.ReadPackedGuid128("Object", i);
+                packet.ReadByte("LootListID", i);
             }
         }
 

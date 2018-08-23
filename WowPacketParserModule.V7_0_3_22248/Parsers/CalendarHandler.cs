@@ -9,11 +9,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_CALENDAR_SEND_CALENDAR)]
         public static void HandleCalendarSendCalendar(Packet packet)
         {
-            packet.ReadInt32("ServerTime");
+            packet.ReadPackedTime("ServerTime");
 
-            var invitesCount = packet.ReadInt32("InvitesCount");
-            var eventsCount = packet.ReadInt32("EventsCount");
-            var raidLockoutsCount = packet.ReadInt32("RaidLockoutsCount");
+            var invitesCount = packet.ReadUInt32("InvitesCount");
+            var eventsCount = packet.ReadUInt32("EventsCount");
+            var raidLockoutsCount = packet.ReadUInt32("RaidLockoutsCount");
 
             for (int i = 0; i < invitesCount; i++)
                 V6_0_2_19033.Parsers.CalendarHandler.ReadCalendarSendCalendarInviteInfo(packet, "Invites", i);
@@ -30,11 +30,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             packet.ReadByte("EventType");
             packet.ReadPackedGuid128("OwnerGUID");
-            packet.ReadInt64("EventID");
+            packet.ReadUInt64("EventID");
             packet.ReadByte("GetEventType");
             packet.ReadInt32("TextureID");
             packet.ReadUInt32("Flags");
-            packet.ReadUInt32("Date");
+            packet.ReadPackedTime("Date");
             packet.ReadUInt32("LockDate");
             packet.ReadPackedGuid128("EventGuildID");
 
@@ -52,6 +52,27 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             packet.ReadWoWString("EventName", lenEventName);
             packet.ReadWoWString("Description", lenDescription);
+        }
+
+        [Parser(Opcode.CMSG_CALENDAR_GUILD_FILTER)]
+        public static void HandleCalendarGuildFilter(Packet packet)
+        {
+            packet.ReadInt32("Min Level");
+            packet.ReadInt32("Max Level");
+            packet.ReadInt32("MaxRankOrder");
+        }
+
+        [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_NOTES_ALERT)]
+        public static void HandleCalendarEventInviteNotesAlert(Packet packet)
+        {
+            packet.ReadPackedGuid128("InviteGuid");
+            packet.ReadUInt64("EventID");
+
+            packet.ResetBitReader();
+            var notesLength = packet.ReadBits(8);
+            packet.ReadBit("ClearPending");
+
+            packet.ReadWoWString("Notes", notesLength);
         }
     }
 }

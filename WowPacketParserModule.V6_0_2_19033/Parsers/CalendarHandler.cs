@@ -81,30 +81,37 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
         }
 
-        [Parser(Opcode.CMSG_CALENDAR_ADD_EVENT)]
-        public static void HandleUserClientCalendarAddEvent(Packet packet)
+        public static void ReadCalendarAddEventInviteInfo(Packet packet, params object[] index)
+        {
+            packet.ReadPackedGuid128("Guid", index);
+            packet.ReadByteE<CalendarEventStatus>("Status", index);
+            packet.ReadByteE<CalendarModerationRank>("Moderator", index);
+        }
+
+        public static void ReadCalendarEventInfo(Packet packet, params object[] index)
         {
             packet.ResetBitReader();
             var TitleLen = packet.ReadBits(8);
             var DescriptionLen = packet.ReadBits(11);
 
-            packet.ReadByteE<CalendarEventType>("EventType");
-            packet.ReadInt32("TextureID");
-            packet.ReadTime("Time");
-            packet.ReadInt32E<CalendarFlag>("Flags");
+            packet.ReadByteE<CalendarEventType>("EventType", index);
+            packet.ReadInt32("TextureID", index);
+            packet.ReadTime("Time", index);
+            packet.ReadInt32E<CalendarFlag>("Flags", index);
 
             var inviteInfoCount = packet.ReadInt32();
 
-            packet.ReadWoWString("Title", TitleLen);
-            packet.ReadWoWString("Description", DescriptionLen);
+            packet.ReadWoWString("Title", TitleLen, index);
+            packet.ReadWoWString("Description", DescriptionLen, index);
 
             for (int i = 0; i < inviteInfoCount; i++)
-            {
-                packet.ReadPackedGuid128("Guid");
-                packet.ReadByteE<CalendarEventStatus>("Status");
-                packet.ReadByteE<CalendarModerationRank>("Moderator");
-            }
+                ReadCalendarAddEventInviteInfo(packet, index, i);
+        }
 
+        [Parser(Opcode.CMSG_CALENDAR_ADD_EVENT)]
+        public static void HandleUserClientCalendarAddEvent(Packet packet)
+        {
+            ReadCalendarEventInfo(packet);
             packet.ReadInt32("MaxSize");
         }
 
@@ -127,7 +134,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_CALENDAR_SEND_NUM_PENDING)]
         public static void HandleSendCalendarNumPending(Packet packet)
         {
-            packet.ReadInt32("NumPending");
+            packet.ReadUInt32("NumPending");
         }
 
         [Parser(Opcode.SMSG_CALENDAR_SEND_CALENDAR)]
@@ -271,8 +278,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadUInt64("EventID");
 
-            var notesLength = packet.ReadBits(8);
             packet.ResetBitReader();
+            var notesLength = packet.ReadBits(8);
 
             packet.ReadWoWString("Notes", notesLength);
         }
@@ -299,7 +306,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleCalendarEventInviteStatus(Packet packet)
         {
             packet.ReadPackedGuid128("InviteGUID");
-            packet.ReadInt64("EventID");
+            packet.ReadUInt64("EventID");
             packet.ReadPackedTime("Date");
             packet.ReadUInt32E<CalendarFlag>("Flags");
             packet.ReadByteE<CalendarEventStatus>("Status");
@@ -314,6 +321,118 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedTime("Date");
             packet.ReadUInt32E<CalendarFlag>("Flags");
             packet.ReadByteE<CalendarEventStatus>("Status");
+        }
+
+        [Parser(Opcode.CMSG_CALENDAR_UPDATE_EVENT)]
+        public static void HandleUpdateCalendarEvent(Packet packet)
+        {
+            packet.ReadInt64("EventID");
+            packet.ReadInt64("ModeratorID");
+            packet.ReadByteE<CalendarEventType>("EventType");
+            packet.ReadUInt32("TextureID");
+            packet.ReadPackedTime("Time");
+            packet.ReadInt32E<CalendarFlag>("Flags");
+
+            var titleLen = packet.ReadBits(8);
+            var descLen = packet.ReadBits(11);
+            packet.ReadWoWString("Title", titleLen);
+            packet.ReadWoWString("Description", descLen);
+        }
+
+        [Parser(Opcode.CMSG_CALENDAR_EVENT_INVITE)]
+        public static void HandleAddCalendarEventInvite(Packet packet)
+        {
+            packet.ReadInt64("EventID");
+            packet.ReadInt64("ModeratorID");
+            var nameLen = packet.ReadBits(9);
+            packet.ReadByteE<CalendarEventStatus>("Status");
+            packet.ReadByteE<CalendarModerationRank>("Moderation Rank");
+            packet.ReadWoWString("Name", nameLen);
+        }
+
+        [Parser(Opcode.CMSG_CALENDAR_EVENT_SIGN_UP)]
+        public static void HandleCalendarEventSignup(Packet packet)
+        {
+            packet.ReadInt64("EventID");
+            packet.ResetBitReader();
+            packet.ReadBit("Tentative");
+        }
+
+        [Parser(Opcode.CMSG_CALENDAR_REMOVE_INVITE)]
+        public static void HandleCalendarRemoveInvite(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadUInt64("InviteID");
+            packet.ReadUInt64("ModeratorID");
+            packet.ReadUInt64("EventID");
+        }
+
+        [Parser(Opcode.CMSG_CALENDAR_EVENT_STATUS)]
+        [Parser(Opcode.CMSG_CALENDAR_EVENT_MODERATOR_STATUS)]
+        public static void HandleCalendarEventStatus(Packet packet)
+        {
+            packet.ReadPackedGuid("Guid");
+            packet.ReadInt64("EventID");
+            packet.ReadInt64("InviteID");
+            packet.ReadInt64("ModeratorID");
+            packet.ReadByteE<CalendarEventStatus>("Status");
+        }
+
+        [Parser(Opcode.SMSG_CALENDAR_EVENT_UPDATED_ALERT)]
+        public static void HandleCalendarEventUpdateAlert(Packet packet)
+        {
+            packet.ReadUInt64("EventID");
+            packet.ReadPackedTime("OriginalDate");
+            packet.ReadPackedTime("Date");
+            packet.ReadUInt32("LockDate");
+            packet.ReadUInt32E<CalendarFlag>("Flags");
+            packet.ReadUInt32("TextureID");
+            packet.ReadByte("EventType");
+
+            packet.ResetBitReader();
+            var eventNameLen = packet.ReadBits(8);
+            var descLen = packet.ReadBits(11);
+            packet.ReadBit("ClearPending");
+
+            packet.ReadWoWString("EventName", eventNameLen);
+            packet.ReadWoWString("Description", descLen);
+        }
+
+        [Parser(Opcode.SMSG_CALENDAR_COMMAND_RESULT)]
+        public static void HandleCalendarCommandResult(Packet packet)
+        {
+            packet.ReadByte("Command");
+            packet.ReadByte("Result");
+            var nameLen = packet.ReadBits(9);
+            packet.ReadWoWString("Name", nameLen);
+        }
+
+        [Parser(Opcode.SMSG_CALENDAR_RAID_LOCKOUT_ADDED)]
+        public static void HandleRaidLockoutAdded(Packet packet)
+        {
+            packet.ReadUInt64("InstanceID");
+            packet.ReadUInt32("ServerTime");
+            packet.ReadInt32("MapID");
+            packet.ReadUInt32("DifficultyID");
+            packet.ReadInt32("TimeRemaining");
+        }
+
+        [Parser(Opcode.SMSG_CALENDAR_RAID_LOCKOUT_REMOVED)]
+        public static void HandleRaidLockoutRemoved(Packet packet)
+        {
+            packet.ReadUInt64("InstanceID");
+            packet.ReadInt32("MapID");
+            packet.ReadUInt32("DifficultyID");
+        }
+
+        [Parser(Opcode.SMSG_CALENDAR_RAID_LOCKOUT_UPDATED)]
+        public static void HandleCalendarRaidLockoutUpdated(Packet packet)
+        {
+            packet.ReadUInt32("ServerTime");
+            packet.ReadInt32("MapID");
+            packet.ReadUInt32("DifficultyID");
+            packet.ReadInt32("NewTimeRemaining");
+            packet.ReadInt32("OldTimeRemaining");
         }
     }
 }

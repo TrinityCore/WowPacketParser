@@ -599,8 +599,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             packet.ReadInt32("ChoiceID");
             var responseCount = packet.ReadUInt32();
-            packet.ReadPackedGuid128("NpcGUID");
+            packet.ReadPackedGuid128("SenderGUID");
+            packet.ResetBitReader();
             var questionLength = packet.ReadBits(8);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_5_24330))
+                packet.ReadBit("CloseChoiceFrame");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_25848))
+                packet.ReadBit("HideWarboardHeader");
 
             for (var i = 0u; i < responseCount; ++i)
                 ReadPlayerChoiceResponse(packet, "PlayerChoiceResponse", i);
@@ -775,6 +780,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     Storage.QuestPOIs.Add(questPoi, packet.TimeSpan);
                 }
             }
+        }
+
+        [Parser(Opcode.SMSG_QUEST_UPDATE_ADD_PVP_CREDIT)]
+        public static void HandleQuestUpdateAddPvPCredit(Packet packet)
+        {
+            packet.ReadInt32<QuestId>("Quest ID");
+            packet.ReadUInt16("Count");
         }
     }
 }

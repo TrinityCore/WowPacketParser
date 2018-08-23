@@ -141,8 +141,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleUndeleteCooldownStatusResponse(Packet packet)
         {
             packet.ReadBit("OnCooldown");
-            packet.ReadInt32("MaxCooldown"); // In Sec
-            packet.ReadInt32("CurrentCooldown"); // In Sec
+            packet.ReadUInt32("MaxCooldown"); // In Sec
+            packet.ReadUInt32("CurrentCooldown"); // In Sec
         }
 
         [Parser(Opcode.SMSG_POWER_UPDATE)]

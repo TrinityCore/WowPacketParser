@@ -193,9 +193,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_QUERY_QUEST_INFO_RESPONSE)]
         public static void HandleQuestQueryResponse(Packet packet)
         {
-            packet.ReadInt32("Entry");
+            packet.ReadUInt32("QuestID");
 
-            Bit hasData = packet.ReadBit("Has Data");
+            Bit hasData = packet.ReadBit("Allow");
             if (!hasData)
                 return; // nothing to do
 
@@ -481,7 +481,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleQuestgiverStatus(Packet packet)
         {
             packet.ReadPackedGuid128("QuestGiverGUID");
-            packet.ReadInt32E<QuestGiverStatus4x>("StatusFlags");
+            packet.ReadUInt32E<QuestGiverStatus4x>("StatusFlags");
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_STATUS_MULTIPLE)]
@@ -491,7 +491,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < int16; ++i)
             {
                 packet.ReadPackedGuid128("Guid");
-                packet.ReadInt32E<QuestGiverStatus4x>("Status");
+                packet.ReadUInt32E<QuestGiverStatus4x>("Status");
             }
         }
 
@@ -597,8 +597,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("QuestID");
             packet.ReadInt32("ObjectID");
 
-            packet.ReadInt16("Count");
-            packet.ReadInt16("Required");
+            packet.ReadUInt16("Count");
+            packet.ReadUInt16("Required");
 
             packet.ReadByte("ObjectiveType");
         }

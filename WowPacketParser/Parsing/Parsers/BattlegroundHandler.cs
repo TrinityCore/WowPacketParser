@@ -1030,5 +1030,14 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadCString("Player Name");
             packet.ReadCString("Arena Team Name");
         }
+
+        [Parser(Opcode.SMSG_REPORT_PVP_PLAYER_AFK_RESULT)]
+        public static void HandleReportPvPPlayerAfkResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("Offender");
+            packet.ReadByte("Result");
+            packet.ReadByte("NumBlackMarksOnOffender");
+            packet.ReadByte("NumPlayersIHaveReported");
+        }
     }
 }

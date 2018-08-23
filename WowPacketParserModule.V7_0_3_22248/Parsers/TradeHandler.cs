@@ -1,0 +1,97 @@
+﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
+using WowPacketParser.Parsing;
+using TradeStatus = WowPacketParserModule.V7_0_3_22248.Enums.TradeStatus;
+
+namespace WowPacketParserModule.V7_0_3_22248.Parsers
+{
+    public static class TradeHandler
+    {
+        [Parser(Opcode.SMSG_TRADE_STATUS)]
+        public static void HandleTradeStatus(Packet packet)
+        {
+            packet.ReadBit("PartnerIsSameBnetAccount");
+            var status = packet.ReadBits("Status", 5);
+
+            switch ((TradeStatus)status)
+            {
+                case TradeStatus.TRADE_STATUS_FAILED:
+                    packet.ReadBit("FailureForYou");
+                    packet.ReadInt32("BagResult");
+                    packet.ReadInt32("ItemID");
+                    break;
+                case TradeStatus.TRADE_STATUS_INITIATED:
+                    packet.ReadUInt32("ID");
+                    break;
+                case TradeStatus.TRADE_STATUS_PROPOSED:
+                    packet.ReadPackedGuid128("Partner");
+                    packet.ReadPackedGuid128("PartnerAccount");
+                    break;
+                case TradeStatus.TRADE_STATUS_WRONG_REALM:
+                case TradeStatus.TRADE_STATUS_NOT_ON_TAPLIST:
+                    packet.ReadByte("TradeSlot");
+                    break;
+                case TradeStatus.TRADE_STATUS_NOT_ENOUGH_CURRENCY:
+                case TradeStatus.TRADE_STATUS_CURRENCY_NOT_TRADABLE:
+                    packet.ReadInt32("CurrencyType");
+                    packet.ReadInt32("CurrencyQuantity");
+                    break;
+            }
+        }
+
+        public static void ReadUnwrappedTradeItem(Packet packet, params object[] index)
+        {
+            packet.ReadInt32("EnchantID", index);
+            packet.ReadInt32("OnUseEnchantmentID", index);
+            packet.ReadPackedGuid128("Creator", index);
+            packet.ReadInt32("Charges", index);
+            packet.ReadInt32("MaxDurability", index);
+            packet.ReadInt32("Durability", index);
+
+            packet.ResetBitReader();
+            var gemsCount = packet.ReadBits(2);
+            packet.ReadBit("Lock", index);
+
+            for (int j = 0; j < gemsCount; j++)
+            {
+                packet.ReadByte("Slot", index, j);
+                V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, index, j);
+            }
+        }
+
+        public static void ReadTradeItem(Packet packet, params object[] index)
+        {
+            packet.ReadByte("Slot", index);
+            packet.ReadInt32("StackCount", index);
+            packet.ReadPackedGuid128("GiftCreator", index);
+            V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, index);
+
+            packet.ResetBitReader();
+            var unwrapped = packet.ReadBit("HasUnwrapped", index);
+            if (unwrapped)
+                ReadUnwrappedTradeItem(packet, index);
+        }
+
+        [Parser(Opcode.SMSG_TRADE_UPDATED)]
+        public static void HandleTradeUpdated(Packet packet)
+        {
+            packet.ReadByte("WhichPlayer");
+
+            packet.ReadInt32("ID");
+            packet.ReadInt32("CurrentStateIndex");
+            packet.ReadInt32("ClientStateIndex");
+
+            packet.ReadInt64("Gold");
+
+            // Order guessed
+            packet.ReadInt32("CurrencyType");
+            packet.ReadInt32("CurrencyQuantity");
+            packet.ReadInt32("ProposedEnchantment");
+
+            var count = packet.ReadInt32("ItemCount");
+
+            for (int i = 0; i < count; i++)
+                ReadTradeItem(packet, i);
+        }
+    }
+}

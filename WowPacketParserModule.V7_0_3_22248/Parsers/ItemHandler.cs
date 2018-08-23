@@ -89,5 +89,39 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             packet.ReadPackedGuid128("Item");
         }
+
+        public static void ReadItemPurchaseRefundItem(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32<ItemId>("ItemID", indexes);
+            packet.ReadInt32("ItemCount", indexes);
+        }
+
+        public static void ReadItemPurchaseRefundCurrency(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("CurrencyID", indexes);
+            packet.ReadInt32("CurrencyCount", indexes);
+        }
+
+        public static void ReadItemPurchaseContents(Packet packet, params object[] indexes)
+        {
+            packet.ReadUInt64("Money");
+
+            for (int i = 0; i < 5; i++)
+                ReadItemPurchaseRefundItem(packet, indexes, i, "ItemPurchaseRefundItem");
+
+            for (int i = 0; i < 5; i++)
+                ReadItemPurchaseRefundCurrency(packet, indexes, i, "ItemPurchaseRefundCurrency");
+        }
+
+        [Parser(Opcode.SMSG_SET_ITEM_PURCHASE_DATA)]
+        public static void HandleSetItemPurchaseData(Packet packet)
+        {
+            packet.ReadPackedGuid128("ItemGUID");
+
+            ReadItemPurchaseContents(packet, "ItemPurchaseContents");
+
+            packet.ReadInt32("Flags");
+            packet.ReadInt32("PurchaseTime");
+        }
     }
 }

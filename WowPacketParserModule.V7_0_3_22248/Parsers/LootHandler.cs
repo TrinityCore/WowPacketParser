@@ -65,11 +65,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         public static void HandleLootRollServer(Packet packet)
         {
             packet.ReadPackedGuid128("LootObj");
-            packet.ReadPackedGuid128("Player");
+            packet.ReadPackedGuid128("Winner");
             packet.ReadInt32("Roll");
             packet.ReadByte("RollType");
             ReadLootItem(packet, "LootItem");
-            packet.ReadBit("Autopassed");
+            packet.ResetBitReader();
+            packet.ReadBit("MainSpec");
         }
 
         [Parser(Opcode.SMSG_LOOT_ROLL_WON)]

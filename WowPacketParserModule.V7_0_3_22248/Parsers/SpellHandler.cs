@@ -210,9 +210,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         public static void ReadTalentInfoUpdate(Packet packet, params object[] idx)
         {
             packet.ReadByte("ActiveGroup", idx);
-            packet.ReadInt32("PrimarySpecialization", idx);
+            packet.ReadUInt32("PrimarySpecialization", idx);
 
-            var talentGroupsCount = packet.ReadInt32("TalentGroupsCount", idx);
+            var talentGroupsCount = packet.ReadUInt32("TalentGroupsCount", idx);
             for (var i = 0; i < talentGroupsCount; ++i)
                 ReadTalentGroupInfo(packet, idx, "TalentGroupsCount", i);
         }
@@ -220,7 +220,6 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         public static void ReadTalentGroupInfo(Packet packet, params object[] idx)
         {
             packet.ReadUInt32("SpecId", idx);
-
             var talentIDsCount = packet.ReadInt32("TalentIDsCount", idx);
             var pvpTalentIDsCount = packet.ReadInt32("PvPTalentIDsCount", idx);
 
@@ -635,6 +634,32 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadByte("Type", i);
                 packet.ReadByte("Mechanic", i);
             }
+        }
+
+        [Parser(Opcode.SMSG_LEARN_TALENTS_FAILED)]
+        public static void HandleLearnTalentsFailed(Packet packet)
+        {
+            packet.ReadBits("Reason", 4);
+            packet.ReadInt32("SpellID");
+            var count = packet.ReadUInt32("TalentCount");
+            for (int i = 0; i < count; i++)
+                packet.ReadUInt16("Talent");
+        }
+
+        public static void ReadGlyphBinding(Packet packet, params object[] index)
+        {
+            packet.ReadUInt32("SpellID", index);
+            packet.ReadUInt16("GlyphID", index);
+        }
+
+        [Parser(Opcode.SMSG_ACTIVE_GLYPHS)]
+        public static void HandleActiveGlyphs(Packet packet)
+        {
+            var count = packet.ReadUInt32("GlyphsCount");
+            for (int i = 0; i < count; i++)
+                ReadGlyphBinding(packet, i);
+            packet.ResetBitReader();
+            packet.ReadBit("IsFullUpdate");
         }
     }
 }

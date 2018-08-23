@@ -303,6 +303,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("WillKickFromWorld");
             packet.ReadBit("IsExpansionPreorderInStore");
             packet.ReadBit("KioskModeEnabled");
+            packet.ReadBit("CompetetiveModeEnabled");
             packet.ReadBit("NoHandler"); // not accessed in handler
             packet.ReadBit("TrialBoostEnabled");
             packet.ReadBit("TokenBalanceEnabled");

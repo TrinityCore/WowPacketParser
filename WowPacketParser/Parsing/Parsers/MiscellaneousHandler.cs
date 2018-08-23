@@ -158,6 +158,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_DUEL_CANCELLED)]
         [Parser(Opcode.SMSG_REFER_A_FRIEND_EXPIRED)]
         [Parser(Opcode.CMSG_PLAYER_VEHICLE_ENTER)]
+        [Parser(Opcode.CMSG_RIDE_VEHICLE_INTERACT)]
         [Parser(Opcode.CMSG_EJECT_PASSENGER)]
         public static void HandleReadGuid(Packet packet)
         {
@@ -1097,6 +1098,15 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleQueryCountdownTimer(Packet packet)
         {
             packet.ReadInt32("TimerType");
+        }
+
+        [Parser(Opcode.SMSG_REFER_A_FRIEND_FAILURE)]
+        public static void HandleRaFFailure(Packet packet)
+        {
+            packet.ReadInt32("Reason");
+            packet.ResetBitReader();
+            var len = packet.ReadBits(6);
+            packet.ReadWoWString("Str", len);
         }
 
         [Parser(Opcode.SMSG_MINIGAME_STATE)]

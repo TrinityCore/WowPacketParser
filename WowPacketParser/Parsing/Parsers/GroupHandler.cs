@@ -9,6 +9,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_SET_EVERYONE_IS_ASSISTANT)]
         public static void HandleEveryoneIsAssistant(Packet packet)
         {
+            packet.ReadByte("PartyIndex");
             packet.ReadBit("Active");
         }
 
