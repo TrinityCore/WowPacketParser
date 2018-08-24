@@ -15,24 +15,24 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             switch ((TradeStatus)status)
             {
-                case TradeStatus.TRADE_STATUS_FAILED:
+                case TradeStatus.Failed:
                     packet.ReadBit("FailureForYou");
                     packet.ReadInt32("BagResult");
                     packet.ReadInt32("ItemID");
                     break;
-                case TradeStatus.TRADE_STATUS_INITIATED:
+                case TradeStatus.Initiated:
                     packet.ReadUInt32("ID");
                     break;
-                case TradeStatus.TRADE_STATUS_PROPOSED:
+                case TradeStatus.Proposed:
                     packet.ReadPackedGuid128("Partner");
                     packet.ReadPackedGuid128("PartnerAccount");
                     break;
-                case TradeStatus.TRADE_STATUS_WRONG_REALM:
-                case TradeStatus.TRADE_STATUS_NOT_ON_TAPLIST:
+                case TradeStatus.WrongRealm:
+                case TradeStatus.NotOnTaplist:
                     packet.ReadByte("TradeSlot");
                     break;
-                case TradeStatus.TRADE_STATUS_NOT_ENOUGH_CURRENCY:
-                case TradeStatus.TRADE_STATUS_CURRENCY_NOT_TRADABLE:
+                case TradeStatus.NotEnoughCurrency:
+                case TradeStatus.CurrencyNotTradeable:
                     packet.ReadInt32("CurrencyType");
                     packet.ReadInt32("CurrencyQuantity");
                     break;

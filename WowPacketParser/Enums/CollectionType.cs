@@ -2,9 +2,9 @@
 {
     public enum CollectionType : int
     {
-        NONE            = -1,
-        TOYBOX          = 1,
-        APPEARANCE      = 3,
-        TRANSMOG_SET    = 4
+        None            = -1,
+        ToyBox          = 1,
+        Appearance      = 3,
+        TransmogSet     = 4
     };
 }
