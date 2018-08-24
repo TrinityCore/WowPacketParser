@@ -16,10 +16,10 @@ namespace WowPacketParser.Store.Objects
         public uint? UiCameraID;
 
         [DBFieldName("ActorIdx")]
-        public ushort? ActorIdx;
+        public byte? ActorIdx;
 
-        [DBFieldName("Unk")]
-        public ushort? Unk;
+        [DBFieldName("Flags")]
+        public byte? Flags;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
