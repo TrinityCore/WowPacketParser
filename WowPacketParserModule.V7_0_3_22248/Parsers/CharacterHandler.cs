@@ -208,19 +208,6 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 ReadPVPBracketData(packet, i, "PVPBracketData");
         }
 
-        [Parser(Opcode.SMSG_POWER_UPDATE)]
-        public static void HandlePowerUpdate(Packet packet)
-        {
-            packet.ReadPackedGuid128("Guid");
-
-            var int32 = packet.ReadInt32("Count");
-            for (var i = 0; i < int32; i++)
-            {
-                packet.ReadInt32("Power", i);
-                packet.ReadByteE<PowerType>("PowerType", i);
-            }
-        }
-
         [Parser(Opcode.CMSG_LEARN_PVP_TALENTS)]
         public static void HandleLearnPvPTalents(Packet packet)
         {
