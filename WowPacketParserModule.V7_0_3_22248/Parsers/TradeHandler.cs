@@ -36,6 +36,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     packet.ReadInt32("CurrencyType");
                     packet.ReadInt32("CurrencyQuantity");
                     break;
+                default:
+                    break;
             }
         }
 
