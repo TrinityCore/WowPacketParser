@@ -670,7 +670,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             ReadGossipText(packet);
         }
 
-        [Parser(Opcode.CMSG_QUERY_QUEST_REWARDS)]
+        [Parser(Opcode.CMSG_QUERY_TREASURE_PICKER)]
         public static void HandleQueryQuestRewards(Packet packet)
         {
             packet.ReadInt32("QuestId");
