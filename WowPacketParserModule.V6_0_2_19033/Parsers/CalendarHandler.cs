@@ -371,7 +371,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_CALENDAR_EVENT_MODERATOR_STATUS)]
         public static void HandleCalendarEventStatus(Packet packet)
         {
-            packet.ReadPackedGuid("Guid");
+            packet.ReadPackedGuid128("Guid");
             packet.ReadInt64("EventID");
             packet.ReadInt64("InviteID");
             packet.ReadInt64("ModeratorID");
