@@ -349,9 +349,10 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var count = packet.ReadInt32("Count");
 
             for (var i = 0; i < count; i++)
-            {
                 ReadAreaPoiData(packet, i);
-            }
-        }        
+        }
+
+        [Parser(Opcode.CMSG_REQUEST_AREA_POI_UPDATE)]
+        public static void HandleAreaPoiZero(Packet packet) { }
     }
 }
