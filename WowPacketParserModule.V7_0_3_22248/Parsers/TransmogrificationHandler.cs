@@ -22,6 +22,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (int i = 0; i < itemCount; i++)
                 ReadTransmogrifyItem(packet, i);
 
+            packet.ResetBitReader();
             packet.ReadBit("CurrentSpecOnly");
         }
 
