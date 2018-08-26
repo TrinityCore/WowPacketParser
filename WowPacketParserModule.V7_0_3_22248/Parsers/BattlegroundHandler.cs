@@ -141,5 +141,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("RatedArenas");
             packet.ReadBit("ArenaSkirmish");
         }
+
+        [Parser(Opcode.SMSG_REPORT_PVP_PLAYER_AFK_RESULT)]
+        public static void HandleReportPvPPlayerAfkResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("Offender");
+            packet.ReadByteE<ReportPvPAFKResult>("Result");
+            packet.ReadByte("NumBlackMarksOnOffender");
+            packet.ReadByte("NumPlayersIHaveReported");
+        }
     }
 }

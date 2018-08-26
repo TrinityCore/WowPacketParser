@@ -248,6 +248,7 @@
     <Compile Include="Enums\LocaleConstant.cs" />
     <Compile Include="Enums\MountResult.cs" />
     <Compile Include="Enums\RaidSummonFail.cs" />
+    <Compile Include="Enums\ReportPvPAFKResult.cs" />
     <Compile Include="Enums\StandState.cs" />
     <Compile Include="Enums\TalentErrors.cs" />
     <Compile Include="Enums\TargetedDatabase.cs" />

@@ -202,7 +202,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadByte("NumPlayersIHaveReported");
             packet.ReadByte("NumBlackMarksOnOffender");
-            packet.ReadByte("Result");
+            packet.ReadByteE<ReportPvPAFKResult>("Result");
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_LIST)]
