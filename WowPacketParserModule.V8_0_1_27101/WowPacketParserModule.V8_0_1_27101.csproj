@@ -55,7 +55,9 @@
     <Compile Include="Parsers\CombatLogHandler.cs" />
     <Compile Include="Parsers\CreatureHandler.cs" />
     <Compile Include="Parsers\GameObjectHandler.cs" />
+    <Compile Include="Parsers\GarrisonHandler.cs" />
     <Compile Include="Parsers\GroupHandler.cs" />
+    <Compile Include="Parsers\ItemHandler.cs" />
     <Compile Include="Parsers\LootHandler.cs" />
     <Compile Include="Parsers\MiscellaneousHandler.cs" />
     <Compile Include="Parsers\MovementHandler.cs" />
@@ -64,6 +66,7 @@
     <Compile Include="Parsers\QuestHandler.cs" />
     <Compile Include="Parsers\SessionHandler.cs" />
     <Compile Include="Parsers\SpellHandler.cs" />
+    <Compile Include="Parsers\VoiceChatHandler.cs" />
     <Compile Include="Parsers\UpdateHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

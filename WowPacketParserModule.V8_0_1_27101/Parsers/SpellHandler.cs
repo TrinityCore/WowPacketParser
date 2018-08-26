@@ -270,6 +270,13 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadBit("SpeedAsTime");
         }
 
+        [Parser(Opcode.CMSG_CANCEL_CHANNELLING)]
+        public static void HandleCancelChanneling(Packet packet)
+        {
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32("Reason");
+        }
+
         [Parser(Opcode.SMSG_ADD_LOSS_OF_CONTROL)]
         public static void HandleAddLossOfControl(Packet packet)
         {
