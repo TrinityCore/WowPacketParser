@@ -84,14 +84,16 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.CMSG_SAVE_EQUIPMENT_SET, ClientVersionBuild.V7_2_0_23826)]
         public static void HandleEquipmentSetSave(Packet packet)
         {
-            packet.ReadUInt64("Set Guid");
-            packet.ReadInt32("Set ID");
+            packet.ReadInt32("SetType");
+            packet.ReadUInt64("SetGuid");
+            packet.ReadInt32("SetID");
             int ignoreMask = packet.ReadInt32("IgnoreMask");
 
             for (var i = 0; i < NumSlots; i++)
             {
                 bool ignore = (ignoreMask & (1 << i)) != 0;
                 packet.ReadPackedGuid128("Item Guid" + (ignore ? " (Ignored)" : ""), i);
+                packet.ReadUInt32("Appearance");
             }
 
             for (var j = 0; j < 2; j++)
@@ -122,6 +124,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
 
             packet.ReadUInt64("GUID");
+        }
+
+        [Parser(Opcode.SMSG_EQUIPMENT_SET_ID)]
+        public static void HandleEquipmentSetSaved(Packet packet)
+        {
+            packet.ReadUInt64("GUID");
+            packet.ReadInt32("Type");
+            packet.ReadUInt32("SetID");
         }
     }
 }

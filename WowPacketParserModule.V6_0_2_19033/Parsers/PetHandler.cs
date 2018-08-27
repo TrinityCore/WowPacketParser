@@ -116,6 +116,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("PetGUID");
             packet.ReadInt32("PetNumber");
 
+            packet.ResetBitReader();
             var bits20 = packet.ReadBits(8);
 
             var bit149 = packet.ReadBit("HasDeclinedNames");
@@ -275,6 +276,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleRequestStabledPets(Packet packet)
         {
             packet.ReadPackedGuid128("StableMaster");
+        }
+
+        [Parser(Opcode.SMSG_SET_PET_SPECIALIZATION)]
+        public static void HandleSetPetSpecialization(Packet packet)
+        {
+            packet.ReadUInt16("SpecID");
         }
     }
 }

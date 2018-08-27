@@ -35,6 +35,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             gossipMenuOptionBox.BoxCoded = packet.ReadByte("OptionFlags", idx) != 0;
             gossipMenuOptionBox.BoxMoney = (uint)packet.ReadInt32("OptionCost", idx);
 
+            packet.ResetBitReader();
             uint textLen = packet.ReadBits(12);
             uint confirmLen = packet.ReadBits(12);
 
@@ -438,7 +439,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 Storage.TrainerSpells.Add(trainerSpell, packet.TimeSpan);
             }
-
+            packet.ResetBitReader();
             uint greetingLength = packet.ReadBits(11);
             trainer.Greeting = packet.ReadWoWString("Greeting", greetingLength);
 

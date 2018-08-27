@@ -422,5 +422,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             ReadClientSettings(packet, "ClientSettings");
         }
+
+        [Parser(Opcode.SMSG_BATTLENET_REALM_LIST_TICKET)]
+        public static void HandleBattlenetRealmListTicket(Packet packet)
+        {
+            packet.ReadUInt32("Token");
+            packet.ResetBitReader();
+            packet.ReadBit("Allow");
+
+            int protoSize = packet.ReadInt32();
+            packet.ReadBytesTable("Data", protoSize);
+        }
+
+        [Parser(Opcode.CMSG_BATTLENET_REQUEST_REALM_LIST_TICKET)]
+        public static void HandleBattlenetRequestRealmListTicket(Packet packet)
+        {
+            packet.ReadUInt32("Token");
+            packet.ReadBytes("Secret", 32);
+        }
     }
 }

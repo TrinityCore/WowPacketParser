@@ -73,5 +73,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadSingle("PvpCPExpCoefficient");
             packet.ReadSingle("PvpCPNumerator");
         }
+
+        [Parser(Opcode.SMSG_NOTIFY_MONEY)]
+        public static void HandleNotifyMoney(Packet packet)
+        {
+            packet.ReadUInt64("Money");
+        }
     }
 }

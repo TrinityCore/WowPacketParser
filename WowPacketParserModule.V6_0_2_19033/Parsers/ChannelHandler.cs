@@ -17,7 +17,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_CHAT_JOIN_CHANNEL)]
         public static void HandleChannelJoin(Packet packet)
         {
-            packet.ReadInt32("Channel Id");
+            packet.ReadInt32("ChatChannelId");
             packet.ReadBit("CreateVoiceSession");
             packet.ReadBit("Internal");
 
@@ -38,7 +38,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             ReadChannelFlags(packet);
             packet.ReadInt32("ChatChannelID");
-            packet.ReadInt64("InstanceID");
+            packet.ReadUInt64("InstanceID");
 
             packet.ReadWoWString("Channel", bits544);
             packet.ReadWoWString("ChannelWelcomeMsg", bits24);
@@ -67,7 +67,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadPackedGuid128("TargetGuid");
 
-            packet.ReadInt32("TargetVirtualRealm");
+            packet.ReadUInt32("TargetVirtualRealm");
             packet.ReadInt32("ChatChannelID");
 
             if (type == ChatNotificationType.ModeChange)
@@ -191,7 +191,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadByteE<ChannelMemberFlag>("UserFlags");
             ReadChannelFlags(packet);
-            packet.ReadInt32("ChannelID");
+            packet.ReadUInt32("ChannelID");
 
             var len = packet.ReadBits(7);
             packet.ReadWoWString("ChannelName", len);
@@ -203,7 +203,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("RemovedUserGUID");
 
             ReadChannelFlags(packet);
-            packet.ReadInt32("ChannelID");
+            packet.ReadUInt32("ChannelID");
 
             var len = packet.ReadBits(7);
             packet.ReadWoWString("ChannelName", len);
@@ -216,7 +216,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadByteE<ChannelMemberFlag>("UserFlags");
             ReadChannelFlags(packet);
-            packet.ReadInt32("ChannelID");
+            packet.ReadUInt32("ChannelID");
 
             var len = packet.ReadBits(7);
             packet.ReadWoWString("ChannelName", len);

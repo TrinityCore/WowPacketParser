@@ -858,5 +858,28 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32<ItemId>("ItemID");
             packet.ReadBit("Favorite");
         }
+
+        [Parser(Opcode.CMSG_WHO_IS)]
+        public static void HandleWhoIsRequest(Packet packet)
+        {
+            var len = packet.ReadBits(6);
+            packet.ReadWoWString("CharName", len);
+        }
+
+        [Parser(Opcode.SMSG_WHO_IS)]
+        public static void HandleWhoIsResponse(Packet packet)
+        {
+            var accNameLen = packet.ReadBits(11);
+            packet.ReadWoWString("AccountName", accNameLen);
+        }
+
+        [Parser(Opcode.CMSG_COLLECTION_ITEM_SET_FAVORITE)]
+        public static void HandleCollectionItemSetFavorite(Packet packet)
+        {
+            packet.ReadInt32E<CollectionType>("CollectionType");
+            packet.ReadUInt32("ID");
+            packet.ResetBitReader();
+            packet.ReadBit("IsFavorite");
+        }
     }
 }

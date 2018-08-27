@@ -88,6 +88,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DBFilesClient.NET, Version=1.1.4.0, Culture=neutral, processorArchitecture=MSIL">
@@ -185,6 +186,7 @@
     <Compile Include="Enums\ChatRestrictionType.cs" />
     <Compile Include="Enums\ChatTag.cs" />
     <Compile Include="Enums\Class.cs" />
+    <Compile Include="Enums\CollectionType.cs" />
     <Compile Include="Enums\FileCompression.cs" />
     <Compile Include="Enums\ClassMask.cs" />
     <Compile Include="Enums\ClientType.cs" />
@@ -247,6 +249,7 @@
     <Compile Include="Enums\LocaleConstant.cs" />
     <Compile Include="Enums\MountResult.cs" />
     <Compile Include="Enums\RaidSummonFail.cs" />
+    <Compile Include="Enums\ReportPvPAFKResult.cs" />
     <Compile Include="Enums\StandState.cs" />
     <Compile Include="Enums\TalentErrors.cs" />
     <Compile Include="Enums\TargetedDatabase.cs" />
@@ -421,6 +424,7 @@
     <Compile Include="Enums\Version\V7_3_0_24920\Opcodes.cs" />
     <Compile Include="Enums\Version\V7_3_2_25383\Opcodes.cs" />
     <Compile Include="Enums\Version\V7_3_5_25848\Opcodes.cs" />
+    <Compile Include="Enums\Version\V8_0_1_27101\Opcodes.cs" />
     <Compile Include="Enums\VictimStates.cs" />
     <Compile Include="Enums\VoidTransferError.cs" />
     <Compile Include="Enums\WardenCheckType.cs" />
