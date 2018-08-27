@@ -73,6 +73,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_PET_MODE)]
+        public static void HandlePetMode(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
+            ReadPetFlags(packet, "PetModeAndOrders");
+        }
+
         [Parser(Opcode.SMSG_PET_NAME_INVALID)]
         public static void HandlePetNameInvalid(Packet packet)
         {
