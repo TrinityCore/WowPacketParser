@@ -82,7 +82,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.CMSG_PET_SPELL_AUTOCAST)]
         public static void HandlePetSpellAutocast(Packet packet)
         {
-            packet.ReadGuid("PetGUID");
+            packet.ReadPackedGuid128("PetGUID");
             packet.ReadUInt32<SpellId>("SpellID");
             packet.ResetBitReader();
             packet.ReadBit("AutocastEnabled");
