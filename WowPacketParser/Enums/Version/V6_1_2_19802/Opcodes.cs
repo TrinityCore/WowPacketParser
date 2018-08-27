@@ -587,7 +587,7 @@ namespace WowPacketParser.Enums.Version.V6_1_2_19802
             {Opcode.CMSG_SET_ASSISTANT_LEADER, 0x0395},
             {Opcode.CMSG_SET_BACKPACK_AUTOSORT_DISABLED, 0x0AF9},
             {Opcode.CMSG_SET_BANK_AUTOSORT_DISABLED, 0x0BA3},
-            {Opcode.CMSG_SET_BANK_BAG_SLOT_FLAG, 0x0B72},
+            {Opcode.CMSG_CHANGE_BANK_BAG_SLOT_FLAG, 0x0B72},
             {Opcode.CMSG_SET_CONTACT_NOTES, 0x0B3D},
             {Opcode.CMSG_SET_CURRENCY_FLAGS, 0x065C},
             {Opcode.CMSG_SET_DIFFICULTY_ID, 0x0BD3},
