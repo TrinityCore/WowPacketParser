@@ -109,14 +109,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_GUILD_CRITERIA_DELETED)]
         public static void HandleGuildCriteriaDeleted(Packet packet)
         {
-            packet.ReadPackedGuid("GuildGUID");
+            packet.ReadPackedGuid128("GuildGUID");
             packet.ReadInt32("CriteriaID");
         }
 
         [Parser(Opcode.SMSG_GUILD_ACHIEVEMENT_DELETED)]
         public static void HandleGuildAchievementDeleted(Packet packet)
         {
-            packet.ReadPackedGuid("GuildGUID");
+            packet.ReadPackedGuid128("GuildGUID");
             packet.ReadUInt32("AchievementID");
             packet.ReadPackedTime("TimeDeleted");
         }
