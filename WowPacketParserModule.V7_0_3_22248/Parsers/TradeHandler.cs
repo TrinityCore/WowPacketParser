@@ -11,9 +11,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         public static void HandleTradeStatus(Packet packet)
         {
             packet.ReadBit("PartnerIsSameBnetAccount");
-            var status = packet.ReadBits("Status", 5);
+            var status = packet.ReadBitsE<TradeStatus>("Status", 5);
 
-            switch ((TradeStatus)status)
+            switch (status)
             {
                 case TradeStatus.Failed:
                     packet.ReadBit("FailureForYou");
