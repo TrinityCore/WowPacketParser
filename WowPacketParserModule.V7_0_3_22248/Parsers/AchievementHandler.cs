@@ -18,7 +18,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             var nameLen = packet.ReadBits(7);
             packet.ReadBit("GuildAchievement");
-            var guid = packet.ReadGuid("PlayerGUID");
+            var guid = packet.ReadPackedGuid128("PlayerGUID");
             packet.ReadUInt32<AchievementId>("AchievementId");
             var name = packet.ReadWoWString("Name", nameLen);
 
