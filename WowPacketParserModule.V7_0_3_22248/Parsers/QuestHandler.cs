@@ -600,6 +600,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32("ChoiceID");
             var responseCount = packet.ReadUInt32();
             packet.ReadPackedGuid128("SenderGUID");
+            packet.ReadInt32("UiTextureKitID");
             packet.ResetBitReader();
             var questionLength = packet.ReadBits(8);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_5_24330))
