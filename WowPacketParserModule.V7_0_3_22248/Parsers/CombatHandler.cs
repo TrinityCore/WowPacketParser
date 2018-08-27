@@ -34,5 +34,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadInt64("Threat", i);
             }
         }
+
+        [Parser(Opcode.SMSG_PVP_CREDIT)]
+        public static void HandlePvPCredit(Packet packet)
+        {
+            packet.ReadInt32("OriginalHonor");
+            packet.ReadInt32("Honor");
+            packet.ReadPackedGuid128("Target");
+            packet.ReadInt32("Rank");
+        }
     }
 }

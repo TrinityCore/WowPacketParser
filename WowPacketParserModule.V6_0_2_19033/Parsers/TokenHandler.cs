@@ -65,6 +65,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("UnkInt");
         }
 
+        [Parser(Opcode.SMSG_WOW_TOKEN_MARKET_PRICE_RESPONSE)]
         [Parser(Opcode.SMSG_REQUEST_WOW_TOKEN_MARKET_PRICE_RESPONSE)]
         public static void HandleTokenUpdateMarketPriceResponse(Packet packet)
         {
@@ -122,6 +123,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("UnkInt");
         }
 
+        [Parser(Opcode.SMSG_WOW_TOKEN_UPDATE_AUCTIONABLE_LIST_RESPONSE)]
         [Parser(Opcode.SMSG_UPDATE_WOW_TOKEN_AUCTIONABLE_LIST_RESPONSE)]
         public static void HandleUpdateListedAuctionableTokensResponse(Packet packet)
         {

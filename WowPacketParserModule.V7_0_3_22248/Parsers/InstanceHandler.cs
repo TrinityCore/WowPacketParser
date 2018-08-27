@@ -14,6 +14,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadUInt32<MapId>("MapID");
             packet.ReadUInt32("DifficultyID");
 
+            packet.ResetBitReader();
             packet.ReadBit("Locked");
             packet.ReadBit("Extended");
         }
@@ -71,6 +72,17 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
                 packet.ReadWoWString("Name", strlen, i);
             }
+        }
+
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_START)]
+        public static void HandleInstanceEncounterStart(Packet packet)
+        {
+            packet.ReadInt32("InCombatResCount");
+            packet.ReadInt32("MaxInCombatResCount");
+            packet.ReadInt32("CombatResChargeRecovery");
+            packet.ReadInt32("NextCombatResChargeTime");
+            packet.ResetBitReader();
+            packet.ReadBit("InProgress");
         }
     }
 }

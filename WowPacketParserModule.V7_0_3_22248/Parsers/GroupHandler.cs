@@ -137,6 +137,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadPackedGuid128("LeaderGUID");
 
             var playerCount = packet.ReadInt32("PlayerListCount");
+            packet.ResetBitReader();
             var hasLFG = packet.ReadBit("HasLfgInfo");
             var hasLootSettings = packet.ReadBit("HasLootSettings");
             var hasDifficultySettings = packet.ReadBit("HasDifficultySettings");
@@ -294,6 +295,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
             if (phaseChanged)
                 V6_0_2_19033.Parsers.GroupHandler.ReadPhaseInfos(packet, "Phase");
+        }
+
+        [Parser(Opcode.CMSG_SET_EVERYONE_IS_ASSISTANT)]
+        public static void HandleEveryoneIsAssistant(Packet packet)
+        {
+            // might be valid for 602+ too
+            packet.ReadByte("PartyIndex");
+            packet.ReadBit("Active");
         }
     }
 }

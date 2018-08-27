@@ -112,5 +112,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32<SpellId>("SpellID");
             packet.ReadInt32("SkillLineID");
         }
+
+        [Parser(Opcode.CMSG_SET_TRADE_CURRENCY)]
+        public static void HandleSetTradeCurrency(Packet packet)
+        {
+            packet.ReadUInt32("Type");
+            packet.ReadUInt32("Quantity");
+        }
     }
 }

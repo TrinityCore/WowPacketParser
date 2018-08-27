@@ -13,13 +13,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_CRITERIA_UPDATE)]
         public static void HandleCriteriaPlayer(Packet packet)
         {
-            int criteriaId = packet.ReadInt32<CriteriaId>("Id");
+            int criteriaId = packet.ReadInt32<CriteriaId>("CriteriaID");
             ulong quantity = (ulong)packet.ReadInt64("Quantity");
-            packet.ReadPackedGuid128("Guid");
+            packet.ReadPackedGuid128("PlayerGUID");
             packet.ReadInt32("Flags");
-            packet.ReadPackedTime("Date");
-            packet.ReadTime("TimeFromStart");
-            packet.ReadTime("TimeFromCreate");
+            packet.ReadPackedTime("CurrentTime");
+            packet.ReadTime("ElapsedTime");
+            packet.ReadTime("CreationTime");
 
             if (Settings.UseDBC)
                 if (DBC.Criteria.ContainsKey(criteriaId))
@@ -104,6 +104,45 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("Player");
             ReadAllAchievements(packet, "Data");
+        }
+
+        [Parser(Opcode.SMSG_GUILD_CRITERIA_DELETED)]
+        public static void HandleGuildCriteriaDeleted(Packet packet)
+        {
+            packet.ReadPackedGuid128("GuildGUID");
+            packet.ReadInt32("CriteriaID");
+        }
+
+        [Parser(Opcode.SMSG_GUILD_ACHIEVEMENT_DELETED)]
+        public static void HandleGuildAchievementDeleted(Packet packet)
+        {
+            packet.ReadPackedGuid128("GuildGUID");
+            packet.ReadUInt32("AchievementID");
+            packet.ReadPackedTime("TimeDeleted");
+        }
+
+        [Parser(Opcode.CMSG_GUILD_GET_ACHIEVEMENT_MEMBERS)]
+        public static void HandleGuildGetAchievementMembers(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGUID");
+            packet.ReadPackedGuid128("GuildGUID");
+            packet.ReadInt32("AchievementID");
+        }
+
+        public static void ReadGuildAchievementMember(Packet packet, params object[] index)
+        {
+            packet.ReadPackedGuid128("MemberGUID", index);
+        }
+
+        [Parser(Opcode.SMSG_GUILD_ACHIEVEMENT_MEMBERS)]
+        public static void HandleGuildAchievementMembers(Packet packet)
+        {
+            packet.ReadPackedGuid128("GuildGUID");
+            packet.ReadInt32("AchievementID");
+            var memberCount = packet.ReadUInt32("MemberCount");
+
+            for (int i = 0; i < memberCount; i++)
+                ReadGuildAchievementMember(packet, i);
         }
     }
 }

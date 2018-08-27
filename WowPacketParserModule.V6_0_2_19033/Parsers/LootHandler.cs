@@ -47,6 +47,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleLootMoneyNotify(Packet packet)
         {
             packet.ReadInt32("Money");
+            packet.ResetBitReader();
             packet.ReadBit("SoleLooter");
         }
 
@@ -62,7 +63,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_LOOT_REMOVED)]
         public static void HandleLootRemoved(Packet packet)
         {
-            packet.ReadPackedGuid128("Loot Owner");
+            packet.ReadPackedGuid128("Owner");
             packet.ReadPackedGuid128("LootObj");
             packet.ReadByte("LootListId");
         }

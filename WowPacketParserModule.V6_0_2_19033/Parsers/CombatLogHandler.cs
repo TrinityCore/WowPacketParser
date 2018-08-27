@@ -230,6 +230,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("Resisted");
             packet.ReadInt32("Absorbed");
 
+            packet.ResetBitReader();
             var bit76 = packet.ReadBit("HasLogData");
             if (bit76)
                 SpellHandler.ReadSpellCastLogData(packet);

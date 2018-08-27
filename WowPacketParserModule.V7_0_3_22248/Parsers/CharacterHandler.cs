@@ -144,15 +144,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadByte("FacialHairStyleID");
             packet.ReadByte("OutfitID");
 
-            for (uint i = 0; i < 3; ++i)
-                packet.ReadByte("CustomDisplay", i);
-
             packet.ReadWoWString("Name", nameLen);
 
             if (hasTemplateSet)
                 packet.ReadInt32("TemplateSetID");
         }
-
+        
         [Parser(Opcode.SMSG_LEVEL_UP_INFO)]
         public static void HandleLevelUpInfo(Packet packet)
         {
@@ -211,19 +208,6 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 ReadPVPBracketData(packet, i, "PVPBracketData");
         }
 
-        [Parser(Opcode.SMSG_POWER_UPDATE)]
-        public static void HandlePowerUpdate(Packet packet)
-        {
-            packet.ReadPackedGuid128("Guid");
-
-            var int32 = packet.ReadInt32("Count");
-            for (var i = 0; i < int32; i++)
-            {
-                packet.ReadInt32("Power", i);
-                packet.ReadByteE<PowerType>("PowerType", i);
-            }
-        }
-
         [Parser(Opcode.CMSG_LEARN_PVP_TALENTS)]
         public static void HandleLearnPvPTalents(Packet packet)
         {
@@ -241,6 +225,151 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var talentCount = packet.ReadUInt32("TalentCount");
             for (int i = 0; i < talentCount; i++)
                 packet.ReadUInt16("Talents");
+        }
+
+        [Parser(Opcode.SMSG_INSPECT_RESULT)]
+        public static void HandleInspectResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("InspecteeGUID");
+
+            var int48 = packet.ReadInt32("ItemsCount");
+            var int80 = packet.ReadInt32("GlyphsCount");
+            var int112 = packet.ReadInt32("TalentsCount");
+            var int144 = packet.ReadInt32("PvpTalentsCount");
+            packet.ReadUInt32E<Class>("ClassID");
+            packet.ReadUInt32("SpecializationID");
+            packet.ReadUInt32E<Gender>("Gender");
+
+            for (int i = 0; i < int80; i++)
+                packet.ReadInt16("Glyphs", i);
+
+            for (int i = 0; i < int112; i++)
+                packet.ReadInt16("Talents", i);
+
+            for (int i = 0; i < int144; i++)
+                packet.ReadInt16("PvpTalents", i);
+
+            packet.ResetBitReader();
+            var hasGuildData = packet.ReadBit("HasGuildData");
+
+            for (int i = 0; i < int48; i++)
+            {
+                packet.ReadPackedGuid128("CreatorGUID", i);
+                packet.ReadByte("Index", i);
+
+                V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, i);
+
+                packet.ResetBitReader();
+                packet.ReadBit("Usable", i);
+                var enchantsCount = packet.ReadBits("EnchantsCount", 4, i);
+                var gemsCount = packet.ReadBits("GemsCount", 2, i);
+
+                for (int j = 0; j < gemsCount; j++)
+                {
+                    packet.ReadByte("Slot", i, j);
+                    V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, i, j);
+                }
+
+                for (int j = 0; j < enchantsCount; j++)
+                {
+                    packet.ReadInt32("Id", i, j);
+                    packet.ReadByte("Index", i, j);
+                }
+            }
+
+            if (hasGuildData)
+            {
+                packet.ReadPackedGuid128("GuildGUID");
+                packet.ReadUInt32("NumGuildMembers");
+                packet.ReadUInt32("GuildAchievementPoints");
+            }
+        }
+
+        [Parser(Opcode.CMSG_CHAR_CUSTOMIZE)]
+        public static void HandleClientCharCustomize(Packet packet)
+        {
+            packet.ReadPackedGuid128("CharGUID");
+
+            packet.ReadByte("SexID");
+            packet.ReadByte("SkinID");
+            packet.ReadByte("HairColorID");
+            packet.ReadByte("HairStyleID");
+            packet.ReadByte("FacialHairStyleID");
+            packet.ReadByte("FaceID");
+
+            for (uint i = 0; i < 3; ++i)
+                packet.ReadByte("CustomDisplay", i);
+
+            packet.ResetBitReader();
+            var bits19 = packet.ReadBits(6);
+            packet.ReadWoWString("CharName", bits19);
+        }
+
+
+        [Parser(Opcode.CMSG_CHAR_RACE_OR_FACTION_CHANGE)]
+        public static void HandleCharRaceOrFactionChange(Packet packet)
+        {
+            packet.ReadBit("FactionChange");
+
+            var bits20 = packet.ReadBits(6);
+
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadByte("SexID");
+            packet.ReadByte("RaceID");
+            packet.ReadByte("SkinID");
+            packet.ReadByte("HairColorID");
+            packet.ReadByte("HairStyleID");
+            packet.ReadByte("FacialHairStyleID");
+            packet.ReadByte("FaceID");
+            for (uint i = 0; i < 3; ++i)
+                packet.ReadByte("CustomDisplay", i);
+            packet.ReadWoWString("Name", bits20);
+        }
+
+        [Parser(Opcode.SMSG_CHAR_FACTION_CHANGE_RESULT)]
+        public static void HandleCharFactionChangeResult(Packet packet)
+        {
+            packet.ReadByte("Result");
+            packet.ReadPackedGuid128("Guid");
+
+            packet.ResetBitReader();
+
+            var bit72 = packet.ReadBit("HasDisplayInfo");
+            if (bit72)
+            {
+                packet.ResetBitReader();
+                var bits55 = packet.ReadBits(6);
+
+                packet.ReadByte("SexID");
+                packet.ReadByte("SkinID");
+                packet.ReadByte("HairColorID");
+                packet.ReadByte("HairStyleID");
+                packet.ReadByte("FacialHairStyleID");
+                packet.ReadByte("FaceID");
+                packet.ReadByte("RaceID");
+
+                for (uint i = 0; i < 3; ++i)
+                    packet.ReadByte("CustomDisplay", i);
+                packet.ReadWoWString("Name", bits55);
+            }
+        }
+
+        [Parser(Opcode.SMSG_CHAR_CUSTOMIZE)]
+        public static void HandleServerCharCustomize(Packet packet)
+        {
+            packet.ReadPackedGuid128("CharGUID");
+            packet.ReadByte("SexID");
+            packet.ReadByte("SkinID");
+            packet.ReadByte("HairColorID");
+            packet.ReadByte("HairStyleID");
+            packet.ReadByte("FacialHairStyleID");
+            packet.ReadByte("FaceID");
+            for (uint i = 0; i < 3; ++i)
+                packet.ReadByte("CustomDisplay", i);
+
+            packet.ResetBitReader();
+            var bits55 = packet.ReadBits(6);
+            packet.ReadWoWString("Name", bits55);
         }
     }
 }
