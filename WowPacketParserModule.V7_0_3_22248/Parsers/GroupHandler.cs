@@ -304,5 +304,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadByte("PartyIndex");
             packet.ReadBit("Active");
         }
+
+        [Parser(Opcode.CMSG_READY_CHECK_RESPONSE)]
+        public static void HandleClientReadyCheckResponse(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            packet.ReadBit("IsReady");
+        }
     }
 }
