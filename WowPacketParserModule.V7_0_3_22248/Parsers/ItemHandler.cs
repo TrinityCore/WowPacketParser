@@ -6,6 +6,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
     public static class ItemHandler
     {
+        public static void ItemEnchantInstanceData(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt32("ID");
+            packet.ReadUInt32("Expiration");
+            packet.ReadUInt32("Charges");
+            packet.ReadByte("Slot");
+        }
+
         public static void ReadItemGemInstanceData(Packet packet, params object[] idx)
         {
             packet.ReadByte("Slot", idx);
