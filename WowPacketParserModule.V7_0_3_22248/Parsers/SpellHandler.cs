@@ -678,6 +678,23 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadPackedGuid128("CastID");
         }
 
+        [Parser(Opcode.SMSG_NOTIFY_MISSILE_TRAJECTORY_COLLISION)]
+        public static void HandleNotifyMissileTrajectoryCollision(Packet packet)
+        {
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadPackedGuid128("CastID");
+            packet.ReadVector3("CollisionPos");
+        }
+
+        [Parser(Opcode.CMSG_MISSILE_TRAJECTORY_COLLISION)]
+        public static void HandleMissileTrajectoryCollision(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadPackedGuid128("CastID");
+            packet.ReadVector3("CollisionPos");
+        }
+
         [Parser(Opcode.SMSG_SUPERCEDED_SPELLS)]
         public static void HandleSupercededSpells(Packet packet)
         {
