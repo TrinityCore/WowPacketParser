@@ -633,5 +633,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadBit("EnablePVP");
         }
+
+        [Parser(Opcode.CMSG_KEYBOUND_OVERRIDE)]
+        public static void HandleKeyboundOverride(Packet packet)
+        {
+            packet.ReadUInt16("OverrideID");
+        }
     }
 }

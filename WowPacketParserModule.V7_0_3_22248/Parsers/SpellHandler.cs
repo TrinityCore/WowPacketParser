@@ -694,5 +694,22 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadPackedGuid128("CastID");
             packet.ReadVector3("CollisionPos");
         }
+
+        [Parser(Opcode.SMSG_SUPERCEDED_SPELLS)]
+        public static void HandleSupercededSpells(Packet packet)
+        {
+            var spellCount = packet.ReadInt32("SpellCount");
+            var supercededCount = packet.ReadInt32("SupercededCount");
+            var favoriteSpellCount = packet.ReadInt32("FavoriteSpellCount");
+
+            for (int i = 0; i < spellCount; i++)
+                packet.ReadUInt32("SpellID", i);
+
+            for (int i = 0; i < supercededCount; i++)
+                packet.ReadUInt32("Superceded", i);
+
+            for (int i = 0; i < favoriteSpellCount; i++)
+                packet.ReadUInt32("FavoriteSpellID", i);
+        }
     }
 }
