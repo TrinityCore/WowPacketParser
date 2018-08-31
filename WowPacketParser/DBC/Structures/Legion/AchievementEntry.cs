@@ -1,6 +1,4 @@
-﻿using DBFilesClient.NET;
-
-namespace WowPacketParser.DBC.Structures
+﻿namespace WowPacketParser.DBC.Structures.Legion
 {
     [DBFile("Achievement")]
 
@@ -8,18 +6,18 @@ namespace WowPacketParser.DBC.Structures
     {
         public string Title;
         public string Description;
-        public uint Flags;
         public string Reward;
-        public short MapID;
-        public ushort Supercedes;
-        public ushort Category;
-        public ushort UIOrder;
-        public ushort SharesCriteria;
-        public ushort CriteriaTree;
+        public int Flags;
+        public short InstanceID;
+        public short Supercedes;
+        public short Category;
+        public short UiOrder;
+        public short SharesCriteria;
         public sbyte Faction;
-        public byte Points;
-        public byte MinimumCriteria;
+        public sbyte Points;
+        public sbyte MinimumCriteria;
         public uint ID;
-        public uint IconFileDataID;
+        public int IconFileDataID;
+        public uint CriteriaTree;
     }
 }

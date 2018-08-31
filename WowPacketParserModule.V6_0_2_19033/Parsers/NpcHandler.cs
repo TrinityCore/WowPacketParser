@@ -363,7 +363,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     if (obj.Type == ObjectType.Unit)
                     {
                         int factionTemplateId = 0;
-                        uint faction = 0;
+                        int faction = 0;
                         UpdateField uf;
 
                         if (obj.UpdateFields != null && obj.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_FACTIONTEMPLATE), out uf))

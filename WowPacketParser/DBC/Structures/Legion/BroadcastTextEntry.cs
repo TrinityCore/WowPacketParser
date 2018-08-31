@@ -1,6 +1,6 @@
-﻿using DBFilesClient.NET;
+﻿using System.Runtime.InteropServices;
 
-namespace WowPacketParser.DBC.Structures
+namespace WowPacketParser.DBC.Structures.Legion
 {
     [DBFile("BroadcastText")]
 
@@ -8,12 +8,15 @@ namespace WowPacketParser.DBC.Structures
     {
         public string Text;
         public string Text1;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         public ushort[] EmoteID;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
         public ushort[] EmoteDelay;
         public ushort EmotesID;
         public byte LanguageID;
         public byte Flags;
-        public uint[] SoundEntriesID;
         public uint ConditionID;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+        public uint[] SoundEntriesID;
     }
 }

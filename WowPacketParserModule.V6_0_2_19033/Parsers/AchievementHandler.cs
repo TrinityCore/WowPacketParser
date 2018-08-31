@@ -8,7 +8,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class AchievementHandler
     {
-        public static Dictionary<uint, ulong> FactionReputationStore { get; } = new Dictionary<uint, ulong>();
+        public static Dictionary<int, ulong> FactionReputationStore { get; } = new Dictionary<int, ulong>();
 
         [Parser(Opcode.SMSG_CRITERIA_UPDATE)]
         public static void HandleCriteriaPlayer(Packet packet)

@@ -5,34 +5,35 @@ using System.Linq;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
-using DBFilesClient.NET;
-using WowPacketParser.DBC.Structures;
+using WDCReaderLib;
+using WowPacketParser.DBC.Structures.BattleForAzeroth;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.DBC
 {
     public static class DBC
     {
-        public static Storage<AreaTableEntry> AreaTable = new Storage<AreaTableEntry>(GetPath("AreaTable.db2"));
-        public static Storage<AchievementEntry> Achievement = new Storage<AchievementEntry>(GetPath("Achievement.db2"));
-        public static Storage<BroadcastTextEntry> BroadcastText = new Storage<BroadcastTextEntry>(GetPath("BroadcastText.db2"));
-        public static Storage<CreatureEntry> Creature = new Storage<CreatureEntry> (GetPath("Creature.db2"));
-        public static Storage<CreatureDifficultyEntry> CreatureDifficulty = new Storage<CreatureDifficultyEntry>(GetPath("CreatureDifficulty.db2"));
-        public static Storage<CreatureFamilyEntry> CreatureFamily = new Storage<CreatureFamilyEntry>(GetPath("CreatureFamily.db2"));
-        public static Storage<CreatureDisplayInfoEntry> CreatureDisplayInfo = new Storage<CreatureDisplayInfoEntry>(GetPath("CreatureDisplayInfo.db2"));
-        public static Storage<CriteriaTreeEntry> CriteriaTree = new Storage<CriteriaTreeEntry>(GetPath("CriteriaTree.db2"));
-        public static Storage<CriteriaEntry> Criteria = new Storage<CriteriaEntry>(GetPath("Criteria.db2"));
-        public static Storage<DifficultyEntry> Difficulty = new Storage<DifficultyEntry>(GetPath("Difficulty.db2"));
-        public static Storage<FactionEntry> Faction = new Storage<FactionEntry>(GetPath("Faction.db2"));
-        public static Storage<FactionTemplateEntry> FactionTemplate = new Storage<FactionTemplateEntry>(GetPath("FactionTemplate.db2"));
-        public static Storage<ItemEntry> Item = new Storage<ItemEntry>(GetPath("Item.db2"));
-        public static Storage<ItemSparseEntry> ItemSparse = new Storage<ItemSparseEntry>(GetPath("ItemSparse.db2"));
-        public static Storage<MapEntry> Map = new Storage<MapEntry>(GetPath("Map.db2"));
-        public static Storage<MapDifficultyEntry> MapDifficulty = new Storage<MapDifficultyEntry>(GetPath("MapDifficulty.db2"));
-        public static Storage<PhaseXPhaseGroupEntry> PhaseXPhaseGroup = new Storage<PhaseXPhaseGroupEntry>(GetPath("PhaseXPhaseGroup.db2"));
-        public static Storage<SoundKitEntry> SoundKit = new Storage<SoundKitEntry>(GetPath("SoundKit.db2"));
-        public static Storage<SpellEntry> Spell = new Storage<SpellEntry>(GetPath("Spell.db2"));
-        public static Storage<SpellEffectEntry> SpellEffect = new Storage<SpellEffectEntry>(GetPath("SpellEffect.db2"));
+        public static Storage<AreaTableEntry> AreaTable { get; set; }
+        public static Storage<AchievementEntry> Achievement { get; set; }
+        public static Storage<BroadcastTextEntry> BroadcastText { get; set; }
+        public static Storage<CreatureEntry> Creature { get; set; }
+        public static Storage<CreatureDifficultyEntry> CreatureDifficulty { get; set; }
+        public static Storage<CreatureFamilyEntry> CreatureFamily { get; set; }
+        public static Storage<CreatureDisplayInfoEntry> CreatureDisplayInfo { get; set; }
+        public static Storage<CriteriaTreeEntry> CriteriaTree { get; set; }
+        public static Storage<CriteriaEntry> Criteria { get; set; }
+        public static Storage<DifficultyEntry> Difficulty { get; set; }
+        public static Storage<FactionEntry> Faction { get; set; }
+        public static Storage<FactionTemplateEntry> FactionTemplate { get; set; }
+        public static Storage<ItemEntry> Item { get; set; }
+        public static Storage<ItemSparseEntry> ItemSparse { get; set; }
+        public static Storage<MapEntry> Map { get; set; }
+        public static Storage<MapDifficultyEntry> MapDifficulty { get; set; }
+        public static Storage<PhaseXPhaseGroupEntry> PhaseXPhaseGroup { get; set; }
+        public static Storage<SoundKitNameEntry> SoundKitName { get; set; }
+        public static Storage<SpellEntry> Spell { get; set; }
+        public static Storage<SpellEffectEntry> SpellEffect { get; set; }
+        public static Storage<SpellNameEntry> SpellName { get; set; }
 
         private static string GetPath()
         {
@@ -57,8 +58,10 @@ namespace WowPacketParser.DBC
             Trace.WriteLine("File name                           LoadTime             Record count");
             Trace.WriteLine("---------------------------------------------------------------------");
 
-            Parallel.ForEach(Assembly.GetAssembly(typeof(DBC)).GetTypes(), type =>
+            Parallel.ForEach(typeof(DBC).GetProperties(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic), dbc =>
             {
+                Type type = dbc.PropertyType.GetGenericArguments()[0];
+
                 if (!type.IsClass)
                     return;
 
@@ -70,8 +73,19 @@ namespace WowPacketParser.DBC
                 var times = new List<long>();
                 var instanceType = typeof(Storage<>).MakeGenericType(type);
                 var countGetter = instanceType.GetProperty("Count").GetGetMethod();
-                var instance = Activator.CreateInstance(instanceType, $"{ GetPath(attr.FileName) }.db2", true);
+                var instance = Activator.CreateInstance(instanceType, $"{ GetPath(attr.FileName) }.db2");
                 var recordCount = (int)countGetter.Invoke(instance, new object[] { });
+
+                try
+                {
+                    dbc.SetValue(dbc.GetValue(null), instance);
+                }
+                catch (TargetInvocationException tie)
+                {
+                    if (tie.InnerException is ArgumentException)
+                        throw new ArgumentException($"Failed to load {attr.FileName}.db2: {tie.InnerException.Message}");
+                    throw;
+                }
 
                 var endTime = DateTime.Now;
                 var span = endTime.Subtract(startTime);
@@ -112,7 +126,7 @@ namespace WowPacketParser.DBC
                     foreach (var criteriaTree in CriteriaTree)
                     {
                         string result = "";
-                        ushort criteriaTreeID = criteriaTree.Value.Parent > 0 ? criteriaTree.Value.Parent : (ushort)criteriaTree.Key;
+                        uint criteriaTreeID = criteriaTree.Value.Parent > 0 ? criteriaTree.Value.Parent : (uint)criteriaTree.Key;
 
                         List<AchievementEntry> achievementList;
                         if (achievements.TryGetValue(criteriaTreeID, out achievementList))
@@ -145,7 +159,7 @@ namespace WowPacketParser.DBC
                 if (SpellEffect != null)
                     foreach (var effect in SpellEffect)
                     {
-                        var tuple = Tuple.Create(effect.Value.SpellID, effect.Value.EffectIndex);
+                        var tuple = Tuple.Create((uint)effect.Value.SpellID, (uint)effect.Value.EffectIndex);
                         SpellEffectStores[tuple] = effect.Value;
                     }
             }), Task.Run(() =>

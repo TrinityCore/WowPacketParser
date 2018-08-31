@@ -1,16 +1,18 @@
-﻿using DBFilesClient.NET;
+﻿using System.Runtime.InteropServices;
 
-namespace WowPacketParser.DBC.Structures
+namespace WowPacketParser.DBC.Structures.Legion
 {
     [DBFile("FactionTemplate")]
     public sealed class FactionTemplateEntry
     {
         public ushort Faction;
         public ushort Flags;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
         public ushort[] Enemies;
-        public ushort[] Friends;
-        public byte Mask;
-        public byte FriendMask;
-        public byte EnemyMask;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+        public ushort[] Friend;
+        public byte FactionGroup;
+        public byte FriendGroup;
+        public byte EnemyGroup;
     }
 }
