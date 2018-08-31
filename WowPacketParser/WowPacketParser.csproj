@@ -32,7 +32,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -90,9 +90,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DBFilesClient.NET, Version=1.1.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DBFilesClient.NET.1.1.4\lib\net452\DBFilesClient.NET.dll</HintPath>
-    </Reference>
     <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
       <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
     </Reference>
@@ -119,9 +116,34 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Tamir.SharpSSH.1.1.1.13\lib\Tamir.SharpSSH.dll</HintPath>
     </Reference>
+    <Reference Include="WDCReaderLib">
+      <HintPath>..\packages\WDCReaderLib.1.0.0.0\lib\WDCReaderLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DBC\DBC.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\AchievementEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\AreaTableEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\BroadcastTextEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\CreatureDifficultyEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\CreatureDisplayInfoEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\CreatureEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\CreatureFamilyEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\CriteriaEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\CriteriaTreeEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\DBFileAttribute.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\DifficultyEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\FactionEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\FactionTemplateEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\ItemEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\ItemSparseEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\MapDifficultyEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\MapEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\PhaseXPhaseGroupEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\SoundKitNameEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\SpellEffectEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\SpellEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\SpellNameEntry.cs" />
     <Compile Include="DBC\Structures\Legion\AchievementEntry.cs" />
     <Compile Include="DBC\Structures\Legion\AreaTableEntry.cs" />
     <Compile Include="DBC\Structures\Legion\BroadcastTextEntry.cs" />
@@ -140,7 +162,7 @@
     <Compile Include="DBC\Structures\Legion\MapDifficultyEntry.cs" />
     <Compile Include="DBC\Structures\Legion\MapEntry.cs" />
     <Compile Include="DBC\Structures\Legion\PhaseXPhaseGroupEntry.cs" />
-    <Compile Include="DBC\Structures\Legion\SoundKitEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\SoundKitNameEntry.cs" />
     <Compile Include="DBC\Structures\Legion\SpellEffectEntry.cs" />
     <Compile Include="DBC\Structures\Legion\SpellEntry.cs" />
     <Compile Include="Enums\AccountDataType.cs" />
@@ -643,7 +665,6 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.

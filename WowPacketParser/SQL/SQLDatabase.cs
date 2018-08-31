@@ -8,7 +8,7 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using WowPacketParser.DBC.Structures;
+using WowPacketParser.DBC.Structures.BattleForAzeroth;
 
 namespace WowPacketParser.SQL
 {
@@ -139,7 +139,7 @@ namespace WowPacketParser.SQL
                     broadcastText.SoundEntriesID[1] = Convert.ToUInt32(reader["SoundEntriesID2"]);
 
                     if (!DBC.DBC.BroadcastText.ContainsKey(id))
-                        DBC.DBC.BroadcastText.Add(id, broadcastText);
+                        DBC.DBC.BroadcastText.TryAdd(id, broadcastText);
                     else
                         DBC.DBC.BroadcastText[id] = broadcastText;
                 }

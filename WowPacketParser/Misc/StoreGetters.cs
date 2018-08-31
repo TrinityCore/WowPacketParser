@@ -49,19 +49,19 @@ namespace WowPacketParser.Misc
                         break;
                     case StoreNameType.Item:
                         if (DBC.DBC.ItemSparse.ContainsKey(entry))
-                            return DBC.DBC.ItemSparse[entry].Name;
+                            return DBC.DBC.ItemSparse[entry].Display;
                         break;
                     case StoreNameType.Map:
                         if (DBC.DBC.Map.ContainsKey(entry))
                             return DBC.DBC.Map[entry].MapName;
                         break;
                     case StoreNameType.Sound:
-                        if (DBC.DBC.SoundKit.ContainsKey(entry))
-                            return DBC.DBC.SoundKit[entry].Name;
+                        if (DBC.DBC.SoundKitName.ContainsKey(entry))
+                            return DBC.DBC.SoundKitName[entry].Name;
                         break;
                     case StoreNameType.Spell:
-                        if (DBC.DBC.Spell.ContainsKey(entry))
-                            return DBC.DBC.Spell[entry].Name;
+                        if (DBC.DBC.SpellName.ContainsKey(entry))
+                            return DBC.DBC.SpellName[entry].Name;
                         break;
                     case StoreNameType.Zone:
                         if (DBC.DBC.Zones.ContainsKey((uint)entry))
