@@ -1706,6 +1706,7 @@ namespace WowPacketParser.Enums.Version.V8_0_1_27101
             {Opcode.SMSG_VOID_STORAGE_FAILED, 0x25DB},
             {Opcode.SMSG_VOID_STORAGE_TRANSFER_CHANGES, 0x25DD},
             {Opcode.SMSG_VOID_TRANSFER_RESULT, 0x25DE},
+            {Opcode.SMSG_WAIT_QUEUE_FINISH, 0x256E},
             {Opcode.SMSG_WAIT_QUEUE_UPDATE, 0x256D},
             {Opcode.SMSG_WARDEN_DATA, 0x2576},
             {Opcode.SMSG_WARFRONT_COMPLETED, 0x27AD},
