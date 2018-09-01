@@ -1,19 +1,17 @@
-﻿using DBFilesClient.NET;
-
-namespace WowPacketParser.DBC.Structures
+﻿namespace WowPacketParser.DBC.Structures.Legion
 {
     [DBFile("MapDifficulty")]
 
-    public sealed class MapDifficultyEntry
+    public class MapDifficultyEntry
     {
         public string Message;
-        public ushort MapID;
         public byte DifficultyID;
-        public byte RaidDurationType;
+        public byte ResetInterval;
         public byte MaxPlayers;
         public byte LockID;
         public byte Flags;
-        public byte ItemBonusTreeModID;
-        public uint Context;
+        public byte ItemContext;
+        public uint ItemContextPickerID;
+        public ushort MapID;
     }
 }

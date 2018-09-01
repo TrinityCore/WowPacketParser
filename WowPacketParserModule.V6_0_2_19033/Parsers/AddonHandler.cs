@@ -13,10 +13,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (var i = 0; i < count; ++i)
             {
-                var lengths = (int)packet.ReadBits(5);
                 packet.ResetBitReader();
+                var lengths = (int)packet.ReadBits(5);
                 packet.ReadWoWString("Addon", lengths, i);
-
             }
         }
 

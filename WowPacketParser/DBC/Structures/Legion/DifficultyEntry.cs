@@ -1,9 +1,6 @@
-﻿using DBFilesClient.NET;
-
-namespace WowPacketParser.DBC.Structures
+﻿namespace WowPacketParser.DBC.Structures.Legion
 {
     [DBFile("Difficulty")]
-
     public sealed class DifficultyEntry
     {
         public string Name;

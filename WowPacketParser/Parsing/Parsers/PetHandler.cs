@@ -188,8 +188,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_PET_CANCEL_AURA)]
         public static void HandlePetCancelAura(Packet packet)
         {
-            packet.ReadGuid("GUID");
-            packet.ReadInt32<SpellId>("Spell ID");
+            packet.ReadGuid("PetGUID");
+            packet.ReadInt32<SpellId>("SpellID");
         }
 
         [Parser(Opcode.SMSG_PET_LEARNED_SPELLS)]

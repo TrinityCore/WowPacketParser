@@ -303,6 +303,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("WillKickFromWorld");
             packet.ReadBit("IsExpansionPreorderInStore");
             packet.ReadBit("KioskModeEnabled");
+            packet.ReadBit("CompetetiveModeEnabled");
             packet.ReadBit("NoHandler"); // not accessed in handler
             packet.ReadBit("TrialBoostEnabled");
             packet.ReadBit("TokenBalanceEnabled");
@@ -354,5 +355,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
         [Parser(Opcode.CMSG_REQUEST_AREA_POI_UPDATE)]
         public static void HandleAreaPoiZero(Packet packet) { }
+
+        [Parser(Opcode.SMSG_SET_MOVEMENT_ANIM_KIT)]
+        public static void HandlePlayOneShotAnimKit(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+            packet.ReadUInt16("AnimKitID");
+        }
     }
 }

@@ -33,29 +33,29 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             packet.ResetBitReader();
             var hasAreaTriggerSpline = packet.ReadBit("HasAreaTriggerSpline");
-            var hasAreaTriggerUnkType = packet.ReadBit("HasAreaTriggerUnkType");
+            var hasAreaTriggerCircularMovement = packet.ReadBit("HasAreaTriggerCircularMovement");
 
             if (hasAreaTriggerSpline)
                 ReadAreaTriggerSpline(packet);
 
-            if (hasAreaTriggerUnkType)
+            if (hasAreaTriggerCircularMovement)
             {
                 packet.ResetBitReader();
-                var unk1 = packet.ReadBit("AreaTriggerUnk1");
+                var hasTarget = packet.ReadBit("HasTarget");
                 var hasCenter = packet.ReadBit("HasCenter");
-                packet.ReadBit("Unk bit 703 1");
-                packet.ReadBit("Unk bit 703 2");
+                packet.ReadBit("CounterClockwise");
+                packet.ReadBit("CanLoop");
 
-                packet.ReadUInt32("Unk UInt 1");
-                packet.ReadInt32("Unk Int 1");
-                packet.ReadUInt32("Unk UInt 2");
+                packet.ReadUInt32("TimeToTarget");
+                packet.ReadInt32("ElapsedTimeForMovement");
+                packet.ReadUInt32("StartDelay");
                 packet.ReadSingle("Radius");
                 packet.ReadSingle("BlendFromRadius");
                 packet.ReadSingle("InitialAngel");
                 packet.ReadSingle("ZOffset");
 
-                if (unk1)
-                    packet.ReadPackedGuid128("AreaTriggerUnkGUID");
+                if (hasTarget)
+                    packet.ReadPackedGuid128("TargetGUID");
 
                 if (hasCenter)
                     packet.ReadVector3("Center");

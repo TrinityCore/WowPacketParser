@@ -202,7 +202,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadByte("NumPlayersIHaveReported");
             packet.ReadByte("NumBlackMarksOnOffender");
-            packet.ReadByte("Result");
+            packet.ReadByteE<ReportPvPAFKResult>("Result");
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_LIST)]
@@ -296,9 +296,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
 
-            packet.ReadBit("AsGroup");                   // unconfirmed order
-            packet.ReadBit("SuspendedQueue");            // unconfirmed order
-            packet.ReadBit("EligibleForMatchmaking");    // unconfirmed order
+            packet.ReadBit("AsGroup");                  
+            packet.ReadBit("EligibleForMatchmaking");   
+            packet.ReadBit("SuspendedQueue");
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_STATUS_NONE)]
@@ -313,8 +313,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadBattlefieldStatus_Header(packet);
 
             packet.ReadInt32<MapId>("Mapid");
-            packet.ReadInt32("StartTimer");
             packet.ReadInt32("ShutdownTimer");
+            packet.ReadInt32("StartTimer");
 
             packet.ResetBitReader();
             packet.ReadBit("ArenaFaction");     // unconfirmed order

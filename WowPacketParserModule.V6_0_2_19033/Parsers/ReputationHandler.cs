@@ -53,10 +53,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_SET_FACTION_STANDING)]
         public static void HandleSetFactionStanding(Packet packet)
         {
-            packet.ReadSingle("BonusFromAchievementSystem");
             packet.ReadSingle("ReferAFriendBonus");
+            packet.ReadSingle("BonusFromAchievementSystem");
 
-            var count = packet.ReadInt32("");
+            var count = packet.ReadInt32();
             for (int i = 0; i < count; i++)
             {
                 packet.ReadInt32("Index");

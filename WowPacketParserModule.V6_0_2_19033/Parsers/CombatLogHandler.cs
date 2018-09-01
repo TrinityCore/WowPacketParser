@@ -230,6 +230,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("Resisted");
             packet.ReadInt32("Absorbed");
 
+            packet.ResetBitReader();
             var bit76 = packet.ReadBit("HasLogData");
             if (bit76)
                 SpellHandler.ReadSpellCastLogData(packet);
@@ -259,8 +260,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Caster");
             packet.ReadPackedGuid128("Victim");
 
-            packet.ReadInt32("InterruptedSpellID");
             packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32<SpellId>("InterruptedSpellID");
         }
 
         [Parser(Opcode.SMSG_SPELL_OR_DAMAGE_IMMUNE)]

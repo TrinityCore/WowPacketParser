@@ -117,7 +117,7 @@ namespace WowPacketParser.Enums.Version.V6_0_3_19103
             {Opcode.CMSG_CHALLENGE_MODE_REQUEST_LEADERS, 0x0E66},
             {Opcode.CMSG_CHALLENGE_MODE_REQUEST_MAP_STATS, 0x0E78},
             {Opcode.CMSG_CHANGE_BAG_SLOT_FLAG, 0x1959},
-            {Opcode.CMSG_SET_BANK_BAG_SLOT_FLAG, 0x0ADE},
+            {Opcode.CMSG_CHANGE_BANK_BAG_SLOT_FLAG, 0x0ADE},
             {Opcode.CMSG_CHANGE_SUB_GROUP, 0x0BA4},
             {Opcode.CMSG_CHANGE_MONUMENT_APPEARANCE, 0x0B91},
             {Opcode.CMSG_CHAT_CHANNEL_ANNOUNCEMENTS, 0x1313},

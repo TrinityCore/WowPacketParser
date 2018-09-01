@@ -13,14 +13,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             packet.ReadPackedGuid128("MoverGUID", idx);
 
-            packet.ReadUInt32("MoveIndex", idx);
+            packet.ReadInt32("MoveTime", idx);
             packet.ReadVector4("Position", idx);
 
             packet.ReadSingle("Pitch", idx);
-            packet.ReadSingle("StepUpStartElevation", idx);
+            packet.ReadSingle("SplineElevation", idx);
 
             var int152 = packet.ReadInt32("RemoveForcesCount", idx);
-            packet.ReadInt32("MoveTime", idx);
+            packet.ReadInt32("MoveIndex", idx);
 
             for (var i = 0; i < int152; i++)
                 packet.ReadPackedGuid128("RemoveForcesIDs", idx, i);
@@ -496,6 +496,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             if (hasTransferSpell)
                 packet.ReadUInt32<SpellId>("TransferSpellID");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_SET_VEHICLE_REC_ID_ACK)]
+        public static void HandleMoveSetVehicleRecIdAck(Packet packet)
+        {
+            ReadMovementAck(packet);
+            packet.ReadInt32("VehicleRecID");
         }
     }
 }

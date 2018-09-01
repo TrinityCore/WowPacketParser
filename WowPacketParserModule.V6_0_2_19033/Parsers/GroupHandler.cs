@@ -90,6 +90,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
+        public static void ReadPhaseInfos(Packet packet, params object[] index)
+        {
+            packet.ReadInt32("PhaseShiftFlags", index);
+            var int4 = packet.ReadInt32("PhaseCount", index);
+            packet.ReadPackedGuid128("PersonalGUID", index);
+            for (int i = 0; i < int4; i++)
+            {
+                packet.ReadUInt16("PhaseFlags", index, i);
+                packet.ReadUInt16("Id", index, i);
+            }
+        }
+
         [Parser(Opcode.SMSG_PARTY_MEMBER_STATS)]
         public static void HandlePartyMemberStats(Packet packet)
         {
@@ -237,17 +249,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
 
             if (bit72) // Phase
-            {
-                // sub_61E155
-                packet.ReadInt32("PhaseShiftFlags");
-                var int4 = packet.ReadInt32("PhaseCount");
-                packet.ReadPackedGuid128("PersonalGUID");
-                for (int i = 0; i < int4; i++)
-                {
-                    packet.ReadInt16("PhaseFlags", i);
-                    packet.ReadInt16("Id", i);
-                }
-            }
+                ReadPhaseInfos(packet, "Phase");
         }
 
         [Parser(Opcode.SMSG_PARTY_MEMBER_STATE)]
@@ -282,14 +284,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("VehicleSeatRecID");
             var auraCount = packet.ReadInt32("AuraCount");
 
-            packet.ReadInt32("PhaseShiftFlags");
-            var int4 = packet.ReadInt32("PhaseCount");
-            packet.ReadPackedGuid128("PersonalGUID");
-            for (int i = 0; i < int4; i++)
-            {
-                packet.ReadInt16("PhaseFlags", i);
-                packet.ReadInt16("Id", i);
-            }
+            ReadPhaseInfos(packet, "Phase");
 
             for (int i = 0; i < auraCount; i++)
             {

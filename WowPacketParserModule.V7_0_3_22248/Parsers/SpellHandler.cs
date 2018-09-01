@@ -210,9 +210,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         public static void ReadTalentInfoUpdate(Packet packet, params object[] idx)
         {
             packet.ReadByte("ActiveGroup", idx);
-            packet.ReadInt32("PrimarySpecialization", idx);
+            packet.ReadUInt32("PrimarySpecialization", idx);
 
-            var talentGroupsCount = packet.ReadInt32("TalentGroupsCount", idx);
+            var talentGroupsCount = packet.ReadUInt32("TalentGroupsCount", idx);
             for (var i = 0; i < talentGroupsCount; ++i)
                 ReadTalentGroupInfo(packet, idx, "TalentGroupsCount", i);
         }
@@ -220,7 +220,6 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         public static void ReadTalentGroupInfo(Packet packet, params object[] idx)
         {
             packet.ReadUInt32("SpecId", idx);
-
             var talentIDsCount = packet.ReadInt32("TalentIDsCount", idx);
             var pvpTalentIDsCount = packet.ReadInt32("PvPTalentIDsCount", idx);
 
@@ -612,6 +611,105 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var count = packet.ReadInt32("ItemDisplayCount");
             for (var i = 0; i < count; i++)
                 packet.ReadInt32("ItemDisplayID", i);
+        }
+
+        [Parser(Opcode.CMSG_UPDATE_SPELL_VISUAL)]
+        public static void HandleUpdateSpellVisual(Packet packet)
+        {
+            packet.ReadUInt32("SpellID");
+            packet.ReadUInt32("SpellXSpellVisualID");
+            packet.ReadPackedGuid128("GUID");
+        }
+
+        [Parser(Opcode.SMSG_LOSS_OF_CONTROL_AURA_UPDATE)]
+        public static void HandleLossOfControlAuraUpdate(Packet packet)
+        {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_5_24330))
+                packet.ReadPackedGuid128("AffectedGUID");
+            var count = packet.ReadInt32("LossOfControlInfoCount");
+            for (int i = 0; i < count; i++)
+            {
+                packet.ReadByte("AuraSlot", i);
+                packet.ReadByte("EffectIndex", i);
+                packet.ReadByte("Type", i);
+                packet.ReadByte("Mechanic", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_LEARN_TALENTS_FAILED)]
+        public static void HandleLearnTalentsFailed(Packet packet)
+        {
+            packet.ReadBits("Reason", 4);
+            packet.ReadInt32("SpellID");
+            var count = packet.ReadUInt32("TalentCount");
+            for (int i = 0; i < count; i++)
+                packet.ReadUInt16("Talent");
+        }
+
+        public static void ReadGlyphBinding(Packet packet, params object[] index)
+        {
+            packet.ReadUInt32("SpellID", index);
+            packet.ReadUInt16("GlyphID", index);
+        }
+
+        [Parser(Opcode.SMSG_ACTIVE_GLYPHS)]
+        public static void HandleActiveGlyphs(Packet packet)
+        {
+            var count = packet.ReadUInt32("GlyphsCount");
+            for (int i = 0; i < count; i++)
+                ReadGlyphBinding(packet, i);
+            packet.ResetBitReader();
+            packet.ReadBit("IsFullUpdate");
+        }
+
+        [Parser(Opcode.SMSG_NOTIFY_DEST_LOC_SPELL_CAST)]
+        public static void HandleNotifyDestLocSpellCast(Packet packet)
+        {
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadPackedGuid128("DestTransport");
+            packet.ReadUInt32<SpellId>("SpellID");
+            packet.ReadUInt32("SpellXSpellVisualID");
+            packet.ReadVector3("SourceLoc");
+            packet.ReadVector3("DestLoc");
+            packet.ReadSingle("MissileTrajectoryPitch");
+            packet.ReadSingle("MissileTrajectorySpeed");
+            packet.ReadInt32("TravelTime");
+            packet.ReadByte("DestLocSpellCastIndex");
+            packet.ReadPackedGuid128("CastID");
+        }
+
+        [Parser(Opcode.SMSG_NOTIFY_MISSILE_TRAJECTORY_COLLISION)]
+        public static void HandleNotifyMissileTrajectoryCollision(Packet packet)
+        {
+            packet.ReadPackedGuid128("Caster");
+            packet.ReadPackedGuid128("CastID");
+            packet.ReadVector3("CollisionPos");
+        }
+
+        [Parser(Opcode.CMSG_MISSILE_TRAJECTORY_COLLISION)]
+        public static void HandleMissileTrajectoryCollision(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadPackedGuid128("CastID");
+            packet.ReadVector3("CollisionPos");
+        }
+
+        [Parser(Opcode.SMSG_SUPERCEDED_SPELLS)]
+        public static void HandleSupercededSpells(Packet packet)
+        {
+            var spellCount = packet.ReadInt32("SpellCount");
+            var supercededCount = packet.ReadInt32("SupercededCount");
+            var favoriteSpellCount = packet.ReadInt32("FavoriteSpellCount");
+
+            for (int i = 0; i < spellCount; i++)
+                packet.ReadUInt32("SpellID", i);
+
+            for (int i = 0; i < supercededCount; i++)
+                packet.ReadUInt32("Superceded", i);
+
+            for (int i = 0; i < favoriteSpellCount; i++)
+                packet.ReadUInt32("FavoriteSpellID", i);
         }
     }
 }

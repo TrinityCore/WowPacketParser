@@ -1,32 +1,34 @@
-﻿using DBFilesClient.NET;
+﻿using System.Runtime.InteropServices;
 
-namespace WowPacketParser.DBC.Structures
+namespace WowPacketParser.DBC.Structures.Legion
 {
     [DBFile("AreaTable")]
     public sealed class AreaTableEntry
     {
-        public uint[] Flags;
         public string ZoneName;
-        public float AmbientMultiplier;
         public string AreaName;
-        public ushort MapID;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
+        public int[] Flags;
+        public float AmbientMultiplier;
+        public ushort ContinentID;
         public ushort ParentAreaID;
         public short AreaBit;
         public ushort AmbienceID;
         public ushort ZoneMusic;
         public ushort IntroSound;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
         public ushort[] LiquidTypeID;
-        public ushort UWZoneMusic;
-        public ushort UWAmbience;
-        public ushort PvPCombatWorldStateID;
+        public ushort UwZoneMusic;
+        public ushort UwAmbience;
+        public short PvpCombatWorldStateID;
         public byte SoundProviderPref;
         public byte SoundProviderPrefUnderwater;
-        public byte ExplorationLevel;
+        public sbyte ExplorationLevel;
         public byte FactionGroupMask;
         public byte MountFlags;
         public byte WildBattlePetLevelMin;
         public byte WildBattlePetLevelMax;
         public byte WindSettingsID;
-        public uint UWIntroSound;
+        public uint UwIntroSound;
     }
 }

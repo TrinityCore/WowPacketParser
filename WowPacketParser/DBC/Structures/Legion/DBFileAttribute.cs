@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WowPacketParser.DBC.Structures
+namespace WowPacketParser.DBC.Structures.Legion
 {
     public sealed class DBFileAttribute : Attribute
     {

@@ -35,6 +35,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             gossipMenuOptionBox.BoxCoded = packet.ReadByte("OptionFlags", idx) != 0;
             gossipMenuOptionBox.BoxMoney = (uint)packet.ReadInt32("OptionCost", idx);
 
+            packet.ResetBitReader();
             uint textLen = packet.ReadBits(12);
             uint confirmLen = packet.ReadBits(12);
 
@@ -362,7 +363,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     if (obj.Type == ObjectType.Unit)
                     {
                         int factionTemplateId = 0;
-                        uint faction = 0;
+                        int faction = 0;
                         UpdateField uf;
 
                         if (obj.UpdateFields != null && obj.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_FACTIONTEMPLATE), out uf))
@@ -438,7 +439,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 Storage.TrainerSpells.Add(trainerSpell, packet.TimeSpan);
             }
-
+            packet.ResetBitReader();
             uint greetingLength = packet.ReadBits(11);
             trainer.Greeting = packet.ReadWoWString("Greeting", greetingLength);
 

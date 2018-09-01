@@ -60,6 +60,27 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Notes", bits28);
         }
 
+        public static void ReadContactInfo(Packet packet, params object[] index)
+        {
+            packet.ReadPackedGuid128("Guid", index);
+            packet.ReadPackedGuid128("WowAccount", index);
+
+            packet.ReadUInt32("VirtualRealmAddr", index);
+            packet.ReadUInt32("NativeRealmAddr", index);
+            packet.ReadUInt32("TypeFlags", index);
+
+            packet.ReadByte("Status", index);
+
+            packet.ReadUInt32<AreaId>("AreaID", index);
+            packet.ReadUInt32("Level", index);
+            packet.ReadUInt32("ClassID", index);
+
+            packet.ResetBitReader();
+
+            var bits44 = packet.ReadBits(10);
+            packet.ReadWoWString("Notes", bits44, index);
+        }
+
         [Parser(Opcode.SMSG_CONTACT_LIST)]
         public static void HandleContactList(Packet packet)
         {
@@ -67,25 +88,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var bits6 = packet.ReadBits("ContactInfoCount", 8);
 
             for (var i = 0; i < bits6; i++)
-            {
-                packet.ReadPackedGuid128("Guid", i);
-                packet.ReadPackedGuid128("WowAccount", i);
-
-                packet.ReadInt32("VirtualRealmAddr", i);
-                packet.ReadInt32("NativeRealmAddr", i);
-                packet.ReadInt32("TypeFlags", i);
-
-                packet.ReadByte("Status", i);
-
-                packet.ReadInt32<AreaId>("AreaID", i);
-                packet.ReadInt32("Level", i);
-                packet.ReadInt32("ClassID", i);
-
-                packet.ResetBitReader();
-
-                var bits44 = packet.ReadBits(10);
-                packet.ReadWoWString("Notes", bits44, i);
-            }
+                ReadContactInfo(packet, i);
         }
 
         [Parser(Opcode.CMSG_SEND_CONTACT_LIST)]

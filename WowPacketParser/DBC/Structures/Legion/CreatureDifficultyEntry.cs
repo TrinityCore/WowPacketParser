@@ -1,16 +1,17 @@
-﻿using DBFilesClient.NET;
+﻿using System.Runtime.InteropServices;
 
-namespace WowPacketParser.DBC.Structures
+namespace WowPacketParser.DBC.Structures.Legion
 {
     [DBFile("CreatureDifficulty")]
 
     public sealed class CreatureDifficultyEntry
     {
-        public uint CreatureID;
-        public uint[] Flags;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 7)]
+        public int[] Flags;
         public ushort FactionTemplateID;
         public sbyte Expansion;
         public sbyte MinLevel;
         public sbyte MaxLevel;
+        public int CreatureID;
     }
 }

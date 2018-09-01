@@ -129,7 +129,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("MessageID");
 
             packet.ResetBitReader();
-
             var bits20 = packet.ReadBits(11);
             packet.ReadWoWString("StringParam", bits20);
         }
@@ -161,8 +160,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_SEND_TEXT_EMOTE, ClientVersionBuild.V6_0_3_19103)]
         public static void HandleTextEmote603(Packet packet)
         {
-            packet.ReadPackedGuid128("TargetGUID");
-            packet.ReadInt32E<EmoteTextType>("Emote ID");
+            packet.ReadPackedGuid128("Target");
+            packet.ReadInt32E<EmoteTextType>("EmoteID");
             packet.ReadInt32("SoundIndex");
         }
 
@@ -170,7 +169,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleTextEmoteServer(Packet packet)
         {
             packet.ReadPackedGuid128("SourceGUID");
-            packet.ReadPackedGuid128("WowAccountGUID");
+            packet.ReadPackedGuid128("SourceAccountGUID");
             packet.ReadInt32E<EmoteTextType>("EmoteID");
             packet.ReadInt32("SoundIndex");
             packet.ReadPackedGuid128("TargetGUID");
@@ -180,6 +179,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleDefenseMessage(Packet packet)
         {
             packet.ReadInt32<ZoneId>("ZoneID");
+            packet.ResetBitReader();
             var len = packet.ReadBits(12);
             packet.ReadWoWString("MessageText", len);
         }
@@ -197,6 +197,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var notifyTextLen = packet.ReadBits(12);
 
             packet.ReadWoWString("NotifyText", notifyTextLen);
+        }
+
+        [Parser(Opcode.SMSG_CHAT_PLAYER_AMBIGUOUS)]
+        public static void HandleChatPlayerAmbiguous(Packet packet)
+        {
+            packet.ResetBitReader();
+            var len = packet.ReadBits(9);
+            packet.ReadWoWString("Name", len);
         }
     }
 }
