@@ -682,7 +682,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32("QuestTimer");
         }
 
-        [Parser(Opcode.SMSG_QUERY_QUEST_REWARD_RESPONSE)]
+        [Parser(Opcode.SMSG_QUERY_TREASURE_PICKER_RESPONSE)]
         public static void HandleQueryQuestRewardResponse(Packet packet)
         {
             packet.ReadInt32("QuestId");

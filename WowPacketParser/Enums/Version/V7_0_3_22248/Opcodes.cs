@@ -1408,7 +1408,7 @@ namespace WowPacketParser.Enums.Version.V7_0_3_22248
             {Opcode.SMSG_QUERY_PET_NAME_RESPONSE, 0x26FF},
             {Opcode.SMSG_QUERY_PLAYER_NAME_RESPONSE, 0x26FC},
             {Opcode.SMSG_QUERY_QUEST_INFO_RESPONSE, 0x2A95},
-            {Opcode.SMSG_QUERY_QUEST_REWARD_RESPONSE, 0x283B},
+            {Opcode.SMSG_QUERY_TREASURE_PICKER_RESPONSE, 0x283B},
             {Opcode.SMSG_QUERY_TIME_RESPONSE, 0x2717},
             {Opcode.SMSG_QUEST_COMPLETION_NPC_RESPONSE, 0x2A81},
             {Opcode.SMSG_QUEST_CONFIRM_ACCEPT, 0x2A8E},
