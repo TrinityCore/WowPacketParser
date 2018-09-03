@@ -243,7 +243,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_GARRISON_IS_UPGRADEABLE_RESULT)]
         public static void HandleClientGarrisonUpgradeableResult(Packet packet)
         {
-            packet.ReadInt32("Result");
+            packet.ReadUInt32E<GarrisonResult>("Result");
         }
 
         [Parser(Opcode.SMSG_DISPLAY_TOAST, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_1_0_19678)]
@@ -450,7 +450,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleCreateShipment61x(Packet packet)
         {
             packet.ReadPackedGuid128("NpcGUID");
-            packet.ReadUInt32("Unk4");
+            packet.ReadUInt32("ShipmentsToCreate");
         }
 
         [Parser(Opcode.CMSG_COMPLETE_ALL_READY_SHIPMENTS)]

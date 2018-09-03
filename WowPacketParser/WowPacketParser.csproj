@@ -220,6 +220,7 @@
     <Compile Include="Enums\ContactStatus.cs" />
     <Compile Include="Enums\BuyResult.cs" />
     <Compile Include="Enums\DB2Hash.cs" />
+    <Compile Include="Enums\GarrisonEnums.cs" />
     <Compile Include="Enums\ItemFieldFlags.cs" />
     <Compile Include="Enums\ItemModifier.cs" />
     <Compile Include="Enums\LootError.cs" />
