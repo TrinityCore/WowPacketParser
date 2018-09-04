@@ -38,5 +38,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadBit("Accepted", i);
             }
         }
+
+        [Parser(Opcode.CMSG_QUICK_JOIN_AUTO_ACCEPT_REQUESTS)]
+        public static void HandleLfgQuickJoinAutoAcceptRequests(Packet packet)
+        {
+            packet.ReadBit("AutoAccept");
+        }
     }
 }
