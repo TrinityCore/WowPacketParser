@@ -26,6 +26,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("CurrentSpecOnly");
         }
 
+        [Parser(Opcode.SMSG_TRANSMOG_SET_COLLECTION_UPDATE)]
         [Parser(Opcode.SMSG_TRANSMOG_COLLECTION_UPDATE)]
         public static void HandleTransmogCollectionUpdate(Packet packet)
         {
