@@ -146,6 +146,9 @@ namespace WowPacketParser.Parsing.Parsers
             var mask = new BitArray(updateMask);
             var dict = new Dictionary<int, UpdateField>();
 
+            ulong streamedGuidRawValue = 0;
+            var streamedGuidIfAny = WowGuid.Empty;
+
             int objectEnd = UpdateFields.GetUpdateField(ObjectField.OBJECT_END);
             for (var i = 0; i < mask.Count; ++i)
             {
@@ -162,7 +165,26 @@ namespace WowPacketParser.Parsing.Parsers
                 string value = blockVal.UInt32Value + "/" + blockVal.SingleValue;
 
                 if (i < objectEnd)
+                {
                     key = UpdateFields.GetUpdateFieldName<ObjectField>(i);
+                    
+                    // Try to recover the GUID for broken versions (4.1.0a and friends say hello)
+                    if (type == 0)
+                    {
+                        if (i == 1)
+                            streamedGuidRawValue |= ((ulong)(blockVal.UInt32Value) << 32);
+                        else if (i == 0)
+                            streamedGuidRawValue |= blockVal.UInt32Value;
+                        else if (streamedGuidRawValue != 0)
+                        {
+                            streamedGuidIfAny = new WowGuid64(streamedGuidRawValue);
+                            packet.AddValue("Recovered GUID", streamedGuidIfAny, index);
+                            
+                            // Correct type so we can get actual block names
+                            type = streamedGuidIfAny.GetObjectType();
+                        }
+                    }
+                }
                 else
                 {
                     switch (type)
