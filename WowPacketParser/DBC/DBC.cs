@@ -175,7 +175,7 @@ namespace WowPacketParser.DBC
             }));
         }
 
-        public static HashSet<ushort> GetPhaseGroups(HashSet<ushort> phases)
+        public static HashSet<ushort> GetPhaseGroups(ICollection<ushort> phases)
         {
             if (!phases.Any())
                 return new HashSet<ushort>();

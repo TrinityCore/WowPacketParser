@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using WowPacketParser.DBC;
@@ -14,7 +15,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class MovementHandler
     {
-        public static readonly HashSet<ushort> ActivePhases = new HashSet<ushort>();
+        public static readonly IDictionary<ushort, bool> ActivePhases = new ConcurrentDictionary<ushort, bool>();
 
         public static void ReadMovementStats(Packet packet, params object[] idx)
         {
@@ -371,12 +372,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             {
                 var flags = packet.ReadUInt16("PhaseFlags", i);
                 var id = packet.ReadUInt16("Id", i);
-                ActivePhases.Add(id);
+                ActivePhases.Add(id, true);
             }
 
             if (DBC.Phases.Any())
             {
-                foreach (var phaseGroup in DBC.GetPhaseGroups(ActivePhases))
+                foreach (var phaseGroup in DBC.GetPhaseGroups(ActivePhases.Keys))
                     packet.WriteLine($"PhaseGroup: { phaseGroup } Phases: { string.Join(" - ", DBC.Phases[phaseGroup]) }");
             }
 

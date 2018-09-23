@@ -95,7 +95,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             obj.Area = CoreParsers.WorldStateHandler.CurrentAreaId;
             obj.Zone = CoreParsers.WorldStateHandler.CurrentZoneId;
             obj.PhaseMask = (uint)CoreParsers.MovementHandler.CurrentPhaseMask;
-            obj.Phases = new HashSet<ushort>(V6_0_2_19033.Parsers.MovementHandler.ActivePhases);
+            obj.Phases = new HashSet<ushort>(V6_0_2_19033.Parsers.MovementHandler.ActivePhases.Keys);
             obj.DifficultyID = CoreParsers.MovementHandler.CurrentDifficultyID;
 
             // If this is the second time we see the same object (same guid,
