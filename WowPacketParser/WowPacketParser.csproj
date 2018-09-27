@@ -631,6 +631,8 @@
     <Compile Include="Store\Objects\QuestRequestItemsLocale.cs" />
     <Compile Include="Store\Objects\QuestTemplate.cs" />
     <Compile Include="Store\Objects\QuestVisualEffect.cs" />
+    <Compile Include="Store\Objects\ScenarioPOI.cs" />
+    <Compile Include="Store\Objects\ScenarioPOIPoints.cs" />
     <Compile Include="Store\Objects\SceneTemplate.cs" />
     <Compile Include="Store\Objects\SniffData.cs" />
     <Compile Include="Store\Objects\PlayerCreateInfoAction.cs" />

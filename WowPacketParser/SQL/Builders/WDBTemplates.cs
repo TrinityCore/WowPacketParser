@@ -199,5 +199,33 @@ namespace WowPacketParser.SQL.Builders
 
             return string.Empty;
         }
+
+        [BuilderMethod(true)]
+        public static string ScenarioPOI()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.scenario_poi))
+                return string.Empty;
+
+            if (Storage.ScenarioPOIs.IsEmpty())
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.ScenarioPOIs);
+
+            return SQLUtil.Compare(Storage.ScenarioPOIs, templatesDb, StoreNameType.None);
+        }
+
+        [BuilderMethod(true)]
+        public static string ScenarioPOIPoint()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.scenario_poi))
+                return string.Empty;
+
+            if (Storage.ScenarioPOIPoints.IsEmpty())
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.ScenarioPOIPoints);
+
+            return SQLUtil.Compare(Storage.ScenarioPOIPoints, templatesDb, StoreNameType.None);
+        }
     }
 }
