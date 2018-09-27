@@ -43,6 +43,7 @@
         quest_poi_points,
         quest_template,
         scene_template,
+        scenario_poi,
         spell_target_position,
         spell_areatrigger,
         SniffData,

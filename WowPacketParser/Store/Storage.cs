@@ -114,6 +114,10 @@ namespace WowPacketParser.Store
         // Scenes
         public static readonly DataBag<SceneTemplate> Scenes = new DataBag<SceneTemplate>(new List<SQLOutput> { SQLOutput.scene_template });
 
+        // Scenario
+        public static readonly DataBag<ScenarioPOI> ScenarioPOIs = new DataBag<ScenarioPOI>(new List<SQLOutput> { SQLOutput.scenario_poi });
+        public static readonly DataBag<ScenarioPOIPoint> ScenarioPOIPoints = new DataBag<ScenarioPOIPoint>(new List<SQLOutput> { SQLOutput.scenario_poi });
+
         public static readonly DataBag<BroadcastText> BroadcastTexts = new DataBag<BroadcastText>(new List<SQLOutput> { SQLOutput.broadcast_text });
         public static readonly DataBag<BroadcastTextLocale> BroadcastTextLocales = new DataBag<BroadcastTextLocale>(new List<SQLOutput> { SQLOutput.broadcast_text_locale });
 
@@ -197,6 +201,9 @@ namespace WowPacketParser.Store
             HotfixDatas.Clear();
 
             Scenes.Clear();
+
+            ScenarioPOIs.Clear();
+            ScenarioPOIPoints.Clear();
 
             BroadcastTexts.Clear();
             BroadcastTextLocales.Clear();
