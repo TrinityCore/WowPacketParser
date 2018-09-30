@@ -22,8 +22,11 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("areaId")]
         public uint? AreaID;
 
-        [DBFieldName("spawnMask")]
+        [DBFieldName("spawnMask", TargetedDatabase.Zero, TargetedDatabase.Legion)]
         public uint? SpawnMask;
+
+        [DBFieldName("spawnDifficulties", TargetedDatabase.Legion)]
+        public string spawnDifficulties;
 
         [DBFieldName("phaseMask", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
         public uint? PhaseMask;
