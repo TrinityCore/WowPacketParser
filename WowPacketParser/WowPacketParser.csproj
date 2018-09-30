@@ -465,6 +465,7 @@
     <Compile Include="Misc\BattlenetPacketHeader.cs" />
     <Compile Include="Misc\BiDictionary.cs" />
     <Compile Include="Misc\Bit.cs" />
+    <Compile Include="Misc\ClientLocale.cs" />
     <Compile Include="Misc\ClientVersion.cs" />
     <Compile Include="Misc\ConcurrentPriorityQueue.cs" />
     <Compile Include="Misc\Configuration.cs" />
@@ -599,6 +600,7 @@
     <Compile Include="Store\Objects\GossipMenuOptionBox.cs" />
     <Compile Include="Store\Objects\GossipMenuOptionTrainer.cs" />
     <Compile Include="Store\Objects\IBroadcastTextEntry.cs" />
+    <Compile Include="Store\Objects\PageTextLocale.cs" />
     <Compile Include="Store\Objects\PointsOfInterest.cs" />
     <Compile Include="Store\Objects\HotfixData.cs" />
     <Compile Include="Store\Objects\Item.cs" />
@@ -606,6 +608,7 @@
     <Compile Include="Store\Objects\LocalesQuest.cs" />
     <Compile Include="Store\Objects\QuestDetails.cs" />
     <Compile Include="Store\Objects\QuestGreeting.cs" />
+    <Compile Include="Store\Objects\QuestGreetingLocale.cs" />
     <Compile Include="Store\Objects\QuestObjectivesLocale.cs" />
     <Compile Include="Store\Objects\ModelData.cs" />
     <Compile Include="Store\Objects\NpcText.cs" />
@@ -619,9 +622,11 @@
     <Compile Include="Store\Objects\Player.cs" />
     <Compile Include="Store\Objects\QuestObjective.cs" />
     <Compile Include="Store\Objects\QuestOfferReward.cs" />
+    <Compile Include="Store\Objects\QuestOfferRewardLocale.cs" />
     <Compile Include="Store\Objects\QuestPOI.cs" />
     <Compile Include="Store\Objects\QuestPOIPoint.cs" />
     <Compile Include="Store\Objects\QuestRequestItems.cs" />
+    <Compile Include="Store\Objects\QuestRequestItemsLocale.cs" />
     <Compile Include="Store\Objects\QuestTemplate.cs" />
     <Compile Include="Store\Objects\QuestVisualEffect.cs" />
     <Compile Include="Store\Objects\SceneTemplate.cs" />

@@ -29,7 +29,6 @@ namespace WowPacketParser.Loading
         private uint _startTickCount;
         private int _snifferId;
         private short _snifferVersion;
-        private static string _locale = "enUS";
 
         public BinaryPacketReader(SniffType type, string fileName, Encoding encoding)
         {
@@ -92,7 +91,7 @@ namespace WowPacketParser.Loading
                 {
                     _snifferId = _reader.ReadByte();                                        // sniffer id
                     SetBuild(_reader.ReadUInt32());                                         // client build
-                    _locale = Encoding.ASCII.GetString(_reader.ReadBytes(4));               // client locale
+                    SetLocale(Encoding.ASCII.GetString(_reader.ReadBytes(4)));              // client locale
                     _reader.ReadBytes(40);                                                  // session key
                     _startTime = Utilities.GetDateTimeFromUnixTime(_reader.ReadUInt32());   // start time
                     _startTickCount = _reader.ReadUInt32();                                 // start tick count
@@ -126,17 +125,9 @@ namespace WowPacketParser.Loading
             ClientVersion.SetVersion((ClientVersionBuild)build);
         }
 
-        public static string GetClientLocale()
+        static void SetLocale(string locale)
         {
-            return _locale;
-        }
-
-        public static LocaleConstant GetLocale()
-        {
-            if (_locale == "enGB")
-                return LocaleConstant.enUS;
-
-            return (LocaleConstant) Enum.Parse(typeof(LocaleConstant), _locale);
+            ClientLocale.SetLocale(locale);
         }
 
         public bool CanRead()

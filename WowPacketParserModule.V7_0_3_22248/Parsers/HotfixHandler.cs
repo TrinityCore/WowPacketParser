@@ -67,7 +67,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
                         Storage.BroadcastTexts.Add(bct, packet.TimeSpan);
 
-                        if (BinaryPacketReader.GetLocale() != LocaleConstant.enUS)
+                        if (ClientLocale.PacketLocale != LocaleConstant.enUS)
                         {
                             BroadcastTextLocale lbct = new BroadcastTextLocale
                             {
