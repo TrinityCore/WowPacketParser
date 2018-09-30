@@ -387,7 +387,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var uiWorldMapAreaIDSwapsCount = packet.ReadInt32("UiWorldMapAreaIDSwap") / 2;
             for (var i = 0; i < uiWorldMapAreaIDSwapsCount; ++i)
-                packet.ReadInt16<MapId>("UiWorldMapAreaIDSwaps", i);
+                packet.ReadInt16("UiWorldMapAreaIDSwaps", i);
 
             var visibleMapIDsCount = packet.ReadInt32("VisibleMapIDsCount") / 2;
             for (var i = 0; i < visibleMapIDsCount; ++i)

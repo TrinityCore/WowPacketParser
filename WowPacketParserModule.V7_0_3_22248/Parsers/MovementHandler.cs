@@ -545,7 +545,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             var uiWorldMapAreaIDSwapsCount = packet.ReadInt32("UiWorldMapAreaIDSwap") / 2;
             for (var i = 0; i < uiWorldMapAreaIDSwapsCount; ++i)
-                packet.ReadInt16<MapId>("UiWorldMapAreaIDSwaps", i);
+                packet.ReadInt16("UiWorldMapAreaIDSwaps", i);
         }
     }
 }
