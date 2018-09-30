@@ -35,6 +35,7 @@
         npc_vendor,
         ObjectNames,
         page_text,
+        page_text_locale,
         playercreateinfo,
         playercreateinfo_action,
         points_of_interest,

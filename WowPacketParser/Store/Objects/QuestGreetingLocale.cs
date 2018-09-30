@@ -4,23 +4,20 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("quest_objectives_locale")]
-    public sealed class QuestObjectivesLocale : IDataModel
+    [DBTableName("quest_greeting_locale")]
+    public sealed class QuestGreetingLocale : IDataModel
     {
         [DBFieldName("ID", true)]
         public uint? ID;
 
+        [DBFieldName("Type", true)]
+        public uint? Type;
+
         [DBFieldName("locale", true)]
         public string Locale = ClientLocale.PacketLocaleString;
 
-        [DBFieldName("QuestId")]
-        public uint? QuestId;
-
-        [DBFieldName("StorageIndex")]
-        public int? StorageIndex;
-
-        [DBFieldName("Description")]
-        public string Description;
+        [DBFieldName("Greeting")]
+        public string Greeting;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
