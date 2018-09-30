@@ -100,7 +100,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             packet.ReadPackedGuid128("GUID");
             packet.ResetBitReader();
-            packet.ReadBit("UnkBit"); // Suppress LevelUp Anim??
+            packet.ReadBit("SuppressLevelUpAnim");
         }
     }
 }
