@@ -2674,26 +2674,26 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadSingle("Vehicle Orientation", index);
             }
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_1_0_13914))
             {
                 if (flags.HasAnyFlag(UpdateFlag.AnimKits))
                 {
-                    packet.ReadInt16("Unk Int16", index);
-                    packet.ReadInt16("Unk Int16", index);
-                    packet.ReadInt16("Unk Int16", index);
+                    packet.ReadInt16("AiAnimKitID", index);
+                    packet.ReadInt16("MovementAnimKitID", index);
+                    packet.ReadInt16("MeleeAnimKitID", index);
                 }
             }
 
             if (flags.HasAnyFlag(UpdateFlag.GORotation))
                 moveInfo.Rotation = packet.ReadPackedQuaternion("GO Rotation", index);
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_2_14545))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_1_0_13914))
             {
                 if (flags.HasAnyFlag(UpdateFlag.TransportUnkArray))
                 {
-                    var count = packet.ReadByte("Count", index);
+                    var count = packet.ReadByte("PauseTimesCount", index);
                     for (var i = 0; i < count; i++)
-                        packet.ReadInt32("Unk Int32", index, count);
+                        packet.ReadInt32("PauseTimes", index, count);
                 }
             }
 
