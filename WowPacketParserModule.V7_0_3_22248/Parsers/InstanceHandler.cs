@@ -74,30 +74,45 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
         }
 
-        public static void ReadUnkEncouter(Packet packet, params object[] idx)
+        public static void ReadEncounterItemInfo(Packet packet, params object[] idx)
         {
-            packet.ReadInt32("UnkInt32_13", idx);
-            packet.ReadInt32("UnkInt32_14", idx);
+            packet.ReadInt32("ItemID", idx);
+            packet.ReadInt32("ItemLevel", idx);
 
-            var count1 = packet.ReadUInt32("UnkCount1", idx);
-            var count2 = packet.ReadUInt32("UnkCount2", idx);
-            var count3 = packet.ReadUInt32("UnkCount3", idx);
+            var enchantmentCount = packet.ReadUInt32("PermanentEnchantmentID", idx);
+            var bonusListCount = packet.ReadUInt32("TemporaryEnchantmentID", idx);
+            var gemCount = packet.ReadUInt32("GemCount", idx);
 
-            for (var j = 0; j < count1; ++j)
-            {
-                packet.ReadInt32("UnkInt32_15", idx, j);
-            }
+            for (var j = 0; j < enchantmentCount; ++j)
+                packet.ReadInt32("EnchantmentID", idx, j);
 
-            for (var j = 0; j < count2; ++j)
-            {
-                packet.ReadInt32("UnkInt32_16", idx, j);
-            }
+            for (var j = 0; j < bonusListCount; ++j)
+                packet.ReadInt32("ItemBonusListID", idx, j);
 
-            for (var j = 0; j < count3; ++j)
-            {
-                ReadUnkEncouter(packet, idx, j);
-            }
+            for (var j = 0; j < gemCount; ++j)
+                ReadEncounterItemInfo(packet, idx, "Gem", j);
         }
+
+        static readonly string[] FilteredRatingList =
+        {
+            "Dodge",
+            "Parry",
+            "Block",
+            "CritMelee",
+            "CritRanged",
+            "CritSpell",
+            "Speed",
+            "Lifesteal",
+            "HasteMelee",
+            "HasteRanged",
+            "HasteSpell",
+            "Avoidance",
+            "Mastery",
+            "VersatilityDamageDone",
+            "VersatilityHealingDone",
+            "VersatilityDamageTaken",
+            "Armor"
+        };
 
         [Parser(Opcode.SMSG_ENCOUNTER_START)]
         public static void HandleEncounterStart(Packet packet)
@@ -106,61 +121,49 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32<DifficultyId>("DifficultyID");
             packet.ReadInt32("GroupSize");
 
-            // Debug only???
-            var count = packet.ReadUInt32("UnkCount");
-
-            for (var i = 0; i < count; ++i)
+            var playerCount = packet.ReadUInt32("Players");
+            for (var i = 0; i < playerCount; ++i)
             {
                 packet.ReadPackedGuid128("Guid", i);
 
-                var count1 = packet.ReadUInt32("UnkCount1", i);
-                var count2 = packet.ReadUInt32("UnkCount2", i);
-                var count3 = packet.ReadUInt32("UnkCount3", i);
+                var statCount = packet.ReadUInt32("StatCount", i);
+                var combatRatingCount = packet.ReadUInt32("CombatRatingCount", i);
+                var auraCount = packet.ReadUInt32("AuraCount", i);
 
-                packet.ReadInt32("UnkInt32", i);
+                packet.ReadInt32("SpecID", i);
 
-                var count4 = packet.ReadUInt32("UnkCount4", i);
-                var count5 = packet.ReadUInt32("UnkCount5", i);
+                var talentCount = packet.ReadUInt32("TalentCount", i);
+                var pvpTalentCount = packet.ReadUInt32("PvPTalentCount", i);
 
-                for (var j = 0; j < count4; ++j)
+                for (var j = 0; j < talentCount; ++j)
+                    packet.ReadInt32("TalentSpellID", i, j);
+
+                for (var j = 0; j < pvpTalentCount; ++j)
+                    packet.ReadInt32("PvPTalentSpellID", i, j);
+
+                var artifactPowerCount = packet.ReadUInt32("ArtifactPowerCount", i);
+                var itemCount = packet.ReadUInt32("ItemCount", i);
+
+                for (var j = 0; j < statCount; ++j)
+                    packet.ReadInt32(((StatType)j).ToString(), i);
+
+                for (var j = 0; j < combatRatingCount; ++j)
+                    packet.ReadInt32(j < FilteredRatingList.Length ? FilteredRatingList[j] : $"[{j}] CombatRatingValue", i);
+
+                for (var j = 0; j < auraCount; ++j)
                 {
-                    packet.ReadInt32("UnkInt32_5", i, j);
+                    packet.ReadPackedGuid128("CasterGUID", i, j);
+                    packet.ReadInt32("SpellID", i, j);
                 }
 
-                for (var j = 0; j < count5; ++j)
+                for (var j = 0; j < artifactPowerCount; ++j)
                 {
-                    packet.ReadInt32("UnkInt32_6", i, j);
+                    packet.ReadInt32("ArtifactPowerID", i, j);
+                    packet.ReadInt16("Rank", i, j);
                 }
 
-                var count6 = packet.ReadUInt32("UnkInt32_7", i);
-                var count7 = packet.ReadUInt32("UnkInt32_8", i);
-
-                for (var j = 0; j < count1; ++j)
-                {
-                    packet.ReadInt32("UnkInt32_9", i, j);
-                }
-
-                for (var j = 0; j < count2; ++j)
-                {
-                    packet.ReadInt32("UnkInt32_10", i, j);
-                }
-
-                for (var j = 0; j < count3; ++j)
-                {
-                    packet.ReadPackedGuid128("Guid", i, j);
-                    packet.ReadInt32("UnkInt32_11", i, j);
-                }
-
-                for (var j = 0; j < count6; ++j)
-                {
-                    packet.ReadInt32("UnkInt32_12", i, j);
-                    packet.ReadInt16("UnkInt16_1", i, j);
-                }
-
-                for (var j = 0; j < count7; ++j)
-                {
-                    ReadUnkEncouter(packet, i, j);
-                }
+                for (var j = 0; j < itemCount; ++j)
+                    ReadEncounterItemInfo(packet, i, j);
             }
         }
 
@@ -186,6 +189,6 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         public static void HandleInstanceEncounterSetAllowingRelease(Packet packet)
         {
             packet.ReadBit("ReleaseAllowed");
-        }        
+        }
     }
 }
