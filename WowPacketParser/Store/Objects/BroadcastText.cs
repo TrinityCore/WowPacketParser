@@ -25,14 +25,35 @@ namespace WowPacketParser.Store.Objects
             SoundEntriesID2 = SoundEntriesID[1];
         }
 
-        [DBFieldName("ID", true)]
-        public uint? ID;
-
         [DBFieldName("Text", LocaleConstant.enUS)]
         public string Text;
 
         [DBFieldName("Text1", LocaleConstant.enUS)]
         public string Text1;
+
+        [DBFieldName("ID", true)]
+        public uint? ID;
+
+        [DBFieldName("LanguageID")]
+        public byte? LanguageID;
+
+        [DBFieldName("ConditionID")]
+        public uint? ConditionID;
+
+        [DBFieldName("EmotesID")]
+        public ushort? EmotesID;
+
+        [DBFieldName("Flags")]
+        public byte? Flags;
+
+        [DBFieldName("ChatBubbleDurationMs", TargetedDatabase.BattleForAzeroth)]
+        public uint? ChatBubbleDurationMs;
+
+        [DBFieldName("SoundEntriesID1")]
+        public uint? SoundEntriesID1;
+
+        [DBFieldName("SoundEntriesID2")]
+        public uint? SoundEntriesID2;
 
         [DBFieldName("EmoteID1")]
         public ushort? EmoteID1;
@@ -51,24 +72,6 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("EmoteDelay3")]
         public ushort? EmoteDelay3;
-
-        [DBFieldName("EmotesID")]
-        public ushort? EmotesID;
-
-        [DBFieldName("LanguageID")]
-        public byte? LanguageID;
-
-        [DBFieldName("Flags")]
-        public byte? Flags;
-
-        [DBFieldName("ConditionID")]
-        public uint? ConditionID;
-
-        [DBFieldName("SoundEntriesID1")]
-        public uint? SoundEntriesID1;
-
-        [DBFieldName("SoundEntriesID2")]
-        public uint? SoundEntriesID2;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
