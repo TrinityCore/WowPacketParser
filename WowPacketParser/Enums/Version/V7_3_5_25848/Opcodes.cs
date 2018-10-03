@@ -216,6 +216,7 @@ namespace WowPacketParser.Enums.Version.V7_3_5_25848
            {Opcode.CMSG_CONNECT_TO_FAILED, 0x35D4},
            {Opcode.CMSG_CONTRIBUTION_CONTRIBUTE, 0x3558},
            {Opcode.CMSG_CONTRIBUTION_GET_STATE, 0x3559},
+           {Opcode.CMSG_CONVERSATION_LINE_STARTED, 0x354A},
            {Opcode.CMSG_CONVERT_CONSUMPTION_TIME, 0x36F9},
            {Opcode.CMSG_CONVERT_RAID, 0x364E},
            {Opcode.CMSG_CREATE_CHARACTER, 0x3643},

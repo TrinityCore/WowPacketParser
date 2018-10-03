@@ -306,6 +306,7 @@
     <Compile Include="Parsers\CharacterHandler.cs" />
     <Compile Include="Parsers\ChatHandler.cs" />
     <Compile Include="Parsers\CombatHandler.cs" />
+    <Compile Include="Parsers\ConversationHandler.cs" />
     <Compile Include="Parsers\CorpseHandler.cs" />
     <Compile Include="Parsers\CombatLogHandler.cs" />
     <Compile Include="Parsers\CreatureHandler.cs" />
