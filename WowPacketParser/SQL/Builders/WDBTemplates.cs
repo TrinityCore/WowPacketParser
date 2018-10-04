@@ -81,6 +81,23 @@ namespace WowPacketParser.SQL.Builders
         }
 
         [BuilderMethod(true)]
+        public static string CreatureTemplateModel()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template))
+                return string.Empty;
+
+            if (Storage.CreatureTemplateModels.IsEmpty())
+                return string.Empty;
+
+            if (Settings.TargetedDatabase <= TargetedDatabase.BattleForAzeroth)
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.CreatureTemplateModels);
+
+            return SQLUtil.Compare(Storage.CreatureTemplateModels, templatesDb, StoreNameType.Unit);
+        }
+
+        [BuilderMethod(true)]
         public static string CreatureTemplateQuestItem()
         {
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template))
