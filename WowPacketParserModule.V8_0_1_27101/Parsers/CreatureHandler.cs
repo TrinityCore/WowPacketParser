@@ -70,9 +70,17 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             creature.ModelIDs = new uint?[displayIdCount];
             for (var i = 0; i < displayIdCount; ++i)
             {
-                creature.ModelIDs[i] = (uint)packet.ReadInt32("CreatureDisplayID", i);
-                packet.ReadSingle("DisplayScale", i);
-                packet.ReadSingle("Probability", i);
+                CreatureTemplateModel model = new CreatureTemplateModel
+                {
+                    CreatureID = (uint)entry.Key,
+                    Idx = (uint)i
+                };
+
+                model.CreatureDisplayID = (uint)packet.ReadInt32("CreatureDisplayID", i);
+                model.DisplayScale = packet.ReadSingle("DisplayScale", i);
+                model.Probability = packet.ReadSingle("Probability", i);
+
+                Storage.CreatureTemplateModels.Add(model, packet.TimeSpan);
             }
 
             creature.HealthModifier = packet.ReadSingle("HpMulti");
