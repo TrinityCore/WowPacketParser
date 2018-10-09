@@ -32,7 +32,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadVector3("Pos");
             packet.ReadSingle("Facing");
 
-            Storage.Scenes.Add(scene, packet.TimeSpan);
+            if (sceneId != 0) // SPELL_EFFECT_195 plays scenes by SceneScriptPackageID and sets SceneID = 0 (there are no Scenes which have SceneID = 0)
+                Storage.Scenes.Add(scene, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_INITIAL_UPDATE)]
