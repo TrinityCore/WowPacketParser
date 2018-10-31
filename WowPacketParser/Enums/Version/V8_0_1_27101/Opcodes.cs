@@ -1483,6 +1483,7 @@ namespace WowPacketParser.Enums.Version.V8_0_1_27101
             {Opcode.SMSG_QUEST_GIVER_QUEST_DETAILS, 0x2A91},
             {Opcode.SMSG_QUEST_GIVER_QUEST_FAILED, 0x2A85},
             {Opcode.SMSG_QUEST_GIVER_QUEST_LIST_MESSAGE, 0x2A99},
+            {Opcode.SMSG_QUEST_GIVER_QUEST_MESSAGE, 0x2A98},
             {Opcode.SMSG_QUEST_GIVER_QUEST_TURN_IN_FAILURE, 0x285D},
             {Opcode.SMSG_QUEST_GIVER_REQUEST_ITEMS, 0x2A92},
             {Opcode.SMSG_QUEST_GIVER_STATUS, 0x2A9A},
