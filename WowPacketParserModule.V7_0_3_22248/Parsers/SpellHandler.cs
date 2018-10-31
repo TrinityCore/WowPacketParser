@@ -711,5 +711,15 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (int i = 0; i < favoriteSpellCount; i++)
                 packet.ReadUInt32("FavoriteSpellID", i);
         }
+
+        [Parser(Opcode.SMSG_SET_SPELL_CHARGES)]
+        public static void HandleSetSpellCharges(Packet packet)
+        {
+            packet.ReadInt32("Category");
+            packet.ReadInt32("RecoveryTime");
+            packet.ReadByte("ConsumedCharges");
+            packet.ReadSingle("ChargeModRate");
+            packet.ReadBit("IsPet");
+        }
     }
 }
