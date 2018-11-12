@@ -50,7 +50,7 @@ namespace WowPacketParser.Hotfix
 
         #region Static helpers for SQL serialization
         // ReSharper disable StaticMemberInGenericType
-        private static MethodInfo stringReplace = typeof (string).GetMethod("Replace", new[] {typeof (string), typeof(string)});
+        private static MethodInfo stringReplace = typeof (string).GetMethod("Replace", new[] {typeof (string), typeof (string)});
         private static MethodInfo stringFormat = typeof (string).GetMethod("Format", new[] {typeof (string), typeof (object)});
         private static MethodInfo stringBuilderAppend = typeof (StringBuilder).GetMethod("Append", new[] {typeof (string)});
         private static MethodInfo stringEscape = typeof(MySqlHelper).GetMethod("EscapeString", new[] {typeof (string)});
