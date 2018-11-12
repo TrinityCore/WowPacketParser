@@ -701,8 +701,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32("Quantity", indexes);
         }
 
-        [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_MESSAGE)]
-        public static void HandleQuestgiverQuestMessage(Packet packet)
+        [Parser(Opcode.SMSG_GOSSIP_TEXT_UPDATE)]
+        public static void HandleGossipTextUpdate(Packet packet)
         {
             packet.ReadPackedGuid128("QuestGiverGUID");
             ReadGossipText(packet);
