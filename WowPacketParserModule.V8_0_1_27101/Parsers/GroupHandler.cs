@@ -40,8 +40,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 packet.ReadByteE<Class>("Class", i);
 
                 packet.ReadWoWString("Name", playerNameLength, i);
-                if (voiceStateLength > 0) // according to implementation of CDataStore::GetCString in 8.0.1
-                    packet.ReadCString("BNetIdString", i);
+                packet.ReadDynamicString("VoiceStateID", voiceStateLength, i);
             }
 
             packet.ResetBitReader();

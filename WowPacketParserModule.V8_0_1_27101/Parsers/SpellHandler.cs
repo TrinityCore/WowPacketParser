@@ -22,7 +22,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             for (var i = 0; i < pvpTalentIDsCount; ++i)
             {
                 packet.ReadUInt16("PvPTalentID", idx, i);
-                packet.ReadByte("UnkByte", idx, i);
+                packet.ReadByte("Slot", idx, i);
             }
         }
 
@@ -177,7 +177,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     packet.ReadUInt32("ActiveFlags", i);
                     aura.Level = packet.ReadUInt16("CastLevel", i);
                     aura.Charges = packet.ReadByte("Applications", i);
-                    packet.ReadInt32("Unk801", i);
+                    packet.ReadInt32("ContentTuningID", i);
 
                     packet.ResetBitReader();
 

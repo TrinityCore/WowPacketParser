@@ -185,9 +185,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             packet.ReadInt32<SpellId>("SpellID");
             packet.ReadInt32("Health");
+            packet.ReadInt32("OriginalHeal");
             packet.ReadInt32("OverHeal");
             packet.ReadInt32("Absorbed");
-            packet.ReadInt32("Critical");
 
             packet.ResetBitReader();
 
