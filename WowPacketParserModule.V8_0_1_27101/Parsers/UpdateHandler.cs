@@ -182,6 +182,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             var sceneObjCreate = packet.ReadBit("SceneObjCreate", index);
             var playerCreateData = packet.ReadBit("HasPlayerCreateData", index);
+            var hasConversation = packet.ReadBit("HasConversation", index);
 
             if (hasMovementUpdate)
             {
@@ -280,7 +281,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
                         var hasSplineFilterKey = packet.ReadBit("HasSplineFilterKey", index);
                         var hasSpellEffectExtraData = packet.ReadBit("HasSpellEffectExtraData", index);
-                        var unk801 = packet.ReadBit("Unk801", index);
+                        var hasJumpExtraData = packet.ReadBit("HasJumpExtraData", index);
 
                         if (hasSplineFilterKey)
                         {
@@ -319,12 +320,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                         if (hasSpellEffectExtraData)
                             MovementHandler.ReadMonsterSplineSpellEffectExtraData(packet, index);
 
-                        if (unk801)
-                        {
-                            packet.ReadSingle("Unk801_Float_1");
-                            packet.ReadUInt32("Unk801_UInt32_1");
-                            packet.ReadUInt32("Unk801_UInt32_2");
-                        }
+                        if (hasJumpExtraData)
+                            MovementHandler.ReadMonsterSplineJumpExtraData(packet, index);
                     }
                 }
             }
@@ -413,14 +410,14 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 bool hasFacingCurveID = packet.ReadBit("HasFacingCurveID", index);
                 bool hasMoveCurveID = packet.ReadBit("HasMoveCurveID", index);
 
-                if (packet.ReadBit("unkbit4C", index))
-                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk2;
+                if (packet.ReadBit("HasAnimID", index))
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasAnimId;
 
                 if (packet.ReadBit("unkbit50", index))
                     areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk3;
 
-                if (packet.ReadBit("unkbit58", index))
-                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk4;
+                if (packet.ReadBit("HasAnimKitID", index))
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasAnimKitId;
 
                 bool hasUnk801 = packet.ReadBit("unkbit801", index);
 
@@ -438,8 +435,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
                 bool hasAreaTriggerSpline = packet.ReadBit("HasAreaTriggerSpline", index);
 
-                if (packet.ReadBit("HasAreaTriggerUnkType", index))
-                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk5;
+                if (packet.ReadBit("HasAreaTriggerCircularMovement", index))
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasCircularMovement;
 
                 if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.Unk3) != 0)
                     packet.ReadBit();
@@ -462,11 +459,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 if (hasMoveCurveID)
                     spellAreaTrigger.MoveCurveId = (int)packet.ReadUInt32("MoveCurveID", index);
 
-                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.Unk2) != 0)
-                    packet.ReadInt32();
+                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.HasAnimId) != 0)
+                    spellAreaTrigger.AnimId = packet.ReadInt32("AnimId", index);
 
-                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.Unk4) != 0)
-                    packet.ReadInt32();
+                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.HasAnimKitId) != 0)
+                    spellAreaTrigger.AnimKitId = packet.ReadInt32("AnimKitId", index);
 
                 if (hasUnk801)
                     packet.ReadUInt32("Unk801", index);
@@ -539,24 +536,24 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     areaTriggerTemplate.Data[5] = packet.ReadSingle("LocationZOffsetTarget", index);
                 }
 
-                if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.Unk5) != 0)
+                if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.HasCircularMovement) != 0)
                 {
                     packet.ResetBitReader();
-                    var unk1 = packet.ReadBit("AreaTriggerUnk1");
+                    var hasPathTarget = packet.ReadBit("HasPathTarget");
                     var hasCenter = packet.ReadBit("HasCenter", index);
-                    packet.ReadBit("Unk bit 703 1", index);
-                    packet.ReadBit("Unk bit 703 2", index);
+                    packet.ReadBit("CounterClockwise", index);
+                    packet.ReadBit("CanLoop", index);
 
-                    packet.ReadUInt32();
-                    packet.ReadInt32();
-                    packet.ReadUInt32();
+                    packet.ReadUInt32("TimeToTarget", index);
+                    packet.ReadInt32("ElapsedTimeForMovement", index);
+                    packet.ReadUInt32("StartDelay", index);
                     packet.ReadSingle("Radius", index);
                     packet.ReadSingle("BlendFromRadius", index);
                     packet.ReadSingle("InitialAngel", index);
                     packet.ReadSingle("ZOffset", index);
 
-                    if (unk1)
-                        packet.ReadPackedGuid128("AreaTriggerUnkGUID", index);
+                    if (hasPathTarget)
+                        packet.ReadPackedGuid128("PathTarget", index);
 
                     if (hasCenter)
                         packet.ReadVector3("Center", index);
@@ -625,8 +622,16 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 }
             }
 
+            if (hasConversation)
+            {
+                packet.ResetBitReader();
+                if (packet.ReadBit("HasTextureKitID", index))
+                    (obj as ConversationTemplate).TextureKitId = packet.ReadUInt32("TextureKitID", index);
+            }
+
             return moveInfo;
         }
+
         private static Dictionary<int, UpdateField> ReadValuesUpdateBlock(Packet packet, ObjectType type, object index, bool isCreating)
         {
             var maskSize = packet.ReadByte();

@@ -41,13 +41,13 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             {
                 if (stringLens[i][0] > 1)
                 {
-                    string name = packet.ReadCString("Name");
+                    string name = packet.ReadDynamicString("Name", stringLens[i][0], i);
                     if (i == 0)
                         creature.Name = name;
                 }
                 if (stringLens[i][1] > 1)
                 {
-                    string nameAlt = packet.ReadCString("NameAlt");
+                    string nameAlt = packet.ReadDynamicString("NameAlt", stringLens[i][1], i);
                     if (i == 0)
                         creature.FemaleName = nameAlt;
                 }

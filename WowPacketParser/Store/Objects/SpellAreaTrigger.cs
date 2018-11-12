@@ -26,6 +26,12 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("FacingCurveId")]
         public int? FacingCurveId = 0;
 
+        [DBFieldName("AnimId")]
+        public int? AnimId = 0;
+
+        [DBFieldName("AnimKitId")]
+        public int? AnimKitId = 0;
+
         [DBFieldName("DecalPropertiesId")]
         public uint DecalPropertiesId = 0;
 

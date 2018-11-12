@@ -31,7 +31,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             gossipPOI.Name = packet.ReadWoWString("Name", bit84);
 
             var lastGossipOption = CoreParsers.NpcHandler.LastGossipOption;
-            var tempGossipOptionPOI = CoreParsers.NpcHandler.TempGossipOptionPOI; ;
+            var tempGossipOptionPOI = CoreParsers.NpcHandler.TempGossipOptionPOI;
 
             lastGossipOption.ActionPoiId = gossipPOI.ID;
             tempGossipOptionPOI.ActionPoiId = gossipPOI.ID;

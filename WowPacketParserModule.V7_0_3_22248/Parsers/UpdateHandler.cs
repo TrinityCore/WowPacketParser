@@ -433,14 +433,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 bool hasFacingCurveID = packet.ReadBit("HasFacingCurveID", index);
                 bool hasMoveCurveID = packet.ReadBit("HasMoveCurveID", index);
 
-                if (packet.ReadBit("unkbit4C", index))
-                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk2;
+                if (packet.ReadBit("HasAnimID", index))
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasAnimId;
 
                 if (packet.ReadBit("unkbit50", index))
                     areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk3;
 
-                if (packet.ReadBit("unkbit58", index))
-                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk4;
+                if (packet.ReadBit("HasAnimKitID", index))
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasAnimKitId;
 
                 if (packet.ReadBit("HasAreaTriggerSphere", index))
                     areaTriggerTemplate.Type = (byte)AreaTriggerType.Sphere;
@@ -457,7 +457,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 bool hasAreaTriggerSpline = packet.ReadBit("HasAreaTriggerSpline", index);
 
                 if (packet.ReadBit("HasAreaTriggerUnkType", index))
-                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk5;
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasCircularMovement;
 
                 if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.Unk3) != 0)
                     packet.ReadBit();
@@ -480,11 +480,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 if (hasMoveCurveID)
                     spellAreaTrigger.MoveCurveId = packet.ReadInt32("MoveCurveID", index);
 
-                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.Unk2) != 0)
-                    packet.ReadInt32();
+                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.HasAnimId) != 0)
+                    spellAreaTrigger.AnimId = packet.ReadInt32("AnimId", index);
 
-                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.Unk4) != 0)
-                    packet.ReadUInt32();
+                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.HasAnimKitId) != 0)
+                    spellAreaTrigger.AnimKitId = (int)packet.ReadUInt32("AnimKitId", index);
 
                 if (areaTriggerTemplate.Type == (byte)AreaTriggerType.Sphere)
                 {
@@ -554,7 +554,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     areaTriggerTemplate.Data[5] = packet.ReadSingle("LocationZOffsetTarget", index);
                 }
 
-                if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.Unk5) != 0)
+                if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.HasCircularMovement) != 0)
                 {
                     packet.ResetBitReader();
                     var unk1 = packet.ReadBit("AreaTriggerUnk1");

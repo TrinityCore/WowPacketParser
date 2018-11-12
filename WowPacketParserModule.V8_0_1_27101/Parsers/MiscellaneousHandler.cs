@@ -202,7 +202,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 packet.ReadPackedGuid128("BnetAccountID", i);
                 packet.ReadPackedGuid128("GuidActual", i);
 
-                packet.ReadUInt64("CommunityDbID", i);
+                packet.ReadUInt64("GuildClubMemberID", i);
                 packet.ReadUInt32("VirtualRealmAddress", i);
 
                 packet.ReadByteE<Race>("Race", i);

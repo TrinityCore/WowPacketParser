@@ -17,6 +17,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("LastLineEndTime")]
         public uint? LastLineEndTime;
 
+        [DBFieldName("TextureKitId", TargetedDatabase.BattleForAzeroth)]
+        public uint? TextureKitId;
+
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
 

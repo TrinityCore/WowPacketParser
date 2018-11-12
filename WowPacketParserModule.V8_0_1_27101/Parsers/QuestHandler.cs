@@ -27,8 +27,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             packet.ReadInt32("RewardMoney", idx);
             packet.ReadInt32("XP", idx);
-            packet.ReadUInt64("UnkUInt64_HeartOfAzeroth", idx);
-            packet.ReadInt32("UnkUInt32_HeartOfAzeroth", idx);
+            packet.ReadUInt64("ArtifactXP", idx);
+            packet.ReadInt32("ArtifactCategoryID", idx);
             packet.ReadInt32("Honor", idx);
             packet.ReadInt32("Title", idx);
             packet.ReadInt32("FactionFlags", idx);
@@ -470,12 +470,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             for (var i = 0; i < count; i++)
             {
-                packet.ReadInt32("Unk", i);
-                packet.ReadInt32("Entry", i);
+                packet.ReadInt32("SpawnTrackingID", i);
+                packet.ReadInt32("QuestObjectID", i);
 
                 packet.ResetBitReader();
 
-                packet.ReadBit("UnkBit", i);
+                packet.ReadBit("Visible", i);
             }
         }
 
