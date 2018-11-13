@@ -110,46 +110,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             }
         }
 
-        static void ReadHotfixRecord(Packet packet, int hotfixId, params object[] indexes)
-        {
-            packet.ResetBitReader();
-            var type = packet.ReadUInt32E<DB2Hash>("TableHash", indexes);
-            var entry = packet.ReadInt32("RecordID", indexes);
-            var allow = packet.ReadBit("Allow", indexes);
-            var dataSize = packet.ReadInt32("Size", indexes);
-            var data = packet.ReadBytes(dataSize);
-            var db2File = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
-
-            if (!allow)
-            {
-                packet.WriteLine($"Row {entry} has been removed.");
-                HotfixStoreMgr.RemoveRecord(type, entry);
-            }
-            else
-            {
-                packet.AddSniffData(StoreNameType.None, entry, type.ToString());
-                HotfixStoreMgr.AddRecord(type, entry, db2File);
-
-                if (db2File.Position != db2File.Length)
-                {
-                    db2File.WriteLine($"(Entry: {entry} TableHash: {type}) has missing structure");
-                    db2File.AsHex();
-                }
-
-                db2File.ClosePacket(false);
-            }
-
-            HotfixData hotfixData = new HotfixData
-            {
-                ID = (uint)hotfixId,
-                TableHash = type,
-                RecordID = entry,
-                Deleted = !allow
-            };
-
-            Storage.HotfixDatas.Add(hotfixData);
-        }
-
         static void ReadHotfixData(Packet packet, params object[] indexes)
         {
             packet.ResetBitReader();
