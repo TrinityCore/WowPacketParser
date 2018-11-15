@@ -6,6 +6,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using System.Data.Linq;
 
 namespace WowPacketParserModule.V8_0_1_27101.Parsers
 {
@@ -145,7 +146,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                         TableHash = type,
                         RecordID = entry,
                         Size = dataSize,
-                        Blob = data
+                        Blob = (Binary)data
                     };
 
                     Storage.HotfixBlobs.Add(hotfixBlob);
