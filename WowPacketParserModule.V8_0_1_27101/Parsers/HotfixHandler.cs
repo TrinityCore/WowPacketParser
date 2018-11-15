@@ -137,8 +137,18 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
                 if (db2File.Position != db2File.Length)
                 {
-                    db2File.WriteLine($"(Entry: {entry} TableHash: {type}) has missing structure");
+                    db2File.WriteLine($"(Entry: {entry} TableHash: {type}) has missing structure, saved as Blob");
                     db2File.AsHex();
+
+                    HotfixBlob hotfixBlob = new HotfixBlob
+                    {
+                        TableHash = type,
+                        RecordID = entry,
+                        Size = dataSize,
+                        Blob = data
+                    };
+
+                    Storage.HotfixBlobs.Add(hotfixBlob);
                 }
 
                 db2File.ClosePacket(false);
