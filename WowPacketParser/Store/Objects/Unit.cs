@@ -236,9 +236,9 @@ namespace WowPacketParser.Store.Objects
                     case TypeCode.Int32:
                         return (TK)(object)(int)uf.UInt32Value;
                     case TypeCode.Single:
-                        return (TK)(object)uf.SingleValue;
+                        return (TK)(object)uf.FloatValue;
                     case TypeCode.Double:
-                        return (TK)(object)(double)uf.SingleValue;
+                        return (TK)(object)(double)uf.FloatValue;
                     default:
                         break;
                 }
@@ -274,10 +274,10 @@ namespace WowPacketParser.Store.Objects
                             result[i] = (TK)(object)(int)uf.UInt32Value;
                             break;
                         case TypeCode.Single:
-                            result[i] = (TK)(object)uf.SingleValue;
+                            result[i] = (TK)(object)uf.FloatValue;
                             break;
                         case TypeCode.Double:
-                            result[i] = (TK)(object)(double)uf.SingleValue;
+                            result[i] = (TK)(object)(double)uf.FloatValue;
                             break;
                         default:
                             break;

@@ -22,11 +22,11 @@ namespace WowPacketParser.Tests.Misc
             var updateField = new UpdateField(uint.MaxValue);
 
             Assert.AreEqual(uint.MaxValue, updateField.UInt32Value);
-            Assert.AreEqual(Int32ToFloatBits(uint.MaxValue), updateField.SingleValue, float.Epsilon);
+            Assert.AreEqual(Int32ToFloatBits(uint.MaxValue), updateField.FloatValue, float.Epsilon);
 
             updateField = new UpdateField(float.MaxValue);
 
-            Assert.AreEqual(float.MaxValue, updateField.SingleValue);
+            Assert.AreEqual(float.MaxValue, updateField.FloatValue);
             Assert.AreEqual(FloatToInt32Bits(float.MaxValue), updateField.UInt32Value);
         }
 

@@ -6,23 +6,19 @@ namespace WowPacketParser.Misc
     [StructLayout(LayoutKind.Explicit)]
     public struct UpdateField
     {
-        public UpdateField(uint val)
+        public UpdateField(uint val) : this()
         {
-            SingleValue = 0; // CS0171
             UInt32Value = val;
         }
 
-        public UpdateField(float val)
+        public UpdateField(float val) : this()
         {
-            UInt32Value = 0; // CS0171
-            SingleValue = val;
+            FloatValue = val;
         }
 
-        [FieldOffset(0)]
-        public readonly uint UInt32Value;
-
-        [FieldOffset(0)]
-        public readonly float SingleValue;
+        [FieldOffset(0)] public readonly uint UInt32Value;
+        [FieldOffset(0)] public readonly int Int32Value;
+        [FieldOffset(0)] public readonly float FloatValue;
 
         public override bool Equals(object obj)
         {
@@ -36,7 +32,7 @@ namespace WowPacketParser.Misc
             if (UInt32Value == other.UInt32Value)
                 return true;
 
-            if (Math.Abs(SingleValue - other.SingleValue) < float.Epsilon)
+            if (Math.Abs(FloatValue - other.FloatValue) < float.Epsilon)
                 return true;
 
             return false;

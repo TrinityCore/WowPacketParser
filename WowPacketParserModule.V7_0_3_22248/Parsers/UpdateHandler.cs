@@ -44,7 +44,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                         var guid = packet.ReadPackedGuid128("Object Guid", i);
 
                         WoWObject obj;
-                        var updates = ReadValuesUpdateBlock(packet, guid.GetObjectType(), i, false);
+                        var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, guid.GetObjectType(), i, false);
                         var dynamicUpdates = ReadDynamicValuesUpdateBlock(packet, guid.GetObjectType(), i, false);
 
                         if (Storage.Objects.TryGetValue(guid, out obj))
@@ -98,7 +98,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
 
             var moves = ReadMovementUpdateBlock(packet, guid, obj, index);
-            var updates = ReadValuesUpdateBlock(packet, objType, index, true);
+            var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, objType, index, true);
             var dynamicUpdates = ReadDynamicValuesUpdateBlock(packet, objType, index, true);
 
             obj.Type = objType;
@@ -642,111 +642,6 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             return moveInfo;
         }
-        private static Dictionary<int, UpdateField> ReadValuesUpdateBlock(Packet packet, ObjectType type, object index, bool isCreating)
-        {
-            var maskSize = packet.ReadByte();
-
-            var updateMask = new int[maskSize];
-            for (var i = 0; i < maskSize; i++)
-                updateMask[i] = packet.ReadInt32();
-
-            var mask = new BitArray(updateMask);
-            var dict = new Dictionary<int, UpdateField>();
-
-            int objectEnd = UpdateFields.GetUpdateField(ObjectField.OBJECT_END);
-            for (var i = 0; i < mask.Count; ++i)
-            {
-                if (!mask[i])
-                    continue;
-
-                var blockVal = packet.ReadUpdateField();
-
-                // Don't spam 0 values at create
-                if (isCreating && blockVal.UInt32Value == 0)
-                    continue;
-
-                string key = "Block Value " + i;
-                string value = blockVal.UInt32Value + "/" + blockVal.SingleValue;
-
-                if (i < objectEnd)
-                    key = UpdateFields.GetUpdateFieldName<ObjectField>(i);
-                else
-                {
-                    switch (type)
-                    {
-                        case ObjectType.Container:
-                        {
-                            if (i < UpdateFields.GetUpdateField(ItemField.ITEM_END))
-                                goto case ObjectType.Item;
-
-                            key = UpdateFields.GetUpdateFieldName<ContainerField>(i);
-                            break;
-                        }
-                        case ObjectType.Item:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<ItemField>(i);
-                            break;
-                        }
-                        case ObjectType.Player:
-                        {
-                            if (i < UpdateFields.GetUpdateField(UnitField.UNIT_END) || i < UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_END))
-                                goto case ObjectType.Unit;
-
-                            key = UpdateFields.GetUpdateFieldName<PlayerField>(i);
-                            break;
-                        }
-                        case ObjectType.Unit:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<UnitField>(i);
-                            break;
-                        }
-                        case ObjectType.GameObject:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<GameObjectField>(i);
-                            break;
-                        }
-                        case ObjectType.DynamicObject:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<DynamicObjectField>(i);
-                            break;
-                        }
-                        case ObjectType.Corpse:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<CorpseField>(i);
-                            break;
-                        }
-                        case ObjectType.AreaTrigger:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<AreaTriggerField>(i);
-                            break;
-                        }
-                        case ObjectType.SceneObject:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<SceneObjectField>(i);
-                            break;
-                        }
-                        case ObjectType.Conversation:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<ConversationField>(i);
-                            break;
-                        }
-                    }
-                }
-
-                // HACK...
-                if (key == UnitField.UNIT_FIELD_SCALING_LEVEL_DELTA.ToString())
-                    value = (int)blockVal.UInt32Value + "/" + blockVal.SingleValue;
-
-                if (key == UnitField.UNIT_FIELD_FACTIONTEMPLATE.ToString())
-                    packet.AddValue(key, value + $" ({ StoreGetters.GetName(StoreNameType.Faction, (int)blockVal.UInt32Value, false) })", index);
-                else
-                    packet.AddValue(key, value, index);
-
-                dict.Add(i, blockVal);
-            }
-
-            return dict;
-        }
 
         private static Dictionary<int, List<UpdateField>> ReadDynamicValuesUpdateBlock(Packet packet, ObjectType type, object index, bool isCreating)
         {
@@ -850,7 +745,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                         continue;
 
                     var blockVal = packet.ReadUpdateField();
-                    string value = blockVal.UInt32Value + "/" + blockVal.SingleValue;
+                    string value = blockVal.UInt32Value + "/" + blockVal.FloatValue;
                     packet.AddValue(key, value, index, j);
 
                     values.Add(blockVal);

@@ -110,6 +110,31 @@ namespace WowPacketParser.Enums.Version
             return field.ToString(CultureInfo.InvariantCulture);
         }
 
+        public static Tuple<string, int, int> GetUpdateFieldNameTuple<T>(int field)
+        {
+            if (UpdateFieldDictionaries.ContainsKey(typeof(T)))
+            {
+                int start = field; // find start of field
+                do
+                {
+                    if (UpdateFieldDictionaries[typeof(T)].ContainsValue(start))
+                        break;
+                    start--;
+                }
+                while (start < field);
+                int diff = 1; // find next field
+                do
+                {
+                    if (UpdateFieldDictionaries[typeof(T)].ContainsValue(start + diff))
+                        return Tuple.Create(UpdateFieldDictionaries[typeof(T)][start], diff, start);
+                    ++diff;
+                }
+                while (diff <= 8);
+            }
+
+            return Tuple.Create("", 0, field);
+        }
+
         private static string GetUpdateFieldDictionaryBuildName(ClientVersionBuild build)
         {
             switch (build)
