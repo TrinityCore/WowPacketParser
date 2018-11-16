@@ -303,7 +303,11 @@ namespace WowPacketParser.Parsing.Parsers
             quest.RequiredNpcOrGoCount = new uint?[4];
             quest.RequiredItemID = new uint?[4];
             quest.RequiredItemCount = new uint?[4];
-            int reqItemFieldCount = ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_8_9464) ? 6 : 4;
+            var reqItemFieldCount = 4;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_8_9464))
+                reqItemFieldCount = 5;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192))
+                reqItemFieldCount = 6;
             quest.RequiredItemID = new uint?[reqItemFieldCount];
             quest.RequiredItemCount = new uint?[reqItemFieldCount];
 

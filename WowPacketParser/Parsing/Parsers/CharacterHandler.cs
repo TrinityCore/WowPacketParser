@@ -1044,7 +1044,10 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Time Played");
                 packet.ReadInt32("Total");
             }
-            packet.ReadBool("Print in chat");
+            if (packet.CanRead())
+            {
+                packet.ReadBool("Print in chat");
+            }
         }
 
         [Parser(Opcode.SMSG_LOG_XP_GAIN)]

@@ -631,7 +631,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadUInt32("Unk time"); // Time online?
 
-            if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing)) // no idea when this was added exactly, doesn't exist in 2.4.0
+            if (packet.CanRead()) // no idea when this was added exactly, doesn't exist in 2.4.0
                 packet.ReadUInt32("Unk int32");
         }
 
