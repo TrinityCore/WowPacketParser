@@ -496,7 +496,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             item.AllowedClasses = packet.ReadInt32E<ClassMask>("Allowed Classes");
 
-            item.AllowedRaces = packet.ReadInt32E<RaceMask>("Allowed Races");
+            item.AllowedRaces = packet.ReadUInt32E<RaceMask>("Allowed Races");
 
             item.ItemLevel = packet.ReadUInt32("Item Level");
 

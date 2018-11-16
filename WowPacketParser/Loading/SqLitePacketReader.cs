@@ -111,7 +111,10 @@ namespace WowPacketParser.Loading
                         {
                             int build;
                             if (int.TryParse(value.ToString(), out build))
+                            {
                                 ClientVersion.SetVersion((ClientVersionBuild)build);
+                                ClientLocale.SetLocale("enUS");
+                            }
 
                             break;
                         }
