@@ -1,11 +1,17 @@
+using WowPacketParser.Parsing;
+
 namespace WowPacketParser.Enums
 {
     // ReSharper disable InconsistentNaming, UnusedMember.Global
     public enum ObjectField
     {
+        [UpdateField(UpdateFieldType.Guid)]
         OBJECT_FIELD_GUID,
+        [UpdateField(UpdateFieldType.Uint)]
         OBJECT_FIELD_TYPE,
+        [UpdateField(UpdateFieldType.Uint)]
         OBJECT_FIELD_ENTRY,
+        [UpdateField(UpdateFieldType.Float)]
         OBJECT_FIELD_SCALE_X,
         OBJECT_FIELD_PADDING,
         OBJECT_DYNAMIC_FLAGS,
@@ -142,30 +148,45 @@ namespace WowPacketParser.Enums
         UNIT_FIELD_BATTLE_PET_COMPANION_GUID,
         UNIT_FIELD_BATTLE_PET_DB_ID,
         UNIT_FIELD_BONUS_RESISTANCE_MODS,
+        [UpdateField(UpdateFieldType.Float)]
         UNIT_FIELD_BOUNDINGRADIUS,
+        [UpdateField(UpdateFieldType.Bytes)]
         UNIT_FIELD_BYTES_0,
+        [UpdateField(UpdateFieldType.Bytes)]
         UNIT_FIELD_BYTES_1,
+        [UpdateField(UpdateFieldType.Bytes)]
         UNIT_FIELD_BYTES_2,
         UNIT_FIELD_CHANNEL_DATA,
+        [UpdateField(UpdateFieldType.Guid)]
         UNIT_FIELD_CHANNEL_OBJECT,
         UNIT_FIELD_CHARM,
+        [UpdateField(UpdateFieldType.Guid)]
         UNIT_FIELD_CHARMEDBY,
         UNIT_FIELD_CONTENT_TUNING_ID,
+        [UpdateField(UpdateFieldType.Float)]
         UNIT_FIELD_COMBATREACH,
+        [UpdateField(UpdateFieldType.Guid)]
         UNIT_FIELD_CREATEDBY,
         UNIT_FIELD_CRITTER,
+        [UpdateField(UpdateFieldType.Guid)]
         UNIT_FIELD_DEMON_CREATOR,
         UNIT_FIELD_DISPLAYID,
         UNIT_FIELD_DISPLAY_POWER,
         UNIT_FIELD_DISPLAY_SCALE,
         UNIT_FIELD_EFFECTIVE_LEVEL,
         UNIT_FIELD_END,
+        [UpdateField(UpdateFieldType.Custom)]
         UNIT_FIELD_FACTIONTEMPLATE,
+        [UpdateField(UpdateFieldType.Uint)]
         UNIT_FIELD_FLAGS,
+        [UpdateField(UpdateFieldType.Uint)]
         UNIT_FIELD_FLAGS_2,
+        [UpdateField(UpdateFieldType.Uint)]
         UNIT_FIELD_FLAGS_3,
         UNIT_FIELD_GUILD_GUID,
+        [UpdateField(UpdateFieldType.Uint)]
         UNIT_FIELD_HEALTH,
+        [UpdateField(UpdateFieldType.Float)]
         UNIT_FIELD_HOVERHEIGHT,
         UNIT_FIELD_INTERACT_SPELLID,
         UNIT_FIELD_LEVEL,
@@ -286,6 +307,7 @@ namespace WowPacketParser.Enums
         UNIT_FIELD_SCALING_HEALTH_ITEM_LEVEL_CURVE_ID,
         UNIT_FIELD_SCALING_LEVEL_MIN,
         UNIT_FIELD_SCALING_LEVEL_MAX,
+        [UpdateField(UpdateFieldType.Int)]
         UNIT_FIELD_SCALING_LEVEL_DELTA,
         UNIT_FIELD_STAT,
         UNIT_FIELD_STAT0,
@@ -298,8 +320,10 @@ namespace WowPacketParser.Enums
         UNIT_FIELD_STATE_SPELL_VISUAL_ID,
         UNIT_FIELD_STATE_WORLD_EFFECT_ID,
         UNIT_FIELD_SUMMON,
+        [UpdateField(UpdateFieldType.Guid)]
         UNIT_FIELD_SUMMONEDBY,
         UNIT_FIELD_SUMMONED_BY_HOME_REALM,
+        [UpdateField(UpdateFieldType.Guid)]
         UNIT_FIELD_TARGET,
         UNIT_FIELD_UNK63,
         UNIT_FIELD_WILD_BATTLEPET_LEVEL,
@@ -324,9 +348,13 @@ namespace WowPacketParser.Enums
         PLAYER_AMPLIFY,
         PLAYER_AVOIDANCE,
         PLAYER_BLOCK_PERCENTAGE,
+        [UpdateField(UpdateFieldType.Bytes)]
         PLAYER_BYTES,
+        [UpdateField(UpdateFieldType.Bytes)]
         PLAYER_BYTES_2,
+        [UpdateField(UpdateFieldType.Bytes)]
         PLAYER_BYTES_3,
+        [UpdateField(UpdateFieldType.Bytes)]
         PLAYER_BYTES_4,
         PLAYER_CHARACTER_POINTS,
         PLAYER_CHARACTER_POINTS1,
@@ -377,8 +405,11 @@ namespace WowPacketParser.Enums
         PLAYER_FIELD_BUYBACK_TIMESTAMP_7,
         PLAYER_FIELD_BUYBACK_TIMESTAMP_8,
         PLAYER_FIELD_BUYBACK_TIMESTAMP_9,
+        [UpdateField(UpdateFieldType.Bytes)]
         PLAYER_FIELD_BYTES,
+        [UpdateField(UpdateFieldType.Bytes)]
         PLAYER_FIELD_BYTES2,
+        [UpdateField(UpdateFieldType.Bytes)]
         PLAYER_FIELD_BYTES3,
         PLAYER_FIELD_COINAGE,
         PLAYER_FIELD_COMBAT_RATING_1,
@@ -815,8 +846,11 @@ namespace WowPacketParser.Enums
         ACTIVE_PLAYER_FIELD_BLOCK_PERCENTAGE,
         ACTIVE_PLAYER_FIELD_BUYBACK_PRICE,
         ACTIVE_PLAYER_FIELD_BUYBACK_TIMESTAMP,
+        [UpdateField(UpdateFieldType.Bytes)]
         ACTIVE_PLAYER_FIELD_BYTES,
+        [UpdateField(UpdateFieldType.Bytes)]
         ACTIVE_PLAYER_FIELD_BYTES2,
+        [UpdateField(UpdateFieldType.Bytes)]
         ACTIVE_PLAYER_FIELD_BYTES3,
         ACTIVE_PLAYER_FIELD_CHARACTER_POINTS,
         ACTIVE_PLAYER_FIELD_COINAGE,
@@ -917,16 +951,21 @@ namespace WowPacketParser.Enums
 
     public enum GameObjectField
     {
+        [UpdateField(UpdateFieldType.Bytes)]
         GAMEOBJECT_BYTES_1,
         GAMEOBJECT_DISPLAYID,
         GAMEOBJECT_DYNAMIC,
         GAMEOBJECT_END,
+        [UpdateField(UpdateFieldType.Int)]
         GAMEOBJECT_FACTION,
+        [UpdateField(UpdateFieldType.Guid)]
         GAMEOBJECT_FIELD_CREATED_BY,
         GAMEOBJECT_FIELD_CUSTOM_PARAM,
         GAMEOBJECT_FIELD_GUILD_GUID,
         GAMEOBJECT_FLAGS,
         GAMEOBJECT_LEVEL,
+        [UpdateField(UpdateFieldType.Quaternion)]
+        [UpdateField(UpdateFieldType.PackedQuaternion, ClientVersionBuild.V3_0_2_9056)]
         GAMEOBJECT_ROTATION,
         GAMEOBJECT_PARENTROTATION,
         GAMEOBJECT_POS_X,
@@ -950,6 +989,7 @@ namespace WowPacketParser.Enums
 
     public enum DynamicObjectField
     {
+        [UpdateField(UpdateFieldType.Bytes)]
         DYNAMICOBJECT_BYTES,
         DYNAMICOBJECT_CASTER,
         DYNAMICOBJECT_CASTTIME,
@@ -968,7 +1008,9 @@ namespace WowPacketParser.Enums
     public enum CorpseField
     {
         CORPSE_END,
+        [UpdateField(UpdateFieldType.Bytes)]
         CORPSE_FIELD_BYTES_1,
+        [UpdateField(UpdateFieldType.Bytes)]
         CORPSE_FIELD_BYTES_2,
         CORPSE_FIELD_CUSTOM_DISPLAY_OPTION,
         CORPSE_FIELD_DISPLAY_ID,
@@ -978,6 +1020,7 @@ namespace WowPacketParser.Enums
         CORPSE_FIELD_GUILD,
         CORPSE_FIELD_GUILD_GUID,
         CORPSE_FIELD_ITEM,
+        [UpdateField(UpdateFieldType.Guid)]
         CORPSE_FIELD_OWNER,
         CORPSE_FIELD_PAD,
         CORPSE_FIELD_PARTY
