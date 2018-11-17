@@ -1,6 +1,5 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.SQL;
-using System.Data.Linq;
 
 namespace WowPacketParser.Store.Objects
 {
@@ -16,7 +15,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Size")]
         public int? Size;
 
-        [DBFieldName("Blob")]
-        public Binary Blob;
+        [DBFieldName("Blob", false, true)]
+        public string Blob;
     }
 }
