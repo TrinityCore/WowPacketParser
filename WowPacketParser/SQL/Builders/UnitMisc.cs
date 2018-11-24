@@ -125,27 +125,28 @@ namespace WowPacketParser.SQL.Builders
 
                 var npc = unit.Value;
 
-                if (npc.ScalingMinLevel != null && npc.ScalingMaxLevel != null)
+                uint minLevel, maxLevel, sandboxScalingID;
+                int minDelta, maxDelta;
+
+                minLevel = npc.ScalingMinLevel.GetValueOrDefault(0);
+                maxLevel = npc.ScalingMaxLevel.GetValueOrDefault(0);
+                minDelta = scalingdeltalevels[unit.Key.GetEntry()].Item1;
+                maxDelta = scalingdeltalevels[unit.Key.GetEntry()].Item2;
+                sandboxScalingID = npc.SandboxScalingID.GetValueOrDefault(0);
+
+                var template = new CreatureTemplateScaling
                 {
-                    uint minLevel, maxLevel;
-                    int minDelta, maxDelta;
+                    Entry = unit.Key.GetEntry(),
+                    DifficultyID = npc.DifficultyID,
+                    LevelScalingMin = minLevel,
+                    LevelScalingMax = maxLevel,
+                    LevelScalingDeltaMin = minDelta,
+                    LevelScalingDeltaMax = maxDelta,
+                    SandboxScalingID = sandboxScalingID
+                };
 
-                    minLevel = (uint)npc.ScalingMinLevel;
-                    maxLevel = (uint)npc.ScalingMaxLevel;
-                    minDelta = (int)scalingdeltalevels[unit.Key.GetEntry()].Item1;
-                    maxDelta = (int)scalingdeltalevels[unit.Key.GetEntry()].Item2;
-
-                    var template = new CreatureTemplateScaling
-                    {
-                        Entry = unit.Key.GetEntry(),
-                        LevelScalingMin = minLevel,
-                        LevelScalingMax = maxLevel,
-                        LevelScalingDeltaMin = minDelta,
-                        LevelScalingDeltaMax = maxDelta
-                    };
-
+                if (minLevel != 0 || maxLevel != 0 || sandboxScalingID != 0)
                     Storage.CreatureTemplateScalings.Add(template);
-                }
             }
 
             var templatesDb = SQLDatabase.Get(Storage.CreatureTemplateScalings);

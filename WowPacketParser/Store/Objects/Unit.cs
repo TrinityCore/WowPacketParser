@@ -40,6 +40,7 @@ namespace WowPacketParser.Store.Objects
         public uint? ScalingMinLevel;
         public uint? ScalingMaxLevel;
         public int? ScalingDelta;
+        public uint? SandboxScalingID;
         public uint? Faction;
         public uint[] EquipmentItemId;
         public ushort[] EquipmentAppearanceModId;
@@ -134,7 +135,11 @@ namespace WowPacketParser.Store.Objects
             {
                 ScalingMinLevel = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_SCALING_LEVEL_MIN);
                 ScalingMaxLevel = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_SCALING_LEVEL_MAX);
-                ScalingDelta = UpdateFields.GetValue<UnitField, int>(UnitField.UNIT_FIELD_SCALING_LEVEL_DELTA); ;
+                ScalingDelta = UpdateFields.GetValue<UnitField, int>(UnitField.UNIT_FIELD_SCALING_LEVEL_DELTA);
+                if (ClientVersion.AddedInVersion(ClientType.Legion) && ClientVersion.RemovedInVersion(ClientType.BattleForAzeroth))
+                    SandboxScalingID = UpdateFields.GetValue<UnitField, uint>(UnitField.UNIT_FIELD_SANDBOX_SCALING_ID);
+                if (ClientVersion.AddedInVersion(ClientType.BattleForAzeroth))
+                    SandboxScalingID = UpdateFields.GetValue<UnitField, uint>(UnitField.UNIT_FIELD_CONTENT_TUNING_ID);
                 EquipmentRaw = UpdateFields.GetArray<UnitField, uint>(UnitField.UNIT_VIRTUAL_ITEM_SLOT_ID, 6);
             }
             else
