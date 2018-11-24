@@ -54,6 +54,10 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
 
         public int Level => UpdateFields.GetValue<UnitField, int?>(UnitField.UNIT_FIELD_LEVEL).GetValueOrDefault(1);
 
+        public int ContentTuningID => ClientVersion.AddedInVersion(ClientType.BattleForAzeroth)
+                ? UpdateFields.GetValue<UnitField, int>(UnitField.UNIT_FIELD_CONTENT_TUNING_ID)
+                : UpdateFields.GetValue<UnitField, int>(UnitField.UNIT_FIELD_SANDBOX_SCALING_ID);
+
         public int ScalingLevelMin => UpdateFields.GetValue<UnitField, int>(UnitField.UNIT_FIELD_SCALING_LEVEL_MIN);
 
         public int ScalingLevelMax => UpdateFields.GetValue<UnitField, int>(UnitField.UNIT_FIELD_SCALING_LEVEL_MAX);

@@ -125,26 +125,22 @@ namespace WowPacketParser.SQL.Builders
 
                 var npc = unit.Value;
 
-                if (npc.UnitData.ScalingLevelMin != 0 && npc.UnitData.ScalingLevelMax != 0)
+                var minLevel = (uint)npc.UnitData.ScalingLevelMin;
+                var maxLevel = (uint)npc.UnitData.ScalingLevelMax;
+                var contentTuningID = npc.UnitData.ContentTuningID;
+
+                if (minLevel != 0 || maxLevel != 0 || contentTuningID != 0)
                 {
-                    uint minLevel, maxLevel;
-                    int minDelta, maxDelta;
-
-                    minLevel = (uint)npc.UnitData.ScalingLevelMin;
-                    maxLevel = (uint)npc.UnitData.ScalingLevelMax;
-                    minDelta = (int)scalingdeltalevels[unit.Key.GetEntry()].Item1;
-                    maxDelta = (int)scalingdeltalevels[unit.Key.GetEntry()].Item2;
-
-                    var template = new CreatureTemplateScaling
+                    Storage.CreatureTemplateScalings.Add(new CreatureTemplateScaling
                     {
                         Entry = unit.Key.GetEntry(),
+                        DifficultyID = npc.DifficultyID,
                         LevelScalingMin = minLevel,
                         LevelScalingMax = maxLevel,
-                        LevelScalingDeltaMin = minDelta,
-                        LevelScalingDeltaMax = maxDelta
-                    };
-
-                    Storage.CreatureTemplateScalings.Add(template);
+                        LevelScalingDeltaMin = scalingdeltalevels[unit.Key.GetEntry()].Item1,
+                        LevelScalingDeltaMax = scalingdeltalevels[unit.Key.GetEntry()].Item2,
+                        ContentTuningID = contentTuningID
+                    });
                 }
             }
 

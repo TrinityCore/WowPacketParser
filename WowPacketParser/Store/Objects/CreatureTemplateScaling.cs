@@ -1,3 +1,4 @@
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
@@ -8,6 +9,9 @@ namespace WowPacketParser.Store.Objects
     {
         [DBFieldName("Entry", true)]
         public uint? Entry;
+
+        [DBFieldName("DifficultyID", true)]
+        public uint? DifficultyID;
 
         [DBFieldName("LevelScalingMin")]
         public uint? LevelScalingMin;
@@ -20,6 +24,10 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("LevelScalingDeltaMax")]
         public int? LevelScalingDeltaMax;
+
+        [DBFieldName("SandboxScalingID", TargetedDatabase.Legion, TargetedDatabase.BattleForAzeroth)]
+        [DBFieldName("ContentTuningID", TargetedDatabase.BattleForAzeroth)]
+        public int? ContentTuningID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
