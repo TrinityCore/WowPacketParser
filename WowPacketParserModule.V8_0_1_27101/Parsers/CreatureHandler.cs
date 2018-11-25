@@ -67,7 +67,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             var displayIdCount = packet.ReadUInt32("DisplayIdCount");
             packet.ReadSingle("TotalProbability");
 
-            creature.ModelIDs = new uint?[displayIdCount];
             for (var i = 0; i < displayIdCount; ++i)
             {
                 CreatureTemplateModel model = new CreatureTemplateModel

@@ -7,13 +7,13 @@ namespace WowPacketParser.Store.Objects
     public sealed class CreatureTemplateModel : IDataModel
     {
         [DBFieldName("CreatureID", true)]
-        public uint CreatureID;
+        public uint? CreatureID;
 
         [DBFieldName("Idx")]
-        public uint Idx;
+        public uint? Idx;
 
         [DBFieldName("CreatureDisplayID", true)]
-        public uint CreatureDisplayID;
+        public uint? CreatureDisplayID;
 
         [DBFieldName("DisplayScale")]
         public float? DisplayScale;
