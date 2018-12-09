@@ -11,7 +11,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public uint Effect { get; set; }
         public float EffectAmplitude { get; set; }
         public int EffectAttributes { get; set; }
-        public short EffectAura { get; set; }
+        public ushort EffectAura { get; set; }
         public int EffectAuraPeriod { get; set; }
         public float EffectBonusCoefficient { get; set; }
         public float EffectChainAmplitude { get; set; }

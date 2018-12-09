@@ -19,6 +19,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public ushort CharacterBitNumber { get; set; }
         public byte Flags { get; set; }
         public int UiTextureKitID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V8_1_0_28657, false)]
+        public int MinimapAtlasMemberID { get; set; }
         public float Facing { get; set; }
         public uint SpecialIconConditionID { get; set; }
         public uint VisibilityConditionID { get; set; }

@@ -10,7 +10,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public float[] GameCoords { get; set; }
         public float GameFalloffStart { get; set; }
         public float GameFalloffEnd { get; set; }
-        public short ContinentID { get; set; }
+        public ushort ContinentID { get; set; }
         [HotfixArray(8)]
         public ushort[] LightParamsID { get; set; }
     }

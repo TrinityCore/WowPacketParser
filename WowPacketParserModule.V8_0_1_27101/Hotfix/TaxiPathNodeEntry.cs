@@ -13,8 +13,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public int NodeIndex { get; set; }
         public ushort ContinentID { get; set; }
         public byte Flags { get; set; }
-        public uint Delay { get; set; }
+        public int Delay { get; set; }
+        [HotfixVersion(ClientVersionBuild.V8_1_0_28657, true)]
         public ushort ArrivalEventID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V8_1_0_28657, false)]
+        public uint ArrivalEventId { get; set; }
         public ushort DepartureEventID { get; set; }
     }
 }

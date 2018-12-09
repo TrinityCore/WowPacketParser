@@ -21,7 +21,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public short LoadingScreenID { get; set; }
         public short TimeOfDayOverride { get; set; }
         public short ParentMapID { get; set; }
-        public short CosmeticParentMapID { get; set; }
+        public ushort CosmeticParentMapID { get; set; }
         public byte TimeOffset { get; set; }
         public float MinimapIconScale { get; set; }
         public short CorpseMapID { get; set; }

@@ -23,6 +23,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public int IconFileDataID { get; set; }
         public short RequiredPlayerConditionID { get; set; }
         [HotfixArray(16)]
-        public short[] MapID { get; set; }
+        public ushort[] MapID { get; set; }
     }
 }

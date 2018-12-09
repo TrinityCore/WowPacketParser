@@ -11,8 +11,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public ushort ReqRidingSkill { get; set; }
         public ushort ReqAreaID { get; set; }
         public uint ReqSpellAuraID { get; set; }
-        public int ReqSpellKnownID { get; set; }
+        public uint ReqSpellKnownID { get; set; }
         public int ModSpellAuraID { get; set; }
-        public short ReqMapID { get; set; }
+        public ushort ReqMapID { get; set; }
     }
 }

@@ -14,7 +14,10 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public short ReputationIndex { get; set; }
         public ushort ParentFactionID { get; set; }
         public byte Expansion { get; set; }
-        public byte FriendshipRepID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V8_1_0_28657, false)]
+        public uint FriendshipRepID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V8_1_0_28657, true)]
+        public byte FriendshipRepId { get; set; }
         public byte Flags { get; set; }
         public ushort ParagonFactionID { get; set; }
         [HotfixArray(4)]

@@ -12,8 +12,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public int ID { get; set; }
         public short InstanceID { get; set; }
         public sbyte Faction { get; set; }
-        public short Supercedes { get; set; }
-        public short Category { get; set; }
+        public ushort Supercedes { get; set; }
+        public ushort Category { get; set; }
         public sbyte MinimumCriteria { get; set; }
         public sbyte Points { get; set; }
         public int Flags { get; set; }

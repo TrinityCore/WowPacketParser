@@ -11,9 +11,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public int SpecID { get; set; }
         public int SpellID { get; set; }
         public int OverridesSpellID { get; set; }
-        public int Flags { get; set; }
-        public int ActionBarSpellID { get; set; }
-        public int PvpTalentCategoryID { get; set; }
-        public int LevelRequired { get; set; }
+        public uint Flags { get; set; }
+        public uint ActionBarSpellID { get; set; }
+        public uint PvpTalentCategoryID { get; set; }
+        public uint LevelRequired { get; set; }
     }
 }

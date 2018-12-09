@@ -16,8 +16,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public byte Flags { get; set; }
         [HotfixArray(10)]
         public ushort[] Duration { get; set; }
+        [HotfixVersion(ClientVersionBuild.V8_1_0_28657, true)]
         [HotfixArray(16)]
-        public uint[] Date { get; set; }
+        public int[] Date { get; set; }
+        [HotfixVersion(ClientVersionBuild.V8_1_0_28657, false)]
+        [HotfixArray(26)]
+        public int[] date { get; set; }
         [HotfixArray(10)]
         public byte[] CalendarFlags { get; set; }
         [HotfixArray(3)]
