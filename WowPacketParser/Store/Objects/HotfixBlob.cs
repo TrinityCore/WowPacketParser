@@ -12,9 +12,6 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("RecordId", true)]
         public int? RecordID;
 
-        [DBFieldName("Size")]
-        public int? Size;
-
         [DBFieldName("Blob", false, true)]
         public string Blob;
     }

@@ -144,7 +144,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     {
                         TableHash = type,
                         RecordID = entry,
-                        Size = dataSize,
                         Blob = "0x" + Utilities.ByteArrayToHexString(data)
                     };
 
