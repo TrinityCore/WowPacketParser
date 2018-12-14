@@ -21,7 +21,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public uint UiAltItemAppearanceID { get; set; }
         public byte Flags { get; set; }
         public ushort UiCameraID { get; set; }
-        [HotfixVersion(ClientVersionBuild.V8_1_0_28657, false)]
+        [HotfixVersion(ClientVersionBuild.V8_1_0_28724, false)]
         public uint UsablePlayerConditionID { get; set; }
     }
 }

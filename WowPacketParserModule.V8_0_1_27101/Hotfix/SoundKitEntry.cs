@@ -7,9 +7,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     public class SoundKitEntry
     {
         public int ID { get; set; }
-        [HotfixVersion(ClientVersionBuild.V8_1_0_28657, true)]
+        [HotfixVersion(ClientVersionBuild.V8_1_0_28724, true)]
         public byte SoundType { get; set; }
-        [HotfixVersion(ClientVersionBuild.V8_1_0_28657, false)]
+        [HotfixVersion(ClientVersionBuild.V8_1_0_28724, false)]
         public int soundType { get; set; }
         public float VolumeFloat { get; set; }
         public ushort Flags { get; set; }

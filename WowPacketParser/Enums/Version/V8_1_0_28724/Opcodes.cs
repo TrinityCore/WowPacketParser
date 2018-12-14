@@ -1,6 +1,6 @@
 using WowPacketParser.Misc;
 
-namespace WowPacketParser.Enums.Version.V8_1_0_28657
+namespace WowPacketParser.Enums.Version.V8_1_0_28724
 {
     public static class Opcodes_8_1_0
     {
