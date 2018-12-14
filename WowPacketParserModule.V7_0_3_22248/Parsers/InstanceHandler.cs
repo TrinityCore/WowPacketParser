@@ -27,6 +27,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             for (int i = 0; i < count; ++i)
             {
+                packet.ResetBitReader();
+
                 var strlen = packet.ReadBits(7);
 
                 packet.ReadBit("KeepGroupsTogether", i);
