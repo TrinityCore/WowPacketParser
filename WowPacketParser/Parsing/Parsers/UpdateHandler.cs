@@ -175,14 +175,12 @@ namespace WowPacketParser.Parsing.Parsers
                 UpdateField blockVal = packet.ReadUpdateField();
 
                 string key = "Block Value " + i;
-                Type fieldType = typeof(object);
                 string value = blockVal.UInt32Value + "/" + blockVal.FloatValue;
                 UpdateFieldInfo fieldInfo = null;
 
                 if (i < objectEnd)
                 {
                     fieldInfo = UpdateFields.GetUpdateFieldInfo<ObjectField>(i);
-                    fieldType = typeof(ObjectField);
                 }
                 else
                 {
@@ -194,13 +192,11 @@ namespace WowPacketParser.Parsing.Parsers
                                 goto case ObjectType.Item;
 
                             fieldInfo = UpdateFields.GetUpdateFieldInfo<ContainerField>(i);
-                            fieldType = typeof(ContainerField);
                             break;
                         }
                         case ObjectType.Item:
                         {
                             fieldInfo = UpdateFields.GetUpdateFieldInfo<ItemField>(i);
-                            fieldType = typeof(ItemField);
                             break;
                         }
                         case ObjectType.AzeriteEmpoweredItem:
@@ -209,7 +205,6 @@ namespace WowPacketParser.Parsing.Parsers
                                 goto case ObjectType.Item;
 
                             fieldInfo = UpdateFields.GetUpdateFieldInfo<AzeriteEmpoweredItemField>(i);
-                            fieldType = typeof(AzeriteEmpoweredItemField);
                             break;
                         }
                         case ObjectType.AzeriteItem:
@@ -218,7 +213,6 @@ namespace WowPacketParser.Parsing.Parsers
                                 goto case ObjectType.Item;
 
                             fieldInfo = UpdateFields.GetUpdateFieldInfo<AzeriteItemField>(i);
-                            fieldType = typeof(AzeriteItemField);
                             break;
                         }
                         case ObjectType.Player:
@@ -227,7 +221,6 @@ namespace WowPacketParser.Parsing.Parsers
                                 goto case ObjectType.Unit;
 
                             fieldInfo = UpdateFields.GetUpdateFieldInfo<PlayerField>(i);
-                            fieldType = typeof(PlayerField);
                             break;
                         }
                         case ObjectType.ActivePlayer:
@@ -236,49 +229,41 @@ namespace WowPacketParser.Parsing.Parsers
                                 goto case ObjectType.Player;
 
                             fieldInfo = UpdateFields.GetUpdateFieldInfo<ActivePlayerField>(i);
-                            fieldType = typeof(ActivePlayerField);
                             break;
                         }
                         case ObjectType.Unit:
                         {
                             fieldInfo = UpdateFields.GetUpdateFieldInfo<UnitField>(i);
-                            fieldType = typeof(UnitField);
                             break;
                         }
                         case ObjectType.GameObject:
                         {
                             fieldInfo = UpdateFields.GetUpdateFieldInfo<GameObjectField>(i);
-                            fieldType = typeof(GameObjectField);
                             break;
                         }
                         case ObjectType.DynamicObject:
                         {
                             fieldInfo = UpdateFields.GetUpdateFieldInfo<DynamicObjectField>(i);
-                            fieldType = typeof(DynamicObjectField);
                             break;
                         }
                         case ObjectType.Corpse:
                         {
                             fieldInfo = UpdateFields.GetUpdateFieldInfo<CorpseField>(i);
-                            fieldType = typeof(CorpseField);
                             break;
                         }
                         case ObjectType.AreaTrigger:
                         {
                             fieldInfo = UpdateFields.GetUpdateFieldInfo<AreaTriggerField>(i);
-                            fieldType = typeof(AreaTriggerField);
                             break;
                         }
                         case ObjectType.SceneObject:
                         {
                             fieldInfo = UpdateFields.GetUpdateFieldInfo<SceneObjectField>(i);
-                            fieldType = typeof(SceneObjectField);
                             break;
                         }
                         case ObjectType.Conversation:
                         {
                             fieldInfo = UpdateFields.GetUpdateFieldInfo<ConversationField>(i);
-                            fieldType = typeof(ConversationField);
                             break;
                         }
                     }
