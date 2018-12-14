@@ -29,17 +29,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     case "Values":
                     {
                         var guid = packet.ReadPackedGuid("GUID", i);
-
-                        WoWObject obj;
-                        var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, guid.GetObjectType(), i, false);
-
-                        if (Storage.Objects.TryGetValue(guid, out obj))
-                        {
-                            if (obj.ChangedUpdateFieldsList == null)
-                                obj.ChangedUpdateFieldsList = new List<Dictionary<int, UpdateField>>();
-                            obj.ChangedUpdateFieldsList.Add(updates);
-                        }
-
+                        CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, guid, i);
                         break;
                     }
                     case "CreateObject1":
@@ -62,7 +52,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         {
             ObjectType objType = ObjectTypeConverter.Convert(packet.ReadByteE<ObjectTypeLegacy>("Object Type", index));
             var moves = ReadMovementUpdateBlock434(packet, guid, index);
-            var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, objType, index, true);
+            var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlockOnCreate(packet, objType, index);
 
             WoWObject obj;
             switch (objType)
