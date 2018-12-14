@@ -183,5 +183,30 @@ namespace WowPacketParser.Misc
 
             return FileCompression.None;
         }
+
+        public static int BinarySearch<TKey, TValue>(this SortedList<TKey, TValue> sortedList, TKey key)
+        {
+            if (key == null)
+                throw new ArgumentNullException(nameof(key));
+
+            var array = sortedList.Keys;
+            var comparer = sortedList.Comparer;
+            var lo = 0;
+            var hi = sortedList.Count - 1;
+            while (lo <= hi)
+            {
+                var i = lo + ((hi - lo) >> 1);
+                var order = comparer.Compare(array[i], key);
+                if (order == 0)
+                    return i;
+
+                if (order < 0)
+                    lo = i + 1;
+                else
+                    hi = i - 1;
+            }
+
+            return ~lo;
+        }
     }
 }

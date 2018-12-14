@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
@@ -36,17 +35,7 @@ namespace WowPacketParser.Parsing.Parsers
                     case "Values":
                     {
                         var guid = packet.ReadPackedGuid("GUID", i);
-
-                        WoWObject obj;
-                        var updates = ReadValuesUpdateBlock(packet, guid.GetObjectType(), i, false);
-
-                        if (Storage.Objects.TryGetValue(guid, out obj))
-                        {
-                            if (obj.ChangedUpdateFieldsList == null)
-                                obj.ChangedUpdateFieldsList = new List<Dictionary<int, UpdateField>>();
-                            obj.ChangedUpdateFieldsList.Add(updates);
-                        }
-
+                        ReadValuesUpdateBlock(packet, guid, i);
                         break;
                     }
                     case "Movement":
@@ -78,8 +67,8 @@ namespace WowPacketParser.Parsing.Parsers
         {
             ObjectType objType = ObjectTypeConverter.Convert(packet.ReadByteE<ObjectTypeLegacy>("Object Type", index));
             var moves = ReadMovementUpdateBlock(packet, guid, index);
-            var updates = ReadValuesUpdateBlock(packet, objType, index, true);
-            var dynamicUpdates = ReadDynamicValuesUpdateBlock(packet, objType, index);
+            var updates = ReadValuesUpdateBlockOnCreate(packet, objType, index);
+            var dynamicUpdates = ReadDynamicValuesUpdateBlockOnCreate(packet, objType, index);
 
             WoWObject obj;
             switch (objType)
@@ -115,6 +104,16 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.AddSniffData(Utilities.ObjectTypeToStore(objType), (int)guid.GetEntry(), "SPAWN");
         }
 
+        public static Dictionary<int, UpdateField> ReadValuesUpdateBlockOnCreate(Packet packet, ObjectType type, object index)
+        {
+            return ReadValuesUpdateBlock(packet, type, index, true, null);
+        }
+
+        public static Dictionary<int, List<UpdateField>> ReadDynamicValuesUpdateBlockOnCreate(Packet packet, ObjectType type, object index)
+        {
+            return ReadDynamicValuesUpdateBlock(packet, type, index, true, null);
+        }
+
         public static void ProcessExistingObject(ref WoWObject obj, WoWObject newObj, WowGuid guid)
         {
             obj.PhaseMask |= newObj.PhaseMask;
@@ -138,7 +137,23 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadPackedGuid("Object GUID", index, j);
         }
 
-        public static Dictionary<int, UpdateField> ReadValuesUpdateBlock(Packet packet, ObjectType type, object index, bool isCreating)
+        public static void ReadValuesUpdateBlock(Packet packet, WowGuid guid, int index)
+        {
+            WoWObject obj;
+            if (Storage.Objects.TryGetValue(guid, out obj))
+            {
+                var updates = ReadValuesUpdateBlock(packet, guid.GetObjectType(), index, false, obj.UpdateFields);
+                var dynamicUpdates = ReadDynamicValuesUpdateBlock(packet, guid.GetObjectType(), index, false, obj.DynamicUpdateFields);
+                ApplyUpdateFieldsChange(obj, updates, dynamicUpdates);
+            }
+            else
+            {
+                ReadValuesUpdateBlock(packet, guid.GetObjectType(), index, false, null);
+                ReadDynamicValuesUpdateBlock(packet, guid.GetObjectType(), index, false, null);
+            }
+        }
+
+        private static Dictionary<int, UpdateField> ReadValuesUpdateBlock(Packet packet, ObjectType type, object index, bool isCreating, Dictionary<int, UpdateField> oldValues)
         {
             var maskSize = packet.ReadByte();
 
@@ -162,11 +177,11 @@ namespace WowPacketParser.Parsing.Parsers
                 string key = "Block Value " + i;
                 Type fieldType = typeof(object);
                 string value = blockVal.UInt32Value + "/" + blockVal.FloatValue;
-                Tuple<string, int, int> tuple = null;
+                UpdateFieldInfo fieldInfo = null;
 
                 if (i < objectEnd)
                 {
-                    tuple = UpdateFields.GetUpdateFieldNameTuple<ObjectField>(i);
+                    fieldInfo = UpdateFields.GetUpdateFieldInfo<ObjectField>(i);
                     fieldType = typeof(ObjectField);
                 }
                 else
@@ -178,13 +193,13 @@ namespace WowPacketParser.Parsing.Parsers
                             if (i < UpdateFields.GetUpdateField(ItemField.ITEM_END))
                                 goto case ObjectType.Item;
 
-                            tuple = UpdateFields.GetUpdateFieldNameTuple<ContainerField>(i);
+                            fieldInfo = UpdateFields.GetUpdateFieldInfo<ContainerField>(i);
                             fieldType = typeof(ContainerField);
                             break;
                         }
                         case ObjectType.Item:
                         {
-                            tuple = UpdateFields.GetUpdateFieldNameTuple<ItemField>(i);
+                            fieldInfo = UpdateFields.GetUpdateFieldInfo<ItemField>(i);
                             fieldType = typeof(ItemField);
                             break;
                         }
@@ -192,7 +207,8 @@ namespace WowPacketParser.Parsing.Parsers
                         {
                             if (i < UpdateFields.GetUpdateField(ItemField.ITEM_END))
                                 goto case ObjectType.Item;
-                            tuple = UpdateFields.GetUpdateFieldNameTuple<AzeriteEmpoweredItemField>(i);
+
+                            fieldInfo = UpdateFields.GetUpdateFieldInfo<AzeriteEmpoweredItemField>(i);
                             fieldType = typeof(AzeriteEmpoweredItemField);
                             break;
                         }
@@ -200,7 +216,8 @@ namespace WowPacketParser.Parsing.Parsers
                         {
                             if (i < UpdateFields.GetUpdateField(ItemField.ITEM_END))
                                 goto case ObjectType.Item;
-                            tuple = UpdateFields.GetUpdateFieldNameTuple<AzeriteItemField>(i);
+
+                            fieldInfo = UpdateFields.GetUpdateFieldInfo<AzeriteItemField>(i);
                             fieldType = typeof(AzeriteItemField);
                             break;
                         }
@@ -209,7 +226,7 @@ namespace WowPacketParser.Parsing.Parsers
                             if (i < UpdateFields.GetUpdateField(UnitField.UNIT_END) || i < UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_END))
                                 goto case ObjectType.Unit;
 
-                            tuple = UpdateFields.GetUpdateFieldNameTuple<PlayerField>(i);
+                            fieldInfo = UpdateFields.GetUpdateFieldInfo<PlayerField>(i);
                             fieldType = typeof(PlayerField);
                             break;
                         }
@@ -217,152 +234,187 @@ namespace WowPacketParser.Parsing.Parsers
                         {
                             if (i < UpdateFields.GetUpdateField(PlayerField.PLAYER_END))
                                 goto case ObjectType.Player;
-                            tuple = UpdateFields.GetUpdateFieldNameTuple<ActivePlayerField>(i);
+
+                            fieldInfo = UpdateFields.GetUpdateFieldInfo<ActivePlayerField>(i);
                             fieldType = typeof(ActivePlayerField);
                             break;
                         }
                         case ObjectType.Unit:
                         {
-                            tuple = UpdateFields.GetUpdateFieldNameTuple<UnitField>(i);
+                            fieldInfo = UpdateFields.GetUpdateFieldInfo<UnitField>(i);
                             fieldType = typeof(UnitField);
                             break;
                         }
                         case ObjectType.GameObject:
                         {
-                            tuple = UpdateFields.GetUpdateFieldNameTuple<GameObjectField>(i);
+                            fieldInfo = UpdateFields.GetUpdateFieldInfo<GameObjectField>(i);
                             fieldType = typeof(GameObjectField);
                             break;
                         }
                         case ObjectType.DynamicObject:
                         {
-                            tuple = UpdateFields.GetUpdateFieldNameTuple<DynamicObjectField>(i);
+                            fieldInfo = UpdateFields.GetUpdateFieldInfo<DynamicObjectField>(i);
                             fieldType = typeof(DynamicObjectField);
                             break;
                         }
                         case ObjectType.Corpse:
                         {
-                            tuple = UpdateFields.GetUpdateFieldNameTuple<CorpseField>(i);
+                            fieldInfo = UpdateFields.GetUpdateFieldInfo<CorpseField>(i);
                             fieldType = typeof(CorpseField);
                             break;
                         }
                         case ObjectType.AreaTrigger:
                         {
-                            tuple = UpdateFields.GetUpdateFieldNameTuple<AreaTriggerField>(i);
+                            fieldInfo = UpdateFields.GetUpdateFieldInfo<AreaTriggerField>(i);
                             fieldType = typeof(AreaTriggerField);
                             break;
                         }
                         case ObjectType.SceneObject:
                         {
-                            tuple = UpdateFields.GetUpdateFieldNameTuple<SceneObjectField>(i);
+                            fieldInfo = UpdateFields.GetUpdateFieldInfo<SceneObjectField>(i);
                             fieldType = typeof(SceneObjectField);
                             break;
                         }
                         case ObjectType.Conversation:
                         {
-                            tuple = UpdateFields.GetUpdateFieldNameTuple<ConversationField>(i);
+                            fieldInfo = UpdateFields.GetUpdateFieldInfo<ConversationField>(i);
                             fieldType = typeof(ConversationField);
                             break;
                         }
                     }
                 }
                 int start = i;
-                if (tuple != null && tuple.Item1 != string.Empty)
-                {
-                    key = tuple.Item1;
-                    size = tuple.Item2;
-                    start = tuple.Item3;
-                }
                 UpdateFieldType updateFieldType = UpdateFieldType.Default;
+                if (fieldInfo != null)
+                {
+                    key = fieldInfo.Name;
+                    size = fieldInfo.Size;
+                    start = fieldInfo.Value;
+                    updateFieldType = fieldInfo.Format;
+                }
 
                 List<UpdateField> fieldData = new List<UpdateField>();
                 for (int k = start; k < i; ++k)
-                    fieldData.Add(new UpdateField(0));
+                {
+                    UpdateField updateField;
+                    if (oldValues == null || !oldValues.TryGetValue(k, out updateField))
+                        updateField = new UpdateField(0);
+
+                    fieldData.Add(updateField);
+                }
                 fieldData.Add(blockVal);
                 int currentPosition = i + 1;
                 for (int k = i - start + 1; k < size; ++k)
                 {
+                    UpdateField updateField;
                     if (mask[currentPosition])
-                        fieldData.Add(new UpdateField(packet.ReadUInt32()));
-                    else
-                        fieldData.Add(new UpdateField(0));
+                        updateField = packet.ReadUpdateField();
+                    else if (oldValues == null || !oldValues.TryGetValue(currentPosition, out updateField))
+                        updateField = new UpdateField(0);
 
+                    fieldData.Add(updateField);
                     ++currentPosition;
-                }
-
-                var memInfo = fieldType.GetMember(key);
-                if (memInfo.Length > 0)
-                {
-                    var attributes = memInfo[0].GetCustomAttributes(typeof(UpdateFieldAttribute), false);
-                    if (attributes.Length > 0)
-                    {
-                        for (int k = 0; k < attributes.Length; ++k)
-                        {
-                            UpdateFieldAttribute attribute = (UpdateFieldAttribute)attributes[k];
-                            if (attribute.Version <= ClientVersion.VersionDefiningBuild)
-                                updateFieldType = attribute.UFAttribute;
-                        }
-                    }
                 }
 
                 switch (updateFieldType)
                 {
                     case UpdateFieldType.Guid:
                     {
-                        if (fieldData.Count == 2)
+                        var guidSize = ClientVersion.AddedInVersion(ClientType.WarlordsOfDraenor) ? 4 : 2;
+                        var guidCount = size / guidSize;
+                        for (var guidI = 0; guidI < guidCount; ++guidI)
                         {
-                            ulong guid = fieldData[1].UInt32Value;
-                            guid <<= 32;
-                            guid += fieldData[0].UInt32Value;
-                            if (!isCreating || guid == 0)
-                                break;
-                            packet.AddValue("(" + start + ") " + key, new WowGuid64(guid), index);
-                        }
-                        else
-                        {
-                            ulong low = fieldData[1].UInt32Value;
-                            low <<= 32;
-                            low += fieldData[0].UInt32Value;
-                            ulong high = fieldData[3].UInt32Value;
-                            high <<= 32;
-                            high += fieldData[2].UInt32Value;
-                            if (!isCreating || (high == 0 && low == 0))
-                                break;
-                            packet.AddValue("(" + start + ") " + key, new WowGuid128(low, high), index);
+                            bool hasGuidValue = false;
+                            for (var guidPart = 0; guidPart < guidSize; ++guidPart)
+                                if (mask[start + guidI * guidSize + guidPart])
+                                    hasGuidValue = true;
+
+                            if (!hasGuidValue)
+                                continue;
+
+                            if (!ClientVersion.AddedInVersion(ClientType.WarlordsOfDraenor))
+                            {
+                                ulong guid = fieldData[guidI * guidSize + 1].UInt32Value;
+                                guid <<= 32;
+                                guid |= fieldData[guidI * guidSize + 0].UInt32Value;
+                                if (isCreating && guid == 0)
+                                    continue;
+
+                                packet.AddValue(key + (guidCount > 1 ? " + " + guidI : ""), new WowGuid64(guid), index);
+                            }
+                            else
+                            {
+                                ulong low = (fieldData[guidI * guidSize + 1].UInt32Value << 32);
+                                low <<= 32;
+                                low |= fieldData[guidI * guidSize + 0].UInt32Value;
+                                ulong high = fieldData[guidI * guidSize + 3].UInt32Value;
+                                high <<= 32;
+                                high |= fieldData[guidI * guidSize + 2].UInt32Value;
+                                if (isCreating && (high == 0 && low == 0))
+                                    continue;
+
+                                packet.AddValue(key + (guidCount > 1 ? " + " + guidI : ""), new WowGuid128(low, high), index);
+                            }
                         }
                         break;
                     }
                     case UpdateFieldType.Quaternion:
                     {
-                        packet.AddValue("(" + start + ") " + key, new Quaternion(fieldData[0].FloatValue, fieldData[1].FloatValue, fieldData[2].FloatValue, fieldData[3].FloatValue), index);
+                        var quaternionCount = size / 4;
+                        for (var quatI = 0; quatI < quaternionCount; ++quatI)
+                        {
+                            bool hasQuatValue = false;
+                            for (var guidPart = 0; guidPart < 4; ++guidPart)
+                                if (mask[start + quatI * 4 + guidPart])
+                                    hasQuatValue = true;
+
+                            if (!hasQuatValue)
+                                continue;
+
+                            packet.AddValue(key + (quaternionCount > 1 ? " + " + quatI : ""), new Quaternion(fieldData[quatI * 4 + 0].FloatValue, fieldData[quatI * 4 + 1].FloatValue,
+                                fieldData[quatI * 4 + 2].FloatValue, fieldData[quatI * 4 + 3].FloatValue), index);
+                        }
                         break;
                     }
                     case UpdateFieldType.PackedQuaternion:
                     {
-                        long quat = fieldData[1].UInt32Value;
-                        quat <<= 32;
-                        quat += fieldData[0].UInt32Value;
-                        packet.AddValue("(" + start + ") " + key, new Quaternion(quat), index);
+                        var quaternionCount = size / 2;
+                        for (var quatI = 0; quatI < quaternionCount; ++quatI)
+                        {
+                            bool hasQuatValue = false;
+                            for (var guidPart = 0; guidPart < 2; ++guidPart)
+                                if (mask[start + quatI * 2 + guidPart])
+                                    hasQuatValue = true;
+
+                            if (!hasQuatValue)
+                                continue;
+
+                            long quat = fieldData[quatI * 2 + 1].UInt32Value;
+                            quat <<= 32;
+                            quat |= fieldData[quatI * 2 + 0].UInt32Value;
+                            packet.AddValue(key + (quaternionCount > 1 ? " + " + quatI : ""), new Quaternion(quat), index);
+                        }
                         break;
                     }
                     case UpdateFieldType.Uint:
                     {
                         for (int k = 0; k < fieldData.Count; ++k)
                             if (mask[start + k] && (!isCreating || fieldData[k].UInt32Value != 0))
-                                packet.AddValue("(" + (start + k) + ") " + (k > 0 ? key + " + " + k : key), fieldData[k].UInt32Value, index);
+                                packet.AddValue(k > 0 ? key + " + " + k : key, fieldData[k].UInt32Value, index);
                         break;
                     }
                     case UpdateFieldType.Int:
                     {
                         for (int k = 0; k < fieldData.Count; ++k)
                             if (mask[start + k] && (!isCreating || fieldData[k].UInt32Value != 0))
-                                packet.AddValue("(" + (start + k) + ") " + (k > 0 ? key + " + " + k : key), fieldData[k].Int32Value, index);
+                                packet.AddValue(k > 0 ? key + " + " + k : key, fieldData[k].Int32Value, index);
                         break;
                     }
                     case UpdateFieldType.Float:
                     {
                         for (int k = 0; k < fieldData.Count; ++k)
                             if (mask[start + k] && (!isCreating || fieldData[k].UInt32Value != 0))
-                                packet.AddValue("(" + (start + k) + ") " + (k > 0 ? key + " + " + k : key), fieldData[k].FloatValue, index);
+                                packet.AddValue(k > 0 ? key + " + " + k : key, fieldData[k].FloatValue, index);
                         break;
                     }
                     case UpdateFieldType.Bytes:
@@ -372,7 +424,7 @@ namespace WowPacketParser.Parsing.Parsers
                             if (mask[start + k] && (!isCreating || fieldData[k].UInt32Value != 0))
                             {
                                 byte[] intBytes = BitConverter.GetBytes(fieldData[k].UInt32Value);
-                                packet.AddValue("(" + (start + k) + ") " + (k > 0 ? key + " + " + k : key), intBytes[0] + "/" + intBytes[1] + "/" + intBytes[2] + "/" + intBytes[3], index);
+                                packet.AddValue(k > 0 ? key + " + " + k : key, intBytes[0] + "/" + intBytes[1] + "/" + intBytes[2] + "/" + intBytes[3], index);
                             }
                         }
                         break;
@@ -381,13 +433,13 @@ namespace WowPacketParser.Parsing.Parsers
                     {
                         // TODO: add custom handling
                         if (key == UnitField.UNIT_FIELD_FACTIONTEMPLATE.ToString())
-                            packet.AddValue("(" + start + ") " + key, value + $" ({ StoreGetters.GetName(StoreNameType.Faction, fieldData[0].Int32Value, false) })", index);
+                            packet.AddValue(key, value + $" ({ StoreGetters.GetName(StoreNameType.Faction, fieldData[0].Int32Value, false) })", index);
                         break;
                     }
                     default:
                         for (int k = 0; k < fieldData.Count; ++k)
                             if (mask[start + k] && (!isCreating || fieldData[k].UInt32Value != 0))
-                                packet.AddValue("(" + (start + k) + ") " + (k > 0 ? key + " + " + k : key), fieldData[k].UInt32Value + "/" + fieldData[k].FloatValue, index);
+                                packet.AddValue(k > 0 ? key + " + " + k : key, fieldData[k].UInt32Value + "/" + fieldData[k].FloatValue, index);
                         break;
                 }
 
@@ -398,7 +450,7 @@ namespace WowPacketParser.Parsing.Parsers
             return dict;
         }
 
-        private static Dictionary<int, List<UpdateField>> ReadDynamicValuesUpdateBlock(Packet packet, ObjectType type, object index/*, bool isCreating*/)
+        private static Dictionary<int, List<UpdateField>> ReadDynamicValuesUpdateBlock(Packet packet, ObjectType type, object index, bool isCreating, Dictionary<int, List<UpdateField>> oldValues)
         {
             var dict = new Dictionary<int, List<UpdateField>>();
 
@@ -417,17 +469,6 @@ namespace WowPacketParser.Parsing.Parsers
                 if (!mask[i])
                     continue;
 
-                var flag = packet.ReadByte();
-
-                if ((flag & 0x80) != 0)
-                    packet.ReadUInt16();
-
-                var cnt = flag & 0x7F;
-                var vals = new int[cnt];
-                for (var j = 0; j < cnt; ++j)
-                    vals[j] = packet.ReadInt32();
-
-
                 string key = "Dynamic Block Value " + i;
                 if (i < objectEnd)
                     key = UpdateFields.GetUpdateFieldName<ObjectDynamicField>(i);
@@ -435,17 +476,37 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     switch (type)
                     {
+                        case ObjectType.Item:
+                        {
+                            key = UpdateFields.GetUpdateFieldName<ItemDynamicField>(i);
+                            break;
+                        }
                         case ObjectType.Container:
                         {
                             if (i < UpdateFields.GetUpdateField(ItemDynamicField.ITEM_DYNAMIC_END))
                                 goto case ObjectType.Item;
-
                             key = UpdateFields.GetUpdateFieldName<ContainerDynamicField>(i);
                             break;
                         }
-                        case ObjectType.Item:
+                        case ObjectType.AzeriteEmpoweredItem:
                         {
-                            key = UpdateFields.GetUpdateFieldName<ItemDynamicField>(i);
+                            if (i < UpdateFields.GetUpdateField(ItemDynamicField.ITEM_DYNAMIC_END))
+                                goto case ObjectType.Item;
+
+                            key = UpdateFields.GetUpdateFieldName<AzeriteEmpoweredItemDynamicField>(i);
+                            break;
+                        }
+                        case ObjectType.AzeriteItem:
+                        {
+                            if (i < UpdateFields.GetUpdateField(ItemDynamicField.ITEM_DYNAMIC_END))
+                                goto case ObjectType.Item;
+
+                            key = UpdateFields.GetUpdateFieldName<AzeriteItemDynamicField>(i);
+                            break;
+                        }
+                        case ObjectType.Unit:
+                        {
+                            key = UpdateFields.GetUpdateFieldName<UnitDynamicField>(i);
                             break;
                         }
                         case ObjectType.Player:
@@ -456,9 +517,12 @@ namespace WowPacketParser.Parsing.Parsers
                             key = UpdateFields.GetUpdateFieldName<PlayerDynamicField>(i);
                             break;
                         }
-                        case ObjectType.Unit:
+                        case ObjectType.ActivePlayer:
                         {
-                            key = UpdateFields.GetUpdateFieldName<UnitDynamicField>(i);
+                            if (i < UpdateFields.GetUpdateField(PlayerDynamicField.PLAYER_DYNAMIC_END))
+                                goto case ObjectType.Player;
+
+                            key = UpdateFields.GetUpdateFieldName<ActivePlayerDynamicField>(i);
                             break;
                         }
                         case ObjectType.GameObject:
@@ -494,6 +558,27 @@ namespace WowPacketParser.Parsing.Parsers
                     }
                 }
 
+                uint cnt;
+                if (ClientVersion.AddedInVersion(ClientType.Legion))
+                {
+                    var flag = packet.ReadUInt16();
+                    cnt = flag & 0x7FFFu;
+                    if ((flag & 0x8000) != 0)
+                        packet.ReadUInt32(key + " Size", index);
+                }
+                else
+                {
+                    var flag = packet.ReadByte();
+                    cnt = flag & 0x7Fu;
+                    if ((flag & 0x80) != 0)
+                        packet.ReadUInt16(key + " Size", index);
+                }
+
+                var vals = new int[cnt];
+                for (var j = 0; j < cnt; ++j)
+                    vals[j] = packet.ReadInt32();
+
+                var values = new List<UpdateField>();
                 var fieldMask = new BitArray(vals);
                 for (var j = 0; j < fieldMask.Count; ++j)
                 {
@@ -503,10 +588,19 @@ namespace WowPacketParser.Parsing.Parsers
                     var blockVal = packet.ReadUpdateField();
                     string value = blockVal.UInt32Value + "/" + blockVal.FloatValue;
                     packet.AddValue(key, value, index, j);
+                    values.Add(blockVal);
                 }
+
+                dict.Add(i, values);
             }
 
             return dict;
+        }
+
+        public static void ApplyUpdateFieldsChange(WoWObject obj, Dictionary<int, UpdateField> updates, Dictionary<int, List<UpdateField>> dynamicUpdates)
+        {
+            foreach (var kvp in updates)
+                obj.UpdateFields[kvp.Key] = kvp.Value;
         }
 
         private static MovementInfo ReadMovementUpdateBlock510(Packet packet, WowGuid guid, object index)

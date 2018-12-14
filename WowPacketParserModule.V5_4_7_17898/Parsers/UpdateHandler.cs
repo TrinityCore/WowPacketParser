@@ -56,33 +56,23 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 switch (typeString)
                 {
                     case "Values":
-                        {
-                            var guid = packet.ReadPackedGuid("GUID", i);
-
-                            WoWObject obj;
-                            var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, guid.GetObjectType(), i, false);
-
-                            if (Storage.Objects.TryGetValue(guid, out obj))
-                            {
-                                if (obj.ChangedUpdateFieldsList == null)
-                                    obj.ChangedUpdateFieldsList = new List<Dictionary<int, UpdateField>>();
-                                obj.ChangedUpdateFieldsList.Add(updates);
-                            }
-
-                            break;
-                        }
+                    {
+                        var guid = packet.ReadPackedGuid("GUID", i);
+                        CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, guid, i);
+                        break;
+                    }
                     case "CreateObject1":
                     case "CreateObject2": // Might != CreateObject1 on Cata
-                        {
-                            var guid = packet.ReadPackedGuid("GUID", i);
-                            ReadCreateObjectBlock(packet, guid, map, i);
-                            break;
-                        }
+                    {
+                        var guid = packet.ReadPackedGuid("GUID", i);
+                        ReadCreateObjectBlock(packet, guid, map, i);
+                        break;
+                    }
                     case "DestroyObjects":
-                        {
-                            CoreParsers.UpdateHandler.ReadObjectsBlock(packet, i);
-                            break;
-                        }
+                    {
+                        CoreParsers.UpdateHandler.ReadObjectsBlock(packet, i);
+                        break;
+                    }
                 }
             }
         }
@@ -91,7 +81,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         {
             ObjectType objType = ObjectTypeConverter.Convert(packet.ReadByteE<ObjectTypeLegacy>("Object Type", index));
             var moves = ReadMovementUpdateBlock(packet, guid, index);
-            var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, objType, index, true);
+            var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlockOnCreate(packet, objType, index);
+            var dynamicUpdates = CoreParsers.UpdateHandler.ReadDynamicValuesUpdateBlockOnCreate(packet, objType, index);
 
             WoWObject obj;
             switch (objType)
@@ -116,6 +107,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             obj.Type = objType;
             obj.Movement = moves;
             obj.UpdateFields = updates;
+            obj.DynamicUpdateFields = dynamicUpdates;
             obj.Map = map;
             obj.Area = CoreParsers.WorldStateHandler.CurrentAreaId;
             obj.Zone = CoreParsers.WorldStateHandler.CurrentZoneId;

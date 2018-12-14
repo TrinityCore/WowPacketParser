@@ -42,18 +42,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     case "Values":
                     {
                         var guid = packet.ReadPackedGuid128("Object Guid", i);
-
-                        WoWObject obj;
-                        var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, guid.GetObjectType(), i, false);
-                        var dynamicUpdates = ReadDynamicValuesUpdateBlock(packet, guid.GetObjectType(), i, false);
-
-                        if (Storage.Objects.TryGetValue(guid, out obj))
-                        {
-                            if (obj.ChangedUpdateFieldsList == null)
-                                obj.ChangedUpdateFieldsList = new List<Dictionary<int, UpdateField>>();
-                            obj.ChangedUpdateFieldsList.Add(updates);
-                        }
-
+                        CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, guid, i);
                         break;
                     }
                     case "CreateObject1":
@@ -98,8 +87,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             }
 
             var moves = ReadMovementUpdateBlock(packet, guid, obj, index);
-            var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, objType, index, true);
-            var dynamicUpdates = ReadDynamicValuesUpdateBlock(packet, objType, index, true);
+            var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlockOnCreate(packet, objType, index);
+            var dynamicUpdates = CoreParsers.UpdateHandler.ReadDynamicValuesUpdateBlockOnCreate(packet, objType, index);
 
             obj.Type = objType;
             obj.Movement = moves;
@@ -630,138 +619,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             }
 
             return moveInfo;
-        }
-
-        private static Dictionary<int, List<UpdateField>> ReadDynamicValuesUpdateBlock(Packet packet, ObjectType type, object index, bool isCreating)
-        {
-            var dict = new Dictionary<int, List<UpdateField>>();
-
-            int objectEnd = UpdateFields.GetUpdateField(ObjectDynamicField.OBJECT_DYNAMIC_END);
-            var maskSize = packet.ReadByte();
-            var updateMask = new int[maskSize];
-            for (var i = 0; i < maskSize; i++)
-                updateMask[i] = packet.ReadInt32();
-
-            var mask = new BitArray(updateMask);
-            for (var i = 0; i < mask.Count; ++i)
-            {
-                if (!mask[i])
-                    continue;
-
-                string key = "Dynamic Block Value " + i;
-                if (i < objectEnd)
-                    key = UpdateFields.GetUpdateFieldName<ObjectDynamicField>(i);
-                else
-                {
-                    switch (type)
-                    {
-                        case ObjectType.Container:
-                        {
-                            if (i < UpdateFields.GetUpdateField(ItemDynamicField.ITEM_DYNAMIC_END))
-                                goto case ObjectType.Item;
-
-                            key = UpdateFields.GetUpdateFieldName<ContainerDynamicField>(i);
-                            break;
-                        }
-                        case ObjectType.Item:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<ItemDynamicField>(i);
-                            break;
-                        }
-                        case ObjectType.AzeriteEmpoweredItem:
-                        {
-                            if (i < UpdateFields.GetUpdateField(ItemDynamicField.ITEM_DYNAMIC_END))
-                                goto case ObjectType.Item;
-                            key = UpdateFields.GetUpdateFieldName<AzeriteEmpoweredItemDynamicField>(i);
-                            break;
-                        }
-                        case ObjectType.AzeriteItem:
-                        {
-                            if (i < UpdateFields.GetUpdateField(ItemDynamicField.ITEM_DYNAMIC_END))
-                                goto case ObjectType.Item;
-                            key = UpdateFields.GetUpdateFieldName<AzeriteItemDynamicField>(i);
-                            break;
-                        }
-                        case ObjectType.Player:
-                        {
-                            if (i < UpdateFields.GetUpdateField(UnitDynamicField.UNIT_DYNAMIC_END))
-                                goto case ObjectType.Unit;
-
-                            key = UpdateFields.GetUpdateFieldName<PlayerDynamicField>(i);
-                            break;
-                        }
-                        case ObjectType.ActivePlayer:
-                        {
-                            if (i < UpdateFields.GetUpdateField(PlayerDynamicField.PLAYER_DYNAMIC_END))
-                                goto case ObjectType.Player;
-                            key = UpdateFields.GetUpdateFieldName<ActivePlayerDynamicField>(i);
-                            break;
-                        }
-                        case ObjectType.Unit:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<UnitDynamicField>(i);
-                            break;
-                        }
-                        case ObjectType.GameObject:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<GameObjectDynamicField>(i);
-                            break;
-                        }
-                        case ObjectType.DynamicObject:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<DynamicObjectDynamicField>(i);
-                            break;
-                        }
-                        case ObjectType.Corpse:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<CorpseDynamicField>(i);
-                            break;
-                        }
-                        case ObjectType.AreaTrigger:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<AreaTriggerDynamicField>(i);
-                            break;
-                        }
-                        case ObjectType.SceneObject:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<SceneObjectDynamicField>(i);
-                            break;
-                        }
-                        case ObjectType.Conversation:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<ConversationDynamicField>(i);
-                            break;
-                        }
-                    }
-                }
-
-                var flag = packet.ReadUInt16();
-                var cnt = flag & 0x7FFF;
-                if ((flag & 0x8000) != 0)
-                    packet.ReadUInt32(key + " Size", index);
-
-                var vals = new int[cnt];
-                for (var j = 0; j < cnt; ++j)
-                    vals[j] = packet.ReadInt32();
-
-                var values = new List<UpdateField>();
-                var fieldMask = new BitArray(vals);
-                for (var j = 0; j < fieldMask.Count; ++j)
-                {
-                    if (!fieldMask[j])
-                        continue;
-
-                    var blockVal = packet.ReadUpdateField();
-                    string value = blockVal.UInt32Value + "/" + blockVal.FloatValue;
-                    packet.AddValue(key, value, index, j);
-
-                    values.Add(blockVal);
-                }
-
-                dict.Add(i, values);
-            }
-
-            return dict;
         }
     }
 }
