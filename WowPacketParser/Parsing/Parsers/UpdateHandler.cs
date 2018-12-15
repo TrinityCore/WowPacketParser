@@ -441,13 +441,13 @@ namespace WowPacketParser.Parsing.Parsers
                         }
 
                         if (key == UnitField.UNIT_FIELD_FLAGS.ToString())
-                            packet.AddValue(key, value + $" ({((UnitFlags)fieldData[0].Int32Value)})", index);
+                            packet.AddValue(key, fieldData[0].UInt32Value + $" ({((UnitFlags)fieldData[0].UInt32Value)})", index);
 
                         if (key == UnitField.UNIT_FIELD_FLAGS_2.ToString())
-                            packet.AddValue(key, value + $" ({((UnitFlags2)fieldData[0].Int32Value)})", index);
+                            packet.AddValue(key, fieldData[0].UInt32Value + $" ({((UnitFlags2)fieldData[0].UInt32Value)})", index);
 
                         if (key == UnitField.UNIT_FIELD_FLAGS_3.ToString())
-                            packet.AddValue(key, value + $" ({((UnitFlags3)fieldData[0].Int32Value)})", index);
+                            packet.AddValue(key, fieldData[0].UInt32Value + $" ({((UnitFlags3)fieldData[0].UInt32Value)})", index);
 
                         break;
                     }
