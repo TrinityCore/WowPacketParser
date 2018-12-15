@@ -153,9 +153,9 @@ namespace WowPacketParser.Enums
         UNIT_FIELD_BOUNDINGRADIUS,
         [UpdateField(UpdateFieldType.Bytes)]
         UNIT_FIELD_BYTES_0,
-        [UpdateField(UpdateFieldType.Bytes)]
+        [UpdateField(UpdateFieldType.Custom)]
         UNIT_FIELD_BYTES_1,
-        [UpdateField(UpdateFieldType.Bytes)]
+        [UpdateField(UpdateFieldType.Custom)]
         UNIT_FIELD_BYTES_2,
         UNIT_FIELD_CHANNEL_DATA,
         [UpdateField(UpdateFieldType.Guid)]
@@ -178,11 +178,11 @@ namespace WowPacketParser.Enums
         UNIT_FIELD_END,
         [UpdateField(UpdateFieldType.Custom)]
         UNIT_FIELD_FACTIONTEMPLATE,
-        [UpdateField(UpdateFieldType.Uint)]
+        [UpdateField(UpdateFieldType.Custom)]
         UNIT_FIELD_FLAGS,
-        [UpdateField(UpdateFieldType.Uint)]
+        [UpdateField(UpdateFieldType.Custom)]
         UNIT_FIELD_FLAGS_2,
-        [UpdateField(UpdateFieldType.Uint)]
+        [UpdateField(UpdateFieldType.Custom)]
         UNIT_FIELD_FLAGS_3,
         UNIT_FIELD_GUILD_GUID,
         [UpdateField(UpdateFieldType.Uint)]

@@ -419,6 +419,36 @@ namespace WowPacketParser.Parsing.Parsers
                         // TODO: add custom handling
                         if (key == UnitField.UNIT_FIELD_FACTIONTEMPLATE.ToString())
                             packet.AddValue(key, value + $" ({ StoreGetters.GetName(StoreNameType.Faction, fieldData[0].Int32Value, false) })", index);
+
+                        if (key == UnitField.UNIT_FIELD_BYTES_1.ToString())
+                        {
+                            byte[] intBytes = BitConverter.GetBytes(fieldData[0].UInt32Value);                            
+                            packet.AddValue(key, intBytes[0] + "/" + intBytes[1] + "/" + intBytes[2] + "/" + intBytes[3], index);
+                            packet.AddValue(key, "(UNIT_BYTES_1_OFFSET_STAND_STATE): " + intBytes[0] + $"({(UnitStandStateType)intBytes[0]})", index);
+                            packet.AddValue(key, "(UNIT_BYTES_1_OFFSET_PET_TALENTS): " + intBytes[1], index);
+                            packet.AddValue(key, "(UNIT_BYTES_1_OFFSET_VIS_FLAG): " + intBytes[2] + $"({(UnitStandFlags)intBytes[2]})", index);
+                            packet.AddValue(key, "(UNIT_BYTES_1_OFFSET_ANIM_TIER): " + intBytes[3] + $"({(UnitBytes1Flags)intBytes[3]})", index);
+                        }
+
+                        if (key == UnitField.UNIT_FIELD_BYTES_2.ToString())
+                        {
+                            byte[] intBytes = BitConverter.GetBytes(fieldData[0].UInt32Value);                            
+                            packet.AddValue(key, intBytes[0] + "/" + intBytes[1] + "/" + intBytes[2] + "/" + intBytes[3], index);
+                            packet.AddValue(key, "(UNIT_BYTES_2_OFFSET_SHEATH_STATE): " + intBytes[0] + $"({(UnitSheathState)intBytes[0]})", index);
+                            packet.AddValue(key, "(UNIT_BYTES_2_OFFSET_PVP_FLAG): " + intBytes[1] + $"({(UnitPVPStateFlags)intBytes[1]})", index);
+                            packet.AddValue(key, "(UNIT_BYTES_2_OFFSET_PET_FLAGS): " + intBytes[2] + $"({(UnitRename)intBytes[2]})", index);
+                            packet.AddValue(key, "(UNIT_BYTES_2_OFFSET_SHAPESHIFT_FORM): " + intBytes[3] + $"({(ShapeshiftForm)intBytes[3]})", index);
+                        }
+
+                        if (key == UnitField.UNIT_FIELD_FLAGS.ToString())
+                            packet.AddValue(key, value + $" ({((UnitFlags)fieldData[0].Int32Value)})", index);
+
+                        if (key == UnitField.UNIT_FIELD_FLAGS_2.ToString())
+                            packet.AddValue(key, value + $" ({((UnitFlags2)fieldData[0].Int32Value)})", index);
+
+                        if (key == UnitField.UNIT_FIELD_FLAGS_3.ToString())
+                            packet.AddValue(key, value + $" ({((UnitFlags3)fieldData[0].Int32Value)})", index);
+
                         break;
                     }
                     default:
