@@ -71,6 +71,9 @@ namespace WowPacketParser.Loading
                     case ".pkt":
                         _sniffType = SniffType.Pkt;
                         break;
+                    case ".sqlite":
+                        _sniffType = SniffType.Sqlite;
+                        break;
                     default:
                         throw new IOException($"Invalid file type {_fileName}");
                 }
@@ -433,7 +436,7 @@ namespace WowPacketParser.Loading
             return "# TrinityCore - WowPacketParser" + Environment.NewLine +
                    "# File name: " + Path.GetFileName(fileName) + Environment.NewLine +
                    "# Detected build: " + ClientVersion.Build + Environment.NewLine +
-                   "# Detected locale: " + BinaryPacketReader.GetClientLocale() + Environment.NewLine +
+                   "# Detected locale: " + ClientLocale.ClientLocaleString + Environment.NewLine +
                    "# Targeted database: " + Settings.TargetedDatabase + Environment.NewLine +
                    "# Parsing date: " + DateTime.Now.ToString(CultureInfo.InvariantCulture) + Environment.NewLine;
         }

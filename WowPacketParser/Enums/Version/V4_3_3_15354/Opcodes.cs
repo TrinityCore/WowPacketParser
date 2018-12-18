@@ -6,11 +6,17 @@ namespace WowPacketParser.Enums.Version.V4_3_3_15354
     {
         public static BiDictionary<Opcode, int> Opcodes(Direction direction)
         {
-            if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
-                return ClientOpcodes;
-            if (direction == Direction.ServerToClient || direction == Direction.BNServerToClient)
-                return ServerOpcodes;
-            return MiscOpcodes;
+            switch (direction)
+            {
+                case Direction.ClientToServer:
+                case Direction.BNClientToServer:
+                    return ClientOpcodes;
+                case Direction.ServerToClient:
+                case Direction.BNServerToClient:
+                    return ServerOpcodes;
+                default:
+                    return MiscOpcodes;
+            }
         }
 
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>

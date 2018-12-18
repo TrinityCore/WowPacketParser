@@ -12,6 +12,19 @@ namespace WowPacketParser.Misc
             W = w;
         }
 
+        public Quaternion(long packed)
+        {
+            X = (packed >> 42) * (1.0f / 2097152.0f);
+            Y = (((packed << 22) >> 32) >> 11) * (1.0f / 1048576.0f);
+            Z = (packed << 43 >> 43) * (1.0f / 1048576.0f);
+
+            W = X * X + Y * Y + Z * Z;
+            if (Math.Abs(W - 1.0f) >= (1 / 1048576.0f))
+                W = (float)Math.Sqrt(1.0f - W);
+            else
+                W = 0.0f;
+        }
+
         public readonly float X;
 
         public readonly float Y;

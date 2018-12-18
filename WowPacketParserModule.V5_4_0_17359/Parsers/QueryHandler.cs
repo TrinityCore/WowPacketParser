@@ -125,7 +125,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             Storage.CreatureTemplates.Add(creature, packet.TimeSpan);
 
-            if (BinaryPacketReader.GetLocale() != LocaleConstant.enUS)
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
             {
                 CreatureTemplateLocale localesCreature = new CreatureTemplateLocale
                 {

@@ -39,8 +39,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                         var bct = new BroadcastText()
                         {
                             ID = (uint)entry,
-                            MaleText = db2File.ReadCString("MaleText"),
-                            FemaleText = db2File.ReadCString("FemaleText"),
+                            Text = db2File.ReadCString("Text"),
+                            Text1 = db2File.ReadCString("Text1"),
                         };
 
                         bct.EmoteID = new ushort?[3];
@@ -51,25 +51,29 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                         for (int i = 0; i < 3; ++i)
                             bct.EmoteDelay[i] = db2File.ReadUInt16("EmoteDelay", i);
 
-                        bct.UnkEmoteID = db2File.ReadUInt16("UnkEmoteID");
-                        bct.Language = db2File.ReadByte("Language");
-                        bct.Type = db2File.ReadByte("Type");
+                        bct.EmotesID = db2File.ReadUInt16("EmotesID");
+                        bct.LanguageID = db2File.ReadByte("LanguageID");
+                        bct.Flags = db2File.ReadByte("Flags");
 
-                        bct.SoundID = new uint?[2];
+                        if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_25848))
+                            bct.ConditionID = db2File.ReadUInt32("ConditionID");
+
+                        bct.SoundEntriesID = new uint?[2];
                         for (int i = 0; i < 2; ++i)
-                            bct.SoundID[i] = db2File.ReadUInt32("SoundID", i);
+                            bct.SoundEntriesID[i] = db2File.ReadUInt32("SoundEntriesID", i);
 
-                        bct.PlayerConditionID = db2File.ReadUInt32("PlayerConditionID");
+                        if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_0_3_22248) && ClientVersion.RemovedInVersion(ClientVersionBuild.V7_3_5_25848))
+                            bct.ConditionID = db2File.ReadUInt32("ConditionID");
 
                         Storage.BroadcastTexts.Add(bct, packet.TimeSpan);
 
-                        if (BinaryPacketReader.GetLocale() != LocaleConstant.enUS)
+                        if (ClientLocale.PacketLocale != LocaleConstant.enUS)
                         {
                             BroadcastTextLocale lbct = new BroadcastTextLocale
                             {
                                 ID = bct.ID,
-                                MaleTextLang = bct.MaleText,
-                                FemaleTextLang = bct.FemaleText
+                                TextLang = bct.Text,
+                                Text1Lang = bct.Text1
                             };
                             Storage.BroadcastTextLocales.Add(lbct, packet.TimeSpan);
                         }
@@ -170,6 +174,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var type = packet.AddValue("TableHash", (DB2Hash)Utilities.PAIR64_HIPART(id), indexes);
 
             var entry = packet.ReadInt32("RecordID", indexes);
+            packet.ResetBitReader();
             var allow = packet.ReadBit("Allow", indexes);
             var dataSize = packet.ReadInt32("Size", indexes);
             var data = packet.ReadBytes(dataSize);

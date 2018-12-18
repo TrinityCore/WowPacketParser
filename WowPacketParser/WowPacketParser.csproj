@@ -32,7 +32,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -88,13 +88,11 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <Prefer32Bit>false</Prefer32Bit>
+    <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DBFilesClient.NET, Version=1.1.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DBFilesClient.NET.1.1.4\lib\net452\DBFilesClient.NET.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
+    <Reference Include="DotNetZip, Version=1.12.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.12.0\lib\net20\DotNetZip.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
@@ -112,13 +110,41 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Data.SQLite, Version=1.0.108.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Core.1.0.108.0\lib\net451\System.Data.SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="Tamir.SharpSSH, Version=1.1.1.13, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Tamir.SharpSSH.1.1.1.13\lib\Tamir.SharpSSH.dll</HintPath>
     </Reference>
+    <Reference Include="WDCReaderLib">
+      <HintPath>..\packages\WDCReaderLib.1.0.0.0\lib\WDCReaderLib.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DBC\DBC.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\AchievementEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\AreaTableEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\BroadcastTextEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\CreatureDifficultyEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\CreatureDisplayInfoEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\CreatureEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\CreatureFamilyEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\CriteriaEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\CriteriaTreeEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\DBFileAttribute.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\DifficultyEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\FactionEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\FactionTemplateEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\ItemEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\ItemSparseEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\MapDifficultyEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\MapEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\PhaseXPhaseGroupEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\SoundKitNameEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\SpellEffectEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\SpellEntry.cs" />
+    <Compile Include="DBC\Structures\BattleForAzeroth\SpellNameEntry.cs" />
     <Compile Include="DBC\Structures\Legion\AchievementEntry.cs" />
     <Compile Include="DBC\Structures\Legion\AreaTableEntry.cs" />
     <Compile Include="DBC\Structures\Legion\BroadcastTextEntry.cs" />
@@ -137,7 +163,7 @@
     <Compile Include="DBC\Structures\Legion\MapDifficultyEntry.cs" />
     <Compile Include="DBC\Structures\Legion\MapEntry.cs" />
     <Compile Include="DBC\Structures\Legion\PhaseXPhaseGroupEntry.cs" />
-    <Compile Include="DBC\Structures\Legion\SoundKitEntry.cs" />
+    <Compile Include="DBC\Structures\Legion\SoundKitNameEntry.cs" />
     <Compile Include="DBC\Structures\Legion\SpellEffectEntry.cs" />
     <Compile Include="DBC\Structures\Legion\SpellEntry.cs" />
     <Compile Include="Enums\AccountDataType.cs" />
@@ -182,6 +208,7 @@
     <Compile Include="Enums\ChatRestrictionType.cs" />
     <Compile Include="Enums\ChatTag.cs" />
     <Compile Include="Enums\Class.cs" />
+    <Compile Include="Enums\CollectionType.cs" />
     <Compile Include="Enums\FileCompression.cs" />
     <Compile Include="Enums\ClassMask.cs" />
     <Compile Include="Enums\ClientType.cs" />
@@ -197,6 +224,7 @@
     <Compile Include="Enums\ItemModifier.cs" />
     <Compile Include="Enums\LootError.cs" />
     <Compile Include="Enums\QuestFlags2.cs" />
+    <Compile Include="Enums\QuestFlags3.cs" />
     <Compile Include="Enums\QuestRequirementType.cs" />
     <Compile Include="Enums\CreatureFamily.cs" />
     <Compile Include="Enums\CreatureRank.cs" />
@@ -244,6 +272,7 @@
     <Compile Include="Enums\LocaleConstant.cs" />
     <Compile Include="Enums\MountResult.cs" />
     <Compile Include="Enums\RaidSummonFail.cs" />
+    <Compile Include="Enums\ReportPvPAFKResult.cs" />
     <Compile Include="Enums\StandState.cs" />
     <Compile Include="Enums\TalentErrors.cs" />
     <Compile Include="Enums\TargetedDatabase.cs" />
@@ -355,6 +384,8 @@
     <Compile Include="Enums\UpdateFlag.cs" />
     <Compile Include="Enums\UpdateType.cs" />
     <Compile Include="Enums\VehicleFlags.cs" />
+    <Compile Include="Enums\Version\V2_4_3_8606\UpdateFields.cs" />
+    <Compile Include="Enums\Version\V3_0_9_9551\UpdateFields.cs" />
     <Compile Include="Enums\Version\V5_0_5_16048\Opcodes.cs" />
     <Compile Include="Enums\Version\V5_0_5_16048\UpdateFields.cs" />
     <Compile Include="Enums\Version\Opcodes.cs" />
@@ -416,6 +447,7 @@
     <Compile Include="Enums\Version\V7_3_0_24920\Opcodes.cs" />
     <Compile Include="Enums\Version\V7_3_2_25383\Opcodes.cs" />
     <Compile Include="Enums\Version\V7_3_5_25848\Opcodes.cs" />
+    <Compile Include="Enums\Version\V8_0_1_27101\Opcodes.cs" />
     <Compile Include="Enums\VictimStates.cs" />
     <Compile Include="Enums\VoidTransferError.cs" />
     <Compile Include="Enums\WardenCheckType.cs" />
@@ -428,11 +460,13 @@
     <Compile Include="Loading\BinaryPacketReader.cs" />
     <Compile Include="Loading\IPacketReader.cs" />
     <Compile Include="Loading\Reader.cs" />
+    <Compile Include="Loading\SqLitePacketReader.cs" />
     <Compile Include="Misc\BattlenetBitStream.cs" />
     <Compile Include="Misc\BattlenetPacket.cs" />
     <Compile Include="Misc\BattlenetPacketHeader.cs" />
     <Compile Include="Misc\BiDictionary.cs" />
     <Compile Include="Misc\Bit.cs" />
+    <Compile Include="Misc\ClientLocale.cs" />
     <Compile Include="Misc\ClientVersion.cs" />
     <Compile Include="Misc\ConcurrentPriorityQueue.cs" />
     <Compile Include="Misc\Configuration.cs" />
@@ -440,6 +474,7 @@
     <Compile Include="Misc\FileCompressionAttribute.cs" />
     <Compile Include="Misc\Filters.cs" />
     <Compile Include="Misc\HighGuid.cs" />
+    <Compile Include="Misc\ObjectTypeConverter.cs" />
     <Compile Include="Misc\WowGuid.cs" />
     <Compile Include="Misc\LfgEntry.cs" />
     <Compile Include="Misc\Logger.cs" />
@@ -508,6 +543,7 @@
     <Compile Include="Parsing\Parsers\WardenHandler.cs" />
     <Compile Include="Parsing\Parsers\WorldStateHandler.cs" />
     <Compile Include="Enums\PetStableResult.cs" />
+    <Compile Include="Parsing\UpdateFieldAttributes.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Saving\BinaryPacketWriter.cs" />
@@ -552,6 +588,7 @@
     <Compile Include="Store\Objects\CreatureAddon.cs" />
     <Compile Include="Store\Objects\CreatureDefaultTrainer.cs" />
     <Compile Include="Store\Objects\CreatureEquipment.cs" />
+    <Compile Include="Store\Objects\CreatureTemplateModel.cs" />
     <Compile Include="Store\Objects\CreatureTemplateAddon.cs" />
     <Compile Include="Store\Objects\CreatureTemplateLocale.cs" />
     <Compile Include="Store\Objects\CreatureTemplateScaling.cs" />
@@ -567,6 +604,7 @@
     <Compile Include="Store\Objects\GossipMenuOptionBox.cs" />
     <Compile Include="Store\Objects\GossipMenuOptionTrainer.cs" />
     <Compile Include="Store\Objects\IBroadcastTextEntry.cs" />
+    <Compile Include="Store\Objects\PageTextLocale.cs" />
     <Compile Include="Store\Objects\PointsOfInterest.cs" />
     <Compile Include="Store\Objects\HotfixData.cs" />
     <Compile Include="Store\Objects\Item.cs" />
@@ -574,6 +612,7 @@
     <Compile Include="Store\Objects\LocalesQuest.cs" />
     <Compile Include="Store\Objects\QuestDetails.cs" />
     <Compile Include="Store\Objects\QuestGreeting.cs" />
+    <Compile Include="Store\Objects\QuestGreetingLocale.cs" />
     <Compile Include="Store\Objects\QuestObjectivesLocale.cs" />
     <Compile Include="Store\Objects\ModelData.cs" />
     <Compile Include="Store\Objects\NpcText.cs" />
@@ -587,11 +626,15 @@
     <Compile Include="Store\Objects\Player.cs" />
     <Compile Include="Store\Objects\QuestObjective.cs" />
     <Compile Include="Store\Objects\QuestOfferReward.cs" />
+    <Compile Include="Store\Objects\QuestOfferRewardLocale.cs" />
     <Compile Include="Store\Objects\QuestPOI.cs" />
     <Compile Include="Store\Objects\QuestPOIPoint.cs" />
     <Compile Include="Store\Objects\QuestRequestItems.cs" />
+    <Compile Include="Store\Objects\QuestRequestItemsLocale.cs" />
     <Compile Include="Store\Objects\QuestTemplate.cs" />
     <Compile Include="Store\Objects\QuestVisualEffect.cs" />
+    <Compile Include="Store\Objects\ScenarioPOI.cs" />
+    <Compile Include="Store\Objects\ScenarioPOIPoints.cs" />
     <Compile Include="Store\Objects\SceneTemplate.cs" />
     <Compile Include="Store\Objects\SniffData.cs" />
     <Compile Include="Store\Objects\PlayerCreateInfoAction.cs" />
@@ -637,7 +680,6 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -661,5 +703,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.108.0\build\net451\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.108.0\build\net451\System.Data.SQLite.Core.targets'))" />
   </Target>
+  <Import Project="..\packages\System.Data.SQLite.Core.1.0.108.0\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.108.0\build\net451\System.Data.SQLite.Core.targets')" />
 </Project>

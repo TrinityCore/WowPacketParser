@@ -7,8 +7,8 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("points_of_interest")]
     public sealed class PointsOfInterest : IDataModel
     {
-        [DBFieldName("ID", true)]
-        public uint? ID;
+        [DBFieldName("ID", true, true)]
+        public object ID;
 
         [DBFieldName("PositionX")]
         public float? PositionX;

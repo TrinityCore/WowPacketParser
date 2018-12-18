@@ -16,6 +16,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("QuestLevel")]
         public int? QuestLevel;
 
+        [DBFieldName("ScalingFactionGroup", TargetedDatabase.BattleForAzeroth)]
+        public int? QuestScalingFactionGroup;
+
         [DBFieldName("MaxScalingLevel", TargetedDatabase.Legion)]
         public int? QuestMaxScalingLevel;
 
@@ -146,6 +149,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("FlagsEx", TargetedDatabase.WarlordsOfDraenor)]
         public QuestFlags2? FlagsEx;
 
+        [DBFieldName("FlagsEx2", TargetedDatabase.BattleForAzeroth)]
+        public QuestFlags3? FlagsEx2;
+
         [DBFieldName("MinimapTargetMark", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
         public uint? MinimapTargetMark;
 
@@ -166,6 +172,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("QuestGiverPortrait", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
         [DBFieldName("PortraitGiver", TargetedDatabase.WarlordsOfDraenor)]
         public uint? QuestGiverPortrait;
+
+        [DBFieldName("PortraitGiverMount", TargetedDatabase.BattleForAzeroth)]
+        public uint? PortraitGiverMount;
 
         [DBFieldName("QuestTurnInPortrait", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
         [DBFieldName("PortraitTurnIn", TargetedDatabase.WarlordsOfDraenor)]
@@ -243,7 +252,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("AllowableRaces", TargetedDatabase.WarlordsOfDraenor)]
         public ulong? AllowableRacesWod;
 
-        [DBFieldName("QuestRewardID", TargetedDatabase.Legion)]
+        [DBFieldName("QuestRewardID", TargetedDatabase.Legion, TargetedDatabase.BattleForAzeroth)]
+        [DBFieldName("TreasurePickerID", TargetedDatabase.BattleForAzeroth)]
         public int? QuestRewardID;
 
         [DBFieldName("Expansion", TargetedDatabase.Legion)]

@@ -1,4 +1,5 @@
 ﻿using WowPacketParser.Enums;
+using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -122,6 +123,16 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
                 packet.AddSniffData(StoreNameType.PageText, (int)entry, "QUERY_RESPONSE");
                 Storage.PageTexts.Add(pageText, packet.TimeSpan);
+
+                if (ClientLocale.PacketLocale != LocaleConstant.enUS && pageText.Text != string.Empty)
+                {
+                    PageTextLocale localesPageText = new PageTextLocale
+                    {
+                        ID = pageText.ID,
+                        Text = pageText.Text
+                    };
+                    Storage.LocalesPageText.Add(localesPageText, packet.TimeSpan);
+                }
             }
         }
 
@@ -303,6 +314,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("WillKickFromWorld");
             packet.ReadBit("IsExpansionPreorderInStore");
             packet.ReadBit("KioskModeEnabled");
+            packet.ReadBit("CompetetiveModeEnabled");
             packet.ReadBit("NoHandler"); // not accessed in handler
             packet.ReadBit("TrialBoostEnabled");
             packet.ReadBit("TokenBalanceEnabled");
@@ -325,6 +337,41 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             packet.ReadUInt32("TeleportSpellID");
             packet.ReadUInt32("LoadingScreenID");
+        }
+
+        [Parser(Opcode.SMSG_OPEN_ALLIED_RACE_DETAILS_GIVER)]
+        public static void HandleOpenAlliedRaceDetailsGiver(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID"); // Creature or GameObject
+            packet.ReadInt32("RaceID");
+        }
+
+        public static void ReadAreaPoiData(Packet packet, params object[] idx)
+        {
+            packet.ReadTime("StartTime", idx);
+            packet.ReadInt32("AreaPoiID", idx);
+            packet.ReadInt32("DurationSec", idx);
+            packet.ReadUInt32("WorldStateVariableID", idx);
+            packet.ReadUInt32("WorldStateValue", idx);
+        }
+
+        [Parser(Opcode.SMSG_AREA_POI_UPDATE)]
+        public static void HandleAreaPoiUpdate(Packet packet)
+        {
+            var count = packet.ReadInt32("Count");
+
+            for (var i = 0; i < count; i++)
+                ReadAreaPoiData(packet, i);
+        }
+
+        [Parser(Opcode.CMSG_REQUEST_AREA_POI_UPDATE)]
+        public static void HandleAreaPoiZero(Packet packet) { }
+
+        [Parser(Opcode.SMSG_SET_MOVEMENT_ANIM_KIT)]
+        public static void HandlePlayOneShotAnimKit(Packet packet)
+        {
+            packet.ReadPackedGuid128("Unit");
+            packet.ReadUInt16("AnimKitID");
         }
     }
 }

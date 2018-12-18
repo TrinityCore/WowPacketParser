@@ -112,17 +112,7 @@ namespace WowPacketParser.Misc
         public Quaternion ReadPackedQuaternion()
         {
             long packed = ReadInt64();
-            float x = (packed >> 42)*(1.0f/2097152.0f);
-            float y = (((packed << 22) >> 32) >> 11)*(1.0f/1048576.0f);
-            float z = (packed << 43 >> 43)*(1.0f/1048576.0f);
-
-            float w = x*x + y*y + z*z;
-            if (Math.Abs(w - 1.0f) >= (1/1048576.0f))
-                w = (float) Math.Sqrt(1.0f - w);
-            else
-                w = 0.0f;
-
-            return new Quaternion(x, y, z, w);
+            return new Quaternion(packed);
         }
 
         public string ReadWoWString(int len)
@@ -131,6 +121,14 @@ namespace WowPacketParser.Misc
             var bytes = ReadBytes(len).Where(b => b != 0).ToArray();
             string s = encoding.GetString(bytes);
             return s;
+        }
+
+        public string ReadDynamicString(int len)
+        {
+            if (len == 1)
+                return string.Empty;
+
+            return ReadWoWString(len);
         }
 
         public string ReadCString(Encoding encoding)
@@ -402,6 +400,16 @@ namespace WowPacketParser.Misc
         public string ReadWoWString(string name, uint len, params object[] indexes)
         {
             return AddValue(name, ReadWoWString((int)len), indexes);
+        }
+
+        public string ReadDynamicString(string name, int len, params object[] indexes)
+        {
+            return AddValue(name, ReadDynamicString(len), indexes);
+        }
+
+        public string ReadDynamicString(string name, uint len, params object[] indexes)
+        {
+            return AddValue(name, ReadDynamicString((int)len), indexes);
         }
 
         public string ReadCString(string name, params object[] indexes)

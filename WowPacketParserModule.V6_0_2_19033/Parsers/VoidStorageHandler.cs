@@ -12,18 +12,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Guid");
         }
 
+        public static void ReadVoidItem(Packet packet, params object[] index)
+        {
+            packet.ReadPackedGuid128("Guid", index);
+            packet.ReadPackedGuid128("Creator", index);
+            packet.ReadUInt32("Slot", index);
+
+            ItemHandler.ReadItemInstance(packet, index);
+        }
+
         [Parser(Opcode.SMSG_VOID_STORAGE_CONTENTS)]
         public static void HandleVoidStorageContents(Packet packet)
         {
             var count = packet.ReadBits(8);
             for (var i = 0; i < count; ++i)
-            {
-                packet.ReadPackedGuid128("Guid", i);
-                packet.ReadPackedGuid128("Creator", i);
-                packet.ReadUInt32("Slot", i);
-
-                ItemHandler.ReadItemInstance(packet, i);
-            }
+                ReadVoidItem(packet, i);
         }
 
         [Parser(Opcode.CMSG_SWAP_VOID_ITEM)]
@@ -65,13 +68,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             // AddedItems
             for (int i = 0; i < bits32; i++)
-            {
-                packet.ReadPackedGuid128("AddedItemsGuid", i);
-                packet.ReadPackedGuid128("Creator", i);
-                packet.ReadInt32("Slot", i);
-
-                ItemHandler.ReadItemInstance(packet, i);
-            }
+                ReadVoidItem(packet, "AddedItems", i);
 
             // RemovedItems
             for (int i = 0; i < bits16; i++)

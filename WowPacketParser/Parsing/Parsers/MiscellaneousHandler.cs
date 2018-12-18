@@ -158,6 +158,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_DUEL_CANCELLED)]
         [Parser(Opcode.SMSG_REFER_A_FRIEND_EXPIRED)]
         [Parser(Opcode.CMSG_PLAYER_VEHICLE_ENTER)]
+        [Parser(Opcode.CMSG_RIDE_VEHICLE_INTERACT)]
         [Parser(Opcode.CMSG_EJECT_PASSENGER)]
         public static void HandleReadGuid(Packet packet)
         {
@@ -630,7 +631,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             packet.ReadUInt32("Unk time"); // Time online?
 
-            if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing)) // no idea when this was added exactly, doesn't exist in 2.4.0
+            if (packet.CanRead()) // no idea when this was added exactly, doesn't exist in 2.4.0
                 packet.ReadUInt32("Unk int32");
         }
 
@@ -1099,6 +1100,15 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("TimerType");
         }
 
+        [Parser(Opcode.SMSG_REFER_A_FRIEND_FAILURE)]
+        public static void HandleRaFFailure(Packet packet)
+        {
+            packet.ReadInt32("Reason");
+            packet.ResetBitReader();
+            var len = packet.ReadBits(6);
+            packet.ReadWoWString("Str", len);
+        }
+
         [Parser(Opcode.SMSG_MINIGAME_STATE)]
         [Parser(Opcode.CMSG_KEEP_ALIVE)]
         [Parser(Opcode.CMSG_TUTORIAL_RESET)]
@@ -1112,7 +1122,6 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_VOICESESSION_FULL)] // 61 bytes in 2.4.1
         [Parser(Opcode.SMSG_DEBUG_SERVER_GEO)] // Was unknown
         [Parser(Opcode.SMSG_RESUME_COMMS)]
-        [Parser(Opcode.SMSG_GOSSIP_COMPLETE)]
         [Parser(Opcode.SMSG_INVALID_PROMOTION_CODE)]
         [Parser(Opcode.CMSG_COMPLETE_CINEMATIC)]
         [Parser(Opcode.CMSG_NEXT_CINEMATIC_CAMERA)]

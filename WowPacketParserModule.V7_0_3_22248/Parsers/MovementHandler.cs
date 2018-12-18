@@ -1,4 +1,8 @@
-﻿using WowPacketParser.Enums;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using WowPacketParser.DBC;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParserModule.V7_0_3_22248.Enums;
@@ -9,18 +13,20 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
     public static class MovementHandler
     {
+        public static readonly IDictionary<ushort, bool> ActivePhases = new ConcurrentDictionary<ushort, bool>();
+
         public static void ReadMovementStats(Packet packet, params object[] idx)
         {
             packet.ReadPackedGuid128("MoverGUID", idx);
 
-            packet.ReadUInt32("MoveIndex", idx);
+            packet.ReadInt32("MoveTime", idx);
             packet.ReadVector4("Position", idx);
 
             packet.ReadSingle("Pitch", idx);
-            packet.ReadSingle("StepUpStartElevation", idx);
+            packet.ReadSingle("SplineElevation", idx);
 
             var int152 = packet.ReadInt32("RemoveForcesCount", idx);
-            packet.ReadInt32("MoveTime", idx);
+            packet.ReadInt32("MoveIndex", idx);
 
             for (var i = 0; i < int152; i++)
                 packet.ReadPackedGuid128("RemoveForcesIDs", idx, i);
@@ -496,6 +502,50 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             if (hasTransferSpell)
                 packet.ReadUInt32<SpellId>("TransferSpellID");
+        }
+
+        [Parser(Opcode.CMSG_MOVE_SET_VEHICLE_REC_ID_ACK)]
+        public static void HandleMoveSetVehicleRecIdAck(Packet packet)
+        {
+            ReadMovementAck(packet);
+            packet.ReadInt32("VehicleRecID");
+        }
+
+        [Parser(Opcode.SMSG_PHASE_SHIFT_CHANGE)]
+        public static void HandlePhaseShift(Packet packet)
+        {
+            ActivePhases.Clear();
+
+            packet.ReadPackedGuid128("Client");
+
+            // PhaseShiftData
+            packet.ReadInt32("PhaseShiftFlags");
+            var count = packet.ReadInt32("PhaseShiftCount");
+            packet.ReadPackedGuid128("PersonalGUID");
+            for (var i = 0; i < count; ++i)
+            {
+                var flags = packet.ReadUInt16("PhaseFlags", i);
+                var id = packet.ReadUInt16("Id", i);
+                ActivePhases.Add(id, true);
+            }
+
+            if (DBC.Phases.Any())
+            {
+                foreach (var phaseGroup in DBC.GetPhaseGroups(ActivePhases.Keys))
+                    packet.WriteLine($"PhaseGroup: { phaseGroup } Phases: { string.Join(" - ", DBC.Phases[phaseGroup]) }");
+            }
+
+            var visibleMapIDsCount = packet.ReadInt32("VisibleMapIDsCount") / 2;
+            for (var i = 0; i < visibleMapIDsCount; ++i)
+                packet.ReadInt16<MapId>("VisibleMapID", i);
+
+            var preloadMapIDCount = packet.ReadInt32("PreloadMapIDsCount") / 2;
+            for (var i = 0; i < preloadMapIDCount; ++i)
+                packet.ReadInt16<MapId>("PreloadMapID", i);
+
+            var uiWorldMapAreaIDSwapsCount = packet.ReadInt32("UiWorldMapAreaIDSwap") / 2;
+            for (var i = 0; i < uiWorldMapAreaIDSwapsCount; ++i)
+                packet.ReadInt16("UiWorldMapAreaIDSwaps", i);
         }
     }
 }

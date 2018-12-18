@@ -14,7 +14,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ActionMenuId")]
         public uint? ActionMenuId;
 
-        [DBFieldName("ActionPoiId")]
-        public uint? ActionPoiId;
+        [DBFieldName("ActionPoiId", false, true)]
+        public object ActionPoiId;
     }
 }

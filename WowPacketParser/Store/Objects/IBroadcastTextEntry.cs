@@ -2,7 +2,7 @@
 {
     public interface IBroadcastTextEntry
     {
-        string MaleText { get; set; }
-        string FemaleText { get; set; }
+        string Text { get; set; }
+        string Text1 { get; set; }
     }
 }

@@ -17,6 +17,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("LastLineEndTime")]
         public uint? LastLineEndTime;
 
+        [DBFieldName("TextureKitId", TargetedDatabase.BattleForAzeroth)]
+        public uint? TextureKitId;
+
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
 
@@ -65,16 +68,16 @@ namespace WowPacketParser.Store.Objects
                     line.StartTime = lines[i + 1].UInt32Value;
                     line.UiCameraID = lines[i + 2].UInt32Value;
                     var part = lines[i + 3].UInt32Value;
-                    var actorIdx = (ushort)(part & 0xFFFF);
+                    var actorIdx = (byte)(part & 0xFF);
                     line.ActorIdx = actorIdx;
-                    line.Unk = (ushort)((part >> 16) & 0xFFFF);
+                    line.Flags = (byte)((part >> 8) & 0xFF);
 
                     if (i == 0)
                         FirstLineID = line.Id;
 
                     var actor = new ConversationActor();
                     actor.ConversationId = Id;
-                    var actorTemplate = actorTemplates[actorIdx & 0xFF]; /// @workaround: structure is incorrect
+                    var actorTemplate = actorTemplates[actorIdx];
                     actor.ConversationActorId = actorTemplate.Id;
                     actor.Guid = actorTemplate.Guid;
                     actor.Idx = actorIdx;

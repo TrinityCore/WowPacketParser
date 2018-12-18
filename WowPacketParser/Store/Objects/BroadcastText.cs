@@ -7,35 +7,68 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("broadcast_text")]
     public sealed class BroadcastText : IDataModel
     {
+        public ushort?[] EmoteID;
+        public ushort?[] EmoteDelay;
+        public uint?[] SoundEntriesID;
+
+        public void ConvertToDBStruct()
+        {
+            EmoteID1 = EmoteID[0];
+            EmoteID2 = EmoteID[1];
+            EmoteID3 = EmoteID[2];
+
+            EmoteDelay1 = EmoteDelay[0];
+            EmoteDelay2 = EmoteDelay[1];
+            EmoteDelay3 = EmoteDelay[2];
+
+            SoundEntriesID1 = SoundEntriesID[0];
+            SoundEntriesID2 = SoundEntriesID[1];
+        }
+
         [DBFieldName("ID", true)]
         public uint? ID;
 
-        [DBFieldName("MaleText", LocaleConstant.enUS)]
-        public string MaleText;
+        [DBFieldName("Text", LocaleConstant.enUS)]
+        public string Text;
 
-        [DBFieldName("FemaleText", LocaleConstant.enUS)]
-        public string FemaleText;
+        [DBFieldName("Text1", LocaleConstant.enUS)]
+        public string Text1;
 
-        [DBFieldName("EmoteID", 3)]
-        public ushort?[] EmoteID;
+        [DBFieldName("EmoteID1")]
+        public ushort? EmoteID1;
 
-        [DBFieldName("EmoteDelay", 3)]
-        public ushort?[] EmoteDelay;
+        [DBFieldName("EmoteID2")]
+        public ushort? EmoteID2;
 
-        [DBFieldName("UnkEmoteID")]
-        public ushort? UnkEmoteID;
+        [DBFieldName("EmoteID3")]
+        public ushort? EmoteID3;
 
-        [DBFieldName("Language")]
-        public byte? Language;
+        [DBFieldName("EmoteDelay1")]
+        public ushort? EmoteDelay1;
 
-        [DBFieldName("Type")]
-        public byte? Type;
+        [DBFieldName("EmoteDelay2")]
+        public ushort? EmoteDelay2;
 
-        [DBFieldName("SoundID", 2)]
-        public uint?[] SoundID;
+        [DBFieldName("EmoteDelay3")]
+        public ushort? EmoteDelay3;
 
-        [DBFieldName("PlayerConditionID")]
-        public uint? PlayerConditionID;
+        [DBFieldName("EmotesID")]
+        public ushort? EmotesID;
+
+        [DBFieldName("LanguageID")]
+        public byte? LanguageID;
+
+        [DBFieldName("Flags")]
+        public byte? Flags;
+
+        [DBFieldName("ConditionID")]
+        public uint? ConditionID;
+
+        [DBFieldName("SoundEntriesID1")]
+        public uint? SoundEntriesID1;
+
+        [DBFieldName("SoundEntriesID2")]
+        public uint? SoundEntriesID2;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

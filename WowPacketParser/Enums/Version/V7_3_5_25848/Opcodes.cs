@@ -12,8 +12,9 @@ namespace WowPacketParser.Enums.Version.V7_3_5_25848
                     return ClientOpcodes;
                 case Direction.ServerToClient:
                     return ServerOpcodes;
+                default:
+                    return MiscOpcodes;
             }
-            return MiscOpcodes;
         }
 
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
@@ -30,6 +31,7 @@ namespace WowPacketParser.Enums.Version.V7_3_5_25848
            {Opcode.CMSG_ADD_TOY, 0x328B},
            {Opcode.CMSG_ADVENTURE_JOURNAL_OPEN_QUEST, 0x31F9},
            {Opcode.CMSG_ADVENTURE_JOURNAL_START_QUEST, 0x332E},
+           {Opcode.CMSG_ADVENTURE_MAP_POI_QUERY, 0x323B},
            {Opcode.CMSG_ALTER_APPEARANCE, 0x34F9},
            {Opcode.CMSG_AREA_SPIRIT_HEALER_QUERY, 0x34B3},
            {Opcode.CMSG_AREA_SPIRIT_HEALER_QUEUE, 0x34B4},
@@ -216,6 +218,7 @@ namespace WowPacketParser.Enums.Version.V7_3_5_25848
            {Opcode.CMSG_CONNECT_TO_FAILED, 0x35D4},
            {Opcode.CMSG_CONTRIBUTION_CONTRIBUTE, 0x3558},
            {Opcode.CMSG_CONTRIBUTION_GET_STATE, 0x3559},
+           {Opcode.CMSG_CONVERSATION_LINE_STARTED, 0x354A},
            {Opcode.CMSG_CONVERT_CONSUMPTION_TIME, 0x36F9},
            {Opcode.CMSG_CONVERT_RAID, 0x364E},
            {Opcode.CMSG_CREATE_CHARACTER, 0x3643},
@@ -523,7 +526,7 @@ namespace WowPacketParser.Enums.Version.V7_3_5_25848
            {Opcode.CMSG_QUERY_PLAYER_NAME, 0x368B},
            {Opcode.CMSG_QUERY_QUEST_COMPLETION_NPCS, 0x3173},
            {Opcode.CMSG_QUERY_QUEST_INFO, 0x3265},
-           {Opcode.CMSG_QUERY_QUEST_REWARDS, 0x3336},
+           {Opcode.CMSG_QUERY_TREASURE_PICKER, 0x3336},
            {Opcode.CMSG_QUERY_REALM_NAME, 0x368C},
            {Opcode.CMSG_QUERY_SCENARIO_POI, 0x3656},
            {Opcode.CMSG_QUERY_TIME, 0x34DA},
@@ -619,7 +622,7 @@ namespace WowPacketParser.Enums.Version.V7_3_5_25848
            {Opcode.CMSG_SET_ASSISTANT_LEADER, 0x364F},
            {Opcode.CMSG_SET_BACKPACK_AUTOSORT_DISABLED, 0x3314},
            {Opcode.CMSG_SET_BANK_AUTOSORT_DISABLED, 0x3315},
-           {Opcode.CMSG_SET_BANK_BAG_SLOT_FLAG, 0x3313},
+           {Opcode.CMSG_CHANGE_BANK_BAG_SLOT_FLAG, 0x3313},
            {Opcode.CMSG_SET_CONTACT_NOTES, 0x36D1},
            {Opcode.CMSG_SET_CURRENCY_FLAGS, 0x3169},
            {Opcode.CMSG_SET_DIFFICULTY_ID, 0x3218},
@@ -745,6 +748,7 @@ namespace WowPacketParser.Enums.Version.V7_3_5_25848
            {Opcode.SMSG_ADD_LOSS_OF_CONTROL, 0x2696},
            {Opcode.SMSG_ADD_RUNE_POWER, 0x26E2},
            {Opcode.SMSG_ADJUST_SPLINE_DURATION, 0x25E8},
+           {Opcode.SMSG_ADVENTURE_MAP_POI_QUERY_RESPONSE, 0x283B},
            {Opcode.SMSG_AE_LOOT_TARGETS, 0x262C},
            {Opcode.SMSG_AE_LOOT_TARGET_ACK, 0x262D},
            {Opcode.SMSG_AI_REACTION, 0x26DF},
@@ -1084,6 +1088,7 @@ namespace WowPacketParser.Enums.Version.V7_3_5_25848
            {Opcode.SMSG_GOSSIP_COMPLETE, 0x2A96},
            {Opcode.SMSG_GOSSIP_MESSAGE, 0x2A97},
            {Opcode.SMSG_GOSSIP_POI, 0x27D8},
+           {Opcode.SMSG_GOSSIP_TEXT_UPDATE, 0x2A98},
            {Opcode.SMSG_GROUP_ACTION_THROTTLED, 0x259C},
            {Opcode.SMSG_GROUP_DECLINE, 0x27D3},
            {Opcode.SMSG_GROUP_DESTROYED, 0x27D5},
@@ -1442,7 +1447,7 @@ namespace WowPacketParser.Enums.Version.V7_3_5_25848
            {Opcode.SMSG_QUERY_PET_NAME_RESPONSE, 0x2702},
            {Opcode.SMSG_QUERY_PLAYER_NAME_RESPONSE, 0x26FF},
            {Opcode.SMSG_QUERY_QUEST_INFO_RESPONSE, 0x2A95},
-           {Opcode.SMSG_QUERY_QUEST_REWARD_RESPONSE, 0x2846},
+           {Opcode.SMSG_QUERY_TREASURE_PICKER_RESPONSE, 0x2846},
            {Opcode.SMSG_QUERY_TIME_RESPONSE, 0x271A},
            {Opcode.SMSG_QUEST_COMPLETION_NPC_RESPONSE, 0x2A81},
            {Opcode.SMSG_QUEST_CONFIRM_ACCEPT, 0x2A8E},

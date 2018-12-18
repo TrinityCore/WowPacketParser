@@ -3,6 +3,7 @@
     public enum SniffType
     {
         Bin,
-        Pkt
+        Pkt,
+        Sqlite
     }
 }

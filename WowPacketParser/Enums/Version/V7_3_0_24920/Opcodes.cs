@@ -12,8 +12,9 @@ namespace WowPacketParser.Enums.Version.V7_3_0_24920
                     return ClientOpcodes;
                 case Direction.ServerToClient:
                     return ServerOpcodes;
+                default:
+                    return MiscOpcodes;
             }
-            return MiscOpcodes;
         }
 
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
@@ -522,7 +523,7 @@ namespace WowPacketParser.Enums.Version.V7_3_0_24920
            {Opcode.CMSG_QUERY_PLAYER_NAME, 0x368E},
            {Opcode.CMSG_QUERY_QUEST_COMPLETION_NPCS, 0x3173},
            {Opcode.CMSG_QUERY_QUEST_INFO, 0x3261},
-           {Opcode.CMSG_QUERY_QUEST_REWARDS, 0x3337},
+           {Opcode.CMSG_QUERY_TREASURE_PICKER, 0x3337},
            {Opcode.CMSG_QUERY_REALM_NAME, 0x368F},
            {Opcode.CMSG_QUERY_SCENARIO_POI, 0x3659},
            {Opcode.CMSG_QUERY_TIME, 0x34DC},
@@ -617,7 +618,7 @@ namespace WowPacketParser.Enums.Version.V7_3_0_24920
            {Opcode.CMSG_SET_ASSISTANT_LEADER, 0x3652},
            {Opcode.CMSG_SET_BACKPACK_AUTOSORT_DISABLED, 0x3314},
            {Opcode.CMSG_SET_BANK_AUTOSORT_DISABLED, 0x3315},
-           {Opcode.CMSG_SET_BANK_BAG_SLOT_FLAG, 0x3313},
+           {Opcode.CMSG_CHANGE_BANK_BAG_SLOT_FLAG, 0x3313},
            {Opcode.CMSG_SET_CONTACT_NOTES, 0x36D4},
            {Opcode.CMSG_SET_CURRENCY_FLAGS, 0x3169},
            {Opcode.CMSG_SET_DIFFICULTY_ID, 0x3216},
@@ -1080,6 +1081,7 @@ namespace WowPacketParser.Enums.Version.V7_3_0_24920
            {Opcode.SMSG_GOSSIP_COMPLETE, 0x2A96},
            {Opcode.SMSG_GOSSIP_MESSAGE, 0x2A97},
            {Opcode.SMSG_GOSSIP_POI, 0x27DA},
+           {Opcode.SMSG_GOSSIP_TEXT_UPDATE, 0x2A98},
            {Opcode.SMSG_GROUP_ACTION_THROTTLED, 0x259D},
            {Opcode.SMSG_GROUP_DECLINE, 0x27D5},
            {Opcode.SMSG_GROUP_DESTROYED, 0x27D7},
@@ -1438,7 +1440,7 @@ namespace WowPacketParser.Enums.Version.V7_3_0_24920
            {Opcode.SMSG_QUERY_PET_NAME_RESPONSE, 0x2704},
            {Opcode.SMSG_QUERY_PLAYER_NAME_RESPONSE, 0x2701},
            {Opcode.SMSG_QUERY_QUEST_INFO_RESPONSE, 0x2A95},
-           {Opcode.SMSG_QUERY_QUEST_REWARD_RESPONSE, 0x2847},
+           {Opcode.SMSG_QUERY_TREASURE_PICKER_RESPONSE, 0x2847},
            {Opcode.SMSG_QUERY_TIME_RESPONSE, 0x271C},
            {Opcode.SMSG_QUEST_COMPLETION_NPC_RESPONSE, 0x2A81},
            {Opcode.SMSG_QUEST_CONFIRM_ACCEPT, 0x2A8E},

@@ -143,7 +143,8 @@ namespace WowPacketParser.Parsing.Parsers
             }
             else // Did they stop sending pet spell data after 3.1?
             {
-                packet.ReadInt32("Unk Int");
+                if (ClientVersion.RemovedInVersion(ClientType.WrathOfTheLichKing))
+                    packet.ReadInt32("Unk Int");
                 creature.PetSpellDataID = packet.ReadUInt32("Pet Spell Data Id");
             }
 
@@ -175,7 +176,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             Storage.CreatureTemplates.Add(creature, packet.TimeSpan);
 
-            if (BinaryPacketReader.GetLocale() != LocaleConstant.enUS)
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
             {
                 CreatureTemplateLocale localesCreature = new CreatureTemplateLocale
                 {

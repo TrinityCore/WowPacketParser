@@ -224,7 +224,7 @@ namespace WowPacketParser.SQL
 
         public bool IsVisible()
         {
-            if (Locale != null && Locale != BinaryPacketReader.GetLocale())
+            if (Locale != null && Locale != ClientLocale.PacketLocale)
                 return false;
 
             TargetedDatabase target = Settings.TargetedDatabase;

@@ -54,12 +54,8 @@ namespace WowPacketParser.SQL
         /// <returns>Modified string</returns>
         public static string EscapeString(string str)
         {
-            str = MySqlHelper.DoubleQuoteString(str);
-            str = str.Replace(Environment.NewLine, @"\n");
-            str = str.Replace("’’", "’"); // french is gay ... 
-
-            // prevent double escaping
-            return str.Replace("\"\"", "\"");
+            str = MySqlHelper.EscapeString(str);
+            return str.Replace(Environment.NewLine, @"\n");
         }
 
         /// <summary>
@@ -206,7 +202,7 @@ namespace WowPacketParser.SQL
 
             foreach (var elem1 in storeList)
             {
-                if (dbList != null && dbList.ContainsKey(elem1.Item1)) // update
+                if (dbList != null && dbList.ContainsKey(elem1.Item1) && !Settings.ForceInsertQueries) // update
                 {
 
                     var lastField = fields[fields.Count - 1];
@@ -249,11 +245,7 @@ namespace WowPacketParser.SQL
                             continue;
 
                         if (val1 is string)
-                        {
                             val1 = ((string)val1).Replace(Environment.NewLine, "\n");
-                            // prevent double escaping
-                            val1 =  ((string)val1).Replace("\"\"", "\"");
-                        }
 
                         if (Utilities.EqualValues(val1, val2))
                             field.Item2.SetValue(elem1.Item1, null);

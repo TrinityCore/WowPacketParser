@@ -29,6 +29,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (int i = 0; i < count; ++i)
             {
+                packet.ResetBitReader();
+
                 var strlen = packet.ReadBits(7);
 
                 packet.ReadBit("KeepGroupsTogether", i);
@@ -111,7 +113,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleSetSavedInstanceExtend(Packet packet)
         {
             packet.ReadInt32<MapId>("MapID");
-            packet.ReadInt32<DifficultyId>("DifficultyID");
+            packet.ReadUInt32<DifficultyId>("DifficultyID");
             packet.ReadBit("Extended");
         }
 
@@ -191,7 +193,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleInstanceEncounterGainCombatResurrectionCharge(Packet packet)
         {
             packet.ReadInt32("InCombatResCount");
-            packet.ReadInt32("CombatResChargeRecovery");
+            packet.ReadUInt32("CombatResChargeRecovery");
         }
 
         [Parser(Opcode.SMSG_ENCOUNTER_START)]

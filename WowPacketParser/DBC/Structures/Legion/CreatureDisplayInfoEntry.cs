@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace WowPacketParser.DBC.Structures
+namespace WowPacketParser.DBC.Structures.Legion
 {
     [DBFile("CreatureDisplayInfo")]
     public sealed class CreatureDisplayInfoEntry
@@ -13,7 +13,6 @@ namespace WowPacketParser.DBC.Structures
         public byte Flags;
         public sbyte Gender;
         public uint ExtendedDisplayInfoID;
-        public uint[] TextureVariation;
         public uint PortraitTextureFileDataID;
         public byte CreatureModelAlpha;
         public short SoundID;
@@ -28,5 +27,7 @@ namespace WowPacketParser.DBC.Structures
         public int StateSpellVisualKitID;
         public float InstanceOtherPlayerPetScale;                             // scale of not own player pets inside dungeons/raids/scenarios
         public int MountSpellVisualKitID;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
+        public uint[] TextureVariation;
     }
 }

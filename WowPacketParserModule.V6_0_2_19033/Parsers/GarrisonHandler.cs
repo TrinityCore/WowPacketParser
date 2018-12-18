@@ -671,8 +671,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_GARRISON_CREATE_RESULT)]
         public static void HandleGarrisonCreateResult(Packet packet)
         {
-            packet.ReadInt32("Result");
-            packet.ReadInt32("GarrSiteID");
+            packet.ReadUInt32("Result");
+            packet.ReadUInt32("GarrSiteLevelID");
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_DELETE_RESULT)]
+        public static void HandleGarrisonDeleteResult(Packet packet)
+        {
+            packet.ReadUInt32("Result");
+            packet.ReadUInt32("GarrSiteID");
         }
 
         [Parser(Opcode.SMSG_GARRISON_BUILDING_LANDMARKS)]

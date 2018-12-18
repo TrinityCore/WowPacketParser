@@ -11,13 +11,13 @@ namespace WowPacketParser.Store.Objects
         public uint? ID;
 
         [DBFieldName("locale", true)]
-        public string Locale = BinaryPacketReader.GetClientLocale();
+        public string Locale = ClientLocale.PacketLocaleString;
 
-        [DBFieldName("MaleText_lang")]
-        public string MaleTextLang;
+        [DBFieldName("Text_lang")]
+        public string TextLang;
 
-        [DBFieldName("FemaleText_lang")]
-        public string FemaleTextLang;
+        [DBFieldName("Text1_lang")]
+        public string Text1Lang;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

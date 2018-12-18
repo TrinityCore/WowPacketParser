@@ -1,6 +1,4 @@
-﻿using DBFilesClient.NET;
-
-namespace WowPacketParser.DBC.Structures
+﻿namespace WowPacketParser.DBC.Structures.Legion
 {
     [DBFile("Spell")]
 

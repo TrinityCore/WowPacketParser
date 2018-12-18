@@ -12,9 +12,10 @@ namespace WowPacketParser.Enums
         FollowsTerrain          = 0x00010,
         Unk1                    = 0x00020,
         HasTargetRollPitchYaw   = 0x00040,
-        Unk2                    = 0x00080,
+        HasAnimId               = 0x00080,
         Unk3                    = 0x00100,
-        Unk4                    = 0x00200,
-        Unk5                    = 0x00400
+        HasAnimKitId            = 0x00200,
+        HasCircularMovement     = 0x00400,
+        Unk5                    = 0x00800
     }
 }

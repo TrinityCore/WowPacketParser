@@ -12,8 +12,9 @@ namespace WowPacketParser.Enums.Version.V7_1_0_22900
                     return ClientOpcodes;
                 case Direction.ServerToClient:
                     return ServerOpcodes;
+                default:
+                    return MiscOpcodes;
             }
-            return MiscOpcodes;
         }
 
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
@@ -513,7 +514,7 @@ namespace WowPacketParser.Enums.Version.V7_1_0_22900
             {Opcode.CMSG_QUERY_PLAYER_NAME, 0x368F},
             {Opcode.CMSG_QUERY_QUEST_COMPLETION_NPCS, 0x3172},
             {Opcode.CMSG_QUERY_QUEST_INFO, 0x3251},
-            {Opcode.CMSG_QUERY_QUEST_REWARDS, 0x3325},
+            {Opcode.CMSG_QUERY_TREASURE_PICKER, 0x3325},
             {Opcode.CMSG_QUERY_REALM_NAME, 0x3690},
             {Opcode.CMSG_QUERY_SCENARIO_POI, 0x3659},
             {Opcode.CMSG_QUERY_TIME, 0x34CE},
@@ -605,7 +606,7 @@ namespace WowPacketParser.Enums.Version.V7_1_0_22900
             {Opcode.CMSG_SET_ASSISTANT_LEADER, 0x364F},
             {Opcode.CMSG_SET_BACKPACK_AUTOSORT_DISABLED, 0x3301},
             {Opcode.CMSG_SET_BANK_AUTOSORT_DISABLED, 0x3302},
-            {Opcode.CMSG_SET_BANK_BAG_SLOT_FLAG, 0x3300},
+            {Opcode.CMSG_CHANGE_BANK_BAG_SLOT_FLAG, 0x3300},
             {Opcode.CMSG_SET_CONTACT_NOTES, 0x36D4},
             {Opcode.CMSG_SET_CURRENCY_FLAGS, 0x3169},
             {Opcode.CMSG_SET_DIFFICULTY_ID, 0x3207},
@@ -1420,7 +1421,7 @@ namespace WowPacketParser.Enums.Version.V7_1_0_22900
             {Opcode.SMSG_QUERY_PET_NAME_RESPONSE, 0x26FD},
             {Opcode.SMSG_QUERY_PLAYER_NAME_RESPONSE, 0x26FA},
             {Opcode.SMSG_QUERY_QUEST_INFO_RESPONSE, 0x2A95},
-            {Opcode.SMSG_QUERY_QUEST_REWARD_RESPONSE, 0x2839},
+            {Opcode.SMSG_QUERY_TREASURE_PICKER_RESPONSE, 0x2839},
             {Opcode.SMSG_QUERY_TIME_RESPONSE, 0x2715},
             {Opcode.SMSG_QUEST_COMPLETION_NPC_RESPONSE, 0x2A81},
             {Opcode.SMSG_QUEST_CONFIRM_ACCEPT, 0x2A8E},

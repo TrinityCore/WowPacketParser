@@ -11,9 +11,9 @@ namespace WowPacketParser.Store.Objects
         public uint? ID;
 
         [DBFieldName("locale", true)]
-        public string Locale = BinaryPacketReader.GetClientLocale();
+        public string Locale = ClientLocale.PacketLocaleString;
 
-        [DBFieldName("Name")]
+        [DBFieldName("Name", nullable: true)]
         public string Name;
 
         [DBFieldName("NameAlt", nullable: true)]

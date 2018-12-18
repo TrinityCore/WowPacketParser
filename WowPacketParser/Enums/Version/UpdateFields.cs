@@ -1,47 +1,60 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using WowPacketParser.Misc;
+using WowPacketParser.Parsing;
 
 namespace WowPacketParser.Enums.Version
 {
+    public class UpdateFieldInfo
+    {
+        public int Value;
+        public string Name;
+        public int Size;
+        public UpdateFieldType Format;
+    }
+
     public static class UpdateFields
     {
-        private static Dictionary<Type, BiDictionary<string, int>> LoadDefaultUFDictionaries()
-        {
-            var dicts = new Dictionary<Type, BiDictionary<string, int>>();
-
-            LoadUFDictionariesInto(dicts, Assembly.GetExecutingAssembly(), ClientVersionBuild.Zero);
-
-            return dicts;
-        }
-
         // TEMPORARY HACK
         // This is needed because currently opcode handlers are only registersd if version is matching
         // so we need to clear them and reinitialize default handlers
         // This will be obsolete when all version specific stuff is moved to their own modules
         public static void ResetUFDictionaries()
         {
-            UpdateFieldDictionaries.Clear();
+            UpdateFieldDictionary.Clear();
+            UpdateFieldNameDictionary.Clear();
         }
 
         public static bool LoadUFDictionaries(Assembly asm, ClientVersionBuild build)
         {
-            return LoadUFDictionariesInto(UpdateFieldDictionaries, asm, build);
+            return LoadUFDictionariesInto(UpdateFieldDictionary, UpdateFieldNameDictionary, asm, build);
         }
 
-        private static readonly Dictionary<Type, BiDictionary<string, int>> UpdateFieldDictionaries = LoadDefaultUFDictionaries();
+        private static readonly Dictionary<Type, SortedList<int, UpdateFieldInfo>> UpdateFieldDictionary;
+        private static readonly Dictionary<Type, Dictionary<string, int>> UpdateFieldNameDictionary;
 
-        private static bool LoadUFDictionariesInto(Dictionary<Type, BiDictionary<string, int>> dicts, Assembly asm, ClientVersionBuild build)
+        static UpdateFields()
+        {
+            UpdateFieldDictionary = new Dictionary<Type, SortedList<int, UpdateFieldInfo>>();
+            UpdateFieldNameDictionary = new Dictionary<Type, Dictionary<string, int>>();
+
+            LoadUFDictionariesInto(UpdateFieldDictionary, UpdateFieldNameDictionary, Assembly.GetExecutingAssembly(), ClientVersionBuild.Zero);
+        }
+
+        private static bool LoadUFDictionariesInto(Dictionary<Type, SortedList<int, UpdateFieldInfo>> dicts,
+            Dictionary<Type, Dictionary<string, int>> nameToValueDict,
+            Assembly asm, ClientVersionBuild build)
         {
             Type[] enumTypes =
             {
-                typeof(ObjectField), typeof(ItemField), typeof(ContainerField), typeof(UnitField),
-                typeof(PlayerField), typeof(GameObjectField), typeof(DynamicObjectField),
+                typeof(ObjectField), typeof(ItemField), typeof(ContainerField), typeof(AzeriteEmpoweredItemField), typeof(AzeriteItemField), typeof(UnitField),
+                typeof(PlayerField), typeof(ActivePlayerField), typeof(GameObjectField), typeof(DynamicObjectField),
                 typeof(CorpseField), typeof(AreaTriggerField), typeof(SceneObjectField), typeof(ConversationField),
-                typeof(ObjectDynamicField), typeof(ItemDynamicField), typeof(ContainerDynamicField), typeof(UnitDynamicField),
-                typeof(PlayerDynamicField), typeof(GameObjectDynamicField), typeof(DynamicObjectDynamicField),
+                typeof(ObjectDynamicField), typeof(ItemDynamicField), typeof(ContainerDynamicField), typeof(AzeriteEmpoweredItemDynamicField), typeof(AzeriteItemDynamicField), typeof(UnitDynamicField),
+                typeof(PlayerDynamicField), typeof(ActivePlayerDynamicField), typeof(GameObjectDynamicField), typeof(DynamicObjectDynamicField),
                 typeof(CorpseDynamicField), typeof(AreaTriggerDynamicField), typeof(SceneObjectDynamicField), typeof(ConversationDynamicField)
             };
 
@@ -63,51 +76,82 @@ namespace WowPacketParser.Enums.Version
                 Array vValues = Enum.GetValues(vEnumType);
                 var vNames = Enum.GetNames(vEnumType);
 
-                var result = new BiDictionary<string, int>();
+                var result = new SortedList<int, UpdateFieldInfo>(vValues.Length);
+                var namesResult = new Dictionary<string, int>(vNames.Length);
 
                 for (int i = 0; i < vValues.Length; ++i)
-                    result.Add(vNames[i], (int)vValues.GetValue(i));
+                {
+                    var format = enumType.GetMember(vNames[i])
+                        .SelectMany(member => member.GetCustomAttributes(typeof(UpdateFieldAttribute), false))
+                        .Where(attribute => ((UpdateFieldAttribute)attribute).Version <= ClientVersion.VersionDefiningBuild)
+                        .OrderByDescending(attribute => ((UpdateFieldAttribute)attribute).Version)
+                        .Select(attribute => ((UpdateFieldAttribute)attribute).UFAttribute)
+                        .DefaultIfEmpty(UpdateFieldType.Default).First();
+
+                    result.Add((int)vValues.GetValue(i), new UpdateFieldInfo() { Value = (int)vValues.GetValue(i), Name = vNames[i], Size = 0, Format = format });
+                    namesResult.Add(vNames[i], (int)vValues.GetValue(i));
+                }
+
+                for (var i = 0; i < result.Count - 1; ++i)
+                    result.Values[i].Size = result.Keys[i + 1] - result.Keys[i];
 
                 dicts.Add(enumType, result);
+                nameToValueDict.Add(enumType, namesResult);
                 loaded = true;
             }
 
             return loaded;
         }
 
-        public static int GetUpdateField<T>(T field)
+        public static int GetUpdateField<T>(T field) // where T: System.Enum // C# 7.3
         {
-            if (UpdateFieldDictionaries.ContainsKey(typeof(T)))
-                if (UpdateFieldDictionaries[typeof(T)].ContainsKey(field.ToString()))
-                    return UpdateFieldDictionaries[typeof(T)][field.ToString()];
+            Dictionary<string, int> byNamesDict;
+            if (UpdateFieldNameDictionary.TryGetValue(typeof(T), out byNamesDict))
+            {
+                int fieldValue;
+                if (byNamesDict.TryGetValue(field.ToString(), out fieldValue))
+                    return fieldValue;
+            }
 
             return Convert.ToInt32(field);
         }
 
-        public static int GetUpdateField<T>(int field)
+        public static string GetUpdateFieldName<T>(int field) // where T: System.Enum // C# 7.3
         {
-            if (UpdateFieldDictionaries.ContainsKey(typeof(T)))
-                if (UpdateFieldDictionaries[typeof(T)].ContainsKey(field.ToString(CultureInfo.InvariantCulture)))
-                    return UpdateFieldDictionaries[typeof(T)][field.ToString(CultureInfo.InvariantCulture)];
-
-            return field;
-        }
-
-        public static string GetUpdateFieldName<T>(int field)
-        {
-            if (UpdateFieldDictionaries.ContainsKey(typeof(T)))
+            SortedList<int, UpdateFieldInfo> infoDict;
+            if (UpdateFieldDictionary.TryGetValue(typeof(T), out infoDict))
             {
-                int diff = 0;
-                do
+                if (infoDict.Count != 0)
                 {
-                    if (UpdateFieldDictionaries[typeof(T)].ContainsValue(field - diff))
-                        return UpdateFieldDictionaries[typeof(T)][field - diff] + (diff > 0 ? " + " + diff.ToString() : "");
-                    diff++;
+                    var index = infoDict.BinarySearch(field);
+                    if (index >= 0)
+                        return infoDict.Values[index].Name;
+
+                    index = ~index - 1;
+                    var start = infoDict.Keys[index];
+                    return infoDict.Values[index].Name + " + " + (field - start);
                 }
-                while (diff < field);
             }
 
             return field.ToString(CultureInfo.InvariantCulture);
+        }
+
+        public static UpdateFieldInfo GetUpdateFieldInfo<T>(int field) // where T: System.Enum // C# 7.3
+        {
+            SortedList<int, UpdateFieldInfo> infoDict;
+            if (UpdateFieldDictionary.TryGetValue(typeof(T), out infoDict))
+            {
+                if (infoDict.Count != 0)
+                {
+                    var index = infoDict.BinarySearch(field);
+                    if (index >= 0)
+                        return infoDict.Values[index];
+
+                    return infoDict.Values[~index - 1];
+                }
+            }
+
+            return null;
         }
 
         private static string GetUpdateFieldDictionaryBuildName(ClientVersionBuild build)
@@ -132,11 +176,13 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V2_4_1_8125:
                 case ClientVersionBuild.V2_4_2_8209:
                 case ClientVersionBuild.V2_4_3_8606:
+                    return "V2_4_3_8606";
                 case ClientVersionBuild.V3_0_2_9056:
                 case ClientVersionBuild.V3_0_3_9183:
                 case ClientVersionBuild.V3_0_8_9464:
                 case ClientVersionBuild.V3_0_8a_9506:
                 case ClientVersionBuild.V3_0_9_9551:
+                    return "V3_0_9_9551";
                 case ClientVersionBuild.V3_1_0_9767:
                 case ClientVersionBuild.V3_1_1_9806:
                 case ClientVersionBuild.V3_1_1a_9835:
@@ -415,6 +461,28 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V7_3_5_26972:
                 {
                     return "V7_3_5_25848";
+                }
+                case ClientVersionBuild.V8_0_1_27101:
+                case ClientVersionBuild.V8_0_1_27144:
+                case ClientVersionBuild.V8_0_1_27165:
+                case ClientVersionBuild.V8_0_1_27178:
+                case ClientVersionBuild.V8_0_1_27219:
+                case ClientVersionBuild.V8_0_1_27291:
+                case ClientVersionBuild.V8_0_1_27326:
+                case ClientVersionBuild.V8_0_1_27355:
+                case ClientVersionBuild.V8_0_1_27356:
+                case ClientVersionBuild.V8_0_1_27366:
+                case ClientVersionBuild.V8_0_1_27377:
+                case ClientVersionBuild.V8_0_1_27404:
+                case ClientVersionBuild.V8_0_1_27481:
+                case ClientVersionBuild.V8_0_1_27547:
+                case ClientVersionBuild.V8_0_1_27602:
+                case ClientVersionBuild.V8_0_1_27791:
+                case ClientVersionBuild.V8_0_1_27843:
+                case ClientVersionBuild.V8_0_1_27980:
+                case ClientVersionBuild.V8_0_1_28153:
+                {
+                    return "V8_0_1_27101";
                 }
                 default:
                 {

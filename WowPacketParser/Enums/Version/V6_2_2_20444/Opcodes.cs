@@ -12,8 +12,9 @@ namespace WowPacketParser.Enums.Version.V6_2_2_20444
                     return ClientOpcodes;
                 case Direction.ServerToClient:
                     return ServerOpcodes;
+                default:
+                    return MiscOpcodes;
             }
-            return MiscOpcodes;
         }
 
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
@@ -578,7 +579,7 @@ namespace WowPacketParser.Enums.Version.V6_2_2_20444
             {Opcode.CMSG_SET_ASSISTANT_LEADER, 0x03B4},
             {Opcode.CMSG_SET_BACKPACK_AUTOSORT_DISABLED, 0x1B5E},
             {Opcode.CMSG_SET_BANK_AUTOSORT_DISABLED, 0x16A0},
-            {Opcode.CMSG_SET_BANK_BAG_SLOT_FLAG, 0x1A9E},
+            {Opcode.CMSG_CHANGE_BANK_BAG_SLOT_FLAG, 0x1A9E},
             {Opcode.CMSG_SET_CONTACT_NOTES, 0x037B},
             {Opcode.CMSG_SET_CURRENCY_FLAGS, 0x12DF},
             {Opcode.CMSG_SET_DIFFICULTY_ID, 0x125D},
