@@ -164,9 +164,6 @@ namespace WowPacketParser.Parsing.Parsers
             var mask = new BitArray(updateMask);
             var dict = new Dictionary<int, UpdateField>();
 
-            ulong streamedGuidRawValue = 0;
-            var streamedGuidIfAny = WowGuid.Empty;
-
             int objectEnd = UpdateFields.GetUpdateField(ObjectField.OBJECT_END);
             int size;
             for (var i = 0; i < mask.Count; i += size)
@@ -183,7 +180,6 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (i < objectEnd)
                 {
-
                     fieldInfo = UpdateFields.GetUpdateFieldInfo<ObjectField>(i);
                 }
                 else
