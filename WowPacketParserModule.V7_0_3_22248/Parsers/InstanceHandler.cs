@@ -192,5 +192,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             packet.ReadBit("ReleaseAllowed");
         }
+
+        [Parser(Opcode.CMSG_START_CHALLENGE_MODE)]
+        public static void HandleStartChallengeMode(Packet packet)
+        {
+            packet.ReadByte("Bag");
+            packet.ReadInt32("Slot");
+            packet.ReadPackedGuid128("GobGUID");
+        }
     }
 }
