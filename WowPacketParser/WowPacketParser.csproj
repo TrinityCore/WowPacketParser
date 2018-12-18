@@ -220,7 +220,16 @@
     <Compile Include="Enums\ContactStatus.cs" />
     <Compile Include="Enums\BuyResult.cs" />
     <Compile Include="Enums\DB2Hash.cs" />
-    <Compile Include="Enums\GarrisonEnums.cs" />
+    <Compile Include="Enums\GarrisonFollowerQuality.cs" />
+    <Compile Include="Enums\GarrisonFollowerStatus.cs" />
+    <Compile Include="Enums\GarrisonFollowerType.cs" />
+    <Compile Include="Enums\GarrisonMissionFlag.cs" />
+    <Compile Include="Enums\GarrisonMissionResult.cs" />
+    <Compile Include="Enums\GarrisonMissionState.cs" />
+    <Compile Include="Enums\GarrisonResult.cs" />
+    <Compile Include="Enums\GarrisonSite.cs" />
+    <Compile Include="Enums\GarrisonSiteLevel.cs" />
+    <Compile Include="Enums\GarrisonType.cs" />
     <Compile Include="Enums\ItemFieldFlags.cs" />
     <Compile Include="Enums\ItemModifier.cs" />
     <Compile Include="Enums\LootError.cs" />

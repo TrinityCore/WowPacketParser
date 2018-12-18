@@ -257,7 +257,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_GARRISON_START_MISSION_RESULT)]
         public static void HandleGarrisonStartMissionResult(Packet packet)
         {
-            packet.ReadInt32E<MissionResultType>("Result");
+            packet.ReadInt32E<GarrisonMissionResult>("Result");
             packet.ReadUInt16("SessionMissionCount");
             ReadGarrisonMission(packet, "Mission");
 
@@ -305,13 +305,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             ReadGarrisonMission(packet, "Mission");
             packet.ReadInt32("MissionRecID");
-            packet.ReadInt32E<MissionResultType>("Result");
+            packet.ReadInt32E<GarrisonMissionResult>("Result");
         }
 
         [Parser(Opcode.SMSG_GARRISON_COMPLETE_MISSION_RESULT)]
         public static void HandleGarrisonFinishMission(Packet packet)
         {
-            packet.ReadInt32E<MissionResultType>("Result");
+            packet.ReadInt32E<GarrisonMissionResult>("Result");
             ReadGarrisonMission(packet, "Mission");
             packet.ReadInt32("MissionRecId");
 
@@ -425,8 +425,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_GARRISON_NUM_FOLLOWER_ACTIVATIONS_REMAINING)]
         public static void HandleGarrisonNumFollowerActivationsRemaining(Packet packet)
         {
+            packet.ReadUInt32E<GarrisonSite>("GarrSiteID");
             packet.ReadUInt32("NumActivations");
-            packet.ReadUInt32("Unk");
         }
 
         [Parser(Opcode.CMSG_GARRISON_SET_FOLLOWER_FAVORITE)]
