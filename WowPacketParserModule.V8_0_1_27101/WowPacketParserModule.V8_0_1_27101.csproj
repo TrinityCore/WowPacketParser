@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{749EA02D-C727-4697-B979-9ED80FB98085}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WowPacketParserModule.V8_0_1_27101</RootNamespace>
+    <AssemblyName>WowPacketParserModule.V8_0_1_27101</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\WowPacketParser\bin\Debug\Parsers\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>6</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\WowPacketParser\bin\Release\Parsers\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <LangVersion>6</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Sigil, Version=4.7.0.0, Culture=neutral, PublicKeyToken=2d06c3494341c8ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sigil.4.7.0\lib\net45\Sigil.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Enums\AttackSwingErr.cs" />
+    <Compile Include="Enums\CharacterUndeleteResult.cs" />
+    <Compile Include="Enums\MovementFlag.cs" />
+    <Compile Include="Enums\MovementFlags2.cs" />
+    <Compile Include="Enums\UpdateFields.cs" />
+    <Compile Include="Parsers\AccountDataHandler.cs" />
+    <Compile Include="Parsers\AuthenticationHandler.cs" />
+    <Compile Include="Parsers\BattlegroundHandler.cs" />
+    <Compile Include="Parsers\ChallengeModeHandler.cs" />
+    <Compile Include="Parsers\CharacterHandler.cs" />
+    <Compile Include="Parsers\ChatHandler.cs" />
+    <Compile Include="Parsers\CombatHandler.cs" />
+    <Compile Include="Parsers\CombatLogHandler.cs" />
+    <Compile Include="Parsers\CreatureHandler.cs" />
+    <Compile Include="Parsers\GameObjectHandler.cs" />
+    <Compile Include="Parsers\GarrisonHandler.cs" />
+    <Compile Include="Parsers\GroupHandler.cs" />
+    <Compile Include="Parsers\ItemHandler.cs" />
+    <Compile Include="Parsers\LootHandler.cs" />
+    <Compile Include="Parsers\MiscellaneousHandler.cs" />
+    <Compile Include="Parsers\MovementHandler.cs" />
+    <Compile Include="Parsers\NpcHandler.cs" />
+    <Compile Include="Parsers\PetHandler.cs" />
+    <Compile Include="Parsers\QuestHandler.cs" />
+    <Compile Include="Parsers\ScenarioHandler.cs" />
+    <Compile Include="Parsers\SessionHandler.cs" />
+    <Compile Include="Parsers\SpellHandler.cs" />
+    <Compile Include="Parsers\VoiceChatHandler.cs" />
+    <Compile Include="Parsers\UpdateHandler.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WowPacketParserModule.V6_0_2_19033\WowPacketParserModule.V6_0_2_19033.csproj">
+      <Project>{63484313-34d2-4133-b157-a19d12b69d9b}</Project>
+      <Name>WowPacketParserModule.V6_0_2_19033</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\WowPacketParserModule.V7_0_3_22248\WowPacketParserModule.V7_0_3_22248.csproj">
+      <Project>{7a7109fd-a819-4906-9406-1be84c6a527c}</Project>
+      <Name>WowPacketParserModule.V7_0_3_22248</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\WowPacketParser\WowPacketParser.csproj">
+      <Project>{0bf6f270-0b6f-4705-8e1a-f57db76db407}</Project>
+      <Name>WowPacketParser</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -81,6 +81,23 @@ namespace WowPacketParser.SQL.Builders
         }
 
         [BuilderMethod(true)]
+        public static string CreatureTemplateModel()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template))
+                return string.Empty;
+
+            if (Storage.CreatureTemplateModels.IsEmpty())
+                return string.Empty;
+
+            if (Settings.TargetedDatabase < TargetedDatabase.BattleForAzeroth)
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.CreatureTemplateModels);
+
+            return SQLUtil.Compare(Storage.CreatureTemplateModels, templatesDb, StoreNameType.Unit);
+        }
+
+        [BuilderMethod(true)]
         public static string CreatureTemplateQuestItem()
         {
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template))
@@ -198,6 +215,34 @@ namespace WowPacketParser.SQL.Builders
             }
 
             return string.Empty;
+        }
+
+        [BuilderMethod(true)]
+        public static string ScenarioPOI()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.scenario_poi))
+                return string.Empty;
+
+            if (Storage.ScenarioPOIs.IsEmpty())
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.ScenarioPOIs);
+
+            return SQLUtil.Compare(Storage.ScenarioPOIs, templatesDb, StoreNameType.None);
+        }
+
+        [BuilderMethod(true)]
+        public static string ScenarioPOIPoint()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.scenario_poi))
+                return string.Empty;
+
+            if (Storage.ScenarioPOIPoints.IsEmpty())
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.ScenarioPOIPoints);
+
+            return SQLUtil.Compare(Storage.ScenarioPOIPoints, templatesDb, StoreNameType.None);
         }
     }
 }

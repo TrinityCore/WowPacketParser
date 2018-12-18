@@ -17,7 +17,7 @@ namespace WowPacketParser.SQL.Builders
         {
             var stringBuilder = new StringBuilder();
 
-            if (BinaryPacketReader.GetLocale() == LocaleConstant.enUS)
+            if (ClientLocale.PacketLocale == LocaleConstant.enUS)
             {
                 // ReSharper disable once LoopCanBePartlyConvertedToQuery
                 foreach (DB2Hash hashValue in Enum.GetValues(typeof (DB2Hash)))

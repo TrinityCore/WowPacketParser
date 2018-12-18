@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27428.2002
+VisualStudioVersion = 15.0.27703.2018
 MinimumVisualStudioVersion = 14.0.23107.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParser", "WowPacketParser\WowPacketParser.csproj", "{0BF6F270-0B6F-4705-8E1A-F57DB76DB407}"
 EndProject
@@ -45,6 +45,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParserModule.V7_0_3_22248", "WowPacketParserModule.V7_0_3_22248\WowPacketParserModule.V7_0_3_22248.csproj", "{7A7109FD-A819-4906-9406-1BE84C6A527C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParserModule.V2_4_3_8606", "WowPacketParserModule.V2_4_3_8606\WowPacketParserModule.V2_4_3_8606.csproj", "{AB9EFB25-99B6-434C-8785-76FF6997FF98}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParserModule.V8_0_1_27101", "WowPacketParserModule.V8_0_1_27101\WowPacketParserModule.V8_0_1_27101.csproj", "{749EA02D-C727-4697-B979-9ED80FB98085}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -104,6 +106,10 @@ Global
 		{AB9EFB25-99B6-434C-8785-76FF6997FF98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AB9EFB25-99B6-434C-8785-76FF6997FF98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AB9EFB25-99B6-434C-8785-76FF6997FF98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{749EA02D-C727-4697-B979-9ED80FB98085}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{749EA02D-C727-4697-B979-9ED80FB98085}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{749EA02D-C727-4697-B979-9ED80FB98085}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{749EA02D-C727-4697-B979-9ED80FB98085}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

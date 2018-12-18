@@ -264,7 +264,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 uint bits6 = packet.ReadBits(8);
                 questInfoObjective.Description = packet.ReadWoWString("Description", bits6, i);
 
-                if (BinaryPacketReader.GetLocale() != LocaleConstant.enUS && questInfoObjective.Description != string.Empty)
+                if (ClientLocale.PacketLocale != LocaleConstant.enUS && questInfoObjective.Description != string.Empty)
                 {
                     QuestObjectivesLocale localesQuestObjectives = new QuestObjectivesLocale
                     {
@@ -290,7 +290,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             quest.QuestTurnTargetName = packet.ReadWoWString("PortraitTurnInName", questTurnTargetNameLen);
             quest.QuestCompletionLog = packet.ReadWoWString("QuestCompletionLog", questCompletionLogLen);
 
-            if (BinaryPacketReader.GetLocale() != LocaleConstant.enUS)
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
             {
                 LocalesQuest localesQuest = new LocalesQuest
                 {
@@ -368,6 +368,17 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadWoWString("PortraitTurnInName", portraitTurnInNameLen);
 
             Storage.QuestOfferRewards.Add(questOfferReward, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS && questOfferReward.RewardText != string.Empty)
+            {
+                QuestOfferRewardLocale localesQuestOfferReward = new QuestOfferRewardLocale
+                {
+                    ID = (uint)id,
+                    RewardText = questOfferReward.RewardText
+                };
+
+                Storage.LocalesQuestOfferRewards.Add(localesQuestOfferReward, packet.TimeSpan);
+            }
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_DETAILS)]
@@ -507,6 +518,16 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             questRequestItems.CompletionText = packet.ReadWoWString("CompletionText", completionTextLen);
 
             Storage.QuestRequestItems.Add(questRequestItems, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS && questRequestItems.CompletionText != string.Empty)
+            {
+                QuestRequestItemsLocale localesQuestRequestItems = new QuestRequestItemsLocale
+                {
+                    ID = (uint)id,
+                    CompletionText = questRequestItems.CompletionText
+                };
+                Storage.LocalesQuestRequestItems.Add(localesQuestRequestItems, packet.TimeSpan);
+            }
         }
 
         [Parser(Opcode.SMSG_WORLD_QUEST_UPDATE)]
@@ -559,6 +580,17 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
 
             Storage.QuestGreetings.Add(questGreeting, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS && questGreeting.Greeting != string.Empty)
+            {
+                QuestGreetingLocale localesQuestGreeting = new QuestGreetingLocale
+                {
+                    ID = questGreeting.ID,
+                    Type = questGreeting.Type,
+                    Greeting = questGreeting.Greeting
+                };
+                Storage.LocalesQuestGreeting.Add(localesQuestGreeting, packet.TimeSpan);
+            }
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_INVALID_QUEST, ClientVersionBuild.V7_2_0_23826)]
@@ -669,8 +701,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32("Quantity", indexes);
         }
 
-        [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_MESSAGE)]
-        public static void HandleQuestgiverQuestMessage(Packet packet)
+        [Parser(Opcode.SMSG_GOSSIP_TEXT_UPDATE)]
+        public static void HandleGossipTextUpdate(Packet packet)
         {
             packet.ReadPackedGuid128("QuestGiverGUID");
             ReadGossipText(packet);
@@ -753,10 +785,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                         Priority = packet.ReadInt32("Priority", i, j),
                         Flags = packet.ReadInt32("Flags", i, j),
                         WorldEffectID = packet.ReadInt32("WorldEffectID", i, j),
-                        PlayerConditionID = packet.ReadInt32("PlayerConditionID", i, j)
+                        PlayerConditionID = packet.ReadInt32("PlayerConditionID", i, j),
+                        SpawnTrackingID = packet.ReadInt32("SpawnTrackingID", i, j),
                     };
-
-                    questPoi.WoDUnk1 = packet.ReadInt32("WoDUnk1", i, j);
 
                     int questPOIBlobPoint = packet.ReadInt32("QuestPOIBlobPoint", i, j);
                     for (int k = 0; k < questPOIBlobPoint; ++k)

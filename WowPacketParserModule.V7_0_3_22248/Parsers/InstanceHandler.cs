@@ -27,6 +27,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             for (int i = 0; i < count; ++i)
             {
+                packet.ResetBitReader();
+
                 var strlen = packet.ReadBits(7);
 
                 packet.ReadBit("KeepGroupsTogether", i);
@@ -74,6 +76,99 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
         }
 
+        public static void ReadEncounterItemInfo(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("ItemID", idx);
+            packet.ReadInt32("ItemLevel", idx);
+
+            var enchantmentCount = packet.ReadUInt32("PermanentEnchantmentID", idx);
+            var bonusListCount = packet.ReadUInt32("TemporaryEnchantmentID", idx);
+            var gemCount = packet.ReadUInt32("GemCount", idx);
+
+            for (var j = 0; j < enchantmentCount; ++j)
+                packet.ReadInt32("EnchantmentID", idx, j);
+
+            for (var j = 0; j < bonusListCount; ++j)
+                packet.ReadInt32("ItemBonusListID", idx, j);
+
+            for (var j = 0; j < gemCount; ++j)
+                ReadEncounterItemInfo(packet, idx, "Gem", j);
+        }
+
+        static readonly string[] FilteredRatingList =
+        {
+            "Dodge",
+            "Parry",
+            "Block",
+            "CritMelee",
+            "CritRanged",
+            "CritSpell",
+            "Speed",
+            "Lifesteal",
+            "HasteMelee",
+            "HasteRanged",
+            "HasteSpell",
+            "Avoidance",
+            "Mastery",
+            "VersatilityDamageDone",
+            "VersatilityHealingDone",
+            "VersatilityDamageTaken",
+            "Armor"
+        };
+
+        [Parser(Opcode.SMSG_ENCOUNTER_START)]
+        public static void HandleEncounterStart(Packet packet)
+        {
+            packet.ReadInt32("EncounterID");
+            packet.ReadInt32<DifficultyId>("DifficultyID");
+            packet.ReadInt32("GroupSize");
+
+            var playerCount = packet.ReadUInt32("Players");
+            for (var i = 0; i < playerCount; ++i)
+            {
+                packet.ReadPackedGuid128("Guid", i);
+
+                var statCount = packet.ReadUInt32("StatCount", i);
+                var combatRatingCount = packet.ReadUInt32("CombatRatingCount", i);
+                var auraCount = packet.ReadUInt32("AuraCount", i);
+
+                packet.ReadInt32("SpecID", i);
+
+                var talentCount = packet.ReadUInt32("TalentCount", i);
+                var pvpTalentCount = packet.ReadUInt32("PvPTalentCount", i);
+
+                for (var j = 0; j < talentCount; ++j)
+                    packet.ReadInt32("TalentSpellID", i, j);
+
+                for (var j = 0; j < pvpTalentCount; ++j)
+                    packet.ReadInt32("PvPTalentSpellID", i, j);
+
+                var artifactPowerCount = packet.ReadUInt32("ArtifactPowerCount", i);
+                var itemCount = packet.ReadUInt32("ItemCount", i);
+
+                for (var j = 0; j < statCount; ++j)
+                    packet.ReadInt32(((StatType)j).ToString(), i);
+
+                for (var j = 0; j < combatRatingCount; ++j)
+                    packet.ReadInt32(j < FilteredRatingList.Length ? FilteredRatingList[j] : $"[{j}] CombatRatingValue", i);
+
+                for (var j = 0; j < auraCount; ++j)
+                {
+                    packet.ReadPackedGuid128("CasterGUID", i, j);
+                    packet.ReadInt32("SpellID", i, j);
+                }
+
+                for (var j = 0; j < artifactPowerCount; ++j)
+                {
+                    packet.ReadInt32("ArtifactPowerID", i, j);
+                    packet.ReadInt16("Rank", i, j);
+                }
+
+                for (var j = 0; j < itemCount; ++j)
+                    ReadEncounterItemInfo(packet, i, j);
+            }
+        }
+
         [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_START)]
         public static void HandleInstanceEncounterStart(Packet packet)
         {
@@ -81,8 +176,29 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32("MaxInCombatResCount");
             packet.ReadInt32("CombatResChargeRecovery");
             packet.ReadInt32("NextCombatResChargeTime");
+
             packet.ResetBitReader();
             packet.ReadBit("InProgress");
+        }
+
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_SET_SUPPRESSING_RELEASE)]
+        public static void HandleInstanceEncounterSetSuppressingRelease(Packet packet)
+        {
+            packet.ReadBit("ReleaseSuppressed");
+        }
+
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_SET_ALLOWING_RELEASE)]
+        public static void HandleInstanceEncounterSetAllowingRelease(Packet packet)
+        {
+            packet.ReadBit("ReleaseAllowed");
+        }
+
+        [Parser(Opcode.CMSG_START_CHALLENGE_MODE)]
+        public static void HandleStartChallengeMode(Packet packet)
+        {
+            packet.ReadByte("Bag");
+            packet.ReadInt32("Slot");
+            packet.ReadPackedGuid128("GobGUID");
         }
     }
 }

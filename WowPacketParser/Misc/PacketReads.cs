@@ -123,6 +123,14 @@ namespace WowPacketParser.Misc
             return s;
         }
 
+        public string ReadDynamicString(int len)
+        {
+            if (len == 1)
+                return string.Empty;
+
+            return ReadWoWString(len);
+        }
+
         public string ReadCString(Encoding encoding)
         {
             var bytes = new List<byte>();
@@ -392,6 +400,16 @@ namespace WowPacketParser.Misc
         public string ReadWoWString(string name, uint len, params object[] indexes)
         {
             return AddValue(name, ReadWoWString((int)len), indexes);
+        }
+
+        public string ReadDynamicString(string name, int len, params object[] indexes)
+        {
+            return AddValue(name, ReadDynamicString(len), indexes);
+        }
+
+        public string ReadDynamicString(string name, uint len, params object[] indexes)
+        {
+            return AddValue(name, ReadDynamicString((int)len), indexes);
         }
 
         public string ReadCString(string name, params object[] indexes)

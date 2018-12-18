@@ -113,6 +113,11 @@ namespace WowPacketParser.DBC
                             MapSpawnMaskStores[mapDifficulty.Value.MapID] |= difficultyID;
                         else
                             MapSpawnMaskStores.Add(mapDifficulty.Value.MapID, difficultyID);
+
+                        if (!MapDifficultyStores.ContainsKey(mapDifficulty.Value.MapID))
+                            MapDifficultyStores.Add(mapDifficulty.Value.MapID, new List<byte>() { mapDifficulty.Value.DifficultyID });
+                        else
+                            MapDifficultyStores[mapDifficulty.Value.MapID].Add(mapDifficulty.Value.DifficultyID);
                     }
                 }
             }), Task.Run(() =>
@@ -175,7 +180,7 @@ namespace WowPacketParser.DBC
             }));
         }
 
-        public static HashSet<ushort> GetPhaseGroups(HashSet<ushort> phases)
+        public static HashSet<ushort> GetPhaseGroups(ICollection<ushort> phases)
         {
             if (!phases.Any())
                 return new HashSet<ushort>();
@@ -204,6 +209,7 @@ namespace WowPacketParser.DBC
 
         public static readonly Dictionary<uint, string> Zones = new Dictionary<uint, string>();
         public static readonly Dictionary<int, int> MapSpawnMaskStores = new Dictionary<int, int>();
+        public static readonly Dictionary<ushort, List<byte>> MapDifficultyStores = new Dictionary<ushort, List<byte>>();
         public static readonly Dictionary<ushort, string> CriteriaStores = new Dictionary<ushort, string>();
         public static readonly Dictionary<uint, FactionEntry> FactionStores = new Dictionary<uint, FactionEntry>();
         public static readonly Dictionary<Tuple<uint, uint>, SpellEffectEntry> SpellEffectStores = new Dictionary<Tuple<uint, uint>, SpellEffectEntry>();

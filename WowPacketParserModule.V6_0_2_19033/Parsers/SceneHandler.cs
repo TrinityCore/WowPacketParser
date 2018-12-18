@@ -32,7 +32,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadVector3("Pos");
             packet.ReadSingle("Facing");
 
-            Storage.Scenes.Add(scene, packet.TimeSpan);
+            if (sceneId != 0) // SPELL_EFFECT_195 plays scenes by SceneScriptPackageID and sets SceneID = 0 (there are no Scenes which have SceneID = 0)
+                Storage.Scenes.Add(scene, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_SCENE_OBJECT_PET_BATTLE_INITIAL_UPDATE)]
@@ -75,28 +76,45 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_SCENARIO_POIS)]
         public static void HandleScenarioPOIs(Packet packet)
         {
-            var scenarioPOIDataCount = packet.ReadInt32("ScenarioPOIDataCount");
+            var scenarioPOIDataCount = packet.ReadUInt32("ScenarioPOIDataCount");
             for (var i = 0; i < scenarioPOIDataCount; i++)
             {
-                packet.ReadInt32("CriteriaTreeID");
+                int citeriaTreeId = packet.ReadInt32("CriteriaTreeID");
 
-                var scenarioBlobDataCount = packet.ReadInt32("ScenarioBlobDataCount");
-                for (int j = 0; j < scenarioBlobDataCount; j++)
+                var scenarioBlobDataCount = packet.ReadUInt32("ScenarioBlobDataCount");
+                for (uint j = 0; j < scenarioBlobDataCount; j++)
                 {
-                    packet.ReadInt32("BlobID", i, j);
-                    packet.ReadInt32("MapID", i, j);
-                    packet.ReadInt32("WorldMapAreaID", i, j);
-                    packet.ReadInt32("Floor", i, j);
-                    packet.ReadInt32("Priority", i, j);
-                    packet.ReadInt32("Flags", i, j);
-                    packet.ReadInt32("WorldEffectID", i, j);
-                    packet.ReadInt32("PlayerConditionID", i, j);
-
-                    var scenarioPOIPointDataCount = packet.ReadInt32("ScenarioPOIPointDataCount", i, j);
-                    for (int k = 0; k < scenarioPOIPointDataCount; k++)
+                    ScenarioPOI scenarioPOI = new ScenarioPOI
                     {
-                        packet.ReadInt32("X", i, j, k);
-                        packet.ReadInt32("Y", i, j, k);
+                        CriteriaTreeID = citeriaTreeId
+                    };
+
+                    scenarioPOI.BlobIndex = packet.ReadInt32("BlobID", i, j);
+                    scenarioPOI.Idx1 = j;
+                    scenarioPOI.MapID = packet.ReadInt32<MapId>("MapID", i, j);
+                    scenarioPOI.WorldMapAreaId = packet.ReadInt32("WorldMapAreaID", i, j);
+                    scenarioPOI.Floor = packet.ReadInt32("Floor", i, j);
+                    scenarioPOI.Priority = packet.ReadInt32("Priority", i, j);
+                    scenarioPOI.Flags = packet.ReadInt32("Flags", i, j);
+                    scenarioPOI.WorldEffectID = packet.ReadInt32("WorldEffectID", i, j);
+                    scenarioPOI.PlayerConditionID = packet.ReadInt32("PlayerConditionID", i, j);
+
+                    Storage.ScenarioPOIs.Add(scenarioPOI, packet.TimeSpan);
+
+                    var scenarioPOIPointDataCount = packet.ReadUInt32("ScenarioPOIPointDataCount", i, j);
+                    for (uint k = 0; k < scenarioPOIPointDataCount; k++)
+                    {
+                        ScenarioPOIPoint scenarioPOIPoint = new ScenarioPOIPoint
+                        {
+                            CriteriaTreeID = citeriaTreeId
+                        };
+
+                        scenarioPOIPoint.Idx1 = j;
+                        scenarioPOIPoint.Idx2 = k;
+                        scenarioPOIPoint.X = packet.ReadInt32("X", i, j, k);
+                        scenarioPOIPoint.Y = packet.ReadInt32("Y", i, j, k);
+
+                        Storage.ScenarioPOIPoints.Add(scenarioPOIPoint, packet.TimeSpan);
                     }
                 }
             }

@@ -12,8 +12,9 @@ namespace WowPacketParser.Enums.Version.V7_3_2_25383
                     return ClientOpcodes;
                 case Direction.ServerToClient:
                     return ServerOpcodes;
+                default:
+                    return MiscOpcodes;
             }
-            return MiscOpcodes;
         }
 
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
@@ -1030,6 +1031,7 @@ namespace WowPacketParser.Enums.Version.V7_3_2_25383
            {Opcode.SMSG_GARRISON_COMPLETE_MISSION_RESULT, 0x2909},
            {Opcode.SMSG_GARRISON_CREATE_RESULT, 0x28FC},
            {Opcode.SMSG_GARRISON_DELETE_RESULT, 0x2920},
+           {Opcode.SMSG_GARRISON_FOLLOWER_CATEGORIES, 0x2901},
            {Opcode.SMSG_GARRISON_FOLLOWER_CHANGED_ABILITIES, 0x2914},
            {Opcode.SMSG_GARRISON_FOLLOWER_CHANGED_DURABILITY, 0x2904},
            {Opcode.SMSG_GARRISON_FOLLOWER_CHANGED_ITEM_LEVEL, 0x2913},
@@ -1080,6 +1082,7 @@ namespace WowPacketParser.Enums.Version.V7_3_2_25383
            {Opcode.SMSG_GOSSIP_COMPLETE, 0x2A96},
            {Opcode.SMSG_GOSSIP_MESSAGE, 0x2A97},
            {Opcode.SMSG_GOSSIP_POI, 0x27D9},
+           {Opcode.SMSG_GOSSIP_TEXT_UPDATE, 0x2A98},
            {Opcode.SMSG_GROUP_ACTION_THROTTLED, 0x259C},
            {Opcode.SMSG_GROUP_DECLINE, 0x27D4},
            {Opcode.SMSG_GROUP_DESTROYED, 0x27D6},

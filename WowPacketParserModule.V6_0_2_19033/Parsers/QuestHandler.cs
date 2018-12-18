@@ -168,7 +168,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     if (ClientVersion.RemovedInVersion(ClientVersionBuild.V6_2_0_20173))
                         packet.ReadInt32("NumPoints", i, j);
 
-                    questPoi.WoDUnk1 = packet.ReadInt32("WoDUnk1", i, j);
+                    questPoi.SpawnTrackingID = packet.ReadInt32("SpawnTrackingID", i, j);
 
                     int int13 = packet.ReadInt32("QuestPOIBlobPoint", i, j);
                     for (int k = 0; k < int13; ++k)
@@ -331,7 +331,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 uint bits6 = packet.ReadBits(8);
                 questInfoObjective.Description = packet.ReadWoWString("Description", bits6, i);
 
-                if (BinaryPacketReader.GetLocale() != LocaleConstant.enUS && questInfoObjective.Description != string.Empty)
+                if (ClientLocale.PacketLocale != LocaleConstant.enUS && questInfoObjective.Description != string.Empty)
                 {
                     QuestObjectivesLocale localesQuestObjectives = new QuestObjectivesLocale
                     {
@@ -369,7 +369,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             quest.QuestTurnTargetName = packet.ReadWoWString("PortraitTurnInName", bits2365);
             quest.QuestCompletionLog = packet.ReadWoWString("QuestCompletionLog", bits2429);
 
-            if (BinaryPacketReader.GetLocale() != LocaleConstant.enUS)
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
             {
                 LocalesQuest localesQuest = new LocalesQuest
                 {
@@ -587,6 +587,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("PortraitTurnInName", bits4);
 
             Storage.QuestOfferRewards.Add(questOfferReward, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS && questOfferReward.RewardText != string.Empty)
+            {
+                QuestOfferRewardLocale localesQuestOfferReward = new QuestOfferRewardLocale
+                {
+                    ID = (uint)id,
+                    RewardText = questOfferReward.RewardText
+                };
+
+                Storage.LocalesQuestOfferRewards.Add(localesQuestOfferReward, packet.TimeSpan);
+            }
         }
 
         [Parser(Opcode.SMSG_QUEST_UPDATE_ADD_CREDIT)]
@@ -643,6 +654,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
 
             Storage.QuestGreetings.Add(questGreeting, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS && questGreeting.Greeting != string.Empty)
+            {
+                QuestGreetingLocale localesQuestGreeting = new QuestGreetingLocale
+                {
+                    ID = questGreeting.ID,
+                    Type = questGreeting.Type,
+                    Greeting = questGreeting.Greeting
+                };
+                Storage.LocalesQuestGreeting.Add(localesQuestGreeting, packet.TimeSpan);
+            }
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_REQUEST_ITEMS)]
@@ -694,6 +716,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             questRequestItems.CompletionText = packet.ReadWoWString("CompletionText", bits16);
 
             Storage.QuestRequestItems.Add(questRequestItems, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS && questRequestItems.CompletionText != string.Empty)
+            {
+                QuestRequestItemsLocale localesQuestRequestItems = new QuestRequestItemsLocale
+                {
+                    ID = (uint)id,
+                    CompletionText = questRequestItems.CompletionText
+                };
+                Storage.LocalesQuestRequestItems.Add(localesQuestRequestItems, packet.TimeSpan);
+            }
         }
 
         [Parser(Opcode.SMSG_QUEST_UPDATE_COMPLETE)]

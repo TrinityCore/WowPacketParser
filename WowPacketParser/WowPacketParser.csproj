@@ -91,8 +91,8 @@
     <LangVersion>6</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DotNetZip, Version=1.10.1.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetZip.1.10.1\lib\net20\DotNetZip.dll</HintPath>
+    <Reference Include="DotNetZip, Version=1.12.0.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.12.0\lib\net20\DotNetZip.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
@@ -220,10 +220,21 @@
     <Compile Include="Enums\ContactStatus.cs" />
     <Compile Include="Enums\BuyResult.cs" />
     <Compile Include="Enums\DB2Hash.cs" />
+    <Compile Include="Enums\GarrisonFollowerQuality.cs" />
+    <Compile Include="Enums\GarrisonFollowerStatus.cs" />
+    <Compile Include="Enums\GarrisonFollowerType.cs" />
+    <Compile Include="Enums\GarrisonMissionFlag.cs" />
+    <Compile Include="Enums\GarrisonMissionResult.cs" />
+    <Compile Include="Enums\GarrisonMissionState.cs" />
+    <Compile Include="Enums\GarrisonResult.cs" />
+    <Compile Include="Enums\GarrisonSite.cs" />
+    <Compile Include="Enums\GarrisonSiteLevel.cs" />
+    <Compile Include="Enums\GarrisonType.cs" />
     <Compile Include="Enums\ItemFieldFlags.cs" />
     <Compile Include="Enums\ItemModifier.cs" />
     <Compile Include="Enums\LootError.cs" />
     <Compile Include="Enums\QuestFlags2.cs" />
+    <Compile Include="Enums\QuestFlags3.cs" />
     <Compile Include="Enums\QuestRequirementType.cs" />
     <Compile Include="Enums\CreatureFamily.cs" />
     <Compile Include="Enums\CreatureRank.cs" />
@@ -384,7 +395,7 @@
     <Compile Include="Enums\UpdateType.cs" />
     <Compile Include="Enums\VehicleFlags.cs" />
     <Compile Include="Enums\Version\V2_4_3_8606\UpdateFields.cs" />
-    <Compile Include="Enums\Version\V3_0_2_9056\UpdateFields.cs" />
+    <Compile Include="Enums\Version\V3_0_9_9551\UpdateFields.cs" />
     <Compile Include="Enums\Version\V5_0_5_16048\Opcodes.cs" />
     <Compile Include="Enums\Version\V5_0_5_16048\UpdateFields.cs" />
     <Compile Include="Enums\Version\Opcodes.cs" />
@@ -465,6 +476,7 @@
     <Compile Include="Misc\BattlenetPacketHeader.cs" />
     <Compile Include="Misc\BiDictionary.cs" />
     <Compile Include="Misc\Bit.cs" />
+    <Compile Include="Misc\ClientLocale.cs" />
     <Compile Include="Misc\ClientVersion.cs" />
     <Compile Include="Misc\ConcurrentPriorityQueue.cs" />
     <Compile Include="Misc\Configuration.cs" />
@@ -472,6 +484,7 @@
     <Compile Include="Misc\FileCompressionAttribute.cs" />
     <Compile Include="Misc\Filters.cs" />
     <Compile Include="Misc\HighGuid.cs" />
+    <Compile Include="Misc\ObjectTypeConverter.cs" />
     <Compile Include="Misc\WowGuid.cs" />
     <Compile Include="Misc\LfgEntry.cs" />
     <Compile Include="Misc\Logger.cs" />
@@ -540,6 +553,7 @@
     <Compile Include="Parsing\Parsers\WardenHandler.cs" />
     <Compile Include="Parsing\Parsers\WorldStateHandler.cs" />
     <Compile Include="Enums\PetStableResult.cs" />
+    <Compile Include="Parsing\UpdateFieldAttributes.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Saving\BinaryPacketWriter.cs" />
@@ -584,6 +598,7 @@
     <Compile Include="Store\Objects\CreatureAddon.cs" />
     <Compile Include="Store\Objects\CreatureDefaultTrainer.cs" />
     <Compile Include="Store\Objects\CreatureEquipment.cs" />
+    <Compile Include="Store\Objects\CreatureTemplateModel.cs" />
     <Compile Include="Store\Objects\CreatureTemplateAddon.cs" />
     <Compile Include="Store\Objects\CreatureTemplateLocale.cs" />
     <Compile Include="Store\Objects\CreatureTemplateScaling.cs" />
@@ -599,6 +614,7 @@
     <Compile Include="Store\Objects\GossipMenuOptionBox.cs" />
     <Compile Include="Store\Objects\GossipMenuOptionTrainer.cs" />
     <Compile Include="Store\Objects\IBroadcastTextEntry.cs" />
+    <Compile Include="Store\Objects\PageTextLocale.cs" />
     <Compile Include="Store\Objects\PointsOfInterest.cs" />
     <Compile Include="Store\Objects\HotfixData.cs" />
     <Compile Include="Store\Objects\Item.cs" />
@@ -606,6 +622,7 @@
     <Compile Include="Store\Objects\LocalesQuest.cs" />
     <Compile Include="Store\Objects\QuestDetails.cs" />
     <Compile Include="Store\Objects\QuestGreeting.cs" />
+    <Compile Include="Store\Objects\QuestGreetingLocale.cs" />
     <Compile Include="Store\Objects\QuestObjectivesLocale.cs" />
     <Compile Include="Store\Objects\ModelData.cs" />
     <Compile Include="Store\Objects\NpcText.cs" />
@@ -619,11 +636,15 @@
     <Compile Include="Store\Objects\Player.cs" />
     <Compile Include="Store\Objects\QuestObjective.cs" />
     <Compile Include="Store\Objects\QuestOfferReward.cs" />
+    <Compile Include="Store\Objects\QuestOfferRewardLocale.cs" />
     <Compile Include="Store\Objects\QuestPOI.cs" />
     <Compile Include="Store\Objects\QuestPOIPoint.cs" />
     <Compile Include="Store\Objects\QuestRequestItems.cs" />
+    <Compile Include="Store\Objects\QuestRequestItemsLocale.cs" />
     <Compile Include="Store\Objects\QuestTemplate.cs" />
     <Compile Include="Store\Objects\QuestVisualEffect.cs" />
+    <Compile Include="Store\Objects\ScenarioPOI.cs" />
+    <Compile Include="Store\Objects\ScenarioPOIPoints.cs" />
     <Compile Include="Store\Objects\SceneTemplate.cs" />
     <Compile Include="Store\Objects\SniffData.cs" />
     <Compile Include="Store\Objects\PlayerCreateInfoAction.cs" />

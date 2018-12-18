@@ -1,4 +1,4 @@
-﻿using WowPacketParser.Misc;
+using WowPacketParser.Misc;
 
 namespace WowPacketParser.Enums.Version.V8_0_1_27101
 {
@@ -13,9 +13,8 @@ namespace WowPacketParser.Enums.Version.V8_0_1_27101
                 case Direction.ServerToClient:
                     return ServerOpcodes;
                 default:
-                    break;
+                    return MiscOpcodes;
             }
-            return MiscOpcodes;
         }
 
         private static readonly BiDictionary<Opcode, int> ClientOpcodes = new BiDictionary<Opcode, int>
@@ -1070,6 +1069,7 @@ namespace WowPacketParser.Enums.Version.V8_0_1_27101
             {Opcode.SMSG_GARRISON_LIST_MISSIONS_CHEAT_RESULT, 0x292A},
             {Opcode.SMSG_GARRISON_MISSION_AREA_BONUS_ADDED, 0x2910},
             {Opcode.SMSG_GARRISON_MISSION_BONUS_ROLL_RESULT, 0x290C},
+            {Opcode.SMSG_GARRISON_MISSION_LIST_UPDATE, 0x290E},
             {Opcode.SMSG_GARRISON_MISSION_REWARD_RESPONSE, 0x292D},
             {Opcode.SMSG_GARRISON_MISSION_UPDATE_CAN_START, 0x2911},
             {Opcode.SMSG_GARRISON_NUM_FOLLOWER_ACTIVATIONS_REMAINING, 0x2917},
@@ -1107,6 +1107,7 @@ namespace WowPacketParser.Enums.Version.V8_0_1_27101
             {Opcode.SMSG_GOSSIP_COMPLETE, 0x2A96},
             {Opcode.SMSG_GOSSIP_MESSAGE, 0x2A97},
             {Opcode.SMSG_GOSSIP_POI, 0x27E4},
+            {Opcode.SMSG_GOSSIP_TEXT_UPDATE, 0x2A98},
             {Opcode.SMSG_GROUP_ACTION_THROTTLED, 0x259C},
             {Opcode.SMSG_GROUP_DECLINE, 0x27DF},
             {Opcode.SMSG_GROUP_DESTROYED, 0x27E1},

@@ -1,6 +1,7 @@
 ﻿
 using System;
 using WowPacketParser.Enums;
+using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -518,6 +519,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.AddSniffData(StoreNameType.PageText, (int)entry, "QUERY_RESPONSE");
             Storage.PageTexts.Add(pageText, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS && pageText.Text != string.Empty)
+            {
+                PageTextLocale localesPageText = new PageTextLocale
+                {
+                    ID = pageText.ID,
+                    Text = pageText.Text
+                };
+                Storage.LocalesPageText.Add(localesPageText, packet.TimeSpan);
+            }
         }
 
         [Parser(Opcode.SMSG_PLAY_ONE_SHOT_ANIM_KIT)]

@@ -42,18 +42,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     case "Values":
                     {
                         var guid = packet.ReadPackedGuid128("Object Guid", i);
-
-                        WoWObject obj;
-                        var updates = ReadValuesUpdateBlock(packet, guid.GetObjectType(), i, false);
-                        var dynamicUpdates = ReadDynamicValuesUpdateBlock(packet, guid.GetObjectType(), i, false);
-
-                        if (Storage.Objects.TryGetValue(guid, out obj))
-                        {
-                            if (obj.ChangedUpdateFieldsList == null)
-                                obj.ChangedUpdateFieldsList = new List<Dictionary<int, UpdateField>>();
-                            obj.ChangedUpdateFieldsList.Add(updates);
-                        }
-
+                        CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, guid, i);
                         break;
                     }
                     case "CreateObject1":
@@ -69,7 +58,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
         private static void ReadCreateObjectBlock(Packet packet, WowGuid guid, uint map, object index)
         {
-            var objType = packet.ReadByteE<ObjectType>("Object Type", index);
+            ObjectType objType = ObjectTypeConverter.Convert(packet.ReadByteE<ObjectTypeLegacy>("Object Type", index));
 
             WoWObject obj;
             switch (objType)
@@ -98,8 +87,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
 
             var moves = ReadMovementUpdateBlock(packet, guid, obj, index);
-            var updates = ReadValuesUpdateBlock(packet, objType, index, true);
-            var dynamicUpdates = ReadDynamicValuesUpdateBlock(packet, objType, index, true);
+            var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlockOnCreate(packet, objType, index);
+            var dynamicUpdates = CoreParsers.UpdateHandler.ReadDynamicValuesUpdateBlockOnCreate(packet, objType, index);
 
             obj.Type = objType;
             obj.Movement = moves;
@@ -109,7 +98,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             obj.Area = CoreParsers.WorldStateHandler.CurrentAreaId;
             obj.Zone = CoreParsers.WorldStateHandler.CurrentZoneId;
             obj.PhaseMask = (uint)CoreParsers.MovementHandler.CurrentPhaseMask;
-            obj.Phases = new HashSet<ushort>(V6_0_2_19033.Parsers.MovementHandler.ActivePhases);
+            obj.Phases = new HashSet<ushort>(MovementHandler.ActivePhases.Keys);
             obj.DifficultyID = CoreParsers.MovementHandler.CurrentDifficultyID;
 
             // If this is the second time we see the same object (same guid,
@@ -433,14 +422,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 bool hasFacingCurveID = packet.ReadBit("HasFacingCurveID", index);
                 bool hasMoveCurveID = packet.ReadBit("HasMoveCurveID", index);
 
-                if (packet.ReadBit("unkbit4C", index))
-                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk2;
+                if (packet.ReadBit("HasAnimID", index))
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasAnimId;
 
                 if (packet.ReadBit("unkbit50", index))
                     areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk3;
 
-                if (packet.ReadBit("unkbit58", index))
-                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk4;
+                if (packet.ReadBit("HasAnimKitID", index))
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasAnimKitId;
 
                 if (packet.ReadBit("HasAreaTriggerSphere", index))
                     areaTriggerTemplate.Type = (byte)AreaTriggerType.Sphere;
@@ -457,7 +446,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 bool hasAreaTriggerSpline = packet.ReadBit("HasAreaTriggerSpline", index);
 
                 if (packet.ReadBit("HasAreaTriggerUnkType", index))
-                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk5;
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasCircularMovement;
 
                 if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.Unk3) != 0)
                     packet.ReadBit();
@@ -480,11 +469,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 if (hasMoveCurveID)
                     spellAreaTrigger.MoveCurveId = packet.ReadInt32("MoveCurveID", index);
 
-                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.Unk2) != 0)
-                    packet.ReadInt32();
+                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.HasAnimId) != 0)
+                    spellAreaTrigger.AnimId = packet.ReadInt32("AnimId", index);
 
-                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.Unk4) != 0)
-                    packet.ReadUInt32();
+                if ((areaTriggerTemplate.Flags & (int)AreaTriggerFlags.HasAnimKitId) != 0)
+                    spellAreaTrigger.AnimKitId = (int)packet.ReadUInt32("AnimKitId", index);
 
                 if (areaTriggerTemplate.Type == (byte)AreaTriggerType.Sphere)
                 {
@@ -554,7 +543,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     areaTriggerTemplate.Data[5] = packet.ReadSingle("LocationZOffsetTarget", index);
                 }
 
-                if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.Unk5) != 0)
+                if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.HasCircularMovement) != 0)
                 {
                     packet.ResetBitReader();
                     var unk1 = packet.ReadBit("AreaTriggerUnk1");
@@ -641,225 +630,6 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
 
             return moveInfo;
-        }
-        private static Dictionary<int, UpdateField> ReadValuesUpdateBlock(Packet packet, ObjectType type, object index, bool isCreating)
-        {
-            var maskSize = packet.ReadByte();
-
-            var updateMask = new int[maskSize];
-            for (var i = 0; i < maskSize; i++)
-                updateMask[i] = packet.ReadInt32();
-
-            var mask = new BitArray(updateMask);
-            var dict = new Dictionary<int, UpdateField>();
-
-            int objectEnd = UpdateFields.GetUpdateField(ObjectField.OBJECT_END);
-            for (var i = 0; i < mask.Count; ++i)
-            {
-                if (!mask[i])
-                    continue;
-
-                var blockVal = packet.ReadUpdateField();
-
-                // Don't spam 0 values at create
-                if (isCreating && blockVal.UInt32Value == 0)
-                    continue;
-
-                string key = "Block Value " + i;
-                string value = blockVal.UInt32Value + "/" + blockVal.SingleValue;
-
-                if (i < objectEnd)
-                    key = UpdateFields.GetUpdateFieldName<ObjectField>(i);
-                else
-                {
-                    switch (type)
-                    {
-                        case ObjectType.Container:
-                        {
-                            if (i < UpdateFields.GetUpdateField(ItemField.ITEM_END))
-                                goto case ObjectType.Item;
-
-                            key = UpdateFields.GetUpdateFieldName<ContainerField>(i);
-                            break;
-                        }
-                        case ObjectType.Item:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<ItemField>(i);
-                            break;
-                        }
-                        case ObjectType.Player:
-                        {
-                            if (i < UpdateFields.GetUpdateField(UnitField.UNIT_END) || i < UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_END))
-                                goto case ObjectType.Unit;
-
-                            key = UpdateFields.GetUpdateFieldName<PlayerField>(i);
-                            break;
-                        }
-                        case ObjectType.Unit:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<UnitField>(i);
-                            break;
-                        }
-                        case ObjectType.GameObject:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<GameObjectField>(i);
-                            break;
-                        }
-                        case ObjectType.DynamicObject:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<DynamicObjectField>(i);
-                            break;
-                        }
-                        case ObjectType.Corpse:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<CorpseField>(i);
-                            break;
-                        }
-                        case ObjectType.AreaTrigger:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<AreaTriggerField>(i);
-                            break;
-                        }
-                        case ObjectType.SceneObject:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<SceneObjectField>(i);
-                            break;
-                        }
-                        case ObjectType.Conversation:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<ConversationField>(i);
-                            break;
-                        }
-                    }
-                }
-
-                // HACK...
-                if (key == UnitField.UNIT_FIELD_SCALING_LEVEL_DELTA.ToString())
-                    value = (int)blockVal.UInt32Value + "/" + blockVal.SingleValue;
-
-                if (key == UnitField.UNIT_FIELD_FACTIONTEMPLATE.ToString())
-                    packet.AddValue(key, value + $" ({ StoreGetters.GetName(StoreNameType.Faction, (int)blockVal.UInt32Value, false) })", index);
-                else
-                    packet.AddValue(key, value, index);
-
-                dict.Add(i, blockVal);
-            }
-
-            return dict;
-        }
-
-        private static Dictionary<int, List<UpdateField>> ReadDynamicValuesUpdateBlock(Packet packet, ObjectType type, object index, bool isCreating)
-        {
-            var dict = new Dictionary<int, List<UpdateField>>();
-
-            if (!ClientVersion.AddedInVersion(ClientVersionBuild.V5_0_4_16016))
-                return dict;
-
-            int objectEnd = UpdateFields.GetUpdateField(ObjectDynamicField.OBJECT_DYNAMIC_END);
-            var maskSize = packet.ReadByte();
-            var updateMask = new int[maskSize];
-            for (var i = 0; i < maskSize; i++)
-                updateMask[i] = packet.ReadInt32();
-
-            var mask = new BitArray(updateMask);
-            for (var i = 0; i < mask.Count; ++i)
-            {
-                if (!mask[i])
-                    continue;
-
-                string key = "Dynamic Block Value " + i;
-                if (i < objectEnd)
-                    key = UpdateFields.GetUpdateFieldName<ObjectDynamicField>(i);
-                else
-                {
-                    switch (type)
-                    {
-                        case ObjectType.Container:
-                        {
-                            if (i < UpdateFields.GetUpdateField(ItemDynamicField.ITEM_DYNAMIC_END))
-                                goto case ObjectType.Item;
-
-                            key = UpdateFields.GetUpdateFieldName<ContainerDynamicField>(i);
-                            break;
-                        }
-                        case ObjectType.Item:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<ItemDynamicField>(i);
-                            break;
-                        }
-                        case ObjectType.Player:
-                        {
-                            if (i < UpdateFields.GetUpdateField(UnitDynamicField.UNIT_DYNAMIC_END))
-                                goto case ObjectType.Unit;
-
-                            key = UpdateFields.GetUpdateFieldName<PlayerDynamicField>(i);
-                            break;
-                        }
-                        case ObjectType.Unit:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<UnitDynamicField>(i);
-                            break;
-                        }
-                        case ObjectType.GameObject:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<GameObjectDynamicField>(i);
-                            break;
-                        }
-                        case ObjectType.DynamicObject:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<DynamicObjectDynamicField>(i);
-                            break;
-                        }
-                        case ObjectType.Corpse:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<CorpseDynamicField>(i);
-                            break;
-                        }
-                        case ObjectType.AreaTrigger:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<AreaTriggerDynamicField>(i);
-                            break;
-                        }
-                        case ObjectType.SceneObject:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<SceneObjectDynamicField>(i);
-                            break;
-                        }
-                        case ObjectType.Conversation:
-                        {
-                            key = UpdateFields.GetUpdateFieldName<ConversationDynamicField>(i);
-                            break;
-                        }
-                    }
-                }
-
-                var flag = packet.ReadUInt16();
-                var cnt = flag & 0x7FFF;
-                if ((flag & 0x8000) != 0)
-                    packet.ReadUInt32(key + " Size", index);
-
-                var vals = new int[cnt];
-                for (var j = 0; j < cnt; ++j)
-                    vals[j] = packet.ReadInt32();
-
-                var values = new List<UpdateField>();
-                var fieldMask = new BitArray(vals);
-                for (var j = 0; j < fieldMask.Count; ++j)
-                {
-                    if (!fieldMask[j])
-                        continue;
-
-                    var blockVal = packet.ReadUpdateField();
-                    string value = blockVal.UInt32Value + "/" + blockVal.SingleValue;
-                    packet.AddValue(key, value, index, j);
-
-                    values.Add(blockVal);
-                }
-
-                dict.Add(i, values);
-            }
-
-            return dict;
         }
     }
 }
