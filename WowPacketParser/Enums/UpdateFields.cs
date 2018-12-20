@@ -293,13 +293,21 @@ namespace WowPacketParser.Enums
         UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_HOLY,
         UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_NATURE,
         UNIT_FIELD_RESISTANCEBUFFMODSPOSITIVE_SHADOW,
+        [UpdateField(UpdateFieldType.Int)]
         UNIT_FIELD_RESISTANCES,
+        [UpdateField(UpdateFieldType.Int)]
         UNIT_FIELD_RESISTANCES_ARCANE,
+        [UpdateField(UpdateFieldType.Int)]
         UNIT_FIELD_RESISTANCES_ARMOR,
+        [UpdateField(UpdateFieldType.Int)]
         UNIT_FIELD_RESISTANCES_FIRE,
+        [UpdateField(UpdateFieldType.Int)]
         UNIT_FIELD_RESISTANCES_FROST,
+        [UpdateField(UpdateFieldType.Int)]
         UNIT_FIELD_RESISTANCES_HOLY,
+        [UpdateField(UpdateFieldType.Int)]
         UNIT_FIELD_RESISTANCES_NATURE,
+        [UpdateField(UpdateFieldType.Int)]
         UNIT_FIELD_RESISTANCES_SHADOW,
         UNIT_FIELD_SANDBOX_SCALING_ID,
         UNIT_FIELD_SCALE_DURATION,
