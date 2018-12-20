@@ -468,8 +468,8 @@
         DYNAMICOBJECT_POS_Y = ObjectField.OBJECT_END + 0x0006, // Size: 1, Type: FLOAT, Flags: PUBLIC
         DYNAMICOBJECT_POS_Z = ObjectField.OBJECT_END + 0x0007, // Size: 1, Type: FLOAT, Flags: PUBLIC
         DYNAMICOBJECT_FACING = ObjectField.OBJECT_END + 0x0008, // Size: 1, Type: FLOAT, Flags: PUBLIC
-        DYNAMICOBJECT_CASTTIME = ObjectField.OBJECT_END + 0x000, // Size: 1, Type: INT, Flags: PUBLIC
-        DYNAMICOBJECT_END = ObjectField.OBJECT_END + 0x0006
+        DYNAMICOBJECT_CASTTIME = ObjectField.OBJECT_END + 0x0009, // Size: 1, Type: INT, Flags: PUBLIC
+        DYNAMICOBJECT_END = ObjectField.OBJECT_END + 0x000A
     }
 
     public enum CorpseField
