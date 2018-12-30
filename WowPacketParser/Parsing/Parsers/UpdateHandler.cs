@@ -582,6 +582,9 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static void ApplyUpdateFieldsChange(WoWObject obj, Dictionary<int, UpdateField> updates, Dictionary<int, List<UpdateField>> dynamicUpdates)
         {
+            if (obj.UpdateFields == null)
+                obj.UpdateFields = new Dictionary<int, UpdateField>(); // can be created by ENUM packet
+
             foreach (var kvp in updates)
                 obj.UpdateFields[kvp.Key] = kvp.Value;
         }

@@ -179,7 +179,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             WowGuid guid = packet.ReadPackedGuid("GUID");
 
-            if (Storage.Objects != null && Storage.Objects.ContainsKey(guid))
+            if (guid.GetHighType() == HighGuidType.Creature && Storage.Objects != null && Storage.Objects.ContainsKey(guid))
             {
                 WoWObject obj = Storage.Objects[guid].Item1;
                 UpdateField uf;
