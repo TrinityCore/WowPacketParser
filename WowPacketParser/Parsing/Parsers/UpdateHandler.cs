@@ -142,8 +142,8 @@ namespace WowPacketParser.Parsing.Parsers
             WoWObject obj;
             if (Storage.Objects.TryGetValue(guid, out obj))
             {
-                var updates = ReadValuesUpdateBlock(packet, guid.GetObjectType(), index, false, obj.UpdateFields);
-                var dynamicUpdates = ReadDynamicValuesUpdateBlock(packet, guid.GetObjectType(), index, false, obj.DynamicUpdateFields);
+                var updates = ReadValuesUpdateBlock(packet, obj.Type, index, false, obj.UpdateFields);
+                var dynamicUpdates = ReadDynamicValuesUpdateBlock(packet, obj.Type, index, false, obj.DynamicUpdateFields);
                 ApplyUpdateFieldsChange(obj, updates, dynamicUpdates);
             }
             else
