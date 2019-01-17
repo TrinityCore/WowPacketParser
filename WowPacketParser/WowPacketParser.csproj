@@ -617,7 +617,6 @@
     <Compile Include="Store\Objects\PageTextLocale.cs" />
     <Compile Include="Store\Objects\PointsOfInterest.cs" />
     <Compile Include="Store\Objects\HotfixData.cs" />
-    <Compile Include="Store\Objects\Item.cs" />
     <Compile Include="Store\Objects\ItemTemplate.cs" />
     <Compile Include="Store\Objects\LocalesQuest.cs" />
     <Compile Include="Store\Objects\QuestDetails.cs" />

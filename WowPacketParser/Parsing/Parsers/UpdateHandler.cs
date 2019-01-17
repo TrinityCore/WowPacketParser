@@ -75,7 +75,6 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 case ObjectType.Unit:       obj = new Unit(); break;
                 case ObjectType.GameObject: obj = new GameObject(); break;
-                case ObjectType.Item:       obj = new Item(); break;
                 case ObjectType.Player:     obj = new Player(); break;
                 case ObjectType.AreaTrigger:obj = new SpellAreaTrigger(); break;
                 default:                    obj = new WoWObject(); break;
