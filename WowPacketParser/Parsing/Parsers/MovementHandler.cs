@@ -21,7 +21,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static MovementInfo ReadMovementInfo(Packet packet, WowGuid guid, object index = null)
         {
-            if (ClientVersion.Build == ClientVersionBuild.V4_2_0_14333)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_2_0_14333))
                 return ReadMovementInfo420(packet, index);
 
             return ReadMovementInfoGen(packet, guid, index);
