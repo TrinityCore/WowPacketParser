@@ -457,6 +457,7 @@
     <Compile Include="Enums\Version\V7_3_0_24920\Opcodes.cs" />
     <Compile Include="Enums\Version\V7_3_2_25383\Opcodes.cs" />
     <Compile Include="Enums\Version\V7_3_5_25848\Opcodes.cs" />
+    <Compile Include="Enums\Version\V8_1_0_28724\Opcodes.cs" />
     <Compile Include="Enums\Version\V8_0_1_27101\Opcodes.cs" />
     <Compile Include="Enums\Version\V8_1_5_29620\Opcodes.cs" />
     <Compile Include="Enums\VictimStates.cs" />
