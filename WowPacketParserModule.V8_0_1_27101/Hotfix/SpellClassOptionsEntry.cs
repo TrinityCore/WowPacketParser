@@ -10,6 +10,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public uint ModalNextSpell { get; set; }
         public byte SpellClassSet { get; set; }
         [HotfixArray(4)]
-        public int[] SpellClassMask { get; set; }
+        public uint[] SpellClassMask { get; set; }
     }
 }

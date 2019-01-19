@@ -71,6 +71,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             var hitTargetsCount = packet.ReadBits("HitTargetsCount", 16, idx);
             var missTargetsCount = packet.ReadBits("MissTargetsCount", 16, idx);
+            uint unkCount = 0;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
+                unkCount = packet.ReadBits("UnkCount810", 16, idx);
             var missStatusCount = packet.ReadBits("MissStatusCount", 16, idx);
             var remainingPowerCount = packet.ReadBits("RemainingPowerCount", 9, idx);
 
@@ -87,6 +90,10 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             for (var i = 0; i < missTargetsCount; ++i)
                 packet.ReadPackedGuid128("MissTarget", idx, i);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
+                for (var i = 0; i < unkCount; ++i)
+                    packet.ReadByte("UnkByte810", idx, i);
 
             for (var i = 0; i < remainingPowerCount; ++i)
                 V6_0_2_19033.Parsers.SpellHandler.ReadSpellPowerData(packet, idx, "RemainingPower", i);
