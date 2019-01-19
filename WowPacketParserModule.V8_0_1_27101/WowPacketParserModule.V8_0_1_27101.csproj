@@ -290,6 +290,7 @@
     <Compile Include="Parsers\ArenaHandler.cs" />
     <Compile Include="Parsers\AuthenticationHandler.cs" />
     <Compile Include="Parsers\BattlegroundHandler.cs" />
+    <Compile Include="Parsers\CalendarHandler.cs" />
     <Compile Include="Parsers\ChallengeModeHandler.cs" />
     <Compile Include="Parsers\ChannelHandler.cs" />
     <Compile Include="Parsers\CharacterHandler.cs" />
