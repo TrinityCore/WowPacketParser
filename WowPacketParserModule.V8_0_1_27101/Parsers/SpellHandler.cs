@@ -302,5 +302,18 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadByteE<SpellMechanic>("Mechanic");
             packet.ReadByte("Type");
         }
+
+        [Parser(Opcode.SMSG_SEND_SPELL_CHARGES)] // already since 7.?.?
+        public static void HandleSendSpellCharges(Packet packet)
+        {
+            var int4 = packet.ReadInt32("SpellChargeEntryCount");
+            for (int i = 0; i < int4; i++)
+            {
+                packet.ReadUInt32("Category", i);
+                packet.ReadUInt32("NextRecoveryTime", i);
+                packet.ReadSingle("ChargeModRate", i);
+                packet.ReadByte("ConsumedCharges", i);
+            }
+        }
     }
 }
