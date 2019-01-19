@@ -299,6 +299,7 @@
     <Compile Include="Parsers\GameObjectHandler.cs" />
     <Compile Include="Parsers\GarrisonHandler.cs" />
     <Compile Include="Parsers\GroupHandler.cs" />
+    <Compile Include="Parsers\GuildHandler.cs" />
     <Compile Include="Parsers\HotfixHandler.cs" />
     <Compile Include="Parsers\ItemHandler.cs" />
     <Compile Include="Parsers\LootHandler.cs" />
