@@ -258,6 +258,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             packet.ReadUInt16("MissReason");
             packet.ReadUInt16("ReflectStatus");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
+                packet.ReadUInt16("UnkUInt16_810");
 
             packet.ReadSingle("Orientation");
             packet.ReadSingle("UnkFloat");
