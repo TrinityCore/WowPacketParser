@@ -261,15 +261,40 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             packet.ResetBitReader();
 
-            uint logTitleLen = packet.ReadBits(9);
-            uint logDescriptionLen = packet.ReadBits(12);
-            uint questDescriptionLen = packet.ReadBits(12);
-            uint areaDescriptionLen = packet.ReadBits(9);
-            uint questGiverTextWindowLen = packet.ReadBits(10);
-            uint questGiverTargetNameLen = packet.ReadBits(8);
-            uint questTurnTextWindowLen = packet.ReadBits(10);
-            uint questTurnTargetNameLen = packet.ReadBits(8);
-            uint questCompletionLogLen = packet.ReadBits(11);
+            uint logTitleLen = 0;
+            uint logDescriptionLen = 0;
+            uint questDescriptionLen = 0;
+            uint areaDescriptionLen = 0;
+            uint questGiverTextWindowLen = 0;
+            uint questGiverTargetNameLen = 0;
+            uint questTurnTextWindowLen = 0;
+            uint questTurnTargetNameLen = 0;
+            uint questCompletionLogLen = 0;
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
+            {
+                logTitleLen = packet.ReadBits(10);
+                logDescriptionLen = packet.ReadBits(12);
+                questDescriptionLen = packet.ReadBits(12);
+                areaDescriptionLen = packet.ReadBits(9);
+                questGiverTextWindowLen = packet.ReadBits(11);
+                questGiverTargetNameLen = packet.ReadBits(9);
+                questTurnTextWindowLen = packet.ReadBits(11);
+                questTurnTargetNameLen = packet.ReadBits(9);
+                questCompletionLogLen = packet.ReadBits(12);
+            }
+            else
+            {
+                logTitleLen = packet.ReadBits(9);
+                logDescriptionLen = packet.ReadBits(12);
+                questDescriptionLen = packet.ReadBits(12);
+                areaDescriptionLen = packet.ReadBits(9);
+                questGiverTextWindowLen = packet.ReadBits(10);
+                questGiverTargetNameLen = packet.ReadBits(8);
+                questTurnTextWindowLen = packet.ReadBits(10);
+                questTurnTargetNameLen = packet.ReadBits(8);
+                questCompletionLogLen = packet.ReadBits(11);
+            }
 
             for (uint i = 0; i < cliQuestInfoObjective; ++i)
             {

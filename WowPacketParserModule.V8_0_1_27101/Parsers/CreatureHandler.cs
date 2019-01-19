@@ -92,6 +92,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             creature.VignetteID = (uint)packet.ReadInt32("VignetteID");
             creature.UnitClass = (uint)packet.ReadInt32E<Class>("UnitClass");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
+                packet.ReadSingle("UnkFloat");
+
             if (titleLen > 1)
                 creature.SubName = packet.ReadCString("Title");
 
