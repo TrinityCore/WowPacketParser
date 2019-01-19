@@ -10,7 +10,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         {
             packet.ReadBit("Enabled", idx);
             packet.ReadPackedGuid128("BnetAccountID", idx);
-            packet.ReadPackedGuid128("Unk801_GUID2", idx);
+            packet.ReadPackedGuid128("GuildGUID", idx);
         }
 
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS)]
@@ -29,6 +29,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadInt64("TokenBalanceAmount");
             packet.ReadUInt32("BpayStoreProductDeliveryDelay");
             packet.ReadUInt32("ClubsPresenceUpdateTimer");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
+                packet.ReadUInt32("UnkUInt_810");
 
             packet.ResetBitReader();
             packet.ReadBit("VoiceEnabled");
