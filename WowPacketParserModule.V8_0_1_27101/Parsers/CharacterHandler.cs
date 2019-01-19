@@ -126,8 +126,18 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadInt32("MaxCharacterLevel");
             var raceUnlockCount = packet.ReadUInt32("RaceUnlockCount");
 
+            uint unkCount = 0;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
+                unkCount = packet.ReadUInt32("UnkCount_810");
+
             if (hasDisabledClassesMask)
                 packet.ReadUInt32("DisabledClassesMask");
+
+            for (uint i = 0; i < unkCount; ++i)
+            {
+                packet.ReadUInt32("UnkUInt32_1", i);
+                packet.ReadUInt32("UnkUInt32_2", i);
+            }
 
             for (uint i = 0; i < charsCount; ++i)
                 ReadCharactersData(packet, i, "CharactersData");
