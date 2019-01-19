@@ -615,6 +615,7 @@
     <Compile Include="Store\Objects\GossipMenuOptionAction.cs" />
     <Compile Include="Store\Objects\GossipMenuOptionBox.cs" />
     <Compile Include="Store\Objects\GossipMenuOptionTrainer.cs" />
+    <Compile Include="Store\Objects\HotfixBlob.cs" />
     <Compile Include="Store\Objects\IBroadcastTextEntry.cs" />
     <Compile Include="Store\Objects\PageTextLocale.cs" />
     <Compile Include="Store\Objects\PointsOfInterest.cs" />
