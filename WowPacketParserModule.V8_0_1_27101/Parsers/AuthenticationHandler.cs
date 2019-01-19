@@ -78,8 +78,14 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     packet.ResetBitReader();
                     packet.ReadBit("IsLocal", "VirtualRealms", i);
                     packet.ReadBit("IsInternalRealm", "VirtualRealms", i);
-                    var nameLen1 = packet.ReadBits(8);
-                    var nameLen2 = packet.ReadBits(8);
+
+                    var bitsCount = 8;
+
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
+                        bitsCount = 9;
+
+                    var nameLen1 = packet.ReadBits(bitsCount);
+                    var nameLen2 = packet.ReadBits(bitsCount);
                     packet.ReadWoWString("RealmNameActual", nameLen1, "VirtualRealms", i);
                     packet.ReadWoWString("RealmNameNormalized", nameLen2, "VirtualRealms", i);
                 }
