@@ -33,19 +33,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_CHANNEL_NOTIFY_JOINED)]
         public static void HandleChannelNotifyJoined(Packet packet)
         {
-            uint bits544 = 0;
-            uint bits24 = 0;
-
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
-            {
-                bits544 = packet.ReadBits(8);
-                bits24 = packet.ReadBits(10);
-            }
-            else
-            {
-                bits544 = packet.ReadBits(7);
-                bits24 = packet.ReadBits(10);
-            }
+            var bits544 = packet.ReadBits(7);
+            var bits24 = packet.ReadBits(10);
 
             ReadChannelFlags(packet);
             packet.ReadInt32("ChatChannelID");
