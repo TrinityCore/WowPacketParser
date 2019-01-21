@@ -59,7 +59,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         private static void ReadCreateObjectBlock(Packet packet, WowGuid guid, uint map, object index)
         {
             ObjectType objType = ObjectTypeConverter.Convert(packet.ReadByteE<ObjectType801>("Object Type", index));
-            packet.ReadInt32("HeirFlags", index);
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V8_1_0_28724))
+                packet.ReadInt32("HeirFlags", index);
             WoWObject obj;
             switch (objType)
             {
@@ -225,6 +226,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 packet.ReadSingle("PitchRate", index);
 
                 var movementForceCount = packet.ReadUInt32("MovementForceCount", index);
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
+                    packet.ReadSingle("UnkFloat", index);
 
                 packet.ResetBitReader();
 
