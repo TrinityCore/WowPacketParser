@@ -41,5 +41,20 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 ReadAccountCharacterList(packet, i);
             }
         }
+
+        [Parser(Opcode.CMSG_REPORT_CLIENT_VARIABLES, ClientVersionBuild.V8_1_0_28724)]
+        public static void HandleSaveClientVarables(Packet packet)
+        {
+            var varablesCount = packet.ReadUInt32("VarablesCount");
+
+            for (var i = 0; i < varablesCount; ++i)
+            {
+                var variableNameLen = packet.ReadBits(7);
+                var valueLen = packet.ReadBits(11);
+                packet.ResetBitReader();
+
+                packet.WriteLine($"[{ i.ToString() }] VariableName: \"{ packet.ReadWoWString((int)variableNameLen) }\" Value: \"{ packet.ReadWoWString((int)valueLen) }\"");
+            }
+        }
     }
 }
