@@ -181,6 +181,7 @@
     <Compile Include="Hotfix\LiquidTypeEntry.cs" />
     <Compile Include="Hotfix\LockEntry.cs" />
     <Compile Include="Hotfix\MailTemplateEntry.cs" />
+    <Compile Include="Hotfix\MapDifficultyEntry810.cs" />
     <Compile Include="Hotfix\MapDifficultyEntry.cs" />
     <Compile Include="Hotfix\MapEntry.cs" />
     <Compile Include="Hotfix\ModifierTreeEntry.cs" />

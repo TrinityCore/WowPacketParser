@@ -3,7 +3,7 @@ using WowPacketParser.Hotfix;
 
 namespace WowPacketParserModule.V8_0_1_27101.Hotfix
 {
-    [HotfixStructure(DB2Hash.MapDifficulty, HasIndexInData = false)]
+    [HotfixStructure(DB2Hash.MapDifficulty, ClientVersionBuild.V8_0_1_27101, ClientVersionBuild.V8_1_0_28724, HasIndexInData = false)]
     public class MapDifficultyEntry
     {
         public string Message { get; set; }

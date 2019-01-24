@@ -14,7 +14,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public uint TransmogSetGroupID { get; set; }
         public int ItemNameDescriptionID { get; set; }
         public ushort ParentTransmogSetID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V8_1_0_28724, false)]
+        public byte Unknown1 { get; set; }
         public byte ExpansionID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V8_1_0_28724, false)]
+        public int Version { get; set; }
         public short UiOrder { get; set; }
     }
 }

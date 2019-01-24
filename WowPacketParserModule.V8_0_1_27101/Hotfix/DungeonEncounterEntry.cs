@@ -15,5 +15,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public int CreatureDisplayID { get; set; }
         public byte Flags { get; set; }
         public int SpellIconFileID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V8_1_0_28724, false)]
+        public int Unknown1 { get; set; }
     }
 }
