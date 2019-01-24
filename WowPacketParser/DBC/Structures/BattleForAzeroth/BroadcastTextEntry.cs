@@ -13,7 +13,7 @@ namespace WowPacketParser.DBC.Structures.BattleForAzeroth
         public uint ConditionID;
         public ushort EmotesID;
         public byte Flags;
-        public uint Unk;
+        public uint ChatBubbleDurationMs;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
         public uint[] SoundEntriesID;
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]

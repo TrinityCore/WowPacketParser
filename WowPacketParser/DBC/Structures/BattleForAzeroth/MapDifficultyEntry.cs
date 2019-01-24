@@ -6,13 +6,13 @@
     {
         public string Message;
         public uint ItemContextPickerID;
-        public int Unk;
+        public int ContentTuningID;
         public byte DifficultyID;
-        public byte LockID;
-        public byte ResetInterval;
-        public byte MaxPlayers;
-        public byte ItemContext;
-        public byte Flags;
-        public ushort MapID;
+        public int LockID;
+        public int ResetInterval;
+        public int MaxPlayers;
+        public int ItemContext;
+        public int Flags;
+        public int MapID;
     }
 }
