@@ -31,7 +31,6 @@ namespace WowPacketParser.DBC
         public static Storage<MapDifficultyEntry> MapDifficulty { get; set; }
         public static Storage<PhaseXPhaseGroupEntry> PhaseXPhaseGroup { get; set; }
         public static Storage<SoundKitNameEntry> SoundKitName { get; set; }
-        public static Storage<SpellEntry> Spell { get; set; }
         public static Storage<SpellEffectEntry> SpellEffect { get; set; }
         public static Storage<SpellNameEntry> SpellName { get; set; }
 
