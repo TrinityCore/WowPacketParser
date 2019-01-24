@@ -5,7 +5,7 @@ using System.Linq;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
-using WDCReaderLib;
+using DB2FileReaderLib.NET;
 using WowPacketParser.DBC.Structures.BattleForAzeroth;
 using WowPacketParser.Misc;
 
