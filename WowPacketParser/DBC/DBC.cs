@@ -208,7 +208,7 @@ namespace WowPacketParser.DBC
 
         public static readonly Dictionary<uint, string> Zones = new Dictionary<uint, string>();
         public static readonly Dictionary<int, int> MapSpawnMaskStores = new Dictionary<int, int>();
-        public static readonly Dictionary<ushort, List<byte>> MapDifficultyStores = new Dictionary<ushort, List<byte>>();
+        public static readonly Dictionary<int, List<byte>> MapDifficultyStores = new Dictionary<int, List<byte>>();
         public static readonly Dictionary<ushort, string> CriteriaStores = new Dictionary<ushort, string>();
         public static readonly Dictionary<uint, FactionEntry> FactionStores = new Dictionary<uint, FactionEntry>();
         public static readonly Dictionary<Tuple<uint, uint>, SpellEffectEntry> SpellEffectStores = new Dictionary<Tuple<uint, uint>, SpellEffectEntry>();

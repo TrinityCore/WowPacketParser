@@ -18,6 +18,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public ushort ArrivalEventID { get; set; }
         [HotfixVersion(ClientVersionBuild.V8_1_0_28724, false)]
         public uint ArrivalEventId { get; set; }
+        [HotfixVersion(ClientVersionBuild.V8_1_0_28724, true)]
         public ushort DepartureEventID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V8_1_0_28724, false)]
+        public int DepartureEventId { get; set; }
     }
 }
