@@ -96,6 +96,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         [Parser(Opcode.CMSG_HOTFIX_REQUEST)]
         public static void HandleHotfixQuery(Packet packet)
         {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
+            {
+                packet.ReadUInt32("CurrentBuild");
+                packet.ReadUInt32("InternalBuild");
+            }
             var hotfixCount = packet.ReadUInt32("HotfixCount");
             for (var i = 0u; i < hotfixCount; ++i)
             {
