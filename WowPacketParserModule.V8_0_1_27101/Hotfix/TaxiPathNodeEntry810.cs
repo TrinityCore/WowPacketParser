@@ -1,9 +1,9 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
 
-namespace WowPacketParserModule.V8_0_1_27101.Hotfix
+namespace WowPacketParserModule.V8_1_0_28724.Hotfix
 {
-    [HotfixStructure(DB2Hash.TaxiPathNode, ClientVersionBuild.V8_0_1_27101, ClientVersionBuild.V8_1_0_28724)]
+    [HotfixStructure(DB2Hash.TaxiPathNode, ClientVersionBuild.V8_1_0_28724)]
     public class TaxiPathNodeEntry
     {
         [HotfixArray(3)]
@@ -14,7 +14,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public ushort ContinentID { get; set; }
         public byte Flags { get; set; }
         public int Delay { get; set; }
-        public ushort ArrivalEventID { get; set; }
-        public ushort DepartureEventID { get; set; }
+        public uint ArrivalEventID { get; set; }
+        public int DepartureEventID { get; set; }
     }
 }

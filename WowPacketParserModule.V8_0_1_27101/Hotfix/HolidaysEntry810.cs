@@ -1,9 +1,9 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
 
-namespace WowPacketParserModule.V8_0_1_27101.Hotfix
+namespace WowPacketParserModule.V8_1_0_28724.Hotfix
 {
-    [HotfixStructure(DB2Hash.Holidays, ClientVersionBuild.V8_0_1_27101, ClientVersionBuild.V8_1_0_28724)]
+    [HotfixStructure(DB2Hash.Holidays, ClientVersionBuild.V8_1_0_28724)]
     public class HolidaysEntry
     {
         public int ID { get; set; }
@@ -16,7 +16,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public byte Flags { get; set; }
         [HotfixArray(10)]
         public ushort[] Duration { get; set; }
-        [HotfixArray(16)]
+        [HotfixArray(26)]
         public int[] Date { get; set; }
         [HotfixArray(10)]
         public byte[] CalendarFlags { get; set; }

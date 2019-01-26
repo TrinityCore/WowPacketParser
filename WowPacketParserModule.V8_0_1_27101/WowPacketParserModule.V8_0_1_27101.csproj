@@ -44,6 +44,7 @@
     <Compile Include="Enums\CharacterUndeleteResult.cs" />
     <Compile Include="Enums\MovementFlag.cs" />
     <Compile Include="Enums\MovementFlags2.cs" />
+    <Compile Include="Enums\UpdateFields810.cs" />
     <Compile Include="Enums\UpdateFields.cs" />
     <Compile Include="Hotfix\AchievementEntry.cs" />
     <Compile Include="Hotfix\AnimationDataEntry.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Hotfix\BattlePetBreedQualityEntry.cs" />
     <Compile Include="Hotfix\BattlePetBreedStateEntry.cs" />
     <Compile Include="Hotfix\BattlePetSpeciesEntry.cs" />
+    <Compile Include="Hotfix\BattlePetSpeciesStateEntry810.cs" />
     <Compile Include="Hotfix\BattlePetSpeciesStateEntry.cs" />
     <Compile Include="Hotfix\BroadcastTextEntry.cs" />
     <Compile Include="Hotfix\Cfg_RegionsEntry.cs" />
@@ -99,6 +101,7 @@
     <Compile Include="Hotfix\CurveEntry.cs" />
     <Compile Include="Hotfix\CurvePointEntry.cs" />
     <Compile Include="Hotfix\DestructibleModelDataEntry.cs" />
+    <Compile Include="Hotfix\DifficultyEntry810.cs" />
     <Compile Include="Hotfix\DifficultyEntry.cs" />
     <Compile Include="Hotfix\DungeonEncounterEntry.cs" />
     <Compile Include="Hotfix\DurabilityCostsEntry.cs" />
@@ -108,6 +111,7 @@
     <Compile Include="Hotfix\EmotesTextSoundEntry.cs" />
     <Compile Include="Hotfix\ExpectedStatEntry.cs" />
     <Compile Include="Hotfix\ExpectedStatModEntry.cs" />
+    <Compile Include="Hotfix\FactionEntry810.cs" />
     <Compile Include="Hotfix\FactionEntry.cs" />
     <Compile Include="Hotfix\FactionTemplateEntry.cs" />
     <Compile Include="Hotfix\GameObjectDisplayInfoEntry.cs" />
@@ -132,6 +136,7 @@
     <Compile Include="Hotfix\GuildColorEmblemEntry.cs" />
     <Compile Include="Hotfix\GuildPerkSpellsEntry.cs" />
     <Compile Include="Hotfix\HeirloomEntry.cs" />
+    <Compile Include="Hotfix\HolidaysEntry810.cs" />
     <Compile Include="Hotfix\HolidaysEntry.cs" />
     <Compile Include="Hotfix\HotfixSerializer.cs" />
     <Compile Include="Hotfix\ImportPriceArmorEntry.cs" />
@@ -146,6 +151,7 @@
     <Compile Include="Hotfix\ItemBonusEntry.cs" />
     <Compile Include="Hotfix\ItemBonusListLevelDeltaEntry.cs" />
     <Compile Include="Hotfix\ItemBonusTreeNodeEntry.cs" />
+    <Compile Include="Hotfix\ItemChildEquipmentEntry810.cs" />
     <Compile Include="Hotfix\ItemChildEquipmentEntry.cs" />
     <Compile Include="Hotfix\ItemClassEntry.cs" />
     <Compile Include="Hotfix\ItemCurrencyCostEntry.cs" />
@@ -228,6 +234,7 @@
     <Compile Include="Hotfix\SkillLineAbilityEntry.cs" />
     <Compile Include="Hotfix\SkillLineEntry.cs" />
     <Compile Include="Hotfix\SkillRaceClassInfoEntry.cs" />
+    <Compile Include="Hotfix\SoundKitEntry810.cs" />
     <Compile Include="Hotfix\SoundKitEntry.cs" />
     <Compile Include="Hotfix\SpecializationSpellsEntry.cs" />
     <Compile Include="Hotfix\SpellAuraOptionsEntry.cs" />
@@ -267,6 +274,7 @@
     <Compile Include="Hotfix\TalentEntry.cs" />
     <Compile Include="Hotfix\TaxiNodesEntry.cs" />
     <Compile Include="Hotfix\TaxiPathEntry.cs" />
+    <Compile Include="Hotfix\TaxiPathNodeEntry810.cs" />
     <Compile Include="Hotfix\TaxiPathNodeEntry.cs" />
     <Compile Include="Hotfix\TotemCategoryEntry.cs" />
     <Compile Include="Hotfix\ToyEntry.cs" />
