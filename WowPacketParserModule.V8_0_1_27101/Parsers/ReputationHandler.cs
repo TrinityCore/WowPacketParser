@@ -6,7 +6,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 {
     public static class ReputationHandler
     {
-        public static ushort FactionCount = 350; // 8.1.0
+        public static readonly ushort FactionCount = 350; // 8.1.0
 
         [Parser(Opcode.SMSG_FACTION_BONUS_INFO, ClientVersionBuild.V8_1_0_28724)]
         public static void HandleFactionBonusInfo(Packet packet)
