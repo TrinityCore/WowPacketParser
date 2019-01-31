@@ -545,13 +545,31 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadInt32("PortraitTurnIn");
 
             packet.ResetBitReader();
+            uint questTitleLen = 0;
+            uint rewardTextLen = 0;
+            uint portraitGiverTextLen = 0;
+            uint portraitGiverNameLen = 0;
+            uint portraitTurnInTextLen = 0;
+            uint portraitTurnInNameLen = 0;
 
-            uint questTitleLen = packet.ReadBits(9);
-            uint rewardTextLen = packet.ReadBits(12);
-            uint portraitGiverTextLen = packet.ReadBits(10);
-            uint portraitGiverNameLen = packet.ReadBits(8);
-            uint portraitTurnInTextLen = packet.ReadBits(10);
-            uint portraitTurnInNameLen = packet.ReadBits(8);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
+            {
+                questTitleLen = packet.ReadBits(10);
+                rewardTextLen = packet.ReadBits(12);
+                portraitGiverTextLen = packet.ReadBits(11);
+                portraitGiverNameLen = packet.ReadBits(9);
+                portraitTurnInTextLen = packet.ReadBits(11);
+                portraitTurnInNameLen = packet.ReadBits(9);
+            }
+            else
+            {
+                questTitleLen = packet.ReadBits(9);
+                rewardTextLen = packet.ReadBits(12);
+                portraitGiverTextLen = packet.ReadBits(10);
+                portraitGiverNameLen = packet.ReadBits(8);
+                portraitTurnInTextLen = packet.ReadBits(10);
+                portraitTurnInNameLen = packet.ReadBits(8);
+            }
 
             packet.ReadWoWString("QuestTitle", questTitleLen);
             questOfferReward.RewardText = packet.ReadWoWString("RewardText", rewardTextLen);
