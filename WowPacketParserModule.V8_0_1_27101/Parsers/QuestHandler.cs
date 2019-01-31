@@ -636,5 +636,73 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
         [Parser(Opcode.CMSG_CLOSE_QUEST_CHOICE)]
         public static void HandleQuestEmpty(Packet packet) { }
+
+        [Parser(Opcode.SMSG_QUEST_GIVER_REQUEST_ITEMS, ClientVersionBuild.V8_1_0_28724)]
+        public static void HandleQuestGiverRequestItems(Packet packet)
+        {
+            packet.ReadPackedGuid128("QuestGiverGUID");
+            packet.ReadInt32("QuestGiverCreatureID");
+
+            int id = packet.ReadInt32("QuestID");
+            QuestRequestItems questRequestItems = new QuestRequestItems
+            {
+                ID = (uint)id
+            };
+
+            questRequestItems.EmoteOnCompleteDelay = (uint)packet.ReadInt32("CompEmoteDelay");
+            questRequestItems.EmoteOnComplete = (uint)packet.ReadInt32("CompEmoteType");
+
+            for (int i = 0; i < 2; i++)
+                packet.ReadInt32("QuestFlags", i);
+
+            packet.ReadInt32("SuggestPartyMembers");
+            packet.ReadInt32("MoneyToGet");
+            uint collectCount = packet.ReadUInt32("CollectCount");
+            uint currencyCount = packet.ReadUInt32("CurrencyCount");
+            packet.ReadInt32("StatusFlags");
+
+            for (int i = 0; i < collectCount; i++)
+            {
+                packet.ReadInt32("ObjectID", i);
+                packet.ReadInt32("Amount", i);
+                packet.ReadUInt32("Flags", i);
+            }
+
+            for (int i = 0; i < currencyCount; i++)
+            {
+                packet.ReadInt32("CurrencyID", i);
+                packet.ReadInt32("Amount", i);
+            }
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("AutoLaunched");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
+            {
+                packet.ReadBit("CanIgnoreQuest");
+                packet.ReadBit("IsQuestIgnored");
+            }
+
+            packet.ResetBitReader();
+
+            uint questTitleLen = packet.ReadBits(10);
+            uint completionTextLen = packet.ReadBits(12);
+
+            packet.ReadWoWString("QuestTitle", questTitleLen);
+            questRequestItems.CompletionText = packet.ReadWoWString("CompletionText", completionTextLen);
+
+            Storage.QuestRequestItems.Add(questRequestItems, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS && questRequestItems.CompletionText != string.Empty)
+            {
+                QuestRequestItemsLocale localesQuestRequestItems = new QuestRequestItemsLocale
+                {
+                    ID = (uint)id,
+                    CompletionText = questRequestItems.CompletionText
+                };
+                Storage.LocalesQuestRequestItems.Add(localesQuestRequestItems, packet.TimeSpan);
+            }
+        }
     }
 }
