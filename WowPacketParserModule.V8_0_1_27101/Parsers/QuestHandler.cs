@@ -63,6 +63,24 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadBit("IsBoostSpell", idx);
         }
 
+        public static void ReadGossipText(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("QuestID", indexes);
+            packet.ReadInt32("QuestType", indexes);
+            packet.ReadInt32("QuestLevel", indexes);
+            packet.ReadInt32("QuestMaxScalingLevel", indexes);
+
+            for (int i = 0; i < 2; i++)
+                packet.ReadUInt32("QuestFlags", indexes, i);
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Repeatable", indexes);
+
+            var guestTitleLen = packet.ReadBits(10);
+            packet.ReadWoWString("QuestTitle", guestTitleLen, indexes);
+        }
+
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_DETAILS)]
         public static void HandleQuestGiverQuestDetails(Packet packet)
         {
@@ -720,6 +738,51 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     CompletionText = questRequestItems.CompletionText
                 };
                 Storage.LocalesQuestRequestItems.Add(localesQuestRequestItems, packet.TimeSpan);
+            }
+        }
+
+        [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_LIST_MESSAGE, ClientVersionBuild.V8_1_0_28724)]
+        public static void HandleQuestgiverQuestList(Packet packet)
+        {
+            WowGuid guid = packet.ReadPackedGuid128("QuestGiverGUID");
+
+            QuestGreeting questGreeting = new QuestGreeting
+            {
+                ID = guid.GetEntry(),
+                GreetEmoteDelay = packet.ReadUInt32("GreetEmoteDelay"),
+                GreetEmoteType = packet.ReadUInt32("GreetEmoteType")
+            };
+
+            uint gossipTextCount = packet.ReadUInt32("GossipTextCount");
+            packet.ResetBitReader();
+            uint greetingLen = packet.ReadBits(12);
+
+            for (int i = 0; i < gossipTextCount; i++)
+                ReadGossipText(packet, i);
+
+            questGreeting.Greeting = packet.ReadWoWString("Greeting", greetingLen);
+
+            switch (guid.GetObjectType())
+            {
+                case ObjectType.Unit:
+                    questGreeting.Type = 0;
+                    break;
+                case ObjectType.GameObject:
+                    questGreeting.Type = 1;
+                    break;
+            }
+
+            Storage.QuestGreetings.Add(questGreeting, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS && questGreeting.Greeting != string.Empty)
+            {
+                QuestGreetingLocale localesQuestGreeting = new QuestGreetingLocale
+                {
+                    ID = questGreeting.ID,
+                    Type = questGreeting.Type,
+                    Greeting = questGreeting.Greeting
+                };
+                Storage.LocalesQuestGreeting.Add(localesQuestGreeting, packet.TimeSpan);
             }
         }
     }
