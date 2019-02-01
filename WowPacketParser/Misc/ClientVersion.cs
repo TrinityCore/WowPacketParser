@@ -311,8 +311,11 @@ namespace WowPacketParser.Misc
                         return ClientVersionBuild.V4_2_0_14333;
                     case ClientVersionBuild.V4_3_0_15005:
                     case ClientVersionBuild.V4_3_0a_15050:
+                        return ClientVersionBuild.V4_3_0_15005;
                     case ClientVersionBuild.V4_3_2_15211:
+                        return ClientVersionBuild.V4_3_2_15211;
                     case ClientVersionBuild.V4_3_3_15354:
+                        return ClientVersionBuild.V4_3_3_15354;
                     case ClientVersionBuild.V4_3_4_15595:
                         return ClientVersionBuild.V4_3_4_15595;
                     case ClientVersionBuild.V5_0_4_16016:
