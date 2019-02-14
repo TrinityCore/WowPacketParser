@@ -1,12 +1,15 @@
-﻿namespace WowPacketParserModule.V8_1_0_28724.Enums
+﻿using WowPacketParser.Parsing;
+
+namespace WowPacketParserModule.V8_1_0_28724.Enums
 {
     public enum ObjectField
     {
-        //OBJECT_FIELD_GUID                                      = 0x000, // Size: 4, Flags: PUBLIC
-        OBJECT_FIELD_ENTRY                                     = 0x000, // Size: 1, Flags: DYNAMIC
-        OBJECT_DYNAMIC_FLAGS                                   = 0x001, // Size: 1, Flags: DYNAMIC, URGENT
-        OBJECT_FIELD_SCALE_X                                   = 0x002, // Size: 1, Flags: PUBLIC
-        OBJECT_END                                             = 0x003,
+        [UpdateField(UpdateFieldType.Int)]
+        OBJECT_FIELD_ENTRY                                     = 0,
+        OBJECT_DYNAMIC_FLAGS                                   = 1,
+        [UpdateField(UpdateFieldType.Float)]
+        OBJECT_FIELD_SCALE_X                                   = 2,
+        OBJECT_END                                             = 3,
     }
 
     public enum ObjectDynamicField
@@ -86,97 +89,279 @@
 
     public enum UnitField
     {
-        UNIT_FIELD_CHARM                                       = ObjectField.OBJECT_END + 0x000, // Size: 4, Flags: PUBLIC
-        UNIT_FIELD_SUMMON                                      = ObjectField.OBJECT_END + 0x004, // Size: 4, Flags: PUBLIC
-        UNIT_FIELD_CRITTER                                     = ObjectField.OBJECT_END + 0x008, // Size: 4, Flags: PRIVATE
-        UNIT_FIELD_CHARMEDBY                                   = ObjectField.OBJECT_END + 0x00C, // Size: 4, Flags: PUBLIC
-        UNIT_FIELD_SUMMONEDBY                                  = ObjectField.OBJECT_END + 0x010, // Size: 4, Flags: PUBLIC
-        UNIT_FIELD_CREATEDBY                                   = ObjectField.OBJECT_END + 0x014, // Size: 4, Flags: PUBLIC
-        UNIT_FIELD_DEMON_CREATOR                               = ObjectField.OBJECT_END + 0x018, // Size: 4, Flags: PUBLIC
-        UNIT_FIELD_LOOK_AT_CONTROLLER_TARGET                   = ObjectField.OBJECT_END + 0x01C, // Size: 4, Flags: PUBLIC
-        UNIT_FIELD_TARGET                                      = ObjectField.OBJECT_END + 0x020, // Size: 4, Flags: PUBLIC
-        UNIT_FIELD_BATTLE_PET_COMPANION_GUID                   = ObjectField.OBJECT_END + 0x024, // Size: 4, Flags: PUBLIC
-        UNIT_FIELD_BATTLE_PET_DB_ID                            = ObjectField.OBJECT_END + 0x028, // Size: 2, Flags: PUBLIC
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_DISPLAYID                                = ObjectField.OBJECT_END + 0,
+        // loop 2
+        [UpdateField(UpdateFieldType.Uint)]
+        UNIT_FIELD_1                                        = ObjectField.OBJECT_END + 1,
+
+        [UpdateField(UpdateFieldType.Uint)]
+        UNIT_FIELD_3                                        = ObjectField.OBJECT_END + 3,
+        [UpdateField(UpdateFieldType.Uint)]
+        UNIT_FIELD_4                                        = ObjectField.OBJECT_END + 4,
+        [UpdateField(UpdateFieldType.Uint)]
+        UNIT_FIELD_5                                        = ObjectField.OBJECT_END + 5,
+        [UpdateField(UpdateFieldType.Uint, true)]
+        UNIT_DYNAMICFIELD_COUNT1                            = ObjectField.OBJECT_END + 6,
+        [UpdateField(UpdateFieldType.Uint)]
+        UNIT_FIELD_7                                        = ObjectField.OBJECT_END + 7,
+        [UpdateField(UpdateFieldType.DynamicUint)]
+        UNIT_DYNAMIC_1                                      = ObjectField.OBJECT_END + 8,
+        [UpdateField(UpdateFieldType.Guid)]
+        UNIT_FIELD_CHARM                                    = ObjectField.OBJECT_END + 9,        
+        [UpdateField(UpdateFieldType.Guid)]
+        UNIT_FIELD_SUMMON                                   = ObjectField.OBJECT_END + 10,       
+        [UpdateField(UpdateFieldType.Guid, UpdateFieldCreateFlag.Unk1)]
+        UNIT_FIELD_CRITTER                                  = ObjectField.OBJECT_END + 11,       
+        [UpdateField(UpdateFieldType.Guid)]
+        UNIT_FIELD_CHARMEDBY                                = ObjectField.OBJECT_END + 12,        
+        [UpdateField(UpdateFieldType.Guid)]
+        UNIT_FIELD_SUMMONEDBY                               = ObjectField.OBJECT_END + 13,
+        [UpdateField(UpdateFieldType.Guid)]
+        UNIT_FIELD_CREATEDBY                                = ObjectField.OBJECT_END + 14,       
+        [UpdateField(UpdateFieldType.Guid)]
+        UNIT_FIELD_DEMON_CREATOR                            = ObjectField.OBJECT_END + 15,      
+        [UpdateField(UpdateFieldType.Guid)]
+        UNIT_FIELD_LOOK_AT_CONTROLLER_TARGET                = ObjectField.OBJECT_END + 16,      
+        [UpdateField(UpdateFieldType.Guid)]
+        UNIT_FIELD_TARGET                                   = ObjectField.OBJECT_END + 17,     
+        [UpdateField(UpdateFieldType.Guid)]
+        UNIT_FIELD_BATTLE_PET_COMPANION_GUID                = ObjectField.OBJECT_END + 18,
+        [UpdateField(UpdateFieldType.Ulong)]
+        UNIT_FIELD_NPC_FLAGS                                = ObjectField.OBJECT_END + 19,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_20                                       = ObjectField.OBJECT_END + 20,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_21                                       = ObjectField.OBJECT_END + 21,
+        [UpdateField(UpdateFieldType.Uint)]
+        UNIT_FIELD_22                                       = ObjectField.OBJECT_END + 22,
+        [UpdateField(UpdateFieldType.Bytes)]
+        UNIT_FIELD_BYTES_0                                  = ObjectField.OBJECT_END + 23,
+        [UpdateField(UpdateFieldType.Byte)]
+        UNIT_FIELD_DISPLAY_POWER                            = ObjectField.OBJECT_END + 24,
+        [UpdateField(UpdateFieldType.Uint)]
+        UNIT_FIELD_25                                       = ObjectField.OBJECT_END + 25,
+        [UpdateField(UpdateFieldType.Ulong)] //long
+        UNIT_FIELD_HEALTH                                   = ObjectField.OBJECT_END + 26,
+        // loop 6
+        [UpdateField(UpdateFieldType.Int, 2)]
+        UNIT_FIELD_POWER                                    = ObjectField.OBJECT_END + 27,
+        [UpdateField(UpdateFieldType.Int, 2)]
+        UNIT_FIELD_MAXPOWER                                 = ObjectField.OBJECT_END + 28,
+
+        // loop 6
+        [UpdateField(UpdateFieldType.Float, 3, UpdateFieldCreateFlag.Unk1 | UpdateFieldCreateFlag.Unk4)] //flags
+        UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER                = ObjectField.OBJECT_END + 39,
+        [UpdateField(UpdateFieldType.Float, 3, UpdateFieldCreateFlag.Unk1 | UpdateFieldCreateFlag.Unk4)] //flags
+        UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER    = ObjectField.OBJECT_END + 40,
+
+        [UpdateField(UpdateFieldType.Ulong)]//long
+        UNIT_FIELD_MAXHEALTH                                = ObjectField.OBJECT_END + 51,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_LEVEL                                    = ObjectField.OBJECT_END + 52,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_EFFECTIVE_LEVEL                          = ObjectField.OBJECT_END + 53,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_CONTENT_TUNING_ID                        = ObjectField.OBJECT_END + 54,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_SCALING_LEVEL_MIN                        = ObjectField.OBJECT_END + 55,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_SCALING_LEVEL_MAX                        = ObjectField.OBJECT_END + 56,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_SCALING_LEVEL_DELTA                      = ObjectField.OBJECT_END + 57,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_SCALING_FACTION_GROUP                    = ObjectField.OBJECT_END + 58,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_SCALING_HEALTH_ITEM_LEVEL_CURVE_ID       = ObjectField.OBJECT_END + 59,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_SCALING_DAMAGE_ITEM_LEVEL_CURVE_ID       = ObjectField.OBJECT_END + 60,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_FACTIONTEMPLATE                          = ObjectField.OBJECT_END + 61,
+        // loop 3
+        [UpdateField(UpdateFieldType.Int, 4)]
+        UNIT_FIELD_62                                       = ObjectField.OBJECT_END + 62,
+        [UpdateField(UpdateFieldType.Ushort, 4)]
+        UNIT_FIELD_63                                       = ObjectField.OBJECT_END + 63,
+        [UpdateField(UpdateFieldType.Ushort, 4)]
+        UNIT_FIELD_64                                       = ObjectField.OBJECT_END + 64,
+
+        [UpdateField(UpdateFieldType.Uint)]
+        UNIT_FIELD_FLAGS                                    = ObjectField.OBJECT_END + 71,
+        [UpdateField(UpdateFieldType.Uint)]
+        UNIT_FIELD_FLAGS_2                                  = ObjectField.OBJECT_END + 72,
+        [UpdateField(UpdateFieldType.Uint)]
+        UNIT_FIELD_FLAGS_3                                  = ObjectField.OBJECT_END + 73,
+        [UpdateField(UpdateFieldType.Uint)]
+        UNIT_FIELD_AURASTATE                                = ObjectField.OBJECT_END + 74,
+
+        // loop 2
+        [UpdateField(UpdateFieldType.Uint)]
+        UNIT_FIELD_BASEATTACKTIME                           = ObjectField.OBJECT_END + 75,
+
+        [UpdateField(UpdateFieldType.Uint, UpdateFieldCreateFlag.Unk1)]
+        UNIT_FIELD_RANGEDATTACKTIME                         = ObjectField.OBJECT_END + 77,
+        [UpdateField(UpdateFieldType.Float)]
+        UNIT_FIELD_BOUNDINGRADIUS                           = ObjectField.OBJECT_END + 78,
+        [UpdateField(UpdateFieldType.Float)]
+        UNIT_FIELD_COMBATREACH                              = ObjectField.OBJECT_END + 79,
+        [UpdateField(UpdateFieldType.Float)]
+        UNIT_FIELD_DISPLAY_SCALE                            = ObjectField.OBJECT_END + 80,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_NATIVEDISPLAYID                          = ObjectField.OBJECT_END + 81,
+        [UpdateField(UpdateFieldType.Float)]
+        UNIT_FIELD_NATIVE_X_DISPLAY_SCALE                   = ObjectField.OBJECT_END + 82,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_83                                       = ObjectField.OBJECT_END + 83,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_84                                       = ObjectField.OBJECT_END + 84,
+        [UpdateField(UpdateFieldType.Float, UpdateFieldCreateFlag.Unk1 | UpdateFieldCreateFlag.Unk8)]
+        UNIT_FIELD_MINDAMAGE                                = ObjectField.OBJECT_END + 85,
+        [UpdateField(UpdateFieldType.Float, UpdateFieldCreateFlag.Unk1 | UpdateFieldCreateFlag.Unk8)]
+        UNIT_FIELD_MAXDAMAGE                                = ObjectField.OBJECT_END + 86,
+        [UpdateField(UpdateFieldType.Float, UpdateFieldCreateFlag.Unk1 | UpdateFieldCreateFlag.Unk8)]
+        UNIT_FIELD_MINOFFHANDDAMGE                          = ObjectField.OBJECT_END + 87,
+        [UpdateField(UpdateFieldType.Float, UpdateFieldCreateFlag.Unk1 | UpdateFieldCreateFlag.Unk8)]
+        UNIT_FIELD_MAXOFFHANDDAMAGE                         = ObjectField.OBJECT_END + 88,
+        [UpdateField(UpdateFieldType.Bytes)]
+        UNIT_FIELD_BYTES_1                                  = ObjectField.OBJECT_END + 89,
+        [UpdateField(UpdateFieldType.Uint)]
+        UNIT_FIELD_PETNUMBER                                = ObjectField.OBJECT_END + 90,
+        [UpdateField(UpdateFieldType.Uint)]
+        UNIT_FIELD_PET_NAME_TIMESTAMP                       = ObjectField.OBJECT_END + 91,
+        [UpdateField(UpdateFieldType.Uint)]
+        UNIT_FIELD_PETEXPERIENCE                            = ObjectField.OBJECT_END + 92,
+        [UpdateField(UpdateFieldType.Uint)]
+        UNIT_FIELD_PETNEXTLEVELEXP                          = ObjectField.OBJECT_END + 93,
+        [UpdateField(UpdateFieldType.Float)]
+        UNIT_FIELD_MOD_CAST_SPEED                           = ObjectField.OBJECT_END + 94,
+        [UpdateField(UpdateFieldType.Float)]
+        UNIT_FIELD_MOD_CAST_HASTE                           = ObjectField.OBJECT_END + 95,
+        [UpdateField(UpdateFieldType.Float)]
+        UNIT_FIELD_MOD_HASTE                                = ObjectField.OBJECT_END + 96,
+        [UpdateField(UpdateFieldType.Float)]
+        UNIT_FIELD_MOD_RANGED_HASTE                         = ObjectField.OBJECT_END + 97,
+        [UpdateField(UpdateFieldType.Float)]
+        UNIT_FIELD_MOD_HASTE_REGEN                          = ObjectField.OBJECT_END + 98,
+        [UpdateField(UpdateFieldType.Float)]
+        UNIT_FIELD_MOD_TIME_RATE                            = ObjectField.OBJECT_END + 99,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_CREATED_BY_SPELL                         = ObjectField.OBJECT_END + 100,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_NPC_EMOTESTATE                           = ObjectField.OBJECT_END + 101,
+
+        // loop 4
+        [UpdateField(UpdateFieldType.Int, 6, UpdateFieldCreateFlag.Unk1)]
+        UNIT_FIELD_STAT                                     = ObjectField.OBJECT_END + 102,
+        [UpdateField(UpdateFieldType.Int, 7, UpdateFieldCreateFlag.Unk1)]
+        UNIT_FIELD_POSSTAT                                  = ObjectField.OBJECT_END + 103,
+        [UpdateField(UpdateFieldType.Int, 8, UpdateFieldCreateFlag.Unk1)]
+        UNIT_FIELD_NEGSTAT                                  = ObjectField.OBJECT_END + 104,
+
+        // loop 7
+        [UpdateField(UpdateFieldType.Int, UpdateFieldCreateFlag.Unk1 | UpdateFieldCreateFlag.Unk8)]
+        UNIT_FIELD_RESISTANCES                              = ObjectField.OBJECT_END + 114,
+
+        // loop 7
+        [UpdateField(UpdateFieldType.Int, UpdateFieldCreateFlag.Unk1)]
+        UNIT_FIELD_BONUS_RESISTANCE_MODS                    = ObjectField.OBJECT_END + 121,
+        [UpdateField(UpdateFieldType.Int, UpdateFieldCreateFlag.Unk1)]
+        UNIT_FIELD_POWER_COST_MODIFIER                      = ObjectField.OBJECT_END + 122,
+        [UpdateField(UpdateFieldType.Float, UpdateFieldCreateFlag.Unk1)]
+        UNIT_FIELD_POWER_COST_MULTIPLIER                    = ObjectField.OBJECT_END + 123,
+
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_BASE_MANA                                = ObjectField.OBJECT_END + 142,
+        [UpdateField(UpdateFieldType.Int, UpdateFieldCreateFlag.Unk1)]
+        UNIT_FIELD_BASE_HEALTH                              = ObjectField.OBJECT_END + 143,
+        [UpdateField(UpdateFieldType.Bytes)]
+        UNIT_FIELD_BYTES_2                                  = ObjectField.OBJECT_END + 144,
+        [UpdateField(UpdateFieldType.Int, UpdateFieldCreateFlag.Unk1)]
+        UNIT_FIELD_ATTACK_POWER                             = ObjectField.OBJECT_END + 145,
+        [UpdateField(UpdateFieldType.Int, UpdateFieldCreateFlag.Unk1)]
+        UNIT_FIELD_ATTACK_POWER_MOD_POS                     = ObjectField.OBJECT_END + 146,
+        [UpdateField(UpdateFieldType.Int, UpdateFieldCreateFlag.Unk1)]
+        UNIT_FIELD_ATTACK_POWER_MOD_NEG                     = ObjectField.OBJECT_END + 147,
+        [UpdateField(UpdateFieldType.Float, UpdateFieldCreateFlag.Unk1)]
+        UNIT_FIELD_ATTACK_POWER_MULTIPLIER                  = ObjectField.OBJECT_END + 148,
+        [UpdateField(UpdateFieldType.Int, UpdateFieldCreateFlag.Unk1)]
+        UNIT_FIELD_RANGED_ATTACK_POWER                      = ObjectField.OBJECT_END + 149,
+        [UpdateField(UpdateFieldType.Int, UpdateFieldCreateFlag.Unk1)]
+        UNIT_FIELD_RANGED_ATTACK_POWER_MOD_POS              = ObjectField.OBJECT_END + 150,
+        [UpdateField(UpdateFieldType.Int, UpdateFieldCreateFlag.Unk1)]
+        UNIT_FIELD_RANGED_ATTACK_POWER_MOD_NEG              = ObjectField.OBJECT_END + 151,
+        [UpdateField(UpdateFieldType.Float, UpdateFieldCreateFlag.Unk1)]
+        UNIT_FIELD_RANGED_ATTACK_POWER_MULTIPLIER           = ObjectField.OBJECT_END + 152,
+        [UpdateField(UpdateFieldType.Int, UpdateFieldCreateFlag.Unk1)]
+        UNIT_FIELD_MAIN_HAND_WEAPON_ATTACK_POWER            = ObjectField.OBJECT_END + 153,
+        [UpdateField(UpdateFieldType.Int, UpdateFieldCreateFlag.Unk1)]
+        UNIT_FIELD_OFF_HAND_WEAPON_ATTACK_POWER             = ObjectField.OBJECT_END + 154,
+        [UpdateField(UpdateFieldType.Int, UpdateFieldCreateFlag.Unk1)]
+        UNIT_FIELD_RANGED_HAND_WEAPON_ATTACK_POWER          = ObjectField.OBJECT_END + 155,
+        [UpdateField(UpdateFieldType.Int, UpdateFieldCreateFlag.Unk1)]
+        UNIT_FIELD_ATTACK_SPEED_AURA                        = ObjectField.OBJECT_END + 156,
+        [UpdateField(UpdateFieldType.Float, UpdateFieldCreateFlag.Unk1)]
+        UNIT_FIELD_LIFESTEAL                                = ObjectField.OBJECT_END + 157,
+        [UpdateField(UpdateFieldType.Float, UpdateFieldCreateFlag.Unk1)]
+        UNIT_FIELD_MINRANGEDDAMAGE                          = ObjectField.OBJECT_END + 158,
+        [UpdateField(UpdateFieldType.Float, UpdateFieldCreateFlag.Unk1)]
+        UNIT_FIELD_MAXRANGEDDAMAGE                          = ObjectField.OBJECT_END + 159,
+        [UpdateField(UpdateFieldType.Float, UpdateFieldCreateFlag.Unk1)]
+        UNIT_FIELD_160                                      = ObjectField.OBJECT_END + 160,
+        [UpdateField(UpdateFieldType.Float, UpdateFieldCreateFlag.Unk1)]
+        UNIT_FIELD_MAXHEALTHMODIFIER                        = ObjectField.OBJECT_END + 161,
+        [UpdateField(UpdateFieldType.Float)]
+        UNIT_FIELD_HOVERHEIGHT                              = ObjectField.OBJECT_END + 162,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_163                                      = ObjectField.OBJECT_END + 163,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_164                                      = ObjectField.OBJECT_END + 164,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_165                                      = ObjectField.OBJECT_END + 165,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_166                                      = ObjectField.OBJECT_END + 166,
+        [UpdateField(UpdateFieldType.Uint)]
+        UNIT_FIELD_167                                      = ObjectField.OBJECT_END + 167,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_168                                      = ObjectField.OBJECT_END + 168,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_169                                      = ObjectField.OBJECT_END + 169,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_170                                      = ObjectField.OBJECT_END + 170,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_171                                      = ObjectField.OBJECT_END + 171,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_LOOK_AT_CONTROLLER_ID                    = ObjectField.OBJECT_END + 172,
+        [UpdateField(UpdateFieldType.Int)]
+        UNIT_FIELD_173                                      = ObjectField.OBJECT_END + 173,
+        [UpdateField(UpdateFieldType.Guid)]
+        UNIT_FIELD_GUILD_GUID                               = ObjectField.OBJECT_END + 174,
+
+        [UpdateField(UpdateFieldType.Int, true)]
+        UNIT_DYNAMICFIELD_COUNT2                            = ObjectField.OBJECT_END + 175,
+        [UpdateField(UpdateFieldType.Int, true)]
+        UNIT_DYNAMICFIELD_COUNT3                            = ObjectField.OBJECT_END + 176,
+        [UpdateField(UpdateFieldType.Int, true)]
+        UNIT_DYNAMICFIELD_COUNT4                            = ObjectField.OBJECT_END + 177,
+
+        //// DynamicField
+        //[UpdateField(UpdateFieldType.Int)]
+        //[UpdateField(UpdateFieldType.Int)]
+        //
+        //// DynamicField
+        //[UpdateField(UpdateFieldType.Int)]
+        //
+        //// DynamicField
+        //[UpdateField(UpdateFieldType.Guid)]
+
+        UNIT_END                                            = ObjectField.OBJECT_END + 184,
+
+        
+        /*UNIT_FIELD_BATTLE_PET_DB_ID                            = ObjectField.OBJECT_END + 0x028, // Size: 2, Flags: PUBLIC
         UNIT_FIELD_CHANNEL_DATA                                = ObjectField.OBJECT_END + 0x02A, // Size: 2, Flags: PUBLIC, URGENT
         UNIT_FIELD_SUMMONED_BY_HOME_REALM                      = ObjectField.OBJECT_END + 0x02C, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_BYTES_0                                     = ObjectField.OBJECT_END + 0x02D, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_DISPLAY_POWER                               = ObjectField.OBJECT_END + 0x02E, // Size: 1, Flags: PUBLIC
         UNIT_FIELD_OVERRIDE_DISPLAY_POWER_ID                   = ObjectField.OBJECT_END + 0x02F, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_HEALTH                                      = ObjectField.OBJECT_END + 0x030, // Size: 2, Flags: PUBLIC
-        UNIT_FIELD_POWER                                       = ObjectField.OBJECT_END + 0x032, // Size: 6, Flags: PUBLIC, URGENT_SELF_ONLY
-        UNIT_FIELD_MAXHEALTH                                   = ObjectField.OBJECT_END + 0x038, // Size: 2, Flags: PUBLIC
-        UNIT_FIELD_MAXPOWER                                    = ObjectField.OBJECT_END + 0x03A, // Size: 6, Flags: PUBLIC
-        UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER                   = ObjectField.OBJECT_END + 0x040, // Size: 6, Flags: PRIVATE, OWNER, UNIT_ALL
-        UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER       = ObjectField.OBJECT_END + 0x046, // Size: 6, Flags: PRIVATE, OWNER, UNIT_ALL
-        UNIT_FIELD_LEVEL                                       = ObjectField.OBJECT_END + 0x04C, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_EFFECTIVE_LEVEL                             = ObjectField.OBJECT_END + 0x04D, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_CONTENT_TUNING_ID                           = ObjectField.OBJECT_END + 0x04E, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_SCALING_LEVEL_MIN                           = ObjectField.OBJECT_END + 0x04F, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_SCALING_LEVEL_MAX                           = ObjectField.OBJECT_END + 0x050, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_SCALING_LEVEL_DELTA                         = ObjectField.OBJECT_END + 0x051, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_SCALING_FACTION_GROUP                       = ObjectField.OBJECT_END + 0x052, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_SCALING_HEALTH_ITEM_LEVEL_CURVE_ID          = ObjectField.OBJECT_END + 0x053, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_SCALING_DAMAGE_ITEM_LEVEL_CURVE_ID          = ObjectField.OBJECT_END + 0x054, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_FACTIONTEMPLATE                             = ObjectField.OBJECT_END + 0x055, // Size: 1, Flags: PUBLIC
         UNIT_VIRTUAL_ITEM_SLOT_ID                              = ObjectField.OBJECT_END + 0x056, // Size: 6, Flags: PUBLIC
-        UNIT_FIELD_FLAGS                                       = ObjectField.OBJECT_END + 0x05C, // Size: 1, Flags: PUBLIC, URGENT
-        UNIT_FIELD_FLAGS_2                                     = ObjectField.OBJECT_END + 0x05D, // Size: 1, Flags: PUBLIC, URGENT
-        UNIT_FIELD_FLAGS_3                                     = ObjectField.OBJECT_END + 0x05E, // Size: 1, Flags: PUBLIC, URGENT
-        UNIT_FIELD_AURASTATE                                   = ObjectField.OBJECT_END + 0x05F, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_BASEATTACKTIME                              = ObjectField.OBJECT_END + 0x060, // Size: 2, Flags: PUBLIC
-        UNIT_FIELD_RANGEDATTACKTIME                            = ObjectField.OBJECT_END + 0x062, // Size: 1, Flags: PRIVATE
-        UNIT_FIELD_BOUNDINGRADIUS                              = ObjectField.OBJECT_END + 0x063, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_COMBATREACH                                 = ObjectField.OBJECT_END + 0x064, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_DISPLAYID                                   = ObjectField.OBJECT_END + 0x065, // Size: 1, Flags: DYNAMIC, URGENT
-        UNIT_FIELD_DISPLAY_SCALE                               = ObjectField.OBJECT_END + 0x066, // Size: 1, Flags: DYNAMIC, URGENT
-        UNIT_FIELD_NATIVEDISPLAYID                             = ObjectField.OBJECT_END + 0x067, // Size: 1, Flags: PUBLIC, URGENT
-        UNIT_FIELD_NATIVE_X_DISPLAY_SCALE                      = ObjectField.OBJECT_END + 0x068, // Size: 1, Flags: PUBLIC, URGENT
         UNIT_FIELD_MOUNTDISPLAYID                              = ObjectField.OBJECT_END + 0x069, // Size: 1, Flags: PUBLIC, URGENT
-        UNIT_FIELD_MINDAMAGE                                   = ObjectField.OBJECT_END + 0x06A, // Size: 1, Flags: PRIVATE, OWNER, SPECIAL_INFO
-        UNIT_FIELD_MAXDAMAGE                                   = ObjectField.OBJECT_END + 0x06B, // Size: 1, Flags: PRIVATE, OWNER, SPECIAL_INFO
-        UNIT_FIELD_MINOFFHANDDAMAGE                            = ObjectField.OBJECT_END + 0x06C, // Size: 1, Flags: PRIVATE, OWNER, SPECIAL_INFO
-        UNIT_FIELD_MAXOFFHANDDAMAGE                            = ObjectField.OBJECT_END + 0x06D, // Size: 1, Flags: PRIVATE, OWNER, SPECIAL_INFO
-        UNIT_FIELD_BYTES_1                                     = ObjectField.OBJECT_END + 0x06E, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_PETNUMBER                                   = ObjectField.OBJECT_END + 0x06F, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_PET_NAME_TIMESTAMP                          = ObjectField.OBJECT_END + 0x070, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_PETEXPERIENCE                               = ObjectField.OBJECT_END + 0x071, // Size: 1, Flags: OWNER
-        UNIT_FIELD_PETNEXTLEVELEXP                             = ObjectField.OBJECT_END + 0x072, // Size: 1, Flags: OWNER
-        UNIT_MOD_CAST_SPEED                                    = ObjectField.OBJECT_END + 0x073, // Size: 1, Flags: PUBLIC
-        UNIT_MOD_CAST_HASTE                                    = ObjectField.OBJECT_END + 0x074, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_MOD_HASTE                                   = ObjectField.OBJECT_END + 0x075, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_MOD_RANGED_HASTE                            = ObjectField.OBJECT_END + 0x076, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_MOD_HASTE_REGEN                             = ObjectField.OBJECT_END + 0x077, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_MOD_TIME_RATE                               = ObjectField.OBJECT_END + 0x078, // Size: 1, Flags: PUBLIC
-        UNIT_CREATED_BY_SPELL                                  = ObjectField.OBJECT_END + 0x079, // Size: 1, Flags: PUBLIC
-        UNIT_NPC_FLAGS                                         = ObjectField.OBJECT_END + 0x07A, // Size: 2, Flags: PUBLIC, DYNAMIC
-        UNIT_NPC_EMOTESTATE                                    = ObjectField.OBJECT_END + 0x07C, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_STAT                                        = ObjectField.OBJECT_END + 0x07D, // Size: 4, Flags: PRIVATE, OWNER
-        UNIT_FIELD_POSSTAT                                     = ObjectField.OBJECT_END + 0x081, // Size: 4, Flags: PRIVATE, OWNER
-        UNIT_FIELD_NEGSTAT                                     = ObjectField.OBJECT_END + 0x085, // Size: 4, Flags: PRIVATE, OWNER
-        UNIT_FIELD_RESISTANCES                                 = ObjectField.OBJECT_END + 0x089, // Size: 7, Flags: PRIVATE, OWNER, SPECIAL_INFO
-        UNIT_FIELD_BONUS_RESISTANCE_MODS                       = ObjectField.OBJECT_END + 0x090, // Size: 7, Flags: PRIVATE, OWNER
-        UNIT_FIELD_BASE_MANA                                   = ObjectField.OBJECT_END + 0x097, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_BASE_HEALTH                                 = ObjectField.OBJECT_END + 0x098, // Size: 1, Flags: PRIVATE, OWNER
-        UNIT_FIELD_BYTES_2                                     = ObjectField.OBJECT_END + 0x099, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_ATTACK_POWER                                = ObjectField.OBJECT_END + 0x09A, // Size: 1, Flags: PRIVATE, OWNER
-        UNIT_FIELD_ATTACK_POWER_MOD_POS                        = ObjectField.OBJECT_END + 0x09B, // Size: 1, Flags: PRIVATE, OWNER
-        UNIT_FIELD_ATTACK_POWER_MOD_NEG                        = ObjectField.OBJECT_END + 0x09C, // Size: 1, Flags: PRIVATE, OWNER
-        UNIT_FIELD_ATTACK_POWER_MULTIPLIER                     = ObjectField.OBJECT_END + 0x09D, // Size: 1, Flags: PRIVATE, OWNER
-        UNIT_FIELD_RANGED_ATTACK_POWER                         = ObjectField.OBJECT_END + 0x09E, // Size: 1, Flags: PRIVATE, OWNER
-        UNIT_FIELD_RANGED_ATTACK_POWER_MOD_POS                 = ObjectField.OBJECT_END + 0x09F, // Size: 1, Flags: PRIVATE, OWNER
-        UNIT_FIELD_RANGED_ATTACK_POWER_MOD_NEG                 = ObjectField.OBJECT_END + 0x0A0, // Size: 1, Flags: PRIVATE, OWNER
-        UNIT_FIELD_RANGED_ATTACK_POWER_MULTIPLIER              = ObjectField.OBJECT_END + 0x0A1, // Size: 1, Flags: PRIVATE, OWNER
-        UNIT_FIELD_MAIN_HAND_WEAPON_ATTACK_POWER               = ObjectField.OBJECT_END + 0x0A2, // Size: 1, Flags: PRIVATE, OWNER
-        UNIT_FIELD_OFF_HAND_WEAPON_ATTACK_POWER                = ObjectField.OBJECT_END + 0x0A3, // Size: 1, Flags: PRIVATE, OWNER
-        UNIT_FIELD_RANGED_HAND_WEAPON_ATTACK_POWER             = ObjectField.OBJECT_END + 0x0A4, // Size: 1, Flags: PRIVATE, OWNER
-        UNIT_FIELD_ATTACK_SPEED_AURA                           = ObjectField.OBJECT_END + 0x0A5, // Size: 1, Flags: PRIVATE, OWNER
-        UNIT_FIELD_LIFESTEAL                                   = ObjectField.OBJECT_END + 0x0A6, // Size: 1, Flags: PRIVATE, OWNER
-        UNIT_FIELD_MINRANGEDDAMAGE                             = ObjectField.OBJECT_END + 0x0A7, // Size: 1, Flags: PRIVATE, OWNER
-        UNIT_FIELD_MAXRANGEDDAMAGE                             = ObjectField.OBJECT_END + 0x0A8, // Size: 1, Flags: PRIVATE, OWNER
-        UNIT_FIELD_POWER_COST_MODIFIER                         = ObjectField.OBJECT_END + 0x0A9, // Size: 7, Flags: PRIVATE, OWNER
-        UNIT_FIELD_POWER_COST_MULTIPLIER                       = ObjectField.OBJECT_END + 0x0B0, // Size: 7, Flags: PRIVATE, OWNER
-        UNIT_FIELD_MAXHEALTHMODIFIER                           = ObjectField.OBJECT_END + 0x0B7, // Size: 1, Flags: PRIVATE, OWNER
-        UNIT_FIELD_HOVERHEIGHT                                 = ObjectField.OBJECT_END + 0x0B8, // Size: 1, Flags: PUBLIC
         UNIT_FIELD_MIN_ITEM_LEVEL_CUTOFF                       = ObjectField.OBJECT_END + 0x0B9, // Size: 1, Flags: PUBLIC
         UNIT_FIELD_MIN_ITEM_LEVEL                              = ObjectField.OBJECT_END + 0x0BA, // Size: 1, Flags: PUBLIC
         UNIT_FIELD_MAXITEMLEVEL                                = ObjectField.OBJECT_END + 0x0BB, // Size: 1, Flags: PUBLIC
@@ -189,10 +374,7 @@
         UNIT_FIELD_STATE_WORLD_EFFECT_ID                       = ObjectField.OBJECT_END + 0x0C2, // Size: 4, Flags: DYNAMIC, URGENT
         UNIT_FIELD_SCALE_DURATION                              = ObjectField.OBJECT_END + 0x0C6, // Size: 1, Flags: PUBLIC
         UNIT_FIELD_LOOKS_LIKE_MOUNT_ID                         = ObjectField.OBJECT_END + 0x0C7, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_LOOKS_LIKE_CREATURE_ID                      = ObjectField.OBJECT_END + 0x0C8, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_LOOK_AT_CONTROLLER_ID                       = ObjectField.OBJECT_END + 0x0C9, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_GUILD_GUID                                  = ObjectField.OBJECT_END + 0x0CA, // Size: 4, Flags: PUBLIC
-        UNIT_END                                               = ObjectField.OBJECT_END + 0x0CE,
+        UNIT_FIELD_LOOKS_LIKE_CREATURE_ID                      = ObjectField.OBJECT_END + 0x0C8, // Size: 1, Flags: PUBLIC*/
     }
 
     public enum UnitDynamicField
@@ -203,7 +385,7 @@
         UNIT_DYNAMIC_END                                       = ObjectDynamicField.OBJECT_DYNAMIC_END + 0x003,
     }
 
-    public enum PlayerField
+    /*public enum PlayerField
     {
         PLAYER_DUEL_ARBITER                                    = UnitField.UNIT_END + 0x000, // Size: 4, Flags: PUBLIC
         PLAYER_WOW_ACCOUNT                                     = UnitField.UNIT_END + 0x004, // Size: 4, Flags: PUBLIC
@@ -230,7 +412,7 @@
         PLAYER_FIELD_CURRENT_BATTLE_PET_BREED_QUALITY          = UnitField.UNIT_END + 0x686, // Size: 1, Flags: PUBLIC
         PLAYER_FIELD_HONOR_LEVEL                               = UnitField.UNIT_END + 0x687, // Size: 1, Flags: PUBLIC
         PLAYER_END                                             = UnitField.UNIT_END + 0x688,
-    }
+    }*/
 
     public enum PlayerDynamicField
     {
@@ -238,7 +420,7 @@
         PLAYER_DYNAMIC_END                                     = UnitDynamicField.UNIT_DYNAMIC_END + 0x001,
     }
 
-    public enum ActivePlayerField
+    /*public enum ActivePlayerField
     {
         ACTIVE_PLAYER_FIELD_INV_SLOT_HEAD                      = PlayerField.PLAYER_END + 0x000, // Size: 780, Flags: PUBLIC
         ACTIVE_PLAYER_FIELD_FARSIGHT                           = PlayerField.PLAYER_END + 0x30C, // Size: 4, Flags: PUBLIC
@@ -327,7 +509,7 @@
         ACTIVE_PLAYER_FIELD_PVP_TIER_MAX_FROM_WINS             = PlayerField.PLAYER_END + 0xF95, // Size: 1, Flags: PUBLIC
         ACTIVE_PLAYER_FIELD_PVP_LAST_WEEKS_TIER_MAX_FROM_WINS  = PlayerField.PLAYER_END + 0xF96, // Size: 1, Flags: PUBLIC
         ACTIVE_PLAYER_END                                      = PlayerField.PLAYER_END + 0xF97,
-    }
+    }*/
 
     public enum ActivePlayerDynamicField
     {
@@ -350,26 +532,40 @@
 
     public enum GameObjectField
     {
-        GAMEOBJECT_FIELD_CREATED_BY                            = ObjectField.OBJECT_END + 0x000, // Size: 4, Flags: PUBLIC
-        GAMEOBJECT_FIELD_GUILD_GUID                            = ObjectField.OBJECT_END + 0x004, // Size: 4, Flags: PUBLIC
-        GAMEOBJECT_DISPLAYID                                   = ObjectField.OBJECT_END + 0x008, // Size: 1, Flags: DYNAMIC, URGENT
-        GAMEOBJECT_FLAGS                                       = ObjectField.OBJECT_END + 0x009, // Size: 1, Flags: PUBLIC, URGENT
-        GAMEOBJECT_PARENTROTATION                              = ObjectField.OBJECT_END + 0x00A, // Size: 4, Flags: PUBLIC
-        GAMEOBJECT_FACTION                                     = ObjectField.OBJECT_END + 0x00E, // Size: 1, Flags: PUBLIC
-        GAMEOBJECT_LEVEL                                       = ObjectField.OBJECT_END + 0x00F, // Size: 1, Flags: PUBLIC
-        GAMEOBJECT_BYTES_1                                     = ObjectField.OBJECT_END + 0x010, // Size: 1, Flags: PUBLIC, URGENT
-        GAMEOBJECT_SPELL_VISUAL_ID                             = ObjectField.OBJECT_END + 0x011, // Size: 1, Flags: PUBLIC, DYNAMIC, URGENT
-        GAMEOBJECT_STATE_SPELL_VISUAL_ID                       = ObjectField.OBJECT_END + 0x012, // Size: 1, Flags: DYNAMIC, URGENT
-        GAMEOBJECT_STATE_ANIM_ID                               = ObjectField.OBJECT_END + 0x013, // Size: 1, Flags: DYNAMIC, URGENT
-        GAMEOBJECT_STATE_ANIM_KIT_ID                           = ObjectField.OBJECT_END + 0x014, // Size: 1, Flags: DYNAMIC, URGENT
-        GAMEOBJECT_STATE_WORLD_EFFECT_ID                       = ObjectField.OBJECT_END + 0x015, // Size: 4, Flags: DYNAMIC, URGENT
-        GAMEOBJECT_FIELD_CUSTOM_PARAM                          = ObjectField.OBJECT_END + 0x019, // Size: 1, Flags: PUBLIC, URGENT
-        GAMEOBJECT_END                                         = ObjectField.OBJECT_END + 0x01A,
+        [UpdateField(UpdateFieldType.Int)]
+        GAMEOBJECT_DISPLAYID                    = ObjectField.OBJECT_END + 0,
+        GAMEOBJECT_SPELL_VISUAL_ID              = ObjectField.OBJECT_END + 1,
+        GAMEOBJECT_STATE_SPELL_VISUAL_ID        = ObjectField.OBJECT_END + 2,
+        GAMEOBJECT_STATE_ANIM_ID                = ObjectField.OBJECT_END + 3,
+        GAMEOBJECT_STATE_ANIM_KIT_ID            = ObjectField.OBJECT_END + 4,
+        [UpdateField(UpdateFieldType.Uint, true)]
+        GAMEOBJECT_DYNAMIC_COUNTER_1            = ObjectField.OBJECT_END + 5,
+        GAMEOBJECT_STATE_WORLD_EFFECT_ID        = ObjectField.OBJECT_END + 6,
+        [UpdateField(UpdateFieldType.DynamicUint)]
+        GAMEOBJECT_DYNAMIC_ENABLE_DOODAD_SETS   = ObjectField.OBJECT_END + 7,
+        [UpdateField(UpdateFieldType.Guid)]
+        GAMEOBJECT_FIELD_CREATED_BY             = ObjectField.OBJECT_END + 8,
+        [UpdateField(UpdateFieldType.Guid)]
+        GAMEOBJECT_FIELD_GUILD_GUID             = ObjectField.OBJECT_END + 9,
+        GAMEOBJECT_FLAGS                        = ObjectField.OBJECT_END + 10,
+        [UpdateField(UpdateFieldType.Float)]
+        GAMEOBJECT_PARENTROTATION               = ObjectField.OBJECT_END + 11,
+        [UpdateField(UpdateFieldType.Int)]
+        GAMEOBJECT_FACTION                      = ObjectField.OBJECT_END + 15,
+        [UpdateField(UpdateFieldType.Int)]
+        GAMEOBJECT_LEVEL                        = ObjectField.OBJECT_END + 16,
+        GAMEOBJECT_BYTES_1                      = ObjectField.OBJECT_END + 17,
+        [UpdateField(UpdateFieldType.Uint, true)]
+        GAMEOBJECT_DYNAMIC_COUNTER_2            = ObjectField.OBJECT_END + 18,
+        GAMEOBJECT_FIELD_CUSTOM_PARAM           = ObjectField.OBJECT_END + 19,
+        [UpdateField(UpdateFieldType.DynamicUint)]
+        GAMEOBJECT_DYNAMIC_UNKNOWN              = ObjectField.OBJECT_END + 20,
+        GAMEOBJECT_END                          = ObjectField.OBJECT_END + 21,
     }
 
     public enum GameObjectDynamicField
     {
-        GAMEOBJECT_DYNAMIC_ENABLE_DOODAD_SETS                  = ObjectDynamicField.OBJECT_DYNAMIC_END + 0x000, // Flags: PUBLIC
+        GAMEOBJECT_DYNAMIC_ENABLE_DOODAD_SETS                  = ObjectDynamicField.OBJECT_DYNAMIC_END + 0x000,
         GAMEOBJECT_DYNAMIC_END                                 = ObjectDynamicField.OBJECT_DYNAMIC_END + 0x001,
     }
 

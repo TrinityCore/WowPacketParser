@@ -993,6 +993,7 @@ namespace WowPacketParser.Enums
     public enum GameObjectDynamicField
     {
         GAMEOBJECT_DYNAMIC_ENABLE_DOODAD_SETS,
+        GAMEOBJECT_DYNAMIC_UNKNOWN,
         GAMEOBJECT_DYNAMIC_END
     }
 
