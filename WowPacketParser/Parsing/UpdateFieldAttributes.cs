@@ -32,6 +32,9 @@ namespace WowPacketParser.Parsing
         Ulong,
         Long,
         Bytes,  // Supports variable length
+        DynamicByte,
+        DynamicShort,
+        DynamicUshort,
         DynamicUint,
         DynamicInt,
         DynamicFloat,

@@ -19,25 +19,90 @@ namespace WowPacketParserModule.V8_1_0_28724.Enums
 
     public enum ItemField
     {
-        ITEM_FIELD_OWNER                                       = ObjectField.OBJECT_END + 0x000, // Size: 4, Flags: PUBLIC
-        ITEM_FIELD_CONTAINED                                   = ObjectField.OBJECT_END + 0x004, // Size: 4, Flags: PUBLIC
-        ITEM_FIELD_CREATOR                                     = ObjectField.OBJECT_END + 0x008, // Size: 4, Flags: PUBLIC
-        ITEM_FIELD_GIFTCREATOR                                 = ObjectField.OBJECT_END + 0x00C, // Size: 4, Flags: PUBLIC
-        ITEM_FIELD_STACK_COUNT                                 = ObjectField.OBJECT_END + 0x010, // Size: 1, Flags: OWNER
-        ITEM_FIELD_DURATION                                    = ObjectField.OBJECT_END + 0x011, // Size: 1, Flags: OWNER
-        ITEM_FIELD_SPELL_CHARGES                               = ObjectField.OBJECT_END + 0x012, // Size: 5, Flags: OWNER
-        ITEM_FIELD_FLAGS                                       = ObjectField.OBJECT_END + 0x017, // Size: 1, Flags: PUBLIC
-        ITEM_FIELD_ENCHANTMENT                                 = ObjectField.OBJECT_END + 0x018, // Size: 39, Flags: PUBLIC
-        ITEM_FIELD_PROPERTY_SEED                               = ObjectField.OBJECT_END + 0x03F, // Size: 1, Flags: PUBLIC
-        ITEM_FIELD_RANDOM_PROPERTIES_ID                        = ObjectField.OBJECT_END + 0x040, // Size: 1, Flags: PUBLIC
-        ITEM_FIELD_DURABILITY                                  = ObjectField.OBJECT_END + 0x041, // Size: 1, Flags: OWNER
-        ITEM_FIELD_MAXDURABILITY                               = ObjectField.OBJECT_END + 0x042, // Size: 1, Flags: OWNER
-        ITEM_FIELD_CREATE_PLAYED_TIME                          = ObjectField.OBJECT_END + 0x043, // Size: 1, Flags: PUBLIC
-        ITEM_FIELD_MODIFIERS_MASK                              = ObjectField.OBJECT_END + 0x044, // Size: 1, Flags: OWNER
-        ITEM_FIELD_CONTEXT                                     = ObjectField.OBJECT_END + 0x045, // Size: 1, Flags: PUBLIC
-        ITEM_FIELD_ARTIFACT_XP                                 = ObjectField.OBJECT_END + 0x046, // Size: 2, Flags: OWNER
-        ITEM_FIELD_APPEARANCE_MOD_ID                           = ObjectField.OBJECT_END + 0x048, // Size: 1, Flags: OWNER
-        ITEM_END                                               = ObjectField.OBJECT_END + 0x049,
+        [UpdateField(UpdateFieldType.Uint, true)]
+        ITEM_FIELD_DYNAMIC_COUNT1                               = ObjectField.OBJECT_END + 0,
+        [UpdateField(UpdateFieldType.DynamicInt)]
+        ITEM_FIELD_DYNAMIC_1                                    = ObjectField.OBJECT_END + 1,
+        [UpdateField(UpdateFieldType.Guid)]
+        ITEM_FIELD_2                                            = ObjectField.OBJECT_END + 2,
+        [UpdateField(UpdateFieldType.Guid)]
+        ITEM_FIELD_3                                            = ObjectField.OBJECT_END + 3,
+        [UpdateField(UpdateFieldType.Guid)]
+        ITEM_FIELD_4                                            = ObjectField.OBJECT_END + 4,
+        [UpdateField(UpdateFieldType.Guid)]
+        ITEM_FIELD_5                                            = ObjectField.OBJECT_END + 5,
+        [UpdateField(UpdateFieldType.Uint, UpdateFieldCreateFlag.Unk1)]
+        ITEM_FIELD_6                                            = ObjectField.OBJECT_END + 6,
+        [UpdateField(UpdateFieldType.Uint)]
+        ITEM_FIELD_7                                            = ObjectField.OBJECT_END + 7,
+
+        // ArraySize 5
+        [UpdateField(UpdateFieldType.Int)]
+        ITEM_FIELD_8                                            = ObjectField.OBJECT_END + 8,
+
+        [UpdateField(UpdateFieldType.Uint)]
+        ITEM_FIELD_13                                           = ObjectField.OBJECT_END + 13,
+
+        // ArraySize 13
+        [UpdateField(UpdateFieldType.Int, 1)]
+        ITEM_FIELD_14                                           = ObjectField.OBJECT_END + 14,
+        [UpdateField(UpdateFieldType.Uint, 1)]
+        ITEM_FIELD_15                                           = ObjectField.OBJECT_END + 15,
+        [UpdateField(UpdateFieldType.Short, 1)]
+        ITEM_FIELD_16                                           = ObjectField.OBJECT_END + 16,
+        [UpdateField(UpdateFieldType.Ushort, 1)]
+        ITEM_FIELD_17                                           = ObjectField.OBJECT_END + 17,
+
+        [UpdateField(UpdateFieldType.Int)]
+        ITEM_FIELD_66                                           = ObjectField.OBJECT_END + 66,
+        [UpdateField(UpdateFieldType.Int)]
+        ITEM_FIELD_67                                           = ObjectField.OBJECT_END + 67,
+        [UpdateField(UpdateFieldType.Uint, UpdateFieldCreateFlag.Unk1)]
+        ITEM_FIELD_68                                           = ObjectField.OBJECT_END + 68,
+        [UpdateField(UpdateFieldType.Uint, UpdateFieldCreateFlag.Unk1)]
+        ITEM_FIELD_69                                           = ObjectField.OBJECT_END + 69,
+        [UpdateField(UpdateFieldType.Uint)]
+        ITEM_FIELD_70                                           = ObjectField.OBJECT_END + 70,
+        [UpdateField(UpdateFieldType.Uint, UpdateFieldCreateFlag.Unk1)]
+        ITEM_FIELD_71                                           = ObjectField.OBJECT_END + 71,
+        [UpdateField(UpdateFieldType.Int)]
+        ITEM_FIELD_72                                           = ObjectField.OBJECT_END + 72,
+        [UpdateField(UpdateFieldType.Ulong, UpdateFieldCreateFlag.Unk1)]
+        ITEM_FIELD_73                                           = ObjectField.OBJECT_END + 73,
+        [UpdateField(UpdateFieldType.Byte, UpdateFieldCreateFlag.Unk1)]
+        ITEM_FIELD_74                                           = ObjectField.OBJECT_END + 74,
+        [UpdateField(UpdateFieldType.Uint, true)]
+        ITEM_FIELD_DYNAMIC_COUNT2                               = ObjectField.OBJECT_END + 75,
+        [UpdateField(UpdateFieldType.Uint, true)]
+        ITEM_FIELD_DYNAMIC_COUNT3                               = ObjectField.OBJECT_END + 76,
+        [UpdateField(UpdateFieldType.Uint, true)]
+        ITEM_FIELD_DYNAMIC_COUNT4                               = ObjectField.OBJECT_END + 77,
+        [UpdateField(UpdateFieldType.Uint, UpdateFieldCreateFlag.Unk1)]
+        ITEM_FIELD_78                                           = ObjectField.OBJECT_END + 78,
+
+        // DynamicArray
+        [UpdateField(UpdateFieldType.DynamicInt)]
+        ITEM_FIELD_DYNAMIC_2                                    = ObjectField.OBJECT_END + 79,
+
+        // DynamicArray
+        [UpdateField(UpdateFieldType.DynamicShort, 2)]
+        ITEM_FIELD_DYNAMIC_3                                    = ObjectField.OBJECT_END + 80,
+        [UpdateField(UpdateFieldType.DynamicByte, 2)]
+        ITEM_FIELD_DYNAMIC_4                                    = ObjectField.OBJECT_END + 81,
+        [UpdateField(UpdateFieldType.DynamicByte, 2)]
+        ITEM_FIELD_DYNAMIC_5                                    = ObjectField.OBJECT_END + 82,
+
+        // DynamicArray with substructure
+        [UpdateField(UpdateFieldType.DynamicInt, 3)]
+        ITEM_FIELD_DYNAMIC_6                                    = ObjectField.OBJECT_END + 83,
+        // ArraySize 13 substructure
+        [UpdateField(UpdateFieldType.DynamicShort, 3)]
+        ITEM_FIELD_DYNAMIC_7                                    = ObjectField.OBJECT_END + 84,
+
+        [UpdateField(UpdateFieldType.DynamicByte, 3)]
+        ITEM_FIELD_DYNAMIC_8                                    = ObjectField.OBJECT_END + 97,
+
+        ITEM_END                                                = ObjectField.OBJECT_END + 98,
     }
 
     public enum ItemDynamicField
@@ -63,8 +128,9 @@ namespace WowPacketParserModule.V8_1_0_28724.Enums
 
     public enum AzeriteEmpoweredItemField
     {
-        AZERITE_EMPOWERED_ITEM_FIELD_SELECTIONS                = ItemField.ITEM_END + 0x000, // Size: 4, Flags: PUBLIC
-        AZERITE_EMPOWERED_ITEM_END                             = ItemField.ITEM_END + 0x004,
+        [UpdateField(UpdateFieldType.Int)]
+        AZERITE_EMPOWERED_ITEM_FIELD_SELECTIONS                = ItemField.ITEM_END + 0,
+        AZERITE_EMPOWERED_ITEM_END                             = ItemField.ITEM_END + 6,
     }
 
     public enum AzeriteEmpoweredItemDynamicField
@@ -74,12 +140,15 @@ namespace WowPacketParserModule.V8_1_0_28724.Enums
 
     public enum AzeriteItemField
     {
-        AZERITE_ITEM_FIELD_XP                                  = ItemField.ITEM_END + 0x000, // Size: 2, Flags: PUBLIC
-        AZERITE_ITEM_FIELD_LEVEL                               = ItemField.ITEM_END + 0x002, // Size: 1, Flags: PUBLIC
-        AZERITE_ITEM_FIELD_AURA_LEVEL                          = ItemField.ITEM_END + 0x003, // Size: 1, Flags: PUBLIC
-        AZERITE_ITEM_FIELD_KNOWLEDGE_LEVEL                     = ItemField.ITEM_END + 0x004, // Size: 1, Flags: OWNER
-        AZERITE_ITEM_FIELD_DEBUG_KNOWLEDGE_WEEK                = ItemField.ITEM_END + 0x005, // Size: 1, Flags: OWNER
-        AZERITE_ITEM_END                                       = ItemField.ITEM_END + 0x006,
+        [UpdateField(UpdateFieldType.Ulong)]
+        AZERITE_ITEM_FIELD_XP                                  = ItemField.ITEM_END + 0,
+        AZERITE_ITEM_FIELD_LEVEL                               = ItemField.ITEM_END + 1,
+        AZERITE_ITEM_FIELD_AURA_LEVEL                          = ItemField.ITEM_END + 2,
+        [UpdateField(UpdateFieldType.Uint, UpdateFieldCreateFlag.Unk1)]
+        AZERITE_ITEM_FIELD_KNOWLEDGE_LEVEL                     = ItemField.ITEM_END + 3,
+        [UpdateField(UpdateFieldType.Uint, UpdateFieldCreateFlag.Unk1)]
+        AZERITE_ITEM_FIELD_DEBUG_KNOWLEDGE_WEEK                = ItemField.ITEM_END + 4,
+        AZERITE_ITEM_END                                       = ItemField.ITEM_END + 5,
     }
 
     public enum AzeriteItemDynamicField

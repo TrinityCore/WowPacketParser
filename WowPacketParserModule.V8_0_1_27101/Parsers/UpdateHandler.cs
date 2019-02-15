@@ -271,6 +271,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     {
                         switch (fieldInfo.Format)
                         {
+                            case UpdateFieldType.Byte:
+                            case UpdateFieldType.Ushort:
+                            case UpdateFieldType.Short:
                             case UpdateFieldType.DynamicUint:
                             case UpdateFieldType.DynamicInt:
                             case UpdateFieldType.DynamicFloat:
@@ -356,6 +359,54 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                         {
                             switch (arrayInfo.Format)
                             {
+                                case UpdateFieldType.DynamicByte:
+                                    {
+                                        if (dynDict.ContainsKey(arrayInfo.Value))
+                                        {
+                                            var value = packet.ReadByte(arrayIndex > 0 ? arrayInfo.Name + " + " + arrayIndex : arrayInfo.Name, index);
+                                            dynDict[arrayInfo.Value].Add(new UpdateField(value));
+                                        }
+                                        else
+                                        {
+                                            var store = new List<UpdateField>();
+                                            var value = packet.ReadByte(arrayIndex > 0 ? arrayInfo.Name + " + " + arrayIndex : arrayInfo.Name, index);
+                                            store.Add(new UpdateField(value));
+                                            dynDict.Add(arrayInfo.Value, store);
+                                        }
+                                        break;
+                                    }
+                                case UpdateFieldType.DynamicShort:
+                                    {
+                                        if (dynDict.ContainsKey(arrayInfo.Value))
+                                        {
+                                            var value = packet.ReadInt16(arrayIndex > 0 ? arrayInfo.Name + " + " + arrayIndex : arrayInfo.Name, index);
+                                            dynDict[arrayInfo.Value].Add(new UpdateField(value));
+                                        }
+                                        else
+                                        {
+                                            var store = new List<UpdateField>();
+                                            var value = packet.ReadInt16(arrayIndex > 0 ? arrayInfo.Name + " + " + arrayIndex : arrayInfo.Name, index);
+                                            store.Add(new UpdateField(value));
+                                            dynDict.Add(arrayInfo.Value, store);
+                                        }
+                                        break;
+                                    }
+                                case UpdateFieldType.DynamicUshort:
+                                    {
+                                        if (dynDict.ContainsKey(arrayInfo.Value))
+                                        {
+                                            var value = packet.ReadUInt16(arrayIndex > 0 ? arrayInfo.Name + " + " + arrayIndex : arrayInfo.Name, index);
+                                            dynDict[arrayInfo.Value].Add(new UpdateField(value));
+                                        }
+                                        else
+                                        {
+                                            var store = new List<UpdateField>();
+                                            var value = packet.ReadUInt16(arrayIndex > 0 ? arrayInfo.Name + " + " + arrayIndex : arrayInfo.Name, index);
+                                            store.Add(new UpdateField(value));
+                                            dynDict.Add(arrayInfo.Value, store);
+                                        }
+                                        break;
+                                    }
                                 case UpdateFieldType.DynamicUint:
                                     {
                                         if (dynDict.ContainsKey(arrayInfo.Value))
@@ -368,7 +419,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                                             var store = new List<UpdateField>();
                                             var value = packet.ReadUInt32(arrayIndex > 0 ? arrayInfo.Name + " + " + arrayIndex : arrayInfo.Name, index);
                                             store.Add(new UpdateField(value));
-                                            dynDict.Add(i, store);
+                                            dynDict.Add(arrayInfo.Value, store);
                                         }
                                         break;
                                     }
@@ -384,7 +435,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                                             var store = new List<UpdateField>();
                                             var value = packet.ReadInt32(arrayIndex > 0 ? arrayInfo.Name + " + " + arrayIndex : arrayInfo.Name, index);
                                             store.Add(new UpdateField(value));
-                                            dynDict.Add(i, store);
+                                            dynDict.Add(arrayInfo.Value, store);
                                         }
                                         break;
                                     }
@@ -400,7 +451,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                                             var store = new List<UpdateField>();
                                             var value = packet.ReadSingle(arrayIndex > 0 ? arrayInfo.Name + " + " + arrayIndex : arrayInfo.Name, index);
                                             store.Add(new UpdateField(value));
-                                            dynDict.Add(i, store);
+                                            dynDict.Add(arrayInfo.Value, store);
                                         }
                                         break;
                                     }
@@ -416,7 +467,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                                             var store = new List<UpdateField>();
                                             var value = packet.ReadPackedGuid128(arrayIndex > 0 ? arrayInfo.Name + " + " + arrayIndex : arrayInfo.Name, index);
                                             store.Add(new UpdateField(0));
-                                            dynDict.Add(i, store);
+                                            dynDict.Add(arrayInfo.Value, store);
                                         }
                                         break;
                                     }
@@ -579,6 +630,54 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                                 }
                                 break;
                             }
+                        case UpdateFieldType.DynamicByte:
+                            {
+                                if (!isArray)
+                                {
+                                    var count = dynamicCounterStore[0];
+                                    var store = new List<UpdateField>();
+                                    for (int k = 0; k < count; ++k)
+                                    {
+                                        var value = packet.ReadByte(count > 1 ? key + " + " + k : key, index);
+                                        store.Add(new UpdateField(value));
+                                    }
+                                    dynDict.Add(i, store);
+                                    dynamicCounterStore.RemoveAt(0);
+                                }
+                                break;
+                            }
+                        case UpdateFieldType.DynamicUshort:
+                            {
+                                if (!isArray)
+                                {
+                                    var count = dynamicCounterStore[0];
+                                    var store = new List<UpdateField>();
+                                    for (int k = 0; k < count; ++k)
+                                    {
+                                        var value = packet.ReadUInt16(count > 1 ? key + " + " + k : key, index);
+                                        store.Add(new UpdateField(value));
+                                    }
+                                    dynDict.Add(i, store);
+                                    dynamicCounterStore.RemoveAt(0);
+                                }
+                                break;
+                            }
+                        case UpdateFieldType.DynamicShort:
+                            {
+                                if (!isArray)
+                                {
+                                    var count = dynamicCounterStore[0];
+                                    var store = new List<UpdateField>();
+                                    for (int k = 0; k < count; ++k)
+                                    {
+                                        var value = packet.ReadInt16(count > 1 ? key + " + " + k : key, index);
+                                        store.Add(new UpdateField(value));
+                                    }
+                                    dynDict.Add(i, store);
+                                    dynamicCounterStore.RemoveAt(0);
+                                }
+                                break;
+                            }
                         case UpdateFieldType.DynamicUint:
                             {
                                 if (!isArray)
@@ -588,6 +687,22 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                                     for (int k = 0; k < count; ++k)
                                     {
                                         var value = packet.ReadUInt32(count > 1 ? key + " + " + k : key, index);
+                                        store.Add(new UpdateField(value));
+                                    }
+                                    dynDict.Add(i, store);
+                                    dynamicCounterStore.RemoveAt(0);
+                                }
+                                break;
+                            }
+                        case UpdateFieldType.DynamicInt:
+                            {
+                                if (!isArray)
+                                {
+                                    var count = dynamicCounterStore[0];
+                                    var store = new List<UpdateField>();
+                                    for (int k = 0; k < count; ++k)
+                                    {
+                                        var value = packet.ReadInt32(count > 1 ? key + " + " + k : key, index);
                                         store.Add(new UpdateField(value));
                                     }
                                     dynDict.Add(i, store);
