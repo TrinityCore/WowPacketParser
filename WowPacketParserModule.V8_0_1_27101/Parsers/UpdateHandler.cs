@@ -614,6 +614,20 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                                 }
                                 break;
                             }
+                        case UpdateFieldType.Long:
+                            {
+                                if (isArray)
+                                {
+                                    dict.Add(i, new UpdateField(packet.ReadInt64(key + " + " + currentArrayIndex, index)));
+                                    currentArrayPosition++;
+                                }
+                                else
+                                {
+                                    var value = packet.ReadInt64(key, index);
+                                    dict.Add(i, new UpdateField(value));
+                                }
+                                break;
+                            }
                         case UpdateFieldType.Bytes:
                             {
                                 if (isArray)
