@@ -97,7 +97,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     }
                 case ObjectType.Unit:
                     {
-                        fieldCount = UpdateFields.GetUpdateField(UnitField.UNIT_END);
+                        fieldCount = UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_END);
                         break;
                     }
                 case ObjectType.GameObject:
