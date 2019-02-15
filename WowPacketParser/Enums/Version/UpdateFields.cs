@@ -91,31 +91,23 @@ namespace WowPacketParser.Enums.Version
                         .Select(attribute => ((UpdateFieldAttribute)attribute).UFAttribute)
                         .DefaultIfEmpty(UpdateFieldType.Default).First();
 
-                    var vFormat = vEnumType.GetMember(vNames[i])
+                    var vAttribute = vEnumType.GetMember(vNames[i])
                         .SelectMany(member => member.GetCustomAttributes(typeof(UpdateFieldAttribute), false))
                         .Where(attribute => ((UpdateFieldAttribute)attribute).Version <= ClientVersion.VersionDefiningBuild)
-                        .OrderByDescending(attribute => ((UpdateFieldAttribute)attribute).Version)
-                        .Select(attribute => ((UpdateFieldAttribute)attribute).UFAttribute)
+                        .OrderByDescending(attribute => ((UpdateFieldAttribute)attribute).Version);
+
+                    var vFormat = vAttribute.Select(attribute => ((UpdateFieldAttribute)attribute).UFAttribute)
                         .DefaultIfEmpty(UpdateFieldType.Default).First();
 
-                    var vArrayGroup = vEnumType.GetMember(vNames[i])
-                        .SelectMany(member => member.GetCustomAttributes(typeof(UpdateFieldAttribute), false))
-                        .Where(attribute => ((UpdateFieldAttribute)attribute).Version <= ClientVersion.VersionDefiningBuild)
-                        .OrderByDescending(attribute => ((UpdateFieldAttribute)attribute).Version)
+                    var vArrayGroup = vAttribute
                         .Select(attribute => ((UpdateFieldAttribute)attribute).ArrayGroup)
                         .DefaultIfEmpty(0).First();
 
-                    var vIsDynamicCounter = vEnumType.GetMember(vNames[i])
-                        .SelectMany(member => member.GetCustomAttributes(typeof(UpdateFieldAttribute), false))
-                        .Where(attribute => ((UpdateFieldAttribute)attribute).Version <= ClientVersion.VersionDefiningBuild)
-                        .OrderByDescending(attribute => ((UpdateFieldAttribute)attribute).Version)
+                    var vIsDynamicCounter = vAttribute
                         .Select(attribute => ((UpdateFieldAttribute)attribute).IsDynamicCounter)
                         .DefaultIfEmpty(false).First();
 
-                    var vUpdateFieldCreateFlag = vEnumType.GetMember(vNames[i])
-                        .SelectMany(member => member.GetCustomAttributes(typeof(UpdateFieldAttribute), false))
-                        .Where(attribute => ((UpdateFieldAttribute)attribute).Version <= ClientVersion.VersionDefiningBuild)
-                        .OrderByDescending(attribute => ((UpdateFieldAttribute)attribute).Version)
+                    var vUpdateFieldCreateFlag = vAttribute
                         .Select(attribute => ((UpdateFieldAttribute)attribute).Flag)
                         .DefaultIfEmpty(UpdateFieldCreateFlag.None).First();
 
