@@ -91,7 +91,7 @@ namespace WowPacketParserModule.V8_1_0_28724.Enums
     {
         [UpdateField(UpdateFieldType.Int)]
         UNIT_FIELD_DISPLAYID                                = ObjectField.OBJECT_END + 0,
-        // loop 2
+        // ArraySize 2
         [UpdateField(UpdateFieldType.Uint)]
         UNIT_FIELD_1                                        = ObjectField.OBJECT_END + 1,
 
@@ -141,21 +141,21 @@ namespace WowPacketParserModule.V8_1_0_28724.Enums
         UNIT_FIELD_DISPLAY_POWER                            = ObjectField.OBJECT_END + 24,
         [UpdateField(UpdateFieldType.Uint)]
         UNIT_FIELD_25                                       = ObjectField.OBJECT_END + 25,
-        [UpdateField(UpdateFieldType.Ulong)] //long
+        [UpdateField(UpdateFieldType.Long)]
         UNIT_FIELD_HEALTH                                   = ObjectField.OBJECT_END + 26,
-        // loop 6
+        // ArraySize 6
         [UpdateField(UpdateFieldType.Int, 2)]
         UNIT_FIELD_POWER                                    = ObjectField.OBJECT_END + 27,
         [UpdateField(UpdateFieldType.Int, 2)]
         UNIT_FIELD_MAXPOWER                                 = ObjectField.OBJECT_END + 28,
 
-        // loop 6
+        // ArraySize 6
         [UpdateField(UpdateFieldType.Float, 3, UpdateFieldCreateFlag.Unk1 | UpdateFieldCreateFlag.Unk4)] //flags
         UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER                = ObjectField.OBJECT_END + 39,
         [UpdateField(UpdateFieldType.Float, 3, UpdateFieldCreateFlag.Unk1 | UpdateFieldCreateFlag.Unk4)] //flags
         UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER    = ObjectField.OBJECT_END + 40,
 
-        [UpdateField(UpdateFieldType.Ulong)]//long
+        [UpdateField(UpdateFieldType.Long)]
         UNIT_FIELD_MAXHEALTH                                = ObjectField.OBJECT_END + 51,
         [UpdateField(UpdateFieldType.Int)]
         UNIT_FIELD_LEVEL                                    = ObjectField.OBJECT_END + 52,
@@ -177,7 +177,7 @@ namespace WowPacketParserModule.V8_1_0_28724.Enums
         UNIT_FIELD_SCALING_DAMAGE_ITEM_LEVEL_CURVE_ID       = ObjectField.OBJECT_END + 60,
         [UpdateField(UpdateFieldType.Int)]
         UNIT_FIELD_FACTIONTEMPLATE                          = ObjectField.OBJECT_END + 61,
-        // loop 3
+        // ArraySize 3
         [UpdateField(UpdateFieldType.Int, 4)]
         UNIT_FIELD_62                                       = ObjectField.OBJECT_END + 62,
         [UpdateField(UpdateFieldType.Ushort, 4)]
@@ -194,7 +194,7 @@ namespace WowPacketParserModule.V8_1_0_28724.Enums
         [UpdateField(UpdateFieldType.Uint)]
         UNIT_FIELD_AURASTATE                                = ObjectField.OBJECT_END + 74,
 
-        // loop 2
+        // ArraySize 2
         [UpdateField(UpdateFieldType.Uint)]
         UNIT_FIELD_BASEATTACKTIME                           = ObjectField.OBJECT_END + 75,
 
@@ -249,24 +249,24 @@ namespace WowPacketParserModule.V8_1_0_28724.Enums
         [UpdateField(UpdateFieldType.Int)]
         UNIT_FIELD_NPC_EMOTESTATE                           = ObjectField.OBJECT_END + 101,
 
-        // loop 4
-        [UpdateField(UpdateFieldType.Int, 6, UpdateFieldCreateFlag.Unk1)]
+        // ArraySize 4
+        [UpdateField(UpdateFieldType.Int, 5, UpdateFieldCreateFlag.Unk1)]
         UNIT_FIELD_STAT                                     = ObjectField.OBJECT_END + 102,
-        [UpdateField(UpdateFieldType.Int, 7, UpdateFieldCreateFlag.Unk1)]
+        [UpdateField(UpdateFieldType.Int, 5, UpdateFieldCreateFlag.Unk1)]
         UNIT_FIELD_POSSTAT                                  = ObjectField.OBJECT_END + 103,
-        [UpdateField(UpdateFieldType.Int, 8, UpdateFieldCreateFlag.Unk1)]
+        [UpdateField(UpdateFieldType.Int, 5, UpdateFieldCreateFlag.Unk1)]
         UNIT_FIELD_NEGSTAT                                  = ObjectField.OBJECT_END + 104,
 
-        // loop 7
+        // ArraySize 7
         [UpdateField(UpdateFieldType.Int, UpdateFieldCreateFlag.Unk1 | UpdateFieldCreateFlag.Unk8)]
         UNIT_FIELD_RESISTANCES                              = ObjectField.OBJECT_END + 114,
 
-        // loop 7
-        [UpdateField(UpdateFieldType.Int, UpdateFieldCreateFlag.Unk1)]
+        // ArraySize 7
+        [UpdateField(UpdateFieldType.Int, 6, UpdateFieldCreateFlag.Unk1)]
         UNIT_FIELD_BONUS_RESISTANCE_MODS                    = ObjectField.OBJECT_END + 121,
-        [UpdateField(UpdateFieldType.Int, UpdateFieldCreateFlag.Unk1)]
+        [UpdateField(UpdateFieldType.Int, 6, UpdateFieldCreateFlag.Unk1)]
         UNIT_FIELD_POWER_COST_MODIFIER                      = ObjectField.OBJECT_END + 122,
-        [UpdateField(UpdateFieldType.Float, UpdateFieldCreateFlag.Unk1)]
+        [UpdateField(UpdateFieldType.Float, 6, UpdateFieldCreateFlag.Unk1)]
         UNIT_FIELD_POWER_COST_MULTIPLIER                    = ObjectField.OBJECT_END + 123,
 
         [UpdateField(UpdateFieldType.Int)]
@@ -343,38 +343,21 @@ namespace WowPacketParserModule.V8_1_0_28724.Enums
         [UpdateField(UpdateFieldType.Int, true)]
         UNIT_DYNAMICFIELD_COUNT4                            = ObjectField.OBJECT_END + 177,
 
-        //// DynamicField
-        //[UpdateField(UpdateFieldType.Int)]
-        //[UpdateField(UpdateFieldType.Int)]
-        //
-        //// DynamicField
-        //[UpdateField(UpdateFieldType.Int)]
-        //
-        //// DynamicField
-        //[UpdateField(UpdateFieldType.Guid)]
+        //// DynamicField ArraySize UNIT_DYNAMICFIELD_COUNT2
+        [UpdateField(UpdateFieldType.DynamicInt, 7)]
+        UNIT_DYNAMIC_2                                      = ObjectField.OBJECT_END + 178,
+        [UpdateField(UpdateFieldType.DynamicInt, 7)]
+        UNIT_DYNAMIC_3                                      = ObjectField.OBJECT_END + 179,
 
-        UNIT_END                                            = ObjectField.OBJECT_END + 184,
+        //// DynamicField ArraySize UNIT_DYNAMICFIELD_COUNT3
+        [UpdateField(UpdateFieldType.DynamicInt, 8)]
+        UNIT_DYNAMIC_4                                      = ObjectField.OBJECT_END + 180,
 
-        
-        /*UNIT_FIELD_BATTLE_PET_DB_ID                            = ObjectField.OBJECT_END + 0x028, // Size: 2, Flags: PUBLIC
-        UNIT_FIELD_CHANNEL_DATA                                = ObjectField.OBJECT_END + 0x02A, // Size: 2, Flags: PUBLIC, URGENT
-        UNIT_FIELD_SUMMONED_BY_HOME_REALM                      = ObjectField.OBJECT_END + 0x02C, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_OVERRIDE_DISPLAY_POWER_ID                   = ObjectField.OBJECT_END + 0x02F, // Size: 1, Flags: PUBLIC
-        UNIT_VIRTUAL_ITEM_SLOT_ID                              = ObjectField.OBJECT_END + 0x056, // Size: 6, Flags: PUBLIC
-        UNIT_FIELD_MOUNTDISPLAYID                              = ObjectField.OBJECT_END + 0x069, // Size: 1, Flags: PUBLIC, URGENT
-        UNIT_FIELD_MIN_ITEM_LEVEL_CUTOFF                       = ObjectField.OBJECT_END + 0x0B9, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_MIN_ITEM_LEVEL                              = ObjectField.OBJECT_END + 0x0BA, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_MAXITEMLEVEL                                = ObjectField.OBJECT_END + 0x0BB, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_WILD_BATTLEPET_LEVEL                        = ObjectField.OBJECT_END + 0x0BC, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_BATTLEPET_COMPANION_NAME_TIMESTAMP          = ObjectField.OBJECT_END + 0x0BD, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_INTERACT_SPELLID                            = ObjectField.OBJECT_END + 0x0BE, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_STATE_SPELL_VISUAL_ID                       = ObjectField.OBJECT_END + 0x0BF, // Size: 1, Flags: DYNAMIC, URGENT
-        UNIT_FIELD_STATE_ANIM_ID                               = ObjectField.OBJECT_END + 0x0C0, // Size: 1, Flags: DYNAMIC, URGENT
-        UNIT_FIELD_STATE_ANIM_KIT_ID                           = ObjectField.OBJECT_END + 0x0C1, // Size: 1, Flags: DYNAMIC, URGENT
-        UNIT_FIELD_STATE_WORLD_EFFECT_ID                       = ObjectField.OBJECT_END + 0x0C2, // Size: 4, Flags: DYNAMIC, URGENT
-        UNIT_FIELD_SCALE_DURATION                              = ObjectField.OBJECT_END + 0x0C6, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_LOOKS_LIKE_MOUNT_ID                         = ObjectField.OBJECT_END + 0x0C7, // Size: 1, Flags: PUBLIC
-        UNIT_FIELD_LOOKS_LIKE_CREATURE_ID                      = ObjectField.OBJECT_END + 0x0C8, // Size: 1, Flags: PUBLIC*/
+        //// DynamicField ArraySize UNIT_DYNAMICFIELD_COUNT4
+        [UpdateField(UpdateFieldType.DynamicGuid, 9)]
+        UNIT_DYNAMIC_5                                      = ObjectField.OBJECT_END + 181,
+
+        UNIT_END                                            = ObjectField.OBJECT_END + 182,
     }
 
     public enum UnitDynamicField
