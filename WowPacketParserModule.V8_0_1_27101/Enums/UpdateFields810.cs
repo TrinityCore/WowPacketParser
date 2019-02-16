@@ -660,20 +660,70 @@ namespace WowPacketParserModule.V8_1_0_28724.Enums
 
     public enum AreaTriggerField
     {
-        AREATRIGGER_OVERRIDE_SCALE_CURVE                       = ObjectField.OBJECT_END + 0x000, // Size: 7, Flags: PUBLIC, URGENT
-        AREATRIGGER_EXTRA_SCALE_CURVE                          = ObjectField.OBJECT_END + 0x007, // Size: 7, Flags: PUBLIC, URGENT
-        AREATRIGGER_CASTER                                     = ObjectField.OBJECT_END + 0x00E, // Size: 4, Flags: PUBLIC
-        AREATRIGGER_DURATION                                   = ObjectField.OBJECT_END + 0x012, // Size: 1, Flags: PUBLIC
-        AREATRIGGER_TIME_TO_TARGET                             = ObjectField.OBJECT_END + 0x013, // Size: 1, Flags: PUBLIC, URGENT
-        AREATRIGGER_TIME_TO_TARGET_SCALE                       = ObjectField.OBJECT_END + 0x014, // Size: 1, Flags: PUBLIC, URGENT
-        AREATRIGGER_TIME_TO_TARGET_EXTRA_SCALE                 = ObjectField.OBJECT_END + 0x015, // Size: 1, Flags: PUBLIC, URGENT
-        AREATRIGGER_SPELLID                                    = ObjectField.OBJECT_END + 0x016, // Size: 1, Flags: PUBLIC
-        AREATRIGGER_SPELL_FOR_VISUALS                          = ObjectField.OBJECT_END + 0x017, // Size: 1, Flags: PUBLIC
-        AREATRIGGER_SPELL_X_SPELL_VISUAL_ID                    = ObjectField.OBJECT_END + 0x018, // Size: 1, Flags: PUBLIC
-        AREATRIGGER_BOUNDS_RADIUS_2D                           = ObjectField.OBJECT_END + 0x019, // Size: 1, Flags: DYNAMIC, URGENT
-        AREATRIGGER_DECAL_PROPERTIES_ID                        = ObjectField.OBJECT_END + 0x01A, // Size: 1, Flags: PUBLIC
-        AREATRIGGER_CREATING_EFFECT_GUID                       = ObjectField.OBJECT_END + 0x01B, // Size: 4, Flags: PUBLIC
-        AREATRIGGER_END                                        = ObjectField.OBJECT_END + 0x01F,
+        [UpdateField(UpdateFieldType.Uint)]
+        AREATRIGGER_FIELD_0 = ObjectField.OBJECT_END + 0,
+        // ArraySize2
+        [UpdateField(UpdateFieldType.Float, UpdateFieldArrayInfo.InfoStart)]
+        AREATRIGGER_FIELD_1 = ObjectField.OBJECT_END + 1,
+        [UpdateField(UpdateFieldType.Float, UpdateFieldArrayInfo.InfoEnd)]
+        AREATRIGGER_FIELD_2 = ObjectField.OBJECT_END + 2,
+
+        [UpdateField(UpdateFieldType.Uint)]
+        AREATRIGGER_FIELD_5 = ObjectField.OBJECT_END + 5,
+        //2 ReadBit
+        [UpdateField(UpdateFieldType.Byte)]
+        AREATRIGGER_FIELD_6 = ObjectField.OBJECT_END + 6,
+        [UpdateField(UpdateFieldType.Guid)]
+        AREATRIGGER_CASTER = ObjectField.OBJECT_END + 7,
+        [UpdateField(UpdateFieldType.Uint)]
+        AREATRIGGER_FIELD_8 = ObjectField.OBJECT_END + 8,
+        [UpdateField(UpdateFieldType.Uint)]
+        AREATRIGGER_FIELD_9 = ObjectField.OBJECT_END + 9,
+        [UpdateField(UpdateFieldType.Uint)]
+        AREATRIGGER_FIELD_10 = ObjectField.OBJECT_END + 10,
+        [UpdateField(UpdateFieldType.Uint)]
+        AREATRIGGER_FIELD_11 = ObjectField.OBJECT_END + 11,
+        [UpdateField(UpdateFieldType.Int)]
+        AREATRIGGER_FIELD_12 = ObjectField.OBJECT_END + 12,
+        [UpdateField(UpdateFieldType.Int)]
+        AREATRIGGER_FIELD_13 = ObjectField.OBJECT_END + 13,
+        [UpdateField(UpdateFieldType.Int)]
+        AREATRIGGER_FIELD_14 = ObjectField.OBJECT_END + 14,
+        [UpdateField(UpdateFieldType.Float)]
+        AREATRIGGER_FIELD_15 = ObjectField.OBJECT_END + 15,
+        [UpdateField(UpdateFieldType.Uint)]
+        AREATRIGGER_FIELD_16 = ObjectField.OBJECT_END + 16,
+        [UpdateField(UpdateFieldType.Guid)]
+        AREATRIGGER_CREATING_EFFECT_GUID = ObjectField.OBJECT_END + 17,
+        [UpdateField(UpdateFieldType.Uint)]
+        AREATRIGGER_FIELD_18 = ObjectField.OBJECT_END + 18,
+        // ArraySize2
+        [UpdateField(UpdateFieldType.Float, UpdateFieldArrayInfo.InfoStart)]
+        AREATRIGGER_FIELD_19 = ObjectField.OBJECT_END + 19,
+        [UpdateField(UpdateFieldType.Float, UpdateFieldArrayInfo.InfoEnd)]
+        AREATRIGGER_FIELD_20 = ObjectField.OBJECT_END + 20,
+
+        [UpdateField(UpdateFieldType.Uint)]
+        AREATRIGGER_FIELD_23 = ObjectField.OBJECT_END + 23,
+        // 2 ReadBit
+        [UpdateField(UpdateFieldType.Byte)]
+        AREATRIGGER_FIELD_24 = ObjectField.OBJECT_END + 24,
+
+        AREATRIGGER_END = ObjectField.OBJECT_END + 25,
+        //AREATRIGGER_OVERRIDE_SCALE_CURVE                       = ObjectField.OBJECT_END + 0x000, // Size: 7, Flags: PUBLIC, URGENT
+        //AREATRIGGER_EXTRA_SCALE_CURVE                          = ObjectField.OBJECT_END + 0x007, // Size: 7, Flags: PUBLIC, URGENT
+        //AREATRIGGER_CASTER                                     = ObjectField.OBJECT_END + 0x00E, // Size: 4, Flags: PUBLIC
+        //AREATRIGGER_DURATION                                   = ObjectField.OBJECT_END + 0x012, // Size: 1, Flags: PUBLIC
+        //AREATRIGGER_TIME_TO_TARGET                             = ObjectField.OBJECT_END + 0x013, // Size: 1, Flags: PUBLIC, URGENT
+        //AREATRIGGER_TIME_TO_TARGET_SCALE                       = ObjectField.OBJECT_END + 0x014, // Size: 1, Flags: PUBLIC, URGENT
+        //AREATRIGGER_TIME_TO_TARGET_EXTRA_SCALE                 = ObjectField.OBJECT_END + 0x015, // Size: 1, Flags: PUBLIC, URGENT
+        //AREATRIGGER_SPELLID                                    = ObjectField.OBJECT_END + 0x016, // Size: 1, Flags: PUBLIC
+        //AREATRIGGER_SPELL_FOR_VISUALS                          = ObjectField.OBJECT_END + 0x017, // Size: 1, Flags: PUBLIC
+        //AREATRIGGER_SPELL_X_SPELL_VISUAL_ID                    = ObjectField.OBJECT_END + 0x018, // Size: 1, Flags: PUBLIC
+        //AREATRIGGER_BOUNDS_RADIUS_2D                           = ObjectField.OBJECT_END + 0x019, // Size: 1, Flags: DYNAMIC, URGENT
+        //AREATRIGGER_DECAL_PROPERTIES_ID                        = ObjectField.OBJECT_END + 0x01A, // Size: 1, Flags: PUBLIC
+        //AREATRIGGER_CREATING_EFFECT_GUID                       = ObjectField.OBJECT_END + 0x01B, // Size: 4, Flags: PUBLIC
+        //AREATRIGGER_END                                        = ObjectField.OBJECT_END + 0x01F,
     }
 
     public enum AreaTriggerDynamicField
