@@ -139,10 +139,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             int maxArrayPosition = 0;
             int currentArrayPosition = 0;
             int currentArrayIndex = 0;
-            int currentArrayGroup = 0;
             bool isArray = false;
             bool isDynamicArray = false;
-            for (var i = 0; i < fieldCount - 1; ++i)
+            for (var i = 0; i < fieldCount; ++i)
             {
                 string key = "Block Value " + i;
                 UpdateFieldInfo fieldInfo = null;
@@ -267,62 +266,32 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                         continue;
 
                     // Reset array data if new array starts
-                    if (currentArrayGroup != 0 && fieldInfo.ArrayGroup != currentArrayGroup)
+                    if (fieldInfo.ArrayInfo == UpdateFieldArrayInfo.InfoStart)
                     {
-                        switch (fieldInfo.Format)
-                        {
-                            case UpdateFieldType.Byte:
-                            case UpdateFieldType.Ushort:
-                            case UpdateFieldType.Short:
-                            case UpdateFieldType.DynamicUint:
-                            case UpdateFieldType.DynamicInt:
-                            case UpdateFieldType.DynamicFloat:
-                            case UpdateFieldType.DynamicGuid:
-                                {
-                                    if (!isDynamicArray)
-                                    {
-                                        isDynamicArray = true;
-                                        maxArrayIndex = dynamicCounterStore[0];
-                                        i--;
-                                        continue;
-                                    }
-                                    break;
-                                }
-                            default:
-                                {
-                                    isArray = false;
-                                    currentArrayInfo.Clear();
-                                    maxArrayPosition = 0;
-                                    maxArrayIndex = 0;
-                                    currentArrayIndex = 0;
-                                    currentArrayPosition = 0;
-                                    currentArrayGroup = 0;
-                                    break;
-                                }
-                        }
+                        isDynamicArray = false;
+                        isArray = false;
+                        currentArrayInfo.Clear();
+                        maxArrayPosition = 0;
+                        maxArrayIndex = 0;
+                        currentArrayIndex = 0;
+                        currentArrayPosition = 0;;
                     }
                     // Reset array data if end is reached
                     if (maxArrayPosition != 0 && currentArrayPosition > maxArrayPosition)
                     {
+                        isDynamicArray = false;
                         isArray = false;
                         currentArrayInfo.Clear();
                         maxArrayPosition = 0;
                         maxArrayIndex = 0;
                         currentArrayIndex = 0;
                         currentArrayPosition = 0;
-                        currentArrayGroup = 0;
                     }
 
                     // Set isArray if field is part of an arrayGroup
-                    if (fieldInfo.ArrayGroup != 0)
+                    if (fieldInfo.ArrayInfo == UpdateFieldArrayInfo.InfoStart)
                     {
                         isArray = true;
-                    }
-
-                    // Set currentArrayGroup is none is set
-                    if (fieldInfo.ArrayGroup != 0 && currentArrayGroup == 0)
-                    {
-                        currentArrayGroup = fieldInfo.ArrayGroup;
                     }
 
                     // fill necessary data if not collected yet
@@ -334,6 +303,28 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                         {
                             maxArrayPosition = fieldInfo.Size + currentArrayInfo.Count - 2;
                             maxArrayIndex = ((maxArrayPosition + 1) / currentArrayInfo.Count) - 1;
+                        }
+                    }
+
+                    if (fieldInfo.ArrayInfo == UpdateFieldArrayInfo.InfoEnd)
+                    {
+                        switch (fieldInfo.Format)
+                        {
+                            case UpdateFieldType.DynamicByte:
+                            case UpdateFieldType.DynamicUshort:
+                            case UpdateFieldType.DynamicShort:
+                            case UpdateFieldType.DynamicUint:
+                            case UpdateFieldType.DynamicInt:
+                            case UpdateFieldType.DynamicFloat:
+                            case UpdateFieldType.DynamicGuid:
+                                {
+                                    if (!isDynamicArray)
+                                    {
+                                        isDynamicArray = true;
+                                        maxArrayIndex = dynamicCounterStore[0];
+                                    }
+                                    break;
+                                }
                         }
                     }
                 }
@@ -482,7 +473,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     maxArrayIndex = 0;
                     currentArrayIndex = 0;
                     currentArrayPosition = 0;
-                    currentArrayGroup = 0;
                 }
                 else
                 {

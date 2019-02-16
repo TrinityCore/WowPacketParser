@@ -17,6 +17,7 @@ namespace WowPacketParser.Parsing
         Unk128 = 0x80,
         Unk256 = 0x100,
     }
+
     public enum UpdateFieldType
     {
         Default, // Old formatting - Uint/Float - Supports variable length
@@ -42,6 +43,13 @@ namespace WowPacketParser.Parsing
         Custom
     }
 
+    public enum UpdateFieldArrayInfo
+    {
+        None,
+        InfoStart,
+        InfoEnd
+    }
+
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true, Inherited = false)]
     public sealed class UpdateFieldAttribute : Attribute
     {
@@ -49,86 +57,86 @@ namespace WowPacketParser.Parsing
         {
             UFAttribute = attrib;
             Version = ClientVersionBuild.Zero;
-            ArrayGroup = 0;
             IsDynamicCounter = false;
             Flag = UpdateFieldCreateFlag.None;
+            ArrayInfo = UpdateFieldArrayInfo.None;
         }
 
         public UpdateFieldAttribute(UpdateFieldType attrib, UpdateFieldCreateFlag flag)
         {
             UFAttribute = attrib;
             Version = ClientVersionBuild.Zero;
-            ArrayGroup = 0;
             IsDynamicCounter = false;
             Flag = flag;
+            ArrayInfo = UpdateFieldArrayInfo.None;
         }
 
-        public UpdateFieldAttribute(UpdateFieldType attrib, int arrayGroup)
+        public UpdateFieldAttribute(UpdateFieldType attrib, UpdateFieldArrayInfo arrayInfo)
         {
             UFAttribute = attrib;
             Version = ClientVersionBuild.Zero;
-            ArrayGroup = arrayGroup;
             IsDynamicCounter = false;
             Flag = UpdateFieldCreateFlag.None;
+            ArrayInfo = arrayInfo;
         }
 
-        public UpdateFieldAttribute(UpdateFieldType attrib, int arrayGroup, UpdateFieldCreateFlag flag)
+        public UpdateFieldAttribute(UpdateFieldType attrib, UpdateFieldArrayInfo arrayInfo, UpdateFieldCreateFlag flag)
         {
             UFAttribute = attrib;
             Version = ClientVersionBuild.Zero;
-            ArrayGroup = arrayGroup;
             IsDynamicCounter = false;
             Flag = flag;
+            ArrayInfo = arrayInfo;
         }
 
         public UpdateFieldAttribute(UpdateFieldType attrib, bool isDynamicCounter)
         {
             UFAttribute = attrib;
             Version = ClientVersionBuild.Zero;
-            ArrayGroup = 0;
             IsDynamicCounter = isDynamicCounter;
             Flag = UpdateFieldCreateFlag.None;
+            ArrayInfo = UpdateFieldArrayInfo.None;
         }
 
         public UpdateFieldAttribute(UpdateFieldType attrib, ClientVersionBuild fromVersion)
         {
             UFAttribute = attrib;
             Version = fromVersion;
-            ArrayGroup = 0;
             IsDynamicCounter = false;
             Flag = UpdateFieldCreateFlag.None;
+            ArrayInfo = UpdateFieldArrayInfo.None;
         }
 
-        public UpdateFieldAttribute(UpdateFieldType attrib, int arrayGroup, ClientVersionBuild fromVersion)
+        public UpdateFieldAttribute(UpdateFieldType attrib, UpdateFieldArrayInfo arrayInfo, ClientVersionBuild fromVersion)
         {
             UFAttribute = attrib;
             Version = fromVersion;
-            ArrayGroup = arrayGroup;
             IsDynamicCounter = false;
             Flag = UpdateFieldCreateFlag.None;
+            ArrayInfo = arrayInfo;
         }
 
         public UpdateFieldAttribute(UpdateFieldType attrib, bool isDynamicCounter, ClientVersionBuild fromVersion)
         {
             UFAttribute = attrib;
             Version = fromVersion;
-            ArrayGroup = 0;
             IsDynamicCounter = isDynamicCounter;
             Flag = UpdateFieldCreateFlag.None;
+            ArrayInfo = UpdateFieldArrayInfo.None;
         }
 
-        public UpdateFieldAttribute(UpdateFieldType attrib, int arrayGroup, bool isDynamicCounter, ClientVersionBuild fromVersion)
+        public UpdateFieldAttribute(UpdateFieldType attrib, UpdateFieldArrayInfo arrayInfo, bool isDynamicCounter, ClientVersionBuild fromVersion)
         {
             UFAttribute = attrib;
             Version = fromVersion;
-            ArrayGroup = arrayGroup;
             IsDynamicCounter = isDynamicCounter;
             Flag = UpdateFieldCreateFlag.None;
+            ArrayInfo = arrayInfo;
         }
 
         public UpdateFieldType UFAttribute { get; private set; }
         public ClientVersionBuild Version { get; private set; }
-        public int ArrayGroup { get; private set; }
+        public UpdateFieldArrayInfo ArrayInfo { get; private set; }
         public bool IsDynamicCounter { get; private set; }
         public UpdateFieldCreateFlag Flag { get; private set; }
     }
