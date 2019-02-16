@@ -317,6 +317,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                             case UpdateFieldType.DynamicInt:
                             case UpdateFieldType.DynamicFloat:
                             case UpdateFieldType.DynamicGuid:
+                            case UpdateFieldType.DynamicCustom:
                                 {
                                     if (!isDynamicArray)
                                     {
@@ -459,6 +460,31 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                                             var value = packet.ReadPackedGuid128(arrayIndex > 0 ? arrayInfo.Name + " + " + arrayIndex : arrayInfo.Name, index);
                                             store.Add(new UpdateField(0));
                                             dynDict.Add(arrayInfo.Value, store);
+                                        }
+                                        break;
+                                    }
+                                case UpdateFieldType.DynamicCustom:
+                                    {
+                                        if (arrayInfo.Name == "CONVERSATION_DYNAMIC_FIELD_10")
+                                        {
+                                            byte curbitval = packet.ReadByte();
+
+                                            for (byte bitPos = 0; bitPos < 2; ++bitPos)
+                                            {
+                                                var bit = ((curbitval >> (7 - bitPos)) & 1) != 0;
+                                                packet.AddValue(arrayIndex > 0 ? arrayInfo.Name + " + " + arrayIndex : arrayInfo.Name, bit, index, bitPos);
+                                            }
+
+                                            if (dynDict.ContainsKey(arrayInfo.Value))
+                                            {
+                                                dynDict[arrayInfo.Value].Add(new UpdateField(curbitval));
+                                            }
+                                            else
+                                            {
+                                                var store = new List<UpdateField>();
+                                                store.Add(new UpdateField(curbitval));
+                                                dynDict.Add(arrayInfo.Value, store);
+                                            }
                                         }
                                         break;
                                     }

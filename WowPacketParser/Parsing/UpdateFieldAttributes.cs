@@ -40,6 +40,7 @@ namespace WowPacketParser.Parsing
         DynamicInt,
         DynamicFloat,
         DynamicGuid,
+        DynamicCustom,
         Custom
     }
 

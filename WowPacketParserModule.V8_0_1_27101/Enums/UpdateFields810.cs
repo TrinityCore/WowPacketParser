@@ -725,7 +725,7 @@ namespace WowPacketParserModule.V8_1_0_28724.Enums
         [UpdateField(UpdateFieldType.DynamicInt)]
         CONVERSATION_DYNAMIC_FIELD_9                            = ObjectField.OBJECT_END + 11,
         // 2 ReadBit
-        [UpdateField(UpdateFieldType.DynamicByte, UpdateFieldArrayInfo.InfoEnd)]
+        [UpdateField(UpdateFieldType.DynamicCustom, UpdateFieldArrayInfo.InfoEnd)]
         CONVERSATION_DYNAMIC_FIELD_10                           = ObjectField.OBJECT_END + 12,
 
         CONVERSATION_END                                        = ObjectField.OBJECT_END + 13,
