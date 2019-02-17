@@ -41,6 +41,51 @@ namespace WowPacketParser.Misc
             FloatValue = val;
         }
 
+        public UpdateField(ulong val) : this()
+        {
+            UInt64Value = val;
+        }
+
+        public UpdateField(long val) : this()
+        {
+            Int64Value = val;
+        }
+
+        public UpdateField(object val) : this()
+        {
+            var returnCode = Type.GetTypeCode(val.GetType());
+            switch (returnCode)
+            {
+                case TypeCode.SByte:
+                    Int8Value = (sbyte)val;
+                    break;
+                case TypeCode.Byte:
+                    UInt8Value = (byte)val;
+                    break;
+                case TypeCode.Int16:
+                    Int16Value = (short)val;
+                    break;
+                case TypeCode.UInt16:
+                    UInt16Value = (ushort)val;
+                    break;
+                case TypeCode.Int32:
+                    Int32Value = (int)val;
+                    break;
+                case TypeCode.UInt32:
+                    UInt32Value = (uint)val;
+                    break;
+                case TypeCode.Int64:
+                    Int64Value = (long)val;
+                    break;
+                case TypeCode.UInt64:
+                    UInt64Value = (ulong)val;
+                    break;
+                case TypeCode.Single:
+                    FloatValue = (float)val;
+                    break;
+            }
+        }
+
         [FieldOffset(0)] public readonly byte UInt8Value;
         [FieldOffset(0)] public readonly sbyte Int8Value;
         [FieldOffset(0)] public readonly ushort UInt16Value;

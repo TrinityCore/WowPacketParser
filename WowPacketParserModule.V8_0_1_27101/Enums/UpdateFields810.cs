@@ -1,4 +1,4 @@
-﻿using WowPacketParser.Parsing;
+using WowPacketParser.Parsing;
 
 namespace WowPacketParserModule.V8_1_0_28724.Enums
 {
@@ -116,9 +116,12 @@ namespace WowPacketParserModule.V8_1_0_28724.Enums
 
     public enum ContainerField
     {
-        CONTAINER_FIELD_SLOT_1                                 = ItemField.ITEM_END + 0x000, // Size: 144, Flags: PUBLIC
-        CONTAINER_FIELD_NUM_SLOTS                              = ItemField.ITEM_END + 0x090, // Size: 1, Flags: PUBLIC
-        CONTAINER_END                                          = ItemField.ITEM_END + 0x091,
+        // ArraySize 36
+        [UpdateField(UpdateFieldType.Guid)]
+        CONTAINER_FIELD_SLOT_1                                 = ItemField.ITEM_END + 0, // Size: 144, Flags: PUBLIC
+        [UpdateField(UpdateFieldType.Uint)]
+        CONTAINER_FIELD_NUM_SLOTS                              = ItemField.ITEM_END + 36, // Size: 1, Flags: PUBLIC
+        CONTAINER_END                                          = ItemField.ITEM_END + 37,
     }
 
     public enum ContainerDynamicField

@@ -41,6 +41,8 @@ namespace WowPacketParser.Parsing
         DynamicFloat,
         DynamicGuid,
         DynamicCustom,
+        PackedTime,
+        Time,
         Custom
     }
 
