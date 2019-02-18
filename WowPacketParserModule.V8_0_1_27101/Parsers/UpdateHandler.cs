@@ -57,6 +57,33 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             }
         }
 
+        public static bool HasValue(object val)
+        {
+            var returnCode = Type.GetTypeCode(val.GetType());
+            switch (returnCode)
+            {
+                case TypeCode.SByte:
+                    return (sbyte)val != 0;
+                case TypeCode.Byte:
+                    return (byte)val != 0;
+                case TypeCode.Int16:
+                    return (short)val != 0;
+                case TypeCode.UInt16:
+                    return (ushort)val != 0;
+                case TypeCode.Int32:
+                    return (int)val != 0;
+                case TypeCode.UInt32:
+                    return (uint)val != 0;
+                case TypeCode.Int64:
+                    return (long)val != 0;
+                case TypeCode.UInt64:
+                    return (ulong)val != 0;
+                case TypeCode.Single:
+                    return (float)val != 0;
+                default:
+                    return true;
+            }
+        }
         private static void ReadValuesCreateBlock(Dictionary<int, UpdateField> dict, Dictionary<int, List<UpdateField>> dynDict, Packet packet, ObjectType type, object index)
         {
             packet.ReadUInt32("ValuesBlockSize", index);
@@ -719,7 +746,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                             }
                     }
 
-                    if (!isDynamicValue)
+                    if (!isDynamicValue && HasValue(value))
                     {
                         if (updateFieldType == UpdateFieldType.Bytes)
                         {
