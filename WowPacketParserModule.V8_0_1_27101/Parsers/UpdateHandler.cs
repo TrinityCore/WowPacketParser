@@ -638,8 +638,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                                     }
                                     dynDict.Add(i, store);
                                     dynamicCounterStore.RemoveAt(0);
-                                    isDynamicValue = true;
                                 }
+                                isDynamicValue = true;
                                 break;
                             }
                         case UpdateFieldType.DynamicUshort:
@@ -655,8 +655,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                                     }
                                     dynDict.Add(i, store);
                                     dynamicCounterStore.RemoveAt(0);
-                                    isDynamicValue = true;
                                 }
+                                isDynamicValue = true;
                                 break;
                             }
                         case UpdateFieldType.DynamicShort:
@@ -672,8 +672,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                                     }
                                     dynDict.Add(i, store);
                                     dynamicCounterStore.RemoveAt(0);
-                                    isDynamicValue = true;
                                 }
+                                isDynamicValue = true;
                                 break;
                             }
                         case UpdateFieldType.DynamicUint:
@@ -689,8 +689,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                                     }
                                     dynDict.Add(i, store);
                                     dynamicCounterStore.RemoveAt(0);
-                                    isDynamicValue = true;
                                 }
+                                isDynamicValue = true;
                                 break;
                             }
                         case UpdateFieldType.DynamicInt:
@@ -706,8 +706,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                                     }
                                     dynDict.Add(i, store);
                                     dynamicCounterStore.RemoveAt(0);
-                                    isDynamicValue = true;
                                 }
+                                isDynamicValue = true;
                                 break;
                             }
                         case UpdateFieldType.Custom:
