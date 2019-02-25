@@ -1,4 +1,4 @@
-using WowPacketParser.Parsing;
+﻿using WowPacketParser.Parsing;
 
 namespace WowPacketParserModule.V8_1_0_28724.Enums
 {
@@ -44,13 +44,13 @@ namespace WowPacketParserModule.V8_1_0_28724.Enums
         ITEM_FIELD_13                                           = ObjectField.OBJECT_END + 13,
 
         // ArraySize 13
-        [UpdateField(UpdateFieldType.Int, UpdateFieldArrayInfo.InfoStart)]
+        [UpdateField(UpdateFieldType.Int, 4)]
         ITEM_FIELD_14                                           = ObjectField.OBJECT_END + 14,
         [UpdateField(UpdateFieldType.Uint)]
         ITEM_FIELD_15                                           = ObjectField.OBJECT_END + 15,
         [UpdateField(UpdateFieldType.Short)]
         ITEM_FIELD_16                                           = ObjectField.OBJECT_END + 16,
-        [UpdateField(UpdateFieldType.Ushort, UpdateFieldArrayInfo.InfoEnd)]
+        [UpdateField(UpdateFieldType.Ushort)]
         ITEM_FIELD_17                                           = ObjectField.OBJECT_END + 17,
 
         [UpdateField(UpdateFieldType.Int)]
@@ -85,21 +85,21 @@ namespace WowPacketParserModule.V8_1_0_28724.Enums
         ITEM_FIELD_DYNAMIC_2                                    = ObjectField.OBJECT_END + 79,
 
         // DynamicArray
-        [UpdateField(UpdateFieldType.DynamicShort, UpdateFieldArrayInfo.InfoStart)]
+        [UpdateField(UpdateFieldType.DynamicShort, 3)]
         ITEM_FIELD_DYNAMIC_3                                    = ObjectField.OBJECT_END + 80,
         [UpdateField(UpdateFieldType.DynamicByte)]
         ITEM_FIELD_DYNAMIC_4                                    = ObjectField.OBJECT_END + 81,
-        [UpdateField(UpdateFieldType.DynamicByte, UpdateFieldArrayInfo.InfoEnd)]
+        [UpdateField(UpdateFieldType.DynamicByte)]
         ITEM_FIELD_DYNAMIC_5                                    = ObjectField.OBJECT_END + 82,
 
         // DynamicArray with substructure
-        [UpdateField(UpdateFieldType.DynamicInt, UpdateFieldArrayInfo.InfoStart)]
+        [UpdateField(UpdateFieldType.DynamicInt, 15)]
         ITEM_FIELD_DYNAMIC_6                                    = ObjectField.OBJECT_END + 83,
         // ArraySize 13 substructure
         [UpdateField(UpdateFieldType.DynamicShort)]
         ITEM_FIELD_DYNAMIC_7                                    = ObjectField.OBJECT_END + 84,
 
-        [UpdateField(UpdateFieldType.DynamicByte, UpdateFieldArrayInfo.InfoEnd)]
+        [UpdateField(UpdateFieldType.DynamicByte)]
         ITEM_FIELD_DYNAMIC_8                                    = ObjectField.OBJECT_END + 97,
 
         ITEM_END                                                = ObjectField.OBJECT_END + 98,
@@ -216,15 +216,15 @@ namespace WowPacketParserModule.V8_1_0_28724.Enums
         [UpdateField(UpdateFieldType.Long)]
         UNIT_FIELD_HEALTH                                   = ObjectField.OBJECT_END + 26,
         // ArraySize 6
-        [UpdateField(UpdateFieldType.Int, UpdateFieldArrayInfo.InfoStart)]
+        [UpdateField(UpdateFieldType.Int, 2)]
         UNIT_FIELD_POWER                                    = ObjectField.OBJECT_END + 27,
-        [UpdateField(UpdateFieldType.Int, UpdateFieldArrayInfo.InfoEnd)]
+        [UpdateField(UpdateFieldType.Int)]
         UNIT_FIELD_MAXPOWER                                 = ObjectField.OBJECT_END + 28,
 
         // ArraySize 6
-        [UpdateField(UpdateFieldType.Float, UpdateFieldArrayInfo.InfoStart, UpdateFieldCreateFlag.Unk1 | UpdateFieldCreateFlag.Unk4)] //flags
+        [UpdateField(UpdateFieldType.Float, UpdateFieldCreateFlag.Unk1 | UpdateFieldCreateFlag.Unk4)] //flags
         UNIT_FIELD_POWER_REGEN_FLAT_MODIFIER                = ObjectField.OBJECT_END + 39,
-        [UpdateField(UpdateFieldType.Float, UpdateFieldArrayInfo.InfoEnd, UpdateFieldCreateFlag.Unk1 | UpdateFieldCreateFlag.Unk4)] //flags
+        [UpdateField(UpdateFieldType.Float, UpdateFieldCreateFlag.Unk1 | UpdateFieldCreateFlag.Unk4)] //flags
         UNIT_FIELD_POWER_REGEN_INTERRUPTED_FLAT_MODIFIER    = ObjectField.OBJECT_END + 40,
 
         [UpdateField(UpdateFieldType.Long)]
@@ -250,11 +250,11 @@ namespace WowPacketParserModule.V8_1_0_28724.Enums
         [UpdateField(UpdateFieldType.Int)]
         UNIT_FIELD_FACTIONTEMPLATE                          = ObjectField.OBJECT_END + 61,
         // ArraySize 3
-        [UpdateField(UpdateFieldType.Int, UpdateFieldArrayInfo.InfoStart)]
+        [UpdateField(UpdateFieldType.Int, 3)]
         UNIT_FIELD_62                                       = ObjectField.OBJECT_END + 62,
         [UpdateField(UpdateFieldType.Ushort)]
         UNIT_FIELD_63                                       = ObjectField.OBJECT_END + 63,
-        [UpdateField(UpdateFieldType.Ushort, UpdateFieldArrayInfo.InfoEnd)]
+        [UpdateField(UpdateFieldType.Ushort)]
         UNIT_FIELD_64                                       = ObjectField.OBJECT_END + 64,
 
         [UpdateField(UpdateFieldType.Uint)]
@@ -322,11 +322,11 @@ namespace WowPacketParserModule.V8_1_0_28724.Enums
         UNIT_FIELD_NPC_EMOTESTATE                           = ObjectField.OBJECT_END + 101,
 
         // ArraySize 4
-        [UpdateField(UpdateFieldType.Int, UpdateFieldArrayInfo.InfoStart, UpdateFieldCreateFlag.Unk1)]
+        [UpdateField(UpdateFieldType.Int, 3, UpdateFieldCreateFlag.Unk1)]
         UNIT_FIELD_STAT                                     = ObjectField.OBJECT_END + 102,
         [UpdateField(UpdateFieldType.Int, UpdateFieldCreateFlag.Unk1)]
         UNIT_FIELD_POSSTAT                                  = ObjectField.OBJECT_END + 103,
-        [UpdateField(UpdateFieldType.Int, UpdateFieldArrayInfo.InfoEnd, UpdateFieldCreateFlag.Unk1)]
+        [UpdateField(UpdateFieldType.Int, UpdateFieldCreateFlag.Unk1)]
         UNIT_FIELD_NEGSTAT                                  = ObjectField.OBJECT_END + 104,
 
         // ArraySize 7
@@ -334,11 +334,11 @@ namespace WowPacketParserModule.V8_1_0_28724.Enums
         UNIT_FIELD_RESISTANCES                              = ObjectField.OBJECT_END + 114,
 
         // ArraySize 7
-        [UpdateField(UpdateFieldType.Int, UpdateFieldArrayInfo.InfoStart, UpdateFieldCreateFlag.Unk1)]
+        [UpdateField(UpdateFieldType.Int, 3, UpdateFieldCreateFlag.Unk1)]
         UNIT_FIELD_BONUS_RESISTANCE_MODS                    = ObjectField.OBJECT_END + 121,
         [UpdateField(UpdateFieldType.Int, UpdateFieldCreateFlag.Unk1)]
         UNIT_FIELD_POWER_COST_MODIFIER                      = ObjectField.OBJECT_END + 122,
-        [UpdateField(UpdateFieldType.Float, UpdateFieldArrayInfo.InfoEnd, UpdateFieldCreateFlag.Unk1)]
+        [UpdateField(UpdateFieldType.Float, UpdateFieldCreateFlag.Unk1)]
         UNIT_FIELD_POWER_COST_MULTIPLIER                    = ObjectField.OBJECT_END + 123,
 
         [UpdateField(UpdateFieldType.Int)]
@@ -416,9 +416,9 @@ namespace WowPacketParserModule.V8_1_0_28724.Enums
         UNIT_DYNAMICFIELD_COUNT4                            = ObjectField.OBJECT_END + 177,
 
         //// DynamicField ArraySize UNIT_DYNAMICFIELD_COUNT2
-        [UpdateField(UpdateFieldType.DynamicInt, UpdateFieldArrayInfo.InfoStart)]
+        [UpdateField(UpdateFieldType.DynamicInt, 2)]
         UNIT_DYNAMIC_2                                      = ObjectField.OBJECT_END + 178,
-        [UpdateField(UpdateFieldType.DynamicInt, UpdateFieldArrayInfo.InfoEnd)]
+        [UpdateField(UpdateFieldType.DynamicInt)]
         UNIT_DYNAMIC_3                                      = ObjectField.OBJECT_END + 179,
 
         //// DynamicField ArraySize UNIT_DYNAMICFIELD_COUNT3
@@ -440,34 +440,137 @@ namespace WowPacketParserModule.V8_1_0_28724.Enums
         UNIT_DYNAMIC_END                                       = ObjectDynamicField.OBJECT_DYNAMIC_END + 0x003,
     }
 
-    /*public enum PlayerField
+    public enum PlayerField
     {
-        PLAYER_DUEL_ARBITER                                    = UnitField.UNIT_END + 0x000, // Size: 4, Flags: PUBLIC
-        PLAYER_WOW_ACCOUNT                                     = UnitField.UNIT_END + 0x004, // Size: 4, Flags: PUBLIC
-        PLAYER_LOOT_TARGET_GUID                                = UnitField.UNIT_END + 0x008, // Size: 4, Flags: PUBLIC
-        PLAYER_FLAGS                                           = UnitField.UNIT_END + 0x00C, // Size: 1, Flags: PUBLIC
-        PLAYER_FLAGS_EX                                        = UnitField.UNIT_END + 0x00D, // Size: 1, Flags: PUBLIC
-        PLAYER_GUILDRANK                                       = UnitField.UNIT_END + 0x00E, // Size: 1, Flags: PUBLIC
-        PLAYER_GUILDDELETE_DATE                                = UnitField.UNIT_END + 0x00F, // Size: 1, Flags: PUBLIC
-        PLAYER_GUILDLEVEL                                      = UnitField.UNIT_END + 0x010, // Size: 1, Flags: PUBLIC
-        PLAYER_BYTES                                           = UnitField.UNIT_END + 0x011, // Size: 1, Flags: PUBLIC
-        PLAYER_BYTES_2                                         = UnitField.UNIT_END + 0x012, // Size: 1, Flags: PUBLIC
-        PLAYER_BYTES_3                                         = UnitField.UNIT_END + 0x013, // Size: 1, Flags: PUBLIC
-        PLAYER_BYTES_4                                         = UnitField.UNIT_END + 0x014, // Size: 1, Flags: PUBLIC
-        PLAYER_DUEL_TEAM                                       = UnitField.UNIT_END + 0x015, // Size: 1, Flags: PUBLIC
-        PLAYER_GUILD_TIMESTAMP                                 = UnitField.UNIT_END + 0x016, // Size: 1, Flags: PUBLIC
-        PLAYER_QUEST_LOG                                       = UnitField.UNIT_END + 0x017, // Size: 1600, Flags: PARTY_MEMBER
-        PLAYER_VISIBLE_ITEM                                    = UnitField.UNIT_END + 0x657, // Size: 38, Flags: PUBLIC
-        PLAYER_CHOSEN_TITLE                                    = UnitField.UNIT_END + 0x67D, // Size: 1, Flags: PUBLIC
-        PLAYER_FAKE_INEBRIATION                                = UnitField.UNIT_END + 0x67E, // Size: 1, Flags: PUBLIC
-        PLAYER_FIELD_VIRTUAL_PLAYER_REALM                      = UnitField.UNIT_END + 0x67F, // Size: 1, Flags: PUBLIC
-        PLAYER_FIELD_CURRENT_SPEC_ID                           = UnitField.UNIT_END + 0x680, // Size: 1, Flags: PUBLIC
-        PLAYER_FIELD_TAXI_MOUNT_ANIM_KIT_ID                    = UnitField.UNIT_END + 0x681, // Size: 1, Flags: PUBLIC
-        PLAYER_FIELD_AVG_ITEM_LEVEL                            = UnitField.UNIT_END + 0x682, // Size: 4, Flags: PUBLIC
-        PLAYER_FIELD_CURRENT_BATTLE_PET_BREED_QUALITY          = UnitField.UNIT_END + 0x686, // Size: 1, Flags: PUBLIC
-        PLAYER_FIELD_HONOR_LEVEL                               = UnitField.UNIT_END + 0x687, // Size: 1, Flags: PUBLIC
-        PLAYER_END                                             = UnitField.UNIT_END + 0x688,
-    }*/
+        [UpdateField(UpdateFieldType.Guid)]
+        PLAYER_FIELD_0 = UnitField.UNIT_FIELD_END + 0,
+        [UpdateField(UpdateFieldType.Guid)]
+        PLAYER_FIELD_1 = UnitField.UNIT_FIELD_END + 1,
+        [UpdateField(UpdateFieldType.Guid)]
+        PLAYER_FIELD_2 = UnitField.UNIT_FIELD_END + 2,
+        [UpdateField(UpdateFieldType.Uint)]
+        PLAYER_FIELD_3 = UnitField.UNIT_FIELD_END + 3,
+        [UpdateField(UpdateFieldType.Uint)]
+        PLAYER_FIELD_4 = UnitField.UNIT_FIELD_END + 4,
+        [UpdateField(UpdateFieldType.Uint)]
+        PLAYER_FIELD_5 = UnitField.UNIT_FIELD_END + 5,
+        [UpdateField(UpdateFieldType.Uint)]
+        PLAYER_FIELD_6 = UnitField.UNIT_FIELD_END + 6,
+        [UpdateField(UpdateFieldType.Uint)]
+        PLAYER_FIELD_7 = UnitField.UNIT_FIELD_END + 7,
+        [UpdateField(UpdateFieldType.Bytes)]
+        PLAYER_FIELD_8 = UnitField.UNIT_FIELD_END + 8,
+        // ArraySize 3
+        [UpdateField(UpdateFieldType.Byte)]
+        PLAYER_FIELD_9 = UnitField.UNIT_FIELD_END + 9,
+
+        [UpdateField(UpdateFieldType.Byte)]
+        PLAYER_FIELD_12 = UnitField.UNIT_FIELD_END + 12,
+        [UpdateField(UpdateFieldType.Byte)]
+        PLAYER_FIELD_13 = UnitField.UNIT_FIELD_END + 13,
+        [UpdateField(UpdateFieldType.Byte)]
+        PLAYER_FIELD_14 = UnitField.UNIT_FIELD_END + 14,
+        [UpdateField(UpdateFieldType.Byte)]
+        PLAYER_FIELD_15 = UnitField.UNIT_FIELD_END + 15,
+        [UpdateField(UpdateFieldType.Byte)]
+        PLAYER_FIELD_16 = UnitField.UNIT_FIELD_END + 16,
+        [UpdateField(UpdateFieldType.Byte)]
+        PLAYER_FIELD_17 = UnitField.UNIT_FIELD_END + 17,
+        [UpdateField(UpdateFieldType.Uint)]
+        PLAYER_FIELD_18 = UnitField.UNIT_FIELD_END + 18,
+        [UpdateField(UpdateFieldType.Int)]
+        PLAYER_FIELD_19 = UnitField.UNIT_FIELD_END + 19,
+        // Array ArraySize 100 with array in substructure
+        [UpdateField(UpdateFieldType.Int, 28, UpdateFieldCreateFlag.Unk2)]
+        PLAYER_FIELD_QUEST_ID = UnitField.UNIT_FIELD_END + 20,
+        [UpdateField(UpdateFieldType.Uint, UpdateFieldCreateFlag.Unk2)]
+        PLAYER_FIELD_21 = UnitField.UNIT_FIELD_END + 21,
+        [UpdateField(UpdateFieldType.Uint, UpdateFieldCreateFlag.Unk2)]
+        PLAYER_FIELD_22 = UnitField.UNIT_FIELD_END + 22,
+        [UpdateField(UpdateFieldType.Time, UpdateFieldCreateFlag.Unk2)]
+        PLAYER_FIELD_QUEST_ACCEPTED = UnitField.UNIT_FIELD_END + 23,
+        // SubstructureArray 24 members
+        [UpdateField(UpdateFieldType.Ushort, 24, UpdateFieldCreateFlag.Unk2)]
+        PLAYER_FIELD_24 = UnitField.UNIT_FIELD_END + 24,
+
+        // ArraySize 19
+        [UpdateField(UpdateFieldType.Uint, 3)]
+        PLAYER_FIELD_2820 = UnitField.UNIT_FIELD_END + 2820,
+        [UpdateField(UpdateFieldType.Ushort)]
+        PLAYER_FIELD_2821 = UnitField.UNIT_FIELD_END + 2821,
+        [UpdateField(UpdateFieldType.Ushort)]
+        PLAYER_FIELD_2822 = UnitField.UNIT_FIELD_END + 2822,
+
+        [UpdateField(UpdateFieldType.Int)]
+        PLAYER_FIELD_2877 = UnitField.UNIT_FIELD_END + 2877,
+        [UpdateField(UpdateFieldType.Int)]
+        PLAYER_FIELD_2878 = UnitField.UNIT_FIELD_END + 2878,
+        [UpdateField(UpdateFieldType.Uint)]
+        PLAYER_FIELD_2879 = UnitField.UNIT_FIELD_END + 2879,
+        [UpdateField(UpdateFieldType.Uint)]
+        PLAYER_FIELD_2880 = UnitField.UNIT_FIELD_END + 2880,
+        [UpdateField(UpdateFieldType.Int)]
+        PLAYER_FIELD_2881 = UnitField.UNIT_FIELD_END + 2881,
+
+        // ArraySize 4
+        [UpdateField(UpdateFieldType.Float)]
+        PLAYER_FIELD_2882 = UnitField.UNIT_FIELD_END + 2882,
+
+        [UpdateField(UpdateFieldType.Byte)]
+        PLAYER_FIELD_2886 = UnitField.UNIT_FIELD_END + 2886,
+        [UpdateField(UpdateFieldType.Int)]
+        PLAYER_FIELD_2887 = UnitField.UNIT_FIELD_END + 2887,
+        [UpdateField(UpdateFieldType.Uint, true)]
+        PLAYER_FIELD_2888 = UnitField.UNIT_FIELD_END + 2888,
+        [UpdateField(UpdateFieldType.Int)]
+        PLAYER_FIELD_2889 = UnitField.UNIT_FIELD_END + 2889,
+        [UpdateField(UpdateFieldType.Int)]
+        PLAYER_FIELD_2890 = UnitField.UNIT_FIELD_END + 2890,
+
+        // DynamicArray
+        [UpdateField(UpdateFieldType.DynamicInt, 7)]
+        PLAYER_DYNAMIC_FIELD_0 = UnitField.UNIT_FIELD_END + 2891,
+        [UpdateField(UpdateFieldType.DynamicInt)]
+        PLAYER_DYNAMIC_FIELD_1 = UnitField.UNIT_FIELD_END + 2892,
+        [UpdateField(UpdateFieldType.DynamicUint)]
+        PLAYER_DYNAMIC_FIELD_2 = UnitField.UNIT_FIELD_END + 2893,
+        [UpdateField(UpdateFieldType.DynamicUint)]
+        PLAYER_DYNAMIC_FIELD_3 = UnitField.UNIT_FIELD_END + 2894,
+        [UpdateField(UpdateFieldType.DynamicUint)]
+        PLAYER_DYNAMIC_FIELD_4 = UnitField.UNIT_FIELD_END + 2895,
+        [UpdateField(UpdateFieldType.DynamicInt)]
+        PLAYER_DYNAMIC_FIELD_5 = UnitField.UNIT_FIELD_END + 2896,
+        [UpdateField(UpdateFieldType.DynamicByte)]
+        PLAYER_DYNAMIC_FIELD_6 = UnitField.UNIT_FIELD_END + 2897,
+
+        PLAYER_END = UnitField.UNIT_FIELD_END + 2898,
+
+        /*PLAYER_DUEL_ARBITER                                    = UnitField.UNIT_FIELD_END + 0x000, // Size: 4, Flags: PUBLIC
+        PLAYER_WOW_ACCOUNT                                     = UnitField.UNIT_FIELD_END + 0x004, // Size: 4, Flags: PUBLIC
+        PLAYER_LOOT_TARGET_GUID                                = UnitField.UNIT_FIELD_END + 0x008, // Size: 4, Flags: PUBLIC
+        PLAYER_FLAGS                                           = UnitField.UNIT_FIELD_END + 0x00C, // Size: 1, Flags: PUBLIC
+        PLAYER_FLAGS_EX                                        = UnitField.UNIT_FIELD_END + 0x00D, // Size: 1, Flags: PUBLIC
+        PLAYER_GUILDRANK                                       = UnitField.UNIT_FIELD_END + 0x00E, // Size: 1, Flags: PUBLIC
+        PLAYER_GUILDDELETE_DATE                                = UnitField.UNIT_FIELD_END + 0x00F, // Size: 1, Flags: PUBLIC
+        PLAYER_GUILDLEVEL                                      = UnitField.UNIT_FIELD_END + 0x010, // Size: 1, Flags: PUBLIC
+        PLAYER_BYTES                                           = UnitField.UNIT_FIELD_END + 0x011, // Size: 1, Flags: PUBLIC
+        PLAYER_BYTES_2                                         = UnitField.UNIT_FIELD_END + 0x012, // Size: 1, Flags: PUBLIC
+        PLAYER_BYTES_3                                         = UnitField.UNIT_FIELD_END + 0x013, // Size: 1, Flags: PUBLIC
+        PLAYER_BYTES_4                                         = UnitField.UNIT_FIELD_END + 0x014, // Size: 1, Flags: PUBLIC
+        PLAYER_DUEL_TEAM                                       = UnitField.UNIT_FIELD_END + 0x015, // Size: 1, Flags: PUBLIC
+        PLAYER_GUILD_TIMESTAMP                                 = UnitField.UNIT_FIELD_END + 0x016, // Size: 1, Flags: PUBLIC
+        PLAYER_QUEST_LOG                                       = UnitField.UNIT_FIELD_END + 0x017, // Size: 1600, Flags: PARTY_MEMBER
+        PLAYER_VISIBLE_ITEM                                    = UnitField.UNIT_FIELD_END + 0x657, // Size: 38, Flags: PUBLIC
+        PLAYER_CHOSEN_TITLE                                    = UnitField.UNIT_FIELD_END + 0x67D, // Size: 1, Flags: PUBLIC
+        PLAYER_FAKE_INEBRIATION                                = UnitField.UNIT_FIELD_END + 0x67E, // Size: 1, Flags: PUBLIC
+        PLAYER_FIELD_VIRTUAL_PLAYER_REALM                      = UnitField.UNIT_FIELD_END + 0x67F, // Size: 1, Flags: PUBLIC
+        PLAYER_FIELD_CURRENT_SPEC_ID                           = UnitField.UNIT_FIELD_END + 0x680, // Size: 1, Flags: PUBLIC
+        PLAYER_FIELD_TAXI_MOUNT_ANIM_KIT_ID                    = UnitField.UNIT_FIELD_END + 0x681, // Size: 1, Flags: PUBLIC
+        PLAYER_FIELD_AVG_ITEM_LEVEL                            = UnitField.UNIT_FIELD_END + 0x682, // Size: 4, Flags: PUBLIC
+        PLAYER_FIELD_CURRENT_BATTLE_PET_BREED_QUALITY          = UnitField.UNIT_FIELD_END + 0x686, // Size: 1, Flags: PUBLIC
+        PLAYER_FIELD_HONOR_LEVEL                               = UnitField.UNIT_FIELD_END + 0x687, // Size: 1, Flags: PUBLIC
+        PLAYER_END                                             = UnitField.UNIT_FIELD_END + 0x688,*/
+    }
 
     public enum PlayerDynamicField
     {
@@ -666,9 +769,9 @@ namespace WowPacketParserModule.V8_1_0_28724.Enums
         [UpdateField(UpdateFieldType.Uint)]
         AREATRIGGER_OVERRIDE_SCALE_CURVE_UINT_1 = ObjectField.OBJECT_END + 0,
         // ArraySize2
-        [UpdateField(UpdateFieldType.Float, UpdateFieldArrayInfo.InfoStart)]
+        [UpdateField(UpdateFieldType.Float, 2)]
         AREATRIGGER_OVERRIDE_SCALE_FLOAT_1 = ObjectField.OBJECT_END + 1,
-        [UpdateField(UpdateFieldType.Float, UpdateFieldArrayInfo.InfoEnd)]
+        [UpdateField(UpdateFieldType.Float)]
         AREATRIGGER_OVERRIDE_SCALE_FLOAT_2 = ObjectField.OBJECT_END + 2,
 
         [UpdateField(UpdateFieldType.Uint)]
@@ -701,9 +804,9 @@ namespace WowPacketParserModule.V8_1_0_28724.Enums
         [UpdateField(UpdateFieldType.Uint)]
         AREATRIGGER_EXTRA_SCALE_CURVE_UINT_1 = ObjectField.OBJECT_END + 18,
         // ArraySize2
-        [UpdateField(UpdateFieldType.Float, UpdateFieldArrayInfo.InfoStart)]
+        [UpdateField(UpdateFieldType.Float, 2)]
         AREATRIGGER_EXTRA_SCALE_CURVE_FLOAT_1 = ObjectField.OBJECT_END + 19,
-        [UpdateField(UpdateFieldType.Float, UpdateFieldArrayInfo.InfoEnd)]
+        [UpdateField(UpdateFieldType.Float)]
         AREATRIGGER_EXTRA_SCALE_CURVE_FLOAT_2 = ObjectField.OBJECT_END + 20,
 
         [UpdateField(UpdateFieldType.Uint)]
@@ -741,7 +844,7 @@ namespace WowPacketParserModule.V8_1_0_28724.Enums
         [UpdateField(UpdateFieldType.Int)]
         CONVERSATION_LAST_LINE_END_TIME                         = ObjectField.OBJECT_END + 1,
         // DynamicArray Size CONVERSATION_FIELD_DYNAMIC_COUNT_1
-        [UpdateField(UpdateFieldType.DynamicInt, UpdateFieldArrayInfo.InfoStart)]
+        [UpdateField(UpdateFieldType.DynamicInt, 5)]
         CONVERSATION_DYNAMIC_FIELD_1                            = ObjectField.OBJECT_END + 2,
         [UpdateField(UpdateFieldType.DynamicUint)]
         CONVERSATION_DYNAMIC_FIELD_2                            = ObjectField.OBJECT_END + 3,
@@ -749,13 +852,13 @@ namespace WowPacketParserModule.V8_1_0_28724.Enums
         CONVERSATION_DYNAMIC_FIELD_3                            = ObjectField.OBJECT_END + 4,
         [UpdateField(UpdateFieldType.DynamicByte)]
         CONVERSATION_DYNAMIC_FIELD_4                            = ObjectField.OBJECT_END + 5,
-        [UpdateField(UpdateFieldType.DynamicByte, UpdateFieldArrayInfo.InfoEnd)]
+        [UpdateField(UpdateFieldType.DynamicByte)]
         CONVERSATION_DYNAMIC_FIELD_5                            = ObjectField.OBJECT_END + 6,
 
         [UpdateField(UpdateFieldType.Uint, true)]
         CONVERSATION_FIELD_DYNAMIC_COUNT_2                      = ObjectField.OBJECT_END + 7,
         // DynamicArray Size CONVERSATION_FIELD_DYNAMIC_COUNT_2
-        [UpdateField(UpdateFieldType.DynamicUint, UpdateFieldArrayInfo.InfoStart)]
+        [UpdateField(UpdateFieldType.DynamicUint, 5)]
         CONVERSATION_DYNAMIC_FIELD_6                            = ObjectField.OBJECT_END + 8,
         [UpdateField(UpdateFieldType.DynamicUint)]
         CONVERSATION_DYNAMIC_FIELD_7                            = ObjectField.OBJECT_END + 9,
@@ -764,7 +867,7 @@ namespace WowPacketParserModule.V8_1_0_28724.Enums
         [UpdateField(UpdateFieldType.DynamicInt)]
         CONVERSATION_DYNAMIC_FIELD_9                            = ObjectField.OBJECT_END + 11,
         // 2 ReadBit
-        [UpdateField(UpdateFieldType.DynamicCustom, UpdateFieldArrayInfo.InfoEnd)]
+        [UpdateField(UpdateFieldType.DynamicCustom)]
         CONVERSATION_DYNAMIC_FIELD_10                           = ObjectField.OBJECT_END + 12,
 
         CONVERSATION_END                                        = ObjectField.OBJECT_END + 13,

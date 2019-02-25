@@ -80,6 +80,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     return (ulong)val != 0;
                 case TypeCode.Single:
                     return (float)val != 0;
+                case TypeCode.DateTime:
+                    return Utilities.GetUnixTimeFromDateTime((DateTime)val) != 0;
                 default:
                     return true;
             }
@@ -168,6 +170,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             int currentArrayIndex = 0;
             bool isArray = false;
             bool isDynamicArray = false;
+            int arrayMemberCount = 0;
+            int substructureArrayMemberCount = 0;
+            bool isLoadingArrayInfo = false;
             object value = null;
             for (var i = 0; i < fieldCount; ++i)
             {
@@ -293,17 +298,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     if (i > objectEnd && flag != 0 && !flags.HasAnyFlag(flag))
                         continue;
 
-                    // Reset array data if new array starts
-                    if (fieldInfo.ArrayInfo == UpdateFieldArrayInfo.InfoStart)
-                    {
-                        isDynamicArray = false;
-                        isArray = false;
-                        currentArrayInfo.Clear();
-                        maxArrayPosition = 0;
-                        maxArrayIndex = 0;
-                        currentArrayIndex = 0;
-                        currentArrayPosition = 0;;
-                    }
                     // Reset array data if end is reached
                     if (maxArrayPosition != 0 && currentArrayPosition > maxArrayPosition)
                     {
@@ -314,22 +308,52 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                         maxArrayIndex = 0;
                         currentArrayIndex = 0;
                         currentArrayPosition = 0;
+                        arrayMemberCount = 0;
+                        substructureArrayMemberCount = 0;
+                        isLoadingArrayInfo = false;
                     }
 
-                    // Set isArray if field is part of an arrayGroup
-                    if (fieldInfo.ArrayInfo == UpdateFieldArrayInfo.InfoStart)
+                    if (!isArray && !isLoadingArrayInfo && fieldInfo.ArrayMemberCount != 0)
                     {
+                        isLoadingArrayInfo = true;
                         isArray = true;
+                        arrayMemberCount = fieldInfo.ArrayMemberCount;
+                    }
+                    else if (isLoadingArrayInfo && fieldInfo.ArrayMemberCount != 0)
+                    {
+                        substructureArrayMemberCount = fieldInfo.ArrayMemberCount;
                     }
 
-                    // fill necessary data if not collected yet
-                    if (isArray && maxArrayPosition == 0 && maxArrayIndex == 0)
+                    if (isArray && isLoadingArrayInfo)
                     {
-                        currentArrayInfo.Add(fieldInfo);
+                        UpdateFieldInfo arrayFieldInfo = new UpdateFieldInfo();
+                        arrayFieldInfo.Value = fieldInfo.Value;
+                        arrayFieldInfo.Name = key;
+                        arrayFieldInfo.Size = fieldInfo.Size;
+                        arrayFieldInfo.Format = fieldInfo.Format;
+                        arrayFieldInfo.IsCounter = fieldInfo.IsCounter;
+                        arrayFieldInfo.Flag = fieldInfo.Flag;
+                        arrayFieldInfo.ArrayMemberCount = fieldInfo.ArrayMemberCount;
+
+                        currentArrayInfo.Add(arrayFieldInfo);
                     }
 
-                    if (fieldInfo.ArrayInfo == UpdateFieldArrayInfo.InfoEnd)
+                    if (isArray && !isLoadingArrayInfo && maxArrayPosition != 0 && maxArrayIndex != 0)
                     {
+                        UpdateFieldInfo overrideFieldInfo = currentArrayInfo[currentArrayPosition % currentArrayInfo.Count];
+
+                        if (overrideFieldInfo != null)
+                        {
+                            key = overrideFieldInfo.Name;
+                            updateFieldType = overrideFieldInfo.Format;
+                            currentArrayIndex = currentArrayPosition / currentArrayInfo.Count;
+                        }
+                    }
+
+                    if (arrayMemberCount != 0 && currentArrayInfo.Count == arrayMemberCount && isLoadingArrayInfo)
+                    {
+                        isLoadingArrayInfo = false;
+
                         switch (fieldInfo.Format)
                         {
                             case UpdateFieldType.DynamicByte:
@@ -352,22 +376,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
                         if (fieldInfo.Size > 1)
                         {
-                            maxArrayPosition = fieldInfo.Size + currentArrayInfo.Count - 2;
+                            if (substructureArrayMemberCount != 0)
+                                maxArrayPosition = fieldInfo.Size + arrayMemberCount - substructureArrayMemberCount - 1;
+                            else
+                                maxArrayPosition = fieldInfo.Size + currentArrayInfo.Count - 2;
                             maxArrayIndex = ((maxArrayPosition + 1) / currentArrayInfo.Count) - 1;
                         }
-                    }
-                }
-
-                // override fieldinfo with array info
-                if (isArray && maxArrayPosition != 0 && maxArrayIndex != 0)
-                {
-                    UpdateFieldInfo overrideFieldInfo = currentArrayInfo[currentArrayPosition % currentArrayInfo.Count];
-
-                    if (overrideFieldInfo != null)
-                    {
-                        key = overrideFieldInfo.Name;
-                        updateFieldType = overrideFieldInfo.Format;
-                        currentArrayIndex = currentArrayPosition / currentArrayInfo.Count;
                     }
                 }
 

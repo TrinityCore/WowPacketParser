@@ -46,13 +46,6 @@ namespace WowPacketParser.Parsing
         Custom
     }
 
-    public enum UpdateFieldArrayInfo
-    {
-        None,
-        InfoStart,
-        InfoEnd
-    }
-
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = true, Inherited = false)]
     public sealed class UpdateFieldAttribute : Attribute
     {
@@ -62,7 +55,7 @@ namespace WowPacketParser.Parsing
             Version = ClientVersionBuild.Zero;
             IsDynamicCounter = false;
             Flag = UpdateFieldCreateFlag.None;
-            ArrayInfo = UpdateFieldArrayInfo.None;
+            ArrayMemberCount = 0;
         }
 
         public UpdateFieldAttribute(UpdateFieldType attrib, UpdateFieldCreateFlag flag)
@@ -71,25 +64,25 @@ namespace WowPacketParser.Parsing
             Version = ClientVersionBuild.Zero;
             IsDynamicCounter = false;
             Flag = flag;
-            ArrayInfo = UpdateFieldArrayInfo.None;
+            ArrayMemberCount = 0;
         }
 
-        public UpdateFieldAttribute(UpdateFieldType attrib, UpdateFieldArrayInfo arrayInfo)
+        public UpdateFieldAttribute(UpdateFieldType attrib, int arrayMemberCount)
         {
             UFAttribute = attrib;
             Version = ClientVersionBuild.Zero;
             IsDynamicCounter = false;
             Flag = UpdateFieldCreateFlag.None;
-            ArrayInfo = arrayInfo;
+            ArrayMemberCount = arrayMemberCount;
         }
 
-        public UpdateFieldAttribute(UpdateFieldType attrib, UpdateFieldArrayInfo arrayInfo, UpdateFieldCreateFlag flag)
+        public UpdateFieldAttribute(UpdateFieldType attrib, int arrayMemberCount, UpdateFieldCreateFlag flag)
         {
             UFAttribute = attrib;
             Version = ClientVersionBuild.Zero;
             IsDynamicCounter = false;
             Flag = flag;
-            ArrayInfo = arrayInfo;
+            ArrayMemberCount = arrayMemberCount;
         }
 
         public UpdateFieldAttribute(UpdateFieldType attrib, bool isDynamicCounter)
@@ -98,7 +91,7 @@ namespace WowPacketParser.Parsing
             Version = ClientVersionBuild.Zero;
             IsDynamicCounter = isDynamicCounter;
             Flag = UpdateFieldCreateFlag.None;
-            ArrayInfo = UpdateFieldArrayInfo.None;
+            ArrayMemberCount = 0;
         }
 
         public UpdateFieldAttribute(UpdateFieldType attrib, ClientVersionBuild fromVersion)
@@ -107,16 +100,16 @@ namespace WowPacketParser.Parsing
             Version = fromVersion;
             IsDynamicCounter = false;
             Flag = UpdateFieldCreateFlag.None;
-            ArrayInfo = UpdateFieldArrayInfo.None;
+            ArrayMemberCount = 0;
         }
 
-        public UpdateFieldAttribute(UpdateFieldType attrib, UpdateFieldArrayInfo arrayInfo, ClientVersionBuild fromVersion)
+        public UpdateFieldAttribute(UpdateFieldType attrib, int arraySize, ClientVersionBuild fromVersion)
         {
             UFAttribute = attrib;
             Version = fromVersion;
             IsDynamicCounter = false;
             Flag = UpdateFieldCreateFlag.None;
-            ArrayInfo = arrayInfo;
+            ArrayMemberCount = 0;
         }
 
         public UpdateFieldAttribute(UpdateFieldType attrib, bool isDynamicCounter, ClientVersionBuild fromVersion)
@@ -125,22 +118,13 @@ namespace WowPacketParser.Parsing
             Version = fromVersion;
             IsDynamicCounter = isDynamicCounter;
             Flag = UpdateFieldCreateFlag.None;
-            ArrayInfo = UpdateFieldArrayInfo.None;
-        }
-
-        public UpdateFieldAttribute(UpdateFieldType attrib, UpdateFieldArrayInfo arrayInfo, bool isDynamicCounter, ClientVersionBuild fromVersion)
-        {
-            UFAttribute = attrib;
-            Version = fromVersion;
-            IsDynamicCounter = isDynamicCounter;
-            Flag = UpdateFieldCreateFlag.None;
-            ArrayInfo = arrayInfo;
+            ArrayMemberCount = 0;
         }
 
         public UpdateFieldType UFAttribute { get; private set; }
         public ClientVersionBuild Version { get; private set; }
-        public UpdateFieldArrayInfo ArrayInfo { get; private set; }
         public bool IsDynamicCounter { get; private set; }
         public UpdateFieldCreateFlag Flag { get; private set; }
+        public int ArrayMemberCount { get; private set; }
     }
 }
