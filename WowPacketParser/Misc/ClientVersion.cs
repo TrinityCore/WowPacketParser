@@ -262,6 +262,7 @@ namespace WowPacketParser.Misc
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_1_5_29732, new DateTime(2019, 03, 14)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_1_5_29737, new DateTime(2019, 03, 16)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_1_5_29814, new DateTime(2019, 03, 22)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_1_5_29869, new DateTime(2019, 03, 27)),
         };
 
         private static ClientType _expansion;
@@ -512,12 +513,6 @@ namespace WowPacketParser.Misc
                     case ClientVersionBuild.V8_0_1_27843:
                     case ClientVersionBuild.V8_0_1_27980:
                     case ClientVersionBuild.V8_0_1_28153:
-                    case ClientVersionBuild.V8_1_5_29683:
-                    case ClientVersionBuild.V8_1_5_29701:
-                    case ClientVersionBuild.V8_1_5_29718:
-                    case ClientVersionBuild.V8_1_5_29732:
-                    case ClientVersionBuild.V8_1_5_29737:
-                    case ClientVersionBuild.V8_1_5_29814:
                         return ClientVersionBuild.V8_0_1_27101;
                     case ClientVersionBuild.V8_1_0_28724:
                     case ClientVersionBuild.V8_1_0_28768:
@@ -532,6 +527,13 @@ namespace WowPacketParser.Misc
                     case ClientVersionBuild.V8_1_0_29482:
                     case ClientVersionBuild.V8_1_0_29600:
                     case ClientVersionBuild.V8_1_0_29621:
+                    case ClientVersionBuild.V8_1_5_29683:
+                    case ClientVersionBuild.V8_1_5_29701:
+                    case ClientVersionBuild.V8_1_5_29718:
+                    case ClientVersionBuild.V8_1_5_29732:
+                    case ClientVersionBuild.V8_1_5_29737:
+                    case ClientVersionBuild.V8_1_5_29814:
+                    case ClientVersionBuild.V8_1_5_29869:
                         return ClientVersionBuild.V8_0_1_27101;
                     case ClientVersionBuild.BattleNetV37165:
                         return ClientVersionBuild.BattleNetV37165;
