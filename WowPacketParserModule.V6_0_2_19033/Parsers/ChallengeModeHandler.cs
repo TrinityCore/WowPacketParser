@@ -8,17 +8,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     {
         public static void ReadChallengeModeAttempt(Packet packet, params object[] indexes)
         {
-            packet.ReadInt32("InstanceRealmAddress", indexes);
-            packet.ReadInt32("AttemptID", indexes);
+            packet.ReadUInt32("InstanceRealmAddress", indexes);
+            packet.ReadUInt32("AttemptID", indexes);
             packet.ReadInt32("CompletionTime", indexes);
             packet.ReadPackedTime("CompletionDate", indexes);
-            packet.ReadInt32("MedalEarned", indexes);
+            packet.ReadUInt32("MedalEarned", indexes);
 
-            var int12 = packet.ReadInt32("MembersCount", indexes);
+            var int12 = packet.ReadUInt32("MembersCount", indexes);
             for (int i = 0; i < int12; i++)
             {
-                packet.ReadInt32("VirtualRealmAddress", indexes, i);
-                packet.ReadInt32("NativeRealmAddress", indexes, i);
+                packet.ReadUInt32("VirtualRealmAddress", indexes, i);
+                packet.ReadUInt32("NativeRealmAddress", indexes, i);
                 packet.ReadPackedGuid128("Guid", indexes, i);
                 packet.ReadInt32("SpecializationID", indexes, i);
             }
