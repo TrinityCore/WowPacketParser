@@ -760,7 +760,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                             }
                     }
 
-                    if (!isDynamicValue && HasValue(value))
+                    bool hasValue = true;
+
+                    if (Settings.IgnoreZeroValues)
+                        hasValue = HasValue(value);
+
+                    if (!isDynamicValue && hasValue)
                     {
                         if (updateFieldType == UpdateFieldType.Bytes)
                         {
