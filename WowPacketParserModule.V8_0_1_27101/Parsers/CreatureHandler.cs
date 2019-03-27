@@ -95,6 +95,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
                 packet.ReadSingle("UnkFloat");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683))
+            {
+                packet.ReadInt32("UnkInt_815");
+                packet.ReadInt32("UnkInt2_815");
+            }
+
             if (titleLen > 1)
                 creature.SubName = packet.ReadCString("Title");
 
