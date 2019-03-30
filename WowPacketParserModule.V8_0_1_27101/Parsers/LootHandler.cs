@@ -11,5 +11,14 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         {
             packet.ReadBit("LegacyRulesActive");
         }
+
+        [Parser(Opcode.SMSG_LOOT_MONEY_NOTIFY, ClientVersionBuild.V8_1_5_29683)]
+        public static void HandleLootMoneyNotify(Packet packet)
+        {
+            packet.ReadUInt64("Money");
+            packet.ReadUInt64("Mod");
+            packet.ResetBitReader();
+            packet.ReadBit("SoleLooter");
+        }
     }
 }
