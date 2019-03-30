@@ -42,7 +42,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public ushort InstanceBound { get; set; }
         public ushort ZoneBound { get; set; }
         public ushort ItemSet { get; set; }
+        [HotfixVersion(ClientVersionBuild.V8_1_5_29683, true)]
         public ushort ItemRandomSuffixGroupID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V8_1_5_29683, true)]
         public ushort RandomSelect { get; set; }
         public ushort LockID { get; set; }
         public ushort StartQuestID { get; set; }

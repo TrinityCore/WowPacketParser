@@ -93,7 +93,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_HOTFIX_REQUEST)]
+        [Parser(Opcode.CMSG_HOTFIX_REQUEST, ClientVersionBuild.V8_1_0_28724, ClientVersionBuild.V8_1_5_29683)]
         public static void HandleHotfixQuery(Packet packet)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
@@ -111,7 +111,21 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_AVAILABLE_HOTFIXES)]
+        [Parser(Opcode.CMSG_HOTFIX_REQUEST, ClientVersionBuild.V8_1_5_29683)]
+        public static void HandleHotfixQuery815(Packet packet)
+        {
+            packet.ReadUInt32("CurrentBuild");
+            packet.ReadUInt32("InternalBuild");
+            var hotfixCount = packet.ReadUInt32("HotfixCount");
+            for (var i = 0u; i < hotfixCount; ++i)
+            {
+                packet.ReadUInt32E<DB2Hash>("TableHash", i);
+                packet.ReadInt32("RecordID", i);
+                packet.ReadInt32("HotfixID", i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_AVAILABLE_HOTFIXES, ClientVersionBuild.V8_1_0_28724, ClientVersionBuild.V8_1_5_29683)]
         public static void HandleHotfixList(Packet packet)
         {
             packet.ReadInt32("HotfixCacheVersion");
@@ -122,6 +136,19 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
                 packet.AddValue("HotfixID", Utilities.PAIR64_LOPART(id), i);
                 packet.AddValue("TableHash", (DB2Hash)Utilities.PAIR64_HIPART(id), i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_AVAILABLE_HOTFIXES, ClientVersionBuild.V8_1_5_29683)]
+        public static void HandleHotfixList815(Packet packet)
+        {
+            packet.ReadInt32("HotfixCacheVersion");
+            var hotfixCount = packet.ReadUInt32("HotfixCount");
+            for (var i = 0u; i < hotfixCount; ++i)
+            {
+                packet.ReadUInt32E<DB2Hash>("TableHash", i);
+                packet.ReadInt32("RecordID", i);
+                packet.ReadInt32("HotfixID", i);
             }
         }
 
@@ -185,8 +212,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         }
 
         [HasSniffData]
-        [Parser(Opcode.SMSG_HOTFIX_MESSAGE, ClientVersionBuild.V8_1_0_28724)]
-        [Parser(Opcode.SMSG_HOTFIX_RESPONSE, ClientVersionBuild.V8_1_0_28724)]
+        [Parser(Opcode.SMSG_HOTFIX_MESSAGE, ClientVersionBuild.V8_1_0_28724, ClientVersionBuild.V8_1_5_29683)]
+        [Parser(Opcode.SMSG_HOTFIX_RESPONSE, ClientVersionBuild.V8_1_0_28724, ClientVersionBuild.V8_1_5_29683)]
         public static void HandleHotixData810(Packet packet)
         {
             var hotfixRecords = new List<HotfixRecord>();
@@ -201,6 +228,36 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 hotfixRecord.HotfixId = Utilities.PAIR64_LOPART(id);
                 hotfixRecord.Type = (DB2Hash)Utilities.PAIR64_HIPART(id);
                 hotfixRecord.RecordId = packet.ReadInt32();
+                hotfixRecord.HotfixDataSize = packet.ReadInt32();
+                packet.ResetBitReader();
+                hotfixRecord.Allow = packet.ReadBit();
+
+                hotfixRecords.Add(hotfixRecord);
+            }
+
+            var dataSize = packet.ReadInt32();
+            var data = packet.ReadBytes(dataSize);
+            var hotfixData = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
+
+            ReadHotfixData810(hotfixData, hotfixRecords, "HotfixData");
+        }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_HOTFIX_MESSAGE, ClientVersionBuild.V8_1_5_29683)]
+        [Parser(Opcode.SMSG_HOTFIX_RESPONSE, ClientVersionBuild.V8_1_5_29683)]
+        public static void HandleHotixData815(Packet packet)
+        {
+            var hotfixRecords = new List<HotfixRecord>();
+            var hotfixCount = packet.ReadUInt32("HotfixCount");
+
+            for (var i = 0u; i < hotfixCount; ++i)
+            {
+                var hotfixRecord = new HotfixRecord();
+                packet.ResetBitReader();
+
+                hotfixRecord.Type = packet.ReadUInt32E<DB2Hash>();
+                hotfixRecord.RecordId = packet.ReadInt32();
+                hotfixRecord.HotfixId = packet.ReadUInt32();
                 hotfixRecord.HotfixDataSize = packet.ReadInt32();
                 packet.ResetBitReader();
                 hotfixRecord.Allow = packet.ReadBit();
