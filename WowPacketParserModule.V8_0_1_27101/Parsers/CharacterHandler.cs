@@ -146,7 +146,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 V7_0_3_22248.Parsers.CharacterHandler.ReadRaceUnlockData(packet, i, "RaceUnlockData");
         }
 
-        [Parser(Opcode.SMSG_INSPECT_RESULT)]
+        [Parser(Opcode.SMSG_INSPECT_RESULT, ClientVersionBuild.V8_0_1_27101, ClientVersionBuild.V8_1_5_29683)]
         public static void HandleInspectResult(Packet packet)
         {
             packet.ReadPackedGuid128("InspecteeGUID");
@@ -210,6 +210,93 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             }
             if (hasAzeriteLevel)
                 packet.ReadInt32("AzeriteLevel");
+        }
+
+        [Parser(Opcode.SMSG_INSPECT_RESULT, ClientVersionBuild.V8_1_5_29683)]
+        public static void HandleInspectResult815(Packet packet)
+        {
+            packet.ReadPackedGuid128("InspecteeGUID");
+
+            var itemCount = packet.ReadUInt32("ItemsCount");
+            var glyphCount = packet.ReadUInt32("GlyphsCount");
+            var talentCount = packet.ReadUInt32("TalentsCount");
+            var pvpTalentCount = packet.ReadUInt32("PvpTalentsCount");
+            packet.ReadInt32E<Class>("ClassID");
+            packet.ReadInt32("SpecializationID");
+            packet.ReadInt32E<Gender>("Gender");
+            packet.ReadByte("UnkByte_0");
+            packet.ReadUInt16("UnkUint16_0");
+            packet.ReadUInt16("UnkUint16_1");
+            packet.ReadUInt32("UnkUint16_2");
+            packet.ReadUInt32("UnkUint16_3");
+
+            for (int i = 0; i < glyphCount; i++)
+                packet.ReadUInt16("Glyphs", i);
+
+            for (int i = 0; i < talentCount; i++)
+                packet.ReadUInt16("Talents", i);
+
+            for (int i = 0; i < pvpTalentCount; i++)
+                packet.ReadUInt16("PvpTalents", i);
+
+            packet.ResetBitReader();
+            var hasGuildData = packet.ReadBit("HasGuildData");
+            var hasAzeriteLevel = packet.ReadBit("HasAzeriteLevel");
+
+            for (int i = 0; i < 6; i++)
+            {
+                packet.ReadByte("UnkByte_1", i);
+                packet.ReadInt32("UnkInt32_0", i);
+                packet.ReadInt32("UnkInt32_1", i);
+                packet.ReadInt32("UnkInt32_2", i);
+                packet.ReadInt32("UnkInt32_3", i);
+                packet.ReadInt32("UnkInt32_4", i);
+                packet.ReadInt32("UnkInt32_5", i);
+                packet.ReadInt32("UnkInt32_6", i);
+                packet.ReadInt32("UnkInt32_7", i);
+                packet.ReadInt32("UnkInt32_8", i);
+                packet.ReadBit("UnkBool_0", i);
+                packet.ReadBit("UnkBool_1", i);
+            }
+
+            if (hasGuildData)
+            {
+                packet.ReadPackedGuid128("GuildGUID");
+                packet.ReadInt32("NumGuildMembers");
+                packet.ReadInt32("GuildAchievementPoints");
+            }
+            if (hasAzeriteLevel)
+                packet.ReadInt32("AzeriteLevel");
+
+            for (int i = 0; i < itemCount; i++)
+            {
+                packet.ReadPackedGuid128("CreatorGUID", i);
+                packet.ReadByte("Index", i);
+
+                var azeritePowerCount = packet.ReadUInt32("AzeritePowersCount", i);
+
+                for (int j = 0; j < azeritePowerCount; j++)
+                    packet.ReadInt32("AzeritePowerId", i, j);
+
+                ItemHandler.ReadItemInstance815(packet, i);
+
+                packet.ResetBitReader();
+                packet.ReadBit("Usable", i);
+                var enchantsCount = packet.ReadBits("EnchantsCount", 4, i);
+                var gemsCount = packet.ReadBits("GemsCount", 2, i);
+
+                for (int j = 0; j < gemsCount; j++)
+                {
+                    packet.ReadByte("Slot", i, j);
+                    ItemHandler.ReadItemInstance815(packet, i, j);
+                }
+
+                for (int j = 0; j < enchantsCount; j++)
+                {
+                    packet.ReadUInt32("Id", i, j);
+                    packet.ReadByte("Index", i, j);
+                }
+            }
         }
 
         [Parser(Opcode.CMSG_CREATE_CHARACTER)]
