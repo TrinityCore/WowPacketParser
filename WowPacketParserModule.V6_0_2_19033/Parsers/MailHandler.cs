@@ -78,7 +78,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("AttachID", idx);
 
             // ItemInstance
-            ItemHandler.ReadItemInstance(packet, idx);
+            Substructures.ItemHandler.ReadItemInstance(packet, idx);
 
             for (var k = 0; k < 8; ++k)
             {

@@ -182,7 +182,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 for (int j = 0; j < azeritePowerCount; j++)
                     packet.ReadInt32("AzeritePowerId", i, j);
 
-                V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, i);
+                Substructures.ItemHandler.ReadItemInstance(packet, i);
 
                 packet.ResetBitReader();
                 packet.ReadBit("Usable", i);
@@ -192,7 +192,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 for (int j = 0; j < gemsCount; j++)
                 {
                     packet.ReadByte("Slot", i, j);
-                    V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, i, j);
+                    Substructures.ItemHandler.ReadItemInstance(packet, i, j);
                 }
 
                 for (int j = 0; j < enchantsCount; j++)
@@ -279,7 +279,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 for (int j = 0; j < azeritePowerCount; j++)
                     packet.ReadInt32("AzeritePowerId", i, j);
 
-                ItemHandler.ReadItemInstance815(packet, i);
+                Substructures.ItemHandler.ReadItemInstance(packet, i);
 
                 packet.ResetBitReader();
                 packet.ReadBit("Usable", i);
@@ -289,7 +289,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 for (int j = 0; j < gemsCount; j++)
                 {
                     packet.ReadByte("Slot", i, j);
-                    ItemHandler.ReadItemInstance815(packet, i, j);
+                    Substructures.ItemHandler.ReadItemInstance(packet, i, j);
                 }
 
                 for (int j = 0; j < enchantsCount; j++)

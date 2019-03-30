@@ -189,7 +189,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 var bit80 = packet.ReadBit("HasItemInstance", i);
                 if (bit80)
-                    ItemHandler.ReadItemInstance(packet, i);
+                    Substructures.ItemHandler.ReadItemInstance(packet, i);
             }
         }
 
@@ -363,7 +363,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < int16; i++)
             {
                 packet.ReadInt32("Slot", i);
-                ItemHandler.ReadItemInstance(packet, i);
+                Substructures.ItemHandler.ReadItemInstance(packet, i);
 
                 packet.ReadInt32("Count", i);
                 packet.ReadInt32("EnchantmentID", i);

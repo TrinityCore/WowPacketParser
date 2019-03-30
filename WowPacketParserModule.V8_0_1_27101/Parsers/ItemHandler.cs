@@ -6,35 +6,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 {
     public static class ItemHandler
     {
-        public static int ReadItemInstance815(Packet packet, params object[] indexes)
-        {
-            var itemId = packet.ReadInt32<ItemId>("ItemID", indexes);
-
-            packet.ResetBitReader();
-            var hasBonuses = packet.ReadBit("HasItemBonus", indexes);
-            var hasModifications = packet.ReadBit("HasModifications", indexes);
-            if (hasBonuses)
-            {
-                packet.ReadByte("Context", indexes);
-
-                var bonusCount = packet.ReadUInt32();
-                for (var j = 0; j < bonusCount; ++j)
-                    packet.ReadInt32("BonusListID", indexes, j);
-            }
-
-            if (hasModifications)
-            {
-                var mask = packet.ReadUInt32();
-                for (var j = 0; mask != 0; mask >>= 1, ++j)
-                    if ((mask & 1) != 0)
-                        packet.ReadUInt32(((ItemModifier)j).ToString(), indexes);
-            }
-
-            packet.ResetBitReader();
-
-            return itemId;
-        }
-
         [Parser(Opcode.CMSG_AZERITE_EMPOWERED_ITEM_SELECT_POWER)]
         public static void HandleItemAzerithEmpoweredItemSelectPower(Packet packet)
         {
@@ -48,6 +19,38 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         public static void HandleItemAzerithEmpoweredItemViewed(Packet packet)
         {
             packet.ReadPackedGuid128("ItemGUID");
+        }
+
+        [Parser(Opcode.SMSG_ITEM_PUSH_RESULT)]
+        public static void HandleItemPushResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGUID");
+
+            packet.ReadByte("Slot");
+
+            packet.ReadInt32("SlotInBag");
+
+            packet.ReadUInt32("QuestLogItemID");
+            packet.ReadUInt32("Quantity");
+            packet.ReadUInt32("QuantityInInventory");
+            packet.ReadInt32("DungeonEncounterID");
+
+            packet.ReadUInt32("BattlePetBreedID");
+            packet.ReadUInt32("BattlePetBreedQuality");
+            packet.ReadUInt32("BattlePetSpeciesID");
+            packet.ReadUInt32("BattlePetLevel");
+
+            packet.ReadPackedGuid128("ItemGUID");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Pushed");
+            packet.ReadBit("Created");
+            packet.ReadBits("DisplayText", 3);
+            packet.ReadBit("IsBonusRoll");
+            packet.ReadBit("IsEncounterLoot");
+
+            Substructures.ItemHandler.ReadItemInstance(packet);
         }
     }
 }

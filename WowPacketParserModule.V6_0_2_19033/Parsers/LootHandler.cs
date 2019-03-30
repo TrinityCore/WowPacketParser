@@ -17,7 +17,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("LootItemType", indexes);
             packet.ReadByte("LootListID", indexes);
 
-            ItemHandler.ReadItemInstance(packet, indexes, "ItemInstance");
+            Substructures.ItemHandler.ReadItemInstance(packet, indexes, "ItemInstance");
         }
 
         public static void ReadCurrenciesData(Packet packet, params object[] idx)

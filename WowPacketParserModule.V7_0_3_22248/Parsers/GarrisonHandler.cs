@@ -122,7 +122,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             if (type == 0)
             {
                 packet.ReadBit("BonusRoll");
-                V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet);
+                Substructures.ItemHandler.ReadItemInstance(packet);
                 packet.ReadInt32("SpecializationID");
                 packet.ReadInt32("ItemQuantity?");
             }

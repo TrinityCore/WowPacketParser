@@ -945,7 +945,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleDisenchantCredit(Packet packet)
         {
             packet.ReadPackedGuid128("Disenchanter");
-            ItemHandler.ReadItemInstance(packet);
+            Substructures.ItemHandler.ReadItemInstance(packet);
         }
 
         [Parser(Opcode.SMSG_UNLEARNED_SPELLS)]

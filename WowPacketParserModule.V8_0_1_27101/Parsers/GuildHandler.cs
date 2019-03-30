@@ -130,7 +130,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 var int76 = packet.ReadInt32("SocketEnchant", i);
                 packet.ReadInt32("Flags", i);
 
-                V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, i, "ItemInstance");
+                Substructures.ItemHandler.ReadItemInstance(packet, i, "ItemInstance");
 
                 for (int j = 0; j < int76; j++)
                 {

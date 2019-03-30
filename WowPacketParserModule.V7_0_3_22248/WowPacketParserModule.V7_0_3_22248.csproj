@@ -342,6 +342,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WowPacketParserModule.Substructures\WowPacketParserModule.Substructures.csproj">
+      <Project>{953229b7-01c4-457b-86cc-f0dd1173f217}</Project>
+      <Name>WowPacketParserModule.Substructures</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WowPacketParserModule.V6_0_2_19033\WowPacketParserModule.V6_0_2_19033.csproj">
       <Project>{63484313-34d2-4133-b157-a19d12b69d9b}</Project>
       <Name>WowPacketParserModule.V6_0_2_19033</Name>

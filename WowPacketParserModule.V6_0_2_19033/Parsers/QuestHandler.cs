@@ -521,7 +521,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("XpReward");
             packet.ReadUInt32("TalentReward");
 
-            ItemHandler.ReadItemInstance(packet);
+            Substructures.ItemHandler.ReadItemInstance(packet);
 
             packet.ResetBitReader();
 
@@ -854,7 +854,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         public static void ReadPlayerChoiceResponseRewardEntry(Packet packet, params object[] indexes)
         {
-            ItemHandler.ReadItemInstance(packet, indexes);
+            Substructures.ItemHandler.ReadItemInstance(packet, indexes);
             packet.ReadInt32("Quantity", indexes);
         }
 
