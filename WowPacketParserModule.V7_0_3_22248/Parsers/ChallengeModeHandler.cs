@@ -30,6 +30,15 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (int i = 0; i < int9; i++)
                 V6_0_2_19033.Parsers.ChallengeModeHandler.ReadChallengeModeAttempt(packet, i, "RealmLeaders");
         }
+
+        [Parser(Opcode.CMSG_CHALLENGE_MODE_REQUEST_LEADERS)]
+        public static void HandleChallengeModeRequestLeaders(Packet packet)
+        {
+            packet.ReadInt32("MapId");
+            packet.ReadTime("LastGuildUpdate");
+            packet.ReadTime("LastRealmUpdate");
+            packet.ReadInt32("Unk");
+        }
     }
 }
 
