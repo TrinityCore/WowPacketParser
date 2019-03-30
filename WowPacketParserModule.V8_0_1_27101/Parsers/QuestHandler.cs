@@ -277,6 +277,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             quest.QuestRewardID = packet.ReadInt32("TreasurePickerID");
             quest.Expansion = packet.ReadInt32("Expansion");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683))
+                packet.ReadInt32("Unk815");
+
             packet.ResetBitReader();
 
             uint logTitleLen = 0;
@@ -289,7 +292,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             uint questTurnTargetNameLen = 0;
             uint questCompletionLogLen = 0;
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724) && ClientVersion.RemovedInVersion(ClientVersionBuild.V8_1_5_29683))
             {
                 logTitleLen = packet.ReadBits(10);
                 logDescriptionLen = packet.ReadBits(12);
