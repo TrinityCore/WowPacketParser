@@ -255,6 +255,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 packet.ReadInt32("UnkInt32_6", i);
                 packet.ReadInt32("UnkInt32_7", i);
                 packet.ReadInt32("UnkInt32_8", i);
+                packet.ResetBitReader();
                 packet.ReadBit("UnkBool_0", i);
                 packet.ReadBit("UnkBool_1", i);
             }
