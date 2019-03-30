@@ -8,42 +8,44 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 {
     public static class QuestHandler
     {
-        public static int ReadItemInstance815(Packet packet, params object[] indexes)
+        public static int ReadItemInstance(Packet packet, params object[] indexes)
         {
-            var itemId = packet.ReadInt32<ItemId>("ItemID", indexes);
-
-            packet.ResetBitReader();
-
-            var hasBonuses = packet.ReadBit("HasItemBonus", indexes);
-            var hasModifications = packet.ReadBit("HasModifications", indexes);
-            if (hasBonuses)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683))
             {
-                packet.ReadByte("Context", indexes);
+                var itemId = packet.ReadInt32<ItemId>("ItemID", indexes);
 
-                var bonusCount = packet.ReadUInt32();
-                for (var j = 0; j < bonusCount; ++j)
-                    packet.ReadUInt32("BonusListID", indexes, j);
+                packet.ResetBitReader();
+
+                var hasBonuses = packet.ReadBit("HasItemBonus", indexes);
+                var hasModifications = packet.ReadBit("HasModifications", indexes);
+                if (hasBonuses)
+                {
+                    packet.ReadByte("Context", indexes);
+
+                    var bonusCount = packet.ReadUInt32();
+                    for (var j = 0; j < bonusCount; ++j)
+                        packet.ReadUInt32("BonusListID", indexes, j);
+                }
+
+                if (hasModifications)
+                {
+                    var mask = packet.ReadUInt32();
+                    for (var j = 0; mask != 0; mask >>= 1, ++j)
+                        if ((mask & 1) != 0)
+                            packet.ReadInt32(((ItemModifier)j).ToString(), indexes);
+                }
+
+                packet.ResetBitReader();
+
+                return itemId;
             }
-
-            if (hasModifications)
-            {
-                var mask = packet.ReadUInt32();
-                for (var j = 0; mask != 0; mask >>= 1, ++j)
-                    if ((mask & 1) != 0)
-                        packet.ReadInt32(((ItemModifier)j).ToString(), indexes);
-            }
-
-            packet.ResetBitReader();
-
-            return itemId;
+            else
+                return V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, "ItemReward");
         }
 
         public static void ReadRewardItem(Packet packet, params object[] idx)
         {
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683))
-                ReadItemInstance815(packet, idx);
-            else
-                V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, idx);
+            ReadItemInstance(packet, idx);
             packet.ReadInt32("Quantity", idx);
         }
 
@@ -820,6 +822,25 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 };
                 Storage.LocalesQuestGreeting.Add(localesQuestGreeting, packet.TimeSpan);
             }
+        }
+
+        [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_COMPLETE)]
+        public static void HandlQuestGiverQuestComplete(Packet packet)
+        {
+            packet.ReadInt32("QuestId");
+            packet.ReadInt32("XpReward");
+            packet.ReadInt64("MoneyReward");
+            packet.ReadInt32("SkillLineIDReward");
+            packet.ReadInt32("NumSkillUpsReward");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("UseQuestReward");
+            packet.ReadBit("LaunchGossip");
+            packet.ReadBit("LaunchQuest");
+            packet.ReadBit("HideChatMessage");
+
+            ReadItemInstance(packet, "ItemReward");
         }
     }
 }
