@@ -126,17 +126,20 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadInt32("MaxCharacterLevel");
             var raceUnlockCount = packet.ReadUInt32("RaceUnlockCount");
 
-            uint unkCount = 0;
+            uint unlockedConditionalAppearanceCount = 0;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
-                unkCount = packet.ReadUInt32("UnkCount_810");
+                unlockedConditionalAppearanceCount = packet.ReadUInt32("UnlockedConditionalAppearanceCount");
 
             if (hasDisabledClassesMask)
                 packet.ReadUInt32("DisabledClassesMask");
 
-            for (uint i = 0; i < unkCount; ++i)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
             {
-                packet.ReadUInt32("UnkUInt32_1", i);
-                packet.ReadUInt32("UnkUInt32_2", i);
+                for (uint i = 0; i < unlockedConditionalAppearanceCount; ++i)
+                {
+                    packet.ReadUInt32("AchievementId", "UnlockedConditionalAppearance", i);
+                    packet.ReadUInt32("UnkUInt32_810", "UnlockedConditionalAppearance", i);
+                }
             }
 
             for (uint i = 0; i < charsCount; ++i)
