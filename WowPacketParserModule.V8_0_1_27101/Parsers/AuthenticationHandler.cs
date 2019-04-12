@@ -81,7 +81,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
                     var bitsCount = 8;
 
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724) && ClientVersion.RemovedInVersion(ClientVersionBuild.V8_1_5_29683))
                         bitsCount = 9;
 
                     var nameLen1 = packet.ReadBits(bitsCount);
