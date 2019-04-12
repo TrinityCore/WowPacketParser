@@ -91,7 +91,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             packet.ReadInt16("SpecID", idx);
             packet.ReadInt32("Unknown703", idx);
-            packet.ReadInt32("LastLoginBuild", idx);
+            packet.ReadInt32("InterfaceVersion", idx);
             packet.ReadUInt32("Flags4", idx);
 
             packet.ResetBitReader();
