@@ -145,7 +145,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Rank Id", i);
                 packet.ReadByte("Level", i);
                 packet.ReadByte("Class", i);
-                packet.ReadByte("Unk", i);
+                packet.ReadByte("Gender", i);
                 packet.ReadInt32<ZoneId>("Zone Id", i);
 
                 if (!online)
