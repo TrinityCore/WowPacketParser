@@ -240,7 +240,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 var movementForceCount = packet.ReadUInt32("MovementForceCount", index);
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
-                    packet.ReadSingle("UnkFloat", index);
+                    packet.ReadSingle("MovementForcesModMagnitude", index);
 
                 packet.ResetBitReader();
 
