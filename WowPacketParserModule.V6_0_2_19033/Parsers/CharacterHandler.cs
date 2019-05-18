@@ -500,7 +500,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 // sub_614FDF
                 packet.ReadPackedGuid128("CreatorGUID", i);
 
-                ItemHandler.ReadItemInstance(packet, i);
+                Substructures.ItemHandler.ReadItemInstance(packet, i);
 
                 packet.ReadByte("Index", i);
 

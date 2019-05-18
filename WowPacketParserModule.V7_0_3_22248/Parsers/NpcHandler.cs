@@ -110,7 +110,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 vendor.ExtendedCost = packet.ReadUInt32("ExtendedCostID", i);
                 vendor.PlayerConditionID = packet.ReadUInt32("PlayerConditionFailed", i);
 
-                vendor.Item = V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, i);
+                vendor.Item = Substructures.ItemHandler.ReadItemInstance(packet, i);
                 vendor.IgnoreFiltering = packet.ReadBit("DoNotFilterOnVendor", i);
 
                 vendor.MaxCount = maxCount == -1 ? 0 : (uint)maxCount; // TDB

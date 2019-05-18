@@ -20,5 +20,37 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         {
             packet.ReadPackedGuid128("ItemGUID");
         }
+
+        [Parser(Opcode.SMSG_ITEM_PUSH_RESULT)]
+        public static void HandleItemPushResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGUID");
+
+            packet.ReadByte("Slot");
+
+            packet.ReadInt32("SlotInBag");
+
+            packet.ReadUInt32("QuestLogItemID");
+            packet.ReadUInt32("Quantity");
+            packet.ReadUInt32("QuantityInInventory");
+            packet.ReadInt32("DungeonEncounterID");
+
+            packet.ReadUInt32("BattlePetBreedID");
+            packet.ReadUInt32("BattlePetBreedQuality");
+            packet.ReadUInt32("BattlePetSpeciesID");
+            packet.ReadUInt32("BattlePetLevel");
+
+            packet.ReadPackedGuid128("ItemGUID");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Pushed");
+            packet.ReadBit("Created");
+            packet.ReadBits("DisplayText", 3);
+            packet.ReadBit("IsBonusRoll");
+            packet.ReadBit("IsEncounterLoot");
+
+            Substructures.ItemHandler.ReadItemInstance(packet);
+        }
     }
 }

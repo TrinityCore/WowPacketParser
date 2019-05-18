@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using MySql.Data.MySqlClient;
 using Sigil;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
@@ -52,6 +53,7 @@ namespace WowPacketParser.Hotfix
         private static MethodInfo stringReplace = typeof (string).GetMethod("Replace", new[] {typeof (string), typeof (string)});
         private static MethodInfo stringFormat = typeof (string).GetMethod("Format", new[] {typeof (string), typeof (object)});
         private static MethodInfo stringBuilderAppend = typeof (StringBuilder).GetMethod("Append", new[] {typeof (string)});
+        private static MethodInfo stringEscape = typeof(MySqlHelper).GetMethod("EscapeString", new[] {typeof(string)});
         // ReSharper restore StaticMemberInGenericType
 
         private static void SerializeValue(PropertyInfo propInfo,
@@ -61,13 +63,14 @@ namespace WowPacketParser.Hotfix
 
             using (var stringLocal = serializationEmitter.DeclareLocal<string>())
             {
-                serializationEmitter.LoadConstant(isString ? @"""{0}"", " : "{0}, ");
+                serializationEmitter.LoadConstant(isString ? @"'{0}', " : "{0}, ");
                 serializationEmitter.LoadArgument(0); // instance
                 serializationEmitter.CallVirtual(propInfo.GetGetMethod());
                 if (isString)
                 {
-                    serializationEmitter.LoadConstant(@"\""");
-                    serializationEmitter.LoadConstant(@"""");
+                    serializationEmitter.Call(stringEscape);
+                    serializationEmitter.LoadConstant(Environment.NewLine);
+                    serializationEmitter.LoadConstant(@"\n");
                     serializationEmitter.CallVirtual(stringReplace);
                 }
                 else
@@ -115,15 +118,16 @@ namespace WowPacketParser.Hotfix
                 serializationEmitter.Branch(loopConditionLabel);
                 serializationEmitter.MarkLabel(loopBodyLabel);
 
-                serializationEmitter.LoadConstant(isString ? @"""{0}"", " : "{0}, ");
+                serializationEmitter.LoadConstant(isString ? @"'{0}', " : "{0}, ");
                 serializationEmitter.LoadArgument(0); // instance
                 serializationEmitter.CallVirtual(propInfo.GetGetMethod());
                 serializationEmitter.LoadLocal(iterationLocal);
                 serializationEmitter.LoadElement(elementType);
                 if (isString)
                 {
-                    serializationEmitter.LoadConstant(@"\""");
-                    serializationEmitter.LoadConstant(@"""");
+                    serializationEmitter.Call(stringEscape);
+                    serializationEmitter.LoadConstant(Environment.NewLine);
+                    serializationEmitter.LoadConstant(@"\n");
                     serializationEmitter.CallVirtual(stringReplace);
                 }
                 else

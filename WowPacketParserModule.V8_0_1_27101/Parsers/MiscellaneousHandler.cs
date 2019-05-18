@@ -10,7 +10,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         {
             packet.ReadBit("Enabled", idx);
             packet.ReadPackedGuid128("BnetAccountID", idx);
-            packet.ReadPackedGuid128("Unk801_GUID2", idx);
+            packet.ReadPackedGuid128("GuildGUID", idx);
         }
 
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS)]
@@ -29,6 +29,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadInt64("TokenBalanceAmount");
             packet.ReadUInt32("BpayStoreProductDeliveryDelay");
             packet.ReadUInt32("ClubsPresenceUpdateTimer");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
+                packet.ReadUInt32("UnkUInt_810");
 
             packet.ResetBitReader();
             packet.ReadBit("VoiceEnabled");
@@ -222,6 +224,32 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 packet.ReadBit("IsGM", i);
 
                 packet.ReadWoWString("GuildName", bits460, i);
+            }
+        }
+
+        [Parser(Opcode.SMSG_ACCOUNT_TOYS_UPDATE)]
+        public static void HandleAccountToysUpdate(Packet packet)
+        {
+            packet.ReadBit("IsFullUpdate");
+
+            var itemIdCount = packet.ReadUInt32("ToyItemIDsCount");
+            var isFavoriteCount = packet.ReadUInt32("ToyIsFavoriteCount");
+            uint isUnkCount = 0;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683))
+                isUnkCount = packet.ReadUInt32("Unk");
+
+            for (int i = 0; i < itemIdCount; i++)
+                packet.ReadInt32("ToyItemID", i);
+
+            packet.ResetBitReader();
+
+            for (int i = 0; i < isFavoriteCount; i++)
+                packet.ReadBit("ToyIsFavorite", i);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683))
+            {
+                for (int i = 0; i < isUnkCount; i++)
+                    packet.ReadBit("Unk", i);
             }
         }
     }

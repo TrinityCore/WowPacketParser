@@ -24,6 +24,7 @@ namespace WowPacketParser.Parsing
             UFAttribute = attrib;
             Version = ClientVersionBuild.Zero;
         }
+
         public UpdateFieldAttribute(UpdateFieldType attrib, ClientVersionBuild fromVersion)
         {
             UFAttribute = attrib;

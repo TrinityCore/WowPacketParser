@@ -43,7 +43,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 var bit32 = packet.ReadBit("HasUnwrapped", i);
                 if (bit32)
                 {
-                    ItemHandler.ReadItemInstance(packet, i);
+                    Substructures.ItemHandler.ReadItemInstance(packet, i);
 
                     packet.ReadInt32("EnchantID", i);
                     packet.ReadInt32("OnUseEnchantmentID", i);

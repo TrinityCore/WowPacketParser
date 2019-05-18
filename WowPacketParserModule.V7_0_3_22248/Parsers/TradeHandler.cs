@@ -57,7 +57,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (int j = 0; j < gemsCount; j++)
             {
                 packet.ReadByte("Slot", index, j);
-                V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, index, j);
+                Substructures.ItemHandler.ReadItemInstance(packet, index, j);
             }
         }
 
@@ -66,7 +66,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadByte("Slot", index);
             packet.ReadInt32("StackCount", index);
             packet.ReadPackedGuid128("GiftCreator", index);
-            V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, index);
+            Substructures.ItemHandler.ReadItemInstance(packet, index);
 
             packet.ResetBitReader();
             var unwrapped = packet.ReadBit("HasUnwrapped", index);

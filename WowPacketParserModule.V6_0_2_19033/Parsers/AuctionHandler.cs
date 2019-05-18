@@ -35,7 +35,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         public static void ReadCliAuctionItem(Packet packet, params object[] idx)
         {
-            ItemHandler.ReadItemInstance(packet, idx);
+            Substructures.ItemHandler.ReadItemInstance(packet, idx);
 
             packet.ReadInt32("Count", idx);
             packet.ReadInt32("Charges", idx);
@@ -198,14 +198,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32<ItemId>("AuctionItemID", idx);
             packet.ReadUInt64("BidAmount", idx);
-            ItemHandler.ReadItemInstance(packet, idx, "Item");
+            Substructures.ItemHandler.ReadItemInstance(packet, idx, "Item");
         }
 
         public static void ReadClientAuctionBidderNotification(Packet packet, params object[] idx)
         {
             packet.ReadInt32<ItemId>("AuctionItemID", idx);
             packet.ReadPackedGuid128("Bidder", idx);
-            ItemHandler.ReadItemInstance(packet, idx, "Item");
+            Substructures.ItemHandler.ReadItemInstance(packet, idx, "Item");
         }
 
         [Parser(Opcode.SMSG_AUCTION_CLOSED_NOTIFICATION)]

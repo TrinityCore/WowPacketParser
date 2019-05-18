@@ -18,7 +18,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Creator", index);
             packet.ReadUInt32("Slot", index);
 
-            ItemHandler.ReadItemInstance(packet, index);
+            Substructures.ItemHandler.ReadItemInstance(packet, index);
         }
 
         [Parser(Opcode.SMSG_VOID_STORAGE_CONTENTS)]

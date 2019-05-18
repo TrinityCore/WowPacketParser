@@ -6,38 +6,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class ItemHandler
     {
-        public static int ReadItemInstance(Packet packet, params object[] indexes)
-        {
-            var itemId = packet.ReadInt32<ItemId>("ItemID", indexes);
-            packet.ReadUInt32("RandomPropertiesSeed", indexes);
-            packet.ReadUInt32("RandomPropertiesID", indexes);
-
-            packet.ResetBitReader();
-
-            var hasBonuses = packet.ReadBit("HasItemBonus", indexes);
-            var hasModifications = packet.ReadBit("HasModifications", indexes);
-            if (hasBonuses)
-            {
-                packet.ReadByte("Context", indexes);
-
-                var bonusCount = packet.ReadUInt32();
-                for (var j = 0; j < bonusCount; ++j)
-                    packet.ReadUInt32("BonusListID", indexes, j);
-            }
-
-            if (hasModifications)
-            {
-                var mask = packet.ReadUInt32();
-                for (var j = 0; mask != 0; mask >>= 1, ++j)
-                    if ((mask & 1) != 0)
-                        packet.ReadInt32(((ItemModifier)j).ToString(), indexes);
-            }
-
-            packet.ResetBitReader();
-
-            return itemId;
-        }
-
         public static void ReadItemPurchaseContents(Packet packet, params object[] indexes)
         {
             packet.ReadInt32("Money");
@@ -134,7 +102,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 var bit16 = packet.ReadBit("HasSrcItem", i);
                 var bit40 = packet.ReadBit("HasSrcVoidItem", i);
 
-                ReadItemInstance(packet, i);
+                Substructures.ItemHandler.ReadItemInstance(packet, i);
 
                 packet.ReadInt32("Slot", i);
 
@@ -323,7 +291,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("VendorGUID");
             packet.ReadPackedGuid128("ContainerGUID");
 
-            ReadItemInstance(packet);
+            Substructures.ItemHandler.ReadItemInstance(packet);
 
             packet.ReadInt32("Quantity");
             packet.ReadUInt32("Muid");
@@ -344,7 +312,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadInt32("SlotInBag");
 
-            ReadItemInstance(packet);
+            Substructures.ItemHandler.ReadItemInstance(packet);
 
             packet.ReadUInt32("QuestLogItemID");
             packet.ReadUInt32("Quantity");

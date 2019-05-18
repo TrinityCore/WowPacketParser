@@ -11,6 +11,11 @@ namespace WowPacketParser.Misc
             UInt32Value = val;
         }
 
+        public UpdateField(int val) : this()
+        {
+            Int32Value = val;
+        }
+
         public UpdateField(float val) : this()
         {
             FloatValue = val;

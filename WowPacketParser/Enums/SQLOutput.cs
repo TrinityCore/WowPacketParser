@@ -52,7 +52,8 @@
         vehicle_template_accessory,
         weather_updates,
 
-        hotfix_data
+        hotfix_data,
+        hotfix_blob
         // ReSharper restore InconsistentNaming
     }
 }

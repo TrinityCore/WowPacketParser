@@ -30,7 +30,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             var senderNameLen = packet.ReadBits(11);
             var receiverNameLen = packet.ReadBits(11);
             var prefixLen = packet.ReadBits(5);
-            var channelLen = packet.ReadBits(7);
+            uint channelLen = 0;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
+                channelLen = packet.ReadBits(8);
+            else
+                channelLen = packet.ReadBits(7);
             var textLen = packet.ReadBits(12);
             packet.ReadBits("ChatFlags", 11);
 
@@ -57,11 +61,24 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 Storage.CreatureTexts.Add(entry, text, packet.TimeSpan);
         }
 
-        [Parser(Opcode.CMSG_CHAT_ADDON_MESSAGE)]
+        [Parser(Opcode.CMSG_CHAT_ADDON_MESSAGE, ClientVersionBuild.V8_0_1_27101, ClientVersionBuild.V8_1_0_28724)]
         public static void HandleAddonMessage(Packet packet)
         {
             var prefixLen = packet.ReadBits(5);
             var testLen = packet.ReadBits(8);
+            packet.ReadBit("IsLogged");
+            packet.ResetBitReader();
+
+            packet.ReadInt32("Type");
+            packet.ReadWoWString("Prefix", prefixLen);
+            packet.ReadWoWString("Text", testLen);
+        }
+
+        [Parser(Opcode.CMSG_CHAT_ADDON_MESSAGE, ClientVersionBuild.V8_1_0_28724)]
+        public static void HandleAddonMessage810(Packet packet)
+        {
+            var prefixLen = packet.ReadBits(5);
+            var testLen = packet.ReadBits(9);
             packet.ReadBit("IsLogged");
             packet.ResetBitReader();
 

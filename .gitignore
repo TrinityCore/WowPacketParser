@@ -19,7 +19,7 @@ _ReSharper*/
 
 packages/*
 !packages/repositories.config
-!packages/WDCReaderLib.1.0.0.0/
+!packages/DB2FileReaderLib.1.0.0.0/
 
 wpp.tgz
 cov-int

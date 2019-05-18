@@ -7,7 +7,7 @@ namespace WowPacketParser.DBC.Structures.BattleForAzeroth
     {
         public uint ID;
         public ushort ModelID;
-        public ushort Field_253757755;
+        public ushort SoundID;
         public sbyte SizeClass;
         public float CreatureModelScale;
         public byte CreatureModelAlpha;

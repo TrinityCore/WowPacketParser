@@ -18,6 +18,7 @@
         public short UiOrder;
         public int IconFileID;        
         public uint CriteriaTree;
+        public uint Unknown1;
         public short SharesCriteria;
     }
 }

@@ -19,6 +19,7 @@ namespace WowPacketParser.Misc
         public static readonly ulong SQLOutputFlag = GetSQLOutputFlag();
         public static readonly bool SQLOrderByKey = Conf.GetBoolean("SqlOrderByKey", false);
         public static readonly bool SkipOnlyVerifiedBuildUpdateRows = Conf.GetBoolean("SkipOnlyVerifiedBuildUpdateRows", false);
+        public static readonly bool IgnoreZeroValues = Conf.GetBoolean("IgnoreZeroValues", false);
         public static readonly bool ForceInsertQueries = Conf.GetBoolean("ForceInsertQueries", false);
         public static readonly bool RecalcDiscount = Conf.GetBoolean("RecalcDiscount", false);
         public static readonly string SQLFileName = Conf.GetString("SQLFileName", string.Empty);

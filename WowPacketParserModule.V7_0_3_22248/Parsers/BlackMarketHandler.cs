@@ -12,7 +12,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadPackedGuid128("NpcGUID");
             packet.ReadInt32("MarketID");
             packet.ReadUInt64("BidAmount");
-            V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, "Item");
+            Substructures.ItemHandler.ReadItemInstance(packet, "Item");
         }
 
         [Parser(Opcode.SMSG_BLACK_MARKET_OUTBID)]
@@ -21,7 +21,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             packet.ReadInt32("MarketID");
             packet.ReadInt32("RandomPropertiesID");
-            V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, "Item");
+            Substructures.ItemHandler.ReadItemInstance(packet, "Item");
         }
 
         [Parser(Opcode.SMSG_BLACK_MARKET_BID_ON_ITEM_RESULT)]
@@ -29,7 +29,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             packet.ReadInt32("MarketID");
             packet.ReadInt32("Result");
-            V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, "Item");
+            Substructures.ItemHandler.ReadItemInstance(packet, "Item");
         }
 
         public static void ReadBlackMarketItem(Packet packet, params object[] idx)
@@ -42,7 +42,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadUInt64("CurrentBid", idx);
             packet.ReadInt32("SecondsRemaining", idx);
             packet.ReadInt32("NumBids", idx);
-            V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, "Item", idx);
+            Substructures.ItemHandler.ReadItemInstance(packet, "Item", idx);
             packet.ReadBit("HighBid", idx);
             packet.ResetBitReader();
         }

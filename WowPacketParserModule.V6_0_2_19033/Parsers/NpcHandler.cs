@@ -325,7 +325,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     Entry = entry,
                     Slot = packet.ReadInt32("Muid", i),
                     Type = (uint)packet.ReadInt32("Type", i),
-                    Item = ItemHandler.ReadItemInstance(packet, i)
+                    Item = Substructures.ItemHandler.ReadItemInstance(packet, i)
                 };
 
                 int maxCount = packet.ReadInt32("Quantity", i);

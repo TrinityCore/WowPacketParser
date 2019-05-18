@@ -18,7 +18,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("NpcGUID");
             packet.ReadInt32("MarketID");
-            ItemHandler.ReadItemInstance(packet, "Item");
+            Substructures.ItemHandler.ReadItemInstance(packet, "Item");
             packet.ReadUInt64("BidAmount");
         }
 
@@ -40,7 +40,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleBlackMarketOutbidOrWon(Packet packet)
         {
             packet.ReadInt32("MarketID");
-            ItemHandler.ReadItemInstance(packet, "Item");
+            Substructures.ItemHandler.ReadItemInstance(packet, "Item");
             packet.ReadInt32("RandomPropertiesID");
         }
 
@@ -48,7 +48,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleBlackMarketBidOnItemResult(Packet packet)
         {
             packet.ReadInt32("MarketID");
-            ItemHandler.ReadItemInstance(packet, "Item");
+            Substructures.ItemHandler.ReadItemInstance(packet, "Item");
             packet.ReadInt32("Result");
         }
 
@@ -56,7 +56,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("MarketID", idx);
             packet.ReadInt32<UnitId>("SellerNPC", idx);
-            ItemHandler.ReadItemInstance(packet, "Item", idx);
+            Substructures.ItemHandler.ReadItemInstance(packet, "Item", idx);
             packet.ReadInt32("Quantity", idx);
             packet.ReadUInt64("MinBid", idx);
             packet.ReadUInt64("MinIncrement", idx);

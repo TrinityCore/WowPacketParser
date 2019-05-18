@@ -55,7 +55,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32("Durability", idx);
 
             // ItemInstance
-            V6_0_2_19033.Parsers.ItemHandler.ReadItemInstance(packet, idx);
+            Substructures.ItemHandler.ReadItemInstance(packet, idx);
 
             packet.ResetBitReader();
 

@@ -5,7 +5,7 @@ using System.Linq;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
-using WDCReaderLib;
+using DB2FileReaderLib.NET;
 using WowPacketParser.DBC.Structures.BattleForAzeroth;
 using WowPacketParser.Misc;
 
@@ -31,7 +31,6 @@ namespace WowPacketParser.DBC
         public static Storage<MapDifficultyEntry> MapDifficulty { get; set; }
         public static Storage<PhaseXPhaseGroupEntry> PhaseXPhaseGroup { get; set; }
         public static Storage<SoundKitNameEntry> SoundKitName { get; set; }
-        public static Storage<SpellEntry> Spell { get; set; }
         public static Storage<SpellEffectEntry> SpellEffect { get; set; }
         public static Storage<SpellNameEntry> SpellName { get; set; }
 
@@ -209,7 +208,7 @@ namespace WowPacketParser.DBC
 
         public static readonly Dictionary<uint, string> Zones = new Dictionary<uint, string>();
         public static readonly Dictionary<int, int> MapSpawnMaskStores = new Dictionary<int, int>();
-        public static readonly Dictionary<ushort, List<byte>> MapDifficultyStores = new Dictionary<ushort, List<byte>>();
+        public static readonly Dictionary<int, List<byte>> MapDifficultyStores = new Dictionary<int, List<byte>>();
         public static readonly Dictionary<ushort, string> CriteriaStores = new Dictionary<ushort, string>();
         public static readonly Dictionary<uint, FactionEntry> FactionStores = new Dictionary<uint, FactionEntry>();
         public static readonly Dictionary<Tuple<uint, uint>, SpellEffectEntry> SpellEffectStores = new Dictionary<Tuple<uint, uint>, SpellEffectEntry>();
