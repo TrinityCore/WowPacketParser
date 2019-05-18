@@ -14,9 +14,6 @@ namespace WowPacketParser.Enums.Version
         public string Name;
         public int Size;
         public UpdateFieldType Format;
-        public bool IsCounter;
-        public UpdateFieldCreateFlag Flag;
-        public int ArrayMemberCount;
     }
 
     public static class UpdateFields
@@ -91,30 +88,7 @@ namespace WowPacketParser.Enums.Version
                         .Select(attribute => ((UpdateFieldAttribute)attribute).UFAttribute)
                         .DefaultIfEmpty(UpdateFieldType.Default).First();
 
-                    var vAttribute = vEnumType.GetMember(vNames[i])
-                        .SelectMany(member => member.GetCustomAttributes(typeof(UpdateFieldAttribute), false))
-                        .Where(attribute => ((UpdateFieldAttribute)attribute).Version <= ClientVersion.VersionDefiningBuild)
-                        .OrderByDescending(attribute => ((UpdateFieldAttribute)attribute).Version);
-
-                    var vFormat = vAttribute.Select(attribute => ((UpdateFieldAttribute)attribute).UFAttribute)
-                        .DefaultIfEmpty(UpdateFieldType.Default).First();
-
-                    var vIsDynamicCounter = vAttribute
-                        .Select(attribute => ((UpdateFieldAttribute)attribute).IsDynamicCounter)
-                        .DefaultIfEmpty(false).First();
-
-                    var vUpdateFieldCreateFlag = vAttribute
-                        .Select(attribute => ((UpdateFieldAttribute)attribute).Flag)
-                        .DefaultIfEmpty(UpdateFieldCreateFlag.None).First();
-
-                    var vUpdateFieldArrayMemberCount = vAttribute
-                        .Select(attribute => ((UpdateFieldAttribute)attribute).ArrayMemberCount)
-                        .DefaultIfEmpty(0).First();
-
-                    if (vFormat != UpdateFieldType.Default)
-                        format = vFormat;
-
-                    result.Add((int)vValues.GetValue(i), new UpdateFieldInfo() { Value = (int)vValues.GetValue(i), Name = vNames[i], Size = 0, Format = format, ArrayMemberCount = vUpdateFieldArrayMemberCount, IsCounter = vIsDynamicCounter, Flag = vUpdateFieldCreateFlag });
+                    result.Add((int)vValues.GetValue(i), new UpdateFieldInfo() { Value = (int)vValues.GetValue(i), Name = vNames[i], Size = 0, Format = format });
                     namesResult.Add(vNames[i], (int)vValues.GetValue(i));
                 }
 
@@ -240,7 +214,7 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V4_0_6a_13623:
                 {
                     return "V4_0_6_13596";
-                }                
+                }
                 case ClientVersionBuild.V4_1_0_13914:
                 case ClientVersionBuild.V4_1_0a_14007:
                 {

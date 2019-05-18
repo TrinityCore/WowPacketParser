@@ -44,7 +44,6 @@
     <Compile Include="Enums\CharacterUndeleteResult.cs" />
     <Compile Include="Enums\MovementFlag.cs" />
     <Compile Include="Enums\MovementFlags2.cs" />
-    <Compile Include="Enums\UpdateFields810.cs" />
     <Compile Include="Enums\UpdateFields.cs" />
     <Compile Include="Hotfix\AchievementEntry.cs" />
     <Compile Include="Hotfix\AnimationDataEntry.cs" />
