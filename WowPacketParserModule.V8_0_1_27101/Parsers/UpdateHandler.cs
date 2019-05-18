@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -43,7 +40,44 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     case "Values":
                     {
                         var guid = packet.ReadPackedGuid128("Object Guid", i);
-                        CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, guid, i);
+                        if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
+                        {
+                            var updatefieldSize = packet.ReadUInt32();
+                            using (var fieldsData = new Packet(packet.ReadBytes((int)updatefieldSize), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
+                            {
+                                var updateTypeFlag = fieldsData.ReadUInt32();
+                                if ((updateTypeFlag & 0x0001) != 0)
+                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateObjectData(fieldsData, null, i);
+                                if ((updateTypeFlag & 0x0002) != 0)
+                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateItemData(fieldsData, null, i);
+                                if ((updateTypeFlag & 0x0004) != 0)
+                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateContainerData(fieldsData, null, i);
+                                if ((updateTypeFlag & 0x0008) != 0)
+                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateAzeriteEmpoweredItemData(fieldsData, null, i);
+                                if ((updateTypeFlag & 0x0010) != 0)
+                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateAzeriteItemData(fieldsData, null, i);
+                                if ((updateTypeFlag & 0x0020) != 0)
+                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateUnitData(fieldsData, null, i);
+                                if ((updateTypeFlag & 0x0040) != 0)
+                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdatePlayerData(fieldsData, null, i);
+                                if ((updateTypeFlag & 0x0080) != 0)
+                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateActivePlayerData(fieldsData, null, i);
+                                if ((updateTypeFlag & 0x0100) != 0)
+                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateGameObjectData(fieldsData, null, i);
+                                if ((updateTypeFlag & 0x0200) != 0)
+                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateDynamicObjectData(fieldsData, null, i);
+                                if ((updateTypeFlag & 0x0400) != 0)
+                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateCorpseData(fieldsData, null, i);
+                                if ((updateTypeFlag & 0x0800) != 0)
+                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateAreaTriggerData(fieldsData, null, i);
+                                if ((updateTypeFlag & 0x1000) != 0)
+                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateSceneObjectData(fieldsData, null, i);
+                                if ((updateTypeFlag & 0x2000) != 0)
+                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateConversationData(fieldsData, null, i);
+                            }
+                        }
+                        else
+                            CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, guid, i);
                         break;
                     }
                     case "CreateObject1":
@@ -88,10 +122,63 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             var moves = ReadMovementUpdateBlock(packet, guid, obj, index);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
             {
-                // TODO: implement
-                // skip for now to at least parse CreateObjects
                 var updatefieldSize = packet.ReadUInt32();
-                packet.SetPosition(packet.Position + updatefieldSize);
+                using (var fieldsData = new Packet(packet.ReadBytes((int)updatefieldSize), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
+                {
+                    var flags = fieldsData.ReadByteE<UpdateFieldFlag>("FieldFlags", index);
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683))
+                    {
+                        UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateObjectData(fieldsData, flags, index);
+                        switch (objType)
+                        {
+                            case ObjectType.Item:
+                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateItemData(fieldsData, flags, index);
+                                break;
+                            case ObjectType.Container:
+                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateItemData(fieldsData, flags, index);
+                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateContainerData(fieldsData, flags, index);
+                                break;
+                            case ObjectType.AzeriteEmpoweredItem:
+                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateItemData(fieldsData, flags, index);
+                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateAzeriteEmpoweredItemData(fieldsData, flags, index);
+                                break;
+                            case ObjectType.AzeriteItem:
+                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateItemData(fieldsData, flags, index);
+                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateAzeriteItemData(fieldsData, flags, index);
+                                break;
+                            case ObjectType.Unit:
+                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateUnitData(fieldsData, flags, index);
+                                break;
+                            case ObjectType.Player:
+                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateUnitData(fieldsData, flags, index);
+                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreatePlayerData(fieldsData, flags, index);
+                                break;
+                            case ObjectType.ActivePlayer:
+                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateUnitData(fieldsData, flags, index);
+                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreatePlayerData(fieldsData, flags, index);
+                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateActivePlayerData(fieldsData, flags, index);
+                                break;
+                            case ObjectType.GameObject:
+                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateGameObjectData(fieldsData, flags, index);
+                                break;
+                            case ObjectType.DynamicObject:
+                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateDynamicObjectData(fieldsData, flags, index);
+                                break;
+                            case ObjectType.Corpse:
+                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateCorpseData(fieldsData, flags, index);
+                                break;
+                            case ObjectType.AreaTrigger:
+                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateAreaTriggerData(fieldsData, flags, index);
+                                break;
+                            case ObjectType.SceneObject:
+                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateSceneObjectData(fieldsData, flags, index);
+                                break;
+                            case ObjectType.Conversation:
+                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateConversationData(fieldsData, flags, index);
+                                break;
+                        }
+                    }
+                }
             }
             else
             {
