@@ -240,6 +240,10 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
                         data.BonusListIDs[i] = packet.ReadInt32("BonusListIDs", indexes, i);
                     }
                 }
+            }
+            packet.ResetBitReader();
+            if (changesMask[0])
+            {
                 if (changesMask[2])
                 {
                     data.Modifiers.ReadUpdateMask(packet);
@@ -790,6 +794,10 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
                         data.StateWorldEffectIDs[i] = packet.ReadUInt32("StateWorldEffectIDs", indexes, i);
                     }
                 }
+            }
+            packet.ResetBitReader();
+            if (changesMask[0])
+            {
                 if (changesMask[2])
                 {
                     data.PassiveSpells.ReadUpdateMask(packet);
@@ -1843,7 +1851,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             data.Field_14 = packet.ReadUInt32("Field_14", indexes);
             data.Field_18 = packet.ReadUInt32("Field_18", indexes);
             data.PvpTierID = packet.ReadUInt32("PvpTierID", indexes);
-            data.Field_20 = packet.ReadBits("Field_20", 1);
+            data.Field_20 = packet.ReadBits("Field_20", 1, indexes);
             packet.ResetBitReader();
             return data;
         }
@@ -1892,7 +1900,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
                 }
                 if (changesMask[9])
                 {
-                    data.Field_20 = packet.ReadBits("Field_20", 1);
+                    data.Field_20 = packet.ReadBits("Field_20", 1, indexes);
                 }
             }
             packet.ResetBitReader();
@@ -1905,7 +1913,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             data.Field_0 = packet.ReadInt32("Field_0", indexes);
             data.Field_4 = packet.ReadInt32("Field_4", indexes);
             data.Field_8 = packet.ReadInt32("Field_8", indexes);
-            data.Type = packet.ReadBits("Type", 5);
+            data.Type = packet.ReadBits("Type", 5, indexes);
             packet.ResetBitReader();
             return data;
         }
@@ -1917,7 +1925,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             data.Field_0 = packet.ReadInt32("Field_0", indexes);
             data.Field_4 = packet.ReadInt32("Field_4", indexes);
             data.Field_8 = packet.ReadInt32("Field_8", indexes);
-            data.Type = packet.ReadBits("Type", 5);
+            data.Type = packet.ReadBits("Type", 5, indexes);
             packet.ResetBitReader();
             return data;
         }
@@ -3002,6 +3010,10 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
                         data.StateWorldEffectIDs[i] = packet.ReadUInt32("StateWorldEffectIDs", indexes, i);
                     }
                 }
+            }
+            packet.ResetBitReader();
+            if (changesMask[0])
+            {
                 if (changesMask[2])
                 {
                     data.EnableDoodadSets.ReadUpdateMask(packet);
@@ -3458,7 +3470,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             data.CreatureDisplayInfoID = packet.ReadUInt32("CreatureDisplayInfoID", indexes);
             data.ActorGUID = packet.ReadPackedGuid128("ActorGUID", indexes);
             data.Field_18 = packet.ReadInt32("Field_18", indexes);
-            data.Type = packet.ReadBits("Type", 1);
+            data.Type = packet.ReadBits("Type", 1, indexes);
             packet.ResetBitReader();
             return data;
         }
@@ -3471,7 +3483,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             data.CreatureDisplayInfoID = packet.ReadUInt32("CreatureDisplayInfoID", indexes);
             data.ActorGUID = packet.ReadPackedGuid128("ActorGUID", indexes);
             data.Field_18 = packet.ReadInt32("Field_18", indexes);
-            data.Type = packet.ReadBits("Type", 1);
+            data.Type = packet.ReadBits("Type", 1, indexes);
             packet.ResetBitReader();
             return data;
         }
@@ -3511,6 +3523,10 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
                         data.Lines[i] = ReadUpdateConversationLine(packet, data.Lines[i] as ConversationLine, indexes, "Lines", i);
                     }
                 }
+            }
+            packet.ResetBitReader();
+            if (changesMask[0])
+            {
                 if (changesMask[2])
                 {
                     data.Actors.ReadUpdateMask(packet);
