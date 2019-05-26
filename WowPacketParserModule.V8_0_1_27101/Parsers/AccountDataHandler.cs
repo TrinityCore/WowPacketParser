@@ -42,7 +42,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_REPORT_CLIENT_VARIABLES, ClientVersionBuild.V8_1_0_28724)]
+        [Parser(Opcode.CMSG_REPORT_CLIENT_VARIABLES, ClientVersionBuild.V8_1_0_28724, ClientVersionBuild.V8_1_5_29683)]
         public static void HandleSaveClientVarables(Packet packet)
         {
             var varablesCount = packet.ReadUInt32("VarablesCount");

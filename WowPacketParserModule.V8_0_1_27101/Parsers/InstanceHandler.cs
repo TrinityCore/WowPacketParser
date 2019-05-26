@@ -6,8 +6,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 {
     public static class InstanceHandler
     {
-        [Parser(Opcode.CMSG_SAVE_CUF_PROFILES, ClientVersionBuild.V8_1_0_28724)]
-        [Parser(Opcode.SMSG_LOAD_CUF_PROFILES, ClientVersionBuild.V8_1_0_28724)]
+        [Parser(Opcode.CMSG_SAVE_CUF_PROFILES, ClientVersionBuild.V8_1_0_28724, ClientVersionBuild.V8_1_5_29683)]
+        [Parser(Opcode.SMSG_LOAD_CUF_PROFILES, ClientVersionBuild.V8_1_0_28724, ClientVersionBuild.V8_1_5_29683)]
         public static void HandleCUFProfiles(Packet packet)
         {
             var count = packet.ReadUInt32("Count");
