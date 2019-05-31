@@ -931,8 +931,8 @@ namespace WowPacketParser.Parsing.Parsers
                 CompletionText = text
             };
 
-            requestItems.EmoteOnComplete = packet.ReadUInt32("Emote");
-            packet.ReadUInt32("Unk UInt32 1");
+            uint emoteDelay = packet.ReadUInt32("Emote Delay");
+            uint emoteID = packet.ReadUInt32("Emote");
             packet.ReadUInt32("Close Window on Cancel");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
@@ -950,7 +950,17 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             // flags
-            packet.ReadUInt32("Unk flags 1");
+            var flags = packet.ReadUInt32("Unk flags 1");
+            if ((flags & 0x3) == 0) // not completable
+            {
+                requestItems.EmoteOnIncompleteDelay = emoteDelay;
+                requestItems.EmoteOnIncomplete = emoteID;
+            }
+            else
+            {
+                requestItems.EmoteOnCompleteDelay = emoteDelay;
+                requestItems.EmoteOnComplete = emoteID;
+            }
             packet.ReadUInt32("Unk flags 2");
             packet.ReadUInt32("Unk flags 3");
             packet.ReadUInt32("Unk flags 4");
