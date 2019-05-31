@@ -120,17 +120,19 @@ namespace WowPacketParser.Parsing.Parsers
             }
             else
             {
-                packet.ReadUInt32("Honor Points");
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_3_0_7561))
+                    packet.ReadUInt32("Honor Points");
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                     packet.ReadSingle("Honor Multiplier");
 
                 if (readFlags)
-                        packet.ReadUInt32E<QuestFlags>("Quest Flags");
+                    packet.ReadUInt32E<QuestFlags>("Quest Flags");
 
                 packet.ReadInt32<SpellId>("Spell Id");
                 packet.ReadInt32<SpellId>("Spell Cast Id");
-                packet.ReadUInt32("Title Id");
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_4_0_8089))
+                    packet.ReadUInt32("Title Id");
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                     packet.ReadUInt32("Bonus Talents");
@@ -832,8 +834,12 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_3_3a_11723))
             {
-                packet.ReadByte("Unk");
-                packet.ReadByte("Unk");
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
+                {
+                    var questAccepted = packet.ReadByte("QuestAccepted");
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
+                        packet.ReadByte("Unk");
+                }
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_1_13164))
