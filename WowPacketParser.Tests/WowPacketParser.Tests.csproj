@@ -69,6 +69,7 @@
     <Compile Include="Misc\UpdateFieldTest.cs" />
     <Compile Include="Misc\Vector4Test.cs" />
     <Compile Include="OpcodeTest.cs" />
+    <Compile Include="Store\Objects\UpdateFields\LegacyImplementation\UpdateFieldExtensionsTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WowPacketParser\WowPacketParser.csproj">

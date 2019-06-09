@@ -1,6 +1,7 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
+using WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation;
 
 namespace WowPacketParser.Store.Objects
 {
