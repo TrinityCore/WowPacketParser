@@ -113,7 +113,7 @@ namespace WowPacketParser.Enums.Version
                     return fieldValue;
             }
 
-            return Convert.ToInt32(field);
+            return -1;
         }
 
         public static string GetUpdateFieldName<T>(int field) // where T: System.Enum // C# 7.3

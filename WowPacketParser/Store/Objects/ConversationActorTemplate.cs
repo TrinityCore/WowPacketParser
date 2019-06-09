@@ -21,7 +21,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("CreatureModelId")]
         public uint? CreatureModelId;
 
-        public WowGuid128 Guid;
+        public WowGuid Guid;
         public uint? Type;
 
         [DBFieldName("VerifiedBuild")]

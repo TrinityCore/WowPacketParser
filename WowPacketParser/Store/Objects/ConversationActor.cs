@@ -15,7 +15,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Idx", true)]
         public uint? Idx;
 
-        public WowGuid128 Guid;
+        public WowGuid Guid;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

@@ -17,8 +17,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static ObjectData ReadUpdateObjectData(Packet packet, ObjectData data, params object[] indexes)
+        public static ObjectData ReadUpdateObjectData(Packet packet, IObjectData existingData, params object[] indexes)
         {
+            var data = existingData as ObjectData;
             if (data == null)
                 data = new ObjectData();
             var rawChangesMask = new int[1];
@@ -54,8 +55,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static ItemEnchantment ReadUpdateItemEnchantment(Packet packet, ItemEnchantment data, params object[] indexes)
+        public static ItemEnchantment ReadUpdateItemEnchantment(Packet packet, IItemEnchantment existingData, params object[] indexes)
         {
+            var data = existingData as ItemEnchantment;
             if (data == null)
                 data = new ItemEnchantment();
             var rawChangesMask = new int[1];
@@ -94,8 +96,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static ArtifactPower ReadUpdateArtifactPower(Packet packet, ArtifactPower data, params object[] indexes)
+        public static ArtifactPower ReadUpdateArtifactPower(Packet packet, IArtifactPower existingData, params object[] indexes)
         {
+            var data = existingData as ArtifactPower;
             if (data == null)
                 data = new ArtifactPower();
             packet.ResetBitReader();
@@ -117,8 +120,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static SocketedGem ReadUpdateSocketedGem(Packet packet, SocketedGem data, params object[] indexes)
+        public static SocketedGem ReadUpdateSocketedGem(Packet packet, ISocketedGem existingData, params object[] indexes)
         {
+            var data = existingData as SocketedGem;
             if (data == null)
                 data = new SocketedGem();
             var rawChangesMask = new int[1];
@@ -218,8 +222,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static ItemData ReadUpdateItemData(Packet packet, ItemData data, params object[] indexes)
+        public static ItemData ReadUpdateItemData(Packet packet, IItemData existingData, params object[] indexes)
         {
+            var data = existingData as ItemData;
             if (data == null)
                 data = new ItemData();
             var rawChangesMask = new int[2];
@@ -386,8 +391,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static ContainerData ReadUpdateContainerData(Packet packet, ContainerData data, params object[] indexes)
+        public static ContainerData ReadUpdateContainerData(Packet packet, IContainerData existingData, params object[] indexes)
         {
+            var data = existingData as ContainerData;
             if (data == null)
                 data = new ContainerData();
             var rawChangesMask = new int[2];
@@ -430,8 +436,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static AzeriteEmpoweredItemData ReadUpdateAzeriteEmpoweredItemData(Packet packet, AzeriteEmpoweredItemData data, params object[] indexes)
+        public static AzeriteEmpoweredItemData ReadUpdateAzeriteEmpoweredItemData(Packet packet, IAzeriteEmpoweredItemData existingData, params object[] indexes)
         {
+            var data = existingData as AzeriteEmpoweredItemData;
             if (data == null)
                 data = new AzeriteEmpoweredItemData();
             var rawChangesMask = new int[1];
@@ -470,8 +477,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static AzeriteItemData ReadUpdateAzeriteItemData(Packet packet, AzeriteItemData data, params object[] indexes)
+        public static AzeriteItemData ReadUpdateAzeriteItemData(Packet packet, IAzeriteItemData existingData, params object[] indexes)
         {
+            var data = existingData as AzeriteItemData;
             if (data == null)
                 data = new AzeriteItemData();
             var rawChangesMask = new int[1];
@@ -513,8 +521,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static UnitChannel ReadUpdateUnitChannel(Packet packet, UnitChannel data, params object[] indexes)
+        public static UnitChannel ReadUpdateUnitChannel(Packet packet, IUnitChannel existingData, params object[] indexes)
         {
+            var data = existingData as UnitChannel;
             if (data == null)
                 data = new UnitChannel();
             packet.ResetBitReader();
@@ -532,8 +541,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static VisibleItem ReadUpdateVisibleItem(Packet packet, VisibleItem data, params object[] indexes)
+        public static VisibleItem ReadUpdateVisibleItem(Packet packet, IVisibleItem existingData, params object[] indexes)
         {
+            var data = existingData as VisibleItem;
             if (data == null)
                 data = new VisibleItem();
             var rawChangesMask = new int[1];
@@ -567,8 +577,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static PassiveSpellHistory ReadUpdatePassiveSpellHistory(Packet packet, PassiveSpellHistory data, params object[] indexes)
+        public static PassiveSpellHistory ReadUpdatePassiveSpellHistory(Packet packet, IPassiveSpellHistory existingData, params object[] indexes)
         {
+            var data = existingData as PassiveSpellHistory;
             if (data == null)
                 data = new PassiveSpellHistory();
             packet.ResetBitReader();
@@ -774,8 +785,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static UnitData ReadUpdateUnitData(Packet packet, UnitData data, params object[] indexes)
+        public static UnitData ReadUpdateUnitData(Packet packet, IUnitData existingData, params object[] indexes)
         {
+            var data = existingData as UnitData;
             if (data == null)
                 data = new UnitData();
             var rawChangesMask = new int[6];
@@ -1390,8 +1402,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static QuestLog ReadUpdateQuestLog(Packet packet, QuestLog data, params object[] indexes)
+        public static QuestLog ReadUpdateQuestLog(Packet packet, IQuestLog existingData, params object[] indexes)
         {
+            var data = existingData as QuestLog;
             if (data == null)
                 data = new QuestLog();
             var rawChangesMask = new int[1];
@@ -1448,8 +1461,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static ArenaCooldown ReadUpdateArenaCooldown(Packet packet, ArenaCooldown data, params object[] indexes)
+        public static ArenaCooldown ReadUpdateArenaCooldown(Packet packet, IArenaCooldown existingData, params object[] indexes)
         {
+            var data = existingData as ArenaCooldown;
             if (data == null)
                 data = new ArenaCooldown();
             var rawChangesMask = new int[1];
@@ -1550,8 +1564,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static PlayerData ReadUpdatePlayerData(Packet packet, PlayerData data, params object[] indexes)
+        public static PlayerData ReadUpdatePlayerData(Packet packet, IPlayerData existingData, params object[] indexes)
         {
+            var data = existingData as PlayerData;
             if (data == null)
                 data = new PlayerData();
             var rawChangesMask = new int[6];
@@ -1759,8 +1774,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static SkillInfo ReadUpdateSkillInfo(Packet packet, SkillInfo data, params object[] indexes)
+        public static SkillInfo ReadUpdateSkillInfo(Packet packet, ISkillInfo existingData, params object[] indexes)
         {
+            var data = existingData as SkillInfo;
             if (data == null)
                 data = new SkillInfo();
             var rawChangesMask = new int[57];
@@ -1820,8 +1836,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static RestInfo ReadUpdateRestInfo(Packet packet, RestInfo data, params object[] indexes)
+        public static RestInfo ReadUpdateRestInfo(Packet packet, IRestInfo existingData, params object[] indexes)
         {
+            var data = existingData as RestInfo;
             if (data == null)
                 data = new RestInfo();
             var rawChangesMask = new int[1];
@@ -1859,8 +1876,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static PVPInfo ReadUpdatePVPInfo(Packet packet, PVPInfo data, params object[] indexes)
+        public static PVPInfo ReadUpdatePVPInfo(Packet packet, IPVPInfo existingData, params object[] indexes)
         {
+            var data = existingData as PVPInfo;
             if (data == null)
                 data = new PVPInfo();
             packet.ResetBitReader();
@@ -1922,8 +1940,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static CharacterRestriction ReadUpdateCharacterRestriction(Packet packet, CharacterRestriction data, params object[] indexes)
+        public static CharacterRestriction ReadUpdateCharacterRestriction(Packet packet, ICharacterRestriction existingData, params object[] indexes)
         {
+            var data = existingData as CharacterRestriction;
             if (data == null)
                 data = new CharacterRestriction();
             packet.ResetBitReader();
@@ -1944,8 +1963,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static SpellPctModByLabel ReadUpdateSpellPctModByLabel(Packet packet, SpellPctModByLabel data, params object[] indexes)
+        public static SpellPctModByLabel ReadUpdateSpellPctModByLabel(Packet packet, ISpellPctModByLabel existingData, params object[] indexes)
         {
+            var data = existingData as SpellPctModByLabel;
             if (data == null)
                 data = new SpellPctModByLabel();
             packet.ResetBitReader();
@@ -1964,8 +1984,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static SpellFlatModByLabel ReadUpdateSpellFlatModByLabel(Packet packet, SpellFlatModByLabel data, params object[] indexes)
+        public static SpellFlatModByLabel ReadUpdateSpellFlatModByLabel(Packet packet, ISpellFlatModByLabel existingData, params object[] indexes)
         {
+            var data = existingData as SpellFlatModByLabel;
             if (data == null)
                 data = new SpellFlatModByLabel();
             packet.ResetBitReader();
@@ -1982,8 +2003,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static Research ReadUpdateResearch(Packet packet, Research data, params object[] indexes)
+        public static Research ReadUpdateResearch(Packet packet, IResearch existingData, params object[] indexes)
         {
+            var data = existingData as Research;
             if (data == null)
                 data = new Research();
             packet.ResetBitReader();
@@ -2221,8 +2243,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static ActivePlayerData ReadUpdateActivePlayerData(Packet packet, ActivePlayerData data, params object[] indexes)
+        public static ActivePlayerData ReadUpdateActivePlayerData(Packet packet, IActivePlayerData existingData, params object[] indexes)
         {
+            var data = existingData as ActivePlayerData;
             if (data == null)
                 data = new ActivePlayerData();
             packet.ResetBitReader();
@@ -3001,8 +3024,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static GameObjectData ReadUpdateGameObjectData(Packet packet, GameObjectData data, params object[] indexes)
+        public static GameObjectData ReadUpdateGameObjectData(Packet packet, IGameObjectData existingData, params object[] indexes)
         {
+            var data = existingData as GameObjectData;
             if (data == null)
                 data = new GameObjectData();
             var rawChangesMask = new int[1];
@@ -3125,8 +3149,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static DynamicObjectData ReadUpdateDynamicObjectData(Packet packet, DynamicObjectData data, params object[] indexes)
+        public static DynamicObjectData ReadUpdateDynamicObjectData(Packet packet, IDynamicObjectData existingData, params object[] indexes)
         {
+            var data = existingData as DynamicObjectData;
             if (data == null)
                 data = new DynamicObjectData();
             var rawChangesMask = new int[1];
@@ -3193,8 +3218,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static CorpseData ReadUpdateCorpseData(Packet packet, CorpseData data, params object[] indexes)
+        public static CorpseData ReadUpdateCorpseData(Packet packet, ICorpseData existingData, params object[] indexes)
         {
+            var data = existingData as CorpseData;
             if (data == null)
                 data = new CorpseData();
             var rawChangesMask = new int[2];
@@ -3307,8 +3333,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static ScaleCurve ReadUpdateScaleCurve(Packet packet, ScaleCurve data, params object[] indexes)
+        public static ScaleCurve ReadUpdateScaleCurve(Packet packet, IScaleCurve existingData, params object[] indexes)
         {
+            var data = existingData as ScaleCurve;
             if (data == null)
                 data = new ScaleCurve();
             packet.ResetBitReader();
@@ -3342,8 +3369,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static AreaTriggerData ReadUpdateAreaTriggerData(Packet packet, AreaTriggerData data, params object[] indexes)
+        public static AreaTriggerData ReadUpdateAreaTriggerData(Packet packet, IAreaTriggerData existingData, params object[] indexes)
         {
+            var data = existingData as AreaTriggerData;
             if (data == null)
                 data = new AreaTriggerData();
             var rawChangesMask = new int[1];
@@ -3419,8 +3447,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static SceneObjectData ReadUpdateSceneObjectData(Packet packet, SceneObjectData data, params object[] indexes)
+        public static SceneObjectData ReadUpdateSceneObjectData(Packet packet, ISceneObjectData existingData, params object[] indexes)
         {
+            var data = existingData as SceneObjectData;
             if (data == null)
                 data = new SceneObjectData();
             var rawChangesMask = new int[1];
@@ -3461,8 +3490,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static ConversationLine ReadUpdateConversationLine(Packet packet, ConversationLine data, params object[] indexes)
+        public static ConversationLine ReadUpdateConversationLine(Packet packet, IConversationLine existingData, params object[] indexes)
         {
+            var data = existingData as ConversationLine;
             if (data == null)
                 data = new ConversationLine();
             packet.ResetBitReader();
@@ -3486,8 +3516,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static ConversationActor ReadUpdateConversationActor(Packet packet, ConversationActor data, params object[] indexes)
+        public static ConversationActor ReadUpdateConversationActor(Packet packet, IConversationActor existingData, params object[] indexes)
         {
+            var data = existingData as ConversationActor;
             if (data == null)
                 data = new ConversationActor();
             packet.ResetBitReader();
@@ -3517,8 +3548,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             return data;
         }
 
-        public static ConversationData ReadUpdateConversationData(Packet packet, ConversationData data, params object[] indexes)
+        public static ConversationData ReadUpdateConversationData(Packet packet, IConversationData existingData, params object[] indexes)
         {
+            var data = existingData as ConversationData;
             if (data == null)
                 data = new ConversationData();
             var rawChangesMask = new int[1];

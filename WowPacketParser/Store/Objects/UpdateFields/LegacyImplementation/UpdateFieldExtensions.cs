@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
@@ -67,6 +68,38 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
             }
 
             return default(TK);
+        }
+
+        /// <summary>
+        /// Grabs a value list from a dictionary of dynamic UpdateFields
+        /// </summary>
+        /// <typeparam name="T">The type of UpdateField (UnitDynamicField, ...)</typeparam>
+        /// <typeparam name="TK">The type of the value (int, uint or float and their nullable counterparts)</typeparam>
+        /// <param name="dict">The dictionary</param>
+        /// <param name="updateField">The update field we want</param>
+        /// <returns></returns>
+        public static IEnumerable<TK> GetValue<T, TK>(this Dictionary<int, List<UpdateField>> dict, T updateField)
+        {
+            List<UpdateField> ufs;
+            if (dict.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(updateField), out ufs))
+            {
+                var type = GetTypeCodeOfReturnValue<TK>();
+                switch (type)
+                {
+                    case TypeCode.UInt32:
+                        return ufs.Select(uf => (TK)(object)uf.UInt32Value);
+                    case TypeCode.Int32:
+                        return ufs.Select(uf => (TK)(object)(int)uf.UInt32Value);
+                    case TypeCode.Single:
+                        return ufs.Select(uf => (TK)(object)uf.FloatValue);
+                    case TypeCode.Double:
+                        return ufs.Select(uf => (TK)(object)(double)uf.FloatValue);
+                    default:
+                        break;
+                }
+            }
+
+            return Enumerable.Empty<TK>();
         }
 
         /// <summary>

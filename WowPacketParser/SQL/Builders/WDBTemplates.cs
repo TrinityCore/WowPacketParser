@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -131,7 +130,7 @@ namespace WowPacketParser.SQL.Builders
                 if (go != null)
                 {
                     if (goT.Item1.Size == null) // only true for 3.x and 4.x. WDB field since 5.x
-                        goT.Item1.Size = go.Size.GetValueOrDefault(1.0f);
+                        goT.Item1.Size = go.ObjectData.Scale;
                 }
             }
 

@@ -607,6 +607,8 @@
     <Compile Include="Store\Objects\CreatureTemplateLocale.cs" />
     <Compile Include="Store\Objects\CreatureTemplateScaling.cs" />
     <Compile Include="Store\Objects\CreatureText.cs" />
+    <Compile Include="Store\Objects\UpdateFields\LegacyImplementation\ConversationData.cs" />
+    <Compile Include="Store\Objects\UpdateFields\LegacyImplementation\UnitData.cs" />
     <Compile Include="Store\Objects\UpdateFields\LegacyImplementation\UpdateFieldExtensions.cs" />
     <Compile Include="Store\Objects\GameObjectAddon.cs" />
     <Compile Include="Store\Objects\GameObject.cs" />
@@ -692,6 +694,8 @@
     <Compile Include="Store\Objects\UpdateFields\IUnitChannel.cs" />
     <Compile Include="Store\Objects\UpdateFields\IUnitData.cs" />
     <Compile Include="Store\Objects\UpdateFields\IVisibleItem.cs" />
+    <Compile Include="Store\Objects\UpdateFields\LegacyImplementation\GameObjectData.cs" />
+    <Compile Include="Store\Objects\UpdateFields\LegacyImplementation\ObjectData.cs" />
     <Compile Include="Store\Objects\VehicleTemplateAccessory.cs" />
     <Compile Include="Store\Objects\WeatherUpdate.cs" />
     <Compile Include="Store\Objects\WoWObject.cs" />

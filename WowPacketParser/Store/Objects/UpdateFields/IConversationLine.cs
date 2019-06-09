@@ -2,5 +2,10 @@
 {
     public interface IConversationLine
     {
+        int ConversationLineID { get; }
+        uint StartTime { get; }
+        int UiCameraID { get; }
+        byte ActorIndex { get; }
+        byte Flags { get; }
     }
 }

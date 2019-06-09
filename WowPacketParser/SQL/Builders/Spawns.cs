@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
@@ -22,13 +21,9 @@ namespace WowPacketParser.SQL.Builders
             if (!Storage.Objects.TryGetValue(@object.Movement.TransportGuid, out transport))
                 return false;
 
-            UpdateField entry;
-            if (transport.UpdateFields == null || !transport.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out entry))
-                return false;
-
             if (SQLConnector.Enabled)
             {
-                var transportTemplates = SQLDatabase.Get(new RowList<GameObjectTemplate> { new GameObjectTemplate { Entry = entry.UInt32Value } });
+                var transportTemplates = SQLDatabase.Get(new RowList<GameObjectTemplate> { new GameObjectTemplate { Entry = (uint)transport.ObjectData.EntryID } });
                 if (transportTemplates.Count == 0)
                     return false;
 
@@ -65,11 +60,9 @@ namespace WowPacketParser.SQL.Builders
                     if (!(creature.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
                         continue;
 
-                UpdateField uf;
-                if (!creature.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out uf))
+                uint entry = (uint)creature.ObjectData.EntryID;
+                if (entry == 0)
                     continue;   // broken entry, nothing to spawn
-
-                uint entry = uf.UInt32Value;
 
                 uint movementType = 0;
                 int spawnDist = 0;
@@ -184,9 +177,9 @@ namespace WowPacketParser.SQL.Builders
                 {
                     addonRow.Data.GUID = "@CGUID+" + count;
                     addonRow.Data.PathID = 0;
-                    addonRow.Data.Mount = creature.Mount.GetValueOrDefault(0);
-                    addonRow.Data.Bytes1 = creature.Bytes1.GetValueOrDefault(0);
-                    addonRow.Data.Bytes2 = creature.Bytes2.GetValueOrDefault(0);
+                    addonRow.Data.Mount = (uint)creature.UnitData.MountDisplayID;
+                    addonRow.Data.Bytes1 = creature.Bytes1;
+                    addonRow.Data.Bytes2 = creature.Bytes2;
                     addonRow.Data.Emote = 0;
                     addonRow.Data.Auras = auras;
                     addonRow.Data.AIAnimKit = creature.AIAnimKit.GetValueOrDefault(0);
@@ -264,21 +257,11 @@ namespace WowPacketParser.SQL.Builders
                     if (!(go.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
                         continue;
 
-                uint animprogress = 0;
-                uint state = 0;
-                UpdateField uf;
-                if (!go.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(ObjectField.OBJECT_FIELD_ENTRY), out uf))
+                uint entry = (uint)go.ObjectData.EntryID;
+                if (entry == 0)
                     continue;   // broken entry, nothing to spawn
 
-                uint entry = uf.UInt32Value;
                 bool badTransport = false;
-
-                if (go.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(GameObjectField.GAMEOBJECT_BYTES_1), out uf))
-                {
-                    uint bytes = uf.UInt32Value;
-                    state = (bytes & 0x000000FF);
-                    animprogress = Convert.ToUInt32((bytes & 0xFF000000) >> 24);
-                }
 
                 row.Data.GUID = "@OGUID+" + count;
 
@@ -347,10 +330,10 @@ namespace WowPacketParser.SQL.Builders
 
                     if (parentRotation != null)
                     {
-                        addonRow.Data.parentRot0 = parentRotation[0].GetValueOrDefault(0.0f);
-                        addonRow.Data.parentRot1 = parentRotation[1].GetValueOrDefault(0.0f);
-                        addonRow.Data.parentRot2 = parentRotation[2].GetValueOrDefault(0.0f);
-                        addonRow.Data.parentRot3 = parentRotation[3].GetValueOrDefault(1.0f);
+                        addonRow.Data.parentRot0 = parentRotation.Value.X;
+                        addonRow.Data.parentRot1 = parentRotation.Value.Y;
+                        addonRow.Data.parentRot2 = parentRotation.Value.Z;
+                        addonRow.Data.parentRot3 = parentRotation.Value.W;
 
                         if (addonRow.Data.parentRot0 == 0.0f &&
                             addonRow.Data.parentRot1 == 0.0f &&
@@ -368,8 +351,8 @@ namespace WowPacketParser.SQL.Builders
                 }
 
                 row.Data.SpawnTimeSecs = go.GetDefaultSpawnTime(go.DifficultyID);
-                row.Data.AnimProgress = animprogress;
-                row.Data.State = state;
+                row.Data.AnimProgress = go.GameObjectData.PercentHealth;
+                row.Data.State = (uint)go.GameObjectData.State;
 
                 // set some defaults
                 row.Data.PhaseGroup = 0;

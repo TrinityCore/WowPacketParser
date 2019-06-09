@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using WowPacketParser.DBC;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -9,8 +10,6 @@ using WowPacketParser.SQL;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
-using WowPacketParser.DBC;
-using WowPacketParser.Enums.Version;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
@@ -362,13 +361,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     WoWObject obj = Storage.Objects[guid].Item1;
                     if (obj.Type == ObjectType.Unit)
                     {
-                        int factionTemplateId = 0;
+                        int factionTemplateId = (obj as Unit).UnitData.FactionTemplate;
                         int faction = 0;
-                        UpdateField uf;
-
-                        if (obj.UpdateFields != null && obj.UpdateFields.TryGetValue(UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_FACTIONTEMPLATE), out uf))
-                            factionTemplateId = (int)uf.UInt32Value;
-
 
                         if (factionTemplateId != 0 && DBC.FactionTemplate.ContainsKey(factionTemplateId))
                             faction = DBC.FactionTemplate[factionTemplateId].Faction;

@@ -45,9 +45,16 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                             var updatefieldSize = packet.ReadUInt32();
                             using (var fieldsData = new Packet(packet.ReadBytes((int)updatefieldSize), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
                             {
+                                WoWObject obj;
+                                Storage.Objects.TryGetValue(guid, out obj);
+
                                 var updateTypeFlag = fieldsData.ReadUInt32();
                                 if ((updateTypeFlag & 0x0001) != 0)
-                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateObjectData(fieldsData, null, i);
+                                {
+                                    var data = UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateObjectData(fieldsData, obj?.ObjectData, i);
+                                    if (obj != null)
+                                        obj.ObjectData = data;
+                                }
                                 if ((updateTypeFlag & 0x0002) != 0)
                                     UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateItemData(fieldsData, null, i);
                                 if ((updateTypeFlag & 0x0004) != 0)
@@ -57,13 +64,23 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                                 if ((updateTypeFlag & 0x0010) != 0)
                                     UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateAzeriteItemData(fieldsData, null, i);
                                 if ((updateTypeFlag & 0x0020) != 0)
-                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateUnitData(fieldsData, null, i);
+                                {
+                                    var unit = obj as Unit;
+                                    var data = UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateUnitData(fieldsData, unit?.UnitData, i);
+                                    if (unit != null)
+                                        unit.UnitData = data;
+                                }
                                 if ((updateTypeFlag & 0x0040) != 0)
                                     UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdatePlayerData(fieldsData, null, i);
                                 if ((updateTypeFlag & 0x0080) != 0)
                                     UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateActivePlayerData(fieldsData, null, i);
                                 if ((updateTypeFlag & 0x0100) != 0)
-                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateGameObjectData(fieldsData, null, i);
+                                {
+                                    var go = obj as GameObject;
+                                    var data = UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateGameObjectData(fieldsData, go?.GameObjectData, i);
+                                    if (go != null)
+                                        go.GameObjectData = data;
+                                }
                                 if ((updateTypeFlag & 0x0200) != 0)
                                     UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateDynamicObjectData(fieldsData, null, i);
                                 if ((updateTypeFlag & 0x0400) != 0)
@@ -73,7 +90,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                                 if ((updateTypeFlag & 0x1000) != 0)
                                     UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateSceneObjectData(fieldsData, null, i);
                                 if ((updateTypeFlag & 0x2000) != 0)
-                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateConversationData(fieldsData, null, i);
+                                {
+                                    var conversation = obj as ConversationTemplate;
+                                    var data = UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateConversationData(fieldsData, conversation?.ConversationData, i);
+                                    if (conversation != null)
+                                        conversation.ConversationData = data;
+                                }
                             }
                         }
                         else
@@ -128,7 +150,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     var flags = fieldsData.ReadByteE<UpdateFieldFlag>("FieldFlags", index);
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683))
                     {
-                        UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateObjectData(fieldsData, flags, index);
+                        obj.ObjectData = UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateObjectData(fieldsData, flags, index);
                         switch (objType)
                         {
                             case ObjectType.Item:
@@ -147,7 +169,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                                 UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateAzeriteItemData(fieldsData, flags, index);
                                 break;
                             case ObjectType.Unit:
-                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateUnitData(fieldsData, flags, index);
+                                (obj as Unit).UnitData = UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateUnitData(fieldsData, flags, index);
                                 break;
                             case ObjectType.Player:
                                 UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateUnitData(fieldsData, flags, index);
@@ -159,7 +181,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                                 UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateActivePlayerData(fieldsData, flags, index);
                                 break;
                             case ObjectType.GameObject:
-                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateGameObjectData(fieldsData, flags, index);
+                                (obj as GameObject).GameObjectData = UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateGameObjectData(fieldsData, flags, index);
                                 break;
                             case ObjectType.DynamicObject:
                                 UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateDynamicObjectData(fieldsData, flags, index);
@@ -174,7 +196,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                                 UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateSceneObjectData(fieldsData, flags, index);
                                 break;
                             case ObjectType.Conversation:
-                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateConversationData(fieldsData, flags, index);
+                                (obj as ConversationTemplate).ConversationData = UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateConversationData(fieldsData, flags, index);
                                 break;
                         }
                     }

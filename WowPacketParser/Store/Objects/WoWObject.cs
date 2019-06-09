@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.Store.Objects.UpdateFields;
+using WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation;
 
 namespace WowPacketParser.Store.Objects
 {
@@ -15,8 +17,9 @@ namespace WowPacketParser.Store.Objects
         public int Area;
         public int Zone;
 
-        public Dictionary<int, UpdateField> UpdateFields; // SMSG_UPDATE_OBJECT - CreateObject
-        public Dictionary<int, List<UpdateField>> DynamicUpdateFields; // SMSG_UPDATE_OBJECT - CreateObject
+        public IObjectData ObjectData;
+        public Dictionary<int, UpdateField> UpdateFields;
+        public Dictionary<int, List<UpdateField>> DynamicUpdateFields;
 
         public uint PhaseMask;
 
@@ -25,6 +28,11 @@ namespace WowPacketParser.Store.Objects
         public uint DifficultyID;
 
         public bool ForceTemporarySpawn;
+
+        public WoWObject()
+        {
+            ObjectData = new ObjectData(this);
+        }
 
         public virtual bool IsTemporarySpawn()
         {
