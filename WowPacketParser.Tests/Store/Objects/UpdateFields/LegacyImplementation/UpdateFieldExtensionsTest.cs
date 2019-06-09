@@ -20,5 +20,18 @@ namespace WowPacketParser.Tests.Store.Objects.UpdateFields.LegacyImplementation
 
             Assert.Throws<ArgumentException>(() => updateFields.GetValue<int, ulong>(4));
         }
+
+        [Test]
+        public void TestWithMissingValue()
+        {
+            var updateFields = new Dictionary<int, UpdateField>();
+
+            Assert.AreEqual(0, updateFields.GetValue<int, int>(2));
+            Assert.AreEqual(0u, updateFields.GetValue<int, uint>(2));
+            Assert.AreEqual(0.0f, updateFields.GetValue<int, float>(2));
+            Assert.AreEqual(null, updateFields.GetValue<int, int?>(2));
+            Assert.AreEqual(null, updateFields.GetValue<int, uint?>(2));
+            Assert.AreEqual(null, updateFields.GetValue<int, float?>(2));
+        }
     }
 }
