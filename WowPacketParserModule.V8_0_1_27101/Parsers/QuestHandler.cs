@@ -745,7 +745,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_LIST_MESSAGE, ClientVersionBuild.V8_1_0_28724)]
+        [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_LIST_MESSAGE, ClientVersionBuild.V8_1_0_28724, ClientVersionBuild.V8_1_5_29683)]
         public static void HandleQuestgiverQuestList(Packet packet)
         {
             WowGuid guid = packet.ReadPackedGuid128("QuestGiverGUID");
