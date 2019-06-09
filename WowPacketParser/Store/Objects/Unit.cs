@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation;
@@ -163,7 +164,7 @@ namespace WowPacketParser.Store.Objects
                 NpcFlags = UpdateFields.GetEnum<UnitField, NPCFlags?>(UnitField.UNIT_NPC_FLAGS);
 
             EmoteState    = UpdateFields.GetEnum<UnitField, EmoteType?>(UnitField.UNIT_NPC_EMOTESTATE);
-            Resistances   = UpdateFields.GetArray<UnitField, short>(UnitField.UNIT_FIELD_RESISTANCES, 7);
+            Resistances   = UpdateFields.GetArray<UnitField, int>(UnitField.UNIT_FIELD_RESISTANCES, 7).Select(r => (short)r).ToArray();
             ManaMod       = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BASE_MANA);
             HealthMod     = UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BASE_HEALTH);
             BoundingRadius= UpdateFields.GetValue<UnitField, float?>(UnitField.UNIT_FIELD_BOUNDINGRADIUS);
