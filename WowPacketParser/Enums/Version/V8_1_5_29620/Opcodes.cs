@@ -1384,6 +1384,7 @@ namespace WowPacketParser.Enums.Version.V8_1_5_29620
             {Opcode.SMSG_MOVE_UPDATE_TELEPORT, 0x2DAF},
             {Opcode.SMSG_MOVE_UPDATE_TURN_RATE, 0x2DAB},
             {Opcode.SMSG_MOVE_UPDATE_WALK_SPEED, 0x2DA6},
+            {Opcode.SMSG_MULTIPLE_PACKETS, 0x3051},
             {Opcode.SMSG_NEUTRAL_PLAYER_FACTION_SELECT_RESULT, 0x25F2},
             {Opcode.SMSG_NEW_TAXI_PATH, 0x26AD},
             {Opcode.SMSG_NEW_WORLD, 0x25AC},
