@@ -6,7 +6,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     [HotfixStructure(DB2Hash.ItemSearchName)]
     public class ItemSearchNameEntry
     {
-        public ulong AllowableRace { get; set; }
+        public long AllowableRace { get; set; }
         public string Display { get; set; }
         public int ID { get; set; }
         public byte OverallQualityID { get; set; }

@@ -6,7 +6,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     [HotfixStructure(DB2Hash.ItemSparse, HasIndexInData = false)]
     public class ItemSparseEntry
     {
-        public ulong AllowableRace { get; set; }
+        public long AllowableRace { get; set; }
         public string Description { get; set; }
         public string Display3 { get; set; }
         public string Display2 { get; set; }
