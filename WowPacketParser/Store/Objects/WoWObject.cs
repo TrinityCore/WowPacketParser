@@ -105,9 +105,10 @@ namespace WowPacketParser.Store.Objects
                 case 530:   // Outland
                 case 571:   // Northrend
                 case 609:   // Ebon Hold
-                case 638:   // Gilneas 1
-                case 655:   // Gilneas 2
-                case 656:   // Gilneas 3
+                case 638:   // Gilneas
+                case 654:   // Gilneas2
+                case 655:   // GilneasPhase1
+                case 656:   // GilneasPhase2
                 case 646:   // Deepholm
                 case 648:   // Kezan 1
                 case 659:   // Kezan 2
