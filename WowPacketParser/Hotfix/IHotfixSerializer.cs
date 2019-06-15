@@ -1,49 +1,70 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using Sigil;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using MySql.Data.MySqlClient;
-using Sigil;
-using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Hotfix
 {
     public abstract class IHotfixSerializer<T> where T : class, new()
     {
+        // Filter for typeof(Packet).GetMethod to skip the generic variant of ReadXXX used for enums
+        private class NonGenericBinder : Binder
+        {
+            public static NonGenericBinder Instance { get; } = new NonGenericBinder();
+
+            public override FieldInfo BindToField(BindingFlags bindingAttr, FieldInfo[] match, object value, CultureInfo culture)
+            {
+                return null;
+            }
+
+            public override MethodBase BindToMethod(BindingFlags bindingAttr, MethodBase[] match, ref object[] args, ParameterModifier[] modifiers, CultureInfo culture, string[] names, out object state)
+            {
+                state = null;
+                return null;
+            }
+
+            public override object ChangeType(object value, Type type, CultureInfo culture)
+            {
+                return null;
+            }
+
+            public override void ReorderArgumentArray(ref object[] args, object state)
+            {
+            }
+
+            public override MethodBase SelectMethod(BindingFlags bindingAttr, MethodBase[] match, Type[] types, ParameterModifier[] modifiers)
+            {
+                return match.Where(m => !m.IsGenericMethod).SingleOrDefault();
+            }
+
+            public override PropertyInfo SelectProperty(BindingFlags bindingAttr, PropertyInfo[] match, Type returnType, Type[] indexes, ParameterModifier[] modifiers)
+            {
+                return null;
+            }
+        }
+
         // ReSharper disable once StaticMemberInGenericType
         protected static Dictionary<TypeCode, MethodInfo> _binaryReaders { get; } = new Dictionary<TypeCode, MethodInfo>
         {
-            { TypeCode.String, typeof (Packet).GetMethod("ReadCString", new [] { typeof(string), typeof(object[]) }) }
+            { TypeCode.SByte, typeof(Packet).GetMethod("ReadSByte", BindingFlags.Public | BindingFlags.Instance, NonGenericBinder.Instance, new [] { typeof(string), typeof(object[]) }, null) },
+            { TypeCode.Byte, typeof(Packet).GetMethod("ReadByte", BindingFlags.Public | BindingFlags.Instance, NonGenericBinder.Instance, new [] { typeof(string), typeof(object[]) }, null) },
+            { TypeCode.Int16, typeof(Packet).GetMethod("ReadInt16", BindingFlags.Public | BindingFlags.Instance, NonGenericBinder.Instance, new [] { typeof(string), typeof(object[]) }, null) },
+            { TypeCode.UInt16, typeof(Packet).GetMethod("ReadUInt16", BindingFlags.Public | BindingFlags.Instance, NonGenericBinder.Instance, new [] { typeof(string), typeof(object[]) }, null) },
+            { TypeCode.Int32, typeof(Packet).GetMethod("ReadInt32", BindingFlags.Public | BindingFlags.Instance, NonGenericBinder.Instance, new [] { typeof(string), typeof(object[]) }, null) },
+            { TypeCode.UInt32, typeof(Packet).GetMethod("ReadUInt32", BindingFlags.Public | BindingFlags.Instance, NonGenericBinder.Instance, new [] { typeof(string), typeof(object[]) }, null) },
+            { TypeCode.Int64, typeof(Packet).GetMethod("ReadInt64", BindingFlags.Public | BindingFlags.Instance, NonGenericBinder.Instance, new [] { typeof(string), typeof(object[]) }, null) },
+            { TypeCode.UInt64, typeof(Packet).GetMethod("ReadUInt64", BindingFlags.Public | BindingFlags.Instance, NonGenericBinder.Instance, new [] { typeof(string), typeof(object[]) }, null) },
+            { TypeCode.Single, typeof(Packet).GetMethod("ReadSingle", BindingFlags.Public | BindingFlags.Instance, NonGenericBinder.Instance, new [] { typeof(string), typeof(object[]) }, null) },
+            { TypeCode.Double, typeof(Packet).GetMethod("ReadDouble", BindingFlags.Public | BindingFlags.Instance, NonGenericBinder.Instance, new [] { typeof(string), typeof(object[]) }, null) },
+            { TypeCode.String, typeof(Packet).GetMethod("ReadCString", BindingFlags.Public | BindingFlags.Instance, NonGenericBinder.Instance, new [] { typeof(string), typeof(object[]) }, null) }
         };
-
-        static IHotfixSerializer()
-        {
-            foreach (var methodInfo in typeof(Packet).GetMethods(BindingFlags.Public | BindingFlags.Instance).Where(mi =>
-               mi.GetGenericArguments().Length == 0 && mi.GetParameters().Length == 2 && mi.GetParameters()[0].ParameterType == typeof(string)))
-            {
-                var returnCode = Type.GetTypeCode(methodInfo.ReturnType);
-                // ReSharper disable once SwitchStatementMissingSomeCases
-                switch (returnCode)
-                {
-                    case TypeCode.SByte:
-                    case TypeCode.Byte:
-                    case TypeCode.Int16:
-                    case TypeCode.UInt16:
-                    case TypeCode.Int32:
-                    case TypeCode.UInt32:
-                    case TypeCode.Int64:
-                    case TypeCode.UInt64:
-                    case TypeCode.Single:
-                    case TypeCode.Double:
-                        _binaryReaders[returnCode] = methodInfo;
-                        break;
-                }
-            }
-        }
 
         protected Func<Packet, T> _deserializer;
         private Action<T, StringBuilder /* hotfixBuilder */, StringBuilder /* localeBuilder */> _serializer;
