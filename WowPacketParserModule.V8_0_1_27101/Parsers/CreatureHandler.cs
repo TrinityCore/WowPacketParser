@@ -93,12 +93,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             creature.UnitClass = (uint)packet.ReadInt32E<Class>("UnitClass");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
-                packet.ReadSingle("UnkFloat");
+                creature.FadeRegionRadius = packet.ReadSingle("FadeRegionRadius");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683))
             {
-                packet.ReadInt32("UnkInt_815");
-                packet.ReadInt32("UnkInt2_815");
+                creature.WidgetSetID = packet.ReadInt32("WidgetSetID");
+                creature.WidgetSetUnitConditionID = packet.ReadInt32("WidgetSetUnitConditionID");
             }
 
             if (titleLen > 1)
