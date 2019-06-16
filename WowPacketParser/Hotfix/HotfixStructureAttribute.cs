@@ -32,10 +32,18 @@ namespace WowPacketParser.Hotfix
     public class HotfixArrayAttribute : Attribute
     {
         public int Size { get; }
+        public bool IsPosition { get; }
 
         public HotfixArrayAttribute(int arraySize)
         {
             Size = arraySize;
+            IsPosition = false;
+        }
+
+        public HotfixArrayAttribute(int arraySize, bool isPosition)
+        {
+            Size = arraySize;
+            IsPosition = isPosition;
         }
     }
 

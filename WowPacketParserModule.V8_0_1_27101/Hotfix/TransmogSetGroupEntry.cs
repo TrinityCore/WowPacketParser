@@ -7,6 +7,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     public class TransmogSetGroupEntry
     {
         public string Name { get; set; }
-        public int ID { get; set; }
+        public uint ID { get; set; }
     }
 }

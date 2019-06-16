@@ -71,16 +71,16 @@ namespace WowPacketParser.Hotfix
 
         #region Static helpers for SQL serialization
         // ReSharper disable StaticMemberInGenericType
-        private static MethodInfo stringReplace = typeof (string).GetMethod("Replace", new[] {typeof (string), typeof (string)});
-        private static MethodInfo stringFormat = typeof (string).GetMethod("Format", new[] {typeof (string), typeof (object)});
-        private static MethodInfo stringBuilderAppend = typeof (StringBuilder).GetMethod("Append", new[] {typeof (string)});
-        private static MethodInfo stringEscape = typeof(MySqlHelper).GetMethod("EscapeString", new[] {typeof(string)});
+        private static MethodInfo stringReplace = typeof(string).GetMethod("Replace", new[] { typeof(string), typeof(string) });
+        private static MethodInfo stringFormat = typeof(string).GetMethod("Format", new[] { typeof(string), typeof(object) });
+        private static MethodInfo stringBuilderAppend = typeof(StringBuilder).GetMethod("Append", new[] { typeof(string) });
+        private static MethodInfo stringEscape = typeof(MySqlHelper).GetMethod("EscapeString", new[] { typeof(string) });
         // ReSharper restore StaticMemberInGenericType
 
         private static void SerializeValue(PropertyInfo propInfo,
             Emit<Action<T, StringBuilder, StringBuilder>> serializationEmitter)
         {
-            var isString = propInfo.PropertyType == typeof (string);
+            var isString = propInfo.PropertyType == typeof(string);
 
             using (var stringLocal = serializationEmitter.DeclareLocal<string>())
             {
@@ -249,6 +249,7 @@ namespace WowPacketParser.Hotfix
 
         public T Deserialize(Packet packet) => _deserializer(packet);
 
+        public string[] PosLetters = new string[]{ "X", "Y", "Z" };
         public void SerializeStore(HotfixStore<T> store, StringBuilder hotfixBuilder, StringBuilder localeBuilder)
         {
             if (store.Records.Count == 0)
@@ -288,9 +289,18 @@ namespace WowPacketParser.Hotfix
                     var arraySizeAttribute = propInfo.GetCustomAttribute<HotfixArrayAttribute>();
                     for (var i = 0; i < arraySizeAttribute.Size; ++i)
                     {
-                        hotfixBuilder.Append($"`{propInfo.Name}{ i + 1 }`, ");
-                        if (localeBuilder != null && isString)
-                            localeBuilder.Append($"{propInfo.Name}{ i + 1 }_lang`, ");
+                        if (arraySizeAttribute.IsPosition)
+                        {
+                            hotfixBuilder.Append($"`{propInfo.Name}{ PosLetters[i] }`, ");
+                            if (localeBuilder != null && isString)
+                                localeBuilder.Append($"{propInfo.Name}{ PosLetters[i] }_lang`, ");
+                        }
+                        else
+                        {
+                            hotfixBuilder.Append($"`{propInfo.Name}{ i + 1 }`, ");
+                            if (localeBuilder != null && isString)
+                                localeBuilder.Append($"{propInfo.Name}{ i + 1 }_lang`, ");
+                        }
                     }
                 }
                 else

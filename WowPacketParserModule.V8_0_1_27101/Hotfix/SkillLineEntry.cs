@@ -10,8 +10,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public string AlternateVerb { get; set; }
         public string Description { get; set; }
         public string HordeDisplayName { get; set; }
-        public string NeutralDisplayName { get; set; }
-        public int ID { get; set; }
+        public string OverrideSourceInfoDisplayName { get; set; }
+        public uint ID { get; set; }
         public sbyte CategoryID { get; set; }
         public int SpellIconFileID { get; set; }
         public sbyte CanLink { get; set; }

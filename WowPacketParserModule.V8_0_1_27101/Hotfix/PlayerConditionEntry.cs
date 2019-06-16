@@ -6,9 +6,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     [HotfixStructure(DB2Hash.PlayerCondition)]
     public class PlayerConditionEntry
     {
-        public ulong RaceMask { get; set; }
+        public long RaceMask { get; set; }
         public string FailureDescription { get; set; }
-        public int ID { get; set; }
+        public uint ID { get; set; }
         public ushort MinLevel { get; set; }
         public ushort MaxLevel { get; set; }
         public int ClassMask { get; set; }

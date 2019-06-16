@@ -12,7 +12,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public string MapDescription1 { get; set; }
         public string PvpShortDescription { get; set; }
         public string PvpLongDescription { get; set; }
-        [HotfixArray(2)]
+        [HotfixArray(2, true)]
         public float[] Corpse { get; set; }
         public byte MapType { get; set; }
         public sbyte InstanceType { get; set; }
@@ -21,14 +21,16 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public short LoadingScreenID { get; set; }
         public short TimeOfDayOverride { get; set; }
         public short ParentMapID { get; set; }
-        public ushort CosmeticParentMapID { get; set; }
+        public short CosmeticParentMapID { get; set; }
         public byte TimeOffset { get; set; }
         public float MinimapIconScale { get; set; }
         public short CorpseMapID { get; set; }
         public byte MaxPlayers { get; set; }
         public short WindSettingsID { get; set; }
         public int ZmpFileDataID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V8_1_5_29683, false)]
+        public int WdtFileDataID { get; set; }
         [HotfixArray(2)]
-        public uint[] Flags { get; set; }
+        public int[] Flags { get; set; }
     }
 }

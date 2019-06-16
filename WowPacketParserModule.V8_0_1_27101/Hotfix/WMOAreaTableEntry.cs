@@ -7,7 +7,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     public class WMOAreaTableEntry
     {
         public string AreaName { get; set; }
-        public int ID { get; set; }
+        public uint ID { get; set; }
         public ushort WmoID { get; set; }
         public byte NameSetID { get; set; }
         public int WmoGroupID { get; set; }

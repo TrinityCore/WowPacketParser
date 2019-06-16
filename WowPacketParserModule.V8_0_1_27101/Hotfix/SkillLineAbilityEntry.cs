@@ -7,7 +7,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     public class SkillLineAbilityEntry
     {
         public long RaceMask { get; set; }
-        public int ID { get; set; }
+        public uint ID { get; set; }
         public short SkillLine { get; set; }
         public int Spell { get; set; }
         public short MinSkillLineRank { get; set; }

@@ -8,7 +8,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public int ID { get; set; }
+        public uint ID { get; set; }
         public byte GarrAbilityCategoryID { get; set; }
         public byte GarrFollowerTypeID { get; set; }
         public int IconFileDataID { get; set; }

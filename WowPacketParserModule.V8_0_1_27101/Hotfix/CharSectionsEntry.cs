@@ -11,7 +11,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public sbyte BaseSection { get; set; }
         public sbyte VariationIndex { get; set; }
         public sbyte ColorIndex { get; set; }
-        public ushort Flags { get; set; }
+        public short Flags { get; set; }
         [HotfixArray(3)]
         public int[] MaterialResourcesID { get; set; }
     }

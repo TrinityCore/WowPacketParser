@@ -6,13 +6,13 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     [HotfixStructure(DB2Hash.VehicleSeat, HasIndexInData = false)]
     public class VehicleSeatEntry
     {
-        [HotfixArray(3)]
+        [HotfixArray(3, true)]
         public float[] AttachmentOffset { get; set; }
-        [HotfixArray(3)]
+        [HotfixArray(3, true)]
         public float[] CameraOffset { get; set; }
-        public uint Flags { get; set; }
-        public uint FlagsB { get; set; }
-        public uint FlagsC { get; set; }
+        public int Flags { get; set; }
+        public int FlagsB { get; set; }
+        public int FlagsC { get; set; }
         public sbyte AttachmentID { get; set; }
         public float EnterPreDelay { get; set; }
         public float EnterSpeed { get; set; }

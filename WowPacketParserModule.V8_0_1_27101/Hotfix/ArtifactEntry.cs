@@ -7,7 +7,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     public class ArtifactEntry
     {
         public string Name { get; set; }
-        public int ID { get; set; }
+        public uint ID { get; set; }
         public ushort UiTextureKitID { get; set; }
         public int UiNameColor { get; set; }
         public int UiBarOverlayColor { get; set; }

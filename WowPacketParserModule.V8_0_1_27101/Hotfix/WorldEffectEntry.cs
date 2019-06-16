@@ -8,7 +8,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     {
         public uint QuestFeedbackEffectID { get; set; }
         public byte WhenToDisplay { get; set; }
-        public byte TargetType { get; set; }
+        public sbyte TargetType { get; set; }
         public int TargetAsset { get; set; }
         public uint PlayerConditionID { get; set; }
         public ushort CombatConditionID { get; set; }

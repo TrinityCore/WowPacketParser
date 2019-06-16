@@ -7,11 +7,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     public class SpellInterruptsEntry
     {
         public byte DifficultyID { get; set; }
-        public ushort InterruptFlags { get; set; }
+        public short InterruptFlags { get; set; }
         [HotfixArray(2)]
-        public uint[] AuraInterruptFlags { get; set; }
+        public int[] AuraInterruptFlags { get; set; }
         [HotfixArray(2)]
-        public uint[] ChannelInterruptFlags { get; set; }
+        public int[] ChannelInterruptFlags { get; set; }
         public int SpellID { get; set; }
     }
 }

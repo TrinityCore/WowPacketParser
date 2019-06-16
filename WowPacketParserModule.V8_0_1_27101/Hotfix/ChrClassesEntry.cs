@@ -11,12 +11,14 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public string NameMale { get; set; }
         public string NameFemale { get; set; }
         public string PetNameToken { get; set; }
-        public int ID { get; set; }
+        public uint ID { get; set; }
         public uint CreateScreenFileDataID { get; set; }
         public uint SelectScreenFileDataID { get; set; }
         public uint IconFileDataID { get; set; }
         public uint LowResScreenFileDataID { get; set; }
         public int StartingLevel { get; set; }
+        [HotfixVersion(ClientVersionBuild.V8_1_5_29683, false)]
+        public uint SpellTextureBlobFileDataID { get; set; }
         public ushort Flags { get; set; }
         public ushort CinematicSequenceID { get; set; }
         public ushort DefaultSpec { get; set; }

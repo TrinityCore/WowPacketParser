@@ -7,10 +7,10 @@ namespace WowPacketParserModule.V8_1_0_28724.Hotfix
     public class FactionEntry
     {
         [HotfixArray(4)]
-        public ulong[] ReputationRaceMask { get; set; }
+        public long[] ReputationRaceMask { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public int ID { get; set; }
+        public uint ID { get; set; }
         public short ReputationIndex { get; set; }
         public ushort ParentFactionID { get; set; }
         public byte Expansion { get; set; }

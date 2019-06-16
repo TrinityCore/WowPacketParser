@@ -134,6 +134,7 @@
     <Compile Include="Hotfix\GuildColorBorderEntry.cs" />
     <Compile Include="Hotfix\GuildColorEmblemEntry.cs" />
     <Compile Include="Hotfix\GuildPerkSpellsEntry.cs" />
+    <Compile Include="Hotfix\HeirloomEntry815.cs" />
     <Compile Include="Hotfix\HeirloomEntry.cs" />
     <Compile Include="Hotfix\HolidaysEntry810.cs" />
     <Compile Include="Hotfix\HolidaysEntry.cs" />
@@ -271,6 +272,7 @@
     <Compile Include="Hotfix\SummonPropertiesEntry.cs" />
     <Compile Include="Hotfix\TactKeyEntry.cs" />
     <Compile Include="Hotfix\TalentEntry.cs" />
+    <Compile Include="Hotfix\TaxiNodesEntry815.cs" />
     <Compile Include="Hotfix\TaxiNodesEntry.cs" />
     <Compile Include="Hotfix\TaxiPathEntry.cs" />
     <Compile Include="Hotfix\TaxiPathNodeEntry810.cs" />

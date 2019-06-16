@@ -11,7 +11,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public uint Effect { get; set; }
         public float EffectAmplitude { get; set; }
         public int EffectAttributes { get; set; }
-        public ushort EffectAura { get; set; }
+        public short EffectAura { get; set; }
         public int EffectAuraPeriod { get; set; }
         public float EffectBonusCoefficient { get; set; }
         public float EffectChainAmplitude { get; set; }
@@ -28,13 +28,13 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public float Variance { get; set; }
         public float ResourceCoefficient { get; set; }
         public float GroupSizeBasePointsCoefficient { get; set; }
-        public float Points { get; set; }
+        public float EffectBasePoints { get; set; }
         [HotfixArray(2)]
         public int[] EffectMiscValue { get; set; }
         [HotfixArray(2)]
         public uint[] EffectRadiusIndex { get; set; }
         [HotfixArray(4)]
-        public uint[] EffectSpellClassMask { get; set; }
+        public int[] EffectSpellClassMask { get; set; }
         [HotfixArray(2)]
         public short[] ImplicitTarget { get; set; }
         public int SpellID { get; set; }

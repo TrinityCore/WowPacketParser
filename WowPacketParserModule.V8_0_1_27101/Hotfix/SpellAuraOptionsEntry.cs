@@ -13,7 +13,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public int ProcCharges { get; set; }
         public ushort SpellProcsPerMinuteID { get; set; }
         [HotfixArray(2)]
-        public uint[] ProcTypeMask { get; set; }
+        public int[] ProcTypeMask { get; set; }
         public int SpellID { get; set; }
     }
 }

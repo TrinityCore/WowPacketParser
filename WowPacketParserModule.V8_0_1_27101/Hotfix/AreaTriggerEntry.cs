@@ -6,9 +6,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     [HotfixStructure(DB2Hash.AreaTrigger)]
     public class AreaTriggerEntry
     {
-        [HotfixArray(3)]
+        [HotfixArray(3, true)]
         public float[] Pos { get; set; }
-        public int ID { get; set; }
+        public uint ID { get; set; }
         public short ContinentID { get; set; }
         public sbyte PhaseUseFlags { get; set; }
         public short PhaseID { get; set; }

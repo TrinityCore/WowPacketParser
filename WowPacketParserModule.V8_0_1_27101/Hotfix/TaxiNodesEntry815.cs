@@ -1,25 +1,24 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
 
-namespace WowPacketParserModule.V8_0_1_27101.Hotfix
+namespace WowPacketParserModule.V8_1_5_29683.Hotfix
 {
-    [HotfixStructure(DB2Hash.TaxiNodes, ClientVersionBuild.V8_0_1_27101, ClientVersionBuild.V8_1_5_29683)]
+    [HotfixStructure(DB2Hash.TaxiNodes, ClientVersionBuild.V8_1_5_29683)]
     public class TaxiNodesEntry
     {
         public string Name { get; set; }
-        [HotfixArray(3)]
+        [HotfixArray(3, true)]
         public float[] Pos { get; set; }
-        [HotfixArray(2)]
+        [HotfixArray(2, true)]
         public float[] MapOffset { get; set; }
-        [HotfixArray(2)]
+        [HotfixArray(2, true)]
         public float[] FlightMapOffset { get; set; }
-        public int ID { get; set; }
+        public uint ID { get; set; }
         public ushort ContinentID { get; set; }
-        public ushort ConditionID { get; set; }
+        public int ConditionID { get; set; }
         public ushort CharacterBitNumber { get; set; }
         public byte Flags { get; set; }
         public int UiTextureKitID { get; set; }
-        [HotfixVersion(ClientVersionBuild.V8_1_0_28724, false)]
         public int MinimapAtlasMemberID { get; set; }
         public float Facing { get; set; }
         public uint SpecialIconConditionID { get; set; }

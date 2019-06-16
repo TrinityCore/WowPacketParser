@@ -39,6 +39,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public ushort MentorItemLevel { get; set; }
         public byte MentorCharLevel { get; set; }
         [HotfixArray(2)]
-        public uint[] Flags { get; set; }
+        public int[] Flags { get; set; }
     }
 }

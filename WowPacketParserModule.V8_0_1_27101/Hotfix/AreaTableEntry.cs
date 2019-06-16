@@ -28,7 +28,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public byte WildBattlePetLevelMax { get; set; }
         public byte WindSettingsID { get; set; }
         [HotfixArray(2)]
-        public uint[] Flags { get; set; }
+        public int[] Flags { get; set; }
         [HotfixArray(4)]
         public ushort[] LiquidTypeID { get; set; }
     }

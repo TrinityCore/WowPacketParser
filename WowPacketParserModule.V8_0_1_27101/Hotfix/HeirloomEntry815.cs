@@ -1,9 +1,9 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
 
-namespace WowPacketParserModule.V8_0_1_27101.Hotfix
+namespace WowPacketParserModule.V8_1_5_29683.Hotfix
 {
-    [HotfixStructure(DB2Hash.Heirloom, ClientVersionBuild.V8_0_1_27101, ClientVersionBuild.V8_1_5_29683)]
+    [HotfixStructure(DB2Hash.Heirloom, ClientVersionBuild.V8_1_5_29683)]
     public class HeirloomEntry
     {
         public string SourceText { get; set; }
@@ -14,9 +14,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public sbyte SourceTypeEnum { get; set; }
         public byte Flags { get; set; }
         public int LegacyItemID { get; set; }
-        [HotfixArray(3)]
+        [HotfixArray(4)]
         public int[] UpgradeItemID { get; set; }
-        [HotfixArray(3)]
+        [HotfixArray(4)]
         public ushort[] UpgradeItemBonusListID { get; set; }
     }
 }

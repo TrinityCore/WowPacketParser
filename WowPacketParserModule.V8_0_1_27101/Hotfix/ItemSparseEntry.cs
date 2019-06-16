@@ -30,7 +30,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public float PriceVariance { get; set; }
         public float PriceRandomValue { get; set; }
         [HotfixArray(4)]
-        public uint[] Flags { get; set; }
+        public int[] Flags { get; set; }
         public int FactionRelated { get; set; }
         public ushort ItemNameDescriptionID { get; set; }
         public ushort RequiredTransmogHoliday { get; set; }
