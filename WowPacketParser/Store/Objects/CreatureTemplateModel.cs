@@ -9,10 +9,10 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("CreatureID", true)]
         public uint? CreatureID;
 
-        [DBFieldName("Idx")]
+        [DBFieldName("Idx", true)]
         public uint? Idx;
 
-        [DBFieldName("CreatureDisplayID", true)]
+        [DBFieldName("CreatureDisplayID")]
         public uint? CreatureDisplayID;
 
         [DBFieldName("DisplayScale")]
