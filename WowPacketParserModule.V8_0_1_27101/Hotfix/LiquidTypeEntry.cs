@@ -30,7 +30,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         [HotfixArray(18)]
         public float[] Float { get; set; }
         [HotfixArray(4)]
-        public int[] Int { get; set; }
+        public uint[] Int { get; set; }
         [HotfixArray(4)]
         public float[] Coefficient { get; set; }
     }

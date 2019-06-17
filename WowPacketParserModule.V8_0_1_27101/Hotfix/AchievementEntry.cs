@@ -19,9 +19,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public int Flags { get; set; }
         public short UiOrder { get; set; }
         public int IconFileID { get; set; }
-        public int CriteriaTree { get; set; }
         [HotfixVersion(ClientVersionBuild.V8_1_0_28724, false)]
-        public uint Unknown1 { get; set; }
+        public int RewardItemID { get; set; }
+        public uint CriteriaTree { get; set; }
         public short SharesCriteria { get; set; }
     }
 }

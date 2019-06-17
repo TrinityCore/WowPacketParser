@@ -8,7 +8,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     {
         public short Type { get; set; }
         public int Asset { get; set; }
-        public uint ModifierTreeID { get; set; }
+        public uint ModifierTreeId { get; set; }
         public byte StartEvent { get; set; }
         public int StartAsset { get; set; }
         public ushort StartTimer { get; set; }

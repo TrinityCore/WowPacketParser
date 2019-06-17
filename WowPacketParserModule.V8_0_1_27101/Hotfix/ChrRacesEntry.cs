@@ -14,10 +14,10 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public string NameFemaleLowercase { get; set; }
         public uint ID { get; set; }
         public int Flags { get; set; }
-        public uint MaleDisplayID { get; set; }
-        public uint FemaleDisplayID { get; set; }
-        public uint HighResMaleDisplayID { get; set; }
-        public uint HighResFemaleDisplayID { get; set; }
+        public uint MaleDisplayId { get; set; }
+        public uint FemaleDisplayId { get; set; }
+        public uint HighResMaleDisplayId { get; set; }
+        public uint HighResFemaleDisplayId { get; set; }
         public int CreateScreenFileDataID { get; set; }
         public int SelectScreenFileDataID { get; set; }
         [HotfixArray(3)]

@@ -15,6 +15,6 @@ namespace WowPacketParserModule.V8_1_0_28724.Hotfix
         public int ItemContextPickerID { get; set; }
         public int Flags { get; set; }
         public int ContentTuningID { get; set; }
-        public uint MapID { get; set; }
+        public int MapID { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     {
         public string Name { get; set; }
         [HotfixArray(3, true)]
-        public float Pos { get; set; }
+        public float[] Pos { get; set; }
         [HotfixArray(4)]
         public float[] Rot { get; set; }
         public uint ID { get; set; }

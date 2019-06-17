@@ -37,7 +37,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public ushort RequiredHoliday { get; set; }
         public ushort LimitCategory { get; set; }
         public ushort GemProperties { get; set; }
-        public ushort SocketMatchEnchantmentID { get; set; }
+        public ushort SocketMatchEnchantmentId { get; set; }
         public ushort TotemCategoryID { get; set; }
         public ushort InstanceBound { get; set; }
         public ushort ZoneBound { get; set; }

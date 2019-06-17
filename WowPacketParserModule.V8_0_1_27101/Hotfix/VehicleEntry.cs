@@ -6,7 +6,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     [HotfixStructure(DB2Hash.Vehicle, HasIndexInData = false)]
     public class VehicleEntry
     {
-        public uint Flags { get; set; }
+        public int Flags { get; set; }
         public byte FlagsB { get; set; }
         public float TurnSpeed { get; set; }
         public float PitchSpeed { get; set; }
