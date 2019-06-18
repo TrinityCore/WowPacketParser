@@ -7,7 +7,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     public class SpellCastTimesEntry
     {
         public int Base { get; set; }
-        public ushort PerLevel { get; set; }
+        public short PerLevel { get; set; }
         public int Minimum { get; set; }
     }
 }

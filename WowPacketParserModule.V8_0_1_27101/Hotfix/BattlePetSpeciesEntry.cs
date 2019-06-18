@@ -8,7 +8,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     {
         public string Description { get; set; }
         public string SourceText { get; set; }
-        public int ID { get; set; }
+        public uint ID { get; set; }
         public int CreatureID { get; set; }
         public int SummonSpellID { get; set; }
         public int IconFileDataID { get; set; }

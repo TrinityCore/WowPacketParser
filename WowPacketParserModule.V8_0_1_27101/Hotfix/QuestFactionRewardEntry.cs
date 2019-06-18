@@ -7,6 +7,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     public class QuestFactionRewardEntry
     {
         [HotfixArray(10)]
-        public ushort[] Difficulty { get; set; }
+        public short[] Difficulty { get; set; }
     }
 }

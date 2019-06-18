@@ -8,7 +8,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     {
         public string Text { get; set; }
         public string Text1 { get; set; }
-        public int ID { get; set; }
+        public uint ID { get; set; }
         public byte LanguageID { get; set; }
         public int ConditionID { get; set; }
         public ushort EmotesID { get; set; }

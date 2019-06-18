@@ -7,7 +7,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     public class SpecializationSpellsEntry
     {
         public string Description { get; set; }
-        public int ID { get; set; }
+        public uint ID { get; set; }
         public ushort SpecID { get; set; }
         public int SpellID { get; set; }
         public int OverridesSpellID { get; set; }

@@ -6,7 +6,7 @@ namespace WowPacketParserModule.V8_1_0_28724.Hotfix
     [HotfixStructure(DB2Hash.SoundKit, ClientVersionBuild.V8_1_0_28724)]
     public class SoundKitEntry
     {
-        public int ID { get; set; }
+        public uint ID { get; set; }
         public int SoundType { get; set; }
         public float VolumeFloat { get; set; }
         public ushort Flags { get; set; }

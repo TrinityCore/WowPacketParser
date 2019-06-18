@@ -6,8 +6,10 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     [HotfixStructure(DB2Hash.GameObjectDisplayInfo, HasIndexInData = false)]
     public class GameObjectDisplayInfoEntry
     {
-        [HotfixArray(6)]
-        public float[] GeoBox { get; set; }
+        [HotfixArray(3, true)]
+        public float[] GeoBoxMin { get; set; }
+        [HotfixArray(3, true)]
+        public float[] GeoBoxMax { get; set; }
         public int FileDataID { get; set; }
         public short ObjectEffectPackageID { get; set; }
         public float OverrideLootEffectScale { get; set; }

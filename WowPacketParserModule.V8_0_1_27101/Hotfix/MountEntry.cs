@@ -9,7 +9,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public string Name { get; set; }
         public string SourceText { get; set; }
         public string Description { get; set; }
-        public int ID { get; set; }
+        public uint ID { get; set; }
         public ushort MountTypeID { get; set; }
         public ushort Flags { get; set; }
         public sbyte SourceTypeEnum { get; set; }

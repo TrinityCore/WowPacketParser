@@ -7,6 +7,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     public class ItemArmorQualityEntry
     {
         [HotfixArray(7)]
-        public float[] QualityMod { get; set; }
+        public float[] Qualitymod { get; set; }
     }
 }

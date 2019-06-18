@@ -8,7 +8,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     {
         public string DisplayName { get; set; }
         public string Description { get; set; }
-        public int ID { get; set; }
+        public uint ID { get; set; }
         public byte Type { get; set; }
         public float CostModifier { get; set; }
         public byte Race { get; set; }

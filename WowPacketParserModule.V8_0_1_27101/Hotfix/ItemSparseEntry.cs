@@ -6,7 +6,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     [HotfixStructure(DB2Hash.ItemSparse, HasIndexInData = false)]
     public class ItemSparseEntry
     {
-        public ulong AllowableRace { get; set; }
+        public long AllowableRace { get; set; }
         public string Description { get; set; }
         public string Display3 { get; set; }
         public string Display2 { get; set; }
@@ -30,14 +30,14 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public float PriceVariance { get; set; }
         public float PriceRandomValue { get; set; }
         [HotfixArray(4)]
-        public uint[] Flags { get; set; }
+        public int[] Flags { get; set; }
         public int FactionRelated { get; set; }
         public ushort ItemNameDescriptionID { get; set; }
         public ushort RequiredTransmogHoliday { get; set; }
         public ushort RequiredHoliday { get; set; }
         public ushort LimitCategory { get; set; }
         public ushort GemProperties { get; set; }
-        public ushort SocketMatchEnchantmentID { get; set; }
+        public ushort SocketMatchEnchantmentId { get; set; }
         public ushort TotemCategoryID { get; set; }
         public ushort InstanceBound { get; set; }
         public ushort ZoneBound { get; set; }

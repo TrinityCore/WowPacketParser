@@ -9,7 +9,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public string HordeSourceText { get; set; }
         public string AllianceSourceText { get; set; }
         public string TitleName { get; set; }
-        public int ID { get; set; }
+        public uint ID { get; set; }
         public byte GarrTypeID { get; set; }
         public byte GarrFollowerTypeID { get; set; }
         public int HordeCreatureID { get; set; }

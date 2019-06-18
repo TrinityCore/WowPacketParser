@@ -22,7 +22,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public float MinGear { get; set; }
         public byte GroupID { get; set; }
         public byte OrderIndex { get; set; }
-        public uint RequiredPlayerConditionID { get; set; }
+        public uint RequiredPlayerConditionId { get; set; }
         public byte TargetLevel { get; set; }
         public byte TargetLevelMin { get; set; }
         public ushort TargetLevelMax { get; set; }
@@ -39,6 +39,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public ushort MentorItemLevel { get; set; }
         public byte MentorCharLevel { get; set; }
         [HotfixArray(2)]
-        public uint[] Flags { get; set; }
+        public int[] Flags { get; set; }
     }
 }

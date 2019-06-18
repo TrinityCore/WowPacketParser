@@ -7,7 +7,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     public class UiMapEntry
     {
         public string Name { get; set; }
-        public int ID { get; set; }
+        public uint ID { get; set; }
         public int ParentUiMapID { get; set; }
         public int Flags { get; set; }
         public int System { get; set; }

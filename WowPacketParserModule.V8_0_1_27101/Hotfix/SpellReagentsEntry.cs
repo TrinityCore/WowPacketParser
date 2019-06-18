@@ -10,6 +10,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         [HotfixArray(8)]
         public int[] Reagent { get; set; }
         [HotfixArray(8)]
-        public ushort[] ReagentCount { get; set; }
+        public short[] ReagentCount { get; set; }
     }
 }

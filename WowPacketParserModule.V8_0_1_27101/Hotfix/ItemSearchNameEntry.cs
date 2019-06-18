@@ -6,9 +6,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     [HotfixStructure(DB2Hash.ItemSearchName)]
     public class ItemSearchNameEntry
     {
-        public ulong AllowableRace { get; set; }
+        public long AllowableRace { get; set; }
         public string Display { get; set; }
-        public int ID { get; set; }
+        public uint ID { get; set; }
         public byte OverallQualityID { get; set; }
         public byte ExpansionID { get; set; }
         public ushort MinFactionID { get; set; }
@@ -20,6 +20,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public uint RequiredAbility { get; set; }
         public ushort ItemLevel { get; set; }
         [HotfixArray(4)]
-        public uint[] Flags { get; set; }
+        public int[] Flags { get; set; }
     }
 }

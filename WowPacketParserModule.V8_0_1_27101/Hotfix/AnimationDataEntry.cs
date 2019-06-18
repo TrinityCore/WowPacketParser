@@ -10,6 +10,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public byte BehaviorTier { get; set; }
         public int Fallback { get; set; }
         [HotfixArray(2)]
-        public uint[] Flags { get; set; }
+        public int[] Flags { get; set; }
     }
 }

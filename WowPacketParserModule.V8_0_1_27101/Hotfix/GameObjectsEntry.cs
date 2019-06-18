@@ -7,11 +7,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     public class GameObjectsEntry
     {
         public string Name { get; set; }
-        [HotfixArray(3)]
+        [HotfixArray(3, true)]
         public float[] Pos { get; set; }
         [HotfixArray(4)]
         public float[] Rot { get; set; }
-        public int ID { get; set; }
+        public uint ID { get; set; }
         public ushort OwnerID { get; set; }
         public ushort DisplayID { get; set; }
         public float Scale { get; set; }

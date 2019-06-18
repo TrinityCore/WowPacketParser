@@ -12,7 +12,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public ushort Flags { get; set; }
         public byte SoundBank { get; set; }
         public uint SoundID { get; set; }
-        public int SpellID { get; set; }
+        public uint SpellID { get; set; }
         public float MaxDarkenDepth { get; set; }
         public float FogDarkenIntensity { get; set; }
         public float AmbDarkenIntensity { get; set; }
@@ -30,7 +30,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         [HotfixArray(18)]
         public float[] Float { get; set; }
         [HotfixArray(4)]
-        public int[] Int { get; set; }
+        public uint[] Int { get; set; }
         [HotfixArray(4)]
         public float[] Coefficient { get; set; }
     }

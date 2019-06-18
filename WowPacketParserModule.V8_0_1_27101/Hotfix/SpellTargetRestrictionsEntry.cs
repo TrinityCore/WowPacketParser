@@ -10,7 +10,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public float ConeDegrees { get; set; }
         public byte MaxTargets { get; set; }
         public uint MaxTargetLevel { get; set; }
-        public ushort TargetCreatureType { get; set; }
+        public short TargetCreatureType { get; set; }
         public int Targets { get; set; }
         public float Width { get; set; }
         public int SpellID { get; set; }

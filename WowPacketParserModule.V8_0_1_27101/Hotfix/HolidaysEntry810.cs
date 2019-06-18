@@ -6,7 +6,7 @@ namespace WowPacketParserModule.V8_1_0_28724.Hotfix
     [HotfixStructure(DB2Hash.Holidays, ClientVersionBuild.V8_1_0_28724)]
     public class HolidaysEntry
     {
-        public int ID { get; set; }
+        public uint ID { get; set; }
         public ushort Region { get; set; }
         public byte Looping { get; set; }
         public uint HolidayNameID { get; set; }
@@ -17,7 +17,7 @@ namespace WowPacketParserModule.V8_1_0_28724.Hotfix
         [HotfixArray(10)]
         public ushort[] Duration { get; set; }
         [HotfixArray(26)]
-        public int[] Date { get; set; }
+        public uint[] Date { get; set; }
         [HotfixArray(10)]
         public byte[] CalendarFlags { get; set; }
         [HotfixArray(3)]

@@ -7,7 +7,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     public class ArtifactAppearanceEntry
     {
         public string Name { get; set; }
-        public int ID { get; set; }
+        public uint ID { get; set; }
         public ushort ArtifactAppearanceSetID { get; set; }
         public byte DisplayIndex { get; set; }
         public uint UnlockPlayerConditionID { get; set; }

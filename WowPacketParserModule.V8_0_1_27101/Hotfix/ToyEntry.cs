@@ -7,7 +7,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     public class ToyEntry
     {
         public string SourceText { get; set; }
-        public int ID { get; set; }
+        public uint ID { get; set; }
         public int ItemID { get; set; }
         public byte Flags { get; set; }
         public sbyte SourceTypeEnum { get; set; }

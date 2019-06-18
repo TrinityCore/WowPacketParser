@@ -7,14 +7,14 @@ namespace WowPacketParserModule.V8_1_0_28724.Hotfix
     public class MapDifficultyEntry
     {
         public string Message { get; set; }
-        public uint ItemContextPickerID { get; set; }
-        public int ContentTuningID { get; set; }
-        public sbyte DifficultyID { get; set; }
+        public int DifficultyID { get; set; }
         public int LockID { get; set; }
-        public int ResetInterval { get; set; }
+        public sbyte ResetInterval { get; set; }
         public int MaxPlayers { get; set; }
         public int ItemContext { get; set; }
+        public int ItemContextPickerID { get; set; }
         public int Flags { get; set; }
-        public uint MapID { get; set; }
+        public int ContentTuningID { get; set; }
+        public int MapID { get; set; }
     }
 }

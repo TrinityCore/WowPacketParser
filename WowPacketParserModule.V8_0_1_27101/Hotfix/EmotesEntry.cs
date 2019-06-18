@@ -6,7 +6,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     [HotfixStructure(DB2Hash.Emotes, HasIndexInData = false)]
     public class EmotesEntry
     {
-        public ulong RaceMask { get; set; }
+        public long RaceMask { get; set; }
         public string EmoteSlashCommand { get; set; }
         public int AnimID { get; set; }
         public uint EmoteFlags { get; set; }

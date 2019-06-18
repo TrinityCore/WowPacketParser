@@ -6,8 +6,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
     [HotfixStructure(DB2Hash.SkillLineAbility)]
     public class SkillLineAbilityEntry
     {
-        public ulong RaceMask { get; set; }
-        public int ID { get; set; }
+        public long RaceMask { get; set; }
+        public uint ID { get; set; }
         public short SkillLine { get; set; }
         public int Spell { get; set; }
         public short MinSkillLineRank { get; set; }

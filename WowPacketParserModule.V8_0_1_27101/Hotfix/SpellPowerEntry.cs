@@ -10,9 +10,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public byte OrderIndex { get; set; }
         public int ManaCost { get; set; }
         public int ManaCostPerLevel { get; set; }
-        public uint ManaPerSecond { get; set; }
+        public int ManaPerSecond { get; set; }
         public uint PowerDisplayID { get; set; }
-        public uint AltPowerBarID { get; set; }
+        public int AltPowerBarID { get; set; }
         public float PowerCostPct { get; set; }
         public float PowerCostMaxPct { get; set; }
         public float PowerPctPerSecond { get; set; }

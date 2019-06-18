@@ -9,7 +9,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public string Description { get; set; }
         public string Title { get; set; }
         public ushort ScenarioID { get; set; }
-        public uint CriteriatreeID { get; set; }
+        public uint Criteriatreeid { get; set; }
         public ushort RewardQuestID { get; set; }
         public int RelatedStep { get; set; }
         public ushort Supersedes { get; set; }
