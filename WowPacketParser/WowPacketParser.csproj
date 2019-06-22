@@ -607,6 +607,7 @@
     <Compile Include="Store\Objects\CreatureTemplateLocale.cs" />
     <Compile Include="Store\Objects\CreatureTemplateScaling.cs" />
     <Compile Include="Store\Objects\CreatureText.cs" />
+    <Compile Include="Store\Objects\UpdateFields\LegacyImplementation\AreaTriggerData.cs" />
     <Compile Include="Store\Objects\UpdateFields\LegacyImplementation\ConversationData.cs" />
     <Compile Include="Store\Objects\UpdateFields\LegacyImplementation\UnitData.cs" />
     <Compile Include="Store\Objects\UpdateFields\LegacyImplementation\UpdateFieldExtensions.cs" />
