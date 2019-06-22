@@ -3535,11 +3535,12 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
         {
             var data = new ConversationData();
             data.Lines = new IConversationLine[packet.ReadUInt32()];
+            data.LastLineEndTime = packet.ReadInt32("LastLineEndTime", indexes);
+            data.Field_1C = packet.ReadUInt32("Field_1C", indexes);
             for (var i = 0; i < data.Lines.Length; ++i)
             {
                 data.Lines[i] = ReadCreateConversationLine(packet, flags, indexes, "Lines", i);
             }
-            data.LastLineEndTime = packet.ReadInt32("LastLineEndTime", indexes);
             data.Actors.Resize(packet.ReadUInt32());
             for (var i = 0; i < data.Actors.Count; ++i)
             {
@@ -3554,7 +3555,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             if (data == null)
                 data = new ConversationData();
             var rawChangesMask = new int[1];
-            rawChangesMask[0] = (int)packet.ReadBits(4);
+            rawChangesMask[0] = (int)packet.ReadBits(5);
             var changesMask = new BitArray(rawChangesMask);
 
             if (changesMask[0])
@@ -3592,6 +3593,10 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
                 if (changesMask[3])
                 {
                     data.LastLineEndTime = packet.ReadInt32("LastLineEndTime", indexes);
+                }
+                if (changesMask[4])
+                {
+                    data.Field_1C = packet.ReadUInt32("Field_1C", indexes);
                 }
             }
             return data;
