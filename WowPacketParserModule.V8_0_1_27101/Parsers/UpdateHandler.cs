@@ -190,7 +190,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                                 UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateCorpseData(fieldsData, flags, index);
                                 break;
                             case ObjectType.AreaTrigger:
-                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateAreaTriggerData(fieldsData, flags, index);
+                                (obj as SpellAreaTrigger).AreaTriggerData = UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateAreaTriggerData(fieldsData, flags, index);
                                 break;
                             case ObjectType.SceneObject:
                                 UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateSceneObjectData(fieldsData, flags, index);
