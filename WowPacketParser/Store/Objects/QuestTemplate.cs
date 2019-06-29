@@ -259,6 +259,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Expansion", TargetedDatabase.Legion)]
         public int? Expansion;
 
+        [DBFieldName("ManagedWorldStateID", TargetedDatabase.BattleForAzeroth)]
+        public int? ManagedWorldStateID;
+
         [DBFieldName("LogTitle", LocaleConstant.enUS)]
         public string LogTitle;
 

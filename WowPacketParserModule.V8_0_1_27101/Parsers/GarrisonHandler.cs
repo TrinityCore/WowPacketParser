@@ -64,7 +64,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 ReadGarrisonMissionOvermaxRewards(garrisonMissionOvermaxRewardsCount, packet, "MissionOvermaxRewards", i);
 
                 for (int j = 0; j < areaBonusCount; j++)
-                    V6_0_2_19033.Parsers.GarrisonHandler.ReadGarrisonMissionAreaBonus(packet, "MissionAreaBonus", i, j);
+                    V6_0_2_19033.Parsers.GarrisonHandler.ReadGarrisonMissionBonusAbility(packet, "MissionAreaBonus", i, j);
 
                 for (int j = 0; j < talentsCount; j++)
                     V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonTalents(packet, "Talents", i, j);

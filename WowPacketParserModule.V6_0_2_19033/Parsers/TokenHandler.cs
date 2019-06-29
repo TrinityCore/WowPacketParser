@@ -72,7 +72,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt64("CurrentMarketPrice");
             packet.ReadUInt32("UnkInt"); // send CMSG_REQUEST_WOW_TOKEN_MARKET_PRICE
             packet.ReadUInt32("Result");
-            packet.ReadUInt32("CurrentMarketPriceDuration");
+            packet.ReadUInt32("AuctionDuration");
         }
 
         [Parser(Opcode.CMSG_UPDATE_WOW_TOKEN_COUNT)]

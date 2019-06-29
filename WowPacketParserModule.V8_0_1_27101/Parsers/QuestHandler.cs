@@ -273,13 +273,13 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             quest.SoundTurnIn = (uint)packet.ReadInt32("CompleteSoundKitID");
             quest.AreaGroupID = (uint)packet.ReadInt32("AreaGroupID");
             quest.TimeAllowed = (uint)packet.ReadInt32("TimeAllowed");
-            uint cliQuestInfoObjective = packet.ReadUInt32("CliQuestInfoObjective");
+            uint objectiveCount = packet.ReadUInt32("ObjectiveCount");
             quest.AllowableRacesWod = packet.ReadUInt64("AllowableRaces");
             quest.QuestRewardID = packet.ReadInt32("TreasurePickerID");
             quest.Expansion = packet.ReadInt32("Expansion");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683))
-                packet.ReadInt32("Unk815");
+                quest.ManagedWorldStateID = packet.ReadInt32("ManagedWorldStateID");
 
             packet.ResetBitReader();
 
@@ -318,7 +318,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 questCompletionLogLen = packet.ReadBits(11);
             }
 
-            for (uint i = 0; i < cliQuestInfoObjective; ++i)
+            for (uint i = 0; i < objectiveCount; ++i)
             {
                 var objectiveId = packet.ReadEntry("Id", i);
 
@@ -610,6 +610,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             var responseCount = packet.ReadUInt32();
             packet.ReadPackedGuid128("SenderGUID");
             packet.ReadInt32("UiTextureKitID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
+                packet.ReadUInt32("SoundKitID");
             packet.ResetBitReader();
             var questionLength = packet.ReadBits(8);
             packet.ReadBit("CloseChoiceFrame");
@@ -628,20 +630,45 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadInt32("ChoiceArtFileID", indexes);
             packet.ReadInt32("Flags", indexes);
             packet.ReadUInt32("WidgetSetID", indexes);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683))
+            {
+                packet.ReadUInt32("UiTextureAtlasElementID");
+                packet.ReadUInt32("SoundKitID");
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V8_1_5_29683))
+                    packet.ReadUInt32("Unk801");
+            }
             packet.ReadByte("GroupID", indexes);
             packet.ResetBitReader();
             var answerLength = packet.ReadBits(9);
             var headerLength = packet.ReadBits(9);
+            var subHeaderLength = 0u;
+            var buttonTooltipLength = 0u;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
+            {
+                subHeaderLength = packet.ReadBits(7);
+                buttonTooltipLength = packet.ReadBits(9);
+            }
             var descriptionLength = packet.ReadBits(11);
             var confirmationTextLength = packet.ReadBits(7);
+            var hasRewardQuestID = false;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683))
+                hasRewardQuestID = packet.ReadBit();
             var hasReward = packet.ReadBit();
             if (hasReward)
                 ReadPlayerChoiceResponseReward(packet, "PlayerChoiceResponseReward", indexes);
 
             packet.ReadWoWString("Answer", answerLength, indexes);
             packet.ReadWoWString("Header", headerLength, indexes);
+            packet.ReadWoWString("SubHeader", subHeaderLength, indexes);
+            packet.ReadWoWString("ButtonTooltip", buttonTooltipLength, indexes);
             packet.ReadWoWString("Description", descriptionLength, indexes);
             packet.ReadWoWString("ConfirmationText", confirmationTextLength, indexes);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683))
+            {
+                if (hasRewardQuestID)
+                    packet.ReadUInt32("RewardQuestID");
+            }
         }
 
         public static void ReadPlayerChoiceResponseReward(Packet packet, params object[] indexes)
@@ -718,16 +745,20 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             packet.ReadBit("AutoLaunched");
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23826))
-            {
-                packet.ReadBit("CanIgnoreQuest");
-                packet.ReadBit("IsQuestIgnored");
-            }
-
             packet.ResetBitReader();
 
-            uint questTitleLen = packet.ReadBits(10);
-            uint completionTextLen = packet.ReadBits(12);
+            uint questTitleLen = 0;
+            uint completionTextLen = 0;
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V8_1_5_29683))
+            {
+                questTitleLen = packet.ReadBits(10);
+            }
+            else
+            {
+                questTitleLen = packet.ReadBits(9);
+            }
+            completionTextLen = packet.ReadBits(12);
 
             packet.ReadWoWString("QuestTitle", questTitleLen);
             questRequestItems.CompletionText = packet.ReadWoWString("CompletionText", completionTextLen);

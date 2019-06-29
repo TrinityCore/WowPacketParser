@@ -138,7 +138,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 for (uint i = 0; i < unlockedConditionalAppearanceCount; ++i)
                 {
                     packet.ReadUInt32("AchievementId", "UnlockedConditionalAppearance", i);
-                    packet.ReadUInt32("UnkUInt32_810", "UnlockedConditionalAppearance", i);
+                    packet.ReadUInt32("Unused", "UnlockedConditionalAppearance", i);
                 }
             }
 
@@ -227,11 +227,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadInt32E<Class>("ClassID");
             packet.ReadInt32("SpecializationID");
             packet.ReadInt32E<Gender>("Gender");
-            packet.ReadByte("UnkByte_0");
-            packet.ReadUInt16("UnkUint16_0");
-            packet.ReadUInt16("UnkUint16_1");
-            packet.ReadUInt32("UnkUint16_2");
-            packet.ReadUInt32("UnkUint16_3");
+            packet.ReadByte("LifetimeMaxRank");
+            packet.ReadUInt16("TodayHK");
+            packet.ReadUInt16("YesterdayHK");
+            packet.ReadUInt32("LifetimeHK");
+            packet.ReadUInt32("HonorLevel");
 
             for (int i = 0; i < glyphCount; i++)
                 packet.ReadUInt16("Glyphs", i);
@@ -248,19 +248,18 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             for (int i = 0; i < 6; i++)
             {
-                packet.ReadByte("UnkByte_1", i);
-                packet.ReadInt32("UnkInt32_0", i);
-                packet.ReadInt32("UnkInt32_1", i);
-                packet.ReadInt32("UnkInt32_2", i);
-                packet.ReadInt32("UnkInt32_3", i);
-                packet.ReadInt32("UnkInt32_4", i);
-                packet.ReadInt32("UnkInt32_5", i);
-                packet.ReadInt32("UnkInt32_6", i);
-                packet.ReadInt32("UnkInt32_7", i);
-                packet.ReadInt32("UnkInt32_8", i);
+                packet.ReadByte("Bracket", i);
+                packet.ReadInt32("Rating", i);
+                packet.ReadInt32("Rank", i);
+                packet.ReadInt32("WeeklyPlayed", i);
+                packet.ReadInt32("WeeklyWon", i);
+                packet.ReadInt32("SeasonPlayed", i);
+                packet.ReadInt32("SeasonWon", i);
+                packet.ReadInt32("WeeklyBestRating", i);
+                packet.ReadInt32("Unk710", i);
+                packet.ReadInt32("Unk801_1", i);
                 packet.ResetBitReader();
-                packet.ReadBit("UnkBool_0", i);
-                packet.ReadBit("UnkBool_1", i);
+                packet.ReadBit("Unk801_2", i);
             }
 
             if (hasGuildData)

@@ -55,7 +55,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadUInt16("SpecID", idx);
             packet.ReadUInt32("Unknown703", idx);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_25848))
-                packet.ReadUInt32("LastLoginBuild", idx);
+                packet.ReadUInt32("LastLoginVersion", idx);
             packet.ReadUInt32("Flags4", idx);
 
             packet.ResetBitReader();
@@ -149,7 +149,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             if (hasTemplateSet)
                 packet.ReadInt32("TemplateSetID");
         }
-        
+
         [Parser(Opcode.SMSG_LEVEL_UP_INFO)]
         public static void HandleLevelUpInfo(Packet packet)
         {
