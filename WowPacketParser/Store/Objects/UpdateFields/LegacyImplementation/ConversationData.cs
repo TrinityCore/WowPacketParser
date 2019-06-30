@@ -22,7 +22,7 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
             {
                 var lines = DynamicUpdateFields.GetValue<ConversationDynamicField, uint>(ConversationDynamicField.CONVERSATION_DYNAMIC_FIELD_LINES).ToArray();
                 var LineSize = 4;
-                var structuredLines = new IConversationLine[lines.Length + (LineSize - 1) / LineSize];
+                var structuredLines = new IConversationLine[lines.Length / LineSize];
                 for (var i = 0; i + LineSize <= lines.Length; i += LineSize)
                 {
                     var line = new Line();
@@ -48,6 +48,8 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
                 var field = new DynamicUpdateField<IConversationActor>();
                 var actors = DynamicUpdateFields.GetValue<ConversationDynamicField, uint>(ConversationDynamicField.CONVERSATION_DYNAMIC_FIELD_ACTORS).ToList();
                 var ActorSize = 6;
+                field.Resize((uint)(actors.Count / ActorSize));
+
                 for (var i = 0; i + ActorSize <= actors.Count; i += ActorSize)
                 {
                     var actor = new Actor();
