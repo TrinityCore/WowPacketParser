@@ -30,7 +30,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadUInt32("BpayStoreProductDeliveryDelay");
             packet.ReadUInt32("ClubsPresenceUpdateTimer");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
-                packet.ReadUInt32("UnkUInt_810");
+                packet.ReadUInt32("HiddenUIClubsPresenceUpdateTimer");
 
             packet.ResetBitReader();
             packet.ReadBit("VoiceEnabled");
@@ -59,6 +59,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadBit("ClubsEnabled");
             packet.ReadBit("ClubsBattleNetClubTypeAllowed");
             packet.ReadBit("ClubsCharacterClubTypeAllowed");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683))
+                packet.ReadBit("ClubsPresenceUpdateEnabled");
             packet.ReadBit("VoiceChatDisabledByParentalControl");
             packet.ReadBit("VoiceChatMutedByParentalControl");
 
@@ -227,32 +229,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_ACCOUNT_TOYS_UPDATE)]
-        public static void HandleAccountToysUpdate(Packet packet)
-        {
-            packet.ReadBit("IsFullUpdate");
-
-            var itemIdCount = packet.ReadUInt32("ToyItemIDsCount");
-            var isFavoriteCount = packet.ReadUInt32("ToyIsFavoriteCount");
-            uint isUnkCount = 0;
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683))
-                isUnkCount = packet.ReadUInt32("Unk");
-
-            for (int i = 0; i < itemIdCount; i++)
-                packet.ReadInt32("ToyItemID", i);
-
-            packet.ResetBitReader();
-
-            for (int i = 0; i < isFavoriteCount; i++)
-                packet.ReadBit("ToyIsFavorite", i);
-
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683))
-            {
-                for (int i = 0; i < isUnkCount; i++)
-                    packet.ReadBit("Unk", i);
-            }
-        }
-
         [Parser(Opcode.SMSG_MULTIPLE_PACKETS)]
         public static void HandleMultiplePackets(Packet packet)
         {
@@ -281,6 +257,49 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             }
             packet.WriteLine("}");
+        }
+
+        [Parser(Opcode.SMSG_SET_CURRENCY)]
+        public static void HandleSetCurrency(Packet packet)
+        {
+            packet.ReadInt32("Type");
+            packet.ReadInt32("Quantity");
+            packet.ReadUInt32("Flags");
+
+            var hasWeeklyQuantity = packet.ReadBit("HasWeeklyQuantity");
+            var hasTrackedQuantity = packet.ReadBit("HasTrackedQuantity");
+            var hasMaxQuantity = packet.ReadBit("HasMaxQuantity");
+            packet.ReadBit("SuppressChatLog");
+            var hasQuantityChange = false;
+            var hasQuantityGainSource = false;
+            var hasQuantityLostSource = false;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683))
+            {
+                hasQuantityChange = packet.ReadBit("HasQuantityChange");
+                hasQuantityGainSource = packet.ReadBit("HasQuantityGainSource");
+                hasQuantityLostSource = packet.ReadBit("HasQuantityLostSource");
+            }
+
+            if (hasWeeklyQuantity)
+                packet.ReadInt32("WeeklyQuantity");
+
+            if (hasTrackedQuantity)
+                packet.ReadInt32("TrackedQuantity");
+
+            if (hasMaxQuantity)
+                packet.ReadInt32("MaxQuantity");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683))
+            {
+                if (hasQuantityChange)
+                    packet.ReadInt32("QuantityChange");
+
+                if (hasQuantityGainSource)
+                    packet.ReadInt32("QuantityGainSource");
+
+                if (hasQuantityLostSource)
+                    packet.ReadInt32("QuantityLostSource");
+            }
         }
     }
 }

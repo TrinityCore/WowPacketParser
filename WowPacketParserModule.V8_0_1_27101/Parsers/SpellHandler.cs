@@ -138,9 +138,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             var hitTargetsCount = packet.ReadBits("HitTargetsCount", 16, idx);
             var missTargetsCount = packet.ReadBits("MissTargetsCount", 16, idx);
-            uint unkCount = 0;
+            uint hitStatusCount = 0;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
-                unkCount = packet.ReadBits("UnkCount810", 16, idx);
+                hitStatusCount = packet.ReadBits("HitStatusCount", 16, idx);
             var missStatusCount = packet.ReadBits("MissStatusCount", 16, idx);
             var remainingPowerCount = packet.ReadBits("RemainingPowerCount", 9, idx);
 
@@ -159,8 +159,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 packet.ReadPackedGuid128("MissTarget", idx, i);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
-                for (var i = 0; i < unkCount; ++i)
-                    packet.ReadByte("UnkByte810", idx, i);
+                for (var i = 0; i < hitStatusCount; ++i)
+                    packet.ReadByte("HitStatus", idx, i);
 
             for (var i = 0; i < remainingPowerCount; ++i)
                 V6_0_2_19033.Parsers.SpellHandler.ReadSpellPowerData(packet, idx, "RemainingPower", i);
@@ -316,20 +316,19 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         {
             packet.ReadPackedGuid128("Source");
             packet.ReadPackedGuid128("Target");
-            packet.ReadPackedGuid128("UnkGuid");
+            packet.ReadPackedGuid128("Transport");
 
             packet.ReadVector3("TargetPosition");
 
             packet.ReadInt32("SpellVisualID");
             packet.ReadSingle("TravelSpeed");
-
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
+                packet.ReadUInt16("HitReason");
             packet.ReadUInt16("MissReason");
             packet.ReadUInt16("ReflectStatus");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
-                packet.ReadUInt16("UnkUInt16_810");
 
-            packet.ReadSingle("Orientation");
-            packet.ReadSingle("UnkFloat");
+            packet.ReadSingle("LaunchDelay");
+            packet.ReadSingle("MinDuration");
 
             packet.ReadBit("SpeedAsTime");
         }
@@ -343,8 +342,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadPackedGuid128("Target");
             packet.ReadInt32("SpellVisualID");
             packet.ReadSingle("TravelSpeed");
-            packet.ReadSingle("UnkFloat");
-            packet.ReadSingle("801_UnkFloat");
+            packet.ReadSingle("LaunchDelay");
+            packet.ReadSingle("MinDuration");
             packet.ReadBit("SpeedAsTime");
         }
 

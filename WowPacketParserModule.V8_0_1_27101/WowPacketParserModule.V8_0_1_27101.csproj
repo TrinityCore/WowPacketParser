@@ -315,6 +315,7 @@
     <Compile Include="Parsers\HotfixHandler.cs" />
     <Compile Include="Parsers\InstanceHandler.cs" />
     <Compile Include="Parsers\ItemHandler.cs" />
+    <Compile Include="Parsers\LfgHandler.cs" />
     <Compile Include="Parsers\LootHandler.cs" />
     <Compile Include="Parsers\MiscellaneousHandler.cs" />
     <Compile Include="Parsers\MovementHandler.cs" />
@@ -325,6 +326,7 @@
     <Compile Include="Parsers\ScenarioHandler.cs" />
     <Compile Include="Parsers\SessionHandler.cs" />
     <Compile Include="Parsers\SpellHandler.cs" />
+    <Compile Include="Parsers\ToyHandler.cs" />
     <Compile Include="Parsers\UpdateFieldsHandler.cs" />
     <Compile Include="Parsers\VoiceChatHandler.cs" />
     <Compile Include="Parsers\UpdateHandler.cs" />
