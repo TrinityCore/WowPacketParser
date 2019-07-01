@@ -110,7 +110,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadUInt32E<QuestFlags>("Flags", i);
                 packet.ReadWoWString("Title", titleLen[i], i);
                 packet.ReadUInt32("Icon", i);
-                packet.ReadUInt32E<QuestFlags2>("Flags 2", i);
+                packet.ReadUInt32E<QuestFlagsEx>("Flags 2", i);
                 packet.ReadInt32("Level", i);
                 packet.ReadUInt32<QuestId>("Quest ID", i);
             }

@@ -316,7 +316,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadInt32("unk8");
             packet.ReadInt32("unk9");
             packet.ReadInt32("unk10");
-            packet.ReadUInt32E<QuestFlags2>("Quest Flags 2");
+            packet.ReadUInt32E<QuestFlagsEx>("Quest Flags 2");
             packet.ReadUInt32E<QuestFlags>("Quest Flags");
             packet.ReadInt32("unk13");
             packet.ReadInt32("unk14");

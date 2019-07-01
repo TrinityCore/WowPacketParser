@@ -100,7 +100,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             for (int i = 0; i < questgossips; i++)
             {
-                packet.ReadUInt32E<QuestFlags2>("Flags 2", i);
+                packet.ReadUInt32E<QuestFlagsEx>("Flags 2", i);
                 packet.ReadUInt32("Icon", i);
                 packet.ReadWoWString("Title", titleLen[i], i);
                 packet.ReadUInt32E<QuestFlags>("Flags", i);

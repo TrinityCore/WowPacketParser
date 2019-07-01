@@ -474,7 +474,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             }
 
             packet.ReadUInt32E<QuestFlags>("Quest Flags");
-            packet.ReadUInt32E<QuestFlags2>("Quest Flags2");
+            packet.ReadUInt32E<QuestFlagsEx>("Quest Flags2");
             packet.ReadUInt32("XPValue");
             packet.ReadUInt32("CharTitleId");
             packet.ReadUInt32("RewardChoiceItemId[2]");

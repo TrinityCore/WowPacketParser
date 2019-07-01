@@ -414,7 +414,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Level", i);
                 packet.ReadUInt32E<QuestFlags>("Flags", i);
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
-                    packet.ReadUInt32E<QuestFlags2>("Flags 2", i);
+                    packet.ReadUInt32E<QuestFlagsEx>("Flags 2", i);
 
                 packet.ReadBool("Change Icon", i);
                 packet.ReadCString("Title", i);
