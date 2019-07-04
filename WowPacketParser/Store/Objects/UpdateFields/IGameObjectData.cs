@@ -1,11 +1,12 @@
-﻿using WowPacketParser.Misc;
+﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 
 namespace WowPacketParser.Store.Objects.UpdateFields
 {
     public interface IGameObjectData
     {
         WowGuid CreatedBy { get; }
-        uint Flags { get; }
+        GameObjectFlag? Flags { get; }
         Quaternion ParentRotation { get; }
         int FactionTemplate { get; }
         sbyte State { get; }

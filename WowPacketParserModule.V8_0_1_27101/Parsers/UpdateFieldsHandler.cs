@@ -3007,7 +3007,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
             }
             data.CreatedBy = packet.ReadPackedGuid128("CreatedBy", indexes);
             data.GuildGUID = packet.ReadPackedGuid128("GuildGUID", indexes);
-            data.Flags = packet.ReadUInt32("Flags", indexes);
+            data.Flags = (GameObjectFlag)packet.ReadUInt32("Flags", indexes);
             data.ParentRotation = packet.ReadQuaternion("ParentRotation", indexes);
             data.FactionTemplate = packet.ReadInt32("FactionTemplate", indexes);
             data.Level = packet.ReadInt32("Level", indexes);
@@ -3099,7 +3099,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29495
                 }
                 if (changesMask[11])
                 {
-                    data.Flags = packet.ReadUInt32("Flags", indexes);
+                    data.Flags = (GameObjectFlag)packet.ReadUInt32("Flags", indexes);
                 }
                 if (changesMask[12])
                 {
