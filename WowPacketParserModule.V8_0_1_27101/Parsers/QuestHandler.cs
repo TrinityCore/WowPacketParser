@@ -208,8 +208,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             quest.StartItem = (uint)packet.ReadInt32("StartItem");
             quest.Flags = packet.ReadInt32E<QuestFlags>("Flags");
-            quest.FlagsEx = packet.ReadInt32E<QuestFlags2>("FlagsEx");
-            quest.FlagsEx2 = packet.ReadInt32E<QuestFlags3>("FlagsEx2");
+            quest.FlagsEx = packet.ReadInt32E<QuestFlagsEx>("FlagsEx");
+            quest.FlagsEx2 = packet.ReadInt32E<QuestFlagsEx2>("FlagsEx2");
 
             quest.RewardItem = new uint?[4];
             quest.RewardAmount = new uint?[4];

@@ -147,10 +147,10 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("SpecialFlags", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
         [DBFieldName("FlagsEx", TargetedDatabase.WarlordsOfDraenor)]
-        public QuestFlags2? FlagsEx;
+        public QuestFlagsEx? FlagsEx;
 
         [DBFieldName("FlagsEx2", TargetedDatabase.BattleForAzeroth)]
-        public QuestFlags3? FlagsEx2;
+        public QuestFlagsEx2? FlagsEx2;
 
         [DBFieldName("MinimapTargetMark", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
         public uint? MinimapTargetMark;

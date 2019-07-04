@@ -416,7 +416,7 @@ namespace WowPacketParser.Parsing.Parsers
             quest.RewardKillHonor = packet.ReadSingle("RewardKillHonor");
             quest.StartItem = packet.ReadUInt32<ItemId>("StartItem");
             quest.Flags = packet.ReadUInt32E<QuestFlags>("Flags");
-            quest.FlagsEx = packet.ReadUInt32E<QuestFlags2>("FlagsEx");
+            quest.FlagsEx = packet.ReadUInt32E<QuestFlagsEx>("FlagsEx");
             quest.MinimapTargetMark = packet.ReadUInt32("MinimapTargetMark"); // missing enum. 1- Skull, 16 - Unknown, but exists
             quest.RewardTitle = packet.ReadUInt32("RewardTitle");
             quest.RequiredPlayerKills = packet.ReadUInt32("RequiredPlayerKills");
@@ -719,7 +719,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("QuestTurn Portrait");
             packet.ReadByte("Unk Byte");
             packet.ReadUInt32E<QuestFlags>("Quest Flags");
-            packet.ReadUInt32E<QuestFlags2>("Quest Flags 2");
+            packet.ReadUInt32E<QuestFlagsEx>("Quest Flags 2");
             packet.ReadInt32("Unk Int32");
 
             var emoteCount = packet.ReadUInt32("Quest Emote Count");
@@ -769,7 +769,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Quest Level", i);
                 packet.ReadUInt32E<QuestFlags>("Quest Flags", i);
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
-                    packet.ReadUInt32E<QuestFlags2>("Quest Flags 2", i);
+                    packet.ReadUInt32E<QuestFlagsEx>("Quest Flags 2", i);
 
                 packet.ReadBool("Change icon", i);
                 packet.ReadCString("Title", i);
@@ -886,7 +886,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("QuestTurn Portrait");
             packet.ReadBool("Auto Accept");
             packet.ReadUInt32E<QuestFlags>("Quest Flags");
-            packet.ReadUInt32E<QuestFlags2>("Quest Flags 2");
+            packet.ReadUInt32E<QuestFlagsEx>("Quest Flags 2");
             packet.ReadUInt32("Suggested Players");
             packet.ReadByte("Unknown byte");
             packet.ReadBool("Starts at AreaTrigger");
@@ -1046,7 +1046,7 @@ namespace WowPacketParser.Parsing.Parsers
             requestItems.EmoteOnCompleteDelay = packet.ReadUInt32("Delay");
             packet.ReadUInt32("Close Window on Cancel");
             packet.ReadUInt32E<QuestFlags>("Quest Flags");
-            packet.ReadUInt32E<QuestFlags2>("Quest Flags 2");
+            packet.ReadUInt32E<QuestFlagsEx>("Quest Flags 2");
             packet.ReadUInt32("Suggested Players");
             packet.ReadUInt32("Money");
 

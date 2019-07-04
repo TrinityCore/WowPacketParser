@@ -95,7 +95,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             for (var i = 0; i < questgossips; ++i)
             {
-                packet.ReadUInt32E<QuestFlags2>("Flags 2", i);
+                packet.ReadUInt32E<QuestFlagsEx>("Flags 2", i);
                 packet.ReadUInt32<QuestId>("Quest ID", i);
                 packet.ReadInt32("Level", i);
                 packet.ReadUInt32("Icon", i);
