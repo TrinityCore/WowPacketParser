@@ -31,7 +31,7 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
             }
         }
 
-        public uint Flags => (uint)UpdateFields.GetEnum<GameObjectField, GameObjectFlag>(GameObjectField.GAMEOBJECT_FLAGS);
+        public uint Flags => UpdateFields.GetValue<GameObjectField, uint>(GameObjectField.GAMEOBJECT_FLAGS);
 
         public Quaternion ParentRotation
         {
