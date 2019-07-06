@@ -184,6 +184,19 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_LFG_LIST_APPLICATION_UPDATE)]
+        public static void HandleLfgListApplicationUpdate(Packet packet)
+        {
+            V6_0_2_19033.Parsers.LfgHandler.ReadCliRideTicket(packet, "ApplicationRideTicket");
+            V6_0_2_19033.Parsers.LfgHandler.ReadCliRideTicket(packet, "LFGListRideTicket");
+
+            packet.ReadInt32("Unk");
+            packet.ReadByte("ResultId");
+            packet.ReadByteE<LfgRoleFlag>("Role");
+            packet.ReadBitsE<LfgListApplicationStatus>("Status", 4);
+
+        }
+
         [Parser(Opcode.SMSG_LFG_LIST_SEARCH_RESULTS)]
         public static void HandleLfgListSearchResults(Packet packet)
         {
