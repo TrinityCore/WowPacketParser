@@ -266,5 +266,59 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (int i = 0; i < guidCount; i++)
                 packet.ReadPackedGuid128("UnkGUID", i); // PartyMember?
         }
+
+        [Parser(Opcode.SMSG_LFG_LIST_UPDATE_ENTRY)]
+        public static void HandleLfgListUpdateEntry(Packet packet)
+        {
+            var count = packet.ReadUInt32();
+
+            for (int i = 0; i < count; i++)
+            {
+                V6_0_2_19033.Parsers.LfgHandler.ReadCliRideTicket(packet, i, "Ticket");
+                packet.ReadUInt32("Unk2", i); // this is an increasing number, always +1 per update on this entry => UpdateNum?
+                var memberCount = packet.ReadUInt32();
+                for (int j = 0; j < memberCount; j++)
+                {
+                    packet.ReadByteE<Class>("Class", i, "Member", j);
+                    packet.ReadByteE<LfgRole>("Role", i, "Member", j);
+                }
+
+                packet.ResetBitReader();
+                var changeLeader = packet.ReadBit("ChangeLeader", i);
+                var changeVirtualRealmAddress = packet.ReadBit("ChangeVirtualRealmAddress", i);
+                var changeCompletedEncountersMask = packet.ReadBit("ChangeCompletedEncountersMask", i);
+                packet.ReadBit("Delisted", i);
+                packet.ReadBit("ChangeTitle", i);
+                var changeComment = packet.ReadBit("ChangeComment", i);
+                var changeVoice = packet.ReadBit("ChangeVoice", i);
+                var changeItemLevel = packet.ReadBit("ChangeItemLevel", i);
+                var changeUnk = false;
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_0_24920))
+                    changeUnk = packet.ReadBit("Unk5_730", i);
+                packet.ReadBit("ChangeAutoAccept", i);
+                packet.ReadBit("Unk3", i);
+                packet.ReadBit("Unk4", i);
+                packet.ReadBit("Unk5", i);
+
+                ReadLfgListJoinRequest(packet, i, "LFGListJoinRequest");
+                if (changeLeader)
+                    packet.ReadPackedGuid128("NewLeaderGUID", i);
+                if (changeVirtualRealmAddress)
+                    packet.ReadUInt32("NewVirtualRealmAddress", i);
+                if (changeCompletedEncountersMask)
+                    packet.ReadUInt32("CompletedEncountersMask", i);
+                if (changeComment)
+                    packet.ReadPackedGuid128("LeaderGUID", i);
+                if (changeVoice)
+                    packet.ReadPackedGuid128("LeaderGUID", i);
+                if (changeItemLevel)
+                    packet.ReadPackedGuid128("LeaderGUID", i);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_0_24920))
+                {
+                    if (changeUnk)
+                        packet.ReadPackedGuid128("UnkGuid_730");
+                }
+            }
+        }
     }
 }
