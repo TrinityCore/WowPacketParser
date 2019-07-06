@@ -14,4 +14,11 @@ namespace WowPacketParser.Enums
         Unk20  = 0x20,
         Unk40  = 0x40
     }
+
+    public enum LfgRole
+    {
+        Tank   = 0,
+        Healer = 1,
+        Damage = 2,
+    }
 }

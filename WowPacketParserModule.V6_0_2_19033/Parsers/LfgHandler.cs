@@ -497,6 +497,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 ReadLFGListBlacklistEntry(packet, i, "ListBlacklistEntry");
         }
 
+        [Parser(Opcode.CMSG_LFG_LIST_CANCEL_APPLICATION)]
+        public static void HandleLfgListCancelApplication(Packet packet)
+        {
+            ReadCliRideTicket(packet, "RideTicket");
+        }
+
         [Parser(Opcode.CMSG_SET_LFG_BONUS_FACTION_ID)]
         public static void HandleSetLFGBonusFactionID(Packet packet)
         {

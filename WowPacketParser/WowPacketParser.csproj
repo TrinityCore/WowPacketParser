@@ -232,6 +232,8 @@
     <Compile Include="Enums\GarrisonType.cs" />
     <Compile Include="Enums\ItemFieldFlags.cs" />
     <Compile Include="Enums\ItemModifier.cs" />
+    <Compile Include="Enums\LfgListFilter.cs" />
+    <Compile Include="Enums\LfgLockStatus.cs" />
     <Compile Include="Enums\LootError.cs" />
     <Compile Include="Enums\QuestFlagsEx.cs" />
     <Compile Include="Enums\QuestFlagsEx2.cs" />
