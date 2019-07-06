@@ -320,5 +320,44 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 }
             }
         }
+
+        [Parser(Opcode.SMSG_LFG_LIST_APPLICATION_LIST_UPDATE)]
+        public static void HandleLfgListApplicationListUpdate(Packet packet)
+        {
+            V6_0_2_19033.Parsers.LfgHandler.ReadCliRideTicket(packet, "LFGListRideTicket");
+            var applicationCount = packet.ReadUInt32();
+            packet.ReadUInt32("ResultId");
+
+            for (int i = 0; i < applicationCount; i++)
+            {
+                V6_0_2_19033.Parsers.LfgHandler.ReadCliRideTicket(packet, i, "ApplicationRideTicket");
+                packet.ReadPackedGuid128("UnkGuid", i);
+                var memberNum = packet.ReadUInt32();
+                for (int j = 0; j < memberNum; j++)
+                {
+                    packet.ReadPackedGuid128("UnkGuid", i, j);
+                    packet.ReadUInt32("VirtualRealmAddress", i, j);
+                    packet.ReadSingle("ItemLevel", i, j);
+                    packet.ReadUInt32("Level", i, j);
+                    packet.ReadInt32("Unk1", i, j);
+                    packet.ReadByteE<LfgRoleFlag>("Queued role", i, j);
+                    packet.ReadByteE<LfgRoleFlag>("Assigned role", i, j);
+
+                    var provingGroundRankNum = packet.ReadUInt32();
+                    for (int x = 0; x < provingGroundRankNum; x++)
+                    {
+                        packet.ReadUInt32("Criteria", i, j, x);
+                        packet.ReadUInt32("Achieved", i, j, x);
+                    }
+                }
+
+                packet.ResetBitReader();
+                packet.ReadBitsE<LfgListApplicationStatus>("Status", 4, i);
+                packet.ReadBit("Listed", i);
+                var len = packet.ReadBits(8);
+
+                packet.ReadWoWString("Comment", len);
+            }
+        }
     }
 }
