@@ -124,7 +124,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             ObjectName objectName = new ObjectName
             {
-                ObjectType = ObjectType.Unit,
+                ObjectType = StoreNameType.Unit,
                 ID = entry.Key,
                 Name = creature.Name
             };
