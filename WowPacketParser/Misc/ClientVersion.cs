@@ -274,6 +274,8 @@ namespace WowPacketParser.Misc
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_2_0_30898, new DateTime(2019, 06, 25, 16, 05, 18)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_2_0_30918, new DateTime(2019, 06, 25, 18, 48, 19)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_2_0_30920, new DateTime(2019, 06, 26, 0, 35, 18)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_2_0_30948, new DateTime(2019, 06, 27)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_2_0_30993, new DateTime(2019, 07, 02)),
         };
 
         private static ClientType _expansion;
@@ -554,6 +556,8 @@ namespace WowPacketParser.Misc
                     case ClientVersionBuild.V8_2_0_30898:
                     case ClientVersionBuild.V8_2_0_30918:
                     case ClientVersionBuild.V8_2_0_30920:
+                    case ClientVersionBuild.V8_2_0_30948:
+                    case ClientVersionBuild.V8_2_0_30993:
                         return ClientVersionBuild.V8_0_1_27101;
                     case ClientVersionBuild.BattleNetV37165:
                         return ClientVersionBuild.BattleNetV37165;
