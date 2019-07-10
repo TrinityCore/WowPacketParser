@@ -1188,6 +1188,7 @@ namespace WowPacketParser.Enums.Version.V7_2_5_24330
             {Opcode.SMSG_LFG_DISABLED, 0x2A34},
             {Opcode.SMSG_LFG_INSTANCE_SHUTDOWN_COUNTDOWN, 0x2A25},
             {Opcode.SMSG_LFG_JOIN_RESULT, 0x2A1C},
+            {Opcode.SMSG_LFG_LIST_APPLY_TO_GROUP_RESULT, 0x2A29},
             {Opcode.SMSG_LFG_LIST_JOIN_RESULT, 0x2A1D},
             {Opcode.SMSG_LFG_LIST_SEARCH_RESULTS, 0x2A1E},
             {Opcode.SMSG_LFG_LIST_SEARCH_STATUS, 0x2A1F},

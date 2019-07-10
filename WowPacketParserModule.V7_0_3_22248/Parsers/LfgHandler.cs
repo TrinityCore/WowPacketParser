@@ -146,6 +146,19 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             V6_0_2_19033.Parsers.LfgHandler.ReadCliRideTicket(packet, "ApplicationRideTicket");
         }
 
+        [Parser(Opcode.SMSG_LFG_LIST_APPLY_TO_GROUP_RESULT)]
+        public static void HandleLfgApplyForGroupResult(Packet packet)
+        {
+            V6_0_2_19033.Parsers.LfgHandler.ReadCliRideTicket(packet, "ApplicationRideTicket");
+            V6_0_2_19033.Parsers.LfgHandler.ReadCliRideTicket(packet, "LFGListRideTicket");
+
+            packet.ReadTime("RemainingTimeoutTime");
+            packet.ReadByte("ResultId");
+            packet.ReadByte("Unk1"); // always 0
+            ReadLfgListEntry(packet, "LFGListEntry");
+            packet.ReadBitsE<LfgListApplicationStatus>("Status", 4);
+        }
+
         [Parser(Opcode.CMSG_LFG_LIST_APPLY_TO_GROUP)]
         public static void HandleLfgListApplyToGroup(Packet packet)
         {
