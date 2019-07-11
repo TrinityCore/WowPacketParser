@@ -195,11 +195,21 @@ namespace WowPacketParser.SQL.Builders
                 {
                     row.CommentOut = true;
                     row.Comment += " - !!! might be temporary spawn !!!";
+                    if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_addon))
+                    {
+                        addonRow.CommentOut = true;
+                        addonRow.Comment += " - !!! might be temporary spawn !!!";
+                    }
                 }
                 else if (creature.IsOnTransport() && badTransport)
                 {
                     row.CommentOut = true;
                     row.Comment += " - !!! on transport - transport template not found !!!";
+                    if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_addon))
+                    {
+                        addonRow.CommentOut = true;
+                        addonRow.Comment += " - !!! on transport - transport template not found !!!";
+                    }
                 }
                 else
                     ++count;
@@ -365,16 +375,31 @@ namespace WowPacketParser.SQL.Builders
                 {
                     row.CommentOut = true;
                     row.Comment += " - !!! might be temporary spawn !!!";
+                    if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_addon))
+                    {
+                        addonRow.CommentOut = true;
+                        addonRow.Comment += " - !!! might be temporary spawn !!!";
+                    }
                 }
                 else if (go.IsTransport())
                 {
                     row.CommentOut = true;
                     row.Comment += " - !!! transport !!!";
+                    if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_addon))
+                    {
+                        addonRow.CommentOut = true;
+                        addonRow.Comment += " - !!! transport !!!";
+                    }
                 }
                 else if (go.IsOnTransport() && badTransport)
                 {
                     row.CommentOut = true;
                     row.Comment += " - !!! on transport - transport template not found !!!";
+                    if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_addon))
+                    {
+                        addonRow.CommentOut = true;
+                        addonRow.Comment += " - !!! on transport - transport template not found !!!";
+                    }
                 }
                 else
                     ++count;
