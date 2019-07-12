@@ -459,7 +459,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadWoWString("PortraitTurnInText", portraitTurnInTextLen);
             packet.ReadWoWString("PortraitTurnInName", portraitTurnInNameLen);
 
-            Storage.QuestDetails.Add(questDetails, packet.TimeSpan);
+            if (descEmotesCount > 0)
+                Storage.QuestDetails.Add(questDetails, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_REQUEST_ITEMS)]

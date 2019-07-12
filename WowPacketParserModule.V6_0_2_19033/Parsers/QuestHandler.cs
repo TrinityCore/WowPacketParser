@@ -424,21 +424,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             ReadQuestRewards(packet);
 
-            int int2584 = packet.ReadInt32("DescEmotesCount");
-            int int5876 = packet.ReadInt32("ObjectivesCount");
+            int descEmotesCount = packet.ReadInt32("DescEmotesCount");
+            int objectivesCount = packet.ReadInt32("ObjectivesCount");
 
             for (int i = 0; i < int5860; i++)
                 packet.ReadInt32("LearnSpells", i);
 
             questDetails.Emote = new uint?[] {0, 0, 0, 0};
             questDetails.EmoteDelay = new uint?[] {0, 0, 0, 0};
-            for (int i = 0; i < int2584; i++)
+            for (int i = 0; i < descEmotesCount; i++)
             {
                 questDetails.Emote[i] = (uint)packet.ReadInt32("Type", i);
                 questDetails.EmoteDelay[i] = packet.ReadUInt32("Delay", i);
             }
 
-            for (int i = 0; i < int5876; i++)
+            for (int i = 0; i < objectivesCount; i++)
             {
                 packet.ReadInt32("ObjectID", i);
                 packet.ReadInt32("ObjectID", i);
@@ -468,7 +468,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("PortraitTurnInText", bits4);
             packet.ReadWoWString("PortraitTurnInName", bits1532);
 
-            Storage.QuestDetails.Add(questDetails, packet.TimeSpan);
+            if (descEmotesCount > 0)
+                Storage.QuestDetails.Add(questDetails, packet.TimeSpan);
         }
 
         [Parser(Opcode.CMSG_QUEST_GIVER_STATUS_QUERY)]

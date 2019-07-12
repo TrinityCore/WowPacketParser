@@ -152,7 +152,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadWoWString("PortraitTurnInText", portraitTurnInTextLen);
             packet.ReadWoWString("PortraitTurnInName", portraitTurnInNameLen);
 
-            Storage.QuestDetails.Add(questDetails, packet.TimeSpan);
+            if (descEmotesCount > 0)
+                Storage.QuestDetails.Add(questDetails, packet.TimeSpan);
         }
 
         [HasSniffData]
