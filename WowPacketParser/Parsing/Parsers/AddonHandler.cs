@@ -63,22 +63,17 @@ namespace WowPacketParser.Parsing.Parsers
 
             for (var i = 0; i < _addonCount; i++)
             {
-                packet.ReadByte("Addon State", i);
-
-                var sendCrc = packet.ReadBool("Use CRC", i);
-
-                if (sendCrc)
+                packet.ReadByteE<SecureAddonStatus>("Status", i);
+                if (packet.ReadBool("InfoProvided", i))
                 {
-                    var usePublicKey = packet.ReadBool("Use Public Key", i);
+                    if (packet.ReadBool("KeyProvided", i))
+                        packet.ReadBytes("KeyData", 256);
 
-                    if (usePublicKey)
-                        packet.ReadBytes("Name MD5", 256);
-
-                    packet.ReadInt32("Unk Int32", i);
+                    packet.ReadInt32("Revision", i);
                 }
 
-                if (packet.ReadBool("Use URL File", i))
-                    packet.ReadCString("Addon URL File", i);
+                if (packet.ReadBool("UrlProvided", i))
+                    packet.ReadCString("Url", i);
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_8_9464))
