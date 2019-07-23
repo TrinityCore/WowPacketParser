@@ -19,10 +19,10 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerticeY")]
         public float? VerticeY;
 
-        [DBFieldName("VerticeTargetX")]
+        [DBFieldName("VerticeTargetX", false, false, true)]
         public float? VerticeTargetX;
 
-        [DBFieldName("VerticeTargetY")]
+        [DBFieldName("VerticeTargetY", false, false, true)]
         public float? VerticeTargetY;
 
         [DBFieldName("VerifiedBuild")]

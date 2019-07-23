@@ -235,8 +235,13 @@ namespace WowPacketParser.SQL
                     var i = 0;
                     foreach (var field in fields)
                     {
-                        if (values[i] is DBNull && field.Item2.FieldType == typeof(string))
-                            field.Item2.SetValue(instance, string.Empty);
+                        if (values[i] is DBNull)
+                        {
+                            if (field.Item2.FieldType == typeof(string))
+                                field.Item2.SetValue(instance, string.Empty);
+                            else if (field.Item3.Any(a => a.Nullable))
+                                field.Item2.SetValue(instance, null);
+                        }
                         else if (field.Item2.FieldType.BaseType == typeof(Enum))
                             field.Item2.SetValue(instance, Enum.Parse(field.Item2.FieldType, values[i].ToString()));
                         else if (field.Item2.FieldType.BaseType == typeof(Array))
@@ -264,7 +269,7 @@ namespace WowPacketParser.SQL
                             field.Item2.SetValue(instance,
                                 uType.IsEnum
                                     ? Enum.Parse(uType, values[i].ToString())
-                                    : Convert.ChangeType(values[i], Nullable.GetUnderlyingType(field.Item2.FieldType)));
+                                    : Convert.ChangeType(values[i], uType));
                         }
                         else
                             field.Item2.SetValue(instance, values[i]);
