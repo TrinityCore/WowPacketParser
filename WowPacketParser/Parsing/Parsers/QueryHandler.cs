@@ -74,7 +74,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             var objectName = new ObjectName
             {
-                ObjectType = ObjectType.Player,
+                ObjectType = StoreNameType.Player,
                 ID = (int)guid.GetLow(),
                 Name = name
             };
@@ -192,7 +192,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             ObjectName objectName = new ObjectName
             {
-                ObjectType = ObjectType.Unit,
+                ObjectType = StoreNameType.Unit,
                 ID = entry.Key,
                 Name = creature.Name
             };

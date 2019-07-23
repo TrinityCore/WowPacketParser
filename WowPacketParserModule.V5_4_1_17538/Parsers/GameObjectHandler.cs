@@ -57,7 +57,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
 
             ObjectName objectName = new ObjectName
             {
-                ObjectType = ObjectType.GameObject,
+                ObjectType = StoreNameType.GameObject,
                 ID = entry.Key,
                 Name = gameObject.Name
             };

@@ -7,7 +7,7 @@ namespace WowPacketParser.Store.Objects
     public sealed class ObjectName : IDataModel
     {
         [DBFieldName("ObjectType", true)]
-        public ObjectType? ObjectType;
+        public StoreNameType? ObjectType;
 
         [DBFieldName("Id", true)]
         public int? ID;
