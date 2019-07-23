@@ -1,7 +1,7 @@
-namespace WowPacketParser.Enums.Version.V4_1_0_14007
+namespace WowPacketParser.Enums.Version.V4_1_0_13914
 {
     // ReSharper disable InconsistentNaming
-    // 4.1.0.14007
+    // 4.1.0.13914
     public enum ObjectField
     {
         OBJECT_FIELD_GUID = 0x0000, // Size: 2, Type: LONG, Flags: PUBLIC
