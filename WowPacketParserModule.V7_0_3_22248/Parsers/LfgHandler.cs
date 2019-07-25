@@ -29,48 +29,52 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadWoWString("VoiceChat", lenVoiceChat, idx);
 
             if (hasQuest)
-                packet.ReadUInt32("QuestId", idx);
+                packet.ReadUInt32("QuestID", idx);
         }
 
-        public static void ReadLfgListEntry(Packet packet, params object[] idx)
+        public static void ReadLfgListSearchResultMemberInfo(Packet packet, params object[] idx)
+        {
+            packet.ReadByteE<Class>("Class", idx);
+            packet.ReadByteE<LfgRole>("Role", idx);
+        }
+
+        public static void ReadLfgListSearchResult(Packet packet, params object[] idx)
         {
             V6_0_2_19033.Parsers.LfgHandler.ReadCliRideTicket(packet, idx, "LFGListRideTicket");
 
-            packet.ReadUInt32("Unk1", idx);
+            packet.ReadUInt32("SequenceNum", idx);
 
-            packet.ReadPackedGuid128("LeaderGUID1", idx); // somehow these guids are always equivalent to leader?
-            packet.ReadPackedGuid128("LeaderGUID2", idx);
-            packet.ReadPackedGuid128("LeaderGUID3", idx);
-            packet.ReadPackedGuid128("LeaderGUID4", idx);
+            packet.ReadPackedGuid128("Leader", idx);
+            packet.ReadPackedGuid128("LastTouchedAny", idx);
+            packet.ReadPackedGuid128("LastTouchedName", idx);
+            packet.ReadPackedGuid128("LastTouchedComment", idx);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_0_24920))
-                packet.ReadPackedGuid128("UnkGuid_730", idx);
+                packet.ReadPackedGuid128("LastTouchedVoiceChat", idx);
 
             packet.ReadUInt32("VirtualRealmAddress", idx);
 
-            var unkCount1 = packet.ReadUInt32();
-            var unkCount2 = packet.ReadUInt32();
-            var unkCount3 = packet.ReadUInt32();
+            var bnetFriendCount = packet.ReadUInt32();
+            var characterFriendCount = packet.ReadUInt32();
+            var guildMateCount = packet.ReadUInt32();
             var memberCount = packet.ReadUInt32();
 
-            packet.ReadUInt32("Unk2", idx);
-            packet.ReadTime("CreatedTime", idx);
+            packet.ReadUInt32("CompletedEncountersMask", idx);
+            packet.ReadTime("CreationTime", idx);
             packet.ReadByte("Unk4", idx);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_25848))
-                packet.ReadPackedGuid128("UnkGuid_735", idx);
+                packet.ReadPackedGuid128("PartyGUID", idx);
 
-            for (int i = 0; i < unkCount1; i++)
-                packet.ReadPackedGuid128("UnkGuid1", idx, i);
-            for (int i = 0; i < unkCount2; i++)
-                packet.ReadPackedGuid128("UnkGuid2", idx, i);
-            for (int i = 0; i < unkCount3; i++)
-                packet.ReadPackedGuid128("UnkGuid3", idx, i);
+            for (int i = 0; i < bnetFriendCount; i++)
+                packet.ReadPackedGuid128("BNetFriends", idx, i);
+            for (int i = 0; i < characterFriendCount; i++)
+                packet.ReadPackedGuid128("CharacterFriends", idx, i);
+            for (int i = 0; i < guildMateCount; i++)
+                packet.ReadPackedGuid128("GuildMates", idx, i);
 
             for (int i = 0; i < memberCount; i++)
-            {
-                packet.ReadByteE<Class>("Class", idx, i);
-                packet.ReadByteE<LfgRole>("Role", idx, i);
-            }
+                ReadLfgListSearchResultMemberInfo(packet, "Members", idx, i);
+
             ReadLfgListJoinRequest(packet, idx, "LFGListJoinRequest");
         }
 
@@ -155,7 +159,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadTime("RemainingTimeoutTime");
             packet.ReadByte("ResultId");
             packet.ReadByte("Unk1"); // always 0
-            ReadLfgListEntry(packet, "LFGListEntry");
+            ReadLfgListSearchResult(packet, "LFGListEntry");
             packet.ReadBitsE<LfgListApplicationStatus>("Status", 4);
         }
 
@@ -184,7 +188,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_LFG_LIST_APPLICATION_UPDATE)]
+        [Parser(Opcode.SMSG_LFG_LIST_APPLICATION_STATUS_UPDATE)]
         public static void HandleLfgListApplicationUpdate(Packet packet)
         {
             V6_0_2_19033.Parsers.LfgHandler.ReadCliRideTicket(packet, "ApplicationRideTicket");
@@ -194,17 +198,16 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadByte("ResultId");
             packet.ReadByteE<LfgRoleFlag>("Role");
             packet.ReadBitsE<LfgListApplicationStatus>("Status", 4);
-
         }
 
         [Parser(Opcode.SMSG_LFG_LIST_SEARCH_RESULTS)]
         public static void HandleLfgListSearchResults(Packet packet)
         {
-            packet.ReadUInt16("TotalResults"); // this field and resultCount always have the same value
+            packet.ReadUInt16("TotalResults");
             var resultCount = packet.ReadUInt32();
 
             for (int j = 0; j < resultCount; j++)
-                ReadLfgListEntry(packet, "Entry", j);
+                ReadLfgListSearchResult(packet, "Entry", j);
         }
 
         [Parser(Opcode.SMSG_LFG_LIST_SEARCH_STATUS)]
@@ -225,7 +228,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_5_24330))
                 searchFilter = packet.ReadBits("SearchFilterNum", 5);
             else
-                searchFilter = packet.ReadBits("SearchFilterLength", 6);
+                searchFilter = packet.ReadBits("SearchFilterNum", 6);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_5_24330))
             {
@@ -267,87 +270,91 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadPackedGuid128("UnkGUID", i); // PartyMember?
         }
 
-        [Parser(Opcode.SMSG_LFG_LIST_UPDATE_ENTRY)]
-        public static void HandleLfgListUpdateEntry(Packet packet)
+        public static void ReadLfgListSearchResultPartialUpdate(Packet packet, params object[] idx)
+        {
+            V6_0_2_19033.Parsers.LfgHandler.ReadCliRideTicket(packet, idx, "Ticket");
+            packet.ReadUInt32("SequenceNum", idx);
+            var memberCount = packet.ReadUInt32();
+            for (int j = 0; j < memberCount; j++)
+                ReadLfgListSearchResultMemberInfo(packet, "Members", idx, j);
+
+            packet.ResetBitReader();
+            var hasLeader = packet.ReadBit("ChangeLeader", idx);
+            var hasVirtualRealmAddress = packet.ReadBit("ChangeVirtualRealmAddress", idx);
+            var hasCompletedEncountersMask = packet.ReadBit("ChangeCompletedEncountersMask", idx);
+            packet.ReadBit("Delisted", idx);
+            packet.ReadBit("ChangeTitle", idx);
+            var hasAny = packet.ReadBit();
+            var hasName = packet.ReadBit("ChangeName", idx);
+            var hasComment = packet.ReadBit("ChangeComment", idx);
+            var hasVoice = false;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_0_24920))
+                hasVoice = packet.ReadBit("ChangeVoice", idx);
+            var hasItemLevel = packet.ReadBit("ChangeItemLevel", idx);
+            packet.ReadBit("ChangeAutoAccept", idx);
+            packet.ReadBit("ChangeHonorLevel", idx);
+            packet.ReadBit("ChangePrivate", idx);
+
+            ReadLfgListJoinRequest(packet, idx, "LFGListJoinRequest");
+
+            if (hasLeader)
+                packet.ReadPackedGuid128("Leader", idx);
+
+            if (hasVirtualRealmAddress)
+                packet.ReadUInt32("VirtualRealmAddress", idx);
+
+            if (hasCompletedEncountersMask)
+                packet.ReadUInt32("CompletedEncountersMask", idx);
+
+            if (hasAny)
+                packet.ReadPackedGuid128("LastTouchedAny");
+
+            if (hasName)
+                packet.ReadPackedGuid128("LastTouchedName", idx);
+
+            if (hasComment)
+                packet.ReadPackedGuid128("LastTouchedComment", idx);
+
+            if (hasVoice)
+                packet.ReadPackedGuid128("LastTouchedVoiceChat", idx);
+        }
+
+        [Parser(Opcode.SMSG_LFG_LIST_SEARCH_RESULTS_UPDATE)]
+        public static void HandleLfgListSearchResultsUpdate(Packet packet)
         {
             var count = packet.ReadUInt32();
 
             for (int i = 0; i < count; i++)
+                ReadLfgListSearchResultPartialUpdate(packet, "LFGListSearchResultPartialUpdate", i);
+        }
+
+        [Parser(Opcode.SMSG_LFG_LIST_APPLICANT_LIST_UPDATE)]
+        public static void HandleLfgListApplicantListUpdate(Packet packet)
+        {
+            V6_0_2_19033.Parsers.LfgHandler.ReadCliRideTicket(packet, "Ticket");
+            var applicantCount = packet.ReadUInt32();
+            packet.ReadUInt32("Result");
+
+            for (int i = 0; i < applicantCount; i++)
             {
                 V6_0_2_19033.Parsers.LfgHandler.ReadCliRideTicket(packet, i, "Ticket");
-                packet.ReadUInt32("Unk2", i); // this is an increasing number, always +1 per update on this entry => UpdateNum?
+                packet.ReadPackedGuid128("Joiner", i);
                 var memberCount = packet.ReadUInt32();
                 for (int j = 0; j < memberCount; j++)
                 {
-                    packet.ReadByteE<Class>("Class", i, "Member", j);
-                    packet.ReadByteE<LfgRole>("Role", i, "Member", j);
-                }
-
-                packet.ResetBitReader();
-                var changeLeader = packet.ReadBit("ChangeLeader", i);
-                var changeVirtualRealmAddress = packet.ReadBit("ChangeVirtualRealmAddress", i);
-                var changeCompletedEncountersMask = packet.ReadBit("ChangeCompletedEncountersMask", i);
-                packet.ReadBit("Delisted", i);
-                packet.ReadBit("ChangeTitle", i);
-                var changeComment = packet.ReadBit("ChangeComment", i);
-                var changeVoice = packet.ReadBit("ChangeVoice", i);
-                var changeItemLevel = packet.ReadBit("ChangeItemLevel", i);
-                var changeUnk = false;
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_0_24920))
-                    changeUnk = packet.ReadBit("Unk5_730", i);
-                packet.ReadBit("ChangeAutoAccept", i);
-                packet.ReadBit("Unk3", i);
-                packet.ReadBit("Unk4", i);
-                packet.ReadBit("Unk5", i);
-
-                ReadLfgListJoinRequest(packet, i, "LFGListJoinRequest");
-                if (changeLeader)
-                    packet.ReadPackedGuid128("NewLeaderGUID", i);
-                if (changeVirtualRealmAddress)
-                    packet.ReadUInt32("NewVirtualRealmAddress", i);
-                if (changeCompletedEncountersMask)
-                    packet.ReadUInt32("CompletedEncountersMask", i);
-                if (changeComment)
-                    packet.ReadPackedGuid128("LeaderGUID", i);
-                if (changeVoice)
-                    packet.ReadPackedGuid128("LeaderGUID", i);
-                if (changeItemLevel)
-                    packet.ReadPackedGuid128("LeaderGUID", i);
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_0_24920))
-                {
-                    if (changeUnk)
-                        packet.ReadPackedGuid128("UnkGuid_730");
-                }
-            }
-        }
-
-        [Parser(Opcode.SMSG_LFG_LIST_APPLICATION_LIST_UPDATE)]
-        public static void HandleLfgListApplicationListUpdate(Packet packet)
-        {
-            V6_0_2_19033.Parsers.LfgHandler.ReadCliRideTicket(packet, "LFGListRideTicket");
-            var applicationCount = packet.ReadUInt32();
-            packet.ReadUInt32("ResultId");
-
-            for (int i = 0; i < applicationCount; i++)
-            {
-                V6_0_2_19033.Parsers.LfgHandler.ReadCliRideTicket(packet, i, "ApplicationRideTicket");
-                packet.ReadPackedGuid128("UnkGuid", i);
-                var memberNum = packet.ReadUInt32();
-                for (int j = 0; j < memberNum; j++)
-                {
-                    packet.ReadPackedGuid128("UnkGuid", i, j);
+                    packet.ReadPackedGuid128("Guid", i, j);
                     packet.ReadUInt32("VirtualRealmAddress", i, j);
                     packet.ReadSingle("ItemLevel", i, j);
                     packet.ReadUInt32("Level", i, j);
-                    packet.ReadInt32("Unk1", i, j);
+                    packet.ReadInt32("HonorLevel", i, j);
                     packet.ReadByteE<LfgRoleFlag>("Queued role", i, j);
                     packet.ReadByteE<LfgRoleFlag>("Assigned role", i, j);
 
                     var provingGroundRankNum = packet.ReadUInt32();
                     for (int x = 0; x < provingGroundRankNum; x++)
                     {
-                        packet.ReadUInt32("Criteria", i, j, x);
-                        packet.ReadUInt32("Achieved", i, j, x);
+                        packet.ReadUInt32("CriteriaID", i, j, x);
+                        packet.ReadUInt32("Quantity", i, j, x);
                     }
                 }
 
