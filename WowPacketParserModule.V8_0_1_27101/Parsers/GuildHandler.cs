@@ -175,14 +175,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         }
 
         [Parser(Opcode.SMSG_GUILD_EVENT_MOTD, ClientVersionBuild.V8_2_0_30898)]
-        public static void HandleEventMotd(Packet packet)
-        {
-            var motdLen = packet.ReadBits(11);
-            packet.ReadWoWString("MotdText", motdLen);
-        }
-
         [Parser(Opcode.CMSG_GUILD_UPDATE_MOTD_TEXT, ClientVersionBuild.V8_2_0_30898)]
-        public static void HandleGuildEventUpdateMotdText(Packet packet)
+        public static void HandleEventMotd(Packet packet)
         {
             var motdLen = packet.ReadBits(11);
             packet.ReadWoWString("MotdText", motdLen);
