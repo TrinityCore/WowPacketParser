@@ -13,7 +13,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadByteE<LfgRoleFlag>("Roles");
         }
 
-        public static void ReadPlayerData(Packet packet, params object[] idx)
+        public static void ReadPvPMatchPlayerStatistics(Packet packet, params object[] idx)
         {
             packet.ReadPackedGuid128("PlayerGUID", idx);
             packet.ReadUInt32("Kills", idx);
@@ -59,25 +59,41 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 packet.ReadInt32("MmrChange", idx);
         }
 
+        public static void ReadRatingData820(Packet packet, params object[] idx)
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                packet.ReadInt32("Prematch", i, idx);
+                packet.ReadInt32("Postmatch", i, idx);
+                packet.ReadInt32("PrematchMMR", i, idx);
+            }
+        }
+
         [Parser(Opcode.SMSG_PVP_LOG_DATA)]
         public static void HandlePvPLogData(Packet packet)
         {
             var hasRatings = packet.ReadBit("HasRatings");
-            var hasWinner = packet.ReadBit("HasWinner");
+            var hasWinner = false;
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V8_2_0_30898))
+                hasWinner = packet.ReadBit("HasWinner");
 
-            var playersCount = packet.ReadUInt32("PlayersCount");
-
+            var statisticsCount = packet.ReadUInt32();
             for (int i = 0; i < 2; i++)
                 packet.ReadByte("PlayerCount", i);
 
             if (hasRatings)
-                V6_0_2_19033.Parsers.BattlegroundHandler.ReadRatingData(packet, "Ratings");
+            {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_0_30898))
+                    ReadRatingData820(packet, "Ratings");
+                else
+                    V6_0_2_19033.Parsers.BattlegroundHandler.ReadRatingData(packet, "Ratings");
+            }
 
             if (hasWinner)
                 packet.ReadByte("Winner");
 
-            for (int i = 0; i < playersCount; i++)
-                ReadPlayerData(packet, "Players", i);
+            for (int i = 0; i < statisticsCount; i++)
+                ReadPvPMatchPlayerStatistics(packet, "Statistics", i);
         }
     }
 }

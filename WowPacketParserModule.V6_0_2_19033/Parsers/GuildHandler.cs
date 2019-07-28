@@ -67,7 +67,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_GUILD_EVENT_MOTD)]
         public static void HandleEventMotd(Packet packet)
         {
-            packet.ReadWoWString("MotdText", (int)packet.ReadBits(10));
+            var motdLen = packet.ReadBits(10);
+            packet.ReadWoWString("MotdText", motdLen);
+        }
+
+        [Parser(Opcode.CMSG_GUILD_UPDATE_MOTD_TEXT)]
+        public static void HandleGuildEventUpdateMotdText(Packet packet)
+        {
+            var motdLen = packet.ReadBits(10);
+            packet.ReadWoWString("MotdText", motdLen);
         }
 
         [Parser(Opcode.CMSG_GUILD_BANK_BUY_TAB)]
@@ -824,7 +832,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Member");
             packet.ReadInt32("SkillLineID");
             packet.ReadInt32("SkillRank");
-            packet.ReadInt32("SkillStep");      
+            packet.ReadInt32("SkillStep");
             for (int i = 0; i < 0x12C; i++)
                 packet.ReadByte("SkillLineBitArray", i);
         }
@@ -924,7 +932,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < count; ++i)
                 ReadLFGuildBrowseData(packet, "Post", i);
         }
-        
+
         [Parser(Opcode.CMSG_LF_GUILD_SET_GUILD_POST, ClientVersionBuild.V6_1_2_19802)]
         public static void HandleGuildFinderSetGuildPost612(Packet packet)
         {
@@ -939,7 +947,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_SAVE_GUILD_EMBLEM)]
-        public static void HandleSaveGuildEmblem(Packet packet) 
+        public static void HandleSaveGuildEmblem(Packet packet)
         {
             packet.ReadPackedGuid128("Vendor");
             packet.ReadUInt32("EColor");

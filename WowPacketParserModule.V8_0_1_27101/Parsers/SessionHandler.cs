@@ -36,5 +36,20 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 packet.ReadWoWString("RealmNameNormalized", bits258);
             }
         }
+
+        [Parser(Opcode.SMSG_BATTLENET_SET_SESSION_STATE, ClientVersionBuild.V8_2_0_30898)]
+        public static void HandleBattlenetSetSessionState(Packet packet)
+        {
+            packet.ReadBits("State", 2); // TODO: enum
+            packet.ReadBit("SuppressNotification");
+        }
+
+        [Parser(Opcode.SMSG_ENABLE_ENCRYPTION, ClientVersionBuild.V8_2_0_30898)]
+        public static void HandleEnableEncryption(Packet packet)
+        {
+            packet.ReadBytes("EncryptionKey (RSA encrypted)", 256);
+            packet.ResetBitReader();
+            packet.ReadBit("Enabled");
+        }
     }
 }

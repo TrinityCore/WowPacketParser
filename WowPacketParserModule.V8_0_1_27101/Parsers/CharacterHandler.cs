@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Enums;
+﻿using System;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -8,6 +9,93 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 {
     public static class CharacterHandler
     {
+        public static void ReadAzeriteEssenceData(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt32("Index", idx);
+            packet.ReadUInt32("AzeriteEssenceID", idx);
+            packet.ReadUInt32("Rank", idx);
+            packet.ResetBitReader();
+            packet.ReadBit("SlotUnlocked", idx);
+        }
+
+        public static void ReadInspectItemData(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("CreatorGUID", idx);
+            packet.ReadByte("Index", idx);
+
+            var azeritePowerCount = packet.ReadUInt32("AzeritePowersCount", idx);
+            uint azeriteEssenceCount = 0;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_0_30898))
+                azeriteEssenceCount = packet.ReadUInt32();
+
+            for (int j = 0; j < azeritePowerCount; j++)
+                packet.ReadInt32("AzeritePowerId", idx, j);
+
+            Substructures.ItemHandler.ReadItemInstance(packet, idx);
+
+            packet.ResetBitReader();
+            packet.ReadBit("Usable", idx);
+            var enchantsCount = packet.ReadBits("EnchantsCount", 4, idx);
+            var gemsCount = packet.ReadBits("GemsCount", 2, idx);
+
+            for (int i = 0; i < azeriteEssenceCount; i++)
+            {
+                ReadAzeriteEssenceData(packet, "AzeriteEssence", i);
+            }
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_0_30898))
+            {
+                for (int i = 0; i < enchantsCount; i++)
+                {
+                    packet.ReadUInt32("Id", idx, i);
+                    packet.ReadByte("Index", idx, i);
+                }
+
+                for (int i = 0; i < gemsCount; i++)
+                {
+                    packet.ReadByte("Slot", idx, i);
+                    Substructures.ItemHandler.ReadItemInstance(packet, idx, i);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < gemsCount; i++)
+                {
+                    packet.ReadByte("Slot", idx, i);
+                    Substructures.ItemHandler.ReadItemInstance(packet, idx, i);
+                }
+
+                for (int i = 0; i < enchantsCount; i++)
+                {
+                    packet.ReadUInt32("Id", idx, i);
+                    packet.ReadByte("Index", idx, i);
+                }
+            }
+        }
+
+        public static void ReadPlayerModelDisplayInfo(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("InspecteeGUID", idx);
+            packet.ReadInt32("SpecializationID", idx);
+            var itemCount = packet.ReadUInt32();
+            packet.ResetBitReader();
+            var nameLen = packet.ReadBits(6);
+            packet.ReadByteE<Gender>("GenderID", idx);
+            packet.ReadByte("Skin", idx);
+            packet.ReadByte("HairColor", idx);
+            packet.ReadByte("HairStyle", idx);
+            packet.ReadByte("FacialHairStyle", idx);
+            packet.ReadByte("Face", idx);
+            packet.ReadByteE<Race>("Race", idx);
+            packet.ReadByteE<Class>("ClassID", idx);
+            for (int i = 0; i < 3; i++)
+                packet.ReadByte("CustomDisplay", idx);
+            packet.ReadWoWString("Name", nameLen, idx);
+
+            for (int i = 0; i < itemCount; i++)
+                ReadInspectItemData(packet, idx, i);
+        }
+
         [Parser(Opcode.SMSG_QUERY_PLAYER_NAME_RESPONSE)]
         public static void HandleNameQueryResponse(Packet packet)
         {
@@ -177,32 +265,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             for (int i = 0; i < itemCount; i++)
             {
-                packet.ReadPackedGuid128("CreatorGUID", i);
-                packet.ReadByte("Index", i);
-
-                var azeritePowerCount = packet.ReadUInt32("AzeritePowersCount", i);
-
-                for (int j = 0; j < azeritePowerCount; j++)
-                    packet.ReadInt32("AzeritePowerId", i, j);
-
-                Substructures.ItemHandler.ReadItemInstance(packet, i);
-
-                packet.ResetBitReader();
-                packet.ReadBit("Usable", i);
-                var enchantsCount = packet.ReadBits("EnchantsCount", 4, i);
-                var gemsCount = packet.ReadBits("GemsCount", 2, i);
-
-                for (int j = 0; j < gemsCount; j++)
-                {
-                    packet.ReadByte("Slot", i, j);
-                    Substructures.ItemHandler.ReadItemInstance(packet, i, j);
-                }
-
-                for (int j = 0; j < enchantsCount; j++)
-                {
-                    packet.ReadUInt32("Id", i, j);
-                    packet.ReadByte("Index", i, j);
-                }
+                ReadInspectItemData(packet, "Item", i);
             }
 
             if (hasGuildData)
@@ -218,15 +281,29 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         [Parser(Opcode.SMSG_INSPECT_RESULT, ClientVersionBuild.V8_1_5_29683)]
         public static void HandleInspectResult815(Packet packet)
         {
-            packet.ReadPackedGuid128("InspecteeGUID");
-
-            var itemCount = packet.ReadUInt32("ItemsCount");
+            uint itemCount = 0;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_0_30898))
+            {
+                ReadPlayerModelDisplayInfo(packet, "DisplayInfo");
+            }
+            else
+            {
+                packet.ReadPackedGuid128("InspecteeGUID");
+                itemCount = packet.ReadUInt32("ItemsCount");
+            }
             var glyphCount = packet.ReadUInt32("GlyphsCount");
             var talentCount = packet.ReadUInt32("TalentsCount");
             var pvpTalentCount = packet.ReadUInt32("PvpTalentsCount");
-            packet.ReadInt32E<Class>("ClassID");
-            packet.ReadInt32("SpecializationID");
-            packet.ReadInt32E<Gender>("Gender");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_0_30898))
+            {
+                packet.ReadInt32("ItemLevel");
+            }
+            else
+            {
+                packet.ReadInt32E<Class>("ClassID");
+                packet.ReadInt32("SpecializationID");
+                packet.ReadInt32E<Gender>("Gender");
+            }
             packet.ReadByte("LifetimeMaxRank");
             packet.ReadUInt16("TodayHK");
             packet.ReadUInt16("YesterdayHK");
@@ -272,34 +349,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 packet.ReadInt32("AzeriteLevel");
 
             for (int i = 0; i < itemCount; i++)
-            {
-                packet.ReadPackedGuid128("CreatorGUID", i);
-                packet.ReadByte("Index", i);
-
-                var azeritePowerCount = packet.ReadUInt32("AzeritePowersCount", i);
-
-                for (int j = 0; j < azeritePowerCount; j++)
-                    packet.ReadInt32("AzeritePowerId", i, j);
-
-                Substructures.ItemHandler.ReadItemInstance(packet, i);
-
-                packet.ResetBitReader();
-                packet.ReadBit("Usable", i);
-                var enchantsCount = packet.ReadBits("EnchantsCount", 4, i);
-                var gemsCount = packet.ReadBits("GemsCount", 2, i);
-
-                for (int j = 0; j < gemsCount; j++)
-                {
-                    packet.ReadByte("Slot", i, j);
-                    Substructures.ItemHandler.ReadItemInstance(packet, i, j);
-                }
-
-                for (int j = 0; j < enchantsCount; j++)
-                {
-                    packet.ReadUInt32("Id", i, j);
-                    packet.ReadByte("Index", i, j);
-                }
-            }
+                ReadInspectItemData(packet, i);
         }
 
         [Parser(Opcode.CMSG_CREATE_CHARACTER)]

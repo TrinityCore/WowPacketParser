@@ -13,6 +13,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         }
 
         [Parser(Opcode.SMSG_ENABLE_ENCRYPTION)]
+        [Parser(Opcode.CMSG_ENABLE_ENCRYPTION_ACK)]
         public static void HandleSessionZero(Packet packet)
         {
         }

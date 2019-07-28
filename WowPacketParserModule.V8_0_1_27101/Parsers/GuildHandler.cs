@@ -50,8 +50,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             var int20 = packet.ReadUInt32("MemberDataCount");
 
             packet.ResetBitReader();
-            var bits2037 = packet.ReadBits(10);
-            var bits9 = packet.ReadBits(11);
+            uint welcomeTextLen = 0;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_0_30898))
+                welcomeTextLen = packet.ReadBits(11);
+            else
+                welcomeTextLen = packet.ReadBits(10);
+            var infoTextLen = packet.ReadBits(11);
 
             for (var i = 0; i < int20; ++i)
             {
@@ -80,20 +84,20 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
                 packet.ResetBitReader();
 
-                var bits36 = packet.ReadBits(6);
-                var bits92 = packet.ReadBits(8);
-                var bits221 = packet.ReadBits(8);
+                var nameLen = packet.ReadBits(6);
+                var noteLen = packet.ReadBits(8);
+                var officersNoteLen = packet.ReadBits(8);
 
                 packet.ReadBit("Authenticated", i);
                 packet.ReadBit("SorEligible", i);
 
-                packet.ReadWoWString("Name", bits36, i);
-                packet.ReadWoWString("Note", bits92, i);
-                packet.ReadWoWString("OfficerNote", bits221, i);
+                packet.ReadWoWString("Name", nameLen, i);
+                packet.ReadWoWString("Note", noteLen, i);
+                packet.ReadWoWString("OfficerNote", officersNoteLen, i);
             }
 
-            packet.ReadWoWString("WelcomeText", bits2037);
-            packet.ReadWoWString("InfoText", bits9);
+            packet.ReadWoWString("WelcomeText", welcomeTextLen);
+            packet.ReadWoWString("InfoText", infoTextLen);
         }
 
         [Parser(Opcode.SMSG_GUILD_BANK_QUERY_RESULTS, ClientVersionBuild.V7_2_0_23826)]
@@ -168,6 +172,20 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 for (int j = 0; j < achievementReqCount; j++)
                     packet.ReadInt32("AchievementsRequired", i, j);
             }
+        }
+
+        [Parser(Opcode.SMSG_GUILD_EVENT_MOTD, ClientVersionBuild.V8_2_0_30898)]
+        public static void HandleEventMotd(Packet packet)
+        {
+            var motdLen = packet.ReadBits(11);
+            packet.ReadWoWString("MotdText", motdLen);
+        }
+
+        [Parser(Opcode.CMSG_GUILD_UPDATE_MOTD_TEXT, ClientVersionBuild.V8_2_0_30898)]
+        public static void HandleGuildEventUpdateMotdText(Packet packet)
+        {
+            var motdLen = packet.ReadBits(11);
+            packet.ReadWoWString("MotdText", motdLen);
         }
     }
 }

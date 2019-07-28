@@ -56,8 +56,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
 
-            var bits28 = packet.ReadBits(10);
-            packet.ReadWoWString("Notes", bits28);
+            var notesLen = packet.ReadBits(10);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_0_30898))
+                packet.ReadBit("Mobile");
+            packet.ReadWoWString("Notes", notesLen);
         }
 
         public static void ReadContactInfo(Packet packet, params object[] index)
@@ -77,8 +79,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
 
-            var bits44 = packet.ReadBits(10);
-            packet.ReadWoWString("Notes", bits44, index);
+            var notesLen = packet.ReadBits(10);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_0_30898))
+                packet.ReadBit("Mobile");
+            packet.ReadWoWString("Notes", notesLen);
         }
 
         [Parser(Opcode.SMSG_CONTACT_LIST)]
