@@ -1,3 +1,4 @@
+using MySql.Data.MySqlClient.Memcached;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 
@@ -100,11 +101,19 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleLootResponse(Packet packet)
         {
             packet.ReadGuid("GUID");
-            var lootType = packet.ReadByteE<LootType>("Loot Type");
-            if (lootType == LootType.None)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595)) // might have been added before 4.3.4.15595
             {
-                packet.ReadByte("Slot");
-                return;
+                packet.ReadByteE<LootMethod>("LootMethod");
+                packet.ReadUInt32("Gold");
+            }
+            else
+            {
+                var lootType = packet.ReadByteE<LootType>("Loot Type");
+                if (lootType == LootType.None)
+                {
+                    packet.ReadByte("Slot");
+                    return;
+                }
             }
 
             var count = packet.ReadByte("Drop Count");
