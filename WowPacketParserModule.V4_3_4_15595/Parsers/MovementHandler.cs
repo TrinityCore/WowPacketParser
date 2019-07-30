@@ -7261,5 +7261,85 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.WriteGuid("Guid", guid);
             packet.AddValue("Position", pos);
         }
+
+        [Parser(Opcode.SMSG_MOVE_SET_WATER_WALK)]
+        public static void HandleMoveSetWaterWalk(Packet packet)
+        {
+            var guid = packet.StartBitStream(6, 1, 4, 2, 3, 7, 5, 0);
+            packet.ParseBitStream(guid, 0, 6, 3, 7, 4, 2, 5, 1);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_MOVE_SET_LAND_WALK)]
+        public static void HandleMoveSetLandWalk(Packet packet)
+        {
+            var guid = packet.StartBitStream(5, 0, 4, 6, 7, 2, 3, 1);
+            packet.ParseBitStream(guid, 5, 7, 3, 4, 1, 2, 0, 6);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_MOVE_SET_HOVERING)]
+        public static void HandleMoveSetHover(Packet packet)
+        {
+            var guid = packet.StartBitStream(3, 7, 0, 1, 4, 6, 2, 5);
+            packet.ParseBitStream(guid, 2, 4, 3, 1, 7, 0, 5, 6);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_MOVE_UNSET_HOVERING)]
+        public static void HandleMoveUnsetHover(Packet packet)
+        {
+            var guid = packet.StartBitStream(6, 7, 4, 0, 3, 1, 5, 2);
+            packet.ParseBitStream(guid, 4, 5, 3, 0, 2, 7, 6, 1);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_MOVE_SET_FEATHER_FALL)]
+        public static void HandleMoveSetFeatherFall(Packet packet)
+        {
+            var guid = packet.StartBitStream(3, 1, 7, 0, 4, 2, 5, 6);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadInt32("Movement Counter");
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 6);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_MOVE_SET_CAN_FLY)]
+        public static void HandleMoveSetCanFly(Packet packet)
+        {
+            var guid = packet.StartBitStream(1, 6, 5, 0, 7, 4, 2, 3);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadInt32("Movement Counter");
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 5);
+            packet.WriteGuid("Guid", guid);
+        }
+
+        [Parser(Opcode.SMSG_MOVE_UNSET_CAN_FLY)]
+        public static void HandleMoveUnsetCanFly(Packet packet)
+        {
+            var guid = packet.StartBitStream(1, 4, 2, 5, 0, 3, 6, 7);
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 6);
+            packet.ReadInt32("Movement Counter");
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 0);
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 7);
+            packet.WriteGuid("Guid", guid);
+        }
     }
 }
