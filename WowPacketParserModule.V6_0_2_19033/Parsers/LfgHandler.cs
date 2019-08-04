@@ -71,13 +71,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         public static void ReadLfgPlayerQuestReward(Packet packet, params object[] idx)
         {
-            packet.ReadInt32("Mask", idx);
+            packet.ReadUInt32("Mask", idx);
             packet.ReadInt32("RewardMoney", idx);
             packet.ReadInt32("RewardXP", idx);
 
-            var itemCount = packet.ReadInt32("ItemCount", idx);
-            var currencyCount = packet.ReadInt32("CurrencyCount", idx);
-            var bonusCurrencyCount = packet.ReadInt32("QuantityCount", idx);
+            var itemCount = packet.ReadUInt32("ItemCount", idx);
+            var currencyCount = packet.ReadUInt32("CurrencyCount", idx);
+            var bonusCurrencyCount = packet.ReadUInt32("BonusCurrency", idx);
 
             // Item
             for (var k = 0; k < itemCount; ++k)
@@ -117,7 +117,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (hasUnused1)
                 packet.ReadInt32("Unused1", idx);
             if (hasUnused2)
-                packet.ReadUInt64("Unused2", idx);
+            {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23706))
+                    packet.ReadUInt64("Unused2");
+                else
+                    packet.ReadInt32("Unused2", idx);
+            }
             if (hasHonor)
                 packet.ReadInt32("Honor", idx);
         }

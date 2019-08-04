@@ -150,5 +150,41 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadByte("NumBlackMarksOnOffender");
             packet.ReadByte("NumPlayersIHaveReported");
         }
+
+        [Parser(Opcode.SMSG_REQUEST_PVP_REWARDS_RESPONSE)]
+        public static void HandleRequestPVPRewardsResponse(Packet packet)
+        {
+            V6_0_2_19033.Parsers.LfgHandler.ReadLfgPlayerQuestReward(packet, "RandomBGRewards");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_1_0_22900))
+            {
+                packet.ResetBitReader();
+                packet.ReadBit("HasWonRatedBg10v10");
+                packet.ReadBit("HasWonArenaSkirmish");
+                packet.ReadBit("HasWonArena2v2");
+                packet.ReadBit("HasWonArena3v3");
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23706))
+                {
+                    packet.ReadBit("HasWonBrawlBG");
+                    packet.ReadBit("HasWonBrawlArena");
+                }
+            }
+            V6_0_2_19033.Parsers.LfgHandler.ReadLfgPlayerQuestReward(packet, "RatedBGRewards");
+            V6_0_2_19033.Parsers.LfgHandler.ReadLfgPlayerQuestReward(packet, "ArenaSkirmishRewards");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_1_0_22900))
+            {
+                V6_0_2_19033.Parsers.LfgHandler.ReadLfgPlayerQuestReward(packet, "Arena2v2Rewards");
+                V6_0_2_19033.Parsers.LfgHandler.ReadLfgPlayerQuestReward(packet, "Arena3v3Rewards");
+            }
+            else
+                V6_0_2_19033.Parsers.LfgHandler.ReadLfgPlayerQuestReward(packet, "ArenaRewards");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23706))
+            {
+                V6_0_2_19033.Parsers.LfgHandler.ReadLfgPlayerQuestReward(packet, "BrawlBGRewards");
+                V6_0_2_19033.Parsers.LfgHandler.ReadLfgPlayerQuestReward(packet, "BrawlArenaRewards");
+            }
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_0_1_27101))
+                V6_0_2_19033.Parsers.LfgHandler.ReadLfgPlayerQuestReward(packet, "EpicBGRewards");
+        }
     }
 }
