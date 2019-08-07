@@ -50,7 +50,7 @@ namespace WowPacketParser.Store.Objects
                     actor.Guid = actors[i].ActorGUID;
                 else if (actor.Type == (uint)ActorType.CreatureActor)
                 {
-                    actor.Id = actors[i].CreatureID;
+                    actor.Id = actors[i].Id;
                     actor.CreatureId = actors[i].CreatureID;
                     actor.CreatureModelId = actors[i].CreatureDisplayInfoID;
 
