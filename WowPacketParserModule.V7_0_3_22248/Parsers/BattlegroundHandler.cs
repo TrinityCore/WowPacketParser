@@ -186,5 +186,31 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_0_1_27101))
                 V6_0_2_19033.Parsers.LfgHandler.ReadLfgPlayerQuestReward(packet, "EpicBGRewards");
         }
+
+        [Parser(Opcode.SMSG_RATED_BATTLEFIELD_INFO)]
+        public static void HandleRatedBattlefieldInfo(Packet packet)
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                packet.ReadInt32("Rating", i);
+                packet.ReadInt32("Ranking", i);
+                packet.ReadInt32("SeasonPlayed", i);
+                packet.ReadInt32("SeasonWon", i);
+                packet.ReadInt32("UnkPlayed", i); // equal to SeasonPlayed
+                packet.ReadInt32("UnkWon", i); // equal to SeasonWon
+                packet.ReadInt32("WeeklyPlayed", i);
+                packet.ReadInt32("WeeklyWon", i);
+                packet.ReadInt32("WeeklyBestRating", i);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_1_0_22900))
+                    packet.ReadInt32("LastWeeksBestRating", i);
+                packet.ReadInt32("SeasonBestRating", i);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_0_1_27101))
+                {
+                    packet.ReadInt32("PvpTier", i);
+                    packet.ResetBitReader();
+                    packet.ReadBit("UnkBit_801", i); // unused?
+                }
+            }
+        }
     }
 }
