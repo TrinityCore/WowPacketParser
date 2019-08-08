@@ -824,5 +824,21 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32<QuestId>("Quest ID");
             packet.ReadUInt16("Count");
         }
+
+        [Parser(Opcode.SMSG_QUEST_SPAWN_TRACKING_UPDATE)]
+        public static void HandleQuestSpawnTrackingUpdate(Packet packet)
+        {
+            var count = packet.ReadUInt32();
+
+            for (var i = 0; i < count; i++)
+            {
+                packet.ReadInt32("SpawnTrackingID", i);
+                packet.ReadInt32("QuestObjectID", i);
+
+                packet.ResetBitReader();
+
+                packet.ReadBit("Visible", i);
+            }
+        }
     }
 }
