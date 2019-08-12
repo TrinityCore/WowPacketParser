@@ -104,5 +104,26 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ResetBitReader();
             packet.ReadBit("Active");
         }
+
+        [Parser(Opcode.CMSG_BATTLEMASTER_JOIN_SKIRMISH)]
+        public static void HandleBattlemasterJoinSkirmish(Packet packet)
+        {
+            packet.ReadByteE<LfgRoleFlag>("Roles");
+            packet.ReadByte("Bracket");
+            packet.ResetBitReader();
+            packet.ReadBit("IsRequeue");
+        }
+
+        [Parser(Opcode.SMSG_MAP_OBJECTIVE_ADD)]
+        public static void HandleMapObjectiveAdd(Packet packet)
+        {
+            V6_0_2_19033.Parsers.BattlegroundHandler.ReadBattlegroundCapturePointInfo(packet, "CapturePointInfo");
+        }
+
+        [Parser(Opcode.SMSG_MAP_OBJECTIVE_REMOVE)]
+        public static void HandleMapObjectiveRemove(Packet packet)
+        {
+            packet.ReadPackedGuid128("ObjectiveGuid");
+        }
     }
 }
