@@ -21,6 +21,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadPackedGuid128("ItemGUID");
         }
 
+        [Parser(Opcode.SMSG_AZERITE_EMPOWERED_ITEM_RESPEC_OPEN)]
+        public static void HandleAzeriteEmpoweredItemRespecOpen(Packet packet)
+        {
+            packet.ReadPackedGuid128("ReforgerGUID");
+        }
+
         [Parser(Opcode.SMSG_ITEM_PUSH_RESULT)]
         public static void HandleItemPushResult(Packet packet)
         {
