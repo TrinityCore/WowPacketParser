@@ -80,10 +80,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadInt32("ShipmentRecID", indexes);
             packet.ReadInt64("ShipmentID", indexes);
-            packet.ReadInt64("Unk2", indexes);
+            packet.ReadInt64("AssignedFollowerDbID", indexes);
             packet.ReadTime("CreationTime", indexes);
             packet.ReadInt32("ShipmentDuration", indexes);
-            packet.ReadInt32("Unk8", indexes);
+            packet.ReadInt32("BuildingType", indexes);
         }
         public static void ReadGarrisonMissionBonusAbility(Packet packet, params object[] indexes)
         {
