@@ -95,5 +95,14 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             for (int i = 0; i < statisticsCount; i++)
                 ReadPvPMatchPlayerStatistics(packet, "Statistics", i);
         }
+
+        [Parser(Opcode.SMSG_REQUEST_PVP_BRAWL_INFO_RESPONSE)]
+        public static void HandleRequestPVPBrawlInfoResponse(Packet packet)
+        {
+            packet.ReadInt32("PvpBrawlID");
+            packet.ReadInt32("TimeToBrawl");
+            packet.ResetBitReader();
+            packet.ReadBit("Active");
+        }
     }
 }
