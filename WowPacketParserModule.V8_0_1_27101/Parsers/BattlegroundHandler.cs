@@ -105,7 +105,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadBit("Active");
         }
 
-        [Parser(Opcode.CMSG_BATTLEMASTER_JOIN_SKIRMISH)]
+        [Parser(Opcode.CMSG_BATTLEMASTER_JOIN_SKIRMISH, ClientVersionBuild.V8_1_0_28724)]
         public static void HandleBattlemasterJoinSkirmish(Packet packet)
         {
             packet.ReadByteE<LfgRoleFlag>("Roles");

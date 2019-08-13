@@ -239,5 +239,15 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadWoWString("Type", typeLen);
             packet.ReadWoWString("Objective", objectiveLen);
         }
+
+        [Parser(Opcode.CMSG_BATTLEMASTER_JOIN_SKIRMISH)]
+        public static void HandleBattlemasterJoinSkirmish(Packet packet)
+        {
+            packet.ResetBitReader();
+            packet.ReadBit("JoinAsGroup");
+            packet.ReadBit("IsRequeue");
+            packet.ReadByteE<LfgRoleFlag>("Roles");
+            packet.ReadByte("Bracket");
+        }
     }
 }
