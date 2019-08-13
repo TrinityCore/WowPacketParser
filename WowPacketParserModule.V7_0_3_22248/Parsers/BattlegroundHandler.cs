@@ -6,6 +6,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
     public static class BattlegroundHandler
     {
+        [Parser(Opcode.CMSG_REQUEST_PVP_BRAWL_INFO)]
+        public static void HandleBattlegroundZero(Packet packet)
+        {
+        }
+
         [Parser(Opcode.CMSG_BATTLEMASTER_JOIN_ARENA)]
         public static void HandleBattlemasterJoinArena(Packet packet)
         {
@@ -211,6 +216,28 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     packet.ReadBit("UnkBit_801", i); // unused?
                 }
             }
+        }
+
+        [Parser(Opcode.CMSG_BATTLEMASTER_JOIN_BRAWL)]
+        public static void HandleBattlemasterBrawl(Packet packet)
+        {
+            packet.ReadByteE<LfgRoleFlag>("Roles");
+        }
+
+        [Parser(Opcode.SMSG_REQUEST_PVP_BRAWL_INFO_RESPONSE)]
+        public static void HandleRequestPVPBrawlInfoResponse(Packet packet)
+        {
+            packet.ReadInt32("TimeToBrawl");
+            packet.ReadInt32("BattlegroundID");
+            packet.ReadInt32("LFGDungeonID");
+            packet.ResetBitReader();
+            packet.ReadBit("Active");
+            var titleLen = packet.ReadBits(9);
+            var typeLen = packet.ReadBits(10);
+            var objectiveLen = packet.ReadBits(14);
+            packet.ReadWoWString("Title", titleLen);
+            packet.ReadWoWString("Type", typeLen);
+            packet.ReadWoWString("Objective", objectiveLen);
         }
     }
 }
