@@ -6,12 +6,10 @@ namespace WowPacketParser.Enums
     public enum SplineFlag422 : uint
     {
         None             = 0x00000000,
-        Forward          = 0x00000001,
-        Backward         = 0x00000002,
-        StrafeLeft       = 0x00000004,
-        Straferight      = 0x00000008,
-        TurnLeft         = 0x00000010,
-        TurnRight        = 0x00000020,
+        AnimTierSwim     = 0x00000001,
+        AnimTierHover    = 0x00000002,
+        AnimTierFly      = 0x00000003,
+        AnimTierSubmerged= 0x00000004,
         Falling          = 0x00000040,
         NoSpline         = 0x00000080,
         Trajectory       = 0x00000100,

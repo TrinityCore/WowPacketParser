@@ -6,6 +6,10 @@ namespace WowPacketParser.Enums
     public enum SplineFlag434 : uint
     {
         None                = 0x00000000,
+        AnimTierSwim        = 0x00000001,
+        AnimTierHover       = 0x00000002,
+        AnimTierFly         = 0x00000003,
+        AnimTierSubmerged   = 0x00000004,
         Unknown1            = 0x00000010,           // NOT VERIFIED
         Done                = 0x00000020,
         Falling             = 0x00000040,           // Affects elevation computation, can't be combined with Parabolic flag

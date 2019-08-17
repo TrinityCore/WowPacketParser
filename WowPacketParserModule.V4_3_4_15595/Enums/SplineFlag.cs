@@ -6,6 +6,10 @@ namespace WowPacketParserModule.V4_3_4_15595.Enums
     public enum SplineFlag : uint
     {
         None                = 0x00000000,
+        AnimTierSwim        = 0x00000001,
+        AnimTierHover       = 0x00000002,
+        AnimTierFly         = 0x00000003,
+        AnimTierSubmerged   = 0x00000004,
         Unknown0            = 0x00000008,           // NOT VERIFIED
         FallingSlow         = 0x00000010,
         Done                = 0x00000020,
