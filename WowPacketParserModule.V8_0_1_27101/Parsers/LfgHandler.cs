@@ -69,26 +69,27 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         {
             packet.ReadByte("PartyIndex");
             packet.ReadByteE<LfgRoleCheckStatus>("RoleCheckStatus");
-            var joinSlotsCount = packet.ReadInt32("JoinSlotsCount");
+            var joinSlotsCount = packet.ReadUInt32("JoinSlotsCount");
             var bgQueueIdsCount = 0u;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
                 bgQueueIdsCount = packet.ReadUInt32("BgQueueIDCount");
             else
                 packet.ReadUInt64("BgQueueID");
-            packet.ReadInt32("ActivityID"); // NC
-            var membersCount = packet.ReadInt32("MembersCount");
+            packet.ReadInt32("GroupFinderActivityID");
+            var membersCount = packet.ReadUInt32("MembersCount");
 
-            for (var i = 0; i < joinSlotsCount; ++i) // JoinSlots
+            for (var i = 0; i < joinSlotsCount; ++i)
                 packet.ReadUInt32("JoinSlot", i);
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
+            for (var i = 0; i < bgQueueIdsCount; i++)
                 packet.ReadUInt64("BgQueueID");
 
-            for (var i = 0; i < membersCount; ++i) // Members
-                V6_0_2_19033.Parsers.LfgHandler.ReadLFGRoleCheckUpdateMember(packet, i);
-
+            packet.ResetBitReader();
             packet.ReadBit("IsBeginning");
-            packet.ReadBit("ShowRoleCheck"); // NC
+            packet.ReadBit("ShowRoleCheck");
+
+            for (var i = 0; i < membersCount; ++i)
+                V6_0_2_19033.Parsers.LfgHandler.ReadLFGRoleCheckUpdateMember(packet, i, "Members");
         }
 
         [Parser(Opcode.SMSG_LFG_PLAYER_REWARD)]
