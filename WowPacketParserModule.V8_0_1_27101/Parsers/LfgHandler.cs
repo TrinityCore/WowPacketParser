@@ -8,6 +8,19 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 {
     public static class LfgHandler
     {
+        public static void ReadLFGPlayerRewards801(Packet packet, params object[] indexes)
+        {
+            packet.ResetBitReader();
+            var hasRewardItem = packet.ReadBit();
+            var hasRewardCurrency = packet.ReadBit();
+            if (hasRewardItem)
+                Substructures.ItemHandler.ReadItemInstance(packet, indexes);
+            packet.ReadUInt32("Quantity", indexes);
+            packet.ReadInt32("BonusQuantity", indexes);
+            if (hasRewardCurrency)
+                packet.ReadInt32("RewardCurrency", indexes);
+        }
+
         [Parser(Opcode.SMSG_LFG_JOIN_RESULT)]
         public static void HandleLfgJoinResult(Packet packet)
         {
@@ -76,6 +89,19 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             packet.ReadBit("IsBeginning");
             packet.ReadBit("ShowRoleCheck"); // NC
+        }
+
+        [Parser(Opcode.SMSG_LFG_PLAYER_REWARD)]
+        public static void HandleLfgPlayerReward(Packet packet)
+        {
+            packet.ReadUInt32("QueuedSlot");
+            packet.ReadUInt32("ActualSlot");
+            packet.ReadInt32("RewardMoney");
+            packet.ReadInt32("AddedXP");
+
+            var count = packet.ReadInt32("RewardsCount");
+            for (var i = 0; i < count; ++i)
+                ReadLFGPlayerRewards801(packet, i, "LFGPlayerRewards");
         }
     }
 }
