@@ -447,28 +447,31 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         [Parser(Opcode.SMSG_GUILD_BANK_QUERY_RESULTS)]
         public static void HandleGuildBankList434(Packet packet)
         {
-            packet.ReadBit("Unk");
-            var count = packet.ReadBits("Item count", 20);
-            var count2 = packet.ReadBits("Tab count", 22);
+            packet.ReadBit("FullUpdate");
+            var count = packet.ReadBits("GuildBankItemInfoCount", 20);
+            var count2 = packet.ReadBits("GuildBankTabInfoCount", 22);
 
             var icons = new uint[count2];
             var texts = new uint[count2];
             var enchants = new uint[count];
 
             for (var i = 0; i < count; ++i)
-                enchants[i] = packet.ReadBits(24); // Number of Enchantments ?
+            {
+                packet.ReadBit("Locked", i);
+                enchants[i] = packet.ReadBits("GuildBankSocketEnchantCount", 23, i);
+            }
 
             for (var i = 0; i < count2; ++i)
             {
-                icons[i] = packet.ReadBits(9);
-                texts[i] = packet.ReadBits(7);
+                icons[i] = packet.ReadBits(9); // IconLength
+                texts[i] = packet.ReadBits(7); // NameLength
             }
 
             for (var i = 0; i < count2; ++i)
             {
                 packet.ReadWoWString("Icon", icons[i], i);
-                packet.ReadUInt32("Index", i);
-                packet.ReadWoWString("Text", texts[i], i);
+                packet.ReadUInt32("TabIndex", i);
+                packet.ReadWoWString("Name", texts[i], i);
             }
 
             packet.ReadUInt64("Money");
@@ -477,22 +480,22 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             {
                 for (var j = 0; j < enchants[i]; ++j)
                 {
-                    packet.ReadUInt32("Enchantment Slot Id?", i, j);
-                    packet.ReadUInt32("Enchantment Id?", i, j);
+                    packet.ReadUInt32("SocketIndex", i, "GuildBankSocketEnchant", j);
+                    packet.ReadUInt32("SocketEnchantID", i, "GuildBankSocketEnchant", j);
                 }
-                packet.ReadUInt32("Unk UInt32 1", i); // Only seen 0
-                packet.ReadUInt32("Unk UInt32 2", i); // Only seen 0
-                packet.ReadUInt32("Unk UInt32 3", i); // Only seen 0
-                packet.ReadUInt32("Stack Count", i);
-                packet.ReadUInt32("Slot Id", i);
-                packet.ReadUInt32E<UnknownFlags>("Unk mask", i);
-                packet.ReadInt32<ItemId>("Item Entry", i);
-                packet.ReadInt32("Random Item Property Id", i);
-                packet.ReadUInt32("Spell Charges", i);
-                packet.ReadUInt32("Item Suffix Factor", i);
+                packet.ReadUInt32("EnchantmentID", i);
+                packet.ReadUInt32("ReforgeEnchantmentID", i);
+                packet.ReadUInt32("OnUseEnchantmentID", i);
+                packet.ReadUInt32("Count", i);
+                packet.ReadUInt32("Slot", i);
+                packet.ReadUInt32E<UnknownFlags>("Flags", i);
+                packet.ReadUInt32<ItemId>("ItemID", i);
+                packet.ReadUInt32("RandomPropertiesID", i);
+                packet.ReadUInt32("Charges", i);
+                packet.ReadUInt32("RandomPropertiesSeed", i);
             }
             packet.ReadUInt32("Tab");
-            packet.ReadInt32("Remaining Withdraw");
+            packet.ReadInt32("WithdrawalsRemaining");
         }
 
         [Parser(Opcode.CMSG_GUILD_REQUEST_MAX_DAILY_XP)]
