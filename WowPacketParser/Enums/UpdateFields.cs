@@ -1000,6 +1000,7 @@ namespace WowPacketParser.Enums
     {
         [UpdateField(UpdateFieldType.Bytes)]
         DYNAMICOBJECT_BYTES,
+        [UpdateField(UpdateFieldType.Guid)]
         DYNAMICOBJECT_CASTER,
         DYNAMICOBJECT_CASTTIME,
         DYNAMICOBJECT_END,
