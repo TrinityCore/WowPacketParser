@@ -32,6 +32,7 @@ namespace WowPacketParser.Enums
         ITEM_FIELD_CONTAINED,
         ITEM_FIELD_CONTEXT,
         ITEM_FIELD_CREATE_PLAYED_TIME,
+        [UpdateField(UpdateFieldType.Guid)]
         ITEM_FIELD_CREATOR,
         ITEM_FIELD_DURABILITY,
         ITEM_FIELD_DURATION,
@@ -71,6 +72,7 @@ namespace WowPacketParser.Enums
         ITEM_FIELD_ITEM_TEXT_ID,
         ITEM_FIELD_MAXDURABILITY,
         ITEM_FIELD_MODIFIERS_MASK,
+        [UpdateField(UpdateFieldType.Guid)]
         ITEM_FIELD_OWNER,
         ITEM_FIELD_PAD,
         ITEM_FIELD_PROPERTY_SEED,
@@ -1000,6 +1002,7 @@ namespace WowPacketParser.Enums
     {
         [UpdateField(UpdateFieldType.Bytes)]
         DYNAMICOBJECT_BYTES,
+        [UpdateField(UpdateFieldType.Guid)]
         DYNAMICOBJECT_CASTER,
         DYNAMICOBJECT_CASTTIME,
         DYNAMICOBJECT_END,
