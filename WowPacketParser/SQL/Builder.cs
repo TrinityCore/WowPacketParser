@@ -117,7 +117,10 @@ namespace WowPacketParser.SQL
                                Settings.TargetedDatabase == TargetedDatabase.Legion)
                               ||
                               (ClientVersion.Expansion == ClientType.BattleForAzeroth &&
-                               Settings.TargetedDatabase == TargetedDatabase.BattleForAzeroth)))
+                               Settings.TargetedDatabase == TargetedDatabase.BattleForAzeroth)
+                              ||
+                              (ClientVersion.Expansion == ClientType.Classic &&
+                               Settings.TargetedDatabase == TargetedDatabase.Classic)))
                         {
                             Trace.WriteLine(
                                 $"{i}/{builderMethods.Count} - Error: Couldn't generate SQL output of {method.Name} since the targeted database and the sniff version don't match.");

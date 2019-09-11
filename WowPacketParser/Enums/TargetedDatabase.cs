@@ -9,6 +9,8 @@ namespace WowPacketParser.Enums
         Cataclysm           = 2,
         WarlordsOfDraenor   = 3,
         Legion              = 4,
-        BattleForAzeroth    = 5
+        BattleForAzeroth    = 5,
+
+        Classic             = -1
     }
 }

@@ -9,6 +9,7 @@ namespace WowPacketParser.Enums
         MistsOfPandaria    = 4,
         WarlordsOfDraenor  = 5,
         Legion             = 6,
-        BattleForAzeroth   = 7
+        BattleForAzeroth   = 7,
+        Classic            = 7,
     }
 }
