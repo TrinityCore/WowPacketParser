@@ -279,6 +279,8 @@ namespace WowPacketParser.Misc
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_2_0_31229, new DateTime(2019, 07, 25)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_2_0_31429, new DateTime(2019, 08, 08)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_2_0_31478, new DateTime(2019, 08, 16)),
+
+            // no classic info, pkt contain build in header
         };
 
         private static ClientType _expansion;
@@ -565,6 +567,13 @@ namespace WowPacketParser.Misc
                     case ClientVersionBuild.V8_2_0_31429:
                     case ClientVersionBuild.V8_2_0_31478:
                         return ClientVersionBuild.V8_0_1_27101;
+                    //Classic
+                    case ClientVersionBuild.V1_13_2_31446:
+                    case ClientVersionBuild.V1_13_2_31650:
+                    case ClientVersionBuild.V1_13_2_31687:
+                    case ClientVersionBuild.V1_13_2_31727:
+                    case ClientVersionBuild.V1_13_2_31830:
+                        return ClientVersionBuild.V1_13_2_31446;
                     case ClientVersionBuild.BattleNetV37165:
                         return ClientVersionBuild.BattleNetV37165;
                     case ClientVersionBuild.Zero:
@@ -579,6 +588,8 @@ namespace WowPacketParser.Misc
         {
             switch (definingbuild)
             {
+                case ClientVersionBuild.V1_13_2_31446:
+                    return ClientVersionBuild.V8_0_1_27101;
                 case ClientVersionBuild.V7_0_3_22248:
                     return ClientVersionBuild.V6_0_2_19033;
                 case ClientVersionBuild.V8_0_1_27101:
@@ -596,6 +607,8 @@ namespace WowPacketParser.Misc
 
         private static ClientType GetExpansion(ClientVersionBuild build)
         {
+            if (IsClassicClientVersionBuild(build))
+                return ClientType.Classic;
             if (build >= ClientVersionBuild.V8_0_1_27101)
                 return ClientType.BattleForAzeroth;
             if (build >= ClientVersionBuild.V7_0_3_22248)
@@ -704,6 +717,23 @@ namespace WowPacketParser.Misc
         public static bool IsUndefined()
         {
             return Build == ClientVersionBuild.Zero;
+        }
+
+        public static bool IsClassicClientVersionBuild(ClientVersionBuild build)
+        {
+            switch (build)
+            {
+                case ClientVersionBuild.V1_13_2_31446:
+                case ClientVersionBuild.V1_13_2_31650:
+                case ClientVersionBuild.V1_13_2_31687:
+                case ClientVersionBuild.V1_13_2_31727:
+                case ClientVersionBuild.V1_13_2_31830:
+                {
+                    return true;
+                }
+                default:
+                    return false;
+            }
         }
     }
 }

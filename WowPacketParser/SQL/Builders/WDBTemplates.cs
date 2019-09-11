@@ -66,17 +66,31 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template))
                 return string.Empty;
 
-            if (Storage.CreatureTemplates.IsEmpty())
-                return string.Empty;
-
-            foreach (var creatureTemplate in Storage.CreatureTemplates)
+            if (!Storage.CreatureTemplates.IsEmpty() && Settings.TargetedDatabase != TargetedDatabase.Classic)
             {
-                if (creatureTemplate.Item1.FemaleName == null)
-                    creatureTemplate.Item1.FemaleName = string.Empty;
+                foreach (var creatureTemplate in Storage.CreatureTemplates)
+                {
+                    if (creatureTemplate.Item1.FemaleName == null)
+                        creatureTemplate.Item1.FemaleName = string.Empty;
+                }
+
+                var templatesDb = SQLDatabase.Get(Storage.CreatureTemplates);
+                return SQLUtil.Compare(Storage.CreatureTemplates, templatesDb, StoreNameType.Unit);
             }
 
-            var templatesDb = SQLDatabase.Get(Storage.CreatureTemplates);
-            return SQLUtil.Compare(Storage.CreatureTemplates, templatesDb, StoreNameType.Unit);
+            if (!Storage.CreatureTemplatesClassic.IsEmpty() && Settings.TargetedDatabase == TargetedDatabase.Classic)
+            {
+                foreach (var creatureTemplate in Storage.CreatureTemplatesClassic)
+                {
+                    if (creatureTemplate.Item1.FemaleName == null)
+                        creatureTemplate.Item1.FemaleName = string.Empty;
+                }
+
+                var templatesDb = SQLDatabase.Get(Storage.CreatureTemplatesClassic);
+                return SQLUtil.Compare(Storage.CreatureTemplatesClassic, templatesDb, StoreNameType.Unit);
+            }
+
+            return string.Empty;
         }
 
         [BuilderMethod(true)]

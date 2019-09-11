@@ -160,4 +160,74 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("VerifiedBuild", TargetedDatabase.WarlordsOfDraenor)]
         public int? VerifiedBuild = ClientVersion.BuildInt;
     }
+
+    [DBTableName("creature_template")]
+    public sealed class CreatureTemplateClassic : IDataModel
+    {
+        [DBFieldName("entry", true)]
+        public uint? Entry;
+
+        [DBFieldName("KillCredit", 2)]
+        public uint?[] KillCredits;
+
+        [DBFieldName("name")]
+        public string Name;
+
+        [DBFieldName("femaleName")]
+        public string FemaleName;
+
+        [DBFieldName("subname", nullable: true)]
+        public string SubName;
+
+        [DBFieldName("TitleAlt", nullable: true)]
+        public string TitleAlt;
+
+        [DBFieldName("IconName", nullable: true)]
+        public string IconName;
+
+        [DBFieldName("HealthScalingExpansion")]
+        public ClientType? HealthScalingExpansion;
+
+        [DBFieldName("RequiredExpansion")]
+        public ClientType? RequiredExpansion;
+
+        [DBFieldName("VignetteID")]
+        public uint? VignetteID;
+
+        [DBFieldName("unit_class")]
+        public uint? UnitClass;
+
+        [DBFieldName("rank")]
+        public CreatureRank? Rank;
+
+        [DBFieldName("family")]
+        public CreatureFamily? Family;
+
+        [DBFieldName("type")]
+        public CreatureType? Type;
+
+        [DBFieldName("type_flags")]
+        public CreatureTypeFlag? TypeFlags;
+
+        [DBFieldName("type_flags2")]
+        public uint? TypeFlags2;
+
+        [DBFieldName("PetSpellDataId")]
+        public uint? PetSpellDataID;
+
+        [DBFieldName("HealthModifier")]
+        public float? HealthModifier;
+
+        [DBFieldName("ManaModifier")]
+        public float? ManaModifier;
+
+        [DBFieldName("RacialLeader")]
+        public bool? RacialLeader;
+
+        [DBFieldName("movementId")]
+        public uint? MovementID;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
 }
