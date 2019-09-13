@@ -69,7 +69,7 @@ namespace WowPacketParserModule.Substructures
 
         public static int ReadItemInstance(Packet packet, params object[] indexes)
         {
-            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V8_1_5_29683))
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V8_1_5_29683) || ClientVersion.IsClassicClientVersionBuild(ClientVersion.Build))
                 return ReadItemInstance602(packet, indexes);
             return ReadItemInstance815(packet, indexes);
         }
