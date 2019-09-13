@@ -12,5 +12,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadByte("Result");
             V6_0_2_19033.Parsers.PetHandler.ReadPetRenameData(packet);
         }
+
+        [Parser(Opcode.CMSG_PET_CANCEL_AURA)]
+        public static void HandlePetCancelAura(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
+            packet.ReadInt32<SpellId>("SpellID");
+        }
     }
 }
