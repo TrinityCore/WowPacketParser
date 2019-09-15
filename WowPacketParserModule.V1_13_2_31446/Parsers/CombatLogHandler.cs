@@ -90,5 +90,44 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
 
             ReadAttackRoundInfo(packet, "AttackRoundInfo");
         }
+
+        [Parser(Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG)]
+        public static void HandleSpellNonMeleeDmgLog(Packet packet)
+        {
+            packet.ReadPackedGuid128("Me");
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadPackedGuid128("CastID");
+
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32("SpellXSpellVisualID");
+            packet.ReadInt32("Damage");
+            packet.ReadInt32("OriginalDamage");
+            packet.ReadInt32("OverKill");
+
+            packet.ReadByte("SchoolMask");
+
+            packet.ReadInt32("Absorbed");
+            packet.ReadInt32("Resisted");
+            packet.ReadInt32("ShieldBlock");
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Periodic");
+
+            packet.ReadBitsE<AttackerStateFlags>("Flags", 7);
+
+            var hasDebugData = packet.ReadBit("HasDebugData");
+            var hasLogData = packet.ReadBit("HasLogData");
+            var hasContentTuning = packet.ReadBit("HasContentTuning");
+
+            if (hasContentTuning)
+                V8_0_1_27101.Parsers.SpellHandler.ReadContentTuningParams(packet, "ContentTuning");
+
+            if (hasDebugData)
+                V8_0_1_27101.Parsers.CombatLogHandler.ReadSpellNonMeleeDebugData(packet, "DebugData");
+
+            if (hasLogData)
+                SpellHandler.ReadSpellCastLogData(packet, "SpellCastLogData");
+        }
     }
 }
