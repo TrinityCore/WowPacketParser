@@ -11,6 +11,11 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
 {
     public static class SpellHandler
     {
+        public static void ReadSpellCastLogData(Packet packet, params object[] idx)
+        {
+            packet.ReadSByte("Unk1_13_2", idx);
+        }
+
         public static void ReadSpellTargetData(Packet packet, uint spellID, params object[] idx)
         {
             packet.ResetBitReader();
@@ -135,22 +140,6 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
                 packet.ReadInt32E<InventoryType>("AmmoInventoryType", idx);
         }
 
-        public static void ReadContentTuningParams(Packet packet, params object[] idx)
-        {
-            packet.ResetBitReader();
-
-            packet.ReadInt16("PlayerLevelDelta", idx);
-            packet.ReadUInt16("PlayerItemLevel", idx);
-            packet.ReadUInt16("ScalingHealthItemLevelCurveID", idx);
-            packet.ReadByte("TargetLevel", idx);
-            packet.ReadByte("Expansion", idx);
-            packet.ReadByte("TargetMinScalingLevel", idx);
-            packet.ReadByte("TargetMaxScalingLevel", idx);
-            packet.ReadSByte("TargetScalingLevelDelta", idx);
-            packet.ReadBits("Type", 4, idx);
-            packet.ReadBit("ScalesWithItemLevel", idx);
-        }
-
         [Parser(Opcode.SMSG_SPELL_START)]
         public static void HandleSpellStart(Packet packet)
         {
@@ -210,7 +199,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
                     var hasContentTuning = packet.ReadBit("HasContentTuning", i);
 
                     if (hasContentTuning)
-                        ReadContentTuningParams(packet, i, "ContentTuning");
+                        V8_0_1_27101.Parsers.SpellHandler.ReadContentTuningParams(packet, i, "ContentTuning");
 
                     if (hasCastUnit)
                         packet.ReadPackedGuid128("CastUnit", i);
