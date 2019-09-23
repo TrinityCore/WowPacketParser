@@ -24,7 +24,7 @@ namespace WowPacketParser.Enums
         Unknown13      = 0x00008000,
         Unknown14      = 0x00010000,
         AdjustMissile  = 0x00020000, // 4.x
-        Unknown16      = 0x00040000,
+        NoGcd          = 0x00040000,
         VisualChain    = 0x00080000, // 4.x
         Unknown18      = 0x00100000,
         RuneInfo       = 0x00200000, // 4.x PredictedRunes
