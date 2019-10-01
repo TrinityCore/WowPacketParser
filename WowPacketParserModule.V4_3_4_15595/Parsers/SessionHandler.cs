@@ -115,8 +115,8 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         public static void HandleRedirectionAuthProof(Packet packet)
         {
             var bytes = new byte[20];
-            packet.ReadUInt64("Unk Long");
-            packet.ReadUInt64("+ 4");
+            packet.ReadUInt64("Key");
+            packet.ReadUInt64("DosResponse");
             bytes[5] = packet.ReadByte();
             bytes[2] = packet.ReadByte();
             bytes[6] = packet.ReadByte();
