@@ -20,6 +20,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadInt32("ChatChannelID");
             packet.ReadUInt64("InstanceID");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_5_31921))
+                packet.ReadPackedGuid128("ChannelGUID");
+
             packet.ReadWoWString("Channel", channelLen);
             packet.ReadWoWString("ChannelWelcomeMsg", channelWelcomeMsgLen);
         }
