@@ -936,29 +936,29 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         public static void HandleGuildChallengeUpdated(Packet packet)
         {
             for (int i = 0; i < 4; ++i)
-                packet.ReadInt32("Guild Experience Reward", i);
+                packet.ReadInt32("Xp", i);
 
             for (int i = 0; i < 4; ++i)
-                packet.ReadInt32("Completion Gold Reward", i);
+                packet.ReadInt32("MaxLevelGold", i);
 
             for (int i = 0; i < 4; ++i)
-                packet.ReadInt32("Total Count", i);
+                packet.ReadInt32("MaxCount", i);
 
             for (int i = 0; i < 4; ++i)
-                packet.ReadInt32("Gold Reward Unk 2", i); // requires perk Cash Flow?
+                packet.ReadInt32("Gold", i);
 
             for (int i = 0; i < 4; ++i)
-                packet.ReadInt32("Current Count", i);
+                packet.ReadInt32("CurrentCount", i);
         }
 
         [Parser(Opcode.SMSG_GUILD_CHALLENGE_COMPLETED)]
         public static void HandleGuildChallengeCompleted(Packet packet)
         {
-            packet.ReadInt32("Index"); // not confirmed
-            packet.ReadInt32("Gold Reward");
-            packet.ReadInt32("Current Count");
-            packet.ReadInt32("Guild Experience Reward");
-            packet.ReadInt32("Total Count");
+            packet.ReadInt32("ChallengeType");
+            packet.ReadInt32("GoldAwarded");
+            packet.ReadInt32("CurrentCount");
+            packet.ReadInt32("XpAwarded");
+            packet.ReadInt32("MaxCount");
         }
 
         [Parser(Opcode.SMSG_GUILD_REPUTATION_REACTION_CHANGED)]
