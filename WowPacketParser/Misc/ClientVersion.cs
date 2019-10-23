@@ -697,6 +697,8 @@ namespace WowPacketParser.Misc
                 // This is a huge hack to handle the abnormal situation that appeared with builds 6.0 and 6.1 having mostly the same packet structures
                 if (!UpdateFields.LoadUFDictionaries(asm, version))
                     UpdateFields.LoadUFDictionaries(asm, VersionDefiningBuild);
+
+                UpdateFields.LoadUFHandlers(asm, VersionDefiningBuild);
             }
             catch (FileNotFoundException)
             {

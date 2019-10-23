@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParser.Enums.Version
 {
@@ -35,11 +37,13 @@ namespace WowPacketParser.Enums.Version
 
         private static readonly Dictionary<Type, SortedList<int, UpdateFieldInfo>> UpdateFieldDictionary;
         private static readonly Dictionary<Type, Dictionary<string, int>> UpdateFieldNameDictionary;
+        private static readonly Dictionary<ClientVersionBuild, UpdateFieldsHandlerBase> UpdateFieldsHandlers;
 
         static UpdateFields()
         {
             UpdateFieldDictionary = new Dictionary<Type, SortedList<int, UpdateFieldInfo>>();
             UpdateFieldNameDictionary = new Dictionary<Type, Dictionary<string, int>>();
+            UpdateFieldsHandlers = new Dictionary<ClientVersionBuild, UpdateFieldsHandlerBase>();
 
             LoadUFDictionariesInto(UpdateFieldDictionary, UpdateFieldNameDictionary, Assembly.GetExecutingAssembly(), ClientVersionBuild.Zero);
         }
@@ -101,6 +105,35 @@ namespace WowPacketParser.Enums.Version
             }
 
             return loaded;
+        }
+
+        public static void LoadUFHandlers(Assembly asm, ClientVersionBuild assemblyBuild)
+        {
+            var handlers = asm.GetTypes().Where(type => type.BaseType == typeof(UpdateFieldsHandlerBase));
+
+            var namespaceRegex = new Regex($"WowPacketParserModule\\.{assemblyBuild}\\.UpdateFields\\.(.*)$");
+            foreach (var handlerType in handlers)
+            {
+                var buildMatch = namespaceRegex.Match(handlerType.Namespace);
+                if (buildMatch.Success)
+                {
+                    var group = buildMatch.Groups[1];
+                    ClientVersionBuild handlerBuild;
+                    if (Enum.TryParse(group.Value, out handlerBuild))
+                        UpdateFieldsHandlers.Add(handlerBuild, (UpdateFieldsHandlerBase)Activator.CreateInstance(handlerType));
+                }
+            }
+        }
+
+        public static UpdateFieldsHandlerBase GetHandler()
+        {
+            ClientVersionBuild handlerBuild;
+            UpdateFieldsHandlerBase handler;
+            if (Enum.TryParse(GetUpdateFieldDictionaryBuildName(ClientVersion.Build), out handlerBuild))
+                if (UpdateFieldsHandlers.TryGetValue(handlerBuild, out handler))
+                    return handler;
+
+            return null;
         }
 
         public static int GetUpdateField<T>(T field) // where T: System.Enum // C# 7.3

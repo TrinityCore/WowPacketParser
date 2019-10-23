@@ -559,6 +559,7 @@
     <Compile Include="Parsing\Parsers\TaxiHandler.cs" />
     <Compile Include="Parsing\Parsers\TicketHandler.cs" />
     <Compile Include="Parsing\Parsers\TradeHandler.cs" />
+    <Compile Include="Parsing\Parsers\UpdateFieldsHandlerBase.cs" />
     <Compile Include="Parsing\Parsers\UpdateHandler.cs" />
     <Compile Include="Parsing\Parsers\VoiceChatHandler.cs" />
     <Compile Include="Parsing\Parsers\VoidStorageHandler.cs" />

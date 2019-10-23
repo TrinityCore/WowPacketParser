@@ -7,6 +7,7 @@ using WowPacketParser.Store.Objects;
 using WowPacketParserModule.V7_0_3_22248.Parsers;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using SplineFlag = WowPacketParserModule.V7_0_3_22248.Enums.SplineFlag;
+using CoreFields = WowPacketParser.Enums.Version;
 
 namespace WowPacketParserModule.V8_0_1_27101.Parsers
 {
@@ -43,6 +44,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                         if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
                         {
                             var updatefieldSize = packet.ReadUInt32();
+                            var handler = CoreFields.UpdateFields.GetHandler();
                             using (var fieldsData = new Packet(packet.ReadBytes((int)updatefieldSize), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
                             {
                                 WoWObject obj;
@@ -51,48 +53,48 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                                 var updateTypeFlag = fieldsData.ReadUInt32();
                                 if ((updateTypeFlag & 0x0001) != 0)
                                 {
-                                    var data = UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateObjectData(fieldsData, obj?.ObjectData, i);
+                                    var data = handler.ReadUpdateObjectData(fieldsData, obj?.ObjectData, i);
                                     if (obj != null)
                                         obj.ObjectData = data;
                                 }
                                 if ((updateTypeFlag & 0x0002) != 0)
-                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateItemData(fieldsData, null, i);
+                                    handler.ReadUpdateItemData(fieldsData, null, i);
                                 if ((updateTypeFlag & 0x0004) != 0)
-                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateContainerData(fieldsData, null, i);
+                                    handler.ReadUpdateContainerData(fieldsData, null, i);
                                 if ((updateTypeFlag & 0x0008) != 0)
-                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateAzeriteEmpoweredItemData(fieldsData, null, i);
+                                    handler.ReadUpdateAzeriteEmpoweredItemData(fieldsData, null, i);
                                 if ((updateTypeFlag & 0x0010) != 0)
-                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateAzeriteItemData(fieldsData, null, i);
+                                    handler.ReadUpdateAzeriteItemData(fieldsData, null, i);
                                 if ((updateTypeFlag & 0x0020) != 0)
                                 {
                                     var unit = obj as Unit;
-                                    var data = UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateUnitData(fieldsData, unit?.UnitData, i);
+                                    var data = handler.ReadUpdateUnitData(fieldsData, unit?.UnitData, i);
                                     if (unit != null)
                                         unit.UnitData = data;
                                 }
                                 if ((updateTypeFlag & 0x0040) != 0)
-                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdatePlayerData(fieldsData, null, i);
+                                    handler.ReadUpdatePlayerData(fieldsData, null, i);
                                 if ((updateTypeFlag & 0x0080) != 0)
-                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateActivePlayerData(fieldsData, null, i);
+                                    handler.ReadUpdateActivePlayerData(fieldsData, null, i);
                                 if ((updateTypeFlag & 0x0100) != 0)
                                 {
                                     var go = obj as GameObject;
-                                    var data = UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateGameObjectData(fieldsData, go?.GameObjectData, i);
+                                    var data = handler.ReadUpdateGameObjectData(fieldsData, go?.GameObjectData, i);
                                     if (go != null)
                                         go.GameObjectData = data;
                                 }
                                 if ((updateTypeFlag & 0x0200) != 0)
-                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateDynamicObjectData(fieldsData, null, i);
+                                    handler.ReadUpdateDynamicObjectData(fieldsData, null, i);
                                 if ((updateTypeFlag & 0x0400) != 0)
-                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateCorpseData(fieldsData, null, i);
+                                    handler.ReadUpdateCorpseData(fieldsData, null, i);
                                 if ((updateTypeFlag & 0x0800) != 0)
-                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateAreaTriggerData(fieldsData, null, i);
+                                    handler.ReadUpdateAreaTriggerData(fieldsData, null, i);
                                 if ((updateTypeFlag & 0x1000) != 0)
-                                    UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateSceneObjectData(fieldsData, null, i);
+                                    handler.ReadUpdateSceneObjectData(fieldsData, null, i);
                                 if ((updateTypeFlag & 0x2000) != 0)
                                 {
                                     var conversation = obj as ConversationTemplate;
-                                    var data = UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadUpdateConversationData(fieldsData, conversation?.ConversationData, i);
+                                    var data = handler.ReadUpdateConversationData(fieldsData, conversation?.ConversationData, i);
                                     if (conversation != null)
                                         conversation.ConversationData = data;
                                 }
@@ -148,57 +150,55 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 using (var fieldsData = new Packet(packet.ReadBytes((int)updatefieldSize), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
                 {
                     var flags = fieldsData.ReadByteE<UpdateFieldFlag>("FieldFlags", index);
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683))
+                    var handler = CoreFields.UpdateFields.GetHandler();
+                    obj.ObjectData = handler.ReadCreateObjectData(fieldsData, flags, index);
+                    switch (objType)
                     {
-                        obj.ObjectData = UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateObjectData(fieldsData, flags, index);
-                        switch (objType)
-                        {
-                            case ObjectType.Item:
-                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateItemData(fieldsData, flags, index);
-                                break;
-                            case ObjectType.Container:
-                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateItemData(fieldsData, flags, index);
-                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateContainerData(fieldsData, flags, index);
-                                break;
-                            case ObjectType.AzeriteEmpoweredItem:
-                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateItemData(fieldsData, flags, index);
-                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateAzeriteEmpoweredItemData(fieldsData, flags, index);
-                                break;
-                            case ObjectType.AzeriteItem:
-                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateItemData(fieldsData, flags, index);
-                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateAzeriteItemData(fieldsData, flags, index);
-                                break;
-                            case ObjectType.Unit:
-                                (obj as Unit).UnitData = UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateUnitData(fieldsData, flags, index);
-                                break;
-                            case ObjectType.Player:
-                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateUnitData(fieldsData, flags, index);
-                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreatePlayerData(fieldsData, flags, index);
-                                break;
-                            case ObjectType.ActivePlayer:
-                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateUnitData(fieldsData, flags, index);
-                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreatePlayerData(fieldsData, flags, index);
-                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateActivePlayerData(fieldsData, flags, index);
-                                break;
-                            case ObjectType.GameObject:
-                                (obj as GameObject).GameObjectData = UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateGameObjectData(fieldsData, flags, index);
-                                break;
-                            case ObjectType.DynamicObject:
-                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateDynamicObjectData(fieldsData, flags, index);
-                                break;
-                            case ObjectType.Corpse:
-                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateCorpseData(fieldsData, flags, index);
-                                break;
-                            case ObjectType.AreaTrigger:
-                                (obj as SpellAreaTrigger).AreaTriggerData = UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateAreaTriggerData(fieldsData, flags, index);
-                                break;
-                            case ObjectType.SceneObject:
-                                UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateSceneObjectData(fieldsData, flags, index);
-                                break;
-                            case ObjectType.Conversation:
-                                (obj as ConversationTemplate).ConversationData = UpdateFields.V8_1_5_29495.UpdateFieldHandler.ReadCreateConversationData(fieldsData, flags, index);
-                                break;
-                        }
+                        case ObjectType.Item:
+                            handler.ReadCreateItemData(fieldsData, flags, index);
+                            break;
+                        case ObjectType.Container:
+                            handler.ReadCreateItemData(fieldsData, flags, index);
+                            handler.ReadCreateContainerData(fieldsData, flags, index);
+                            break;
+                        case ObjectType.AzeriteEmpoweredItem:
+                            handler.ReadCreateItemData(fieldsData, flags, index);
+                            handler.ReadCreateAzeriteEmpoweredItemData(fieldsData, flags, index);
+                            break;
+                        case ObjectType.AzeriteItem:
+                            handler.ReadCreateItemData(fieldsData, flags, index);
+                            handler.ReadCreateAzeriteItemData(fieldsData, flags, index);
+                            break;
+                        case ObjectType.Unit:
+                            (obj as Unit).UnitData = handler.ReadCreateUnitData(fieldsData, flags, index);
+                            break;
+                        case ObjectType.Player:
+                            handler.ReadCreateUnitData(fieldsData, flags, index);
+                            handler.ReadCreatePlayerData(fieldsData, flags, index);
+                            break;
+                        case ObjectType.ActivePlayer:
+                            handler.ReadCreateUnitData(fieldsData, flags, index);
+                            handler.ReadCreatePlayerData(fieldsData, flags, index);
+                            handler.ReadCreateActivePlayerData(fieldsData, flags, index);
+                            break;
+                        case ObjectType.GameObject:
+                            (obj as GameObject).GameObjectData = handler.ReadCreateGameObjectData(fieldsData, flags, index);
+                            break;
+                        case ObjectType.DynamicObject:
+                            handler.ReadCreateDynamicObjectData(fieldsData, flags, index);
+                            break;
+                        case ObjectType.Corpse:
+                            handler.ReadCreateCorpseData(fieldsData, flags, index);
+                            break;
+                        case ObjectType.AreaTrigger:
+                            (obj as SpellAreaTrigger).AreaTriggerData = handler.ReadCreateAreaTriggerData(fieldsData, flags, index);
+                            break;
+                        case ObjectType.SceneObject:
+                            handler.ReadCreateSceneObjectData(fieldsData, flags, index);
+                            break;
+                        case ObjectType.Conversation:
+                            (obj as ConversationTemplate).ConversationData = handler.ReadCreateConversationData(fieldsData, flags, index);
+                            break;
                     }
                 }
             }
