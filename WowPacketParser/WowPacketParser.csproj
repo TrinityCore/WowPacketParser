@@ -616,6 +616,8 @@
     <Compile Include="Store\Objects\CreatureTemplateLocale.cs" />
     <Compile Include="Store\Objects\CreatureTemplateScaling.cs" />
     <Compile Include="Store\Objects\CreatureText.cs" />
+    <Compile Include="Store\Objects\UpdateFields\ISelectedAzeriteEssences.cs" />
+    <Compile Include="Store\Objects\UpdateFields\IUnlockedAzeriteEssence.cs" />
     <Compile Include="Store\Objects\UpdateFields\LegacyImplementation\AreaTriggerData.cs" />
     <Compile Include="Store\Objects\UpdateFields\LegacyImplementation\ConversationData.cs" />
     <Compile Include="Store\Objects\UpdateFields\LegacyImplementation\UnitData.cs" />
