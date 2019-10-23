@@ -2431,16 +2431,13 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_2_5_31921
             for (var i = 0; i < 1; ++i)
             {
                 data.Research[i].Resize(packet.ReadUInt32());
-            }
-            data.ReplayedQuests.Resize(packet.ReadUInt32());
-            data.DisabledSpells.Resize(packet.ReadUInt32());
-            for (var i = 0; i < 1; ++i)
-            {
                 for (var j = 0; j < data.Research[i].Count; ++j)
                 {
                     data.Research[i][j] = ReadCreateResearch(packet, indexes, "Research", i, j);
                 }
             }
+            data.ReplayedQuests.Resize(packet.ReadUInt32());
+            data.DisabledSpells.Resize(packet.ReadUInt32());
             for (var i = 0; i < data.KnownTitles.Count; ++i)
             {
                 data.KnownTitles[i] = packet.ReadUInt64("KnownTitles", indexes, i);
@@ -2513,7 +2510,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_2_5_31921
             data.BankAutoSortDisabled = packet.ReadBit("BankAutoSortDisabled", indexes);
             data.SortBagsRightToLeft = packet.ReadBit("SortBagsRightToLeft", indexes);
             data.InsertItemsLeftToRight = packet.ReadBit("InsertItemsLeftToRight", indexes);
-            var hasQuestSession = packet.ReadBit("HasQuestSession");
+            var hasQuestSession = packet.ReadBit("HasQuestSession", indexes);
             for (var i = 0; i < data.CharacterRestrictions.Count; ++i)
             {
                 data.CharacterRestrictions[i] = ReadCreateCharacterRestriction(packet, indexes, "CharacterRestrictions", i);
@@ -3149,7 +3146,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_2_5_31921
             packet.ResetBitReader();
             if (changesMask[98])
             {
-                var hasQuestSession = packet.ReadBit("HasQuestSession");
+                var hasQuestSession = packet.ReadBit("HasQuestSession", indexes);
                 if (changesMask[103])
                 {
                     if (hasQuestSession)
