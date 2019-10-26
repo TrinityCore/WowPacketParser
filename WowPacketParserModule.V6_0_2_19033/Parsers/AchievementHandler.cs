@@ -144,5 +144,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < memberCount; i++)
                 ReadGuildAchievementMember(packet, i);
         }
+
+        [Parser(Opcode.CMSG_SET_ACHIEVEMENTS_HIDDEN)]
+        public static void HandleSetAchievementsHidden(Packet packet)
+        {
+            packet.ReadBit("Hidden");
+        }
     }
 }
