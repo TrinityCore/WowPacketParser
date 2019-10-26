@@ -148,7 +148,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_SET_ACHIEVEMENTS_HIDDEN)]
         public static void HandleSetAchievementsHidden(Packet packet)
         {
-            packet.ReadBit("Hiden");
+            packet.ReadBit("Hidden");
         }
     }
 }
