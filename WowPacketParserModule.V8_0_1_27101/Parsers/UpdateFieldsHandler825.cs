@@ -1728,7 +1728,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_2_5_31921
                     rawChangesMask[i] = (int)packet.ReadBits(32);
             var changesMask = new BitArray(rawChangesMask);
 
-            var hasQuestLogDynamicChangesMask = packet.ReadBit();
+            var noQuestLogChangesMask = packet.ReadBit();
             if (changesMask[0])
             {
                 if (changesMask[1])
@@ -1757,10 +1757,10 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_2_5_31921
                     {
                         if (data.QuestSessionQuestLog.UpdateMask[i])
                         {
-                            if (hasQuestLogDynamicChangesMask)
-                                data.QuestSessionQuestLog[i] = ReadUpdateQuestLog(packet, data.QuestSessionQuestLog[i] as QuestLog, indexes, "QuestSessionQuestLog", i);
-                            else
+                            if (noQuestLogChangesMask)
                                 data.QuestSessionQuestLog[i] = ReadCreateQuestLog(packet, indexes, "QuestSessionQuestLog", i);
+                            else
+                                data.QuestSessionQuestLog[i] = ReadUpdateQuestLog(packet, data.QuestSessionQuestLog[i] as QuestLog, indexes, "QuestSessionQuestLog", i);
                         }
                     }
                 }
@@ -1918,10 +1918,10 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_2_5_31921
                 {
                     if (changesMask[42 + i])
                     {
-                        if (hasQuestLogDynamicChangesMask)
-                            data.QuestLog[i] = ReadUpdateQuestLog(packet, data.QuestLog[i] as QuestLog, indexes, "QuestLog", i);
-                        else
+                        if (noQuestLogChangesMask)
                             data.QuestLog[i] = ReadCreateQuestLog(packet, indexes, "QuestLog", i);
+                        else
+                            data.QuestLog[i] = ReadUpdateQuestLog(packet, data.QuestLog[i] as QuestLog, indexes, "QuestLog", i);
                     }
                 }
             }
