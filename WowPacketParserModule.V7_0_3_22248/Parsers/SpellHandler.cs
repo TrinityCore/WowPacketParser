@@ -721,5 +721,22 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadSingle("ChargeModRate");
             packet.ReadBit("IsPet");
         }
+
+        [Parser(Opcode.SMSG_MODIFY_COOLDOWN_RECOVERY_SPEED)] 
+        public static void HandleModifyCooldownRecoverySpeed(Packet packet)
+        {
+            packet.ReadInt32("SpellId");
+            packet.ReadSingle("SpeedRate");
+            packet.ReadSingle("SpeedRate2");
+        }
+
+        [Parser(Opcode.SMSG_MODIFY_CHARGE_RECOVERY_SPEED)]
+        public static void HandleModifyChargeRecoverySpeed(Packet packet)
+        {
+            packet.ReadInt32("ChargeCategoryId");
+            packet.ReadSingle("SpeedRate");
+            packet.ReadSingle("UnkFloat");
+            packet.ReadBit("UnkBool");
+        }
     }
 }
