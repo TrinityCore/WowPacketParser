@@ -574,6 +574,8 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V8_2_5_32265:
                 case ClientVersionBuild.V8_2_5_32294:
                 case ClientVersionBuild.V8_2_5_32305:
+                case ClientVersionBuild.V8_2_5_32494:
+                case ClientVersionBuild.V8_2_5_32580:
                 {
                     return "V8_2_5_31921";
                 }
