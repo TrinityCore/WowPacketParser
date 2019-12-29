@@ -692,7 +692,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             int int60 = packet.ReadInt32("QuestCurrencyCount");
             QuestStatusFlags statusFlags = packet.ReadInt32E<QuestStatusFlags>("StatusFlags");
 
-            if ((statusFlags & (QuestStatusFlags.Complete434)) == QuestStatusFlags.Complete434)
+            if ((statusFlags & (QuestStatusFlags.Complete)) == QuestStatusFlags.Complete)
             {
                 if (CoreParsers.QuestHandler.RequestItemEmoteStore.ContainsKey(id))
                 {
