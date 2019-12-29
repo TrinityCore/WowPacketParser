@@ -296,6 +296,7 @@
     <Compile Include="Hotfix\WorldEffectEntry.cs" />
     <Compile Include="Hotfix\WorldMapOverlayEntry.cs" />
     <Compile Include="Hotfix\WorldSafeLocsEntry.cs" />
+    <Compile Include="Parsers\BattlePetHandler.cs" />
     <Compile Include="Parsers\IslandHandler.cs" />
     <Compile Include="Parsers\AccountDataHandler.cs" />
     <Compile Include="Parsers\ArenaHandler.cs" />
@@ -325,6 +326,7 @@
     <Compile Include="Parsers\QuestHandler.cs" />
     <Compile Include="Parsers\ReputationHandler.cs" />
     <Compile Include="Parsers\ScenarioHandler.cs" />
+    <Compile Include="Parsers\SceneHandler.cs" />
     <Compile Include="Parsers\SessionHandler.cs" />
     <Compile Include="Parsers\SpellHandler.cs" />
     <Compile Include="Parsers\ToyHandler.cs" />
