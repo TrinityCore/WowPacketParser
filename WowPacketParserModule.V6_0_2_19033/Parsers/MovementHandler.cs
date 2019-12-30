@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
 using WowPacketParser.DBC;
 using WowPacketParser.Enums;
@@ -9,14 +7,13 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using CoreParsers = WowPacketParser.Parsing.Parsers;
 using MovementFlag = WowPacketParserModule.V6_0_2_19033.Enums.MovementFlag;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class MovementHandler
     {
-        public static readonly IDictionary<ushort, bool> ActivePhases = new ConcurrentDictionary<ushort, bool>();
-
         public static void ReadMovementStats(Packet packet, params object[] idx)
         {
             packet.ReadPackedGuid128("MoverGUID", idx);
@@ -157,7 +154,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
         public static void HandleLoginVerifyWorld(Packet packet)
         {
-            WowPacketParser.Parsing.Parsers.MovementHandler.CurrentMapId = (uint)packet.ReadInt32<MapId>("Map");
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadInt32<MapId>("Map");
             packet.ReadVector4("Position");
             packet.ReadUInt32("Reason");
         }
@@ -166,11 +163,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_NEW_WORLD)]
         public static void HandleNewWorld(Packet packet)
         {
-            WowPacketParser.Parsing.Parsers.MovementHandler.CurrentMapId = (uint)packet.ReadInt32<MapId>("Map");
+            CoreParsers.MovementHandler.CurrentMapId = (uint)packet.ReadInt32<MapId>("Map");
             packet.ReadVector4("Position");
             packet.ReadUInt32("Reason");
 
-            packet.AddSniffData(StoreNameType.Map, (int)WowPacketParser.Parsing.Parsers.MovementHandler.CurrentMapId, "NEW_WORLD");
+            packet.AddSniffData(StoreNameType.Map, (int)CoreParsers.MovementHandler.CurrentMapId, "NEW_WORLD");
         }
 
         [Parser(Opcode.SMSG_LOGIN_SET_TIME_SPEED)]
@@ -360,7 +357,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_PHASE_SHIFT_CHANGE)]
         public static void HandlePhaseShift(Packet packet)
         {
-            ActivePhases.Clear();
+            CoreParsers.MovementHandler.ActivePhases.Clear();
 
             packet.ReadPackedGuid128("Client");
 
@@ -372,12 +369,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             {
                 var flags = packet.ReadUInt16("PhaseFlags", i);
                 var id = packet.ReadUInt16("Id", i);
-                ActivePhases.Add(id, true);
+                CoreParsers.MovementHandler.ActivePhases.Add(id, true);
             }
 
             if (Settings.UseDBC && DBC.Phases.Any())
             {
-                foreach (var phaseGroup in DBC.GetPhaseGroups(ActivePhases.Keys))
+                foreach (var phaseGroup in DBC.GetPhaseGroups(CoreParsers.MovementHandler.ActivePhases.Keys))
                     packet.WriteLine($"PhaseGroup: { phaseGroup } Phases: { string.Join(" - ", DBC.Phases[phaseGroup]) }");
             }
 
@@ -562,6 +559,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_MOVE_SET_FLIGHT_SPEED)]
         [Parser(Opcode.SMSG_MOVE_SET_WALK_SPEED)]
         [Parser(Opcode.SMSG_MOVE_SET_RUN_BACK_SPEED)]
+        [Parser(Opcode.SMSG_MOVE_SET_MOD_MOVEMENT_FORCE_MAGNITUDE)]
         public static void HandleMovementIndexSpeed(Packet packet)
         {
             packet.ReadPackedGuid128("MoverGUID");
@@ -637,6 +635,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_MOVE_FORCE_RUN_BACK_SPEED_CHANGE_ACK)]
         [Parser(Opcode.CMSG_MOVE_FORCE_SWIM_SPEED_CHANGE_ACK)]
         [Parser(Opcode.CMSG_MOVE_FORCE_WALK_SPEED_CHANGE_ACK)]
+        [Parser(Opcode.CMSG_MOVE_SET_MOD_MOVEMENT_FORCE_MAGNITUDE_ACK)]
         public static void HandleMovementSpeedAck(Packet packet)
         {
             ReadMovementAck(packet);

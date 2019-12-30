@@ -458,7 +458,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Phases count", count);
             for (var i = 0; i < count; ++i)
-                CoreParsers.MovementHandler.ActivePhases.Add(packet.ReadUInt16("Phase id", i)); // Phase.dbc
+                CoreParsers.MovementHandler.ActivePhases.Add(packet.ReadUInt16("Phase id", i), true); // Phase.dbc
 
             packet.ReadXORByte(guid, 7);
             count = packet.ReadUInt32() / 2;

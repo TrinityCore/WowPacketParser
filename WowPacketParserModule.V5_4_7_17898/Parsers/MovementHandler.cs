@@ -414,7 +414,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Phases count", count);
             for (var i = 0; i < count; ++i)
-                CoreParsers.MovementHandler.ActivePhases.Add(packet.ReadUInt16("Phase id", i)); // Phase.dbc
+                CoreParsers.MovementHandler.ActivePhases.Add(packet.ReadUInt16("Phase id", i), true); // Phase.dbc
 
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Active Terrain swap count", count);

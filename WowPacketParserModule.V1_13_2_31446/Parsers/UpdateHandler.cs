@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -96,7 +93,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
             obj.Area = CoreParsers.WorldStateHandler.CurrentAreaId;
             obj.Zone = CoreParsers.WorldStateHandler.CurrentZoneId;
             obj.PhaseMask = (uint)CoreParsers.MovementHandler.CurrentPhaseMask;
-            obj.Phases = new HashSet<ushort>(MovementHandler.ActivePhases.Keys);
+            obj.Phases = new HashSet<ushort>(CoreParsers.MovementHandler.ActivePhases.Keys);
             obj.DifficultyID = CoreParsers.MovementHandler.CurrentDifficultyID;
 
             // If this is the second time we see the same object (same guid,

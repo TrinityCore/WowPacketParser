@@ -1,18 +1,15 @@
-﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using WowPacketParser.DBC;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using CoreParsers = WowPacketParser.Parsing.Parsers;
 using SplineFlag = WowPacketParserModule.V7_0_3_22248.Enums.SplineFlag;
 
 namespace WowPacketParserModule.V8_0_1_27101.Parsers
 {
     public static class MovementHandler
     {
-        public static readonly IDictionary<ushort, bool> ActivePhases = new ConcurrentDictionary<ushort, bool>();
-
         public static void ReadMonsterSplineFilter(Packet packet, params object[] indexes)
         {
             var count = packet.ReadUInt32("MonsterSplineFilterKey", indexes);
@@ -162,7 +159,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         [Parser(Opcode.SMSG_PHASE_SHIFT_CHANGE)]
         public static void HandlePhaseShift(Packet packet)
         {
-            ActivePhases.Clear();
+            CoreParsers.MovementHandler.ActivePhases.Clear();
             packet.ReadPackedGuid128("Client");
             // PhaseShiftData
             packet.ReadInt32("PhaseShiftFlags");
@@ -172,11 +169,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             {
                 var flags = packet.ReadUInt16("PhaseFlags", i);
                 var id = packet.ReadUInt16("Id", i);
-                ActivePhases.Add(id, true);
+                CoreParsers.MovementHandler.ActivePhases.Add(id, true);
             }
             if (DBC.Phases.Any())
             {
-                foreach (var phaseGroup in DBC.GetPhaseGroups(ActivePhases.Keys))
+                foreach (var phaseGroup in DBC.GetPhaseGroups(CoreParsers.MovementHandler.ActivePhases.Keys))
                     packet.WriteLine($"PhaseGroup: { phaseGroup } Phases: { string.Join(" - ", DBC.Phases[phaseGroup]) }");
             }
             var visibleMapIDsCount = packet.ReadInt32("VisibleMapIDsCount") / 2;

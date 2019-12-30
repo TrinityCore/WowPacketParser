@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
@@ -17,7 +18,8 @@ namespace WowPacketParser.Parsing.Parsers
         public static uint CurrentDifficultyID = 1;
         public static int CurrentPhaseMask = 1;
 
-        public static readonly ConcurrentBag<ushort> ActivePhases = new ConcurrentBag<ushort>();
+        // this is a dictionary because ConcurrentSet does not exist
+        public static readonly IDictionary<ushort, bool> ActivePhases = new ConcurrentDictionary<ushort, bool>();
 
         public static MovementInfo ReadMovementInfo(Packet packet, WowGuid guid, object index = null)
         {
@@ -1586,7 +1588,7 @@ namespace WowPacketParser.Parsing.Parsers
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Phases count", count);
             for (var i = 0; i < count; ++i)
-                ActivePhases.Add(packet.ReadUInt16("Phase id", i)); // Phase.dbc
+                ActivePhases.Add(packet.ReadUInt16("Phase id", i), true); // Phase.dbc
 
             count = packet.ReadUInt32() / 2;
             packet.AddValue("WorldMapArea swap count", count);
@@ -1618,7 +1620,7 @@ namespace WowPacketParser.Parsing.Parsers
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Phases count", count);
             for (var i = 0; i < count; ++i)
-                ActivePhases.Add(packet.ReadUInt16("Phase id", i)); // Phase.dbc
+                ActivePhases.Add(packet.ReadUInt16("Phase id", i), true); // Phase.dbc
 
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 6);
