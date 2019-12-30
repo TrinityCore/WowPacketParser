@@ -1069,15 +1069,28 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             // flags, if any of these flags is 0 quest is not completable
-            QuestStatusFlags statusFlag1 = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags1"); // 2
-            QuestStatusFlags statusFlag2 = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags2"); // 4
-            QuestStatusFlags statusFlag3 = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags3"); // 8
-            QuestStatusFlags statusFlag4 = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags4"); // 16
-            QuestStatusFlags statusFlag5 = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags5"); // 64
+            QuestStatusFlags[] statusFlags = new QuestStatusFlags[] { QuestStatusFlags.None, QuestStatusFlags.None, QuestStatusFlags.None, QuestStatusFlags.None, QuestStatusFlags.None };
+            QuestStatusFlags[] completableStatusFlags = new QuestStatusFlags[] { QuestStatusFlags.KillCreditComplete, QuestStatusFlags.CollectableComplete, QuestStatusFlags.QuestStatusUnk8, QuestStatusFlags.QuestStatusUnk16, QuestStatusFlags.QuestStatusUnk64 };
+            
+            statusFlags[0] = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags1"); // 2
+            statusFlags[1] = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags2"); // 4
+            statusFlags[2] = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags3"); // 8
+            statusFlags[3] = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags4"); // 16
+            statusFlags[4] = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags5"); // 64
 
-            QuestStatusFlags statusFlags = statusFlag1 | statusFlag2 | statusFlag3 | statusFlag4 | statusFlag5;
+            bool isComplete = false;
+            for (int i = 0; i < statusFlags.Length; i++)
+            {
+                if ((statusFlags[i] & completableStatusFlags[i]) == completableStatusFlags[i])
+                    isComplete = true;
+                else
+                {
+                    isComplete = false;
+                    break; // if any of these flags is 0 quest is not completable
+                }
+            }
 
-            if ((statusFlags & (QuestStatusFlags.Complete434)) == QuestStatusFlags.Complete434)
+            if (isComplete)
             {
                 if (RequestItemEmoteStore.ContainsKey(id))
                 {
@@ -1169,15 +1182,28 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             // flags, if any of these flags is 0 quest is not completable
-            QuestStatusFlags statusFlag1 = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags1"); // 2
-            QuestStatusFlags statusFlag2 = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags2"); // 4
-            QuestStatusFlags statusFlag3 = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags3"); // 8
-            QuestStatusFlags statusFlag4 = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags4"); // 16
-            QuestStatusFlags statusFlag5 = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags5"); // 64
+            QuestStatusFlags[] statusFlags = new QuestStatusFlags[] { QuestStatusFlags.None, QuestStatusFlags.None, QuestStatusFlags.None, QuestStatusFlags.None, QuestStatusFlags.None };
+            QuestStatusFlags[] completableStatusFlags = new QuestStatusFlags[] { QuestStatusFlags.KillCreditComplete, QuestStatusFlags.CollectableComplete, QuestStatusFlags.QuestStatusUnk8, QuestStatusFlags.QuestStatusUnk16, QuestStatusFlags.QuestStatusUnk64 };
 
-            QuestStatusFlags statusFlags = statusFlag1 | statusFlag2 | statusFlag3 | statusFlag4 | statusFlag5;
+            statusFlags[0] = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags1"); // 2
+            statusFlags[1] = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags2"); // 4
+            statusFlags[2] = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags3"); // 8
+            statusFlags[3] = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags4"); // 16
+            statusFlags[4] = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags5"); // 64
 
-            if ((statusFlags & (QuestStatusFlags.Complete434)) == QuestStatusFlags.Complete434)
+            bool isComplete = false;
+            for (int i = 0; i < statusFlags.Length; i++)
+            {
+                if ((statusFlags[i] & completableStatusFlags[i]) == completableStatusFlags[i])
+                    isComplete = true;
+                else
+                {
+                    isComplete = false;
+                    break; // if any of these flags is 0 quest is not completable
+                }
+            }
+
+            if (isComplete)
             {
                 if (RequestItemEmoteStore.ContainsKey(id))
                 {
