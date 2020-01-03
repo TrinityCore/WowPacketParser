@@ -249,5 +249,18 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadByteE<LfgRoleFlag>("Roles");
             packet.ReadByte("Bracket");
         }
+
+        [Parser(Opcode.CMSG_REQUEST_CROWD_CONTROL_SPELL)]
+        public static void HandleRequestCrowdControlSpell(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGuid");
+        }
+
+        [Parser(Opcode.SMSG_ARENA_CROWD_CONTROL_SPELLS)]
+        public static void HandleArenaCrowdControlSpells(Packet packet)
+        {
+            packet.ReadPackedGuid128("PlayerGuid");
+            packet.ReadInt32("CrowdControlSpellID");
+        }
     }
 }
