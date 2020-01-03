@@ -536,12 +536,26 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleGarrisonSetupTrophy(Packet packet)
         {
             var count = packet.ReadInt32("TrophyCount");
-            for (int i = 0; i < count; i++) // @To-Do: need verification
+            for (int i = 0; i < count; i++) 
             {
-                packet.ReadInt32("Unk1", i);
-                packet.ReadInt32("Unk2", i);
+                packet.ReadInt32("TrophyInstanceID", i);
+                packet.ReadInt32("TrophyID", i);
             }
         }
+
+        [Parser(Opcode.SMSG_LOAD_SELECTED_TROPHY_RESULT)]
+        public static void HandleSelectedTrophyResult(Packet packet)
+        {
+            packet.ResetBitReader();
+            packet.ReadBit("Success");
+            packet.ReadInt32("TrophyID");
+        }
+
+        [Parser(Opcode.CMSG_LOAD_SELECTED_TROPHY)]
+        public static void HandleLoadSelectedTrophy(Packet packet)
+        {
+            packet.ReadInt32("TrophyInstanceID");
+        }        
 
         [Parser(Opcode.SMSG_GARRISON_ADD_FOLLOWER_RESULT)]
         public static void HandleGarrisonAddFollowerResult(Packet packet)
@@ -591,7 +605,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_GET_TROPHY_LIST)]
         public static void HandleGetTrophyList(Packet packet)
         {
-            packet.ReadInt32("TrophyTypeID");
+            packet.ReadUInt32E<TrophyType>("TrophyTypeID");
         }
 
         [Parser(Opcode.CMSG_GARRISON_SET_FOLLOWER_INACTIVE)]
@@ -632,8 +646,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < trophyCount; i++)
             {
                 packet.ReadInt32("TrophyID", i);
-                packet.ReadInt32("Unk1", i);
-                packet.ReadInt32("Unk2", i);
+                packet.ReadUInt32E<TrophyLockCode>("LockCode", i);
+                packet.ReadInt32("AchievementRequired", i);
             }
         }
 
