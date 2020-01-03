@@ -453,7 +453,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         {
             packet.ReadUInt32("MissingQuestCount");
 
-            for (var i = 0; i < 100; i++)
+            int max = 100;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_5_31921))
+                max = 125;
+
+            for (var i = 0; i < max; i++)
                 packet.ReadInt32<QuestId>("MissingQuestPOIs", i);
         }
 
