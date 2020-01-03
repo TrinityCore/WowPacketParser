@@ -10,6 +10,6 @@ namespace WowPacketParser.Enums
         WarlordsOfDraenor  = 5,
         Legion             = 6,
         BattleForAzeroth   = 7,
-        Classic            = 7,
+        Classic            = -1,
     }
 }
