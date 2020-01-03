@@ -90,9 +90,6 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.QuestRequestItems.IsEmpty())
                 return string.Empty;
 
-            foreach (var questRequestItem in Storage.QuestRequestItems)
-                questRequestItem.Item1.CheckVerifiedBuild();
-
             var templatesDb = SQLDatabase.Get(Storage.QuestRequestItems);
 
             return SQLUtil.Compare(Storage.QuestRequestItems, templatesDb, StoreNameType.Quest);
