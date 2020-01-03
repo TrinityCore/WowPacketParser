@@ -28,6 +28,7 @@ namespace WowPacketParser.Enums.Version
         {
             UpdateFieldDictionary.Clear();
             UpdateFieldNameDictionary.Clear();
+            UpdateFieldsHandlers.Clear();
         }
 
         public static bool LoadUFDictionaries(Assembly asm, ClientVersionBuild build)

@@ -62,7 +62,9 @@ namespace WowPacketParser
             foreach (var file in files)
             {
                 SessionHandler.ZStreams.Clear();
-                ClientVersion.SetVersion(Settings.ClientBuild);
+                if (Settings.ClientBuild != Enums.ClientVersionBuild.Zero)
+                    ClientVersion.SetVersion(Settings.ClientBuild);
+
                 try
                 {
                     var sf = new SniffFile(file, Settings.DumpFormat, Tuple.Create(++count, files.Count));

@@ -48,9 +48,9 @@ namespace WowPacketParser.Enums.Version
 {
     public static class Opcodes
     {
-        private static BiDictionary<Opcode, int> _serverDict = GetOpcodeDictionary(ClientVersion.Build, Direction.ServerToClient);
-        private static BiDictionary<Opcode, int> _clientDict = GetOpcodeDictionary(ClientVersion.Build, Direction.ClientToServer);
-        private static BiDictionary<Opcode, int> _miscDict = GetOpcodeDictionary(ClientVersion.Build, Direction.Bidirectional);
+        private static BiDictionary<Opcode, int> _serverDict = GetOpcodeDictionary(OpcodeDefiningBuild, Direction.ServerToClient);
+        private static BiDictionary<Opcode, int> _clientDict = GetOpcodeDictionary(OpcodeDefiningBuild, Direction.ClientToServer);
+        private static BiDictionary<Opcode, int> _miscDict = GetOpcodeDictionary(OpcodeDefiningBuild, Direction.Bidirectional);
 
         private static readonly Dictionary<ClientVersionBuild, Dictionary<Opcode, string>> ServerNameDict = new Dictionary<ClientVersionBuild, Dictionary<Opcode, string>>();
         private static readonly Dictionary<ClientVersionBuild, Dictionary<Opcode, string>> ClientNameDict = new Dictionary<ClientVersionBuild, Dictionary<Opcode, string>>();
@@ -58,9 +58,9 @@ namespace WowPacketParser.Enums.Version
 
         public static void InitializeOpcodeDictionary()
         {
-            _serverDict = GetOpcodeDictionary(ClientVersion.Build, Direction.ServerToClient);
-            _clientDict = GetOpcodeDictionary(ClientVersion.Build, Direction.ClientToServer);
-            _miscDict = GetOpcodeDictionary(ClientVersion.Build, Direction.Bidirectional);
+            _serverDict = GetOpcodeDictionary(OpcodeDefiningBuild, Direction.ServerToClient);
+            _clientDict = GetOpcodeDictionary(OpcodeDefiningBuild, Direction.ClientToServer);
+            _miscDict = GetOpcodeDictionary(OpcodeDefiningBuild, Direction.Bidirectional);
 
             InitializeOpcodeNameDictionary();
         }
@@ -68,34 +68,34 @@ namespace WowPacketParser.Enums.Version
         private static void InitializeOpcodeNameDictionary()
         {
             var tempDict = new Dictionary<Opcode, string>();
-            if (!ServerNameDict.ContainsKey(ClientVersion.Build))
+            if (!ServerNameDict.ContainsKey(OpcodeDefiningBuild))
             {
                 foreach (var o in _serverDict)
                     tempDict.Add(o.Key, o.Key.ToString());
 
-                ServerNameDict[ClientVersion.Build] = new Dictionary<Opcode, string>(tempDict);
+                ServerNameDict[OpcodeDefiningBuild] = new Dictionary<Opcode, string>(tempDict);
                 tempDict.Clear();
             }
 
-            if (!ClientNameDict.ContainsKey(ClientVersion.Build))
+            if (!ClientNameDict.ContainsKey(OpcodeDefiningBuild))
             {
                 foreach (var o in _clientDict)
                     tempDict.Add(o.Key, o.Key.ToString());
 
-                ClientNameDict[ClientVersion.Build] = new Dictionary<Opcode, string>(tempDict);
+                ClientNameDict[OpcodeDefiningBuild] = new Dictionary<Opcode, string>(tempDict);
                 tempDict.Clear();
             }
 
-            if (!MiscNameDict.ContainsKey(ClientVersion.Build))
+            if (!MiscNameDict.ContainsKey(OpcodeDefiningBuild))
             {
                 foreach (var o in _miscDict)
                     tempDict.Add(o.Key, o.Key.ToString());
 
-                MiscNameDict[ClientVersion.Build] = new Dictionary<Opcode, string>(tempDict);
+                MiscNameDict[OpcodeDefiningBuild] = new Dictionary<Opcode, string>(tempDict);
             }
         }
 
-        public static BiDictionary<Opcode, int> GetOpcodeDictionary(ClientVersionBuild build, Direction direction)
+        public static ClientVersionBuild GetOpcodeDefiningBuild(ClientVersionBuild build)
         {
             switch (build)
             {
@@ -137,66 +137,40 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V3_3_3a_11723:
                 case ClientVersionBuild.V3_3_5_12213:
                 case ClientVersionBuild.V3_3_5a_12340:
-                {
-                    return Opcodes_3_3_5.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V3_3_5a_12340;
                 case ClientVersionBuild.V4_0_1_13164:
                 case ClientVersionBuild.V4_0_1a_13205:
                 case ClientVersionBuild.V4_0_3_13329:
-                {
-                    return Opcodes_4_0_3.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V4_0_3_13329;
                 case ClientVersionBuild.V4_0_6_13596:
                 case ClientVersionBuild.V4_0_6a_13623:
-                {
-                    return Opcodes_4_0_6.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V4_0_6_13596;
                 case ClientVersionBuild.V4_1_0_13914:
                 case ClientVersionBuild.V4_1_0a_14007:
-                {
-                    return Opcodes_4_1_0.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V4_1_0_13914;
                 case ClientVersionBuild.V4_2_0_14333:
                 case ClientVersionBuild.V4_2_0a_14480:
-                {
-                    return Opcodes_4_2_0.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V4_2_0_14333;
                 case ClientVersionBuild.V4_2_2_14545:
-                {
-                    return Opcodes_4_2_2.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V4_2_2_14545;
                 case ClientVersionBuild.V4_3_0_15005:
                 case ClientVersionBuild.V4_3_0a_15050:
-                {
-                    return Opcodes_4_3_0.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V4_3_0_15005;
                 case ClientVersionBuild.V4_3_2_15211:
-                {
-                    return Opcodes_4_3_2.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V4_3_2_15211;
                 case ClientVersionBuild.V4_3_3_15354:
-                {
-                    return Opcodes_4_3_3.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V4_3_3_15354;
                 case ClientVersionBuild.V4_3_4_15595:
-                {
-                    return Opcodes_4_3_4.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V4_3_4_15595;
                 case ClientVersionBuild.V5_0_4_16016:
-                {
-                    return Opcodes_5_0_4.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V5_0_4_16016;
                 case ClientVersionBuild.V5_0_5_16048:
                 case ClientVersionBuild.V5_0_5a_16057:
                 case ClientVersionBuild.V5_0_5b_16135:
-                {
-                    return Opcodes_5_0_5.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V5_0_5_16048;
                 case ClientVersionBuild.V5_1_0_16309:
                 case ClientVersionBuild.V5_1_0a_16357:
-                {
-                    return Opcodes_5_1_0.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V5_1_0_16309;
                 case ClientVersionBuild.V5_2_0_16650:
                 case ClientVersionBuild.V5_2_0_16669:
                 case ClientVersionBuild.V5_2_0_16683:
@@ -207,89 +181,61 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V5_2_0_16733:
                 case ClientVersionBuild.V5_2_0_16769:
                 case ClientVersionBuild.V5_2_0_16826:
-                {
-                    return Opcodes_5_2_0.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V5_2_0_16650;
                 case ClientVersionBuild.V5_3_0_16981:
                 case ClientVersionBuild.V5_3_0_16983:
                 case ClientVersionBuild.V5_3_0_16992:
                 case ClientVersionBuild.V5_3_0_17055:
                 case ClientVersionBuild.V5_3_0_17116:
                 case ClientVersionBuild.V5_3_0_17128:
-                {
-                    return Opcodes_5_3_0.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V5_3_0_16981;
                 case ClientVersionBuild.V5_4_0_17359:
                 case ClientVersionBuild.V5_4_0_17371:
                 case ClientVersionBuild.V5_4_0_17399:
-                {
-                    return Opcodes_5_4_0.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V5_4_0_17359;
                 case ClientVersionBuild.V5_4_1_17538:
-                {
-                    return Opcodes_5_4_1.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V5_4_1_17538;
                 case ClientVersionBuild.V5_4_2_17658:
                 case ClientVersionBuild.V5_4_2_17688:
-                {
-                    return Opcodes_5_4_2.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V5_4_2_17658;
                 case ClientVersionBuild.V5_4_7_17898:
                 case ClientVersionBuild.V5_4_7_17930:
                 case ClientVersionBuild.V5_4_7_17956:
                 case ClientVersionBuild.V5_4_7_18019:
-                {
-                    return Opcodes_5_4_7.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V5_4_7_17898;
                 case ClientVersionBuild.V5_4_8_18291:
                 case ClientVersionBuild.V5_4_8_18414:
-                {
-                    return Opcodes_5_4_8.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V5_4_8_18291;
                 case ClientVersionBuild.V6_0_2_19033:
                 case ClientVersionBuild.V6_0_2_19034:
-                {
-                    return Opcodes_6_0_2.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V6_0_2_19033;
                 case ClientVersionBuild.V6_0_3_19103:
                 case ClientVersionBuild.V6_0_3_19116:
                 case ClientVersionBuild.V6_0_3_19243:
                 case ClientVersionBuild.V6_0_3_19342:
-                {
-                    return Opcodes_6_0_3.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V6_0_3_19103;
                 case ClientVersionBuild.V6_1_0_19678:
                 case ClientVersionBuild.V6_1_0_19702:
-                {
-                    return Opcodes_6_1_0.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V6_1_0_19678;
                 case ClientVersionBuild.V6_1_2_19802:
                 case ClientVersionBuild.V6_1_2_19831:
                 case ClientVersionBuild.V6_1_2_19865:
-                {
-                    return Opcodes_6_1_2.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V6_1_2_19802;
                 case ClientVersionBuild.V6_2_0_20173:
                 case ClientVersionBuild.V6_2_0_20182:
                 case ClientVersionBuild.V6_2_0_20201:
                 case ClientVersionBuild.V6_2_0_20216:
                 case ClientVersionBuild.V6_2_0_20253:
                 case ClientVersionBuild.V6_2_0_20338:
-                {
-                    return Opcodes_6_2_0.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V6_2_0_20173;
                 case ClientVersionBuild.V6_2_2_20444:
                 case ClientVersionBuild.V6_2_2a_20490:
                 case ClientVersionBuild.V6_2_2a_20574:
-                {
-                    return Opcodes_6_2_2.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V6_2_2_20444;
                 case ClientVersionBuild.V6_2_3_20726:
                 case ClientVersionBuild.V6_2_3_20779:
                 case ClientVersionBuild.V6_2_3_20886:
-                {
-                    return Opcodes_6_2_3.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V6_2_3_20726;
                 case ClientVersionBuild.V6_2_4_21315:
                 case ClientVersionBuild.V6_2_4_21336:
                 case ClientVersionBuild.V6_2_4_21343:
@@ -299,9 +245,7 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V6_2_4_21463:
                 case ClientVersionBuild.V6_2_4_21676:
                 case ClientVersionBuild.V6_2_4_21742:
-                {
-                    return Opcodes_6_2_4.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V6_2_4_21315;
                 case ClientVersionBuild.V7_0_3_22248:
                 case ClientVersionBuild.V7_0_3_22280:
                 case ClientVersionBuild.V7_0_3_22289:
@@ -318,9 +262,7 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V7_0_3_22624:
                 case ClientVersionBuild.V7_0_3_22747:
                 case ClientVersionBuild.V7_0_3_22810:
-                {
-                    return Opcodes_7_0_3.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V7_0_3_22248;
                 case ClientVersionBuild.V7_1_0_22900:
                 case ClientVersionBuild.V7_1_0_22908:
                 case ClientVersionBuild.V7_1_0_22950:
@@ -329,14 +271,10 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V7_1_0_22996:
                 case ClientVersionBuild.V7_1_0_23171:
                 case ClientVersionBuild.V7_1_0_23222:
-                {
-                    return Opcodes_7_1_0.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V7_1_0_22900;
                 case ClientVersionBuild.V7_1_5_23360:
                 case ClientVersionBuild.V7_1_5_23420:
-                {
-                    return Opcodes_7_1_5.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V7_1_5_23360;
                 case ClientVersionBuild.V7_2_0_23706:
                 case ClientVersionBuild.V7_2_0_23826:
                 case ClientVersionBuild.V7_2_0_23835:
@@ -348,9 +286,7 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V7_2_0_23911:
                 case ClientVersionBuild.V7_2_0_23937:
                 case ClientVersionBuild.V7_2_0_24015:
-                {
-                    return Opcodes_7_2_0.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V7_2_0_23706;
                 case ClientVersionBuild.V7_2_5_24330:
                 case ClientVersionBuild.V7_2_5_24367:
                 case ClientVersionBuild.V7_2_5_24414:
@@ -358,9 +294,7 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V7_2_5_24430:
                 case ClientVersionBuild.V7_2_5_24461:
                 case ClientVersionBuild.V7_2_5_24742:
-                {
-                    return Opcodes_7_2_5.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V7_2_5_24330;
                 case ClientVersionBuild.V7_3_0_24920:
                 case ClientVersionBuild.V7_3_0_24931:
                 case ClientVersionBuild.V7_3_0_24956:
@@ -368,9 +302,7 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V7_3_0_24974:
                 case ClientVersionBuild.V7_3_0_25021:
                 case ClientVersionBuild.V7_3_0_25195:
-                {
-                    return Opcodes_7_3_0.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V7_3_0_24920;
                 case ClientVersionBuild.V7_3_2_25383:
                 case ClientVersionBuild.V7_3_2_25442:
                 case ClientVersionBuild.V7_3_2_25455:
@@ -378,9 +310,7 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V7_3_2_25480:
                 case ClientVersionBuild.V7_3_2_25497:
                 case ClientVersionBuild.V7_3_2_25549:
-                {
-                    return Opcodes_7_3_2.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V7_3_2_25383;
                 case ClientVersionBuild.V7_3_5_25848:
                 case ClientVersionBuild.V7_3_5_25860:
                 case ClientVersionBuild.V7_3_5_25864:
@@ -401,9 +331,7 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V7_3_5_26822:
                 case ClientVersionBuild.V7_3_5_26899:
                 case ClientVersionBuild.V7_3_5_26972:
-                {
-                    return Opcodes_7_3_5.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V7_3_5_25848;
                 case ClientVersionBuild.V8_0_1_27101:
                 case ClientVersionBuild.V8_0_1_27144:
                 case ClientVersionBuild.V8_0_1_27165:
@@ -423,9 +351,7 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V8_0_1_27843:
                 case ClientVersionBuild.V8_0_1_27980:
                 case ClientVersionBuild.V8_0_1_28153:
-                {
-                    return Opcodes_8_0_1.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V8_0_1_27101;
                 case ClientVersionBuild.V8_1_0_28724:
                 case ClientVersionBuild.V8_1_0_28768:
                 case ClientVersionBuild.V8_1_0_28807:
@@ -439,9 +365,7 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V8_1_0_29482:
                 case ClientVersionBuild.V8_1_0_29600:
                 case ClientVersionBuild.V8_1_0_29621:
-                {
-                    return Opcodes_8_1_0.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V8_1_0_28724;
                 case ClientVersionBuild.V8_1_5_29683:
                 case ClientVersionBuild.V8_1_5_29701:
                 case ClientVersionBuild.V8_1_5_29704:
@@ -455,9 +379,7 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V8_1_5_29981:
                 case ClientVersionBuild.V8_1_5_30477:
                 case ClientVersionBuild.V8_1_5_30706:
-                {
-                    return Opcodes_8_1_5.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V8_1_5_29683;
                 case ClientVersionBuild.V8_2_0_30898:
                 case ClientVersionBuild.V8_2_0_30918:
                 case ClientVersionBuild.V8_2_0_30920:
@@ -466,9 +388,7 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V8_2_0_31229:
                 case ClientVersionBuild.V8_2_0_31429:
                 case ClientVersionBuild.V8_2_0_31478:
-                {
-                    return Opcodes_8_2_0.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V8_2_0_30898;
                 case ClientVersionBuild.V8_2_5_31921:
                 case ClientVersionBuild.V8_2_5_31958:
                 case ClientVersionBuild.V8_2_5_31960:
@@ -485,9 +405,7 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V8_2_5_32638:
                 case ClientVersionBuild.V8_2_5_32722:
                 case ClientVersionBuild.V8_2_5_32750:
-                {
-                    return Opcodes_8_2_5.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V8_2_5_31921;
                 case ClientVersionBuild.V1_13_2_31446:
                 case ClientVersionBuild.V1_13_2_31650:
                 case ClientVersionBuild.V1_13_2_31687:
@@ -497,13 +415,109 @@ namespace WowPacketParser.Enums.Version
                 case ClientVersionBuild.V1_13_2_32089:
                 case ClientVersionBuild.V1_13_2_32421:
                 case ClientVersionBuild.V1_13_2_32600:
-                {
-                    return Opcodes_1_13_2.Opcodes(direction);
-                }
+                    return ClientVersionBuild.V1_13_2_31446;
                 default:
-                {
+                    return ClientVersionBuild.V3_3_5a_12340;
+            }
+        }
+        public static ClientVersionBuild OpcodeDefiningBuild
+        {
+            get
+            {
+                return GetOpcodeDefiningBuild(ClientVersion.Build);
+            }
+        }
+
+        public static BiDictionary<Opcode, int> GetOpcodeDictionary(ClientVersionBuild build, Direction direction)
+        {
+            switch (GetOpcodeDefiningBuild(build))
+            {
+                case ClientVersionBuild.V3_3_5a_12340:
                     return Opcodes_3_3_5.Opcodes(direction);
-                }
+                case ClientVersionBuild.V4_0_3_13329:
+                    return Opcodes_4_0_3.Opcodes(direction);
+                case ClientVersionBuild.V4_0_6_13596:
+                    return Opcodes_4_0_6.Opcodes(direction);
+                case ClientVersionBuild.V4_1_0_13914:
+                    return Opcodes_4_1_0.Opcodes(direction);
+                case ClientVersionBuild.V4_2_0_14333:
+                    return Opcodes_4_2_0.Opcodes(direction);
+                case ClientVersionBuild.V4_2_2_14545:
+                    return Opcodes_4_2_2.Opcodes(direction);
+                case ClientVersionBuild.V4_3_0_15005:
+                    return Opcodes_4_3_0.Opcodes(direction);
+                case ClientVersionBuild.V4_3_2_15211:
+                    return Opcodes_4_3_2.Opcodes(direction);
+                case ClientVersionBuild.V4_3_3_15354:
+                    return Opcodes_4_3_3.Opcodes(direction);
+                case ClientVersionBuild.V4_3_4_15595:
+                    return Opcodes_4_3_4.Opcodes(direction);
+                case ClientVersionBuild.V5_0_4_16016:
+                    return Opcodes_5_0_4.Opcodes(direction);
+                case ClientVersionBuild.V5_0_5_16048:
+                    return Opcodes_5_0_5.Opcodes(direction);
+                case ClientVersionBuild.V5_1_0_16309:
+                    return Opcodes_5_1_0.Opcodes(direction);
+                case ClientVersionBuild.V5_2_0_16650:
+                    return Opcodes_5_2_0.Opcodes(direction);
+                case ClientVersionBuild.V5_3_0_16981:
+                    return Opcodes_5_3_0.Opcodes(direction);
+                case ClientVersionBuild.V5_4_0_17359:
+                    return Opcodes_5_4_0.Opcodes(direction);
+                case ClientVersionBuild.V5_4_1_17538:
+                    return Opcodes_5_4_1.Opcodes(direction);
+                case ClientVersionBuild.V5_4_2_17658:
+                    return Opcodes_5_4_2.Opcodes(direction);
+                case ClientVersionBuild.V5_4_7_17898:
+                    return Opcodes_5_4_7.Opcodes(direction);
+                case ClientVersionBuild.V5_4_8_18291:
+                    return Opcodes_5_4_8.Opcodes(direction);
+                case ClientVersionBuild.V6_0_2_19033:
+                    return Opcodes_6_0_2.Opcodes(direction);
+                case ClientVersionBuild.V6_0_3_19103:
+                    return Opcodes_6_0_3.Opcodes(direction);
+                case ClientVersionBuild.V6_1_0_19678:
+                    return Opcodes_6_1_0.Opcodes(direction);
+                case ClientVersionBuild.V6_1_2_19802:
+                    return Opcodes_6_1_2.Opcodes(direction);
+                case ClientVersionBuild.V6_2_0_20173:
+                    return Opcodes_6_2_0.Opcodes(direction);
+                case ClientVersionBuild.V6_2_2_20444:
+                    return Opcodes_6_2_2.Opcodes(direction);
+                case ClientVersionBuild.V6_2_3_20726:
+                    return Opcodes_6_2_3.Opcodes(direction);
+                case ClientVersionBuild.V6_2_4_21315:
+                    return Opcodes_6_2_4.Opcodes(direction);
+                case ClientVersionBuild.V7_0_3_22248:
+                    return Opcodes_7_0_3.Opcodes(direction);
+                case ClientVersionBuild.V7_1_0_22900:
+                    return Opcodes_7_1_0.Opcodes(direction);
+                case ClientVersionBuild.V7_1_5_23360:
+                    return Opcodes_7_1_5.Opcodes(direction);
+                case ClientVersionBuild.V7_2_0_23706:
+                    return Opcodes_7_2_0.Opcodes(direction);
+                case ClientVersionBuild.V7_2_5_24330:
+                    return Opcodes_7_2_5.Opcodes(direction);
+                case ClientVersionBuild.V7_3_0_24920:
+                    return Opcodes_7_3_0.Opcodes(direction);
+                case ClientVersionBuild.V7_3_2_25383:
+                    return Opcodes_7_3_2.Opcodes(direction);
+                case ClientVersionBuild.V7_3_5_25848:
+                    return Opcodes_7_3_5.Opcodes(direction);
+                case ClientVersionBuild.V8_0_1_27101:
+                    return Opcodes_8_0_1.Opcodes(direction);
+                case ClientVersionBuild.V8_1_0_28724:
+                    return Opcodes_8_1_0.Opcodes(direction);
+                case ClientVersionBuild.V8_1_5_29683:
+                    return Opcodes_8_1_5.Opcodes(direction);
+                case ClientVersionBuild.V8_2_0_30898:
+                    return Opcodes_8_2_0.Opcodes(direction);
+                case ClientVersionBuild.V8_2_5_31921:
+                    return Opcodes_8_2_5.Opcodes(direction);
+                case ClientVersionBuild.V1_13_2_31446:
+                    return Opcodes_1_13_2.Opcodes(direction);
+                default:
+                    return Opcodes_3_3_5.Opcodes(direction);
             }
         }
 
@@ -561,17 +575,17 @@ namespace WowPacketParser.Enums.Version
                 string name;
                 if (direction == Direction.ClientToServer || direction == Direction.BNClientToServer)
                 {
-                    if (ClientNameDict[ClientVersion.Build].TryGetValue(opc, out name))
+                    if (ClientNameDict[OpcodeDefiningBuild].TryGetValue(opc, out name))
                         return name;
-                    if (MiscNameDict[ClientVersion.Build].TryGetValue(opc, out name))
+                    if (MiscNameDict[OpcodeDefiningBuild].TryGetValue(opc, out name))
                         return name;
 
                 }
                 else if (direction == Direction.ServerToClient || direction == Direction.BNServerToClient)
                 {
-                    if (ServerNameDict[ClientVersion.Build].TryGetValue(opc, out name))
+                    if (ServerNameDict[OpcodeDefiningBuild].TryGetValue(opc, out name))
                         return name;
-                    if (MiscNameDict[ClientVersion.Build].TryGetValue(opc, out name))
+                    if (MiscNameDict[OpcodeDefiningBuild].TryGetValue(opc, out name))
                         return name;
                 }
             }
