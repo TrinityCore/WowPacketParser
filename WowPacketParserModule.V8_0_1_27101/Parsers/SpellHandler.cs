@@ -216,7 +216,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             packet.ReadInt16("PlayerLevelDelta", idx);
             packet.ReadUInt16("PlayerItemLevel", idx);
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724) && ClientVersion.Expansion != ClientType.Classic)
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724) && !ClientVersion.IsClassicClientVersionBuild(ClientVersion.Build))
                 packet.ReadUInt16("TargetItemLevel", idx);
             packet.ReadUInt16("ScalingHealthItemLevelCurveID", idx);
             packet.ReadByte("TargetLevel", idx);
