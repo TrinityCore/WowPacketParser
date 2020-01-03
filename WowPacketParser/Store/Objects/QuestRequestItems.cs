@@ -26,6 +26,14 @@ namespace WowPacketParser.Store.Objects
         public string CompletionText;
 
         [DBFieldName("VerifiedBuild")]
-        public int? VerifiedBuild = ClientVersion.BuildInt;
+        public int? VerifiedBuild;
+
+        public void CheckVerifiedBuild()
+        {
+            if (EmoteOnComplete >= 0 && EmoteOnIncomplete >= 0 && EmoteOnCompleteDelay >= 0 && EmoteOnIncompleteDelay >= 0)
+                VerifiedBuild = ClientVersion.BuildInt;
+            else
+                VerifiedBuild = 0;
+        }
     }
 }
