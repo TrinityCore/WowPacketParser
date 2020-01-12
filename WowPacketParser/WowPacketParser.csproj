@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -471,6 +471,7 @@
     <Compile Include="Enums\Version\V8_1_5_29620\Opcodes.cs" />
     <Compile Include="Enums\Version\V8_2_0_30898\Opcodes.cs" />
     <Compile Include="Enums\Version\V8_2_5_31921\Opcodes.cs" />
+    <Compile Include="Enums\Version\V8_3_0_32861\Opcodes.cs" />
     <Compile Include="Enums\VictimStates.cs" />
     <Compile Include="Enums\VoidTransferError.cs" />
     <Compile Include="Enums\WardenCheckType.cs" />
