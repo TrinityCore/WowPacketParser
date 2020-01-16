@@ -84,15 +84,15 @@ namespace WowPacketParser.Store.Objects
             return MapIsContinent(Map) ? 1 : 3;
         }
 
-        public List<byte> GetDefaultSpawnDifficulties()
+        public List<int> GetDefaultSpawnDifficulties()
         {
             if (Settings.UseDBC && DBC.DBC.MapDifficultyStores != null)
             {
-                if (DBC.DBC.MapDifficultyStores.ContainsKey((ushort)Map))
-                    return DBC.DBC.MapDifficultyStores[(ushort)Map];
+                if (DBC.DBC.MapDifficultyStores.ContainsKey((int)Map))
+                    return DBC.DBC.MapDifficultyStores[(int)Map];
             }
 
-            return new List<byte>();
+            return new List<int>();
         }
 
         private static bool MapIsContinent(uint mapId)

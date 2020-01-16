@@ -3,6 +3,7 @@
     [DBFile("Criteria")]
     public sealed class CriteriaEntry
     {
+        public uint ID;
         public short Type;
         public int Asset;
         public uint ModifierTreeID;

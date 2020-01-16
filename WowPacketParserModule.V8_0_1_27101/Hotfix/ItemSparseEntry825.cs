@@ -1,9 +1,9 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
 
-namespace WowPacketParserModule.V8_0_1_27101.Hotfix
+namespace WowPacketParserModule.V8_2_5_31921.Hotfix
 {
-    [HotfixStructure(DB2Hash.ItemSparse, ClientVersionBuild.V8_0_1_27101, ClientVersionBuild.V8_2_5_31921, HasIndexInData = false)]
+    [HotfixStructure(DB2Hash.ItemSparse, ClientVersionBuild.V8_2_5_31921, HasIndexInData = false)]
     public class ItemSparseEntry
     {
         public long AllowableRace { get; set; }
@@ -40,12 +40,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public ushort SocketMatchEnchantmentId { get; set; }
         public ushort TotemCategoryID { get; set; }
         public ushort InstanceBound { get; set; }
-        public ushort ZoneBound { get; set; }
+        [HotfixArray(2)]
+        public ushort[] ZoneBound { get; set; }
         public ushort ItemSet { get; set; }
-        [HotfixVersion(ClientVersionBuild.V8_1_5_29683, true)]
-        public ushort ItemRandomSuffixGroupID { get; set; }
-        [HotfixVersion(ClientVersionBuild.V8_1_5_29683, true)]
-        public ushort RandomSelect { get; set; }
         public ushort LockID { get; set; }
         public ushort StartQuestID { get; set; }
         public ushort PageID { get; set; }

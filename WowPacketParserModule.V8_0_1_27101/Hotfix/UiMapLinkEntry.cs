@@ -14,5 +14,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public int ParentUiMapID { get; set; }
         public int OrderIndex { get; set; }
         public int ChildUiMapID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V8_2_0_30898, false)]
+        public int OverrideHighlightFileDataID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V8_2_0_30898, false)]
+        public int OverrideHighlightAtlasID { get; set; }
     }
 }

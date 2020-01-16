@@ -1,9 +1,9 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
 
-namespace WowPacketParserModule.V8_0_1_27101.Hotfix
+namespace WowPacketParserModule.V8_2_0_30898.Hotfix
 {
-    [HotfixStructure(DB2Hash.GarrFollower, ClientVersionBuild.V8_0_1_27101, ClientVersionBuild.V8_2_0_30898)]
+    [HotfixStructure(DB2Hash.GarrFollower, ClientVersionBuild.V8_2_0_30898)]
     public class GarrFollowerEntry
     {
         public string HordeSourceText { get; set; }
@@ -16,8 +16,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public int AllianceCreatureID { get; set; }
         public byte HordeGarrFollRaceID { get; set; }
         public byte AllianceGarrFollRaceID { get; set; }
-        public byte HordeGarrClassSpecID { get; set; }
-        public byte AllianceGarrClassSpecID { get; set; }
+        public int HordeGarrClassSpecID { get; set; }
+        public int AllianceGarrClassSpecID { get; set; }
         public byte Quality { get; set; }
         public byte FollowerLevel { get; set; }
         public ushort ItemLevelWeapon { get; set; }

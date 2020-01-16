@@ -1,17 +1,17 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
 
-namespace WowPacketParserModule.V8_0_1_27101.Hotfix
+namespace WowPacketParserModule.V8_2_5_31921.Hotfix
 {
-    [HotfixStructure(DB2Hash.SpellEffect, ClientVersionBuild.V8_0_1_27101, ClientVersionBuild.V8_2_5_31921, HasIndexInData = false)]
+    [HotfixStructure(DB2Hash.SpellEffect, ClientVersionBuild.V8_2_5_31921, HasIndexInData = false)]
     public class SpellEffectEntry
     {
+        public short EffectAura { get; set; }
         public int DifficultyID { get; set; }
         public int EffectIndex { get; set; }
         public uint Effect { get; set; }
         public float EffectAmplitude { get; set; }
         public int EffectAttributes { get; set; }
-        public short EffectAura { get; set; }
         public int EffectAuraPeriod { get; set; }
         public float EffectBonusCoefficient { get; set; }
         public float EffectChainAmplitude { get; set; }

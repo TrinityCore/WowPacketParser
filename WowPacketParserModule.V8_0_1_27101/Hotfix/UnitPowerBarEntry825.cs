@@ -1,9 +1,9 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
 
-namespace WowPacketParserModule.V8_0_1_27101.Hotfix
+namespace WowPacketParserModule.V8_2_5_31921.Hotfix
 {
-    [HotfixStructure(DB2Hash.UnitPowerBar, ClientVersionBuild.V8_0_1_27101, ClientVersionBuild.V8_2_5_31921, HasIndexInData = false)]
+    [HotfixStructure(DB2Hash.UnitPowerBar, ClientVersionBuild.V8_2_5_31921, HasIndexInData = false)]
     public class UnitPowerBarEntry
     {
         public string Name { get; set; }
@@ -12,7 +12,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public string ToolTip { get; set; }
         public uint MinPower { get; set; }
         public uint MaxPower { get; set; }
-        public ushort StartPower { get; set; }
+        public uint StartPower { get; set; }
         public byte CenterPower { get; set; }
         public float RegenerationPeace { get; set; }
         public float RegenerationCombat { get; set; }

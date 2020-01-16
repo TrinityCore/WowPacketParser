@@ -1,16 +1,16 @@
-﻿using System.Runtime.InteropServices;
-namespace WowPacketParser.DBC.Structures.BattleForAzeroth
+﻿namespace WowPacketParser.DBC.Structures.BattleForAzeroth
 {
     [DBFile("SpellEffect")]
 
     public sealed class SpellEffectEntry
     {
+        public uint ID;
+        public short EffectAura;
         public int DifficultyID;
         public int EffectIndex;
         public uint Effect;
         public float EffectAmplitude;
         public int EffectAttributes;
-        public short EffectAura;
         public int EffectAuraPeriod;
         public float EffectBonusCoefficient;
         public float EffectChainAmplitude;
@@ -28,14 +28,10 @@ namespace WowPacketParser.DBC.Structures.BattleForAzeroth
         public float ResourceCoefficient;
         public float GroupSizeBasePointsCoefficient;
         public float EffectBasePoints;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-        public int[] EffectMiscValue;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-        public uint[] EffectRadiusIndex;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public int[] EffectSpellClassMask;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-        public short[] ImplicitTarget;
+        public int[] EffectMiscValue = new int[2];
+        public uint[] EffectRadiusIndex = new uint[2];
+        public int[] EffectSpellClassMask = new int[4];
+        public short[] ImplicitTarget = new short[2];
         public int SpellID;
     }
 }

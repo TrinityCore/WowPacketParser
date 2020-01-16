@@ -139,7 +139,7 @@ namespace WowPacketParser.SQL
                     broadcastText.SoundEntriesID[1] = Convert.ToUInt32(reader["SoundEntriesID2"]);
 
                     if (!DBC.DBC.BroadcastText.ContainsKey(id))
-                        DBC.DBC.BroadcastText.TryAdd(id, broadcastText);
+                        DBC.DBC.BroadcastText.Add(id, broadcastText);
                     else
                         DBC.DBC.BroadcastText[id] = broadcastText;
                 }

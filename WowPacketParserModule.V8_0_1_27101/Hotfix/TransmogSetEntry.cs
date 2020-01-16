@@ -20,5 +20,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         [HotfixVersion(ClientVersionBuild.V8_1_0_28724, false)]
         public int PatchID { get; set; }
         public short UiOrder { get; set; }
+        [HotfixVersion(ClientVersionBuild.V8_2_5_31921, false)]
+        public int PlayerConditionID { get; set; }
     }
 }

@@ -1,18 +1,16 @@
-﻿using System.Runtime.InteropServices;
-
-namespace WowPacketParser.DBC.Structures.BattleForAzeroth
+﻿namespace WowPacketParser.DBC.Structures.BattleForAzeroth
 {
     [DBFile("Map")]
     public sealed class MapEntry
     {
+        public uint ID;
         public string Directory;
         public string MapName;
         public string MapDescription0;
         public string MapDescription1;
         public string PvpShortDescription;
         public string PvpLongDescription;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-        public float[] Corpse;
+        public float[] Corpse = new float[2];
         public byte MapType;
         public sbyte InstanceType;
         public byte ExpansionID;
@@ -27,7 +25,7 @@ namespace WowPacketParser.DBC.Structures.BattleForAzeroth
         public byte MaxPlayers;
         public short WindSettingsID;
         public int ZmpFileDataID;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-        public uint[] Flags;
+        public int WdtFileDataID;
+        public uint[] Flags = new uint[2];
     }
 }
