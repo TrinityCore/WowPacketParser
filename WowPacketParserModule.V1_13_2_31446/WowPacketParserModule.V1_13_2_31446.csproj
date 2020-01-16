@@ -80,6 +80,7 @@
     <ProjectReference Include="..\WowPacketParser\WowPacketParser.csproj">
       <Project>{0bf6f270-0b6f-4705-8e1a-f57db76db407}</Project>
       <Name>WowPacketParser</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
