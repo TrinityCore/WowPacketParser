@@ -5,12 +5,12 @@ solution: WowPacketParser.sln
 
 matrix:
   include:
-    - dotnet: 2.0
+    - dotnet: 2.1
       mono: none
       env: DOTNETCORE=1
       dist: bionic
     - mono: latest
-      dotnet: 2.0
+      dotnet: 2.1
       dist: bionic
   allow_failures:
     - mono: none
