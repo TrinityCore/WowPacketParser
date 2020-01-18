@@ -1,5 +1,4 @@
-dist: trusty
-sudo: false
+dist: bionic
 
 language: csharp
 solution: WowPacketParser.sln
