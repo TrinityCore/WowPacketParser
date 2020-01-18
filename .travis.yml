@@ -5,15 +5,15 @@ solution: WowPacketParser.sln
 
 matrix:
   include:
-    - dotnet: 3.0
+    - dotnet: 2.0
       mono: none
       env: DOTNETCORE=1
       dist: bionic
     - mono: latest
-      dotnet: 3.0
+      dotnet: 2.0
       dist: bionic
   allow_failures:
-    - dotnet: 3.0
+    - mono: none
 
 install: ./scripts/travis-install.sh
 script: ./scripts/travis-build.sh
