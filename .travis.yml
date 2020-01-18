@@ -6,12 +6,14 @@ solution: WowPacketParser.sln
 
 matrix:
   include:
-    - dotnet: 1.0.1
+    - dotnet: 3.0
       mono: none
       env: DOTNETCORE=1
     - mono: latest
+      dotnet: 3.0
+      env: DOTNETCORE=1
   allow_failures:
-    - dotnet: 1.0.1
+    - dotnet: 3.0
 
 install: ./scripts/travis-install.sh
 script: ./scripts/travis-build.sh
