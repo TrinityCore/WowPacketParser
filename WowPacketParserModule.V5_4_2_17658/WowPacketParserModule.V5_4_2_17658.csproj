@@ -1,127 +1,41 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{611E8ABD-9581-4CDC-A98E-FDDD743B7908}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WowPacketParserModule.V5_4_2_17658</RootNamespace>
-    <AssemblyName>WowPacketParserModule.V5_4_2_17658</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Authors>TrinityCore</Authors>
+    <Copyright>Copyright © 2013-2020</Copyright>
+    <PackageProjectUrl>https://www.trinitycore.org/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/TrinityCore/WowPacketParser</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
+
   <PropertyGroup>
-    <StartupObject />
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\WowPacketParser\bin\Debug\Parsers\</OutputPath>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\WowPacketParser\bin\Debug\netcoreapp3.1\Parsers\</OutputPath>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors />
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisLogFile>bin\Debug\WowPacketParserModule.V5_4_2_17658.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-    <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>6</LangVersion>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>..\WowPacketParser\bin\Release\Parsers\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisLogFile>bin\Release\WowPacketParserModule.V5_4_2_17658.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>6</LangVersion>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+    <OutputPath>..\WowPacketParser\bin\Release\netcoreapp3.1\Parsers\</OutputPath>
   </PropertyGroup>
+
   <ItemGroup>
-    <Compile Include="Hotfix\BroadcastTextEntry.cs" />
-    <Compile Include="Hotfix\CreatureDifficultyEntry.cs" />
-    <Compile Include="Hotfix\CreatureEntry.cs" />
-    <Compile Include="Hotfix\GameObjectsEntry.cs" />
-    <Compile Include="Hotfix\HotfixSerializer.cs" />
-    <Compile Include="Hotfix\ItemEntry.cs" />
-    <Compile Include="Hotfix\ItemExtendedCost.cs" />
-    <Compile Include="Hotfix\ItemSparseEntry.cs" />
-    <Compile Include="Hotfix\KeyChainEntry.cs" />
-    <Compile Include="Hotfix\SceneScriptEntry.cs" />
-    <Compile Include="Hotfix\VignetteEntry.cs" />
-    <Compile Include="Parsers\AchievementHandler.cs" />
-    <Compile Include="Parsers\AccountDataHandler.cs" />
-    <Compile Include="Parsers\ActionBarHandler.cs" />
-    <Compile Include="Parsers\AddonHandler.cs" />
-    <Compile Include="Parsers\ArenaHandler.cs" />
-    <Compile Include="Parsers\BattlePetHandler.cs" />
-    <Compile Include="Parsers\ChannelHandler.cs" />
-    <Compile Include="Parsers\CharacterHandler.cs" />
-    <Compile Include="Parsers\ChatHandler.cs" />
-    <Compile Include="Parsers\CombatLogHandler.cs" />
-    <Compile Include="Parsers\CorpseHandler.cs" />
-    <Compile Include="Parsers\EquipmentSetHandler.cs" />
-    <Compile Include="Parsers\GameObjectHandler.cs" />
-    <Compile Include="Parsers\GroupHandler.cs" />
-    <Compile Include="Parsers\GuildHandler.cs" />
-    <Compile Include="Parsers\HotfixHandler.cs" />
-    <Compile Include="Parsers\LfgHandler.cs" />
-    <Compile Include="Parsers\ItemHandler.cs" />
-    <Compile Include="Parsers\MailHandler.cs" />
-    <Compile Include="Parsers\MiscellaneousHandler.cs" />
-    <Compile Include="Parsers\MovementHandler.cs" />
-    <Compile Include="Parsers\NpcHandler.cs" />
-    <Compile Include="Parsers\PetHandler.cs" />
-    <Compile Include="Parsers\ReputationHandler.cs" />
-    <Compile Include="Parsers\QueryHandler.cs" />
-    <Compile Include="Parsers\QuestHandler.cs" />
-    <Compile Include="Parsers\SessionHandler.cs" />
-    <Compile Include="Parsers\SpellHandler.cs" />
-    <Compile Include="Parsers\UpdateHandler.cs" />
-    <Compile Include="Parsers\WardenHandler.cs" />
-    <Compile Include="Parsers\WorldStateHandler.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <PackageReference Include="Sigil" Version="5.0.0" />
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\WowPacketParser\WowPacketParser.csproj">
-      <Project>{0BF6F270-0B6F-4705-8E1A-F57DB76DB407}</Project>
-      <Name>WowPacketParser</Name>
-      <Private>False</Private>
+      <Private>false</Private>
+      <EmbedInteropTypes>false</EmbedInteropTypes>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Sigil, Version=4.7.0.0, Culture=neutral, PublicKeyToken=2d06c3494341c8ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\Sigil.4.7.0\lib\net45\Sigil.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

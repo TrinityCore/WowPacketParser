@@ -1,197 +1,51 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{63484313-34D2-4133-B157-A19D12B69D9B}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WowPacketParserModule.V6_0_2_19033</RootNamespace>
-    <AssemblyName>WowPacketParserModule.V6_0_2_19033</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <FileAlignment>512</FileAlignment>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Authors>TrinityCore</Authors>
+    <Copyright>Copyright © 2014-2020</Copyright>
+    <PackageProjectUrl>https://www.trinitycore.org/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/TrinityCore/WowPacketParser</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
+
   <PropertyGroup>
-    <StartupObject />
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>..\WowPacketParser\bin\Debug\Parsers\</OutputPath>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\WowPacketParser\bin\Release\netcoreapp3.1\Parsers\</OutputPath>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\WowPacketParser\bin\Debug\netcoreapp3.1\Parsers\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisLogFile>bin\Debug\WowPacketParserModule.V6_0_2_19033.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-    <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>6</LangVersion>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningsAsErrors />
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <OutputPath>..\WowPacketParser\bin\Release\Parsers\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <CodeAnalysisLogFile>bin\Release\WowPacketParserModule.V6_0_2_19033.dll.CodeAnalysisLog.xml</CodeAnalysisLogFile>
-    <CodeAnalysisUseTypeNameInSuppression>true</CodeAnalysisUseTypeNameInSuppression>
-    <CodeAnalysisModuleSuppressionsFile>GlobalSuppressions.cs</CodeAnalysisModuleSuppressionsFile>
-    <UseVSHostingProcess>false</UseVSHostingProcess>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRuleSetDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\\Rule Sets</CodeAnalysisRuleSetDirectories>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisRuleDirectories>;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Team Tools\Static Analysis Tools\FxCop\\Rules</CodeAnalysisRuleDirectories>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>6</LangVersion>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Compile Include="Enums\MovementFlag.cs" />
-    <Compile Include="Enums\UpdateFields.cs" />
-    <Compile Include="Enums\CharacterUndeleteResult.cs" />
-    <Compile Include="Enums\UpdateFields610.cs" />
-    <Compile Include="Enums\UpdateFields620.cs" />
-    <Compile Include="Enums\UpdateFields622.cs" />
-    <Compile Include="Enums\UpdateFields623.cs" />
-    <Compile Include="Enums\UpdateFields624.cs" />
-    <Compile Include="Hotfix\AreaPOIEntry.cs" />
-    <Compile Include="Hotfix\AreaPOIStateEntry.cs" />
-    <Compile Include="Hotfix\BattlePetSpeciesEntry.cs" />
-    <Compile Include="Hotfix\BroadcastTextEntry.cs" />
-    <Compile Include="Hotfix\ChrUpgradeBucketEntry.cs" />
-    <Compile Include="Hotfix\ChrUpgradeBucketSpellEntry.cs" />
-    <Compile Include="Hotfix\ChrUpgradeTierEntry.cs" />
-    <Compile Include="Hotfix\CreatureEntry.cs" />
-    <Compile Include="Hotfix\CriteriaTreeEntry.cs" />
-    <Compile Include="Hotfix\CurvePointEntry.cs" />
-    <Compile Include="Hotfix\GameObjectsEntry.cs" />
-    <Compile Include="Hotfix\HolidaysEntry.cs" />
-    <Compile Include="Hotfix\HotfixSerializer.cs" />
-    <Compile Include="Hotfix\ItemAppearanceEntry.cs" />
-    <Compile Include="Hotfix\ItemBonusEntry.cs" />
-    <Compile Include="Hotfix\ItemBonusTreeNodeEntry.cs" />
-    <Compile Include="Hotfix\ItemCurrencyCostEntry.cs" />
-    <Compile Include="Hotfix\ItemEffectEntry.cs" />
-    <Compile Include="Hotfix\ItemEntry.cs" />
-    <Compile Include="Hotfix\ItemExtendedCost.cs" />
-    <Compile Include="Hotfix\ItemModifiedAppearanceEntry.cs" />
-    <Compile Include="Hotfix\ItemSparseEntry.cs" />
-    <Compile Include="Hotfix\KeyChainEntry.cs" />
-    <Compile Include="Hotfix\LocationEntry.cs" />
-    <Compile Include="Hotfix\OverrideSpellDataEntry.cs" />
-    <Compile Include="Hotfix\PhaseXPhaseGroupEntry.cs" />
-    <Compile Include="Hotfix\RulesetItemUpgradeEntry.cs" />
-    <Compile Include="Hotfix\SceneScriptEntry.cs" />
-    <Compile Include="Hotfix\MountEntry.cs" />
-    <Compile Include="Hotfix\SpellAuraRestrictionsEntry.cs" />
-    <Compile Include="Hotfix\SpellCastingRequirementsEntry.cs" />
-    <Compile Include="Hotfix\SpellClassOptionsEntry.cs" />
-    <Compile Include="Hotfix\SpellEffectGroupSizeEntry.cs" />
-    <Compile Include="Hotfix\SpellLearnSpellEntry.cs" />
-    <Compile Include="Hotfix\SpellMiscEntry.cs" />
-    <Compile Include="Hotfix\SpellPowerEntry.cs" />
-    <Compile Include="Hotfix\SpellReagentsEntry.cs" />
-    <Compile Include="Hotfix\SpellRuneCostEntry.cs" />
-    <Compile Include="Hotfix\SpellTotemsEntry.cs" />
-    <Compile Include="Hotfix\TaxiNodesEntry.cs" />
-    <Compile Include="Hotfix\TaxiPathEntry.cs" />
-    <Compile Include="Hotfix\TaxiPathNodeEntry.cs" />
-    <Compile Include="Hotfix\ToyEntry.cs" />
-    <Compile Include="Hotfix\VignetteEntry.cs" />
-    <Compile Include="Hotfix\WbAccessControlListEntry.cs" />
-    <Compile Include="Parsers\AchievementHandler.cs" />
-    <Compile Include="Parsers\AccountDataHandler.cs" />
-    <Compile Include="Parsers\ActionBarHandler.cs" />
-    <Compile Include="Parsers\AddonHandler.cs" />
-    <Compile Include="Parsers\ArchaelogyHandler.cs" />
-    <Compile Include="Parsers\ArenaHandler.cs" />
-    <Compile Include="Parsers\AreaTriggerHandler.cs" />
-    <Compile Include="Parsers\AuctionHandler.cs" />
-    <Compile Include="Parsers\BattlegroundHandler.cs" />
-    <Compile Include="Parsers\BattlePetHandler.cs" />
-    <Compile Include="Parsers\BattlePayHandler.cs" />
-    <Compile Include="Parsers\BlackMarketHandler.cs" />
-    <Compile Include="Parsers\CalendarHandler.cs" />
-    <Compile Include="Parsers\ChallengeModeHandler.cs" />
-    <Compile Include="Parsers\ChannelHandler.cs" />
-    <Compile Include="Parsers\CharacterHandler.cs" />
-    <Compile Include="Parsers\ChatHandler.cs" />
-    <Compile Include="Parsers\CombatHandler.cs" />
-    <Compile Include="Parsers\CombatLogHandler.cs" />
-    <Compile Include="Parsers\ContactHandler.cs" />
-    <Compile Include="Parsers\CorpseHandler.cs" />
-    <Compile Include="Parsers\CreatureHandler.cs" />
-    <Compile Include="Parsers\CurrencyHandler.cs" />
-    <Compile Include="Parsers\EquipmentSetHandler.cs" />
-    <Compile Include="Parsers\GameObjectHandler.cs" />
-    <Compile Include="Parsers\GarrisonHandler.cs" />
-    <Compile Include="Parsers\GroupHandler.cs" />
-    <Compile Include="Parsers\GuildHandler.cs" />
-    <Compile Include="Parsers\HotfixHandler.cs" />
-    <Compile Include="Parsers\InstanceHandler.cs" />
-    <Compile Include="Parsers\ItemHandler.cs" />
-    <Compile Include="Parsers\LfgHandler.cs" />
-    <Compile Include="Parsers\LootHandler.cs" />
-    <Compile Include="Parsers\MailHandler.cs" />
-    <Compile Include="Parsers\MiscellaneousHandler.cs" />
-    <Compile Include="Parsers\MovementHandler.cs" />
-    <Compile Include="Parsers\NpcHandler.cs" />
-    <Compile Include="Parsers\PetHandler.cs" />
-    <Compile Include="Parsers\QuestHandler.cs" />
-    <Compile Include="Parsers\RecruitAFriendHandler.cs" />
-    <Compile Include="Parsers\ReputationHandler.cs" />
-    <Compile Include="Parsers\SceneHandler.cs" />
-    <Compile Include="Parsers\SessionHandler.cs" />
-    <Compile Include="Parsers\SpellHandler.cs" />
-    <Compile Include="Parsers\TaxiHandler.cs" />
-    <Compile Include="Parsers\TicketHandler.cs" />
-    <Compile Include="Parsers\TokenHandler.cs" />
-    <Compile Include="Parsers\TradeHandler.cs" />
-    <Compile Include="Parsers\VoidStorageHandler.cs" />
-    <Compile Include="Parsers\WardenHandler.cs" />
-    <Compile Include="Parsers\WorldStateHandler.cs" />
-    <Compile Include="Parsers\UpdateHandler.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <PackageReference Include="Sigil" Version="5.0.0" />
   </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\WowPacketParserModule.Substructures\WowPacketParserModule.Substructures.csproj">
-      <Project>{953229b7-01c4-457b-86cc-f0dd1173f217}</Project>
-      <Name>WowPacketParserModule.Substructures</Name>
+      <EmbedInteropTypes>false</EmbedInteropTypes>
+      <Private>true</Private>
     </ProjectReference>
     <ProjectReference Include="..\WowPacketParser\WowPacketParser.csproj">
-      <Project>{0BF6F270-0B6F-4705-8E1A-F57DB76DB407}</Project>
-      <Name>WowPacketParser</Name>
-      <Private>False</Private>
+      <EmbedInteropTypes>false</EmbedInteropTypes>
+      <Private>false</Private>
     </ProjectReference>
   </ItemGroup>
+
   <ItemGroup>
-    <Reference Include="DB2FileReaderLib">
-      <HintPath>..\packages\DB2FileReaderLib.1.0.0.0\lib\DB2FileReaderLib.dll</HintPath>
+    <Reference Include="DBFileReaderLib">
+      <HintPath>..\packages\DBFileReaderLib.1.0.0.0\lib\DBFileReaderLib.dll</HintPath>
     </Reference>
-    <Reference Include="Sigil, Version=4.7.0.0, Culture=neutral, PublicKeyToken=2d06c3494341c8ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\Sigil.4.7.0\lib\net45\Sigil.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

@@ -1,11 +1,10 @@
-﻿using System.Runtime.InteropServices;
-
-namespace WowPacketParser.DBC.Structures.BattleForAzeroth
+﻿namespace WowPacketParser.DBC.Structures.BattleForAzeroth
 {
     [DBFile("CreatureFamily")]
 
     public sealed class CreatureFamilyEntry
     {
+        public uint ID;
         public string Name;
         public float MinScale;
         public sbyte MinScaleLevel;
@@ -14,7 +13,6 @@ namespace WowPacketParser.DBC.Structures.BattleForAzeroth
         public short PetFoodMask;
         public sbyte PetTalentType;
         public int IconFileID;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-        public short[] SkillLine;
+        public short[] SkillLine = new short[2];
     }
 }

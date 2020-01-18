@@ -27,7 +27,7 @@ namespace WowPacketParser.Tests.SQL
         }
 
         // This test isn't suited for running after each compile. Enable it if needed.
-        [Test, Ignore]
+        [Test, Ignore("Ignore TestGet")]
         public void TestGet()
         {
             SQLConnector.Enabled = true;

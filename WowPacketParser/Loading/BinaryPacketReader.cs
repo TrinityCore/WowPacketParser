@@ -201,7 +201,7 @@ namespace WowPacketParser.Loading
                             cIndex = _reader.ReadInt32(); // session id, connection index
                             var tickCount = _reader.ReadUInt32();
                             time = _startTime.AddMilliseconds(tickCount - _startTickCount);
-                            time = TimeZone.CurrentTimeZone.ToLocalTime(time);
+                            time = TimeZoneInfo.ConvertTimeFromUtc(time, TimeZoneInfo.Local);
                         }
 
                         int additionalSize = _reader.ReadInt32();

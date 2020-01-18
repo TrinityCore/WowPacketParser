@@ -1,10 +1,9 @@
-﻿using System.Runtime.InteropServices;
-
-namespace WowPacketParser.DBC.Structures.BattleForAzeroth
+﻿namespace WowPacketParser.DBC.Structures.BattleForAzeroth
 {
     [DBFile("ItemSparse")]
     public sealed class ItemSparseEntry
     {
+        public uint ID;
         public long AllowableRace;
         public string Description;
         public string Display3;
@@ -16,10 +15,8 @@ namespace WowPacketParser.DBC.Structures.BattleForAzeroth
         public float QualityModifier;
         public uint BagFamily;
         public float ItemRange;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 10)]
-        public float StatPercentageOfSocket;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 10)]
-        public int StatPercentEditor;
+        public float[] StatPercentageOfSocket = new float[10];
+        public int[] StatPercentEditor = new int[10];
         public int Stackable;
         public int MaxCount;
         public uint RequiredAbility;
@@ -28,8 +25,7 @@ namespace WowPacketParser.DBC.Structures.BattleForAzeroth
         public uint VendorStackCount;
         public float PriceVariance;
         public float PriceRandomValue;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-        public int Flags;
+        public int[] Flags = new int[4];
         public int OppositeFactionItemID;
         public ushort ItemNameDescriptionID;
         public ushort RequiredTransmogHoliday;
@@ -57,16 +53,14 @@ namespace WowPacketParser.DBC.Structures.BattleForAzeroth
         public byte ArtifactID;
         public byte SpellWeight;
         public byte SpellWeightCategory;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-        public byte SocketType;
+        public byte[] SocketType = new byte[3];
         public byte SheatheType;
         public byte Material;
         public byte PageMaterialID;
         public byte LanguageID;
         public byte Bonding;
         public byte DamageDamageType;
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 10)]
-        public byte StatModifierBonusStat;
+        public byte[] StatModifierBonusStat = new byte[10];
         public byte ContainerSlots;
         public byte MinReputation;
         public byte RequiredPVPMedal;

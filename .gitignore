@@ -16,11 +16,10 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 *.diagsession
 *.vspx
+WowPacketParser/Properties/launchSettings.json
 
 packages/*
-!packages/repositories.config
-!packages/DB2FileReaderLib.1.0.0.0/
+!packages/DBFileReaderLib.1.0.0.0/
 
 wpp.tgz
 cov-int
-

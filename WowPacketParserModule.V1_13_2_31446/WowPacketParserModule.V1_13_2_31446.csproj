@@ -1,87 +1,52 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{76282837-EA19-4905-9A82-AA829E19FBBE}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WowPacketParserModule.V1_13_2_31446</RootNamespace>
-    <AssemblyName>WowPacketParserModule.V1_13_2_31446</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Authors>TrinityCore</Authors>
+    <Copyright>Copyright © 2015-2020</Copyright>
+    <PackageProjectUrl>https://www.trinitycore.org/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/TrinityCore/WowPacketParser</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\WowPacketParser\bin\Debug\Parsers\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\WowPacketParser\bin\Release\Parsers\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\WowPacketParser\bin\Debug\netcoreapp3.1\Parsers\</OutputPath>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\WowPacketParser\bin\Release\netcoreapp3.1\Parsers\</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Sigil, Version=4.7.0.0, Culture=neutral, PublicKeyToken=2d06c3494341c8ab, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Sigil.4.7.0\lib\net45\Sigil.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
+    <PackageReference Include="Sigil" Version="5.0.0" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Enums\UpdateFields.cs" />
-    <Compile Include="Parsers\ActionBarHandler.cs" />
-    <Compile Include="Parsers\CharacterHandler.cs" />
-    <Compile Include="Parsers\ChatHandler.cs" />
-    <Compile Include="Parsers\CombatLogHandler.cs" />
-    <Compile Include="Parsers\HotfixHandler.cs" />
-    <Compile Include="Parsers\GuildHandler.cs" />
-    <Compile Include="Parsers\ItemHandler.cs" />
-    <Compile Include="Parsers\LootHandler.cs" />
-    <Compile Include="Parsers\MiscellaneousHandler.cs" />
-    <Compile Include="Parsers\NpcHandler.cs" />
-    <Compile Include="Parsers\QuestHandler.cs" />
-    <Compile Include="Parsers\AuctionHandler.cs" />
-    <Compile Include="Parsers\SpellHandler.cs" />
-    <Compile Include="Parsers\PvpHandler.cs" />
-    <Compile Include="Parsers\QueryHandler.cs" />
-    <Compile Include="Parsers\MovementHandler.cs" />
-    <Compile Include="Parsers\ReputationHandler.cs" />
-    <Compile Include="Parsers\TicketHandler.cs" />
-    <Compile Include="Parsers\UpdateHandler.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
+
   <ItemGroup>
     <ProjectReference Include="..\WowPacketParserModule.Substructures\WowPacketParserModule.Substructures.csproj">
-      <Project>{953229b7-01c4-457b-86cc-f0dd1173f217}</Project>
-      <Name>WowPacketParserModule.Substructures</Name>
+      <EmbedInteropTypes>false</EmbedInteropTypes>
+      <Private>true</Private>
     </ProjectReference>
     <ProjectReference Include="..\WowPacketParserModule.V6_0_2_19033\WowPacketParserModule.V6_0_2_19033.csproj">
-      <Project>{63484313-34d2-4133-b157-a19d12b69d9b}</Project>
-      <Name>WowPacketParserModule.V6_0_2_19033</Name>
+      <EmbedInteropTypes>false</EmbedInteropTypes>
+      <Private>false</Private>
     </ProjectReference>
     <ProjectReference Include="..\WowPacketParserModule.V7_0_3_22248\WowPacketParserModule.V7_0_3_22248.csproj">
-      <Project>{7a7109fd-a819-4906-9406-1be84c6a527c}</Project>
-      <Name>WowPacketParserModule.V7_0_3_22248</Name>
+      <EmbedInteropTypes>false</EmbedInteropTypes>
+      <Private>false</Private>
     </ProjectReference>
     <ProjectReference Include="..\WowPacketParserModule.V8_0_1_27101\WowPacketParserModule.V8_0_1_27101.csproj">
-      <Project>{749ea02d-c727-4697-b979-9ed80fb98085}</Project>
-      <Name>WowPacketParserModule.V8_0_1_27101</Name>
+      <EmbedInteropTypes>false</EmbedInteropTypes>
+      <Private>false</Private>
     </ProjectReference>
     <ProjectReference Include="..\WowPacketParser\WowPacketParser.csproj">
-      <Project>{0bf6f270-0b6f-4705-8e1a-f57db76db407}</Project>
-      <Name>WowPacketParser</Name>
+      <EmbedInteropTypes>false</EmbedInteropTypes>
+      <Private>false</Private>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>
