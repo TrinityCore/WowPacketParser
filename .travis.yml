@@ -8,9 +8,10 @@ matrix:
     - dotnet: 3.0
       mono: none
       env: DOTNETCORE=1
+      dist: bionic
     - mono: latest
       dotnet: 3.0
-      env: DOTNETCORE=1
+      dist: bionic
   allow_failures:
     - dotnet: 3.0
 
