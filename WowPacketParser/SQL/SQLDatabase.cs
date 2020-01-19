@@ -94,6 +94,11 @@ namespace WowPacketParser.SQL
             string query =
                 "SELECT ID, Text, Text1, EmoteID1, EmoteID2, EmoteID3, EmoteDelay1, EmoteDelay2, EmoteDelay3, EmotesID, LanguageID, Flags, ConditionID, SoundEntriesID1, SoundEntriesID2 " +
                 $"FROM {Settings.HotfixesDatabase}.broadcast_text;";
+
+            if (Settings.TargetedDatabase == TargetedDatabase.WrathOfTheLichKing || Settings.TargetedDatabase == TargetedDatabase.Cataclysm)
+                query = "SELECT ID, LanguageID, Text, Text1, EmoteID1, EmoteID2, EmoteID3, EmoteDelay1, EmoteDelay2, EmoteDelay3, SoundEntriesID, EmotesID, Flags " +
+                $"FROM {Settings.TDBDatabase}.broadcast_text;";
+
             using (var command = SQLConnector.ExecuteQuery(query))
             {
                 if (command == null)
@@ -135,10 +140,20 @@ namespace WowPacketParser.SQL
                         broadcastText.EmotesID = Convert.ToUInt16(reader["EmotesID"]);
                         broadcastText.LanguageID = Convert.ToByte(reader["LanguageID"]);
                         broadcastText.Flags = Convert.ToByte(reader["Flags"]);
-                        broadcastText.ConditionID = Convert.ToUInt32(reader["ConditionID"]);
-                        broadcastText.SoundEntriesID = new uint[2];
-                        broadcastText.SoundEntriesID[0] = Convert.ToUInt32(reader["SoundEntriesID1"]);
-                        broadcastText.SoundEntriesID[1] = Convert.ToUInt32(reader["SoundEntriesID2"]);
+                        if (Settings.TargetedDatabase == TargetedDatabase.WrathOfTheLichKing || Settings.TargetedDatabase == TargetedDatabase.Cataclysm)
+                        {
+                            broadcastText.ConditionID = 0;
+                            broadcastText.SoundEntriesID = new uint[2];
+                            broadcastText.SoundEntriesID[0] = Convert.ToUInt32(reader["SoundEntriesID"]);
+                            broadcastText.SoundEntriesID[1] = 0;
+                        }
+                        else
+                        {
+                            broadcastText.ConditionID = Convert.ToUInt32(reader["ConditionID"]);
+                            broadcastText.SoundEntriesID = new uint[2];
+                            broadcastText.SoundEntriesID[0] = Convert.ToUInt32(reader["SoundEntriesID1"]);
+                            broadcastText.SoundEntriesID[1] = Convert.ToUInt32(reader["SoundEntriesID2"]);
+                        }
 
                         if (!DBC.DBC.BroadcastText.ContainsKey(id))
                             DBC.DBC.BroadcastText.Add(id, broadcastText);
