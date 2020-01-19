@@ -47,14 +47,14 @@ namespace WowPacketParser.SQL
         }
 
         [SuppressMessage("Microsoft.Security", "CA2100", Justification = "No user input.")]
-        public static MySqlDataReader ExecuteQuery(string input)
+        public static MySqlCommand ExecuteQuery(string input)
         {
             try
             {
                 using (var command = new MySqlCommand(input, Conn))
                 {
                     command.CommandTimeout = 2147483; // max timeout val, 0 doesn't work
-                    return command.ExecuteReader();
+                    return command;
                 }
             }
             catch (Exception e)
