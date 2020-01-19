@@ -99,7 +99,7 @@ namespace WowPacketParser.SQL
                 query = "SELECT ID, LanguageID, Text, Text1, EmoteID1, EmoteID2, EmoteID3, EmoteDelay1, EmoteDelay2, EmoteDelay3, SoundEntriesID, EmotesID, Flags " +
                 $"FROM {Settings.TDBDatabase}.broadcast_text;";
 
-            using (var command = SQLConnector.ExecuteQuery(query))
+            using (var command = SQLConnector.CreateCommand(query))
             {
                 if (command == null)
                     return;
@@ -169,7 +169,7 @@ namespace WowPacketParser.SQL
             string query =
                 "SELECT ID, PositionX, PositionY, Icon, Flags, Importance, Name " +
                 $"FROM {Settings.TDBDatabase}.points_of_interest ORDER BY ID;";
-            using (var command = SQLConnector.ExecuteQuery(query))
+            using (var command = SQLConnector.CreateCommand(query))
             {
                 if (command == null)
                     return;
@@ -198,7 +198,7 @@ namespace WowPacketParser.SQL
         // TODO: Drop this and use the GetDict<T, TK> method below
         private static Dictionary<T, TK> GetDict<T, TK>(string query)
         {
-            using (var command = SQLConnector.ExecuteQuery(query))
+            using (var command = SQLConnector.CreateCommand(query))
             {
                 if (command == null)
                     return null;
@@ -242,7 +242,7 @@ namespace WowPacketParser.SQL
 
             var result = new RowList<T>();
 
-            using (var command = SQLConnector.ExecuteQuery(new SQLSelect<T>(rowList, database).Build()))
+            using (var command = SQLConnector.CreateCommand(new SQLSelect<T>(rowList, database).Build()))
             {
                 if (command == null)
                     return null;

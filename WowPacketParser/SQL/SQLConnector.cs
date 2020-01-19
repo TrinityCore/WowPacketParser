@@ -47,7 +47,7 @@ namespace WowPacketParser.SQL
         }
 
         [SuppressMessage("Microsoft.Security", "CA2100", Justification = "No user input.")]
-        public static MySqlCommand ExecuteQuery(string input)
+        public static MySqlCommand CreateCommand(string input)
         {
             try
             {
