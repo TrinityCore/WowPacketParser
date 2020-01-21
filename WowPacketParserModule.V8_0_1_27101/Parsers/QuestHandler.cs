@@ -281,6 +281,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683))
                 quest.ManagedWorldStateID = packet.ReadInt32("ManagedWorldStateID");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_5_31921))
+                quest.QuestSessionBonus = packet.ReadInt32("QuestSessionBonus");
+
             packet.ResetBitReader();
 
             uint logTitleLen = 0;
