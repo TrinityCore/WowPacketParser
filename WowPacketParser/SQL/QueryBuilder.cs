@@ -220,6 +220,8 @@ namespace WowPacketParser.SQL
                         query.Append("=");
                         query.Append(SQLUtil.ToSQLValue(v, noQuotes: field.Item3.Any(a => a.NoQuotes)));
                         query.Append(SQLUtil.CommaSeparator);
+
+                        hasValues = true;
                     }
                     continue;
                 }
