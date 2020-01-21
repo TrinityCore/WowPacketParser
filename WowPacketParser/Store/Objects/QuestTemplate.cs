@@ -262,6 +262,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ManagedWorldStateID", TargetedDatabase.BattleForAzeroth)]
         public int? ManagedWorldStateID;
 
+        [DBFieldName("QuestSessionBonus", TargetedDatabase.BattleForAzeroth)]
+        public int? QuestSessionBonus;
+
         [DBFieldName("LogTitle", LocaleConstant.enUS)]
         public string LogTitle;
 
