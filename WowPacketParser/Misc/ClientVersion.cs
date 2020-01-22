@@ -614,7 +614,7 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.BattleNetV37165:
                     return ClientVersionBuild.BattleNetV37165;
                 case ClientVersionBuild.Zero:
-                    return Build;
+                    return build;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
