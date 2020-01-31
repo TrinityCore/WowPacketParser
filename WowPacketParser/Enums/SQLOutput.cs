@@ -36,6 +36,8 @@
         ObjectNames,
         page_text,
         page_text_locale,
+        playerchoice,
+        playerchoice_locale,
         playercreateinfo,
         playercreateinfo_action,
         points_of_interest,
