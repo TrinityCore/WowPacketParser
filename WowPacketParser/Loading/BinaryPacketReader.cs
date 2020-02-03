@@ -107,7 +107,7 @@ namespace WowPacketParser.Loading
                             _snifferVersion = 0x0105;
 
                         if (_snifferVersion >= 0x0107)
-                            _startTime = DateTime.FromFileTime(BitConverter.ToInt64(optionalData, 3));
+                            _startTime = DateTime.FromFileTimeUtc(BitConverter.ToInt64(optionalData, 3));
                     }
                     break;
                 }
@@ -201,6 +201,7 @@ namespace WowPacketParser.Loading
                             cIndex = _reader.ReadInt32(); // session id, connection index
                             var tickCount = _reader.ReadUInt32();
                             time = _startTime.AddMilliseconds(tickCount - _startTickCount);
+                            time = DateTime.SpecifyKind(time, DateTimeKind.Utc);
                             time = TimeZoneInfo.ConvertTimeFromUtc(time, TimeZoneInfo.Local);
                         }
 
