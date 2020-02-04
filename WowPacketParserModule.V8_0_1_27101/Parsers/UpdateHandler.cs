@@ -550,7 +550,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasCircularMovement;
 
                 if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.Unk3) != 0)
-                    packet.ReadBit(); //-----------------------------------------------------------
+                    packet.ReadBit();
 
                 if (hasAreaTriggerSpline)
                     AreaTriggerHandler.ReadAreaTriggerSpline(packet, index);
