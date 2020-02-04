@@ -524,11 +524,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 if (packet.ReadBit("HasAnimID", index))
                     areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasAnimId;
 
-                if (packet.ReadBit("unkbit50", index))
-                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk3;
-
                 if (packet.ReadBit("HasAnimKitID", index))
                     areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasAnimKitId;
+
+                if (packet.ReadBit("unkbit50", index))
+                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk3;
 
                 bool hasUnk801 = packet.ReadBit("unkbit801", index);
 
@@ -550,7 +550,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasCircularMovement;
 
                 if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.Unk3) != 0)
-                    packet.ReadBit();
+                    packet.ReadBit(); //-----------------------------------------------------------
 
                 if (hasAreaTriggerSpline)
                     AreaTriggerHandler.ReadAreaTriggerSpline(packet, index);
