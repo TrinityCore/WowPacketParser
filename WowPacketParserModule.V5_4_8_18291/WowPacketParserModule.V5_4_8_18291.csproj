@@ -15,14 +15,14 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\WowPacketParser\bin\Debug\netcoreapp3.1\Parsers\</OutputPath>
+    <OutputPath>..\WowPacketParser\bin\Debug\Parsers\</OutputPath>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningsAsErrors />
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\WowPacketParser\bin\Release\netcoreapp3.1\Parsers\</OutputPath>
+    <OutputPath>..\WowPacketParser\bin\Release\Parsers\</OutputPath>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningsAsErrors />
   </PropertyGroup>
