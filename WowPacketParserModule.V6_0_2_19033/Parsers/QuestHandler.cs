@@ -675,11 +675,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("QuestGiverCreatureID");
 
             int id = packet.ReadInt32("QuestID");
-            QuestRequestItems questRequestItems = new QuestRequestItems
-            {
-                ID = (uint)id
-            };
-
             int delay = packet.ReadInt32("EmoteDelay");
             int emote = packet.ReadInt32("EmoteType");
 
@@ -691,77 +686,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             int int44 = packet.ReadInt32("QuestObjectiveCollectCount");
             int int60 = packet.ReadInt32("QuestCurrencyCount");
             QuestStatusFlags statusFlags = packet.ReadInt32E<QuestStatusFlags>("StatusFlags");
-
-            if ((statusFlags & (QuestStatusFlags.Complete)) == QuestStatusFlags.Complete)
-            {
-                if (CoreParsers.QuestHandler.RequestItemEmoteStore.ContainsKey(id))
-                {
-                    CoreParsers.QuestHandler.RequestItemEmoteStore[id].EmoteOnCompleteDelay = delay;
-                    CoreParsers.QuestHandler.RequestItemEmoteStore[id].EmoteOnComplete = emote;
-                }
-                else
-                {
-                    var emotes = new CoreParsers.QuestHandler.RequestItemEmote();
-
-                    emotes.EmoteOnCompleteDelay = delay;
-                    emotes.EmoteOnComplete = emote;
-                    emotes.EmoteOnIncompleteDelay = -1;
-                    emotes.EmoteOnIncomplete = -1;
-
-                    CoreParsers.QuestHandler.RequestItemEmoteStore.Add(id, emotes);
-                }
-            }
-            else
-            {
-                if (CoreParsers.QuestHandler.RequestItemEmoteStore.ContainsKey(id))
-                {
-                    CoreParsers.QuestHandler.RequestItemEmoteStore[id].EmoteOnIncompleteDelay = delay;
-                    CoreParsers.QuestHandler.RequestItemEmoteStore[id].EmoteOnIncomplete = emote;
-                }
-                else
-                {
-                    var emotes = new CoreParsers.QuestHandler.RequestItemEmote();
-
-                    emotes.EmoteOnIncompleteDelay = delay;
-                    emotes.EmoteOnIncomplete = emote;
-                    emotes.EmoteOnComplete = -1;
-                    emotes.EmoteOnCompleteDelay = -1;
-
-                    CoreParsers.QuestHandler.RequestItemEmoteStore.Add(id, emotes);
-                }
-            }
-
-            if ((statusFlags & QuestStatusFlags.NoRequestOnComplete) != 0)
-            {
-                if (CoreParsers.QuestHandler.RequestItemEmoteStore.ContainsKey(id))
-                {
-                    CoreParsers.QuestHandler.RequestItemEmoteStore[id].EmoteOnCompleteDelay = 0;
-                    CoreParsers.QuestHandler.RequestItemEmoteStore[id].EmoteOnComplete = 0;
-                }
-                else
-                {
-                    var emotes = new CoreParsers.QuestHandler.RequestItemEmote();
-
-                    emotes.EmoteOnCompleteDelay = 0;
-                    emotes.EmoteOnComplete = 0;
-                    emotes.EmoteOnIncompleteDelay = -1;
-                    emotes.EmoteOnIncomplete = -1;
-
-                    CoreParsers.QuestHandler.RequestItemEmoteStore.Add(id, emotes);
-                }
-            }
-
-            if (CoreParsers.QuestHandler.RequestItemEmoteStore[id].EmoteOnCompleteDelay >= 0)
-                questRequestItems.EmoteOnCompleteDelay = (uint)CoreParsers.QuestHandler.RequestItemEmoteStore[id].EmoteOnCompleteDelay;
-
-            if (CoreParsers.QuestHandler.RequestItemEmoteStore[id].EmoteOnComplete >= 0)
-                questRequestItems.EmoteOnComplete = (uint)CoreParsers.QuestHandler.RequestItemEmoteStore[id].EmoteOnComplete;
-
-            if (CoreParsers.QuestHandler.RequestItemEmoteStore[id].EmoteOnIncompleteDelay >= 0)
-                questRequestItems.EmoteOnIncompleteDelay = (uint)CoreParsers.QuestHandler.RequestItemEmoteStore[id].EmoteOnIncompleteDelay;
-
-            if (CoreParsers.QuestHandler.RequestItemEmoteStore[id].EmoteOnIncomplete >= 0)
-                questRequestItems.EmoteOnIncomplete = (uint)CoreParsers.QuestHandler.RequestItemEmoteStore[id].EmoteOnIncomplete;
+            bool isComplete = (statusFlags & (QuestStatusFlags.Complete)) == QuestStatusFlags.Complete;
+            bool noRequestOnComplete = (statusFlags & QuestStatusFlags.NoRequestOnComplete) != 0;
 
             for (int i = 0; i < int44; i++)
             {
@@ -785,16 +711,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             uint bits16 = packet.ReadBits(12);
 
             packet.ReadWoWString("QuestTitle", bits3016);
-            questRequestItems.CompletionText = packet.ReadWoWString("CompletionText", bits16);
+            string completionText = packet.ReadWoWString("CompletionText", bits16);
 
-            Storage.QuestRequestItems.Add(questRequestItems, packet.TimeSpan);
+            CoreParsers.QuestHandler.QuestRequestItemHelper(id, completionText, delay, emote, isComplete, packet, noRequestOnComplete);
 
-            if (ClientLocale.PacketLocale != LocaleConstant.enUS && questRequestItems.CompletionText != string.Empty)
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS && completionText != string.Empty)
             {
                 QuestRequestItemsLocale localesQuestRequestItems = new QuestRequestItemsLocale
                 {
                     ID = (uint)id,
-                    CompletionText = questRequestItems.CompletionText
+                    CompletionText = completionText
                 };
                 Storage.LocalesQuestRequestItems.Add(localesQuestRequestItems, packet.TimeSpan);
             }
