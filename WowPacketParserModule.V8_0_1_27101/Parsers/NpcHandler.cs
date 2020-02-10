@@ -75,10 +75,10 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 vendor.ExtendedCost = packet.ReadUInt32("ExtendedCostID", i);
                 vendor.PlayerConditionID = packet.ReadUInt32("PlayerConditionFailed", i);
 
-                vendor.Item = Substructures.ItemHandler.ReadItemInstance(packet, i);
+                vendor.Item = Substructures.ItemHandler.ReadItemInstance(packet, i).ItemID;
                 vendor.IgnoreFiltering = packet.ReadBit("DoNotFilterOnVendor", i);
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
-                    packet.ReadBit("Refundable");
+                    packet.ReadBit("Refundable", i);
 
                 vendor.MaxCount = maxCount == -1 ? 0 : (uint)maxCount; // TDB
                 if (vendor.Type == 2)

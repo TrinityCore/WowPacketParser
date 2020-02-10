@@ -31,7 +31,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
                 vendor.ExtendedCost = packet.ReadUInt32("ExtendedCostID", i);
                 vendor.PlayerConditionID = packet.ReadUInt32("PlayerConditionFailed", i);
 
-                vendor.Item = Substructures.ItemHandler.ReadItemInstance(packet, i);
+                vendor.Item = Substructures.ItemHandler.ReadItemInstance(packet, i).ItemID;
 
                 vendor.MaxCount = maxCount == -1 ? 0 : (uint)maxCount; // TDB
                 if (vendor.Type == 2)

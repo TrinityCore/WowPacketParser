@@ -619,6 +619,7 @@
     <Compile Include="Store\Objects\CreatureTemplateLocale.cs" />
     <Compile Include="Store\Objects\CreatureTemplateScaling.cs" />
     <Compile Include="Store\Objects\CreatureText.cs" />
+    <Compile Include="Store\Objects\ItemInstance.cs" />
     <Compile Include="Store\Objects\UpdateFields\IQuestSession.cs" />
     <Compile Include="Store\Objects\UpdateFields\IReplayedQuest.cs" />
     <Compile Include="Store\Objects\UpdateFields\ISelectedAzeriteEssences.cs" />
