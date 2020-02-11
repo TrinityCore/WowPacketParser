@@ -300,6 +300,10 @@ namespace WowPacketParser.Enums
         V1_13_2_32089 = 32089,
         V1_13_2_32421 = 32421,
         V1_13_2_32600 = 32600,
+        V1_13_2_32790 = 32790,
+        V1_13_2_32836 = 32836,
+        V1_13_2_32887 = 32887,
+        V1_13_2_33155 = 33155,
 
         // Battle.net - should probably not mix this but oh well
         BattleNetV37165 = 37165,
