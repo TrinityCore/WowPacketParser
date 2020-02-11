@@ -632,84 +632,88 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_DISPLAY_PLAYER_CHOICE)]
         public static void HandleDisplayPlayerChoice(Packet packet)
         {
-            packet.ReadInt32("ChoiceID");
+            var choiceId = packet.ReadInt32("ChoiceID");
             var responseCount = packet.ReadUInt32();
             packet.ReadPackedGuid128("SenderGUID");
+            var uiTextureKitId = 0;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_25848))
-                packet.ReadInt32("UiTextureKitID");
+                uiTextureKitId = packet.ReadInt32("UiTextureKitID");
             packet.ResetBitReader();
             var questionLength = packet.ReadBits(8);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_5_24330))
                 packet.ReadBit("CloseChoiceFrame");
+
+            var hideWarboardHeader = 0;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_25848))
-                packet.ReadBit("HideWarboardHeader");
+                hideWarboardHeader = packet.ReadBit("HideWarboardHeader");
 
             for (var i = 0u; i < responseCount; ++i)
-                ReadPlayerChoiceResponse(packet, "PlayerChoiceResponse", i);
+                ReadPlayerChoiceResponse(packet, choiceId, i, "PlayerChoiceResponse", i);
 
-            packet.ReadWoWString("Question", questionLength);
+            var question = packet.ReadWoWString("Question", questionLength);
+
+            Storage.PlayerChoices.Add(new PlayerChoiceTemplate
+            {
+                ChoiceId = choiceId,
+                UiTextureKitId = uiTextureKitId,
+                Question = question,
+                HideWarboardHeader = hideWarboardHeader
+            }, packet.TimeSpan);
+
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                Storage.PlayerChoiceLocales.Add(new PlayerChoiceLocaleTemplate
+                {
+                    ChoiceId = choiceId,
+                    Locale = ClientLocale.PacketLocaleString,
+                    Question = question
+                }, packet.TimeSpan);
+            }
         }
 
-        public static void ReadPlayerChoiceResponse(Packet packet, params object[] indexes)
+        public static void ReadPlayerChoiceResponse(Packet packet, int choiceId, uint index, params object[] indexes)
         {
             packet.ResetBitReader();
-            packet.ReadInt32("ResponseID", indexes);
-            packet.ReadInt32("ChoiceArtFileID", indexes);
+            var responseId = packet.ReadInt32("ResponseID", indexes);
+            var choiceArtFileId = packet.ReadInt32("ChoiceArtFileID", indexes);
             var answerLength = packet.ReadBits(9);
             var headerLength = packet.ReadBits(9);
             var descriptionLength = packet.ReadBits(11);
             var confirmationTextLength = packet.ReadBits(7);
             var hasReward = packet.ReadBit();
             if (hasReward)
-                ReadPlayerChoiceResponseReward(packet, "PlayerChoiceResponseReward", indexes);
+                V6_0_2_19033.Parsers.QuestHandler.ReadPlayerChoiceResponseReward(packet, choiceId, responseId, "PlayerChoiceResponseReward", indexes);
 
-            packet.ReadWoWString("Answer", answerLength, indexes);
-            packet.ReadWoWString("Header", headerLength, indexes);
-            packet.ReadWoWString("Description", descriptionLength, indexes);
-            packet.ReadWoWString("ConfirmationText", confirmationTextLength, indexes);
-        }
+            var answer = packet.ReadWoWString("Answer", answerLength, indexes);
+            var header = packet.ReadWoWString("Header", headerLength, indexes);
+            var description = packet.ReadWoWString("Description", descriptionLength, indexes);
+            var confirmation = packet.ReadWoWString("ConfirmationText", confirmationTextLength, indexes);
 
-        public static void ReadPlayerChoiceResponseReward(Packet packet, params object[] indexes)
-        {
-            packet.ResetBitReader();
-            packet.ReadInt32("TitleID", indexes);
-            packet.ReadInt32("PackageID", indexes);
-            packet.ReadInt32("SkillLineID", indexes);
-            packet.ReadUInt32("SkillPointCount", indexes);
-            packet.ReadUInt32("ArenaPointCount", indexes);
-            packet.ReadUInt32("HonorPointCount", indexes);
-            packet.ReadUInt64("Money", indexes);
-            packet.ReadUInt32("Xp", indexes);
+            Storage.PlayerChoiceResponses.Add(new PlayerChoiceResponseTemplate
+            {
+                ChoiceId = choiceId,
+                ResponseId = responseId,
+                Index = index,
+                ChoiceArtFileId = choiceArtFileId,
+                Header = header,
+                Answer = answer,
+                Description = description,
+                Confirmation = confirmation
+            }, packet.TimeSpan);
 
-            var itemCount = packet.ReadUInt32();
-            var currencyCount = packet.ReadUInt32();
-            var factionCount = packet.ReadUInt32();
-            var itemChoiceCount = packet.ReadUInt32();
-
-            for (var i = 0u; i < itemCount; ++i)
-                ReadPlayerChoiceResponseRewardEntry(packet, "Item", i);
-
-            for (var i = 0u; i < currencyCount; ++i)
-                ReadPlayerChoiceResponseRewardEntry(packet, "Currency", i);
-
-            for (var i = 0u; i < factionCount; ++i)
-                ReadPlayerChoiceResponseRewardEntry(packet, "Faction", i);
-
-            for (var i = 0u; i < itemChoiceCount; ++i)
-                ReadPlayerChoiceResponseRewardEntry(packet, "ItemChoice", i);
-        }
-
-        public static void ReadPlayerChoiceResponseRewardEntry(Packet packet, params object[] indexes)
-        {
-            Substructures.ItemHandler.ReadItemInstance(packet, indexes);
-            packet.ReadInt32("Quantity", indexes);
-        }
-
-        [Parser(Opcode.SMSG_GOSSIP_TEXT_UPDATE)]
-        public static void HandleGossipTextUpdate(Packet packet)
-        {
-            packet.ReadPackedGuid128("QuestGiverGUID");
-            ReadGossipText(packet);
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                Storage.PlayerChoiceResponseLocales.Add(new PlayerChoiceResponseLocaleTemplate
+                {
+                    ChoiceId = choiceId,
+                    ResponseId = responseId,
+                    Locale = ClientLocale.PacketLocaleString,
+                    Header = header,
+                    Answer = answer,
+                    Description = description,
+                    Confirmation = confirmation
+                }, packet.TimeSpan);
+            }
         }
 
         [Parser(Opcode.CMSG_QUERY_TREASURE_PICKER)]

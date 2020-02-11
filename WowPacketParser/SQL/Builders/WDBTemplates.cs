@@ -185,6 +185,90 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.ItemTemplates, templatesDb, StoreNameType.Item);
         }
 
+        [BuilderMethod]
+        public static string PlayerChoice()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.playerchoice))
+                return string.Empty;
+
+            if (Storage.PlayerChoices.IsEmpty())
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.PlayerChoices);
+
+            return SQLUtil.Compare(Storage.PlayerChoices, templatesDb, StoreNameType.None);
+        }
+
+        [BuilderMethod]
+        public static string PlayerChoiceResponse()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.playerchoice))
+                return string.Empty;
+
+            if (Storage.PlayerChoiceResponses.IsEmpty())
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.PlayerChoiceResponses);
+
+            return SQLUtil.Compare(Storage.PlayerChoiceResponses, templatesDb, StoreNameType.None);
+        }
+
+        [BuilderMethod]
+        public static string PlayerChoiceResponseReward()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.playerchoice))
+                return string.Empty;
+
+            if (Storage.PlayerChoiceResponseRewards.IsEmpty())
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.PlayerChoiceResponseRewards);
+
+            return SQLUtil.Compare(Storage.PlayerChoiceResponseRewards, templatesDb, StoreNameType.None);
+        }
+
+        [BuilderMethod]
+        public static string PlayerChoiceResponseRewardCurrency()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.playerchoice))
+                return string.Empty;
+
+            if (Storage.PlayerChoiceResponseRewardCurrencies.IsEmpty())
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.PlayerChoiceResponseRewardCurrencies);
+
+            return SQLUtil.Compare(Storage.PlayerChoiceResponseRewardCurrencies, templatesDb, StoreNameType.None);
+        }
+
+        [BuilderMethod]
+        public static string PlayerChoiceResponseRewardFaction()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.playerchoice))
+                return string.Empty;
+
+            if (Storage.PlayerChoiceResponseRewardFactions.IsEmpty())
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.PlayerChoiceResponseRewardFactions);
+
+            return SQLUtil.Compare(Storage.PlayerChoiceResponseRewardFactions, templatesDb, StoreNameType.None);
+        }
+
+        [BuilderMethod]
+        public static string PlayerChoiceResponseRewardItem()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.playerchoice))
+                return string.Empty;
+
+            if (Storage.PlayerChoiceResponseRewardItems.IsEmpty())
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.PlayerChoiceResponseRewardItems);
+
+            return SQLUtil.Compare(Storage.PlayerChoiceResponseRewardItems, templatesDb, StoreNameType.None);
+        }
+
         [BuilderMethod(true)]
         public static string PageText()
         {

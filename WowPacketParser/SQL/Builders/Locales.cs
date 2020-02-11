@@ -113,5 +113,35 @@ namespace WowPacketParser.SQL.Builders
 
             return "SET NAMES 'utf8';" + Environment.NewLine + SQLUtil.Compare(Storage.LocalesPageText, pagetextDb, StoreNameType.None) + Environment.NewLine + "SET NAMES 'latin1';";
         }
+
+        [BuilderMethod]
+        public static string PlayerChoiceLocale()
+        {
+            if (Storage.PlayerChoiceLocales.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.playerchoice_locale))
+                return string.Empty;
+
+            // pass empty list, because we want to select the whole db table (faster than select only needed columns)
+            var playerChoiceDb = SQLDatabase.Get(new RowList<Store.Objects.PlayerChoiceLocaleTemplate>());
+
+            return "SET NAMES 'utf8';" + Environment.NewLine + SQLUtil.Compare(Storage.PlayerChoiceLocales, playerChoiceDb, StoreNameType.None) + Environment.NewLine + "SET NAMES 'latin1';";
+        }
+
+        [BuilderMethod]
+        public static string PlayerChoiceResponseLocale()
+        {
+            if (Storage.PlayerChoiceResponseLocales.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.playerchoice_locale))
+                return string.Empty;
+
+            // pass empty list, because we want to select the whole db table (faster than select only needed columns)
+            var playerChoiceResponseDb = SQLDatabase.Get(new RowList<Store.Objects.PlayerChoiceResponseLocaleTemplate>());
+
+            return "SET NAMES 'utf8';" + Environment.NewLine + SQLUtil.Compare(Storage.PlayerChoiceResponseLocales, playerChoiceResponseDb, StoreNameType.None) + Environment.NewLine + "SET NAMES 'latin1';";
+        }
     }
 }
