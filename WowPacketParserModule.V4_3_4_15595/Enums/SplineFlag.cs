@@ -26,9 +26,9 @@ namespace WowPacketParserModule.V4_3_4_15595.Enums
         TransportExit       = 0x00010000,
         Unknown3            = 0x00020000,           // NOT VERIFIED
         Unknown4            = 0x00040000,           // NOT VERIFIED
-        OrientationInversed = 0x00080000,
+        Backward            = 0x00080000,
         SmoothGroundPath    = 0x00100000,
-        Walkmode            = 0x00200000,
+        CanSwim             = 0x00200000,
         UncompressedPath    = 0x00400000,
         Unknown6            = 0x00800000,           // NOT VERIFIED
         Animation           = 0x01000000,           // Plays animation after some time passed
