@@ -177,7 +177,6 @@ namespace WowPacketParser.Tests.Misc
         public void TestFileIsInUse()
         {
             Assert.IsFalse(Utilities.FileIsInUse("Blablabla"));
-            Assert.IsFalse(Utilities.FileIsInUse("WowPacketParser.Tests.dll"));
 
             using (File.Create("test.test"))
             {

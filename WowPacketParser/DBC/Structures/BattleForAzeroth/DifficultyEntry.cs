@@ -3,6 +3,7 @@
     [DBFile("Difficulty")]
     public sealed class DifficultyEntry
     {
+        public uint ID;
         public string Name;
         public byte InstanceType;
         public byte OrderIndex;

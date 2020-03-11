@@ -14,5 +14,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public int ReqSpellKnownID { get; set; }
         public int ModSpellAuraID { get; set; }
         public short ReqMapID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V8_2_0_30898, false)]
+        public int PlayerConditionID { get; set; }
     }
 }

@@ -3,6 +3,7 @@
     [DBFile("CriteriaTree")]
     public sealed class CriteriaTreeEntry
     {
+        public uint ID;
         public string Description;
         public uint Parent;
         public uint Amount;

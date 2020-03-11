@@ -3,7 +3,7 @@ using WowPacketParser.Hotfix;
 
 namespace WowPacketParserModule.V8_0_1_27101.Hotfix
 {
-    [HotfixStructure(DB2Hash.ModifierTree, HasIndexInData = false)]
+    [HotfixStructure(DB2Hash.ModifierTree, ClientVersionBuild.V8_0_1_27101, ClientVersionBuild.V8_2_0_30898, HasIndexInData = false)]
     public class ModifierTreeEntry
     {
         public uint Parent { get; set; }

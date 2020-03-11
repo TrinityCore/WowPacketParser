@@ -3,7 +3,7 @@ using WowPacketParser.Hotfix;
 
 namespace WowPacketParserModule.V8_0_1_27101.Hotfix
 {
-    [HotfixStructure(DB2Hash.UnitPowerBar, HasIndexInData = false)]
+    [HotfixStructure(DB2Hash.UnitPowerBar, ClientVersionBuild.V8_0_1_27101, ClientVersionBuild.V8_2_5_31921, HasIndexInData = false)]
     public class UnitPowerBarEntry
     {
         public string Name { get; set; }

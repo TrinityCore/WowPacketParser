@@ -78,7 +78,7 @@ namespace WowPacketParser.Tests.Misc
             Assert.AreNotEqual(lfg1.GetHashCode(), lfg2.GetHashCode());
         }
 
-        [Test, Ignore]
+        [Test, Ignore("Nothing to test")]
         public void TestToString()
         {
             // ...

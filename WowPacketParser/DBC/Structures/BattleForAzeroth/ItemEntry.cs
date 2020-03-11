@@ -3,6 +3,7 @@
     [DBFile("Item")]
     public sealed class ItemEntry
     {
+        public uint ID;
         public byte ClassID;
         public byte SubclassID;
         public byte Material;
