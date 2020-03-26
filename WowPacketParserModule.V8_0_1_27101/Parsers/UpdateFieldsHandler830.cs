@@ -5,7 +5,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing.Parsers;
 using WowPacketParser.Store.Objects.UpdateFields;
 
-namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_3_0_32861
+namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_3_0_33062
 {
     public class UpdateFieldHandler : UpdateFieldsHandlerBase
     {
