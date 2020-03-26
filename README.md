@@ -13,7 +13,7 @@ Usage
 
 * Compile WowPacketParser using Visual Studio 2019 (with .NET Core SDK 3.1) or .NET Core SDK 3.1 (Linux/OSX).
   Alternatively you can download compiled binaries from the links [below](#nightly-builds).
-* Edit `WowPacketParser.exe.config` to fit your needs.
+* Edit `WowPacketParser.dll.config` to fit your needs.
 * Drag one or more files (.pkt or .bin) to `WowPacketParser.exe`.
 * Command line usage: `WowPacketParser.exe [--ConfigFile path --Option1 value1 ...] filetoparse1 ...`
 
@@ -56,8 +56,10 @@ Nightly Builds
   - [Debug](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Ubuntu;%20Configuration:%20Debug&branch=master)
   - [Release](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Ubuntu;%20Configuration:%20Release&branch=master)
   
-##### macOS (currently unsupported)
-
+##### macOS (experimental)
+  - [Debug](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20macOS;%20Configuration:%20Debug&branch=master)
+  - [Release](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20macOS;%20Configuration:%20Release&branch=master)
+  
 Docker (experimental)
 ---------------------
 
