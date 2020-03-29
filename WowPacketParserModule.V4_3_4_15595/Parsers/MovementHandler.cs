@@ -7344,5 +7344,25 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadXORByte(guid, 7);
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_MOVE_KNOCK_BACK)]
+        public static void HandleMoveKnockBack(Packet packet)
+        {
+            var guid = packet.StartBitStream(0, 3, 6, 7, 2, 5, 1, 4);
+            packet.ReadXORByte(guid, 1);
+            packet.ReadSingle("DirectionX");
+            packet.ReadInt32("SequenceIndex");
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 7);
+            packet.ReadSingle("HorzSpeed");
+            packet.ReadXORByte(guid, 4);
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadSingle("VertSpeed");
+            packet.ReadSingle("DirectionY");
+            packet.ReadXORByte(guid, 2);
+            packet.ReadXORByte(guid, 0);
+            packet.WriteGuid("MoverGUID", guid);
+        }
     }
 }
