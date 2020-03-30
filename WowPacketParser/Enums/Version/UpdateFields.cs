@@ -137,7 +137,7 @@ namespace WowPacketParser.Enums.Version
             return null;
         }
 
-        public static int GetUpdateField<T>(T field) // where T: System.Enum // C# 7.3
+        public static int GetUpdateField<T>(T field) where T: Enum
         {
             Dictionary<string, int> byNamesDict;
             if (UpdateFieldNameDictionary.TryGetValue(typeof(T), out byNamesDict))
@@ -150,7 +150,7 @@ namespace WowPacketParser.Enums.Version
             return -1;
         }
 
-        public static string GetUpdateFieldName<T>(int field) // where T: System.Enum // C# 7.3
+        public static string GetUpdateFieldName<T>(int field) where T: Enum
         {
             SortedList<int, UpdateFieldInfo> infoDict;
             if (UpdateFieldDictionary.TryGetValue(typeof(T), out infoDict))
@@ -170,7 +170,7 @@ namespace WowPacketParser.Enums.Version
             return field.ToString(CultureInfo.InvariantCulture);
         }
 
-        public static UpdateFieldInfo GetUpdateFieldInfo<T>(int field) // where T: System.Enum // C# 7.3
+        public static UpdateFieldInfo GetUpdateFieldInfo<T>(int field) where T: Enum
         {
             SortedList<int, UpdateFieldInfo> infoDict;
             if (UpdateFieldDictionary.TryGetValue(typeof(T), out infoDict))

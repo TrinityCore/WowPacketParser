@@ -169,9 +169,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             for (uint j = 0; j < 23; ++j)
             {
-                packet.ReadUInt32("InventoryItem DisplayID", idx, j);
-                packet.ReadUInt32("InventoryItem DisplayEnchantID", idx, j);
-                packet.ReadByteE<InventoryType>("InventoryItem InvType", idx, j);
+                packet.ReadUInt32("DisplayID", idx, "VisualItems", j);
+                packet.ReadUInt32("DisplayEnchantID", idx, "VisualItems", j);
+                packet.ReadByteE<InventoryType>("InvType", idx, "VisualItems", j);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_5_31921))
+                    packet.ReadByte("Subclass", idx, "VisualItems", j);
             }
 
             packet.ReadTime("LastPlayedTime", idx);
@@ -180,6 +182,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadInt32("Unknown703", idx);
             packet.ReadInt32("InterfaceVersion", idx);
             packet.ReadUInt32("Flags4", idx);
+            var unknown830lengths = new uint[packet.ReadUInt32()];
 
             packet.ResetBitReader();
 
@@ -187,6 +190,13 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             var firstLogin = packet.ReadBit("FirstLogin", idx);
             packet.ReadBit("BoostInProgress", idx);
             packet.ReadBits("UnkWod61x", 5, idx);
+
+            for (var j = 0; j < unknown830lengths.Length; ++j)
+                unknown830lengths[j] = packet.ReadBits(6);
+
+            for (var j = 0; j < unknown830lengths.Length; ++j)
+                if (unknown830lengths[j] > 1)
+                    packet.ReadDynamicString("Unknown830", unknown830lengths[j], idx);
 
             packet.ReadWoWString("Character Name", nameLength, idx);
 

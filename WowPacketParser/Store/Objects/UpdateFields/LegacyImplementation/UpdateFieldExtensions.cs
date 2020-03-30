@@ -46,7 +46,7 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
         /// <param name="dict">The dictionary</param>
         /// <param name="updateField">The update field we want</param>
         /// <returns></returns>
-        public static TK GetValue<T, TK>(this Dictionary<int, UpdateField> dict, T updateField)
+        public static TK GetValue<T, TK>(this Dictionary<int, UpdateField> dict, T updateField) where T: Enum
         {
             UpdateField uf;
             if (dict.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(updateField), out uf))
@@ -78,7 +78,7 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
         /// <param name="dict">The dictionary</param>
         /// <param name="updateField">The update field we want</param>
         /// <returns></returns>
-        public static IEnumerable<TK> GetValue<T, TK>(this Dictionary<int, List<UpdateField>> dict, T updateField)
+        public static IEnumerable<TK> GetValue<T, TK>(this Dictionary<int, List<UpdateField>> dict, T updateField) where T: Enum
         {
             List<UpdateField> ufs;
             if (dict.TryGetValue(Enums.Version.UpdateFields.GetUpdateField(updateField), out ufs))
@@ -111,7 +111,7 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
         /// <param name="firstUpdateField">The first update field of the sequence</param>
         /// <param name="count">Number of values to retrieve</param>
         /// <returns></returns>
-        public static TK[] GetArray<T, TK>(this Dictionary<int, UpdateField> dict, T firstUpdateField, int count)
+        public static TK[] GetArray<T, TK>(this Dictionary<int, UpdateField> dict, T firstUpdateField, int count) where T : Enum
         {
             var result = new TK[count];
             var type = GetTypeCodeOfReturnValue<TK>();
@@ -151,7 +151,7 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
         /// <param name="dict">The dictionary</param>
         /// <param name="updateField">The update field we want</param>
         /// <returns></returns>
-        public static TK GetEnum<T, TK>(this Dictionary<int, UpdateField> dict, T updateField)
+        public static TK GetEnum<T, TK>(this Dictionary<int, UpdateField> dict, T updateField) where T : Enum
         {
             // typeof (TK) is a nullable type (ObjectField?)
             // typeof (TK).GetGenericArguments()[0] is the non nullable equivalent (ObjectField)
