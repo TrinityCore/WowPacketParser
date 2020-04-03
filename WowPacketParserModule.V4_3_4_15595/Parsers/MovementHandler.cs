@@ -1,4 +1,6 @@
-﻿using WowPacketParser.Enums;
+﻿using System.Linq;
+using WowPacketParser.DBC;
+using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -2715,38 +2717,43 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 4);
 
-            var count = packet.ReadUInt32() / 2;
-            packet.AddValue("WorldMapArea swap count", count);
-            for (var i = 0; i < count; ++i)
-                packet.ReadUInt16("WorldMapArea swap", i);
+            var uiWorldMapAreaIDSwapsCount = packet.ReadUInt32("UiWorldMapAreaIDSwap") / 2;
+            for (var i = 0; i < uiWorldMapAreaIDSwapsCount; ++i)
+                packet.ReadInt16("UiWorldMapAreaIDSwaps", i);
 
             packet.ReadXORByte(guid, 1);
 
-            packet.ReadUInt32("UInt32");
+            packet.ReadUInt32("PhaseShiftFlags");
 
             packet.ReadXORByte(guid, 2);
             packet.ReadXORByte(guid, 6);
 
-            count = packet.ReadUInt32() / 2;
-            packet.AddValue("Inactive Terrain swap count", count);
-            for (var i = 0; i < count; ++i)
-                packet.ReadInt16<MapId>("Inactive Terrain swap", i);
+            var preloadMapIDCount = packet.ReadUInt32("PreloadMapIDsCount") / 2;
+            for (var i = 0; i < preloadMapIDCount; ++i)
+                packet.ReadInt16<MapId>("PreloadMapID", i);
 
-            count = packet.ReadUInt32() / 2;
-            packet.AddValue("Phases count", count);
+            var count = packet.ReadUInt32("PhaseShiftCount") / 2;
             for (var i = 0; i < count; ++i)
-                CoreParsers.MovementHandler.ActivePhases.Add(packet.ReadUInt16("Phase id", i), true); // Phase.dbc
+            {
+                var id = packet.ReadUInt16("Id", i);
+                CoreParsers.MovementHandler.ActivePhases.Add(id, true);
+            }
+
+            if (DBC.Phases.Any())
+            {
+                foreach (var phaseGroup in DBC.GetPhaseGroups(CoreParsers.MovementHandler.ActivePhases.Keys))
+                    packet.WriteLine($"PhaseGroup: { phaseGroup } Phases: { string.Join(" - ", DBC.Phases[phaseGroup]) }");
+            }
 
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 0);
 
-            count = packet.ReadUInt32() / 2;
-            packet.AddValue("Active Terrain swap count", count);
-            for (var i = 0; i < count; ++i)
-                packet.ReadInt16<MapId>("Active Terrain swap", i);
+            var visibleMapIDsCount = packet.ReadUInt32("VisibleMapIDsCount") / 2;
+            for (var i = 0; i < visibleMapIDsCount; ++i)
+                packet.ReadInt16<MapId>("VisibleMapID", i);
 
             packet.ReadXORByte(guid, 5);
-            packet.WriteGuid("GUID", guid);
+            packet.WriteGuid("Client", guid);
         }
 
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]
