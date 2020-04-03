@@ -2732,7 +2732,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             for (var i = 0; i < preloadMapIDCount; ++i)
                 packet.ReadInt16<MapId>("PreloadMapID", i);
 
-            var count = packet.ReadUInt32("PhaseShiftCount");
+            var count = packet.ReadUInt32("PhaseShiftCount") / 2;
             for (var i = 0; i < count; ++i)
             {
                 var id = packet.ReadUInt16("Id", i);
