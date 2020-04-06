@@ -22,11 +22,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Type")]
         public ChatMessageType? Type;
 
-        [DBFieldName("Language", TargetedDatabase.Zero, TargetedDatabase.BattleForAzeroth)]
+        [DBFieldName("Language")]
         public Language? Language;
-
-        [DBFieldName("Language", TargetedDatabase.BattleForAzeroth)]
-        public Language801? Language801;
 
         [DBFieldName("Probability")]
         public float? Probability;

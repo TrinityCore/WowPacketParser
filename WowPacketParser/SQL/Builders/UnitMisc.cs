@@ -704,7 +704,7 @@ namespace WowPacketParser.SQL.Builders
                 {
                     var count = entryCount.ContainsKey(text.Key) ? entryCount[text.Key] : 0;
 
-                    if (rows.Where(text2 => text2.Data.Text == textValue.Item1.Text).Count() != 0)
+                    if (rows.Where(text2 => text2.Data.Entry == text.Key && text2.Data.Text == textValue.Item1.Text).Count() != 0)
                         continue;
 
                     var row = new Row<CreatureText>
