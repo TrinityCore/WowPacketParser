@@ -810,7 +810,7 @@ namespace WowPacketParser.Enums.Version.V8_3_0_33062
             {Opcode.SMSG_ATTACK_SWING_LANDED_LOG, 0x273A},
             {Opcode.SMSG_AUCTION_CLOSED_NOTIFICATION, 0x2731},
             {Opcode.SMSG_AUCTION_COMMAND_RESULT, 0x272E},
-            {Opcode.SMSG_AUCTION_COMMODITY_PRICE_UPDATE, 0x28C3},
+            {Opcode.SMSG_AUCTION_COMMODITY_QUOTE, 0x28C3},
             {Opcode.SMSG_AUCTION_FAVORITE_ITEMS, 0x28CC},
             {Opcode.SMSG_AUCTION_HELLO_RESPONSE, 0x272C},
             {Opcode.SMSG_AUCTION_LIST_BIDDER_ITEMS_RESULT, 0x28C2},
