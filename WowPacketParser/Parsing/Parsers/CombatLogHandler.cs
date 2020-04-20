@@ -213,6 +213,7 @@ namespace WowPacketParser.Parsing.Parsers
                             break;
                         }
                         case SpellEffect.DismissPet:
+                        case SpellEffect.CallPet:
                         {
                             packet.ReadPackedGuid("GUID", index, i, j);
                             break;

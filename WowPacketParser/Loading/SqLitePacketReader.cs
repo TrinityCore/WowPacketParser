@@ -27,7 +27,7 @@ namespace WowPacketParser.Loading
             _connection = new SQLiteConnection(new SQLiteConnectionStringBuilder() { DataSource = fileName }.ConnectionString);
             _connection.Open();
 
-            ReadHeader();
+            TryReadHeader(fileName);
 
             _num = 0;
 
@@ -71,6 +71,39 @@ namespace WowPacketParser.Loading
                 _reader.Dispose();
             }
             _reader = null;
+        }
+
+        private void TryReadHeader(string fileName)
+        {
+            // sniff may not contain build
+            var lastWriteTimeUtc = File.GetLastWriteTimeUtc(fileName);
+
+            // non tiawps
+            // sqlite_sequnce (name, seq) while seq is the amount of files
+            // packets table (id integer primary key autoincrement, sess_id integer/*not used*, timestamp datetime, direction integer, opcode integer, data blob)
+
+            // tiawps
+            // header table (`key` string primary key, value string)
+            // packets table (id integer primary key autoincrement, timestamp datetime, direction integer, opcode integer, data blob)
+
+            try
+            {
+                ReadHeader(); // might be non tiawps
+            }
+            catch (SQLiteException e)
+            {
+                var build = ClientVersion.GetVersion(lastWriteTimeUtc);
+
+                using (var command = _connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT timestamp FROM packets limit 1";
+                    var dateTime = Convert.ToDateTime(command.ExecuteScalar());
+                    build = ClientVersion.GetVersion(dateTime);
+                }
+
+                ClientVersion.SetVersion((ClientVersionBuild)build);
+                ClientLocale.SetLocale("enUS");
+            }
         }
 
         public Packet Read(int number, string fileName)
