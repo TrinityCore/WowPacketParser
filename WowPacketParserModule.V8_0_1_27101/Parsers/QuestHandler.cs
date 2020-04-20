@@ -3,6 +3,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V8_0_1_27101.Parsers
 {
@@ -732,13 +733,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadInt32("QuestGiverCreatureID");
 
             int id = packet.ReadInt32("QuestID");
-            QuestRequestItems questRequestItems = new QuestRequestItems
-            {
-                ID = (uint)id
-            };
-
-            questRequestItems.EmoteOnCompleteDelay = (uint)packet.ReadInt32("CompEmoteDelay");
-            questRequestItems.EmoteOnComplete = (uint)packet.ReadInt32("CompEmoteType");
+            int delay = packet.ReadInt32("EmoteDelay");
+            int emote = packet.ReadInt32("EmoteType");
 
             for (int i = 0; i < 2; i++)
                 packet.ReadInt32("QuestFlags", i);
@@ -747,7 +743,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadInt32("MoneyToGet");
             uint collectCount = packet.ReadUInt32("CollectCount");
             uint currencyCount = packet.ReadUInt32("CurrencyCount");
-            packet.ReadInt32("StatusFlags");
+            QuestStatusFlags statusFlags = packet.ReadInt32E<QuestStatusFlags>("StatusFlags");
+            bool isComplete = (statusFlags & (QuestStatusFlags.Complete)) == QuestStatusFlags.Complete;
+            bool noRequestOnComplete = (statusFlags & QuestStatusFlags.NoRequestOnComplete) != 0;
 
             for (int i = 0; i < collectCount; i++)
             {
@@ -782,16 +780,16 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             completionTextLen = packet.ReadBits(12);
 
             packet.ReadWoWString("QuestTitle", questTitleLen);
-            questRequestItems.CompletionText = packet.ReadWoWString("CompletionText", completionTextLen);
+            string completionText = packet.ReadWoWString("CompletionText", completionTextLen);
 
-            Storage.QuestRequestItems.Add(questRequestItems, packet.TimeSpan);
+            CoreParsers.QuestHandler.QuestRequestItemHelper(id, completionText, delay, emote, isComplete, packet, noRequestOnComplete);
 
-            if (ClientLocale.PacketLocale != LocaleConstant.enUS && questRequestItems.CompletionText != string.Empty)
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS && completionText != string.Empty)
             {
                 QuestRequestItemsLocale localesQuestRequestItems = new QuestRequestItemsLocale
                 {
                     ID = (uint)id,
-                    CompletionText = questRequestItems.CompletionText
+                    CompletionText = completionText
                 };
                 Storage.LocalesQuestRequestItems.Add(localesQuestRequestItems, packet.TimeSpan);
             }

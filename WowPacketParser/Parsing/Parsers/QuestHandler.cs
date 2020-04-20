@@ -12,6 +12,16 @@ namespace WowPacketParser.Parsing.Parsers
     [SuppressMessage("ReSharper", "UseObjectOrCollectionInitializer")]
     public static class QuestHandler
     {
+        public class RequestItemEmote
+        {
+            public int EmoteOnIncompleteDelay { get; set; }
+            public int EmoteOnIncomplete { get; set; }
+            public int EmoteOnCompleteDelay { get; set; }
+            public int EmoteOnComplete { get; set; }
+        }
+
+        public static Dictionary<int, RequestItemEmote> RequestItemEmoteStore = new Dictionary<int, RequestItemEmote>();
+
         private static void ReadExtraQuestInfo510(Packet packet)
         {
             packet.ReadUInt32("Choice Item Count");
@@ -923,22 +933,92 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Unk UInt32");
         }
 
+        public static void QuestRequestItemHelper(int id, string completionText, int delay, int emote, bool isComplete, Packet packet, bool noRequestOnComplete = false)
+        {
+            QuestRequestItems requestItems = new QuestRequestItems
+            {
+                ID = (uint)id,
+                CompletionText = completionText
+            };
+
+            RequestItemEmote requestItemEmote;
+            if (RequestItemEmoteStore.TryGetValue(id, out requestItemEmote))
+            {
+                if (isComplete)
+                {
+                    requestItemEmote.EmoteOnCompleteDelay = delay;
+                    requestItemEmote.EmoteOnComplete = emote;
+                }
+                else
+                {
+                    requestItemEmote.EmoteOnIncompleteDelay = delay;
+                    requestItemEmote.EmoteOnIncomplete = emote;
+                    
+                    if (noRequestOnComplete)
+                    {
+                        requestItemEmote.EmoteOnCompleteDelay = 0;
+                        requestItemEmote.EmoteOnComplete = 0;
+                    }
+                }
+            }
+            else
+            {
+                var emotes = new RequestItemEmote();
+
+                if (isComplete)
+                {
+                    emotes.EmoteOnCompleteDelay = delay;
+                    emotes.EmoteOnComplete = emote;
+                    emotes.EmoteOnIncompleteDelay = -1;
+                    emotes.EmoteOnIncomplete = -1;
+                }
+                else
+                {
+                    emotes.EmoteOnIncompleteDelay = delay;
+                    emotes.EmoteOnIncomplete = emote;
+
+                    if (noRequestOnComplete)
+                    {
+                        requestItemEmote.EmoteOnCompleteDelay = 0;
+                        requestItemEmote.EmoteOnComplete = 0;
+                    }
+                    else
+                    {
+                        emotes.EmoteOnComplete = -1;
+                        emotes.EmoteOnCompleteDelay = -1;
+                    }
+                }
+
+                RequestItemEmoteStore.Add(id, emotes);
+            }
+
+            if (RequestItemEmoteStore.TryGetValue(id, out requestItemEmote))
+            {
+                if (requestItemEmote.EmoteOnCompleteDelay >= 0)
+                    requestItems.EmoteOnCompleteDelay = (uint)requestItemEmote.EmoteOnCompleteDelay;
+
+                if (requestItemEmote.EmoteOnComplete >= 0)
+                    requestItems.EmoteOnComplete = (uint)requestItemEmote.EmoteOnComplete;
+
+                if (requestItemEmote.EmoteOnIncompleteDelay >= 0)
+                    requestItems.EmoteOnIncompleteDelay = (uint)requestItemEmote.EmoteOnIncompleteDelay;
+
+                if (requestItemEmote.EmoteOnIncomplete >= 0)
+                    requestItems.EmoteOnIncomplete = (uint)requestItemEmote.EmoteOnIncomplete;
+
+                Storage.QuestRequestItems.Add(requestItems, packet.TimeSpan);
+            }
+        }
+
         [Parser(Opcode.SMSG_QUEST_GIVER_REQUEST_ITEMS, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleQuestRequestItems(Packet packet)
         {
             packet.ReadGuid("GUID");
-            uint entry = packet.ReadUInt32<QuestId>("Quest ID");
+            int id = packet.ReadInt32<QuestId>("Quest ID");
             packet.ReadCString("Title");
             string text = packet.ReadCString("Text");
-
-            QuestRequestItems requestItems = new QuestRequestItems
-            {
-                ID = entry,
-                CompletionText = text
-            };
-
-            uint emoteDelay = packet.ReadUInt32("Emote Delay");
-            uint emoteID = packet.ReadUInt32("Emote");
+            int emoteDelay = (int)packet.ReadUInt32("Emote Delay");
+            int emoteID = (int)packet.ReadUInt32("Emote");
             packet.ReadUInt32("Close Window on Cancel");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
@@ -957,16 +1037,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             // flags
             var flags = packet.ReadUInt32("Unk flags 1");
-            if ((flags & 0x3) == 0) // not completable
-            {
-                requestItems.EmoteOnIncompleteDelay = emoteDelay;
-                requestItems.EmoteOnIncomplete = emoteID;
-            }
-            else
-            {
-                requestItems.EmoteOnCompleteDelay = emoteDelay;
-                requestItems.EmoteOnComplete = emoteID;
-            }
+            bool isComplete = (flags & 0x3) != 0;
+
             packet.ReadUInt32("Unk flags 2");
             packet.ReadUInt32("Unk flags 3");
             packet.ReadUInt32("Unk flags 4");
@@ -976,31 +1048,24 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadUInt32("Unk flags 5");
                 packet.ReadUInt32("Unk flags 6");
             }
-            requestItems.EmoteOnCompleteDelay = 0;
-            Storage.QuestRequestItems.Add(requestItems, packet.TimeSpan);
-        }
 
+            QuestRequestItemHelper(id, text, emoteDelay, emoteID, isComplete, packet);
+        }
+        
         [Parser(Opcode.SMSG_QUEST_GIVER_REQUEST_ITEMS, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestRequestItems434(Packet packet)
         {
             packet.ReadGuid("GUID");
-            uint entry = packet.ReadUInt32<QuestId>("Quest ID");
+            int id = packet.ReadInt32<QuestId>("QuestID");
             
             packet.ReadCString("Title");
-            string text = packet.ReadCString("Text");
-
-            QuestRequestItems requestItems = new QuestRequestItems
-            {
-                ID = entry,
-                CompletionText = text
-            };
-
-            requestItems.EmoteOnCompleteDelay = packet.ReadUInt32("Delay");  // not confirmed
-            requestItems.EmoteOnComplete = packet.ReadUInt32("Emote");  // not confirmed
+            string completionText = packet.ReadCString("CompletionText");
+            int delay = packet.ReadInt32("EmoteDelay");
+            int emote = packet.ReadInt32("EmoteType");
 
             packet.ReadUInt32("Close Window on Cancel");
-            packet.ReadUInt32E<QuestFlags>("Quest Flags");
-            packet.ReadUInt32("Suggested Players");
+            packet.ReadUInt32E<QuestFlags>("QuestFlags");
+            packet.ReadUInt32("SuggestedPlayers");
             packet.ReadUInt32("Money");
 
             uint countItems = packet.ReadUInt32("Number of Required Items");
@@ -1019,31 +1084,39 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             // flags, if any of these flags is 0 quest is not completable
-            packet.ReadUInt32("Unk flags 1"); // 2
-            packet.ReadUInt32("Unk flags 2"); // 4
-            packet.ReadUInt32("Unk flags 3"); // 8
-            packet.ReadUInt32("Unk flags 4"); // 16
-            packet.ReadUInt32("Unk flags 5"); // 64
+            QuestStatusFlags[] statusFlags = new QuestStatusFlags[] { QuestStatusFlags.None, QuestStatusFlags.None, QuestStatusFlags.None, QuestStatusFlags.None, QuestStatusFlags.None };
+            QuestStatusFlags[] completableStatusFlags = new QuestStatusFlags[] { QuestStatusFlags.KillCreditComplete, QuestStatusFlags.CollectableComplete, QuestStatusFlags.QuestStatusUnk8, QuestStatusFlags.QuestStatusUnk16, QuestStatusFlags.QuestStatusUnk64 };
+            
+            statusFlags[0] = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags1"); // 2
+            statusFlags[1] = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags2"); // 4
+            statusFlags[2] = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags3"); // 8
+            statusFlags[3] = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags4"); // 16
+            statusFlags[4] = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags5"); // 64
 
-            Storage.QuestRequestItems.Add(requestItems, packet.TimeSpan);
+            bool isComplete = false;
+            for (int i = 0; i < statusFlags.Length; i++)
+            {
+                if ((statusFlags[i] & completableStatusFlags[i]) == completableStatusFlags[i])
+                    isComplete = true;
+                else
+                {
+                    isComplete = false;
+                    break; // if any of these flags is 0 quest is not completable
+                }
+            }
+
+            QuestRequestItemHelper(id, completionText, delay, emote, isComplete, packet);
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_REQUEST_ITEMS, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestRequestItems510(Packet packet)
         {
             packet.ReadGuid("GUID");
-            uint entry = packet.ReadUInt32<QuestId>("Quest ID");
+            int id = packet.ReadInt32<QuestId>("QuestID");
             packet.ReadCString("Title");
             string text = packet.ReadCString("Text");
-
-            QuestRequestItems requestItems = new QuestRequestItems
-            {
-                ID = entry,
-                CompletionText = text
-            };
-
-            requestItems.EmoteOnComplete = packet.ReadUInt32("Emote");
-            requestItems.EmoteOnCompleteDelay = packet.ReadUInt32("Delay");
+            int delay = packet.ReadInt32("EmoteDelay");
+            int emote = packet.ReadInt32("EmoteType");
             packet.ReadUInt32("Close Window on Cancel");
             packet.ReadUInt32E<QuestFlags>("Quest Flags");
             packet.ReadUInt32E<QuestFlagsEx>("Quest Flags 2");
@@ -1066,13 +1139,28 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             // flags, if any of these flags is 0 quest is not completable
-            packet.ReadUInt32("Unk flags 1"); // 2
-            packet.ReadUInt32("Unk flags 2"); // 4
-            packet.ReadUInt32("Unk flags 3"); // 8
-            packet.ReadUInt32("Unk flags 4"); // 16
-            packet.ReadUInt32("Unk flags 5"); // 64
+            QuestStatusFlags[] statusFlags = new QuestStatusFlags[] { QuestStatusFlags.None, QuestStatusFlags.None, QuestStatusFlags.None, QuestStatusFlags.None, QuestStatusFlags.None };
+            QuestStatusFlags[] completableStatusFlags = new QuestStatusFlags[] { QuestStatusFlags.KillCreditComplete, QuestStatusFlags.CollectableComplete, QuestStatusFlags.QuestStatusUnk8, QuestStatusFlags.QuestStatusUnk16, QuestStatusFlags.QuestStatusUnk64 };
 
-            Storage.QuestRequestItems.Add(requestItems, packet.TimeSpan);
+            statusFlags[0] = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags1"); // 2
+            statusFlags[1] = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags2"); // 4
+            statusFlags[2] = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags3"); // 8
+            statusFlags[3] = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags4"); // 16
+            statusFlags[4] = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags5"); // 64
+
+            bool isComplete = false;
+            for (int i = 0; i < statusFlags.Length; i++)
+            {
+                if ((statusFlags[i] & completableStatusFlags[i]) == completableStatusFlags[i])
+                    isComplete = true;
+                else
+                {
+                    isComplete = false;
+                    break; // if any of these flags is 0 quest is not completable
+                }
+            }
+
+            QuestRequestItemHelper(id, text, delay, emote, isComplete, packet);
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_OFFER_REWARD_MESSAGE)]

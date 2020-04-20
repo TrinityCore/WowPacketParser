@@ -24,8 +24,5 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("CompletionText")]
         public string CompletionText;
-
-        [DBFieldName("VerifiedBuild")]
-        public int? VerifiedBuild = ClientVersion.BuildInt;
     }
 }
