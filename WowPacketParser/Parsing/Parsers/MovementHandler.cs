@@ -1811,7 +1811,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadToEnd();
         }
 
-        [Parser(Opcode.SMSG_MOVE_KNOCK_BACK, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_MOVE_KNOCK_BACK, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleMoveKnockBack422(Packet packet)
         {
             var guid = packet.StartBitStream(5, 2, 6, 3, 1, 4, 0, 7);
