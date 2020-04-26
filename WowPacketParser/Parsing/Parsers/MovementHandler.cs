@@ -1788,23 +1788,29 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_COMPRESSED_MOVES)]
+        [Parser(Opcode.SMSG_MULTIPLE_MOVES)]
         public static void HandleCompressedMoves(Packet packet)
         {
+            var uncompressedSize = packet.ReadInt32("Data Size");
+
             packet.WriteLine("{"); // To be able to see what is inside this packet.
             packet.WriteLine();
 
-            using (var pkt = packet.Inflate(packet.ReadInt32()))
-            {
-                while (pkt.CanRead())
-                {
-                    var size = pkt.ReadByte();
-                    var opc = pkt.ReadInt16();
-                    var data = pkt.ReadBytes(size - 2);
+            Packet pkt;
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_COMPRESSED_MOVES, Direction.ServerToClient))
+                pkt = packet.Inflate(uncompressedSize);
+            else
+                pkt = packet;
 
-                    using (var newPacket = new Packet(data, opc, pkt.Time, pkt.Direction, pkt.Number, packet.Writer, packet.FileName))
-                        Handler.Parse(newPacket, true);
-                    packet.WriteLine();
-                }
+            while (pkt.CanRead())
+            {
+                var size = pkt.ReadByte();
+                var opc = pkt.ReadInt16();
+                var data = pkt.ReadBytes(size - 2);
+
+                using (var newPacket = new Packet(data, opc, pkt.Time, pkt.Direction, pkt.Number, packet.Writer, packet.FileName))
+                    Handler.Parse(newPacket, true);
+                packet.WriteLine();
             }
 
             packet.WriteLine("}");

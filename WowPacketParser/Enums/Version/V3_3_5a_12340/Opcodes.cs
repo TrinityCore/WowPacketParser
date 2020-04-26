@@ -1225,7 +1225,7 @@ namespace WowPacketParser.Enums.Version.V3_3_5a_12340
             {Opcode.SMSG_MOVE_SET_COLLISION_HGT, 0x516},
             {Opcode.SMSG_COMMENTATOR_SKIRMISH_QUEUE_RESULT1, 0x51C},
             {Opcode.SMSG_COMMENTATOR_SKIRMISH_QUEUE_RESULT2, 0x51D},
-            {Opcode.SMSG_COMPRESSED_UNKNOWN_1310, 0x51E}
+            {Opcode.SMSG_MULTIPLE_MOVES, 0x51E}
         };
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
