@@ -10,6 +10,8 @@ namespace WowPacketParser.Store.Objects.UpdateFields
         WowGuid CreatedBy { get; }
         byte ClassId { get; }
         byte Sex { get; }
+        int[] MaxPower { get; }
+        long MaxHealth { get; }
         int Level { get; }
         int ContentTuningID { get; }
         int ScalingLevelMin { get; }

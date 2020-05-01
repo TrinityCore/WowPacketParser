@@ -170,6 +170,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("KillCredit", 2)]
         public uint?[] KillCredits;
 
+        [DBFieldName("ModelId", 4)]
+        public uint?[] DisplayId;
+
         [DBFieldName("name")]
         public string Name;
 
@@ -220,6 +223,9 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("ManaModifier")]
         public float? ManaModifier;
+
+        [DBFieldName("Civilian")]
+        public bool? Civilian;
 
         [DBFieldName("RacialLeader")]
         public bool? RacialLeader;
