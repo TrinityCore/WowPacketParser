@@ -139,8 +139,8 @@ namespace WowPacketParser.SQL.Builders
                 row.Data.PhaseGroup = 0;
                 row.Data.ModelID = 0;
                 row.Data.CurrentWaypoint = 0;
-                row.Data.CurHealth = 0;
-                row.Data.CurMana = 0;
+                row.Data.CurHealth = (uint)creature.UnitData.MaxHealth;
+                row.Data.CurMana = (uint)creature.UnitData.MaxPower[0];
                 row.Data.NpcFlag = 0;
                 row.Data.UnitFlag = 0;
                 row.Data.DynamicFlag = 0;

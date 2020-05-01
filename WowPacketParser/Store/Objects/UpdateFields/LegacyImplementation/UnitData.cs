@@ -52,6 +52,10 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
                 ? ((UpdateFields.GetValue<UnitField, uint>(UnitField.UNIT_FIELD_BYTES_0) >> 24) & 0xFF)
                 : ((UpdateFields.GetValue<UnitField, uint>(UnitField.UNIT_FIELD_BYTES_0) >> 16) & 0xFF));
 
+        public long MaxHealth => UpdateFields.GetValue<UnitField, int>(UnitField.UNIT_FIELD_MAXHEALTH);
+
+        public int[] MaxPower => new int[] { UpdateFields.GetValue<UnitField, int>(UnitField.UNIT_FIELD_MAXPOWER) };
+
         public int Level => UpdateFields.GetValue<UnitField, int?>(UnitField.UNIT_FIELD_LEVEL).GetValueOrDefault(1);
 
         public int ContentTuningID => ClientVersion.AddedInVersion(ClientType.BattleForAzeroth)
