@@ -408,23 +408,23 @@ namespace WowPacketParser.SQL.Builders
         }
 
         //                      entry, <minlevel, maxlevel>
-        public static Dictionary<uint, Tuple<uint, uint>> GetLevels(Dictionary<WowGuid, Unit> units)
+        public static Dictionary<uint, ValueTuple<int, int>> GetLevels(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
                 return null;
 
             var entries = units.GroupBy(unit => unit.Key.GetEntry());
-            var list = new Dictionary<uint, List<uint>>();
+            var list = new Dictionary<uint, List<int>>();
 
             foreach (var pair in entries.SelectMany(entry => entry))
             {
                 if (list.ContainsKey(pair.Key.GetEntry()))
-                    list[pair.Key.GetEntry()].Add((uint)pair.Value.UnitData.Level);
+                    list[pair.Key.GetEntry()].Add(pair.Value.UnitData.Level);
                 else
-                    list.Add(pair.Key.GetEntry(), new List<uint> { (uint)pair.Value.UnitData.Level });
+                    list.Add(pair.Key.GetEntry(), new List<int> { pair.Value.UnitData.Level });
             }
 
-            var result = list.ToDictionary(pair => pair.Key, pair => Tuple.Create(pair.Value.Min(), pair.Value.Max()));
+            var result = list.ToDictionary(pair => pair.Key, pair => ValueTuple.Create(pair.Value.Min(), pair.Value.Max()));
 
             return result.Count == 0 ? null : result;
         }
@@ -502,6 +502,34 @@ namespace WowPacketParser.SQL.Builders
                 return string.Empty;
 
             var levels = GetLevels(units);
+            var usesCurrentExpansionLevels = new Dictionary<uint, long>();
+            var expansionBaseLevel = 0;
+            if (Settings.TargetedDatabase >= TargetedDatabase.WarlordsOfDraenor && Settings.DBEnabled)
+            {
+                usesCurrentExpansionLevels = SQLDatabase.GetDict<uint, long>($"SELECT entry, 1 FROM {Settings.TDBDatabase}.creature_template WHERE HealthScalingExpansion = -1");
+                switch (Settings.TargetedDatabase)
+                {
+                    case TargetedDatabase.WarlordsOfDraenor:
+                        expansionBaseLevel = 100;
+                        break;
+                    case TargetedDatabase.Legion:
+                        expansionBaseLevel = 110;
+                        break;
+                    case TargetedDatabase.BattleForAzeroth:
+                        expansionBaseLevel = 120;
+                        break;
+                }
+            }
+
+            Func<uint, (int MinLevel, int MaxLevel)> getLevel = (uint id) =>
+            {
+                CreatureTemplate template;
+                if ((Storage.CreatureTemplates.TryGetValue(id, out template) && template.HealthScalingExpansion == ClientType.Current)
+                    || usesCurrentExpansionLevels.ContainsKey(id))
+                    return (levels[id].Item1 - expansionBaseLevel, levels[id].Item2 - expansionBaseLevel);
+
+                return levels[id];
+            };
 
             foreach (var unit in units)
             {
@@ -509,13 +537,14 @@ namespace WowPacketParser.SQL.Builders
                     continue;
 
                 var npc = unit.Value;
+                var minMaxLevel = getLevel(unit.Key.GetEntry());
 
                 var template = new CreatureTemplateNonWDB
                 {
                     Entry = unit.Key.GetEntry(),
                     GossipMenuId = npc.GossipId,
-                    MinLevel = (int)levels[unit.Key.GetEntry()].Item1,
-                    MaxLevel = (int)levels[unit.Key.GetEntry()].Item2,
+                    MinLevel = minMaxLevel.MinLevel,
+                    MaxLevel = minMaxLevel.MaxLevel,
                     Faction = (uint)npc.UnitData.FactionTemplate,
                     NpcFlag = (NPCFlags)Utilities.MAKE_PAIR64(npc.UnitData.NpcFlags[0], npc.UnitData.NpcFlags[1]),
                     SpeedRun = npc.Movement.RunSpeed,
@@ -576,10 +605,10 @@ namespace WowPacketParser.SQL.Builders
                      (template.NpcFlag & NPCFlags.ClassTrainer) == 0))
                 {
                     var subname = GetSubName((int)unit.Key.GetEntry(), false); // Fall back
-                    var entry = Storage.CreatureTemplates.Where(creature => creature.Item1.Entry == unit.Key.GetEntry());
-                    if (entry.Any())
+                    CreatureTemplate entry;
+                    if (Storage.CreatureTemplates.TryGetValue(unit.Key.GetEntry(), out entry))
                     {
-                        var sub = entry.Select(creature => creature.Item1.SubName).First();
+                        var sub = entry.SubName;
                         if (sub.Length > 0)
                         {
                             template.NpcFlag |= ProcessNpcFlags(sub);

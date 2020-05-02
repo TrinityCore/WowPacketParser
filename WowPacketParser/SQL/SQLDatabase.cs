@@ -196,7 +196,7 @@ namespace WowPacketParser.SQL
 
         // Returns a dictionary from a DB query with two parameters (e.g <creature_entry, creature_name>)
         // TODO: Drop this and use the GetDict<T, TK> method below
-        private static Dictionary<T, TK> GetDict<T, TK>(string query)
+        public static Dictionary<T, TK> GetDict<T, TK>(string query)
         {
             using (var command = SQLConnector.CreateCommand(query))
             {
@@ -225,7 +225,7 @@ namespace WowPacketParser.SQL
             return values;
         }
 
-        public static RowList<T> Get<T>(DataBag<T> conditionList, string database = null)
+        public static RowList<T> Get<T>(IEnumerable<Tuple<T, TimeSpan?>> conditionList, string database = null)
             where T : IDataModel, new()
         {
             var cond = new RowList<T>();

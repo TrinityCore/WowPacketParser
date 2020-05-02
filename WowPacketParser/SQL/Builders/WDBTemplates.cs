@@ -70,12 +70,12 @@ namespace WowPacketParser.SQL.Builders
             {
                 foreach (var creatureTemplate in Storage.CreatureTemplates)
                 {
-                    if (creatureTemplate.Item1.FemaleName == null)
-                        creatureTemplate.Item1.FemaleName = string.Empty;
+                    if (creatureTemplate.Value.Item1.FemaleName == null)
+                        creatureTemplate.Value.Item1.FemaleName = string.Empty;
                 }
 
-                var templatesDb = SQLDatabase.Get(Storage.CreatureTemplates);
-                return SQLUtil.Compare(Storage.CreatureTemplates, templatesDb, StoreNameType.Unit);
+                var templatesDb = SQLDatabase.Get(Storage.CreatureTemplates.Values);
+                return SQLUtil.Compare(Storage.CreatureTemplates.Values, templatesDb, StoreNameType.Unit);
             }
 
             if (!Storage.CreatureTemplatesClassic.IsEmpty() && Settings.TargetedDatabase == TargetedDatabase.Classic)

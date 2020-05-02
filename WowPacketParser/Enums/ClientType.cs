@@ -2,6 +2,7 @@ namespace WowPacketParser.Enums
 {
     public enum ClientType
     {
+        Current            = -1, // this is used by creature_template HealthScalingExpansion field, client forces this to current expansion and also increases levels by "current max"
         WorldOfWarcraft    = 0,
         TheBurningCrusade  = 1,
         WrathOfTheLichKing = 2,

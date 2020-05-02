@@ -153,9 +153,20 @@ namespace WowPacketParser.Store
             return GetEnumerator();
         }
 
-        public List<T> Keys()
+        public ICollection<T> Keys
         {
-            return Enabled ? _dictionary.Keys.ToList() : new List<T>();
+            get
+            {
+                return Enabled ? _dictionary.Keys : new List<T>();
+            }
+        }
+
+        public ICollection<Tuple<TK, TimeSpan?>> Values
+        {
+            get
+            {
+                return Enabled ? _dictionary.Values : new List<Tuple<TK, TimeSpan?>>();
+            }
         }
     }
 
