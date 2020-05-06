@@ -286,7 +286,7 @@ namespace WowPacketParser.Parsing.Parsers
                 for (var i = 1; i < waypoints; i++)
                 {
                     var vec = packet.ReadPackedVector3();
-                    vec = mid - vec;
+                    vec = mid + vec;
                     packet.AddValue("Waypoint", vec, i);
                 }
             }
