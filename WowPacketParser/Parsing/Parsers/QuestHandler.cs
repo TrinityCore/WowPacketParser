@@ -979,8 +979,8 @@ namespace WowPacketParser.Parsing.Parsers
 
                     if (noRequestOnComplete)
                     {
-                        requestItemEmote.EmoteOnCompleteDelay = 0;
-                        requestItemEmote.EmoteOnComplete = 0;
+                        emotes.EmoteOnCompleteDelay = 0;
+                        emotes.EmoteOnComplete = 0;
                     }
                     else
                     {
