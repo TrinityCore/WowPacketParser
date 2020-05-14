@@ -52,7 +52,11 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
                 ? ((UpdateFields.GetValue<UnitField, uint>(UnitField.UNIT_FIELD_BYTES_0) >> 24) & 0xFF)
                 : ((UpdateFields.GetValue<UnitField, uint>(UnitField.UNIT_FIELD_BYTES_0) >> 16) & 0xFF));
 
+        public long Health => UpdateFields.GetValue<UnitField, int>(UnitField.UNIT_FIELD_HEALTH);
+
         public long MaxHealth => UpdateFields.GetValue<UnitField, int>(UnitField.UNIT_FIELD_MAXHEALTH);
+
+        public int[] Power => new int[] { UpdateFields.GetValue<UnitField, int>(UnitField.UNIT_FIELD_POWER) };
 
         public int[] MaxPower => new int[] { UpdateFields.GetValue<UnitField, int>(UnitField.UNIT_FIELD_MAXPOWER) };
 
@@ -121,6 +125,8 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
         public byte AnimTier => (byte)((UpdateFields.GetValue<UnitField, uint>(UnitField.UNIT_FIELD_BYTES_1) >> 24) & 0xFF);
 
         public int CreatedBySpell => UpdateFields.GetValue<UnitField, int>(UnitField.UNIT_CREATED_BY_SPELL);
+
+        public int EmoteState => UpdateFields.GetValue<UnitField, int>(UnitField.UNIT_NPC_EMOTESTATE);
 
         public byte SheatheState => (byte)(UpdateFields.GetValue<UnitField, uint>(UnitField.UNIT_FIELD_BYTES_2) & 0xFF);
 

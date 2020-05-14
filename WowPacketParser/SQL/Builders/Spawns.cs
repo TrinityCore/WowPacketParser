@@ -191,7 +191,7 @@ namespace WowPacketParser.SQL.Builders
                     addonRows.Add(addonRow);
                 }
 
-                if (creature.IsTemporarySpawn())
+                if (creature.IsTemporarySpawn() && !Settings.SaveTempSpawns)
                 {
                     row.CommentOut = true;
                     row.Comment += " - !!! might be temporary spawn !!!";
@@ -371,7 +371,7 @@ namespace WowPacketParser.SQL.Builders
                 row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, go.Area, false) + " - ";
                 row.Comment += "Difficulty: " + StoreGetters.GetName(StoreNameType.Difficulty, (int)go.DifficultyID, false) + ")";
 
-                if (go.IsTemporarySpawn())
+                if (go.IsTemporarySpawn() && !Settings.SaveTempSpawns)
                 {
                     row.CommentOut = true;
                     row.Comment += " - !!! might be temporary spawn !!!";
