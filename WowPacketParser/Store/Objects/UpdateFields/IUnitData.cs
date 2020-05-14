@@ -10,6 +10,8 @@ namespace WowPacketParser.Store.Objects.UpdateFields
         WowGuid CreatedBy { get; }
         byte ClassId { get; }
         byte Sex { get; }
+        long Health { get; }
+        int[] Power { get; }
         int[] MaxPower { get; }
         long MaxHealth { get; }
         int Level { get; }
@@ -32,6 +34,7 @@ namespace WowPacketParser.Store.Objects.UpdateFields
         byte VisFlags { get; }
         byte AnimTier { get; }
         int CreatedBySpell { get; }
+        int EmoteState { get; }
         byte SheatheState { get; }
         byte PvpFlags { get; }
         byte PetFlags { get; }
