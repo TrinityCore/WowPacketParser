@@ -32,6 +32,10 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
             packet.ReadUInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
             packet.ReadInt64("TokenBalanceAmount");
             packet.ReadInt32("MaxCharactersPerRealm");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V1_13_3_32790)) // no idea when this was added exactly
+                packet.ReadInt32("UnkInt");
+
             packet.ReadUInt32("BpayStoreProductDeliveryDelay");
             packet.ReadInt32("ActiveCharacterUpgradeBoostType");
             packet.ReadInt32("ActiveClassTrialBoostType");
