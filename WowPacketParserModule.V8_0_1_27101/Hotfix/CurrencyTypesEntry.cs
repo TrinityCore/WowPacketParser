@@ -19,5 +19,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public int FactionID { get; set; }
         [HotfixVersion(ClientVersionBuild.V8_1_5_29683, false)]
         public int ItemGroupSoundsID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V8_3_0_33062, false)]
+        public int ConvertToPlayerExperience { get; set; }
+        [HotfixVersion(ClientVersionBuild.V8_3_0_33062, false)]
+        public int PlayerConditionID { get; set; }
     }
 }

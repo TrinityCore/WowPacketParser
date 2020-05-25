@@ -17,5 +17,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public uint PlayerConditionID { get; set; }
         public float MountFlyRideHeight { get; set; }
         public int UiModelSceneID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V8_3_0_33062, false)]
+        public int MountSpecialRiderAnimKitID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V8_3_0_33062, false)]
+        public int MountSpecialSpellVisualKitID { get; set; }
     }
 }
