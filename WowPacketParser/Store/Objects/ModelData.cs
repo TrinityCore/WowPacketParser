@@ -16,7 +16,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("CombatReach")]
         public float? CombatReach;
 
-        [DBFieldName("Gender", TargetedDatabase.Zero, TargetedDatabase.WarlordsOfDraenor)]
+        [DBFieldName("Gender", TargetedDatabase.Classic, TargetedDatabase.WarlordsOfDraenor)]
         public Gender? Gender;
 
         [DBFieldName("DisplayID_Other_Gender")]
