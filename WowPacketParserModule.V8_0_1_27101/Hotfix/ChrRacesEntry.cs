@@ -35,6 +35,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public int FemaleSkeletonFileDataID { get; set; }
         public int MaleSkeletonFileDataID { get; set; }
         public int HelmVisFallbackRaceID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V8_3_0_33062, false)]
+        public int TransmogrifyDisabledSlotMask { get; set; }
         public short FactionID { get; set; }
         public short CinematicSequenceID { get; set; }
         public short ResSicknessSpellID { get; set; }

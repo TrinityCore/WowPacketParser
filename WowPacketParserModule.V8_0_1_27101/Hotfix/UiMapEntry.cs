@@ -19,5 +19,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Hotfix
         public int VisibilityPlayerConditionID { get; set; }
         public sbyte HelpTextPosition { get; set; }
         public int BkgAtlasID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V8_3_0_33062, false)]
+        public int AlternateUiMapGroup { get; set; }
     }
 }
