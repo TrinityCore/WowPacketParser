@@ -158,7 +158,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 Storage.GossipMenuOptions.Add(gossipOption, packet.TimeSpan);
                 if (!gossipMenuOptionBox.IsEmpty)
                     Storage.GossipMenuOptionBoxes.Add(gossipMenuOptionBox, packet.TimeSpan);
-                
+
                 packetGossip.Options.Add(new GossipMessageOption()
                 {
                     OptionIndex = gossipOption.OptionIndex.Value,
@@ -185,8 +185,10 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             gossip.ObjectEntry = guid.GetEntry();
 
             if (guid.GetObjectType() == ObjectType.Unit)
-                if (Storage.Objects.ContainsKey(guid))
-                    ((Unit)Storage.Objects[guid].Item1).GossipId = menuId;
+            {
+                if (!Storage.CreatureDefaultGossips.ContainsKey(guid.GetEntry()))
+                    Storage.CreatureDefaultGossips.Add(guid.GetEntry(), menuId);
+            }
 
             Storage.Gossips.Add(gossip, packet.TimeSpan);
             var lastGossipOption = CoreParsers.NpcHandler.LastGossipOption;

@@ -549,7 +549,7 @@ namespace WowPacketParser.SQL.Builders
                 var template = new CreatureTemplateNonWDB
                 {
                     Entry = unit.Key.GetEntry(),
-                    GossipMenuId = npc.GossipId,
+                    GossipMenuId = Storage.CreatureDefaultGossips.GetValueOrDefault(unit.Key.GetEntry()),
                     MinLevel = minMaxLevel.MinLevel,
                     MaxLevel = minMaxLevel.MaxLevel,
                     Faction = (uint)npc.UnitData.FactionTemplate,
