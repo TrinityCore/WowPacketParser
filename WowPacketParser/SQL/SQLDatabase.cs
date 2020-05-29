@@ -41,7 +41,8 @@ namespace WowPacketParser.SQL
             StoreNameType.Zone,
             StoreNameType.Area,
             StoreNameType.Player,
-            StoreNameType.Achievement
+            StoreNameType.Achievement,
+            StoreNameType.Sound
         };
 
         public struct POIData

@@ -1,8 +1,11 @@
-﻿namespace WowPacketParser.DBC.Structures.BattleForAzeroth
+﻿using DBFileReaderLib.Attributes;
+
+namespace WowPacketParser.DBC.Structures.BattleForAzeroth
 {
     [DBFile("Creature")]
     public sealed class CreatureEntry
     {
+        [Index(true)]
         public uint ID;
         public string Name;
         public string NameAlt;
@@ -12,8 +15,11 @@
         public byte CreatureType;
         public ushort CreatureFamily;
         public byte StartAnimState;
+        [Cardinality(4)]
         public uint[] DisplayID = new uint[4];
+        [Cardinality(4)]
         public float[] DisplayProbability = new float[4];
+        [Cardinality(3)]
         public uint[] AlwaysItem = new uint[3];
     }
 }

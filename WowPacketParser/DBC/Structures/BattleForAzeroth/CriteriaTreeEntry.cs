@@ -1,8 +1,11 @@
-﻿namespace WowPacketParser.DBC.Structures.BattleForAzeroth
+﻿using DBFileReaderLib.Attributes;
+
+namespace WowPacketParser.DBC.Structures.BattleForAzeroth
 {
     [DBFile("CriteriaTree")]
     public sealed class CriteriaTreeEntry
     {
+        [Index(true)]
         public uint ID;
         public string Description;
         public uint Parent;

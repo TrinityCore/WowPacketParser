@@ -1,8 +1,11 @@
-﻿namespace WowPacketParser.DBC.Structures.BattleForAzeroth
+﻿using DBFileReaderLib.Attributes;
+
+namespace WowPacketParser.DBC.Structures.BattleForAzeroth
 {
     [DBFile("ItemSparse")]
     public sealed class ItemSparseEntry
     {
+        [Index(true)]
         public uint ID;
         public long AllowableRace;
         public string Description;
@@ -15,7 +18,9 @@
         public float QualityModifier;
         public uint BagFamily;
         public float ItemRange;
+        [Cardinality(10)]
         public float[] StatPercentageOfSocket = new float[10];
+        [Cardinality(10)]
         public int[] StatPercentEditor = new int[10];
         public int Stackable;
         public int MaxCount;
@@ -25,20 +30,19 @@
         public uint VendorStackCount;
         public float PriceVariance;
         public float PriceRandomValue;
+        [Cardinality(4)]
         public int[] Flags = new int[4];
-        public int OppositeFactionItemID;
+        public int FactionRelated;
         public ushort ItemNameDescriptionID;
         public ushort RequiredTransmogHoliday;
         public ushort RequiredHoliday;
         public ushort LimitCategory;
         public ushort GemProperties;
-        public ushort SocketMatchEnchantmentID;
+        public ushort SocketMatchEnchantmentId;
         public ushort TotemCategoryID;
         public ushort InstanceBound;
         public ushort ZoneBound;
         public ushort ItemSet;
-        public ushort ItemRandomSuffixGroupID;
-        public ushort RandomSelect;
         public ushort LockID;
         public ushort StartQuestID;
         public ushort PageID;
@@ -53,6 +57,7 @@
         public byte ArtifactID;
         public byte SpellWeight;
         public byte SpellWeightCategory;
+        [Cardinality(3)]
         public byte[] SocketType = new byte[3];
         public byte SheatheType;
         public byte Material;
@@ -60,7 +65,8 @@
         public byte LanguageID;
         public byte Bonding;
         public byte DamageDamageType;
-        public byte[] StatModifierBonusStat = new byte[10];
+        [Cardinality(10)]
+        public sbyte[] StatModifierBonusStat = new sbyte[10];
         public byte ContainerSlots;
         public byte MinReputation;
         public byte RequiredPVPMedal;

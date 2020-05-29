@@ -55,10 +55,6 @@ namespace WowPacketParser.Misc
                         if (DBC.DBC.Map.ContainsKey(entry))
                             return DBC.DBC.Map[entry].MapName;
                         break;
-                    case StoreNameType.Sound:
-                        if (DBC.DBC.SoundKitName.ContainsKey(entry))
-                            return DBC.DBC.SoundKitName[entry].Name;
-                        break;
                     case StoreNameType.Spell:
                         if (DBC.DBC.SpellName.ContainsKey(entry))
                             return DBC.DBC.SpellName[entry].Name;

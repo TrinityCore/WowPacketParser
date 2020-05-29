@@ -1,8 +1,11 @@
-﻿namespace WowPacketParser.DBC.Structures.BattleForAzeroth
+﻿using DBFileReaderLib.Attributes;
+
+namespace WowPacketParser.DBC.Structures.BattleForAzeroth
 {
     [DBFile("Difficulty")]
     public sealed class DifficultyEntry
     {
+        [Index(true)]
         public uint ID;
         public string Name;
         public byte InstanceType;

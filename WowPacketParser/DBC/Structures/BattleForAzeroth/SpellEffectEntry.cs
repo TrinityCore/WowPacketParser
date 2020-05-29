@@ -1,9 +1,12 @@
-﻿namespace WowPacketParser.DBC.Structures.BattleForAzeroth
+﻿using DBFileReaderLib.Attributes;
+
+namespace WowPacketParser.DBC.Structures.BattleForAzeroth
 {
     [DBFile("SpellEffect")]
 
     public sealed class SpellEffectEntry
     {
+        [Index(true)]
         public uint ID;
         public short EffectAura;
         public int DifficultyID;
@@ -28,9 +31,13 @@
         public float ResourceCoefficient;
         public float GroupSizeBasePointsCoefficient;
         public float EffectBasePoints;
+        [Cardinality(2)]
         public int[] EffectMiscValue = new int[2];
+        [Cardinality(2)]
         public uint[] EffectRadiusIndex = new uint[2];
+        [Cardinality(4)]
         public int[] EffectSpellClassMask = new int[4];
+        [Cardinality(2)]
         public short[] ImplicitTarget = new short[2];
         public int SpellID;
     }
