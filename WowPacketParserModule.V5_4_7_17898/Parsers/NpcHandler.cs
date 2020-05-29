@@ -177,6 +177,13 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             {
                 if (!Storage.CreatureDefaultGossips.ContainsKey(guid.GetEntry()))
                     Storage.CreatureDefaultGossips.Add(guid.GetEntry(), menuId);
+
+                CreatureGossip newGossip = new CreatureGossip
+                {
+                    CreatureId = gossip.ObjectEntry,
+                    GossipMenuId = menuId,
+                };
+                Storage.CreatureGossips.Add(newGossip, packet.TimeSpan);
             }
 
             gossipOptions.ForEach(g =>

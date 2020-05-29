@@ -75,6 +75,7 @@ namespace WowPacketParser.Store
 
         // Gossips (MenuId, TextId)
         public static readonly Dictionary<uint, uint> CreatureDefaultGossips = new Dictionary<uint, uint>();
+        public static readonly DataBag<CreatureGossip> CreatureGossips = new DataBag<CreatureGossip>(new List<SQLOutput> { SQLOutput.creature_gossip });
         public static readonly DataBag<GossipMenu> Gossips = new DataBag<GossipMenu>(new List<SQLOutput> { SQLOutput.gossip_menu });
         public static readonly DataBag<GossipMenuOption> GossipMenuOptions = new DataBag<GossipMenuOption>(new List<SQLOutput> { SQLOutput.gossip_menu_option });
         public static readonly DataBag<GossipMenuOptionAction> GossipMenuOptionActions = new DataBag<GossipMenuOptionAction>(new List<SQLOutput> { SQLOutput.gossip_menu_option });
@@ -188,6 +189,7 @@ namespace WowPacketParser.Store
             StartActions.Clear();
             StartPositions.Clear();
 
+            CreatureGossips.Clear();
             Gossips.Clear();
             GossipMenuOptions.Clear();
             GossipMenuOptionActions.Clear();
