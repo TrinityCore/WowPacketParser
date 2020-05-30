@@ -1,4 +1,6 @@
-﻿namespace WowPacketParser.DBC.Structures.BattleForAzeroth
+﻿using DBFileReaderLib.Attributes;
+
+namespace WowPacketParser.DBC.Structures.BattleForAzeroth
 {
     [DBFile("Achievement")]
 
@@ -7,6 +9,7 @@
         public string Description;
         public string Title;
         public string Reward;
+        [Index(false)]
         public uint ID;
         public short InstanceID;
         public sbyte Faction;
@@ -17,8 +20,8 @@
         public int Flags;
         public short UiOrder;
         public int IconFileID;        
+        public uint RewardItemID;
         public uint CriteriaTree;
-        public uint Unknown1;
         public short SharesCriteria;
     }
 }

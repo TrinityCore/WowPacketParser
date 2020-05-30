@@ -1,8 +1,11 @@
-﻿namespace WowPacketParser.DBC.Structures.BattleForAzeroth
+﻿using DBFileReaderLib.Attributes;
+
+namespace WowPacketParser.DBC.Structures.BattleForAzeroth
 {
     [DBFile("Item")]
     public sealed class ItemEntry
     {
+        [Index(true)]
         public uint ID;
         public byte ClassID;
         public byte SubclassID;

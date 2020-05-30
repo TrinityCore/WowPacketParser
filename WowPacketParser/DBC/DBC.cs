@@ -30,29 +30,44 @@ namespace WowPacketParser.DBC
         public static Storage<MapEntry> Map { get; set; }
         public static Storage<MapDifficultyEntry> MapDifficulty { get; set; }
         public static Storage<PhaseXPhaseGroupEntry> PhaseXPhaseGroup { get; set; }
-        public static Storage<SoundKitNameEntry> SoundKitName { get; set; }
         public static Storage<SpellEffectEntry> SpellEffect { get; set; }
         public static Storage<SpellNameEntry> SpellName { get; set; }
 
-        private static string GetPath()
+        private static string GetDBCPath()
         {
             return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Settings.DBCPath, Settings.DBCLocale);
         }
 
-        private static string GetPath(string fileName)
+        private static string GetDBCPath(string fileName)
         {
-            return Path.Combine(GetPath(), fileName);
+            return Path.Combine(GetDBCPath(), fileName);
+        }
+
+        private static string GetHotfixCachePath()
+        {
+            return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Settings.HotfixCachePath);
         }
 
         public static async void Load()
         {
-            if (!Directory.Exists(GetPath()))
+            if (!Directory.Exists(GetDBCPath()))
             {
-                Trace.WriteLine($"DBC folder \"{ GetPath() }\" not found");
+                Trace.WriteLine($"DBC folder \"{ GetDBCPath() }\" not found");
                 return;
             }
             else
-                Trace.WriteLine($"DBC folder \"{ GetPath() }\" found");
+                Trace.WriteLine($"DBC folder \"{ GetDBCPath() }\" found");
+
+            HotfixReader hotfixReader = null;
+            try
+            {
+                hotfixReader = new HotfixReader(GetHotfixCachePath());
+                Trace.WriteLine($"Hotfix cache {GetHotfixCachePath()} found!");
+            }
+            catch (Exception)
+            {
+                Trace.WriteLine($"Hotfix cache {GetHotfixCachePath()} cannot be loaded, ignoring!");
+            }
 
             Trace.WriteLine("File name                           LoadTime             Record count");
             Trace.WriteLine("---------------------------------------------------------------------");
@@ -72,11 +87,16 @@ namespace WowPacketParser.DBC
                 var times = new List<long>();
                 var instanceType = typeof(Storage<>).MakeGenericType(type);
                 var countGetter = instanceType.GetProperty("Count").GetGetMethod();
-                var instance = Activator.CreateInstance(instanceType, $"{ GetPath(attr.FileName) }.db2");
+                dynamic instance = Activator.CreateInstance(instanceType, $"{ GetDBCPath(attr.FileName) }.db2");
                 var recordCount = (int)countGetter.Invoke(instance, new object[] { });
 
                 try
                 {
+                    var db2Reader = new DBReader($"{ GetDBCPath(attr.FileName) }.db2");
+
+                    if (hotfixReader != null)
+                        hotfixReader.ApplyHotfixes(instance, db2Reader);
+
                     dbc.SetValue(dbc.GetValue(null), instance);
                 }
                 catch (TargetInvocationException tie)

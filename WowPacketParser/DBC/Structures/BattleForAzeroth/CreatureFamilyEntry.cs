@@ -1,9 +1,12 @@
-﻿namespace WowPacketParser.DBC.Structures.BattleForAzeroth
+﻿using DBFileReaderLib.Attributes;
+
+namespace WowPacketParser.DBC.Structures.BattleForAzeroth
 {
     [DBFile("CreatureFamily")]
 
     public sealed class CreatureFamilyEntry
     {
+        [Index(true)]
         public uint ID;
         public string Name;
         public float MinScale;
@@ -13,6 +16,7 @@
         public short PetFoodMask;
         public sbyte PetTalentType;
         public int IconFileID;
+        [Cardinality(2)]
         public short[] SkillLine = new short[2];
     }
 }

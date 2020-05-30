@@ -1,8 +1,11 @@
-﻿namespace WowPacketParser.DBC.Structures.BattleForAzeroth
+﻿using DBFileReaderLib.Attributes;
+
+namespace WowPacketParser.DBC.Structures.BattleForAzeroth
 {
     [DBFile("Map")]
     public sealed class MapEntry
     {
+        [Index(true)]
         public uint ID;
         public string Directory;
         public string MapName;
@@ -10,6 +13,7 @@
         public string MapDescription1;
         public string PvpShortDescription;
         public string PvpLongDescription;
+        [Cardinality(2)]
         public float[] Corpse = new float[2];
         public byte MapType;
         public sbyte InstanceType;
@@ -26,6 +30,7 @@
         public short WindSettingsID;
         public int ZmpFileDataID;
         public int WdtFileDataID;
+        [Cardinality(2)]
         public uint[] Flags = new uint[2];
     }
 }

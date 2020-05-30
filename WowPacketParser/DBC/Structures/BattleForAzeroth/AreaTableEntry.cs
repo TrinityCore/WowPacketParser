@@ -1,8 +1,11 @@
-﻿namespace WowPacketParser.DBC.Structures.BattleForAzeroth
+﻿using DBFileReaderLib.Attributes;
+
+namespace WowPacketParser.DBC.Structures.BattleForAzeroth
 {
     [DBFile("AreaTable")]
     public sealed class AreaTableEntry
     {
+        [Index(true)]
         public uint ID;
         public string ZoneName;
         public string AreaName;
@@ -25,7 +28,9 @@
         public byte WildBattlePetLevelMin;
         public byte WildBattlePetLevelMax;
         public byte WindSettingsID;
+        [Cardinality(2)]
         public int[] Flags = new int[2];
+        [Cardinality(4)]
         public ushort[] LiquidTypeID = new ushort[4];
     }
 }

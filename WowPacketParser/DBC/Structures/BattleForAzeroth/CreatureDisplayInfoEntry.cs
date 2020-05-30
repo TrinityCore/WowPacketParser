@@ -1,8 +1,11 @@
-﻿namespace WowPacketParser.DBC.Structures.BattleForAzeroth
+﻿using DBFileReaderLib.Attributes;
+
+namespace WowPacketParser.DBC.Structures.BattleForAzeroth
 {
     [DBFile("CreatureDisplayInfo")]
     public sealed class CreatureDisplayInfoEntry
     {
+        [Index(false)]
         public uint ID;
         public ushort ModelID;
         public ushort SoundID;
@@ -27,6 +30,7 @@
         public sbyte Gender;
         public int DissolveOutEffectID;
         public sbyte CreatureModelMinLod;
+        [Cardinality(3)]
         public int[] TextureVariationFileDataID = new int[3];
     }
 }
