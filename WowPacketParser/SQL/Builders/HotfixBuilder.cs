@@ -62,7 +62,7 @@ namespace WowPacketParser.SQL.Builders
                 rows.Add(row);
             }
 
-            return "TRUNCATE `hotfix_data`;" + Environment.NewLine + new SQLInsert<HotfixData>(rows, false).Build();
+            return "DELETE FROM `hotfix_data` WHERE `VerifiedBuild`>0;" + Environment.NewLine + new SQLInsert<HotfixData>(rows, false).Build();
         }
 
         [BuilderMethod(true)]
@@ -87,7 +87,7 @@ namespace WowPacketParser.SQL.Builders
                 rows.Add(row);
             }
 
-            return "TRUNCATE `hotfix_blob`;" + Environment.NewLine + new SQLInsert<HotfixBlob>(rows, false).Build();
+            return "DELETE FROM `hotfix_blob` WHERE `VerifiedBuild`>0;" + Environment.NewLine + new SQLInsert<HotfixBlob>(rows, false).Build();
         }
 
         // Special Hotfix Builders

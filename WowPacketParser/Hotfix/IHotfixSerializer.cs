@@ -265,14 +265,14 @@ namespace WowPacketParser.Hotfix
             if (localeBuilder != null && propertiesInfos.Any(
                 propInfo => propInfo.PropertyType == typeof (string) || propInfo.PropertyType == typeof (string[])))
             {
-                localeBuilder.AppendLine($"TRUNCATE `{tableName}_locale`;");
+                localeBuilder.AppendLine($"DELTE FROM `{tableName}_locale` WHERE `VerifiedBuild`>0;");
                 localeBuilder.Append($"INSERT INTO `{tableName}_locale` (");
                 if (!hotfixStructureAttribute.HasIndexInData)
                     localeBuilder.Append("`ID`, ");
                 localeBuilder.Append("`locale`, ");
             }
 
-            hotfixBuilder.AppendLine($"TRUNCATE `{tableName}`;");
+            hotfixBuilder.AppendLine($"DELETE FROM `{tableName}` WHERE `VerifiedBuild`>0;");
             hotfixBuilder.Append($"INSERT INTO `{tableName}` (");
             if (!hotfixStructureAttribute.HasIndexInData)
                 hotfixBuilder.Append("`ID`, ");
