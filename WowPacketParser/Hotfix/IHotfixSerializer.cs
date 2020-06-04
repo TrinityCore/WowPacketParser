@@ -265,7 +265,7 @@ namespace WowPacketParser.Hotfix
             if (localeBuilder != null && propertiesInfos.Any(
                 propInfo => propInfo.PropertyType == typeof (string) || propInfo.PropertyType == typeof (string[])))
             {
-                localeBuilder.AppendLine($"DELTE FROM `{tableName}_locale` WHERE `VerifiedBuild`>0;");
+                localeBuilder.AppendLine($"DELETE FROM `{tableName}_locale` WHERE `VerifiedBuild`>0;");
                 localeBuilder.Append($"INSERT INTO `{tableName}_locale` (");
                 if (!hotfixStructureAttribute.HasIndexInData)
                     localeBuilder.Append("`ID`, ");
