@@ -163,7 +163,8 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
         public static void HandleAuraUpdate(Packet packet)
         {
             packet.ReadBit("UpdateAll");
-            var count = packet.ReadBits("AurasCount", 7);
+            int countBits = ClientVersion.AddedInVersion(ClientVersionBuild.V1_13_3_32790) ? 8 : 7;
+            var count = packet.ReadBits("AurasCount", countBits);
 
             var auras = new List<Aura>();
             for (var i = 0; i < count; ++i)
