@@ -102,7 +102,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             packet.ResetBitReader();
 
-            packet.ReadBitsE<TargetFlag>("Flags", 25, idx);
+            packet.ReadBitsE<TargetFlag>("Flags", ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683) ? 26 : 25, idx);
             var hasSrcLoc = packet.ReadBit("HasSrcLocation", idx);
             var hasDstLoc = packet.ReadBit("HasDstLocation", idx);
             var hasOrient = packet.ReadBit("HasOrientation", idx);
