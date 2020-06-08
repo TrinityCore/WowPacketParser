@@ -340,5 +340,19 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             for (var i = 0u; i < hotfixCount; ++i)
                 ReadHotfixData(packet, i, "HotfixData");
         }
+
+        [Parser(Opcode.CMSG_DB_QUERY_BULK)]
+        public static void HandleDbQueryBulk(Packet packet)
+        {
+            packet.ReadInt32E<DB2Hash>("TableHash");
+
+            var count = packet.ReadBits("Count", 13);
+            for (var i = 0; i < count; ++i)
+            {
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V8_2_5_31921))
+                    packet.ReadPackedGuid128("Guid", i);
+                packet.ReadInt32("RecordID", i);
+            }
+        }
     }
 }
