@@ -16,6 +16,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             if (entry.Value) // entry is masked
                 return;
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_3_0_33062))
+                packet.ReadPackedGuid128("GUID");
+
             GameObjectTemplate gameObject = new GameObjectTemplate
             {
                 Entry = (uint)entry.Key
