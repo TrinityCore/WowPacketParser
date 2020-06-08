@@ -124,7 +124,10 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadBit("IsExpansionPreorderInStore");
             packet.ReadBit("KioskModeEnabled");
             packet.ReadBit("IsCompetitiveModeEnabled");
-            packet.ReadBit("NoHandler"); // not accessed in handler
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V8_2_5_31921))
+                packet.ReadBit("NoHandler"); // not accessed in handler
+
             packet.ReadBit("TrialBoostEnabled");
             packet.ReadBit("TokenBalanceEnabled");
             packet.ReadBit("LiveRegionCharacterListEnabled");
@@ -132,7 +135,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadBit("LiveRegionAccountCopyEnabled");
 
             packet.ReadUInt32("TokenPollTimeSeconds");
-            packet.ReadUInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V8_2_5_31921))
+                packet.ReadUInt32E<ConsumableTokenRedeem>("TokenRedeemIndex");
             packet.ReadInt64("TokenBalanceAmount");
             packet.ReadInt32("MaxCharactersPerRealm");
             packet.ReadUInt32("BpayStoreProductDeliveryDelay");
