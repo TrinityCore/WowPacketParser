@@ -76,6 +76,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 vendor.PlayerConditionID = packet.ReadUInt32("PlayerConditionFailed", i);
 
                 vendor.Item = Substructures.ItemHandler.ReadItemInstance(packet, i).ItemID;
+                packet.ResetBitReader();
                 vendor.IgnoreFiltering = packet.ReadBit("DoNotFilterOnVendor", i);
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
                     packet.ReadBit("Refundable", i);
