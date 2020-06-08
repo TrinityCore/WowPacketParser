@@ -110,6 +110,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             var objectivesCount = packet.ReadUInt32("ObjectivesCount");
             packet.ReadInt32("QuestStartItemID");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_5_31921))
+                packet.ReadInt32("QuestSessionBonus");
+
             for (var i = 0; i < learnSpellsCount; i++)
                 packet.ReadInt32("LearnSpells", i);
 
@@ -142,6 +145,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadBit("DisplayPopup");
             packet.ReadBit("StartCheat");
             packet.ReadBit("AutoLaunched");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_5_31921))
+                packet.ReadBit(); // Unused by client
 
             ReadQuestRewards(packet, "QuestRewards");
 
