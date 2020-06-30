@@ -87,7 +87,7 @@ namespace WowPacketParser.SQL.Builders
                 rows.Add(row);
             }
 
-            return "DELETE FROM `hotfix_blob` WHERE `VerifiedBuild`>0;" + Environment.NewLine + new SQLInsert<HotfixBlob>(rows, false).Build();
+            return $"DELETE FROM `hotfix_blob` WHERE `locale` = '{ClientLocale.PacketLocale}' AND `VerifiedBuild`>0;" + Environment.NewLine + new SQLInsert<HotfixBlob>(rows, false).Build();
         }
 
         // Special Hotfix Builders
