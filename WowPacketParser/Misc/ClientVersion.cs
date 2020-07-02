@@ -313,7 +313,7 @@ namespace WowPacketParser.Misc
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_3_0_34220, new DateTime(2020, 04, 29)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_3_0_34601, new DateTime(2020, 06, 03)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_3_0_34769, new DateTime(2020, 06, 16)),
-            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_3_0_34963, new DateTime(2020, 02, 01)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_3_0_34963, new DateTime(2020, 07, 01)),
 
             // no classic info, pkt contain build in header
         };
