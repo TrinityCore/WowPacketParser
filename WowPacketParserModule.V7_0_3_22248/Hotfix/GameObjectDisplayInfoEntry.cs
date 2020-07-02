@@ -3,7 +3,7 @@ using WowPacketParser.Hotfix;
 
 namespace WowPacketParserModule.V7_0_3_22248.Hotfix
 {
-    [HotfixStructure(DB2Hash.GameObjectDisplayInfo, HasIndexInData = false)]
+    [HotfixStructure(DB2Hash.GameobjectDisplayInfo, HasIndexInData = false)]
     public class GameObjectDisplayInfoEntry
     {
         public uint FileDataID { get; set; }

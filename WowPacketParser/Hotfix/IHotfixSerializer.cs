@@ -255,6 +255,7 @@ namespace WowPacketParser.Hotfix
             if (store.Records.Count == 0)
                 return;
 
+            bool isLocale = false;
             var hotfixStructureAttribute = typeof (T).GetCustomAttribute<HotfixStructureAttribute>();
             Debug.Assert(hotfixStructureAttribute != null);
 
@@ -265,14 +266,41 @@ namespace WowPacketParser.Hotfix
             if (localeBuilder != null && propertiesInfos.Any(
                 propInfo => propInfo.PropertyType == typeof (string) || propInfo.PropertyType == typeof (string[])))
             {
-                localeBuilder.AppendLine($"DELETE FROM `{tableName}_locale` WHERE `VerifiedBuild`>0;");
+                if (tableName == "broadcast_text")
+                {
+                    var remainingCountDelete = store.Records.Count - 1;
+
+                    localeBuilder.Append($"DELETE FROM `{tableName}_locale` WHERE `locale` = '{ClientLocale.PacketLocale}' AND `ID` IN (");
+                    foreach (var kv in store.Records)
+                    {
+                        localeBuilder?.Append($"{kv.Key}");
+                        localeBuilder?.Append(remainingCountDelete > 0 ? $", " : $");" + Environment.NewLine);
+                        --remainingCountDelete;
+                    }
+                }
+                else
+                    localeBuilder.AppendLine($"DELETE FROM `{tableName}_locale` WHERE `locale` = '{ClientLocale.PacketLocale}' AND `VerifiedBuild`>0;");
                 localeBuilder.Append($"INSERT INTO `{tableName}_locale` (");
-                if (!hotfixStructureAttribute.HasIndexInData)
-                    localeBuilder.Append("`ID`, ");
+                localeBuilder.Append("`ID`, ");
                 localeBuilder.Append("`locale`, ");
+                isLocale = true;
             }
 
-            hotfixBuilder.AppendLine($"DELETE FROM `{tableName}` WHERE `VerifiedBuild`>0;");
+            if (tableName == "broadcast_text")
+            {
+                var remainingCountDelete = store.Records.Count - 1;
+
+                hotfixBuilder.Append($"DELETE FROM `{tableName}` WHERE `VerifiedBuild`>0 AND `ID` IN (");
+                foreach (var kv in store.Records)
+                {
+                    hotfixBuilder.Append($"{kv.Key}");
+                    hotfixBuilder.Append(remainingCountDelete > 0 ? $", " : $");" + Environment.NewLine);
+                    --remainingCountDelete;
+                }
+            }
+            else
+                hotfixBuilder.AppendLine($"DELETE FROM `{tableName}` WHERE `VerifiedBuild`>0;");
+
             hotfixBuilder.Append($"INSERT INTO `{tableName}` (");
             if (!hotfixStructureAttribute.HasIndexInData)
                 hotfixBuilder.Append("`ID`, ");
@@ -312,30 +340,36 @@ namespace WowPacketParser.Hotfix
             }
 
             hotfixBuilder.AppendLine("`VerifiedBuild`) VALUES");
-            localeBuilder?.AppendLine("`VerifiedBuild`) VALUES");
+            if (isLocale)
+                localeBuilder?.AppendLine("`VerifiedBuild`) VALUES");
 
             var remainingCount = store.Records.Count - 1;
 
             foreach (var kv in store.Records)
             {
                 hotfixBuilder.Append("(");
-                localeBuilder?.Append("(");
-                if (!hotfixStructureAttribute.HasIndexInData)
-                {
-                    hotfixBuilder.Append($"{kv.Key}, ");
-                    localeBuilder?.Append($"{kv.Key}, ");
-                }
+                if (isLocale)
+                    localeBuilder?.Append("(");
 
-                localeBuilder?.Append($"'{ClientLocale.PacketLocale}', ");
+                if (!hotfixStructureAttribute.HasIndexInData)
+                    hotfixBuilder.Append($"{kv.Key}, ");
+
+                if (isLocale)
+                    localeBuilder?.Append($"{kv.Key}, ");
+
+                if (isLocale)
+                    localeBuilder?.Append($"'{ClientLocale.PacketLocale}', ");
                 _serializer((T)kv.Value, hotfixBuilder, localeBuilder);
 
                 hotfixBuilder.AppendLine(remainingCount > 0 ? $"{ClientVersion.BuildInt})," : $"{ClientVersion.BuildInt});");
-                localeBuilder?.AppendLine(remainingCount > 0 ? $"{ClientVersion.BuildInt})," : $"{ClientVersion.BuildInt});");
+                if (isLocale)
+                    localeBuilder?.AppendLine(remainingCount > 0 ? $"{ClientVersion.BuildInt})," : $"{ClientVersion.BuildInt});");
                 --remainingCount;
             }
 
             hotfixBuilder.AppendLine();
-            localeBuilder?.AppendLine();
+            if (isLocale)
+                localeBuilder?.AppendLine();
         }
     }
 }

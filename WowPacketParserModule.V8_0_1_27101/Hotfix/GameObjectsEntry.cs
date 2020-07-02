@@ -3,7 +3,7 @@ using WowPacketParser.Hotfix;
 
 namespace WowPacketParserModule.V8_0_1_27101.Hotfix
 {
-    [HotfixStructure(DB2Hash.GameObjects)]
+    [HotfixStructure(DB2Hash.Gameobjects)]
     public class GameObjectsEntry
     {
         public string Name { get; set; }
