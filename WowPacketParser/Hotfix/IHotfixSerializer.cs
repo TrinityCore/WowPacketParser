@@ -260,7 +260,18 @@ namespace WowPacketParser.Hotfix
             Debug.Assert(hotfixStructureAttribute != null);
 
             var propertiesInfos = typeof (T).GetProperties(BindingFlags.Instance | BindingFlags.Public);
-            var tableName = Regex.Replace(hotfixStructureAttribute.Hash.ToString(), @"(?<=[a-z])([A-Z])|(?<=[A-Z])([A-Z][a-z])",
+            // Synch with TC
+            var normalizedTableHashString = hotfixStructureAttribute.Hash.ToString()
+                .Replace("GameObject", "Gameobject")
+                .Replace("PvP", "Pvp")
+                .Replace("PVP", "Pvp")
+                .Replace("QuestXP", "QuestXp")
+                .Replace("WMO", "Wmo")
+                .Replace("AddOn", "Addon")
+                .Replace("LFG", "Lfg")
+                .Replace("_", "");
+
+            var tableName = Regex.Replace(normalizedTableHashString, @"(?<=[a-z])([A-Z])|(?<=[A-Z])([A-Z][a-z])",
                 @"_$1$2", RegexOptions.Compiled).ToLower();
 
             if (localeBuilder != null && propertiesInfos.Any(
