@@ -456,14 +456,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadInt32("Unk");
 
-            int int32 = packet.ReadInt32("ItemCount");
-            int int16 = packet.ReadInt32("FlagsCount");
+            int itemCount = packet.ReadUInt32("ItemCount");
+            int flagCount = packet.ReadUInt32("FlagsCount");
 
-            for (int i = 0; i < int32; i++)
+            for (int i = 0; i < itemCount; i++)
                 packet.ReadInt32<ItemId>("ItemID", i);
 
-            for (int i = 0; i < int16; i++)
-                packet.ReadInt32("Flags", i);
+            for (int i = 0; i < flagCount; i++)
+                packet.ReadUInt32("Flags", i);
         }
 
         [Parser(Opcode.SMSG_PLAY_SOUND)]
