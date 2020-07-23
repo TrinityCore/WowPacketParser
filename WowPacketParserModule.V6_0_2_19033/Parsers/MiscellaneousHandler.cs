@@ -456,13 +456,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ReadInt32("Unk");
 
-            int itemCount = packet.ReadUInt32("ItemCount");
-            int flagCount = packet.ReadUInt32("FlagsCount");
+            uint itemCount = packet.ReadUInt32("ItemCount");
+            uint flagCount = packet.ReadUInt32("FlagsCount");
 
-            for (int i = 0; i < itemCount; i++)
+            for (uint i = 0u; i < itemCount; i++)
                 packet.ReadInt32<ItemId>("ItemID", i);
 
-            for (int i = 0; i < flagCount; i++)
+            for (uint i = 0u; i < flagCount; i++)
                 packet.ReadUInt32("Flags", i);
         }
 
