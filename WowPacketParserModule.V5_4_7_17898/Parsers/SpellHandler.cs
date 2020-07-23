@@ -56,7 +56,6 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             guid2[0] = packet.ReadBit();
             guid2[1] = packet.ReadBit();
 
-            var auras = new List<Aura>();
             for (var i = 0; i < bits0; ++i)
             {
                 if (hasAura[i])

@@ -276,10 +276,10 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 6);
 
-            var tempList = new List<NpcVendor>();
+            var tempArray = new NpcVendor[count];
             for (int i = 0; i < count; ++i)
             {
-                NpcVendor vendor = new NpcVendor
+                var vendor = new NpcVendor
                 {
                     Type = packet.ReadUInt32("Type", i)
                 };
@@ -304,7 +304,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 if (hasCondition[i])
                     vendor.PlayerConditionID = packet.ReadUInt32("Condition ID", i);
 
-                tempList.Add(vendor);
+                tempArray[i] = vendor;
             }
 
             packet.ReadByte("Byte28");
@@ -319,11 +319,11 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.WriteGuid("Guid", guid);
 
             uint entry = packet.WriteGuid("GUID", guid).GetEntry();
-            tempList.ForEach(v =>
+            for(int i = 0; i < count; ++i)
             {
-                v.Entry = entry;
-                Storage.NpcVendors.Add(v, packet.TimeSpan);
-            });
+                tempArray[i].Entry = entry;
+                Storage.NpcVendors.Add(tempArray[i], packet.TimeSpan);
+            }
         }
 
         [Parser(Opcode.SMSG_TRAINER_LIST)]
@@ -350,7 +350,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 Type = packet.ReadUInt32E<TrainerType>("TrainerType")
             };
 
-            var tempList = new List<TrainerSpell>();
+            var tempArray = new TrainerSpell[count];
             for (int i = 0; i < count; ++i)
             {
                 TrainerSpell trainerSpell = new TrainerSpell
@@ -367,7 +367,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 trainerSpell.ReqLevel = packet.ReadByte("ReqLevel", i);
                 trainerSpell.ReqSkillRank = packet.ReadUInt32("ReqSkillRank", i);
 
-                tempList.Add(trainerSpell);
+                tempArray[i] = trainerSpell;
             }
 
             packet.ReadXORByte(guidBytes, 7);
@@ -387,11 +387,13 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             packet.WriteGuid("TrainerGUID", guidBytes);
             Storage.Trainers.Add(trainer, packet.TimeSpan);
-            tempList.ForEach(trainerSpell =>
+
+            for(int i = 0; i < count; ++i)
             {
-                trainerSpell.TrainerId = trainer.Id;
-                Storage.TrainerSpells.Add(trainerSpell, packet.TimeSpan);
-            });
+                tempArray[i].TrainerId = trainer.Id;
+                Storage.TrainerSpells.Add(tempArray[i], packet.TimeSpan);
+            }
+
             var lastGossipOption = CoreParsers.NpcHandler.LastGossipOption;
             if (lastGossipOption.HasSelection)
                 Storage.GossipMenuOptionTrainers.Add(new GossipMenuOptionTrainer { MenuId = lastGossipOption.MenuId, OptionIndex = lastGossipOption.OptionIndex, TrainerId = trainer.Id }, packet.TimeSpan);

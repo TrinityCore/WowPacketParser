@@ -496,15 +496,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 {
                     var verticesCount = packet.ReadInt32("VerticesCount", index);
                     var verticesTargetCount = packet.ReadInt32("VerticesTargetCount", index);
-
-                    List<AreaTriggerTemplateVertices> verticesList = new List<AreaTriggerTemplateVertices>();
+                    var verticesArray = new AreaTriggerTemplateVertices[verticesCount];
 
                     areaTriggerTemplate.Data[0] = packet.ReadSingle("Height", index);
                     areaTriggerTemplate.Data[1] = packet.ReadSingle("HeightTarget", index);
 
                     for (uint i = 0; i < verticesCount; ++i)
                     {
-                        AreaTriggerTemplateVertices areaTriggerTemplateVertices = new AreaTriggerTemplateVertices
+                        var areaTriggerTemplateVertices = new AreaTriggerTemplateVertices
                         {
                             AreaTriggerId = guid.GetEntry(),
                             Idx = i
@@ -515,18 +514,18 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                         areaTriggerTemplateVertices.VerticeX = vertices.X;
                         areaTriggerTemplateVertices.VerticeY = vertices.Y;
 
-                        verticesList.Add(areaTriggerTemplateVertices);
+                        verticesArray[i] = areaTriggerTemplateVertices;
                     }
 
                     for (var i = 0; i < verticesTargetCount; ++i)
                     {
                         Vector2 verticesTarget = packet.ReadVector2("VerticesTarget", index, i);
 
-                        verticesList[i].VerticeTargetX = verticesTarget.X;
-                        verticesList[i].VerticeTargetY = verticesTarget.Y;
+                        verticesArray[i].VerticeTargetX = verticesTarget.X;
+                        verticesArray[i].VerticeTargetY = verticesTarget.Y;
                     }
 
-                    foreach (AreaTriggerTemplateVertices vertice in verticesList)
+                    foreach (var vertice in verticesArray)
                         Storage.AreaTriggerTemplatesVertices.Add(vertice);
                 }
 
