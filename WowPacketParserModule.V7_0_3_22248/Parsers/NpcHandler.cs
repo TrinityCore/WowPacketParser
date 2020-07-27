@@ -73,11 +73,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = lastGossipOption.MenuId, OptionIndex = lastGossipOption.OptionIndex, ActionMenuId = gossip.Entry, ActionPoiId = lastGossipOption.ActionPoiId }, packet.TimeSpan);
 
                 //keep temp data (for case SMSG_GOSSIP_POI is delayed)
+                tempGossipOptionPOI.Guid = lastGossipOption.Guid;
                 tempGossipOptionPOI.MenuId = lastGossipOption.MenuId;
                 tempGossipOptionPOI.OptionIndex = lastGossipOption.OptionIndex;
                 tempGossipOptionPOI.ActionMenuId = gossip.Entry;
 
                 // clear lastgossip so no faulty linkings appear
+                lastGossipOption.Guid = null;
                 lastGossipOption.MenuId = null;
                 lastGossipOption.OptionIndex = null;
                 lastGossipOption.ActionMenuId = null;
@@ -119,6 +121,21 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
                 Storage.NpcVendors.Add(vendor, packet.TimeSpan);
             }
+
+            var lastGossipOption = CoreParsers.NpcHandler.LastGossipOption;
+            var tempGossipOptionPOI = CoreParsers.NpcHandler.TempGossipOptionPOI;
+
+            lastGossipOption.Guid = null;
+            lastGossipOption.MenuId = null;
+            lastGossipOption.OptionIndex = null;
+            lastGossipOption.ActionMenuId = null;
+            lastGossipOption.ActionPoiId = null;
+
+            tempGossipOptionPOI.Guid = null;
+            tempGossipOptionPOI.MenuId = null;
+            tempGossipOptionPOI.OptionIndex = null;
+            tempGossipOptionPOI.ActionMenuId = null;
+            tempGossipOptionPOI.ActionPoiId = null;
         }
     }
 }

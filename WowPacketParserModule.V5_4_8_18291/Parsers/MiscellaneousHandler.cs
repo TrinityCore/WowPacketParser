@@ -368,6 +368,18 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 packet.ReadByte("NodeMask", i);
 
             packet.WriteGuid("Guid", guid);
+
+            CoreParsers.NpcHandler.LastGossipOption.Guid = null;
+            CoreParsers.NpcHandler.LastGossipOption.MenuId = null;
+            CoreParsers.NpcHandler.LastGossipOption.OptionIndex = null;
+            CoreParsers.NpcHandler.LastGossipOption.ActionMenuId = null;
+            CoreParsers.NpcHandler.LastGossipOption.ActionMenuId = null;
+
+            CoreParsers.NpcHandler.TempGossipOptionPOI.Guid = null;
+            CoreParsers.NpcHandler.TempGossipOptionPOI.MenuId = null;
+            CoreParsers.NpcHandler.TempGossipOptionPOI.OptionIndex = null;
+            CoreParsers.NpcHandler.TempGossipOptionPOI.ActionMenuId = null;
+            CoreParsers.NpcHandler.TempGossipOptionPOI.ActionMenuId = null;
         }
         [Parser(Opcode.CMSG_ACTIVATE_TAXI_EXPRESS)]
         public static void HandleActiaveTaxiExpress(Packet packet)

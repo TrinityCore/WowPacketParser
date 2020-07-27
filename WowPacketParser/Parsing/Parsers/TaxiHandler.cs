@@ -32,6 +32,18 @@ namespace WowPacketParser.Parsing.Parsers
             var i = 0;
             while (packet.CanRead())
                 packet.ReadUInt64("NodeMask", i++);
+
+            NpcHandler.LastGossipOption.Guid = null;
+            NpcHandler.LastGossipOption.MenuId = null;
+            NpcHandler.LastGossipOption.OptionIndex = null;
+            NpcHandler.LastGossipOption.ActionMenuId = null;
+            NpcHandler.LastGossipOption.ActionMenuId = null;
+
+            NpcHandler.TempGossipOptionPOI.Guid = null;
+            NpcHandler.TempGossipOptionPOI.MenuId = null;
+            NpcHandler.TempGossipOptionPOI.OptionIndex = null;
+            NpcHandler.TempGossipOptionPOI.ActionMenuId = null;
+            NpcHandler.TempGossipOptionPOI.ActionMenuId = null;
         }
 
         [Parser(Opcode.SMSG_SHOW_TAXI_NODES, ClientVersionBuild.V4_3_4_15595)]
@@ -47,6 +59,18 @@ namespace WowPacketParser.Parsing.Parsers
             var count = packet.ReadInt32("Count");
             for (int i = 0; i < count; ++i)
                 packet.ReadByte("NodeMask", i);
+
+            NpcHandler.LastGossipOption.Guid = null;
+            NpcHandler.LastGossipOption.MenuId = null;
+            NpcHandler.LastGossipOption.OptionIndex = null;
+            NpcHandler.LastGossipOption.ActionMenuId = null;
+            NpcHandler.LastGossipOption.ActionMenuId = null;
+
+            NpcHandler.TempGossipOptionPOI.Guid = null;
+            NpcHandler.TempGossipOptionPOI.MenuId = null;
+            NpcHandler.TempGossipOptionPOI.OptionIndex = null;
+            NpcHandler.TempGossipOptionPOI.ActionMenuId = null;
+            NpcHandler.TempGossipOptionPOI.ActionMenuId = null;
         }
 
         [Parser(Opcode.CMSG_ACTIVATE_TAXI)]

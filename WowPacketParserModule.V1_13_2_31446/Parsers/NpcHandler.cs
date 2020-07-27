@@ -3,6 +3,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V1_13_2_31446.Parsers
 {
@@ -39,6 +40,21 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
 
                 Storage.NpcVendors.Add(vendor, packet.TimeSpan);
             }
+
+            var lastGossipOption = CoreParsers.NpcHandler.LastGossipOption;
+            var tempGossipOptionPOI = CoreParsers.NpcHandler.TempGossipOptionPOI;
+
+            lastGossipOption.Guid = null;
+            lastGossipOption.MenuId = null;
+            lastGossipOption.OptionIndex = null;
+            lastGossipOption.ActionMenuId = null;
+            lastGossipOption.ActionPoiId = null;
+
+            tempGossipOptionPOI.Guid = null;
+            tempGossipOptionPOI.MenuId = null;
+            tempGossipOptionPOI.OptionIndex = null;
+            tempGossipOptionPOI.ActionMenuId = null;
+            tempGossipOptionPOI.ActionPoiId = null;
         }
     }
 }

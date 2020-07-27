@@ -1,6 +1,7 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
@@ -24,6 +25,18 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             for (var i = 0u; i < canUseNodesCount; ++i)
                 packet.ReadByte("CanUseNodes", i);
+
+            CoreParsers.NpcHandler.LastGossipOption.Guid = null;
+            CoreParsers.NpcHandler.LastGossipOption.MenuId = null;
+            CoreParsers.NpcHandler.LastGossipOption.OptionIndex = null;
+            CoreParsers.NpcHandler.LastGossipOption.ActionMenuId = null;
+            CoreParsers.NpcHandler.LastGossipOption.ActionMenuId = null;
+
+            CoreParsers.NpcHandler.TempGossipOptionPOI.Guid = null;
+            CoreParsers.NpcHandler.TempGossipOptionPOI.MenuId = null;
+            CoreParsers.NpcHandler.TempGossipOptionPOI.OptionIndex = null;
+            CoreParsers.NpcHandler.TempGossipOptionPOI.ActionMenuId = null;
+            CoreParsers.NpcHandler.TempGossipOptionPOI.ActionMenuId = null;
         }
 
         [Parser(Opcode.CMSG_ACTIVATE_TAXI)]

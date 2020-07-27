@@ -21,6 +21,18 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
                 packet.ReadBool("Enabled");
+
+            NpcHandler.LastGossipOption.Guid = null;
+            NpcHandler.LastGossipOption.MenuId = null;
+            NpcHandler.LastGossipOption.OptionIndex = null;
+            NpcHandler.LastGossipOption.ActionMenuId = null;
+            NpcHandler.LastGossipOption.ActionMenuId = null;
+
+            NpcHandler.TempGossipOptionPOI.Guid = null;
+            NpcHandler.TempGossipOptionPOI.MenuId = null;
+            NpcHandler.TempGossipOptionPOI.OptionIndex = null;
+            NpcHandler.TempGossipOptionPOI.ActionMenuId = null;
+            NpcHandler.TempGossipOptionPOI.ActionMenuId = null;
         }
 
         [Parser(Opcode.CMSG_AUCTION_SELL_ITEM)]

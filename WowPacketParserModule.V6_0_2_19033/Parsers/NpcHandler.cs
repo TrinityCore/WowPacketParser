@@ -344,6 +344,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 Storage.NpcVendors.Add(vendor, packet.TimeSpan);
             }
+
+            var lastGossipOption = CoreParsers.NpcHandler.LastGossipOption;
+            var tempGossipOptionPOI = CoreParsers.NpcHandler.TempGossipOptionPOI;
+
+            lastGossipOption.Guid = null;
+            lastGossipOption.MenuId = null;
+            lastGossipOption.OptionIndex = null;
+            lastGossipOption.ActionMenuId = null;
+            lastGossipOption.ActionPoiId = null;
+
+            tempGossipOptionPOI.Guid = null;
+            tempGossipOptionPOI.MenuId = null;
+            tempGossipOptionPOI.OptionIndex = null;
+            tempGossipOptionPOI.ActionMenuId = null;
+            tempGossipOptionPOI.ActionPoiId = null;
         }
 
         [Parser(Opcode.SMSG_TRAINER_LIST)]
@@ -439,10 +454,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             Storage.Trainers.Add(trainer, packet.TimeSpan);
             var lastGossipOption = CoreParsers.NpcHandler.LastGossipOption;
+            var tempGossipOptionPOI = CoreParsers.NpcHandler.TempGossipOptionPOI;
             if (lastGossipOption.HasSelection)
                 Storage.GossipMenuOptionTrainers.Add(new GossipMenuOptionTrainer { MenuId = lastGossipOption.MenuId, OptionIndex = lastGossipOption.OptionIndex, TrainerId = trainer.Id }, packet.TimeSpan);
             else
                 Storage.CreatureDefaultTrainers.Add(new CreatureDefaultTrainer { CreatureId = lastGossipOption.Guid.GetEntry(), TrainerId = trainer.Id }, packet.TimeSpan);
+
+            lastGossipOption.Guid = null;
+            lastGossipOption.MenuId = null;
+            lastGossipOption.OptionIndex = null;
+            lastGossipOption.ActionMenuId = null;
+            lastGossipOption.ActionPoiId = null;
+
+            tempGossipOptionPOI.Guid = null;
+            tempGossipOptionPOI.MenuId = null;
+            tempGossipOptionPOI.OptionIndex = null;
+            tempGossipOptionPOI.ActionMenuId = null;
+            tempGossipOptionPOI.ActionPoiId = null;
         }
 
         [Parser(Opcode.CMSG_TRAINER_BUY_SPELL)]
