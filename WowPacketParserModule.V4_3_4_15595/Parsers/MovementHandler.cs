@@ -6934,40 +6934,39 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             var guid = packet.StartBitStream(5, 0, 4, 1, 7, 6, 2, 3);
 
             var count = packet.ReadBits("StateChangeCount", 23);
-            bool HasVehicleRecID = false;
-            bool HasSpeed = false;
-            bool HasKnockBackInfo = false;
-            bool HasCollisionHeightInfo = false;
-            uint CollisionHeightInfoReason = 0;
+            var HasVehicleRecID = new byte[count];
+            var HasSpeed = new byte[count];
+            var HasKnockBackInfo = new byte[count];
+            var HasCollisionHeightInfo = new byte[count];
 
             for (int i = 0; i < count; ++i)
             {
-                HasVehicleRecID = packet.ReadBit("HasVehicleRecID", i);
-                HasSpeed = packet.ReadBit("HasSpeed", i);
-                HasKnockBackInfo = packet.ReadBit("HasKnockBackInfo", i);
-                HasCollisionHeightInfo = packet.ReadBit("HasCollisionHeightInfo", i);
-                if (HasCollisionHeightInfo)
-                    CollisionHeightInfoReason = packet.ReadBits("CollisionHeightInfoReason", 2, i);
+                HasVehicleRecID[i] = packet.ReadBit("HasVehicleRecID", i);
+                HasSpeed[i] = packet.ReadBit("HasSpeed", i);
+                HasKnockBackInfo[i] = packet.ReadBit("HasKnockBackInfo", i);
+                HasCollisionHeightInfo[i] = packet.ReadBit("HasCollisionHeightInfo", i);
+                if (HasCollisionHeightInfo[i] != 0)
+                    packet.ReadBits("CollisionHeightInfoReason", 2, i);
             }
 
             for (int i = 0; i < count; ++i)
             {
-                if (HasCollisionHeightInfo)
+                if (HasCollisionHeightInfo[i] != 0)
                     packet.ReadSingle("CollisionHeightInfoHeight", i);
 
-                if (HasKnockBackInfo)
+                if (HasKnockBackInfo[i] != 0)
                 {
                     packet.ReadSingle("HorizontalSpeed", i);
                     packet.ReadVector2("Direction", i);
                     packet.ReadSingle("InitVerticalSpeed", i);
                 }
 
-                if (HasVehicleRecID)
+                if (HasVehicleRecID[i] != 0)
                     packet.ReadInt32("VehicleRecID", i);
 
                 packet.ReadInt32("SequenceIndex", i);
 
-                if (HasSpeed)
+                if (HasSpeed[i] != 0)
                     packet.ReadSingle("Speed", i);
 
                 packet.ReadInt16("Opcode", i);
