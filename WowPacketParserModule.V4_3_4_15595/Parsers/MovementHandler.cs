@@ -6969,7 +6969,10 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 if (HasSpeed[i] != 0)
                     packet.ReadSingle("Speed", i);
 
-                packet.ReadInt16("Opcode", i);
+                var opcode = packet.ReadInt16();
+                var opcodeName = Opcodes.GetOpcodeName(opcode, packet.Direction);
+                packet.AddValue("Opcode", $"{ opcodeName } (0x{ opcode.ToString("X4") })", i);
+
             }
 
             packet.ParseBitStream(guid, 2, 1, 4, 5, 6, 7, 0, 3);
