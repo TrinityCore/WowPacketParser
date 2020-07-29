@@ -1,4 +1,4 @@
-﻿using MySql.Data.MySqlClient;
+using MySql.Data.MySqlClient;
 using Sigil;
 using System;
 using System.Collections.Generic;
@@ -277,6 +277,79 @@ namespace WowPacketParser.Hotfix
             if (localeBuilder != null && propertiesInfos.Any(
                 propInfo => propInfo.PropertyType == typeof (string) || propInfo.PropertyType == typeof (string[])))
             {
+                switch (tableName)
+                {
+                    case "achievement":
+                    case "area_table":
+                    case "artifact_appearance":
+                    case "artifact_appearance_set":
+                    case "artifact":
+                    case "auction_house":
+                    case "azerite_essence":
+                    case "azerite_essence_power":
+                    case "barber_shop_style":
+                    case "battlemaster_list":
+                    case "battle_pet_species":
+                    case "broadcast_text":
+                    case "char_titles":
+                    case "chat_channels":
+                    case "chr_classes":
+                    case "chr_races":
+                    case "chr_specialization":
+                    case "creature_family":
+                    case "creature_type":
+                    case "criteria_tree":
+                    case "currency_types":
+                    case "difficulty":
+                    case "dungeon_encounter":
+                    case "faction":
+                    case "gameobjects":
+                    case "garr_ability":
+                    case "garr_building":
+                    case "garr_class_spec":
+                    case "garr_follower":
+                    case "heirloom":
+                    case "item_bag_family":
+                    case "item_class":
+                    case "item_limit_category":
+                    case "item_name_description":
+                    case "item_search_name":
+                    case "item_set":
+                    case "item_sparse":
+                    case "lfg_dungeons":
+                    case "mail_template":
+                    case "map_difficulty":
+                    case "map":
+                    case "mount":
+                    case "names_reserved":
+                    case "player_condition":
+                    case "prestige_level_info":
+                    case "pvp_talent":
+                    case "quest_sort":
+                    case "scenario":
+                    case "scenario_step":
+                    case "skill_line":
+                    case "specialization_spells":
+                    case "spell_category":
+                    case "spell_focus_object":
+                    case "spell_item_enchantment":
+                    case "spell_name":
+                    case "spell_range":
+                    case "spell_shapeshift_form":
+                    case "talent":
+                    case "taxi_nodes":
+                    case "totem_category":
+                    case "toy":
+                    case "transmog_set_group":
+                    case "transmog_set":
+                    case "ui_map":
+                    case "unit_power_bar":
+                    case "wmo_area_table":
+                        break;
+                    default:
+                        return;
+                }
+
                 if (tableName == "broadcast_text")
                 {
                     var remainingCountDelete = store.Records.Count - 1;
