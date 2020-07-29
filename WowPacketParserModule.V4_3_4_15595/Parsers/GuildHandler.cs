@@ -231,6 +231,77 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             // packet.WriteGuid("Guid2", guid2);
         }
 
+
+        [Parser(Opcode.SMSG_GUILD_ROSTER_UPDATE)]
+        public static void HandleGuildRosterUpdate434(Packet packet)
+        {
+            var size = packet.ReadBits("Count", 18);
+
+            var guid = new byte[size][];
+            var nameLength = new uint[size];
+            var publicLength = new uint[size];
+            var officerLength = new uint[size];
+
+            for (int i = 0; i < size; ++i)
+            {
+                guid[i] = new byte[8];
+
+                nameLength[i] = packet.ReadBits(7);
+                guid[i][3] = packet.ReadBit();
+                guid[i][4] = packet.ReadBit();
+                packet.ReadBit("Has Authenticator", i);
+                packet.ReadBit("Can SoR", i);
+                publicLength[i] = packet.ReadBits(8);
+                officerLength[i] = packet.ReadBits(8);
+                guid[i][0] = packet.ReadBit();
+                guid[i][1] = packet.ReadBit();
+                guid[i][2] = packet.ReadBit();
+                guid[i][6] = packet.ReadBit();
+                guid[i][5] = packet.ReadBit();
+                guid[i][7] = packet.ReadBit();
+            }
+
+            for (int i = 0; i < size; ++i)
+            {
+                packet.ReadByte("Gender", i);
+                packet.ReadUInt32("Remaining guild week Rep", i);
+                packet.ReadXORByte(guid[i], 1);
+                packet.ReadUInt64("Total activity", i);
+                packet.ReadXORByte(guid[i], 2);
+
+                for (var j = 0; j < 2; ++j)
+                {
+                    var rank = packet.ReadUInt32();
+                    var id = packet.ReadUInt32();
+                    var step = packet.ReadUInt32();
+                    packet.AddValue("Profession", string.Format("Id {0} - Value {1} - Rank {2}", id, step, rank), i, j);
+                }
+
+                packet.ReadXORByte(guid[i], 0);
+                packet.ReadXORByte(guid[i], 6);
+                packet.ReadXORByte(guid[i], 7);
+                packet.ReadUInt32("Member Rank", i);
+                packet.ReadWoWString("Public note", publicLength[i], i);
+                packet.ReadWoWString("Officer note", officerLength[i], i);
+                packet.ReadXORByte(guid[i], 4);
+                packet.ReadXORByte(guid[i], 5);
+                packet.ReadInt32("Guild Reputation", i);
+                packet.ReadUInt32("Member Achievement Points", i);
+                packet.ReadSingle("Last online", i);
+                packet.ReadUInt64("Weekly activity", i);
+                packet.ReadByte("Member Level", i);
+                packet.ReadByteE<Class>("Member Class", i);
+                packet.ReadXORByte(guid[i], 3);
+                packet.ReadByteE<GuildMemberFlag>("Member Flags", i);
+                packet.ReadInt32<ZoneId>("Zone Id", i);
+                var name = packet.ReadWoWString("Name", nameLength[i], i);
+                packet.ReadInt32("Virtual Realm Address", i);
+
+                packet.WriteGuid("Guid", guid[i], i);
+                StoreGetters.AddName(new WowGuid64(BitConverter.ToUInt64(guid[i], 0)), name);
+            }
+        }
+
         [Parser(Opcode.SMSG_GUILD_ROSTER)]
         public static void HandleGuildRoster434(Packet packet)
         {
@@ -268,15 +339,15 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
 
                 packet.ReadXORByte(guid[i], 0);
 
-                packet.ReadUInt64("Week activity", i);
+                packet.ReadUInt64("Weekly activity", i);
                 packet.ReadUInt32("Member Rank", i);
                 packet.ReadUInt32("Member Achievement Points", i);
                 for (var j = 0; j < 2; ++j)
                 {
+                    var step = packet.ReadUInt32();
                     var rank = packet.ReadUInt32();
-                    var value = packet.ReadUInt32();
                     var id = packet.ReadUInt32();
-                    packet.AddValue("Profession", string.Format("Id {0} - Value {1} - Rank {2}", id, value, rank), i, j);
+                    packet.AddValue("Profession", string.Format("Id {0} - Value {1} - Rank {2}", id, step, rank), i, j);
                 }
 
                 packet.ReadXORByte(guid[i], 2);
@@ -294,12 +365,12 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     guid[i][3] ^= packet.ReadByte();
 
                 packet.ReadByte("Member Level", i);
-                packet.ReadInt32("Unk 2", i);
+                packet.ReadInt32("Virtual Realm Address", i);
 
                 packet.ReadXORByte(guid[i], 5);
                 packet.ReadXORByte(guid[i], 4);
 
-                packet.ReadByte("Unk Byte", i);
+                packet.ReadByte("Gender", i);
 
                 packet.ReadXORByte(guid[i], 1);
 
