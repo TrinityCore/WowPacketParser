@@ -6932,45 +6932,49 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         public static void HandleMoveSetCompoundState434(Packet packet)
         {
             var guid = packet.StartBitStream(5, 0, 4, 1, 7, 6, 2, 3);
-            var count = packet.ReadBits("Count", 23);
-            var unk1 = new byte[count];
-            var unk2 = new byte[count];
-            var hasPosition = new byte[count];
-            var unk4 = new byte[count];
+
+            var count = packet.ReadBits("StateChangeCount", 23);
+            bool HasVehicleRecID = false;
+            bool HasSpeed = false;
+            bool HasKnockBackInfo = false;
+            bool HasCollisionHeightInfo = false;
+            uint CollisionHeightInfoReason = 0;
 
             for (int i = 0; i < count; ++i)
             {
-                unk1[i] = packet.ReadBit("Unk bit 1", i); // 36
-                unk2[i] = packet.ReadBit("Unk bit 2", i); // 8
-                hasPosition[i] = packet.ReadBit("Has position", i); // 16
-                unk4[i] = packet.ReadBit("Unk bit 4", i); // 44
-
-                if (unk4[i] != 0)
-                    packet.ReadBits("Unk bits", 2, i);
+                HasVehicleRecID = packet.ReadBit("HasVehicleRecID", i);
+                HasSpeed = packet.ReadBit("HasSpeed", i);
+                HasKnockBackInfo = packet.ReadBit("HasKnockBackInfo", i);
+                HasCollisionHeightInfo = packet.ReadBit("HasCollisionHeightInfo", i);
+                if (HasCollisionHeightInfo)
+                    CollisionHeightInfoReason = packet.ReadBits("CollisionHeightInfoReason", 2, i);
             }
 
             for (int i = 0; i < count; ++i)
             {
+                if (HasCollisionHeightInfo)
+                    packet.ReadSingle("CollisionHeightInfoHeight", i);
 
-                if (unk4[i] != 0)
-                    packet.ReadSingle("Unk Float 1", i);
+                if (HasKnockBackInfo)
+                {
+                    packet.ReadSingle("HorizontalSpeed", i);
+                    packet.ReadVector2("Direction", i);
+                    packet.ReadSingle("InitVerticalSpeed", i);
+                }
 
-                if (hasPosition[i] != 0)
-                    packet.ReadVector4("Position", i);
+                if (HasVehicleRecID)
+                    packet.ReadInt32("VehicleRecID", i);
 
-                if (unk1[i] != 0)
-                    packet.ReadInt32("Unk Int32 1", i);
+                packet.ReadInt32("SequenceIndex", i);
 
-                packet.ReadInt32("Unk Int32 2", i);
+                if (HasSpeed)
+                    packet.ReadSingle("Speed", i);
 
-                if (unk2[i] != 0)
-                    packet.ReadSingle("Unk Float 2", i);
-
-                packet.ReadInt16("Unk Int16", i);
+                packet.ReadInt16("Opcode", i);
             }
 
             packet.ParseBitStream(guid, 2, 1, 4, 5, 6, 7, 0, 3);
-            packet.WriteGuid("Guid", guid);
+            packet.WriteGuid("MoverGUID", guid);
         }
 
         [Parser(Opcode.SMSG_MOVE_SET_FLIGHT_SPEED)]
