@@ -240,15 +240,15 @@ namespace WowPacketParser.SQL.Builders
         }
 
         [BuilderMethod]
-        public static string CreatureDefaultTrainer()
+        public static string CreatureTrainer()
         {
-            if (Storage.CreatureDefaultTrainers.IsEmpty())
+            if (Storage.CreatureTrainers.IsEmpty())
                 return string.Empty;
 
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.trainer))
                 return string.Empty;
 
-            return SQLUtil.Compare(Storage.CreatureDefaultTrainers, SQLDatabase.Get(Storage.CreatureDefaultTrainers), StoreNameType.None);
+            return SQLUtil.Compare(Storage.CreatureTrainers, SQLDatabase.Get(Storage.CreatureTrainers), StoreNameType.None);
         }
 
         [BuilderMethod]
@@ -397,7 +397,6 @@ namespace WowPacketParser.SQL.Builders
                 result += SQLUtil.Compare(Storage.GossipMenuOptions, SQLDatabase.Get(Storage.GossipMenuOptions), t => t.BroadcastTextIDHelper);
                 result += SQLUtil.Compare(Storage.GossipMenuOptionActions, SQLDatabase.Get(Storage.GossipMenuOptionActions), StoreNameType.None);
                 result += SQLUtil.Compare(Storage.GossipMenuOptionBoxes, SQLDatabase.Get(Storage.GossipMenuOptionBoxes), t => t.BroadcastTextIdHelper);
-                result += SQLUtil.Compare(Storage.GossipMenuOptionTrainers, SQLDatabase.Get(Storage.GossipMenuOptionTrainers), StoreNameType.None);
             }
 
             return result;
