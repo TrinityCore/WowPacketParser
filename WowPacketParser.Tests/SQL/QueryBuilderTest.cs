@@ -64,13 +64,18 @@ namespace WowPacketParser.Tests.SQL
             _conditionsTwoPk = new RowList<TestDataTwoPK>
             {
                 new TestDataTwoPK {ID = 10, TestInt1 = 20, TestString1 = "string10"},
-                new TestDataTwoPK {ID = 20, TestInt1 = 30}
+                new TestDataTwoPK {ID = 20, TestInt1 = 30},
+                new TestDataTwoPK {ID = 30, TestInt1 = 40},
+                new TestDataTwoPK {ID = 30, TestInt1 = 50}
+
             };
 
             _valuesTwoPk = new RowList<TestDataTwoPK>
             {
-                new TestDataTwoPK {ID = 40, TestInt1 = 50, TestString1 = "string20"},
-                new TestDataTwoPK {ID = 60, TestInt1 = 70}
+                new TestDataTwoPK {ID = 60, TestInt1 = 70, TestString1 = "string20"},
+                new TestDataTwoPK {ID = 80, TestInt1 = 90},
+                new TestDataTwoPK {ID = 100, TestInt1 = 110},
+                new TestDataTwoPK {ID = 100, TestInt1 = 120}
             };
         }
 
@@ -115,11 +120,17 @@ namespace WowPacketParser.Tests.SQL
         [Test]
         public void TestSQLWhere()
         {
-            var where = new SQLWhere<TestDataOnePK>(_conditionsOnePk);
+            var whereOnePk = new SQLWhere<TestDataOnePK>(_conditionsOnePk);
 
             Assert.AreEqual(
                 "(`ID`=1 AND `TestInt1`=2 AND `TestString1`='string1') OR (`ID`=2 AND `TestInt1`=3)",
-                where.Build());
+                whereOnePk.Build());
+
+            var whereTwoPk = new SQLWhere<TestDataTwoPK>(_conditionsTwoPk);
+
+            Assert.AreEqual(
+                "(`ID`=10 AND `TestInt1`=20 AND `TestString1`='string10') OR (`ID`=20 AND `TestInt1`=30) OR (`ID`=30 AND `TestInt1`=40) OR (`ID`=30 AND `TestInt1`=50)",
+                whereTwoPk.Build());
         }
 
         [Test]
@@ -129,7 +140,7 @@ namespace WowPacketParser.Tests.SQL
             Assert.AreEqual("`ID` IN (1, 2)", whereOnePk.Build());
 
             var whereTwoPk = new SQLWhere<TestDataTwoPK>(_conditionsTwoPk, true);
-            Assert.AreEqual("(`ID`=10 AND `TestInt1`=20) OR (`ID`=20 AND `TestInt1`=30)", whereTwoPk.Build());
+            Assert.AreEqual("(`ID`=10 AND `TestInt1`=20) OR (`ID`=20 AND `TestInt1`=30) OR (`ID`=30 AND `TestInt1` IN (40,50))", whereTwoPk.Build());
         }
 
         [Test]
