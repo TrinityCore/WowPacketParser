@@ -165,9 +165,17 @@ namespace WowPacketParser.SQL
                 whereClause.Append(" AND ");
 
                 whereClause.Append(secondField);
-                whereClause.Append(" IN (");
-                whereClause.Append(string.Join(',', pair.Value.Select(cond => cond.FieldValuePairs[secondField])));
-                whereClause.Append(")");
+                if (pair.Value.Select(cond => cond.FieldValuePairs[secondField]).Count() == 1)
+                {
+                    whereClause.Append("=");
+                    whereClause.Append(pair.Value.Select(cond => cond.FieldValuePairs[secondField]).First());
+                }
+                else
+                {
+                    whereClause.Append(" IN (");
+                    whereClause.Append(string.Join(',', pair.Value.Select(cond => cond.FieldValuePairs[secondField])));
+                    whereClause.Append(")");
+                }
 
                 whereClause.Append(")");
 
