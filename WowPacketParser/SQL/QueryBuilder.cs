@@ -62,6 +62,15 @@ namespace WowPacketParser.SQL
             }
             else
             {
+                if (_conditions.Count > 1)
+                {
+                    var result = BuildDistinct();
+                    if (result != null)
+                        return result;
+
+                    // Fallback to standard AND where clauses if the distinct one failed
+                }
+
                 foreach (Row<T> condition in _conditions)
                 {
                     whereClause.Append("(");
@@ -89,6 +98,105 @@ namespace WowPacketParser.SQL
             }
 
             return whereClause.ToString();
+        }
+
+        private string BuildDistinct()
+        {
+            // 1. Get a list of all conditions as list of field/value pairs
+            List<WhereCondition> whereConditions = new List<WhereCondition>();
+            foreach (Row<T> condition in _conditions)
+            {
+                var whereCondition = new WhereCondition();
+
+                foreach (var field in _databaseFields)
+                {
+                    object value = field.Item2.GetValue(condition.Data);
+
+                    if (value == null ||
+                        (_onlyPrimaryKeys &&
+                         field.Item3.Any(a => !a.IsPrimaryKey)))
+                        continue;
+
+                    whereCondition.Add(field.Item1, SQLUtil.ToSQLValue(value));
+                }
+
+                if (!whereCondition.IsEmpty)
+                    whereConditions.Add(whereCondition);
+            }
+
+            // 2. Check if all conditions share the same fields
+            bool allShareSameFields = true;
+            var baselineConditionFields = whereConditions.First().FieldValuePairs.Keys;
+            foreach (var condition in whereConditions)
+                if (!condition.FieldValuePairs.Keys.SequenceEqual(baselineConditionFields))
+                    allShareSameFields = false;
+
+            if (!allShareSameFields)
+                return null;
+
+            // ToDo: support the case with more than 2 fields
+            if (baselineConditionFields.Count != 2)
+                return null;
+
+            // 3. Get a distinct of values for each field
+            var fieldsWithDistinctValues = (from condition in whereConditions
+                                            from fieldValuePair in condition.FieldValuePairs
+                                            group fieldValuePair by fieldValuePair.Key into byField
+                                            select new { Field = byField.Key, Values = byField.ToList().Select(pair => pair.Value).Distinct().ToList() }
+                                            ).OrderBy(field => field.Values.Count()).ToList();
+
+            // 4. Get the field with lowest different values
+            var fieldWithLowestDifferentValues = fieldsWithDistinctValues.First().Field;
+            // ToDo: support the case with more than 2 fields
+            var secondField = fieldsWithDistinctValues.Skip(1).First().Field;
+
+            // 5. Group conditions by the field with lowest different values
+            var conditionsByFieldWithLowestDifferentValues = whereConditions.GroupBy(cond => cond.FieldValuePairs[fieldWithLowestDifferentValues])
+                                                            .ToDictionary(g => g.Key, g => g.ToList());
+
+            // 6. Build the where clause using the field with lowest different values for the first condition
+            StringBuilder whereClause = new StringBuilder();
+            foreach(var pair in conditionsByFieldWithLowestDifferentValues)
+            {
+                whereClause.Append("(");
+                whereClause.Append(fieldWithLowestDifferentValues);
+                whereClause.Append("=");
+                whereClause.Append(pair.Key);
+                whereClause.Append(" AND ");
+
+                whereClause.Append(secondField);
+                if (pair.Value.Select(cond => cond.FieldValuePairs[secondField]).Count() == 1)
+                {
+                    whereClause.Append("=");
+                    whereClause.Append(pair.Value.Select(cond => cond.FieldValuePairs[secondField]).First());
+                }
+                else
+                {
+                    whereClause.Append(" IN (");
+                    whereClause.Append(string.Join(',', pair.Value.Select(cond => cond.FieldValuePairs[secondField])));
+                    whereClause.Append(")");
+                }
+
+                whereClause.Append(")");
+
+                whereClause.Append(" OR ");
+            }
+
+            whereClause.Length -= 4; // remove last " OR ";
+
+            return whereClause.ToString();
+        }
+
+        private class WhereCondition
+        {
+            internal readonly Dictionary<string, object> FieldValuePairs = new Dictionary<string, object>();
+
+            internal bool IsEmpty => FieldValuePairs.Count == 0;
+
+            internal void Add(string fieldName, object value)
+            {
+                FieldValuePairs.Add(fieldName, value);
+            }
         }
     }
 
