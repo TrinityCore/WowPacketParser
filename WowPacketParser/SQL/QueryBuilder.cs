@@ -62,7 +62,7 @@ namespace WowPacketParser.SQL
             }
             else
             {
-                if (_conditions.Count > 100)
+                if (_conditions.Count > 1)
                 {
                     var result = BuildDistinct();
                     if (result != null)
