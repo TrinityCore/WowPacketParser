@@ -59,9 +59,9 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 foreach (var poi in SQLDatabase.POIs)
                 {
-                    if (gossipPOI.Name == poi.Name && (uint)gossipPOI.Icon == poi.Icon && gossipPOI.Flags == poi.Flags)
+                    if (gossipPOI.Name == poi.Name && (uint)gossipPOI.Icon == poi.Icon)
                     {
-                        if (Math.Abs(pos.X - poi.PositionX) <= 0.01f && Math.Abs(pos.Y - poi.PositionY) <= 0.01f)
+                        if (Math.Abs(pos.X - poi.PositionX) <= 0.99f && Math.Abs(pos.Y - poi.PositionY) <= 0.99f)
                         {
                             gossipPOI.ID = poi.ID;
                             break;
