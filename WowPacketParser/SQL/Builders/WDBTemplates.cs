@@ -296,6 +296,179 @@ namespace WowPacketParser.SQL.Builders
                 foreach (var npcText in Storage.NpcTexts)
                     npcText.Item1.ConvertToDBStruct();
 
+                // Check for broadcast_texts which fit perfectly (e.g. only 1 entry or only Text0 or only Text1 fitting)
+                foreach (var npcText in Storage.NpcTexts)
+                {
+                    List<int> optionTextList0;
+                    List<int> optionTextList1;
+                    List<int> optionTextList2;
+                    List<int> optionTextList3;
+                    List<int> optionTextList4;
+                    List<int> optionTextList5;
+                    List<int> optionTextList6;
+                    List<int> optionTextList7;
+
+                    if (npcText.Item1.Text00 == string.Empty && npcText.Item1.Text01 == string.Empty)
+                        npcText.Item1.BroadcastTextID0 = 0;
+
+                    if (npcText.Item1.Text00 != string.Empty && npcText.Item1.Text01 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastTexts.TryGetValue(npcText.Item1.Text00, out optionTextList0))
+                        {
+                            if (optionTextList0.Count == 1)
+                                npcText.Item1.BroadcastTextID0 = (uint)optionTextList0.First();
+                        }
+                    }
+                    else if (npcText.Item1.Text01 != string.Empty && npcText.Item1.Text00 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastText1s.TryGetValue(npcText.Item1.Text01, out optionTextList0))
+                        {
+                            if (optionTextList0.Count == 1)
+                                npcText.Item1.BroadcastTextID0 = (uint)optionTextList0.First();
+                        }
+                    }
+
+                    if (npcText.Item1.Text10 == string.Empty && npcText.Item1.Text11 == string.Empty)
+                        npcText.Item1.BroadcastTextID1 = 0;
+
+                    if (npcText.Item1.Text10 != string.Empty && npcText.Item1.Text11 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastTexts.TryGetValue(npcText.Item1.Text10, out optionTextList1))
+                        {
+                            if (optionTextList1.Count == 1)
+                                npcText.Item1.BroadcastTextID1 = (uint)optionTextList1.First();
+                        }
+                    }
+                    else if (npcText.Item1.Text11 != string.Empty && npcText.Item1.Text10 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastText1s.TryGetValue(npcText.Item1.Text11, out optionTextList1))
+                        {
+                            if (optionTextList1.Count == 1)
+                                npcText.Item1.BroadcastTextID1 = (uint)optionTextList1.First();
+                        }
+                    }
+
+                    if (npcText.Item1.Text20 == string.Empty && npcText.Item1.Text21 == string.Empty)
+                        npcText.Item1.BroadcastTextID2 = 0;
+
+                    if (npcText.Item1.Text20 != string.Empty && npcText.Item1.Text21 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastTexts.TryGetValue(npcText.Item1.Text20, out optionTextList2))
+                        {
+                            if (optionTextList2.Count == 1)
+                                npcText.Item1.BroadcastTextID2 = (uint)optionTextList2.First();
+                        }
+                    }
+                    else if (npcText.Item1.Text21 != string.Empty && npcText.Item1.Text20 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastText1s.TryGetValue(npcText.Item1.Text21, out optionTextList2))
+                        {
+                            if (optionTextList2.Count == 1)
+                                npcText.Item1.BroadcastTextID2 = (uint)optionTextList2.First();
+                        }
+                    }
+
+                    if (npcText.Item1.Text30 == string.Empty && npcText.Item1.Text31 == string.Empty)
+                        npcText.Item1.BroadcastTextID3 = 0;
+
+                    if (npcText.Item1.Text30 != string.Empty && npcText.Item1.Text31 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastTexts.TryGetValue(npcText.Item1.Text30, out optionTextList3))
+                        {
+                            if (optionTextList3.Count == 1)
+                                npcText.Item1.BroadcastTextID3 = (uint)optionTextList3.First();
+                        }
+                    }
+                    else if (npcText.Item1.Text31 != string.Empty && npcText.Item1.Text30 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastText1s.TryGetValue(npcText.Item1.Text31, out optionTextList3))
+                        {
+                            if (optionTextList3.Count == 1)
+                                npcText.Item1.BroadcastTextID3 = (uint)optionTextList3.First();
+                        }
+                    }
+
+                    if (npcText.Item1.Text40 == string.Empty && npcText.Item1.Text41 == string.Empty)
+                        npcText.Item1.BroadcastTextID4 = 0;
+
+                    if (npcText.Item1.Text40 != string.Empty && npcText.Item1.Text41 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastTexts.TryGetValue(npcText.Item1.Text40, out optionTextList4))
+                        {
+                            if (optionTextList4.Count == 1)
+                                npcText.Item1.BroadcastTextID4 = (uint)optionTextList4.First();
+                        }
+                    }
+                    else if (npcText.Item1.Text41 != string.Empty && npcText.Item1.Text40 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastText1s.TryGetValue(npcText.Item1.Text41, out optionTextList4))
+                        {
+                            if (optionTextList4.Count == 1)
+                                npcText.Item1.BroadcastTextID4 = (uint)optionTextList4.First();
+                        }
+                    }
+
+                    if (npcText.Item1.Text50 == string.Empty && npcText.Item1.Text51 == string.Empty)
+                        npcText.Item1.BroadcastTextID5 = 0;
+
+                    if (npcText.Item1.Text50 != string.Empty && npcText.Item1.Text51 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastTexts.TryGetValue(npcText.Item1.Text50, out optionTextList5))
+                        {
+                            if (optionTextList5.Count == 1)
+                                npcText.Item1.BroadcastTextID5 = (uint)optionTextList5.First();
+                        }
+                    }
+                    else if (npcText.Item1.Text51 != string.Empty && npcText.Item1.Text50 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastText1s.TryGetValue(npcText.Item1.Text51, out optionTextList5))
+                        {
+                            if (optionTextList5.Count == 1)
+                                npcText.Item1.BroadcastTextID5 = (uint)optionTextList5.First();
+                        }
+                    }
+
+                    if (npcText.Item1.Text60 == string.Empty && npcText.Item1.Text61 == string.Empty)
+                        npcText.Item1.BroadcastTextID6 = 0;
+
+                    if (npcText.Item1.Text60 != string.Empty && npcText.Item1.Text61 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastTexts.TryGetValue(npcText.Item1.Text60, out optionTextList6))
+                        {
+                            if (optionTextList6.Count == 1)
+                                npcText.Item1.BroadcastTextID6 = (uint)optionTextList6.First();
+                        }
+                    }
+                    else if (npcText.Item1.Text61 != string.Empty && npcText.Item1.Text60 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastText1s.TryGetValue(npcText.Item1.Text61, out optionTextList6))
+                        {
+                            if (optionTextList6.Count == 1)
+                                npcText.Item1.BroadcastTextID6 = (uint)optionTextList6.First();
+                        }
+                    }
+
+                    if (npcText.Item1.Text70 == string.Empty && npcText.Item1.Text71 == string.Empty)
+                        npcText.Item1.BroadcastTextID7 = 0;
+
+                    if (npcText.Item1.Text70 != string.Empty && npcText.Item1.Text71 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastTexts.TryGetValue(npcText.Item1.Text70, out optionTextList7))
+                        {
+                            if (optionTextList7.Count == 1)
+                                npcText.Item1.BroadcastTextID7 = (uint)optionTextList7.First();
+                        }
+                    }
+                    else if (npcText.Item1.Text71 != string.Empty && npcText.Item1.Text70 == string.Empty)
+                    {
+                        if (SQLDatabase.BroadcastText1s.TryGetValue(npcText.Item1.Text71, out optionTextList7))
+                        {
+                            if (optionTextList7.Count == 1)
+                                npcText.Item1.BroadcastTextID7 = (uint)optionTextList7.First();
+                        }
+                    }
+                }
+
                 var templatesDb = SQLDatabase.Get(Storage.NpcTexts);
 
                 return SQLUtil.Compare(Storage.NpcTexts, templatesDb, StoreNameType.NpcText);

@@ -243,28 +243,26 @@ namespace WowPacketParser.Parsing.Parsers
                 ID = (uint)entry.Key
             };
 
-            npcText.Probabilities = new float[8];
+            npcText.Probabilities = new float?[8];
+            npcText.Texts0 = new string[8];
             npcText.Texts1 = new string[8];
-            npcText.Texts2 = new string[8];
-            npcText.Languages = new Language[8];
-            npcText.EmoteDelays = new uint[8][];
-            npcText.EmoteIds = new EmoteType[8][];
+            npcText.Languages = new Language?[8];
+            npcText.EmoteDelays = new uint?[8][];
+            npcText.Emotes = new EmoteType?[8][];
+
             for (int i = 0; i < 8; i++)
             {
                 npcText.Probabilities[i] = packet.ReadSingle("Probability", i);
-
-                npcText.Texts1[i] = packet.ReadCString("Text 1", i);
-
-                npcText.Texts2[i] = packet.ReadCString("Text 2", i);
-
+                npcText.Texts0[i] = packet.ReadCString("Text0", i);
+                npcText.Texts1[i] = packet.ReadCString("Text1", i);
                 npcText.Languages[i] = packet.ReadInt32E<Language>("Language", i);
 
-                npcText.EmoteDelays[i] = new uint[3];
-                npcText.EmoteIds[i] = new EmoteType[3];
+                npcText.EmoteDelays[i] = new uint?[3];
+                npcText.Emotes[i] = new EmoteType?[3];
                 for (int j = 0; j < 3; j++)
                 {
-                    npcText.EmoteDelays[i][j] = packet.ReadUInt32("Emote Delay", i, j);
-                    npcText.EmoteIds[i][j] = packet.ReadUInt32E<EmoteType>("Emote ID", i, j);
+                    npcText.EmoteDelays[i][j] = packet.ReadUInt32("EmoteDelay", i, j);
+                    npcText.Emotes[i][j] = packet.ReadUInt32E<EmoteType>("EmoteID", i, j);
                 }
             }
 
