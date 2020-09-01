@@ -53,17 +53,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (int i = 0; i < int16; ++i)
                 packet.ReadByte("Nodes", i);
 
-            CoreParsers.NpcHandler.LastGossipOption.Guid = null;
-            CoreParsers.NpcHandler.LastGossipOption.MenuId = null;
-            CoreParsers.NpcHandler.LastGossipOption.OptionIndex = null;
-            CoreParsers.NpcHandler.LastGossipOption.ActionMenuId = null;
-            CoreParsers.NpcHandler.LastGossipOption.ActionMenuId = null;
-
-            CoreParsers.NpcHandler.TempGossipOptionPOI.Guid = null;
-            CoreParsers.NpcHandler.TempGossipOptionPOI.MenuId = null;
-            CoreParsers.NpcHandler.TempGossipOptionPOI.OptionIndex = null;
-            CoreParsers.NpcHandler.TempGossipOptionPOI.ActionMenuId = null;
-            CoreParsers.NpcHandler.TempGossipOptionPOI.ActionMenuId = null;
+            CoreParsers.NpcHandler.LastGossipOption.Reset();
+            CoreParsers.NpcHandler.TempGossipOptionPOI.Reset();
         }
 
         [Parser(Opcode.SMSG_TAXI_NODE_STATUS)]

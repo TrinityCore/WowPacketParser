@@ -1,3 +1,4 @@
+using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -40,15 +41,19 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             if (tempGossipOptionPOI.HasSelection)
             {
-                if (tempGossipOptionPOI.ActionMenuId != null)
+                if ((packet.TimeSpan - tempGossipOptionPOI.TimeSpan).Duration() <= TimeSpan.FromMilliseconds(2500))
                 {
-                    Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = tempGossipOptionPOI.MenuId, OptionIndex = tempGossipOptionPOI.OptionIndex, ActionMenuId = tempGossipOptionPOI.ActionMenuId, ActionPoiId = gossipPOI.ID }, packet.TimeSpan);
-                    //clear temp
-                    tempGossipOptionPOI.Guid = null;
-                    tempGossipOptionPOI.MenuId = null;
-                    tempGossipOptionPOI.OptionIndex = null;
-                    tempGossipOptionPOI.ActionMenuId = null;
-                    tempGossipOptionPOI.ActionPoiId = null;
+                    if (tempGossipOptionPOI.ActionMenuId != null)
+                    {
+                        Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = tempGossipOptionPOI.MenuId, OptionIndex = tempGossipOptionPOI.OptionIndex, ActionMenuId = tempGossipOptionPOI.ActionMenuId, ActionPoiId = gossipPOI.ID }, packet.TimeSpan);
+                        //clear temp
+                        tempGossipOptionPOI.Reset();
+                    }
+                }
+                else
+                {
+                    lastGossipOption.Reset();
+                    tempGossipOptionPOI.Reset();
                 }
             }
         }
@@ -89,20 +94,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 Storage.NpcVendors.Add(vendor, packet.TimeSpan);
             }
 
-            var lastGossipOption = CoreParsers.NpcHandler.LastGossipOption;
-            var tempGossipOptionPOI = CoreParsers.NpcHandler.TempGossipOptionPOI;
-
-            lastGossipOption.Guid = null;
-            lastGossipOption.MenuId = null;
-            lastGossipOption.OptionIndex = null;
-            lastGossipOption.ActionMenuId = null;
-            lastGossipOption.ActionPoiId = null;
-
-            tempGossipOptionPOI.Guid = null;
-            tempGossipOptionPOI.MenuId = null;
-            tempGossipOptionPOI.OptionIndex = null;
-            tempGossipOptionPOI.ActionMenuId = null;
-            tempGossipOptionPOI.ActionPoiId = null;
+            CoreParsers.NpcHandler.LastGossipOption.Reset();
+            CoreParsers.NpcHandler.TempGossipOptionPOI.Reset();
         }
     }
 }

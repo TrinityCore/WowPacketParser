@@ -19,17 +19,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("Guid");
             packet.ReadBit("OpenForBusiness");
 
-            CoreParsers.NpcHandler.LastGossipOption.Guid = null;
-            CoreParsers.NpcHandler.LastGossipOption.MenuId = null;
-            CoreParsers.NpcHandler.LastGossipOption.OptionIndex = null;
-            CoreParsers.NpcHandler.LastGossipOption.ActionMenuId = null;
-            CoreParsers.NpcHandler.LastGossipOption.ActionMenuId = null;
-
-            CoreParsers.NpcHandler.TempGossipOptionPOI.Guid = null;
-            CoreParsers.NpcHandler.TempGossipOptionPOI.MenuId = null;
-            CoreParsers.NpcHandler.TempGossipOptionPOI.OptionIndex = null;
-            CoreParsers.NpcHandler.TempGossipOptionPOI.ActionMenuId = null;
-            CoreParsers.NpcHandler.TempGossipOptionPOI.ActionMenuId = null;
+            CoreParsers.NpcHandler.LastGossipOption.Reset();
+            CoreParsers.NpcHandler.TempGossipOptionPOI.Reset();
         }
 
         [Parser(Opcode.SMSG_AUCTION_COMMAND_RESULT)]
