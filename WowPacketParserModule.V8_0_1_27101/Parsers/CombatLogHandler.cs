@@ -225,6 +225,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadInt32("OriginalDamage"); // OriginalDamage (before HitResult -> BeforeCrit and Armor etc)
 
             packet.ResetBitReader();
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_3_7_35249)) // is it since 837 or earlier?
+                packet.ReadBit("UnkBit");
 
             var bit100 = packet.ReadBit("HasLogData");
             if (bit100)
