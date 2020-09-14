@@ -859,7 +859,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             var count = packet.ReadUInt32();
 
             for (int i = 0; i < count; i++)
-                packet.ReadUInt32<QuestId>("QuestLineXQuestID", i);
+                packet.ReadUInt32("QuestLineXQuestID", i);
         }
     }
 }
