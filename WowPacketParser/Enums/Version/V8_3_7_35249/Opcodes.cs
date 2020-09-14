@@ -1547,6 +1547,7 @@ namespace WowPacketParser.Enums.Version.V8_3_7_35249
             {Opcode.SMSG_QUEST_GIVER_REQUEST_ITEMS, 0x2A92},
             {Opcode.SMSG_QUEST_GIVER_STATUS, 0x2A9A},
             {Opcode.SMSG_QUEST_GIVER_STATUS_MULTIPLE, 0x2A90},
+            {Opcode.SMSG_QUEST_LINES_FOR_MAP_RESPONSE, 0x2AA1},
             {Opcode.SMSG_QUEST_LOG_FULL, 0x2A86},
             {Opcode.SMSG_QUEST_POI_CHANGED, 0x2A9F},
             {Opcode.SMSG_QUEST_POI_QUERY_RESPONSE, 0x2A9C},

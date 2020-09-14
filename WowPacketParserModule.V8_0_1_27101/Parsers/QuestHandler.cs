@@ -851,5 +851,15 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         {
             packet.ReadInt32("UiMapID");
         }
+
+        [Parser(Opcode.SMSG_QUEST_LINES_FOR_MAP_RESPONSE)]
+        public static void HandleQuestLinesForMapResponse(Packet packet)
+        {
+            packet.ReadInt32("UiMapID");
+            var count = packet.ReadUInt32();
+
+            for (int i = 0; i < count; i++)
+                packet.ReadUInt32<QuestId>("QuestLineXQuestID", i);
+        }
     }
 }
