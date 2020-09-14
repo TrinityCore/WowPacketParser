@@ -1178,6 +1178,7 @@ namespace WowPacketParser.Enums.Version.V7_1_5_23360
             {Opcode.SMSG_LFG_LIST_SEARCH_RESULTS, 0x2A1E},
             {Opcode.SMSG_LFG_LIST_SEARCH_STATUS, 0x2A1F},
             {Opcode.SMSG_LFG_LIST_UPDATE_BLACKLIST, 0x2A2A},
+            {Opcode.SMSG_LFG_LIST_UPDATE_EXPIRATION, 0x2A27},
             {Opcode.SMSG_LFG_LIST_UPDATE_STATUS, 0x2A26},
             {Opcode.SMSG_LFG_OFFER_CONTINUE, 0x2A35},
             {Opcode.SMSG_LFG_PARTY_INFO, 0x2A37},
