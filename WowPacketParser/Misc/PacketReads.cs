@@ -257,6 +257,12 @@ namespace WowPacketParser.Misc
             return new IPAddress(val);
         }
 
+        public IPAddress ReadIPv6Address()
+        {
+            byte[] val = ReadBytes(16);
+            return new IPAddress(val);
+        }
+
         public T ReadStruct<T>()
             where T : struct
         {
@@ -465,6 +471,10 @@ namespace WowPacketParser.Misc
         public IPAddress ReadIPAddress(string name, params object[] indexes)
         {
             return AddValue(name, ReadIPAddress(), indexes);
+        }
+        public IPAddress ReadIPv6Address(string name, params object[] indexes)
+        {
+            return AddValue(name, ReadIPv6Address(), indexes);
         }
 
         public KeyValuePair<int, bool> ReadEntry(string name, params object[] indexes)

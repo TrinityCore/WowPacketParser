@@ -51,5 +51,32 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ResetBitReader();
             packet.ReadBit("Enabled");
         }
+
+        [Parser(Opcode.SMSG_CONNECT_TO, ClientVersionBuild.V8_2_0_30898)]
+        public static void HandleRedirectClient(Packet packet)
+        {
+            packet.ReadBytes("Where (RSA encrypted)", 256);
+
+            AddressType type = packet.ReadByteE<AddressType>("Type");
+            switch (type)
+            {
+                case AddressType.IPv4:
+                    packet.ReadIPAddress("Address");
+                    break;
+                case AddressType.IPv6:
+                    packet.ReadIPv6Address("Address");
+                    break;
+                case AddressType.NamedSocket:
+                    packet.ReadWoWString("Address", 128);
+                    break;
+                default:
+                    break;
+            }
+
+            packet.ReadUInt16("Port");
+            packet.ReadUInt32E<ConnectToSerial>("Serial");
+            packet.ReadByte("Con");
+            packet.ReadUInt64("Key");
+        }
     }
 }
