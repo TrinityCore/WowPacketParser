@@ -1569,6 +1569,7 @@ namespace WowPacketParser.Enums.Version.V8_2_0_30898
             {Opcode.SMSG_RESET_WEEKLY_CURRENCY, 0x2574},
             {Opcode.SMSG_RESPEC_WIPE_CONFIRM, 0x2629},
             {Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS, 0x2571},
+            {Opcode.SMSG_RESUME_CAST, 0x2C3B},
             {Opcode.SMSG_RESUME_CAST_BAR, 0x2C3E},
             {Opcode.SMSG_RESUME_COMMS, 0x304B},
             {Opcode.SMSG_RESUME_TOKEN, 0x25BE},
