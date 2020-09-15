@@ -342,7 +342,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_WORLD_SERVER_INFO, ClientVersionBuild.V8_3_7_35249)]
+        [Parser(Opcode.SMSG_WORLD_SERVER_INFO, ClientVersionBuild.V8_3_0_33062)]
         public static void HandleWorldServerInfo(Packet packet)
         {
             CoreParsers.MovementHandler.CurrentDifficultyID = packet.ReadUInt32<DifficultyId>("DifficultyID");
