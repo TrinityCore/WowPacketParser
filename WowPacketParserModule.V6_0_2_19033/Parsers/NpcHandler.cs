@@ -496,6 +496,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_CLOSE_INTERACTION)] // trigger in CGGameUI::CloseInteraction
         public static void HandleCloseInteraction(Packet packet)
         {
+            LastGossipOption.Reset();
             packet.ReadPackedGuid128("Guid");
         }
 
