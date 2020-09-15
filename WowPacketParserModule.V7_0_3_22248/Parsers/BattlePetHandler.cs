@@ -109,5 +109,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             packet.ReadWoWString("Name", nameLen);
         }
+
+        [Parser(Opcode.CMSG_BATTLE_PET_CLEAR_FANFARE)]
+        public static void HandleBattlePetClearFanfare(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlePetGUID");
+        }
     }
 }
