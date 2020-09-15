@@ -1,4 +1,4 @@
-﻿using WowPacketParser.Enums;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
@@ -362,6 +362,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             if (hasInstanceGroupSize)
                 packet.ReadInt32("InstanceGroupSize");
+        }
+
+        [Parser(Opcode.SMSG_RESURRECT_CLEAR_DATA)]
+        public static void HandleResurrectClearData(Packet packet)
+        {
         }
     }
 }
