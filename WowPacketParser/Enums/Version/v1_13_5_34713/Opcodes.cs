@@ -776,7 +776,6 @@ namespace WowPacketParser.Enums.Version.v1_13_5_34713
             {Opcode.SMSG_AUTH_RESPONSE, 0x256C},
             {Opcode.SMSG_AVAILABLE_HOTFIXES, 0x25A1},
             {Opcode.SMSG_AZERITE_EMPOWERED_ITEM_RESPEC_OPEN, 0x2837},
-            {Opcode.SMSG_BAN_REASON, 0x26B7},
             {Opcode.SMSG_BARBER_SHOP_RESULT, 0x26F0},
             {Opcode.SMSG_BATTLEFIELD_LIST, 0x2594},
             {Opcode.SMSG_BATTLEFIELD_PORT_DENIED, 0x259A},
@@ -965,6 +964,7 @@ namespace WowPacketParser.Enums.Version.v1_13_5_34713
             {Opcode.SMSG_DELETE_CHAR, 0x2747}, // ok
             {Opcode.SMSG_DESTROY_ARENA_UNIT, 0x2786},
             {Opcode.SMSG_DIFFERENT_INSTANCE_FROM_PARTY, 0x258A},
+            {Opcode.SMSG_DISCONNECT_REASON, 0x282F},
             {Opcode.SMSG_DISENCHANT_CREDIT, 0x25BC},
             {Opcode.SMSG_DISMOUNT, 0x26E2},
             {Opcode.SMSG_DISMOUNT_RESULT, 0x257B},
@@ -1183,7 +1183,7 @@ namespace WowPacketParser.Enums.Version.v1_13_5_34713
             {Opcode.SMSG_ITEM_PURCHASE_REFUND_RESULT, 0x25AF},
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0x2638},
             {Opcode.SMSG_ITEM_TIME_UPDATE, 0x279E}, // ok
-            {Opcode.SMSG_KICK_REASON, 0x282F},
+            {Opcode.SMSG_KICK_REASON, 0x26B7},
             {Opcode.SMSG_LEARNED_SPELLS, 0x2C4D},
             {Opcode.SMSG_LEARN_PVP_TALENTS_FAILED, 0x25EA},
             {Opcode.SMSG_LEARN_TALENTS_FAILED, 0x25E9},
