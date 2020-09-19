@@ -290,6 +290,7 @@ namespace WowPacketParser.Enums.Version.V8_1_5_29620
             {Opcode.CMSG_GET_REMAINING_GAME_TIME, 0x36F2},
             {Opcode.CMSG_GET_TROPHY_LIST, 0x32FF},
             {Opcode.CMSG_GET_UNDELETE_CHARACTER_COOLDOWN_STATUS, 0x36E5},
+            {Opcode.CMSG_GET_VAS_TRANSFER_TARGET_REALM_LIST, 0x36F8},
             {Opcode.CMSG_GM_TICKET_ACKNOWLEDGE_SURVEY, 0x3697},
             {Opcode.CMSG_GM_TICKET_GET_CASE_STATUS, 0x3696},
             {Opcode.CMSG_GM_TICKET_GET_SYSTEM_STATUS, 0x3695},
