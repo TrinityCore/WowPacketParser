@@ -69,7 +69,7 @@ namespace WowPacketParser.Enums.Version.V6_2_4_21315
             {Opcode.CMSG_BATTLE_PAY_DISTRIBUTION_ASSIGN_TO_TARGET, 0x3651},
             {Opcode.CMSG_BATTLE_PAY_GET_PRODUCT_LIST, 0x364C},
             {Opcode.CMSG_BATTLE_PAY_GET_PURCHASE_LIST, 0x364D},
-            {Opcode.CMSG_BATTLE_PAY_START_PURCHASE, 0x3680},
+            {Opcode.CMSG_BATTLE_PAY_START_PURCHASE, 0x3656},
             {Opcode.CMSG_BATTLE_PAY_START_VAS_PURCHASE, 0x3681},
             {Opcode.CMSG_BATTLE_PET_DELETE_PET, 0x35AD},
             {Opcode.CMSG_BATTLE_PET_DELETE_PET_CHEAT, 0x35AC},
