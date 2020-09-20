@@ -2467,6 +2467,7 @@ namespace WowPacketParser.Enums
         SMSG_PVP_MATCH_END,
         SMSG_PVP_MATCH_INIT,
         SMSG_PVP_MATCH_START,
+        SMSG_PVP_MATCH_STATISTICS,
         SMSG_PVP_OPTIONS_ENABLED,
         SMSG_PVP_QUEUE_STATS,
         SMSG_PVP_SEASON,

@@ -70,6 +70,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         }
 
         [Parser(Opcode.SMSG_PVP_LOG_DATA)]
+        [Parser(Opcode.SMSG_PVP_MATCH_STATISTICS)]
         public static void HandlePvPLogData(Packet packet)
         {
             var hasRatings = packet.ReadBit("HasRatings");
