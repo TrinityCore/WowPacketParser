@@ -808,10 +808,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_DETAILS, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestgiverDetails(Packet packet)
         {
-            packet.ReadGuid("GUID1");
+            packet.ReadGuid("QuestGiverGUID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
-                packet.ReadGuid("Unk NPC GUID");
+                packet.ReadGuid("InformUnit");
 
             packet.ReadUInt32<QuestId>("Quest ID");
             packet.ReadCString("Title");
@@ -881,8 +881,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_DETAILS, ClientVersionBuild.V5_1_0_16309, ClientVersionBuild.V5_1_0a_16357)]
         public static void HandleQuestgiverDetails510(Packet packet)
         {
-            packet.ReadGuid("GUID");
-            packet.ReadGuid("Unk NPC GUID");
+            packet.ReadGuid("QuestGiverGUID");
+            packet.ReadGuid("InformUnit");
             packet.ReadUInt32<QuestId>("Quest ID");
             packet.ReadInt32("Unk Int32");
             packet.ReadCString("Title");
