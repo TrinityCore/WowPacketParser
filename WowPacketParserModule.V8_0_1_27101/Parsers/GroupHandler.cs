@@ -46,7 +46,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_5_43903))
                     packet.ReadByte("FactionGroup", i);
 
-                packet.ReadWoWString("Name", playerNameLength, i);
+                packet.ReadWoWString_Sanitize("Name", playerNameLength, i);
                 packet.ReadDynamicString("VoiceStateID", voiceStateLength, i);
             }
 

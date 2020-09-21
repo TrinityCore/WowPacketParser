@@ -188,12 +188,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("Fled");
 
             // Order guessed
-            packet.ReadUInt32("BeatenVirtualRealmAddress");
-            packet.ReadUInt32("WinnerVirtualRealmAddress");
+            packet.ReadUInt32_Sanitize("BeatenVirtualRealmAddress");
+            packet.ReadUInt32_Sanitize("WinnerVirtualRealmAddress");
 
             // Order guessed
-            packet.ReadWoWString("BeatenName", bits80);
-            packet.ReadWoWString("WinnerName", bits24);
+            packet.ReadWoWString_Sanitize("BeatenName", bits80);
+            packet.ReadWoWString_Sanitize("WinnerName", bits24);
         }
 
         [Parser(Opcode.SMSG_CAN_DUEL_RESULT)]

@@ -13,9 +13,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var bits273 = packet.ReadBits(9);
             var bits338 = packet.ReadBits(10);
 
-            packet.ReadWoWString("Name", bits16);
-            packet.ReadWoWString("Email", bits273);
-            packet.ReadWoWString("Text", bits338);
+            packet.ReadWoWString_Sanitize("Name", bits16);
+            packet.ReadWoWString_Sanitize("Email", bits273);
+            packet.ReadWoWString_Sanitize("Text", bits338);
         }
 
         [Parser(Opcode.SMSG_RECRUIT_A_FRIEND_RESPONSE)]

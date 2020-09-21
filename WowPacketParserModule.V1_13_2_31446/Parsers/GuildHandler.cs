@@ -15,7 +15,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
             if (hasData)
             {
                 packet.ReadPackedGuid128("GuildGUID");
-                packet.ReadInt32("VirtualRealmAddress");
+                packet.ReadInt32_Sanitize("VirtualRealmAddress");
                 var rankCount = packet.ReadUInt32("RankCount");
                 packet.ReadInt32("EmblemColor");
                 packet.ReadInt32("EmblemStyle");

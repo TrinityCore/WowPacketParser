@@ -24,7 +24,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 hasRafAcceptanceID = packet.ReadBit();
 
             if (hasRafAcceptanceID)
-                packet.ReadUInt64("RafAcceptanceID");
+                packet.ReadUInt64_Sanitize("RafAcceptanceID");
 
             if (Settings.UseDBC)
                 if (DBC.Criteria.ContainsKey(criteriaId))

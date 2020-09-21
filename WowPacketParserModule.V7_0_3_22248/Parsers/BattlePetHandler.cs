@@ -32,7 +32,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var hasOwnerInfo = packet.ReadBit("HasOwnerInfo", idx);
             packet.ReadBit("NoRename", idx);
 
-            packet.ReadWoWString("CustomName", customNameLength, idx);
+            packet.ReadWoWString_Sanitize("CustomName", customNameLength, idx);
 
             if (hasOwnerInfo)
                 V6_0_2_19033.Parsers.BattlePetHandler.ReadClientBattlePetOwnerInfo(packet, "OwnerInfo", idx);
@@ -105,10 +105,10 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     declinedNamesLen[i] = packet.ReadBits(7);
 
                 for (int i = 0; i < 5; i++)
-                    packet.ReadWoWString("DeclinedNames", declinedNamesLen[i]);
+                    packet.ReadWoWString_Sanitize("DeclinedNames", declinedNamesLen[i]);
             }
 
-            packet.ReadWoWString("Name", nameLen);
+            packet.ReadWoWString_Sanitize("Name", nameLen);
         }
 
         [Parser(Opcode.CMSG_BATTLE_PET_CLEAR_FANFARE)]

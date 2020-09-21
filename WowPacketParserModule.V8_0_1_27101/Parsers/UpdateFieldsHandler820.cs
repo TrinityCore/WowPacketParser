@@ -1660,7 +1660,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_2_0_30898
             }
             data.PlayerTitle = packet.ReadInt32("PlayerTitle", indexes);
             data.FakeInebriation = packet.ReadInt32("FakeInebriation", indexes);
-            data.VirtualPlayerRealm = packet.ReadUInt32("VirtualPlayerRealm", indexes);
+            data.VirtualPlayerRealm = packet.ReadUInt32_Sanitize("VirtualPlayerRealm", indexes);
             data.CurrentSpecID = packet.ReadUInt32("CurrentSpecID", indexes);
             data.TaxiMountAnimKitID = packet.ReadInt32("TaxiMountAnimKitID", indexes);
             for (var i = 0; i < 4; ++i)
@@ -1801,7 +1801,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_2_0_30898
                 }
                 if (changesMask[24])
                 {
-                    data.VirtualPlayerRealm = packet.ReadUInt32("VirtualPlayerRealm", indexes);
+                    data.VirtualPlayerRealm = packet.ReadUInt32_Sanitize("VirtualPlayerRealm", indexes);
                 }
                 if (changesMask[25])
                 {

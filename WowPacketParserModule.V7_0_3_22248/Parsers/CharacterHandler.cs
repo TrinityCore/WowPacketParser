@@ -65,7 +65,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("BoostInProgress", idx);
             packet.ReadBits("UnkWod61x", 5, idx);
 
-            packet.ReadWoWString("Character Name", nameLength, idx);
+            packet.ReadWoWString_Sanitize("Character Name", nameLength, idx);
 
             if (firstLogin)
             {
@@ -147,7 +147,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (var i = 0; i < 3; i++)
                 packet.ReadByte("CustomDisplay", i);
 
-            packet.ReadWoWString("Name", nameLen);
+            packet.ReadWoWString_Sanitize("Name", nameLen);
 
             if (hasTemplateSet)
                 packet.ReadInt32("TemplateSetID");
@@ -305,7 +305,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             packet.ResetBitReader();
             var bits19 = packet.ReadBits(6);
-            packet.ReadWoWString("CharName", bits19);
+            packet.ReadWoWString_Sanitize("CharName", bits19);
         }
 
 
@@ -326,7 +326,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadByte("FaceID");
             for (uint i = 0; i < 3; ++i)
                 packet.ReadByte("CustomDisplay", i);
-            packet.ReadWoWString("Name", bits20);
+            packet.ReadWoWString_Sanitize("Name", bits20);
         }
 
         [Parser(Opcode.SMSG_CHAR_FACTION_CHANGE_RESULT)]
@@ -353,7 +353,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
                 for (uint i = 0; i < 3; ++i)
                     packet.ReadByte("CustomDisplay", i);
-                packet.ReadWoWString("Name", bits55);
+                packet.ReadWoWString_Sanitize("Name", bits55);
             }
         }
 
@@ -372,7 +372,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             packet.ResetBitReader();
             var bits55 = packet.ReadBits(6);
-            packet.ReadWoWString("Name", bits55);
+            packet.ReadWoWString_Sanitize("Name", bits55);
         }
     }
 }

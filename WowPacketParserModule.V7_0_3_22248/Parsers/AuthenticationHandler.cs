@@ -14,7 +14,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadByte("BuildType");
             packet.ReadUInt32("RegionID");
             packet.ReadUInt32("BattlegroupID");
-            packet.ReadUInt32("RealmID");
+            packet.ReadUInt32_Sanitize("RealmID");
             packet.ReadBytes("LocalChallenge", 16);
             packet.ReadBytes("Digest", 24);
             packet.ReadBit("UseIPv6");
@@ -32,7 +32,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var queued = packet.ReadBit("Queued");
             if (ok)
             {
-                packet.ReadUInt32("VirtualRealmAddress");
+                packet.ReadUInt32_Sanitize("VirtualRealmAddress");
                 var realms = packet.ReadUInt32();
                 packet.ReadUInt32("TimeRested");
                 packet.ReadByte("ActiveExpansionLevel");
@@ -87,14 +87,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
                 for (var i = 0; i < realms; ++i)
                 {
-                    packet.ReadUInt32("RealmAddress", "VirtualRealms", i);
+                    packet.ReadUInt32_Sanitize("RealmAddress", "VirtualRealms", i);
                     packet.ResetBitReader();
                     packet.ReadBit("IsLocal", "VirtualRealms", i);
                     packet.ReadBit("IsInternalRealm", "VirtualRealms", i);
                     var nameLen1 = packet.ReadBits(8);
                     var nameLen2 = packet.ReadBits(8);
-                    packet.ReadWoWString("RealmNameActual", nameLen1, "VirtualRealms", i);
-                    packet.ReadWoWString("RealmNameNormalized", nameLen2, "VirtualRealms", i);
+                    packet.ReadWoWString_Sanitize("RealmNameActual", nameLen1, "VirtualRealms", i);
+                    packet.ReadWoWString_Sanitize("RealmNameNormalized", nameLen2, "VirtualRealms", i);
                 }
 
                 for (var i = 0; i < templates; ++i)

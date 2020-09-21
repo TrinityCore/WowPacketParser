@@ -33,6 +33,7 @@ namespace WowPacketParser.Misc
             FileName = fileName;
             Status = ParsedStatus.None;
             WriteToFile = true;
+            BinaryWriter = new BinaryWriter(BaseStream);
 
             if (number == 0)
                 _firstPacketTime = Time;
@@ -54,6 +55,20 @@ namespace WowPacketParser.Misc
         public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, string fileName)
             : this(input, opcode, time, direction, number, null, fileName)
         {
+            Opcode = opcode;
+            Time = time;
+            Direction = direction;
+            Number = number;
+            Writer = null;
+            FileName = fileName;
+            Status = ParsedStatus.None;
+            WriteToFile = true;
+            BinaryWriter = new BinaryWriter(BaseStream);
+
+            if (number == 0)
+                _firstPacketTime = Time;
+
+            TimeSpan = Time - _firstPacketTime;
         }
 
         public int Opcode { get; set; } // setter can't be private because it's used in multiple_packets
@@ -67,6 +82,8 @@ namespace WowPacketParser.Misc
         public bool WriteToFile { get; private set; }
         public int ConnectionIndex { get; set; }
         public IPEndPoint EndPoint { get; set; }
+        public byte[] Header { get; set; }
+        public BinaryWriter BinaryWriter { get; }
 
         public PacketHolder Holder { get; set; }
 

@@ -83,7 +83,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 }
             }
 
-            packet.ReadWoWString("Name", nameLength, idx);
+            packet.ReadWoWString_Sanitize("Name", nameLength, idx);
         }
 
         public static void ReadTalentGroupInfo(Packet packet, params object[] idx)

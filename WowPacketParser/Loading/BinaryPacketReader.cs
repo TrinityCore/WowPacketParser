@@ -30,11 +30,14 @@ namespace WowPacketParser.Loading
         private int _snifferId;
         private short _snifferVersion;
 
+        private byte[] FileHeader;
+
         public BinaryPacketReader(SniffType type, string fileName, Encoding encoding)
         {
             _sniffType = type;
             _reader = new BinaryReader(new FileStream(@fileName, FileMode.Open, FileAccess.Read, FileShare.Read), encoding);
             ReadHeader();
+            StoreFileHeader();
         }
 
         void ReadHeader()
@@ -125,6 +128,16 @@ namespace WowPacketParser.Loading
             }
         }
 
+        void StoreFileHeader()
+        {
+            // all data till this position belong to the sniffFile header
+            // store the end position of the header
+            // then reset it to 0 and simply store the whole header again as byte[]
+            var currentPosition = _reader.BaseStream.Position;
+            _reader.BaseStream.Position = 0;
+            FileHeader = _reader.ReadBytes((int)currentPosition);
+        }
+
         static void SetBuild(uint build)
         {
             ClientVersion.SetVersion((ClientVersionBuild)build);
@@ -149,7 +162,12 @@ namespace WowPacketParser.Loading
             byte[] data;
             StringBuilder writer = null;
             int cIndex = 0;
+            byte[] header;
             IPEndPoint endPoint = null; // Only used in PKT3.1 by TC's PacketLogger
+
+            // Note: PacketHeader ends before data
+            var packetHeaderStartPosition = _reader.BaseStream.Position;
+            long packetHeaderEndPosition = 0;
 
             if (_sniffType == SniffType.Pkt)
             {
@@ -166,11 +184,13 @@ namespace WowPacketParser.Loading
                         if (direction == Direction.ServerToClient)
                         {
                             opcode = _reader.ReadInt16();
+                            packetHeaderEndPosition = _reader.BaseStream.Position;
                             data = _reader.ReadBytes(length - 2);
                         }
                         else
                         {
                             opcode = _reader.ReadInt32();
+                            packetHeaderEndPosition = _reader.BaseStream.Position;
                             data = _reader.ReadBytes(length - 4);
                         }
 
@@ -256,6 +276,7 @@ namespace WowPacketParser.Loading
                             _reader.ReadBytes(additionalSize);
 
                         opcode = _reader.ReadInt32();
+                        packetHeaderEndPosition = _reader.BaseStream.Position;
                         data = _reader.ReadBytes(length - 4);
                         break;
                     }
@@ -265,6 +286,7 @@ namespace WowPacketParser.Loading
                         length = _reader.ReadInt32();
                         direction = (Direction)_reader.ReadByte();
                         time = Utilities.GetDateTimeFromUnixTime(_reader.ReadInt64());
+                        packetHeaderEndPosition = _reader.BaseStream.Position;
                         data = _reader.ReadBytes(length);
                         break;
                     }
@@ -276,6 +298,7 @@ namespace WowPacketParser.Loading
                 length = _reader.ReadInt32();
                 time = Utilities.GetDateTimeFromUnixTime(_reader.ReadInt32());
                 direction = (Direction)_reader.ReadByte();
+                packetHeaderEndPosition = _reader.BaseStream.Position;
                 data = _reader.ReadBytes(length);
             }
 
@@ -286,6 +309,15 @@ namespace WowPacketParser.Loading
                     ClientVersion.SetVersion(time);
             }
 
+            // store the end position of the packet so we can return here
+            var packetEndPosition = _reader.BaseStream.Position;
+
+            // go back to packetHeaderStartPosition
+            _reader.BaseStream.Position = packetHeaderStartPosition;
+            // store all bytes till packetHeaderEndPosition, because its the header
+            header = _reader.ReadBytes((int)(packetHeaderEndPosition - packetHeaderStartPosition));
+            // go back to end of packet
+            _reader.BaseStream.Position = packetEndPosition;
             // ignore opcodes that were not "decrypted" (usually because of
             // a missing session key) (only applicable to 335 or earlier)
             if (opcode >= 1312 && (ClientVersion.Build <= ClientVersionBuild.V3_3_5a_12340 && ClientVersion.Build != ClientVersionBuild.Zero))
@@ -294,7 +326,8 @@ namespace WowPacketParser.Loading
             return new Packet(data, opcode, time, direction, number, writer, Path.GetFileName(fileName))
             {
                 ConnectionIndex = cIndex,
-                EndPoint = endPoint
+                EndPoint = endPoint,
+                Header = header
             };
         }
 
@@ -306,6 +339,11 @@ namespace WowPacketParser.Loading
         public long GetCurrentSize()
         {
             return _reader?.BaseStream.Position ?? 0;
+        }
+
+        public byte[] GetFileHeader()
+        {
+            return FileHeader;
         }
 
         public void Dispose()

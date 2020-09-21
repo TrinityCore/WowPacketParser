@@ -66,8 +66,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void ReadClientBattlePetOwnerInfo(Packet packet, params object[] idx)
         {
             packet.ReadPackedGuid128("Guid", idx);
-            packet.ReadUInt32("PlayerVirtualRealm", idx);
-            packet.ReadUInt32("PlayerNativeRealm", idx);
+            packet.ReadUInt32_Sanitize("PlayerVirtualRealm", idx);
+            packet.ReadUInt32_Sanitize("PlayerNativeRealm", idx);
         }
 
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL)]

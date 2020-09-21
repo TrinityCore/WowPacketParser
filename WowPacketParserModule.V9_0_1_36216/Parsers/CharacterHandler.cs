@@ -19,7 +19,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         {
             var playerGuid = packet.ReadPackedGuid128("Guid", idx);
 
-            packet.ReadUInt64("GuildClubMemberID", idx);
+            packet.ReadUInt64_Sanitize("GuildClubMemberID", idx);
 
             packet.ReadByte("ListPosition", idx);
             var race = packet.ReadByteE<Race>("RaceID", idx);
@@ -87,7 +87,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 if (mailSenderLengths[j] > 1)
                     packet.ReadDynamicString("MailSender", mailSenderLengths[j], idx);
 
-            var name = packet.ReadWoWString("Character Name", nameLength, idx);
+            var name = packet.ReadWoWString_Sanitize("Character Name", nameLength, idx);
 
             if (firstLogin)
             {
@@ -113,7 +113,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadByteE<Race>("Race", idx);
             packet.ReadByteE<Class>("ClassID", idx);
             var customizationCount = packet.ReadUInt32();
-            packet.ReadWoWString("Name", nameLen, idx);
+            packet.ReadWoWString_Sanitize("Name", nameLen, idx);
 
             for (var j = 0u; j < customizationCount; ++j)
                 ReadChrCustomizationChoice(packet, idx, "Customizations", j);
@@ -237,7 +237,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             var customizationCount = packet.ReadUInt32();
 
-            packet.ReadWoWString("Name", nameLen);
+            packet.ReadWoWString_Sanitize("Name", nameLen);
 
             if (hasTemplateSet)
                 packet.ReadInt32("TemplateSetID");
@@ -257,7 +257,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         public static void HandleCheckCharacterNameAvailability(Packet packet)
         {
             packet.ReadUInt32("SequenceIndex");
-            packet.ReadWoWString("Character Name", packet.ReadBits(6));
+            packet.ReadWoWString_Sanitize("Character Name", packet.ReadBits(6));
         }
     }
 }

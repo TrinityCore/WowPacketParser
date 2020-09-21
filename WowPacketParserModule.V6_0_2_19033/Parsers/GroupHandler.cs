@@ -366,7 +366,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("InviterGuid");
             packet.ReadPackedGuid128("InviterBNetAccountID");
 
-            packet.ReadInt32("InviterCfgRealmID");
+            packet.ReadInt32_Sanitize("InviterCfgRealmID");
             packet.ReadInt16("Unk1");
 
             packet.ResetBitReader();
@@ -376,14 +376,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var bits2 = packet.ReadBits(8);
             var bits258 = packet.ReadBits(8);
-            packet.ReadWoWString("InviterRealmNameActual", bits2);
-            packet.ReadWoWString("InviterRealmNameNormalized", bits258);
+            packet.ReadWoWString_Sanitize("InviterRealmNameActual", bits2);
+            packet.ReadWoWString_Sanitize("InviterRealmNameNormalized", bits258);
 
             packet.ReadInt32("ProposedRoles");
             var int32 = packet.ReadInt32("LfgSlotsCount");
             packet.ReadInt32("LfgCompletedMask");
 
-            packet.ReadWoWString("InviterName", len);
+            packet.ReadWoWString_Sanitize("InviterName", len);
 
             for (int i = 0; i < int32; i++)
                 packet.ReadInt32("LfgSlots", i);
@@ -537,15 +537,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("PartyIndex");
             packet.ReadInt32("ProposedRoles");
             packet.ReadPackedGuid128("TargetGuid");
-            packet.ReadInt32("TargetCfgRealmID");
+            packet.ReadInt32_Sanitize("TargetCfgRealmID");
 
             packet.ResetBitReader();
 
             var lenTargetName = packet.ReadBits(9);
             var lenTargetRealm = packet.ReadBits(9);
 
-            packet.ReadWoWString("TargetName", lenTargetName);
-            packet.ReadWoWString("TargetRealm", lenTargetRealm);
+            packet.ReadWoWString_Sanitize("TargetName", lenTargetName);
+            packet.ReadWoWString_Sanitize("TargetRealm", lenTargetRealm);
         }
 
         [Parser(Opcode.CMSG_CONVERT_RAID)]

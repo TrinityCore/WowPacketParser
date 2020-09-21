@@ -26,19 +26,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var int24 = packet.ReadInt32("CasesCount");
             for (int i = 0; i < int24; i++)
             {
-                packet.ReadInt32("CaseID", i);
+                packet.ReadInt32_Sanitize("CaseID", i);
                 packet.ReadInt32("CaseOpened", i);
                 packet.ReadInt32("CaseStatus", i);
-                packet.ReadInt16("CfgRealmID", i);
-                packet.ReadInt64("CharacterID", i);
+                packet.ReadInt16_Sanitize("CfgRealmID", i);
+                packet.ReadInt64_Sanitize("CharacterID", i);
                 packet.ReadInt32("WaitTimeOverrideMinutes", i);
 
                 packet.ResetBitReader();
                 var bits12 = packet.ReadBits(11);
                 var bits262 = packet.ReadBits(10);
 
-                packet.ReadWoWString("Url", bits12, i);
-                packet.ReadWoWString("WaitTimeOverrideMessage", bits262, i);
+                packet.ReadWoWString_Sanitize("Url", bits12, i);
+                packet.ReadWoWString_Sanitize("WaitTimeOverrideMessage", bits262, i);
             }
         }
 
@@ -58,7 +58,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             // ClientGMTicketInfo
             if (hasInfo)
             {
-                packet.ReadInt32("TicketID");
+                packet.ReadInt32_Sanitize("TicketID");
                 packet.ReadByte("Category");
                 packet.ReadTime("TicketOpenTime");
                 packet.ReadTime("OldestTicketTime");
@@ -72,27 +72,27 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 var bits1 = packet.ReadBits(11);
                 var bits2022 = packet.ReadBits(10);
 
-                packet.ReadWoWString("TicketDescription", bits1);
-                packet.ReadWoWString("WaitTimeOverrideMessage", bits2022);
+                packet.ReadWoWString_Sanitize("TicketDescription", bits1);
+                packet.ReadWoWString_Sanitize("WaitTimeOverrideMessage", bits2022);
             }
         }
 
         public static void ReadComplaintOffender(Packet packet, params object[] indexes)
         {
             packet.ReadPackedGuid128("PlayerGuid", indexes);
-            packet.ReadInt32("RealmAddress", indexes);
+            packet.ReadInt32_Sanitize("RealmAddress", indexes);
             packet.ReadInt32("TimeSinceOffence", indexes);
         }
 
         public static void ReadComplaintChat(Packet packet, params object[] indexes)
         {
-            packet.ReadInt32("Command");
-            packet.ReadInt32("ChannelID");
+            packet.ReadInt32_Sanitize("Command");
+            packet.ReadInt32_Sanitize("ChannelID");
 
             packet.ResetBitReader();
 
             var len = packet.ReadBits(12);
-            packet.ReadWoWString("MessageLog", len);
+            packet.ReadWoWString_Sanitize("MessageLog", len);
         }
 
         [Parser(Opcode.CMSG_COMPLAINT)]
@@ -105,15 +105,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             switch (result)
             {
                 case 0: // Mail
-                    packet.ReadInt32("MailID");
+                    packet.ReadInt32_Sanitize("MailID");
                     break;
                 case 1: // Chat
                     ReadComplaintChat(packet, "Chat");
                     break;
                 case 2: // Calendar
                     // Order guessed
-                    packet.ReadInt64("EventGuid");
-                    packet.ReadInt64("InviteGuid");
+                    packet.ReadInt64_Sanitize("EventGuid");
+                    packet.ReadInt64_Sanitize("InviteGuid");
                     break;
             }
         }
@@ -121,7 +121,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_GM_TICKET_ACKNOWLEDGE_SURVEY)]
         public static void HandleGMTicketAcknowledgeSurvey(Packet packet)
         {
-            packet.ReadInt32("CaseID");
+            packet.ReadInt32_Sanitize("CaseID");
         }
 
         [Parser(Opcode.CMSG_GM_TICKET_CREATE)]
@@ -133,7 +133,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var descriptionLength = packet.ReadBits("DescriptionLength", 11);
             packet.ResetBitReader();
-            packet.ReadWoWString("Description", descriptionLength);
+            packet.ReadWoWString_Sanitize("Description", descriptionLength);
 
             packet.ReadBit("NeedResponse");
             packet.ReadBit("NeedMoreHelp");
@@ -150,7 +150,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 var decompCount = packet.ReadInt32();
                 var pkt = packet.Inflate(decompCount);
-                pkt.ReadCString("Text");
+                pkt.ReadCString_Sanitize("Text");
                 pkt.ClosePacket(false);
             }
         }
@@ -161,25 +161,25 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var length = packet.ReadBits("DescriptionLength", 11);
             packet.ResetBitReader();
 
-            packet.ReadWoWString("Description", length);
+            packet.ReadWoWString_Sanitize("Description", length);
         }
 
         public static void ReadClientGMSurveyQuestion(Packet packet, params object[] idx)
         {
-            packet.ReadInt32("QuestionID", idx);
+            packet.ReadInt32_Sanitize("QuestionID", idx);
             packet.ReadByte("Answer", idx);
 
             packet.ResetBitReader();
             var length = packet.ReadBits("AnswerCommentLength", 11, idx);
             packet.ResetBitReader();
 
-            packet.ReadWoWString("AnswerComment", length, idx);
+            packet.ReadWoWString_Sanitize("AnswerComment", length, idx);
         }
 
         [Parser(Opcode.CMSG_GM_SURVEY_SUBMIT)]
         public static void HandleGMSurveySubmit(Packet packet)
         {
-            packet.ReadInt32("SurveyID");
+            packet.ReadInt32_Sanitize("SurveyID");
 
             var questionCount = packet.ReadBits("SurveyQuestionCount", 4);
             var commentLenght = packet.ReadBits("CommentLength", 11);
@@ -189,7 +189,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             for (var i = 0; i < questionCount; ++i)
                 ReadClientGMSurveyQuestion(packet, "SurveyQuestion", i);
 
-            packet.ReadWoWString("Comment", commentLenght);
+            packet.ReadWoWString_Sanitize("Comment", commentLenght);
         }
 
         public static void ReadCliSupportTicketHeader(Packet packet, params object[] idx)
@@ -207,7 +207,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var noteLength = packet.ReadBits("NoteLength", 10);
             packet.ResetBitReader();
-            packet.ReadWoWString("Note", noteLength);
+            packet.ReadWoWString_Sanitize("Note", noteLength);
         }
 
         public static void ReadCliSupportTicketChatLine(Packet packet, params object[] idx)
@@ -216,7 +216,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 var textLength = packet.ReadBits("TextLength", 12, idx);
                 packet.ResetBitReader();
-                packet.ReadWoWString("Text", textLength, idx);
+                packet.ReadWoWString_Sanitize("Text", textLength, idx);
         }
 
         public static void ReadCliSupportTicketChatLog(Packet packet, params object[] idx)
@@ -234,21 +234,21 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         public static void ReadCliSupportTicketMailInfo(Packet packet, params object[] idx)
         {
-            packet.ReadInt32("MailID", idx);
+            packet.ReadInt32_Sanitize("MailID", idx);
 
             var bodyLength = packet.ReadBits("MailBodyLength", 13, idx);
             var subjectLength = packet.ReadBits("MailSubjectLength", 9, idx);
 
             packet.ResetBitReader();
 
-            packet.ReadWoWString("MailBody", bodyLength, idx);
-            packet.ReadWoWString("MailSubject", subjectLength, idx);
+            packet.ReadWoWString_Sanitize("MailBody", bodyLength, idx);
+            packet.ReadWoWString_Sanitize("MailSubject", subjectLength, idx);
         }
 
         public static void ReadCliSupportTicketCalendarEventInfo(Packet packet, params object[] idx)
         {
-            packet.ReadUInt64("EventID", idx); // order not confirmed
-            packet.ReadUInt64("InviteID", idx); // order not confirmed
+            packet.ReadUInt64_Sanitize("EventID", idx); // order not confirmed
+            packet.ReadUInt64_Sanitize("InviteID", idx); // order not confirmed
 
             var eventTitleLength = packet.ReadBits("EventTitleLength", 8, idx);
 
@@ -265,7 +265,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
 
-            packet.ReadWoWString("PetName", petNameLength, idx);
+            packet.ReadWoWString_Sanitize("PetName", petNameLength, idx);
         }
 
         public static void ReadCliSupportTicketGuildInfo(Packet packet, params object[] idx)
@@ -276,7 +276,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
 
-            packet.ReadWoWString("GuildName", guildNameLength, idx);
+            packet.ReadWoWString_Sanitize("GuildName", guildNameLength, idx);
         }
 
         public static void ReadCliSupportTicketLFGListSearchResult(Packet packet, params object[] idx)
@@ -293,9 +293,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
 
-            packet.ReadWoWString("Title", titleLength, idx);
-            packet.ReadWoWString("Description", descriptionLength, idx);
-            packet.ReadWoWString("VoiceChat", voiceChatLength, idx);
+            packet.ReadWoWString_Sanitize("Title", titleLength, idx);
+            packet.ReadWoWString_Sanitize("Description", descriptionLength, idx);
+            packet.ReadWoWString_Sanitize("VoiceChat", voiceChatLength, idx);
         }
 
         public static void ReadCliSupportTicketLFGListApplicant(Packet packet, params object[] idx)
@@ -304,7 +304,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             var length = packet.ReadBits(9);
             packet.ResetBitReader();
-            packet.ReadWoWString("Comment", length, idx);
+            packet.ReadWoWString_Sanitize("Comment", length, idx);
         }
 
         [Parser(Opcode.CMSG_SUPPORT_TICKET_SUBMIT_COMPLAINT)]
@@ -379,14 +379,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             // TODO: confirm order
 
-            packet.ReadUInt32("TicketID");
-            packet.ReadUInt32("ResponseID");
+            packet.ReadUInt32_Sanitize("TicketID");
+            packet.ReadUInt32_Sanitize("ResponseID");
 
             var descriptionLength = packet.ReadBits(11);
             var responseTextLength = packet.ReadBits(14);
 
-            packet.ReadWoWString("Description", descriptionLength);
-            packet.ReadWoWString("ResponseText", responseTextLength);
+            packet.ReadWoWString_Sanitize("Description", descriptionLength);
+            packet.ReadWoWString_Sanitize("ResponseText", responseTextLength);
         }
 
     }

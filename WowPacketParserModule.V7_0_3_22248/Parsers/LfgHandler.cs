@@ -51,7 +51,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_0_24920))
                 packet.ReadPackedGuid128("LastTouchedVoiceChat", idx);
 
-            packet.ReadUInt32("VirtualRealmAddress", idx);
+            packet.ReadUInt32_Sanitize("VirtualRealmAddress", idx);
 
             var bnetFriendCount = packet.ReadUInt32();
             var characterFriendCount = packet.ReadUInt32();
@@ -301,7 +301,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadPackedGuid128("Leader", idx);
 
             if (hasVirtualRealmAddress)
-                packet.ReadUInt32("VirtualRealmAddress", idx);
+                packet.ReadUInt32_Sanitize("VirtualRealmAddress", idx);
 
             if (hasCompletedEncountersMask)
                 packet.ReadUInt32("CompletedEncountersMask", idx);
@@ -343,7 +343,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 for (int j = 0; j < memberCount; j++)
                 {
                     packet.ReadPackedGuid128("Guid", i, j);
-                    packet.ReadUInt32("VirtualRealmAddress", i, j);
+                    packet.ReadUInt32_Sanitize("VirtualRealmAddress", i, j);
                     packet.ReadSingle("ItemLevel", i, j);
                     packet.ReadUInt32("Level", i, j);
                     packet.ReadInt32("HonorLevel", i, j);

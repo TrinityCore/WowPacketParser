@@ -143,8 +143,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             packet.ReadUInt32("ScrollOfResurrectionRequestsRemaining");
             packet.ReadUInt32("ScrollOfResurrectionMaxRequestsPerDay");
-            packet.ReadUInt32("CfgRealmID");
-            packet.ReadInt32("CfgRealmRecID");
+            packet.ReadUInt32_Sanitize("CfgRealmID");
+            packet.ReadInt32_Sanitize("CfgRealmRecID");
             packet.ReadUInt32("TwitterPostThrottleLimit");
             packet.ReadUInt32("TwitterPostThrottleCooldown");
             packet.ReadUInt32("TokenPollTimeSeconds");
@@ -224,8 +224,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             packet.ReadUInt32("ScrollOfResurrectionRequestsRemaining");
             packet.ReadUInt32("ScrollOfResurrectionMaxRequestsPerDay");
-            packet.ReadUInt32("CfgRealmID");
-            packet.ReadInt32("CfgRealmRecID");
+            packet.ReadUInt32_Sanitize("CfgRealmID");
+            packet.ReadInt32_Sanitize("CfgRealmRecID");
             packet.ReadUInt32("TwitterPostThrottleLimit");
             packet.ReadUInt32("TwitterPostThrottleCooldown");
             packet.ReadUInt32("TokenPollTimeSeconds");

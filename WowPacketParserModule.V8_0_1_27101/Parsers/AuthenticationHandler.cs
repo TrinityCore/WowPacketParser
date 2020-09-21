@@ -12,13 +12,13 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadUInt64("DosResponse");
             packet.ReadUInt32("RegionID");
             packet.ReadUInt32("BattlegroupID");
-            packet.ReadUInt32("RealmID");
-            packet.ReadBytes("LocalChallenge", 16);
-            packet.ReadBytes("Digest", 24);
+            packet.ReadUInt32_Sanitize("RealmID");
+            packet.ReadBytes_Sanitize("LocalChallenge", 16);
+            packet.ReadBytes_Sanitize("Digest", 24);
             packet.ReadBit("UseIPv6");
 
             var realmJoinTicketSize = packet.ReadInt32();
-            packet.ReadBytes("RealmJoinTicket", realmJoinTicketSize);
+            packet.ReadBytes_Sanitize("RealmJoinTicket", realmJoinTicketSize);
         }
 
         [Parser(Opcode.SMSG_AUTH_RESPONSE)]
@@ -30,7 +30,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             var queued = packet.ReadBit("Queued");
             if (ok)
             {
-                packet.ReadUInt32("VirtualRealmAddress");
+                packet.ReadUInt32_Sanitize("VirtualRealmAddress");
                 var realms = packet.ReadUInt32();
                 packet.ReadUInt32("TimeRested");
                 packet.ReadByte("ActiveExpansionLevel");
@@ -96,7 +96,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
                 for (var i = 0; i < realms; ++i)
                 {
-                    packet.ReadUInt32("RealmAddress", "VirtualRealms", i);
+                    packet.ReadUInt32_Sanitize("RealmAddress", "VirtualRealms", i);
                     packet.ResetBitReader();
                     packet.ReadBit("IsLocal", "VirtualRealms", i);
                     packet.ReadBit("IsInternalRealm", "VirtualRealms", i);
@@ -108,8 +108,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
                     var nameLen1 = packet.ReadBits(bitsCount);
                     var nameLen2 = packet.ReadBits(bitsCount);
-                    packet.ReadWoWString("RealmNameActual", nameLen1, "VirtualRealms", i);
-                    packet.ReadWoWString("RealmNameNormalized", nameLen2, "VirtualRealms", i);
+                    packet.ReadWoWString_Sanitize("RealmNameActual", nameLen1, "VirtualRealms", i);
+                    packet.ReadWoWString_Sanitize("RealmNameNormalized", nameLen2, "VirtualRealms", i);
                 }
 
                 for (var i = 0; i < templates; ++i)

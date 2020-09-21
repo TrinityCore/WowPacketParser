@@ -63,6 +63,11 @@ namespace WowPacketParser.Loading
             return _count;
         }
 
+        public byte[] GetFileHeader()
+        {
+            return new byte[0];
+        }
+
         public void Dispose()
         {
             if (_reader != null)

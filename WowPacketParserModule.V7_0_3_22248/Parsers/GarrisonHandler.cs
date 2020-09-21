@@ -62,7 +62,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ResetBitReader();
 
             var len = packet.ReadBits(7);
-            packet.ReadWoWString("CustomName", len, indexes);
+            packet.ReadWoWString_Sanitize("CustomName", len, indexes);
         }
 
         public static void ReadGarrisonTalents(Packet packet, params object[] indexes)
@@ -497,10 +497,10 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.CMSG_GARRISON_RENAME_FOLLOWER)]
         public static void HandleGarrisonRenameFollower(Packet packet)
         {
-            packet.ReadUInt64("FollowerDbId");
+            packet.ReadUInt64_Sanitize("FollowerDbId");
             var followerNewNameLength = packet.ReadBits("FollowerNewNameLength", 7);
             packet.ResetBitReader();
-            packet.ReadWoWString("FollowerNewName", followerNewNameLength);
+            packet.ReadWoWString_Sanitize("FollowerNewName", followerNewNameLength);
         }
 
         [Parser(Opcode.CMSG_GARRISON_SET_RECRUITMENT_PREFERENCES)]

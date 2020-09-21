@@ -18,6 +18,7 @@
         Fusion,
         UniversalProto,
         UniversalProtoWithText,
-        UniversalProtoWithSeparateText
+        UniversalProtoWithSeparateText,
+        SanitizedPkt
     }
 }

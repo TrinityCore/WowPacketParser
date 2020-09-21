@@ -10,7 +10,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         {
             packet.ReadPackedGuid128("WowAccountGUID", idx);
             packet.ReadPackedGuid128("CharacterGUID", idx);
-            packet.ReadUInt32("VirtualRealmAddress", idx);
+            packet.ReadUInt32_Sanitize("VirtualRealmAddress", idx);
             packet.ReadByteE<Race>("Race" ,idx);
             packet.ReadByteE<Class>("Class", idx);
             packet.ReadByteE<Gender>("Gender", idx);
@@ -27,8 +27,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             uint characterNameLength = packet.ReadBits(6);
             uint realmNameLength = packet.ReadBits(9);
 
-            packet.ReadWoWString("CharacterName", characterNameLength, idx);
-            packet.ReadWoWString("RealmName", realmNameLength, idx);
+            packet.ReadWoWString_Sanitize("CharacterName", characterNameLength, idx);
+            packet.ReadWoWString_Sanitize("RealmName", realmNameLength, idx);
         }
 
         [Parser(Opcode.SMSG_GET_ACCOUNT_CHARACTER_LIST_RESULT)]
