@@ -289,8 +289,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32E<GarrisonFollowerType>("FollowerType"); // Indicates which type of missions
         }
 
-        [Parser(Opcode.SMSG_GARRISON_LANDING_PAGE_SHIPMENT_INFO)]
-        public static void HandleGarrisonLandingPageShipmentInfo(Packet packet)
+        [Parser(Opcode.SMSG_GET_LANDING_PAGE_SHIPMENTS_RESPONSE)]
+        public static void HandleGetLandingPageShipmentsResponse(Packet packet)
         {
             if(ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_0_23706))
                 packet.ReadUInt32("UnkUInt32");
@@ -321,7 +321,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 for (uint i = 0; i < count; i++)
                 {
                     packet.ReadUInt64("FollowerDBID", i);
-                    packet.ReadUInt32("Flags", i); 
+                    packet.ReadUInt32("Flags", i);
                 }
                 packet.ReadBit("Succeeded");
             }

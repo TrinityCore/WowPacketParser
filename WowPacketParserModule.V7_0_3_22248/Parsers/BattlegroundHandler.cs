@@ -224,8 +224,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadByteE<LfgRoleFlag>("Roles");
         }
 
-        [Parser(Opcode.SMSG_REQUEST_PVP_BRAWL_INFO_RESPONSE)]
-        public static void HandleRequestPVPBrawlInfoResponse(Packet packet)
+        [Parser(Opcode.SMSG_REQUEST_SCHEDULED_PVP_INFO_RESPONSE)]
+        public static void HandleRequestScheduledPVPInfoResponse(Packet packet)
         {
             packet.ReadInt32("TimeToBrawl");
             packet.ReadInt32("BattlegroundID");
@@ -256,8 +256,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadPackedGuid128("PlayerGuid");
         }
 
-        [Parser(Opcode.SMSG_ARENA_CROWD_CONTROL_SPELLS)]
-        public static void HandleArenaCrowdControlSpells(Packet packet)
+        [Parser(Opcode.SMSG_ARENA_CROWD_CONTROL_SPELL_RESULT)]
+        public static void HandleArenaCrowdControlSpellResult(Packet packet)
         {
             packet.ReadPackedGuid128("PlayerGuid");
             packet.ReadInt32("CrowdControlSpellID");

@@ -6,16 +6,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class TokenHandler
     {
-        [Parser(Opcode.CMSG_BUY_WOW_TOKEN_START)]
-        public static void HandleTokenBuyToken(Packet packet)
+        [Parser(Opcode.CMSG_CONSUMABLE_TOKEN_BUY)]
+        public static void HandleConsumableTokenBuy(Packet packet)
         {
             packet.ReadUInt32("UnkInt32");
             packet.ReadPackedGuid128("Buyer");
             packet.ReadUInt64("CurrentMarketPrice");
         }
 
-        [Parser(Opcode.CMSG_BUY_WOW_TOKEN_CONFIRM)]
-        public static void HandleTokenConfirmBuyToken(Packet packet)
+        [Parser(Opcode.CMSG_CONSUMABLE_TOKEN_BUY_AT_MARKET_PRICE)]
+        public static void HandleConsumableTokenBuyAtMarketPrice(Packet packet)
         {
             packet.ReadUInt32("UnkInt32");
             packet.ReadUInt32("PendingBuyConfirmations");
@@ -23,8 +23,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("Confirmed");
         }
 
-        [Parser(Opcode.CMSG_SELL_WOW_TOKEN_CONFIRM)]
-        public static void HandleTokenConfirmSellToken(Packet packet)
+        [Parser(Opcode.CMSG_AUCTIONABLE_TOKEN_SELL_AT_MARKET_PRICE)]
+        public static void HandleAuctionableTokenSellAtMarketPrice(Packet packet)
         {
             packet.ReadPackedGuid128("TokenGuid");
             packet.ReadUInt32("UnkInt32");
@@ -33,16 +33,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("Confirmed");
         }
 
-        [Parser(Opcode.CMSG_SELL_WOW_TOKEN_START)]
-        public static void HandleTokenSellToken(Packet packet)
+        [Parser(Opcode.CMSG_AUCTIONABLE_TOKEN_SELL)]
+        public static void HandleAuctionableTokenSell(Packet packet)
         {
             packet.ReadUInt64("UnkInt64");
             packet.ReadUInt64("CurrentMarketPrice");
             packet.ReadUInt32("UnkInt32");
         }
 
-        [Parser(Opcode.CMSG_REDEEM_WOW_TOKEN_CONFIRM)]
-        public static void HandleConirmRedeemToken(Packet packet)
+        [Parser(Opcode.CMSG_CONSUMABLE_TOKEN_REDEEM_CONFIRMATION)]
+        public static void HandleConsumableTokenRedeemConfirmation(Packet packet)
         {
             packet.ReadUInt32("UnkInt32");
             packet.ReadUInt64("Count");
@@ -51,23 +51,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("Confirm");
         }
 
-        [Parser(Opcode.CMSG_REDEEM_WOW_TOKEN_START)]
-        public static void HandleRedeemToken(Packet packet)
+        [Parser(Opcode.CMSG_CONSUMABLE_TOKEN_REDEEM)]
+        public static void HandleConsumableTokenRedeem(Packet packet)
         {
             packet.ReadUInt64("Count");
             packet.ReadUInt32("UnkInt32");
             packet.ReadUInt32("UnkInt32");
         }
 
-        [Parser(Opcode.CMSG_REQUEST_WOW_TOKEN_MARKET_PRICE)]
-        public static void HandleTokenUpdateMarketPrice(Packet packet)
+        [Parser(Opcode.CMSG_COMMERCE_TOKEN_GET_MARKET_PRICE)]
+        public static void HandleCommerceTokenGetMarketPrice(Packet packet)
         {
             packet.ReadUInt32("UnkInt");
         }
 
-        [Parser(Opcode.SMSG_WOW_TOKEN_MARKET_PRICE_RESPONSE)]
-        [Parser(Opcode.SMSG_REQUEST_WOW_TOKEN_MARKET_PRICE_RESPONSE)]
-        public static void HandleTokenUpdateMarketPriceResponse(Packet packet)
+        [Parser(Opcode.SMSG_COMMERCE_TOKEN_GET_MARKET_PRICE_RESPONSE)]
+        public static void HandleCommerceTokenGetMarketPriceResponse(Packet packet)
         {
             packet.ReadUInt64("CurrentMarketPrice");
             packet.ReadUInt32("UnkInt"); // send CMSG_REQUEST_WOW_TOKEN_MARKET_PRICE
@@ -75,13 +74,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("AuctionDuration");
         }
 
-        [Parser(Opcode.CMSG_UPDATE_WOW_TOKEN_COUNT)]
-        public static void HandleTokenUpdateTokenCount(Packet packet)
+        [Parser(Opcode.CMSG_COMMERCE_TOKEN_GET_COUNT)]
+        public static void HandleCommerceTokenGetCount(Packet packet)
         {
             packet.ReadUInt32("UnkInt");
         }
 
-        [Parser(Opcode.SMSG_UPDATE_WOW_TOKEN_COUNT_RESPONSE)]
+        [Parser(Opcode.SMSG_COMMERCE_TOKEN_GET_COUNT_RESPONSE)]
         public static void HandleTokenUpdateTokenCountResponse(Packet packet)
         {
             packet.ReadUInt32("UnkInt"); // send CMSG_UPDATE_WOW_TOKEN_COUNT
@@ -104,8 +103,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("UnkInt32");
         }
 
-        [Parser(Opcode.SMSG_TOKEN_UNK1)]
-        public static void HandleTokenUnk1(Packet packet)
+        [Parser(Opcode.SMSG_COMMERCE_TOKEN_UPDATE)]
+        public static void HandleCommerceTokenUpdate(Packet packet)
         {
             var count1 = packet.ReadInt32("DistributionCount1");
             var count2 = packet.ReadInt32("DistributionCount2");
@@ -117,15 +116,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt64("DistributionID", i);
         }
 
-        [Parser(Opcode.CMSG_UPDATE_WOW_TOKEN_AUCTIONABLE_LIST)]
-        public static void HandleUpdateListedAuctionableTokens(Packet packet)
+        [Parser(Opcode.CMSG_COMMERCE_TOKEN_GET_LOG)]
+        public static void HandleCommerceTokenGetLog(Packet packet)
         {
             packet.ReadUInt32("UnkInt");
         }
 
-        [Parser(Opcode.SMSG_WOW_TOKEN_UPDATE_AUCTIONABLE_LIST_RESPONSE)]
-        [Parser(Opcode.SMSG_UPDATE_WOW_TOKEN_AUCTIONABLE_LIST_RESPONSE)]
-        public static void HandleUpdateListedAuctionableTokensResponse(Packet packet)
+        [Parser(Opcode.SMSG_COMMERCE_TOKEN_GET_LOG_RESPONSE)]
+        public static void HandleCommerceTokenGetLogResponse(Packet packet)
         {
             packet.ReadInt32("UnkInt"); // send CMSG_UPDATE_WOW_TOKEN_AUCTIONABLE_LIST
             packet.ReadUInt32("Result");
@@ -140,8 +138,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_TOKEN_SELL_RESULT)]
-        public static void HandleTokenSellResult(Packet packet)
+        [Parser(Opcode.SMSG_AUCTIONABLE_TOKEN_SELL_AT_MARKET_PRICE_RESPONSE)]
+        public static void HandleAuctionableTokenSellAtMarketPriceResponse(Packet packet)
         {
             packet.ReadUInt32("UnkInt");
             packet.ReadUInt32("Result");

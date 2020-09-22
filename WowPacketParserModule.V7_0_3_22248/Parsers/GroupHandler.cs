@@ -34,8 +34,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadWoWString("PetName", len, index);
         }
 
-        [Parser(Opcode.SMSG_PARTY_MEMBER_STATE)]
-        public static void HandlePartyMemberState(Packet packet)
+        [Parser(Opcode.SMSG_PARTY_MEMBER_FULL_STATE)]
+        public static void HandlePartyMemberFullState(Packet packet)
         {
             packet.ReadBit("ForEnemy");
 
@@ -192,8 +192,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_PARTY_MEMBER_STATE_UPDATE)]
-        public static void HandlePartyMemberStateUpdate(Packet packet)
+        [Parser(Opcode.SMSG_PARTY_MEMBER_PARTIAL_STATE)]
+        public static void HandlePartyMemberPartialState(Packet packet)
         {
             packet.ReadBit("ForEnemyChanged");
             packet.ReadBit("SetPvPInactive"); // adds GroupMemberStatusFlag 0x0020 if true, removes 0x0020 if false

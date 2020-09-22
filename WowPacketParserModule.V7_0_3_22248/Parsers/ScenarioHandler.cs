@@ -50,8 +50,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 ReadScenarioSpellUpdate(packet, "ScenarioSpellUpdate", i);
         }
 
-        [Parser(Opcode.SMSG_SCENARIO_BOOT)]
-        public static void HandleScenarioBoot(Packet packet)
+        [Parser(Opcode.SMSG_SCENARIO_VACATE)]
+        public static void HandleScenarioVacate(Packet packet)
         {
             packet.ReadInt32("ScenarioID");
             packet.ReadInt32("Unk1");

@@ -432,8 +432,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadBit("MountIsFavorite", i);
         }
 
-        [Parser(Opcode.SMSG_ACCOUNT_TOYS_UPDATE)]
-        public static void HandleAccountToysUpdate(Packet packet)
+        [Parser(Opcode.SMSG_ACCOUNT_TOY_UPDATE)]
+        public static void HandleAccountToyUpdate(Packet packet)
         {
             packet.ReadBit("IsFullUpdate");
 
@@ -820,8 +820,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         // new opcode on 6.x, related to combat log and mostly used in garrisons
-        [Parser(Opcode.SMSG_WORLD_TEXT)]
-        public static void HandleWorldText(Packet packet)
+        [Parser(Opcode.SMSG_DISPLAY_WORLD_TEXT)]
+        public static void HandleDisplayWorldText(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");
             packet.ReadInt32("Arg1");

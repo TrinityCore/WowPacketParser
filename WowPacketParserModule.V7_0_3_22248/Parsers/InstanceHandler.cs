@@ -181,14 +181,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("InProgress");
         }
 
-        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_SET_SUPPRESSING_RELEASE)]
-        public static void HandleInstanceEncounterSetSuppressingRelease(Packet packet)
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_UPDATE_SUPPRESS_RELEASE)]
+        public static void HandleInstanceEncounterUpdateSuppressRelease(Packet packet)
         {
             packet.ReadBit("ReleaseSuppressed");
         }
 
-        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_SET_ALLOWING_RELEASE)]
-        public static void HandleInstanceEncounterSetAllowingRelease(Packet packet)
+        [Parser(Opcode.SMSG_INSTANCE_ENCOUNTER_UPDATE_ALLOW_RELEASE_IN_PROGRESS)]
+        public static void HandleInstanceEncounterUpdateAllowReleaseInProgress(Packet packet)
         {
             packet.ReadBit("ReleaseAllowed");
         }

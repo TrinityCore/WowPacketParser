@@ -189,6 +189,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_ALERT)]
+        [Parser(Opcode.SMSG_CALENDAR_INVITE_ALERT)]
         public static void HandleCalendarEventInviteAlert(Packet packet)
         {
             // TODO: find unks
@@ -218,6 +219,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE)]
+        [Parser(Opcode.SMSG_CALENDAR_INVITE_ADDED)]
         public static void HandleCalendarEventInvite(Packet packet)
         {
             packet.ReadPackedGuid128("InviteGUID");
@@ -231,6 +233,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INITIAL_INVITES)]
+        [Parser(Opcode.SMSG_CALENDAR_COMMUNITY_INVITE)]
         public static void HandleCalendarEventInitialInvites(Packet packet)
         {
             var inviteInfoCount = packet.ReadUInt32();
@@ -252,6 +255,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_MODERATOR_STATUS)]
+        [Parser(Opcode.SMSG_CALENDAR_MODERATOR_STATUS)]
         public static void HandleCalendarEventInviteModeratorStatus(Packet packet)
         {
             packet.ReadPackedGuid128("InviteGUID");
@@ -261,6 +265,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_NOTES)]
+        [Parser(Opcode.SMSG_CALENDAR_INVITE_NOTES)]
         public static void HandleCalendarEventInviteNotes(Packet packet)
         {
             packet.ReadPackedGuid128("InviteGUID");
@@ -274,6 +279,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_NOTES_ALERT)]
+        [Parser(Opcode.SMSG_CALENDAR_INVITE_NOTES_ALERT)]
         public static void HandleCalendarEventInviteNotesAlert(Packet packet)
         {
             packet.ReadUInt64("EventID");
@@ -285,6 +291,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_REMOVED)]
+        [Parser(Opcode.SMSG_CALENDAR_INVITE_REMOVED)]
         public static void HandleCalendarEventInviteRemoved(Packet packet)
         {
             packet.ReadPackedGuid128("InviteGUID");
@@ -294,6 +301,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_REMOVED_ALERT)]
+        [Parser(Opcode.SMSG_CALENDAR_INVITE_REMOVED_ALERT)]
         public static void HandleCalendarEventInviteRemovedAlert(Packet packet)
         {
             packet.ReadInt64("EventID");
@@ -303,6 +311,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_STATUS)]
+        [Parser(Opcode.SMSG_CALENDAR_INVITE_STATUS)]
         public static void HandleCalendarEventInviteStatus(Packet packet)
         {
             packet.ReadPackedGuid128("InviteGUID");
@@ -315,6 +324,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_STATUS_ALERT)]
+        [Parser(Opcode.SMSG_CALENDAR_INVITE_STATUS_ALERT)]
         public static void HandleCalendarEventInviteStatusAlert(Packet packet)
         {
             packet.ReadInt64("EventID");

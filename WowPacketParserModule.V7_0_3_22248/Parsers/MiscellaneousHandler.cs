@@ -339,8 +339,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadUInt32("LoadingScreenID");
         }
 
-        [Parser(Opcode.SMSG_OPEN_ALLIED_RACE_DETAILS_GIVER)]
-        public static void HandleOpenAlliedRaceDetailsGiver(Packet packet)
+        [Parser(Opcode.SMSG_ALLIED_RACE_DETAILS)]
+        public static void HandleAlliedRaceDetails(Packet packet)
         {
             packet.ReadPackedGuid128("GUID"); // Creature or GameObject
             packet.ReadInt32("RaceID");
@@ -355,8 +355,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadUInt32("WorldStateValue", idx);
         }
 
-        [Parser(Opcode.SMSG_AREA_POI_UPDATE)]
-        public static void HandleAreaPoiUpdate(Packet packet)
+        [Parser(Opcode.SMSG_AREA_POI_UPDATE_RESPONSE)]
+        public static void HandleAreaPOIUpdateResponse(Packet packet)
         {
             var count = packet.ReadInt32("Count");
 

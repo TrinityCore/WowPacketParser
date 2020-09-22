@@ -432,8 +432,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadInt32("NumNewPvpTalentSlots");
         }
 
-        [Parser(Opcode.SMSG_AZERITE_XP_GAIN)]
-        public static void HandleAzeriteXpGain(Packet packet)
+        [Parser(Opcode.SMSG_PLAYER_AZERITE_ITEM_GAINS)]
+        public static void HandlePlayerAzeriteItemGains(Packet packet)
         {
             packet.ReadPackedGuid128("Item");
             packet.ReadUInt64("AzeriteXPGained");

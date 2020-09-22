@@ -95,8 +95,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("AutocastEnabled");
         }
 
-        [Parser(Opcode.SMSG_LEVEL_UPDATE)]
-        public static void HandleLevelUpdate(Packet packet)
+        [Parser(Opcode.SMSG_PET_NEWLY_TAMED)]
+        public static void HandlePetNewlyTamed(Packet packet)
         {
             packet.ReadPackedGuid128("GUID");
             packet.ResetBitReader();

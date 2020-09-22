@@ -37,15 +37,15 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadPackedGuid128("NpcGUID");
         }
 
-        [Parser(Opcode.SMSG_ARTIFACT_FORGE_OPENED)]
-        public static void HandleArtifactForgeOpened(Packet packet)
+        [Parser(Opcode.SMSG_OPEN_ARTIFACT_FORGE)]
+        public static void HandleOpenArtifactForge(Packet packet)
         {
             packet.ReadPackedGuid128("ArtifactGUID");
             packet.ReadPackedGuid128("ForgeGUID");
         }
 
-        [Parser(Opcode.SMSG_ARTIFACT_RESPEC_CONFIRM)]
-        public static void HandleArtifactRespecConfirm(Packet packet)
+        [Parser(Opcode.SMSG_ARTIFACT_RESPEC_PROMPT)]
+        public static void HandleArtifactRespecPrompt(Packet packet)
         {
             packet.ReadPackedGuid128("ArtifactGUID");
             packet.ReadPackedGuid128("NpcGUID");

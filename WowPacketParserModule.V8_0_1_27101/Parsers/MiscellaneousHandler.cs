@@ -182,8 +182,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadInt32("MaximumExpansionLevel");
         }
 
-        [Parser(Opcode.SMSG_LIGHTNING_STORM_START)]
-        [Parser(Opcode.SMSG_LIGHTNING_STORM_END)]
+        [Parser(Opcode.SMSG_START_LIGHTNING_STORM)]
+        [Parser(Opcode.SMSG_END_LIGHTNING_STORM)]
         public static void HandleLightningStorm(Packet packet)
         {
             packet.ReadUInt32("LightningStormId");
@@ -364,8 +364,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 packet.ReadInt32("InstanceGroupSize");
         }
 
-        [Parser(Opcode.SMSG_RESURRECT_CLEAR_DATA)]
-        public static void HandleResurrectClearData(Packet packet)
+        [Parser(Opcode.SMSG_CLEAR_RESURRECT)]
+        public static void HandleClearResurrect(Packet packet)
         {
         }
     }

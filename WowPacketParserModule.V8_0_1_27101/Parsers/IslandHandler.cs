@@ -6,17 +6,17 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 {
     public static class IslandHandler
     {
-        [Parser(Opcode.SMSG_ISLAND_AZERITE_XP_GAIN)]
-        public static void HandleIslandAzeriteXpGain(Packet packet)
-        {            
-            packet.ReadInt32("XpGain");
+        [Parser(Opcode.SMSG_ISLAND_AZERITE_GAIN)]
+        public static void HandleIslandAzeriteGain(Packet packet)
+        {
+            packet.ReadInt32("Gain");
             packet.ReadPackedGuid128("PlayerGuid");
             packet.ReadPackedGuid128("SourceGuid");
             packet.ReadInt32("SourceID");
-        }       
+        }
 
-        [Parser(Opcode.SMSG_ISLAND_COMPLETED)]
-        public static void HandleIslandCompleted(Packet packet)
+        [Parser(Opcode.SMSG_ISLAND_COMPLETE)]
+        public static void HandleIslandComplete(Packet packet)
         {
             packet.ReadInt32("MapID");
             packet.ReadInt32("Winner");
@@ -25,8 +25,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 CharacterHandler.ReadPlayerModelDisplayInfo(packet, "DisplayInfo", j);
         }
 
-        [Parser(Opcode.SMSG_ISLAND_OPEN_QUEUE_NPC)]
-        public static void HandleIslandOpenQueueNpc(Packet packet)
+        [Parser(Opcode.SMSG_ISLANDS_MISSION_NPC)]
+        public static void HandleIslandsMissionNPC(Packet packet)
         {
             packet.ReadPackedGuid128("QueueNPCGuid");
         }

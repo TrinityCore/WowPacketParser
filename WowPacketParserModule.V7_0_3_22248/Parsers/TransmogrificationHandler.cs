@@ -26,9 +26,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("CurrentSpecOnly");
         }
 
-        [Parser(Opcode.SMSG_TRANSMOG_SET_COLLECTION_UPDATE)]
-        [Parser(Opcode.SMSG_TRANSMOG_COLLECTION_UPDATE)]
-        public static void HandleTransmogCollectionUpdate(Packet packet)
+        [Parser(Opcode.SMSG_ACCOUNT_TRANSMOG_SET_FAVORITES_UPDATE)]
+        [Parser(Opcode.SMSG_ACCOUNT_TRANSMOG_UPDATE)]
+        public static void HandleAccountTransmogUpdate(Packet packet)
         {
             packet.ReadBit("IsFullUpdate");
             packet.ReadBit("IsSetFavorite");
@@ -37,8 +37,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadUInt32("ItemModifiedAppearanceId");
         }
 
-        [Parser(Opcode.SMSG_OPEN_TRANSMOGRIFIER)]
-        public static void HandleOpenTransmogrifier(Packet packet)
+        [Parser(Opcode.SMSG_TRANSMOGRIFY_NPC)]
+        public static void HandleTransmogrifyNPC(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");
         }

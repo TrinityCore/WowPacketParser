@@ -411,8 +411,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBytesTable("Data", protoSize);
         }
 
-        [Parser(Opcode.SMSG_BATTLENET_SET_SESSION_STATE)]
-        public static void HandleBattlenetSetSessionState(Packet packet)
+        [Parser(Opcode.SMSG_BATTLE_NET_CONNECTION_STATUS)]
+        public static void HandleBattleNetConnectionStatus(Packet packet)
         {
             packet.ReadBits("State", 2); // TODO: enum
         }
@@ -423,8 +423,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadClientSettings(packet, "ClientSettings");
         }
 
-        [Parser(Opcode.SMSG_BATTLENET_REALM_LIST_TICKET)]
-        public static void HandleBattlenetRealmListTicket(Packet packet)
+        [Parser(Opcode.SMSG_CHANGE_REALM_TICKET_RESPONSE)]
+        public static void HandleChangeRealmTicketResponse(Packet packet)
         {
             packet.ReadUInt32("Token");
             packet.ResetBitReader();
@@ -434,8 +434,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBytesTable("Data", protoSize);
         }
 
-        [Parser(Opcode.CMSG_BATTLENET_REQUEST_REALM_LIST_TICKET)]
-        public static void HandleBattlenetRequestRealmListTicket(Packet packet)
+        [Parser(Opcode.CMSG_CHANGE_REALM_TICKET)]
+        public static void HandleChangeRealmTicket(Packet packet)
         {
             packet.ReadUInt32("Token");
             packet.ReadBytes("Secret", 32);

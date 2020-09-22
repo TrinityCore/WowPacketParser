@@ -6,8 +6,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 {
     public static class LootHandler
     {
-        [Parser(Opcode.SMSG_LOOT_LEGACY_RULES_IN_EFFECT)]
-        public static void HandleLootLegacyRulesInEffect(Packet packet)
+        [Parser(Opcode.SMSG_LEGACY_LOOT_RULES)]
+        public static void HandleLegacyLootRules(Packet packet)
         {
             packet.ReadBit("LegacyRulesActive");
         }

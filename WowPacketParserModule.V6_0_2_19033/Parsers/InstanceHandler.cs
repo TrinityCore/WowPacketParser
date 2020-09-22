@@ -15,8 +15,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
         }
 
-        [Parser(Opcode.SMSG_BOSS_KILL_CREDIT)]
-        public static void HandleBossKillCredit(Packet packet)
+        [Parser(Opcode.SMSG_BOSS_KILL)]
+        public static void HandleBossKill(Packet packet)
         {
             packet.ReadUInt32("EncounterID");
         }

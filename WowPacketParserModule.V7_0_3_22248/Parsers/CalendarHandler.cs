@@ -63,6 +63,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         }
 
         [Parser(Opcode.SMSG_CALENDAR_EVENT_INVITE_NOTES_ALERT)]
+        [Parser(Opcode.SMSG_CALENDAR_INVITE_NOTES_ALERT)]
         public static void HandleCalendarEventInviteNotesAlert(Packet packet)
         {
             packet.ReadPackedGuid128("InviteGuid");

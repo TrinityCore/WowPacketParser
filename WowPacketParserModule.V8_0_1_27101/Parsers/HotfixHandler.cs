@@ -213,7 +213,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
         [HasSniffData]
         [Parser(Opcode.SMSG_HOTFIX_MESSAGE, ClientVersionBuild.V8_1_0_28724, ClientVersionBuild.V8_1_5_29683)]
-        [Parser(Opcode.SMSG_HOTFIX_RESPONSE, ClientVersionBuild.V8_1_0_28724, ClientVersionBuild.V8_1_5_29683)]
+        [Parser(Opcode.SMSG_HOTFIX_CONNECT, ClientVersionBuild.V8_1_0_28724, ClientVersionBuild.V8_1_5_29683)]
         public static void HandleHotixData810(Packet packet)
         {
             var hotfixRecords = new List<HotfixRecord>();
@@ -244,7 +244,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
         [HasSniffData]
         [Parser(Opcode.SMSG_HOTFIX_MESSAGE, ClientVersionBuild.V8_1_5_29683)]
-        [Parser(Opcode.SMSG_HOTFIX_RESPONSE, ClientVersionBuild.V8_1_5_29683)]
+        [Parser(Opcode.SMSG_HOTFIX_CONNECT, ClientVersionBuild.V8_1_5_29683)]
         public static void HandleHotixData815(Packet packet)
         {
             var hotfixRecords = new List<HotfixRecord>();
@@ -333,7 +333,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
         [HasSniffData]
         [Parser(Opcode.SMSG_HOTFIX_MESSAGE, ClientVersionBuild.V8_0_1_27101, ClientVersionBuild.V8_1_0_28724)]
-        [Parser(Opcode.SMSG_HOTFIX_RESPONSE, ClientVersionBuild.V8_0_1_27101, ClientVersionBuild.V8_1_0_28724)]
+        [Parser(Opcode.SMSG_HOTFIX_CONNECT, ClientVersionBuild.V8_0_1_27101, ClientVersionBuild.V8_1_0_28724)]
         public static void HandleHotixData(Packet packet)
         {
             var hotfixCount = packet.ReadUInt32("HotfixCount");

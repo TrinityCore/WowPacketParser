@@ -1098,6 +1098,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("TimerType");
         }
 
+        [Parser(Opcode.SMSG_RECRUIT_A_FRIEND_FAILURE)]
         [Parser(Opcode.SMSG_REFER_A_FRIEND_FAILURE)]
         public static void HandleRaFFailure(Packet packet)
         {
@@ -1114,6 +1115,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.MSG_MOVE_WORLDPORT_ACK)]
         [Parser(Opcode.CMSG_QUERY_TIME)]
         [Parser(Opcode.CMSG_UI_TIME_REQUEST)]
+        [Parser(Opcode.CMSG_SERVER_TIME_OFFSET_REQUEST)]
         [Parser(Opcode.SMSG_COMSAT_CONNECT_FAIL)]
         [Parser(Opcode.SMSG_COMSAT_RECONNECT_TRY)]
         [Parser(Opcode.SMSG_COMSAT_DISCONNECT)]

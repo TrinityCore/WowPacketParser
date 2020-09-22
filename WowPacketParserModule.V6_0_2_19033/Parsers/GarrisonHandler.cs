@@ -200,8 +200,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("GarrBuildingID");
         }
 
-        [Parser(Opcode.SMSG_GARRISON_LANDING_PAGE_SHIPMENT_INFO)]
-        public static void HandleGarrisonLandingPage(Packet packet)
+        [Parser(Opcode.SMSG_GET_LANDING_PAGE_SHIPMENTS_RESPONSE)]
+        public static void HandleGetLandingPageShipmentsResponse(Packet packet)
         {
             var count = packet.ReadInt32("Count");
             for (int i = 0; i < count; i++)
@@ -536,15 +536,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleGarrisonSetupTrophy(Packet packet)
         {
             var count = packet.ReadInt32("TrophyCount");
-            for (int i = 0; i < count; i++) 
+            for (int i = 0; i < count; i++)
             {
                 packet.ReadInt32("TrophyInstanceID", i);
                 packet.ReadInt32("TrophyID", i);
             }
         }
 
-        [Parser(Opcode.SMSG_LOAD_SELECTED_TROPHY_RESULT)]
-        public static void HandleSelectedTrophyResult(Packet packet)
+        [Parser(Opcode.SMSG_GET_SELECTED_TROPHY_ID_RESPONSE)]
+        public static void HandleGetSelectedTrophyIDResponse(Packet packet)
         {
             packet.ResetBitReader();
             packet.ReadBit("Success");
@@ -555,7 +555,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleLoadSelectedTrophy(Packet packet)
         {
             packet.ReadInt32("TrophyInstanceID");
-        }        
+        }
 
         [Parser(Opcode.SMSG_GARRISON_ADD_FOLLOWER_RESULT)]
         public static void HandleGarrisonAddFollowerResult(Packet packet)

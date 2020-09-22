@@ -6,8 +6,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
     public static class ChallengeModeHandler
     {
-        [Parser(Opcode.SMSG_CHALLENGE_MODE_REWARDS)]
-        public static void HandleChallengeModeRewards(Packet packet)
+        [Parser(Opcode.SMSG_MYTHIC_PLUS_WEEKLY_REWARD_RESPONSE)]
+        public static void HandleMythicPlusWeeklyRewardResponse(Packet packet)
         {
             packet.ReadBit("IsWeeklyRewardAvailable");
         }

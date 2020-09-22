@@ -97,8 +97,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 ReadPvPMatchPlayerStatistics(packet, "Statistics", i);
         }
 
-        [Parser(Opcode.SMSG_REQUEST_PVP_BRAWL_INFO_RESPONSE, ClientVersionBuild.V8_2_0_30898)]
-        public static void HandleRequestPVPBrawlInfoResponse(Packet packet)
+        [Parser(Opcode.SMSG_REQUEST_SCHEDULED_PVP_INFO_RESPONSE, ClientVersionBuild.V8_2_0_30898)]
+        public static void HandleRequestScheduledPVPInfoResponse(Packet packet)
         {
             packet.ReadInt32("PvpBrawlID");
             packet.ReadInt32("TimeToBrawl");
@@ -115,14 +115,14 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadBit("IsRequeue");
         }
 
-        [Parser(Opcode.SMSG_MAP_OBJECTIVE_ADD)]
-        public static void HandleMapObjectiveAdd(Packet packet)
+        [Parser(Opcode.SMSG_UPDATE_CAPTURE_POINT)]
+        public static void HandleUpdateCapturePoint(Packet packet)
         {
             V6_0_2_19033.Parsers.BattlegroundHandler.ReadBattlegroundCapturePointInfo(packet, "CapturePointInfo");
         }
 
-        [Parser(Opcode.SMSG_MAP_OBJECTIVE_REMOVE)]
-        public static void HandleMapObjectiveRemove(Packet packet)
+        [Parser(Opcode.SMSG_CAPTURE_POINT_REMOVED)]
+        public static void HandleCapturePointRemoved(Packet packet)
         {
             packet.ReadPackedGuid128("ObjectiveGuid");
         }

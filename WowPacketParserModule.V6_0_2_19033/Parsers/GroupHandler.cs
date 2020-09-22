@@ -252,8 +252,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 ReadPhaseInfos(packet, "Phase");
         }
 
-        [Parser(Opcode.SMSG_PARTY_MEMBER_STATE)]
-        public static void HandlePartyMemberState(Packet packet)
+        [Parser(Opcode.SMSG_PARTY_MEMBER_FULL_STATE)]
+        public static void HandlePartyMemberFullState(Packet packet)
         {
             packet.ReadBit("ForEnemy");
             packet.ReadPackedGuid128("MemberGuid");

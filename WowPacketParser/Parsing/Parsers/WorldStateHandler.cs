@@ -37,6 +37,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_UI_TIME)]
+        [Parser(Opcode.SMSG_SERVER_TIME_OFFSET)]
         public static void HandleUITimer(Packet packet)
         {
             packet.ReadTime("Time");

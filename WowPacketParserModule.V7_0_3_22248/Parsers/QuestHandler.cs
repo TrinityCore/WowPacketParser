@@ -528,8 +528,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_WORLD_QUEST_UPDATE)]
-        public static void HandleWorldQuestUpdate(Packet packet)
+        [Parser(Opcode.SMSG_WORLD_QUEST_UPDATE_RESPONSE)]
+        public static void HandleWorldQuestUpdateResponse(Packet packet)
         {
             var count = packet.ReadInt32("Count");
 
@@ -721,8 +721,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32("QuestTimer");
         }
 
-        [Parser(Opcode.SMSG_QUERY_TREASURE_PICKER_RESPONSE)]
-        public static void HandleQueryQuestRewardResponse(Packet packet)
+        [Parser(Opcode.SMSG_TREASURE_PICKER_RESPONSE)]
+        public static void HandleTreasurePickerResponse(Packet packet)
         {
             packet.ReadInt32("QuestId");
             packet.ReadInt32("QuestTimer");

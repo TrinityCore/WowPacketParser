@@ -297,7 +297,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("CharName", bits19);
         }
 
-        [Parser(Opcode.SMSG_CHAR_CUSTOMIZE, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_1_0_19678)]
+        [Parser(Opcode.SMSG_CHAR_CUSTOMIZE_SUCCESS, ClientVersionBuild.V6_0_2_19033, ClientVersionBuild.V6_1_0_19678)]
         public static void HandleServerCharCustomize60x(Packet packet)
         {
             packet.ReadPackedGuid128("CharGUID");
@@ -316,7 +316,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Name", bits55);
         }
 
-        [Parser(Opcode.SMSG_CHAR_CUSTOMIZE, ClientVersionBuild.V6_1_0_19678)]
+        [Parser(Opcode.SMSG_CHAR_CUSTOMIZE_SUCCESS, ClientVersionBuild.V6_1_0_19678)]
         public static void HandleServerCharCustomize61x(Packet packet)
         {
             packet.ReadPackedGuid128("CharGUID");
@@ -332,7 +332,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Name", bits55);
         }
 
-        [Parser(Opcode.SMSG_CHAR_CUSTOMIZE_RESULT)]
+        [Parser(Opcode.SMSG_CHAR_CUSTOMIZE_FAILURE)]
         public static void HandleServerCharCustomizeResult(Packet packet)
         {
             packet.ReadByte("Result");

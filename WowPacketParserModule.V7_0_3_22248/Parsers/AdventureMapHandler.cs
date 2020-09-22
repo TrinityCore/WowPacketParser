@@ -12,8 +12,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadUInt32("AdventureMapPoiID");
         }
 
-        [Parser(Opcode.SMSG_ADVENTURE_MAP_POI_QUERY_RESPONSE)]
-        public static void HandleAdcentureMapPoiQueryResponse(Packet packet)
+        [Parser(Opcode.SMSG_PLAYER_IS_ADVENTURE_MAP_POI_VALID)]
+        public static void HandlePlayerIsAdventureMapPOIValid(Packet packet)
         {
             packet.ReadInt32("AdventureMapPoiID");
             packet.ResetBitReader();

@@ -6,8 +6,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 {
     public static class SessionHandler
     {
-        [Parser(Opcode.SMSG_BATTLENET_UPDATE_SESSION_KEY)]
-        public static void HandleBattlenetUpdateSessionKey(Packet packet)
+        [Parser(Opcode.SMSG_UPDATE_BNET_SESSION_KEY)]
+        public static void HandleUpdateBnetSessionKey(Packet packet)
         {
             var sessionKeyLength = (int) packet.ReadBits(7);
 
@@ -37,15 +37,15 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_BATTLENET_SET_SESSION_STATE, ClientVersionBuild.V8_2_0_30898)]
-        public static void HandleBattlenetSetSessionState(Packet packet)
+        [Parser(Opcode.SMSG_BATTLE_NET_CONNECTION_STATUS, ClientVersionBuild.V8_2_0_30898)]
+        public static void HandleBattleNetConnectionStatus(Packet packet)
         {
             packet.ReadBits("State", 2); // TODO: enum
             packet.ReadBit("SuppressNotification");
         }
 
-        [Parser(Opcode.SMSG_ENABLE_ENCRYPTION, ClientVersionBuild.V8_2_0_30898)]
-        public static void HandleEnableEncryption(Packet packet)
+        [Parser(Opcode.SMSG_ENTER_ENCRYPTED_MODE, ClientVersionBuild.V8_2_0_30898)]
+        public static void HandleEnterEncryptedMode(Packet packet)
         {
             packet.ReadBytes("EncryptionKey (RSA encrypted)", 256);
             packet.ResetBitReader();
