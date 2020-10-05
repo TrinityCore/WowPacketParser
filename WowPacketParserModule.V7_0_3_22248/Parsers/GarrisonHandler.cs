@@ -308,6 +308,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32E<GarrisonMissionResult>("Result");
         }
 
+        [Parser(Opcode.SMSG_GARRISON_UPDATE_MISSION)]
         [Parser(Opcode.SMSG_GARRISON_COMPLETE_MISSION_RESULT)]
         public static void HandleGarrisonFinishMission(Packet packet)
         {
