@@ -67,7 +67,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     V6_0_2_19033.Parsers.GarrisonHandler.ReadGarrisonMissionBonusAbility(packet, "MissionAreaBonus", i, j);
 
                 for (int j = 0; j < talentsCount; j++)
-                    V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonTalents(packet, "Talents", i, j);
+                    ReadGarrisonTalents(packet, "Talents", i, j);
 
                 for (int j = 0; j < archivedMissionsCount; j++)
                     packet.ReadInt32("ArchivedMissions", i, j);
@@ -85,6 +85,28 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 for (int j = 0; j < garrisonFollowerCount; j++)
                     V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonFollower(packet, "Follower", i, j);
             }
+        }
+
+        public static void ReadGarrisonTalents(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("GarrTalentID", indexes);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_3_0_33062))
+                packet.ReadInt32("Rank", indexes);
+
+            packet.ReadTime("ResearchStartTime", indexes);
+            packet.ReadInt32("Flags", indexes);
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_UPDATE_TALENT)]
+        public static void HandleGarrisonUpdateTalent(Packet packet)
+        {
+            packet.ReadUInt32("Remove");
+            packet.ReadInt32E<GarrisonType>("GarrTypeID");
+
+            ReadGarrisonTalents(packet, "Talent");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_3_0_33062))
+                packet.ReadBit("UnkBit_830");
         }
     }
 }
