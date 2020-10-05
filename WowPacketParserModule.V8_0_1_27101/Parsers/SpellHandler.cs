@@ -392,10 +392,10 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadInt32<SpellId>("SpellID");
         }
 
-        [Parser(Opcode.SMSG_SPELL_SET_POWER_TYPE)]
-        public static void HandleSpellSetPowerType(Packet packet)
+        [Parser(Opcode.SMSG_INTERRUPT_POWER_REGEN)]
+        public static void HandleInterruptPowerRegen(Packet packet)
         {
-            packet.ReadUInt32E<PowerType>("PowerTypeId");
+            packet.ReadUInt32("PowerTypeEnum");
         }
     }
 }
