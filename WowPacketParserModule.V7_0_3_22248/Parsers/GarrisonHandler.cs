@@ -550,5 +550,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadUInt32E<GarrisonType>("GarrTypeId");
             V6_0_2_19033.Parsers.GarrisonHandler.ReadGarrisonPlotInfo(packet, "PlotInfo");
         }
+
+        [Parser(Opcode.SMSG_GARRISON_RENAME_FOLLOWER_RESPONSE)]
+        public static void HandleGarrisonFollowerRenameResponse(Packet packet)
+        {
+            packet.ReadPackedGuid128("Guid");
+            packet.ReadInt64("FollowerDbId");
+            packet.ReadWoWString("Name", 8);
+        }
     }
 }
