@@ -390,7 +390,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadPackedGuid128("CastID");
             packet.ReadPackedGuid128("Target");
             packet.ReadInt32<SpellId>("SpellID");
+        }
 
+        [Parser(Opcode.SMSG_SPELL_SET_POWER_TYPE)]
+        public static void HandleSpellSetPowerType(Packet packet)
+        {
+            packet.ReadUInt32E<PowerType>("PowerTypeId");
         }
     }
 }

@@ -1718,6 +1718,7 @@ namespace WowPacketParser.Enums.Version.V8_3_7_35249
             {Opcode.SMSG_SPELL_OR_DAMAGE_IMMUNE, 0x2C2F},
             {Opcode.SMSG_SPELL_PERIODIC_AURA_LOG, 0x2C1B},
             {Opcode.SMSG_SPELL_PREPARE, 0x2C38},
+            {Opcode.SMSG_SPELL_SET_POWER_TYPE, 0x2C58},
             {Opcode.SMSG_SPELL_START, 0x2C3A},
             {Opcode.SMSG_SPELL_VISUAL_LOAD_SCREEN, 0x25E5},
             {Opcode.SMSG_SPIRIT_HEALER_CONFIRM, 0x275A},
