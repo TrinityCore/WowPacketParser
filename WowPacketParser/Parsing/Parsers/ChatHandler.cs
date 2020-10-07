@@ -69,6 +69,7 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_CHAT)]
+        [Parser(Opcode.SMSG_GM_MESSAGECHAT)]
         public static void HandleServerChatMessage(Packet packet)
         {
             var text = new CreatureText
@@ -379,28 +380,6 @@ namespace WowPacketParser.Parsing.Parsers
 
             packet.ReadWoWString("Message", msgLen);
             packet.ReadWoWString("Channel Name", channelNameLen);
-        }
-
-        [Parser(Opcode.SMSG_GM_MESSAGECHAT)] // Similar to SMSG_MESSAGECHAT
-        public static void HandleGMMessageChat(Packet packet)
-        {
-            var type = packet.ReadByteE<ChatMessageType>("Type");
-            packet.ReadInt32E<Language>("Language");
-            packet.ReadGuid("GUID 1");
-            packet.ReadInt32("Constant time");
-            packet.ReadInt32("GM Name Length");
-            packet.ReadCString("GM Name");
-            packet.ReadGuid("GUID 2");
-            packet.ReadInt32("Message Length");
-            packet.ReadCString("Message");
-
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
-                packet.ReadInt16E<ChatTag>("Chat Tag");
-            else
-                packet.ReadByteE<ChatTag>("Chat Tag");
-
-            if (type == ChatMessageType.Achievement || type == ChatMessageType.GuildAchievement)
-                packet.ReadInt32<AchievementId>("Achievement Id");
         }
 
         [Parser(Opcode.SMSG_CHAT_RESTRICTED)]
