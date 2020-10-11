@@ -378,6 +378,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadByte("FacialHairStyleID");
             packet.ReadByte("OutfitID");
 
+            for (var i = 0; i < 3; i++)
+                packet.ReadByte("CustomDisplay", i);
+
             packet.ReadWoWString("Name", nameLen);
 
             if (hasTemplateSet)
