@@ -366,5 +366,21 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadWoWString("Comment", len);
             }
         }
+
+        [Parser(Opcode.CMSG_DF_JOIN)]
+        public static void HandleDFJoin(Packet packet)
+        {
+            packet.ReadBit("QueueAsGroup");
+            packet.ReadBit("UnknownBit");
+
+            packet.ResetBitReader();
+
+            packet.ReadByte("PartyIndex");
+            packet.ReadInt32E<LfgRoleFlag>("Roles");
+            var slotsCount = packet.ReadInt32();
+
+            for (var i = 0; i < slotsCount; ++i) // Slots
+                packet.ReadUInt32("Slot", i);
+        }
     }
 }
