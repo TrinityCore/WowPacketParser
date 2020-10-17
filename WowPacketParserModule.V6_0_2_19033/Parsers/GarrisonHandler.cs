@@ -96,7 +96,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_GARRISON_REQUEST_BLUEPRINT_AND_SPECIALIZATION_DATA)]
         [Parser(Opcode.CMSG_GARRISON_CHECK_UPGRADEABLE)]
         [Parser(Opcode.CMSG_GARRISON_UNK1)]
-        [Parser(Opcode.CMSG_GARRISON_GET_BUILDING_LANDMARKS)]
+        [Parser(Opcode.CMSG_GARRISON_GET_MAP_DATA)]
         public static void HandleGarrisonZero(Packet packet)
         {
         }
@@ -239,9 +239,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt64("FollowerDBIDs");
         }
 
-        [Parser(Opcode.SMSG_GARRISON_UPGRADEABLE_RESULT)]
-        [Parser(Opcode.SMSG_GARRISON_IS_UPGRADEABLE_RESULT)]
-        public static void HandleClientGarrisonUpgradeableResult(Packet packet)
+        [Parser(Opcode.SMSG_GARRISON_IS_UPGRADEABLE_RESPONSE)]
+        public static void HandleClientGarrisonUpgradeableResponse(Packet packet)
         {
             packet.ReadUInt32E<GarrisonResult>("Result");
         }
@@ -696,8 +695,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadUInt32("GarrSiteID");
         }
 
-        [Parser(Opcode.SMSG_GARRISON_BUILDING_LANDMARKS)]
-        public static void HandleGarrisonBuildingLandmarks(Packet packet)
+        [Parser(Opcode.SMSG_GARRISON_MAP_DATA_RESPONSE)]
+        public static void HandleGarrisonMapDataResponse(Packet packet)
         {
             var count = packet.ReadInt32();
             for (var i = 0; i < count; ++i)

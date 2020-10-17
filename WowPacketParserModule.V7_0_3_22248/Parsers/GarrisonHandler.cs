@@ -327,8 +327,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             }
         }
 
-        [Parser(Opcode.SMSG_GARRISON_MISSION_UPDATE_CAN_START)]
-        public static void HandleGarrisonMissionUpdateCanStart(Packet packet)
+        [Parser(Opcode.SMSG_GARRISON_MISSION_START_CONDITION_UPDATE)]
+        public static void HandleGarrisonMissionStartConditionUpdate(Packet packet)
         {
             uint missionsCount = packet.ReadUInt32("MissionsCount");
             uint canStartMissionCount = packet.ReadUInt32("CanStartMissionCount");
@@ -340,8 +340,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadBit("CanStartMission", i);
         }
 
-        [Parser(Opcode.SMSG_GARRISON_FOLLOWER_CATEGORIES)]
-        public static void HandleGarrisonFollowerCategories(Packet packet)
+        [Parser(Opcode.SMSG_GARRISON_GET_CLASS_SPEC_CATEGORY_INFO_RESULT)]
+        public static void HandleGarrisonGetClassSpecCategoryInfoResult(Packet packet)
         {
             packet.ReadInt32E<GarrisonFollowerType>("FollowerTypeId");
             uint count = packet.ReadUInt32("CategoryInfoCount");
@@ -377,15 +377,15 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32<QuestId>("QuestID");
         }
 
-        [Parser(Opcode.SMSG_GARRISON_CLEAR_ALL_FOLLOWERS_EXHAUSTION)]
-        public static void HandleGarrisonAllFollowersExhaustion(Packet packet)
+        [Parser(Opcode.SMSG_GARRISON_FOLLOWER_FATIGUE_CLEARED)]
+        public static void HandleGarrisonFollowerFatigueCleared(Packet packet)
         {
             packet.ReadInt32E<GarrisonType>("GarrTypeID");
             packet.ReadInt32E<GarrisonResult>("Result");
         }
 
-        [Parser(Opcode.SMSG_GARRISON_MISSION_LIST_UPDATE)]
-        public static void HandleGarrisonMissionListUpdate(Packet packet)
+        [Parser(Opcode.SMSG_DELETE_EXPIRED_MISSIONS_RESULT)]
+        public static void HandleDeleteExpiredMissionsResult(Packet packet)
         {
             packet.ReadUInt32E<GarrisonType>("GarrTypeID");
             packet.ReadUInt32E<GarrisonResult>("Result");
@@ -397,15 +397,15 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("LegionUnkBit");
         }
 
-        [Parser(Opcode.SMSG_GARRISON_FOLLOWER_CHANGED_DURABILITY)]
-        public static void HandleGarrisonFollowerChangedDurability(Packet packet)
+        [Parser(Opcode.SMSG_GARRISON_UPDATE_FOLLOWER)]
+        public static void HandleGarrisonUpdateFollower(Packet packet)
         {
             packet.ReadUInt32("Unk1");
             ReadGarrisonFollower(packet, "Follower");
         }
 
-        [Parser(Opcode.SMSG_GARRISON_FOLLOWER_CHANGED_ABILITIES)]
-        public static void HandleGarrisonFollowerChangedAbilities(Packet packet)
+        [Parser(Opcode.SMSG_GARRISON_FOLLOWER_CHANGED_QUALITY)]
+        public static void HandleGarrisonFollowerChangedQuality(Packet packet)
         {
             ReadGarrisonFollower(packet, "Follower");
         }
@@ -422,8 +422,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadUInt32("BuildingId");
         }
 
-        [Parser(Opcode.SMSG_GARRISON_NUM_FOLLOWER_ACTIVATIONS_REMAINING)]
-        public static void HandleGarrisonNumFollowerActivationsRemaining(Packet packet)
+        [Parser(Opcode.SMSG_GARRISON_FOLLOWER_ACTIVATIONS_SET)]
+        public static void HandleGarrisonFollowerActivationsSet(Packet packet)
         {
             packet.ReadUInt32E<GarrisonSite>("GarrSiteID");
             packet.ReadUInt32("NumActivations");
@@ -457,8 +457,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadUInt32("AbilityID");
         }
 
-        [Parser(Opcode.CMSG_GARRISON_GET_MISSION_REWARD)]
-        public static void HandleGarrisonGetMissionReward(Packet packet)
+        [Parser(Opcode.CMSG_GARRISON_MISSION_REQUEST_REWARD_INFO)]
+        public static void HandleGarrisonMissionRequestRewardInfo(Packet packet)
         {
             packet.ReadUInt64("Unk1"); // Money ?
             packet.ReadUInt32("Unk2");
