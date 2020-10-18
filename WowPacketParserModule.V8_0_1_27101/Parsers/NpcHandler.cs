@@ -98,8 +98,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             CoreParsers.NpcHandler.TempGossipOptionPOI.Reset();
         }
 
-        [Parser(Opcode.SMSG_GOSSIP_TEXT_UPDATE)]
-        public static void HandleGossipTextUpdate(Packet packet)
+        [Parser(Opcode.SMSG_GOSSIP_QUEST_UPDATE)]
+        public static void HandleGossipQuestUpdate(Packet packet)
         {
             packet.ReadPackedGuid128("GossipGUID");
 

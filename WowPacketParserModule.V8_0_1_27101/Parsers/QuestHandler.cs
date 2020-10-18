@@ -846,14 +846,14 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             }
         }
 
-        [Parser(Opcode.CMSG_REQUEST_QUEST_LINES_FOR_MAP)]
-        public static void HandleRequestQuestLinesForMap(Packet packet)
+        [Parser(Opcode.CMSG_UI_MAP_QUEST_LINES_REQUEST)]
+        public static void HandleUiMapQuestLinesRequest(Packet packet)
         {
             packet.ReadInt32("UiMapID");
         }
 
-        [Parser(Opcode.SMSG_QUEST_LINES_FOR_MAP_RESPONSE)]
-        public static void HandleQuestLinesForMapResponse(Packet packet)
+        [Parser(Opcode.SMSG_UI_MAP_QUEST_LINES_RESPONSE)]
+        public static void HandleUiMapQuestLinesResponse(Packet packet)
         {
             packet.ReadInt32("UiMapID");
             var count = packet.ReadUInt32();

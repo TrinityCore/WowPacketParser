@@ -827,8 +827,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadUInt16("Count");
         }
 
-        [Parser(Opcode.SMSG_QUEST_SPAWN_TRACKING_UPDATE)]
-        public static void HandleQuestSpawnTrackingUpdate(Packet packet)
+        [Parser(Opcode.SMSG_QUEST_POI_UPDATE_RESPONSE)]
+        public static void HandleQuestPOIUpdateResponse(Packet packet)
         {
             var count = packet.ReadUInt32();
 
