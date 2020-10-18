@@ -5,11 +5,13 @@ VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WowPacketParser", "WowPacketParser\WowPacketParser.csproj", "{4EBDE3AD-9831-4F44-9EFB-5DEE51EE6390}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WowPacketParser.Tests", "WowPacketParser.Tests\WowPacketParser.Tests.csproj", "{A53E4EF2-5349-4149-AE71-AA7A800E637C}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WowPacketParserModule.BattleNet.V37165", "WowPacketParserModule.BattleNet.V37165\WowPacketParserModule.BattleNet.V37165.csproj", "{9C185B8A-052F-4240-9EC3-729496124402}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WowPacketParserModule.V1_13_2_31446", "WowPacketParserModule.V1_13_2_31446\WowPacketParserModule.V1_13_2_31446.csproj", "{733875B9-E2B9-4EF5-8B5C-B8E98AF25975}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WowPacketParserModule.Substructures", "WowPacketParserModule.Substructures\WowPacketParserModule.Substructures.csproj", "{A0CD6DDC-E2B3-400E-ACB7-E2339B74FCF9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WowPacketParserModule.V1_13_2_31446", "WowPacketParserModule.V1_13_2_31446\WowPacketParserModule.V1_13_2_31446.csproj", "{733875B9-E2B9-4EF5-8B5C-B8E98AF25975}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WowPacketParserModule.V2_4_3_8606", "WowPacketParserModule.V2_4_3_8606\WowPacketParserModule.V2_4_3_8606.csproj", "{A072A641-D60D-4765-B8BD-F00F727B4F89}"
 EndProject
@@ -33,7 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WowPacketParserModule.V7_0_
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WowPacketParserModule.V8_0_1_27101", "WowPacketParserModule.V8_0_1_27101\WowPacketParserModule.V8_0_1_27101.csproj", "{2FD96AE7-74EA-4608-8071-CAFE6948FB6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WowPacketParser.Tests", "WowPacketParser.Tests\WowPacketParser.Tests.csproj", "{A53E4EF2-5349-4149-AE71-AA7A800E637C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WowPacketParserModule.V9_0_1_36216", "WowPacketParserModule.V9_0_1_36216\WowPacketParserModule.V9_0_1_36216.csproj", "{0A932EF2-830E-4409-AE4F-78A9C110E21F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,6 +107,10 @@ Global
 		{A53E4EF2-5349-4149-AE71-AA7A800E637C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A53E4EF2-5349-4149-AE71-AA7A800E637C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A53E4EF2-5349-4149-AE71-AA7A800E637C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A932EF2-830E-4409-AE4F-78A9C110E21F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A932EF2-830E-4409-AE4F-78A9C110E21F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A932EF2-830E-4409-AE4F-78A9C110E21F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A932EF2-830E-4409-AE4F-78A9C110E21F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

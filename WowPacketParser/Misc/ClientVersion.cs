@@ -322,6 +322,12 @@ namespace WowPacketParser.Misc
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_3_7_35435, new DateTime(2020, 08, 06)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V8_3_7_35662, new DateTime(2020, 08, 26)),
 
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V9_0_1_36216, new DateTime(2020, 10, 13)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V9_0_1_36228, new DateTime(2020, 10, 13, 09, 28, 51)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V9_0_1_36230, new DateTime(2020, 10, 13, 13, 24, 51)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V9_0_1_36247, new DateTime(2020, 10, 14)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V9_0_1_36272, new DateTime(2020, 10, 15)),
+
             // no classic info, pkt contain build in header
         };
 
@@ -646,6 +652,12 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V8_3_7_35435:
                 case ClientVersionBuild.V8_3_7_35662:
                     return ClientVersionBuild.V8_0_1_27101;
+                case ClientVersionBuild.V9_0_1_36216:
+                case ClientVersionBuild.V9_0_1_36228:
+                case ClientVersionBuild.V9_0_1_36230:
+                case ClientVersionBuild.V9_0_1_36247:
+                case ClientVersionBuild.V9_0_1_36272:
+                    return ClientVersionBuild.V9_0_1_36216;
                 //Classic
                 case ClientVersionBuild.V1_13_2_31446:
                 case ClientVersionBuild.V1_13_2_31650:
@@ -701,6 +713,8 @@ namespace WowPacketParser.Misc
                     return ClientVersionBuild.V6_0_2_19033;
                 case ClientVersionBuild.V8_0_1_27101:
                     return ClientVersionBuild.V7_0_3_22248;
+                case ClientVersionBuild.V9_0_1_36216:
+                    return ClientVersionBuild.V8_0_1_27101;
                 default:
                     return ClientVersionBuild.Zero;
             }
@@ -716,6 +730,8 @@ namespace WowPacketParser.Misc
         {
             if (IsClassicClientVersionBuild(build))
                 return ClientType.Classic;
+            if (build >= ClientVersionBuild.V9_0_1_36216)
+                return ClientType.Shadowlands;
             if (build >= ClientVersionBuild.V8_0_1_27101)
                 return ClientType.BattleForAzeroth;
             if (build >= ClientVersionBuild.V7_0_3_22248)
