@@ -35,7 +35,7 @@ namespace WowPacketParser.Store.Objects
         public uint? ID;
 
         [DBFieldName("LanguageID")]
-        public byte? LanguageID;
+        public int? LanguageID;
 
         [DBFieldName("ConditionID")]
         public uint? ConditionID;

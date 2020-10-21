@@ -8,7 +8,7 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using WowPacketParser.DBC.Structures.BattleForAzeroth;
+using WowPacketParser.DBC.Structures.Shadowlands;
 
 namespace WowPacketParser.SQL
 {
@@ -139,7 +139,7 @@ namespace WowPacketParser.SQL
                         broadcastText.EmoteDelay[1] = Convert.ToUInt16(reader["EmoteDelay2"]);
                         broadcastText.EmoteDelay[2] = Convert.ToUInt16(reader["EmoteDelay3"]);
                         broadcastText.EmotesID = Convert.ToUInt16(reader["EmotesID"]);
-                        broadcastText.LanguageID = Convert.ToByte(reader["LanguageID"]);
+                        broadcastText.LanguageID = Convert.ToInt32(reader["LanguageID"]);
                         broadcastText.Flags = Convert.ToByte(reader["Flags"]);
                         if (Settings.TargetedDatabase == TargetedDatabase.WrathOfTheLichKing || Settings.TargetedDatabase == TargetedDatabase.Cataclysm)
                         {

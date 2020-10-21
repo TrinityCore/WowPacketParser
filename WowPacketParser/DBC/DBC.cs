@@ -6,7 +6,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using DBFileReaderLib;
-using WowPacketParser.DBC.Structures.BattleForAzeroth;
+using WowPacketParser.DBC.Structures.Shadowlands;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.DBC
