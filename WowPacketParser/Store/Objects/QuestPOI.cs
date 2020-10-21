@@ -54,7 +54,7 @@ namespace WowPacketParser.Store.Objects
         public int? SpawnTrackingID;
 
         [DBFieldName("AlwaysAllowMergingBlobs", TargetedDatabase.Legion)]
-        public bool AlwaysAllowMergingBlobs;
+        public bool? AlwaysAllowMergingBlobs;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
