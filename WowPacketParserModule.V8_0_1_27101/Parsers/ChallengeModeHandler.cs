@@ -51,7 +51,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadBit("UnkBit", indexes);
         }
 
-        [Parser(Opcode.CMSG_REQUEST_CHALLENGE_MODE_AFFIXES)]
+        [Parser(Opcode.CMSG_REQUEST_MYTHIC_PLUS_AFFIXES)]
         public static void HandleChallengeModeZero(Packet packet) { }
 
         [Parser(Opcode.SMSG_MYTHIC_PLUS_WEEKLY_REWARD_RESPONSE)]

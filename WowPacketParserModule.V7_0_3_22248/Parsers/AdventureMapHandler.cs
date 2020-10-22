@@ -6,8 +6,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
     public static class AdventureMapHandler
     {
-        [Parser(Opcode.CMSG_ADVENTURE_MAP_POI_QUERY)]
-        public static void HandleAdcentureMapPoiQuery(Packet packet)
+        [Parser(Opcode.CMSG_CHECK_IS_ADVENTURE_MAP_POI_VALID)]
+        public static void HandleCheckIsAdventureMapPOIValid(Packet packet)
         {
             packet.ReadUInt32("AdventureMapPoiID");
         }

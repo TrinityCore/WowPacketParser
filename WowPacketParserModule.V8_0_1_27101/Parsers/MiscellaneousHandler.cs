@@ -189,8 +189,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadUInt32("LightningStormId");
         }
 
-        [Parser(Opcode.CMSG_QUERY_COMMUNITY_NAME)]
-        public static void HandleQueryCommunityName(Packet packet)
+        [Parser(Opcode.CMSG_QUERY_PLAYER_NAME_BY_COMMUNITY_ID)]
+        public static void HandleQueryPlayerNameByCommunityID(Packet packet)
         {
             packet.ReadPackedGuid128("BNetAccountGUID");
             packet.ReadUInt64("CommunityDbID");

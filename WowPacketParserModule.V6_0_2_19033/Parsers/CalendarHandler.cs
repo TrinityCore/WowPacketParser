@@ -350,6 +350,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_CALENDAR_EVENT_INVITE)]
+        [Parser(Opcode.CMSG_CALENDAR_INVITE)]
         public static void HandleAddCalendarEventInvite(Packet packet)
         {
             packet.ReadInt64("EventID");
@@ -378,7 +379,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_CALENDAR_EVENT_STATUS)]
+        [Parser(Opcode.CMSG_CALENDAR_STATUS)]
         [Parser(Opcode.CMSG_CALENDAR_EVENT_MODERATOR_STATUS)]
+        [Parser(Opcode.CMSG_CALENDAR_MODERATOR_STATUS)]
         public static void HandleCalendarEventStatus(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");

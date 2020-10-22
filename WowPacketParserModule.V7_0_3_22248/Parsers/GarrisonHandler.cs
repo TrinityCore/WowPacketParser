@@ -457,8 +457,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadUInt32("AbilityID");
         }
 
-        [Parser(Opcode.CMSG_GARRISON_MISSION_REQUEST_REWARD_INFO)]
-        public static void HandleGarrisonMissionRequestRewardInfo(Packet packet)
+        [Parser(Opcode.CMSG_GARRISON_GET_MISSION_REWARD)]
+        public static void HandleGarrisonGetMissionReward(Packet packet)
         {
             packet.ReadUInt64("Unk1"); // Money ?
             packet.ReadUInt32("Unk2");
@@ -479,8 +479,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadUInt32("FollowerID");
         }
 
-        [Parser(Opcode.CMSG_GARRISON_REQUEST_CLASS_SPEC_CATEGORY_INFO)]
-        public static void HandleGarrisonRequestClassSpecCategoryInfo(Packet packet)
+        [Parser(Opcode.CMSG_GARRISON_GET_CLASS_SPEC_CATEGORY_INFO)]
+        public static void HandleGarrisonGetClassSpecCategoryInfo(Packet packet)
         {
             packet.ReadUInt32E<GarrisonFollowerType>("GarrFollowerTypeId");
         }
