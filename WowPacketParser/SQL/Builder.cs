@@ -122,6 +122,9 @@ namespace WowPacketParser.SQL
                               (ClientVersion.Expansion == ClientType.BattleForAzeroth &&
                                Settings.TargetedDatabase == TargetedDatabase.BattleForAzeroth)
                               ||
+                              (ClientVersion.Expansion == ClientType.Shadowlands &&
+                               Settings.TargetedDatabase == TargetedDatabase.Shadowlands)
+                              ||
                               (ClientVersion.Expansion == ClientType.Classic &&
                                Settings.TargetedDatabase == TargetedDatabase.Classic)))
                         {

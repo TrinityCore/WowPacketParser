@@ -513,6 +513,9 @@ namespace WowPacketParser.SQL.Builders
                     case TargetedDatabase.BattleForAzeroth:
                         expansionBaseLevel = 120;
                         break;
+                    case TargetedDatabase.Shadowlands:
+                        expansionBaseLevel = 60;
+                        break;
                 }
             }
 
