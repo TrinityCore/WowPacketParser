@@ -50,6 +50,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("PlayerConditionID", TargetedDatabase.WarlordsOfDraenor)]
         public int? PlayerConditionID;
 
+        [DBFieldName("Unknown", TargetedDatabase.Shadowlands)]
+        public int? Unknown;
+
         [DBFieldName("SpawnTrackingID", TargetedDatabase.WarlordsOfDraenor)]
         public int? SpawnTrackingID;
 
