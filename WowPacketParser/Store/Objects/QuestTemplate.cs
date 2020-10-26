@@ -13,19 +13,22 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("QuestType")]
         public QuestType? QuestType;
 
-        [DBFieldName("QuestLevel")]
+        [DBFieldName("QuestLevel", TargetedDatabase.Zero, TargetedDatabase.Shadowlands)]
         public int? QuestLevel;
 
-        [DBFieldName("ScalingFactionGroup", TargetedDatabase.BattleForAzeroth)]
+        [DBFieldName("ScalingFactionGroup", TargetedDatabase.BattleForAzeroth, TargetedDatabase.Shadowlands)]
         public int? QuestScalingFactionGroup;
 
-        [DBFieldName("MaxScalingLevel", TargetedDatabase.Legion)]
+        [DBFieldName("MaxScalingLevel", TargetedDatabase.Legion, TargetedDatabase.Shadowlands)]
         public int? QuestMaxScalingLevel;
 
         [DBFieldName("QuestPackageID", TargetedDatabase.WarlordsOfDraenor)]
         public uint? QuestPackageID;
 
-        [DBFieldName("MinLevel")]
+        [DBFieldName("ContentTuningID", TargetedDatabase.Shadowlands)]
+        public int? ContentTuningID;
+
+        [DBFieldName("MinLevel", TargetedDatabase.Zero, TargetedDatabase.Shadowlands)]
         public int? MinLevel;
 
         [DBFieldName("MaxLevel", TargetedDatabase.Cataclysm, TargetedDatabase.WarlordsOfDraenor)]
@@ -79,8 +82,11 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("RewardDisplaySpell", TargetedDatabase.Zero, TargetedDatabase.WarlordsOfDraenor)]
         public uint? RewardDisplaySpell;
 
-        [DBFieldName("RewardDisplaySpell", TargetedDatabase.Legion, 3)]
+        [DBFieldName("RewardDisplaySpell", TargetedDatabase.Legion, TargetedDatabase.Shadowlands, 3)]
         public uint?[] RewardDisplaySpellLegion;
+
+        [DBFieldName("RewardDisplaySpell", TargetedDatabase.Shadowlands, 6)]
+        public uint[] RewardDisplaySpellShadowlands;
 
         [DBFieldName("RewardSpell", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
         public int? RewardSpell;
