@@ -129,11 +129,13 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             quest.ManagedWorldStateID = packet.ReadInt32("ManagedWorldStateID");
             quest.QuestSessionBonus = packet.ReadInt32("QuestSessionBonus");
 
-            quest.RewardDisplaySpellShadowlands = new uint[6];
+            // May group that into own table
+            quest.RewardDisplaySpellShadowlands = new uint[12];
+            quest.RewardDisplaySpellPlayerCondition = new int[12];
             for (int i = 0; i < rewardDisplaySpellCount; ++i)
             {
-                quest.RewardDisplaySpellShadowlands[i] = (uint)packet.ReadInt32("RewardDisplaySpell", i);
-                packet.ReadInt32("UnkInt", i);
+                quest.RewardDisplaySpellShadowlands[i] = (uint)packet.ReadInt32<SpellId>("SpellID", i, "RewardDisplaySpell");
+                quest.RewardDisplaySpellPlayerCondition[i] = packet.ReadInt32("PlayerCondition", i, "RewardDisplaySpell");
             }
 
             packet.ResetBitReader();

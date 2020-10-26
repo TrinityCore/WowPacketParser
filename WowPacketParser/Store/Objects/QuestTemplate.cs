@@ -85,8 +85,11 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("RewardDisplaySpell", TargetedDatabase.Legion, TargetedDatabase.Shadowlands, 3)]
         public uint?[] RewardDisplaySpellLegion;
 
-        [DBFieldName("RewardDisplaySpell", TargetedDatabase.Shadowlands, 6)]
+        [DBFieldName("RewardDisplaySpell", TargetedDatabase.Shadowlands, 12)]
         public uint[] RewardDisplaySpellShadowlands;
+
+        [DBFieldName("RewardDisplaySpellPlayerCondition", TargetedDatabase.Shadowlands, 12)]
+        public int[] RewardDisplaySpellPlayerCondition;
 
         [DBFieldName("RewardSpell", TargetedDatabase.Zero, TargetedDatabase.Cataclysm)]
         public int? RewardSpell;
