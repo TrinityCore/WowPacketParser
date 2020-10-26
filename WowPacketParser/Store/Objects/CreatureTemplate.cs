@@ -43,7 +43,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("unit_class", TargetedDatabase.BattleForAzeroth)]
         public uint? UnitClass;
 
-        [DBFieldName("FadeRegionRadius", TargetedDatabase.BattleForAzeroth)]
+        [DBFieldName("FadeRegionRadius", TargetedDatabase.BattleForAzeroth, TargetedDatabase.Shadowlands)]
         public float? FadeRegionRadius;
 
         [DBFieldName("WidgetSetID", TargetedDatabase.BattleForAzeroth)]
