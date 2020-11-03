@@ -602,24 +602,24 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         [Parser(Opcode.SMSG_RATED_BATTLEFIELD_INFO)]
         public static void HandleRatedBGStats(Packet packet)
         {
-            packet.ReadUInt32("BgWeeklyWins20vs20");
-            packet.ReadUInt32("BgWeeklyPlayed20vs20");
+            packet.ReadUInt32("BgWeeklyWins25vs25");
+            packet.ReadUInt32("BgWeeklyPlayed25vs25");
             packet.ReadUInt32("BgWeeklyPlayed15vs15");
-            packet.ReadUInt32("Unk UInt32 (3)");
+            packet.ReadUInt32("BgSeasonalPlayed15vs15");
             packet.ReadUInt32("BgWeeklyWins10vs10");
-            packet.ReadUInt32("Unk UInt32 (3)");
-            packet.ReadUInt32("Unk UInt32 (4)");
-            packet.ReadUInt32("Unk UInt32");
+            packet.ReadUInt32("BgSeasonalPlayed25vs25");
+            packet.ReadUInt32("BgSeasonalWins15vs15");
+            packet.ReadUInt32("TotalWins10vs10"); // Unused by Client
             packet.ReadUInt32("BgWeeklyWins15vs15");
-            packet.ReadUInt32("Unk UInt32");
-            packet.ReadUInt32("Unk UInt32 (4)");
-            packet.ReadUInt32("Unk UInt32");
-            packet.ReadUInt32("Unk UInt32 (3)");
-            packet.ReadUInt32("Unk UInt32 (4)");
-            packet.ReadUInt32("Unk UInt32");
+            packet.ReadUInt32("TotalWins25vs25"); // Unused by Client
+            packet.ReadUInt32("BgSeasonalWins10vs10");
+            packet.ReadUInt32("TotalWins15vs15"); // Unused by Client
+            packet.ReadUInt32("BgSeasonalPlayed10vs10");
+            packet.ReadUInt32("BgSeasonalWins25vs25");
+            packet.ReadUInt32("TotalPlayed10vs10"); // Unused by Client
             packet.ReadUInt32("BgWeeklyPlayed10vs10");
-            packet.ReadUInt32("Unk UInt32");
-            packet.ReadUInt32("Unk UInt32");
+            packet.ReadUInt32("TotalPlayed25vs25"); // Unused by Client
+            packet.ReadUInt32("TotalPlayed15vs15"); // Unused by Client
         }
 
         [Parser(Opcode.SMSG_BATTLEFIELD_RATED_INFO)]
