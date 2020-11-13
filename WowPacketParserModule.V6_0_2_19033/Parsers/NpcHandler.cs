@@ -37,6 +37,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ResetBitReader();
             uint textLen = packet.ReadBits(12);
             uint confirmLen = packet.ReadBits(12);
+            if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
+            {
+                packet.ReadBits("Status", 2, idx);
+
+                uint rewardsCount = packet.ReadUInt32();
+                for (uint i = 0; i < rewardsCount; ++i)
+                {
+                    packet.ResetBitReader();
+                    packet.ReadBits("Type", 1, idx, "TreasureItem", i);
+                    packet.ReadInt32("ID", idx, "TreasureItem", i);
+                    packet.ReadInt32("Quantity", idx, "TreasureItem", i);
+                }
+            }
 
             gossipOption.OptionText = packet.ReadWoWString("Text", textLen, idx);
             gossipMenuOptionBox.BoxText = packet.ReadWoWString("Confirm", confirmLen, idx);

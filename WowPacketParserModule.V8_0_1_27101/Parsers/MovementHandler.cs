@@ -47,14 +47,18 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         public static void ReadMovementSpline(Packet packet, Vector3 pos, params object[] indexes)
         {
             packet.ReadUInt32E<SplineFlag>("Flags", indexes);
-            packet.ReadByte("AnimTier", indexes);
-            packet.ReadUInt32("TierTransStartTime", indexes);
+            if (ClientVersion.RemovedInVersion(ClientType.Shadowlands))
+            {
+                packet.ReadByte("AnimTier", indexes);
+                packet.ReadUInt32("TierTransStartTime", indexes);
+            }
             packet.ReadInt32("Elapsed", indexes);
             packet.ReadUInt32("MoveTime", indexes);
             packet.ReadUInt32("FadeObjectTime", indexes);
 
             packet.ReadByte("Mode", indexes);
-            packet.ReadByte("VehicleExitVoluntary", indexes);
+            if (ClientVersion.RemovedInVersion(ClientType.Shadowlands))
+                packet.ReadByte("VehicleExitVoluntary", indexes);
 
             packet.ReadPackedGuid128("TransportGUID", indexes);
             packet.ReadSByte("VehicleSeat", indexes);
@@ -63,10 +67,22 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             var type = packet.ReadBits("Face", 2, indexes);
             var pointsCount = packet.ReadBits("PointsCount", 16, indexes);
+            if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
+            {
+                packet.ReadBit("VehicleExitVoluntary", indexes);
+                packet.ReadBit("Interpolate", indexes);
+            }
             var packedDeltasCount = packet.ReadBits("PackedDeltasCount", 16, indexes);
             var hasSplineFilter = packet.ReadBit("HasSplineFilter", indexes);
             var hasSpellEffectExtraData = packet.ReadBit("HasSpellEffectExtraData", indexes);
             var hasJumpExtraData = packet.ReadBit("HasJumpExtraData", indexes);
+            var hasAnimTier = false;
+            var hasUnk901 = false;
+            if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
+            {
+                hasAnimTier = packet.ReadBit("HasAnimTierTransition");
+                hasUnk901 = packet.ReadBit("HasUnknown");
+            }
 
             if (hasSplineFilter)
                 ReadMonsterSplineFilter(packet, indexes, "MonsterSplineFilter");
@@ -109,10 +125,29 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             }
 
             if (hasSpellEffectExtraData)
-                ReadMonsterSplineSpellEffectExtraData(packet, "MonsterSplineSpellEffectExtra");
+                ReadMonsterSplineSpellEffectExtraData(packet, indexes, "MonsterSplineSpellEffectExtra");
 
             if (hasJumpExtraData)
-                ReadMonsterSplineJumpExtraData(packet, "MonsterSplineJumpExtraData");
+                ReadMonsterSplineJumpExtraData(packet, indexes, "MonsterSplineJumpExtraData");
+
+            if (hasAnimTier)
+            {
+                packet.ReadInt32("TierTransitionID", indexes);
+                packet.ReadInt32("StartTime", indexes);
+                packet.ReadInt32("EndTime", indexes);
+                packet.ReadByte("AnimTier", indexes);
+            }
+
+            if (hasUnk901)
+            {
+                for (var i = 0; i < 16; ++i)
+                {
+                    packet.ReadInt32("Unknown1", indexes, "Unknown901", i);
+                    packet.ReadInt32("Unknown2", indexes, "Unknown901", i);
+                    packet.ReadInt32("Unknown3", indexes, "Unknown901", i);
+                    packet.ReadInt32("Unknown4", indexes, "Unknown901", i);
+                }
+            }
 
             // Calculate mid pos
             var mid = new Vector3

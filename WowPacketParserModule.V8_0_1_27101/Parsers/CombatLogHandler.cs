@@ -41,9 +41,17 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadByte("TargetMaxScalingLevel", idx);
             packet.ReadInt16("PlayerLevelDelta", idx);
             packet.ReadSByte("TargetScalingLevelDelta", idx);
-            packet.ReadUInt16("PlayerItemLevel", idx);
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
-                packet.ReadUInt16("TargetItemLevel", idx);
+            if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
+            {
+                packet.ReadSingle("PlayerItemLevel", idx);
+                packet.ReadSingle("TargetItemLevel", idx);
+            }
+            else
+            {
+                packet.ReadUInt16("PlayerItemLevel", idx);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
+                    packet.ReadUInt16("TargetItemLevel", idx);
+            }
             packet.ReadUInt16("ScalingHealthItemLevelCurveID", idx);
             packet.ReadByte("ScalesWithItemLevel", idx);
         }

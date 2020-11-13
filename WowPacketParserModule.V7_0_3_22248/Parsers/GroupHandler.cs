@@ -9,7 +9,10 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         public static void ReadAuraInfos(Packet packet, params object[] index)
         {
             packet.ReadUInt32<SpellId>("Aura", index);
-            packet.ReadByte("Flags", index);
+            if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
+                packet.ReadUInt16("Flags", index);
+            else
+                packet.ReadByte("Flags", index);
             packet.ReadInt32("ActiveFlags", index);
             var byte3 = packet.ReadInt32("PointsCount", index);
 
@@ -65,6 +68,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var auraCount = packet.ReadInt32("AuraCount");
 
             V6_0_2_19033.Parsers.GroupHandler.ReadPhaseInfos(packet, "Phase");
+
+            if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
+            {
+                packet.ReadUInt32("ContentTuningConditionMask", "CTROptions");
+                packet.ReadInt32("Unused901", "CTROptions");
+                packet.ReadUInt32("ExpansionLevelMask", "CTROptions");
+            }
 
             for (int i = 0; i < auraCount; i++)
                 ReadAuraInfos(packet, "Aura", i);

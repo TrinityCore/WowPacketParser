@@ -34,7 +34,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("IsSetFavorite");
             var count = packet.ReadUInt32("FavoriteAppearancesCount");
             for (int i = 0; i < count; i++)
-                packet.ReadUInt32("ItemModifiedAppearanceId");
+                packet.ReadUInt32("ItemModifiedAppearanceId", "FavoriteAppearances", i);
         }
 
         [Parser(Opcode.SMSG_TRANSMOGRIFY_NPC)]

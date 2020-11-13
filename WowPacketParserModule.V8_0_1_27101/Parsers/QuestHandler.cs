@@ -436,6 +436,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadUInt64("MoneyReward");
             var bonusCount = packet.ReadUInt32("BonusCount");
 
+            if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
+                packet.ReadInt32("Flags");
+
             for (int i = 0; i < currencyCount; i++)
                 ReadTreasurePickCurrency(packet, i);
 
