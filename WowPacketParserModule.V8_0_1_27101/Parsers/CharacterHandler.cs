@@ -182,7 +182,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadInt32("Unknown703", idx);
             packet.ReadInt32("InterfaceVersion", idx);
             packet.ReadUInt32("Flags4", idx);
-            var unknown830lengths = new uint[packet.ReadUInt32()];
+            var mailSenderLengths = new uint[packet.ReadUInt32()];
 
             packet.ResetBitReader();
 
@@ -191,12 +191,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadBit("BoostInProgress", idx);
             packet.ReadBits("UnkWod61x", 5, idx);
 
-            for (var j = 0; j < unknown830lengths.Length; ++j)
-                unknown830lengths[j] = packet.ReadBits(6);
+            for (var j = 0; j < mailSenderLengths.Length; ++j)
+                mailSenderLengths[j] = packet.ReadBits(6);
 
-            for (var j = 0; j < unknown830lengths.Length; ++j)
-                if (unknown830lengths[j] > 1)
-                    packet.ReadDynamicString("Unknown830", unknown830lengths[j], idx);
+            for (var j = 0; j < mailSenderLengths.Length; ++j)
+                if (mailSenderLengths[j] > 1)
+                    packet.ReadDynamicString("MailSender", mailSenderLengths[j], idx);
 
             packet.ReadWoWString("Character Name", nameLength, idx);
 
@@ -205,6 +205,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 PlayerCreateInfo startPos = new PlayerCreateInfo { Race = race, Class = klass, Map = (uint)mapId, Zone = (uint)zone, Position = pos, Orientation = 0 };
                 Storage.StartPositions.Add(startPos, packet.TimeSpan);
             }
+        }
+
+        public static void ReadUnlockedConditionalAppearance(Packet packet, params object[] indexes)
+        {
+            packet.ReadUInt32("AchievementId", indexes);
+            packet.ReadUInt32("Unused", indexes);
         }
 
         [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT)]
@@ -233,10 +239,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
             {
                 for (uint i = 0; i < unlockedConditionalAppearanceCount; ++i)
-                {
-                    packet.ReadUInt32("AchievementId", "UnlockedConditionalAppearance", i);
-                    packet.ReadUInt32("Unused", "UnlockedConditionalAppearance", i);
-                }
+                    ReadUnlockedConditionalAppearance(packet, "UnlockedConditionalAppearance", i);
             }
 
             for (uint i = 0; i < charsCount; ++i)
