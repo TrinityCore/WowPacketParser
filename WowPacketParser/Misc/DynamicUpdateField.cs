@@ -32,9 +32,9 @@ namespace WowPacketParser.Misc
             }
         }
 
-        public void ReadUpdateMask(Packet packet)
+        public void ReadUpdateMask(Packet packet, int bitSizeCount = 32)
         {
-            var newSize = packet.ReadBits(32);
+            var newSize = packet.ReadBits(bitSizeCount);
             Resize(newSize);
             var rawMask = new int[(newSize + 31) / 32];
             if (newSize > 32)
