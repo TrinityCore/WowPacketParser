@@ -118,20 +118,18 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_NOTIFY_DEST_LOC_SPELL_CAST)]
         public static void HandleNotifyDestLocSpellCast(Packet packet)
         {
-            // TODO: Verify and/or finish this
-            // Everything is guessed
-            packet.ReadGuid("Caster GUID");
-            packet.ReadGuid("Target GUID");
+            packet.ReadGuid("Caster");
+            packet.ReadGuid("DestTransport");
             packet.ReadInt32<SpellId>("Spell ID");
-            packet.ReadVector3("Position");
-            packet.ReadVector3("Target Position");
-            packet.ReadSingle("Elevation");
-            packet.ReadSingle("Speed");
-            packet.ReadUInt32("Duration");
-            packet.ReadInt32("Unk");
+            packet.ReadVector3("SourceLoc");
+            packet.ReadVector3("DestLoc");
+            packet.ReadSingle("MissileTrajectoryPitch");
+            packet.ReadSingle("MissileTrajectorySpeed");
+            packet.ReadUInt32("TravelTime");
+            packet.ReadInt32("DestLocSpellCastIndex");
 
             if (packet.Length == 64) // packet always has length 64 length except for some rare exceptions with length 60 (hardcoded in the client)
-                packet.ReadSingle("Unk");
+                packet.ReadSingle("CastID");
         }
 
         [Parser(Opcode.SMSG_WEEKLY_SPELL_USAGE)]
