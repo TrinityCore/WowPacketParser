@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Enums;
+﻿using System;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
@@ -60,10 +61,14 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadInt32("InterfaceVersion", idx);
             packet.ReadUInt32("Flags4", idx);
             var mailSenderLengths = new uint[packet.ReadUInt32()];
+            var mailSenderTypes = ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_2_36639) ? new uint[packet.ReadUInt32()] : Array.Empty<uint>();
             packet.ReadUInt32("OverrideSelectScreenFileDataID", idx);
 
             for (var j = 0u; j < customizationCount; ++j)
                 ReadChrCustomizationChoice(packet, idx, "Customizations", j);
+
+            for (var j = 0; j < mailSenderTypes.Length; ++j)
+                packet.ReadUInt32("MailSenderType", idx, j);
 
             packet.ResetBitReader();
 
@@ -77,7 +82,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             for (var j = 0; j < mailSenderLengths.Length; ++j)
                 if (mailSenderLengths[j] > 1)
-                    packet.ReadDynamicString("Unknown830", mailSenderLengths[j], idx);
+                    packet.ReadDynamicString("MailSender", mailSenderLengths[j], idx);
 
             packet.ReadWoWString("Character Name", nameLength, idx);
 
@@ -94,6 +99,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadBit("Success");
             packet.ReadBit("IsDeletedCharacters");
             packet.ReadBit("IsNewPlayerRestrictionSkipped");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_2_36639))
+                packet.ReadBit("IsNewPlayerRestricted");
+
             packet.ReadBit("IsNewPlayer");
 
             var hasDisabledClassesMask = packet.ReadBit("HasDisabledClassesMask");

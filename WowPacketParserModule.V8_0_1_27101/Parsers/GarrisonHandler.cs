@@ -6,16 +6,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 {
     public static class GarrisonHandler
     {
-        public static void ReadGarrisonMissionOvermaxRewards(uint rewardsCount, Packet packet, params object[] indexes)
-        {
-            int[] counts = new int[rewardsCount];
-            for (int i = 0; i < rewardsCount; i++)
-                counts[i] = packet.ReadInt32("MissionRewardCount", indexes, i);
-            for (int i = 0; i < rewardsCount; i++)
-                for (int j = 0; j < counts[i]; j++)
-                    V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonMissionReward(packet, indexes, i, j);
-        }
-
         [Parser(Opcode.CMSG_GARRISON_CHECK_UPGRADEABLE)]
         [Parser(Opcode.CMSG_GARRISON_GET_CLASS_SPEC_CATEGORY_INFO)]
         public static void HandleGarrisonGarrSiteID(Packet packet)
@@ -59,8 +49,21 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 for (int j = 0; j < garrisonMissionCount; j++)
                     V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonMission(packet, "Mission", i, j);
 
-                ReadGarrisonMissionOvermaxRewards(garrisonMissionRewardsCount, packet, "MissionRewards", i);
-                ReadGarrisonMissionOvermaxRewards(garrisonMissionOvermaxRewardsCount, packet, "MissionOvermaxRewards", i);
+                int[] garrisonMissionRewardItemCounts = new int[garrisonMissionRewardsCount];
+                for (int j = 0; j < garrisonMissionRewardItemCounts.Length; ++j)
+                    garrisonMissionRewardItemCounts[j] = packet.ReadInt32();
+
+                for (int j = 0; j < garrisonMissionRewardItemCounts.Length; ++j)
+                    for (int k = 0; k < garrisonMissionRewardItemCounts[i]; ++k)
+                        V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonMissionReward(packet, i, "MissionRewards", j, k);
+
+                int[] garrisonMissionOvermaxRewardItemCounts = new int[garrisonMissionOvermaxRewardsCount];
+                for (int j = 0; j < garrisonMissionOvermaxRewardItemCounts.Length; ++j)
+                    garrisonMissionOvermaxRewardItemCounts[j] = packet.ReadInt32();
+
+                for (int j = 0; j < garrisonMissionOvermaxRewardItemCounts.Length; ++j)
+                    for (int k = 0; k < garrisonMissionOvermaxRewardItemCounts[i]; ++k)
+                        V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonMissionReward(packet, i, "MissionOvermaxRewards", j, k);
 
                 for (int j = 0; j < areaBonusCount; j++)
                     V6_0_2_19033.Parsers.GarrisonHandler.ReadGarrisonMissionBonusAbility(packet, "MissionAreaBonus", i, j);

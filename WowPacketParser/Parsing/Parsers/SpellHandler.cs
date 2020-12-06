@@ -126,7 +126,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadSingle("MissileTrajectoryPitch");
             packet.ReadSingle("MissileTrajectorySpeed");
             packet.ReadUInt32("TravelTime");
-            packet.ReadInt32("DestLocSpellCastIndex");
+            packet.AddValue("DestLocSpellCastIndex", packet.ReadInt32() & 0xFF);
 
             if (packet.Length == 64) // packet always has length 64 length except for some rare exceptions with length 60 (hardcoded in the client)
                 packet.ReadSingle("CastID");

@@ -37,9 +37,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ResetBitReader();
             uint textLen = packet.ReadBits(12);
             uint confirmLen = packet.ReadBits(12);
+            bool hasSpellId = false;
             if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
             {
                 packet.ReadBits("Status", 2, idx);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_2_36639))
+                    hasSpellId = packet.ReadBit();
 
                 uint rewardsCount = packet.ReadUInt32();
                 for (uint i = 0; i < rewardsCount; ++i)
@@ -53,6 +56,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             gossipOption.OptionText = packet.ReadWoWString("Text", textLen, idx);
             gossipMenuOptionBox.BoxText = packet.ReadWoWString("Confirm", confirmLen, idx);
+
+            if (hasSpellId)
+                packet.ReadInt32("SpellID", idx);
 
             List<int> boxTextList;
             List<int> optionTextList;

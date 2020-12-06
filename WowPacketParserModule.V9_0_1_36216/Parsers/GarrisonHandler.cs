@@ -134,8 +134,23 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 for (int j = 0; j < garrisonMissionCount; j++)
                     ReadGarrisonMission(packet, "Mission", i, j);
 
-                V8_0_1_27101.Parsers.GarrisonHandler.ReadGarrisonMissionOvermaxRewards(garrisonMissionRewardsCount, packet, "MissionRewards", i);
-                V8_0_1_27101.Parsers.GarrisonHandler.ReadGarrisonMissionOvermaxRewards(garrisonMissionOvermaxRewardsCount, packet, "MissionOvermaxRewards", i);
+                int[] garrisonMissionRewardItemCounts = new int[garrisonMissionRewardsCount];
+                for (int j = 0; j < garrisonMissionRewardItemCounts.Length; ++j)
+                    garrisonMissionRewardItemCounts[j] = packet.ReadInt32();
+
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V9_0_2_36639))
+                    for (int j = 0; j < garrisonMissionRewardItemCounts.Length; ++j)
+                        for (int k = 0; k < garrisonMissionRewardItemCounts[i]; ++k)
+                            V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonMissionReward(packet, i, "MissionRewards", j, k);
+
+                int[] garrisonMissionOvermaxRewardItemCounts = new int[garrisonMissionOvermaxRewardsCount];
+                for (int j = 0; j < garrisonMissionOvermaxRewardItemCounts.Length; ++j)
+                    garrisonMissionOvermaxRewardItemCounts[j] = packet.ReadInt32();
+
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V9_0_2_36639))
+                    for (int j = 0; j < garrisonMissionOvermaxRewardItemCounts.Length; ++j)
+                        for (int k = 0; k < garrisonMissionOvermaxRewardItemCounts[i]; ++k)
+                            V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonMissionReward(packet, i, "MissionOvermaxRewards", j, k);
 
                 for (int j = 0; j < areaBonusCount; j++)
                     V6_0_2_19033.Parsers.GarrisonHandler.ReadGarrisonMissionBonusAbility(packet, "MissionAreaBonus", i, j);
@@ -165,6 +180,17 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
                 for (int j = 0; j < talentsCount; j++)
                     ReadGarrisonTalents(packet, "Talents", i, j);
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_2_36639))
+                {
+                    for (int j = 0; j < garrisonMissionRewardItemCounts.Length; ++j)
+                        for (int k = 0; k < garrisonMissionRewardItemCounts[i]; ++k)
+                            V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonMissionReward(packet, i, "MissionRewards", j, k);
+
+                    for (int j = 0; j < garrisonMissionOvermaxRewardItemCounts.Length; ++j)
+                        for (int k = 0; k < garrisonMissionOvermaxRewardItemCounts[i]; ++k)
+                            V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonMissionReward(packet, i, "MissionOvermaxRewards", j, k);
+                }
             }
         }
     }

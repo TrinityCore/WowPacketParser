@@ -29,6 +29,9 @@ namespace WowPacketParser.Enums
         Duration = 0x0004,
         Scalable = 0x0008,
         Negative = 0x0010,
-        Unk20    = 0x0020
+        Unk20    = 0x0020,
+        Unk40    = 0x0040,
+        Unk80    = 0x0080,
+        MawPower = 0x0100
     }
 }

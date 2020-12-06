@@ -90,13 +90,19 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
         public static void ReadGarrisonMissionReward(Packet packet, params object[] indexes)
         {
-            packet.ReadInt32<ItemId>("ItemId", indexes);
-            packet.ReadUInt32("Quantity", indexes);
-            packet.ReadInt32<CurrencyId>("CurrencyId", indexes);
+            packet.ResetBitReader();
+            packet.ReadInt32<ItemId>("ItemID", indexes);
+            packet.ReadUInt32("ItemQuantity", indexes);
+            packet.ReadInt32<CurrencyId>("CurrencyID", indexes);
             packet.ReadUInt32("CurrencyQuantity", indexes);
-            packet.ReadUInt32("FollowerXp", indexes);
-            packet.ReadUInt32("BonusAbilityId", indexes);
+            packet.ReadUInt32("FollowerXP", indexes);
+            packet.ReadUInt32("GarrMssnBonusAbilityID", indexes);
             packet.ReadInt32("ItemFileDataID", indexes);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_2_36639))
+            {
+                if (packet.ReadBit())
+                    Substructures.ItemHandler.ReadItemInstance(packet, indexes, "ItemInstance");
+            }
         }
 
         public static void ReadGarrisonFollowerCategoryInfo(Packet packet, params object[] indexes)

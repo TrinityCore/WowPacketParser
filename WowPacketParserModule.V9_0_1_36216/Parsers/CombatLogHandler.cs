@@ -19,8 +19,13 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadByte("TargetMinScalingLevel", idx);
             packet.ReadByte("TargetMaxScalingLevel", idx);
             packet.ReadSByte("TargetScalingLevelDelta", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_2_36639))
+                packet.ReadUInt32("Flags", idx);
+
             packet.ReadBits("Type", 4, idx);
-            packet.ReadBit("ScalesWithItemLevel", idx);
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V9_0_2_36639))
+                packet.ReadBit("ScalesWithItemLevel", idx);
         }
 
         [Parser(Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG)]
