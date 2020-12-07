@@ -80,8 +80,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             var hasUnk901 = false;
             if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
             {
-                hasAnimTier = packet.ReadBit("HasAnimTierTransition");
-                hasUnk901 = packet.ReadBit("HasUnknown");
+                hasAnimTier = packet.ReadBit("HasAnimTierTransition", indexes);
+                hasUnk901 = packet.ReadBit("HasUnknown", indexes);
             }
 
             if (hasSplineFilter)
