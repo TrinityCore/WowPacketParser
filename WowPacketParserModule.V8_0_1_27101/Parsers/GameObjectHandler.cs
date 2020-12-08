@@ -62,7 +62,10 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 Storage.GameObjectTemplateQuestItems.Add(questItem, packet.TimeSpan);
             }
 
-            gameObject.RequiredLevel = packet.ReadInt32("RequiredLevel");
+            if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
+                gameObject.ContentTuningId = packet.ReadInt32("ContentTuningId");
+            else
+                gameObject.RequiredLevel = packet.ReadInt32("RequiredLevel");
 
             Storage.GameObjectTemplates.Add(gameObject, packet.TimeSpan);
 

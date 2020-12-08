@@ -40,8 +40,11 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Data", TargetedDatabase.BattleForAzeroth, 34, true)]
         public int?[] Data;
 
-        [DBFieldName("RequiredLevel", TargetedDatabase.Cataclysm)]
+        [DBFieldName("RequiredLevel", TargetedDatabase.Cataclysm, TargetedDatabase.Shadowlands)]
         public int? RequiredLevel;
+
+        [DBFieldName("ContentTuningId", TargetedDatabase.Shadowlands)]
+        public int? ContentTuningId;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
