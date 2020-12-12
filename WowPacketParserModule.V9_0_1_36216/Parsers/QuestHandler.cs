@@ -262,7 +262,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                         Flags = packet.ReadInt32("Flags", i, j),
                         WorldEffectID = packet.ReadInt32("WorldEffectID", i, j),
                         PlayerConditionID = packet.ReadInt32("PlayerConditionID", i, j),
-                        Unknown = packet.ReadInt32("AlternativePlayerConditionID?", i, j),
+                        NavigationPlayerConditionID = packet.ReadInt32("NavigationPlayerConditionID", i, j),
                         SpawnTrackingID = packet.ReadInt32("SpawnTrackingID", i, j)
                     };
 
