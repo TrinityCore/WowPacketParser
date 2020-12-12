@@ -143,5 +143,25 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             for (int i = 0; i < liveRegionCharacterCopySourceRegionsCount; i++)
                 packet.ReadUInt32("LiveRegionCharacterCopySourceRegion", i);
         }
+
+        [Parser(Opcode.SMSG_SET_ALL_TASK_PROGRESS)]
+        [Parser(Opcode.SMSG_UPDATE_TASK_PROGRESS)]
+        public static void HandleSetAllTaskProgress(Packet packet)
+        {
+            var int4 = packet.ReadUInt32("TaskProgressCount");
+            for (int i = 0; i < int4; i++)
+            {
+                packet.ReadUInt32("TaskID", i);
+
+                // these fields might have been shuffled
+                packet.ReadUInt32("FailureTime", i);
+                packet.ReadUInt32("Flags", i);
+                packet.ReadUInt32("Unk", i);
+
+                var int3 = packet.ReadUInt32("ProgressCounts", i);
+                for (int j = 0; j < int3; j++)
+                    packet.ReadUInt16("Counts", i, j);
+            }
+        }
     }
 }
