@@ -29,6 +29,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadUInt32("Reason", idx, i);
                 packet.ReadInt32("SubReason1", idx, i);
                 packet.ReadInt32("SubReason2", idx, i);
+                if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
+                    packet.ReadUInt32("SoftLock", idx, i);
             }
         }
 
@@ -136,12 +138,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_LFG_PLAYER_INFO)]
         public static void HandleLfgPlayerLockInfoResponse(Packet packet)
         {
-            var int16 = packet.ReadInt32("DungeonCount");
+            var dungeonCount = packet.ReadInt32("DungeonCount");
 
             ReadLFGBlackList(packet, "LFGBlackList");
 
             // LfgPlayerDungeonInfo
-            for (var i = 0; i < int16; ++i)
+            for (var i = 0; i < dungeonCount; ++i)
             {
                 packet.ReadUInt32("Slot", i);
                 packet.ReadInt32("CompletionQuantity", i);
