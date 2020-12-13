@@ -310,5 +310,13 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadUInt32("Duration");
             packet.ReadBit("MountedVisual");
         }
+
+        [Parser(Opcode.CMSG_UPDATE_SPELL_VISUAL)]
+        public static void HandleUpdateSpellVisual(Packet packet)
+        {
+            packet.ReadUInt32("SpellID");
+            ReadSpellCastVisual(packet, "Visual");
+            packet.ReadPackedGuid128("GUID");
+        }
     }
 }
