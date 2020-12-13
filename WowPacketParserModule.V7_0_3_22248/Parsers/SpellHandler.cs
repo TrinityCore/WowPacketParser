@@ -124,7 +124,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             int mapID = -1;
             if (hasMapID)
-                mapID = (ushort)packet.ReadInt32("MapID", idx);
+                mapID = packet.ReadInt32("MapID", idx);
 
             if (Settings.UseDBC && dstLocation != null && mapID != -1)
             {
