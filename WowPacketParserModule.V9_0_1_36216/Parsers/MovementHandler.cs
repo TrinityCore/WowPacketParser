@@ -27,5 +27,51 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             packet.AddSniffData(StoreNameType.Map, (int)WowPacketParser.Parsing.Parsers.MovementHandler.CurrentMapId, "NEW_WORLD");
         }
+
+        [Parser(Opcode.SMSG_VIGNETTE_UPDATE)]
+        public static void HandleVignetteUpdate(Packet packet)
+        {
+            packet.ReadBit("ForceUpdate");
+            packet.ReadBit("Unk_Bit_901");
+
+            // VignetteInstanceIDList
+            var int1 = packet.ReadUInt32("RemovedCount");
+            for (var i = 0; i < int1; ++i)
+                packet.ReadPackedGuid128("IDs", i);
+
+            // Added
+            var int2 = packet.ReadUInt32("AddedCount");
+            for (var i = 0; i < int2; ++i)
+                packet.ReadPackedGuid128("IDs", i);
+
+            // Added VignetteClientData
+            var int3 = packet.ReadUInt32("VignetteClientDataCount");
+            for (var i = 0; i < int3; ++i)
+            {
+                packet.ReadVector3("Position", i);
+                packet.ReadPackedGuid128("ObjGUID", i);
+                packet.ReadInt32("VignetteID", i);
+                packet.ReadUInt32<AreaId>("AreaID", i);
+                packet.ReadUInt32("Unk901_1", i);
+                packet.ReadUInt32("Unk901_2", i);
+            }
+
+            // Updated
+            var int4 = packet.ReadUInt32("UpdatedCount");
+            for (var i = 0; i < int4; ++i)
+                packet.ReadPackedGuid128("IDs", i);
+
+            // Updated VignetteClientData
+            var int5 = packet.ReadUInt32("VignetteClientDataCount");
+            for (var i = 0; i < int5; ++i)
+            {
+                packet.ReadVector3("Position", i);
+                packet.ReadPackedGuid128("ObjGUID", i);
+                packet.ReadInt32("VignetteID", i);
+                packet.ReadUInt32<AreaId>("AreaID", i);
+                packet.ReadUInt32("Unk901_1", i);
+                packet.ReadUInt32("Unk901_2", i);
+            }
+        }
     }
 }
