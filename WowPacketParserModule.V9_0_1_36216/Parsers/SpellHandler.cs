@@ -318,5 +318,16 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             ReadSpellCastVisual(packet, "Visual");
             packet.ReadPackedGuid128("GUID");
         }
+
+        [Parser(Opcode.SMSG_RESUME_CAST)]
+        public static void HandleResumeCast(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterGUID");
+            ReadSpellCastVisual(packet, "Visual");
+            packet.ReadPackedGuid128("CastID");
+            packet.ReadPackedGuid128("Target");
+            packet.ReadInt32<SpellId>("SpellID");
+
+        }
     }
 }
