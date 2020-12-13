@@ -207,6 +207,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             uint questTurnTextWindowLen = packet.ReadBits("questTurnTextWindowLen", 10);
             uint questTurnTargetNameLen = packet.ReadBits("questTurnTargetNameLen", 8);
             uint questCompletionLogLen = packet.ReadBits("questCompletionLogLen", 11);
+            packet.ReadBit("ReadyForTranslation");
 
             for (uint i = 0; i < objectiveCount; ++i)
             {
