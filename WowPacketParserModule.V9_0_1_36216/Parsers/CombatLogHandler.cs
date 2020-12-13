@@ -28,6 +28,32 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadBit("ScalesWithItemLevel", idx);
         }
 
+        public static void ReadPeriodicAuraLogEffectData(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("Effect", idx);
+            packet.ReadInt32("Amount", idx);
+            packet.ReadInt32("OriginalDamage", idx);
+            packet.ReadInt32("OverHealOrKill", idx);
+            packet.ReadInt32("SchoolMaskOrPower", idx);
+            packet.ReadInt32("AbsorbedOrAmplitude", idx);
+            packet.ReadInt32("Resisted", idx);
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Crit", idx);
+            var hasDebugData = packet.ReadBit("HasPeriodicAuraLogEffectDebugInfo", idx);
+            var hasContentTuning = packet.ReadBit("HasContentTuning", idx);
+
+            if (hasContentTuning)
+                ReadContentTuningParams(packet, idx, "ContentTuning");
+
+            if (hasDebugData)
+            {
+                packet.ReadSingle("CritRollMade", idx);
+                packet.ReadSingle("CritRollNeeded", idx);
+            }
+        }
+
         [Parser(Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG)]
         public static void HandleSpellNonMeleeDmgLog(Packet packet)
         {
@@ -65,6 +91,26 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             if (hasContentTuning)
                 ReadContentTuningParams(packet, "ContentTuning");
+        }
+
+        [Parser(Opcode.SMSG_SPELL_PERIODIC_AURA_LOG)]
+        public static void HandleSpellPeriodicAuraLog720(Packet packet)
+        {
+            packet.ReadPackedGuid128("TargetGUID");
+            packet.ReadPackedGuid128("CasterGUID");
+
+            packet.ReadInt32<SpellId>("SpellID");
+
+            var periodicAuraLogEffectCount = packet.ReadUInt32("PeriodicAuraLogEffectCount");
+
+            packet.ResetBitReader();
+            var hasLogData = packet.ReadBit("HasLogData");
+
+            for (var i = 0; i < periodicAuraLogEffectCount; i++)
+                ReadPeriodicAuraLogEffectData(packet, "PeriodicAuraLogEffectData");
+
+            if (hasLogData)
+                V8_0_1_27101.Parsers.SpellHandler.ReadSpellCastLogData(packet, "SpellCastLogData");
         }
     }
 }
