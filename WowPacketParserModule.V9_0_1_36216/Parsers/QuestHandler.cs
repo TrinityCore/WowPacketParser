@@ -407,5 +407,13 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             Storage.QuestOfferRewards.Add(questOfferReward, packet.TimeSpan);
         }
+
+        [Parser(Opcode.CMSG_QUEST_GIVER_CHOOSE_REWARD)]
+        public static void HandleQuestChooseReward(Packet packet)
+        {
+            packet.ReadPackedGuid128("QuestGiverGUID");
+            packet.ReadInt32("QuestID");
+            ReadRewardItem(packet, "ItemChoice");
+        }
     }
 }
