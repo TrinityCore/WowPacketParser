@@ -13,6 +13,7 @@ namespace WowPacketParser.Parsing
         Int, // Supports variable length
         Float, // Supports variable length
         Bytes,  // Supports variable length
+        Short,
         Custom
     }
 

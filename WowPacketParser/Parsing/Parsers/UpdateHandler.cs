@@ -407,6 +407,15 @@ namespace WowPacketParser.Parsing.Parsers
                         }
                         break;
                     }
+                    case UpdateFieldType.Short:
+                    {
+                        for (int k = 0; k < fieldData.Count; ++k)
+                        {
+                            if (mask[start + k] && (!isCreating || fieldData[k].UInt32Value != 0))
+                                packet.AddValue(k > 0 ? key + " + " + k : key, ((short)(fieldData[k].UInt32Value & 0xffff)) + "/" + ((short)(fieldData[k].UInt32Value >> 16)), index);
+                        }
+                        break;
+                    }
                     case UpdateFieldType.Custom:
                     {
                         // TODO: add custom handling
