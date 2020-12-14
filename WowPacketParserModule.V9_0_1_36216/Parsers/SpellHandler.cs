@@ -384,5 +384,11 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadPackedGuid128("PetGUID");
             ReadSpellCastRequest(packet, "Cast");
         }
+
+        [Parser(Opcode.SMSG_INTERRUPT_POWER_REGEN)]
+        public static void HandleInterruptPowerRegen(Packet packet)
+        {
+            packet.ReadUInt32E<PowerType>("PowerType");
+        }
     }
 }
