@@ -348,5 +348,13 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadUInt32("Immunities");
             }
         }
+
+        [Parser(Opcode.SMSG_MIRROR_IMAGE_CREATURE_DATA)]
+        public static void HandleGetMirrorImageData(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+            packet.ReadInt32("DisplayID");
+            packet.ReadInt32("SpellVisualKitID");
+        }
     }
 }
