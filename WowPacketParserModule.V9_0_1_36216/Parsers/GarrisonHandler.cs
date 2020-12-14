@@ -140,7 +140,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
                 if (ClientVersion.RemovedInVersion(ClientVersionBuild.V9_0_2_36639))
                     for (int j = 0; j < garrisonMissionRewardItemCounts.Length; ++j)
-                        for (int k = 0; k < garrisonMissionRewardItemCounts[i]; ++k)
+                        for (int k = 0; k < garrisonMissionRewardItemCounts[j]; ++k)
                             V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonMissionReward(packet, i, "MissionRewards", j, k);
 
                 int[] garrisonMissionOvermaxRewardItemCounts = new int[garrisonMissionOvermaxRewardsCount];
@@ -149,7 +149,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
                 if (ClientVersion.RemovedInVersion(ClientVersionBuild.V9_0_2_36639))
                     for (int j = 0; j < garrisonMissionOvermaxRewardItemCounts.Length; ++j)
-                        for (int k = 0; k < garrisonMissionOvermaxRewardItemCounts[i]; ++k)
+                        for (int k = 0; k < garrisonMissionOvermaxRewardItemCounts[j]; ++k)
                             V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonMissionReward(packet, i, "MissionOvermaxRewards", j, k);
 
                 for (int j = 0; j < areaBonusCount; j++)
@@ -184,11 +184,11 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_2_36639))
                 {
                     for (int j = 0; j < garrisonMissionRewardItemCounts.Length; ++j)
-                        for (int k = 0; k < garrisonMissionRewardItemCounts[i]; ++k)
+                        for (int k = 0; k < garrisonMissionRewardItemCounts[j]; ++k)
                             V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonMissionReward(packet, i, "MissionRewards", j, k);
 
                     for (int j = 0; j < garrisonMissionOvermaxRewardItemCounts.Length; ++j)
-                        for (int k = 0; k < garrisonMissionOvermaxRewardItemCounts[i]; ++k)
+                        for (int k = 0; k < garrisonMissionOvermaxRewardItemCounts[j]; ++k)
                             V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonMissionReward(packet, i, "MissionOvermaxRewards", j, k);
                 }
             }
