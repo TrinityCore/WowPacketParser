@@ -193,5 +193,36 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 }
             }
         }
+
+        [Parser(Opcode.SMSG_GARRISON_ADD_MISSION_RESULT)]
+        public static void HandleGarrisonAddMissionResult(Packet packet)
+        {
+            packet.ReadInt32E<GarrisonType>("GarrTypeId");
+            packet.ReadInt32E<GarrisonResult>("Result");
+            packet.ReadByte("State");
+
+            ReadGarrisonMission(packet, "Mission");
+
+            uint rewardCount1 = packet.ReadUInt32("RewardsCount");
+            uint rewardCount2 = packet.ReadUInt32("OvermaxRewardsCount");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_2_36639))
+            {
+                packet.ResetBitReader();
+                packet.ReadBit("CanStart");
+            }
+
+            for (int i = 0; i < rewardCount1; i++)
+                V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonMissionReward(packet, "MissionReward", i);
+
+            for (int i = 0; i < rewardCount2; i++)
+                V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonMissionReward(packet, "MissionOvermaxReward", i);
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V9_0_2_36639))
+            {
+                packet.ResetBitReader();
+                packet.ReadBit("CanStart");
+            }
+        }
     }
 }
