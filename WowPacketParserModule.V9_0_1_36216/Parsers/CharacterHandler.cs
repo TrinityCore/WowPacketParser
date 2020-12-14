@@ -93,6 +93,26 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             }
         }
 
+        public static void ReadPlayerModelDisplayInfo(Packet packet, params object[] idx)
+        {
+            packet.ReadPackedGuid128("InspecteeGUID", idx);
+            packet.ReadInt32("SpecializationID", idx);
+            var itemCount = packet.ReadUInt32();
+            packet.ResetBitReader();
+            var nameLen = packet.ReadBits(6);
+            packet.ReadByteE<Gender>("GenderID", idx);
+            packet.ReadByteE<Race>("Race", idx);
+            packet.ReadByteE<Class>("ClassID", idx);
+            var customizationCount = packet.ReadUInt32();
+            packet.ReadWoWString("Name", nameLen, idx);
+
+            for (var j = 0u; j < customizationCount; ++j)
+                ReadChrCustomizationChoice(packet, idx, "Customizations", j);
+
+            for (int i = 0; i < itemCount; i++)
+                V8_0_1_27101.Parsers.CharacterHandler.ReadInspectItemData(packet, idx, i);
+        }
+
         [Parser(Opcode.SMSG_PLAYER_CHOICE_CLEAR)]
         public static void HandleEmpty(Packet packet)
         {
@@ -128,6 +148,59 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             for (var i = 0u; i < raceUnlockCount; ++i)
                 V7_0_3_22248.Parsers.CharacterHandler.ReadRaceUnlockData(packet, i, "RaceUnlockData");
+        }
+
+        [Parser(Opcode.SMSG_INSPECT_RESULT)]
+        public static void HandleInspectResult(Packet packet)
+        {
+            ReadPlayerModelDisplayInfo(packet, "DisplayInfo");
+            var glyphCount = packet.ReadUInt32("GlyphsCount");
+            var talentCount = packet.ReadUInt32("TalentsCount");
+            var pvpTalentCount = packet.ReadUInt32("PvpTalentsCount");
+            packet.ReadInt32("ItemLevel");
+            packet.ReadByte("LifetimeMaxRank");
+            packet.ReadUInt16("TodayHK");
+            packet.ReadUInt16("YesterdayHK");
+            packet.ReadUInt32("LifetimeHK");
+            packet.ReadUInt32("HonorLevel");
+
+            for (int i = 0; i < glyphCount; i++)
+                packet.ReadUInt16("Glyphs", i);
+
+            for (int i = 0; i < talentCount; i++)
+                packet.ReadUInt16("Talents", i);
+
+            for (int i = 0; i < pvpTalentCount; i++)
+                packet.ReadUInt16("PvpTalents", i);
+
+            packet.ResetBitReader();
+            var hasGuildData = packet.ReadBit("HasGuildData");
+            var hasAzeriteLevel = packet.ReadBit("HasAzeriteLevel");
+
+            for (int i = 0; i < 6; i++)
+            {
+                packet.ReadByte("Bracket", i);
+                packet.ReadInt32("Rating", i);
+                packet.ReadInt32("Rank", i);
+                packet.ReadInt32("WeeklyPlayed", i);
+                packet.ReadInt32("WeeklyWon", i);
+                packet.ReadInt32("SeasonPlayed", i);
+                packet.ReadInt32("SeasonWon", i);
+                packet.ReadInt32("WeeklyBestRating", i);
+                packet.ReadInt32("Unk710", i);
+                packet.ReadInt32("Unk801_1", i);
+                packet.ResetBitReader();
+                packet.ReadBit("Unk801_2", i);
+            }
+
+            if (hasGuildData)
+            {
+                packet.ReadPackedGuid128("GuildGUID");
+                packet.ReadInt32("NumGuildMembers");
+                packet.ReadInt32("GuildAchievementPoints");
+            }
+            if (hasAzeriteLevel)
+                packet.ReadInt32("AzeriteLevel");
         }
     }
 }
