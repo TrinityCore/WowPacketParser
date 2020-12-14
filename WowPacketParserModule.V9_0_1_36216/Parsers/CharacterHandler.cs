@@ -93,6 +93,11 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_PLAYER_CHOICE_CLEAR)]
+        public static void HandleEmpty(Packet packet)
+        {
+        }
+
         [Parser(Opcode.SMSG_ENUM_CHARACTERS_RESULT)]
         public static void HandleEnumCharactersResult(Packet packet)
         {
