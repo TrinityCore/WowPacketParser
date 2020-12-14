@@ -133,5 +133,13 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadUInt32("Unk902_5");
             }
         }
+
+        [Parser(Opcode.SMSG_GROUP_NEW_LEADER)]
+        public static void HandleGroupNewLeader(Packet packet)
+        {
+            packet.ReadByte("PartyIndex");
+            var len = packet.ReadBits(9);
+            packet.ReadWoWString("Name", len);
+        }
     }
 }
