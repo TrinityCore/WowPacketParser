@@ -22,5 +22,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             packet.ReadBytes("WardenData", len);
         }
+
+        [Parser(Opcode.SMSG_WARDEN3_ENABLED)]
+        public static void HandleWarden3Enabled(Packet packet)
+        {
+            packet.ReadInt32("Unk");
+        }
     }
 }
