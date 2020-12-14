@@ -444,5 +444,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadPackedGuid128("Item");
             packet.ReadUInt64("AzeriteXPGained");
         }
+        
+        [Parser(Opcode.SMSG_PLAYER_AZERITE_ITEM_EQUIPPED_STATUS_CHANGED)]
+        public static void HandlePlayerAzeriteItemEquippedStatusChanged(Packet packet)
+        {
+            packet.ReadBit("IsHeartEquipped");
+        }
     }
 }
