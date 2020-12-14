@@ -377,5 +377,12 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             for (var i = 0; i < itemDisplayCount; i++)
                 packet.ReadInt32("ItemDisplayID", i);
         }
+
+        [Parser(Opcode.CMSG_PET_CAST_SPELL)]
+        public static void HandlePetCastSpell(Packet packet)
+        {
+            packet.ReadPackedGuid128("PetGUID");
+            ReadSpellCastRequest(packet, "Cast");
+        }
     }
 }
