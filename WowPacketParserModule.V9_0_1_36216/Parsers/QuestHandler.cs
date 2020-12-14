@@ -551,5 +551,11 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 Storage.LocalesQuestGreeting.Add(localesQuestGreeting, packet.TimeSpan);
             }
         }
+
+        [Parser(Opcode.CMSG_QUEST_GIVER_CLOSE_QUEST)]
+        public static void HandleQuestGiverCloseQuest(Packet packet)
+        {
+            packet.ReadInt32<QuestId>("QuestID");
+        }
     }
 }
