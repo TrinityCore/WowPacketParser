@@ -356,5 +356,26 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadInt32("DisplayID");
             packet.ReadInt32("SpellVisualKitID");
         }
+
+        [Parser(Opcode.SMSG_MIRROR_IMAGE_COMPONENTED_DATA)]
+        public static void HandleMirrorImageData(Packet packet)
+        {
+            packet.ReadPackedGuid128("UnitGUID");
+            packet.ReadInt32("DisplayID");
+            packet.ReadInt32("SpellVisualKitID");
+
+            packet.ReadByte("RaceID");
+            packet.ReadByte("Gender");
+            packet.ReadByte("ClassID");
+            var customizationCount = packet.ReadUInt32();
+            packet.ReadPackedGuid128("GuildGUID");
+            var itemDisplayCount = packet.ReadInt32("ItemDisplayCount");
+
+            for (var j = 0u; j < customizationCount; ++j)
+                CharacterHandler.ReadChrCustomizationChoice(packet, "Customizations", j);
+
+            for (var i = 0; i < itemDisplayCount; i++)
+                packet.ReadInt32("ItemDisplayID", i);
+        }
     }
 }
