@@ -129,10 +129,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadUInt32("NumMissionsStartedToday", i);
 
                 for (int j = 0; j < garrisonPlotInfoCount; j++)
-                    V6_0_2_19033.Parsers.GarrisonHandler.ReadGarrisonPlotInfo(packet, "PlotInfo", i, j);
+                    V6_0_2_19033.Parsers.GarrisonHandler.ReadGarrisonPlotInfo(packet, i, "PlotInfo", j);
 
                 for (int j = 0; j < garrisonMissionCount; j++)
-                    ReadGarrisonMission(packet, "Mission", i, j);
+                    ReadGarrisonMission(packet, i, "Mission", j);
 
                 int[] garrisonMissionRewardItemCounts = new int[garrisonMissionRewardsCount];
                 for (int j = 0; j < garrisonMissionRewardItemCounts.Length; ++j)
@@ -153,19 +153,19 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                             V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonMissionReward(packet, i, "MissionOvermaxRewards", j, k);
 
                 for (int j = 0; j < areaBonusCount; j++)
-                    V6_0_2_19033.Parsers.GarrisonHandler.ReadGarrisonMissionBonusAbility(packet, "MissionAreaBonus", i, j);
+                    V6_0_2_19033.Parsers.GarrisonHandler.ReadGarrisonMissionBonusAbility(packet, i, "MissionAreaBonus", j);
 
                 for (int j = 0; j < collectionsCount; j++)
-                    ReadGarrisonCollection(packet, "Collection", i, j);
+                    ReadGarrisonCollection(packet, i, "Collection", j);
 
                 for (int j = 0; j < eventListCount; j++)
-                    ReadGarrisonEventList(packet, "EventList", i, j);
+                    ReadGarrisonEventList(packet, i, "EventList", j);
 
                 for (int j = 0; j < archivedMissionsCount; j++)
                     packet.ReadInt32("ArchivedMissions", i, j);
 
                 for (int j = 0; j < garrisonBuildingInfoCount; j++)
-                    V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonBuildingInfo(packet, "BuildingInfo", i, j);
+                    V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonBuildingInfo(packet, i, "BuildingInfo", j);
 
                 packet.ResetBitReader();
 
@@ -173,13 +173,13 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                     packet.ReadBit("CanStartMission", i, j);
 
                 for (int j = 0; j < garrisonFollowerCount; j++)
-                    ReadGarrisonFollower(packet, "Follower", i, j);
+                    ReadGarrisonFollower(packet, i, "Follower", j);
 
                 for (int j = 0; j < autoTroopCount; j++)
-                    ReadGarrisonFollower(packet, "AutoTroop", i, j);
+                    ReadGarrisonFollower(packet, i, "AutoTroop", j);
 
                 for (int j = 0; j < talentsCount; j++)
-                    ReadGarrisonTalents(packet, "Talents", i, j);
+                    ReadGarrisonTalents(packet, i, "Talents", j);
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_2_36639))
                 {
