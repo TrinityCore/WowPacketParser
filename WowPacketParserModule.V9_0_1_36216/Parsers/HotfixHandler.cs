@@ -131,7 +131,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                             }
                             else if (db2File.Position != db2File.Length)
                             {
-                                db2File.WriteLine($"(Entry: {entry} TableHash: {type}) has incorrect structure");
+                                db2File.WriteLine($"(Entry: {entry} TableHash: {type}) has incorrect structure OR optional data. PacketLength: {db2File.Length} CurrentPosition: {db2File.Position} ");
                                 db2File.AsHex();
                             }
 
