@@ -17,5 +17,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Hotfix
         public int TargetLevelMaxDelta { get; set; }
         public int TargetLevelMin { get; set; }
         public int TargetLevelMax { get; set; }
+        [HotfixVersion(ClientVersionBuild.V9_0_2_36639, false)]
+        public int MinItemLevel { get; set; }
     }
 }

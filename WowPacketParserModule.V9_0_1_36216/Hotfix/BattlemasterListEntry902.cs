@@ -1,9 +1,9 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
 
-namespace WowPacketParserModule.V9_0_1_36216.Hotfix
+namespace WowPacketParserModule.V9_0_2_36639.Hotfix
 {
-    [HotfixStructure(DB2Hash.BattlemasterList, ClientVersionBuild.V9_0_1_36216, ClientVersionBuild.V9_0_2_36639, HasIndexInData = false)]
+    [HotfixStructure(DB2Hash.BattlemasterList, ClientVersionBuild.V9_0_2_36639, HasIndexInData = false)]
     public class BattlemasterListEntry
     {
         public string Name { get; set; }
@@ -19,7 +19,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Hotfix
         public sbyte GroupsAllowed { get; set; }
         public sbyte MaxGroupSize { get; set; }
         public short HolidayWorldState { get; set; }
-        public sbyte Flags { get; set; }
+        public int Flags { get; set; }
         public int IconFileDataID { get; set; }
         public int RequiredPlayerConditionID { get; set; }
         [HotfixArray(16)]
