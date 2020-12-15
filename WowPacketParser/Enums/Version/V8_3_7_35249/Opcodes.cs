@@ -1262,6 +1262,7 @@ namespace WowPacketParser.Enums.Version.V8_3_7_35249
             {Opcode.SMSG_INSTANCE_RESET, 0x26B5},
             {Opcode.SMSG_INSTANCE_RESET_FAILED, 0x26B6},
             {Opcode.SMSG_INSTANCE_SAVE_CREATED, 0x27C5},
+            {Opcode.SMSG_INTERRUPT_POWER_REGEN, 0x2C58},
             {Opcode.SMSG_INVALIDATE_PAGE_TEXT, 0x270C},
             {Opcode.SMSG_INVALIDATE_PLAYER, 0x26DA},
             {Opcode.SMSG_INVALID_PROMOTION_CODE, 0x2799},
