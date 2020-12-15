@@ -108,42 +108,53 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 var data = packet.ReadBytes(dataSize);
                 var db2File = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
 
-                if (status == HotfixStatus.Invalid)
+                switch (status)
                 {
-                    packet.WriteLine($"Row {entry} has been removed.");
-                    HotfixStoreMgr.RemoveRecord(type, entry);
-                }
-                if (status == HotfixStatus.Unavailable)
-                {
-                    // sniffs from others may have the data
-                    packet.WriteLine($"Row {entry} is unavailable.");                    
-                }
-                else
-                {
-                    packet.AddSniffData(StoreNameType.None, entry, type.ToString());
-                    HotfixStoreMgr.AddRecord(type, entry, db2File);
-
-                    if (HotfixStoreMgr.GetStore(type) == null)
-                    {
-                        db2File.WriteLine($"(Entry: {entry} TableHash: {type}) has missing structure. HotfixBlob entry generated!");
-                        db2File.AsHex();
-
-                        HotfixBlob hotfixBlob = new HotfixBlob
+                    case HotfixStatus.Valid:
                         {
-                            TableHash = type,
-                            RecordID = entry,
-                            Blob = "0x" + Utilities.ByteArrayToHexString(data)
-                        };
+                            packet.AddSniffData(StoreNameType.None, entry, type.ToString());
+                            HotfixStoreMgr.AddRecord(type, entry, db2File);
 
-                        Storage.HotfixBlobs.Add(hotfixBlob);
-                    }
-                    else if (db2File.Position != db2File.Length)
-                    {
-                        db2File.WriteLine($"(Entry: {entry} TableHash: {type}) has incorrect structure");
-                        db2File.AsHex();
-                    }
+                            if (HotfixStoreMgr.GetStore(type) == null)
+                            {
+                                db2File.WriteLine($"(Entry: {entry} TableHash: {type}) has missing structure. HotfixBlob entry generated!");
+                                db2File.AsHex();
 
-                    db2File.ClosePacket(false);
+                                HotfixBlob hotfixBlob = new HotfixBlob
+                                {
+                                    TableHash = type,
+                                    RecordID = entry,
+                                    Blob = "0x" + Utilities.ByteArrayToHexString(data)
+                                };
+
+                                Storage.HotfixBlobs.Add(hotfixBlob);
+                            }
+                            else if (db2File.Position != db2File.Length)
+                            {
+                                db2File.WriteLine($"(Entry: {entry} TableHash: {type}) has incorrect structure");
+                                db2File.AsHex();
+                            }
+
+                            db2File.ClosePacket(false);
+                            break;
+                        }
+                    case HotfixStatus.Invalid:
+                        {
+                            packet.WriteLine($"Row {entry} has been removed.");
+                            HotfixStoreMgr.RemoveRecord(type, entry);
+                            break;
+                        }
+                    case HotfixStatus.Unavailable:
+                        {
+                            // sniffs from others may have the data
+                            packet.WriteLine($"Row {entry} is unavailable.");    
+                            break;
+                        }
+                    default:
+                        {
+                            packet.WriteLine($"Unhandled status: {status}");
+                            break;
+                        }
                 }
 
                 HotfixData hotfixData = new HotfixData
@@ -182,7 +193,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 hotfixRecords.Add(hotfixRecord);
             }
 
-            var dataSize = packet.ReadInt32();
+            var dataSize = packet.ReadInt32("HotfixDataSize");
             var data = packet.ReadBytes(dataSize);
             var hotfixData = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
 
