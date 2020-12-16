@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
 using WowPacketParser.Misc;
@@ -131,8 +132,35 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                             }
                             else if (db2File.Position != db2File.Length)
                             {
-                                db2File.WriteLine($"(Entry: {entry} TableHash: {type}) has incorrect structure OR optional data. PacketLength: {db2File.Length} CurrentPosition: {db2File.Position} ");
-                                db2File.AsHex();
+                                var backupPosition = db2File.Position;
+                                var hash = db2File.ReadUInt32E<DB2Hash>();
+                                // jump back, because hash part also belongs to optional data
+                                db2File.SetPosition(backupPosition);
+
+                                // check if hash is valid hash
+                                if (Enum.IsDefined(typeof(DB2Hash), hash))
+                                {
+                                    var optionalData = db2File.ReadToEnd();
+
+                                    packet.AddValue("(OptionalData) TableHash:", hash);
+                                    packet.AddValue("(OptionalData) OptionalData:", Utilities.ByteArrayToHexString(optionalData));
+
+                                    HotfixOptionalData hotfixOptionalData = new HotfixOptionalData
+                                    {
+                                        // data to link the optional data to correct hotfix
+                                        TableHash = type,
+                                        RecordID = entry,
+
+                                        Data = "0x" + Utilities.ByteArrayToHexString(optionalData)
+                                    };
+
+                                    Storage.HotfixOptionalDatas.Add(hotfixOptionalData);
+                                }
+                                else
+                                {
+                                    db2File.WriteLine($"(Entry: {entry} TableHash: {type}) has incorrect structure OR optional data. PacketLength: {db2File.Length} CurrentPosition: {db2File.Position} ");
+                                    db2File.AsHex();
+                                }
                             }
 
                             db2File.ClosePacket(false);

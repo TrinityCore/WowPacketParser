@@ -126,5 +126,32 @@ namespace WowPacketParser.SQL.Builders
 
             return "SET NAMES 'utf8';" + Environment.NewLine + SQLUtil.Compare(Storage.BroadcastTextLocales, templatesDb, StoreNameType.None) + Environment.NewLine + "SET NAMES 'latin1';";
         }
+
+        [BuilderMethod]
+        public static string HotfixOptionalData()
+        {
+            if (Storage.HotfixOptionalDatas.IsEmpty())
+                return string.Empty;
+
+            var rows = new RowList<HotfixOptionalData>();
+
+            foreach (var hotfixOptionalData in Storage.HotfixOptionalDatas)
+            {
+                if (HotfixSettings.Instance.ShouldLog(hotfixOptionalData.Item1.TableHash))
+                {
+                    var row = new Row<HotfixOptionalData>
+                    {
+                        Data = hotfixOptionalData.Item1,
+                        Comment = hotfixOptionalData.Item1.TableHash.ToString()
+                    };
+
+                    rows.Add(row);
+                }
+            }
+            if (rows.Count != 0)
+                return $"DELETE FROM `hotfix_optional_data` WHERE `locale` = '{ClientLocale.PacketLocale}' AND `VerifiedBuild`>0;" + Environment.NewLine + new SQLInsert<HotfixOptionalData>(rows, false).Build();
+            else
+                return string.Empty;
+        }
     }
 }
