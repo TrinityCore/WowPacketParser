@@ -216,6 +216,7 @@ namespace WowPacketParser.Store
 
             HotfixDatas.Clear();
             HotfixBlobs.Clear();
+            HotfixOptionalDatas.Clear();
 
             Scenes.Clear();
 
