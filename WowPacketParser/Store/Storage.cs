@@ -32,6 +32,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<QuestTemplate> QuestTemplates = new DataBag<QuestTemplate>(new List<SQLOutput> { SQLOutput.quest_template });
         public static readonly DataBag<QuestObjective> QuestObjectives = new DataBag<QuestObjective>(new List<SQLOutput> { SQLOutput.quest_template });
         public static readonly DataBag<QuestVisualEffect> QuestVisualEffects = new DataBag<QuestVisualEffect>(new List<SQLOutput> { SQLOutput.quest_template });
+        public static readonly DataBag<QuestRewardDisplaySpell> QuestRewardDisplaySpells = new DataBag<QuestRewardDisplaySpell>(new List<SQLOutput> { SQLOutput.quest_template });
         public static readonly StoreDictionary<uint, CreatureTemplate> CreatureTemplates = new StoreDictionary<uint, CreatureTemplate>(new List<SQLOutput> { SQLOutput.creature_template });
         public static readonly DataBag<CreatureTemplateClassic> CreatureTemplatesClassic = new DataBag<CreatureTemplateClassic>(new List<SQLOutput> { SQLOutput.creature_template });
         public static readonly DataBag<CreatureTemplateNonWDB> CreatureTemplatesNonWDB = new DataBag<CreatureTemplateNonWDB>(new List<SQLOutput> { SQLOutput.creature_template });
@@ -151,6 +152,7 @@ namespace WowPacketParser.Store
             QuestTemplates.Clear();
             QuestObjectives.Clear();
             QuestVisualEffects.Clear();
+            QuestRewardDisplaySpells.Clear();
             CreatureTemplates.Clear();
             CreatureTemplatesClassic.Clear();
             CreatureTemplatesNonWDB.Clear();

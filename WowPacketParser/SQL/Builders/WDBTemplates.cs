@@ -60,6 +60,23 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.QuestVisualEffects, templateDb, StoreNameType.None);
         }
 
+        [BuilderMethod(true)]
+        public static string QuestRewardDisplaySpell()
+        {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
+                return string.Empty;
+
+            if (Settings.TargetedDatabase != TargetedDatabase.Shadowlands)
+                return string.Empty;
+
+            if (Storage.QuestRewardDisplaySpells.IsEmpty())
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.QuestRewardDisplaySpells);
+
+            return SQLUtil.Compare(Storage.QuestRewardDisplaySpells, templatesDb, StoreNameType.None);
+        }
+
         [BuilderMethod(true, Units = true)]
         public static string CreatureTemplate(Dictionary<WowGuid, Unit> units)
         {

@@ -123,7 +123,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             quest.RewardBonusMoney = (uint)packet.ReadInt32("RewardBonusMoney");
 
-            var rewardDisplaySpellCount = packet.ReadUInt32("rewardDisplaySpellCount");
+            var rewardDisplaySpellCount = packet.ReadUInt32("RewardDisplaySpellCount");
 
             quest.RewardSpellWod = (uint)packet.ReadInt32("RewardSpell");
             quest.RewardHonorWod = (uint)packet.ReadInt32("RewardHonor");
@@ -208,13 +208,17 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             quest.ManagedWorldStateID = packet.ReadInt32("ManagedWorldStateID");
             quest.QuestSessionBonus = packet.ReadInt32("QuestSessionBonus");
 
-            // May group that into own table
-            quest.RewardDisplaySpellShadowlands = new uint[12];
-            quest.RewardDisplaySpellPlayerCondition = new int[12];
-            for (int i = 0; i < rewardDisplaySpellCount; ++i)
+            for (uint i = 0; i < rewardDisplaySpellCount; ++i)
             {
-                quest.RewardDisplaySpellShadowlands[i] = (uint)packet.ReadInt32<SpellId>("SpellID", i, "RewardDisplaySpell");
-                quest.RewardDisplaySpellPlayerCondition[i] = packet.ReadInt32("PlayerCondition", i, "RewardDisplaySpell");
+                QuestRewardDisplaySpell questRewardDisplaySpell = new QuestRewardDisplaySpell
+                {
+                    QuestID = (uint)id.Key,
+                    Idx = i,
+                    SpellID = (uint)packet.ReadInt32<SpellId>("SpellID", i, "RewardDisplaySpell"),
+                    PlayerConditionID = (uint)packet.ReadInt32("PlayerConditionID", i, "RewardDisplaySpell")
+            };
+
+                Storage.QuestRewardDisplaySpells.Add(questRewardDisplaySpell, packet.TimeSpan);
             }
 
             packet.ResetBitReader();
