@@ -32,6 +32,7 @@ namespace WowPacketParser.Misc
         public static readonly bool ParsingLog = Conf.GetBoolean("ParsingLog", false);
         public static readonly bool DevMode = Conf.GetBoolean("DevMode", false);
         public static readonly int Threads = Conf.GetInt("Threads", 8);
+        public static readonly bool ParseAllHotfixes = Conf.GetBoolean("ParseAllHotfixes", false);
 
         public static readonly bool SSHEnabled = Conf.GetBoolean("SSHEnabled", false);
         public static readonly string SSHHost = Conf.GetString("SSHHost", "localhost");

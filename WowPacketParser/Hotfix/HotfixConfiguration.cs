@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 
 namespace WowPacketParser.Hotfix
 {
@@ -15,6 +16,9 @@ namespace WowPacketParser.Hotfix
         {
             for (var i = 0; i < Hashes.Count; ++i)
             {
+                if (Settings.ParseAllHotfixes == true)
+                    return true;
+
                 var currentElement = Hashes[i];
                 if (currentElement.FileHash == fileHash.ToString())
                     return currentElement.Enabled;
@@ -25,8 +29,13 @@ namespace WowPacketParser.Hotfix
         public bool ShouldLog()
         {
             for (var i = 0; i < Hashes.Count; ++i)
+            {
+                if (Settings.ParseAllHotfixes == true)
+                    return true;
+
                 if (Hashes[i].Enabled)
                     return true;
+            }
             return false;
         }
     }
