@@ -13,6 +13,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("RecordId", true)]
         public int? RecordID;
 
+        [DBFieldName("Idx", true)]
+        public int? Idx;
+
         [DBFieldName("locale", true)]
         public string Locale = ClientLocale.PacketLocaleString;
 

@@ -132,29 +132,51 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                             }
                             else if (db2File.Position != db2File.Length)
                             {
+                                var leftSize = db2File.Length - db2File.Position;
                                 var backupPosition = db2File.Position;
-                                var hash = db2File.ReadUInt32E<DB2Hash>();
-                                // jump back, because hash part also belongs to optional data
-                                db2File.SetPosition(backupPosition);
 
-                                // check if hash is valid hash
-                                if (Enum.IsDefined(typeof(DB2Hash), hash))
+                                // 28 bytes = size of TactKey optional data
+                                if (leftSize % 28 == 0)
                                 {
-                                    var optionalData = db2File.ReadToEnd();
+                                    var tactKeyCount = leftSize / 28;
 
-                                    packet.AddValue("(OptionalData) TableHash:", hash);
-                                    packet.AddValue("(OptionalData) OptionalData:", Utilities.ByteArrayToHexString(optionalData));
-
-                                    HotfixOptionalData hotfixOptionalData = new HotfixOptionalData
+                                    for (int i = 0; i < tactKeyCount; ++i)
                                     {
-                                        // data to link the optional data to correct hotfix
-                                        TableHash = type,
-                                        RecordID = entry,
+                                        var optionalDataStart = db2File.Position;
+                                        // get hash, we need to verify
+                                        var hash = db2File.ReadUInt32E<DB2Hash>();
 
-                                        Data = "0x" + Utilities.ByteArrayToHexString(optionalData)
-                                    };
+                                        // go back to start of optional data
+                                        db2File.SetPosition(optionalDataStart);
 
-                                    Storage.HotfixOptionalDatas.Add(hotfixOptionalData);
+                                        // check if hash is valid hash, we only support TactKey optional data yet
+                                        if (hash == DB2Hash.TactKey)
+                                        {
+                                            // read whole optional data
+                                            var optionalData = db2File.ReadBytes(28);
+
+                                            packet.AddValue($"(OptionalData) [{i}] TableHash:", hash);
+                                            packet.AddValue($"(OptionalData) [{i}] OptionalData:", Utilities.ByteArrayToHexString(optionalData));
+
+                                            HotfixOptionalData hotfixOptionalData = new HotfixOptionalData
+                                            {
+                                                // data to link the optional data to correct hotfix
+                                                TableHash = type,
+                                                RecordID = entry,
+                                                Idx = i,
+
+                                                Data = "0x" + Utilities.ByteArrayToHexString(optionalData)
+                                            };
+
+                                            Storage.HotfixOptionalDatas.Add(hotfixOptionalData);
+                                        }
+                                        else
+                                        {
+                                            db2File.SetPosition(backupPosition);
+                                            db2File.WriteLine($"(Entry: {entry} TableHash: {type}) has incorrect structure OR optional data. PacketLength: {db2File.Length} CurrentPosition: {db2File.Position} ");
+                                            db2File.AsHex();
+                                        }
+                                    }
                                 }
                                 else
                                 {
