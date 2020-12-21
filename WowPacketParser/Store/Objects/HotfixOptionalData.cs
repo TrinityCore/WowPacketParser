@@ -7,19 +7,19 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("hotfix_optional_data")]
     public sealed class HotfixOptionalData : IDataModel
     {
-        [DBFieldName("TableHash")]
+        [DBFieldName("TableHash", true)]
         public DB2Hash TableHash;
 
-        [DBFieldName("RecordId")]
+        [DBFieldName("RecordId", true)]
         public int? RecordID;
 
-        [DBFieldName("locale")]
+        [DBFieldName("locale", true)]
         public string Locale = ClientLocale.PacketLocaleString;
 
-        [DBFieldName("Key")]
+        [DBFieldName("Key", true)]
         public DB2Hash Key;
 
-        [DBFieldName("Data", false, true)]
+        [DBFieldName("Data", true, true)]
         public string Data;
 
         [DBFieldName("VerifiedBuild")]
