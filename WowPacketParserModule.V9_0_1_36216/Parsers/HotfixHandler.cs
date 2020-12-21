@@ -142,20 +142,16 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
                                     for (int i = 0; i < tactKeyCount; ++i)
                                     {
-                                        var optionalDataStart = db2File.Position;
                                         // get hash, we need to verify
                                         var hash = db2File.ReadUInt32E<DB2Hash>();
-
-                                        // go back to start of optional data
-                                        db2File.SetPosition(optionalDataStart);
 
                                         // check if hash is valid hash, we only support TactKey optional data yet
                                         if (hash == DB2Hash.TactKey)
                                         {
-                                            // read whole optional data
-                                            var optionalData = db2File.ReadBytes(28);
+                                            // read optional data
+                                            var optionalData = db2File.ReadBytes(24);
 
-                                            packet.AddValue($"(OptionalData) [{i}] TableHash:", hash);
+                                            packet.AddValue($"(OptionalData) [{i}] Key:", hash);
                                             packet.AddValue($"(OptionalData) [{i}] OptionalData:", Utilities.ByteArrayToHexString(optionalData));
 
                                             HotfixOptionalData hotfixOptionalData = new HotfixOptionalData
@@ -163,7 +159,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                                                 // data to link the optional data to correct hotfix
                                                 TableHash = type,
                                                 RecordID = entry,
-                                                Idx = i,
+                                                Key = hash,
 
                                                 Data = "0x" + Utilities.ByteArrayToHexString(optionalData)
                                             };
