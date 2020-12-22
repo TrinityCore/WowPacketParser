@@ -687,6 +687,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             {
                 packet.ResetBitReader();
                 packet.ReadBit("ReplaceActive", index);
+                if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
+                    packet.ReadBit("StopAnimKits", index);
+
                 var replaceObject = packet.ReadBit();
                 if (replaceObject)
                     packet.ReadPackedGuid128("ReplaceObject", index);
