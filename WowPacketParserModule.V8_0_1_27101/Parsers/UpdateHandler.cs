@@ -388,11 +388,20 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
                         var pointsCount = packet.ReadBits("PointsCount", 16, index);
 
-                        packet.ReadBitsE<SplineMode>("Mode", 2, index);
+                        if (ClientVersion.RemovedInVersion(ClientType.Shadowlands))
+                            packet.ReadBitsE<SplineMode>("Mode", 2, index);
 
                         var hasSplineFilterKey = packet.ReadBit("HasSplineFilterKey", index);
                         var hasSpellEffectExtraData = packet.ReadBit("HasSpellEffectExtraData", index);
                         var hasJumpExtraData = packet.ReadBit("HasJumpExtraData", index);
+
+                        var hasAnimationTierTransition = false;
+                        var hasUnknown901 = false;
+                        if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
+                        {
+                            hasAnimationTierTransition = packet.ReadBit("HasAnimationTierTransition", index);
+                            hasUnknown901 = packet.ReadBit("Unknown901", index);
+                        }
 
                         if (hasSplineFilterKey)
                         {
@@ -433,6 +442,25 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
                         if (hasJumpExtraData)
                             MovementHandler.ReadMonsterSplineJumpExtraData(packet, index);
+
+                        if (hasAnimationTierTransition)
+                        {
+                            packet.ReadInt32("TierTransitionID", index);
+                            packet.ReadInt32("StartTime", index);
+                            packet.ReadInt32("EndTime", index);
+                            packet.ReadByte("AnimTier", index);
+                        }
+
+                        if (hasUnknown901)
+                        {
+                            for (var i = 0; i < 16; ++i)
+                            {
+                                packet.ReadInt32("Unknown1", index, "Unknown901", i);
+                                packet.ReadInt32("Unknown2", index, "Unknown901", i);
+                                packet.ReadInt32("Unknown3", index, "Unknown901", i);
+                                packet.ReadInt32("Unknown4", index, "Unknown901", i);
+                            }
+                        }
                     }
                 }
             }
