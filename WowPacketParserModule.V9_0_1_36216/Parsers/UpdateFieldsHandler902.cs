@@ -3861,9 +3861,9 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_0_2_36639
             {
                 data.Items[i] = packet.ReadUInt32("Items", indexes, i);
             }
-            data.Unused = packet.ReadByte("Unused", indexes);
             data.RaceID = packet.ReadByte("RaceID", indexes);
             data.Sex = packet.ReadByte("Sex", indexes);
+            data.Class = packet.ReadByte("Class", indexes);
             data.Customizations.Resize(packet.ReadUInt32());
             data.Flags = packet.ReadUInt32("Flags", indexes);
             data.FactionTemplate = packet.ReadInt32("FactionTemplate", indexes);
@@ -3931,15 +3931,15 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_0_2_36639
                 }
                 if (changesMask[7])
                 {
-                    data.Unused = packet.ReadByte("Unused", indexes);
+                    data.RaceID = packet.ReadByte("RaceID", indexes);
                 }
                 if (changesMask[8])
                 {
-                    data.RaceID = packet.ReadByte("RaceID", indexes);
+                    data.Sex = packet.ReadByte("Sex", indexes);
                 }
                 if (changesMask[9])
                 {
-                    data.Sex = packet.ReadByte("Sex", indexes);
+                    data.Class = packet.ReadByte("Class", indexes);
                 }
                 if (changesMask[10])
                 {

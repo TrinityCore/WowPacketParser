@@ -11,9 +11,9 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_0_2_36639
         public WowGuid GuildGUID { get; set; }
         public uint DisplayID { get; set; }
         public uint[] Items { get; } = new uint[19];
-        public byte Unused { get; set; }
         public byte RaceID { get; set; }
         public byte Sex { get; set; }
+        public byte Class { get; set; }
         public uint Flags { get; set; }
         public int FactionTemplate { get; set; }
         public uint StateSpellVisualKitID { get; set; }
