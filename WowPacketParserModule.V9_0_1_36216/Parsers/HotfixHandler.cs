@@ -48,49 +48,52 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 switch (type)
                 {
                     case DB2Hash.BroadcastText:
+                    {
+                        var bct = new BroadcastText()
                         {
-                            var bct = new BroadcastText()
+                            Text = db2File.ReadCString("Text"),
+                            Text1 = db2File.ReadCString("Text1"),
+                        };
+
+                        bct.ID = db2File.ReadUInt32("ID");
+                        bct.LanguageID = db2File.ReadInt32("LanguageID");
+                        bct.ConditionID = db2File.ReadUInt32("ConditionID");
+                        bct.EmotesID = db2File.ReadUInt16("EmotesID");
+                        bct.Flags = db2File.ReadByte("Flags");
+                        bct.ChatBubbleDurationMs = db2File.ReadUInt32("ChatBubbleDurationMs");
+
+                        bct.SoundEntriesID = new uint?[2];
+                        for (int i = 0; i < 2; ++i)
+                            bct.SoundEntriesID[i] = db2File.ReadUInt32("SoundEntriesID", i);
+
+                        bct.EmoteID = new ushort?[3];
+                        bct.EmoteDelay = new ushort?[3];
+                        for (int i = 0; i < 3; ++i)
+                            bct.EmoteID[i] = db2File.ReadUInt16("EmoteID", i);
+                        for (int i = 0; i < 3; ++i)
+                            bct.EmoteDelay[i] = db2File.ReadUInt16("EmoteDelay", i);
+
+                        Storage.BroadcastTexts.Add(bct, packet.TimeSpan);
+
+                        if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+                        {
+                            BroadcastTextLocale lbct = new BroadcastTextLocale
                             {
-                                Text = db2File.ReadCString("Text"),
-                                Text1 = db2File.ReadCString("Text1"),
+                                ID = bct.ID,
+                                TextLang = bct.Text,
+                                Text1Lang = bct.Text1
                             };
-
-                            bct.ID = db2File.ReadUInt32("ID");
-                            bct.LanguageID = db2File.ReadInt32("LanguageID");
-                            bct.ConditionID = db2File.ReadUInt32("ConditionID");
-                            bct.EmotesID = db2File.ReadUInt16("EmotesID");
-                            bct.Flags = db2File.ReadByte("Flags");
-                            bct.ChatBubbleDurationMs = db2File.ReadUInt32("ChatBubbleDurationMs");
-
-                            bct.SoundEntriesID = new uint?[2];
-                            for (int i = 0; i < 2; ++i)
-                                bct.SoundEntriesID[i] = db2File.ReadUInt32("SoundEntriesID", i);
-
-                            bct.EmoteID = new ushort?[3];
-                            bct.EmoteDelay = new ushort?[3];
-                            for (int i = 0; i < 3; ++i)
-                                bct.EmoteID[i] = db2File.ReadUInt16("EmoteID", i);
-                            for (int i = 0; i < 3; ++i)
-                                bct.EmoteDelay[i] = db2File.ReadUInt16("EmoteDelay", i);
-
-                            Storage.BroadcastTexts.Add(bct, packet.TimeSpan);
-
-                            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
-                            {
-                                BroadcastTextLocale lbct = new BroadcastTextLocale
-                                {
-                                    ID = bct.ID,
-                                    TextLang = bct.Text,
-                                    Text1Lang = bct.Text1
-                                };
-                                Storage.BroadcastTextLocales.Add(lbct, packet.TimeSpan);
-                            }
-                            break;
+                            Storage.BroadcastTextLocales.Add(lbct, packet.TimeSpan);
                         }
+                        break;
+                    }
                     default:
                         HotfixStoreMgr.AddRecord(type, entry, db2File);
                         break;
                 }
+
+                if (db2File.Position != db2File.Length)
+                    HandleHotfixOptionalData(packet, type, entry, db2File);
 
                 db2File.ClosePacket(false);
             }
@@ -131,55 +134,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                                 Storage.HotfixBlobs.Add(hotfixBlob);
                             }
                             else if (db2File.Position != db2File.Length)
-                            {
-                                var leftSize = db2File.Length - db2File.Position;
-                                var backupPosition = db2File.Position;
-
-                                // 28 bytes = size of TactKey optional data
-                                if (leftSize % 28 == 0)
-                                {
-                                    var tactKeyCount = leftSize / 28;
-
-                                    for (int i = 0; i < tactKeyCount; ++i)
-                                    {
-                                        // get hash, we need to verify
-                                        var hash = db2File.ReadUInt32E<DB2Hash>();
-
-                                        // check if hash is valid hash, we only support TactKey optional data yet
-                                        if (hash == DB2Hash.TactKey)
-                                        {
-                                            // read optional data
-                                            var optionalData = db2File.ReadBytes(24);
-
-                                            packet.AddValue($"(OptionalData) [{i}] Key:", hash);
-                                            packet.AddValue($"(OptionalData) [{i}] OptionalData:", Utilities.ByteArrayToHexString(optionalData));
-
-                                            HotfixOptionalData hotfixOptionalData = new HotfixOptionalData
-                                            {
-                                                // data to link the optional data to correct hotfix
-                                                TableHash = type,
-                                                RecordID = entry,
-                                                Key = hash,
-
-                                                Data = "0x" + Utilities.ByteArrayToHexString(optionalData)
-                                            };
-
-                                            Storage.HotfixOptionalDatas.Add(hotfixOptionalData);
-                                        }
-                                        else
-                                        {
-                                            db2File.SetPosition(backupPosition);
-                                            db2File.WriteLine($"(Entry: {entry} TableHash: {type}) has incorrect structure OR optional data. PacketLength: {db2File.Length} CurrentPosition: {db2File.Position} ");
-                                            db2File.AsHex();
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    db2File.WriteLine($"(Entry: {entry} TableHash: {type}) has incorrect structure OR optional data. PacketLength: {db2File.Length} CurrentPosition: {db2File.Position} ");
-                                    db2File.AsHex();
-                                }
-                            }
+                                HandleHotfixOptionalData(packet, type, entry, db2File);
 
                             db2File.ClosePacket(false);
                             break;
@@ -193,7 +148,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                     case HotfixStatus.Unavailable:
                         {
                             // sniffs from others may have the data
-                            packet.WriteLine($"Row {entry} is unavailable.");    
+                            packet.WriteLine($"Row {entry} is unavailable.");
                             break;
                         }
                     default:
@@ -213,6 +168,57 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
                 Storage.HotfixDatas.Add(hotfixData);
                 count++;
+            }
+        }
+
+        private static void HandleHotfixOptionalData(Packet packet, DB2Hash type, int entry, Packet db2File)
+        {
+            var leftSize = db2File.Length - db2File.Position;
+            var backupPosition = db2File.Position;
+
+            // 28 bytes = size of TactKey optional data
+            if (leftSize % 28 == 0)
+            {
+                var tactKeyCount = leftSize / 28;
+
+                for (int i = 0; i < tactKeyCount; ++i)
+                {
+                    // get hash, we need to verify
+                    var hash = db2File.ReadUInt32E<DB2Hash>();
+
+                    // check if hash is valid hash, we only support TactKey optional data yet
+                    if (hash == DB2Hash.TactKey)
+                    {
+                        // read optional data
+                        var optionalData = db2File.ReadBytes(24);
+
+                        packet.AddValue($"(OptionalData) [{i}] Key:", hash);
+                        packet.AddValue($"(OptionalData) [{i}] OptionalData:", Utilities.ByteArrayToHexString(optionalData));
+
+                        HotfixOptionalData hotfixOptionalData = new HotfixOptionalData
+                        {
+                            // data to link the optional data to correct hotfix
+                            TableHash = type,
+                            RecordID = entry,
+                            Key = hash,
+
+                            Data = "0x" + Utilities.ByteArrayToHexString(optionalData)
+                        };
+
+                        Storage.HotfixOptionalDatas.Add(hotfixOptionalData);
+                    }
+                    else
+                    {
+                        db2File.SetPosition(backupPosition);
+                        db2File.WriteLine($"(Entry: {entry} TableHash: {type}) has incorrect structure OR optional data. PacketLength: {db2File.Length} CurrentPosition: {db2File.Position} ");
+                        db2File.AsHex();
+                    }
+                }
+            }
+            else
+            {
+                db2File.WriteLine($"(Entry: {entry} TableHash: {type}) has incorrect structure OR optional data. PacketLength: {db2File.Length} CurrentPosition: {db2File.Position} ");
+                db2File.AsHex();
             }
         }
 
