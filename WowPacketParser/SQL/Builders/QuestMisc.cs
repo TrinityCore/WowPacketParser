@@ -1,6 +1,7 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.SQL.Builders
 {
@@ -87,12 +88,40 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
                 return string.Empty;
 
+            foreach (var requestItemEmote in Parsing.Parsers.QuestHandler.RequestItemEmoteStore)
+            {
+                QuestRequestItems requestItems = new QuestRequestItems
+                {
+                    ID = requestItemEmote.Value.ID,
+                    CompletionText = requestItemEmote.Value.CompletionText
+                };
+
+                requestItems.VerifiedBuild = 0;
+
+                if (requestItemEmote.Value.EmoteOnCompleteDelay >= 0)
+                    requestItems.EmoteOnCompleteDelay = (uint)requestItemEmote.Value.EmoteOnCompleteDelay;
+
+                if (requestItemEmote.Value.EmoteOnComplete >= 0)
+                    requestItems.EmoteOnComplete = (uint)requestItemEmote.Value.EmoteOnComplete;
+
+                if (requestItemEmote.Value.EmoteOnIncompleteDelay >= 0)
+                    requestItems.EmoteOnIncompleteDelay = (uint)requestItemEmote.Value.EmoteOnIncompleteDelay;
+
+                if (requestItemEmote.Value.EmoteOnIncomplete >= 0)
+                    requestItems.EmoteOnIncomplete = (uint)requestItemEmote.Value.EmoteOnIncomplete;
+
+                if (requestItemEmote.Value.EmoteOnCompleteDelay >= 0 && requestItemEmote.Value.EmoteOnComplete >= 0 && requestItemEmote.Value.EmoteOnIncompleteDelay >= 0 && requestItemEmote.Value.EmoteOnIncomplete >= 0)
+                    requestItems.VerifiedBuild = ClientVersion.BuildInt;
+
+                Storage.QuestRequestItems.Add(requestItems);
+            }
+
             if (Storage.QuestRequestItems.IsEmpty())
                 return string.Empty;
 
             var templatesDb = SQLDatabase.Get(Storage.QuestRequestItems);
 
             return SQLUtil.Compare(Storage.QuestRequestItems, templatesDb, StoreNameType.Quest);
-         }
+        }
     }
 }

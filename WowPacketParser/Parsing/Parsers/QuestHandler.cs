@@ -14,10 +14,12 @@ namespace WowPacketParser.Parsing.Parsers
     {
         public class RequestItemEmote
         {
+            public uint ID { get; set; }
             public int EmoteOnIncompleteDelay { get; set; }
             public int EmoteOnIncomplete { get; set; }
             public int EmoteOnCompleteDelay { get; set; }
             public int EmoteOnComplete { get; set; }
+            public string CompletionText { get; set; }
         }
 
         public static Dictionary<int, RequestItemEmote> RequestItemEmoteStore = new Dictionary<int, RequestItemEmote>();
@@ -935,12 +937,6 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static void QuestRequestItemHelper(int id, string completionText, int delay, int emote, bool isComplete, Packet packet, bool noRequestOnComplete = false)
         {
-            QuestRequestItems requestItems = new QuestRequestItems
-            {
-                ID = (uint)id,
-                CompletionText = completionText
-            };
-
             RequestItemEmote requestItemEmote;
             if (RequestItemEmoteStore.TryGetValue(id, out requestItemEmote))
             {
@@ -964,6 +960,9 @@ namespace WowPacketParser.Parsing.Parsers
             else
             {
                 var emotes = new RequestItemEmote();
+
+                emotes.ID = (uint)id;
+                emotes.CompletionText = completionText;
 
                 if (isComplete)
                 {
@@ -990,23 +989,6 @@ namespace WowPacketParser.Parsing.Parsers
                 }
 
                 RequestItemEmoteStore.Add(id, emotes);
-            }
-
-            if (RequestItemEmoteStore.TryGetValue(id, out requestItemEmote))
-            {
-                if (requestItemEmote.EmoteOnCompleteDelay >= 0)
-                    requestItems.EmoteOnCompleteDelay = (uint)requestItemEmote.EmoteOnCompleteDelay;
-
-                if (requestItemEmote.EmoteOnComplete >= 0)
-                    requestItems.EmoteOnComplete = (uint)requestItemEmote.EmoteOnComplete;
-
-                if (requestItemEmote.EmoteOnIncompleteDelay >= 0)
-                    requestItems.EmoteOnIncompleteDelay = (uint)requestItemEmote.EmoteOnIncompleteDelay;
-
-                if (requestItemEmote.EmoteOnIncomplete >= 0)
-                    requestItems.EmoteOnIncomplete = (uint)requestItemEmote.EmoteOnIncomplete;
-
-                Storage.QuestRequestItems.Add(requestItems, packet.TimeSpan);
             }
         }
 
