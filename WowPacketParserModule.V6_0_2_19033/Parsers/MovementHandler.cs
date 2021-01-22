@@ -292,6 +292,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 waypoints[i].Z = packedDeltas.Z;
             }
 
+            packet.ResetBitReader();
             var type = packet.ReadBitsE<SplineType>("Face", 2, indexes);
             var monsterSplineFilter = packet.ReadBit("HasMonsterSplineFilter", indexes);
 
