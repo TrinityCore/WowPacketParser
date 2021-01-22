@@ -8,7 +8,7 @@ using WowPacketParser.Parsing;
 using WowPacketParserModule.V7_0_3_22248.Enums;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using MovementFlag = WowPacketParserModule.V6_0_2_19033.Enums.MovementFlag;
-using SplineType = WowPacketParserModule.V6_0_2_19033.Enums.SplineType;
+using FaceType = WowPacketParserModule.V6_0_2_19033.Enums.FaceType;
 using SplineFlag = WowPacketParserModule.V7_0_3_22248.Enums.SplineFlag;
 
 namespace WowPacketParserModule.V7_0_3_22248.Parsers
@@ -131,7 +131,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             packet.ResetBitReader();
 
-            var type = packet.ReadBitsE<SplineType>("Face", 2, indexes);
+            var type = packet.ReadBitsE<FaceType>("Face", 2, indexes);
             var pointsCount = packet.ReadBits("PointsCount", 16, indexes);
             var packedDeltasCount = packet.ReadBits("PackedDeltasCount", 16, indexes);
             var hasSplineFilter = packet.ReadBit("HasSplineFilter", indexes);
@@ -142,14 +142,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             switch (type)
             {
-                case SplineType.FacingSpot:
+                case FaceType.FacingSpot:
                     packet.ReadVector3("FaceSpot", indexes);
                     break;
-                case SplineType.FacingTarget:
+                case FaceType.FacingTarget:
                     packet.ReadSingle("FaceDirection", indexes);
                     packet.ReadPackedGuid128("FacingGUID", indexes);
                     break;
-                case SplineType.FacingAngle:
+                case FaceType.FacingAngle:
                     packet.ReadSingle("FaceDirection", indexes);
                     break;
             }

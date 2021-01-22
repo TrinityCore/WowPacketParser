@@ -1,8 +1,8 @@
 namespace WowPacketParserModule.V6_0_2_19033.Enums
 {
-    public enum SplineType
+    public enum FaceType
     {
-        Normal       = 0,
+        None         = 0,
         FacingSpot   = 1,
         FacingTarget = 2,
         FacingAngle  = 3
