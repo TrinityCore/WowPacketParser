@@ -9,6 +9,7 @@ using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using MovementFlag = WowPacketParserModule.V6_0_2_19033.Enums.MovementFlag;
+using SplineType = WowPacketParserModule.V6_0_2_19033.Enums.SplineType;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
@@ -291,20 +292,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 waypoints[i].Z = packedDeltas.Z;
             }
 
-            packet.ResetBitReader();
-            var type = packet.ReadBits("Face", 2, indexes);
+            var type = packet.ReadBitsE<SplineType>("Face", 2, indexes);
             var monsterSplineFilter = packet.ReadBit("HasMonsterSplineFilter", indexes);
 
             switch (type)
             {
-                case 1:
+                case SplineType.FacingSpot:
                     packet.ReadVector3("FaceSpot", indexes);
                     break;
-                case 2:
+                case SplineType.FacingTarget:
                     packet.ReadSingle("FaceDirection", indexes);
                     packet.ReadPackedGuid128("FacingGUID", indexes);
                     break;
-                case 3:
+                case SplineType.FacingAngle:
                     packet.ReadSingle("FaceDirection", indexes);
                     break;
             }
