@@ -101,43 +101,36 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleLootResponse(Packet packet)
         {
             packet.ReadGuid("GUID");
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595)) // might have been added before 4.3.4.15595
+            var lootType = packet.ReadByteE<LootType>("AcquireReason");
+            if (lootType == LootType.None)
             {
-                packet.ReadByteE<LootMethod>("LootMethod");
-                packet.ReadUInt32("Gold");
-            }
-            else
-            {
-                var lootType = packet.ReadByteE<LootType>("Loot Type");
-                if (lootType == LootType.None)
-                {
-                    packet.ReadByte("Slot");
-                    return;
-                }
+                packet.ReadByteE<LootError>("FailureReason");
+                return;
             }
 
-            var count = packet.ReadByte("Drop Count");
+            packet.ReadUInt32("Coins");
+            var itemsCount = packet.ReadByte("Drop Count");
 
-            byte currencyCount = 0;
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
-                currencyCount = packet.ReadByte("Currency Count");
+            byte currenciesCount = 0;
+            if (ClientVersion.AddedInVersion(ClientType.Cataclysm))
+                currenciesCount = packet.ReadByte("Currency Count");
 
-            for (var i = 0; i < count; ++i)
+            for (var i = 0; i < itemsCount; ++i)
             {
-                packet.ReadByte("Slot", i);
-                packet.ReadUInt32<ItemId>("Entry", i);
-                packet.ReadUInt32("Count", i);
-                packet.ReadUInt32("Display ID", i);
-                packet.ReadInt32("Random Suffix", i);
-                packet.ReadInt32("Random Property Id", i);
-                packet.ReadByteE<LootSlotType>("Slot Type", i);
+                packet.ReadByte("LootListID", i);
+                packet.ReadUInt32<ItemId>("ItemID", i);
+                packet.ReadUInt32("Quantity", i);
+                packet.ReadUInt32("DisplayID", i);
+                packet.ReadInt32("RandomPropertiesSeed", i);
+                packet.ReadInt32("RandomPropertiesID", i);
+                packet.ReadByteE<LootSlotType>("UIType", i);
             }
 
-            for (int i = 0; i < currencyCount; ++i)
+            for (int i = 0; i < currenciesCount; ++i)
             {
-                packet.ReadByte("Slot", i);
-                packet.ReadInt32("Currency Id", i);
-                packet.ReadInt32("Count", i); // unconfirmed
+                packet.ReadByte("LootListID", i);
+                packet.ReadInt32("CurrencyID", i);
+                packet.ReadInt32("Quantity", i);
             }
         }
 
