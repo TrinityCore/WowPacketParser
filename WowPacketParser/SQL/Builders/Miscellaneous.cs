@@ -22,12 +22,12 @@ namespace WowPacketParser.SQL.Builders
                         return StoreGetters.GetName(StoreNameType.Spell, (int)a.Action.GetValueOrDefault(), false);
                     if (a.Type == ActionButtonType.Item)
                         return StoreGetters.GetName(StoreNameType.Item, (int)a.Action.GetValueOrDefault(), false);
-                    
+
                     return string.Empty;
                 });
 
             }
-            
+
             if (!Storage.StartPositions.IsEmpty() && Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.playercreateinfo))
             {
                 var dataDb = SQLDatabase.Get(Storage.StartPositions);
@@ -103,7 +103,8 @@ namespace WowPacketParser.SQL.Builders
                 if (template.Faction == 1 || template.Faction == 2 || template.Faction == 3 ||
                     template.Faction == 4 || template.Faction == 5 || template.Faction == 6 ||
                     template.Faction == 115 || template.Faction == 116 || template.Faction == 1610 ||
-                    template.Faction == 1629 || template.Faction == 2203 || template.Faction == 2204) // player factions
+                    template.Faction == 1629 || template.Faction == 2203 || template.Faction == 2204 ||
+                    template.Faction == 2395 || template.Faction == 2401 || template.Faction == 2402) // player factions
                     template.Faction = 0;
 
                 template.Flags &= ~GameObjectFlag.Triggered;
