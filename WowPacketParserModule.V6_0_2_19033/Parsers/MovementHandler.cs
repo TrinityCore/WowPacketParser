@@ -9,7 +9,7 @@ using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using MovementFlag = WowPacketParserModule.V6_0_2_19033.Enums.MovementFlag;
-using FaceType = WowPacketParserModule.V6_0_2_19033.Enums.FaceType;
+using SplineFacingType = WowPacketParserModule.V6_0_2_19033.Enums.SplineFacingType;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
@@ -293,19 +293,19 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
 
             packet.ResetBitReader();
-            var type = packet.ReadBitsE<FaceType>("Face", 2, indexes);
+            var type = packet.ReadBitsE<SplineFacingType>("Face", 2, indexes);
             var monsterSplineFilter = packet.ReadBit("HasMonsterSplineFilter", indexes);
 
             switch (type)
             {
-                case FaceType.FacingSpot:
+                case SplineFacingType.Spot:
                     packet.ReadVector3("FaceSpot", indexes);
                     break;
-                case FaceType.FacingTarget:
+                case SplineFacingType.Target:
                     packet.ReadSingle("FaceDirection", indexes);
                     packet.ReadPackedGuid128("FacingGUID", indexes);
                     break;
-                case FaceType.FacingAngle:
+                case SplineFacingType.Angle:
                     packet.ReadSingle("FaceDirection", indexes);
                     break;
             }
