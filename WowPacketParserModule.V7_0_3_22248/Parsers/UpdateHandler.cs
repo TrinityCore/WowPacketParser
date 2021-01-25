@@ -333,9 +333,19 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             if (hasAnimKitCreate)
             {
-                packet.ReadUInt16("AiID", index);
-                packet.ReadUInt16("MovementID", index);
-                packet.ReadUInt16("MeleeID", index);
+                var aiId = packet.ReadUInt16("AiID", index);
+                var movementId = packet.ReadUInt16("MovementID", index);
+                var meleeId = packet.ReadUInt16("MeleeID", index);
+                if (obj is Unit unit)
+                {
+                    unit.AIAnimKit = aiId;
+                    unit.MovementAnimKit = movementId;
+                    unit.MeleeAnimKit = meleeId;
+                }
+                else if (obj is GameObject gob)
+                {
+                    gob.AIAnimKitID = aiId;
+                }
             }
 
             if (hasRotation)
@@ -569,7 +579,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             if (hasGameObject)
             {
                 packet.ResetBitReader();
-                packet.ReadInt32("WorldEffectID", index);
+                var worldEffectId = packet.ReadUInt32("WorldEffectID", index);
+                if (worldEffectId != 0 && obj is GameObject gob)
+                    gob.WorldEffectID = worldEffectId;
 
                 var bit8 = packet.ReadBit("bit8", index);
                 if (bit8)

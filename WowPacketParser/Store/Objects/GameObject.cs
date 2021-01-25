@@ -9,6 +9,8 @@ namespace WowPacketParser.Store.Objects
     public sealed class GameObject : WoWObject, IDataModel
     {
         public IGameObjectData GameObjectData;
+        public uint? WorldEffectID;
+        public uint? AIAnimKitID;
 
         public GameObject() : base()
         {
