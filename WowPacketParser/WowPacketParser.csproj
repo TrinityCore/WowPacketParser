@@ -40,7 +40,6 @@
     <PackageReference Include="Sigil" Version="5.0.0" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.112" />
-    <PackageReference Include="Tamir.SharpSsh.dll" Version="1.1.1.14" />
   </ItemGroup>
 
   <ItemGroup>
