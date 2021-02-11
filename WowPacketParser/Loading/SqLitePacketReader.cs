@@ -90,7 +90,7 @@ namespace WowPacketParser.Loading
             {
                 ReadHeader(); // might be non tiawps
             }
-            catch (SQLiteException e)
+            catch (SQLiteException)
             {
                 var build = ClientVersion.GetVersion(lastWriteTimeUtc);
 

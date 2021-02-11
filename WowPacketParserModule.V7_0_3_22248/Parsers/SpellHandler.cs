@@ -115,7 +115,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             if (hasSrcLoc)
                 V6_0_2_19033.Parsers.SpellHandler.ReadLocation(packet, "SrcLocation");
 
-            var dstLocation = new Vector3();
+            Vector3? dstLocation = null;
             if (hasDstLoc)
                 dstLocation = V6_0_2_19033.Parsers.SpellHandler.ReadLocation(packet, "DstLocation");
 
@@ -142,9 +142,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                             {
                                 ID = spellID,
                                 EffectIndex = (byte)i,
-                                PositionX = dstLocation.X,
-                                PositionY = dstLocation.Y,
-                                PositionZ = dstLocation.Z,
+                                PositionX = dstLocation.Value.X,
+                                PositionY = dstLocation.Value.Y,
+                                PositionZ = dstLocation.Value.Z,
                                 MapID = (ushort)mapID,
                                 EffectHelper = effectHelper
                             };
@@ -722,7 +722,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("IsPet");
         }
 
-        [Parser(Opcode.SMSG_UPDATE_COOLDOWN)] 
+        [Parser(Opcode.SMSG_UPDATE_COOLDOWN)]
         public static void HandleUpdateCooldown(Packet packet)
         {
             packet.ReadInt32("SpellId");
