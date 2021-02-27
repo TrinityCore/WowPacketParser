@@ -1,4 +1,5 @@
-﻿using WowPacketParser.SQL;
+﻿using WowPacketParser.Enums;
+using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
@@ -13,5 +14,8 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("ScriptPackageID", true)]
         public uint? ScriptPackageID;
+
+        [DBFieldName("Encrypted", TargetedDatabase.Shadowlands)]
+        public bool? Encrypted;
     }
 }

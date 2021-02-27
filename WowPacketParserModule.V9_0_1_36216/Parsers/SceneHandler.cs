@@ -23,8 +23,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadPackedGuid128("TransportGUID");
             packet.ReadVector3("Pos");
             packet.ReadSingle("Facing");
-            // do we need to add that to template too?
-            packet.ReadBit("PerformTactCallbacks");
+            scene.Encrypted = packet.ReadBit("Encrypted");
 
             if (sceneId != 0) // SPELL_EFFECT_195 plays scenes by SceneScriptPackageID and sets SceneID = 0 (there are no Scenes which have SceneID = 0)
                 Storage.Scenes.Add(scene, packet.TimeSpan);
