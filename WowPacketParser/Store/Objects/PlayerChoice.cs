@@ -38,6 +38,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("ResponseId", true)]
         public int? ResponseId;
 
+        [DBFieldName("ResponseIdentifier", TargetedDatabase.Shadowlands)]
+        public short? ResponseIdentifier;
+
         [DBFieldName("Index", true)]
         public uint? Index;
 
@@ -79,6 +82,9 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("RewardQuestID", TargetedDatabase.BattleForAzeroth)]
         public uint? RewardQuestID;
+
+        [DBFieldName("UiTextureKitID", TargetedDatabase.Shadowlands)]
+        public uint? UiTextureKitID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
