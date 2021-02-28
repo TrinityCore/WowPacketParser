@@ -574,9 +574,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var responseCount = packet.ReadUInt32();
             packet.ReadPackedGuid128("SenderGUID");
             var uiTextureKitId = packet.ReadInt32("UiTextureKitID");
-            var soundKitId = 0u;
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
-                soundKitId = packet.ReadUInt32("SoundKitID");
+            var soundKitId = packet.ReadUInt32("SoundKitID");
             packet.ResetBitReader();
             var questionLength = packet.ReadBits(8);
             packet.ReadBit("CloseChoiceFrame");
