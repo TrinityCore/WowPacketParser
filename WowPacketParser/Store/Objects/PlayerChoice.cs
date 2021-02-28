@@ -83,7 +83,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("RewardQuestID", TargetedDatabase.BattleForAzeroth)]
         public uint? RewardQuestID;
 
-        [DBFieldName("RewardQuestID", TargetedDatabase.Shadowlands)]
+        [DBFieldName("UiTextureKitID", TargetedDatabase.Shadowlands)]
         public uint? UiTextureKitID;
 
         [DBFieldName("VerifiedBuild")]
