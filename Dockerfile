@@ -1,11 +1,9 @@
-FROM mono:5.0.1.1
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+WORKDIR /app/src
+COPY . .
+RUN dotnet build "WowPacketParser.sln" -c Release
 
-RUN mkdir -p /usr/src/app/source /usr/src/app/build
-WORKDIR /usr/src/app/source
-
-COPY . /usr/src/app/source
-RUN nuget restore -NonInteractive
-RUN xbuild /property:Configuration=Release /property:OutDir=/usr/src/app/build/
+FROM mcr.microsoft.com/dotnet/runtime:5.0 AS final
 WORKDIR /usr/src/app/build
-
-ENTRYPOINT [ "mono", "WowPacketParser.exe" ]
+COPY --from=build /app/src/WowPacketParser/bin/Release .
+ENTRYPOINT ["dotnet", "WowPacketParser.dll"]
