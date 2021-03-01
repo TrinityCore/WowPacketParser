@@ -69,7 +69,6 @@ namespace WowPacketParser.Enums
         BannedAddOns                    = 0x3B7DA145,
         BarberShopStyle                 = 0x8F09B48B,
         BarrageEffect                   = 0x9E4FB781,
-        BattleMasterList                = 0x558D704E,
         BattlePetAbility                = 0xCBA43BD7,
         BattlePetAbilityEffect          = 0xDD8B690E,
         BattlePetAbilityState           = 0x3C556E43,
