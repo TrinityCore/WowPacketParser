@@ -294,6 +294,8 @@ namespace WowPacketParser.Hotfix
                     case "char_titles":
                     case "chat_channels":
                     case "chr_classes":
+                    case "chr_customization_choice":
+                    case "chr_customization_option":
                     case "chr_races":
                     case "chr_specialization":
                     case "creature_family":
