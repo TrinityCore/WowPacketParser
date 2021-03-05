@@ -436,7 +436,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadUInt64("MoneyReward");
             var bonusCount = packet.ReadUInt32("BonusCount");
 
-            if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_0_30898))
                 packet.ReadInt32("Flags");
 
             for (int i = 0; i < currencyCount; i++)
@@ -447,8 +447,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             for (var i = 0; i < bonusCount; ++i)
             {
-                var bonusItemCount = packet.ReadInt32("BonusItemCount", i);
-                var bonusCurrencyCount = packet.ReadInt32("BonusCurrencyCount", i);
+                var bonusItemCount = packet.ReadUInt32("BonusItemCount", i);
+                var bonusCurrencyCount = packet.ReadUInt32("BonusCurrencyCount", i);
                 packet.ReadUInt64("BonusMoney", i);
 
                 for (var z = 0; z < bonusCurrencyCount; ++z)
