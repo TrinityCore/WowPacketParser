@@ -513,11 +513,11 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_3_0_33062
             {
                 if (changesMask[1])
                 {
-                    data.SpecializationID = packet.ReadUInt32("SpecializationID", indexes);
+                    data.Enabled = packet.ReadBits("Enabled", 1, indexes);
                 }
                 if (changesMask[2])
                 {
-                    data.Enabled = packet.ReadBits("Enabled", 1, indexes);
+                    data.SpecializationID = packet.ReadUInt32("SpecializationID", indexes);
                 }
             }
             if (changesMask[3])

@@ -560,11 +560,11 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_0_1_36216
             {
                 if (changesMask[1])
                 {
-                    data.SpecializationID = packet.ReadUInt32("SpecializationID", indexes);
+                    data.Enabled = packet.ReadBits("Enabled", 1, indexes);
                 }
                 if (changesMask[2])
                 {
-                    data.Enabled = packet.ReadBits("Enabled", 1, indexes);
+                    data.SpecializationID = packet.ReadUInt32("SpecializationID", indexes);
                 }
             }
             if (changesMask[3])
