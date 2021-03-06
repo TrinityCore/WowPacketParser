@@ -4,7 +4,7 @@ namespace WowPacketParser.Store.Objects.UpdateFields
 {
     public interface IConversationActor
     {
-        uint Id { get; }
+        int Id { get; }
         uint CreatureID { get; }
         uint CreatureDisplayInfoID { get; }
         WowGuid ActorGUID { get; }

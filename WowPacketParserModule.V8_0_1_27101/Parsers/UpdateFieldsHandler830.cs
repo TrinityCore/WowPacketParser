@@ -3862,7 +3862,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_3_0_33062
             data.CreatureID = packet.ReadUInt32("CreatureID", indexes);
             data.CreatureDisplayInfoID = packet.ReadUInt32("CreatureDisplayInfoID", indexes);
             data.ActorGUID = packet.ReadPackedGuid128("ActorGUID", indexes);
-            data.Field_18 = packet.ReadInt32("Field_18", indexes);
+            data.Id = packet.ReadInt32("Id", indexes);
             data.Type = packet.ReadBits("Type", 1, indexes);
             return data;
         }
@@ -3876,7 +3876,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_3_0_33062
             data.CreatureID = packet.ReadUInt32("CreatureID", indexes);
             data.CreatureDisplayInfoID = packet.ReadUInt32("CreatureDisplayInfoID", indexes);
             data.ActorGUID = packet.ReadPackedGuid128("ActorGUID", indexes);
-            data.Field_18 = packet.ReadInt32("Field_18", indexes);
+            data.Id = packet.ReadInt32("Id", indexes);
             data.Type = packet.ReadBits("Type", 1, indexes);
             return data;
         }
@@ -3886,7 +3886,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_3_0_33062
             var data = new ConversationData();
             data.Lines = new IConversationLine[packet.ReadUInt32()];
             data.LastLineEndTime = packet.ReadInt32("LastLineEndTime", indexes);
-            data.Field_1C = packet.ReadUInt32("Field_1C", indexes);
+            data.Progress = packet.ReadUInt32("Progress", indexes);
             for (var i = 0; i < data.Lines.Length; ++i)
             {
                 data.Lines[i] = ReadCreateConversationLine(packet, indexes, "Lines", i);
@@ -3946,7 +3946,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_3_0_33062
                 }
                 if (changesMask[4])
                 {
-                    data.Field_1C = packet.ReadUInt32("Field_1C", indexes);
+                    data.Progress = packet.ReadUInt32("Progress", indexes);
                 }
             }
             return data;

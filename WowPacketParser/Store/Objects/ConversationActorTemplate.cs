@@ -13,7 +13,7 @@ namespace WowPacketParser.Store.Objects
     public sealed class ConversationActorTemplate : IDataModel
     {
         [DBFieldName("Id", true)]
-        public uint? Id;
+        public int? Id;
 
         [DBFieldName("CreatureId")]
         public uint? CreatureId;

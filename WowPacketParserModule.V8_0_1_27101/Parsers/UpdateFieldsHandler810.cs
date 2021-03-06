@@ -3510,7 +3510,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
             data.CreatureID = packet.ReadUInt32("CreatureID", indexes);
             data.CreatureDisplayInfoID = packet.ReadUInt32("CreatureDisplayInfoID", indexes);
             data.ActorGUID = packet.ReadPackedGuid128("ActorGUID", indexes);
-            data.Field_18 = packet.ReadInt32("Field_18", indexes);
+            data.Id = packet.ReadInt32("Id", indexes);
             data.Type = packet.ReadBits("Type", 1, indexes);
             return data;
         }
@@ -3524,7 +3524,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
             data.CreatureID = packet.ReadUInt32("CreatureID", indexes);
             data.CreatureDisplayInfoID = packet.ReadUInt32("CreatureDisplayInfoID", indexes);
             data.ActorGUID = packet.ReadPackedGuid128("ActorGUID", indexes);
-            data.Field_18 = packet.ReadInt32("Field_18", indexes);
+            data.Id = packet.ReadInt32("Id", indexes);
             data.Type = packet.ReadBits("Type", 1, indexes);
             return data;
         }

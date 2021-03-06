@@ -10,7 +10,7 @@ namespace WowPacketParser.Store.Objects
         public uint? ConversationId;
 
         [DBFieldName("ConversationActorId", true)]
-        public uint? ConversationActorId;
+        public int? ConversationActorId;
 
         [DBFieldName("Idx", true)]
         public uint? Idx;
