@@ -508,7 +508,6 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_3_0_33062
                 rawChangesMask[0] = (int)packet.ReadBits(32);
             var changesMask = new BitArray(rawChangesMask);
 
-            packet.ResetBitReader();
             if (changesMask[0])
             {
                 if (changesMask[1])

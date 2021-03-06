@@ -205,7 +205,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_2_5_31921
             data.Gems.Resize(packet.ReadUInt32());
             if ((flags & UpdateFieldFlag.Owner) != UpdateFieldFlag.None)
             {
-                data.Field_130 = packet.ReadUInt32("Field_130", indexes);
+                data.DynamicFlags2 = packet.ReadUInt32("DynamicFlags2", indexes);
             }
             for (var i = 0; i < data.Modifiers.Count; ++i)
             {
@@ -354,7 +354,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_2_5_31921
                 }
                 if (changesMask[19])
                 {
-                    data.Field_130 = packet.ReadUInt32("Field_130", indexes);
+                    data.DynamicFlags2 = packet.ReadUInt32("DynamicFlags2", indexes);
                 }
             }
             if (changesMask[20])
@@ -508,7 +508,6 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_2_5_31921
                 rawChangesMask[0] = (int)packet.ReadBits(32);
             var changesMask = new BitArray(rawChangesMask);
 
-            packet.ResetBitReader();
             if (changesMask[0])
             {
                 if (changesMask[1])
