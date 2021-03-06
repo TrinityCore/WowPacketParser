@@ -39,26 +39,26 @@ namespace WowPacketParser.Store.Objects
 
             var actorTemplates = new List<ConversationActorTemplate>();
             var actors = ConversationData.Actors;
-            for (var i = 0; i < actors.Count; ++i)
+            actors.ReadAll((item) =>
             {
                 var actor = new ConversationActorTemplate
                 {
-                    Type = actors[i].Type
+                    Type = item.Type
                 };
 
                 if (actor.Type == (uint)ActorType.WorldObjectActor)
-                    actor.Guid = actors[i].ActorGUID;
+                    actor.Guid = item.ActorGUID;
                 else if (actor.Type == (uint)ActorType.CreatureActor)
                 {
-                    actor.Id = actors[i].Id;
-                    actor.CreatureId = actors[i].CreatureID;
-                    actor.CreatureModelId = actors[i].CreatureDisplayInfoID;
+                    actor.Id = item.Id;
+                    actor.CreatureId = item.CreatureID;
+                    actor.CreatureModelId = item.CreatureDisplayInfoID;
 
                     Storage.ConversationActorTemplates.Add(actor);
                 }
 
                 actorTemplates.Add(actor);
-            }
+            });
 
             var lines = ConversationData.Lines;
             for (var i = 0; i < lines.Length; ++i)

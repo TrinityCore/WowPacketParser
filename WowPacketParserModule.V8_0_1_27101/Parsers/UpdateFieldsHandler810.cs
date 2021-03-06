@@ -209,18 +209,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
             {
                 data.DynamicFlags2 = packet.ReadUInt32("DynamicFlags2", indexes);
             }
-            for (var i = 0; i < data.Modifiers.Count; ++i)
-            {
-                data.Modifiers[i] = packet.ReadInt32("Modifiers", indexes, i);
-            }
-            for (var i = 0; i < data.ArtifactPowers.Count; ++i)
-            {
-                data.ArtifactPowers[i] = ReadCreateArtifactPower(packet, indexes, "ArtifactPowers", i);
-            }
-            for (var i = 0; i < data.Gems.Count; ++i)
-            {
-                data.Gems[i] = ReadCreateSocketedGem(packet, indexes, "Gems", i);
-            }
+            data.Modifiers.FillAll((i) => { return packet.ReadInt32("Modifiers", indexes, i); });
+            data.ArtifactPowers.FillAll((i) => { return ReadCreateArtifactPower(packet, indexes, "ArtifactPowers", i); });
+            data.Gems.FillAll((i) => { return ReadCreateSocketedGem(packet, indexes, "Gems", i); });
             return data;
         }
 
@@ -270,33 +261,15 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
             {
                 if (changesMask[2])
                 {
-                    for (var i = 0; i < data.Modifiers.Count; ++i)
-                    {
-                        if (data.Modifiers.UpdateMask[i])
-                        {
-                            data.Modifiers[i] = packet.ReadInt32("Modifiers", indexes, i);
-                        }
-                    }
+                    data.Modifiers.FillAllByUpdateMask((i) => { return packet.ReadInt32("Modifiers", indexes, i); });
                 }
                 if (changesMask[3])
                 {
-                    for (var i = 0; i < data.ArtifactPowers.Count; ++i)
-                    {
-                        if (data.ArtifactPowers.UpdateMask[i])
-                        {
-                            data.ArtifactPowers[i] = ReadUpdateArtifactPower(packet, data.ArtifactPowers[i] as ArtifactPower, indexes, "ArtifactPowers", i);
-                        }
-                    }
+                    data.ArtifactPowers.UpdateAllByUpdateMask((i, item) => { return ReadUpdateArtifactPower(packet, item as ArtifactPower, indexes, "ArtifactPowers", i); });
                 }
                 if (changesMask[4])
                 {
-                    for (var i = 0; i < data.Gems.Count; ++i)
-                    {
-                        if (data.Gems.UpdateMask[i])
-                        {
-                            data.Gems[i] = ReadUpdateSocketedGem(packet, data.Gems[i] as SocketedGem, indexes, "Gems", i);
-                        }
-                    }
+                    data.Gems.UpdateAllByUpdateMask((i, item) => { return ReadUpdateSocketedGem(packet, item as SocketedGem, indexes, "Gems", i); });
                 }
                 if (changesMask[5])
                 {
@@ -776,18 +749,9 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
             data.PassiveSpells.Resize(packet.ReadUInt32());
             data.WorldEffects.Resize(packet.ReadUInt32());
             data.ChannelObjects.Resize(packet.ReadUInt32());
-            for (var i = 0; i < data.PassiveSpells.Count; ++i)
-            {
-                data.PassiveSpells[i] = ReadCreatePassiveSpellHistory(packet, indexes, "PassiveSpells", i);
-            }
-            for (var i = 0; i < data.WorldEffects.Count; ++i)
-            {
-                data.WorldEffects[i] = packet.ReadInt32("WorldEffects", indexes, i);
-            }
-            for (var i = 0; i < data.ChannelObjects.Count; ++i)
-            {
-                data.ChannelObjects[i] = packet.ReadPackedGuid128("ChannelObjects", indexes, i);
-            }
+            data.PassiveSpells.FillAll((i) => { return ReadCreatePassiveSpellHistory(packet, indexes, "PassiveSpells", i); });
+            data.WorldEffects.FillAll((i) => { return packet.ReadInt32("WorldEffects", indexes, i); });
+            data.ChannelObjects.FillAll((i) => { return packet.ReadPackedGuid128("ChannelObjects", indexes, i); });
             return data;
         }
 
@@ -837,33 +801,15 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
             {
                 if (changesMask[2])
                 {
-                    for (var i = 0; i < data.PassiveSpells.Count; ++i)
-                    {
-                        if (data.PassiveSpells.UpdateMask[i])
-                        {
-                            data.PassiveSpells[i] = ReadUpdatePassiveSpellHistory(packet, data.PassiveSpells[i] as PassiveSpellHistory, indexes, "PassiveSpells", i);
-                        }
-                    }
+                    data.PassiveSpells.UpdateAllByUpdateMask((i, item) => { return ReadUpdatePassiveSpellHistory(packet, item as PassiveSpellHistory, indexes, "PassiveSpells", i); });
                 }
                 if (changesMask[3])
                 {
-                    for (var i = 0; i < data.WorldEffects.Count; ++i)
-                    {
-                        if (data.WorldEffects.UpdateMask[i])
-                        {
-                            data.WorldEffects[i] = packet.ReadInt32("WorldEffects", indexes, i);
-                        }
-                    }
+                    data.WorldEffects.FillAllByUpdateMask((i) => { return packet.ReadInt32("WorldEffects", indexes, i); });
                 }
                 if (changesMask[4])
                 {
-                    for (var i = 0; i < data.ChannelObjects.Count; ++i)
-                    {
-                        if (data.ChannelObjects.UpdateMask[i])
-                        {
-                            data.ChannelObjects[i] = packet.ReadPackedGuid128("ChannelObjects", indexes, i);
-                        }
-                    }
+                    data.ChannelObjects.FillAllByUpdateMask((i) => { return packet.ReadPackedGuid128("ChannelObjects", indexes, i); });
                 }
                 if (changesMask[5])
                 {
@@ -1555,10 +1501,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
             data.ArenaCooldowns.Resize(packet.ReadUInt32());
             data.Field_B0 = packet.ReadInt32("Field_B0", indexes);
             data.Field_B4 = packet.ReadInt32("Field_B4", indexes);
-            for (var i = 0; i < data.ArenaCooldowns.Count; ++i)
-            {
-                data.ArenaCooldowns[i] = ReadCreateArenaCooldown(packet, indexes, "ArenaCooldowns", i);
-            }
+            data.ArenaCooldowns.FillAll((i) => { return ReadCreateArenaCooldown(packet, indexes, "ArenaCooldowns", i); });
             return data;
         }
 
@@ -1588,13 +1531,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
             {
                 if (changesMask[1])
                 {
-                    for (var i = 0; i < data.ArenaCooldowns.Count; ++i)
-                    {
-                        if (data.ArenaCooldowns.UpdateMask[i])
-                        {
-                            data.ArenaCooldowns[i] = ReadUpdateArenaCooldown(packet, data.ArenaCooldowns[i] as ArenaCooldown, indexes, "ArenaCooldowns", i);
-                        }
-                    }
+                    data.ArenaCooldowns.UpdateAllByUpdateMask((i, item) => { return ReadUpdateArenaCooldown(packet, item as ArenaCooldown, indexes, "ArenaCooldowns", i); });
                 }
                 if (changesMask[2])
                 {
@@ -2160,63 +2097,21 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
             for (var i = 0; i < 1; ++i)
             {
                 data.Research[i].Resize(packet.ReadUInt32());
-                for (var j = 0; j < data.Research[i].Count; ++j)
-                {
-                    data.Research[i][j] = ReadCreateResearch(packet, indexes, "Research", i, j);
-                }
+                data.Research[i].FillAll((j) => { return ReadCreateResearch(packet, indexes, "Research", i, j); });
             }
-            for (var i = 0; i < data.KnownTitles.Count; ++i)
-            {
-                data.KnownTitles[i] = packet.ReadUInt64("KnownTitles", indexes, i);
-            }
-            for (var i = 0; i < data.ResearchSites.Count; ++i)
-            {
-                data.ResearchSites[i] = packet.ReadUInt16("ResearchSites", indexes, i);
-            }
-            for (var i = 0; i < data.ResearchSiteProgress.Count; ++i)
-            {
-                data.ResearchSiteProgress[i] = packet.ReadUInt32("ResearchSiteProgress", indexes, i);
-            }
-            for (var i = 0; i < data.DailyQuestsCompleted.Count; ++i)
-            {
-                data.DailyQuestsCompleted[i] = packet.ReadInt32("DailyQuestsCompleted", indexes, i);
-            }
-            for (var i = 0; i < data.AvailableQuestLineXQuestIDs.Count; ++i)
-            {
-                data.AvailableQuestLineXQuestIDs[i] = packet.ReadInt32("AvailableQuestLineXQuestIDs", indexes, i);
-            }
-            for (var i = 0; i < data.Heirlooms.Count; ++i)
-            {
-                data.Heirlooms[i] = packet.ReadInt32("Heirlooms", indexes, i);
-            }
-            for (var i = 0; i < data.HeirloomFlags.Count; ++i)
-            {
-                data.HeirloomFlags[i] = packet.ReadUInt32("HeirloomFlags", indexes, i);
-            }
-            for (var i = 0; i < data.Toys.Count; ++i)
-            {
-                data.Toys[i] = packet.ReadInt32("Toys", indexes, i);
-            }
-            for (var i = 0; i < data.ToyFlags.Count; ++i)
-            {
-                data.ToyFlags[i] = packet.ReadUInt32("ToyFlags", indexes, i);
-            }
-            for (var i = 0; i < data.Transmog.Count; ++i)
-            {
-                data.Transmog[i] = packet.ReadUInt32("Transmog", indexes, i);
-            }
-            for (var i = 0; i < data.SelfResSpells.Count; ++i)
-            {
-                data.SelfResSpells[i] = packet.ReadInt32("SelfResSpells", indexes, i);
-            }
-            for (var i = 0; i < data.SpellPctModByLabel.Count; ++i)
-            {
-                data.SpellPctModByLabel[i] = ReadCreateSpellPctModByLabel(packet, indexes, "SpellPctModByLabel", i);
-            }
-            for (var i = 0; i < data.SpellFlatModByLabel.Count; ++i)
-            {
-                data.SpellFlatModByLabel[i] = ReadCreateSpellFlatModByLabel(packet, indexes, "SpellFlatModByLabel", i);
-            }
+            data.KnownTitles.FillAll((i) => { return packet.ReadUInt64("KnownTitles", indexes, i); });
+            data.ResearchSites.FillAll((i) => { return packet.ReadUInt16("ResearchSites", indexes, i); });
+            data.ResearchSiteProgress.FillAll((i) => { return packet.ReadUInt32("ResearchSiteProgress", indexes, i); });
+            data.DailyQuestsCompleted.FillAll((i) => { return packet.ReadInt32("DailyQuestsCompleted", indexes, i); });
+            data.AvailableQuestLineXQuestIDs.FillAll((i) => { return packet.ReadInt32("AvailableQuestLineXQuestIDs", indexes, i); });
+            data.Heirlooms.FillAll((i) => { return packet.ReadInt32("Heirlooms", indexes, i); });
+            data.HeirloomFlags.FillAll((i) => { return packet.ReadUInt32("HeirloomFlags", indexes, i); });
+            data.Toys.FillAll((i) => { return packet.ReadInt32("Toys", indexes, i); });
+            data.ToyFlags.FillAll((i) => { return packet.ReadUInt32("ToyFlags", indexes, i); });
+            data.Transmog.FillAll((i) => { return packet.ReadUInt32("Transmog", indexes, i); });
+            data.SelfResSpells.FillAll((i) => { return packet.ReadInt32("SelfResSpells", indexes, i); });
+            data.SpellPctModByLabel.FillAll((i) => { return ReadCreateSpellPctModByLabel(packet, indexes, "SpellPctModByLabel", i); });
+            data.SpellFlatModByLabel.FillAll((i) => { return ReadCreateSpellFlatModByLabel(packet, indexes, "SpellFlatModByLabel", i); });
             for (var i = 0; i < 6; ++i)
             {
                 data.PvpInfo[i] = ReadCreatePVPInfo(packet, indexes, "PvpInfo", i);
@@ -2225,10 +2120,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
             data.BankAutoSortDisabled = packet.ReadBit("BankAutoSortDisabled", indexes);
             data.SortBagsRightToLeft = packet.ReadBit("SortBagsRightToLeft", indexes);
             data.InsertItemsLeftToRight = packet.ReadBit("InsertItemsLeftToRight", indexes);
-            for (var i = 0; i < data.CharacterRestrictions.Count; ++i)
-            {
-                data.CharacterRestrictions[i] = ReadCreateCharacterRestriction(packet, indexes, "CharacterRestrictions", i);
-            }
+            data.CharacterRestrictions.FillAll((i) => { return ReadCreateCharacterRestriction(packet, indexes, "CharacterRestrictions", i); });
             return data;
         }
 
@@ -2340,13 +2232,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
                 {
                     if (changesMask[20 + i])
                     {
-                        for (var j = 0; j < data.Research[i].Count; ++j)
-                        {
-                            if (data.Research[i].UpdateMask[j])
-                            {
-                                data.Research[i][j] = ReadUpdateResearch(packet, data.Research[i][j] as Research, indexes, "Research", i, j);
-                            }
-                        }
+                        data.Research[i].UpdateAllByUpdateMask((j, item) => { return ReadUpdateResearch(packet, item as Research, indexes, "Research", i, j); });
                     }
                 }
             }
@@ -2355,143 +2241,59 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
             {
                 if (changesMask[5])
                 {
-                    for (var i = 0; i < data.KnownTitles.Count; ++i)
-                    {
-                        if (data.KnownTitles.UpdateMask[i])
-                        {
-                            data.KnownTitles[i] = packet.ReadUInt64("KnownTitles", indexes, i);
-                        }
-                    }
+                    data.KnownTitles.FillAllByUpdateMask((i) => { return packet.ReadUInt64("KnownTitles", indexes, i); });
                 }
                 if (changesMask[6])
                 {
-                    for (var i = 0; i < data.ResearchSites.Count; ++i)
-                    {
-                        if (data.ResearchSites.UpdateMask[i])
-                        {
-                            data.ResearchSites[i] = packet.ReadUInt16("ResearchSites", indexes, i);
-                        }
-                    }
+                    data.ResearchSites.FillAllByUpdateMask((i) => { return packet.ReadUInt16("ResearchSites", indexes, i); });
                 }
                 if (changesMask[7])
                 {
-                    for (var i = 0; i < data.ResearchSiteProgress.Count; ++i)
-                    {
-                        if (data.ResearchSiteProgress.UpdateMask[i])
-                        {
-                            data.ResearchSiteProgress[i] = packet.ReadUInt32("ResearchSiteProgress", indexes, i);
-                        }
-                    }
+                    data.ResearchSiteProgress.FillAllByUpdateMask((i) => { return packet.ReadUInt32("ResearchSiteProgress", indexes, i); });
                 }
                 if (changesMask[8])
                 {
-                    for (var i = 0; i < data.DailyQuestsCompleted.Count; ++i)
-                    {
-                        if (data.DailyQuestsCompleted.UpdateMask[i])
-                        {
-                            data.DailyQuestsCompleted[i] = packet.ReadInt32("DailyQuestsCompleted", indexes, i);
-                        }
-                    }
+                    data.DailyQuestsCompleted.FillAllByUpdateMask((i) => { return packet.ReadInt32("DailyQuestsCompleted", indexes, i); });
                 }
                 if (changesMask[9])
                 {
-                    for (var i = 0; i < data.AvailableQuestLineXQuestIDs.Count; ++i)
-                    {
-                        if (data.AvailableQuestLineXQuestIDs.UpdateMask[i])
-                        {
-                            data.AvailableQuestLineXQuestIDs[i] = packet.ReadInt32("AvailableQuestLineXQuestIDs", indexes, i);
-                        }
-                    }
+                    data.AvailableQuestLineXQuestIDs.FillAllByUpdateMask((i) => { return packet.ReadInt32("AvailableQuestLineXQuestIDs", indexes, i); });
                 }
                 if (changesMask[10])
                 {
-                    for (var i = 0; i < data.Heirlooms.Count; ++i)
-                    {
-                        if (data.Heirlooms.UpdateMask[i])
-                        {
-                            data.Heirlooms[i] = packet.ReadInt32("Heirlooms", indexes, i);
-                        }
-                    }
+                    data.Heirlooms.FillAllByUpdateMask((i) => { return packet.ReadInt32("Heirlooms", indexes, i); });
                 }
                 if (changesMask[11])
                 {
-                    for (var i = 0; i < data.HeirloomFlags.Count; ++i)
-                    {
-                        if (data.HeirloomFlags.UpdateMask[i])
-                        {
-                            data.HeirloomFlags[i] = packet.ReadUInt32("HeirloomFlags", indexes, i);
-                        }
-                    }
+                    data.HeirloomFlags.FillAllByUpdateMask((i) => { return packet.ReadUInt32("HeirloomFlags", indexes, i); });
                 }
                 if (changesMask[12])
                 {
-                    for (var i = 0; i < data.Toys.Count; ++i)
-                    {
-                        if (data.Toys.UpdateMask[i])
-                        {
-                            data.Toys[i] = packet.ReadInt32("Toys", indexes, i);
-                        }
-                    }
+                    data.Toys.FillAllByUpdateMask((i) => { return packet.ReadInt32("Toys", indexes, i); });
                 }
                 if (changesMask[13])
                 {
-                    for (var i = 0; i < data.ToyFlags.Count; ++i)
-                    {
-                        if (data.ToyFlags.UpdateMask[i])
-                        {
-                            data.ToyFlags[i] = packet.ReadUInt32("ToyFlags", indexes, i);
-                        }
-                    }
+                    data.ToyFlags.FillAllByUpdateMask((i) => { return packet.ReadUInt32("ToyFlags", indexes, i); });
                 }
                 if (changesMask[14])
                 {
-                    for (var i = 0; i < data.Transmog.Count; ++i)
-                    {
-                        if (data.Transmog.UpdateMask[i])
-                        {
-                            data.Transmog[i] = packet.ReadUInt32("Transmog", indexes, i);
-                        }
-                    }
+                    data.Transmog.FillAllByUpdateMask((i) => { return packet.ReadUInt32("Transmog", indexes, i); });
                 }
                 if (changesMask[15])
                 {
-                    for (var i = 0; i < data.SelfResSpells.Count; ++i)
-                    {
-                        if (data.SelfResSpells.UpdateMask[i])
-                        {
-                            data.SelfResSpells[i] = packet.ReadInt32("SelfResSpells", indexes, i);
-                        }
-                    }
+                    data.SelfResSpells.FillAllByUpdateMask((i) => { return packet.ReadInt32("SelfResSpells", indexes, i); });
                 }
                 if (changesMask[17])
                 {
-                    for (var i = 0; i < data.SpellPctModByLabel.Count; ++i)
-                    {
-                        if (data.SpellPctModByLabel.UpdateMask[i])
-                        {
-                            data.SpellPctModByLabel[i] = ReadUpdateSpellPctModByLabel(packet, data.SpellPctModByLabel[i] as SpellPctModByLabel, indexes, "SpellPctModByLabel", i);
-                        }
-                    }
+                    data.SpellPctModByLabel.UpdateAllByUpdateMask((i, item) => { return ReadUpdateSpellPctModByLabel(packet, item as SpellPctModByLabel, indexes, "SpellPctModByLabel", i); });
                 }
                 if (changesMask[18])
                 {
-                    for (var i = 0; i < data.SpellFlatModByLabel.Count; ++i)
-                    {
-                        if (data.SpellFlatModByLabel.UpdateMask[i])
-                        {
-                            data.SpellFlatModByLabel[i] = ReadUpdateSpellFlatModByLabel(packet, data.SpellFlatModByLabel[i] as SpellFlatModByLabel, indexes, "SpellFlatModByLabel", i);
-                        }
-                    }
+                    data.SpellFlatModByLabel.UpdateAllByUpdateMask((i, item) => { return ReadUpdateSpellFlatModByLabel(packet, item as SpellFlatModByLabel, indexes, "SpellFlatModByLabel", i); });
                 }
                 if (changesMask[16])
                 {
-                    for (var i = 0; i < data.CharacterRestrictions.Count; ++i)
-                    {
-                        if (data.CharacterRestrictions.UpdateMask[i])
-                        {
-                            data.CharacterRestrictions[i] = ReadUpdateCharacterRestriction(packet, data.CharacterRestrictions[i] as CharacterRestriction, indexes, "CharacterRestrictions", i);
-                        }
-                    }
+                    data.CharacterRestrictions.UpdateAllByUpdateMask((i, item) => { return ReadUpdateCharacterRestriction(packet, item as CharacterRestriction, indexes, "CharacterRestrictions", i); });
                 }
                 if (changesMask[21])
                 {
@@ -2992,10 +2794,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
             data.PercentHealth = packet.ReadByte("PercentHealth", indexes);
             data.EnableDoodadSets.Resize(packet.ReadUInt32());
             data.CustomParam = packet.ReadUInt32("CustomParam", indexes);
-            for (var i = 0; i < data.EnableDoodadSets.Count; ++i)
-            {
-                data.EnableDoodadSets[i] = packet.ReadInt32("EnableDoodadSets", indexes, i);
-            }
+            data.EnableDoodadSets.FillAll((i) => { return packet.ReadInt32("EnableDoodadSets", indexes, i); });
             return data;
         }
 
@@ -3032,13 +2831,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
             {
                 if (changesMask[2])
                 {
-                    for (var i = 0; i < data.EnableDoodadSets.Count; ++i)
-                    {
-                        if (data.EnableDoodadSets.UpdateMask[i])
-                        {
-                            data.EnableDoodadSets[i] = packet.ReadInt32("EnableDoodadSets", indexes, i);
-                        }
-                    }
+                    data.EnableDoodadSets.FillAllByUpdateMask((i) => { return packet.ReadInt32("EnableDoodadSets", indexes, i); });
                 }
                 if (changesMask[3])
                 {
@@ -3539,10 +3332,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
                 data.Lines[i] = ReadCreateConversationLine(packet, indexes, "Lines", i);
             }
             data.Actors.Resize(packet.ReadUInt32());
-            for (var i = 0; i < data.Actors.Count; ++i)
-            {
-                data.Actors[i] = ReadCreateConversationActor(packet, indexes, "Actors", i);
-            }
+            data.Actors.FillAll((i) => { return ReadCreateConversationActor(packet, indexes, "Actors", i); });
             return data;
         }
 
@@ -3579,13 +3369,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
             {
                 if (changesMask[2])
                 {
-                    for (var i = 0; i < data.Actors.Count; ++i)
-                    {
-                        if (data.Actors.UpdateMask[i])
-                        {
-                            data.Actors[i] = ReadUpdateConversationActor(packet, data.Actors[i] as ConversationActor, indexes, "Actors", i);
-                        }
-                    }
+                    data.Actors.UpdateAllByUpdateMask((i, item) => { return ReadUpdateConversationActor(packet, item as ConversationActor, indexes, "Actors", i); });
                 }
                 if (changesMask[3])
                 {
