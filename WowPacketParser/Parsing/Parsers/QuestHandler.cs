@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using WowPacketParser.Enums;
@@ -22,7 +23,7 @@ namespace WowPacketParser.Parsing.Parsers
             public string CompletionText { get; set; }
         }
 
-        public static Dictionary<int, RequestItemEmote> RequestItemEmoteStore = new Dictionary<int, RequestItemEmote>();
+        public static ConcurrentDictionary<int, RequestItemEmote> RequestItemEmoteStore = new ConcurrentDictionary<int, RequestItemEmote>();
 
         private static void ReadExtraQuestInfo510(Packet packet)
         {
@@ -949,7 +950,7 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     requestItemEmote.EmoteOnIncompleteDelay = delay;
                     requestItemEmote.EmoteOnIncomplete = emote;
-                    
+
                     if (noRequestOnComplete)
                     {
                         requestItemEmote.EmoteOnCompleteDelay = 0;
@@ -988,7 +989,7 @@ namespace WowPacketParser.Parsing.Parsers
                     }
                 }
 
-                RequestItemEmoteStore.Add(id, emotes);
+                RequestItemEmoteStore.TryAdd(id, emotes);
             }
         }
 
@@ -1033,13 +1034,13 @@ namespace WowPacketParser.Parsing.Parsers
 
             QuestRequestItemHelper(id, text, emoteDelay, emoteID, isComplete, packet);
         }
-        
+
         [Parser(Opcode.SMSG_QUEST_GIVER_REQUEST_ITEMS, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestRequestItems434(Packet packet)
         {
             packet.ReadGuid("GUID");
             int id = packet.ReadInt32<QuestId>("QuestID");
-            
+
             packet.ReadCString("Title");
             string completionText = packet.ReadCString("CompletionText");
             int delay = packet.ReadInt32("EmoteDelay");
@@ -1068,7 +1069,7 @@ namespace WowPacketParser.Parsing.Parsers
             // flags, if any of these flags is 0 quest is not completable
             QuestStatusFlags[] statusFlags = new QuestStatusFlags[] { QuestStatusFlags.None, QuestStatusFlags.None, QuestStatusFlags.None, QuestStatusFlags.None, QuestStatusFlags.None };
             QuestStatusFlags[] completableStatusFlags = new QuestStatusFlags[] { QuestStatusFlags.KillCreditComplete, QuestStatusFlags.CollectableComplete, QuestStatusFlags.QuestStatusUnk8, QuestStatusFlags.QuestStatusUnk16, QuestStatusFlags.QuestStatusUnk64 };
-            
+
             statusFlags[0] = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags1"); // 2
             statusFlags[1] = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags2"); // 4
             statusFlags[2] = packet.ReadUInt32E<QuestStatusFlags>("StatusFlags3"); // 8
