@@ -77,7 +77,7 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
                         }
                     }
 
-                    field[i / ActorSize] = actor;
+                    field.SetUnsafe(i / ActorSize, actor);
                 }
 
                 return field;

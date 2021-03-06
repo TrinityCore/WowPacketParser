@@ -8,6 +8,10 @@ using WowPacketParserModule.V7_0_3_22248.Parsers;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using SplineFlag = WowPacketParserModule.V7_0_3_22248.Enums.SplineFlag;
 using CoreFields = WowPacketParser.Enums.Version;
+using System.IO;
+using System.Threading;
+using System.Collections.Concurrent;
+using System;
 
 namespace WowPacketParserModule.V8_0_1_27101.Parsers
 {

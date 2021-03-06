@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation;
 
 namespace WowPacketParser.Misc
 {
@@ -10,25 +11,72 @@ namespace WowPacketParser.Misc
         private readonly List<T> _values = new List<T>();
         public BitArray UpdateMask { get; private set; } = new BitArray(0);
 
-        public int Count => _values.Count;
+        public delegate void ActionUpdater(int idx, ref T value);
 
-        public T this[int index]
+        public void ReadAll(Action<T> action)
         {
-            get { return _values[index]; }
-            set { _values[index] = value; }
+            lock (_values)
+            {
+                for (int i = 0; i < _values.Count; ++i)
+                {
+                    action(_values[i]);
+                }
+            }
+        }
+
+        public void UpdateAllByUpdateMask(Func<int, T, T> updater)
+        {
+            lock (_values)
+            {
+                for (int i = 0; i < _values.Count; ++i)
+                {
+                    if (UpdateMask[i])
+                    {
+                        _values[i] = updater(i, _values[i]);
+                    }
+                }
+            }
+        }
+
+        public void FillAllByUpdateMask(Func<int, T> updater)
+        {
+            lock (_values)
+            {
+                for (int i = 0; i < _values.Count; ++i)
+                {
+                    if (UpdateMask[i])
+                    {
+                        _values[i] = updater(i);
+                    }
+                }
+            }
+        }
+
+        public void FillAll(Func<int, T> reader)
+        {
+            lock (_values)
+            {
+                for (int i = 0; i < _values.Count; ++i)
+                {
+                    _values[i] = reader(i);
+                }
+            }
         }
 
         public void Resize(uint newSize)
         {
-            int newCount = (int)newSize; // this is stupid but packets have unsigned values in them and this method is intended to be used in packet readers
-            int current = _values.Count;
-            if (newCount < current)
-                _values.RemoveRange(newCount, current - newCount);
-            else if (newCount > current)
+            lock (_values)
             {
-                if (newCount > _values.Capacity)
-                    _values.Capacity = newCount;
-                _values.AddRange(Enumerable.Repeat(default(T), newCount - current));
+                int newCount = (int)newSize; // this is stupid but packets have unsigned values in them and this method is intended to be used in packet readers
+                int current = _values.Count;
+                if (newCount < current)
+                    _values.RemoveRange(newCount, current - newCount);
+                else if (newCount > current)
+                {
+                    if (newCount > _values.Capacity)
+                        _values.Capacity = newCount;
+                    _values.AddRange(Enumerable.Repeat(default(T), newCount - current));
+                }
             }
         }
 
@@ -51,7 +99,15 @@ namespace WowPacketParser.Misc
             if ((newSize % 32) != 0)
                 rawMask[newSize / 32] = (int)packet.ReadBits((int)newSize % 32);
 
-            UpdateMask = new BitArray(rawMask);
+            lock (_values)
+            {
+                UpdateMask = new BitArray(rawMask);
+            }
+        }
+
+        public void SetUnsafe(int idx, T value)
+        {
+            _values[idx] = value;
         }
     }
 }
