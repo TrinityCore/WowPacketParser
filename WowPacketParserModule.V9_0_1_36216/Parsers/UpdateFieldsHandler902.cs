@@ -539,7 +539,7 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_0_2_36639
                 data.AzeriteEssenceID[i] = packet.ReadUInt32("AzeriteEssenceID", indexes, i);
             }
             data.SpecializationID = packet.ReadUInt32("SpecializationID", indexes);
-            data.Enabled = packet.ReadBits("Enabled", 1, indexes);
+            data.Enabled = packet.ReadBit("Enabled", indexes);
             return data;
         }
 
@@ -557,16 +557,19 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_0_2_36639
                 rawChangesMask[0] = (int)packet.ReadBits(32);
             var changesMask = new BitArray(rawChangesMask);
 
-            packet.ResetBitReader();
             if (changesMask[0])
             {
                 if (changesMask[1])
                 {
-                    data.SpecializationID = packet.ReadUInt32("SpecializationID", indexes);
+                    data.Enabled = packet.ReadBit("Enabled", indexes);
                 }
+            }
+            packet.ResetBitReader();
+            if (changesMask[0])
+            {
                 if (changesMask[2])
                 {
-                    data.Enabled = packet.ReadBits("Enabled", 1, indexes);
+                    data.SpecializationID = packet.ReadUInt32("SpecializationID", indexes);
                 }
             }
             if (changesMask[3])
@@ -605,7 +608,6 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_0_2_36639
             {
                 data.UnlockedEssenceMilestones[i] = packet.ReadUInt32("UnlockedEssenceMilestones", indexes, i);
             }
-            packet.ResetBitReader();
             if ((flags & UpdateFieldFlag.Owner) != UpdateFieldFlag.None)
             {
                 data.Enabled = packet.ReadBit("Enabled", indexes);
@@ -1843,7 +1845,6 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_0_2_36639
             {
                 data.ArenaCooldowns[i] = ReadCreateArenaCooldown(packet, indexes, "ArenaCooldowns", i);
             }
-            packet.ResetBitReader();
             if ((flags & UpdateFieldFlag.PartyMember) != UpdateFieldFlag.None)
             {
                 data.HasQuestSession = packet.ReadBit("HasQuestSession", indexes);
@@ -3982,7 +3983,6 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_0_2_36639
                 data.Points[i] = packet.ReadVector2("Points", indexes, i);
             }
             data.ParameterCurve = packet.ReadUInt32("ParameterCurve", indexes);
-            packet.ResetBitReader();
             data.OverrideActive = packet.ReadBit("OverrideActive", indexes);
             return data;
         }
