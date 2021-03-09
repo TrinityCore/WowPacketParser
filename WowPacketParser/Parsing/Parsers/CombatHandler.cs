@@ -64,7 +64,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandlePvPCredit(Packet packet)
         {
             packet.ReadUInt32("Honor");
-            packet.ReadGuid("GUID");
+            packet.ReadGuid("TargetGUID");
             packet.ReadInt32("Rank");
         }
 
@@ -114,17 +114,17 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_ATTACK_START)]
         public static void HandleAttackStartStart(Packet packet)
         {
-            packet.ReadGuid("GUID");
-            packet.ReadGuid("Victim GUID");
+            packet.ReadGuid("AttackerGUID");
+            packet.ReadGuid("VictimGUID");
         }
 
         [Parser(Opcode.SMSG_ATTACK_STOP)]
         [Parser(Opcode.SMSG_COMBAT_EVENT_FAILED)]
         public static void HandleAttackStartStop(Packet packet)
         {
-            packet.ReadPackedGuid("GUID");
-            packet.ReadPackedGuid("Victim GUID");
-            packet.ReadInt32("Unk int"); // Has something to do with facing?
+            packet.ReadPackedGuid("AttackerGUID");
+            packet.ReadPackedGuid("VictimGUID");
+            packet.ReadInt32("NowDead"); // Blocks clientside facing when set to 1
         }
 
         [Parser(Opcode.SMSG_ATTACKER_STATE_UPDATE, ClientVersionBuild.V4_0_6_13596)]
@@ -136,32 +136,32 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadInt32("Damage");
             packet.ReadInt32("OverDamage");
 
-            var subDmgCount = packet.ReadByte("Count");
+            var subDmgCount = packet.ReadByte("SubDmg");
             for (var i = 0; i < subDmgCount; ++i)
             {
                 packet.ReadInt32("SchoolMask", i);
-                packet.ReadSingle("Float Damage", i);
-                packet.ReadInt32("Int Damage", i);
+                packet.ReadSingle("FDamage", i);
+                packet.ReadInt32("Damage", i);
             }
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_ABSORB | SpellHitInfo.HITINFO_FULL_ABSORB))
                 for (var i = 0; i < subDmgCount; ++i)
-                    packet.ReadInt32("Damage Absorbed", i);
+                    packet.ReadInt32("Absorbed", i);
 
                 if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_RESIST | SpellHitInfo.HITINFO_FULL_RESIST))
                     for (var i = 0; i < subDmgCount; ++i)
-                        packet.ReadInt32("Damage Resisted", i);
+                        packet.ReadInt32("Resisted", i);
 
             packet.ReadByteE<VictimStates>("VictimState");
-            packet.ReadInt32("Unk Attacker State 0");
+            packet.ReadInt32("AttackerState");
 
-            packet.ReadInt32<SpellId>("Melee Spell Id");
+            packet.ReadInt32<SpellId>("MeleeSpellID");
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_BLOCK))
-                packet.ReadInt32("Block Amount");
+                packet.ReadInt32("BlockAmount");
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_RAGE_GAIN))
-                packet.ReadInt32("Rage Gained");
+                packet.ReadInt32("RageGained");
 
             if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_UNK0))
             {
