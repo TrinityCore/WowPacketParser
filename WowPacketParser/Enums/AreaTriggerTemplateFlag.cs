@@ -16,6 +16,6 @@ namespace WowPacketParser.Enums
         Unk3                    = 0x00100,
         HasAnimKitId            = 0x00200,
         HasCircularMovement     = 0x00400,
-        Unk5                    = 0x00800
+        Unk901                  = 0x00800
     }
 }

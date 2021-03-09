@@ -587,6 +587,10 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 if (packet.ReadBit("HasAreaTriggerCircularMovement", index))
                     areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasCircularMovement;
 
+                if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
+                    if (packet.ReadBit("HasAreaTriggerUnk901", index)) // seen with spellid 343597
+                        areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk901;
+
                 if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.Unk3) != 0)
                     packet.ReadBit();
 
@@ -683,6 +687,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     areaTriggerTemplate.Data[3] = packet.ReadSingle("HeightTarget", index);
                     areaTriggerTemplate.Data[4] = packet.ReadSingle("LocationZOffset", index);
                     areaTriggerTemplate.Data[5] = packet.ReadSingle("LocationZOffsetTarget", index);
+                }
+
+                if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.Unk901) != 0)
+                {
+                    packet.ReadInt32("Unk901"); // some id prolly, its neither npc nor spell though
+                    packet.ReadVector3("Unk901Position");
                 }
 
                 if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.HasCircularMovement) != 0)
