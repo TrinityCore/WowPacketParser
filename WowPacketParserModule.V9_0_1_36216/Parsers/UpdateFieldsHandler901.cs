@@ -4031,6 +4031,7 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_0_1_36216
         public override IAreaTriggerData ReadCreateAreaTriggerData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
         {
             var data = new AreaTriggerData();
+            data.OverrideScaleCurve = ReadCreateScaleCurve(packet, indexes, "OverrideScaleCurve");
             data.Caster = packet.ReadPackedGuid128("Caster", indexes);
             data.Duration = packet.ReadUInt32("Duration", indexes);
             data.TimeToTarget = packet.ReadUInt32("TimeToTarget", indexes);
@@ -4042,7 +4043,6 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_0_1_36216
             data.BoundsRadius2D = packet.ReadSingle("BoundsRadius2D", indexes);
             data.DecalPropertiesID = packet.ReadUInt32("DecalPropertiesID", indexes);
             data.CreatingEffectGUID = packet.ReadPackedGuid128("CreatingEffectGUID", indexes);
-            data.OverrideScaleCurve = ReadCreateScaleCurve(packet, indexes, "OverrideScaleCurve");
             data.ExtraScaleCurve = ReadCreateScaleCurve(packet, indexes, "ExtraScaleCurve");
             return data;
         }
