@@ -202,5 +202,28 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             if (hasAzeriteLevel)
                 packet.ReadInt32("AzeriteLevel");
         }
+
+        [Parser(Opcode.CMSG_CREATE_CHARACTER)]
+        public static void HandleClientCharCreate(Packet packet)
+        {
+            var nameLen = packet.ReadBits(6);
+            var hasTemplateSet = packet.ReadBit("HasTemplateSet");
+            packet.ReadBit("IsTrialBoost");
+            packet.ReadBit("UseNPE");
+
+            packet.ReadByteE<Race>("RaceID");
+            packet.ReadByteE<Class>("ClassID");
+            packet.ReadByteE<Gender>("SexID");
+
+            var customizationCount = packet.ReadUInt32();
+
+            packet.ReadWoWString("Name", nameLen);
+
+            if (hasTemplateSet)
+                packet.ReadInt32("TemplateSetID");
+
+            for (var i = 0u; i < customizationCount; ++i)
+                ReadChrCustomizationChoice(packet, "Customizations", i);
+        }
     }
 }
