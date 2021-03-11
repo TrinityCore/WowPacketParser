@@ -16,6 +16,6 @@ namespace WowPacketParserModule.V9_0_1_36216.Hotfix
         public int ChrCustomizationCondModelID { get; set; }
         public int ChrCustomizationDisplayInfoID { get; set; }
         [HotfixVersion(ClientVersionBuild.V9_0_5_37503, false)]
-        public int ChrCustItemGeoModifyID { get; set; }
+        public int ChrCustomizationItemGeosetModifyID { get; set; }
     }
 }
