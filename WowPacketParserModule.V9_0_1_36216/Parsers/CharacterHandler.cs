@@ -225,5 +225,19 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             for (var i = 0u; i < customizationCount; ++i)
                 ReadChrCustomizationChoice(packet, "Customizations", i);
         }
+      
+        [Parser(Opcode.SMSG_CHECK_CHARACTER_NAME_AVAILABILITY_RESULT)]
+        public static void HandleCheckCharacterNameAvailabilityResult(Packet packet)
+        {
+            packet.ReadUInt32("SequenceIndex");
+            packet.ReadUInt32("Result");
+        }
+
+        [Parser(Opcode.CMSG_CHECK_CHARACTER_NAME_AVAILABILITY)]
+        public static void HandleCheckCharacterNameAvailability(Packet packet)
+        {
+            packet.ReadUInt32("SequenceIndex");
+            packet.ReadWoWString("Character Name", packet.ReadBits(6));
+        }
     }
 }
