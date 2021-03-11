@@ -6,8 +6,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Hotfix
     [HotfixStructure(DB2Hash.CreatureModelData, HasIndexInData = false)]
     public class CreatureModelDataEntry
     {
-        [HotfixArray(6)]
-        public float[] GeoBox { get; set; }
+        [HotfixArray(3, true)]
+        public float[] GeoBoxMin { get; set; }
+        [HotfixArray(3, true)]
+        public float[] GeoBoxMax { get; set; }
         public uint Flags { get; set; }
         public uint FileDataID { get; set; }
         public uint BloodID { get; set; }
