@@ -12,14 +12,14 @@ namespace WowPacketParserModule.V9_0_1_36216.Hotfix
         public float DamageSecondaryF { get; set; }
         public int DamageReplaceStat { get; set; }
         public int DamageSecondary { get; set; }
-        [HotfixArray(5)]
         [HotfixVersion(ClientVersionBuild.V9_0_5_37503, false)]
+        [HotfixArray(5)]
         public float[] EpicF { get; set; }
-        [HotfixArray(5)]
         [HotfixVersion(ClientVersionBuild.V9_0_5_37503, false)]
+        [HotfixArray(5)]
         public float[] SuperiorF { get; set; }
-        [HotfixArray(5)]
         [HotfixVersion(ClientVersionBuild.V9_0_5_37503, false)]
+        [HotfixArray(5)]
         public float[] GoodF { get; set; }
         [HotfixArray(5)]
         public uint[] Epic { get; set; }
