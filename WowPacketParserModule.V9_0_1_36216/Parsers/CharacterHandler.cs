@@ -213,7 +213,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         [Parser(Opcode.CMSG_CHECK_CHARACTER_NAME_AVAILABILITY)]
         public static void HandleCheckCharacterNameAvailability(Packet packet)
         {
-            packet.ReadUInt32("Index");
+            packet.ReadUInt32("SequenceIndex");
             packet.ReadWoWString("Character Name", packet.ReadBits(6));
         }
     }
