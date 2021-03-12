@@ -190,13 +190,13 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var hasInstanceGroupSize = packet.ReadBit("HasInstanceGroupSize");
 
             if (hasRestrictedAccountMaxLevel)
-                packet.ReadInt32("RestrictedAccountMaxLevel");
+                packet.ReadUInt32("RestrictedAccountMaxLevel");
 
             if (hasRestrictedAccountMaxMoney)
                 packet.ReadUInt64("RestrictedAccountMaxMoney");
 
             if (hasInstanceGroupSize)
-                packet.ReadInt32("InstanceGroupSize");
+                packet.ReadUInt32("InstanceGroupSize");
         }
     }
 }

@@ -11,8 +11,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
         public static void ReadCriteriaProgress(Packet packet, params object[] indexes)
         {
-            int criteriaId = packet.ReadInt32<CriteriaId>("CriteriaID", indexes);
-            ulong quantity = (ulong)packet.ReadInt64("Quantity", indexes);
+            var criteriaId = packet.ReadInt32<CriteriaId>("CriteriaID", indexes);
+            var quantity = packet.ReadUInt64("Quantity", indexes);
             packet.ReadPackedGuid128("PlayerGUID", indexes);
             packet.ReadPackedTime("CurrentTime", indexes);
             packet.ReadTime("ElapsedTime", indexes);
