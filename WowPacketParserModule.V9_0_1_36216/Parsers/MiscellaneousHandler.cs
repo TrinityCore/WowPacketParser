@@ -176,5 +176,27 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             Storage.Sounds.Add(sound, packet.TimeSpan);
         }
+
+        [Parser(Opcode.SMSG_WORLD_SERVER_INFO)]
+        public static void HandleWorldServerInfo(Packet packet)
+        {
+            CoreParsers.MovementHandler.CurrentDifficultyID = packet.ReadUInt32<DifficultyId>("DifficultyID");
+            packet.ReadByte("IsTournamentRealm");
+
+            packet.ReadBit("XRealmPvpAlert");
+            packet.ReadBit("BlockExitingLoadingScreen");
+            var hasRestrictedAccountMaxLevel = packet.ReadBit("HasRestrictedAccountMaxLevel");
+            var hasRestrictedAccountMaxMoney = packet.ReadBit("HasRestrictedAccountMaxMoney");
+            var hasInstanceGroupSize = packet.ReadBit("HasInstanceGroupSize");
+
+            if (hasRestrictedAccountMaxLevel)
+                packet.ReadUInt32("RestrictedAccountMaxLevel");
+
+            if (hasRestrictedAccountMaxMoney)
+                packet.ReadUInt64("RestrictedAccountMaxMoney");
+
+            if (hasInstanceGroupSize)
+                packet.ReadUInt32("InstanceGroupSize");
+        }
     }
 }
