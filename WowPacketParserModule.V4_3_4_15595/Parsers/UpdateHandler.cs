@@ -114,7 +114,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadBit();
             var hasGameObjectPosition = packet.ReadBit("Has GameObject Position", index);
             var hasStationaryPosition = packet.ReadBit("Has Stationary Position", index);
-            var bit456 = packet.ReadBit();
+            var hasAreaTrigger = packet.ReadBit();
             /*var bit2 =*/
             packet.ReadBit();
             var transport = packet.ReadBit("Transport", index);
@@ -450,11 +450,18 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             if (hasGameObjectRotation)
                 moveInfo.Rotation = packet.ReadPackedQuaternion("GameObject Rotation", index);
 
-            if (bit456)
+            if (hasAreaTrigger)
             {
                 // float[] arr = new float[16];
                 // ordering: 13, 4, 7, 15, BYTE, 10, 11, 3, 5, 14, 6, 1, 8, 12, 0, 2, 9
-                packet.ReadBytes(4 * 16 + 1);
+                var arr = new float[16];
+                var sequence = new int[] { 13, 4, 7, 15, 10, 11, 3, 5, 14, 6, 1, 8, 12, 0, 2, 9 };
+                foreach (var idx in sequence)
+                {
+                    arr[idx] = packet.ReadSingle($"AreaTrigger Data[{idx}]");
+                    if (idx == 15)
+                        packet.ReadByte("AreaTrigger Byte");
+                }
             }
 
             if (hasStationaryPosition)
