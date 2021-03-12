@@ -9,8 +9,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         [Parser(Opcode.SMSG_SCENARIO_STATE)]
         public static void HandleScenarioState(Packet packet)
         {
-            packet.ReadUInt32("ScenarioID");
-            packet.ReadUInt32("CurrentStep");
+            packet.ReadInt32("ScenarioID");
+            packet.ReadInt32("CurrentStep");
             packet.ReadUInt32<DifficultyId>("DifficultyID");
             packet.ReadUInt32("WaveCurrent");
             packet.ReadUInt32("WaveMax");
