@@ -376,8 +376,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadBit("CanStart");
         }
 
-        [Parser(Opcode.CMSG_ADVENTURE_JOURNAL_START_QUEST)]
-        public static void HandleAdventurejournalStartQuest(Packet packet)
+        [Parser(Opcode.CMSG_ADVENTURE_MAP_START_QUEST)]
+        public static void HandleAdventureMapStartQuest(Packet packet)
         {
             packet.ReadInt32<QuestId>("QuestID");
         }

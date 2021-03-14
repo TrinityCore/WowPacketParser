@@ -29,7 +29,7 @@ namespace WowPacketParser.Enums.Version.V8_3_7_35249
             {Opcode.CMSG_ADD_IGNORE, 0x36D2},
             {Opcode.CMSG_ADD_TOY, 0x329C},
             {Opcode.CMSG_ADVENTURE_JOURNAL_OPEN_QUEST, 0x3203},
-            {Opcode.CMSG_ADVENTURE_JOURNAL_START_QUEST, 0x3346},
+            {Opcode.CMSG_ADVENTURE_MAP_START_QUEST, 0x3346},
             {Opcode.CMSG_ALTER_APPEARANCE, 0x34FD},
             {Opcode.CMSG_AREA_SPIRIT_HEALER_QUERY, 0x34B0},
             {Opcode.CMSG_AREA_SPIRIT_HEALER_QUEUE, 0x34B1},
