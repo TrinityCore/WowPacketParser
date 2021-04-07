@@ -150,6 +150,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         private static Dictionary<int, UpdateField> ReadValuesUpdateBlock(Packet packet, ObjectType type, object index, bool isCreating, Dictionary<int, UpdateField> oldValues)
         {
+            bool missingCreateObject = !isCreating && oldValues == null;
             var maskSize = packet.ReadByte();
 
             var updateMask = new int[maskSize];
@@ -189,6 +190,10 @@ namespace WowPacketParser.Parsing.Parsers
                         }
                         case ObjectType.Item:
                         {
+                            // if mask.Count is bigger than AZERITE_ITEM_END it is probably a Container
+                            if (missingCreateObject && mask.Count >= UpdateFields.GetUpdateField(AzeriteItemField.AZERITE_ITEM_END) && i >= UpdateFields.GetUpdateField(ItemField.ITEM_END))
+                                goto case ObjectType.Container;
+
                             fieldInfo = UpdateFields.GetUpdateFieldInfo<ItemField>(i);
                             break;
                         }
@@ -212,6 +217,9 @@ namespace WowPacketParser.Parsing.Parsers
                         {
                             if (i < UpdateFields.GetUpdateField(UnitField.UNIT_END) || i < UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_END))
                                 goto case ObjectType.Unit;
+                        
+                            if (missingCreateObject && i >= UpdateFields.GetUpdateField(PlayerField.PLAYER_END) && i < UpdateFields.GetUpdateField(ActivePlayerField.ACTIVE_PLAYER_END))
+                                goto case ObjectType.ActivePlayer;
 
                             fieldInfo = UpdateFields.GetUpdateFieldInfo<PlayerField>(i);
                             break;
