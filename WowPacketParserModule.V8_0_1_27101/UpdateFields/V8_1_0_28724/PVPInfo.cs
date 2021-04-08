@@ -13,7 +13,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_0_28724
         public uint Field_14 { get; set; }
         public uint Field_18 { get; set; }
         public uint PvpTierID { get; set; }
-        public uint Field_20 { get; set; }
+        public bool Field_20 { get; set; }
     }
 }
 

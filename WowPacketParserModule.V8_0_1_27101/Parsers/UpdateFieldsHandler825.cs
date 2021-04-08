@@ -2061,7 +2061,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_2_5_31921
             data.Field_14 = packet.ReadUInt32("Field_14", indexes);
             data.Field_18 = packet.ReadUInt32("Field_18", indexes);
             data.PvpTierID = packet.ReadUInt32("PvpTierID", indexes);
-            data.Field_20 = packet.ReadBits("Field_20", 1, indexes);
+            data.Field_20 = packet.ReadBit("Field_20", indexes);
             return data;
         }
 
@@ -2075,13 +2075,16 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_2_5_31921
             rawChangesMask[0] = (int)packet.ReadBits(10);
             var changesMask = new BitArray(rawChangesMask);
 
-            packet.ResetBitReader();
             if (changesMask[0])
             {
                 if (changesMask[1])
                 {
-                    data.Field_20 = packet.ReadBits("Field_20", 1, indexes);
+                    data.Field_20 = packet.ReadBit("Field_20", indexes);
                 }
+            }
+            packet.ResetBitReader();
+            if (changesMask[0])
+            {
                 if (changesMask[2])
                 {
                     data.Field_0 = packet.ReadUInt32("Field_0", indexes);
