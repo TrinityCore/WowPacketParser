@@ -2190,7 +2190,7 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_0_5_37862
             data.Field_14 = packet.ReadUInt32("Field_14", indexes);
             data.Field_18 = packet.ReadUInt32("Field_18", indexes);
             data.PvpTierID = packet.ReadUInt32("PvpTierID", indexes);
-            data.Field_20 = packet.ReadBits("Field_20", 1, indexes);
+            data.Field_20 = packet.ReadBit("Field_20", indexes);
             return data;
         }
 
@@ -2204,44 +2204,47 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_0_5_37862
             rawChangesMask[0] = (int)packet.ReadBits(10);
             var changesMask = new BitArray(rawChangesMask);
 
-            packet.ResetBitReader();
             if (changesMask[0])
             {
                 if (changesMask[1])
                 {
-                    data.Field_0 = packet.ReadUInt32("Field_0", indexes);
+                    data.Field_20 = packet.ReadBit("Field_20", indexes);
                 }
+            }
+            packet.ResetBitReader();
+            if (changesMask[0])
+            {
                 if (changesMask[2])
                 {
-                    data.Field_4 = packet.ReadUInt32("Field_4", indexes);
+                    data.Field_0 = packet.ReadUInt32("Field_0", indexes);
                 }
                 if (changesMask[3])
                 {
-                    data.Field_8 = packet.ReadUInt32("Field_8", indexes);
+                    data.Field_4 = packet.ReadUInt32("Field_4", indexes);
                 }
                 if (changesMask[4])
                 {
-                    data.Field_C = packet.ReadUInt32("Field_C", indexes);
+                    data.Field_8 = packet.ReadUInt32("Field_8", indexes);
                 }
                 if (changesMask[5])
                 {
-                    data.Rating = packet.ReadUInt32("Rating", indexes);
+                    data.Field_C = packet.ReadUInt32("Field_C", indexes);
                 }
                 if (changesMask[6])
                 {
-                    data.Field_14 = packet.ReadUInt32("Field_14", indexes);
+                    data.Rating = packet.ReadUInt32("Rating", indexes);
                 }
                 if (changesMask[7])
                 {
-                    data.Field_18 = packet.ReadUInt32("Field_18", indexes);
+                    data.Field_14 = packet.ReadUInt32("Field_14", indexes);
                 }
                 if (changesMask[8])
                 {
-                    data.PvpTierID = packet.ReadUInt32("PvpTierID", indexes);
+                    data.Field_18 = packet.ReadUInt32("Field_18", indexes);
                 }
                 if (changesMask[9])
                 {
-                    data.Field_20 = packet.ReadBits("Field_20", 1, indexes);
+                    data.PvpTierID = packet.ReadUInt32("PvpTierID", indexes);
                 }
             }
             return data;
