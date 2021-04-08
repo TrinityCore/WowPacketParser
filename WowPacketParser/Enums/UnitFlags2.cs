@@ -7,7 +7,7 @@ namespace WowPacketParser.Enums
     {
         None                             = 0x0,
         AppearDead                       = 0x1,
-        Unk1                             = 0x2,
+        HideBody                         = 0x2,
         IgnoreReputation                 = 0x4, // ?
         ComprehendLanguages              = 0x8,
         MirrorImage                      = 0x10,
