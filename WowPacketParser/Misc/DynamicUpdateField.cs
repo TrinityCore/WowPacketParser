@@ -39,14 +39,16 @@ namespace WowPacketParser.Misc
             var rawMask = new int[(newSize + 31) / 32];
             if (newSize > 32)
             {
-                Func<int> read;
                 if (packet.HasUnreadBitsInBuffer())
-                    read = () => (int)packet.ReadBits(32);
+                {
+                    for (var i = 0; i < newSize / 32; ++i)
+                        rawMask[i] = (int)packet.ReadBits(32);
+                }
                 else
-                    read = () => (int)packet.ReadUInt32();
-
-                for (var i = 0; i < newSize / 32; ++i)
-                    rawMask[i] = read();
+                {
+                    for (var i = 0; i < newSize / 32; ++i)
+                        rawMask[i] = packet.ReadInt32();
+                }
             }
             if ((newSize % 32) != 0)
                 rawMask[newSize / 32] = (int)packet.ReadBits((int)newSize % 32);
