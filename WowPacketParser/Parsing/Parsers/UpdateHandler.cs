@@ -160,6 +160,37 @@ namespace WowPacketParser.Parsing.Parsers
             var mask = new BitArray(updateMask);
             var dict = new Dictionary<int, UpdateField>();
 
+            if (missingCreateObject)
+            {
+                switch (type)
+                {
+                    case ObjectType.Item:
+                    {
+                        if (mask.Count >= UpdateFields.GetUpdateField(ItemField.ITEM_END))
+                        {
+                            // Container MaskSize = 8 (6.1.0 - 8.0.1) 5 (2.4.3 - 6.0.3)
+                            if (maskSize == Convert.ToInt32((UpdateFields.GetUpdateField(ContainerField.CONTAINER_END) + 32) / 32))
+                                type = ObjectType.Container;
+                            // AzeriteEmpoweredItem and AzeriteItem MaskSize = 3 (8.0.1)
+                            // we can't determine them RIP
+                        }
+                        break;
+                    }
+                    case ObjectType.Player:
+                    {
+                        if (mask.Count >= UpdateFields.GetUpdateField(PlayerField.PLAYER_END))
+                        {
+                            // ActivePlayer MaskSize = 184 (8.0.1)
+                            if (maskSize == Convert.ToInt32((UpdateFields.GetUpdateField(ActivePlayerField.ACTIVE_PLAYER_END) + 32) / 32))
+                                type = ObjectType.ActivePlayer;
+                        }
+                        break;
+                    }
+                    default:
+                        break;
+                }
+            }
+
             int objectEnd = UpdateFields.GetUpdateField(ObjectField.OBJECT_END);
             for (var i = 0; i < mask.Count; ++i)
             {
@@ -190,10 +221,6 @@ namespace WowPacketParser.Parsing.Parsers
                         }
                         case ObjectType.Item:
                         {
-                            // if mask.Count is bigger than AZERITE_ITEM_END it is probably a Container
-                            if (missingCreateObject && mask.Count >= UpdateFields.GetUpdateField(AzeriteItemField.AZERITE_ITEM_END) && i >= UpdateFields.GetUpdateField(ItemField.ITEM_END))
-                                goto case ObjectType.Container;
-
                             fieldInfo = UpdateFields.GetUpdateFieldInfo<ItemField>(i);
                             break;
                         }
@@ -217,9 +244,6 @@ namespace WowPacketParser.Parsing.Parsers
                         {
                             if (i < UpdateFields.GetUpdateField(UnitField.UNIT_END) || i < UpdateFields.GetUpdateField(UnitField.UNIT_FIELD_END))
                                 goto case ObjectType.Unit;
-                        
-                            if (missingCreateObject && i >= UpdateFields.GetUpdateField(PlayerField.PLAYER_END) && i < UpdateFields.GetUpdateField(ActivePlayerField.ACTIVE_PLAYER_END))
-                                goto case ObjectType.ActivePlayer;
 
                             fieldInfo = UpdateFields.GetUpdateFieldInfo<PlayerField>(i);
                             break;
