@@ -200,7 +200,8 @@ namespace WowPacketParser.Loading
                         },
                         packet => // write
                         {
-                            ShowPercentProgress("Processing...", reader.PacketReader.GetCurrentSize(), reader.PacketReader.GetTotalSize());
+                            if (!Console.IsOutputRedirected)
+                                ShowPercentProgress("Processing...", reader.PacketReader.GetCurrentSize(), reader.PacketReader.GetTotalSize());
 
                             if (!packet.Status.HasAnyFlag(Settings.OutputFlag) || !packet.WriteToFile)
                             {
