@@ -176,7 +176,7 @@ namespace WowPacketParser.Parsing.Parsers
                             // we can't determine them RIP
                             else if (maskSize == Convert.ToInt32((UpdateFields.GetUpdateField(AzeriteItemField.AZERITE_ITEM_END) + 32) / 32) || maskSize == Convert.ToInt32((UpdateFields.GetUpdateField(AzeriteEmpoweredItemField.AZERITE_EMPOWERED_ITEM_END) + 32) / 32))
                             {
-                                packet.WriteLine($"[{index}] ObjectType cannot be determined! Possible ObjeytTypes: AzeriteItem, AzeriteEmpoweredItem");
+                                packet.WriteLine($"[{index}] ObjectType cannot be determined! Possible ObjectTypes: AzeriteItem, AzeriteEmpoweredItem");
                                 packet.WriteLine($"[{index}] Following data may not make sense!");
                                 skipDictionary = true;
                             }
