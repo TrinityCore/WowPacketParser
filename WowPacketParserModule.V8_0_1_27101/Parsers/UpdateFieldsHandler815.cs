@@ -3323,7 +3323,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29683
             return data;
         }
 
-        public static ScaleCurve ReadCreateScaleCurve(Packet packet, UpdateFieldFlag flags, params object[] indexes)
+        public static IScaleCurve ReadCreateScaleCurve(Packet packet, UpdateFieldFlag flags, params object[] indexes)
         {
             var data = new ScaleCurve();
             packet.ResetBitReader();
@@ -3337,19 +3337,44 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29683
             return data;
         }
 
-        public static ScaleCurve ReadUpdateScaleCurve(Packet packet, IScaleCurve existingData, params object[] indexes)
+        public static IScaleCurve ReadUpdateScaleCurve(Packet packet, IScaleCurve existingData, params object[] indexes)
         {
             var data = existingData as ScaleCurve;
             if (data == null)
                 data = new ScaleCurve();
             packet.ResetBitReader();
-            data.OverrideActive = packet.ReadBit("OverrideActive", indexes);
-            packet.ResetBitReader();
-            data.StartTimeOffset = packet.ReadUInt32("StartTimeOffset", indexes);
-            data.ParameterCurve = packet.ReadUInt32("ParameterCurve", indexes);
-            for (var i = 0; i < 2; ++i)
+            var rawChangesMask = new int[1];
+            rawChangesMask[0] = (int)packet.ReadBits(7);
+            var changesMask = new BitArray(rawChangesMask);
+
+            if (changesMask[0])
             {
-                data.Points[i] = packet.ReadVector2("Points", indexes, i);
+                if (changesMask[1])
+                {
+                    data.OverrideActive = packet.ReadBit("OverrideActive", indexes);
+                }
+            }
+            packet.ResetBitReader();
+            if (changesMask[0])
+            {
+                if (changesMask[2])
+                {
+                    data.StartTimeOffset = packet.ReadUInt32("StartTimeOffset", indexes);
+                }
+                if (changesMask[3])
+                {
+                    data.ParameterCurve = packet.ReadUInt32("ParameterCurve", indexes);
+                }
+            }
+            if (changesMask[4])
+            {
+                for (var i = 0; i < 2; ++i)
+                {
+                    if (changesMask[5 + i])
+                    {
+                        data.Points[i] = packet.ReadVector2("Points", indexes, i);
+                    }
+                }
             }
             return data;
         }
