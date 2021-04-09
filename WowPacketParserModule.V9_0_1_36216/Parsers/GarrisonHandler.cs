@@ -6,8 +6,38 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 {
     public static class GarrisonHandler
     {
+        public static void ReadGarrisonBuildingInfo(Packet packet, params object[] indexes)
+        {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
+            {
+                ReadGarrisonBuildingInfo905(packet, indexes);
+                return;
+            }
+
+            V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonBuildingInfo(packet, indexes);
+        }
+
+        public static void ReadGarrisonBuildingInfo905(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("GarrPlotInstanceID", indexes);
+            packet.ReadInt32("GarrBuildingID", indexes);
+            packet.ReadTime64("TimeBuilt", indexes);
+            packet.ReadInt32("CurrentGarSpecID", indexes);
+            packet.ReadTime64("TimeSpecCooldown", indexes);
+
+            packet.ResetBitReader();
+
+            packet.ReadBit("Active", indexes);
+        }
+
         public static void ReadGarrisonMission(Packet packet, params object[] indexes)
         {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
+            {
+                ReadGarrisonMission905(packet, indexes);
+                return;
+            }
+
             packet.ReadUInt64("DbID", indexes);
             packet.ReadInt32("MissionRecID", indexes);
             packet.ReadTime("OfferTime", indexes);
@@ -16,6 +46,21 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadInt32("TravelDuration", indexes);
             packet.ReadInt32("MissionDuration", indexes);
             packet.ReadUInt32E<GarrisonMissionState>("MissionState", indexes);
+            packet.ReadInt32("SuccessChance", indexes);
+            packet.ReadUInt32E<GarrisonMissionFlag>("Flags", indexes);
+            packet.ReadSingle("MissionScalar", indexes);
+        }
+
+        private static void ReadGarrisonMission905(Packet packet, params object[] indexes)
+        {
+            packet.ReadUInt64("DbID", indexes);
+            packet.ReadTime64("OfferTime", indexes);
+            packet.ReadInt64("OfferDuration", indexes);
+            packet.ReadTime64("StartTime", indexes);
+            packet.ReadInt64("TravelDuration", indexes);
+            packet.ReadInt64("MissionDuration", indexes);
+            packet.ReadInt32("MissionRecID", indexes);
+            packet.ReadInt32E<GarrisonMissionState>("MissionState", indexes);
             packet.ReadInt32("SuccessChance", indexes);
             packet.ReadUInt32E<GarrisonMissionFlag>("Flags", indexes);
             packet.ReadSingle("MissionScalar", indexes);
@@ -38,7 +83,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadInt32E<GarrisonFollowerStatus>("FollowerStatus", indexes);
             packet.ReadInt32("Health", indexes);
             packet.ReadSByte("BoardIndex", indexes);
-            packet.ReadInt32("HealingTimestamp", indexes);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
+                packet.ReadInt64("HealingTimestamp", indexes);
+            else
+                packet.ReadInt32("HealingTimestamp", indexes);
 
             for (int i = 0; i < abilityCount; i++)
                 packet.ReadInt32("AbilityID", indexes, i);
@@ -47,6 +95,23 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             var len = packet.ReadBits(7);
             packet.ReadWoWString("CustomName", len, indexes);
+        }
+
+        public static void ReadGarrisonMissionBonusAbility(Packet packet, params object[] indexes)
+        {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
+            {
+                ReadGarrisonMissionBonusAbility905(packet, indexes);
+                return;
+            }
+
+            V6_0_2_19033.Parsers.GarrisonHandler.ReadGarrisonMissionBonusAbility(packet, indexes);
+        }
+
+        private static void ReadGarrisonMissionBonusAbility905(Packet packet, params object[] indexes)
+        {
+            packet.ReadTime64("StartTime", indexes);
+            packet.ReadInt32("GarrMssnBonusAbilityID", indexes);
         }
 
         public static void ReadGarrisonTalentSocketData(Packet packet, params object[] indexes)
@@ -60,7 +125,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ResetBitReader();
             packet.ReadInt32("GarrTalentID", indexes);
             packet.ReadInt32("Rank", indexes);
-            packet.ReadInt32("ResearchStartTime", indexes);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
+                packet.ReadInt64("ResearchStartTime", indexes);
+            else
+                packet.ReadInt32("ResearchStartTime", indexes);
             packet.ReadInt32("Flags", indexes);
             var hasSocket = packet.ReadBit();
             if (hasSocket)
@@ -83,8 +151,20 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
         public static void ReadGarrisonEventEntry(Packet packet, params object[] indexes)
         {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
+            {
+                ReadGarrisonEventEntry905(packet, indexes);
+                return;
+            }
+
             packet.ReadInt32("EntryID", indexes);
             packet.ReadInt32("EventValue", indexes);
+        }
+
+        private static void ReadGarrisonEventEntry905(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt64("EventValue", indexes);
+            packet.ReadInt32("EntryID", indexes);
         }
 
         public static void ReadGarrisonEventList(Packet packet, params object[] indexes)
@@ -127,6 +207,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
                 packet.ReadInt32("NumFollowerActivationsRemaining", i);
                 packet.ReadUInt32("NumMissionsStartedToday", i);
+                packet.ReadInt32("MinAutoTroopLevel", i);
 
                 for (int j = 0; j < garrisonPlotInfoCount; j++)
                     V6_0_2_19033.Parsers.GarrisonHandler.ReadGarrisonPlotInfo(packet, i, "PlotInfo", j);
@@ -153,7 +234,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                             V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonMissionReward(packet, i, "MissionOvermaxRewards", j, k);
 
                 for (int j = 0; j < areaBonusCount; j++)
-                    V6_0_2_19033.Parsers.GarrisonHandler.ReadGarrisonMissionBonusAbility(packet, i, "MissionAreaBonus", j);
+                    ReadGarrisonMissionBonusAbility(packet, i, "MissionAreaBonus", j);
 
                 for (int j = 0; j < collectionsCount; j++)
                     ReadGarrisonCollection(packet, i, "Collection", j);
@@ -165,7 +246,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                     packet.ReadInt32("ArchivedMissions", i, j);
 
                 for (int j = 0; j < garrisonBuildingInfoCount; j++)
-                    V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonBuildingInfo(packet, i, "BuildingInfo", j);
+                    ReadGarrisonBuildingInfo(packet, i, "BuildingInfo", j);
 
                 packet.ResetBitReader();
 
