@@ -80,11 +80,6 @@ namespace WowPacketParser.Misc
             return Utilities.GetDateTimeFromUnixTime(ReadInt64());
         }
 
-        public DateTime ReadMillisecondTime()
-        {
-            return Utilities.GetDateTimeFromUnixTime((double)ReadInt32()/1000);
-        }
-
         public DateTime ReadPackedTime()
         {
             return Utilities.GetDateTimeFromGameTime(ReadInt32());

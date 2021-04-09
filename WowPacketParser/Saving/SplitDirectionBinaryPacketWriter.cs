@@ -42,7 +42,7 @@ namespace WowPacketParser.Saving
                         writer.Write((ushort)packet.Opcode);
                         writer.Write((int)packet.Length);
                         writer.Write((byte)packet.Direction);
-                        writer.Write((ulong)Utilities.GetUnixTimeFromDateTime(packet.Time));
+                        writer.Write(Utilities.GetUnixTimeFromDateTime(packet.Time));
                         writer.Write(packet.GetStream(0));
                     }
             }

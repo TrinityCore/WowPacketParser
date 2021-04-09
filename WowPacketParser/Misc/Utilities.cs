@@ -13,24 +13,22 @@ namespace WowPacketParser.Misc
 {
     public static class Utilities
     {
-        private static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-
-        public static DateTime GetDateTimeFromUnixTime(double unixTime)
+        public static DateTime GetDateTimeFromUnixTime(long unixTime)
         {
             try
             {
-                return Epoch.AddSeconds(unixTime);
+                return DateTimeOffset.FromUnixTimeSeconds(unixTime).UtcDateTime;
             }
             catch (ArgumentOutOfRangeException)
             {
-                // weird values are sent sometimes that make no sense, return 0
-                return Epoch;
+                // weird values are sent sometimes that make no sense, clamp to valid range
+                return (long)unixTime < DateTimeOffset.MinValue.ToUnixTimeSeconds() ? DateTimeOffset.MinValue.UtcDateTime : DateTimeOffset.MaxValue.UtcDateTime;
             }
         }
 
-        public static double GetUnixTimeFromDateTime(DateTime time)
+        public static long GetUnixTimeFromDateTime(DateTime time)
         {
-            return (time - Epoch).TotalSeconds;
+            return ((DateTimeOffset)DateTime.SpecifyKind(time, DateTimeKind.Utc)).ToUnixTimeSeconds();
         }
 
         public static byte[] HexStringToBinary(string data)
