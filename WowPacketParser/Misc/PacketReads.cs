@@ -75,6 +75,11 @@ namespace WowPacketParser.Misc
             return Utilities.GetDateTimeFromUnixTime(ReadInt32());
         }
 
+        public DateTime ReadTime64()
+        {
+            return Utilities.GetDateTimeFromUnixTime(ReadInt64());
+        }
+
         public DateTime ReadMillisecondTime()
         {
             return Utilities.GetDateTimeFromUnixTime((double)ReadInt32()/1000);
@@ -512,6 +517,11 @@ namespace WowPacketParser.Misc
         public DateTime ReadTime(string name, params object[] indexes)
         {
             return AddValue(name, ReadTime(), indexes);
+        }
+
+        public DateTime ReadTime64(string name, params object[] indexes)
+        {
+            return AddValue(name, ReadTime64(), indexes);
         }
 
         public DateTime ReadPackedTime(string name, params object[] indexes)
