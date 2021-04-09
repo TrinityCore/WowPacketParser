@@ -256,12 +256,15 @@ namespace WowPacketParser.Loading
                         _stats.SetEndTime(DateTime.Now);
                     }
 
-                    if (written)
-                        Trace.WriteLine($"{_logPrefix}: Saved file to '{outFileName}'");
-                    else
+                    if (Settings.DumpFormatWithText())
                     {
-                        Trace.WriteLine($"{_logPrefix}: No file produced");
-                        File.Delete(outFileName);
+                        if (written)
+                            Trace.WriteLine($"{_logPrefix}: Saved file to '{outFileName}'");
+                        else
+                        {
+                            Trace.WriteLine($"{_logPrefix}: No file produced");
+                            File.Delete(outFileName);
+                        }
                     }
 
                     Trace.WriteLine($"{_logPrefix}: {_stats}");
