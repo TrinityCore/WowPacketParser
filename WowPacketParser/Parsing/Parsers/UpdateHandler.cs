@@ -150,6 +150,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         private static Dictionary<int, UpdateField> ReadValuesUpdateBlock(Packet packet, ObjectType type, object index, bool isCreating, Dictionary<int, UpdateField> oldValues)
         {
+            bool skipDictionary = false;
             bool missingCreateObject = !isCreating && oldValues == null;
             var maskSize = packet.ReadByte();
 
@@ -173,6 +174,12 @@ namespace WowPacketParser.Parsing.Parsers
                                 type = ObjectType.Container;
                             // AzeriteEmpoweredItem and AzeriteItem MaskSize = 3 (8.0.1)
                             // we can't determine them RIP
+                            else if (maskSize == Convert.ToInt32((UpdateFields.GetUpdateField(AzeriteItemField.AZERITE_ITEM_END) + 32) / 32) || maskSize == Convert.ToInt32((UpdateFields.GetUpdateField(AzeriteEmpoweredItemField.AZERITE_EMPOWERED_ITEM_END) + 32) / 32))
+                            {
+                                packet.WriteLine($"[{index}] ObjectType cannot be determined! Possible ObjeytTypes: AzeriteItem, AzeriteEmpoweredItem");
+                                packet.WriteLine($"[{index}] Following data may not make sense!");
+                                skipDictionary = true;
+                            }
                         }
                         break;
                     }
@@ -462,8 +469,9 @@ namespace WowPacketParser.Parsing.Parsers
                         break;
                 }
 
-                for (int k = 0; k < fieldData.Count; ++k)
-                    dict.Add(start + k, fieldData[k]);
+                if (!skipDictionary)
+                    for (int k = 0; k < fieldData.Count; ++k)
+                        dict.Add(start + k, fieldData[k]);
             }
 
             return dict;
