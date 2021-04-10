@@ -22,7 +22,7 @@ namespace WowPacketParser.Misc
             catch (ArgumentOutOfRangeException)
             {
                 // weird values are sent sometimes that make no sense, clamp to valid range
-                return (long)unixTime < DateTimeOffset.MinValue.ToUnixTimeSeconds() ? DateTimeOffset.MinValue.UtcDateTime : DateTimeOffset.MaxValue.UtcDateTime;
+                return unixTime < DateTimeOffset.MinValue.ToUnixTimeSeconds() ? DateTimeOffset.MinValue.UtcDateTime : DateTimeOffset.MaxValue.UtcDateTime;
             }
         }
 

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
 using WowPacketParser.Misc;
@@ -250,6 +249,24 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var hotfixData = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
 
             ReadHotfixData(hotfixData, hotfixRecords, "HotfixData");
+        }
+        [Parser(Opcode.CMSG_HOTFIX_REQUEST, ClientVersionBuild.V9_0_5_37503)]
+        public static void HandleHotfixRequest905(Packet packet)
+        {
+            packet.ReadUInt32("CurrentBuild");
+            packet.ReadUInt32("InternalBuild");
+            var hotfixCount = packet.ReadUInt32("HotfixCount");
+            for (var i = 0u; i < hotfixCount; ++i)
+                packet.ReadInt32("HotfixID", i);
+        }
+
+        [Parser(Opcode.SMSG_AVAILABLE_HOTFIXES, ClientVersionBuild.V9_0_5_37503)]
+        public static void HandleAvailableHotfixes905(Packet packet)
+        {
+            packet.ReadInt32("VirtualRealmAddress");
+            var hotfixCount = packet.ReadUInt32("HotfixCount");
+            for (var i = 0u; i < hotfixCount; ++i)
+                packet.ReadInt32("HotfixID", i);
         }
     }
 }
