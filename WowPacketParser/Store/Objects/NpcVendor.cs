@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Misc;
+﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
@@ -23,10 +24,10 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("type", true)]
         public uint? Type;
 
-        [DBFieldName("PlayerConditionID")]
+        [DBFieldName("PlayerConditionID", TargetedDatabase.Cataclysm)]
         public uint? PlayerConditionID;
 
-        [DBFieldName("IgnoreFiltering")]
+        [DBFieldName("IgnoreFiltering", TargetedDatabase.WarlordsOfDraenor)]
         public bool? IgnoreFiltering;
 
         [DBFieldName("VerifiedBuild")]
