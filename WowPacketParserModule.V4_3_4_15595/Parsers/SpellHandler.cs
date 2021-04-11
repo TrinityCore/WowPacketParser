@@ -112,7 +112,10 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 ReadChannelStartInterruptImmunities(packet, "InterruptImmunities");
 
             if (packet.ReadBool("HasHealPrediction"))
+            {
+                packet.ReadPackedGuid("TargetGUID", "HealPrediction");
                 ReadSpellHealPrediction(packet, "HealPrediction");
+            }
         }
 
         [Parser(Opcode.SMSG_SPELL_INTERRUPT_LOG)]
@@ -237,8 +240,9 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         public static void ReadSpellHealPrediction(Packet packet, params object[] idx)
         {
             packet.ReadInt32("Points", idx);
-            packet.ReadByte("Type", idx);
-            packet.ReadPackedGuid("BeaconGUID", idx);
+            var type = packet.ReadByte("Type", idx);
+            if (type == 2) // Beacon of Light target is an extra field used when type is 2
+                packet.ReadPackedGuid("BeaconGUID", idx);
         }
 
         public static void ReadChannelStartInterruptImmunities(Packet packet, params object[] idx)
