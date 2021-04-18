@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using DBFileReaderLib;
 using WowPacketParser.DBC.Structures.Shadowlands;
 using WowPacketParser.Misc;
+using WowPacketParser.Enums;
 
 namespace WowPacketParser.DBC
 {
@@ -29,6 +30,7 @@ namespace WowPacketParser.DBC
         public static Storage<ItemSparseEntry> ItemSparse { get; set; }
         public static Storage<MapEntry> Map { get; set; }
         public static Storage<MapDifficultyEntry> MapDifficulty { get; set; }
+        public static Storage<PhaseEntry> Phase { get; set; }
         public static Storage<PhaseXPhaseGroupEntry> PhaseXPhaseGroup { get; set; }
         public static Storage<SpellEffectEntry> SpellEffect { get; set; }
         public static Storage<SpellNameEntry> SpellName { get; set; }

@@ -549,8 +549,16 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadPackedGuid128("PersonalGUID");
             for (var i = 0; i < count; ++i)
             {
-                var flags = packet.ReadUInt16("PhaseFlags", i);
-                var id = packet.ReadUInt16("Id", i);
+                var flags = packet.ReadUInt16E<PhaseFlags>("PhaseFlags", i);
+                var id = packet.ReadUInt16();
+
+                if (Settings.UseDBC && DBC.Phase.ContainsKey(id))
+                {
+                    packet.WriteLine($"[{i}] ID: {id} ({(DBCPhaseFlags)DBC.Phase[id].Flags})");
+                }
+                else
+                    packet.AddValue("ID", id, i);
+
                 CoreParsers.MovementHandler.ActivePhases.Add(id, true);
             }
 

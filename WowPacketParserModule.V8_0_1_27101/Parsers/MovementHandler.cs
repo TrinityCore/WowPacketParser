@@ -198,13 +198,21 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             CoreParsers.MovementHandler.ActivePhases.Clear();
             packet.ReadPackedGuid128("Client");
             // PhaseShiftData
-            packet.ReadInt32("PhaseShiftFlags");
+            packet.ReadInt32E<PhaseShiftFlags>("PhaseShiftFlags");
             var count = packet.ReadInt32("PhaseShiftCount");
             packet.ReadPackedGuid128("PersonalGUID");
             for (var i = 0; i < count; ++i)
             {
-                var flags = packet.ReadUInt16("PhaseFlags", i);
-                var id = packet.ReadUInt16("Id", i);
+                var flags = packet.ReadUInt16E<PhaseFlags>("PhaseFlags", i);
+                var id = packet.ReadUInt16();
+                
+                if (Settings.UseDBC && DBC.Phase.ContainsKey(id))
+                {
+                    packet.WriteLine($"[{i}] ID: {id} ({(DBCPhaseFlags)DBC.Phase[id].Flags})");
+                }
+                else
+                    packet.AddValue("ID", id, i);
+
                 CoreParsers.MovementHandler.ActivePhases.Add(id, true);
             }
             if (DBC.Phases.Any())
