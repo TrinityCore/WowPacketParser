@@ -391,8 +391,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GROUP_INVITE, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleGroupInvite434(Packet packet)
         {
-            packet.ReadInt32("Unk Int32"); // Non-zero in cross realm parties (1383)
-            packet.ReadInt32("Unk Int32"); // Always 0
+            packet.ReadInt32("TargetCfgRealmID"); // Non-zero in cross realm parties (1383)
+            packet.ReadInt32("ProposedRoles"); // Always 0
             var guid = new byte[8];
             guid[2] = packet.ReadBit();
             guid[7] = packet.ReadBit();
@@ -409,15 +409,15 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 6);
 
-            packet.ReadWoWString("Name", nameLen);
-            packet.ReadWoWString("Realm Name", strLen); // Non-empty in cross realm parties
+            packet.ReadWoWString("TargetName", nameLen);
+            packet.ReadWoWString("TargetRealm", strLen); // Non-empty in cross realm parties
 
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 5);
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 2);
-            packet.WriteGuid("Guid", guid); // Non-zero in cross realm parties
+            packet.WriteGuid("TargetGUID", guid); // Non-zero in cross realm parties
         }
 
         [Parser(Opcode.SMSG_GROUP_INVITE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -437,47 +437,47 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleGroupInviteSmsg434(Packet packet)
         {
             var guid = new byte[8];
-            packet.ReadBit("Replied");
+            packet.ReadBit("MustBeBNetFriend?");
             guid[0] = packet.ReadBit();
             guid[3] = packet.ReadBit();
             guid[2] = packet.ReadBit();
-            packet.ReadBit("Not Already In Group");
+            packet.ReadBit("CanAccept");
             guid[6] = packet.ReadBit();
             guid[5] = packet.ReadBit();
-            var count = packet.ReadBits(9);
+            var realmNameLen = packet.ReadBits(9);
             guid[4] = packet.ReadBit();
-            var count2 = packet.ReadBits(7);
-            var count3 = packet.ReadBits("int32 count", 24);
-            packet.ReadBit("Print Something?");
+            var nameLen = packet.ReadBits(7);
+            var slfSlotsCount = packet.ReadBits(24);
+            packet.ReadBit("IsXRealm?");
             guid[1] = packet.ReadBit();
             guid[7] = packet.ReadBit();
 
             packet.ReadXORByte(guid, 1);
             packet.ReadXORByte(guid, 4);
 
-            packet.ReadInt32("Timestamp?");
-            packet.ReadInt32("Unk Int 32");
-            packet.ReadInt32("Unk Int 32");
+            packet.ReadInt32("Timestamp");
+            packet.ReadInt32("ProposedRoles");
+            packet.ReadInt32("LfgCompletedMask");
 
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 2);
             packet.ReadXORByte(guid, 3);
 
-            for (var i = 0; i < count3; i++)
-                packet.ReadInt32("Unk Int 32", i);
+            for (var i = 0; i < slfSlotsCount; i++)
+                packet.ReadInt32("LfgSlots", i);
 
             packet.ReadXORByte(guid, 5);
 
-            packet.ReadWoWString("Realm Name", count);
+            packet.ReadWoWString("InviterRealmName", realmNameLen);
 
             packet.ReadXORByte(guid, 7);
 
-            packet.ReadWoWString("Invited", count2);
+            packet.ReadWoWString("InviterName", nameLen);
 
-            packet.ReadInt32("Unk Int 32");
+            packet.ReadInt32("InviterCfgRealmID");
 
-            packet.WriteGuid("Guid", guid);
+            packet.WriteGuid("InviterGUID", guid);
 
         }
 
@@ -525,13 +525,13 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandlePartyCommandResult(Packet packet)
         {
             packet.ReadUInt32E<PartyCommand>("Command");
-            packet.ReadCString("Member");
+            packet.ReadCString("Name");
             packet.ReadUInt32E<PartyResult>("Result");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_0_10958))
-                packet.ReadUInt32("LFG Boot Cooldown");
+                packet.ReadUInt32("ResultData");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
-                packet.ReadGuid("Player Guid"); // Usually 0
+                packet.ReadGuid("ResultGUID"); // Usually 0
         }
 
         [Parser(Opcode.SMSG_RAID_GROUP_ONLY)]
@@ -671,8 +671,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_GROUP_INVITE_RESPONSE)]
         public static void HandleGroupInviteResponse434(Packet packet)
         {
-            if (packet.ReadBit("Accepted"))
-                packet.ReadUInt32("Unk Uint32");
+            var hasRolesDesired = packet.ReadBit();
+            packet.ReadBit("Accepted");
+
+            if (hasRolesDesired)
+                packet.ReadUInt32("RolesDesired");
         }
 
         [Parser(Opcode.SMSG_RAID_SUMMON_FAILED)] // 4.3.4

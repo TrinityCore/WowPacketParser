@@ -11,30 +11,30 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         [Parser(Opcode.SMSG_AUTH_CHALLENGE)]
         public static void HandleServerAuthChallenge(Packet packet)
         {
-            packet.ReadUInt32("Key pt1");
-            packet.ReadUInt32("Key pt2");
-            packet.ReadUInt32("Key pt3");
-            packet.ReadUInt32("Key pt4");
-            packet.ReadUInt32("Key pt5");
-            packet.ReadUInt32("Key pt6");
-            packet.ReadUInt32("Key pt7");
-            packet.ReadUInt32("Key pt8");
-            packet.ReadInt32("Server Seed");
-            packet.ReadByte("Unk Byte");
+            packet.ReadUInt32("DosChallenge1");
+            packet.ReadUInt32("DosChallenge2");
+            packet.ReadUInt32("DosChallenge3");
+            packet.ReadUInt32("DosChallenge4");
+            packet.ReadUInt32("DosChallenge5");
+            packet.ReadUInt32("DosChallenge6");
+            packet.ReadUInt32("DosChallenge7");
+            packet.ReadUInt32("DosChallenge8");
+            packet.ReadInt32("Challenge");
+            packet.ReadByte("DosZeroBits");
         }
 
         [Parser(Opcode.CMSG_AUTH_SESSION)]
         public static void HandleAuthSession(Packet packet)
         {
             var sha = new byte[20];
-            packet.ReadUInt32("UInt32 1");
-            packet.ReadUInt32("UInt32 2");
-            packet.ReadByte("Unk Byte");
+            packet.ReadUInt32("LoginServerID");
+            packet.ReadUInt32("BattlegroupID");
+            packet.ReadByte("LoginServerType");
             sha[10] = packet.ReadByte();
             sha[18] = packet.ReadByte();
             sha[12] = packet.ReadByte();
             sha[5] = packet.ReadByte();
-            packet.ReadInt64("Int64");
+            packet.ReadInt64("DosResponse");
             sha[15] = packet.ReadByte();
             sha[9] = packet.ReadByte();
             sha[19] = packet.ReadByte();
@@ -42,18 +42,18 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             sha[7] = packet.ReadByte();
             sha[16] = packet.ReadByte();
             sha[3] = packet.ReadByte();
-            packet.ReadInt16E<ClientVersionBuild>("Client Build");
+            packet.ReadInt16E<ClientVersionBuild>("Build");
             sha[8] = packet.ReadByte();
-            packet.ReadUInt32("UInt32 3");
-            packet.ReadByte("Unk Byte");
+            packet.ReadUInt32("RealmID");
+            packet.ReadByte("BuildType");
             sha[17] = packet.ReadByte();
             sha[6] = packet.ReadByte();
             sha[0] = packet.ReadByte();
             sha[1] = packet.ReadByte();
             sha[11] = packet.ReadByte();
-            packet.ReadUInt32("Client seed");
+            packet.ReadUInt32("LocalChallenge");
             sha[2] = packet.ReadByte();
-            packet.ReadUInt32("UInt32 4");
+            packet.ReadUInt32("RegionID");
             sha[14] = packet.ReadByte();
             sha[13] = packet.ReadByte();
 
@@ -62,35 +62,35 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             CoreParsers.AddonHandler.ReadClientAddonsList(addons);
             addons.ClosePacket(false);
 
-            packet.ReadBit("Unk bit");
+            packet.ReadBit("UseIPv6");
             var size = (int)packet.ReadBits(12);
-            packet.ReadBytesString("Account name", size);
-            packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
+            packet.ReadBytesString("Account", size);
+            packet.AddValue("Digest", Utilities.ByteArrayToHexString(sha));
         }
 
         [Parser(Opcode.SMSG_AUTH_RESPONSE)]
         public static void HandleAuthResponse(Packet packet)
         {
-            var isQueued = packet.ReadBit("Queued");
-            var hasAccountInfo = packet.ReadBit("Has account info");
-
+            var isQueued = packet.ReadBit("HasWaitInfo");
             if (isQueued)
-                packet.ReadBit("UnkBit");
+                packet.ReadBit("WaitInfoHasFCM");
+
+            var hasAccountInfo = packet.ReadBit("HasSuccessInfo");
 
             if (hasAccountInfo)
             {
-                packet.ReadInt32("Billing Time Remaining");
-                packet.ReadByteE<ClientType>("Player Expansion");
-                packet.ReadInt32("Unknown UInt32");
-                packet.ReadByteE<ClientType>("Account Expansion");
-                packet.ReadInt32("Billing Time Rested");
-                packet.ReadByteE<BillingFlag>("Billing Flags");
+                packet.ReadInt32("TimeRemain");
+                packet.ReadByteE<ClientType>("ActiveExpansionLevel");
+                packet.ReadInt32("TimeSecondsUntilPCKick");
+                packet.ReadByteE<ClientType>("AccountExpansionLevel");
+                packet.ReadInt32("TimeRested");
+                packet.ReadByteE<BillingFlag>("TimeOptions");
             }
 
-            packet.ReadByteE<ResponseCode>("Auth Code");
+            packet.ReadByteE<ResponseCode>("Result");
 
             if (isQueued)
-                packet.ReadInt32("Queue Position");
+                packet.ReadInt32("WaitInfoWaitCount");
         }
 
         [Parser(Opcode.CMSG_PLAYER_LOGIN)]
