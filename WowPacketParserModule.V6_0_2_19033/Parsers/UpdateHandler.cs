@@ -17,13 +17,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var count = packet.ReadUInt32("NumObjUpdates");
             uint map = packet.ReadUInt16<MapId>("MapID");
             packet.ResetBitReader();
-            var bit552 = packet.ReadBit("HasDestroyObjects");
-            if (bit552)
+            var hasRemovedObjects = packet.ReadBit("HasRemovedObjects");
+            if (hasRemovedObjects)
             {
-                packet.ReadInt16("Int0");
-                var int8 = packet.ReadUInt32("DestroyObjectsCount");
-                for (var i = 0; i < int8; i++)
-                    packet.ReadPackedGuid128("Object GUID", i);
+                var destroyedObjCount = packet.ReadInt16("DestroyedObjCount");
+                var removedObjCount = packet.ReadUInt32("RemovedObjCount"); // destroyed + out of range
+                var outOfRangeObjCount = removedObjCount - destroyedObjCount;
+
+                for (var i = 0; i < destroyedObjCount; i++)
+                    packet.ReadPackedGuid128("ObjectGUID", "Destroyed", i);
+                for (var i = 0; i < outOfRangeObjCount; i++)
+                    packet.ReadPackedGuid128("ObjectGUID", "OutOfRange", i);
             }
             packet.ReadUInt32("Data size");
 
