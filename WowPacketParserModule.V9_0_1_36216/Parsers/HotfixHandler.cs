@@ -33,14 +33,14 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var data = packet.ReadBytes(size);
             var db2File = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
 
-            if (entry < 0 || status == HotfixStatus.Invalid)
+            if (entry < 0 || status == HotfixStatus.RecordRemoved)
             {
                 packet.WriteLine("Row {0} has been removed.", -entry);
                 HotfixStoreMgr.RemoveRecord(type, entry);
             }
-            if (status == HotfixStatus.Unavailable)
+            if (status == HotfixStatus.Invalid)
             {
-                packet.WriteLine("Row {0} is unavailable.", entry);
+                packet.WriteLine("Row {0} is invalid.", entry);
             }
             else
             {
@@ -138,16 +138,16 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                             db2File.ClosePacket(false);
                             break;
                         }
-                    case HotfixStatus.Invalid:
+                    case HotfixStatus.RecordRemoved:
                         {
                             packet.WriteLine($"Row {entry} has been removed.");
                             HotfixStoreMgr.RemoveRecord(type, entry);
                             break;
                         }
-                    case HotfixStatus.Unavailable:
+                    case HotfixStatus.Invalid:
                         {
                             // sniffs from others may have the data
-                            packet.WriteLine($"Row {entry} is unavailable.");
+                            packet.WriteLine($"Row {entry} is invalid.");
                             break;
                         }
                     default:
