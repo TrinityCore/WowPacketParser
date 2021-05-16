@@ -528,7 +528,7 @@ namespace WowPacketParser.SQL
                 }
                 else
                 {
-                    if (value is byte[] byteArray )
+                    if (value is byte[] byteArray)
                     {
                         query.Append(SQLUtil.ToSQLValue("0x" + Utilities.ByteArrayToHexString(byteArray), noQuotes: field.Item3.Any(a => a.NoQuotes)));
                         query.Append(SQLUtil.CommaSeparator);
