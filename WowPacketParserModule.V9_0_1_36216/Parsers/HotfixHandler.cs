@@ -127,7 +127,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                                 {
                                     TableHash = type,
                                     RecordID = entry,
-                                    Blob = "0x" + Utilities.ByteArrayToHexString(data)
+                                    Blob = data
                                 };
 
                                 Storage.HotfixBlobs.Add(hotfixBlob);
@@ -201,7 +201,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                             RecordID = entry,
                             Key = hash,
 
-                            Data = "0x" + Utilities.ByteArrayToHexString(optionalData)
+                            Data = optionalData
                         };
 
                         Storage.HotfixOptionalDatas.Add(hotfixOptionalData);
