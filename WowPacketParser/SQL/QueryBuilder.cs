@@ -528,8 +528,12 @@ namespace WowPacketParser.SQL
                 }
                 else
                 {
-                    Array arr = value as Array;
-                    if (arr != null)
+                    if (value is byte[] byteArray )
+                    {
+                        query.Append(SQLUtil.ToSQLValue("0x" + Utilities.ByteArrayToHexString(byteArray), noQuotes: field.Item3.Any(a => a.NoQuotes)));
+                        query.Append(SQLUtil.CommaSeparator);
+                    }
+                    else if (value is Array arr)
                     {
                         foreach (object v in arr)
                         {
