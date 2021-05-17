@@ -528,9 +528,9 @@ namespace WowPacketParser.SQL
                 }
                 else
                 {
-                    if (value is byte[] byteArray)
+                    if (value is Blob blob)
                     {
-                        query.Append(SQLUtil.ToSQLValue("0x" + Utilities.ByteArrayToHexString(byteArray), noQuotes: field.Item3.Any(a => a.NoQuotes)));
+                        query.Append(SQLUtil.ToSQLValue("0x" + Utilities.ByteArrayToHexString(blob.Data), noQuotes: field.Item3.Any(a => a.NoQuotes)));
                         query.Append(SQLUtil.CommaSeparator);
                     }
                     else if (value is Array arr)

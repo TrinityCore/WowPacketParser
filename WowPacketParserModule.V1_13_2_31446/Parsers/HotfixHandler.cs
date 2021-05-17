@@ -43,7 +43,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
                     {
                         TableHash = type,
                         RecordID = entry,
-                        Blob = data
+                        Blob = new Blob(data)
                     };
 
                     Storage.HotfixBlobs.Add(hotfixBlob);
