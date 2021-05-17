@@ -530,7 +530,7 @@ namespace WowPacketParser.SQL
                 {
                     if (value is Blob blob)
                     {
-                        query.Append(SQLUtil.ToSQLValue("0x" + Utilities.ByteArrayToHexString(blob.Data), noQuotes: field.Item3.Any(a => a.NoQuotes)));
+                        query.Append(SQLUtil.ToSQLValue(blob));
                         query.Append(SQLUtil.CommaSeparator);
                     }
                     else if (value is Array arr)

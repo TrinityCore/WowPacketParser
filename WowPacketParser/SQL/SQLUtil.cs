@@ -132,6 +132,9 @@ namespace WowPacketParser.SQL
             if (value is float)
                 value = string.Format("{0:F20}", value).Substring(0, 20).TrimEnd('0').TrimEnd('.');
 
+            if (value is Blob blob)
+                value = "0x" + Utilities.ByteArrayToHexString(blob.Data);
+
             return value;
         }
 

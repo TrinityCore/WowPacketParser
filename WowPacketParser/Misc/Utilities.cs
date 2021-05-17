@@ -248,6 +248,9 @@ namespace WowPacketParser.Misc
             if (o1 is float || o2 is double)
                 return false;
 
+            if (o1 is Blob blob1 && o2 is Blob blob2)
+                return blob1.Data.SequenceEqual(blob2.Data);
+
             // Notice that if one of the values is DBNull, DBNull == "" must return true
             string str1 = o1 as string;
             string str2 = o2 as string;

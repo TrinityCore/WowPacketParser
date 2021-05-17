@@ -133,25 +133,9 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.HotfixOptionalDatas.IsEmpty())
                 return string.Empty;
 
-            var rows = new RowList<HotfixOptionalData>();
+            var templatesDb = SQLDatabase.Get(new RowList<Store.Objects.HotfixOptionalData>(), Settings.HotfixesDatabase);
 
-            foreach (var hotfixOptionalData in Storage.HotfixOptionalDatas)
-            {
-                if (HotfixSettings.Instance.ShouldLog(hotfixOptionalData.Item1.TableHash))
-                {
-                    var row = new Row<HotfixOptionalData>
-                    {
-                        Data = hotfixOptionalData.Item1,
-                        Comment = hotfixOptionalData.Item1.TableHash.ToString()
-                    };
-
-                    rows.Add(row);
-                }
-            }
-            if (rows.Count != 0)
-                return $"DELETE FROM `hotfix_optional_data` WHERE `locale` = '{ClientLocale.PacketLocale}' AND `VerifiedBuild`>0;" + Environment.NewLine + new SQLInsert<HotfixOptionalData>(rows, false).Build();
-            else
-                return string.Empty;
+            return SQLUtil.Compare(Storage.HotfixOptionalDatas, templatesDb, StoreNameType.None);
         }
     }
 }

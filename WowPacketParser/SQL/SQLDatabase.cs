@@ -296,6 +296,8 @@ namespace WowPacketParser.SQL
                                         ? Enum.Parse(uType, values[i].ToString())
                                         : Convert.ChangeType(values[i], uType));
                             }
+                            else if (field.Item2.FieldType == typeof(Blob))
+                                field.Item2.SetValue(instance, new Blob(values[i] as byte[]));
                             else
                                 field.Item2.SetValue(instance, values[i]);
 
