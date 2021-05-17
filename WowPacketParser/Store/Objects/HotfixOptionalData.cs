@@ -8,7 +8,7 @@ namespace WowPacketParser.Store.Objects
     public sealed class HotfixOptionalData : IDataModel
     {
         [DBFieldName("TableHash", true)]
-        public DB2Hash TableHash;
+        public DB2Hash? TableHash;
 
         [DBFieldName("RecordId", true)]
         public int? RecordID;
@@ -17,7 +17,7 @@ namespace WowPacketParser.Store.Objects
         public string Locale = ClientLocale.PacketLocaleString;
 
         [DBFieldName("Key", true)]
-        public DB2Hash Key;
+        public DB2Hash? Key;
 
         [DBFieldName("Data", true, true)]
         public Blob Data;
