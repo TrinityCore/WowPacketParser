@@ -20,7 +20,7 @@ namespace WowPacketParser.Store.Objects
         public DB2Hash Key;
 
         [DBFieldName("Data", true, true)]
-        public byte[] Data;
+        public Blob Data;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

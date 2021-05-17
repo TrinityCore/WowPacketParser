@@ -184,7 +184,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                         {
                             TableHash = type,
                             RecordID = entry,
-                            Blob = data
+                            Blob = new Blob(data)
                         };
 
                         Storage.HotfixBlobs.Add(hotfixBlob);
@@ -306,7 +306,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     {
                         TableHash = type,
                         RecordID = entry,
-                        Blob = data
+                        Blob = new Blob(data)
                     };
 
                     Storage.HotfixBlobs.Add(hotfixBlob);
