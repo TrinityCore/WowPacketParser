@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 
@@ -6,6 +7,8 @@ namespace WowPacketParser.Parsing.Parsers
 {
     public static class AchievementHandler
     {
+        public static Dictionary<int, ulong> FactionReputationStore { get; } = new Dictionary<int, ulong>();
+
         [Parser(Opcode.SMSG_ACHIEVEMENT_DELETED)]
         [Parser(Opcode.SMSG_CRITERIA_DELETED)]
         public static void HandleDeleted(Packet packet)

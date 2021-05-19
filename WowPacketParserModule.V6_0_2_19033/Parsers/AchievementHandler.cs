@@ -2,14 +2,12 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.DBC;
-using System.Collections.Generic;
+using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class AchievementHandler
     {
-        public static Dictionary<int, ulong> FactionReputationStore { get; } = new Dictionary<int, ulong>();
-
         [Parser(Opcode.SMSG_CRITERIA_UPDATE)]
         public static void HandleCriteriaPlayer(Packet packet)
         {
@@ -24,7 +22,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (Settings.UseDBC)
                 if (DBC.Criteria.ContainsKey(criteriaId))
                     if (DBC.Criteria[criteriaId].Type == 46)
-                        FactionReputationStore[DBC.Criteria[criteriaId].Asset] = quantity;
+                        CoreParsers.AchievementHandler.FactionReputationStore[DBC.Criteria[criteriaId].Asset] = quantity;
         }
 
         [Parser(Opcode.SMSG_ACCOUNT_CRITERIA_UPDATE)]
@@ -45,7 +43,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (Settings.UseDBC)
                 if (DBC.Criteria.ContainsKey(criteriaId))
                     if (DBC.Criteria[criteriaId].Type == 46)
-                        FactionReputationStore[DBC.Criteria[criteriaId].Asset] = quantity;
+                        CoreParsers.AchievementHandler.FactionReputationStore[DBC.Criteria[criteriaId].Asset] = quantity;
 
             packet.ResetBitReader();
             packet.ReadBits("Flags", 4, idx); // some flag... & 1 -> delete
