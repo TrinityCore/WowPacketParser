@@ -65,7 +65,6 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
                     {
                         if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_0_1_27101))
                         {
-                            actor.Id = (int)actors[i + 0];
                             actor.CreatureID = actors[i + 0];
                             actor.CreatureDisplayInfoID = actors[i + 1];
                         }

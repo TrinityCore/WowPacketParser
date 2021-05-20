@@ -47,7 +47,10 @@ namespace WowPacketParser.Store.Objects
                 };
 
                 if (actor.Type == (uint)ActorType.WorldObjectActor)
+                {
+                    actor.Id = actors[i].Id;
                     actor.Guid = actors[i].ActorGUID;
+                }
                 else if (actor.Type == (uint)ActorType.CreatureActor)
                 {
                     actor.Id = actors[i].Id;
@@ -81,7 +84,9 @@ namespace WowPacketParser.Store.Objects
                     ConversationId = Id,
                     ConversationActorId = actorTemplate.Id,
                     Guid = actorTemplate.Guid,
-                    Idx = line.ActorIdx
+                    Idx = line.ActorIdx,
+                    CreatureId = actorTemplate.CreatureId,
+                    CreatureModelId = actorTemplate.CreatureModelId
                 };
 
                 Storage.ConversationLineTemplates.Add(line);

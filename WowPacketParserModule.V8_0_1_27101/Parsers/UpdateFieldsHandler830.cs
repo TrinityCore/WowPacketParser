@@ -3872,15 +3872,23 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_3_0_33062
 
         public static IConversationActor ReadUpdateConversationActor(Packet packet, IConversationActor existingData, params object[] indexes)
         {
+            packet.ResetBitReader();
+            uint creatureID = packet.ReadUInt32("CreatureID", indexes);
+            uint creatureDisplayInfoID = packet.ReadUInt32("CreatureDisplayInfoID", indexes);
+            WowGuid actorGUID = packet.ReadPackedGuid128("ActorGUID", indexes);
+            int id = packet.ReadInt32("Id", indexes);
+            uint type = packet.ReadBits("Type", 1, indexes);
+
             var data = existingData as ConversationActor;
             if (data == null)
+            {
                 data = new ConversationActor();
-            packet.ResetBitReader();
-            data.CreatureID = packet.ReadUInt32("CreatureID", indexes);
-            data.CreatureDisplayInfoID = packet.ReadUInt32("CreatureDisplayInfoID", indexes);
-            data.ActorGUID = packet.ReadPackedGuid128("ActorGUID", indexes);
-            data.Id = packet.ReadInt32("Id", indexes);
-            data.Type = packet.ReadBits("Type", 1, indexes);
+                data.CreatureID = creatureID;
+                data.CreatureDisplayInfoID = creatureDisplayInfoID;
+                data.ActorGUID = actorGUID;
+                data.Id = id;
+                data.Type = type;
+            }
             return data;
         }
 
