@@ -18,8 +18,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("CreatureId")]
         public uint? CreatureId;
 
-        [DBFieldName("CreatureModelId")]
-        public uint? CreatureModelId;
+        [DBFieldName("CreatureDisplayInfoId")]
+        public uint? CreatureDisplayInfoId;
 
         public WowGuid Guid;
         public uint? Type;
