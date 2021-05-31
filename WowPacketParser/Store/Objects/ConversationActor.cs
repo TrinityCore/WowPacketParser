@@ -19,8 +19,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("CreatureId", TargetedDatabase.Shadowlands)]
         public uint? CreatureId;
 
-        [DBFieldName("CreatureModelId", TargetedDatabase.Shadowlands)]
-        public uint? CreatureModelId;
+        [DBFieldName("CreatureDisplayInfoId", TargetedDatabase.Shadowlands)]
+        public uint? CreatureDisplayInfoId;
 
         public WowGuid Guid;
 
