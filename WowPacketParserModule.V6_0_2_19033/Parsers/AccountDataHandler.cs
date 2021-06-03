@@ -10,11 +10,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleAccountDataTimes(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");
-            packet.ReadTime("Server Time");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
+                packet.ReadTime64("ServerTime");
+            else
+                packet.ReadTime("ServerTime");
 
             for (var i = 0; i < 8; ++i)
             {
-                packet.ReadTime("[" + (AccountDataType)i + "]" + " Time");
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
+                    packet.ReadTime64($"[{(AccountDataType)i}] Time", i);
+                else
+                    packet.ReadTime($"[{(AccountDataType)i}] Time", i);
             }
         }
 
@@ -22,7 +29,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleClientUpdateAccountData(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");
-            packet.ReadTime("Time");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
+                packet.ReadTime64("Time");
+            else
+                packet.ReadTime("Time");
 
             var decompCount = packet.ReadInt32();
             packet.ResetBitReader();
@@ -47,7 +58,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleServerUpdateAccountData(Packet packet)
         {
             packet.ReadPackedGuid128("Guid");
-            packet.ReadTime("Time");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
+                packet.ReadTime64("Time");
+            else
+                packet.ReadTime("Time");
 
             var decompCount = packet.ReadInt32();
             packet.ResetBitReader();

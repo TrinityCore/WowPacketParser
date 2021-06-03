@@ -39,7 +39,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 var classes = packet.ReadUInt32("AvailableClasses");
                 var templates = packet.ReadUInt32("Templates");
                 packet.ReadUInt32("AccountCurrency");
-                packet.ReadTime("Time");
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
+                    packet.ReadTime64("Time");
+                else
+                    packet.ReadTime("Time");
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_3_0_33062))
                 {

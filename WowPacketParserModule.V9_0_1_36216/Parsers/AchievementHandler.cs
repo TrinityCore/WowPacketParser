@@ -58,6 +58,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             }
 
             packet.ResetBitReader();
+            packet.ReadBits("Flags", 4, indexes);
+
             var hasRafAcceptanceID = packet.ReadBit("HasRafAcceptanceID", indexes);
             if (hasRafAcceptanceID)
                 packet.ReadUInt64("RafAcceptanceID", indexes);
@@ -84,6 +86,21 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         public static void HandleAllAchievementDataPlayer(Packet packet)
         {
             ReadAllAchievements(packet, "Data");
+        }
+
+        [Parser(Opcode.SMSG_ACCOUNT_CRITERIA_UPDATE)]
+        public static void HandleCriteriaUpdateAccount(Packet packet)
+        {
+            ReadCriteriaProgress(packet, "Progress");
+        }
+
+        [Parser(Opcode.SMSG_ALL_ACCOUNT_CRITERIA)]
+        public static void HandleAllAchievementCriteriaDataAccount(Packet packet)
+        {
+            var count = packet.ReadUInt32("ProgressCount");
+
+            for (var i = 0; i < count; ++i)
+                ReadCriteriaProgress(packet, "Progress", i);
         }
     }
 }
