@@ -54,7 +54,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadByte("Subclass", idx, "VisualItems", j);
             }
 
-            packet.ReadTime("LastPlayedTime", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
+                packet.ReadTime64("LastPlayedTime", idx);
+            else
+                packet.ReadTime("LastPlayedTime", idx);
 
             packet.ReadInt16("SpecID", idx);
             packet.ReadInt32("Unknown703", idx);
@@ -225,7 +228,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             for (var i = 0u; i < customizationCount; ++i)
                 ReadChrCustomizationChoice(packet, "Customizations", i);
         }
-      
+
         [Parser(Opcode.SMSG_CHECK_CHARACTER_NAME_AVAILABILITY_RESULT)]
         public static void HandleCheckCharacterNameAvailabilityResult(Packet packet)
         {
