@@ -1,5 +1,7 @@
 using System;
 using WowPacketParser.Enums;
+using WowPacketParser.PacketStructures;
+using WoWPacketParser.Proto;
 
 namespace WowPacketParser.Misc
 {
@@ -94,6 +96,10 @@ namespace WowPacketParser.Misc
         {
             return High == 0 && Low == 0;
         }
+
+        public static implicit operator UniversalGuid(WowGuid guid) => guid.ToUniversalGuid();
+
+        public abstract UniversalGuid ToUniversalGuid();
     }
 
     public class WowGuid128 : WowGuid
@@ -133,6 +139,11 @@ namespace WowPacketParser.Misc
         public override uint GetEntry()
         {
             return (uint)((High >> 6) & 0x7FFFFF); // Id
+        }
+
+        public override UniversalGuid ToUniversalGuid()
+        {
+            return this.ToUniversal();
         }
 
         public override ulong GetLow()
@@ -212,6 +223,11 @@ namespace WowPacketParser.Misc
             return     (uint)((Low & 0x000FFFFFFF000000) >> 24);
         }
 
+        public override UniversalGuid ToUniversalGuid()
+        {
+            return this.ToUniversal();
+        }
+        
         public HighGuidTypeLegacy GetHighGuidTypeLegacy()
         {
             if (Low == 0)
