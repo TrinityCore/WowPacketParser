@@ -1,6 +1,7 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -11,6 +12,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
         [Parser(Opcode.SMSG_CHAT)]
         public static void HandleServerChatMessage(Packet packet)
         {
+            PacketChat chatPacket = packet.Holder.Chat = new PacketChat();
             var text = new CreatureText
             {
                 Type = (ChatMessageType)packet.ReadByteE<ChatMessageTypeNew>("SlashCmd"),
@@ -32,7 +34,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
             var prefixLen = packet.ReadBits(5);
             uint channelLen = packet.ReadBits(7);
             var textLen = packet.ReadBits(12);
-            packet.ReadBits("ChatFlags", 11);
+            var flags = packet.ReadBits("ChatFlags", 11);
 
             packet.ReadBit("HideChatLog");
             packet.ReadBit("FakeSenderName");
@@ -55,6 +57,13 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
 
             if (entry != 0)
                 Storage.CreatureTexts.Add(entry, text, packet.TimeSpan);
+            
+            chatPacket.Text = text.Text;
+            chatPacket.Sender = text.SenderGUID.ToUniversalGuid();
+            chatPacket.Target = text.ReceiverGUID?.ToUniversalGuid();
+            chatPacket.Language = (int) text.Language;
+            chatPacket.Type = (int) text.Type;
+            chatPacket.Flags = flags;
         }
 
         [Parser(Opcode.CMSG_CHAT_ADDON_MESSAGE)]
