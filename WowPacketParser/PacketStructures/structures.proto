@@ -15,6 +15,7 @@ message PacketHolder {
   oneof kind {
       PacketChat chat = 2;
       PacketQueryCreatureResponse queryCreatureResponse = 3;
+      PacketEmote emote = 4;
   }
 }
 
@@ -100,6 +101,11 @@ message PacketChat {
   UniversalGuid target = 4;
   uint32 flags = 5;
   string text = 6;
+}
+
+message PacketEmote {
+  int32 emote = 1;
+  UniversalGuid sender = 2;
 }
 
 message PacketQueryCreatureResponse {
