@@ -68,6 +68,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         [Parser(Opcode.SMSG_EMOTE)]
         public static void HandleEmote(Packet packet)
         {
+            PacketEmote packetEmote = packet.Holder.Emote = new PacketEmote();
             var guid = packet.ReadPackedGuid128("GUID");
             var emote = packet.ReadInt32E<EmoteType>("Emote ID");
 
@@ -80,6 +81,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             if (guid.GetObjectType() == ObjectType.Unit)
                 Storage.Emotes.Add(guid, emote, packet.TimeSpan);
+
+            packetEmote.Emote = (int) emote;
+            packetEmote.Sender = guid.ToUniversalGuid();
         }
     }
 }
