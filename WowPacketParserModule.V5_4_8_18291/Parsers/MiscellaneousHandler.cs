@@ -2,6 +2,7 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
@@ -277,14 +278,15 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_PLAY_SOUND)]
         public static void HandlePlaySound(Packet packet)
         {
+            PacketPlaySound packetPlaySound = packet.Holder.PlaySound = new PacketPlaySound();
             var guid = new byte[8];
 
             packet.StartBitStream(guid, 2, 3, 7, 6, 0, 5, 4, 1);
 
-            uint sound = packet.ReadUInt32("Sound Id");
+            uint sound = packetPlaySound.Sound = packet.ReadUInt32("Sound Id");
 
             packet.ParseBitStream(guid, 3, 2, 4, 7, 5, 0, 6, 1);
-            packet.WriteGuid("Guid", guid);
+            packetPlaySound.Source = packet.WriteGuid("Guid", guid).ToUniversalGuid();
 
             Storage.Sounds.Add(sound, packet.TimeSpan);
         }

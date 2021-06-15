@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
+using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -396,18 +397,39 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_PLAY_SOUND)]
-        [Parser(Opcode.SMSG_PLAY_MUSIC)]
-        [Parser(Opcode.SMSG_PLAY_OBJECT_SOUND)]
         public static void HandleSoundMessages(Packet packet)
+        {
+            PacketPlaySound packetPlaySound = packet.Holder.PlaySound = new PacketPlaySound();
+            uint sound = packetPlaySound.Sound = packet.ReadUInt32("Sound Id");
+            packetPlaySound.Source = new UniversalGuid() {Guid64 = new UniversalGuid64()};
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
+                packetPlaySound.Source = packet.ReadGuid("GUID").ToUniversalGuid();
+            
+            Storage.Sounds.Add(sound, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.SMSG_PLAY_OBJECT_SOUND)]
+        public static void HandleObjectSoundMessages(Packet packet)
         {
             uint sound = packet.ReadUInt32("Sound Id");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
                 packet.ReadGuid("GUID");
 
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_PLAY_OBJECT_SOUND, Direction.ServerToClient))
-                packet.ReadGuid("GUID 2");
+            packet.ReadGuid("GUID 2");
 
+            Storage.Sounds.Add(sound, packet.TimeSpan);
+        }
+
+        [Parser(Opcode.SMSG_PLAY_MUSIC)]
+        public static void HandleMusicMessages(Packet packet)
+        {
+            uint sound = packet.ReadUInt32("Sound Id");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
+                packet.ReadGuid("GUID");
+            
             Storage.Sounds.Add(sound, packet.TimeSpan);
         }
 
