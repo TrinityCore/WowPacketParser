@@ -18,6 +18,7 @@ message PacketHolder {
       PacketEmote emote = 4;
       PacketPlaySound playSound = 5;
       PacketPlayMusic playMusic = 6;
+      PacketPlayObjectSound playObjectSound = 7;
   }
 }
 
@@ -113,6 +114,12 @@ message PacketEmote {
 message PacketPlaySound {
   uint32 sound = 1;
   UniversalGuid source = 2;
+}
+
+message PacketPlayObjectSound {
+  uint32 sound = 1;
+  UniversalGuid source = 2;
+  UniversalGuid target = 3;
 }
 
 message PacketPlayMusic {
