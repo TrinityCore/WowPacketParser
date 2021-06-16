@@ -17,6 +17,7 @@ message PacketHolder {
       PacketQueryCreatureResponse queryCreatureResponse = 3;
       PacketEmote emote = 4;
       PacketPlaySound playSound = 5;
+      PacketPlayMusic playMusic = 6;
   }
 }
 
@@ -112,6 +113,11 @@ message PacketEmote {
 message PacketPlaySound {
   uint32 sound = 1;
   UniversalGuid source = 2;
+}
+
+message PacketPlayMusic {
+  uint32 music = 1;
+  UniversalGuid target = 2;
 }
 
 message PacketQueryCreatureResponse {

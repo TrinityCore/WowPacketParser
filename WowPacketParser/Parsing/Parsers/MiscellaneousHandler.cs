@@ -425,10 +425,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_PLAY_MUSIC)]
         public static void HandleMusicMessages(Packet packet)
         {
-            uint sound = packet.ReadUInt32("Sound Id");
+            PacketPlayMusic packetMusic = packet.Holder.PlayMusic = new PacketPlayMusic();
+            uint sound = packetMusic.Music = packet.ReadUInt32("Sound Id");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
-                packet.ReadGuid("GUID");
+                packetMusic.Target = packet.ReadGuid("GUID").ToUniversalGuid();
             
             Storage.Sounds.Add(sound, packet.TimeSpan);
         }

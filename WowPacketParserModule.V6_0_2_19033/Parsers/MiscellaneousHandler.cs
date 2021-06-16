@@ -480,7 +480,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_PLAY_MUSIC)]
         public static void HandlePlayMusic(Packet packet)
         {
-            uint sound = packet.ReadUInt32<SoundId>("SoundKitID");
+            PacketPlayMusic packetMusic = packet.Holder.PlayMusic = new PacketPlayMusic();
+            uint sound = packetMusic.Music = packet.ReadUInt32<SoundId>("SoundKitID");
 
             Storage.Sounds.Add(sound, packet.TimeSpan);
         }
