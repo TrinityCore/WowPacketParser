@@ -493,20 +493,22 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GOSSIP_MESSAGE)]
         public static void HandleNpcGossip(Packet packet)
         {
+            PacketGossipMessage packetGossip = packet.Holder.GossipMessage = new();
             GossipMenu gossip = new GossipMenu();
 
             WowGuid guid = packet.ReadGuid("GUID");
+            packetGossip.GossipSource = guid;
 
             gossip.ObjectType = guid.GetObjectType();
             gossip.ObjectEntry = guid.GetEntry();
 
             uint menuId = packet.ReadUInt32("Menu Id");
-            gossip.Entry = menuId;
+            gossip.Entry = packetGossip.MenuId = menuId;
 
             if (ClientVersion.AddedInVersion(ClientType.MistsOfPandaria))
                 packet.ReadUInt32("Friendship Faction");
 
-            gossip.TextID = packet.ReadUInt32("Text Id");
+            gossip.TextID = packetGossip.TextId = packet.ReadUInt32("Text Id");
 
             uint count = packet.ReadUInt32("Amount of Options");
 
@@ -531,6 +533,16 @@ namespace WowPacketParser.Parsing.Parsers
                 Storage.GossipMenuOptions.Add(gossipOption, packet.TimeSpan);
                 if (!gossipMenuOptionBox.IsEmpty)
                     Storage.GossipMenuOptionBoxes.Add(gossipMenuOptionBox, packet.TimeSpan);
+                
+                packetGossip.Options.Add(new GossipMessageOption()
+                {
+                    OptionIndex = gossipOption.OptionIndex.Value,
+                    OptionIcon = (int)gossipOption.OptionIcon,
+                    BoxCoded = gossipMenuOptionBox.BoxCoded.Value,
+                    BoxCost = gossipMenuOptionBox.BoxMoney.Value,
+                    Text = gossipOption.OptionText,
+                    BoxText = gossipMenuOptionBox.BoxText
+                });
             }
 
             uint questgossips = packet.ReadUInt32("Amount of Quest gossips");
