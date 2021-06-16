@@ -530,8 +530,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_CLOSE_INTERACTION)] // trigger in CGGameUI::CloseInteraction
         public static void HandleCloseInteraction(Packet packet)
         {
+            var packetGossip = packet.Holder.GossipClose = new PacketGossipClose();
             CoreParsers.NpcHandler.LastGossipOption.Reset();
-            packet.ReadPackedGuid128("Guid");
+            packetGossip.GossipSource = packet.ReadPackedGuid128("Guid");
         }
 
         [Parser(Opcode.SMSG_SUPPRESS_NPC_GREETINGS)]
