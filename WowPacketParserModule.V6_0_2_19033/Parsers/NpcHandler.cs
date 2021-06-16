@@ -4,8 +4,10 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using WowPacketParser.DBC;
 using WowPacketParser.Enums;
+using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WoWPacketParser.Proto;
 using WowPacketParser.SQL;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
@@ -123,7 +125,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             CoreParsers.NpcHandler.LastGossipOption.Reset();
             CoreParsers.NpcHandler.TempGossipOptionPOI.Reset();
-            CoreParsers.NpcHandler.LastGossipOption.Guid = packet.ReadPackedGuid128("Guid");
+            var guid = CoreParsers.NpcHandler.LastGossipOption.Guid = packet.ReadPackedGuid128("Guid");
+
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.CMSG_TALK_TO_GOSSIP, Direction.ClientToServer))
+                packet.Holder.GossipHello = new PacketGossipHello { GossipSource = guid };
         }
 
         [Parser(Opcode.SMSG_SHOW_BANK)]
