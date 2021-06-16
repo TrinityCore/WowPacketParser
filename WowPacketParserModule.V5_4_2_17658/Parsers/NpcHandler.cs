@@ -192,10 +192,12 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         [Parser(Opcode.CMSG_GOSSIP_SELECT_OPTION)]
         public static void HandleNpcGossipSelectOption(Packet packet)
         {
+            PacketGossipSelect packetGossip = packet.Holder.GossipSelect = new();
+
             var guid = new byte[8];
 
-            var menuEntry = packet.ReadUInt32("Menu Id");
-            var gossipId = packet.ReadUInt32("GossipMenu Id");
+            var menuEntry = packetGossip.MenuId = packet.ReadUInt32("Menu Id");
+            var gossipId = packetGossip.OptionId = packet.ReadUInt32("GossipMenu Id");
 
             guid[3] = packet.ReadBit();
             var bits8 = packet.ReadBits(8);
@@ -218,9 +220,9 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ReadXORByte(guid, 3);
 
             Storage.GossipSelects.Add(Tuple.Create(menuEntry, gossipId), null, packet.TimeSpan);
-            packet.WriteGuid("GUID", guid);
+            packetGossip.GossipUnit = packet.WriteGuid("GUID", guid);
 
-                        var lastGossipOption = CoreParsers.NpcHandler.LastGossipOption;
+            var lastGossipOption = CoreParsers.NpcHandler.LastGossipOption;
             var tempGossipOptionPOI = CoreParsers.NpcHandler.TempGossipOptionPOI;
 
             lastGossipOption.MenuId = menuEntry;
