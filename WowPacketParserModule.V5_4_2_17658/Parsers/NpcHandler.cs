@@ -5,6 +5,7 @@ using System.Globalization;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
@@ -24,7 +25,9 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ParseBitStream(guid, 3, 4, 6, 1, 0, 2, 7, 5);
 
             CoreParsers.NpcHandler.LastGossipOption.Reset();
-            CoreParsers.NpcHandler.LastGossipOption.Guid = packet.WriteGuid("Guid", guid);
+            var gossipGuid = CoreParsers.NpcHandler.LastGossipOption.Guid = packet.WriteGuid("Guid", guid);
+
+            packet.Holder.GossipHello = new PacketGossipHello { GossipSource = gossipGuid };
         }
 
         [HasSniffData]

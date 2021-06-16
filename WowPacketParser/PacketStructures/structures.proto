@@ -19,6 +19,7 @@ message PacketHolder {
       PacketPlaySound playSound = 5;
       PacketPlayMusic playMusic = 6;
       PacketPlayObjectSound playObjectSound = 7;
+      PacketGossipHello gossipHello = 8;
   }
 }
 
@@ -125,6 +126,10 @@ message PacketPlayObjectSound {
 message PacketPlayMusic {
   uint32 music = 1;
   UniversalGuid target = 2;
+}
+
+message PacketGossipHello {
+  UniversalGuid gossipSource = 1;
 }
 
 message PacketQueryCreatureResponse {
