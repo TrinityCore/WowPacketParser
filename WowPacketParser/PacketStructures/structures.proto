@@ -22,6 +22,7 @@ message PacketHolder {
       PacketGossipHello gossipHello = 8;
       PacketGossipMessage gossipMessage = 9;
       PacketGossipSelect gossipSelect = 10;
+      PacketGossipClose gossipClose = 11;
   }
 }
 
@@ -160,6 +161,10 @@ message PacketGossipSelect {
   UniversalGuid gossipUnit = 1;
   uint32 menuId = 2;
   uint32 optionId = 3;
+}
+
+message PacketGossipClose {
+  UniversalGuid gossipSource = 1;
 }
 
 message PacketQueryCreatureResponse {
