@@ -1,6 +1,7 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 
@@ -168,9 +169,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         [Parser(Opcode.SMSG_PLAY_OBJECT_SOUND)]
         public static void HandlePlayObjectSound(Packet packet)
         {
-            uint sound = packet.ReadUInt32<SoundId>("SoundId");
-            packet.ReadPackedGuid128("SourceObjectGUID");
-            packet.ReadPackedGuid128("TargetObjectGUID");
+            PacketPlayObjectSound packetSound = packet.Holder.PlayObjectSound = new PacketPlayObjectSound();
+            uint sound = packetSound.Sound = packet.ReadUInt32<SoundId>("SoundId");
+            packetSound.Source = packet.ReadPackedGuid128("SourceObjectGUID");
+            packetSound.Target = packet.ReadPackedGuid128("TargetObjectGUID");
             packet.ReadVector3("Position");
             packet.ReadInt32("BroadcastTextID");
 
