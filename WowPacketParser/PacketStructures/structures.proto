@@ -23,6 +23,8 @@ message PacketHolder {
       PacketGossipMessage gossipMessage = 9;
       PacketGossipSelect gossipSelect = 10;
       PacketGossipClose gossipClose = 11;
+      PacketSpellStart packetSpellStart = 12;
+      PacketSpellGo packetSpellGo = 13;
   }
 }
 
@@ -165,6 +167,28 @@ message PacketGossipSelect {
 
 message PacketGossipClose {
   UniversalGuid gossipSource = 1;
+}
+
+message Vec3 {
+  float x = 1;
+  float y = 2;
+  float z = 3;
+}
+
+message PacketSpellData {
+  UniversalGuid caster = 1;
+  uint32 spell = 2;
+  repeated UniversalGuid hitTargets = 3;
+  UniversalGuid targetUnit = 4;
+  optional Vec3 dstLocation = 5;
+}
+
+message PacketSpellStart {
+  PacketSpellData data = 1;
+}
+
+message PacketSpellGo {
+  PacketSpellData data = 1;
 }
 
 message PacketQueryCreatureResponse {

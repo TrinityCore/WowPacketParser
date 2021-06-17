@@ -4,6 +4,7 @@ using WowPacketParser.DBC;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -32,7 +33,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             var weightCount = packet.ReadBits("WeightCount", 2, idx);
 
-            ReadSpellTargetData(packet, spellId, idx, "Target");
+            ReadSpellTargetData(packet, null, spellId, idx, "Target");
 
             if (hasMoveUpdate)
                 MovementHandler.ReadMovementStats(packet, idx, "MoveUpdate");
@@ -41,15 +42,16 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 V6_0_2_19033.Parsers.SpellHandler.ReadSpellWeight(packet, idx, "Weight", i);
         }
 
-        public static void ReadSpellCastData(Packet packet, params object[] idx)
+        public static PacketSpellData ReadSpellCastData(Packet packet, params object[] idx)
         {
+            var packetSpellData = new PacketSpellData();
             packet.ReadPackedGuid128("CasterGUID", idx);
-            packet.ReadPackedGuid128("CasterUnit", idx);
+            packetSpellData.Caster = packet.ReadPackedGuid128("CasterUnit", idx);
 
             packet.ReadPackedGuid128("CastID", idx);
             packet.ReadPackedGuid128("OriginalCastID", idx);
 
-            var spellID = packet.ReadUInt32<SpellId>("SpellID", idx);
+            var spellID = packetSpellData.Spell = packet.ReadUInt32<SpellId>("SpellID", idx);
             packet.ReadUInt32("SpellXSpellVisualID", idx);
 
             packet.ReadUInt32("CastFlags", idx);
@@ -80,10 +82,10 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (var i = 0; i < missStatusCount; ++i)
                 V6_0_2_19033.Parsers.SpellHandler.ReadSpellMissStatus(packet, idx, "MissStatus", i);
 
-            ReadSpellTargetData(packet, spellID, idx, "Target");
+            ReadSpellTargetData(packet, packetSpellData, spellID, idx, "Target");
 
             for (var i = 0; i < hitTargetsCount; ++i)
-                packet.ReadPackedGuid128("HitTarget", idx, i);
+                packetSpellData.HitTargets.Add(packet.ReadPackedGuid128("HitTarget", idx, i)); ;
 
             for (var i = 0; i < missTargetsCount; ++i)
                 packet.ReadPackedGuid128("MissTarget", idx, i);
@@ -96,9 +98,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             for (var i = 0; i < targetPointsCount; ++i)
                 V6_0_2_19033.Parsers.SpellHandler.ReadLocation(packet, idx, "TargetPoints", i);
+
+            return packetSpellData;
         }
 
-        public static void ReadSpellTargetData(Packet packet, uint spellID, params object[] idx)
+        public static void ReadSpellTargetData(Packet packet, PacketSpellData? packetSpellData, uint spellID, params object[] idx)
         {
             packet.ResetBitReader();
 
@@ -109,7 +113,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var hasMapID = packet.ReadBit("hasMapID ", idx);
             var nameLength = packet.ReadBits(7);
 
-            packet.ReadPackedGuid128("Unit", idx);
+            var targetUnit = packet.ReadPackedGuid128("Unit", idx);
+            if (packetSpellData != null)
+                packetSpellData.TargetUnit = targetUnit;
             packet.ReadPackedGuid128("Item", idx);
 
             if (hasSrcLoc)
@@ -117,7 +123,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             Vector3? dstLocation = null;
             if (hasDstLoc)
+            {
                 dstLocation = V6_0_2_19033.Parsers.SpellHandler.ReadLocation(packet, "DstLocation");
+                if (packetSpellData != null)
+                    packetSpellData.DstLocation = dstLocation;
+            }
 
             if (hasOrient)
                 packet.ReadSingle("Orientation", idx);
@@ -253,13 +263,15 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_SPELL_START)]
         public static void HandleSpellStart(Packet packet)
         {
-            ReadSpellCastData(packet, "Cast");
+            PacketSpellStart packetSpellStart = packet.Holder.PacketSpellStart = new();
+            packetSpellStart.Data = ReadSpellCastData(packet, "Cast");
         }
 
         [Parser(Opcode.SMSG_SPELL_GO)]
         public static void HandleSpellGo(Packet packet)
         {
-            ReadSpellCastData(packet, "Cast");
+            PacketSpellGo packetSpellGo = packet.Holder.PacketSpellGo = new();
+            packetSpellGo.Data = ReadSpellCastData(packet, "Cast");
 
             packet.ResetBitReader();
 

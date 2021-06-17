@@ -3,6 +3,7 @@ using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -13,23 +14,27 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         [Parser(Opcode.SMSG_SPELL_START)]
         public static void HandleSpellStart(Packet packet)
         {
-            ReadSpellCastData(packet, "Cast");
+            PacketSpellStart packetSpellStart = packet.Holder.PacketSpellStart = new();
+            packetSpellStart.Data = ReadSpellCastData(packet, "Cast");
         }
+        
         [Parser(Opcode.SMSG_SPELL_GO)]
         public static void HandleSpellGo(Packet packet)
         {
-            ReadSpellCastData(packet, "Cast");
+            PacketSpellGo packetSpellGo = packet.Holder.PacketSpellGo = new();
+            packetSpellGo.Data = ReadSpellCastData(packet, "Cast");
         }
 
-        public static void ReadSpellCastData(Packet packet, params object[] idx)
+        public static PacketSpellData ReadSpellCastData(Packet packet, params object[] idx)
         {
+            var packetSpellData = new PacketSpellData();
             bool isSpellGo = packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_SPELL_GO, Direction.ServerToClient);
             WowGuid targetGUID = new WowGuid64();
 
             var casterGUID = packet.ReadPackedGuid("CasterGUID", idx);
-            packet.ReadPackedGuid("CasterUnit", idx);
+            packetSpellData.Caster = packet.ReadPackedGuid("CasterUnit", idx);
             packet.ReadByte("CastID", idx);
-            var spellId = packet.ReadInt32<SpellId>("SpellID", idx);
+            var spellId = packetSpellData.Spell = (uint)packet.ReadInt32<SpellId>("SpellID", idx);
             CastFlag flags = packet.ReadInt32E<CastFlag>("CastFlags", idx);
             packet.ReadUInt32("CastFlagsEx", idx);
             packet.ReadUInt32("CastTime", idx);
@@ -38,7 +43,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             {
                 var hitTargetsCount = packet.ReadByte("HitTargetsCount", idx);
                 for (var i = 0; i < hitTargetsCount; ++i)
-                    packet.ReadGuid("HitTarget", idx, i);
+                    packetSpellData.HitTargets.Add(packet.ReadGuid("HitTarget", idx, i));
 
                 var missCount = packet.ReadByte("MissStatusCount", idx);
                 for (var i = 0; i < missCount; ++i)
@@ -89,7 +94,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             {
                 NpcSpellClick spellClick = new NpcSpellClick
                 {
-                    SpellID = (uint)spellId,
+                    SpellID = spellId,
                     CasterGUID = casterGUID,
                     TargetGUID = targetGUID
                 };
@@ -98,7 +103,9 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             }
 
             if (isSpellGo)
-                packet.AddSniffData(StoreNameType.Spell, spellId, "SPELL_GO");
+                packet.AddSniffData(StoreNameType.Spell, (int)spellId, "SPELL_GO");
+
+            return packetSpellData;
         }
 
         [Parser(Opcode.MSG_CHANNEL_START)]
