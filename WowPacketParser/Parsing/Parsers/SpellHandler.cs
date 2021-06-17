@@ -4,6 +4,7 @@ using System.Globalization;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
+using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -653,14 +654,19 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleSpellStart(Packet packet)
         {
             bool isSpellGo = packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_SPELL_GO, Direction.ServerToClient);
+            PacketSpellData packetSpellData = new();
+            if (isSpellGo)
+                packet.Holder.PacketSpellGo = new PacketSpellGo() {Data = packetSpellData};
+            else
+                packet.Holder.PacketSpellStart = new PacketSpellStart() {Data = packetSpellData};
 
             var casterGUID = packet.ReadPackedGuid("Caster GUID");
-            packet.ReadPackedGuid("Caster Unit GUID");
+            packetSpellData.Caster = packet.ReadPackedGuid("Caster Unit GUID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                 packet.ReadByte("Cast Count");
 
-            var spellId = packet.ReadInt32<SpellId>("Spell ID");
+            var spellId = packetSpellData.Spell = (uint)packet.ReadInt32<SpellId>("Spell ID");
 
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_0_2_9056) && !isSpellGo)
                 packet.ReadByte("Cast Count");
@@ -679,7 +685,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 var hitCount = packet.ReadByte("Hit Count");
                 for (var i = 0; i < hitCount; i++)
-                    packet.ReadGuid("Hit GUID", i);
+                    packetSpellData.HitTargets.Add(packet.ReadGuid("Hit GUID", i));
 
                 var missCount = packet.ReadByte("Miss Count");
                 for (var i = 0; i < missCount; i++)
@@ -698,6 +704,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (targetFlags.HasAnyFlag(TargetFlag.Unit | TargetFlag.CorpseEnemy | TargetFlag.GameObject |
                 TargetFlag.CorpseAlly | TargetFlag.UnitMinipet))
                 targetGUID = packet.ReadPackedGuid("Target GUID");
+            packetSpellData.TargetUnit = targetGUID;
 
             if (targetFlags.HasAnyFlag(TargetFlag.Item | TargetFlag.TradeItem))
                 packet.ReadPackedGuid("Item Target GUID");
@@ -715,7 +722,7 @@ namespace WowPacketParser.Parsing.Parsers
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_8_9464))
                     packet.ReadPackedGuid("Destination Transport GUID");
 
-                packet.ReadVector3("Destination Position");
+                packetSpellData.DstLocation = packet.ReadVector3("Destination Position");
             }
 
             if (targetFlags.HasAnyFlag(TargetFlag.NameString))
@@ -820,7 +827,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 NpcSpellClick spellClick = new NpcSpellClick
                 {
-                    SpellID = (uint) spellId,
+                    SpellID = spellId,
                     CasterGUID = casterGUID,
                     TargetGUID = targetGUID
                 };
@@ -829,7 +836,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (isSpellGo)
-                packet.AddSniffData(StoreNameType.Spell, spellId, "SPELL_GO");
+                packet.AddSniffData(StoreNameType.Spell, (int)spellId, "SPELL_GO");
         }
 
         [Parser(Opcode.SMSG_LEARNED_SPELL)]

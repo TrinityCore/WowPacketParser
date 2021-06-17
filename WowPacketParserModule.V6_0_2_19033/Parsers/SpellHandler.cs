@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using SpellCastFailureReason = WowPacketParser.Enums.Version.V6_1_0_19678.SpellCastFailureReason;
@@ -33,7 +34,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadSingle("Float7", idx);
         }
 
-        public static void ReadSpellTargetData(Packet packet, params object[] idx)
+        public static void ReadSpellTargetData(Packet packet, PacketSpellData? spellData, params object[] idx)
         {
             packet.ResetBitReader();
 
@@ -43,14 +44,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var hasOrient = packet.ReadBit("HasOrientation", idx);
             var nameLength = packet.ReadBits(7);
 
-            packet.ReadPackedGuid128("Unit", idx);
+            var targetUnit = packet.ReadPackedGuid128("Unit", idx);
+            if (spellData != null)
+                spellData.TargetUnit = targetUnit;
             packet.ReadPackedGuid128("Item", idx);
 
             if (hasSrcLoc)
                 ReadLocation(packet, "SrcLocation");
 
             if (hasDstLoc)
-                ReadLocation(packet, "DstLocation");
+            {
+                var dstLocation = ReadLocation(packet, "DstLocation");
+                if (spellData != null)
+                    spellData.DstLocation = dstLocation;
+            }
 
             if (hasOrient)
                 packet.ReadSingle("Orientation", idx);
@@ -97,7 +104,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32<SpellId>("SpellID", idx);
             packet.ReadInt32(ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173) ? "SpellXSpellVisualID" : "Misc", idx);
 
-            ReadSpellTargetData(packet, idx, "Target");
+            ReadSpellTargetData(packet, null, idx, "Target");
 
             ReadMissileTrajectoryRequest(packet, idx, "MissileTrajectory");
 
@@ -286,13 +293,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_SPELL_START)]
         public static void HandleSpellStart(Packet packet)
         {
-            ReadSpellCastData(packet, "Cast");
+            PacketSpellStart packetSpellStart = packet.Holder.PacketSpellStart = new();
+            packetSpellStart.Data = ReadSpellCastData(packet, "Cast");
         }
 
         [Parser(Opcode.SMSG_SPELL_GO)]
         public static void HandleSpellGo(Packet packet)
         {
-            ReadSpellCastData(packet, "Cast");
+            PacketSpellGo packetSpellGo = packet.Holder.PacketSpellGo = new();
+            packetSpellGo.Data = ReadSpellCastData(packet, "Cast");
 
             packet.ResetBitReader();
 
@@ -346,14 +355,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("Id", idx, i);
         }
 
-        public static void ReadSpellCastData(Packet packet, params object[] idx)
+        public static PacketSpellData ReadSpellCastData(Packet packet, params object[] idx)
         {
+            var packetSpellData = new PacketSpellData();
             packet.ReadPackedGuid128("CasterGUID", idx);
-            packet.ReadPackedGuid128("CasterUnit", idx);
+            packetSpellData.Caster = packet.ReadPackedGuid128("CasterUnit", idx);
 
             packet.ReadByte("CastID", idx);
 
-            packet.ReadInt32<SpellId>("SpellID", idx);
+            packetSpellData.Spell = (uint)packet.ReadInt32<SpellId>("SpellID", idx);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
                 packet.ReadUInt32("SpellXSpellVisualID", idx);
@@ -365,7 +375,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var missTargetsCount = packet.ReadUInt32("MissTargetsCount", idx);
             var missStatusCount = packet.ReadUInt32("MissStatusCount", idx);
 
-            ReadSpellTargetData(packet, idx, "Target");
+            ReadSpellTargetData(packet, packetSpellData, idx, "Target");
 
             var remainingPowerCount = packet.ReadUInt32("RemainingPowerCount", idx);
 
@@ -382,7 +392,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             ReadSpellHealPrediction(packet, idx, "Predict");
 
             for (var i = 0; i < hitTargetsCount; ++i)
-                packet.ReadPackedGuid128("HitTarget", idx, i);
+                packetSpellData.HitTargets.Add(packet.ReadPackedGuid128("HitTarget", idx, i));
 
             for (var i = 0; i < missTargetsCount; ++i)
                 packet.ReadPackedGuid128("MissTarget", idx, i);
@@ -408,6 +418,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (hasProjectileVisual)
                 ReadProjectileVisual(packet, idx, "ProjectileVisual");
+
+            return packetSpellData;
         }
 
         [Parser(Opcode.SMSG_WEEKLY_SPELL_USAGE)]
