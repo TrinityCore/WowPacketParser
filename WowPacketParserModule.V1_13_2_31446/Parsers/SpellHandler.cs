@@ -1,8 +1,10 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using WowPacketParser.DBC;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing;
 using WoWPacketParser.Proto;
 using WowPacketParser.Store;
@@ -174,6 +176,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
         [Parser(Opcode.SMSG_AURA_UPDATE)]
         public static void HandleAuraUpdate(Packet packet)
         {
+            PacketAuraUpdate packetAuraUpdate = packet.Holder.PacketAuraUpdate = new();
             packet.ReadBit("UpdateAll");
             int countBits = ClientVersion.AddedInVersion(ClientVersionBuild.V1_13_3_32790) ? 8 : 7;
             var count = packet.ReadBits("AurasCount", countBits);
@@ -181,18 +184,23 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
             var auras = new List<Aura>();
             for (var i = 0; i < count; ++i)
             {
+                var auraEntry = new PacketAuraUpdateEntry();
+                packetAuraUpdate.Updates.Add(auraEntry);
                 var aura = new Aura();
 
-                packet.ReadByte("Slot", i);
+                auraEntry.Slot = packet.ReadByte("Slot", i);
 
                 packet.ResetBitReader();
                 var hasAura = packet.ReadBit("HasAura", i);
+                auraEntry.Remove = !hasAura;
                 if (hasAura)
                 {
                     packet.ReadPackedGuid128("CastID", i);
-                    aura.SpellId = (uint)packet.ReadInt32<SpellId>("SpellID", i);
+                    aura.SpellId = auraEntry.Spell = (uint)packet.ReadInt32<SpellId>("SpellID", i);
                     packet.ReadInt32("SpellXSpellVisualID", i);
-                    aura.AuraFlags = packet.ReadByteE<AuraFlagMoP>("Flags", i);
+                    var flags = packet.ReadByteE<AuraFlagMoP>("Flags", i);
+                    aura.AuraFlags = flags;
+                    auraEntry.Flags = flags.ToUniversal();
                     packet.ReadUInt32("ActiveFlags", i);
                     aura.Level = packet.ReadUInt16("CastLevel", i);
                     aura.Charges = packet.ReadByte("Applications", i);
@@ -215,11 +223,17 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
                         V8_0_1_27101.Parsers.SpellHandler.ReadContentTuningParams(packet, i, "ContentTuning");
 
                     if (hasCastUnit)
-                        packet.ReadPackedGuid128("CastUnit", i);
+                        auraEntry.CasterUnit = packet.ReadPackedGuid128("CastUnit", i);
 
                     aura.Duration = hasDuration ? packet.ReadInt32("Duration", i) : 0;
                     aura.MaxDuration = hasRemaining ? packet.ReadInt32("Remaining", i) : 0;
 
+                    if (hasDuration)
+                        auraEntry.Duration = aura.Duration;
+
+                    if (hasRemaining)
+                        auraEntry.Remaining = aura.MaxDuration;
+                    
                     if (hasTimeMod)
                         packet.ReadSingle("TimeMod");
 
@@ -235,6 +249,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
             }
 
             var guid = packet.ReadPackedGuid128("UnitGUID");
+            packetAuraUpdate.Unit = guid;
 
             if (Storage.Objects.ContainsKey(guid))
             {
