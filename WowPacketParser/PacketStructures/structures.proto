@@ -25,6 +25,7 @@ message PacketHolder {
       PacketGossipClose gossipClose = 11;
       PacketSpellStart packetSpellStart = 12;
       PacketSpellGo packetSpellGo = 13;
+      PacketAuraUpdate packetAuraUpdate = 14;
   }
 }
 
@@ -189,6 +190,35 @@ message PacketSpellStart {
 
 message PacketSpellGo {
   PacketSpellData data = 1;
+}
+
+enum UniversalAuraFlag {
+  None = 0;
+  NoCaster = 0x0001;
+  Positive = 0x0002;
+  Duration = 0x0004;
+  Scalable = 0x0008;
+  Negative = 0x0010;
+  MawPower = 0x0020;
+  EffectIndex0 = 0x0040;
+  EffectIndex1 = 0x0080;
+  EffectIndex2 = 0x00100;
+}
+
+message PacketAuraUpdateEntry {
+  int32 slot = 1;
+  bool remove = 2;
+  uint32 spell = 3;
+  UniversalAuraFlag flags = 4;
+  optional UniversalGuid casterUnit = 5;
+  optional int32 duration = 6;
+  optional int32 remaining = 7;
+  optional int32 maxDuration = 8;
+}
+
+message PacketAuraUpdate {
+  UniversalGuid unit = 1;
+  repeated PacketAuraUpdateEntry updates = 2;
 }
 
 message PacketQueryCreatureResponse {
