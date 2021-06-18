@@ -3,9 +3,11 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net;
 using System.Text;
+using Google.Protobuf.WellKnownTypes;
 using Ionic.Zlib;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
+using WoWPacketParser.Proto;
 using WowPacketParser.Parsing.Parsers;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
@@ -36,6 +38,16 @@ namespace WowPacketParser.Misc
                 _firstPacketTime = Time;
 
             TimeSpan = Time - _firstPacketTime;
+
+            Holder = new PacketHolder()
+            {
+                BaseData = new PacketBase()
+                {
+                    Number = number,
+                    Time = Timestamp.FromDateTime(DateTime.SpecifyKind(time, DateTimeKind.Utc)),
+                    Opcode = Opcodes.GetOpcodeName(Opcode, Direction, false)
+                }
+            };
         }
 
         [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "MemoryStream is disposed in ClosePacket().")]
@@ -55,6 +67,16 @@ namespace WowPacketParser.Misc
                 _firstPacketTime = Time;
 
             TimeSpan = Time - _firstPacketTime;
+
+            Holder = new PacketHolder()
+            {
+                BaseData = new PacketBase()
+                {
+                    Number = number,
+                    Time = Timestamp.FromDateTime(DateTime.SpecifyKind(time, DateTimeKind.Utc)),
+                    Opcode = Opcodes.GetOpcodeName(Opcode, Direction, false)
+                }
+            };
         }
 
         public int Opcode { get; set; } // setter can't be private because it's used in multiple_packets
@@ -68,6 +90,8 @@ namespace WowPacketParser.Misc
         public bool WriteToFile { get; private set; }
         public int ConnectionIndex { get; set; }
         public IPEndPoint EndPoint { get; set; }
+        
+        public PacketHolder Holder { get; set; }
 
         public void AddSniffData(StoreNameType type, int id, string data)
         {

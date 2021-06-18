@@ -76,7 +76,9 @@ namespace WowPacketParser.Misc
 
         public static bool DumpFormatWithText()
         {
-            return DumpFormat != DumpFormatType.SqlOnly && DumpFormat != DumpFormatType.SniffDataOnly;
+            return DumpFormat != DumpFormatType.SqlOnly && 
+                   DumpFormat != DumpFormatType.SniffDataOnly &&
+                   DumpFormat != DumpFormatType.UniversalProto;
         }
 
         public static bool DumpFormatWithSQL()

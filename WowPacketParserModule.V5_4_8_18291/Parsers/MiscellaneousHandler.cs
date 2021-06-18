@@ -2,6 +2,7 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
@@ -277,14 +278,15 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_PLAY_SOUND)]
         public static void HandlePlaySound(Packet packet)
         {
+            PacketPlaySound packetPlaySound = packet.Holder.PlaySound = new PacketPlaySound();
             var guid = new byte[8];
 
             packet.StartBitStream(guid, 2, 3, 7, 6, 0, 5, 4, 1);
 
-            uint sound = packet.ReadUInt32("Sound Id");
+            uint sound = packetPlaySound.Sound = packet.ReadUInt32("Sound Id");
 
             packet.ParseBitStream(guid, 3, 2, 4, 7, 5, 0, 6, 1);
-            packet.WriteGuid("Guid", guid);
+            packetPlaySound.Source = packet.WriteGuid("Guid", guid).ToUniversalGuid();
 
             Storage.Sounds.Add(sound, packet.TimeSpan);
         }
@@ -292,6 +294,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_PLAY_OBJECT_SOUND)]
         public static void HandlePlayObjectSound(Packet packet)
         {
+            PacketPlayObjectSound packetSound = packet.Holder.PlayObjectSound = new PacketPlayObjectSound();
             var guid1 = new byte[8];
             var guid2 = new byte[8];
 
@@ -317,14 +320,14 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadXORBytes(guid1, 7, 5, 3, 1);
             packet.ReadXORBytes(guid2, 3, 1);
 
-            uint sound = packet.ReadUInt32("Sound Id");
+            uint sound = packetSound.Sound = packet.ReadUInt32("Sound Id");
 
             packet.ReadXORByte(guid1, 4);
             packet.ReadXORBytes(guid2, 4, 7, 0, 6);
             packet.ReadXORByte(guid1, 0);
 
-            packet.WriteGuid("Guid 1", guid1);
-            packet.WriteGuid("Guid 2", guid2);
+            packetSound.Source = packet.WriteGuid("Guid 1", guid1);
+            packetSound.Target = packet.WriteGuid("Guid 2", guid2);
 
             Storage.Sounds.Add(sound, packet.TimeSpan);
         }

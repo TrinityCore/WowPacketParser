@@ -15,6 +15,8 @@
         HexOnly,
         PktDirectionSplit,
         ConnectionIndexes,
-        Fusion
+        Fusion,
+        UniversalProto,
+        UniversalProtoWithText
     }
 }

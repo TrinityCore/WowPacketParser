@@ -1,6 +1,7 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -11,6 +12,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         [Parser(Opcode.SMSG_CHAT)]
         public static void HandleServerChatMessage(Packet packet)
         {
+            PacketChat chatPacket = packet.Holder.Chat = new PacketChat();
             var text = new CreatureText();
             var groupGUIDBytes = new byte[8];
             var guildGUIDBytes = new byte[8];
@@ -75,8 +77,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             text.ReceiverGUID = packet.WriteGuid("ReceiverGUID", receiverGUIDBytes);
             packet.WriteGuid("GroupGUID", groupGUIDBytes);
             packet.WriteGuid("GuildGUID", guildGUIDBytes);
-
-
+            
             if (hasAchi)
                 packet.ReadInt32<AchievementId>("Achievement Id");
 
@@ -110,6 +111,12 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             if (entry != 0)
                 Storage.CreatureTexts.Add(entry, text, packet.TimeSpan);
+            
+            chatPacket.Text = text.Text;
+            chatPacket.Sender = text.SenderGUID.ToUniversalGuid();
+            chatPacket.Target = text.ReceiverGUID.ToUniversalGuid();
+            chatPacket.Language = (int?) text.Language ?? 0;
+            chatPacket.Type = (int?) text.Type ?? 0;
         }
 
         [Parser(Opcode.CMSG_SEND_TEXT_EMOTE)]
