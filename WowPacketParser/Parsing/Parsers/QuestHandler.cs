@@ -816,7 +816,12 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                 packet.ReadGuid("InformUnit");
 
-            packet.ReadUInt32<QuestId>("Quest ID");
+            uint id = packet.ReadUInt32<QuestId>("Quest ID");
+
+            QuestDetails questDetails = new QuestDetails
+            {
+                ID = id
+            };
             packet.ReadCString("Title");
             packet.ReadCString("Details");
             packet.ReadCString("Objectives");
@@ -873,12 +878,17 @@ namespace WowPacketParser.Parsing.Parsers
 
             ReadExtraQuestInfo(packet, false);
 
+            questDetails.Emote = new uint?[] { 0, 0, 0, 0 };
+            questDetails.EmoteDelay = new uint?[] { 0, 0, 0, 0 };
+
             var emoteCount = packet.ReadUInt32("Quest Emote Count");
             for (var i = 0; i < emoteCount; i++)
             {
-                packet.ReadUInt32("Emote Id", i);
-                packet.ReadUInt32("Emote Delay (ms)", i);
+                questDetails.Emote[i] = packet.ReadUInt32("Emote Id", i);
+                questDetails.EmoteDelay[i] = packet.ReadUInt32("Emote Delay (ms)", i);
             }
+
+            Storage.QuestDetails.Add(questDetails, packet.TimeSpan);
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_DETAILS, ClientVersionBuild.V5_1_0_16309, ClientVersionBuild.V5_1_0a_16357)]
