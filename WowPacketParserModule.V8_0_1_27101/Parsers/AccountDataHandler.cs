@@ -16,7 +16,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadByteE<Gender>("Gender", idx);
             packet.ReadByte("Level", idx);
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503) &&
+                ClientVersion.Expansion != ClientType.Classic)
                 packet.ReadTime64("LastLogin", idx);
             else
                 packet.ReadTime("LastLogin", idx);
