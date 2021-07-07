@@ -14,6 +14,7 @@
         creature,
         creature_addon,
         creature_equip_template,
+        creature_gossip,
         creature_model_info,
         creature_template,
         creature_template_addon,
