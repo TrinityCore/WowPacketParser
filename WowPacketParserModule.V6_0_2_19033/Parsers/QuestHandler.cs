@@ -517,7 +517,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_COMPLETE)]
         public static void HandleQuestCompleted(Packet packet)
         {
-            packet.ReadUInt32("QuestId");
+            var questComplete = packet.Holder.QuestGiverQuestComplete = new();
+            questComplete.QuestId = packet.ReadUInt32("QuestId");
             packet.ReadUInt32("SkillLineIDReward");
             packet.ReadUInt32("MoneyReward");
             packet.ReadUInt32("NumSkillUpsReward");

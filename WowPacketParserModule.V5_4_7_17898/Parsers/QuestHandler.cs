@@ -235,8 +235,9 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_COMPLETE)]
         public static void HandleQuestCompleted510(Packet packet)
         {
+            var questComplete = packet.Holder.QuestGiverQuestComplete = new();
             packet.ReadInt32("RewSkillId");
-            packet.ReadInt32<QuestId>("Quest ID");
+            questComplete.QuestId = (uint) packet.ReadInt32<QuestId>("Quest ID");
             packet.ReadInt32("Talent Points");
             packet.ReadInt32("RewSkillPoints");
             packet.ReadInt32("Money");
