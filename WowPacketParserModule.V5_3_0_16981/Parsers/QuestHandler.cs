@@ -254,6 +254,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         [Parser(Opcode.SMSG_QUEST_GIVER_REQUEST_ITEMS)]
         public static void HandleQuestRequestItems(Packet packet)
         {
+            var requestItems = packet.Holder.QuestGiverRequestItems = new();
             var guid = new byte[8];
 
             guid[0] = packet.ReadBit();
@@ -286,18 +287,18 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadUInt32("Required Currency Id", i);
             }
 
-            packet.ReadEntry("Quest Giver Entry");
+            requestItems.QuestGiverEntry = (uint)packet.ReadEntry("Quest Giver Entry").Key;
             packet.ReadXORBytes(guid, 0, 1);
             packet.ReadWoWString("Title", titleLen);
-            packet.ReadWoWString("Text", textLen);
+            requestItems.RequestItemsText = packet.ReadWoWString("Text", textLen);
             packet.ReadInt32("int3556");
-            var entry = packet.ReadUInt32<QuestId>("Quest ID");
+            var entry = requestItems.QuestId = packet.ReadUInt32<QuestId>("Quest ID");
             packet.ReadXORByte(guid, 4);
             packet.ReadUInt32E<QuestFlags>("Quest Flags");
             packet.ReadXORBytes(guid, 6, 3);
             packet.ReadInt32("int3544");
             packet.ReadXORByte(guid, 7);
-            packet.WriteGuid("Guid", guid);
+            requestItems.QuestGiver = packet.WriteGuid("Guid", guid);
         }
     }
 }

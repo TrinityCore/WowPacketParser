@@ -36,6 +36,7 @@ message PacketHolder {
       PacketQuestGiverAcceptQuest questGiverAcceptQuest = 22;
       PacketQuestGiverCompleteQuestRequest questGiverCompleteQuestRequest = 23;
       PacketQuestGiverQuestComplete questGiverQuestComplete = 24;
+      PacketQuestGiverRequestItems questGiverRequestItems = 25;
   }
 }
 
@@ -307,6 +308,13 @@ message PacketQuestGiverCompleteQuestRequest {
 
 message PacketQuestGiverQuestComplete {
   uint32 questId = 1;
+}
+
+message PacketQuestGiverRequestItems {
+  uint32 questId = 1;
+  string requestItemsText = 2;
+  UniversalGuid questGiver = 3;
+  uint32 questGiverEntry = 4;
 }
 
 message PacketQueryCreatureResponse {

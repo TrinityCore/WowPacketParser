@@ -674,10 +674,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_QUEST_GIVER_REQUEST_ITEMS)]
         public static void HandleQuestRequestItems(Packet packet)
         {
-            packet.ReadPackedGuid128("QuestGiverGUID");
-            packet.ReadInt32("QuestGiverCreatureID");
+            var requestItems = packet.Holder.QuestGiverRequestItems = new();
+            requestItems.QuestGiver = packet.ReadPackedGuid128("QuestGiverGUID");
+            requestItems.QuestGiverEntry = (uint)packet.ReadInt32("QuestGiverCreatureID");
 
             int id = packet.ReadInt32("QuestID");
+            requestItems.QuestId = (uint)id;
             int delay = packet.ReadInt32("EmoteDelay");
             int emote = packet.ReadInt32("EmoteType");
 
@@ -714,7 +716,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             uint bits16 = packet.ReadBits(12);
 
             packet.ReadWoWString("QuestTitle", bits3016);
-            string completionText = packet.ReadWoWString("CompletionText", bits16);
+            string completionText = requestItems.RequestItemsText = packet.ReadWoWString("CompletionText", bits16);
 
             CoreParsers.QuestHandler.QuestRequestItemHelper(id, completionText, delay, emote, isComplete, packet, noRequestOnComplete);
 
