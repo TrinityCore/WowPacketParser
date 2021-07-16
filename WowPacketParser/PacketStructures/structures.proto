@@ -37,6 +37,8 @@ message PacketHolder {
       PacketQuestGiverCompleteQuestRequest questGiverCompleteQuestRequest = 23;
       PacketQuestGiverQuestComplete questGiverQuestComplete = 24;
       PacketQuestGiverRequestItems questGiverRequestItems = 25;
+      PacketNpcText npcText = 26;
+      PacketNpcTextOld npcTextOld = 27;
   }
 }
 
@@ -315,6 +317,34 @@ message PacketQuestGiverRequestItems {
   string requestItemsText = 2;
   UniversalGuid questGiver = 3;
   uint32 questGiverEntry = 4;
+}
+
+message PacketNpcTextEntry {
+  float probability = 1;
+  uint32 broadcastTextId = 2;
+}
+
+message PacketNpcText {
+  uint32 entry = 1;
+  repeated PacketNpcTextEntry texts = 2;
+}
+
+message BroadcastTextEmote {
+  uint32 emoteId = 1;
+  uint32 delay = 2;
+}
+
+message PacketNpcTextOldEntry {
+  float probability = 1;
+  string text0 = 2;
+  string text1 = 3;
+  int32 language = 4;
+  repeated BroadcastTextEmote emotes = 5;
+}
+
+message PacketNpcTextOld {
+  uint32 entry = 1;
+  repeated PacketNpcTextOldEntry texts = 2;
 }
 
 message PacketQueryCreatureResponse {

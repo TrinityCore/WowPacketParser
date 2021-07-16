@@ -264,20 +264,27 @@ namespace WowPacketParser.Parsing.Parsers
             npcText.EmoteDelays = new uint?[8][];
             npcText.Emotes = new EmoteType?[8][];
 
+            var proto = packet.Holder.NpcTextOld = new() { Entry = npcText.ID.Value };
             for (int i = 0; i < 8; i++)
             {
-                npcText.Probabilities[i] = packet.ReadSingle("Probability", i);
-                npcText.Texts0[i] = packet.ReadCString("Text0", i);
-                npcText.Texts1[i] = packet.ReadCString("Text1", i);
+                var textEntry = new PacketNpcTextOldEntry();
+                npcText.Probabilities[i] = textEntry.Probability = packet.ReadSingle("Probability", i);
+                npcText.Texts0[i] = textEntry.Text0 = packet.ReadCString("Text0", i);
+                npcText.Texts1[i] = textEntry.Text1 = packet.ReadCString("Text1", i);
                 npcText.Languages[i] = packet.ReadInt32E<Language>("Language", i);
+                textEntry.Language = (int?)npcText.Languages[i] ?? 0;
 
                 npcText.EmoteDelays[i] = new uint?[3];
                 npcText.Emotes[i] = new EmoteType?[3];
                 for (int j = 0; j < 3; j++)
                 {
-                    npcText.EmoteDelays[i][j] = packet.ReadUInt32("EmoteDelay", i, j);
+                    var emote = new BroadcastTextEmote();
+                    npcText.EmoteDelays[i][j] = emote.Delay = packet.ReadUInt32("EmoteDelay", i, j);
                     npcText.Emotes[i][j] = packet.ReadUInt32E<EmoteType>("EmoteID", i, j);
+                    emote.EmoteId = (uint?)npcText.Emotes[i][j] ?? 0;
+                    textEntry.Emotes.Add(emote);
                 }
+                proto.Texts.Add(textEntry);
             }
 
             packet.AddSniffData(StoreNameType.NpcText, entry.Key, "QUERY_RESPONSE");
