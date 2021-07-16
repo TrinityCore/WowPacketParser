@@ -30,6 +30,7 @@ message PacketHolder {
       PacketPhaseShift packetPhaseShift = 16;
       PacketSpellClick packetSpellClick = 17;
       PacketPlayerLogin playerLogin = 18;
+      PacketOneShotAnimKit oneShotAnimKit = 19;
   }
 }
 
@@ -270,6 +271,11 @@ message PacketSpellClick {
 
 message PacketPlayerLogin {
   UniversalGuid playerGuid = 1;
+}
+
+message PacketOneShotAnimKit {
+  UniversalGuid unit = 1;
+  uint32 animKit = 2;
 }
 
 message PacketQueryCreatureResponse {

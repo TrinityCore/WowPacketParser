@@ -1108,15 +1108,28 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_PLAY_ONE_SHOT_ANIM_KIT)]
-        [Parser(Opcode.SMSG_SET_AI_ANIM_KIT)]
-        [Parser(Opcode.SMSG_SET_MELEE_ANIM_KIT)]
-        [Parser(Opcode.SMSG_SET_MOVEMENT_ANIM_KIT)]
         public static void HandlePlayOneShotAnimKit(Packet packet)
+        {
+            var animKit = packet.Holder.OneShotAnimKit = new();
+            animKit.Unit = packet.ReadPackedGuid("Guid");
+            animKit.AnimKit = packet.ReadUInt16("AnimKit.dbc Id");
+        }
+        
+        [Parser(Opcode.SMSG_SET_AI_ANIM_KIT)]
+        public static void HandleSetAiAnimKit(Packet packet)
         {
             packet.ReadPackedGuid("Guid");
             packet.ReadUInt16("AnimKit.dbc Id");
         }
-
+        
+        [Parser(Opcode.SMSG_SET_MELEE_ANIM_KIT)]
+        [Parser(Opcode.SMSG_SET_MOVEMENT_ANIM_KIT)]
+        public static void HandleMeleeAnimKit(Packet packet)
+        {
+            packet.ReadPackedGuid("Guid");
+            packet.ReadUInt16("AnimKit.dbc Id");
+        }
+        
         [Parser(Opcode.CMSG_QUERY_COUNTDOWN_TIMER)]
         public static void HandleQueryCountdownTimer(Packet packet)
         {

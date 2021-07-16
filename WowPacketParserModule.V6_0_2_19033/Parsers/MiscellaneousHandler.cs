@@ -537,8 +537,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_PLAY_ONE_SHOT_ANIM_KIT)]
         public static void HandlePlayOneShotAnimKit(Packet packet)
         {
-            packet.ReadPackedGuid128("Unit");
-            packet.ReadUInt16("AnimKitID");
+            var animKit = packet.Holder.OneShotAnimKit = new();
+            animKit.Unit = packet.ReadPackedGuid128("Unit");
+            animKit.AnimKit = packet.ReadUInt16("AnimKitID");
         }
 
         [Parser(Opcode.SMSG_SET_AI_ANIM_KIT)]
