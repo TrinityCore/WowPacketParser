@@ -32,7 +32,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ParseBitStream(guid, 5, 1, 0, 6, 2, 4, 7, 3);
 
             CoreParsers.SessionHandler.LoginGuid = new WowGuid64(BitConverter.ToUInt64(guid, 0));
-            packet.WriteGuid("Guid", guid);
+            packet.Holder.PlayerLogin = new() { PlayerGuid = packet.WriteGuid("Guid", guid) };
         }
 
         [Parser(Opcode.SMSG_SET_TIME_ZONE_INFORMATION)]

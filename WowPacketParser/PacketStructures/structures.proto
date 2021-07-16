@@ -29,6 +29,7 @@ message PacketHolder {
       PacketMonsterMove packetMonsterMove = 15;
       PacketPhaseShift packetPhaseShift = 16;
       PacketSpellClick packetSpellClick = 17;
+      PacketPlayerLogin playerLogin = 18;
   }
 }
 
@@ -265,6 +266,10 @@ message PacketPhaseShift {
 
 message PacketSpellClick {
   UniversalGuid target = 1;
+}
+
+message PacketPlayerLogin {
+  UniversalGuid playerGuid = 1;
 }
 
 message PacketQueryCreatureResponse {

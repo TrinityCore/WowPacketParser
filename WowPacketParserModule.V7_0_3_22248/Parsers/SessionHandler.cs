@@ -36,8 +36,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.CMSG_PLAYER_LOGIN)]
         public static void HandlePlayerLogin(Packet packet)
         {
-            packet.ReadPackedGuid128("Guid");
+            var guid = packet.ReadPackedGuid128("Guid");
             packet.ReadSingle("FarClip");
+            packet.Holder.PlayerLogin = new() { PlayerGuid = guid };
         }
     }
 }
