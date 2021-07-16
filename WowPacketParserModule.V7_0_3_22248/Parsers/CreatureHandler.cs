@@ -63,10 +63,10 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             creature.TypeFlags2 = response.TypeFlags2 = packet.ReadUInt32("Creature Type Flags 2");
 
             creature.Type = packet.ReadInt32E<CreatureType>("CreatureType");
-            response.Type = (int?)creature.Type ?? 0;
             creature.Family = packet.ReadInt32E<CreatureFamily>("CreatureFamily");
-            response.Family = (int?)creature.Family ?? 0;
             creature.Rank = packet.ReadInt32E<CreatureRank>("Classification");
+            response.Type = (int?)creature.Type ?? 0;
+            response.Family = (int?)creature.Family ?? 0;
             response.Rank = (int?)creature.Rank ?? 0;
 
             creature.KillCredits = new uint?[2];

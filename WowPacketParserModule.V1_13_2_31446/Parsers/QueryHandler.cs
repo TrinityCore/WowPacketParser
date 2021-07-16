@@ -2,6 +2,7 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -13,14 +14,17 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
         [Parser(Opcode.SMSG_QUERY_CREATURE_RESPONSE)]
         public static void HandleCreatureQueryResponse(Packet packet)
         {
+            PacketQueryCreatureResponse response = packet.Holder.QueryCreatureResponse = new PacketQueryCreatureResponse();
             var entry = packet.ReadEntry("Entry");
 
             CreatureTemplateClassic creature = new CreatureTemplateClassic
             {
                 Entry = (uint)entry.Key
             };
+            response.Entry = (uint) entry.Key;
 
             Bit hasData = packet.ReadBit();
+            response.HasData = hasData;
             if (!hasData)
                 return; // nothing to do
 
@@ -29,7 +33,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
             uint titleAltLen = packet.ReadBits(11);
             uint cursorNameLen = packet.ReadBits(6);
             creature.Civilian = packet.ReadBit("Civilian");
-            creature.RacialLeader = packet.ReadBit("Leader");
+            creature.RacialLeader = response.Leader = packet.ReadBit("Leader");
 
             var stringLens = new int[4][];
             for (int i = 0; i < 4; i++)
@@ -45,26 +49,33 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
                 {
                     string name = packet.ReadDynamicString("Name", stringLens[i][0], i);
                     if (i == 0)
-                        creature.Name = name;
+                        creature.Name = response.Name =  name;
                 }
                 if (stringLens[i][1] > 1)
                 {
                     string nameAlt = packet.ReadDynamicString("NameAlt", stringLens[i][1], i);
                     if (i == 0)
-                        creature.FemaleName = nameAlt;
+                        creature.FemaleName = response.NameAlt = nameAlt;
                 }
             }
             creature.TypeFlags = packet.ReadUInt32E<CreatureTypeFlag>("Type Flags");
+            response.TypeFlags = (uint?)creature.TypeFlags ?? 0;
             creature.TypeFlags2 = packet.ReadUInt32("Creature Type Flags 2");
 
             creature.Type = packet.ReadInt32E<CreatureType>("CreatureType");
             creature.Family = packet.ReadInt32E<CreatureFamily>("CreatureFamily");
             creature.Rank = packet.ReadInt32E<CreatureRank>("Classification");
             creature.PetSpellDataID = packet.ReadUInt32("PetSpellDataId");
+            response.Type = (int?)creature.Type ?? 0;
+            response.Family = (int?)creature.Family ?? 0;
+            response.Rank = (int?)creature.Rank ?? 0;
 
             creature.KillCredits = new uint?[2];
             for (int i = 0; i < 2; ++i)
+            {
                 creature.KillCredits[i] = (uint)packet.ReadInt32("ProxyCreatureID", i);
+                response.KillCredits.Add(creature.KillCredits[i] ?? 0);
+            }
 
             uint displayIdCount = packet.ReadUInt32("DisplayIdCount");
             packet.ReadSingle("TotalProbability");
@@ -73,29 +84,32 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
             for (uint i = 0; i < displayIdCount; ++i)
             {
                 displayIds[i] = (uint)packet.ReadInt32("DisplayId", i);
+                response.Models.Add(creature.DisplayId[i] ?? 0);
                 packet.ReadSingle("DisplayScale", i);
                 packet.ReadSingle("DisplayProbability", i);
             }
 
             creature.DisplayId = displayIds.Concat(new uint?[] { 0, 0, 0, 0 }).Take(4).ToArray();
 
-            creature.HealthModifier = packet.ReadSingle("HpMulti");
-            creature.ManaModifier = packet.ReadSingle("EnergyMulti");
+            creature.HealthModifier = response.HpMod = packet.ReadSingle("HpMulti");
+            creature.ManaModifier = response.ManaMod = packet.ReadSingle("EnergyMulti");
             uint questItems = packet.ReadUInt32("QuestItems");
-            creature.MovementID = (uint)packet.ReadInt32("CreatureMovementInfoID");
+            creature.MovementID = response.MovementId = (uint)packet.ReadInt32("CreatureMovementInfoID");
             creature.HealthScalingExpansion = packet.ReadInt32E<ClientType>("HealthScalingExpansion");
+            response.HpScalingExp = (uint?) creature.HealthScalingExpansion ?? 0;
             creature.RequiredExpansion = packet.ReadInt32E<ClientType>("RequiredExpansion");
+            response.Expansion = (uint?) creature.RequiredExpansion ?? 0;
             creature.VignetteID = (uint)packet.ReadInt32("VignetteID");
             creature.UnitClass = (uint)packet.ReadInt32E<Class>("UnitClass");
 
             if (titleLen > 1)
-                creature.SubName = packet.ReadCString("Title");
+                creature.SubName = response.Title = packet.ReadCString("Title");
 
             if (titleAltLen > 1)
-                creature.TitleAlt = packet.ReadCString("TitleAlt");
+                creature.TitleAlt = response.TitleAlt = packet.ReadCString("TitleAlt");
 
             if (cursorNameLen > 1)
-                creature.IconName = packet.ReadCString("CursorName");
+                creature.IconName = response.IconName = packet.ReadCString("CursorName");
 
             for (uint i = 0; i < questItems; ++i)
             {
@@ -107,6 +121,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
                 };
 
                 Storage.CreatureTemplateQuestItems.Add(questItem, packet.TimeSpan);
+                response.QuestItems.Add(questItem.ItemId ?? 0);
             }
 
             packet.AddSniffData(StoreNameType.Unit, entry.Key, "QUERY_RESPONSE");

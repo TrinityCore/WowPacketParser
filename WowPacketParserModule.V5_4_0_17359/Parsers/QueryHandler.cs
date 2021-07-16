@@ -4,6 +4,7 @@ using WowPacketParser.Hotfix;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -45,8 +46,11 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_QUERY_CREATURE_RESPONSE)]
         public static void HandleCreatureQueryResponse(Packet packet)
         {
+            PacketQueryCreatureResponse response = packet.Holder.QueryCreatureResponse = new PacketQueryCreatureResponse();
             var entry = packet.ReadEntry("Entry");
+            response.Entry = (uint)entry.Key;
             Bit hasData = packet.ReadBit();
+            response.HasData = hasData;
             if (!hasData)
                 return; // nothing to do
 
@@ -82,7 +86,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             //TODO: move to creature_questitems
             //creature.QuestItems = new uint[qItemCount];
             for (int i = 0; i < qItemCount; ++i)
-                /*creature.QuestItems[i] = (uint)*/packet.ReadInt32<ItemId>("Quest Item", i);
+                /*creature.QuestItems[i] = (uint)*/response.QuestItems.Add((uint)packet.ReadInt32<ItemId>("Quest Item", i));
 
             creature.RequiredExpansion = packet.ReadUInt32E<ClientType>("Expansion");
 
@@ -146,6 +150,26 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 Name = creature.Name
             };
             Storage.ObjectNames.Add(objectName, packet.TimeSpan);
+
+            for (int i = 0; i < 4; ++i)
+                response.Models.Add(creature.ModelIDs[i] ?? 0);
+            for (int i = 0; i < 2; ++i)
+                response.KillCredits.Add(creature.KillCredits[i] ?? 0);
+            response.Name = creature.Name;
+            response.NameAlt = creature.FemaleName;
+            response.Title = creature.SubName;
+            response.TitleAlt = creature.TitleAlt;
+            response.IconName = creature.IconName;
+            response.TypeFlags = (uint?)creature.TypeFlags ?? 0;
+            response.TypeFlags2 = creature.TypeFlags2 ?? 0;
+            response.Type = (int?)creature.Type ?? 0;
+            response.Family = (int?)creature.Family ?? 0;
+            response.Rank = (int?)creature.Rank ?? 0;
+            response.HpMod = creature.HealthModifier ?? 1.0f;
+            response.ManaMod = creature.ManaModifier ?? 1.0f;
+            response.Leader = creature.RacialLeader ?? false;
+            response.Expansion = (uint?) creature.RequiredExpansion ?? 0;
+            response.MovementId = creature.MovementID ?? 0;
         }
 
         [HasSniffData]
