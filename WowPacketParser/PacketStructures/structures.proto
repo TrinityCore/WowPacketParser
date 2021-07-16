@@ -32,6 +32,7 @@ message PacketHolder {
       PacketPlayerLogin playerLogin = 18;
       PacketOneShotAnimKit oneShotAnimKit = 19;
       PacketSetAnimKit setAnimKit = 20;
+      PacketPlaySpellVisualKit playSpellVisualKit = 21;
   }
 }
 
@@ -282,6 +283,13 @@ message PacketOneShotAnimKit {
 message PacketSetAnimKit {
   UniversalGuid unit = 1;
   uint32 animKit = 2;
+}
+
+message PacketPlaySpellVisualKit {
+  UniversalGuid unit = 1;
+  int32 kitRecId = 2;
+  int32 kitType = 3;
+  uint32 duration = 4;
 }
 
 message PacketQueryCreatureResponse {
