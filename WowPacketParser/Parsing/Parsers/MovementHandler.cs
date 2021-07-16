@@ -5,6 +5,7 @@ using System.IO;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
+using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -179,7 +180,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_MONSTER_MOVE_TRANSPORT)]
         public static void HandleMonsterMove(Packet packet)
         {
+            PacketMonsterMove monsterMove = packet.Holder.PacketMonsterMove = new();
             WowGuid guid = packet.ReadPackedGuid("GUID");
+            monsterMove.Mover = guid;
+            monsterMove.TransportGuid = new WowGuid64(0);
 
             if (guid.GetHighType() == HighGuidType.Creature && Storage.Objects != null && Storage.Objects.ContainsKey(guid))
             {
@@ -192,10 +196,11 @@ namespace WowPacketParser.Parsing.Parsers
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_MONSTER_MOVE_TRANSPORT, Direction.ServerToClient))
             {
                 WowGuid transportGuid = packet.ReadPackedGuid("Transport GUID");
+                monsterMove.TransportGuid = transportGuid;
 
                 int seat = -1;
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767)) // no idea when this was added exactly
-                    seat = packet.ReadByte("Transport Seat");
+                    seat = monsterMove.VehicleSeat = packet.ReadByte("Transport Seat");
 
                 if (transportGuid.HasEntry() && transportGuid.GetHighType() == HighGuidType.Vehicle &&
                     guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
@@ -213,7 +218,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767)) // no idea when this was added exactly
                 packet.ReadBool("Toggle AnimTierInTrans");
 
-            var pos = packet.ReadVector3("Position");
+            var pos = monsterMove.Position = packet.ReadVector3("Position");
 
             packet.ReadInt32("Move Ticks");
 
@@ -223,17 +228,18 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 case SplineType.FacingSpot:
                 {
-                    packet.ReadVector3("Facing Spot");
+                    monsterMove.LookPosition = packet.ReadVector3("Facing Spot");
                     break;
                 }
                 case SplineType.FacingTarget:
                 {
-                    packet.ReadGuid("Facing GUID");
+                    var lookTarget = monsterMove.LookTarget = new();
+                    lookTarget.Target = packet.ReadGuid("Facing GUID");
                     break;
                 }
                 case SplineType.FacingAngle:
                 {
-                    packet.ReadSingle("Facing Angle");
+                    monsterMove.LookOrientation = packet.ReadSingle("Facing Angle");
                     break;
                 }
                 case SplineType.Stop:
@@ -262,7 +268,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Async-time in ms");
             }
 
-            packet.ReadInt32("Move Time");
+            monsterMove.MoveTime = (uint)packet.ReadInt32("Move Time");
 
             if (flags.HasAnyFlag(SplineFlag.Trajectory))
             {
@@ -275,7 +281,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (flags.HasAnyFlag(SplineFlag.Flying | SplineFlag.CatmullRom))
             {
                 for (var i = 0; i < waypoints; i++)
-                    packet.ReadVector3("Waypoint", i);
+                    monsterMove.Points.Add(packet.ReadVector3("Waypoint", i));
             }
             else
             {
@@ -287,6 +293,7 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     var vec = packet.ReadPackedVector3();
                     vec = mid - vec;
+                    monsterMove.PackedPoints.Add(vec);
                     packet.AddValue("Waypoint", vec, i);
                 }
             }
@@ -294,6 +301,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         private static void ReadSplineMovement510(Packet packet, Vector3 pos)
         {
+            var monsterMove = packet.Holder.PacketMonsterMove;
             var flags = packet.ReadInt32E<SplineFlag434>("Spline Flags");
 
             if (flags.HasAnyFlag(SplineFlag434.Animation))
@@ -302,7 +310,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Asynctime in ms"); // Async-time in ms
             }
 
-            packet.ReadInt32("Move Time");
+            monsterMove.MoveTime = (uint)packet.ReadInt32("Move Time");
 
             if (flags.HasAnyFlag(SplineFlag434.Parabolic))
             {
@@ -315,7 +323,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (flags.HasAnyFlag(SplineFlag434.UncompressedPath))
             {
                 for (var i = 0; i < waypoints; i++)
-                    packet.ReadVector3("Waypoint", i);
+                    monsterMove.Points.Add(packet.ReadVector3("Waypoint", i));
             }
             else
             {
@@ -334,6 +342,7 @@ namespace WowPacketParser.Parsing.Parsers
                     vec.X += mid.X;
                     vec.Y += mid.Y;
                     vec.Z += mid.Z;
+                    monsterMove.PackedPoints.Add(vec);
                     packet.AddValue("Waypoint: ", vec, 0);
 
                     if (waypoints > 2)
@@ -345,6 +354,7 @@ namespace WowPacketParser.Parsing.Parsers
                             vec.Y += mid.Y;
                             vec.Z += mid.Z;
 
+                            monsterMove.PackedPoints.Add(vec);
                             packet.AddValue("Waypoint", vec, i);
                         }
                     }
@@ -370,6 +380,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         private static void ReadSplineMovement422(Packet packet, Vector3 pos)
         {
+            var monsterMove = packet.Holder.PacketMonsterMove;
             var flags = packet.ReadInt32E<SplineFlag422>("Spline Flags");
 
             if (flags.HasAnyFlag(SplineFlag422.AnimationTier))
@@ -378,7 +389,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadInt32("Asynctime in ms"); // Async-time in ms
             }
 
-            packet.ReadInt32("Move Time");
+            monsterMove.MoveTime = (uint)packet.ReadInt32("Move Time");
 
             if (flags.HasAnyFlag(SplineFlag422.Trajectory))
             {
@@ -391,7 +402,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (flags.HasAnyFlag(SplineFlag422.UsePathSmoothing))
             {
                 for (var i = 0; i < waypoints; i++)
-                    packet.ReadVector3("Waypoint", i);
+                    monsterMove.Points.Add(packet.ReadVector3("Waypoint", i));
             }
             else
             {
@@ -411,6 +422,7 @@ namespace WowPacketParser.Parsing.Parsers
                     vec.Y += mid.Y;
                     vec.Z += mid.Z;
 
+                    monsterMove.PackedPoints.Add(vec);
                     packet.AddValue("Waypoint", vec);
                 }
             }

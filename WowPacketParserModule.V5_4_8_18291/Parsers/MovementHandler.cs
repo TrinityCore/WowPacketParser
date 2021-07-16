@@ -1,6 +1,7 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WoWPacketParser.Proto;
 using WowPacketParserModule.V5_4_8_18291.Enums;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using CoreOpcode = WowPacketParser.Enums.Version.Opcodes;
@@ -566,6 +567,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_ON_MONSTER_MOVE)]
         public static void HandleMonsterMove(Packet packet)
         {
+            var monsterMove = packet.Holder.PacketMonsterMove = new();
             var pos = new Vector3();
 
             var guid2 = new byte[8];
@@ -651,7 +653,8 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 {
                     endpos = spot;
                 }
-
+                
+                monsterMove.Points.Add(spot);
                 packet.AddValue("Spline Waypoint", spot, i);
             }
 
@@ -661,7 +664,8 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             if (splineType == 3)
             {
                 packet.ParseBitStream(factingTargetGUID, 5, 7, 0, 4, 3, 2, 6, 1);
-                packet.WriteGuid("Facting Target GUID", factingTargetGUID);
+                var lookTarget = monsterMove.LookTarget = new();
+                lookTarget.Target = packet.WriteGuid("Facing Target GUID", factingTargetGUID);
             }
 
             packet.ReadXORByte(ownerGUID, 5);   // +37 - 5
@@ -687,7 +691,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 packet.ReadInt32("Int19");      // +19
 
             if (splineType == 4)
-                packet.ReadSingle("Facing Angle");  // +45
+                monsterMove.LookOrientation = packet.ReadSingle("Facing Angle");  // +45
 
             packet.ReadXORByte(ownerGUID, 3);   // +35 - 3
 
@@ -705,9 +709,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             if (splineType == 2)
             {
-                packet.ReadSingle("Float48");   // +48
-                packet.ReadSingle("Float49");   // +49
-                packet.ReadSingle("Float50");   // +50
+                monsterMove.LookPosition = packet.ReadVector3("Facing Spot");
             }
 
             packet.ReadXORByte(ownerGUID, 0);   // +32 - 0
@@ -727,7 +729,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadXORByte(ownerGUID, 4);   // +36 - 4
 
             if (bit20)
-                packet.ReadInt32("Move Time");      // +20
+                monsterMove.MoveTime = (uint)packet.ReadInt32("Move Time");      // +20
 
             // Calculate mid pos
             var mid = new Vector3();
@@ -742,12 +744,14 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                     Y = mid.Y - waypoints[i].Y,
                     Z = mid.Z - waypoints[i].Z
                 };
+                monsterMove.PackedPoints.Add(vec);
                 packet.AddValue("Waypoint", vec, i);
             }
 
-            packet.WriteGuid("Owner GUID", ownerGUID);
+            monsterMove.Mover = packet.WriteGuid("Owner GUID", ownerGUID);
             packet.WriteGuid("GUID2", guid2);
             packet.AddValue("Position", pos);
+            monsterMove.Position = pos;
         }
 
         [Parser(Opcode.SMSG_MOVE_TELEPORT)]

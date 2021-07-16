@@ -26,6 +26,7 @@ message PacketHolder {
       PacketSpellStart packetSpellStart = 12;
       PacketSpellGo packetSpellGo = 13;
       PacketAuraUpdate packetAuraUpdate = 14;
+      PacketMonsterMove packetMonsterMove = 15;
   }
 }
 
@@ -219,6 +220,36 @@ message PacketAuraUpdateEntry {
 message PacketAuraUpdate {
   UniversalGuid unit = 1;
   repeated PacketAuraUpdateEntry updates = 2;
+}
+
+message PacketMonsterMove {
+  UniversalGuid mover = 1;
+  Vec3 position = 2;
+  uint32 id = 3;
+  Vec3 destination = 4;
+  int32 elapsedTime = 5;
+  uint32 moveTime = 6;
+  UniversalGuid transportGuid = 7;
+  int32 vehicleSeat = 8;
+  oneof facing {
+    Vec3 lookPosition = 9;
+    float lookOrientation = 10;
+    SplineLookTarget lookTarget = 11;
+  }
+  repeated Vec3 points = 12;
+  repeated Vec3 packedPoints = 13;
+  optional SplineJump jump = 14;
+}
+
+message SplineJump {
+  float gravity = 1;
+  uint32 startTime = 2;
+  uint32 duration = 3;
+}
+
+message SplineLookTarget {
+  UniversalGuid target = 1;
+  optional float orientation = 2;
 }
 
 message PacketQueryCreatureResponse {

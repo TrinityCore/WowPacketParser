@@ -165,6 +165,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         [Parser(Opcode.SMSG_ON_MONSTER_MOVE)]
         public static void HandleMonsterMove(Packet packet)
         {
+            var monsterMove = packet.Holder.PacketMonsterMove = new();
             var ownerGUID = new byte[8];
             var guid2 = new byte[8];
             var factingTargetGUID = new byte[8];
@@ -221,7 +222,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             if (splineType == 3)
             {
                 packet.ParseBitStream(factingTargetGUID, 1, 0, 6, 5, 3, 4, 7, 2);
-                packet.WriteGuid("Facting Target GUID", factingTargetGUID);
+                var lookTarget = monsterMove.LookTarget = new();
+                lookTarget.Target = packet.WriteGuid("Facing Target GUID", factingTargetGUID);
             }
 
             if (bit6D)
@@ -234,7 +236,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadByteE<MovementAnimationState>("Animation State");
 
             if (hasTime)
-                packet.ReadInt32("Move Time in ms");
+                monsterMove.MoveTime = (uint)packet.ReadInt32("Move Time in ms");
 
             packet.ReadXORBytes(ownerGUID, 7, 1);
 
@@ -260,7 +262,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadInt32E<SplineFlag434>("Spline Flags");
 
             if (splineType == 2)
-                packet.ReadVector3("Facing Spot");
+                monsterMove.LookPosition = packet.ReadVector3("Facing Spot");
 
             if (bit6C)
                 packet.ReadByte("byte6C");
@@ -270,11 +272,12 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             Vector3 endpos = new Vector3();
             for (var i = 0; i < splineCount; ++i)
             {
+                var spot = packet.ReadVector3("Spline Waypoint", i);
                 // client always taking first point
                 if (i == 0)
-                    endpos = packet.ReadVector3("Spline Waypoint", i);
-                else
-                    packet.ReadVector3("Spline Waypoint", i);
+                    endpos = spot;
+                
+                monsterMove.Points.Add(spot);
             }
 
             packet.ReadXORBytes(ownerGUID, 6, 3, 5);
@@ -282,7 +285,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 packet.ReadInt32("int4C");
 
             if (splineType == 4)
-                packet.ReadSingle("Facing Angle");
+                monsterMove.LookOrientation = packet.ReadSingle("Facing Angle");
 
             if (!bit78)
                 packet.ReadByte("byte78");
@@ -303,12 +306,14 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 vec.X = mid.X - vec.X;
                 vec.Y = mid.Y - vec.Y;
                 vec.Z = mid.Z - vec.Z;
+                monsterMove.PackedPoints.Add(vec);
                 packet.AddValue("Waypoint", vec, i);
             }
 
-            packet.WriteGuid("Owner GUID", ownerGUID);
+            monsterMove.Mover = packet.WriteGuid("Owner GUID", ownerGUID);
             packet.WriteGuid("GUID2", guid2);
             packet.AddValue("Position", pos);
+            monsterMove.Position = pos;
         }
 
         [Parser(Opcode.SMSG_MOVE_UPDATE)]

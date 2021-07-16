@@ -5,6 +5,7 @@ using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
@@ -254,20 +255,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
         public static void ReadMovementSpline(Packet packet, Vector3 pos, params object[] indexes)
         {
+            PacketMonsterMove monsterMove = packet.Holder.PacketMonsterMove;
+            SplineJump jump = packet.Holder.PacketMonsterMove.Jump = new();
             packet.ReadInt32E<SplineFlag434>("Flags", indexes);
             packet.ReadByte("AnimTier", indexes);
             packet.ReadUInt32("TierTransStartTime", indexes);
-            packet.ReadInt32("Elapsed", indexes);
-            packet.ReadUInt32("MoveTime", indexes);
-            packet.ReadSingle("JumpGravity", indexes);
-            packet.ReadUInt32("SpecialTime", indexes);
+            monsterMove.ElapsedTime = packet.ReadInt32("Elapsed", indexes);
+            monsterMove.MoveTime = packet.ReadUInt32("MoveTime", indexes);
+            jump.Gravity = packet.ReadSingle("JumpGravity", indexes);
+            jump.Duration = packet.ReadUInt32("SpecialTime", indexes);
             var pointsCount = packet.ReadInt32("PointsCount", indexes);
 
             packet.ReadByte("Mode", indexes);
             packet.ReadByte("VehicleExitVoluntary", indexes);
 
-            packet.ReadPackedGuid128("TransportGUID", indexes);
-            packet.ReadSByte("VehicleSeat", indexes);
+            monsterMove.TransportGuid = packet.ReadPackedGuid128("TransportGUID", indexes);
+            monsterMove.VehicleSeat = packet.ReadSByte("VehicleSeat", indexes);
 
             var packedDeltasCount = packet.ReadInt32("PackedDeltasCount", indexes);
 
@@ -280,6 +283,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 if (i == 0)
                     endpos = spot;
 
+                monsterMove.Points.Add(spot);
                 packet.AddValue("Points", spot, indexes, i);
             }
 
@@ -299,14 +303,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             switch (type)
             {
                 case SplineFacingType.Spot:
-                    packet.ReadVector3("FaceSpot", indexes);
+                    monsterMove.LookPosition = packet.ReadVector3("FaceSpot", indexes);
                     break;
                 case SplineFacingType.Target:
-                    packet.ReadSingle("FaceDirection", indexes);
-                    packet.ReadPackedGuid128("FacingGUID", indexes);
+                    SplineLookTarget lookTarget = monsterMove.LookTarget = new();
+                    lookTarget.Orientation = packet.ReadSingle("FaceDirection", indexes);
+                    lookTarget.Target = packet.ReadPackedGuid128("FacingGUID", indexes);
                     break;
                 case SplineFacingType.Angle:
-                    packet.ReadSingle("FaceDirection", indexes);
+                    monsterMove.LookOrientation = packet.ReadSingle("FaceDirection", indexes);
                     break;
             }
 
@@ -329,14 +334,16 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     Y = mid.Y - waypoints[i].Y,
                     Z = mid.Z - waypoints[i].Z
                 };
+                monsterMove.PackedPoints.Add(vec);
                 packet.AddValue("WayPoints", vec, indexes, i);
             }
         }
 
         public static void ReadMovementMonsterSpline(Packet packet, Vector3 pos, params object[] indexes)
         {
-            packet.ReadUInt32("Id", indexes);
-            packet.ReadVector3("Destination", indexes);
+            PacketMonsterMove monsterMove = packet.Holder.PacketMonsterMove;
+            monsterMove.Id = packet.ReadUInt32("Id", indexes);
+            monsterMove.Destination = packet.ReadVector3("Destination", indexes);
 
             ReadMovementSpline(packet, pos, indexes, "MovementSpline");
 
@@ -349,8 +356,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_ON_MONSTER_MOVE)]
         public static void HandleOnMonsterMove(Packet packet)
         {
-            packet.ReadPackedGuid128("MoverGUID");
-            var pos = packet.ReadVector3("Position");
+            PacketMonsterMove monsterMove = packet.Holder.PacketMonsterMove = new();
+            monsterMove.Mover = packet.ReadPackedGuid128("MoverGUID");
+            Vector3 pos = monsterMove.Position = packet.ReadVector3("Position");
 
             ReadMovementMonsterSpline(packet, pos, "MovementMonsterSpline");
         }

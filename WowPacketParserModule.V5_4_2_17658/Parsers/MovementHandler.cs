@@ -162,6 +162,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         [Parser(Opcode.SMSG_ON_MONSTER_MOVE)]
         public static void HandleMonsterMove(Packet packet)
         {
+            var monsterMove = packet.Holder.PacketMonsterMove = new();
             var pos = new Vector3();
 
             var guid2 = new byte[8];
@@ -218,7 +219,8 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             if (splineType == 3)
             {
                 packet.ParseBitStream(factingTargetGUID, 1, 6, 4, 3, 5, 0, 2, 7);
-                packet.WriteGuid("Facting Target GUID", factingTargetGUID);
+                var lookTarget = monsterMove.LookTarget = new();
+                lookTarget.Target = packet.WriteGuid("Facing Target GUID", factingTargetGUID);
             }
 
             packet.ReadXORByte(ownerGUID, 5);
@@ -262,7 +264,8 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 {
                     endpos = spot;
                 }
-
+                
+                monsterMove.Points.Add(spot);
                 packet.AddValue("Spline Waypoint", spot, i);
             }
 
@@ -276,7 +279,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ReadXORByte(ownerGUID, 0);
 
             if (splineType == 4)
-                packet.ReadSingle("Facing Angle");
+                monsterMove.LookOrientation = packet.ReadSingle("Facing Angle");
 
             pos.Y = packet.ReadSingle();
 
@@ -297,13 +300,11 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             if (splineType == 2)
             {
-                packet.ReadSingle("FloatA8");
-                packet.ReadSingle("FloatAC");
-                packet.ReadSingle("FloatB0");
+                monsterMove.LookPosition = packet.ReadVector3("Facing Spot");
             }
 
             if (hasTime)
-                packet.ReadInt32("Move Time in ms");
+                monsterMove.MoveTime = (uint)packet.ReadInt32("Move Time in ms");
 
             if (bit30)
                 packet.ReadInt32("Int30");
@@ -336,12 +337,14 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                     Y = mid.Y - waypoints[i].Y,
                     Z = mid.Z - waypoints[i].Z
                 };
+                monsterMove.PackedPoints.Add(vec);
                 packet.AddValue("Waypoint", vec, i);
             }
 
-            packet.WriteGuid("Owner GUID", ownerGUID);
+            monsterMove.Mover = packet.WriteGuid("Owner GUID", ownerGUID);
             packet.WriteGuid("GUID2", guid2);
             packet.AddValue("Position", pos);
+            monsterMove.Position = pos;
         }
 
 

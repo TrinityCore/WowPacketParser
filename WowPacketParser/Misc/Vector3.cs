@@ -80,5 +80,8 @@ namespace WowPacketParser.Misc
 
         public static implicit operator WoWPacketParser.Proto.Vec3(Vector3 vector) =>
             new() {X = vector.X, Y = vector.Y, Z = vector.Z};
+
+        public static implicit operator Vector3(WoWPacketParser.Proto.Vec3 vector) =>
+            new() {X = vector.X, Y = vector.Y, Z = vector.Z};
     }
 }

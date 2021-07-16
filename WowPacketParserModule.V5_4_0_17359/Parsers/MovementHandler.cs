@@ -49,6 +49,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_ON_MONSTER_MOVE)]
         public static void HandleMonsterMove(Packet packet)
         {
+            var monsterMove = packet.Holder.PacketMonsterMove = new();
             var ownerGUID = new byte[8];
             var guid2 = new byte[8];
             var factingTargetGUID = new byte[8];
@@ -109,7 +110,8 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             if (splineType == 3)
             {
                 packet.ParseBitStream(factingTargetGUID, 2, 1, 7, 0, 5, 3, 4, 6);
-                packet.WriteGuid("Facting Target GUID", factingTargetGUID);
+                var lookTarget = monsterMove.LookTarget = new();
+                lookTarget.Target = packet.WriteGuid("Facing Target GUID", factingTargetGUID);
             }
 
             pos.Y = packet.ReadSingle();
@@ -138,6 +140,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                     Z = packet.ReadSingle(),
                     X = packet.ReadSingle()
                 };
+                monsterMove.LookPosition = spot;
                 packet.AddValue("Facing Spot", spot);
             }
 
@@ -156,6 +159,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                     endpos = spot;
                 }
 
+                monsterMove.Points.Add(spot);
                 packet.AddValue("Spline Waypoint", spot, i);
             }
 
@@ -177,7 +181,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
 
             pos.X = packet.ReadSingle();
             if (hasTime)
-                packet.ReadInt32("Move Time in ms");
+                monsterMove.MoveTime = (uint)packet.ReadInt32("Move Time in ms");
 
             packet.ReadXORByte(ownerGUID, 4);
             if (hasParabolicSpeed)
@@ -187,7 +191,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.ReadByte("byte78");
 
             if (splineType == 4)
-                packet.ReadSingle("Facing Angle");
+                monsterMove.LookOrientation = packet.ReadSingle("Facing Angle");
 
             if (bit6C)
                 packet.ReadByte("byte6C");
@@ -211,12 +215,14 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                     Y = mid.Y - waypoints[i].Y,
                     Z = mid.Z - waypoints[i].Z
                 };
+                monsterMove.PackedPoints.Add(vec);
                 packet.AddValue("Waypoint", vec, i);
             }
 
-            packet.WriteGuid("Owner GUID", ownerGUID);
+            monsterMove.Mover = packet.WriteGuid("Owner GUID", ownerGUID);
             packet.WriteGuid("GUID2", guid2);
             packet.AddValue("Position", pos);
+            monsterMove.Position = pos;
         }
 
         [Parser(Opcode.SMSG_PHASE_SHIFT_CHANGE)]
