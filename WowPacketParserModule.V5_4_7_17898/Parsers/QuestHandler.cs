@@ -247,9 +247,10 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.CMSG_QUEST_GIVER_ACCEPT_QUEST)]
         public static void HandleQuestgiverAcceptQuest(Packet packet)
         {
+            var questGiverAcceptQuest = packet.Holder.QuestGiverAcceptQuest = new();
             var guid = new byte[8];
 
-            packet.ReadUInt32<QuestId>("Quest ID");
+            questGiverAcceptQuest.QuestId = packet.ReadUInt32<QuestId>("Quest ID");
             guid[3] = packet.ReadBit();
             guid[2] = packet.ReadBit();
             guid[7] = packet.ReadBit();
@@ -269,7 +270,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 0);
 
-            packet.WriteGuid("Guid", guid);
+            questGiverAcceptQuest.QuestGiver = packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_QUEST_GIVER_REQUEST_REWARD)]

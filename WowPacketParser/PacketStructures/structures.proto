@@ -33,6 +33,7 @@ message PacketHolder {
       PacketOneShotAnimKit oneShotAnimKit = 19;
       PacketSetAnimKit setAnimKit = 20;
       PacketPlaySpellVisualKit playSpellVisualKit = 21;
+      PacketQuestGiverAcceptQuest questGiverAcceptQuest = 22;
   }
 }
 
@@ -290,6 +291,11 @@ message PacketPlaySpellVisualKit {
   int32 kitRecId = 2;
   int32 kitType = 3;
   uint32 duration = 4;
+}
+
+message PacketQuestGiverAcceptQuest {
+  UniversalGuid questGiver = 1;
+  uint32 questId = 2;
 }
 
 message PacketQueryCreatureResponse {

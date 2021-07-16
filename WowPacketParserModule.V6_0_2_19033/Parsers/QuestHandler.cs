@@ -111,8 +111,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_QUEST_GIVER_ACCEPT_QUEST)]
         public static void HandleQuestgiverAcceptQuest(Packet packet)
         {
-            packet.ReadPackedGuid128("QuestGiverGUID");
-            packet.ReadUInt32<QuestId>("QuestID");
+            var questGiverAcceptQuest = packet.Holder.QuestGiverAcceptQuest = new();
+            questGiverAcceptQuest.QuestGiver = packet.ReadPackedGuid128("QuestGiverGUID");
+            questGiverAcceptQuest.QuestId = packet.ReadUInt32<QuestId>("QuestID");
             packet.ReadBit("StartCheat");
         }
 
