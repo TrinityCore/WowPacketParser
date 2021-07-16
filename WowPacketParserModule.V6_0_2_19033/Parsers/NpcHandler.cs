@@ -515,6 +515,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleSpellClick(Packet packet)
         {
             WowGuid guid = packet.ReadPackedGuid128("SpellClickUnitGUID");
+            packet.Holder.PacketSpellClick = new() { Target = guid };
             packet.ReadBit("TryAutoDismount");
 
             if (guid.GetObjectType() == ObjectType.Unit)

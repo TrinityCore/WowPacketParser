@@ -28,6 +28,7 @@ message PacketHolder {
       PacketAuraUpdate packetAuraUpdate = 14;
       PacketMonsterMove packetMonsterMove = 15;
       PacketPhaseShift packetPhaseShift = 16;
+      PacketSpellClick packetSpellClick = 17;
   }
 }
 
@@ -260,6 +261,10 @@ message PacketPhaseShift {
   repeated uint32 visibleMaps = 4;
   repeated uint32 preloadMaps = 5;
   repeated uint32 uiMapPhase = 6;
+}
+
+message PacketSpellClick {
+  UniversalGuid target = 1;
 }
 
 message PacketQueryCreatureResponse {
