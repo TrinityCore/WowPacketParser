@@ -4,6 +4,7 @@ using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
@@ -2707,6 +2708,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         [Parser(Opcode.SMSG_PHASE_SHIFT_CHANGE)]
         public static void HandlePhaseShift434(Packet packet)
         {
+            var phaseShift = packet.Holder.PacketPhaseShift = new PacketPhaseShift();
             CoreParsers.MovementHandler.ActivePhases.Clear();
 
             var guid = packet.StartBitStream(2, 3, 1, 6, 4, 5, 0, 7);
@@ -2716,7 +2718,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
 
             var uiWorldMapAreaIDSwapsCount = packet.ReadUInt32("UiWorldMapAreaIDSwap") / 2;
             for (var i = 0; i < uiWorldMapAreaIDSwapsCount; ++i)
-                packet.ReadInt16("UiWorldMapAreaIDSwaps", i);
+                phaseShift.UiMapPhase.Add((uint)packet.ReadInt16("UiWorldMapAreaIDSwaps", i));
 
             packet.ReadXORByte(guid, 1);
 
@@ -2727,12 +2729,13 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
 
             var preloadMapIDCount = packet.ReadUInt32("PreloadMapIDsCount") / 2;
             for (var i = 0; i < preloadMapIDCount; ++i)
-                packet.ReadInt16<MapId>("PreloadMapID", i);
+                phaseShift.PreloadMaps.Add((uint)packet.ReadInt16<MapId>("PreloadMapID", i));
 
             var count = packet.ReadUInt32("PhaseShiftCount") / 2;
             for (var i = 0; i < count; ++i)
             {
                 var id = packet.ReadUInt16("Id", i);
+                phaseShift.Phases.Add(id);
                 CoreParsers.MovementHandler.ActivePhases.Add(id, true);
             }
 
@@ -2747,10 +2750,10 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
 
             var visibleMapIDsCount = packet.ReadUInt32("VisibleMapIDsCount") / 2;
             for (var i = 0; i < visibleMapIDsCount; ++i)
-                packet.ReadInt16<MapId>("VisibleMapID", i);
+                phaseShift.VisibleMaps.Add((uint)packet.ReadInt16<MapId>("VisibleMapID", i));
 
             packet.ReadXORByte(guid, 5);
-            packet.WriteGuid("Client", guid);
+            phaseShift.Client = packet.WriteGuid("Client", guid);
         }
 
         [Parser(Opcode.SMSG_TRANSFER_PENDING)]

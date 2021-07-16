@@ -27,6 +27,7 @@ message PacketHolder {
       PacketSpellGo packetSpellGo = 13;
       PacketAuraUpdate packetAuraUpdate = 14;
       PacketMonsterMove packetMonsterMove = 15;
+      PacketPhaseShift packetPhaseShift = 16;
   }
 }
 
@@ -250,6 +251,15 @@ message SplineJump {
 message SplineLookTarget {
   UniversalGuid target = 1;
   optional float orientation = 2;
+}
+
+message PacketPhaseShift {
+  UniversalGuid client = 1;
+  UniversalGuid personalGuid = 2;
+  repeated uint32 phases = 3;
+  repeated uint32 visibleMaps = 4;
+  repeated uint32 preloadMaps = 5;
+  repeated uint32 uiMapPhase = 6;
 }
 
 message PacketQueryCreatureResponse {

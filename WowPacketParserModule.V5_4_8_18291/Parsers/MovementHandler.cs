@@ -475,6 +475,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_PHASE_SHIFT_CHANGE)]
         public static void HandlePhaseShift(Packet packet)
         {
+            var phaseShift = packet.Holder.PacketPhaseShift = new PacketPhaseShift();
             CoreParsers.MovementHandler.ActivePhases.Clear();
 
             var guid = packet.StartBitStream(0, 3, 1, 4, 6, 2, 7, 5);
@@ -483,29 +484,29 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             var count = packet.ReadUInt32() / 2;
             packet.AddValue("Phases count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadInt16("Phase id", i); // if + Phase.dbc, if - duno atm
+                phaseShift.Phases.Add((uint)packet.ReadInt16("Phase id", i)); // if + Phase.dbc, if - duno atm
 
             packet.ParseBitStream(guid, 0, 6);
 
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Inactive Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadInt16<MapId>("Inactive Terrain swap", i); // Map.dbc, all possible terrainswaps
+                phaseShift.PreloadMaps.Add((uint)packet.ReadInt16<MapId>("Inactive Terrain swap", i)); // Map.dbc, all possible terrainswaps
 
             packet.ParseBitStream(guid, 1, 7);
 
             count = packet.ReadUInt32() / 2;
             packet.AddValue("WorldMapArea swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadUInt16("WorldMapArea swap", i); // WorldMapArea.dbc
+                phaseShift.UiMapPhase.Add((uint)packet.ReadUInt16("WorldMapArea swap", i)); // WorldMapArea.dbc
 
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Active Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadInt16<MapId>("Active Terrain swap", i); // Map.dbc, all active terrainswaps
+                phaseShift.VisibleMaps.Add((uint)packet.ReadInt16<MapId>("Active Terrain swap", i)); // Map.dbc, all active terrainswaps
 
             packet.ParseBitStream(guid, 5);
-            packet.WriteGuid("GUID", guid);
+            phaseShift.Client = packet.WriteGuid("GUID", guid);
 
             packet.ReadUInt32("Flags:");
         }

@@ -547,18 +547,20 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.SMSG_PHASE_SHIFT_CHANGE)]
         public static void HandlePhaseShift(Packet packet)
         {
+            var phaseShift = packet.Holder.PacketPhaseShift = new PacketPhaseShift();
             CoreParsers.MovementHandler.ActivePhases.Clear();
 
-            packet.ReadPackedGuid128("Client");
+            phaseShift.Client = packet.ReadPackedGuid128("Client");
 
             // PhaseShiftData
             packet.ReadInt32("PhaseShiftFlags");
             var count = packet.ReadInt32("PhaseShiftCount");
-            packet.ReadPackedGuid128("PersonalGUID");
+            phaseShift.PersonalGuid = packet.ReadPackedGuid128("PersonalGUID");
             for (var i = 0; i < count; ++i)
             {
                 var flags = packet.ReadUInt16E<PhaseFlags>("PhaseFlags", i);
                 var id = packet.ReadUInt16();
+                phaseShift.Phases.Add(id);
 
                 if (Settings.UseDBC && DBC.Phase.ContainsKey(id))
                 {
@@ -578,15 +580,15 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             var visibleMapIDsCount = packet.ReadInt32("VisibleMapIDsCount") / 2;
             for (var i = 0; i < visibleMapIDsCount; ++i)
-                packet.ReadInt16<MapId>("VisibleMapID", i);
+                phaseShift.VisibleMaps.Add((uint)packet.ReadInt16<MapId>("VisibleMapID", i));
 
             var preloadMapIDCount = packet.ReadInt32("PreloadMapIDsCount") / 2;
             for (var i = 0; i < preloadMapIDCount; ++i)
-                packet.ReadInt16<MapId>("PreloadMapID", i);
+                phaseShift.PreloadMaps.Add((uint)packet.ReadInt16<MapId>("PreloadMapID", i));
 
             var uiWorldMapAreaIDSwapsCount = packet.ReadInt32("UiWorldMapAreaIDSwap") / 2;
             for (var i = 0; i < uiWorldMapAreaIDSwapsCount; ++i)
-                packet.ReadInt16("UiWorldMapAreaIDSwaps", i);
+                phaseShift.UiMapPhase.Add((uint)packet.ReadInt16("UiWorldMapAreaIDSwaps", i));
         }
     }
 }

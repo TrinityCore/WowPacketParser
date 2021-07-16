@@ -203,16 +203,18 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         [Parser(Opcode.SMSG_PHASE_SHIFT_CHANGE)]
         public static void HandlePhaseShift(Packet packet)
         {
+            var phaseShift = packet.Holder.PacketPhaseShift = new PacketPhaseShift();
             CoreParsers.MovementHandler.ActivePhases.Clear();
-            packet.ReadPackedGuid128("Client");
+            phaseShift.Client = packet.ReadPackedGuid128("Client");
             // PhaseShiftData
             packet.ReadInt32E<PhaseShiftFlags>("PhaseShiftFlags");
             var count = packet.ReadInt32("PhaseShiftCount");
-            packet.ReadPackedGuid128("PersonalGUID");
+            phaseShift.PersonalGuid = packet.ReadPackedGuid128("PersonalGUID");
             for (var i = 0; i < count; ++i)
             {
                 var flags = packet.ReadUInt16E<PhaseFlags>("PhaseFlags", i);
                 var id = packet.ReadUInt16();
+                phaseShift.Phases.Add(id);
                 
                 if (Settings.UseDBC && DBC.Phase.ContainsKey(id))
                 {
@@ -230,13 +232,13 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             }
             var visibleMapIDsCount = packet.ReadInt32("VisibleMapIDsCount") / 2;
             for (var i = 0; i < visibleMapIDsCount; ++i)
-                packet.ReadInt16<MapId>("VisibleMapID", i);
+                phaseShift.VisibleMaps.Add((uint)packet.ReadInt16<MapId>("VisibleMapID", i));
             var preloadMapIDCount = packet.ReadInt32("PreloadMapIDsCount") / 2;
             for (var i = 0; i < preloadMapIDCount; ++i)
-                packet.ReadInt16<MapId>("PreloadMapID", i);
+                phaseShift.PreloadMaps.Add((uint)packet.ReadInt16<MapId>("PreloadMapID", i));
             var uiMapPhaseIdCount = packet.ReadInt32("UiMapPhaseIDsCount") / 2;
             for (var i = 0; i < uiMapPhaseIdCount; ++i)
-                packet.ReadInt16("UiMapPhaseId", i);
+                phaseShift.UiMapPhase.Add((uint)packet.ReadInt16("UiMapPhaseId", i));
         }
 
         [Parser(Opcode.SMSG_MOVE_UPDATE_MOD_MOVEMENT_FORCE_MAGNITUDE)]

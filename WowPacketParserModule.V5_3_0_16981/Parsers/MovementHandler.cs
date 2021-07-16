@@ -1,6 +1,7 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WoWPacketParser.Proto;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V5_3_0_16981.Parsers
@@ -442,6 +443,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         [Parser(Opcode.SMSG_PHASE_SHIFT_CHANGE)]
         public static void HandlePhaseShift(Packet packet)
         {
+            var phaseShift = packet.Holder.PacketPhaseShift = new PacketPhaseShift();
             CoreParsers.MovementHandler.ActivePhases.Clear();
 
             var guid = packet.StartBitStream(2, 6, 3, 1, 5, 7, 0, 4);
@@ -450,7 +452,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             var count = packet.ReadUInt32() / 2;
             packet.AddValue("WorldMapArea swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadUInt16("WorldMapArea swap", i);
+                phaseShift.UiMapPhase.Add(packet.ReadUInt16("WorldMapArea swap", i));
 
             packet.ReadUInt32("UInt32 1");
             packet.ReadXORByte(guid, 4);
@@ -458,21 +460,25 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Inactive Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadInt16<MapId>("Inactive Terrain swap", i);
+                phaseShift.PreloadMaps.Add((uint)packet.ReadInt16<MapId>("Inactive Terrain swap", i));
 
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Phases count", count);
             for (var i = 0; i < count; ++i)
-                CoreParsers.MovementHandler.ActivePhases.Add(packet.ReadUInt16("Phase id", i), true); // Phase.dbc
+            {
+                var phaseId = packet.ReadUInt16("Phase id", i);
+                phaseShift.Phases.Add(phaseId);
+                CoreParsers.MovementHandler.ActivePhases.Add(phaseId, true); // Phase.dbc
+            }
 
             packet.ReadXORByte(guid, 7);
             count = packet.ReadUInt32() / 2;
             packet.AddValue("Active Terrain swap count", count);
             for (var i = 0; i < count; ++i)
-                packet.ReadInt16<MapId>("Active Terrain swap", i);
+                phaseShift.VisibleMaps.Add((uint)packet.ReadInt16<MapId>("Active Terrain swap", i));
 
             packet.ReadXORBytes(guid, 6, 2, 1);
-            packet.WriteGuid("GUID", guid);
+            phaseShift.Client = packet.WriteGuid("GUID", guid);
         }
     }
 }
