@@ -39,6 +39,7 @@ message PacketHolder {
       PacketQuestGiverRequestItems questGiverRequestItems = 25;
       PacketNpcText npcText = 26;
       PacketNpcTextOld npcTextOld = 27;
+      PacketDbReply dbReply = 28;
   }
 }
 
@@ -345,6 +346,36 @@ message PacketNpcTextOldEntry {
 message PacketNpcTextOld {
   uint32 entry = 1;
   repeated PacketNpcTextOldEntry texts = 2;
+}
+
+enum PacketDbReplyRecordStatus {
+  RecordStatusNoneDontUse = 0;
+  RecordStatusValid  = 1;
+  RecordStatusRecordRemoved = 2;
+  RecordStatusInvalid = 3;
+}
+
+message PacketDbReplyBroadcastText {
+  uint32 id = 1;
+  string text0 = 2;
+  string text1 = 3;
+  int32 language = 4;
+  uint32 conditionId = 5;
+  uint32 emotesId = 6;
+  uint32 flags = 7;
+  uint32 chatBubbleDuration = 8;
+  repeated uint32 sounds = 9;
+  repeated BroadcastTextEmote emotes = 10;
+}
+
+message PacketDbReply {
+  uint32 tableHash = 1;
+  int32 recordId = 2;
+  google.protobuf.Timestamp time = 3;
+  PacketDbReplyRecordStatus status = 4;
+  oneof kind {
+      PacketDbReplyBroadcastText broadcastText = 5;
+  };
 }
 
 message PacketQueryCreatureResponse {
