@@ -34,6 +34,7 @@ message PacketHolder {
       PacketSetAnimKit setAnimKit = 20;
       PacketPlaySpellVisualKit playSpellVisualKit = 21;
       PacketQuestGiverAcceptQuest questGiverAcceptQuest = 22;
+      PacketQuestGiverCompleteQuestRequest questGiverCompleteQuestRequest = 23;
   }
 }
 
@@ -294,6 +295,11 @@ message PacketPlaySpellVisualKit {
 }
 
 message PacketQuestGiverAcceptQuest {
+  UniversalGuid questGiver = 1;
+  uint32 questId = 2;
+}
+
+message PacketQuestGiverCompleteQuestRequest {
   UniversalGuid questGiver = 1;
   uint32 questId = 2;
 }

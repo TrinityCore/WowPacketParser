@@ -213,9 +213,10 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.CMSG_QUEST_GIVER_COMPLETE_QUEST)]
         public static void HandleQuestCompleteQuest(Packet packet)
         {
+            var questGiverCompleteQuest = packet.Holder.QuestGiverCompleteQuestRequest = new();
             var guid = new byte[8];
 
-            packet.ReadInt32<QuestId>("Quest ID");
+            questGiverCompleteQuest.QuestId = (uint)packet.ReadInt32<QuestId>("Quest ID");
             guid[6] = packet.ReadBit();
             guid[5] = packet.ReadBit();
             guid[7] = packet.ReadBit();
@@ -228,7 +229,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.ParseBitStream(guid, 0, 5, 3, 2, 4, 6, 1, 7);
 
-            packet.WriteGuid("Guid", guid);
+            questGiverCompleteQuest.QuestGiver = packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_COMPLETE)]
