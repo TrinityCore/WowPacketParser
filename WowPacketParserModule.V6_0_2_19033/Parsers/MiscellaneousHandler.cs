@@ -545,6 +545,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_SET_AI_ANIM_KIT)]
         public static void SetAIAnimKitId(Packet packet)
         {
+            var animKit = packet.Holder.SetAnimKit = new();
             var guid = packet.ReadPackedGuid128("Unit");
             var animKitID = packet.ReadUInt16("AnimKitID");
 
@@ -555,6 +556,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     if (timeSpan != null && timeSpan.Value.Duration() <= TimeSpan.FromSeconds(1))
                         ((Unit)Storage.Objects[guid].Item1).AIAnimKit = animKitID;
                 }
+
+            animKit.Unit = guid;
+            animKit.AnimKit = animKitID;
         }
 
         [Parser(Opcode.SMSG_SET_MELEE_ANIM_KIT)]

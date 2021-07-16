@@ -31,6 +31,7 @@ message PacketHolder {
       PacketSpellClick packetSpellClick = 17;
       PacketPlayerLogin playerLogin = 18;
       PacketOneShotAnimKit oneShotAnimKit = 19;
+      PacketSetAnimKit setAnimKit = 20;
   }
 }
 
@@ -274,6 +275,11 @@ message PacketPlayerLogin {
 }
 
 message PacketOneShotAnimKit {
+  UniversalGuid unit = 1;
+  uint32 animKit = 2;
+}
+
+message PacketSetAnimKit {
   UniversalGuid unit = 1;
   uint32 animKit = 2;
 }

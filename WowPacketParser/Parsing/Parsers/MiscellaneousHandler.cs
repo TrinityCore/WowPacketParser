@@ -1118,8 +1118,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SET_AI_ANIM_KIT)]
         public static void HandleSetAiAnimKit(Packet packet)
         {
-            packet.ReadPackedGuid("Guid");
-            packet.ReadUInt16("AnimKit.dbc Id");
+            var animKit = packet.Holder.SetAnimKit = new();
+            animKit.Unit = packet.ReadPackedGuid("Guid");
+            animKit.AnimKit = packet.ReadUInt16("AnimKit.dbc Id");
         }
         
         [Parser(Opcode.SMSG_SET_MELEE_ANIM_KIT)]
