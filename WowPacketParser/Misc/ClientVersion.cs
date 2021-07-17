@@ -354,6 +354,17 @@ namespace WowPacketParser.Misc
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V9_0_5_38134, new DateTime(2021, 03, 30)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V9_0_5_38556, new DateTime(2021, 05, 11, 19, 00, 00)),
 
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V9_1_0_39185, new DateTime(2021, 06, 29)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V9_1_0_39226, new DateTime(2021, 06, 29, 22, 08, 00)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V9_1_0_39229, new DateTime(2021, 06, 30, 06, 12, 00)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V9_1_0_39262, new DateTime(2021, 07, 02, 06, 14, 00)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V9_1_0_39282, new DateTime(2021, 07, 02, 18, 24, 00)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V9_1_0_39289, new DateTime(2021, 07, 03, 05, 30, 00)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V9_1_0_39291, new DateTime(2021, 07, 04, 05, 40, 00)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V9_1_0_39318, new DateTime(2021, 07, 06, 23, 40, 00)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V9_1_0_39335, new DateTime(2021, 07, 08, 19, 22, 00)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V9_1_0_39427, new DateTime(2021, 07, 16, 20, 06, 00)),
+
             // no classic info, pkt contain build in header
         };
 
@@ -708,6 +719,16 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V9_0_5_37988:
                 case ClientVersionBuild.V9_0_5_38134:
                 case ClientVersionBuild.V9_0_5_38556:
+                case ClientVersionBuild.V9_1_0_39185:
+                case ClientVersionBuild.V9_1_0_39226:
+                case ClientVersionBuild.V9_1_0_39229:
+                case ClientVersionBuild.V9_1_0_39262:
+                case ClientVersionBuild.V9_1_0_39282:
+                case ClientVersionBuild.V9_1_0_39289:
+                case ClientVersionBuild.V9_1_0_39291:
+                case ClientVersionBuild.V9_1_0_39318:
+                case ClientVersionBuild.V9_1_0_39335:
+                case ClientVersionBuild.V9_1_0_39427:
                     return ClientVersionBuild.V9_0_1_36216;
                 //Classic
                 case ClientVersionBuild.V1_13_2_31446:
