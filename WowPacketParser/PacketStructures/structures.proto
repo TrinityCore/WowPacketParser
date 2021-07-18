@@ -40,6 +40,7 @@ message PacketHolder {
       PacketNpcText npcText = 26;
       PacketNpcTextOld npcTextOld = 27;
       PacketDbReply dbReply = 28;
+      PacketUpdateObject updateObject = 29;
   }
 }
 
@@ -188,6 +189,13 @@ message Vec3 {
   float x = 1;
   float y = 2;
   float z = 3;
+}
+
+message Quat {
+  float x = 1;
+  float y = 2;
+  float z = 3;
+  float w = 4;
 }
 
 message PacketSpellData {
@@ -376,6 +384,31 @@ message PacketDbReply {
   oneof kind {
       PacketDbReplyBroadcastText broadcastText = 5;
   };
+}
+
+message UpdateValues {
+  map<string, int64> ints = 1;
+  map<string, float> floats = 2;
+  map<string, UniversalGuid> guids = 3;
+  map<string, Quat> quaternions = 4;
+}
+
+message CreateObject {
+  UniversalGuid guid = 1;
+  UpdateValues values = 2;
+}
+
+message UpdateObject {
+  UniversalGuid guid = 1;
+  UpdateValues values = 2;
+}
+
+message PacketUpdateObject {
+  repeated UniversalGuid destroyed = 1;
+  repeated UniversalGuid outOfRange = 2;
+  repeated CreateObject created = 3;
+  repeated UpdateObject updated = 4;
+  uint32 mapId = 5;
 }
 
 message PacketQueryCreatureResponse {

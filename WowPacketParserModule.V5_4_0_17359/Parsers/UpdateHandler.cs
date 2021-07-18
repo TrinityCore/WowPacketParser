@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
@@ -15,7 +16,8 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_UPDATE_OBJECT)]
         public static void HandleUpdateObject(Packet packet)
         {
-            uint map = packet.ReadUInt16("Map");
+            var updateObject = packet.Holder.UpdateObject = new();
+            uint map = updateObject.MapId = packet.ReadUInt16("Map");
             var count = packet.ReadUInt32("Count");
 
             for (var i = 0; i < count; i++)
@@ -29,30 +31,34 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                     case "Values":
                     {
                         var guid = packet.ReadPackedGuid("GUID", i);
-                        CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, guid, i);
+                        var updateValues = new UpdateValues();
+                        CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, updateValues, guid, i);
+                        updateObject.Updated.Add(new UpdateObject{Guid = guid, Values = updateValues});
                         break;
                     }
                     case "CreateObject1":
                     case "CreateObject2": // Might != CreateObject1 on Cata
                     {
                         var guid = packet.ReadPackedGuid("GUID", i);
-                        ReadCreateObjectBlock(packet, guid, map, i);
+                        var createObject = new CreateObject() { Guid = guid, Values = new()};
+                        ReadCreateObjectBlock(packet, createObject, guid, map, i);
+                        updateObject.Created.Add(createObject);
                         break;
                     }
                     case "DestroyObjects":
                     {
-                        CoreParsers.UpdateHandler.ReadObjectsBlock(packet, i);
+                        CoreParsers.UpdateHandler.ReadDestroyObjectsBlock(packet, i);
                         break;
                     }
                 }
             }
         }
 
-        private static void ReadCreateObjectBlock(Packet packet, WowGuid guid, uint map, object index)
+        private static void ReadCreateObjectBlock(Packet packet, CreateObject createObject, WowGuid guid, uint map, object index)
         {
             ObjectType objType = ObjectTypeConverter.Convert(packet.ReadByteE<ObjectTypeLegacy>("Object Type", index));
             var moves = ReadMovementUpdateBlock(packet, guid, index);
-            var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlockOnCreate(packet, objType, index);
+            var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlockOnCreate(packet, createObject.Values, objType, index);
             var dynamicUpdates = CoreParsers.UpdateHandler.ReadDynamicValuesUpdateBlockOnCreate(packet, objType, index);
 
             WoWObject obj;
