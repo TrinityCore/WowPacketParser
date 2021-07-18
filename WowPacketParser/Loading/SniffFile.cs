@@ -12,6 +12,7 @@ using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Hotfix;
 using WowPacketParser.Misc;
+using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing;
 using WoWPacketParser.Proto;
 using WowPacketParser.Saving;
@@ -171,7 +172,7 @@ namespace WowPacketParser.Loading
                     var written = false;
                     using (var writer = (Settings.DumpFormatWithText() ? new StreamWriter(outFileName, true) : null))
                     {
-                        Packets packets = new();
+                        Packets packets = new() { Version = StructureVersion.ProtobufStructureVersion };
                         var firstRead = true;
                         var firstWrite = true;
 
