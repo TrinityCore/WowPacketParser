@@ -148,7 +148,7 @@ namespace WowPacketParser.Loading
                     var outProtoFileName = Path.ChangeExtension(FileName, null) + "_parsed.dat";
                     FileStream protoOutputStream = null;
 
-                    if (Settings.DumpFormatWithText())
+                    if (Settings.DumpFormatWithTextToFile())
                     {
                         if (Utilities.FileIsInUse(outFileName) && Settings.DumpFormat != DumpFormatType.SqlOnly)
                         {
@@ -184,7 +184,7 @@ namespace WowPacketParser.Loading
 
                     var written = false;
 
-                    using (var writer = (Settings.DumpFormatWithText() ? new StreamWriter(outFileName, true) : null))
+                    using (var writer = (Settings.DumpFormatWithTextToFile() ? new StreamWriter(outFileName, true) : null))
                     {
                         Packets packets = new() { Version = StructureVersion.ProtobufStructureVersion };
                         var firstRead = true;
@@ -296,7 +296,7 @@ namespace WowPacketParser.Loading
                         _stats.SetEndTime(DateTime.Now);
                     }
 
-                    if (Settings.DumpFormatWithText())
+                    if (Settings.DumpFormatWithTextToFile())
                     {
                         if (written)
                             Trace.WriteLine($"{_logPrefix}: Saved file to '{outFileName}'");

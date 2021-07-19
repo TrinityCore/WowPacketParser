@@ -82,6 +82,14 @@ namespace WowPacketParser.Misc
                    DumpFormat != DumpFormatType.SniffDataOnly &&
                    DumpFormat != DumpFormatType.UniversalProto;
         }
+        
+        public static bool DumpFormatWithTextToFile()
+        {
+            return DumpFormat != DumpFormatType.SqlOnly && 
+                   DumpFormat != DumpFormatType.SniffDataOnly &&
+                   DumpFormat != DumpFormatType.UniversalProto &&
+                   DumpFormat != DumpFormatType.UniversalProtoWithText;
+        }
 
         public static bool DumpFormatWithSQL()
         {
