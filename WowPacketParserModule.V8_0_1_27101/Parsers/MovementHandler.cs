@@ -4,6 +4,7 @@ using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WoWPacketParser.Proto;
+using WowPacketParserModule.V7_0_3_22248.Enums;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using SplineFacingType = WowPacketParserModule.V6_0_2_19033.Enums.SplineFacingType;
 using SplineFlag = WowPacketParserModule.V7_0_3_22248.Enums.SplineFlag;
@@ -50,7 +51,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         public static void ReadMovementSpline(Packet packet, Vector3 pos, params object[] indexes)
         {
             PacketMonsterMove monsterMove = packet.Holder.PacketMonsterMove;
-            packet.ReadUInt32E<SplineFlag>("Flags", indexes);
+            monsterMove.Flags = packet.ReadUInt32E<SplineFlag>("Flags", indexes).ToUniversal();
             if (ClientVersion.RemovedInVersion(ClientType.Shadowlands))
             {
                 packet.ReadByte("AnimTier", indexes);

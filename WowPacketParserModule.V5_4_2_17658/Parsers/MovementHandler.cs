@@ -1,5 +1,6 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing;
 using WoWPacketParser.Proto;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
@@ -243,7 +244,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             }
 
             if (hasFlags)
-                packet.ReadInt32E<SplineFlag434>("Spline Flags");
+                monsterMove.Flags = packet.ReadInt32E<SplineFlag434>("Spline Flags").ToUniversal();
 
             if (bit40)
                 packet.ReadInt32("Int40");

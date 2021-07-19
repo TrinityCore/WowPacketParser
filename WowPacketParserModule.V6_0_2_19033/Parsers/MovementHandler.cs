@@ -4,6 +4,7 @@ using WowPacketParser.DBC;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
+using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing;
 using WoWPacketParser.Proto;
 using WowPacketParser.Store;
@@ -257,7 +258,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             PacketMonsterMove monsterMove = packet.Holder.PacketMonsterMove;
             SplineJump jump = packet.Holder.PacketMonsterMove.Jump = new();
-            packet.ReadInt32E<SplineFlag434>("Flags", indexes);
+            monsterMove.Flags = packet.ReadInt32E<SplineFlag434>("Flags", indexes).ToUniversal();
             packet.ReadByte("AnimTier", indexes);
             packet.ReadUInt32("TierTransStartTime", indexes);
             monsterMove.ElapsedTime = packet.ReadInt32("Elapsed", indexes);

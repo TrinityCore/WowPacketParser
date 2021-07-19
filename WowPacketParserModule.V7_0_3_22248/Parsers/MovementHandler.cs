@@ -119,7 +119,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             PacketMonsterMove monsterMove = packet.Holder.PacketMonsterMove;
             SplineJump jump = packet.Holder.PacketMonsterMove.Jump = new();
-            packet.ReadInt32E<SplineFlag>("Flags", indexes);
+            monsterMove.Flags = packet.ReadInt32E<SplineFlag>("Flags", indexes).ToUniversal();
             packet.ReadByte("AnimTier", indexes);
             packet.ReadUInt32("TierTransStartTime", indexes);
             monsterMove.ElapsedTime = packet.ReadInt32("Elapsed", indexes);

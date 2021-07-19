@@ -1,5 +1,6 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing;
 using WoWPacketParser.Proto;
 using WowPacketParserModule.V5_4_8_18291.Enums;
@@ -697,7 +698,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadXORByte(ownerGUID, 3);   // +35 - 3
 
             if (bit16)
-                packet.ReadInt32E<SplineFlag>("Spline Flags"); // +16
+                monsterMove.Flags = packet.ReadInt32E<SplineFlag>("Spline Flags").ToUniversal(); // +16
 
             if (bit69)
                 packet.ReadByte("Byte69");      // +69

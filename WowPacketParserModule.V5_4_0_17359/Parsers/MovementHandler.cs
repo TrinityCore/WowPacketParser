@@ -1,5 +1,6 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing;
 using WoWPacketParser.Proto;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
@@ -168,7 +169,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.ReadInt32("Move Ticks");
 
             if (hasFlags)
-                packet.ReadInt32E<SplineFlag434>("Spline Flags");
+                monsterMove.Flags = packet.ReadInt32E<SplineFlag434>("Spline Flags").ToUniversal();
 
             if (hasAnimationState)
                 packet.ReadByteE<MovementAnimationState>("Animation State");

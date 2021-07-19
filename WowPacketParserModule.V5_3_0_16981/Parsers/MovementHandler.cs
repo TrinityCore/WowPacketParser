@@ -1,5 +1,6 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing;
 using WoWPacketParser.Proto;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
@@ -260,7 +261,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             }
 
             if (hasFlags)
-                packet.ReadInt32E<SplineFlag434>("Spline Flags");
+                monsterMove.Flags = packet.ReadInt32E<SplineFlag434>("Spline Flags").ToUniversal();
 
             if (splineType == 2)
                 monsterMove.LookPosition = packet.ReadVector3("Facing Spot");

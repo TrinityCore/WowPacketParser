@@ -5,6 +5,7 @@ using System.IO;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
+using WowPacketParser.PacketStructures;
 using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
@@ -261,6 +262,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             var flags = packet.ReadInt32E<SplineFlag>("Spline Flags");
+            monsterMove.Flags = flags.ToUniversal();
 
             if (flags.HasAnyFlag(SplineFlag.AnimationTier))
             {
@@ -303,6 +305,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var monsterMove = packet.Holder.PacketMonsterMove;
             var flags = packet.ReadInt32E<SplineFlag434>("Spline Flags");
+            monsterMove.Flags = flags.ToUniversal();
 
             if (flags.HasAnyFlag(SplineFlag434.Animation))
             {
@@ -382,6 +385,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var monsterMove = packet.Holder.PacketMonsterMove;
             var flags = packet.ReadInt32E<SplineFlag422>("Spline Flags");
+            monsterMove.Flags = flags.ToUniversal();
 
             if (flags.HasAnyFlag(SplineFlag422.AnimationTier))
             {
