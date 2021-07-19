@@ -850,7 +850,7 @@ namespace WowPacketParser.Parsing.Parsers
         public static void HandleSpellClick(Packet packet)
         {
             WowGuid guid = packet.ReadGuid("GUID");
-            packet.Holder.PacketSpellClick = new() { Target = guid };
+            packet.Holder.SpellClick = new() { Target = guid };
 
             if (guid.GetObjectType() == ObjectType.Unit)
                 Storage.NpcSpellClicks.Add(guid, packet.TimeSpan);

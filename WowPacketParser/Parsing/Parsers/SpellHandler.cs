@@ -291,7 +291,7 @@ namespace WowPacketParser.Parsing.Parsers
         {
             PacketAuraUpdate packetAuraUpdate = new();
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_AURA_UPDATE, Direction.ServerToClient))
-                packet.Holder.PacketAuraUpdate = packetAuraUpdate;
+                packet.Holder.AuraUpdate = packetAuraUpdate;
             
             var guid = packet.ReadPackedGuid("GUID");
             packetAuraUpdate.Unit = guid;
@@ -679,9 +679,9 @@ namespace WowPacketParser.Parsing.Parsers
             bool isSpellGo = packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_SPELL_GO, Direction.ServerToClient);
             PacketSpellData packetSpellData = new();
             if (isSpellGo)
-                packet.Holder.PacketSpellGo = new PacketSpellGo() {Data = packetSpellData};
+                packet.Holder.SpellGo = new PacketSpellGo() {Data = packetSpellData};
             else
-                packet.Holder.PacketSpellStart = new PacketSpellStart() {Data = packetSpellData};
+                packet.Holder.SpellStart = new PacketSpellStart() {Data = packetSpellData};
 
             var casterGUID = packet.ReadPackedGuid("Caster GUID");
             packetSpellData.Caster = packet.ReadPackedGuid("Caster Unit GUID");

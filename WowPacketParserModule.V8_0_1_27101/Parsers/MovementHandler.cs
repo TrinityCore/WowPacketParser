@@ -42,7 +42,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
         public static void ReadMonsterSplineJumpExtraData(Packet packet, params object[] indexes)
         {
-            SplineJump jump = packet.Holder.PacketMonsterMove.Jump = new();
+            SplineJump jump = packet.Holder.MonsterMove.Jump = new();
             jump.Gravity = packet.ReadSingle("JumpGravity", indexes);
             jump.StartTime = packet.ReadUInt32("StartTime", indexes);
             jump.Duration = packet.ReadUInt32("Duration", indexes);
@@ -50,7 +50,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
         public static void ReadMovementSpline(Packet packet, Vector3 pos, params object[] indexes)
         {
-            PacketMonsterMove monsterMove = packet.Holder.PacketMonsterMove;
+            PacketMonsterMove monsterMove = packet.Holder.MonsterMove;
             monsterMove.Flags = packet.ReadUInt32E<SplineFlag>("Flags", indexes).ToUniversal();
             if (ClientVersion.RemovedInVersion(ClientType.Shadowlands))
             {
@@ -179,7 +179,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
         public static void ReadMovementMonsterSpline(Packet packet, Vector3 pos, params object[] indexes)
         {
-            PacketMonsterMove monsterMove = packet.Holder.PacketMonsterMove;
+            PacketMonsterMove monsterMove = packet.Holder.MonsterMove;
             monsterMove.Id = packet.ReadUInt32("Id", indexes);
             monsterMove.Destination = packet.ReadVector3("Destination", indexes);
 
@@ -194,7 +194,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         [Parser(Opcode.SMSG_ON_MONSTER_MOVE)]
         public static void HandleOnMonsterMove(Packet packet)
         {
-            PacketMonsterMove monsterMove = packet.Holder.PacketMonsterMove = new();
+            PacketMonsterMove monsterMove = packet.Holder.MonsterMove = new();
             monsterMove.Mover = packet.ReadPackedGuid128("MoverGUID");
             Vector3 pos = monsterMove.Position = packet.ReadVector3("Position");
 
@@ -204,7 +204,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         [Parser(Opcode.SMSG_PHASE_SHIFT_CHANGE)]
         public static void HandlePhaseShift(Packet packet)
         {
-            var phaseShift = packet.Holder.PacketPhaseShift = new PacketPhaseShift();
+            var phaseShift = packet.Holder.PhaseShift = new PacketPhaseShift();
             CoreParsers.MovementHandler.ActivePhases.Clear();
             phaseShift.Client = packet.ReadPackedGuid128("Client");
             // PhaseShiftData

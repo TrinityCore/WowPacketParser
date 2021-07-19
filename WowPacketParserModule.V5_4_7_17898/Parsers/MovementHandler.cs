@@ -86,7 +86,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.SMSG_ON_MONSTER_MOVE)]
         public static void HandleMonsterMove(Packet packet)
         {
-            var monsterMove = packet.Holder.PacketMonsterMove = new();
+            var monsterMove = packet.Holder.MonsterMove = new();
             var pos = new Vector3();
 
             var ownerGUID = new byte[8];
@@ -401,7 +401,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.SMSG_PHASE_SHIFT_CHANGE)]
         public static void HandlePhaseShift(Packet packet)
         {
-            var phaseShift = packet.Holder.PacketPhaseShift = new PacketPhaseShift();
+            var phaseShift = packet.Holder.PhaseShift = new PacketPhaseShift();
             CoreParsers.MovementHandler.ActivePhases.Clear();
 
             packet.ReadUInt32("UInt32 1");

@@ -181,7 +181,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_MONSTER_MOVE_TRANSPORT)]
         public static void HandleMonsterMove(Packet packet)
         {
-            PacketMonsterMove monsterMove = packet.Holder.PacketMonsterMove = new();
+            PacketMonsterMove monsterMove = packet.Holder.MonsterMove = new();
             WowGuid guid = packet.ReadPackedGuid("GUID");
             monsterMove.Mover = guid;
             monsterMove.TransportGuid = new WowGuid64(0);
@@ -303,7 +303,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         private static void ReadSplineMovement510(Packet packet, Vector3 pos)
         {
-            var monsterMove = packet.Holder.PacketMonsterMove;
+            var monsterMove = packet.Holder.MonsterMove;
             var flags = packet.ReadInt32E<SplineFlag434>("Spline Flags");
             monsterMove.Flags = flags.ToUniversal();
 
@@ -383,7 +383,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         private static void ReadSplineMovement422(Packet packet, Vector3 pos)
         {
-            var monsterMove = packet.Holder.PacketMonsterMove;
+            var monsterMove = packet.Holder.MonsterMove;
             var flags = packet.ReadInt32E<SplineFlag422>("Spline Flags");
             monsterMove.Flags = flags.ToUniversal();
 

@@ -21,7 +21,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         [Parser(Opcode.SMSG_MONSTER_MOVE_TRANSPORT)]
         public static void HandleMonsterMove(Packet packet)
         {
-            var monsterMove = packet.Holder.PacketMonsterMove = new();
+            var monsterMove = packet.Holder.MonsterMove = new();
             var guid = packet.ReadPackedGuid("MoverGUID");
             monsterMove.Mover = guid;
 
@@ -48,13 +48,13 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
 
         public static void ReadMovementMonsterSpline(Packet packet, Vector3 pos, params object[] indexes)
         {
-            packet.Holder.PacketMonsterMove.Id = (uint)packet.ReadInt32("Id", indexes);
+            packet.Holder.MonsterMove.Id = (uint)packet.ReadInt32("Id", indexes);
             ReadMovementSpline(packet, pos, indexes, "MovementSpline");
         }
 
         public static void ReadMovementSpline(Packet packet, Vector3 pos, params object[] indexes)
         {
-            var monsterMove = packet.Holder.PacketMonsterMove;
+            var monsterMove = packet.Holder.MonsterMove;
             var type = packet.ReadSByteE<SplineType>("Face", indexes);
 
             switch (type)
@@ -2714,7 +2714,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         [Parser(Opcode.SMSG_PHASE_SHIFT_CHANGE)]
         public static void HandlePhaseShift434(Packet packet)
         {
-            var phaseShift = packet.Holder.PacketPhaseShift = new PacketPhaseShift();
+            var phaseShift = packet.Holder.PhaseShift = new PacketPhaseShift();
             CoreParsers.MovementHandler.ActivePhases.Clear();
 
             var guid = packet.StartBitStream(2, 3, 1, 6, 4, 5, 0, 7);

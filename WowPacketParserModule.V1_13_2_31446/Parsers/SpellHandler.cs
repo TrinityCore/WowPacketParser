@@ -155,14 +155,14 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
         [Parser(Opcode.SMSG_SPELL_START)]
         public static void HandleSpellStart(Packet packet)
         {
-            PacketSpellStart packetSpellStart = packet.Holder.PacketSpellStart = new();
+            PacketSpellStart packetSpellStart = packet.Holder.SpellStart = new();
             packetSpellStart.Data = ReadSpellCastData(packet, "Cast");
         }
 
         [Parser(Opcode.SMSG_SPELL_GO)]
         public static void HandleSpellGo(Packet packet)
         {
-            PacketSpellGo packetSpellGo = packet.Holder.PacketSpellGo = new();
+            PacketSpellGo packetSpellGo = packet.Holder.SpellGo = new();
             packetSpellGo.Data = ReadSpellCastData(packet, "Cast");
 
             packet.ResetBitReader();
@@ -176,7 +176,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
         [Parser(Opcode.SMSG_AURA_UPDATE)]
         public static void HandleAuraUpdate(Packet packet)
         {
-            PacketAuraUpdate packetAuraUpdate = packet.Holder.PacketAuraUpdate = new();
+            PacketAuraUpdate packetAuraUpdate = packet.Holder.AuraUpdate = new();
             packet.ReadBit("UpdateAll");
             int countBits = ClientVersion.AddedInVersion(ClientVersionBuild.V1_13_3_32790) ? 8 : 7;
             var count = packet.ReadBits("AurasCount", countBits);
