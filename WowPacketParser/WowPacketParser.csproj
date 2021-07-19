@@ -35,12 +35,6 @@
 
   <ItemGroup>
     <PackageReference Include="DotNetZip" Version="1.15.0" />
-    <PackageReference Include="Google.Protobuf" Version="3.17.3" />
-    <PackageReference Include="Grpc" Version="2.38.0" />
-    <PackageReference Include="Grpc.Tools" Version="2.38.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="MySql.Data" Version="8.0.23" />
     <PackageReference Include="RawScape.Wintellect.PowerCollections" Version="1.0.1" />
     <PackageReference Include="Sigil" Version="5.0.0" />
@@ -55,7 +49,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="PacketStructures\structures.proto" />
+    <ProjectReference Include="..\WowPacketParser.Proto\WowPacketParser.Proto.csproj" />
   </ItemGroup>
 
 </Project>

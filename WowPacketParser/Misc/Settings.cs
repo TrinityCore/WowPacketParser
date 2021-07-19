@@ -57,8 +57,6 @@ namespace WowPacketParser.Misc
         public static readonly string HotfixCachePath = Conf.GetString("HotfixCachePath", $@"\cache\DBCache.bin");
         public static readonly bool UseDBC = Conf.GetBoolean("UseDBC", false);
         public static readonly bool ParseSpellInfos = Conf.GetBoolean("ParseSpellInfos", false);
-        
-        public static readonly bool GetProtoVersion = Conf.GetBoolean("ProtoVersion", false);
 
         private static ulong GetSQLOutputFlag()
         {
