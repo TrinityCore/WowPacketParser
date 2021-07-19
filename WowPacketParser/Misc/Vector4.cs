@@ -64,9 +64,9 @@ namespace WowPacketParser.Misc
         }
 
         public static implicit operator WoWPacketParser.Proto.Vec4(Vector4 vector) =>
-            new() {X = vector.X, Y = vector.Y, Z = vector.Z, W = vector.O};
+            new() {X = vector.X, Y = vector.Y, Z = vector.Z, O = vector.O};
 
         public static implicit operator Vector4(WoWPacketParser.Proto.Vec4 vector) =>
-            new() {X = vector.X, Y = vector.Y, Z = vector.Z, O = vector.W};
+            new() {X = vector.X, Y = vector.Y, Z = vector.Z, O = vector.O};
     }
 }
