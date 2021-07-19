@@ -257,7 +257,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void ReadMovementSpline(Packet packet, Vector3 pos, params object[] indexes)
         {
             PacketMonsterMove monsterMove = packet.Holder.MonsterMove;
-            SplineJump jump = packet.Holder.MonsterMove.Jump = new();
+            SplineJump jump = monsterMove.Jump = new();
             monsterMove.Flags = packet.ReadInt32E<SplineFlag434>("Flags", indexes).ToUniversal();
             packet.ReadByte("AnimTier", indexes);
             packet.ReadUInt32("TierTransStartTime", indexes);

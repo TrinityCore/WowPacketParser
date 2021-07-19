@@ -204,6 +204,13 @@ message Vec3 {
   float z = 3;
 }
 
+message Vec4 {
+  float x = 1;
+  float y = 2;
+  float z = 3;
+  float w = 4;
+}
+
 message Quat {
   float x = 1;
   float y = 2;
@@ -441,9 +448,70 @@ message UpdateValues {
   map<string, Quat> quaternions = 4;
 }
 
+message MovementUpdateTransport {
+  UniversalGuid transportGuid = 1;
+  Vec4 position = 2;
+  uint32 seat = 3;
+  uint32 moveTime = 4;
+  optional uint32 prevMoveTime = 5;
+  optional int32 vehicleId = 6;
+}
+
+message MovementSplineMoveData {
+  UniversalSplineFlag flags = 1;
+  int32 elapsed = 2;
+  uint32 duration = 3;
+  float durationModifier = 4;
+  float nextDurationModifier = 5;
+  oneof facing {
+    Vec3 lookPosition = 6;
+    float lookOrientation = 7;
+    SplineLookTarget lookTarget = 8;
+  }
+  optional SplineJump jump = 9;
+  repeated Vec3 points = 10;
+}
+
+message StationaryPositionData {
+  Vec3 position = 1;
+  float orientation = 2;
+}
+
+message MovementSplineData {
+  int32 id = 1;
+  Vec3 destination = 2;
+  optional MovementSplineMoveData moveData = 3;
+}
+
+message MovementUpdate {
+  UniversalGuid mover = 1;
+  uint32 moveTime = 2;
+  Vec3 position = 3;
+  float orientation = 4;
+  float pitch = 5;
+  float stepUpStartElevation = 6;
+  int32 moveIndex = 7;
+  float walkSpeed = 8;
+  float runSpeed = 9;
+  optional MovementUpdateTransport transport = 10;
+  optional uint32 fallTime = 11;
+  optional float jumpVelocity = 12;
+  optional MovementSplineData splineData = 13;
+}
+
+message VehicleCreate {
+  int32 vehicleId = 1;
+  float initialRawFacing = 2;
+}
+
 message CreateObject {
   UniversalGuid guid = 1;
   UpdateValues values = 2;
+  optional MovementUpdate movement = 3;
+  optional MovementUpdateTransport transport = 4;
+  optional StationaryPositionData stationary = 5;
+  optional VehicleCreate vehicle = 6;
+  optional Quat rotation = 7;
 }
 
 message UpdateObject {

@@ -40,12 +40,13 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadSingle("JumpGravity", indexes);
         }
 
-        public static void ReadMonsterSplineJumpExtraData(Packet packet, params object[] indexes)
+        public static SplineJump ReadMonsterSplineJumpExtraData(Packet packet, params object[] indexes)
         {
-            SplineJump jump = packet.Holder.MonsterMove.Jump = new();
+            SplineJump jump = new();
             jump.Gravity = packet.ReadSingle("JumpGravity", indexes);
             jump.StartTime = packet.ReadUInt32("StartTime", indexes);
             jump.Duration = packet.ReadUInt32("Duration", indexes);
+            return jump;
         }
 
         public static void ReadMovementSpline(Packet packet, Vector3 pos, params object[] indexes)
@@ -135,7 +136,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 ReadMonsterSplineSpellEffectExtraData(packet, indexes, "MonsterSplineSpellEffectExtra");
 
             if (hasJumpExtraData)
-                ReadMonsterSplineJumpExtraData(packet, indexes, "MonsterSplineJumpExtraData");
+                monsterMove.Jump = ReadMonsterSplineJumpExtraData(packet, indexes, "MonsterSplineJumpExtraData");
 
             if (hasAnimTier)
             {
