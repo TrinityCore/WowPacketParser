@@ -23,10 +23,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             {
                 Entry = (uint)entry.Key
             };
+            var query = packet.Holder.QueryGameObjectResponse = new() { Entry = (uint)entry.Key };
 
             packet.ReadBit("Allow");
 
             int dataSize = packet.ReadInt32("DataSize");
+            query.HasData = dataSize > 0;
             if (dataSize == 0)
                 return;
 
@@ -59,13 +61,14 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     ItemId = (uint)packet.ReadInt32<ItemId>("QuestItem", i)
                 };
 
+                query.Items.Add(questItem.ItemId.Value);
                 Storage.GameObjectTemplateQuestItems.Add(questItem, packet.TimeSpan);
             }
 
             if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
-                gameObject.ContentTuningId = packet.ReadInt32("ContentTuningId");
+                gameObject.ContentTuningId = query.ContentTuningId = packet.ReadInt32("ContentTuningId");
             else
-                gameObject.RequiredLevel = packet.ReadInt32("RequiredLevel");
+                gameObject.RequiredLevel = query.RequiredLevel = packet.ReadInt32("RequiredLevel");
 
             Storage.GameObjectTemplates.Add(gameObject, packet.TimeSpan);
 
@@ -77,6 +80,15 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             };
 
             Storage.ObjectNames.Add(objectName, packet.TimeSpan);
+
+            query.Type = (uint)gameObject.Type.Value;
+            query.Model = gameObject.DisplayID.Value;
+            query.Name = gameObject.Name;
+            query.IconName = gameObject.IconName;
+            query.CastCaption = gameObject.CastCaption;
+            query.Size = gameObject.Size.Value;
+            foreach (var data in gameObject.Data)
+                query.Data.Add(data.Value);
         }
     }
 }

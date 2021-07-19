@@ -27,8 +27,9 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             int unk1 = packet.ReadInt32("Unk1 UInt32");
             if (unk1 == 0)
             {
-                packet.ReadEntry("Entry");
+                var goEntry = packet.ReadEntry("Entry").Key;
                 packet.ReadByte("Unk1 Byte");
+                packet.Holder.QueryGameObjectResponse = new() { Entry = (uint)goEntry, HasData = false };
                 return;
             }
             gameObject.Type = packet.ReadInt32E<GameObjectType>("Type");
@@ -74,6 +75,18 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 Name = gameObject.Name
             };
             Storage.ObjectNames.Add(objectName, packet.TimeSpan);
+            var query = packet.Holder.QueryGameObjectResponse = new() { Entry = (uint)entry.Key, HasData = true };
+            query.Type = (uint)gameObject.Type.Value;
+            query.Model = gameObject.DisplayID.Value;
+            query.Name = gameObject.Name;
+            query.IconName = gameObject.IconName;
+            query.CastCaption = gameObject.CastCaption;
+            query.Size = gameObject.Size.Value;
+            query.RequiredLevel = gameObject.RequiredLevel.Value;
+            foreach (var data in gameObject.Data)
+                query.Data.Add(data.Value);
+            foreach (var item in gameObject.QuestItems)
+                query.Items.Add(item.Value);
         }
 
         [Parser(Opcode.SMSG_GAME_OBJECT_CUSTOM_ANIM)]

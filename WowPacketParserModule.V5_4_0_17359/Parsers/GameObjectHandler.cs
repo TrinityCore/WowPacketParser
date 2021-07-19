@@ -21,8 +21,10 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             {
                 Entry = (uint)entry.Key
             };
+            var query = packet.Holder.QueryGameObjectResponse = new() { Entry = (uint)entry.Key };
 
             int unk1 = packet.ReadInt32("Unk1 UInt32");
+            query.HasData = unk1 > 0;
             if (unk1 == 0)
                 return;
 
@@ -50,7 +52,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             for (int i = 0; i < gameObject.QuestItems.Length; i++)
                 gameObject.QuestItems[i] = (uint)packet.ReadInt32<ItemId>("Quest Item", i);
 
-            packet.ReadUInt32E<ClientType>("Expansion");
+            gameObject.RequiredLevel = (int)packet.ReadUInt32E<ClientType>("Expansion");
 
             Storage.GameObjectTemplates.Add(gameObject, packet.TimeSpan);
 
@@ -61,6 +63,18 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 Name = gameObject.Name
             };
             Storage.ObjectNames.Add(objectName, packet.TimeSpan);
+            
+            query.Type = (uint)gameObject.Type.Value;
+            query.Model = gameObject.DisplayID.Value;
+            query.Name = gameObject.Name;
+            query.IconName = gameObject.IconName;
+            query.CastCaption = gameObject.CastCaption;
+            query.Size = gameObject.Size.Value;
+            query.RequiredLevel = gameObject.RequiredLevel.Value;
+            foreach (var data in gameObject.Data)
+                query.Data.Add(data.Value);
+            foreach (var item in gameObject.QuestItems)
+                query.Items.Add(item.Value);
         }
 
         [Parser(Opcode.CMSG_QUERY_GAME_OBJECT)]

@@ -32,6 +32,7 @@ namespace WowPacketParser.Parsing.Parsers
                 Type = packet.ReadInt32E<GameObjectType>("Type"),
                 DisplayID = packet.ReadUInt32("Display ID")
             };
+            var query = packet.Holder.QueryGameObjectResponse = new() { Entry = (uint)entry.Key, HasData = true};
 
             var name = new string[4];
             for (int i = 0; i < 4; i++)
@@ -47,15 +48,18 @@ namespace WowPacketParser.Parsing.Parsers
                 gameObject.Data[i] = packet.ReadInt32("Data", i);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056)) // not sure when it was added exactly - did not exist in 2.4.1 sniff
-                gameObject.Size = packet.ReadSingle("Size");
+                gameObject.Size = query.Size = packet.ReadSingle("Size");
 
             gameObject.QuestItems = new uint?[ClientVersion.AddedInVersion(ClientVersionBuild.V3_2_0_10192) ? 6 : 4];
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
                 for (int i = 0; i < gameObject.QuestItems.Length; i++)
+                {
                     gameObject.QuestItems[i] = (uint)packet.ReadInt32<ItemId>("Quest Item", i);
+                    query.Items.Add(gameObject.QuestItems[i].Value);
+                }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6_13596))
-                gameObject.RequiredLevel = packet.ReadInt32("RequiredLevel");
+                gameObject.RequiredLevel = query.RequiredLevel = packet.ReadInt32("RequiredLevel");
 
             packet.AddSniffData(StoreNameType.GameObject, entry.Key, "QUERY_RESPONSE");
 
@@ -68,6 +72,14 @@ namespace WowPacketParser.Parsing.Parsers
                 Name = gameObject.Name
             };
             Storage.ObjectNames.Add(objectName, packet.TimeSpan);
+
+            query.Type = (uint)gameObject.Type.Value;
+            query.Model = gameObject.DisplayID.Value;
+            query.Name = gameObject.Name;
+            query.IconName = gameObject.IconName;
+            query.CastCaption = gameObject.CastCaption;
+            foreach (var data in gameObject.Data)
+                query.Data.Add(data.Value);
         }
 
         [Parser(Opcode.SMSG_DESTRUCTIBLE_BUILDING_DAMAGE)]

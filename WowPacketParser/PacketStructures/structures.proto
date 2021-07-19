@@ -56,6 +56,7 @@ message PacketHolder {
       PacketNpcTextOld npcTextOld = 27;
       PacketDbReply dbReply = 28;
       PacketUpdateObject updateObject = 29;
+      PacketQueryGameObjectResponse queryGameObjectResponse = 30;
   }
 }
 
@@ -420,6 +421,23 @@ message PacketUpdateObject {
   repeated CreateObject created = 3;
   repeated UpdateObject updated = 4;
   uint32 mapId = 5;
+}
+
+message PacketQueryGameObjectResponse {
+  uint32 entry = 1;
+  bool hasData = 2;
+  uint32 type = 3;
+  uint32 model = 4;
+  string name = 5;
+  string iconName = 6;
+  string castCaption = 7;
+  repeated int32 data = 8;
+  float size = 9;
+  repeated uint32 items = 10;
+  oneof level {
+    int32 contentTuningId = 11;
+    int32 requiredLevel = 12;
+  }
 }
 
 message PacketQueryCreatureResponse {
