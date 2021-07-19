@@ -11,6 +11,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing.Parsers;
 using WowPacketParser.SQL;
 using WowPacketParser.DBC;
+using WowPacketParser.PacketStructures;
 using WoWPacketParser.Proto;
 
 namespace WowPacketParser
@@ -31,6 +32,12 @@ namespace WowPacketParser
             // config options are handled in Misc.Settings
             Utilities.RemoveConfigOptions(ref files);
 
+            if (Settings.GetProtoVersion)
+            {
+                Console.WriteLine(StructureVersion.ProtobufStructureVersion);
+                return;
+            }
+            
             if (!Utilities.GetFiles(ref files))
             {
                 EndPrompt();
