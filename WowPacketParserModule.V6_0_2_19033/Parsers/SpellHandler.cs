@@ -376,15 +376,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("CasterGUID", idx);
             packetSpellData.Caster = packet.ReadPackedGuid128("CasterUnit", idx);
 
-            packet.ReadByte("CastID", idx);
+            packetSpellData.CastId = packet.ReadByte("CastID", idx);
 
             packetSpellData.Spell = (uint)packet.ReadInt32<SpellId>("SpellID", idx);
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
                 packet.ReadUInt32("SpellXSpellVisualID", idx);
 
-            packet.ReadUInt32("CastFlags", idx);
-            packet.ReadUInt32("CastTime", idx);
+            packetSpellData.Flags = packet.ReadUInt32("CastFlags", idx);
+            packetSpellData.CastTime = packet.ReadUInt32("CastTime", idx);
 
             var hitTargetsCount = packet.ReadUInt32("HitTargetsCount", idx);
             var missTargetsCount = packet.ReadUInt32("MissTargetsCount", idx);
@@ -410,7 +410,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packetSpellData.HitTargets.Add(packet.ReadPackedGuid128("HitTarget", idx, i));
 
             for (var i = 0; i < missTargetsCount; ++i)
-                packet.ReadPackedGuid128("MissTarget", idx, i);
+                packetSpellData.MissedTargets.Add(packet.ReadPackedGuid128("MissTarget", idx, i));
 
             for (var i = 0; i < missStatusCount; ++i)
                 ReadSpellMissStatus(packet, idx, "MissStatus", i);
@@ -419,11 +419,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 ReadSpellPowerData(packet, idx, "RemainingPower", i);
 
             for (var i = 0; i < targetPointsCount; ++i)
-                ReadLocation(packet, idx, "TargetPoints", i);
+                packetSpellData.TargetPoints.Add(ReadLocation(packet, idx, "TargetPoints", i));
 
             packet.ResetBitReader();
 
-            packet.ReadBits("CastFlagsEx", ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173) ? 20 : 18, idx);
+            packetSpellData.Flags2 = packet.ReadBits("CastFlagsEx", ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173) ? 20 : 18, idx);
 
             var hasRuneData = packet.ReadBit("HasRuneData", idx);
             var hasProjectileVisual = ClientVersion.RemovedInVersion(ClientVersionBuild.V6_2_0_20173) && packet.ReadBit("HasProjectileVisual", idx);

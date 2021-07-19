@@ -692,15 +692,16 @@ namespace WowPacketParser.Parsing.Parsers
             var spellId = packetSpellData.Spell = (uint)packet.ReadInt32<SpellId>("Spell ID");
 
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V3_0_2_9056) && !isSpellGo)
-                packet.ReadByte("Cast Count");
+                packetSpellData.CastCount = packet.ReadByte("Cast Count");
 
             CastFlag flags;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
                 flags = packet.ReadInt32E<CastFlag>("Cast Flags");
             else
                 flags = packet.ReadUInt16E<CastFlag>("Cast Flags");
+            packetSpellData.Flags = (uint)flags;
 
-            packet.ReadUInt32("Time");
+            packetSpellData.CastTime = packet.ReadUInt32("Time");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_0_15005))
                 packet.ReadUInt32("Time2");
 
@@ -713,7 +714,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var missCount = packet.ReadByte("Miss Count");
                 for (var i = 0; i < missCount; i++)
                 {
-                    packet.ReadGuid("Miss GUID", i);
+                    packetSpellData.MissedTargets.Add(packet.ReadGuid("Miss GUID", i));
 
                     var missType = packet.ReadByteE<SpellMissType>("Miss Type", i);
                     if (missType == SpellMissType.Reflect)
@@ -801,8 +802,8 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (flags.HasAnyFlag(CastFlag.Projectile))
             {
-                packet.ReadInt32("Ammo Display ID");
-                packet.ReadInt32E<InventoryType>("Ammo Inventory Type");
+                packetSpellData.AmmoDisplayId = packet.ReadInt32("Ammo Display ID");
+                packetSpellData.AmmoInventoryType = (uint)packet.ReadInt32E<InventoryType>("Ammo Inventory Type");
             }
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056))
@@ -823,7 +824,7 @@ namespace WowPacketParser.Parsing.Parsers
                         var targetCount = packet.ReadInt32("Extra Targets Count");
                         for (var i = 0; i < targetCount; i++)
                         {
-                            packet.ReadVector3("Extra Target Position", i);
+                            packetSpellData.TargetPoints.Add(packet.ReadVector3("Extra Target Position", i));
                             packet.ReadGuid("Extra Target GUID", i);
                         }
                     }

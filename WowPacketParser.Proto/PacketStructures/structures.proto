@@ -224,6 +224,18 @@ message PacketSpellData {
   repeated UniversalGuid hitTargets = 3;
   UniversalGuid targetUnit = 4;
   optional Vec3 dstLocation = 5;
+  oneof idKind {
+    UniversalGuid castGuid = 6;
+    uint32 castId = 7;
+  }
+  uint32 flags = 8;
+  uint32 flags2 = 9;
+  uint32 castTime = 10;
+  optional int32 ammoDisplayId = 11;
+  repeated UniversalGuid missedTargets = 12;
+  repeated Vec3 targetPoints = 13;
+  optional uint32 ammoInventoryType = 14;
+  optional uint32 castCount = 15;
 }
 
 message PacketSpellStart {

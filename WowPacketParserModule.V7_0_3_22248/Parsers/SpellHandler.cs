@@ -50,18 +50,18 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadPackedGuid128("CasterGUID", idx);
             packetSpellData.Caster = packet.ReadPackedGuid128("CasterUnit", idx);
 
-            packet.ReadPackedGuid128("CastID", idx);
+            packetSpellData.CastGuid = packet.ReadPackedGuid128("CastID", idx);
             packet.ReadPackedGuid128("OriginalCastID", idx);
 
             var spellID = packetSpellData.Spell = packet.ReadUInt32<SpellId>("SpellID", idx);
             packet.ReadUInt32("SpellXSpellVisualID", idx);
 
-            packet.ReadUInt32("CastFlags", idx);
-            packet.ReadUInt32("CastTime", idx);
+            packetSpellData.Flags = packet.ReadUInt32("CastFlags", idx);
+            packetSpellData.CastTime = packet.ReadUInt32("CastTime", idx);
 
             V6_0_2_19033.Parsers.SpellHandler.ReadMissileTrajectoryResult(packet, idx, "MissileTrajectory");
 
-            packet.ReadInt32("Ammo.DisplayID", idx);
+            packetSpellData.AmmoDisplayId = packet.ReadInt32("Ammo.DisplayID", idx);
 
             packet.ReadByte("DestLocSpellCastIndex", idx);
 
@@ -90,7 +90,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packetSpellData.HitTargets.Add(packet.ReadPackedGuid128("HitTarget", idx, i)); ;
 
             for (var i = 0; i < missTargetsCount; ++i)
-                packet.ReadPackedGuid128("MissTarget", idx, i);
+                packetSpellData.MissedTargets.Add(packet.ReadPackedGuid128("MissTarget", idx, i));
 
             for (var i = 0; i < remainingPowerCount; ++i)
                 V6_0_2_19033.Parsers.SpellHandler.ReadSpellPowerData(packet, idx, "RemainingPower", i);
@@ -99,7 +99,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 ReadRuneData(packet, idx, "RemainingRunes");
 
             for (var i = 0; i < targetPointsCount; ++i)
-                V6_0_2_19033.Parsers.SpellHandler.ReadLocation(packet, idx, "TargetPoints", i);
+                packetSpellData.TargetPoints.Add(V6_0_2_19033.Parsers.SpellHandler.ReadLocation(packet, idx, "TargetPoints", i));
 
             return packetSpellData;
         }
