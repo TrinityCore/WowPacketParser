@@ -410,10 +410,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleClientAreaTrigger(Packet packet)
         {
             var entry = packet.ReadEntry("Area Trigger Id");
-            packet.ReadBit("Entered");
+            var entered = packet.ReadBit("Entered");
             packet.ReadBit("FromClient");
 
             packet.AddSniffData(StoreNameType.AreaTrigger, entry.Key, "AREATRIGGER");
+            packet.Holder.ClientAreaTrigger = new() { Enter = entered, AreaTrigger = (uint)entry.Key };
         }
 
         [Parser(Opcode.SMSG_ACCOUNT_MOUNT_UPDATE)]

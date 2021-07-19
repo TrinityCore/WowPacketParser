@@ -473,6 +473,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadByte("Unk Byte");
 
             packet.AddSniffData(StoreNameType.AreaTrigger, entry.Key, "AREATRIGGER");
+            packet.Holder.ClientAreaTrigger = new() { Enter = true, AreaTrigger = (uint)entry.Key };
         }
 
         [Parser(Opcode.SMSG_PRE_RESSURECT)]

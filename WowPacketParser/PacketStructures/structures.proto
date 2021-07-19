@@ -57,6 +57,7 @@ message PacketHolder {
       PacketDbReply dbReply = 28;
       PacketUpdateObject updateObject = 29;
       PacketQueryGameObjectResponse queryGameObjectResponse = 30;
+      PacketClientAreaTrigger clientAreaTrigger = 31;
   }
 }
 
@@ -462,4 +463,9 @@ message PacketQueryCreatureResponse {
   string title = 19;
   string titleAlt = 20;
   string iconName = 21;
+}
+
+message PacketClientAreaTrigger {
+  uint32 areaTrigger = 1;
+  bool enter = 2;
 }
