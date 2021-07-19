@@ -9,6 +9,7 @@
         <RepositoryUrl>https://github.com/TrinityCore/WowPacketParser</RepositoryUrl>
         <RepositoryType>GitHub</RepositoryType>
         <NeutralLanguage>en</NeutralLanguage>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <PropertyGroup>
