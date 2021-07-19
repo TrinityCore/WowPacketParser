@@ -146,6 +146,7 @@ namespace WowPacketParser.Loading
                 {
                     var outFileName = Path.ChangeExtension(FileName, null) + "_parsed.txt";
                     var outProtoFileName = Path.ChangeExtension(FileName, null) + "_parsed.dat";
+                    FileStream protoOutputStream = null;
 
                     if (Settings.DumpFormatWithText())
                     {
@@ -159,6 +160,18 @@ namespace WowPacketParser.Loading
                         File.Delete(outFileName);
                     }
                     
+                    if (_dumpFormat is DumpFormatType.UniversalProto or 
+                        DumpFormatType.UniversalProtoWithText)
+                    {
+                        if (Utilities.FileIsInUse(outProtoFileName))
+                        {
+                            Trace.WriteLine($"Save file {outProtoFileName} is in use, parsing will not be done.");
+                            break;
+                        }
+                        File.Delete(outProtoFileName);
+                        protoOutputStream = File.Create(outProtoFileName);
+                    }
+                    
                     Store.Store.SQLEnabledFlags = Settings.SQLOutputFlag;
 
                     _stats.SetStartTime(DateTime.Now);
@@ -170,6 +183,7 @@ namespace WowPacketParser.Loading
                     ThreadPool.SetMinThreads(threadCount + 2, 4);
 
                     var written = false;
+
                     using (var writer = (Settings.DumpFormatWithText() ? new StreamWriter(outFileName, true) : null))
                     {
                         Packets packets = new() { Version = StructureVersion.ProtobufStructureVersion };
@@ -273,11 +287,10 @@ namespace WowPacketParser.Loading
 
                         reader.PacketReader.Dispose();
 
-                        if (_dumpFormat is DumpFormatType.UniversalProto or 
-                            DumpFormatType.UniversalProtoWithText)
+                        if (protoOutputStream != null)
                         {
-                            using var output = File.Create(outProtoFileName);
-                            packets.WriteTo(output);
+                            packets.WriteTo(protoOutputStream);
+                            protoOutputStream.Close();
                         }
 
                         _stats.SetEndTime(DateTime.Now);
