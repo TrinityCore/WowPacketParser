@@ -31,6 +31,7 @@ namespace WowPacketParser.Parsing.Parsers
                 var type = packet.ReadByte();
                 var typeString = ClientVersion.AddedInVersion(ClientType.Cataclysm) ? ((UpdateTypeCataclysm)type).ToString() : ((UpdateType)type).ToString();
 
+                var partWriter = new StringBuilderProtoPart(packet.Writer);
                 packet.AddValue("UpdateType", typeString, i);
                 switch (typeString)
                 {
@@ -39,7 +40,7 @@ namespace WowPacketParser.Parsing.Parsers
                         var guid = packet.ReadPackedGuid("GUID", i);
                         var updateValues = new UpdateValues();
                         ReadValuesUpdateBlock(packet, updateValues, guid, i);
-                        updateObject.Updated.Add(new UpdateObject{Guid = guid, Values = updateValues});
+                        updateObject.Updated.Add(new UpdateObject{Guid = guid, Values = updateValues, Text = partWriter.Text});
                         break;
                     }
                     case "Movement":
@@ -55,6 +56,7 @@ namespace WowPacketParser.Parsing.Parsers
                         var guid = packet.ReadPackedGuid("GUID", i);
                         var createObject = new CreateObject() { Guid = guid, Values = new()};
                         ReadCreateObjectBlock(packet, createObject, guid, map, i);
+                        createObject.Text = partWriter.Text;
                         updateObject.Created.Add(createObject);
                         break;
                     }
@@ -146,7 +148,11 @@ namespace WowPacketParser.Parsing.Parsers
         {
             var objCount = packet.ReadInt32("Object Count", index);
             for (var j = 0; j < objCount; j++)
-                packet.Holder.UpdateObject.Destroyed.Add(packet.ReadPackedGuid("Object GUID", index, j));
+            {
+                var partWriter = new StringBuilderProtoPart(packet.Writer);
+                var guid = packet.ReadPackedGuid("Object GUID", index, j);
+                packet.Holder.UpdateObject.Destroyed.Add(new DestroyedObject(){Guid = guid, Text = partWriter.Text});
+            }
         }
 
         public static void ReadValuesUpdateBlock(Packet packet, UpdateValues updateValues, WowGuid guid, int index)

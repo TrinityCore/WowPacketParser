@@ -524,16 +524,23 @@ message CreateObject {
   optional StationaryPositionData stationary = 5;
   optional VehicleCreate vehicle = 6;
   optional Quat rotation = 7;
+  optional string text = 8;
 }
 
 message UpdateObject {
   UniversalGuid guid = 1;
   UpdateValues values = 2;
+  optional string text = 3;
+}
+
+message DestroyedObject {
+  UniversalGuid guid = 1;
+  optional string text = 2;
 }
 
 message PacketUpdateObject {
-  repeated UniversalGuid destroyed = 1;
-  repeated UniversalGuid outOfRange = 2;
+  repeated DestroyedObject destroyed = 1;
+  repeated DestroyedObject outOfRange = 2;
   repeated CreateObject created = 3;
   repeated UpdateObject updated = 4;
   uint32 mapId = 5;

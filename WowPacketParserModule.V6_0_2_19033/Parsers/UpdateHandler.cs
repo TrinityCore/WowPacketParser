@@ -28,9 +28,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 var outOfRangeObjCount = removedObjCount - destroyedObjCount;
 
                 for (var i = 0; i < destroyedObjCount; i++)
-                    updateObject.Destroyed.Add(packet.ReadPackedGuid128("ObjectGUID", "Destroyed", i));
+                {
+                    var partWriter = new StringBuilderProtoPart(packet.Writer);
+                    var guid = packet.ReadPackedGuid128("ObjectGUID", "Destroyed", i);
+                    updateObject.Destroyed.Add(new DestroyedObject(){Guid = guid, Text = partWriter.Text });
+                }
                 for (var i = 0; i < outOfRangeObjCount; i++)
-                    updateObject.OutOfRange.Add(packet.ReadPackedGuid128("ObjectGUID", "OutOfRange", i));
+                {
+                    var partWriter = new StringBuilderProtoPart(packet.Writer);
+                    var guid = packet.ReadPackedGuid128("ObjectGUID", "OutOfRange", i);
+                    updateObject.OutOfRange.Add(new DestroyedObject(){Guid = guid, Text = partWriter.Text });
+                }
             }
             packet.ReadUInt32("Data size");
 
@@ -39,6 +47,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 var type = packet.ReadByte();
                 var typeString = ((UpdateTypeCataclysm)type).ToString();
 
+                var partWriter = new StringBuilderProtoPart(packet.Writer);
                 packet.AddValue("UpdateType", typeString, i);
                 switch (typeString)
                 {
@@ -47,7 +56,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                         var guid = packet.ReadPackedGuid128("Object Guid", i);
                         var updateValues = new UpdateValues();
                         CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, updateValues, guid, i);
-                        updateObject.Updated.Add(new UpdateObject{Guid = guid, Values = updateValues});
+                        updateObject.Updated.Add(new UpdateObject{Guid = guid, Values = updateValues, Text = partWriter.Text});
                         break;
                     }
                     case "CreateObject1":
@@ -56,6 +65,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                         var guid = packet.ReadPackedGuid128("Object Guid", i);
                         var createObject = new CreateObject() { Guid = guid, Values = new()};
                         ReadCreateObjectBlock(packet, createObject, guid, map, i);
+                        createObject.Text = partWriter.Text;
                         updateObject.Created.Add(createObject);
                         break;
                     }
