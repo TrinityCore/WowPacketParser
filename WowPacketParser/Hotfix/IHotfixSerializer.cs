@@ -280,6 +280,7 @@ namespace WowPacketParser.Hotfix
                 switch (tableName)
                 {
                     case "achievement":
+                    case "achievement_category":
                     case "adventure_journal":
                     case "adventure_map_poi":
                     case "area_table":
@@ -307,6 +308,8 @@ namespace WowPacketParser.Hotfix
                     case "difficulty":
                     case "dungeon_encounter":
                     case "faction":
+                    case "friendship_rep_reaction":
+                    case "friendship_reputation":
                     case "gameobjects":
                     case "garr_ability":
                     case "garr_building":
@@ -330,6 +333,7 @@ namespace WowPacketParser.Hotfix
                     case "player_condition":
                     case "prestige_level_info":
                     case "pvp_talent":
+                    case "pvp_tier":
                     case "quest_sort":
                     case "scenario":
                     case "scenario_step":
