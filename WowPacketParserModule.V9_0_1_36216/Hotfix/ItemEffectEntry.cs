@@ -14,6 +14,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Hotfix
         public ushort SpellCategoryID { get; set; }
         public int SpellID { get; set; }
         public ushort ChrSpecializationID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V9_1_0_39185, true)]
         public uint ParentItemID { get; set; }
     }
 }

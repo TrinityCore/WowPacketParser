@@ -9,6 +9,5 @@ namespace WowPacketParserModule.V9_0_1_36216.Hotfix
         public byte ChrClassesID { get; set; }
         public uint AdvGuidePlayerConditionID { get; set; }
         public uint SplashPlayerConditionID { get; set; }
-
     }
 }

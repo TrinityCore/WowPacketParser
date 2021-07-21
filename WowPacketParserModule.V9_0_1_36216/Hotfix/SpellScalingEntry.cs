@@ -7,6 +7,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Hotfix
     public class SpellScalingEntry
     {
         public int SpellID { get; set; }
+        [HotfixVersion(ClientVersionBuild.V9_1_0_39185, true)]
         public int Class { get; set; }
         public uint MinScalingLevel { get; set; }
         public uint MaxScalingLevel { get; set; }

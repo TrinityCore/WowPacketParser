@@ -35,9 +35,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Hotfix
         public float OverrideNameScale { get; set; }
         public float OverrideSelectionRadius { get; set; }
         public float TamedPetBaseScale { get; set; }
-        public sbyte Unknown820_1 { get; set; }
-        public float Unknown820_2 { get; set; }
+        public sbyte Unknown820_1 { get; set; } // MountScaleOtherIndex
+        public float Unknown820_2 { get; set; } // MountScaleSelf
         [HotfixArray(2)]
-        public float[] Unknown820_3 { get; set; }
+        public float[] Unknown820_3 { get; set; } // MountScaleOther
     }
 }

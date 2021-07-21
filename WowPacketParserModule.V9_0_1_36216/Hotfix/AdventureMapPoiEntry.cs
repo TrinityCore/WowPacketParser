@@ -9,7 +9,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Hotfix
         public string Title { get; set; }
         public string Description { get; set; }
         [HotfixArray(2, true)]
-        public float WorldPosition { get; set; }
+        public float[] WorldPosition { get; set; }
         public byte Type { get; set; }
         public uint PlayerConditionID { get; set; }
         public uint QuestID { get; set; }

@@ -3,7 +3,7 @@ using WowPacketParser.Hotfix;
 
 namespace WowPacketParserModule.V9_0_1_36216.Hotfix
 {
-    [HotfixStructure(DB2Hash.Faction)]
+    [HotfixStructure(DB2Hash.Faction, ClientVersionBuild.V9_0_1_36216, ClientVersionBuild.V9_1_0_39185)]
     public class FactionEntry
     {
         [HotfixArray(4)]

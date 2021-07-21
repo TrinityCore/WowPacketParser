@@ -3,7 +3,7 @@ using WowPacketParser.Hotfix;
 
 namespace WowPacketParserModule.V9_0_1_36216.Hotfix
 {
-    [HotfixStructure(DB2Hash.GarrFollower)]
+    [HotfixStructure(DB2Hash.GarrFollower, ClientVersionBuild.V9_0_1_36216, ClientVersionBuild.V9_1_0_39185)]
     public class GarrFollowerEntry
     {
         public string HordeSourceText { get; set; }

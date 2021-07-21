@@ -11,9 +11,14 @@ namespace WowPacketParserModule.V9_0_1_36216.Hotfix
         public int ChrCustomizationOptionID { get; set; }
         public int ChrCustomizationReqID { get; set; }
         public ushort SortOrder { get; set; }
+        [HotfixVersion(ClientVersionBuild.V9_1_0_39185, true)]
         public int SwatchColor1 { get; set; }
+        [HotfixVersion(ClientVersionBuild.V9_1_0_39185, true)]
         public int SwatchColor2 { get; set; }
         public ushort UiOrderIndex { get; set; }
         public int Flags { get; set; }
+        [HotfixVersion(ClientVersionBuild.V9_1_0_39185, false)]
+        [HotfixArray(2)]
+        public int[] SwatchColor { get; set; }
     }
 }

@@ -8,6 +8,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Hotfix
     {
         public string Directory { get; set; }
         public string MapName { get; set; }
+        [HotfixVersion(ClientVersionBuild.V9_1_0_39185, true)]
         public string InternalName { get; set; }
         public string MapDescription0 { get; set; }
         public string MapDescription1 { get; set; }

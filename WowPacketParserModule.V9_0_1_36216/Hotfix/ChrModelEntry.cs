@@ -23,6 +23,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Hotfix
         public float CustomizeFacing { get; set; }
         public float CameraDistanceOffset { get; set; }
         public float BarberShopCameraOffsetScale { get; set; }
+        [HotfixVersion(ClientVersionBuild.V9_1_0_39185, false)]
+        public float Field91038312015 { get; set; }
         public float BarberShopCameraRotationOffset { get; set; }
     }
 }
