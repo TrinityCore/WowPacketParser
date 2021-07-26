@@ -71,6 +71,8 @@ namespace WowPacketParser.Proto.Processing
                     return Process(packet.BaseData, packet.QueryGameObjectResponse);
                 case PacketHolder.KindOneofCase.ClientAreaTrigger:
                     return Process(packet.BaseData, packet.ClientAreaTrigger);
+                case PacketHolder.KindOneofCase.QueryPlayerNameResponse:
+                    return Process(packet.BaseData, packet.QueryPlayerNameResponse);
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -106,5 +108,6 @@ namespace WowPacketParser.Proto.Processing
         protected virtual T? Process(PacketBase basePacket, PacketNpcTextOld packet) => default;
         protected virtual T? Process(PacketBase basePacket, PacketDbReply packet) => default;
         protected virtual T? Process(PacketBase basePacket, PacketUpdateObject packet) => default;
+        protected virtual T? Process(PacketBase basePacket, PacketQueryPlayerNameResponse packet) => default;
     }
 }

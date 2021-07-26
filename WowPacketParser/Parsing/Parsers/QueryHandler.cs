@@ -28,10 +28,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUERY_PLAYER_NAME_RESPONSE)]
         public static void HandleNameQueryResponse(Packet packet)
         {
+            PacketQueryPlayerNameResponse response = packet.Holder.QueryPlayerNameResponse = new();
             WowGuid guid;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
             {
-                guid = packet.ReadPackedGuid("GUID");
+                response.PlayerGuid = guid = packet.ReadPackedGuid("GUID");
                 var end = packet.ReadByte("Result");
                 /*
                 if (end == 1)
@@ -48,23 +49,25 @@ namespace WowPacketParser.Parsing.Parsers
                     return;
             }
             else
-                guid = packet.ReadGuid("GUID");
+                response.PlayerGuid = guid = packet.ReadGuid("GUID");
 
+            response.HasData = true;
             var name = packet.ReadCString("Name");
+            response.PlayerName = name;
             StoreGetters.AddName(guid, name);
             packet.ReadCString("Realm Name");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
             {
-                packet.ReadByteE<Race>("Race");
-                packet.ReadByteE<Gender>("Gender");
-                packet.ReadByteE<Class>("Class");
+                response.Race = (uint)packet.ReadByteE<Race>("Race");
+                response.Gender = (uint)packet.ReadByteE<Gender>("Gender");
+                response.Class = (uint)packet.ReadByteE<Class>("Class");
             }
             else
             {
-                packet.ReadInt32E<Race>("Race");
-                packet.ReadInt32E<Gender>("Gender");
-                packet.ReadInt32E<Class>("Class");
+                response.Race = (uint)packet.ReadInt32E<Race>("Race");
+                response.Gender = (uint)packet.ReadInt32E<Gender>("Gender");
+                response.Class = (uint)packet.ReadInt32E<Class>("Class");
             }
 
             if (!packet.ReadBool("Name Declined"))

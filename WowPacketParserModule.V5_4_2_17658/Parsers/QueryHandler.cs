@@ -258,6 +258,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         [Parser(Opcode.SMSG_QUERY_PLAYER_NAME_RESPONSE)]
         public static void HandleNameQueryResponse(Packet packet)
         {
+            PacketQueryPlayerNameResponse response = packet.Holder.QueryPlayerNameResponse = new();
             var guid1 = new byte[8];
             var accountId = new byte[8];
             var guid2 = new byte[8];
@@ -282,12 +283,13 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             var hasData = packet.ReadByte("HasData");
             if (hasData == 0)
             {
-                packet.ReadByteE<Class>("Class");
-                packet.ReadByteE<Gender>("Gender");
+                response.HasData = true;
+                response.Class = (uint)packet.ReadByteE<Class>("Class");
+                response.Gender = (uint)packet.ReadByteE<Gender>("Gender");
                 packet.ReadInt32("Realm Id");
-                packet.ReadByteE<Race>("Race");
+                response.Race = (uint)packet.ReadByteE<Race>("Race");
                 packet.ReadInt32("Int24");
-                packet.ReadByte("Level");
+                response.Level = packet.ReadByte("Level");
             }
 
             packet.ReadXORByte(guid1, 5);
@@ -325,7 +327,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 for (var i = 0; i < 5; ++i)
                     packet.ReadWoWString("Name Declined", count[i], i);
 
-                packet.ReadWoWString("Name", bits38);
+                response.PlayerName = packet.ReadWoWString("Name", bits38);
 
                 packet.ReadXORByte(accountId, 2);
                 packet.ReadXORByte(accountId, 5);

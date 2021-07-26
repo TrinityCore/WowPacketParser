@@ -5,8 +5,8 @@ option csharp_namespace = "WoWPacketParser.Proto";
 
 /*
   PacketsVersion::version field denotes version of the structure. Current version is in the file StructureVersion.cs.
-    If you change this file (and change the structure), please increment the version by one. This way user could
-    know if there is need to reparse the sniff.
+     If you change this file (and change the structure), please increment the version by one. This way user could
+     know if there is need to reparse the sniff.
  */
 
 message PacketsVersion {
@@ -58,6 +58,7 @@ message PacketHolder {
       PacketUpdateObject updateObject = 29;
       PacketQueryGameObjectResponse queryGameObjectResponse = 30;
       PacketClientAreaTrigger clientAreaTrigger = 31;
+      PacketQueryPlayerNameResponse queryPlayerNameResponse = 32;
   }
 }
 
@@ -590,4 +591,14 @@ message PacketQueryCreatureResponse {
 message PacketClientAreaTrigger {
   uint32 areaTrigger = 1;
   bool enter = 2;
+}
+
+message PacketQueryPlayerNameResponse {
+  UniversalGuid playerGuid = 1;
+  bool hasData = 2;
+  string playerName = 3;
+  uint32 race = 4;
+  uint32 gender = 5;
+  uint32 class = 6;
+  uint32 level = 7;
 }

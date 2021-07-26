@@ -277,6 +277,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_QUERY_PLAYER_NAME_RESPONSE)]
         public static void HandleNameQueryResponse(Packet packet)
         {
+            PacketQueryPlayerNameResponse response = packet.Holder.QueryPlayerNameResponse = new();
             var guid = new byte[8];
             var guid1 = new byte[8];
             var guid2 = new byte[8];
@@ -290,11 +291,12 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var hasData = packet.ReadByte("Byte18");
             if (hasData == 0)
             {
+                response.HasData = true;
                 packet.ReadInt32("Int24");
-                packet.ReadByte("Race");
-                packet.ReadByte("Gender");
-                packet.ReadByte("Level");
-                packet.ReadByte("Class");
+                response.Race = packet.ReadByte("Race");
+                response.Gender = packet.ReadByte("Gender");
+                response.Level = packet.ReadByte("Level");
+                response.Class = packet.ReadByte("Class");
                 packet.ReadInt32("Realm Id");
             }
 
@@ -333,7 +335,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 guid1[2] = packet.ReadBit();
                 guid1[6] = packet.ReadBit();
 
-                packet.ReadWoWString("Name", bits38);
+                response.PlayerName = packet.ReadWoWString("Name", bits38);
 
                 packet.ReadXORByte(guid2, 4);
                 packet.ReadXORByte(guid1, 3);
@@ -360,7 +362,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.WriteGuid("Guid2", guid2);
             }
 
-            packet.WriteGuid("Guid", guid);
+            response.PlayerGuid = packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_NAME_QUERY)]

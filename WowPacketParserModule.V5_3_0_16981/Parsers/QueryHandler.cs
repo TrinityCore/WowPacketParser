@@ -189,6 +189,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         [Parser(Opcode.SMSG_QUERY_PLAYER_NAME_RESPONSE)]
         public static void HandleNameQueryResponse(Packet packet)
         {
+            PacketQueryPlayerNameResponse response = packet.Holder.QueryPlayerNameResponse = new();
             var guid = new byte[8];
 
             var bit16 = packet.ReadBit();
@@ -204,23 +205,23 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.StartBitStream(guid, 5, 7);
 
             packet.ReadXORByte(guid, 1);
-            packet.ReadWoWString("Name: ", bits32);
+            response.PlayerName = packet.ReadWoWString("Name: ", bits32);
             packet.ReadXORBytes(guid, 0, 7);
 
-            packet.ReadByte("Race");
+            response.Race = packet.ReadByte("Race");
             packet.ReadByte("unk81");
-            packet.ReadByte("Gender");
+            response.Gender = packet.ReadByte("Gender");
 
             if (bit16)
                 for (var i = 0; i < 5; ++i)
                     packet.ReadCString("Declined Name");
 
-            packet.ReadByte("Class");
+            response.Class = packet.ReadByte("Class");
             packet.ReadXORBytes(guid, 4, 6, 5);
             packet.ReadUInt32("Realm Id");
             packet.ReadXORBytes(guid, 3, 2);
 
-            packet.WriteGuid("Guid", guid);
+            response.PlayerGuid = packet.WriteGuid("Guid", guid);
         }
 
         [HasSniffData]
