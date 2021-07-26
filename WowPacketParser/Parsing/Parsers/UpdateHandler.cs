@@ -476,7 +476,9 @@ namespace WowPacketParser.Parsing.Parsers
                             if (mask[start + k] && (!isCreating || fieldData[k].UInt32Value != 0))
                             {
                                 byte[] intBytes = BitConverter.GetBytes(fieldData[k].UInt32Value);
-                                packet.AddValue(k > 0 ? key + " + " + k : key, intBytes[0] + "/" + intBytes[1] + "/" + intBytes[2] + "/" + intBytes[3], index);
+                                var name = k > 0 ? key + " + " + k : key;
+                                updateValues.Ints[name] = fieldData[k].UInt32Value;
+                                packet.AddValue(name, intBytes[0] + "/" + intBytes[1] + "/" + intBytes[2] + "/" + intBytes[3], index);
                             }
                         }
                         break;
