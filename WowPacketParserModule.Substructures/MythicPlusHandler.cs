@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Misc;
+﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 
 namespace WowPacketParserModule.Substructures
 {
@@ -20,7 +21,7 @@ namespace WowPacketParserModule.Substructures
             packet.ReadInt32("CurrentSeasonScore", indexes);
             var runCount = packet.ReadUInt32("RunCount", indexes);
             for (var i = 0u; i < runCount; ++i)
-                ReadDungeonScoreMapSummary(packet, indexes, "Run", i);
+                ReadDungeonScoreMapSummary(packet, indexes, i, "Run");
         }
 
         public static void ReadMythicPlusMember(Packet packet, params object[] indexes)
@@ -32,7 +33,7 @@ namespace WowPacketParserModule.Substructures
             packet.ReadUInt32("NativeRealmAddress", indexes);
             packet.ReadUInt32("VirtualRealmAddress", indexes);
             packet.ReadInt16("ChrSpecializationID", indexes);
-            packet.ReadInt16("RaceID", indexes);
+            packet.ReadInt16E<Race>("RaceID", indexes);
             packet.ReadInt32("ItemLevel", indexes);
             packet.ReadInt32("CovenantID", indexes);
             packet.ReadInt32("SoulbindID", indexes);
@@ -52,7 +53,7 @@ namespace WowPacketParserModule.Substructures
             var memberCount = packet.ReadUInt32("MemberCount", indexes);
             packet.ReadInt32("RunScore", indexes);
             for (var i = 0u; i < memberCount; ++i)
-                ReadMythicPlusMember(packet, indexes, "Member", i);
+                ReadMythicPlusMember(packet, indexes, i, "Member");
 
             packet.ResetBitReader();
             packet.ReadBit("Completed", indexes);
@@ -71,7 +72,7 @@ namespace WowPacketParserModule.Substructures
             var runCount = packet.ReadUInt32("BestRunCount", indexes);
             packet.ReadInt32("OverAllScore", indexes);
             for (var i = 0u; i < runCount; ++i)
-                ReadDungeonScoreBestRunForAffix(packet, indexes, "BestRun", i);
+                ReadDungeonScoreBestRunForAffix(packet, indexes, i, "BestRun");
         }
 
         public static void ReadDungeonScoreSeasonData(Packet packet, params object[] indexes)
@@ -80,7 +81,7 @@ namespace WowPacketParserModule.Substructures
             var runCount = packet.ReadUInt32("MapCount", indexes);
             packet.ReadInt32("SeasonScore", indexes);
             for (var i = 0u; i < runCount; ++i)
-                ReadDungeonScoreMapData(packet, indexes, "Map", i);
+                ReadDungeonScoreMapData(packet, indexes, i, "Map");
         }
 
         public static void ReadDungeonScoreData(Packet packet, params object[] indexes)
@@ -88,7 +89,7 @@ namespace WowPacketParserModule.Substructures
             var seasonCount = packet.ReadUInt32("SeasonCount", indexes);
             packet.ReadInt32("TotalRuns", indexes);
             for (var i = 0u; i < seasonCount; ++i)
-                ReadDungeonScoreSeasonData(packet, indexes, "Season", i);
+                ReadDungeonScoreSeasonData(packet, indexes, i, "Season");
         }
     }
 }

@@ -15,10 +15,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadInt32("Subseason");
 
             for (var i = 0; i < runCount; ++i)
-                Substructures.MythicPlusHandler.ReadMythicPlusRun(packet, "Run", i);
+                Substructures.MythicPlusHandler.ReadMythicPlusRun(packet, i, "Run");
 
             for (var i = 0; i < rewardCount; ++i)
-                ReadMythicPlusReward(packet, "Reward", i);
+                ReadMythicPlusReward(packet, i, "Reward");
         }
 
         public static void ReadMythicPlusReward(Packet packet, params object[] indexes)
