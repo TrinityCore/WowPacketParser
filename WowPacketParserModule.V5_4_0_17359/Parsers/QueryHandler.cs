@@ -4,6 +4,7 @@ using WowPacketParser.Hotfix;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -45,8 +46,11 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_QUERY_CREATURE_RESPONSE)]
         public static void HandleCreatureQueryResponse(Packet packet)
         {
+            PacketQueryCreatureResponse response = packet.Holder.QueryCreatureResponse = new PacketQueryCreatureResponse();
             var entry = packet.ReadEntry("Entry");
+            response.Entry = (uint)entry.Key;
             Bit hasData = packet.ReadBit();
+            response.HasData = hasData;
             if (!hasData)
                 return; // nothing to do
 
@@ -82,7 +86,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             //TODO: move to creature_questitems
             //creature.QuestItems = new uint[qItemCount];
             for (int i = 0; i < qItemCount; ++i)
-                /*creature.QuestItems[i] = (uint)*/packet.ReadInt32<ItemId>("Quest Item", i);
+                /*creature.QuestItems[i] = (uint)*/response.QuestItems.Add((uint)packet.ReadInt32<ItemId>("Quest Item", i));
 
             creature.RequiredExpansion = packet.ReadUInt32E<ClientType>("Expansion");
 
@@ -146,6 +150,26 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 Name = creature.Name
             };
             Storage.ObjectNames.Add(objectName, packet.TimeSpan);
+
+            for (int i = 0; i < 4; ++i)
+                response.Models.Add(creature.ModelIDs[i] ?? 0);
+            for (int i = 0; i < 2; ++i)
+                response.KillCredits.Add(creature.KillCredits[i] ?? 0);
+            response.Name = creature.Name;
+            response.NameAlt = creature.FemaleName;
+            response.Title = creature.SubName;
+            response.TitleAlt = creature.TitleAlt;
+            response.IconName = creature.IconName;
+            response.TypeFlags = (uint?)creature.TypeFlags ?? 0;
+            response.TypeFlags2 = creature.TypeFlags2 ?? 0;
+            response.Type = (int?)creature.Type ?? 0;
+            response.Family = (int?)creature.Family ?? 0;
+            response.Rank = (int?)creature.Rank ?? 0;
+            response.HpMod = creature.HealthModifier ?? 1.0f;
+            response.ManaMod = creature.ManaModifier ?? 1.0f;
+            response.Leader = creature.RacialLeader ?? false;
+            response.Expansion = (uint?) creature.RequiredExpansion ?? 0;
+            response.MovementId = creature.MovementID ?? 0;
         }
 
         [HasSniffData]
@@ -245,11 +269,15 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             packet.AddSniffData(StoreNameType.NpcText, entry.Key, "QUERY_RESPONSE");
 
             Storage.NpcTextsMop.Add(npcText, packet.TimeSpan);
+            var proto = packet.Holder.NpcText = new() { Entry = npcText.ID.Value };
+            for (int i = 0; i < 8; ++i)
+                proto.Texts.Add(new PacketNpcTextEntry(){Probability = npcText.Probabilities[i], BroadcastTextId = npcText.BroadcastTextId[i]});
         }
 
         [Parser(Opcode.SMSG_QUERY_PLAYER_NAME_RESPONSE)]
         public static void HandleNameQueryResponse(Packet packet)
         {
+            PacketQueryPlayerNameResponse response = packet.Holder.QueryPlayerNameResponse = new();
             var guid = new byte[8];
             var guid1 = new byte[8];
             var guid2 = new byte[8];
@@ -263,11 +291,12 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var hasData = packet.ReadByte("Byte18");
             if (hasData == 0)
             {
+                response.HasData = true;
                 packet.ReadInt32("Int24");
-                packet.ReadByte("Race");
-                packet.ReadByte("Gender");
-                packet.ReadByte("Level");
-                packet.ReadByte("Class");
+                response.Race = packet.ReadByte("Race");
+                response.Gender = packet.ReadByte("Gender");
+                response.Level = packet.ReadByte("Level");
+                response.Class = packet.ReadByte("Class");
                 packet.ReadInt32("Realm Id");
             }
 
@@ -306,7 +335,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 guid1[2] = packet.ReadBit();
                 guid1[6] = packet.ReadBit();
 
-                packet.ReadWoWString("Name", bits38);
+                response.PlayerName = packet.ReadWoWString("Name", bits38);
 
                 packet.ReadXORByte(guid2, 4);
                 packet.ReadXORByte(guid1, 3);
@@ -333,7 +362,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 packet.WriteGuid("Guid2", guid2);
             }
 
-            packet.WriteGuid("Guid", guid);
+            response.PlayerGuid = packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_NAME_QUERY)]

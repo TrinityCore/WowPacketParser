@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Google.Protobuf.WellKnownTypes;
 using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -25,10 +27,13 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         [Parser(Opcode.SMSG_DB_REPLY)]
         public static void HandleDBReply(Packet packet)
         {
+            var dbReply = packet.Holder.DbReply = new();
             var type = packet.ReadUInt32E<DB2Hash>("TableHash");
-            var entry = packet.ReadInt32("RecordID");
+            dbReply.TableHash = (uint)type;
+            var entry = dbReply.RecordId = packet.ReadInt32("RecordID");
             var timeStamp = packet.ReadUInt32();
-            packet.AddValue("Timestamp", Utilities.GetDateTimeFromUnixTime(timeStamp));
+            var time = packet.AddValue("Timestamp", Utilities.GetDateTimeFromUnixTime(timeStamp));
+            dbReply.Time = Timestamp.FromDateTime(DateTime.SpecifyKind(time, DateTimeKind.Utc));
             var allow = packet.ReadBit("Allow");
 
             var size = packet.ReadInt32("Size");
@@ -37,11 +42,13 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             if (entry < 0 || !allow)
             {
+                dbReply.Status = PacketDbReplyRecordStatus.RecordStatusRecordRemoved;
                 packet.WriteLine("Row {0} has been removed.", -entry);
                 HotfixStoreMgr.RemoveRecord(type, entry);
             }
             else
             {
+                dbReply.Status = PacketDbReplyRecordStatus.RecordStatusValid;
                 switch (type)
                 {
                     case DB2Hash.BroadcastText:
@@ -82,6 +89,22 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                                 };
                                 Storage.BroadcastTextLocales.Add(lbct, packet.TimeSpan);
                             }
+
+                            dbReply.BroadcastText = new PacketDbReplyBroadcastText()
+                            {
+                                Id = bct.ID.Value,
+                                Text0 = bct.Text,
+                                Text1 = bct.Text1,
+                                Language = bct.LanguageID.Value,
+                                ConditionId = bct.ConditionID.Value,
+                                EmotesId = bct.EmotesID.Value,
+                                Flags = bct.Flags.Value,
+                                ChatBubbleDuration = bct.ChatBubbleDurationMs.Value,
+                            };
+                            dbReply.BroadcastText.Sounds.Add(bct.SoundEntriesID1.Value);
+                            dbReply.BroadcastText.Sounds.Add(bct.SoundEntriesID2.Value);
+                            for (int i = 0; i < 3; ++i)
+                                dbReply.BroadcastText.Emotes.Add(new BroadcastTextEmote(){EmoteId = bct.EmoteID[i].Value, Delay = bct.EmoteDelay[i].Value});
                             break;
                         }
                     default:

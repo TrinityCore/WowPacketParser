@@ -1,6 +1,7 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -57,6 +58,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.SMSG_CHAT)]
         public static void HandleServerChatMessage(Packet packet)
         {
+            PacketChat chatPacket = packet.Holder.Chat = new PacketChat();
             var text = new CreatureText();
 
             var senderGUIDBytes = new byte[8];
@@ -165,6 +167,12 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             text.ReceiverGUID = packet.WriteGuid("ReceiverGUID", receiverGUIDBytes);
             packet.WriteGuid("GuildGUID", guildGUIDBytes);
             packet.WriteGuid("GroupGUID", groupGUIDBytes);
+            
+            chatPacket.Text = text.Text;
+            chatPacket.Sender = text.SenderGUID.ToUniversalGuid();
+            chatPacket.Target = text.ReceiverGUID.ToUniversalGuid();
+            chatPacket.Language = (int?) text.Language ?? 0;
+            chatPacket.Type = (int) text.Type;
 
             uint entry = 0;
             if (text.SenderGUID.GetObjectType() == ObjectType.Unit)

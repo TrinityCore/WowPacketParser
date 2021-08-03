@@ -33,8 +33,10 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             {
                 Entry = (uint)entry.Key
             };
+            var query = packet.Holder.QueryGameObjectResponse = new() { Entry = (uint)entry.Key };
 
             int unk1 = packet.ReadInt32("Unk1 UInt32");
+            query.HasData = unk1 > 0;
             if (unk1 == 0)
             {
                 packet.ReadByte("Unk1 Byte");

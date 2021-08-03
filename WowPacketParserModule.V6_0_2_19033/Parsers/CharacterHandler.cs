@@ -1,6 +1,7 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using WowPacketParserModule.V6_0_2_19033.Enums;
@@ -389,9 +390,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_QUERY_PLAYER_NAME_RESPONSE)]
         public static void HandleNameQueryResponse(Packet packet)
         {
+            PacketQueryPlayerNameResponse response = packet.Holder.QueryPlayerNameResponse = new();
             var hasData = packet.ReadByte("HasData");
 
-            packet.ReadPackedGuid128("Player Guid");
+            response.PlayerGuid = packet.ReadPackedGuid128("Player Guid");
 
             if (hasData == 0)
             {
@@ -411,12 +413,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
                 packet.ReadUInt32("VirtualRealmAddress");
 
-                packet.ReadByteE<Race>("Race");
-                packet.ReadByteE<Gender>("Gender");
-                packet.ReadByteE<Class>("Class");
-                packet.ReadByte("Level");
+                response.Race = (uint)packet.ReadByteE<Race>("Race");
+                response.Gender = (uint)packet.ReadByteE<Gender>("Gender");
+                response.Class = (uint)packet.ReadByteE<Class>("Class");
+                response.Level = packet.ReadByte("Level");
 
-                packet.ReadWoWString("Name", bits15);
+                response.PlayerName = packet.ReadWoWString("Name", bits15);
             }
         }
 

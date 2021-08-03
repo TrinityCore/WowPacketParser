@@ -801,8 +801,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_QUEST_GIVER_ACCEPT_QUEST)]
         public static void HandleQuestgiverAcceptQuest(Packet packet)
         {
-            packet.ReadGuid("GUID");
-            packet.ReadUInt32<QuestId>("Quest ID");
+            var questGiverAcceptQuest = packet.Holder.QuestGiverAcceptQuest = new();
+            questGiverAcceptQuest.QuestGiver = packet.ReadGuid("GUID");
+            questGiverAcceptQuest.QuestId = packet.ReadUInt32<QuestId>("Quest ID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_2_9901))
                 packet.ReadUInt32("Unk UInt32");
@@ -931,8 +932,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_QUEST_GIVER_COMPLETE_QUEST)]
         public static void HandleQuestCompleteQuest(Packet packet)
         {
-            packet.ReadGuid("GUID");
-            packet.ReadUInt32<QuestId>("Quest ID");
+            var questGiverCompleteQuest = packet.Holder.QuestGiverCompleteQuestRequest = new();
+            questGiverCompleteQuest.QuestGiver = packet.ReadGuid("GUID");
+            questGiverCompleteQuest.QuestId = packet.ReadUInt32<QuestId>("Quest ID");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_0_6a_13623))
                 packet.ReadByte("Unk byte");
         }

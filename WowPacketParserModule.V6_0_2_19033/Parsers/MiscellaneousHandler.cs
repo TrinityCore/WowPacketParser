@@ -4,6 +4,7 @@ using WowPacketParser.Enums;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
@@ -409,10 +410,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         public static void HandleClientAreaTrigger(Packet packet)
         {
             var entry = packet.ReadEntry("Area Trigger Id");
-            packet.ReadBit("Entered");
+            var entered = packet.ReadBit("Entered");
             packet.ReadBit("FromClient");
 
             packet.AddSniffData(StoreNameType.AreaTrigger, entry.Key, "AREATRIGGER");
+            packet.Holder.ClientAreaTrigger = new() { Enter = entered, AreaTrigger = (uint)entry.Key };
         }
 
         [Parser(Opcode.SMSG_ACCOUNT_MOUNT_UPDATE)]
@@ -469,8 +471,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_PLAY_SOUND)]
         public static void HandlePlaySound(Packet packet)
         {
-            uint sound = packet.ReadUInt32<SoundId>("SoundKitID");
-            packet.ReadPackedGuid128("SourceObjectGUID");
+            PacketPlaySound packetPlaySound = packet.Holder.PlaySound = new PacketPlaySound();
+            uint sound = packetPlaySound.Sound = packet.ReadUInt32<SoundId>("SoundKitID");
+            packetPlaySound.Source = packet.ReadPackedGuid128("SourceObjectGUID").ToUniversalGuid();
 
             Storage.Sounds.Add(sound, packet.TimeSpan);
         }
@@ -478,7 +481,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_PLAY_MUSIC)]
         public static void HandlePlayMusic(Packet packet)
         {
-            uint sound = packet.ReadUInt32<SoundId>("SoundKitID");
+            PacketPlayMusic packetMusic = packet.Holder.PlayMusic = new PacketPlayMusic();
+            uint sound = packetMusic.Music = packet.ReadUInt32<SoundId>("SoundKitID");
 
             Storage.Sounds.Add(sound, packet.TimeSpan);
         }
@@ -534,13 +538,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_PLAY_ONE_SHOT_ANIM_KIT)]
         public static void HandlePlayOneShotAnimKit(Packet packet)
         {
-            packet.ReadPackedGuid128("Unit");
-            packet.ReadUInt16("AnimKitID");
+            var animKit = packet.Holder.OneShotAnimKit = new();
+            animKit.Unit = packet.ReadPackedGuid128("Unit");
+            animKit.AnimKit = packet.ReadUInt16("AnimKitID");
         }
 
         [Parser(Opcode.SMSG_SET_AI_ANIM_KIT)]
         public static void SetAIAnimKitId(Packet packet)
         {
+            var animKit = packet.Holder.SetAnimKit = new();
             var guid = packet.ReadPackedGuid128("Unit");
             var animKitID = packet.ReadUInt16("AnimKitID");
 
@@ -551,6 +557,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     if (timeSpan != null && timeSpan.Value.Duration() <= TimeSpan.FromSeconds(1))
                         ((Unit)Storage.Objects[guid].Item1).AIAnimKit = animKitID;
                 }
+
+            animKit.Unit = guid;
+            animKit.AnimKit = animKitID;
         }
 
         [Parser(Opcode.SMSG_SET_MELEE_ANIM_KIT)]
@@ -731,9 +740,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_PLAY_OBJECT_SOUND)]
         public static void HandlePlayObjectSound(Packet packet)
         {
-            uint sound = packet.ReadUInt32<SoundId>("SoundId");
-            packet.ReadPackedGuid128("SourceObjectGUID");
-            packet.ReadPackedGuid128("TargetObjectGUID");
+            PacketPlayObjectSound packetSound = packet.Holder.PlayObjectSound = new PacketPlayObjectSound();
+            uint sound = packetSound.Sound = packet.ReadUInt32<SoundId>("SoundId");
+            packetSound.Source = packet.ReadPackedGuid128("SourceObjectGUID");
+            packetSound.Target = packet.ReadPackedGuid128("TargetObjectGUID");
             packet.ReadVector3("Position");
 
             Storage.Sounds.Add(sound, packet.TimeSpan);

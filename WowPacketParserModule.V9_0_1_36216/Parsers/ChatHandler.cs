@@ -1,6 +1,7 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -11,6 +12,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         [Parser(Opcode.SMSG_CHAT)]
         public static void HandleServerChatMessage(Packet packet)
         {
+            PacketChat chatPacket = packet.Holder.Chat = new PacketChat();
             var text = new CreatureText
             {
                 Type = (ChatMessageType)packet.ReadByteE<ChatMessageTypeNew>("SlashCmd"),
@@ -32,7 +34,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var prefixLen = packet.ReadBits(5);
             var channelLen = packet.ReadBits(7);
             var textLen = packet.ReadBits(12);
-            packet.ReadBits("ChatFlags", 14);
+            var flags = packet.ReadBits("ChatFlags", 14);
 
             packet.ReadBit("HideChatLog");
             packet.ReadBit("FakeSenderName");
@@ -42,8 +44,14 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             text.ReceiverName = packet.ReadWoWString("Receiver Name", receiverNameLen);
             packet.ReadWoWString("Addon Message Prefix", prefixLen);
             packet.ReadWoWString("Channel Name", channelLen);
+            
+            chatPacket.Text = text.Text = packet.ReadWoWString("Text", textLen);
+            chatPacket.Sender = text.SenderGUID.ToUniversalGuid();
+            chatPacket.Target = text.ReceiverGUID.ToUniversalGuid();
+            chatPacket.Language = (int) text.Language;
+            chatPacket.Type = (int) text.Type;
+            chatPacket.Flags = flags;
 
-            text.Text = packet.ReadWoWString("Text", textLen);
             if (unk801bit)
                 packet.ReadUInt32("Unk801");
 
@@ -60,6 +68,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         [Parser(Opcode.SMSG_EMOTE)]
         public static void HandleEmote(Packet packet)
         {
+            PacketEmote packetEmote = packet.Holder.Emote = new PacketEmote();
             var guid = packet.ReadPackedGuid128("GUID");
             var emote = packet.ReadInt32E<EmoteType>("Emote ID");
 
@@ -72,6 +81,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             if (guid.GetObjectType() == ObjectType.Unit)
                 Storage.Emotes.Add(guid, emote, packet.TimeSpan);
+
+            packetEmote.Emote = (int) emote;
+            packetEmote.Sender = guid.ToUniversalGuid();
         }
     }
 }

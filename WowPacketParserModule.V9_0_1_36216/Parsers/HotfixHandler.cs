@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Google.Protobuf.WellKnownTypes;
 using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -23,11 +26,28 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         [Parser(Opcode.SMSG_DB_REPLY)]
         public static void HandleDBReply(Packet packet)
         {
+            var dbReply = packet.Holder.DbReply = new();
             var type = packet.ReadUInt32E<DB2Hash>("TableHash");
-            var entry = packet.ReadInt32("RecordID");
+            dbReply.TableHash = (uint)type;
+            var entry = dbReply.RecordId = packet.ReadInt32("RecordID");
             var timeStamp = packet.ReadUInt32();
-            packet.AddValue("Timestamp", Utilities.GetDateTimeFromUnixTime(timeStamp));
+            var time = packet.AddValue("Timestamp", Utilities.GetDateTimeFromUnixTime(timeStamp));
+            dbReply.Time = Timestamp.FromDateTime(DateTime.SpecifyKind(time, DateTimeKind.Utc));
             var status = packet.ReadBitsE<HotfixStatus>("Status", 2);
+            switch (status)
+            {
+                case HotfixStatus.Valid:
+                    dbReply.Status = PacketDbReplyRecordStatus.RecordStatusValid;
+                    break;
+                case HotfixStatus.RecordRemoved:
+                    dbReply.Status = PacketDbReplyRecordStatus.RecordStatusRecordRemoved;
+                    break;
+                case HotfixStatus.Invalid:
+                    dbReply.Status = PacketDbReplyRecordStatus.RecordStatusInvalid;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
 
             var size = packet.ReadInt32("Size");
             var data = packet.ReadBytes(size);
@@ -84,6 +104,22 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                             };
                             Storage.BroadcastTextLocales.Add(lbct, packet.TimeSpan);
                         }
+
+                        dbReply.BroadcastText = new PacketDbReplyBroadcastText()
+                        {
+                            Id = bct.ID.Value,
+                            Text0 = bct.Text,
+                            Text1 = bct.Text1,
+                            Language = bct.LanguageID.Value,
+                            ConditionId = bct.ConditionID.Value,
+                            EmotesId = bct.EmotesID.Value,
+                            Flags = bct.Flags.Value,
+                            ChatBubbleDuration = bct.ChatBubbleDurationMs.Value,
+                        };
+                        dbReply.BroadcastText.Sounds.Add(bct.SoundEntriesID1.Value);
+                        dbReply.BroadcastText.Sounds.Add(bct.SoundEntriesID2.Value);
+                        for (int i = 0; i < 3; ++i)
+                            dbReply.BroadcastText.Emotes.Add(new BroadcastTextEmote(){EmoteId = bct.EmoteID[i].Value, Delay = bct.EmoteDelay[i].Value});
                         break;
                     }
                     default:

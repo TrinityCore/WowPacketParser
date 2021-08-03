@@ -975,16 +975,17 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL_KIT)]
         public static void HandleCastVisualKit(Packet packet)
         {
+            var playSpellVisualKit = packet.Holder.PlaySpellVisualKit = new();
             var guid = new byte[8];
 
             packet.StartBitStream(guid, 3, 0, 6, 7, 4, 1, 5, 2);
-            packet.ReadInt32("SpellVisualKit ID");
+            playSpellVisualKit.KitRecId = packet.ReadInt32("SpellVisualKit ID");
             packet.ParseBitStream(guid, 4, 7, 0);
-            packet.ReadInt32("Int20");
+            playSpellVisualKit.KitType = packet.ReadInt32("Int20");
             packet.ParseBitStream(guid, 2, 1, 5, 6, 3);
-            packet.ReadInt32("Int1C");
+            playSpellVisualKit.Duration = (uint)packet.ReadInt32("Int1C");
 
-            packet.WriteGuid("Guid", guid);
+            playSpellVisualKit.Unit = packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SET_FLAT_SPELL_MODIFIER)]

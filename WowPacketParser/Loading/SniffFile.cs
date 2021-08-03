@@ -7,11 +7,14 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using Google.Protobuf;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Hotfix;
 using WowPacketParser.Misc;
+using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing;
+using WoWPacketParser.Proto;
 using WowPacketParser.Saving;
 using WowPacketParser.SQL;
 using WowPacketParser.Store;
@@ -138,19 +141,38 @@ namespace WowPacketParser.Loading
                 case DumpFormatType.SqlOnly:
                 case DumpFormatType.Text:
                 case DumpFormatType.HexOnly:
+                case DumpFormatType.UniversalProto:
+                case DumpFormatType.UniversalProtoWithText:
                 {
                     var outFileName = Path.ChangeExtension(FileName, null) + "_parsed.txt";
+                    var outProtoFileName = Path.ChangeExtension(FileName, null) + "_parsed.dat";
+                    FileStream protoOutputStream = null;
 
-                    if (Utilities.FileIsInUse(outFileName) && Settings.DumpFormat != DumpFormatType.SqlOnly)
+                    if (Settings.DumpFormatWithTextToFile())
                     {
-                        // If our dump format requires a .txt to be created,
-                        // check if we can write to that .txt before starting parsing
-                        Trace.WriteLine($"Save file {outFileName} is in use, parsing will not be done.");
-                        break;
+                        if (Utilities.FileIsInUse(outFileName) && Settings.DumpFormat != DumpFormatType.SqlOnly)
+                        {
+                            // If our dump format requires a .txt to be created,
+                            // check if we can write to that .txt before starting parsing
+                            Trace.WriteLine($"Save file {outFileName} is in use, parsing will not be done.");
+                            break;
+                        }
+                        File.Delete(outFileName);
                     }
-
+                    
+                    if (_dumpFormat is DumpFormatType.UniversalProto or 
+                        DumpFormatType.UniversalProtoWithText)
+                    {
+                        if (Utilities.FileIsInUse(outProtoFileName))
+                        {
+                            Trace.WriteLine($"Save file {outProtoFileName} is in use, parsing will not be done.");
+                            break;
+                        }
+                        File.Delete(outProtoFileName);
+                        protoOutputStream = File.Create(outProtoFileName);
+                    }
+                    
                     Store.Store.SQLEnabledFlags = Settings.SQLOutputFlag;
-                    File.Delete(outFileName);
 
                     _stats.SetStartTime(DateTime.Now);
 
@@ -161,8 +183,10 @@ namespace WowPacketParser.Loading
                     ThreadPool.SetMinThreads(threadCount + 2, 4);
 
                     var written = false;
-                    using (var writer = (Settings.DumpFormatWithText() ? new StreamWriter(outFileName, true) : null))
+
+                    using (var writer = (Settings.DumpFormatWithTextToFile() ? new StreamWriter(outFileName, true) : null))
                     {
+                        Packets packets = new() { Version = StructureVersion.ProtobufStructureVersion };
                         var firstRead = true;
                         var firstWrite = true;
 
@@ -202,6 +226,8 @@ namespace WowPacketParser.Loading
                         {
                             if (!Console.IsOutputRedirected)
                                 ShowPercentProgress("Processing...", reader.PacketReader.GetCurrentSize(), reader.PacketReader.GetTotalSize());
+                            else
+                                Console.WriteLine(reader.PacketReader.GetCurrentSize() * 1.0 / reader.PacketReader.GetTotalSize());
 
                             if (!packet.Status.HasAnyFlag(Settings.OutputFlag) || !packet.WriteToFile)
                             {
@@ -246,18 +272,31 @@ namespace WowPacketParser.Loading
                             }
 // ReSharper restore AccessToDisposedClosure
 
+                            if (_dumpFormat is DumpFormatType.UniversalProtoWithText)
+                                packet.Holder.BaseData.StringData = packet.Writer.ToString();
+
                             // Close Writer, Stream - Dispose
                             packet.ClosePacket();
+                            
+                            if (_dumpFormat is DumpFormatType.UniversalProto or 
+                                DumpFormatType.UniversalProtoWithText)
+                                packets.Packets_.Add(packet.Holder);
                         }, threadCount);
 
                         pwp.WaitForFinished(Timeout.Infinite);
 
                         reader.PacketReader.Dispose();
 
+                        if (protoOutputStream != null)
+                        {
+                            packets.WriteTo(protoOutputStream);
+                            protoOutputStream.Close();
+                        }
+
                         _stats.SetEndTime(DateTime.Now);
                     }
 
-                    if (Settings.DumpFormatWithText())
+                    if (Settings.DumpFormatWithTextToFile())
                     {
                         if (written)
                             Trace.WriteLine($"{_logPrefix}: Saved file to '{outFileName}'");

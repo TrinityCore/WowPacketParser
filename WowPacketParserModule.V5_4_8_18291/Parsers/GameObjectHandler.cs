@@ -35,8 +35,10 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             {
                 Entry = (uint)entry.Key
             };
+            var query = packet.Holder.QueryGameObjectResponse = new() { Entry = (uint)entry.Key };
 
             int unk1 = packet.ReadInt32("Unk1 UInt32");
+            query.HasData = unk1 > 0;
             if (unk1 == 0)
             {
                 packet.ReadByte("Unk1 Byte");
@@ -78,6 +80,17 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 Name = gameObject.Name
             };
             Storage.ObjectNames.Add(objectName, packet.TimeSpan);
+            query.Type = (uint)gameObject.Type.Value;
+            query.Model = gameObject.DisplayID.Value;
+            query.Name = gameObject.Name;
+            query.IconName = gameObject.IconName;
+            query.CastCaption = gameObject.CastCaption;
+            query.Size = gameObject.Size.Value;
+            query.RequiredLevel = gameObject.RequiredLevel.Value;
+            foreach (var data in gameObject.Data)
+                query.Data.Add(data.Value);
+            foreach (var item in gameObject.QuestItems)
+                query.Items.Add(item.Value);
         }
 
         [Parser(Opcode.CMSG_GAME_OBJ_USE)]

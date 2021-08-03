@@ -1,6 +1,7 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
+using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -38,11 +39,15 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_EMOTE)]
         public static void HandleEmote(Packet packet)
         {
+            PacketEmote packetEmote = packet.Holder.Emote = new PacketEmote();
             var emote = packet.ReadInt32E<EmoteType>("Emote ID");
             var guid = packet.ReadGuid("GUID");
 
             if (guid.GetObjectType() == ObjectType.Unit)
                 Storage.Emotes.Add(guid, emote, packet.TimeSpan);
+
+            packetEmote.Emote = (int) emote;
+            packetEmote.Sender = guid.ToUniversalGuid();
         }
 
         [Parser(Opcode.CMSG_SEND_TEXT_EMOTE)]
@@ -73,6 +78,7 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GM_MESSAGECHAT)]
         public static void HandleServerChatMessage(Packet packet)
         {
+            PacketChat chatPacket = packet.Holder.Chat = new PacketChat();
             var text = new CreatureText
             {
                 Type = packet.ReadByteE<ChatMessageType>("Type"),
@@ -188,6 +194,12 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (entry != 0)
                 Storage.CreatureTexts.Add(entry, text, packet.TimeSpan);
+
+            chatPacket.Text = text.Text;
+            chatPacket.Sender = text.SenderGUID.ToUniversalGuid();
+            chatPacket.Target = text.ReceiverGUID?.ToUniversalGuid();
+            chatPacket.Language = (int) text.Language;
+            chatPacket.Type = (int) text.Type;
         }
 
         [Parser(Opcode.CMSG_MESSAGECHAT)]

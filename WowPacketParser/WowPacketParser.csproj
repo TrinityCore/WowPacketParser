@@ -48,4 +48,8 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WowPacketParser.Proto\WowPacketParser.Proto.csproj" />
+  </ItemGroup>
+
 </Project>

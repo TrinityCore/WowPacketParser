@@ -4,6 +4,7 @@ using WowPacketParser.Hotfix;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WoWPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -22,14 +23,17 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_QUERY_CREATURE_RESPONSE)]
         public static void HandleCreatureQueryResponse(Packet packet)
         {
+            PacketQueryCreatureResponse response = packet.Holder.QueryCreatureResponse = new PacketQueryCreatureResponse();
             var entry = packet.ReadEntry("Entry"); // +5
 
             CreatureTemplate creature = new CreatureTemplate
             {
                 Entry = (uint)entry.Key
             };
+            response.Entry = (uint) entry.Key;
 
             Bit hasData = packet.ReadBit(); //+16
+            response.HasData = hasData;
             if (!hasData)
                 return; // nothing to do
 
@@ -90,16 +94,16 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             //creature.QuestItems = new uint[qItemCount];
             for (int i = 0; i < qItemCount; ++i)
-                /*creature.QuestItems[i] = (uint)*/packet.ReadInt32<ItemId>("Quest Item", i); //+72
+                response.QuestItems.Add((uint)packet.ReadInt32<ItemId>("Quest Item", i)); //+72
 
             creature.KillCredits[1] = packet.ReadUInt32(); //+28
             creature.ManaModifier = packet.ReadSingle("Modifier 2"); //+16
             creature.Family = packet.ReadInt32E<CreatureFamily>("Family"); //+13
 
             for (int i = 0; i < 4; ++i)
-                packet.AddValue("Display ID", creature.ModelIDs[i], i);
+                response.Models.Add(packet.AddValue("Display ID", creature.ModelIDs[i], i) ?? 0);
             for (int i = 0; i < 2; ++i)
-                packet.AddValue("Kill Credit", creature.KillCredits[i], i);
+                response.KillCredits.Add(packet.AddValue("Kill Credit", creature.KillCredits[i], i) ?? 0);
 
             packet.AddSniffData(StoreNameType.Unit, entry.Key, "QUERY_RESPONSE");
 
@@ -126,6 +130,22 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 Name = creature.Name
             };
             Storage.ObjectNames.Add(objectName, packet.TimeSpan);
+
+            response.Name = creature.Name;
+            response.NameAlt = creature.FemaleName;
+            response.Title = creature.SubName;
+            response.TitleAlt = creature.TitleAlt;
+            response.IconName = creature.IconName;
+            response.TypeFlags = (uint?)creature.TypeFlags ?? 0;
+            response.TypeFlags2 = creature.TypeFlags2 ?? 0;
+            response.Type = (int?)creature.Type ?? 0;
+            response.Family = (int?)creature.Family ?? 0;
+            response.Rank = (int?)creature.Rank ?? 0;
+            response.HpMod = creature.HealthModifier ?? 1.0f;
+            response.ManaMod = creature.ManaModifier ?? 1.0f;
+            response.Leader = creature.RacialLeader ?? false;
+            response.Expansion = (uint?) creature.RequiredExpansion ?? 0;
+            response.MovementId = creature.MovementID ?? 0;
         }
 
         [Parser(Opcode.CMSG_DB_QUERY_BULK)]
@@ -189,6 +209,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_QUERY_PLAYER_NAME_RESPONSE)]
         public static void HandleNameQueryResponse(Packet packet)
         {
+            PacketQueryPlayerNameResponse response = packet.Holder.QueryPlayerNameResponse = new();
             var guid4 = new byte[8];
             var guid5 = new byte[8];
             var guid1 = new byte[8];
@@ -214,12 +235,13 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             var hasData = packet.ReadByte("HasData");
             if (hasData == 0)
             {
+                response.HasData = true;
                 packet.ReadInt32("Realm Id");
                 packet.ReadInt32("AccountId");
-                packet.ReadByteE<Class>("Class");
-                packet.ReadByteE<Race>("Race");
-                packet.ReadByte("Level");
-                packet.ReadByteE<Gender>("Gender");
+                response.Class = (uint)packet.ReadByteE<Class>("Class");
+                response.Race = (uint)packet.ReadByteE<Race>("Race");
+                response.Level = packet.ReadByte("Level");
+                response.Gender = (uint)packet.ReadByteE<Gender>("Gender");
             }
 
             packet.ReadXORByte(guid1, 0);
@@ -256,7 +278,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
                 packet.ReadXORByte(guid5, 6);
                 packet.ReadXORByte(guid5, 0);
-                packet.ReadWoWString("Name", nameLen);
+                response.PlayerName = packet.ReadWoWString("Name", nameLen);
                 packet.ReadXORByte(guid4, 5);
                 packet.ReadXORByte(guid4, 2);
                 packet.ReadXORByte(guid5, 3);
@@ -280,7 +302,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 packet.WriteGuid("Guid5", guid5);
             }
 
-            packet.WriteGuid("Guid1", guid1);
+            response.PlayerGuid = packet.WriteGuid("Guid1", guid1);
         }
 
         [Parser(Opcode.CMSG_NAME_QUERY)]

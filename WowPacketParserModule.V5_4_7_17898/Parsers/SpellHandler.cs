@@ -1644,16 +1644,17 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.SMSG_PLAY_SPELL_VISUAL_KIT)]
         public static void HandleCastVisualKit(Packet packet)
         {
+            var playSpellVisualKit = packet.Holder.PlaySpellVisualKit = new();
             var guid = new byte[8];
 
-            packet.ReadUInt32("Unk");
-            packet.ReadInt32("SpellVisualKit ID");
-            packet.ReadUInt32("Unk");
+            playSpellVisualKit.KitType = (int)packet.ReadUInt32("Unk");
+            playSpellVisualKit.KitRecId = packet.ReadInt32("SpellVisualKit ID");
+            playSpellVisualKit.Duration = packet.ReadUInt32("Unk");
 
             packet.StartBitStream(guid, 2, 5, 7, 3, 4, 6, 0, 1);
             packet.ParseBitStream(guid, 4, 2, 1, 3, 5, 6, 0, 7);
 
-            packet.WriteGuid("Guid", guid);
+            playSpellVisualKit.Unit = packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_AURA_POINTS_DEPLETED)]
