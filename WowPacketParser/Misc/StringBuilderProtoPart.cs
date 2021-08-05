@@ -19,8 +19,8 @@ namespace WowPacketParser.Misc
             get
             {
                 if (Settings.DumpFormat == DumpFormatType.UniversalProtoWithText)
-                    return stringBuilder?.ToString(startLength, stringBuilder.Length - startLength);
-                return null;
+                    return stringBuilder?.ToString(startLength, stringBuilder.Length - startLength) ?? "";
+                return "";
             }
         }
     }
