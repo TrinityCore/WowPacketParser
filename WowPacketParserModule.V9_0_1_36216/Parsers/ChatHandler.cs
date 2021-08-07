@@ -39,6 +39,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadBit("HideChatLog");
             packet.ReadBit("FakeSenderName");
             bool unk801bit = packet.ReadBit("Unk801_Bit");
+            bool hasChannelGuid = false;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185))
+                hasChannelGuid = packet.ReadBit("HasChannelGUID");
 
             text.SenderName = packet.ReadWoWString("Sender Name", senderNameLen);
             text.ReceiverName = packet.ReadWoWString("Receiver Name", receiverNameLen);
@@ -54,6 +57,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             if (unk801bit)
                 packet.ReadUInt32("Unk801");
+
+            if (hasChannelGuid)
+                packet.ReadPackedGuid128("ChannelGUID");
 
             uint entry = 0;
             if (text.SenderGUID.GetObjectType() == ObjectType.Unit)

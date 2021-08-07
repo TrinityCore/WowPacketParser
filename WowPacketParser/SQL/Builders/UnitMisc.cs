@@ -355,6 +355,7 @@ namespace WowPacketParser.SQL.Builders
 
                     row.Data.PositionX = pointOfInterest.Item1.PositionX;
                     row.Data.PositionY = pointOfInterest.Item1.PositionY;
+                    row.Data.PositionZ = pointOfInterest.Item1.PositionZ;
                     row.Data.Icon = pointOfInterest.Item1.Icon;
                     row.Data.Flags = pointOfInterest.Item1.Flags;
                     row.Data.Importance = pointOfInterest.Item1.Importance;

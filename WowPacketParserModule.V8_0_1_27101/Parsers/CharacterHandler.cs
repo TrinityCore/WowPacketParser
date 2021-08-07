@@ -348,10 +348,10 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 packet.ReadInt32("SeasonPlayed", i);
                 packet.ReadInt32("SeasonWon", i);
                 packet.ReadInt32("WeeklyBestRating", i);
-                packet.ReadInt32("Unk710", i);
-                packet.ReadInt32("Unk801_1", i);
+                packet.ReadInt32("SeasonBestRating", i);
+                packet.ReadInt32("PvpTierID", i);
                 packet.ResetBitReader();
-                packet.ReadBit("Unk801_2", i);
+                packet.ReadBit("Disqualified", i);
             }
 
             if (hasGuildData)
@@ -410,9 +410,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadInt32("SeasonPlayed", idx);
             packet.ReadInt32("SeasonWon", idx);
             packet.ReadInt32("WeeklyBestRating", idx);
-            packet.ReadInt32("Unk710");
-            packet.ReadInt32("Unk801");
-            packet.ReadBit("Unk801_Bit");
+            packet.ReadInt32("SeasonBestRating", idx);
+            packet.ReadInt32("PvpTierID", idx);
+            packet.ReadBit("Disqualified", idx);
         }
 
         [Parser(Opcode.SMSG_INSPECT_PVP)]

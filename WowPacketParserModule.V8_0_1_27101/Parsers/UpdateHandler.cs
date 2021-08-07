@@ -393,6 +393,13 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     packet.ReadUInt32("TransportID", index);
                     packet.ReadSingle("Magnitude", index);
                     packet.ReadBits("Type", 2, index);
+
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185))
+                    {
+                        var unused910 = packet.ReadBit();
+                        if (unused910)
+                            packet.ReadInt32("Unused910", index);
+                    }
                 }
 
                 if (moveInfo.HasSplineData)

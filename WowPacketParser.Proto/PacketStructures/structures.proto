@@ -429,6 +429,7 @@ enum PacketDbReplyRecordStatus {
   RecordStatusValid  = 1;
   RecordStatusRecordRemoved = 2;
   RecordStatusInvalid = 3;
+  RecordStatusNotPublic = 4;
 }
 
 message PacketDbReplyBroadcastText {

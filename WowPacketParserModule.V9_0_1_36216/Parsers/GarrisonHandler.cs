@@ -175,6 +175,12 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 ReadGarrisonEventEntry(packet, indexes, i);
         }
 
+        public static void ReadGarrisonSpecGroup(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("ChrSpecializationID", indexes);
+            packet.ReadInt32("SoulbindID", indexes);
+        }
+
         [Parser(Opcode.SMSG_GET_GARRISON_INFO_RESULT)]
         public static void HandleGetGarrisonInfoResult(Packet packet)
         {
@@ -202,6 +208,11 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 var talentsCount = packet.ReadUInt32("Talents", i);
                 var collectionsCount = packet.ReadUInt32("GarrisonCollectionCount", i);
                 var eventListCount = packet.ReadUInt32("GarrisonEventListCount", i);
+
+                uint specGroupsCount = 0;
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185))
+                    specGroupsCount = packet.ReadUInt32("SpecGroupsCount", i);
+
                 var canStartMissionCount = packet.ReadUInt32("CanStartMission", i);
                 var archivedMissionsCount = packet.ReadUInt32("ArchivedMissionsCount", i);
 
@@ -241,6 +252,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
                 for (int j = 0; j < eventListCount; j++)
                     ReadGarrisonEventList(packet, i, "EventList", j);
+
+                for (int j = 0; j < specGroupsCount; j++)
+                    ReadGarrisonSpecGroup(packet, i, "SpecGroup", j);
 
                 for (int j = 0; j < archivedMissionsCount; j++)
                     packet.ReadInt32("ArchivedMissions", i, j);

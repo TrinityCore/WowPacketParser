@@ -173,6 +173,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             quest.RewardNumSkillUps = (uint)packet.ReadInt32("RewardNumSkillUps");
             quest.QuestGiverPortrait = (uint)packet.ReadInt32("PortraitGiver");
             quest.PortraitGiverMount = (uint)packet.ReadInt32("PortraitGiverMount");
+
+            if(ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185))
+                quest.PortraitGiverModelSceneID = packet.ReadInt32("PortraitGiverModelSceneID");
+
             quest.QuestTurnInPortrait = (uint)packet.ReadInt32("PortraitTurnIn");
 
             quest.RewardFactionID = new uint?[5];
@@ -412,6 +416,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadInt32("QuestPackageID");
             packet.ReadInt32("PortraitGiver");
             packet.ReadInt32("PortraitGiverMount");
+            packet.ReadInt32("PortraitGiverModelSceneID");
             packet.ReadInt32("PortraitTurnIn");
 
             packet.ResetBitReader();
@@ -456,6 +461,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadInt32("QuestPackageID");
             packet.ReadInt32("PortraitGiver");
             packet.ReadInt32("PortraitGiverMount");
+            packet.ReadInt32("PortraitGiverModelSceneID");
             packet.ReadInt32("PortraitTurnIn");
 
             for (int i = 0; i < 2; i++)
@@ -575,6 +581,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadPackedGuid128("SenderGUID");
             var uiTextureKitId = packet.ReadInt32("UiTextureKitID");
             var soundKitId = packet.ReadUInt32("SoundKitID");
+            packet.ReadByte("NumRerolls");
             packet.ResetBitReader();
             var questionLength = packet.ReadBits(8);
             packet.ReadBit("CloseChoiceFrame");
@@ -679,6 +686,14 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                     Confirmation = confirmation
                 }, packet.TimeSpan);
             }
+        }
+
+        [Parser(Opcode.CMSG_CHOICE_RESPONSE, ClientVersionBuild.V9_1_0_39185)]
+        public static void HandleChoiceResponse(Packet packet)
+        {
+            packet.ReadInt32("ChoiceID");
+            packet.ReadInt32("ResponseID");
+            packet.ReadBit("IsReroll");
         }
     }
 }

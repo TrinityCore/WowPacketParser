@@ -16,6 +16,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("PositionY")]
         public float? PositionY;
 
+        [DBFieldName("PositionZ", TargetedDatabase.Shadowlands)]
+        public float? PositionZ;
+
         [DBFieldName("Icon")]
         public GossipPOIIcon? Icon;
 

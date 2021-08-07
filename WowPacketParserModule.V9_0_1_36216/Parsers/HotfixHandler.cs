@@ -33,7 +33,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var timeStamp = packet.ReadUInt32();
             var time = packet.AddValue("Timestamp", Utilities.GetDateTimeFromUnixTime(timeStamp));
             dbReply.Time = Timestamp.FromDateTime(DateTime.SpecifyKind(time, DateTimeKind.Utc));
-            var status = packet.ReadBitsE<HotfixStatus>("Status", 2);
+            int statusBits = ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185) ? 3 : 2;
+            var status = packet.ReadBitsE<HotfixStatus>("Status", statusBits);
             switch (status)
             {
                 case HotfixStatus.Valid:
@@ -45,6 +46,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 case HotfixStatus.Invalid:
                     dbReply.Status = PacketDbReplyRecordStatus.RecordStatusInvalid;
                     break;
+                case HotfixStatus.NotPublic:
+                    dbReply.Status = PacketDbReplyRecordStatus.RecordStatusNotPublic;
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -53,84 +57,101 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var data = packet.ReadBytes(size);
             var db2File = new Packet(data, packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName);
 
-            if (entry < 0 || status == HotfixStatus.RecordRemoved)
+            switch (status)
             {
-                packet.WriteLine("Row {0} has been removed.", -entry);
-                HotfixStoreMgr.RemoveRecord(type, entry);
-            }
-            if (status == HotfixStatus.Invalid)
-            {
-                packet.WriteLine("Row {0} is invalid.", entry);
-            }
-            else
-            {
-                switch (type)
+                case HotfixStatus.Valid:
                 {
-                    case DB2Hash.BroadcastText:
+                    switch (type)
                     {
-                        var bct = new BroadcastText()
+                        case DB2Hash.BroadcastText:
                         {
-                            Text = db2File.ReadCString("Text"),
-                            Text1 = db2File.ReadCString("Text1"),
-                        };
-
-                        bct.ID = db2File.ReadUInt32("ID");
-                        bct.LanguageID = db2File.ReadInt32("LanguageID");
-                        bct.ConditionID = db2File.ReadUInt32("ConditionID");
-                        bct.EmotesID = db2File.ReadUInt16("EmotesID");
-                        bct.Flags = db2File.ReadByte("Flags");
-                        bct.ChatBubbleDurationMs = db2File.ReadUInt32("ChatBubbleDurationMs");
-
-                        bct.SoundEntriesID = new uint?[2];
-                        for (int i = 0; i < 2; ++i)
-                            bct.SoundEntriesID[i] = db2File.ReadUInt32("SoundEntriesID", i);
-
-                        bct.EmoteID = new ushort?[3];
-                        bct.EmoteDelay = new ushort?[3];
-                        for (int i = 0; i < 3; ++i)
-                            bct.EmoteID[i] = db2File.ReadUInt16("EmoteID", i);
-                        for (int i = 0; i < 3; ++i)
-                            bct.EmoteDelay[i] = db2File.ReadUInt16("EmoteDelay", i);
-
-                        Storage.BroadcastTexts.Add(bct, packet.TimeSpan);
-
-                        if (ClientLocale.PacketLocale != LocaleConstant.enUS)
-                        {
-                            BroadcastTextLocale lbct = new BroadcastTextLocale
+                            var bct = new BroadcastText()
                             {
-                                ID = bct.ID,
-                                TextLang = bct.Text,
-                                Text1Lang = bct.Text1
+                                Text = db2File.ReadCString("Text"),
+                                Text1 = db2File.ReadCString("Text1"),
                             };
-                            Storage.BroadcastTextLocales.Add(lbct, packet.TimeSpan);
+
+                            bct.ID = db2File.ReadUInt32("ID");
+                            bct.LanguageID = db2File.ReadInt32("LanguageID");
+                            bct.ConditionID = db2File.ReadUInt32("ConditionID");
+                            bct.EmotesID = db2File.ReadUInt16("EmotesID");
+                            bct.Flags = db2File.ReadByte("Flags");
+                            bct.ChatBubbleDurationMs = db2File.ReadUInt32("ChatBubbleDurationMs");
+
+                            bct.SoundEntriesID = new uint?[2];
+                            for (int i = 0; i < 2; ++i)
+                                bct.SoundEntriesID[i] = db2File.ReadUInt32("SoundEntriesID", i);
+
+                            bct.EmoteID = new ushort?[3];
+                            bct.EmoteDelay = new ushort?[3];
+                            for (int i = 0; i < 3; ++i)
+                                bct.EmoteID[i] = db2File.ReadUInt16("EmoteID", i);
+                            for (int i = 0; i < 3; ++i)
+                                bct.EmoteDelay[i] = db2File.ReadUInt16("EmoteDelay", i);
+
+                            Storage.BroadcastTexts.Add(bct, packet.TimeSpan);
+
+                            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+                            {
+                                BroadcastTextLocale lbct = new BroadcastTextLocale
+                                {
+                                    ID = bct.ID,
+                                    TextLang = bct.Text,
+                                    Text1Lang = bct.Text1
+                                };
+                                Storage.BroadcastTextLocales.Add(lbct, packet.TimeSpan);
+                            }
+
+                            dbReply.BroadcastText = new PacketDbReplyBroadcastText()
+                            {
+                                Id = bct.ID.Value,
+                                Text0 = bct.Text,
+                                Text1 = bct.Text1,
+                                Language = bct.LanguageID.Value,
+                                ConditionId = bct.ConditionID.Value,
+                                EmotesId = bct.EmotesID.Value,
+                                Flags = bct.Flags.Value,
+                                ChatBubbleDuration = bct.ChatBubbleDurationMs.Value,
+                            };
+                            dbReply.BroadcastText.Sounds.Add(bct.SoundEntriesID1.Value);
+                            dbReply.BroadcastText.Sounds.Add(bct.SoundEntriesID2.Value);
+                            for (int i = 0; i < 3; ++i)
+                                dbReply.BroadcastText.Emotes.Add(new BroadcastTextEmote() { EmoteId = bct.EmoteID[i].Value, Delay = bct.EmoteDelay[i].Value });
+                            break;
                         }
-
-                        dbReply.BroadcastText = new PacketDbReplyBroadcastText()
-                        {
-                            Id = bct.ID.Value,
-                            Text0 = bct.Text,
-                            Text1 = bct.Text1,
-                            Language = bct.LanguageID.Value,
-                            ConditionId = bct.ConditionID.Value,
-                            EmotesId = bct.EmotesID.Value,
-                            Flags = bct.Flags.Value,
-                            ChatBubbleDuration = bct.ChatBubbleDurationMs.Value,
-                        };
-                        dbReply.BroadcastText.Sounds.Add(bct.SoundEntriesID1.Value);
-                        dbReply.BroadcastText.Sounds.Add(bct.SoundEntriesID2.Value);
-                        for (int i = 0; i < 3; ++i)
-                            dbReply.BroadcastText.Emotes.Add(new BroadcastTextEmote(){EmoteId = bct.EmoteID[i].Value, Delay = bct.EmoteDelay[i].Value});
-                        break;
+                        default:
+                            HotfixStoreMgr.AddRecord(type, entry, db2File);
+                            break;
                     }
-                    default:
-                        HotfixStoreMgr.AddRecord(type, entry, db2File);
-                        break;
+
+                    if (db2File.Position != db2File.Length)
+                        HandleHotfixOptionalData(packet, type, entry, db2File);
+
+                    db2File.ClosePacket(false);
+                    break;
                 }
-
-                if (db2File.Position != db2File.Length)
-                    HandleHotfixOptionalData(packet, type, entry, db2File);
-
-                db2File.ClosePacket(false);
+                case HotfixStatus.RecordRemoved:
+                {
+                    packet.WriteLine($"Row {entry} has been removed.");
+                    HotfixStoreMgr.RemoveRecord(type, entry);
+                    break;
+                }
+                case HotfixStatus.Invalid:
+                {
+                    // sniffs from others may have the data
+                    packet.WriteLine($"Row {entry} is invalid.");
+                    break;
+                }
+                case HotfixStatus.NotPublic:
+                {
+                    packet.WriteLine($"Row {entry} is not public.");
+                    break;
+                }
+                default:
+                {
+                    packet.WriteLine($"Unhandled status: {status}");
+                    break;
+                }
             }
         }
 
@@ -150,47 +171,47 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 switch (status)
                 {
                     case HotfixStatus.Valid:
-                        {
-                            packet.AddSniffData(StoreNameType.None, entry, type.ToString());
-                            HotfixStoreMgr.AddRecord(type, entry, db2File);
+                    {
+                        packet.AddSniffData(StoreNameType.None, entry, type.ToString());
+                        HotfixStoreMgr.AddRecord(type, entry, db2File);
 
-                            if (HotfixStoreMgr.GetStore(type) == null)
+                        if (HotfixStoreMgr.GetStore(type) == null)
+                        {
+                            db2File.WriteLine($"(Entry: {entry} TableHash: {type}) has missing structure. HotfixBlob entry generated!");
+                            db2File.AsHex();
+
+                            HotfixBlob hotfixBlob = new HotfixBlob
                             {
-                                db2File.WriteLine($"(Entry: {entry} TableHash: {type}) has missing structure. HotfixBlob entry generated!");
-                                db2File.AsHex();
+                                TableHash = type,
+                                RecordID = entry,
+                                Blob = new Blob(data)
+                            };
 
-                                HotfixBlob hotfixBlob = new HotfixBlob
-                                {
-                                    TableHash = type,
-                                    RecordID = entry,
-                                    Blob = new Blob(data)
-                                };
-
-                                Storage.HotfixBlobs.Add(hotfixBlob);
-                            }
-                            else if (db2File.Position != db2File.Length)
-                                HandleHotfixOptionalData(packet, type, entry, db2File);
-
-                            db2File.ClosePacket(false);
-                            break;
+                            Storage.HotfixBlobs.Add(hotfixBlob);
                         }
+                        else if (db2File.Position != db2File.Length)
+                            HandleHotfixOptionalData(packet, type, entry, db2File);
+
+                        db2File.ClosePacket(false);
+                        break;
+                    }
                     case HotfixStatus.RecordRemoved:
-                        {
-                            packet.WriteLine($"Row {entry} has been removed.");
-                            HotfixStoreMgr.RemoveRecord(type, entry);
-                            break;
-                        }
+                    {
+                        packet.WriteLine($"Row {entry} has been removed.");
+                        HotfixStoreMgr.RemoveRecord(type, entry);
+                        break;
+                    }
                     case HotfixStatus.Invalid:
-                        {
-                            // sniffs from others may have the data
-                            packet.WriteLine($"Row {entry} is invalid.");
-                            break;
-                        }
+                    {
+                        // sniffs from others may have the data
+                        packet.WriteLine($"Row {entry} is invalid.");
+                        break;
+                    }
                     default:
-                        {
-                            packet.WriteLine($"Unhandled status: {status}");
-                            break;
-                        }
+                    {
+                        packet.WriteLine($"Unhandled status: {status}");
+                        break;
+                    }
                 }
 
                 HotfixData hotfixData = new HotfixData
@@ -275,7 +296,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 hotfixRecord.HotfixId = packet.ReadUInt32();
                 hotfixRecord.HotfixDataSize = packet.ReadInt32();
                 packet.ResetBitReader();
-                hotfixRecord.Status = (HotfixStatus)packet.ReadBits(2);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185))
+                    hotfixRecord.Status = (HotfixStatus)packet.ReadBits(3);
+                else
+                    hotfixRecord.Status = (HotfixStatus)packet.ReadBits(2);
 
                 hotfixRecords.Add(hotfixRecord);
             }

@@ -105,6 +105,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             response.Expansion = (uint?) creature.RequiredExpansion ?? 0;
             creature.VignetteID = (uint)packet.ReadInt32("VignetteID");
             creature.UnitClass = (uint)packet.ReadInt32E<Class>("UnitClass");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185))
+                creature.CreatureDifficultyID = packet.ReadInt32("CreatureDifficultyID");
             creature.WidgetSetID = packet.ReadInt32("WidgetSetID");
             creature.WidgetSetUnitConditionID = packet.ReadInt32("WidgetSetUnitConditionID");
 

@@ -105,6 +105,12 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             }
         }
 
+        [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS2)]
+        public static void HandleFeatureSystemStatus2(Packet packet)
+        {
+            packet.ReadBit("TextToSpeechFeatureEnabled");
+        }
+
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS_GLUE_SCREEN)]
         public static void HandleFeatureSystemStatusGlueScreen(Packet packet)
         {

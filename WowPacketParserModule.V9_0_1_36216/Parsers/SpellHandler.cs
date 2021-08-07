@@ -21,7 +21,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         {
             packet.ReadInt32<ItemId>("ItemID", indexes);
             packet.ReadInt32("Slot", indexes);
-            packet.ReadInt32("Count", indexes);
+            if(ClientVersion.RemovedInVersion(ClientVersionBuild.V9_1_0_39185))
+                packet.ReadInt32("Count", indexes);
         }
 
         public static void ReadOptionalCurrency(Packet packet, params object[] indexes)

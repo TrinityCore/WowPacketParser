@@ -116,6 +116,24 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 V8_0_1_27101.Parsers.CharacterHandler.ReadInspectItemData(packet, idx, i);
         }
 
+        public static void ReadPVPBracketData(Packet packet, params object[] idx)
+        {
+            packet.ReadByte("Bracket", idx);
+            packet.ReadInt32("Rating", idx);
+            packet.ReadInt32("Rank", idx);
+            packet.ReadInt32("WeeklyPlayed", idx);
+            packet.ReadInt32("WeeklyWon", idx);
+            packet.ReadInt32("SeasonPlayed", idx);
+            packet.ReadInt32("SeasonWon", idx);
+            packet.ReadInt32("WeeklyBestRating", idx);
+            packet.ReadInt32("SeasonBestRating", idx);
+            packet.ReadInt32("PvpTierID", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185))
+                packet.ReadInt32("WeeklyBestWinPvpTierID", idx);
+            packet.ReadBit("Disqualified", idx);
+            packet.ResetBitReader();
+        }
+
         [Parser(Opcode.SMSG_PLAYER_CHOICE_CLEAR)]
         public static void HandleEmpty(Packet packet)
         {
@@ -181,20 +199,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var hasAzeriteLevel = packet.ReadBit("HasAzeriteLevel");
 
             for (int i = 0; i < 6; i++)
-            {
-                packet.ReadByte("Bracket", i);
-                packet.ReadInt32("Rating", i);
-                packet.ReadInt32("Rank", i);
-                packet.ReadInt32("WeeklyPlayed", i);
-                packet.ReadInt32("WeeklyWon", i);
-                packet.ReadInt32("SeasonPlayed", i);
-                packet.ReadInt32("SeasonWon", i);
-                packet.ReadInt32("WeeklyBestRating", i);
-                packet.ReadInt32("Unk710", i);
-                packet.ReadInt32("Unk801_1", i);
-                packet.ResetBitReader();
-                packet.ReadBit("Unk801_2", i);
-            }
+                ReadPVPBracketData(packet, i, "PVPBracketData");
 
             if (hasGuildData)
             {
