@@ -53,9 +53,9 @@ namespace WowPacketParserModule.V9_1_0_39185.Hotfix
         public float[] AlteredFormCustomizeOffsetFallback { get; set; }
         public float AlteredFormCustomizeRotationFallback { get; set; }
         [HotfixArray(3)]
-        public float[] Field_9_1_0_38312_030 { get; set; }
+        public float[] Unknown910_1 { get; set; }
         [HotfixArray(3)]
-        public float[] Field_9_1_0_38312_031 { get; set; }
+        public float[] Unknown910_2 { get; set; }
         public sbyte BaseLanguage { get; set; }
         public sbyte CreatureType { get; set; }
         public sbyte MaleModelFallbackSex { get; set; }

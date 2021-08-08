@@ -9,6 +9,6 @@ namespace WowPacketParserModule.V9_1_0_39185.Hotfix
         public long RaceMask { get; set; }
         public sbyte ChrClassID { get; set; }
         public sbyte Purpose { get; set; }
-        public sbyte Field25138043004 { get; set; }
+        public sbyte Unused910 { get; set; }
     }
 }
