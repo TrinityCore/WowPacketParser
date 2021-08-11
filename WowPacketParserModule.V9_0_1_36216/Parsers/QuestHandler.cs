@@ -416,7 +416,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadInt32("QuestPackageID");
             packet.ReadInt32("PortraitGiver");
             packet.ReadInt32("PortraitGiverMount");
-            packet.ReadInt32("PortraitGiverModelSceneID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185))
+                packet.ReadInt32("PortraitGiverModelSceneID");
             packet.ReadInt32("PortraitTurnIn");
 
             packet.ResetBitReader();
@@ -461,7 +462,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadInt32("QuestPackageID");
             packet.ReadInt32("PortraitGiver");
             packet.ReadInt32("PortraitGiverMount");
-            packet.ReadInt32("PortraitGiverModelSceneID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185))
+                packet.ReadInt32("PortraitGiverModelSceneID");
             packet.ReadInt32("PortraitTurnIn");
 
             for (int i = 0; i < 2; i++)
@@ -581,7 +583,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadPackedGuid128("SenderGUID");
             var uiTextureKitId = packet.ReadInt32("UiTextureKitID");
             var soundKitId = packet.ReadUInt32("SoundKitID");
-            packet.ReadByte("NumRerolls");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185))
+                packet.ReadByte("NumRerolls");
             packet.ResetBitReader();
             var questionLength = packet.ReadBits(8);
             packet.ReadBit("CloseChoiceFrame");

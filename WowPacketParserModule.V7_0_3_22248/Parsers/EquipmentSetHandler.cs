@@ -99,6 +99,18 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (var j = 0; j < 2; j++)
                 packet.ReadInt32("Enchants", j);
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_1_36216))
+            {
+                packet.ReadInt32("SecondaryShoulderApparanceID");
+                packet.ReadInt32("SecondaryShoulderSlot");
+            }
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185))
+            {
+                packet.ReadInt32("SecondaryWeaponAppearanceID");
+                packet.ReadInt32("SecondaryWeaponSlot");
+            }
+
             packet.ResetBitReader();
 
             var hasSpecIndex = packet.ReadBit("HasSpecIndex");

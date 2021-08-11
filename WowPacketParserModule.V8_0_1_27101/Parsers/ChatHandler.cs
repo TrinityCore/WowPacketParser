@@ -9,6 +9,22 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 {
     public static class ChatHandler
     {
+        public static void ReadChatAddonMessageParams(Packet packet, params object[] indexes)
+        {
+            packet.ResetBitReader();
+            var prefixLen = packet.ReadBits(5);
+            uint textLen = 0;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724) && ClientVersion.RemovedInVersion(ClientVersionBuild.V8_1_5_29683))
+                textLen = packet.ReadBits(9);
+            else
+                textLen = packet.ReadBits(8);
+            packet.ReadBit("IsLogged", indexes);
+
+            packet.ReadInt32("Type", indexes);
+            packet.ReadWoWString("Prefix", prefixLen, indexes);
+            packet.ReadWoWString("Text", textLen, indexes);
+        }
+
         [Parser(Opcode.SMSG_CHAT)]
         public static void HandleServerChatMessage(Packet packet)
         {
@@ -69,30 +85,20 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 Storage.CreatureTexts.Add(entry, text, packet.TimeSpan);
         }
 
-        [Parser(Opcode.CMSG_CHAT_ADDON_MESSAGE, ClientVersionBuild.V8_0_1_27101, ClientVersionBuild.V8_1_0_28724)]
+        [Parser(Opcode.CMSG_CHAT_ADDON_MESSAGE)]
         public static void HandleAddonMessage(Packet packet)
         {
-            var prefixLen = packet.ReadBits(5);
-            var testLen = packet.ReadBits(8);
-            packet.ReadBit("IsLogged");
-            packet.ResetBitReader();
-
-            packet.ReadInt32("Type");
-            packet.ReadWoWString("Prefix", prefixLen);
-            packet.ReadWoWString("Text", testLen);
+            ReadChatAddonMessageParams(packet);
         }
 
-        [Parser(Opcode.CMSG_CHAT_ADDON_MESSAGE, ClientVersionBuild.V8_1_0_28724)]
-        public static void HandleAddonMessage810(Packet packet)
+        [Parser(Opcode.CMSG_CHAT_ADDON_MESSAGE_TARGETED)]
+        public static void HandleChatAddonMessageTargeted(Packet packet)
         {
-            var prefixLen = packet.ReadBits(5);
-            var testLen = packet.ReadBits(9);
-            packet.ReadBit("IsLogged");
-            packet.ResetBitReader();
-
-            packet.ReadInt32("Type");
-            packet.ReadWoWString("Prefix", prefixLen);
-            packet.ReadWoWString("Text", testLen);
+            var targetLen = packet.ReadBits(9);
+            ReadChatAddonMessageParams(packet, "Params");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185))
+                packet.ReadPackedGuid128("ChannelGUID");
+            packet.ReadWoWString("Target", targetLen);
         }
     }
 }

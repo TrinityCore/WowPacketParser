@@ -80,8 +80,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 ReadAuraInfos(packet, "Aura", i);
 
             packet.ResetBitReader();
-
             var hasPet = packet.ReadBit("HasPet");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185))
+                Substructures.MythicPlusHandler.ReadDungeonScoreSummary(packet, "DungeonScoreSummary");
+
             if (hasPet) // Pet
                 ReadPetInfos(packet, "Pet");
 
