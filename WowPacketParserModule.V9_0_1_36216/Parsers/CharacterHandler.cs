@@ -49,7 +49,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             {
                 packet.ReadUInt32("DisplayID", idx, "VisualItems", j);
                 packet.ReadUInt32("DisplayEnchantID", idx, "VisualItems", j);
-                packet.ReadInt32("ItemModifiedAppearanceID", idx, "VisualItems", j);
+                packet.ReadInt32("SecondaryItemModifiedAppearanceID", idx, "VisualItems", j);
                 packet.ReadByteE<InventoryType>("InvType", idx, "VisualItems", j);
                 packet.ReadByte("Subclass", idx, "VisualItems", j);
             }

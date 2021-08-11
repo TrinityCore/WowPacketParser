@@ -745,7 +745,7 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_0_5_37862
         {
             var data = new VisibleItem();
             data.ItemID = packet.ReadInt32("ItemID", indexes);
-            data.ItemModifiedAppearanceID = packet.ReadInt32("ItemModifiedAppearanceID", indexes);
+            data.SecondaryItemModifiedAppearanceID = packet.ReadInt32("SecondaryItemModifiedAppearanceID", indexes);
             data.ItemAppearanceModID = packet.ReadUInt16("ItemAppearanceModID", indexes);
             data.ItemVisual = packet.ReadUInt16("ItemVisual", indexes);
             return data;
@@ -769,7 +769,7 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_0_5_37862
                 }
                 if (changesMask[2])
                 {
-                    data.ItemModifiedAppearanceID = packet.ReadInt32("ItemModifiedAppearanceID", indexes);
+                    data.SecondaryItemModifiedAppearanceID = packet.ReadInt32("SecondaryItemModifiedAppearanceID", indexes);
                 }
                 if (changesMask[3])
                 {
