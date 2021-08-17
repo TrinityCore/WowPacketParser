@@ -4,7 +4,6 @@
     {
         // ReSharper disable InconsistentNaming
         areatrigger_template,
-        areatrigger_template_polygon_vertices,
         broadcast_text,
         broadcast_text_locale,
         conversation_actor_template,
@@ -48,6 +47,7 @@
         scenario_poi,
         spell_target_position,
         spell_areatrigger,
+        spell_areatrigger_vertices,
         SniffData,
         SniffDataOpcodes,
         trainer,

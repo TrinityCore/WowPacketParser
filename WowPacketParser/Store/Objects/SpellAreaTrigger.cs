@@ -62,32 +62,37 @@ namespace WowPacketParser.Store.Objects
             DecalPropertiesId   = AreaTriggerData.DecalPropertiesID;
             TimeToTarget        = AreaTriggerData.TimeToTarget;
             TimeToTargetScale   = AreaTriggerData.TimeToTargetScale;
+            SpellMiscId         = GetSpellMiscIdFromSpellId(spellId);
+        }
 
-            if (Settings.UseDBC)
+        public static uint? GetSpellMiscIdFromSpellId(uint spellId)
+        {
+            if (!Settings.UseDBC)
+                return null;
+
+            uint? SpellMiscId = null;
+
+            for (uint idx = 0; idx < 32; idx++)
             {
-                for (uint idx = 0; idx < 32; idx++)
+                var tuple = Tuple.Create(spellId, idx);
+                if (DBC.DBC.SpellEffectStores.ContainsKey(tuple))
                 {
-                    var tuple = Tuple.Create(spellId, idx);
-                    if (DBC.DBC.SpellEffectStores.ContainsKey(tuple))
+                    var effect = DBC.DBC.SpellEffectStores[tuple];
+
+                    if (effect.Effect == (uint)SpellEffects.SPELL_EFFECT_CREATE_AREATRIGGER ||
+                        effect.EffectAura == (uint)AuraTypeLegion.SPELL_AURA_AREA_TRIGGER)
                     {
-                        var effect = DBC.DBC.SpellEffectStores[tuple];
+                        // If we already had a SPELL_EFFECT_CREATE_AREATRIGGER, spell has multiple areatrigger,
+                        // so we can't deduce SpellMiscId, return null
+                        if (SpellMiscId != null)
+                            return null;
 
-                        if (effect.Effect == (uint)SpellEffects.SPELL_EFFECT_CREATE_AREATRIGGER ||
-                            effect.EffectAura == (uint)AuraTypeLegion.SPELL_AURA_AREA_TRIGGER)
-                        {
-                            // If we already had a SPELL_EFFECT_CREATE_AREATRIGGER, spell has multiple areatrigger,
-                            // so we can't deduce SpellMiscId, erase previous value & break
-                            if (SpellMiscId != null)
-                            {
-                                SpellMiscId = null;
-                                break;
-                            }
-
-                            SpellMiscId = (uint)effect.EffectMiscValue[0];
-                        }
+                        SpellMiscId = (uint)effect.EffectMiscValue[0];
                     }
                 }
             }
+
+            return SpellMiscId;
         }
     }
 }

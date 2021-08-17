@@ -535,25 +535,25 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                     var verticesCount = packet.ReadInt32("VerticesCount", index);
                     var verticesTargetCount = packet.ReadInt32("VerticesTargetCount", index);
 
-                    List<AreaTriggerTemplateVertices> verticesList = new List<AreaTriggerTemplateVertices>();
+                    List<SpellAreatriggerVertices> verticesList = new List<SpellAreatriggerVertices>();
 
                     areaTriggerTemplate.Data[0] = packet.ReadSingle("Height", index);
                     areaTriggerTemplate.Data[1] = packet.ReadSingle("HeightTarget", index);
 
                     for (uint i = 0; i < verticesCount; ++i)
                     {
-                        AreaTriggerTemplateVertices areaTriggerTemplateVertices = new AreaTriggerTemplateVertices
+                        SpellAreatriggerVertices spellAreatriggerVertices = new SpellAreatriggerVertices
                         {
-                            AreaTriggerId = guid.GetEntry(),
+                            areatriggerGuid = guid,
                             Idx = i
                         };
 
                         Vector2 vertices = packet.ReadVector2("Vertices", index, i);
 
-                        areaTriggerTemplateVertices.VerticeX = vertices.X;
-                        areaTriggerTemplateVertices.VerticeY = vertices.Y;
+                        spellAreatriggerVertices.VerticeX = vertices.X;
+                        spellAreatriggerVertices.VerticeY = vertices.Y;
 
-                        verticesList.Add(areaTriggerTemplateVertices);
+                        verticesList.Add(spellAreatriggerVertices);
                     }
 
                     for (var i = 0; i < verticesTargetCount; ++i)
@@ -564,8 +564,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                         verticesList[i].VerticeTargetY = verticesTarget.Y;
                     }
 
-                    foreach (AreaTriggerTemplateVertices vertice in verticesList)
-                        Storage.AreaTriggerTemplatesVertices.Add(vertice);
+                    foreach (SpellAreatriggerVertices vertice in verticesList)
+                        Storage.SpellAreaTriggerVertices.Add(vertice);
                 }
 
                 if (areaTriggerTemplate.Type == (byte)AreaTriggerType.Cylinder)
