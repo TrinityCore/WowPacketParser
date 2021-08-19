@@ -1289,7 +1289,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.Direction == Direction.ServerToClient) && ClientVersion.Build != ClientVersionBuild.V4_2_2_14545)
                 guid = packet.ReadPackedGuid("Guid");
             else
-                guid = new WowGuid64();
+                guid = WowGuid64.Empty;
 
             ReadMovementInfo(packet, guid);
 

@@ -185,7 +185,7 @@ namespace WowPacketParser.Parsing.Parsers
                 entry.Remove = true;
                 return null;
             }
-            
+
             aura.SpellId = entry.Spell = (uint)id;
 
             AuraFlag flags;
@@ -201,7 +201,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             aura.Charges = packet.ReadByte("Charges", i);
 
-            entry.CasterUnit = aura.CasterGuid = !aura.AuraFlags.HasAnyFlag(AuraFlag.NotCaster) ? packet.ReadPackedGuid("Caster GUID", i) : new WowGuid64();
+            entry.CasterUnit = aura.CasterGuid = !aura.AuraFlags.HasAnyFlag(AuraFlag.NotCaster) ? packet.ReadPackedGuid("Caster GUID", i) : WowGuid64.Empty;
 
             if (aura.AuraFlags.HasAnyFlag(AuraFlag.Duration))
             {
@@ -258,7 +258,7 @@ namespace WowPacketParser.Parsing.Parsers
 
             aura.Charges = packet.ReadByte("Charges", i);
 
-            entry.CasterUnit = aura.CasterGuid = !aura.AuraFlags.HasAnyFlag(AuraFlagMoP.NoCaster) ? packet.ReadPackedGuid("Caster GUID", i) : new WowGuid64();
+            entry.CasterUnit = aura.CasterGuid = !aura.AuraFlags.HasAnyFlag(AuraFlagMoP.NoCaster) ? packet.ReadPackedGuid("Caster GUID", i) : WowGuid64.Empty;
 
             if (aura.AuraFlags.HasAnyFlag(AuraFlagMoP.Duration))
             {
@@ -292,7 +292,7 @@ namespace WowPacketParser.Parsing.Parsers
             PacketAuraUpdate packetAuraUpdate = new();
             if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_AURA_UPDATE, Direction.ServerToClient))
                 packet.Holder.AuraUpdate = packetAuraUpdate;
-            
+
             var guid = packet.ReadPackedGuid("GUID");
             packetAuraUpdate.Unit = guid;
             var i = 0;
@@ -306,7 +306,7 @@ namespace WowPacketParser.Parsing.Parsers
                     aura = ReadAuraUpdateBlock505(packet, auraEntry, i++);
                 else
                     aura = ReadAuraUpdateBlock(packet, auraEntry, i++);
-                
+
                 if (aura != null)
                     auras.Add(aura);
             }
@@ -724,11 +724,11 @@ namespace WowPacketParser.Parsing.Parsers
 
             var targetFlags = packet.ReadInt32E<TargetFlag>("Target Flags");
 
-            WowGuid targetGUID = new WowGuid64();
+            WowGuid targetGUID = WowGuid64.Empty;
             if (targetFlags.HasAnyFlag(TargetFlag.Unit | TargetFlag.CorpseEnemy | TargetFlag.GameObject |
                 TargetFlag.CorpseAlly | TargetFlag.UnitMinipet))
                 targetGUID = packet.ReadPackedGuid("Target GUID");
-            packetSpellData.TargetUnit = targetGUID.ToUniversalGuid();
+            packetSpellData.TargetUnit = targetGUID;
 
             if (targetFlags.HasAnyFlag(TargetFlag.Item | TargetFlag.TradeItem))
                 packet.ReadPackedGuid("Item Target GUID");

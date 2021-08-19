@@ -149,7 +149,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                         aura.CasterGuid = new WowGuid64(BitConverter.ToUInt64(casterGUID[i], 0));
                     }
                     else
-                        aura.CasterGuid = new WowGuid64();
+                        aura.CasterGuid = WowGuid64.Empty;
 
                     aura.AuraFlags = packet.ReadByteE<AuraFlagMoP>("Flags", i);
 

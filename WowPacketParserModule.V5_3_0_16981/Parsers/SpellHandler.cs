@@ -71,7 +71,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                         aura.CasterGuid = new WowGuid64(BitConverter.ToUInt64(casterGUID[i], 0));
                     }
                     else
-                        aura.CasterGuid = new WowGuid64();
+                        aura.CasterGuid = WowGuid64.Empty;
 
                     aura.Charges = packet.ReadByte("Charges", i);
 

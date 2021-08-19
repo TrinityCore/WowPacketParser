@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
@@ -17,7 +16,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             PacketSpellStart packetSpellStart = packet.Holder.SpellStart = new();
             packetSpellStart.Data = ReadSpellCastData(packet, "Cast");
         }
-        
+
         [Parser(Opcode.SMSG_SPELL_GO)]
         public static void HandleSpellGo(Packet packet)
         {
@@ -29,7 +28,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         {
             var packetSpellData = new PacketSpellData();
             bool isSpellGo = packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_SPELL_GO, Direction.ServerToClient);
-            WowGuid targetGUID = new WowGuid64();
+            WowGuid targetGUID = WowGuid64.Empty;
 
             var casterGUID = packet.ReadPackedGuid("CasterGUID", idx);
             packetSpellData.Caster = packet.ReadPackedGuid("CasterUnit", idx);
