@@ -1,6 +1,6 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -85,7 +85,7 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
                 Storage.GossipMenuOptions.Add(gossipOption, packet.TimeSpan);
                 if (!gossipMenuOptionBox.IsEmpty)
                     Storage.GossipMenuOptionBoxes.Add(gossipMenuOptionBox, packet.TimeSpan);
-                
+
                 packetGossip.Options.Add(new GossipMessageOption()
                 {
                     OptionIndex = gossipOption.OptionIndex.Value,

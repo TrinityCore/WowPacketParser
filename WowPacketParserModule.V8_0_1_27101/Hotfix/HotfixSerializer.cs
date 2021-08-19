@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Sigil;
+using System;
 using System.Reflection;
-using Sigil;
 using WowPacketParser.Hotfix;
 using WowPacketParser.Misc;
 

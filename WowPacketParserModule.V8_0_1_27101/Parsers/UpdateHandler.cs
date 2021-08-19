@@ -7,9 +7,9 @@ using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using WowPacketParserModule.V7_0_3_22248.Enums;
 using WowPacketParserModule.V7_0_3_22248.Parsers;
+using CoreFields = WowPacketParser.Enums.Version;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using SplineFlag = WowPacketParserModule.V7_0_3_22248.Enums.SplineFlag;
-using CoreFields = WowPacketParser.Enums.Version;
 
 namespace WowPacketParserModule.V8_0_1_27101.Parsers
 {

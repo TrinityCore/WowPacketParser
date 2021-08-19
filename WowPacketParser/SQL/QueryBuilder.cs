@@ -222,7 +222,7 @@ namespace WowPacketParser.SQL
             var fields = SQLUtil.GetFields<T>();
 
             StringBuilder fieldNames = new StringBuilder();
-            
+
             foreach (var field in fields)
             {
                 fieldNames.Append(field.Item1);
@@ -248,7 +248,7 @@ namespace WowPacketParser.SQL
         public SQLUpdate(Dictionary<Row<T>, RowList<T>> rows)
         {
             _rows2 = rows;
-        } 
+        }
 
         /// <summary>
         /// Constructs the actual query
@@ -466,7 +466,7 @@ namespace WowPacketParser.SQL
     internal class SQLInsertRow<T> : ISQLQuery
         where T : IDataModel, new()
     {
-        private readonly Row<T> _row; 
+        private readonly Row<T> _row;
 
         private string _headerComment;
 

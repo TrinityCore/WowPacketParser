@@ -1,4 +1,3 @@
-using MySql.Data.MySqlClient.Memcached;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Google.Protobuf.WellKnownTypes;
+using System;
 using System.Diagnostics.CodeAnalysis;
-using Google.Protobuf.WellKnownTypes;
 using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
-using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using WowPacketParser.Store;
-using WowPacketParser.Store.Objects;
 using WowPacketParser.Proto;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers

@@ -46,12 +46,12 @@ namespace WowPacketParser.Store.Objects
 
         public int GetDefaultSpawnTime(uint difficultyID)
         {
-             if (Settings.UseDBC && DBC.DBC.Map != null)
-             {
-                 if (DBC.DBC.Map.ContainsKey((int)Map))
-                 {
-                     switch (DBC.DBC.Map[(int)Map].InstanceType)
-                     {
+            if (Settings.UseDBC && DBC.DBC.Map != null)
+            {
+                if (DBC.DBC.Map.ContainsKey((int)Map))
+                {
+                    switch (DBC.DBC.Map[(int)Map].InstanceType)
+                    {
                         case 0: // MAP_COMMON
                             return 120;
                         case 1: // MAP_INSTANCE
@@ -62,13 +62,13 @@ namespace WowPacketParser.Store.Objects
                             return 7200;
                         case 2: // MAP_RAID
                             return 604800;
-                     }
-                 }
-             }
+                    }
+                }
+            }
 
-             // If map is Continent use a lower respawn time
-             // TODO: Rank and if npc is needed for quest kill should change spawntime as well
-             return MapIsContinent(Map) ? 120 : 7200;
+            // If map is Continent use a lower respawn time
+            // TODO: Rank and if npc is needed for quest kill should change spawntime as well
+            return MapIsContinent(Map) ? 120 : 7200;
         }
 
         public int GetDefaultSpawnMask()

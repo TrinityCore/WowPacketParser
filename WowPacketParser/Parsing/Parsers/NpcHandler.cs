@@ -4,10 +4,10 @@ using System.Globalization;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
-using WoWPacketParser.Proto;
+using WowPacketParser.Proto;
+using WowPacketParser.SQL;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using WowPacketParser.SQL;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -535,7 +535,7 @@ namespace WowPacketParser.Parsing.Parsers
                 Storage.GossipMenuOptions.Add(gossipOption, packet.TimeSpan);
                 if (!gossipMenuOptionBox.IsEmpty)
                     Storage.GossipMenuOptionBoxes.Add(gossipMenuOptionBox, packet.TimeSpan);
-                
+
                 packetGossip.Options.Add(new GossipMessageOption()
                 {
                     OptionIndex = gossipOption.OptionIndex.Value,

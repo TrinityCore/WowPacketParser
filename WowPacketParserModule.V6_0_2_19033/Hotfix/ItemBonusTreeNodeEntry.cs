@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WowPacketParserModule.V6_0_2_19033.Hotfix
+﻿namespace WowPacketParserModule.V6_0_2_19033.Hotfix
 {
     class ItemBonusTreeNodeEntry
     {

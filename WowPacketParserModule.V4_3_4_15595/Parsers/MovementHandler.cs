@@ -10,8 +10,8 @@ using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using MovementFlag = WowPacketParserModule.V4_3_4_15595.Enums.MovementFlag;
 using MovementFlagExtra = WowPacketParserModule.V4_3_4_15595.Enums.MovementFlagExtra;
-using SplineFlag = WowPacketParserModule.V4_3_4_15595.Enums.SplineFlag;
 using SetCollisionHeightReason = WowPacketParserModule.V4_3_4_15595.Enums.SetCollisionHeightReason;
+using SplineFlag = WowPacketParserModule.V4_3_4_15595.Enums.SplineFlag;
 
 namespace WowPacketParserModule.V4_3_4_15595.Parsers
 {

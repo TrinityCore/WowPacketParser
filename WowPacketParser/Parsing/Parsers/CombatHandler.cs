@@ -148,9 +148,9 @@ namespace WowPacketParser.Parsing.Parsers
                 for (var i = 0; i < subDmgCount; ++i)
                     packet.ReadInt32("Absorbed", i);
 
-                if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_RESIST | SpellHitInfo.HITINFO_FULL_RESIST))
-                    for (var i = 0; i < subDmgCount; ++i)
-                        packet.ReadInt32("Resisted", i);
+            if (hitInfo.HasAnyFlag(SpellHitInfo.HITINFO_PARTIAL_RESIST | SpellHitInfo.HITINFO_FULL_RESIST))
+                for (var i = 0; i < subDmgCount; ++i)
+                    packet.ReadInt32("Resisted", i);
 
             packet.ReadByteE<VictimStates>("VictimState");
             packet.ReadInt32("AttackerState");

@@ -1,6 +1,4 @@
-﻿using WowPacketParser.Misc;
-
-namespace WowPacketParser.Store.Objects.UpdateFields
+﻿namespace WowPacketParser.Store.Objects.UpdateFields
 {
     public interface IAreaTriggerData
     {

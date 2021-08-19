@@ -1,7 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
 using WowPacketParser.Enums;
-using WowPacketParser.Enums.Version;
-using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Proto;
 using WowPacketParser.Store;
@@ -140,7 +138,7 @@ namespace WowPacketParser.Parsing.Parsers
             creature.Type = packet.ReadInt32E<CreatureType>("Type");
             creature.Family = packet.ReadInt32E<CreatureFamily>("Family");
             creature.Rank = packet.ReadInt32E<CreatureRank>("Rank");
-            
+
             response.Type = (int?)creature.Type ?? 0;
             response.Family = (int?)creature.Family ?? 0;
             response.Rank = (int?)creature.Rank ?? 0;
@@ -181,7 +179,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 for (int i = 0; i < qItemCount; i++)
                     response.QuestItems.Add((uint)packet.ReadInt32<ItemId>("Quest Item", i));
-                
+
                 creature.MovementID = response.MovementId = packet.ReadUInt32("Movement ID");
             }
 

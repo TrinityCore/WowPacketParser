@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Google.Protobuf.WellKnownTypes;
+using System;
 using System.Collections.Generic;
-using Google.Protobuf.WellKnownTypes;
 using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
-using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Proto;

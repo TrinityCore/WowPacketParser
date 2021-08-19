@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WowPacketParser.Enums.Version;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Saving
@@ -31,16 +30,16 @@ namespace WowPacketParser.Saving
                 var fileName = "Fusion.pkt";
 
                 using (var fileStream = new FileStream(fileName, FileMode.Append, FileAccess.Write))
-                    using (var writer = new BinaryWriter(fileStream, _encoding))
-                        foreach (var packet in group)
-                        {
-                            writer.Write((ushort)packet.Opcode);
-                            writer.Write((int)packet.Length);
-                            writer.Write((byte)packet.Direction);
-                            writer.Write(Utilities.GetUnixTimeFromDateTime(packet.Time));
-                            writer.Write(packet.GetStream(0));
-                            // TODO: Add ConnIdx in a backwards compatible way
-                        }
+                using (var writer = new BinaryWriter(fileStream, _encoding))
+                    foreach (var packet in group)
+                    {
+                        writer.Write((ushort)packet.Opcode);
+                        writer.Write((int)packet.Length);
+                        writer.Write((byte)packet.Direction);
+                        writer.Write(Utilities.GetUnixTimeFromDateTime(packet.Time));
+                        writer.Write(packet.GetStream(0));
+                        // TODO: Add ConnIdx in a backwards compatible way
+                    }
             }
         }
     }

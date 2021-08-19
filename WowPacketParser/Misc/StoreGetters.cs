@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Globalization;
 using WowPacketParser.Enums;
 using WowPacketParser.SQL;
-using WowPacketParser.Store;
 
 namespace WowPacketParser.Misc
 {

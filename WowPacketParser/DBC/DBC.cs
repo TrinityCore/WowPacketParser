@@ -1,14 +1,13 @@
+using DBFileReaderLib;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using DBFileReaderLib;
 using WowPacketParser.DBC.Structures.Shadowlands;
 using WowPacketParser.Misc;
-using WowPacketParser.Enums;
 
 namespace WowPacketParser.DBC
 {

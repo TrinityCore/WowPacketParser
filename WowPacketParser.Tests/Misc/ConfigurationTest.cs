@@ -1,6 +1,6 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Configuration;
-using NUnit.Framework;
 using Configuration = WowPacketParser.Misc.Configuration;
 
 namespace WowPacketParser.Tests.Misc

@@ -1,6 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
 using WowPacketParser.Enums;
-using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;

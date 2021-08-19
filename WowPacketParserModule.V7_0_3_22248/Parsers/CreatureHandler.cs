@@ -1,5 +1,4 @@
 ﻿using WowPacketParser.Enums;
-using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Proto;
@@ -57,7 +56,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                         creature.FemaleName = response.NameAlt = nameAlt;
                 }
             }
-            
+
             creature.TypeFlags = packet.ReadUInt32E<CreatureTypeFlag>("Type Flags");
             response.TypeFlags = (uint?)creature.TypeFlags ?? 0;
             creature.TypeFlags2 = response.TypeFlags2 = packet.ReadUInt32("Creature Type Flags 2");

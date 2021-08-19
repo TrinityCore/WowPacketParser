@@ -3,7 +3,6 @@ using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
-using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V9_0_1_36216.Parsers
 {

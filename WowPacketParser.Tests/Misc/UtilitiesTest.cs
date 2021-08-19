@@ -1,9 +1,9 @@
-﻿using System;
+﻿using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using NUnit.Framework;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 

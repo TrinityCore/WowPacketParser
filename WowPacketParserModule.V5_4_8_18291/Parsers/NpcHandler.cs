@@ -132,7 +132,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 gossipOptions.Add(gossipMenuOption);
                 if (!gossipMenuOptionBox.IsEmpty)
                     gossipOptionBoxes.Add(gossipMenuOptionBox);
-                
+
                 packetGossip.Options.Add(new GossipMessageOption()
                 {
                     OptionIndex = gossipMenuOption.OptionIndex.Value,

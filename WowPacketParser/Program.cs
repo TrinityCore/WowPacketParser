@@ -4,14 +4,10 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using Google.Protobuf;
-using Google.Protobuf.WellKnownTypes;
 using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing.Parsers;
 using WowPacketParser.SQL;
-using WowPacketParser.DBC;
-using WowPacketParser.PacketStructures;
 
 namespace WowPacketParser
 {

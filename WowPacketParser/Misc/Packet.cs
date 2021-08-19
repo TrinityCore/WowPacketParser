@@ -1,10 +1,10 @@
+using Google.Protobuf.WellKnownTypes;
+using Ionic.Zlib;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net;
 using System.Text;
-using Google.Protobuf.WellKnownTypes;
-using Ionic.Zlib;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Parsing.Parsers;
@@ -90,7 +90,7 @@ namespace WowPacketParser.Misc
         public bool WriteToFile { get; private set; }
         public int ConnectionIndex { get; set; }
         public IPEndPoint EndPoint { get; set; }
-        
+
         public PacketHolder Holder { get; set; }
 
         public void AddSniffData(StoreNameType type, int id, string data)

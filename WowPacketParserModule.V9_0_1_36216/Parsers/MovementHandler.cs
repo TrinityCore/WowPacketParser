@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using WowPacketParser.DBC;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
-using WowPacketParserModule.V7_0_3_22248.Enums;
-using CoreParsers = WowPacketParser.Parsing.Parsers;
-using MovementFlag = WowPacketParserModule.V6_0_2_19033.Enums.MovementFlag;
-using SplineFlag = WowPacketParserModule.V7_0_3_22248.Enums.SplineFlag;
 
 namespace WowPacketParserModule.V9_0_1_36216.Parsers
 {

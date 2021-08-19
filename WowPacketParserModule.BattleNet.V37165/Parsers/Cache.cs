@@ -1,5 +1,4 @@
-﻿using System;
-using WowPacketParser.Enums.Battlenet;
+﻿using WowPacketParser.Enums.Battlenet;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParserModule.BattleNet.V37165.Enums;

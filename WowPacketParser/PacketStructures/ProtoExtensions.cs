@@ -20,7 +20,7 @@ namespace WowPacketParser.PacketStructures
                 }
             };
         }
-        
+
         public static UniversalGuid ToUniversal(this WowGuid64 guid)
         {
             return new UniversalGuid()

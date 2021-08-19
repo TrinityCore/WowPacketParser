@@ -115,13 +115,13 @@ namespace WowPacketParserModule.V5_4_1_17538.Parsers
             text.ReceiverGUID = packet.WriteGuid("ReceiverGUID", receiverGUIDBytes);
             packet.WriteGuid("GuildGUID", guildGUIDBytes);
             packet.WriteGuid("GroupGUID", groupGUIDBytes);
-            
+
             chatPacket.Text = text.Text;
             chatPacket.Sender = text.SenderGUID.ToUniversalGuid();
             chatPacket.Target = text.ReceiverGUID.ToUniversalGuid();
             chatPacket.Language = (int?) text.Language ?? 0;
             chatPacket.Type = (int) text.Type;
-            
+
             uint entry = 0;
             if (text.SenderGUID.GetObjectType() == ObjectType.Unit)
                 entry = text.SenderGUID.GetEntry();

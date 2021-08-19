@@ -278,7 +278,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
                 // client always taking first point
                 if (i == 0)
                     endpos = spot;
-                
+
                 monsterMove.Points.Add(spot);
             }
 

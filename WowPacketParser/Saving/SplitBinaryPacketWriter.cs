@@ -33,16 +33,16 @@ namespace WowPacketParser.Saving
                 var fileName = Folder + "/" + Opcodes.GetOpcodeName(groups.Key, group.Key) + ".pkt";
 
                 using (var fileStream = new FileStream(fileName, FileMode.Append, FileAccess.Write))
-                    using (var writer = new BinaryWriter(fileStream, _encoding))
-                        foreach (var packet in group)
-                        {
-                            writer.Write((ushort)packet.Opcode);
-                            writer.Write((int)packet.Length);
-                            writer.Write((byte)packet.Direction);
-                            writer.Write(Utilities.GetUnixTimeFromDateTime(packet.Time));
-                            writer.Write(packet.GetStream(0));
-                            // TODO: Add ConnIdx in a backwards compatible way
-                        }
+                using (var writer = new BinaryWriter(fileStream, _encoding))
+                    foreach (var packet in group)
+                    {
+                        writer.Write((ushort)packet.Opcode);
+                        writer.Write((int)packet.Length);
+                        writer.Write((byte)packet.Direction);
+                        writer.Write(Utilities.GetUnixTimeFromDateTime(packet.Time));
+                        writer.Write(packet.GetStream(0));
+                        // TODO: Add ConnIdx in a backwards compatible way
+                    }
             }
         }
     }

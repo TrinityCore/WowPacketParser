@@ -1,8 +1,8 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Data;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using MySql.Data.MySqlClient;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.SQL

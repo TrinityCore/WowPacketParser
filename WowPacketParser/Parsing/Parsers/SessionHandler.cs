@@ -1,7 +1,7 @@
+using Ionic.Zlib;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Ionic.Zlib;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 

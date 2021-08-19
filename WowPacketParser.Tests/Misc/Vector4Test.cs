@@ -1,6 +1,6 @@
-﻿using System.Globalization;
+﻿using NUnit.Framework;
+using System.Globalization;
 using System.Threading;
-using NUnit.Framework;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Tests.Misc

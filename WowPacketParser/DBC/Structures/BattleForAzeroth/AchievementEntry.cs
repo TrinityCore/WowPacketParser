@@ -19,7 +19,7 @@ namespace WowPacketParser.DBC.Structures.BattleForAzeroth
         public sbyte Points;
         public int Flags;
         public short UiOrder;
-        public int IconFileID;        
+        public int IconFileID;
         public uint RewardItemID;
         public uint CriteriaTree;
         public short SharesCriteria;

@@ -31,7 +31,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             {
                 MenuId = menuId
             };
-            
+
             gossipOption.OptionIndex = gossipMenuOptionBox.OptionIndex = gossipMessageOption.OptionIndex = (uint)packet.ReadInt32("ClientOption", idx);
             gossipOption.OptionIcon = (GossipOptionIcon?)packet.ReadByte("OptionNPC", idx);
             gossipMessageOption.OptionIcon = (int) gossipOption.OptionIcon;

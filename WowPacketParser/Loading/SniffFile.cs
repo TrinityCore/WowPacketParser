@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Google.Protobuf;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -7,7 +8,6 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using Google.Protobuf;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
 using WowPacketParser.Hotfix;
@@ -159,8 +159,8 @@ namespace WowPacketParser.Loading
                         }
                         File.Delete(outFileName);
                     }
-                    
-                    if (_dumpFormat is DumpFormatType.UniversalProto or 
+
+                    if (_dumpFormat is DumpFormatType.UniversalProto or
                         DumpFormatType.UniversalProtoWithText)
                     {
                         if (Utilities.FileIsInUse(outProtoFileName))
@@ -171,7 +171,7 @@ namespace WowPacketParser.Loading
                         File.Delete(outProtoFileName);
                         protoOutputStream = File.Create(outProtoFileName);
                     }
-                    
+
                     Store.Store.SQLEnabledFlags = Settings.SQLOutputFlag;
 
                     _stats.SetStartTime(DateTime.Now);
@@ -277,8 +277,8 @@ namespace WowPacketParser.Loading
 
                             // Close Writer, Stream - Dispose
                             packet.ClosePacket();
-                            
-                            if (_dumpFormat is DumpFormatType.UniversalProto or 
+
+                            if (_dumpFormat is DumpFormatType.UniversalProto or
                                 DumpFormatType.UniversalProtoWithText)
                                 packets.Packets_.Add(packet.Holder);
                         }, threadCount);
@@ -330,7 +330,7 @@ namespace WowPacketParser.Loading
                         var packetsPerSplit = Math.Abs(Settings.FilterPacketsNum);
                         var totalPackets = packets.Count;
 
-                        var numberOfSplits = (int)Math.Ceiling((double)totalPackets/packetsPerSplit);
+                        var numberOfSplits = (int)Math.Ceiling((double)totalPackets / packetsPerSplit);
 
                         for (var i = 0; i < numberOfSplits; ++i)
                         {

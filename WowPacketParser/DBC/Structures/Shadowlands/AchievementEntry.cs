@@ -19,7 +19,7 @@ namespace WowPacketParser.DBC.Structures.Shadowlands
         public sbyte Points;
         public int Flags;
         public short UiOrder;
-        public int IconFileID;        
+        public int IconFileID;
         public int RewardItemID;
         public uint CriteriaTree;
         public short SharesCriteria;

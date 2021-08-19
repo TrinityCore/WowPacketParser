@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
 using WowPacketParser.Enums;
-using WowPacketParser.Loading;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.SQL
@@ -32,7 +31,7 @@ namespace WowPacketParser.SQL
         /// <summary>
         /// Ture if field is nullable or the default value should be NULL.
         /// </summary>
-        public bool Nullable { get; set;}
+        public bool Nullable { get; set; }
 
         /// <summary>
         /// Number of fields
