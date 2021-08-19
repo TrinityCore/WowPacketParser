@@ -9,51 +9,29 @@ namespace WowPacketParser.PacketStructures
     {
         public static UniversalGuid ToUniversal(this WowGuid128 guid)
         {
-            uint entry = 0;
-            UniversalHighGuid type = UniversalHighGuid.Null;
-            UniversalGuid128 guid128 = new UniversalGuid128() { Low = 0, High = 0 };
-
-            if (guid != null)
+            return new UniversalGuid()
             {
-                entry = guid.GetEntry();
-                type = (UniversalHighGuid)(int)guid.HighGuid.GetHighGuidType();
-                guid128 = new UniversalGuid128()
+                Entry = guid.GetEntry(),
+                Type = (UniversalHighGuid)(int)guid.HighGuid.GetHighGuidType(),
+                Guid128 = new UniversalGuid128()
                 {
                     Low = guid.Low,
                     High = guid.High
-                };
-            }
-
-            return new UniversalGuid()
-            {
-                Entry = entry,
-                Type = type,
-                Guid128 = guid128
+                }
             };
         }
         
         public static UniversalGuid ToUniversal(this WowGuid64 guid)
         {
-            uint entry = 0;
-            UniversalHighGuid type = UniversalHighGuid.Null;
-            UniversalGuid64 guid64 = new UniversalGuid64() { Low = 0, High = 0 };
-
-            if (guid != null)
+            return new UniversalGuid()
             {
-                entry = guid.GetEntry();
-                type = (UniversalHighGuid)(int)guid.HighGuid.GetHighGuidType();
-                guid64 = new UniversalGuid64()
+                Entry = guid.GetEntry(),
+                Type = (UniversalHighGuid)(int)guid.HighGuid.GetHighGuidType(),
+                Guid64 = new UniversalGuid64()
                 {
                     Low = guid.Low,
                     High = guid.High
-                };
-            }
-
-            return new UniversalGuid()
-            {
-                Entry = entry,
-                Type = type,
-                Guid64 = guid64
+                }
             };
         }
 
