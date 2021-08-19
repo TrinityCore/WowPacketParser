@@ -64,6 +64,8 @@ namespace WowPacketParser
                 if (Settings.ClientBuild != Enums.ClientVersionBuild.Zero)
                     ClientVersion.SetVersion(Settings.ClientBuild);
 
+                ClientLocale.SetLocale(Settings.ClientLocale.ToString());
+
                 try
                 {
                     var sf = new SniffFile(file, Settings.DumpFormat, Tuple.Create(++count, files.Count));
