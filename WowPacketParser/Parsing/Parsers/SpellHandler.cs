@@ -728,7 +728,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (targetFlags.HasAnyFlag(TargetFlag.Unit | TargetFlag.CorpseEnemy | TargetFlag.GameObject |
                 TargetFlag.CorpseAlly | TargetFlag.UnitMinipet))
                 targetGUID = packet.ReadPackedGuid("Target GUID");
-            packetSpellData.TargetUnit = targetGUID;
+            packetSpellData.TargetUnit = targetGUID.ToUniversalGuid();
 
             if (targetFlags.HasAnyFlag(TargetFlag.Item | TargetFlag.TradeItem))
                 packet.ReadPackedGuid("Item Target GUID");
