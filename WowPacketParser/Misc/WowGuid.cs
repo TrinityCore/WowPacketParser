@@ -1,7 +1,7 @@
 using System;
 using WowPacketParser.Enums;
 using WowPacketParser.PacketStructures;
-using WoWPacketParser.Proto;
+using WowPacketParser.Proto;
 
 namespace WowPacketParser.Misc
 {

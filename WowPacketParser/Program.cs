@@ -12,7 +12,6 @@ using WowPacketParser.Parsing.Parsers;
 using WowPacketParser.SQL;
 using WowPacketParser.DBC;
 using WowPacketParser.PacketStructures;
-using WoWPacketParser.Proto;
 
 namespace WowPacketParser
 {

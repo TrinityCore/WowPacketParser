@@ -14,7 +14,7 @@ using WowPacketParser.Hotfix;
 using WowPacketParser.Misc;
 using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing;
-using WoWPacketParser.Proto;
+using WowPacketParser.Proto;
 using WowPacketParser.Saving;
 using WowPacketParser.SQL;
 using WowPacketParser.Store;

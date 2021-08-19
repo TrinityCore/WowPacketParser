@@ -2,7 +2,7 @@
 using WowPacketParser.Misc;
 using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing;
-using WoWPacketParser.Proto;
+using WowPacketParser.Proto;
 using WowPacketParserModule.V5_4_8_18291.Enums;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using CoreOpcode = WowPacketParser.Enums.Version.Opcodes;

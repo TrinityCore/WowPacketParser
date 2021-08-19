@@ -1,5 +1,4 @@
 using System;
-using WoWPacketParser.Proto;
 
 namespace WowPacketParser.Proto.Processing
 {

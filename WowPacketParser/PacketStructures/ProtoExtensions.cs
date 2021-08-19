@@ -1,6 +1,6 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using WoWPacketParser.Proto;
+using WowPacketParser.Proto;
 // ReSharper disable BitwiseOperatorOnEnumWithoutFlags
 
 namespace WowPacketParser.PacketStructures

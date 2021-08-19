@@ -1,4 +1,4 @@
-using WoWPacketParser.Proto;
+using WowPacketParser.Proto;
 
 namespace WowPacketParserModule.V7_0_3_22248.Enums
 {

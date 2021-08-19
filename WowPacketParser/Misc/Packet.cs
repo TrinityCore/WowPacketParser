@@ -7,8 +7,8 @@ using Google.Protobuf.WellKnownTypes;
 using Ionic.Zlib;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
-using WoWPacketParser.Proto;
 using WowPacketParser.Parsing.Parsers;
+using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
