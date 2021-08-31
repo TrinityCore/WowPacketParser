@@ -288,6 +288,7 @@ namespace WowPacketParser.Parsing.Parsers
             else
             {
                 var newpos = packet.ReadVector3("Waypoint Endpoint");
+                monsterMove.Points.Add(newpos);
 
                 Vector3 mid = (pos + newpos) * 0.5f;
 
@@ -331,6 +332,7 @@ namespace WowPacketParser.Parsing.Parsers
             else
             {
                 var newpos = packet.ReadVector3("Waypoint Endpoint");
+                monsterMove.Points.Add(newpos);
 
                 var mid = new Vector3
                 {
@@ -411,6 +413,7 @@ namespace WowPacketParser.Parsing.Parsers
             else
             {
                 var newpos = packet.ReadVector3("Waypoint Endpoint");
+                monsterMove.Points.Add(newpos);
 
                 var mid = new Vector3
                 {

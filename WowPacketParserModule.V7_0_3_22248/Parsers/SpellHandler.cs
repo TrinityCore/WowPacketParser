@@ -14,7 +14,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
     public static class SpellHandler
     {
-        public static void ReadSpellCastRequest(Packet packet, params object[] idx)
+        public static uint ReadSpellCastRequest(Packet packet, params object[] idx)
         {
             packet.ReadPackedGuid128("CastID", idx);
 
@@ -42,6 +42,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             for (var i = 0; i < weightCount; ++i)
                 V6_0_2_19033.Parsers.SpellHandler.ReadSpellWeight(packet, idx, "Weight", i);
+
+            return spellId;
         }
 
         public static PacketSpellData ReadSpellCastData(Packet packet, params object[] idx)

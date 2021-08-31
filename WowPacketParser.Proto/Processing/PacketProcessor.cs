@@ -72,6 +72,14 @@ namespace WowPacketParser.Proto.Processing
                     return Process(packet.BaseData, packet.ClientAreaTrigger);
                 case PacketHolder.KindOneofCase.QueryPlayerNameResponse:
                     return Process(packet.BaseData, packet.QueryPlayerNameResponse);
+                case PacketHolder.KindOneofCase.QuestComplete:
+                    return Process(packet.BaseData, packet.QuestComplete);
+                case PacketHolder.KindOneofCase.QuestFailed:
+                    return Process(packet.BaseData, packet.QuestFailed);
+                case PacketHolder.KindOneofCase.QuestAddKillCredit:
+                    return Process(packet.BaseData, packet.QuestAddKillCredit);
+                case PacketHolder.KindOneofCase.ClientUseItem:
+                    return Process(packet.BaseData, packet.ClientUseItem);
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -108,5 +116,9 @@ namespace WowPacketParser.Proto.Processing
         protected virtual T? Process(PacketBase basePacket, PacketDbReply packet) => default;
         protected virtual T? Process(PacketBase basePacket, PacketUpdateObject packet) => default;
         protected virtual T? Process(PacketBase basePacket, PacketQueryPlayerNameResponse packet) => default;
+        protected virtual T? Process(PacketBase basePacket, PacketQuestComplete packet) => default;
+        protected virtual T? Process(PacketBase basePacket, PacketQuestFailed packet) => default;
+        protected virtual T? Process(PacketBase basePacket, PacketQuestAddKillCredit packet) => default;
+        protected virtual T? Process(PacketBase basePacket, PacketClientUseItem packet) => default;
     }
 }

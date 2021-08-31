@@ -681,20 +681,40 @@ namespace WowPacketParser.Parsing.Parsers
 
         [Parser(Opcode.SMSG_QUEST_FORCE_REMOVED)]
         [Parser(Opcode.CMSG_QUEST_CONFIRM_ACCEPT)]
-        [Parser(Opcode.SMSG_QUEST_UPDATE_FAILED)]
-        [Parser(Opcode.SMSG_QUEST_UPDATE_FAILED_TIMER)]
-        [Parser(Opcode.SMSG_QUEST_UPDATE_COMPLETE, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
-        [Parser(Opcode.SMSG_QUEST_UPDATE_COMPLETE, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestForceRemoved(Packet packet)
         {
             packet.ReadInt32<QuestId>("QuestID");
         }
 
+        [Parser(Opcode.SMSG_QUEST_UPDATE_COMPLETE, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
+        [Parser(Opcode.SMSG_QUEST_UPDATE_COMPLETE, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_1_0_16309)]
+        public static void HandleQuestUpdateComplete(Packet packet)
+        {
+            var questComplete = packet.Holder.QuestComplete = new();
+            questComplete.QuestId = (uint)packet.ReadInt32<QuestId>("QuestID");
+        }
+        
+        [Parser(Opcode.SMSG_QUEST_UPDATE_FAILED)]
+        public static void HandleQuestUpdateFailed(Packet packet)
+        {
+            var questFailed = packet.Holder.QuestFailed = new();
+            questFailed.QuestId = (uint)packet.ReadInt32<QuestId>("QuestID");
+        }
+        
+        [Parser(Opcode.SMSG_QUEST_UPDATE_FAILED_TIMER)]
+        public static void HandleQuestUpdateFailedTimer(Packet packet)
+        {
+            var questFailed = packet.Holder.QuestFailed = new();
+            questFailed.QuestId = (uint)packet.ReadInt32<QuestId>("QuestID");
+            questFailed.TimerFail = true;
+        }
+
         [Parser(Opcode.SMSG_QUEST_UPDATE_COMPLETE, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleQuestUpdateComplete422(Packet packet)
         {
+            var questComplete = packet.Holder.QuestComplete = new();
             packet.ReadGuid("Guid");
-            packet.ReadUInt32<QuestId>("Quest ID");
+            questComplete.QuestId = packet.ReadUInt32<QuestId>("Quest ID");
             packet.ReadCString("Title");
             packet.ReadCString("Complete Text");
             packet.ReadCString("QuestGiver Text Window");
@@ -719,8 +739,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUEST_UPDATE_COMPLETE, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestUpdateComplete510(Packet packet)
         {
+            var questComplete = packet.Holder.QuestComplete = new();
             packet.ReadGuid("Guid");
-            packet.ReadUInt32<QuestId>("Quest ID");
+            questComplete.QuestId = packet.ReadUInt32<QuestId>("Quest ID");
             packet.ReadInt32("Unk Int32");
             packet.ReadCString("Title");
             packet.ReadCString("Complete Text");
@@ -1224,14 +1245,16 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_FAILED)]
         public static void HandleQuestFailed(Packet packet)
         {
-            packet.ReadUInt32<QuestId>("Quest ID");
+            var questFailed = packet.Holder.QuestFailed = new();
+            questFailed.QuestId = packet.ReadUInt32<QuestId>("Quest ID");
             packet.ReadUInt32E<QuestReasonType>("Reason");
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_COMPLETE, ClientVersionBuild.Zero, ClientVersionBuild.V4_0_6a_13623)]
         public static void HandleQuestCompleted(Packet packet)
         {
-            packet.ReadInt32<QuestId>("Quest ID");
+            var questComplete = packet.Holder.QuestGiverQuestComplete = new();
+            questComplete.QuestId = (uint)packet.ReadInt32<QuestId>("Quest ID");
             packet.ReadInt32("Reward");
             packet.ReadInt32("Money");
             packet.ReadInt32("Honor");
@@ -1242,9 +1265,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_COMPLETE, ClientVersionBuild.V4_0_6a_13623, ClientVersionBuild.V4_2_2_14545)]
         public static void HandleQuestCompleted406(Packet packet)
         {
+            var questComplete = packet.Holder.QuestGiverQuestComplete = new();
             packet.ReadBit("Unk");
             packet.ReadUInt32("Reward Skill Id");
-            packet.ReadInt32<QuestId>("Quest ID");
+            questComplete.QuestId = (uint)packet.ReadInt32<QuestId>("Quest ID");
             packet.ReadInt32("Money");
             packet.ReadInt32("Talent Points");
             packet.ReadUInt32("Reward Skill Points");
@@ -1254,11 +1278,12 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_COMPLETE, ClientVersionBuild.V4_2_2_14545, ClientVersionBuild.V4_3_4_15595)]
         public static void HandleQuestCompleted422(Packet packet)
         {
+            var questComplete = packet.Holder.QuestGiverQuestComplete = new();
             packet.ReadByte("Unk Byte");
             packet.ReadInt32("Reward XP");
             packet.ReadInt32("Money");
             packet.ReadInt32("Reward Skill Points");
-            packet.ReadInt32<QuestId>("Quest ID");
+            questComplete.QuestId = (uint)packet.ReadInt32<QuestId>("Quest ID");
             packet.ReadInt32("Reward Skill Id");
             packet.ReadInt32("Talent Points");
         }
@@ -1266,11 +1291,12 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_COMPLETE, ClientVersionBuild.V4_3_4_15595, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestCompleted434(Packet packet)
         {
+            var questComplete = packet.Holder.QuestGiverQuestComplete = new();
             packet.ReadInt32("Talent Points");
             packet.ReadInt32("RewSkillPoints");
             packet.ReadInt32("Money");
             packet.ReadInt32("XP");
-            packet.ReadInt32<QuestId>("Quest ID");
+            questComplete.QuestId = (uint)packet.ReadInt32<QuestId>("Quest ID");
             packet.ReadInt32("RewSkillId");
             packet.ReadBit("Unk Bit 1"); // if true EVENT_QUEST_FINISHED is fired, target cleared and gossip window is open
             packet.ReadBit("Unk Bit 2");
@@ -1279,9 +1305,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_COMPLETE, ClientVersionBuild.V5_1_0_16309)]
         public static void HandleQuestCompleted510(Packet packet)
         {
+            var questComplete = packet.Holder.QuestGiverQuestComplete = new();
             packet.ReadInt32("Talent Points");
             packet.ReadInt32("Money");
-            packet.ReadInt32<QuestId>("Quest ID");
+            questComplete.QuestId = (uint)packet.ReadInt32<QuestId>("Quest ID");
             packet.ReadInt32("XP");
             packet.ReadInt32("RewSkillPoints");
             packet.ReadInt32("RewSkillId");
@@ -1306,19 +1333,30 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_QUEST_UPDATE_ADD_ITEM)]
         public static void HandleQuestUpdateAdd(Packet packet)
         {
-            packet.ReadInt32<QuestId>("Quest ID");
+            int questId = packet.ReadInt32<QuestId>("Quest ID");
             var entry = packet.ReadEntry();
             packet.AddValue("Entry", StoreGetters.GetName(entry.Value ? StoreNameType.GameObject : StoreNameType.Unit, entry.Key));
 
+            int count = 0;
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
-                packet.ReadInt16("Count");
+                count = packet.ReadInt16("Count");
             else
-                packet.ReadInt32("Count");
+                count = packet.ReadInt32("Count");
 
-            packet.ReadInt32("Required Count");
-            packet.ReadGuid("GUID");
+            int requiredCount = packet.ReadInt32("Required Count");
+            var victim = packet.ReadGuid("GUID");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
                 packet.ReadByteE<QuestRequirementType>("Quest Requirement Type");
+
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_QUEST_UPDATE_ADD_KILL, Direction.ServerToClient))
+            {
+                var addCredit = packet.Holder.QuestAddKillCredit = new();
+                addCredit.QuestId = (uint)questId;
+                addCredit.KillCredit = (uint)entry.Key;
+                addCredit.Count = (uint)count;
+                addCredit.RequiredCount = (uint)requiredCount;
+                addCredit.Victim = victim;
+            }
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_STATUS)]
