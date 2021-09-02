@@ -78,11 +78,12 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_USE_ITEM, ClientVersionBuild.Zero, ClientVersionBuild.V3_0_3_9183)]
         public static void HandleUseItem(Packet packet)
         {
-            packet.ReadSByte("Bag");
-            packet.ReadByte("Slot");
+            var useItem = packet.Holder.ClientUseItem = new();
+            useItem.PackSlot = packet.ReadSByte("Bag");
+            useItem.ItemSlot = packet.ReadByte("Slot");
             packet.ReadByte("Spell Count");
             packet.ReadByte("Cast Count");
-            packet.ReadGuid("GUID");
+            useItem.CastItem = packet.ReadGuid("GUID");
 
             SpellHandler.ReadSpellCastTargets(packet);
         }
@@ -90,11 +91,12 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_USE_ITEM, ClientVersionBuild.V3_0_3_9183)]
         public static void HandleUseItem2(Packet packet)
         {
-            packet.ReadSByte("Bag");
-            packet.ReadByte("Slot");
+            var useItem = packet.Holder.ClientUseItem = new();
+            useItem.PackSlot = packet.ReadSByte("Bag");
+            useItem.ItemSlot = packet.ReadByte("Slot");
             packet.ReadByte("Cast Count");
-            packet.ReadInt32<SpellId>("Spell ID");
-            packet.ReadGuid("GUID");
+            useItem.SpellId = packet.ReadUInt32<SpellId>("Spell ID");
+            useItem.CastItem = packet.ReadGuid("GUID");
             packet.ReadUInt32("Glyph Index");
             var castflag = packet.ReadByteE<CastFlag>("Cast Flags");
 

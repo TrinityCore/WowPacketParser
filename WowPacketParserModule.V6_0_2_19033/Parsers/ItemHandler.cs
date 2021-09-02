@@ -150,11 +150,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_USE_ITEM)]
         public static void HandleUseItem(Packet packet)
         {
-            packet.ReadByte("PackSlot");
-            packet.ReadByte("Slot");
-            packet.ReadPackedGuid128("CastItem");
+            var useItem = packet.Holder.ClientUseItem = new();
+            useItem.PackSlot = packet.ReadByte("PackSlot");
+            useItem.ItemSlot = packet.ReadByte("Slot");
+            useItem.CastItem = packet.ReadPackedGuid128("CastItem");
 
-            SpellHandler.ReadSpellCastRequest(packet, "Cast");
+            useItem.SpellId = SpellHandler.ReadSpellCastRequest(packet, "Cast");
         }
 
         [Parser(Opcode.CMSG_ADD_TOY)]

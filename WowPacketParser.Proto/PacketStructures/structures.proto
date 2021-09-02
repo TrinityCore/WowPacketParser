@@ -59,6 +59,10 @@ message PacketHolder {
       PacketQueryGameObjectResponse queryGameObjectResponse = 30;
       PacketClientAreaTrigger clientAreaTrigger = 31;
       PacketQueryPlayerNameResponse queryPlayerNameResponse = 32;
+      PacketQuestComplete questComplete = 33;
+      PacketQuestFailed questFailed = 34;
+      PacketQuestAddKillCredit questAddKillCredit = 35;
+      PacketClientUseItem clientUseItem = 36;
   }
 }
 
@@ -602,4 +606,28 @@ message PacketQueryPlayerNameResponse {
   uint32 gender = 5;
   uint32 class = 6;
   uint32 level = 7;
+}
+
+message PacketQuestComplete {
+  uint32 questId = 1;
+}
+
+message PacketQuestFailed {
+  uint32 questId = 1;
+  bool timerFail = 2;
+}
+
+message PacketQuestAddKillCredit {
+  uint32 questId = 1;
+  uint32 killCredit = 2;
+  uint32 count = 3;
+  uint32 requiredCount = 4;
+  optional UniversalGuid victim = 5;
+}
+
+message PacketClientUseItem {
+  int32 packSlot = 1;
+  int32 itemSlot = 2;
+  UniversalGuid castItem = 3;
+  uint32 spellId = 4;
 }

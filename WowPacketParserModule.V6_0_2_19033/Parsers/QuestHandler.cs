@@ -606,13 +606,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_QUEST_UPDATE_ADD_CREDIT)]
         public static void HandleQuestUpdateAddCredit(Packet packet)
         {
-            packet.ReadPackedGuid128("VictimGUID");
+            var addCredit = packet.Holder.QuestAddKillCredit = new();
+            addCredit.Victim = packet.ReadPackedGuid128("VictimGUID");
 
-            packet.ReadInt32("QuestID");
-            packet.ReadInt32("ObjectID");
+            addCredit.QuestId = (uint)packet.ReadInt32("QuestID");
+            addCredit.KillCredit = (uint)packet.ReadInt32("ObjectID");
 
-            packet.ReadUInt16("Count");
-            packet.ReadUInt16("Required");
+            addCredit.Count = packet.ReadUInt16("Count");
+            addCredit.RequiredCount = packet.ReadUInt16("Required");
 
             packet.ReadByte("ObjectiveType");
         }
@@ -731,8 +732,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.SMSG_QUEST_UPDATE_COMPLETE)]
+        public static void HandleQuestUpdateComplete(Packet packet)
+        {
+            var questComplete = packet.Holder.QuestComplete = new();
+            questComplete.QuestId = (uint)packet.ReadInt32<QuestId>("QuestID");
+        }
+        
         [Parser(Opcode.CMSG_QUEST_CLOSE_AUTOACCEPT_QUEST)]
-        public static void HandleQuestForceRemoved(Packet packet)
+        public static void HandleQuestCloseAutoAcceptQuest(Packet packet)
         {
             packet.ReadInt32<QuestId>("QuestID");
         }

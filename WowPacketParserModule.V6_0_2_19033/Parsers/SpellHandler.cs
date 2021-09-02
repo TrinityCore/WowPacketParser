@@ -93,7 +93,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByteE<PowerType>("Type", idx);
         }
 
-        public static void ReadSpellCastRequest(Packet packet, params object[] idx)
+        public static uint ReadSpellCastRequest(Packet packet, params object[] idx)
         {
             packet.ReadByte("CastID", idx);
 
@@ -103,7 +103,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     packet.ReadInt32("Misc", idx, i);
             }
 
-            packet.ReadInt32<SpellId>("SpellID", idx);
+            uint spellId = packet.ReadUInt32<SpellId>("SpellID", idx);
             packet.ReadInt32(ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173) ? "SpellXSpellVisualID" : "Misc", idx);
 
             ReadSpellTargetData(packet, null, idx, "Target");
@@ -124,6 +124,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (var i = 0; i < weightCount; ++i)
                 ReadSpellWeight(packet, idx, "Weight", i);
+
+            return spellId;
         }
 
         [Parser(Opcode.SMSG_LEARNED_SPELLS)]

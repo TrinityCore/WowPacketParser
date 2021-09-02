@@ -411,19 +411,21 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_QUEST_UPDATE_ADD_KILL)]
         public static void HandleQuestUpdateAdd(Packet packet)
         {
-            packet.ReadInt16("Count");
+            var addCredit = packet.Holder.QuestAddKillCredit = new();
+            addCredit.Count = (uint)packet.ReadInt16("Count");
             packet.ReadByteE<QuestRequirementType>("Quest Requirement Type");
-            packet.ReadInt32<QuestId>("Quest ID");
-            packet.ReadInt16("Required Count");
+            addCredit.QuestId = (uint)packet.ReadInt32<QuestId>("Quest ID");
+            addCredit.RequiredCount = (uint)packet.ReadInt16("Required Count");
 
             var entry = packet.ReadEntry();
             packet.AddValue("Entry", StoreGetters.GetName(entry.Value ? StoreNameType.GameObject : StoreNameType.Unit, entry.Key));
+            addCredit.KillCredit = (uint)entry.Key;
 
             var guid = new byte[8];
 
             packet.StartBitStream(guid, 0, 4, 2, 6, 1, 5, 7, 3);
             packet.ParseBitStream(guid, 2, 7, 3, 0, 4, 5, 1, 6);
-            packet.WriteGuid("Guid", guid);
+            addCredit.Victim = packet.WriteGuid("Guid", guid);
         }
 
 
