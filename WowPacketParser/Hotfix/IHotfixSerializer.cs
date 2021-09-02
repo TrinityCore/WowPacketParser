@@ -329,7 +329,6 @@ namespace WowPacketParser.Hotfix
                     case "map_difficulty":
                     case "map":
                     case "mount":
-                    case "names_reserved":
                     case "player_condition":
                     case "prestige_level_info":
                     case "pvp_talent":
