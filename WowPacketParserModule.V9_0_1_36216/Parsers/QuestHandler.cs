@@ -24,13 +24,14 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var bits13 = packet.ReadBits(9);
             packet.ReadWoWString("QuestTitle", bits13, indexes);
         }
-        public static void ReadRewardItem(Packet packet, params object[] idx)
+        public static ItemInstance ReadRewardItem(Packet packet, params object[] idx)
         {
             packet.ResetBitReader();
             packet.ReadBitsE<LootItemType>("LootItemType", 2, idx);
-            Substructures.ItemHandler.ReadItemInstance(packet, idx);
+            var itemInstance = Substructures.ItemHandler.ReadItemInstance(packet, idx);
 
             packet.ReadInt32("Quantity", idx);
+            return itemInstance;
         }
 
         public static void ReadQuestRewards(Packet packet, params object[] idx)
@@ -441,9 +442,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         [Parser(Opcode.CMSG_QUEST_GIVER_CHOOSE_REWARD)]
         public static void HandleQuestChooseReward(Packet packet)
         {
-            packet.ReadPackedGuid128("QuestGiverGUID");
-            packet.ReadInt32("QuestID");
-            ReadRewardItem(packet, "ItemChoice");
+            var chooseReward = packet.Holder.ClientQuestGiverChooseReward = new();
+            chooseReward.QuestGiver = packet.ReadPackedGuid128("QuestGiverGUID");
+            chooseReward.QuestId = packet.ReadUInt32("QuestID");
+            chooseReward.Item = (uint)ReadRewardItem(packet, "ItemChoice").ItemID;
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_DETAILS)]

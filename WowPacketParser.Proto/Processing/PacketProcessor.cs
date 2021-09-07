@@ -4,7 +4,7 @@ namespace WowPacketParser.Proto.Processing
 {
     public abstract class PacketProcessor<T> : IPacketProcessor<T>
     {
-        public T? Process(PacketHolder packet)
+        public virtual T? Process(PacketHolder packet)
         {
             switch (packet.KindCase)
             {
@@ -80,6 +80,8 @@ namespace WowPacketParser.Proto.Processing
                     return Process(packet.BaseData, packet.QuestAddKillCredit);
                 case PacketHolder.KindOneofCase.ClientUseItem:
                     return Process(packet.BaseData, packet.ClientUseItem);
+                case PacketHolder.KindOneofCase.ClientQuestGiverChooseReward:
+                    return Process(packet.BaseData, packet.ClientQuestGiverChooseReward);
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -120,5 +122,6 @@ namespace WowPacketParser.Proto.Processing
         protected virtual T? Process(PacketBase basePacket, PacketQuestFailed packet) => default;
         protected virtual T? Process(PacketBase basePacket, PacketQuestAddKillCredit packet) => default;
         protected virtual T? Process(PacketBase basePacket, PacketClientUseItem packet) => default;
+        protected virtual T? Process(PacketBase basePacket, PacketClientQuestGiverChooseReward packet) => default;
     }
 }

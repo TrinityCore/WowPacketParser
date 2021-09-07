@@ -1231,9 +1231,10 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.CMSG_QUEST_GIVER_CHOOSE_REWARD)]
         public static void HandleQuestChooseReward(Packet packet)
         {
-            packet.ReadGuid("GUID");
-            packet.ReadUInt32<QuestId>("Quest ID");
-            packet.ReadUInt32("Reward");
+            var chooseReward = packet.Holder.ClientQuestGiverChooseReward = new();
+            chooseReward.QuestGiver = packet.ReadGuid("GUID");
+            chooseReward.QuestId = packet.ReadUInt32<QuestId>("Quest ID");
+            chooseReward.Item = packet.ReadUInt32("Reward");
         }
 
         [Parser(Opcode.SMSG_QUEST_GIVER_INVALID_QUEST)]

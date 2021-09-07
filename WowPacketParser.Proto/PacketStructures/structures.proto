@@ -63,6 +63,7 @@ message PacketHolder {
       PacketQuestFailed questFailed = 34;
       PacketQuestAddKillCredit questAddKillCredit = 35;
       PacketClientUseItem clientUseItem = 36;
+      PacketClientQuestGiverChooseReward clientQuestGiverChooseReward = 37;
   }
 }
 
@@ -630,4 +631,10 @@ message PacketClientUseItem {
   int32 itemSlot = 2;
   UniversalGuid castItem = 3;
   uint32 spellId = 4;
+}
+
+message PacketClientQuestGiverChooseReward {
+  UniversalGuid questGiver = 1;
+  uint32 questId = 2;
+  uint32 item = 3;
 }
