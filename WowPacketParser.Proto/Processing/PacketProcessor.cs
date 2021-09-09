@@ -82,6 +82,8 @@ namespace WowPacketParser.Proto.Processing
                     return Process(packet.BaseData, packet.ClientUseItem);
                 case PacketHolder.KindOneofCase.ClientQuestGiverChooseReward:
                     return Process(packet.BaseData, packet.ClientQuestGiverChooseReward);
+                case PacketHolder.KindOneofCase.ClientMove:
+                    return Process(packet.BaseData, packet.ClientMove);
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -123,5 +125,6 @@ namespace WowPacketParser.Proto.Processing
         protected virtual T? Process(PacketBase basePacket, PacketQuestAddKillCredit packet) => default;
         protected virtual T? Process(PacketBase basePacket, PacketClientUseItem packet) => default;
         protected virtual T? Process(PacketBase basePacket, PacketClientQuestGiverChooseReward packet) => default;
+        protected virtual T? Process(PacketBase basePacket, PacketClientMove packet) => default;
     }
 }

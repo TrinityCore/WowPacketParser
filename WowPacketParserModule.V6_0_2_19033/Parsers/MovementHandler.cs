@@ -17,12 +17,13 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
     public static class MovementHandler
     {
-        public static void ReadMovementStats(Packet packet, params object[] idx)
+        public static MovementStats ReadMovementStats(Packet packet, params object[] idx)
         {
-            packet.ReadPackedGuid128("MoverGUID", idx);
+            MovementStats stats = new();
+            stats.MoverGuid = packet.ReadPackedGuid128("MoverGUID", idx);
 
             packet.ReadUInt32("MoveIndex", idx);
-            packet.ReadVector4("Position", idx);
+            stats.Position = packet.ReadVector4("Position", idx);
 
             packet.ReadSingle("Pitch", idx);
             packet.ReadSingle("StepUpStartElevation", idx);
@@ -49,6 +50,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (hasFall)
                 ReadFallData(packet, idx, "FallData");
+            return stats;
         }
 
         public static void ReadTransportData(Packet packet, params object[] idx)
@@ -85,10 +87,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
         }
 
-        public static void ReadMovementAck(Packet packet)
+        public static MovementStats ReadMovementAck(Packet packet)
         {
-            ReadMovementStats(packet);
+            var stats = ReadMovementStats(packet);
             packet.ReadInt32("AckIndex");
+            return stats;
         }
 
         public static void ReadMovementForce(Packet packet, params object[] idx)
@@ -232,7 +235,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_MOVE_UPDATE)]
         public static void HandlePlayerMove(Packet packet)
         {
-            ReadMovementStats(packet);
+            var stats = ReadMovementStats(packet);
+            packet.Holder.ClientMove = new() { Mover = stats.MoverGuid, Position = stats.Position };
         }
 
         public static void ReadMonsterSplineFilter(Packet packet, params object[] indexes)
@@ -638,8 +642,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_MOVE_FEATHER_FALL_ACK)]
         [Parser(Opcode.CMSG_MOVE_SET_CAN_TURN_WHILE_FALLING_ACK)]
         public static void HandleMovementAck(Packet packet)
-        {
-            ReadMovementAck(packet);
+        {        
+            var stats = ReadMovementAck(packet);
+            packet.Holder.ClientMove = new() { Mover = stats.MoverGuid, Position = stats.Position };
         }
 
         [Parser(Opcode.CMSG_MOVE_FORCE_FLIGHT_SPEED_CHANGE_ACK)]
@@ -650,21 +655,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_MOVE_SET_MOD_MOVEMENT_FORCE_MAGNITUDE_ACK)]
         public static void HandleMovementSpeedAck(Packet packet)
         {
-            ReadMovementAck(packet);
+            var stats = ReadMovementAck(packet);
+            packet.Holder.ClientMove = new() { Mover = stats.MoverGuid, Position = stats.Position };
             packet.ReadSingle("Speed");
         }
 
         [Parser(Opcode.CMSG_MOVE_REMOVE_MOVEMENT_FORCE_ACK)]
         public static void HandleMoveRemoveMovementForceAck(Packet packet)
         {
-            ReadMovementAck(packet);
+            var stats = ReadMovementAck(packet);
+            packet.Holder.ClientMove = new() { Mover = stats.MoverGuid, Position = stats.Position };
             packet.ReadPackedGuid128("TriggerGUID");
         }
 
         [Parser(Opcode.CMSG_MOVE_SET_VEHICLE_REC_ID_ACK)]
         public static void HandleMoveSetVehicleRecIdAck(Packet packet)
         {
-            ReadMovementAck(packet);
+            var stats = ReadMovementAck(packet);
+            packet.Holder.ClientMove = new() { Mover = stats.MoverGuid, Position = stats.Position };
             packet.ReadInt32("VehicleRecID");
         }
 
@@ -686,7 +694,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_MOVE_APPLY_MOVEMENT_FORCE_ACK)]
         public static void HandleMoveApplyMovementForceAck(Packet packet)
         {
-            ReadMovementAck(packet);
+            var stats = ReadMovementAck(packet);
+            packet.Holder.ClientMove = new() { Mover = stats.MoverGuid, Position = stats.Position };
             ReadMovementForce(packet, "MovementForce");
         }
 
@@ -709,7 +718,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_MOVE_SET_COLLISION_HEIGHT_ACK)]
         public static void HandleMoveSetCollisionHeightAck(Packet packet)
         {
-            ReadMovementAck(packet);
+            var stats = ReadMovementAck(packet);
+            packet.Holder.ClientMove = new() { Mover = stats.MoverGuid, Position = stats.Position };
             packet.ReadSingle("Height");
             packet.ReadInt32("MountDisplayID");
 

@@ -64,6 +64,7 @@ message PacketHolder {
       PacketQuestAddKillCredit questAddKillCredit = 35;
       PacketClientUseItem clientUseItem = 36;
       PacketClientQuestGiverChooseReward clientQuestGiverChooseReward = 37;
+      PacketClientMove clientMove = 38;
   }
 }
 
@@ -637,4 +638,9 @@ message PacketClientQuestGiverChooseReward {
   UniversalGuid questGiver = 1;
   uint32 questId = 2;
   uint32 item = 3;
+}
+
+message PacketClientMove {
+  UniversalGuid mover = 1;
+  Vec4 position = 2;
 }
