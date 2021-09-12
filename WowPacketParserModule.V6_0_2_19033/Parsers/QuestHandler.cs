@@ -105,7 +105,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             var chooseReward = packet.Holder.ClientQuestGiverChooseReward = new();
             chooseReward.QuestGiver = packet.ReadPackedGuid128("QuestGiverGUID");
-            chooseReward.QuestId = packet.ReadUInt32("QuestID");
+            chooseReward.QuestId = (uint)packet.ReadInt32("QuestID");
             chooseReward.Item = packet.ReadUInt32("ItemChoiceID");
         }
 

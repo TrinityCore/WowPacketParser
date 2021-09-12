@@ -231,12 +231,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_MOVE_STOP_STRAFE)]
         [Parser(Opcode.CMSG_MOVE_STOP_SWIM)]
         [Parser(Opcode.CMSG_MOVE_STOP_TURN)]
+        public static void HandleClientPlayerMove(Packet packet)
+        {
+            var stats = ReadMovementStats(packet);
+            packet.Holder.ClientMove = new() { Mover = stats.MoverGuid, Position = stats.Position };
+        }
+        
+        
         [Parser(Opcode.SMSG_MOVE_UPDATE_KNOCK_BACK)]
         [Parser(Opcode.SMSG_MOVE_UPDATE)]
         public static void HandlePlayerMove(Packet packet)
         {
-            var stats = ReadMovementStats(packet);
-            packet.Holder.ClientMove = new() { Mover = stats.MoverGuid, Position = stats.Position };
+            ReadMovementStats(packet);
         }
 
         public static void ReadMonsterSplineFilter(Packet packet, params object[] indexes)

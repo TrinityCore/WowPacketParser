@@ -196,7 +196,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             var guid = new byte[8];
 
             chooseReward.Item = packet.ReadUInt32("Reward");
-            chooseReward.QuestId = packet.ReadUInt32<QuestId>("Quest ID");
+            chooseReward.QuestId = (uint)packet.ReadInt32<QuestId>("Quest ID");
             guid[2] = packet.ReadBit();
             guid[0] = packet.ReadBit();
             guid[7] = packet.ReadBit();
