@@ -140,8 +140,10 @@ namespace WowPacketParser.SQL
 
         public static string GetTableName<T>() where T : IDataModel
         {
-            var tableAttrs =
-                (DBTableNameAttribute[])typeof(T).GetCustomAttributes(typeof(DBTableNameAttribute), false);
+            var tableAttrs = typeof(T).GetCustomAttributes(typeof(DBTableNameAttribute), false)
+                .Cast<DBTableNameAttribute>()
+                .Where(attr => attr.IsVisible())
+                .ToArray();
             if (tableAttrs.Length > 0)
                 return AddBackQuotes(tableAttrs[0].Name);
 
