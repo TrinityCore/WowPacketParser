@@ -319,5 +319,38 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadBit("CanStart");
             }
         }
+
+        [Parser(Opcode.SMSG_COVENANT_CALLINGS_AVAILABILITY_RESPONSE)]
+        public static void HandleGarrisonCovenantCallingsAvailability(Packet packet)
+        {
+            packet.ResetBitReader();
+            packet.ReadBit("result");
+            int Callingsize = packet.ReadInt32("CallingSize");
+
+            for (int i = 0; i < Callingsize; i++)
+                packet.ReadInt32("Calling", i);
+
+        }
+
+
+        [Parser(Opcode.SMSG_COVENANT_RENOWN_OPEN_NPC)]
+        public static void HandleGarrisonCovenantRenowmOpenNpc(Packet packet)
+        {
+            packet.ReadPackedGuid128("ObjectGuid");
+
+            packet.ResetBitReader();
+            packet.ReadBit("result");
+
+        }
+
+        [Parser(Opcode.SMSG_COVENANT_RENOWN_SEND_CATCHUP_STATE)]
+        public static void HandleGarrisonCovenantRenownSendCatchupState(Packet packet)
+        {
+
+            packet.ResetBitReader();
+            packet.ReadBit("result");
+
+        }
+
     }
 }
