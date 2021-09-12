@@ -33,33 +33,36 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             packet.ResetBitReader();
             var hasAreaTriggerSpline = packet.ReadBit("HasAreaTriggerSpline");
-            var hasAreaTriggerCircularMovement = packet.ReadBit("HasAreaTriggerCircularMovement");
+            var hasAreaTriggerOrbit = packet.ReadBit("HasAreaTriggerOrbit");
 
             if (hasAreaTriggerSpline)
                 ReadAreaTriggerSpline(packet);
 
-            if (hasAreaTriggerCircularMovement)
-            {
-                packet.ResetBitReader();
-                var hasTarget = packet.ReadBit("HasTarget");
-                var hasCenter = packet.ReadBit("HasCenter");
-                packet.ReadBit("CounterClockwise");
-                packet.ReadBit("CanLoop");
+            if (hasAreaTriggerOrbit)
+                ReadAreaTriggerOrbit(packet, "Orbit");
+        }
 
-                packet.ReadUInt32("TimeToTarget");
-                packet.ReadInt32("ElapsedTimeForMovement");
-                packet.ReadUInt32("StartDelay");
-                packet.ReadSingle("Radius");
-                packet.ReadSingle("BlendFromRadius");
-                packet.ReadSingle("InitialAngel");
-                packet.ReadSingle("ZOffset");
+        public static void ReadAreaTriggerOrbit(Packet packet, params object[] indexes)
+        {
+            packet.ResetBitReader();
+            var hasTarget = packet.ReadBit("HasPathTarget");
+            var hasCenter = packet.ReadBit("HasCenter");
+            packet.ReadBit("CounterClockwise");
+            packet.ReadBit("CanLoop");
 
-                if (hasTarget)
-                    packet.ReadPackedGuid128("TargetGUID");
+            packet.ReadUInt32("TimeToTarget");
+            packet.ReadInt32("ElapsedTimeForMovement");
+            packet.ReadUInt32("StartDelay");
+            packet.ReadSingle("Radius");
+            packet.ReadSingle("BlendFromRadius");
+            packet.ReadSingle("InitialAngel");
+            packet.ReadSingle("ZOffset");
 
-                if (hasCenter)
-                    packet.ReadVector3("Center");
-            }
+            if (hasTarget)
+                packet.ReadPackedGuid128("PathTarget");
+
+            if (hasCenter)
+                packet.ReadVector3("Center");
         }
     }
 }

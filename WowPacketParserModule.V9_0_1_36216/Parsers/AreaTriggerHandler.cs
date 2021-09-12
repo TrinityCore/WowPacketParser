@@ -24,29 +24,6 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadVector3("Center", indexes);
         }
 
-        public static void ReadAreaTriggerCircularMovement(Packet packet, params object[] indexes)
-        {
-            packet.ResetBitReader();
-            var hasTarget = packet.ReadBit("HasTarget");
-            var hasCenter = packet.ReadBit("HasCenter");
-            packet.ReadBit("CounterClockwise");
-            packet.ReadBit("CanLoop");
-
-            packet.ReadUInt32("TimeToTarget");
-            packet.ReadInt32("ElapsedTimeForMovement");
-            packet.ReadUInt32("StartDelay");
-            packet.ReadSingle("Radius");
-            packet.ReadSingle("BlendFromRadius");
-            packet.ReadSingle("InitialAngel");
-            packet.ReadSingle("ZOffset");
-
-            if (hasTarget)
-                packet.ReadPackedGuid128("TargetGUID");
-
-            if (hasCenter)
-                packet.ReadVector3("Center");
-        }
-
         [Parser(Opcode.SMSG_AREA_TRIGGER_RE_PATH)]
         public static void HandleAreaTriggerReShape(Packet packet)
         {
@@ -54,7 +31,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             packet.ResetBitReader();
             var hasAreaTriggerSpline = packet.ReadBit("HasAreaTriggerSpline");
-            var hasAreaTriggerCircularMovement = packet.ReadBit("HasAreaTriggerCircularMovement");
+            var hasAreaTriggerOrbit = packet.ReadBit("HasAreaTriggerOrbit");
             var hasAreaTriggerMovementScript = packet.ReadBit("HasAreaTriggerMovementScript");
 
             if (hasAreaTriggerSpline)
@@ -63,8 +40,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             if (hasAreaTriggerMovementScript)
                 ReadAreaTriggerMovementScript(packet, "MovementScript");
 
-            if (hasAreaTriggerCircularMovement)
-                ReadAreaTriggerCircularMovement(packet, "CircularMovement");
+            if (hasAreaTriggerOrbit)
+                V7_0_3_22248.Parsers.AreaTriggerHandler.ReadAreaTriggerOrbit(packet, "Orbit");
         }
     }
 }
