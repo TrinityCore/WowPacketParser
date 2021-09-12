@@ -25,20 +25,6 @@ namespace WowPacketParser.SQL.Builders
         }
 
         [BuilderMethod]
-        public static string AreaTriggerTemplateVerticesData()
-        {
-            if (Storage.AreaTriggerTemplatesVertices.IsEmpty())
-                return string.Empty;
-
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger_template_polygon_vertices))
-                return string.Empty;
-
-            var templateDb = SQLDatabase.Get(Storage.AreaTriggerTemplatesVertices);
-
-            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.AreaTriggerTemplatesVertices.OrderBy(x => x.Item1.AreaTriggerId).ToArray() : Storage.AreaTriggerTemplatesVertices.ToArray(), templateDb, x => string.Empty);
-        }
-
-        [BuilderMethod]
         public static string SpellAreaTriggersData()
         {
             var spellareatriggers = Storage.Objects.IsEmpty()
@@ -66,6 +52,29 @@ namespace WowPacketParser.SQL.Builders
             var templateDb = SQLDatabase.Get(spellareatriggersData);
 
             return SQLUtil.Compare(Settings.SQLOrderByKey ? spellareatriggersData.OrderBy(x => x.Item1.AreaTriggerId).ToArray() : spellareatriggersData.ToArray(), templateDb, x => "SpellId : " + x.spellId.ToString());
+        }
+
+        [BuilderMethod]
+        public static string SpellAreaTriggerVerticesData()
+        {
+            if (Storage.SpellAreaTriggerVertices.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.spell_areatrigger_vertices))
+                return string.Empty;
+
+            var templateDb = SQLDatabase.Get(Storage.SpellAreaTriggerVertices);
+
+            foreach (var spellAreaTriggerVertice in Storage.SpellAreaTriggerVertices)
+            {
+                var spellAreaTriggerTuple = Storage.Objects.Where(obj => obj.Key == spellAreaTriggerVertice.Item1.areatriggerGuid).First();
+                SpellAreaTrigger spellAreaTrigger = (SpellAreaTrigger)spellAreaTriggerTuple.Value.Item1;
+
+                spellAreaTriggerVertice.Item1.spellId = spellAreaTrigger.spellId;
+                spellAreaTriggerVertice.Item1.SpellMiscId = spellAreaTrigger.SpellMiscId;
+            }
+
+            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.SpellAreaTriggerVertices.OrderBy(x => x.Item1.SpellMiscId).ToArray() : Storage.SpellAreaTriggerVertices.ToArray(), templateDb, x => "SpellId : " + x.spellId.ToString());
         }
     }
 }

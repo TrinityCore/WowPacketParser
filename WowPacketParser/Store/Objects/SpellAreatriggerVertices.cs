@@ -3,11 +3,11 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("areatrigger_template_polygon_vertices")]
-    public sealed class AreaTriggerTemplateVertices : IDataModel
+    [DBTableName("spell_areatrigger_vertices")]
+    public sealed class SpellAreatriggerVertices : IDataModel
     {
-        [DBFieldName("AreaTriggerId", true)]
-        public uint? AreaTriggerId;
+        [DBFieldName("SpellMiscId", true)]
+        public uint? SpellMiscId;
 
         [DBFieldName("Idx", true)]
         public uint? Idx;
@@ -26,5 +26,10 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
+
+        // Will be inserted as comment to facilitate SpellMiscId research
+        public uint spellId = 0;
+
+        public WowGuid areatriggerGuid;
     }
 }
