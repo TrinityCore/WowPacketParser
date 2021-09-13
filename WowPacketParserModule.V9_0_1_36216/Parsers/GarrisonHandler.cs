@@ -324,33 +324,30 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         public static void HandleGarrisonCovenantCallingsAvailability(Packet packet)
         {
             packet.ResetBitReader();
-            packet.ReadBit("result");
-            int Callingsize = packet.ReadInt32("CallingSize");
+            packet.ReadBit("Unk"); // always true?
+            int bountyCount = packet.ReadInt32();
 
-            for (int i = 0; i < Callingsize; i++)
-                packet.ReadInt32("Calling", i);
-
+            for (int i = 0; i < bountyCount; i++)
+                packet.ReadInt32("BountyID", i);
         }
 
-
         [Parser(Opcode.SMSG_COVENANT_RENOWN_OPEN_NPC)]
-        public static void HandleGarrisonCovenantRenowmOpenNpc(Packet packet)
+        public static void HandleGarrisonCovenantRenownOpenNpc(Packet packet)
         {
-            packet.ReadPackedGuid128("ObjectGuid");
-
-            packet.ResetBitReader();
-            packet.ReadBit("result");
-
+            packet.ReadPackedGuid128("NpcGUID");
+            
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
+            {
+                packet.ResetBitReader();
+                packet.ReadBit("CatchupState");
+            }
         }
 
         [Parser(Opcode.SMSG_COVENANT_RENOWN_SEND_CATCHUP_STATE)]
         public static void HandleGarrisonCovenantRenownSendCatchupState(Packet packet)
         {
-
             packet.ResetBitReader();
-            packet.ReadBit("result");
-
+            packet.ReadBit("CatchupState");
         }
-
     }
 }
