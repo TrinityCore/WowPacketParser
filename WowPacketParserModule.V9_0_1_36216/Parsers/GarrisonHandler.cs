@@ -324,7 +324,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         public static void HandleGarrisonCovenantCallingsAvailability(Packet packet)
         {
             packet.ResetBitReader();
-            packet.ReadBit("Unk"); // always true?
+            packet.ReadBit("AreCallingsUnlocked");
             int bountyCount = packet.ReadInt32();
 
             for (int i = 0; i < bountyCount; i++)
