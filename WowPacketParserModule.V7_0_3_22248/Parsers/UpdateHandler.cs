@@ -105,6 +105,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlockOnCreate(packet, createObject.Values, objType, index);
             var dynamicUpdates = CoreParsers.UpdateHandler.ReadDynamicValuesUpdateBlockOnCreate(packet, objType, index);
 
+            obj.Guid = guid;
             obj.Type = objType;
             obj.Movement = moves;
             obj.UpdateFields = updates;

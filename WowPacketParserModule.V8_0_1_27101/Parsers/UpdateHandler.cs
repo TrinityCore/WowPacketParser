@@ -235,6 +235,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 obj.DynamicUpdateFields = dynamicUpdates;
             }
 
+            obj.Guid = guid;
             obj.Type = objType;
             obj.Movement = moves;
             obj.Map = map;

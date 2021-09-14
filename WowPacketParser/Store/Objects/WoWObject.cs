@@ -8,6 +8,7 @@ namespace WowPacketParser.Store.Objects
 {
     public class WoWObject
     {
+        public WowGuid Guid;
         public ObjectType Type;
 
         public MovementInfo Movement;

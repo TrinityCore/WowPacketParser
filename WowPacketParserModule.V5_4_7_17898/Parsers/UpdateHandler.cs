@@ -107,6 +107,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     break;
             }
 
+            obj.Guid = guid;
             obj.Type = objType;
             obj.Movement = moves;
             obj.UpdateFields = updates;

@@ -92,6 +92,7 @@ namespace WowPacketParser.Parsing.Parsers
                 default:                    obj = new WoWObject(); break;
             }
 
+            obj.Guid = guid;
             obj.Type = objType;
             obj.Movement = moves;
             obj.UpdateFields = updates;
