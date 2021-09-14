@@ -23,20 +23,43 @@ namespace WowPacketParser.SQL
         /// <summary>
         /// </summary>
         /// <param name="name">table name</param>
-        public DBTableNameAttribute(string name, TargetedDatabase addedInVersion = TargetedDatabase.Zero, TargetedDatabase removedInVersion = TargetedDatabase.Zero)
+        public DBTableNameAttribute(string name)
         {
             Name = name;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="name">table name</param>
+        /// <param name="addedInVersion">initial version</param>
+        public DBTableNameAttribute(string name, TargetedDatabase addedInVersion)
+            : this(name)
+        {
+            _addedInVersion = addedInVersion;
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="name">table name</param>
+        /// <param name="addedInVersion">initial version</param>
+        /// <param name="removedInVersion">final version</param>
+        public DBTableNameAttribute(string name, TargetedDatabase addedInVersion, TargetedDatabase removedInVersion)
+            : this(name, addedInVersion)
+        {
+            _removedInVersion = removedInVersion;
         }
 
         public bool IsVisible()
         {
             TargetedDatabase target = Settings.TargetedDatabase;
 
-            if (_addedInVersion.HasValue && !_removedInVersion.HasValue)
-                return target >= _addedInVersion.Value;
+            if (_addedInVersion.HasValue)
+                if (_addedInVersion.Value < target)
+                    return false;
 
-            if (_addedInVersion.HasValue && _removedInVersion.HasValue)
-                return target >= _addedInVersion.Value && target < _removedInVersion.Value;
+            if (_removedInVersion.HasValue)
+                if (target >= _removedInVersion.Value)
+                    return false;
 
             return true;
         }
