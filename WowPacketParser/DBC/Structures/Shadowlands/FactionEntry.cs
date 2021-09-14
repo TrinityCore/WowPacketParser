@@ -5,12 +5,12 @@ namespace WowPacketParser.DBC.Structures.Shadowlands
     [DBFile("Faction")]
     public sealed class FactionEntry
     {
+        [Index(true)]
+        public int ID;
         [Cardinality(4)]
         public long[] ReputationRaceMask = new long[4];
         public string Name;
         public string Description;
-        [Index(false)]
-        public int ID;
         public short ReputationIndex;
         public ushort ParentFactionID;
         public byte Expansion;

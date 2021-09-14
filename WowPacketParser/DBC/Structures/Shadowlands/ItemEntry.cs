@@ -15,6 +15,6 @@ namespace WowPacketParser.DBC.Structures.Shadowlands
         public sbyte SoundOverrideSubclassID;
         public int IconFileDataID;
         public byte ItemGroupSoundsID;
-        public int Unk;
+        public int ModifiedCraftingReagentItemID;
     }
 }

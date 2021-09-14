@@ -8,9 +8,6 @@ namespace WowPacketParser.DBC.Structures.Shadowlands
     {
         [Index(true)]
         public uint ID;
-        public sbyte Expansion;
-        public sbyte MinLevel;
-        public sbyte MaxLevel;
         public int UnkMin;
         public int UnkMax;
         public ushort FactionTemplateID;

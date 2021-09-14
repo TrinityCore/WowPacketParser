@@ -31,6 +31,7 @@ namespace WowPacketParser.DBC.Structures.Shadowlands
         public float ResourceCoefficient;
         public float GroupSizeBasePointsCoefficient;
         public float EffectBasePoints;
+        public int ScalingClass;
         [Cardinality(2)]
         public int[] EffectMiscValue = new int[2];
         [Cardinality(2)]
