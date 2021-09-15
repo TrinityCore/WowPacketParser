@@ -6,18 +6,6 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 {
     public static class AreaTriggerHandler
     {
-        public static void ReadAreaTriggerSpline(Packet packet, params object[] indexes)
-        {
-            packet.ReadInt32("TimeToTarget", indexes);
-            packet.ReadInt32("ElapsedTimeForMovement", indexes);
-
-            packet.ResetBitReader();
-
-            var verticesCount = packet.ReadBits("VerticesCount", 16, indexes);
-
-            for (var i = 0; i < verticesCount; ++i)
-                packet.ReadVector3("Points", indexes, i);
-        }
         public static void ReadAreaTriggerMovementScript(Packet packet, params object[] indexes)
         {
             packet.ReadInt32("SpellScriptID", indexes);
@@ -35,7 +23,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var hasAreaTriggerMovementScript = packet.ReadBit("HasAreaTriggerMovementScript");
 
             if (hasAreaTriggerSpline)
-                ReadAreaTriggerSpline(packet, "Spline");
+                V7_0_3_22248.Parsers.AreaTriggerHandler.ReadAreaTriggerSpline(null, packet, "Spline");
 
             if (hasAreaTriggerMovementScript)
                 ReadAreaTriggerMovementScript(packet, "MovementScript");

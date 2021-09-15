@@ -1,29 +1,47 @@
+using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
     public static class AreaTriggerHandler
     {
-        public static void ReadAreaTriggerSpline(Packet packet, params object[] indexes)
+        public static List<SpellAreatriggerSpline> ReadAreaTriggerSpline(SpellAreaTrigger areaTrigger, Packet packet, params object[] indexes)
         {
             packet.ReadInt32("TimeToTarget", indexes);
             packet.ReadInt32("ElapsedTimeForMovement", indexes);
 
             packet.ResetBitReader();
 
-            var verticesCount = packet.ReadBits("VerticesCount", 16, indexes);
+            var pointCount = (int) packet.ReadBits("PointsCount", 16, indexes);
+            var points = new List<SpellAreatriggerSpline>(pointCount);
 
-            for (var i = 0; i < verticesCount; ++i)
-                packet.ReadVector3("Points", indexes, i);
+            for (var i = 0u; i < pointCount; ++i)
+            {
+                var point = packet.ReadVector3("Points", indexes, i);
+                if (areaTrigger != null)
+                {
+                    points.Add(new SpellAreatriggerSpline()
+                    {
+                        areatriggerGuid = areaTrigger.Guid,
+                        Idx = i,
+                        X = point.X,
+                        Y = point.Y,
+                        Z = point.Z
+                    });
+                }
+            }
+
+            return points;
         }
 
         [Parser(Opcode.SMSG_AREA_TRIGGER_RE_PATH)]
         public static void HandleAreaTriggerRePath(Packet packet)
         {
             packet.ReadPackedGuid128("TriggerGUID");
-            ReadAreaTriggerSpline(packet);
+            ReadAreaTriggerSpline(null, packet);
         }
 
         [Parser(Opcode.SMSG_AREA_TRIGGER_RE_SHAPE)]
@@ -36,7 +54,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var hasAreaTriggerOrbit = packet.ReadBit("HasAreaTriggerOrbit");
 
             if (hasAreaTriggerSpline)
-                ReadAreaTriggerSpline(packet);
+                ReadAreaTriggerSpline(null, packet);
 
             if (hasAreaTriggerOrbit)
                 ReadAreaTriggerOrbit(packet, "Orbit");

@@ -633,7 +633,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     packet.ReadBit();
 
                 if (hasAreaTriggerSpline)
-                    AreaTriggerHandler.ReadAreaTriggerSpline(packet, index);
+                    foreach (var splinePoint in AreaTriggerHandler.ReadAreaTriggerSpline(spellAreaTrigger, packet, index))
+                        Storage.SpellAreaTriggerSplines.Add(splinePoint);
 
                 if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.HasTargetRollPitchYaw) != 0)
                     packet.ReadVector3("TargetRollPitchYaw", index);

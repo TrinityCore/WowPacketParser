@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -52,6 +53,41 @@ namespace WowPacketParser.SQL.Builders
             var templateDb = SQLDatabase.Get(spellareatriggersData);
 
             return SQLUtil.Compare(Settings.SQLOrderByKey ? spellareatriggersData.OrderBy(x => x.Item1.AreaTriggerId).ToArray() : spellareatriggersData.ToArray(), templateDb, x => "SpellId : " + x.spellId.ToString());
+        }
+
+        [BuilderMethod]
+        public static string SpellAreaTriggerSplineData()
+        {
+            if (Storage.SpellAreaTriggerSplines.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.spell_areatrigger_splines))
+                return string.Empty;
+
+            var templateDb = SQLDatabase.Get(Storage.SpellAreaTriggerSplines);
+
+            foreach (var splinePoint in Storage.SpellAreaTriggerSplines)
+            {
+                var spellAreaTriggerTuple = Storage.Objects.Where(obj => obj.Key == splinePoint.Item1.areatriggerGuid).First();
+                SpellAreaTrigger spellAreaTrigger = (SpellAreaTrigger)spellAreaTriggerTuple.Value.Item1;
+
+                splinePoint.Item1.spellId = spellAreaTrigger.spellId;
+                splinePoint.Item1.SpellMiscId = spellAreaTrigger.SpellMiscId;
+
+                // convert points to offsets
+                splinePoint.Item1.X -= spellAreaTrigger.Movement.Position.X;
+                splinePoint.Item1.Y -= spellAreaTrigger.Movement.Position.Y;
+                splinePoint.Item1.Z -= spellAreaTrigger.Movement.Position.Z;
+
+                float areaTriggerO = spellAreaTrigger.Movement.Orientation;
+                float inx = splinePoint.Item1.X.Value;
+                float iny = splinePoint.Item1.Y.Value;
+
+                splinePoint.Item1.X = (float)((inx + iny * Math.Tan(areaTriggerO)) / (Math.Cos(areaTriggerO) + Math.Sin(areaTriggerO) * Math.Tan(areaTriggerO)));
+                splinePoint.Item1.Y = (float)((iny - inx * Math.Tan(areaTriggerO)) / (Math.Cos(areaTriggerO) + Math.Sin(areaTriggerO) * Math.Tan(areaTriggerO)));
+            }
+
+            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.SpellAreaTriggerSplines.OrderBy(x => x.Item1.SpellMiscId).ToArray() : Storage.SpellAreaTriggerSplines.ToArray(), templateDb, x => "SpellId : " + x.spellId.ToString());
         }
 
         [BuilderMethod]

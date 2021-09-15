@@ -451,7 +451,8 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
                     packet.ReadBit();
 
                 if (hasAreaTriggerSpline)
-                    V7_0_3_22248.Parsers.AreaTriggerHandler.ReadAreaTriggerSpline(packet, index);
+                    foreach (var splinePoint in V7_0_3_22248.Parsers.AreaTriggerHandler.ReadAreaTriggerSpline((SpellAreaTrigger)obj, packet, index))
+                        Storage.SpellAreaTriggerSplines.Add(splinePoint);
 
                 if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.HasTargetRollPitchYaw) != 0)
                     packet.ReadVector3("TargetRollPitchYaw", index);

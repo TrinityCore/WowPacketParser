@@ -47,6 +47,7 @@
         scenario_poi,
         spell_target_position,
         spell_areatrigger,
+        spell_areatrigger_splines,
         spell_areatrigger_vertices,
         SniffData,
         SniffDataOpcodes,
