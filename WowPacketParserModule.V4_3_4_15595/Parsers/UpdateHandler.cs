@@ -57,9 +57,6 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
         private static void ReadCreateObjectBlock(Packet packet, CreateObject createObject, WowGuid guid, uint map, object index)
         {
             ObjectType objType = ObjectTypeConverter.Convert(packet.ReadByteE<ObjectTypeLegacy>("Object Type", index));
-            var moves = ReadMovementUpdateBlock434(packet, guid, index);
-            var updates = CoreParsers.UpdateHandler.ReadValuesUpdateBlockOnCreate(packet, createObject.Values, objType, index);
-
             WoWObject obj;
             switch (objType)
             {
@@ -79,13 +76,14 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
 
             obj.Guid = guid;
             obj.Type = objType;
-            obj.Movement = moves;
-            obj.UpdateFields = updates;
             obj.Map = map;
             obj.Area = CoreParsers.WorldStateHandler.CurrentAreaId;
             obj.Zone = CoreParsers.WorldStateHandler.CurrentZoneId;
             obj.PhaseMask = (uint)CoreParsers.MovementHandler.CurrentPhaseMask;
             obj.Phases = new HashSet<ushort>(CoreParsers.MovementHandler.ActivePhases.Keys);
+
+            obj.Movement = ReadMovementUpdateBlock434(packet, guid, index);
+            obj.UpdateFields = CoreParsers.UpdateHandler.ReadValuesUpdateBlockOnCreate(packet, createObject.Values, objType, index);
 
             // If this is the second time we see the same object (same guid,
             // same position) update its phasemask
