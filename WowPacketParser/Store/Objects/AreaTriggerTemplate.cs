@@ -9,13 +9,13 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Id", true)]
         public uint? Id;
 
-        [DBFieldName("Type")]
+        [DBFieldName("Type")] // kept in TargetedDatabase.Shadowlands to preserve data for non-spell areatriggers
         public byte? Type;
 
         [DBFieldName("Flags")]
         public uint? Flags;
 
-        [DBFieldName("Data", 6, true)]
+        [DBFieldName("Data", 6, true)] // kept in TargetedDatabase.Shadowlands to preserve data for non-spell areatriggers
         public float?[] Data = { 0, 0, 0, 0, 0, 0 };
 
         [DBFieldName("VerifiedBuild")]

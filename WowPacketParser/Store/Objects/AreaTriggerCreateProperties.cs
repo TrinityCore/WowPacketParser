@@ -7,13 +7,15 @@ using WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation;
 
 namespace WowPacketParser.Store.Objects
 {
-    [DBTableName("spell_areatrigger")]
-    public sealed class SpellAreaTrigger : WoWObject, IDataModel
+    [DBTableName("spell_areatrigger", TargetedDatabase.Zero, TargetedDatabase.Shadowlands)]
+    [DBTableName("areatrigger_create_properties", TargetedDatabase.Shadowlands)]
+    public sealed class AreaTriggerCreateProperties : WoWObject, IDataModel
     {
-        [DBFieldName("SpellMiscId", true)]
-        public uint? SpellMiscId;
+        [DBFieldName("SpellMiscId", TargetedDatabase.Zero, TargetedDatabase.Shadowlands, true)]
+        [DBFieldName("Id", TargetedDatabase.Shadowlands, true)]
+        public uint? AreaTriggerCreatePropertiesId;
 
-        [DBFieldName("AreaTriggerId", true)]
+        [DBFieldName("AreaTriggerId")]
         public uint? AreaTriggerId;
 
         [DBFieldName("MoveCurveId")]
@@ -43,15 +45,21 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("TimeToTargetScale")]
         public uint TimeToTargetScale = 0;
 
+        [DBFieldName("Shape", TargetedDatabase.Shadowlands)]
+        public byte? Shape;
+
+        [DBFieldName("ShapeData", TargetedDatabase.Shadowlands, 6, true)]
+        public float?[] ShapeData = { 0, 0, 0, 0, 0, 0 };
+
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
 
-        // Will be inserted as comment to facilitate SpellMiscId research
+        // Will be inserted as comment
         public uint spellId = 0;
 
         public IAreaTriggerData AreaTriggerData;
 
-        public SpellAreaTrigger() : base()
+        public AreaTriggerCreateProperties() : base()
         {
             AreaTriggerData = new AreaTriggerData(this);
         }
@@ -62,37 +70,41 @@ namespace WowPacketParser.Store.Objects
             DecalPropertiesId   = AreaTriggerData.DecalPropertiesID;
             TimeToTarget        = AreaTriggerData.TimeToTarget;
             TimeToTargetScale   = AreaTriggerData.TimeToTargetScale;
-            SpellMiscId         = GetSpellMiscIdFromSpellId(spellId);
+            AreaTriggerCreatePropertiesId = GetAreaTriggerCreatePropertiesIdFromSpellId(spellId);
+            if (AreaTriggerCreatePropertiesId == null)
+            {
+                // this is a hack to allow generating statements
+                AreaTriggerCreatePropertiesId = 0x80000000 | spellId;
+            }
         }
 
-        public static uint? GetSpellMiscIdFromSpellId(uint spellId)
+        public static uint? GetAreaTriggerCreatePropertiesIdFromSpellId(uint spellId)
         {
             if (!Settings.UseDBC)
                 return null;
 
-            uint? SpellMiscId = null;
+            uint? areaTriggerCreatePropertiesId = null;
 
             for (uint idx = 0; idx < 32; idx++)
             {
                 var tuple = Tuple.Create(spellId, idx);
-                if (DBC.DBC.SpellEffectStores.ContainsKey(tuple))
+                if (DBC.DBC.SpellEffectStores.TryGetValue(tuple, out var effect))
                 {
-                    var effect = DBC.DBC.SpellEffectStores[tuple];
-
                     if (effect.Effect == (uint)SpellEffects.SPELL_EFFECT_CREATE_AREATRIGGER ||
+                        effect.Effect == (uint)SpellEffects.SPELL_EFFECT_183 ||
                         effect.EffectAura == (uint)AuraTypeLegion.SPELL_AURA_AREA_TRIGGER)
                     {
                         // If we already had a SPELL_EFFECT_CREATE_AREATRIGGER, spell has multiple areatrigger,
                         // so we can't deduce SpellMiscId, return null
-                        if (SpellMiscId != null)
+                        if (areaTriggerCreatePropertiesId != null)
                             return null;
 
-                        SpellMiscId = (uint)effect.EffectMiscValue[0];
+                        areaTriggerCreatePropertiesId = (uint)effect.EffectMiscValue[0];
                     }
                 }
             }
 
-            return SpellMiscId;
+            return areaTriggerCreatePropertiesId;
         }
     }
 }

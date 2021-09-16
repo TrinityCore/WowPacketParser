@@ -29,7 +29,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 ReadAreaTriggerMovementScript(packet, "MovementScript");
 
             if (hasAreaTriggerOrbit)
-                V7_0_3_22248.Parsers.AreaTriggerHandler.ReadAreaTriggerOrbit(packet, "Orbit");
+                V7_0_3_22248.Parsers.AreaTriggerHandler.ReadAreaTriggerOrbit(null, packet, "Orbit");
         }
     }
 }
