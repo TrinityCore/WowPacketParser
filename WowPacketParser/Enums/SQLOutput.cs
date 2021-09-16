@@ -4,6 +4,7 @@
     {
         // ReSharper disable InconsistentNaming
         areatrigger_create_properties,
+        areatrigger_create_properties_orbit,
         areatrigger_create_properties_polygon_vertex,
         areatrigger_create_properties_spline_point,
         areatrigger_template,

@@ -63,6 +63,37 @@ namespace WowPacketParser.SQL.Builders
                     return comment;
                 });
         }
+
+        [BuilderMethod]
+        public static string AreaTriggerCreatePropertiesOrbitData()
+        {
+            if (Storage.AreaTriggerCreatePropertiesOrbits.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger_create_properties_orbit))
+                return string.Empty;
+
+            var templateDb = SQLDatabase.Get(Storage.AreaTriggerCreatePropertiesOrbits);
+
+            foreach (var orbit in Storage.AreaTriggerCreatePropertiesOrbits)
+            {
+                var spellAreaTriggerTuple = Storage.Objects.Where(obj => obj.Key == orbit.Item1.areatriggerGuid).First();
+                AreaTriggerCreateProperties areaTrigger = (AreaTriggerCreateProperties)spellAreaTriggerTuple.Value.Item1;
+
+                orbit.Item1.spellId = areaTrigger.spellId;
+                orbit.Item1.AreaTriggerCreatePropertiesId = areaTrigger.AreaTriggerCreatePropertiesId;
+            }
+
+            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.AreaTriggerCreatePropertiesOrbits.OrderBy(x => x.Item1.AreaTriggerCreatePropertiesId).ToArray() : Storage.AreaTriggerCreatePropertiesOrbits.ToArray(),
+                templateDb,
+                x =>
+                {
+                    var comment = "SpellId : " + x.spellId.ToString();
+                    if ((x.AreaTriggerCreatePropertiesId & 0x80000000) != 0)
+                        comment += " CANNOT FIND PROPERTIES ID, USED SPELL ID AS KEY (NEEDS MANUAL CORRECTION)";
+
+                    return comment;
+                });
         }
 
         [BuilderMethod]
@@ -85,7 +116,16 @@ namespace WowPacketParser.SQL.Builders
                 vertex.Item1.AreaTriggerCreatePropertiesId = areaTrigger.AreaTriggerCreatePropertiesId;
             }
 
-            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.AreaTriggerCreatePropertiesPolygonVertices.OrderBy(x => x.Item1.AreaTriggerCreatePropertiesId).ToArray() : Storage.AreaTriggerCreatePropertiesPolygonVertices.ToArray(), templateDb, x => "SpellId : " + x.spellId.ToString());
+            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.AreaTriggerCreatePropertiesPolygonVertices.OrderBy(x => x.Item1.AreaTriggerCreatePropertiesId).ToArray() : Storage.AreaTriggerCreatePropertiesPolygonVertices.ToArray(),
+                templateDb,
+                x =>
+                {
+                    var comment = "SpellId : " + x.spellId.ToString();
+                    if ((x.AreaTriggerCreatePropertiesId & 0x80000000) != 0)
+                        comment += " CANNOT FIND PROPERTIES ID, USED SPELL ID AS KEY (NEEDS MANUAL CORRECTION)";
+
+                    return comment;
+                });
         }
 
         [BuilderMethod]
@@ -120,7 +160,16 @@ namespace WowPacketParser.SQL.Builders
                 splinePoint.Item1.Y = (float)((iny - inx * Math.Tan(areaTriggerO)) / (Math.Cos(areaTriggerO) + Math.Sin(areaTriggerO) * Math.Tan(areaTriggerO)));
             }
 
-            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.AreaTriggerCreatePropertiesSplinePoints.OrderBy(x => x.Item1.AreaTriggerCreatePropertiesId).ToArray() : Storage.AreaTriggerCreatePropertiesSplinePoints.ToArray(), templateDb, x => "SpellId : " + x.spellId.ToString());
+            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.AreaTriggerCreatePropertiesSplinePoints.OrderBy(x => x.Item1.AreaTriggerCreatePropertiesId).ToArray() : Storage.AreaTriggerCreatePropertiesSplinePoints.ToArray(),
+                templateDb,
+                x =>
+                {
+                    var comment = "SpellId : " + x.spellId.ToString();
+                    if ((x.AreaTriggerCreatePropertiesId & 0x80000000) != 0)
+                        comment += " CANNOT FIND PROPERTIES ID, USED SPELL ID AS KEY (NEEDS MANUAL CORRECTION)";
+
+                    return comment;
+                });
         }
     }
 }

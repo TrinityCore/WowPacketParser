@@ -21,6 +21,7 @@ namespace WowPacketParser.Store
 
         // Templates
         public static readonly DataBag<AreaTriggerTemplate> AreaTriggerTemplates = new DataBag<AreaTriggerTemplate>(new List<SQLOutput> { SQLOutput.areatrigger_template });
+        public static readonly DataBag<AreaTriggerCreatePropertiesOrbit> AreaTriggerCreatePropertiesOrbits = new DataBag<AreaTriggerCreatePropertiesOrbit>(new List<SQLOutput> { SQLOutput.areatrigger_create_properties_orbit });
         public static readonly DataBag<AreaTriggerCreatePropertiesPolygonVertex> AreaTriggerCreatePropertiesPolygonVertices = new DataBag<AreaTriggerCreatePropertiesPolygonVertex>(new List<SQLOutput> { SQLOutput.areatrigger_create_properties_polygon_vertex });
         public static readonly DataBag<AreaTriggerCreatePropertiesSplinePoint> AreaTriggerCreatePropertiesSplinePoints = new DataBag<AreaTriggerCreatePropertiesSplinePoint>(new List<SQLOutput> { SQLOutput.areatrigger_create_properties_spline_point });
         public static readonly DataBag<ConversationActor> ConversationActors = new DataBag<ConversationActor>(new List<SQLOutput> { SQLOutput.conversation_actors });
@@ -141,6 +142,7 @@ namespace WowPacketParser.Store
 
             Objects.Clear();
 
+            AreaTriggerCreatePropertiesOrbits.Clear();
             AreaTriggerCreatePropertiesPolygonVertices.Clear();
             AreaTriggerCreatePropertiesSplinePoints.Clear();
             AreaTriggerTemplates.Clear();
