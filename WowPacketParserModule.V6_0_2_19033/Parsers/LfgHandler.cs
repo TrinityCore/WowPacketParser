@@ -11,7 +11,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("RequesterGuid", idx);
             packet.ReadInt32("Id", idx);
             packet.ReadInt32("Type", idx);
-            packet.ReadTime("Time", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
+                packet.ReadTime64("Time", idx);
+            else
+                packet.ReadTime("Time", idx);
         }
 
         public static void ReadLFGBlackList(Packet packet, params object[] idx)
