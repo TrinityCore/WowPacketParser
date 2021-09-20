@@ -36,17 +36,10 @@ namespace WowPacketParser.Loading
         {
             try
             {
-                packet = PacketReader.Read(_packetNum, FileName);
+                packet = PacketReader.Read(_packetNum++, FileName);
                 if (packet == null)
                     return false; // continue
-
-                if (_packetNum++ == 0)
-                {
-                    // determine build version based on date of first packet if not specified otherwise
-                    if (ClientVersion.IsUndefined())
-                        ClientVersion.SetVersion(packet.Time);
-                }
-
+                
                 // check for filters
                 var opcodeName = Opcodes.GetOpcodeName(packet.Opcode, packet.Direction);
 
@@ -89,16 +82,9 @@ namespace WowPacketParser.Loading
                 int packetNum = 0, count = 0;
                 while (reader.CanRead())
                 {
-                    var packet = reader.Read(packetNum, fileName);
+                    var packet = reader.Read(packetNum++, fileName);
                     if (packet == null)
                         continue;
-
-                    if (packetNum++ == 0)
-                    {
-                        // determine build version based on date of first packet if not specified otherwise
-                        if (ClientVersion.IsUndefined())
-                            ClientVersion.SetVersion(packet.Time);
-                    }
 
                     // check for filters
                     var opcodeName = Opcodes.GetOpcodeName(packet.Opcode, packet.Direction);
