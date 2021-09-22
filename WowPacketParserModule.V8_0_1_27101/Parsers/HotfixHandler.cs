@@ -100,10 +100,10 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                                 Flags = bct.Flags.Value,
                                 ChatBubbleDuration = bct.ChatBubbleDurationMs.Value,
                             };
-                            dbReply.BroadcastText.Sounds.Add(bct.SoundEntriesID1.Value);
-                            dbReply.BroadcastText.Sounds.Add(bct.SoundEntriesID2.Value);
+                            dbReply.BroadcastText.Sounds.Add(bct.SoundEntriesID1 ?? 0);
+                            dbReply.BroadcastText.Sounds.Add(bct.SoundEntriesID2 ?? 0);
                             for (int i = 0; i < 3; ++i)
-                                dbReply.BroadcastText.Emotes.Add(new BroadcastTextEmote(){EmoteId = bct.EmoteID[i].Value, Delay = bct.EmoteDelay[i].Value});
+                                dbReply.BroadcastText.Emotes.Add(new BroadcastTextEmote(){EmoteId = bct.EmoteID[i] ?? 0, Delay = bct.EmoteDelay[i] ?? 0});
                             break;
                         }
                     default:

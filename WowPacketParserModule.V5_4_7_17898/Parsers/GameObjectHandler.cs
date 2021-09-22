@@ -1,6 +1,7 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -85,23 +86,25 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.CMSG_GAME_OBJ_REPORT_USE)]
         public static void HandleGOReportUse(Packet packet)
         {
+            var use = packet.Holder.ClientUseGameObject = new PacketClientUseGameObject() { Report = true };
             var guid = new byte[8];
 
             packet.StartBitStream(guid, 7, 0, 3, 2, 1, 6, 5, 4);
             packet.ParseBitStream(guid, 1, 3, 5, 4, 6, 7, 2, 0);
 
-            packet.WriteGuid("Guid", guid);
+            use.GameObject = packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.CMSG_GAME_OBJ_USE)]
         public static void HandleGOUse(Packet packet)
         {
+            var use = packet.Holder.ClientUseGameObject = new PacketClientUseGameObject();
             var guid = new byte[8];
 
             packet.StartBitStream(guid, 4, 7, 6, 5, 1, 3, 2, 0);
             packet.ParseBitStream(guid, 4, 3, 2, 0, 5, 6, 1, 7);
 
-            packet.WriteGuid("Guid", guid);
+            use.GameObject = packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM)]

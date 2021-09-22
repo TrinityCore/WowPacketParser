@@ -1,5 +1,6 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -93,13 +94,26 @@ namespace WowPacketParser.Parsing.Parsers
         }
 
         [Parser(Opcode.SMSG_GAMEOBJECT_DESPAWN_ANIM)]
-        [Parser(Opcode.CMSG_GAME_OBJ_USE)]
-        [Parser(Opcode.CMSG_GAME_OBJ_REPORT_USE)]
         [Parser(Opcode.SMSG_PAGE_TEXT)]
         [Parser(Opcode.SMSG_GAME_OBJECT_RESET_STATE)]
         public static void HandleGOMisc(Packet packet)
         {
+            var use = packet.Holder.ClientUseGameObject = new PacketClientUseGameObject();
             packet.ReadGuid("GUID");
+        }
+        
+        [Parser(Opcode.CMSG_GAME_OBJ_USE)]
+        public static void HandleGOUse(Packet packet)
+        {
+            var use = packet.Holder.ClientUseGameObject = new PacketClientUseGameObject();
+            use.GameObject = packet.ReadGuid("GUID");
+        }
+        
+        [Parser(Opcode.CMSG_GAME_OBJ_REPORT_USE)]
+        public static void HandleGOReportUse(Packet packet)
+        {
+            var use = packet.Holder.ClientUseGameObject = new PacketClientUseGameObject() { Report = true };
+            use.GameObject = packet.ReadGuid("GUID");
         }
 
         [Parser(Opcode.SMSG_GAME_OBJECT_CUSTOM_ANIM)]

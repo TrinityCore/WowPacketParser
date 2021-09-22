@@ -114,9 +114,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                                 ChatBubbleDuration = bct.ChatBubbleDurationMs.Value,
                             };
                             for (int i = 0; i < 2; ++i)
-                                dbReply.BroadcastText.Sounds.Add(bct.SoundEntriesID[i].Value);
+                                dbReply.BroadcastText.Sounds.Add(bct.SoundEntriesID[i] ?? 0);
                             for (int i = 0; i < 3; ++i)
-                                dbReply.BroadcastText.Emotes.Add(new BroadcastTextEmote() { EmoteId = bct.EmoteID[i].Value, Delay = bct.EmoteDelay[i].Value });
+                                dbReply.BroadcastText.Emotes.Add(new BroadcastTextEmote() { EmoteId = bct.EmoteID[i] ?? 0, Delay = bct.EmoteDelay[i] ?? 0 });
                             break;
                         }
                         default:

@@ -1,6 +1,7 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -93,9 +94,22 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         }
 
         [Parser(Opcode.CMSG_GAME_OBJ_REPORT_USE)]
+        public static void HandleGoReportUse(Packet packet)
+        {
+            var use = packet.Holder.ClientUseGameObject = new PacketClientUseGameObject();
+            use.GameObject = packet.ReadPackedGuid128("GameObjectGUID");
+            use.Report = true;
+        }
+        
         [Parser(Opcode.CMSG_GAME_OBJ_USE)]
+        public static void HandleGoUse(Packet packet)
+        {
+            var use = packet.Holder.ClientUseGameObject = new PacketClientUseGameObject();
+            use.GameObject = packet.ReadPackedGuid128("GameObjectGUID");
+        }
+        
         [Parser(Opcode.SMSG_PAGE_TEXT)]
-        public static void HandleGoMisc(Packet packet)
+        public static void HandleGoPageText(Packet packet)
         {
             packet.ReadPackedGuid128("GameObjectGUID");
         }
