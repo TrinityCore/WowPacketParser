@@ -776,13 +776,43 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V1_13_5_35753:
                 case ClientVersionBuild.V1_13_5_36035:
                 case ClientVersionBuild.V1_13_5_36325:
+                case ClientVersionBuild.v1_13_6_36231:
+                case ClientVersionBuild.V1_13_6_36324:
+                case ClientVersionBuild.V1_13_6_36497:
+                case ClientVersionBuild.V1_13_6_36524:
+                case ClientVersionBuild.V1_13_6_36611:
                 case ClientVersionBuild.V1_13_6_36714:
                 case ClientVersionBuild.V1_13_6_36935:
                 case ClientVersionBuild.V1_13_6_37497:
+                case ClientVersionBuild.V1_13_7_38363:
                 case ClientVersionBuild.V1_13_7_38386:
+                case ClientVersionBuild.V1_13_7_38475:
                 case ClientVersionBuild.V1_13_7_38631:
                 case ClientVersionBuild.V1_13_7_38704:
+                case ClientVersionBuild.V1_13_7_39605:
+                case ClientVersionBuild.V1_13_7_39692:
                     return ClientVersionBuild.V1_13_2_31446;
+                case ClientVersionBuild.V2_5_1_38598:
+                case ClientVersionBuild.V2_5_1_38644:
+                case ClientVersionBuild.V2_5_1_38707:
+                case ClientVersionBuild.V2_5_1_38741:
+                case ClientVersionBuild.V2_5_1_38757:
+                case ClientVersionBuild.V2_5_1_38835:
+                case ClientVersionBuild.V2_5_1_38892:
+                case ClientVersionBuild.V2_5_1_38921:
+                case ClientVersionBuild.V2_5_1_38988:
+                case ClientVersionBuild.V2_5_1_39170:
+                case ClientVersionBuild.V2_5_1_39475:
+                case ClientVersionBuild.V2_5_1_39603:
+                case ClientVersionBuild.V2_5_1_39640:
+                case ClientVersionBuild.V2_5_2_39570:
+                case ClientVersionBuild.V2_5_2_39618:
+                case ClientVersionBuild.V2_5_2_39926:
+                case ClientVersionBuild.V2_5_2_40011:
+                case ClientVersionBuild.V2_5_2_40045:
+                case ClientVersionBuild.V2_5_2_40203:
+                case ClientVersionBuild.V2_5_2_40260:
+                    return ClientVersionBuild.V2_5_1_38707;
                 case ClientVersionBuild.BattleNetV37165:
                     return ClientVersionBuild.BattleNetV37165;
                 case ClientVersionBuild.Zero:
@@ -806,6 +836,8 @@ namespace WowPacketParser.Misc
             {
                 case ClientVersionBuild.V1_13_2_31446:
                     return ClientVersionBuild.V8_0_1_27101;
+                case ClientVersionBuild.V2_5_1_38707:
+                    return ClientVersionBuild.V9_0_1_36216;
                 case ClientVersionBuild.V7_0_3_22248:
                     return ClientVersionBuild.V6_0_2_19033;
                 case ClientVersionBuild.V8_0_1_27101:
@@ -825,8 +857,10 @@ namespace WowPacketParser.Misc
 
         private static ClientType GetExpansion(ClientVersionBuild build)
         {
-            if (IsClassicClientVersionBuild(build))
+            if (IsClassicVanillaClientVersionBuild(build))
                 return ClientType.Classic;
+            if (IsBurningCrusadeClassicClientVersionBuild(build))
+                return ClientType.BurningCrusadeClassic;
             if (build >= ClientVersionBuild.V9_0_1_36216)
                 return ClientType.Shadowlands;
             if (build >= ClientVersionBuild.V8_0_1_27101)
@@ -948,6 +982,11 @@ namespace WowPacketParser.Misc
 
         public static bool IsClassicClientVersionBuild(ClientVersionBuild build)
         {
+            return IsClassicVanillaClientVersionBuild(build) || IsBurningCrusadeClassicClientVersionBuild(build);
+        }
+
+        public static bool IsClassicVanillaClientVersionBuild(ClientVersionBuild build)
+        {
             switch (build)
             {
                 case ClientVersionBuild.V1_13_2_31446:
@@ -979,12 +1018,53 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V1_13_5_35753:
                 case ClientVersionBuild.V1_13_5_36035:
                 case ClientVersionBuild.V1_13_5_36325:
+                case ClientVersionBuild.v1_13_6_36231:
+                case ClientVersionBuild.V1_13_6_36324:
+                case ClientVersionBuild.V1_13_6_36497:
+                case ClientVersionBuild.V1_13_6_36524:
+                case ClientVersionBuild.V1_13_6_36611:
                 case ClientVersionBuild.V1_13_6_36714:
                 case ClientVersionBuild.V1_13_6_36935:
                 case ClientVersionBuild.V1_13_6_37497:
+                case ClientVersionBuild.V1_13_7_38363:
                 case ClientVersionBuild.V1_13_7_38386:
+                case ClientVersionBuild.V1_13_7_38475:
                 case ClientVersionBuild.V1_13_7_38631:
                 case ClientVersionBuild.V1_13_7_38704:
+                case ClientVersionBuild.V1_13_7_39605:
+                case ClientVersionBuild.V1_13_7_39692:
+                {
+                    return true;
+                }
+                default:
+                    return false;
+            }
+        }
+
+        public static bool IsBurningCrusadeClassicClientVersionBuild(ClientVersionBuild build)
+        {
+            switch (build)
+            {
+                case ClientVersionBuild.V2_5_1_38598:
+                case ClientVersionBuild.V2_5_1_38644:
+                case ClientVersionBuild.V2_5_1_38707:
+                case ClientVersionBuild.V2_5_1_38741:
+                case ClientVersionBuild.V2_5_1_38757:
+                case ClientVersionBuild.V2_5_1_38835:
+                case ClientVersionBuild.V2_5_1_38892:
+                case ClientVersionBuild.V2_5_1_38921:
+                case ClientVersionBuild.V2_5_1_38988:
+                case ClientVersionBuild.V2_5_1_39170:
+                case ClientVersionBuild.V2_5_1_39475:
+                case ClientVersionBuild.V2_5_1_39603:
+                case ClientVersionBuild.V2_5_1_39640:
+                case ClientVersionBuild.V2_5_2_39570:
+                case ClientVersionBuild.V2_5_2_39618:
+                case ClientVersionBuild.V2_5_2_39926:
+                case ClientVersionBuild.V2_5_2_40011:
+                case ClientVersionBuild.V2_5_2_40045:
+                case ClientVersionBuild.V2_5_2_40203:
+                case ClientVersionBuild.V2_5_2_40260:
                 {
                     return true;
                 }
