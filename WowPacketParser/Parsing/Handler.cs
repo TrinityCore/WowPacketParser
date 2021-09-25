@@ -119,7 +119,7 @@ namespace WowPacketParser.Parsing
                 key = new KeyValuePair<ClientVersionBuild, Opcode>(tmpFallback, opcode);
                 hasHandler = VersionHandlers.TryGetValue(key, out handler);
 
-                tmpFallback = ClientVersion.FallbackVersionDefiningBuild(tmpFallback);
+                tmpFallback = ClientVersion.FallbackVersionDefiningBuild(tmpFallback, ClientVersion.VersionDefiningBuild);
             }
 
             if (!hasHandler)
