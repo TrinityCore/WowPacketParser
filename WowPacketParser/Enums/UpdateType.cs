@@ -17,4 +17,10 @@ namespace WowPacketParser.Enums
         CreateObject2  = 2,
         DestroyObjects = 3
     }
+
+    public enum ObjectCreateType
+    {
+        Create1 = 0,
+        Create2 = 1
+    }
 }
