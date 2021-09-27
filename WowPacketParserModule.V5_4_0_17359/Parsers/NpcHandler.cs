@@ -222,18 +222,21 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         public static void HandleGossipPoi(Packet packet)
         {
             ++LastGossipPOIEntry;
+            var protoPoi = packet.Holder.GossipPoi = new();
             PointsOfInterest gossipPOI = new PointsOfInterest();
             gossipPOI.ID = "@ID+" + LastGossipPOIEntry.ToString();
 
-            gossipPOI.Flags = (uint) packet.ReadInt32E<UnknownFlags>("Flags");
+            gossipPOI.Flags = protoPoi.Flags = (uint) packet.ReadInt32E<UnknownFlags>("Flags");
 
             Vector2 pos = packet.ReadVector2("Coordinates");
+            protoPoi.Coordinates = pos;
             gossipPOI.PositionX = pos.X;
             gossipPOI.PositionY = pos.Y;
 
             gossipPOI.Icon = packet.ReadUInt32E<GossipPOIIcon>("Icon");
-            gossipPOI.Importance = packet.ReadUInt32("Data");
-            gossipPOI.Name = packet.ReadCString("Icon Name");
+            gossipPOI.Importance = protoPoi.Importance = packet.ReadUInt32("Data");
+            gossipPOI.Name = protoPoi.Name = packet.ReadCString("Icon Name");
+            protoPoi.Icon = (uint)gossipPOI.Icon;
 
             Storage.GossipPOIs.Add(gossipPOI, packet.TimeSpan);
             var lastGossipOption = CoreParsers.NpcHandler.LastGossipOption;

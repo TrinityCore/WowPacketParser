@@ -2,6 +2,7 @@ using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
@@ -24,9 +25,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         [Parser(Opcode.SMSG_GOSSIP_POI)]
         public static void HandleGossipPoi(Packet packet)
         {
+            var protoPoi = packet.Holder.GossipPoi = new();
             PointsOfInterest gossipPOI = new PointsOfInterest();
 
-            gossipPOI.ID = packet.ReadInt32("ID");
+            gossipPOI.ID = protoPoi.Id = packet.ReadInt32("ID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185))
             {
@@ -34,21 +36,25 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 gossipPOI.PositionX = pos.X;
                 gossipPOI.PositionY = pos.Y;
                 gossipPOI.PositionZ = pos.Z;
+                protoPoi.Coordinates = new Vec2() { X = pos.X, Y = pos.Y };
+                protoPoi.Height = pos.Z;
             }
             else
             {
                 Vector2 pos = packet.ReadVector2("Coordinates");
                 gossipPOI.PositionX = pos.X;
                 gossipPOI.PositionY = pos.Y;
+                protoPoi.Coordinates = pos;
             }
 
             gossipPOI.Icon = packet.ReadInt32E<GossipPOIIcon>("Icon");
-            gossipPOI.Importance = (uint)packet.ReadInt32("Importance");
+            gossipPOI.Importance = protoPoi.Importance = (uint)packet.ReadInt32("Importance");
+            protoPoi.Icon = (uint)gossipPOI.Icon;
 
             packet.ResetBitReader();
-            gossipPOI.Flags = packet.ReadBits("Flags", 14);
+            gossipPOI.Flags = gossipPOI.Flags = packet.ReadBits("Flags", 14);
             uint bit84 = packet.ReadBits(6);
-            gossipPOI.Name = packet.ReadWoWString("Name", bit84);
+            gossipPOI.Name = protoPoi.Name = packet.ReadWoWString("Name", bit84);
 
             var lastGossipOption = CoreParsers.NpcHandler.LastGossipOption;
             var tempGossipOptionPOI = CoreParsers.NpcHandler.TempGossipOptionPOI;

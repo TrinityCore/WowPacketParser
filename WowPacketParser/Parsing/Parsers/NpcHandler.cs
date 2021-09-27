@@ -41,16 +41,19 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GOSSIP_POI)]
         public static void HandleGossipPoi(Packet packet)
         {
+            var protoPoi = packet.Holder.GossipPoi = new();
             PointsOfInterest gossipPOI = new PointsOfInterest();
 
-            gossipPOI.Flags = (uint)packet.ReadInt32E<UnknownFlags>("Flags");
+            gossipPOI.Flags = protoPoi.Flags = (uint)packet.ReadInt32E<UnknownFlags>("Flags");
             Vector2 pos = packet.ReadVector2("Coordinates");
+            protoPoi.Coordinates = pos;
             gossipPOI.PositionX = pos.X;
             gossipPOI.PositionY = pos.Y;
 
             gossipPOI.Icon = packet.ReadUInt32E<GossipPOIIcon>("Icon");
-            gossipPOI.Importance = packet.ReadUInt32("Importance");
-            gossipPOI.Name = packet.ReadCString("Name");
+            gossipPOI.Importance = protoPoi.Importance = packet.ReadUInt32("Importance");
+            gossipPOI.Name = protoPoi.Name = packet.ReadCString("Name");
+            protoPoi.Icon = (uint)gossipPOI.Icon;
 
             // DB PART STARTS HERE
             if (Settings.DBEnabled)
