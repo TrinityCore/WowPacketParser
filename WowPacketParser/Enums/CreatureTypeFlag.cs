@@ -9,7 +9,7 @@ namespace WowPacketParser.Enums
         Tameable                      = 0x00000001,
         VisibleToGhosts               = 0x00000002,
         BossMob                       = 0x00000004,
-        DoNotPlayWoundParryAnimation  = 0x00000008,
+        DoNotPlayWoundAnim            = 0x00000008,
         NoFactionTooltip              = 0x00000010,
         MoreAudible                   = 0x00000020, // sound related
         SpellAttackable               = 0x00000040,
@@ -28,7 +28,7 @@ namespace WowPacketParser.Enums
         CollideWithMissiles           = 0x00080000,
         NoNamePlate                   = 0x00100000,
         DoNotPlayMountedAnimations    = 0x00200000,
-        IsLinkAll                     = 0x00400000,
+        LinkAll                       = 0x00400000,
         InteractOnlyWithCreator       = 0x00800000,
         DoNotPlayUnitEventSounds      = 0x01000000,
         HasNoShadowBlob               = 0x02000000,
@@ -37,6 +37,6 @@ namespace WowPacketParser.Enums
         DoNotSheathe                  = 0x10000000,
         DoNotTargetOnInteraction      = 0x20000000,
         DoNotRenderObjectName         = 0x40000000,
-        UnitIsQuestBoss               = 0x80000000 // not verified
+        QuestBoss                     = 0x80000000 // not verified
     }
 }
