@@ -3,6 +3,7 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
+    [DBTableName("playercreateinfo_action")]
     public sealed class PlayerCreateInfoAction : IDataModel
     {
         [DBFieldName("race", true)]

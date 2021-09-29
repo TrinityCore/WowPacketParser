@@ -17,7 +17,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
         public static void ReadCharactersListEntry(Packet packet, params object[] idx)
         {
-            packet.ReadPackedGuid128("Guid", idx);
+            var playerGuid = packet.ReadPackedGuid128("Guid", idx);
 
             packet.ReadUInt64("GuildClubMemberID", idx);
 
@@ -27,7 +27,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadByteE<Gender>("SexID", idx);
             var customizationCount = packet.ReadUInt32();
 
-            packet.ReadByte("ExperienceLevel", idx);
+            var level = packet.ReadByte("ExperienceLevel", idx);
             var zone = packet.ReadInt32<ZoneId>("ZoneID", idx);
             var mapId = packet.ReadInt32<MapId>("MapID", idx);
 
@@ -87,13 +87,19 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 if (mailSenderLengths[j] > 1)
                     packet.ReadDynamicString("MailSender", mailSenderLengths[j], idx);
 
-            packet.ReadWoWString("Character Name", nameLength, idx);
+            var name = packet.ReadWoWString("Character Name", nameLength, idx);
 
             if (firstLogin)
             {
                 PlayerCreateInfo startPos = new PlayerCreateInfo { Race = race, Class = @class, Map = (uint)mapId, Zone = (uint)zone, Position = pos, Orientation = 0 };
                 Storage.StartPositions.Add(startPos, packet.TimeSpan);
             }
+
+            var playerInfo = new Player { Race = race, Class = @class, Name = name, FirstLogin = firstLogin, Level = level, Type = ObjectType.Player };
+            if (Storage.Objects.ContainsKey(playerGuid))
+                Storage.Objects[playerGuid] = new Tuple<WoWObject, TimeSpan?>(playerInfo, packet.TimeSpan);
+            else
+                Storage.Objects.Add(playerGuid, playerInfo, packet.TimeSpan);
         }
 
         public static void ReadPlayerModelDisplayInfo(Packet packet, params object[] idx)

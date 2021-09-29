@@ -18,13 +18,18 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (int i = 0; i < buttonCount; ++i)
             {
+
+                var actionVal = packet.ReadUInt32();
+                var type = packet.ReadUInt32();
+
+                if (actionVal == 0 && (ActionButtonType)type == ActionButtonType.Spell)
+                    continue;
+
                 PlayerCreateInfoAction action = new PlayerCreateInfoAction
                 {
-                    Button = (uint)i
+                    Button = (uint)i,
+                    Action = actionVal
                 };
-
-                action.Action = packet.ReadUInt32();
-                uint type = packet.ReadUInt32();
 
                 packet.AddValue("Action " + i, action.Action);
                 packet.AddValue("Type " + i, type);
@@ -42,6 +47,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                         {
                             action.Race = player.Race;
                             action.Class = player.Class;
+                            action.Type = (ActionButtonType)type;
                             Storage.StartActions.Add(action, packet.TimeSpan);
                         }
                     }
