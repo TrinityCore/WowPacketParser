@@ -49,7 +49,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             if (hasFall)
                 V6_0_2_19033.Parsers.MovementHandler.ReadFallData(packet, idx, "FallData");
-            
+
             return stats;
         }
 
@@ -274,7 +274,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             var stats = ReadMovementStats(packet, "MovementStats");
             packet.Holder.ClientMove = new() { Position = stats.Position, Mover = stats.MoverGuid };
         }
-        
+
         [Parser(Opcode.SMSG_MOVE_UPDATE_KNOCK_BACK)]
         [Parser(Opcode.SMSG_MOVE_UPDATE)]
         public static void HandlePlayerMove(Packet packet)
@@ -519,8 +519,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             packet.ReadPackedGuid128("MoverGUID");
             packet.ReadInt32("SequenceIndex");
-            packet.ReadSingle("Scale");
             packet.ReadSingle("Height");
+            packet.ReadSingle("Scale");
             packet.ReadUInt32("MountDisplayID");
             packet.ReadInt32("ScaleDuration");
 
