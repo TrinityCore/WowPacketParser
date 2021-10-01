@@ -52,5 +52,11 @@ namespace WowPacketParser.Misc
             }
             return result;
         }
+
+        public static implicit operator WowPacketParser.Proto.Vec2(Vector2 vector) =>
+            new() {X = vector.X, Y = vector.Y};
+
+        public static implicit operator Vector2(WowPacketParser.Proto.Vec2 vector) =>
+            new(vector.X, vector.Y);
     }
 }

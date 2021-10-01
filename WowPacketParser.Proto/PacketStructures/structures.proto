@@ -66,6 +66,7 @@ message PacketHolder {
       PacketClientQuestGiverChooseReward clientQuestGiverChooseReward = 37;
       PacketClientMove clientMove = 38;
       PacketClientUseGameObject clientUseGameObject = 39;
+      PacketGossipPoi gossipPoi = 40;
   }
 }
 
@@ -204,6 +205,11 @@ message PacketGossipSelect {
 
 message PacketGossipClose {
   UniversalGuid gossipSource = 1;
+}
+
+message Vec2 {
+  float x = 1;
+  float y = 2;
 }
 
 message Vec3 {
@@ -651,3 +657,14 @@ message PacketClientUseGameObject {
   UniversalGuid gameObject = 1;
   bool report = 2;
 }
+
+message PacketGossipPoi {
+  Vec2 coordinates = 1;
+  uint32 flags = 2;
+  uint32 icon = 3;
+  uint32 importance = 4;
+  string name = 5;
+  optional int32 id = 6;
+  optional float height = 7;
+}
+

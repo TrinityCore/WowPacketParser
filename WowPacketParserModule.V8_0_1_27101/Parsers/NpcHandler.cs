@@ -15,21 +15,24 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         [Parser(Opcode.SMSG_GOSSIP_POI)]
         public static void HandleGossipPoi(Packet packet)
         {
+            var protoPoi = packet.Holder.GossipPoi = new();
             PointsOfInterest gossipPOI = new PointsOfInterest();
 
-            gossipPOI.ID = packet.ReadInt32("ID");
+            gossipPOI.ID = protoPoi.Id = packet.ReadInt32("ID");
 
             Vector2 pos = packet.ReadVector2("Coordinates");
             gossipPOI.PositionX = pos.X;
             gossipPOI.PositionY = pos.Y;
+            protoPoi.Coordinates = pos;
 
             gossipPOI.Icon = packet.ReadInt32E<GossipPOIIcon>("Icon");
-            gossipPOI.Importance = (uint)packet.ReadInt32("Importance");
+            gossipPOI.Importance = protoPoi.Importance = (uint)packet.ReadInt32("Importance");
+            protoPoi.Icon = (uint)gossipPOI.Icon;
 
             packet.ResetBitReader();
-            gossipPOI.Flags = packet.ReadBits("Flags", 14);
+            gossipPOI.Flags = protoPoi.Flags = packet.ReadBits("Flags", 14);
             uint bit84 = packet.ReadBits(6);
-            gossipPOI.Name = packet.ReadWoWString("Name", bit84);
+            gossipPOI.Name = protoPoi.Name = packet.ReadWoWString("Name", bit84);
 
             var lastGossipOption = CoreParsers.NpcHandler.LastGossipOption;
             var tempGossipOptionPOI = CoreParsers.NpcHandler.TempGossipOptionPOI;
