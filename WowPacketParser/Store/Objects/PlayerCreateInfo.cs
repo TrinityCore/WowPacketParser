@@ -16,7 +16,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("map")]
         public uint? Map;
 
-        [DBFieldName("zone")]
+        [DBFieldName("zone", TargetedDatabase.Zero, TargetedDatabase.Shadowlands)]
         public uint? Zone;
 
         [DBFieldName("position_x")]
