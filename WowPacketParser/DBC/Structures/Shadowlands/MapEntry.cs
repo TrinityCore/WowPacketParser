@@ -9,7 +9,6 @@ namespace WowPacketParser.DBC.Structures.Shadowlands
         public uint ID;
         public string Directory;
         public string MapName;
-        public string InternalName;
         public string MapDescription0;
         public string MapDescription1;
         public string PvpShortDescription;
