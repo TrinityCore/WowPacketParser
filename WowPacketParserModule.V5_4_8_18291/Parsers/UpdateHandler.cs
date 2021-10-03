@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing;
 using WowPacketParser.Proto;
 using WowPacketParser.Store;
@@ -42,30 +43,31 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
 
             for (var i = 0; i < count; i++)
             {
-                var type = packet.ReadByte();
-                var typeString = ((UpdateTypeCataclysm)type).ToString();
+                var type = (UpdateTypeCataclysm)packet.ReadByte();
 
-                packet.AddValue("UpdateType", typeString, i);
-                switch (typeString)
+                var partWriter = new StringBuilderProtoPart(packet.Writer);
+                packet.AddValue("UpdateType", type.ToString(), i);
+                switch (type)
                 {
-                    case "Values":
+                    case UpdateTypeCataclysm.Values:
                     {
                         var guid = packet.ReadPackedGuid("GUID", i);
                         var updateValues = new UpdateValues();
                         CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, updateValues, guid, i);
-                        updateObject.Updated.Add(new UpdateObject{Guid = guid, Values = updateValues});
+                        updateObject.Updated.Add(new UpdateObject{ Guid = guid, Values = updateValues, Text = partWriter.Text });
                         break;
                     }
-                    case "CreateObject1":
-                    case "CreateObject2": // Might != CreateObject1 on Cata
+                    case UpdateTypeCataclysm.CreateObject1:
+                    case UpdateTypeCataclysm.CreateObject2: // Might != CreateObject1 on Cata
                     {
                         var guid = packet.ReadPackedGuid("GUID", i);
-                        var createObject = new CreateObject() { Guid = guid, Values = new()};
+                        var createObject = new CreateObject() { Guid = guid, Values = new(), CreateType = type.ToCreateObjectType() };
                         ReadCreateObjectBlock(packet, createObject, guid, map, i);
+                        createObject.Text = partWriter.Text;
                         updateObject.Created.Add(createObject);
                         break;
                     }
-                    case "DestroyObjects":
+                    case UpdateTypeCataclysm.DestroyObjects:
                     {
                         CoreParsers.UpdateHandler.ReadDestroyObjectsBlock(packet, i);
                         break;

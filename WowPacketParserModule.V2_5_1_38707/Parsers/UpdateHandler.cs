@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing;
 using WowPacketParser.Proto;
 using WowPacketParser.Store;
@@ -41,14 +42,13 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
 
             for (var i = 0; i < count; i++)
             {
-                var type = packet.ReadByte();
-                var typeString = ((UpdateTypeCataclysm)type).ToString();
+                var type = (UpdateTypeCataclysm)packet.ReadByte();
 
                 var partWriter = new StringBuilderProtoPart(packet.Writer);
-                packet.AddValue("UpdateType", typeString, i);
-                switch (typeString)
+                packet.AddValue("UpdateType", type.ToString(), i);
+                switch (type)
                 {
-                    case "Values":
+                    case UpdateTypeCataclysm.Values:
                     {
                         var guid = packet.ReadPackedGuid128("Object Guid", i);
                         var updateValues = new UpdateValues();
@@ -56,12 +56,13 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                         updateObject.Updated.Add(new UpdateObject { Guid = guid, Values = updateValues, Text = partWriter.Text });
                         break;
                     }
-                    case "CreateObject1":
-                    case "CreateObject2":
+                    case UpdateTypeCataclysm.CreateObject1:
+                    case UpdateTypeCataclysm.CreateObject2:
                     {
                         var guid = packet.ReadPackedGuid128("Object Guid", i);
-                        var createObject = new CreateObject() { Guid = guid, Values = new() };
+                        var createObject = new CreateObject() { Guid = guid, Values = new(), CreateType = type.ToCreateObjectType()};
                         ReadCreateObjectBlock(packet, createObject, guid, map, i);
+                        createObject.Text = partWriter.Text;
                         updateObject.Created.Add(createObject);
                         break;
                     }

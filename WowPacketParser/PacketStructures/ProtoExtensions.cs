@@ -1,3 +1,4 @@
+using System;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Proto;
@@ -225,6 +226,15 @@ namespace WowPacketParser.PacketStructures
             if (flags.HasFlag(SplineFlag.UncompressedPath))
                 universal |= UniversalSplineFlag.UncompressedPath;
             return universal;
+        }
+        
+        public static CreateObjectType ToCreateObjectType(this UpdateTypeCataclysm updateTypeCataclysm)
+        {
+            if (updateTypeCataclysm == UpdateTypeCataclysm.CreateObject1)
+                return CreateObjectType.InRange;
+            if (updateTypeCataclysm == UpdateTypeCataclysm.CreateObject2)
+                return CreateObjectType.Spawn;
+            throw new ArgumentOutOfRangeException();
         }
     }
 }

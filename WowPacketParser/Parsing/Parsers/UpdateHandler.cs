@@ -54,7 +54,8 @@ namespace WowPacketParser.Parsing.Parsers
                     case "CreateObject2": // Might != CreateObject1 on Cata
                     {
                         var guid = packet.ReadPackedGuid("GUID", i);
-                        var createObject = new CreateObject() { Guid = guid, Values = new()};
+                        var createType = typeString == "CreateObject1" ? CreateObjectType.InRange : CreateObjectType.Spawn;
+                        var createObject = new CreateObject() { Guid = guid, Values = new(), CreateType = createType };
                         ReadCreateObjectBlock(packet, createObject, guid, map, i);
                         createObject.Text = partWriter.Text;
                         updateObject.Created.Add(createObject);
