@@ -76,10 +76,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var progressCount = packet.ReadUInt32("ProgressCount", idx);
 
             for (var i = 0; i < earnedCount; ++i)
-                V6_0_2_19033.Parsers.AchievementHandler.ReadEarnedAchievement(packet, "Earned", i);
+                V6_0_2_19033.Parsers.AchievementHandler.ReadEarnedAchievement(packet, idx, "Earned", i);
 
             for (var i = 0; i < progressCount; ++i)
-                ReadCriteriaProgress(packet, "Progress", i);
+                ReadCriteriaProgress(packet, idx, "Progress", i);
         }
 
         [Parser(Opcode.SMSG_ALL_ACHIEVEMENT_DATA)]
