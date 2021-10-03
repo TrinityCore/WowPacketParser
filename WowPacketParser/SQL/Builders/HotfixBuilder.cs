@@ -132,6 +132,9 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.HotfixOptionalDatas.IsEmpty())
                 return string.Empty;
 
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.hotfix_optional_data))
+                return string.Empty;
+
             var templatesDb = SQLDatabase.Get(new RowList<Store.Objects.HotfixOptionalData>(), Settings.HotfixesDatabase);
 
             return SQLUtil.Compare(Storage.HotfixOptionalDatas, templatesDb, StoreNameType.None);
