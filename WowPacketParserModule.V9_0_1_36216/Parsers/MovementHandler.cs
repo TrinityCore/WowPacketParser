@@ -77,5 +77,14 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadUInt32("MountDisplayID");
             packet.ReadInt32("ScaleDuration");
         }
+
+        [Parser(Opcode.CMSG_MOVE_SET_COLLISION_HEIGHT_ACK)]
+        public static void HandleMoveSetCollisionHeightAck(Packet packet)
+        {
+            V7_0_3_22248.Parsers.MovementHandler.ReadMovementAck(packet, "MovementAck");
+            packet.ReadSingle("Height");
+            packet.ReadInt32("MountDisplayID");
+            packet.ReadByte("Reason");
+        }
     }
 }
