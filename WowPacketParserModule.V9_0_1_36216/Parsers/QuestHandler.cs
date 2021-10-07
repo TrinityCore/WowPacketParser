@@ -699,5 +699,24 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadInt32("ResponseID");
             packet.ReadBit("IsReroll");
         }
+
+        [Parser(Opcode.SMSG_WORLD_QUEST_UPDATE_RESPONSE)]
+        public static void HandleWorldQuestUpdateResponse(Packet packet)
+        {
+            var count = packet.ReadInt32("Count");
+
+            for (int i = 0; i < count; i++)
+            {
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
+                    packet.ReadTime64("LastUpdate", i);
+                else
+                    packet.ReadTime("LastUpdate", i);
+
+                packet.ReadUInt32<QuestId>("QuestID", i);
+                packet.ReadUInt32("Timer", i);
+                packet.ReadInt32("VariableID", i);
+                packet.ReadInt32("Value", i);
+            }
+        }
     }
 }
