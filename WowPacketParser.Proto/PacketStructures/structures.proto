@@ -531,15 +531,22 @@ message VehicleCreate {
   float initialRawFacing = 2;
 }
 
+enum CreateObjectType {
+  CreateObjectEmpty = 0;
+  InRange = 1;
+  Spawn = 2;
+}
+
 message CreateObject {
   UniversalGuid guid = 1;
   UpdateValues values = 2;
-  optional MovementUpdate movement = 3;
-  optional MovementUpdateTransport transport = 4;
-  optional StationaryPositionData stationary = 5;
-  optional VehicleCreate vehicle = 6;
-  optional Quat rotation = 7;
-  optional string text = 8;
+  CreateObjectType createType = 3;
+  optional MovementUpdate movement = 4;
+  optional MovementUpdateTransport transport = 5;
+  optional StationaryPositionData stationary = 6;
+  optional VehicleCreate vehicle = 7;
+  optional Quat rotation = 8;
+  optional string text = 9;
 }
 
 message UpdateObject {
