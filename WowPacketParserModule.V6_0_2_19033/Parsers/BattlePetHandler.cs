@@ -101,24 +101,27 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("BattlePetID");
 
             packet.ReadInt32("CreatureID");
-            packet.ReadTime("Timestamp");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
+                packet.ReadTime64("Timestamp");
+            else
+                packet.ReadTime("Timestamp");
 
             packet.ResetBitReader();
-            var bit40 = packet.ReadBit("Allow");
-            if (!bit40)
+            var nonEmpty = packet.ReadBit("Allow");
+            if (!nonEmpty)
                 return;
 
-            var bits49 = packet.ReadBits(8);
+            var nameLength = packet.ReadBits(8);
+
             packet.ReadBit("HasDeclined");
-
-            var bits97 = new uint[5];
+            var declinedNameLengths = new uint[5];
             for (int i = 0; i < 5; i++)
-                bits97[i] = packet.ReadBits(7);
+                declinedNameLengths[i] = packet.ReadBits(7);
 
             for (int i = 0; i < 5; i++)
-                packet.ReadWoWString("DeclinedNames", bits97[i]);
+                packet.ReadWoWString("DeclinedNames", declinedNameLengths[i]);
 
-            packet.ReadWoWString("Name", bits49);
+            packet.ReadWoWString("Name", nameLength);
         }
 
         [Parser(Opcode.CMSG_BATTLE_PET_DELETE_PET)]
