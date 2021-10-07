@@ -181,6 +181,18 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadInt32("SoulbindID", indexes);
         }
 
+        public static void ReadGarrisonStartMissionFollowerInfo(Packet packet, params object[] indexes)
+        {
+            packet.ReadUInt64("DatabaseID", indexes);
+            packet.ReadUInt32("BoardIndex", indexes);
+            packet.ReadUInt32("Health", indexes);
+            packet.ResetBitReader();
+
+            var hasFollowerEntry = packet.ReadBit("HasFollowerEntry", indexes);
+            if (hasFollowerEntry)
+                packet.ReadUInt32("FollowerEntry", indexes);
+        }
+
         [Parser(Opcode.SMSG_GET_GARRISON_INFO_RESULT)]
         public static void HandleGetGarrisonInfoResult(Packet packet)
         {
@@ -335,7 +347,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         public static void HandleGarrisonCovenantRenownOpenNpc(Packet packet)
         {
             packet.ReadPackedGuid128("NpcGUID");
-            
+
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
             {
                 packet.ResetBitReader();
@@ -348,6 +360,18 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         {
             packet.ResetBitReader();
             packet.ReadBit("CatchupState");
+        }
+
+        [Parser(Opcode.CMSG_GARRISON_START_MISSION)]
+        public static void HandleGarrisonStartMission(Packet packet)
+        {
+            packet.ReadPackedGuid128("NpcGUID");
+
+            var infoCount = packet.ReadInt32("InfoCount");
+            packet.ReadInt32("MissionRecID");
+
+            for (int i = 0; i < infoCount; i++)
+                ReadGarrisonStartMissionFollowerInfo(packet, i, "FollowerInfo");
         }
     }
 }
