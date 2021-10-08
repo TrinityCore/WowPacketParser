@@ -93,7 +93,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         }
 
         [Parser(Opcode.CMSG_SEND_TEXT_EMOTE)]
-        public static void HandleTextEmote603(Packet packet)
+        public static void HandleSendTextEmote(Packet packet)
         {
             packet.ReadPackedGuid128("Target");
             packet.ReadInt32E<EmoteTextType>("EmoteID");
