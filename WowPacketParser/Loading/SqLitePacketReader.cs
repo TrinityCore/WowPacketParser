@@ -118,6 +118,13 @@ namespace WowPacketParser.Loading
             if (DBNull.Value.Equals(blob))
                 return null;
 
+            if (number == 0)
+            {
+                // determine build version based on date of first packet if not specified otherwise
+                if (ClientVersion.IsUndefined())
+                    ClientVersion.SetVersion(time);
+            }
+            
             var data = (byte[])blob;
 
             var packet = new Packet(data, opcode, time, direction, number, Path.GetFileName(fileName));

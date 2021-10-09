@@ -251,7 +251,14 @@ namespace WowPacketParser.Loading
                 direction = (Direction)_reader.ReadByte();
                 data = _reader.ReadBytes(length);
             }
-
+            
+            if (number == 0)
+            {
+                // determine build version based on date of first packet if not specified otherwise
+                if (ClientVersion.IsUndefined())
+                    ClientVersion.SetVersion(time);
+            }
+            
             // ignore opcodes that were not "decrypted" (usually because of
             // a missing session key) (only applicable to 335 or earlier)
             if (opcode >= 1312 && (ClientVersion.Build <= ClientVersionBuild.V3_3_5a_12340 && ClientVersion.Build != ClientVersionBuild.Zero))
