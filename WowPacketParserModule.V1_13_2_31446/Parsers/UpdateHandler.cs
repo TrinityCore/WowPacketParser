@@ -81,37 +81,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
             ObjectType objType = ObjectTypeConverter.Convert(packet.ReadByteE<ObjectType801>("Object Type", index));
             packet.ReadInt32("HeirFlags", index);
 
-            WoWObject obj;
-            switch (objType)
-            {
-                case ObjectType.Unit:
-                    obj = new Unit();
-                    break;
-                case ObjectType.GameObject:
-                    obj = new GameObject();
-                    break;
-                case ObjectType.Player:
-                    obj = new Player();
-                    break;
-                case ObjectType.AreaTrigger:
-                    obj = new AreaTriggerCreateProperties();
-                    break;
-                case ObjectType.Conversation:
-                    obj = new ConversationTemplate();
-                    break;
-                default:
-                    obj = new WoWObject();
-                    break;
-            }
-
-            obj.Guid = guid;
-            obj.Type = objType;
-            obj.Map = map;
-            obj.Area = CoreParsers.WorldStateHandler.CurrentAreaId;
-            obj.Zone = CoreParsers.WorldStateHandler.CurrentZoneId;
-            obj.PhaseMask = (uint)CoreParsers.MovementHandler.CurrentPhaseMask;
-            obj.Phases = new HashSet<ushort>(CoreParsers.MovementHandler.ActivePhases.Keys);
-            obj.DifficultyID = CoreParsers.MovementHandler.CurrentDifficultyID;
+            WoWObject obj = CoreParsers.UpdateHandler.CreateObject(objType, guid, map);
 
             obj.Movement = ReadMovementUpdateBlock(packet, createObject, guid, obj, index);
             obj.UpdateFields = CoreParsers.UpdateHandler.ReadValuesUpdateBlockOnCreate(packet, createObject.Values, objType, index);

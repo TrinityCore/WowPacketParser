@@ -79,22 +79,7 @@ namespace WowPacketParser.Parsing.Parsers
         private static void ReadCreateObjectBlock(Packet packet, CreateObject createObject, WowGuid guid, uint map, object index)
         {
             ObjectType objType = ObjectTypeConverter.Convert(packet.ReadByteE<ObjectTypeLegacy>("Object Type", index));
-            WoWObject obj;
-            switch (objType)
-            {
-                case ObjectType.Unit:       obj = new Unit(); break;
-                case ObjectType.GameObject: obj = new GameObject(); break;
-                case ObjectType.Player:     obj = new Player(); break;
-                case ObjectType.AreaTrigger:obj = new AreaTriggerCreateProperties(); break;
-                default:                    obj = new WoWObject(); break;
-            }
-
-            obj.Guid = guid;
-            obj.Type = objType;
-            obj.Map = map;
-            obj.Area = WorldStateHandler.CurrentAreaId;
-            obj.Zone = WorldStateHandler.CurrentZoneId;
-            obj.PhaseMask = (uint) MovementHandler.CurrentPhaseMask;
+            WoWObject obj = CreateObject(objType, guid, map);
 
             obj.Movement = ReadMovementUpdateBlock(packet, guid, index);
             obj.UpdateFields = ReadValuesUpdateBlockOnCreate(packet, createObject.Values, objType, index);
@@ -112,6 +97,30 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (guid.HasEntry() && (objType == ObjectType.Unit || objType == ObjectType.GameObject))
                 packet.AddSniffData(Utilities.ObjectTypeToStore(objType), (int)guid.GetEntry(), "SPAWN");
+        }
+
+        public static WoWObject CreateObject(ObjectType objType, WowGuid guid, uint map)
+        {
+            WoWObject obj = objType switch
+            {
+                ObjectType.Unit => new Unit(),
+                ObjectType.GameObject => new GameObject(),
+                ObjectType.Player => new Player(),
+                ObjectType.AreaTrigger => new AreaTriggerCreateProperties(),
+                ObjectType.Conversation => new ConversationTemplate(),
+                _ => new WoWObject(),
+            };
+
+            obj.Guid = guid;
+            obj.Type = objType;
+            obj.Map = map;
+            obj.Area = WorldStateHandler.CurrentAreaId;
+            obj.Zone = WorldStateHandler.CurrentZoneId;
+            obj.PhaseMask = (uint)MovementHandler.CurrentPhaseMask;
+            obj.Phases = new HashSet<ushort>(MovementHandler.ActivePhases.Keys);
+            obj.DifficultyID = MovementHandler.CurrentDifficultyID;
+
+            return obj;
         }
 
         public static Dictionary<int, UpdateField> ReadValuesUpdateBlockOnCreate(Packet packet, UpdateValues updateValues, ObjectType type, object index)

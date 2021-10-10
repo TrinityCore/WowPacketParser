@@ -75,20 +75,11 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
             ObjectType objType = ObjectTypeConverter.Convert(packet.ReadByteE<ObjectTypeBCC>("Object Type", index));
             packet.ReadInt32("HeirFlags", index);
 
-            WoWObject obj;
-            if (Storage.Objects.ContainsKey(guid))
-                obj = Storage.Objects[guid].Item1;
-            else
-            {
-                switch (objType)
-                {
-                    case ObjectType.Unit: obj = new Unit(); break;
-                    case ObjectType.GameObject: obj = new GameObject(); break;
-                    case ObjectType.Player: obj = new Player(); break;
-                    case ObjectType.AreaTrigger: obj = new AreaTriggerCreateProperties(); break;
-                    default: obj = new WoWObject(); break;
-                }
-            }
+            WoWObject obj = CoreParsers.UpdateHandler.CreateObject(objType, guid, map);
+
+            obj.Movement = ReadMovementUpdateBlock(packet, guid, obj, index);
+            obj.UpdateFields = CoreParsers.UpdateHandler.ReadValuesUpdateBlockOnCreate(packet, createObject.Values, objType, index);
+            obj.DynamicUpdateFields = CoreParsers.UpdateHandler.ReadDynamicValuesUpdateBlockOnCreate(packet, objType, index);
 
             // If this is the second time we see the same object (same guid,
             // same position) update its phasemask
@@ -98,20 +89,7 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                 CoreParsers.UpdateHandler.ProcessExistingObject(ref existObj, obj, guid);
             }
             else
-            {
-                obj.Guid = guid;
-                obj.Type = objType;
-                obj.Movement = ReadMovementUpdateBlock(packet, guid, obj, index);
-                obj.UpdateFields = CoreParsers.UpdateHandler.ReadValuesUpdateBlockOnCreate(packet, createObject.Values, objType, index);
-                obj.DynamicUpdateFields = CoreParsers.UpdateHandler.ReadDynamicValuesUpdateBlockOnCreate(packet, objType, index);
-                obj.Map = map;
-                obj.Area = CoreParsers.WorldStateHandler.CurrentAreaId;
-                obj.Zone = CoreParsers.WorldStateHandler.CurrentZoneId;
-                obj.PhaseMask = (uint)CoreParsers.MovementHandler.CurrentPhaseMask;
-                obj.Phases = new HashSet<ushort>(CoreParsers.MovementHandler.ActivePhases.Keys);
-                obj.DifficultyID = CoreParsers.MovementHandler.CurrentDifficultyID;
                 Storage.Objects.Add(guid, obj, packet.TimeSpan);
-            }  
 
             if (guid.HasEntry() && (objType == ObjectType.Unit || objType == ObjectType.GameObject))
                 packet.AddSniffData(Utilities.ObjectTypeToStore(objType), (int)guid.GetEntry(), "SPAWN");
