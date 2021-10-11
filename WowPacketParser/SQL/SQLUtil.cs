@@ -1,4 +1,4 @@
-﻿using MySql.Data.MySqlClient;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,7 +55,12 @@ namespace WowPacketParser.SQL
         public static string EscapeString(string str)
         {
             str = MySqlHelper.EscapeString(str);
-            return str.Replace(Environment.NewLine, @"\n");
+            str = str.Replace(Environment.NewLine, @"\n");
+            // first make sure we dont have escaped newlines mixed with nonescaped
+            str = str.Replace("\\n", "\n").Replace("\\t", "\t");
+            // then properly escape them all
+            str = str.Replace("\n", "\\n").Replace("\t", "\\t");
+            return str;
         }
 
         /// <summary>
