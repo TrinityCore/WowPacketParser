@@ -200,7 +200,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                             (obj as AreaTriggerCreateProperties).AreaTriggerData = handler.ReadCreateAreaTriggerData(fieldsData, flags, index);
                             break;
                         case ObjectType.SceneObject:
-                            handler.ReadCreateSceneObjectData(fieldsData, flags, index);
+                            (obj as SceneObject).SceneObjectData = handler.ReadCreateSceneObjectData(fieldsData, flags, index);
                             break;
                         case ObjectType.Conversation:
                             (obj as ConversationTemplate).ConversationData = handler.ReadCreateConversationData(fieldsData, flags, index);

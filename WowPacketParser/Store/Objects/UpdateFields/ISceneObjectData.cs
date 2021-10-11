@@ -2,5 +2,7 @@
 {
     public interface ISceneObjectData
     {
+        int ScriptPackageID { get; }
+        uint SceneType { get; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
@@ -144,10 +145,22 @@ namespace WowPacketParser.SQL.Builders
         [BuilderMethod]
         public static string SceneTemplates()
         {
-            if (Storage.Scenes.IsEmpty())
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.scene_template))
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.scene_template))
+            var sceneTemplatesFromObjects = Storage.Objects.IsEmpty()
+                ? new List<(SceneTemplate, System.TimeSpan?)>()
+                : Storage.Objects
+                    .Where(obj => obj.Value.Item1.Type == ObjectType.SceneObject)
+                    .Select(pair => (pair.Value.Item1 as SceneObject, pair.Value.Item2))
+                    .Where(obj => obj.Item1.CanBeSaved())
+                    .Select(obj => (obj.Item1.CreateSceneTemplate(), obj.Item2))
+                    .ToList();
+
+            foreach (var scene in sceneTemplatesFromObjects)
+                Storage.Scenes.Add(scene.Item1, scene.Item2);
+
+            if (Storage.Scenes.IsEmpty())
                 return string.Empty;
 
             var templateDb = SQLDatabase.Get(Storage.Scenes, Settings.TDBDatabase);

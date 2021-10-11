@@ -12,7 +12,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Flags")]
         public uint? Flags;
 
-        [DBFieldName("ScriptPackageID", true)]
+        [DBFieldName("ScriptPackageID")]
         public uint? ScriptPackageID;
 
         [DBFieldName("Encrypted", TargetedDatabase.Shadowlands)]
