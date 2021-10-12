@@ -34,9 +34,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadUInt32("QuantityInInventory");
             packet.ReadInt32("DungeonEncounterID");
 
+            packet.ReadUInt32("BattlePetSpeciesID");
             packet.ReadUInt32("BattlePetBreedID");
             packet.ReadUInt32("BattlePetBreedQuality");
-            packet.ReadUInt32("BattlePetSpeciesID");
             packet.ReadUInt32("BattlePetLevel");
 
             packet.ReadPackedGuid128("ItemGUID");

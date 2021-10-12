@@ -321,9 +321,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
                 packet.ReadInt32("DungeonEncounterID");
 
+            packet.ReadUInt32("BattlePetSpeciesID");
             packet.ReadUInt32("BattlePetBreedID");
             packet.ReadUInt32("BattlePetBreedQuality");
-            packet.ReadUInt32("BattlePetSpeciesID");
             packet.ReadUInt32("BattlePetLevel");
 
             packet.ReadPackedGuid128("ItemGUID");
