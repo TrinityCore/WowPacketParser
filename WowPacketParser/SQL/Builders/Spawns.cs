@@ -211,8 +211,7 @@ namespace WowPacketParser.SQL.Builders
                         addonRow.Comment += " - !!! on transport - transport template not found !!!";
                     }
                 }
-                else
-                    ++count;
+                ++count;
 
                 if (creature.Movement.HasWpsOrRandMov)
                     row.Comment += " (possible waypoints or random movement)";
