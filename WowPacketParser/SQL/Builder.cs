@@ -125,7 +125,11 @@ namespace WowPacketParser.SQL
                                Settings.TargetedDatabase == TargetedDatabase.Shadowlands)
                               ||
                               (ClientVersion.Expansion == ClientType.Classic &&
-                               Settings.TargetedDatabase == TargetedDatabase.Classic)))
+                               Settings.TargetedDatabase == TargetedDatabase.Classic)
+                              ||
+                              (ClientVersion.Expansion == ClientType.BurningCrusadeClassic &&
+                               Settings.TargetedDatabase == TargetedDatabase.Classic)
+                               ))
                         {
                             Trace.WriteLine(
                                 $"{i}/{builderMethods.Count} - Error: Couldn't generate SQL output of {method.Name} since the targeted database and the sniff version don't match.");
