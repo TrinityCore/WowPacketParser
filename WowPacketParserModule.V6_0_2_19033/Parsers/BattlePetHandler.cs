@@ -7,6 +7,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     public static class BattlePetHandler
     {
         [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_ACQUIRED)]
+        [Parser(Opcode.SMSG_BATTLE_PET_JOURNAL_LOCK_DENIED)]
         [Parser(Opcode.CMSG_BATTLE_PET_REQUEST_JOURNAL)]
         [Parser(Opcode.CMSG_BATTLE_PET_REQUEST_JOURNAL_LOCK)]
         [Parser(Opcode.SMSG_PET_BATTLE_FINISHED)]
@@ -23,8 +24,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("BattlePetGUID", idx);
 
             packet.ReadInt32("SpeciesID", idx);
+            packet.ReadInt32("CreatureID", idx);
             packet.ReadInt32("DisplayID", idx);
-            packet.ReadInt32("CollarID", idx);
 
             packet.ReadInt16("BreedID", idx);
             packet.ReadInt16("Level", idx);
