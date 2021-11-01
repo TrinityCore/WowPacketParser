@@ -304,6 +304,7 @@ namespace WowPacketParser.Hotfix
                     case "creature_family":
                     case "creature_type":
                     case "criteria_tree":
+                    case "currency_container":
                     case "currency_types":
                     case "difficulty":
                     case "dungeon_encounter":
@@ -315,6 +316,7 @@ namespace WowPacketParser.Hotfix
                     case "garr_building":
                     case "garr_class_spec":
                     case "garr_follower":
+                    case "garr_mission":
                     case "heirloom":
                     case "item_bag_family":
                     case "item_class":
@@ -323,9 +325,15 @@ namespace WowPacketParser.Hotfix
                     case "item_search_name":
                     case "item_set":
                     case "item_sparse":
+                    case "journal_encounter":
+                    case "journal_encounter_section":
+                    case "journal_instance":
+                    case "journal_tier":
+                    case "keystone_affix":
                     case "languages":
                     case "lfg_dungeons":
                     case "mail_template":
+                    case "map_challenge_mode":
                     case "map_difficulty":
                     case "map":
                     case "mount":
