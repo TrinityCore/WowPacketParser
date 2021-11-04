@@ -76,6 +76,18 @@ namespace WowPacketParser.Store.Objects
                 // this is a hack to allow generating statements
                 AreaTriggerCreatePropertiesId = 0x80000000 | spellId;
             }
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772))
+            {
+                if (AreaTriggerData.VisualAnim != null)
+                {
+                    if (AreaTriggerData.VisualAnim.AnimationDataID != 0 && AreaTriggerData.VisualAnim.AnimationDataID != uint.MaxValue)
+                        AnimId = (int)AreaTriggerData.VisualAnim.AnimationDataID;
+
+                    if (AreaTriggerData.VisualAnim.AnimKitID != 0)
+                        AnimKitId = (int)AreaTriggerData.VisualAnim.AnimKitID;
+                }
+            }
         }
 
         public static uint? GetAreaTriggerCreatePropertiesIdFromSpellId(uint spellId)

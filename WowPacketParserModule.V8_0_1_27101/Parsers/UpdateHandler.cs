@@ -569,17 +569,21 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 bool hasMorphCurveID = packet.ReadBit("HasMorphCurveID", index);
                 bool hasFacingCurveID = packet.ReadBit("HasFacingCurveID", index);
                 bool hasMoveCurveID = packet.ReadBit("HasMoveCurveID", index);
+                bool hasAnimProgress = false;
 
-                if (packet.ReadBit("HasAnimID", index))
-                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasAnimId;
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V9_1_5_40772))
+                {
+                    if (packet.ReadBit("HasAnimID", index))
+                        areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasAnimId;
 
-                if (packet.ReadBit("HasAnimKitID", index))
-                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasAnimKitId;
+                    if (packet.ReadBit("HasAnimKitID", index))
+                        areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasAnimKitId;
 
-                if (packet.ReadBit("unkbit50", index))
-                    areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk3;
+                    if (packet.ReadBit("unkbit50", index))
+                        areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk3;
 
-                bool hasAnimProgress = packet.ReadBit("HasAnimProgress", index);
+                    hasAnimProgress = packet.ReadBit("HasAnimProgress", index);
+                }
 
                 if (packet.ReadBit("HasAreaTriggerSphere", index))
                     areaTriggerTemplate.Type = (byte)AreaTriggerType.Sphere;

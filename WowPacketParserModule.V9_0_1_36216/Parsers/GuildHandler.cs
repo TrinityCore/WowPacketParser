@@ -64,7 +64,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadBit("Authenticated", i);
                 packet.ReadBit("SorEligible", i);
 
-                Substructures.MythicPlusHandler.ReadDungeonScoreSummary(packet, "DungeonScoreSummary");
+                Substructures.MythicPlusHandler.ReadDungeonScoreSummary(packet, i, "DungeonScoreSummary");
 
                 packet.ReadWoWString("Name", nameLen, i);
                 packet.ReadWoWString("Note", noteLen, i);
