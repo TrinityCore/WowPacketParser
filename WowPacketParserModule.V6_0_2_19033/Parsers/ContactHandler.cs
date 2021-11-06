@@ -10,8 +10,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_VOICE_ADD_IGNORE)]
         public static void HandleAddIgnoreOrMute(Packet packet)
         {
-            var bits9 = packet.ReadBits(9);
-            packet.ReadWoWString("Name", bits9);
+            var nameLength = packet.ReadBits(9);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772))
+                packet.ReadPackedGuid128("AccountGUID");
+            packet.ReadWoWString("Name", nameLength);
         }
 
         [Parser(Opcode.CMSG_ADD_FRIEND)]

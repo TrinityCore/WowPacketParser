@@ -192,30 +192,45 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 V6_0_2_19033.Parsers.LfgHandler.ReadLfgPlayerQuestReward(packet, "EpicBGRewards");
         }
 
+        public static void ReadRatedPvpBracketInfo(Packet packet, params object[] idx)
+        {
+            packet.ReadInt32("PersonalRating", idx);
+            packet.ReadInt32("Ranking", idx);
+            packet.ReadInt32("SeasonPlayed", idx);
+            packet.ReadInt32("SeasonWon", idx);
+            packet.ReadInt32("Unused1", idx); // equal to SeasonPlayed
+            packet.ReadInt32("Unused2", idx); // equal to SeasonWon
+            packet.ReadInt32("WeeklyPlayed", idx);
+            packet.ReadInt32("WeeklyWon", idx);
+            packet.ReadInt32("BestWeeklyRating", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_1_0_22900))
+                packet.ReadInt32("LastWeeksBestRating", idx);
+
+            packet.ReadInt32("BestSeasonRating", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_0_1_27101))
+            {
+                packet.ReadInt32("PvpTier", idx);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_3_7_35249))
+                {
+                    packet.ReadInt32("Unused3", idx);
+                    packet.ReadInt32("WeeklyBestWinPvpTierID", idx);
+                }
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772))
+                {
+                    packet.ReadInt32("Unused4");
+                    packet.ReadInt32("Rank");
+                }
+                packet.ResetBitReader();
+                packet.ReadBit("Disqualified", idx);
+            }
+        }
+
         [Parser(Opcode.SMSG_RATED_BATTLEFIELD_INFO)]
+        [Parser(Opcode.SMSG_RATED_PVP_INFO)]
         public static void HandleRatedBattlefieldInfo(Packet packet)
         {
             for (int i = 0; i < 6; i++)
-            {
-                packet.ReadInt32("Rating", i);
-                packet.ReadInt32("Ranking", i);
-                packet.ReadInt32("SeasonPlayed", i);
-                packet.ReadInt32("SeasonWon", i);
-                packet.ReadInt32("UnkPlayed", i); // equal to SeasonPlayed
-                packet.ReadInt32("UnkWon", i); // equal to SeasonWon
-                packet.ReadInt32("WeeklyPlayed", i);
-                packet.ReadInt32("WeeklyWon", i);
-                packet.ReadInt32("WeeklyBestRating", i);
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_1_0_22900))
-                    packet.ReadInt32("LastWeeksBestRating", i);
-                packet.ReadInt32("SeasonBestRating", i);
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_0_1_27101))
-                {
-                    packet.ReadInt32("PvpTier", i);
-                    packet.ResetBitReader();
-                    packet.ReadBit("UnkBit_801", i); // unused?
-                }
-            }
+                ReadRatedPvpBracketInfo(packet, i);
         }
 
         [Parser(Opcode.CMSG_BATTLEMASTER_JOIN_BRAWL)]

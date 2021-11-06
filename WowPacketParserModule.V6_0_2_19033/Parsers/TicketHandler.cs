@@ -287,15 +287,15 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadPackedGuid128("LastDescriptionAuthorGuid", idx);
             packet.ReadPackedGuid128("LastVoiceChatAuthorGuid", idx);
 
-            var length88 = packet.ReadBits(8);
-            var length217 = packet.ReadBits(11);
-            var length1242 = packet.ReadBits(8);
+            var titleLength = packet.ReadBits(ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772) ? 10 : 8);
+            var descriptionLength = packet.ReadBits(11);
+            var voiceChatLength = packet.ReadBits(8);
 
             packet.ResetBitReader();
 
-            packet.ReadWoWString("Title", length88, idx);
-            packet.ReadWoWString("Description", length217, idx);
-            packet.ReadWoWString("VoiceChat", length1242, idx);
+            packet.ReadWoWString("Title", titleLength, idx);
+            packet.ReadWoWString("Description", descriptionLength, idx);
+            packet.ReadWoWString("VoiceChat", voiceChatLength, idx);
         }
 
         public static void ReadCliSupportTicketLFGListApplicant(Packet packet, params object[] idx)

@@ -738,7 +738,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var questComplete = packet.Holder.QuestComplete = new();
             questComplete.QuestId = (uint)packet.ReadInt32<QuestId>("QuestID");
         }
-        
+
         [Parser(Opcode.CMSG_QUEST_CLOSE_AUTOACCEPT_QUEST)]
         public static void HandleQuestCloseAutoAcceptQuest(Packet packet)
         {

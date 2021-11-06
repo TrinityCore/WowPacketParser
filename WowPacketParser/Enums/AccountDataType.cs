@@ -9,6 +9,10 @@ namespace WowPacketParser.Enums
         GlobalMacrosCache         = 4,
         PerCharacterMacrosCache   = 5,
         PerCharacterLayoutCache   = 6,
-        PerCharacterChatCache     = 7
+        PerCharacterChatCache     = 7,
+        GlobalTTSCache            = 8,
+        PerCharacterTTSCache      = 9,
+        GlobalFlaggedCache        = 10,
+        PerCharacterFlaggedCache  = 11
     }
 }

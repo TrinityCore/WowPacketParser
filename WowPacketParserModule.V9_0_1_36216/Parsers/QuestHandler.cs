@@ -718,5 +718,21 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadInt32("Value", i);
             }
         }
+
+        [Parser(Opcode.SMSG_QUEST_PUSH_RESULT)]
+        public static void HandleQuestPushResult(Packet packet)
+        {
+            packet.ReadPackedGuid128("SenderGUID");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772))
+            {
+                packet.ReadByteE<QuestPushReason915>("Result");
+
+                var questTitleLength = packet.ReadBits(9);
+                packet.ReadWoWString("QuestTitle", questTitleLength);
+            }
+            else
+                packet.ReadByteE<QuestPushReason>("Result");
+        }
     }
 }

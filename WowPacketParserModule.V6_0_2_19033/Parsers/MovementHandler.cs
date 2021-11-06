@@ -236,8 +236,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var stats = ReadMovementStats(packet);
             packet.Holder.ClientMove = new() { Mover = stats.MoverGuid, Position = stats.Position };
         }
-        
-        
+
+
         [Parser(Opcode.SMSG_MOVE_UPDATE_KNOCK_BACK)]
         [Parser(Opcode.SMSG_MOVE_UPDATE)]
         public static void HandlePlayerMove(Packet packet)
@@ -648,7 +648,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.CMSG_MOVE_FEATHER_FALL_ACK)]
         [Parser(Opcode.CMSG_MOVE_SET_CAN_TURN_WHILE_FALLING_ACK)]
         public static void HandleMovementAck(Packet packet)
-        {        
+        {
             var stats = ReadMovementAck(packet);
             packet.Holder.ClientMove = new() { Mover = stats.MoverGuid, Position = stats.Position };
         }

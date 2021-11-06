@@ -65,6 +65,14 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadBit("ClubFinderEnabled");
             packet.ReadBit("Unknown901CheckoutRelated");
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772))
+            {
+                packet.ReadBit("TextToSpeechFeatureEnabled");
+                packet.ReadBit("ChatDisabledByDefault");
+                packet.ReadBit("ChatDisabledByPlayer");
+                packet.ReadBit("LFGListCustomRequiresAuthenticator");
+            }
+
             {
                 packet.ResetBitReader();
                 packet.ReadBit("ToastsDisabled");

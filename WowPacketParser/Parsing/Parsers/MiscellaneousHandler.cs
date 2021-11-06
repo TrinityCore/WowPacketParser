@@ -392,7 +392,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_TRIGGER_MOVIE)]
         public static void HandleTriggerSequence(Packet packet)
         {
-            packet.ReadInt32("Sequence Id");
+            packet.ReadInt32("CinematicID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772))
+                packet.ReadPackedGuid128("ConversationGuid");
         }
 
         [Parser(Opcode.SMSG_PLAY_SOUND)]

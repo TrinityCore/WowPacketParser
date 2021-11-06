@@ -96,6 +96,41 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 ReadInspectItemData(packet, idx, i);
         }
 
+        public static PlayerGuidLookupData ReadPlayerGuidLookupData(Packet packet, params object[] idx)
+        {
+            PlayerGuidLookupData data = new PlayerGuidLookupData();
+
+            packet.ResetBitReader();
+            packet.ReadBit("IsDeleted", idx);
+            var bits15 = (int)packet.ReadBits(6);
+
+            var count = new int[5];
+            for (var i = 0; i < 5; ++i)
+                count[i] = (int)packet.ReadBits(7);
+
+            for (var i = 0; i < 5; ++i)
+                packet.ReadWoWString("Name Declined", count[i], i, idx);
+
+            packet.ReadPackedGuid128("AccountID", idx);
+            packet.ReadPackedGuid128("BnetAccountID", idx);
+            packet.ReadPackedGuid128("Player Guid", idx);
+
+            packet.ReadUInt64("GuildClubMemberID", idx);
+            packet.ReadUInt32("VirtualRealmAddress", idx);
+
+            data.Race = packet.ReadByteE<Race>("Race", idx);
+            data.Gender = packet.ReadByteE<Gender>("Gender", idx);
+            data.Class = packet.ReadByteE<Class>("Class", idx);
+            data.Level = packet.ReadByte("Level", idx);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772))
+                packet.ReadByte("Unused915", idx);
+
+            data.Name = packet.ReadWoWString("Name", bits15, idx);
+
+            return data;
+        }
+
         [Parser(Opcode.SMSG_QUERY_PLAYER_NAME_RESPONSE)]
         public static void HandleNameQueryResponse(Packet packet)
         {
@@ -106,29 +141,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             if (hasData == 0)
             {
-                packet.ReadBit("IsDeleted");
-                var bits15 = (int)packet.ReadBits(6);
-
-                var count = new int[5];
-                for (var i = 0; i < 5; ++i)
-                    count[i] = (int)packet.ReadBits(7);
-
-                for (var i = 0; i < 5; ++i)
-                    packet.ReadWoWString("Name Declined", count[i], i);
-
-                packet.ReadPackedGuid128("AccountID");
-                packet.ReadPackedGuid128("BnetAccountID");
-                packet.ReadPackedGuid128("Player Guid");
-
-                packet.ReadUInt64("GuildClubMemberID");
-                packet.ReadUInt32("VirtualRealmAddress");
-
-                response.Race = (uint)packet.ReadByteE<Race>("Race");
-                response.Gender = (uint)packet.ReadByteE<Gender>("Gender");
-                response.Class = (uint)packet.ReadByteE<Class>("Class");
-                response.Level = packet.ReadByte("Level");
-
-                response.PlayerName = packet.ReadWoWString("Name", bits15);
+                var data = ReadPlayerGuidLookupData(packet);
+                response.Race = (uint)data.Race;
+                response.Gender = (uint)data.Gender;
+                response.Class = (uint)data.Class;
+                response.Level = data.Level;
                 response.HasData = true;
             }
         }

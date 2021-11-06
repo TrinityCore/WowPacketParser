@@ -136,8 +136,14 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadInt32("PvpTierID", idx);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185))
                 packet.ReadInt32("WeeklyBestWinPvpTierID", idx);
-            packet.ReadBit("Disqualified", idx);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772))
+            {
+                packet.ReadInt32("Unused1", idx);
+                packet.ReadInt32("Unused2", idx);
+            }
             packet.ResetBitReader();
+            packet.ReadBit("Disqualified", idx);
         }
 
         [Parser(Opcode.SMSG_PLAYER_CHOICE_CLEAR)]

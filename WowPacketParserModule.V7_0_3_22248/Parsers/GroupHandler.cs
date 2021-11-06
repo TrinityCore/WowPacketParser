@@ -95,13 +95,21 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         public static void HandleClientPartyInvite(Packet packet)
         {
             packet.ReadByte("PartyIndex");
-            packet.ReadInt32("ProposedRoles");
-            packet.ReadPackedGuid128("TargetGuid");
-
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V9_1_5_40772))
+            {
+                packet.ReadInt32("ProposedRoles");
+                packet.ReadPackedGuid128("TargetGuid");
+            }
             packet.ResetBitReader();
 
             var lenTargetName = packet.ReadBits(9);
             var lenTargetRealm = packet.ReadBits(9);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772))
+            {
+                packet.ReadInt32("ProposedRoles");
+                packet.ReadPackedGuid128("TargetGuid");
+            }
 
             packet.ReadWoWString("TargetName", lenTargetName);
             packet.ReadWoWString("TargetRealm", lenTargetRealm);

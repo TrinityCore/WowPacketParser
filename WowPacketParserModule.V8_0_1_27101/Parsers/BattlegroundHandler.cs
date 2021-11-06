@@ -126,5 +126,30 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         {
             packet.ReadPackedGuid128("ObjectiveGuid");
         }
+
+        [Parser(Opcode.SMSG_RATED_PVP_INFO)]
+        public static void HandleRatedPvPInfo(Packet packet)
+        {
+            packet.ReadInt32("PersonalRating");
+            packet.ReadInt32("Ranking");
+            packet.ReadInt32("SeasonPlayed");
+            packet.ReadInt32("SeasonWon");
+            packet.ReadInt32("Unused1");
+            packet.ReadInt32("Unused2");
+            packet.ReadInt32("WeeklyPlayed");
+            packet.ReadInt32("WeeklyWon");
+            packet.ReadInt32("BestWeeklyRating");
+            packet.ReadInt32("LastWeeksBestRating");
+            packet.ReadInt32("BestSeasonRating");
+            packet.ReadInt32("PvpTierID");
+            packet.ReadInt32("Unused3");
+            packet.ReadInt32("WeeklyBestWinPvpTierID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772))
+            {
+                packet.ReadInt32("Unused4");
+                packet.ReadInt32("Rank");
+            }
+            packet.ReadBit("Disqualified");
+        }
     }
 }
