@@ -10,6 +10,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Id", true)]
         public uint? ID;
 
+        [DBFieldName("UniqueID", TargetedDatabase.Shadowlands)]
+        public uint? UniqueID;
+
         [DBFieldName("TableHash", true)]
         public DB2Hash? TableHash;
 

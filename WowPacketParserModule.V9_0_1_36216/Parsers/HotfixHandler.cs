@@ -16,6 +16,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         public class HotfixRecord
         {
             public uint HotfixId;
+            public uint UniqueId;
             public DB2Hash Type;
             public int RecordId;
             public int HotfixDataSize;
@@ -161,6 +162,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             foreach (var record in records)
             {
                 var hotfixId = packet.AddValue("HotfixID", record.HotfixId, count, indexes, "HotfixRecord");
+                var uniqueId = packet.AddValue("UniqueID", record.UniqueId, count, indexes, "HotfixRecord");
                 var type = packet.AddValue("TableHash", record.Type, count, indexes, "HotfixRecord");
                 var entry = packet.AddValue("RecordID", record.RecordId, count, indexes, "HotfixRecord");
                 var dataSize = packet.AddValue("Size", record.HotfixDataSize, count, indexes, "HotfixRecord");
@@ -217,6 +219,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 HotfixData hotfixData = new HotfixData
                 {
                     ID = hotfixId,
+                    UniqueID = uniqueId,
                     TableHash = type,
                     RecordID = entry,
                     Status = status
@@ -291,9 +294,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 var hotfixRecord = new HotfixRecord();
                 packet.ResetBitReader();
 
+                hotfixRecord.HotfixId = packet.ReadUInt32();
+                hotfixRecord.UniqueId = packet.ReadUInt32();
                 hotfixRecord.Type = packet.ReadUInt32E<DB2Hash>();
                 hotfixRecord.RecordId = packet.ReadInt32();
-                hotfixRecord.HotfixId = packet.ReadUInt32();
                 hotfixRecord.HotfixDataSize = packet.ReadInt32();
                 packet.ResetBitReader();
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185))
@@ -310,6 +314,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             ReadHotfixData(hotfixData, hotfixRecords, "HotfixData");
         }
+
         [Parser(Opcode.CMSG_HOTFIX_REQUEST, ClientVersionBuild.V9_0_5_37503)]
         public static void HandleHotfixRequest905(Packet packet)
         {
@@ -320,13 +325,25 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadInt32("HotfixID", i);
         }
 
-        [Parser(Opcode.SMSG_AVAILABLE_HOTFIXES, ClientVersionBuild.V9_0_5_37503)]
+        [Parser(Opcode.SMSG_AVAILABLE_HOTFIXES, ClientVersionBuild.V9_0_5_37503, ClientVersionBuild.V9_1_5_40772)]
         public static void HandleAvailableHotfixes905(Packet packet)
         {
             packet.ReadInt32("VirtualRealmAddress");
             var hotfixCount = packet.ReadUInt32("HotfixCount");
             for (var i = 0u; i < hotfixCount; ++i)
                 packet.ReadInt32("HotfixID", i);
+        }
+
+        [Parser(Opcode.SMSG_AVAILABLE_HOTFIXES, ClientVersionBuild.V9_1_5_40772)]
+        public static void HandleAvailableHotfixes915(Packet packet)
+        {
+            packet.ReadInt32("VirtualRealmAddress");
+            var hotfixCount = packet.ReadUInt32("HotfixCount");
+            for (var i = 0u; i < hotfixCount; ++i)
+            {
+                packet.ReadInt32("PushID", i, "HotfixUniqueID");
+                packet.ReadUInt32("UniqueID", i, "HotfixUniqueID");
+            }
         }
     }
 }
