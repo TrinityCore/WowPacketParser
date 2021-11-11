@@ -31,7 +31,7 @@ namespace WowPacketParser.Store.Objects
         public int? FacingCurveId = 0;
 
         [DBFieldName("AnimId")]
-        public int? AnimId = 0;
+        public int? AnimId = ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772) ? -1 : 0;
 
         [DBFieldName("AnimKitId")]
         public int? AnimKitId = 0;
