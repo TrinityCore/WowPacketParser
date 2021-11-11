@@ -90,8 +90,9 @@ namespace WowPacketParser.SQL
         /// </summary>
         private static void LoadBroadcastText()
         {
+            var sound = Settings.TargetedDatabase >= TargetedDatabase.Shadowlands ? "Kit" : "Entries";
             string query =
-                "SELECT ID, Text, Text1, EmoteID1, EmoteID2, EmoteID3, EmoteDelay1, EmoteDelay2, EmoteDelay3, EmotesID, LanguageID, Flags, ConditionID, SoundEntriesID1, SoundEntriesID2 " +
+                $"SELECT ID, Text, Text1, EmoteID1, EmoteID2, EmoteID3, EmoteDelay1, EmoteDelay2, EmoteDelay3, EmotesID, LanguageID, Flags, ConditionID, Sound{sound}ID1, Sound{sound}ID2 " +
                 $"FROM {Settings.HotfixesDatabase}.broadcast_text;";
 
             if (Settings.TargetedDatabase == TargetedDatabase.WrathOfTheLichKing || Settings.TargetedDatabase == TargetedDatabase.Cataclysm)
