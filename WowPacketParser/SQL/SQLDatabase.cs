@@ -90,9 +90,9 @@ namespace WowPacketParser.SQL
         /// </summary>
         private static void LoadBroadcastText()
         {
-            var sound = Settings.TargetedDatabase >= TargetedDatabase.Shadowlands ? "Kit" : "Entries";
+            var soundFieldName = Settings.TargetedDatabase >= TargetedDatabase.Shadowlands ? "Kit" : "Entries";
             string query =
-                $"SELECT ID, Text, Text1, EmoteID1, EmoteID2, EmoteID3, EmoteDelay1, EmoteDelay2, EmoteDelay3, EmotesID, LanguageID, Flags, ConditionID, Sound{sound}ID1, Sound{sound}ID2 " +
+                $"SELECT ID, Text, Text1, EmoteID1, EmoteID2, EmoteID3, EmoteDelay1, EmoteDelay2, EmoteDelay3, EmotesID, LanguageID, Flags, ConditionID, Sound{soundFieldName}ID1, Sound{soundFieldName}ID2 " +
                 $"FROM {Settings.HotfixesDatabase}.broadcast_text;";
 
             if (Settings.TargetedDatabase == TargetedDatabase.WrathOfTheLichKing || Settings.TargetedDatabase == TargetedDatabase.Cataclysm)
@@ -151,8 +151,8 @@ namespace WowPacketParser.SQL
                         {
                             broadcastText.ConditionID = Convert.ToUInt32(reader["ConditionID"]);
                             broadcastText.SoundEntriesID = new uint[2];
-                            broadcastText.SoundEntriesID[0] = Convert.ToUInt32(reader["SoundEntriesID1"]);
-                            broadcastText.SoundEntriesID[1] = Convert.ToUInt32(reader["SoundEntriesID2"]);
+                            broadcastText.SoundEntriesID[0] = Convert.ToUInt32(reader[$"Sound{soundFieldName}ID1"]);
+                            broadcastText.SoundEntriesID[1] = Convert.ToUInt32(reader[$"Sound{soundFieldName}ID2"]);
                         }
 
                         if (!DBC.DBC.BroadcastText.ContainsKey(id))
