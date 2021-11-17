@@ -166,9 +166,9 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                     for (var j = 0; j < effectCount; ++j)
                         packet.ReadSingle("EstimatedPoints", i, j);
 
+                    auras.Add(aura);
                     packet.AddSniffData(StoreNameType.Spell, (int)aura.SpellId, "AURA_UPDATE");
                 }
-                auras.Add(aura);
             }
 
             var guid = packet.ReadPackedGuid128("UnitGUID");
