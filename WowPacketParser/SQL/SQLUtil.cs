@@ -229,6 +229,8 @@ namespace WowPacketParser.SQL
                     var row = new Row<T>();
                     var elem2 = dbList[elem1.Item1].Data;
 
+                    row.Comment = commentSetter(elem1.Item1);
+
                     foreach (var field in fields)
                     {
                         var val1 = field.Item2.GetValue(elem1.Item1);
@@ -260,8 +262,6 @@ namespace WowPacketParser.SQL
                         if (Utilities.EqualValues(val1, val2))
                             field.Item2.SetValue(elem1.Item1, null);
                     }
-
-                    row.Comment = commentSetter(elem2);
 
                     row.Data = elem1.Item1;
                     rowsUpd.Add(row, new RowList<T>().Add(elem2));
