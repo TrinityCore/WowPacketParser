@@ -121,6 +121,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.SMSG_GAME_OBJECT_CUSTOM_ANIM)]
         public static void HandleGOCustomAnim(Packet packet)
         {
+            var customAnim = packet.Holder.GameObjectCustomAnim = new();
             var guid = new byte[8];
 
             guid[0] = packet.ReadBit();
@@ -135,7 +136,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             guid[2] = packet.ReadBit();
             packet.ReadXORByte(guid, 1);
             if (hasAnim)
-                packet.ReadInt32("Anim");
+                customAnim.Anim = packet.ReadInt32("Anim");
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 5);
@@ -144,7 +145,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 2);
 
-            packet.WriteGuid("Guid", guid);
+            customAnim.GameObject = packet.WriteGuid("Guid", guid);
         }
     }
 }

@@ -119,8 +119,9 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GAME_OBJECT_CUSTOM_ANIM)]
         public static void HandleGOCustomAnim(Packet packet)
         {
-            packet.ReadGuid("GUID");
-            packet.ReadInt32("Anim");
+            var customAnim = packet.Holder.GameObjectCustomAnim = new();
+            customAnim.GameObject = packet.ReadGuid("GUID");
+            customAnim.Anim = packet.ReadInt32("Anim");
         }
 
         [Parser(Opcode.SMSG_GAME_OBJECT_ACTIVATE_ANIM_KIT)] // 4.3.4

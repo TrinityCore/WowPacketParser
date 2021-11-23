@@ -67,6 +67,7 @@ message PacketHolder {
       PacketClientMove clientMove = 38;
       PacketClientUseGameObject clientUseGameObject = 39;
       PacketGossipPoi gossipPoi = 40;
+      PacketGameObjectCustomAnim gameObjectCustomAnim = 41;
   }
 }
 
@@ -673,5 +674,11 @@ message PacketGossipPoi {
   string name = 5;
   optional int32 id = 6;
   optional float height = 7;
+}
+
+message PacketGameObjectCustomAnim {
+  UniversalGuid gameObject = 1;
+  int32 anim = 2;
+  optional bool playAsDespawn = 3;
 }
 

@@ -88,6 +88,8 @@ namespace WowPacketParser.Proto.Processing
                     return Process(packet.BaseData, packet.ClientUseGameObject);
                 case PacketHolder.KindOneofCase.GossipPoi:
                     return Process(packet.BaseData, packet.GossipPoi);
+                case PacketHolder.KindOneofCase.GameObjectCustomAnim:
+                    return Process(packet.BaseData, packet.GameObjectCustomAnim);
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -132,5 +134,6 @@ namespace WowPacketParser.Proto.Processing
         protected virtual T? Process(PacketBase basePacket, PacketClientMove packet) => default;
         protected virtual T? Process(PacketBase basePacket, PacketClientUseGameObject packet) => default;
         protected virtual T? Process(PacketBase basePacket, PacketGossipPoi packet) => default;
+        protected virtual T? Process(PacketBase basePacket, PacketGameObjectCustomAnim packet) => default;
     }
 }
