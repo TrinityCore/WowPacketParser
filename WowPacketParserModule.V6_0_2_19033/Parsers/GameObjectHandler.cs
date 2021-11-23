@@ -117,9 +117,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_GAME_OBJECT_CUSTOM_ANIM)]
         public static void HandleGoCustomAnim(Packet packet)
         {
-            packet.ReadPackedGuid128("ObjectGUID");
-            packet.ReadInt32("CustomAnim");
-            packet.ReadBit("PlayAsDespawn");
+            var customAnim = packet.Holder.GameObjectCustomAnim = new();
+            customAnim.GameObject = packet.ReadPackedGuid128("ObjectGUID");
+            customAnim.Anim = packet.ReadInt32("CustomAnim");
+            customAnim.PlayAsDespawn = packet.ReadBit("PlayAsDespawn");
         }
 
         [Parser(Opcode.SMSG_GAME_OBJECT_DESPAWN)]
