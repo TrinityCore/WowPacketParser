@@ -220,10 +220,10 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 
                 if (Settings.UseDBC && DBC.Phase.ContainsKey(id))
                 {
-                    packet.WriteLine($"[{i}] ID: {id} ({(DBCPhaseFlags)DBC.Phase[id].Flags})");
+                    packet.WriteLine($"[{i}] ID: {id} ({StoreGetters.GetName(StoreNameType.PhaseId, id, false)}) Flags: {(DBCPhaseFlags)DBC.Phase[id].Flags}");
                 }
                 else
-                    packet.AddValue("ID", id, i);
+                    packet.AddValue($"{StoreGetters.GetName(StoreNameType.PhaseId, id)}", id, i);
 
                 CoreParsers.MovementHandler.ActivePhases.Add(id, true);
             }

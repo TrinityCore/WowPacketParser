@@ -63,8 +63,32 @@ namespace WowPacketParser.SQL
                 throw new DataException("Cannot get DB data without an active DB connection.");
 
             foreach (var objectType in ObjectTypes)
-                NameStores.Add(objectType, GetDict<int, string>(
-                    $"SELECT `Id`, `Name` FROM `object_names` WHERE `ObjectType`='{objectType}';"));
+            {
+                using (var command = SQLConnector.CreateCommand($"SELECT `Id`, `Name` FROM `object_names` WHERE `ObjectType`='{objectType}';"))
+                {
+                    if (command == null)
+                        return;
+
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int ID = Convert.ToInt32(reader.GetValue(0));
+                            string Name = Convert.ToString(reader.GetValue(1));
+
+                            Dictionary<int, string> names;
+                            if (!NameStores.TryGetValue(objectType, out names))
+                            {
+                                names = new Dictionary<int, string>();
+                                NameStores.Add(objectType, names);
+                            }
+
+                            if (!names.ContainsKey(ID))
+                                names.Add(ID, Name);
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -79,6 +103,7 @@ namespace WowPacketParser.SQL
 
             LoadBroadcastText();
             LoadPointsOfinterest();
+            LoadNameData();
 
             var endTime = DateTime.Now;
             var span = DateTime.Now.Subtract(startTime);
@@ -194,6 +219,35 @@ namespace WowPacketParser.SQL
             }
         }
 
+        private static void LoadNameData()
+        {
+            // Unit
+            NameStores.Add(StoreNameType.Unit, GetDict<int, string>(
+                    $"SELECT `entry`, `name` FROM {Settings.TDBDatabase}.creature_template;"));
+
+            // GameObject
+            NameStores.Add(StoreNameType.GameObject, GetDict<int, string>(
+                    $"SELECT `entry`, `name` FROM {Settings.TDBDatabase}.gameobject_template;"));
+
+            // Quest
+            NameStores.Add(StoreNameType.Quest, GetDict<int, string>(
+                    $"SELECT `ID`, `LogTitle` FROM {Settings.TDBDatabase}.quest_template;"));
+
+            // Item - Cataclysm and above have ItemSparse.db2
+            if (Settings.TargetedDatabase <= TargetedDatabase.WrathOfTheLichKing)
+            {
+                NameStores.Add(StoreNameType.Item, GetDict<int, string>(
+                    $"SELECT `entry`, `name` FROM {Settings.TDBDatabase}.item_template;"));
+            }
+
+            // Phase - Before Cataclysm there was phasemask system
+            if (Settings.TargetedDatabase >= TargetedDatabase.Cataclysm)
+            {
+                NameStores.Add(StoreNameType.PhaseId, GetDict<int, string>(
+                    $"SELECT `ID`, `Name` FROM {Settings.TDBDatabase}.phase_name;"));
+            }
+        }
+
         // Returns a dictionary from a DB query with two parameters (e.g <creature_entry, creature_name>)
         // TODO: Drop this and use the GetDict<T, TK> method below
         public static Dictionary<T, TK> GetDict<T, TK>(string query)
@@ -208,7 +262,7 @@ namespace WowPacketParser.SQL
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
-                        dict.Add((T)reader.GetValue(0), (TK)reader.GetValue(1));
+                        dict.Add((T)Convert.ChangeType(reader.GetValue(0), typeof(T)), (TK)Convert.ChangeType(reader.GetValue(1), typeof(TK)));
                 }
 
                 return dict;

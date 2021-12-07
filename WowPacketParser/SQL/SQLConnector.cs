@@ -107,8 +107,10 @@ namespace WowPacketParser.SQL
             try
             {
                 Connect();
-                SQLDatabase.GrabNameData();
+                // Load names from world db first
                 SQLDatabase.LoadSQL();
+                // then fill gaps with object_names table
+                SQLDatabase.GrabNameData();
             }
             catch (Exception ex)
             {

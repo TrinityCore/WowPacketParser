@@ -33,6 +33,7 @@ namespace WowPacketParser.Enums
         QuestGreeting       = 27,
         QuestObjective      = 28,
         Sound               = 29,
+        PhaseId             = 30,
     }
 
     public static class StoreName
@@ -73,6 +74,8 @@ namespace WowPacketParser.Enums
                 return StoreNameType.Unit;
             if (typeof(T) == typeof(ZoneId))
                 return StoreNameType.Zone;
+            if (typeof(T) == typeof(PhaseId))
+                return StoreNameType.PhaseId;
 
             throw new ArgumentOutOfRangeException(typeof(T).ToString());
         }
@@ -97,4 +100,5 @@ namespace WowPacketParser.Enums
     public struct SpellId :  IId { }
     public struct UnitId : IId { }
     public struct ZoneId : IId { }
+    public struct PhaseId : IId { }
 }
