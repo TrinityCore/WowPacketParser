@@ -5,7 +5,7 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("points_of_interest")]
-    public sealed class PointsOfInterest : IDataModel
+    public sealed record PointsOfInterest : IDataModel
     {
         [DBFieldName("ID", true, true)]
         public object ID;

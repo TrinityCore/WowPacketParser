@@ -4,7 +4,7 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("areatrigger_template")]
-    public sealed class AreaTriggerTemplate : IDataModel
+    public sealed record AreaTriggerTemplate : IDataModel
     {
         [DBFieldName("Id", true)]
         public uint? Id;

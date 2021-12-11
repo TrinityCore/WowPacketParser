@@ -6,7 +6,7 @@ using WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation;
 
 namespace WowPacketParser.Store.Objects
 {
-    public class WoWObject
+    public record WoWObject
     {
         public WowGuid Guid;
         public ObjectType Type;

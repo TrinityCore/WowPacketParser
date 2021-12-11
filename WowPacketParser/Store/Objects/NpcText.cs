@@ -5,7 +5,7 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("npc_text")]
-    public class NpcText : IDataModel
+    public sealed record NpcText : IDataModel
     {
         public string[] Texts0;
         public string[] Texts1;
@@ -375,7 +375,7 @@ namespace WowPacketParser.Store.Objects
     }
 
     [DBTableName("npc_text")]
-    public class NpcTextMop : IDataModel
+    public sealed record NpcTextMop : IDataModel
     {
         public float[] Probabilities;
 

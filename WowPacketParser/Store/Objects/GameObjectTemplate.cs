@@ -5,7 +5,7 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("gameobject_template")]
-    public sealed class GameObjectTemplate : IDataModel
+    public sealed record GameObjectTemplate : IDataModel
     {
         [DBFieldName("entry", true)]
         public uint? Entry;
@@ -52,7 +52,7 @@ namespace WowPacketParser.Store.Objects
     }
 
     [DBTableName("gameobject_questitem")]
-    public sealed class GameObjectTemplateQuestItem : IDataModel
+    public sealed record GameObjectTemplateQuestItem : IDataModel
     {
         [DBFieldName("GameObjectEntry", true)]
         public uint? GameObjectEntry;

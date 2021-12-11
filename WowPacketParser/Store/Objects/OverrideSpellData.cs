@@ -4,7 +4,7 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("override_spell_data")]
-    public sealed class OverrideSpellData : IDataModel
+    public sealed record OverrideSpellData : IDataModel
     {
         [DBFieldName("ID", true)]
         public uint? ID;

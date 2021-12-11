@@ -10,7 +10,7 @@ namespace WowPacketParser.Store.Objects
     };
 
     [DBTableName("conversation_actor_template")]
-    public sealed class ConversationActorTemplate : IDataModel
+    public sealed record ConversationActorTemplate : IDataModel
     {
         [DBFieldName("Id", true)]
         public int? Id;

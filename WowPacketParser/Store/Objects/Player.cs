@@ -2,7 +2,7 @@ using WowPacketParser.Enums;
 
 namespace WowPacketParser.Store.Objects
 {
-    public sealed class Player : WoWObject
+    public sealed record Player : WoWObject
     {
         public Race Race;
 

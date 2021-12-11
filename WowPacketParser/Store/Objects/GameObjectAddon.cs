@@ -4,7 +4,7 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("gameobject_addon")]
-    public sealed class GameObjectAddon : IDataModel
+    public sealed record GameObjectAddon : IDataModel
     {
         [DBFieldName("guid", true, true)]
         public string GUID;

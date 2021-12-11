@@ -5,7 +5,7 @@ using WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation;
 
 namespace WowPacketParser.Store.Objects
 {
-    public sealed class SceneObject : WoWObject, IDataModel
+    public sealed record SceneObject : WoWObject, IDataModel
     {
         public ISceneObjectData SceneObjectData;
 

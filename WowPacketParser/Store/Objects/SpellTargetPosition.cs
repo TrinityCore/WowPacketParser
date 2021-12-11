@@ -3,7 +3,7 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
-    public sealed class SpellTargetPosition : IDataModel
+    public sealed record SpellTargetPosition : IDataModel
     {
         [DBFieldName("ID", true)]
         public uint? ID;

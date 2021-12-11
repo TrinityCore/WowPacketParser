@@ -5,7 +5,7 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("creature_template_scaling")]
-    public sealed class CreatureTemplateScaling : IDataModel
+    public sealed record CreatureTemplateScaling : IDataModel
     {
         [DBFieldName("Entry", true)]
         public uint? Entry;

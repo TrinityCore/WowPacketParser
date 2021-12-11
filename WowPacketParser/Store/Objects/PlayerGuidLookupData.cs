@@ -2,7 +2,7 @@
 
 namespace WowPacketParser.Store.Objects
 {
-    public class PlayerGuidLookupData
+    public record PlayerGuidLookupData
     {
         public Race Race;
         public Gender Gender;

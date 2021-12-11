@@ -5,7 +5,7 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("hotfix_optional_data")]
-    public sealed class HotfixOptionalData : IDataModel
+    public sealed record HotfixOptionalData : IDataModel
     {
         [DBFieldName("TableHash", true)]
         public DB2Hash? TableHash;

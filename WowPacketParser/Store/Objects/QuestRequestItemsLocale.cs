@@ -4,7 +4,7 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("quest_request_items_locale")]
-    public sealed class QuestRequestItemsLocale : IDataModel
+    public sealed record QuestRequestItemsLocale : IDataModel
     {
         [DBFieldName("ID", true)]
         public uint? ID;

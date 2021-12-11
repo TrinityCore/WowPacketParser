@@ -4,7 +4,7 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("object_names")]
-    public sealed class ObjectName : IDataModel
+    public sealed record ObjectName : IDataModel
     {
         [DBFieldName("ObjectType", true)]
         public StoreNameType? ObjectType;

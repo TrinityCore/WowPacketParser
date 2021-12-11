@@ -5,7 +5,7 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("hotfix_data")]
-    public sealed class HotfixData : IDataModel
+    public sealed record HotfixData : IDataModel
     {
         [DBFieldName("Id", true)]
         public uint? ID;

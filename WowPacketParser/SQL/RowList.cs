@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace WowPacketParser.SQL
 {
-    public class Row<T> where T : IDataModel, new()
+    public record Row<T> where T : IDataModel, new()
     {
         public Row()
         { }

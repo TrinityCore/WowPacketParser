@@ -4,7 +4,7 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("quest_visual_effect")]
-    public sealed class QuestVisualEffect : IDataModel
+    public sealed record QuestVisualEffect : IDataModel
     {
         [DBFieldName("ID", true)]
         public uint? ID;

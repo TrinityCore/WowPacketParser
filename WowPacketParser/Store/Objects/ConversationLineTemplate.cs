@@ -5,7 +5,7 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("conversation_line_template")]
-    public sealed class ConversationLineTemplate : IDataModel
+    public sealed record ConversationLineTemplate : IDataModel
     {
         [DBFieldName("Id", true)]
         public uint? Id;

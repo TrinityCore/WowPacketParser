@@ -4,7 +4,7 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("npc_spellclick_spells")]
-    public sealed class NpcSpellClick : IDataModel
+    public sealed record NpcSpellClick : IDataModel
     {
         [DBFieldName("npc_entry", true)]
         public uint? Entry;

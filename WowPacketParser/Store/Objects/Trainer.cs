@@ -5,7 +5,7 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("trainer")]
-    public sealed class Trainer : IDataModel
+    public sealed record Trainer : IDataModel
     {
         [DBFieldName("Id", true)]
         public uint? Id;

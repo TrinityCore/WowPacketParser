@@ -3,7 +3,7 @@
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("creature_trainer")]
-    public class CreatureTrainer : IDataModel
+    public sealed record CreatureTrainer : IDataModel
     {
         [DBFieldName("CreatureId", true)]
         public uint? CreatureId;

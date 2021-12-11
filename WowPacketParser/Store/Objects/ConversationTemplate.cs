@@ -8,7 +8,7 @@ using WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("conversation_template")]
-    public sealed class ConversationTemplate : WoWObject, IDataModel
+    public sealed record ConversationTemplate : WoWObject, IDataModel
     {
         [DBFieldName("Id", true)]
         public uint? Id;

@@ -3,7 +3,7 @@
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("gossip_menu_option_action")]
-    public class GossipMenuOptionAction : IDataModel
+    public sealed record GossipMenuOptionAction : IDataModel
     {
         [DBFieldName("MenuId", true)]
         public uint? MenuId;

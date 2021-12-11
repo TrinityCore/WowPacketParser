@@ -4,7 +4,7 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("creature_template_model")]
-    public sealed class CreatureTemplateModel : IDataModel
+    public sealed record CreatureTemplateModel : IDataModel
     {
         [DBFieldName("CreatureID", true)]
         public uint? CreatureID;

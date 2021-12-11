@@ -4,7 +4,7 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("phase_group")]
-    public sealed class PhaseXPhaseGroup : IDataModel
+    public sealed record PhaseXPhaseGroup : IDataModel
     {
         [DBFieldName("ID", true)]
         public uint? ID;

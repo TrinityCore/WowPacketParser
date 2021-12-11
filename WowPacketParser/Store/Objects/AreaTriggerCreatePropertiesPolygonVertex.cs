@@ -6,7 +6,7 @@ namespace WowPacketParser.Store.Objects
 {
     [DBTableName("spell_areatrigger_vertices", TargetedDatabase.Zero, TargetedDatabase.Shadowlands)]
     [DBTableName("areatrigger_create_properties_polygon_vertex", TargetedDatabase.Shadowlands)]
-    public sealed class AreaTriggerCreatePropertiesPolygonVertex : IDataModel
+    public sealed record AreaTriggerCreatePropertiesPolygonVertex : IDataModel
     {
         [DBFieldName("SpellMiscId", TargetedDatabase.Zero, TargetedDatabase.Shadowlands, true)]
         [DBFieldName("AreaTriggerCreatePropertiesId", TargetedDatabase.Shadowlands, true)]

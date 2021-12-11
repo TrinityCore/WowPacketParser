@@ -2,7 +2,7 @@
 
 namespace WowPacketParser.Store.Objects
 {
-    public sealed class NpcTrainer : IDataModel
+    public sealed record NpcTrainer : IDataModel
     {
         [DBFieldName("ID", true)]
         public uint? ID;

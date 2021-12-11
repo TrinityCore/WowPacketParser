@@ -4,7 +4,7 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("trainer_spell")]
-    public sealed class TrainerSpell : IDataModel
+    public sealed record TrainerSpell : IDataModel
     {
         public uint[] ReqAbility;
 

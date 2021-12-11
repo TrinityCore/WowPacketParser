@@ -3,7 +3,7 @@ using WowPacketParser.Enums;
 
 namespace WowPacketParser.Store.Objects
 {
-    public class ItemInstance
+    public record ItemInstance
     {
         public int ItemID;
         public uint RandomPropertiesSeed; // removed in 8.1.5

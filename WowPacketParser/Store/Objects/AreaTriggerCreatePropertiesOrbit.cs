@@ -9,7 +9,7 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("areatrigger_create_properties_orbit")]
-    public sealed class AreaTriggerCreatePropertiesOrbit : IDataModel
+    public sealed record AreaTriggerCreatePropertiesOrbit : IDataModel
     {
         [DBFieldName("AreaTriggerCreatePropertiesId", true)]
         public uint? AreaTriggerCreatePropertiesId;

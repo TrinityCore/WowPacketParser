@@ -3,7 +3,7 @@ using WowPacketParser.Misc;
 
 namespace WowPacketParser.Store.Objects
 {
-    public class Aura
+    public record Aura
     {
         public uint Slot;
 

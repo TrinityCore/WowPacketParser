@@ -5,7 +5,7 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("broadcast_text")]
-    public sealed class BroadcastText : IDataModel
+    public sealed record BroadcastText : IDataModel
     {
         public ushort?[] EmoteID;
         public ushort?[] EmoteDelay;

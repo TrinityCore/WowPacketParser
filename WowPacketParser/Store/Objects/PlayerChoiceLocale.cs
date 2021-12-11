@@ -5,7 +5,7 @@ using WowPacketParser.SQL;
 namespace WowPacketParser.Store.Objects
 {
     [DBTableName("playerchoice_locale")]
-    public sealed class PlayerChoiceLocaleTemplate : IDataModel
+    public sealed record PlayerChoiceLocaleTemplate : IDataModel
     {
         [DBFieldName("ChoiceId", true)]
         public int? ChoiceId;
@@ -21,7 +21,7 @@ namespace WowPacketParser.Store.Objects
     }
 
     [DBTableName("playerchoice_response_locale")]
-    public sealed class PlayerChoiceResponseLocaleTemplate : IDataModel
+    public sealed record PlayerChoiceResponseLocaleTemplate : IDataModel
     {
         [DBFieldName("ChoiceId", true)]
         public int? ChoiceId;

@@ -9,7 +9,7 @@ namespace WowPacketParser.Store.Objects
 {
     [DBTableName("spell_areatrigger", TargetedDatabase.Zero, TargetedDatabase.Shadowlands)]
     [DBTableName("areatrigger_create_properties", TargetedDatabase.Shadowlands)]
-    public sealed class AreaTriggerCreateProperties : WoWObject, IDataModel
+    public sealed record AreaTriggerCreateProperties : WoWObject, IDataModel
     {
         [DBFieldName("SpellMiscId", TargetedDatabase.Zero, TargetedDatabase.Shadowlands, true)]
         [DBFieldName("Id", TargetedDatabase.Shadowlands, true)]
