@@ -264,9 +264,9 @@ namespace WowPacketParser.SQL
                     }
 
                     row.Data = elem1.Item1;
-                    if (row.Comment.Length == 0 && rowsUpd.ContainsKey(row))
+                    if (row.Comment.Length == 0 && rowsUpd.TryGetValue(row, out var conditions))
                     {
-                        rowsUpd[row].Add(elem2);
+                        conditions.Add(elem2);
                         continue;
                     }
                     rowsUpd.Add(row, new RowList<T>().Add(elem2));
