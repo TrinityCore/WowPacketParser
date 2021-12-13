@@ -313,47 +313,7 @@ namespace WowPacketParser.SQL
                         var i = 0;
                         foreach (var field in fields)
                         {
-                            if (values[i] is DBNull)
-                            {
-                                if (field.Item2.FieldType == typeof(string))
-                                    field.Item2.SetValue(instance, string.Empty);
-                                else if (field.Item3.Any(a => a.Nullable))
-                                    field.Item2.SetValue(instance, null);
-                            }
-                            else if (field.Item2.FieldType.BaseType == typeof(Enum))
-                                field.Item2.SetValue(instance, Enum.Parse(field.Item2.FieldType, values[i].ToString()));
-                            else if (field.Item2.FieldType.BaseType == typeof(Array))
-                            {
-                                var arr = Array.CreateInstance(field.Item2.FieldType.GetElementType(), field.Item3.First().Count);
-
-                                for (var j = 0; j < arr.Length; j++)
-                                {
-                                    var elemType = arr.GetType().GetElementType();
-
-                                    if (elemType.IsEnum)
-                                        arr.SetValue(Enum.Parse(elemType, values[i + j].ToString()), j);
-                                    else if (Nullable.GetUnderlyingType(elemType) != null) //is nullable
-                                        arr.SetValue(Convert.ChangeType(values[i + j], Nullable.GetUnderlyingType(elemType)), j);
-                                    else
-                                        arr.SetValue(Convert.ChangeType(values[i + j], elemType), j);
-                                }
-                                field.Item2.SetValue(instance, arr);
-                            }
-                            else if (field.Item2.FieldType == typeof(bool))
-                                field.Item2.SetValue(instance, Convert.ToBoolean(values[i]));
-                            else if (Nullable.GetUnderlyingType(field.Item2.FieldType) != null) // is nullable
-                            {
-                                var uType = Nullable.GetUnderlyingType(field.Item2.FieldType);
-                                field.Item2.SetValue(instance,
-                                    uType.IsEnum
-                                        ? Enum.Parse(uType, values[i].ToString())
-                                        : Convert.ChangeType(values[i], uType));
-                            }
-                            else if (field.Item2.FieldType == typeof(Blob))
-                                field.Item2.SetValue(instance, new Blob(values[i] as byte[]));
-                            else
-                                field.Item2.SetValue(instance, values[i]);
-
+                            SQLUtil.SetFieldValueByDB(instance, field, values, i);
                             i += field.Item3.First().Count;
                         }
 

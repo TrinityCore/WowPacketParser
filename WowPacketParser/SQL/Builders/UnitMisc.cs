@@ -24,6 +24,7 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template_addon))
                 return string.Empty;
 
+            var templateAddonDefault = SQLUtil.GetDefaultObject<CreatureTemplateAddon>();
             var addons = new DataBag<CreatureTemplateAddon>();
             foreach (var unit in units)
             {
@@ -68,6 +69,9 @@ namespace WowPacketParser.SQL.Builders
                     Auras = auras,
                     CommentAuras = commentAuras
                 };
+
+                if (SQLUtil.AreDBFieldsEqual(addon, templateAddonDefault))
+                    continue;
 
                 if (addons.ContainsKey(addon))
                     continue;
