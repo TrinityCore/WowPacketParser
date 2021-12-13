@@ -1,17 +1,17 @@
 namespace WowPacketParser.Enums
 {
-    public enum DifficultyChangeType
+    public enum SetPlayerDifficultyResults
     {
-        PlayerDifficulty1 = 0,
-        SpellDuration     = 1,
-        WorldState        = 2,
-        Encounter         = 3,
-        Combat            = 4,
-        Unknown1          = 5,
-        Time              = 6,
-        Unknown2          = 7,
-        MapDifficulty     = 8,
-        PlayerDifficulty2 = 9
+        SetDifficulty       = 0,
+        Cooldown            = 1,
+        WorldState          = 2,
+        EncounterInProgress = 3,
+        PlayerInCombat      = 4,
+        PlayerBusy          = 5,
+        Start               = 6,
+        AlreadyInProgress   = 7,
+        FailedCondition     = 8,
+        Complete            = 9,
     }
 
     public enum DifficultyChangeType434

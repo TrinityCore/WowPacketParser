@@ -79,20 +79,18 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CHANGE_PLAYER_DIFFICULTY_RESULT)]
         public static void HandlePlayerChangeDifficulty(Packet packet)
         {
-            var type = packet.ReadInt32E<DifficultyChangeType>("Change Type");
+            var type = packet.ReadInt32E<SetPlayerDifficultyResults>("Result");
             switch (type)
             {
-                case DifficultyChangeType.PlayerDifficulty1:
-                    packet.ReadByte("Player Difficulty");
+                case SetPlayerDifficultyResults.SetDifficulty:
+                    packet.ReadByteE<MapDifficulty>("InstanceDifficulty");
                     break;
-                case DifficultyChangeType.SpellDuration:
-                    packet.ReadInt32("Spell Duration");
+                case SetPlayerDifficultyResults.Cooldown:
+                case SetPlayerDifficultyResults.Start:
+                    packet.ReadInt32("Cooldown");
                     break;
-                case DifficultyChangeType.Time:
-                    packet.ReadInt32("Time");
-                    break;
-                case DifficultyChangeType.MapDifficulty:
-                    packet.ReadInt32E<MapDifficulty>("Difficulty");
+                case SetPlayerDifficultyResults.FailedCondition:
+                    packet.ReadInt32("DifficultyRecID");
                     break;
             }
         }
