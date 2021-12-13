@@ -759,14 +759,17 @@ namespace WowPacketParser.SQL
                             }
 
                             var fieldName = matchList[0].Groups[1].Value;
-                            idx = int.Parse(matchList[0].Groups[2].Value) - 1; // -1 because we are starting with index 1 in column names
-
                             field = fields.Where(f => f.Item1 == fieldName).FirstOrDefault();
+
                             if (field == null)
                             {
                                 Console.WriteLine($"Cannot find column '{values[0]}' within fields of '{tableName}'.");
                                 continue;
                             }
+
+                            idx = int.Parse(matchList[0].Groups[2].Value);
+                            if (!field.Item3.First().StartAtZero)
+                                idx -= 1;
                         }
 
                         SetFieldValueByDB(instance, field, values, 1, true);
