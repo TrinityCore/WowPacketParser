@@ -749,19 +749,13 @@ namespace WowPacketParser.SQL
                             var matchList = Regex.Matches((string)values[0], "([a-zA-Z-_]+)(\\d+)");
 
                             if (matchList.Count == 0)
-                            {
-                                Console.WriteLine($"Cannot find column '{values[0]}' within fields of '{tableName}'.");
                                 continue;
-                            }
 
                             var fieldName = matchList[0].Groups[1].Value;
                             field = fields.Where(f => f.Item3.First().Name == fieldName).FirstOrDefault();
 
                             if (field == null)
-                            {
-                                Console.WriteLine($"Cannot find column '{values[0]}' within fields of '{tableName}'.");
                                 continue;
-                            }
 
                             idx = int.Parse(matchList[0].Groups[2].Value);
                             if (!field.Item3.First().StartAtZero)
