@@ -730,11 +730,7 @@ namespace WowPacketParser.SQL
                 if (command == null)
                     return default;
 
-                var fields = (from field in Utilities.GetFieldsAndAttributes<T, DBFieldNameAttribute>()
-                              where field.Value.Any(f => f.IsVisible())
-                              let fieldName = field.Value.Single(f => f.IsVisible()).Name
-                              let fieldValue = field.Value.FindAll(f => f.IsVisible())
-                              select new Tuple<string, FieldInfo, List<DBFieldNameAttribute>>(fieldName, field.Key, fieldValue)).ToList();
+                var fields = GetFields<T>();
                 var instance = (T)Activator.CreateInstance(typeof(T));
 
                 using (MySqlDataReader reader = command.ExecuteReader())
@@ -744,7 +740,7 @@ namespace WowPacketParser.SQL
                         var values = new object[2];
                         reader.GetValues(values);
 
-                        var field = fields.Where(f => f.Item1 == (string)values[0]).FirstOrDefault();
+                        var field = fields.Where(f => f.Item3.First().Name == (string)values[0]).FirstOrDefault();
                         var idx = 0;
 
                         if (field == null)
@@ -759,7 +755,7 @@ namespace WowPacketParser.SQL
                             }
 
                             var fieldName = matchList[0].Groups[1].Value;
-                            field = fields.Where(f => f.Item1 == fieldName).FirstOrDefault();
+                            field = fields.Where(f => f.Item3.First().Name == fieldName).FirstOrDefault();
 
                             if (field == null)
                             {
