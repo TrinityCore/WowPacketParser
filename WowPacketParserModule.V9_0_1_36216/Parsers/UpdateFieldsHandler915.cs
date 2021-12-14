@@ -974,7 +974,7 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_1_5_40772
             data.MaxItemLevel = packet.ReadInt32("MaxItemLevel", indexes);
             data.AzeriteItemLevel = packet.ReadInt32("AzeriteItemLevel", indexes);
             data.WildBattlePetLevel = packet.ReadInt32("WildBattlePetLevel", indexes);
-            data.Field_220 = packet.ReadInt32("Field_220", indexes);
+            data.BattlePetCompanionExperience = packet.ReadInt32("BattlePetCompanionExperience", indexes);
             data.BattlePetCompanionNameTimestamp = packet.ReadUInt32("BattlePetCompanionNameTimestamp", indexes);
             data.InteractSpellID = packet.ReadInt32("InteractSpellID", indexes);
             data.ScaleDuration = packet.ReadInt32("ScaleDuration", indexes);
@@ -1493,7 +1493,7 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_1_5_40772
                 }
                 if (changesMask[109])
                 {
-                    data.Field_220 = packet.ReadInt32("Field_220", indexes);
+                    data.BattlePetCompanionExperience = packet.ReadInt32("BattlePetCompanionExperience", indexes);
                 }
                 if (changesMask[110])
                 {

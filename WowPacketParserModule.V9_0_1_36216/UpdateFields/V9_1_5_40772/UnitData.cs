@@ -122,7 +122,7 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_1_5_40772
         public int MaxItemLevel { get; set; }
         public int AzeriteItemLevel { get; set; }
         public int WildBattlePetLevel { get; set; }
-        public int Field_220 { get; set; }
+        public int BattlePetCompanionExperience { get; set; }
         public uint BattlePetCompanionNameTimestamp { get; set; }
         public int InteractSpellID { get; set; }
         public int ScaleDuration { get; set; }
