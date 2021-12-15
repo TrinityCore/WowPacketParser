@@ -1,17 +1,18 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.Proto;
 using WowPacketParser.Store.Objects.UpdateFields;
 
 namespace WowPacketParser.Parsing.Parsers
 {
     public abstract class UpdateFieldsHandlerBase
     {
-        public virtual IObjectData ReadCreateObjectData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
+        public virtual IObjectData ReadCreateObjectData(Packet packet, UpdateFieldFlag flags, UpdateValuesObjectDataFields fields, params object[] indexes)
         {
             return null;
         }
 
-        public virtual IObjectData ReadUpdateObjectData(Packet packet, IObjectData existingData, params object[] indexes)
+        public virtual IObjectData ReadUpdateObjectData(Packet packet, UpdateValuesObjectDataFields fields, IObjectData existingData, params object[] indexes)
         {
             return existingData;
         }
@@ -56,12 +57,12 @@ namespace WowPacketParser.Parsing.Parsers
             return existingData;
         }
 
-        public virtual IUnitData ReadCreateUnitData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
+        public virtual IUnitData ReadCreateUnitData(Packet packet, UpdateFieldFlag flags, UpdateValuesUnitDataFields fields, params object[] indexes)
         {
             return null;
         }
 
-        public virtual IUnitData ReadUpdateUnitData(Packet packet, IUnitData existingData, params object[] indexes)
+        public virtual IUnitData ReadUpdateUnitData(Packet packet, UpdateValuesUnitDataFields fields, IUnitData existingData, params object[] indexes)
         {
             return existingData;
         }
@@ -86,12 +87,12 @@ namespace WowPacketParser.Parsing.Parsers
             return existingData;
         }
 
-        public virtual IGameObjectData ReadCreateGameObjectData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
+        public virtual IGameObjectData ReadCreateGameObjectData(Packet packet, UpdateFieldFlag flags, UpdateValuesGameObjectDataFields fields, params object[] indexes)
         {
             return null;
         }
 
-        public virtual IGameObjectData ReadUpdateGameObjectData(Packet packet, IGameObjectData existingData, params object[] indexes)
+        public virtual IGameObjectData ReadUpdateGameObjectData(Packet packet, UpdateValuesGameObjectDataFields fields, IGameObjectData existingData, params object[] indexes)
         {
             return existingData;
         }

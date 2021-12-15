@@ -3,13 +3,14 @@ using System.Linq;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing.Parsers;
+using WowPacketParser.Proto;
 using WowPacketParser.Store.Objects.UpdateFields;
 
 namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29683
 {
     public class UpdateFieldHandler : UpdateFieldsHandlerBase
     {
-        public override IObjectData ReadCreateObjectData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
+        public override IObjectData ReadCreateObjectData(Packet packet, UpdateFieldFlag flags, UpdateValuesObjectDataFields fields, params object[] indexes)
         {
             var data = new ObjectData();
             data.EntryID = packet.ReadInt32("EntryID", indexes);
@@ -18,7 +19,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29683
             return data;
         }
 
-        public override IObjectData ReadUpdateObjectData(Packet packet, IObjectData existingData, params object[] indexes)
+        public override IObjectData ReadUpdateObjectData(Packet packet, UpdateValuesObjectDataFields fields, IObjectData existingData, params object[] indexes)
         {
             var data = existingData as ObjectData;
             if (data == null)
@@ -589,7 +590,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29683
             return data;
         }
 
-        public override IUnitData ReadCreateUnitData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
+        public override IUnitData ReadCreateUnitData(Packet packet, UpdateFieldFlag flags, UpdateValuesUnitDataFields fields, params object[] indexes)
         {
             var data = new UnitData();
             data.DisplayID = packet.ReadInt32("DisplayID", indexes);
@@ -786,7 +787,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29683
             return data;
         }
 
-        public override IUnitData ReadUpdateUnitData(Packet packet, IUnitData existingData, params object[] indexes)
+        public override IUnitData ReadUpdateUnitData(Packet packet, UpdateValuesUnitDataFields fields, IUnitData existingData, params object[] indexes)
         {
             var data = existingData as UnitData;
             if (data == null)
@@ -2995,7 +2996,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29683
             return data;
         }
 
-        public override IGameObjectData ReadCreateGameObjectData(Packet packet, UpdateFieldFlag flags, params object[] indexes)
+        public override IGameObjectData ReadCreateGameObjectData(Packet packet, UpdateFieldFlag flags, UpdateValuesGameObjectDataFields fields, params object[] indexes)
         {
             var data = new GameObjectData();
             data.DisplayID = packet.ReadInt32("DisplayID", indexes);
@@ -3028,7 +3029,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29683
             return data;
         }
 
-        public override IGameObjectData ReadUpdateGameObjectData(Packet packet, IGameObjectData existingData, params object[] indexes)
+        public override IGameObjectData ReadUpdateGameObjectData(Packet packet, UpdateValuesGameObjectDataFields fields, IGameObjectData existingData, params object[] indexes)
         {
             var data = existingData as GameObjectData;
             if (data == null)

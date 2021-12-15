@@ -57,8 +57,8 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
                     case UpdateTypeCataclysm.Values:
                     {
                         var guid = packet.ReadPackedGuid128("Object Guid", i);
-                        var updateValues = new UpdateValues();
-                        CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, updateValues, guid, i);
+                        var updateValues = new UpdateValues() {Legacy = new()};
+                        CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, updateValues.Legacy, guid, i);
                         updateObject.Updated.Add(new UpdateObject{Guid = guid, Values = updateValues, Text = partWriter.Text });
                         break;
                     }
@@ -66,7 +66,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
                     case UpdateTypeCataclysm.CreateObject2:
                     {
                         var guid = packet.ReadPackedGuid128("Object Guid", i);
-                        var createObject = new CreateObject() { Guid = guid, Values = new(), CreateType = type.ToCreateObjectType() };
+                        var createObject = new CreateObject() { Guid = guid, Values = new() {Legacy = new()}, CreateType = type.ToCreateObjectType() };
                         ReadCreateObjectBlock(packet, createObject, guid, map, i);
                         createObject.Text = partWriter.Text;
                         updateObject.Created.Add(createObject);
@@ -84,7 +84,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
             WoWObject obj = CoreParsers.UpdateHandler.CreateObject(objType, guid, map);
 
             obj.Movement = ReadMovementUpdateBlock(packet, createObject, guid, obj, index);
-            obj.UpdateFields = CoreParsers.UpdateHandler.ReadValuesUpdateBlockOnCreate(packet, createObject.Values, objType, index);
+            obj.UpdateFields = CoreParsers.UpdateHandler.ReadValuesUpdateBlockOnCreate(packet, createObject.Values.Legacy, objType, index);
             obj.DynamicUpdateFields = CoreParsers.UpdateHandler.ReadDynamicValuesUpdateBlockOnCreate(packet, objType, index);
 
             // If this is the second time we see the same object (same guid,

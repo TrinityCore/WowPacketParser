@@ -5,7 +5,10 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
+using Google.Protobuf.Collections;
 using WowPacketParser.Enums;
+using WowPacketParser.Proto;
+using WowPacketParser.Store.Objects.UpdateFields;
 
 namespace WowPacketParser.Misc
 {
@@ -205,6 +208,32 @@ namespace WowPacketParser.Misc
             }
 
             return ~lo;
+        }
+
+        public static void Reserve<T>(this RepeatedField<T> field, int count) where T : new()
+        {
+            while (field.Count < count)
+                field.Add(new T());
+        }
+
+        public static UInt32ValueWrapper ToProto(this uint value)
+        {
+            return new UInt32ValueWrapper() { Value = value };
+        }
+        
+        public static Int32ValueWrapper ToProto(this int value)
+        {
+            return new Int32ValueWrapper() { Value = value };
+        }
+
+        public static VisibleItemFields ToProto(this IVisibleItem item)
+        {
+            return new()
+            {
+                ItemID = item.ItemID,
+                ItemVisual = item.ItemVisual,
+                ItemAppearanceModID = item.ItemAppearanceModID
+            };
         }
     }
 }
