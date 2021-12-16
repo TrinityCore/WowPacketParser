@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using WowPacketParser.Enums.Battlenet;
 using WowPacketParser.Misc;
@@ -106,7 +107,7 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
                         while (reader.BaseStream.Position < reader.BaseStream.Length)
                         {
                             var pathLength = UnpackInt(reader);
-                            packet.Stream.AddValue("Path", Utilities.ByteArrayToHexString(reader.ReadBytes((int)pathLength)));
+                            packet.Stream.AddValue("Path", Convert.ToHexString(reader.ReadBytes((int)pathLength)));
                             var fieldType = reader.ReadByte();
                             switch (fieldType)
                             {
@@ -126,7 +127,7 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
                                     break;
                                 case 3:
                                     var binaryLength = UnpackInt(reader);
-                                    packet.Stream.AddValue("Binary", Utilities.ByteArrayToHexString(reader.ReadBytes((int)binaryLength)));
+                                    packet.Stream.AddValue("Binary", Convert.ToHexString(reader.ReadBytes((int)binaryLength)));
                                     break;
                                 case 4:
                                     var stringLength = UnpackInt(reader);
@@ -140,7 +141,7 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
                                 case 6: //cache handle
                                     var handleLength = UnpackInt(reader);
                                     if (handleLength == 40)
-                                        packet.Stream.AddValue("CacheHandle", Utilities.ByteArrayToHexString(reader.ReadBytes(40)));
+                                        packet.Stream.AddValue("CacheHandle", Convert.ToHexString(reader.ReadBytes(40)));
                                     break;
                             }
                         }

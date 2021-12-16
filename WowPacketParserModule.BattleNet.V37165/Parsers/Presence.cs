@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using WowPacketParser.Enums.Battlenet;
 using WowPacketParser.Misc;
@@ -117,7 +118,7 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
                         outputStream.AddValue("Offset", bitStream.Read<ushort>(0, 16), i, "ImageTableEntry");
                         break;
                     case PresenceFieldType.OpaqueData:
-                        outputStream.AddValue("OpaqueData", Utilities.ByteArrayToHexString(bitStream.ReadBytes(bitStream.Read<int>(0, 7))), i);
+                        outputStream.AddValue("OpaqueData", Convert.ToHexString(bitStream.ReadBytes(bitStream.Read<int>(0, 7))), i);
                         break;
                     case PresenceFieldType.ToonFullName:
                         outputStream.AddValue("Region", bitStream.Read<byte>(0, 8), i, "ToonFullName");

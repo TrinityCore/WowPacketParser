@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using WowPacketParser.Enums.Battlenet;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
@@ -94,7 +95,7 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
                 {
                     packet.ReadFixedLengthString("Type", 4, "Strings");
                     packet.ReadFourCC("Region", "Strings");
-                    var id = Utilities.ByteArrayToHexString(packet.ReadBytes("ModuleId", 32, "Strings"));
+                    var id = Convert.ToHexString(packet.ReadBytes("ModuleId", 32, "Strings"));
                     var dataSize = packet.Read<int>("Data size", 0, 10);
                     var data = packet.ReadBytes(dataSize);
                     var module = new BattlenetModuleHandler(packet);
@@ -118,7 +119,7 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
                 {
                     packet.ReadFixedLengthString("Type", 4, "FinalRequest", i);
                     packet.ReadFourCC("Region", "FinalRequest", i);
-                    var id = Utilities.ByteArrayToHexString(packet.ReadBytes("ModuleId", 32, "FinalRequest", i));
+                    var id = Convert.ToHexString(packet.ReadBytes("ModuleId", 32, "FinalRequest", i));
                     var dataSize = packet.Read<int>("Data size", 0, 10, i);
                     var data = packet.ReadBytes(dataSize);
 
@@ -157,7 +158,7 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
                 {
                     packet.ReadFixedLengthString("Type", 4, "Strings");
                     packet.ReadFourCC("Region", "Strings");
-                    var id = Utilities.ByteArrayToHexString(packet.ReadBytes("ModuleId", 32, "Strings"));
+                    var id = Convert.ToHexString(packet.ReadBytes("ModuleId", 32, "Strings"));
                     var dataSize = packet.Read<int>("Data size", 0, 10);
                     var data = packet.ReadBytes(dataSize);
                     var module = new BattlenetModuleHandler(packet);
@@ -181,7 +182,7 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
                 {
                     packet.ReadFixedLengthString("Type", 4, "FinalRequest", i);
                     packet.ReadFourCC("Region", "FinalRequest", i);
-                    var id = Utilities.ByteArrayToHexString(packet.ReadBytes("ModuleId", 32, "FinalRequest", i));
+                    var id = Convert.ToHexString(packet.ReadBytes("ModuleId", 32, "FinalRequest", i));
                     var dataSize = packet.Read<int>("Data size", 0, 10, i);
                     var data = packet.ReadBytes(dataSize);
 
@@ -205,7 +206,7 @@ namespace WowPacketParserModule.BattleNet.V37165.Parsers
             {
                 packet.ReadFixedLengthString("Type", 4, i);
                 packet.ReadFourCC("Region", i);
-                var id = Utilities.ByteArrayToHexString(packet.ReadBytes("ModuleId", 32, i));
+                var id = Convert.ToHexString(packet.ReadBytes("ModuleId", 32, i));
                 var dataSize = packet.Read<int>("Data size", 0, 10, i);
                 var data = packet.ReadBytes(dataSize);
 

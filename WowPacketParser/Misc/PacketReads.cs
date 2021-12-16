@@ -464,7 +464,7 @@ namespace WowPacketParser.Misc
         public byte[] ReadBytes(string name, int length, params object[] indexes)
         {
             var val = ReadBytes(length);
-            AddValue(name, Utilities.ByteArrayToHexString(val), indexes);
+            AddValue(name, Convert.ToHexString(val), indexes);
             return val;
         }
 
