@@ -139,4 +139,3 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_1_5_40772
         public DynamicUpdateField<WowGuid> ChannelObjects { get; } = new DynamicUpdateField<WowGuid>();
     }
 }
-

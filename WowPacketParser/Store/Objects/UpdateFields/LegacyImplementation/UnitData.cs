@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿#nullable enable
+using System.Collections.Generic;
 using System.Linq;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -44,9 +45,9 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
 
         public int?[] Resistances => null;
         
-        public WowGuid SummonedBy => GetGuidValue(UnitField.UNIT_FIELD_SUMMONEDBY);
+        public WowGuid? SummonedBy => GetGuidValue(UnitField.UNIT_FIELD_SUMMONEDBY);
 
-        public WowGuid CreatedBy => GetGuidValue(UnitField.UNIT_FIELD_CREATEDBY);
+        public WowGuid? CreatedBy => GetGuidValue(UnitField.UNIT_FIELD_CREATEDBY);
 
         public byte? ClassId => (byte)((UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BYTES_0).GetValueOrDefault((uint)Class.Warrior << 8) >> 8) & 0xFF);
 
