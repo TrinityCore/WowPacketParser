@@ -796,13 +796,16 @@ namespace WowPacketParser.SQL
             return Utilities.EqualValues(val1, val2);
         }
 
-        public static bool AreDBFieldsEqual<T>(T a, T b, bool includePrimaryKeys = false) where T : IDataModel, new()
+        public static List<Tuple<FieldInfo, DBFieldNameAttribute>> GetDBFields<T>(bool includePrimaryKeys) where T : IDataModel, new()
         {
-            var fields = Utilities.GetFieldsAndAttributes<T, DBFieldNameAttribute>()
+            return Utilities.GetFieldsAndAttributes<T, DBFieldNameAttribute>()
                 .Where(field => field.Value.Any(f => f.IsVisible() && (!f.IsPrimaryKey || (includePrimaryKeys && f.IsPrimaryKey))))
                 .Select(field => new Tuple<FieldInfo, DBFieldNameAttribute>(field.Key, field.Value.First()))
                 .ToList();
+        }
 
+        public static bool AreDBFieldsEqual<T>(T a, T b, List<Tuple<FieldInfo, DBFieldNameAttribute>> fields) where T : IDataModel, new()
+        {
             foreach (var field in fields)
             {
                 var val1 = field.Item1.GetValue(a);
