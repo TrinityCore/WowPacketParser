@@ -44,7 +44,7 @@ namespace WowPacketParser.Misc
 
         public static string ByteArrayToHexString(byte[] data)
         {
-            return data.Aggregate(String.Empty, (current, t) => current + t.ToString("X2", CultureInfo.InvariantCulture));
+            return Convert.ToHexString(data);
         }
 
         public static string ByteArrayToHexTable(byte[] data, bool sh0rt = false, int offset = 0, bool noOffsetFirstLine = true)
