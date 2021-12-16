@@ -42,11 +42,11 @@ namespace WowPacketParser.SQL.Builders
                 };
 
                 HashSet<int> playerFactions = new HashSet<int> { 1, 2, 3, 4, 5, 6, 115, 116, 1610, 1629, 2203, 2204, 2395, 2401, 2402 };
-                addon.Faction = (uint)go.GameObjectData.FactionTemplate;
-                if (playerFactions.Contains(go.GameObjectData.FactionTemplate))
+                addon.Faction = (uint)(go.GameObjectData.FactionTemplate ?? 0);
+                if (playerFactions.Contains(go.GameObjectData.FactionTemplate ?? 0))
                     addon.Faction = 0;
 
-                addon.Flags = (GameObjectFlag)go.GameObjectData.Flags;
+                addon.Flags = (GameObjectFlag)(go.GameObjectData.Flags ?? 0);
                 addon.Flags &= ~GameObjectFlag.Triggered;
                 addon.Flags &= ~GameObjectFlag.Damaged;
                 addon.Flags &= ~GameObjectFlag.Destroyed;

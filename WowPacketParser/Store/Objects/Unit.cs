@@ -45,8 +45,8 @@ namespace WowPacketParser.Store.Objects
 
         public override void LoadValuesFromUpdateFields()
         {
-            Bytes1 = BitConverter.ToUInt32(new byte[] { UnitData.StandState, UnitData.PetTalentPoints, UnitData.VisFlags, UnitData.AnimTier }, 0);
-            Bytes2 = BitConverter.ToUInt32(new byte[] { UnitData.SheatheState, UnitData.PvpFlags, UnitData.PetFlags, UnitData.ShapeshiftForm }, 0);
+            Bytes1 = BitConverter.ToUInt32(new byte[] { UnitData.StandState ?? 0, UnitData.PetTalentPoints ?? 0, UnitData.VisFlags ?? 0, UnitData.AnimTier  ?? 0}, 0);
+            Bytes2 = BitConverter.ToUInt32(new byte[] { UnitData.SheatheState ?? 0, UnitData.PvpFlags ?? 0, UnitData.PetFlags ?? 0, UnitData.ShapeshiftForm  ?? 0}, 0);
             if (ClientVersion.AddedInVersion(ClientType.WarlordsOfDraenor))
                 DynamicFlagsWod = (UnitDynamicFlagsWOD)ObjectData.DynamicFlags;
             else

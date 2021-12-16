@@ -37,13 +37,13 @@ namespace WowPacketParser.Store.Objects
         public int? AnimKitId = 0;
 
         [DBFieldName("DecalPropertiesId")]
-        public uint DecalPropertiesId = 0;
+        public uint? DecalPropertiesId = 0;
 
         [DBFieldName("TimeToTarget")]
-        public uint TimeToTarget = 0;
+        public uint? TimeToTarget = 0;
 
         [DBFieldName("TimeToTargetScale")]
-        public uint TimeToTargetScale = 0;
+        public uint? TimeToTargetScale = 0;
 
         [DBFieldName("Shape", TargetedDatabase.Shadowlands)]
         public byte? Shape;

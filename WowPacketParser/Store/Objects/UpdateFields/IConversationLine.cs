@@ -1,4 +1,6 @@
-﻿namespace WowPacketParser.Store.Objects.UpdateFields
+﻿#nullable enable
+
+namespace WowPacketParser.Store.Objects.UpdateFields
 {
     public interface IConversationLine
     {

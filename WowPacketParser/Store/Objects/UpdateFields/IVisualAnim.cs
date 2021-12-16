@@ -1,9 +1,11 @@
-﻿namespace WowPacketParser.Store.Objects.UpdateFields
+﻿#nullable enable
+
+namespace WowPacketParser.Store.Objects.UpdateFields
 {
     public interface IVisualAnim
     {
-        uint AnimationDataID { get; set; }
-        uint AnimKitID { get; set; }
-        bool Field_C { get; set; }
+        uint? AnimationDataID { get; set; }
+        uint? AnimKitID { get; set; }
+        bool? Field_C { get; set; }
     }
 }
