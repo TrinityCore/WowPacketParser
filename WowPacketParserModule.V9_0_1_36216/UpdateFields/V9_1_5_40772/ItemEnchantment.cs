@@ -7,10 +7,10 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_1_5_40772
 {
     public class ItemEnchantment : IItemEnchantment
     {
-        public int ID { get; set; }
-        public uint Duration { get; set; }
-        public short Charges { get; set; }
-        public ushort Inactive { get; set; }
+        public System.Nullable<int> ID { get; set; }
+        public System.Nullable<uint> Duration { get; set; }
+        public System.Nullable<short> Charges { get; set; }
+        public System.Nullable<ushort> Inactive { get; set; }
     }
 }
 

@@ -5,16 +5,16 @@ using WowPacketParser.Store.Objects.UpdateFields;
 
 namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_1_5_40772
 {
-    public class UnitData : IUnitData
+    public class UnitData : IMutableUnitData
     {
-        public int DisplayID { get; set; }
-        public uint[] NpcFlags { get; } = new uint[2];
-        public uint StateSpellVisualID { get; set; }
-        public uint StateAnimID { get; set; }
-        public uint StateAnimKitID { get; set; }
-        public uint StateWorldEffectsQuestObjectiveID { get; set; }
-        public int SpellOverrideNameID { get; set; }
-        public uint[] StateWorldEffectIDs { get; set; }
+        public System.Nullable<int> DisplayID { get; set; }
+        public System.Nullable<uint>[] NpcFlags { get; } = new System.Nullable<uint>[2];
+        public System.Nullable<uint> StateSpellVisualID { get; set; }
+        public System.Nullable<uint> StateAnimID { get; set; }
+        public System.Nullable<uint> StateAnimKitID { get; set; }
+        public System.Nullable<uint> StateWorldEffectsQuestObjectiveID { get; set; }
+        public System.Nullable<int> SpellOverrideNameID { get; set; }
+        public System.Nullable<uint>[] StateWorldEffectIDs { get; set; }
         public WowGuid Charm { get; set; }
         public WowGuid Summon { get; set; }
         public WowGuid Critter { get; set; }
@@ -25,117 +25,117 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_1_5_40772
         public WowGuid LookAtControllerTarget { get; set; }
         public WowGuid Target { get; set; }
         public WowGuid BattlePetCompanionGUID { get; set; }
-        public ulong BattlePetDBID { get; set; }
+        public System.Nullable<ulong> BattlePetDBID { get; set; }
         public IUnitChannel ChannelData { get; set; }
-        public uint SummonedByHomeRealm { get; set; }
-        public byte Race { get; set; }
-        public byte ClassId { get; set; }
-        public byte PlayerClassId { get; set; }
-        public byte Sex { get; set; }
-        public byte DisplayPower { get; set; }
-        public uint OverrideDisplayPowerID { get; set; }
-        public long Health { get; set; }
-        public int[] Power { get; } = new int[7];
-        public int[] MaxPower { get; } = new int[7];
-        public float[] PowerRegenFlatModifier { get; } = new float[7];
-        public float[] PowerRegenInterruptedFlatModifier { get; } = new float[7];
-        public long MaxHealth { get; set; }
-        public int Level { get; set; }
-        public int EffectiveLevel { get; set; }
-        public int ContentTuningID { get; set; }
-        public int ScalingLevelMin { get; set; }
-        public int ScalingLevelMax { get; set; }
-        public int ScalingLevelDelta { get; set; }
-        public int ScalingFactionGroup { get; set; }
-        public int ScalingHealthItemLevelCurveID { get; set; }
-        public int ScalingDamageItemLevelCurveID { get; set; }
-        public int FactionTemplate { get; set; }
+        public System.Nullable<uint> SummonedByHomeRealm { get; set; }
+        public System.Nullable<byte> Race { get; set; }
+        public System.Nullable<byte> ClassId { get; set; }
+        public System.Nullable<byte> PlayerClassId { get; set; }
+        public System.Nullable<byte> Sex { get; set; }
+        public System.Nullable<byte> DisplayPower { get; set; }
+        public System.Nullable<uint> OverrideDisplayPowerID { get; set; }
+        public System.Nullable<long> Health { get; set; }
+        public System.Nullable<int>[] Power { get; } = new System.Nullable<int>[7];
+        public System.Nullable<int>[] MaxPower { get; } = new System.Nullable<int>[7];
+        public System.Nullable<float>[] PowerRegenFlatModifier { get; } = new System.Nullable<float>[7];
+        public System.Nullable<float>[] PowerRegenInterruptedFlatModifier { get; } = new System.Nullable<float>[7];
+        public System.Nullable<long> MaxHealth { get; set; }
+        public System.Nullable<int> Level { get; set; }
+        public System.Nullable<int> EffectiveLevel { get; set; }
+        public System.Nullable<int> ContentTuningID { get; set; }
+        public System.Nullable<int> ScalingLevelMin { get; set; }
+        public System.Nullable<int> ScalingLevelMax { get; set; }
+        public System.Nullable<int> ScalingLevelDelta { get; set; }
+        public System.Nullable<int> ScalingFactionGroup { get; set; }
+        public System.Nullable<int> ScalingHealthItemLevelCurveID { get; set; }
+        public System.Nullable<int> ScalingDamageItemLevelCurveID { get; set; }
+        public System.Nullable<int> FactionTemplate { get; set; }
         public IVisibleItem[] VirtualItems { get; } = new IVisibleItem[3];
-        public uint Flags { get; set; }
-        public uint Flags2 { get; set; }
-        public uint Flags3 { get; set; }
-        public uint AuraState { get; set; }
-        public uint[] AttackRoundBaseTime { get; } = new uint[2];
-        public uint RangedAttackRoundBaseTime { get; set; }
-        public float BoundingRadius { get; set; }
-        public float CombatReach { get; set; }
-        public float DisplayScale { get; set; }
-        public int CreatureFamily { get; set; }
-        public int CreatureType { get; set; }
-        public int NativeDisplayID { get; set; }
-        public float NativeXDisplayScale { get; set; }
-        public int MountDisplayID { get; set; }
-        public int CosmeticMountDisplayID { get; set; }
-        public float MinDamage { get; set; }
-        public float MaxDamage { get; set; }
-        public float MinOffHandDamage { get; set; }
-        public float MaxOffHandDamage { get; set; }
-        public byte StandState { get; set; }
-        public byte PetTalentPoints { get; set; }
-        public byte VisFlags { get; set; }
-        public byte AnimTier { get; set; }
-        public uint PetNumber { get; set; }
-        public uint PetNameTimestamp { get; set; }
-        public uint PetExperience { get; set; }
-        public uint PetNextLevelExperience { get; set; }
-        public float ModCastingSpeed { get; set; }
-        public float ModCastingSpeedNeg { get; set; }
-        public float ModSpellHaste { get; set; }
-        public float ModHaste { get; set; }
-        public float ModRangedHaste { get; set; }
-        public float ModHasteRegen { get; set; }
-        public float ModTimeRate { get; set; }
-        public int CreatedBySpell { get; set; }
-        public int EmoteState { get; set; }
-        public int[] Stats { get; } = new int[4];
-        public int[] StatPosBuff { get; } = new int[4];
-        public int[] StatNegBuff { get; } = new int[4];
-        public int[] Resistances { get; } = new int[7];
-        public int[] BonusResistanceMods { get; } = new int[7];
-        public int[] ManaCostModifier { get; } = new int[7];
-        public int BaseMana { get; set; }
-        public int BaseHealth { get; set; }
-        public byte SheatheState { get; set; }
-        public byte PvpFlags { get; set; }
-        public byte PetFlags { get; set; }
-        public byte ShapeshiftForm { get; set; }
-        public int AttackPower { get; set; }
-        public int AttackPowerModPos { get; set; }
-        public int AttackPowerModNeg { get; set; }
-        public float AttackPowerMultiplier { get; set; }
-        public int RangedAttackPower { get; set; }
-        public int RangedAttackPowerModPos { get; set; }
-        public int RangedAttackPowerModNeg { get; set; }
-        public float RangedAttackPowerMultiplier { get; set; }
-        public int MainHandWeaponAttackPower { get; set; }
-        public int OffHandWeaponAttackPower { get; set; }
-        public int RangedWeaponAttackPower { get; set; }
-        public int SetAttackSpeedAura { get; set; }
-        public float Lifesteal { get; set; }
-        public float MinRangedDamage { get; set; }
-        public float MaxRangedDamage { get; set; }
-        public float ManaCostMultiplier { get; set; }
-        public float MaxHealthModifier { get; set; }
-        public float HoverHeight { get; set; }
-        public int MinItemLevelCutoff { get; set; }
-        public int MinItemLevel { get; set; }
-        public int MaxItemLevel { get; set; }
-        public int AzeriteItemLevel { get; set; }
-        public int WildBattlePetLevel { get; set; }
-        public int BattlePetCompanionExperience { get; set; }
-        public uint BattlePetCompanionNameTimestamp { get; set; }
-        public int InteractSpellID { get; set; }
-        public int ScaleDuration { get; set; }
-        public int LooksLikeMountID { get; set; }
-        public int LooksLikeCreatureID { get; set; }
-        public int LookAtControllerID { get; set; }
-        public int TaxiNodesID { get; set; }
+        public System.Nullable<uint> Flags { get; set; }
+        public System.Nullable<uint> Flags2 { get; set; }
+        public System.Nullable<uint> Flags3 { get; set; }
+        public System.Nullable<uint> AuraState { get; set; }
+        public System.Nullable<uint>[] AttackRoundBaseTime { get; } = new System.Nullable<uint>[2];
+        public System.Nullable<uint> RangedAttackRoundBaseTime { get; set; }
+        public System.Nullable<float> BoundingRadius { get; set; }
+        public System.Nullable<float> CombatReach { get; set; }
+        public System.Nullable<float> DisplayScale { get; set; }
+        public System.Nullable<int> CreatureFamily { get; set; }
+        public System.Nullable<int> CreatureType { get; set; }
+        public System.Nullable<int> NativeDisplayID { get; set; }
+        public System.Nullable<float> NativeXDisplayScale { get; set; }
+        public System.Nullable<int> MountDisplayID { get; set; }
+        public System.Nullable<int> CosmeticMountDisplayID { get; set; }
+        public System.Nullable<float> MinDamage { get; set; }
+        public System.Nullable<float> MaxDamage { get; set; }
+        public System.Nullable<float> MinOffHandDamage { get; set; }
+        public System.Nullable<float> MaxOffHandDamage { get; set; }
+        public System.Nullable<byte> StandState { get; set; }
+        public System.Nullable<byte> PetTalentPoints { get; set; }
+        public System.Nullable<byte> VisFlags { get; set; }
+        public System.Nullable<byte> AnimTier { get; set; }
+        public System.Nullable<uint> PetNumber { get; set; }
+        public System.Nullable<uint> PetNameTimestamp { get; set; }
+        public System.Nullable<uint> PetExperience { get; set; }
+        public System.Nullable<uint> PetNextLevelExperience { get; set; }
+        public System.Nullable<float> ModCastingSpeed { get; set; }
+        public System.Nullable<float> ModCastingSpeedNeg { get; set; }
+        public System.Nullable<float> ModSpellHaste { get; set; }
+        public System.Nullable<float> ModHaste { get; set; }
+        public System.Nullable<float> ModRangedHaste { get; set; }
+        public System.Nullable<float> ModHasteRegen { get; set; }
+        public System.Nullable<float> ModTimeRate { get; set; }
+        public System.Nullable<int> CreatedBySpell { get; set; }
+        public System.Nullable<int> EmoteState { get; set; }
+        public System.Nullable<int>[] Stats { get; } = new System.Nullable<int>[4];
+        public System.Nullable<int>[] StatPosBuff { get; } = new System.Nullable<int>[4];
+        public System.Nullable<int>[] StatNegBuff { get; } = new System.Nullable<int>[4];
+        public System.Nullable<int>[] Resistances { get; } = new System.Nullable<int>[7];
+        public System.Nullable<int>[] BonusResistanceMods { get; } = new System.Nullable<int>[7];
+        public System.Nullable<int>[] ManaCostModifier { get; } = new System.Nullable<int>[7];
+        public System.Nullable<int> BaseMana { get; set; }
+        public System.Nullable<int> BaseHealth { get; set; }
+        public System.Nullable<byte> SheatheState { get; set; }
+        public System.Nullable<byte> PvpFlags { get; set; }
+        public System.Nullable<byte> PetFlags { get; set; }
+        public System.Nullable<byte> ShapeshiftForm { get; set; }
+        public System.Nullable<int> AttackPower { get; set; }
+        public System.Nullable<int> AttackPowerModPos { get; set; }
+        public System.Nullable<int> AttackPowerModNeg { get; set; }
+        public System.Nullable<float> AttackPowerMultiplier { get; set; }
+        public System.Nullable<int> RangedAttackPower { get; set; }
+        public System.Nullable<int> RangedAttackPowerModPos { get; set; }
+        public System.Nullable<int> RangedAttackPowerModNeg { get; set; }
+        public System.Nullable<float> RangedAttackPowerMultiplier { get; set; }
+        public System.Nullable<int> MainHandWeaponAttackPower { get; set; }
+        public System.Nullable<int> OffHandWeaponAttackPower { get; set; }
+        public System.Nullable<int> RangedWeaponAttackPower { get; set; }
+        public System.Nullable<int> SetAttackSpeedAura { get; set; }
+        public System.Nullable<float> Lifesteal { get; set; }
+        public System.Nullable<float> MinRangedDamage { get; set; }
+        public System.Nullable<float> MaxRangedDamage { get; set; }
+        public System.Nullable<float> ManaCostMultiplier { get; set; }
+        public System.Nullable<float> MaxHealthModifier { get; set; }
+        public System.Nullable<float> HoverHeight { get; set; }
+        public System.Nullable<int> MinItemLevelCutoff { get; set; }
+        public System.Nullable<int> MinItemLevel { get; set; }
+        public System.Nullable<int> MaxItemLevel { get; set; }
+        public System.Nullable<int> AzeriteItemLevel { get; set; }
+        public System.Nullable<int> WildBattlePetLevel { get; set; }
+        public System.Nullable<int> BattlePetCompanionExperience { get; set; }
+        public System.Nullable<uint> BattlePetCompanionNameTimestamp { get; set; }
+        public System.Nullable<int> InteractSpellID { get; set; }
+        public System.Nullable<int> ScaleDuration { get; set; }
+        public System.Nullable<int> LooksLikeMountID { get; set; }
+        public System.Nullable<int> LooksLikeCreatureID { get; set; }
+        public System.Nullable<int> LookAtControllerID { get; set; }
+        public System.Nullable<int> TaxiNodesID { get; set; }
         public WowGuid GuildGUID { get; set; }
         public WowGuid SkinningOwnerGUID { get; set; }
-        public uint SilencedSchoolMask { get; set; }
+        public System.Nullable<uint> SilencedSchoolMask { get; set; }
         public WowGuid NameplateAttachToGUID { get; set; }
         public DynamicUpdateField<IPassiveSpellHistory> PassiveSpells { get; } = new DynamicUpdateField<IPassiveSpellHistory>();
-        public DynamicUpdateField<int> WorldEffects { get; } = new DynamicUpdateField<int>();
+        public DynamicUpdateField<System.Nullable<int>> WorldEffects { get; } = new DynamicUpdateField<System.Nullable<int>>();
         public DynamicUpdateField<WowGuid> ChannelObjects { get; } = new DynamicUpdateField<WowGuid>();
     }
 }

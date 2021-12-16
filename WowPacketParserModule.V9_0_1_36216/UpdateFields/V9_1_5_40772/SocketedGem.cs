@@ -7,9 +7,9 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_1_5_40772
 {
     public class SocketedGem : ISocketedGem
     {
-        public int ItemID { get; set; }
-        public ushort[] BonusListIDs { get; } = new ushort[16];
-        public byte Context { get; set; }
+        public System.Nullable<int> ItemID { get; set; }
+        public System.Nullable<ushort>[] BonusListIDs { get; } = new System.Nullable<ushort>[16];
+        public System.Nullable<byte> Context { get; set; }
     }
 }
 
