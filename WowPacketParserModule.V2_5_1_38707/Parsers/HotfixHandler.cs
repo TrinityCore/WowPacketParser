@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Hotfix;
 using WowPacketParser.Misc;
