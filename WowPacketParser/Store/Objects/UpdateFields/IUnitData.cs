@@ -4,6 +4,8 @@ using WowPacketParser.Misc;
 
 namespace WowPacketParser.Store.Objects.UpdateFields
 {
+    // when adding new properties, remember to include them in 
+    // IMutableUnitData and in Extensions.UpdateData
     public interface IUnitData
     {
         int? DisplayID { get; }
