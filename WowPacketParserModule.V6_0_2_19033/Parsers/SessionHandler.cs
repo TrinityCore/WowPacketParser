@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Enums;
+﻿using System;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
@@ -172,7 +173,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 addons.ClosePacket(false);
             }
 
-            packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
+            packet.AddValue("Proof SHA-1 Hash", Convert.ToHexString(sha));
         }
 
         [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V6_2_4_21315)]

@@ -65,7 +65,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             packet.ReadBit("UseIPv6");
             var size = (int)packet.ReadBits(12);
             packet.ReadBytesString("Account", size);
-            packet.AddValue("Digest", Utilities.ByteArrayToHexString(sha));
+            packet.AddValue("Digest", Convert.ToHexString(sha));
         }
 
         [Parser(Opcode.SMSG_AUTH_RESPONSE)]
@@ -137,7 +137,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             bytes[9] = packet.ReadByte();
             bytes[19] = packet.ReadByte();
             bytes[3] = packet.ReadByte();
-            packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(bytes));
+            packet.AddValue("Proof SHA-1 Hash", Convert.ToHexString(bytes));
         }
     }
 }
