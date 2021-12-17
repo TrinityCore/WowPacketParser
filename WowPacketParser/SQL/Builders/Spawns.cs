@@ -44,7 +44,7 @@ namespace WowPacketParser.SQL.Builders
 
             uint count = 0;
             CreatureAddon addonDefault = null;
-            if (Settings.DBEnabled)
+            if (Settings.DBEnabled && Settings.SkipRowsWithFallbackValues)
                 addonDefault = SQLUtil.GetDefaultObject<CreatureAddon>();
             var dbFields = SQLUtil.GetDBFields<CreatureAddon>(false);
             var rows = new RowList<Creature>();
@@ -190,7 +190,7 @@ namespace WowPacketParser.SQL.Builders
                     addonRow.Data.MovementAnimKit = creature.MovementAnimKit.GetValueOrDefault(0);
                     addonRow.Data.MeleeAnimKit = creature.MeleeAnimKit.GetValueOrDefault(0);
 
-                    if (!Settings.SkipRowsWithFallbackValues || (addonDefault != null && !SQLUtil.AreDBFieldsEqual(addonDefault, addonRow.Data, dbFields)))
+                    if (addonDefault == null || !SQLUtil.AreDBFieldsEqual(addonDefault, addonRow.Data, dbFields))
                     {
                         addonRow.Data.GUID = $"@CGUID+{count}";
                         addonRow.Comment += StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);

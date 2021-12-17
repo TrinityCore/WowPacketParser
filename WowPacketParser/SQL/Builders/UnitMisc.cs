@@ -25,10 +25,10 @@ namespace WowPacketParser.SQL.Builders
                 return string.Empty;
 
             CreatureTemplateAddon templateAddonDefault = null;
-            if (Settings.DBEnabled)
+            if (Settings.DBEnabled && Settings.SkipRowsWithFallbackValues)
                 templateAddonDefault = SQLUtil.GetDefaultObject<CreatureTemplateAddon>();
 
-            var dbFields = SQLUtil.GetDBFields<CreatureAddon>(false);
+            var dbFields = SQLUtil.GetDBFields<CreatureTemplateAddon>(false);
             var addons = new DataBag<CreatureTemplateAddon>();
             foreach (var unit in units)
             {
@@ -74,7 +74,7 @@ namespace WowPacketParser.SQL.Builders
                     CommentAuras = commentAuras
                 };
 
-                if (Settings.SkipRowsWithFallbackValues && templateAddonDefault != null && SQLUtil.AreDBFieldsEqual(addon, templateAddonDefault, dbFields))
+                if (templateAddonDefault != null && SQLUtil.AreDBFieldsEqual(addon, templateAddonDefault, dbFields))
                     continue;
 
                 if (addons.ContainsKey(addon))
