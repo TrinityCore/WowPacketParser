@@ -110,7 +110,7 @@ namespace WowPacketParser.SQL.Builders
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595) && creature.Phases != null)
                 {
                     string data = string.Join(" - ", creature.Phases);
-                    if (string.IsNullOrEmpty(data))
+                    if (string.IsNullOrEmpty(data) || Settings.ForcePhaseZero)
                         data = "0";
 
                     row.Data.PhaseID = data;
@@ -300,7 +300,7 @@ namespace WowPacketParser.SQL.Builders
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_0_3_22248))
                 {
                     string data = string.Join(",", go.GetDefaultSpawnDifficulties());
-                    if (string.IsNullOrEmpty(data))
+                    if (string.IsNullOrEmpty(data) || Settings.ForcePhaseZero)
                         data = "0";
 
                     row.Data.spawnDifficulties = data;
