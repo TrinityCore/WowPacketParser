@@ -21,7 +21,7 @@ namespace WowPacketParser.Misc
         public static readonly bool SQLOrderByKey = Conf.GetBoolean("SqlOrderByKey", false);
         public static readonly bool SaveTempSpawns = Conf.GetBoolean("SaveTempSpawns", true);
         public static readonly bool SkipOnlyVerifiedBuildUpdateRows = Conf.GetBoolean("SkipOnlyVerifiedBuildUpdateRows", false);
-        public static readonly bool SkipRowsWithFallbackValues = Conf.GetBoolean("SkipRowsWithFallbackValues", false);
+        public static readonly bool SkipRowsWithFallbackValues = Conf.GetBoolean("SkipRowsWithFallbackValues", true);
         public static readonly bool IgnoreZeroValues = Conf.GetBoolean("IgnoreZeroValues", false);
         public static readonly bool ForceInsertQueries = Conf.GetBoolean("ForceInsertQueries", false);
         public static readonly bool RecalcDiscount = Conf.GetBoolean("RecalcDiscount", false);
