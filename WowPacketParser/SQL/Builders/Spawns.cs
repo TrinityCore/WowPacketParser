@@ -43,8 +43,13 @@ namespace WowPacketParser.SQL.Builders
                 return string.Empty;
 
             uint count = 0;
+            CreatureAddon addonDefault = null;
+            if (Settings.DBEnabled && Settings.SkipRowsWithFallbackValues)
+                addonDefault = SQLUtil.GetDefaultObject<CreatureAddon>();
+            var dbFields = SQLUtil.GetDBFields<CreatureAddon>(false);
             var rows = new RowList<Creature>();
             var addonRows = new RowList<CreatureAddon>();
+
             foreach (var unit in units)
             {
                 Row<Creature> row = new Row<Creature>();
@@ -175,7 +180,6 @@ namespace WowPacketParser.SQL.Builders
                 var addonRow = new Row<CreatureAddon>();
                 if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_addon))
                 {
-                    addonRow.Data.GUID = "@CGUID+" + count;
                     addonRow.Data.PathID = 0;
                     addonRow.Data.Mount = (uint)creature.UnitData.MountDisplayID;
                     addonRow.Data.Bytes1 = creature.Bytes1;
@@ -185,10 +189,15 @@ namespace WowPacketParser.SQL.Builders
                     addonRow.Data.AIAnimKit = creature.AIAnimKit.GetValueOrDefault(0);
                     addonRow.Data.MovementAnimKit = creature.MovementAnimKit.GetValueOrDefault(0);
                     addonRow.Data.MeleeAnimKit = creature.MeleeAnimKit.GetValueOrDefault(0);
-                    addonRow.Comment += StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
-                    if (!string.IsNullOrWhiteSpace(auras))
-                        addonRow.Comment += " - " + commentAuras;
-                    addonRows.Add(addonRow);
+
+                    if (addonDefault == null || !SQLUtil.AreDBFieldsEqual(addonDefault, addonRow.Data, dbFields))
+                    {
+                        addonRow.Data.GUID = $"@CGUID+{count}";
+                        addonRow.Comment += StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
+                        if (!string.IsNullOrWhiteSpace(auras))
+                            addonRow.Comment += $" - {commentAuras}";
+                        addonRows.Add(addonRow);
+                    }
                 }
 
                 if (creature.IsTemporarySpawn() && !Settings.SaveTempSpawns)

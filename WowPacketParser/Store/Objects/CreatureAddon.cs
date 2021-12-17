@@ -3,6 +3,7 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
+    [DBTableName("creature_addon")]
     public sealed record CreatureAddon : IDataModel
     {
         [DBFieldName("guid", true, noQuotes: true)]
@@ -34,10 +35,5 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("auras")]
         public string Auras;
-
-        public bool HasDefaultValues()
-        {
-            return true;
-        }
     }
 }
