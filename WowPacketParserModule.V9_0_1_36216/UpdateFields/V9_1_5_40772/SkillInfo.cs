@@ -7,13 +7,13 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_1_5_40772
 {
     public class SkillInfo : ISkillInfo
     {
-        public ushort[] SkillLineID { get; } = new ushort[256];
-        public ushort[] SkillStep { get; } = new ushort[256];
-        public ushort[] SkillRank { get; } = new ushort[256];
-        public ushort[] SkillStartingRank { get; } = new ushort[256];
-        public ushort[] SkillMaxRank { get; } = new ushort[256];
-        public short[] SkillTempBonus { get; } = new short[256];
-        public ushort[] SkillPermBonus { get; } = new ushort[256];
+        public System.Nullable<ushort>[] SkillLineID { get; } = new System.Nullable<ushort>[256];
+        public System.Nullable<ushort>[] SkillStep { get; } = new System.Nullable<ushort>[256];
+        public System.Nullable<ushort>[] SkillRank { get; } = new System.Nullable<ushort>[256];
+        public System.Nullable<ushort>[] SkillStartingRank { get; } = new System.Nullable<ushort>[256];
+        public System.Nullable<ushort>[] SkillMaxRank { get; } = new System.Nullable<ushort>[256];
+        public System.Nullable<short>[] SkillTempBonus { get; } = new System.Nullable<short>[256];
+        public System.Nullable<ushort>[] SkillPermBonus { get; } = new System.Nullable<ushort>[256];
     }
 }
 

@@ -1,6 +1,7 @@
 syntax = "proto3";
 package wpp;
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/wrappers.proto";
 option csharp_namespace = "WowPacketParser.Proto";
 
 /*
@@ -469,11 +470,116 @@ message PacketDbReply {
   };
 }
 
-message UpdateValues {
+message UpdateValuesLegacy {
   map<string, int64> ints = 1;
   map<string, float> floats = 2;
   map<string, UniversalGuid> guids = 3;
   map<string, Quat> quaternions = 4;
+}
+
+message VisibleItemFields {
+  int32 itemID = 1;
+  uint32 itemAppearanceModID = 2;
+  uint32 itemVisual = 3;
+}
+
+message UInt32ValueWrapper {
+  google.protobuf.UInt32Value value = 1;
+}
+
+message Int32ValueWrapper {
+  google.protobuf.Int32Value value = 1;
+}
+
+message UpdateValuesUnitDataFields {
+  google.protobuf.Int32Value displayID = 1;
+  repeated UInt32ValueWrapper npcFlags = 2;
+  optional UniversalGuid summonedBy = 3;
+  optional UniversalGuid createdBy = 4;
+  google.protobuf.UInt32Value classId = 5;
+  google.protobuf.UInt32Value sex = 6;
+  google.protobuf.Int64Value health = 7;
+  repeated Int32ValueWrapper power = 8;
+  repeated Int32ValueWrapper maxPower = 9;
+  google.protobuf.Int64Value maxHealth = 10;
+  google.protobuf.Int32Value level = 11;
+  google.protobuf.Int32Value contentTuningID = 12;
+  google.protobuf.Int32Value scalingLevelMin = 13;
+  google.protobuf.Int32Value scalingLevelMax = 14;
+  google.protobuf.Int32Value scalingLevelDelta = 15;
+  google.protobuf.Int32Value factionTemplate = 16;
+  repeated VisibleItemFields virtualItems = 17;
+  google.protobuf.UInt32Value flags = 18;
+  google.protobuf.UInt32Value flags2 = 19;
+  google.protobuf.UInt32Value flags3 = 20;
+  repeated UInt32ValueWrapper attackRoundBaseTime = 21;
+  google.protobuf.UInt32Value rangedAttackRoundBaseTime = 22;
+  google.protobuf.FloatValue boundingRadius = 23;
+  google.protobuf.FloatValue combatReach = 24;
+  google.protobuf.Int32Value mountDisplayID = 25;
+  google.protobuf.UInt32Value standState = 26;
+  google.protobuf.UInt32Value petTalentPoints = 27;
+  google.protobuf.UInt32Value visFlags = 28;
+  google.protobuf.UInt32Value animTier = 29;
+  google.protobuf.Int32Value createdBySpell = 30;
+  google.protobuf.Int32Value emoteState = 31;
+  google.protobuf.UInt32Value sheatheState = 32;
+  google.protobuf.UInt32Value pvpFlags = 33;
+  google.protobuf.UInt32Value petFlags = 34;
+  google.protobuf.UInt32Value shapeshiftForm = 35;
+  google.protobuf.FloatValue hoverHeight = 36;
+  google.protobuf.Int32Value interactSpellID = 37;
+  google.protobuf.UInt32Value stateSpellVisualID = 38;
+  google.protobuf.UInt32Value stateAnimID = 39;
+  google.protobuf.UInt32Value stateAnimKitID = 40;
+  optional UniversalGuid charm = 41;
+  optional UniversalGuid summon = 42;
+  optional UniversalGuid critter = 43;
+  optional UniversalGuid demonCreator = 44;
+  optional UniversalGuid lookAtControllerTarget = 45;
+  optional UniversalGuid target = 46;
+  google.protobuf.UInt32Value race = 47;
+  google.protobuf.UInt32Value displayPower = 48;
+  google.protobuf.Int32Value effectiveLevel = 49;
+  google.protobuf.UInt32Value auraState = 50;
+  google.protobuf.FloatValue displayScale = 51;
+  google.protobuf.Int32Value creatureFamily = 52;
+  google.protobuf.Int32Value creatureType = 53;
+  google.protobuf.Int32Value nativeDisplayID = 54;
+  google.protobuf.FloatValue nativeXDisplayScale = 55;
+  repeated Int32ValueWrapper resistances = 56;
+  google.protobuf.Int32Value baseMana = 57;
+  google.protobuf.Int32Value baseHealth = 58;
+  optional UniversalGuid charmedBy = 59;
+}
+ 
+message UpdateValuesGameObjectDataFields
+{
+  optional UniversalGuid createdBy = 1;
+  google.protobuf.UInt32Value flags = 2;
+  optional Quat parentRotation = 3;
+  google.protobuf.Int32Value factionTemplate = 4;
+  google.protobuf.Int32Value state = 5;
+  google.protobuf.Int32Value typeID = 6;
+  google.protobuf.UInt32Value percentHealth = 7;
+  google.protobuf.Int32Value displayID = 8;
+  google.protobuf.UInt32Value artKit = 9;
+  google.protobuf.Int32Value level = 10;
+}
+  
+message UpdateValuesObjectDataFields {
+  google.protobuf.Int32Value entryID = 1;
+  google.protobuf.UInt32Value dynamicFlags = 2;
+  google.protobuf.FloatValue scale = 3;
+  optional UpdateValuesUnitDataFields unit = 4;
+  optional UpdateValuesGameObjectDataFields gameobject = 5;
+}
+
+message UpdateValues {
+  oneof values {
+    UpdateValuesLegacy legacy = 1;
+    UpdateValuesObjectDataFields fields = 2;
+  }
 }
 
 message MovementUpdateTransport {

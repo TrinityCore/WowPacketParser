@@ -5,7 +5,10 @@ using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
+using Google.Protobuf.Collections;
 using WowPacketParser.Enums;
+using WowPacketParser.Proto;
+using WowPacketParser.Store.Objects.UpdateFields;
 
 namespace WowPacketParser.Misc
 {
@@ -205,6 +208,147 @@ namespace WowPacketParser.Misc
             }
 
             return ~lo;
+        }
+
+        public static void Reserve<T>(this RepeatedField<T> field, int count) where T : new()
+        {
+            while (field.Count < count)
+                field.Add(new T());
+        }
+
+        public static void UpdateData(this UpdateValuesObjectDataFields fields, IObjectData data)
+        {
+            fields.EntryID = data.EntryID;
+            fields.Scale = data.Scale;
+            fields.DynamicFlags = data.DynamicFlags;
+        }
+        
+        public static void UpdateData(this UpdateValuesObjectDataFields fields, IGameObjectData data)
+        {
+            var go = fields.Gameobject ??= new();
+            if (data.CreatedBy != null)
+                go.CreatedBy = data.CreatedBy;
+            go.Flags = data.Flags;
+            if (data.ParentRotation.HasValue)
+                go.ParentRotation = data.ParentRotation;
+            go.FactionTemplate = data.FactionTemplate;
+            go.State = data.State;
+            go.TypeID = data.TypeID;
+            go.PercentHealth = data.PercentHealth;
+            go.DisplayID = data.DisplayID;
+            go.ArtKit = data.ArtKit;
+            go.Level = data.Level;
+        }
+
+        public static void UpdateData(this UpdateValuesObjectDataFields fields, IUnitData data)
+        {
+            var unit = fields.Unit ??= new();
+            unit.DisplayID = data.DisplayID;
+            unit.ClassId = data.ClassId;
+            unit.Sex = data.Sex;
+            unit.Health = data.Health;
+            unit.MaxHealth = data.MaxHealth;
+            unit.Level = data.Level;
+            unit.ContentTuningID = data.ContentTuningID;
+            unit.ScalingLevelMin = data.ScalingLevelMin;
+            unit.ScalingLevelMax = data.ScalingLevelMax;
+            unit.ScalingLevelDelta = data.ScalingLevelDelta;
+            unit.FactionTemplate = data.FactionTemplate;
+            unit.Flags = data.Flags;
+            unit.Flags2 = data.Flags2;
+            unit.Flags3 = data.Flags3;
+            unit.RangedAttackRoundBaseTime = data.RangedAttackRoundBaseTime;
+            unit.BoundingRadius = data.BoundingRadius;
+            unit.CombatReach = data.CombatReach;
+            unit.MountDisplayID = data.MountDisplayID;
+            unit.StandState = data.StandState;
+            unit.PetTalentPoints = data.PetTalentPoints;
+            unit.VisFlags = data.VisFlags;
+            unit.AnimTier = data.AnimTier;
+            unit.CreatedBySpell = data.CreatedBySpell;
+            unit.EmoteState = data.EmoteState;
+            unit.SheatheState = data.SheatheState;
+            unit.PvpFlags = data.PvpFlags;
+            unit.PetFlags = data.PetFlags;
+            unit.ShapeshiftForm = data.ShapeshiftForm;
+            unit.HoverHeight = data.HoverHeight;
+            unit.InteractSpellID = data.InteractSpellID;
+            unit.StateSpellVisualID = data.StateSpellVisualID;
+            unit.StateAnimID = data.StateAnimID;
+            unit.StateAnimKitID = data.StateAnimKitID;
+            unit.Race = data.Race;
+            unit.DisplayPower = data.DisplayPower;
+            unit.EffectiveLevel = data.EffectiveLevel;
+            unit.AuraState = data.AuraState;
+            unit.DisplayScale = data.DisplayScale;
+            unit.CreatureFamily = data.CreatureFamily;
+            unit.CreatureType = data.CreatureType;
+            unit.NativeDisplayID = data.NativeDisplayID;
+            unit.NativeXDisplayScale = data.NativeXDisplayScale;
+            unit.BaseMana = data.BaseMana;
+            unit.BaseHealth = data.BaseHealth;
+            if (data.Charm != null)
+                unit.Charm = data.Charm;
+            if (data.Summon != null)
+                unit.Summon = data.Summon;
+            if (data.Critter != null)
+                unit.Critter = data.Critter;
+            if (data.CharmedBy != null)
+                unit.CharmedBy = data.CharmedBy;
+            if (data.DemonCreator != null)
+                unit.DemonCreator = data.DemonCreator;
+            if (data.LookAtControllerTarget != null)
+                unit.LookAtControllerTarget = data.LookAtControllerTarget;
+            if (data.Target != null)
+                unit.Target = data.Target;
+            if (data.SummonedBy != null)
+                unit.SummonedBy = data.SummonedBy;
+            if (data.CreatedBy != null)
+                unit.CreatedBy = data.CreatedBy;
+            unit.NpcFlags.Reserve(data.NpcFlags.Length);
+            for (int i = 0; i < data.NpcFlags.Length; ++i)
+                unit.NpcFlags[i] = data.NpcFlags[i].ToProto();
+            
+            unit.Power.Reserve(data.Power.Length);
+            for (int i = 0; i < data.Power.Length; ++i)
+                unit.Power[i] = data.Power[i].ToProto();
+            
+            unit.MaxPower.Reserve(data.MaxPower.Length);
+            for (int i = 0; i < data.MaxPower.Length; ++i)
+                unit.MaxPower[i] = data.MaxPower[i].ToProto();
+            
+            unit.AttackRoundBaseTime.Reserve(data.AttackRoundBaseTime.Length);
+            for (int i = 0; i < data.AttackRoundBaseTime.Length; ++i)
+                unit.AttackRoundBaseTime[i] = data.AttackRoundBaseTime[i].ToProto();
+            
+            unit.Resistances.Reserve(data.Resistances.Length);
+            for (int i = 0; i < data.Resistances.Length; ++i)
+                unit.Resistances[i] = data.Resistances[i].ToProto();
+            
+            unit.VirtualItems.Reserve(data.VirtualItems.Length);
+            for (int i = 0; i < data.VirtualItems.Length; ++i)
+                if (data.VirtualItems[i] != null)
+                    unit.VirtualItems[i] = data.VirtualItems[i].ToProto();
+        }
+        
+        public static UInt32ValueWrapper ToProto(this uint? value)
+        {
+            return new UInt32ValueWrapper() { Value = value };
+        }
+        
+        public static Int32ValueWrapper ToProto(this int? value)
+        {
+            return new Int32ValueWrapper() { Value = value };
+        }
+
+        public static VisibleItemFields ToProto(this IVisibleItem item)
+        {
+            return new()
+            {
+                ItemID = item.ItemID ?? 0,
+                ItemVisual = item.ItemVisual ?? 0,
+                ItemAppearanceModID = item.ItemAppearanceModID ?? 0
+            };
         }
     }
 }

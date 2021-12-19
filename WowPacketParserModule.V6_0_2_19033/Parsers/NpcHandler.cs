@@ -421,7 +421,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                     WoWObject obj = Storage.Objects[guid].Item1;
                     if (obj.Type == ObjectType.Unit)
                     {
-                        int factionTemplateId = (obj as Unit).UnitData.FactionTemplate;
+                        int factionTemplateId = (obj as Unit).UnitData.FactionTemplate ?? 0;
                         int faction = 0;
 
                         if (factionTemplateId != 0 && DBC.FactionTemplate.ContainsKey(factionTemplateId))

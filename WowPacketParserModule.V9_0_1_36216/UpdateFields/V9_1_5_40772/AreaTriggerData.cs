@@ -8,15 +8,15 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_1_5_40772
     public class AreaTriggerData : IAreaTriggerData
     {
         public WowGuid Caster { get; set; }
-        public uint Duration { get; set; }
-        public uint TimeToTarget { get; set; }
-        public uint TimeToTargetScale { get; set; }
-        public uint TimeToTargetExtraScale { get; set; }
-        public int SpellID { get; set; }
-        public int SpellForVisuals { get; set; }
+        public System.Nullable<uint> Duration { get; set; }
+        public System.Nullable<uint> TimeToTarget { get; set; }
+        public System.Nullable<uint> TimeToTargetScale { get; set; }
+        public System.Nullable<uint> TimeToTargetExtraScale { get; set; }
+        public System.Nullable<int> SpellID { get; set; }
+        public System.Nullable<int> SpellForVisuals { get; set; }
         public ISpellCastVisual SpellVisual { get; set; }
-        public float BoundsRadius2D { get; set; }
-        public uint DecalPropertiesID { get; set; }
+        public System.Nullable<float> BoundsRadius2D { get; set; }
+        public System.Nullable<uint> DecalPropertiesID { get; set; }
         public WowGuid CreatingEffectGUID { get; set; }
         public WowGuid Field_80 { get; set; }
         public IScaleCurve OverrideScaleCurve { get; set; }

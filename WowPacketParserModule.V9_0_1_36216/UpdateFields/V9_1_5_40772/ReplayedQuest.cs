@@ -7,8 +7,8 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_1_5_40772
 {
     public class ReplayedQuest : IReplayedQuest
     {
-        public int QuestID { get; set; }
-        public uint ReplayTime { get; set; }
+        public System.Nullable<int> QuestID { get; set; }
+        public System.Nullable<uint> ReplayTime { get; set; }
     }
 }
 

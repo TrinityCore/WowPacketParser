@@ -8,7 +8,7 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_1_5_40772
     public class ActivePlayerUnk901 : IActivePlayerUnk901
     {
         public WowGuid Field_0 { get; set; }
-        public int Field_10 { get; set; }
+        public System.Nullable<int> Field_10 { get; set; }
     }
 }
 

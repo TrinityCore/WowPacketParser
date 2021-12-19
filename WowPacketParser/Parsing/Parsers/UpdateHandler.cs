@@ -38,8 +38,8 @@ namespace WowPacketParser.Parsing.Parsers
                     case "Values":
                     {
                         var guid = packet.ReadPackedGuid("GUID", i);
-                        var updateValues = new UpdateValues();
-                        ReadValuesUpdateBlock(packet, updateValues, guid, i);
+                        var updateValues = new UpdateValues(){Legacy = new()};
+                        ReadValuesUpdateBlock(packet, updateValues.Legacy, guid, i);
                         updateObject.Updated.Add(new UpdateObject{Guid = guid, Values = updateValues, Text = partWriter.Text});
                         break;
                     }
@@ -55,7 +55,7 @@ namespace WowPacketParser.Parsing.Parsers
                     {
                         var guid = packet.ReadPackedGuid("GUID", i);
                         var createType = typeString == "CreateObject1" ? CreateObjectType.InRange : CreateObjectType.Spawn;
-                        var createObject = new CreateObject() { Guid = guid, Values = new(), CreateType = createType };
+                        var createObject = new CreateObject() { Guid = guid, Values = new() {Legacy = new()}, CreateType = createType };
                         ReadCreateObjectBlock(packet, createObject, guid, map, i);
                         createObject.Text = partWriter.Text;
                         updateObject.Created.Add(createObject);
@@ -82,7 +82,7 @@ namespace WowPacketParser.Parsing.Parsers
             WoWObject obj = CreateObject(objType, guid, map);
 
             obj.Movement = ReadMovementUpdateBlock(packet, guid, index);
-            obj.UpdateFields = ReadValuesUpdateBlockOnCreate(packet, createObject.Values, objType, index);
+            obj.UpdateFields = ReadValuesUpdateBlockOnCreate(packet, createObject.Values.Legacy, objType, index);
             obj.DynamicUpdateFields = ReadDynamicValuesUpdateBlockOnCreate(packet, objType, index);
 
             // If this is the second time we see the same object (same guid,
@@ -124,7 +124,7 @@ namespace WowPacketParser.Parsing.Parsers
             return obj;
         }
 
-        public static Dictionary<int, UpdateField> ReadValuesUpdateBlockOnCreate(Packet packet, UpdateValues updateValues, ObjectType type, object index)
+        public static Dictionary<int, UpdateField> ReadValuesUpdateBlockOnCreate(Packet packet, UpdateValuesLegacy updateValues, ObjectType type, object index)
         {
             return ReadValuesUpdateBlock(packet, updateValues, type, index, true, null);
         }
@@ -164,7 +164,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        public static void ReadValuesUpdateBlock(Packet packet, UpdateValues updateValues, WowGuid guid, int index)
+        public static void ReadValuesUpdateBlock(Packet packet, UpdateValuesLegacy updateValues, WowGuid guid, int index)
         {
             WoWObject obj;
             if (Storage.Objects.TryGetValue(guid, out obj))
@@ -180,7 +180,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
-        private static Dictionary<int, UpdateField> ReadValuesUpdateBlock(Packet packet, UpdateValues updateValues, ObjectType type, object index, bool isCreating, Dictionary<int, UpdateField> oldValues)
+        private static Dictionary<int, UpdateField> ReadValuesUpdateBlock(Packet packet, UpdateValuesLegacy updateValues, ObjectType type, object index, bool isCreating, Dictionary<int, UpdateField> oldValues)
         {
             bool skipDictionary = false;
             bool missingCreateObject = !isCreating && oldValues == null;

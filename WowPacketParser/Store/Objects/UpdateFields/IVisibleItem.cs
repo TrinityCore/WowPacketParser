@@ -1,9 +1,11 @@
-﻿namespace WowPacketParser.Store.Objects.UpdateFields
+﻿#nullable enable
+
+namespace WowPacketParser.Store.Objects.UpdateFields
 {
     public interface IVisibleItem
     {
-        int ItemID { get; }
-        ushort ItemAppearanceModID { get; }
-        ushort ItemVisual { get; }
+        int? ItemID { get; }
+        ushort? ItemAppearanceModID { get; }
+        ushort? ItemVisual { get; }
     }
 }

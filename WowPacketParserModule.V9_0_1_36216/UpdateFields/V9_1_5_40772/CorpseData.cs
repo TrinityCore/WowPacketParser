@@ -7,18 +7,18 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_1_5_40772
 {
     public class CorpseData : ICorpseData
     {
-        public uint DynamicFlags { get; set; }
+        public System.Nullable<uint> DynamicFlags { get; set; }
         public WowGuid Owner { get; set; }
         public WowGuid PartyGUID { get; set; }
         public WowGuid GuildGUID { get; set; }
-        public uint DisplayID { get; set; }
-        public uint[] Items { get; } = new uint[19];
-        public byte RaceID { get; set; }
-        public byte Sex { get; set; }
-        public byte Class { get; set; }
-        public uint Flags { get; set; }
-        public int FactionTemplate { get; set; }
-        public uint StateSpellVisualKitID { get; set; }
+        public System.Nullable<uint> DisplayID { get; set; }
+        public System.Nullable<uint>[] Items { get; } = new System.Nullable<uint>[19];
+        public System.Nullable<byte> RaceID { get; set; }
+        public System.Nullable<byte> Sex { get; set; }
+        public System.Nullable<byte> Class { get; set; }
+        public System.Nullable<uint> Flags { get; set; }
+        public System.Nullable<int> FactionTemplate { get; set; }
+        public System.Nullable<uint> StateSpellVisualKitID { get; set; }
         public DynamicUpdateField<IChrCustomizationChoice> Customizations { get; } = new DynamicUpdateField<IChrCustomizationChoice>();
     }
 }
