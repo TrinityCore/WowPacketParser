@@ -9,13 +9,13 @@ namespace WowPacketParser.Store.Objects.UpdateFields
         int? LastLineEndTime { get; }
         DynamicUpdateField<IConversationActor> Actors { get; }
     }
-    
+
     public interface IMutableConversationData : IConversationData
     {
-        IConversationLine[] Lines { get; set; }
-        int? LastLineEndTime { get; set; }
+        new IConversationLine[] Lines { get; set; }
+        new int? LastLineEndTime { get; set; }
     }
-    
+
     public static partial class Extensions
     {
         public static void UpdateData(this IMutableConversationData data, IConversationData update)
@@ -25,7 +25,7 @@ namespace WowPacketParser.Store.Objects.UpdateFields
 
             if (update.Actors.Count > data.Actors.Count)
                 data.Actors.Resize((uint)update.Actors.Count);
-            
+
             for (int i = 0; i < update.Actors.Count; ++i)
                 data.Actors[i] = update.Actors[i] ?? data.Actors[i];
         }

@@ -4,7 +4,7 @@ using WowPacketParser.Misc;
 
 namespace WowPacketParser.Store.Objects.UpdateFields
 {
-    // when adding new properties, remember to include them in 
+    // when adding new properties, remember to include them in
     // IMutableUnitData and in Extensions.UpdateData
     public interface IUnitData
     {
@@ -68,62 +68,62 @@ namespace WowPacketParser.Store.Objects.UpdateFields
         int? BaseMana { get; }
         int? BaseHealth { get; }
     }
-    
+
     public interface IMutableUnitData : IUnitData
     {
-        int? DisplayID { get; set; }
-        WowGuid? SummonedBy { get; set; }
-        WowGuid? CreatedBy { get; set; }
-        byte? ClassId { get; set; }
-        byte? Sex { get; set; }
-        long? Health { get; set; }
-        long? MaxHealth { get; set; }
-        int? Level { get; set; }
-        int? ContentTuningID { get; set; }
-        int? ScalingLevelMin { get; set; }
-        int? ScalingLevelMax { get; set; }
-        int? ScalingLevelDelta { get; set; }
-        int? FactionTemplate { get; set; }
-        uint? Flags { get; set; }
-        uint? Flags2 { get; set; }
-        uint? Flags3 { get; set; }
-        uint? RangedAttackRoundBaseTime { get; set; }
-        float? BoundingRadius { get; set; }
-        float? CombatReach { get; set; }
-        int? MountDisplayID { get; set; }
-        byte? StandState { get; set; }
-        byte? PetTalentPoints { get; set; }
-        byte? VisFlags { get; set; }
-        byte? AnimTier { get; set; }
-        int? CreatedBySpell { get; set; }
-        int? EmoteState { get; set; }
-        byte? SheatheState { get; set; }
-        byte? PvpFlags { get; set; }
-        byte? PetFlags { get; set; }
-        byte? ShapeshiftForm { get; set; }
-        float? HoverHeight { get; set; }
-        int? InteractSpellID { get; set; }
-        uint? StateSpellVisualID { get; set; }
-        uint? StateAnimID { get; set; }
-        uint? StateAnimKitID { get; set; }
-        WowGuid? Charm { get; set; }
-        WowGuid? Summon { get; set; }
-        WowGuid? Critter { get; set; }
-        WowGuid? CharmedBy { get; set; }
-        WowGuid? DemonCreator { get; set; }
-        WowGuid? LookAtControllerTarget { get; set; }
-        WowGuid? Target { get; set; }
-        byte? Race { get; set; }
-        byte? DisplayPower { get; set; }
-        int? EffectiveLevel { get; set; }
-        uint? AuraState { get; set; }
-        float? DisplayScale { get; set; }
-        int? CreatureFamily { get; set; }
-        int? CreatureType { get; set; }
-        int? NativeDisplayID { get; set; }
-        float? NativeXDisplayScale { get; set; }
-        int? BaseMana { get; set; }
-        int? BaseHealth { get; set; }
+        new int? DisplayID { get; set; }
+        new WowGuid? SummonedBy { get; set; }
+        new WowGuid? CreatedBy { get; set; }
+        new byte? ClassId { get; set; }
+        new byte? Sex { get; set; }
+        new long? Health { get; set; }
+        new long? MaxHealth { get; set; }
+        new int? Level { get; set; }
+        new int? ContentTuningID { get; set; }
+        new int? ScalingLevelMin { get; set; }
+        new int? ScalingLevelMax { get; set; }
+        new int? ScalingLevelDelta { get; set; }
+        new int? FactionTemplate { get; set; }
+        new uint? Flags { get; set; }
+        new uint? Flags2 { get; set; }
+        new uint? Flags3 { get; set; }
+        new uint? RangedAttackRoundBaseTime { get; set; }
+        new float? BoundingRadius { get; set; }
+        new float? CombatReach { get; set; }
+        new int? MountDisplayID { get; set; }
+        new byte? StandState { get; set; }
+        new byte? PetTalentPoints { get; set; }
+        new byte? VisFlags { get; set; }
+        new byte? AnimTier { get; set; }
+        new int? CreatedBySpell { get; set; }
+        new int? EmoteState { get; set; }
+        new byte? SheatheState { get; set; }
+        new byte? PvpFlags { get; set; }
+        new byte? PetFlags { get; set; }
+        new byte? ShapeshiftForm { get; set; }
+        new float? HoverHeight { get; set; }
+        new int? InteractSpellID { get; set; }
+        new uint? StateSpellVisualID { get; set; }
+        new uint? StateAnimID { get; set; }
+        new uint? StateAnimKitID { get; set; }
+        new WowGuid? Charm { get; set; }
+        new WowGuid? Summon { get; set; }
+        new WowGuid? Critter { get; set; }
+        new WowGuid? CharmedBy { get; set; }
+        new WowGuid? DemonCreator { get; set; }
+        new WowGuid? LookAtControllerTarget { get; set; }
+        new WowGuid? Target { get; set; }
+        new byte? Race { get; set; }
+        new byte? DisplayPower { get; set; }
+        new int? EffectiveLevel { get; set; }
+        new uint? AuraState { get; set; }
+        new float? DisplayScale { get; set; }
+        new int? CreatureFamily { get; set; }
+        new int? CreatureType { get; set; }
+        new int? NativeDisplayID { get; set; }
+        new float? NativeXDisplayScale { get; set; }
+        new int? BaseMana { get; set; }
+        new int? BaseHealth { get; set; }
     }
 
     public static partial class Extensions
@@ -183,7 +183,7 @@ namespace WowPacketParser.Store.Objects.UpdateFields
             data.ContentTuningID = update.ContentTuningID ?? data.ContentTuningID;
             data.ScalingLevelDelta = update.ScalingLevelDelta ?? data.ScalingLevelDelta;
             data.FactionTemplate = update.FactionTemplate ?? data.FactionTemplate;
-            
+
             for (int i = 0; i < Math.Min(data.NpcFlags.Length, update.NpcFlags.Length); i++)
                 data.NpcFlags[i] = update.NpcFlags[i] ?? data.NpcFlags[i];
             for (int i = 0; i < Math.Min(data.Power.Length, update.Power.Length); i++)

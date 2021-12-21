@@ -4,7 +4,7 @@ using WowPacketParser.Misc;
 
 namespace WowPacketParser.Store.Objects.UpdateFields
 {
-    // when adding new properties, remember to include them in 
+    // when adding new properties, remember to include them in
     // IMutableGameObjectData and in Extensions.UpdateData
     public interface IGameObjectData
     {
@@ -19,21 +19,21 @@ namespace WowPacketParser.Store.Objects.UpdateFields
         uint? ArtKit { get; }
         int? Level { get; }
     }
-    
+
     public interface IMutableGameObjectData : IGameObjectData
     {
-        WowGuid? CreatedBy { get; set; }
-        uint? Flags { get; set; }
-        Quaternion? ParentRotation { get; set; }
-        int? FactionTemplate { get; set; }
-        sbyte? State { get; set; }
-        sbyte? TypeID { get; set; }
-        byte? PercentHealth { get; set; }
-        int? DisplayID { get; set; }
-        uint? ArtKit { get; set; }
-        int? Level { get; set; }
+        new WowGuid? CreatedBy { get; set; }
+        new uint? Flags { get; set; }
+        new Quaternion? ParentRotation { get; set; }
+        new int? FactionTemplate { get; set; }
+        new sbyte? State { get; set; }
+        new sbyte? TypeID { get; set; }
+        new byte? PercentHealth { get; set; }
+        new int? DisplayID { get; set; }
+        new uint? ArtKit { get; set; }
+        new int? Level { get; set; }
     }
-    
+
     public static partial class Extensions
     {
         public static void UpdateData(this IMutableGameObjectData data, IGameObjectData update)

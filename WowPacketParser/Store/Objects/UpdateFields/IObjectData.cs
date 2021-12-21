@@ -11,9 +11,9 @@ namespace WowPacketParser.Store.Objects.UpdateFields
     
     public interface IMutableObjectData : IObjectData
     {
-        int? EntryID { get; set; }
-        uint? DynamicFlags { get; set; }
-        float? Scale { get; set; }
+        new int? EntryID { get; set; }
+        new uint? DynamicFlags { get; set; }
+        new float? Scale { get; set; }
     }
 
     public static partial class Extensions
