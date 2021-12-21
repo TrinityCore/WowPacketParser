@@ -15,15 +15,15 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_1_0_39185
         public uint StateWorldEffectsQuestObjectiveID { get; set; }
         public int SpellOverrideNameID { get; set; }
         public uint[] StateWorldEffectIDs { get; set; }
-        public WowGuid? Charm { get; set; }
-        public WowGuid? Summon { get; set; }
-        public WowGuid? Critter { get; set; }
-        public WowGuid? CharmedBy { get; set; }
-        public WowGuid? SummonedBy { get; set; }
-        public WowGuid? CreatedBy { get; set; }
-        public WowGuid? DemonCreator { get; set; }
-        public WowGuid? LookAtControllerTarget { get; set; }
-        public WowGuid? Target { get; set; }
+        public WowGuid Charm { get; set; }
+        public WowGuid Summon { get; set; }
+        public WowGuid Critter { get; set; }
+        public WowGuid CharmedBy { get; set; }
+        public WowGuid SummonedBy { get; set; }
+        public WowGuid CreatedBy { get; set; }
+        public WowGuid DemonCreator { get; set; }
+        public WowGuid LookAtControllerTarget { get; set; }
+        public WowGuid Target { get; set; }
         public WowGuid BattlePetCompanionGUID { get; set; }
         public ulong BattlePetDBID { get; set; }
         public IUnitChannel ChannelData { get; set; }

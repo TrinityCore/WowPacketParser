@@ -1,5 +1,4 @@
-﻿#nullable enable
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 
@@ -15,7 +14,7 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
             Object = obj;
         }
 
-        public WowGuid? CreatedBy
+        public WowGuid CreatedBy
         {
             get
             {

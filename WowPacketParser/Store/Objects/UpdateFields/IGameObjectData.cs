@@ -1,5 +1,4 @@
-﻿#nullable enable
-
+﻿
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Store.Objects.UpdateFields
@@ -8,7 +7,7 @@ namespace WowPacketParser.Store.Objects.UpdateFields
     // IMutableGameObjectData and in Extensions.UpdateData
     public interface IGameObjectData
     {
-        WowGuid? CreatedBy { get; }
+        WowGuid CreatedBy { get; }
         uint? Flags { get; }
         Quaternion? ParentRotation { get; }
         int? FactionTemplate { get; }
@@ -22,7 +21,7 @@ namespace WowPacketParser.Store.Objects.UpdateFields
 
     public interface IMutableGameObjectData : IGameObjectData
     {
-        new WowGuid? CreatedBy { get; set; }
+        new WowGuid CreatedBy { get; set; }
         new uint? Flags { get; set; }
         new Quaternion? ParentRotation { get; set; }
         new int? FactionTemplate { get; set; }

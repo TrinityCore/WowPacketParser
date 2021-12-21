@@ -1,5 +1,4 @@
-﻿#nullable enable
-using System;
+﻿using System;
 using WowPacketParser.Misc;
 
 namespace WowPacketParser.Store.Objects.UpdateFields
@@ -10,8 +9,8 @@ namespace WowPacketParser.Store.Objects.UpdateFields
     {
         int? DisplayID { get; }
         uint?[] NpcFlags { get; }
-        WowGuid? SummonedBy { get; }
-        WowGuid? CreatedBy { get; }
+        WowGuid SummonedBy { get; }
+        WowGuid CreatedBy { get; }
         byte? ClassId { get; }
         byte? Sex { get; }
         long? Health { get; }
@@ -24,7 +23,7 @@ namespace WowPacketParser.Store.Objects.UpdateFields
         int? ScalingLevelMax { get; }
         int? ScalingLevelDelta { get; }
         int? FactionTemplate { get; }
-        IVisibleItem?[] VirtualItems { get; }
+        IVisibleItem[] VirtualItems { get; }
         uint? Flags { get; }
         uint? Flags2 { get; }
         uint? Flags3 { get; }
@@ -48,13 +47,13 @@ namespace WowPacketParser.Store.Objects.UpdateFields
         uint? StateSpellVisualID { get; }
         uint? StateAnimID { get; }
         uint? StateAnimKitID { get; }
-        WowGuid? Charm { get; }
-        WowGuid? Summon { get; }
-        WowGuid? Critter { get; }
-        WowGuid? CharmedBy { get; }
-        WowGuid? DemonCreator { get; }
-        WowGuid? LookAtControllerTarget { get; }
-        WowGuid? Target { get; }
+        WowGuid Charm { get; }
+        WowGuid Summon { get; }
+        WowGuid Critter { get; }
+        WowGuid CharmedBy { get; }
+        WowGuid DemonCreator { get; }
+        WowGuid LookAtControllerTarget { get; }
+        WowGuid Target { get; }
         byte? Race { get; }
         byte? DisplayPower { get; }
         int? EffectiveLevel { get; }
@@ -72,8 +71,8 @@ namespace WowPacketParser.Store.Objects.UpdateFields
     public interface IMutableUnitData : IUnitData
     {
         new int? DisplayID { get; set; }
-        new WowGuid? SummonedBy { get; set; }
-        new WowGuid? CreatedBy { get; set; }
+        new WowGuid SummonedBy { get; set; }
+        new WowGuid CreatedBy { get; set; }
         new byte? ClassId { get; set; }
         new byte? Sex { get; set; }
         new long? Health { get; set; }
@@ -106,13 +105,13 @@ namespace WowPacketParser.Store.Objects.UpdateFields
         new uint? StateSpellVisualID { get; set; }
         new uint? StateAnimID { get; set; }
         new uint? StateAnimKitID { get; set; }
-        new WowGuid? Charm { get; set; }
-        new WowGuid? Summon { get; set; }
-        new WowGuid? Critter { get; set; }
-        new WowGuid? CharmedBy { get; set; }
-        new WowGuid? DemonCreator { get; set; }
-        new WowGuid? LookAtControllerTarget { get; set; }
-        new WowGuid? Target { get; set; }
+        new WowGuid Charm { get; set; }
+        new WowGuid Summon { get; set; }
+        new WowGuid Critter { get; set; }
+        new WowGuid CharmedBy { get; set; }
+        new WowGuid DemonCreator { get; set; }
+        new WowGuid LookAtControllerTarget { get; set; }
+        new WowGuid Target { get; set; }
         new byte? Race { get; set; }
         new byte? DisplayPower { get; set; }
         new int? EffectiveLevel { get; set; }

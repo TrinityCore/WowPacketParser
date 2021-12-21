@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using System.Collections.Generic;
 using WowPacketParser.DBC;
@@ -19,7 +18,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
             packet.ReadSByte("Unk1_13_2", idx);
         }
 
-        public static void ReadSpellTargetData(Packet packet, PacketSpellData? packetSpellData, uint spellID, params object[] idx)
+        public static void ReadSpellTargetData(Packet packet, PacketSpellData packetSpellData, uint spellID, params object[] idx)
         {
             packet.ResetBitReader();
 
@@ -233,7 +232,7 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
 
                     if (hasRemaining)
                         auraEntry.Remaining = aura.MaxDuration;
-                    
+
                     if (hasTimeMod)
                         packet.ReadSingle("TimeMod");
 

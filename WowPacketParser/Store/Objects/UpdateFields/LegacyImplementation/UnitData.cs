@@ -1,5 +1,4 @@
-﻿#nullable enable
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -44,22 +43,22 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
         }
 
         public int?[] Resistances => null;
-        
-        public WowGuid? SummonedBy => GetGuidValue(UnitField.UNIT_FIELD_SUMMONEDBY);
 
-        public WowGuid? CreatedBy => GetGuidValue(UnitField.UNIT_FIELD_CREATEDBY);
+        public WowGuid SummonedBy => GetGuidValue(UnitField.UNIT_FIELD_SUMMONEDBY);
+
+        public WowGuid CreatedBy => GetGuidValue(UnitField.UNIT_FIELD_CREATEDBY);
 
         public byte? ClassId => (byte)((UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BYTES_0).GetValueOrDefault((uint)Class.Warrior << 8) >> 8) & 0xFF);
 
         public byte? Sex => (byte)(ClientVersion.AddedInVersion(ClientVersionBuild.V5_4_0_17359)
                 ? ((UpdateFields.GetValue<UnitField, uint>(UnitField.UNIT_FIELD_BYTES_0) >> 24) & 0xFF)
                 : ((UpdateFields.GetValue<UnitField, uint>(UnitField.UNIT_FIELD_BYTES_0) >> 16) & 0xFF));
-        
+
         public byte? Race => UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_BYTES_0).HasValue ?
             (byte)(UpdateFields.GetValue<UnitField, uint>(UnitField.UNIT_FIELD_BYTES_0) & 0xFF) : null;
-        
+
         public byte? DisplayPower => UpdateFields.GetValue<UnitField, byte?>(UnitField.UNIT_FIELD_DISPLAY_POWER);
-        
+
         public long? Health => UpdateFields.GetValue<UnitField, int>(UnitField.UNIT_FIELD_HEALTH);
 
         public long? MaxHealth => UpdateFields.GetValue<UnitField, int>(UnitField.UNIT_FIELD_MAXHEALTH);
@@ -150,13 +149,13 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
         public uint? StateSpellVisualID => UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_STATE_SPELL_VISUAL_ID);
         public uint? StateAnimID => UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_STATE_ANIM_ID);
         public uint? StateAnimKitID => UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_STATE_ANIM_KIT_ID);
-        public WowGuid? Charm => GetGuidValue(UnitField.UNIT_FIELD_CHARM);
-        public WowGuid? Summon => GetGuidValue(UnitField.UNIT_FIELD_SUMMON);
-        public WowGuid? Critter => GetGuidValue(UnitField.UNIT_FIELD_CRITTER);
-        public WowGuid? CharmedBy => GetGuidValue(UnitField.UNIT_FIELD_CHARMEDBY);
-        public WowGuid? DemonCreator => GetGuidValue(UnitField.UNIT_FIELD_DEMON_CREATOR);
-        public WowGuid? LookAtControllerTarget => GetGuidValue(UnitField.UNIT_FIELD_LOOK_AT_CONTROLLER_TARGET);
-        public WowGuid? Target => GetGuidValue(UnitField.UNIT_FIELD_TARGET);
+        public WowGuid Charm => GetGuidValue(UnitField.UNIT_FIELD_CHARM);
+        public WowGuid Summon => GetGuidValue(UnitField.UNIT_FIELD_SUMMON);
+        public WowGuid Critter => GetGuidValue(UnitField.UNIT_FIELD_CRITTER);
+        public WowGuid CharmedBy => GetGuidValue(UnitField.UNIT_FIELD_CHARMEDBY);
+        public WowGuid DemonCreator => GetGuidValue(UnitField.UNIT_FIELD_DEMON_CREATOR);
+        public WowGuid LookAtControllerTarget => GetGuidValue(UnitField.UNIT_FIELD_LOOK_AT_CONTROLLER_TARGET);
+        public WowGuid Target => GetGuidValue(UnitField.UNIT_FIELD_TARGET);
         public int? EffectiveLevel => UpdateFields.GetValue<UnitField, int?>(UnitField.UNIT_FIELD_EFFECTIVE_LEVEL);
         public uint? AuraState => UpdateFields.GetValue<UnitField, uint?>(UnitField.UNIT_FIELD_AURASTATE);
         public float? DisplayScale => UpdateFields.GetValue<UnitField, float?>(UnitField.UNIT_FIELD_DISPLAY_SCALE);

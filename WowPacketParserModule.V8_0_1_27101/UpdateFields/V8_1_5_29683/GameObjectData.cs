@@ -1,4 +1,3 @@
-#nullable enable
 using WowPacketParser.Misc;
 using WowPacketParser.Store.Objects.UpdateFields;
 
@@ -13,7 +12,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29683
         public uint SpawnTrackingStateAnimKitID { get; set; }
         public uint StateWorldEffectsQuestObjectiveID { get; set; }
         public uint[] StateWorldEffectIDs { get; set; }
-        public WowGuid? CreatedBy { get; set; }
+        public WowGuid CreatedBy { get; set; }
         public WowGuid GuildGUID { get; set; }
         public uint? Flags { get; set; }
         public Quaternion? ParentRotation { get; set; }

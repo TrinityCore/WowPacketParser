@@ -1,4 +1,3 @@
-#nullable enable
 using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
@@ -36,7 +35,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadSingle("Float7", idx);
         }
 
-        public static void ReadSpellTargetData(Packet packet, PacketSpellData? spellData, params object[] idx)
+        public static void ReadSpellTargetData(Packet packet, PacketSpellData spellData, params object[] idx)
         {
             packet.ResetBitReader();
 

@@ -1,4 +1,3 @@
-#nullable enable
 using WowPacketParser.Misc;
 using WowPacketParser.Store.Objects.UpdateFields;
 
@@ -13,15 +12,15 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_3_0_33062
         public uint? StateAnimKitID { get; set; }
         public uint StateWorldEffectsQuestObjectiveID { get; set; }
         public uint[] StateWorldEffectIDs { get; set; }
-        public WowGuid? Charm { get; set; }
-        public WowGuid? Summon { get; set; }
-        public WowGuid? Critter { get; set; }
-        public WowGuid? CharmedBy { get; set; }
-        public WowGuid? SummonedBy { get; set; }
-        public WowGuid? CreatedBy { get; set; }
-        public WowGuid? DemonCreator { get; set; }
-        public WowGuid? LookAtControllerTarget { get; set; }
-        public WowGuid? Target { get; set; }
+        public WowGuid Charm { get; set; }
+        public WowGuid Summon { get; set; }
+        public WowGuid Critter { get; set; }
+        public WowGuid CharmedBy { get; set; }
+        public WowGuid SummonedBy { get; set; }
+        public WowGuid CreatedBy { get; set; }
+        public WowGuid DemonCreator { get; set; }
+        public WowGuid LookAtControllerTarget { get; set; }
+        public WowGuid Target { get; set; }
         public WowGuid BattlePetCompanionGUID { get; set; }
         public ulong BattlePetDBID { get; set; }
         public IUnitChannel ChannelData { get; set; }

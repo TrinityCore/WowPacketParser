@@ -1,5 +1,4 @@
-﻿#nullable enable
-
+﻿
 namespace WowPacketParser.Store.Objects.UpdateFields
 {
     public interface IAreaTriggerData
@@ -9,6 +8,6 @@ namespace WowPacketParser.Store.Objects.UpdateFields
         uint? TimeToTargetScale { get; }
         uint? DecalPropertiesID { get; }
 
-        IVisualAnim? VisualAnim { get { return null; } }
+        IVisualAnim VisualAnim { get { return null; } }
     }
 }
