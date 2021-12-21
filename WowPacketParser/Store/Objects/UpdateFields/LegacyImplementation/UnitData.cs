@@ -42,7 +42,7 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
             }
         }
 
-        public int?[] Resistances => null;
+        public int?[] Resistances => UpdateFields.GetArray<UnitField, int?>(UnitField.UNIT_FIELD_RESISTANCES, 7);
 
         public WowGuid SummonedBy => GetGuidValue(UnitField.UNIT_FIELD_SUMMONEDBY);
 
