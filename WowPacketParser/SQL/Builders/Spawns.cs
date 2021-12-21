@@ -70,14 +70,14 @@ namespace WowPacketParser.SQL.Builders
                     continue;   // broken entry, nothing to spawn
 
                 uint movementType = 0;
-                int spawnDist = 0;
+                int wanderDistance = 0;
                 row.Data.AreaID = 0;
                 row.Data.ZoneID = 0;
 
                 if (creature.Movement.HasWpsOrRandMov)
                 {
                     movementType = 1;
-                    spawnDist = 10;
+                    wanderDistance = 10;
                 }
 
                 row.Data.GUID = "@CGUID+" + count;
@@ -137,7 +137,7 @@ namespace WowPacketParser.SQL.Builders
                 }
 
                 row.Data.SpawnTimeSecs = creature.GetDefaultSpawnTime(creature.DifficultyID);
-                row.Data.SpawnDist = spawnDist;
+                row.Data.WanderDistance = wanderDistance;
                 row.Data.MovementType = movementType;
 
                 // set some defaults

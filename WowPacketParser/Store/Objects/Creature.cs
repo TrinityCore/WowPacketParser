@@ -58,8 +58,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("spawntimesecs")]
         public int? SpawnTimeSecs;
 
-        [DBFieldName("spawndist")]
-        public float? SpawnDist;
+        [DBFieldName("wander_distance")]
+        public float? WanderDistance;
 
         [DBFieldName("currentwaypoint")]
         public uint? CurrentWaypoint;
