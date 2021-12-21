@@ -14,7 +14,7 @@ namespace WowPacketParser.Store.Objects
 
         public BlockingCollection<List<Aura>> AddedAuras = new BlockingCollection<List<Aura>>();
 
-        public uint GossipId;
+        public uint? GossipId;
 
         public ushort? AIAnimKit;
         public ushort? MovementAnimKit;
