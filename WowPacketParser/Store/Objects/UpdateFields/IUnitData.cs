@@ -194,7 +194,15 @@ namespace WowPacketParser.Store.Objects.UpdateFields
             for (int i = 0; i < Math.Min(data.Resistances.Length, update.Resistances.Length); i++)
                 data.Resistances[i] = update.Resistances[i] ?? data.Resistances[i];
             for (int i = 0; i < Math.Min(data.VirtualItems.Length, update.VirtualItems.Length); i++)
-                data.VirtualItems[i] = update.VirtualItems[i] ?? data.VirtualItems[i];
+            {
+                if (update.VirtualItems[i] != null)
+                {
+                    if (data.VirtualItems[i] == null)
+                        data.VirtualItems[i] = update.VirtualItems[i];
+                    else if (data.VirtualItems[i] is IMutableVisibleItem mut)
+                        mut.UpdateData(update.VirtualItems[i]);
+                }
+            }
         }
     }
 }

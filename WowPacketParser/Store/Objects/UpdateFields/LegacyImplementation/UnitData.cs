@@ -166,7 +166,7 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
         public int? BaseMana => UpdateFields.GetValue<UnitField, int?>(UnitField.UNIT_FIELD_BASE_MANA);
         public int? BaseHealth => UpdateFields.GetValue<UnitField, int?>(UnitField.UNIT_FIELD_BASE_HEALTH);
 
-        public class VisibleItem : IVisibleItem
+        public class VisibleItem : IMutableVisibleItem
         {
             public int? ItemID { get; set; }
             public ushort? ItemAppearanceModID { get; set; }
