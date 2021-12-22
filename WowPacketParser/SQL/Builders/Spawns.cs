@@ -309,7 +309,7 @@ namespace WowPacketParser.SQL.Builders
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_0_3_22248))
                 {
                     string data = string.Join(",", go.GetDefaultSpawnDifficulties());
-                    if (string.IsNullOrEmpty(data) || Settings.ForcePhaseZero)
+                    if (string.IsNullOrEmpty(data))
                         data = "0";
 
                     row.Data.spawnDifficulties = data;
@@ -318,7 +318,13 @@ namespace WowPacketParser.SQL.Builders
                 row.Data.PhaseMask = go.PhaseMask;
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595) && go.Phases != null)
-                    row.Data.PhaseID = string.Join(" - ", go.Phases);
+                {
+                    string data = string.Join(" - ", go.Phases);
+                    if (string.IsNullOrEmpty(data) || Settings.ForcePhaseZero)
+                        data = "0";
+
+                    row.Data.PhaseID = data;
+                }
 
                 if (!go.IsOnTransport())
                 {
