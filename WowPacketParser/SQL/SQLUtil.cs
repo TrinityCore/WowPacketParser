@@ -272,6 +272,10 @@ namespace WowPacketParser.SQL
                         }
                     }
 
+                    // no updates required, skip
+                    if (fieldUpdateCount == 0)
+                        continue;
+
                     // only set comment for rows which arent updating VerifiedBuild only
                     if (fieldUpdateCount != 1 || verBuildField == null || lastField.Item2.GetValue(elem1.Item1) == null)
                         row.Comment = comment;
