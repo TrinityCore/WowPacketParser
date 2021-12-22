@@ -34,7 +34,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("PhaseId", TargetedDatabase.Cataclysm)]
         public string PhaseID;
 
-        [DBFieldName("PhaseGroup")]
+        [DBFieldName("PhaseGroup", TargetedDatabase.Cataclysm)]
         public int? PhaseGroup;
 
         [DBFieldName("modelid")]
