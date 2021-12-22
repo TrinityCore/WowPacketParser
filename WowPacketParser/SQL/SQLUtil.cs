@@ -231,6 +231,7 @@ namespace WowPacketParser.SQL
                     var elem2 = dbList[elem1.Item1].Data;
                     var fieldUpdateCount = 0;
                     var comment = commentSetter(elem1.Item1);
+                    var differingValues = (T)Activator.CreateInstance(typeof(T));
 
                     foreach (var field in fields)
                     {
@@ -259,25 +260,23 @@ namespace WowPacketParser.SQL
                                 }
                             }
 
-                            // Workaround: set array to null if its entirely equal - record types do not check array contents for equality
-                            if (arraysEqual)
-                                field.Item2.SetValue(elem1.Item1, null);
-                            else
-                                field.Item2.SetValue(elem1.Item1, arr1);
+                            if (!arraysEqual)
+                                field.Item2.SetValue(differingValues, arr1);
                             continue;
                         }
 
-                        if (IsFieldEqual(val1, val2, attrib))
-                            field.Item2.SetValue(elem1.Item1, null);
-                        else
+                        if (!IsFieldEqual(val1, val2, attrib))
+                        {
                             fieldUpdateCount++;
+                            field.Item2.SetValue(differingValues, val1);
+                        }
                     }
 
                     // only set comment for rows which arent updating VerifiedBuild only
                     if (fieldUpdateCount != 1 || verBuildField == null || lastField.Item2.GetValue(elem1.Item1) == null)
                         row.Comment = comment;
 
-                    row.Data = elem1.Item1;
+                    row.Data = differingValues;
                     if (rowsUpd.TryGetValue(row, out var conditions))
                     {
                         conditions.Add(elem2);
