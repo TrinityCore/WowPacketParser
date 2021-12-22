@@ -211,14 +211,13 @@ namespace WowPacketParser.SQL
 
             var rowsIns = new RowList<T>();
             var rowsUpd = new Dictionary<Row<T>, RowList<T>>();
+            var lastField = fields[fields.Count - 1];
+            var verBuildField = fields.FirstOrDefault(f => f.Item2.Name == "VerifiedBuild");
 
             foreach (var elem1 in storeList)
             {
                 if (dbList != null && dbList.ContainsKey(elem1.Item1) && !Settings.ForceInsertQueries) // update
                 {
-
-                    var lastField = fields[fields.Count - 1];
-                    var verBuildField = fields.FirstOrDefault(f => f.Item2.Name == "VerifiedBuild");
                     if (verBuildField != null)
                     {
                         var buildvSniff = (int)lastField.Item2.GetValue(elem1.Item1);
@@ -230,8 +229,8 @@ namespace WowPacketParser.SQL
 
                     var row = new Row<T>();
                     var elem2 = dbList[elem1.Item1].Data;
-
-                    row.Comment = commentSetter(elem1.Item1);
+                    var fieldUpdateCount = 0;
+                    var comment = commentSetter(elem1.Item1);
 
                     foreach (var field in fields)
                     {
@@ -243,22 +242,40 @@ namespace WowPacketParser.SQL
                         if (arr1 != null)
                         {
                             var arr2 = (Array)val2;
-
+                            bool arraysEqual = true;
                             for (var i = 0; i < attrib.Count; i++)
                             {
                                 var value1 = arr1.GetValue(i);
                                 var value2 = arr2.GetValue(i);
 
                                 if (Utilities.EqualValues(value1, value2))
+                                {
                                     arr1.SetValue(null, i);
+                                }
+                                else
+                                {
+                                    arraysEqual = false;
+                                    fieldUpdateCount++;
+                                }
                             }
-                            field.Item2.SetValue(elem1.Item1, arr1);
+
+                            // Workaround: set array to null if its entirely equal - record types do not check array contents for equality
+                            if (arraysEqual)
+                                field.Item2.SetValue(elem1.Item1, null);
+                            else
+                                field.Item2.SetValue(elem1.Item1, arr1);
                             continue;
                         }
 
                         if (IsFieldEqual(val1, val2, attrib))
                             field.Item2.SetValue(elem1.Item1, null);
+                        else
+                            fieldUpdateCount++;
                     }
+
+                    // only set comment for rows which arent updating VerifiedBuild only
+                    if (fieldUpdateCount != 1 || verBuildField == null || lastField.Item2.GetValue(elem1.Item1) == null)
+                        row.Comment = comment;
 
                     row.Data = elem1.Item1;
                     if (rowsUpd.TryGetValue(row, out var conditions))
