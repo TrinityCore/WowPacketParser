@@ -52,7 +52,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             protoPoi.Icon = (uint)gossipPOI.Icon;
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
-                packet.ReadInt32("Unknown905");
+                gossipPOI.Unknown905 = packet.ReadInt32("Unknown905");
 
             packet.ResetBitReader();
             gossipPOI.Flags = gossipPOI.Flags = packet.ReadBits("Flags", 14);
