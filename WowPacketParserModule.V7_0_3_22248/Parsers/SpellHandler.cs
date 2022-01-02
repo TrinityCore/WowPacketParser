@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using System.Collections.Generic;
 using WowPacketParser.DBC;
@@ -106,7 +105,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             return packetSpellData;
         }
 
-        public static void ReadSpellTargetData(Packet packet, PacketSpellData? packetSpellData, uint spellID, params object[] idx)
+        public static void ReadSpellTargetData(Packet packet, PacketSpellData packetSpellData, uint spellID, params object[] idx)
         {
             packet.ResetBitReader();
 

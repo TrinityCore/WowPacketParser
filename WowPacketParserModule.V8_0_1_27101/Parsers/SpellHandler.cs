@@ -1,5 +1,4 @@
-﻿#nullable enable
-using System;
+﻿using System;
 using System.Collections.Generic;
 using WowPacketParser.DBC;
 using WowPacketParser.Enums;
@@ -14,7 +13,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 {
     public static class SpellHandler
     {
-        public static void ReadSpellTargetData(Packet packet, PacketSpellData? packetSpellData, uint spellID, params object[] idx)
+        public static void ReadSpellTargetData(Packet packet, PacketSpellData packetSpellData, uint spellID, params object[] idx)
         {
             packet.ResetBitReader();
 

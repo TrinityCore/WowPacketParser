@@ -179,7 +179,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             sha[9] = packet.ReadByte();
             sha[7] = packet.ReadByte();
 
-            packet.AddValue("SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
+            packet.AddValue("SHA-1 Hash", Convert.ToHexString(sha));
         }
 
         [Parser(Opcode.SMSG_CONNECT_TO)]

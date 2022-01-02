@@ -71,7 +71,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             sha[11] = packet.ReadByte();
             sha[7] = packet.ReadByte();
 
-            packet.AddValue("SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
+            packet.AddValue("SHA-1 Hash", Convert.ToHexString(sha));
         }
 
 
@@ -271,7 +271,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadBit("Unk bit");
             packet.ResetBitReader();
             packet.ReadBytesString("Account name", size);
-            packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
+            packet.AddValue("Proof SHA-1 Hash", Convert.ToHexString(sha));
         }
     }
 }

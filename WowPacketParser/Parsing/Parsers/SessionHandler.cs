@@ -252,7 +252,7 @@ namespace WowPacketParser.Parsing.Parsers
             var size = lowBits | highBits;
             packet.AddValue("Size", size);
             packet.AddValue("Account name", Encoding.UTF8.GetString(packet.ReadBytes(size)));
-            packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
+            packet.AddValue("Proof SHA-1 Hash", Convert.ToHexString(sha));
         }
 
         [Parser(Opcode.CMSG_AUTH_SESSION, ClientVersionBuild.V5_0_5_16048)]
@@ -297,7 +297,7 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadBit("Unk bit");
             var size = (int)packet.ReadBits(12);
             packet.AddValue("Account name", Encoding.UTF8.GetString(packet.ReadBytes(size)));
-            packet.AddValue("Proof SHA-1 Hash", Utilities.ByteArrayToHexString(sha));
+            packet.AddValue("Proof SHA-1 Hash", Convert.ToHexString(sha));
         }
 
         [Parser(Opcode.SMSG_AUTH_RESPONSE, ClientVersionBuild.Zero, ClientVersionBuild.V4_3_4_15595)]
@@ -532,7 +532,7 @@ namespace WowPacketParser.Parsing.Parsers
             bytes[16] = packet.ReadByte();
             bytes[14] = packet.ReadByte();
             bytes[10] = packet.ReadByte();
-            packet.AddValue("Proof RSA Hash", Utilities.ByteArrayToHexString(bytes));
+            packet.AddValue("Proof RSA Hash", Convert.ToHexString(bytes));
         }
 
         [Parser(Opcode.SMSG_KICK_REASON)]

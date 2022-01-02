@@ -34,7 +34,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("PhaseId", TargetedDatabase.Cataclysm)]
         public string PhaseID;
 
-        [DBFieldName("PhaseGroup")]
+        [DBFieldName("PhaseGroup", TargetedDatabase.Cataclysm)]
         public int? PhaseGroup;
 
         [DBFieldName("modelid")]
@@ -58,8 +58,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("spawntimesecs")]
         public int? SpawnTimeSecs;
 
-        [DBFieldName("spawndist")]
-        public float? SpawnDist;
+        [DBFieldName("wander_distance")]
+        public float? WanderDistance;
 
         [DBFieldName("currentwaypoint")]
         public uint? CurrentWaypoint;

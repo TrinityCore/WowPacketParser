@@ -37,15 +37,7 @@ namespace WowPacketParser.Tests.Misc
 
             Assert.Throws<ArgumentOutOfRangeException>(() => Utilities.HexStringToBinary("B"));
         }
-
-        [Test]
-        public void TestByteArrayToHexString()
-        {
-            Assert.AreEqual(string.Empty, Utilities.ByteArrayToHexString(new byte[0]));
-            Assert.AreEqual("01020304", Utilities.ByteArrayToHexString(new byte[] { 1, 2, 3, 4 }));
-            Assert.AreEqual("FF00", Utilities.ByteArrayToHexString(new byte[] { 255, 0 }));
-        }
-
+        
         [Test]
         public void TestGetDateTimeFromGameTime()
         {

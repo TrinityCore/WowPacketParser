@@ -15,8 +15,8 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
             Object = obj;
         }
 
-        public int ScriptPackageID => UpdateFields.GetValue<SceneObjectField, int>(SceneObjectField.SCENEOBJECT_FIELD_SCRIPT_PACKAGE_ID);
+        public int? ScriptPackageID => UpdateFields.GetValue<SceneObjectField, int>(SceneObjectField.SCENEOBJECT_FIELD_SCRIPT_PACKAGE_ID);
 
-        public uint SceneType => UpdateFields.GetValue<SceneObjectField, uint>(SceneObjectField.SCENEOBJECT_FIELD_SCENE_TYPE);
+        public uint? SceneType => UpdateFields.GetValue<SceneObjectField, uint>(SceneObjectField.SCENEOBJECT_FIELD_SCENE_TYPE);
     }
 }

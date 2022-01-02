@@ -5,12 +5,12 @@ using WowPacketParser.Store.Objects.UpdateFields;
 
 namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_1_5_40772
 {
-    public class VisibleItem : IVisibleItem
+    public class VisibleItem : IMutableVisibleItem
     {
-        public int ItemID { get; set; }
-        public int SecondaryItemModifiedAppearanceID { get; set; }
-        public ushort ItemAppearanceModID { get; set; }
-        public ushort ItemVisual { get; set; }
+        public System.Nullable<int> ItemID { get; set; }
+        public System.Nullable<int> SecondaryItemModifiedAppearanceID { get; set; }
+        public System.Nullable<ushort> ItemAppearanceModID { get; set; }
+        public System.Nullable<ushort> ItemVisual { get; set; }
     }
 }
 

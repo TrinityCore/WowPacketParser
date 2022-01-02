@@ -9,14 +9,14 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_1_5_29683
         public IScaleCurve ExtraScaleCurve { get; set; }
         public WowGuid Caster { get; set; }
         public uint Duration { get; set; }
-        public uint TimeToTarget { get; set; }
-        public uint TimeToTargetScale { get; set; }
+        public uint? TimeToTarget { get; set; }
+        public uint? TimeToTargetScale { get; set; }
         public uint TimeToTargetExtraScale { get; set; }
-        public int SpellID { get; set; }
+        public int? SpellID { get; set; }
         public int SpellForVisuals { get; set; }
         public int SpellXSpellVisualID { get; set; }
         public float BoundsRadius2D { get; set; }
-        public uint DecalPropertiesID { get; set; }
+        public uint? DecalPropertiesID { get; set; }
         public WowGuid CreatingEffectGUID { get; set; }
     }
 }

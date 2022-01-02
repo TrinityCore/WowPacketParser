@@ -8,7 +8,7 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_1_5_40772
     public class ContainerData : IContainerData
     {
         public WowGuid[] Slots { get; } = new WowGuid[36];
-        public uint NumSlots { get; set; }
+        public System.Nullable<uint> NumSlots { get; set; }
     }
 }
 

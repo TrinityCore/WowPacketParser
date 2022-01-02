@@ -39,7 +39,7 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
             }
         }
 
-        public int LastLineEndTime => UpdateFields.GetValue<ConversationField, int>(ConversationField.CONVERSATION_LAST_LINE_END_TIME);
+        public int? LastLineEndTime => UpdateFields.GetValue<ConversationField, int?>(ConversationField.CONVERSATION_LAST_LINE_END_TIME);
 
         public DynamicUpdateField<IConversationActor> Actors
         {

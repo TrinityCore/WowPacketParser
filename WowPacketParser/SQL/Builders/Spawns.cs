@@ -43,8 +43,13 @@ namespace WowPacketParser.SQL.Builders
                 return string.Empty;
 
             uint count = 0;
+            CreatureAddon addonDefault = null;
+            if (Settings.DBEnabled && Settings.SkipRowsWithFallbackValues)
+                addonDefault = SQLUtil.GetDefaultObject<CreatureAddon>();
+            var dbFields = SQLUtil.GetDBFields<CreatureAddon>(false);
             var rows = new RowList<Creature>();
             var addonRows = new RowList<CreatureAddon>();
+
             foreach (var unit in units)
             {
                 Row<Creature> row = new Row<Creature>();
@@ -65,14 +70,14 @@ namespace WowPacketParser.SQL.Builders
                     continue;   // broken entry, nothing to spawn
 
                 uint movementType = 0;
-                int spawnDist = 0;
+                int wanderDistance = 0;
                 row.Data.AreaID = 0;
                 row.Data.ZoneID = 0;
 
                 if (creature.Movement.HasWpsOrRandMov)
                 {
                     movementType = 1;
-                    spawnDist = 10;
+                    wanderDistance = 10;
                 }
 
                 row.Data.GUID = "@CGUID+" + count;
@@ -110,7 +115,7 @@ namespace WowPacketParser.SQL.Builders
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595) && creature.Phases != null)
                 {
                     string data = string.Join(" - ", creature.Phases);
-                    if (string.IsNullOrEmpty(data))
+                    if (string.IsNullOrEmpty(data) || Settings.ForcePhaseZero)
                         data = "0";
 
                     row.Data.PhaseID = data;
@@ -132,7 +137,7 @@ namespace WowPacketParser.SQL.Builders
                 }
 
                 row.Data.SpawnTimeSecs = creature.GetDefaultSpawnTime(creature.DifficultyID);
-                row.Data.SpawnDist = spawnDist;
+                row.Data.WanderDistance = wanderDistance;
                 row.Data.MovementType = movementType;
 
                 // set some defaults
@@ -175,7 +180,6 @@ namespace WowPacketParser.SQL.Builders
                 var addonRow = new Row<CreatureAddon>();
                 if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_addon))
                 {
-                    addonRow.Data.GUID = "@CGUID+" + count;
                     addonRow.Data.PathID = 0;
                     addonRow.Data.Mount = (uint)creature.UnitData.MountDisplayID;
                     addonRow.Data.Bytes1 = creature.Bytes1;
@@ -185,10 +189,15 @@ namespace WowPacketParser.SQL.Builders
                     addonRow.Data.AIAnimKit = creature.AIAnimKit.GetValueOrDefault(0);
                     addonRow.Data.MovementAnimKit = creature.MovementAnimKit.GetValueOrDefault(0);
                     addonRow.Data.MeleeAnimKit = creature.MeleeAnimKit.GetValueOrDefault(0);
-                    addonRow.Comment += StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
-                    if (!string.IsNullOrWhiteSpace(auras))
-                        addonRow.Comment += " - " + commentAuras;
-                    addonRows.Add(addonRow);
+
+                    if (addonDefault == null || !SQLUtil.AreDBFieldsEqual(addonDefault, addonRow.Data, dbFields))
+                    {
+                        addonRow.Data.GUID = $"@CGUID+{count}";
+                        addonRow.Comment += StoreGetters.GetName(StoreNameType.Unit, (int)unit.Key.GetEntry(), false);
+                        if (!string.IsNullOrWhiteSpace(auras))
+                            addonRow.Comment += $" - {commentAuras}";
+                        addonRows.Add(addonRow);
+                    }
                 }
 
                 if (creature.IsTemporarySpawn() && !Settings.SaveTempSpawns)
@@ -309,7 +318,13 @@ namespace WowPacketParser.SQL.Builders
                 row.Data.PhaseMask = go.PhaseMask;
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595) && go.Phases != null)
-                    row.Data.PhaseID = string.Join(" - ", go.Phases);
+                {
+                    string data = string.Join(" - ", go.Phases);
+                    if (string.IsNullOrEmpty(data) || Settings.ForcePhaseZero)
+                        data = "0";
+
+                    row.Data.PhaseID = data;
+                }
 
                 if (!go.IsOnTransport())
                 {

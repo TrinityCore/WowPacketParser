@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Text;
 using WowPacketParser.Misc;
@@ -84,19 +85,19 @@ namespace WowPacketParser.Parsing.Parsers
             switch (state)
             {
                 case 0:
-                    AddValue("I", Utilities.ByteArrayToHexString(reader.ReadBytes(32)), values);
-                    AddValue("s", Utilities.ByteArrayToHexString(reader.ReadBytes(32)), values);
-                    AddValue("B", Utilities.ByteArrayToHexString(reader.ReadBytes(128)), values);
-                    AddValue("unk", Utilities.ByteArrayToHexString(reader.ReadBytes(128)), values);
+                    AddValue("I", Convert.ToHexString(reader.ReadBytes(32)), values);
+                    AddValue("s", Convert.ToHexString(reader.ReadBytes(32)), values);
+                    AddValue("B", Convert.ToHexString(reader.ReadBytes(128)), values);
+                    AddValue("unk", Convert.ToHexString(reader.ReadBytes(128)), values);
                     return false;
                 case 2:
-                    AddValue("a", Utilities.ByteArrayToHexString(reader.ReadBytes(128)), values);
-                    AddValue("M1", Utilities.ByteArrayToHexString(reader.ReadBytes(32)), values);
-                    AddValue("A", Utilities.ByteArrayToHexString(reader.ReadBytes(128)), values);
+                    AddValue("a", Convert.ToHexString(reader.ReadBytes(128)), values);
+                    AddValue("M1", Convert.ToHexString(reader.ReadBytes(32)), values);
+                    AddValue("A", Convert.ToHexString(reader.ReadBytes(128)), values);
                     return true;
                 case 3:
-                    AddValue("M2", Utilities.ByteArrayToHexString(reader.ReadBytes(32)), values);
-                    AddValue("unk", Utilities.ByteArrayToHexString(reader.ReadBytes(128)), values);
+                    AddValue("M2", Convert.ToHexString(reader.ReadBytes(32)), values);
+                    AddValue("unk", Convert.ToHexString(reader.ReadBytes(128)), values);
                     return true;
             }
             return false;
@@ -110,22 +111,22 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 case 0:
                     AddValue("Unk", reader.ReadByte(), values);
-                    AddValue("Token id", Utilities.ByteArrayToHexString(reader.ReadBytes(8).Reverse().ToArray()), values);
+                    AddValue("Token id", Convert.ToHexString(reader.ReadBytes(8).Reverse().ToArray()), values);
                     AddValue("Unk counter", reader.ReadByte(), values);
-                    AddValue("Crypt entropy", Utilities.ByteArrayToHexString(reader.ReadBytes(16)), values);
+                    AddValue("Crypt entropy", Convert.ToHexString(reader.ReadBytes(16)), values);
                     return false;
                 case 1:
-                    AddValue("Token key", Utilities.ByteArrayToHexString(reader.ReadBytes(8)), values);
+                    AddValue("Token key", Convert.ToHexString(reader.ReadBytes(8)), values);
                     AddValue("Token", reader.ReadUInt32(), values);
                     return true;
                 case 2:
-                    AddValue("data", Utilities.ByteArrayToHexString(reader.ReadBytes(36)), values);
+                    AddValue("data", Convert.ToHexString(reader.ReadBytes(36)), values);
                     return true;
                 case 3:
-                    AddValue("Token id", Utilities.ByteArrayToHexString(reader.ReadBytes(8).Reverse().ToArray()), values);
-                    AddValue("Crypt entropy", Utilities.ByteArrayToHexString(reader.ReadBytes(16)), values);
-                    AddValue("Token key", Utilities.ByteArrayToHexString(reader.ReadBytes(8)), values);
-                    AddValue("Token data", Utilities.ByteArrayToHexString(reader.ReadBytes(16)), values);
+                    AddValue("Token id", Convert.ToHexString(reader.ReadBytes(8).Reverse().ToArray()), values);
+                    AddValue("Crypt entropy", Convert.ToHexString(reader.ReadBytes(16)), values);
+                    AddValue("Token key", Convert.ToHexString(reader.ReadBytes(8)), values);
+                    AddValue("Token data", Convert.ToHexString(reader.ReadBytes(16)), values);
                     return true;
             }
 
@@ -134,7 +135,7 @@ namespace WowPacketParser.Parsing.Parsers
 
         private bool HandleThumbprint(BinaryReader reader, params object[] values)
         {
-            AddValue("Data", Utilities.ByteArrayToHexString(reader.ReadBytes(512)), values);
+            AddValue("Data", Convert.ToHexString(reader.ReadBytes(512)), values);
             return true;
         }
 
@@ -187,14 +188,14 @@ namespace WowPacketParser.Parsing.Parsers
             switch (state)
             {
                 case 0:
-                    AddValue("Server challenge", Utilities.ByteArrayToHexString(reader.ReadBytes(16).Reverse().ToArray()), values);
+                    AddValue("Server challenge", Convert.ToHexString(reader.ReadBytes(16).Reverse().ToArray()), values);
                     return false;
                 case 1:
-                    AddValue("Client challenge", Utilities.ByteArrayToHexString(reader.ReadBytes(16).Reverse().ToArray()), values);
-                    AddValue("Client proof", Utilities.ByteArrayToHexString(reader.ReadBytes(32).Reverse().ToArray()), values);
+                    AddValue("Client challenge", Convert.ToHexString(reader.ReadBytes(16).Reverse().ToArray()), values);
+                    AddValue("Client proof", Convert.ToHexString(reader.ReadBytes(32).Reverse().ToArray()), values);
                     break;
                 case 2:
-                    AddValue("Server proof", Utilities.ByteArrayToHexString(reader.ReadBytes(32).Reverse().ToArray()), values);
+                    AddValue("Server proof", Convert.ToHexString(reader.ReadBytes(32).Reverse().ToArray()), values);
                     break;
             }
 

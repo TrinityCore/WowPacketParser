@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Enums.Battlenet;
+﻿using System;
+using WowPacketParser.Enums.Battlenet;
 
 namespace WowPacketParser.Misc
 {
@@ -87,7 +88,7 @@ namespace WowPacketParser.Misc
         public byte[] ReadBytes(string name, int length, params object[] indexes)
         {
             var value = BitStream.ReadBytes(length);
-            Stream.AddValue(name, Utilities.ByteArrayToHexString(value), indexes);
+            Stream.AddValue(name, Convert.ToHexString(value), indexes);
             return value;
         }
 

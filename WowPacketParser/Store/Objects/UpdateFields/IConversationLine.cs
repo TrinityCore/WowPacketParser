@@ -1,4 +1,5 @@
-﻿namespace WowPacketParser.Store.Objects.UpdateFields
+﻿
+namespace WowPacketParser.Store.Objects.UpdateFields
 {
     public interface IConversationLine
     {

@@ -252,7 +252,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                         var optionalData = db2File.ReadBytes(24);
 
                         packet.AddValue($"(OptionalData) [{i}] Key:", hash);
-                        packet.AddValue($"(OptionalData) [{i}] OptionalData:", Utilities.ByteArrayToHexString(optionalData));
+                        packet.AddValue($"(OptionalData) [{i}] OptionalData:", Convert.ToHexString(optionalData));
 
                         HotfixOptionalData hotfixOptionalData = new HotfixOptionalData
                         {

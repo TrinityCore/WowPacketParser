@@ -10,38 +10,38 @@ namespace WowPacketParserModule.V9_0_1_36216.UpdateFields.V9_1_5_40772
         public WowGuid DuelArbiter { get; set; }
         public WowGuid WowAccount { get; set; }
         public WowGuid LootTargetGUID { get; set; }
-        public uint PlayerFlags { get; set; }
-        public uint PlayerFlagsEx { get; set; }
-        public uint GuildRankID { get; set; }
-        public uint GuildDeleteDate { get; set; }
-        public int GuildLevel { get; set; }
-        public byte PartyType { get; set; }
-        public byte NativeSex { get; set; }
-        public byte Inebriation { get; set; }
-        public byte PvpTitle { get; set; }
-        public byte ArenaFaction { get; set; }
-        public uint DuelTeam { get; set; }
-        public int GuildTimeStamp { get; set; }
+        public System.Nullable<uint> PlayerFlags { get; set; }
+        public System.Nullable<uint> PlayerFlagsEx { get; set; }
+        public System.Nullable<uint> GuildRankID { get; set; }
+        public System.Nullable<uint> GuildDeleteDate { get; set; }
+        public System.Nullable<int> GuildLevel { get; set; }
+        public System.Nullable<byte> PartyType { get; set; }
+        public System.Nullable<byte> NativeSex { get; set; }
+        public System.Nullable<byte> Inebriation { get; set; }
+        public System.Nullable<byte> PvpTitle { get; set; }
+        public System.Nullable<byte> ArenaFaction { get; set; }
+        public System.Nullable<uint> DuelTeam { get; set; }
+        public System.Nullable<int> GuildTimeStamp { get; set; }
         public IQuestLog[] QuestLog { get; } = new IQuestLog[125];
         public IVisibleItem[] VisibleItems { get; } = new IVisibleItem[19];
-        public int PlayerTitle { get; set; }
-        public int FakeInebriation { get; set; }
-        public uint VirtualPlayerRealm { get; set; }
-        public uint CurrentSpecID { get; set; }
-        public int TaxiMountAnimKitID { get; set; }
-        public float[] AvgItemLevel { get; } = new float[6];
-        public byte CurrentBattlePetBreedQuality { get; set; }
-        public int HonorLevel { get; set; }
-        public int Field_B0 { get; set; }
-        public int Field_B4 { get; set; }
+        public System.Nullable<int> PlayerTitle { get; set; }
+        public System.Nullable<int> FakeInebriation { get; set; }
+        public System.Nullable<uint> VirtualPlayerRealm { get; set; }
+        public System.Nullable<uint> CurrentSpecID { get; set; }
+        public System.Nullable<int> TaxiMountAnimKitID { get; set; }
+        public System.Nullable<float>[] AvgItemLevel { get; } = new System.Nullable<float>[6];
+        public System.Nullable<byte> CurrentBattlePetBreedQuality { get; set; }
+        public System.Nullable<int> HonorLevel { get; set; }
+        public System.Nullable<int> Field_B0 { get; set; }
+        public System.Nullable<int> Field_B4 { get; set; }
         public ICTROptions CtrOptions { get; set; }
-        public int CovenantID { get; set; }
-        public int SoulbindID { get; set; }
+        public System.Nullable<int> CovenantID { get; set; }
+        public System.Nullable<int> SoulbindID { get; set; }
         public DynamicUpdateField<IChrCustomizationChoice> Customizations { get; } = new DynamicUpdateField<IChrCustomizationChoice>();
         public DynamicUpdateField<IQuestLog> QuestSessionQuestLog { get; } = new DynamicUpdateField<IQuestLog>();
         public DynamicUpdateField<IArenaCooldown> ArenaCooldowns { get; } = new DynamicUpdateField<IArenaCooldown>();
-        public bool HasQuestSession { get; set; }
-        public bool HasLevelLink { get; set; }
+        public System.Nullable<bool> HasQuestSession { get; set; }
+        public System.Nullable<bool> HasLevelLink { get; set; }
     }
 }
 

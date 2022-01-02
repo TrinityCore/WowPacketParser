@@ -31,9 +31,9 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
             }
         }
 
-        public uint Flags => UpdateFields.GetValue<GameObjectField, uint>(GameObjectField.GAMEOBJECT_FLAGS);
+        public uint? Flags => UpdateFields.GetValue<GameObjectField, uint>(GameObjectField.GAMEOBJECT_FLAGS);
 
-        public Quaternion ParentRotation
+        public Quaternion? ParentRotation
         {
             get
             {
@@ -43,12 +43,18 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
             }
         }
 
-        public int FactionTemplate => UpdateFields.GetValue<GameObjectField, int>(GameObjectField.GAMEOBJECT_FACTION);
+        public int? FactionTemplate => UpdateFields.GetValue<GameObjectField, int?>(GameObjectField.GAMEOBJECT_FACTION);
 
-        public sbyte State => (sbyte)(UpdateFields.GetValue<GameObjectField, int>(GameObjectField.GAMEOBJECT_BYTES_1) & 0x000000FF);
+        public sbyte? State => (sbyte)(UpdateFields.GetValue<GameObjectField, int>(GameObjectField.GAMEOBJECT_BYTES_1) & 0x000000FF);
 
-        public sbyte TypeID => (sbyte)((UpdateFields.GetValue<GameObjectField, int>(GameObjectField.GAMEOBJECT_BYTES_1) & 0x0000FF00) >> 8);
+        public sbyte? TypeID => (sbyte)((UpdateFields.GetValue<GameObjectField, int>(GameObjectField.GAMEOBJECT_BYTES_1) & 0x0000FF00) >> 8);
 
-        public byte PercentHealth => (byte)((UpdateFields.GetValue<GameObjectField, uint>(GameObjectField.GAMEOBJECT_BYTES_1) & 0xFF000000) >> 24);
+        public byte? PercentHealth => (byte)((UpdateFields.GetValue<GameObjectField, uint>(GameObjectField.GAMEOBJECT_BYTES_1) & 0xFF000000) >> 24);
+        
+        public int? DisplayID => UpdateFields.GetValue<GameObjectField, int?>(GameObjectField.GAMEOBJECT_DISPLAYID);
+        
+        public uint? ArtKit => UpdateFields.GetValue<GameObjectField, uint?>(GameObjectField.GAMEOBJECT_ARTKIT);
+        
+        public int? Level => UpdateFields.GetValue<GameObjectField, int?>(GameObjectField.GAMEOBJECT_LEVEL);
     }
 }

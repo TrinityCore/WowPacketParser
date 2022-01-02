@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Store;
@@ -138,23 +139,24 @@ namespace WowPacketParser.SQL
                 value = string.Format("{0:F20}", value).Substring(0, 20).TrimEnd('0').TrimEnd('.');
 
             if (value is Blob blob)
-                value = "0x" + Utilities.ByteArrayToHexString(blob.Data);
+                value = "0x" + Convert.ToHexString(blob.Data);
 
             return value;
         }
 
-        public static string GetTableName<T>() where T : IDataModel
+        public static string GetTableName<T>(bool noBackQuotes = false) where T : IDataModel
         {
             var tableAttrs = typeof(T).GetCustomAttributes(typeof(DBTableNameAttribute), false)
                 .Cast<DBTableNameAttribute>()
                 .Where(attr => attr.IsVisible())
                 .ToArray();
             if (tableAttrs.Length > 0)
-                return AddBackQuotes(tableAttrs[0].Name);
+                return noBackQuotes ? tableAttrs[0].Name : AddBackQuotes(tableAttrs[0].Name);
 
             //convert CamelCase name to camel_case
             var name = typeof(T).Name;
-            return AddBackQuotes(string.Concat(name.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString().ToLower() : x.ToString().ToLower())));
+            var tableNameByClass = string.Concat(name.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString().ToLower() : x.ToString().ToLower()));
+            return noBackQuotes ? tableNameByClass : AddBackQuotes(tableNameByClass);
         }
 
         public static List<Tuple<string, FieldInfo, List<DBFieldNameAttribute>>> GetFields<T>() where T : IDataModel
@@ -209,14 +211,13 @@ namespace WowPacketParser.SQL
 
             var rowsIns = new RowList<T>();
             var rowsUpd = new Dictionary<Row<T>, RowList<T>>();
+            var lastField = fields[fields.Count - 1];
+            var verBuildField = fields.FirstOrDefault(f => f.Item2.Name == "VerifiedBuild");
 
             foreach (var elem1 in storeList)
             {
                 if (dbList != null && dbList.ContainsKey(elem1.Item1) && !Settings.ForceInsertQueries) // update
                 {
-
-                    var lastField = fields[fields.Count - 1];
-                    var verBuildField = fields.FirstOrDefault(f => f.Item2.Name == "VerifiedBuild");
                     if (verBuildField != null)
                     {
                         var buildvSniff = (int)lastField.Item2.GetValue(elem1.Item1);
@@ -228,43 +229,59 @@ namespace WowPacketParser.SQL
 
                     var row = new Row<T>();
                     var elem2 = dbList[elem1.Item1].Data;
-
-                    row.Comment = commentSetter(elem1.Item1);
+                    var fieldUpdateCount = 0;
+                    var comment = commentSetter(elem1.Item1);
+                    var differingValues = (T)Activator.CreateInstance(typeof(T));
 
                     foreach (var field in fields)
                     {
                         var val1 = field.Item2.GetValue(elem1.Item1);
                         var val2 = field.Item2.GetValue(elem2);
+                        var attrib = field.Item3.First();
 
                         var arr1 = val1 as Array;
                         if (arr1 != null)
                         {
                             var arr2 = (Array)val2;
-
-                            for (var i = 0; i < field.Item3.First().Count; i++)
+                            bool arraysEqual = true;
+                            for (var i = 0; i < attrib.Count; i++)
                             {
                                 var value1 = arr1.GetValue(i);
                                 var value2 = arr2.GetValue(i);
 
                                 if (Utilities.EqualValues(value1, value2))
+                                {
                                     arr1.SetValue(null, i);
+                                }
+                                else
+                                {
+                                    arraysEqual = false;
+                                    fieldUpdateCount++;
+                                }
                             }
-                            field.Item2.SetValue(elem1.Item1, arr1);
+
+                            if (!arraysEqual)
+                                field.Item2.SetValue(differingValues, arr1);
                             continue;
                         }
 
-                        if ((val2 is Array) && val1 == null)
-                            continue;
-
-                        if (val1 is string)
-                            val1 = ((string)val1).Replace(Environment.NewLine, "\n");
-
-                        if (Utilities.EqualValues(val1, val2))
-                            field.Item2.SetValue(elem1.Item1, null);
+                        if (!IsFieldEqual(val1, val2, attrib))
+                        {
+                            fieldUpdateCount++;
+                            field.Item2.SetValue(differingValues, val1);
+                        }
                     }
 
-                    row.Data = elem1.Item1;
-                    if (row.Comment.Length == 0 && rowsUpd.TryGetValue(row, out var conditions))
+                    // no updates required, skip
+                    if (fieldUpdateCount == 0)
+                        continue;
+
+                    // only set comment for rows which arent updating VerifiedBuild only
+                    if (fieldUpdateCount != 1 || verBuildField == null || lastField.Item2.GetValue(elem1.Item1) == null)
+                        row.Comment = comment;
+
+                    row.Data = differingValues;
+                    if (rowsUpd.TryGetValue(row, out var conditions))
                     {
                         conditions.Add(elem2);
                         continue;
@@ -720,6 +737,151 @@ namespace WowPacketParser.SQL
 
             return result;*/
             return string.Empty;
+        }
+
+        public static T GetDefaultObject<T>() where T : IDataModel, new()
+        {
+            var tableName = GetTableName<T>(true);
+
+            //                              0                 1
+            var query = $"SELECT `COLUMN_NAME`, `COLUMN_DEFAULT` FROM `information_schema`.`COLUMNS` WHERE `TABLE_SCHEMA`='{Settings.TDBDatabase}' AND `TABLE_NAME`='{tableName}'";
+            using (var command = SQLConnector.CreateCommand(query))
+            {
+                if (command == null)
+                    return default;
+
+                var fields = GetFields<T>();
+                var instance = (T)Activator.CreateInstance(typeof(T));
+
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var values = new object[2];
+                        reader.GetValues(values);
+
+                        var field = fields.Where(f => f.Item3.First().Name == (string)values[0]).FirstOrDefault();
+                        var idx = 0;
+
+                        if (field == null)
+                        {
+                            // check if its an array
+                            var matchList = Regex.Matches((string)values[0], "([a-zA-Z-_]+)(\\d+)");
+
+                            if (matchList.Count == 0)
+                                continue;
+
+                            var fieldName = matchList[0].Groups[1].Value;
+                            field = fields.Where(f => f.Item3.First().Name == fieldName).FirstOrDefault();
+
+                            if (field == null)
+                                continue;
+
+                            idx = int.Parse(matchList[0].Groups[2].Value);
+                            if (!field.Item3.First().StartAtZero)
+                                idx -= 1;
+                        }
+
+                        SetFieldValueByDB(instance, field, values, 1, true);
+                    }
+                }
+                return instance;
+            }
+        }
+
+        public static bool IsFieldEqual(object val1, object val2, DBFieldNameAttribute field)
+        {
+            var arr1 = val1 as Array;
+            if (arr1 != null)
+            {
+                var arr2 = (Array)val2;
+
+                for (var i = 0; i < field.Count; i++)
+                {
+                    var value1 = arr1.GetValue(i);
+                    var value2 = arr2.GetValue(i);
+
+                    if (!Utilities.EqualValues(value1, value2))
+                        return false;
+                }
+                return true;
+            }
+
+            if ((val2 is Array) && val1 == null)
+                return true;
+
+            if (val1 is string)
+                val1 = ((string)val1).Replace(Environment.NewLine, "\n");
+
+            return Utilities.EqualValues(val1, val2);
+        }
+
+        public static List<Tuple<FieldInfo, DBFieldNameAttribute>> GetDBFields<T>(bool includePrimaryKeys) where T : IDataModel, new()
+        {
+            return Utilities.GetFieldsAndAttributes<T, DBFieldNameAttribute>()
+                .Where(field => field.Value.Any(f => f.IsVisible() && (!f.IsPrimaryKey || (includePrimaryKeys && f.IsPrimaryKey))))
+                .Select(field => new Tuple<FieldInfo, DBFieldNameAttribute>(field.Key, field.Value.First()))
+                .ToList();
+        }
+
+        public static bool AreDBFieldsEqual<T>(T a, T b, List<Tuple<FieldInfo, DBFieldNameAttribute>> fields) where T : IDataModel, new()
+        {
+            foreach (var field in fields)
+            {
+                var val1 = field.Item1.GetValue(a);
+                var val2 = field.Item1.GetValue(b);
+
+                if (!IsFieldEqual(val1, val2, field.Item2))
+                    return false;
+            }
+            return true;
+        }
+
+        public static void SetFieldValueByDB<T>(T instance, Tuple<string, FieldInfo, List<DBFieldNameAttribute>> field, object[] values, int idx, bool singleFieldsOnly = false)
+        {
+            if (values[idx] is DBNull)
+            {
+                if (field.Item2.FieldType == typeof(string))
+                    field.Item2.SetValue(instance, string.Empty);
+                else if (field.Item3.Any(a => a.Nullable))
+                    field.Item2.SetValue(instance, null);
+            }
+            else if (field.Item2.FieldType.BaseType == typeof(Enum))
+                field.Item2.SetValue(instance, Enum.Parse(field.Item2.FieldType, values[idx].ToString()));
+            else if (field.Item2.FieldType.BaseType == typeof(Array))
+            {
+                Array arr = (singleFieldsOnly ? (Array)field.Item2.GetValue(instance) : null);
+                if (arr == null)
+                    arr = Array.CreateInstance(field.Item2.FieldType.GetElementType(), field.Item3.First().Count); Array.CreateInstance(field.Item2.FieldType.GetElementType(), field.Item3.First().Count);
+
+                int arrayLength = (singleFieldsOnly ? 1 : arr.Length);
+                for (var j = 0; j < arrayLength; j++)
+                {
+                    var elemType = arr.GetType().GetElementType();
+
+                    if (elemType.IsEnum)
+                        arr.SetValue(Enum.Parse(elemType, values[idx + j].ToString()), j);
+                    else if (Nullable.GetUnderlyingType(elemType) != null) //is nullable
+                        arr.SetValue(Convert.ChangeType(values[idx + j], Nullable.GetUnderlyingType(elemType)), j);
+                    else
+                        arr.SetValue(Convert.ChangeType(values[idx + j], elemType), j);
+                }
+                field.Item2.SetValue(instance, arr);
+            }
+            else if (field.Item2.FieldType == typeof(bool))
+                field.Item2.SetValue(instance, Convert.ToBoolean(values[idx]));
+            else if (Nullable.GetUnderlyingType(field.Item2.FieldType) != null) // is nullable
+            {
+                var uType = Nullable.GetUnderlyingType(field.Item2.FieldType);
+                field.Item2.SetValue(instance,
+                    uType.IsEnum
+                        ? Enum.Parse(uType, values[idx].ToString())
+                        : Convert.ChangeType(values[idx], uType));
+            }
+            else if (field.Item2.FieldType == typeof(Blob))
+                field.Item2.SetValue(instance, new Blob(values[idx] as byte[]));
+            else
+                field.Item2.SetValue(instance, values[idx]);
         }
     }
 }

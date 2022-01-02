@@ -24,6 +24,11 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template_addon))
                 return string.Empty;
 
+            CreatureTemplateAddon templateAddonDefault = null;
+            if (Settings.DBEnabled && Settings.SkipRowsWithFallbackValues)
+                templateAddonDefault = SQLUtil.GetDefaultObject<CreatureTemplateAddon>();
+
+            var dbFields = SQLUtil.GetDBFields<CreatureTemplateAddon>(false);
             var addons = new DataBag<CreatureTemplateAddon>();
             foreach (var unit in units)
             {
@@ -69,6 +74,9 @@ namespace WowPacketParser.SQL.Builders
                     CommentAuras = commentAuras
                 };
 
+                if (templateAddonDefault != null && SQLUtil.AreDBFieldsEqual(addon, templateAddonDefault, dbFields))
+                    continue;
+
                 if (addons.ContainsKey(addon))
                     continue;
 
@@ -97,9 +105,9 @@ namespace WowPacketParser.SQL.Builders
             foreach (var pair in entries.SelectMany(entry => entry))
             {
                 if (list.ContainsKey(pair.Key.GetEntry()))
-                    list[pair.Key.GetEntry()].Add(pair.Value.UnitData.ScalingLevelDelta);
+                    list[pair.Key.GetEntry()].Add(pair.Value.UnitData.ScalingLevelDelta ?? 0);
                 else
-                    list.Add(pair.Key.GetEntry(), new List<int> { pair.Value.UnitData.ScalingLevelDelta });
+                    list.Add(pair.Key.GetEntry(), new List<int> { pair.Value.UnitData.ScalingLevelDelta ?? 0 });
             }
 
             var result = list.ToDictionary(pair => pair.Key, pair => Tuple.Create(pair.Value.Min(), pair.Value.Max()));
@@ -415,9 +423,9 @@ namespace WowPacketParser.SQL.Builders
             foreach (var pair in entries.SelectMany(entry => entry))
             {
                 if (list.ContainsKey(pair.Key.GetEntry()))
-                    list[pair.Key.GetEntry()].Add(pair.Value.UnitData.Level);
+                    list[pair.Key.GetEntry()].Add(pair.Value.UnitData.Level ?? 0);
                 else
-                    list.Add(pair.Key.GetEntry(), new List<int> { pair.Value.UnitData.Level });
+                    list.Add(pair.Key.GetEntry(), new List<int> { pair.Value.UnitData.Level ?? 0 });
             }
 
             var result = list.ToDictionary(pair => pair.Key, pair => ValueTuple.Create(pair.Value.Min(), pair.Value.Max()));
@@ -545,7 +553,7 @@ namespace WowPacketParser.SQL.Builders
                     MinLevel = minMaxLevel.MinLevel,
                     MaxLevel = minMaxLevel.MaxLevel,
                     Faction = (uint)npc.UnitData.FactionTemplate,
-                    NpcFlag = (NPCFlags)Utilities.MAKE_PAIR64(npc.UnitData.NpcFlags[0], npc.UnitData.NpcFlags[1]),
+                    NpcFlag = (NPCFlags)Utilities.MAKE_PAIR64(npc.UnitData.NpcFlags[0] ?? 0, npc.UnitData.NpcFlags[1] ?? 0),
                     SpeedRun = npc.Movement.RunSpeed,
                     SpeedWalk = npc.Movement.WalkSpeed,
                     BaseAttackTime = npc.UnitData.AttackRoundBaseTime[0],
