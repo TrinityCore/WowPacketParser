@@ -231,7 +231,7 @@ namespace WowPacketParser.SQL
                     var elem2 = dbList[elem1.Item1].Data;
                     var fieldUpdateCount = 0;
                     var comment = commentSetter(elem1.Item1);
-                    var differingValues = (T)Activator.CreateInstance(typeof(T));
+                    var differingValues = new T(); // we are creating a new object here to always have the same values for non db fields
 
                     foreach (var field in fields)
                     {
@@ -262,6 +262,8 @@ namespace WowPacketParser.SQL
 
                             if (!arraysEqual)
                                 field.Item2.SetValue(differingValues, arr1);
+                            else
+                                field.Item2.SetValue(differingValues, null); // make sure to null default values
                             continue;
                         }
 
@@ -270,6 +272,8 @@ namespace WowPacketParser.SQL
                             fieldUpdateCount++;
                             field.Item2.SetValue(differingValues, val1);
                         }
+                        else
+                            field.Item2.SetValue(differingValues, null); // make sure to null default values
                     }
 
                     // no updates required, skip
