@@ -294,6 +294,9 @@ namespace WowPacketParser.SQL
             if (!SQLConnector.Enabled)
                 return null;
 
+            if (!SQLUtil.IsTableVisible<T>())
+                return null;
+
             var result = new RowList<T>();
 
             using (var command = SQLConnector.CreateCommand(new SQLSelect<T>(rowList, database).Build()))

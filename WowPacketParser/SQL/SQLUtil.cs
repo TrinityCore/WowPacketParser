@@ -144,12 +144,22 @@ namespace WowPacketParser.SQL
             return value;
         }
 
-        public static string GetTableName<T>(bool noBackQuotes = false) where T : IDataModel
+        public static DBTableNameAttribute[] GetVisibleDBTableNameAttributes<T>() where T : IDataModel
         {
-            var tableAttrs = typeof(T).GetCustomAttributes(typeof(DBTableNameAttribute), false)
+            return typeof(T).GetCustomAttributes(typeof(DBTableNameAttribute), false)
                 .Cast<DBTableNameAttribute>()
                 .Where(attr => attr.IsVisible())
                 .ToArray();
+        }
+
+        public static bool IsTableVisible<T>() where T : IDataModel
+        {
+            return GetVisibleDBTableNameAttributes<T>().Length > 0;
+        }
+
+        public static string GetTableName<T>(bool noBackQuotes = false) where T : IDataModel
+        {
+            var tableAttrs = GetVisibleDBTableNameAttributes<T>();
             if (tableAttrs.Length > 0)
                 return noBackQuotes ? tableAttrs[0].Name : AddBackQuotes(tableAttrs[0].Name);
 
@@ -205,6 +215,9 @@ namespace WowPacketParser.SQL
         public static string Compare<T>(IEnumerable<Tuple<T, TimeSpan?>> storeList, RowList<T> dbList, Func<T, string> commentSetter)
             where T : IDataModel, new()
         {
+            if (!IsTableVisible<T>())
+                return string.Empty;
+
             var fields = GetFields<T>();
             if (fields == null)
                 return string.Empty;
