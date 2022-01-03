@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Misc;
+﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
@@ -8,6 +9,9 @@ namespace WowPacketParser.Store.Objects
     {
         [DBFieldName("Id", true)]
         public uint? Id;
+
+        [DBFieldName("IsServerSide", TargetedDatabase.Shadowlands, true)]
+        public byte? IsServerSide = 0;
 
         [DBFieldName("Type")] // kept in TargetedDatabase.Shadowlands to preserve data for non-spell areatriggers
         public byte? Type;
