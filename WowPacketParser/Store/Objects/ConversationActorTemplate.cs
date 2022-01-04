@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Misc;
+﻿using WowPacketParser.Enums;
+using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
@@ -9,7 +10,7 @@ namespace WowPacketParser.Store.Objects
         CreatureActor = 1
     };
 
-    [DBTableName("conversation_actor_template")]
+    [DBTableName("conversation_actor_template", TargetedDatabase.Zero, TargetedDatabase.BattleForAzeroth)]
     public sealed record ConversationActorTemplate : IDataModel
     {
         [DBFieldName("Id", true)]

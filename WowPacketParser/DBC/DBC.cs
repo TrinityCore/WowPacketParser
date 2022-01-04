@@ -218,10 +218,8 @@ namespace WowPacketParser.DBC
                 }
 
                 if (valid)
-                {
-                    Trace.WriteLine($"PhaseGroup: { phaseGroup.Key } Phases: { string.Join(" - ", phaseGroup.Value) }");
                     phaseGroups.Add(phaseGroup.Key);
-                }
+
             }
 
             return phaseGroups;
