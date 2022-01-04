@@ -451,6 +451,7 @@ namespace WowPacketParser.Enums
         V2_5_2_40617 = 40617, // both live and ptr
         V2_5_2_40892 = 40892, // both live and ptr
         V2_5_2_41446 = 41446, // both live and ptr
+        V2_5_2_41510 = 41510, // Live
 
         // Battle.net - should probably not mix this but oh well
         BattleNetV37165 = 37165,
