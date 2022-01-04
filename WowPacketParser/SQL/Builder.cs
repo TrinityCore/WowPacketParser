@@ -63,39 +63,11 @@ namespace WowPacketParser.SQL
             }
         }
 
-        public static void DumpSQL(string prefix, string fileName, string header)
+        public static void DumpFile(string prefix, string fileName, string header, List<MethodInfo> builderMethods, Dictionary<WowGuid, Unit> units, Dictionary<WowGuid, GameObject> gameObjects)
         {
             var startTime = DateTime.Now;
-
-            LoadNames();
-
-            var units = Storage.Objects.IsEmpty()
-                ? new Dictionary<WowGuid, Unit>()                                                               // empty dict if there are no objects
-                : Storage.Objects.Where(
-                    obj =>
-                        obj.Value.Item1.Type == ObjectType.Unit && obj.Key.GetHighType() != HighGuidType.Pet && // remove pets
-                        !obj.Value.Item1.IsTemporarySpawn())                                                    // remove temporary spawns
-                    .OrderBy(pair => pair.Value.Item2)                                                          // order by spawn time
-                    .ToDictionary(obj => obj.Key, obj => obj.Value.Item1 as Unit);
-
-            var gameObjects = Storage.Objects.IsEmpty()
-                ? new Dictionary<WowGuid, GameObject>()                                                         // empty dict if there are no objects
-                : Storage.Objects.Where(obj => obj.Value.Item1.Type == ObjectType.GameObject)
-                    .OrderBy(pair => pair.Value.Item2)                                                          // order by spawn time
-                    .ToDictionary(obj => obj.Key, obj => obj.Value.Item1 as GameObject);
-
-            foreach (var obj in Storage.Objects)
-                obj.Value.Item1.LoadValuesFromUpdateFields();
-
             using (var store = new SQLFile(fileName))
             {
-                var builderMethods = Assembly.GetExecutingAssembly()
-                    .GetTypes()
-                    .Where(type => type.GetCustomAttributes(typeof (BuilderClassAttribute), true).Length > 0)
-                    .SelectMany(x => x.GetMethods())
-                    .Where(y => y.GetCustomAttributes().OfType<BuilderMethodAttribute>().Any())
-                    .ToList();
-
                 for (int i = 1; i <= builderMethods.Count; i++)
                 {
                     var method = builderMethods[i - 1];
@@ -135,7 +107,59 @@ namespace WowPacketParser.SQL
                     : "No SQL files created -- empty.");
                 var endTime = DateTime.Now;
                 var span = endTime.Subtract(startTime);
-                Trace.WriteLine($"Finished SQL file in {span.ToFormattedString()}.");
+                Trace.WriteLine($"Finished SQL file {fileName} in {span.ToFormattedString()}.");
+            }
+        }
+
+        public static void DumpSQL(string prefix, string fileName, string header)
+        {
+            var startTime = DateTime.Now;
+
+            LoadNames();
+
+            var units = Storage.Objects.IsEmpty()
+                ? new Dictionary<WowGuid, Unit>()                                                               // empty dict if there are no objects
+                : Storage.Objects.Where(
+                    obj =>
+                        obj.Value.Item1.Type == ObjectType.Unit && obj.Key.GetHighType() != HighGuidType.Pet && // remove pets
+                        !obj.Value.Item1.IsTemporarySpawn())                                                    // remove temporary spawns
+                    .OrderBy(pair => pair.Value.Item2)                                                          // order by spawn time
+                    .ToDictionary(obj => obj.Key, obj => obj.Value.Item1 as Unit);
+
+            var gameObjects = Storage.Objects.IsEmpty()
+                ? new Dictionary<WowGuid, GameObject>()                                                         // empty dict if there are no objects
+                : Storage.Objects.Where(obj => obj.Value.Item1.Type == ObjectType.GameObject)
+                    .OrderBy(pair => pair.Value.Item2)                                                          // order by spawn time
+                    .ToDictionary(obj => obj.Key, obj => obj.Value.Item1 as GameObject);
+
+            foreach (var obj in Storage.Objects)
+                obj.Value.Item1.LoadValuesFromUpdateFields();
+
+            var methods = Assembly.GetExecutingAssembly()
+                    .GetTypes()
+                    .Where(type => type.GetCustomAttributes(typeof(BuilderClassAttribute), true).Length > 0)
+                    .SelectMany(x => x.GetMethods());
+            if (Settings.SplitSQLFile)
+            {
+                fileName = System.IO.Path.ChangeExtension(fileName, null); // remove .sql
+
+                var hotfixMethods = methods.Where(y => y.GetCustomAttributes().OfType<BuilderMethodAttribute>().Any(z => z.Database == TargetSQLDatabase.Hotfixes))
+                    .ToList();
+                DumpFile(prefix, $"{fileName}_hotfixes.sql", header, hotfixMethods, units, gameObjects);
+
+                var worldMethods = methods.Where(y => y.GetCustomAttributes().OfType<BuilderMethodAttribute>().Any(z => z.Database == TargetSQLDatabase.World))
+                    .ToList();
+                DumpFile(prefix, $"{fileName}_world.sql", header, worldMethods, units, gameObjects);
+
+                var wppMethods = methods.Where(y => y.GetCustomAttributes().OfType<BuilderMethodAttribute>().Any(z => z.Database == TargetSQLDatabase.WPP))
+                    .ToList();
+                DumpFile(prefix, $"{fileName}_wpp.sql", header, wppMethods, units, gameObjects);
+            }
+            else
+            {
+                var builderMethods = methods.Where(y => y.GetCustomAttributes().OfType<BuilderMethodAttribute>().Any())
+                    .ToList();
+                DumpFile(prefix, fileName, header, builderMethods, units, gameObjects);
             }
         }
 

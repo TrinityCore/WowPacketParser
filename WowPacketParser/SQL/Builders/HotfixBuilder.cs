@@ -11,7 +11,7 @@ namespace WowPacketParser.SQL.Builders
     [BuilderClass]
     public static class HotfixBuilder
     {
-        [BuilderMethod]
+        [BuilderMethod(TargetSQLDatabase.Hotfixes)]
         public static string Hotfixes()
         {
             var stringBuilder = new StringBuilder();
@@ -42,7 +42,7 @@ namespace WowPacketParser.SQL.Builders
             return stringBuilder.ToString();
         }
 
-        [BuilderMethod(true)]
+        [BuilderMethod(true, TargetSQLDatabase.Hotfixes)]
         public static string HotfixData()
         {
             if (Storage.HotfixDatas.IsEmpty())
@@ -67,7 +67,7 @@ namespace WowPacketParser.SQL.Builders
             return "DELETE FROM `hotfix_data` WHERE `VerifiedBuild`>0;" + Environment.NewLine + new SQLInsert<HotfixData>(rows, false).Build();
         }
 
-        [BuilderMethod(true)]
+        [BuilderMethod(true, TargetSQLDatabase.Hotfixes)]
         public static string HotfixBlob()
         {
             if (Storage.HotfixBlobs.IsEmpty())
@@ -93,7 +93,7 @@ namespace WowPacketParser.SQL.Builders
         }
 
         // Special Hotfix Builders
-        [BuilderMethod(true)]
+        [BuilderMethod(true, TargetSQLDatabase.Hotfixes)]
         public static string BroadcastText()
         {
             if (Storage.BroadcastTexts.IsEmpty())
@@ -111,7 +111,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.BroadcastTexts, templatesDb, StoreNameType.None);
         }
 
-        [BuilderMethod(true)]
+        [BuilderMethod(true, TargetSQLDatabase.Hotfixes)]
         public static string BroadcastTextLocales()
         {
             if (Storage.BroadcastTextLocales.IsEmpty())
@@ -126,7 +126,7 @@ namespace WowPacketParser.SQL.Builders
             return "SET NAMES 'utf8';" + Environment.NewLine + SQLUtil.Compare(Storage.BroadcastTextLocales, templatesDb, StoreNameType.None) + Environment.NewLine + "SET NAMES 'latin1';";
         }
 
-        [BuilderMethod]
+        [BuilderMethod(TargetSQLDatabase.Hotfixes)]
         public static string HotfixOptionalData()
         {
             if (Storage.HotfixOptionalDatas.IsEmpty())

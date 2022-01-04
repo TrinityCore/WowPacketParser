@@ -1,4 +1,5 @@
 ﻿using System;
+using WowPacketParser.Enums;
 
 namespace WowPacketParser.SQL.Builders
 {
@@ -10,10 +11,22 @@ namespace WowPacketParser.SQL.Builders
     {
         public BuilderMethodAttribute()
         {
+            Database = TargetSQLDatabase.World;
+        }
+        public BuilderMethodAttribute(TargetSQLDatabase database)
+        {
+            Database = database;
         }
 
         public BuilderMethodAttribute(bool checkVersionMissmatch)
         {
+            Database = TargetSQLDatabase.World;
+            CheckVersionMismatch = checkVersionMissmatch;
+        }
+
+        public BuilderMethodAttribute(bool checkVersionMissmatch, TargetSQLDatabase database)
+        {
+            Database = database;
             CheckVersionMismatch = checkVersionMissmatch;
         }
 
@@ -31,6 +44,11 @@ namespace WowPacketParser.SQL.Builders
         /// If true gameobject list will be included as method invocation parameter
         /// </summary>
         public bool Gameobjects { get; set; }
+
+        // <summary>
+        // Defines the targeted database
+        // </summary>
+        public TargetSQLDatabase Database;
     }
 
     [AttributeUsage(AttributeTargets.Class)]
