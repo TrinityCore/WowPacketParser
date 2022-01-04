@@ -423,7 +423,6 @@ namespace WowPacketParser.Enums
         V1_13_7_38704 = 38704,
         V1_13_7_39605 = 39605,
         V1_13_7_39692 = 39692,
-        V1_14_1_41511 = 41511, // ptr Season of Mastery
 
         // TBC Classic
         V2_5_1_38598 = 38598, // ptr
