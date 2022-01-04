@@ -87,7 +87,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
                 gossipOptions.Add(gossipOption);
                 if (!gossipMenuOptionBox.IsEmpty)
                     gossipOptionBoxes.Add(gossipMenuOptionBox);
-                
+
                 packetGossip.Options.Add(new GossipMessageOption()
                 {
                     OptionIndex = gossipOption.OptionIndex.Value,
@@ -151,6 +151,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             gossipOptions.ForEach(g =>
             {
                 g.MenuId = menuId;
+                g.FillOptionType(guid);
                 Storage.GossipMenuOptions.Add(g, packet.TimeSpan);
             });
             gossipOptionBoxes.ForEach(gb =>

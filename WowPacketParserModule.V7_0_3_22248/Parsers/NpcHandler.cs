@@ -67,7 +67,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             int int60 = packet.ReadInt32("GossipText");
 
             for (int i = 0; i < int44; ++i)
-                packetGossip.Options.Add(V6_0_2_19033.Parsers.NpcHandler.ReadGossipOptionsData((uint)menuId, packet, i, "GossipOptions"));
+                packetGossip.Options.Add(V6_0_2_19033.Parsers.NpcHandler.ReadGossipOptionsData((uint)menuId, guid, packet, i, "GossipOptions"));
 
             for (int i = 0; i < int60; ++i)
                 packetGossip.Quests.Add(ReadGossipQuestTextData(packet, i, "GossipQuestText"));

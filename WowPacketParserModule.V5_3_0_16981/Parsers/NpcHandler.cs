@@ -179,6 +179,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             gossipOptions.ForEach(g =>
             {
                 g.MenuId = menuId;
+                g.FillOptionType(guid);
                 Storage.GossipMenuOptions.Add(g, packet.TimeSpan);
             });
             gossipOptionBoxes.ForEach(gb =>

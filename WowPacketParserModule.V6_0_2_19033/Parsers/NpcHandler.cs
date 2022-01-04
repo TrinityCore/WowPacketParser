@@ -20,7 +20,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
     {
         public static uint LastGossipPOIEntry;
 
-        public static GossipMessageOption ReadGossipOptionsData(uint menuId, Packet packet, params object[] idx)
+        public static GossipMessageOption ReadGossipOptionsData(uint menuId, WowGuid npcGuid, Packet packet, params object[] idx)
         {
             GossipMessageOption gossipMessageOption = new();
             GossipMenuOption gossipOption = new GossipMenuOption
@@ -93,7 +93,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             else
                 gossipOption.OptionBroadcastTextId = 0;
 
-
+            gossipOption.FillOptionType(npcGuid);
             Storage.GossipMenuOptions.Add(gossipOption, packet.TimeSpan);
             if (!gossipMenuOptionBox.IsEmpty)
                 Storage.GossipMenuOptionBoxes.Add(gossipMenuOptionBox, packet.TimeSpan);
@@ -327,7 +327,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             int int60 = packet.ReadInt32("GossipText");
 
             for (int i = 0; i < int44; ++i)
-                packetGossip.Options.Add(ReadGossipOptionsData((uint)menuId, packet, i, "GossipOptions"));
+                packetGossip.Options.Add(ReadGossipOptionsData((uint)menuId, guid, packet, i, "GossipOptions"));
 
             for (int i = 0; i < int60; ++i)
                 packetGossip.Quests.Add(ReadGossipQuestTextData(packet, i, "GossipQuestText"));

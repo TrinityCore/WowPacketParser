@@ -535,6 +535,7 @@ namespace WowPacketParser.Parsing.Parsers
                 gossipOption.OptionText = packet.ReadCString("Text", i);
                 gossipMenuOptionBox.BoxText = packet.ReadCString("Box Text", i);
 
+                gossipOption.FillOptionType(guid);
                 Storage.GossipMenuOptions.Add(gossipOption, packet.TimeSpan);
                 if (!gossipMenuOptionBox.IsEmpty)
                     Storage.GossipMenuOptionBoxes.Add(gossipMenuOptionBox, packet.TimeSpan);
