@@ -69,9 +69,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (gossipMenuOptionBox.BoxText != string.Empty && SQLDatabase.BroadcastTexts.TryGetValue(gossipMenuOptionBox.BoxText, out boxTextList))
             {
-                if (boxTextList.Count == 1)
-                    gossipMenuOptionBox.BoxBroadcastTextId = boxTextList[0];
-                else
+                gossipMenuOptionBox.BoxBroadcastTextId = boxTextList[0];
+                if (boxTextList.Count != 1)
                 {
                     gossipMenuOptionBox.BroadcastTextIdHelper += "BoxBroadcastTextID: ";
                     gossipMenuOptionBox.BroadcastTextIdHelper += string.Join(" - ", boxTextList);
@@ -82,9 +81,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (gossipOption.OptionText != string.Empty && SQLDatabase.BroadcastTexts.TryGetValue(gossipOption.OptionText, out optionTextList))
             {
-                if (optionTextList.Count == 1)
-                    gossipOption.OptionBroadcastTextId = optionTextList[0];
-                else
+                gossipOption.OptionBroadcastTextId = optionTextList[0];
+                if (optionTextList.Count != 1)
                 {
                     gossipOption.BroadcastTextIDHelper += "OptionBroadcastTextID: ";
                     gossipOption.BroadcastTextIDHelper += string.Join(" - ", optionTextList);
