@@ -203,6 +203,20 @@ namespace WowPacketParser.SQL.Builders
         }
 
         [BuilderMethod]
+        public static string CreatureTemplateSpells()
+        {
+            if (Storage.CreatureTemplateSpells.IsEmpty())
+                return string.Empty;
+
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template))
+                return string.Empty;
+
+            var templatesDb = SQLDatabase.Get(Storage.CreatureTemplateSpells);
+
+            return SQLUtil.Compare(Storage.CreatureTemplateSpells, templatesDb, StoreNameType.Unit);
+        }
+
+        [BuilderMethod]
         public static string NpcTrainer()
         {
             if (Storage.NpcTrainers.IsEmpty())

@@ -1,6 +1,8 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Store;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
@@ -40,7 +42,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadWoWString("Pet name", len);
         }
 
-        public static void ReadPetAction(Packet packet, params object[] indexes)
+        public static (uint, uint) ReadPetAction(Packet packet, params object[] indexes)
         {
             var action = packet.ReadUInt32();
             var spellID = action & 0xFFFFFF;
@@ -48,6 +50,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.AddValue("Action", slot, indexes);
             packet.AddValue("SpellID", StoreGetters.GetName(StoreNameType.Spell, (int)spellID), indexes);
+
+            return (slot, spellID);
         }
 
         public static void ReadPetFlags(Packet packet, params object[] indexes)
@@ -80,7 +84,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_PET_SPELLS_MESSAGE)]
         public static void HandlePetSpells(Packet packet)
         {
-            packet.ReadPackedGuid128("PetGUID");
+            var petGuid = packet.ReadPackedGuid128("PetGUID");
             packet.ReadInt16<CreatureFamilyId>("CreatureFamily");
             packet.ReadInt16("Specialization");
             packet.ReadInt32("TimeLimit");
@@ -88,8 +92,23 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             const int maxCreatureSpells = 10;
             for (var i = 0; i < maxCreatureSpells; i++) // Read pet / vehicle spell ids
-                ReadPetAction(packet, "ActionButtons", i);
+            {
+                var (slot, spellId) = ReadPetAction(packet, "ActionButtons", i);
 
+                if (i == 0)
+                    continue;
+
+                if (spellId == 0)
+                    continue;
+
+                var creatureTemplateSpell = new CreatureTemplateSpell
+                {
+                    CreatureID = petGuid.GetEntry(),
+                    Index = (byte)(i - 1),
+                    Spell = spellId
+                };
+                Storage.CreatureTemplateSpells.Add(creatureTemplateSpell);
+            }
             var actionsCount = packet.ReadInt32("ActionsCount");
             var cooldownsCount = packet.ReadUInt32("CooldownsCount");
             var spellHistoryCount = packet.ReadUInt32("SpellHistoryCount");
