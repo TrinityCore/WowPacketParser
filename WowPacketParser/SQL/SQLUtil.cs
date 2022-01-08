@@ -224,7 +224,6 @@ namespace WowPacketParser.SQL
 
             var rowsIns = new RowList<T>();
             var rowsUpd = new Dictionary<Row<T>, RowList<T>>();
-            var lastField = fields[fields.Count - 1];
             var verBuildField = fields.FirstOrDefault(f => f.Item2.Name == "VerifiedBuild");
 
             foreach (var elem1 in storeList)
@@ -233,8 +232,8 @@ namespace WowPacketParser.SQL
                 {
                     if (verBuildField != null)
                     {
-                        var buildvSniff = (int)lastField.Item2.GetValue(elem1.Item1);
-                        var buildvDB = (int)lastField.Item2.GetValue(dbList[elem1.Item1].Data);
+                        var buildvSniff = (int)verBuildField.Item2.GetValue(elem1.Item1);
+                        var buildvDB = (int)verBuildField.Item2.GetValue(dbList[elem1.Item1].Data);
 
                         if (buildvDB > buildvSniff) // skip update if DB already has a VerifiedBuild higher than this one
                             continue;
@@ -257,7 +256,8 @@ namespace WowPacketParser.SQL
                         {
                             var arr2 = (Array)val2;
                             bool arraysEqual = true;
-                            for (var i = 0; i < attrib.Count; i++)
+                            var arrayLength = Math.Min(Math.Min(attrib.Count, arr1.Length), arr2.Length);
+                            for (var i = 0; i < arrayLength; ++i)
                             {
                                 var value1 = arr1.GetValue(i);
                                 var value2 = arr2.GetValue(i);
@@ -294,7 +294,7 @@ namespace WowPacketParser.SQL
                         continue;
 
                     // only set comment for rows which arent updating VerifiedBuild only
-                    if (fieldUpdateCount != 1 || verBuildField == null || lastField.Item2.GetValue(elem1.Item1) == null)
+                    if (fieldUpdateCount != 1 || verBuildField == null || verBuildField.Item2.GetValue(elem1.Item1) == null)
                         row.Comment = comment;
 
                     row.Data = differingValues;
