@@ -181,5 +181,27 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             var motdLen = packet.ReadBits(11);
             packet.ReadWoWString("MotdText", motdLen);
         }
+
+        [Parser(Opcode.CMSG_GUILD_SET_RANK_PERMISSIONS, ClientVersionBuild.V8_2_5_31921)]
+        public static void HandlelGuildSetRankPermissions(Packet packet)
+        {
+            packet.ReadByte("RankID");
+            packet.ReadInt32("RankOrder");
+            packet.ReadUInt32E<GuildRankRightsFlag>("Flags");
+            packet.ReadInt32("WithdrawGoldLimit");
+
+            for (var i = 0; i < 8; ++i)
+            {
+                packet.ReadInt32E<GuildBankRightsFlag>("TabFlags", i);
+                packet.ReadInt32("TabWithdrawItemLimit", i);
+            }
+
+            packet.ResetBitReader();
+            var rankNameLen = packet.ReadBits(7);
+
+            packet.ReadWoWString("RankName", rankNameLen);
+
+            packet.ReadUInt32E<GuildRankRightsFlag>("OldFlags");
+        }
     }
 }

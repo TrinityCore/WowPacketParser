@@ -93,7 +93,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             for (var i = 0; i < count; ++i)
             {
-                packet.ReadInt32("RankID", i);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_2_5_31921))
+                    packet.ReadByte("RankID", i);
+                else
+                    packet.ReadInt32("RankID", i);
+
                 packet.ReadInt32("RankOrder", i);
                 packet.ReadInt32("Flags", i);
                 packet.ReadInt32("WithdrawGoldLimit", i);
@@ -996,6 +1000,20 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var count = packet.ReadInt32("MembersCount");
             for (var i = 0; i < count; ++i)
                 packet.ReadPackedGuid128("Member", i);
+        }
+
+        [Parser(Opcode.CMSG_GUILD_ADD_RANK)]
+        public static void HandleGuildAddRank(Packet packet)
+        {
+            var nameLength = packet.ReadBits(7);
+            packet.ReadInt32("RankOrder");
+            packet.ReadWoWString("Name", nameLength);
+        }
+
+        [Parser(Opcode.CMSG_GUILD_DELETE_RANK)]
+        public static void HandleGuildDeleteRank(Packet packet)
+        {
+            packet.ReadInt32("RankOrder");
         }
     }
 }
