@@ -630,10 +630,7 @@ namespace WowPacketParser.SQL.Builders
                     {
                         var sub = entry.SubName;
                         if (sub.Length > 0)
-                        {
                             template.NpcFlag |= ProcessNpcFlags(sub);
-                            Trace.WriteLine($"Entry: { unit.Key.GetEntry() } NpcFlag: { template.NpcFlag }");
-                        }
                         else // If the SubName doesn't exist or is cached, fall back to DB method
                             template.NpcFlag |= ProcessNpcFlags(subname);
                     }
