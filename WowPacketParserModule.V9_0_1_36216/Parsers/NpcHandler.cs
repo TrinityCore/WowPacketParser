@@ -73,7 +73,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 {
                     if (tempGossipOptionPOI.ActionMenuId != null)
                     {
-                        Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = tempGossipOptionPOI.MenuId, OptionIndex = tempGossipOptionPOI.OptionIndex, ActionMenuId = tempGossipOptionPOI.ActionMenuId, ActionPoiId = gossipPOI.ID }, packet.TimeSpan);
+                        Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = tempGossipOptionPOI.MenuId, OptionIndex = tempGossipOptionPOI.OptionIndex, ActionMenuId = tempGossipOptionPOI.ActionMenuId.GetValueOrDefault(), ActionPoiId = gossipPOI.ID }, packet.TimeSpan);
                         //clear temp
                         tempGossipOptionPOI.Reset();
                     }

@@ -158,7 +158,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 Storage.GossipMenuOptions.Add(gossipOption, packet.TimeSpan);
                 if (!gossipMenuOptionBox.IsEmpty)
                     Storage.GossipMenuOptionBoxes.Add(gossipMenuOptionBox, packet.TimeSpan);
-                
+
                 packetGossip.Options.Add(new GossipMessageOption()
                 {
                     OptionIndex = gossipOption.OptionIndex.Value,
@@ -195,7 +195,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             {
                 if ((packet.TimeSpan - lastGossipOption.TimeSpan).Duration() <= TimeSpan.FromMilliseconds(2500))
                 {
-                    Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = lastGossipOption.MenuId, OptionIndex = lastGossipOption.OptionIndex, ActionMenuId = menuId }, packet.TimeSpan);
+                    Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = lastGossipOption.MenuId, OptionIndex = lastGossipOption.OptionIndex, ActionMenuId = menuId, ActionPoiId = 0 }, packet.TimeSpan);
 
                     //keep temp data (for case SMSG_GOSSIP_POI is delayed)
                     tempGossipOptionPOI.Guid = lastGossipOption.Guid;
@@ -248,7 +248,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
                 {
                     if (tempGossipOptionPOI.ActionMenuId != null)
                     {
-                        Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = tempGossipOptionPOI.MenuId, OptionIndex = tempGossipOptionPOI.OptionIndex, ActionMenuId = tempGossipOptionPOI.ActionMenuId, ActionPoiId = gossipPOI.ID }, packet.TimeSpan);
+                        Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = tempGossipOptionPOI.MenuId, OptionIndex = tempGossipOptionPOI.OptionIndex, ActionMenuId = tempGossipOptionPOI.ActionMenuId.GetValueOrDefault(), ActionPoiId = gossipPOI.ID }, packet.TimeSpan);
                         //clear temp
                         tempGossipOptionPOI.Reset();
                     }

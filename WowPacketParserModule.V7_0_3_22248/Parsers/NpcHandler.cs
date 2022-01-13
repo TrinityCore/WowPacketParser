@@ -84,7 +84,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             {
                 if ((packet.TimeSpan - lastGossipOption.TimeSpan).Duration() <= TimeSpan.FromMilliseconds(2500))
                 {
-                    Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = lastGossipOption.MenuId, OptionIndex = lastGossipOption.OptionIndex, ActionMenuId = gossip.Entry, ActionPoiId = lastGossipOption.ActionPoiId }, packet.TimeSpan);
+                    Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = lastGossipOption.MenuId, OptionIndex = lastGossipOption.OptionIndex, ActionMenuId = gossip.Entry, ActionPoiId = lastGossipOption.ActionPoiId ?? 0 }, packet.TimeSpan);
 
                     //keep temp data (for case SMSG_GOSSIP_POI is delayed)
                     tempGossipOptionPOI.Guid = lastGossipOption.Guid;

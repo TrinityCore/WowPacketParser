@@ -103,7 +103,7 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     if (TempGossipOptionPOI.ActionMenuId != null)
                     {
-                        Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = TempGossipOptionPOI.MenuId, OptionIndex = TempGossipOptionPOI.OptionIndex, ActionMenuId = TempGossipOptionPOI.ActionMenuId, ActionPoiId = gossipPOI.ID }, packet.TimeSpan);
+                        Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = TempGossipOptionPOI.MenuId, OptionIndex = TempGossipOptionPOI.OptionIndex, ActionMenuId = TempGossipOptionPOI.ActionMenuId.GetValueOrDefault(), ActionPoiId = gossipPOI.ID }, packet.TimeSpan);
                         //clear temp
                         TempGossipOptionPOI.Reset();
                     }
@@ -575,7 +575,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 if ((packet.TimeSpan - LastGossipOption.TimeSpan).Duration() <= TimeSpan.FromMilliseconds(2500))
                 {
-                    Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = LastGossipOption.MenuId, OptionIndex = LastGossipOption.OptionIndex, ActionMenuId = menuId, ActionPoiId = LastGossipOption.ActionPoiId }, packet.TimeSpan);
+                    Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = LastGossipOption.MenuId, OptionIndex = LastGossipOption.OptionIndex, ActionMenuId = menuId, ActionPoiId = LastGossipOption.ActionPoiId ?? 0 }, packet.TimeSpan);
 
                     //keep temp data (for case SMSG_GOSSIP_POI is delayed)
                     TempGossipOptionPOI.Guid = LastGossipOption.Guid;
