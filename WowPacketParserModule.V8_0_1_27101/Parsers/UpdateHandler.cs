@@ -79,7 +79,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                                         mut.UpdateData(data);
                                     else if (obj != null)
                                         obj.ObjectData = data;
-                                    
+
                                     updateValues.Fields.UpdateData(data);
                                 }
                                 if ((updateTypeFlag & 0x0002) != 0)
@@ -98,7 +98,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                                         mut.UpdateData(data);
                                     else if (unit != null)
                                         unit.UnitData = data;
-                                    
+
                                     updateValues.Fields.UpdateData(data);
                                 }
                                 if ((updateTypeFlag & 0x0040) != 0)
@@ -113,7 +113,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                                         mut.UpdateData(data);
                                     else if (go != null)
                                         go.GameObjectData = data;
-                                    
+
                                     updateValues.Fields.UpdateData(data);
                                 }
                                 if ((updateTypeFlag & 0x0200) != 0)
