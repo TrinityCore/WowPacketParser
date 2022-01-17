@@ -395,14 +395,6 @@ namespace WowPacketParser.SQL.Builders
 
             var result = "";
 
-            // `creature_gossip`
-            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_gossip))
-            {
-                var templateDb = SQLDatabase.Get(Storage.CreatureGossips, Settings.WPPDatabase);
-                result += SQLUtil.Compare(Storage.CreatureGossips, templateDb,
-                    t => StoreGetters.GetName(StoreNameType.Unit, (int)t.CreatureId));
-            } 
-
             // `gossip_menu`
             if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu))
                 result += SQLUtil.Compare(Storage.Gossips, SQLDatabase.Get(Storage.Gossips),
