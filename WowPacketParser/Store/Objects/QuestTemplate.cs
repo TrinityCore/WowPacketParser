@@ -67,7 +67,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("RewardXPMultiplier", TargetedDatabase.WarlordsOfDraenor)]
         public float? RewardXPMultiplier;
 
-        [DBFieldName("RewardMoney")]
+        [DBFieldName("RewardMoney", TargetedDatabase.Zero, TargetedDatabase.Shadowlands)]
         public int? RewardMoney;
 
         [DBFieldName("RewardMoneyDifficulty", TargetedDatabase.WarlordsOfDraenor)]
