@@ -346,7 +346,7 @@ namespace WowPacketParser.SQL.Builders
                             if (existingEquip.VerifiedBuild < equip.VerifiedBuild)
                             {
                                 equip.ID = existingEquip.ID;
-                                equipsDb.Add(equip);
+                                equipsDb.Add(existingEquip);
                             }
                             else
                                 skip = true;
@@ -357,7 +357,7 @@ namespace WowPacketParser.SQL.Builders
                     // if new entry use next available ID
                     if (newEntry)
                     {
-                        equip.ID = (uint?)existingEquipList.Count;
+                        equip.ID = (uint?)existingEquipList.Count + 1;
                         existingEquipList.Add(equip);
                     }
                 }
