@@ -298,6 +298,7 @@ namespace WowPacketParser.SQL.Builders
                 return string.Empty;
 
             var equips = new DataBag<CreatureEquipment>();
+            var equipsDb = new RowList<CreatureEquipment>();
             foreach (var npc in units)
             {
                 if (Settings.AreaFilters.Length > 0)
@@ -331,21 +332,52 @@ namespace WowPacketParser.SQL.Builders
                     ItemVisual3 = equipment[2].ItemVisual
                 };
 
-
-                if (equips.Contains(equip))
-                    continue;
-
-                for (uint i = 1;; i++)
+                bool skip = false;
+                if (SQLDatabase.CreatureEquipments.TryGetValue(npc.Key.GetEntry(), out var existingEquipList))
                 {
-                    equip.ID = i;
-                    if (!equips.ContainsKey(equip))
-                        break;
+                    bool newEntry = true;
+                    foreach (var existingEquip in existingEquipList)
+                    {
+                        if (existingEquip.EquipEqual(equip))
+                        {
+                            newEntry = false;
+
+                            // use same ID if only VerifiedBuild differs, otherwise skip
+                            if (existingEquip.VerifiedBuild < equip.VerifiedBuild)
+                            {
+                                equip.ID = existingEquip.ID;
+                                equipsDb.Add(equip);
+                            }
+                            else
+                                skip = true;
+                            break;
+                        }
+                    }
+
+                    // if new entry use next available ID
+                    if (newEntry)
+                    {
+                        equip.ID = (uint?)existingEquipList.Count;
+                        existingEquipList.Add(equip);
+                    }
+                }
+                else
+                {
+                    if (equips.Contains(equip))
+                        continue;
+
+                    for (uint i = 1; ; i++)
+                    {
+                        equip.ID = i;
+                        if (!equips.ContainsKey(equip))
+                            break;
+                    }
                 }
 
-                equips.Add(equip);
+                if (!skip)
+                    equips.Add(equip);
             }
 
-            var equipsDb = SQLDatabase.Get(equips);
             return SQLUtil.Compare(equips, equipsDb, StoreNameType.Unit);
         }
 
