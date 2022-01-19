@@ -40,6 +40,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("BroadcastTextId", false, true)]
         public object BroadcastTextID;
 
+        [DBFieldName("TextRange")]
+        public byte? TextRange = 0;
+
         [DBFieldName("comment")]
         public string Comment;
 
