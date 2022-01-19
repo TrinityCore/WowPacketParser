@@ -139,26 +139,24 @@ namespace WowPacketParser.SQL
                     .GetTypes()
                     .Where(type => type.GetCustomAttributes(typeof(BuilderClassAttribute), true).Length > 0)
                     .SelectMany(x => x.GetMethods());
+            var allMethods = methods.Select(y => new { Method = y, Attributes = y.GetCustomAttributes().OfType<BuilderMethodAttribute>()}).Where(y => y.Attributes.Any()).ToList();
+
             if (Settings.SplitSQLFile)
             {
                 fileName = System.IO.Path.ChangeExtension(fileName, null); // remove .sql
 
-                var hotfixMethods = methods.Where(y => y.GetCustomAttributes().OfType<BuilderMethodAttribute>().Any(z => z.Database == TargetSQLDatabase.Hotfixes))
-                    .ToList();
+                var hotfixMethods = allMethods.Where(x => x.Attributes.First().Database == TargetSQLDatabase.Hotfixes).Select(x => x.Method).ToList();
                 DumpFile(prefix, $"{fileName}_hotfixes.sql", header, hotfixMethods, units, gameObjects);
 
-                var worldMethods = methods.Where(y => y.GetCustomAttributes().OfType<BuilderMethodAttribute>().Any(z => z.Database == TargetSQLDatabase.World))
-                    .ToList();
+                var worldMethods = allMethods.Where(x => x.Attributes.First().Database == TargetSQLDatabase.World).Select(x => x.Method).ToList();
                 DumpFile(prefix, $"{fileName}_world.sql", header, worldMethods, units, gameObjects);
 
-                var wppMethods = methods.Where(y => y.GetCustomAttributes().OfType<BuilderMethodAttribute>().Any(z => z.Database == TargetSQLDatabase.WPP))
-                    .ToList();
+                var wppMethods = allMethods.Where(x => x.Attributes.First().Database == TargetSQLDatabase.WPP).Select(x => x.Method).ToList();
                 DumpFile(prefix, $"{fileName}_wpp.sql", header, wppMethods, units, gameObjects);
             }
             else
             {
-                var builderMethods = methods.Where(y => y.GetCustomAttributes().OfType<BuilderMethodAttribute>().Any())
-                    .ToList();
+                var builderMethods = allMethods.Select(x => x.Method).ToList();
                 DumpFile(prefix, fileName, header, builderMethods, units, gameObjects);
             }
         }
