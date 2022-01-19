@@ -25,7 +25,7 @@ namespace WowPacketParser.SQL
 
         public static Dictionary<string, List<int>> BroadcastTexts { get; } = new Dictionary<string, List<int>>();
         public static Dictionary<string, List<int>> BroadcastText1s { get; } = new Dictionary<string, List<int>>();
-        public static Dictionary<uint /*CreatureId*/, List<CreatureEquipment>> CreatureEquipments { get; } = new ();
+        public static Dictionary<uint /*CreatureId*/, List<CreatureEquipment>> CreatureEquipments { get; } = new();
         public static List<POIData> POIs { get; } = new List<POIData>();
 
         private static readonly StoreNameType[] ObjectTypes =
