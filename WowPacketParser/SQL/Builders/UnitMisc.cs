@@ -292,10 +292,8 @@ namespace WowPacketParser.SQL.Builders
         {
             foreach (var equip in equipList)
             {
-                if (!equip.EquipEqual(newEquip))
-                    continue;
-
-                return equip;
+                if (equip.EquipEqual(newEquip))
+                    return equip;
             }
             return null;
         }
