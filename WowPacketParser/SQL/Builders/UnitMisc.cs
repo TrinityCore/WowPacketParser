@@ -378,7 +378,7 @@ namespace WowPacketParser.SQL.Builders
                     equips.Add(equip);
             }
 
-            return SQLUtil.Compare(equips, equipsDb, StoreNameType.Unit);
+            return SQLUtil.Compare(Settings.SQLOrderByKey ? equips.OrderBy(x => x.Item1.CreatureID).ThenBy(y => y.Item1.ID) : equips, equipsDb, StoreNameType.Unit);
         }
 
         [BuilderMethod]
