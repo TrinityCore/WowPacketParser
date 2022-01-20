@@ -25,7 +25,7 @@ namespace WowPacketParser.SQL
 
         public static Dictionary<string, List<int>> BroadcastTexts { get; } = new Dictionary<string, List<int>>();
         public static Dictionary<string, List<int>> BroadcastText1s { get; } = new Dictionary<string, List<int>>();
-        public static Dictionary<uint /*CreatureId*/, List<CreatureEquipment>> CreatureEquipments { get; } = new();
+        public static Dictionary<uint? /*CreatureId*/, List<CreatureEquipment>> CreatureEquipments { get; } = new();
         public static List<POIData> POIs { get; } = new List<POIData>();
 
         private static readonly StoreNameType[] ObjectTypes =
@@ -258,12 +258,12 @@ namespace WowPacketParser.SQL
                         }
 
                         // CreatureID never null
-                        if (CreatureEquipments.TryGetValue((uint)equip.CreatureID, out var equipList))
+                        if (CreatureEquipments.TryGetValue(equip.CreatureID, out var equipList))
                         {
                             equipList.Add(equip);
                             continue;
                         }
-                        CreatureEquipments.Add((uint)equip.CreatureID, new List<CreatureEquipment>() { equip });
+                        CreatureEquipments.Add(equip.CreatureID, new List<CreatureEquipment>() { equip });
                     }
                 }
             }

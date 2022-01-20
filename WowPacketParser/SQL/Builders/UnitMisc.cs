@@ -356,7 +356,7 @@ namespace WowPacketParser.SQL.Builders
                     }
                     else
                     {
-                        equip.ID = (uint?)equipListDB.Count + 1;
+                        equip.ID = (uint)equipListDB.Count + 1;
                         equipListDB.Add(equip);
                     }
                 }
@@ -367,7 +367,7 @@ namespace WowPacketParser.SQL.Builders
                         if (GetDuplicateEquipFromList(equip, equipList) != null)
                             continue;
 
-                        equip.ID = (uint?)equipList.Count + 1;
+                        equip.ID = (uint)equipList.Count + 1;
                         equipList.Add(equip);
                     }
                     else
