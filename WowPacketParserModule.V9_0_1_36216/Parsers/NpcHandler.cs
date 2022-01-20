@@ -86,7 +86,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             }
         }
 		
-		[Parser(Opcode.SMSG_CHROMIE_TIME_OPEN_NPC)]
+        [Parser(Opcode.SMSG_CHROMIE_TIME_OPEN_NPC)]
         public static void HandleChromieTimeOpenNpc(Packet packet)
         {
             packet.ReadPackedGuid128("GUID");
