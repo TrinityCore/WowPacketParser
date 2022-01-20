@@ -290,10 +290,10 @@ namespace WowPacketParser.SQL.Builders
 
         public static CreatureEquipment GetDuplicateEquipFromList(CreatureEquipment newEquip, List<CreatureEquipment> equipList)
         {
-            foreach (var equip in equipList)
+            for (int i = 0; i < equipList.Count; i++)
             {
-                if (equip.EquipEqual(newEquip))
-                    return equip;
+                if (equipList[i].EquipEqual(newEquip))
+                    return equipList[i];
             }
             return null;
         }
