@@ -361,6 +361,14 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ResetBitReader();
             packet.ReadBit("CatchupState");
         }
+        
+        [Parser(Opcode.SMSG_COVENANT_PREVIEW_OPEN_NPC)]
+        public static void HandleGarrisonCovenantPreviewOpenNpc(Packet packet)
+        {
+            packet.ReadPackedGuid128("GUID");
+            packet.ReadUInt32("Index");
+        }
+
 
         [Parser(Opcode.CMSG_GARRISON_START_MISSION)]
         public static void HandleGarrisonStartMission(Packet packet)
