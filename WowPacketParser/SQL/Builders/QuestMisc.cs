@@ -32,7 +32,8 @@ namespace WowPacketParser.SQL.Builders
 
             if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_poi))
             {
-                var poiDb = SQLDatabase.Get(Storage.QuestPOIs);
+                // pass empty list, because we want to select the whole db table (faster than select only needed columns)
+                var poiDb = SQLDatabase.Get(new RowList<QuestPOI>());
 
                 sql = SQLUtil.Compare(Storage.QuestPOIs, poiDb, StoreNameType.Quest);
             }
@@ -41,7 +42,8 @@ namespace WowPacketParser.SQL.Builders
             {
                 if (!Storage.QuestPOIPoints.IsEmpty())
                 {
-                    var poiDb = SQLDatabase.Get(Storage.QuestPOIPoints);
+                    // pass empty list, because we want to select the whole db table (faster than select only needed columns)
+                    var poiDb = SQLDatabase.Get(new RowList<QuestPOIPoint>());
 
                     sql += SQLUtil.Compare(Storage.QuestPOIPoints, poiDb, StoreNameType.Quest);
                 }
