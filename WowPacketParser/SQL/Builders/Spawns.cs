@@ -124,6 +124,12 @@ namespace WowPacketParser.SQL.Builders
                     row.Data.PhaseID = data;
                 }
 
+                if (SQLDatabase.CreatureEquipments.TryGetValue(entry, out var equipList))
+                {
+                    var equip = equipList.FirstOrDefault(x => x.EquipEqual(creature.UnitData.VirtualItems));
+                    row.Data.EquipmentID = (int)equip.ID;
+                }
+
                 if (!creature.IsOnTransport())
                 {
                     row.Data.PositionX = creature.Movement.Position.X;
