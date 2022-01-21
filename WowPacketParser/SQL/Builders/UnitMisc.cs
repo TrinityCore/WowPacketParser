@@ -299,7 +299,7 @@ namespace WowPacketParser.SQL.Builders
             return null;
         }
 
-        [BuilderMethod(Units = true)]
+        // [BuilderMethod(Units = true)] // this method has to be run before generating creature spawns, with this attribute the order isn't ensured
         public static string CreatureEquip(Dictionary<WowGuid, Unit> units)
         {
             if (units.Count == 0)
