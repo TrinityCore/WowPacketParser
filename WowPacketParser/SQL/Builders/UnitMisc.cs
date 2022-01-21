@@ -321,28 +321,9 @@ namespace WowPacketParser.SQL.Builders
                     if (!(npc.Value.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
                         continue;
 
-                var equipment = npc.Value.UnitData.VirtualItems;
-                if (equipment.Length != 3)
+                var equip = npc.Value.GetEquipment();
+                if (equip == null)
                     continue;
-
-                if (equipment[0].ItemID == 0 && equipment[1].ItemID == 0 && equipment[2].ItemID == 0)
-                    continue;
-
-                var equip = new CreatureEquipment
-                {
-                    CreatureID = npc.Key.GetEntry(),
-                    ItemID1 = (uint)equipment[0].ItemID,
-                    ItemID2 = (uint)equipment[1].ItemID,
-                    ItemID3 = (uint)equipment[2].ItemID,
-
-                    AppearanceModID1 = equipment[0].ItemAppearanceModID,
-                    AppearanceModID2 = equipment[1].ItemAppearanceModID,
-                    AppearanceModID3 = equipment[2].ItemAppearanceModID,
-
-                    ItemVisual1 = equipment[0].ItemVisual,
-                    ItemVisual2 = equipment[1].ItemVisual,
-                    ItemVisual3 = equipment[2].ItemVisual
-                };
 
                 if (SQLDatabase.CreatureEquipments.TryGetValue(npc.Key.GetEntry(), out var equipListDB))
                 {
