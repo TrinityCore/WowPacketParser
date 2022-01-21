@@ -40,7 +40,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Protobuf Include="PacketStructures\structures.proto" />
+        <Protobuf Include="PacketStructures\structures.proto" GrpcServices="None" />
     </ItemGroup>
 
 </Project>
