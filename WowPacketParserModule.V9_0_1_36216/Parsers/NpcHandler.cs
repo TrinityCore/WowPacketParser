@@ -85,7 +85,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 }
             }
         }
-		
+
         [Parser(Opcode.SMSG_CHROMIE_TIME_OPEN_NPC)]
         public static void HandleChromieTimeOpenNpc(Packet packet)
         {
@@ -97,6 +97,13 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         {
             packet.ReadPackedGuid128("GUID");
             packet.ReadUInt32("Expansion");
+        }
+
+        [Parser(Opcode.SMSG_COVENANT_PREVIEW_OPEN_NPC)]
+        public static void HandleGarrisonCovenantPreviewOpenNpc(Packet packet)
+        {
+            packet.ReadPackedGuid128("NpcGUID");
+            packet.ReadInt32("CovenantID");
         }
     }
 }
