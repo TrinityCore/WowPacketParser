@@ -366,7 +366,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         public static void HandleGarrisonCovenantPreviewOpenNpc(Packet packet)
         {
             packet.ReadPackedGuid128("GUID");
-            packet.ReadUInt32("Index");
+            packet.ReadInt32("CovenantId");
         }
 
 
