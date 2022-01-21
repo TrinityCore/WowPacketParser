@@ -288,6 +288,16 @@ namespace WowPacketParser.SQL.Builders
                 vendor => StoreGetters.GetName(vendor.Type <= 1 ? StoreNameType.Item : StoreNameType.Currency, vendor.Item.GetValueOrDefault(), false));
         }
 
+        public static CreatureEquipment GetDuplicateEquipFromList(CreatureEquipment newEquip, List<CreatureEquipment> equipList)
+        {
+            for (int i = 0; i < equipList.Count; i++)
+            {
+                if (equipList[i].EquipEqual(newEquip))
+                    return equipList[i];
+            }
+            return null;
+        }
+
         [BuilderMethod(Units = true)]
         public static string CreatureEquip(Dictionary<WowGuid, Unit> units)
         {
@@ -298,6 +308,8 @@ namespace WowPacketParser.SQL.Builders
                 return string.Empty;
 
             var equips = new DataBag<CreatureEquipment>();
+            var equipsDb = new RowList<CreatureEquipment>();
+            var newEntriesDict = new Dictionary<uint? /*CreatureID*/, List<CreatureEquipment>>();
             foreach (var npc in units)
             {
                 if (Settings.AreaFilters.Length > 0)
@@ -331,22 +343,44 @@ namespace WowPacketParser.SQL.Builders
                     ItemVisual3 = equipment[2].ItemVisual
                 };
 
-
-                if (equips.Contains(equip))
-                    continue;
-
-                for (uint i = 1;; i++)
+                if (SQLDatabase.CreatureEquipments.TryGetValue(npc.Key.GetEntry(), out var equipListDB))
                 {
-                    equip.ID = i;
-                    if (!equips.ContainsKey(equip))
-                        break;
+                    var equipDB = GetDuplicateEquipFromList(equip, equipListDB);
+                    if (equipDB != null)
+                    {
+                        if (equipDB.VerifiedBuild >= equip.VerifiedBuild)
+                            continue;
+
+                        equip.ID = equipDB.ID;
+                        equipsDb.Add(equipDB); // add to entries to compare to
+                    }
+                    else
+                    {
+                        equip.ID = (uint)equipListDB.Count + 1;
+                        equipListDB.Add(equip);
+                    }
+                }
+                else
+                {
+                    if (newEntriesDict.TryGetValue(equip.CreatureID, out var equipList))
+                    {
+                        if (GetDuplicateEquipFromList(equip, equipList) != null)
+                            continue;
+
+                        equip.ID = (uint)equipList.Count + 1;
+                        equipList.Add(equip);
+                    }
+                    else
+                    {
+                        equip.ID = 1;
+                        newEntriesDict.Add(equip.CreatureID, new List<CreatureEquipment>() { equip });
+                    }
                 }
 
                 equips.Add(equip);
             }
 
-            var equipsDb = SQLDatabase.Get(equips);
-            return SQLUtil.Compare(equips, equipsDb, StoreNameType.Unit);
+            return SQLUtil.Compare(Settings.SQLOrderByKey ? equips.OrderBy(x => x.Item1.CreatureID).ThenBy(y => y.Item1.ID) : equips, equipsDb, StoreNameType.Unit);
         }
 
         [BuilderMethod]

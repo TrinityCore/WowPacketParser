@@ -7,6 +7,7 @@ using System.Linq;
 using WowPacketParser.DBC.Structures.Shadowlands;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
+using WowPacketParser.Store.Objects;
 
 namespace WowPacketParser.SQL
 {
@@ -24,6 +25,7 @@ namespace WowPacketParser.SQL
 
         public static Dictionary<string, List<int>> BroadcastTexts { get; } = new Dictionary<string, List<int>>();
         public static Dictionary<string, List<int>> BroadcastText1s { get; } = new Dictionary<string, List<int>>();
+        public static Dictionary<uint? /*CreatureId*/, List<CreatureEquipment>> CreatureEquipments { get; } = new();
         public static List<POIData> POIs { get; } = new List<POIData>();
 
         private static readonly StoreNameType[] ObjectTypes =
@@ -103,6 +105,7 @@ namespace WowPacketParser.SQL
 
             LoadBroadcastText();
             LoadPointsOfinterest();
+            LoadCreatureEquipment();
             LoadNameData();
 
             var endTime = DateTime.Now;
@@ -214,6 +217,53 @@ namespace WowPacketParser.SQL
                         };
 
                         POIs.Add(poiData);
+                    }
+                }
+            }
+        }
+
+        private static void LoadCreatureEquipment()
+        {
+            string columns = "CreatureID, ID, ItemID1, ItemID2, ItemID3, VerifiedBuild";
+            if (Settings.TargetedDatabase >= TargetedDatabase.Legion)
+                columns += ", AppearanceModID1, ItemVisual1, AppearanceModID2, ItemVisual2, AppearanceModID3, ItemVisual3";
+            string query = $"SELECT {columns} FROM {Settings.TDBDatabase}.creature_equip_template";
+
+            using (var command = SQLConnector.CreateCommand(query))
+            {
+                if (command == null)
+                    return;
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var equip = new CreatureEquipment
+                        {
+                            CreatureID = reader.GetUInt32("CreatureID"),
+                            ID = reader.GetUInt32("ID"),
+                            ItemID1 = reader.GetUInt32("ItemID1"),
+                            ItemID2 = reader.GetUInt32("ItemID2"),
+                            ItemID3 = reader.GetUInt32("ItemID3"),
+                            VerifiedBuild = reader.GetInt32("VerifiedBuild")
+                        };
+
+                        if (Settings.TargetedDatabase >= TargetedDatabase.Legion)
+                        {
+                            equip.AppearanceModID1 = reader.GetUInt16("AppearanceModID1");
+                            equip.ItemVisual1 = reader.GetUInt16("ItemVisual1");
+                            equip.AppearanceModID2 = reader.GetUInt16("AppearanceModID2");
+                            equip.ItemVisual2 = reader.GetUInt16("ItemVisual2");
+                            equip.AppearanceModID3 = reader.GetUInt16("AppearanceModID3");
+                            equip.ItemVisual3 = reader.GetUInt16("ItemVisual3");
+                        }
+
+                        // CreatureID never null
+                        if (CreatureEquipments.TryGetValue(equip.CreatureID, out var equipList))
+                        {
+                            equipList.Add(equip);
+                            continue;
+                        }
+                        CreatureEquipments.Add(equip.CreatureID, new List<CreatureEquipment>() { equip });
                     }
                 }
             }

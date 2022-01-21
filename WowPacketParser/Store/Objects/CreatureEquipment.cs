@@ -42,5 +42,20 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
+
+        public bool EquipEqual(CreatureEquipment other)
+        {
+            if (ItemID1 != other.ItemID1 ||
+                ItemID2 != other.ItemID2 ||
+                ItemID3 != other.ItemID3 ||
+                AppearanceModID1 != other.AppearanceModID1 ||
+                AppearanceModID2 != other.AppearanceModID2 ||
+                AppearanceModID3 != other.AppearanceModID3 ||
+                ItemVisual1 != other.ItemVisual1 ||
+                ItemVisual2 != other.ItemVisual2 ||
+                ItemVisual3 != other.ItemVisual3)
+                return false;
+            return true;
+        }
     }
 }
