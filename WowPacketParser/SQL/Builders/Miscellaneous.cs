@@ -39,7 +39,7 @@ namespace WowPacketParser.SQL.Builders
             return result;
         }
 
-        [BuilderMethod]
+        [BuilderMethod(TargetSQLDatabase.WPP)]
         public static string ObjectNames()
         {
             if (Storage.ObjectNames.IsEmpty())
@@ -53,7 +53,7 @@ namespace WowPacketParser.SQL.Builders
             return SQLUtil.Compare(Storage.ObjectNames, templateDb, StoreNameType.None);
         }
 
-        [BuilderMethod]
+        [BuilderMethod(TargetSQLDatabase.WPP)]
         public static string SniffData()
         {
             if (Storage.SniffData.IsEmpty())

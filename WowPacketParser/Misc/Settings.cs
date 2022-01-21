@@ -27,6 +27,7 @@ namespace WowPacketParser.Misc
         public static readonly bool RecalcDiscount = Conf.GetBoolean("RecalcDiscount", false);
         public static readonly bool ForcePhaseZero = Conf.GetBoolean("ForcePhaseZero", false);
         public static readonly string SQLFileName = Conf.GetString("SQLFileName", string.Empty);
+        public static readonly bool SplitSQLFile = Conf.GetBoolean("SplitSQLFile", false);
         public static readonly bool ShowEndPrompt = Conf.GetBoolean("ShowEndPrompt", false);
         public static readonly bool LogErrors = Conf.GetBoolean("LogErrors", false);
         public static readonly bool LogPacketErrors = Conf.GetBoolean("LogPacketErrors", false);
