@@ -21,6 +21,9 @@ namespace WowPacketParser.SQL.Builders
             if (!Storage.Objects.TryGetValue(@object.Movement.TransportGuid, out transport))
                 return false;
 
+            if (transport.Type == ObjectType.Player || transport.Type == ObjectType.ActivePlayer)
+                return false;
+
             if (SQLConnector.Enabled)
             {
                 var transportTemplates = SQLDatabase.Get(new RowList<GameObjectTemplate> { new GameObjectTemplate { Entry = (uint)transport.ObjectData.EntryID } });

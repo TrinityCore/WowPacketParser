@@ -106,6 +106,7 @@ namespace WowPacketParser.Parsing.Parsers
                 ObjectType.Unit => new Unit(),
                 ObjectType.GameObject => new GameObject(),
                 ObjectType.Player => new Player(),
+                ObjectType.ActivePlayer => new Player(),
                 ObjectType.AreaTrigger => new AreaTriggerCreateProperties(),
                 ObjectType.SceneObject => new SceneObject(),
                 ObjectType.Conversation => new ConversationTemplate(),
