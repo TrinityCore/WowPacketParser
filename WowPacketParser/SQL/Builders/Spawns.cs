@@ -189,6 +189,7 @@ namespace WowPacketParser.SQL.Builders
                     addonRow.Data.AIAnimKit = creature.AIAnimKit.GetValueOrDefault(0);
                     addonRow.Data.MovementAnimKit = creature.MovementAnimKit.GetValueOrDefault(0);
                     addonRow.Data.MeleeAnimKit = creature.MeleeAnimKit.GetValueOrDefault(0);
+                    addonRow.Data.VisibilityDistanceType = creature.VisibilityDistanceType;
 
                     if (addonDefault == null || !SQLUtil.AreDBFieldsEqual(addonDefault, addonRow.Data, dbFields))
                     {

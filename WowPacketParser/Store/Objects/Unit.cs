@@ -50,5 +50,21 @@ namespace WowPacketParser.Store.Objects
             else
                 DynamicFlags  = UpdateFields.GetEnum<UnitField, UnitDynamicFlags?>(UnitField.UNIT_DYNAMIC_FLAGS);
         }
+
+        public byte? VisibilityDistanceType
+        {
+            get
+            {
+                if (!UnitData.Flags2.HasValue)
+                    return null;
+                if (((UnitFlags2)UnitData.Flags2).HasFlag(UnitFlags2.InfiniteAOI))
+                    return 5;
+                if (((UnitFlags2)UnitData.Flags2).HasFlag(UnitFlags2.GiganticAOI))
+                    return 4;
+                if (((UnitFlags2)UnitData.Flags2).HasFlag(UnitFlags2.LargeAOI))
+                    return 3;
+                return 0;
+            }
+        }
     }
 }
