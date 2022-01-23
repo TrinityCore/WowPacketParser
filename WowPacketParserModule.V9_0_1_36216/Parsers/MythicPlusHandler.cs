@@ -35,8 +35,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         [Parser(Opcode.SMSG_MYTHIC_PLUS_SEASON_DATA)]
         public static void HandleMythicPlusSeasonData(Packet packet)
         {
-           packet.ReadBit("SeasonID");
-           packet.ResetBitReader();
+           packet.ReadBit("IsMythicPlusActive");
         }
     }
 }
