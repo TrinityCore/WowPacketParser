@@ -106,11 +106,11 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadInt32("CovenantID");
         }
 		
-       [Parser(Opcode.SMSG_ADVENTURE_MAP_OPEN_NPC)]
+        [Parser(Opcode.SMSG_ADVENTURE_MAP_OPEN_NPC)]
         public static void HandleAdventureMapOpenNpc(Packet packet)
         {
-            packet.ReadPackedGuid128("GUID");
-            packet.ReadInt32("UiMapID ");
+            packet.ReadPackedGuid128("NpcGUID");
+            packet.ReadInt32("UiMapID");
         }
     }
 }
