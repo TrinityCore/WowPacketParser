@@ -90,5 +90,16 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             for (int i = 0; i < unkCount3; i++)
                 ReadUnk3ChallengeModeMapStats(packet, i);
         }
+
+        [Parser(Opcode.SMSG_MYTHIC_PLUS_CURRENT_AFFIXES)]
+        public static void HandleMythicPlusCurrentAffixes(Packet packet)
+        {
+            var count = packet.ReadUInt32();
+            for (int i = 0; i < count; i++)
+            {
+                packet.ReadInt32("KeystoneAffixID", i);
+                packet.ReadInt32("RequiredSeason", i);
+            }
+        }
     }
 }
