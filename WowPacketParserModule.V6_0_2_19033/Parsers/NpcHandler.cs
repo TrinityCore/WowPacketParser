@@ -25,18 +25,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             GossipMessageOption gossipMessageOption = new();
             GossipMenuOption gossipOption = new GossipMenuOption
             {
-                MenuId = menuId
-            };
-            GossipMenuOptionBox gossipMenuOptionBox = new GossipMenuOptionBox
-            {
-                MenuId = menuId
+                MenuID = menuId
             };
 
-            gossipOption.OptionIndex = gossipMenuOptionBox.OptionIndex = gossipMessageOption.OptionIndex = (uint)packet.ReadInt32("ClientOption", idx);
+            gossipOption.OptionID = gossipMessageOption.OptionIndex = (uint)packet.ReadInt32("OptionID", idx);
             gossipOption.OptionIcon = (GossipOptionIcon?)packet.ReadByte("OptionNPC", idx);
             gossipMessageOption.OptionIcon = (int) gossipOption.OptionIcon;
-            gossipMenuOptionBox.BoxCoded = gossipMessageOption.BoxCoded = packet.ReadByte("OptionFlags", idx) != 0;
-            gossipMenuOptionBox.BoxMoney = gossipMessageOption.BoxCost = (uint)packet.ReadInt32("OptionCost", idx);
+            gossipOption.BoxCoded = gossipMessageOption.BoxCoded = packet.ReadByte("OptionFlags", idx) != 0;
+            gossipOption.BoxMoney = gossipMessageOption.BoxCost = (uint)packet.ReadInt32("OptionCost", idx);
 
             packet.ResetBitReader();
             uint textLen = packet.ReadBits(12);
@@ -59,42 +55,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             }
 
             gossipOption.OptionText = gossipMessageOption.Text = packet.ReadWoWString("Text", textLen, idx);
-            gossipMenuOptionBox.BoxText = gossipMessageOption.BoxText = packet.ReadWoWString("Confirm", confirmLen, idx);
+            gossipMessageOption.BoxText = packet.ReadWoWString("Confirm", confirmLen, idx);
+
+            if (!string.IsNullOrEmpty(gossipMessageOption.BoxText))
+                gossipOption.BoxText = gossipMessageOption.BoxText;
 
             if (hasSpellId)
                 packet.ReadInt32("SpellID", idx);
 
-            List<int> boxTextList;
-            List<int> optionTextList;
-
-            if (gossipMenuOptionBox.BoxText != string.Empty && SQLDatabase.BroadcastTexts.TryGetValue(gossipMenuOptionBox.BoxText, out boxTextList))
-            {
-                gossipMenuOptionBox.BoxBroadcastTextId = boxTextList[0];
-                if (boxTextList.Count != 1)
-                {
-                    gossipMenuOptionBox.BroadcastTextIdHelper += "BoxBroadcastTextID: ";
-                    gossipMenuOptionBox.BroadcastTextIdHelper += string.Join(" - ", boxTextList);
-                }
-            }
-            else
-                gossipMenuOptionBox.BoxBroadcastTextId = 0;
-
-            if (gossipOption.OptionText != string.Empty && SQLDatabase.BroadcastTexts.TryGetValue(gossipOption.OptionText, out optionTextList))
-            {
-                gossipOption.OptionBroadcastTextId = optionTextList[0];
-                if (optionTextList.Count != 1)
-                {
-                    gossipOption.BroadcastTextIDHelper += "OptionBroadcastTextID: ";
-                    gossipOption.BroadcastTextIDHelper += string.Join(" - ", optionTextList);
-                }
-            }
-            else
-                gossipOption.OptionBroadcastTextId = 0;
-
+            gossipOption.FillBroadcastTextIDs();
             gossipOption.FillOptionType(npcGuid);
-            Storage.GossipMenuOptions.Add(gossipOption, packet.TimeSpan);
-            if (!gossipMenuOptionBox.IsEmpty)
-                Storage.GossipMenuOptionBoxes.Add(gossipMenuOptionBox, packet.TimeSpan);
+            Storage.GossipMenuOptions.Add((gossipOption.MenuID, gossipOption.OptionID), gossipOption, packet.TimeSpan);
 
             return gossipMessageOption;
         }
@@ -288,7 +259,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 {
                     if (tempGossipOptionPOI.ActionMenuId != null)
                     {
-                        Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = tempGossipOptionPOI.MenuId, OptionIndex = tempGossipOptionPOI.OptionIndex, ActionMenuId = tempGossipOptionPOI.ActionMenuId.GetValueOrDefault(), ActionPoiId = gossipPOI.ID }, packet.TimeSpan);
+                        Storage.GossipMenuOptions[(tempGossipOptionPOI.MenuId, tempGossipOptionPOI.OptionIndex)].Item1.ActionMenuID = tempGossipOptionPOI.ActionMenuId.GetValueOrDefault();
+                        Storage.GossipMenuOptions[(tempGossipOptionPOI.MenuId, tempGossipOptionPOI.OptionIndex)].Item1.ActionPoiID = gossipPOI.ID;
                         //clear temp
                         tempGossipOptionPOI.Reset();
                     }
@@ -315,7 +287,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             gossip.ObjectEntry = guid.GetEntry();
 
             int menuId = packet.ReadInt32("GossipID");
-            gossip.Entry = packetGossip.MenuId = (uint)menuId;
+            gossip.MenuID = packetGossip.MenuId = (uint)menuId;
 
             packet.ReadInt32("FriendshipFactionID");
 
@@ -344,13 +316,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             {
                 if ((packet.TimeSpan - lastGossipOption.TimeSpan).Duration() <= TimeSpan.FromMilliseconds(2500))
                 {
-                    Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = lastGossipOption.MenuId, OptionIndex = lastGossipOption.OptionIndex, ActionMenuId = gossip.Entry, ActionPoiId = lastGossipOption.ActionPoiId ?? 0 }, packet.TimeSpan);
+                    Storage.GossipMenuOptions[(lastGossipOption.MenuId, lastGossipOption.OptionIndex)].Item1.ActionMenuID = gossip.MenuID;
+                    Storage.GossipMenuOptions[(lastGossipOption.MenuId, lastGossipOption.OptionIndex)].Item1.ActionPoiID = lastGossipOption.ActionPoiId ?? 0;
 
                     //keep temp data (for case SMSG_GOSSIP_POI is delayed)
                     tempGossipOptionPOI.Guid = lastGossipOption.Guid;
                     tempGossipOptionPOI.MenuId = lastGossipOption.MenuId;
                     tempGossipOptionPOI.OptionIndex = lastGossipOption.OptionIndex;
-                    tempGossipOptionPOI.ActionMenuId = gossip.Entry;
+                    tempGossipOptionPOI.ActionMenuId = gossip.MenuID;
                     tempGossipOptionPOI.TimeSpan = lastGossipOption.TimeSpan;
 
                     // clear lastgossip so no faulty linkings appear

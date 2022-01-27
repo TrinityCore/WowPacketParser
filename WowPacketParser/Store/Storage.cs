@@ -77,9 +77,7 @@ namespace WowPacketParser.Store
         // Gossips (MenuId, TextId)
         public static readonly Dictionary<uint, uint> CreatureDefaultGossips = new Dictionary<uint, uint>();
         public static readonly DataBag<GossipMenu> Gossips = new DataBag<GossipMenu>(new List<SQLOutput> { SQLOutput.gossip_menu });
-        public static readonly DataBag<GossipMenuOption> GossipMenuOptions = new DataBag<GossipMenuOption>(new List<SQLOutput> { SQLOutput.gossip_menu_option });
-        public static readonly DataBag<GossipMenuOptionAction> GossipMenuOptionActions = new DataBag<GossipMenuOptionAction>(new List<SQLOutput> { SQLOutput.gossip_menu_option });
-        public static readonly DataBag<GossipMenuOptionBox> GossipMenuOptionBoxes = new DataBag<GossipMenuOptionBox>(new List<SQLOutput> { SQLOutput.gossip_menu_option });
+        public static readonly StoreDictionary<(uint?, uint?), GossipMenuOption> GossipMenuOptions = new StoreDictionary<(uint?, uint?), GossipMenuOption>(new List<SQLOutput> { SQLOutput.gossip_menu_option });
 
         // Quest POI (QuestId, Id)
         public static readonly DataBag<QuestPOI> QuestPOIs = new DataBag<QuestPOI>(new List<SQLOutput> { SQLOutput.quest_poi_points });
@@ -192,8 +190,6 @@ namespace WowPacketParser.Store
 
             Gossips.Clear();
             GossipMenuOptions.Clear();
-            GossipMenuOptionActions.Clear();
-            GossipMenuOptionBoxes.Clear();
 
             QuestPOIs.Clear();
             QuestPOIPoints.Clear();

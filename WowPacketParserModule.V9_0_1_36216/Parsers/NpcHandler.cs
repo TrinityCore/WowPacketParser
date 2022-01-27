@@ -73,7 +73,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 {
                     if (tempGossipOptionPOI.ActionMenuId != null)
                     {
-                        Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = tempGossipOptionPOI.MenuId, OptionIndex = tempGossipOptionPOI.OptionIndex, ActionMenuId = tempGossipOptionPOI.ActionMenuId.GetValueOrDefault(), ActionPoiId = gossipPOI.ID }, packet.TimeSpan);
+                        Storage.GossipMenuOptions[(tempGossipOptionPOI.MenuId, tempGossipOptionPOI.OptionIndex)].Item1.ActionMenuID = tempGossipOptionPOI.ActionMenuId.GetValueOrDefault();
+                        Storage.GossipMenuOptions[(tempGossipOptionPOI.MenuId, tempGossipOptionPOI.OptionIndex)].Item1.ActionPoiID = gossipPOI.ID;
                         //clear temp
                         tempGossipOptionPOI.Reset();
                     }
@@ -105,7 +106,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadPackedGuid128("NpcGUID");
             packet.ReadInt32("CovenantID");
         }
-		
+
         [Parser(Opcode.SMSG_ADVENTURE_MAP_OPEN_NPC)]
         public static void HandleAdventureMapOpenNpc(Packet packet)
         {
