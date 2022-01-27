@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Enums;
+﻿using System.Collections.Generic;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
@@ -7,11 +8,11 @@ namespace WowPacketParser.Store.Objects
     [DBTableName("gossip_menu_option")]
     public sealed record GossipMenuOption : IDataModel
     {
-        [DBFieldName("MenuId", true)]
-        public uint? MenuId;
+        [DBFieldName("MenuID", true)]
+        public uint? MenuID;
 
-        [DBFieldName("OptionIndex", true)]
-        public uint? OptionIndex;
+        [DBFieldName("OptionID", true)]
+        public uint? OptionID;
 
         [DBFieldName("OptionIcon")]
         public GossipOptionIcon? OptionIcon;
@@ -28,10 +29,58 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("OptionNpcFlag")]
         public NPCFlags? OptionNpcFlag;
 
+        [DBFieldName("ActionMenuID")]
+        public uint? ActionMenuID;
+
+        [DBFieldName("ActionPoiID", false, true)]
+        public object ActionPoiID;
+
+        [DBFieldName("BoxCoded")]
+        public bool? BoxCoded;
+
+        [DBFieldName("BoxMoney")]
+        public uint? BoxMoney;
+
+        [DBFieldName("BoxText", false, false, true)]
+        public string BoxText;
+
+        [DBFieldName("BoxBroadcastTextID")]
+        public int? BoxBroadcastTextID;
+
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
 
         public string BroadcastTextIDHelper;
+
+        public void FillBroadcastTextIDs()
+        {
+            List<int> boxTextList;
+            List<int> optionTextList;
+
+            if (!string.IsNullOrEmpty(BoxText) && SQLDatabase.BroadcastTexts.TryGetValue(BoxText, out boxTextList))
+            {
+                BoxBroadcastTextID = boxTextList[0];
+                if (boxTextList.Count != 1)
+                {
+                    BroadcastTextIDHelper += "BoxBroadcastTextID: ";
+                    BroadcastTextIDHelper += string.Join(" - ", boxTextList);
+                }
+            }
+            else
+                BoxBroadcastTextID = 0;
+
+            if (!string.IsNullOrEmpty(OptionText) && SQLDatabase.BroadcastTexts.TryGetValue(OptionText, out optionTextList))
+            {
+                OptionBroadcastTextId = optionTextList[0];
+                if (optionTextList.Count != 1)
+                {
+                    BroadcastTextIDHelper += "OptionBroadcastTextID: ";
+                    BroadcastTextIDHelper += string.Join(" - ", optionTextList);
+                }
+            }
+            else
+                OptionBroadcastTextId = 0;
+        }
 
         public void FillOptionType(WowGuid npcGuid)
         {

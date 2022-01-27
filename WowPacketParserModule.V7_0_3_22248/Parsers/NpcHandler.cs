@@ -57,7 +57,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             gossip.ObjectEntry = guid.GetEntry();
 
             int menuId = packet.ReadInt32("GossipID");
-            gossip.Entry = packetGossip.MenuId = (uint)menuId;
+            gossip.MenuID = packetGossip.MenuId = (uint)menuId;
 
             packet.ReadInt32("FriendshipFactionID");
 
@@ -86,13 +86,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             {
                 if ((packet.TimeSpan - lastGossipOption.TimeSpan).Duration() <= TimeSpan.FromMilliseconds(2500))
                 {
-                    Storage.GossipMenuOptionActions.Add(new GossipMenuOptionAction { MenuId = lastGossipOption.MenuId, OptionIndex = lastGossipOption.OptionIndex, ActionMenuId = gossip.Entry, ActionPoiId = lastGossipOption.ActionPoiId ?? 0 }, packet.TimeSpan);
+                    Storage.GossipMenuOptions[(lastGossipOption.MenuId, lastGossipOption.OptionIndex)].Item1.ActionMenuID = gossip.MenuID;
+                    Storage.GossipMenuOptions[(lastGossipOption.MenuId, lastGossipOption.OptionIndex)].Item1.ActionPoiID = lastGossipOption.ActionPoiId ?? 0;
 
                     //keep temp data (for case SMSG_GOSSIP_POI is delayed)
                     tempGossipOptionPOI.Guid = lastGossipOption.Guid;
                     tempGossipOptionPOI.MenuId = lastGossipOption.MenuId;
                     tempGossipOptionPOI.OptionIndex = lastGossipOption.OptionIndex;
-                    tempGossipOptionPOI.ActionMenuId = gossip.Entry;
+                    tempGossipOptionPOI.ActionMenuId = gossip.MenuID;
                     tempGossipOptionPOI.TimeSpan = lastGossipOption.TimeSpan;
 
                     // clear lastgossip so no faulty linkings appear
