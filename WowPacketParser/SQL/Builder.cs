@@ -68,6 +68,8 @@ namespace WowPacketParser.SQL
             var startTime = DateTime.Now;
             using (var store = new SQLFile(fileName))
             {
+                store.WriteData(UnitMisc.CreatureEquip(units)); // ensure this is run before spawns
+
                 for (int i = 1; i <= builderMethods.Count; i++)
                 {
                     var method = builderMethods[i - 1];
