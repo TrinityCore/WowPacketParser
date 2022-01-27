@@ -432,7 +432,8 @@ namespace WowPacketParser.SQL.Builders
             // `gossip_menu_option`
             if (!Storage.GossipMenuOptions.IsEmpty() && Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu_option))
             {
-                result += SQLUtil.Compare(Storage.GossipMenuOptions.Values, SQLDatabase.Get(Storage.GossipMenuOptions.Values), t => t.BroadcastTextIDHelper);
+                var store = Settings.SQLOrderByKey ? Storage.GossipMenuOptions.Values.OrderBy(x => x.Item1.MenuID).ThenBy(y => y.Item1.OptionID).ToArray() : Storage.GossipMenuOptions.Values;
+                result += SQLUtil.Compare(store, SQLDatabase.Get(Storage.GossipMenuOptions.Values), t => t.BroadcastTextIDHelper);
             }
 
             return result;
