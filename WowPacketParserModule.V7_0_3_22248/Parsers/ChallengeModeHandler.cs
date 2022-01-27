@@ -47,6 +47,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32("CompletionTime"); // in ms
             packet.ReadUInt32("KeystoneLevel");
         }
+
+        [Parser(Opcode.SMSG_CHALLENGE_MODE_UPDATE_DEATH_COUNT)]
+        public static void ChallengeModeUpdateDeathCount(Packet packet)
+        {
+            packet.ReadInt32("NewDeathCount");
+        }
     }
 }
 
