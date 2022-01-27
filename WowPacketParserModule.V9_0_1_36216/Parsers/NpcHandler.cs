@@ -59,32 +59,8 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             uint bit84 = packet.ReadBits(6);
             gossipPOI.Name = protoPoi.Name = packet.ReadWoWString("Name", bit84);
 
-            var lastGossipOption = CoreParsers.NpcHandler.LastGossipOption;
-            var tempGossipOptionPOI = CoreParsers.NpcHandler.TempGossipOptionPOI;
-
-            lastGossipOption.ActionPoiId = gossipPOI.ID;
-            tempGossipOptionPOI.ActionPoiId = gossipPOI.ID;
-
             Storage.GossipPOIs.Add(gossipPOI, packet.TimeSpan);
-
-            if (tempGossipOptionPOI.HasSelection)
-            {
-                if ((packet.TimeSpan - tempGossipOptionPOI.TimeSpan).Duration() <= TimeSpan.FromMilliseconds(2500))
-                {
-                    if (tempGossipOptionPOI.ActionMenuId != null)
-                    {
-                        Storage.GossipMenuOptions[(tempGossipOptionPOI.MenuId, tempGossipOptionPOI.OptionIndex)].Item1.ActionMenuID = tempGossipOptionPOI.ActionMenuId.GetValueOrDefault();
-                        Storage.GossipMenuOptions[(tempGossipOptionPOI.MenuId, tempGossipOptionPOI.OptionIndex)].Item1.ActionPoiID = gossipPOI.ID;
-                        //clear temp
-                        tempGossipOptionPOI.Reset();
-                    }
-                }
-                else
-                {
-                    lastGossipOption.Reset();
-                    tempGossipOptionPOI.Reset();
-                }
-            }
+            CoreParsers.NpcHandler.UpdateTempGossipOptionActionPOI(packet.TimeSpan, gossipPOI.ID);
         }
 
         [Parser(Opcode.SMSG_CHROMIE_TIME_OPEN_NPC)]
