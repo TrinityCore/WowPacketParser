@@ -39,6 +39,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadTime("LastRealmUpdate");
             packet.ReadInt32("Unk");
         }
+
+        [Parser(Opcode.SMSG_MYTHIC_PLUS_NEW_WEEK_RECORD)]
+        public static void HandleMythicPlusNewWeekRecord(Packet packet)
+        {
+            packet.ReadInt32("MapChallengeModeID");
+            packet.ReadInt32("CompletionTime"); // in ms
+            packet.ReadUInt32("KeystoneLevel");
+        }
     }
 }
 
