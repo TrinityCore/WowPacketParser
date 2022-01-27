@@ -6,15 +6,15 @@ namespace WowPacketParser.Store.Objects
     public sealed record CreatureTrainer : IDataModel
     {
         [DBFieldName("CreatureID", true)]
-        public uint? CreatureId;
+        public uint? CreatureID;
 
         [DBFieldName("TrainerID")]
-        public uint? TrainerId;
+        public uint? TrainerID;
 
         [DBFieldName("MenuID", true)]
         public uint? MenuID;
 
         [DBFieldName("OptionID", true)]
-        public uint? OptionIndex;
+        public uint? OptionID;
     }
 }

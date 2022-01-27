@@ -46,17 +46,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.WriteGuid("Guid", guid);
 
-            CoreParsers.NpcHandler.LastGossipOption.Guid = null;
-            CoreParsers.NpcHandler.LastGossipOption.MenuId = null;
-            CoreParsers.NpcHandler.LastGossipOption.OptionIndex = null;
-            CoreParsers.NpcHandler.LastGossipOption.ActionMenuId = null;
-            CoreParsers.NpcHandler.LastGossipOption.ActionMenuId = null;
-
-            CoreParsers.NpcHandler.TempGossipOptionPOI.Guid = null;
-            CoreParsers.NpcHandler.TempGossipOptionPOI.MenuId = null;
-            CoreParsers.NpcHandler.TempGossipOptionPOI.OptionIndex = null;
-            CoreParsers.NpcHandler.TempGossipOptionPOI.ActionMenuId = null;
-            CoreParsers.NpcHandler.TempGossipOptionPOI.ActionMenuId = null;
+            CoreParsers.NpcHandler.LastGossipOption.Reset();
+            CoreParsers.NpcHandler.TempGossipOptionPOI.Reset();
         }
     }
 }

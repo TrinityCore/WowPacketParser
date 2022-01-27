@@ -21,6 +21,16 @@ namespace WowPacketParser.Parsing.Parsers
         public TimeSpan TimeSpan { get; set; }
 
         public bool HasSelection { get { return MenuId.HasValue && OptionIndex.HasValue; } }
+
+        public void GossipSelectOption(uint? menuId, uint? optionId, TimeSpan timespan)
+        {
+            MenuId = menuId;
+            OptionIndex = optionId;
+            ActionMenuId = null;
+            ActionPoiId = null;
+            TimeSpan = timespan;
+        }
+
         public void Reset()
         {
             Guid = null;
@@ -37,6 +47,72 @@ namespace WowPacketParser.Parsing.Parsers
         public static uint LastGossipPOIEntry;
         public static GossipOptionSelection LastGossipOption = new GossipOptionSelection();
         public static GossipOptionSelection TempGossipOptionPOI = new GossipOptionSelection();
+
+        public static void AddToCreatureTrainers(uint? trainerId, TimeSpan timeSpan, bool checkDelay = false)
+        {
+            if (LastGossipOption.HasSelection)
+            {
+                if (!checkDelay || (timeSpan - LastGossipOption.TimeSpan).Duration() <= TimeSpan.FromMilliseconds(2500))
+                    Storage.CreatureTrainers.Add(new CreatureTrainer { CreatureID = LastGossipOption.Guid.GetEntry(), MenuID = LastGossipOption.MenuId, OptionID = LastGossipOption.OptionIndex, TrainerID = trainerId }, timeSpan);
+            }
+            else
+                Storage.CreatureTrainers.Add(new CreatureTrainer { CreatureID = LastGossipOption.Guid.GetEntry(), MenuID = 0, OptionID = 0, TrainerID = trainerId }, timeSpan);
+
+            LastGossipOption.Reset();
+            TempGossipOptionPOI.Reset();
+        }
+
+        public static void UpdateTempGossipOptionActionPOI(TimeSpan timeSpan, object gossipPOIID)
+        {
+            LastGossipOption.ActionPoiId = gossipPOIID;
+            TempGossipOptionPOI.ActionPoiId = gossipPOIID;
+
+            if (!TempGossipOptionPOI.HasSelection)
+                return;
+
+            if ((timeSpan - TempGossipOptionPOI.TimeSpan).Duration() <= TimeSpan.FromMilliseconds(2500))
+            {
+                if (TempGossipOptionPOI.ActionMenuId == null)
+                    return;
+
+                Storage.GossipMenuOptions[(TempGossipOptionPOI.MenuId, TempGossipOptionPOI.OptionIndex)].Item1.ActionMenuID = TempGossipOptionPOI.ActionMenuId.GetValueOrDefault();
+                Storage.GossipMenuOptions[(TempGossipOptionPOI.MenuId, TempGossipOptionPOI.OptionIndex)].Item1.ActionPoiID = gossipPOIID;
+                //clear temp
+                TempGossipOptionPOI.Reset();
+            }
+            else
+            {
+                LastGossipOption.Reset();
+                TempGossipOptionPOI.Reset();
+            }
+        }
+
+        public static void UpdateLastGossipOptionActionMessage(TimeSpan timeSpan, uint? menuId)
+        {
+            if (!LastGossipOption.HasSelection)
+                return;
+
+            if ((timeSpan - LastGossipOption.TimeSpan).Duration() <= TimeSpan.FromMilliseconds(2500))
+            {
+                Storage.GossipMenuOptions[(LastGossipOption.MenuId, LastGossipOption.OptionIndex)].Item1.ActionMenuID = menuId;
+                Storage.GossipMenuOptions[(LastGossipOption.MenuId, LastGossipOption.OptionIndex)].Item1.ActionPoiID = LastGossipOption.ActionPoiId ?? 0;
+
+                //keep temp data (for case SMSG_GOSSIP_POI is delayed)
+                TempGossipOptionPOI.Guid = LastGossipOption.Guid;
+                TempGossipOptionPOI.MenuId = LastGossipOption.MenuId;
+                TempGossipOptionPOI.OptionIndex = LastGossipOption.OptionIndex;
+                TempGossipOptionPOI.ActionMenuId = menuId;
+                TempGossipOptionPOI.TimeSpan = LastGossipOption.TimeSpan;
+
+                // clear lastgossip so no faulty linkings appear
+                LastGossipOption.Reset();
+            }
+            else
+            {
+                LastGossipOption.Reset();
+                TempGossipOptionPOI.Reset();
+            }
+        }
 
         [Parser(Opcode.SMSG_GOSSIP_POI)]
         public static void HandleGossipPoi(Packet packet)
@@ -96,25 +172,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             Storage.GossipPOIs.Add(gossipPOI, packet.TimeSpan);
-
-            if (TempGossipOptionPOI.HasSelection)
-            {
-                if ((packet.TimeSpan - TempGossipOptionPOI.TimeSpan).Duration() <= TimeSpan.FromMilliseconds(2500))
-                {
-                    if (TempGossipOptionPOI.ActionMenuId != null)
-                    {
-                        Storage.GossipMenuOptions[(TempGossipOptionPOI.MenuId, TempGossipOptionPOI.OptionIndex)].Item1.ActionMenuID = TempGossipOptionPOI.ActionMenuId.GetValueOrDefault();
-                        Storage.GossipMenuOptions[(TempGossipOptionPOI.MenuId, TempGossipOptionPOI.OptionIndex)].Item1.ActionPoiID = gossipPOI.ID;
-                        //clear temp
-                        TempGossipOptionPOI.Reset();
-                    }
-                }
-                else
-                {
-                    LastGossipOption.Reset();
-                    TempGossipOptionPOI.Reset();
-                }
-            }
+            UpdateTempGossipOptionActionPOI(packet.TimeSpan, gossipPOI.ID);
         }
 
         [Parser(Opcode.CMSG_TRAINER_BUY_SPELL, ClientVersionBuild.Zero, ClientVersionBuild.V4_2_2_14545)]
@@ -252,13 +310,7 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 Storage.Trainers.Add(trainer, packet.TimeSpan);
 
-                if (LastGossipOption.HasSelection)
-                {
-                    if ((packet.TimeSpan - LastGossipOption.TimeSpan).Duration() <= TimeSpan.FromMilliseconds(2500))
-                        Storage.CreatureTrainers.Add(new CreatureTrainer { CreatureId = LastGossipOption.Guid.GetEntry(), MenuID = LastGossipOption.MenuId, OptionIndex = LastGossipOption.OptionIndex, TrainerId = trainer.Id }, packet.TimeSpan);
-                }
-                else
-                    Storage.CreatureTrainers.Add(new CreatureTrainer { CreatureId = LastGossipOption.Guid.GetEntry(), MenuID = 0, OptionIndex = 0, TrainerId = trainer.Id }, packet.TimeSpan);
+                AddToCreatureTrainers(trainer.Id, packet.TimeSpan, true);
             }
 
             LastGossipOption.Reset();
@@ -473,26 +525,17 @@ namespace WowPacketParser.Parsing.Parsers
             PacketGossipSelect packetGossip = packet.Holder.GossipSelect = new();
 
             packetGossip.GossipUnit = packet.ReadGuid("GUID");
-            var menuEntry = packetGossip.MenuId = packet.ReadUInt32("Menu Id");
-            var gossipId = packetGossip.OptionId = packet.ReadUInt32("GossipMenu Id");
+            var menuID = packetGossip.MenuId = packet.ReadUInt32("MenuID");
+            var optionID = packetGossip.OptionId = packet.ReadUInt32("OptionID");
 
             if (packet.CanRead()) // if ( byte_F3777C[v3] & 1 )
                 packet.ReadCString("Box Text");
 
-            Storage.GossipSelects.Add(Tuple.Create(menuEntry, gossipId), null, packet.TimeSpan);
+            Storage.GossipSelects.Add(Tuple.Create(menuID, optionID), null, packet.TimeSpan);
 
-            LastGossipOption.MenuId = menuEntry;
-            LastGossipOption.OptionIndex = gossipId;
-            LastGossipOption.ActionMenuId = null;
-            LastGossipOption.ActionPoiId = null;
-            LastGossipOption.TimeSpan = packet.TimeSpan;
-
+            LastGossipOption.GossipSelectOption(menuID, optionID, packet.TimeSpan);
+            TempGossipOptionPOI.GossipSelectOption(menuID, optionID, packet.TimeSpan);
             TempGossipOptionPOI.Guid = LastGossipOption.Guid;
-            TempGossipOptionPOI.MenuId = menuEntry;
-            TempGossipOptionPOI.OptionIndex = gossipId;
-            TempGossipOptionPOI.ActionMenuId = null;
-            TempGossipOptionPOI.ActionPoiId = null;
-            TempGossipOptionPOI.TimeSpan = packet.TimeSpan;
         }
 
         [HasSniffData]
@@ -570,30 +613,7 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             Storage.Gossips.Add(gossip, packet.TimeSpan);
-            if (LastGossipOption.HasSelection)
-            {
-                if ((packet.TimeSpan - LastGossipOption.TimeSpan).Duration() <= TimeSpan.FromMilliseconds(2500))
-                {
-                    Storage.GossipMenuOptions[(LastGossipOption.MenuId, LastGossipOption.OptionIndex)].Item1.ActionMenuID = menuId;
-                    Storage.GossipMenuOptions[(LastGossipOption.MenuId, LastGossipOption.OptionIndex)].Item1.ActionPoiID = LastGossipOption.ActionPoiId ?? 0;
-
-                    //keep temp data (for case SMSG_GOSSIP_POI is delayed)
-                    TempGossipOptionPOI.Guid = LastGossipOption.Guid;
-                    TempGossipOptionPOI.MenuId = LastGossipOption.MenuId;
-                    TempGossipOptionPOI.OptionIndex = LastGossipOption.OptionIndex;
-                    TempGossipOptionPOI.ActionMenuId = gossip.MenuID;
-                    TempGossipOptionPOI.TimeSpan = LastGossipOption.TimeSpan;
-
-                    // clear lastgossip so no faulty linkings appear
-                    LastGossipOption.Reset();
-                }
-                else
-                {
-                    LastGossipOption.Reset();
-                    TempGossipOptionPOI.Reset();
-
-                }
-            }
+            UpdateLastGossipOptionActionMessage(packet.TimeSpan, menuId);
 
             packet.AddSniffData(StoreNameType.Gossip, (int)menuId, guid.GetEntry().ToString(CultureInfo.InvariantCulture));
         }
