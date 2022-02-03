@@ -127,7 +127,8 @@ namespace WowPacketParser.SQL.Builders
                 if (SQLDatabase.CreatureEquipments.TryGetValue(entry, out var equipList))
                 {
                     var equip = equipList.FirstOrDefault(x => x.EquipEqual(creature.UnitData.VirtualItems));
-                    row.Data.EquipmentID = (int)equip.ID;
+                    if (equip != null) // in case creature_equip_template parsing is disabled this is null for new equips
+                        row.Data.EquipmentID = (int)equip.ID;
                 }
 
                 if (!creature.IsOnTransport())
