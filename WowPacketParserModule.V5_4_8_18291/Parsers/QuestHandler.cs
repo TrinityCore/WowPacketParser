@@ -6,6 +6,7 @@ using WowPacketParser.Parsing;
 using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V5_4_8_18291.Parsers
 {
@@ -600,7 +601,10 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 6);
 
-            requestItems.QuestGiver = packet.WriteGuid("Guid", guid);
+            var questgiverGUID = packet.WriteGuid("Guid", guid);
+            requestItems.QuestGiver = questgiverGUID;
+
+            CoreParsers.QuestHandler.AddQuestEnder(questgiverGUID, requestItems.QuestGiverEntry);
         }
 
         [Parser(Opcode.CMSG_QUEST_GIVER_REQUEST_REWARD)]
