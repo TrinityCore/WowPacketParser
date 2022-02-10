@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -258,8 +259,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             guid[0] = packet.ReadBit();
             packet.ReadBit("bit3552");
-            var countItems = packet.ReadBits("Number of Required Items", 20);
-            var countCurrencies = packet.ReadBits("Number of Required Currencies", 21);
+            var countItems = requestItems.CollectCount = packet.ReadBits("Number of Required Items", 20);
+            var countCurrencies = requestItems.CurrencyCount = packet.ReadBits("Number of Required Currencies", 21);
             packet.StartBitStream(guid, 2, 6);
             var titleLen = packet.ReadBits(9);
             var textLen = packet.ReadBits(12);
@@ -272,28 +273,38 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             for (var i = 0; i < countItems; ++i)
             {
                 packet.ReadUInt32("Required Item Display Id", i);
-                packet.ReadUInt32<ItemId>("Required Item Id", i);
-                packet.ReadUInt32("Required Item Count", i);
+                var itemId = packet.ReadUInt32<ItemId>("Required Item Id", i);
+                var amount = packet.ReadUInt32("Required Item Count", i);
+                requestItems.Collect.Add(new QuestCollect()
+                {
+                    Id = (int)itemId,
+                    Count = (int)amount
+                });
             }
 
-            packet.ReadInt32("Money");
-            packet.ReadInt32("int3604");
-            packet.ReadInt32("Emote");
+            requestItems.MoneyToGet = packet.ReadInt32("Money");
+            requestItems.EmoteDelay = packet.ReadInt32("int3604");
+            requestItems.EmoteType = packet.ReadInt32("Emote");
 
             for (var i = 0; i < countCurrencies; i++)
             {
-                packet.ReadUInt32("Required Currency Count", i);
-                packet.ReadUInt32("Required Currency Id", i);
+                var currencyId = packet.ReadUInt32("Required Currency Count", i);
+                var amount = packet.ReadUInt32("Required Currency Id", i);
+                requestItems.Currencies.Add(new Currency()
+                {
+                    Id = currencyId,
+                    Count = amount
+                });
             }
 
             requestItems.QuestGiverEntry = (uint)packet.ReadEntry("Quest Giver Entry").Key;
             packet.ReadXORBytes(guid, 0, 1);
-            packet.ReadWoWString("Title", titleLen);
-            requestItems.RequestItemsText = packet.ReadWoWString("Text", textLen);
+            requestItems.QuestTitle = packet.ReadWoWString("Title", titleLen);
+            requestItems.CompletionText = packet.ReadWoWString("Text", textLen);
             packet.ReadInt32("int3556");
             var entry = requestItems.QuestId = packet.ReadUInt32<QuestId>("Quest ID");
             packet.ReadXORByte(guid, 4);
-            packet.ReadUInt32E<QuestFlags>("Quest Flags");
+            requestItems.QuestFlags = (uint)packet.ReadUInt32E<QuestFlags>("Quest Flags");
             packet.ReadXORBytes(guid, 6, 3);
             packet.ReadInt32("int3544");
             packet.ReadXORByte(guid, 7);

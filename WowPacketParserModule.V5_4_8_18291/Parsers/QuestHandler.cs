@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 
@@ -547,43 +548,53 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             var guid = new byte[8];
 
             packet.ReadInt32("unk");
-            packet.ReadUInt32E<QuestFlags>("Quest Flags");
+            requestItems.QuestFlags = (uint)packet.ReadUInt32E<QuestFlags>("Quest Flags");
             packet.ReadInt32("unk");
             packet.ReadInt32("canComplete?");
-            packet.ReadInt32("Money");
+            requestItems.MoneyToGet = packet.ReadInt32("Money");
             requestItems.QuestGiverEntry = (uint)packet.ReadEntry("Quest Giver Entry").Key;
-            packet.ReadInt32("unk");
-            packet.ReadInt32("Emote");
+            requestItems.EmoteDelay = packet.ReadInt32("unk");
+            requestItems.EmoteType = packet.ReadInt32("Emote");
             var entry = requestItems.QuestId = packet.ReadUInt32<QuestId>("Quest ID");
-            var countCurrencies = packet.ReadBits("Number of Required Currencies", 21);
+            var countCurrencies = requestItems.CurrencyCount = packet.ReadBits("Number of Required Currencies", 21);
             packet.ReadBit("CloseOnCancel?");
             packet.StartBitStream(guid, 2, 5, 1);
             var titleLen = packet.ReadBits(9);
             var textLen = packet.ReadBits(12);
             packet.StartBitStream(guid, 6, 0);
-            var countItems = packet.ReadBits("Number of Required Items", 20);
+            var countItems = requestItems.CollectCount = packet.ReadBits("Number of Required Items", 20);
             packet.StartBitStream(guid, 4, 7, 3);
 
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 2);
-            packet.ReadWoWString("Title", titleLen);
+            requestItems.QuestTitle = packet.ReadWoWString("Title", titleLen);
 
             for (var i = 0; i < countCurrencies; i++)
             {
-                packet.ReadUInt32("Required Currency Id", i);
-                packet.ReadUInt32("Required Currency Count", i);
+                var currencyId = packet.ReadUInt32("Required Currency Id", i);
+                var amount = packet.ReadUInt32("Required Currency Count", i);
+                requestItems.Currencies.Add(new Currency()
+                {
+                    Id = currencyId,
+                    Count = amount
+                });
             }
 
             for (var i = 0; i < countItems; ++i)
             {
                 packet.ReadUInt32("Required Item Display Id", i);
-                packet.ReadUInt32<ItemId>("Required Item Id", i);
-                packet.ReadUInt32("Required Item Count", i);
+                var itemId = packet.ReadUInt32<ItemId>("Required Item Id", i);
+                var amount = packet.ReadUInt32("Required Item Count", i);
+                requestItems.Collect.Add(new QuestCollect()
+                {
+                    Id = (int)itemId,
+                    Count = (int)amount
+                });
             }
 
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 1);
-            requestItems.RequestItemsText = packet.ReadWoWString("Text", textLen);
+            requestItems.CompletionText = packet.ReadWoWString("Text", textLen);
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 5);
             packet.ReadXORByte(guid, 7);
