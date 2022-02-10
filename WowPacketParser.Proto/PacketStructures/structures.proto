@@ -404,11 +404,37 @@ message PacketQuestGiverQuestComplete {
   uint32 questId = 1;
 }
 
+message Currency {
+  uint32 id = 1;
+  uint32 count = 2;
+}
+
+message QuestCollect {
+  int32 id = 1;
+  int32 count = 2;
+  google.protobuf.UInt32Value flags = 3;
+}
+
 message PacketQuestGiverRequestItems {
   uint32 questId = 1;
-  string requestItemsText = 2;
-  UniversalGuid questGiver = 3;
-  uint32 questGiverEntry = 4;
+  UniversalGuid questGiver = 2;
+  uint32 questGiverEntry = 3;
+  int32 emoteDelay = 4;
+  int32 emoteType = 5;
+  uint32 questFlags = 6;
+  uint32 questFlags2 = 7;
+  int32 suggestedPartyMembers = 8;
+  int32 moneyToGet = 9;
+  uint32 CollectCount = 10;
+  uint32 CurrencyCount = 11;
+  PacketQuestStatusFlags statusFlags = 12;
+  bool autoLaunched = 13;
+  google.protobuf.BoolValue canIgnoreQuest = 14;
+  google.protobuf.BoolValue isQuestIgnored = 15;
+  string questTitle = 16;
+  string completionText = 17;
+  repeated Currency currencies = 18;
+  repeated QuestCollect collect = 19;
 }
 
 message PacketNpcTextEntry {
@@ -788,3 +814,14 @@ message PacketGameObjectCustomAnim {
   optional bool playAsDespawn = 3;
 }
 
+enum PacketQuestStatusFlags {
+  QuestStatusNone = 0;
+  QuestStatusUnk1 = 0x01;
+  KillCreditComplete = 0x02;
+  CollectableComplete = 0x04;
+  QuestStatusUnk8 = 0x08;
+  QuestStatusUnk16 = 0x10;
+  NoRequestOnComplete = 0x20;
+  QuestStatusUnk64 = 0x40;
+  QuestStatusUnk128 = 0x80;
+}
