@@ -99,7 +99,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadInt32E<EmoteTextType>("EmoteID");
             packet.ReadInt32("SoundIndex");
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503) || ClientVersion.IsBurningCrusadeClassicClientVersionBuild(ClientVersion.Build))
             {
                 var count = packet.ReadUInt32("SpellVisualKitCount");
                 for (var i = 0; i < count; ++i)
