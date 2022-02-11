@@ -227,7 +227,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
             packet.ReadPackedGuid128("GuildGUID", idx);
 
-            packet.ReadInt32("GuildVirtualRealmAddress", idx);
+            packet.ReadUInt32("GuildVirtualRealmAddress", idx);
             packet.ReadInt32<AreaId>("AreaID", idx);
 
             packet.ResetBitReader();
@@ -240,6 +240,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         [Parser(Opcode.SMSG_WHO)]
         public static void HandleWho(Packet packet)
         {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_3_7_35249) || ClientVersion.IsBurningCrusadeClassicClientVersionBuild(ClientVersion.Build))
+                packet.ReadUInt32("RequestID");
+
             var bits568 = packet.ReadBits("List count", 6);
 
             for (var i = 0; i < bits568; ++i)
