@@ -80,6 +80,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             }
             var packedDeltasCount = packet.ReadBits("PackedDeltasCount", 16, indexes);
             var hasSplineFilter = packet.ReadBit("HasSplineFilter", indexes);
+
+            if (ClientVersion.AddedInVersion(ClientType.Shadowlands) && ClientVersion.AddedInVersion(ClientVersionBuild.V2_5_3_41812))
+            {
+                packet.ReadBit("HasUnknown2", indexes);
+            }
+
             var hasSpellEffectExtraData = packet.ReadBit("HasSpellEffectExtraData", indexes);
             var hasJumpExtraData = packet.ReadBit("HasJumpExtraData", indexes);
             var hasAnimTier = false;
