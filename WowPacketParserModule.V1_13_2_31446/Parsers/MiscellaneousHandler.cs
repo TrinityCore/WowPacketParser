@@ -1,6 +1,7 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
-using WowPacketParser.Parsing;
+using WowPacketParser.Parsing
+using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V1_13_2_31446.Parsers
 {
@@ -118,6 +119,27 @@ namespace WowPacketParserModule.V1_13_2_31446.Parsers
 
             for (var i = 0; i < areaCount; ++i)
                 packet.ReadUInt32<AreaId>("Area", i);
+        }
+
+        [Parser(Opcode.SMSG_WORLD_SERVER_INFO)]
+        public static void HandleWorldServerInfo(Packet packet)
+        {
+            CoreParsers.MovementHandler.CurrentDifficultyID = packet.ReadUInt32<DifficultyId>("DifficultyID");
+            packet.ReadByte("IsTournamentRealm");
+
+            packet.ReadBit("XRealmPvpAlert");
+            var hasRestrictedAccountMaxLevel = packet.ReadBit("HasRestrictedAccountMaxLevel");
+            var hasRestrictedAccountMaxMoney = packet.ReadBit("HasRestrictedAccountMaxMoney");
+            var hasInstanceGroupSize = packet.ReadBit("HasInstanceGroupSize");
+
+            if (hasRestrictedAccountMaxLevel)
+                packet.ReadUInt32("RestrictedAccountMaxLevel");
+
+            if (hasRestrictedAccountMaxMoney)
+                packet.ReadUInt64("RestrictedAccountMaxMoney");
+
+            if (hasInstanceGroupSize)
+                packet.ReadUInt32("InstanceGroupSize");
         }
     }
 }
