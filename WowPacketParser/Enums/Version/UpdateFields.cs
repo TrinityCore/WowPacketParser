@@ -770,10 +770,10 @@ namespace WowPacketParser.Enums.Version
                 {
                     return "V2_5_2_39570";
                 }
-                case ClientVersionBuild.V2_5_3_41818:
+                case ClientVersionBuild.V2_5_3_41812:
                 case ClientVersionBuild.V2_5_3_42083:
                 {
-                    return "V2_5_3_41818";
+                    return "V2_5_3_41812";
                 }
                 default:
                 {
