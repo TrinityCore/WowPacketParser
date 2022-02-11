@@ -977,7 +977,7 @@ namespace WowPacketParser.Enums.Version.V2_5_3_41812
             {Opcode.SMSG_FEIGN_DEATH_RESISTED, 0x273C},
             {Opcode.SMSG_FISH_ESCAPED, 0x26C8},
             {Opcode.SMSG_FISH_NOT_HOOKED, 0x26C7},
-            {Opcode.SMSG_FLIGHT_SPLINE_SYNC, 0x26AA},
+            {Opcode.SMSG_FLIGHT_SPLINE_SYNC, 0x2E2B},
             {Opcode.SMSG_FORCED_DEATH_UPDATE, 0x26CC},
             {Opcode.SMSG_FORCE_ANIM, 0x2748},
             {Opcode.SMSG_FORCE_ANIMATIONS, 0x2749},
