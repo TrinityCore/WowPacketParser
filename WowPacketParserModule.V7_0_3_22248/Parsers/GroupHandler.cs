@@ -8,13 +8,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
     {
         public static void ReadAuraInfos(Packet packet, params object[] index)
         {
-            packet.ReadUInt32<SpellId>("Aura", index);
-            if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
+            packet.ReadInt32<SpellId>("Aura", index);
+            if (ClientVersion.AddedInVersion(ClientType.Shadowlands) || ClientVersion.IsBurningCrusadeClassicClientVersionBuild(ClientVersion.Build))
                 packet.ReadUInt16("Flags", index);
             else
                 packet.ReadByte("Flags", index);
-            packet.ReadInt32("ActiveFlags", index);
-            var byte3 = packet.ReadInt32("PointsCount", index);
+            packet.ReadUInt32("ActiveFlags", index);
+            var byte3 = packet.ReadUInt32("PointsCount", index);
 
             for (int j = 0; j < byte3; j++)
                 packet.ReadSingle("Points", index, j);
@@ -23,11 +23,11 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         public static void ReadPetInfos(Packet packet, params object[] index)
         {
             packet.ReadPackedGuid128("PetGuid", index);
-            packet.ReadUInt32("PetDisplayID", index);
-            packet.ReadUInt32("PetMaxHealth", index);
-            packet.ReadUInt32("PetHealth", index);
+            packet.ReadInt32("PetDisplayID", index);
+            packet.ReadInt32("PetMaxHealth", index);
+            packet.ReadInt32("PetHealth", index);
 
-            var petAuraCount = packet.ReadInt32("PetAuraCount", index);
+            var petAuraCount = packet.ReadUInt32("PetAuraCount", index);
             for (int i = 0; i < petAuraCount; i++)
                 ReadAuraInfos(packet, index, i);
 
@@ -45,20 +45,20 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (var i = 0; i < 2; i++)
                 packet.ReadByte("PartyType", i);
 
-            packet.ReadInt16E<GroupMemberStatusFlag>("Flags");
+            packet.ReadUInt16E<GroupMemberStatusFlag>("Flags");
 
             packet.ReadByte("PowerType");
-            packet.ReadInt16("OverrideDisplayPower");
+            packet.ReadUInt16("OverrideDisplayPower");
             packet.ReadInt32("CurrentHealth");
             packet.ReadInt32("MaxHealth");
-            packet.ReadInt16("MaxPower");
-            packet.ReadInt16("MaxPower");
-            packet.ReadInt16("Level");
-            packet.ReadInt16("Spec");
-            packet.ReadInt16("AreaID");
+            packet.ReadUInt16("MaxPower");
+            packet.ReadUInt16("MaxPower");
+            packet.ReadUInt16("Level");
+            packet.ReadUInt16("Spec");
+            packet.ReadUInt16("AreaID");
 
-            packet.ReadInt16("WmoGroupID");
-            packet.ReadInt32("WmoDoodadPlacementID");
+            packet.ReadUInt16("WmoGroupID");
+            packet.ReadUInt32("WmoDoodadPlacementID");
 
             packet.ReadInt16("PositionX");
             packet.ReadInt16("PositionY");
@@ -69,7 +69,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             V6_0_2_19033.Parsers.GroupHandler.ReadPhaseInfos(packet, "Phase");
 
-            if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
+            if (ClientVersion.AddedInVersion(ClientType.Shadowlands) || ClientVersion.IsBurningCrusadeClassicClientVersionBuild(ClientVersion.Build))
             {
                 packet.ReadUInt32("ContentTuningConditionMask", "CTROptions");
                 packet.ReadInt32("Unused901", "CTROptions");
