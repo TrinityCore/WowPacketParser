@@ -940,6 +940,7 @@ namespace WowPacketParser.Enums.Version.V2_5_3_41812
             {Opcode.SMSG_DIFFERENT_INSTANCE_FROM_PARTY, 0x258D},
             {Opcode.SMSG_DISCONNECT_REASON, 0x2682},
             {Opcode.SMSG_DISENCHANT_CREDIT, 0x25A6},
+            {Opcode.SMSG_DISMOUNT, 0x26AA},
             {Opcode.SMSG_DISMOUNT_RESULT, 0x257C},
             {Opcode.SMSG_DISPEL_FAILED, 0x2C30},
             {Opcode.SMSG_DISPLAY_GAME_ERROR, 0x25A0},

@@ -719,6 +719,7 @@ namespace WowPacketParser.Enums.Version.V2_5_1_38835
             {Opcode.SMSG_PRELOAD_CHILD_MAP, 0x2579},
             {Opcode.SMSG_UNLOAD_CHILD_MAP, 0x257A},
             {Opcode.SMSG_MOUNT_RESULT, 0x257B},
+            {Opcode.SMSG_DISMOUNT, 0x26AC},
             {Opcode.SMSG_DISMOUNT_RESULT, 0x257C},
             {Opcode.SMSG_BIND_POINT_UPDATE, 0x257D},
             {Opcode.SMSG_RESURRECT_REQUEST, 0x257E},
