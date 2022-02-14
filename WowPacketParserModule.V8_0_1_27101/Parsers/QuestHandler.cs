@@ -87,7 +87,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_DETAILS)]
         public static void HandleQuestGiverQuestDetails(Packet packet)
         {
-            packet.ReadPackedGuid128("QuestGiverGUID");
+            var questgiverGUID = packet.ReadPackedGuid128("QuestGiverGUID");
             packet.ReadPackedGuid128("InformUnit");
 
             int id = packet.ReadInt32("QuestID");
@@ -95,6 +95,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             {
                 ID = (uint)id
             };
+
+            CoreParsers.QuestHandler.AddQuestStarter(questgiverGUID, (uint)id);
 
             packet.ReadInt32("QuestPackageID");
             packet.ReadInt32("PortraitGiver");
@@ -531,7 +533,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         [Parser(Opcode.SMSG_QUEST_GIVER_OFFER_REWARD_MESSAGE)]
         public static void QuestGiverOfferReward(Packet packet)
         {
-            packet.ReadPackedGuid128("QuestGiverGUID");
+            var questgiverGUID = packet.ReadPackedGuid128("QuestGiverGUID");
 
             packet.ReadInt32("QuestGiverCreatureID");
             int id = packet.ReadInt32("QuestID");
@@ -540,6 +542,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             {
                 ID = (uint)id
             };
+
+            CoreParsers.QuestHandler.AddQuestEnder(questgiverGUID, (uint)id);
 
             for (int i = 0; i < 2; i++)
                 packet.ReadInt32("QuestFlags", i);
@@ -739,14 +743,17 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         [Parser(Opcode.SMSG_QUEST_GIVER_REQUEST_ITEMS, ClientVersionBuild.V8_1_0_28724)]
         public static void HandleQuestGiverRequestItems(Packet packet)
         {
+            var questgiverGUID = packet.ReadPackedGuid128("QuestGiverGUID");
             var requestItems = packet.Holder.QuestGiverRequestItems = new();
-            requestItems.QuestGiver = packet.ReadPackedGuid128("QuestGiverGUID");
+            requestItems.QuestGiver = questgiverGUID;
             requestItems.QuestGiverEntry = (uint)packet.ReadInt32("QuestGiverCreatureID");
 
             int id = packet.ReadInt32("QuestID");
             int delay = requestItems.EmoteDelay = packet.ReadInt32("EmoteDelay");
             int emote = requestItems.EmoteType = packet.ReadInt32("EmoteType");
             requestItems.QuestId = (uint)id;
+
+            CoreParsers.QuestHandler.AddQuestEnder(questgiverGUID, (uint)id);
 
             for (int i = 0; i < 2; i++)
             {
