@@ -17,5 +17,19 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
             packet.ReadWoWString("ChannelName", channelLength);
             packet.ReadWoWString("Password", passwordLength);
         }
+
+        [Parser(Opcode.SMSG_CHANNEL_NOTIFY_JOINED)]
+        public static void HandleChannelNotifyJoined(Packet packet)
+        {
+            var channelLen = packet.ReadBits(7);
+            uint channelWelcomeMsgLen = packet.ReadBits(11);
+
+            packet.ReadUInt32E<ChannelFlag>("ChannelFlags");
+            packet.ReadInt32("ChatChannelID");
+            packet.ReadUInt64("InstanceID");
+            packet.ReadPackedGuid128("ChannelGUID");
+            packet.ReadWoWString("Channel", channelLen);
+            packet.ReadWoWString("ChannelWelcomeMsg", channelWelcomeMsgLen);
+        }
     }
 }
