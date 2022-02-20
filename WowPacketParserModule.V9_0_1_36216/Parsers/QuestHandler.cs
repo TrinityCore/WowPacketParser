@@ -623,6 +623,17 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             }
         }
 
+        public static void ReadPlayerChoiceResponseMawPower(Packet packet, params object[] indexes)
+        {
+            packet.ReadInt32("Unused901_1", indexes);
+            packet.ReadInt32("TypeArtFileID", indexes);
+            packet.ReadInt32("Rarity", indexes);
+            packet.ReadUInt32("RarityColor", indexes);
+            packet.ReadInt32("Unused901_2", indexes);
+            packet.ReadInt32("SpellID", indexes);
+            packet.ReadInt32("MaxStacks", indexes);
+        }
+
         public static void ReadPlayerChoiceResponse(Packet packet, int choiceId, uint index, params object[] indexes)
         {
             var responseId = packet.ReadInt32("ResponseID", indexes);
@@ -644,6 +655,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var confirmationTextLength = packet.ReadBits(7);
             var hasRewardQuestID = packet.ReadBit();
             var hasReward = packet.ReadBit();
+            var hasMawPower = packet.ReadBit();
             if (hasReward)
                 V6_0_2_19033.Parsers.QuestHandler.ReadPlayerChoiceResponseReward(packet, choiceId, responseId, "PlayerChoiceResponseReward", indexes);
 
@@ -657,6 +669,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var rewardQuestID = 0u;
             if (hasRewardQuestID)
                 rewardQuestID = packet.ReadUInt32("RewardQuestID", indexes);
+
+            if (hasMawPower)
+                ReadPlayerChoiceResponseMawPower(packet, indexes);
 
             Storage.PlayerChoiceResponses.Add(new PlayerChoiceResponseTemplate
             {
