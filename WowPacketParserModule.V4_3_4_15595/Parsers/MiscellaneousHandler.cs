@@ -1,6 +1,8 @@
 ﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using MovementFlag = WowPacketParser.Enums.v4.MovementFlag;
+using MovementFlag2 = WowPacketParser.Enums.v4.MovementFlag2;
 
 namespace WowPacketParserModule.V4_3_4_15595.Parsers
 {
@@ -104,7 +106,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                     hasFallVelocity = packet.ReadBit();
 
                 if (hasMovementFlagsExtra)
-                    packet.ReadBitsE<MovementFlagExtra>("Movement Flags Extra", 12, "Movement");
+                    packet.ReadBitsE<MovementFlag2>("Movement Flags Extra", 12, "Movement");
             }
 
             packet.ResetBitReader();

@@ -940,13 +940,13 @@ namespace WowPacketParser.Parsing.Parsers
             }
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasFallData)
                 hasFallDirection = packet.ReadBit();
 
             if (hasMovementFlags2)
-                packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
+                packet.ReadBitsE<Enums.v4.MovementFlag2>("Extra Movement Flags", 12);
 
             packet.ReadXORByte(guid, 5);
             packet.ReadXORByte(guid, 3);

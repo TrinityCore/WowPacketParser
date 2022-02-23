@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.PacketStructures;
@@ -7,6 +6,8 @@ using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
+using MovementFlag = WowPacketParser.Enums.v4.MovementFlag;
+using MovementFlag2 = WowPacketParser.Enums.v4.MovementFlag2;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
@@ -228,9 +229,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (hasMovementTransport) // 456
             {
+                moveInfo.Transport = new MovementInfo.TransportInfo();
                 var transport = createObject.Transport = new();
-                transport.TransportGuid = moveInfo.TransportGuid = packet.ReadPackedGuid128("TransportGUID", index);
-                transport.Position = moveInfo.TransportOffset = packet.ReadVector4("TransportPosition", index);
+                transport.TransportGuid = moveInfo.Transport.Guid = packet.ReadPackedGuid128("TransportGUID", index);
+                transport.Position = moveInfo.Transport.Offset = packet.ReadVector4("TransportPosition", index);
                 var seat = packet.ReadByte("VehicleSeatIndex", index);
                 transport.Seat = seat;
                 transport.MoveTime = packet.ReadUInt32("MoveTime", index);
@@ -246,12 +248,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 if (hasVehicleRecID)
                     transport.VehicleId = packet.ReadInt32("VehicleRecID", index);
 
-                if (moveInfo.TransportGuid.HasEntry() && moveInfo.TransportGuid.GetHighType() == HighGuidType.Vehicle &&
+                if (moveInfo.Transport.Guid.HasEntry() && moveInfo.Transport.Guid.GetHighType() == HighGuidType.Vehicle &&
                     guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
                 {
                     VehicleTemplateAccessory vehicleAccessory = new VehicleTemplateAccessory
                     {
-                        Entry = moveInfo.TransportGuid.GetEntry(),
+                        Entry = moveInfo.Transport.Guid.GetEntry(),
                         AccessoryEntry = guid.GetEntry(),
                         SeatId = seat
                     };
@@ -441,8 +443,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             packet.ResetBitReader();
 
-            moveInfo.Flags = (MovementFlag)packet.ReadBitsE<Enums.MovementFlag>("Movement Flags", 30, index);
-            moveInfo.FlagsExtra = packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173) ? 16 : 15, index);
+            moveInfo.Flags = (uint)packet.ReadBitsE<MovementFlag>("Movement Flags", 30, index);
+            moveInfo.Flags2 = (uint)packet.ReadBitsE<MovementFlag2>("Extra Movement Flags", ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173) ? 16 : 15, index);
 
             var hasTransport = packet.ReadBit("Has Transport Data", index);
             var hasFall = packet.ReadBit("Has Fall Data", index);

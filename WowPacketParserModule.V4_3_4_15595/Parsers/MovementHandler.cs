@@ -8,8 +8,8 @@ using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
-using MovementFlag = WowPacketParserModule.V4_3_4_15595.Enums.MovementFlag;
-using MovementFlagExtra = WowPacketParserModule.V4_3_4_15595.Enums.MovementFlagExtra;
+using MovementFlag = WowPacketParser.Enums.v4.MovementFlag;
+using MovementFlagExtra = WowPacketParser.Enums.v4.MovementFlag2;
 using SetCollisionHeightReason = WowPacketParserModule.V4_3_4_15595.Enums.SetCollisionHeightReason;
 using SplineFlag = WowPacketParserModule.V4_3_4_15595.Enums.SplineFlag;
 
@@ -196,7 +196,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 hasFallDirection = packet.ReadBit();
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasMovementFlags2)
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
@@ -308,7 +308,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasFallData)
                 hasFallDirection = packet.ReadBit();
@@ -425,7 +425,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             packet.ParseBitStream(guid, 6, 7, 2, 0, 4, 1, 5, 3);
 
@@ -585,7 +585,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             }
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasMovementFlags2)
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
@@ -698,7 +698,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             }
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasMovementFlags2)
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
@@ -798,7 +798,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             guid[4] = packet.ReadBit();
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasTrans)
             {
@@ -929,7 +929,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasFallData)
                 hasFallDirection = packet.ReadBit();
@@ -1038,7 +1038,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasFallData)
                 hasFallDirection = packet.ReadBit();
@@ -1154,7 +1154,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 hasFallDirection = packet.ReadBit();
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             packet.ParseBitStream(guid, 3, 7, 0, 5, 2, 6, 4, 1);
 
@@ -1264,7 +1264,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             }
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasFallData)
                 hasFallDirection = packet.ReadBit();
@@ -1382,7 +1382,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             packet.ParseBitStream(guid, 1, 7, 0, 6, 4, 3, 5, 2);
 
@@ -1492,7 +1492,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             }
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasFallData)
                 hasFallDirection = packet.ReadBit();
@@ -1606,7 +1606,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             }
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasMovementFlags2)
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
@@ -1733,7 +1733,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasFallData)
                 hasFallDirection = packet.ReadBit();
@@ -1846,7 +1846,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 hasFallDirection = packet.ReadBit();
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasMovementFlags2)
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
@@ -1961,7 +1961,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             }
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasMovementFlags2)
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
@@ -2074,7 +2074,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasFallData)
                 hasFallDirection = packet.ReadBit();
@@ -2185,7 +2185,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             }
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasFallData)
                 hasFallDirection = packet.ReadBit();
@@ -2298,7 +2298,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             }
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasMovementFlags2)
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
@@ -2418,7 +2418,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 hasFallDirection = packet.ReadBit();
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             packet.ParseBitStream(guid, 0, 4, 7, 5, 6, 3, 2, 1);
 
@@ -2527,7 +2527,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasFallData)
                 hasFallDirection = packet.ReadBit();
@@ -2639,7 +2639,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 hasFallDirection = packet.ReadBit();
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasMovementFlags2)
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
@@ -2879,7 +2879,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             var hasFallData = packet.ReadBit("Has fall data");
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasTrans)
             {
@@ -2981,7 +2981,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             guid[5] = packet.ReadBit();
             var hasTransport = packet.ReadBit();
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement flags", 30);
 
             var hasTransportTime3 = false;
             var hasTransportTime2 = false;
@@ -3140,7 +3140,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             packet.ParseBitStream(guid, 3, 6, 0, 7, 4, 1, 5, 2);
 
@@ -3251,7 +3251,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 hasFallDirection = packet.ReadBit();
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasMovementFlags2)
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
@@ -3368,7 +3368,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 hasFallDirection = packet.ReadBit();
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             packet.ParseBitStream(guid, 2, 0, 4, 7, 5, 1, 3, 6);
 
@@ -3482,7 +3482,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 hasFallDirection = packet.ReadBit();
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             packet.ParseBitStream(guid, 6, 3, 1, 5, 2, 4, 7, 0);
 
@@ -3598,7 +3598,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             packet.ParseBitStream(guid, 7, 4, 5, 6, 0, 1, 2, 3);
 
@@ -3716,7 +3716,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 hasFallDirection = packet.ReadBit();
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             packet.ParseBitStream(guid, 3, 2, 0, 4, 1, 5, 7, 6);
 
@@ -3791,7 +3791,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             var hasTime = !packet.ReadBit();
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement flags", 30);
 
             var hasFallData = packet.ReadBit();
             guid[3] = packet.ReadBit();
@@ -3937,7 +3937,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             guid[3] = packet.ReadBit();
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement flags", 30);
 
             guid[7] = packet.ReadBit();
             guid[0] = packet.ReadBit();
@@ -4059,7 +4059,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             guid[1] = packet.ReadBit();
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement flags", 30);
 
             var hasFallData = packet.ReadBit();
             guid[2] = packet.ReadBit();
@@ -4226,7 +4226,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement flags", 30);
 
             packet.ReadXORByte(guid, 3);
 
@@ -4354,7 +4354,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             var hasSplineElevation = !packet.ReadBit();
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement flags", 30);
 
             guid[1] = packet.ReadBit();
             packet.ReadXORByte(guid, 7);
@@ -4706,7 +4706,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             }
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasFallData)
                 hasFallDirection = packet.ReadBit();
@@ -4827,7 +4827,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasFallData)
                 hasFallDirection = packet.ReadBit();
@@ -4946,7 +4946,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             packet.ParseBitStream(guid, 5, 6, 1, 7, 3, 0, 2, 4);
 
@@ -5059,7 +5059,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasFallData)
                 hasFallDirection = packet.ReadBit();
@@ -5178,7 +5178,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 hasFallDirection = packet.ReadBit();
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             packet.ParseBitStream(guid, 2, 0, 6, 5, 1, 3, 4, 7);
 
@@ -5288,7 +5288,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             }
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasMovementFlags2)
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
@@ -5404,7 +5404,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             }
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasMovementFlags2)
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
@@ -5502,7 +5502,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             var hasO = !packet.ReadBit();
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement flags", 30);
 
             if (hasFallData)
                 hasFallDirection = packet.ReadBit();
@@ -5653,7 +5653,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement flags", 30);
 
             packet.ReadBit("Has spline data");
             guid[4] = packet.ReadBit();
@@ -5784,7 +5784,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasFallData)
                 hasFallDirection = packet.ReadBit();
@@ -5903,7 +5903,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             packet.ParseBitStream(guid, 7, 1, 0, 6, 2, 4, 5, 3);
 
@@ -6017,7 +6017,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             packet.ParseBitStream(guid, 4, 0, 1, 7, 5, 2, 3, 6);
 
@@ -6133,7 +6133,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             packet.ParseBitStream(guid, 6, 1, 7, 0, 5, 4, 3, 2);
 
@@ -6243,7 +6243,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             }
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasMovementFlags2)
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
@@ -6360,7 +6360,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 hasFallDirection = packet.ReadBit();
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasMovementFlags2)
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
@@ -6473,7 +6473,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             }
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasMovementFlags2)
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
@@ -6576,7 +6576,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             var hasFallData = packet.ReadBit("Has fall data");
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasTrans)
             {
@@ -6708,7 +6708,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                 hasFallDirection = packet.ReadBit();
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasMovementFlags2)
                 packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12);
@@ -6820,7 +6820,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
             }
 
             if (hasMovementFlags)
-                packet.ReadBitsE<MovementFlag>("Movement Flags", 30);
+                packet.ReadBitsE<WowPacketParser.Enums.v4.MovementFlag>("Movement Flags", 30);
 
             if (hasFallData)
                 hasFallDirection = packet.ReadBit();

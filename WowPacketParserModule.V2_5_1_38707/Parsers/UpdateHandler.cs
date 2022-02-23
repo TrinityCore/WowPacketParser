@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using WowPacketParser.Enums;
+﻿using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing;
@@ -8,6 +6,8 @@ using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
+using MovementFlag = WowPacketParser.Enums.v4.MovementFlag;
+using MovementFlag2 = WowPacketParser.Enums.v7.MovementFlag2;
 using SplineFlag = WowPacketParserModule.V7_0_3_22248.Enums.SplineFlag;
 
 namespace WowPacketParserModule.V2_5_1_38707.Parsers
@@ -140,8 +140,8 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
 
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_5_3_41812))
                 {
-                    moveInfo.Flags = (MovementFlag)packet.ReadUInt32E<V6_0_2_19033.Enums.MovementFlag>("Movement Flags", index);
-                    moveInfo.FlagsExtra = (MovementFlagExtra)packet.ReadUInt32E<V8_0_1_27101.Enums.MovementFlags2>("Extra Movement Flags", index);
+                    moveInfo.Flags = (uint)packet.ReadUInt32E<MovementFlag>("Movement Flags", index);
+                    moveInfo.Flags2 = (uint)packet.ReadUInt32E<MovementFlag2>("Extra Movement Flags", index);
 
                     packet.ReadUInt32("MovementFlags3", index);
                 }
@@ -161,8 +161,8 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
 
                 if (ClientVersion.RemovedInVersion(ClientVersionBuild.V2_5_3_41812))
                 {
-                    moveInfo.Flags = (MovementFlag)packet.ReadBitsE<V6_0_2_19033.Enums.MovementFlag>("Movement Flags", 30, index);
-                    moveInfo.FlagsExtra = (MovementFlagExtra)packet.ReadBitsE<V8_0_1_27101.Enums.MovementFlags2>("Extra Movement Flags", 18, index);
+                    moveInfo.Flags = (uint)packet.ReadBitsE<MovementFlag>("Movement Flags", 30, index);
+                    moveInfo.Flags2 = (uint)packet.ReadBitsE<MovementFlag2>("Extra Movement Flags", 18, index);
                 }
 
                 var hasTransport = packet.ReadBit("Has Transport Data", index);
@@ -351,9 +351,10 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
 
             if (hasMovementTransport)
             {
+                moveInfo.Transport = new MovementInfo.TransportInfo();
                 packet.ResetBitReader();
-                moveInfo.TransportGuid = packet.ReadPackedGuid128("TransportGUID", index);
-                moveInfo.TransportOffset = packet.ReadVector4("TransportPosition", index);
+                moveInfo.Transport.Guid = packet.ReadPackedGuid128("TransportGUID", index);
+                moveInfo.Transport.Offset = packet.ReadVector4("TransportPosition", index);
                 sbyte seat;
                 if (ClientVersion.RemovedInVersion(ClientVersionBuild.V2_5_3_41812))
                     seat = (sbyte)packet.ReadByte("VehicleSeatIndex", index);
@@ -371,12 +372,12 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                 if (hasVehicleRecID)
                     packet.ReadInt32("VehicleRecID", index);
 
-                if (moveInfo.TransportGuid.HasEntry() && moveInfo.TransportGuid.GetHighType() == HighGuidType.Vehicle &&
+                if (moveInfo.Transport.Guid.HasEntry() && moveInfo.Transport.Guid.GetHighType() == HighGuidType.Vehicle &&
                     guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
                 {
                     VehicleTemplateAccessory vehicleAccessory = new VehicleTemplateAccessory
                     {
-                        Entry = moveInfo.TransportGuid.GetEntry(),
+                        Entry = moveInfo.Transport.Guid.GetEntry(),
                         AccessoryEntry = guid.GetEntry(),
                         SeatId = seat
                     };

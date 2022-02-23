@@ -6,6 +6,8 @@ using WowPacketParser.Proto;
 using WowPacketParserModule.V5_4_8_18291.Enums;
 using CoreOpcode = WowPacketParser.Enums.Version.Opcodes;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
+using MovementFlag = WowPacketParser.Enums.v4.MovementFlag;
+using MovementFlag2 = WowPacketParser.Enums.v4.MovementFlag2;
 
 namespace WowPacketParserModule.V5_4_8_18291.Parsers
 {
@@ -208,7 +210,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                         break;
                     case MovementStatusElements.MSEMovementFlags2:
                         if (hasMovementFlags2)
-                            packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 13);
+                            packet.ReadBitsE<MovementFlag2>("Extra Movement Flags", 13);
                         break;
                     case MovementStatusElements.MSETimestamp:
                         if (hasTimestamp)

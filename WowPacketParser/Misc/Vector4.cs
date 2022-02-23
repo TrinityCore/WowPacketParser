@@ -12,6 +12,11 @@ namespace WowPacketParser.Misc
             O = o;
         }
 
+        public Vector4(Vector3 xyz, float o)
+            : this(xyz.X, xyz.Y, xyz.Z, o)
+        {
+        }
+
         public float X;
 
         public float Y;

@@ -7,6 +7,7 @@ using WowPacketParser.Misc;
 using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using MovementFlag = WowPacketParser.Enums.MovementFlag;
 
 namespace WowPacketParser.Parsing.Parsers
 {
@@ -789,7 +790,7 @@ namespace WowPacketParser.Parsing.Parsers
                 }
 
                 if (hasMoveFlagsExtra)
-                    moveInfo.FlagsExtra = packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 13, index);
+                    moveInfo.Flags2 = (uint)packet.ReadBitsE<Enums.v4.MovementFlag2>("Extra Movement Flags", 13, index);
 
                 var hasMovementFlags = !packet.ReadBit();
                 guid2[1] = packet.ReadBit();
@@ -798,7 +799,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 moveInfo.HasSplineData = packet.ReadBit("Has Spline Data", index);
                 if (hasMovementFlags)
-                    moveInfo.Flags = packet.ReadBitsE<MovementFlag>("Movement Flags", 30, index);
+                    moveInfo.Flags = (uint)packet.ReadBitsE<Enums.v4.MovementFlag>("Movement Flags", 30, index);
 
                 if (moveInfo.HasSplineData)
                 {
@@ -999,17 +1000,18 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (hasTransportData)
                 {
-                    moveInfo.TransportOffset.Z = packet.ReadSingle();
+                    moveInfo.Transport = new MovementInfo.TransportInfo();
+                    moveInfo.Transport.Offset.Z = packet.ReadSingle();
                     packet.ReadXORByte(transportGuid, 4);
-                    moveInfo.TransportOffset.X = packet.ReadSingle();
+                    moveInfo.Transport.Offset.X = packet.ReadSingle();
                     if (hasTransportTime3)
                         packet.ReadUInt32("Transport Time 3", index);
 
                     packet.ReadXORByte(transportGuid, 6);
                     packet.ReadXORByte(transportGuid, 5);
                     packet.ReadXORByte(transportGuid, 1);
-                    moveInfo.TransportOffset.O = packet.ReadSingle();
-                    moveInfo.TransportOffset.Y = packet.ReadSingle();
+                    moveInfo.Transport.Offset.O = packet.ReadSingle();
+                    moveInfo.Transport.Offset.Y = packet.ReadSingle();
                     var seat = packet.ReadSByte("Transport Seat", index);
                     packet.ReadXORByte(transportGuid, 7);
                     if (hasTransportTime2)
@@ -1020,15 +1022,15 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadXORByte(transportGuid, 2);
                     packet.ReadXORByte(transportGuid, 3);
 
-                    moveInfo.TransportGuid = packet.WriteGuid("Transport GUID", transportGuid, index);
-                    packet.AddValue("Transport Position", moveInfo.TransportOffset, index);
+                    moveInfo.Transport.Guid = packet.WriteGuid("Transport GUID", transportGuid, index);
+                    packet.AddValue("Transport Position", moveInfo.Transport.Offset, index);
 
-                    if (moveInfo.TransportGuid.HasEntry() && moveInfo.TransportGuid.GetHighType() == HighGuidType.Vehicle &&
+                    if (moveInfo.Transport.Guid.HasEntry() && moveInfo.Transport.Guid.GetHighType() == HighGuidType.Vehicle &&
                         guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
                     {
                         VehicleTemplateAccessory vehicleAccessory = new VehicleTemplateAccessory
                         {
-                            Entry = moveInfo.TransportGuid.GetEntry(),
+                            Entry = moveInfo.Transport.Guid.GetEntry(),
                             AccessoryEntry = guid.GetEntry(),
                             SeatId = seat
                         };
@@ -1147,10 +1149,11 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasGameObjectPosition)
             {
+                moveInfo.Transport = new MovementInfo.TransportInfo();
                 packet.ReadXORByte(goTransportGuid, 3);
                 packet.ReadXORByte(goTransportGuid, 1);
                 packet.ReadSByte("GO Transport Seat", index);
-                moveInfo.TransportOffset.Z = packet.ReadSingle();
+                moveInfo.Transport.Offset.Z = packet.ReadSingle();
                 packet.ReadXORByte(goTransportGuid, 2);
                 packet.ReadXORByte(goTransportGuid, 7);
                 if (hasGOTransportTime3)
@@ -1161,16 +1164,16 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt32("GO Transport Time 2", index);
 
                 packet.ReadUInt32("GO Transport Time", index);
-                moveInfo.TransportOffset.Y = packet.ReadSingle();
-                moveInfo.TransportOffset.X = packet.ReadSingle();
+                moveInfo.Transport.Offset.Y = packet.ReadSingle();
+                moveInfo.Transport.Offset.X = packet.ReadSingle();
                 packet.ReadXORByte(goTransportGuid, 0);
                 packet.ReadXORByte(goTransportGuid, 4);
                 packet.ReadXORByte(goTransportGuid, 5);
-                moveInfo.TransportOffset.O = packet.ReadSingle();
+                moveInfo.Transport.Offset.O = packet.ReadSingle();
 
-                moveInfo.TransportGuid = new WowGuid64(BitConverter.ToUInt64(goTransportGuid, 0));
-                packet.AddValue("GO Transport GUID", moveInfo.TransportGuid, index);
-                packet.AddValue("GO Transport Position", moveInfo.TransportOffset, index);
+                moveInfo.Transport.Guid = new WowGuid64(BitConverter.ToUInt64(goTransportGuid, 0));
+                packet.AddValue("GO Transport GUID", moveInfo.Transport.Guid, index);
+                packet.AddValue("GO Transport Position", moveInfo.Transport.Offset, index);
             }
 
             if (hasAnimKits)
@@ -1332,7 +1335,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadBit();
                 guid2[5] = packet.ReadBit();
                 if (hasMoveFlagsExtra)
-                    moveInfo.FlagsExtra = packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 13, index);
+                    moveInfo.Flags2 = (uint)packet.ReadBitsE<Enums.v4.MovementFlag2>("Extra Movement Flags", 13, index);
 
                 guid2[2] = packet.ReadBit();
                 guid2[6] = packet.ReadBit();
@@ -1341,7 +1344,7 @@ namespace WowPacketParser.Parsing.Parsers
                     hasFallDirection = packet.ReadBit("Has Fall Direction", index);
 
                 if (hasMovementFlags)
-                    moveInfo.Flags = packet.ReadBitsE<MovementFlag>("Movement Flags", 30, index);
+                    moveInfo.Flags = (uint)packet.ReadBitsE<Enums.v4.MovementFlag>("Movement Flags", 30, index);
 
                 hasOrientation = !packet.ReadBit();
                 packet.ReadBit();
@@ -1495,10 +1498,11 @@ namespace WowPacketParser.Parsing.Parsers
                 moveInfo.WalkSpeed = packet.ReadSingle("Walk Speed", index) / 2.5f;
                 if (hasTransportData)
                 {
+                    moveInfo.Transport = new MovementInfo.TransportInfo();
                     packet.ReadXORByte(transportGuid, 4);
                     packet.ReadXORByte(transportGuid, 0);
-                    moveInfo.TransportOffset.Y = packet.ReadSingle();
-                    moveInfo.TransportOffset.X = packet.ReadSingle();
+                    moveInfo.Transport.Offset.Y = packet.ReadSingle();
+                    moveInfo.Transport.Offset.X = packet.ReadSingle();
                     var seat = packet.ReadSByte("Transport Seat", index);
                     packet.ReadXORByte(transportGuid, 7);
                     packet.ReadXORByte(transportGuid, 3);
@@ -1506,25 +1510,25 @@ namespace WowPacketParser.Parsing.Parsers
                         packet.ReadUInt32("Transport Time 3", index);
 
                     packet.ReadXORByte(transportGuid, 6);
-                    moveInfo.TransportOffset.O = packet.ReadSingle();
+                    moveInfo.Transport.Offset.O = packet.ReadSingle();
                     packet.ReadUInt32("Transport Time", index);
                     packet.ReadXORByte(transportGuid, 2);
                     packet.ReadXORByte(transportGuid, 1);
-                    moveInfo.TransportOffset.Z = packet.ReadSingle();
+                    moveInfo.Transport.Offset.Z = packet.ReadSingle();
                     packet.ReadXORByte(transportGuid, 5);
                     if (hasTransportTime2)
                         packet.ReadUInt32("Transport Time 2", index);
 
-                    moveInfo.TransportGuid = new WowGuid64(BitConverter.ToUInt64(transportGuid, 0));
-                    packet.AddValue("Transport GUID",  moveInfo.TransportGuid, index);
-                    packet.AddValue("Transport Position", moveInfo.TransportOffset, index);
+                    moveInfo.Transport.Guid = new WowGuid64(BitConverter.ToUInt64(transportGuid, 0));
+                    packet.AddValue("Transport GUID",  moveInfo.Transport.Guid, index);
+                    packet.AddValue("Transport Position", moveInfo.Transport.Offset, index);
 
-                    if (moveInfo.TransportGuid.HasEntry() && moveInfo.TransportGuid.GetHighType() == HighGuidType.Vehicle &&
+                    if (moveInfo.Transport.Guid.HasEntry() && moveInfo.Transport.Guid.GetHighType() == HighGuidType.Vehicle &&
                         guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
                     {
                         VehicleTemplateAccessory vehicleAccessory = new VehicleTemplateAccessory
                         {
-                            Entry = moveInfo.TransportGuid.GetEntry(),
+                            Entry = moveInfo.Transport.Guid.GetEntry(),
                             AccessoryEntry = guid.GetEntry(),
                             SeatId = seat
                         };
@@ -1636,10 +1640,11 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasGameObjectPosition)
             {
+                moveInfo.Transport = new MovementInfo.TransportInfo();
                 packet.ReadXORByte(goTransportGuid, 7);
                 packet.ReadXORByte(goTransportGuid, 3);
                 packet.ReadXORByte(goTransportGuid, 5);
-                moveInfo.TransportOffset.O = packet.ReadSingle();
+                moveInfo.Transport.Offset.O = packet.ReadSingle();
                 packet.ReadXORByte(goTransportGuid, 6);
                 packet.ReadXORByte(goTransportGuid, 0);
                 packet.ReadXORByte(goTransportGuid, 2);
@@ -1648,18 +1653,18 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadUInt32("GO Transport Time 3", index);
 
                 packet.ReadXORByte(goTransportGuid, 1);
-                moveInfo.TransportOffset.Z = packet.ReadSingle();
+                moveInfo.Transport.Offset.Z = packet.ReadSingle();
                 packet.ReadSByte("GO Transport Seat", index);
                 if (hasGOTransportTime2)
                     packet.ReadUInt32("GO Transport Time 2", index);
 
-                moveInfo.TransportOffset.X = packet.ReadSingle();
+                moveInfo.Transport.Offset.X = packet.ReadSingle();
                 packet.ReadXORByte(goTransportGuid, 4);
-                moveInfo.TransportOffset.Y = packet.ReadSingle();
+                moveInfo.Transport.Offset.Y = packet.ReadSingle();
 
-                moveInfo.TransportGuid = new WowGuid64(BitConverter.ToUInt64(goTransportGuid, 0));
-                packet.AddValue("GO Transport GUID", moveInfo.TransportGuid, index);
-                packet.AddValue("GO Transport Position", moveInfo.TransportOffset, index);
+                moveInfo.Transport.Guid = new WowGuid64(BitConverter.ToUInt64(goTransportGuid, 0));
+                packet.AddValue("GO Transport GUID", moveInfo.Transport.Guid, index);
+                packet.AddValue("GO Transport Position", moveInfo.Transport.Offset, index);
             }
 
             if (hasStationaryPosition)
@@ -1812,11 +1817,11 @@ namespace WowPacketParser.Parsing.Parsers
                 hasUnkUInt = !packet.ReadBit();
                 guid2[7] = packet.ReadBit();
                 if (hasExtraMovementFlags)
-                    moveInfo.FlagsExtra = packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12, index);
+                    moveInfo.Flags2 = (uint)packet.ReadBitsE<Enums.v4.MovementFlag2>("Extra Movement Flags", 12, index);
 
                 guid2[0] = packet.ReadBit();
                 if (hasMovementFlags)
-                    moveInfo.Flags = packet.ReadBitsE<MovementFlag>("Movement Flags", 30, index);
+                    moveInfo.Flags = (uint)packet.ReadBitsE<Enums.v4.MovementFlag>("Movement Flags", 30, index);
 
                 guid2[3] = packet.ReadBit();
                 hasOrientation = !packet.ReadBit();
@@ -1913,6 +1918,8 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (hasTransportData)
                 {
+                    moveInfo.Transport = new MovementInfo.TransportInfo();
+
                     if (hasTransportTime2)
                         packet.ReadInt32("Transport Time 2", index);
 
@@ -1926,7 +1933,7 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadXORByte(transportGuid, 7);
                     packet.ReadXORByte(transportGuid, 3);
 
-                    moveInfo.TransportOffset = new Vector4
+                    moveInfo.Transport.Offset = new Vector4
                     {
                         X = packet.ReadSingle(),
                         Z = packet.ReadSingle(),
@@ -1937,19 +1944,19 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadXORByte(transportGuid, 1);
                     packet.ReadXORByte(transportGuid, 0);
 
-                    moveInfo.TransportOffset.Y = packet.ReadSingle();
-                    moveInfo.TransportGuid = new WowGuid64(BitConverter.ToUInt64(transportGuid, 0));
-                    packet.AddValue("Transport GUID", moveInfo.TransportGuid, index);
-                    packet.AddValue("Transport Position", moveInfo.TransportOffset, index);
+                    moveInfo.Transport.Offset.Y = packet.ReadSingle();
+                    moveInfo.Transport.Guid = new WowGuid64(BitConverter.ToUInt64(transportGuid, 0));
+                    packet.AddValue("Transport GUID", moveInfo.Transport.Guid, index);
+                    packet.AddValue("Transport Position", moveInfo.Transport.Offset, index);
                     var seat = packet.ReadByte("Transport Seat", index);
                     packet.ReadInt32("Transport Time", index);
 
-                    if (moveInfo.TransportGuid.HasEntry() && moveInfo.TransportGuid.GetHighType() == HighGuidType.Vehicle &&
+                    if (moveInfo.Transport.Guid.HasEntry() && moveInfo.Transport.Guid.GetHighType() == HighGuidType.Vehicle &&
                         guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
                     {
                         VehicleTemplateAccessory vehicleAccessory = new VehicleTemplateAccessory
                         {
-                            Entry = moveInfo.TransportGuid.GetEntry(),
+                            Entry = moveInfo.Transport.Guid.GetEntry(),
                             AccessoryEntry = guid.GetEntry(),
                             SeatId = seat
                         };
@@ -2024,17 +2031,19 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasGameObjectPosition)
             {
+                moveInfo.Transport = new MovementInfo.TransportInfo();
+
                 packet.ReadXORByte(goTransportGuid, 6);
                 packet.ReadXORByte(goTransportGuid, 5);
 
-                moveInfo.TransportOffset.Y = packet.ReadSingle();
+                moveInfo.Transport.Offset.Y = packet.ReadSingle();
                 packet.ReadXORByte(goTransportGuid, 4);
                 packet.ReadXORByte(goTransportGuid, 2);
                 if (hasGOTransportTime3)
                     packet.ReadUInt32("GO Transport Time 3", index);
 
-                moveInfo.TransportOffset.O = packet.ReadSingle();
-                moveInfo.TransportOffset.Z = packet.ReadSingle();
+                moveInfo.Transport.Offset.O = packet.ReadSingle();
+                moveInfo.Transport.Offset.Z = packet.ReadSingle();
                 if (hasGOTransportTime2)
                     packet.ReadUInt32("GO Transport Time 2", index);
 
@@ -2044,10 +2053,10 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(goTransportGuid, 0);
                 packet.ReadXORByte(goTransportGuid, 3);
 
-                moveInfo.TransportOffset.X = packet.ReadSingle();
-                moveInfo.TransportGuid = packet.WriteGuid("GO Transport GUID", goTransportGuid, index);
+                moveInfo.Transport.Offset.X = packet.ReadSingle();
+                moveInfo.Transport.Guid = packet.WriteGuid("GO Transport GUID", goTransportGuid, index);
                 packet.ReadSingle("GO Transport Time", index);
-                packet.AddValue("GO Transport Position: {1}", moveInfo.TransportOffset, index);
+                packet.AddValue("GO Transport Position: {1}", moveInfo.Transport.Offset, index);
             }
 
             if (hasAttackingTarget)
@@ -2154,14 +2163,14 @@ namespace WowPacketParser.Parsing.Parsers
                 /*bool bit148 = */packet.ReadBit();
 
                 if (hasExtraMovementFlags)
-                    moveInfo.FlagsExtra = packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12, index);
+                    moveInfo.Flags2 = (uint)packet.ReadBitsE<Enums.v4.MovementFlag2>("Extra Movement Flags", 12, index);
 
                 hasUnkUInt = !packet.ReadBit();
                 guid2[3] = packet.ReadBit();
                 /*bool bit149 = */packet.ReadBit();
 
                 if (hasMovementFlags)
-                    moveInfo.Flags = packet.ReadBitsE<MovementFlag>("Movement Flags", 30, index);
+                    moveInfo.Flags = (uint)packet.ReadBitsE<Enums.v4.MovementFlag>("Movement Flags", 30, index);
 
                 guid2[1] = packet.ReadBit();
                 unkFloat2 = !packet.ReadBit();
@@ -2253,21 +2262,23 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasGameObjectPosition)
             {
+                moveInfo.Transport = new MovementInfo.TransportInfo();
+
                 if (hasGOTransportTime3)
                     packet.ReadInt32("GO Transport Time 3", index);
 
                 packet.ReadXORByte(goTransportGuid, 7);
 
-                moveInfo.TransportOffset.Z = packet.ReadSingle();
+                moveInfo.Transport.Offset.Z = packet.ReadSingle();
                 packet.ReadByte("GO Transport Seat", index);
-                moveInfo.TransportOffset.X = packet.ReadSingle();
-                moveInfo.TransportOffset.Y = packet.ReadSingle();
+                moveInfo.Transport.Offset.X = packet.ReadSingle();
+                moveInfo.Transport.Offset.Y = packet.ReadSingle();
 
                 packet.ReadXORByte(goTransportGuid, 4);
                 packet.ReadXORByte(goTransportGuid, 5);
                 packet.ReadXORByte(goTransportGuid, 6);
 
-                moveInfo.TransportOffset.O = packet.ReadSingle();
+                moveInfo.Transport.Offset.O = packet.ReadSingle();
                 packet.ReadInt32("GO Transport Time", index);
 
                 packet.ReadXORByte(goTransportGuid, 1);
@@ -2279,8 +2290,8 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadXORByte(goTransportGuid, 2);
                 packet.ReadXORByte(goTransportGuid, 3);
 
-                moveInfo.TransportGuid = packet.WriteGuid("GO Transport GUID", goTransportGuid, index);
-                packet.AddValue("GO Transport Position", moveInfo.TransportOffset, index);
+                moveInfo.Transport.Guid = packet.WriteGuid("GO Transport GUID", goTransportGuid, index);
+                packet.AddValue("GO Transport Position", moveInfo.Transport.Offset, index);
             }
 
             if (living)
@@ -2346,14 +2357,16 @@ namespace WowPacketParser.Parsing.Parsers
 
                 if (hasTransportData)
                 {
+                    moveInfo.Transport = new MovementInfo.TransportInfo();
+
                     packet.ReadXORByte(transportGuid, 6);
                     if (hasTransportTime2)
                         packet.ReadInt32("Transport Time 2", index);
 
                     var seat = packet.ReadByte("Transport Seat", index);
-                    moveInfo.TransportOffset.O = packet.ReadSingle();
+                    moveInfo.Transport.Offset.O = packet.ReadSingle();
                     packet.ReadXORByte(transportGuid, 7);
-                    moveInfo.TransportOffset.Y = packet.ReadSingle();
+                    moveInfo.Transport.Offset.Y = packet.ReadSingle();
                     packet.ReadXORByte(transportGuid, 3);
                     if (hasTransportTime3)
                         packet.ReadInt32("Transport Time 3", index);
@@ -2361,22 +2374,22 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("Transport Time", index);
                     packet.ReadXORByte(transportGuid, 0);
                     packet.ReadXORByte(transportGuid, 1);
-                    moveInfo.TransportOffset.X = packet.ReadSingle();
+                    moveInfo.Transport.Offset.X = packet.ReadSingle();
                     packet.ReadXORByte(transportGuid, 4);
-                    moveInfo.TransportOffset.Z = packet.ReadSingle();
+                    moveInfo.Transport.Offset.Z = packet.ReadSingle();
                     packet.ReadXORByte(transportGuid, 5);
                     packet.ReadXORByte(transportGuid, 2);
 
-                    moveInfo.TransportGuid = new WowGuid64(BitConverter.ToUInt64(transportGuid, 0));
-                    packet.AddValue("Transport GUID", moveInfo.TransportGuid, index);
-                    packet.AddValue("Transport Position", moveInfo.TransportOffset, index);
+                    moveInfo.Transport.Guid = new WowGuid64(BitConverter.ToUInt64(transportGuid, 0));
+                    packet.AddValue("Transport GUID", moveInfo.Transport.Guid, index);
+                    packet.AddValue("Transport Position", moveInfo.Transport.Offset, index);
 
-                    if (moveInfo.TransportGuid.HasEntry() && moveInfo.TransportGuid.GetHighType() == HighGuidType.Vehicle &&
+                    if (moveInfo.Transport.Guid.HasEntry() && moveInfo.Transport.Guid.GetHighType() == HighGuidType.Vehicle &&
                         guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
                     {
                         VehicleTemplateAccessory vehicleAccessory = new VehicleTemplateAccessory
                         {
-                            Entry = moveInfo.TransportGuid.GetEntry(),
+                            Entry = moveInfo.Transport.Guid.GetEntry(),
                             AccessoryEntry = guid.GetEntry(),
                             SeatId = seat
                         };
@@ -2596,12 +2609,12 @@ namespace WowPacketParser.Parsing.Parsers
 
                 guid2[3] = packet.ReadBit();
                 if (hasMovementFlags)
-                    moveInfo.Flags = packet.ReadBitsE<MovementFlag>("Movement Flags", 30, index);
+                    moveInfo.Flags = (uint)packet.ReadBitsE<Enums.v4.MovementFlag>("Movement Flags", 30, index);
 
                 unkFloat1 = !packet.ReadBit();
                 hasFallData = packet.ReadBit("Has Fall Data", index);
                 if (hasExtraMovementFlags)
-                    moveInfo.FlagsExtra = packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 12, index);
+                    moveInfo.Flags2 = (uint)packet.ReadBitsE<Enums.v4.MovementFlag2>("Extra Movement Flags", 12, index);
 
                 guid2[0] = packet.ReadBit();
                 hasOrientation = !packet.ReadBit();
@@ -2656,29 +2669,31 @@ namespace WowPacketParser.Parsing.Parsers
 
             if (hasGameObjectPosition)
             {
+                moveInfo.Transport = new MovementInfo.TransportInfo();
+
                 packet.ReadXORByte(goTransportGuid, 1);
                 packet.ReadXORByte(goTransportGuid, 4);
-                moveInfo.TransportOffset.Z = packet.ReadSingle();
+                moveInfo.Transport.Offset.Z = packet.ReadSingle();
                 if (hasGOTransportTime3)
                     packet.ReadInt32("GO Transport Time 3", index);
 
                 packet.ReadInt32("GO Transport Time", index);
                 packet.ReadXORByte(goTransportGuid, 5);
                 packet.ReadXORByte(goTransportGuid, 6);
-                moveInfo.TransportOffset.X = packet.ReadSingle();
+                moveInfo.Transport.Offset.X = packet.ReadSingle();
                 packet.ReadXORByte(goTransportGuid, 2);
                 if (hasGOTransportTime2)
                     packet.ReadInt32("GO Transport Time 2", index);
 
                 packet.ReadByte("GO Transport Seat", index);
                 packet.ReadXORByte(goTransportGuid, 3);
-                moveInfo.TransportOffset.Y = packet.ReadSingle();
-                moveInfo.TransportOffset.O = packet.ReadSingle();
+                moveInfo.Transport.Offset.Y = packet.ReadSingle();
+                moveInfo.Transport.Offset.O = packet.ReadSingle();
                 packet.ReadXORByte(goTransportGuid, 7);
                 packet.ReadXORByte(goTransportGuid, 0);
 
-                moveInfo.TransportGuid = packet.WriteGuid("GO Transport GUID", goTransportGuid, index);
-                packet.AddValue("GO Transport Position", moveInfo.TransportOffset, index);
+                moveInfo.Transport.Guid = packet.WriteGuid("GO Transport GUID", goTransportGuid, index);
+                packet.AddValue("GO Transport Position", moveInfo.Transport.Offset, index);
             }
 
             if (living)
@@ -2745,20 +2760,22 @@ namespace WowPacketParser.Parsing.Parsers
                 packet.ReadSingle("Pitch Speed", index);
                 if (hasTransportData)
                 {
+                    moveInfo.Transport = new MovementInfo.TransportInfo();
+
                     packet.ReadXORByte(transportGuid, 4);
-                    moveInfo.TransportOffset.Z = packet.ReadSingle();
+                    moveInfo.Transport.Offset.Z = packet.ReadSingle();
                     packet.ReadXORByte(transportGuid, 7);
                     packet.ReadXORByte(transportGuid, 5);
                     packet.ReadXORByte(transportGuid, 1);
-                    moveInfo.TransportOffset.X = packet.ReadSingle();
+                    moveInfo.Transport.Offset.X = packet.ReadSingle();
                     packet.ReadXORByte(transportGuid, 3);
                     packet.ReadXORByte(transportGuid, 6);
                     if (hasTransportTime3)
                         packet.ReadInt32("Transport Time 3", index);
 
-                    moveInfo.TransportOffset.Y = packet.ReadSingle();
+                    moveInfo.Transport.Offset.Y = packet.ReadSingle();
                     var seat = packet.ReadByte("Transport Seat", index);
-                    moveInfo.TransportOffset.O = packet.ReadSingle();
+                    moveInfo.Transport.Offset.O = packet.ReadSingle();
                     if (hasTransportTime2)
                         packet.ReadInt32("Transport Time 2", index);
 
@@ -2766,16 +2783,16 @@ namespace WowPacketParser.Parsing.Parsers
                     packet.ReadInt32("Transport Time", index);
                     packet.ReadXORByte(transportGuid, 0);
 
-                    moveInfo.TransportGuid = new WowGuid64(BitConverter.ToUInt64(transportGuid, 0));
-                    packet.AddValue("Transport GUID", moveInfo.TransportGuid, index);
-                    packet.AddValue("Transport Position", moveInfo.TransportOffset, index);
+                    moveInfo.Transport.Guid = new WowGuid64(BitConverter.ToUInt64(transportGuid, 0));
+                    packet.AddValue("Transport GUID", moveInfo.Transport.Guid, index);
+                    packet.AddValue("Transport Position", moveInfo.Transport.Offset, index);
 
-                    if (moveInfo.TransportGuid.HasEntry() && moveInfo.TransportGuid.GetHighType() == HighGuidType.Vehicle &&
+                    if (moveInfo.Transport.Guid.HasEntry() && moveInfo.Transport.Guid.GetHighType() == HighGuidType.Vehicle &&
                         guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
                     {
                         VehicleTemplateAccessory vehicleAccessory = new VehicleTemplateAccessory
                         {
-                            Entry = moveInfo.TransportGuid.GetEntry(),
+                            Entry = moveInfo.Transport.Guid.GetEntry(),
                             AccessoryEntry = guid.GetEntry(),
                             SeatId = seat
                         };
@@ -2893,7 +2910,7 @@ namespace WowPacketParser.Parsing.Parsers
             if (flags.HasAnyFlag(UpdateFlag.Living))
             {
                 moveInfo = MovementHandler.ReadMovementInfo(packet, guid, index);
-                var moveFlags = moveInfo.Flags;
+                var moveFlags = (MovementFlag)moveInfo.Flags;
 
                 var speeds = ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_2_9056) ? 9 : 8;
 
@@ -2919,7 +2936,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 // Movement flags seem incorrect for 4.2.2
                 // guess in which version they stopped checking movement flag and used bits
-                if ((ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_0_14333) && moveFlags.HasAnyFlag(MovementFlag.SplineEnabled)) || moveInfo.HasSplineData)
+                if ((ClientVersion.RemovedInVersion(ClientVersionBuild.V4_2_0_14333) && moveFlags.HasFlag(MovementFlag.SplineEnabled)) || moveInfo.HasSplineData)
                 {
                     // Temp solution
                     // TODO: Make Enums version friendly
@@ -2975,17 +2992,19 @@ namespace WowPacketParser.Parsing.Parsers
             {
                 if (flags.HasAnyFlag(UpdateFlag.GOPosition))
                 {
-                    moveInfo.TransportGuid = packet.ReadPackedGuid("GO Transport GUID", index);
+                    moveInfo.Transport = new MovementInfo.TransportInfo();
+
+                    moveInfo.Transport.Guid = packet.ReadPackedGuid("GO Transport GUID", index);
 
                     moveInfo.Position = packet.ReadVector3("GO Position", index);
-                    moveInfo.TransportOffset.X = packet.ReadSingle();
-                    moveInfo.TransportOffset.Y = packet.ReadSingle();
-                    moveInfo.TransportOffset.Z = packet.ReadSingle();
+                    moveInfo.Transport.Offset.X = packet.ReadSingle();
+                    moveInfo.Transport.Offset.Y = packet.ReadSingle();
+                    moveInfo.Transport.Offset.Z = packet.ReadSingle();
 
                     moveInfo.Orientation = packet.ReadSingle("GO Orientation", index);
-                    moveInfo.TransportOffset.O = moveInfo.Orientation;
+                    moveInfo.Transport.Offset.O = moveInfo.Orientation;
 
-                    packet.AddValue("GO Transport Position", moveInfo.TransportOffset, index);
+                    packet.AddValue("GO Transport Position", moveInfo.Transport.Offset, index);
 
                     packet.ReadSingle("Corpse Orientation", index);
                 }

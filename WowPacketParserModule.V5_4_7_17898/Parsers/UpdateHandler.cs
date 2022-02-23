@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.PacketStructures;
@@ -8,6 +7,8 @@ using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
+using MovementFlag = WowPacketParser.Enums.v4.MovementFlag;
+using MovementFlag2 = WowPacketParser.Enums.v4.MovementFlag2;
 
 namespace WowPacketParserModule.V5_4_7_17898.Parsers
 {
@@ -221,7 +222,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 hasSplineElevation = !packet.ReadBit("Has SplineElevation", index);
 
                 if (hasMoveFlagsExtra)
-                    moveInfo.FlagsExtra = packet.ReadBitsE<MovementFlagExtra>("Extra Movement Flags", 13, index);
+                    moveInfo.Flags2 = (uint)packet.ReadBitsE<MovementFlag2>("Extra Movement Flags", 13, index);
 
                 hasOrientation = !packet.ReadBit();
                 hasTimestamp = !packet.ReadBit();
@@ -235,7 +236,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 guid1[0] = packet.ReadBit();
 
                 if (hasMovementFlags)
-                    moveInfo.Flags = packet.ReadBitsE<MovementFlag>("Movement Flags", 30, index);
+                    moveInfo.Flags = (uint)packet.ReadBitsE<MovementFlag>("Movement Flags", 30, index);
                 packet.ReadBit();
                 if (hasFallData)
                     hasFallDirection = packet.ReadBit();
@@ -462,6 +463,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
                 if (hasTransportData)
                 {
+                    moveInfo.Transport = new MovementInfo.TransportInfo();
+
                     packet.ReadXORByte(transportGuid, 7);
                     packet.ReadXORByte(transportGuid, 4);
 
@@ -473,28 +476,28 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     if (hasTransportTime2)
                         packet.ReadUInt32("Transport Time 2", index);
 
-                    moveInfo.TransportOffset.O = packet.ReadSingle();
-                    moveInfo.TransportOffset.X = packet.ReadSingle();
+                    moveInfo.Transport.Offset.O = packet.ReadSingle();
+                    moveInfo.Transport.Offset.X = packet.ReadSingle();
                     packet.ReadXORByte(transportGuid, 6);
                     packet.ReadXORByte(transportGuid, 3);
                     packet.ReadXORByte(transportGuid, 2);
-                    moveInfo.TransportOffset.Z = packet.ReadSingle();
-                    moveInfo.TransportOffset.Y = packet.ReadSingle();
+                    moveInfo.Transport.Offset.Z = packet.ReadSingle();
+                    moveInfo.Transport.Offset.Y = packet.ReadSingle();
                     var seat = packet.ReadSByte("Transport Seat", index);
                     packet.ReadXORByte(transportGuid, 1);
                     packet.ReadXORByte(transportGuid, 0);
                     packet.ReadXORByte(transportGuid, 5);
 
-                    moveInfo.TransportGuid = new WowGuid64(BitConverter.ToUInt64(transportGuid, 0));
-                    packet.AddValue("Transport GUID", moveInfo.TransportGuid, index);
-                    packet.AddValue("Transport Position", moveInfo.TransportOffset, index);
+                    moveInfo.Transport.Guid = new WowGuid64(BitConverter.ToUInt64(transportGuid, 0));
+                    packet.AddValue("Transport GUID", moveInfo.Transport.Guid, index);
+                    packet.AddValue("Transport Position", moveInfo.Transport.Offset, index);
 
-                    if (moveInfo.TransportGuid.HasEntry() && moveInfo.TransportGuid.GetHighType() == HighGuidType.Vehicle &&
+                    if (moveInfo.Transport.Guid.HasEntry() && moveInfo.Transport.Guid.GetHighType() == HighGuidType.Vehicle &&
                         guid.HasEntry() && guid.GetHighType() == HighGuidType.Creature)
                     {
                         VehicleTemplateAccessory vehicleAccessory = new VehicleTemplateAccessory
                         {
-                            Entry = moveInfo.TransportGuid.GetEntry(),
+                            Entry = moveInfo.Transport.Guid.GetEntry(),
                             AccessoryEntry = guid.GetEntry(),
                             SeatId = seat
                         };
@@ -554,17 +557,19 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             if (hasTransportPosition)
             {
+                moveInfo.Transport = new MovementInfo.TransportInfo();
+
                 packet.ReadSByte("Transport Seat", index);
-                moveInfo.TransportOffset.X = packet.ReadSingle();
+                moveInfo.Transport.Offset.X = packet.ReadSingle();
                 packet.ReadXORBytes(goTransportGuid, 1, 0, 2, 6, 5, 4);
 
                 if (hasGOTransportTime2)
                     packet.ReadUInt32("Transport Time 3", index);
 
                 packet.ReadXORByte(goTransportGuid, 7);
-                moveInfo.TransportOffset.O = packet.ReadSingle();
-                moveInfo.TransportOffset.Z = packet.ReadSingle();
-                moveInfo.TransportOffset.Y = packet.ReadSingle();
+                moveInfo.Transport.Offset.O = packet.ReadSingle();
+                moveInfo.Transport.Offset.Z = packet.ReadSingle();
+                moveInfo.Transport.Offset.Y = packet.ReadSingle();
 
                 if (hasGOTransportTime3)
                     packet.ReadUInt32("Transport Time 2", index);
@@ -572,9 +577,9 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packet.ReadXORByte(goTransportGuid, 3);
                 packet.ReadUInt32("Transport Time", index);
 
-                moveInfo.TransportGuid = new WowGuid64(BitConverter.ToUInt64(goTransportGuid, 0));
-                packet.AddValue("Transport GUID", moveInfo.TransportGuid, index);
-                packet.AddValue("Transport Position", moveInfo.TransportOffset, index);
+                moveInfo.Transport.Guid = new WowGuid64(BitConverter.ToUInt64(goTransportGuid, 0));
+                packet.AddValue("Transport GUID", moveInfo.Transport.Guid, index);
+                packet.AddValue("Transport Position", moveInfo.Transport.Offset, index);
             }
 
             if (bit1DC)
