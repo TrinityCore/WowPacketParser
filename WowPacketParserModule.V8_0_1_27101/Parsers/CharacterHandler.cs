@@ -134,7 +134,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         [Parser(Opcode.SMSG_QUERY_PLAYER_NAME_RESPONSE)]
         public static void HandleNameQueryResponse(Packet packet)
         {
-            PacketQueryPlayerNameResponse response = packet.Holder.QueryPlayerNameResponse = new();
+            PacketQueryPlayerNameResponseWrapper responses = packet.Holder.QueryPlayerNameResponse = new();
+            PacketQueryPlayerNameResponse response = new();
+            responses.Responses.Add(response);
             var hasData = packet.ReadByte("HasData");
 
             response.PlayerGuid = packet.ReadPackedGuid128("Player Guid");

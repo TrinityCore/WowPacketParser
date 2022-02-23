@@ -257,7 +257,9 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         [Parser(Opcode.SMSG_QUERY_PLAYER_NAME_RESPONSE)]
         public static void HandleNameQueryResponse(Packet packet)
         {
-            PacketQueryPlayerNameResponse response = packet.Holder.QueryPlayerNameResponse = new();
+            PacketQueryPlayerNameResponseWrapper responses = packet.Holder.QueryPlayerNameResponse = new();
+            PacketQueryPlayerNameResponse response = new();
+            responses.Responses.Add(response);
             var guid1 = new byte[8];
             var accountId = new byte[8];
             var guid2 = new byte[8];

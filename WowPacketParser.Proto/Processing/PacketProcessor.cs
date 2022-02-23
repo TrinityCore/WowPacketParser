@@ -125,7 +125,7 @@ namespace WowPacketParser.Proto.Processing
         protected virtual T? Process(PacketBase basePacket, PacketNpcTextOld packet) => default;
         protected virtual T? Process(PacketBase basePacket, PacketDbReply packet) => default;
         protected virtual T? Process(PacketBase basePacket, PacketUpdateObject packet) => default;
-        protected virtual T? Process(PacketBase basePacket, PacketQueryPlayerNameResponse packet) => default;
+        protected virtual T? Process(PacketBase basePacket, PacketQueryPlayerNameResponseWrapper packet) => default;
         protected virtual T? Process(PacketBase basePacket, PacketQuestComplete packet) => default;
         protected virtual T? Process(PacketBase basePacket, PacketQuestFailed packet) => default;
         protected virtual T? Process(PacketBase basePacket, PacketQuestAddKillCredit packet) => default;

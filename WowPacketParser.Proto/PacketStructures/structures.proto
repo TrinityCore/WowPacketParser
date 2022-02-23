@@ -59,7 +59,7 @@ message PacketHolder {
       PacketUpdateObject updateObject = 29;
       PacketQueryGameObjectResponse queryGameObjectResponse = 30;
       PacketClientAreaTrigger clientAreaTrigger = 31;
-      PacketQueryPlayerNameResponse queryPlayerNameResponse = 32;
+      PacketQueryPlayerNameResponseWrapper queryPlayerNameResponse = 32;
       PacketQuestComplete questComplete = 33;
       PacketQuestFailed questFailed = 34;
       PacketQuestAddKillCredit questAddKillCredit = 35;
@@ -755,6 +755,10 @@ message PacketQueryPlayerNameResponse {
   uint32 gender = 5;
   uint32 class = 6;
   uint32 level = 7;
+}
+
+message PacketQueryPlayerNameResponseWrapper {
+  repeated PacketQueryPlayerNameResponse responses = 1;
 }
 
 message PacketQuestComplete {
