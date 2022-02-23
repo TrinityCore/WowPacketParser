@@ -9,9 +9,12 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         [Parser(Opcode.SMSG_SEASON_INFO)]
         public static void HandleSeasonInfo(Packet packet)
         {
-            packet.ReadInt32("MythicPlusSeasonID");
-            packet.ReadInt32("CurrentSeason");
-            packet.ReadInt32("PreviousSeason");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
+                packet.ReadInt32("MythicPlusDisplaySeasonID");
+
+            packet.ReadInt32("MythicPlusMilestoneSeasonID");
+            packet.ReadInt32("CurrentArenaSeason");
+            packet.ReadInt32("PreviousArenaSeason");
             packet.ReadInt32("ConquestWeeklyProgressCurrencyID");
             packet.ReadInt32("PvpSeasonID");
             packet.ReadBit("WeeklyRewardChestsEnabled");

@@ -34,6 +34,17 @@ namespace WowPacketParser.Enums
         AddonBfA       = 183,
         AddonLogged    = 184,
         Vulpera        = 285,
+        ComplexCipher  = 287,
+        BasicCypher    = 288,
+        Metrial        = 290,
+        Altonian       = 291,
+        Sopranian      = 292,
+        Aealic         = 293,
+        Dealic         = 294,
+        Trebelim       = 295,
+        Bassalim       = 296,
+        EmbeddedLanguages = 297,
+        Unknowable     = 298,
         Addon          = uint.MaxValue
     }
 }

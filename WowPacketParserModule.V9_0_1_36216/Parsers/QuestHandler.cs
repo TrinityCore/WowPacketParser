@@ -589,10 +589,19 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadPackedGuid128("SenderGUID");
             var uiTextureKitId = packet.ReadInt32("UiTextureKitID");
             var soundKitId = packet.ReadUInt32("SoundKitID");
+            uint? closeSoundKitId = null;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
+                closeSoundKitId = packet.ReadUInt32("CloseUISoundKitID");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185))
                 packet.ReadByte("NumRerolls");
+            long? duration = null;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
+                duration = packet.ReadInt64("Duration");
             packet.ResetBitReader();
             var questionLength = packet.ReadBits(8);
+            var pendingChoiceTextLength = 0u;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
+                pendingChoiceTextLength = packet.ReadBits(8);
             packet.ReadBit("CloseChoiceFrame");
             var hideWarboardHeader = packet.ReadBit("HideWarboardHeader");
             var keepOpenAfterChoice = packet.ReadBit("KeepOpenAfterChoice");
@@ -601,13 +610,19 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 ReadPlayerChoiceResponse(packet, choiceId, i, "PlayerChoiceResponse", i);
 
             var question = packet.ReadWoWString("Question", questionLength);
+            var pendingChoiceText = "";
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
+                pendingChoiceText = packet.ReadWoWString("PendingChoiceText", pendingChoiceTextLength);
 
             Storage.PlayerChoices.Add(new PlayerChoiceTemplate
             {
                 ChoiceId = choiceId,
                 UiTextureKitId = uiTextureKitId,
                 SoundKitId = soundKitId,
+                CloseSoundKitId = closeSoundKitId,
+                Duration = duration,
                 Question = question,
+                PendingChoiceText = pendingChoiceText,
                 HideWarboardHeader = hideWarboardHeader,
                 KeepOpenAfterChoice = keepOpenAfterChoice
             }, packet.TimeSpan);
@@ -625,13 +640,30 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
         public static void ReadPlayerChoiceResponseMawPower(Packet packet, params object[] indexes)
         {
+            packet.ResetBitReader();
+
             packet.ReadInt32("Unused901_1", indexes);
             packet.ReadInt32("TypeArtFileID", indexes);
-            packet.ReadInt32("Rarity", indexes);
-            packet.ReadUInt32("RarityColor", indexes);
+
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V9_2_0_42423))
+            {
+                packet.ReadInt32("Rarity", indexes);
+                packet.ReadUInt32("RarityColor", indexes);
+            }
             packet.ReadInt32("Unused901_2", indexes);
             packet.ReadInt32("SpellID", indexes);
             packet.ReadInt32("MaxStacks", indexes);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
+            {
+                var hasRarity = packet.ReadBit();
+                var hasRarityColor = packet.ReadBit();
+
+                if (hasRarity)
+                    packet.ReadInt32("Rarity", indexes);
+
+                if (hasRarityColor)
+                    packet.ReadUInt32("RarityColor", indexes);
+            }
         }
 
         public static void ReadPlayerChoiceResponse(Packet packet, int choiceId, uint index, params object[] indexes)

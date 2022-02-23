@@ -48,8 +48,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Shape", TargetedDatabase.Shadowlands)]
         public byte? Shape;
 
-        [DBFieldName("ShapeData", TargetedDatabase.Shadowlands, 6, true)]
-        public float?[] ShapeData = { 0, 0, 0, 0, 0, 0 };
+        [DBFieldName("ShapeData", TargetedDatabase.Shadowlands, 8, true)]
+        public float?[] ShapeData = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

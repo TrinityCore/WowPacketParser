@@ -130,7 +130,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var hasVehicle = packet.ReadBit("HasVehicle", idx);
             var hasCollisionHeight = packet.ReadBit("HasCollisionHeight", idx);
             var hasMovementForce = packet.ReadBit("HasMovementForce", idx);
-            var hasMoverGUID = packet.ReadBit("HasMoverGUID", idx);
+            var hasMovementForceGUID = packet.ReadBit("HasMovementForceGUID", idx);
+            var hasMovementInertiaGUID = packet.ReadBit("HasMovementInertiaGUID", idx);
+            var hasMovementInertiaLifetimeMs = packet.ReadBit("HasMovementInertiaLifetimeMs", idx);
 
             if (hasSpeed)
                 packet.ReadSingle("Speed", idx);
@@ -155,8 +157,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (hasMovementForce)
                 ReadMovementForce(packet, "MovementForce", idx);
 
-            if (hasMoverGUID)
-                packet.ReadPackedGuid128("MoverGUID", idx);
+            if (hasMovementForceGUID)
+                packet.ReadPackedGuid128("MovementForceGUID", idx);
+
+            if (hasMovementInertiaGUID)
+                packet.ReadPackedGuid128("MovementInertiaGUID", idx);
+
+            if (hasMovementInertiaLifetimeMs)
+                packet.ReadUInt32("MovementInertiaLifetimeMs", idx);
         }
 
         [Parser(Opcode.CMSG_WORLD_PORT_RESPONSE)]

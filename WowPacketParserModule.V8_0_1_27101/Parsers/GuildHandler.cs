@@ -10,7 +10,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         public static void HandleGuildQueryResponse(Packet packet)
         {
             packet.ReadPackedGuid128("Guild Guid");
-            packet.ReadPackedGuid128("PlayerGUID");
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V9_2_0_42423))
+                packet.ReadPackedGuid128("PlayerGUID");
 
             var hasData = packet.ReadBit();
             if (hasData)

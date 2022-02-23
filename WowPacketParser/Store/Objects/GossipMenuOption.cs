@@ -29,6 +29,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("OptionNpcFlag")]
         public NPCFlags? OptionNpcFlag;
 
+        [DBFieldName("Language", TargetedDatabase.Shadowlands)]
+        public Language? Language;
+
         [DBFieldName("ActionMenuID")]
         public uint? ActionMenuID;
 

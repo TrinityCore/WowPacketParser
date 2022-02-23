@@ -13,6 +13,7 @@ namespace WowPacketParser.Enums
         GlobalTTSCache            = 8,
         PerCharacterTTSCache      = 9,
         GlobalFlaggedCache        = 10,
-        PerCharacterFlaggedCache  = 11
+        PerCharacterFlaggedCache  = 11,
+        PerCharacterClickBindingsCache = 12,
     }
 }

@@ -26,6 +26,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadInt32E<Class>("Class", idx);
             packet.ReadInt32("CreatureID", idx);
             packet.ReadInt32("HonorLevel", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
+                packet.ReadInt32("Role", idx);
 
             for (int i = 0; i < statsCount; i++)
                 packet.ReadUInt32("Stats", i, idx);

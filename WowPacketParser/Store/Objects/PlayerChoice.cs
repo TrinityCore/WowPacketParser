@@ -16,8 +16,17 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("SoundKitId", TargetedDatabase.BattleForAzeroth)]
         public uint? SoundKitId;
 
+        [DBFieldName("CloseSoundKitId", TargetedDatabase.Shadowlands)]
+        public uint? CloseSoundKitId;
+
+        [DBFieldName("Duration", TargetedDatabase.Shadowlands)]
+        public long? Duration;
+
         [DBFieldName("Question")]
         public string Question;
+
+        [DBFieldName("PendingChoiceText", TargetedDatabase.Shadowlands)]
+        public string PendingChoiceText;
 
         [DBFieldName("HideWarboardHeader", TargetedDatabase.Legion)]
         public int HideWarboardHeader;

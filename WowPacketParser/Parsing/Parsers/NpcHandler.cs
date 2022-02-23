@@ -621,6 +621,8 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_GOSSIP_COMPLETE)]
         public static void HandleGossipComplete(Packet packet)
         {
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
+                packet.ReadBit("SuppressSound");
         }
 
         [Parser(Opcode.SMSG_THREAT_UPDATE)]

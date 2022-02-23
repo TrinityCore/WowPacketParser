@@ -100,14 +100,14 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             use.GameObject = packet.ReadPackedGuid128("GameObjectGUID");
             use.Report = true;
         }
-        
+
         [Parser(Opcode.CMSG_GAME_OBJ_USE)]
         public static void HandleGoUse(Packet packet)
         {
             var use = packet.Holder.ClientUseGameObject = new PacketClientUseGameObject();
             use.GameObject = packet.ReadPackedGuid128("GameObjectGUID");
         }
-        
+
         [Parser(Opcode.SMSG_PAGE_TEXT)]
         public static void HandleGoPageText(Packet packet)
         {
@@ -166,6 +166,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         {
             packet.ReadPackedGuid128("GUID");
             packet.ReadInt32("UILink");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
+                packet.ReadInt32("UIItemInteractionID");
         }
 
         [Parser(Opcode.SMSG_FORCE_OBJECT_RELINK)]

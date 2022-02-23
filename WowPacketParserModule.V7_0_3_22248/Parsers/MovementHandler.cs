@@ -22,6 +22,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             MovementInfo info = new();
             info.MoverGuid = packet.ReadPackedGuid128("MoverGUID", idx);
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
+            {
+                info.Flags = (uint)packet.ReadUInt32E<MovementFlag>("MovementFlags", idx);
+                info.Flags2 = (uint)packet.ReadUInt32E<MovementFlag2>("MovementFlags2", idx);
+                info.Flags3 = (uint)packet.ReadUInt32E<MovementFlag3>("MovementFlags3", idx);
+            }
+
             packet.ReadInt32("MoveTime", idx);
             var position = packet.ReadVector4("Position", idx);
             info.Position = new Vector3 { X = position.X, Y = position.Y, Z = position.Z };
@@ -38,17 +45,28 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             packet.ResetBitReader();
 
-            info.Flags = (uint)packet.ReadBitsE<MovementFlag>("MovementFlags", 30, idx);
-            info.Flags2 = (uint)packet.ReadBitsE<MovementFlag2>("ExtraMovementFlags", 18, idx);
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V9_2_0_42423))
+            {
+                info.Flags = (uint)packet.ReadBitsE<MovementFlag>("MovementFlags", 30, idx);
+                info.Flags2 = (uint)packet.ReadBitsE<MovementFlag2>("MovementFlags2", 18, idx);
+            }
 
             var hasTransport = packet.ReadBit("HasTransportData", idx);
             var hasFall = packet.ReadBit("HasFallData", idx);
             packet.ReadBit("HasSpline", idx);
             packet.ReadBit("HeightChangeFailed", idx);
             packet.ReadBit("RemoteTimeValid", idx);
+            var hasInertia = ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423) && packet.ReadBit("HasInertia", idx);
 
             if (hasTransport)
                 info.Transport = V6_0_2_19033.Parsers.MovementHandler.ReadTransportData(packet, idx, "TransportData");
+
+            if (hasInertia)
+            {
+                packet.ReadPackedGuid128("GUID", idx, "Inertia");
+                packet.ReadVector3("Force", idx, "Inertia");
+                packet.ReadUInt32("Lifetime", idx, "Inertia");
+            }
 
             if (hasFall)
                 V6_0_2_19033.Parsers.MovementHandler.ReadFallData(packet, idx, "FallData");
