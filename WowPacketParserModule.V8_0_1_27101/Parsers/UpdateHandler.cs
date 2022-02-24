@@ -325,6 +325,13 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 packet.ResetBitReader();
                 movementUpdate.Mover = packet.ReadPackedGuid128("MoverGUID", index);
 
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
+                {
+                    moveInfo.Flags = (uint)packet.ReadUInt32E<MovementFlag>("MovementFlags", index);
+                    moveInfo.Flags2 = (uint)packet.ReadUInt32E<MovementFlag2>("MovementFlags2", index);
+                    moveInfo.Flags3 = (uint)packet.ReadUInt32E<MovementFlag3>("MovementFlags3", index);
+                }
+
                 movementUpdate.MoveTime = packet.ReadUInt32("MoveTime", index);
                 movementUpdate.Position = moveInfo.Position = packet.ReadVector3("Position", index);
                 movementUpdate.Orientation = moveInfo.Orientation = packet.ReadSingle("Orientation", index);
@@ -338,17 +345,28 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 for (var i = 0; i < removeForcesIDsCount; i++)
                     packet.ReadPackedGuid128("RemoveForcesIDs", index, i);
 
-                moveInfo.Flags = (uint)packet.ReadBitsE<MovementFlag>("Movement Flags", 30, index);
-                moveInfo.Flags2 = (uint)packet.ReadBitsE<MovementFlag2>("Extra Movement Flags", 18, index);
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V9_2_0_42423))
+                {
+                    moveInfo.Flags = (uint)packet.ReadBitsE<MovementFlag>("Movement Flags", 30, index);
+                    moveInfo.Flags2 = (uint)packet.ReadBitsE<MovementFlag2>("Extra Movement Flags", 18, index);
+                }
 
                 var hasTransport = packet.ReadBit("Has Transport Data", index);
                 var hasFall = packet.ReadBit("Has Fall Data", index);
                 packet.ReadBit("HasSpline", index);
                 packet.ReadBit("HeightChangeFailed", index);
                 packet.ReadBit("RemoteTimeValid", index);
+                var hasInertia = ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423) && packet.ReadBit("HasInertia", index);
 
                 if (hasTransport)
                     movementUpdate.Transport = ReadTransportData(moveInfo, guid, packet, index);
+
+                if (hasInertia)
+                {
+                    packet.ReadPackedGuid128("GUID", index, "Inertia");
+                    packet.ReadVector3("Force", index, "Inertia");
+                    packet.ReadUInt32("Lifetime", index, "Inertia");
+                }
 
                 if (hasFall)
                 {
@@ -626,6 +644,10 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 if (packet.ReadBit("HasAreaTriggerCylinder", index))
                     areaTriggerTemplate.Type = (byte)AreaTriggerType.Cylinder;
 
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
+                    if (packet.ReadBit("HasAreaTriggerDisk", index))
+                        areaTriggerTemplate.Type = (byte)AreaTriggerType.Disk;
+
                 bool hasAreaTriggerSpline = packet.ReadBit("HasAreaTriggerSpline", index);
 
                 if (packet.ReadBit("HasAreaTriggerOrbit", index))
@@ -732,6 +754,18 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     areaTriggerTemplate.Data[3] = packet.ReadSingle("HeightTarget", index);
                     areaTriggerTemplate.Data[4] = packet.ReadSingle("LocationZOffset", index);
                     areaTriggerTemplate.Data[5] = packet.ReadSingle("LocationZOffsetTarget", index);
+                }
+
+                if (areaTriggerTemplate.Type == (byte)AreaTriggerType.Disk)
+                {
+                    areaTriggerTemplate.Data[0] = packet.ReadSingle("InnerRadius", index);
+                    areaTriggerTemplate.Data[1] = packet.ReadSingle("InnerRadiusTarget", index);
+                    areaTriggerTemplate.Data[2] = packet.ReadSingle("OuterRadius", index);
+                    areaTriggerTemplate.Data[3] = packet.ReadSingle("OuterRadiusTarget", index);
+                    areaTriggerTemplate.Data[4] = packet.ReadSingle("Height", index);
+                    areaTriggerTemplate.Data[5] = packet.ReadSingle("HeightTarget", index);
+                    areaTriggerTemplate.Data[6] = packet.ReadSingle("LocationZOffset", index);
+                    areaTriggerTemplate.Data[7] = packet.ReadSingle("LocationZOffsetTarget", index);
                 }
 
                 if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.HasMovementScript) != 0)
