@@ -52,31 +52,8 @@ namespace WowPacketParser.Misc
 
         [SuppressMessage("Microsoft.Reliability", "CA2000", Justification = "MemoryStream is disposed in ClosePacket().")]
         public Packet(byte[] input, int opcode, DateTime time, Direction direction, int number, string fileName)
-            : base(new MemoryStream(input, 0, input.Length), Encoding.UTF8)
+            : this(input, opcode, time, direction, number, null, fileName)
         {
-            Opcode = opcode;
-            Time = time;
-            Direction = direction;
-            Number = number;
-            Writer = null;
-            FileName = fileName;
-            Status = ParsedStatus.None;
-            WriteToFile = true;
-
-            if (number == 0)
-                _firstPacketTime = Time;
-
-            TimeSpan = Time - _firstPacketTime;
-
-            Holder = new PacketHolder()
-            {
-                BaseData = new PacketBase()
-                {
-                    Number = number,
-                    Time = Timestamp.FromDateTime(DateTime.SpecifyKind(time, DateTimeKind.Utc)),
-                    Opcode = Opcodes.GetOpcodeName(Opcode, Direction, false)
-                }
-            };
         }
 
         public int Opcode { get; set; } // setter can't be private because it's used in multiple_packets
