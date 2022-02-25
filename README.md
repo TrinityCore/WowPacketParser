@@ -8,7 +8,7 @@ WowPacketParser (WPP)
 Usage
 -----
 
-* Compile WowPacketParser using Visual Studio 2019 (with .NET 5.0 SDK) or .NET 5.0 SDK (Linux/OSX).
+* Compile WowPacketParser using Visual Studio 2022 (with .NET 6.0 SDK) or .NET 6.0 SDK (Linux/OSX).
   Alternatively you can download compiled binaries from the links [below](#nightly-builds).
 * Edit `WowPacketParser.dll.config` to fit your needs.
 * Drag one or more files (.pkt or .bin) to `WowPacketParser.exe`.
@@ -40,14 +40,14 @@ and `wpp_data_objectnames.sql` has some data to fill the database.
 
 Nightly Builds
 --------------
-.NET 5.0 SDK (5.0.102 or higher) or .NET 5.0 Runtime(5.0.102 or higher) is needed!
+.NET 6.0 SDK (6.0.102 or higher) or .NET 6.0 Runtime(6.0.102 or higher) is needed!
 
-[Download .NET 5.0 here!](https://dotnet.microsoft.com/download/dotnet/5.0)
+[Download .NET 6.0 here!](https://dotnet.microsoft.com/download/dotnet/6.0)
 
 ##### Windows
-- Visual Studio 2019
-  - [Debug](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Visual%20Studio%202019;%20Configuration:%20Debug&branch=master)
-  - [Release](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Visual%20Studio%202019;%20Configuration:%20Release&branch=master)
+- Visual Studio 2022
+  - [Debug](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Visual%20Studio%202022;%20Configuration:%20Debug&branch=master)
+  - [Release](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Visual%20Studio%202022;%20Configuration:%20Release&branch=master)
   
 ##### Linux (Ubuntu)
   - [Debug](https://ci.appveyor.com/api/projects/DDuarte/wowpacketparser-191/artifacts/WowPacketParser/WPP.zip?job=Image:%20Ubuntu;%20Configuration:%20Debug&branch=master)
@@ -91,4 +91,4 @@ Copyright information of third party libraries provided through NuGet can be obt
 
 ###### Provided third party libraries:
 
-DBFileReaderLib, 2019-2021 wowdev, located at https://github.com/wowdev/DBCD
+DBFileReaderLib, 2019-2022 wowdev, located at https://github.com/wowdev/DBCD
