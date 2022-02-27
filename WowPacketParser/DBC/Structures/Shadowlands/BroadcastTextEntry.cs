@@ -15,6 +15,7 @@ namespace WowPacketParser.DBC.Structures.Shadowlands
         public ushort EmotesID;
         public byte Flags;
         public uint ChatBubbleDurationMs;
+        public int VoiceOverPriorityID;
         [Cardinality(2)]
         public uint[] SoundEntriesID = new uint[2];
         [Cardinality(3)]

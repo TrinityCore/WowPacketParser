@@ -49,7 +49,7 @@ namespace WowPacketParser.DBC.Structures.Shadowlands
         public ushort[] ZoneBound = new ushort[2];
         public ushort ItemSet;
         public ushort LockID;
-        public ushort StartQuestID;
+        public int StartQuestID;
         public ushort PageID;
         public ushort ItemDelay;
         public ushort MinFactionID;
@@ -65,7 +65,7 @@ namespace WowPacketParser.DBC.Structures.Shadowlands
         public byte SheatheType;
         public byte Material;
         public byte PageMaterialID;
-        public byte LanguageID;
+        public int LanguageID;
         public byte Bonding;
         public byte DamageDamageType;
         [Cardinality(10)]
@@ -75,7 +75,7 @@ namespace WowPacketParser.DBC.Structures.Shadowlands
         public byte RequiredPVPMedal;
         public byte RequiredPVPRank;
         public sbyte RequiredLevel;
-        public byte InventoryType;
-        public byte OverallQualityID;
+        public sbyte InventoryType;
+        public sbyte OverallQualityID;
     }
 }
