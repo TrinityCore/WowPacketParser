@@ -626,5 +626,17 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             for (var i = 0; i < uiWorldMapAreaIDSwapsCount; ++i)
                 phaseShift.UiMapPhase.Add((uint)packet.ReadInt16("UiWorldMapAreaIDSwaps", i));
         }
+
+        [Parser(Opcode.SMSG_TRANSFER_ABORTED)]
+        public static void HandleTransferAborted(Packet packet)
+        {
+            packet.ReadInt32<MapId>("MapID");
+            packet.ReadByte("Arg");
+            packet.ReadInt32("MapDifficultyXConditionID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185))
+                packet.ReadBitsE<TransferAbortReason>("TransfertAbort", 6);
+            else
+                packet.ReadBitsE<TransferAbortReason>("TransfertAbort", 5);
+        }
     }
 }
