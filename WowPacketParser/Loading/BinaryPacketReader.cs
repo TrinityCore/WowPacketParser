@@ -109,7 +109,7 @@ namespace WowPacketParser.Loading
                         if (_snifferVersion >= 0x0107)
                             _startTime = DateTime.FromFileTimeUtc(BitConverter.ToInt64(optionalData, 3));
                     }
-                    else if (_snifferId == 0x15)
+                    else if (_snifferId == 0x15 || _snifferId == 0x16) // ymir
                     {
                         if (additionalLength >= 2)
                             _snifferVersion = BitConverter.ToInt16(optionalData, 0);
