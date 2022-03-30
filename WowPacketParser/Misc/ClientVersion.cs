@@ -398,6 +398,8 @@ namespace WowPacketParser.Misc
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V9_2_0_42614, new DateTime(2022, 03, 08, 15, 15, 00)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V9_2_0_42698, new DateTime(2022, 03, 12, 03, 18, 00)),
             new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V9_2_0_42852, new DateTime(2022, 03, 24, 21, 10, 00)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V9_2_0_42937, new DateTime(2022, 03, 29, 16, 20, 00)),
+            new KeyValuePair<ClientVersionBuild, DateTime>(ClientVersionBuild.V9_2_0_42979, new DateTime(2022, 03, 30, 04, 05, 00)),
 
             // no classic info, pkt contain build in header
         };
@@ -795,6 +797,8 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V9_2_0_42614:
                 case ClientVersionBuild.V9_2_0_42698:
                 case ClientVersionBuild.V9_2_0_42852:
+                case ClientVersionBuild.V9_2_0_42937:
+                case ClientVersionBuild.V9_2_0_42979:
                     return ClientVersionBuild.V9_0_1_36216;
                 //Classic
                 case ClientVersionBuild.V1_13_2_31446:
