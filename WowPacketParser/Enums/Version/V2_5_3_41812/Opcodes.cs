@@ -1349,6 +1349,7 @@ namespace WowPacketParser.Enums.Version.V2_5_3_41812
             {Opcode.SMSG_PVP_MATCH_START, 0x2951},
             {Opcode.SMSG_PVP_MATCH_STATISTICS, 0x2933},
             {Opcode.SMSG_PVP_OPTIONS_ENABLED, 0x2936},
+            {Opcode.SMSG_QUERY_ARENA_TEAM_RESPONSE, 0x2920},
             {Opcode.SMSG_QUERY_BATTLE_PET_NAME_RESPONSE, 0x291A},
             {Opcode.SMSG_QUERY_CREATURE_RESPONSE, 0x2914},
             {Opcode.SMSG_QUERY_GAME_OBJECT_RESPONSE, 0x2915},
