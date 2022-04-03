@@ -999,15 +999,17 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_CAST_FAILED)]
         public static void HandleCastFailed(Packet packet)
         {
+            var spellFail = packet.Holder.SpellCastFailed = new();
             if (ClientVersion.AddedInVersion(ClientType.WrathOfTheLichKing))
-                packet.ReadByte("Cast count");
+                spellFail.CastId = packet.ReadByte("Cast count");
 
-            packet.ReadUInt32<SpellId>("Spell ID");
+            spellFail.Spell = packet.ReadUInt32<SpellId>("Spell ID");
 
             var result = packet.ReadByteE<SpellCastFailureReason>("Reason");
+            spellFail.Success = result == SpellCastFailureReason.Success;
 
             if (ClientVersion.RemovedInVersion(ClientType.WrathOfTheLichKing))
-                packet.ReadByte("Cast count");
+                spellFail.CastId = packet.ReadByte("Cast count");
 
             switch (result)
             {
@@ -1087,10 +1089,11 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_SPELL_FAILED_OTHER)]
         public static void HandleSpellFailedOther(Packet packet)
         {
-            packet.ReadPackedGuid("Guid");
-            packet.ReadByte("Cast count");
-            packet.ReadUInt32<SpellId>("Spell ID");
-            packet.ReadByteE<SpellCastFailureReason>("Reason");
+            var spellFail = packet.Holder.SpellFailure = new();
+            spellFail.Caster = packet.ReadPackedGuid("Guid");
+            spellFail.CastId = packet.ReadByte("Cast count");
+            spellFail.Spell = packet.ReadUInt32<SpellId>("Spell ID");
+            spellFail.Success = packet.ReadByteE<SpellCastFailureReason>("Reason") == SpellCastFailureReason.Success;
         }
 
         [Parser(Opcode.SMSG_SPELL_INSTAKILL_LOG)]

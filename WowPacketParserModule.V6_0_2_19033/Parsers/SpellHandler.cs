@@ -556,40 +556,43 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
         [Parser(Opcode.SMSG_PET_CAST_FAILED)]
         public static void HandleCastFailed(Packet packet)
         {
-            packet.ReadInt32<SpellId>("SpellID");
-            packet.ReadInt32("Reason");
+            var spellFail = packet.Holder.SpellCastFailed = new();
+            spellFail.Spell = (uint)packet.ReadInt32<SpellId>("SpellID");
+            spellFail.Success = packet.ReadInt32("Reason") == 0;
             packet.ReadInt32("FailedArg1");
             packet.ReadInt32("FailedArg2");
 
-            packet.ReadByte("Cast count");
+            spellFail.CastId = packet.ReadByte("Cast count");
         }
 
         [Parser(Opcode.SMSG_SPELL_FAILURE)]
         public static void HandleSpellFailure(Packet packet)
         {
-            packet.ReadPackedGuid128("CasterUnit");
-            packet.ReadByte("CastID");
-            packet.ReadUInt32<SpellId>("SpellID");
+            var spellFail = packet.Holder.SpellFailure = new();
+            spellFail.Caster = packet.ReadPackedGuid128("CasterUnit");
+            spellFail.CastId = packet.ReadByte("CastID");
+            spellFail.Spell = packet.ReadUInt32<SpellId>("SpellID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_2_0_20173))
                 packet.ReadInt32("SpellXSpellVisualID");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
-                packet.ReadInt16E<SpellCastFailureReason>("Reason");
+                spellFail.Success = packet.ReadInt16E<SpellCastFailureReason>("Reason") == SpellCastFailureReason.Success;
             else
-                packet.ReadByteE<SpellCastFailureReason>("Reason");
+                spellFail.Success = packet.ReadByteE<SpellCastFailureReason>("Reason") == SpellCastFailureReason.Success;
         }
 
         [Parser(Opcode.SMSG_SPELL_FAILED_OTHER)]
         public static void HandleSpellFailedOther(Packet packet)
         {
-            packet.ReadPackedGuid128("CasterUnit");
-            packet.ReadByte("CastID");
-            packet.ReadUInt32<SpellId>("SpellID");
+            var spellFail = packet.Holder.SpellFailure = new();
+            spellFail.Caster = packet.ReadPackedGuid128("CasterUnit");
+            spellFail.CastId = packet.ReadByte("CastID");
+            spellFail.Spell = packet.ReadUInt32<SpellId>("SpellID");
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V6_1_0_19678))
-                packet.ReadByteE<SpellCastFailureReason>("Reason");
+                spellFail.Success = packet.ReadByteE<SpellCastFailureReason>("Reason") == SpellCastFailureReason.Success;
             else
-                packet.ReadInt16E<SpellCastFailureReason>("Reason");
+                spellFail.Success = packet.ReadInt16E<SpellCastFailureReason>("Reason") == SpellCastFailureReason.Success;
         }
 
         [Parser(Opcode.SMSG_REFRESH_SPELL_HISTORY)]

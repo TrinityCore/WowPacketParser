@@ -1228,10 +1228,12 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         [Parser(Opcode.SMSG_CAST_FAILED)]
         public static void HandleCastFailed(Packet packet)
         {
+            var spellFail = packet.Holder.SpellCastFailed = new();
             var bit18 = !packet.ReadBit();
             var bit14 = !packet.ReadBit();
 
             var result = packet.ReadInt32E<SpellCastFailureReason>("Reason");
+            spellFail.Success = result == SpellCastFailureReason.Success;
 
             if (bit18)
                 packet.ReadInt32("Int18");
@@ -1239,27 +1241,29 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             if (bit14)
                 packet.ReadInt32("Int14");
 
-            packet.ReadByte("Cast count");
-            packet.ReadUInt32<SpellId>("Spell ID");
+            spellFail.CastId = packet.ReadByte("Cast count");
+            spellFail.Spell = packet.ReadUInt32<SpellId>("Spell ID");
         }
 
         [Parser(Opcode.SMSG_PET_CAST_FAILED)]
         public static void HandlePetCastFailed(Packet packet)
         {
+            var spellFail = packet.Holder.SpellCastFailed = new();
             var bit10 = !packet.ReadBit();
             var bit1C = !packet.ReadBit();
 
             var result = packet.ReadInt32E<SpellCastFailureReason>("Reason");
+            spellFail.Success = result == SpellCastFailureReason.Success;
 
             if (bit1C)
                 packet.ReadInt32("Int1C");
 
-            packet.ReadUInt32<SpellId>("Spell ID");
+            spellFail.Spell = packet.ReadUInt32<SpellId>("Spell ID");
 
             if (bit10)
                 packet.ReadInt32("Int10");
 
-            packet.ReadByte("Cast count");
+            spellFail.CastId = packet.ReadByte("Cast count");
         }
     }
 }

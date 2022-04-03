@@ -1029,9 +1029,10 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_CAST_FAILED)]
         public static void HandleCastFailed(Packet packet)
         {
-            packet.ReadUInt32<SpellId>("Spell ID");
-            packet.ReadInt32E<SpellCastFailureReason>("Reason");
-            packet.ReadByte("Cast count");
+            var spellFail = packet.Holder.SpellCastFailed = new();
+            spellFail.Spell = packet.ReadUInt32<SpellId>("Spell ID");
+            spellFail.Success = packet.ReadInt32E<SpellCastFailureReason>("Reason") == SpellCastFailureReason.Success;
+            spellFail.CastId = packet.ReadByte("Cast count");
 
             var bit14 = !packet.ReadBit();
             var bit18 = !packet.ReadBit();
@@ -1046,6 +1047,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_SPELL_FAILURE)]
         public static void HandleSpellFailed(Packet packet)
         {
+            var spellFail = packet.Holder.SpellFailure = new();
             var guid = new byte[8];
 
             packet.StartBitStream(guid, 7, 3, 6, 2, 1, 5, 0, 4);
@@ -1056,25 +1058,26 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 3);
             packet.ReadXORByte(guid, 1);
-            packet.ReadByte("Cast count");
-            packet.ReadUInt32<SpellId>("Spell ID");
-            packet.ReadByteE<SpellCastFailureReason>("Reason");
+            spellFail.CastId = packet.ReadByte("Cast count");
+            spellFail.Spell = packet.ReadUInt32<SpellId>("Spell ID");
+            spellFail.Success = packet.ReadByteE<SpellCastFailureReason>("Reason") == SpellCastFailureReason.Success;
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 5);
 
-            packet.WriteGuid("Guid", guid);
+            spellFail.Caster = packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPELL_FAILED_OTHER)]
         public static void HandleSpellFailedOther(Packet packet)
         {
+            var spellFail = packet.Holder.SpellFailure = new();
             var guid = new byte[8];
 
             packet.StartBitStream(guid, 7, 0, 5, 6, 1, 4, 3, 2);
 
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 1);
-            packet.ReadByteE<SpellCastFailureReason>("Reason");
+            spellFail.Success = packet.ReadByteE<SpellCastFailureReason>("Reason") == SpellCastFailureReason.Success;
             packet.ReadXORByte(guid, 7);
             packet.ReadXORByte(guid, 5);
             packet.ReadXORByte(guid, 6);
