@@ -1187,9 +1187,11 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.SMSG_PET_CAST_FAILED)]
         public static void HandleCastFailed(Packet packet)
         {
+            var spellFail = packet.Holder.SpellCastFailed = new();
             var result = packet.ReadInt32E<SpellCastFailureReason>("Reason");
-            packet.ReadByte("Cast count");
-            packet.ReadUInt32<SpellId>("Spell ID");
+            spellFail.Success = result == SpellCastFailureReason.Success;
+            spellFail.CastId = packet.ReadByte("Cast count");
+            spellFail.Spell = packet.ReadUInt32<SpellId>("Spell ID");
 
             var bit18 = !packet.ReadBit();
             var bit14 = !packet.ReadBit();
@@ -1204,6 +1206,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.SMSG_SPELL_FAILURE)]
         public static void HandleSpellFailed(Packet packet)
         {
+            var spellFail = packet.Holder.SpellFailure = new();
             var guid = new byte[8];
 
             packet.StartBitStream(guid, 1, 5, 3, 4, 2, 7, 0, 6);
@@ -1211,9 +1214,9 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid, 0);
             packet.ReadXORByte(guid, 2);
             packet.ReadXORByte(guid, 5);
-            packet.ReadByteE<SpellCastFailureReason>("Reason");
-            packet.ReadByte("Cast count");
-            packet.ReadUInt32<SpellId>("Spell ID");
+            spellFail.Success = packet.ReadByteE<SpellCastFailureReason>("Reason") == SpellCastFailureReason.Success;
+            spellFail.CastId = packet.ReadByte("Cast count");
+            spellFail.Spell = packet.ReadUInt32<SpellId>("Spell ID");
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 3);
@@ -1225,6 +1228,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         [Parser(Opcode.SMSG_SPELL_FAILED_OTHER)]
         public static void HandleSpellFailedOther(Packet packet)
         {
+            var spellFail = packet.Holder.SpellFailure = new();
             var guid = new byte[8];
 
             packet.StartBitStream(guid, 3, 1, 0, 7, 6, 4, 2, 5);
@@ -1234,14 +1238,14 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ReadXORByte(guid, 6);
             packet.ReadXORByte(guid, 4);
             packet.ReadXORByte(guid, 3);
-            packet.ReadByteE<SpellCastFailureReason>("Reason");
+            spellFail.Success = packet.ReadByteE<SpellCastFailureReason>("Reason") == SpellCastFailureReason.Success;
             packet.ReadXORByte(guid, 7);
-            packet.ReadUInt32<SpellId>("Spell ID");
+            spellFail.Spell = packet.ReadUInt32<SpellId>("Spell ID");
             packet.ReadXORByte(guid, 1);
-            packet.ReadByte("Cast count");
+            spellFail.CastId = packet.ReadByte("Cast count");
             packet.ReadXORByte(guid, 0);
 
-            packet.WriteGuid("Guid", guid);
+            spellFail.Caster = packet.WriteGuid("Guid", guid);
         }
 
         [Parser(Opcode.SMSG_SPELL_INTERRUPT_LOG)] // 4.3.4
