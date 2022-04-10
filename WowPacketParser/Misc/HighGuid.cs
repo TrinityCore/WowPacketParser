@@ -176,6 +176,11 @@ namespace WowPacketParser.Misc
             { HighGuidType703.CommerceObj,       HighGuidType.CommerceObj },
             { HighGuidType703.ClientSession,     HighGuidType.ClientSession },
             { HighGuidType703.Cast,              HighGuidType.Cast },
+            { HighGuidType703.ClientConnection,  HighGuidType.ClientConnection },
+            { HighGuidType703.ClubFinder,        HighGuidType.ClubFinder },
+            { HighGuidType703.ToolsClient,       HighGuidType.ToolsClient },
+            { HighGuidType703.WorldLayer,        HighGuidType.WorldLayer },
+            { HighGuidType703.ArenaTeam,         HighGuidType.ArenaTeam },
             { HighGuidType703.Invalid,           HighGuidType.Invalid }
         };
 
