@@ -1236,7 +1236,7 @@ namespace WowPacketParser.Enums.Version.V2_5_2_39570
             {Opcode.SMSG_CACHE_INFO, 0x291D},
             {Opcode.SMSG_QUERY_ITEM_TEXT_RESPONSE, 0x291E},
             {Opcode.SMSG_TREASURE_PICKER_RESPONSE, 0x291F},
-            {Opcode.SMSG_QUERY_ARENA_TEAM_RESPONSE, 0x2920},
+            {Opcode.SMSG_ARENA_TEAM_QUERY_RESPONSE, 0x2920},
             {Opcode.SMSG_BATTLEFIELD_STATUS_NEED_CONFIRMATION, 0x2922},
             {Opcode.SMSG_BATTLEFIELD_STATUS_ACTIVE, 0x2923},
             {Opcode.SMSG_BATTLEFIELD_STATUS_QUEUED, 0x2924},
