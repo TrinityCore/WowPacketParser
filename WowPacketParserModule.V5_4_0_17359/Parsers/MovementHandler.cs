@@ -18,10 +18,10 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         {
             PacketLoginSetTimeSpeed setTime = packet.Holder.LoginSetTimeSpeed = new();
             setTime.NewSpeed = packet.ReadSingle("Game Speed");
-            setTime.GameTime = packet.ReadPackedTime("Game Time").ToUniversalTime().ToUniversalTime().ToTimestamp();
+            setTime.GameTime = packet.ReadPackedTime("Game Time").ToUniversalTime().ToTimestamp();
             packet.ReadInt32("Unk 1");
             packet.ReadInt32("Unk 2");
-            setTime.ServerTime = packet.ReadPackedTime("Game Time?").ToUniversalTime().ToUniversalTime().ToTimestamp();
+            setTime.ServerTime = packet.ReadPackedTime("Game Time?").ToUniversalTime().ToTimestamp();
         }
 
         [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
