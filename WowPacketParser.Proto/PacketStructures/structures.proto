@@ -849,9 +849,9 @@ message PacketSpellFailure {
 }
 
 message PacketLoginSetTimeSpeed {
- google.protobuf.Timestamp serverTime = 1;
- google.protobuf.Timestamp gameTime = 2;
- float newSpeed = 3;
- int32 serverTimeHolidayOffset = 4;
- int32 gameTimeHolidayOffset = 5;
+  google.protobuf.Timestamp serverTime = 1;
+  google.protobuf.Timestamp gameTime = 2;
+  float newSpeed = 3;
+  int32 serverTimeHolidayOffset = 4;
+  int32 gameTimeHolidayOffset = 5;
 }
