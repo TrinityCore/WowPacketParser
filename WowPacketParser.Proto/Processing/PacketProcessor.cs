@@ -94,6 +94,8 @@ namespace WowPacketParser.Proto.Processing
                     return Process(packet.BaseData, packet.SpellCastFailed);
                 case PacketHolder.KindOneofCase.SpellFailure:
                     return Process(packet.BaseData, packet.SpellFailure);
+                case PacketHolder.KindOneofCase.LoginSetTimeSpeed:
+                    return Process(packet.BaseData, packet.LoginSetTimeSpeed);
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -141,5 +143,6 @@ namespace WowPacketParser.Proto.Processing
         protected virtual T? Process(PacketBase basePacket, PacketGameObjectCustomAnim packet) => default;
         protected virtual T? Process(PacketBase basePacket, PacketSpellCastFailed packet) => default;
         protected virtual T? Process(PacketBase basePacket, PacketSpellFailure packet) => default;
+        protected virtual T? Process(PacketBase basePacket, PacketLoginSetTimeSpeed packet) => default;
     }
 }

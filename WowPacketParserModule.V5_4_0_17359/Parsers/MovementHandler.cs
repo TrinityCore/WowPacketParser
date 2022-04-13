@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Enums;
+﻿using Google.Protobuf.WellKnownTypes;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing;
@@ -15,11 +16,12 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
         [Parser(Opcode.SMSG_LOGIN_SET_TIME_SPEED)]
         public static void HandleUnknown431(Packet packet)
         {
-            packet.ReadSingle("Game Speed");
-            packet.ReadPackedTime("Game Time");
+            PacketLoginSetTimeSpeed setTime = packet.Holder.LoginSetTimeSpeed = new();
+            setTime.NewSpeed = packet.ReadSingle("Game Speed");
+            setTime.GameTime = packet.ReadPackedTime("Game Time").ToUniversalTime().ToUniversalTime().ToTimestamp();
             packet.ReadInt32("Unk 1");
             packet.ReadInt32("Unk 2");
-            packet.ReadPackedTime("Game Time?");
+            setTime.ServerTime = packet.ReadPackedTime("Game Time?").ToUniversalTime().ToUniversalTime().ToTimestamp();
         }
 
         [Parser(Opcode.SMSG_LOGIN_VERIFY_WORLD)]
