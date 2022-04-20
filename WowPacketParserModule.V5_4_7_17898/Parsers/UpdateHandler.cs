@@ -31,7 +31,14 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             packet.ParseBitStream(guid, 2, 1, 5, 4, 3, 6, 7, 0);
 
-            packet.WriteGuid("GUID", guid);
+            var destroyed = packet.WriteGuid("GUID", guid);
+            
+            var update = packet.Holder.UpdateObject = new();
+            update.Destroyed.Add(new DestroyedObject()
+            {
+                Guid = destroyed,
+                Text = packet.Writer.ToString()
+            });
         }
 
         [Parser(Opcode.CMSG_OBJECT_UPDATE_FAILED)]

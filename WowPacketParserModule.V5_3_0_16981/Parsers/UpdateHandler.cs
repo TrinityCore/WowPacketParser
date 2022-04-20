@@ -863,7 +863,14 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
             packet.ReadBit("Despawn Animation");
             packet.StartBitStream(guid, 0, 1, 6, 2, 5, 7, 3);
             packet.ParseBitStream(guid, 7, 1, 2, 5, 0, 3, 6, 4);
-            packet.WriteGuid("GUID", guid);
+            var destroyed = packet.WriteGuid("GUID", guid);
+            
+            var update = packet.Holder.UpdateObject = new();
+            update.Destroyed.Add(new DestroyedObject()
+            {
+                Guid = destroyed,
+                Text = packet.Writer.ToString()
+            });
         }
     }
 }

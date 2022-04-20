@@ -873,7 +873,14 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             guid[1] = packet.ReadBit();
             packet.ParseBitStream(guid, 4, 2, 0, 3, 7, 1, 5, 6);
 
-            packet.WriteGuid("GUID", guid);
+            var destroyed = packet.WriteGuid("GUID", guid);
+            
+            var update = packet.Holder.UpdateObject = new();
+            update.Destroyed.Add(new DestroyedObject()
+            {
+                Guid = destroyed,
+                Text = packet.Writer.ToString()
+            });
         }
     }
 }
