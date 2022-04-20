@@ -204,7 +204,7 @@ namespace WowPacketParser.Loading
                             {
                                 Trace.WriteLine(
                                     $"{_logPrefix}: Parsing {Utilities.BytesToString(reader.PacketReader.GetTotalSize())} of packets. Detected version {ClientVersion.VersionString}");
-
+                                packets.GameVersion = (ulong)ClientVersion.Build;
                                 firstRead = false;
                             }
 
