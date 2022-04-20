@@ -24,6 +24,7 @@ namespace WowPacketParser.Store.Objects
 
         public WowGuid Guid;
         public uint? Type;
+        public bool? NoActorObject;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;

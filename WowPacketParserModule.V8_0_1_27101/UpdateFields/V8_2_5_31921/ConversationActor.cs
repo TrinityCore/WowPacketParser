@@ -10,6 +10,7 @@ namespace WowPacketParserModule.V8_0_1_27101.UpdateFields.V8_2_5_31921
         public WowGuid ActorGUID { get; set; }
         public int Id { get; set; }
         public uint Type { get; set; }
+        public uint NoActorObject { get; set; }
     }
 }
 

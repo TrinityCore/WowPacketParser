@@ -9,5 +9,6 @@ namespace WowPacketParser.Store.Objects.UpdateFields
         uint CreatureDisplayInfoID { get; }
         WowGuid ActorGUID { get; }
         uint Type { get; }
+        uint NoActorObject { get; }
     }
 }

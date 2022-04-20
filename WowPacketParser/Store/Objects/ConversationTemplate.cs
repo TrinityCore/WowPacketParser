@@ -43,7 +43,8 @@ namespace WowPacketParser.Store.Objects
             {
                 var actor = new ConversationActorTemplate
                 {
-                    Type = actors[i].Type
+                    Type = actors[i].Type,
+                    NoActorObject = actors[i].NoActorObject > 0
                 };
 
                 if (actor.Type == (uint)ActorType.WorldObjectActor)
@@ -86,7 +87,9 @@ namespace WowPacketParser.Store.Objects
                     Guid = actorTemplate.Guid,
                     Idx = line.ActorIdx,
                     CreatureId = actorTemplate.CreatureId,
-                    CreatureDisplayInfoId = actorTemplate.CreatureModelId
+                    CreatureDisplayInfoId = actorTemplate.CreatureModelId,
+                    NoActorObject = actorTemplate.NoActorObject,
+                    ActivePlayerObject = actorTemplate.Guid.Low == 0xFFFFFFFFFFFFFFFF && actorTemplate.Guid.GetHighType() == HighGuidType.Player
                 };
 
                 Storage.ConversationLineTemplates.Add(line);

@@ -99,6 +99,7 @@ namespace WowPacketParser.Store.Objects.UpdateFields.LegacyImplementation
             public uint CreatureDisplayInfoID { get; set; }
             public WowGuid ActorGUID { get; set; }
             public uint Type { get; set; }
+            public uint NoActorObject { get; set; }
         }
     }
 }
