@@ -16,7 +16,8 @@ message PacketsVersion {
 
 message Packets {
   uint64 version = 1;
-  repeated PacketHolder packets = 2;
+  uint64 gameVersion = 2;
+  repeated PacketHolder packets = 3;
 }
 
 message PacketBase {
