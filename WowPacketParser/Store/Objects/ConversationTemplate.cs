@@ -89,7 +89,7 @@ namespace WowPacketParser.Store.Objects
                     CreatureId = actorTemplate.CreatureId,
                     CreatureDisplayInfoId = actorTemplate.CreatureModelId,
                     NoActorObject = actorTemplate.NoActorObject,
-                    ActivePlayerObject = actorTemplate.Guid.Low == 0xFFFFFFFFFFFFFFFF && actorTemplate.Guid.GetHighType() == HighGuidType.Player
+                    ActivePlayerObject = actorTemplate.Guid != null && actorTemplate.Guid.Low == 0xFFFFFFFFFFFFFFFF && actorTemplate.Guid.GetHighType() == HighGuidType.Player
                 };
 
                 Storage.ConversationLineTemplates.Add(line);
