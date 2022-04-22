@@ -71,6 +71,7 @@ message PacketHolder {
       PacketGameObjectCustomAnim gameObjectCustomAnim = 41;
       PacketSpellCastFailed spellCastFailed = 42;
       PacketSpellFailure spellFailure = 43;
+      PacketLoginSetTimeSpeed loginSetTimeSpeed = 44;
   }
 }
 
@@ -845,4 +846,12 @@ message PacketSpellFailure {
   google.protobuf.UInt32Value castId = 3;
   bool success = 4;
   UniversalGuid caster = 5;
+}
+
+message PacketLoginSetTimeSpeed {
+  google.protobuf.Timestamp serverTime = 1;
+  google.protobuf.Timestamp gameTime = 2;
+  float newSpeed = 3;
+  int32 serverTimeHolidayOffset = 4;
+  int32 gameTimeHolidayOffset = 5;
 }

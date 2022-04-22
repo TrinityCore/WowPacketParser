@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Enums;
+﻿using Google.Protobuf.WellKnownTypes;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.PacketStructures;
 using WowPacketParser.Parsing;
@@ -767,11 +768,12 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
         [Parser(Opcode.SMSG_LOGIN_SET_TIME_SPEED)]
         public static void HandleLoginSetTimeSpeed(Packet packet)
         {
+            PacketLoginSetTimeSpeed setTime = packet.Holder.LoginSetTimeSpeed = new();
             packet.ReadInt32("Unk Int32");
-            packet.ReadPackedTime("Game Time");
+            setTime.GameTime = packet.ReadPackedTime("Game Time").ToUniversalTime().ToTimestamp();
             packet.ReadInt32("Unk Int32");
             packet.ReadInt32("Unk Int32");
-            packet.ReadSingle("Game Speed");
+            setTime.NewSpeed = packet.ReadSingle("Game Speed");
         }
 
         [Parser(Opcode.SMSG_MOVE_SET_RUN_BACK_SPEED)]
