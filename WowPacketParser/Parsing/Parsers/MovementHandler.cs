@@ -180,6 +180,11 @@ namespace WowPacketParser.Parsing.Parsers
             return info;
         }
 
+        public static double GetDistance(Vector3 start, Vector3 end)
+        {
+            return Math.Sqrt(Math.Pow((start.X - end.X), 2) + Math.Pow((start.Y - end.Y), 2) + Math.Pow((start.Z - end.Z), 2));
+        }
+
         [Parser(Opcode.SMSG_ON_MONSTER_MOVE)]
         [Parser(Opcode.SMSG_MONSTER_MOVE_TRANSPORT)]
         public static void HandleMonsterMove(Packet packet)
@@ -283,10 +288,17 @@ namespace WowPacketParser.Parsing.Parsers
 
             var waypoints = packet.ReadInt32("Waypoints");
 
+            double distance = 0;
+
             if (flags.HasAnyFlag(SplineFlag.Flying | SplineFlag.CatmullRom))
             {
+                var start = pos;
                 for (var i = 0; i < waypoints; i++)
-                    monsterMove.Points.Add(packet.ReadVector3("Waypoint", i));
+                {
+                    var vec = packet.ReadVector3("Waypoint", i);
+                    monsterMove.Points.Add(vec);
+                    distance += GetDistance(start, vec);
+                }
             }
             else
             {
@@ -294,15 +306,23 @@ namespace WowPacketParser.Parsing.Parsers
                 monsterMove.Points.Add(newpos);
 
                 Vector3 mid = (pos + newpos) * 0.5f;
+                var start = pos;
 
                 for (var i = 1; i < waypoints; i++)
                 {
                     var vec = packet.ReadPackedVector3();
                     vec = mid - vec;
+                    distance += GetDistance(start, vec);
                     monsterMove.PackedPoints.Add(vec);
+                    start = vec;
                     packet.AddValue("Waypoint", vec, i);
                 }
+
+                distance += GetDistance(start, newpos);
             }
+
+            packet.WriteLine("Computed Distance: " + distance.ToString());
+            packet.WriteLine("Computed Speed: " + (distance / monsterMove.MoveTime * 1000).ToString());
         }
 
         private static void ReadSplineMovement510(Packet packet, Vector3 pos)
