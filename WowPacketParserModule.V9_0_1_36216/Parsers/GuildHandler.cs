@@ -15,7 +15,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadWoWString("Name", nameLength);
 
             if (isArena)
-                packet.ReadInt32("ArenaTeamSize");
+                packet.ReadInt32("ArenaTeamId");
         }
 
         [Parser(Opcode.SMSG_GUILD_ROSTER, ClientVersionBuild.V9_1_0_39185)]
