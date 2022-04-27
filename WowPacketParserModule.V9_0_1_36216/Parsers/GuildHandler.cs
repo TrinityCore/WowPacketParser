@@ -10,11 +10,11 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         public static void HandleGuildInviteByName(Packet packet)
         {
             var nameLength = packet.ReadBits(9);
-            var isArena = packet.ReadBit("IsArenaTeamInvite");
+            var hasArenaTeamId = packet.ReadBit("HasArenaTeamId");
 
             packet.ReadWoWString("Name", nameLength);
 
-            if (isArena)
+            if (hasArenaTeamId)
                 packet.ReadInt32("ArenaTeamId");
         }
 
