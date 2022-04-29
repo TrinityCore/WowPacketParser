@@ -840,20 +840,9 @@ namespace WowPacketParser.Parsing.Parsers
             packet.ReadUInt32("Delay");
             packet.ReadUInt32("Emote");
 
-            var count = packet.ReadByte("Count");
+            var count = packet.ReadByte("GossipQuestsCount");
             for (var i = 0; i < count; i++)
-            {
-                packet.ReadUInt32<QuestId>("Quest ID", i);
-                packet.ReadUInt32("Quest Icon", i);
-                packet.ReadInt32("Quest Level", i);
-                packet.ReadUInt32E<QuestFlags>("Quest Flags", i);
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
-                    packet.ReadUInt32E<QuestFlagsEx>("Quest Flags 2", i);
-
-                packet.ReadBool("Change icon", i);
-                packet.ReadCString("Title", i);
-            }
-
+                NpcHandler.ReadGossipQuestTextData(packet, i, "GossipQuests");
         }
 
         [Parser(Opcode.CMSG_QUEST_GIVER_QUERY_QUEST)]

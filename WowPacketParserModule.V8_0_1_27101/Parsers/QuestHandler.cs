@@ -844,12 +844,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 GreetEmoteType = packet.ReadUInt32("GreetEmoteType")
             };
 
-            uint gossipTextCount = packet.ReadUInt32("GossipTextCount");
+            uint questsCount = packet.ReadUInt32("GossipQuestsCount");
             packet.ResetBitReader();
             uint greetingLen = packet.ReadBits(12);
 
-            for (int i = 0; i < gossipTextCount; i++)
-                ReadGossipText(packet, i);
+            for (int i = 0; i < questsCount; i++)
+                V7_0_3_22248.Parsers.NpcHandler.ReadGossipQuestTextData(packet, i, "GossipQuests");
 
             questGreeting.Greeting = packet.ReadWoWString("Greeting", greetingLen);
 

@@ -538,6 +538,25 @@ namespace WowPacketParser.Parsing.Parsers
             TempGossipOptionPOI.Guid = LastGossipOption.Guid;
         }
 
+        public static GossipQuestOption ReadGossipQuestTextData(Packet packet, params object[] idx)
+        {
+            var gossipQuest = new GossipQuestOption();
+            gossipQuest.QuestId = (uint)packet.ReadInt32("QuestID", idx);
+            packet.ReadInt32("QuestType", idx);
+            packet.ReadInt32("QuestLevel", idx);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
+                packet.ReadUInt32E<QuestFlags>("Flags", idx);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
+                packet.ReadUInt32E<QuestFlagsEx>("FlagsEx", idx);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_3_3_11685))
+                packet.ReadBool("Repeatable", idx);
+
+            gossipQuest.Title = packet.ReadCString("Title", idx);
+            return gossipQuest;
+        }
+
         [HasSniffData]
         [Parser(Opcode.SMSG_GOSSIP_MESSAGE)]
         public static void HandleNpcGossip(Packet packet)
@@ -591,20 +610,9 @@ namespace WowPacketParser.Parsing.Parsers
                 });
             }
 
-            uint questgossips = packet.ReadUInt32("Amount of Quest gossips");
-            for (int i = 0; i < questgossips; i++)
-            {
-                packet.ReadUInt32<QuestId>("Quest ID", i);
-
-                packet.ReadUInt32("Icon", i);
-                packet.ReadInt32("Level", i);
-                packet.ReadUInt32E<QuestFlags>("Flags", i);
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
-                    packet.ReadUInt32E<QuestFlagsEx>("Flags 2", i);
-
-                packet.ReadBool("Change Icon", i);
-                packet.ReadCString("Title", i);
-            }
+            uint questsCount = packet.ReadUInt32("GossipQuestsCount");
+            for (int i = 0; i < questsCount; i++)
+                ReadGossipQuestTextData(packet, i, "GossipQuests");
 
             if (guid.GetObjectType() == ObjectType.Unit)
             {
