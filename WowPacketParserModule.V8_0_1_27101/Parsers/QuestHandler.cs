@@ -66,24 +66,6 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadBit("IsBoostSpell", idx);
         }
 
-        public static void ReadGossipText(Packet packet, params object[] indexes)
-        {
-            packet.ReadInt32("QuestID", indexes);
-            packet.ReadInt32("QuestType", indexes);
-            packet.ReadInt32("QuestLevel", indexes);
-            packet.ReadInt32("QuestMaxScalingLevel", indexes);
-
-            for (int i = 0; i < 2; i++)
-                packet.ReadUInt32("QuestFlags", indexes, i);
-
-            packet.ResetBitReader();
-
-            packet.ReadBit("Repeatable", indexes);
-
-            var guestTitleLen = packet.ReadBits(10);
-            packet.ReadWoWString("QuestTitle", guestTitleLen, indexes);
-        }
-
         [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_DETAILS)]
         public static void HandleQuestGiverQuestDetails(Packet packet)
         {
