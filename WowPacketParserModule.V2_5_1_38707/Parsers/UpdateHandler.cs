@@ -5,6 +5,8 @@ using WowPacketParser.Parsing;
 using WowPacketParser.Proto;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
+using WowPacketParser.Store.Objects.UpdateFields;
+using CoreFields = WowPacketParser.Enums.Version;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
 using MovementFlag = WowPacketParser.Enums.v4.MovementFlag;
 using MovementFlag2 = WowPacketParser.Enums.v7.MovementFlag2;
@@ -20,7 +22,7 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
         {
             var updateObject = packet.Holder.UpdateObject = new();
             var count = packet.ReadUInt32("NumObjUpdates");
-            uint map = packet.ReadUInt16<MapId>("MapID");
+            uint map = updateObject.MapId = packet.ReadUInt16<MapId>("MapID");
             packet.ResetBitReader();
             var hasRemovedObjects = packet.ReadBit("HasRemovedObjects");
             if (hasRemovedObjects)
@@ -31,11 +33,16 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
 
                 for (var i = 0; i < destroyedObjCount; i++)
                 {
-                    WowGuid guid = packet.ReadPackedGuid128("ObjectGUID", "Destroyed", i);
+                    var partWriter = new StringBuilderProtoPart(packet.Writer);
+                    var guid = packet.ReadPackedGuid128("ObjectGUID", "Destroyed", i);
+                    updateObject.Destroyed.Add(new DestroyedObject(){Guid=guid, Text = partWriter.Text});
                 }
+
                 for (var i = 0; i < outOfRangeObjCount; i++)
                 {
-                    WowGuid guid = packet.ReadPackedGuid128("ObjectGUID", "OutOfRange", i);
+                    var partWriter = new StringBuilderProtoPart(packet.Writer);
+                    var guid = packet.ReadPackedGuid128("ObjectGUID", "OutOfRange", i);
+                    updateObject.OutOfRange.Add(new DestroyedObject(){Guid=guid, Text = partWriter.Text});
                 }
             }
             packet.ReadUInt32("Data size");
@@ -51,16 +58,94 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                     case UpdateTypeCataclysm.Values:
                     {
                         var guid = packet.ReadPackedGuid128("Object Guid", i);
-                        var updateValues = new UpdateValues() {Legacy = new()};
-                        CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, updateValues.Legacy, guid, i);
-                        updateObject.Updated.Add(new UpdateObject { Guid = guid, Values = updateValues, Text = partWriter.Text });
+                        var updateValues = new UpdateValues();
+                        if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_5_4_42695))
+                        {
+                            var updatefieldSize = packet.ReadUInt32();
+                            var handler = CoreFields.UpdateFields.GetHandler();
+                            updateValues.Fields = new();
+                            using (var fieldsData = new Packet(packet.ReadBytes((int)updatefieldSize), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
+                            {
+                                WoWObject obj;
+                                Storage.Objects.TryGetValue(guid, out obj);
+
+                                var updateTypeFlag = fieldsData.ReadUInt32();
+                                if ((updateTypeFlag & 0x0001) != 0)
+                                {
+                                    var data = handler.ReadUpdateObjectData(fieldsData, i);
+                                    if (obj is { ObjectData: IMutableObjectData mut })
+                                        mut.UpdateData(data);
+                                    else if (obj != null)
+                                        obj.ObjectData = data;
+
+                                    updateValues.Fields.UpdateData(data);
+                                }
+                                if ((updateTypeFlag & 0x0002) != 0)
+                                    handler.ReadUpdateItemData(fieldsData, i);
+                                if ((updateTypeFlag & 0x0004) != 0)
+                                    handler.ReadUpdateContainerData(fieldsData, i);
+                                if ((updateTypeFlag & 0x0008) != 0)
+                                    handler.ReadUpdateAzeriteEmpoweredItemData(fieldsData, i);
+                                if ((updateTypeFlag & 0x0010) != 0)
+                                    handler.ReadUpdateAzeriteItemData(fieldsData, i);
+                                if ((updateTypeFlag & 0x0020) != 0)
+                                {
+                                    var unit = obj as Unit;
+                                    var data = handler.ReadUpdateUnitData(fieldsData, i);
+                                    if (unit is { UnitData: IMutableUnitData mut })
+                                        mut.UpdateData(data);
+                                    else if (unit != null)
+                                        unit.UnitData = data;
+
+                                    updateValues.Fields.UpdateData(data);
+                                }
+                                if ((updateTypeFlag & 0x0040) != 0)
+                                    handler.ReadUpdatePlayerData(fieldsData, i);
+                                if ((updateTypeFlag & 0x0080) != 0)
+                                    handler.ReadUpdateActivePlayerData(fieldsData, i);
+                                if ((updateTypeFlag & 0x0100) != 0)
+                                {
+                                    var go = obj as GameObject;
+                                    var data = handler.ReadUpdateGameObjectData(fieldsData, i);
+                                    if (go is { GameObjectData: IMutableGameObjectData mut })
+                                        mut.UpdateData(data);
+                                    else if (go != null)
+                                        go.GameObjectData = data;
+
+                                    updateValues.Fields.UpdateData(data);
+                                }
+                                if ((updateTypeFlag & 0x0200) != 0)
+                                    handler.ReadUpdateDynamicObjectData(fieldsData, i);
+                                if ((updateTypeFlag & 0x0400) != 0)
+                                    handler.ReadUpdateCorpseData(fieldsData, i);
+                                if ((updateTypeFlag & 0x0800) != 0)
+                                    handler.ReadUpdateAreaTriggerData(fieldsData, i);
+                                if ((updateTypeFlag & 0x1000) != 0)
+                                    handler.ReadUpdateSceneObjectData(fieldsData, i);
+                                if ((updateTypeFlag & 0x2000) != 0)
+                                {
+                                    var conversation = obj as ConversationTemplate;
+                                    var data = handler.ReadUpdateConversationData(fieldsData, i);
+                                    if (conversation is { ConversationData: IMutableConversationData mut })
+                                        mut.UpdateData(data);
+                                    else if (conversation != null)
+                                        conversation.ConversationData = data;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            updateValues.Legacy = new();
+                            CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, updateValues.Legacy, guid, i);
+                        }
+                        updateObject.Updated.Add(new UpdateObject{Guid = guid, Values = updateValues, Text = partWriter.Text});
                         break;
                     }
                     case UpdateTypeCataclysm.CreateObject1:
                     case UpdateTypeCataclysm.CreateObject2:
                     {
                         var guid = packet.ReadPackedGuid128("Object Guid", i);
-                        var createObject = new CreateObject() { Guid = guid, Values = new(){Legacy = new()}, CreateType = type.ToCreateObjectType()};
+                        var createObject = new CreateObject() { Guid = guid, Values = new(){}, CreateType = type.ToCreateObjectType() };
                         ReadCreateObjectBlock(packet, createObject, guid, map, i);
                         createObject.Text = partWriter.Text;
                         updateObject.Created.Add(createObject);
@@ -72,21 +157,93 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
 
         private static void ReadCreateObjectBlock(Packet packet, CreateObject createObject, WowGuid guid, uint map, object index)
         {
-            ObjectType objType = ObjectTypeConverter.Convert(packet.ReadByteE<ObjectTypeBCC>("Object Type", index));
-            packet.ReadInt32("HeirFlags", index);
+            ObjectType objType = ObjectTypeConverter.Convert(packet.ReadByteE<ObjectType801>("Object Type", index));
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V2_5_4_42695))
+                packet.ReadInt32("HeirFlags", index);
 
             WoWObject obj = CoreParsers.UpdateHandler.CreateObject(objType, guid, map);
 
             obj.Movement = ReadMovementUpdateBlock(packet, guid, obj, index);
-            obj.UpdateFields = CoreParsers.UpdateHandler.ReadValuesUpdateBlockOnCreate(packet, createObject.Values.Legacy, objType, index);
-            obj.DynamicUpdateFields = CoreParsers.UpdateHandler.ReadDynamicValuesUpdateBlockOnCreate(packet, objType, index);
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_5_4_42695))
+            {
+                createObject.Values.Fields = new();
+                var updatefieldSize = packet.ReadUInt32();
+                using (var fieldsData = new Packet(packet.ReadBytes((int)updatefieldSize), packet.Opcode, packet.Time, packet.Direction, packet.Number, packet.Writer, packet.FileName))
+                {
+                    var flags = fieldsData.ReadByteE<UpdateFieldFlag>("FieldFlags", index);
+                    var handler = CoreFields.UpdateFields.GetHandler();
+                    obj.ObjectData = handler.ReadCreateObjectData(fieldsData, flags, index);
+                    createObject.Values.Fields.UpdateData(obj.ObjectData);
+                    switch (objType)
+                    {
+                        case ObjectType.Item:
+                            handler.ReadCreateItemData(fieldsData, flags, index);
+                            break;
+                        case ObjectType.Container:
+                            handler.ReadCreateItemData(fieldsData, flags, index);
+                            handler.ReadCreateContainerData(fieldsData, flags, index);
+                            break;
+                        case ObjectType.AzeriteEmpoweredItem:
+                            handler.ReadCreateItemData(fieldsData, flags, index);
+                            handler.ReadCreateAzeriteEmpoweredItemData(fieldsData, flags, index);
+                            break;
+                        case ObjectType.AzeriteItem:
+                            handler.ReadCreateItemData(fieldsData, flags, index);
+                            handler.ReadCreateAzeriteItemData(fieldsData, flags, index);
+                            break;
+                        case ObjectType.Unit:
+                        {
+                            var data = (obj as Unit).UnitData = handler.ReadCreateUnitData(fieldsData, flags, index);
+                            createObject.Values.Fields.UpdateData(data);
+                            break;
+                        }
+                        case ObjectType.Player:
+                            handler.ReadCreateUnitData(fieldsData, flags, index);
+                            handler.ReadCreatePlayerData(fieldsData, flags, index);
+                            break;
+                        case ObjectType.ActivePlayer:
+                            handler.ReadCreateUnitData(fieldsData, flags, index);
+                            handler.ReadCreatePlayerData(fieldsData, flags, index);
+                            handler.ReadCreateActivePlayerData(fieldsData, flags, index);
+                            break;
+                        case ObjectType.GameObject:
+                        {
+                            var data = (obj as GameObject).GameObjectData = handler.ReadCreateGameObjectData(fieldsData, flags, index);
+                            createObject.Values.Fields.UpdateData(data);
+                            break;
+                        }
+                        case ObjectType.DynamicObject:
+                            handler.ReadCreateDynamicObjectData(fieldsData, flags, index);
+                            break;
+                        case ObjectType.Corpse:
+                            handler.ReadCreateCorpseData(fieldsData, flags, index);
+                            break;
+                        case ObjectType.AreaTrigger:
+                            (obj as AreaTriggerCreateProperties).AreaTriggerData = handler.ReadCreateAreaTriggerData(fieldsData, flags, index);
+                            break;
+                        case ObjectType.SceneObject:
+                            (obj as SceneObject).SceneObjectData = handler.ReadCreateSceneObjectData(fieldsData, flags, index);
+                            break;
+                        case ObjectType.Conversation:
+                            (obj as ConversationTemplate).ConversationData = handler.ReadCreateConversationData(fieldsData, flags, index);
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                createObject.Values.Legacy = new();
+                obj.UpdateFields = CoreParsers.UpdateHandler.ReadValuesUpdateBlockOnCreate(packet, createObject.Values.Legacy, objType, index);
+                obj.DynamicUpdateFields = CoreParsers.UpdateHandler.ReadDynamicValuesUpdateBlockOnCreate(packet, objType, index);
+            }
 
             // If this is the second time we see the same object (same guid,
             // same position) update its phasemask
             if (Storage.Objects.ContainsKey(guid))
             {
                 var existObj = Storage.Objects[guid].Item1;
-                CoreParsers.UpdateHandler.ProcessExistingObject(ref existObj, obj, guid);
+                CoreParsers.UpdateHandler.ProcessExistingObject(ref existObj, obj, guid); // can't do "ref Storage.Objects[guid].Item1 directly
             }
             else
                 Storage.Objects.Add(guid, obj, packet.TimeSpan);
