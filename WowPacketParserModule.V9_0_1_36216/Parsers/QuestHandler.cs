@@ -9,22 +9,6 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 {
     public static class QuestHandler
     {
-        public static void ReadGossipText(Packet packet, params object[] indexes)
-        {
-            packet.ReadInt32("QuestID", indexes);
-            packet.ReadInt32("ContentTuningID", indexes);
-            packet.ReadInt32("QuestType", indexes);
-
-            for (int i = 0; i < 2; i++)
-                packet.ReadUInt32("QuestFlags", indexes, i);
-
-            packet.ResetBitReader();
-
-            packet.ReadBit("Repeatable", indexes);
-
-            var bits13 = packet.ReadBits(9);
-            packet.ReadWoWString("QuestTitle", bits13, indexes);
-        }
         public static ItemInstance ReadRewardItem(Packet packet, params object[] idx)
         {
             packet.ResetBitReader();
@@ -528,51 +512,6 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadWoWString("PortraitTurnInName", portraitTurnInNameLen);
 
             Storage.QuestDetails.Add(questDetails, packet.TimeSpan);
-        }
-
-        [Parser(Opcode.SMSG_QUEST_GIVER_QUEST_LIST_MESSAGE)]
-        public static void HandleQuestgiverQuestList(Packet packet)
-        {
-            WowGuid guid = packet.ReadPackedGuid128("QuestGiverGUID");
-
-            QuestGreeting questGreeting = new QuestGreeting
-            {
-                ID = guid.GetEntry(),
-                GreetEmoteDelay = packet.ReadUInt32("GreetEmoteDelay"),
-                GreetEmoteType = packet.ReadUInt32("GreetEmoteType")
-            };
-
-            uint gossipTextCount = packet.ReadUInt32("GossipTextCount");
-            packet.ResetBitReader();
-            uint greetingLen = packet.ReadBits(11);
-
-            for (int i = 0; i < gossipTextCount; i++)
-                ReadGossipText(packet, i);
-
-            questGreeting.Greeting = packet.ReadWoWString("Greeting", greetingLen);
-
-            switch (guid.GetObjectType())
-            {
-                case ObjectType.Unit:
-                    questGreeting.Type = 0;
-                    break;
-                case ObjectType.GameObject:
-                    questGreeting.Type = 1;
-                    break;
-            }
-
-            Storage.QuestGreetings.Add(questGreeting, packet.TimeSpan);
-
-            if (ClientLocale.PacketLocale != LocaleConstant.enUS && questGreeting.Greeting != string.Empty)
-            {
-                QuestGreetingLocale localesQuestGreeting = new QuestGreetingLocale
-                {
-                    ID = questGreeting.ID,
-                    Type = questGreeting.Type,
-                    Greeting = questGreeting.Greeting
-                };
-                Storage.LocalesQuestGreeting.Add(localesQuestGreeting, packet.TimeSpan);
-            }
         }
 
         [Parser(Opcode.CMSG_QUEST_GIVER_CLOSE_QUEST)]

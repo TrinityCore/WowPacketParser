@@ -82,21 +82,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
         public static void HandleGossipQuestUpdate(Packet packet)
         {
             packet.ReadPackedGuid128("GossipGUID");
-
-            packet.ReadInt32<QuestId>("QuestID");
-            packet.ReadInt32("QuestType");
-            packet.ReadInt32("QuestLevel");
-            packet.ReadInt32("QuestMaxScalingLevel");
-
-            for (int i = 0; i < 2; ++i)
-                packet.ReadInt32("QuestFlags", i);
-
-            packet.ResetBitReader();
-
-            packet.ReadBit("Repeatable");
-            uint questTitleLen = packet.ReadBits(9);
-
-            packet.ReadWoWString("QuestTitle", questTitleLen);
+            V7_0_3_22248.Parsers.NpcHandler.ReadGossipQuestTextData(packet);
         }
     }
 }

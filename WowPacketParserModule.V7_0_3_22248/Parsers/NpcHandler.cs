@@ -20,7 +20,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 packet.ReadInt32("ContentTuningID", idx);
 
             packet.ReadInt32("QuestType", idx);
-            if (ClientVersion.RemovedInVersion(ClientType.Shadowlands))
+            if (ClientVersion.RemovedInVersion(ClientType.Shadowlands) || ClientVersion.IsClassicClientVersionBuild(ClientVersion.Build))
             {
                 packet.ReadInt32("QuestLevel", idx);
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_3_5_25848))
@@ -36,8 +36,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V7_2_0_23826))
                 packet.ReadBit("Ignored");
 
-            uint questTitleLen = packet.ReadBits(9);
+            int titleBits;
+            if (ClientVersion.InVersion(ClientVersionBuild.V8_1_0_28724, ClientVersionBuild.V8_1_5_29683))
+                titleBits = 10;
+            else
+                titleBits = 9;
 
+            uint questTitleLen = packet.ReadBits(titleBits);
             gossipQuest.Title = packet.ReadWoWString("QuestTitle", questTitleLen, idx);
 
             return gossipQuest;
@@ -63,14 +68,14 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             gossip.TextID = packetGossip.TextId = (uint)packet.ReadInt32("TextID");
 
-            int int44 = packet.ReadInt32("GossipOptions");
-            int int60 = packet.ReadInt32("GossipText");
+            int optionsCount = packet.ReadInt32("GossipOptionsCount");
+            int questsCount = packet.ReadInt32("GossipQuestsCount");
 
-            for (int i = 0; i < int44; ++i)
+            for (int i = 0; i < optionsCount; ++i)
                 packetGossip.Options.Add(V6_0_2_19033.Parsers.NpcHandler.ReadGossipOptionsData((uint)menuId, guid, packet, i, "GossipOptions"));
 
-            for (int i = 0; i < int60; ++i)
-                packetGossip.Quests.Add(ReadGossipQuestTextData(packet, i, "GossipQuestText"));
+            for (int i = 0; i < questsCount; ++i)
+                packetGossip.Quests.Add(ReadGossipQuestTextData(packet, i, "GossipQuests"));
 
             if (guid.GetObjectType() == ObjectType.Unit)
             {

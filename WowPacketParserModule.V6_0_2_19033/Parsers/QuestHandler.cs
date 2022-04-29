@@ -60,23 +60,6 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadBit("bit44");
         }
 
-        public static void ReadGossipText(Packet packet, params object[] indexes)
-        {
-            packet.ReadInt32("QuestID", indexes);
-            packet.ReadInt32("QuestType", indexes);
-            packet.ReadInt32("QuestLevel", indexes);
-
-            for (int i = 0; i < 2; i++)
-                packet.ReadUInt32("QuestFlags", indexes, i);
-
-            packet.ResetBitReader();
-
-            packet.ReadBit("Repeatable", indexes);
-
-            var bits13 = packet.ReadBits(9);
-            packet.ReadWoWString("QuestTitle", bits13, indexes);
-        }
-
         [Parser(Opcode.CMSG_QUERY_QUEST_INFO)]
         public static void HandleQuestQuery(Packet packet)
         {
@@ -642,9 +625,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 GreetEmoteType = packet.ReadUInt32("GreetEmoteType")
             };
 
-            uint int520 = packet.ReadUInt32("GossipTextCount");
-            for (int i = 0; i < int520; i++)
-                ReadGossipText(packet, i);
+            uint questsCount = packet.ReadUInt32("GossipQuestsCount");
+            for (int i = 0; i < questsCount; i++)
+                NpcHandler.ReadGossipQuestTextData(packet, i, "GossipQuests");
 
             packet.ResetBitReader();
 
