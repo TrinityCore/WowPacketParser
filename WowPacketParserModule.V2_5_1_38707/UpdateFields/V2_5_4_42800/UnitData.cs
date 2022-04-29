@@ -125,8 +125,8 @@ namespace WowPacketParserModule.V2_5_1_38707.UpdateFields.V2_5_4_42800
         public DynamicUpdateField<IPassiveSpellHistory> PassiveSpells { get; } = new DynamicUpdateField<IPassiveSpellHistory>();
         public DynamicUpdateField<System.Nullable<int>> WorldEffects { get; } = new DynamicUpdateField<System.Nullable<int>>();
         public DynamicUpdateField<WowGuid> ChannelObjects { get; } = new DynamicUpdateField<WowGuid>();
-        public int? CreatureFamily { get; set; }
-        public int? CreatureType { get; set; }
+        public System.Nullable<int> CreatureFamily { get; set; }
+        public System.Nullable<int> CreatureType { get; set; }
     }
 }
 

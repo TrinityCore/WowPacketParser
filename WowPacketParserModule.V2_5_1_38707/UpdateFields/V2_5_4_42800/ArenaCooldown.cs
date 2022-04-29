@@ -9,7 +9,7 @@ namespace WowPacketParserModule.V2_5_1_38707.UpdateFields.V2_5_4_42800
     {
         public System.Nullable<int> SpellID { get; set; }
         public System.Nullable<int> Charges { get; set; }
-        public System.Nullable<int> Unknown { get; set; }
+        public System.Nullable<int> Unk254 { get; set; }
         public System.Nullable<uint> Flags { get; set; }
         public System.Nullable<uint> StartTime { get; set; }
         public System.Nullable<uint> EndTime { get; set; }

@@ -116,7 +116,7 @@ namespace WowPacketParserModule.V2_5_1_38707.UpdateFields.V2_5_4_42800
         public DynamicUpdateField<System.Nullable<uint>> ResearchSiteProgress { get; } = new DynamicUpdateField<System.Nullable<uint>>();
         public DynamicUpdateField<System.Nullable<int>> DailyQuestsCompleted { get; } = new DynamicUpdateField<System.Nullable<int>>();
         public DynamicUpdateField<System.Nullable<int>> AvailableQuestLineXQuestIDs { get; } = new DynamicUpdateField<System.Nullable<int>>();
-        public DynamicUpdateField<System.Nullable<int>> Unknown { get; } = new DynamicUpdateField<System.Nullable<int>>();
+        public DynamicUpdateField<System.Nullable<int>> Unk254 { get; } = new DynamicUpdateField<System.Nullable<int>>();
         public DynamicUpdateField<System.Nullable<int>> Heirlooms { get; } = new DynamicUpdateField<System.Nullable<int>>();
         public DynamicUpdateField<System.Nullable<uint>> HeirloomFlags { get; } = new DynamicUpdateField<System.Nullable<uint>>();
         public DynamicUpdateField<System.Nullable<int>> Toys { get; } = new DynamicUpdateField<System.Nullable<int>>();

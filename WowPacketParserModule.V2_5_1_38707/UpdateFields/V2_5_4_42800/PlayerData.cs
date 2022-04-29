@@ -21,7 +21,7 @@ namespace WowPacketParserModule.V2_5_1_38707.UpdateFields.V2_5_4_42800
         public System.Nullable<byte> PvpTitle { get; set; }
         public System.Nullable<byte> ArenaFaction { get; set; }
         public System.Nullable<byte> PvpRank { get; set; }
-        public System.Nullable<byte> Unknown { get; set; }
+        public System.Nullable<byte> Unk254 { get; set; }
         public System.Nullable<uint> DuelTeam { get; set; }
         public System.Nullable<int> GuildTimeStamp { get; set; }
         public IQuestLog[] QuestLog { get; } = new IQuestLog[25];
@@ -34,7 +34,7 @@ namespace WowPacketParserModule.V2_5_1_38707.UpdateFields.V2_5_4_42800
         public System.Nullable<float>[] AvgItemLevel { get; } = new System.Nullable<float>[6];
         public System.Nullable<byte> CurrentBattlePetBreedQuality { get; set; }
         public System.Nullable<int> HonorLevel { get; set; }
-        public DynamicUpdateField<IChrCustomizationChoice> CustomizationChoices { get; } = new DynamicUpdateField<IChrCustomizationChoice>();
+        public DynamicUpdateField<IChrCustomizationChoice> Customizations { get; } = new DynamicUpdateField<IChrCustomizationChoice>();
         public DynamicUpdateField<IArenaCooldown> ArenaCooldowns { get; } = new DynamicUpdateField<IArenaCooldown>();
     }
 }
