@@ -232,13 +232,13 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 double distance = 0;
                 if (packedDeltasCount > 0)
                 {
-                    distance = WowPacketParser.Parsing.Parsers.MovementHandler.GetDistance(pos, trueWaypoints[0]);
+                    distance = Vector3.GetDistance(pos, trueWaypoints[0]);
                     for (var i = 1; i < packedDeltasCount; ++i)
-                        distance += WowPacketParser.Parsing.Parsers.MovementHandler.GetDistance(trueWaypoints[i - 1], trueWaypoints[i]);
-                    distance += WowPacketParser.Parsing.Parsers.MovementHandler.GetDistance(trueWaypoints[(int)(packedDeltasCount - 1)], endpos);
+                        distance += Vector3.GetDistance(trueWaypoints[i - 1], trueWaypoints[i]);
+                    distance += Vector3.GetDistance(trueWaypoints[(int)(packedDeltasCount - 1)], endpos);
                 }
                 else
-                    distance = WowPacketParser.Parsing.Parsers.MovementHandler.GetDistance(pos, endpos);
+                    distance = Vector3.GetDistance(pos, endpos);
 
                 packet.WriteLine("(MovementMonsterSpline) Computed Distance: " + distance.ToString());
                 packet.WriteLine("(MovementMonsterSpline) Computed Speed: " + ((distance / moveTime) * 1000).ToString());

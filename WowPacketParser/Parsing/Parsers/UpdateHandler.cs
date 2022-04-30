@@ -2986,7 +2986,7 @@ namespace WowPacketParser.Parsing.Parsers
                     {
                         var vec = packet.ReadVector3("Spline Waypoint", index, i);
                         if (start != null)
-                            distance += WowPacketParser.Parsing.Parsers.MovementHandler.GetDistance(start.Value, vec);
+                            distance += Vector3.GetDistance(start.Value, vec);
                         start = vec;
                     }
 
@@ -2998,7 +2998,7 @@ namespace WowPacketParser.Parsing.Parsers
                     {
                         if (start == null)
                             start = moveInfo.Position;
-                        distance += WowPacketParser.Parsing.Parsers.MovementHandler.GetDistance(start.Value, end);
+                        distance += Vector3.GetDistance(start.Value, end);
                     }
 
                     packet.WriteLine($"[{index}] Computed Spline Distance: " + distance.ToString());

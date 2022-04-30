@@ -180,11 +180,6 @@ namespace WowPacketParser.Parsing.Parsers
             return info;
         }
 
-        public static double GetDistance(Vector3 start, Vector3 end)
-        {
-            return Math.Sqrt(Math.Pow((start.X - end.X), 2) + Math.Pow((start.Y - end.Y), 2) + Math.Pow((start.Z - end.Z), 2));
-        }
-
         [Parser(Opcode.SMSG_ON_MONSTER_MOVE)]
         [Parser(Opcode.SMSG_MONSTER_MOVE_TRANSPORT)]
         public static void HandleMonsterMove(Packet packet)
@@ -297,7 +292,7 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     var vec = packet.ReadVector3("Waypoint", i);
                     monsterMove.Points.Add(vec);
-                    distance += GetDistance(start, vec);
+                    distance += Vector3.GetDistance(start, vec);
                 }
             }
             else
@@ -312,13 +307,13 @@ namespace WowPacketParser.Parsing.Parsers
                 {
                     var vec = packet.ReadPackedVector3();
                     vec = mid - vec;
-                    distance += GetDistance(start, vec);
+                    distance += Vector3.GetDistance(start, vec);
                     monsterMove.PackedPoints.Add(vec);
                     start = vec;
                     packet.AddValue("Waypoint", vec, i);
                 }
 
-                distance += GetDistance(start, newpos);
+                distance += Vector3.GetDistance(start, newpos);
             }
 
             packet.WriteLine("Computed Distance: " + distance.ToString());
