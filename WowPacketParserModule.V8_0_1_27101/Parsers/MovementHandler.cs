@@ -84,7 +84,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             var hasJumpExtraData = packet.ReadBit("HasJumpExtraData", indexes);
 
             var hasAnimTier = false;
-            if (ClientVersion.AddedInVersion(ClientType.Shadowlands) || ClientVersion.IsClassicClientVersionBuild(ClientVersion.Build))
+            if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
                 hasAnimTier = packet.ReadBit("HasAnimTierTransition", indexes);
 
             var hasUnk901 = false;
