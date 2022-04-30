@@ -9,13 +9,13 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         [Parser(Opcode.CMSG_GUILD_INVITE_BY_NAME, ClientVersionBuild.V9_1_0_39185)]
         public static void HandleGuildInviteByName(Packet packet)
         {
-            var bits16 = packet.ReadBits(9);
-            var unused910 = packet.ReadBit();
+            var nameLength = packet.ReadBits(9);
+            var hasArenaTeamId = packet.ReadBit("HasArenaTeamId");
 
-            packet.ReadWoWString("Name", bits16);
+            packet.ReadWoWString("Name", nameLength);
 
-            if (unused910)
-                packet.ReadInt32("Unused910");
+            if (hasArenaTeamId)
+                packet.ReadInt32("ArenaTeamId");
         }
 
         [Parser(Opcode.SMSG_GUILD_ROSTER, ClientVersionBuild.V9_1_0_39185)]
