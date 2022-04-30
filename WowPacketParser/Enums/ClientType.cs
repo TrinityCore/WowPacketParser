@@ -13,6 +13,7 @@ namespace WowPacketParser.Enums
         BattleForAzeroth   = 7,
         Classic            = 7,
         Shadowlands        = 8,
+        ClassicSoM         = 8,
         BurningCrusadeClassic = 8
     }
 }
