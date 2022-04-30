@@ -51,7 +51,7 @@ namespace WowPacketParser.Parsing
         /// [addedInVersion, removedInVersion[
         /// </summary>
         /// <param name="opcode"></param>
-        /// <param name="brancj"></param>
+        /// <param name="branch"></param>
         /// <param name="addedInVersion"></param>
         /// <param name="removedInVersion"></param>
         public ParserAttribute(Opcode opcode, ClientBranch branch, ClientVersionBuild addedInVersion, ClientVersionBuild removedInVersion)
