@@ -47,6 +47,11 @@ namespace WowPacketParser.Misc
             return new Vector3(c1.X / c2, c1.Y / c2, c1.Z / c2);
         }
 
+        public static double GetDistance(Vector3 start, Vector3 end)
+        {
+            return Math.Sqrt(Math.Pow((start.X - end.X), 2) + Math.Pow((start.Y - end.Y), 2) + Math.Pow((start.Z - end.Z), 2));
+        }
+
         public override bool Equals(object obj)
         {
             if (obj is Vector3)

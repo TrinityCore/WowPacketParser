@@ -135,11 +135,6 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadUInt32("ParabolicCurveID", indexes);
         }
 
-        public static double GetDistance(Vector3 start, Vector3 end)
-        {
-            return Math.Sqrt(Math.Pow((start.X - end.X), 2) + Math.Pow((start.Y - end.Y), 2) + Math.Pow((start.Z - end.Z), 2));
-        }
-
         public static void ReadMovementSpline(Packet packet, Vector3 pos, params object[] indexes)
         {
             PacketMonsterMove monsterMove = packet.Holder.MonsterMove;
@@ -237,16 +232,16 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
                 double distance = 0;
                 if (packedDeltasCount > 0)
                 {
-                    distance = GetDistance(pos, trueWaypoints[0]);
+                    distance = Vector3.GetDistance(pos, trueWaypoints[0]);
                     for (var i = 1; i < packedDeltasCount; ++i)
-                        distance += GetDistance(trueWaypoints[i - 1], trueWaypoints[i]);
-                    distance += GetDistance(trueWaypoints[(int)(packedDeltasCount - 1)], endpos);
+                        distance += Vector3.GetDistance(trueWaypoints[i - 1], trueWaypoints[i]);
+                    distance += Vector3.GetDistance(trueWaypoints[(int)(packedDeltasCount - 1)], endpos);
                 }
                 else
-                    distance = GetDistance(pos, endpos);
+                    distance = Vector3.GetDistance(pos, endpos);
 
-                packet.WriteLine("(MovementMonsterSpline) Distance: " + distance.ToString());
-                packet.WriteLine("(MovementMonsterSpline) Speed: " + (distance / moveTime * 1000).ToString());
+                packet.WriteLine("(MovementMonsterSpline) Computed Distance: " + distance.ToString());
+                packet.WriteLine("(MovementMonsterSpline) Computed Speed: " + ((distance / moveTime) * 1000).ToString());
             }
         }
 

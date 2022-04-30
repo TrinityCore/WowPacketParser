@@ -2967,7 +2967,7 @@ namespace WowPacketParser.Parsing.Parsers
                     }
 
                     packet.ReadInt32("Spline Time", index);
-                    packet.ReadInt32("Spline Full Time", index);
+                    var moveTime = packet.ReadInt32("Spline Full Time", index);
                     packet.ReadInt32("Spline ID", index);
 
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_1_0_9767))
@@ -2978,14 +2978,31 @@ namespace WowPacketParser.Parsing.Parsers
                         packet.ReadInt32("Spline Start Time", index);
                     }
 
+                    double distance = 0;
+                    Vector3? start = null;
+
                     var splineCount = packet.ReadInt32();
                     for (var i = 0; i < splineCount; i++)
-                        packet.ReadVector3("Spline Waypoint", index, i);
+                    {
+                        var vec = packet.ReadVector3("Spline Waypoint", index, i);
+                        if (start != null)
+                            distance += Vector3.GetDistance(start.Value, vec);
+                        start = vec;
+                    }
 
                     if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_0_8_9464))
                         packet.ReadByteE<SplineMode>("Spline Mode", index);
 
-                    packet.ReadVector3("Spline Endpoint", index);
+                    var end = packet.ReadVector3("Spline Endpoint", index);
+                    if (end.X != 0 || end.Y != 0 || end.Z != 0)
+                    {
+                        if (start == null)
+                            start = moveInfo.Position;
+                        distance += Vector3.GetDistance(start.Value, end);
+                    }
+
+                    packet.WriteLine($"[{index}] Computed Spline Distance: " + distance.ToString());
+                    packet.WriteLine($"[{index}] Computed Spline Speed: " + ((distance / moveTime) * 1000).ToString());
                 }
             }
             else // !UpdateFlag.Living
