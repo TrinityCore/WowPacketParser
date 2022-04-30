@@ -72,6 +72,7 @@ message PacketHolder {
       PacketSpellCastFailed spellCastFailed = 42;
       PacketSpellFailure spellFailure = 43;
       PacketLoginSetTimeSpeed loginSetTimeSpeed = 44;
+      PacketAuraUpdateAll auraUpdateAll = 45;
   }
 }
 
@@ -290,6 +291,11 @@ message PacketAuraUpdateEntry {
 }
 
 message PacketAuraUpdate {
+  UniversalGuid unit = 1;
+  repeated PacketAuraUpdateEntry updates = 2;
+}
+
+message PacketAuraUpdateAll {
   UniversalGuid unit = 1;
   repeated PacketAuraUpdateEntry updates = 2;
 }

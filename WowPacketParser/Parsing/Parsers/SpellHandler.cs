@@ -289,18 +289,14 @@ namespace WowPacketParser.Parsing.Parsers
         [Parser(Opcode.SMSG_AURA_UPDATE)]
         public static void HandleAuraUpdate(Packet packet)
         {
-            PacketAuraUpdate packetAuraUpdate = new();
-            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_AURA_UPDATE, Direction.ServerToClient))
-                packet.Holder.AuraUpdate = packetAuraUpdate;
-
+            List<PacketAuraUpdateEntry> updates = new();
             var guid = packet.ReadPackedGuid("GUID");
-            packetAuraUpdate.Unit = guid;
             var i = 0;
             var auras = new List<Aura>();
             while (packet.CanRead())
             {
                 var auraEntry = new PacketAuraUpdateEntry();
-                packetAuraUpdate.Updates.Add(auraEntry);
+                updates.Add(auraEntry);
                 Aura aura;
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_0_5_16048))
                     aura = ReadAuraUpdateBlock505(packet, auraEntry, i++);
@@ -327,6 +323,21 @@ namespace WowPacketParser.Parsing.Parsers
                     else
                         unit.AddedAuras.Add(auras);
                 }
+            }
+            
+            if (packet.Opcode == Opcodes.GetOpcode(Opcode.SMSG_AURA_UPDATE, Direction.ServerToClient))
+            {
+                PacketAuraUpdate packetAuraUpdate = new();
+                packet.Holder.AuraUpdate = packetAuraUpdate;
+                packetAuraUpdate.Unit = guid;
+                packetAuraUpdate.Updates.AddRange(updates);
+            }
+            else
+            {
+                PacketAuraUpdateAll packetAuraUpdate = new();
+                packet.Holder.AuraUpdateAll = packetAuraUpdate;
+                packetAuraUpdate.Unit = guid;
+                packetAuraUpdate.Updates.AddRange(updates);
             }
         }
 
