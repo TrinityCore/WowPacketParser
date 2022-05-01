@@ -39,14 +39,14 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 {
                     var partWriter = new StringBuilderProtoPart(packet.Writer);
                     var guid = packet.ReadPackedGuid128("ObjectGUID", "Destroyed", i);
-                    updateObject.Destroyed.Add(new DestroyedObject(){Guid=guid, Text = partWriter.Text});
+                    updateObject.Destroyed.Add(new DestroyedObject(){Guid=guid, TextStartOffset = partWriter.StartOffset, TextLength = partWriter.Length, Text = partWriter.Text});
                 }
 
                 for (var i = 0; i < outOfRangeObjCount; i++)
                 {
                     var partWriter = new StringBuilderProtoPart(packet.Writer);
                     var guid = packet.ReadPackedGuid128("ObjectGUID", "OutOfRange", i);
-                    updateObject.OutOfRange.Add(new DestroyedObject(){Guid=guid, Text = partWriter.Text});
+                    updateObject.OutOfRange.Add(new DestroyedObject(){Guid=guid, TextStartOffset = partWriter.StartOffset, TextLength = partWriter.Length, Text = partWriter.Text});
                 }
             }
             packet.ReadUInt32("Data size");
@@ -142,7 +142,7 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                             updateValues.Legacy = new();
                             CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, updateValues.Legacy, guid, i);
                         }
-                        updateObject.Updated.Add(new UpdateObject{Guid = guid, Values = updateValues, Text = partWriter.Text});
+                        updateObject.Updated.Add(new UpdateObject{Guid = guid, Values = updateValues, TextStartOffset = partWriter.StartOffset, TextLength = partWriter.Length, Text = partWriter.Text});
                         break;
                     }
                     case UpdateTypeCataclysm.CreateObject1:
@@ -152,6 +152,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                         var createObject = new CreateObject() { Guid = guid, Values = new(){}, CreateType = type.ToCreateObjectType() };
                         ReadCreateObjectBlock(packet, createObject, guid, map, i);
                         createObject.Text = partWriter.Text;
+                        createObject.TextStartOffset = partWriter.StartOffset;
+                        createObject.TextLength = partWriter.Length;
                         updateObject.Created.Add(createObject);
                         break;
                     }

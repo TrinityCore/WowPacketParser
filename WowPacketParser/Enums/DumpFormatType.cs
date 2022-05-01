@@ -17,6 +17,7 @@
         ConnectionIndexes,
         Fusion,
         UniversalProto,
-        UniversalProtoWithText
+        UniversalProtoWithText,
+        UniversalProtoWithSeparateText
     }
 }

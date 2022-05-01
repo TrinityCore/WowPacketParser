@@ -35,7 +35,7 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                         var guid = packet.ReadPackedGuid("GUID", i);
                         var updateValues = new UpdateValues(){Legacy = new()};
                         CoreParsers.UpdateHandler.ReadValuesUpdateBlock(packet, updateValues.Legacy, guid, i);
-                        updateObject.Updated.Add(new UpdateObject{Guid = guid, Values = updateValues, Text = partWriter.Text });
+                        updateObject.Updated.Add(new UpdateObject{Guid = guid, Values = updateValues, TextStartOffset = partWriter.StartOffset, TextLength = partWriter.Length, Text = partWriter.Text });
                         break;
                     }
                     case UpdateTypeCataclysm.CreateObject1:
@@ -45,6 +45,8 @@ namespace WowPacketParserModule.V4_3_4_15595.Parsers
                         var createObject = new CreateObject() { Guid = guid, Values = new(){Legacy = new()}, CreateType = type.ToCreateObjectType() };
                         ReadCreateObjectBlock(packet, createObject, guid, map, i);
                         createObject.Text = partWriter.Text;
+                        createObject.TextStartOffset = partWriter.StartOffset;
+                        createObject.TextLength = partWriter.Length;
                         updateObject.Created.Add(createObject);
                         break;
                     }
