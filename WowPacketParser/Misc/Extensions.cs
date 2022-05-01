@@ -350,5 +350,11 @@ namespace WowPacketParser.Misc
                 ItemAppearanceModID = item.ItemAppearanceModID ?? 0
             };
         }
+
+        public static bool IsUniversalProtobufType(this DumpFormatType type)
+        {
+            return type is DumpFormatType.UniversalProto or DumpFormatType.UniversalProtoWithText
+                or DumpFormatType.UniversalProtoWithSeparateText;
+        }
     }
 }

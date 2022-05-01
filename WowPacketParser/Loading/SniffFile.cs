@@ -143,6 +143,7 @@ namespace WowPacketParser.Loading
                 case DumpFormatType.HexOnly:
                 case DumpFormatType.UniversalProto:
                 case DumpFormatType.UniversalProtoWithText:
+                case DumpFormatType.UniversalProtoWithSeparateText:
                 {
                     var outFileName = Path.ChangeExtension(FileName, null) + "_parsed.txt";
                     var outProtoFileName = Path.ChangeExtension(FileName, null) + "_parsed.dat";
@@ -160,8 +161,7 @@ namespace WowPacketParser.Loading
                         File.Delete(outFileName);
                     }
 
-                    if (_dumpFormat is DumpFormatType.UniversalProto or
-                        DumpFormatType.UniversalProtoWithText)
+                    if (_dumpFormat.IsUniversalProtobufType())
                     {
                         if (Utilities.FileIsInUse(outProtoFileName))
                         {
@@ -186,7 +186,7 @@ namespace WowPacketParser.Loading
 
                     using (var writer = (Settings.DumpFormatWithTextToFile() ? new StreamWriter(outFileName, true) : null))
                     {
-                        Packets packets = new() { Version = StructureVersion.ProtobufStructureVersion };
+                        Packets packets = new() { Version = StructureVersion.ProtobufStructureVersion, DumpType = (uint)Settings.DumpFormat };
                         var firstRead = true;
                         var firstWrite = true;
 
@@ -267,8 +267,15 @@ namespace WowPacketParser.Loading
                             if (writer != null)
                             {
                                 // Write to file
+                                var startOffset = writer.BaseStream.Position;
                                 writer.WriteLine(packet.Writer);
                                 writer.Flush();
+
+                                if (_dumpFormat is DumpFormatType.UniversalProtoWithSeparateText)
+                                {
+                                    packet.Holder.BaseData.TextStartOffset = startOffset;
+                                    packet.Holder.BaseData.TextLength = (int)(writer.BaseStream.Position - startOffset);
+                                }
                             }
 // ReSharper restore AccessToDisposedClosure
 
@@ -278,8 +285,7 @@ namespace WowPacketParser.Loading
                             // Close Writer, Stream - Dispose
                             packet.ClosePacket();
 
-                            if (_dumpFormat is DumpFormatType.UniversalProto or
-                                DumpFormatType.UniversalProtoWithText)
+                            if (_dumpFormat.IsUniversalProtobufType())
                                 packets.Packets_.Add(packet.Holder);
                         }, threadCount);
 

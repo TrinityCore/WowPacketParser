@@ -14,12 +14,16 @@ namespace WowPacketParser.Misc
             startLength = stringBuilder?.Length ?? 0;
         }
 
+        public int StartOffset => startLength;
+
+        public int Length => stringBuilder.Length - startLength;
+
         public string Text
         {
             get
             {
                 if (Settings.DumpFormat == DumpFormatType.UniversalProtoWithText)
-                    return stringBuilder?.ToString(startLength, stringBuilder.Length - startLength) ?? "";
+                    return stringBuilder?.ToString(StartOffset, Length) ?? "";
                 return "";
             }
         }

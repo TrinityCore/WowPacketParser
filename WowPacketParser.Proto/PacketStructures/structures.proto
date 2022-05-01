@@ -12,12 +12,15 @@ option csharp_namespace = "WowPacketParser.Proto";
 
 message PacketsVersion {
   uint64 version = 1;
+  uint64 gameVersion = 2;
+  uint32 dumpType = 3;
 }
 
 message Packets {
   uint64 version = 1;
   uint64 gameVersion = 2;
-  repeated PacketHolder packets = 3;
+  uint32 dumpType = 3;
+  repeated PacketHolder packets = 4;
 }
 
 message PacketBase {
@@ -25,6 +28,8 @@ message PacketBase {
   string opcode = 2;
   google.protobuf.Timestamp time = 3;
   string stringData = 4;
+  google.protobuf.Int64Value textStartOffset = 5;
+  google.protobuf.Int32Value textLength = 6;
 }
 
 message PacketHolder {
@@ -689,18 +694,24 @@ message CreateObject {
   optional StationaryPositionData stationary = 6;
   optional VehicleCreate vehicle = 7;
   optional Quat rotation = 8;
-  optional string text = 9;
+  google.protobuf.Int32Value textStartOffset = 9;
+  google.protobuf.Int32Value textLength = 10;
+  optional string text = 11;
 }
 
 message UpdateObject {
   UniversalGuid guid = 1;
   UpdateValues values = 2;
-  optional string text = 3;
+  google.protobuf.Int32Value textStartOffset = 3;
+  google.protobuf.Int32Value textLength = 4;
+  optional string text = 5;
 }
 
 message DestroyedObject {
   UniversalGuid guid = 1;
-  optional string text = 2;
+  google.protobuf.Int32Value textStartOffset = 2;
+  google.protobuf.Int32Value textLength = 3;
+  optional string text = 4;
 }
 
 message PacketUpdateObject {
