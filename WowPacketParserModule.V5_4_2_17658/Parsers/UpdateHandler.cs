@@ -908,7 +908,14 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
 
             packet.ParseBitStream(guid, 1, 5, 3, 0, 2, 6, 7, 4);
 
-            packet.WriteGuid("GUID", guid);
+            var destroyed= packet.WriteGuid("GUID", guid);
+            
+            var update = packet.Holder.UpdateObject = new();
+            update.Destroyed.Add(new DestroyedObject()
+            {
+                Guid = destroyed,
+                Text = packet.Writer.ToString()
+            });
         }
 
         [Parser(Opcode.CMSG_OBJECT_UPDATE_FAILED)]

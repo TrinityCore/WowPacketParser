@@ -3085,16 +3085,24 @@ namespace WowPacketParser.Parsing.Parsers
             using (var packet2 = packet.Inflate(packet.ReadInt32()))
             {
                 HandleUpdateObject(packet2);
+                packet.Holder.UpdateObject = packet2.Holder.UpdateObject;
             }
         }
 
         [Parser(Opcode.SMSG_DESTROY_OBJECT)]
         public static void HandleDestroyObject(Packet packet)
         {
-            packet.ReadGuid("GUID");
+            var guid = packet.ReadGuid("GUID");
 
             if (packet.CanRead())
                 packet.ReadBool("Despawn Animation");
+            
+            var update = packet.Holder.UpdateObject = new();
+            update.Destroyed.Add(new DestroyedObject()
+            {
+                Guid = guid,
+                Text = packet.Writer.ToString()
+            });
         }
 
         [Parser(Opcode.CMSG_OBJECT_UPDATE_FAILED, ClientVersionBuild.Zero, ClientVersionBuild.V5_1_0_16309)] // 4.3.4
