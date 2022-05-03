@@ -46,6 +46,7 @@ namespace WowPacketParser.Enums.Version.V2_5_4_42695
             {Opcode.SMSG_AREA_SPIRIT_HEALER_TIME, 0x2739},
             {Opcode.SMSG_AREA_TRIGGER_DENIED, 0x2902},
             {Opcode.SMSG_AREA_TRIGGER_FORCE_SET_POSITION_AND_FACING, 0x28FF},
+            {Opcode.SMSG_AREA_TRIGGER_MESSAGE, 0x2891},
             {Opcode.SMSG_AREA_TRIGGER_NO_CORPSE, 0x270F},
             {Opcode.SMSG_AREA_TRIGGER_RE_PATH, 0x28FD},
             {Opcode.SMSG_AREA_TRIGGER_RE_SHAPE, 0x2901},
