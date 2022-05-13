@@ -418,7 +418,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         [Parser(Opcode.CMSG_GARRISON_RESEARCH_TALENT)]
         public static void HandleGarrisonResearchTalent(Packet packet)
         {
-            packet.ReadUInt32("GarrTalentID");
+            packet.ReadInt32("GarrTalentID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_3_0_33062))
+                packet.ReadInt32E<GarrisonTalentFlag>("Flags");
         }
 
         [Parser(Opcode.CMSG_GARRISON_SET_BUILDING_ACTIVE)]
