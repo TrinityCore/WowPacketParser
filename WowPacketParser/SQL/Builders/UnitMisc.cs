@@ -870,10 +870,8 @@ namespace WowPacketParser.SQL.Builders
 
             foreach (var unit in units)
             {
-                var row = new Row<NpcSpellClick>();
-
                 var npc = unit.Value;
-                if (npc.UnitData.InteractSpellID == 0)
+                if (npc.UnitData.InteractSpellID == null || npc.UnitData.InteractSpellID == 0)
                     continue;
 
                 if (Settings.AreaFilters.Length > 0)
@@ -884,6 +882,7 @@ namespace WowPacketParser.SQL.Builders
                     if (!npc.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters))
                         continue;
 
+                var row = new Row<NpcSpellClick>();
                 row.Data.Entry = unit.Key.GetEntry();
                 row.Data.SpellID = (uint)npc.UnitData.InteractSpellID;
 

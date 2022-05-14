@@ -42,7 +42,7 @@ namespace WowPacketParser.Store.Objects
 
         public bool IsOnTransport()
         {
-            return Movement.Transport != null;
+            return Movement.Transport != null && !Movement.Transport.Guid.IsEmpty();
         }
 
         public int GetDefaultSpawnTime(uint difficultyID)
