@@ -1199,7 +1199,8 @@ namespace WowPacketParser.Parsing.Parsers
             int delay = requestItems.EmoteDelay = packet.ReadInt32("EmoteDelay");
             int emote = requestItems.EmoteType = packet.ReadInt32("EmoteType");
 
-            AddQuestEnder(questgiverGUID, (uint)id);            packet.ReadUInt32("Close Window on Cancel");
+            AddQuestEnder(questgiverGUID, (uint)id);
+            packet.ReadUInt32("Close Window on Cancel");
             requestItems.QuestFlags = (uint)packet.ReadUInt32E<QuestFlags>("Quest Flags");
             requestItems.QuestFlags2 = (uint)packet.ReadUInt32E<QuestFlagsEx>("Quest Flags 2");
             requestItems.SuggestedPartyMembers = (int)packet.ReadUInt32("Suggested Players");
