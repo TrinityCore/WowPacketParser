@@ -43,8 +43,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             packet.ReadInt32("SecondsRemaining", idx);
             packet.ReadInt32("NumBids", idx);
             Substructures.ItemHandler.ReadItemInstance(packet, "Item", idx);
-            packet.ReadBit("HighBid", idx);
             packet.ResetBitReader();
+            packet.ReadBit("HighBid", idx);
         }
 
         [Parser(Opcode.SMSG_BLACK_MARKET_REQUEST_ITEMS_RESULT)]
