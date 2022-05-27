@@ -687,7 +687,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             int collectCount = packet.ReadInt32("QuestObjectiveCollectCount");
             int currencyCount = packet.ReadInt32("QuestCurrencyCount");
             requestItems.CollectCount = (uint)collectCount;
-            requestItems.CurrencyCount = (uint)currencyCount; 
+            requestItems.CurrencyCount = (uint)currencyCount;
             QuestStatusFlags statusFlags = packet.ReadInt32E<QuestStatusFlags>("StatusFlags");
             requestItems.StatusFlags = (PacketQuestStatusFlags)statusFlags;
             bool isComplete = (statusFlags & (QuestStatusFlags.Complete)) == QuestStatusFlags.Complete;
@@ -936,9 +936,12 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             var quantity = packet.ReadInt32("Quantity", indexes);
 
             string bonusListIds = "";
-            for (var i = 0; i < instance.BonusListIDs.Length; i++)
-                bonusListIds += instance.BonusListIDs[i] + " ";
-            bonusListIds = bonusListIds.TrimEnd(' ');
+            if (instance.BonusListIDs != null)
+            {
+                for (var i = 0; i < instance.BonusListIDs.Length; i++)
+                    bonusListIds += instance.BonusListIDs[i] + " ";
+                bonusListIds = bonusListIds.TrimEnd(' ');
+            }
 
             Storage.PlayerChoiceResponseRewardItems.Add(new PlayerChoiceResponseRewardItemTemplate
             {
