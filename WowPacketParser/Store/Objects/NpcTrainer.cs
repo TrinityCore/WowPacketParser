@@ -2,6 +2,7 @@
 
 namespace WowPacketParser.Store.Objects
 {
+    [DBTableName("npc_trainer")]
     public sealed record NpcTrainer : IDataModel
     {
         [DBFieldName("ID", true)]

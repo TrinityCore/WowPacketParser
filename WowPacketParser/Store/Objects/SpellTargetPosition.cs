@@ -3,6 +3,7 @@ using WowPacketParser.SQL;
 
 namespace WowPacketParser.Store.Objects
 {
+    [DBTableName("spell_target_position")]
     public sealed record SpellTargetPosition : IDataModel
     {
         [DBFieldName("ID", true)]
