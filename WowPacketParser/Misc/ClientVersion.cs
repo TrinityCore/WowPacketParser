@@ -414,6 +414,7 @@ namespace WowPacketParser.Misc
         };
 
         private static ClientType _expansion;
+        private static ClientBranch _branch;
 
         public static ClientVersionBuild Build { get; private set; }
 
@@ -863,6 +864,41 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V1_13_7_39605:
                 case ClientVersionBuild.V1_13_7_39692:
                     return ClientVersionBuild.V1_13_2_31446;
+                case ClientVersionBuild.V1_14_0_39802:
+                case ClientVersionBuild.V1_14_0_39958:
+                case ClientVersionBuild.V1_14_0_40140:
+                case ClientVersionBuild.V1_14_0_40179:
+                case ClientVersionBuild.V1_14_0_40237:
+                case ClientVersionBuild.V1_14_0_40347:
+                case ClientVersionBuild.V1_14_0_40441:
+                case ClientVersionBuild.V1_14_0_40618:
+                case ClientVersionBuild.V1_14_1_40487:
+                case ClientVersionBuild.V1_14_1_40594:
+                case ClientVersionBuild.V1_14_1_40666:
+                case ClientVersionBuild.V1_14_1_40688:
+                case ClientVersionBuild.V1_14_1_40800:
+                case ClientVersionBuild.V1_14_1_40818:
+                case ClientVersionBuild.V1_14_1_40926:
+                case ClientVersionBuild.V1_14_1_40962:
+                case ClientVersionBuild.V1_14_1_41009:
+                case ClientVersionBuild.V1_14_1_41030:
+                case ClientVersionBuild.V1_14_1_41077:
+                case ClientVersionBuild.V1_14_1_41137:
+                case ClientVersionBuild.V1_14_1_41243:
+                case ClientVersionBuild.V1_14_1_41511:
+                case ClientVersionBuild.V1_14_1_41794:
+                case ClientVersionBuild.V1_14_1_42032:
+                case ClientVersionBuild.V1_14_2_41858:
+                case ClientVersionBuild.V1_14_2_41959:
+                case ClientVersionBuild.V1_14_2_42065:
+                case ClientVersionBuild.V1_14_2_42082:
+                case ClientVersionBuild.V1_14_2_42214:
+                case ClientVersionBuild.V1_14_2_42597:
+                case ClientVersionBuild.V1_14_3_42770:
+                case ClientVersionBuild.V1_14_3_42926:
+                case ClientVersionBuild.V1_14_3_43037:
+                case ClientVersionBuild.V1_14_3_43086:
+                case ClientVersionBuild.V1_14_3_43154:
                 case ClientVersionBuild.V2_5_1_38598:
                 case ClientVersionBuild.V2_5_1_38644:
                 case ClientVersionBuild.V2_5_1_38707:
@@ -954,6 +990,8 @@ namespace WowPacketParser.Misc
         {
             if (IsClassicVanillaClientVersionBuild(build))
                 return ClientType.Classic;
+            if (IsClassicSeasonOfMasteryClientVersionBuild(build))
+                return ClientType.ClassicSoM;
             if (IsBurningCrusadeClassicClientVersionBuild(build))
                 return ClientType.BurningCrusadeClassic;
             if (build >= ClientVersionBuild.V9_0_1_36216)
@@ -976,6 +1014,18 @@ namespace WowPacketParser.Misc
             return ClientType.WorldOfWarcraft;
         }
 
+        public static ClientBranch Branch => _branch;
+
+        private static ClientBranch GetBranch(ClientVersionBuild build)
+        {
+            if (IsClassicVanillaClientVersionBuild(build) || IsClassicSeasonOfMasteryClientVersionBuild(build))
+                return ClientBranch.Classic;
+            if (IsBurningCrusadeClassicClientVersionBuild(build))
+                return ClientBranch.TBC;
+            
+            return ClientBranch.Retail;
+        }
+
         public static ClientVersionBuild GetVersion(DateTime time)
         {
             if (time < ClientBuilds[0].Value)
@@ -991,6 +1041,7 @@ namespace WowPacketParser.Misc
 
             ClientVersionBuild prevBuild = Build;
             Build = version;
+            _branch = GetBranch(version);
 
             Opcodes.InitializeOpcodeDictionary();
 
@@ -1050,9 +1101,19 @@ namespace WowPacketParser.Misc
             return AddedInVersion(build1) && RemovedInVersion(build2);
         }
 
+        public static bool InVersion(ClientBranch branch, ClientVersionBuild build1, ClientVersionBuild build2)
+        {
+            return _branch == branch && InVersion(build1, build2);
+        }
+
         public static bool AddedInVersion(ClientVersionBuild build)
         {
             return Build >= build;
+        }
+
+        public static bool AddedInVersion(ClientBranch branch, ClientVersionBuild build)
+        {
+            return _branch == branch && AddedInVersion(build);
         }
 
         public static bool AddedInVersion(ClientType expansion)
@@ -1063,6 +1124,11 @@ namespace WowPacketParser.Misc
         public static bool RemovedInVersion(ClientVersionBuild build)
         {
             return Build < build;
+        }
+
+        public static bool RemovedInVersion(ClientBranch branch, ClientVersionBuild build)
+        {
+            return _branch == branch && RemovedInVersion(build);
         }
 
         public static bool RemovedInVersion(ClientType expansion)
@@ -1077,7 +1143,9 @@ namespace WowPacketParser.Misc
 
         public static bool IsClassicClientVersionBuild(ClientVersionBuild build)
         {
-            return IsClassicVanillaClientVersionBuild(build) || IsBurningCrusadeClassicClientVersionBuild(build);
+            return IsClassicVanillaClientVersionBuild(build) ||
+                   IsClassicSeasonOfMasteryClientVersionBuild(build) ||
+                   IsBurningCrusadeClassicClientVersionBuild(build);
         }
 
         public static bool IsClassicVanillaClientVersionBuild(ClientVersionBuild build)
@@ -1128,6 +1196,53 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V1_13_7_38704:
                 case ClientVersionBuild.V1_13_7_39605:
                 case ClientVersionBuild.V1_13_7_39692:
+                {
+                    return true;
+                }
+                default:
+                    return false;
+            }
+        }
+
+        public static bool IsClassicSeasonOfMasteryClientVersionBuild(ClientVersionBuild build)
+        {
+            switch (build)
+            {
+                case ClientVersionBuild.V1_14_0_39802:
+                case ClientVersionBuild.V1_14_0_39958:
+                case ClientVersionBuild.V1_14_0_40140:
+                case ClientVersionBuild.V1_14_0_40179:
+                case ClientVersionBuild.V1_14_0_40237:
+                case ClientVersionBuild.V1_14_0_40347:
+                case ClientVersionBuild.V1_14_0_40441:
+                case ClientVersionBuild.V1_14_0_40618:
+                case ClientVersionBuild.V1_14_1_40487:
+                case ClientVersionBuild.V1_14_1_40594:
+                case ClientVersionBuild.V1_14_1_40666:
+                case ClientVersionBuild.V1_14_1_40688:
+                case ClientVersionBuild.V1_14_1_40800:
+                case ClientVersionBuild.V1_14_1_40818:
+                case ClientVersionBuild.V1_14_1_40926:
+                case ClientVersionBuild.V1_14_1_40962:
+                case ClientVersionBuild.V1_14_1_41009:
+                case ClientVersionBuild.V1_14_1_41030:
+                case ClientVersionBuild.V1_14_1_41077:
+                case ClientVersionBuild.V1_14_1_41137:
+                case ClientVersionBuild.V1_14_1_41243:
+                case ClientVersionBuild.V1_14_1_41511:
+                case ClientVersionBuild.V1_14_1_41794:
+                case ClientVersionBuild.V1_14_1_42032:
+                case ClientVersionBuild.V1_14_2_41858:
+                case ClientVersionBuild.V1_14_2_41959:
+                case ClientVersionBuild.V1_14_2_42065:
+                case ClientVersionBuild.V1_14_2_42082:
+                case ClientVersionBuild.V1_14_2_42214:
+                case ClientVersionBuild.V1_14_2_42597:
+                case ClientVersionBuild.V1_14_3_42770:
+                case ClientVersionBuild.V1_14_3_42926:
+                case ClientVersionBuild.V1_14_3_43037:
+                case ClientVersionBuild.V1_14_3_43086:
+                case ClientVersionBuild.V1_14_3_43154:
                 {
                     return true;
                 }

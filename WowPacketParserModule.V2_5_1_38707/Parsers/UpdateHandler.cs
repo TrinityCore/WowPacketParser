@@ -297,7 +297,8 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                 packet.ResetBitReader();
                 packet.ReadPackedGuid128("MoverGUID", index);
 
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_5_3_41812))
+                if (ClientVersion.AddedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_14_1_40666) ||
+                    ClientVersion.AddedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_3_41812))
                 {
                     moveInfo.Flags = (uint)packet.ReadUInt32E<MovementFlag>("Movement Flags", index);
                     moveInfo.Flags2 = (uint)packet.ReadUInt32E<MovementFlag2>("Movement Flags 2", index);
@@ -317,7 +318,8 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                 for (var i = 0; i < removeForcesIDsCount; i++)
                     packet.ReadPackedGuid128("RemoveForcesIDs", index, i);
 
-                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V2_5_3_41812))
+                if (ClientVersion.RemovedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_14_1_40666) ||
+                    ClientVersion.RemovedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_3_41812))
                 {
                     moveInfo.Flags = (uint)packet.ReadBitsE<MovementFlag>("Movement Flags", 30, index);
                     moveInfo.Flags2 = (uint)packet.ReadBitsE<MovementFlag2>("Extra Movement Flags", 18, index);
@@ -328,7 +330,9 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                 packet.ReadBit("HasSpline", index);
                 packet.ReadBit("HeightChangeFailed", index);
                 packet.ReadBit("RemoteTimeValid", index);
-                var hasInertia = ClientVersion.AddedInVersion(ClientVersionBuild.V2_5_3_41812) && packet.ReadBit("Has Inertia", index);
+                var hasInertia = (ClientVersion.AddedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_14_1_40666) ||
+                                  ClientVersion.AddedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_3_41812)) && 
+                                  packet.ReadBit("Has Inertia", index);
 
                 if (hasTransport)
                     V8_0_1_27101.Parsers.UpdateHandler.ReadTransportData(moveInfo, guid, packet, index);

@@ -762,6 +762,42 @@ namespace WowPacketParser.Enums.Version
                 {
                     return "V1_13_3_32790";
                 }
+                case ClientVersionBuild.V1_14_0_39802:
+                case ClientVersionBuild.V1_14_0_39958:
+                case ClientVersionBuild.V1_14_0_40140:
+                case ClientVersionBuild.V1_14_0_40179:
+                case ClientVersionBuild.V1_14_0_40237:
+                case ClientVersionBuild.V1_14_0_40347:
+                case ClientVersionBuild.V1_14_0_40441:
+                case ClientVersionBuild.V1_14_0_40618:
+                {
+                    return "V1_14_0_40237";
+                }
+                case ClientVersionBuild.V1_14_1_40487:
+                case ClientVersionBuild.V1_14_1_40594:
+                case ClientVersionBuild.V1_14_1_40666:
+                case ClientVersionBuild.V1_14_1_40688:
+                case ClientVersionBuild.V1_14_1_40800:
+                case ClientVersionBuild.V1_14_1_40818:
+                case ClientVersionBuild.V1_14_1_40926:
+                case ClientVersionBuild.V1_14_1_40962:
+                case ClientVersionBuild.V1_14_1_41009:
+                case ClientVersionBuild.V1_14_1_41030:
+                case ClientVersionBuild.V1_14_1_41077:
+                case ClientVersionBuild.V1_14_1_41137:
+                case ClientVersionBuild.V1_14_1_41243:
+                case ClientVersionBuild.V1_14_1_41511:
+                case ClientVersionBuild.V1_14_1_41794:
+                case ClientVersionBuild.V1_14_1_42032:
+                case ClientVersionBuild.V1_14_2_41858:
+                case ClientVersionBuild.V1_14_2_41959:
+                case ClientVersionBuild.V1_14_2_42065:
+                case ClientVersionBuild.V1_14_2_42082:
+                case ClientVersionBuild.V1_14_2_42214:
+                case ClientVersionBuild.V1_14_2_42597:
+                {
+                    return "V1_14_1_40688";
+                }
                 case ClientVersionBuild.V2_5_1_38598:
                 case ClientVersionBuild.V2_5_1_38644:
                 case ClientVersionBuild.V2_5_1_38707:

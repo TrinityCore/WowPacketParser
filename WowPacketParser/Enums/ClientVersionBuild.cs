@@ -446,6 +446,47 @@ namespace WowPacketParser.Enums
         V1_13_7_39605 = 39605,
         V1_13_7_39692 = 39692,
 
+        // Classic-Era rebased upon TBC client
+        V1_14_0_39802 = 39802, // ptr
+        V1_14_0_39958 = 39958, // ptr
+        V1_14_0_40140 = 40140, // ptr
+        V1_14_0_40179 = 40179, // ptr
+        V1_14_0_40237 = 40237, // ptr
+        V1_14_0_40347 = 40347, // both live and ptr
+        V1_14_0_40441 = 40441, // both live and ptr
+        V1_14_0_40618 = 40618,
+
+        // Classic SoM
+        V1_14_1_40487 = 40487, // ptr
+        V1_14_1_40594 = 40594, // ptr
+        V1_14_1_40666 = 40666, // ptr
+        V1_14_1_40688 = 40688, // ptr
+        V1_14_1_40800 = 40800, // ptr
+        V1_14_1_40818 = 40818, // ptr
+        V1_14_1_40926 = 40926, // ptr
+        V1_14_1_40962 = 40962, // both live and ptr
+        V1_14_1_41009 = 41009, // ptr
+        V1_14_1_41030 = 41030, // both live and ptr
+        V1_14_1_41077 = 41077, // both live and ptr
+        V1_14_1_41137 = 41137, // both live and ptr
+        V1_14_1_41243 = 41243, // both live and ptr
+        V1_14_1_41511 = 41511, // both live and ptr (issue: bugged timestamps in sniffer)
+        V1_14_1_41794 = 41794, // both live and ptr
+        V1_14_1_42032 = 42032, // live
+
+        V1_14_2_41858 = 41858, // ptr
+        V1_14_2_41959 = 41959, // ptr
+        V1_14_2_42065 = 42065, // ptr
+        V1_14_2_42082 = 42082, // ptr
+        V1_14_2_42214 = 42214, // both live and ptr
+        V1_14_2_42597 = 42597, // both live and ptr
+
+        V1_14_3_42770 = 42770, // ptr
+        V1_14_3_42926 = 42926, // ptr
+        V1_14_3_43037 = 43037, // ptr
+        V1_14_3_43086 = 43086, // ptr
+        V1_14_3_43154 = 43154, // both live and ptr
+
         // TBC Classic
         V2_5_1_38598 = 38598, // ptr
         V2_5_1_38644 = 38644,

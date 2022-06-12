@@ -105,7 +105,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503) || ClientVersion.IsBurningCrusadeClassicClientVersionBuild(ClientVersion.Build))
             {
                 var count = packet.ReadUInt32("SpellVisualKitCount");
-                if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423))
+                if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V9_2_0_42423) ||
+                    ClientVersion.AddedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_14_2_42065) ||
+                    ClientVersion.AddedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_3_41812))
                     packet.ReadInt32("SequenceVariation");
 
                 for (var i = 0; i < count; ++i)
