@@ -159,9 +159,14 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
 
         private static void ReadCreateObjectBlock(Packet packet, CreateObject createObject, WowGuid guid, uint map, object index)
         {
-            ObjectType objType = ObjectTypeConverter.Convert(packet.ReadByteE<ObjectType801>("Object Type", index));
+            ObjectType objType;
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V2_5_4_42695))
+            {
+                objType = ObjectTypeConverter.Convert(packet.ReadByteE<ObjectTypeBCC>("Object Type", index));
                 packet.ReadInt32("HeirFlags", index);
+            }
+            else
+                objType = ObjectTypeConverter.Convert(packet.ReadByteE<ObjectType801>("Object Type", index));               
 
             WoWObject obj = CoreParsers.UpdateHandler.CreateObject(objType, guid, map);
 
