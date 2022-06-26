@@ -1,4 +1,5 @@
-﻿using WowPacketParser.Enums;
+﻿using System.Collections.Generic;
+using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.SQL;
 
@@ -406,6 +407,113 @@ namespace WowPacketParser.Store.Objects
 
         [DBFieldName("ID", true)]
         public uint? ID;
+
+        [DBFieldName("Probability0")]
+        public float? Prob0;
+
+        [DBFieldName("Probability1")]
+        public float? Prob1;
+
+        [DBFieldName("Probability2")]
+        public float? Prob2;
+
+        [DBFieldName("Probability3")]
+        public float? Prob3;
+
+        [DBFieldName("Probability4")]
+        public float? Prob4;
+
+        [DBFieldName("Probability5")]
+        public float? Prob5;
+
+        [DBFieldName("Probability6")]
+        public float? Prob6;
+
+        [DBFieldName("Probability7")]
+        public float? Prob7;
+
+        [DBFieldName("BroadcastTextId0")]
+        public uint? BroadcastTextId0;
+
+        [DBFieldName("BroadcastTextId1")]
+        public uint? BroadcastTextId1;
+
+        [DBFieldName("BroadcastTextId2")]
+        public uint? BroadcastTextId2;
+
+        [DBFieldName("BroadcastTextId3")]
+        public uint? BroadcastTextId3;
+
+        [DBFieldName("BroadcastTextId4")]
+        public uint? BroadcastTextId4;
+
+        [DBFieldName("BroadcastTextId5")]
+        public uint? BroadcastTextId5;
+
+        [DBFieldName("BroadcastTextId6")]
+        public uint? BroadcastTextId6;
+
+        [DBFieldName("BroadcastTextId7")]
+        public uint? BroadcastTextId7;
+
+        [DBFieldName("VerifiedBuild")]
+        public int? VerifiedBuild = ClientVersion.BuildInt;
+    }
+
+    [DBTableName("npc_text")]
+    public sealed record NpcText925 : IDataModel
+    {
+        public ObjectType ObjectType;
+        public uint ObjectEntry;
+
+        public List<float> Probabilities = new();
+
+        public List<uint> BroadcastTextId = new();
+
+        public void AddBroadcastTextIfNotExists(uint broadcastTextId, float probability)
+        {
+            for (var i = 0; i < BroadcastTextId.Count; i++)
+            {
+                if (BroadcastTextId[i] == broadcastTextId)
+                    return;
+            }
+            BroadcastTextId.Add(broadcastTextId);
+            Probabilities.Add(probability);
+        }
+
+        public void ConvertToDBStruct()
+        {
+            if (BroadcastTextId.Count < 8)
+            {
+                for (int i = BroadcastTextId.Count; i < 8; i++)
+                {
+                    BroadcastTextId.Add(0);
+                    Probabilities.Add(0);
+                }
+            }
+            // Seriously...
+
+            Prob0 = Probabilities[0];
+            Prob1 = Probabilities[1];
+            Prob2 = Probabilities[2];
+            Prob3 = Probabilities[3];
+            Prob4 = Probabilities[4];
+            Prob5 = Probabilities[5];
+            Prob6 = Probabilities[6];
+            Prob7 = Probabilities[7];
+
+            BroadcastTextId0 = BroadcastTextId[0];
+            BroadcastTextId1 = BroadcastTextId[1];
+            BroadcastTextId2 = BroadcastTextId[2];
+            BroadcastTextId3 = BroadcastTextId[3];
+            BroadcastTextId4 = BroadcastTextId[4];
+            BroadcastTextId5 = BroadcastTextId[5];
+            BroadcastTextId6 = BroadcastTextId[6];
+            BroadcastTextId7 = BroadcastTextId[7];
+        }
+
+        [DBFieldName("ID", true, true)]
+        public string ID;
 
         [DBFieldName("Probability0")]
         public float? Prob0;

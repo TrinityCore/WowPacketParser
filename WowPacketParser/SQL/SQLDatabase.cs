@@ -26,6 +26,7 @@ namespace WowPacketParser.SQL
         public static Dictionary<string, List<int>> BroadcastTexts { get; } = new Dictionary<string, List<int>>();
         public static Dictionary<string, List<int>> BroadcastText1s { get; } = new Dictionary<string, List<int>>();
         public static Dictionary<uint? /*CreatureId*/, List<CreatureEquipment>> CreatureEquipments { get; } = new();
+        public static Dictionary<uint /*broadcastText*/, List<uint> /*npc_text ids*/> NPCTexts { get; } = new();
         public static List<POIData> POIs { get; } = new List<POIData>();
 
         private static readonly StoreNameType[] ObjectTypes =
@@ -106,6 +107,7 @@ namespace WowPacketParser.SQL
             LoadBroadcastText();
             LoadPointsOfinterest();
             LoadCreatureEquipment();
+            LoadNPCTexts();
             LoadNameData();
 
             var endTime = DateTime.Now;
@@ -264,6 +266,33 @@ namespace WowPacketParser.SQL
                             continue;
                         }
                         CreatureEquipments.Add(equip.CreatureID, new List<CreatureEquipment>() { equip });
+                    }
+                }
+            }
+        }
+
+        private static void LoadNPCTexts()
+        {
+            string columns = "ID, BroadcastTextID0, BroadcastTextID1, BroadcastTextID2, BroadcastTextID3, BroadcastTextID4, BroadcastTextID5, BroadcastTextID6, BroadcastTextID7";
+            string query = $"SELECT {columns} FROM {Settings.TDBDatabase}.npc_text";
+
+            using (var command = SQLConnector.CreateCommand(query))
+            {
+                if (command == null)
+                    return;
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var npcTextId = reader.GetUInt32(0);
+                        for (int i = 1; i < 9; i++)
+                        {
+                            var broadcastTextId = reader.GetUInt32(i);
+                            if (NPCTexts.TryGetValue(broadcastTextId, out var npcTextList))
+                                npcTextList.Add(npcTextId);
+                            else
+                                NPCTexts.Add(broadcastTextId, new List<uint> { npcTextId });
+                        }
                     }
                 }
             }

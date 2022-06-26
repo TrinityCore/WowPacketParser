@@ -57,6 +57,7 @@ namespace WowPacketParser.Store
         public static readonly DataBag<PageText> PageTexts = new DataBag<PageText>(new List<SQLOutput> { SQLOutput.page_text });
         public static readonly DataBag<NpcText> NpcTexts = new DataBag<NpcText>(new List<SQLOutput> { SQLOutput.npc_text });
         public static readonly DataBag<NpcTextMop> NpcTextsMop = new DataBag<NpcTextMop>(new List<SQLOutput> { SQLOutput.npc_text });
+        public static readonly StoreDictionary<uint /*menuID*/, NpcText925> GossipToNpcTextMap = new(new List<SQLOutput> { SQLOutput.npc_text });
 
         // Creature text (says, yells, etc.)
         public static readonly StoreMulti<uint, CreatureText> CreatureTexts = new StoreMulti<uint, CreatureText>(new List<SQLOutput> { SQLOutput.creature_text });
@@ -80,6 +81,7 @@ namespace WowPacketParser.Store
         // Gossips (MenuId, TextId)
         public static readonly Dictionary<uint, uint> CreatureDefaultGossips = new Dictionary<uint, uint>();
         public static readonly DataBag<GossipMenu> Gossips = new DataBag<GossipMenu>(new List<SQLOutput> { SQLOutput.gossip_menu });
+        public static readonly DataBag<GossipMenu925> Gossips925 = new DataBag<GossipMenu925>(new List<SQLOutput> { SQLOutput.gossip_menu });
         public static readonly StoreDictionary<(uint?, uint?), GossipMenuOption> GossipMenuOptions = new StoreDictionary<(uint?, uint?), GossipMenuOption>(new List<SQLOutput> { SQLOutput.gossip_menu_option });
 
         // Quest POI (QuestId, Id)
@@ -177,6 +179,7 @@ namespace WowPacketParser.Store
             PageTexts.Clear();
             NpcTexts.Clear();
             NpcTextsMop.Clear();
+            GossipToNpcTextMap.Clear();
 
             CreatureTexts.Clear();
 
@@ -192,6 +195,7 @@ namespace WowPacketParser.Store
             StartPositions.Clear();
 
             Gossips.Clear();
+            Gossips925.Clear();
             GossipMenuOptions.Clear();
 
             QuestPOIs.Clear();
