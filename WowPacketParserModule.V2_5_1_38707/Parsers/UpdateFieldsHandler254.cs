@@ -3157,8 +3157,13 @@ namespace WowPacketParserModule.V2_5_1_38707.UpdateFields.V2_5_4_42800
         public override ICorpseData ReadUpdateCorpseData(Packet packet, params object[] indexes)
         {
             var data = new CorpseData();
-            var rawChangesMask = new int[1];
-            rawChangesMask[0] = (int)packet.ReadBits(32);
+            var rawChangesMask = new int[2];
+            var rawMaskMask = new int[1];
+            rawMaskMask[0] = (int)packet.ReadBits(2);
+            var maskMask = new BitArray(rawMaskMask);
+            for (var i = 0; i < 2; ++i)
+                if (maskMask[i])
+                    rawChangesMask[i] = (int)packet.ReadBits(32);
             var changesMask = new BitArray(rawChangesMask);
 
             if (changesMask[0])
