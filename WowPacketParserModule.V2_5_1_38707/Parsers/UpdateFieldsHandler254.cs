@@ -3158,7 +3158,11 @@ namespace WowPacketParserModule.V2_5_1_38707.UpdateFields.V2_5_4_42800
         {
             var data = new CorpseData();
             var rawChangesMask = new int[1];
-            rawChangesMask[0] = (int)packet.ReadBits(32);
+            var rawMaskMask = new int[1];
+            rawMaskMask[0] = (int)packet.ReadBits(1);
+            var maskMask = new BitArray(rawMaskMask);
+            if (maskMask[0])
+                rawChangesMask[0] = (int)packet.ReadBits(32);
             var changesMask = new BitArray(rawChangesMask);
 
             if (changesMask[0])
