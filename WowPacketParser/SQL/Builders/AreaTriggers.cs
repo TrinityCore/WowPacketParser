@@ -73,8 +73,6 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger_create_properties_orbit))
                 return string.Empty;
 
-            var templateDb = SQLDatabase.Get(Storage.AreaTriggerCreatePropertiesOrbits);
-
             foreach (var orbit in Storage.AreaTriggerCreatePropertiesOrbits)
             {
                 var spellAreaTriggerTuple = Storage.Objects.Where(obj => obj.Key == orbit.Item1.areatriggerGuid).First();
@@ -83,6 +81,8 @@ namespace WowPacketParser.SQL.Builders
                 orbit.Item1.spellId = areaTrigger.spellId;
                 orbit.Item1.AreaTriggerCreatePropertiesId = areaTrigger.AreaTriggerCreatePropertiesId;
             }
+
+            var templateDb = SQLDatabase.Get(Storage.AreaTriggerCreatePropertiesOrbits);
 
             return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.AreaTriggerCreatePropertiesOrbits.OrderBy(x => x.Item1.AreaTriggerCreatePropertiesId).ToArray() : Storage.AreaTriggerCreatePropertiesOrbits.ToArray(),
                 templateDb,
@@ -105,8 +105,6 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger_create_properties_polygon_vertex))
                 return string.Empty;
 
-            var templateDb = SQLDatabase.Get(Storage.AreaTriggerCreatePropertiesPolygonVertices);
-
             foreach (var vertex in Storage.AreaTriggerCreatePropertiesPolygonVertices)
             {
                 var spellAreaTriggerTuple = Storage.Objects.Where(obj => obj.Key == vertex.Item1.areatriggerGuid).First();
@@ -115,6 +113,8 @@ namespace WowPacketParser.SQL.Builders
                 vertex.Item1.spellId = areaTrigger.spellId;
                 vertex.Item1.AreaTriggerCreatePropertiesId = areaTrigger.AreaTriggerCreatePropertiesId;
             }
+
+            var templateDb = SQLDatabase.Get(Storage.AreaTriggerCreatePropertiesPolygonVertices);
 
             return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.AreaTriggerCreatePropertiesPolygonVertices.OrderBy(x => x.Item1.AreaTriggerCreatePropertiesId).ToArray() : Storage.AreaTriggerCreatePropertiesPolygonVertices.ToArray(),
                 templateDb,
@@ -137,8 +137,6 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger_create_properties_spline_point))
                 return string.Empty;
 
-            var templateDb = SQLDatabase.Get(Storage.AreaTriggerCreatePropertiesSplinePoints);
-
             foreach (var splinePoint in Storage.AreaTriggerCreatePropertiesSplinePoints)
             {
                 var spellAreaTriggerTuple = Storage.Objects.Where(obj => obj.Key == splinePoint.Item1.areatriggerGuid).First();
@@ -159,6 +157,8 @@ namespace WowPacketParser.SQL.Builders
                 splinePoint.Item1.X = (float)((inx + iny * Math.Tan(areaTriggerO)) / (Math.Cos(areaTriggerO) + Math.Sin(areaTriggerO) * Math.Tan(areaTriggerO)));
                 splinePoint.Item1.Y = (float)((iny - inx * Math.Tan(areaTriggerO)) / (Math.Cos(areaTriggerO) + Math.Sin(areaTriggerO) * Math.Tan(areaTriggerO)));
             }
+
+            var templateDb = SQLDatabase.Get(Storage.AreaTriggerCreatePropertiesSplinePoints);
 
             return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.AreaTriggerCreatePropertiesSplinePoints.OrderBy(x => x.Item1.AreaTriggerCreatePropertiesId).ToArray() : Storage.AreaTriggerCreatePropertiesSplinePoints.ToArray(),
                 templateDb,
