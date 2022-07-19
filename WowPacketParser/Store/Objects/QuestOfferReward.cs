@@ -10,7 +10,7 @@ namespace WowPacketParser.Store.Objects
         public uint? ID;
 
         [DBFieldName("Emote", 4)]
-        public uint?[] Emote;
+        public int?[] Emote;
 
         [DBFieldName("EmoteDelay", 4)]
         public uint?[] EmoteDelay;

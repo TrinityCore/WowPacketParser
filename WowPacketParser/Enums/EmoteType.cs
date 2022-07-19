@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace WowPacketParser.Enums
 {
     [SuppressMessage("ReSharper", "InconsistentNaming")]
-    public enum EmoteType
+    public enum EmoteType : int
     {
         OneShotNone                            = 0,
         OneShotTalk                            = 1,
