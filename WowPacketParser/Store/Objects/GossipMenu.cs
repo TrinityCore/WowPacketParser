@@ -29,7 +29,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("MenuID", true, true)]
         public uint? MenuID;
 
-        [DBFieldName("TextID", true)]
+        [DBFieldName("TextID", true, true)]
         public string TextID;
 
         [DBFieldName("VerifiedBuild")]
