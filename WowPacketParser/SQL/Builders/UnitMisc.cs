@@ -479,13 +479,6 @@ namespace WowPacketParser.SQL.Builders
                     t => StoreGetters.GetName(StoreNameType.Unit, (int)t.ObjectEntry)); // BUG: GOs can send gossips too
             }
 
-            // `gossip_menu`
-            if (!Storage.Gossips925.IsEmpty() && Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu))
-            {
-                result += SQLUtil.Compare(Storage.Gossips925, SQLDatabase.Get(Storage.Gossips925),
-                    t => StoreGetters.GetName(StoreNameType.Unit, (int)t.ObjectEntry)); // BUG: GOs can send gossips too
-            }
-
             // `gossip_menu_option`
             if (!Storage.GossipMenuOptions.IsEmpty() && Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu_option))
             {
