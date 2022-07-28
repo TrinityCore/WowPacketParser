@@ -417,5 +417,19 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         {
             packet.ReadUInt32E<PowerType>("PowerType");
         }
+
+        [Parser(Opcode.SMSG_SPELL_HEAL_ABSORB_LOG)]
+        public static void HandleSpellHealAbsorbLog(Packet packet)
+        {
+            packet.ReadPackedGuid128("Target");
+            packet.ReadPackedGuid128("AbsorbCaster");
+            packet.ReadPackedGuid128("Healer");
+            packet.ReadInt32("AbsorbSpellID");
+            packet.ReadInt32("AbsorbedSpellID");
+            packet.ReadInt32("Absorbed");
+            packet.ReadInt32("OriginalHeal");
+            if (packet.ReadBit())
+                CombatLogHandler.ReadContentTuningParams(packet, "ContentTuning");
+        }
     }
 }
