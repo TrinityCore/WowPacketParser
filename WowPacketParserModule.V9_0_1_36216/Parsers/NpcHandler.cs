@@ -1,8 +1,10 @@
 using System;
+using System.Globalization;
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
 using WowPacketParser.Proto;
+using WowPacketParser.SQL;
 using WowPacketParser.Store;
 using WowPacketParser.Store.Objects;
 using CoreParsers = WowPacketParser.Parsing.Parsers;
@@ -88,6 +90,69 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         {
             packet.ReadPackedGuid128("NpcGUID");
             packet.ReadInt32("UiMapID");
+        }
+
+        public static void AddBroadcastTextToGossip(uint menuID, uint broadcastTextID, WowGuid guid)
+        {
+            NpcText925 npcText = null;
+            if (!Storage.GossipToNpcTextMap.TryGetValue(menuID, out npcText))
+            {
+                npcText = new NpcText925();
+                npcText.ObjectType = guid.GetObjectType();
+                npcText.ObjectEntry = guid.GetEntry();
+                Storage.GossipToNpcTextMap.Add(menuID, npcText);
+            }
+            npcText.AddBroadcastTextIfNotExists(broadcastTextID, 1.0f);
+        }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_GOSSIP_MESSAGE, ClientVersionBuild.V9_2_5_43903)]
+        public static void HandleNpcGossip(Packet packet)
+        {
+            PacketGossipMessage packetGossip = packet.Holder.GossipMessage = new();
+
+            WowGuid guid = packet.ReadPackedGuid128("GossipGUID");
+            packetGossip.GossipSource = guid;
+
+            int menuId = packet.ReadInt32("GossipID");
+            packetGossip.MenuId = (uint)menuId;
+
+            packet.ReadInt32("FriendshipFactionID");
+
+            var broadcastTextID = (uint)packet.ReadInt32("BroadcastTextID");
+
+            if (SQLDatabase.NPCTexts.TryGetValue(broadcastTextID, out var npcTextId))
+            {
+                GossipMenu gossip = new();
+                gossip.MenuID = packetGossip.MenuId;
+                gossip.TextID = packetGossip.TextId = npcTextId[0];
+                gossip.ObjectType = guid.GetObjectType();
+                gossip.ObjectEntry = guid.GetEntry();
+                Storage.Gossips.Add(gossip, packet.TimeSpan);
+            }
+            else
+            {
+                AddBroadcastTextToGossip(packetGossip.MenuId, broadcastTextID, guid);
+            }
+
+            int optionsCount = packet.ReadInt32("GossipOptionsCount");
+            int questsCount = packet.ReadInt32("GossipQuestsCount");
+
+            for (int i = 0; i < optionsCount; ++i)
+                packetGossip.Options.Add(V6_0_2_19033.Parsers.NpcHandler.ReadGossipOptionsData((uint)menuId, guid, packet, i, "GossipOptions"));
+
+            for (int i = 0; i < questsCount; ++i)
+                packetGossip.Quests.Add(V7_0_3_22248.Parsers.NpcHandler.ReadGossipQuestTextData(packet, i, "GossipQuests"));
+
+            if (guid.GetObjectType() == ObjectType.Unit)
+            {
+                if (!Storage.CreatureDefaultGossips.ContainsKey(guid.GetEntry()))
+                    Storage.CreatureDefaultGossips.Add(guid.GetEntry(), (uint)menuId);
+            }
+
+            CoreParsers.NpcHandler.UpdateLastGossipOptionActionMessage(packet.TimeSpan, (uint)menuId);
+
+            packet.AddSniffData(StoreNameType.Gossip, menuId, guid.GetEntry().ToString(CultureInfo.InvariantCulture));
         }
     }
 }

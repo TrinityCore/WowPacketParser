@@ -418,6 +418,56 @@ namespace WowPacketParser.SQL.Builders
         }
 
         [BuilderMethod]
+        public static string Gossip925()
+        {
+            if (Storage.GossipToNpcTextMap.IsEmpty() || Settings.TargetedDatabase < TargetedDatabase.Shadowlands)
+                return string.Empty;
+
+            var count = 0;
+            var textRows = new RowList<NpcText925>();
+            var gossipRows = new RowList<GossipMenu925>();
+            foreach (var entry in Storage.GossipToNpcTextMap)
+            {
+                var npcText = entry.Value.Item1;
+                npcText.ConvertToDBStruct();
+                npcText.ID = $"@NPCTEXTID+{count}";
+
+                string comment = "";
+                if (npcText.ObjectType == ObjectType.GameObject)
+                    comment = StoreGetters.GetName(StoreNameType.GameObject, (int)npcText.ObjectEntry);
+                else if (npcText.ObjectType == ObjectType.Unit)
+                    comment = StoreGetters.GetName(StoreNameType.Unit, (int)npcText.ObjectEntry);
+
+                var npcTextRow = new Row<NpcText925>();
+                npcTextRow.Data = npcText;
+                npcTextRow.Comment = comment;
+                textRows.Add(npcTextRow);
+
+                var gossip = new Row<GossipMenu925>();
+                gossip.Data.MenuID = entry.Key;
+                gossip.Data.TextID = npcText.ID;
+                gossip.Comment = comment;
+
+                gossipRows.Add(gossip);
+
+                count++;
+            }
+
+            StringBuilder result = new StringBuilder();
+            var textDelete = new SQLDelete<NpcText925>(Tuple.Create("@NPCTEXTID+0", "@NPCTEXTID+" + (count - 1)));
+            result.Append(textDelete.Build());
+            var textInsert = new SQLInsert<NpcText925>(textRows, false);
+            result.Append(textInsert.Build());
+            result.Append('\n');
+            var gossipDelete = new SQLDelete<GossipMenu925>(Tuple.Create("@NPCTEXTID+0", "@NPCTEXTID+" + (count - 1)));
+            result.Append(gossipDelete.Build());
+            var gossipInsert = new SQLInsert<GossipMenu925>(gossipRows, false);
+            result.Append(gossipInsert.Build());
+
+            return result.ToString();
+        }
+
+        [BuilderMethod]
         public static string Gossip()
         {
             var result = "";
