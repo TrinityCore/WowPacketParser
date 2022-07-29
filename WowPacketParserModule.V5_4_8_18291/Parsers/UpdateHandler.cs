@@ -305,7 +305,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 bit644 = packet.ReadBit();
                 bit560 = packet.ReadBit();
 
-                if (bit664)
+                if (bit644)
                 {
                     bits25C = packet.ReadBits(21); //604
                     bits26C = packet.ReadBits(21); //624
