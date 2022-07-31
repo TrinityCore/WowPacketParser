@@ -693,7 +693,7 @@ namespace WowPacketParser.SQL.Builders
                     if (Storage.CreatureTemplates.TryGetValue(unit.Key.GetEntry(), out entry))
                     {
                         var sub = entry.SubName;
-                        if (sub.Length > 0)
+                        if (sub != null && sub.Length > 0)
                             template.NpcFlag |= ProcessNpcFlags(sub);
                         else // If the SubName doesn't exist or is cached, fall back to DB method
                             template.NpcFlag |= ProcessNpcFlags(subname);
