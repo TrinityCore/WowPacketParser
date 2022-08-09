@@ -39,7 +39,8 @@ namespace WowPacketParser.SQL
                 if (_conditions.Count == 1)
                 {
                     whereClause.Append("=");
-                    whereClause.Append(field.Item2.GetValue(_conditions.First().Data));
+                    object value = field.Item2.GetValue(_conditions.First().Data);
+                    whereClause.Append(SQLUtil.ToSQLValue(value, noQuotes: field.Item3.Any(a => a.NoQuotes == true)));
                 }
                 else
                 {
@@ -48,7 +49,7 @@ namespace WowPacketParser.SQL
                     foreach (Row<T> condition in _conditions)
                     {
                         object value = field.Item2.GetValue(condition.Data);
-                        whereClause.Append(SQLUtil.ToSQLValue(value));
+                        whereClause.Append(SQLUtil.ToSQLValue(value, noQuotes: field.Item3.Any(a => a.NoQuotes == true)));
 
                         if (!string.IsNullOrEmpty(condition.Comment))
                             whereClause.Append(" /*" + condition.Comment + "*/");
@@ -86,7 +87,7 @@ namespace WowPacketParser.SQL
                         whereClause.Append(field.Item1);
 
                         whereClause.Append("=");
-                        whereClause.Append(SQLUtil.ToSQLValue(value));
+                        whereClause.Append(SQLUtil.ToSQLValue(value, noQuotes: field.Item3.Any(a => a.NoQuotes == true)));
                         whereClause.Append(" AND ");
                     }
 
@@ -117,7 +118,7 @@ namespace WowPacketParser.SQL
                          field.Item3.Any(a => !a.IsPrimaryKey)))
                         continue;
 
-                    whereCondition.Add(field.Item1, SQLUtil.ToSQLValue(value));
+                    whereCondition.Add(field.Item1, SQLUtil.ToSQLValue(value, noQuotes: field.Item3.Any(a => a.NoQuotes == true)));
                 }
 
                 if (!whereCondition.IsEmpty)
