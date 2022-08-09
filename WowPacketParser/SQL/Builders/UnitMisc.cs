@@ -459,7 +459,7 @@ namespace WowPacketParser.SQL.Builders
             var textInsert = new SQLInsert<NpcText925>(textRows, false);
             result.Append(textInsert.Build());
             result.Append('\n');
-            var gossipDelete = new SQLDelete<GossipMenu925>(Tuple.Create("@NPCTEXTID+0", "@NPCTEXTID+" + (count - 1)));
+            var gossipDelete = new SQLDelete<GossipMenu925>(gossipRows);
             result.Append(gossipDelete.Build());
             var gossipInsert = new SQLInsert<GossipMenu925>(gossipRows, false);
             result.Append(gossipInsert.Build());
