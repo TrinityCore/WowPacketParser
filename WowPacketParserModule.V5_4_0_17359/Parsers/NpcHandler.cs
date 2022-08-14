@@ -85,7 +85,7 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             var guidBytes = new byte[8];
 
             uint menuId = packetGossip.MenuId = packet.ReadUInt32("Menu Id");
-            packet.ReadUInt32("Friendship Faction");
+            uint friendshipFactionID = packet.ReadUInt32("Friendship Faction");
             uint textId = packetGossip.TextId = packet.ReadUInt32("Text Id");
             packet.StartBitStream(guidBytes, 0, 1);
             uint amountOfOptions = packet.ReadBits("Amount of Options", 20);
@@ -178,6 +178,9 @@ namespace WowPacketParserModule.V5_4_0_17359.Parsers
             }
 
             Storage.Gossips.Add(gossip, packet.TimeSpan);
+
+            CoreParsers.NpcHandler.AddGossipAddon(packetGossip.MenuId, (int)friendshipFactionID, guid, packet.TimeSpan);
+
             CoreParsers.NpcHandler.UpdateLastGossipOptionActionMessage(packet.TimeSpan, menuId);
 
             packet.AddSniffData(StoreNameType.Gossip, (int)menuId, guid.GetEntry().ToString(CultureInfo.InvariantCulture));

@@ -64,7 +64,8 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             int menuId = packet.ReadInt32("GossipID");
             gossip.MenuID = packetGossip.MenuId = (uint)menuId;
 
-            packet.ReadInt32("FriendshipFactionID");
+            int friendshipFactionID = packet.ReadInt32("FriendshipFactionID");
+            CoreParsers.NpcHandler.AddGossipAddon(packetGossip.MenuId, friendshipFactionID, guid, packet.TimeSpan);
 
             gossip.TextID = packetGossip.TextId = (uint)packet.ReadInt32("TextID");
 

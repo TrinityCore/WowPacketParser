@@ -476,7 +476,14 @@ namespace WowPacketParser.SQL.Builders
             if (!Storage.Gossips.IsEmpty() && Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu))
             {
                 result += SQLUtil.Compare(Storage.Gossips, SQLDatabase.Get(Storage.Gossips),
-                    t => StoreGetters.GetName(StoreNameType.Unit, (int)t.ObjectEntry)); // BUG: GOs can send gossips too
+                    t => StoreGetters.GetName((t.ObjectType == ObjectType.GameObject ? StoreNameType.GameObject : StoreNameType.Unit), (int)t.ObjectEntry));
+            }
+
+            // `gossip_menu_addon`
+            if (Settings.TargetedDatabase > TargetedDatabase.Cataclysm && !Storage.GossipMenuAddons.IsEmpty() && Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu_addon))
+            {
+                result += '\n' + SQLUtil.Compare(Storage.GossipMenuAddons, SQLDatabase.Get(Storage.GossipMenuAddons),
+                    t => StoreGetters.GetName((t.ObjectType == ObjectType.GameObject ? StoreNameType.GameObject : StoreNameType.Unit), (int)t.ObjectEntry));
             }
 
             // `gossip_menu_option`
