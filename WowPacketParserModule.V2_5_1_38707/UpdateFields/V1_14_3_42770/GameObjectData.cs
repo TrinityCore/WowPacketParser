@@ -5,7 +5,7 @@ using WowPacketParser.Store.Objects.UpdateFields;
 
 namespace WowPacketParserModule.V2_5_1_38707.UpdateFields.V1_14_3_42770
 {
-    public class GameObjectData : IGameObjectData
+    public class GameObjectData : IMutableGameObjectData
     {
         public System.Nullable<int> DisplayID { get; set; }
         public System.Nullable<uint> SpellVisualID { get; set; }
@@ -16,7 +16,7 @@ namespace WowPacketParserModule.V2_5_1_38707.UpdateFields.V1_14_3_42770
         public WowGuid CreatedBy { get; set; }
         public WowGuid GuildGUID { get; set; }
         public System.Nullable<uint> Flags { get; set; }
-        public uint DynamicFlags { get; set; }
+        public System.Nullable<uint> DynamicFlags { get; set; }
         public Quaternion? ParentRotation { get; set; }
         public System.Nullable<int> FactionTemplate { get; set; }
         public System.Nullable<int> Level { get; set; }
@@ -25,9 +25,7 @@ namespace WowPacketParserModule.V2_5_1_38707.UpdateFields.V1_14_3_42770
         public System.Nullable<byte> PercentHealth { get; set; }
         public System.Nullable<uint> ArtKit { get; set; }
         public System.Nullable<uint> CustomParam { get; set; }
-        public DynamicUpdateField<int> EnableDoodadSets { get; } = new DynamicUpdateField<int>();
-
-        public IGameObjectData Clone() { return (IGameObjectData)MemberwiseClone(); }
+        public DynamicUpdateField<System.Nullable<int>> EnableDoodadSets { get; } = new DynamicUpdateField<System.Nullable<int>>();
     }
 }
 
