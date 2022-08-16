@@ -5,7 +5,7 @@ using WowPacketParser.Store.Objects.UpdateFields;
 
 namespace WowPacketParserModule.V2_5_1_38707.UpdateFields.V1_14_3_42770
 {
-    public class ObjectData : IObjectData
+    public class ObjectData : IMutableObjectData
     {
         public System.Nullable<int> EntryID { get; set; }
         public System.Nullable<uint> DynamicFlags { get; set; }
