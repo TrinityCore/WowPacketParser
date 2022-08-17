@@ -32,6 +32,7 @@
         gameobject_template,
         gameobject_template_addon,
         gossip_menu,
+        gossip_menu_addon,
         gossip_menu_option,
         item_template,
         locales_quest,

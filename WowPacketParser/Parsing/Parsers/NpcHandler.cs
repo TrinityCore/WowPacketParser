@@ -114,6 +114,19 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        public static void AddGossipAddon(uint menuID, int friendshipFactionID, WowGuid guid, TimeSpan timeSpan)
+        {
+            if (friendshipFactionID > 0)
+            {
+                GossipMenuAddon gossipMenuAddon = new();
+                gossipMenuAddon.MenuID = menuID;
+                gossipMenuAddon.FriendshipFactionID = friendshipFactionID;
+                gossipMenuAddon.ObjectType = guid.GetObjectType();
+                gossipMenuAddon.ObjectEntry = guid.GetEntry();
+                Storage.GossipMenuAddons.Add(gossipMenuAddon, timeSpan);
+            }
+        }
+
         [Parser(Opcode.SMSG_GOSSIP_POI)]
         public static void HandleGossipPoi(Packet packet)
         {
@@ -574,7 +587,11 @@ namespace WowPacketParser.Parsing.Parsers
             gossip.MenuID = packetGossip.MenuId = menuId;
 
             if (ClientVersion.AddedInVersion(ClientType.MistsOfPandaria))
-                packet.ReadUInt32("Friendship Faction");
+            {
+                uint friendshipFactionID = packet.ReadUInt32("Friendship Faction");
+                AddGossipAddon(packetGossip.MenuId, (int)friendshipFactionID, guid, packet.TimeSpan);
+
+            }
 
             gossip.TextID = packetGossip.TextId = packet.ReadUInt32("Text Id");
 
