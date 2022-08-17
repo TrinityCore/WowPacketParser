@@ -26,7 +26,8 @@ namespace WowPacketParser.SQL
         public static Dictionary<string, List<int>> BroadcastTexts { get; } = new Dictionary<string, List<int>>();
         public static Dictionary<string, List<int>> BroadcastText1s { get; } = new Dictionary<string, List<int>>();
         public static Dictionary<uint? /*CreatureId*/, List<CreatureEquipment>> CreatureEquipments { get; } = new();
-        public static Dictionary<uint /*broadcastText*/, List<uint> /*npc_text ids*/> NPCTexts { get; } = new();
+        public static Dictionary<uint /*broadcastText*/, List<uint> /*npc_text ids*/> BroadcastToNPCTexts { get; } = new();
+        public static Dictionary<int /*menuID*/, List<uint> /*npc_text ids*/> GossipMenuToNPCTexts { get; } = new();
         public static List<POIData> POIs { get; } = new List<POIData>();
 
         private static readonly StoreNameType[] ObjectTypes =
@@ -108,6 +109,7 @@ namespace WowPacketParser.SQL
             LoadPointsOfinterest();
             LoadCreatureEquipment();
             LoadNPCTexts();
+            LoadGossipMenuNPCTexts();
             LoadNameData();
 
             var endTime = DateTime.Now;
@@ -288,11 +290,35 @@ namespace WowPacketParser.SQL
                         for (int i = 1; i < 9; i++)
                         {
                             var broadcastTextId = reader.GetUInt32(i);
-                            if (NPCTexts.TryGetValue(broadcastTextId, out var npcTextList))
+                            if (BroadcastToNPCTexts.TryGetValue(broadcastTextId, out var npcTextList))
                                 npcTextList.Add(npcTextId);
                             else
-                                NPCTexts.Add(broadcastTextId, new List<uint> { npcTextId });
+                                BroadcastToNPCTexts.Add(broadcastTextId, new List<uint> { npcTextId });
                         }
+                    }
+                }
+            }
+        }
+
+        private static void LoadGossipMenuNPCTexts()
+        {
+            string columns = "MenuID, TextID";
+            string query = $"SELECT {columns} FROM {Settings.TDBDatabase}.gossip_menu";
+
+            using (var command = SQLConnector.CreateCommand(query))
+            {
+                if (command == null)
+                    return;
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var menuId = reader.GetInt32(0);
+                        var npcTextId = reader.GetUInt32(1);
+                        if (GossipMenuToNPCTexts.TryGetValue(menuId, out var list))
+                            list.Add(npcTextId);
+                        else
+                            GossipMenuToNPCTexts.Add(menuId, new List<uint> { npcTextId });
                     }
                 }
             }
@@ -405,6 +431,16 @@ namespace WowPacketParser.SQL
             }
 
             return result;
+        }
+
+        public static uint GetNPCTextIDByMenuIDAndBroadcastText(int menuId, uint broadcastTextID)
+        {
+            if (!BroadcastToNPCTexts.TryGetValue(broadcastTextID, out var npcTextsByBroadcast))
+                return 0;
+            if (!GossipMenuToNPCTexts.TryGetValue(menuId, out var npcTextsByMenuId))
+                return npcTextsByBroadcast[0];
+
+            return npcTextsByBroadcast.FirstOrDefault(n => npcTextsByMenuId.Contains(n));
         }
     }
 }

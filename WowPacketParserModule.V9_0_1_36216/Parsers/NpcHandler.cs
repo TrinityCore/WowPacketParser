@@ -122,19 +122,18 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
 
             var broadcastTextID = (uint)packet.ReadInt32("BroadcastTextID");
 
-            if (SQLDatabase.NPCTexts.TryGetValue(broadcastTextID, out var npcTextId))
+            var npcTextId = SQLDatabase.GetNPCTextIDByMenuIDAndBroadcastText(menuId, broadcastTextID);
+            if (npcTextId != 0)
             {
                 GossipMenu gossip = new();
                 gossip.MenuID = packetGossip.MenuId;
-                gossip.TextID = packetGossip.TextId = npcTextId[0];
+                gossip.TextID = packetGossip.TextId = npcTextId;
                 gossip.ObjectType = guid.GetObjectType();
                 gossip.ObjectEntry = guid.GetEntry();
                 Storage.Gossips.Add(gossip, packet.TimeSpan);
             }
             else
-            {
                 AddBroadcastTextToGossip(packetGossip.MenuId, broadcastTextID, guid);
-            }
 
             int optionsCount = packet.ReadInt32("GossipOptionsCount");
             int questsCount = packet.ReadInt32("GossipQuestsCount");
