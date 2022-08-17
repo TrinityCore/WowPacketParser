@@ -10,7 +10,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("MenuID", true)]
         public uint? MenuID;
 
-        [DBFieldName("FriendshipFactionID", true)]
+        [DBFieldName("FriendshipFactionID")]
         public int? FriendshipFactionID;
 
         [DBFieldName("VerifiedBuild")]
