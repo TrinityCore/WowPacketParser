@@ -13,7 +13,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadInt32<ItemId>("ItemID");
             packet.ReadUInt32("Quantity");
             if (packet.ReadBit())
-                ReadAddonInfo(packet, "TaintedBy");
+                V8_0_1_27101.Parsers.AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
         }
 
         [Parser(Opcode.SMSG_AUCTION_GET_COMMODITY_QUOTE_RESULT)]
@@ -40,19 +40,20 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadInt64("QuoteDuration");
         }
 
-        public static void ReadAddonInfo(Packet packet, params object[] indexes)
+        [Parser(Opcode.CMSG_AUCTION_REMOVE_ITEM)]
+        public static void HandleAuctionRemoveItem(Packet packet)
         {
-            packet.ResetBitReader();
+            packet.ReadPackedGuid128("Auctioneer");
+            packet.ReadInt32("AuctionID");
 
-            var nameLength = (int)packet.ReadBits(10);
-            var versionLength = (int)packet.ReadBits(10);
-            packet.ReadBit("Loaded", indexes);
-            packet.ReadBit("Disabled", indexes);
-            if (nameLength > 1)
-                packet.ReadDynamicString("Name", nameLength - 1, indexes);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_7_45114))
+                packet.ReadInt32<ItemId>("ItemID");
 
-            if (versionLength > 1)
-                packet.ReadDynamicString("Version", versionLength - 1, indexes);
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_3_0_33062))
+            {
+                if (packet.ReadBit())
+                    V8_0_1_27101.Parsers.AddonHandler.ReadAddOnInfo(packet, "TaintedBy");
+            }
         }
     }
 }

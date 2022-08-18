@@ -34,6 +34,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadInt32("TargetContentTuningID", idx);
             }
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_7_45114))
+                packet.ReadInt32("Unused927", idx);
+
             packet.ReadBits("Type", 4, idx);
 
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V9_0_2_36639))

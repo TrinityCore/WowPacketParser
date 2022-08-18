@@ -17,6 +17,8 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
             packet.ReadPackedGuid128("PartyGUID");
             packet.ReadInt32("SequenceNum");
             packet.ReadPackedGuid128("LeaderGUID");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_7_45114))
+                packet.ReadByte("LeaderFactionGroup");
 
             var playerCount = packet.ReadUInt32("PlayerListCount");
             var hasLFG = packet.ReadBit("HasLfgInfo");

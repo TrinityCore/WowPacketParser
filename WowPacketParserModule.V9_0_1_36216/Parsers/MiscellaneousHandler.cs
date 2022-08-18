@@ -43,6 +43,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 var gameRuleValuesCount = packet.ReadUInt32("GameRuleValuesCount");
                 packet.ReadInt16("MaxPlayerNameQueriesPerPacket");
 
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_7_45114))
+                    packet.ReadInt16("PlayerNameQueryTelemetryInterval");
+
                 for (var i = 0; i < gameRuleValuesCount; ++i)
                     ReadGameRuleValuePair(packet, "GameRuleValues");
             }
@@ -179,6 +182,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
                 packet.ReadInt32("GameRuleUnknown1");
                 gameRuleValuesCount = packet.ReadUInt32("GameRuleValuesCount");
                 packet.ReadInt16("MaxPlayerNameQueriesPerPacket");
+
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_7_45114))
+                    packet.ReadInt16("PlayerNameQueryTelemetryInterval");
             }
 
             for (int i = 0; i < liveRegionCharacterCopySourceRegionsCount; i++)
@@ -225,7 +231,10 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
         public static void HandleWorldServerInfo(Packet packet)
         {
             CoreParsers.MovementHandler.CurrentDifficultyID = packet.ReadUInt32<DifficultyId>("DifficultyID");
-            packet.ReadByte("IsTournamentRealm");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_7_45114))
+                packet.ReadBit("IsTournamentRealm");
+            else
+                packet.ReadByte("IsTournamentRealm");
 
             packet.ReadBit("XRealmPvpAlert");
             packet.ReadBit("BlockExitingLoadingScreen");
