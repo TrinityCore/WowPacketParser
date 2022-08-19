@@ -37,12 +37,12 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
 
                 packet.ReadPackedGuid128("Guid", i);
 
-                packet.ReadByte("Status", i);
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V9_2_7_45114))
+                    packet.ReadByte("Status", i);
                 packet.ReadByte("Subgroup", i);
                 packet.ReadByte("Flags", i);
                 packet.ReadByte("RolesAssigned", i);
-                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V9_2_7_45114))
-                    packet.ReadByteE<Class>("Class", i);
+                packet.ReadByteE<Class>("Class", i);
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_5_43903))
                     packet.ReadByte("FactionGroup", i);
 
