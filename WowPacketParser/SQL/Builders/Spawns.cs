@@ -149,6 +149,12 @@ namespace WowPacketParser.SQL.Builders
                     row.Data.Orientation = creature.Movement.Transport.Offset.O;
                 }
 
+                // Recalculate PositionZ if creature is hovering
+                if (creature.UnitData.HoverHeight > 0)
+                    if ((ClientVersion.Expansion == ClientType.WrathOfTheLichKing && creature.Movement.Flags.HasAnyFlag(MovementFlag.Hover)) ||
+                        (ClientVersion.Expansion >= ClientType.Cataclysm && creature.Movement.Flags.HasAnyFlag(Enums.v4.MovementFlag.Hover)))
+                        row.Data.PositionZ -= creature.UnitData.HoverHeight;
+
                 row.Data.SpawnTimeSecs = creature.GetDefaultSpawnTime(creature.DifficultyID);
                 row.Data.WanderDistance = wanderDistance;
                 row.Data.MovementType = movementType;
