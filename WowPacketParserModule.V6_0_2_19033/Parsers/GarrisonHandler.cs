@@ -712,5 +712,17 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadInt32("Result");
             packet.ReadInt32("Destroyed");
         }
+
+        [Parser(Opcode.SMSG_GARRISON_OPEN_TALENT_NPC)]
+        public static void HandleGarrisonOpenTalentNPC(Packet packet)
+        {
+            packet.ReadPackedGuid128("NpcGUID");
+
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_5_24330))
+            {
+                packet.ReadInt32("GarrTalentTreeID");
+                packet.ReadInt32("FriendshipFactionID");
+            }
+        }
     }
 }
