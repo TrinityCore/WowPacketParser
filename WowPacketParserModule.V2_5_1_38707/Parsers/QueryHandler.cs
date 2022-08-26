@@ -206,6 +206,7 @@ namespace WowPacketParserModule.V2_5_1_38835.Parsers
         [HasSniffData]
         [Parser(Opcode.SMSG_QUERY_GAME_OBJECT_RESPONSE, ClientBranch.Classic, ClientVersionBuild.V1_14_1_40666)]
         [Parser(Opcode.SMSG_QUERY_GAME_OBJECT_RESPONSE, ClientBranch.TBC, ClientVersionBuild.V2_5_3_41812)]
+        [Parser(Opcode.SMSG_QUERY_GAME_OBJECT_RESPONSE, ClientBranch.WotLK, ClientVersionBuild.V3_4_0_45166)]
         public static void HandleGameObjectQueryResponse1141(Packet packet)
         {
             var entry = packet.ReadEntry("Entry");

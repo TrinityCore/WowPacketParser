@@ -9,7 +9,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         public static void ReadAuraInfos(Packet packet, params object[] index)
         {
             packet.ReadInt32<SpellId>("Aura", index);
-            if (ClientVersion.AddedInVersion(ClientType.Shadowlands) || ClientVersion.IsBurningCrusadeClassicClientVersionBuild(ClientVersion.Build))
+            if (ClientVersion.AddedInVersion(ClientType.Shadowlands) ||
+                ClientVersion.IsBurningCrusadeClassicClientVersionBuild(ClientVersion.Build) ||
+                ClientVersion.IsWotLKClientVersionBuild(ClientVersion.Build))
                 packet.ReadUInt16("Flags", index);
             else
                 packet.ReadByte("Flags", index);
@@ -69,7 +71,9 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 
             V6_0_2_19033.Parsers.GroupHandler.ReadPhaseInfos(packet, "Phase");
 
-            if (ClientVersion.AddedInVersion(ClientType.Shadowlands) || ClientVersion.IsBurningCrusadeClassicClientVersionBuild(ClientVersion.Build))
+            if (ClientVersion.AddedInVersion(ClientType.Shadowlands) ||
+                ClientVersion.IsBurningCrusadeClassicClientVersionBuild(ClientVersion.Build) ||
+                ClientVersion.IsWotLKClientVersionBuild(ClientVersion.Build))
             {
                 packet.ReadUInt32("ContentTuningConditionMask", "CTROptions");
                 packet.ReadInt32("Unused901", "CTROptions");

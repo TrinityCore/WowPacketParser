@@ -166,7 +166,7 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                 packet.ReadInt32("HeirFlags", index);
             }
             else
-                objType = ObjectTypeConverter.Convert(packet.ReadByteE<ObjectType801>("Object Type", index));               
+                objType = ObjectTypeConverter.Convert(packet.ReadByteE<ObjectType801>("Object Type", index));
 
             WoWObject obj = CoreParsers.UpdateHandler.CreateObject(objType, guid, map);
 
@@ -303,7 +303,8 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                 packet.ReadPackedGuid128("MoverGUID", index);
 
                 if (ClientVersion.AddedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_14_1_40666) ||
-                    ClientVersion.AddedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_3_41812))
+                    ClientVersion.AddedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_3_41812) ||
+                    ClientVersion.AddedInVersion(ClientBranch.WotLK, ClientVersionBuild.V3_4_0_45166))
                 {
                     moveInfo.Flags = (uint)packet.ReadUInt32E<MovementFlag>("Movement Flags", index);
                     moveInfo.Flags2 = (uint)packet.ReadUInt32E<MovementFlag2>("Movement Flags 2", index);
@@ -324,7 +325,8 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                     packet.ReadPackedGuid128("RemoveForcesIDs", index, i);
 
                 if (ClientVersion.RemovedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_14_1_40666) ||
-                    ClientVersion.RemovedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_3_41812))
+                    ClientVersion.RemovedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_3_41812) ||
+                    ClientVersion.RemovedInVersion(ClientBranch.WotLK, ClientVersionBuild.V3_4_0_45166))
                 {
                     moveInfo.Flags = (uint)packet.ReadBitsE<MovementFlag>("Movement Flags", 30, index);
                     moveInfo.Flags2 = (uint)packet.ReadBitsE<MovementFlag2>("Extra Movement Flags", 18, index);
@@ -336,7 +338,8 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                 packet.ReadBit("HeightChangeFailed", index);
                 packet.ReadBit("RemoteTimeValid", index);
                 var hasInertia = (ClientVersion.AddedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_14_1_40666) ||
-                                  ClientVersion.AddedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_3_41812)) && 
+                                  ClientVersion.AddedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_3_41812) ||
+                                  ClientVersion.AddedInVersion(ClientBranch.WotLK, ClientVersionBuild.V3_4_0_45166)) &&
                                   packet.ReadBit("Has Inertia", index);
 
                 if (hasTransport)

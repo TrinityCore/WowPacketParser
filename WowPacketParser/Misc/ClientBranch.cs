@@ -11,5 +11,6 @@ namespace WowPacketParser.Misc
         Retail  = 0,
         Classic = 1,
         TBC     = 2,
+        WotLK   = 3,
     }
 }

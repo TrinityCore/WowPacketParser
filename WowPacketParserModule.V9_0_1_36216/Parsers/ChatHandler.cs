@@ -102,12 +102,15 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadInt32E<EmoteTextType>("EmoteID");
             packet.ReadInt32("SoundIndex");
 
-            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503) || ClientVersion.IsBurningCrusadeClassicClientVersionBuild(ClientVersion.Build))
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_5_37503) ||
+                ClientVersion.IsBurningCrusadeClassicClientVersionBuild(ClientVersion.Build) ||
+                ClientVersion.IsWotLKClientVersionBuild(ClientVersion.Build))
             {
                 var count = packet.ReadUInt32("SpellVisualKitCount");
                 if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V9_2_0_42423) ||
                     ClientVersion.AddedInVersion(ClientBranch.Classic, ClientVersionBuild.V1_14_2_42065) ||
-                    ClientVersion.AddedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_3_41812))
+                    ClientVersion.AddedInVersion(ClientBranch.TBC, ClientVersionBuild.V2_5_3_41812) ||
+                    ClientVersion.AddedInVersion(ClientBranch.WotLK, ClientVersionBuild.V3_4_0_45166))
                     packet.ReadInt32("SequenceVariation");
 
                 for (var i = 0; i < count; ++i)

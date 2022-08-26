@@ -147,7 +147,8 @@ namespace WowPacketParserModule.Substructures
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_5_1_38835) &&
                (ClientVersion.IsBurningCrusadeClassicClientVersionBuild(ClientVersion.Build) ||
-                ClientVersion.IsClassicSeasonOfMasteryClientVersionBuild(ClientVersion.Build)))
+                ClientVersion.IsClassicSeasonOfMasteryClientVersionBuild(ClientVersion.Build) ||
+                ClientVersion.IsWotLKClientVersionBuild(ClientVersion.Build)))
                 return ReadItemInstance251(packet, indexes);
             if (ClientVersion.RemovedInVersion(ClientVersionBuild.V8_1_5_29683) || ClientVersion.IsClassicVanillaClientVersionBuild(ClientVersion.Build))
                 return ReadItemInstance602(packet, indexes);
