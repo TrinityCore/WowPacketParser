@@ -101,7 +101,21 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             packet.AddSniffData(StoreNameType.Unit, entry.Key, "QUERY_RESPONSE");
 
-            Storage.CreatureTemplates.Add(creature.Entry.Value, creature, packet.TimeSpan);
+            if (ClientLocale.PacketLocale != LocaleConstant.enUS)
+            {
+                CreatureTemplateLocale localesCreature = new CreatureTemplateLocale
+                {
+                    ID = (uint)entry.Key,
+                    Name = creature.Name,
+                    NameAlt = creature.FemaleName,
+                    Title = creature.SubName,
+                    TitleAlt = creature.TitleAlt
+                };
+
+                Storage.LocalesCreatures.Add(localesCreature, packet.TimeSpan);
+            }
+            else
+                Storage.CreatureTemplates.Add(creature.Entry.Value, creature, packet.TimeSpan);
 
             var objectName = new ObjectName
             {
