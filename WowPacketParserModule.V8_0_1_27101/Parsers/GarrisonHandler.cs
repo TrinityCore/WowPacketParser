@@ -88,5 +88,23 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonFollower(packet, "Follower", i, j);
             }
         }
+
+        [Parser(Opcode.SMSG_GARRISON_RESEARCH_TALENT_RESULT)]
+        public static void HandleGarrisonResearchTalentResult(Packet packet)
+        {
+            packet.ReadInt32("Result"); // if > 0 entire packet is unhandled
+            packet.ReadInt32E<GarrisonType>("GarrTypeID");
+            packet.ReadBit("DontAlert");
+            V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonTalents(packet, "Talent");
+        }
+
+        [Parser(Opcode.SMSG_GARRISON_TALENT_COMPLETED)]
+        public static void HandleGarrisonTalentCompleted(Packet packet)
+        {
+            packet.ReadInt32E<GarrisonType>("GarrTypeID");
+            packet.ReadInt32("GarrTalentID");
+            packet.ReadInt32("GarrTalentRank");
+            packet.ReadInt32("Flags");
+        }
     }
 }
