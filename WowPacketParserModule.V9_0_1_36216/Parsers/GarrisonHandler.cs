@@ -390,5 +390,14 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadInt32E<GarrisonTalentFlag>("Flags");
             packet.ReadBit("IsTemporary");
         }
+
+        [Parser(Opcode.SMSG_GARRISON_RESEARCH_TALENT_RESULT)]
+        public static void HandleGarrisonResearchTalentResult(Packet packet)
+        {
+            packet.ReadInt32("Result"); // if > 0 entire packet is unhandled
+            packet.ReadInt32E<GarrisonType>("GarrTypeID");
+            packet.ReadBit("DontAlert");
+            ReadGarrisonTalents(packet, "Talent");
+        }
     }
 }
