@@ -556,6 +556,7 @@ namespace WowPacketParser.Enums
         V3_4_0_45166 = 45166, // ptr / beta
         V3_4_0_45189 = 45189, // ptr / beta
         V3_4_0_45264 = 45264, // ptr / beta
+        V3_4_0_45327 = 45327, // ptr / beta
 
         // Battle.net - should probably not mix this but oh well
         BattleNetV37165 = 37165,
