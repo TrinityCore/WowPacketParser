@@ -735,6 +735,9 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
             {
                 packet.ResetBitReader();
                 packet.ReadBit("ReplaceActive", index);
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V3_4_0_45166))
+                    packet.ReadBit("StopAnimKits", index);
+
                 var replaceObject = packet.ReadBit();
                 if (replaceObject)
                     packet.ReadPackedGuid128("ReplaceObject", index);
@@ -763,7 +766,7 @@ namespace WowPacketParserModule.V2_5_1_38707.Parsers
                 packet.ResetBitReader();
                 var hasSceneInstanceIDs = packet.ReadBit("ScenePendingInstances", index);
                 var hasRuneState = packet.ReadBit("Runes", index);
-                var hasActionButtons = packet.ReadBit("Unk1132", index);
+                var hasActionButtons = packet.ReadBit("HasActionButtons", index);
 
                 if (hasSceneInstanceIDs)
                 {

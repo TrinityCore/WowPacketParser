@@ -47,7 +47,6 @@
 
   <ItemGroup>
     <Folder Include="UpdateFields\" />
-    <Folder Include="Parsers\" />
   </ItemGroup>
 
 </Project>
