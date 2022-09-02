@@ -14,6 +14,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadInt32("Rule", indexes);
             packet.ReadInt32("Value", indexes);
         }
+
         [Parser(Opcode.SMSG_FEATURE_SYSTEM_STATUS_GLUE_SCREEN)]
         public static void HandleFeatureSystemStatusGlueScreen(Packet packet)
         {
@@ -73,6 +74,13 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
 
             for (var i = 0; i < gameRuleValuesCount; ++i)
                 ReadGameRuleValuePair(packet, "GameRuleValues");
+        }
+
+        [Parser(Opcode.SMSG_TRIGGER_CINEMATIC)]
+        [Parser(Opcode.SMSG_TRIGGER_MOVIE)]
+        public static void HandleTriggerSequence(Packet packet)
+        {
+            packet.ReadInt32("CinematicID");
         }
     }
 }
