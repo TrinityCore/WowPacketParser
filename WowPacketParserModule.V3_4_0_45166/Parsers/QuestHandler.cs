@@ -31,7 +31,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             quest.QuestScalingFactionGroup = packet.ReadInt32("QuestScalingFactionGroup");
             quest.QuestMaxScalingLevel = packet.ReadInt32("QuestMaxScalingLevel");
             quest.QuestPackageID = (uint)packet.ReadInt32("QuestPackageID");
-            quest.MinLevel = packet.ReadInt32("QuestMinlevel");
+            quest.MinLevel = packet.ReadInt32("QuestMinLevel");
             quest.QuestSortID = (QuestSort)packet.ReadInt32("QuestSortID");
             quest.QuestInfoID = packet.ReadInt32E<QuestInfo>("QuestInfoID");
             quest.SuggestedGroupNum = (uint)packet.ReadInt32("SuggestedGroupNum");
@@ -145,7 +145,6 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             uint questTurnTextWindowLen = packet.ReadBits("questTurnTextWindowLen", 10);
             uint questTurnTargetNameLen = packet.ReadBits("questTurnTargetNameLen", 8);
             uint questCompletionLogLen = packet.ReadBits("questCompletionLogLen", 11);
-            // packet.ReadBit("ReadyForTranslation");
 
             for (uint i = 0; i < objectiveCount; ++i)
             {
