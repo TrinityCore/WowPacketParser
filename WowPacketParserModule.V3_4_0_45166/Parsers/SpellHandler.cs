@@ -157,5 +157,16 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         {
             ReadSpellCastData(packet, "Cast");
         }
+
+        [Parser(Opcode.SMSG_SPELL_GO)]
+        public static void HandleSpellGo(Packet packet)
+        {
+            ReadSpellCastData(packet, "Cast");
+
+            packet.ResetBitReader();
+            var hasLog = packet.ReadBit();
+            if (hasLog)
+                V8_0_1_27101.Parsers.SpellHandler.ReadSpellCastLogData(packet, "LogData");
+        }
     }
 }
