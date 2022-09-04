@@ -108,8 +108,12 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         public static void ReadSpellTargetData(Packet packet, PacketSpellData packetSpellData, uint spellID, params object[] idx)
         {
             packet.ResetBitReader();
-
-            packet.ReadBitsE<TargetFlag>("Flags", ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683) ? 26 : 25, idx);
+            int bitCount = 25;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_5_29683))
+                bitCount = 26;
+            if(ClientVersion.IsWotLKClientVersionBuild(ClientVersionBuild.V3_4_0_45166))
+                bitCount = 27;
+            packet.ReadBitsE<TargetFlag>("Flags", bitCount, idx);
             var hasSrcLoc = packet.ReadBit("HasSrcLocation", idx);
             var hasDstLoc = packet.ReadBit("HasDstLocation", idx);
             var hasOrient = packet.ReadBit("HasOrientation", idx);
