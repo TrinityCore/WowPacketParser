@@ -76,5 +76,17 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         {
             ReadSpellCastRequest(packet, "Cast");
         }
+
+        [Parser(Opcode.SMSG_CAST_FAILED)]
+        public static void HandleCastFailed(Packet packet)
+        {
+            var spellFail = packet.Holder.SpellCastFailed = new();
+            spellFail.CastGuid = packet.ReadPackedGuid128("CastID");
+            spellFail.Spell = (uint)packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32("SpellXSpellVisual");
+            spellFail.Success = packet.ReadInt32("Reason") == 0;
+            packet.ReadInt32("FailedArg1");
+            packet.ReadInt32("FailedArg2");
+        }
     }
 }
