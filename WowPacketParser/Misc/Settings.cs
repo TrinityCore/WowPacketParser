@@ -1,68 +1,232 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
+using System.Configuration;
 using WowPacketParser.Enums;
 
 namespace WowPacketParser.Misc
 {
-    public static class Settings
+    public class Settings
     {
-        private static readonly Configuration Conf = new Configuration();
+        static Settings _instance;
+        public static Settings Instance
+        {
+            get => _instance;
+        }
+        private Settings() { }
+        public void Initialize(IConfiguration Configuration = null)
+        {
+            _instance = new Settings()
+            {
+                _configuration = Configuration,
+                Conf = new Configuration(_configuration)
+            };
+        }
+    
 
-        public static readonly string[] Filters = Conf.GetStringList("Filters", new string[0]);
-        public static readonly string[] IgnoreFilters = Conf.GetStringList("IgnoreFilters", new string[0]);
-        public static readonly string[] IgnoreByEntryFilters = Conf.GetStringList("IgnoreByEntryFilters", new string[0]);
-        public static readonly string[] MapFilters = Conf.GetStringList("MapFilters", new string[0]);
-        public static readonly string[] AreaFilters = Conf.GetStringList("AreaFilters", new string[0]);
-        public static readonly int FilterPacketsNum = Conf.GetInt("FilterPacketsNum", 0);
-        public static readonly ClientVersionBuild ClientBuild = Conf.GetEnum("ClientBuild", ClientVersionBuild.Zero);
-        public static readonly LocaleConstant ClientLocale = Conf.GetEnum("ClientLocale", LocaleConstant.enUS);
-        public static readonly TargetedDatabase TargetedDatabase = Conf.GetEnum("TargetedDatabase", TargetedDatabase.WrathOfTheLichKing);
-        public static readonly DumpFormatType DumpFormat = Conf.GetEnum("DumpFormat", DumpFormatType.Text);
-        public static readonly ulong SQLOutputFlag = GetSQLOutputFlag();
-        public static readonly bool SQLOrderByKey = Conf.GetBoolean("SqlOrderByKey", false);
-        public static readonly bool SaveTempSpawns = Conf.GetBoolean("SaveTempSpawns", true);
-        public static readonly bool SkipOnlyVerifiedBuildUpdateRows = Conf.GetBoolean("SkipOnlyVerifiedBuildUpdateRows", false);
-        public static readonly bool SkipRowsWithFallbackValues = Conf.GetBoolean("SkipRowsWithFallbackValues", true);
-        public static readonly bool IgnoreZeroValues = Conf.GetBoolean("IgnoreZeroValues", false);
-        public static readonly bool ForceInsertQueries = Conf.GetBoolean("ForceInsertQueries", false);
-        public static readonly bool RecalcDiscount = Conf.GetBoolean("RecalcDiscount", false);
-        public static readonly bool ForcePhaseZero = Conf.GetBoolean("ForcePhaseZero", false);
-        public static readonly string SQLFileName = Conf.GetString("SQLFileName", string.Empty);
-        public static readonly bool SplitSQLFile = Conf.GetBoolean("SplitSQLFile", false);
-        public static readonly bool ShowEndPrompt = Conf.GetBoolean("ShowEndPrompt", false);
-        public static readonly bool LogErrors = Conf.GetBoolean("LogErrors", false);
-        public static readonly bool LogPacketErrors = Conf.GetBoolean("LogPacketErrors", false);
-        public static readonly ParsedStatus OutputFlag = Conf.GetEnum("OutputFlag", ParsedStatus.All);
-        public static readonly bool DebugReads = Conf.GetBoolean("DebugReads", false);
-        public static readonly bool ParsingLog = Conf.GetBoolean("ParsingLog", false);
-        public static readonly bool DevMode = Conf.GetBoolean("DevMode", false);
-        public static readonly int Threads = Conf.GetInt("Threads", 8);
-        public static readonly bool ParseAllHotfixes = Conf.GetBoolean("ParseAllHotfixes", false);
+        private IConfiguration _configuration;
 
-        public static readonly bool SSHEnabled = Conf.GetBoolean("SSHEnabled", false);
-        public static readonly string SSHHost = Conf.GetString("SSHHost", "localhost");
-        public static readonly string SSHUsername = Conf.GetString("SSHUsername", string.Empty);
-        public static readonly string SSHPassword = Conf.GetString("SSHPassword", string.Empty);
-        public static readonly int SSHPort = Conf.GetInt("SSHPort", 22);
-        public static readonly int SSHLocalPort = Conf.GetInt("SSHLocalPort", 3307);
+        private Configuration Conf = new Configuration();
 
-        public static readonly bool DBEnabled = Conf.GetBoolean("DBEnabled", false);
-        public static readonly string Server = Conf.GetString("Server", "localhost");
-        public static readonly string Port = Conf.GetString("Port", "3306");
-        public static readonly string Username = Conf.GetString("Username", "root");
-        public static readonly string Password = Conf.GetString("Password", string.Empty);
-        public static readonly string WPPDatabase = Conf.GetString("WPPDatabase", "WPP");
-        public static readonly string TDBDatabase = Conf.GetString("TDBDatabase", "world");
-        public static readonly string HotfixesDatabase = Conf.GetString("HotfixesDatabase", "hotfixes");
-        public static readonly string CharacterSet = Conf.GetString("CharacterSet", "utf8");
+        public string[] Filters { get => Conf.GetStringList("Filters", new string[0]); }
+        public string[] IgnoreFilters
+        {
+            get => Conf.GetStringList("IgnoreFilters", new string[0]);
+        }
+        public string[] IgnoreByEntryFilters
+        {
+            get => Conf.GetStringList("IgnoreByEntryFilters", new string[0]);
+        }
+        public string[] MapFilters
+        {
+            get => Conf.GetStringList("MapFilters", new string[0]);
+        }
+        public string[] AreaFilters
+        {
+            get => Conf.GetStringList("AreaFilters", new string[0]);
+        }
+        public int FilterPacketsNum
+        {
+            get => Conf.GetInt("FilterPacketsNum", 0);
+        }
+        public ClientVersionBuild ClientBuild
+        {
+            get => Conf.GetEnum("ClientBuild", ClientVersionBuild.Zero);
+        }
+        public LocaleConstant ClientLocale
+        {
+            get => Conf.GetEnum("ClientLocale", LocaleConstant.enUS);
+        }
+        public TargetedDatabase TargetedDatabase
+        {
+            get => Conf.GetEnum("TargetedDatabase", TargetedDatabase.WrathOfTheLichKing);
+        }
+        public DumpFormatType DumpFormat
+        {
+            get => Conf.GetEnum("DumpFormat", DumpFormatType.Text);
+        }   
+        public ulong SQLOutputFlag { get => GetSQLOutputFlag(); }
+        public bool SQLOrderByKey
+        {
+            get => Conf.GetBoolean("SqlOrderByKey", false);
+        }
+        public bool SaveTempSpawns
+        {
+            get => Conf.GetBoolean("SaveTempSpawns", true);
+        }
+        public bool SkipOnlyVerifiedBuildUpdateRows
+        {
+            get => Conf.GetBoolean("SkipOnlyVerifiedBuildUpdateRows", false);
+        }
+        public bool SkipRowsWithFallbackValues
+        {
+            get => Conf.GetBoolean("SkipRowsWithFallbackValues", true);
+        }
+        public bool IgnoreZeroValues
+        {
+            get => Conf.GetBoolean("IgnoreZeroValues", false);
+        }
+        public bool ForceInsertQueries
+        {
+            get => Conf.GetBoolean("ForceInsertQueries", false);
+        }
+        public bool RecalcDiscount
+        {
+            get => Conf.GetBoolean("RecalcDiscount", false);
+        }
+        public bool ForcePhaseZero
+        {
+            get => Conf.GetBoolean("ForcePhaseZero", false);
+        }
+        public string SQLFileName
+        {
+            get => Conf.GetString("SQLFileName", string.Empty);
+        }
+        public bool SplitSQLFile
+        {
+            get => Conf.GetBoolean("SplitSQLFile", false);
+        }
+        public bool ShowEndPrompt
+        {
+            get => Conf.GetBoolean("ShowEndPrompt", false);
+        }
+        public bool LogErrors
+        {
+            get => Conf.GetBoolean("LogErrors", false);
+        }
+        public bool LogPacketErrors
+        {
+            get => Conf.GetBoolean("LogPacketErrors", false);
+        }
+        public ParsedStatus OutputFlag
+        {
+            get => Conf.GetEnum("OutputFlag", ParsedStatus.All);
+        }
+        public bool DebugReads
+        {
+            get => Conf.GetBoolean("DebugReads", false);
+        }
+        public bool ParsingLog
+        {
+            get => Conf.GetBoolean("ParsingLog", false);
+        }
+        public bool DevMode
+        {
+            get => Conf.GetBoolean("DevMode", false);
+        }
+        public int Threads
+        {
+            get => Conf.GetInt("Threads", 8);
+        }
+        public bool ParseAllHotfixes
+        {
+            get => Conf.GetBoolean("ParseAllHotfixes", false);
+        }
+
+        public bool SSHEnabled
+        {
+            get => Conf.GetBoolean("SSHEnabled", false);
+        }
+        public string SSHHost
+        {
+            get => Conf.GetString("SSHHost", "localhost");
+        }
+        public string SSHUsername
+        {
+            get => Conf.GetString("SSHUsername", string.Empty);
+        }
+        public string SSHPassword
+        {
+            get => Conf.GetString("SSHPassword", string.Empty);
+        }
+        public int SSHPort
+        {
+            get => Conf.GetInt("SSHPort", 22);
+        }
+        public int SSHLocalPort
+        {
+            get => Conf.GetInt("SSHLocalPort", 3307);
+        }
+
+        public bool DBEnabled
+        {
+            get => Conf.GetBoolean("DBEnabled", false);
+        }
+        public string Server
+        {
+            get => Conf.GetString("Server", "localhost");
+        }
+        public string Port
+        {
+            get => Conf.GetString("Port", "3306");
+        }
+        public string Username
+        {
+            get => Conf.GetString("Username", "root");
+        }
+        public string Password
+        {
+            get => Conf.GetString("Password", string.Empty);
+        }
+        public string WPPDatabase
+        {
+            get => Conf.GetString("WPPDatabase", "WPP");
+        }
+        public string TDBDatabase
+        {
+            get => Conf.GetString("TDBDatabase", "world");
+        }
+        public string HotfixesDatabase
+        {
+            get => Conf.GetString("HotfixesDatabase", "hotfixes");
+        }
+        public string CharacterSet
+        {
+            get => Conf.GetString("CharacterSet", "utf8");
+        }
 
         // DB2
-        public static readonly string DBCPath = Conf.GetString("DBCPath", $@"\dbc");
-        public static readonly string DBCLocale = Conf.GetString("DBCLocale", "enUS");
-        public static readonly string HotfixCachePath = Conf.GetString("HotfixCachePath", $@"\cache\DBCache.bin");
-        public static readonly bool UseDBC = Conf.GetBoolean("UseDBC", false);
-        public static readonly bool ParseSpellInfos = Conf.GetBoolean("ParseSpellInfos", false);
+        public string DBCPath
+        {
+            get => Conf.GetString("DBCPath", $@"\dbc");
+        }
+        public string DBCLocale
+        {
+            get => Conf.GetString("DBCLocale", "enUS");
+        }
+        public string HotfixCachePath
+        {
+            get => Conf.GetString("HotfixCachePath", $@"\cache\DBCache.bin");
+        }
+        public bool UseDBC
+        {
+            get => Conf.GetBoolean("UseDBC", false);
+        }
+        public bool ParseSpellInfos
+        {
+            get => Conf.GetBoolean("ParseSpellInfos", false);
+        }
 
-        private static ulong GetSQLOutputFlag()
+        private ulong GetSQLOutputFlag()
         {
             var names = Enum.GetNames(typeof(SQLOutput));
             var values = Enum.GetValues(typeof(SQLOutput));
@@ -78,14 +242,14 @@ namespace WowPacketParser.Misc
             return result;
         }
 
-        public static bool DumpFormatWithText()
+        public bool DumpFormatWithText()
         {
             return DumpFormat != DumpFormatType.SqlOnly &&
                    DumpFormat != DumpFormatType.SniffDataOnly &&
                    DumpFormat != DumpFormatType.UniversalProto;
         }
 
-        public static bool DumpFormatWithTextToFile()
+        public bool DumpFormatWithTextToFile()
         {
             return DumpFormat != DumpFormatType.SqlOnly &&
                    DumpFormat != DumpFormatType.SniffDataOnly &&
@@ -93,11 +257,21 @@ namespace WowPacketParser.Misc
                    DumpFormat != DumpFormatType.UniversalProtoWithText;
         }
 
-        public static bool DumpFormatWithSQL()
+        public bool DumpFormatWithSQL()
         {
             return DumpFormat == DumpFormatType.SniffDataOnly ||
                    DumpFormat == DumpFormatType.SqlOnly ||
                    DumpFormat == DumpFormatType.Text;
+        }
+
+        internal void Remove(string key)
+        {
+            Conf.Remove(key);
+        }
+
+        internal void Add(string key, string value)
+        {
+            Conf.Add(key,value);
         }
     }
 }

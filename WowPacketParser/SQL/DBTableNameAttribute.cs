@@ -51,7 +51,7 @@ namespace WowPacketParser.SQL
 
         public bool IsVisible()
         {
-            TargetedDatabase target = Settings.TargetedDatabase;
+            TargetedDatabase target = Settings.Instance.TargetedDatabase;
 
             if (_addedInVersion.HasValue)
                 if (_addedInVersion.Value < target)

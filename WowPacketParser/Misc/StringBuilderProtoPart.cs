@@ -23,7 +23,7 @@ namespace WowPacketParser.Misc
         {
             get
             {
-                if (Settings.DumpFormat == DumpFormatType.UniversalProtoWithText)
+                if (Settings.Instance.DumpFormat == DumpFormatType.UniversalProtoWithText)
                     return stringBuilder?.ToString(StartOffset, Length) ?? "";
                 return "";
             }

@@ -16,7 +16,7 @@ namespace WowPacketParser.Hotfix
         {
             for (var i = 0; i < Hashes.Count; ++i)
             {
-                if (Settings.ParseAllHotfixes == true)
+                if (Settings.Instance.ParseAllHotfixes == true)
                     return true;
 
                 var currentElement = Hashes[i];
@@ -30,7 +30,7 @@ namespace WowPacketParser.Hotfix
         {
             for (var i = 0; i < Hashes.Count; ++i)
             {
-                if (Settings.ParseAllHotfixes == true)
+                if (Settings.Instance.ParseAllHotfixes == true)
                     return true;
 
                 if (Hashes[i].Enabled)

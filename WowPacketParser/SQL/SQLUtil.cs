@@ -228,7 +228,7 @@ namespace WowPacketParser.SQL
 
             foreach (var elem1 in storeList)
             {
-                if (dbList != null && dbList.ContainsKey(elem1.Item1) && !Settings.ForceInsertQueries) // update
+                if (dbList != null && dbList.ContainsKey(elem1.Item1) && !Settings.Instance.ForceInsertQueries) // update
                 {
                     if (verBuildField != null)
                     {
@@ -350,7 +350,7 @@ namespace WowPacketParser.SQL
             var rowsIns = new List<SQLInsertRow>();
             var rowsUpd = new List<SQLUpdateRow>();
 
-            foreach (var elem1 in Settings.SQLOrderByKey ? dict1.OrderBy(blub => blub.Key).ToList() : dict1.ToList())
+            foreach (var elem1 in Settings.Instance.SQLOrderByKey ? dict1.OrderBy(blub => blub.Key).ToList() : dict1.ToList())
             {
                 if (dict2 != null && dict2.ContainsKey(elem1.Key)) // update
                 {
@@ -479,7 +479,7 @@ namespace WowPacketParser.SQL
             var rowsIns = new List<SQLInsertRow>();
             var rowsUpd = new List<SQLUpdateRow>();
 
-            foreach (var elem1 in Settings.SQLOrderByKey ? dict1.OrderBy(blub => blub.Key).ToList() : dict1.ToList())
+            foreach (var elem1 in Settings.Instance.SQLOrderByKey ? dict1.OrderBy(blub => blub.Key).ToList() : dict1.ToList())
             {
                 if (dict2 != null && dict2.ContainsKey(elem1.Key)) // update
                 {
@@ -630,7 +630,7 @@ namespace WowPacketParser.SQL
             var rowsIns = new List<SQLInsertRow>();
             var rowsUpd = new List<SQLUpdateRow>();
 
-            foreach (var elem1 in Settings.SQLOrderByKey ? dict1.OrderBy(blub => blub.Key).ToList() : dict1.ToList())
+            foreach (var elem1 in Settings.Instance.SQLOrderByKey ? dict1.OrderBy(blub => blub.Key).ToList() : dict1.ToList())
             {
                 if (dict2 != null && dict2.ContainsKey(elem1.Key)) // update
                 {
@@ -761,7 +761,7 @@ namespace WowPacketParser.SQL
             var tableName = GetTableName<T>(true);
 
             //                              0                 1
-            var query = $"SELECT `COLUMN_NAME`, `COLUMN_DEFAULT` FROM `information_schema`.`COLUMNS` WHERE `TABLE_SCHEMA`='{Settings.TDBDatabase}' AND `TABLE_NAME`='{tableName}'";
+            var query = $"SELECT `COLUMN_NAME`, `COLUMN_DEFAULT` FROM `information_schema`.`COLUMNS` WHERE `TABLE_SCHEMA`='{Settings.Instance.TDBDatabase}' AND `TABLE_NAME`='{tableName}'";
             using (var command = SQLConnector.CreateCommand(query))
             {
                 if (command == null)

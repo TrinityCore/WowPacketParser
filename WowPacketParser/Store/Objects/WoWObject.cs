@@ -47,7 +47,7 @@ namespace WowPacketParser.Store.Objects
 
         public int GetDefaultSpawnTime(uint difficultyID)
         {
-            if (Settings.UseDBC && DBC.DBC.Map != null)
+            if (Settings.Instance.UseDBC && DBC.DBC.Map != null)
             {
                 if (DBC.DBC.Map.ContainsKey((int)Map))
                 {
@@ -76,7 +76,7 @@ namespace WowPacketParser.Store.Objects
         {
             // 3 is the most common spawnmask outside of continents although it is not correct in all cases
             // TODO: read map/instance db to guess correct spawnmask
-            if (Settings.UseDBC && DBC.DBC.MapSpawnMaskStores != null)
+            if (Settings.Instance.UseDBC && DBC.DBC.MapSpawnMaskStores != null)
             {
                 if (DBC.DBC.MapSpawnMaskStores.ContainsKey((int)Map))
                     return DBC.DBC.MapSpawnMaskStores[(int)Map];
@@ -87,7 +87,7 @@ namespace WowPacketParser.Store.Objects
 
         public List<int> GetDefaultSpawnDifficulties()
         {
-            if (Settings.UseDBC && DBC.DBC.MapDifficultyStores != null)
+            if (Settings.Instance.UseDBC && DBC.DBC.MapDifficultyStores != null)
             {
                 if (DBC.DBC.MapDifficultyStores.ContainsKey((int)Map))
                     return DBC.DBC.MapDifficultyStores[(int)Map];

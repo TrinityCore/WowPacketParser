@@ -45,12 +45,12 @@ namespace WowPacketParser.SQL.Builders
             if (units.Count == 0)
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature))
                 return string.Empty;
 
             uint count = 0;
             CreatureAddon addonDefault = null;
-            if (Settings.DBEnabled && Settings.SkipRowsWithFallbackValues)
+            if (Settings.Instance.DBEnabled && Settings.Instance.SkipRowsWithFallbackValues)
                 addonDefault = SQLUtil.GetDefaultObject<CreatureAddon>();
             var dbFields = SQLUtil.GetDBFields<CreatureAddon>(false);
             var rows = new RowList<Creature>();
@@ -63,12 +63,12 @@ namespace WowPacketParser.SQL.Builders
 
                 Unit creature = unit.Value;
 
-                if (Settings.AreaFilters.Length > 0)
-                    if (!(creature.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
+                if (Settings.Instance.AreaFilters.Length > 0)
+                    if (!(creature.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.Instance.AreaFilters)))
                         continue;
 
-                if (Settings.MapFilters.Length > 0)
-                    if (!(creature.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
+                if (Settings.Instance.MapFilters.Length > 0)
+                    if (!(creature.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.Instance.MapFilters)))
                         continue;
 
                 uint entry = (uint)creature.ObjectData.EntryID;
@@ -121,7 +121,7 @@ namespace WowPacketParser.SQL.Builders
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595) && creature.Phases != null)
                 {
                     string data = string.Join(" - ", creature.Phases);
-                    if (string.IsNullOrEmpty(data) || Settings.ForcePhaseZero)
+                    if (string.IsNullOrEmpty(data) || Settings.Instance.ForcePhaseZero)
                         data = "0";
 
                     row.Data.PhaseID = data;
@@ -197,7 +197,7 @@ namespace WowPacketParser.SQL.Builders
                 }
 
                 var addonRow = new Row<CreatureAddon>();
-                if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_addon))
+                if (Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_addon))
                 {
                     addonRow.Data.PathID = 0;
                     addonRow.Data.Mount = (uint)creature.UnitData.MountDisplayID;
@@ -220,11 +220,11 @@ namespace WowPacketParser.SQL.Builders
                     }
                 }
 
-                if (creature.IsTemporarySpawn() && !Settings.SaveTempSpawns)
+                if (creature.IsTemporarySpawn() && !Settings.Instance.SaveTempSpawns)
                 {
                     row.CommentOut = true;
                     row.Comment += " - !!! might be temporary spawn !!!";
-                    if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_addon))
+                    if (Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_addon))
                     {
                         addonRow.CommentOut = true;
                         addonRow.Comment += " - !!! might be temporary spawn !!!";
@@ -234,7 +234,7 @@ namespace WowPacketParser.SQL.Builders
                 {
                     row.CommentOut = true;
                     row.Comment += " - !!! on transport - transport template not found !!!";
-                    if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_addon))
+                    if (Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_addon))
                     {
                         addonRow.CommentOut = true;
                         addonRow.Comment += " - !!! on transport - transport template not found !!!";
@@ -258,7 +258,7 @@ namespace WowPacketParser.SQL.Builders
             var sql = new SQLInsert<Creature>(rows, false);
             result.Append(sql.Build());
 
-            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_addon))
+            if (Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_addon))
             {
                 var addonDelete = new SQLDelete<CreatureAddon>(Tuple.Create("@CGUID+0", "@CGUID+" + count));
                 result.Append(addonDelete.Build());
@@ -275,7 +275,7 @@ namespace WowPacketParser.SQL.Builders
             if (gameObjects.Count == 0)
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject))
                 return string.Empty;
 
             uint count = 0;
@@ -287,12 +287,12 @@ namespace WowPacketParser.SQL.Builders
 
                 GameObject go = gameobject.Value;
 
-                if (Settings.AreaFilters.Length > 0)
-                    if (!(go.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
+                if (Settings.Instance.AreaFilters.Length > 0)
+                    if (!(go.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.Instance.AreaFilters)))
                         continue;
 
-                if (Settings.MapFilters.Length > 0)
-                    if (!(go.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
+                if (Settings.Instance.MapFilters.Length > 0)
+                    if (!(go.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.Instance.MapFilters)))
                         continue;
 
                 uint entry = (uint)go.ObjectData.EntryID;
@@ -340,7 +340,7 @@ namespace WowPacketParser.SQL.Builders
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V4_3_4_15595) && go.Phases != null)
                 {
                     string data = string.Join(" - ", go.Phases);
-                    if (string.IsNullOrEmpty(data) || Settings.ForcePhaseZero)
+                    if (string.IsNullOrEmpty(data) || Settings.Instance.ForcePhaseZero)
                         data = "0";
 
                     row.Data.PhaseID = data;
@@ -366,7 +366,7 @@ namespace WowPacketParser.SQL.Builders
 
                 bool add = false;
                 var addonRow = new Row<GameObjectAddon>();
-                if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_addon))
+                if (Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_addon))
                 {
                     addonRow.Data.GUID = "@OGUID+" + count;
 
@@ -409,11 +409,11 @@ namespace WowPacketParser.SQL.Builders
                 row.Comment += " (Area: " + StoreGetters.GetName(StoreNameType.Area, go.Area, false) + " - ";
                 row.Comment += "Difficulty: " + StoreGetters.GetName(StoreNameType.Difficulty, (int)go.DifficultyID, false) + ")";
 
-                if (go.IsTemporarySpawn() && !Settings.SaveTempSpawns)
+                if (go.IsTemporarySpawn() && !Settings.Instance.SaveTempSpawns)
                 {
                     row.CommentOut = true;
                     row.Comment += " - !!! might be temporary spawn !!!";
-                    if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_addon))
+                    if (Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_addon))
                     {
                         addonRow.CommentOut = true;
                         addonRow.Comment += " - !!! might be temporary spawn !!!";
@@ -423,7 +423,7 @@ namespace WowPacketParser.SQL.Builders
                 {
                     row.CommentOut = true;
                     row.Comment += " - !!! transport !!!";
-                    if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_addon))
+                    if (Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_addon))
                     {
                         addonRow.CommentOut = true;
                         addonRow.Comment += " - !!! transport !!!";
@@ -433,7 +433,7 @@ namespace WowPacketParser.SQL.Builders
                 {
                     row.CommentOut = true;
                     row.Comment += " - !!! on transport - transport template not found !!!";
-                    if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_addon))
+                    if (Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_addon))
                     {
                         addonRow.CommentOut = true;
                         addonRow.Comment += " - !!! on transport - transport template not found !!!";
@@ -456,7 +456,7 @@ namespace WowPacketParser.SQL.Builders
             var sql = new SQLInsert<GameObjectModel>(rows, false);
             result.Append(sql.Build());
 
-            if (Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_addon))
+            if (Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_addon))
             {
                 var addonDelete = new SQLDelete<GameObjectAddon>(Tuple.Create("@OGUID+0", "@OGUID+" + count));
                 result.Append(addonDelete.Build());

@@ -243,7 +243,7 @@ namespace WowPacketParser.Loading
                                 var commentLength = _reader.ReadByte();
                                 if (commentLength > 0)
                                 {
-                                    if (Settings.DumpFormatWithText())
+                                    if (Settings.Instance.DumpFormatWithText())
                                     {
                                         writer = new StringBuilder();
                                         writer.AppendLine("# " + Encoding.UTF8.GetString(_reader.ReadBytes(commentLength)));

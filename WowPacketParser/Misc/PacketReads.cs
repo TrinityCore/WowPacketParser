@@ -171,7 +171,7 @@ namespace WowPacketParser.Misc
             else
                 val32 = Convert.ToInt32(val);
 
-            if (type == StoreNameType.Spell && Settings.ParseSpellInfos)
+            if (type == StoreNameType.Spell && Settings.Instance.ParseSpellInfos)
                 ReadSpellEntry((uint)val32, name, indexes);
             else
                 AddValue(name, FormatInteger(val32, StoreGetters.GetName(type, val32, false)), indexes);
@@ -720,14 +720,14 @@ namespace WowPacketParser.Misc
 
         private static string FormatInteger(IFormattable value)
         {
-            if (Settings.DebugReads)
+            if (Settings.Instance.DebugReads)
                 return value + " (0x" + value.ToString("X4", NumberFormatInfo.CurrentInfo) + ")";
             return value.ToString();
         }
 
         private static string FormatFloat(float value)
         {
-            if (!Settings.DebugReads)
+            if (!Settings.Instance.DebugReads)
                 return string.Format("{0:F20}", value).Substring(0, 20).TrimEnd('0').TrimEnd('.');
 
             var bytes = BitConverter.GetBytes(value);
@@ -736,7 +736,7 @@ namespace WowPacketParser.Misc
 
         private string FormatFloat(double value)
         {
-            if (!Settings.DebugReads)
+            if (!Settings.Instance.DebugReads)
                 return value.ToString(CultureInfo.InvariantCulture);
 
             var bytes = BitConverter.GetBytes(value);
@@ -745,7 +745,7 @@ namespace WowPacketParser.Misc
 
         private static string FormatInteger(IFormattable value, string name)
         {
-            if (Settings.DebugReads)
+            if (Settings.Instance.DebugReads)
                 return $"{value} (0x{value:X4}) ({name})";
             return value + " (" + name + ")";
         }

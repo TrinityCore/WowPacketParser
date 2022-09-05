@@ -36,7 +36,7 @@ namespace WowPacketParser.DBC
 
         private static string GetDBCPath()
         {
-            return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Settings.DBCPath, Settings.DBCLocale);
+            return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Settings.Instance.DBCPath, Settings.Instance.DBCLocale);
         }
 
         private static string GetDBCPath(string fileName)
@@ -46,7 +46,7 @@ namespace WowPacketParser.DBC
 
         private static string GetHotfixCachePath()
         {
-            return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Settings.HotfixCachePath);
+            return Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), Settings.Instance.HotfixCachePath);
         }
 
         public static async void Load()

@@ -17,12 +17,12 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.AreaTriggerTemplates.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger_template))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger_template))
                 return string.Empty;
 
             var templateDb = SQLDatabase.Get(Storage.AreaTriggerTemplates);
 
-            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.AreaTriggerTemplates.OrderBy(x => x.Item1.Id).ToArray() : Storage.AreaTriggerTemplates.ToArray(), templateDb, x => string.Empty);
+            return SQLUtil.Compare(Settings.Instance.SQLOrderByKey ? Storage.AreaTriggerTemplates.OrderBy(x => x.Item1.Id).ToArray() : Storage.AreaTriggerTemplates.ToArray(), templateDb, x => string.Empty);
         }
 
         [BuilderMethod]
@@ -40,7 +40,7 @@ namespace WowPacketParser.SQL.Builders
             if (spellareatriggers.Count == 0)
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger_create_properties))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger_create_properties))
                 return string.Empty;
 
             var spellareatriggersData = new DataBag<AreaTriggerCreateProperties>();
@@ -52,7 +52,7 @@ namespace WowPacketParser.SQL.Builders
 
             var templateDb = SQLDatabase.Get(spellareatriggersData);
 
-            return SQLUtil.Compare(Settings.SQLOrderByKey ? spellareatriggersData.OrderBy(x => x.Item1.AreaTriggerId).ToArray() : spellareatriggersData.ToArray(),
+            return SQLUtil.Compare(Settings.Instance.SQLOrderByKey ? spellareatriggersData.OrderBy(x => x.Item1.AreaTriggerId).ToArray() : spellareatriggersData.ToArray(),
                 templateDb,
                 x =>
                 {
@@ -70,7 +70,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.AreaTriggerCreatePropertiesOrbits.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger_create_properties_orbit))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger_create_properties_orbit))
                 return string.Empty;
 
             foreach (var orbit in Storage.AreaTriggerCreatePropertiesOrbits)
@@ -84,7 +84,7 @@ namespace WowPacketParser.SQL.Builders
 
             var templateDb = SQLDatabase.Get(Storage.AreaTriggerCreatePropertiesOrbits);
 
-            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.AreaTriggerCreatePropertiesOrbits.OrderBy(x => x.Item1.AreaTriggerCreatePropertiesId).ToArray() : Storage.AreaTriggerCreatePropertiesOrbits.ToArray(),
+            return SQLUtil.Compare(Settings.Instance.SQLOrderByKey ? Storage.AreaTriggerCreatePropertiesOrbits.OrderBy(x => x.Item1.AreaTriggerCreatePropertiesId).ToArray() : Storage.AreaTriggerCreatePropertiesOrbits.ToArray(),
                 templateDb,
                 x =>
                 {
@@ -102,7 +102,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.AreaTriggerCreatePropertiesPolygonVertices.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger_create_properties_polygon_vertex))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger_create_properties_polygon_vertex))
                 return string.Empty;
 
             foreach (var vertex in Storage.AreaTriggerCreatePropertiesPolygonVertices)
@@ -116,7 +116,7 @@ namespace WowPacketParser.SQL.Builders
 
             var templateDb = SQLDatabase.Get(Storage.AreaTriggerCreatePropertiesPolygonVertices);
 
-            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.AreaTriggerCreatePropertiesPolygonVertices.OrderBy(x => x.Item1.AreaTriggerCreatePropertiesId).ToArray() : Storage.AreaTriggerCreatePropertiesPolygonVertices.ToArray(),
+            return SQLUtil.Compare(Settings.Instance.SQLOrderByKey ? Storage.AreaTriggerCreatePropertiesPolygonVertices.OrderBy(x => x.Item1.AreaTriggerCreatePropertiesId).ToArray() : Storage.AreaTriggerCreatePropertiesPolygonVertices.ToArray(),
                 templateDb,
                 x =>
                 {
@@ -134,7 +134,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.AreaTriggerCreatePropertiesSplinePoints.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger_create_properties_spline_point))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.areatrigger_create_properties_spline_point))
                 return string.Empty;
 
             foreach (var splinePoint in Storage.AreaTriggerCreatePropertiesSplinePoints)
@@ -160,7 +160,7 @@ namespace WowPacketParser.SQL.Builders
 
             var templateDb = SQLDatabase.Get(Storage.AreaTriggerCreatePropertiesSplinePoints);
 
-            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.AreaTriggerCreatePropertiesSplinePoints.OrderBy(x => x.Item1.AreaTriggerCreatePropertiesId).ToArray() : Storage.AreaTriggerCreatePropertiesSplinePoints.ToArray(),
+            return SQLUtil.Compare(Settings.Instance.SQLOrderByKey ? Storage.AreaTriggerCreatePropertiesSplinePoints.OrderBy(x => x.Item1.AreaTriggerCreatePropertiesId).ToArray() : Storage.AreaTriggerCreatePropertiesSplinePoints.ToArray(),
                 templateDb,
                 x =>
                 {

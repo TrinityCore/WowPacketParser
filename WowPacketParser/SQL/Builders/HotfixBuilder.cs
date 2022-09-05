@@ -48,7 +48,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.HotfixDatas.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.hotfix_data))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.hotfix_data))
                 return string.Empty;
 
             var rows = new RowList<HotfixData>();
@@ -73,7 +73,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.HotfixBlobs.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.hotfix_blob))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.hotfix_blob))
                 return string.Empty;
 
             var rows = new RowList<HotfixBlob>();
@@ -99,14 +99,14 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.BroadcastTexts.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.broadcast_text))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.broadcast_text))
                 return string.Empty;
 
             foreach (var broadcastText in Storage.BroadcastTexts)
                 broadcastText.Item1.ConvertToDBStruct();
 
             // pass empty list, because we want to select the whole db table (faster than select only needed columns)
-            var templatesDb = SQLDatabase.Get(new RowList<Store.Objects.BroadcastText>(), Settings.HotfixesDatabase);
+            var templatesDb = SQLDatabase.Get(new RowList<Store.Objects.BroadcastText>(), Settings.Instance.HotfixesDatabase);
 
             return SQLUtil.Compare(Storage.BroadcastTexts, templatesDb, StoreNameType.None);
         }
@@ -117,11 +117,11 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.BroadcastTextLocales.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.broadcast_text_locale))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.broadcast_text_locale))
                 return string.Empty;
 
             // pass empty list, because we want to select the whole db table (faster than select only needed columns)
-            var templatesDb = SQLDatabase.Get(new RowList<Store.Objects.BroadcastTextLocale>(), Settings.HotfixesDatabase);
+            var templatesDb = SQLDatabase.Get(new RowList<Store.Objects.BroadcastTextLocale>(), Settings.Instance.HotfixesDatabase);
 
             return "SET NAMES 'utf8';" + Environment.NewLine + SQLUtil.Compare(Storage.BroadcastTextLocales, templatesDb, StoreNameType.None) + Environment.NewLine + "SET NAMES 'latin1';";
         }
@@ -132,10 +132,10 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.HotfixOptionalDatas.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.hotfix_optional_data))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.hotfix_optional_data))
                 return string.Empty;
 
-            var templatesDb = SQLDatabase.Get(new RowList<Store.Objects.HotfixOptionalData>(), Settings.HotfixesDatabase);
+            var templatesDb = SQLDatabase.Get(new RowList<Store.Objects.HotfixOptionalData>(), Settings.Instance.HotfixesDatabase);
 
             return SQLUtil.Compare(Storage.HotfixOptionalDatas, templatesDb, StoreNameType.None);
         }

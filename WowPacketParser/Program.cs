@@ -36,7 +36,7 @@ namespace WowPacketParser
             Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 
-            if (Settings.UseDBC)
+            if (Settings.Instance.UseDBC)
             {
                 var startTime = DateTime.Now;
 
@@ -47,7 +47,7 @@ namespace WowPacketParser
             }
 
             // Disable DB when we don't need its data (dumping to a binary file)
-            if (!Settings.DumpFormatWithSQL())
+            if (!Settings.Instance.DumpFormatWithSQL())
             {
                 SQLConnector.Enabled = false;
                 SSHTunnel.Enabled = false;
@@ -62,14 +62,14 @@ namespace WowPacketParser
             foreach (var file in files)
             {
                 SessionHandler.ZStreams.Clear();
-                if (Settings.ClientBuild != Enums.ClientVersionBuild.Zero)
-                    ClientVersion.SetVersion(Settings.ClientBuild);
+                if (Settings.Instance.ClientBuild != Enums.ClientVersionBuild.Zero)
+                    ClientVersion.SetVersion(Settings.Instance.ClientBuild);
 
-                ClientLocale.SetLocale(Settings.ClientLocale.ToString());
+                ClientLocale.SetLocale(Settings.Instance.ClientLocale.ToString());
 
                 try
                 {
-                    var sf = new SniffFile(file, Settings.DumpFormat, Tuple.Create(++count, files.Count));
+                    var sf = new SniffFile(file, Settings.Instance.DumpFormat, Tuple.Create(++count, files.Count));
                     sf.ProcessFile();
                 }
                 catch (IOException ex)
@@ -78,8 +78,8 @@ namespace WowPacketParser
                 }
             }
 
-            if (!string.IsNullOrWhiteSpace(Settings.SQLFileName) && Settings.DumpFormatWithSQL())
-                Builder.DumpSQL("Dumping global sql", Settings.SQLFileName, SniffFile.GetHeader("multi"));
+            if (!string.IsNullOrWhiteSpace(Settings.Instance.SQLFileName) && Settings.Instance.DumpFormatWithSQL())
+                Builder.DumpSQL("Dumping global sql", Settings.Instance.SQLFileName, SniffFile.GetHeader("multi"));
 
             var processTime = DateTime.Now.Subtract(processStartTime);
             Trace.WriteLine($"Processing {files.Count} sniffs took { processTime.ToFormattedString() }.");
@@ -87,7 +87,7 @@ namespace WowPacketParser
             SQLConnector.Disconnect();
             SSHTunnel.Disconnect();
 
-            if (Settings.LogErrors)
+            if (Settings.Instance.LogErrors)
                 Logger.WriteErrors();
 
             Trace.Listeners.Remove("ConsoleMirror");
@@ -97,7 +97,7 @@ namespace WowPacketParser
 
         private static void EndPrompt(bool forceKey = false)
         {
-            if (Settings.ShowEndPrompt || forceKey)
+            if (Settings.Instance.ShowEndPrompt || forceKey)
             {
                 Console.WriteLine("Press any key to continue.");
                 Console.ReadKey();
@@ -125,7 +125,7 @@ namespace WowPacketParser
             using (ConsoleTraceListener consoleListener = new ConsoleTraceListener(true))
                 Trace.Listeners.Add(consoleListener);
 
-            if (Settings.ParsingLog)
+            if (Settings.Instance.ParsingLog)
             {
                 using (TextWriterTraceListener fileListener = new TextWriterTraceListener($"{Utilities.FormattedDateTimeForFiles()}_log.txt"))
                 {

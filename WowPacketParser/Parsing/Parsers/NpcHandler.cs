@@ -145,7 +145,7 @@ namespace WowPacketParser.Parsing.Parsers
             protoPoi.Icon = (uint)gossipPOI.Icon;
 
             // DB PART STARTS HERE
-            if (Settings.DBEnabled)
+            if (Settings.Instance.DBEnabled)
             {
                 foreach (var poi in SQLDatabase.POIs)
                 {

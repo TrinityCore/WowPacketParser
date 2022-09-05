@@ -232,9 +232,9 @@ namespace WowPacketParser.SQL
             fieldNames.Remove(fieldNames.Length - 2, 2); // remove last ", "
 
             if (_whereClause.HasConditions)
-                return $"SELECT {fieldNames} FROM {_database ?? Settings.TDBDatabase}.{tableName} WHERE {_whereClause.Build()}";
+                return $"SELECT {fieldNames} FROM {_database ?? Settings.Instance.TDBDatabase}.{tableName} WHERE {_whereClause.Build()}";
 
-            return $"SELECT {fieldNames} FROM {_database ?? Settings.TDBDatabase}.{tableName}";
+            return $"SELECT {fieldNames} FROM {_database ?? Settings.Instance.TDBDatabase}.{tableName}";
         }
     }
 
@@ -338,7 +338,7 @@ namespace WowPacketParser.SQL
                 if (value == null)
                     continue;
 
-                if (field.Item2.Name != "VerifiedBuild" || !Settings.SkipOnlyVerifiedBuildUpdateRows)
+                if (field.Item2.Name != "VerifiedBuild" || !Settings.Instance.SkipOnlyVerifiedBuildUpdateRows)
                     hasValues = true;
 
                 query.Append(field.Item1);

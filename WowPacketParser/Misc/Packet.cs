@@ -16,8 +16,8 @@ namespace WowPacketParser.Misc
 {
     public sealed partial class Packet : BinaryReader
     {
-        private static readonly bool SniffData = Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.SniffData) || Settings.DumpFormat == DumpFormatType.SniffDataOnly;
-        private static readonly bool SniffDataOpcodes = Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.SniffDataOpcodes) || Settings.DumpFormat == DumpFormatType.SniffDataOnly;
+        private static readonly bool SniffData = Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.SniffData) || Settings.Instance.DumpFormat == DumpFormatType.SniffDataOnly;
+        private static readonly bool SniffDataOpcodes = Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.SniffDataOpcodes) || Settings.Instance.DumpFormat == DumpFormatType.SniffDataOnly;
 
         private static DateTime _firstPacketTime;
 
@@ -251,7 +251,7 @@ namespace WowPacketParser.Misc
 
         public void Write(string value)
         {
-            if (!Settings.DumpFormatWithText())
+            if (!Settings.Instance.DumpFormatWithText())
                 return;
 
             if (Writer == null)
@@ -262,7 +262,7 @@ namespace WowPacketParser.Misc
 
         public void Write(string format, params object[] args)
         {
-            if (!Settings.DumpFormatWithText())
+            if (!Settings.Instance.DumpFormatWithText())
                 return;
 
             if (Writer == null)
@@ -273,7 +273,7 @@ namespace WowPacketParser.Misc
 
         public void WriteLine()
         {
-            if (!Settings.DumpFormatWithText())
+            if (!Settings.Instance.DumpFormatWithText())
                 return;
 
             if (Writer == null)
@@ -284,7 +284,7 @@ namespace WowPacketParser.Misc
 
         public void WriteLine(string value)
         {
-            if (!Settings.DumpFormatWithText())
+            if (!Settings.Instance.DumpFormatWithText())
                 return;
 
             if (Writer == null)
@@ -295,7 +295,7 @@ namespace WowPacketParser.Misc
 
         public void WriteLine(string format, params object[] args)
         {
-            if (!Settings.DumpFormatWithText())
+            if (!Settings.Instance.DumpFormatWithText())
                 return;
 
             if (Writer == null)
@@ -308,7 +308,7 @@ namespace WowPacketParser.Misc
         {
             if (clearWriter && Writer != null)
             {
-                if (Settings.DumpFormatWithText())
+                if (Settings.Instance.DumpFormatWithText())
                     Writer.Clear();
                 Writer = null;
             }

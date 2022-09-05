@@ -12,7 +12,7 @@ namespace WowPacketParser.Misc
 
         public static void Initialize()
         {
-            foreach (var filter in Settings.IgnoreByEntryFilters)
+            foreach (var filter in Settings.Instance.IgnoreByEntryFilters)
             {
                 var elements = filter.Split(new[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
                 if (elements.Length < 2)
@@ -31,7 +31,7 @@ namespace WowPacketParser.Misc
                     NameStores.Add(type, list);
             }
 
-            foreach (var filter in Settings.Filters)
+            foreach (var filter in Settings.Instance.Filters)
             {
                 if (filter.StartsWith("-")) // ignore error checking for negative values
                     continue;
@@ -40,7 +40,7 @@ namespace WowPacketParser.Misc
                     Console.WriteLine("Warning: No opcode name matches filter \"" + filter + "\"");
             }
 
-            foreach (var filter in Settings.IgnoreFilters)
+            foreach (var filter in Settings.Instance.IgnoreFilters)
             {
                 if (filter.StartsWith("-")) // ignore error checking for negative values
                     continue;

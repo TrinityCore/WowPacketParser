@@ -92,7 +92,7 @@ namespace WowPacketParser.Store.Objects
 
         public static uint? GetAreaTriggerCreatePropertiesIdFromSpellId(uint spellId)
         {
-            if (!Settings.UseDBC)
+            if (!Settings.Instance.UseDBC)
                 return null;
 
             uint? areaTriggerCreatePropertiesId = null;

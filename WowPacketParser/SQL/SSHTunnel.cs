@@ -9,19 +9,19 @@ namespace WowPacketParser.SQL
     {
         [ThreadStatic]
         private static SshClient _session;
-        public static bool Enabled = Settings.SSHEnabled;
+        public static bool Enabled = Settings.Instance.SSHEnabled;
 
         public static void Connect()
         {
             try
             {
-                _session = new SshClient(Settings.SSHHost, Settings.SSHPort, Settings.SSHUsername, Settings.SSHPassword);
+                _session = new SshClient(Settings.Instance.SSHHost, Settings.Instance.SSHPort, Settings.Instance.SSHUsername, Settings.Instance.SSHPassword);
                 _session.Connect();
                 uint port;
-                if (!uint.TryParse(Settings.Port, out port))
+                if (!uint.TryParse(Settings.Instance.Port, out port))
                     port = 3306;
 
-                var portForward = new ForwardedPortLocal((uint)Settings.SSHLocalPort, "127.0.0.1", port);
+                var portForward = new ForwardedPortLocal((uint)Settings.Instance.SSHLocalPort, "127.0.0.1", port);
 
                 _session.AddForwardedPort(portForward);
 

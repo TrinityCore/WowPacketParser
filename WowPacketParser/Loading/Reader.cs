@@ -44,15 +44,15 @@ namespace WowPacketParser.Loading
                 var opcodeName = Opcodes.GetOpcodeName(packet.Opcode, packet.Direction);
 
                 var add = true;
-                if (Settings.Filters.Length > 0)
-                    add = opcodeName.MatchesFilters(Settings.Filters);
+                if (Settings.Instance.Filters.Length > 0)
+                    add = opcodeName.MatchesFilters(Settings.Instance.Filters);
                 // check for ignore filters
-                if (add && Settings.IgnoreFilters.Length > 0)
-                    add = !opcodeName.MatchesFilters(Settings.IgnoreFilters);
+                if (add && Settings.Instance.IgnoreFilters.Length > 0)
+                    add = !opcodeName.MatchesFilters(Settings.Instance.IgnoreFilters);
 
                 if (add)
                 {
-                    if (Settings.FilterPacketsNum > 0 && _count++ == Settings.FilterPacketsNum)
+                    if (Settings.Instance.FilterPacketsNum > 0 && _count++ == Settings.Instance.FilterPacketsNum)
                         return true; // break
                     return false; // continue
                 }
@@ -90,16 +90,16 @@ namespace WowPacketParser.Loading
                     var opcodeName = Opcodes.GetOpcodeName(packet.Opcode, packet.Direction);
 
                     var add = true;
-                    if (Settings.Filters.Length > 0)
-                        add = opcodeName.MatchesFilters(Settings.Filters);
+                    if (Settings.Instance.Filters.Length > 0)
+                        add = opcodeName.MatchesFilters(Settings.Instance.Filters);
                     // check for ignore filters
-                    if (add && Settings.IgnoreFilters.Length > 0)
-                        add = !opcodeName.MatchesFilters(Settings.IgnoreFilters);
+                    if (add && Settings.Instance.IgnoreFilters.Length > 0)
+                        add = !opcodeName.MatchesFilters(Settings.Instance.IgnoreFilters);
 
                     if (add)
                     {
                         action(Tuple.Create(packet, reader.GetCurrentSize(), reader.GetTotalSize()));
-                        if (Settings.FilterPacketsNum > 0 && count++ == Settings.FilterPacketsNum)
+                        if (Settings.Instance.FilterPacketsNum > 0 && count++ == Settings.Instance.FilterPacketsNum)
                             break;
                     }
                     else

@@ -12,7 +12,7 @@ namespace WowPacketParser.SQL
         [ThreadStatic]
         public static MySqlConnection Conn;
 
-        public static bool Enabled = Settings.DBEnabled;
+        public static bool Enabled = Settings.Instance.DBEnabled;
 
         public static void Connect()
         {
@@ -22,7 +22,7 @@ namespace WowPacketParser.SQL
                 return;
             }
 
-            Trace.WriteLine("Connecting to MySQL server: " + ConnectionString.Replace("Password=" + Settings.Password + ";", String.Empty)); // Do not print password
+            Trace.WriteLine("Connecting to MySQL server: " + ConnectionString.Replace("Password=" + Settings.Instance.Password + ";", String.Empty)); // Do not print password
             Conn = new MySqlConnection(ConnectionString);
 
             try
@@ -72,7 +72,7 @@ namespace WowPacketParser.SQL
         {
             get
             {
-                var server = Settings.Server;
+                var server = Settings.Instance.Server;
                 var protocol = String.Empty;
                 var portOrPipe = "Port";
 
@@ -84,8 +84,8 @@ namespace WowPacketParser.SQL
                 }
 
                 return
-                    $"Server={server};{portOrPipe}={Settings.Port};Username={Settings.Username};Password={Settings.Password};" +
-                    $"Database={Settings.WPPDatabase};CharSet={Settings.CharacterSet};ConnectionTimeout=5;{protocol}";
+                    $"Server={server};{portOrPipe}={Settings.Instance.Port};Username={Settings.Instance.Username};Password={Settings.Instance.Password};" +
+                    $"Database={Settings.Instance.WPPDatabase};CharSet={Settings.Instance.CharacterSet};ConnectionTimeout=5;{protocol}";
             }
         }
 

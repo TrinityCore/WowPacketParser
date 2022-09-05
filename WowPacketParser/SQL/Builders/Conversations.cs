@@ -16,12 +16,12 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.ConversationActors.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.conversation_actors))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.conversation_actors))
                 return string.Empty;
 
             var templateDb = SQLDatabase.Get(Storage.ConversationActors);
 
-            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.ConversationActors.OrderBy(x => x.Item1.ConversationId).ToArray() : Storage.ConversationActors.ToArray(), templateDb, x => x.Guid != null ? x.Guid.ToString() : string.Empty);
+            return SQLUtil.Compare(Settings.Instance.SQLOrderByKey ? Storage.ConversationActors.OrderBy(x => x.Item1.ConversationId).ToArray() : Storage.ConversationActors.ToArray(), templateDb, x => x.Guid != null ? x.Guid.ToString() : string.Empty);
         }
 
         [BuilderMethod]
@@ -30,12 +30,12 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.ConversationActorTemplates.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.conversation_actor_template))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.conversation_actor_template))
                 return string.Empty;
 
             var templateDb = SQLDatabase.Get(Storage.ConversationActorTemplates);
 
-            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.ConversationActorTemplates.OrderBy(x => x.Item1.Id).ToArray() : Storage.ConversationActorTemplates.ToArray(), templateDb, x => string.Empty);
+            return SQLUtil.Compare(Settings.Instance.SQLOrderByKey ? Storage.ConversationActorTemplates.OrderBy(x => x.Item1.Id).ToArray() : Storage.ConversationActorTemplates.ToArray(), templateDb, x => string.Empty);
         }
 
         [BuilderMethod]
@@ -44,12 +44,12 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.ConversationLineTemplates.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.conversation_line_template))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.conversation_line_template))
                 return string.Empty;
 
             var templateDb = SQLDatabase.Get(Storage.ConversationLineTemplates);
 
-            return SQLUtil.Compare(Settings.SQLOrderByKey ? Storage.ConversationLineTemplates.OrderBy(x => x.Item1.Id).ToArray() : Storage.ConversationLineTemplates.ToArray(), templateDb, x => string.Empty);
+            return SQLUtil.Compare(Settings.Instance.SQLOrderByKey ? Storage.ConversationLineTemplates.OrderBy(x => x.Item1.Id).ToArray() : Storage.ConversationLineTemplates.ToArray(), templateDb, x => string.Empty);
         }
 
         [BuilderMethod]
@@ -66,7 +66,7 @@ namespace WowPacketParser.SQL.Builders
             if (conversations.Count == 0)
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.conversation_template))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.conversation_template))
                 return string.Empty;
 
             var conversationsData = new DataBag<ConversationTemplate>();
@@ -78,7 +78,7 @@ namespace WowPacketParser.SQL.Builders
 
             var templateDb = SQLDatabase.Get(conversationsData);
 
-            return SQLUtil.Compare(Settings.SQLOrderByKey ? conversationsData.OrderBy(x => x.Item1.Id).ToArray() : conversationsData.ToArray(), templateDb, x => string.Empty);
+            return SQLUtil.Compare(Settings.Instance.SQLOrderByKey ? conversationsData.OrderBy(x => x.Item1.Id).ToArray() : conversationsData.ToArray(), templateDb, x => string.Empty);
         }
     }
 }

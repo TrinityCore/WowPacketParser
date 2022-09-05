@@ -129,9 +129,9 @@ namespace WowPacketParser.Parsing
                 hasHandler = VersionHandlers.TryGetValue(key, out handler);
             }
 
-            if (hasHandler && Settings.DumpFormat != DumpFormatType.HexOnly)
+            if (hasHandler && Settings.Instance.DumpFormat != DumpFormatType.HexOnly)
             {
-                if (Settings.DumpFormat == DumpFormatType.SniffDataOnly)
+                if (Settings.Instance.DumpFormat == DumpFormatType.SniffDataOnly)
                 {
                     var attrs = handler.Method.GetCustomAttributes(typeof(HasSniffDataAttribute), false);
 
@@ -182,7 +182,7 @@ namespace WowPacketParser.Parsing
             {
                 packet.Status = status;
 
-                if (Settings.DumpFormat != DumpFormatType.SniffDataOnly)
+                if (Settings.Instance.DumpFormat != DumpFormatType.SniffDataOnly)
                 {
                     // added before for this type
                     var data = status == ParsedStatus.Success ? Opcodes.GetOpcodeName(packet.Opcode, packet.Direction) : status.ToString();

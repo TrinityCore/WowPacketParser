@@ -226,7 +226,7 @@ namespace WowPacketParser.SQL
             if (Locale != null && Locale != ClientLocale.PacketLocale)
                 return false;
 
-            TargetedDatabase target = Settings.TargetedDatabase;
+            TargetedDatabase target = Settings.Instance.TargetedDatabase;
 
             if (_addedInVersion.HasValue && !_removedInVersion.HasValue)
                 return target >= _addedInVersion.Value;

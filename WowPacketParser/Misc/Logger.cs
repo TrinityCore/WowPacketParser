@@ -16,7 +16,7 @@ namespace WowPacketParser.Misc
 
         public static void CheckForMissingValues<TEnum>(long rawValue)
         {
-            if (!Settings.LogErrors || !typeof(TEnum).IsEnum || !Attribute.IsDefined(typeof(TEnum), typeof(FlagsAttribute)))
+            if (!Settings.Instance.LogErrors || !typeof(TEnum).IsEnum || !Attribute.IsDefined(typeof(TEnum), typeof(FlagsAttribute)))
                 return;
 
             string key = typeof(TEnum).ToString().Replace("WowPacketParser.Enums.", "");

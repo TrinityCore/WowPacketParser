@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
@@ -8,16 +9,12 @@ namespace WowPacketParser.Misc
 {
     public class Configuration
     {
-        private readonly KeyValueConfigurationCollection _settingsCollection;
+          private IConfiguration configuration;
 
-        public Configuration()
-        {
-            _settingsCollection = GetConfiguration();
-        }
 
-        public Configuration(KeyValueConfigurationCollection configCollection)
+        public Configuration(IConfiguration configuration=null)
         {
-            _settingsCollection = configCollection;
+            this.configuration = configuration?? new KeyValueConfiguration(GetConfiguration());
         }
 
         private static KeyValueConfigurationCollection GetConfiguration()
@@ -69,8 +66,8 @@ namespace WowPacketParser.Misc
             // override config options with options from command line
             foreach (var pair in opts)
             {
-                settings.Remove(pair.Key);
-                settings.Add(pair.Key, pair.Value);
+                Settings.Instance.Remove(pair.Key);
+                Settings.Instance.Add(pair.Key, pair.Value);
             }
 
             return settings;
@@ -78,18 +75,16 @@ namespace WowPacketParser.Misc
 
         public string GetString(string key, string defValue)
         {
-            KeyValueConfigurationElement s = _settingsCollection[key];
-            return s?.Value ?? defValue;
+            return configuration[key] ?? defValue;
         }
 
         public string[] GetStringList(string key, string[] defValue)
         {
-            KeyValueConfigurationElement s = _settingsCollection[key];
 
-            if (s?.Value == null)
+            if (configuration[key] == null)
                 return defValue;
 
-            var arr = s.Value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            var arr = configuration[key].Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
             for (int i = 0; i < arr.Length; i++)
                 arr[i] = arr[i].Trim();
@@ -99,42 +94,40 @@ namespace WowPacketParser.Misc
 
         public bool GetBoolean(string key, bool defValue)
         {
-            KeyValueConfigurationElement s = _settingsCollection[key];
-            if (s?.Value == null)
+
+            if (configuration[key] == null)
                 return defValue;
 
             bool aux;
-            if (bool.TryParse(s.Value, out aux))
+            if (bool.TryParse(configuration[key], out aux))
                 return aux;
 
-            Console.WriteLine("Warning: \"{0}\" is not a valid boolean value for key \"{1}\"", s.Value, key);
+            Console.WriteLine("Warning: \"{0}\" is not a valid boolean value for key \"{1}\"", configuration[key], key);
             return defValue;
         }
 
         public int GetInt(string key, int defValue)
         {
-            KeyValueConfigurationElement s = _settingsCollection[key];
-            if (string.IsNullOrEmpty(s?.Value))
+            if (string.IsNullOrEmpty(configuration[key]))
                 return defValue;
 
             int aux;
-            if (int.TryParse(s.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out aux))
+            if (int.TryParse(configuration[key], NumberStyles.Integer, CultureInfo.InvariantCulture, out aux))
                 return aux;
 
-            Console.WriteLine("Warning: \"{0}\" is not a valid integer value for key \"{1}\"", s.Value, key);
+            Console.WriteLine("Warning: \"{0}\" is not a valid integer value for key \"{1}\"", configuration[key], key);
             return defValue;
         }
 
         public TEnum GetEnum<TEnum>(string key, TEnum defValue) where TEnum : struct
         {
-            KeyValueConfigurationElement s = _settingsCollection[key];
-            if (string.IsNullOrEmpty(s?.Value))
+            if (string.IsNullOrEmpty(configuration[key]))
                 return defValue;
 
             int value;
-            if (!int.TryParse(s.Value, NumberStyles.Integer, CultureInfo.InvariantCulture, out value))
+            if (!int.TryParse(configuration[key], NumberStyles.Integer, CultureInfo.InvariantCulture, out value))
             {
-                Console.WriteLine("Warning: \"{0}\" is not a valid integer value for key \"{1}\"", s.Value, key);
+                Console.WriteLine("Warning: \"{0}\" is not a valid integer value for key \"{1}\"", configuration[key], key);
                 return defValue;
             }
 
@@ -145,8 +138,18 @@ namespace WowPacketParser.Misc
             if (Enum.TryParse(value.ToString(), out enumValue))
                 return enumValue;
 
-            Console.WriteLine("Warning: \"{0}\" is not a valid enum value for key \"{1}\", enum \"{2}\"", s.Value, key, typeof(TEnum).Name);
+            Console.WriteLine("Warning: \"{0}\" is not a valid enum value for key \"{1}\", enum \"{2}\"", configuration[key], key, typeof(TEnum).Name);
             return defValue;
+        }
+
+        internal void Remove(string key)
+        {
+            configuration[key] = null;
+        }
+
+        internal void Add(string key, string value)
+        {
+            configuration[key] = value;
         }
     }
 }

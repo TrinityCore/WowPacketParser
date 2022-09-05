@@ -13,7 +13,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.SpellTargetPositions.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.spell_target_position))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.spell_target_position))
                 return string.Empty;
 
             return SQLUtil.Compare(Storage.SpellTargetPositions, SQLDatabase.Get(Storage.SpellTargetPositions), t => t.EffectHelper);

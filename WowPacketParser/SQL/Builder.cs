@@ -77,7 +77,7 @@ namespace WowPacketParser.SQL
 
                     if (attr.CheckVersionMismatch)
                     {
-                        if (!GetExpectedTargetDatabasesForExpansion(ClientVersion.Expansion).Contains(Settings.TargetedDatabase))
+                        if (!GetExpectedTargetDatabasesForExpansion(ClientVersion.Expansion).Contains(Settings.Instance.TargetedDatabase))
                         {
                             Trace.WriteLine(
                                 $"{i}/{builderMethods.Count} - Error: Couldn't generate SQL output of {method.Name} since the targeted database and the sniff version don't match.");
@@ -143,7 +143,7 @@ namespace WowPacketParser.SQL
                     .SelectMany(x => x.GetMethods());
             var allMethods = methods.Select(y => new { Method = y, Attributes = y.GetCustomAttributes().OfType<BuilderMethodAttribute>()}).Where(y => y.Attributes.Any()).ToList();
 
-            if (Settings.SplitSQLFile)
+            if (Settings.Instance.SplitSQLFile)
             {
                 fileName = System.IO.Path.ChangeExtension(fileName, null); // remove .sql
 

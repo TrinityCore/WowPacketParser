@@ -122,14 +122,14 @@ namespace WowPacketParser.SQL
         /// </summary>
         private static void LoadBroadcastText()
         {
-            var soundFieldName = Settings.TargetedDatabase >= TargetedDatabase.Shadowlands ? "Kit" : "Entries";
+            var soundFieldName = Settings.Instance.TargetedDatabase >= TargetedDatabase.Shadowlands ? "Kit" : "Entries";
             string query =
                 $"SELECT ID, Text, Text1, EmoteID1, EmoteID2, EmoteID3, EmoteDelay1, EmoteDelay2, EmoteDelay3, EmotesID, LanguageID, Flags, ConditionID, Sound{soundFieldName}ID1, Sound{soundFieldName}ID2 " +
-                $"FROM {Settings.HotfixesDatabase}.broadcast_text;";
+                $"FROM {Settings.Instance.HotfixesDatabase}.broadcast_text;";
 
-            if (Settings.TargetedDatabase == TargetedDatabase.WrathOfTheLichKing || Settings.TargetedDatabase == TargetedDatabase.Cataclysm)
+            if (Settings.Instance.TargetedDatabase == TargetedDatabase.WrathOfTheLichKing || Settings.Instance.TargetedDatabase == TargetedDatabase.Cataclysm)
                 query = "SELECT ID, LanguageID, Text, Text1, EmoteID1, EmoteID2, EmoteID3, EmoteDelay1, EmoteDelay2, EmoteDelay3, SoundEntriesID, EmotesID, Flags " +
-                $"FROM {Settings.TDBDatabase}.broadcast_text;";
+                $"FROM {Settings.Instance.TDBDatabase}.broadcast_text;";
 
             using (var command = SQLConnector.CreateCommand(query))
             {
@@ -152,7 +152,7 @@ namespace WowPacketParser.SQL
                             BroadcastText1s[text1] = new List<int>();
                         BroadcastText1s[text1].Add(id);
 
-                        if (!Settings.UseDBC)
+                        if (!Settings.Instance.UseDBC)
                             continue;
 
                         var broadcastText = new BroadcastTextEntry()
@@ -172,7 +172,7 @@ namespace WowPacketParser.SQL
                         broadcastText.EmotesID = Convert.ToUInt16(reader["EmotesID"]);
                         broadcastText.LanguageID = Convert.ToInt32(reader["LanguageID"]);
                         broadcastText.Flags = Convert.ToByte(reader["Flags"]);
-                        if (Settings.TargetedDatabase == TargetedDatabase.WrathOfTheLichKing || Settings.TargetedDatabase == TargetedDatabase.Cataclysm)
+                        if (Settings.Instance.TargetedDatabase == TargetedDatabase.WrathOfTheLichKing || Settings.Instance.TargetedDatabase == TargetedDatabase.Cataclysm)
                         {
                             broadcastText.ConditionID = 0;
                             broadcastText.SoundEntriesID = new uint[2];
@@ -200,7 +200,7 @@ namespace WowPacketParser.SQL
         {
             string query =
                 "SELECT ID, PositionX, PositionY, Icon, Flags, Importance, Name " +
-                $"FROM {Settings.TDBDatabase}.points_of_interest ORDER BY ID;";
+                $"FROM {Settings.Instance.TDBDatabase}.points_of_interest ORDER BY ID;";
             using (var command = SQLConnector.CreateCommand(query))
             {
                 if (command == null)
@@ -229,9 +229,9 @@ namespace WowPacketParser.SQL
         private static void LoadCreatureEquipment()
         {
             string columns = "CreatureID, ID, ItemID1, ItemID2, ItemID3, VerifiedBuild";
-            if (Settings.TargetedDatabase >= TargetedDatabase.Legion)
+            if (Settings.Instance.TargetedDatabase >= TargetedDatabase.Legion)
                 columns += ", AppearanceModID1, ItemVisual1, AppearanceModID2, ItemVisual2, AppearanceModID3, ItemVisual3";
-            string query = $"SELECT {columns} FROM {Settings.TDBDatabase}.creature_equip_template";
+            string query = $"SELECT {columns} FROM {Settings.Instance.TDBDatabase}.creature_equip_template";
 
             using (var command = SQLConnector.CreateCommand(query))
             {
@@ -251,7 +251,7 @@ namespace WowPacketParser.SQL
                             VerifiedBuild = reader.GetInt32("VerifiedBuild")
                         };
 
-                        if (Settings.TargetedDatabase >= TargetedDatabase.Legion)
+                        if (Settings.Instance.TargetedDatabase >= TargetedDatabase.Legion)
                         {
                             equip.AppearanceModID1 = reader.GetUInt16("AppearanceModID1");
                             equip.ItemVisual1 = reader.GetUInt16("ItemVisual1");
@@ -276,7 +276,7 @@ namespace WowPacketParser.SQL
         private static void LoadNPCTexts()
         {
             string columns = "ID, BroadcastTextID0, BroadcastTextID1, BroadcastTextID2, BroadcastTextID3, BroadcastTextID4, BroadcastTextID5, BroadcastTextID6, BroadcastTextID7";
-            string query = $"SELECT {columns} FROM {Settings.TDBDatabase}.npc_text";
+            string query = $"SELECT {columns} FROM {Settings.Instance.TDBDatabase}.npc_text";
 
             using (var command = SQLConnector.CreateCommand(query))
             {
@@ -303,7 +303,7 @@ namespace WowPacketParser.SQL
         private static void LoadGossipMenuNPCTexts()
         {
             string columns = "MenuID, TextID";
-            string query = $"SELECT {columns} FROM {Settings.TDBDatabase}.gossip_menu";
+            string query = $"SELECT {columns} FROM {Settings.Instance.TDBDatabase}.gossip_menu";
 
             using (var command = SQLConnector.CreateCommand(query))
             {
@@ -328,28 +328,28 @@ namespace WowPacketParser.SQL
         {
             // Unit
             NameStores.Add(StoreNameType.Unit, GetDict<int, string>(
-                    $"SELECT `entry`, `name` FROM {Settings.TDBDatabase}.creature_template;"));
+                    $"SELECT `entry`, `name` FROM {Settings.Instance.TDBDatabase}.creature_template;"));
 
             // GameObject
             NameStores.Add(StoreNameType.GameObject, GetDict<int, string>(
-                    $"SELECT `entry`, `name` FROM {Settings.TDBDatabase}.gameobject_template;"));
+                    $"SELECT `entry`, `name` FROM {Settings.Instance.TDBDatabase}.gameobject_template;"));
 
             // Quest
             NameStores.Add(StoreNameType.Quest, GetDict<int, string>(
-                    $"SELECT `ID`, `LogTitle` FROM {Settings.TDBDatabase}.quest_template;"));
+                    $"SELECT `ID`, `LogTitle` FROM {Settings.Instance.TDBDatabase}.quest_template;"));
 
             // Item - Cataclysm and above have ItemSparse.db2
-            if (Settings.TargetedDatabase <= TargetedDatabase.WrathOfTheLichKing)
+            if (Settings.Instance.TargetedDatabase <= TargetedDatabase.WrathOfTheLichKing)
             {
                 NameStores.Add(StoreNameType.Item, GetDict<int, string>(
-                    $"SELECT `entry`, `name` FROM {Settings.TDBDatabase}.item_template;"));
+                    $"SELECT `entry`, `name` FROM {Settings.Instance.TDBDatabase}.item_template;"));
             }
 
             // Phase - Before Cataclysm there was phasemask system
-            if (Settings.TargetedDatabase >= TargetedDatabase.Cataclysm)
+            if (Settings.Instance.TargetedDatabase >= TargetedDatabase.Cataclysm)
             {
                 NameStores.Add(StoreNameType.PhaseId, GetDict<int, string>(
-                    $"SELECT `ID`, `Name` FROM {Settings.TDBDatabase}.phase_name;"));
+                    $"SELECT `ID`, `Name` FROM {Settings.Instance.TDBDatabase}.phase_name;"));
             }
         }
 

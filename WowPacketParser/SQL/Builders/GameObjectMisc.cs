@@ -12,9 +12,9 @@ namespace WowPacketParser.SQL.Builders
     public static class GameObjectMisc
     {
         [BuilderMethod(true, Gameobjects = true)]
-        public static string GameObjectTemplateAddon(Dictionary<WowGuid, GameObject> gameobjects)
+        public static string GameObjectTemplateAddon(Dictionary<WowGuid, GameObject> gameobjects,Settings settings)
         {
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_template_addon))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gameobject_template_addon))
                 return string.Empty;
 
             if (gameobjects.Count == 0)
@@ -28,12 +28,12 @@ namespace WowPacketParser.SQL.Builders
                     continue;
 
                 var go = obj.Value;
-                if (Settings.AreaFilters.Length > 0)
-                    if (!(go.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.AreaFilters)))
+                if (Settings.Instance.AreaFilters.Length > 0)
+                    if (!(go.Area.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.Instance.AreaFilters)))
                         continue;
 
-                if (Settings.MapFilters.Length > 0)
-                    if (!(go.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
+                if (Settings.Instance.MapFilters.Length > 0)
+                    if (!(go.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.Instance.MapFilters)))
                         continue;
 
                 var addon = new GameObjectTemplateAddon

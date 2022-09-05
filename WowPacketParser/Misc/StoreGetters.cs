@@ -15,7 +15,7 @@ namespace WowPacketParser.Misc
             var entryStr = entry.ToString(CultureInfo.InvariantCulture);
 
             string name = string.Empty;
-            if (Settings.UseDBC)
+            if (Settings.Instance.UseDBC)
             {
                 switch (type)
                 {

@@ -14,7 +14,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.LocalesCreatures.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template_locale))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.creature_template_locale))
                 return string.Empty;
 
             // pass empty list, because we want to select the whole db table (faster than select only needed columns)
@@ -29,7 +29,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.LocalesQuests.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.locales_quest))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.locales_quest))
                 return string.Empty;
 
             // pass empty list, because we want to select the whole db table (faster than select only needed columns)
@@ -44,7 +44,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.LocalesQuestOfferRewards.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.locales_quest))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.locales_quest))
                 return string.Empty;
 
             // pass empty list, because we want to select the whole db table (faster than select only needed columns)
@@ -60,7 +60,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.LocalesQuestObjectives.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.locales_quest_objectives))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.locales_quest_objectives))
                 return string.Empty;
 
             // pass empty list, because we want to select the whole db table (faster than select only needed columns)
@@ -75,7 +75,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.LocalesQuestGreeting.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.locales_quest))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.locales_quest))
                 return string.Empty;
 
             // pass empty list, because we want to select the whole db table (faster than select only needed columns)
@@ -90,7 +90,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.LocalesQuestRequestItems.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.locales_quest))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.locales_quest))
                 return string.Empty;
 
             // pass empty list, because we want to select the whole db table (faster than select only needed columns)
@@ -105,7 +105,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.LocalesPageText.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.page_text_locale))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.page_text_locale))
                 return string.Empty;
 
             // pass empty list, because we want to select the whole db table (faster than select only needed columns)
@@ -120,7 +120,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.PlayerChoiceLocales.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.playerchoice_locale))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.playerchoice_locale))
                 return string.Empty;
 
             // pass empty list, because we want to select the whole db table (faster than select only needed columns)
@@ -135,7 +135,7 @@ namespace WowPacketParser.SQL.Builders
             if (Storage.PlayerChoiceResponseLocales.IsEmpty())
                 return string.Empty;
 
-            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.playerchoice_locale))
+            if (!Settings.Instance.SQLOutputFlag.HasAnyFlagBit(SQLOutput.playerchoice_locale))
                 return string.Empty;
 
             // pass empty list, because we want to select the whole db table (faster than select only needed columns)

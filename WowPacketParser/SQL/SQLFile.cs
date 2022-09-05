@@ -16,7 +16,7 @@ namespace WowPacketParser.SQL
 
         public SQLFile(string file)
         {
-            if (string.IsNullOrWhiteSpace(Settings.SQLFileName)) // only delete file if no global
+            if (string.IsNullOrWhiteSpace(Settings.Instance.SQLFileName)) // only delete file if no global
                 File.Delete(file);                               // file name was specified
             _fileName = file;
         }
@@ -43,11 +43,11 @@ namespace WowPacketParser.SQL
 
             _file.WriteLine(header);
 
-            var genCreatures = Settings.SQLOutputFlag.HasAnyFlagBit(Enums.SQLOutput.creature);
+            var genCreatures = Settings.Instance.SQLOutputFlag.HasAnyFlagBit(Enums.SQLOutput.creature);
             if (genCreatures)
                 _file.WriteLine("SET @CGUID := SET_VALUE_MANUALLY_HERE;");
 
-            var genGameObjects = Settings.SQLOutputFlag.HasAnyFlagBit(Enums.SQLOutput.gameobject);
+            var genGameObjects = Settings.Instance.SQLOutputFlag.HasAnyFlagBit(Enums.SQLOutput.gameobject);
             if (genGameObjects)
                 _file.WriteLine("SET @OGUID := SET_VALUE_MANUALLY_HERE;");
 

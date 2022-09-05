@@ -1,4 +1,5 @@
 ﻿using Google.Protobuf;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -31,12 +32,12 @@ namespace WowPacketParser.Loading
         private readonly Statistics _stats;
         private readonly DumpFormatType _dumpFormat;
         private readonly string _logPrefix;
-
+        private readonly IConfiguration _configuration;
         private readonly List<string> _withErrorHeaders = new List<string>();
         private readonly List<string> _skippedHeaders = new List<string>();
         private readonly List<string> _noStructureHeaders = new List<string>();
 
-        public SniffFile(string fileName, DumpFormatType dumpFormat = DumpFormatType.Text, Tuple<int, int> number = null)
+        public SniffFile(string fileName, DumpFormatType dumpFormat = DumpFormatType.Text, Tuple<int, int> number = null, IConfiguration configuration = null)
         {
             if (string.IsNullOrWhiteSpace(fileName))
                 throw new ArgumentException("fileName cannot be null, empty or whitespace.", nameof(fileName));
@@ -47,6 +48,7 @@ namespace WowPacketParser.Loading
             _dumpFormat = dumpFormat;
 
             _logPrefix = number == null ? $"[{Path.GetFileName(FileName)}]" : $"[{number.Item1}/{number.Item2} {Path.GetFileName(FileName)}]";
+            _configuration = configuration;
         }
 
         private string FileName
@@ -149,9 +151,9 @@ namespace WowPacketParser.Loading
                     var outProtoFileName = Path.ChangeExtension(FileName, null) + "_parsed.dat";
                     FileStream protoOutputStream = null;
 
-                    if (Settings.DumpFormatWithTextToFile())
+                    if (Settings.Instance.DumpFormatWithTextToFile())
                     {
-                        if (Utilities.FileIsInUse(outFileName) && Settings.DumpFormat != DumpFormatType.SqlOnly)
+                        if (Utilities.FileIsInUse(outFileName) && Settings.Instance.DumpFormat != DumpFormatType.SqlOnly)
                         {
                             // If our dump format requires a .txt to be created,
                             // check if we can write to that .txt before starting parsing
@@ -172,11 +174,11 @@ namespace WowPacketParser.Loading
                         protoOutputStream = File.Create(outProtoFileName);
                     }
 
-                    Store.Store.SQLEnabledFlags = Settings.SQLOutputFlag;
+                    Store.Store.SQLEnabledFlags = Settings.Instance.SQLOutputFlag;
 
                     _stats.SetStartTime(DateTime.Now);
 
-                    var threadCount = Settings.Threads;
+                    var threadCount = Settings.Instance.Threads;
                     if (threadCount == 0)
                         threadCount = Environment.ProcessorCount;
 
@@ -184,9 +186,9 @@ namespace WowPacketParser.Loading
 
                     var written = false;
 
-                    using (var writer = (Settings.DumpFormatWithTextToFile() ? new StreamWriter(outFileName, true) : null))
+                    using (var writer = (Settings.Instance.DumpFormatWithTextToFile() ? new StreamWriter(outFileName, true) : null))
                     {
-                        Packets packets = new() { Version = StructureVersion.ProtobufStructureVersion, DumpType = (uint)Settings.DumpFormat };
+                        Packets packets = new() { Version = StructureVersion.ProtobufStructureVersion, DumpType = (uint)Settings.Instance.DumpFormat };
                         var firstRead = true;
                         var firstWrite = true;
 
@@ -229,7 +231,7 @@ namespace WowPacketParser.Loading
                             else
                                 Console.WriteLine(reader.PacketReader.GetCurrentSize() * 1.0 / reader.PacketReader.GetTotalSize());
 
-                            if (!packet.Status.HasAnyFlag(Settings.OutputFlag) || !packet.WriteToFile)
+                            if (!packet.Status.HasAnyFlag(Settings.Instance.OutputFlag) || !packet.WriteToFile)
                             {
                                 packet.ClosePacket();
                                 return;
@@ -247,7 +249,7 @@ namespace WowPacketParser.Loading
                             }
 
                             // get packet header if necessary
-                            if (Settings.LogPacketErrors)
+                            if (Settings.Instance.LogPacketErrors)
                             {
                                 switch (packet.Status)
                                 {
@@ -302,7 +304,7 @@ namespace WowPacketParser.Loading
                         _stats.SetEndTime(DateTime.Now);
                     }
 
-                    if (Settings.DumpFormatWithTextToFile())
+                    if (Settings.Instance.DumpFormatWithTextToFile())
                     {
                         if (written)
                             Trace.WriteLine($"{_logPrefix}: Saved file to '{outFileName}'");
@@ -315,10 +317,10 @@ namespace WowPacketParser.Loading
 
                     Trace.WriteLine($"{_logPrefix}: {_stats}");
 
-                    if (Settings.SQLOutputFlag != 0 || HotfixSettings.Instance.ShouldLog())
+                    if (Settings.Instance.SQLOutputFlag != 0 || HotfixSettings.Instance.ShouldLog())
                         WriteSQLs();
 
-                    if (Settings.LogPacketErrors)
+                    if (Settings.Instance.LogPacketErrors)
                         WritePacketErrors();
 
                     GC.Collect(); // Force a GC collect after parsing a file. It seems to help.
@@ -331,9 +333,9 @@ namespace WowPacketParser.Loading
                     if (packets.Count == 0)
                         break;
 
-                    if (Settings.FilterPacketsNum < 0)
+                    if (Settings.Instance.FilterPacketsNum < 0)
                     {
-                        var packetsPerSplit = Math.Abs(Settings.FilterPacketsNum);
+                        var packetsPerSplit = Math.Abs(Settings.Instance.FilterPacketsNum);
                         var totalPackets = packets.Count;
 
                         var numberOfSplits = (int)Math.Ceiling((double)totalPackets / packetsPerSplit);
@@ -486,7 +488,7 @@ namespace WowPacketParser.Loading
                    "# File name: " + Path.GetFileName(fileName) + Environment.NewLine +
                    "# Detected build: " + ClientVersion.Build + Environment.NewLine +
                    "# Detected locale: " + ClientLocale.ClientLocaleString + Environment.NewLine +
-                   "# Targeted database: " + Settings.TargetedDatabase + Environment.NewLine +
+                   "# Targeted database: " + Settings.Instance.TargetedDatabase + Environment.NewLine +
                    "# Parsing date: " + DateTime.Now.ToString(CultureInfo.InvariantCulture) + Environment.NewLine;
         }
 
@@ -562,9 +564,9 @@ namespace WowPacketParser.Loading
 
         private void WriteSQLs()
         {
-            var sqlFileName = string.IsNullOrWhiteSpace(Settings.SQLFileName) ? $"{Utilities.FormattedDateTimeForFiles()}_{Path.GetFileName(FileName)}.sql" : Settings.SQLFileName;
+            var sqlFileName = string.IsNullOrWhiteSpace(Settings.Instance.SQLFileName) ? $"{Utilities.FormattedDateTimeForFiles()}_{Path.GetFileName(FileName)}.sql" : Settings.Instance.SQLFileName;
 
-            if (!string.IsNullOrWhiteSpace(Settings.SQLFileName))
+            if (!string.IsNullOrWhiteSpace(Settings.Instance.SQLFileName))
                 return;
 
             Builder.DumpSQL($"{_logPrefix}: Dumping sql", sqlFileName, GetHeader(FileName));
