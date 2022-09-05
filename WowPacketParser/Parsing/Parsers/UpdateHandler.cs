@@ -2884,7 +2884,7 @@ namespace WowPacketParser.Parsing.Parsers
             return moveInfo;
         }
 
-        private static MovementInfo ReadMovementUpdateBlock(Packet packet, WowGuid guid, object index)
+        public static MovementInfo ReadMovementUpdateBlock(Packet packet, WowGuid guid, object index)
         {
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V5_1_0_16309))
                 return ReadMovementUpdateBlock510(packet, guid, index);
