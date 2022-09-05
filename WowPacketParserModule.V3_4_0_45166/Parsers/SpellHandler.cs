@@ -168,5 +168,16 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             if (hasLog)
                 V8_0_1_27101.Parsers.SpellHandler.ReadSpellCastLogData(packet, "LogData");
         }
+
+        [Parser(Opcode.SMSG_SPELL_FAILED_OTHER)]
+        public static void HandleSpellFailedOther(Packet packet)
+        {
+            var spellFail = packet.Holder.SpellFailure = new();
+            spellFail.Caster = packet.ReadPackedGuid128("CasterUnit");
+            spellFail.CastGuid = packet.ReadPackedGuid128("CastID");
+            spellFail.Spell = packet.ReadUInt32<SpellId>("SpellID");
+            packet.ReadInt32("SpellXSpellVisual");
+            spellFail.Success = packet.ReadByte("Reason") == 0;
+        }
     }
 }
