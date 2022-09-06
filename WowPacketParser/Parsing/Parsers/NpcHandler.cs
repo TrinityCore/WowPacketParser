@@ -67,6 +67,9 @@ namespace WowPacketParser.Parsing.Parsers
             LastGossipOption.ActionPoiId = gossipPOIID;
             TempGossipOptionPOI.ActionPoiId = gossipPOIID;
 
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu_option))
+                return;
+
             if (!TempGossipOptionPOI.HasSelection)
                 return;
 
