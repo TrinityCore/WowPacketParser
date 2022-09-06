@@ -89,6 +89,9 @@ namespace WowPacketParser.Parsing.Parsers
 
         public static void UpdateLastGossipOptionActionMessage(TimeSpan timeSpan, uint? menuId)
         {
+            if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.gossip_menu_option))
+                return;
+
             if (!LastGossipOption.HasSelection)
                 return;
 
