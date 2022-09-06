@@ -16,7 +16,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
         {
             var gossipQuest = new GossipQuestOption();
             gossipQuest.QuestId = (uint)packet.ReadInt32("QuestID", idx);
-            if (ClientVersion.AddedInVersion(ClientType.Shadowlands))
+            if (ClientVersion.AddedInVersion(ClientType.Shadowlands) || ClientVersion.IsClassicClientVersionBuild(ClientVersion.Build))
                 packet.ReadInt32("ContentTuningID", idx);
 
             packet.ReadInt32("QuestType", idx);
