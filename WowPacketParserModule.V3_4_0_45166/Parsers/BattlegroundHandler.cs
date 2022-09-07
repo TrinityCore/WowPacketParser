@@ -33,5 +33,15 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             for (int i = 0; i < 6; i++)
                 ReadRatedPvpBracketInfo(packet, i);
         }
+
+        [Parser(Opcode.CMSG_BATTLEMASTER_JOIN_SKIRMISH)]
+        public static void HandleBattlemasterJoinSkirmish(Packet packet)
+        {
+            packet.ReadPackedGuid128("BattlemasterGUID");
+            packet.ReadByteE<LfgRoleFlag>("Roles");
+            packet.ReadByte("Bracket");
+            packet.ResetBitReader();
+            packet.ReadBit("IsRequeue");
+        }
     }
 }
