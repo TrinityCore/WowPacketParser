@@ -190,5 +190,23 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadInt32("SpellXSpellVisual");
             spellFail.Success = packet.ReadInt16("Reason") == 0;
         }
+
+        [Parser(Opcode.SMSG_SPELL_CHANNEL_START, ClientVersionBuild.V7_2_0_23826)]
+        public static void HandleSpellChannelStart(Packet packet)
+        {
+            packet.ReadPackedGuid128("CasterGUID");
+            packet.ReadInt32<SpellId>("SpellID");
+            packet.ReadInt32("SpellXSpellVisual");
+            packet.ReadInt32("ChannelDuration");
+
+            var hasInterruptImmunities = packet.ReadBit("HasInterruptImmunities");
+            var hasHealPrediction = packet.ReadBit("HasHealPrediction");
+
+            if (hasInterruptImmunities)
+                V6_0_2_19033.Parsers.SpellHandler.ReadSpellChannelStartInterruptImmunities(packet, "InterruptImmunities");
+
+            if (hasHealPrediction)
+                V6_0_2_19033.Parsers.SpellHandler.ReadSpellTargetedHealPrediction(packet, "HealPrediction");
+        }
     }
 }
