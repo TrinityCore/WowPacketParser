@@ -191,7 +191,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             spellFail.Success = packet.ReadInt16("Reason") == 0;
         }
 
-        [Parser(Opcode.SMSG_SPELL_CHANNEL_START, ClientVersionBuild.V7_2_0_23826)]
+        [Parser(Opcode.SMSG_SPELL_CHANNEL_START)]
         public static void HandleSpellChannelStart(Packet packet)
         {
             packet.ReadPackedGuid128("CasterGUID");
