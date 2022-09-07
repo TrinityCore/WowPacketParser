@@ -29,5 +29,17 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             setTime.ServerTimeHolidayOffset = packet.ReadInt32("ServerTimeHolidayOffset");
             setTime.GameTimeHolidayOffset = packet.ReadInt32("GameTimeHolidayOffset");
         }
+
+        [HasSniffData]
+        [Parser(Opcode.SMSG_NEW_WORLD)]
+        public static void HandleNewWorld(Packet packet)
+        {
+            WowPacketParser.Parsing.Parsers.MovementHandler.CurrentMapId = (uint)packet.ReadInt32<MapId>("Map");
+            packet.ReadVector4("Position");
+            packet.ReadUInt32("Reason");
+            packet.ReadVector3("MovementOffset");
+
+            packet.AddSniffData(StoreNameType.Map, (int)WowPacketParser.Parsing.Parsers.MovementHandler.CurrentMapId, "NEW_WORLD");
+        }
     }
 }
