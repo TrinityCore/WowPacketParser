@@ -15,6 +15,7 @@ namespace WowPacketParser
     {
         private static void Main(string[] args)
         {
+            SetUpWindowTitle();
             SetUpConsole();
 
             var files = args.ToList();
@@ -116,9 +117,13 @@ namespace WowPacketParser
             EndPrompt(true);
         }
 
-        private static void SetUpConsole()
+        private static void SetUpWindowTitle()
         {
             Console.Title = "WowPacketParser";
+        }
+
+        public static void SetUpConsole()
+        {
 
             Trace.Listeners.Clear();
 
