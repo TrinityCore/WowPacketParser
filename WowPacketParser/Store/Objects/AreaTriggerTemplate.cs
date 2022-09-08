@@ -19,8 +19,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Flags")]
         public uint? Flags;
 
-        [DBFieldName("Data", 6, true)] // kept in TargetedDatabase.Shadowlands to preserve data for non-spell areatriggers
-        public float?[] Data = { 0, 0, 0, 0, 0, 0 };
+        [DBFieldName("Data", 8, true)] // kept in TargetedDatabase.Shadowlands to preserve data for non-spell areatriggers
+        public float?[] Data = { 0, 0, 0, 0, 0, 0, 0, 0 };
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
