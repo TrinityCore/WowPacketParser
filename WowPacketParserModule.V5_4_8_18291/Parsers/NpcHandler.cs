@@ -181,7 +181,7 @@ namespace WowPacketParserModule.V5_4_8_18291.Parsers
                 g.MenuID = menuId;
                 g.FillBroadcastTextIDs();
 
-                if (Settings.TargetedDatabase != TargetedDatabase.Shadowlands)
+                if (Settings.TargetedDatabase < TargetedDatabase.Shadowlands)
                     g.FillOptionType(guid);
 
                 Storage.GossipMenuOptions.Add((g.MenuID, g.OptionID), g, packet.TimeSpan);

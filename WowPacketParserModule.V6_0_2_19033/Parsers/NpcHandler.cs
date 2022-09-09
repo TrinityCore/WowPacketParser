@@ -70,7 +70,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             gossipOption.FillBroadcastTextIDs();
 
-            if (Settings.TargetedDatabase != TargetedDatabase.Shadowlands)
+            if (Settings.TargetedDatabase < TargetedDatabase.Shadowlands)
                 gossipOption.FillOptionType(npcGuid);
 
             Storage.GossipMenuOptions.Add((gossipOption.MenuID, gossipOption.OptionID), gossipOption, packet.TimeSpan);

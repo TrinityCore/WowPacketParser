@@ -619,7 +619,7 @@ namespace WowPacketParser.Parsing.Parsers
 
                 gossipOption.FillBroadcastTextIDs();
 
-                if (Settings.TargetedDatabase != TargetedDatabase.Shadowlands)
+                if (Settings.TargetedDatabase < TargetedDatabase.Shadowlands)
                     gossipOption.FillOptionType(guid);
 
                 if (!string.IsNullOrEmpty(boxText))
