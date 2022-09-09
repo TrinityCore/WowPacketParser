@@ -23,7 +23,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("OptionBroadcastTextId")]
         public int? OptionBroadcastTextId;
 
-        [DBFieldName("OptionType")]
+        [DBFieldName("OptionType", TargetedDatabase.Zero, TargetedDatabase.Shadowlands)]
         public GossipOptionType? OptionType;
 
         [DBFieldName("OptionNpcFlag")]
