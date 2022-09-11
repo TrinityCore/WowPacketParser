@@ -112,7 +112,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             var overmaxRewardCount = packet.ReadUInt32("OvermaxRewardCount", indexes);
 
             for (int i = 0; i < encounterCount; i++)
-                packet.ReadUInt32("AbilityID", indexes, i);
+                ReadGarrisonEncounter(packet, indexes, "MissionEncounters", i);
 
             for (int i = 0; i < rewardCount; i++)
                 V7_0_3_22248.Parsers.GarrisonHandler.ReadGarrisonMissionReward(packet, indexes, "MissionRewards", i);
