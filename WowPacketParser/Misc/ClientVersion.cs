@@ -975,6 +975,7 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V3_4_0_45264:
                 case ClientVersionBuild.V3_4_0_45327:
                 case ClientVersionBuild.V3_4_0_45435:
+                case ClientVersionBuild.V3_4_0_45572:
                     return ClientVersionBuild.V3_4_0_45166;
                 case ClientVersionBuild.BattleNetV37165:
                     return ClientVersionBuild.BattleNetV37165;
@@ -1368,6 +1369,7 @@ namespace WowPacketParser.Misc
                 case ClientVersionBuild.V3_4_0_45264:
                 case ClientVersionBuild.V3_4_0_45327:
                 case ClientVersionBuild.V3_4_0_45435:
+                case ClientVersionBuild.V3_4_0_45572:
                     return true;
                 default:
                     return false;
