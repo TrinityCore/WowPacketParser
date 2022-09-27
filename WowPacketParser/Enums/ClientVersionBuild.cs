@@ -563,7 +563,7 @@ namespace WowPacketParser.Enums
         V3_4_0_45572 = 45572, // live
         V3_4_0_45613 = 45613, // live
         V3_4_0_45704 = 45704, // both live and ptr
-        V3_4_0_45772 = 45772, // both live and ptr ^(;,;)^ CTHULHU Loves You!
+        V3_4_0_45772 = 45772, // both live and ptr
 
         // Battle.net - should probably not mix this but oh well
         BattleNetV37165 = 37165,
