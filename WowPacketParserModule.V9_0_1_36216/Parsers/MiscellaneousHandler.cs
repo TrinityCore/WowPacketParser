@@ -251,5 +251,16 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             if (hasInstanceGroupSize)
                 packet.ReadUInt32("InstanceGroupSize");
         }
+
+        [Parser(Opcode.SMSG_PLAY_SOUND)]
+        public static void HandlePlaySound(Packet packet)
+        {
+            PacketPlaySound packetPlaySound = packet.Holder.PlaySound = new PacketPlaySound();
+            var sound = packetPlaySound.Sound = (uint)packet.ReadInt32<SoundId>("SoundKitID");
+            packetPlaySound.Source = packet.ReadPackedGuid128("SourceObjectGUID").ToUniversalGuid();
+            packetPlaySound.BroadcastTextId = (uint)packet.ReadInt32("BroadcastTextID");
+
+            Storage.Sounds.Add(sound, packet.TimeSpan);
+        }
     }
 }
