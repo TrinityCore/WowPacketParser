@@ -439,7 +439,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             packet.ReadByte("PartyIndex");
             packet.ReadPackedGuid128("PartyGUID");
             packet.ReadPackedGuid128("InitiatorGUID");
-            packet.ReadInt32("Duration");
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772))
+                packet.ReadInt64("Duration");
+            else
+                packet.ReadInt32("Duration");
         }
 
         [Parser(Opcode.CMSG_READY_CHECK_RESPONSE)]
