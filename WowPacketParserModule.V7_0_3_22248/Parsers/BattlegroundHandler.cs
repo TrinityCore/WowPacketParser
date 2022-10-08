@@ -6,6 +6,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
 {
     public static class BattlegroundHandler
     {
+        [Parser(Opcode.CMSG_REQUEST_RATED_PVP_INFO)]
         [Parser(Opcode.CMSG_REQUEST_SCHEDULED_PVP_INFO)]
         public static void HandleBattlegroundZero(Packet packet)
         {

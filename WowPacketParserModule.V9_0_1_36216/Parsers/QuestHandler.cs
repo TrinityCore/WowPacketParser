@@ -68,6 +68,7 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             packet.ReadBit("IsBoostSpell", idx);
         }
 
+        [Parser(Opcode.CMSG_REQUEST_COVENANT_CALLINGS)]
         [Parser(Opcode.SMSG_CLEAR_TREASURE_PICKER_CACHE)]
         public static void HandleEmpty(Packet packet)
         {
