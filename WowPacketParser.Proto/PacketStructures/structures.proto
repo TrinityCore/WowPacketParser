@@ -170,6 +170,7 @@ message PacketEmote {
 message PacketPlaySound {
   uint32 sound = 1;
   UniversalGuid source = 2;
+  uint32 broadcastTextId = 3;
 }
 
 message PacketPlayObjectSound {
