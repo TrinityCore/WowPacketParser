@@ -190,7 +190,7 @@ message PacketGossipHello {
 
 message GossipMessageOption {
   uint32 optionIndex = 1;
-  int32 optionIcon = 2;
+  int32 optionNpc = 2;
   string text = 3;
   bool boxCoded = 4;
   uint32 boxCost = 5;

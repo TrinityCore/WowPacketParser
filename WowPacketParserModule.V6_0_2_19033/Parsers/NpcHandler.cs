@@ -29,8 +29,8 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             };
 
             gossipOption.OptionID = gossipMessageOption.OptionIndex = (uint)packet.ReadInt32("OptionID", idx);
-            gossipOption.OptionIcon = (GossipOptionIcon?)packet.ReadByte("OptionNPC", idx);
-            gossipMessageOption.OptionIcon = (int) gossipOption.OptionIcon;
+            gossipOption.OptionNpc = (GossipOptionNpc?)packet.ReadByte("OptionNPC", idx);
+            gossipMessageOption.OptionNpc = (int) gossipOption.OptionNpc;
             gossipOption.BoxCoded = gossipMessageOption.BoxCoded = packet.ReadByte("OptionFlags", idx) != 0;
             gossipOption.BoxMoney = gossipMessageOption.BoxCost = (uint)packet.ReadInt32("OptionCost", idx);
             if (ClientVersion.AddedInVersion(ClientBranch.Retail, ClientVersionBuild.V9_2_0_42423) ||
@@ -69,7 +69,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 packet.ReadInt32("SpellID", idx);
 
             gossipOption.FillBroadcastTextIDs();
-            gossipOption.FillOptionType(npcGuid);
+
+            if (Settings.TargetedDatabase < TargetedDatabase.Shadowlands)
+                gossipOption.FillOptionType(npcGuid);
+
             Storage.GossipMenuOptions.Add((gossipOption.MenuID, gossipOption.OptionID), gossipOption, packet.TimeSpan);
 
             return gossipMessageOption;

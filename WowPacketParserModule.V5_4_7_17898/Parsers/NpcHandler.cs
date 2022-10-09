@@ -130,7 +130,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 gossipMenuOption.BoxMoney = packet.ReadUInt32("Required money", i);
                 gossipMenuOption.OptionText = packet.ReadWoWString("Text", optionTextLen[i], i);
                 gossipMenuOption.OptionID = packet.ReadUInt32("OptionID", i);
-                gossipMenuOption.OptionIcon = packet.ReadByteE<GossipOptionIcon>("Icon", i);
+                gossipMenuOption.OptionNpc = packet.ReadByteE<GossipOptionNpc>("OptionNPC", i);
                 var boxText = packet.ReadWoWString("Box Text", boxTextLen[i], i);
                 gossipMenuOption.BoxCoded = packet.ReadBool("Box", i);
 
@@ -142,7 +142,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 packetGossip.Options.Add(new GossipMessageOption()
                 {
                     OptionIndex = gossipMenuOption.OptionID.Value,
-                    OptionIcon = (int)gossipMenuOption.OptionIcon,
+                    OptionNpc = (int)gossipMenuOption.OptionNpc,
                     BoxCoded = gossipMenuOption.BoxCoded.Value,
                     BoxCost = gossipMenuOption.BoxMoney.Value,
                     Text = gossipMenuOption.OptionText,
@@ -187,7 +187,10 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             {
                 g.MenuID = menuId;
                 g.FillBroadcastTextIDs();
-                g.FillOptionType(guid);
+
+                if (Settings.TargetedDatabase < TargetedDatabase.Shadowlands)
+                    g.FillOptionType(guid);
+
                 Storage.GossipMenuOptions.Add((g.MenuID, g.OptionID), g, packet.TimeSpan);
             });
 

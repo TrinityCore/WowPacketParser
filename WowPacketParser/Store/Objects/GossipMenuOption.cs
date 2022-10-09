@@ -14,8 +14,9 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("OptionID", true)]
         public uint? OptionID;
 
-        [DBFieldName("OptionIcon")]
-        public GossipOptionIcon? OptionIcon;
+        [DBFieldName("OptionIcon", TargetedDatabase.Zero, TargetedDatabase.Shadowlands)]
+        [DBFieldName("OptionNpc", TargetedDatabase.Shadowlands)]
+        public GossipOptionNpc? OptionNpc;
 
         [DBFieldName("OptionText")]
         public string OptionText;
@@ -102,16 +103,16 @@ namespace WowPacketParser.Store.Objects
                 }
             }
 
-            switch (OptionIcon)
+            switch (OptionNpc)
             {
-                case GossipOptionIcon.Gossip:
+                case GossipOptionNpc.None:
                     if (npcFlags[0].HasAnyFlag(NPCFlags.Gossip))
                     {
                         OptionType = GossipOptionType.Gossip;
                         OptionNpcFlag = NPCFlags.Gossip;
                     }
                     break;
-                case GossipOptionIcon.Vendor:
+                case GossipOptionNpc.Vendor:
                     OptionType = GossipOptionType.Vendor;
                     if (npcFlags[0].HasAnyFlag(NPCFlags.AmmoVendor))
                         OptionNpcFlag = NPCFlags.AmmoVendor;
@@ -124,11 +125,11 @@ namespace WowPacketParser.Store.Objects
                     else
                         OptionNpcFlag = NPCFlags.Vendor;
                     break;
-                case GossipOptionIcon.Taxi:
+                case GossipOptionNpc.TaxiNode:
                     OptionType = GossipOptionType.Taxivendor;
                     OptionNpcFlag = NPCFlags.FlightMaster;
                     break;
-                case GossipOptionIcon.Trainer:
+                case GossipOptionNpc.Trainer:
                     OptionType = GossipOptionType.Trainer;
                     if (npcFlags[0].HasAnyFlag(NPCFlags.Trainer))
                         OptionNpcFlag = NPCFlags.Trainer;
@@ -137,39 +138,39 @@ namespace WowPacketParser.Store.Objects
                     else if (npcFlags[0].HasAnyFlag(NPCFlags.ClassTrainer))
                         OptionNpcFlag = NPCFlags.ClassTrainer;
                     break;
-                case GossipOptionIcon.SpiritHealer:
+                case GossipOptionNpc.SpiritHealer:
                     OptionType = GossipOptionType.Spirithealer;
                     OptionNpcFlag = NPCFlags.SpiritHealer;
                     break;
-                case GossipOptionIcon.Inkeeper:
+                case GossipOptionNpc.Binder:
                     OptionType = GossipOptionType.Innkeeper;
                     OptionNpcFlag = NPCFlags.InnKeeper;
                     break;
-                case GossipOptionIcon.Banker:
+                case GossipOptionNpc.Banker:
                     OptionType = GossipOptionType.Banker;
                     OptionNpcFlag = NPCFlags.Banker;
                     break;
-                case GossipOptionIcon.Petition:
+                case GossipOptionNpc.PetitionVendor:
                     OptionType = GossipOptionType.Petitioner;
                     OptionNpcFlag = NPCFlags.Petitioner;
                     break;
-                case GossipOptionIcon.Tabard:
+                case GossipOptionNpc.TabardVendor:
                     OptionType = GossipOptionType.TabardDesigner;
                     OptionNpcFlag = NPCFlags.TabardDesigner;
                     break;
-                case GossipOptionIcon.Battlemaster:
+                case GossipOptionNpc.BattleMaster:
                     OptionType = GossipOptionType.Battlefield;
                     OptionNpcFlag = NPCFlags.BattleMaster;
                     break;
-                case GossipOptionIcon.Auctioneer:
+                case GossipOptionNpc.Auctioneer:
                     OptionType = GossipOptionType.Auctioneer;
                     OptionNpcFlag = NPCFlags.Auctioneer;
                     break;
-                case GossipOptionIcon.StableMaster:
+                case GossipOptionNpc.StableMaster:
                     OptionType = GossipOptionType.StablePet;
                     OptionNpcFlag = NPCFlags.StableMaster;
                     break;
-                case GossipOptionIcon.TransmogrifyNpc:
+                case GossipOptionNpc.Transmogrify:
                     OptionType = GossipOptionType.Transmogrifier;
                     OptionNpcFlag = NPCFlags.Transmogrifier;
                     break;

@@ -611,13 +611,16 @@ namespace WowPacketParser.Parsing.Parsers
                 };
 
                 gossipOption.OptionID = packet.ReadUInt32("OptionID", i);
-                gossipOption.OptionIcon = packet.ReadByteE<GossipOptionIcon>("Icon", i);
+                gossipOption.OptionNpc = packet.ReadByteE<GossipOptionNpc>("OptionNPC", i);
                 gossipOption.BoxCoded = packet.ReadBool("Box", i);
                 gossipOption.BoxMoney = packet.ReadUInt32("Required money", i);
                 gossipOption.OptionText = packet.ReadCString("Text", i);
                 var boxText = packet.ReadCString("Box Text", i);
-                gossipOption.FillOptionType(guid);
+
                 gossipOption.FillBroadcastTextIDs();
+
+                if (Settings.TargetedDatabase < TargetedDatabase.Shadowlands)
+                    gossipOption.FillOptionType(guid);
 
                 if (!string.IsNullOrEmpty(boxText))
                     gossipOption.BoxText = boxText;
@@ -625,7 +628,7 @@ namespace WowPacketParser.Parsing.Parsers
                 packetGossip.Options.Add(new GossipMessageOption()
                 {
                     OptionIndex = gossipOption.OptionID.Value,
-                    OptionIcon = (int)gossipOption.OptionIcon,
+                    OptionNpc = (int)gossipOption.OptionNpc,
                     BoxCoded = gossipOption.BoxCoded.Value,
                     BoxCost = gossipOption.BoxMoney.Value,
                     Text = gossipOption.OptionText,
