@@ -27,7 +27,7 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("OptionType", TargetedDatabase.Zero, TargetedDatabase.Shadowlands)]
         public GossipOptionType? OptionType;
 
-        [DBFieldName("OptionNpcFlag")]
+        [DBFieldName("OptionNpcFlag", TargetedDatabase.Zero, TargetedDatabase.Shadowlands)]
         public NPCFlags? OptionNpcFlag;
 
         [DBFieldName("Language", TargetedDatabase.Shadowlands)]
