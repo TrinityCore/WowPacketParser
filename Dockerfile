@@ -1,9 +1,9 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
-WORKDIR /app/src
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
 COPY . .
-RUN dotnet build "WowPacketParser.sln" -c Release
+RUN dotnet build -c Release
 
-FROM mcr.microsoft.com/dotnet/runtime:5.0 AS final
-WORKDIR /usr/src/app/build
-COPY --from=build /app/src/WowPacketParser/bin/Release .
+FROM mcr.microsoft.com/dotnet/runtime:6.0
+WORKDIR /app
+COPY --from=build /src/WowPacketParser/bin/Release .
 ENTRYPOINT ["dotnet", "WowPacketParser.dll"]
