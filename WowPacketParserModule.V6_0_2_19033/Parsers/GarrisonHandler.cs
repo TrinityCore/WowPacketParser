@@ -1,6 +1,7 @@
 using WowPacketParser.Enums;
 using WowPacketParser.Misc;
 using WowPacketParser.Parsing;
+using CoreParsers = WowPacketParser.Parsing.Parsers;
 
 namespace WowPacketParserModule.V6_0_2_19033.Parsers
 {
@@ -720,8 +721,10 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V7_2_5_24330))
             {
-                packet.ReadInt32("GarrTalentTreeID");
+                int garrTalentTreeID = packet.ReadInt32("GarrTalentTreeID");
                 packet.ReadInt32("FriendshipFactionID");
+
+                CoreParsers.NpcHandler.AddGossipOptionAddon(garrTalentTreeID, packet.TimeSpan, true);
             }
         }
     }

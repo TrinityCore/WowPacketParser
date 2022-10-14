@@ -133,6 +133,16 @@ namespace WowPacketParser.Parsing.Parsers
             }
         }
 
+        public static void AddGossipOptionAddon(int? garrTalentTreeID, TimeSpan timeSpan, bool checkDelay = false)
+        {
+            if (LastGossipOption.HasSelection)
+                if (!checkDelay || (timeSpan - LastGossipOption.TimeSpan).Duration() <= TimeSpan.FromMilliseconds(2500))
+                    Storage.GossipMenuOptionAddons.Add(new GossipMenuOptionAddon { MenuID = LastGossipOption.MenuId, OptionID = LastGossipOption.OptionIndex, GarrTalentTreeID = garrTalentTreeID }, timeSpan);
+
+            LastGossipOption.Reset();
+            TempGossipOptionPOI.Reset();
+        }
+
         [Parser(Opcode.SMSG_GOSSIP_POI)]
         public static void HandleGossipPoi(Packet packet)
         {
