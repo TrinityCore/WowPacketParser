@@ -57,10 +57,22 @@ Nightly Builds
 Docker (experimental)
 ---------------------
 
-It is possible run WPP on Docker using the `trinitycore/wpp` image:
+It is possible run WPP on Docker using the `trinitycore/wpp` image.
+
+To build image:
+```
+docker build . -t trinitycore/wpp
+```
+
+To configure:
+
+Copy WowPacketParser/App.config as template and edit as your needs.
+
+
+To run:
 
 ```
-docker run -v /place/where/sniffs/are/kept:/usr/src/app/build/sniffs trinitycore/wpp sniffs/sniffname.pkt
+docker run -v /place/where/sniffs/are/kept:/sniffs -v App.config:/app/WowPacketparser.dll.config trinitycore/wpp /sniffs/sniffname.pkt
 ```
 
 */place/where/sniffs/are/kept* should your local directory containing the .pkt file and *sniffname.pkt* the file to be parsed.
