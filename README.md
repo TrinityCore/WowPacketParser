@@ -72,7 +72,7 @@ Copy WowPacketParser/App.config as template and edit as your needs.
 To run:
 
 ```
-docker run --rm -it -v /place/where/sniffs/are/kept:/sniffs -v /place/where/config/is/App.config:/app/WowPacketParser.dll.config trinitycore/wpp /sniffs/sniffname.pkt
+docker run -v /place/where/sniffs/are/kept:/sniffs -v App.config:/app/WowPacketparser.dll.config trinitycore/wpp /sniffs/sniffname.pkt
 ```
 
 */place/where/sniffs/are/kept* should your local directory containing the .pkt file and *sniffname.pkt* the file to be parsed.
