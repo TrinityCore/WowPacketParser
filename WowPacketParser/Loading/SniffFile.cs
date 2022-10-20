@@ -562,7 +562,7 @@ namespace WowPacketParser.Loading
 
         private void WriteSQLs()
         {
-            var sqlFileName = string.IsNullOrWhiteSpace(Settings.SQLFileName) ? $"{Utilities.FormattedDateTimeForFiles()}_{Path.GetFileName(FileName)}.sql" : Settings.SQLFileName;
+            var sqlFileName = string.IsNullOrWhiteSpace(Settings.SQLFileName) ? $"{Path.GetDirectoryName(FileName)}/{Utilities.FormattedDateTimeForFiles()}_{Path.GetFileName(FileName)}.sql" : Settings.SQLFileName;
 
             if (!string.IsNullOrWhiteSpace(Settings.SQLFileName))
                 return;
