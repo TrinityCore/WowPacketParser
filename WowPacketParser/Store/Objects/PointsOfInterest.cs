@@ -31,8 +31,8 @@ namespace WowPacketParser.Store.Objects
         [DBFieldName("Name")]
         public string Name;
 
-        [DBFieldName("Unknown905", TargetedDatabase.Shadowlands)]
-        public int? Unknown905;
+        [DBFieldName("WMOGroupID", TargetedDatabase.Shadowlands)]
+        public int? WMOGroupID;
 
         [DBFieldName("VerifiedBuild")]
         public int? VerifiedBuild = ClientVersion.BuildInt;
