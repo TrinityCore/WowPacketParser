@@ -203,7 +203,7 @@ namespace WowPacketParser.SQL.Builders
                     addonRow.Data.Mount = (uint)creature.UnitData.MountDisplayID;
                     addonRow.Data.Bytes1 = creature.Bytes1;
                     addonRow.Data.Bytes2 = creature.Bytes2;
-                    addonRow.Data.Emote = 0;
+                    addonRow.Data.Emote = (uint)creature.UnitData.EmoteState.GetValueOrDefault(0);
                     addonRow.Data.Auras = auras;
                     addonRow.Data.AIAnimKit = creature.AIAnimKit.GetValueOrDefault(0);
                     addonRow.Data.MovementAnimKit = creature.MovementAnimKit.GetValueOrDefault(0);
@@ -220,7 +220,7 @@ namespace WowPacketParser.SQL.Builders
                     }
                 }
 
-                if (creature.IsTemporarySpawn() && !Settings.SaveTempSpawns)
+                if (creature.Guid.GetHighType() == HighGuidType.Pet || creature.IsTemporarySpawn())
                 {
                     row.CommentOut = true;
                     row.Comment += " - !!! might be temporary spawn !!!";
