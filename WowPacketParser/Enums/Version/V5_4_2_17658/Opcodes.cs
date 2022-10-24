@@ -141,6 +141,7 @@ namespace WowPacketParser.Enums.Version.V5_4_2_17658
             {Opcode.SMSG_LOGOUT_RESPONSE, 0x104A},
             {Opcode.SMSG_MAIL_LIST_RESULT, 0x0F2C},
             {Opcode.SMSG_MOTD, 0x08BB},
+            {Opcode.SMSG_MOVE_APPLY_MOVEMENT_FORCE, 0x08C6},
             {Opcode.SMSG_MOVE_SET_CAN_FLY, 0x06EB},
             {Opcode.SMSG_MOVE_SET_FLIGHT_SPEED, 0x0207},
             {Opcode.SMSG_MOVE_SET_RUN_SPEED, 0x0183},

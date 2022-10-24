@@ -3883,5 +3883,41 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ParseBitStream(guid, 5, 4, 0, 1, 3, 7, 6, 2);
             packet.WriteGuid("Guid", guid);
         }
+
+        [Parser(Opcode.SMSG_MOVE_APPLY_MOVEMENT_FORCE)]
+        public static void HandleMoveApplyMovementForce(Packet packet)
+        {
+            var pos = new Vector3();
+            var guid = new byte[8];
+
+            guid[5] = packet.ReadBit();
+            guid[4] = packet.ReadBit();
+            packet.ReadBits("Type", 2);
+            guid[6] = packet.ReadBit();
+            guid[1] = packet.ReadBit();
+            guid[2] = packet.ReadBit();
+            guid[3] = packet.ReadBit();
+            guid[0] = packet.ReadBit();
+            guid[7] = packet.ReadBit();
+
+            pos.Z = packet.ReadSingle();
+            packet.ReadSingle("Magnitude");
+            packet.ReadXORByte(guid, 4);
+            packet.ReadUInt32("SequenceIndex");
+            packet.ReadXORByte(guid, 5);
+            packet.ReadXORByte(guid, 7);
+            pos.X = packet.ReadSingle();
+            packet.ReadXORByte(guid, 6);
+            packet.ReadXORByte(guid, 3);
+            packet.ReadUInt32("ID");
+            pos.Y = packet.ReadSingle();
+            packet.ReadXORByte(guid, 2);
+            packet.ReadUInt32("TransportID");
+            packet.ReadXORByte(guid, 1);
+            packet.ReadXORByte(guid, 0);
+
+            packet.WriteGuid("Guid", guid);
+            packet.AddValue("Direction", pos);
+        }
     }
 }
