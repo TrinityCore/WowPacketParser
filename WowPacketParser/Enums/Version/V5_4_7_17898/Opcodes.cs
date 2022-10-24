@@ -333,6 +333,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_MAIL_LIST_RESULT, 0x0401},
             {Opcode.SMSG_MONEY_NOTIFY, 0x05E2},
             {Opcode.SMSG_MOTD, 0x0E20},
+            {Opcode.SMSG_MOVE_APPLY_MOVEMENT_FORCE, 0x1232},
             {Opcode.SMSG_MOVE_ROOT, 0x198B},
             {Opcode.SMSG_MOVE_SET_CAN_FLY, 0x01F4}, // 5.4.7 17956
             {Opcode.SMSG_MOVE_SET_FLIGHT_SPEED, 0x02DC}, // 5.4.7 17956
