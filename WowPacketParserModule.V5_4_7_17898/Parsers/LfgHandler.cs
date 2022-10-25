@@ -11,115 +11,116 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         {
             var guid = new byte[8];
 
-            var bit18 = packet.ReadBit();
-            if (bit18)
+            var hasGuid = packet.ReadBit();
+            if (hasGuid)
                 packet.StartBitStream(guid, 0, 6, 7, 5, 2, 4, 1, 3);
 
-            var bits30 = packet.ReadBits(17);
+            var dungeonsSize = packet.ReadBits(17);
 
-            var bits7C = new uint[bits30];
-            var bits6C = new uint[bits30];
-            var bits40 = new uint[bits30];
-            var bits1C = new uint[bits30][];
-            var bits2C = new uint[bits30][];
-            var bitsC = new uint[bits30][];
-            var bit4 = new bool[bits30];
-            var bits5C = new uint[bits30];
-            var bit3C = new bool[bits30];
+            var bonusCurrencySize = new uint[dungeonsSize];
+            var currencySize = new uint[dungeonsSize];
+            var ShortageRewardSize = new uint[dungeonsSize];
+            var bits1C = new uint[dungeonsSize][];
+            var bits2C = new uint[dungeonsSize][];
+            var ShortageRewardItemsSize = new uint[dungeonsSize][];
+            var bit4 = new bool[dungeonsSize];
+            var RewardItemsCount = new uint[dungeonsSize];
+            var bit3C = new bool[dungeonsSize];
 
-            for (var i = 0; i < bits30; i++)
+            for (var i = 0; i < dungeonsSize; i++)
             {
-                bits7C[i] = packet.ReadBits(21);
-                bits6C[i] = packet.ReadBits(21);
-                bits40[i] = packet.ReadBits(19);
+                bonusCurrencySize[i] = packet.ReadBits(21);
+                currencySize[i] = packet.ReadBits(21);
+                ShortageRewardSize[i] = packet.ReadBits(19);
 
-                bits1C[i] = new uint[bits40[i]];
-                bits2C[i] = new uint[bits40[i]];
-                bitsC[i] = new uint[bits40[i]];
+                bits1C[i] = new uint[ShortageRewardSize[i]];
+                bits2C[i] = new uint[ShortageRewardSize[i]];
+                ShortageRewardItemsSize[i] = new uint[ShortageRewardSize[i]];
 
-                for (var j = 0; j < bits40[i]; j++)
+                for (var j = 0; j < ShortageRewardSize[i]; j++)
                 {
                     bits1C[i][j] = packet.ReadBits(21);
                     bits2C[i][j] = packet.ReadBits(21);
-                    bitsC[i][j] = packet.ReadBits(20);
+                    ShortageRewardItemsSize[i][j] = packet.ReadBits(20);
                 }
 
                 bit3C[i] = packet.ReadBit();
                 bit4[i] = packet.ReadBit();
-                bits5C[i] = packet.ReadBits(20);
+                RewardItemsCount[i] = packet.ReadBits(20);
             }
 
             var bits20 = packet.ReadBits(20);
-            for (var i = 0; i < bits30; i++)
+
+            for (var i = 0; i < dungeonsSize; i++)
             {
 
-                for (var j = 0; j < bits40[i]; j++)
+                for (var j = 0; j < ShortageRewardSize[i]; j++)
                 {
-                    for (var k = 0; k < bitsC[i][j]; k++)
+                    for (var k = 0; k < ShortageRewardItemsSize[i][j]; k++)
                     {
-                        packet.ReadInt32("Int0", i, j, k);
-                        packet.ReadInt32("Int34", i, j, k);
-                        packet.ReadInt32("Int34", i, j, k);
+                        packet.ReadInt32("ShortageRewardItemID", i, j, k);
+                        packet.ReadInt32("ShortageRewardItemDisplayID", i, j, k);
+                        packet.ReadInt32("ShortageRewardItemCount", i, j, k);
                     }
 
                     for (var k = 0; k < bits2C[i][j]; k++)
                     {
-                        packet.ReadInt32("Int34", i, j, k);
-                        packet.ReadInt32("Int34", i, j, k);
+                        packet.ReadInt32("ShortageRewardCurrencyUnk1", i, j, k);
+                        packet.ReadInt32("ShortageRewardCurrencyUnk2", i, j, k);
                     }
 
                     for (var k = 0; k < bits1C[i][j]; k++)
                     {
-                        packet.ReadInt32("Int34", i, j, k);
-                        packet.ReadInt32("Int34", i, j, k);
+                        packet.ReadInt32("ShortageRewardCurrencyUnk3", i, j, k);
+                        packet.ReadInt32("ShortageRewardCurrencyUnk4", i, j, k);
                     }
 
-                    packet.ReadInt32("Int44+8", i, j);
-                    packet.ReadInt32("Int44+0", i, j);
-                    packet.ReadInt32("Int44+4", i, j);
+                    packet.ReadInt32("ShortageRewardXP", i, j);
+                    packet.ReadInt32("ShortageRewardMask", i, j);
+                    packet.ReadInt32("ShortageRewardMoney", i, j);
                 }
 
-                packet.ReadInt32("Int34", i);
-                packet.ReadInt32("Int34", i);
+                packet.ReadInt32("PurseLimit", i);
+                packet.ReadInt32("CompletionLimit", i);
 
-                for (var j = 0; j < bits7C[i]; j++)
+                for (var j = 0; j < bonusCurrencySize[i]; j++)
                 {
-                    packet.ReadInt32("Int34", i, j);
-                    packet.ReadInt32("Int34", i, j);
+                    packet.ReadInt32("BonusCurrencyCount", i, j);
+                    packet.ReadInt32("BonusCurrencyID", i, j);
                 }
 
-                packet.ReadInt32("Int34", i);
-                packet.ReadInt32("Int34", i);
-                packet.ReadInt32("Int34", i);
+                packet.ReadInt32("SpecificLimit", i);
+                packet.ReadInt32("CompletionQuantity", i);
+                packet.ReadInt32("PurseWeeklyLimit", i);
 
-                for (var j = 0; j < bits5C[i]; j++)
+                for (var j = 0; j < RewardItemsCount[i]; j++)
                 {
-                    packet.ReadInt32("Int34", i, j);
-                    packet.ReadInt32("Int0", i, j);
-                    packet.ReadInt32("Int34", i, j);
+                    packet.ReadInt32("ItemDisplayId", i, j);
+                    packet.ReadInt32("ItemQuantity", i, j);
+                    packet.ReadInt32("ItemId", i, j);
                 }
 
-                for (var j = 0; j < bits6C[i]; j++)
+                for (var j = 0; j < currencySize[i]; j++)
                 {
-                    packet.ReadInt32("Int34", i, j);
-                    packet.ReadInt32("Int34", i, j);
+                    packet.ReadInt32("CurrencyId", i, j);
+                    packet.ReadInt32("CurrencyQuantity", i, j);
                 }
 
-                packet.ReadInt32("Int34", i);
-                packet.ReadInt32("Int34", i);
-                packet.ReadInt32("Int34", i);
-                packet.ReadInt32("Int34", i);
-                packet.ReadInt32("Int34", i);
-                packet.ReadInt32("Int34", i);
-                packet.ReadInt32("Int34", i);
-                packet.ReadInt32("Int34", i);
-                packet.ReadInt32("Int34", i);
-                packet.ReadInt32("Int34", i);
-                packet.ReadInt32("Int34", i);
-                packet.ReadInt32("Int34", i);
+                packet.ReadInt32("Quantity", i);
+                packet.ReadInt32("CompletedEncouterMask", i);
+                packet.ReadInt32("PurseWeeklyQuantity", i);
+                packet.ReadInt32("OverallLimit", i);
+                packet.ReadInt32("RewardMoney", i);
+                packet.ReadInt32("PurseQuantity", i);
+                packet.ReadInt32("RewardXP", i);
+                packet.ReadInt32("OverallQuantity", i);
+                packet.ReadInt32("SpecificQuantity", i);
+                packet.ReadInt32("CompletionCurrencyID", i);
+                packet.ReadInt32("RewardMask", i);
+                packet.ReadInt32("DungeonID", i);
             }
 
-            if (bit18)
+            if (hasGuid)
             {
                 packet.ParseBitStream(guid, 6, 3, 0, 4, 5, 1, 2, 7);
                 packet.WriteGuid("Guid", guid);
@@ -127,10 +128,10 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             for (var i = 0; i < bits20; i++)
             {
-                packet.ReadInt32("IntED", i);
-                packet.ReadInt32("Int24", i);
-                packet.ReadInt32("IntED", i);
-                packet.ReadInt32("IntED", i);
+                packet.ReadInt32("Slot", i);
+                packet.ReadInt32("SubReason1", i);
+                packet.ReadInt32("Reason", i);
+                packet.ReadInt32("SubReason2", i);
             }
         }
 
