@@ -419,6 +419,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_CONNECT_TO, 0x05B9},
             {Opcode.SMSG_REFORGE_RESULT, 0x1601},
             {Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS, 0x04E1},
+            {Opcode.SMSG_RESUME_CAST_BAR, 0x0850},
             {Opcode.SMSG_RESUME_COMMS, 0x01B9},
             {Opcode.SMSG_SCENARIO_POIS, 0x10E9},
             {Opcode.SMSG_SCENARIO_PROGRESS_UPDATE, 0x167B},
@@ -433,6 +434,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_SET_TIME_ZONE_INFORMATION, 0x0C2B},
             {Opcode.SMSG_SHOW_BANK, 0x060B},
             {Opcode.SMSG_CATEGORY_COOLDOWN, 0x053B},
+            {Opcode.SMSG_SPELL_CHANNEL_START, 0x1B15},
             {Opcode.SMSG_SPELL_COOLDOWN, 0x1B14},
             {Opcode.SMSG_SPELL_DISPELL_LOG , 0x0919},
             {Opcode.SMSG_SPELL_ENERGIZE_LOG, 0x0071},
@@ -445,6 +447,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_SPELL_INTERRUPT_LOG, 0x091A},
             {Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG, 0x0172},
             {Opcode.SMSG_SPELL_START, 0x0130},
+            {Opcode.SMSG_SPELL_UPDATE_CHAIN_TARGETS, 0x1B96},
             {Opcode.SMSG_STAND_STATE_UPDATE, 0x0C48},
             {Opcode.SMSG_SUSPEND_COMMS, 0x10B0},
             {Opcode.SMSG_UPDATE_ACTION_BUTTONS, 0x1768},
@@ -481,7 +484,6 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
         {
-            {Opcode.MSG_CHANNEL_START, 0x1B15},
             {Opcode.MSG_CHANNEL_UPDATE, 0x087B},
             {Opcode.MSG_MOVE_FALL_LAND, 0x055B},
             {Opcode.MSG_MOVE_HEARTBEAT, 0x017B},

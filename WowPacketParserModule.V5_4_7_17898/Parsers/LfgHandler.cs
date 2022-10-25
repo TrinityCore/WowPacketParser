@@ -358,7 +358,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
 
             var slotsCount = packet.ReadBits(22);
             var commentLen = packet.ReadBits(8);
-            bool queueAsGroup = packet.ReadBit();
+            packet.ReadBit("QueueAsGroup");
 
             packet.ReadWoWString("Comment", commentLen);
 
