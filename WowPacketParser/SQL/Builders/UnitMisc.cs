@@ -178,6 +178,10 @@ namespace WowPacketParser.SQL.Builders
                     if (!(npc.Map.ToString(CultureInfo.InvariantCulture).MatchesFilters(Settings.MapFilters)))
                         continue;
 
+                // Ignore pets
+                if (npc.Guid.GetHighType() == HighGuidType.Pet)
+                    continue;
+
                 uint modelId = (uint)npc.UnitData.DisplayID;
                 if (modelId == 0)
                     continue;
