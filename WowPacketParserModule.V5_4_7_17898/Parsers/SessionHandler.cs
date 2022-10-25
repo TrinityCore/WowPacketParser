@@ -220,47 +220,45 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         {
             var sha = new byte[20];
 
-            packet.ReadUInt32("UInt32 1");
-            packet.ReadUInt32("UInt32 2");
+            packet.ReadUInt32("RegionID");
+            packet.ReadUInt32("LoginServerID");
 
-            sha[4] = packet.ReadByte();
-            sha[12] = packet.ReadByte();
             sha[3] = packet.ReadByte();
+            sha[12] = packet.ReadByte();
+            sha[2] = packet.ReadByte();
             sha[7] = packet.ReadByte();
 
-            packet.ReadUInt32("UInt32 3");
+            packet.ReadUInt32("SiteID");
 
             sha[11] = packet.ReadByte();
             sha[17] = packet.ReadByte();
             sha[14] = packet.ReadByte();
-            sha[5] = packet.ReadByte();
+            sha[4] = packet.ReadByte();
 
-            packet.ReadInt64("Int64");
+            packet.ReadInt64("DosResponse");
 
             sha[10] = packet.ReadByte();
 
-            packet.ReadUInt32("UInt32 4");
+            packet.ReadUInt32("RealmID");
 
             sha[6] = packet.ReadByte();
             sha[18] = packet.ReadByte();
             sha[15] = packet.ReadByte();
             sha[13] = packet.ReadByte();
-            sha[0] = packet.ReadByte();
+
+            packet.ReadByte("LoginServerType");
             sha[8] = packet.ReadByte();
-
             packet.ReadInt16E<ClientVersionBuild>("Client Build");
-
-            sha[1] = packet.ReadByte();
+            sha[0] = packet.ReadByte();
             sha[19] = packet.ReadByte();
             sha[16] = packet.ReadByte();
             sha[9] = packet.ReadByte();
             sha[5] = packet.ReadByte();
-            sha[2] = packet.ReadByte();
+            sha[1] = packet.ReadByte();
 
-            packet.ReadByte("Unk Byte");
+            packet.ReadByte("BuildType");
 
-            packet.ReadUInt32("UInt32 5");
-            //packet.ReadUInt32("UInt32 6");
+            packet.ReadUInt32("LocalChallenge");
 
             var addons = new Packet(packet.ReadBytes(packet.ReadInt32()), packet.Opcode, packet.Time, packet.Direction,
                 packet.Number, packet.Writer, packet.FileName);

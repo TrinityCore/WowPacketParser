@@ -571,5 +571,24 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ParseBitStream(guid, 7, 0, 5, 2, 3, 6, 4, 1);
             packet.WriteGuid("GUID", guid);
         }
+
+        [Parser(Opcode.SMSG_GUILD_CHALLENGE_UPDATE)]
+        public static void HandleGuildChallengeUpdated(Packet packet)
+        {
+            for (int i = 0; i < 6; ++i)
+                packet.ReadInt32("XP", i);
+
+            for (int i = 0; i < 6; ++i)
+                packet.ReadInt32("MaxCount", i);
+
+            for (int i = 0; i < 6; ++i)
+                packet.ReadInt32("CurrentCount", i);
+
+            for (int i = 0; i < 6; ++i)
+                packet.ReadInt32("MaxLevelGold", i);
+
+            for (int i = 0; i < 6; ++i)
+                packet.ReadInt32("Gold", i);
+        }
     }
 }

@@ -297,6 +297,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_GROUP_INVITE, 0x1472},
             {Opcode.SMSG_GROUP_LIST, 0x1E61},
             {Opcode.SMSG_GUILD_BANK_QUERY_RESULTS, 0x1B7B},
+            {Opcode.SMSG_GUILD_CHALLENGE_UPDATE,0x1A33},
             {Opcode.SMSG_GUILD_COMMAND_RESULT, 0x1A13},
             {Opcode.SMSG_GUILD_INVITE, 0x185A},
             {Opcode.SMSG_GUILD_NEWS_TEXT, 0x1850},
@@ -316,6 +317,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_INIT_WORLD_STATES, 0x0F03},
             {Opcode.SMSG_INSPECT_HONOR_STATS, 0x1429},
             {Opcode.SMSG_INSPECT_RATED_BG_STATS, 0x046B},
+            {Opcode.SMSG_INSTANCE_INFO,0x0C21},
             {Opcode.SMSG_INVENTORY_CHANGE_FAILURE, 0x0F49},
             {Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE, 0x0660},
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0x04A1},
@@ -359,6 +361,8 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_MOVE_SPLINE_SET_SWIM_SPEED, 0x0254},
             {Opcode.SMSG_MOVE_SPLINE_SET_WALK_BACK_SPEED, 0x0155},
             {Opcode.SMSG_MOVE_SPLINE_UNROOT, 0x1698},
+            {Opcode.SMSG_MOVE_TELEPORT, 0x00D5},
+            {Opcode.SMSG_MOVE_UNROOT, 0x1D8A},
             {Opcode.SMSG_MOVE_UNSET_CAN_FLY, 0x1D81}, // 5.4.7 17956
             {Opcode.SMSG_MOVE_UPDATE, 0x1CB2},
             {Opcode.SMSG_MOVE_UPDATE_COLLISION_HEIGHT, 0x179A},
@@ -509,7 +513,6 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.MSG_MOVE_STOP_STRAFE, 0x0171}, // 5.4.7 17956
             {Opcode.MSG_MOVE_STOP_SWIM, 0x0578}, // 5.4.7 17956
             {Opcode.MSG_MOVE_STOP_TURN, 0x0530}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_TELEPORT, 0x00D5}, // 5.4.7 17956
             {Opcode.MSG_MOVE_TELEPORT_ACK, 0x0978}, // 5.4.7 17956
             {Opcode.MSG_MOVE_WORLDPORT_ACK, 0x18BB}
         };
