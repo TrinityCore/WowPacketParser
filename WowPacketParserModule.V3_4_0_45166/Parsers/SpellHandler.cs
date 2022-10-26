@@ -214,6 +214,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             packet.ReadUInt32("UnspentTalentPoints", idx);
 
             // This is always 0 or 1 (index)
+            // Random values if IsPetTalents (probably uninitialized on serverside)
             packet.ReadByte("ActiveSpecGroup", idx);
             var specCount = packet.ReadUInt32("SpecCount", idx);
 
@@ -221,7 +222,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             {
                 packet.ReadByte("TalentCount", idx, i);                     // Blizzard doing blizzard things
                 var talentCount = packet.ReadUInt32("TalentCount", idx, i); // Blizzard doing blizzard things
-                packet.ReadByte("GlyphCount", idx, i);                      // Blizzard doing blizzard things
+                packet.ReadByte("GlyphCount", idx, i);                      // Blizzard doing blizzard things - Random values if IsPetTalents (probably uninitialized on serverside)
                 var glyphCount = packet.ReadUInt32("GlyphCount", idx, i);   // Blizzard doing blizzard things
                 // This is 0 (without dualspec learnt) and 1 or 2 with dualspec learnt
                 // SpecID 0 and 1 = Index 0 (SpecGroup)
