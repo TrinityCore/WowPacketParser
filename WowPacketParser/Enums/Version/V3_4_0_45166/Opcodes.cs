@@ -1683,7 +1683,7 @@ namespace WowPacketParser.Enums.Version.V3_4_0_45166
             { Opcode.SMSG_UPDATE_LAST_INSTANCE, 0x2685 },
             { Opcode.SMSG_UPDATE_OBJECT, 0x27CB },
             { Opcode.SMSG_UPDATE_PRIMARY_SPEC, 0x25D4 },
-            { Opcode.SMSG_UPDATE_TALENT_DATA, 0x25D2 },
+            { Opcode.SMSG_UPDATE_TALENT_DATA, 0x25D3 },
             { Opcode.SMSG_UPDATE_TASK_PROGRESS, 0x278D },
             { Opcode.SMSG_UPDATE_WEEKLY_SPELL_USAGE, 0x2C19 },
             { Opcode.SMSG_UPDATE_WORLD_STATE, 0x2744 },

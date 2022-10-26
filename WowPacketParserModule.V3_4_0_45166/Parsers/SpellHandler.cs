@@ -208,5 +208,40 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
             if (hasHealPrediction)
                 V6_0_2_19033.Parsers.SpellHandler.ReadSpellTargetedHealPrediction(packet, "HealPrediction");
         }
+
+        public static void ReadTalentInfoUpdate(Packet packet, params object[] idx)
+        {
+            packet.ReadUInt32("UnspentTalentPoints", idx);
+            packet.ReadByte("Unk2", idx);
+            var specCount = packet.ReadUInt32("SpecCount", idx);
+
+            for (var i = 0; i < specCount; ++i)
+            {
+                packet.ReadByte("Unk3", idx, i);
+                var talentCount = packet.ReadUInt32("TalentCount", idx, i);
+                packet.ReadByte("Unk4", idx, i);
+                var glyphCount = packet.ReadUInt32("GlyphCount", idx, i);
+                packet.ReadByte("Unk5", idx, i);
+
+                for (var j = 0; j < talentCount; ++j)
+                {
+                    packet.ReadUInt32("TalentID", idx, i, "TalentInfo", j);
+                    packet.ReadByte("Rank", idx, i, "TalentInfo", j);
+                }
+
+                for (var k = 0; k < glyphCount; ++k)
+                {
+                    packet.ReadUInt16("Glyph", idx, i, "GlyphInfo", k);
+                }
+            }
+
+            packet.ReadBit("UnkBool", idx);
+        }
+
+        [Parser(Opcode.SMSG_UPDATE_TALENT_DATA)]
+        public static void ReadUpdateTalentData(Packet packet)
+        {
+            ReadTalentInfoUpdate(packet);
+        }
     }
 }
