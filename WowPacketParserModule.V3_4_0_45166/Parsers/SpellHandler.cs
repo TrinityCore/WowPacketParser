@@ -212,16 +212,21 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
         public static void ReadTalentInfoUpdate(Packet packet, params object[] idx)
         {
             packet.ReadUInt32("UnspentTalentPoints", idx);
-            packet.ReadByte("Unk2", idx);
+
+            // This is always 0 or 1 (index)
+            packet.ReadByte("ActiveSpecGroup", idx);
             var specCount = packet.ReadUInt32("SpecCount", idx);
 
             for (var i = 0; i < specCount; ++i)
             {
-                packet.ReadByte("Unk3", idx, i);
-                var talentCount = packet.ReadUInt32("TalentCount", idx, i);
-                packet.ReadByte("Unk4", idx, i);
-                var glyphCount = packet.ReadUInt32("GlyphCount", idx, i);
-                packet.ReadByte("Unk5", idx, i);
+                packet.ReadByte("TalentCount", idx, i);                     // Blizzard doing blizzard things
+                var talentCount = packet.ReadUInt32("TalentCount", idx, i); // Blizzard doing blizzard things
+                packet.ReadByte("GlyphCount", idx, i);                      // Blizzard doing blizzard things
+                var glyphCount = packet.ReadUInt32("GlyphCount", idx, i);   // Blizzard doing blizzard things
+                // This is 0 (without dualspec learnt) and 1 or 2 with dualspec learnt
+                // SpecID 0 and 1 = Index 0 (SpecGroup)
+                // SpecID 2 = Index 1 (SpecGroup)
+                packet.ReadByte("SpecID", idx, i);
 
                 for (var j = 0; j < talentCount; ++j)
                 {
@@ -235,7 +240,7 @@ namespace WowPacketParserModule.V3_4_0_45166.Parsers
                 }
             }
 
-            packet.ReadBit("UnkBool", idx);
+            packet.ReadBit("IsPetTalents", idx);
         }
 
         [Parser(Opcode.SMSG_UPDATE_TALENT_DATA)]
