@@ -66,7 +66,7 @@ namespace WowPacketParser.SQL.Builders
             if (!Settings.SQLOutputFlag.HasAnyFlagBit(SQLOutput.quest_template))
                 return string.Empty;
 
-            if (Settings.TargetedDatabase != TargetedDatabase.Shadowlands)
+            if (Settings.TargetedDatabase < TargetedDatabase.Shadowlands)
                 return string.Empty;
 
             if (Storage.QuestRewardDisplaySpells.IsEmpty())

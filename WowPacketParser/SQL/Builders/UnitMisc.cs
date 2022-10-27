@@ -620,6 +620,9 @@ namespace WowPacketParser.SQL.Builders
                     case TargetedDatabase.Shadowlands:
                         expansionBaseLevel = 60;
                         break;
+                    case TargetedDatabase.Dragonflight:
+                        expansionBaseLevel = 70;
+                        break;
                 }
             }
 
