@@ -61,6 +61,12 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_DEL_FRIEND, 0x1707},
             {Opcode.CMSG_DEL_IGNORE, 0x0385},
             {Opcode.CMSG_DESTROY_ITEM, 0x1F12},
+            {Opcode.CMSG_DF_BOOT_PLAYER_VOTE,0x1CBA},
+            {Opcode.CMSG_DF_JOIN,0x18B8},
+            {Opcode.CMSG_DF_LEAVE,0x0D83},
+            {Opcode.CMSG_DF_PROPOSAL_RESPONSE,0x1C99},
+            {Opcode.CMSG_DF_SET_ROLES,0x1A9B},
+            {Opcode.CMSG_DF_TELEPORT,0x1999},
             {Opcode.CMSG_DO_READY_CHECK, 0x0D88},
             {Opcode.CMSG_SAVE_EQUIPMENT_SET, 0x115C},
             {Opcode.CMSG_EQUIPMENT_SET_USE, 0x1402},
@@ -111,6 +117,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.CMSG_CHAT_JOIN_CHANNEL, 0x1D20},
             {Opcode.CMSG_LEARN_TALENT, 0x1F5A},
             {Opcode.CMSG_CHAT_LEAVE_CHANNEL, 0x0E0B},
+            {Opcode.CMSG_LFG_SET_COMMENT,0x1C88},
             {Opcode.CMSG_LIST_INVENTORY, 0x10DD},
             {Opcode.CMSG_LOADING_SCREEN_NOTIFY, 0x1691},
             {Opcode.CMSG_LOGOUT_CANCEL, 0x11D4},
@@ -290,6 +297,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_GROUP_INVITE, 0x1472},
             {Opcode.SMSG_GROUP_LIST, 0x1E61},
             {Opcode.SMSG_GUILD_BANK_QUERY_RESULTS, 0x1B7B},
+            {Opcode.SMSG_GUILD_CHALLENGE_UPDATE,0x1A33},
             {Opcode.SMSG_GUILD_COMMAND_RESULT, 0x1A13},
             {Opcode.SMSG_GUILD_INVITE, 0x185A},
             {Opcode.SMSG_GUILD_NEWS_TEXT, 0x1850},
@@ -309,14 +317,20 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_INIT_WORLD_STATES, 0x0F03},
             {Opcode.SMSG_INSPECT_HONOR_STATS, 0x1429},
             {Opcode.SMSG_INSPECT_RATED_BG_STATS, 0x046B},
+            {Opcode.SMSG_INSTANCE_INFO,0x0C21},
             {Opcode.SMSG_INVENTORY_CHANGE_FAILURE, 0x0F49},
             {Opcode.SMSG_ITEM_ENCHANT_TIME_UPDATE, 0x0660},
             {Opcode.SMSG_ITEM_PUSH_RESULT, 0x04A1},
             {Opcode.SMSG_ITEM_UPGRADE_RESULT, 0x0888},
             {Opcode.SMSG_LEARNED_SPELLS, 0x0C99},
             {Opcode.SMSG_LEVEL_UP_INFO, 0x0E6A},
+            {Opcode.SMSG_LFG_BOOT_PLAYER,0x1521},
+            {Opcode.SMSG_LFG_JOIN_RESULT, 0x12E9},
             {Opcode.SMSG_LFG_PLAYER_INFO, 0x13B0},
+            {Opcode.SMSG_LFG_PARTY_INFO, 0x1F28},
+            {Opcode.SMSG_LFG_ROLE_CHECK_UPDATE,0x0541},
             {Opcode.SMSG_LFG_QUEUE_STATUS, 0x0D40},
+            {Opcode.SMSG_LFG_UPDATE_STATUS,0x1661},
             {Opcode.SMSG_VENDOR_INVENTORY, 0x0D2A},
             {Opcode.SMSG_LOAD_EQUIPMENT_SET, 0x1520},
             {Opcode.SMSG_LOGIN_SET_TIME_SPEED, 0x0F4A},
@@ -347,6 +361,8 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_MOVE_SPLINE_SET_SWIM_SPEED, 0x0254},
             {Opcode.SMSG_MOVE_SPLINE_SET_WALK_BACK_SPEED, 0x0155},
             {Opcode.SMSG_MOVE_SPLINE_UNROOT, 0x1698},
+            {Opcode.SMSG_MOVE_TELEPORT, 0x00D5},
+            {Opcode.SMSG_MOVE_UNROOT, 0x1D8A},
             {Opcode.SMSG_MOVE_UNSET_CAN_FLY, 0x1D81}, // 5.4.7 17956
             {Opcode.SMSG_MOVE_UPDATE, 0x1CB2},
             {Opcode.SMSG_MOVE_UPDATE_COLLISION_HEIGHT, 0x179A},
@@ -407,6 +423,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_CONNECT_TO, 0x05B9},
             {Opcode.SMSG_REFORGE_RESULT, 0x1601},
             {Opcode.SMSG_RESPOND_INSPECT_ACHIEVEMENTS, 0x04E1},
+            {Opcode.SMSG_RESUME_CAST_BAR, 0x0850},
             {Opcode.SMSG_RESUME_COMMS, 0x01B9},
             {Opcode.SMSG_SCENARIO_POIS, 0x10E9},
             {Opcode.SMSG_SCENARIO_PROGRESS_UPDATE, 0x167B},
@@ -421,6 +438,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_SET_TIME_ZONE_INFORMATION, 0x0C2B},
             {Opcode.SMSG_SHOW_BANK, 0x060B},
             {Opcode.SMSG_CATEGORY_COOLDOWN, 0x053B},
+            {Opcode.SMSG_SPELL_CHANNEL_START, 0x1B15},
             {Opcode.SMSG_SPELL_COOLDOWN, 0x1B14},
             {Opcode.SMSG_SPELL_DISPELL_LOG , 0x0919},
             {Opcode.SMSG_SPELL_ENERGIZE_LOG, 0x0071},
@@ -433,6 +451,7 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.SMSG_SPELL_INTERRUPT_LOG, 0x091A},
             {Opcode.SMSG_SPELL_NON_MELEE_DAMAGE_LOG, 0x0172},
             {Opcode.SMSG_SPELL_START, 0x0130},
+            {Opcode.SMSG_SPELL_UPDATE_CHAIN_TARGETS, 0x1B96},
             {Opcode.SMSG_STAND_STATE_UPDATE, 0x0C48},
             {Opcode.SMSG_SUSPEND_COMMS, 0x10B0},
             {Opcode.SMSG_UPDATE_ACTION_BUTTONS, 0x1768},
@@ -469,7 +488,6 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
 
         private static readonly BiDictionary<Opcode, int> MiscOpcodes = new BiDictionary<Opcode, int>
         {
-            {Opcode.MSG_CHANNEL_START, 0x1B15},
             {Opcode.MSG_CHANNEL_UPDATE, 0x087B},
             {Opcode.MSG_MOVE_FALL_LAND, 0x055B},
             {Opcode.MSG_MOVE_HEARTBEAT, 0x017B},
@@ -495,7 +513,6 @@ namespace WowPacketParser.Enums.Version.V5_4_7_17898
             {Opcode.MSG_MOVE_STOP_STRAFE, 0x0171}, // 5.4.7 17956
             {Opcode.MSG_MOVE_STOP_SWIM, 0x0578}, // 5.4.7 17956
             {Opcode.MSG_MOVE_STOP_TURN, 0x0530}, // 5.4.7 17956
-            {Opcode.MSG_MOVE_TELEPORT, 0x00D5}, // 5.4.7 17956
             {Opcode.MSG_MOVE_TELEPORT_ACK, 0x0978}, // 5.4.7 17956
             {Opcode.MSG_MOVE_WORLDPORT_ACK, 0x18BB}
         };

@@ -76,10 +76,10 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                 {
                     QuestPOI questPoi = new QuestPOI();
 
-                    packet.ReadInt32("Unk Int32 1", i, j);
+                    packet.ReadInt32("Flags", i, j);
                     packet.ReadInt32("World Effect ID", i, j);
                     packet.ReadInt32("Player Condition ID", i, j);
-                    packet.ReadInt32("Unk Int32 2", i, j);
+                    packet.ReadInt32("QuestObjectID", i, j);
 
                     var questPoiPoints = new List<QuestPOIPoint>();
                     for (int k = 0; k < pointsSize[i][j]; ++k)
@@ -94,12 +94,12 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     }
 
                     questPoi.MapID = (int)packet.ReadUInt32<MapId>("Map Id", i, j);
-                    packet.ReadInt32("Unk Int32 3", i, j);
-                    packet.ReadInt32("Unk Int32 4", i, j);
-                    questPoi.Floor = (int)packet.ReadUInt32("Floor Id", i, j);
-                    questPoi.WorldMapAreaId = (int)packet.ReadUInt32("World Map Area ID", i, j);
+                    packet.ReadInt32("Floor", i, j);
+                    packet.ReadInt32("Priority", i, j);
+                    questPoi.Floor = (int)packet.ReadUInt32("NumPoints", i, j);
+                    questPoi.WorldMapAreaId = (int)packet.ReadUInt32("WorldMapAreaID", i, j);
 
-                    int idx = packet.ReadInt32("POI Index", i, j);
+                    int idx = packet.ReadInt32("BlobIndex", i, j);
                     questPoi.ID = idx;
 
                     questPoi.ObjectiveIndex = packet.ReadInt32("Objective Index", i, j);
@@ -113,7 +113,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
                     questPOIs.Add(questPoi);
                 }
 
-                packet.ReadInt32("POI Counter?", i);
+                packet.ReadInt32("NumBlobs", i);
                 int questId = packet.ReadInt32<QuestId>("Quest ID", i);
 
                 questPoiPointsForQuest.ForEach(q =>
