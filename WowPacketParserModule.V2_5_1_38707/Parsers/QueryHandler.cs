@@ -364,10 +364,11 @@ namespace WowPacketParserModule.V2_5_1_38835.Parsers
             quest.RewardNumSkillUps = (uint)packet.ReadInt32("RewardNumSkillUps");
             quest.QuestGiverPortrait = (uint)packet.ReadInt32("PortraitGiver");
             quest.PortraitGiverMount = (uint)packet.ReadInt32("PortraitGiverMount");
-            quest.QuestTurnInPortrait = (uint)packet.ReadInt32("PortraitTurnIn");
 
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V2_5_2_39926))
-                packet.ReadInt32("Unk");
+                packet.ReadInt32("PortraitGiverModelSceneID");
+
+            quest.QuestTurnInPortrait = (uint)packet.ReadInt32("PortraitTurnIn");
 
             quest.RewardFactionID = new uint?[5];
             quest.RewardFactionOverride = new int?[5];
