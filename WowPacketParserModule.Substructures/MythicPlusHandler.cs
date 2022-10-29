@@ -63,7 +63,7 @@ namespace WowPacketParserModule.Substructures
             packet.ReadTime64("CompletionDate", indexes);
             packet.ReadInt32("Season", indexes);
             for (var i = 0; i < 4; ++i)
-                packet.ReadInt32("KeystoneAffixIDs", indexes, i);
+                packet.ReadUInt32("KeystoneAffixIDs", indexes, i);
 
             var memberCount = packet.ReadUInt32("MemberCount", indexes);
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_5_40772))

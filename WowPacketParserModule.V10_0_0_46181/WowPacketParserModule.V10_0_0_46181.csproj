@@ -49,4 +49,8 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Parsers\" />
+  </ItemGroup>
+
 </Project>

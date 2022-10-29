@@ -76,7 +76,7 @@ namespace WowPacketParserModule.V7_0_3_22248.Parsers
             orbit.StartDelay = packet.ReadUInt32("StartDelay", indexes);
             orbit.CircleRadius = packet.ReadSingle("Radius", indexes);
             orbit.BlendFromRadius = packet.ReadSingle("BlendFromRadius", indexes);
-            orbit.InitialAngle = packet.ReadSingle("InitialAngel", indexes);
+            orbit.InitialAngle = packet.ReadSingle("InitialAngle", indexes);
             orbit.ZOffset = packet.ReadSingle("ZOffset", indexes);
 
             if (hasTarget)

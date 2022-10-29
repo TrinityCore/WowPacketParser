@@ -359,15 +359,25 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 packet.ReadBit("HeightChangeFailed", index);
                 packet.ReadBit("RemoteTimeValid", index);
                 var hasInertia = ClientVersion.AddedInVersion(ClientVersionBuild.V9_2_0_42423) && packet.ReadBit("HasInertia", index);
+                var hasUnk1000 = ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181) && packet.ReadBit("HasUnk1000", index);
 
                 if (hasTransport)
                     movementUpdate.Transport = ReadTransportData(moveInfo, guid, packet, index);
 
                 if (hasInertia)
                 {
-                    packet.ReadPackedGuid128("GUID", index, "Inertia");
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181))
+                        packet.ReadInt32("field_AC", "Inertia");
+                    else
+                        packet.ReadPackedGuid128("GUID", index, "Inertia");
                     packet.ReadVector3("Force", index, "Inertia");
                     packet.ReadUInt32("Lifetime", index, "Inertia");
+                }
+
+                if (hasUnk1000)
+                {
+                    packet.ReadSingle("field_C4", index, "Unk1000");
+                    packet.ReadSingle("field_C8", index, "Unk1000");
                 }
 
                 if (hasFall)
@@ -399,8 +409,28 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V8_1_0_28724))
                     packet.ReadSingle("MovementForcesModMagnitude", index);
 
-                packet.ResetBitReader();
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181))
+                {
+                    packet.ReadSingle("field_454", index);
+                    packet.ReadSingle("field_458", index);
+                    packet.ReadSingle("field_45C", index);
+                    packet.ReadSingle("field_460", index);
+                    packet.ReadSingle("field_464", index);
+                    packet.ReadSingle("field_468", index);
+                    packet.ReadSingle("field_46C", index);
+                    packet.ReadSingle("field_470", index);
+                    packet.ReadSingle("field_474", index);
+                    packet.ReadSingle("field_478", index);
+                    packet.ReadSingle("field_47C", index);
+                    packet.ReadSingle("field_480", index);
+                    packet.ReadSingle("field_484", index);
+                    packet.ReadSingle("field_488", index);
+                    packet.ReadSingle("field_48C", index);
+                    packet.ReadSingle("field_490", index);
+                    packet.ReadSingle("field_494", index);
+                }
 
+                packet.ResetBitReader();
                 moveInfo.HasSplineData = packet.ReadBit("HasMovementSpline", index);
 
                 for (var i = 0; i < movementForceCount; ++i)
@@ -411,9 +441,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     packet.ReadVector3("Direction", index);
                     packet.ReadUInt32("TransportID", index);
                     packet.ReadSingle("Magnitude", index);
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181))
+                        packet.ReadInt32("field_34");
                     packet.ReadBits("Type", 2, index);
 
-                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185))
+                    if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_1_0_39185) && ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_0_46181))
                     {
                         var unused910 = packet.ReadBit();
                         if (unused910)
@@ -611,6 +643,9 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                 if (packet.ReadBit("Unk bit WoD62x", index))
                     areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.Unk1;
 
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181))
+                    packet.ReadBit("Unk1000", index);
+
                 if (packet.ReadBit("HasTargetRollPitchYaw", index))
                     areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasTargetRollPitchYaw;
 
@@ -650,6 +685,10 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     if (packet.ReadBit("HasAreaTriggerDisk", index))
                         areaTriggerTemplate.Type = (byte)AreaTriggerType.Disk;
 
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181))
+                    if (packet.ReadBit("HasAreaTriggerUnk1000", index))
+                        areaTriggerTemplate.Type = (byte)AreaTriggerType.Unk1000;
+
                 bool hasAreaTriggerSpline = packet.ReadBit("HasAreaTriggerSpline", index);
 
                 if (packet.ReadBit("HasAreaTriggerOrbit", index))
@@ -659,8 +698,11 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     if (packet.ReadBit("HasAreaTriggerMovementScript", index)) // seen with spellid 343597
                         areaTriggerTemplate.Flags |= (uint)AreaTriggerFlags.HasMovementScript;
 
-                if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.Unk3) != 0)
-                    packet.ReadBit();
+                if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_0_46181))
+                {
+                    if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.Unk3) != 0)
+                        packet.ReadBit();
+                }
 
                 if (hasAreaTriggerSpline)
                     foreach (var splinePoint in AreaTriggerHandler.ReadAreaTriggerSpline(spellAreaTrigger, packet, index, "AreaTriggerSpline"))
@@ -768,6 +810,14 @@ namespace WowPacketParserModule.V8_0_1_27101.Parsers
                     areaTriggerTemplate.Data[5] = packet.ReadSingle("HeightTarget", index);
                     areaTriggerTemplate.Data[6] = packet.ReadSingle("LocationZOffset", index);
                     areaTriggerTemplate.Data[7] = packet.ReadSingle("LocationZOffsetTarget", index);
+                }
+
+                if (areaTriggerTemplate.Type == (byte)AreaTriggerType.Unk1000)
+                {
+                    areaTriggerTemplate.Data[0] = packet.ReadSingle("field_F0", index);
+                    areaTriggerTemplate.Data[1] = packet.ReadSingle("field_F4", index);
+                    areaTriggerTemplate.Data[2] = packet.ReadSingle("field_F8", index);
+                    areaTriggerTemplate.Data[3] = packet.ReadSingle("field_FC", index);
                 }
 
                 if ((areaTriggerTemplate.Flags & (uint)AreaTriggerFlags.HasMovementScript) != 0)

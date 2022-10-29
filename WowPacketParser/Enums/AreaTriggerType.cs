@@ -8,5 +8,6 @@
         Polygon     = 3,
         Cylinder    = 4,
         Disk        = 5,
+        Unk1000     = 6,
     }
 }
