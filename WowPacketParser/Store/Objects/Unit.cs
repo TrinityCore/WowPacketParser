@@ -38,7 +38,7 @@ namespace WowPacketParser.Store.Objects
 
             // If our unit got any of the following update fields set,
             // it's probably a temporary spawn
-            return !UnitData.SummonedBy.IsEmpty() || !UnitData.CreatedBy.IsEmpty() || UnitData.CreatedBySpell != 0;
+            return !UnitData.SummonedBy.IsEmpty() || !UnitData.CreatedBy.IsEmpty() || UnitData.CreatedBySpell != 0 || !UnitData.DemonCreator.IsEmpty();
         }
 
         public override void LoadValuesFromUpdateFields()

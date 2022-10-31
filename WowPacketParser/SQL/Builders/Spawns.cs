@@ -220,7 +220,7 @@ namespace WowPacketParser.SQL.Builders
                     }
                 }
 
-                if (creature.Guid.GetHighType() == HighGuidType.Pet || creature.IsTemporarySpawn())
+                if (creature.Guid.GetHighType() == HighGuidType.Pet || (creature.IsTemporarySpawn() && !Settings.SaveTempSpawns))
                 {
                     row.CommentOut = true;
                     row.Comment += " - !!! might be temporary spawn !!!";
