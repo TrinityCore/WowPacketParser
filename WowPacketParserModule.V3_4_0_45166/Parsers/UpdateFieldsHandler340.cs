@@ -1961,17 +1961,17 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_0_45166
             return data;
         }
 
-        public static IActivePlayerUnk340 ReadCreateActivePlayerUnk340(Packet packet, params object[] indexes)
+        public static IGlyphInfo ReadCreateGlyphInfo(Packet packet, params object[] indexes)
         {
-            var data = new ActivePlayerUnk340();
-            data.Field_0 = packet.ReadUInt32("Field_0", indexes);
-            data.Field_10 = packet.ReadUInt32("Field_10", indexes);
+            var data = new GlyphInfo();
+            data.GlyphSlot = packet.ReadUInt32("GlyphSlot", indexes);
+            data.Glyph = packet.ReadUInt32("Glyph", indexes);
             return data;
         }
 
-        public static IActivePlayerUnk340 ReadUpdateActivePlayerUnk340(Packet packet, params object[] indexes)
+        public static IGlyphInfo ReadUpdateGlyphInfo(Packet packet, params object[] indexes)
         {
-            var data = new ActivePlayerUnk340();
+            var data = new GlyphInfo();
             var rawChangesMask = new int[1];
             rawChangesMask[0] = (int)packet.ReadBits(3);
             var changesMask = new BitArray(rawChangesMask);
@@ -1981,11 +1981,11 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_0_45166
             {
                 if (changesMask[1])
                 {
-                    data.Field_0 = packet.ReadUInt32("Field_0", indexes);
+                    data.GlyphSlot = packet.ReadUInt32("GlyphSlot", indexes);
                 }
                 if (changesMask[2])
                 {
-                    data.Field_10 = packet.ReadUInt32("Field_10", indexes);
+                    data.Glyph = packet.ReadUInt32("Glyph", indexes);
                 }
             }
             return data;
@@ -2162,7 +2162,7 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_0_45166
             data.TransportServerTime = packet.ReadInt32("TransportServerTime", indexes);
             for (var i = 0; i < 6; ++i)
             {
-                data.Unk340[i] = ReadCreateActivePlayerUnk340(packet, indexes, "Unk340", i);
+                data.GlyphInfo[i] = ReadCreateGlyphInfo(packet, indexes, "GlyphInfo", i);
             }
             data.Unk340_2 = packet.ReadByte("Unk340_2", indexes);
             for (var i = 0; i < data.KnownTitles.Count; ++i)
@@ -2997,7 +2997,7 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_0_45166
                 {
                     if (changesMask[1484 + i])
                     {
-                        data.Unk340[i] = ReadUpdateActivePlayerUnk340(packet, data.Unk340[i] as ActivePlayerUnk340, indexes, "Unk340", i);
+                        data.GlyphInfo[i] = ReadUpdateGlyphInfo(packet, data.GlyphInfo[i] as GlyphInfo, indexes, "GlyphInfo", i);
                     }
                 }
             }

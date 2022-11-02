@@ -5,10 +5,10 @@ using WowPacketParser.Store.Objects.UpdateFields;
 
 namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_0_45166
 {
-    public class ActivePlayerUnk340 : IActivePlayerUnk340
+    public class GlyphInfo : IGlyphInfo
     {
-        public System.Nullable<uint> Field_0 { get; set; }
-        public System.Nullable<uint> Field_10 { get; set; }
+        public System.Nullable<uint> GlyphSlot { get; set; }
+        public System.Nullable<uint> Glyph { get; set; }
     }
 }
 

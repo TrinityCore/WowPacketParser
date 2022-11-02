@@ -110,7 +110,7 @@ namespace WowPacketParserModule.V3_4_0_45166.UpdateFields.V3_4_0_45166
         public System.Nullable<int> PvpLastWeeksTierMaxFromWins { get; set; }
         public System.Nullable<byte> NumBankSlots { get; set; }
         public System.Nullable<int> TransportServerTime { get; set; }
-        public IActivePlayerUnk340[] Unk340 { get; } = new IActivePlayerUnk340[6];
+        public IGlyphInfo[] GlyphInfo { get; } = new IGlyphInfo[6];
         public System.Nullable<byte> Unk340_2 { get; set; }
         public DynamicUpdateField<IResearch>[] Research { get; } = new DynamicUpdateField<IResearch>[1] { new DynamicUpdateField<IResearch>() };
         public DynamicUpdateField<System.Nullable<ulong>> KnownTitles { get; } = new DynamicUpdateField<System.Nullable<ulong>>();
