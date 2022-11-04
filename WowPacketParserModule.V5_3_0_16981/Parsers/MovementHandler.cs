@@ -449,7 +449,7 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
         public static void HandlePhaseShift(Packet packet)
         {
             var phaseShift = packet.Holder.PhaseShift = new PacketPhaseShift();
-            CoreParsers.MovementHandler.ActivePhases.Clear();
+            CoreParsers.MovementHandler.ClearPhases();
 
             var guid = packet.StartBitStream(2, 6, 3, 1, 5, 7, 0, 4);
             packet.ReadXORBytes(guid, 5, 3, 0);
@@ -484,6 +484,8 @@ namespace WowPacketParserModule.V5_3_0_16981.Parsers
 
             packet.ReadXORBytes(guid, 6, 2, 1);
             phaseShift.Client = packet.WriteGuid("GUID", guid);
+
+            CoreParsers.MovementHandler.WritePhaseChanges(packet);
         }
     }
 }

@@ -891,7 +891,7 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
         public static void HandlePhaseShift(Packet packet)
         {
             var phaseShift = packet.Holder.PhaseShift = new PacketPhaseShift();
-            CoreParsers.MovementHandler.ActivePhases.Clear();
+            CoreParsers.MovementHandler.ClearPhases();
 
             var guid = packet.StartBitStream(7, 5, 0, 4, 3, 1, 6, 2);
             packet.ParseBitStream(guid, 4, 5, 2);
@@ -932,6 +932,8 @@ namespace WowPacketParserModule.V5_4_2_17658.Parsers
             packet.ParseBitStream(guid, 6);
 
             phaseShift.Client = packet.WriteGuid("GUID", guid);
+
+            CoreParsers.MovementHandler.WritePhaseChanges(packet);
         }
 
         [Parser(Opcode.SMSG_CONTROL_UPDATE)]

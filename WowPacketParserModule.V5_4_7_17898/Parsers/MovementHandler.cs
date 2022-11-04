@@ -406,7 +406,7 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
         public static void HandlePhaseShift(Packet packet)
         {
             var phaseShift = packet.Holder.PhaseShift = new PacketPhaseShift();
-            CoreParsers.MovementHandler.ActivePhases.Clear();
+            CoreParsers.MovementHandler.ClearPhases();
 
             packet.ReadUInt32("UInt32 1");
 
@@ -438,6 +438,8 @@ namespace WowPacketParserModule.V5_4_7_17898.Parsers
             packet.ParseBitStream(guid, 0, 4, 7, 6, 3, 5, 1, 2);
 
             phaseShift.Client = packet.WriteGuid("GUID", guid);
+
+            CoreParsers.MovementHandler.WritePhaseChanges(packet);
         }
 
         [Parser(Opcode.SMSG_FLIGHT_SPLINE_SYNC)]

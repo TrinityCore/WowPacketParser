@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Google.Protobuf.WellKnownTypes;
 using WowPacketParser.Enums;
 using WowPacketParser.Enums.Version;
@@ -22,7 +23,24 @@ namespace WowPacketParser.Parsing.Parsers
         public static int CurrentPhaseMask = 1;
 
         // this is a dictionary because ConcurrentSet does not exist
+        public static readonly IDictionary<ushort, bool> OldPhases = new ConcurrentDictionary<ushort, bool>();
         public static readonly IDictionary<ushort, bool> ActivePhases = new ConcurrentDictionary<ushort, bool>();
+
+        public static void ClearPhases()
+        {
+            OldPhases.Clear();
+            foreach (var phase in ActivePhases)
+                OldPhases.Add(phase);
+            ActivePhases.Clear();
+        }
+
+        public static void WritePhaseChanges(Packet packet)
+        {
+            var addedPhases = ActivePhases.Keys.Where(p => !OldPhases.ContainsKey(p));
+            var removedPhases = OldPhases.Keys.Where(p => !ActivePhases.ContainsKey(p));
+            packet.WriteLine($"// Added Phases: {string.Join(", ", addedPhases)}");
+            packet.WriteLine($"// Removed Phases: {string.Join(", ", removedPhases)}");
+        }
 
         public static MovementInfo ReadMovementInfo(Packet packet, WowGuid guid, object index = null)
         {
