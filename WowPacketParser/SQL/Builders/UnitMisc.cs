@@ -892,7 +892,14 @@ namespace WowPacketParser.SQL.Builders
                 rows.Add(row);
             }
 
-            return new SQLInsert<VehicleTemplateAccessory>(rows, false).Build();
+            StringBuilder result = new StringBuilder();
+            var delete = new SQLDelete<VehicleTemplateAccessory>(rows);
+            result.Append(delete.Build());
+
+            var insert = new SQLInsert<VehicleTemplateAccessory>(rows, false);
+            result.Append(insert.Build());
+
+            return result.ToString();
         }
 
         [BuilderMethod]
