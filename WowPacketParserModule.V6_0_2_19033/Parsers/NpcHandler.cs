@@ -39,15 +39,24 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 ClientVersion.AddedInVersion(ClientBranch.WotLK, ClientVersionBuild.V3_4_0_45166))
                 gossipOption.Language = packet.ReadUInt32E<Language>("Language", idx);
 
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181))
+            {
+                packet.ReadInt32("Unk1000_field_17B0", idx);
+                packet.ReadInt32("Unk1000_field_17B4", idx);
+            }
+
             packet.ResetBitReader();
             uint textLen = packet.ReadBits(12);
             uint confirmLen = packet.ReadBits(12);
             bool hasSpellId = false;
+            bool hasUnk1000 = false;
             if (ClientVersion.AddedInVersion(ClientType.Shadowlands) || ClientVersion.IsWotLKClientVersionBuild(ClientVersion.Build))
             {
                 packet.ReadBits("Status", 2, idx);
                 if (ClientVersion.AddedInVersion(ClientVersionBuild.V9_0_2_36639) || ClientVersion.IsWotLKClientVersionBuild(ClientVersion.Build))
                     hasSpellId = packet.ReadBit();
+                if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181))
+                    hasUnk1000 = packet.ReadBit();
 
                 uint rewardsCount = packet.ReadUInt32();
                 for (uint i = 0; i < rewardsCount; ++i)
@@ -67,6 +76,9 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
 
             if (hasSpellId)
                 packet.ReadInt32("SpellID", idx);
+
+            if (hasUnk1000)
+                packet.ReadInt32("Unk1000_field_17A8", idx);
 
             gossipOption.FillBroadcastTextIDs();
 

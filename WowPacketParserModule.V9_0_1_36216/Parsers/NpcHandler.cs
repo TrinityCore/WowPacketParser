@@ -120,7 +120,9 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             int friendshipFactionID = packet.ReadInt32("FriendshipFactionID");
             CoreParsers.NpcHandler.AddGossipAddon(packetGossip.MenuId, friendshipFactionID, guid, packet.TimeSpan);
 
-            var broadcastTextID = (uint)packet.ReadInt32("BroadcastTextID");
+            uint broadcastTextID = 0;
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_0_46181))
+                broadcastTextID = packet.ReadUInt32("BroadcastTextID");
 
             var npcTextId = SQLDatabase.GetNPCTextIDByMenuIDAndBroadcastText(menuId, broadcastTextID);
             if (npcTextId != 0)
@@ -138,8 +140,22 @@ namespace WowPacketParserModule.V9_0_1_36216.Parsers
             int optionsCount = packet.ReadInt32("GossipOptionsCount");
             int questsCount = packet.ReadInt32("GossipQuestsCount");
 
+            bool hasUnk1000_field3C = false;
+            bool hasUnk1000_field74 = false;
+            if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181))
+            {
+                hasUnk1000_field3C = packet.ReadBit("Unk1000_field_3C");
+                hasUnk1000_field74 = packet.ReadBit("Unk1000_field_74");
+            }
+
             for (int i = 0; i < optionsCount; ++i)
                 packetGossip.Options.Add(V6_0_2_19033.Parsers.NpcHandler.ReadGossipOptionsData((uint)menuId, guid, packet, i, "GossipOptions"));
+
+            if (hasUnk1000_field3C)
+                packet.ReadInt32("Unk1000_field_38");
+
+            if (hasUnk1000_field74)
+                packet.ReadInt32("Unk1000_field_70");
 
             for (int i = 0; i < questsCount; ++i)
                 packetGossip.Quests.Add(V7_0_3_22248.Parsers.NpcHandler.ReadGossipQuestTextData(packet, i, "GossipQuests"));
