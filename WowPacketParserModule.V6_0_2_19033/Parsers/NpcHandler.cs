@@ -28,7 +28,11 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
                 MenuID = menuId
             };
 
-            gossipOption.OptionID = gossipMessageOption.OptionIndex = (uint)packet.ReadInt32("OptionID", idx);
+            if (ClientVersion.RemovedInVersion(ClientVersionBuild.V10_0_0_46181))
+                gossipOption.OptionID = gossipMessageOption.OptionIndex = (uint)packet.ReadInt32("OptionID", idx);
+            else
+                packet.ReadInt32("GossipNPCOptionID", idx);
+
             gossipOption.OptionNpc = (GossipOptionNpc?)packet.ReadByte("OptionNPC", idx);
             gossipMessageOption.OptionNpc = (int) gossipOption.OptionNpc;
             gossipOption.BoxCoded = gossipMessageOption.BoxCoded = packet.ReadByte("OptionFlags", idx) != 0;
@@ -42,7 +46,7 @@ namespace WowPacketParserModule.V6_0_2_19033.Parsers
             if (ClientVersion.AddedInVersion(ClientVersionBuild.V10_0_0_46181))
             {
                 packet.ReadInt32("Unk1000_field_17B0", idx);
-                packet.ReadInt32("Unk1000_field_17B4", idx);
+                gossipOption.OptionID = gossipMessageOption.OptionIndex = (uint)packet.ReadInt32("OptionID", idx);
             }
 
             packet.ResetBitReader();
